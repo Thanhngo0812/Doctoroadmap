@@ -1,0 +1,33 @@
+# --- neo vào gốc (bài học F27: 'artifacts/' từng che src/.../artifacts/) ---
+/.venv/
+/.tools/
+/.uv-cache/
+/.uv-python/
+/.model-cache/
+/.pytest_cache/
+/artifacts/
+
+# --- khắp nơi, KHÔNG neo ---
+__pycache__/
+*.py[cod]
+
+# --- bí mật ---
+.env
+
+# --- cấu hình riêng từng máy ---
+/.claude/settings.local.json
+
+# --- sản phẩm dựng gói ---
+/build/
+/dist/
+*.egg-info/
+
+# --- rác hệ điều hành ---
+.DS_Store
+Thumbs.db
+
+# --- giáo trình nguồn: không vào repo.
+#     Fixture Docling trong tests/ đã đủ cho test; PDF gốc thì không.
+#     KHÔNG neo tests/fixtures/*.pdf — smoke PDF do scripts/create_smoke_pdf.py
+#     tự sinh, phải commit, nếu không test integration skip lặng lẽ. ---
+/*.pdf
