@@ -1,0 +1,14 @@
+# Ghim rõ thay vì dựa vào phỏng đoán của git.
+# Dự án này bán tính tất định: một byte đổi trong tokenizer là mọi
+# số đếm token đổi theo, mà lại không có gì báo.
+
+* text=auto
+
+# Nhị phân — tuyệt đối không đụng vào dòng
+vendor/gemma/tokenizer.model  binary
+*.pdf                         binary
+*.model                       binary
+
+# Fixture Docling: giữ nguyên LF ở mọi hệ, để so sánh giữa các máy
+# là so cùng một thứ
+tests/fixtures/docling/*.json  text eol=lf
