@@ -4,7 +4,8 @@
 > [ticket 07](07-cham-theo-luat-dang-ky-truoc.md) và feedback F18, vòng 25. Code v3 nằm trên nhánh
 > `a4-quan-he-mo-2a`; `main` giữ code mặc định. Đợt 2, thêm luật kiểm nhất quán trên v3:
 > [ticket 09](09-ke-hoach-dot-2-luat-nhat-quan.md). Đợt 2 cho precision gộp 0,946; **chủ dự án chấp nhận bản đó**
-> (2026-09-14). Đường đưa vào `main`: ticket 01, rồi ticket 15.
+> (2026-09-14). Ticket 01 và 15 đã xong: nhánh đã gộp vào `main` (commit `c418499`), và bản này là mặc định. Kho
+> chính: báo cáo v8, ba tài liệu kia v7.
 
 **Quyết định của chủ dự án (2026-09-12):**
 - 2a không còn kênh riêng cho `subtype_of`. Giữa hai node tách riêng trong cụm, 2a được đề xuất **quan hệ kiểu mở**

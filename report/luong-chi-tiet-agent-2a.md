@@ -558,15 +558,15 @@ Nếu evidence không chứng minh `g1 ≡ g2`, agent phải tách hoặc deferr
 | `a5_kept`, `a5_synthesized`, `a5_rewritten_*` | Hành vi description |
 | `nghi_gop_nham` | Node có nguồn mô tả mâu thuẫn |
 
-Trên bốn tài liệu đã chốt, cấu hình hiện tại đạt 31 TP, 0 FP, 16 FN trên 47 cặp cùng: precision 1,000, recall
-0,660, F1 0,795. Đồ thị đề cử bắt 47/47 cặp cùng trong bộ vàng; phần còn bỏ sót nằm ở phán quyết merge, không ở
-candidate recall của corpus đo hiện tại.
+Trên bốn tài liệu, bản mặc định hiện hành (2026-09-14, prompt v3 và luật nhất quán) đạt 35 TP, 2 FP, 12 FN trên 47 cặp
+cùng: precision 0,946, recall 0,745, F1 0,833. Bản trước (prompt v1) đạt 31/0/16, precision 1,000. Chủ dự án chấp nhận
+đổi một chút precision lấy recall và quan hệ kiểu mở (ADR 0007).
 
-Về `subtype_of`: có 61 cạnh; trên cặp có nhãn, 33 cạnh đúng và 19 cạnh sai, tức precision 0,635. Vì vậy 2b chỉ dùng
-`subtype_of` như đề xuất.
+Đồ thị đề cử bắt 47/47 cặp cùng trong bộ vàng. Phần còn bỏ sót nằm ở phán quyết merge, không ở candidate recall của
+corpus đo hiện tại.
 
-A/B F72 thử thêm prompt biến thể và model Pro, nhưng không nhánh nào thắng cấu hình này theo luật chọn viết trước khi
-chạy. Xem báo cáo chạy thật, mục A/B.
+Quan hệ 2a trên bốn tài liệu: 80 cạnh, trong đó 45 `subtype_of`. Trên cặp có nhãn, `subtype_of` có 25 cạnh đúng và 13
+cạnh sai, tức precision 0,658. Quan hệ khác đúng khoảng 70% trên mẫu 30. Vì vậy 2b chỉ dùng chúng như đề xuất.
 
 ## 20. Các bất biến an toàn
 

@@ -27,24 +27,41 @@ sinh phiên bản nào mới hơn. Muốn sạch thì phải xoá tay phiên b�
 
 **Blocked by:** 01 — Spec và ADR 0007 (Claude). Ticket 14 đã được chủ dự án chấp nhận.
 
-**Status:** todo — mở theo quyết định của chủ dự án (2026-09-14)
+**Status:** done — 2026-09-14. Claude làm theo yêu cầu của chủ dự án; bản mới là mặc định trên `main`.
 
-- [ ] Commit phần đợt 2 lên nhánh `a4-quan-he-mo-2a`, gồm code, test, ticket và feedback, trước khi chạy gì.
-- [ ] **Mẫu thứ hai**, trên nhánh, chưa gộp: chạy runner vào
+- [x] Commit phần đợt 2 lên nhánh `a4-quan-he-mo-2a`, gồm code, test, ticket và feedback, trước khi chạy gì (`d98c0dc`).
+      Sửa F82 thêm ở `3ab74ab`.
+- [x] **Mẫu thứ hai**, trên nhánh, chưa gộp: chạy runner vào
       `artifacts/a4-ab/gemini-3.1-flash-lite-relations-v3-consistency-2`. Đây là mẫu mới, gọi flash-lite thật.
-- [ ] Chấm mẫu thứ hai bằng `a4-evaluate` theo bốn điều kiện ở trên. Trượt thì dừng, không gộp, và báo reviewer cùng chủ
+- [x] Chấm mẫu thứ hai bằng `a4-evaluate` theo bốn điều kiện ở trên. Trượt thì dừng, không gộp, và báo reviewer cùng chủ
       dự án.
-- [ ] Qua thì gộp nhánh `a4-quan-he-mo-2a` vào `main` bằng một commit gộp riêng (`--no-ff`), để revert được bằng một
-      lệnh.
-- [ ] Chạy `doc2roadmap a4 --doc-id <doc> --gold tests/fixtures/a4/gold-blind.json` cho bốn tài liệu vào kho chính.
-- [ ] Chấm lượt chạy kho chính theo bốn điều kiện. Trượt thì:
+- [x] Qua thì gộp nhánh `a4-quan-he-mo-2a` vào `main` bằng một commit gộp riêng (`--no-ff`), để revert được bằng một
+      lệnh (`c418499`).
+- [x] Chạy `doc2roadmap a4 --doc-id <doc> --gold tests/fixtures/a4/gold-blind.json` cho bốn tài liệu vào kho chính.
+- [x] Chấm lượt chạy kho chính theo bốn điều kiện. Trượt thì:
   - `git revert -m 1` commit gộp;
   - **hỏi chủ dự án trước** khi xoá các phiên bản canonical vừa sinh, vì `latest` đang trỏ vào chúng;
   - báo reviewer.
-- [ ] Chạy lại lần hai: `reused=true`, 0 lời gọi.
-- [ ] Cập nhật báo cáo chạy thật (bảng số của bản mặc định mới, tên chỉ số mới), luồng 2a, README nếu có nhắc tên chỉ số,
+- [x] Chạy lại lần hai: `reused=true`, 0 lời gọi.
+- [x] Cập nhật báo cáo chạy thật (bảng số của bản mặc định mới, tên chỉ số mới), luồng 2a, README nếu có nhắc tên chỉ số,
       và trạng thái các ticket.
-- [ ] Toàn bộ test xanh, chặn mạng.
+- [x] Toàn bộ test xanh, chặn mạng: 296/296 trên `main` sau khi gộp.
+
+## Kết quả lượt chạy kho chính
+
+Chạy ở commit gộp `c418499`. Embedding tên gọi trực tiếp, không phát lại từ fixture. 138 lời gọi flash-lite.
+
+| Điều kiện | Kết quả | |
+|---|---:|---|
+| Precision gộp ≥ 0,93 | 0,946 (35/2/12) | ✅ |
+| F1 gộp ≥ 0,775 | 0,833 | ✅ |
+| Precision `subtype_of` ≥ 0,635 | 0,658 | ✅ |
+| Cụm hỏng hẳn ≤ 1 | 0 | ✅ |
+
+- Phiên bản mới trong kho chính: báo cáo v8, slide v7, ML v7, XSTK v7.
+- Chạy lại khi chặn mạng: cả bốn tài liệu `reused=true`.
+- Node, cạnh và cụm đề cử giống hệt hai lượt chạy ở kho thử. 217/217 quyết định cũng giống hệt, vì `temperature` bằng 0.
+- README gốc không nhắc tên chỉ số A4, nên không phải sửa.
 
 ## Kết quả mẫu thứ hai (2026-09-14, Claude làm theo yêu cầu của chủ dự án)
 

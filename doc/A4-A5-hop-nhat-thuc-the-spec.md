@@ -289,7 +289,9 @@ Từ góc nhìn người dùng, sau đợt này:
     quan hệ khác `subtype_of` có 70% đúng trên mẫu 30. Theo luật chấm viết trước thì trượt ngưỡng 0,95 đúng một ca;
     **chủ dự án chấp nhận**, để đổi lấy recall và quan hệ kiểu mở.
 
-  Bản này chỉ thành mặc định sau một mẫu xác nhận và lượt chạy kho chính, với precision gộp ≥ 0,93.
+  **Mặc định từ 2026-09-14.** Mẫu xác nhận và lượt chạy kho chính (commit gộp `c418499`) đều qua ngưỡng xác nhận
+  precision gộp ≥ 0,93, với cùng số 35 / 2 / 12. Kho chính: báo cáo v8, slide v7, ML v7, XSTK v7. Với `temperature` 0,
+  ba lượt chạy cho 217/217 quyết định giống hệt: chúng chứng minh tái lập được, không phải ba mẫu độc lập.
 
   Giới hạn đã biết:
   - hai kiểu gộp sai hệ thống không mang tín hiệu mâu thuẫn: tên chung với tên riêng, và các bài toán anh em;
@@ -363,7 +365,7 @@ Từ góc nhìn người dùng, sau đợt này:
     quan hệ 2a có kiểu `subtype_of`.
   - Vì sao không xoá: đo trên bộ vàng, luật xoá bỏ 17 cạnh `subtype_of` đúng mà chỉ bắt được 2 cạnh sai. A3 hay gắn
     biến thể thành bộ phận (`Gaussian Naive Bayes` `component_of` `Naïve Bayes Classification`).
-- **Chất lượng quan hệ 2a mà 2b nhận**, đo ở đợt 2:
+- **Chất lượng quan hệ 2a mà 2b nhận**, đo trên kho chính (bản mặc định 2026-09-14):
   - `subtype_of` trên cặp có nhãn: 25 cạnh đúng, 13 cạnh sai, tức precision 0,658 (prompt v1 cũ là 0,635);
   - bắt được 27/47 cặp cha–con. Ba cặp bộ phận mà bộ vàng gán cha–con giờ được gắn đúng kiểu `component_of`;
   - quan hệ khác `subtype_of`: 70% đúng trên mẫu 30, do Claude gán.

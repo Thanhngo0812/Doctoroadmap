@@ -1,16 +1,45 @@
-# A4/A5 — Kết quả chạy thật sau F76, F75 và A/B F72
+# A4/A5 — Kết quả chạy thật: quan hệ kiểu mở ở 2a và luật kiểm nhất quán
 
-Ngày chốt: 2026-09-12. Bộ đánh giá có 416 mục tại
+Ngày chốt: 2026-09-14 (bản mặc định trước: 2026-09-12). Bộ đánh giá có 416 mục tại
 `tests/fixtures/a4/gold-blind.json`, SHA-256
 `1df2167ca2a9df5b97cdd232e5ed251f37840dd1f94d738143af72f11012cd55`.
 Chủ dự án đã chấp nhận dùng bộ này; người gán là Claude, không phải người độc lập, nên các điểm dưới đây là mốc kỹ
 thuật theo rubric hiện hành chứ chưa phải độ đúng khách quan. Nhãn vàng không xuất hiện trong prompt phán.
 
-## Kết quả đã chọn: `gemini-3.1-flash-lite`
+## Bản mặc định hiện hành (2026-09-14): `gemini-3.1-flash-lite`, prompt v3, luật nhất quán
 
 Merge, vá cụm và A5 dùng temperature 0, tối đa 8.192 output token; concurrency 4 trong từng stage của một tài liệu.
-Lượt vá F69 dùng cùng prompt/schema phân hoạch với lượt cụm và nhận đủ mọi nhóm thành viên của hai node ở đầu cạnh
-bị cắt. A5 dùng luật ngôn ngữ `token-majority-prose-vi20-v2`.
+Lượt vá dùng cùng prompt, schema và ba lớp kiểm với lượt cụm. 2a trả thêm quan hệ kiểu mở giữa các node đã tách (ADR
+0007). A5 dùng luật ngôn ngữ `token-majority-prose-vi20-v2`.
+
+Chạy thật vào kho chính ở commit `c418499`: 138 lời gọi flash-lite. Chạy lại khi chặn mạng thì cả bốn tài liệu
+`reused=true`. Node, cạnh và cụm đề cử giống hệt hai lượt chạy ở kho thử.
+
+| Tài liệu | Canonical | Precision | Recall | F1 | TP / FP / FN | Recall subtype | Subtype sai |
+|---|---|---:|---:|---:|---|---:|---:|
+| nhap-mon-ml | v7 | 0,875 | 0,700 | 0,778 | 7 / 1 / 3 | 0,545 | 3 |
+| xstk-ch3-1 | v7 | 0,875 | 0,438 | 0,583 | 7 / 1 / 9 | 0,600 | 8 |
+| baocao-canhan | v8 | 1,000 | 1,000 | 1,000 | 11 / 0 / 0 | 0,500 | 1 |
+| naive-bayes | v7 | 1,000 | 1,000 | 1,000 | 10 / 0 / 0 | 0,556 | 1 |
+| **Gộp bốn tài liệu** | | **0,946** | **0,745** | **0,833** | **35 / 2 / 12** | **27/47 = 0,574** | **13** |
+
+Hai ca gộp sai: `Bài toán phân loại` / `Bài toán phân cụm` (bộ vàng: *liên quan*) và `Đường hồi quy mẫu Y theo X` /
+`Đường hồi quy mẫu` (bộ vàng: cha–con). Cả hai không mang tín hiệu mâu thuẫn nên luật R1/R2 không bắt được. Luật bắt 8
+lượt mâu thuẫn; cả 8 sửa được ở lần thử lại, không cụm nào bị hoãn.
+
+| Tài liệu | Node text / media | Cạnh cuối | Nhóm/cặp hoãn | Cụm vá phán / gộp | Quan hệ loại | Quan hệ 2a (trùng A3) | A5 giữ | Viết lại ngôn ngữ / hỗ trợ | Tổng hợp | Fallback | Cờ mâu thuẫn |
+|---|---|---:|---|---|---:|---:|---:|---|---:|---:|---:|
+| nhap-mon-ml | 75 / 9 | 67 | 0 / 0 | 7 / 1 | 1 | 20 (3) | 55 | 0 / 1 | 19 | 0 | 0 |
+| xstk-ch3-1 | 98 / 53 | 137 | 0 / 0 | 21 / 1 | 0 | 42 (1) | 69 | 2 / 1 | 26 | 0 | 0 |
+| baocao-canhan | 36 / 3 | 25 | 0 / 0 | 6 / 1 | 1 | 8 (1) | 11 | 12 / 0 | 13 | 0 | 0 |
+| naive-bayes | 34 / 14 | 57 | 0 / 0 | 4 / 0 | 3 | 10 (0) | 12 | 10 / 0 | 12 | 0 | 1 |
+
+Lịch sử redirect tăng từ 7 / 7 / 9 / 7 lên 10 / 9 / 9 / 8 (báo cáo / slide / ML / XSTK), vì một số node đổi thành
+viên. Id cũ luôn trỏ tới node còn sống (ADR 0005).
+
+### Bản mặc định trước (2026-09-12): prompt v1, chỉ `subtype_of`
+
+Các mục phía dưới (F73, F76, A/B F72, F75) được đo trên bản này.
 
 | Tài liệu | Canonical | Precision | Recall | F1 | TP / FP / FN | Recall subtype | Subtype sai |
 |---|---|---:|---:|---:|---|---:|---:|
@@ -211,9 +240,12 @@ Kết quả trên một mẫu mới (138 lời gọi flash-lite):
 Trượt ngưỡng precision gộp đúng một ca. Hai ca gộp sai còn lại không mang tín hiệu mâu thuẫn, và lặp lại đúng như ở lần
 đầu. Lượt thử lại làm mất 4 cặp đúng vì mô hình tách cả node. Chi tiết ở ticket 14 và feedback F18, vòng 26.
 
-**Chủ dự án chấp nhận bản này (2026-09-14),** đổi precision gộp 1,000 → 0,946 lấy recall, F1 và quan hệ kiểu mở. Bản
-này chỉ trở thành mặc định sau khi một mẫu thứ hai và lượt chạy kho chính qua ngưỡng xác nhận ở ticket 15. Tới lúc đó,
-các bảng số ở đầu báo cáo vẫn là của bản mặc định hiện hành.
+**Chủ dự án chấp nhận bản này (2026-09-14),** đổi precision gộp 1,000 → 0,946 lấy recall, F1 và quan hệ kiểu mở.
+Sau đó cả mẫu xác nhận lẫn lượt chạy kho chính đều qua ngưỡng xác nhận (precision gộp ≥ 0,93), nên bản này thành mặc
+định; số của nó ở đầu báo cáo.
+
+Lưu ý: với `temperature` 0, ba lượt chạy (ticket 13, mẫu xác nhận, kho chính) cho 217/217 quyết định giống hệt nhau.
+Chúng chứng minh kết quả tái lập được, chứ không phải ba mẫu độc lập.
 
 ## Chốt đồ thị và kênh mô tả
 

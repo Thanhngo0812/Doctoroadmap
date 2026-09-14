@@ -1895,6 +1895,52 @@ Hướng đi mới:
 
 ---
 
+# Vòng 27 — Hoàn tất phase A4: ticket 01, 15 và F82 (2026-09-14)
+
+Chủ dự án giao tôi làm nốt phần còn lại của phase A4, trừ đợt tổ chức prompt để dành cho nhân viên.
+
+## Kết luận
+
+**Phase A4 đóng.** Bản v3 cộng luật kiểm nhất quán là mặc định trên `main`, từ commit gộp `c418499`.
+
+| Chỉ số | Bản trước (v1) | Bản mặc định mới |
+|---|---:|---:|
+| Precision / recall / F1 gộp | 1,000 / 0,660 / 0,795 | 0,946 / 0,745 / 0,833 |
+| Precision `subtype_of` | 0,635 | 0,658 |
+| Quan hệ 2a khác `subtype_of` | — | 35, mẫu 30 cho 70% đúng |
+| Kho chính | báo cáo v7, còn lại v6 | báo cáo v8, còn lại v7 |
+
+## Đã làm
+
+| Việc | Kết quả |
+|---|---|
+| Commit đợt 2 lên nhánh | `d98c0dc` |
+| **F82**: chỉ số mâu thuẫn đếm từ nhật ký | `3ab74ab`. Ba chỉ số đếm từ `attempts` của mọi dòng merge/vá, kể cả quyết định dùng lại. Thêm 3 test; 5/5 đột biến bị bắt. Dựng lại artifact đợt 2 cho chỉ số giống hệt lần chạy gốc |
+| **Ticket 01**: spec, ADR, luồng 2a | `129a03d`. Spec D4/D5/D7, addendum, ADR 0007, luồng 2a, hai thuật ngữ mới trong CONTEXT |
+| **Ticket 15**: mẫu xác nhận | Qua bốn điều kiện (precision ≥ 0,93). Nhưng 217/217 quyết định giống hệt ticket 13, vì `temperature` 0: tái lập được, không phải mẫu độc lập |
+| Gộp vào `main` | `c418499`, `--no-ff`, cây code giống hệt đầu nhánh; 296/296 test |
+| Chạy kho chính | Qua bốn điều kiện: 35/2/12, 138 lời gọi, embedding gọi trực tiếp. Node, cạnh, cụm đề cử giống hệt kho thử. Chạy lại khi chặn mạng: `reused=true` cả bốn tài liệu |
+| Tài liệu | Báo cáo chạy thật (bảng mặc định mới, giữ bảng cũ làm lịch sử), luồng 2a, trạng thái ticket |
+
+## Giới hạn mang sang phase sau
+
+- **Hai kiểu gộp sai hệ thống:** tên chung với tên riêng, và các bài toán anh em.
+- **F83:** lượt thử lại tách cả node, làm mất cặp đúng.
+- **Mọi quan hệ 2a đều là đề xuất:** 2b phải kiểm lại, cùng với cạnh A3.
+- **Bộ vàng do Claude gán**, và các thiết kế đã được chọn sau khi thấy lỗi trên chính bộ vàng đó. Thử prompt lần sau cần
+  nhãn mới.
+- **Ba lượt chạy giống hệt nhau** vì `temperature` 0. Muốn đo biến động thì phải đổi đầu vào (tài liệu mới), không phải
+  chạy lại.
+
+## Bàn giao cho nhân viên
+
+Đợt [`task/to-chuc-prompt/`](../task/to-chuc-prompt/), gồm ticket 01–04, đã hết chặn, làm trên `main`. Mọi bước nghiệm
+thu chạy khi chặn mạng, và đợt này tốn 0 lời gọi mô hình.
+
+Nhánh `a4-quan-he-mo-2a` đã gộp hết vào `main`, nên xoá được bất cứ lúc nào mà không mất gì.
+
+---
+
 # Bàn giao của nhân viên — triển khai A4/A5 (2026-09-11)
 
 Ngày cập nhật: 2026-09-11. Nguồn yêu cầu: `task/a4-a5-hop-nhat/`, spec A4/A5 và ADR 0005/0006.

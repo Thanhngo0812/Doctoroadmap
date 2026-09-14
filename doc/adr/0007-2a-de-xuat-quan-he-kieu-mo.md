@@ -36,8 +36,11 @@ Prompt phân hoạch là v3. Mô hình vẫn là `gemini-3.1-flash-lite`.
 | Quan hệ khác `subtype_of` | — | 35, mẫu 30 cho 70% đúng |
 
 Theo luật chấm viết trước (precision gộp ≥ 0,95), bản này trượt đúng một ca gộp sai. **Chủ dự án chấp nhận**, đổi một
-chút precision lấy recall, F1 và quan hệ kiểu mở. Muốn thành mặc định, bản này còn phải qua ngưỡng xác nhận precision
-gộp ≥ 0,93.
+chút precision lấy recall, F1 và quan hệ kiểu mở.
+
+Sau đó, mẫu xác nhận và lượt chạy kho chính đều qua ngưỡng xác nhận precision gộp ≥ 0,93, với cùng số 35 / 2 / 12.
+Bản này thành mặc định từ 2026-09-14 (commit gộp `c418499`). Với `temperature` 0, ba lượt chạy cho quyết định giống
+hệt nhau, nên chúng chứng minh tái lập được chứ không đo biến động.
 
 ## Hệ quả
 
