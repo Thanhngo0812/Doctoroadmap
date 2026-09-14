@@ -7,8 +7,22 @@ chứ không theo trí nhớ của cuộc trao đổi.
 
 **Blocked by:** Bước 0 — chủ dự án chốt commit mốc hay không
 
-**Status:** hoãn — thay đổi không được nhận ở ticket 07, nên spec và ADR giữ nguyên. Chỉ làm nếu chủ dự án chọn
-thử tiếp.
+**Status:** done — 2026-09-14. Đã sửa:
+- spec A4/A5: D4 (rubric, đầu ra, ba lớp kiểm, cache, lịch sử quyết định), D5 (quan hệ ở lượt vá), D7 (`origins`, gộp
+  với cạnh A3, F75 chỉ cho `subtype_of`, chất lượng mà 2b nhận);
+- addendum: bước 4 của Tầng 2a, hợp đồng 2a với ví dụ JSON mới, bước 1 của 2b;
+- ADR mới `doc/adr/0007-2a-de-xuat-quan-he-kieu-mo.md`;
+- luồng 2a (`report/luong-chi-tiet-agent-2a.md`): schema, R1/R2, kiểm từng quan hệ, cache, bảng chỉ số, bất biến;
+- CONTEXT: thêm "Quan hệ đề xuất" và "Đầu ra tự mâu thuẫn".
+
+Chủ dự án chấp nhận v3 cộng luật kiểm nhất quán (ticket 14, 2026-09-14), nên ticket này phải xong trước khi ticket 15
+gộp nhánh vào `main`.
+
+Ngoài các mục ở dưới, spec và ADR phải có thêm:
+- luật nhất quán R1, R2 cùng tập kiểu đồng nhất;
+- cơ chế thử lại rồi hoãn cụm, và phần sửa cache;
+- quyết định của chủ dự án kèm số liệu: precision gộp 0,946, chấp nhận thấp hơn ngưỡng cũ 0,95;
+- các giới hạn đã biết: hai kiểu gộp sai hệ thống, F83, bộ vàng do Claude gán.
 
 - [ ] **Spec A4/A5, D4:**
   - rubric: *cha–con*, *anh em / liên quan* và *khác* đều là hai node;

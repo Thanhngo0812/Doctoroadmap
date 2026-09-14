@@ -32,6 +32,10 @@ def name_key(text: str) -> str:
     return unicodedata.normalize("NFC", decomposed)
 
 
+def normalize_edge_type(edge_type: str) -> str:
+    return " ".join(edge_type.casefold().split())
+
+
 def alias_kind(text: str) -> str:
     text = normalize_text(text).strip()
     if len(text) > 1 and text.isalnum() and text.isupper() and any(c.isalpha() for c in text):
@@ -175,10 +179,11 @@ def remap_edges(nodes, edges):
         if source == target:
             self_edges += 1
             continue
-        key = (source, target, " ".join(edge.edge_type.casefold().split()))
+        key = (source, target, normalize_edge_type(edge.edge_type))
         if key not in result:
             result[key] = {"source": source, "target": target, "edge_type": key[2],
-                           "evidence": [], "source_refs": [], "confirmed": False, "proposal": True}
+                           "evidence": [], "source_refs": [], "confirmed": False, "proposal": True,
+                           "origins": ["a3"]}
         else:
             duplicates += 1
         row = result[key]

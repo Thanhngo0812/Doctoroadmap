@@ -41,6 +41,7 @@ def main():
     parser.add_argument("--partition-prompt", type=Path, help="file prompt thay cho a4-merge.txt và a4-repair.txt")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--doc-id", action="append", required=True)
+    parser.add_argument("--exclude-subtype-item", action="append", default=[])
     args = parser.parse_args()
     settings = Settings()
     main_store = JsonArtifactStore(settings.artifact_dir)
@@ -70,15 +71,22 @@ def main():
         if partition_prompt:
             reasoning.prompts = {**reasoning.prompts, "merge": partition_prompt, "repair": partition_prompt}
         artifact, reused = Canonicalize(store, embedding, graph_config=graph, reasoning=reasoning).execute(doc)
-        result = evaluate_canonical(artifact, gold)
+        result = evaluate_canonical(artifact, gold, exclude_subtype_items=args.exclude_subtype_item)
         stats = artifact.payload["stats"]
+        call_keys = ("merge_calls", "repair_calls", "describe_calls", "check_calls",
+                     "merge_invalid", "repair_invalid")
         print(json.dumps({"doc_id": doc, "version": artifact.version, "reused": reused,
-                          **{key: result[key] for key in ("tp", "fp", "fn", "subtype_recall", "subtype_incorrect")},
-                          "calls": {key: stats.get(key) for key in ("merge_calls", "repair_calls", "describe_calls",
-                                                                    "check_calls", "merge_invalid", "repair_invalid")},
-                          "subtype_rejected": stats.get("subtype_rejected"),
-                          "subtype_conflicts_a3": stats.get("subtype_conflicts_a3"),
-                          "deferred_groups": stats.get("deferred_groups")}, ensure_ascii=False), flush=True)
+                          **{key: result[key] for key in ("tp", "fp", "fn", "subtype_recall", "subtype_incorrect",
+                                                          "subtype_precision", "relations_2a_on_gold")},
+                          "calls": {key: 0 if reused else stats.get(key, 0) for key in call_keys},
+                          **{key: stats.get(key, 0) for key in ("relation_rejected", "relation_edges", "relation_types",
+                                                               "relation_same_as_a3", "relation_same_type_reversed_a3",
+                                                               "relation_other_type_than_a3", "relation_new_pair",
+                                                               "relation_self_removed", "partition_contradictions",
+                                                               "contradiction_retried_calls", "contradiction_deferred_calls",
+                                                               "merge_cache_invalid", "repair_cache_invalid")},
+                          "subtype_conflicts_a3": stats.get("subtype_conflicts_a3", 0),
+                          "deferred_groups": stats.get("deferred_groups", 0)}, ensure_ascii=False), flush=True)
 
 
 if __name__ == "__main__":

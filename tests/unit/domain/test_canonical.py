@@ -142,6 +142,7 @@ def test_edge_remapping_and_redirects():
         CandidateEdge("b", "c", "USES", evidence=b.evidence, confirmed=True)])
     assert metrics["self_edges_removed"] == metrics["duplicate_edges_removed"] == 1
     assert len(edges) == 1 and edges[0]["confirmed"] and len(edges[0]["evidence"]) == 2
+    assert edges[0]["origins"] == ["a3"]
     old, _, _ = build_nodes([[a], [b], [c]], "")
     redirect = redirects(old, nodes)
     assert redirect[old[1]["node_id"]] == nodes[0]["node_id"]

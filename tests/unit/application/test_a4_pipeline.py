@@ -49,7 +49,7 @@ class FakeModel:
             assert "description_draft" not in json.dumps(data) and '"draft"' not in json.dumps(data)
             ids = [g["group_id"] for g in data["groups"]]
             groups = [ids] if self.merge_all else [[id] for id in ids]
-            value = {"nodes": [{"groups": g, "reason": "fixture"} for g in groups], "deferred": [], "subtype_edges": []}
+            value = {"nodes": [{"groups": g, "reason": "fixture"} for g in groups], "deferred": [], "relations": []}
         elif "pairs" in data:
             value = {"pairs": [{"pair_id": p["pair_id"], "label": "different", "child": "", "chunk_ids": [], "reason": "fixture"} for p in data["pairs"]]}
         elif "nodes" in data:
@@ -187,6 +187,7 @@ def test_real_fixture_names_nominations_and_no_network(tmp_path, monkeypatch):
 def test_reasoning_fixture_cache_and_language_invalidation(tmp_path):
     store, judge, writer = fixture_store(tmp_path), FakeModel(), FakeModel()
     reasoning = CanonicalReasoning(judge, writer)
+    assert reasoning.config()["partition_validation"] == "consistency-v1"
     first, _ = Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")
     assert first.payload["stage"] == "complete"
     assert any(n.get("description_sentences") for n in first.payload["nodes"])
@@ -205,6 +206,35 @@ def test_reasoning_fixture_cache_and_language_invalidation(tmp_path):
     assert first.payload["stats"]["merged_group_count"] == first.payload["stats"]["name_group_count"] - first.payload["stats"]["node_count"]
     assert first.payload["stats"]["cut_pairs_judged"] <= first.payload["stats"]["cut_edge_count"]
     assert isinstance(first.payload["deferred_pairs"], list)
+    for key in ("partition_contradictions", "contradiction_retried_calls",
+                "contradiction_deferred_calls", "merge_cache_invalid", "repair_cache_invalid"):
+        assert first.payload["stats"][key] == 0
+
+
+def test_invalid_cached_partition_is_replaced_by_one_model_call(tmp_path):
+    store, judge, writer = fixture_store(tmp_path), FakeModel(), FakeModel()
+    reasoning = CanonicalReasoning(judge, writer)
+    first, _ = Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")
+    payload = json.loads(json.dumps(first.payload))
+    target = next(row for row in payload["decision_log"]
+                  if row.get("stage") == "merge" and len(row["input"]["groups"]) >= 2)
+    a, b = target["input"]["groups"][:2]
+    target["output"]["relations"] = [{
+        "source": a["group_id"], "target": b["group_id"], "edge_type": "same_as",
+        "chunk_ids": [a["evidence"][0]["chunk_id"]], "reason": "stale cache fixture",
+    }]
+    store._write(first.path / "canonical.json", payload)
+    calls = len(judge.calls)
+
+    reasoning.language_rule = "same-rule-new-version"
+    second, _ = Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")
+
+    assert len(judge.calls) == calls + 1
+    assert second.payload["stats"]["merge_cache_invalid"] == 1
+    rows = [row for row in second.payload["decision_log"]
+            if row.get("input_hash") == target["input_hash"]]
+    assert len(rows) == 1 and rows[0]["reused"] is False
+    assert "R2" in rows[0]["cache_invalid_error"]
 
 
 def test_bad_model_is_deferred_and_bad_citations_keep_draft(tmp_path):
@@ -213,6 +243,9 @@ def test_bad_model_is_deferred_and_bad_citations_keep_draft(tmp_path):
     result, _ = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(judge, writer)).execute("baocao-canhan")
     assert result.payload["deferred"]
     assert result.payload["stats"]["text_node_count"] == 46
+    # Clusters fail for a shape error, not a contradiction: they must not be counted as contradiction deferrals.
+    assert result.payload["stats"]["merge_invalid"] > 0
+    assert result.payload["stats"]["contradiction_deferred_calls"] == 0
     assert any(n.get("description_status") == "draft_fallback_invalid" for n in result.payload["nodes"])
     assert not any("outside" in (n["description"] or "") for n in result.payload["nodes"])
 
@@ -321,7 +354,13 @@ def test_evaluation_hand_computed_eight_pairs():
         {"node_id": "n1", "members": ["a", "b", "c"]}, {"node_id": "n2", "members": ["d"]},
         {"node_id": "n3", "members": ["e"]}, {"node_id": "n4", "members": ["f"]}],
         "nominations": {"edges": [{"source": "a", "target": "b"}, {"source": "c", "target": "d"}]},
-        "edges": [{"source": "n2", "target": "n3", "edge_type": "subtype_of"}]})
+        "edges": [
+            {"source": "n2", "target": "n3", "edge_type": "subtype_of", "origins": ["2a"]},
+            {"source": "n1", "target": "n4", "edge_type": "subtype_of", "origins": ["2a"]},
+            {"source": "n1", "target": "n4", "edge_type": "uses", "origins": ["2a"]},
+            {"source": "n2", "target": "n1", "edge_type": "contrasts_with", "origins": ["2a"]},
+            {"source": "n1", "target": "n4", "edge_type": "uses", "origins": ["a3"]},
+        ]})
     second = [dict(i) for i in items]
     second[0]["label"] = "different"
     result = evaluate_canonical(artifact, {"items": items}, {"items": second})
@@ -330,8 +369,38 @@ def test_evaluation_hand_computed_eight_pairs():
     assert result["f1"] == pytest.approx(.4)
     assert result["nomination_recall"] == pytest.approx(2/3)
     assert result["subtype_recall"] == 1 and result["uncertain_count"] == 1
+    assert result["subtype_incorrect"] == 1 and result["subtype_precision"] == .5
+    assert result["relations_2a_on_gold"] == {
+        "same": 1, "parent_child": 0, "related": 1, "different": 1,
+    }
+    excluded = evaluate_canonical(artifact, {"items": items}, exclude_subtype_items={"6"})
+    assert excluded["subtype_recall"] is None
+    assert excluded["subtype_precision"] == .5
     # Agreement=7/8; expected agreement=(3*2+2*3+1+1+1)/64=15/64.
     assert result["agreement"]["kappa"] == pytest.approx(41/49)
+
+
+def test_relation_on_collapsed_gold_pairs_is_counted_for_every_label():
+    groups = {id: {"group_id": id, "members": [{"candidate_id": id}]} for id in "abcd"}
+    gold = {"items": [
+        {"item_id": "related", "kind": "pair", "doc_id": "doc",
+         "groups": [groups["a"], groups["c"]], "label": "related"},
+        {"item_id": "different", "kind": "pair", "doc_id": "doc",
+         "groups": [groups["b"], groups["d"]], "label": "different"},
+    ]}
+    artifact = SimpleNamespace(version=1, payload={
+        "doc_id": "doc",
+        "nodes": [{"node_id": "n1", "members": ["a", "b"]},
+                  {"node_id": "n2", "members": ["c", "d"]}],
+        "nominations": {"edges": []},
+        "edges": [{"source": "n1", "target": "n2", "edge_type": "uses", "origins": ["2a"]}],
+    })
+
+    result = evaluate_canonical(artifact, gold)
+
+    assert result["relations_2a_on_gold"] == {
+        "same": 0, "parent_child": 0, "related": 1, "different": 1,
+    }
 
 
 def test_changed_evidence_only_invalidates_affected_merge_decisions(tmp_path):
@@ -413,10 +482,10 @@ def test_partition_subtype_direction_and_uncertainty(tmp_path, monkeypatch, unce
         def ask_json(self, prompt, *, response_schema):
             reply = super().ask_json(prompt, response_schema=response_schema)
             if uncertain:
-                reply.payload = {"nodes": [], "deferred": [{"group_id": id, "reason": "uncertain fixture"} for id in pair], "subtype_edges": []}
+                reply.payload = {"nodes": [], "deferred": [{"group_id": id, "reason": "uncertain fixture"} for id in pair], "relations": []}
             else:
                 data = self.calls[-1]
-                reply.payload["subtype_edges"] = [{"child": pair[0], "parent": pair[1],
+                reply.payload["relations"] = [{"source": pair[0], "target": pair[1], "edge_type": "subtype_of",
                     "chunk_ids": [data["groups"][0]["evidence"][0]["chunk_id"]], "reason": "fixture direction"}]
             return reply
     result, _ = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(Judge(), FakeModel())).execute("baocao-canhan")
@@ -443,9 +512,10 @@ def graph_with(clusters_by_name, cut_by_name):
 
 
 class NamedJudge(FakeModel):
-    def __init__(self, partition=None, repair=None, subtype=None):
+    def __init__(self, partition=None, repair=None, subtype=None, relation=None):
         super().__init__()
-        self.partition, self.repair, self.subtype, self.prompts = partition or {}, repair, subtype, []
+        self.partition, self.repair, self.subtype = partition or {}, repair, subtype
+        self.relation, self.prompts = relation, []
 
     def ask_json(self, prompt, *, response_schema):
         self.prompts.append(prompt)
@@ -454,18 +524,20 @@ class NamedJudge(FakeModel):
             by = {g["name"]: g["group_id"] for g in data["groups"]}
             key = frozenset(by)
             if key not in self.partition and self.repair == "invalid":
-                return SimpleNamespace(payload={"nodes": [], "deferred": [], "subtype_edges": []}, raw_text="invalid repair")
+                return SimpleNamespace(payload={"nodes": [], "deferred": [], "relations": []}, raw_text="invalid repair")
             if key not in self.partition and self.repair == "uncertain":
                 return SimpleNamespace(payload={"nodes": [], "deferred": [{"group_id": id, "reason": "uncertain fixture"} for id in by.values()],
-                                                "subtype_edges": []}, raw_text="uncertain repair")
+                                                "relations": []}, raw_text="uncertain repair")
             plan = self.partition.get(key, [[*by]] if self.repair == "same" else [[n] for n in by])
             nodes = [{"groups": [by[n] for n in group], "reason": "fixture"} for group in plan if not group[0].startswith("~")]
             deferred = [{"group_id": by[group[0][1:]], "reason": "fixture"} for group in plan if group[0].startswith("~")]
+            relation = self.relation or ((*self.subtype[:2], "subtype_of", self.subtype[2]) if self.subtype else None)
             edges = []
-            if self.subtype and {self.subtype[0], self.subtype[1]} <= set(by):
-                child, parent, chunk = self.subtype
-                edges = [{"child": by[child], "parent": by[parent], "chunk_ids": [chunk], "reason": "fixture"}]
-            return SimpleNamespace(payload={"nodes": nodes, "deferred": deferred, "subtype_edges": edges}, raw_text="rejected fixture")
+            if relation and {relation[0], relation[1]} <= set(by):
+                source, target, edge_type, chunk = relation
+                edges = [{"source": by[source], "target": by[target], "edge_type": edge_type,
+                          "chunk_ids": [chunk], "reason": "fixture"}]
+            return SimpleNamespace(payload={"nodes": nodes, "deferred": deferred, "relations": edges}, raw_text="rejected fixture")
         return super().ask_json(prompt, response_schema=response_schema)
 
 
@@ -549,17 +621,229 @@ def test_uncertain_repair_is_pair_scoped_not_group_deferral(
     assert len(result.payload["deferred_pairs"]) == 1
 
 
-def test_invalid_subtype_edge_is_dropped_not_the_partition(tmp_path, monkeypatch):
+def test_invalid_relation_is_dropped_not_the_partition(tmp_path, monkeypatch):
     trio = ["WebSocket", "WebSockets", "Giao thức WebSockets"]
     judge = NamedJudge(partition={frozenset(trio): [["WebSocket", "WebSockets"], ["Giao thức WebSockets"]]},
                        subtype=("Giao thức WebSockets", "WebSocket", "c_outside"))
     result, nodes = run_named(tmp_path, monkeypatch, judge, [trio], [])
     assert frozenset({"WebSocket", "WebSockets"}) in nodes
     assert not [e for e in result.payload["edges"] if e["edge_type"] == "subtype_of"]
-    rejected = next(r["edge"] for r in result.payload["decision_log"] if r.get("stage") == "subtype_rejected")
-    assert rejected["child"] and rejected["parent"]
+    rejected = next(r["edge"] for r in result.payload["decision_log"] if r.get("stage") == "relation_rejected")
+    assert rejected["source"] and rejected["target"]
     assert rejected["invalid_chunk_ids"] == ["c_outside"]
     assert rejected["allowed_chunk_ids"]
+
+
+def test_requires_from_judge_is_rejected_before_artifact(tmp_path, monkeypatch):
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "WebSocket")["evidence"][0]["chunk_id"]
+    pair = ["WebSocket", "WebSockets"]
+    judge = NamedJudge(relation=(pair[0], pair[1], "requires", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+
+    assert not [e for e in result.payload["edges"]
+                if e["edge_type"] == "requires" and "2a" in e["origins"]]
+    assert any(row.get("stage") == "relation_rejected"
+               and row["edge"]["edge_type"] == "requires" for row in result.payload["decision_log"])
+
+
+def test_open_relation_becomes_proposed_edge_with_2a_origin_and_metrics(tmp_path, monkeypatch):
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "WebSocket")["evidence"][0]["chunk_id"]
+    pair = ["WebSocket", "WebSockets"]
+    judge = NamedJudge(relation=(pair[0], pair[1], " Uses ", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+
+    names = {n["node_id"]: n["name"] for n in result.payload["nodes"]}
+    edge = next(e for e in result.payload["edges"]
+                if (names[e["source"]], names[e["target"]], e["edge_type"]) == (*pair, "uses"))
+    assert edge["origins"] == ["2a"] and edge["proposal"] and not edge["confirmed"]
+    assert result.payload["stats"]["relation_types"] == {"uses": 1}
+    assert result.payload["stats"]["relation_edges"] == result.payload["stats"]["relation_new_pair"] == 1
+    assert result.payload["stats"]["relation_rejected"] == result.payload["stats"]["relation_self_removed"] == 0
+
+
+def test_relation_matching_a3_edge_is_merged_with_both_origins(tmp_path, monkeypatch):
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "Mutex")["evidence"][0]["chunk_id"]
+    pair = ["Mutex", "Race Condition"]
+    judge = NamedJudge(relation=(pair[0], pair[1], "uses", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+
+    names = {n["node_id"]: n["name"] for n in result.payload["nodes"]}
+    edges = [e for e in result.payload["edges"]
+             if (names[e["source"]], names[e["target"]], e["edge_type"]) == (*pair, "uses")]
+    assert len(edges) == 1
+    assert edges[0]["origins"] == ["2a", "a3"]
+    assert edges[0]["evidence"] and edges[0]["reason"] == "fixture"
+    assert result.payload["stats"]["relation_same_as_a3"] == 1
+    assert result.payload["stats"]["relation_other_type_than_a3"] == 0
+
+
+def test_relation_on_reversed_a3_pair_with_other_type_is_counted(tmp_path, monkeypatch):
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "Race Condition")["evidence"][0]["chunk_id"]
+    pair = ["Race Condition", "Mutex"]
+    judge = NamedJudge(relation=(pair[0], pair[1], "contrasts_with", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+
+    stats = result.payload["stats"]
+    assert stats["relation_edges"] == stats["relation_other_type_than_a3"] == 1
+    assert stats["relation_same_as_a3"] == stats["relation_new_pair"] == 0
+    assert stats["relation_edges"] == sum(stats[key] for key in
+        ("relation_same_as_a3", "relation_same_type_reversed_a3",
+         "relation_other_type_than_a3", "relation_new_pair"))
+
+
+def test_relation_with_same_type_reversed_from_a3_is_not_counted_as_other_type(tmp_path, monkeypatch):
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "Race Condition")["evidence"][0]["chunk_id"]
+    pair = ["Race Condition", "Mutex"]
+    judge = NamedJudge(relation=(pair[0], pair[1], "uses", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+
+    stats = result.payload["stats"]
+    assert stats["relation_edges"] == stats["relation_same_type_reversed_a3"] == 1
+    assert stats["relation_other_type_than_a3"] == 0
+
+
+def test_duplicate_relations_across_calls_are_merged_deterministically(tmp_path, monkeypatch):
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "WebSocket")["evidence"][0]["chunk_id"]
+    pair = ["WebSocket", "WebSockets"]
+    class DifferentReasons(NamedJudge):
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            for edge in reply.payload.get("relations", []):
+                edge["reason"] = "repair reason" if data.get("repair_of_cut_edge") else "merge reason"
+            return reply
+
+    judge = DifferentReasons(relation=(pair[0], pair[1], "uses", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [(pair[0], pair[1])])
+
+    names = {n["node_id"]: n["name"] for n in result.payload["nodes"]}
+    edges = [e for e in result.payload["edges"]
+             if (names[e["source"]], names[e["target"]], e["edge_type"]) == (*pair, "uses")]
+    assert len(edges) == 1
+    assert edges[0]["reason"] == "merge reason"
+    assert result.payload["stats"]["relation_edges"] == 1
+
+
+@pytest.mark.parametrize("always_contradictory", [False, True])
+def test_contradictory_partition_is_retried_then_applied_or_deferred(
+    tmp_path, monkeypatch, always_contradictory
+):
+    pair = ["WebSocket", "WebSockets"]
+
+    class ContradictingJudge(NamedJudge):
+        partition_calls = 0
+
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            if "groups" in data:
+                self.partition_calls += 1
+                if always_contradictory or self.partition_calls == 1:
+                    ids = [group["group_id"] for group in data["groups"]]
+                    reply.payload = {
+                        "nodes": [{"groups": ids, "reason": "fixture"}], "deferred": [],
+                        "relations": [{"source": ids[0], "target": ids[1], "edge_type": "uses",
+                                       "chunk_ids": [data["groups"][0]["evidence"][0]["chunk_id"]],
+                                       "reason": "contradictory fixture"}],
+                    }
+                    reply.raw_text = "contradictory fixture"
+            return reply
+
+    judge = ContradictingJudge(partition={frozenset(pair): [pair]})
+    result, nodes = run_named(tmp_path, monkeypatch, judge, [pair], [])
+    row = next(item for item in result.payload["decision_log"] if item.get("stage") == "merge")
+    stats = result.payload["stats"]
+
+    assert "R1" in row["attempts"][0]["error"]
+    contradiction_attempts = sum(
+        "R1:" in attempt["error"] or "R2:" in attempt["error"]
+        for item in result.payload["decision_log"]
+        for attempt in item.get("attempts", [])
+    )
+    assert stats["partition_contradictions"] == contradiction_attempts
+    assert stats["partition_contradictions"] == (2 if always_contradictory else 1)
+    assert stats["contradiction_retried_calls"] == 1
+    assert stats["contradiction_deferred_calls"] == int(always_contradictory)
+    if always_contradictory:
+        assert row["valid"] is False and len(result.payload["deferred"]) == 2
+        assert all(frozenset([name]) in nodes for name in pair)
+    else:
+        assert row["valid"] is True and row["retries"] == 1
+        assert frozenset(pair) in nodes
+
+
+def test_contradiction_metrics_survive_a_rerun_from_cache(tmp_path, monkeypatch):  # F82
+    pair = ["WebSocket", "WebSockets"]
+
+    class ContradictOnce(NamedJudge):
+        partition_calls = 0
+
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            if "groups" in data:
+                self.partition_calls += 1
+                if self.partition_calls == 1:
+                    ids = [group["group_id"] for group in data["groups"]]
+                    reply.payload = {
+                        "nodes": [{"groups": ids, "reason": "fixture"}], "deferred": [],
+                        "relations": [{"source": ids[0], "target": ids[1], "edge_type": "uses",
+                                       "chunk_ids": [data["groups"][0]["evidence"][0]["chunk_id"]],
+                                       "reason": "contradictory fixture"}],
+                    }
+            return reply
+
+    judge = ContradictOnce(partition={frozenset(pair): [pair]})
+    first, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+    calls = judge.partition_calls
+    reasoning = CanonicalReasoning(judge, FakeModel())
+    reasoning.language_rule = "same-rule-new-version"  # new artifact, same merge decisions
+
+    second, reused = Canonicalize(JsonArtifactStore(tmp_path), embedding(), reasoning=reasoning).execute("baocao-canhan")
+
+    assert not reused and judge.partition_calls == calls
+    assert first.payload["stats"]["partition_contradictions"] == 1
+    for key in ("partition_contradictions", "contradiction_retried_calls", "contradiction_deferred_calls"):
+        assert second.payload["stats"][key] == first.payload["stats"][key]
+
+
+def test_relation_from_repair_between_groups_merged_by_cluster_is_removed(tmp_path, monkeypatch):
+    pair = ["WebSocket", "WebSockets"]
+    third = "Giao thức WebSockets"
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"]
+                 if e["name"] == pair[0])["evidence"][0]["chunk_id"]
+
+    class RepairRelation(NamedJudge):
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            if data.get("repair_of_cut_edge"):
+                by = {group["name"]: group["group_id"] for group in data["groups"]}
+                reply.payload["relations"] = [{
+                    "source": by[pair[0]], "target": by[pair[1]], "edge_type": "uses",
+                    "chunk_ids": [chunk], "reason": "repair fixture",
+                }]
+            return reply
+
+    judge = RepairRelation(partition={frozenset(pair): [pair]})
+    result, nodes = run_named(tmp_path, monkeypatch, judge, [pair], [(pair[1], third)])
+
+    assert frozenset(pair) in nodes
+    assert result.payload["stats"]["relation_self_removed"] == 1
+    assert not [edge for edge in result.payload["edges"] if "2a" in edge["origins"]]
 
 
 @pytest.mark.parametrize("repair", ["uncertain", "invalid"])

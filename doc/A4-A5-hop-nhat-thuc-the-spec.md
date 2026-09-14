@@ -228,19 +228,34 @@ Từ góc nhìn người dùng, sau đợt này:
   | Nhãn | Nghĩa | Kết quả |
   |---|---|---|
   | cùng | cùng một thực thể dù khác tên, cách dịch, dạng ký hiệu | chung node |
-  | cha–con | rộng vs hẹp (`Regularization` / `L2 Regularization`) | hai node + cạnh `subtype_of` con → cha, kèm lý do và `chunk_id` bằng chứng |
-  | anh em / liên quan | đồng cấp hoặc chỉ liên quan (`Mutex` / `Pessimistic Locking`) | hai node, không cạnh |
+  | cha–con | rộng vs hẹp (`Regularization` / `L2 Regularization`) | hai node + quan hệ `subtype_of` con → cha, kèm lý do và `chunk_id` bằng chứng |
+  | anh em / liên quan | đồng cấp hoặc chỉ liên quan (`Mutex` / `Pessimistic Locking`) | hai node; câu trích nêu quan hệ thì kèm quan hệ kiểu mở (`component_of`, `uses`, `statistic_of`…) |
   | khác | | hai node |
   | không chắc | | **không gộp**, `deferred` kèm lý do |
 
   Phân vân thì không gộp. **Không đề xuất `requires`.**
-- **Đầu ra**: phân hoạch các nhóm trong cụm thành node (mỗi nhóm thuộc đúng một node hoặc nằm trong `deferred`),
-  cộng các cạnh `subtype_of`, cộng `deferred`. Mô hình không chọn tên, không gộp alias, không viết mô tả.
-- **Code kiểm đầu ra tách hai lớp**. Phân hoạch phải chứa mỗi nhóm đúng một lần trong `nodes` hoặc `deferred`, không
-  có id lạ và mỗi quyết định có lý do; sai ⇒ thử lại **một lần**, vẫn sai ⇒ cả cụm `deferred`, không gộp gì.
-  Sau khi phân hoạch hợp lệ, code kiểm riêng từng `subtype_of`: cạnh phải nối hai node khác nhau và chỉ trích
-  `chunk_id` của hai đầu. Cạnh sai bị loại riêng, ghi `subtype_rejected` cùng lỗi và tập chunk hợp lệ; phân hoạch
-  vẫn được áp.
+- **Đầu ra** *(ADR 0007)*: `nodes` (mỗi nhóm thuộc đúng một node hoặc nằm trong `deferred`), `relations` và
+  `deferred`. Mô hình không chọn tên, không gộp alias, không viết mô tả.
+  - Mỗi quan hệ có dạng `{source, target, edge_type, chunk_ids, reason}` và nối hai nhóm nằm ở **hai node khác nhau**.
+  - `edge_type` là kiểu mở, đọc từ `source` sang `target`. `subtype_of` nghĩa là "là một loại / dạng / biến thể /
+    trường hợp riêng của"; các quan hệ khác dùng tên snake_case ngắn.
+  - Không bao giờ `requires` hay tên đồng nghĩa với nó.
+- **Code kiểm đầu ra ba lớp**:
+  1. **Phân hoạch:** mỗi nhóm đúng một lần trong `nodes` hoặc `deferred`, không có id lạ, mọi quyết định có lý do.
+  2. **Nhất quán**, không cần nhãn:
+     - R1: một quan hệ không đồng nhất nối hai nhóm mà mô hình đặt chung node ⇒ mâu thuẫn;
+     - R2: một quan hệ đồng nhất (`same_as`, `equivalent_to`, `identical_to`, `synonym_of`, `alias_of`) nối hai node
+       tách riêng ⇒ mâu thuẫn.
+
+     Lớp 1 hoặc lớp 2 sai ⇒ thử lại **một lần**, kèm lỗi cụ thể; vẫn sai ⇒ cả cụm `deferred`, không gộp gì.
+  3. **Từng quan hệ:**
+     - hai đầu phải là hai node khác nhau và không `deferred`;
+     - chỉ trích `chunk_id` của hai đầu, và có lý do;
+     - kiểu không rỗng, không `requires` hay đồng nghĩa, không phải kiểu dành cho media.
+
+     Quan hệ sai bị loại riêng, ghi `relation_rejected`; phân hoạch vẫn được áp.
+- **Cache:** đầu ra trong nhật ký cũ không còn qua được luật kiểm hiện hành ⇒ coi như cache trượt và gọi lại mô hình
+  (`<stage>_cache_invalid`), không dừng lượt chạy.
 - **Kiểu do code quyết, không do mô hình**: chuẩn hoá tối thiểu chuỗi `node_type` (casefold, khoảng trắng, ánh xạ
   theo sổ đăng ký kiểu đã duyệt) rồi bỏ phiếu đa số. Hoà ⇒ kiểu **cụ thể hơn** `concept`, rồi kiểu được dùng nhiều
   hơn trong cả tài liệu, rồi thứ tự chữ cái; luật đã dùng ghi vào nhật ký. Đo: 12/60 nhóm tên nhiều ứng viên hoà
@@ -266,6 +281,22 @@ Từ góc nhìn người dùng, sau đợt này:
     không đo trên bộ vàng đã dùng để chọn prompt.
   - Chi tiết ở báo cáo chạy thật, mục A/B.
 
+  **Quan hệ kiểu mở (2026-09-14, ADR 0007).** Prompt phân hoạch là **v3**. So với v1, nó thay kênh `subtype_of` riêng
+  bằng danh sách quan hệ kiểu mở, và thêm câu bắt dùng `group_id`. Có hai đợt, đều chạy flash-lite trên bốn tài liệu:
+  - **Đợt 1**, chỉ prompt v3: precision gộp 0,809. Mô hình dùng node như nhóm chủ đề, và ghi quan hệ giữa chính các
+    nhóm nó vừa gộp. Không nhận.
+  - **Đợt 2**, v3 cộng luật nhất quán: 35 / 2 / 12, precision gộp 0,946, F1 0,833, precision `subtype_of` 0,658;
+    quan hệ khác `subtype_of` có 70% đúng trên mẫu 30. Theo luật chấm viết trước thì trượt ngưỡng 0,95 đúng một ca;
+    **chủ dự án chấp nhận**, để đổi lấy recall và quan hệ kiểu mở.
+
+  Bản này chỉ thành mặc định sau một mẫu xác nhận và lượt chạy kho chính, với precision gộp ≥ 0,93.
+
+  Giới hạn đã biết:
+  - hai kiểu gộp sai hệ thống không mang tín hiệu mâu thuẫn: tên chung với tên riêng, và các bài toán anh em;
+  - lượt thử lại hay tách cả node và làm mất cặp đúng (F83).
+
+  Chi tiết ở `task/a4-quan-he-mo-2a/` và báo cáo chạy thật.
+
 ### D5 — Vá cặp bị chia hai cụm, và mâu thuẫn bắc cầu *(Q26, Q13)*
 
 - Sau lượt phán cụm, với mỗi cạnh bị cắt, hợp **mọi nhóm tên thành viên** của hai node đã được phán ở hai đầu thành
@@ -276,6 +307,9 @@ Từ góc nhìn người dùng, sau đợt này:
   toàn cục và không tháo những lần gộp đúng của lượt cụm.
 - **Gộp bắc cầu có kiểm**: nếu các quyết định *cùng* còn tạo thành phần chứa một cặp đã bị tách rõ ở lượt cụm thì
   không gộp thành phần đó: đánh các nhóm liên quan `deferred`, phát cảnh báo và đếm số lần.
+- Quan hệ trả về ở lượt vá được giữ như ở lượt cụm, cùng ba lớp kiểm của D4.
+- Quan hệ chỉ được map về node sau khi đã chốt node. Hai đầu rơi vào cùng một node (vì lượt vá gộp chúng) thì quan hệ
+  bị bỏ, đếm vào `relation_self_removed`.
 
 ### D6 — Lắp node canonical *(Q4, Q7, Q18, Q23, D3 · ADR 0005)*
 
@@ -315,17 +349,26 @@ Từ góc nhìn người dùng, sau đợt này:
 - Cạnh đề xuất của A3 ánh xạ hai đầu mút ứng viên → node canonical. Hai đầu rơi vào cùng node ⇒ bỏ, có đếm. Nhiều
   cạnh cùng kiểu giữa cùng cặp node ⇒ gộp một, hợp bằng chứng, `confirmed` lấy OR.
 - Cạnh media `illustrates` / `tabulates` theo cùng luật; tính lại media mồ côi (I-G2).
-- Cạnh `subtype_of` từ D4/D5 được thêm vào, là kiểu mở, ghi sổ đăng ký kiểu (I-G3).
+- **Quan hệ kiểu mở từ D4/D5 (kể cả `subtype_of`)** thành cạnh node–node với `proposal: true`, và được ghi vào sổ đăng
+  ký kiểu (I-G3).
+  - Mọi cạnh có `origins` ⊆ {`2a`, `a3`}.
+  - Quan hệ 2a trùng bộ ba (nguồn, đích, kiểu) với cạnh A3 thì thành một cạnh, `origins: ["2a", "a3"]`: giữ nguyên các
+    trường của A3, hợp `chunk_ids`, và thêm `reason` của 2a.
+  - Quan hệ trùng nhau giữa các cụm hoặc lượt vá thì gộp làm một, giữ `reason` đầu tiên theo thứ tự xử lý.
+  - Chỉ số so với A3: `relation_same_as_a3`, `relation_same_type_reversed_a3`, `relation_other_type_than_a3`,
+    `relation_new_pair`.
 - **Cặp đã có cạnh A3 mang nghĩa khác "là một loại"** — `component_of`, `uses`, `solves`, `prevents`, `causes`,
   `computed_by`, `contrasts_with`, bất kể chiều. *(F75)*
-  - Luật: giữ cả hai cạnh; ghi `subtype_conflicts_a3` vào nhật ký, kèm kiểu cạnh A3, và vào chỉ số.
+  - Luật: giữ cả hai cạnh; ghi `subtype_conflicts_a3` vào nhật ký, kèm kiểu cạnh A3, và vào chỉ số. Luật này chỉ xét
+    quan hệ 2a có kiểu `subtype_of`.
   - Vì sao không xoá: đo trên bộ vàng, luật xoá bỏ 17 cạnh `subtype_of` đúng mà chỉ bắt được 2 cạnh sai. A3 hay gắn
     biến thể thành bộ phận (`Gaussian Naive Bayes` `component_of` `Naïve Bayes Classification`).
-- **Chất lượng `subtype_of` mà 2b nhận**:
-  - trên cặp có nhãn: 33 cạnh đúng, 19 cạnh sai, tức precision 0,635;
-  - bắt được 35/47 cặp cha–con.
+- **Chất lượng quan hệ 2a mà 2b nhận**, đo ở đợt 2:
+  - `subtype_of` trên cặp có nhãn: 25 cạnh đúng, 13 cạnh sai, tức precision 0,658 (prompt v1 cũ là 0,635);
+  - bắt được 27/47 cặp cha–con. Ba cặp bộ phận mà bộ vàng gán cha–con giờ được gắn đúng kiểu `component_of`;
+  - quan hệ khác `subtype_of`: 70% đúng trên mẫu 30, do Claude gán.
 
-  Vì vậy 2b chỉ dùng `subtype_of` như **đề xuất phân cấp cần kiểm lại**, không coi là sự thật.
+  Vì vậy 2b coi mọi quan hệ 2a, cũng như cạnh A3, là **đề xuất cần kiểm lại**, không phải sự thật.
 - `requires` do A3 đề xuất vẫn chỉ là đề xuất; 2b xác minh lại (§726). Không đổi.
 
 ### D8 — A5: mô tả chuẩn *(Q5, Q15, Q16, Q20, D6)*

@@ -180,6 +180,17 @@ _Tránh dùng_: cụm, cluster, topic
 > Hai khái niệm trên **khác hẳn nhau** và đều hay bị gọi tắt là "cụm". Cụm ứng viên là *cùng một khái niệm,
 > nhiều tên*; cụm chủ đề là *nhiều khái niệm, cùng một mảng*.
 
+**Quan hệ đề xuất**:
+Cạnh giữa hai node mà A3 hoặc mô hình phán cụm (2a) nêu kèm câu bằng chứng, chưa được kiểm lại. Kiểu cạnh để mở;
+`subtype_of` (là một loại của) chỉ là một kiểu trong đó. Trường `origins` ghi nguồn đã nêu cạnh. Chỉ `requires` do 2b
+duyệt mới tham gia lộ trình.
+_Tránh dùng_: cạnh xác nhận, quan hệ chắc chắn
+
+**Đầu ra tự mâu thuẫn**:
+Câu trả lời phán cụm vừa gộp hai nhóm vào một node, vừa ghi một quan hệ giữa chúng; hoặc ghi quan hệ đồng nhất giữa hai
+node mà nó để riêng. Mô hình phải phán lại cụm đó.
+_Tránh dùng_: lỗi định dạng
+
 **Siêu section**:
 Nhiều section ngắn liền kề được gộp lại cho vừa một lời gọi mô hình.
 _Tránh dùng_: super section, batch section

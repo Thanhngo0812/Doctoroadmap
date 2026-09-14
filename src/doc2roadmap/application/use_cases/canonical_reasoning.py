@@ -11,7 +11,8 @@ from doc2roadmap.application.canonical_prompt import (
 from doc2roadmap.application.ports.extraction import ModelTransportError
 from doc2roadmap.domain.canonical import digest, evidence_missing_name, build_nodes
 from doc2roadmap.domain.canonical_decisions import (
-    validate_partition, split_subtype_edges, guarded_components, validate_description, document_language, vietnamese, split_sentences,
+    is_contradiction_error, validate_partition, split_relation_edges, guarded_components,
+    validate_description, document_language, vietnamese, split_sentences,
 )
 
 
@@ -32,6 +33,7 @@ class CanonicalReasoning:
                 "generation": self.generation, "prompts": self.prompts,
                 "schemas": [PARTITION_SCHEMA, DESCRIPTION_SCHEMA, SINGLE_SCHEMA],
                 "language_rule": self.language_rule, "batch_size": self.batch_size,
+                "partition_validation": "consistency-v1",
                 "description_validation": "sentence-language-v2",
                 "source_budget": 4000, "tokenizer": getattr(self.counter, "identifier", None)}
 
@@ -45,17 +47,30 @@ class CanonicalReasoning:
         group_map = {node["node_id"]: group for node, group in zip(initial_nodes, groups, strict=True) if not node["media_id"]}
         node_map = {n["node_id"]: n for n in initial_nodes}
         cache = {row["input_hash"]: row for row in previous_log if row.get("valid") and "input_hash" in row}
-        logs, metrics, deferred, extra_edges, deferred_pairs = [], Counter(), set(), [], []
+        logs = []
+        metrics = Counter(
+            relation_rejected=0, relation_self_removed=0,
+            partition_contradictions=0, contradiction_retried_calls=0,
+            contradiction_deferred_calls=0, merge_cache_invalid=0,
+            repair_cache_invalid=0,
+        )
+        deferred, extra_edges, deferred_pairs = set(), [], []
         def call(stage, data, schema, validate):
             counts = Counter()
             model = self.writer if stage in {"describe", "check"} else self.judge
             phash = self.prompt_hash(stage, schema)
             key = digest([model.model_id, phash, data])
+            cache_invalid_error = None
             if key in cache:
                 row = dict(cache[key], reused=True)
-                validate(row["output"])
-                counts[stage+"_reused"] += 1
-                return row["output"], row, counts
+                try:
+                    validate(row["output"])
+                except (ValueError, TypeError, KeyError, IndexError) as exc:
+                    cache_invalid_error = str(exc)
+                    counts[stage+"_cache_invalid"] += 1
+                else:
+                    counts[stage+"_reused"] += 1
+                    return row["output"], row, counts
             error, attempts = None, []
             for attempt in range(2):
                 counts[stage+"_calls"] += 1
@@ -77,10 +92,14 @@ class CanonicalReasoning:
                 row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
                              "input_hash": key, "input": data, "output": value, "valid": True,
                              "reused": False, "retries": attempt, "attempts": attempts}
+                if cache_invalid_error is not None:
+                    row["cache_invalid_error"] = cache_invalid_error
                 return value, row, counts
             row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
                    "input_hash": key, "input": data, "valid": False, "error": error, "retries": 1,
                    "attempts": attempts}
+            if cache_invalid_error is not None:
+                row["cache_invalid_error"] = cache_invalid_error
             counts[stage+"_invalid"] += 1
             return None, row, counts
 
@@ -117,10 +136,10 @@ class CanonicalReasoning:
             deferred.update(d["group_id"] for d in value["deferred"])
             for a, b in combinations(cluster, 2):
                 (same if a in owner and b in owner and owner[a] == owner[b] else different).append((a, b))
-            kept, rejected = split_subtype_edges(value, {id: sources[id] for id in cluster})
+            kept, rejected = split_relation_edges(value, {id: sources[id] for id in cluster})
             extra_edges.extend(kept)
-            logs.extend({"stage": "subtype_rejected", "edge": edge} for edge in rejected)
-            metrics["subtype_rejected"] += len(rejected)
+            logs.extend({"stage": "relation_rejected", "edge": edge} for edge in rejected)
+            metrics["relation_rejected"] += len(rejected)
         # A group deferred by cluster judgment remains separate. Repair deferral is pair-scoped.
         base_components, _ = guarded_components(list(group_map), same, [])
         base_owner = {id: component for component in base_components for id in component}
@@ -148,10 +167,10 @@ class CanonicalReasoning:
                 deferred_pairs.append({"pair": [a, b], "reason": "repair_invalid"})
                 continue
             metrics["cut_pairs_judged"] += 1
-            kept, rejected = split_subtype_edges(value, {id: sources[id] for id in combined})
+            kept, rejected = split_relation_edges(value, {id: sources[id] for id in combined})
             extra_edges.extend(kept)
-            logs.extend({"stage": "subtype_rejected", "edge": edge} for edge in rejected)
-            metrics["subtype_rejected"] += len(rejected)
+            logs.extend({"stage": "relation_rejected", "edge": edge} for edge in rejected)
+            metrics["relation_rejected"] += len(rejected)
             owner = {id: i for i, node in enumerate(value["nodes"]) for id in node["groups"]}
             if value["deferred"]:
                 different.append((a, b))
@@ -161,6 +180,13 @@ class CanonicalReasoning:
                 metrics["repair_merged_pairs"] += 1
             else:
                 different.append((a, b))
+        # Counted from the log, reused rows included, so a rerun from cache reports what the decisions went through.
+        partition_rows = [row for row in logs if row.get("stage") in {"merge", "repair"}]
+        flags = [[is_contradiction_error(a.get("error")) for a in row.get("attempts", [])] for row in partition_rows]
+        metrics["partition_contradictions"] = sum(sum(row_flags) for row_flags in flags)
+        metrics["contradiction_retried_calls"] = sum(any(row_flags) for row_flags in flags)
+        metrics["contradiction_deferred_calls"] = sum(
+            not row["valid"] and bool(row_flags) and row_flags[-1] for row, row_flags in zip(partition_rows, flags))
         components, conflicts = guarded_components(list(group_map), same, different)
         for group in conflicts:
             deferred.update(group)
@@ -171,14 +197,23 @@ class CanonicalReasoning:
         logs.extend(tie_log)
         mapping = {c: n["node_id"] for n in nodes for c in n["members"]}
         group_to_node = {id: mapping[members[0].candidate_id] for id, members in group_map.items()}
-        edges = []
+        edges = {}
         for row in extra_edges:
-            a, b = group_to_node[row["child"]], group_to_node[row["parent"]]
-            if a != b:
-                edge = {"source": a, "target": b, "edge_type": "subtype_of", "chunk_ids": row["chunk_ids"],
-                        "reason": row["reason"], "proposal": True, "confirmed": False, "evidence": [], "source_refs": []}
-                if edge not in edges:
-                    edges.append(edge)
+            a, b = group_to_node[row["source"]], group_to_node[row["target"]]
+            if a == b:
+                metrics["relation_self_removed"] += 1
+                continue
+            key = (a, b, row["edge_type"])
+            if key not in edges:
+                edges[key] = {"source": a, "target": b, "edge_type": row["edge_type"],
+                              "chunk_ids": row["chunk_ids"], "reason": row["reason"],
+                              "proposal": True, "confirmed": False, "evidence": [],
+                              "source_refs": [], "origins": ["2a"]}
+            else:
+                edges[key]["chunk_ids"] = sorted(set(edges[key]["chunk_ids"]) | set(row["chunk_ids"]))
+        edges = list(edges.values())
+        metrics["relation_edges"] = len(edges)
+        metrics["relation_types"] = dict(sorted(Counter(edge["edge_type"] for edge in edges).items()))
         language = document_language(chunks.chunks)
         def description_input(node, draft=False):
             source_chunks = sorted((chunks_by_id[c] for c in node["source_chunk_ids"]), key=lambda c: c.order_index)
