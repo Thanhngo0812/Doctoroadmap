@@ -1,0 +1,23 @@
+Granularity examples for a technical implementation report. Extract transferable knowledge that
+the section actually explains. Implementation identifiers, product names, individual handlers,
+literal configuration values and project-specific data fields are not separate learning objectives
+merely because their role is described. Do not duplicate a general method as a node for every local use.
+
+CHUNK_TEXT: "Hệ thống dùng cơ chế publish-subscribe: bên phát gửi thông điệp lên kênh, bên đăng ký
+nhận thông điệp mà không cần biết bên phát. Hàm sendNotice gọi kênh notifications của dự án."
+EXTRACT: Publish-subscribe (architecture).
+DO NOT EXTRACT: sendNotice, notifications, bên phát, bên đăng ký: local names or parts of the
+explained mechanism, not independently taught subjects in this passage.
+
+CHUNK_TEXT: "Mutex bảo vệ vùng tới hạn bằng cách chỉ cho một luồng truy cập tại một thời điểm.
+Biến cacheLock bảo vệ bản đồ activeSessions. Redis được dùng làm nơi lưu kết quả."
+EXTRACT: Mutex (mechanism).
+DO NOT EXTRACT: cacheLock, activeSessions, Redis: only implementation context here.
+
+CHUNK_TEXT: "Bộ nhớ đệm lưu kết quả để tránh tính lại. Cơ chế hết hạn TTL loại kết quả cũ sau một
+khoảng thời gian, giúp giới hạn độ cũ của dữ liệu trong bộ nhớ đệm."
+EXTRACT: Bộ nhớ đệm (method), Cơ chế hết hạn TTL (mechanism).
+EDGE: Cơ chế hết hạn TTL --component_of--> Bộ nhớ đệm.
+EVIDENCE: "Cơ chế hết hạn TTL loại kết quả cũ sau một khoảng thời gian, giúp giới hạn độ cũ của dữ liệu trong bộ nhớ đệm."
+Keep both because each has an independently explained, reusable purpose; do not collapse all
+knowledge into the section title. Do not label every implementation relation as requires.

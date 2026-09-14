@@ -1,0 +1,124 @@
+{
+  "recorded_at": "2026-09-04",
+  "generation_model_id": "gemini-3.1-flash-lite",
+  "embedding_model_id": "gemini-embedding-001:768",
+  "prompt_hash_prefix": "8e7c14c3",
+  "documents": {
+    "nhap-mon-ml": {
+      "candidate_version": 7,
+      "total_entities": 114,
+      "learnable_entities": 105,
+      "learnable_per_1000_tokens": 11.76,
+      "cross_section_duplicate_name_ratio": 0.3429,
+      "model_edge_type_count": 6,
+      "nonlearnable_context_entities": 0,
+      "empty_sections": 3,
+      "failed_sections": 0,
+      "llm_calls": 68,
+      "formula_context_count": 1,
+      "formula_context_tokens": 12,
+      "vector_count": 114
+    },
+    "xstk-ch3-1": {
+      "candidate_version": 4,
+      "total_entities": 209,
+      "learnable_entities": 156,
+      "learnable_per_1000_tokens": 5.13,
+      "cross_section_duplicate_name_ratio": 0.5897,
+      "model_edge_type_count": 6,
+      "nonlearnable_context_entities": 0,
+      "empty_sections": 2,
+      "failed_sections": 0,
+      "llm_calls": 130,
+      "formula_context_count": 263,
+      "formula_context_tokens": 7270,
+      "vector_count": 209
+    },
+    "baocao-canhan": {
+      "candidate_version": 6,
+      "total_entities": 75,
+      "learnable_entities": 72,
+      "learnable_per_1000_tokens": 19.70,
+      "cross_section_duplicate_name_ratio": 0.2917,
+      "model_edge_type_count": 4,
+      "nonlearnable_context_entities": 0,
+      "empty_sections": 6,
+      "failed_sections": 0,
+      "llm_calls": 76,
+      "formula_context_count": 0,
+      "formula_context_tokens": 0,
+      "vector_count": 75
+    },
+    "naive-bayes": {
+      "candidate_version": 5,
+      "total_entities": 76,
+      "learnable_entities": 62,
+      "learnable_per_1000_tokens": 10.72,
+      "cross_section_duplicate_name_ratio": 0.4677,
+      "model_edge_type_count": 6,
+      "nonlearnable_context_entities": 0,
+      "empty_sections": 2,
+      "failed_sections": 0,
+      "llm_calls": 89,
+      "formula_context_count": 32,
+      "formula_context_tokens": 968,
+      "vector_count": 76
+    }
+  },
+  "corpus": {
+    "total_entities": 474,
+    "learnable_entities": 395,
+    "nonlearnable_context_entities": 0,
+    "cross_section_duplicate_name_ratio": 0.4506,
+    "media_entities": 79,
+    "figure_entities": 19,
+    "table_entities": 60,
+    "generated_multimodal": 11,
+    "generated_from_content": 56,
+    "original_figure_captions": 8,
+    "original_table_captions": 4,
+    "missing_media_descriptions": 0,
+    "vector_count": 474,
+    "llm_calls": 363,
+    "failed_sections": 0
+  },
+  "gold_evaluation": {
+    "nhap-mon-ml": {
+      "gold": 71,
+      "predicted": 74,
+      "matched": 59,
+      "recall": 0.8309859154929577,
+      "excess_ratio": 0.20270270270270271,
+      "evidence_ratio": 1.0
+    },
+    "xstk-ch3-1": {
+      "gold": 40,
+      "predicted": 34,
+      "matched": 23,
+      "recall": 0.575,
+      "excess_ratio": 0.3235294117647059,
+      "evidence_ratio": 1.0
+    }
+  },
+  "stability_nhap_mon_ml_v2_v3": {
+    "node_jaccard": 1.0,
+    "edge_jaccard": 0.2698412698412698
+  },
+  "prompt_translation_jaccard": {
+    "nhap-mon-ml": {"node": 0.9478260869565217, "edge": 0.0990990990990991},
+    "xstk-ch3-1": {"node": 0.7947598253275109, "edge": 0.1164021164021164},
+    "baocao-canhan": {"node": 0.7647058823529411, "edge": 0.14814814814814814},
+    "naive-bayes": {"node": 0.7411764705882353, "edge": 0.10256410256410256}
+  },
+  "fixture_sizes_bytes": {
+    "llm_multimodal": 81095,
+    "embedding_233x768": 3817219
+  },
+  "retrieval_queries": [
+    {"query": "overfitting", "dense_rank": 4, "bm25_rank": 1, "hybrid_rank": 2},
+    {"query": "học từ dữ liệu đã có nhãn", "dense_rank": 2, "bm25_rank": 1, "hybrid_rank": 2},
+    {"query": "hệ số tương quan mẫu", "dense_rank": 1, "bm25_rank": 1, "hybrid_rank": 1},
+    {"query": "P(A|B)", "dense_rank": 3, "bm25_rank": 1, "hybrid_rank": 1},
+    {"query": "lỗi tranh chấp khi nhiều luồng cùng ghi dữ liệu", "dense_rank": 10, "bm25_rank": 6, "hybrid_rank": 6}
+  ]
+}

@@ -23,23 +23,18 @@ from .ports import SentenceSplitter, TextSpan, TokenCounter
 
 HEADING_TYPES = {"title", "section_header"}
 MERGEABLE_TYPES = {"text", "paragraph", "list_item", "figure", "table", "formula"}
-CHUNK_ALGORITHM_ID = "section-id-v7"
+TEXT_BLOCK_TYPES = {"text", "paragraph", "list_item"}
+CHUNK_ALGORITHM_ID = "section-id-v8"
 OVERSIZE_TABLE_ROW = "table_row_exceeds_max_tokens"
+OVERSIZE_TABLE_PRESERVED = "table_kept_whole_above_text_limit"
 OVERSIZE_SENTENCE_BOUNDARY = "sentence_splitter_no_boundary"
 OVERSIZE_HARD_CAP = "hard_cap_forced_split"
-_CHAPTER_HEADING = re.compile(r"^(?:(?:CHƯƠNG|PHẦN|CHAPTER)\s+\d+\b|PHỤ\s+LỤC\b)", re.IGNORECASE)
 _NUMBERED_HEADING = re.compile(r"^(\d+(?:\.\d+)*)(?:[.)])?\s+")
-_LETTER_HEADING = re.compile(r"^[A-Za-z]\)\s+")
+_LETTER_HEADING = re.compile(r"^[^\W\d_][.)]\s+")
+_ARABIC_NUMBER = re.compile(r"\d+")
+_ROMAN_NUMBER = re.compile(r"(?<![^\W\d_])[IVXLCDM]+(?![^\W\d_])", re.IGNORECASE)
+_TRAILING_PAGE_NUMBER = re.compile(r"\s+\d+\s*$")
 _LEADING_BULLETS = frozenset("•▪▫◦‣⁃∙●○■□-–—")
-_WARNINGS_WITH_PAYLOAD = {
-    "clamped_heading_level",
-    "missing_image",
-    "orphan_caption",
-    "rejected_heading",
-    "rejected_heading_bullet",
-    "rejected_heading_repeated",
-    OVERSIZE_SENTENCE_BOUNDARY,
-}
 
 
 @dataclass(slots=True)
@@ -87,8 +82,6 @@ def _table_markdown(node: DocumentNode) -> str:
 
 
 def _heading_number_level(title: str) -> int | None:
-    if _CHAPTER_HEADING.match(title):
-        return 1
     match = _NUMBERED_HEADING.match(title)
     return match.group(1).count(".") + 1 if match else None
 
@@ -97,8 +90,10 @@ def _is_numbered_heading(title: str) -> bool:
     return _heading_number_level(title) is not None or bool(_LETTER_HEADING.match(title))
 
 
-def _false_heading_reason(title: str, body_texts: list[str]) -> str | None:
-    if _is_numbered_heading(title):
+def _false_heading_reason(
+    title: str, body_texts: list[str], *, sequence_member: bool = False
+) -> str | None:
+    if _is_numbered_heading(title) or sequence_member:
         return None
     if title[0] in _LEADING_BULLETS or unicodedata.category(title[0]) == "Pd":
         return "bullet"
@@ -109,23 +104,108 @@ def _false_heading_reason(title: str, body_texts: list[str]) -> str | None:
     return None
 
 
+def _roman_value(value: str) -> int:
+    digits = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
+    result = 0
+    previous = 0
+    for character in reversed(value.upper()):
+        digit = digits[character]
+        result += -digit if digit < previous else digit
+        previous = max(previous, digit)
+    return result
+
+
+def _chapter_sequences(nodes: list[DocumentNode]) -> tuple[set[int], dict[int, int]]:
+    headings = [
+        (index, normalize_text(node.text))
+        for index, node in enumerate(nodes)
+        if node.node_type in HEADING_TYPES and normalize_text(node.text)
+    ]
+    groups: dict[str, list[tuple[int, int, int]]] = defaultdict(list)
+    for heading_position, (node_index, title) in enumerate(headings):
+        matches = sorted(
+            [*_ARABIC_NUMBER.finditer(title), *_ROMAN_NUMBER.finditer(title)],
+            key=lambda match: match.start(),
+        )
+        for match in matches:
+            prefix = title[: match.start()].casefold()
+            if not any(character.isalpha() for character in prefix):
+                continue
+            value = int(match.group()) if match.group().isdigit() else _roman_value(match.group())
+            groups[prefix].append((heading_position, node_index, value))
+
+    sequence_members: set[int] = set()
+    covering: list[tuple[int, int, list[tuple[int, int, int]]]] = []
+    for members in groups.values():
+        if len({value for _, _, value in members}) < 2:
+            continue
+        sequence_members.update(node_index for _, node_index, _ in members)
+        positions = sorted({position for position, _, _ in members})
+        if any(second > first + 1 for first, second in zip(positions, positions[1:])):
+            covering.append((positions[0], positions[-1], members))
+
+    levels: dict[int, int] = {}
+    for start, end, members in covering:
+        level = 1 + sum(
+            outer_start < start and end < outer_end
+            for outer_start, outer_end, _ in covering
+        )
+        for _, node_index, _ in members:
+            levels[node_index] = max(levels.get(node_index, 0), level)
+    return sequence_members, levels
+
+
 def _group_warnings(warnings: list[str]) -> list[str]:
-    counts = Counter(
-        warning
-        for warning in warnings
-        if warning.partition(":")[0] not in _WARNINGS_WITH_PAYLOAD
-    )
+    counts = Counter(warnings)
     emitted: set[str] = set()
     grouped = []
     for warning in warnings:
-        warning_type = warning.partition(":")[0]
-        if warning_type in _WARNINGS_WITH_PAYLOAD:
-            grouped.append(warning)
-        elif warning not in emitted:
+        if warning not in emitted:
             count = counts[warning]
             grouped.append(f"{warning} ×{count}" if count > 1 else warning)
             emitted.add(warning)
     return grouped
+
+
+def _is_non_linguistic(text: str) -> bool:
+    return len(text) >= 100 and sum(character.isalpha() for character in text) / len(text) < 0.1
+
+
+def _toc_candidate(text: str, headings: set[str]) -> bool:
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    if not lines or not any(_TRAILING_PAGE_NUMBER.search(line) for line in lines):
+        return False
+    matches = sum(_TRAILING_PAGE_NUMBER.sub("", line).strip() in headings for line in lines)
+    return matches * 2 > len(lines)
+
+
+def _toc_runs(nodes: list[DocumentNode], headings: set[str]) -> tuple[set[int], dict[int, str]]:
+    candidates = {
+        index
+        for index, node in enumerate(nodes)
+        if node.node_type in TEXT_BLOCK_TYPES
+        and _toc_candidate(normalize_text(node.text), headings)
+    }
+    excluded: set[int] = set()
+    warnings: dict[int, str] = {}
+    index = 0
+    while index < len(nodes):
+        if index not in candidates:
+            index += 1
+            continue
+        end = index + 1
+        while end in candidates:
+            end += 1
+        first_text = normalize_text(nodes[index].text)
+        if end - index > 1 or "\n" in first_text:
+            excluded.update(range(index, end))
+            excerpt = " | ".join(
+                normalize_text(nodes[item].text).replace("\n", " | ")
+                for item in range(index, min(end, index + 2))
+            )
+            warnings[index] = f"toc_block: {excerpt[:120]}"
+        index = end
+    return excluded, warnings
 
 
 def _table_parts(
@@ -260,6 +340,21 @@ def chunk_document(
         raise ValueError("sentence_overlap không được âm")
 
     nodes = sorted(tree.nodes, key=lambda node: node.reading_order)
+    sequence_members, sequence_levels = _chapter_sequences(nodes)
+    known_headings = {
+        title
+        for node in nodes
+        if node.node_type in HEADING_TYPES
+        for title in [normalize_text(node.text)]
+        if title
+    }
+    toc_indexes, toc_warnings = _toc_runs(nodes, known_headings)
+    declared_levels = {
+        int(node.level)
+        for node in nodes
+        if node.node_type in HEADING_TYPES and node.level is not None
+    }
+    declared_hierarchy = len(declared_levels) >= 2
     body_texts = [
         text
         for node in nodes
@@ -384,14 +479,16 @@ def chunk_document(
                                 None,
                             )
                             or (
-                                OVERSIZE_SENTENCE_BOUNDARY
-                                if token_count
-                                > (
-                                    max_table_tokens
-                                    if any(block.block_type == "table" for block in span_blocks)
-                                    else max_tokens
+                                OVERSIZE_TABLE_PRESERVED
+                                if token_count > max_tokens
+                                and any(
+                                    block.block_type == "table" for block in span_blocks
                                 )
-                                else None
+                                else (
+                                    OVERSIZE_SENTENCE_BOUNDARY
+                                    if token_count > max_tokens
+                                    else None
+                                )
                             )
                         )
                     ),
@@ -426,13 +523,17 @@ def chunk_document(
         if counter.count("\n".join(item.text for item in pending)) >= target_tokens:
             flush()
 
-    for node in nodes:
+    for node_index, node in enumerate(nodes):
         node_type = node.node_type
         if node.node_type in HEADING_TYPES:
             title = normalize_text(node.text)
             if not title:
                 continue
-            false_heading_reason = _false_heading_reason(title, body_texts)
+            false_heading_reason = _false_heading_reason(
+                title,
+                body_texts,
+                sequence_member=node_index in sequence_members,
+            )
             if false_heading_reason:
                 warning_type = (
                     "rejected_heading"
@@ -451,6 +552,11 @@ def chunk_document(
                 elif _LETTER_HEADING.match(title):
                     level = (numbered_level or 1) + 1
                     numbered_heading_seen = True
+                elif node_index in sequence_levels:
+                    level = numbered_level = sequence_levels[node_index]
+                    numbered_heading_seen = True
+                elif declared_hierarchy and node.level is not None:
+                    level = max(1, int(node.level))
                 elif not numbered_heading_seen:
                     level = 1
                 else:
@@ -491,6 +597,16 @@ def chunk_document(
         raw_text = _table_markdown(node) if node_type == "table" else node.text
         text = normalize_text(raw_text)
         if not text:
+            continue
+        if node_index in toc_indexes:
+            if node_index in toc_warnings:
+                structure_warnings.append(toc_warnings[node_index])
+            continue
+        if node_type in TEXT_BLOCK_TYPES and _is_non_linguistic(text):
+            excerpt = text[:80].replace("\n", " ")
+            structure_warnings.append(
+                f"non_linguistic_block: {len(text)} chars: {excerpt}"
+            )
             continue
         owner = stack[-1]
         owner.has_direct_content = True

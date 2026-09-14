@@ -147,7 +147,12 @@ def test_pdf_glyph_repetitions_are_removed_without_touching_vietnamese_words() -
 
     class Document:
         def iterate_items(self):
-            return [(SimpleNamespace(label="text", text=text, prov=[]), 1) for text in cases]
+            bbox = SimpleNamespace(l=0, t=10, r=10, b=0)
+            provenance = [SimpleNamespace(page_no=1, bbox=bbox)]
+            return [
+                (SimpleNamespace(label="text", text=text, prov=provenance), 1)
+                for text in cases
+            ]
 
     tree = DoclingParser().adapt(Document(), "fixture.pdf").tree
 
@@ -162,8 +167,8 @@ def test_docx_does_not_collapse_pdf_glyphs() -> None:
     parsed = DoclingParser().adapt(load_docling_fixture(), "fixture.docx")
     tree = parsed.tree
 
-    assert not parsed.images
-    assert all(node.image_id is None for node in tree.nodes)
+    assert len(parsed.images) == 9
+    assert sum(node.image_id is not None for node in tree.nodes) == 9
     assert any("P P P" in node.text for node in tree.nodes)
     assert tree.parse_stats["pages_reordered"] == 0
     assert tree.parse_stats["page_breaks_stitched"] == 0

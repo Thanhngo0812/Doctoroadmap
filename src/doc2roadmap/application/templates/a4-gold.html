@@ -1,0 +1,26 @@
+<!doctype html><html lang="vi"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'">
+<title>Gán mù bộ vàng A4</title>
+<style>body{font:16px system-ui;max-width:1000px;margin:24px auto;padding:0 16px;background:#f6f7fa;color:#17212d}header{position:sticky;top:0;background:#f6f7fa;padding:12px 0;border-bottom:1px solid #ccc}article{background:white;border:1px solid #ddd;border-radius:8px;padding:18px;margin:16px 0}section{border-left:3px solid #567;padding-left:12px}button,input,select{font:inherit;padding:8px;margin:4px}blockquote{margin:10px 0;color:#34495e}label{display:inline-block;margin:5px}#error{color:#a00}small{overflow-wrap:anywhere}</style>
+<header><h1>Gán mù bộ vàng A4</h1><p>Chọn theo bằng chứng. Phân vân hãy chọn “không chắc”. Không có gợi ý của mô hình.</p>
+<label>Người gán <input id="annotator" autocomplete="name"></label><strong id="progress"></strong>
+<button id="export">Xuất JSON</button><div id="error" role="status"></div></header><main id="items"></main>
+<script>
+const data=__PAYLOAD__, storageKey='a4-gold-'+data.sheet_id;
+let saved={}; try{saved=JSON.parse(localStorage.getItem(storageKey)||'{}')}catch(e){document.getElementById('error').textContent='Không đọc được tiến độ tự lưu. Hãy xuất JSON trước khi đóng.'}
+const answers=saved.answers||{}; const annotator=document.getElementById('annotator'); annotator.value=saved.annotator||'';
+const pairLabels={same:'Cùng một thực thể',parent_child:'Cha–con',related:'Anh em / liên quan',different:'Khác',uncertain:'Không chắc'};
+function el(tag,text,parent){const n=document.createElement(tag);n.textContent=text;if(parent)parent.append(n);return n}
+function valid(item){const a=answers[item.item_id];return a&&a.label&&(a.label!=='parent_child'||[0,1].includes(a.child))&&(a.label!=='homonym'||(a.different_members?.length>0&&a.different_members.length<item.groups[0].members.length))}
+function save(){document.getElementById('progress').textContent=data.items.filter(valid).length+' / '+data.items.length+' mục';try{localStorage.setItem(storageKey,JSON.stringify({annotator:annotator.value,answers}))}catch(e){document.getElementById('error').textContent='Trình duyệt chặn tự lưu. Hãy xuất JSON trước khi đóng.'}}
+annotator.addEventListener('input',save);
+data.items.forEach((item,index)=>{const card=el('article','',document.getElementById('items'));el('h2',(index+1)+'. '+item.doc_id+' — '+(item.kind==='pair'?'So hai nhóm':'Soát nhóm trùng tên'),card);
+item.groups.forEach((g,gi)=>{const section=el('section','',card);el('h3','Nhóm '+(gi+1),section);g.members.forEach(m=>{el('h4',m.name+' ('+m.node_type+')',section);el('p','Alias: '+m.aliases.map(a=>a.name).join(', '),section);el('p','Section: '+m.section_paths.map(p=>p.join(' > ')).join(' / '),section);m.evidence.forEach(e=>{el('blockquote',e.quote,section);el('small',e.chunk_id,section)})});el('p','Ký hiệu: '+g.symbols.map(s=>s.name).join(', '),section)});
+const a=answers[item.item_id]||{};answers[item.item_id]=a;
+const options=item.kind==='pair'?pairLabels:{one_entity:'Một thực thể',homonym:'Có đồng âm'};
+Object.entries(options).forEach(([value,title])=>{const label=el('label','',card);const input=document.createElement('input');input.type='radio';input.name=item.item_id;input.value=value;input.checked=a.label===value;label.append(input,document.createTextNode(title));input.onchange=()=>{a.label=value;save()}});
+if(item.kind==='pair'){const label=el('label','Nhóm con: ',card);const select=document.createElement('select');[['','Chọn chiều khi gán cha–con'],['0','Nhóm 1 là con'],['1','Nhóm 2 là con']].forEach(([v,t])=>{const o=el('option',t,select);o.value=v});select.value=a.child===undefined?'':String(a.child);select.onchange=()=>{if(select.value==='')delete a.child;else a.child=Number(select.value);save()};label.append(select)}
+else{el('p','Nếu có đồng âm: đánh dấu những ứng viên khác nghĩa với phần còn lại.',card);item.groups[0].members.forEach(m=>{const label=el('label','',card),input=document.createElement('input');input.type='checkbox';input.checked=(a.different_members||[]).includes(m.candidate_id);input.onchange=()=>{const ids=new Set(a.different_members||[]);input.checked?ids.add(m.candidate_id):ids.delete(m.candidate_id);a.different_members=[...ids];save()};label.append(input,document.createTextNode(m.name+' — '+m.candidate_id))})}});
+document.getElementById('export').onclick=()=>{if(!annotator.value.trim()||!data.items.every(valid)){document.getElementById('error').textContent='Điền người gán và hoàn tất mọi mục (gồm chiều cha–con / thành viên đồng âm).';return}const payload={...data,annotator:annotator.value.trim(),annotated_at:new Date().toISOString(),blind_before_first_a4_run:true,items:data.items.map(i=>({...i,...answers[i.item_id]}))};const link=document.createElement('a');link.href=URL.createObjectURL(new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}));link.download='a4-gold.json';link.click();setTimeout(()=>URL.revokeObjectURL(link.href),1000)};save();
+</script></html>

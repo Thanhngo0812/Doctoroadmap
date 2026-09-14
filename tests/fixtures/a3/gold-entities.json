@@ -1,0 +1,366 @@
+{
+  "schema_version": 1,
+  "blind_before_first_a3_run": true,
+  "annotation_completed_at": "2026-09-03",
+  "annotation_policy": {
+    "include": "Khái niệm, định nghĩa, định lý, phương pháp hoặc bước quy trình được section giải thích.",
+    "exclude": "Ví dụ, tên sản phẩm, biến, tham số công thức, tiêu đề và thuật ngữ chỉ được nhắc.",
+    "repeated_entity": "Chỉ gắn lại khi section mới tiếp tục giảng nội dung của thực thể đó."
+  },
+  "documents": {
+    "nhap-mon-ml": {
+      "chunks_version_at_annotation": 2,
+      "source_hash": "d5a78c95b7603bffff77d6675c0286beaeb997f5633ac9e598bccb25305d3f71",
+      "chapter_section_id": "s_5047515fc71136c96c7ab5be",
+      "chapter_title": "CHƯƠNG 1. GIỚI THIỆU CHUNG VỀ HỌC MÁY VÀ KHAI PHÁ DỮ LIỆU",
+      "calibration_section_ids": [
+        "s_39ca0d2e65c3c03b3016b961"
+      ],
+      "sections": [
+        {
+          "section_id": "s_39ca0d2e65c3c03b3016b961",
+          "title": "1.1.1 Vài quan điểm về ML",
+          "include_in_score": false,
+          "entities": [
+            {"name": "Học", "aliases": ["learning"]},
+            {"name": "Học máy", "aliases": ["Machine Learning", "ML"]},
+            {"name": "Bài toán học máy", "aliases": []},
+            {"name": "Lọc thư rác", "aliases": ["Spam filtering"]},
+            {"name": "Mô tả ảnh", "aliases": ["Image captioning"]}
+          ]
+        },
+        {
+          "section_id": "s_123b6b7aa01873c7cd31c30a",
+          "title": "1.1 Các khái niệm và bài toán học cơ bản",
+          "include_in_score": true,
+          "entities": []
+        },
+        {
+          "section_id": "s_edf42372a3a0fb86fabae591",
+          "title": "1.1.2 Bản chất của việc học, suy diễn, và phán đoán",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Bài toán học", "aliases": ["Learning problem"]},
+            {"name": "Mẫu dữ liệu", "aliases": ["data instance", "ví dụ", "example"]},
+            {"name": "Tập huấn luyện", "aliases": ["training set", "tập học"]},
+            {"name": "Nhãn", "aliases": ["label", "phản hồi", "response", "đầu ra", "output"]},
+            {"name": "Không gian dữ liệu", "aliases": ["data space"]},
+            {"name": "Không gian đầu ra", "aliases": ["tập nhãn"]},
+            {"name": "Lớp hàm", "aliases": ["lớp hàm H"]},
+            {"name": "Thuật toán học", "aliases": ["learning algorithm"]},
+            {"name": "Mô hình", "aliases": ["model"]},
+            {"name": "Phán đoán", "aliases": ["predict", "suy diễn", "infer"]}
+          ]
+        },
+        {
+          "section_id": "s_135336307101d7127494ee5f",
+          "title": "1.1.3 Hai bài toán học cơ bản",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Học có giám sát", "aliases": ["Supervised learning"]},
+            {"name": "Phân loại", "aliases": ["classification"]},
+            {"name": "Hồi qui", "aliases": ["regression"]},
+            {"name": "Phân loại nhiều lớp", "aliases": ["multiclass classification"]},
+            {"name": "Phân loại nhị phân", "aliases": ["binary classification"]},
+            {"name": "Phân loại đa nhãn", "aliases": ["multilabel classification"]},
+            {"name": "Học không giám sát", "aliases": ["Unsupervised learning"]}
+          ]
+        },
+        {
+          "section_id": "s_8fad8ebb523a4b4519cdca7e",
+          "title": "1.1.4 Phân biệt giữa Học máy và Khai phá dữ liệu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Khai phá dữ liệu", "aliases": ["Data mining", "DM"]},
+            {"name": "Phát hiện tri thức", "aliases": ["KDD"]}
+          ]
+        },
+        {
+          "section_id": "s_e6fae68dbe2566854fd62e7a",
+          "title": "1.2 Quy trình xây dựng một hệ thống học",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Business understanding", "aliases": []},
+            {"name": "Analytic approach", "aliases": []},
+            {"name": "Data requirements", "aliases": []},
+            {"name": "Data collection", "aliases": []},
+            {"name": "Data understanding", "aliases": []},
+            {"name": "Data preparation", "aliases": []},
+            {"name": "Modeling", "aliases": []},
+            {"name": "Evaluation", "aliases": []},
+            {"name": "Deployment", "aliases": []},
+            {"name": "Feedback", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_2f0f556ede6f7dd5f7d6f5df",
+          "title": "1.2.1 Hàm cần học và tập huấn luyện",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Hàm cần học", "aliases": []},
+            {"name": "Không gian dữ liệu X", "aliases": ["không gian dữ liệu"]},
+            {"name": "Tập nhãn Y", "aliases": ["tập nhãn"]},
+            {"name": "Tính đại diện của tập huấn luyện", "aliases": ["tính đại diện"]}
+          ]
+        },
+        {
+          "section_id": "s_7da70465b64e2f0b25926a79",
+          "title": "1.2.2 Giai đoạn Mô hình hoá",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Mô hình hoá", "aliases": ["Modeling"]}
+          ]
+        },
+        {
+          "section_id": "s_468a5fb5ec95d64c5e3a7a82",
+          "title": "a) Chọn kiểu mô hình:",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Lớp mô hình H", "aliases": ["lớp mô hình", "kiểu mô hình"]},
+            {"name": "Giả thuyết", "aliases": ["hypothesis"]}
+          ]
+        },
+        {
+          "section_id": "s_a3f70ba09c518cee205c71bd",
+          "title": "b) Chọn giải thuật học:",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Giải thuật học", "aliases": []},
+            {"name": "Mô hình đã được huấn luyện", "aliases": ["trained model"]}
+          ]
+        },
+        {
+          "section_id": "s_f60bd965514e5878ee5f9e7b",
+          "title": "1.3 Vài vấn đề cần biết khi dùng ML",
+          "include_in_score": true,
+          "entities": []
+        },
+        {
+          "section_id": "s_4ef37953bac7ae649220c625",
+          "title": "1.3.1 Thuận toán học (Learning algorithm)",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Thuật toán học dạng lặp", "aliases": ["thuật toán học lặp"]},
+            {"name": "Định lý No Free Lunch", "aliases": ["No Free Lunch"]}
+          ]
+        },
+        {
+          "section_id": "s_b1af531a3f8e7010406b24a7",
+          "title": "1.3.2 Tập huấn luyện (Training set)",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Tập huấn luyện", "aliases": ["Training set", "tập học"]},
+            {"name": "Tính đại diện", "aliases": []},
+            {"name": "Kích cỡ tập huấn luyện", "aliases": ["kích cỡ tập học"]}
+          ]
+        },
+        {
+          "section_id": "s_d4813c8e049a4200f1804dc1",
+          "title": "1.3.3 Khả năng tổng quát hoá (Generalization)",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Khả năng tổng quát hoá", "aliases": ["Generalization"]}
+          ]
+        },
+        {
+          "section_id": "s_35cc00fc4c4062c179e84b8f",
+          "title": "1.3.4 Quá khớp (Overfitting) và kém khớp (Underfitting)",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Quá khớp", "aliases": ["Overfitting"]},
+            {"name": "Kém khớp", "aliases": ["Underfitting"]},
+            {"name": "Mô hình quá phức tạp", "aliases": []},
+            {"name": "Nhiễu hoặc lỗi trong dữ liệu", "aliases": []},
+            {"name": "Tập học quá bé", "aliases": []},
+            {"name": "Mô hình quá đơn giản", "aliases": ["kiểu mô hình H quá đơn giản"]}
+          ]
+        },
+        {
+          "section_id": "s_609dd8fc97450e57c6a711c4",
+          "title": "1.3.5 Hiệu chỉnh (regularization)",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Hiệu chỉnh", "aliases": ["regularization"]},
+            {"name": "Quá khớp", "aliases": ["Overfitting"]},
+            {"name": "Kém khớp", "aliases": ["Underfitting"]}
+          ]
+        },
+        {
+          "section_id": "s_8008b5cadbbdc4ff6dec93b1",
+          "title": "1.4 Thu thập và tiền xử lý dữ liệu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Thu thập dữ liệu", "aliases": ["data collection"]},
+            {"name": "Tiền xử lý dữ liệu", "aliases": ["data preprocessing"]},
+            {"name": "Làm sạch dữ liệu", "aliases": ["data cleaning"]},
+            {"name": "Tích hợp dữ liệu", "aliases": ["data integration"]},
+            {"name": "Biến đổi dữ liệu", "aliases": ["data transformation"]}
+          ]
+        },
+        {
+          "section_id": "s_a09b682410f3a7ee08458ec7",
+          "title": "1.4.1 Thu thập dữ liệu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Thu thập dữ liệu", "aliases": []},
+            {"name": "Lấy mẫu", "aliases": ["sampling"]},
+            {"name": "Ghi lịch sử", "aliases": ["logging"]},
+            {"name": "Thu thập dữ liệu từ internet", "aliases": ["crawling", "scraping"]}
+          ]
+        },
+        {
+          "section_id": "s_52246fb7c9f07310aec6bd41",
+          "title": "1.4.2 Tiền xử lý dữ liệu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Làm sạch dữ liệu", "aliases": ["data cleaning"]},
+            {"name": "Tích hợp dữ liệu", "aliases": ["data integration"]},
+            {"name": "Giảm dữ liệu", "aliases": ["data reduction"]},
+            {"name": "Biến đổi dữ liệu", "aliases": ["data transformation"]},
+            {"name": "Chuẩn hóa", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_15f1aa7bb16255f93d90afd3",
+          "title": "Làm sạch dữ liệu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Điền giá trị thiếu", "aliases": ["xử lý giá trị thiếu"]},
+            {"name": "Làm mịn dữ liệu nhiễu", "aliases": []},
+            {"name": "Giá trị ngoại lệ", "aliases": ["xác định giá trị ngoại lệ", "loại bỏ giá trị ngoại lệ"]},
+            {"name": "Sự không nhất quán", "aliases": ["giải quyết sự không nhất quán"]}
+          ]
+        }
+      ]
+    },
+    "xstk-ch3-1": {
+      "chunks_version_at_annotation": 2,
+      "source_hash": "c265d409800af5515ba6e71408a9998020b38670369dfec4a5c01246e07fd20c",
+      "chapter_section_id": "s_f2012bbcc82242c70a7c7605",
+      "chapter_title": "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+      "calibration_section_ids": [
+        "s_4eb49c3558adadf3a0242c12"
+      ],
+      "sections": [
+        {
+          "section_id": "s_4eb49c3558adadf3a0242c12",
+          "title": "1.1. Khái niệm tổng thể và mẫu",
+          "include_in_score": false,
+          "entities": [
+            {"name": "Tổng thể", "aliases": ["đám đông"]},
+            {"name": "Tỷ lệ tổng thể", "aliases": []},
+            {"name": "Trung bình tổng thể", "aliases": []},
+            {"name": "Phương sai tổng thể", "aliases": []},
+            {"name": "Mẫu", "aliases": []},
+            {"name": "Kích thước mẫu", "aliases": []},
+            {"name": "Phương pháp mẫu", "aliases": []},
+            {"name": "Mẫu ngẫu nhiên", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_9fea810f1f7436f5e6b4fa2a",
+          "title": "1.2. Phân loại mẫu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Mẫu tổng quát", "aliases": []},
+            {"name": "Mẫu cụ thể", "aliases": []},
+            {"name": "Mẫu định tính", "aliases": []},
+            {"name": "Mẫu định lượng", "aliases": []},
+            {"name": "Tần số", "aliases": ["tần số ni"]}
+          ]
+        },
+        {
+          "section_id": "s_81a2bfe39be7997c3ee616a6",
+          "title": "1.3. Các số đặc trưng của mẫu cụ thể",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Tỉ lệ mẫu", "aliases": []},
+            {"name": "Trung bình mẫu", "aliases": []},
+            {"name": "Phương sai mẫu", "aliases": []},
+            {"name": "Phương sai mẫu hiệu chỉnh", "aliases": []},
+            {"name": "Độ lệch mẫu", "aliases": []},
+            {"name": "Độ lệch mẫu hiệu chỉnh", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_6d22fcf5582d1c45f4c72e8e",
+          "title": "1.4. Phương pháp tính số đặc trưng bằng bảng",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Phương pháp tính trực tiếp", "aliases": ["tính trực tiếp"]},
+            {"name": "Phương pháp đổi biến số", "aliases": ["đổi biến số"]}
+          ]
+        },
+        {
+          "section_id": "s_6a0f48a8f71d725f19bf2dc4",
+          "title": "1.5. Phương pháp tính số đặc trưng bằng máy tính",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Phương pháp tính số đặc trưng bằng máy tính", "aliases": []},
+            {"name": "Chương trình SD", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_db657132c6c88cd10709ea1d",
+          "title": "1.6. Mẫu hai chiều",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Mẫu tương quan cặp", "aliases": []},
+            {"name": "Mẫu tương quan bảng", "aliases": ["mẫu hai chiều"]},
+            {"name": "Tần số đồng thời", "aliases": []},
+            {"name": "Mẫu theo dấu hiệu X", "aliases": []},
+            {"name": "Mẫu theo dấu hiệu Y", "aliases": []},
+            {"name": "Mẫu chung", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_d1fd0707d7deb12ce469823e",
+          "title": "1.7. Các số đặc trưng của mẫu hai chiều",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Trung bình mẫu theo X", "aliases": ["trung bình mẫu theo dấu hiệu X"]},
+            {"name": "Phương sai mẫu theo X", "aliases": ["phương sai mẫu theo dấu hiệu X"]},
+            {"name": "Trung bình mẫu theo Y", "aliases": ["trung bình mẫu theo dấu hiệu Y"]},
+            {"name": "Phương sai mẫu theo Y", "aliases": ["phương sai mẫu theo dấu hiệu Y"]},
+            {"name": "Trung bình chung", "aliases": []},
+            {"name": "Chương trình REG", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_93d0c1f396c41c76d7ed46db",
+          "title": "1.8. Hệ số tương quan mẫu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Hệ số tương quan mẫu", "aliases": []},
+            {"name": "Tương quan phụ thuộc", "aliases": ["mối quan hệ tương quan phụ thuộc"]},
+            {"name": "Tương quan nghịch", "aliases": ["mối quan hệ tương quan nghịch"]},
+            {"name": "Tương quan thuận", "aliases": ["mối quan hệ tương quan thuận"]},
+            {"name": "Tương quan tuyến tính", "aliases": ["mối quan hệ tương quan tuyến tính"]}
+          ]
+        },
+        {
+          "section_id": "s_4e6d1b3f6d49ebfe550334fc",
+          "title": "1.9. Đường hồi quy tuyến tính mẫu",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Mẫu có điều kiện của Y theo X", "aliases": []},
+            {"name": "Trung bình có điều kiện của Y theo X", "aliases": []},
+            {"name": "Đường hồi quy mẫu Y theo X", "aliases": []},
+            {"name": "Đường hồi quy mẫu X theo Y", "aliases": []}
+          ]
+        },
+        {
+          "section_id": "s_4451a4cb0121af57ce9f1397",
+          "title": "Giải",
+          "include_in_score": true,
+          "entities": [
+            {"name": "Đường hồi quy tuyến tính mẫu Y theo X", "aliases": []},
+            {"name": "Đường hồi quy tuyến tính mẫu X theo Y", "aliases": []},
+            {"name": "Phương trình hồi quy tuyến tính mẫu Y theo X", "aliases": []},
+            {"name": "Phương trình hồi quy tuyến tính mẫu X theo Y", "aliases": []}
+          ]
+        }
+      ]
+    }
+  }
+}

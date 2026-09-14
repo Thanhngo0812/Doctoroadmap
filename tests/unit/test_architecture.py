@@ -8,6 +8,8 @@ _DOMAIN_STDLIB = {
     "dataclasses",
     "hashlib",
     "json",
+    "itertools",
+    "math",
     "re",
     "typing",
     "unicodedata",
@@ -24,11 +26,12 @@ def _imports(path: Path) -> list[tuple[str, int]]:
     return imports
 
 
-def test_domain_does_not_import_project_or_external_packages() -> None:
+def test_domain_only_uses_stdlib_and_specified_graph_dependency() -> None:
     for path in Path("src/doc2roadmap/domain").rglob("*.py"):
         for module, level in _imports(path):
             if level == 0:
-                assert module.split(".", 1)[0] in _DOMAIN_STDLIB, f"{path}: {module}"
+                allowed = _DOMAIN_STDLIB | ({"networkx"} if path.name == "nomination.py" else set())
+                assert module.split(".", 1)[0] in allowed, f"{path}: {module}"
 
 
 def test_application_does_not_import_infrastructure() -> None:

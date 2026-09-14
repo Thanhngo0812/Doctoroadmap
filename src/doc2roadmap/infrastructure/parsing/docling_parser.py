@@ -10,19 +10,23 @@ from io import BytesIO
 from itertools import groupby
 from pathlib import Path
 from typing import Any
+from zipfile import BadZipFile, ZipFile
 
 from doc2roadmap.application.ports import ParsedDocument
 from doc2roadmap.domain.models import DocumentNode, DocumentTree
 from doc2roadmap.domain.normalization import normalize_text
 
 
-ADAPTER_VERSION = 7  # Bump whenever the adapter changes how DocumentNode values are built.
+ADAPTER_VERSION = 8  # Bump whenever the adapter changes how DocumentNode values are built.
 IMAGE_SCALE = 2.0
 UNCAPTIONED_FIGURE_TEXT = "[figure]"
 FORMULA_TEXT = "[formula]"
 _HTML_COMMENT = re.compile(r"<!--.*?-->", re.DOTALL)
 _REPEATED_PDF_GLYPH = re.compile(r"(?<![^\W\d_])([A-Za-z])(?: \1){2,}")
 _TERMINAL_PUNCTUATION = re.compile(r'''[.!?:]["'”’\)\]]*(?:\s+\d+)?\s*$''')
+_TRAILING_PAGE_NUMBER = re.compile(r"\s+\d+\s*$")
+_LIST_START = re.compile(r"^(?:[+\-*•▪▫◦‣⁃∙●○■□]\s*|\d+(?:\.\d+)*[.)]?\s+|[^\W\d_][.)]\s+)")
+_LEADING_PRIVATE_USE = re.compile(r"^[\uE000-\uF8FF]\s*")
 _DETACHED_TYPES = {"caption", "figure", "footnote", "formula"}
 _STITCHABLE_TYPES = {"text", "paragraph", "list_item"}
 _PRIVATE_USE = range(0xE000, 0xF900)
@@ -234,10 +238,28 @@ class DoclingParser:
         return text.translate(_SYMBOL_TRANSLATION), mapped
 
     @staticmethod
+    def _strip_private_use_bullet(text: str) -> tuple[str, bool]:
+        stripped = _LEADING_PRIVATE_USE.sub("", text, count=1)
+        return stripped, stripped != text
+
+    @staticmethod
     def _private_use_count(node: DocumentNode) -> int:
         values = [node.text, node.raw_text or "", node.context_prefix or ""]
         values.extend(cell for row in node.table_rows or [] for cell in row)
         return sum(ord(character) in _PRIVATE_USE for value in values for character in value)
+
+    @staticmethod
+    def _has_drawingml_shape(source: bytes) -> bool:
+        try:
+            with ZipFile(BytesIO(source)) as archive:
+                return any(
+                    b"schemas.microsoft.com/office/word/2010/wordprocessingShape"
+                    in archive.read(name)
+                    for name in archive.namelist()
+                    if name.startswith("word/") and name.endswith(".xml")
+                )
+        except BadZipFile:
+            return False
 
     @staticmethod
     def _is_single_column(nodes: list[DocumentNode]) -> bool:
@@ -328,8 +350,46 @@ class DoclingParser:
             index += 1
         return stitched
 
+    @staticmethod
+    def _join_run_text(first: str, second: str) -> str:
+        second = second.lstrip()
+        separator = "" if second[:1] in ",.;:!?)]}" else " "
+        return f"{first.rstrip()}{separator}{second}"
+
+    @classmethod
+    def _stitch_unpositioned_runs(cls, nodes: list[DocumentNode]) -> int:
+        stitched = 0
+        index = 0
+        while index + 1 < len(nodes):
+            first, second = nodes[index : index + 2]
+            second_text = second.text.lstrip()
+            if (
+                first.node_type in _STITCHABLE_TYPES
+                and second.node_type in _STITCHABLE_TYPES
+                and first.bbox is None
+                and second.bbox is None
+                and not _TERMINAL_PUNCTUATION.search(first.text)
+                and not _TRAILING_PAGE_NUMBER.search(first.text)
+                and second_text
+                and second.node_type != "list_item"
+                and not _LIST_START.match(second_text)
+            ):
+                first_text = first.text
+                first.text = cls._join_run_text(first_text, second_text)
+                if first.raw_text or second.raw_text:
+                    first.raw_text = cls._join_run_text(
+                        first.raw_text or first_text,
+                        second.raw_text or second.text,
+                    )
+                del nodes[index + 1]
+                stitched += 1
+                continue
+            index += 1
+        return stitched
+
     def adapt(self, document: Any, filename: str) -> ParsedDocument:
-        collapse_pdf_glyphs = Path(filename).suffix.lower() == ".pdf"
+        suffix = Path(filename).suffix.lower()
+        collapse_pdf_glyphs = suffix == ".pdf"
         items = list(document.iterate_items())
         linked_captions = {
             str(getattr(reference, "cref", ""))
@@ -343,8 +403,9 @@ class DoclingParser:
         captions_recovered = 0
         captions_orphaned = 0
         symbol_characters_mapped = 0
+        stripped_pua_bullets = 0
 
-        for item, tree_level in items:
+        for item_index, (item, tree_level) in enumerate(items, start=1):
             label = self._label(item)
             image_id = None
             table_rows = None
@@ -381,13 +442,17 @@ class DoclingParser:
                 node_type = "figure"
                 level = None
                 text = self._caption(item, document) or UNCAPTIONED_FIGURE_TEXT
-                if collapse_pdf_glyphs:
-                    image = self._image_bytes(item, document)
-                    if image is not None:
-                        image_id = hashlib.sha256(image).hexdigest()
-                        images.setdefault(image_id, image)
-                    else:
-                        warnings.append(f"missing_image: page {self._page(item)}")
+                image = self._image_bytes(item, document)
+                if image is not None:
+                    image_id = hashlib.sha256(image).hexdigest()
+                    images.setdefault(image_id, image)
+                else:
+                    page = self._page(item)
+                    location = f"page {page}" if page is not None else f"item {item_index}"
+                    reason = "image bytes unavailable"
+                    if suffix == ".docx":
+                        reason += "; DOCX DrawingML may require LibreOffice"
+                    warnings.append(f"missing_image: {location}; {reason}")
             else:
                 node_type = label if label else "text"
                 level = None
@@ -401,6 +466,13 @@ class DoclingParser:
                 collapse_pdf_glyphs=collapse_pdf_glyphs,
             )
             symbol_characters_mapped += text_mapped + raw_mapped
+            if node_type == "list_item" or (
+                collapse_pdf_glyphs
+                and _LEADING_PRIVATE_USE.fullmatch(text or raw_text)
+            ):
+                text, text_stripped = self._strip_private_use_bullet(text)
+                raw_text, raw_stripped = self._strip_private_use_bullet(raw_text)
+                stripped_pua_bullets += text_stripped or raw_stripped
             content = text or raw_text
             if not content:
                 dropped[label] += 1
@@ -444,6 +516,7 @@ class DoclingParser:
         if collapse_pdf_glyphs:
             nodes, pages_reordered = self._repair_pdf_order(nodes)
             page_breaks_stitched = self._stitch_pdf_page_breaks(nodes)
+        runs_stitched = self._stitch_unpositioned_runs(nodes)
         for reading_order, node in enumerate(nodes):
             if node.node_type == "caption":
                 node.node_type = "text"
@@ -469,7 +542,9 @@ class DoclingParser:
                     "images_extracted": len(images),
                     "pages_reordered": pages_reordered,
                     "page_breaks_stitched": page_breaks_stitched,
+                    "runs_stitched": runs_stitched,
                     "symbol_characters_mapped": symbol_characters_mapped,
+                    "stripped_pua_bullets": stripped_pua_bullets,
                 },
             ),
             images=images,
@@ -485,7 +560,13 @@ class DoclingParser:
                 temporary.write(source)
                 temporary_name = temporary.name
             document = self._get_converter().convert(temporary_name).document
-            return self.adapt(document, filename)
+            parsed = self.adapt(document, filename)
+            if suffix == ".docx" and self._has_drawingml_shape(source):
+                parsed.tree.structure_warnings.append(
+                    "missing_image: DOCX DrawingML shape bytes unavailable; "
+                    "install LibreOffice to render it"
+                )
+            return parsed
         finally:
             if temporary_name:
                 Path(temporary_name).unlink(missing_ok=True)

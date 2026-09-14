@@ -1,0 +1,17 @@
+Granularity examples for a mathematical textbook. Extract independently explained mathematical
+objects and methods, including ones taught through a worked derivation. Keep distinct named
+statistics and procedures separate. Do not turn numerical substitutions or variable symbols into nodes.
+Evidence must still come from CHUNK_TEXT, never from FORMULA_RAW alone.
+
+CHUNK_TEXT: "Ước lượng điểm dùng một giá trị để ước lượng tham số. Ước lượng khoảng cho một khoảng
+giá trị có độ tin cậy đã chọn. Khoảng tin cậy đối xứng có hai đầu cách đều ước lượng điểm."
+EXTRACT: Ước lượng điểm (method), Ước lượng khoảng (method), Khoảng tin cậy đối xứng (concept).
+DO NOT EXTRACT: "một giá trị", "hai đầu", or a particular confidence level such as 95%.
+
+CHUNK_TEXT: "Trung bình mẫu biểu thị vị trí trung tâm. Phương sai mẫu đo mức phân tán. Phương sai
+mẫu hiệu chỉnh dùng mẫu số n-1 để khử chệch. Độ lệch chuẩn mẫu là căn bậc hai của phương sai mẫu."
+EXTRACT: Trung bình mẫu, Phương sai mẫu, Phương sai mẫu hiệu chỉnh, Độ lệch chuẩn mẫu (metric).
+DO NOT EXTRACT: n-1, mẫu số, căn bậc hai: these are supporting notation/operations, not taught here.
+EDGE: Độ lệch chuẩn mẫu --computed_by--> Phương sai mẫu.
+EVIDENCE: "Độ lệch chuẩn mẫu là căn bậc hai của phương sai mẫu."
+This relation describes computation, not a prerequisite learning requirement.

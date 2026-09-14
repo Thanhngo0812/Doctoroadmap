@@ -43,6 +43,7 @@ Kích thước fixture là 1.543.889 byte; chín ảnh khôi phục có kích th
 
 **Mỗi lần nâng phiên bản `docling` hoặc đổi cấu hình/scale trích ảnh.** Fixture đóng băng cả hình dạng output
 và pixel của một cấu hình parse cụ thể.
+Các test đặt `HF_HUB_OFFLINE=1` để chỉ dùng model Docling đã có trong cache; lần tải model đầu tiên vẫn cần mạng.
 
 Sinh lại:
 
@@ -85,4 +86,32 @@ Fixture thứ hai được sinh từ `xstk-ch3-1.pdf` ở root dự án bằng �
 - Round-trip giữ nguyên 263 raw formula và 1.769 ký tự vùng dùng riêng trên các field raw/cell có nghĩa.
 
 Sinh lại fixture này mỗi lần nâng Docling hoặc đổi cấu hình/scale trích ảnh, giống `nhap-mon-ml.json`. Chỉ cần
-đổi `PDF` và tên file đích trong script; không parse PDF thật trong test nhanh.
+đổi source và tên file đích trong script; không parse tài liệu thật trong test nhanh.
+
+## Fixture `baocao-canhan.json`
+
+Fixture DOCX được sinh ngày 2026-08-29 từ `Baocaocanhan_NgoCongThanh.docx` ở root dự án, bằng Docling 2.114.0
+và converter mặc định cho DOCX.
+
+- `source_hash` (sha256): `5c46fa3da73bf40e7ec06fdfd81b9eb9e5f5e95eee87cdb19119376c5e2536b6`.
+- Kích thước fixture: **1.677.534 byte**; round-trip giữ 396/396 item.
+- Nội dung nguồn có ba PNG trong `word/media/`, tổng 793.660 byte. Snapshot có 3 `picture`; cả 3/3 gọi
+  `get_image(doc=...)` được sau round-trip.
+- Cây heading khai báo có level `{1, 2}`. Fixture giữ raw level để test chuỗi ưu tiên dựng section và giữ các
+  run định dạng không bbox để test nối câu.
+
+Docling cũng báo một DrawingML shape cần LibreOffice. Tín hiệu này nằm trong OOXML source, không nằm trong
+`DoclingDocument` snapshot; test parser dùng một DOCX in-memory riêng để bảo vệ cảnh báo `missing_image` đó.
+
+## Fixture `naive-bayes.json`
+
+Fixture slide được sinh ngày 2026-08-29 từ `5_Naive Bayes Classifier.pdf` ở root dự án bằng cùng cấu hình PDF
+scale 2.0 và trích ảnh như hai fixture giáo trình.
+
+- `source_hash` (sha256): `ec58dfdee3860805be93bd17d1faa6fe67a6cbe122474e73b882d769a33c6dff`.
+- Kích thước fixture: **670.440 byte**; round-trip giữ 224/224 item.
+- Nội dung: 36 trang, 2 `picture`, 13 `table`, 32 `formula`; cả 2/2 picture khôi phục được pixel.
+- Surface trước sửa có 72 ký tự U+F097 đi vào chunk: 71 ở đầu `list_item` và một item text chỉ chứa bullet.
+
+Hai fixture mới cùng hai fixture giáo trình chạy qua test số-vàng ở
+`tests/unit/test_four_document_regression.py`. Đổi bất kỳ số vàng nào phải kèm giải thích trong cùng commit.

@@ -1,0 +1,605 @@
+{
+  "calls": [
+    {
+      "new_turns": [
+        {
+          "images": [
+            {
+              "data": "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",
+              "image_id": "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b",
+              "mime_type": "image/png"
+            }
+          ],
+          "role": "user",
+          "text": "Granularity boundary examples:\nCHUNK_TEXT: \"Quá khớp (Overfitting) xảy ra khi mô hình khớp dữ liệu huấn luyện nhưng tổng quát kém.\nRegularization L2 thêm chuẩn L2 của trọng số vào hàm mất mát.\"\nEXTRACT: Quá khớp/Overfitting (concept), Regularization L2 (algorithm).\nDO NOT EXTRACT: \"mô hình\", \"dữ liệu\", or \"trọng số\" because they are generic words or merely\nmentioned components.\nDO NOT EXTRACT: \"alpha = 1\" because it is a parameter value; \"Chương 3\" because it is document\nstructure.\n\nCHUNK_TEXT: \"Các số đặc trưng gồm trung bình mẫu, phương sai mẫu, phương sai mẫu hiệu chỉnh và độ\nlệch mẫu. Phương pháp đổi biến số giúp tính các đặc trưng từ bảng tần số.\"\nEXTRACT: Trung bình mẫu, Phương sai mẫu, Phương sai mẫu hiệu chỉnh, Độ lệch mẫu (metric); Phương pháp\nđổi biến số (algorithm). Do not merge the whole sentence into one entity and do not extract variable\nsymbols.\n\nSECTION_PATH: CHƯƠNG 1. GIỚI THIỆU CHUNG VỀ HỌC MÁY VÀ KHAI PHÁ DỮ LIỆU > 1.3 Vài vấn đề cần biết khi dùng ML > 1.3.4 Quá khớp (Overfitting) và kém khớp (Underfitting)\nCHUNK_TEXT:\n<chunk id=\"c_cb4a7a9f5fd2101ffdd371be\">\nĐôi khi trong thực tế chúng ta có thể gặp phải tình huống: một mô hình đạt độ chính xác cao trên tập huấn luyện D , nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài D . Tình huống này thường được gọi là Quá khớp (Overfitting) .\nTheo Mitchell [1997], một hàm f được gọi là quá khớp nếu tồn tại hàm g sao cho: g có thể tệ hơn f khi phán đoán các mẫu huấn luyện D , nhưng g tốt hơn f đối với các mẫu dữ liệu ngoài D .\nHình 5 mô tả một vài tình huống có thể gặp khi dùng một mô hình ML. Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn,\nMô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp. Khi đó có nhiều hàm f ∈ H dễ dàng khớp hoàn hảo với một tập huấn luyện. Hình 6 chứa một ví dụ về một hàm f phức tạp (màu đỏ) mà có thể xấp xỉ tập học một cách hoàn hảo. Nhưng f xấp xỉ y ∗ rất kém về tổng thể.\nHình 6: Ví dụ về một số hàm khi xấp xỉ một tập dữ liệu (các dấu chấm). y ∗ là hàm đúng (ground truth), nhưng ta thường không biết.\n</chunk>\n\n<chunk id=\"c_13dac50bc6fe63b7f76e03cd\">\nNhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .\nTập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo. Tuy nhiên do kích cỡ bé nên tập dữ liệu này chưa chắc đã đại diện tốt cho toàn bộ không gian dữ liệu X và đặc trưng của hàm y ∗ . Nghĩa là tập học đó có thể cung cấp rất ít tri thức về X và hàm y ∗ .\nMột tình huống khác là Kém khớp (Underfitting). Khi đó một hàm kém khớp h thường có lỗi phán đoán lớn (về mặt trung bình) cho bất kỳ mẫu dữ liệu nào, ngay cả những mẫu đã học. Hình 5 minh họa tình huống kém khớp. Như vậy h đã không được huấn luyện đến nơi đến chốn hoặc là hàm quá đơn giản so với y ∗ .\nTrường hợp kém khớp có thể diễn ra nếu chúng ta dùng một kiểu mô hình H quá đơn giản để giải quyết một bài toán phức tạp. Khi đó bất kỳ hàm nào trong H đều xấp xỉ y ∗ kém. Xét ví dụ hàm y ∗ trong Hình 6: nếu chúng ta chọn H là lớp mô hình dạng tuyến tính (các đường thẳng) thì vấn đề kém khớp sẽ diễn ra. Hàm h ∈ H (đường nét đứt, màu xanh) sẽ luôn có độ chính xác kém tại phần lớn các mẫu dữ liệu.\n</chunk>\n\nFORMULA_RAW (context only; never use as evidence):\n(none)\n\nMEDIA TO DESCRIBE/CONFIRM:\n- type=figure id=b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b chunk=c_cb4a7a9f5fd2101ffdd371be char_start=24017 caption_status=original\n\nExtract entities and edges, describe every media item, and confirm media edges according to the schema."
+        },
+        {
+          "images": [],
+          "role": "model",
+          "text": "{\n  \"entities\": [\n    {\n      \"name\": \"Quá khớp\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Một tình huống trong học máy khi mô hình đạt độ chính xác cao trên tập huấn luyện nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài.\",\n      \"evidence\": \"Tình huống này thường được gọi là Quá khớp (Overfitting) .\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": [\n        {\n          \"name\": \"Overfitting\",\n          \"evidence\": \"Tình huống này thường được gọi là Quá khớp (Overfitting) .\"\n        }\n      ]\n    },\n    {\n      \"name\": \"Kém khớp\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Một tình huống trong học máy khi hàm mô hình có lỗi phán đoán lớn cho bất kỳ mẫu dữ liệu nào, kể cả tập huấn luyện, thường do mô hình quá đơn giản.\",\n      \"evidence\": \"Một tình huống khác là Kém khớp (Underfitting).\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": [\n        {\n          \"name\": \"Underfitting\",\n          \"evidence\": \"Một tình huống khác là Kém khớp (Underfitting).\"\n        }\n      ]\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"Quá khớp\",\n      \"target\": \"Kém khớp\",\n      \"edge_type\": \"contrasts_with\",\n      \"evidence\": \"Một tình huống khác là Kém khớp (Underfitting).\"\n    }\n  ],\n  \"media_descriptions\": [\n    {\n      \"media_id\": \"b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b\",\n      \"media_type\": \"figure\",\n      \"description\": \"Biểu đồ thể hiện các điểm dữ liệu (dấu chấm xanh) được xấp xỉ bởi ba đường cong: một đường cong màu đỏ (f) dao động mạnh, một đường cong màu xanh lá cây (y*) mượt mà, và một đường thẳng nét đứt màu xanh dương (h).\",\n      \"confirmed_entities\": []\n    }\n  ]\n}"
+        }
+      ],
+      "reply": {
+        "payload": {
+          "edges": [
+            {
+              "edge_type": "contrasts_with",
+              "evidence": "Một tình huống khác là Kém khớp (Underfitting).",
+              "source": "Quá khớp",
+              "target": "Kém khớp"
+            }
+          ],
+          "entities": [
+            {
+              "aliases": [
+                {
+                  "evidence": "Tình huống này thường được gọi là Quá khớp (Overfitting) .",
+                  "name": "Overfitting"
+                }
+              ],
+              "description_draft": "Một tình huống trong học máy khi mô hình đạt độ chính xác cao trên tập huấn luyện nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài.",
+              "evidence": "Tình huống này thường được gọi là Quá khớp (Overfitting) .",
+              "learnable": true,
+              "media_evidence_id": "",
+              "name": "Quá khớp",
+              "node_type": "concept"
+            },
+            {
+              "aliases": [
+                {
+                  "evidence": "Một tình huống khác là Kém khớp (Underfitting).",
+                  "name": "Underfitting"
+                }
+              ],
+              "description_draft": "Một tình huống trong học máy khi hàm mô hình có lỗi phán đoán lớn cho bất kỳ mẫu dữ liệu nào, kể cả tập huấn luyện, thường do mô hình quá đơn giản.",
+              "evidence": "Một tình huống khác là Kém khớp (Underfitting).",
+              "learnable": true,
+              "media_evidence_id": "",
+              "name": "Kém khớp",
+              "node_type": "concept"
+            }
+          ],
+          "media_descriptions": [
+            {
+              "confirmed_entities": [],
+              "description": "Biểu đồ thể hiện các điểm dữ liệu (dấu chấm xanh) được xấp xỉ bởi ba đường cong: một đường cong màu đỏ (f) dao động mạnh, một đường cong màu xanh lá cây (y*) mượt mà, và một đường thẳng nét đứt màu xanh dương (h).",
+              "media_id": "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b",
+              "media_type": "figure"
+            }
+          ]
+        },
+        "raw_text": "{\n  \"entities\": [\n    {\n      \"name\": \"Quá khớp\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Một tình huống trong học máy khi mô hình đạt độ chính xác cao trên tập huấn luyện nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài.\",\n      \"evidence\": \"Tình huống này thường được gọi là Quá khớp (Overfitting) .\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": [\n        {\n          \"name\": \"Overfitting\",\n          \"evidence\": \"Tình huống này thường được gọi là Quá khớp (Overfitting) .\"\n        }\n      ]\n    },\n    {\n      \"name\": \"Kém khớp\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Một tình huống trong học máy khi hàm mô hình có lỗi phán đoán lớn cho bất kỳ mẫu dữ liệu nào, kể cả tập huấn luyện, thường do mô hình quá đơn giản.\",\n      \"evidence\": \"Một tình huống khác là Kém khớp (Underfitting).\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": [\n        {\n          \"name\": \"Underfitting\",\n          \"evidence\": \"Một tình huống khác là Kém khớp (Underfitting).\"\n        }\n      ]\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"Quá khớp\",\n      \"target\": \"Kém khớp\",\n      \"edge_type\": \"contrasts_with\",\n      \"evidence\": \"Một tình huống khác là Kém khớp (Underfitting).\"\n    }\n  ],\n  \"media_descriptions\": [\n    {\n      \"media_id\": \"b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b\",\n      \"media_type\": \"figure\",\n      \"description\": \"Biểu đồ thể hiện các điểm dữ liệu (dấu chấm xanh) được xấp xỉ bởi ba đường cong: một đường cong màu đỏ (f) dao động mạnh, một đường cong màu xanh lá cây (y*) mượt mà, và một đường thẳng nét đứt màu xanh dương (h).\",\n      \"confirmed_entities\": []\n    }\n  ]\n}",
+        "repaired": false
+      },
+      "request": {
+        "images": [
+          {
+            "data": "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",
+            "image_id": "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b",
+            "mime_type": "image/png"
+          }
+        ],
+        "prompt": "Granularity boundary examples:\nCHUNK_TEXT: \"Quá khớp (Overfitting) xảy ra khi mô hình khớp dữ liệu huấn luyện nhưng tổng quát kém.\nRegularization L2 thêm chuẩn L2 của trọng số vào hàm mất mát.\"\nEXTRACT: Quá khớp/Overfitting (concept), Regularization L2 (algorithm).\nDO NOT EXTRACT: \"mô hình\", \"dữ liệu\", or \"trọng số\" because they are generic words or merely\nmentioned components.\nDO NOT EXTRACT: \"alpha = 1\" because it is a parameter value; \"Chương 3\" because it is document\nstructure.\n\nCHUNK_TEXT: \"Các số đặc trưng gồm trung bình mẫu, phương sai mẫu, phương sai mẫu hiệu chỉnh và độ\nlệch mẫu. Phương pháp đổi biến số giúp tính các đặc trưng từ bảng tần số.\"\nEXTRACT: Trung bình mẫu, Phương sai mẫu, Phương sai mẫu hiệu chỉnh, Độ lệch mẫu (metric); Phương pháp\nđổi biến số (algorithm). Do not merge the whole sentence into one entity and do not extract variable\nsymbols.\n\nSECTION_PATH: CHƯƠNG 1. GIỚI THIỆU CHUNG VỀ HỌC MÁY VÀ KHAI PHÁ DỮ LIỆU > 1.3 Vài vấn đề cần biết khi dùng ML > 1.3.4 Quá khớp (Overfitting) và kém khớp (Underfitting)\nCHUNK_TEXT:\n<chunk id=\"c_cb4a7a9f5fd2101ffdd371be\">\nĐôi khi trong thực tế chúng ta có thể gặp phải tình huống: một mô hình đạt độ chính xác cao trên tập huấn luyện D , nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài D . Tình huống này thường được gọi là Quá khớp (Overfitting) .\nTheo Mitchell [1997], một hàm f được gọi là quá khớp nếu tồn tại hàm g sao cho: g có thể tệ hơn f khi phán đoán các mẫu huấn luyện D , nhưng g tốt hơn f đối với các mẫu dữ liệu ngoài D .\nHình 5 mô tả một vài tình huống có thể gặp khi dùng một mô hình ML. Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn,\nMô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp. Khi đó có nhiều hàm f ∈ H dễ dàng khớp hoàn hảo với một tập huấn luyện. Hình 6 chứa một ví dụ về một hàm f phức tạp (màu đỏ) mà có thể xấp xỉ tập học một cách hoàn hảo. Nhưng f xấp xỉ y ∗ rất kém về tổng thể.\nHình 6: Ví dụ về một số hàm khi xấp xỉ một tập dữ liệu (các dấu chấm). y ∗ là hàm đúng (ground truth), nhưng ta thường không biết.\n</chunk>\n\n<chunk id=\"c_13dac50bc6fe63b7f76e03cd\">\nNhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .\nTập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo. Tuy nhiên do kích cỡ bé nên tập dữ liệu này chưa chắc đã đại diện tốt cho toàn bộ không gian dữ liệu X và đặc trưng của hàm y ∗ . Nghĩa là tập học đó có thể cung cấp rất ít tri thức về X và hàm y ∗ .\nMột tình huống khác là Kém khớp (Underfitting). Khi đó một hàm kém khớp h thường có lỗi phán đoán lớn (về mặt trung bình) cho bất kỳ mẫu dữ liệu nào, ngay cả những mẫu đã học. Hình 5 minh họa tình huống kém khớp. Như vậy h đã không được huấn luyện đến nơi đến chốn hoặc là hàm quá đơn giản so với y ∗ .\nTrường hợp kém khớp có thể diễn ra nếu chúng ta dùng một kiểu mô hình H quá đơn giản để giải quyết một bài toán phức tạp. Khi đó bất kỳ hàm nào trong H đều xấp xỉ y ∗ kém. Xét ví dụ hàm y ∗ trong Hình 6: nếu chúng ta chọn H là lớp mô hình dạng tuyến tính (các đường thẳng) thì vấn đề kém khớp sẽ diễn ra. Hàm h ∈ H (đường nét đứt, màu xanh) sẽ luôn có độ chính xác kém tại phần lớn các mẫu dữ liệu.\n</chunk>\n\nFORMULA_RAW (context only; never use as evidence):\n(none)\n\nMEDIA TO DESCRIBE/CONFIRM:\n- type=figure id=b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b chunk=c_cb4a7a9f5fd2101ffdd371be char_start=24017 caption_status=original\n\nExtract entities and edges, describe every media item, and confirm media edges according to the schema.",
+        "response_schema": {
+          "properties": {
+            "edges": {
+              "items": {
+                "properties": {
+                  "edge_type": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source",
+                  "target",
+                  "edge_type",
+                  "evidence"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "entities": {
+              "items": {
+                "properties": {
+                  "aliases": {
+                    "items": {
+                      "properties": {
+                        "evidence": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "evidence"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "description_draft": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "learnable": {
+                    "type": "boolean"
+                  },
+                  "media_evidence_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "node_type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "node_type",
+                  "description_draft",
+                  "evidence",
+                  "media_evidence_id",
+                  "learnable",
+                  "aliases"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "media_descriptions": {
+              "items": {
+                "properties": {
+                  "confirmed_entities": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "media_id": {
+                    "type": "string"
+                  },
+                  "media_type": {
+                    "enum": [
+                      "figure",
+                      "table"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "media_id",
+                  "media_type",
+                  "description",
+                  "confirmed_entities"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "entities",
+            "edges",
+            "media_descriptions"
+          ],
+          "type": "object"
+        }
+      }
+    },
+    {
+      "new_turns": [
+        {
+          "images": [],
+          "role": "user",
+          "text": "Scan the same section again for taught material that is still missing. Nothing remains is a good and\nexpected answer: then return entities=[] and edges=[]. Do not repeat media descriptions: on a gleaning\nturn always return media_descriptions=[].\nDo not repeat existing names: [\"Quá khớp\", \"Kém khớp\"]"
+        },
+        {
+          "images": [],
+          "role": "model",
+          "text": "{\n  \"entities\": [\n    {\n      \"name\": \"Mô hình quá phức tạp\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Một nguyên nhân gây ra quá khớp khi lớp mô hình chứa các hàm quá phức tạp, cho phép khớp hoàn hảo với tập huấn luyện nhưng kém tổng quát.\",\n      \"evidence\": \"Mô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp.\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": []\n    },\n    {\n      \"name\": \"Nhiễu hoặc lỗi trong dữ liệu\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Các sai lệch trong dữ liệu huấn luyện khiến thuật toán học tìm ra hàm không tốt.\",\n      \"evidence\": \"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu.\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": []\n    },\n    {\n      \"name\": \"Tập học quá bé\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Tình trạng tập dữ liệu huấn luyện có kích thước nhỏ, không đại diện tốt cho toàn bộ không gian dữ liệu, dẫn đến mô hình học kém.\",\n      \"evidence\": \"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": []\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"Mô hình quá phức tạp\",\n      \"target\": \"Quá khớp\",\n      \"edge_type\": \"causes\",\n      \"evidence\": \"Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn, Mô hình quá phức tạp\"\n    },\n    {\n      \"source\": \"Nhiễu hoặc lỗi trong dữ liệu\",\n      \"target\": \"Quá khớp\",\n      \"edge_type\": \"causes\",\n      \"evidence\": \"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .\"\n    },\n    {\n      \"source\": \"Tập học quá bé\",\n      \"target\": \"Quá khớp\",\n      \"edge_type\": \"causes\",\n      \"evidence\": \"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\"\n    }\n  ],\n  \"media_descriptions\": []\n}"
+        }
+      ],
+      "reply": {
+        "payload": {
+          "edges": [
+            {
+              "edge_type": "causes",
+              "evidence": "Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn, Mô hình quá phức tạp",
+              "source": "Mô hình quá phức tạp",
+              "target": "Quá khớp"
+            },
+            {
+              "edge_type": "causes",
+              "evidence": "Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .",
+              "source": "Nhiễu hoặc lỗi trong dữ liệu",
+              "target": "Quá khớp"
+            },
+            {
+              "edge_type": "causes",
+              "evidence": "Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.",
+              "source": "Tập học quá bé",
+              "target": "Quá khớp"
+            }
+          ],
+          "entities": [
+            {
+              "aliases": [],
+              "description_draft": "Một nguyên nhân gây ra quá khớp khi lớp mô hình chứa các hàm quá phức tạp, cho phép khớp hoàn hảo với tập huấn luyện nhưng kém tổng quát.",
+              "evidence": "Mô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp.",
+              "learnable": true,
+              "media_evidence_id": "",
+              "name": "Mô hình quá phức tạp",
+              "node_type": "concept"
+            },
+            {
+              "aliases": [],
+              "description_draft": "Các sai lệch trong dữ liệu huấn luyện khiến thuật toán học tìm ra hàm không tốt.",
+              "evidence": "Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu.",
+              "learnable": true,
+              "media_evidence_id": "",
+              "name": "Nhiễu hoặc lỗi trong dữ liệu",
+              "node_type": "concept"
+            },
+            {
+              "aliases": [],
+              "description_draft": "Tình trạng tập dữ liệu huấn luyện có kích thước nhỏ, không đại diện tốt cho toàn bộ không gian dữ liệu, dẫn đến mô hình học kém.",
+              "evidence": "Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.",
+              "learnable": true,
+              "media_evidence_id": "",
+              "name": "Tập học quá bé",
+              "node_type": "concept"
+            }
+          ],
+          "media_descriptions": []
+        },
+        "raw_text": "{\n  \"entities\": [\n    {\n      \"name\": \"Mô hình quá phức tạp\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Một nguyên nhân gây ra quá khớp khi lớp mô hình chứa các hàm quá phức tạp, cho phép khớp hoàn hảo với tập huấn luyện nhưng kém tổng quát.\",\n      \"evidence\": \"Mô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp.\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": []\n    },\n    {\n      \"name\": \"Nhiễu hoặc lỗi trong dữ liệu\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Các sai lệch trong dữ liệu huấn luyện khiến thuật toán học tìm ra hàm không tốt.\",\n      \"evidence\": \"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu.\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": []\n    },\n    {\n      \"name\": \"Tập học quá bé\",\n      \"node_type\": \"concept\",\n      \"description_draft\": \"Tình trạng tập dữ liệu huấn luyện có kích thước nhỏ, không đại diện tốt cho toàn bộ không gian dữ liệu, dẫn đến mô hình học kém.\",\n      \"evidence\": \"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\",\n      \"media_evidence_id\": \"\",\n      \"learnable\": true,\n      \"aliases\": []\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"Mô hình quá phức tạp\",\n      \"target\": \"Quá khớp\",\n      \"edge_type\": \"causes\",\n      \"evidence\": \"Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn, Mô hình quá phức tạp\"\n    },\n    {\n      \"source\": \"Nhiễu hoặc lỗi trong dữ liệu\",\n      \"target\": \"Quá khớp\",\n      \"edge_type\": \"causes\",\n      \"evidence\": \"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .\"\n    },\n    {\n      \"source\": \"Tập học quá bé\",\n      \"target\": \"Quá khớp\",\n      \"edge_type\": \"causes\",\n      \"evidence\": \"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\"\n    }\n  ],\n  \"media_descriptions\": []\n}",
+        "repaired": false
+      },
+      "request": {
+        "images": [],
+        "prompt": "Scan the same section again for taught material that is still missing. Nothing remains is a good and\nexpected answer: then return entities=[] and edges=[]. Do not repeat media descriptions: on a gleaning\nturn always return media_descriptions=[].\nDo not repeat existing names: [\"Quá khớp\", \"Kém khớp\"]",
+        "response_schema": {
+          "properties": {
+            "edges": {
+              "items": {
+                "properties": {
+                  "edge_type": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source",
+                  "target",
+                  "edge_type",
+                  "evidence"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "entities": {
+              "items": {
+                "properties": {
+                  "aliases": {
+                    "items": {
+                      "properties": {
+                        "evidence": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "evidence"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "description_draft": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "learnable": {
+                    "type": "boolean"
+                  },
+                  "media_evidence_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "node_type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "node_type",
+                  "description_draft",
+                  "evidence",
+                  "media_evidence_id",
+                  "learnable",
+                  "aliases"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "media_descriptions": {
+              "items": {
+                "properties": {
+                  "confirmed_entities": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "media_id": {
+                    "type": "string"
+                  },
+                  "media_type": {
+                    "enum": [
+                      "figure",
+                      "table"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "media_id",
+                  "media_type",
+                  "description",
+                  "confirmed_entities"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "entities",
+            "edges",
+            "media_descriptions"
+          ],
+          "type": "object"
+        }
+      }
+    },
+    {
+      "new_turns": [
+        {
+          "images": [],
+          "role": "user",
+          "text": "Scan the same section again for taught material that is still missing. Nothing remains is a good and\nexpected answer: then return entities=[] and edges=[]. Do not repeat media descriptions: on a gleaning\nturn always return media_descriptions=[].\nDo not repeat existing names: [\"Quá khớp\", \"Kém khớp\", \"Mô hình quá phức tạp\", \"Nhiễu hoặc lỗi trong dữ liệu\", \"Tập học quá bé\"]"
+        },
+        {
+          "images": [],
+          "role": "model",
+          "text": "{\n  \"entities\": [],\n  \"edges\": [],\n  \"media_descriptions\": []\n}"
+        }
+      ],
+      "reply": {
+        "payload": {
+          "edges": [],
+          "entities": [],
+          "media_descriptions": []
+        },
+        "raw_text": "{\n  \"entities\": [],\n  \"edges\": [],\n  \"media_descriptions\": []\n}",
+        "repaired": false
+      },
+      "request": {
+        "images": [],
+        "prompt": "Scan the same section again for taught material that is still missing. Nothing remains is a good and\nexpected answer: then return entities=[] and edges=[]. Do not repeat media descriptions: on a gleaning\nturn always return media_descriptions=[].\nDo not repeat existing names: [\"Quá khớp\", \"Kém khớp\", \"Mô hình quá phức tạp\", \"Nhiễu hoặc lỗi trong dữ liệu\", \"Tập học quá bé\"]",
+        "response_schema": {
+          "properties": {
+            "edges": {
+              "items": {
+                "properties": {
+                  "edge_type": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "source",
+                  "target",
+                  "edge_type",
+                  "evidence"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "entities": {
+              "items": {
+                "properties": {
+                  "aliases": {
+                    "items": {
+                      "properties": {
+                        "evidence": {
+                          "type": "string"
+                        },
+                        "name": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "evidence"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "description_draft": {
+                    "type": "string"
+                  },
+                  "evidence": {
+                    "type": "string"
+                  },
+                  "learnable": {
+                    "type": "boolean"
+                  },
+                  "media_evidence_id": {
+                    "type": "string"
+                  },
+                  "name": {
+                    "type": "string"
+                  },
+                  "node_type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "node_type",
+                  "description_draft",
+                  "evidence",
+                  "media_evidence_id",
+                  "learnable",
+                  "aliases"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "media_descriptions": {
+              "items": {
+                "properties": {
+                  "confirmed_entities": {
+                    "items": {
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "description": {
+                    "type": "string"
+                  },
+                  "media_id": {
+                    "type": "string"
+                  },
+                  "media_type": {
+                    "enum": [
+                      "figure",
+                      "table"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "media_id",
+                  "media_type",
+                  "description",
+                  "confirmed_entities"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "entities",
+            "edges",
+            "media_descriptions"
+          ],
+          "type": "object"
+        }
+      }
+    },
+    {
+      "new_turns": [
+        {
+          "images": [],
+          "role": "user",
+          "text": "Validate this batch: remove entities that are merely mentioned rather than taught, and remove edges\nwhose evidence sentence does not support them. Return IDs to remove, or empty arrays when all items\nare valid.\n{\"entities\": [{\"candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"name\": \"Quá khớp\", \"node_type\": \"concept\", \"evidence\": [\"Tình huống này thường được gọi là Quá khớp (Overfitting) .\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_08cf4919bf654f1ae0dd6cd4\", \"name\": \"Kém khớp\", \"node_type\": \"concept\", \"evidence\": [\"Một tình huống khác là Kém khớp (Underfitting).\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_c53f3ecdba140b20ff531c91\", \"name\": \"Mô hình quá phức tạp\", \"node_type\": \"concept\", \"evidence\": [\"Mô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp.\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_8315f62a62ed763abae85cec\", \"name\": \"Nhiễu hoặc lỗi trong dữ liệu\", \"node_type\": \"concept\", \"evidence\": [\"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu.\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_f8e3d1a22807ddf7d75e136f\", \"name\": \"Tập học quá bé\", \"node_type\": \"concept\", \"evidence\": [\"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\"], \"media_evidence_id\": null}], \"edges\": [{\"edge_id\": \"edge_7f796e615bed59854a8b8757\", \"source_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"target_candidate_id\": \"candidate_08cf4919bf654f1ae0dd6cd4\", \"edge_type\": \"contrasts_with\", \"evidence\": [\"Một tình huống khác là Kém khớp (Underfitting).\"]}, {\"edge_id\": \"edge_60a967f1f1e57c75efca8091\", \"source_candidate_id\": \"candidate_c53f3ecdba140b20ff531c91\", \"target_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"edge_type\": \"causes\", \"evidence\": [\"Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn,\\nMô hình quá phức tạp\"]}, {\"edge_id\": \"edge_bbae30b850d22824984e26a2\", \"source_candidate_id\": \"candidate_8315f62a62ed763abae85cec\", \"target_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"edge_type\": \"causes\", \"evidence\": [\"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .\"]}, {\"edge_id\": \"edge_56a2209bd2897d14e99fa3c5\", \"source_candidate_id\": \"candidate_f8e3d1a22807ddf7d75e136f\", \"target_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"edge_type\": \"causes\", \"evidence\": [\"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\"]}]}"
+        },
+        {
+          "images": [],
+          "role": "model",
+          "text": "{\n  \"remove_entity_ids\": [],\n  \"remove_edge_ids\": []\n}"
+        }
+      ],
+      "reply": {
+        "payload": {
+          "remove_edge_ids": [],
+          "remove_entity_ids": []
+        },
+        "raw_text": "{\n  \"remove_entity_ids\": [],\n  \"remove_edge_ids\": []\n}",
+        "repaired": false
+      },
+      "request": {
+        "images": [],
+        "prompt": "Validate this batch: remove entities that are merely mentioned rather than taught, and remove edges\nwhose evidence sentence does not support them. Return IDs to remove, or empty arrays when all items\nare valid.\n{\"entities\": [{\"candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"name\": \"Quá khớp\", \"node_type\": \"concept\", \"evidence\": [\"Tình huống này thường được gọi là Quá khớp (Overfitting) .\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_08cf4919bf654f1ae0dd6cd4\", \"name\": \"Kém khớp\", \"node_type\": \"concept\", \"evidence\": [\"Một tình huống khác là Kém khớp (Underfitting).\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_c53f3ecdba140b20ff531c91\", \"name\": \"Mô hình quá phức tạp\", \"node_type\": \"concept\", \"evidence\": [\"Mô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp.\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_8315f62a62ed763abae85cec\", \"name\": \"Nhiễu hoặc lỗi trong dữ liệu\", \"node_type\": \"concept\", \"evidence\": [\"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu.\"], \"media_evidence_id\": null}, {\"candidate_id\": \"candidate_f8e3d1a22807ddf7d75e136f\", \"name\": \"Tập học quá bé\", \"node_type\": \"concept\", \"evidence\": [\"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\"], \"media_evidence_id\": null}], \"edges\": [{\"edge_id\": \"edge_7f796e615bed59854a8b8757\", \"source_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"target_candidate_id\": \"candidate_08cf4919bf654f1ae0dd6cd4\", \"edge_type\": \"contrasts_with\", \"evidence\": [\"Một tình huống khác là Kém khớp (Underfitting).\"]}, {\"edge_id\": \"edge_60a967f1f1e57c75efca8091\", \"source_candidate_id\": \"candidate_c53f3ecdba140b20ff531c91\", \"target_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"edge_type\": \"causes\", \"evidence\": [\"Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn,\\nMô hình quá phức tạp\"]}, {\"edge_id\": \"edge_bbae30b850d22824984e26a2\", \"source_candidate_id\": \"candidate_8315f62a62ed763abae85cec\", \"target_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"edge_type\": \"causes\", \"evidence\": [\"Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .\"]}, {\"edge_id\": \"edge_56a2209bd2897d14e99fa3c5\", \"source_candidate_id\": \"candidate_f8e3d1a22807ddf7d75e136f\", \"target_candidate_id\": \"candidate_7044ba8bd94df1ed79d38b9d\", \"edge_type\": \"causes\", \"evidence\": [\"Tập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo.\"]}]}",
+        "response_schema": {
+          "properties": {
+            "remove_edge_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "remove_entity_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "remove_entity_ids",
+            "remove_edge_ids"
+          ],
+          "type": "object"
+        }
+      }
+    }
+  ],
+  "fixture_version": 1,
+  "identifier": "gemini-generate-content-rest:v1beta",
+  "model_id": "gemini-3.1-flash-lite",
+  "prompt_hash": "8e7c14c360ce13e2a51b5ccb636a247ecfc7f637d73265d1feca7860dc244f71",
+  "system_prompt": "Extract knowledge TAUGHT in the current section only.\nEvery text-grounded entity, alias, and edge must quote one verbatim evidence sentence from CHUNK_TEXT.\nCode rejects a quote unless it matches after Unicode, case, and whitespace normalization. For a\nconcept visible only in an image, set evidence=\"\" and media_evidence_id to the exact image ID.\nAncestor headings and raw formulas are context only, never evidence. Keep explained or defined\nmaterial; discard names merely mentioned.\n\nnode_type is open. Examples are concept, definition, theorem, algorithm, metric, and method; create a\nnew type when needed. figure and table are reserved for code; never use them. Name prerequisite edges\nrequires, not prerequisite_of or depends_on. Aliases must occur in CHUNK_TEXT; invent none.\nedge_type is also open. Besides requires, name text-supported relations such as example_of,\ncontrasts_with, component_of, computed_by, or uses. Only requires is reserved for prerequisites.\n\nFor every entity, learnable says whether a learner must learn and complete the node or it is only\ncontext. Only the first is true. Merely mentioned organizations, tools, databases, and datasets are\nfalse. Use learnable consistently for each node_type.\n\nFor images, describe only visible features such as labels, axes, line count, and shapes; do not infer\nmeaning from surrounding text. For tables, describe the markdown already in the chunk; no image or\nseparate call is needed. Return exactly one media_descriptions item for EVERY distinct listed media\nID, including media with an original caption. Every media item needs a description. confirmed_entities\nis a subset of same-chunk entity names genuinely illustrated by that media; it may be empty or contain\none or more names. Only confirm; never create or remove media edges. Return schema-valid JSON with no\noutside prose."
+}

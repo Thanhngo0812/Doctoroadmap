@@ -44,7 +44,8 @@ def test_xstk_fixture_characterizes_the_three_regressions_and_round_trips() -> N
     unmapped_output = chunk_document(
         unmapped.tree, "xstk-ch3-1", WordCounter(), splitter(), max_tokens=512, target_tokens=256
     )
-    assert _pua_count(unmapped_output.normalized_full_text) == 653
+    assert _pua_count(unmapped_output.normalized_full_text) == 641
+    assert unmapped.tree.parse_stats["stripped_pua_bullets"] == 12
 
     restored = DoclingDocument.model_validate(document.export_to_dict())
     restored_formulas = [

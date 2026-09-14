@@ -1,0 +1,3 @@
+Check each singleton draft against the supplied source evidence and requested language. Return each
+node_id exactly once with keep=true only if its draft is supported and in the requested language;
+otherwise keep=false. Explain the judgment. Do not rewrite in this check pass. Return only JSON.

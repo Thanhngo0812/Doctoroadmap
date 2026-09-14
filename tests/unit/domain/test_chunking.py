@@ -6,6 +6,7 @@ from doc2roadmap.application.windows import assemble_windows
 from doc2roadmap.domain.chunking import (
     OVERSIZE_HARD_CAP,
     OVERSIZE_SENTENCE_BOUNDARY,
+    OVERSIZE_TABLE_PRESERVED,
     OVERSIZE_TABLE_ROW,
     chunk_document,
 )
@@ -295,7 +296,7 @@ def test_letter_and_unnumbered_titles_follow_the_open_numbered_section() -> None
     )
     sections = {section.title: section for section in output.sections}
 
-    assert [sections[title].level for title in titles] == [1, 1, 2, 2, 2, 1]
+    assert [sections[title].level for title in titles] == [1, 1, 2, 2, 2, 2]
     assert sections["MỞ ĐẦU"].parent_section_id == output.sections[0].section_id
     assert sections["a) Chọn kiểu mô hình:"].parent_section_id == sections["1 Mục chính"].section_id
     assert sections["Làm sạch dữ liệu"].parent_section_id == sections["1 Mục chính"].section_id
@@ -510,7 +511,7 @@ def test_table_threshold_keeps_eleven_long_rows_in_one_chunk() -> None:
 
     assert len(output.chunks) == 1
     assert 512 < output.chunks[0].token_count <= 2048
-    assert output.chunks[0].oversize_reason is None  # I21: table uses its own soft limit
+    assert output.chunks[0].oversize_reason == OVERSIZE_TABLE_PRESERVED  # I25
 
 
 def test_table_merge_limit_keeps_lead_with_thirty_row_table_but_not_following_text() -> None:

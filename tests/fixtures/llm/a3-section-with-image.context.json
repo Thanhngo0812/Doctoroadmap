@@ -1,0 +1,81 @@
+{
+  "chunks": [
+    {
+      "block_types": [
+        "text",
+        "list_item",
+        "figure"
+      ],
+      "char_end": 24147,
+      "char_start": 23184,
+      "chunk_id": "c_cb4a7a9f5fd2101ffdd371be",
+      "context_prefix": null,
+      "doc_id": "nhap-mon-ml",
+      "formula_refs": [],
+      "heading_level": 3,
+      "image_refs": [
+        {
+          "char_start": 24017,
+          "image_id": "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b"
+        }
+      ],
+      "order_index": 54,
+      "oversize_reason": null,
+      "page": 16,
+      "parent_section_id": "s_35cc00fc4c4062c179e84b8f",
+      "section_path": [
+        "CHƯƠNG 1. GIỚI THIỆU CHUNG VỀ HỌC MÁY VÀ KHAI PHÁ DỮ LIỆU",
+        "1.3 Vài vấn đề cần biết khi dùng ML",
+        "1.3.4 Quá khớp (Overfitting) và kém khớp (Underfitting)"
+      ],
+      "split_index": 0,
+      "table_refs": [],
+      "text": "Đôi khi trong thực tế chúng ta có thể gặp phải tình huống: một mô hình đạt độ chính xác cao trên tập huấn luyện D , nhưng phán đoán kém chính xác với các mẫu dữ liệu bên ngoài D . Tình huống này thường được gọi là Quá khớp (Overfitting) .\nTheo Mitchell [1997], một hàm f được gọi là quá khớp nếu tồn tại hàm g sao cho: g có thể tệ hơn f khi phán đoán các mẫu huấn luyện D , nhưng g tốt hơn f đối với các mẫu dữ liệu ngoài D .\nHình 5 mô tả một vài tình huống có thể gặp khi dùng một mô hình ML. Có nhiều nguyên nhân dẫn đến vấn đề quá khớp. Chẳng hạn,\nMô hình quá phức tạp: nghĩa là mỗi hàm trong lớp mô hình H quá phức tạp. Khi đó có nhiều hàm f ∈ H dễ dàng khớp hoàn hảo với một tập huấn luyện. Hình 6 chứa một ví dụ về một hàm f phức tạp (màu đỏ) mà có thể xấp xỉ tập học một cách hoàn hảo. Nhưng f xấp xỉ y ∗ rất kém về tổng thể.\nHình 6: Ví dụ về một số hàm khi xấp xỉ một tập dữ liệu (các dấu chấm). y ∗ là hàm đúng (ground truth), nhưng ta thường không biết.",
+      "token_count": 288,
+      "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+    },
+    {
+      "block_types": [
+        "list_item",
+        "text"
+      ],
+      "char_end": 25309,
+      "char_start": 24148,
+      "chunk_id": "c_13dac50bc6fe63b7f76e03cd",
+      "context_prefix": null,
+      "doc_id": "nhap-mon-ml",
+      "formula_refs": [],
+      "heading_level": 3,
+      "image_refs": [],
+      "order_index": 55,
+      "oversize_reason": null,
+      "page": 17,
+      "parent_section_id": "s_35cc00fc4c4062c179e84b8f",
+      "section_path": [
+        "CHƯƠNG 1. GIỚI THIỆU CHUNG VỀ HỌC MÁY VÀ KHAI PHÁ DỮ LIỆU",
+        "1.3 Vài vấn đề cần biết khi dùng ML",
+        "1.3.4 Quá khớp (Overfitting) và kém khớp (Underfitting)"
+      ],
+      "split_index": 0,
+      "table_refs": [],
+      "text": "Nhiễu hoặc lỗi trong dữ liệu: nhiễu hoặc lỗi có thể làm sai lệch thông tin ẩn chứa trong các mẫu dữ liệu. Do đó thuật toán học dễ bị đánh lừa và tìm ra hàm không tốt trong H .\nTập học quá bé: khi đó một mô hình dễ dàng có thể xấp xỉ tập học một cách hoàn hảo. Tuy nhiên do kích cỡ bé nên tập dữ liệu này chưa chắc đã đại diện tốt cho toàn bộ không gian dữ liệu X và đặc trưng của hàm y ∗ . Nghĩa là tập học đó có thể cung cấp rất ít tri thức về X và hàm y ∗ .\nMột tình huống khác là Kém khớp (Underfitting). Khi đó một hàm kém khớp h thường có lỗi phán đoán lớn (về mặt trung bình) cho bất kỳ mẫu dữ liệu nào, ngay cả những mẫu đã học. Hình 5 minh họa tình huống kém khớp. Như vậy h đã không được huấn luyện đến nơi đến chốn hoặc là hàm quá đơn giản so với y ∗ .\nTrường hợp kém khớp có thể diễn ra nếu chúng ta dùng một kiểu mô hình H quá đơn giản để giải quyết một bài toán phức tạp. Khi đó bất kỳ hàm nào trong H đều xấp xỉ y ∗ kém. Xét ví dụ hàm y ∗ trong Hình 6: nếu chúng ta chọn H là lớp mô hình dạng tuyến tính (các đường thẳng) thì vấn đề kém khớp sẽ diễn ra. Hàm h ∈ H (đường nét đứt, màu xanh) sẽ luôn có độ chính xác kém tại phần lớn các mẫu dữ liệu.",
+      "token_count": 338,
+      "tokenizer_id": "google-gemma-sentencepiece-v1:61a7b147390c"
+    }
+  ],
+  "formulas": [],
+  "media_captions": [
+    [
+      "figure",
+      "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b",
+      "Hình 6: Ví dụ về một số hàm khi xấp xỉ một tập dữ liệu (các dấu chấm). y ∗ là hàm đúng (ground truth), nhưng ta thường không biết."
+    ]
+  ],
+  "section_id": "s_35cc00fc4c4062c179e84b8f",
+  "section_path": [
+    "CHƯƠNG 1. GIỚI THIỆU CHUNG VỀ HỌC MÁY VÀ KHAI PHÁ DỮ LIỆU",
+    "1.3 Vài vấn đề cần biết khi dùng ML",
+    "1.3.4 Quá khớp (Overfitting) và kém khớp (Underfitting)"
+  ],
+  "title": "1.3.4 Quá khớp (Overfitting) và kém khớp (Underfitting)"
+}

@@ -1,4 +1,11 @@
-from .artifacts import ArtifactStore, StoredChunks, StoredParse
+from .artifacts import ArtifactStore, StoredChunks, StoredParse, StoredStageArtifact
 from .parsing import DocumentParser, ParsedDocument
 
-__all__ = ["ArtifactStore", "DocumentParser", "ParsedDocument", "StoredChunks", "StoredParse"]
+__all__ = [
+    "ArtifactStore",
+    "DocumentParser",
+    "ParsedDocument",
+    "StoredChunks",
+    "StoredParse",
+    "StoredStageArtifact",
+]

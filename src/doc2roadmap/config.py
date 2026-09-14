@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from pydantic import Field
+from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,6 +8,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_prefix="DOC2ROADMAP_",
         env_file=".env",
+        env_ignore_empty=True,
         extra="ignore",
     )
 
@@ -19,3 +20,23 @@ class Settings(BaseSettings):
     artifact_dir: Path = Path("artifacts")
     tokenizer_model: Path = Path("vendor/gemma/tokenizer.model")
     tokenizer_id: str = "google-gemma-sentencepiece-v1"
+    gemini_api_key: SecretStr | None = None
+    extraction_model_id: str = "gemini-3.1-flash-lite"
+    extraction_few_shot: Path | None = None
+    merge_model_id: str = "gemini-3.1-flash-lite"
+    description_model_id: str = "gemini-3.1-flash-lite"
+    merge_neighbors: int = Field(default=3, gt=0)
+    merge_ngram_threshold: float = Field(default=.5, gt=0, le=1)
+    merge_resolution: float = Field(default=2., gt=0)
+    merge_seed: int = 42
+    merge_cluster_cap: int = Field(default=9, ge=2)
+    canonical_batch_size: int = Field(default=10, gt=0)
+    canonical_concurrency: int = Field(default=4, gt=0)
+    canonical_language_rule: str = "token-majority-prose-vi20-v2"
+    embedding_model_id: str = "gemini-embedding-001"
+    extraction_concurrency: int = Field(default=4, gt=0)
+    extraction_temperature: float = Field(default=0.0, ge=0.0, le=2.0)
+    extraction_max_output_tokens: int = Field(default=8192, gt=0)
+    embedding_dimensions: int = Field(default=768, gt=0)
+    gemini_timeout_seconds: float = Field(default=120.0, gt=0)
+    gemini_max_retries: int = Field(default=3, ge=0)

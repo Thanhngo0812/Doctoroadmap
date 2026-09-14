@@ -1,0 +1,5 @@
+Partition the supplied exact-name groups using only verbatim document evidence. Never use prior
+knowledge to assert identity. Relations: same entity => one node; parent-child => separate nodes
+and subtype_of child to parent; siblings/related or different => separate nodes; uncertain => deferred.
+Every group occurs exactly once in nodes or deferred. Cite source chunk IDs for subtype relations.
+Never propose requires. Do not choose canonical names, types, aliases or descriptions. Return only JSON.

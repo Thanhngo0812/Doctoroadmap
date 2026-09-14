@@ -1,0 +1,447 @@
+{
+  "canonical_version": 7,
+  "generation": {
+    "max_output_tokens": 8192,
+    "temperature": 0.0
+  },
+  "input": {
+    "nodes": [
+      {
+        "aliases": [],
+        "chunks": [
+          {
+            "chunk_id": "c_84742a4fa621fc855cf55587",
+            "text": "Để hệ thống vận hành thực tế, em đã đi sâu vào các kỹ thuật bảo vệ dữ liệu:\n- Tranh chấp dữ liệu (Race Condition):\nNghiên cứu các rủi ro khi nhiều người dùng cùng đặt giá tại một thời điểm và các giải pháp đồng bộ hóa như sync.Mutex ở tầng ứng dụng và Pessimistic Locking (SELECT ... FOR UPDATE) ở tầng cơ sở dữ liệu.\n- Database Transaction:\nTìm hiểu lý thuyết ACID để áp dụng vào các luồng nghiệp vụ nhạy cảm như nạp/rút tiền, đóng băng số dư và thanh toán phiên đấu giá, đảm bảo tính nguyên tố: \"hoặc thành công tất cả, hoặc không có gì thay đổi\".\n- Đóng gói và Triển khai:\nNghiên cứu về Docker và Docker Compose để container hóa ứng dụng, tạo môi trường vận hành đồng nhất giữa máy cá nhân và máy chủ.\nThông qua quá trình nghiên cứu này, em không chỉ nắm vững lý thuyết về Golang mà còn hiểu sâu về cách thiết kế một hệ thống Backend chịu tải cao, có tính nhất quán và bảo mật theo chuẩn công nghiệp\n[figure]"
+          }
+        ],
+        "draft": "Bộ tiêu chuẩn các thuộc tính (Atomicity, Consistency, Isolation, Durability) đảm bảo các giao dịch cơ sở dữ liệu được xử lý tin cậy.",
+        "evidence": [
+          {
+            "char_end": 6220,
+            "char_start": 6013,
+            "chunk_id": "c_84742a4fa621fc855cf55587",
+            "quote": "Tìm hiểu lý thuyết ACID để áp dụng vào các luồng nghiệp vụ nhạy cảm như nạp/rút tiền, đóng băng số dư và thanh toán phiên đấu giá, đảm bảo tính nguyên tố: \"hoặc thành công tất cả, hoặc không có gì thay đổi\"."
+          }
+        ],
+        "language": "vi",
+        "name": "ACID",
+        "node_id": "node_1b78c06cf3f1d75a46426c9a",
+        "node_type": "concept",
+        "symbols": []
+      },
+      {
+        "aliases": [],
+        "chunks": [
+          {
+            "chunk_id": "c_f9826fa27760fd2c345bcd59",
+            "text": "Với vai trò là thành viên phụ trách điều phối kỹ thuật và thiết kế nền tảng, em đã tham gia vào hầu hết các giai đoạn quan trọng của dự án thực tế:\n- Quản lý và Quy trình:\nThống nhất cách thức làm việc nhóm trên GitHub, thiết lập quy chuẩn phân nhánh (branching) và phối hợp mã nguồn.\n- Thiết kế Cơ sở dữ liệu:\nChịu trách nhiệm chính trong việc phân tích và thiết kế lược đồ cơ sở dữ liệu (ERD) cho toàn bộ hệ thống đấu giá.\n- Xây dựng nền tảng (Base API):\nTrực tiếp khởi tạo cấu trúc dự án và xây dựng nền tảng API (API foundation) làm mẫu cho các thành viên khác triển khai module.\n- Phát triển Module nghiệp vụ:\nThiết kế và hoàn thiện Module Auctions (bao gồm quản lý phiên đấu giá, danh mục và sản phẩm), đồng thời tích hợp Transaction để đảm bảo tính toàn vẹn dữ liệu cho các luồng nghiệp vụ này.\n- Tối ưu hóa và Đóng gói:\n+ Thực hiện tích hợp (Refactor) toàn bộ mã nguồn của nhóm, chuẩn hóa cơ chế xử lý lỗi (Error handling) và ghi nhật ký (Logging) tập trung."
+          }
+        ],
+        "draft": "A base structure or template for an API that serves as a standard for module implementation.",
+        "evidence": [
+          {
+            "char_end": 3525,
+            "char_start": 3399,
+            "chunk_id": "c_f9826fa27760fd2c345bcd59",
+            "quote": "Trực tiếp khởi tạo cấu trúc dự án và xây dựng nền tảng API (API foundation) làm mẫu cho các thành viên khác triển khai module."
+          }
+        ],
+        "language": "vi",
+        "name": "API foundation",
+        "node_id": "node_95373ff12cd6ed3deb178765",
+        "node_type": "concept",
+        "symbols": []
+      },
+      {
+        "aliases": [
+          {
+            "candidate_id": "candidate_2c6b277ae618fe5df5cef60b",
+            "evidence": {
+              "char_end": 8183,
+              "char_start": 8059,
+              "chunk_id": "c_c86be65152b22b0b3df54aa0",
+              "quote": "Hệ thống có thể phát sóng (Broadcast) mức giá mới nhất đến hàng vạn người dùng cùng lúc với độ trễ cực thấp và tỷ lệ lỗi 0%."
+            },
+            "name": "phát sóng"
+          }
+        ],
+        "chunks": [
+          {
+            "chunk_id": "c_c86be65152b22b0b3df54aa0",
+            "text": "em đã trực tiếp triển khai bài tập ứng dụng WebSockets để giải quyết vấn đề đồng bộ dữ liệu tức thời trong phòng đấu giá.\n- Nội dung thực hiện:\nXây dựng mô hình Hub - Client kết hợp với hai luồng Goroutines độc lập ( ReadPump và WritePump) cho mỗi kết nối.\n- Kết quả:\nHệ thống có thể phát sóng (Broadcast) mức giá mới nhất đến hàng vạn người dùng cùng lúc với độ trễ cực thấp và tỷ lệ lỗi 0%."
+          }
+        ],
+        "draft": "A communication method used to transmit data to multiple recipients simultaneously.",
+        "evidence": [
+          {
+            "char_end": 8183,
+            "char_start": 8059,
+            "chunk_id": "c_c86be65152b22b0b3df54aa0",
+            "quote": "Hệ thống có thể phát sóng (Broadcast) mức giá mới nhất đến hàng vạn người dùng cùng lúc với độ trễ cực thấp và tỷ lệ lỗi 0%."
+          }
+        ],
+        "language": "vi",
+        "name": "Broadcast",
+        "node_id": "node_596c0d469c235a9f85bc7099",
+        "node_type": "method",
+        "symbols": []
+      },
+      {
+        "aliases": [],
+        "chunks": [
+          {
+            "chunk_id": "c_014b3b1257bd6a3d43d92d78",
+            "text": "Để giải quyết bài toán bảo vệ hệ thống trước các đợt truy cập tăng đột biến, em đã thiết kế bài tập xây dựng Middleware kiểm soát lưu lượng.\n- Nội dung thực hiện:\nSử dụng Buffered Channel làm \"van điều tiết\" để giới hạn tối đa 200 request đồng thời cho API lấy thông tin phiên đấu giá.\n- Kết quả:\nTriển khai thành công cơ chế Fail-fast, chủ động trả về mã lỗi HTTP 429 (Too Many Requests) khi hệ thống vượt ngưỡng chịu tải, đảm bảo cơ sở dữ liệu không bị treo."
+          }
+        ],
+        "draft": "Một cấu trúc dữ liệu được sử dụng như một van điều tiết để giới hạn số lượng yêu cầu đồng thời được xử lý tại một thời điểm.",
+        "evidence": [
+          {
+            "char_end": 7615,
+            "char_start": 7493,
+            "chunk_id": "c_014b3b1257bd6a3d43d92d78",
+            "quote": "Sử dụng Buffered Channel làm \"van điều tiết\" để giới hạn tối đa 200 request đồng thời cho API lấy thông tin phiên đấu giá."
+          }
+        ],
+        "language": "vi",
+        "name": "Buffered Channel",
+        "node_id": "node_05e65fca3df1abccab9726bc",
+        "node_type": "mechanism",
+        "symbols": []
+      },
+      {
+        "aliases": [],
+        "chunks": [
+          {
+            "chunk_id": "c_84742a4fa621fc855cf55587",
+            "text": "Để hệ thống vận hành thực tế, em đã đi sâu vào các kỹ thuật bảo vệ dữ liệu:\n- Tranh chấp dữ liệu (Race Condition):\nNghiên cứu các rủi ro khi nhiều người dùng cùng đặt giá tại một thời điểm và các giải pháp đồng bộ hóa như sync.Mutex ở tầng ứng dụng và Pessimistic Locking (SELECT ... FOR UPDATE) ở tầng cơ sở dữ liệu.\n- Database Transaction:\nTìm hiểu lý thuyết ACID để áp dụng vào các luồng nghiệp vụ nhạy cảm như nạp/rút tiền, đóng băng số dư và thanh toán phiên đấu giá, đảm bảo tính nguyên tố: \"hoặc thành công tất cả, hoặc không có gì thay đổi\".\n- Đóng gói và Triển khai:\nNghiên cứu về Docker và Docker Compose để container hóa ứng dụng, tạo môi trường vận hành đồng nhất giữa máy cá nhân và máy chủ.\nThông qua quá trình nghiên cứu này, em không chỉ nắm vững lý thuyết về Golang mà còn hiểu sâu về cách thiết kế một hệ thống Backend chịu tải cao, có tính nhất quán và bảo mật theo chuẩn công nghiệp\n[figure]"
+          }
+        ],
+        "draft": "Kỹ thuật đóng gói ứng dụng và các phụ thuộc của nó vào các đơn vị độc lập để đảm bảo môi trường vận hành đồng nhất.",
+        "evidence": [
+          {
+            "char_end": 6375,
+            "char_start": 6247,
+            "chunk_id": "c_84742a4fa621fc855cf55587",
+            "quote": "Nghiên cứu về Docker và Docker Compose để container hóa ứng dụng, tạo môi trường vận hành đồng nhất giữa máy cá nhân và máy chủ."
+          }
+        ],
+        "language": "vi",
+        "name": "Container hóa",
+        "node_id": "node_9d41ca3d10704c06edfe6a13",
+        "node_type": "method",
+        "symbols": []
+      },
+      {
+        "aliases": [],
+        "chunks": [
+          {
+            "chunk_id": "c_fbb4a73e9b5d27b286f405bc",
+            "text": "Trong phần nghiên cứu lý thuyết, em chịu trách nhiệm chính trong việc định hình khung kiến trúc và các khái niệm kỹ thuật chuyên sâu của hệ thống, bao gồm:\n- Nghiên cứu tổng quan:\nTìm hiểu về ngôn ngữ lập trình Golang và các đặc điểm của lập trình Backend hiện đại.\n- Thiết kế kiến trúc hệ thống:\nNghiên cứu và đề xuất áp dụng kiến trúc phân lớp ( Layered Architecture) cho toàn bộ dự án để đảm bảo tính tách biệt giữa logic nghiệp vụ và hạ tầng.\n- Phân tích các kỹ thuật nâng cao:\n+ Nghiên cứu lý thuyết về Lập trình đồng thời (Concurrency) và giao thức WebSockets để giải quyết bài toán thời gian thực.\n+ Phân tích hiện tượng tranh chấp dữ liệu ( Race Condition) và các cơ chế đồng bộ hóa trong môi trường đa luồng."
+          }
+        ],
+        "draft": "Các kỹ thuật được sử dụng để quản lý quyền truy cập tài nguyên trong môi trường đa luồng nhằm ngăn chặn tranh chấp dữ liệu.",
+        "evidence": [
+          {
+            "char_end": 2528,
+            "char_start": 2418,
+            "chunk_id": "c_fbb4a73e9b5d27b286f405bc",
+            "quote": "Phân tích hiện tượng tranh chấp dữ liệu ( Race Condition) và các cơ chế đồng bộ hóa trong môi trường đa luồng."
+          }
+        ],
+        "language": "vi",
+        "name": "Cơ chế đồng bộ hóa",
+        "node_id": "node_1a2bc3511d2d8589b7a223c1",
+        "node_type": "mechanism",
+        "symbols": []
+      },
+      {
+        "aliases": [],
+        "chunks": [
+          {
+            "chunk_id": "c_3a835c859a06361fe0f2d854",
+            "text": "em đã đảm nhiệm việc hướng dẫn và thực hiện bài tập thực chiến nhằm chuyển đổi dự án từ mức độ \"Hello World\" đơn giản sang một hệ thống Backend hoàn chỉnh theo tiêu chuẩn công nghiệp.\n- Nội dung thực hiện:\nXây dựng cơ chế đọc file cấu hình động, thiết lập hạ tầng qua Dockerfile và docker-compose.yml để liên kết ứng dụng với PostgreSQL.\n- Kết quả:\nTạo ra một Makefile chứa các lệnh điều khiển tự động hóa quy trình build và run, giúp nhóm làm việc nhất quán trên mọi môi trường."
+          }
+        ],
+        "draft": "Phương pháp đọc các thiết lập hệ thống từ file mà không cần biên dịch lại mã nguồn.",
+        "evidence": [
+          {
+            "char_end": 7187,
+            "char_start": 7056,
+            "chunk_id": "c_3a835c859a06361fe0f2d854",
+            "quote": "Xây dựng cơ chế đọc file cấu hình động, thiết lập hạ tầng qua Dockerfile và docker-compose.yml để liên kết ứng dụng với PostgreSQL."
+          }
+        ],
+        "language": "vi",
+        "name": "Cấu hình động",
+        "node_id": "node_61a00aa1b3ee6f2ec39d60cb",
+        "node_type": "method",
+        "symbols": []
+      },
+      {
+        "aliases": [],
+        "chunks": [
+          {
+            "chunk_id": "c_35bb4ceb9d35a2936dfbac7c",
+            "text": "Thông qua đồ án này, em đã rút ra được những bài học quý giá về tư duy lập trình hệ thống:\n- Tầm quan trọng của Thiết kế:\nViệc đầu tư kỹ lưỡng vào khâu phân tích CSDL và đặc tả API ngay từ đầu giúp quá trình viết code không bị chồng chéo và hạn chế việc sửa đổi kiến trúc về sau.\n- Kỹ năng xử lý chuyên sâu:\nEm đã làm chủ được các kỹ thuật khó như xử lý tranh chấp dữ liệu (Race Condition) bằng Mutex và Database Locking, cũng như tối ưu hóa hiệu năng truy vấn thông qua Eager Loading (Preload).\n- Định hướng tương lai:\nTrong thời gian tới, em dự định nghiên cứu sâu hơn về kiến trúc Clean Architecture và giao thức gRPC để tối ưu hóa giao tiếp giữa các dịch vụ, đồng thời tìm hiểu công cụ pprof để phân tích và tinh chỉnh hiệu năng hệ thống đạt mức tối ưu.\nKết thúc môn học, những kiến thức và kỹ năng thực chiến với Golang không chỉ giúp em hoàn thành bài báo cáo mà còn là nền tảng vững chắc để em tự tin theo đuổi các vị trí kỹ sư Backend chuyên nghiệp trong tương lai."
+          }
+        ],
+        "draft": "Cơ chế khóa cơ sở dữ liệu dùng để ngăn chặn tranh chấp dữ liệu.",
+        "evidence": [
+          {
+            "char_end": 13293,
+            "char_start": 13181,
+            "chunk_id": "c_35bb4ceb9d35a2936dfbac7c",
+            "quote": "Em đã làm chủ được các kỹ thuật khó như xử lý tranh chấp dữ liệu (Race Condition) bằng Mutex và Database Locking"
+          }
+        ],
+        "language": "vi",
+        "name": "Database Locking",
+        "node_id": "node_479cbc28373fe1f52aeb987f",
+        "node_type": "mechanism",
+        "symbols": []
+      },
+      {
+        "aliases": [
+          {
+            "candidate_id": "candidate_e595442a2cf7cfa901ea1160",
+            "evidence": {
+              "char_end": 10837,
+              "char_start": 10817,
+              "chunk_id": "c_77cb1ab205cb7fdafc31e432",
+              "quote": "Docker hóa hệ thống:"
+            },
+            "name": "Docker hóa hệ thống"
+          }
+        ],
+        "chunks": [
+          {
+            "chunk_id": "c_77cb1ab205cb7fdafc31e432",
+            "text": "- Docker hóa hệ thống:\nEm chịu trách nhiệm viết file Dockerfile và docker-compose.yml để đóng gói toàn bộ stack ứng dụng (Go App, PostgreSQL, Redis), giúp việc triển khai trở nên nhanh chóng và đồng nhất trên mọi môi trường.\n- Kiểm thử End-to-End (E2E):\nTrước khi phát hành phiên bản cuối cùng, em đã thực hiện kiểm thử liên thông giữa các module (Auth - User - Wallet - Auction - WebSocket) để đảm bảo luồng nghiệp vụ chạy trơn tru.\n- Hoàn thiện báo cáo:\nTham gia tổng hợp nội dung, rà soát tính kỹ thuật của toàn bộ cuốn báo cáo và chuẩn bị các kịch bản demo cho dự án.\nThông qua những đóng góp này, em đã giúp nhóm xây dựng được một hệ thống Backend có cấu trúc vững chắc, khả năng chịu tải tốt và tuân thủ đúng các nguyên tắc lập trình hiện đại."
+          }
+        ],
+        "draft": "Quá trình đóng gói ứng dụng và các thành phần phụ thuộc vào các container để đảm bảo tính đồng nhất khi triển khai trên các môi trường khác nhau.",
+        "evidence": [
+          {
+            "char_end": 11039,
+            "char_start": 10817,
+            "chunk_id": "c_77cb1ab205cb7fdafc31e432",
+            "quote": "Docker hóa hệ thống:\nEm chịu trách nhiệm viết file Dockerfile và docker-compose.yml để đóng gói toàn bộ stack ứng dụng (Go App, PostgreSQL, Redis), giúp việc triển khai trở nên nhanh chóng và đồng nhất trên mọi môi trường."
+          }
+        ],
+        "language": "vi",
+        "name": "Docker hóa",
+        "node_id": "node_2f945f2ef1c2ab9039bb0089",
+        "node_type": "method",
+        "symbols": []
+      },
+      {
+        "aliases": [
+          {
+            "candidate_id": "candidate_1cc36bff585c9691f582a624",
+            "evidence": {
+              "char_end": 13368,
+              "char_start": 13295,
+              "chunk_id": "c_35bb4ceb9d35a2936dfbac7c",
+              "quote": "cũng như tối ưu hóa hiệu năng truy vấn thông qua Eager Loading (Preload)."
+            },
+            "name": "Preload"
+          }
+        ],
+        "chunks": [
+          {
+            "chunk_id": "c_35bb4ceb9d35a2936dfbac7c",
+            "text": "Thông qua đồ án này, em đã rút ra được những bài học quý giá về tư duy lập trình hệ thống:\n- Tầm quan trọng của Thiết kế:\nViệc đầu tư kỹ lưỡng vào khâu phân tích CSDL và đặc tả API ngay từ đầu giúp quá trình viết code không bị chồng chéo và hạn chế việc sửa đổi kiến trúc về sau.\n- Kỹ năng xử lý chuyên sâu:\nEm đã làm chủ được các kỹ thuật khó như xử lý tranh chấp dữ liệu (Race Condition) bằng Mutex và Database Locking, cũng như tối ưu hóa hiệu năng truy vấn thông qua Eager Loading (Preload).\n- Định hướng tương lai:\nTrong thời gian tới, em dự định nghiên cứu sâu hơn về kiến trúc Clean Architecture và giao thức gRPC để tối ưu hóa giao tiếp giữa các dịch vụ, đồng thời tìm hiểu công cụ pprof để phân tích và tinh chỉnh hiệu năng hệ thống đạt mức tối ưu.\nKết thúc môn học, những kiến thức và kỹ năng thực chiến với Golang không chỉ giúp em hoàn thành bài báo cáo mà còn là nền tảng vững chắc để em tự tin theo đuổi các vị trí kỹ sư Backend chuyên nghiệp trong tương lai."
+          }
+        ],
+        "draft": "Kỹ thuật tối ưu hóa hiệu năng truy vấn bằng cách tải trước dữ liệu liên quan.",
+        "evidence": [
+          {
+            "char_end": 13368,
+            "char_start": 13295,
+            "chunk_id": "c_35bb4ceb9d35a2936dfbac7c",
+            "quote": "cũng như tối ưu hóa hiệu năng truy vấn thông qua Eager Loading (Preload)."
+          }
+        ],
+        "language": "vi",
+        "name": "Eager Loading",
+        "node_id": "node_a90a05cde7892d6388edef5a",
+        "node_type": "method",
+        "symbols": []
+      }
+    ]
+  },
+  "language_rule": "token-majority-prose-vi20-v2",
+  "sources": {
+    "media:baocao-canhan:figure:0658892bf7f0c3f952adf5e7d3663ae5f5ae04c36ca982f90d88d906ddee4d17": [
+      "c_e891d3a1a60cc55f74e4fb37"
+    ],
+    "media:baocao-canhan:figure:0a88f52b03cba815f28cb33145ed4657a936a5b09dd203531c2067e92b5e0219": [
+      "c_0199547c7b64f48db339dbb5"
+    ],
+    "media:baocao-canhan:figure:855ea73ca96b471d08fda85a5091d73d4f668223e845bfa3f604335147ca0172": [
+      "c_84742a4fa621fc855cf55587"
+    ],
+    "node_04044fac8e269c8db740958f": [
+      "c_1883574edbbf53f734f2957f",
+      "c_c86be65152b22b0b3df54aa0"
+    ],
+    "node_04f88b99f4471fb8f5621b43": [
+      "c_62c7fbb367cea7bf7d01edb7",
+      "c_f9826fa27760fd2c345bcd59"
+    ],
+    "node_05e65fca3df1abccab9726bc": [
+      "c_014b3b1257bd6a3d43d92d78"
+    ],
+    "node_0ad572a45b91bb5900c5a355": [
+      "c_62c7fbb367cea7bf7d01edb7",
+      "c_f9826fa27760fd2c345bcd59"
+    ],
+    "node_0bed689c1a8690f6cc6c88f0": [
+      "c_27753b9952fc9e314e50a6cc"
+    ],
+    "node_13ad3db8d4ac96647bd8c688": [
+      "c_e891d3a1a60cc55f74e4fb37"
+    ],
+    "node_1a2bc3511d2d8589b7a223c1": [
+      "c_fbb4a73e9b5d27b286f405bc"
+    ],
+    "node_1b78c06cf3f1d75a46426c9a": [
+      "c_84742a4fa621fc855cf55587"
+    ],
+    "node_1ca73de5f12fadd557936f32": [
+      "c_acf536ad868b6267044b230f"
+    ],
+    "node_25739d1627bfef813d4c2bc2": [
+      "c_acf536ad868b6267044b230f"
+    ],
+    "node_26703bfc4aa9e286a82550c8": [
+      "c_ea780de79b4dd5a4546236c2",
+      "c_f9826fa27760fd2c345bcd59"
+    ],
+    "node_2b4ef4ddf6892b3c44d491b7": [
+      "c_84742a4fa621fc855cf55587",
+      "c_acf536ad868b6267044b230f"
+    ],
+    "node_2cd11a7a69f9f2d000fa3525": [
+      "c_d2bb1a83adb50de545d2613c"
+    ],
+    "node_2f945f2ef1c2ab9039bb0089": [
+      "c_77cb1ab205cb7fdafc31e432"
+    ],
+    "node_479cbc28373fe1f52aeb987f": [
+      "c_35bb4ceb9d35a2936dfbac7c"
+    ],
+    "node_47e7635ef891f46f58126cce": [
+      "c_77cb1ab205cb7fdafc31e432",
+      "c_d20638b24848020c9f0304b2"
+    ],
+    "node_5026e71324ea02bc48e73f82": [
+      "c_d2bb1a83adb50de545d2613c"
+    ],
+    "node_505da9e65ea5f30ec067a50d": [
+      "c_c86be65152b22b0b3df54aa0"
+    ],
+    "node_596c0d469c235a9f85bc7099": [
+      "c_c86be65152b22b0b3df54aa0"
+    ],
+    "node_61a00aa1b3ee6f2ec39d60cb": [
+      "c_3a835c859a06361fe0f2d854"
+    ],
+    "node_76519bc6851b198580729ede": [
+      "c_35bb4ceb9d35a2936dfbac7c"
+    ],
+    "node_77bf9087412d549ad97f5e8c": [
+      "c_ea780de79b4dd5a4546236c2"
+    ],
+    "node_90c6fbbbbd23ab0d6b9817e8": [
+      "c_62c7fbb367cea7bf7d01edb7"
+    ],
+    "node_92871dc2f2ad67e253882ea4": [
+      "c_014b3b1257bd6a3d43d92d78"
+    ],
+    "node_93f3b570b04dc9fdf4f331bb": [
+      "c_62c7fbb367cea7bf7d01edb7"
+    ],
+    "node_95373ff12cd6ed3deb178765": [
+      "c_f9826fa27760fd2c345bcd59"
+    ],
+    "node_95b4785a1f82a87b829849a1": [
+      "c_35bb4ceb9d35a2936dfbac7c",
+      "c_adf8e178fe2c538d8c77ca63"
+    ],
+    "node_9d41ca3d10704c06edfe6a13": [
+      "c_84742a4fa621fc855cf55587"
+    ],
+    "node_a2d8d5e58a547eedbff52998": [
+      "c_1883574edbbf53f734f2957f"
+    ],
+    "node_a90a05cde7892d6388edef5a": [
+      "c_35bb4ceb9d35a2936dfbac7c"
+    ],
+    "node_a92bbb6e987924f601569d77": [
+      "c_d2bb1a83adb50de545d2613c",
+      "c_ea780de79b4dd5a4546236c2",
+      "c_fbb4a73e9b5d27b286f405bc"
+    ],
+    "node_aaa39abf91eed97d37482efc": [
+      "c_35bb4ceb9d35a2936dfbac7c",
+      "c_84742a4fa621fc855cf55587",
+      "c_adf8e178fe2c538d8c77ca63",
+      "c_e891d3a1a60cc55f74e4fb37",
+      "c_fbb4a73e9b5d27b286f405bc"
+    ],
+    "node_b173bd6234012ac0c9c7bdb2": [
+      "c_1883574edbbf53f734f2957f"
+    ],
+    "node_b662d7b39a7a7bf60864ce97": [
+      "c_35bb4ceb9d35a2936dfbac7c",
+      "c_adf8e178fe2c538d8c77ca63",
+      "c_e891d3a1a60cc55f74e4fb37"
+    ],
+    "node_be9d2f44306a85139f511303": [
+      "c_adf8e178fe2c538d8c77ca63"
+    ],
+    "node_c5b10591dc3998fe687b9df6": [
+      "c_62c7fbb367cea7bf7d01edb7",
+      "c_f9826fa27760fd2c345bcd59"
+    ],
+    "node_d07b8e459fd2ed49e7045263": [
+      "c_1883574edbbf53f734f2957f",
+      "c_adf8e178fe2c538d8c77ca63",
+      "c_fbb4a73e9b5d27b286f405bc"
+    ],
+    "node_dfc28fdc1e2cb860d6a72ea7": [
+      "c_77cb1ab205cb7fdafc31e432"
+    ],
+    "node_e1f2cf591073dbc644e0ea7c": [
+      "c_3a835c859a06361fe0f2d854"
+    ],
+    "node_e499b92aa9554a7c7c858892": [
+      "c_84742a4fa621fc855cf55587",
+      "c_acf536ad868b6267044b230f",
+      "c_f9826fa27760fd2c345bcd59"
+    ],
+    "node_ec562462e83c2c5efe262f64": [
+      "c_e891d3a1a60cc55f74e4fb37"
+    ],
+    "node_f00abe4acf9a831fd2eb5b06": [
+      "c_27753b9952fc9e314e50a6cc"
+    ],
+    "node_f60c4d4e4239aa80e1b2bb83": [
+      "c_1883574edbbf53f734f2957f",
+      "c_adf8e178fe2c538d8c77ca63",
+      "c_c86be65152b22b0b3df54aa0",
+      "c_fbb4a73e9b5d27b286f405bc"
+    ],
+    "node_fa1afad77ae08586e1020d94": [
+      "c_62c7fbb367cea7bf7d01edb7"
+    ],
+    "node_fa1bca4d66c3a01f7aa24c1a": [
+      "c_014b3b1257bd6a3d43d92d78"
+    ],
+    "node_fce6163f27379e046e4c5f54": [
+      "c_adf8e178fe2c538d8c77ca63"
+    ]
+  }
+}

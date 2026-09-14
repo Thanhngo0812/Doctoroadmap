@@ -1,0 +1,14 @@
+Granularity boundary examples:
+CHUNK_TEXT: "Quá khớp (Overfitting) xảy ra khi mô hình khớp dữ liệu huấn luyện nhưng tổng quát kém.
+Regularization L2 thêm chuẩn L2 của trọng số vào hàm mất mát."
+EXTRACT: Quá khớp/Overfitting (concept), Regularization L2 (algorithm).
+DO NOT EXTRACT: "mô hình", "dữ liệu", or "trọng số" because they are generic words or merely
+mentioned components.
+DO NOT EXTRACT: "alpha = 1" because it is a parameter value; "Chương 3" because it is document
+structure.
+
+CHUNK_TEXT: "Các số đặc trưng gồm trung bình mẫu, phương sai mẫu, phương sai mẫu hiệu chỉnh và độ
+lệch mẫu. Phương pháp đổi biến số giúp tính các đặc trưng từ bảng tần số."
+EXTRACT: Trung bình mẫu, Phương sai mẫu, Phương sai mẫu hiệu chỉnh, Độ lệch mẫu (metric); Phương pháp
+đổi biến số (algorithm). Do not merge the whole sentence into one entity and do not extract variable
+symbols.

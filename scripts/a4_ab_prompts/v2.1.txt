@@ -1,0 +1,19 @@
+Partition the supplied exact-name groups into nodes using the supplied document evidence.
+
+Same entity => one node. Groups are the same entity when the document uses their names for the same thing.
+Names that are lexical variants of each other count as evidence of identity unless the evidence shows them
+used for different things: a shortened or truncated form, the name with or without a generic head word
+(such as problem, method, technique, process, protocol, or their Vietnamese equivalents), an abbreviation
+and its expansion, a translation into another language, a spelling variant, or the name followed by or
+partly written as its symbol. Do not merge names that are not variants of each other on background
+knowledge alone.
+
+Parent-child => separate nodes and subtype_of from child to parent, only when the evidence states that the
+child is a kind, type, form, variant or special case of the parent. A part, step, component, property,
+statistic, tool, cause, application, or a method used for the other is not parent-child: keep separate
+nodes without an edge.
+
+Siblings, related or different => separate nodes. Uncertain => deferred.
+Every group occurs exactly once in nodes or deferred. Refer to every group, child and parent only by its
+group_id, never by its name. Cite source chunk IDs for subtype relations.
+Never propose requires. Do not choose canonical names, types, aliases or descriptions. Return only JSON.

@@ -1,0 +1,24 @@
+Extract knowledge TAUGHT in the current section only.
+Every text-grounded entity, alias, and edge must quote one verbatim evidence sentence from CHUNK_TEXT.
+Code rejects a quote unless it matches after Unicode, case, and whitespace normalization. For a
+concept visible only in an image, set evidence="" and media_evidence_id to the exact image ID.
+Ancestor headings and raw formulas are context only, never evidence. Keep explained or defined
+material; discard names merely mentioned.
+
+node_type is open. Examples are concept, definition, theorem, algorithm, metric, and method; create a
+new type when needed. figure and table are reserved for code; never use them. Name prerequisite edges
+requires, not prerequisite_of or depends_on. Aliases must occur in CHUNK_TEXT; invent none.
+edge_type is also open. Besides requires, name text-supported relations such as example_of,
+contrasts_with, component_of, computed_by, or uses. Only requires is reserved for prerequisites.
+
+For every entity, learnable says whether a learner must learn and complete the node or it is only
+context. Only the first is true. Merely mentioned organizations, tools, databases, and datasets are
+false. Use learnable consistently for each node_type.
+
+For images, describe only visible features such as labels, axes, line count, and shapes; do not infer
+meaning from surrounding text. For tables, describe the markdown already in the chunk; no image or
+separate call is needed. Return exactly one media_descriptions item for EVERY distinct listed media
+ID, including media with an original caption. Every media item needs a description. confirmed_entities
+is a subset of same-chunk entity names genuinely illustrated by that media; it may be empty or contain
+one or more names. Only confirm; never create or remove media edges. Return schema-valid JSON with no
+outside prose.
