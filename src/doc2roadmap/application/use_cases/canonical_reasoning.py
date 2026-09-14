@@ -11,7 +11,7 @@ from doc2roadmap.application.canonical_prompt import (
 from doc2roadmap.application.ports.extraction import ModelTransportError
 from doc2roadmap.domain.canonical import digest, evidence_missing_name, build_nodes
 from doc2roadmap.domain.canonical_decisions import (
-    validate_partition, split_subtype_edges, guarded_components, validate_description, document_language, vietnamese, split_sentences,
+    validate_partition, split_relation_edges, guarded_components, validate_description, document_language, vietnamese, split_sentences,
 )
 
 
@@ -45,7 +45,9 @@ class CanonicalReasoning:
         group_map = {node["node_id"]: group for node, group in zip(initial_nodes, groups, strict=True) if not node["media_id"]}
         node_map = {n["node_id"]: n for n in initial_nodes}
         cache = {row["input_hash"]: row for row in previous_log if row.get("valid") and "input_hash" in row}
-        logs, metrics, deferred, extra_edges, deferred_pairs = [], Counter(), set(), [], []
+        logs = []
+        metrics = Counter(relation_rejected=0, relation_self_removed=0)
+        deferred, extra_edges, deferred_pairs = set(), [], []
         def call(stage, data, schema, validate):
             counts = Counter()
             model = self.writer if stage in {"describe", "check"} else self.judge
@@ -117,10 +119,10 @@ class CanonicalReasoning:
             deferred.update(d["group_id"] for d in value["deferred"])
             for a, b in combinations(cluster, 2):
                 (same if a in owner and b in owner and owner[a] == owner[b] else different).append((a, b))
-            kept, rejected = split_subtype_edges(value, {id: sources[id] for id in cluster})
+            kept, rejected = split_relation_edges(value, {id: sources[id] for id in cluster})
             extra_edges.extend(kept)
-            logs.extend({"stage": "subtype_rejected", "edge": edge} for edge in rejected)
-            metrics["subtype_rejected"] += len(rejected)
+            logs.extend({"stage": "relation_rejected", "edge": edge} for edge in rejected)
+            metrics["relation_rejected"] += len(rejected)
         # A group deferred by cluster judgment remains separate. Repair deferral is pair-scoped.
         base_components, _ = guarded_components(list(group_map), same, [])
         base_owner = {id: component for component in base_components for id in component}
@@ -148,10 +150,10 @@ class CanonicalReasoning:
                 deferred_pairs.append({"pair": [a, b], "reason": "repair_invalid"})
                 continue
             metrics["cut_pairs_judged"] += 1
-            kept, rejected = split_subtype_edges(value, {id: sources[id] for id in combined})
+            kept, rejected = split_relation_edges(value, {id: sources[id] for id in combined})
             extra_edges.extend(kept)
-            logs.extend({"stage": "subtype_rejected", "edge": edge} for edge in rejected)
-            metrics["subtype_rejected"] += len(rejected)
+            logs.extend({"stage": "relation_rejected", "edge": edge} for edge in rejected)
+            metrics["relation_rejected"] += len(rejected)
             owner = {id: i for i, node in enumerate(value["nodes"]) for id in node["groups"]}
             if value["deferred"]:
                 different.append((a, b))
@@ -171,14 +173,23 @@ class CanonicalReasoning:
         logs.extend(tie_log)
         mapping = {c: n["node_id"] for n in nodes for c in n["members"]}
         group_to_node = {id: mapping[members[0].candidate_id] for id, members in group_map.items()}
-        edges = []
+        edges = {}
         for row in extra_edges:
-            a, b = group_to_node[row["child"]], group_to_node[row["parent"]]
-            if a != b:
-                edge = {"source": a, "target": b, "edge_type": "subtype_of", "chunk_ids": row["chunk_ids"],
-                        "reason": row["reason"], "proposal": True, "confirmed": False, "evidence": [], "source_refs": []}
-                if edge not in edges:
-                    edges.append(edge)
+            a, b = group_to_node[row["source"]], group_to_node[row["target"]]
+            if a == b:
+                metrics["relation_self_removed"] += 1
+                continue
+            key = (a, b, row["edge_type"])
+            if key not in edges:
+                edges[key] = {"source": a, "target": b, "edge_type": row["edge_type"],
+                              "chunk_ids": row["chunk_ids"], "reason": row["reason"],
+                              "proposal": True, "confirmed": False, "evidence": [],
+                              "source_refs": [], "origins": ["2a"]}
+            else:
+                edges[key]["chunk_ids"] = sorted(set(edges[key]["chunk_ids"]) | set(row["chunk_ids"]))
+        edges = list(edges.values())
+        metrics["relation_edges"] = len(edges)
+        metrics["relation_types"] = dict(sorted(Counter(edge["edge_type"] for edge in edges).items()))
         language = document_language(chunks.chunks)
         def description_input(node, draft=False):
             source_chunks = sorted((chunks_by_id[c] for c in node["source_chunk_ids"]), key=lambda c: c.order_index)

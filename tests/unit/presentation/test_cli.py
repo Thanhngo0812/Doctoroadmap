@@ -104,6 +104,11 @@ def test_parser_exposes_repeatable_a3_operations() -> None:
         ["a3-evaluate", "--doc-id", "book", "--gold", "gold.json"]
     )
     assert evaluate.gold == Path("gold.json")
+    a4_evaluate = parser.parse_args([
+        "a4-evaluate", "--doc-id", "book", "--gold", "gold.json",
+        "--exclude-subtype-item", "first", "--exclude-subtype-item", "second",
+    ])
+    assert a4_evaluate.exclude_subtype_item == ["first", "second"]
 
 
 def test_extract_cli_forwards_few_shot_override(monkeypatch) -> None:

@@ -13,7 +13,8 @@ STRING = {"type": "string"}
 IDS = _array(STRING)
 PARTITION_SCHEMA = _object({
     "nodes": _array(_object({"groups": IDS, "reason": STRING})),
-    "subtype_edges": _array(_object({"child": STRING, "parent": STRING, "chunk_ids": IDS, "reason": STRING})),
+    "relations": _array(_object({"source": STRING, "target": STRING, "edge_type": STRING,
+                                  "chunk_ids": IDS, "reason": STRING})),
     "deferred": _array(_object({"group_id": STRING, "reason": STRING})),
 })
 DESCRIPTION_SCHEMA = _object({

@@ -167,13 +167,14 @@ def load_gold(path: Path, store, *, expected=None, require_complete=False):
     return payload
 
 
-def evaluate_canonical(artifact, gold, second=None):
+def evaluate_canonical(artifact, gold, second=None, *, exclude_subtype_items=()):
     doc = artifact.payload["doc_id"]
+    excluded = set(exclude_subtype_items)
     mapping = {c: n["node_id"] for n in artifact.payload["nodes"] for c in n["members"]}
     nominated = {frozenset((e["source"], e["target"])) for e in artifact.payload["nominations"]["edges"]}
     subtype = {(e["source"], e["target"]) for e in artifact.payload["edges"] if e["edge_type"] == "subtype_of"}
     tp = fp = fn = positives = captured = uncertain = parents = correct_parent = homonyms = 0
-    annotated_pairs, parent_pairs = set(), set()
+    annotated_pairs, parent_pairs, labels_by_pair = set(), set(), {}
     for item in gold["items"]:
         if item["doc_id"] != doc:
             continue
@@ -190,21 +191,36 @@ def evaluate_canonical(artifact, gold, second=None):
         tp += positive and predicted; fp += predicted and not positive; fn += positive and not predicted
         positives += positive
         captured += positive and frozenset((a["group_id"], b["group_id"])) in nominated
-        annotated_pairs.add(frozenset((x, y)))
+        node_pair = frozenset((x, y))
+        annotated_pairs.add(node_pair)
+        labels_by_pair[node_pair] = item["label"]
         if item["label"] == "parent_child":
-            parents += 1
             pair = (x, y) if item["child"] == 0 else (y, x)
             parent_pairs.add(pair)
-            correct_parent += pair in subtype
+            if item["item_id"] not in excluded:
+                parents += 1
+                correct_parent += pair in subtype
     precision = tp/(tp+fp) if tp+fp else 0.
     recall = tp/(tp+fn) if tp+fn else 0.
+    subtype_correct = sum(edge in parent_pairs for edge in subtype)
+    subtype_incorrect = sum(frozenset(edge) in annotated_pairs and edge not in parent_pairs for edge in subtype)
+    relations_2a_on_gold = {label: 0 for label in ("same", "parent_child", "related", "different")}
+    for edge in artifact.payload["edges"]:
+        if edge["edge_type"] == "subtype_of" or "2a" not in edge.get("origins", []):
+            continue
+        label = labels_by_pair.get(frozenset((edge["source"], edge["target"])))
+        if label in relations_2a_on_gold:
+            relations_2a_on_gold[label] += 1
     result = {"canonical_version": artifact.version, "tp": tp, "fp": fp, "fn": fn,
               "precision": precision, "recall": recall,
               "f1": 2*precision*recall/(precision+recall) if precision+recall else 0.,
               "nomination_recall": captured/positives if positives else None,
               "uncertain_count": uncertain, "homonyms_merged": homonyms,
               "subtype_recall": correct_parent/parents if parents else None,
-              "subtype_incorrect": sum(frozenset(e) in annotated_pairs and e not in parent_pairs for e in subtype)}
+              "subtype_incorrect": subtype_incorrect,
+              "subtype_precision": subtype_correct/(subtype_correct+subtype_incorrect)
+                                   if subtype_correct+subtype_incorrect else None,
+              "relations_2a_on_gold": relations_2a_on_gold}
     if second:
         def labels(payload):
             return {i["item_id"]: (i["label"], i.get("child") if i["label"] == "parent_child" else None)

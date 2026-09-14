@@ -22,7 +22,7 @@ def main():
     for stage, schema in [("merge", PARTITION_SCHEMA), ("repair", PARTITION_SCHEMA),
                           ("describe", DESCRIPTION_SCHEMA), ("check", SINGLE_SCHEMA)]:
         row = next(r for r in artifact.payload["decision_log"] if r.get("stage") == stage and r.get("valid"))
-        path = Path("tests/fixtures/a4/llm-v2") / f"{stage}.json"
+        path = Path("tests/fixtures/a4/llm-v3") / f"{stage}.json"
         if path.exists():
             raise ValueError(f"refusing to overwrite recorded fixture: {path}")
         model = reasoning.writer if stage in {"describe", "check"} else reasoning.judge

@@ -10,7 +10,7 @@
         {
           "images": [],
           "role": "model",
-          "text": "{\n  \"nodes\": [\n    {\n      \"groups\": [\n        \"node_04044fac8e269c8db740958f\",\n        \"node_505da9e65ea5f30ec067a50d\"\n      ],\n      \"reason\": \"Both groups refer to the same architectural pattern (Hub-Client) used for WebSocket communication, with identical components (ReadPump, WritePump, Goroutines) described in the context of the same system implementation.\"\n    }\n  ],\n  \"subtype_edges\": [],\n  \"deferred\": []\n}"
+          "text": "{\n  \"nodes\": [\n    {\n      \"groups\": [\n        \"node_04044fac8e269c8db740958f\",\n        \"node_505da9e65ea5f30ec067a50d\"\n      ],\n      \"reason\": \"Both groups refer to the same architectural pattern involving a central hub and client connections managed by Goroutines, described as 'Kiến trúc Hub - Client' and 'Mô hình Hub - Client' respectively.\"\n    }\n  ],\n  \"relations\": [],\n  \"deferred\": []\n}"
         }
       ],
       "reply": {
@@ -22,12 +22,12 @@
                 "node_04044fac8e269c8db740958f",
                 "node_505da9e65ea5f30ec067a50d"
               ],
-              "reason": "Both groups refer to the same architectural pattern (Hub-Client) used for WebSocket communication, with identical components (ReadPump, WritePump, Goroutines) described in the context of the same system implementation."
+              "reason": "Both groups refer to the same architectural pattern involving a central hub and client connections managed by Goroutines, described as 'Kiến trúc Hub - Client' and 'Mô hình Hub - Client' respectively."
             }
           ],
-          "subtype_edges": []
+          "relations": []
         },
-        "raw_text": "{\n  \"nodes\": [\n    {\n      \"groups\": [\n        \"node_04044fac8e269c8db740958f\",\n        \"node_505da9e65ea5f30ec067a50d\"\n      ],\n      \"reason\": \"Both groups refer to the same architectural pattern (Hub-Client) used for WebSocket communication, with identical components (ReadPump, WritePump, Goroutines) described in the context of the same system implementation.\"\n    }\n  ],\n  \"subtype_edges\": [],\n  \"deferred\": []\n}",
+        "raw_text": "{\n  \"nodes\": [\n    {\n      \"groups\": [\n        \"node_04044fac8e269c8db740958f\",\n        \"node_505da9e65ea5f30ec067a50d\"\n      ],\n      \"reason\": \"Both groups refer to the same architectural pattern involving a central hub and client connections managed by Goroutines, described as 'Kiến trúc Hub - Client' and 'Mô hình Hub - Client' respectively.\"\n    }\n  ],\n  \"relations\": [],\n  \"deferred\": []\n}",
         "repaired": false
       },
       "request": {
@@ -74,28 +74,32 @@
               },
               "type": "array"
             },
-            "subtype_edges": {
+            "relations": {
               "items": {
                 "properties": {
-                  "child": {
-                    "type": "string"
-                  },
                   "chunk_ids": {
                     "items": {
                       "type": "string"
                     },
                     "type": "array"
                   },
-                  "parent": {
+                  "edge_type": {
                     "type": "string"
                   },
                   "reason": {
                     "type": "string"
+                  },
+                  "source": {
+                    "type": "string"
+                  },
+                  "target": {
+                    "type": "string"
                   }
                 },
                 "required": [
-                  "child",
-                  "parent",
+                  "source",
+                  "target",
+                  "edge_type",
                   "chunk_ids",
                   "reason"
                 ],
@@ -106,7 +110,7 @@
           },
           "required": [
             "nodes",
-            "subtype_edges",
+            "relations",
             "deferred"
           ],
           "type": "object"
@@ -117,6 +121,6 @@
   "fixture_version": 1,
   "identifier": "gemini-generate-content-rest:v1beta",
   "model_id": "gemini-3.1-flash-lite",
-  "prompt_hash": "3b7204877fc0390666e2603d2edb6ce386f18a17a1a78b7a75284c0dd816b5b0",
-  "system_prompt": "Partition the supplied exact-name groups using only verbatim document evidence. Never use prior\nknowledge to assert identity. Relations: same entity => one node; parent-child => separate nodes\nand subtype_of child to parent; siblings/related or different => separate nodes; uncertain => deferred.\nEvery group occurs exactly once in nodes or deferred. Cite source chunk IDs for subtype relations.\nNever propose requires. Do not choose canonical names, types, aliases or descriptions. Return only JSON."
+  "prompt_hash": "0ac9f4a8e23cbf5441412575d016987a04421594e60109b0cba55d133fa589ca",
+  "system_prompt": "Partition the supplied exact-name groups using only verbatim document evidence. Never use prior\nknowledge to assert identity. Judgments: same entity => one node; parent-child, siblings, related or\ndifferent => separate nodes; uncertain => deferred.\nEvery group occurs exactly once in nodes or deferred. Refer to every group only by its group_id, never\nby its name.\nBetween groups in separate nodes, add a relation only when a cited sentence states it. edge_type is open\nand reads from source to target: subtype_of when the source is a kind, type, form, variant or special\ncase of the target; otherwise a short snake_case name such as component_of, uses, example_of, computed_by\nor contrasts_with, or a new name when none fits. Cite source chunk IDs for every relation.\nNever propose requires or a synonym of it. Do not choose canonical names, types, aliases or descriptions.\nReturn only JSON."
 }

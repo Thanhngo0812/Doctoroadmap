@@ -1,7 +1,14 @@
 from types import SimpleNamespace
 import pytest
 
-from doc2roadmap.domain.canonical_decisions import validate_partition, guarded_components, validate_description, document_language, vietnamese
+from doc2roadmap.domain.canonical_decisions import (
+    validate_partition,
+    split_relation_edges,
+    guarded_components,
+    validate_description,
+    document_language,
+    vietnamese,
+)
 from doc2roadmap.domain.nomination import nomination_graph
 from doc2roadmap.domain.entities import EntityCandidate, EvidenceSpan, VerifiedAlias
 
@@ -9,12 +16,13 @@ from doc2roadmap.domain.entities import EntityCandidate, EvidenceSpan, VerifiedA
 def test_partition_guards_and_transitive_conflict():
     source = {"a": ["ca"], "b": ["cb"], "c": ["cc"]}
     good = {"nodes": [{"groups": ["a", "b"], "reason": "same"}, {"groups": ["c"], "reason": "other"}],
-            "deferred": [], "subtype_edges": [{"child": "a", "parent": "c", "chunk_ids": ["ca"], "reason": "subtype"}]}
+            "deferred": [], "relations": [{"source": "a", "target": "c", "edge_type": "subtype_of",
+                                                "chunk_ids": ["ca"], "reason": "subtype"}]}
     assert validate_partition(good, source) is good
     import copy
     for mutate in [lambda v: v["nodes"][0]["groups"].pop(),
                    lambda v: v["nodes"][0]["groups"].append("c"),
-                   lambda v: v["subtype_edges"][0].update(edge_type="requires")]:
+                   lambda v: v["relations"][0].update(unexpected=True)]:
         bad = copy.deepcopy(good); mutate(bad)
         with pytest.raises(ValueError):
             validate_partition(bad, source)
@@ -65,19 +73,67 @@ def test_nomination_mutual_neighbors_symbols_seed_and_cluster_cap():
     assert first["cut_edges"]
 
 
-def test_subtype_edges_are_filtered_separately_from_the_partition():
-    from doc2roadmap.domain.canonical_decisions import split_subtype_edges
-    import copy
+def test_relation_edges_are_normalized_deduplicated_and_keep_first_reason():
     source = {"a": ["ca"], "b": ["cb"], "c": ["cc"]}
-    good = {"nodes": [{"groups": ["a", "b"], "reason": "same"}, {"groups": ["c"], "reason": "other"}],
-            "deferred": [], "subtype_edges": [{"child": "a", "parent": "c", "chunk_ids": ["ca"], "reason": "subtype"}]}
-    for mutate in [lambda v: v["subtype_edges"][0].update(parent="b"),
-                   lambda v: v["subtype_edges"][0].update(chunk_ids=["outside"])]:
-        bad = copy.deepcopy(good); mutate(bad)
-        assert validate_partition(bad, source) is bad
-        kept, rejected = split_subtype_edges(bad, source)
-        assert kept == [] and len(rejected) == 1 and rejected[0]["error"]
-    assert split_subtype_edges(good, source) == (good["subtype_edges"], [])
+    value = {"nodes": [{"groups": ["a"], "reason": "a"}, {"groups": ["b"], "reason": "b"},
+                       {"groups": ["c"], "reason": "c"}], "deferred": [],
+             "relations": [
+                 {"source": "a", "target": "b", "edge_type": " Uses ", "chunk_ids": ["ca"], "reason": "first"},
+                 {"source": "a", "target": "b", "edge_type": "uses", "chunk_ids": ["cb"], "reason": "second"},
+             ]}
+
+    assert validate_partition(value, source) is value
+    kept, rejected = split_relation_edges(value, source)
+
+    assert rejected == []
+    assert kept == [{"source": "a", "target": "b", "edge_type": "uses",
+                     "chunk_ids": ["ca", "cb"], "reason": "first"}]
+
+
+@pytest.mark.parametrize(
+    "relation,nodes,deferred",
+    [
+        ({"source": "missing", "target": "b", "edge_type": "uses", "chunk_ids": ["cb"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "missing", "edge_type": "uses", "chunk_ids": ["ca"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "c", "edge_type": "uses", "chunk_ids": ["ca"], "reason": "r"},
+         [["a"], ["b"]], ["c"]),
+        ({"source": "a", "target": "b", "edge_type": "uses", "chunk_ids": ["ca"], "reason": "r"},
+         [["a", "b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": "uses", "chunk_ids": [], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": "uses", "chunk_ids": ["outside"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": "uses", "chunk_ids": ["ca"], "reason": " "},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": " ", "chunk_ids": ["ca"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": "requires", "chunk_ids": ["ca"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": "depends_on", "chunk_ids": ["ca"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": "illustrates", "chunk_ids": ["ca"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+        ({"source": "a", "target": "b", "edge_type": "tabulates", "chunk_ids": ["ca"], "reason": "r"},
+         [["a"], ["b"], ["c"]], []),
+    ],
+    ids=["unknown-source", "unknown-target", "deferred-target", "same-node", "empty-chunks",
+         "foreign-chunk", "empty-reason", "empty-type", "requires", "requires-alias", "illustrates", "tabulates"],
+)
+def test_invalid_relation_is_rejected_without_invalidating_partition(relation, nodes, deferred):
+    source = {"a": ["ca"], "b": ["cb"], "c": ["cc"]}
+    value = {"nodes": [{"groups": groups, "reason": "fixture"} for groups in nodes],
+             "deferred": [{"group_id": group, "reason": "fixture"} for group in deferred],
+             "relations": [relation]}
+
+    assert validate_partition(value, source) is value
+    kept, rejected = split_relation_edges(value, source)
+
+    assert kept == []
+    assert len(rejected) == 1
+    assert rejected[0]["error"]
+    assert "allowed_chunk_ids" in rejected[0]
 
 
 def test_tables_and_code_do_not_decide_description_language():
@@ -99,6 +155,7 @@ def test_subtype_conflicting_with_a3_relation_is_found_in_either_direction():  #
           {"source": "g", "target": "h", "edge_type": "requires"}]
     proposed = [{"source": s, "target": t, "edge_type": "subtype_of"} for s, t in
                 [("a", "b"), ("c", "d"), ("e", "f"), ("g", "h"), ("i", "j")]]
+    proposed.append({"source": "a", "target": "b", "edge_type": "uses"})
     conflicts = find_subtype_conflicts(a3, proposed)
     assert [(e["source"], e["target"], e["a3_edge_types"]) for e in conflicts] == [
         ("a", "b", ["component_of"]), ("c", "d", ["uses"])]

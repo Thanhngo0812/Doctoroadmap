@@ -48,6 +48,7 @@ def _parser() -> argparse.ArgumentParser:
     evaluation.add_argument("--gold", type=Path, required=True)
     evaluation.add_argument("--second-gold", type=Path)
     evaluation.add_argument("--canonical-version", type=int)
+    evaluation.add_argument("--exclude-subtype-item", action="append", default=[])
     ingest = commands.add_parser("ingest", help="parse và cắt một PDF/DOCX")
     ingest.add_argument("file", type=Path)
     ingest.add_argument("--doc-id", required=True)
@@ -245,7 +246,8 @@ def main(argv: list[str] | None = None) -> int:
             gold = load_gold(args.gold, store)
             second = load_gold(args.second_gold, store) if args.second_gold else None
             artifact = store.load_canonical(args.doc_id, args.canonical_version) if args.canonical_version else store.load_latest_canonical(args.doc_id)
-            _json(evaluate_canonical(artifact, gold, second))
+            _json(evaluate_canonical(artifact, gold, second,
+                                     exclude_subtype_items=args.exclude_subtype_item))
         elif args.command == "a4":
             store = build_artifact_store()
             if args.names_only:

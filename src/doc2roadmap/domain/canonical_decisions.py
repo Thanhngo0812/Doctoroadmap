@@ -3,6 +3,9 @@ from __future__ import annotations
 import re
 import unicodedata
 
+from .canonical import normalize_edge_type
+from .entities import validate_llm_edge_type
+
 
 def vietnamese(text):
     words = re.findall(r"[^\W\d_]+", unicodedata.normalize("NFC", text))
@@ -23,8 +26,8 @@ def document_language(chunks):
 
 
 def validate_partition(value, source):
-    if not isinstance(value, dict) or set(value) != {"nodes", "subtype_edges", "deferred"}:
-        raise ValueError("cần nodes, subtype_edges, deferred; không được sinh requires")
+    if not isinstance(value, dict) or set(value) != {"nodes", "relations", "deferred"}:
+        raise ValueError("cần nodes, relations, deferred")
     ids = set(source)
     seen, owner = [], {}
     for i, node in enumerate(value["nodes"]):
@@ -40,29 +43,47 @@ def validate_partition(value, source):
         missing, extra = sorted(ids - set(seen)), sorted(set(seen) - ids)
         repeated = sorted({group for group in seen if seen.count(group) > 1})
         raise ValueError(f"mỗi nhóm phải có đúng một lần: thiếu {missing}, lặp {repeated}, id lạ {extra}")
-    for edge in value["subtype_edges"]:
-        if set(edge) != {"child", "parent", "chunk_ids", "reason"}:
-            raise ValueError("chỉ được sinh subtype_of")
+    for edge in value["relations"]:
+        if not isinstance(edge, dict) or set(edge) != {"source", "target", "edge_type", "chunk_ids", "reason"}:
+            raise ValueError("mỗi relation cần source, target, edge_type, chunk_ids, reason")
     return value
 
 
-def split_subtype_edges(value, source):
+def split_relation_edges(value, source):
     owner = {group: i for i, node in enumerate(value["nodes"]) for group in node["groups"]}
-    kept, rejected = [], []
-    for edge in value["subtype_edges"]:
-        a, b = edge["child"], edge["parent"]
+    kept, rejected = {}, []
+    for edge in value["relations"]:
+        a, b = edge["source"], edge["target"]
         allowed = sorted(set(source.get(a, ())) | set(source.get(b, ())))
         if a not in owner or b not in owner or owner[a] == owner[b]:
             rejected.append({**edge, "invalid_chunk_ids": [], "allowed_chunk_ids": allowed,
-                             "error": f"subtype_of {a} → {b} phải nối hai node khác nhau trong cụm"})
+                             "error": f"relation {a} → {b} phải nối hai node khác nhau, không deferred"})
             continue
         invalid = sorted(set(edge["chunk_ids"]) - set(allowed))
-        if not edge["chunk_ids"] or invalid or not edge["reason"]:
+        if not edge["chunk_ids"] or invalid:
             rejected.append({**edge, "invalid_chunk_ids": invalid, "allowed_chunk_ids": allowed,
-                             "error": f"subtype_of {a} → {b}: chunk sai {invalid}, hợp lệ {allowed}"})
+                             "error": f"relation {a} → {b}: chunk sai {invalid}, hợp lệ {allowed}"})
+            continue
+        if not isinstance(edge["reason"], str) or not edge["reason"].strip():
+            rejected.append({**edge, "invalid_chunk_ids": invalid, "allowed_chunk_ids": allowed,
+                             "error": f"relation {a} → {b} thiếu lý do"})
+            continue
+        try:
+            edge_type = normalize_edge_type(validate_llm_edge_type(edge["edge_type"]))
+        except (AttributeError, ValueError) as error:
+            rejected.append({**edge, "invalid_chunk_ids": invalid, "allowed_chunk_ids": allowed,
+                             "error": f"relation {a} → {b}: {error}"})
+            continue
+        if edge_type in {"requires", "illustrates", "tabulates"}:
+            rejected.append({**edge, "invalid_chunk_ids": invalid, "allowed_chunk_ids": allowed,
+                             "error": f"relation {a} → {b}: kiểu dành riêng {edge_type}"})
+            continue
+        key = (a, b, edge_type)
+        if key not in kept:
+            kept[key] = {**edge, "edge_type": edge_type, "chunk_ids": sorted(set(edge["chunk_ids"]))}
         else:
-            kept.append(edge)
-    return kept, rejected
+            kept[key]["chunk_ids"] = sorted(set(kept[key]["chunk_ids"]) | set(edge["chunk_ids"]))
+    return list(kept.values()), rejected
 
 
 # A3 already relates the pair in a way that is not "is a kind of". Recorded, not dropped: on the gold set the
@@ -71,13 +92,15 @@ SUBTYPE_CONFLICTING_EDGE_TYPES = frozenset(
     {"component_of", "uses", "solves", "prevents", "causes", "computed_by", "contrasts_with"})
 
 
-def find_subtype_conflicts(edges, subtype_edges):
+def find_subtype_conflicts(edges, relation_edges):
     typed = {}
     for edge in edges:
         if edge["edge_type"] in SUBTYPE_CONFLICTING_EDGE_TYPES:
             typed.setdefault(frozenset((edge["source"], edge["target"])), set()).add(edge["edge_type"])
     conflicts = []
-    for edge in subtype_edges:
+    for edge in relation_edges:
+        if edge["edge_type"] != "subtype_of":
+            continue
         types = typed.get(frozenset((edge["source"], edge["target"])))
         if types:
             conflicts.append({**edge, "a3_edge_types": sorted(types)})

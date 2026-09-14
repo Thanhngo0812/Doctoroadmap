@@ -32,6 +32,7 @@ class Canonicalize:
                   "embedding_text": "candidate.name", "vector_formula": "unit(mean(unit(member_vectors)))",
                   "graph": self.graph_config, "reasoning": self.reasoning.config() if self.reasoning else None,
                   "subtype_rule": "a3-conflict-log-v1",
+                  "relation_rule": "open-v1",
                   "stage": "complete" if self.reasoning else "nominations" if self.embedding else "names"}
         config_hash = digest(config)
         cached = self.store.find_canonical(doc_id, source.manifest["source_hash"], config_hash)
@@ -70,14 +71,25 @@ class Canonicalize:
         edges, edge_metrics = remap_edges(nodes, extraction.edges)
         subtype_conflicts = find_subtype_conflicts(edges, extra_edges)
         log.extend({"stage": "subtype_conflicts_a3", "edge": edge} for edge in subtype_conflicts)
+        a3_triples = {(e["source"], e["target"], e["edge_type"]) for e in edges}
+        a3_pairs = {frozenset((e["source"], e["target"])) for e in edges}
+        relation_same_as_a3 = relation_other_type_than_a3 = relation_new_pair = 0
         for extra in extra_edges:
-            existing = next((e for e in edges if (e["source"], e["target"], e["edge_type"]) ==
-                             (extra["source"], extra["target"], extra["edge_type"])), None)
+            triple = (extra["source"], extra["target"], extra["edge_type"])
+            if triple in a3_triples:
+                relation_same_as_a3 += 1
+            elif frozenset((extra["source"], extra["target"])) in a3_pairs:
+                relation_other_type_than_a3 += 1
+            else:
+                relation_new_pair += 1
+            existing = next((e for e in edges if (e["source"], e["target"], e["edge_type"]) == triple), None)
             if existing is None:
                 edges.append(extra)
             else:
                 existing.setdefault("chunk_ids", [])
                 existing["chunk_ids"] = sorted(set(existing["chunk_ids"]) | set(extra["chunk_ids"]))
+                existing["origins"] = sorted(set(existing["origins"]) | set(extra["origins"]))
+                existing.setdefault("reason", extra["reason"])
         quality = candidate_warnings(extraction.entities, {c.chunk_id: c.parent_section_id for c in chunks.result.chunks})
         old = previous.payload["nodes"] if previous else []
         redirect = redirects(old, nodes, previous.payload.get("redirects") if previous else None)
@@ -92,6 +104,9 @@ class Canonicalize:
                    "type_tie_count": sum(row.get("action") == "type_tie" for row in log),
                    "redirect_count": len(redirect), **edge_metrics, **nominations["metrics"], **reasoning_metrics,
                    "final_edge_count": len(edges), "subtype_conflicts_a3": len(subtype_conflicts),
+                   "relation_same_as_a3": relation_same_as_a3,
+                   "relation_other_type_than_a3": relation_other_type_than_a3,
+                   "relation_new_pair": relation_new_pair,
                    "deferred_ratio": len(deferred)/len(groups) if groups else 0}
         for id in set(previous.payload.get("redirects", {})) & {n["node_id"] for n in nodes} if previous else []:
             log.append({"action": "restore_id", "node_id": id})
