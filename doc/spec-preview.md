@@ -1,5 +1,12 @@
 # Luồng mới (bản đầy đủ): Extract song song → Agent merge theo cụm → Mention map → Agent edge định tuyến
 
+> ⚠️ **KHÔNG PHẢI NGUỒN CHÂN LÝ.** Nguồn chân lý là [`spec-addendum.md`](./spec-addendum.md).
+> Tài liệu này mô tả cùng một hệ thống bằng hệ nhãn khác (T1–T4 thay vì A1–A13) và **đã lỗi thời ở
+> một số chỗ** — đáng kể nhất là hệ kiểu node/cạnh: bản chân lý nay dùng **hệ kiểu mở** với `node_type`
+> và `edge_type` do LLM tự đặt, chỉ đóng cạnh `requires`; và mọi thuật toán thứ tự (§9 quality gate,
+> §9 cycle, §10 layering ở đây) **chỉ được đọc cạnh `requires`** trên node `learnable = true`.
+> Giữ lại tài liệu này làm tham chiếu lịch sử và cho phần phụ lục hướng nghiên cứu.
+
 Tài liệu tự chứa, đặc tả chi tiết Pha A (ingestion) phiên bản cuối. Đầu vào: 1 tài liệu PDF/DOCX. Đầu ra: bảng node khái niệm canonical + đồ thị tiên quyết (DAG, mọi edge có confidence + evidence) + lộ trình học theo giai đoạn + chỉ mục vector đã gắn stage — sẵn sàng cho pha học online (tutor agent scoped RAG, quiz, unlock).
 
 ## 1. Nguyên tắc thiết kế và phân quyền

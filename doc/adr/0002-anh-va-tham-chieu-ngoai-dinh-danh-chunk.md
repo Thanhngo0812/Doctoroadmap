@@ -27,6 +27,10 @@ Các quyết định sau tạo thành một khối, không áp dụng riêng l�
    không nhân đôi ma trận ô sang artifact chunk.
 6. **Dấu vết vào văn bản, nội dung ra chỗ khác.** Nội dung phi văn xuôi để lại marker trung tính ngôn ngữ
    (`[figure]`, `[formula]`) tại đúng vị trí; byte ảnh hoặc raw công thức nằm ngoài text embed.
+7. **Dấu vết hình không được mồ côi im lặng.** Figure mà parser nhìn thấy nhưng không lấy được byte vẫn giữ
+   marker `[figure]` và bắt buộc phát `missing_image` kèm vị trí/lý do. Quy tắc áp dụng cho mọi định dạng.
+   Với DrawingML không thành figure trong cây, parser đọc tín hiệu OOXML và phát cùng cảnh báo, hướng dẫn dùng
+   LibreOffice; đây là trạng thái suy giảm hợp lệ duy nhất khi không thể tạo `image_ref`.
 
 Tra bảng Adobe Symbol cho PDF là một phỏng đoán có kiểm soát: Docling không cung cấp font ở provenance, nhưng
 ký tự `U+F000–U+F0FF` không có nghĩa văn bản hợp lệ để giữ nguyên. Adapter ánh xạ toàn bộ entry có đích
@@ -62,6 +66,8 @@ và chưa có quyết định về vai trò hình trong topo, chu trình hoặc 
 ## Consequences
 
 - Parse artifact sở hữu cả `tree.json` và `images/<image_id>.png`; ảnh sống và chết cùng version parse.
+- Ảnh raster nhúng trong DOCX đi cùng đường băm/lưu/tham chiếu như ảnh PDF. LibreOffice chỉ là phụ thuộc tuỳ
+  chọn để render DrawingML; thiếu nó không làm mất im lặng.
 - Đổi scale làm đổi mọi `image_id` có byte PNG thay đổi. Điểm yếu này được chấp nhận vì `image_refs` không nằm
   trong khoá băm chunk, nên riêng thay đổi ảnh không làm đổi `chunk_id` khi text và ranh giới chunk giữ nguyên.
 - Chunk text chỉ chứa caption hoặc marker `[figure]`; không chứa hash, path hay base64.

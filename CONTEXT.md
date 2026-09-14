@@ -11,6 +11,26 @@ các giai đoạn học tuần tự.
 Cây các khối nội dung mà parser trả về từ một tài liệu, đã có thứ tự đọc toàn cục và cấp heading.
 _Tránh dùng_: markdown, plain text, parse output
 
+**Cây khai báo**:
+Phân cấp heading lấy trực tiếp từ level/style mà nguồn hoặc parser cung cấp. Khi có từ hai level phân biệt trở
+lên, đây là dữ liệu được tin sau đánh số tường minh trong text.
+_Tránh dùng_: cây DOCX, level đúng mặc định, cây suy diễn
+
+**Cây thoái hoá**:
+Cây khai báo không còn biểu diễn phân cấp, thường vì mọi heading cùng level hoặc không có level. Chỉ trường hợp
+này mới rơi về luật suy cấp từ text.
+_Tránh dùng_: cây phẳng đúng, PDF tree, cây lỗi chung chung
+
+**Run định dạng**:
+Mảnh text riêng do thay đổi định dạng nội tuyến như chữ đậm, tên mã hoặc font trong cùng một câu. Với dòng chảy
+không có bbox, các run liền nhau được nối trước khi tách câu/chunk nếu không chạm guard liệt kê.
+_Tránh dùng_: đoạn văn, dòng, page fragment
+
+**Khối phi ngôn ngữ**:
+Leaf block đủ dài nhưng có tỉ lệ chữ cái Unicode quá thấp, như dòng kẻ toàn dấu chấm. Khối bị loại khỏi text
+chunk kèm cảnh báo và đoạn đầu để audit; node gốc vẫn ở parse artifact.
+_Tránh dùng_: block rác im lặng, ký hiệu ngắn, công thức
+
 **Leaf block**:
 Khối nội dung nhỏ nhất mà parser nhận diện — một đoạn văn, một bảng, một công thức, một caption.
 Đây là đơn vị gốc để cắt chunk.
@@ -96,13 +116,42 @@ _Tránh dùng_: cache, snapshot, output
 
 ### Khái niệm và đồ thị
 
+**Thực thể**:
+Một đơn vị trong đồ thị: khái niệm, hình, bảng, hoặc bất kỳ kiểu nào mô hình tự đặt như `theorem`, `tool`,
+`protocol`. Kiểu là nhãn mở; mọi luật hợp nhất và mô tả áp cho thực thể nói chung, không riêng khái niệm.
+_Tránh dùng_: concept (khi ý là mọi kiểu), entity
+
 **Ứng viên**:
-Một khái niệm do bước trích xuất đề xuất từ đúng một window, chưa qua kiểm định trùng lặp.
+Một thực thể do bước trích xuất sinh ra từ đúng một window, chưa qua kiểm định trùng lặp.
 _Tránh dùng_: candidate concept, concept thô
 
 **Node canonical**:
-Một khái niệm đã chốt danh tính sau khi hợp nhất các ứng viên trùng — có tên chuẩn, tập alias, mô tả hợp nhất.
+Một thực thể đã chốt danh tính sau khi hợp nhất các ứng viên trùng — có tên chuẩn, tập alias, mô tả hợp nhất.
 _Tránh dùng_: concept, entity, node
+
+**Cặp nghi trùng**:
+Hai nhóm ứng viên mang tên khác nhau nhưng bị nghi là cùng một thực thể — vì chung alias, tên gần giống hoặc
+tên gần nghĩa — nên được đưa cho mô hình phán. Ngoài các ứng viên trùng tên khít, chỉ cặp nghi trùng mới có
+cơ hội được gộp.
+_Tránh dùng_: cặp ứng viên, cặp trùng, candidate pair
+
+**Tên chuẩn**:
+Tên hiển thị của một node canonical — tên gọi đầy đủ mà chính tài liệu dùng nhiều nhất trong số tên của các
+ứng viên thuộc node; alias không tranh làm tên chuẩn. Chữ viết tắt chỉ làm tên chuẩn khi các ứng viên không
+có tên gọi đầy đủ nào. Đếm không chồng lấn: một lần xuất hiện của tên dài không được tính cho tên ngắn nằm trong nó.
+_Tránh dùng_: tên chính, primary name, label
+
+**Alias**:
+Tên gọi khác mà chính tài liệu dùng cho cùng một thực thể, kể cả tên ở ngôn ngữ khác và chữ viết tắt tài
+liệu thật sự dùng; luôn kèm câu bằng chứng. Alias là lý do để đem hai ứng viên ra phán trùng, không phải bằng
+chứng rằng chúng đã trùng.
+_Tránh dùng_: bí danh tự sinh, từ đồng nghĩa
+
+**Ký hiệu**:
+Dạng viết toán học không chứa từ ngữ nào mà tài liệu dùng thay cho một thực thể — `μ`, `x`, `t α`,
+`P(A|B)`, một chữ cái đơn. Khác alias: không dùng để đề cử hay gộp ứng viên, không làm tên chuẩn, không dùng
+để khớp mention, và `F` khác `f`. Chữ viết tắt như `ML`, `JWT` là alias, không phải ký hiệu.
+_Tránh dùng_: alias ký hiệu, biến, notation
 
 **Provenance**:
 Tập chunk nơi một khái niệm được **dạy** hoặc **định nghĩa**.
@@ -119,8 +168,8 @@ ngữ nghĩa.
 _Tránh dùng_: index, bảng tra
 
 **Cụm ứng viên**:
-Nhóm các ứng viên **nghi là cùng một khái niệm**, gom theo độ giống ngữ nghĩa để đem đi kiểm định trùng lặp.
-Sau kiểm định thì co về một node.
+Nhóm các ứng viên **nghi là cùng một thực thể**, gom từ các cặp nghi trùng để mô hình phán trong một lượt.
+Sau kiểm định ra một hoặc nhiều node canonical.
 _Tránh dùng_: cụm, cluster
 
 **Cụm chủ đề**:

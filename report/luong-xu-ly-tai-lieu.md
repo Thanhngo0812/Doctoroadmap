@@ -1,6 +1,6 @@
 # Báo cáo chi tiết luồng xử lý tài liệu của `doc2roadmap`
 
-**Ngày đối chiếu:** 2026-08-20  
+**Ngày đối chiếu:** 2026-08-29
 **Phạm vi code hiện có:** pha B0 — ingest PDF/DOCX, dựng cây section, tạo chunk, ráp window và lưu artifact JSON.  
 **Ngoài phạm vi code hiện có:** embedding, trích khái niệm, hợp nhất khái niệm, đồ thị tiên quyết và xếp stage của roadmap.
 
@@ -34,7 +34,7 @@ Hai định dạng đi chung luồng sau Docling nhưng khác ở adapter:
 
 ```text
 PDF  → có page/bbox → sửa reading order trang một cột theo hàng → stitch đoạn đứt trang
-DOCX → thứ tự block logic từ OOXML, thường page/bbox=None → không repair theo trang
+DOCX → thứ tự block logic từ OOXML, thường page/bbox=None → nối run định dạng, không repair theo trang
 ```
 
 Ba loại dữ liệu trung tâm:
@@ -158,7 +158,7 @@ config_hash         = SHA-256(parser + normalization + chunk + tokenizer)
 ```json
 {
   "adapter": "docling:2.114.0",
-  "adapter_version": 7,
+  "adapter_version": 8,
   "image_scale": 2.0
 }
 ```
@@ -166,7 +166,7 @@ config_hash         = SHA-256(parser + normalization + chunk + tokenizer)
 `config` đầy đủ còn chứa:
 
 - khai báo normalization;
-- `CHUNK_ALGORITHM_ID = "section-id-v7"`;
+- `CHUNK_ALGORITHM_ID = "section-id-v8"`;
 - `max_tokens`, `max_table_tokens`, `hard_cap_tokens`, `target_tokens`, `sentence_overlap`;
 - identifier của tokenizer, gồm digest model.
 
@@ -212,7 +212,8 @@ File: [`src/doc2roadmap/infrastructure/parsing/docling_parser.py`](../src/doc2ro
 3. lazy-create `DocumentConverter` ở lần gọi đầu; cấu hình PDF bật `generate_picture_images` và ghim `images_scale=2.0`;
 4. gọi `converter.convert(temp_path).document`;
 5. chuyển `DoclingDocument` qua `adapt()` thành `ParsedDocument`, gồm cây miền và dictionary byte ảnh;
-6. xóa temporary file trong `finally`, kể cả khi parse lỗi.
+6. với DOCX có `wordprocessingShape`, thêm `missing_image` hướng dẫn LibreOffice vào kênh cảnh báo hệ thống;
+7. xóa temporary file trong `finally`, kể cả khi parse lỗi.
 
 `DocumentConverter` được cache trong một instance `DoclingParser`. Nó được tái sử dụng nếu cùng process gọi parser nhiều lần; mỗi lần chạy CLI mới vẫn tạo process và converter mới.
 
@@ -254,14 +255,15 @@ Mỗi node có thể mang:
 - `level`: raw heading level;
 - `page` và `bbox`: từ provenance đầu tiên;
 - `context_prefix`: caption của non-figure item;
-- `image_id`: SHA-256 của byte PNG với node figure PDF;
+- `image_id`: SHA-256 của byte PNG với node figure ở mọi định dạng;
 - `table_rows` và `table_id`: ma trận ô Docling cùng SHA-256 của các ô đã chuẩn hoá;
 - `tree_depth`: depth khi Docling duyệt tree;
 - `raw_text` và `formula_id`: raw parser cùng content ID của công thức;
 - `reading_order`: ban đầu là thứ tự adapter nhận item.
 
-Adapter không còn gọi Markdown export làm fallback cho figure, nên data URI base64 không thể lọt vào text. Với PDF,
-mỗi hình được encode PNG, băm SHA-256 và đưa vào `ParsedDocument.images`. Regex còn gộp artifact glyph như
+Adapter không còn gọi Markdown export làm fallback cho figure, nên data URI base64 không thể lọt vào text. Với
+PDF lẫn DOCX, mỗi hình lấy được byte sẽ được encode PNG, băm SHA-256 và đưa vào `ParsedDocument.images`; figure
+không lấy được byte giữ marker và phát `missing_image` kèm lý do. Regex còn gộp artifact glyph như
 `P P P` thành `P`, nhưng không gộp từ tự nhiên như `ha ha ha`; Unicode lookbehind giữ đúng ký hiệu trong
 `các c c c`.
 
@@ -308,7 +310,9 @@ captions total/recovered/orphaned
 images_extracted
 pages_reordered
 page_breaks_stitched
+runs_stitched
 symbol_characters_mapped
+stripped_pua_bullets
 ```
 
 **Giới hạn:** trang đa cột hiện tin Docling; stitch không nối continuation bắt đầu bằng chữ hoa; node stitch giữ page/bbox của fragment đầu.
@@ -322,7 +326,14 @@ page=None
 bbox=None
 ```
 
-Adapter không repair reading order và không stitch theo trang. Một paragraph Word đi qua nhiều trang hiển thị thường vẫn là một DocItem logic.
+Adapter không repair reading order và không stitch theo trang. Sau đó, pass không-bố-cục nối chuỗi text run
+liền nhau khi cả hai không có bbox, run trước chưa kết câu và run sau không mở một mục liệt kê/đánh số mới.
+Pass nối tiếp tục trên node vừa nối, nên ba mảnh `bằng` / `Docker Compose` / `, thực hiện` thành một câu; dấu
+phẩy được gắn không thêm space. Dòng mục lục kết thúc bằng số trang và list item thật là guard không nối.
+
+Ảnh raster DOCX đi cùng đường băm/lưu/tham chiếu của PDF. DrawingML shape không render được khi thiếu
+LibreOffice tạo cảnh báo `missing_image` từ OOXML source. `runs_stitched` và `stripped_pua_bullets` ghi số lần
+xử lý vào parse stats.
 
 ### Bước 7 — Lưu parse artifact
 
@@ -375,17 +386,28 @@ section_path = []
 
 #### Nhận heading thật và heading giả
 
-Heading được suy level từ text thay vì tin tuyệt đối raw level:
+Heading dùng chuỗi bằng chứng mạnh trước, yếu sau:
 
 ```text
-CHƯƠNG 1 / PHẦN 1 / CHAPTER 1 → level 1
-1                                 → level 1
-1.2                               → level 2
-1.2.3                             → level 3
-a)                                → sâu hơn numbered heading đang mở một cấp
+1. đánh số tường minh trong text
+   1 / 1.2 / 1.2.3                              → level 1 / 2 / 3
+   A. / A) / Đ.                                  → sâu hơn numbered heading đang mở một cấp
+   chuỗi chung tiền tố + số khác nhau, có heading chen giữa
+     Kapitel 1 ... Kapitel 2 / 第1章 ... 第2章      → level 1
+   chuỗi bao trùm lồng nhau                       → level ngoài + 1
+2. raw level, nếu toàn cây khai ít nhất hai level phân biệt
+3. suy diễn hiện hành, nếu cây khai phẳng hoặc thiếu level
 ```
 
-Heading không đánh số trước numbered heading đầu tiên được coi là level 1. Heading không đánh số sau đó được coi là con của numbered level đang mở.
+Đánh số text thắng raw level khi mâu thuẫn. Heading không đánh số trong cây thoái hoá trước numbered heading
+đầu tiên được coi là level 1; sau đó được coi là con của numbered level đang mở. Ba PDF corpus khai phẳng nên
+giữ hành vi cũ; DOCX khai level 1/2 nên giữ đúng style Word.
+
+Chuỗi chương tự hiệu chỉnh không dùng danh sách từ khoá ngôn ngữ. Từ hai heading trở lên chung tiền tố có chữ
+đứng ngay trước chữ số/số La Mã khác nhau tạo một chuỗi và được miễn heuristic heading lặp. Chuỗi chỉ nhận cấp
+chương khi giữa ít nhất một cặp thành viên liên tiếp có heading khác, nên `Bài tập 1 / Bài tập 2` đứng sát nhau
+không thành chương; tiền tố chỉ có ký hiệu như `§` cũng không tham gia. Heading chương đơn lẻ và phụ lục không
+đánh số là gap đã chấp nhận và đi luật thường.
 
 Candidate heading bị hạ thành text nếu:
 
@@ -413,8 +435,9 @@ Mỗi heading thật:
 Heading không đi vào `normalized_full_text` và không sinh chunk. Tuy nhiên heading và chunk dùng chung trục `result_order`, vì vậy `Chunk.order_index` có thể có khoảng trống. Khoảng trống là vị trí của section heading, không phải mất chunk.
 
 Nếu có ít nhất bốn heading và mọi level suy ra đều giống nhau, hệ thống thêm warning `flat_heading_tree`.
-Trước khi trả result, warning không kèm raw được gom ổn định theo lần xuất hiện đầu (`... ×N`); warning chứa
-raw/location giữ từng ca. Chính danh sách result này được ghi đồng thời vào document, manifest và CLI.
+Trước khi trả result, mọi warning giống hệt toàn chuỗi được gom ổn định theo lần xuất hiện đầu (`... ×N`). Hai
+warning cùng loại nhưng khác raw/location vẫn là hai chuỗi và được giữ riêng. Chính danh sách result này được
+ghi đồng thời vào document, manifest và CLI.
 
 ### Bước 9 — Chuyển leaf block thành full text và chunk
 
@@ -422,11 +445,17 @@ Mỗi non-heading node:
 
 1. chuyển table rows thành Markdown nếu `table_rows` có dữ liệu;
 2. normalize text;
-3. gán owner là section đang ở đỉnh stack;
-4. đánh `owner.has_direct_content = True`;
-5. nối leaf vào `normalized_full_text` bằng đúng một newline giữa các leaf;
-6. ghi `char_start`/`char_end` tích lũy;
-7. đưa `_LeafBlock` vào hàng đợi chunk.
+3. loại block dài có tỉ lệ chữ cái dưới 10% và vùng mục lục gồm chuỗi dòng khớp đa số heading nội bộ; mỗi
+   vùng bị loại phát `non_linguistic_block` hoặc `toc_block` kèm excerpt;
+4. gán owner là section đang ở đỉnh stack;
+5. đánh `owner.has_direct_content = True`;
+6. nối leaf vào `normalized_full_text` bằng đúng một newline giữa các leaf;
+7. ghi `char_start`/`char_end` tích lũy;
+8. đưa `_LeafBlock` vào hàng đợi chunk.
+
+Node bị lọc vẫn tồn tại trong parse tree đóng băng; chỉ text/chunk bỏ nó. Ngưỡng chiều dài 100 ký tự bảo vệ
+khối kỹ thuật ngắn như `x = 5`. Vùng mục lục chỉ được nhận khi các dòng có số trang và có ít nhất hai ứng viên
+liền nhau, nên một câu văn nhắc một heading không bị nuốt.
 
 #### Gộp quanh mục tiêu 256 token
 
@@ -485,6 +514,11 @@ Bộ tách bỏ qua dấu kết câu nếu ký tự chữ-số có nghĩa tiếp
 - với Markdown table dài, lặp hai dòng header ở mỗi phần;
 - thêm từng row cho đến khi phần kế tiếp vượt trần;
 - row đơn lẻ vượt trần bảng tạm mang `oversize_reason="table_row_exceeds_max_tokens"` trước bước trần cứng.
+
+Bảng giữ nguyên vượt trần văn xuôi 512 nhưng chưa vượt trần bảng 2048 mang
+`oversize_reason="table_kept_whole_above_text_limit"`. Vì vậy bảng slide 513 token và bảng xstk 628 token
+được phép tồn tại nhưng không còn vượt 512 im lặng. Văn xuôi vượt 512 không có ranh câu vẫn dùng
+`sentence_splitter_no_boundary`; trong trần để `oversize_reason` rỗng.
 
 Docling adapter giữ cả Markdown text, ma trận `DocumentNode.table_rows` và `table_id` băm từ ma trận đã chuẩn
 hoá. Chunker dựng markdown từ ma trận; cấu trúc hàng cột không bị nhân đôi sang chunk artifact.
@@ -785,8 +819,11 @@ Nếu quên bump, artifact cũ có thể được tái sử dụng im lặng.
 | [`tests/unit/domain/test_normalization.py`](../tests/unit/domain/test_normalization.py) | NFC, whitespace, soft hyphen, dehyphenation và punctuation. |
 | [`tests/unit/domain/test_sentence_splitter.py`](../tests/unit/domain/test_sentence_splitter.py) | Mười ca đa chữ viết, abbreviation data, decimal và exact offset. |
 | [`tests/unit/domain/test_chunking.py`](../tests/unit/domain/test_chunking.py) | Cây/window/ID/span, ba loại ref ngoài ID, formula merge, heading filter, warning và table split. |
+| [`tests/unit/domain/test_docx_cleanup_chunking.py`](../tests/unit/domain/test_docx_cleanup_chunking.py) | Chuỗi ưu tiên heading, lọc dot/TOC, gom warning toàn chuỗi và I25. |
 | [`tests/unit/infrastructure/test_docling_adapter.py`](../tests/unit/infrastructure/test_docling_adapter.py) | Ảnh/order/stitch cùng table ID độc lập markdown/vị trí. |
+| [`tests/unit/infrastructure/test_docx_cleanup_adapter.py`](../tests/unit/infrastructure/test_docx_cleanup_adapter.py) | Ảnh/DrawingML DOCX, nối run và gỡ bullet PUA trên fixture mới. |
 | [`tests/unit/infrastructure/test_symbol_formula_adapter.py`](../tests/unit/infrastructure/test_symbol_formula_adapter.py) | Fixture xstk, Symbol PDF/DOCX, raw fallback, formula và I22–I24. |
+| [`tests/unit/test_four_document_regression.py`](../tests/unit/test_four_document_regression.py) | Số-vàng toàn pipeline và digest chunk ID của bốn tài liệu thật. |
 | [`tests/unit/infrastructure/test_docling_parser_cache.py`](../tests/unit/infrastructure/test_docling_parser_cache.py) | Converter lazy và reuse trong cùng parser instance. |
 | [`tests/unit/presentation/test_cli.py`](../tests/unit/presentation/test_cli.py) | Output tree/window/warning/parse stats của CLI. |
 
@@ -808,6 +845,8 @@ Nếu quên bump, artifact cũ có thể được tái sử dụng im lặng.
 | [`tests/fixtures/smoke.docx`](../tests/fixtures/smoke.docx) | DOCX có heading, paragraph và table thật. |
 | [`tests/fixtures/docling/nhap-mon-ml.json`](../tests/fixtures/docling/nhap-mon-ml.json) | Snapshot 170 item có 9 PNG nhúng ở scale 2.0, chạy adapter test không parse OCR lại. |
 | [`tests/fixtures/docling/xstk-ch3-1.json`](../tests/fixtures/docling/xstk-ch3-1.json) | Snapshot 992 item có 264 formula, 51 bảng và glyph Symbol để test nhanh. |
+| [`tests/fixtures/docling/baocao-canhan.json`](../tests/fixtures/docling/baocao-canhan.json) | Snapshot DOCX 396 item, 3 ảnh raster và level Word 1/2. |
+| [`tests/fixtures/docling/naive-bayes.json`](../tests/fixtures/docling/naive-bayes.json) | Snapshot slide 224 item, 2 ảnh, 13 bảng, 32 công thức và bullet PUA. |
 | [`tests/fixtures/docling/README.md`](../tests/fixtures/docling/README.md) | Nguồn, hash, cách sinh và điều kiện refresh snapshot. |
 
 ### Script
@@ -920,7 +959,9 @@ vẫn bị loại có warning. Có đúng 263 marker và 263 ref trỏ vào mark
 Mapping sửa toàn bộ glyph Symbol có Unicode đọc được. Hai `U+F0E7` là extender corporate-use không có đích
 Unicode tương đương, nên được giữ với warning `remaining_private_use: 78`; số 78 tính cả text/raw/table surface
 lưu trong parse tree, còn text chunk có hai. Đây là trạng thái I22 hợp lệ, không phải lỗi im lặng. Hash tập 126
-chunk ID là `4ee6218d79b1d67e9d42a79fa958eed8842ee8e9a2c477157253123f03316040`.
+chunk ID ở đối chiếu v7 là `4ee6218d79b1d67e9d42a79fa958eed8842ee8e9a2c477157253123f03316040`;
+số-vàng hiện tại với adapter 8/`section-id-v8` là
+`f12e2c21bfbd1ccf303266e22a961233ca649e767793a880b87b741e16d4b9f9`.
 
 Fixture thật `tests/fixtures/smoke.docx` vẫn ingest với đúng một `table_ref`, trỏ tới markdown bắt đầu bằng
 `| Name | Value |`; bài integration tương ứng xanh.
@@ -928,7 +969,7 @@ Fixture thật `tests/fixtures/smoke.docx` vẫn ingest với đúng một `tabl
 Đối chiếu test tại thời điểm viết báo cáo:
 
 ```text
-97 passed, 5 warnings
+115 passed, 5 warnings
 ```
 
 Năm warning là deprecation warning từ dependency Docling/RapidOCR/SWIG; không có test failure.
@@ -953,23 +994,25 @@ Năm warning là deprecation warning từ dependency Docling/RapidOCR/SWIG; khô
 | Formula ref ngoài chunk ID (I24) | Đổi formula ID nhưng giữ text/section không đổi `chunk_id` |
 | Raw fallback (I23) | `text` rỗng nhưng `orig` có chữ vẫn tạo node; chỉ cả hai rỗng mới bị loại |
 | Symbol guard (I22) | PUA trong chunk chỉ được tồn tại khi result có warning `remaining_private_use` |
-| Warning grouping | 300 warning lặp thành một dòng có count; warning raw giữ từng ca và thứ tự |
+| Warning grouping | 300 warning trùng toàn chuỗi thành một dòng có count; raw khác nhau giữ từng ca và thứ tự |
 | Block types | Chunk khai đủ loại block, khử trùng lặp theo thứ tự xuất hiện |
-| Heading hierarchy | Số mục `1.1.1` tạo ba level dù raw level phẳng |
+| Heading hierarchy | Đánh số thắng raw; cây khai 1/2 được tin; cây phẳng rơi về suy diễn |
 | False heading | Nội dung bị nhận nhầm heading được hạ thành text, không mất |
 | Merge boundary | Không merge qua section hoặc footnote ở domain chunker |
-| Oversize reason | Row quá dài và splitter bó tay nhận hai lý do khác nhau; chunk trong trần không có lý do |
+| Oversize reason (I25) | Bảng trên 512, row dài, splitter bó tay và hard cap đều gọi tên đường vượt; trong 512 để rỗng |
 | Splitter failure warning | Block vượt trần chỉ có một span tạo warning manifest/CLI kèm trang hoặc section |
 | Table semantics | Cắt theo row, lặp header |
 | Global sentence boundary | Mười ca Việt/Anh/Trung/Nhật/Hindi/Ả Rập cùng punctuation Khmer/Arabic mở rộng |
 | Lowercase continuation | Ba ca `… rồi`, `U.S.A. là`, `"tuyệt!" rồi` không bị cắt nhầm |
-| Table soft cap | Bảng 11×6 giữ nguyên; lead + bảng cùng chunk; văn xuôi vẫn bị chặn ở 512 |
+| Table soft cap | Bảng 11×6 giữ nguyên và khai lý do trên 512; lead + bảng cùng chunk; văn xuôi vẫn bị chặn ở 512 |
 | Hard cap I20 | Prose không boundary và hàng bảng dị thường đều bị cắt dưới trần; span/Unicode/table ID giữ đúng |
-| Adapter isolation | PDF repair không chạy với DOCX |
+| Adapter isolation | PDF repair không chạy với DOCX; nối run không-bbox không chạy trên node PDF có bbox |
 | Multi-column guard | Hai text block ngang tách rời trả `False` và giữ order; side figure không tạo cột; thiếu bbox trả `False` |
 | Same-row tolerance | Block cùng hàng được sort theo `left` dù độ lệch `top` đi ngược thứ tự trái-phải |
 | Orphan caption | Caption không có ref được giữ đúng reading order và cảnh báo đúng một lần |
-| Image isolation | DOCX không đi qua nhánh trích ảnh PDF |
+| Image parity | PDF/DOCX cùng trích byte và ref; marker thiếu byte hoặc DrawingML luôn có `missing_image` |
+| DOCX cleanup | Run ba mảnh nối theo chuỗi; bullet mới không dính; dot/TOC bị lọc nhưng section còn nguyên |
+| Corpus bốn tài liệu | Số section/chunk/ref/PUA/chữ cái, I9, ID trùng và digest chunk ID được ghim tự động |
 
 ## 12. Phát hiện và giới hạn cần lead biết
 
@@ -987,7 +1030,8 @@ F22–F24 từng làm `ADAPTER_VERSION` tăng `3 → 4` trong đợt reading-ord
 chunk algorithm `section-id-v3 → section-id-v4`; đợt bảng/tách câu tăng đúng một lần thành adapter 6 và
 `section-id-v5`; đợt ba trần chỉ tăng chunk algorithm thành `section-id-v6`, adapter vẫn là 6; đợt
 Symbol/formula tăng cả hai thành adapter 7 và `section-id-v7`. Phần kết luận F10 về artifact v3 vẫn là số liệu
-lịch sử.
+lịch sử. Đợt DOCX/dọn dẹp tăng đúng một lần thành adapter 8 và `section-id-v8`; các thay đổi ảnh, nối run,
+bullet PUA cùng dùng bump adapter này, còn cấp heading, lọc block, gom warning và I25 cùng dùng bump chunker.
 
 ### 12.1 F27 đã xử lý — `.gitignore` không còn che source code artifact store
 
@@ -1121,7 +1165,7 @@ ingest_document.py
   validate, băm, quyết định reuse parse, điều phối toàn luồng
 
 docling_parser.py
-  bytes → DoclingDocument → ParsedDocument(tree sạch + Symbol/raw/formula ID + PNG)
+  bytes → DoclingDocument → ParsedDocument(tree sạch + ảnh mọi định dạng + nối run + PUA stats)
 
 json_store.py
   đóng băng/nạp parse tree và ghi images/<sha256>.png theo parser hash
@@ -1130,7 +1174,8 @@ normalization.py
   chuẩn hóa text từng block
 
 chunking.py
-  DocumentTree → Section + Chunk(block_types, image/table/formula refs) + normalized_full_text
+  DocumentTree → lọc dot/TOC → Section theo explicit/declared/fallback
+               → Chunk(block_types, image/table/formula refs, I25) + normalized_full_text
 
 tokenizer.py + sentence_splitter.py
   đo ngân sách và cung cấp ranh giới cắt block dài
