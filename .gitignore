@@ -6,6 +6,8 @@
 /.model-cache/
 /.pytest_cache/
 /artifacts/
+# basetemp của pytest (--basetemp tmp/...): chứa candidates/canonical trích từ giáo trình
+/tmp/
 
 # --- khắp nơi, KHÔNG neo ---
 __pycache__/
@@ -31,3 +33,4 @@ Thumbs.db
 #     KHÔNG neo tests/fixtures/*.pdf — smoke PDF do scripts/create_smoke_pdf.py
 #     tự sinh, phải commit, nếu không test integration skip lặng lẽ. ---
 /*.pdf
+/*.docx
