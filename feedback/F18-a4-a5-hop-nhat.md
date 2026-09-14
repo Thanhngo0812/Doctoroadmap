@@ -1786,6 +1786,113 @@ Chỉ cần sửa nếu thiết kế này được dùng lại.
 Hướng 3 và 4 đều được nghĩ ra sau khi đã thấy lỗi trên bộ vàng này. Vì vậy chúng cần luật viết trước khi chạy mới, và
 nên xác nhận trên nhãn mới trước khi nhận.
 
+**Chủ dự án chọn hướng 4, tức luật nhất quán trên v3 (2026-09-14).** Trong trao đổi, hướng này được gọi là "hướng 3",
+vì khi ấy tôi đưa ba lựa chọn: dừng, hai lời gọi, luật nhất quán. Kế hoạch và luật chấm viết trước khi chạy nằm ở
+[ticket 09](../task/a4-quan-he-mo-2a/09-ke-hoach-dot-2-luat-nhat-quan.md); làm trên nhánh `a4-quan-he-mo-2a`.
+
+---
+
+# Vòng 26 — Kiểm thử đợt 2: luật kiểm nhất quán trên v3 (2026-09-14)
+
+Phạm vi:
+- ticket 10–13 của [`task/a4-quan-he-mo-2a/`](../task/a4-quan-he-mo-2a/), do nhân viên làm;
+- ticket 14, tôi chấm theo luật ở ticket 09.
+
+Mốc so sánh là commit `454a899` trên nhánh `a4-quan-he-mo-2a`.
+
+## Kết luận
+
+- **Nhân viên làm đúng và đủ ticket 10–13, và đóng F80, F81.** Mọi con số tự báo đều khớp khi tôi chấm độc lập. Không có
+  lỗi code nào làm sai kết quả.
+- **Theo luật: không nhận.** Precision gộp 0,946 (35/2/12), dưới ngưỡng 0,95 **đúng một ca gộp sai**. Bốn cổng còn lại
+  qua.
+- `main` và kho chính giữ nguyên. Ticket 15 không làm.
+
+## Đã kiểm
+
+| Hạng mục | Cách kiểm | Kết quả |
+|---|---|---|
+| Phạm vi | diff so với `454a899` | ✅ 5 file `src`/`scripts`, 2 file test; đúng ticket 10–12 |
+| Test | toàn bộ, chặn mạng | ✅ 294/294; `git diff --check` sạch |
+| Đột biến đợt 2 | 13 đột biến của tôi | ✅ 13/13 bị bắt (danh sách ở ticket 14) |
+| F80 | chạy lại M5, M9, M14 của vòng 25 | ✅ Cả ba giờ bị bắt; test tự nối dựng ca vá thật |
+| F81 | đọc diff, test | ✅ Có `relation_same_type_reversed_a3`; cặp nhiều nhãn đếm cho mọi nhãn |
+| Bất biến artifact | như vòng 25 | ✅ Cả bốn tài liệu |
+| Tái lập | dựng lại từ nhật ký, mô hình bị bẫy | ✅ 0 lời gọi; node, cạnh, hoãn, redirect giống hệt (xem F82) |
+| Số nhân viên báo | chấm độc lập | ✅ Khớp 35/2/12, 138 lời gọi, 8 lượt thử lại, 0 cụm hoãn |
+
+## Luật làm được gì, và mất gì
+
+- **Được:** ca gộp sai giảm từ 9 xuống 2. R1 và R2 bắt 10 mâu thuẫn trong 8 lượt thử, và cả 8 lượt phán đều sửa được ở
+  lần thử lại, không cụm nào bị hoãn.
+- **Hai ca còn lại là lỗi hệ thống.** Đó đúng là hai ca ticket 09 đã nói trước là luật không bắt được, vì không mang tín
+  hiệu mâu thuẫn: `Bài toán phân loại` / `Bài toán phân cụm`, và `Đường hồi quy mẫu Y theo X` / `Đường hồi quy mẫu`.
+  Chúng lặp lại ở một mẫu mới hoàn toàn độc lập.
+- **Mất:** 4 cặp *cùng* so với v3 lần đầu, cả 4 đều trong cụm có thử lại (F83).
+- **So với mặc định:** precision gộp 1,000 → 0,946; recall 0,660 → 0,745; F1 0,795 → 0,833; precision `subtype_of`
+  0,635 → 0,658; có thêm 35 quan hệ kiểu mở, mẫu 30 cho 70% đúng.
+
+---
+
+## F82 🟡 — Chỉ số mâu thuẫn chỉ đếm trong lần chạy — **nhân viên**
+
+**Hiện tượng.** Dựng lại artifact đợt 2 từ cache thì `partition_contradictions` và `contradiction_retried_calls` về 0,
+trong khi các dòng nhật ký được dùng lại vẫn giữ `attempts` có lỗi R1/R2.
+
+**Tác động.**
+- Ai đọc chỉ số của một lượt chạy lại sẽ tưởng không có mâu thuẫn nào.
+- Test mới khẳng định "chỉ số khớp nhật ký", nhưng điều đó chỉ đúng khi mọi lượt đều gọi mô hình thật.
+
+**Sửa, khi thiết kế này được dùng lại:** hoặc đếm từ `attempts` của mọi dòng, kể cả dòng dùng lại; hoặc ghi rõ đây là
+chỉ số của lần chạy, giống `merge_calls`, và thêm bộ đếm tương ứng cho phần dùng lại.
+
+## F83 🟡 — Lượt thử lại tách cả node, làm mất cặp đúng — **thiết kế của tôi**
+
+**Hiện tượng.** Lời báo ở lượt thử lại nói *"hãy tách hai nhóm hoặc bỏ/sửa relation"*, và mô hình tách luôn các nhóm
+khác trong node. Ví dụ:
+- `Độ chính xác` + `Độ chính xác ε` + `Độ chính xác trong ước lượng tỉ lệ`: cả ba bị tách, nên cặp đúng `Độ chính xác`
+  / `Độ chính xác ε` mất theo;
+- `Bài toán tìm kích thước mẫu` + `Xác định kích thước mẫu` + `… trong ước lượng trung bình`: tương tự.
+
+**Tác động.** Mất 4 cặp đúng, recall từ 0,809 tụt còn 0,745.
+
+**Hướng xử lý.** Lời báo có thể nói rõ hơn, kiểu *"chỉ tách hai nhóm này, giữ nguyên các nhóm khác"*. Nhưng đó là đổi
+nội dung gửi cho mô hình, tức một lần chỉnh prompt, nên chỉ được làm ở một đợt mới có nhãn mới.
+
+---
+
+## Hướng đi tiếp — chủ dự án quyết
+
+1. **Dừng.** `main` giữ mặc định: precision gộp 1,000, F1 0,795. 2b coi `subtype_of` là đề xuất cần kiểm lại. Nhánh
+   `a4-quan-he-mo-2a` giữ làm hồ sơ.
+2. **Hai lời gọi — tôi đề nghị nếu vẫn muốn có quan hệ mở.**
+   - Hai đợt vừa rồi cho thấy kênh quan hệ tự nó có ích: mẫu cho 70–73% đúng, và nó chữa được các cạnh `subtype_of` bị
+     ép chọn.
+   - Cái hại đến từ việc nhét kênh quan hệ vào **cùng lời gọi phân hoạch**: precision gộp tụt còn 0,809, luật nhất quán
+     vá lên được 0,946 nhưng không tới 0,95.
+   - Giữ nguyên prompt phân hoạch v1 thì precision gộp giữ 1,000 theo cấu trúc, vì mọi quyết định gộp lấy lại từ cache.
+     Quan hệ hỏi ở một lời gọi riêng, sau khi đã chốt node.
+3. **Không nên nới ngưỡng cho kết quả lần này.** 0,946 cách 0,95 đúng một ca, nhưng đổi ngưỡng sau khi thấy số chính là
+   điều luật viết trước khi chạy ngăn lại. Nếu chủ dự án thật sự muốn đổi cách cân giữa precision và recall (ví dụ chấp
+   nhận precision 0,93 để đổi lấy recall), đó là quyết định sản phẩm: đặt cho thí nghiệm **sau**, và xác nhận trên nhãn
+   mới.
+
+## Quyết định của chủ dự án (2026-09-14)
+
+**Chấp nhận bản nhân viên đã làm, tức v3 cộng luật kiểm nhất quán, dù precision gộp giảm còn 0,946.** Đây là quyết định
+sản phẩm, vượt lên luật chấm viết trước. Chủ dự án chọn đổi một chút precision lấy recall (0,660 → 0,745), F1 (0,795 →
+0,833) và quan hệ kiểu mở từ 2a. Các giới hạn đi kèm được ghi ở ticket 14.
+
+Hướng đi mới:
+1. **Ticket 01 (Claude):** spec D4/D5/D7, addendum, ADR 0007 và luồng 2a, gồm luật nhất quán và quyết định này.
+2. **Ticket 15 (nhân viên):**
+   - commit đợt 2 lên nhánh;
+   - chạy mẫu thứ hai trong kho riêng, với ngưỡng xác nhận viết trước: precision gộp ≥ 0,93, F1 ≥ 0,775, precision
+     `subtype_of` ≥ 0,635, cụm hỏng ≤ 1;
+   - qua thì gộp nhánh vào `main` bằng commit gộp riêng, rồi chạy kho chính theo cùng ngưỡng.
+3. **Sau đó:** đợt [`task/to-chuc-prompt/`](../task/to-chuc-prompt/) làm trên `main`, khi nhánh đã gộp xong.
+4. **Để sau, cần nhãn mới:** F83 (lượt thử lại tách cả node), và hai kiểu gộp sai hệ thống còn lại.
+
 ---
 
 # Bàn giao của nhân viên — triển khai A4/A5 (2026-09-11)
@@ -1970,3 +2077,52 @@ Nguồn triển khai: [`task/a4-quan-he-mo-2a/`](../task/a4-quan-he-mo-2a/), l�
 
 Chưa kết luận năm cổng và chưa gán mẫu 30 quan hệ: đó là ticket 07 của reviewer. Không chạy `doc2roadmap a4` vào kho
 chính và không thực hiện ticket 08.
+
+---
+
+# Bàn giao đợt 2 hướng 3 — tickets 10–13 (2026-09-14)
+
+Nguồn luật và ngưỡng được khóa trước khi chạy ở
+[`09-ke-hoach-dot-2-luat-nhat-quan.md`](../task/a4-quan-he-mo-2a/09-ke-hoach-dot-2-luat-nhat-quan.md). Nhân viên làm
+trên nhánh `a4-quan-he-mo-2a`, HEAD nền `454a899`; chưa commit, chưa gộp `main`, không chạy `doc2roadmap a4` vào kho
+chính.
+
+## Code và kiểm thử
+
+- **Ticket 10 xong.** `validate_partition` có `ContradictionError`, R1/R2 và đúng năm kiểu đồng nhất cố định. Một đầu ra
+  gom đủ mọi mâu thuẫn vào một lỗi; retry một lần bằng cơ chế cũ; lỗi cuối vẫn là mâu thuẫn thì hoãn trọn cụm.
+- **Ticket 11 xong.** Cache cũ trượt validator trở thành cache miss; chỉ bắt `ValueError`, `TypeError`, `KeyError`,
+  `IndexError`; dòng gọi mới có `cache_invalid_error`, không sinh hai dòng cùng `input_hash`.
+- **Ticket 12 xong.** Config có `partition_validation: consistency-v1`; năm chỉ số mới luôn có cả khi bằng 0; runner in
+  trực tiếp. Công thức `a4-evaluate` và năm cổng không đổi.
+- **F80 xong.** M9 đặt cạnh A3 lên cặp vàng và đột biến đếm nhầm A3 làm test đỏ. M14 dùng hai lượt merge/repair cho cùng
+  bộ ba với lý do khác nhau; đột biến giữ lý do cuối làm test đỏ. Test self-edge không còn monkeypatch: cluster gộp hai
+  nhóm, repair tách chúng trong đầu ra và đề xuất quan hệ; merge đã có khiến hai đầu về cùng node cuối, cạnh bị loại và
+  `relation_self_removed = 1`. Đây là đúng đường đã xảy ra trong arm thật ở `baocao-canhan` và `naive-bayes`.
+- **F81 xong.** Cạnh cùng kiểu nhưng đảo chiều A3 được tách sang `relation_same_type_reversed_a3`, không còn đội
+  `relation_other_type_than_a3`. Khi nhiều item vàng cùng rơi vào một cặp node, quan hệ được đếm cho mọi nhãn tương ứng,
+  không phụ thuộc thứ tự item và không còn “nhãn cuối thắng”.
+- Đột biến R1 làm đỏ 3/3 ca; đột biến R2 làm đỏ 2/2 ca; cache cũ, đếm A3, giữ reason cuối, cạnh đảo chiều và nhãn vàng
+  chồng đều đã thấy đỏ trước vá. Sau khôi phục: 70/70 test domain+A4 và **294/294 toàn suite** xanh.
+
+## Ticket 13 — arm thật lần hai
+
+Kho riêng: `artifacts/a4-ab/gemini-3.1-flash-lite-relations-v3-consistency`; judge và writer đều
+`gemini-3.1-flash-lite`. Bốn JSON nguyên văn ở ticket 13. Tổng **138 lời gọi thật** = 70 merge + 39 repair + 11
+describe + 18 check; trong đó 8 attempt là retry do R1/R2.
+
+| Tài liệu | TP | FP | FN | `subtype` đúng/sai | Mâu thuẫn / retry / hoãn |
+|---|---:|---:|---:|---:|---:|
+| `baocao-canhan` | 11 | 0 | 0 | 1 / 1 | 2 / 2 / 0 |
+| `naive-bayes` | 10 | 0 | 0 | 4 / 1 | 0 / 0 / 0 |
+| `nhap-mon-ml` | 7 | 1 | 3 | 6 / 3 | 3 / 3 / 0 |
+| `xstk-ch3-1` | 7 | 1 | 9 | 14 / 8 | 3 / 3 / 0 |
+| **Tổng** | **35** | **2** | **12** | **25 / 13** | **8 / 8 / 0** |
+
+Số thô: precision gộp `35/37 = 0,9459`, recall `35/47 = 0,7447`, F1 `70/84 = 0,8333`; precision
+`subtype_of = 25/38 = 0,6579`. Vì cổng 1 đã đăng ký là precision gộp ≥ 0,95, số hiện tại thấp hơn ngưỡng 0,0041.
+Nhân viên **không tự kết luận ticket 14** và không gán mẫu 30 quan hệ của reviewer; nhưng theo phép so số học, đợt này
+đang trượt ít nhất cổng 1 nên ticket 15 vẫn khóa.
+
+Phát lại cùng lệnh trong môi trường chặn mạng: 4/4 `reused=true`, mọi lời gọi bằng 0. Kho chính được kiểm lại vẫn giữ
+`baocao-canhan v7`, `naive-bayes v6`, `nhap-mon-ml v6`, `xstk-ch3-1 v6`.

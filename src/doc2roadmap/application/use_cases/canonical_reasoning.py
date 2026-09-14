@@ -11,7 +11,8 @@ from doc2roadmap.application.canonical_prompt import (
 from doc2roadmap.application.ports.extraction import ModelTransportError
 from doc2roadmap.domain.canonical import digest, evidence_missing_name, build_nodes
 from doc2roadmap.domain.canonical_decisions import (
-    validate_partition, split_relation_edges, guarded_components, validate_description, document_language, vietnamese, split_sentences,
+    ContradictionError, validate_partition, split_relation_edges, guarded_components,
+    validate_description, document_language, vietnamese, split_sentences,
 )
 
 
@@ -32,6 +33,7 @@ class CanonicalReasoning:
                 "generation": self.generation, "prompts": self.prompts,
                 "schemas": [PARTITION_SCHEMA, DESCRIPTION_SCHEMA, SINGLE_SCHEMA],
                 "language_rule": self.language_rule, "batch_size": self.batch_size,
+                "partition_validation": "consistency-v1",
                 "description_validation": "sentence-language-v2",
                 "source_budget": 4000, "tokenizer": getattr(self.counter, "identifier", None)}
 
@@ -46,19 +48,31 @@ class CanonicalReasoning:
         node_map = {n["node_id"]: n for n in initial_nodes}
         cache = {row["input_hash"]: row for row in previous_log if row.get("valid") and "input_hash" in row}
         logs = []
-        metrics = Counter(relation_rejected=0, relation_self_removed=0)
+        metrics = Counter(
+            relation_rejected=0, relation_self_removed=0,
+            partition_contradictions=0, contradiction_retried_calls=0,
+            contradiction_deferred_calls=0, merge_cache_invalid=0,
+            repair_cache_invalid=0,
+        )
         deferred, extra_edges, deferred_pairs = set(), [], []
         def call(stage, data, schema, validate):
             counts = Counter()
             model = self.writer if stage in {"describe", "check"} else self.judge
             phash = self.prompt_hash(stage, schema)
             key = digest([model.model_id, phash, data])
+            cache_invalid_error = None
             if key in cache:
                 row = dict(cache[key], reused=True)
-                validate(row["output"])
-                counts[stage+"_reused"] += 1
-                return row["output"], row, counts
-            error, attempts = None, []
+                try:
+                    validate(row["output"])
+                except (ValueError, TypeError, KeyError, IndexError) as exc:
+                    cache_invalid_error = str(exc)
+                    counts[stage+"_cache_invalid"] += 1
+                else:
+                    counts[stage+"_reused"] += 1
+                    return row["output"], row, counts
+            error, attempts, last_exception = None, [], None
+            saw_contradiction = False
             for attempt in range(2):
                 counts[stage+"_calls"] += 1
                 reply = None
@@ -72,17 +86,35 @@ class CanonicalReasoning:
                     validate(value)
                 except ModelTransportError:
                     raise
-                except (ValueError, TypeError, KeyError, IndexError, RuntimeError) as exc:
+                except ContradictionError as exc:
+                    last_exception = exc
+                    saw_contradiction = True
+                    counts["partition_contradictions"] += 1
                     error = str(exc)
                     attempts.append({"error": error, "raw_text": getattr(reply or exc, "raw_text", None)})
                     continue
+                except (ValueError, TypeError, KeyError, IndexError, RuntimeError) as exc:
+                    last_exception = exc
+                    error = str(exc)
+                    attempts.append({"error": error, "raw_text": getattr(reply or exc, "raw_text", None)})
+                    continue
+                if saw_contradiction:
+                    counts["contradiction_retried_calls"] += 1
                 row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
                              "input_hash": key, "input": data, "output": value, "valid": True,
                              "reused": False, "retries": attempt, "attempts": attempts}
+                if cache_invalid_error is not None:
+                    row["cache_invalid_error"] = cache_invalid_error
                 return value, row, counts
+            if saw_contradiction:
+                counts["contradiction_retried_calls"] += 1
+            if isinstance(last_exception, ContradictionError):
+                counts["contradiction_deferred_calls"] += 1
             row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
                    "input_hash": key, "input": data, "valid": False, "error": error, "retries": 1,
                    "attempts": attempts}
+            if cache_invalid_error is not None:
+                row["cache_invalid_error"] = cache_invalid_error
             counts[stage+"_invalid"] += 1
             return None, row, counts
 

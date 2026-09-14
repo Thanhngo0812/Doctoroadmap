@@ -80,8 +80,11 @@ def main():
                                                           "subtype_precision", "relations_2a_on_gold")},
                           "calls": {key: 0 if reused else stats.get(key, 0) for key in call_keys},
                           **{key: stats.get(key, 0) for key in ("relation_rejected", "relation_edges", "relation_types",
-                                                               "relation_same_as_a3", "relation_other_type_than_a3",
-                                                               "relation_new_pair", "relation_self_removed")},
+                                                               "relation_same_as_a3", "relation_same_type_reversed_a3",
+                                                               "relation_other_type_than_a3", "relation_new_pair",
+                                                               "relation_self_removed", "partition_contradictions",
+                                                               "contradiction_retried_calls", "contradiction_deferred_calls",
+                                                               "merge_cache_invalid", "repair_cache_invalid")},
                           "subtype_conflicts_a3": stats.get("subtype_conflicts_a3", 0),
                           "deferred_groups": stats.get("deferred_groups", 0)}, ensure_ascii=False), flush=True)
 

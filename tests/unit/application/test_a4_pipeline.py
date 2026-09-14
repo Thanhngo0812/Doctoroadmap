@@ -187,6 +187,7 @@ def test_real_fixture_names_nominations_and_no_network(tmp_path, monkeypatch):
 def test_reasoning_fixture_cache_and_language_invalidation(tmp_path):
     store, judge, writer = fixture_store(tmp_path), FakeModel(), FakeModel()
     reasoning = CanonicalReasoning(judge, writer)
+    assert reasoning.config()["partition_validation"] == "consistency-v1"
     first, _ = Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")
     assert first.payload["stage"] == "complete"
     assert any(n.get("description_sentences") for n in first.payload["nodes"])
@@ -205,6 +206,35 @@ def test_reasoning_fixture_cache_and_language_invalidation(tmp_path):
     assert first.payload["stats"]["merged_group_count"] == first.payload["stats"]["name_group_count"] - first.payload["stats"]["node_count"]
     assert first.payload["stats"]["cut_pairs_judged"] <= first.payload["stats"]["cut_edge_count"]
     assert isinstance(first.payload["deferred_pairs"], list)
+    for key in ("partition_contradictions", "contradiction_retried_calls",
+                "contradiction_deferred_calls", "merge_cache_invalid", "repair_cache_invalid"):
+        assert first.payload["stats"][key] == 0
+
+
+def test_invalid_cached_partition_is_replaced_by_one_model_call(tmp_path):
+    store, judge, writer = fixture_store(tmp_path), FakeModel(), FakeModel()
+    reasoning = CanonicalReasoning(judge, writer)
+    first, _ = Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")
+    payload = json.loads(json.dumps(first.payload))
+    target = next(row for row in payload["decision_log"]
+                  if row.get("stage") == "merge" and len(row["input"]["groups"]) >= 2)
+    a, b = target["input"]["groups"][:2]
+    target["output"]["relations"] = [{
+        "source": a["group_id"], "target": b["group_id"], "edge_type": "same_as",
+        "chunk_ids": [a["evidence"][0]["chunk_id"]], "reason": "stale cache fixture",
+    }]
+    store._write(first.path / "canonical.json", payload)
+    calls = len(judge.calls)
+
+    reasoning.language_rule = "same-rule-new-version"
+    second, _ = Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")
+
+    assert len(judge.calls) == calls + 1
+    assert second.payload["stats"]["merge_cache_invalid"] == 1
+    rows = [row for row in second.payload["decision_log"]
+            if row.get("input_hash") == target["input_hash"]]
+    assert len(rows) == 1 and rows[0]["reused"] is False
+    assert "R2" in rows[0]["cache_invalid_error"]
 
 
 def test_bad_model_is_deferred_and_bad_citations_keep_draft(tmp_path):
@@ -326,7 +356,7 @@ def test_evaluation_hand_computed_eight_pairs():
             {"source": "n1", "target": "n4", "edge_type": "subtype_of", "origins": ["2a"]},
             {"source": "n1", "target": "n4", "edge_type": "uses", "origins": ["2a"]},
             {"source": "n2", "target": "n1", "edge_type": "contrasts_with", "origins": ["2a"]},
-            {"source": "n3", "target": "n4", "edge_type": "uses", "origins": ["a3"]},
+            {"source": "n1", "target": "n4", "edge_type": "uses", "origins": ["a3"]},
         ]})
     second = [dict(i) for i in items]
     second[0]["label"] = "different"
@@ -338,13 +368,36 @@ def test_evaluation_hand_computed_eight_pairs():
     assert result["subtype_recall"] == 1 and result["uncertain_count"] == 1
     assert result["subtype_incorrect"] == 1 and result["subtype_precision"] == .5
     assert result["relations_2a_on_gold"] == {
-        "same": 0, "parent_child": 0, "related": 1, "different": 1,
+        "same": 1, "parent_child": 0, "related": 1, "different": 1,
     }
     excluded = evaluate_canonical(artifact, {"items": items}, exclude_subtype_items={"6"})
     assert excluded["subtype_recall"] is None
     assert excluded["subtype_precision"] == .5
     # Agreement=7/8; expected agreement=(3*2+2*3+1+1+1)/64=15/64.
     assert result["agreement"]["kappa"] == pytest.approx(41/49)
+
+
+def test_relation_on_collapsed_gold_pairs_is_counted_for_every_label():
+    groups = {id: {"group_id": id, "members": [{"candidate_id": id}]} for id in "abcd"}
+    gold = {"items": [
+        {"item_id": "related", "kind": "pair", "doc_id": "doc",
+         "groups": [groups["a"], groups["c"]], "label": "related"},
+        {"item_id": "different", "kind": "pair", "doc_id": "doc",
+         "groups": [groups["b"], groups["d"]], "label": "different"},
+    ]}
+    artifact = SimpleNamespace(version=1, payload={
+        "doc_id": "doc",
+        "nodes": [{"node_id": "n1", "members": ["a", "b"]},
+                  {"node_id": "n2", "members": ["c", "d"]}],
+        "nominations": {"edges": []},
+        "edges": [{"source": "n1", "target": "n2", "edge_type": "uses", "origins": ["2a"]}],
+    })
+
+    result = evaluate_canonical(artifact, gold)
+
+    assert result["relations_2a_on_gold"] == {
+        "same": 0, "parent_child": 0, "related": 1, "different": 1,
+    }
 
 
 def test_changed_evidence_only_invalidates_affected_merge_decisions(tmp_path):
@@ -639,43 +692,120 @@ def test_relation_on_reversed_a3_pair_with_other_type_is_counted(tmp_path, monke
     assert stats["relation_edges"] == stats["relation_other_type_than_a3"] == 1
     assert stats["relation_same_as_a3"] == stats["relation_new_pair"] == 0
     assert stats["relation_edges"] == sum(stats[key] for key in
-        ("relation_same_as_a3", "relation_other_type_than_a3", "relation_new_pair"))
+        ("relation_same_as_a3", "relation_same_type_reversed_a3",
+         "relation_other_type_than_a3", "relation_new_pair"))
+
+
+def test_relation_with_same_type_reversed_from_a3_is_not_counted_as_other_type(tmp_path, monkeypatch):
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "Race Condition")["evidence"][0]["chunk_id"]
+    pair = ["Race Condition", "Mutex"]
+    judge = NamedJudge(relation=(pair[0], pair[1], "uses", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+
+    stats = result.payload["stats"]
+    assert stats["relation_edges"] == stats["relation_same_type_reversed_a3"] == 1
+    assert stats["relation_other_type_than_a3"] == 0
 
 
 def test_duplicate_relations_across_calls_are_merged_deterministically(tmp_path, monkeypatch):
     source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
     chunk = next(e for e in source["candidate_payload"]["entities"] if e["name"] == "WebSocket")["evidence"][0]["chunk_id"]
     pair = ["WebSocket", "WebSockets"]
-    judge = NamedJudge(relation=(pair[0], pair[1], "uses", chunk))
+    class DifferentReasons(NamedJudge):
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            for edge in reply.payload.get("relations", []):
+                edge["reason"] = "repair reason" if data.get("repair_of_cut_edge") else "merge reason"
+            return reply
 
-    result, _ = run_named(tmp_path, monkeypatch, judge, [pair, pair], [])
+    judge = DifferentReasons(relation=(pair[0], pair[1], "uses", chunk))
+
+    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [(pair[0], pair[1])])
 
     names = {n["node_id"]: n["name"] for n in result.payload["nodes"]}
     edges = [e for e in result.payload["edges"]
              if (names[e["source"]], names[e["target"]], e["edge_type"]) == (*pair, "uses")]
     assert len(edges) == 1
+    assert edges[0]["reason"] == "merge reason"
     assert result.payload["stats"]["relation_edges"] == 1
 
 
-def test_relation_whose_groups_end_in_one_node_is_removed_and_counted(tmp_path, monkeypatch):
+@pytest.mark.parametrize("always_contradictory", [False, True])
+def test_contradictory_partition_is_retried_then_applied_or_deferred(
+    tmp_path, monkeypatch, always_contradictory
+):
     pair = ["WebSocket", "WebSockets"]
 
-    def bypass_partition_relation(value, sources):
-        a, b = list(sources)[:2]
-        chunk = sources[a][0]
-        return ([{"source": a, "target": b, "edge_type": "uses",
-                  "chunk_ids": [chunk], "reason": "fixture"}], [])
+    class ContradictingJudge(NamedJudge):
+        partition_calls = 0
 
-    monkeypatch.setattr(
-        "doc2roadmap.application.use_cases.canonical_reasoning.split_relation_edges",
-        bypass_partition_relation,
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            if "groups" in data:
+                self.partition_calls += 1
+                if always_contradictory or self.partition_calls == 1:
+                    ids = [group["group_id"] for group in data["groups"]]
+                    reply.payload = {
+                        "nodes": [{"groups": ids, "reason": "fixture"}], "deferred": [],
+                        "relations": [{"source": ids[0], "target": ids[1], "edge_type": "uses",
+                                       "chunk_ids": [data["groups"][0]["evidence"][0]["chunk_id"]],
+                                       "reason": "contradictory fixture"}],
+                    }
+                    reply.raw_text = "contradictory fixture"
+            return reply
+
+    judge = ContradictingJudge(partition={frozenset(pair): [pair]})
+    result, nodes = run_named(tmp_path, monkeypatch, judge, [pair], [])
+    row = next(item for item in result.payload["decision_log"] if item.get("stage") == "merge")
+    stats = result.payload["stats"]
+
+    assert "R1" in row["attempts"][0]["error"]
+    contradiction_attempts = sum(
+        "R1:" in attempt["error"] or "R2:" in attempt["error"]
+        for item in result.payload["decision_log"]
+        for attempt in item.get("attempts", [])
     )
-    judge = NamedJudge(partition={frozenset(pair): [pair]})
+    assert stats["partition_contradictions"] == contradiction_attempts
+    assert stats["partition_contradictions"] == (2 if always_contradictory else 1)
+    assert stats["contradiction_retried_calls"] == 1
+    assert stats["contradiction_deferred_calls"] == int(always_contradictory)
+    if always_contradictory:
+        assert row["valid"] is False and len(result.payload["deferred"]) == 2
+        assert all(frozenset([name]) in nodes for name in pair)
+    else:
+        assert row["valid"] is True and row["retries"] == 1
+        assert frozenset(pair) in nodes
 
-    result, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
 
+def test_relation_from_repair_between_groups_merged_by_cluster_is_removed(tmp_path, monkeypatch):
+    pair = ["WebSocket", "WebSockets"]
+    third = "Giao thức WebSockets"
+    source = json.loads(Path("tests/fixtures/a4/baocao-canhan/input.json").read_text(encoding="utf-8"))
+    chunk = next(e for e in source["candidate_payload"]["entities"]
+                 if e["name"] == pair[0])["evidence"][0]["chunk_id"]
+
+    class RepairRelation(NamedJudge):
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            if data.get("repair_of_cut_edge"):
+                by = {group["name"]: group["group_id"] for group in data["groups"]}
+                reply.payload["relations"] = [{
+                    "source": by[pair[0]], "target": by[pair[1]], "edge_type": "uses",
+                    "chunk_ids": [chunk], "reason": "repair fixture",
+                }]
+            return reply
+
+    judge = RepairRelation(partition={frozenset(pair): [pair]})
+    result, nodes = run_named(tmp_path, monkeypatch, judge, [pair], [(pair[1], third)])
+
+    assert frozenset(pair) in nodes
     assert result.payload["stats"]["relation_self_removed"] == 1
-    assert not [e for e in result.payload["edges"] if "2a" in e["origins"]]
+    assert not [edge for edge in result.payload["edges"] if "2a" in edge["origins"]]
 
 
 @pytest.mark.parametrize("repair", ["uncertain", "invalid"])

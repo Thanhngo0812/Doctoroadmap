@@ -197,6 +197,24 @@ nó đã gộp: 7/9 ca gộp sai nằm trong node có quan hệ tự mâu thuẫ
 Bản thân kênh quan hệ thì có ích: 6/11 cặp *liên quan* từng bị gắn `subtype_of` sai được gắn kiểu đúng hơn. Chi tiết,
 mẫu kèm nhãn, và các hướng đi tiếp nằm ở ticket 07 và feedback F18, vòng 25.
 
+**Đợt 2, thêm luật kiểm nhất quán (2026-09-14) — cũng không nhận.** Giữ prompt v3, thêm luật:
+- quan hệ nối hai nhóm mà mô hình đã gộp chung node, hoặc quan hệ đồng nhất giữa hai node tách riêng, đều coi là đầu ra
+  tự mâu thuẫn;
+- gặp mâu thuẫn thì bắt mô hình phán lại một lần.
+
+Kết quả trên một mẫu mới (138 lời gọi flash-lite):
+- **gộp:** 35 / 2 / 12, precision 0,946, F1 0,833;
+- **`subtype_of`:** precision 0,658;
+- **quan hệ khác:** mẫu 30 cho 70% đúng;
+- **luật bắt mâu thuẫn:** 8 lượt thử, cả 8 sửa được, 0 cụm bị hoãn.
+
+Trượt ngưỡng precision gộp đúng một ca. Hai ca gộp sai còn lại không mang tín hiệu mâu thuẫn, và lặp lại đúng như ở lần
+đầu. Lượt thử lại làm mất 4 cặp đúng vì mô hình tách cả node. Chi tiết ở ticket 14 và feedback F18, vòng 26.
+
+**Chủ dự án chấp nhận bản này (2026-09-14),** đổi precision gộp 1,000 → 0,946 lấy recall, F1 và quan hệ kiểu mở. Bản
+này chỉ trở thành mặc định sau khi một mẫu thứ hai và lượt chạy kho chính qua ngưỡng xác nhận ở ticket 15. Tới lúc đó,
+các bảng số ở đầu báo cáo vẫn là của bản mặc định hiện hành.
+
 ## Chốt đồ thị và kênh mô tả
 
 Đã thử 13 cấu hình one-factor-at-a-time trên 47 cặp *cùng*. Cấu hình chốt giữ nguyên: k=3, ngưỡng n-gram=0,5,

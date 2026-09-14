@@ -7,8 +7,14 @@ chứ không theo trí nhớ của cuộc trao đổi.
 
 **Blocked by:** Bước 0 — chủ dự án chốt commit mốc hay không
 
-**Status:** hoãn — thay đổi không được nhận ở ticket 07, nên spec và ADR giữ nguyên. Chỉ làm nếu chủ dự án chọn
-thử tiếp.
+**Status:** todo. Chủ dự án chấp nhận v3 cộng luật kiểm nhất quán (ticket 14, 2026-09-14), nên ticket này phải xong
+trước khi ticket 15 gộp nhánh vào `main`.
+
+Ngoài các mục ở dưới, spec và ADR phải có thêm:
+- luật nhất quán R1, R2 cùng tập kiểu đồng nhất;
+- cơ chế thử lại rồi hoãn cụm, và phần sửa cache;
+- quyết định của chủ dự án kèm số liệu: precision gộp 0,946, chấp nhận thấp hơn ngưỡng cũ 0,95;
+- các giới hạn đã biết: hai kiểu gộp sai hệ thống, F83, bộ vàng do Claude gán.
 
 - [ ] **Spec A4/A5, D4:**
   - rubric: *cha–con*, *anh em / liên quan* và *khác* đều là hai node;

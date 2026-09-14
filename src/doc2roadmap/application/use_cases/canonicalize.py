@@ -73,11 +73,14 @@ class Canonicalize:
         log.extend({"stage": "subtype_conflicts_a3", "edge": edge} for edge in subtype_conflicts)
         a3_triples = {(e["source"], e["target"], e["edge_type"]) for e in edges}
         a3_pairs = {frozenset((e["source"], e["target"])) for e in edges}
-        relation_same_as_a3 = relation_other_type_than_a3 = relation_new_pair = 0
+        relation_same_as_a3 = relation_same_type_reversed_a3 = 0
+        relation_other_type_than_a3 = relation_new_pair = 0
         for extra in extra_edges:
             triple = (extra["source"], extra["target"], extra["edge_type"])
             if triple in a3_triples:
                 relation_same_as_a3 += 1
+            elif (extra["target"], extra["source"], extra["edge_type"]) in a3_triples:
+                relation_same_type_reversed_a3 += 1
             elif frozenset((extra["source"], extra["target"])) in a3_pairs:
                 relation_other_type_than_a3 += 1
             else:
@@ -105,6 +108,7 @@ class Canonicalize:
                    "redirect_count": len(redirect), **edge_metrics, **nominations["metrics"], **reasoning_metrics,
                    "final_edge_count": len(edges), "subtype_conflicts_a3": len(subtype_conflicts),
                    "relation_same_as_a3": relation_same_as_a3,
+                   "relation_same_type_reversed_a3": relation_same_type_reversed_a3,
                    "relation_other_type_than_a3": relation_other_type_than_a3,
                    "relation_new_pair": relation_new_pair,
                    "deferred_ratio": len(deferred)/len(groups) if groups else 0}

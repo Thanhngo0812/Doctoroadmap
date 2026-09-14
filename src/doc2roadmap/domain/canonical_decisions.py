@@ -15,6 +15,13 @@ def vietnamese(text):
 
 
 NON_PROSE = {"table", "code", "formula", "figure"}
+IDENTITY_EDGE_TYPES = frozenset(
+    {"same_as", "equivalent_to", "identical_to", "synonym_of", "alias_of"}
+)
+
+
+class ContradictionError(ValueError):
+    pass
 
 
 def document_language(chunks):
@@ -46,6 +53,24 @@ def validate_partition(value, source):
     for edge in value["relations"]:
         if not isinstance(edge, dict) or set(edge) != {"source", "target", "edge_type", "chunk_ids", "reason"}:
             raise ValueError("mỗi relation cần source, target, edge_type, chunk_ids, reason")
+    contradictions = []
+    for edge in value["relations"]:
+        a, b, raw_type = edge["source"], edge["target"], edge["edge_type"]
+        if a == b or a not in owner or b not in owner or not isinstance(raw_type, str):
+            continue
+        edge_type = normalize_edge_type(raw_type)
+        if owner[a] == owner[b] and edge_type not in IDENTITY_EDGE_TYPES:
+            contradictions.append(
+                f"R1: {a} → {b} ({raw_type}) nằm trong cùng node; "
+                "hãy tách hai nhóm hoặc bỏ/sửa relation"
+            )
+        elif owner[a] != owner[b] and edge_type in IDENTITY_EDGE_TYPES:
+            contradictions.append(
+                f"R2: {a} → {b} ({raw_type}) là quan hệ đồng nhất giữa hai node; "
+                "hãy gộp hai nhóm hoặc bỏ/sửa relation"
+            )
+    if contradictions:
+        raise ContradictionError("; ".join(contradictions))
     return value
 
 

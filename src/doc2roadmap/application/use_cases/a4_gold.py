@@ -193,7 +193,7 @@ def evaluate_canonical(artifact, gold, second=None, *, exclude_subtype_items=())
         captured += positive and frozenset((a["group_id"], b["group_id"])) in nominated
         node_pair = frozenset((x, y))
         annotated_pairs.add(node_pair)
-        labels_by_pair[node_pair] = item["label"]
+        labels_by_pair.setdefault(node_pair, set()).add(item["label"])
         if item["label"] == "parent_child":
             pair = (x, y) if item["child"] == 0 else (y, x)
             parent_pairs.add(pair)
@@ -208,9 +208,10 @@ def evaluate_canonical(artifact, gold, second=None, *, exclude_subtype_items=())
     for edge in artifact.payload["edges"]:
         if edge["edge_type"] == "subtype_of" or "2a" not in edge.get("origins", []):
             continue
-        label = labels_by_pair.get(frozenset((edge["source"], edge["target"])))
-        if label in relations_2a_on_gold:
-            relations_2a_on_gold[label] += 1
+        labels = labels_by_pair.get(frozenset((edge["source"], edge["target"])), ())
+        for label in labels:
+            if label in relations_2a_on_gold:
+                relations_2a_on_gold[label] += 1
     result = {"canonical_version": artifact.version, "tp": tp, "fp": fp, "fn": fn,
               "precision": precision, "recall": recall,
               "f1": 2*precision*recall/(precision+recall) if precision+recall else 0.,
