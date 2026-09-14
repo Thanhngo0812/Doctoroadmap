@@ -11,7 +11,7 @@ from doc2roadmap.application.canonical_prompt import (
 from doc2roadmap.application.ports.extraction import ModelTransportError
 from doc2roadmap.domain.canonical import digest, evidence_missing_name, build_nodes
 from doc2roadmap.domain.canonical_decisions import (
-    ContradictionError, validate_partition, split_relation_edges, guarded_components,
+    is_contradiction_error, validate_partition, split_relation_edges, guarded_components,
     validate_description, document_language, vietnamese, split_sentences,
 )
 
@@ -71,8 +71,7 @@ class CanonicalReasoning:
                 else:
                     counts[stage+"_reused"] += 1
                     return row["output"], row, counts
-            error, attempts, last_exception = None, [], None
-            saw_contradiction = False
+            error, attempts = None, []
             for attempt in range(2):
                 counts[stage+"_calls"] += 1
                 reply = None
@@ -86,30 +85,16 @@ class CanonicalReasoning:
                     validate(value)
                 except ModelTransportError:
                     raise
-                except ContradictionError as exc:
-                    last_exception = exc
-                    saw_contradiction = True
-                    counts["partition_contradictions"] += 1
-                    error = str(exc)
-                    attempts.append({"error": error, "raw_text": getattr(reply or exc, "raw_text", None)})
-                    continue
                 except (ValueError, TypeError, KeyError, IndexError, RuntimeError) as exc:
-                    last_exception = exc
                     error = str(exc)
                     attempts.append({"error": error, "raw_text": getattr(reply or exc, "raw_text", None)})
                     continue
-                if saw_contradiction:
-                    counts["contradiction_retried_calls"] += 1
                 row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
                              "input_hash": key, "input": data, "output": value, "valid": True,
                              "reused": False, "retries": attempt, "attempts": attempts}
                 if cache_invalid_error is not None:
                     row["cache_invalid_error"] = cache_invalid_error
                 return value, row, counts
-            if saw_contradiction:
-                counts["contradiction_retried_calls"] += 1
-            if isinstance(last_exception, ContradictionError):
-                counts["contradiction_deferred_calls"] += 1
             row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
                    "input_hash": key, "input": data, "valid": False, "error": error, "retries": 1,
                    "attempts": attempts}
@@ -195,6 +180,13 @@ class CanonicalReasoning:
                 metrics["repair_merged_pairs"] += 1
             else:
                 different.append((a, b))
+        # Counted from the log, reused rows included, so a rerun from cache reports what the decisions went through.
+        partition_rows = [row for row in logs if row.get("stage") in {"merge", "repair"}]
+        flags = [[is_contradiction_error(a.get("error")) for a in row.get("attempts", [])] for row in partition_rows]
+        metrics["partition_contradictions"] = sum(sum(row_flags) for row_flags in flags)
+        metrics["contradiction_retried_calls"] = sum(any(row_flags) for row_flags in flags)
+        metrics["contradiction_deferred_calls"] = sum(
+            not row["valid"] and bool(row_flags) and row_flags[-1] for row, row_flags in zip(partition_rows, flags))
         components, conflicts = guarded_components(list(group_map), same, different)
         for group in conflicts:
             deferred.update(group)

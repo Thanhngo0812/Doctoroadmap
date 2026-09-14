@@ -24,6 +24,11 @@ class ContradictionError(ValueError):
     pass
 
 
+def is_contradiction_error(error):
+    # validate_partition starts every contradiction message with its rule; reused log rows keep that text.
+    return isinstance(error, str) and error.startswith(("R1:", "R2:"))
+
+
 def document_language(chunks):
     chunks = list(chunks)
     prose = [c for c in chunks if not set(getattr(c, "block_types", None) or ["text"]) <= NON_PROSE] or chunks

@@ -78,6 +78,24 @@ def test_identity_relation_inside_one_node_is_redundant_not_contradictory():
     assert kept == [] and len(rejected) == 1
 
 
+def test_contradiction_errors_are_recognised_by_their_rule():  # F82
+    from doc2roadmap.domain.canonical_decisions import is_contradiction_error
+    source = {"a": ["ca"], "b": ["cb"]}
+    relation = {"source": "a", "target": "b", "chunk_ids": ["ca"], "reason": "fixture"}
+    one_node = {"nodes": [{"groups": ["a", "b"], "reason": "x"}], "deferred": [],
+                "relations": [{**relation, "edge_type": "uses"}]}
+    two_nodes = {"nodes": [{"groups": ["a"], "reason": "x"}, {"groups": ["b"], "reason": "y"}], "deferred": [],
+                 "relations": [{**relation, "edge_type": "same_as"}]}
+    for value in (one_node, two_nodes):
+        with pytest.raises(ContradictionError) as error:
+            validate_partition(value, source)
+        assert is_contradiction_error(str(error.value))
+    with pytest.raises(ValueError) as shape:
+        validate_partition({"nodes": [], "deferred": [], "relations": []}, source)
+    assert not is_contradiction_error(str(shape.value))
+    assert not is_contradiction_error(None)
+
+
 def test_partition_reports_every_consistency_contradiction_together():
     source = {id: ["c" + id] for id in "abcd"}
     value = {

@@ -243,6 +243,9 @@ def test_bad_model_is_deferred_and_bad_citations_keep_draft(tmp_path):
     result, _ = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(judge, writer)).execute("baocao-canhan")
     assert result.payload["deferred"]
     assert result.payload["stats"]["text_node_count"] == 46
+    # Clusters fail for a shape error, not a contradiction: they must not be counted as contradiction deferrals.
+    assert result.payload["stats"]["merge_invalid"] > 0
+    assert result.payload["stats"]["contradiction_deferred_calls"] == 0
     assert any(n.get("description_status") == "draft_fallback_invalid" for n in result.payload["nodes"])
     assert not any("outside" in (n["description"] or "") for n in result.payload["nodes"])
 
@@ -779,6 +782,41 @@ def test_contradictory_partition_is_retried_then_applied_or_deferred(
     else:
         assert row["valid"] is True and row["retries"] == 1
         assert frozenset(pair) in nodes
+
+
+def test_contradiction_metrics_survive_a_rerun_from_cache(tmp_path, monkeypatch):  # F82
+    pair = ["WebSocket", "WebSockets"]
+
+    class ContradictOnce(NamedJudge):
+        partition_calls = 0
+
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            if "groups" in data:
+                self.partition_calls += 1
+                if self.partition_calls == 1:
+                    ids = [group["group_id"] for group in data["groups"]]
+                    reply.payload = {
+                        "nodes": [{"groups": ids, "reason": "fixture"}], "deferred": [],
+                        "relations": [{"source": ids[0], "target": ids[1], "edge_type": "uses",
+                                       "chunk_ids": [data["groups"][0]["evidence"][0]["chunk_id"]],
+                                       "reason": "contradictory fixture"}],
+                    }
+            return reply
+
+    judge = ContradictOnce(partition={frozenset(pair): [pair]})
+    first, _ = run_named(tmp_path, monkeypatch, judge, [pair], [])
+    calls = judge.partition_calls
+    reasoning = CanonicalReasoning(judge, FakeModel())
+    reasoning.language_rule = "same-rule-new-version"  # new artifact, same merge decisions
+
+    second, reused = Canonicalize(JsonArtifactStore(tmp_path), embedding(), reasoning=reasoning).execute("baocao-canhan")
+
+    assert not reused and judge.partition_calls == calls
+    assert first.payload["stats"]["partition_contradictions"] == 1
+    for key in ("partition_contradictions", "contradiction_retried_calls", "contradiction_deferred_calls"):
+        assert second.payload["stats"][key] == first.payload["stats"][key]
 
 
 def test_relation_from_repair_between_groups_merged_by_cluster_is_removed(tmp_path, monkeypatch):
