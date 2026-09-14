@@ -684,8 +684,10 @@ bước: [`A4-A5-hop-nhat-thuc-the-spec.md`](./A4-A5-hop-nhat-thuc-the-spec.md).
 4. **Kiểm định theo cụm**, các cụm chạy **song song**, mỗi cụm một lời gọi, không tool. Mô hình nhận tên, alias,
    ký hiệu, kiểu, `section_path` và câu bằng chứng nguyên văn của từng nhóm — **không** nhận `description_draft`,
    vì A3 hay viết cùng một câu mô tả cho mọi mục trong một danh sách; ứng viên có câu bằng chứng không nhắc tên
-   thì code đính kèm toàn văn chunk. Mô hình chia cụm thành node; cha–con ⇒ cạnh kiểu mở `subtype_of` kèm bằng
-   chứng; phân vân ⇒ `deferred`. Mô hình **không** chọn tên, **không** viết mô tả, **không** đề xuất `requires`.
+   thì code đính kèm toàn văn chunk. Mô hình chia cụm thành node. Giữa các node đã tách, nó ghi quan hệ kiểu mở kèm
+   bằng chứng; cha–con là `subtype_of`, còn lại như `component_of`, `uses` (ADR 0007). Phân vân ⇒ `deferred`. Mô hình
+   **không** chọn tên, **không** viết mô tả, **không** đề xuất `requires`. Đầu ra tự mâu thuẫn, như gộp hai nhóm rồi
+   lại ghi quan hệ giữa chúng, thì phải phán lại.
 5. **Vá cặp bị chia**: với cạnh nghi trùng có hai đầu rơi vào hai cụm, lấy đủ mọi nhóm thành viên của hai node đã
    phán để tạo một cụm nhỏ, rồi dùng lại đúng prompt/schema phân hoạch của bước 4. Chỉ gộp khi toàn bộ hai node được
    đặt chung; hoãn ở lượt này là hoãn theo cặp, không tháo lần gộp đúng trước đó. Gộp bắc cầu còn mâu thuẫn với một
@@ -757,21 +759,26 @@ Cả hai loại agent đều được định vai là **người kiểm định/
 
 1. Rubric năm nhãn cho mỗi cặp nhóm trong cụm:
    - **cùng** — cùng một thực thể dù khác tên (alias, viết tắt, cách dịch, dạng ký hiệu khác nhau) ⇒ chung node;
-   - **cha–con** — rộng vs hẹp (vd "Regularization" vs "L2 Regularization") ⇒ hai node + cạnh `subtype_of` con →
+   - **cha–con** — rộng vs hẹp (vd "Regularization" vs "L2 Regularization") ⇒ hai node + quan hệ `subtype_of` con →
      cha, kèm bằng chứng;
-   - **anh em / liên quan** — đồng cấp hoặc chỉ liên quan (L1 vs L2, Mutex vs Pessimistic Locking) ⇒ hai node,
-     không cạnh;
+   - **anh em / liên quan** — đồng cấp hoặc chỉ liên quan (L1 vs L2, Mutex vs Pessimistic Locking) ⇒ hai node. Câu
+     trích nêu quan hệ thì kèm quan hệ kiểu mở (`component_of`, `uses`, `statistic_of`…) *(ADR 0007)*;
    - **khác** ⇒ hai node;
    - **không chắc** ⇒ không gộp, `deferred` kèm lý do, chốt ở self-review tầng 3.
 
    Phân vân thì không gộp. Không đề xuất `requires` — tiên quyết là việc của 2b.
 2. Mô hình **không** chọn tên chuẩn, **không** gộp alias, **không** viết mô tả — code lắp node, A5 viết mô tả.
-3. Code kiểm:
-   - **Nhóm**: mọi nhóm xuất hiện đúng một lần. Sai thì thử lại một lần; vẫn sai thì cả cụm `deferred`.
-   - **`subtype_of`**: phải nối hai node khác nhau trong cụm, bằng chứng thuộc một trong hai. Sai thì chỉ loại cạnh
-     đó (`subtype_rejected`).
-   - **Sau khi ánh xạ cạnh A3**: `subtype_of` trùng cặp với một cạnh A3 mang nghĩa khác "là một loại" vẫn được giữ,
-     và được ghi `subtype_conflicts_a3` (F75, luật ở D7 spec A4/A5).
+3. Code kiểm, ba lớp (D4 spec A4/A5):
+   - **Nhóm:** mọi nhóm xuất hiện đúng một lần.
+   - **Nhất quán:** quan hệ nối hai nhóm chung một node (R1), hoặc quan hệ đồng nhất nối hai node tách riêng (R2), là
+     mâu thuẫn.
+
+     Hai lớp trên sai thì thử lại một lần kèm lỗi; vẫn sai thì cả cụm `deferred`.
+   - **Từng quan hệ:** hai đầu là hai node khác nhau, bằng chứng thuộc một trong hai, có lý do, kiểu hợp lệ (không
+     `requires`, không kiểu media). Sai thì chỉ loại quan hệ đó (`relation_rejected`).
+   - **Sau khi ánh xạ cạnh A3:** quan hệ trùng bộ ba với cạnh A3 thành một cạnh, `origins: ["2a", "a3"]`. Riêng
+     `subtype_of` trùng cặp với một cạnh A3 mang nghĩa khác "là một loại" vẫn được giữ, và được ghi
+     `subtype_conflicts_a3` (F75, luật ở D7 spec A4/A5).
 
 Ví dụ một cụm: `Overfitting` (g_07), `Quá khớp` (g_12), `L2 Regularization` (g_09), `Regularization` (g_15),
 `Weight decay` (g_20 — tài liệu chỉ nhắc một lần, không đủ bằng chứng):
@@ -779,21 +786,23 @@ Ví dụ một cụm: `Overfitting` (g_07), `Quá khớp` (g_12), `L2 Regulariza
 ```json
 {
   "nodes": [
-    {"groups": ["g_07", "g_12"]},
-    {"groups": ["g_09"]},
-    {"groups": ["g_15"]}
+    {"groups": ["g_07", "g_12"], "reason": "Quá khớp là cách dịch của Overfitting"},
+    {"groups": ["g_09"], "reason": "…"},
+    {"groups": ["g_15"], "reason": "…"}
   ],
-  "subtype_of": [
-    {"child": "g_09", "parent": "g_15", "evidence_chunk_ids": ["c_0042"],
-     "reason": "L2 Regularization là một dạng Regularization"}
+  "relations": [
+    {"source": "g_09", "target": "g_15", "edge_type": "subtype_of", "chunk_ids": ["c_0042"],
+     "reason": "L2 Regularization là một dạng Regularization"},
+    {"source": "g_15", "target": "g_07", "edge_type": "prevents", "chunk_ids": ["c_0043"],
+     "reason": "Regularization được dùng để tránh overfitting"}
   ],
-  "deferred": [{"groups": ["g_20"], "reason": "chỉ được nhắc tên, không có câu nào nói nó là gì"}]
+  "deferred": [{"group_id": "g_20", "reason": "chỉ được nhắc tên, không có câu nào nói nó là gì"}]
 }
 ```
 
 **Agent suy luận edge (2b)** — quy trình bắt buộc mỗi iteration:
 
-1. Edge đề xuất từ tầng 1 phải được **xác minh lại**, không copy nguyên — extractor tầng 1 không có bối cảnh graph. `subtype_of` của 2a cũng chỉ là đề xuất phân cấp: precision đo trên bộ vàng là 0,635 (D7 spec A4/A5). Chỉ tạo edge tiên quyết **trực tiếp**; edge suy diễn xa để transitive reduction lo.
+1. Edge đề xuất từ tầng 1 phải được **xác minh lại**, không copy nguyên — extractor tầng 1 không có bối cảnh graph. Quan hệ kiểu mở của 2a, kể cả `subtype_of`, cũng chỉ là đề xuất: precision `subtype_of` đo trên bộ vàng là 0,658, và các quan hệ khác đúng khoảng 70% trên mẫu (D7 spec A4/A5). Cạnh có `origins` gồm cả `2a` lẫn `a3` là đề xuất được hai nguồn độc lập cùng nêu. Chỉ tạo edge tiên quyết **trực tiếp**; edge suy diễn xa để transitive reduction lo.
 2. Rubric confidence: **0.9+** khi văn bản nói rõ ("để hiểu X cần nắm Y") hoặc Y xuất hiện trong **câu định nghĩa nguyên văn** của X — câu bằng chứng hoặc chunk định nghĩa, **không** phải mô tả A5: mô tả do mô hình viết có thể mang kiến thức nền của mô hình, mà đây là luật cho confidence cao nhất; **0.7** khi suy luận mạnh từ mạch trình bày; **0.5** khi suy đoán; **dưới 0.5 thì không tạo edge**. Edge ngược thứ tự tài liệu chỉ được tạo khi có evidence tường minh, và trừ 0.1 confidence.
 3. Gặp khái niệm không có trong bảng node chuẩn → `flag_missing_node`, không tự tạo.
 4. Kết thúc iteration bằng **một batch JSON duy nhất**:

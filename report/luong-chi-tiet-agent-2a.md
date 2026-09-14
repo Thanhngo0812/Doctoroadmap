@@ -1,6 +1,6 @@
 # Luồng chi tiết Agent 2a — A4 hợp nhất thực thể
 
-Ngày đối chiếu: 2026-09-12
+Ngày đối chiếu: 2026-09-14 (quan hệ kiểu mở và luật nhất quán, ADR 0007)
 Nguồn chuẩn: `doc/A4-A5-hop-nhat-thuc-the-spec.md` và mã hiện hành trong
 `src/doc2roadmap/application/use_cases/canonicalize.py`,
 `src/doc2roadmap/application/use_cases/canonical_reasoning.py`.
@@ -12,14 +12,15 @@ Agent 2a là **merge judge của A4**. Nó không đọc lần lượt 200 secti
 
 1. nhóm nào là cùng một thực thể (`same`);
 2. nhóm nào phải giữ riêng (`separate`);
-3. hai node riêng có quan hệ loại–cha (`subtype_of`);
+3. giữa hai node riêng có quan hệ gì, kiểu mở: cha–con là `subtype_of`, còn lại như `component_of`, `uses`… (ADR
+   0007);
 4. trường hợp nào chưa đủ bằng chứng (`deferred`).
 
 Trong JSON thật, `same` và `separate` không phải hai trường riêng:
 
 - hai `group_id` nằm trong cùng một phần tử `nodes` nghĩa là `same`;
 - nằm trong hai phần tử `nodes` khác nhau nghĩa là `separate`;
-- `subtype_edges` và `deferred` là hai trường tường minh.
+- `relations` và `deferred` là hai trường tường minh.
 
 Chỉ `same` làm các nhóm được gộp. Ba kết quả còn lại đều giữ node tách biệt. Agent chỉ đưa ra quyết định; code kiểm
 định cấu trúc, lắp node canonical và lưu artifact.
@@ -30,7 +31,7 @@ Chỉ `same` làm các nhóm được gộp. Ba kết quả còn lại đều gi
 |---|---|---|
 | A3 | Trích ứng viên, alias, kiểu, draft và bằng chứng | Không hợp nhất xuyên section |
 | Code A4 | Gộp tên khít, dựng đồ thị, chia cụm, kiểm JSON, lắp node và remap cạnh | Không dùng cosine/ngram để tự gộp tên khác nhau |
-| Agent 2a | Phân hoạch cụm theo danh tính; đề xuất `subtype_of`; hoãn khi thiếu bằng chứng | Không chọn tên/kiểu/alias/description; không tạo `requires` |
+| Agent 2a | Phân hoạch cụm theo danh tính; đề xuất quan hệ kiểu mở giữa các node đã tách; hoãn khi thiếu bằng chứng | Không chọn tên/kiểu/alias/description; không tạo `requires` |
 | A5 | Kiểm hoặc viết mô tả có citation sau khi node đã chốt | Không đổi quyết định merge |
 | Agent 2b | Xác minh và tạo cạnh tiên quyết ở đợt sau | Không tạo hoặc hợp nhất node |
 | A13/người review | Xem log, conflict, deferred và có thể sửa quyết định | Không nằm trong runtime tự động của 2a |
@@ -54,7 +55,7 @@ flowchart TD
     I --> J{Kết quả}
     J -->|same| K[Ghi cặp cùng]
     J -->|separate| L[Ghi cặp khác]
-    J -->|subtype| M[Giữ riêng + cạnh đề xuất]
+    J -->|quan hệ| M[Giữ riêng + quan hệ đề xuất]
     J -->|deferred| N[Giữ riêng + hàng review]
     K --> O[Repair các cut edge]
     L --> O
@@ -232,7 +233,8 @@ Quy tắc đóng gói:
 
 ## 10. Bước 6 — Agent 2a phán cụm
 
-Prompt buộc agent chỉ dùng bằng chứng nguyên văn, không dùng kiến thức nền. Output schema:
+Prompt (v3) buộc agent chỉ dùng bằng chứng nguyên văn, không dùng kiến thức nền, và chỉ gọi nhóm bằng `group_id`.
+Output schema:
 
 ```json
 {
@@ -240,10 +242,11 @@ Prompt buộc agent chỉ dùng bằng chứng nguyên văn, không dùng kiến
     {"groups": ["g1", "g2"], "reason": "..."},
     {"groups": ["g3"], "reason": "..."}
   ],
-  "subtype_edges": [
+  "relations": [
     {
-      "child": "g3",
-      "parent": "g1",
+      "source": "g3",
+      "target": "g1",
+      "edge_type": "subtype_of",
       "chunk_ids": ["c_0042"],
       "reason": "..."
     }
@@ -273,15 +276,17 @@ Overfitting | Underfitting → hai node, không có cạnh taxonomy
 
 Các quan hệ ngang hàng, đối nghịch hoặc chỉ liên quan đều là `separate`.
 
-### 10.3 `subtype_of`
+### 10.3 Quan hệ kiểu mở
 
-Hai group vẫn nằm ở hai node riêng, đồng thời agent đề xuất cạnh loại–cha có chunk bằng chứng.
+Hai group vẫn nằm ở hai node riêng, đồng thời agent đề xuất một quan hệ có chunk bằng chứng. `edge_type` đọc từ `source`
+sang `target`; `subtype_of` là quan hệ loại–cha, các kiểu khác do agent đặt tên.
 
 ```text
 L2 Regularization ──subtype_of──> Regularization
+Kiểm định giả thiết thống kê ──tests──> Giả thiết thống kê
 ```
 
-Cạnh này có `proposal=true`, `confirmed=false`; nó không phải cạnh tiên quyết `requires`.
+Cạnh có `proposal=true`, `confirmed=false`, và `origins` cho biết nguồn. Nó không phải cạnh tiên quyết `requires`.
 
 ### 10.4 `deferred`
 
@@ -305,19 +310,34 @@ Mỗi `group_id` đầu vào phải xuất hiện **đúng một lần** trong `
 Output sai được gửi lại một lần kèm lỗi cụ thể. Nếu lần hai vẫn sai, toàn cụm trở thành `deferred` và không có merge.
 Raw output bị từ chối được giữ trong `decision_log` để điều tra.
 
-### 11.2 Kiểm `subtype_of` độc lập
+### 11.2 Kiểm nhất quán (R1, R2)
 
-Cạnh subtype chỉ hợp lệ khi:
+Đầu ra tự mâu thuẫn thì bị từ chối như lỗi phân hoạch: gửi lại một lần kèm lỗi, vẫn sai thì cả cụm `deferred`.
+- **R1:** một quan hệ không đồng nhất nối hai group mà chính agent đặt chung node. Ví dụ agent gộp `Pessimistic
+  Locking` với `Database Locking`, rồi lại ghi `subtype_of` giữa chúng.
+- **R2:** một quan hệ đồng nhất (`same_as`, `equivalent_to`, `identical_to`, `synonym_of`, `alias_of`) nối hai node
+  tách riêng.
 
-- child và parent đều thuộc cụm;
-- chúng nằm ở hai node khác nhau;
+Luật này không cần nhãn, vì nó chỉ dựa vào chính câu trả lời của agent. Ở lần chạy thật, 8 lượt thử bị bắt và cả 8 sửa
+được ở lần thử lại. Một cái giá đã biết: khi được báo "tách hai nhóm", agent hay tách luôn cả node (F83).
+
+### 11.3 Kiểm từng quan hệ
+
+Quan hệ chỉ hợp lệ khi:
+
+- source và target đều thuộc cụm, không `deferred`, và nằm ở hai node khác nhau;
 - có reason;
-- có ít nhất một `chunk_id` và mọi ID thuộc nguồn của child hoặc parent.
+- có ít nhất một `chunk_id` và mọi ID thuộc nguồn của source hoặc target;
+- kiểu không rỗng, không phải `requires` hay đồng nghĩa, không phải kiểu dành cho media.
 
-Subtype sai bị ghi `subtype_rejected` và bỏ riêng cạnh đó; phân hoạch `same/separate` đúng vẫn được giữ. Một cạnh
-taxonomy sai không được làm mất quyết định merge đúng.
+Quan hệ sai bị ghi `relation_rejected` và bỏ riêng; phân hoạch đúng vẫn được giữ.
 
-### 11.3 Lỗi vận chuyển
+### 11.4 Cache không còn hợp lệ
+
+Quyết định cũ trong cache mà không qua được luật kiểm hiện hành thì bị gọi lại mô hình (`<stage>_cache_invalid`), thay
+vì làm dừng cả lượt chạy.
+
+### 11.5 Lỗi vận chuyển
 
 HTTP, timeout hoặc lỗi mạng là `ModelTransportError`. Lỗi này dừng lượt A4 trước khi ghi artifact hoàn chỉnh, thay vì
 đóng băng một kết quả fallback vào cache.
@@ -367,6 +387,11 @@ Sau khi chốt component, code thực hiện phần agent 2a không được là
 - **redirect:** nếu ID cũ biến mất sau thay đổi merge, lưu ánh xạ sang node mới khi tìm được thành viên chung.
 
 Code sau đó ánh xạ cạnh A3 từ candidate ID sang canonical node ID, bỏ self-edge phát sinh do merge và khử cạnh trùng.
+
+Quan hệ của agent được map về node sau khi đã chốt node. Hai đầu rơi vào cùng node thì quan hệ bị bỏ
+(`relation_self_removed`). Quan hệ trùng bộ ba (nguồn, đích, kiểu) với cạnh A3 thành một cạnh, `origins: ["2a",
+"a3"]`: giữ các trường của A3, hợp `chunk_ids`, thêm `reason` của agent. Mọi cạnh còn lại mang `origins` của nguồn
+duy nhất của nó.
 
 Tiếp theo code so từng `subtype_of` của agent với cạnh A3 trên cùng cặp node, bất kể chiều. Các kiểu A3 được so:
 `component_of`, `uses`, `solves`, `prevents`, `causes`, `computed_by`, `contrasts_with`. Gặp trùng thì **giữ cả hai
@@ -472,12 +497,20 @@ Louvain và trả:
     {"groups": ["g3"], "reason": "Khái niệm regularization tổng quát."},
     {"groups": ["g4"], "reason": "Một kỹ thuật regularization cụ thể."}
   ],
-  "subtype_edges": [
+  "relations": [
     {
-      "child": "g4",
-      "parent": "g3",
+      "source": "g4",
+      "target": "g3",
+      "edge_type": "subtype_of",
       "chunk_ids": ["c_0043"],
       "reason": "Tài liệu nói L2 là một kỹ thuật regularization."
+    },
+    {
+      "source": "g3",
+      "target": "g1",
+      "edge_type": "prevents",
+      "chunk_ids": ["c_0044"],
+      "reason": "Tài liệu nói regularization được dùng để tránh quá khớp."
     }
   ],
   "deferred": []
@@ -494,8 +527,11 @@ Node A: Overfitting
 
 Node B: Regularization
 Node C: L2 Regularization
-Node C ──subtype_of (proposal)──> Node B
+Node C ──subtype_of (proposal, origins=[2a])──> Node B
+Node B ──prevents (proposal, origins=[2a])──> Node A
 ```
+
+Nếu agent gộp `g3` với `g4` rồi lại ghi `g4 subtype_of g3`, luật R1 bắt mâu thuẫn và agent phải phán lại cụm.
 
 Nếu evidence không chứng minh `g1 ≡ g2`, agent phải tách hoặc deferred; nó không được dựa vào kiến thức nền để gộp.
 
@@ -509,7 +545,12 @@ Nếu evidence không chứng minh `g1 ≡ g2`, agent phải tách hoặc deferr
 | `cut_edge_count` | Cạnh bị cắt cần xem xét repair |
 | `merge_calls`, `merge_reused`, `merge_invalid` | Chi phí/cache/lỗi lượt chính |
 | `repair_calls`, `repair_merged_pairs` | Chi phí và số repair thực sự gộp |
-| `subtype_rejected` | Cạnh subtype model đề xuất nhưng validator loại |
+| `relation_rejected` | Quan hệ agent đề xuất nhưng lớp kiểm từng quan hệ loại |
+| `relation_edges`, `relation_types` | Số cạnh quan hệ 2a sau khi gộp trùng, và đếm theo kiểu |
+| `relation_same_as_a3`, `relation_same_type_reversed_a3`, `relation_other_type_than_a3`, `relation_new_pair` | Quan hệ 2a so với cạnh A3 trên cùng cặp: trùng hệt, cùng kiểu ngược chiều, khác kiểu, cặp A3 chưa nối |
+| `relation_self_removed` | Quan hệ bị bỏ vì hai đầu thành một node sau lượt vá |
+| `partition_contradictions`, `contradiction_retried_calls`, `contradiction_deferred_calls` | Lượt thử bị R1/R2 bắt, số lượt phán phải thử lại, số lượt phán bị hoãn vì vẫn mâu thuẫn. Đếm từ nhật ký, kể cả quyết định dùng lại |
+| `merge_cache_invalid`, `repair_cache_invalid` | Quyết định trong cache không qua luật kiểm hiện hành nên phải gọi lại |
 | `subtype_conflicts_a3` | Cạnh subtype trùng cặp với cạnh A3 khác nghĩa "là một loại" — giữ, chỉ ghi |
 | `deferred_groups`, `deferred_pairs` | Việc chưa đủ bằng chứng |
 | `transitive_conflicts` | Mâu thuẫn same/different bắc cầu |
@@ -532,9 +573,10 @@ chạy. Xem báo cáo chạy thật, mục A/B.
 1. Chỉ exact-name được code tự gộp; mọi tên khác phải qua agent.
 2. Mỗi group xuất hiện đúng một lần trong `nodes` hoặc `deferred`.
 3. `same` là kết quả duy nhất cho phép hợp nhất.
-4. `separate`, `subtype` và `deferred` đều giữ node riêng.
-5. `subtype_of` phải có evidence thuộc nguồn hai đầu và không thay thế `requires`.
-6. Lỗi subtype không được làm mất phân hoạch đúng.
+4. `separate`, quan hệ và `deferred` đều giữ node riêng.
+5. Mọi quan hệ phải có evidence thuộc nguồn hai đầu, và không bao giờ là `requires`.
+6. Một quan hệ sai không được làm mất phân hoạch đúng. Nhưng một câu trả lời tự mâu thuẫn (R1, R2) thì bị phán lại cả
+   cụm.
 7. Repair không được tháo merge đúng đã có chỉ vì cặp repair bị deferred.
 8. Mâu thuẫn bắc cầu không được âm thầm hợp nhất.
 9. Lỗi mạng không tạo artifact fallback/cache giả.

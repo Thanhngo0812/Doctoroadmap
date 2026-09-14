@@ -46,6 +46,22 @@ sinh phiên bản nào mới hơn. Muốn sạch thì phải xoá tay phiên b�
       và trạng thái các ticket.
 - [ ] Toàn bộ test xanh, chặn mạng.
 
+## Kết quả mẫu thứ hai (2026-09-14, Claude làm theo yêu cầu của chủ dự án)
+
+Chạy ở commit `3ab74ab` (đã có sửa F82), vào kho `…-relations-v3-consistency-2`; 138 lời gọi flash-lite.
+
+| Điều kiện | Kết quả | |
+|---|---:|---|
+| Precision gộp ≥ 0,93 | 0,946 (35/2/12) | ✅ |
+| F1 gộp ≥ 0,775 | 0,833 | ✅ |
+| Precision `subtype_of` ≥ 0,635 | 0,658 | ✅ |
+| Cụm hỏng hẳn ≤ 1 | 0 | ✅ |
+
+**Mẫu này không độc lập.** 217/217 quyết định giống hệt từng byte với lần chạy ở ticket 13: với `temperature` 0,
+flash-lite trả cùng một câu trả lời cho cùng đầu vào. Vì vậy lượt này chứng minh kết quả **tái lập được**, chứ không
+chứng minh kết quả vững trước biến động ngẫu nhiên. Muốn đo biến động thì phải đổi đầu vào, tức cần tài liệu mới hoặc
+nhãn mới, không phải chạy lại.
+
 Không bắt buộc, có thể làm cùng: sửa F82 bằng cách ghi rõ nghĩa "trong lần chạy này" của các chỉ số mâu thuẫn, hoặc đếm
 từ `attempts` của mọi dòng. F83 (lượt thử lại tách cả node) **không** sửa ở đây, vì sửa nó là đổi nội dung gửi cho mô
 hình.
