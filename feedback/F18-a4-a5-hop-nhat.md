@@ -1941,6 +1941,67 @@ Nhánh `a4-quan-he-mo-2a` đã gộp hết vào `main`, nên xoá được bất
 
 ---
 
+# Vòng 28 — Kiểm thử đợt tổ chức prompt (2026-09-15)
+
+Phạm vi: ticket 01–04 của [`task/to-chuc-prompt/`](../task/to-chuc-prompt/), do nhân viên làm trên `main`, chưa commit.
+Mốc so sánh là `60755b9`.
+
+## Kết luận
+
+**Nhận.** Nhân viên làm đúng và đủ bốn ticket. Mọi con số tự báo đều khớp khi tôi kiểm độc lập. Không có lỗi nào làm
+đổi hành vi. Chỉ có một chỗ tài liệu cũ nằm ngoài phạm vi ticket (F84), tôi đã sửa.
+
+## Đã kiểm
+
+| Hạng mục | Cách kiểm | Kết quả |
+|---|---|---|
+| Dời file | `git diff --cached -M`, so blob | ✅ 10 đích `R100`; `a4-repair.txt` là file duy nhất bị xoá, và có cùng blob `7483dbd` với `a4-merge.txt` |
+| Hash vàng | tự tính trên worktree tách ở `60755b9` (trước khi dời) và trên cây mới | ✅ 7/7 hash giống hệt nhau, và giống số ghi trong test |
+| Không phụ thuộc ký tự xuống dòng | worktree mới checkout ra CRLF (`text=auto`) | ✅ Hash vẫn giống. Chữ `M` còn lại trên `a4/partition.txt` trong `git status` chỉ là CRLF ở bản làm việc; nội dung sau chuẩn hoá trùng index |
+| Test | toàn bộ, chặn socket/DNS, `HF_HUB_OFFLINE=1` | ✅ 299/299 |
+| Đột biến | 12 đột biến của tôi, khôi phục đúng từng byte | ✅ 12/12 bị bắt (danh sách dưới) |
+| A4 kho chính | `doc2roadmap a4 … --gold …`, chặn mạng | ✅ Bốn tài liệu `reused=true`, giữ v8/v7/v7/v7; không sinh phiên bản mới |
+| A3 manifest | tính lại `prompt_hash` từ file mới cho cả ba bộ few-shot | ✅ Mỗi manifest khớp đúng một bộ: báo cáo ↔ `technical-report`, naive-bayes và ML ↔ `default`, XSTK ↔ `statistics` |
+| Wheel | giải nén wheel của nhân viên, nạp prompt từ đó | ✅ Đủ 7 file A3 và 3 file A4; không có tên cũ; 7 hash tính từ gói giống hệt |
+| Tên cũ còn sót | quét toàn repo trừ `artifacts/`, `tmp/` | ✅ `src/`, `scripts/`, `tests/`, README gốc sạch; còn lại là hồ sơ, cộng F84 |
+
+Đột biến, mỗi dòng là một lần phá và test bắt được:
+
+| # | Đột biến | Test đỏ |
+|---|---|---|
+| M1–M4 | sửa một ký tự trong `a4/partition.txt`, `a3/few-shot/statistics.txt`, `a3/glean.txt`, `a4/check.txt` | hash vàng |
+| M5 | thêm `a4/unknown.txt` | danh mục, dùng chung |
+| M6 | thêm `a3/few-shot/extra.txt` | danh mục |
+| M7 | `repair` đọc `describe` | hash vàng, dùng chung |
+| M8 | `load_prompt` bỏ `strip()` | hash vàng |
+| M9 | lỗi thiếu file không nêu đường dẫn | danh mục |
+| M10 | few-shot truyền bằng đường dẫn bỏ `strip()` | hash vàng |
+| M11 | few-shot mặc định trỏ sang `statistics` | hash vàng |
+| M12 | `system` đọc nhầm `section` | hash vàng |
+
+## F84 🟢 — Tài liệu luồng A3 còn trỏ thư mục phẳng — **phạm vi ticket của tôi** · ✅ đã sửa
+
+`report/luong-xu-ly-a3-trich-thuc-the.md` (bước 3 và bảng vai trò file) vẫn ghi `application/prompts/*.txt`. README gốc
+dẫn người đọc tới file này để tra vai trò từng file, nên đây là tài liệu vận hành, không phải hồ sơ. Ticket 03 lại loại
+mọi file trong `report/` khỏi phạm vi, nên nhân viên làm đúng ticket. Tôi đã sửa hai chỗ đó sang `prompts/a3/…` và
+`prompt_library.py`.
+
+## Ghi nhận, không phải lỗi
+
+- **Test danh mục so với một danh sách viết tay**, không so với tập file mà code thực sự nạp. Ai thêm file và thêm luôn
+  tên vào danh sách thì test vẫn xanh, dù không code nào đọc file đó. Chấp nhận được: muốn thêm file thì phải sửa test,
+  tức là việc có chủ đích. Hai bộ few-shot `statistics` và `technical-report` cũng không do code nạp mà do người chạy
+  chọn bằng `--few-shot`, nên kiểm theo kiểu "code có nạp không" cũng không áp được cho chúng.
+- **`merge` và `repair` có cùng `prompt_hash`**, vì hash không chứa tên khâu. Điều này đã đúng từ trước khi dời file (hai
+  bản sao giống hệt nhau), nên đợt này không đổi gì.
+
+## Trạng thái
+
+- Đợt tổ chức prompt xong. Chủ dự án cho commit ngày 2026-09-15, gồm code, test, tài liệu và vòng review này.
+- Theo quyết định của chủ dự án, `.obsidian/` được thêm vào `.gitignore`, ở nhóm cấu hình riêng từng máy.
+
+---
+
 # Bàn giao của nhân viên — triển khai A4/A5 (2026-09-11)
 
 Ngày cập nhật: 2026-09-11. Nguồn yêu cầu: `task/a4-a5-hop-nhat/`, spec A4/A5 và ADR 0005/0006.
@@ -2172,3 +2233,26 @@ Nhân viên **không tự kết luận ticket 14** và không gán mẫu 30 quan
 
 Phát lại cùng lệnh trong môi trường chặn mạng: 4/4 `reused=true`, mọi lời gọi bằng 0. Kho chính được kiểm lại vẫn giữ
 `baocao-canhan v7`, `naive-bayes v6`, `nhap-mon-ml v6`, `xstk-ch3-1 v6`.
+
+---
+
+# Bàn giao tổ chức prompt — tickets 01–04 (2026-09-15)
+
+Nguồn yêu cầu và bằng chứng chi tiết nằm ở [`task/to-chuc-prompt/`](../task/to-chuc-prompt/). Đợt này làm trực tiếp
+trên `main`, chỉ tổ chức lại file và nơi nạp; nội dung prompt, schema, công thức hash và nơi gọi mô hình không đổi.
+
+- **Ticket 01 xong:** 11 file nguồn phẳng thành 10 file sản phẩm theo phase; `a4-merge.txt` và `a4-repair.txt` vốn có
+  cùng SHA-256 nên dùng chung `a4/partition.txt`. Cả 10 đích được Git nhận là `R100`; blob partition mới trùng blob
+  merge cũ. `prompt_library.load_prompt` thống nhất UTF-8/`strip()`/đường dẫn lỗi, còn few-shot tùy ý của A3 giữ nguyên.
+- **Ticket 02 xong:** chốt 3 hash A3 và 4 hash theo stage A4 trước khi dời. Test giữ đúng danh mục 10 file và buộc
+  merge/vá dùng chung nội dung. Ba mutation — đổi khoảng trắng, thêm file lạ, trỏ repair sai — đều làm đúng guard đỏ
+  trước khi khôi phục.
+- **Ticket 03 xong:** README prompt ghi toàn bộ quy ước và bảng tên cũ → mới; README gốc và help của runner A4 đã trỏ
+  đường dẫn mới. Quét mã, script và test không còn consumer của tên sản phẩm cũ.
+- **Ticket 04 xong:** A4 phát lại bốn tài liệu khi chặn mạng đều `reused=true`, `stage=complete`, giữ lần lượt v8/v7/v7/v7;
+  hash A3 tính từ đường dẫn mới khớp cả `config.prompt_hash` và `manifest.prompt_hash` của bốn bản ứng viên mới nhất.
+  Wheel offline chứa đủ 7 prompt A3 và 3 prompt A4, không chứa tên cũ.
+- Kiểm cuối: **299/299 test pass**, không ghi lại fixture. Tổng chi phí của toàn đợt là **0 lời gọi mô hình** và không
+  có phiên bản artifact mới. Ngoài phạm vi chỉ có `.obsidian/` không được theo dõi, có từ trước và không bị thay đổi.
+
+Đã hoàn tất phần nhân viên của cả bốn ticket; trạng thái tiếp theo theo kế hoạch là Claude review.

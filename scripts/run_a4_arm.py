@@ -38,7 +38,7 @@ class ArmStore:
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--judge-model", help="model phán cụm và vá; mặc định DOC2ROADMAP_MERGE_MODEL_ID")
-    parser.add_argument("--partition-prompt", type=Path, help="file prompt thay cho a4-merge.txt và a4-repair.txt")
+    parser.add_argument("--partition-prompt", type=Path, help="file prompt thay cho prompts/a4/partition.txt")
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--doc-id", action="append", required=True)
     parser.add_argument("--exclude-subtype-item", action="append", default=[])

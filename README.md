@@ -33,9 +33,10 @@ Artifact mặc định nằm trong `artifacts/`; ảnh nằm tại `parse_tree/<
 Ba trần chunk có thể đổi qua `DOC2ROADMAP_MAX_TOKENS` (512), `DOC2ROADMAP_MAX_TABLE_TOKENS` (2048) và
 `DOC2ROADMAP_HARD_CAP_TOKENS` (6000). Mọi giá trị được ghi vào manifest và tham gia version hash.
 
-Prompt A3 mặc định nằm trong `src/doc2roadmap/application/prompts/`: phần hướng dẫn dùng tiếng Anh, còn
-đoạn corpus few-shot giữ tiếng Việt. Có thể chọn bộ few-shot khác bằng `--few-shot` trên lệnh `extract`/`a3`
-hoặc `DOC2ROADMAP_EXTRACTION_FEW_SHOT`; nội dung được tính vào `prompt_hash`.
+Prompt A3 nằm trong `src/doc2roadmap/application/prompts/a3/`; few-shot mặc định là
+`a3/few-shot/default.txt`, còn các bộ theo loại tài liệu nằm cùng thư mục. Có thể truyền đường dẫn bất kỳ bằng
+`--few-shot` trên lệnh `extract`/`a3` hoặc `DOC2ROADMAP_EXTRACTION_FEW_SHOT`; nội dung được tính vào `prompt_hash`.
+Xem [quy ước bố cục và thay đổi prompt](src/doc2roadmap/application/prompts/README.md).
 
 Luồng A3, vai trò từng file, số đo thật và lệnh đánh giá được ghi tại
 [`report/luong-xu-ly-a3-trich-thuc-the.md`](report/luong-xu-ly-a3-trich-thuc-the.md).

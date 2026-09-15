@@ -1,4 +1,4 @@
-from pathlib import Path
+from .prompt_library import load_prompt
 
 
 def _object(properties):
@@ -25,6 +25,6 @@ SINGLE_SCHEMA = _object({"nodes": _array(_object({"node_id": STRING, "keep": {"t
 
 
 def canonical_prompts():
-    directory = Path(__file__).with_name("prompts")
-    return {stage: (directory / f"a4-{stage}.txt").read_text(encoding="utf-8").strip()
-            for stage in ("merge", "repair", "describe", "check")}
+    partition = load_prompt("a4", "partition")
+    return {"merge": partition, "repair": partition,
+            "describe": load_prompt("a4", "describe"), "check": load_prompt("a4", "check")}

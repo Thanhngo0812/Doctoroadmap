@@ -8,6 +8,12 @@ tutor…), vì mỗi phase sẽ thêm prompt mới.
 **Blocked by:** không còn. Ticket 15 của [`task/a4-quan-he-mo-2a/`](../a4-quan-he-mo-2a/) đã gộp nhánh vào `main`
 (2026-09-14, commit `c418499`), nên nhân viên làm được ngay.
 
+**Kết quả nhân viên:** tickets 01–04 hoàn tất ngày 2026-09-15; 299/299 test pass, 0 lời gọi mô hình.
+
+**Review (Claude, 2026-09-15): nhận.** Kiểm độc lập khớp mọi con số: 7/7 hash vàng giống bản trước khi dời, 12/12 đột
+biến bị bắt, kho chính dùng lại đủ bốn tài liệu, wheel đủ file. Chi tiết ở feedback F18, vòng 28. Đã commit theo lệnh
+của chủ dự án.
+
 Lưu ý: prompt phân hoạch trên `main` giờ là v3. `a4-merge.txt` và `a4-repair.txt` vẫn là hai bản sao giống hệt nhau,
 đúng như hiện trạng mô tả dưới đây. Giá trị hash vàng ở ticket 02 lấy trên `main` hiện tại, trước khi dời file.
 

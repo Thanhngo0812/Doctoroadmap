@@ -108,8 +108,9 @@ không đi vào đầu vào embedding. Số thật được bơm: `nhap-mon-ml` 
 
 ### Bước 3 — Tạo prompt có thể băm và đa phương thức
 
-`src/doc2roadmap/application/prompts/` chứa bốn khối hướng dẫn và few-shot dạng UTF-8;
-`extraction_prompt.py` chỉ còn loader, schema và logic dựng/băm. Các hướng dẫn dùng tiếng Anh, còn hai
+`src/doc2roadmap/application/prompts/a3/` chứa bốn khối hướng dẫn, còn few-shot nằm trong `a3/few-shot/`, tất cả
+dạng UTF-8. `extraction_prompt.load_prompts` đọc chúng qua hàm chung `prompt_library.load_prompt`; ngoài loader đó,
+`extraction_prompt.py` chỉ giữ schema và logic dựng/băm. Quy ước đặt và đổi prompt ở `prompts/README.md`. Các hướng dẫn dùng tiếng Anh, còn hai
 đoạn corpus minh hoạ giữ tiếng Việt. Có thể ghi đè few-shot bằng Settings/CLI mà không sửa Python.
 `prompt_hash()` băm sáu nhóm dữ liệu ảnh hưởng output: template, few-shot, model ID, tham số sinh, schema
 và seed types. Hàm không nhận key nên key không thể lọt vào hash.
@@ -297,7 +298,8 @@ XSTK ở 5,13/1000 (quá thô). Đây là tồn đọng F47 có số, không ph�
 |---|---|
 | `config.py` | Cấu hình model, key, concurrency, timeout, retry, số chiều và đường dẫn few-shot. |
 | `composition.py` | Dựng adapter/use case thật; fail-fast key; không chứa logic nghiệp vụ. |
-| `application/prompts/*.txt` | Scaffolding tiếng Anh và corpus few-shot tiếng Việt. |
+| `application/prompts/a3/**/*.txt` | Scaffolding tiếng Anh và corpus few-shot tiếng Việt. |
+| `application/prompt_library.py` | Hàm nạp prompt chung cho mọi phase, theo `prompts/<phase>/<tên>.txt`. |
 | `application/extraction_prompt.py` | Nạp prompt, dựng nội dung, JSON schema và `prompt_hash`. |
 | `application/ports/extraction.py` | Protocol session/extractor và kiểu ảnh/turn/reply. |
 | `application/ports/embedding.py` | Một cổng embedding dùng chung cho chunk/entity/media. |

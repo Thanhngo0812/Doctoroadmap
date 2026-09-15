@@ -6,6 +6,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from .prompt_library import load_prompt
+
 
 SEED_NODE_TYPES = (
     "concept",
@@ -26,20 +28,14 @@ class ExtractionPrompts:
     validation: str
 
 
-_PROMPT_DIR = Path(__file__).with_name("prompts")
-
-
-def _read_prompt(path: Path) -> str:
-    return path.read_text(encoding="utf-8").strip()
-
-
 def load_prompts(few_shot_path: Path | None = None) -> ExtractionPrompts:
     return ExtractionPrompts(
-        system=_read_prompt(_PROMPT_DIR / "system.txt"),
-        few_shot=_read_prompt(few_shot_path or _PROMPT_DIR / "few-shot.txt"),
-        section=_read_prompt(_PROMPT_DIR / "section.txt"),
-        glean=_read_prompt(_PROMPT_DIR / "glean.txt"),
-        validation=_read_prompt(_PROMPT_DIR / "validation.txt"),
+        system=load_prompt("a3", "system"),
+        few_shot=(few_shot_path.read_text(encoding="utf-8").strip()
+                  if few_shot_path else load_prompt("a3", "few-shot/default")),
+        section=load_prompt("a3", "section"),
+        glean=load_prompt("a3", "glean"),
+        validation=load_prompt("a3", "validation"),
     )
 
 

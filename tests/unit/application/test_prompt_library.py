@@ -1,0 +1,87 @@
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+from doc2roadmap.application.canonical_prompt import (
+    DESCRIPTION_SCHEMA,
+    PARTITION_SCHEMA,
+    SINGLE_SCHEMA,
+    canonical_prompts,
+)
+from doc2roadmap.application.extraction_prompt import load_prompts, prompt_hash
+from doc2roadmap.application.prompt_library import PROMPT_ROOT, load_prompt
+from doc2roadmap.application.use_cases.canonical_reasoning import CanonicalReasoning
+
+
+HASH_CHANGE_WARNING = (
+    "đổi prompt là đổi hành vi — ghi lại fixture hợp đồng, chạy lại, "
+    "chấm theo luật viết trước"
+)
+GENERATION = {"temperature": 0.0, "max_output_tokens": 8192}
+
+
+def test_product_prompt_hashes_are_intentionally_versioned():
+    a3_expected = {
+        "default": "f44cf4e10d19cf697dac08dfdcd7e91a810913f2d435dbf56bf969a082d50399",
+        "statistics": "27ba75c246fd190724e42e540421f31b660b60b15b7708ea786e8cf1d100ce18",
+        "technical-report": "12df3220b52d5be6789524a078d8877f921f51aad205c64cbcb0244833461fd6",
+    }
+    a3_actual = {
+        name: prompt_hash(
+            model_id="golden-model",
+            generation=GENERATION,
+            prompts=load_prompts(None if name == "default" else PROMPT_ROOT / "a3" / "few-shot" / f"{name}.txt"),
+        )
+        for name in a3_expected
+    }
+    model = SimpleNamespace(model_id="golden-model")
+    reasoning = CanonicalReasoning(model, model, generation=GENERATION)
+    schemas = {
+        "merge": PARTITION_SCHEMA,
+        "repair": PARTITION_SCHEMA,
+        "describe": DESCRIPTION_SCHEMA,
+        "check": SINGLE_SCHEMA,
+    }
+    a4_actual = {stage: reasoning.prompt_hash(stage, schema) for stage, schema in schemas.items()}
+    a4_expected = {
+        "merge": "068e51fe7021257c0ccd8de8d21dbfd25b84b31ff499427661fd70d864abec31",
+        "repair": "068e51fe7021257c0ccd8de8d21dbfd25b84b31ff499427661fd70d864abec31",
+        "describe": "94b1ffe0a23feab8d335136141de8eb904945f38eadd383e1eab3ab10a7d79d2",
+        "check": "f01acab2cc39818cef30ce3ed16ad618b3ec24d4b488ab6126ca2ece0902ac0c",
+    }
+
+    assert a3_actual == a3_expected, HASH_CHANGE_WARNING
+    assert a4_actual == a4_expected, HASH_CHANGE_WARNING
+
+
+def test_product_prompt_catalog_is_exact_and_loadable():
+    expected = {
+        Path("a3/system.txt"),
+        Path("a3/section.txt"),
+        Path("a3/glean.txt"),
+        Path("a3/validation.txt"),
+        Path("a3/few-shot/default.txt"),
+        Path("a3/few-shot/statistics.txt"),
+        Path("a3/few-shot/technical-report.txt"),
+        Path("a4/partition.txt"),
+        Path("a4/describe.txt"),
+        Path("a4/check.txt"),
+    }
+    actual = {path.relative_to(PROMPT_ROOT) for path in PROMPT_ROOT.rglob("*.txt")}
+
+    assert actual == expected, f"prompt thừa={sorted(actual - expected)}, thiếu={sorted(expected - actual)}"
+    assert all(load_prompt(*path.with_suffix("").parts) for path in expected if len(path.parts) == 2)
+    missing = PROMPT_ROOT / "missing" / "unknown.txt"
+    with pytest.raises(FileNotFoundError) as error:
+        load_prompt("missing", "unknown")
+    assert str(missing) in str(error.value)
+
+
+def test_merge_and_repair_share_the_only_partition_prompt():
+    prompts = canonical_prompts()
+
+    assert prompts["merge"] == prompts["repair"] == load_prompt("a4", "partition")
+    assert {path.name for path in (PROMPT_ROOT / "a4").glob("*.txt")} == {
+        "partition.txt", "describe.txt", "check.txt",
+    }
