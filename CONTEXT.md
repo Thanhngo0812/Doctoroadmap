@@ -154,12 +154,13 @@ Dạng viết toán học không chứa từ ngữ nào mà tài liệu dùng th
 _Tránh dùng_: alias ký hiệu, biến, notation
 
 **Provenance**:
-Tập chunk nơi một khái niệm được **dạy** hoặc **định nghĩa**.
-_Tránh dùng_: nguồn, xuất xứ, evidence
+Tập chunk nơi một khái niệm được **dạy** hoặc **định nghĩa**. Chỗ chỉ nêu tên — kể cả khi bước trích xuất lấy
+ứng viên từ đó, như một câu liệt kê — không phải provenance.
+_Tránh dùng_: nguồn, xuất xứ, evidence, mọi chunk đã trích ra ứng viên
 
 **Mention**:
 Một chỗ trong tài liệu nơi khái niệm được **nhắc tới**, kể cả chỉ gọi tên hoặc diễn đạt lại. Rộng hơn
-provenance và không trùng nó.
+provenance và không trùng nó; chunk trích ra ứng viên mà không dạy khái niệm đó là mention.
 _Tránh dùng_: occurrence, xuất hiện
 
 **Mention map**:
@@ -197,8 +198,37 @@ _Tránh dùng_: super section, batch section
 
 **Cặp chạm**:
 Một cặp khái niệm thuộc hai cụm chủ đề khác nhau cùng được nhắc tới trong một chunk — giả thuyết rằng giữa
-chúng có thể có quan hệ tiên quyết.
+chúng có thể có quan hệ tiên quyết. Vô hướng: chỉ là lý do để đem cặp ra phán; chiều do 2b chốt.
 _Tránh dùng_: cặp ứng viên, co-occurrence pair
+
+**Viện dẫn**:
+Khái niệm B được nhắc tới trong provenance của khái niệm A — tức lúc dạy A, tài liệu dựa vào B. Có hướng; là
+bằng chứng rẻ rằng B có thể cần biết trước A, chưa phải quan hệ tiên quyết.
+_Tránh dùng_: tham chiếu (đã dành cho hình, bảng, công thức), cặp chạm, reference
+
+**Cặp nghi tiên quyết**:
+Hai khái niệm học được mà ít nhất một nguồn đề cử — cặp chạm, viện dẫn hoặc quan hệ đề xuất — cho là có thể có
+quan hệ tiên quyết. Vô hướng. Trong pass phụ, chỉ cặp nghi tiên quyết mới có cơ hội thành `requires`.
+_Tránh dùng_: cặp ứng viên, candidate pair, cặp chạm (cặp chạm chỉ là một nguồn đề cử)
+
+**Định tuyến**:
+Luật chọn trục cho pass chính theo cấu trúc tài liệu: theo chương khi chương mục rõ, theo cụm chủ đề khi tài liệu
+phẳng, một phiên duy nhất khi tài liệu có ít khái niệm học được. Ngưỡng tính theo số khái niệm, không theo số trang.
+_Tránh dùng_: routing, luật 50 trang
+
+**Pass chính**:
+Lượt suy luận tiên quyết đi theo trục do định tuyến chọn — từng section của chương, hoặc từng cụm chủ đề. Mô hình tự
+đề xuất cạnh giữa các khái niệm trong danh sách của phiên, kèm bằng chứng.
+_Tránh dùng_: main pass, lượt mở
+
+**Pass phụ**:
+Lượt đi theo trục còn lại để bù điểm mù của pass chính. Chỉ phán các cặp nghi tiên quyết, không tự đề xuất cạnh.
+_Tránh dùng_: secondary pass, lượt kiểm
+
+**Khái niệm đích**:
+Khái niệm được dạy trong đoạn văn mà một phiên của pass chính đang đọc; phiên hỏi cần biết gì trước để hiểu nó như
+đoạn đó trình bày. Khái niệm được dạy ở nhiều nơi là khái niệm đích ở mọi nơi đó.
+_Tránh dùng_: target, node nguồn
 
 **Boundary concept**:
 Khái niệm có góp mặt trong ít nhất một cặp chạm, tức nằm ở rìa giao giữa hai cụm chủ đề.

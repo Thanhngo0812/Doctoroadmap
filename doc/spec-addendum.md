@@ -437,6 +437,13 @@ tuyệt đối. Đây là thứ B0 để lại sẵn; đừng dựng lại bằn
 
 ### A6. Semantic graph (đồ thị chủ đề thô)
 
+> **Chi tiết A6–A10 nằm ở [`A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md`](./A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md)** (2026-09-16).
+> Spec đó **sửa ba chỗ** của mục này và các mục A7, A8, Tầng 2b dưới đây: bỏ ngưỡng cosine tuyệt đối khi dựng
+> cạnh (dùng mutual-kNN và đồng xuất hiện có chuẩn hoá); trần cỡ cụm là ràng buộc cứng đếm theo khái niệm thay
+> cho lượt chẻ đệ quy; và luật "dưới 50 trang thì một phiên" đổi thành ngưỡng theo số khái niệm học được. Nó
+> cũng **hẹp hơn** một chỗ: 2b chỉ sinh `requires`, không đặt thêm kiểu cạnh mới. Khi hai tài liệu lệch nhau,
+> theo spec A6–A8.
+
 - **Mục đích**: tạo input cho bước cluster. Đây KHÔNG phải đồ thị tiên quyết — chỉ là đồ thị "liên quan".
 - **Chạy trên đồ thị đầy đủ** (mọi `node_type`) — xem §0.1.
 - **Edge thô** gồm 3 nguồn, có trọng số:
@@ -719,6 +726,8 @@ hiện; cạnh đề xuất của tầng 1 đã ánh xạ về node (bỏ cạnh
 > ngữ cảnh hai node đưa false positive gộp về 0 trên bộ vàng AI hiện tại; xem báo cáo A4/A5.
 
 ### Tầng 2b — Suy luận edge (định tuyến theo cấu trúc tài liệu)
+
+> **Thiết kế hiện hành của tầng này nằm ở [`A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md`](./A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md)** (2026-09-16): pass chính trích mở, pass phụ chỉ kiểm cặp nghi tiên quyết, không tool, chu trình giải ở tầng 3 (ADR 0008). Mục dưới đây giữ làm hồ sơ.
 
 Đơn vị phân vùng **không cố định** — chọn theo cấu trúc tài liệu, quyết định bằng heuristic ngay sau A1 (có heading phân cấp rõ hay không):
 
