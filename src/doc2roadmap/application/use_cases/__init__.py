@@ -1,4 +1,11 @@
 from .extract_entities import ExtractEntities, ExtractionSummary
+from .build_clusters import BuildClusters
+from .build_mentions import BuildMentions
+from .build_main_edges import BuildMainEdges
+from .build_secondary_edges import BuildSecondaryEdges
+from .validate_graph import ValidateGraph
+from .build_roadmap import BuildRoadmap
+from .build_learning_graph import BuildLearningGraph
 from .index_document import IndexDocument, IndexSummary, SearchDocument
 from .ingest_document import IngestDocument, IngestSummary
 from .inspect_document import InspectDocument
@@ -7,6 +14,13 @@ from .report_a3 import compare_candidate_versions, evaluate_gold, report_candida
 __all__ = [
     "ExtractEntities",
     "ExtractionSummary",
+    "BuildClusters",
+    "BuildMentions",
+    "BuildMainEdges",
+    "BuildSecondaryEdges",
+    "ValidateGraph",
+    "BuildRoadmap",
+    "BuildLearningGraph",
     "IndexDocument",
     "IndexSummary",
     "IngestDocument",

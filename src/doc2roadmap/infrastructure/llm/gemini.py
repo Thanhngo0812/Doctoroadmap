@@ -88,7 +88,7 @@ class GeminiEntityExtractor:
         system_prompt: str,
         turns: Sequence[ConversationTurn],
         response_schema: dict[str, Any],
-    ) -> str:
+    ) -> tuple[str, dict[str, int]]:
         body = {
             "systemInstruction": {"parts": [{"text": system_prompt}]},
             "contents": [
@@ -118,7 +118,12 @@ class GeminiEntityExtractor:
             text = "".join(part.get("text", "") for part in parts)
             if not text:
                 raise KeyError("text")
-            return text
+            usage = {
+                key: int(value)
+                for key, value in payload.get("usageMetadata", {}).items()
+                if isinstance(value, (int, float)) and not isinstance(value, bool)
+            }
+            return text, usage
         except (json.JSONDecodeError, KeyError, IndexError, TypeError) as error:
             raise RuntimeError("Gemini trả phản hồi không có nội dung văn bản") from error
 
@@ -162,13 +167,13 @@ class GeminiExtractionSession:
     def repair_count(self) -> int:
         return self._repair_count
 
-    def _ask_raw(self, response_schema: dict[str, Any]) -> str:
+    def _ask_raw(self, response_schema: dict[str, Any]) -> tuple[str, dict[str, int]]:
         self._call_count += 1
-        raw_text = self._extractor._complete(
+        raw_text, usage = self._extractor._complete(
             self._system_prompt, self._turns, response_schema
         )
         self._turns.append(ConversationTurn("model", raw_text))
-        return raw_text
+        return raw_text, usage
 
     @staticmethod
     def _decode(raw_text: str) -> Any:
@@ -182,9 +187,9 @@ class GeminiExtractionSession:
         images: Sequence[PromptImage] = (),
     ) -> ExtractionReply:
         self._turns.append(ConversationTurn("user", prompt, tuple(images)))
-        raw_text = self._ask_raw(response_schema)
+        raw_text, usage = self._ask_raw(response_schema)
         try:
-            return ExtractionReply(self._decode(raw_text), raw_text)
+            return ExtractionReply(self._decode(raw_text), raw_text, usage=usage)
         except json.JSONDecodeError as error:
             self._repair_count += 1
             self._turns.append(
@@ -195,10 +200,15 @@ class GeminiExtractionSession:
                     "Chỉ sửa định dạng và trả đúng một giá trị JSON theo schema đã yêu cầu.",
                 )
             )
-            repaired_text = self._ask_raw(response_schema)
+            repaired_text, repaired_usage = self._ask_raw(response_schema)
+            combined_usage = {
+                key: usage.get(key, 0) + repaired_usage.get(key, 0)
+                for key in set(usage) | set(repaired_usage)
+            }
             try:
                 return ExtractionReply(
-                    self._decode(repaired_text), repaired_text, repaired=True
+                    self._decode(repaired_text), repaired_text, repaired=True,
+                    usage=combined_usage,
                 )
             except json.JSONDecodeError as repaired_error:
                 raise MalformedModelResponse(

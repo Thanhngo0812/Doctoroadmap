@@ -744,3 +744,36 @@ Làm theo đúng thứ tự này, vì mục 3 dựa vào mục 1.
 5. **F103** làm cùng. Trong đó câu prompt về luật cạnh ngược nên thêm **trong cùng lượt sửa F101**, vì cả hai đều đổi
    prompt pass chính và chỉ nên tốn một lần ghi lại fixture.
 6. Chỉ sau khi vòng kiểm tiếp theo đạt mới mở vé 11 và E1/E2.
+
+---
+
+## F105 🟠 — Provenance trỏ vào chunk mở đề, không phải chunk có định nghĩa (phát hiện từ lượt gán thử)
+
+**Nguồn.** Lượt gán thử của chủ dự án trên `xstk-ch3-1`, đơn vị 10–13 (§2 Ước lượng), 2026-09-18: 52 quan hệ và 27
+cờ. Trong đó **4 cờ "nơi dạy sai"**, đều nói một điều: danh mục ghi nơi dạy sớm hơn chỗ định nghĩa thật một trang.
+
+**Kiểm chứng.** Lấy ca `Hàm ước lượng`:
+
+- Artifact ghi provenance là chunk trang 21 (sách 107). Đối chiếu văn bản PDF bằng phép khớp từ: chunk ấy **đúng**
+  nằm trọn ở trang 21, nên **số trang không sai**.
+- Nhưng chunk đó chỉ mở đề: "Để ước lượng số đặc trưng θ… ta có mẫu tổng quát (X1,…,Xn)".
+- Câu định nghĩa thật — "Các thống kê X̄, S², F được gọi lần lượt là…" — nằm ở chunk trang 22, và chunk đó **không**
+  nằm trong provenance của node.
+
+Ba cờ còn lại (`Khoảng tin cậy`, `Xác suất mắc sai lầm`, `Độ tin cậy`) cùng hình dạng: định nghĩa ở trang kế tiếp.
+
+**Tác động.**
+- File gán chỉ người gán tới chunk mở đề, nên họ phải tự dò sang trang sau. 4 trên 26 khái niệm đích của đơn vị này.
+- E1 phân loại vị trí theo provenance, nên cặp lẽ ra "cùng chunk" có thể rơi xuống "cùng mục" hoặc "cùng chương".
+- Luật bằng chứng của D9 tra mention map theo chunk, nên chunk định nghĩa thật không nằm trong provenance cũng ảnh
+  hưởng tới việc cạnh được nhận hay bị loại.
+
+**Chưa sửa.** Đây là hành vi của A3/A4 — phase đã đóng — và vé 11 cấm sửa code. Ba đường:
+(a) ghi thành giới hạn trong báo cáo và giữ nguyên;
+(b) cho phép provenance gồm **cả chunk kế tiếp** khi định nghĩa bị cắt qua chunk, đo lại điểm vàng A4 trước khi nhận;
+(c) để người gán sửa "nơi dạy" ngay trong file gán, rồi dùng cờ đó làm mẫu kiểm cho A13.
+
+Tôi nghiêng về (c) cho đợt này, cộng (a) trong báo cáo: không đụng vào phase đã đóng, mà vẫn có số đo về mức lệch.
+Chủ dự án quyết.
+
+**Số cần báo trong báo cáo cuối:** tỉ lệ khái niệm đích bị gắn cờ "nơi dạy sai" trên cả hai chương vàng.

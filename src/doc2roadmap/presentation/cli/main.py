@@ -20,6 +20,7 @@ from doc2roadmap.composition import (
     build_inspect,
     build_search,
     build_canonical,
+    build_learning_graph,
 )
 from doc2roadmap.application.use_cases.report_a3 import review_candidate_types
 from doc2roadmap.application.use_cases.canonicalize import Canonicalize
@@ -80,6 +81,14 @@ def _parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--doc-id", required=True)
     evaluate.add_argument("--gold", type=Path, required=True)
     evaluate.add_argument("--candidate-version", type=int)
+    roadmap = commands.add_parser("roadmap", help="chạy A6 đến A10 trên một tài liệu")
+    roadmap.add_argument("--doc-id", required=True)
+    roadmap.add_argument(
+        "--stop-after",
+        choices=("clusters", "mentions", "edges", "stages"),
+        default="stages",
+        help="dừng sau stage đã chọn; mentions không gọi mô hình phán",
+    )
     return parser
 
 
@@ -283,6 +292,16 @@ def main(argv: list[str] | None = None) -> int:
             _a3(args.doc_id, few_shot_path=args.few_shot)
         elif args.command == "search":
             _search(args.doc_id, args.query, args.top_k, args.stage_id)
+        elif args.command == "roadmap":
+            use_case, _ = build_learning_graph()
+            artifact, reused = use_case.execute(args.doc_id, stop_after=args.stop_after)
+            _json({
+                "path": str(artifact.path),
+                "version": artifact.version,
+                "stage": artifact.payload["stage"],
+                "reused": reused,
+                "stats": artifact.payload.get("stats", {}),
+            })
         elif args.command == "a3-report":
             _json(report_candidates(build_artifact_store(), args.doc_id))
         elif args.command == "a3-review-types":

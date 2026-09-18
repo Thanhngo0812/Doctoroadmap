@@ -454,6 +454,12 @@ Theo thứ tự:
   trình bày, không dựa vào kiến thức nền.
 - **Phạm vi:** một **chương giữa** mỗi giáo trình. Khái niệm đích là node `learnable` có provenance trong chương
   đó; đầu được cần có thể là **bất kỳ node nào của cả tài liệu**, nên cạnh xuyên chương vào được bộ vàng.
+- **Hai giáo trình được chọn (chủ dự án chốt 2026-09-18, hướng a):** `doc-1` — *Bài giảng Đại số tuyến tính*,
+  **tiếng Việt**; và `doc-2` — *Linear Algebra Done Right, 4th ed.*, **tiếng Anh**. Vì vậy bộ vàng của đợt này là
+  **song ngữ**: một chương tiếng Việt và một chương tiếng Anh. Báo cáo phải nói rõ điều đó — đóng góp là "bộ vàng
+  tiên quyết bám văn bản cho **một giáo trình tiếng Việt**, cộng một chương tiếng Anh để kiểm chéo ngôn ngữ", không
+  phải một bộ vàng tiếng Việt thuần. Các số phải tách theo từng chương, không gộp chung hai ngôn ngữ thành một
+  con số duy nhất. Không dùng `xstk-ch3-1` làm chương vàng, vì nó đã nằm trong bộ tài liệu phát triển.
 - **Công cụ:** một lệnh sinh **file Excel** từ artifact, mở bằng Excel 365. Sheet hướng dẫn; sheet khái niệm
   (khoá, kèm nơi dạy: chương, mục, trang); sheet quan hệ (chọn từ danh sách, kèm vị trí trong sách, loại bằng
   chứng, ghi chú); sheet cờ (không phải khái niệm, thiếu khái niệm, node gộp sai). Một ô ẩn ghi phiên bản artifact

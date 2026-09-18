@@ -14,6 +14,7 @@ from doc2roadmap.domain.entities import validate_llm_node_type
 
 _VERSION = re.compile(r"^v(\d+)$")
 _IMAGE_ID = re.compile(r"^[0-9a-f]{64}$")
+_CHECKPOINT_ID = re.compile(r"^[a-z0-9_-]+$")
 
 
 class JsonArtifactStore:
@@ -38,6 +39,23 @@ class JsonArtifactStore:
             if entry["reviewed"]:
                 reviewed[name] = entry["learnable"]
         return reviewed
+
+    def _checkpoint_path(self, doc_id: str, checkpoint_id: str) -> Path:
+        if not _CHECKPOINT_ID.fullmatch(checkpoint_id):
+            raise ValueError("checkpoint_id không hợp lệ")
+        return self.root / "checkpoints" / "graph" / doc_id / f"{checkpoint_id}.json"
+
+    def load_checkpoint(self, doc_id: str, checkpoint_id: str) -> dict[str, Any] | None:
+        path = self._checkpoint_path(doc_id, checkpoint_id)
+        return self._read(path) if path.exists() else None
+
+    def save_checkpoint(self, doc_id: str, checkpoint_id: str, payload: dict[str, Any]) -> None:
+        self._write(self._checkpoint_path(doc_id, checkpoint_id), payload)
+
+    def clear_checkpoint(self, doc_id: str, checkpoint_id: str) -> None:
+        path = self._checkpoint_path(doc_id, checkpoint_id)
+        if path.exists():
+            path.unlink()
 
     @staticmethod
     def _read(path: Path) -> Any:
@@ -422,6 +440,12 @@ class JsonArtifactStore:
             upstream_version=upstream_version,
             manifest_fields=manifest_fields,
         )
+
+    def load_graph(self, doc_id: str, version: int) -> StoredStageArtifact:
+        return self._load_stage("graph", doc_id, version)
+
+    def load_latest_graph(self, doc_id: str) -> StoredStageArtifact:
+        return self._load_latest_stage("graph", doc_id)
 
     def find_retrieval(
         self, doc_id: str, source_hash: str, config_hash: str

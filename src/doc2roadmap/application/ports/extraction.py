@@ -25,6 +25,7 @@ class ExtractionReply:
     payload: Any
     raw_text: str
     repaired: bool = False
+    usage: dict[str, int] | None = None
 
 
 class ExtractionSession(Protocol):

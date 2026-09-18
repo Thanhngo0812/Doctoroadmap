@@ -2,13 +2,12 @@ from __future__ import annotations
 
 import json
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
 from itertools import combinations
 
+from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.canonical_prompt import (
     canonical_prompts, PARTITION_SCHEMA, DESCRIPTION_SCHEMA, SINGLE_SCHEMA,
 )
-from doc2roadmap.application.ports.extraction import ModelTransportError
 from doc2roadmap.domain.canonical import digest, evidence_missing_name, build_nodes
 from doc2roadmap.domain.canonical_decisions import (
     is_contradiction_error, validate_partition, split_relation_edges, guarded_components,
@@ -46,7 +45,6 @@ class CanonicalReasoning:
         chunks_by_id = {c.chunk_id: c for c in chunks.chunks}
         group_map = {node["node_id"]: group for node, group in zip(initial_nodes, groups, strict=True) if not node["media_id"]}
         node_map = {n["node_id"]: n for n in initial_nodes}
-        cache = {row["input_hash"]: row for row in previous_log if row.get("valid") and "input_hash" in row}
         logs = []
         metrics = Counter(
             relation_rejected=0, relation_self_removed=0,
@@ -55,62 +53,21 @@ class CanonicalReasoning:
             repair_cache_invalid=0,
         )
         deferred, extra_edges, deferred_pairs = set(), [], []
-        def call(stage, data, schema, validate):
-            counts = Counter()
-            model = self.writer if stage in {"describe", "check"} else self.judge
-            phash = self.prompt_hash(stage, schema)
-            key = digest([model.model_id, phash, data])
-            cache_invalid_error = None
-            if key in cache:
-                row = dict(cache[key], reused=True)
-                try:
-                    validate(row["output"])
-                except (ValueError, TypeError, KeyError, IndexError) as exc:
-                    cache_invalid_error = str(exc)
-                    counts[stage+"_cache_invalid"] += 1
-                else:
-                    counts[stage+"_reused"] += 1
-                    return row["output"], row, counts
-            error, attempts = None, []
-            for attempt in range(2):
-                counts[stage+"_calls"] += 1
-                reply = None
-                try:
-                    session = model.start_session(self.prompts[stage])
-                    prompt = json.dumps(data, ensure_ascii=False, sort_keys=True)
-                    if error:
-                        prompt += "\nCorrect this validation error: " + str(error)
-                    reply = session.ask_json(prompt, response_schema=schema)
-                    value = reply.payload
-                    validate(value)
-                except ModelTransportError:
-                    raise
-                except (ValueError, TypeError, KeyError, IndexError, RuntimeError) as exc:
-                    error = str(exc)
-                    attempts.append({"error": error, "raw_text": getattr(reply or exc, "raw_text", None)})
-                    continue
-                row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
-                             "input_hash": key, "input": data, "output": value, "valid": True,
-                             "reused": False, "retries": attempt, "attempts": attempts}
-                if cache_invalid_error is not None:
-                    row["cache_invalid_error"] = cache_invalid_error
-                return value, row, counts
-            row = {"stage": stage, "model": model.model_id, "prompt_hash": phash,
-                   "input_hash": key, "input": data, "valid": False, "error": error, "retries": 1,
-                   "attempts": attempts}
-            if cache_invalid_error is not None:
-                row["cache_invalid_error"] = cache_invalid_error
-            counts[stage+"_invalid"] += 1
-            return None, row, counts
-
         def run_calls(jobs):
             # Workers own sessions and counters; only the caller mutates graph/log state.
-            with ThreadPoolExecutor(max_workers=self.concurrency) as pool:
-                results = list(pool.map(lambda job: call(*job), jobs))
-            for _, row, counts in results:
-                logs.append(row)
-                metrics.update(counts)
-            return [value for value, _, _ in results]
+            calls = []
+            for stage, data, schema, validate in jobs:
+                model = self.writer if stage in {"describe", "check"} else self.judge
+                calls.append(ModelJob(
+                    stage, model, self.prompts[stage], self.prompt_hash(stage, schema),
+                    data, schema, validate,
+                ))
+            values, rows, counts = run_model_jobs(
+                calls, previous_log, concurrency=self.concurrency
+            )
+            logs.extend(rows)
+            metrics.update(counts)
+            return values
 
         def group_input(id):
             node, members = node_map[id], group_map[id]

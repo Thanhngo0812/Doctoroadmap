@@ -14,12 +14,20 @@ Biến bảng node canonical thành **đồ thị tiên quyết** rồi thành *
 vàng do người gán. Đầu ra của đợt là hai thứ: sản phẩm chạy hết A1→A10 trên ba tài liệu mới, và một **báo cáo
 thực nghiệm**.
 
+**Phạm vi A10 (chủ dự án chốt 2026-09-17, hướng c):** A6–A8 là trọng tâm và là phần duy nhất vào tuyên bố khoa học.
+A9 làm đầy đủ. A10 (vé 09) chỉ là **bản tối thiểu** cho sản phẩm có lộ trình xem được, không đưa vào phần khoa học. Thiết
+kế A10 cần một đợt nghiên cứu riêng **sau** đợt này trước khi chốt. Xem đầu spec.
+
 ## Chia việc
 
 | Ai | Vé |
 |---|---|
 | Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11 |
 | Claude | 04, 05, 12, 13, 14 |
+
+**Cập nhật 2026-09-16:** nhân viên đã hoàn tất và nghiệm thu các vé 01, 02, 03, 06, 07, 08, 09, 10. Vé
+11 đang chặn vì chưa nhận được hai giáo trình đầy đủ và một tài liệu phẳng; không có thay đổi code cho vé này.
+Số đo thật, chi phí và danh sách mutation nằm trong feedback của từng vé.
 
 ## Thứ tự và cạnh chặn
 

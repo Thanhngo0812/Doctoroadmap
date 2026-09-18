@@ -124,6 +124,7 @@ class RecordingExtractionSession:
                     "payload": reply.payload,
                     "raw_text": reply.raw_text,
                     "repaired": reply.repaired,
+                    "usage": reply.usage,
                 },
                 "new_turns": [
                     _turn_to_dict(turn)
@@ -222,5 +223,6 @@ class ReplayExtractionSession:
         self._repair_count += bool(reply["repaired"])
         self._index += 1
         return ExtractionReply(
-            reply["payload"], reply["raw_text"], repaired=reply["repaired"]
+            reply["payload"], reply["raw_text"], repaired=reply["repaired"],
+            usage=reply.get("usage"),
         )

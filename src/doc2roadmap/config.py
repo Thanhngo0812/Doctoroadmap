@@ -40,3 +40,15 @@ class Settings(BaseSettings):
     embedding_dimensions: int = Field(default=768, gt=0)
     gemini_timeout_seconds: float = Field(default=120.0, gt=0)
     gemini_max_retries: int = Field(default=3, ge=0)
+    topic_neighbors: int = Field(default=3, gt=0)
+    topic_edge_quantile: float = Field(default=0.5, ge=0.0, le=1.0)
+    topic_resolution: float | None = Field(default=None, gt=0.0)
+    topic_seed: int = 42
+    topic_cluster_cap: int = Field(default=12, gt=0)
+    mention_dense_top_k: int = Field(default=3, gt=0)
+    mention_dense_min_z: float = 0.0
+    mention_pair_cluster_top_k: int = Field(default=3, gt=0)
+    roadmap_model_id: str = "gemini-3.1-flash-lite"
+    roadmap_concurrency: int = Field(default=4, gt=0)
+    roadmap_single_session_limit: int = Field(default=20, gt=0)
+    roadmap_stage_cap: int = Field(default=8, ge=5, le=8)

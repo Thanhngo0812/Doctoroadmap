@@ -33,7 +33,7 @@ class _Response(BytesIO):
         self.close()
 
 
-def _response(text: str) -> _Response:
+def _response(text: str, usage: dict | None = None) -> _Response:
     payload = {
         "candidates": [
             {
@@ -42,6 +42,8 @@ def _response(text: str) -> _Response:
             }
         ]
     }
+    if usage is not None:
+        payload["usageMetadata"] = usage
     return _Response(json.dumps(payload).encode())
 
 
@@ -98,6 +100,18 @@ def test_gemini_sends_structured_multimodal_request_without_key_in_url(
             }
         },
     ]
+
+
+def test_gemini_exposes_usage_metadata(monkeypatch) -> None:
+    monkeypatch.setattr(
+        "doc2roadmap.infrastructure.llm.gemini.urlopen",
+        lambda request, timeout: _response(
+            '{"entities":[]}',
+            {"promptTokenCount": 12, "candidatesTokenCount": 3, "thoughtsTokenCount": 2, "totalTokenCount": 17},
+        ),
+    )
+    reply = GeminiEntityExtractor("test-secret").start_session("system").ask_json("extract", response_schema=SCHEMA)
+    assert reply.usage == {"promptTokenCount": 12, "candidatesTokenCount": 3, "thoughtsTokenCount": 2, "totalTokenCount": 17}
 
 
 def test_session_repairs_malformed_json_once_in_the_same_conversation(

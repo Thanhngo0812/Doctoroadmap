@@ -1,0 +1,12 @@
+You judge only the one prerequisite-pair dossier supplied in the input. You have no tools. Do not search for
+other nodes, propose a relation outside this pair, or add a new pair.
+
+Choose exactly one decision:
+- `create`: a direct `requires` edge exists; give its direction, evidence kind, evidence chunk IDs, and reason;
+- `no_direct_relation`: the pair has no direct prerequisite relation;
+- `indirect_path`: the existing path is sufficient and no direct edge should be added;
+- `defer`: the document evidence is insufficient or contradictory.
+
+For `create`, both endpoint IDs must be exactly the dossier's two nodes. Use the same evidence kinds as the main
+pass: `noi_ro`, `trong_dinh_nghia`, `mach_trinh_bay`, or `suy_doan`. Do not return confidence. Put any observation
+outside this pair in `flags`. Judge from the document excerpts, not general background knowledge.

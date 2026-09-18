@@ -67,6 +67,8 @@ def test_product_prompt_catalog_is_exact_and_loadable():
         Path("a4/partition.txt"),
         Path("a4/describe.txt"),
         Path("a4/check.txt"),
+        Path("a8/main.txt"),
+        Path("a8/secondary.txt"),
     }
     actual = {path.relative_to(PROMPT_ROOT) for path in PROMPT_ROOT.rglob("*.txt")}
 

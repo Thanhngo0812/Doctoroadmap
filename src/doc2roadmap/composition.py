@@ -135,3 +135,59 @@ def build_canonical(*, prepare=False):
         concurrency=settings.canonical_concurrency,
         counter=SentencePieceTokenCounter(settings.tokenizer_model, settings.tokenizer_id))
     return Canonicalize(store, embedding, graph_config=graph, reasoning=reasoning)
+
+
+def build_learning_graph():
+    from doc2roadmap.application.use_cases import (
+        BuildClusters,
+        BuildLearningGraph,
+        BuildMainEdges,
+        BuildMentions,
+        BuildRoadmap,
+        BuildSecondaryEdges,
+        ValidateGraph,
+    )
+
+    settings, store, embedding = _a3_dependencies()
+    model = GeminiEntityExtractor(
+        settings.gemini_api_key.get_secret_value(),
+        settings.roadmap_model_id,
+        timeout_seconds=settings.gemini_timeout_seconds,
+        max_retries=settings.gemini_max_retries,
+        temperature=0.0,
+        max_output_tokens=settings.extraction_max_output_tokens,
+    )
+    generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}
+    return BuildLearningGraph(
+        BuildClusters(
+            store,
+            embedding,
+            semantic_neighbors=settings.topic_neighbors,
+            edge_quantile=settings.topic_edge_quantile,
+            resolution=settings.topic_resolution,
+            seed=settings.topic_seed,
+            concept_cap=settings.topic_cluster_cap,
+        ),
+        BuildMentions(
+            store,
+            embedding,
+            dense_top_k=settings.mention_dense_top_k,
+            dense_min_z=settings.mention_dense_min_z,
+            pair_cluster_top_k=settings.mention_pair_cluster_top_k,
+        ),
+        BuildMainEdges(
+            store,
+            model,
+            single_session_limit=settings.roadmap_single_session_limit,
+            concurrency=settings.roadmap_concurrency,
+            generation=generation,
+        ),
+        BuildSecondaryEdges(
+            store,
+            model,
+            concurrency=settings.roadmap_concurrency,
+            generation=generation,
+        ),
+        ValidateGraph(store),
+        BuildRoadmap(store, stage_cap=settings.roadmap_stage_cap),
+    ), settings

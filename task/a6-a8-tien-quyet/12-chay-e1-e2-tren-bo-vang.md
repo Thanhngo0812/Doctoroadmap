@@ -5,10 +5,16 @@
 
 **Blocked by:** 05, 11, và việc gán nhãn đã đóng băng. (Việc của Claude.)
 
-**Status:** ready-for-agent
+**Status:** ready-for-agent — bộ chấm đã xong ở vé 05 (nhánh `ve-05-bo-cham`), chỉ còn chờ nhãn người
+
+> **Hai chương vàng (chủ dự án chốt 2026-09-18, hướng a):** một chương giữa của `doc-1` (tiếng Việt) và một
+> chương giữa của `doc-2` (tiếng Anh). Bộ vàng song ngữ, nên **mọi bảng phải tách theo từng chương**, không gộp
+> hai ngôn ngữ thành một con số. Xem spec D13.
 
 - [ ] Hai người gán đã nộp file, độ đồng thuận đã tính (có kể đồng thuận ngầm qua bắc cầu), và **đã hội ý** xong;
       bộ vàng đóng băng trước khi chạy.
+- [ ] Hai file gán phải **khác nhau**: đây là hai người làm độc lập, không phải một bản chép làm hai. Kiểm ngay khi
+      nhận file, hai file trùng khít thì κ vô nghĩa và bộ vàng không dùng được.
 - [ ] E1: bảng sáu loại vị trí, kèm NMI giữa cụm chủ đề và chương, cho cả hai giáo trình.
 - [ ] E2: bảng theo từng bộ sinh và từng tổ hợp, kèm recall riêng và ba cấu hình định tuyến.
 - [ ] Áp **luật chọn bộ sinh mặc định** đã viết trước ở D5, và ghi kết quả áp luật.

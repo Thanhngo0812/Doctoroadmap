@@ -105,3 +105,13 @@ def test_incomplete_candidates_are_never_frozen(tmp_path: Path) -> None:
         )
 
     assert store.find_candidates("book", "source", "config") is None
+
+
+def test_graph_progress_checkpoint_is_atomic_and_outside_version_chain(tmp_path):
+    store = JsonArtifactStore(tmp_path)
+    store.save_checkpoint("doc", "main-deadbeef", {"completed": ["s1"]})
+    store.save_checkpoint("doc", "main-deadbeef", {"completed": ["s1", "s2"]})
+    assert store.load_checkpoint("doc", "main-deadbeef") == {"completed": ["s1", "s2"]}
+    assert not (tmp_path / "graph" / "doc").exists()
+    store.clear_checkpoint("doc", "main-deadbeef")
+    assert store.load_checkpoint("doc", "main-deadbeef") is None

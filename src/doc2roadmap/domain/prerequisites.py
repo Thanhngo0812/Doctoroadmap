@@ -1,0 +1,230 @@
+from __future__ import annotations
+
+from collections import defaultdict
+
+
+EVIDENCE_CONFIDENCE = {
+    "noi_ro": 0.9,
+    "trong_dinh_nghia": 0.9,
+    "mach_trinh_bay": 0.7,
+}
+
+
+def plan_main_sessions(nodes, chunks, sections, mention_map, *, single_limit):
+    learnable = [node for node in nodes if node.get("learnable")]
+    node_by_id = {node["node_id"]: node for node in learnable}
+    chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
+
+    def allowed(chunk_ids, targets):
+        result = set(targets)
+        for chunk_id in chunk_ids:
+            result.update(node_id for node_id in mention_map.get(chunk_id, {}) if node_id in node_by_id)
+        return sorted(result)
+
+    if len(learnable) <= single_limit:
+        return [{
+            "session_id": "main_single",
+            "route": "single",
+            "chapter_id": "document",
+            "sequence": 0,
+            "chunk_ids": [chunk.chunk_id for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id))],
+            "target_node_ids": sorted(node_by_id),
+            "allowed_node_ids": sorted(node_by_id),
+        }]
+
+    section_by_id = {section.section_id: section for section in sections}
+    heading_levels = {
+        section.level
+        for section in sections
+        if section.level > 0
+    }
+    hierarchical = len(heading_levels) >= 2
+    if hierarchical:
+        def chapter(section_id):
+            current = section_by_id[section_id]
+            while current.level > 1 and current.parent_section_id in section_by_id:
+                current = section_by_id[current.parent_section_id]
+            return current.section_id
+
+        rows = []
+        for section in sorted(sections, key=lambda value: (value.order_index, value.section_id)):
+            chunk_ids = [
+                chunk.chunk_id
+                for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id))
+                if chunk.parent_section_id == section.section_id
+            ]
+            if not chunk_ids:
+                continue
+            target_ids = sorted(
+                node_id
+                for node_id, node in node_by_id.items()
+                if set(node.get("defining_chunk_ids", [])) & set(chunk_ids)
+            )
+            if not target_ids:
+                continue
+            rows.append({
+                "session_id": "main_section_" + section.section_id,
+                "route": "chapter",
+                "chapter_id": chapter(section.section_id),
+                "sequence": 0,
+                "chunk_ids": chunk_ids,
+                "target_node_ids": target_ids,
+                "allowed_node_ids": allowed(chunk_ids, target_ids),
+            })
+        sequence = defaultdict(int)
+        for row in rows:
+            row["sequence"] = sequence[row["chapter_id"]]
+            sequence[row["chapter_id"]] += 1
+        return rows
+
+    rows = []
+    clusters = sorted({node["cluster_id"] for node in learnable})
+    for cluster_id in clusters:
+        target_ids = sorted(node["node_id"] for node in learnable if node["cluster_id"] == cluster_id)
+        chunk_ids = sorted(
+            {
+                chunk_id
+                for node_id in target_ids
+                for chunk_id in node_by_id[node_id].get("defining_chunk_ids", [])
+                if chunk_id in chunk_by_id
+            },
+            key=lambda chunk_id: (chunk_by_id[chunk_id].order_index, chunk_id),
+        )
+        rows.append({
+            "session_id": "main_cluster_" + cluster_id,
+            "route": "topic_cluster",
+            "chapter_id": cluster_id,
+            "sequence": 0,
+            "chunk_ids": chunk_ids,
+            "target_node_ids": target_ids,
+            "allowed_node_ids": allowed(chunk_ids, target_ids),
+        })
+    return rows
+
+
+def validate_main_response(value):
+    if not isinstance(value, dict) or not isinstance(value.get("edges"), list) or not isinstance(value.get("flags"), list):
+        raise ValueError("đầu ra pass chính cần edges và flags dạng mảng")
+    for edge in value["edges"]:
+        if not isinstance(edge, dict):
+            raise ValueError("edge phải là object")
+        for key in ("target", "prerequisite", "evidence_kind", "reason"):
+            if not isinstance(edge.get(key), str) or not edge[key].strip():
+                raise ValueError(f"edge thiếu chuỗi {key}")
+        if not isinstance(edge.get("chunk_ids"), list) or not all(isinstance(item, str) for item in edge["chunk_ids"]):
+            raise ValueError("edge cần chunk_ids dạng mảng chuỗi")
+    for flag in value["flags"]:
+        if not isinstance(flag, dict) or not isinstance(flag.get("kind"), str):
+            raise ValueError("flag cần kind")
+
+
+def _order_relation(source, target, node_by_id, chunk_by_id):
+    source_chunks = set(node_by_id[source].get("defining_chunk_ids", []))
+    target_chunks = set(node_by_id[target].get("defining_chunk_ids", []))
+    if source_chunks & target_chunks:
+        return "cùng chunk"
+    source_order = min((chunk_by_id[value].order_index for value in source_chunks if value in chunk_by_id), default=10**18)
+    target_order = min((chunk_by_id[value].order_index for value in target_chunks if value in chunk_by_id), default=10**18)
+    return "thuận" if source_order <= target_order else "ngược"
+
+
+def validate_main_proposals(output, session, nodes, chunks, mention_map, *, existing_edges):
+    validate_main_response(output)
+    node_by_id = {node["node_id"]: node for node in nodes}
+    chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
+    allowed = set(session["allowed_node_ids"])
+    existing = {
+        (edge["source"], edge["target"], edge.get("edge_type", "requires"))
+        for edge in existing_edges
+    }
+    accepted, flags, log, retry = [], [], [], []
+    for index, edge in enumerate(output["edges"]):
+        source, target = edge["prerequisite"], edge["target"]
+        error = None
+        if source not in node_by_id or target not in node_by_id:
+            error = "unknown_node"
+        elif source not in allowed or target not in allowed:
+            error = "outside_session"
+        elif not node_by_id[source].get("learnable") or not node_by_id[target].get("learnable"):
+            error = "non_learnable_node"
+        elif "confidence" in edge:
+            error = "model_confidence_forbidden"
+        elif edge.get("edge_type", "requires") != "requires":
+            error = "relation_type_must_be_requires"
+        elif edge["evidence_kind"] == "suy_doan":
+            error = "speculative_evidence"
+        elif edge["evidence_kind"] not in EVIDENCE_CONFIDENCE:
+            error = "unknown_evidence_kind"
+        elif not edge["chunk_ids"] or any(chunk_id not in chunk_by_id for chunk_id in edge["chunk_ids"]):
+            error = "unknown_evidence_chunk"
+        elif any(
+            source not in mention_map.get(chunk_id, {}) or target not in mention_map.get(chunk_id, {})
+            for chunk_id in edge["chunk_ids"]
+        ):
+            error = "evidence_missing_both_endpoints"
+        if error:
+            row = {"session_id": session["session_id"], "operation_index": index, "status": "rejected", "error": error, "operation": edge}
+            log.append(row)
+            retry.append({"operation_index": index, "error": error, "operation": edge})
+            continue
+        key = (source, target, "requires")
+        if source == target:
+            log.append({"session_id": session["session_id"], "operation_index": index, "status": "dropped_self", "operation": edge})
+            continue
+        if key in existing:
+            log.append({"session_id": session["session_id"], "operation_index": index, "status": "dropped_duplicate", "operation": edge})
+            continue
+        order_relation = _order_relation(source, target, node_by_id, chunk_by_id)
+        if order_relation == "ngược" and edge["evidence_kind"] not in {"noi_ro", "trong_dinh_nghia"}:
+            error = "reverse_order_requires_explicit_evidence"
+        if error:
+            row = {"session_id": session["session_id"], "operation_index": index, "status": "rejected", "error": error, "operation": edge}
+            log.append(row)
+            retry.append({"operation_index": index, "error": error, "operation": edge})
+            continue
+        confidence = EVIDENCE_CONFIDENCE[edge["evidence_kind"]]
+        if order_relation == "ngược":
+            confidence -= 0.1
+        proposal = {
+            "source": source,
+            "target": target,
+            "edge_type": "requires",
+            "evidence_kind": edge["evidence_kind"],
+            "chunk_ids": sorted(set(edge["chunk_ids"])),
+            "reason": edge["reason"],
+            "confidence": confidence,
+            "explicit_evidence": edge["evidence_kind"] in {"noi_ro", "trong_dinh_nghia"},
+            "order_relation": order_relation,
+            "session_id": session["session_id"],
+            "operation_index": index,
+        }
+        accepted.append(proposal)
+        log.append({"session_id": session["session_id"], "operation_index": index, "status": "accepted", "edge": proposal})
+    for index, flag in enumerate(output["flags"]):
+        flags.append({**flag, "session_id": session["session_id"], "operation_index": index})
+        log.append({"session_id": session["session_id"], "flag_index": index, "status": "flagged", "flag": flags[-1]})
+    return accepted, flags, log, retry
+
+
+def merge_main_proposals(proposals, existing_edges):
+    result = [dict(edge) for edge in existing_edges]
+    seen = {(edge["source"], edge["target"], edge.get("edge_type", "requires")) for edge in result}
+    log = []
+    ordered = sorted(
+        proposals,
+        key=lambda edge: (
+            edge.get("session_id", ""),
+            edge.get("operation_index", 0),
+            edge["source"],
+            edge["target"],
+        ),
+    )
+    for edge in ordered:
+        key = (edge["source"], edge["target"], edge.get("edge_type", "requires"))
+        if key in seen:
+            log.append({"session_id": edge.get("session_id"), "operation_index": edge.get("operation_index"), "status": "dropped_duplicate", "edge": edge})
+            continue
+        seen.add(key)
+        result.append(dict(edge))
+    result.sort(key=lambda edge: (edge["source"], edge["target"], edge.get("session_id", ""), edge.get("operation_index", 0)))
+    return result, log
