@@ -66,7 +66,7 @@ def _chapters(sections, chapter_level):
     return sorted(items, key=lambda s: _value(s, "order_index"))
 
 
-def _chapter_lookup(sections, chapter_level):
+def chapter_lookup(sections, chapter_level):
     by_id = {_value(s, "section_id"): s for s in sections}
     cache = {}
 
@@ -130,7 +130,7 @@ def _learnable(nodes):
 def list_chapters(nodes, sections, chunks, *, chapter_level=1):
     """Các chương ở cấp đã chọn, kèm số khái niệm được dạy trong từng chương."""
     chapters = _chapters(sections, chapter_level)
-    chapter_of = _chapter_lookup(sections, chapter_level)
+    chapter_of = chapter_lookup(sections, chapter_level)
     chunk_chapter = {_value(c, "chunk_id"): chapter_of(_value(c, "parent_section_id")) for c in chunks}
     counts = {_value(s, "section_id"): 0 for s in chapters}
     for node in _learnable(nodes):
@@ -152,7 +152,7 @@ def annotation_scope(doc_id, canonical_version, nodes, sections, chunks, *, chap
         "titles": [_value(section, "title") for _, section in chosen],
     }
     ordinals = {_value(s, "section_id"): i for i, s in enumerate(chapters, 1)}
-    chapter_of = _chapter_lookup(sections, chapter_level)
+    chapter_of = chapter_lookup(sections, chapter_level)
     chunk_info = {}
     for chunk in chunks:
         path = list(_value(chunk, "section_path"))
@@ -228,17 +228,17 @@ def _assign_labels(concepts):
 
 
 def scope_from_store(store, doc_id, *, chapter, chapter_level=1, canonical_version=None):
-    inputs = _store_inputs(store, doc_id, canonical_version)
+    inputs = scope_inputs(store, doc_id, canonical_version)
     return annotation_scope(doc_id, inputs["version"], inputs["nodes"], inputs["sections"], inputs["chunks"],
                             chapter=chapter, chapter_level=chapter_level)
 
 
 def chapters_from_store(store, doc_id, *, chapter_level=1, canonical_version=None):
-    inputs = _store_inputs(store, doc_id, canonical_version)
+    inputs = scope_inputs(store, doc_id, canonical_version)
     return list_chapters(inputs["nodes"], inputs["sections"], inputs["chunks"], chapter_level=chapter_level)
 
 
-def _store_inputs(store, doc_id, canonical_version):
+def scope_inputs(store, doc_id, canonical_version):
     artifact = (store.load_canonical(doc_id, canonical_version) if canonical_version
                 else store.load_latest_canonical(doc_id))
     if artifact.payload.get("stage") != "complete":

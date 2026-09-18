@@ -25,6 +25,7 @@ from doc2roadmap.application.use_cases.report_a3 import review_candidate_types
 from doc2roadmap.application.use_cases.canonicalize import Canonicalize
 from doc2roadmap.domain.canonical import compare_nodes
 from doc2roadmap.application.use_cases.a4_gold import gold_items, write_gold_sheet, load_gold, evaluate_canonical
+from doc2roadmap.application.use_cases import a8_score
 from doc2roadmap.application.use_cases.a8_gold import (
     chapters_from_store,
     read_annotation_sheet,
@@ -58,6 +59,16 @@ def _parser() -> argparse.ArgumentParser:
     prereq_sheet.add_argument("--output", type=Path)
     prereq_sheet.add_argument("--list-chapters", action="store_true", help="chỉ liệt kê chương và số khái niệm đích")
     prereq_sheet.add_argument("--force", action="store_true", help="ghi đè file đã có (có thể làm mất nhãn đã gán)")
+    prereq_score = commands.add_parser("a8-score", help="chấm E1 và E2 từ bộ vàng; không gọi mô hình")
+    prereq_score.add_argument("--doc-id", required=True)
+    prereq_score.add_argument("--graph", type=Path, required=True, help="graph.json của một phiên bản artifact graph")
+    prereq_score.add_argument("--gold", type=Path, action="append", required=True,
+                              help="JSON từ a8-gold-check; lặp lại tham số cho người gán thứ hai")
+    prereq_score.add_argument("--gold-mode", choices=("union", "intersection"), default="union",
+                              help="cách gộp khi có hai người gán")
+    prereq_score.add_argument("--bootstrap", type=int, default=2000, help="số lần lấy mẫu lại; 0 để bỏ khoảng tin cậy")
+    prereq_score.add_argument("--seed", type=int, default=20260918)
+    prereq_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
     prereq_check = commands.add_parser("a8-gold-check", help="đọc và kiểm file Excel tiên quyết đã gán")
     prereq_check.add_argument("--doc-id", required=True)
     prereq_check.add_argument("--chapter", required=True)
@@ -300,6 +311,18 @@ def main(argv: list[str] | None = None) -> int:
                 summary["output"] = str(output)
             _json(summary)
             return 1 if result["errors"] else 0
+        elif args.command == "a8-score":
+            store = build_artifact_store()
+            report = a8_score.score_from_store(store, args.doc_id, args.graph, args.gold,
+                                               mode=args.gold_mode, samples=args.bootstrap, seed=args.seed)
+            if args.output:
+                output = _inside_artifacts(store, args.output)
+                output.parent.mkdir(parents=True, exist_ok=True)
+                output.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                                  encoding="utf-8")
+                report = {**report, "output": str(output)}
+            # Bảng tổ hợp bộ sinh dài; bản in gọn bỏ nó đi, JSON đầy đủ nằm ở --output.
+            _json({**report, "e2": {**report["e2"], "subsets": f"{len(report['e2']['subsets'])} tổ hợp, xem --output"}})
         elif args.command == "a4-evaluate":
             store = build_artifact_store()
             gold = load_gold(args.gold, store)
