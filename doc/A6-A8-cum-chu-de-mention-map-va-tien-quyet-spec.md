@@ -393,6 +393,10 @@ Theo thứ tự:
   trình bày, không dựa vào kiến thức nền.
 - **Phạm vi:** một **chương giữa** mỗi giáo trình. Khái niệm đích là node `learnable` có provenance trong chương
   đó; đầu được cần có thể là **bất kỳ node nào của cả tài liệu**, nên cạnh xuyên chương vào được bộ vàng.
+- **Đơn vị gán có thể là một dải mục liền nhau** ở một cấp heading đã chọn *(bổ sung khi làm vé 04, 2026-09-16)*.
+  Trên artifact thật, cây heading hay lệch khỏi chương của tác giả: ở `xstk-ch3-1`, ba phần 1.x, 2.x, 3.x nằm
+  phẳng ở cấp 2 dưới một mục cấp 1 duy nhất; ở `nhap-mon-ml`, cấp 1 lẫn cả trang bìa và mục lục. Người quản lý
+  chọn đúng "chương" bằng một dải như `10-13`, và file ghi lại đúng các mục đã chọn.
 - **Công cụ:** một lệnh sinh **file Excel** từ artifact, mở bằng Excel 365. Sheet hướng dẫn; sheet khái niệm
   (khoá, kèm nơi dạy: chương, mục, trang); sheet quan hệ (chọn từ danh sách, kèm vị trí trong sách, loại bằng
   chứng, ghi chú); sheet cờ (không phải khái niệm, thiếu khái niệm, node gộp sai). Một ô ẩn ghi phiên bản artifact

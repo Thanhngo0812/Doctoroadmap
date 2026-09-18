@@ -262,6 +262,7 @@ source = { editable = "." }
 dependencies = [
     { name = "docling" },
     { name = "networkx" },
+    { name = "openpyxl" },
     { name = "pydantic-settings" },
     { name = "sentencepiece" },
 ]
@@ -275,6 +276,7 @@ dev = [
 requires-dist = [
     { name = "docling", specifier = "==2.114.0" },
     { name = "networkx", specifier = "==3.6.1" },
+    { name = "openpyxl", specifier = "==3.1.5" },
     { name = "pydantic-settings", specifier = ">=2.14,<3" },
     { name = "pytest", marker = "extra == 'dev'", specifier = "==8.4.1" },
     { name = "sentencepiece", specifier = "==0.2.1" },
