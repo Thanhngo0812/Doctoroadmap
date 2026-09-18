@@ -10,6 +10,8 @@ trình bày mọi số đo kèm độ bất định.
 - [ ] Mô tả luồng theo đúng ngôn ngữ chung của `CONTEXT.md`, mỗi quyết định trỏ về spec và về công trình đã dẫn.
 - [ ] Trình bày E1 tới E8, mỗi bảng kèm khoảng tin cậy và cỡ mẫu.
 - [ ] Nói rõ đóng góp: tổ hợp, phép đo, và bộ vàng tiếng Việt. **Không tuyên bố cơ chế mới.**
+- [ ] Phần khoa học chỉ gồm A6–A8 (và A9 như phần phục vụ). A10 chỉ được mô tả như **bản tối thiểu của sản phẩm**, ghi
+      rõ thiết kế chưa chốt và cần nghiên cứu riêng (phạm vi hướng c, 2026-09-17).
 - [ ] Ghi đủ giới hạn: bộ vàng chỉ hai chương, người gán là hai, tài liệu phẳng không có vàng, `temperature` 0
       không bảo đảm tất định ở mọi hạ tầng, và danh sách khái niệm do pipeline sinh nên mọi số P/R là có điều
       kiện trên tập đó.

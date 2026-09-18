@@ -11,6 +11,13 @@ ADR 0007 (2a đề xuất quan hệ kiểu mở) · **ADR 0008** và **ADR 0009*
 **Khái niệm đích**, **Requires**, **Stage**
 **Thay thế:** `spec-preview.md` §6–§8 (bước C, M, T2b) cho phần thiết kế. Preview giữ làm hồ sơ lịch sử.
 
+> **Phạm vi (chủ dự án chốt 2026-09-17, hướng c).**
+> - **A6, A7, M và A8** là trọng tâm của đợt, và là phần duy nhất đi vào tuyên bố khoa học của báo cáo thực nghiệm.
+> - **A9 (D11)** làm đầy đủ, vì thiết kế 2b dựa vào nó: chu trình được giải ở tầng 3, không chặn lúc thêm cạnh.
+> - **A10 (D12)** chỉ là **bản tối thiểu**, để sản phẩm có lộ trình xem được. Nó **không** thuộc phần tuyên bố khoa
+>   học, và thiết kế A10 **chưa chốt**: cần một đợt nghiên cứu riêng (cách chia stage, xử lý tầng 1 phình, luật khi
+>   rơi về thứ tự chương) trước khi coi D12 là cuối cùng.
+
 ---
 
 ## Problem Statement
@@ -165,7 +172,16 @@ Song song với sản phẩm là phần đo, vì đầu ra của đợt này cò
   tham số sinh, mọi tham số A6/A7/M, `embedding_model_id` và số chiều (ADR 0004), phiên bản thư viện gom cụm.
   Không đổi gì thì `reused=true`, 0 lời gọi.
 - Checkpoint sau mỗi phiên của pass chính và mỗi phiên của pass phụ, để lượt chạy hỏng giữa chừng không mất phần
-  đã trả tiền.
+  đã trả tiền. Checkpoint là **tệp tiến độ nằm ngoài chuỗi phiên bản**; chỉ stage hoàn tất mới đóng một phiên bản.
+- **Stage sau dùng đúng artifact mà stage trước trả về, không dùng "bản mới nhất"** *(chốt 2026-09-18, F98, F104)*.
+  Bộ điều phối truyền artifact xuống; một stage gọi lẻ thì dựng lại khoá cấu hình của stage trước để tìm, và báo lỗi
+  nếu không có. `upstream_version` chỉ được trỏ **trong cùng tầng artifact**: bản `clusters` không ghi số phiên bản
+  của tầng `canonical` vào đó (đã có `config.canonical_version`), vì vòng lần ngược đọc số ấy như số của tầng `graph`
+  và sẽ nhận nhầm một artifact khác.
+- **Khối nặng không được chép sang stage sau** *(chốt 2026-09-18, F102)*. Nhật ký phán (chứa nguyên văn chunk trong
+  input) và vector node chỉ nằm ở stage sinh ra chúng; stage sau tham chiếu theo số phiên bản. Đo trên `xstk-ch3-1`,
+  hai khối này chiếm 60% của bản cuối 10,80 MB, và một lượt sáu stage tốn 49 MB — với giáo trình thật cộng ba lượt
+  chạy của E3 thì sẽ lên hàng GB. Cách này phụ thuộc chuỗi `upstream` đúng, nên phải sửa hai điểm trên trước.
 
 ### D2 — A6: đồ thị chủ đề dựng bằng ba kênh, không ngưỡng tuyệt đối *(sửa `spec-addendum` §451 (A6, kênh similarity))*
 
@@ -192,6 +208,17 @@ Chạy trên **đồ thị đầy đủ**, mọi `node_type`, kể cả media.
 - **Trần cứng trong lúc tối ưu**, không phải lượt chẻ hậu kỳ: cỡ cụm tính bằng tổng cỡ node, node `learnable`
   cỡ 1 và media cỡ 0, trần 12. Luật "đếm theo concept, không đếm media" của addendum §468 do đó thành một tham
   số, không cần vòng đệ quy — và không rơi vào ca "không chẻ được nữa" của thư viện GraphRAG đang dùng.
+- **Độ phân giải γ lấy theo chính đồ thị, không phải hằng số** *(chốt 2026-09-18, F86)*. Với CPM, γ là ngưỡng mật
+  độ: một cụm chỉ đáng gọi là cụm nếu bên trong đặc hơn γ. Mặc định của thư viện là 1,0, trong khi đồ thị chủ đề
+  thật có mật độ có trọng số 0,019–0,049, nên γ = 1,0 khiến Leiden gần như không chia cụm và **vòng gộp cụm nhỏ mới
+  là thứ tạo ra cụm** (đo trên bốn tài liệu: 33/36, 34/34, 75/75, 98/98 khái niệm nằm trong cụm do vòng gộp tạo).
+  Vì vậy:
+  - γ mặc định = **mật độ có trọng số trên khái niệm** = tổng trọng số cạnh giữa hai node `learnable`, chia
+    `C(số khái niệm, 2)`. Đọc là "một cụm phải đặc hơn mức trung bình của chính tài liệu đó".
+  - Manifest ghi **cả công thức lẫn giá trị hiệu lực**. Có thể ép một giá trị khác, nhưng chỉ để làm ablation, và
+    lượt đó phải được báo cáo là ablation.
+  - Stats tách **phân hoạch Leiden thô** khỏi kết quả sau vòng gộp: số cụm thô, số cụm 1–2 khái niệm, số lần gộp,
+    và tỉ lệ khái niệm mà cụm cuối do vòng gộp quyết. Báo cáo phải dùng đúng các số này khi mô tả thuật toán.
 - **Không lọc thành phần liên thông lớn nhất.** Mọi node phải có `cluster_id`, kể cả khái niệm lẻ và media mồ côi.
 - **Cụm 1–2 khái niệm sáp nhập vào cụm gần nhất**, với "gần nhất" định nghĩa theo thứ tự: tổng trọng số cạnh
   sang cụm kia, rồi cosine tới tâm embedding của cụm, rồi thứ tự tài liệu. Luật phải tất định.
@@ -225,7 +252,16 @@ viên ra nhưng không dạy) > `nhắc` (chỉ do kênh exact hoặc dense bắ
 
 **Đầu ra dẫn xuất, đều là code thuần:**
 
-- **Viện dẫn** — có hướng: B được nhắc trong provenance của A, tức bằng chứng B có thể cần trước A.
+- **Viện dẫn** — có hướng: B được nhắc trong provenance của A, tức bằng chứng B có thể cần trước A. Hai luật lọc
+  *(chốt 2026-09-18, F90)*:
+  - **Bỏ ca đồng định nghĩa.** Nếu B cũng ở mức `định nghĩa` trong chính chunk đó thì không sinh viện dẫn: chunk ấy
+    dạy cả hai, nên không mang thông tin về hướng, và ca này đã có bộ sinh `same_section` lo. Đo trên bốn tài liệu,
+    luật cũ sinh 97 / 57 / 279 / 161 viện dẫn kiểu này.
+  - **Tách cứng và mềm.** Viện dẫn mà mọi chunk chỉ bắt được bằng kênh dense là **mềm**; còn lại (khớp tên đúng chữ,
+    mức `định nghĩa` hoặc `trích`) là **cứng**. Mỗi viện dẫn ghi kênh của từng chunk, và bộ sinh cặp của D5 dùng
+    `citation_hard` và `citation_soft` như hai bộ sinh riêng, để E2 đo được từng cái.
+  - Sau hai luật này, `baocao-canhan` còn 164 viện dẫn (66 cứng / 98 mềm) so với 261 trước đó, và số cặp có cả chiều
+    ngược giảm từ 146 xuống 34.
 - **Cặp chạm** — vô hướng: hai khái niệm thuộc hai cụm chủ đề khác nhau cùng được nhắc trong một chunk.
 - **Sổ cặp cụm**: hai bộ đếm **tách rời** cho kênh exact và kênh dense, không trộn hai thang khác nhau bằng một
   phép lấy nhỏ nhất. Trọng số hạ theo số khái niệm trong chunk. Ngưỡng mở phiên là **tương đối** (trọng số trung
@@ -238,7 +274,8 @@ viên ra nhưng không dạy) > `nhắc` (chỉ do kênh exact hoặc dense bắ
 Bốn nguồn đề cử, mọi cặp đều ghi nguồn:
 
 1. hai khái niệm có provenance trong cùng một section;
-2. **viện dẫn**;
+2. **viện dẫn**, tính là **hai bộ sinh tách rời** — `citation_hard` và `citation_soft` theo D4 *(chốt 2026-09-18)* —
+   để E2 đo được riêng phần kênh dense đóng góp;
 3. **cặp chạm**;
 4. quan hệ đề xuất còn lại của A3 và 2a, gồm cả `subtype_of`. Chúng vẫn chỉ là đề xuất: precision `subtype_of`
    đo được là 0,658, các kiểu khác đúng khoảng 70% trên mẫu 30.
@@ -273,7 +310,12 @@ Báo cáo cho từng bộ sinh: số cặp, recall cạnh vàng, và phần reca
 1. **nguyên văn chunk** của đơn vị đang xét (với nhánh cụm: chunk định nghĩa của các node trong cụm);
 2. **khái niệm đích** — node `learnable` có provenance ở đây, kèm tên chuẩn, alias, mô tả A5;
 3. **khái niệm được nhắc ở đây nhưng dạy nơi khác**, lấy từ mention map, kèm nơi dạy;
-4. cạnh đã tạo ở các phiên trước **trong cùng chương** (nhánh chương) — đây là trạng thái duy nhất được truyền;
+4. cạnh đã tạo ở các phiên trước **trong cùng chương** (nhánh chương) — đây là trạng thái duy nhất được truyền —
+   và **chỉ những cạnh có ít nhất một đầu nằm trong danh sách khái niệm của phiên** *(chốt 2026-09-18, F101)*.
+   Không lọc thì khối này tăng theo bình phương số phiên trong chương: đo trên `xstk-ch3-1` (một chương, 38 phiên),
+   khối cạnh trước của phiên cuối đã là 69.013 ký tự, và tổng cả chương là 1.392.009 ký tự — lọc còn 33%. Lý do
+   chính không phải tiền mà là **nhiễu**: không lọc thì mỗi phiên thấy một lượng ngữ cảnh khác nhau hẳn tuỳ vị trí
+   trong chương, nên E2 và E6 không so được cấu hình một cách sạch. Nhật ký ghi số cạnh đã bị lược của từng phiên;
 5. quan hệ đề xuất liên quan của A3 và 2a, kèm `origins`.
 
 **Câu hỏi, đúng tinh thần PREAP:** *với mỗi khái niệm đích, cần biết khái niệm nào trong danh sách để hiểu nó
@@ -327,6 +369,17 @@ Báo cáo cho từng bộ sinh: số cặp, recall cạnh vàng, và phần reca
 | `evidence_kind` ngoài danh sách | từ chối |
 | Tên quan hệ đồng nghĩa `requires` | từ chối, báo dùng `requires` |
 
+- **"Nhắc" ở đây tính cả kênh dense, nhưng cạnh phải mang cờ độ cứng của bằng chứng** *(chốt 2026-09-18, F96)*.
+  Mỗi cạnh được nhận ghi thêm `evidence_hard`: đúng khi **ít nhất một** chunk được trích nhắc **cả hai đầu bằng kênh
+  cứng** (provenance, trích, hoặc khớp tên đúng chữ), sai khi mọi chunk trích chỉ có kênh dense ở ít nhất một đầu.
+  Lý do không siết ngay: đo trên bốn tài liệu, luật siết cứu được 6 cạnh đang bị loại nhưng loại thêm 41 trong 344
+  cạnh đang nhận (12%), và **không có bộ vàng thì không biết bên nào đúng**. Nên giữ nếp "đánh dấu, đừng xoá" như
+  cạnh thừa ở D11: nhận cạnh, gắn cờ, rồi đo ở E7.
+  - **Luật đổi mặc định, viết trước khi đo:** chỉ chuyển sang đòi bằng chứng cứng khi trên bộ vàng, precision của
+    nhóm `evidence_hard = false` thấp hơn nhóm `evidence_hard = true` **≥ 0,15**, khoảng tin cậy của hiệu **không
+    chứa 0**, và bỏ nhóm mềm không làm recall tổng thể giảm quá **0,05**. Ngoài ra giữ nguyên, báo cáo ghi số của
+    cả hai nhóm.
+  - Thao tác bị từ chối vì thiếu bằng chứng vẫn nằm trong nhật ký executor, nên E7 đo được cả phần bị luật này cắt.
 - **Một lượt retry duy nhất** cho các thao tác lỗi; thao tác đã nhận không chạy lại.
 - Phiên **ghi đề xuất vào một nhật ký chỉ-thêm**, không sửa trực tiếp đồ thị. Một bộ gộp tất định áp theo khoá
   (phiên, thứ tự thao tác), nên kết quả không phụ thuộc phiên nào chạy xong trước.
@@ -366,11 +419,15 @@ Theo thứ tự:
    thường nhỏ). Thứ tự ưu tiên **giữ** cạnh: loại bằng chứng (`noi_ro` > `trong_dinh_nghia` > `mach_trinh_bay`),
    rồi thuận thứ tự provenance, rồi số nguồn độc lập đã đề cử, rồi confidence. Không dùng confidence làm tiêu chí
    đầu tiên: nó do mô hình tự khai và thường quá tự tin.
-4. **Chu trình hai cạnh là tín hiệu danh tính trước đã:** hai khái niệm đòi nhau thường là cặp anh em hoặc cặp
-   nghi trùng mà 2a chưa tách đúng. Ghi cờ cho A13 trước khi nghĩ tới cắt cạnh. Trong một bộ dữ liệu tiên quyết
-   công bố, 4% cạnh là hai chiều và tác giả coi đó là hợp lệ.
-5. **Cổng chất lượng** như `spec-addendum` §522 (A9, quality gate): chỉ đếm cạnh `requires`, mẫu số là node `learnable`. Không đạt
-   thì rơi về lộ trình theo thứ tự chương.
+4. **Chu trình hai cạnh được giữ và gắn cờ, không cắt** *(sửa 2026-09-17, F88)*. Hai khái niệm đòi nhau có thể là lẫn
+   chiều (trên `baocao-canhan`, cả hai ca thật đều là bộ phận–toàn thể bị đoán ngược), cũng có thể là cặp anh em hay
+   nghi trùng mà 2a chưa tách đúng. Trong một bộ dữ liệu tiên quyết công bố, 4% cạnh là hai chiều và tác giả coi đó
+   là hợp lệ. Vì vậy:
+   - giữ cả hai cạnh, gắn cờ trung tính `two_way_requires` cho A13, kèm hai cạnh và bằng chứng của từng chiều;
+   - **không** gọi đó là lỗi danh tính, và **không** để nó ảnh hưởng tới cổng chất lượng.
+5. **Cổng chất lượng** như `spec-addendum` §522 (A9, quality gate): **chỉ** xét mật độ — đếm cạnh `requires`, mẫu số
+   là node `learnable`, cộng tỉ lệ node cô lập. Không đạt thì rơi về lộ trình theo thứ tự chương. Chu trình hai cạnh
+   còn giữ **không** làm trượt cổng.
 6. **Cạnh thừa chỉ được đánh dấu.** Ghi `redundant_via` trỏ vào đường đi gián tiếp; **không xoá**. Xếp tầng chỉ
    phụ thuộc tính đến được nên không đổi; còn xoá thì lúc người duyệt gỡ một cạnh sai, cạnh trực tiếp đúng đã
    biến mất và không tự quay lại.
@@ -378,7 +435,11 @@ Theo thứ tự:
 
 ### D12 — A10 và trang xem *(Q6)*
 
-- Xếp tầng Kahn **chỉ trên đồ thị con `requires` của node `learnable`**.
+- Xếp tầng Kahn **chỉ trên đồ thị con `requires` của node `learnable`**, và chạy trên **đồ thị co** *(sửa
+  2026-09-17, F88)*: mỗi thành phần liên thông mạnh còn lại sau tầng 3 (tức các chu trình hai cạnh đã giữ) được co
+  thành một khối. Mọi khái niệm trong khối nằm **cùng một tầng**; cạnh vào và ra khối vẫn quyết định thứ tự như thường.
+  Tầng tính theo **đường dài nhất** từ gốc. Nếu sau tầng 3 còn thành phần nào lớn hơn hai node, đó là lỗi của tầng 3
+  và phải dừng, không được xếp tiếp.
 - Stage = giao của một tầng với một cụm chủ đề, trần 5–8 khái niệm.
 - **Phân biệt hai loại node không có tiên quyết:** node đã được xét mà không tìm thấy tiên quyết, và node chưa
   từng nằm trong phiên nào. Mỗi node ghi các phiên đã xét nó. Loại thứ hai là lỗi phủ, phải báo, không được lặng
@@ -417,7 +478,7 @@ Theo thứ tự:
 | E4 | Rò rỉ kiến thức nền | Cùng cặp, hỏi **không kèm văn bản** rồi so với có văn bản; đếm cạnh mô hình vẫn khẳng định mà vàng không có | có |
 | E5 | Nhận diện mention | P/R của kênh exact (có và không bỏ dấu), thêm kênh dense, thêm khử nhập nhằng | 0 |
 | E6 | Trích mở đối đầu kiểm cặp | Chạy lại đúng danh sách khái niệm của các phiên có vàng theo kiểu kiểm cặp; so P/R/F1 | có |
-| E7 | Cái giá của các bước nhất quán | Cạnh vàng bị cắt chu trình, bị đánh dấu thừa, hoặc bị tỉa reachability | 0 |
+| E7 | Cái giá của các bước nhất quán | Cạnh vàng bị cắt chu trình, bị đánh dấu thừa, hoặc bị tỉa reachability. Kèm **precision theo `evidence_hard`** và số cạnh vàng bị luật bằng chứng của D9 loại (F96) | 0 |
 | E8 | Thứ tự tài liệu | Tỉ lệ cạnh vàng ngược thứ tự provenance và ngược viện dẫn; hiệu chỉnh mức trừ | 0 |
 
 **Luật viết trước:**
