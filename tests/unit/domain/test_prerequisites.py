@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 from types import SimpleNamespace
 
 from doc2roadmap.domain.prerequisites import (
@@ -79,6 +81,16 @@ def test_routing_ignores_level_zero_root_and_uses_distinct_chapter_lanes():
     assert {row["chapter_id"] for row in sessions} == {"s1", "s2"}
 
 
+def test_real_naive_bayes_sections_excerpt_uses_topic_cluster_route():
+    rows = json.loads(Path("tests/fixtures/a8/naive-bayes-sections-excerpt.json").read_text(encoding="utf-8"))
+    sections = [SimpleNamespace(**row) for row in rows]
+    section_ids = [row.section_id for row in sections if row.level == 1]
+    nodes = [node(str(index), cluster=f"g{index % 2}", defining=(f"c{index % 2}",)) for index in range(21)]
+    chunks = [chunk(f"c{index}", section_id, index) for index, section_id in enumerate(section_ids)]
+    sessions = plan_main_sessions(nodes, chunks, sections, {}, single_limit=20)
+    assert {row["route"] for row in sessions} == {"topic_cluster"}
+
+
 def test_exactly_twenty_concepts_use_single_route():
     nodes = [node(str(i), defining=("c1",)) for i in range(20)]
     sections = [SimpleNamespace(section_id="s1", parent_section_id=None, level=1, order_index=0)]
@@ -140,11 +152,31 @@ def test_reverse_order_needs_explicit_evidence_and_loses_point_one():
     output = {"edges": [
         {"target": "a", "prerequisite": "b", "evidence_kind": "mach_trinh_bay", "chunk_ids": ["c2"], "reason": "weak reverse"},
         {"target": "a", "prerequisite": "b", "evidence_kind": "noi_ro", "chunk_ids": ["c2"], "reason": "explicit reverse"},
+        {"target": "a", "prerequisite": "b", "evidence_kind": "trong_dinh_nghia", "chunk_ids": ["c2"], "reason": "definition reverse"},
         {"target": "b", "prerequisite": "a", "evidence_kind": "mach_trinh_bay", "chunk_ids": ["c1"], "reason": "forward"},
     ], "flags": []}
     accepted, _, _, retry = validate_main_proposals(output, session, nodes, chunks, mention_map, existing_edges=[])
     assert [row["error"] for row in retry] == ["reverse_order_requires_explicit_evidence"]
-    assert [(edge["order_relation"], edge["confidence"]) for edge in accepted] == [("ngược", 0.8), ("thuận", 0.7)]
+    assert [(edge["order_relation"], edge["confidence"]) for edge in accepted] == [
+        ("ngược", 0.8), ("ngược", 0.8), ("thuận", 0.7)
+    ]
+
+
+def test_every_accepted_edge_marks_whether_any_cited_chunk_has_two_hard_mentions():
+    nodes = [node("a", defining=("c1",)), node("b", defining=("c2",))]
+    chunks = [chunk("c1", "s1", 0), chunk("c2", "s1", 1), chunk("c3", "s1", 2)]
+    mention_map = {
+        "c1": {"a": {"channels": ["dense"]}, "b": {"channels": ["exact"]}},
+        "c2": {"a": {"channels": ["provenance"]}, "b": {"channels": ["extraction"]}},
+        "c3": {"a": {"channels": ["dense"]}, "b": {"channels": ["dense"]}},
+    }
+    session = {"session_id": "one", "allowed_node_ids": ["a", "b"], "chunk_ids": ["c1", "c2", "c3"]}
+    output = {"edges": [
+        {"target": "b", "prerequisite": "a", "evidence_kind": "noi_ro", "chunk_ids": ["c1", "c2"], "reason": "hard in c2"},
+        {"target": "a", "prerequisite": "b", "evidence_kind": "noi_ro", "chunk_ids": ["c3"], "reason": "dense only"},
+    ], "flags": []}
+    accepted, _, _, _ = validate_main_proposals(output, session, nodes, chunks, mention_map, existing_edges=[])
+    assert [edge["evidence_hard"] for edge in accepted] == [True, False]
 
 
 def test_merger_is_independent_of_completion_order_and_logs_duplicates():

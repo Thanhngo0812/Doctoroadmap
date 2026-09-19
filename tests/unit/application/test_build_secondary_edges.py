@@ -1,6 +1,8 @@
 import json
 from types import SimpleNamespace
 
+import pytest
+
 from doc2roadmap.application.use_cases.build_secondary_edges import BuildSecondaryEdges
 
 
@@ -52,6 +54,24 @@ class InconsistentModel(Model):
         })
 
 
+class PairModel(Model):
+    def ask_json(self, prompt, *, response_schema):
+        data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+        self.calls.append(data)
+        dossier = data["dossier"]
+        prerequisite, target = sorted((dossier["left"], dossier["right"]))
+        return SimpleNamespace(payload={
+            "pair_id": dossier["pair_id"],
+            "decision": "create",
+            "prerequisite": prerequisite,
+            "target": target,
+            "evidence_kind": "noi_ro",
+            "chunk_ids": ["c1"],
+            "reason": "explicit",
+            "flags": [],
+        })
+
+
 class Store:
     def __init__(self):
         nodes = [
@@ -69,7 +89,7 @@ class Store:
                 "main_complete": True,
                 "main_edges": [],
                 "main_flags": [],
-                "decision_log": [],
+                "decision_log": [{"stage": "main", "large": True}],
                 "executor_log": [],
             },
             version=3,
@@ -132,9 +152,14 @@ def test_secondary_asks_both_orders_uses_executor_and_reuses_final_artifact():
     assert model.calls[0]["dossier"]["nodes"][0]["node_id"] == "a"
     assert model.calls[1]["dossier"]["left"] == "b"
     assert model.calls[1]["dossier"]["nodes"][0]["node_id"] == "b"
+    assert first.payload["main_decision_log_version"] == store.main.version
+    assert all(row.get("stage") == "secondary" for row in first.payload["decision_log"])
+    assert first.payload["stats"]["evidence_hard_count"] == 0
+    assert first.payload["stats"]["evidence_soft_count"] == 1
     second, reused = use_case.execute("doc")
     assert reused and second is first and len(model.calls) == 2
     assert store.saved_versions == 1
+    assert not store.checkpoints
 
 
 def test_secondary_uses_both_verdicts_and_defers_when_decisions_differ():
@@ -143,3 +168,56 @@ def test_secondary_uses_both_verdicts_and_defers_when_decisions_differ():
     assert len(model.calls) == 2
     assert artifact.payload["secondary_edges"] == []
     assert artifact.payload["secondary_log"][-1]["reason"] == "inconsistent_orders"
+
+
+def test_secondary_rejects_an_incomplete_main_pass():
+    store = Store()
+    store.main.payload["main_complete"] = False
+    with pytest.raises(ValueError, match="pass chính hoàn chỉnh"):
+        BuildSecondaryEdges(store, Model()).execute("doc")
+
+
+def test_secondary_stops_at_clusters_instead_of_following_a_cross_tier_version():
+    store = Store()
+    store.latest = SimpleNamespace(payload={"stage": "clusters"}, version=8, manifest={"upstream_version": None})
+    with pytest.raises(ValueError, match="không trỏ về stage edges"):
+        BuildSecondaryEdges(store, Model()).execute("doc")
+
+
+def test_secondary_resume_and_uninterrupted_run_prune_the_same_pairs_with_logs():
+    class ChainStore(Store):
+        def __init__(self, *, interrupt=False):
+            super().__init__()
+            self.main.payload["nodes"].append({
+                "node_id": "c", "name": "C", "description": "C", "cluster_id": "g1",
+                "learnable": True, "defining_chunk_ids": ["c1"],
+            })
+            self.main.payload["mention_map"]["c1"]["c"] = {"channels": ["exact"]}
+            self.main.payload["suspected_pairs"] = [
+                {"pair_id": "ab", "left": "a", "right": "b", "sources": ["citation"], "details": {}},
+                {"pair_id": "ac", "left": "a", "right": "c", "sources": ["citation"], "details": {}},
+            ]
+            self.main.payload["main_edges"] = [{
+                "source": "b", "target": "c", "edge_type": "requires", "explicit_evidence": True,
+            }]
+            self.interrupt = interrupt
+
+        def save_checkpoint(self, doc_id, checkpoint_id, payload):
+            super().save_checkpoint(doc_id, checkpoint_id, payload)
+            if self.interrupt:
+                self.interrupt = False
+                raise RuntimeError("interrupted after first pair")
+
+    continuous_store, continuous_model = ChainStore(), PairModel()
+    continuous, _ = BuildSecondaryEdges(continuous_store, continuous_model).execute("doc")
+
+    resumed_store, resumed_model = ChainStore(interrupt=True), PairModel()
+    with pytest.raises(RuntimeError, match="interrupted"):
+        BuildSecondaryEdges(resumed_store, resumed_model).execute("doc")
+    resumed, _ = BuildSecondaryEdges(resumed_store, resumed_model).execute("doc")
+
+    assert resumed.payload["secondary_edges"] == continuous.payload["secondary_edges"]
+    assert resumed.payload["secondary_log"] == continuous.payload["secondary_log"]
+    assert resumed.payload["stats"]["pruned_secondary_pair_count"] == 1
+    assert resumed.payload["stats"]["completed_secondary_pair_count"] == 2
+    assert any(row["pair_id"] == "ac" and row["status"] == "pruned_explicit_path" for row in resumed.payload["secondary_log"])

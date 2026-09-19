@@ -5,12 +5,14 @@ from collections import Counter, defaultdict
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prerequisite_prompt import (
     MAIN_SCHEMA,
+    PRICING_SOURCE,
     PRICING_USD_PER_MILLION,
     main_prompt_hash,
     main_system_prompt,
 )
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.prerequisites import (
+    REVERSE_ORDER_PENALTY,
     merge_main_proposals,
     plan_main_sessions,
     validate_main_proposals,
@@ -28,12 +30,14 @@ class BuildMainEdges:
         self.concurrency = concurrency
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
 
-    def _mentions(self, doc_id, latest):
+    def _provenance(self, doc_id, latest):
         artifact = latest
-        while artifact.payload.get("stage") != "mentions":
+        while artifact.payload.get("stage") != "provenance":
+            if artifact.payload.get("stage") in {"clusters", "mentions"}:
+                raise ValueError("artifact graph không trỏ về stage provenance")
             upstream = artifact.manifest.get("upstream_version")
             if upstream is None:
-                raise ValueError("artifact graph không trỏ về stage mentions")
+                raise ValueError("artifact graph không trỏ về stage provenance")
             artifact = self.store.load_graph(doc_id, upstream)
         return artifact
 
@@ -66,12 +70,17 @@ class BuildMainEdges:
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
         targets = set(session["target_node_ids"])
         mentioned = [node_id for node_id in session["allowed_node_ids"] if node_id not in targets]
-        previous = [
+        previous_in_chapter = [
             edge
             for edge in existing_edges
             if session_by_id.get(edge.get("session_id"), {}).get("chapter_id") == session["chapter_id"]
         ]
         allowed = set(session["allowed_node_ids"])
+        previous = [
+            edge
+            for edge in previous_in_chapter
+            if edge.get("source") in allowed or edge.get("target") in allowed
+        ]
         return {
             "session_id": session["session_id"],
             "route": session["route"],
@@ -83,6 +92,7 @@ class BuildMainEdges:
             "target_concepts": [self._concept(node_by_id[node_id]) for node_id in session["target_node_ids"]],
             "mentioned_elsewhere": [self._concept(node_by_id[node_id]) for node_id in mentioned],
             "previous_edges_in_chapter": previous,
+            "previous_edges_omitted_count": len(previous_in_chapter) - len(previous),
             "proposed_relations": [
                 edge
                 for edge in proposed_relations
@@ -90,11 +100,26 @@ class BuildMainEdges:
             ],
         }
 
-    def execute(self, doc_id):
-        latest = self.store.load_latest_graph(doc_id)
-        mentions = self._mentions(doc_id, latest)
-        chunks = self.store.load_latest_chunks(doc_id).result
-        canonical = self.store.load_latest_canonical(doc_id)
+    def execute(self, doc_id, *, upstream=None):
+        mentions = upstream if upstream is not None else self._provenance(
+            doc_id, self.store.load_latest_graph(doc_id)
+        )
+        if mentions.payload.get("stage") != "provenance":
+            raise ValueError("pass chính cần artifact provenance")
+        mention_config = mentions.manifest.get("config", {})
+        chunks_version = mention_config.get("chunks_version")
+        chunks_artifact = (
+            self.store.load_chunks(doc_id, chunks_version)
+            if chunks_version is not None
+            else self.store.load_latest_chunks(doc_id)
+        )
+        chunks = chunks_artifact.result
+        canonical_version = mention_config.get("canonical_version")
+        canonical = (
+            self.store.load_canonical(doc_id, canonical_version)
+            if canonical_version is not None
+            else self.store.load_latest_canonical(doc_id)
+        )
         nodes = mentions.payload["nodes"]
         sessions = plan_main_sessions(
             nodes,
@@ -112,20 +137,24 @@ class BuildMainEdges:
         }[route]
         prompt_hash = main_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-main-pass-v2",
-            "mentions_version": mentions.version,
-            "mentions_config_hash": mentions.manifest["config_hash"],
+            "algorithm_id": "a8-main-pass-v4",
+            "provenance_version": mentions.version,
+            "provenance_config_hash": mentions.manifest["config_hash"],
+            "mentions_version": mention_config.get("mentions_version"),
+            "mentions_config_hash": mention_config.get("mentions_config_hash"),
+            "canonical_version": canonical.version,
+            "chunks_version": chunks_artifact.version,
             "model_id": self.model.model_id,
             "generation": self.generation,
             "prompt_hash": prompt_hash,
             "single_session_limit": self.single_session_limit,
-            "concurrency": self.concurrency,
             "route": route,
             "route_reason": reason,
             "executor": "requires-reverse-order-v2",
-            "reverse_order_penalty": 0.1,
+            "reverse_order_penalty": REVERSE_ORDER_PENALTY,
             "checkpoint": "progress-file-outside-version-chain-v1",
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,
+            "pricing_source": PRICING_SOURCE,
         }
         base_config_hash = digest(base_config)
         source_hash = digest(mentions.payload)
@@ -254,6 +283,8 @@ class BuildMainEdges:
             "completed_session_count": len(completed),
             "main_edge_count": len(edges),
             "main_flag_count": len(flags),
+            "evidence_hard_count": sum(edge.get("evidence_hard", False) for edge in edges),
+            "evidence_soft_count": sum(not edge.get("evidence_hard", False) for edge in edges),
             **dict(sorted(metrics.items())),
         }
         input_tokens = sum(value for key, value in metrics.items() if key.endswith("_input_tokens"))

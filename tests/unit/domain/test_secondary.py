@@ -40,6 +40,14 @@ def test_secondary_route_and_explicit_reachability_pruning():
     direct_weak = [{"source": "a", "target": "b", "edge_type": "requires", "explicit_evidence": False}]
     selected, pruned = select_secondary_pairs(nodes, suspected, [], direct_weak, route="chapter")
     assert selected == [] and pruned[0]["status"] == "pruned_direct_edge"
+    selected, pruned = select_secondary_pairs(
+        nodes,
+        suspected,
+        [],
+        [{"source": "b", "target": "a", "edge_type": "requires", "explicit_evidence": True}],
+        route="chapter",
+    )
+    assert selected == [] and pruned[0]["edge"] == {"source": "b", "target": "a"}
     selected, _ = select_secondary_pairs(
         nodes,
         suspected,
@@ -68,6 +76,9 @@ def test_pair_contract_rejects_outside_edge_and_two_orders_must_agree():
     assert reconcile_pair_verdicts(valid, dict(valid)) == valid
     assert reconcile_pair_verdicts(valid, {**valid, "prerequisite": "b", "target": "a"})["decision"] == "defer"
     assert reconcile_pair_verdicts(valid, {"pair_id": "ab", "decision": "no_direct_relation", "flags": []})["decision"] == "defer"
+    assert reconcile_pair_verdicts(
+        {"pair_id": "ab", "decision": "no_direct_relation", "flags": []}, valid
+    )["decision"] == "defer"
 
 
 def test_dossier_contains_sources_weights_text_descriptions_order_and_weak_path():

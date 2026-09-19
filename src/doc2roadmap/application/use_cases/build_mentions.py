@@ -46,19 +46,33 @@ class BuildMentions:
             artifact = self.store.load_graph(doc_id, upstream)
         return artifact
 
-    def execute(self, doc_id):
-        clusters = self._clusters(doc_id)
-        chunks = self.store.load_latest_chunks(doc_id)
+    def execute(self, doc_id, *, upstream=None):
+        clusters = upstream if upstream is not None else self._clusters(doc_id)
+        if clusters.payload.get("stage") != "clusters":
+            raise ValueError("tầng mentions cần artifact clusters")
+        cluster_config = clusters.manifest.get("config", {})
+        chunks_version = cluster_config.get("chunks_version")
+        chunks = (
+            self.store.load_chunks(doc_id, chunks_version)
+            if chunks_version is not None
+            else self.store.load_latest_chunks(doc_id)
+        )
         retrieval = self.store.load_latest_retrieval(doc_id)
-        canonical = self.store.load_latest_canonical(doc_id)
+        canonical_version = cluster_config.get("canonical_version")
+        canonical = (
+            self.store.load_canonical(doc_id, canonical_version)
+            if canonical_version is not None
+            else self.store.load_latest_canonical(doc_id)
+        )
         if retrieval.manifest["source_hash"] != chunks.manifest["source_hash"]:
             raise ValueError("retrieval và chunks không cùng tài liệu nguồn")
         if retrieval.manifest.get("embedding_model_id") != self.embedding.embedding_model_id:
             raise ValueError("mô hình embedding query không khớp chỉ mục chunk")
         config = {
-            "algorithm_id": "mention-map-v2",
+            "algorithm_id": "mention-map-v3",
             "clusters_version": clusters.version,
             "clusters_config_hash": clusters.manifest["config_hash"],
+            "canonical_version": canonical.version,
             "chunks_version": chunks.version,
             "retrieval_version": retrieval.version,
             "retrieval_config_hash": retrieval.manifest["config_hash"],
@@ -131,9 +145,13 @@ class BuildMentions:
             "embedding_request_count": len(requests),
             "runtime_seconds": perf_counter() - started,
         }
+        cluster_payload = {
+            key: value for key, value in clusters.payload.items() if key != "node_vectors"
+        }
         payload = {
-            **clusters.payload,
+            **cluster_payload,
             "stage": "mentions",
+            "node_vectors_version": clusters.version,
             "cluster_stats": clusters.payload.get("stats", {}),
             "mention_map": mention_map,
             **derivatives,

@@ -129,7 +129,7 @@ class ArtifactStore(Protocol):
         config: dict[str, Any],
         payload: dict[str, Any],
         *,
-        upstream_version: int,
+        upstream_version: int | None,
         manifest_fields: dict[str, Any] | None = None,
     ) -> StoredStageArtifact: ...
 

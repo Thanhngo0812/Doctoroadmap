@@ -163,6 +163,7 @@ Song song với sản phẩm là phần đo, vì đầu ra của đợt này cò
   |---|---|---|
   | `clusters` | đồ thị chủ đề A6, `cluster_id` của mọi node | không |
   | `mentions` | mention map, viện dẫn, cặp chạm, cặp nghi tiên quyết | không |
+  | `provenance` | provenance đã vá bằng mention map, và mọi thứ phái sinh dựng lại — xem [spec vá](./va-provenance-sau-mention-map-spec.md) *(thêm 2026-09-18, F105)* | có, ít |
   | `edges` | cạnh `requires` từ pass chính và pass phụ, nhật ký phán | có |
   | `stages` | sau A9 và A10: cạnh đã validate, tầng, stage, `stage_id` gắn về chunk | có |
 
@@ -252,8 +253,9 @@ viên ra nhưng không dạy) > `nhắc` (chỉ do kênh exact hoặc dense bắ
 
 **Đầu ra dẫn xuất, đều là code thuần:**
 
-- **Viện dẫn** — có hướng: B được nhắc trong provenance của A, tức bằng chứng B có thể cần trước A. Hai luật lọc
-  *(chốt 2026-09-18, F90)*:
+- **Viện dẫn** — có hướng: B được nhắc trong provenance của A, tức bằng chứng B có thể cần trước A. Vì luật này
+  đứng trên provenance, nó phải được **dựng lại sau khi provenance được vá** ở stage `provenance`
+  ([spec vá](./va-provenance-sau-mention-map-spec.md), V5). Hai luật lọc *(chốt 2026-09-18, F90)*:
   - **Bỏ ca đồng định nghĩa.** Nếu B cũng ở mức `định nghĩa` trong chính chunk đó thì không sinh viện dẫn: chunk ấy
     dạy cả hai, nên không mang thông tin về hướng, và ca này đã có bộ sinh `same_section` lo. Đo trên bốn tài liệu,
     luật cũ sinh 97 / 57 / 279 / 161 viện dẫn kiểu này.
@@ -460,6 +462,9 @@ Theo thứ tự:
   tiên quyết bám văn bản cho **một giáo trình tiếng Việt**, cộng một chương tiếng Anh để kiểm chéo ngôn ngữ", không
   phải một bộ vàng tiếng Việt thuần. Các số phải tách theo từng chương, không gộp chung hai ngôn ngữ thành một
   con số duy nhất. Không dùng `xstk-ch3-1` làm chương vàng, vì nó đã nằm trong bộ tài liệu phát triển.
+- **Cột "Nơi dạy" lấy từ provenance đã vá** *(2026-09-18, F105)*, tức artifact stage `provenance`, không lấy thẳng
+  từ `canonical`. Gán thử cho thấy provenance gốc trỏ vào chunk mở đề chứ không phải chunk định nghĩa ở 4/26 khái
+  niệm, và người gán bị chỉ sai chỗ.
 - **Công cụ:** một lệnh sinh **file Excel** từ artifact, mở bằng Excel 365. Sheet hướng dẫn; sheet khái niệm
   (khoá, kèm nơi dạy: chương, mục, trang); sheet quan hệ (chọn từ danh sách, kèm vị trí trong sách, loại bằng
   chứng, ghi chú); sheet cờ (không phải khái niệm, thiếu khái niệm, node gộp sai). Một ô ẩn ghi phiên bản artifact

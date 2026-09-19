@@ -21,11 +21,18 @@ class Store:
                 "main_flags": [],
                 "secondary_flags": [],
                 "flags": [],
+                "node_vectors_version": 2,
+                "decision_log": [{"input": "large"}],
             },
             version=4,
             manifest={"source_hash": "edge-source", "config_hash": "edge-config"},
         )
         self.latest = self.edges
+        self.clusters = SimpleNamespace(
+            payload={"stage": "clusters", "node_vectors": {"a": [1.0, 0.0], "b": [0.0, 1.0]}},
+            version=2,
+            manifest={"upstream_version": None},
+        )
         self.canonical = SimpleNamespace(payload={"edges": []}, version=1, manifest={})
         self.saved = None
 
@@ -33,6 +40,8 @@ class Store:
         return self.latest
 
     def load_graph(self, doc_id, version):
+        if version == 2:
+            return self.clusters
         assert version == 4
         return self.edges
 
@@ -61,6 +70,10 @@ def test_validate_stage_is_pure_cached_and_preserves_requires():
     first, reused = ValidateGraph(store).execute("doc")
     assert not reused and first.payload["stage"] == "validated"
     assert first.payload["requires_edges"][0]["source"] == "a"
+    assert "decision_log" not in first.payload and "node_vectors" not in first.payload
+    assert first.payload["decision_log_version"] == store.edges.version
+    assert first.payload["node_vectors_version"] == store.clusters.version
+    assert first.payload["incremental_node_vectors"] == {}
     second, reused = ValidateGraph(store).execute("doc")
     assert reused and second is first
 

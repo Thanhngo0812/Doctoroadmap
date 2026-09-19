@@ -39,17 +39,22 @@ class BuildRoadmap:
     def _validated(self, doc_id, latest):
         artifact = latest
         while artifact.payload.get("stage") != "validated":
+            if artifact.payload.get("stage") == "clusters":
+                raise ValueError("stage roadmap cần artifact validated")
             upstream = artifact.manifest.get("upstream_version")
             if upstream is None:
                 raise ValueError("stage roadmap cần artifact validated")
             artifact = self.store.load_graph(doc_id, upstream)
         return artifact
 
-    def execute(self, doc_id):
-        latest = self.store.load_latest_graph(doc_id)
-        validated = self._validated(doc_id, latest)
+    def execute(self, doc_id, *, upstream=None):
+        validated = upstream if upstream is not None else self._validated(
+            doc_id, self.store.load_latest_graph(doc_id)
+        )
+        if validated.payload.get("stage") != "validated":
+            raise ValueError("stage roadmap cần artifact validated")
         config = {
-            "algorithm_id": "a10-kahn-stage-v4",
+            "algorithm_id": "a10-kahn-stage-v5",
             "validated_version": validated.version,
             "validated_config_hash": validated.manifest["config_hash"],
             "stage_rule": "layer-intersection-topic-cluster",
@@ -63,10 +68,19 @@ class BuildRoadmap:
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
             return cached, True
+        invalid_sessions = {
+            flag.get("session_id")
+            for flag in validated.payload.get("main_flags", [])
+            if flag.get("kind") == "invalid_main_session"
+        }
         roadmap = build_roadmap(
             validated.payload["nodes"],
             validated.payload["requires_edges"],
-            validated.payload.get("main_sessions", []),
+            [
+                session
+                for session in validated.payload.get("main_sessions", [])
+                if session.get("session_id") not in invalid_sessions
+            ],
             validated.payload.get("completed_secondary_pairs", []),
             validated.payload.get("suspected_pairs", []),
             stage_cap=self.stage_cap,

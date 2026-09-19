@@ -1,6 +1,8 @@
 from types import SimpleNamespace
 
-from doc2roadmap.application.leiden_cluster import _merge_tiny_groups, cluster_nodes
+import pytest
+
+from doc2roadmap.application.leiden_cluster import _merge_tiny_groups, cluster_nodes, weighted_concept_density
 from doc2roadmap.domain.topic_graph import build_topic_edges
 
 
@@ -137,9 +139,20 @@ def test_tiny_merge_includes_two_concepts_and_prefers_cross_weight_before_simila
         frozenset(("s1", "w1")): 2.0,
         frozenset(("s1", "v1")): 1.0,
     }
-    merged, count, _ = _merge_tiny_groups(groups, node_by_id, weights, vectors, 5)
+    merged, count, affected = _merge_tiny_groups(groups, node_by_id, weights, vectors, 5)
     assert count == 1
     assert {"s1", "s2", "w1", "w2", "w3"} in merged.values()
+    assert affected == {"s1", "s2", "w1", "w2", "w3"}
+
+
+def test_weighted_density_uses_unordered_concept_pairs_and_ignores_media_edges():
+    nodes = [node("a"), node("b"), node("c"), node("media", learnable=False, media=True)]
+    edges = [
+        {"source": "a", "target": "b", "weight": 0.6},
+        {"source": "b", "target": "c", "weight": 0.3},
+        {"source": "a", "target": "media", "weight": 99.0},
+    ]
+    assert weighted_concept_density(nodes, edges) == pytest.approx(0.3)
 
 
 def test_quantile_removes_low_edges_and_busy_chunk_reduces_cooccurrence_weight():

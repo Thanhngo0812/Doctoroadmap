@@ -329,7 +329,7 @@ class JsonArtifactStore:
         config: dict[str, Any],
         payload: dict[str, Any],
         *,
-        upstream_version: int,
+        upstream_version: int | None,
         manifest_fields: dict[str, Any] | None = None,
         force_new: bool = False,
     ) -> StoredStageArtifact:
@@ -427,7 +427,7 @@ class JsonArtifactStore:
         config: dict[str, Any],
         payload: dict[str, Any],
         *,
-        upstream_version: int,
+        upstream_version: int | None,
         manifest_fields: dict[str, Any] | None = None,
     ) -> StoredStageArtifact:
         return self._save_stage(

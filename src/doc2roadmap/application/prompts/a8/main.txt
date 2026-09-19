@@ -15,3 +15,6 @@ Do not return confidence; code assigns it. Do not resolve cycles. If the text su
 node, put it in `flags` instead of inventing an edge. The input contains, in order: verbatim chunks, target
 concepts, concepts mentioned here but taught elsewhere, earlier accepted edges in this chapter, and proposed
 relations from earlier phases.
+
+An edge that runs opposite the document's teaching order needs `noi_ro` or `trong_dinh_nghia`; do not use
+`mach_trinh_bay` for a reverse-order edge.

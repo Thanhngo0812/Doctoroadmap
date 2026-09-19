@@ -11,6 +11,11 @@ from doc2roadmap.application.canonical_prompt import (
 )
 from doc2roadmap.application.extraction_prompt import load_prompts, prompt_hash
 from doc2roadmap.application.prompt_library import PROMPT_ROOT, load_prompt
+from doc2roadmap.application.prerequisite_prompt import (
+    main_prompt_hash,
+    provenance_prompt_hash,
+    secondary_prompt_hash,
+)
 from doc2roadmap.application.use_cases.canonical_reasoning import CanonicalReasoning
 
 
@@ -50,9 +55,20 @@ def test_product_prompt_hashes_are_intentionally_versioned():
         "describe": "94b1ffe0a23feab8d335136141de8eb904945f38eadd383e1eab3ab10a7d79d2",
         "check": "f01acab2cc39818cef30ce3ed16ad618b3ec24d4b488ab6126ca2ece0902ac0c",
     }
+    a8_actual = {
+        "main": main_prompt_hash("golden-model", GENERATION),
+        "provenance": provenance_prompt_hash("golden-model", GENERATION),
+        "secondary": secondary_prompt_hash("golden-model", GENERATION),
+    }
+    a8_expected = {
+        "main": "dd74068e852d265b12bb9690f056f3f442f51147b6747f11dce32523e6a5be98",
+        "provenance": "65776d7757bf3e2a6a79fb05a5cd37b424686edd0f667aa7aeb1e84618772dad",
+        "secondary": "0d4d06ecc160d5b726d2bc160ab58a62d6f6bfa0c7d5cf7891c0d2091cd278d1",
+    }
 
     assert a3_actual == a3_expected, HASH_CHANGE_WARNING
     assert a4_actual == a4_expected, HASH_CHANGE_WARNING
+    assert a8_actual == a8_expected, HASH_CHANGE_WARNING
 
 
 def test_product_prompt_catalog_is_exact_and_loadable():
@@ -68,6 +84,7 @@ def test_product_prompt_catalog_is_exact_and_loadable():
         Path("a4/describe.txt"),
         Path("a4/check.txt"),
         Path("a8/main.txt"),
+        Path("a8/provenance.txt"),
         Path("a8/secondary.txt"),
     }
     actual = {path.relative_to(PROMPT_ROOT) for path in PROMPT_ROOT.rglob("*.txt")}

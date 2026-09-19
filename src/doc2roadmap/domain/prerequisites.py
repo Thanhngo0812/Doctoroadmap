@@ -8,6 +8,8 @@ EVIDENCE_CONFIDENCE = {
     "trong_dinh_nghia": 0.9,
     "mach_trinh_bay": 0.7,
 }
+HARD_MENTION_CHANNELS = {"provenance", "extraction", "exact"}
+REVERSE_ORDER_PENALTY = 0.1
 
 
 def plan_main_sessions(nodes, chunks, sections, mention_map, *, single_limit):
@@ -184,7 +186,12 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             continue
         confidence = EVIDENCE_CONFIDENCE[edge["evidence_kind"]]
         if order_relation == "ngược":
-            confidence -= 0.1
+            confidence -= REVERSE_ORDER_PENALTY
+        evidence_hard = any(
+            bool(HARD_MENTION_CHANNELS & set(mention_map[chunk_id][source].get("channels", [])))
+            and bool(HARD_MENTION_CHANNELS & set(mention_map[chunk_id][target].get("channels", [])))
+            for chunk_id in edge["chunk_ids"]
+        )
         proposal = {
             "source": source,
             "target": target,
@@ -194,6 +201,7 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             "reason": edge["reason"],
             "confidence": confidence,
             "explicit_evidence": edge["evidence_kind"] in {"noi_ro", "trong_dinh_nghia"},
+            "evidence_hard": evidence_hard,
             "order_relation": order_relation,
             "session_id": session["session_id"],
             "operation_index": index,

@@ -5,9 +5,10 @@ nhánh chỉ mục vector, A4 và A5, để có bảng node canonical làm đầ
 
 Không sửa code ở vé này. Nếu phải sửa thì dừng và báo, vì đó là thay đổi hành vi của phase đã đóng.
 
-**Blocked by:** None về code — chờ chủ dự án gửi tài liệu.
+**Blocked by:** vé 16. Ba tài liệu đã có, nhưng chỉ được chạy sau khi stage provenance đạt đủ cổng, gồm bảng E1
+trước/sau trên nhãn thử.
 
-**Status:** ready-for-agent — chủ dự án đã gửi `doc-1.pdf`, `doc-2.pdf`, `doc-3.pdf` (2026-09-18); xem ghi chú dưới
+**Status:** blocked — chủ dự án đã gửi đủ file; đang chờ dữ liệu nhãn thử đã điền để đóng vé 16 (2026-09-19)
 
 > **Ba tài liệu đã có trong workspace, đã nằm trong `.gitignore`.** Soi trước khi nạp (2026-09-18):
 > - `doc-1.pdf` — *Bài giảng Đại số tuyến tính*, tiếng Việt, 159 trang, 208 nghìn ký tự, có `Chương` và ba cấp mục.

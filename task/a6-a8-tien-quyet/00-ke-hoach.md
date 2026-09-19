@@ -25,22 +25,23 @@ kế A10 cần một đợt nghiên cứu riêng **sau** đợt này trước kh
 | Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11 |
 | Claude | 04, 05, 12, 13, 14 |
 
-**Cập nhật 2026-09-16:** nhân viên đã hoàn tất và nghiệm thu các vé 01, 02, 03, 06, 07, 08, 09, 10. Vé
-11 đang chặn vì chưa nhận được hai giáo trình đầy đủ và một tài liệu phẳng; không có thay đổi code cho vé này.
+**Cập nhật 2026-09-19:** nhân viên đã hoàn tất code và chạy thật các vé 01, 02, 03, 06, 07, 08, 09, 10. Vé 16
+được thêm sau mention map; code/test/cache/precision đã đạt, còn thiếu bảng E1 vì file nhãn thử tìm được là template
+trống. Vé 11 đã có đủ ba PDF nhưng bị vé 16 chặn.
 Số đo thật, chi phí và danh sách mutation nằm trong feedback của từng vé.
 
 ## Thứ tự và cạnh chặn
 
 ```text
 01 prefactor ─┐
-02 clusters ──┴─> 03 mentions ─┬─> 06 pass chính ─> 07 pass phụ ─> 10 fixture ─┐
-                               │              └──> 08 tầng 3 ─> 09 A10         │
+02 clusters ──┴─> 03 mentions ─> 16 provenance ─┬─> 06 pass chính ─> 07 pass phụ ─> 10 fixture ─┐
+                                               │              └──> 08 tầng 3 ─> 09 A10         │
 04 excel vàng ─────────────────┴─> 05 bộ chấm ─┐                               │
-11 nạp tài liệu mới ───────────────────────────┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
+16 ─> 11 nạp tài liệu mới ─────────────────────┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
 ```
 
-Vé **01, 02, 04 và 11 không chặn bởi gì cả**, chạy song song được ngay. Vé 04 nằm trên đường găng vì việc gán
-nhãn tốn người.
+Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 11 bị chặn bởi vé 16; vé 04 nằm trên đường găng vì việc gán nhãn tốn
+người.
 
 ## Luật chung cho mọi vé
 

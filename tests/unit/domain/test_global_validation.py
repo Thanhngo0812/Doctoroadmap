@@ -132,3 +132,37 @@ def test_large_strong_component_uses_bounded_cycle_heuristic():
     }]
     kept = {(row["source"], row["target"]) for row in result["requires_edges"]}
     assert not any((target, source) in kept for source, target in kept)
+
+
+def test_eades_prefers_strong_outgoing_evidence_and_selects_the_highest_score_node():
+    nodes = [node(value) for value in "abcde"]
+    requires = [
+        edge(
+            source,
+            target,
+            "noi_ro" if source < target else "mach_trinh_bay",
+            0.9 if source < target else 0.7,
+        )
+        for source in "abcde"
+        for target in "abcde"
+        if source != target
+    ]
+    result = validate_graph_rules(nodes, requires, [])
+    assert {(row["source"], row["target"]) for row in result["requires_edges"]} == {
+        (source, target) for source in "abcde" for target in "abcde" if source < target
+    }
+
+
+def test_quality_gate_rejects_an_isolated_ratio_of_point_seven():
+    nodes = [node(str(index)) for index in range(10)]
+    requires = [
+        edge("0", "1", "noi_ro", 0.9),
+        edge("1", "2", "noi_ro", 0.9),
+        edge("0", "2", "noi_ro", 0.9),
+        edge("0", "1", "noi_ro", 0.8),
+        edge("1", "2", "noi_ro", 0.8),
+    ]
+    result = validate_graph_rules(nodes, requires, [])
+    assert result["quality_gate"]["requires_edge_count"] == 5
+    assert result["quality_gate"]["isolated_ratio"] == 0.7
+    assert result["quality_gate"]["passed"] is False

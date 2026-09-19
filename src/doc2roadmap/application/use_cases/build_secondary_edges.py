@@ -5,6 +5,7 @@ from collections import Counter
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prerequisite_prompt import (
     SECONDARY_SCHEMA,
+    PRICING_SOURCE,
     PRICING_USD_PER_MILLION,
     secondary_prompt_hash,
     secondary_system_prompt,
@@ -31,6 +32,8 @@ class BuildSecondaryEdges:
     def _edge_checkpoint(self, doc_id, latest):
         artifact = latest
         while artifact.payload.get("stage") != "edges":
+            if artifact.payload.get("stage") == "clusters":
+                raise ValueError("artifact graph không trỏ về stage edges")
             upstream = artifact.manifest.get("upstream_version")
             if upstream is None:
                 raise ValueError("artifact graph không trỏ về stage edges")
@@ -59,20 +62,31 @@ class BuildSecondaryEdges:
             "presentation_order": [dossier["right"], dossier["left"]],
         }
 
-    def execute(self, doc_id):
-        latest = self.store.load_latest_graph(doc_id)
-        edge_checkpoint = self._edge_checkpoint(doc_id, latest)
-        main = self._main(doc_id, edge_checkpoint)
+    def execute(self, doc_id, *, upstream=None):
+        if upstream is None:
+            edge_checkpoint = self._edge_checkpoint(doc_id, self.store.load_latest_graph(doc_id))
+            main = self._main(doc_id, edge_checkpoint)
+        else:
+            main = upstream
         if main.payload.get("stage") != "edges" or not main.payload.get("main_complete"):
             raise ValueError("pass phụ cần artifact pass chính hoàn chỉnh")
-        chunks = self.store.load_latest_chunks(doc_id).result.chunks
+        main_config = main.manifest.get("config", {})
+        chunks_version = main_config.get("chunks_version")
+        chunks_artifact = (
+            self.store.load_chunks(doc_id, chunks_version)
+            if chunks_version is not None
+            else self.store.load_latest_chunks(doc_id)
+        )
+        chunks = chunks_artifact.result.chunks
         nodes = main.payload["nodes"]
         route = main.payload["routing"]["route"]
         prompt_hash = secondary_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-secondary-pass-v2",
+            "algorithm_id": "a8-secondary-pass-v3",
             "main_version": main.version,
             "main_config_hash": main.manifest["config_hash"],
+            "canonical_version": main_config.get("canonical_version"),
+            "chunks_version": chunks_artifact.version,
             "model_id": self.model.model_id,
             "generation": self.generation,
             "prompt_hash": prompt_hash,
@@ -81,6 +95,7 @@ class BuildSecondaryEdges:
             "prune_rule": "direct-any-strength-or-explicit-path-v2",
             "checkpoint": "progress-file-outside-version-chain-v1",
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,
+            "pricing_source": PRICING_SOURCE,
         }
         base_config_hash = digest(base_config)
         source_hash = digest(main.payload)
@@ -100,22 +115,44 @@ class BuildSecondaryEdges:
             metrics = Counter(checkpoint.get("secondary_model_metrics", {}))
         else:
             completed, secondary_edges, secondary_flags = set(), [], []
-            decision_log = list(main.payload.get("decision_log", []))
+            decision_log = []
             executor_log = list(main.payload.get("executor_log", []))
             secondary_log, metrics = [], Counter()
-        all_edges = list(main.payload.get("main_edges", [])) + secondary_edges
-        pairs, pruned = select_secondary_pairs(
+        pairs, _ = select_secondary_pairs(
             nodes,
             main.payload.get("suspected_pairs", []),
             main.payload.get("pair_cluster_ledger", []),
-            all_edges,
+            [],
             route=route,
         )
-        if not resumable:
-            secondary_log.extend(pruned)
         pending = [pair for pair in pairs if pair["pair_id"] not in completed]
         system_prompt = secondary_system_prompt()
+
+        def save_progress():
+            self.store.save_checkpoint(doc_id, checkpoint_id, {
+                "source_hash": source_hash,
+                "completed_secondary_pairs": sorted(completed),
+                "secondary_edges": secondary_edges,
+                "secondary_flags": secondary_flags,
+                "decision_log": decision_log,
+                "executor_log": executor_log,
+                "secondary_log": secondary_log,
+                "secondary_model_metrics": dict(sorted(metrics.items())),
+            })
+
         for pair in pending:
+            askable, pruned = select_secondary_pairs(
+                nodes,
+                [pair],
+                main.payload.get("pair_cluster_ledger", []),
+                list(main.payload.get("main_edges", [])) + secondary_edges,
+                route=route,
+            )
+            if not askable:
+                secondary_log.extend(pruned)
+                completed.add(pair["pair_id"])
+                save_progress()
+                continue
             dossier = pair_dossier(
                 pair,
                 nodes,
@@ -206,21 +243,24 @@ class BuildSecondaryEdges:
                     "decision": verdict["decision"],
                 })
             completed.add(pair["pair_id"])
-            self.store.save_checkpoint(doc_id, checkpoint_id, {
-                "source_hash": source_hash,
-                "completed_secondary_pairs": sorted(completed),
-                "secondary_edges": secondary_edges,
-                "secondary_flags": secondary_flags,
-                "decision_log": decision_log,
-                "executor_log": executor_log,
-                "secondary_log": secondary_log,
-                "secondary_model_metrics": dict(sorted(metrics.items())),
-            })
+            save_progress()
+        pruned_count = sum(
+            row.get("status") in {"pruned_direct_edge", "pruned_explicit_path"}
+            for row in secondary_log
+        )
         stats = {
             "secondary_pair_count": len(pairs),
             "completed_secondary_pair_count": len(completed),
-            "pruned_secondary_pair_count": len(pruned),
+            "pruned_secondary_pair_count": pruned_count,
             "secondary_edge_count": len(secondary_edges),
+            "evidence_hard_count": sum(
+                edge.get("evidence_hard", False)
+                for edge in [*main.payload.get("main_edges", []), *secondary_edges]
+            ),
+            "evidence_soft_count": sum(
+                not edge.get("evidence_hard", False)
+                for edge in [*main.payload.get("main_edges", []), *secondary_edges]
+            ),
             **dict(sorted(metrics.items())),
         }
         input_tokens = sum(value for key, value in metrics.items() if key.endswith("_input_tokens"))
@@ -242,6 +282,7 @@ class BuildSecondaryEdges:
             "completed_secondary_pairs": sorted(completed),
             "secondary_edges": secondary_edges,
             "secondary_flags": secondary_flags,
+            "main_decision_log_version": main.version,
             "decision_log": decision_log,
             "executor_log": executor_log,
             "secondary_log": secondary_log,

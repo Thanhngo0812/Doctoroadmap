@@ -143,6 +143,7 @@ def build_learning_graph():
         BuildLearningGraph,
         BuildMainEdges,
         BuildMentions,
+        BuildProvenance,
         BuildRoadmap,
         BuildSecondaryEdges,
         ValidateGraph,
@@ -174,6 +175,12 @@ def build_learning_graph():
             dense_top_k=settings.mention_dense_top_k,
             dense_min_z=settings.mention_dense_min_z,
             pair_cluster_top_k=settings.mention_pair_cluster_top_k,
+        ),
+        BuildProvenance(
+            store,
+            model,
+            concurrency=settings.roadmap_concurrency,
+            generation=generation,
         ),
         BuildMainEdges(
             store,

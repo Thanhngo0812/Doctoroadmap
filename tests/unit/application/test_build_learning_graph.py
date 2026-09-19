@@ -8,7 +8,9 @@ class Stage:
         self.name = name
         self.calls = calls
 
-    def execute(self, doc_id):
+    def execute(self, doc_id, *, upstream=None):
+        if self.name != "clusters":
+            assert upstream is not None
         self.calls.append(self.name)
         stage = "edges" if self.name in {"main", "secondary"} else self.name
         return SimpleNamespace(payload={"stage": stage}), True
@@ -18,14 +20,16 @@ def test_one_use_case_stops_at_each_public_stage_without_touching_later_stages()
     expected = {
         "clusters": ["clusters"],
         "mentions": ["clusters", "mentions"],
-        "edges": ["clusters", "mentions", "main", "secondary"],
-        "stages": ["clusters", "mentions", "main", "secondary", "validated", "stages"],
+        "provenance": ["clusters", "mentions", "provenance"],
+        "edges": ["clusters", "mentions", "provenance", "main", "secondary"],
+        "stages": ["clusters", "mentions", "provenance", "main", "secondary", "validated", "stages"],
     }
     for stop_after, wanted in expected.items():
         calls = []
         use_case = BuildLearningGraph(
             Stage("clusters", calls),
             Stage("mentions", calls),
+            Stage("provenance", calls),
             Stage("main", calls),
             Stage("secondary", calls),
             Stage("validated", calls),
@@ -35,3 +39,58 @@ def test_one_use_case_stops_at_each_public_stage_without_touching_later_stages()
         assert calls == wanted
         assert reused
         assert artifact.payload["stage"] == stop_after
+
+
+def test_orchestrator_passes_the_exact_returned_artifact_to_the_next_stage():
+    artifacts = []
+
+    class TrackingStage(Stage):
+        def execute(self, doc_id, *, upstream=None):
+            if artifacts:
+                assert upstream is artifacts[-1]
+            artifact, reused = super().execute(doc_id, upstream=upstream)
+            artifacts.append(artifact)
+            return artifact, reused
+
+    calls = []
+    stages = [TrackingStage(name, calls) for name in ("clusters", "mentions", "provenance", "main", "secondary", "validated", "stages")]
+    BuildLearningGraph(*stages).execute("doc")
+    assert calls == ["clusters", "mentions", "provenance", "main", "secondary", "validated", "stages"]
+
+
+def test_switching_configuration_a_b_a_reuses_the_original_a_chain():
+    current = {"value": "A"}
+
+    class Clusters:
+        def __init__(self):
+            self.cache = {}
+
+        def execute(self, doc_id):
+            value = current["value"]
+            reused = value in self.cache
+            self.cache.setdefault(value, SimpleNamespace(payload={"stage": "clusters", "config": value}))
+            return self.cache[value], reused
+
+    class Mentions:
+        def __init__(self):
+            self.cache = {}
+            self.calls = 0
+
+        def execute(self, doc_id, *, upstream):
+            value = upstream.payload["config"]
+            if value in self.cache:
+                return self.cache[value], True
+            self.calls += 1
+            artifact = SimpleNamespace(payload={"stage": "mentions", "config": value})
+            self.cache[value] = artifact
+            return artifact, False
+
+    clusters, mentions = Clusters(), Mentions()
+    unused = Stage("unused", [])
+    use_case = BuildLearningGraph(clusters, mentions, unused, unused, unused, unused, unused)
+    first_a, _ = use_case.execute("doc", stop_after="mentions")
+    current["value"] = "B"
+    use_case.execute("doc", stop_after="mentions")
+    current["value"] = "A"
+    second_a, reused = use_case.execute("doc", stop_after="mentions")
+    assert reused and second_a is first_a and mentions.calls == 2

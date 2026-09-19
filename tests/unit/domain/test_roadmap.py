@@ -108,3 +108,19 @@ def test_roadmap_rejects_strong_component_larger_than_two_nodes():
             stage_cap=5,
             quality_gate={"passed": True},
         )
+
+
+def test_document_order_fallback_keeps_a_two_node_component_in_one_layer():
+    result = build_roadmap(
+        [node("a", order=0), node("b", order=10), node("c", order=1)],
+        [
+            {"source": "a", "target": "b", "edge_type": "requires"},
+            {"source": "b", "target": "a", "edge_type": "requires"},
+        ],
+        [], [], [],
+        stage_cap=5,
+        quality_gate={"passed": False},
+    )
+    layers = {row["node_id"]: row["layer"] for row in result["nodes"]}
+    assert result["mode"] == "document_order_fallback"
+    assert layers["a"] == layers["b"]

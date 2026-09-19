@@ -777,3 +777,86 @@ Tôi nghiêng về (c) cho đợt này, cộng (a) trong báo cáo: không đụ
 Chủ dự án quyết.
 
 **Số cần báo trong báo cáo cuối:** tỉ lệ khái niệm đích bị gắn cờ "nơi dạy sai" trên cả hai chương vàng.
+
+---
+
+# Phản hồi thực thi vòng 32 — F96, F98–F105 và vé 16 · 2026-09-19
+
+## Kết luận
+
+- **F96, F98, F99, F101, F102, F103 và F104 đã sửa, có test và chạy thật.** F100 đã chạy lại đủ bốn tài liệu trong
+  cùng lượt. F105 đã có stage `provenance` theo spec vá; cache và precision quan sát đạt cổng.
+- Baseline A6–A10 đã commit ở `a033b89`. Các thay đổi vòng 32 và vé 16 đang chờ commit sau khi cập nhật feedback này.
+- **Chưa mở vé 11.** Vé 16 còn thiếu đúng bảng E1 trước/sau vì file nhãn A1 trong scratchpad là template trống, dù
+  F105 nhắc một lượt gán thử 52 quan hệ/27 cờ. Không tìm thấy file chứa 52 quan hệ trong workspace, worktree vé 04/05,
+  Desktop, Documents hoặc Downloads.
+
+## Sửa code và test
+
+- F104/F98: `clusters.upstream_version=null`; bộ điều phối truyền chính artifact vừa tạo sang stage kế; walker dừng
+  đúng ở `clusters`. Test A→B→A chứng minh không nhặt artifact của cấu hình khác.
+- F99: pass phụ tỉa ngay trước từng cặp trên trạng thái cạnh hiện tại, luôn ghi log cặp bị tỉa, và resume cho kết quả
+  giống chạy liền.
+- F96: mọi cạnh nhận được có `evidence_hard`; kênh cứng là provenance/extraction/exact, dense-only là mềm. Artifact
+  validated thật có **286 cạnh cứng / 41 cạnh mềm** (chi tiết ở bảng dưới).
+- F101: cạnh trước chỉ giữ khi ít nhất một đầu thuộc phiên; log ghi `previous_edges_omitted_count`. Prompt nói rõ cạnh
+  ngược chỉ nhận `noi_ro` hoặc `trong_dinh_nghia`.
+- F102: vector node chỉ ở `clusters`; main log chỉ ở main; secondary log chỉ ở secondary; stage sau mang version tham
+  chiếu. Chuỗi artifact ghim đúng version chunks/canonical.
+- F103: concurrency ra khỏi cache key pass chính; phiên chính lỗi không còn tính node là đã xét; hằng mức trừ cạnh
+  ngược là `REVERSE_ORDER_PENALTY=0.1`; fixture section thật của `naive-bayes`; prompt hash vàng A8; nguồn giá và ngày
+  kiểm được ghi trong manifest. `merge_affected_concept_count` được hiểu là mọi concept trong cả cụm nguồn và cụm nhận.
+- Các lỗ R17, N4–N7, N11–N13, N15, N20, N24, N30, N35–N36, N41–N42 đều có test. N16 đã có test ghi checkpoint
+  nguyên tử. R13/R25 là phòng thủ/tương đương như giải thích cũ; N28 tương đương vì JSON `sort_keys`; N44 tương đương
+  vì mention map chỉ chứa node học được.
+- Vé 16 thêm stage `clusters → mentions → provenance → edges → validated → stages`; một job, tối đa một lần gọi cho
+  mỗi khái niệm nghi; exact ∪ dense; trần 12; marker cấu hình; quote nguyên văn; add-only; dựng lại mention map và mọi
+  phái sinh bằng hàm domain hiện có. Năm đột biến tối thiểu đều bị seam test bắt.
+- Toàn bộ suite **383/383** chạy xanh với `HF_HUB_OFFLINE=1`; seam vé 16 riêng có **23 test xanh**.
+
+## Chạy thật hợp nhất F100/F96/F101/F102/F103/vé 16
+
+| Tài liệu | Route · phiên | γ | Leiden thô → sau gộp | Graph chain mới | Dung lượng 7 stage | Roadmap | Cạnh validated hard / soft |
+|---|---|---:|---:|---|---:|---|---:|
+| `baocao-canhan` | chapter · 16 | 0,04943 | 12 → 8 | 79→80→85→86→87→88→89 | 4,02 MB | requires · 22 stage / 6 lớp | 22 / 3 |
+| `naive-bayes` | **topic_cluster · 6** | 0,04547 | 12 → 7 | 13→14→15→16→17→18→19 | 4,75 MB | requires · 16 / 6 | 30 / 8 |
+| `nhap-mon-ml` | chapter · 19 | 0,02782 | 18 → 14 | 13→14→15→16→17→18→19 | 11,64 MB | requires · 43 / 9 | 74 / 10 |
+| `xstk-ch3-1` | chapter · 38 | 0,01889 | 20 → 14 | 13→14→15→16→17→18→19 | 17,72 MB | requires · 63 / 13 | 160 / 20 |
+
+`naive-bayes` có 6/6 phiên hợp lệ mang `route=topic_cluster`; các dòng repair không có route và không được tính là
+phiên. Algorithm id của chuỗi cuối là: clusters v3, mentions v3, provenance v1, main v4, secondary v3, validation v4,
+roadmap v5. Tổng bảy payload mới là **38,13 MB**, thay vì khoảng 49 MB chỉ riêng sáu stage của `xstk-ch3-1` trước F102.
+
+| Tài liệu | Provenance call / USD | Main+repair call / USD | Secondary call / USD | Tổng USD |
+|---|---:|---:|---:|---:|
+| `baocao-canhan` | 0 / 0,000000 | 21 / 0,031879 | 72 / 0,030285 | 0,062164 |
+| `naive-bayes` | 2 / 0,001373 | 8 / 0,022718 | 281 / 0,145733 | 0,169824 |
+| `nhap-mon-ml` | 3 / 0,001574 | 25 / 0,076277 | 245 / 0,130178 | 0,208029 |
+| `xstk-ch3-1` | 13 / 0,010456 | 47 / 0,172333 | 294 / 0,167239 | 0,350028 |
+| **Tổng** | **18 / 0,013403** | **101 / 0,303207** | **892 / 0,473435** | **0,790044** |
+
+Giá dùng để tính: Gemini 3.1 Flash-Lite, Developer API paid standard, input 0,25 USD/M token và output 1,50 USD/M
+token, kiểm ngày 2026-09-18; URL nguồn nằm trong manifest. Lượt `baocao-canhan` v81–v84 đã hoàn tất ngay trước khi
+tài liệu vé 16 xuất hiện, tốn thêm 0,062164 USD; ghi riêng, không nhập vào lượt hợp nhất ở bảng.
+
+## Vé 16: số thật và kiểm tay
+
+| Tài liệu | Xét | Hỏi | Thêm | Quote bị loại | Đổi thứ tự đầu | Token vào / ra | USD |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| `baocao-canhan` | 36 | 0 | 0 | 0 | 0 | 0 / 0 | 0,000000 |
+| `naive-bayes` | 34 | 2 | 0 | 0 | 0 | 4.999 / 82 | 0,001373 |
+| `nhap-mon-ml` | 75 | 3 | 2 | 0 | 0 | 4.753 / 257 | 0,001574 |
+| `xstk-ch3-1` | 98 | 13 | 7 | 0 | 1 | 34.912 / 1.152 | 0,010456 |
+
+Chỉ có 9 chunk được thêm nên kiểm tay toàn bộ 9 thay vì giả vờ rút 30 mẫu: **9/9 đúng nơi dạy/định nghĩa**, precision
+quan sát 1,00. Bất biến artifact thật đều đạt: source ⊆ refined; không node học được rỗng provenance; số node không
+đổi; mọi quote trạng thái `added` khớp độc lập với chunk. Replay bốn tài liệu qua proxy đóng `127.0.0.1:9` trả đúng
+v89/v19/v19/v19 và `reused=true` cả bốn.
+
+## Cổng còn thiếu trước vé 11
+
+Chạy chính bộ đọc của vé 04 trên file `xstk-ch3-1-chuong-10-13-A1.xlsx` tìm được trong scratchpad cho kết quả:
+`annotator=A1`, `edges=0`, `flags=0`, thời gian gán/rà soát đều null, cảnh báo `chưa có quan hệ nào được ghi`. Đây là
+template sinh ngày 2026-09-16, không phải dữ liệu lượt gán thử 52 quan hệ/27 cờ ở F105. Do đó chưa thể tính bảng E1
+hai lần. Cần file Excel đã điền hoặc JSON sạch từ `a8-gold-check`; tới lúc đó vé 16 và vé 11 vẫn chặn đúng theo tài
+liệu mới.

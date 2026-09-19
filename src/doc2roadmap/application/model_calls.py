@@ -26,9 +26,12 @@ def run_model_jobs(
     previous_log: Iterable[dict[str, Any]],
     *,
     concurrency: int,
+    max_attempts: int = 2,
 ) -> tuple[list[Any | None], list[dict[str, Any]], Counter]:
     if type(concurrency) is not int or concurrency < 1:
         raise ValueError("concurrency phải là số nguyên dương")
+    if type(max_attempts) is not int or max_attempts < 1:
+        raise ValueError("max_attempts phải là số nguyên dương")
     cached = {
         row["input_hash"]: row
         for row in previous_log
@@ -51,7 +54,7 @@ def run_model_jobs(
                 return row["output"], row, counts
 
         error, attempts = None, []
-        for attempt in range(2):
+        for attempt in range(max_attempts):
             counts[job.stage + "_calls"] += 1
             reply = None
             try:
@@ -107,7 +110,7 @@ def run_model_jobs(
             "input": job.data,
             "valid": False,
             "error": error,
-            "retries": 1,
+            "retries": max_attempts - 1,
             "attempts": attempts,
         }
         if cache_invalid_error is not None:

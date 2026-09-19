@@ -1,6 +1,8 @@
 import json
 from types import SimpleNamespace
 
+import pytest
+
 from doc2roadmap.application.use_cases.build_main_edges import BuildMainEdges
 
 
@@ -57,9 +59,14 @@ class Store:
         ]
         self.mentions = SimpleNamespace(
             payload={
-                "stage": "mentions",
+                "stage": "provenance",
                 "nodes": nodes,
-                "mention_map": {"c1": {"a": {"level": "definition"}, "b": {"level": "definition"}}},
+                "mention_map": {
+                    "c1": {
+                        "a": {"level": "definition", "channels": ["provenance"]},
+                        "b": {"level": "definition", "channels": ["exact"]},
+                    }
+                },
                 "suspected_pairs": [],
                 "flags": [],
             },
@@ -133,6 +140,8 @@ def test_main_pass_checkpoints_and_reruns_without_model_calls():
     first, reused = use_case.execute("doc")
     assert not reused and first.payload["stage"] == "edges"
     assert len(model.calls) == 1
+    assert first.payload["stats"]["evidence_hard_count"] == 1
+    assert first.payload["stats"]["evidence_soft_count"] == 0
     assert first.payload["main_edges"] == [
         {
             "source": "a",
@@ -142,7 +151,8 @@ def test_main_pass_checkpoints_and_reruns_without_model_calls():
             "chunk_ids": ["c1"],
             "reason": "Alpha is required before Beta",
             "confidence": 0.9,
-            "explicit_evidence": True,
+                "explicit_evidence": True,
+                "evidence_hard": True,
             "order_relation": "cùng chunk",
             "session_id": "main_single",
             "operation_index": 0,
@@ -169,6 +179,26 @@ def test_main_pass_resumes_progress_file_without_creating_partial_version():
     assert len(model.calls) == 1 and store.saved_versions == 1 and not store.checkpoints
 
 
+def test_main_pass_ignores_checkpoint_from_another_source():
+    store, model = Store(), Model()
+    store.fail_final_once = True
+    use_case = BuildMainEdges(store, model)
+    with pytest.raises(RuntimeError, match="disk unavailable"):
+        use_case.execute("doc")
+    checkpoint = next(iter(store.checkpoints.values()))
+    checkpoint["source_hash"] = "another-source"
+    use_case.execute("doc")
+    assert len(model.calls) == 2
+
+
+def test_main_cache_key_does_not_depend_on_worker_concurrency():
+    store, model = Store(), Model()
+    first, reused = BuildMainEdges(store, model, concurrency=1).execute("doc")
+    assert not reused
+    second, reused = BuildMainEdges(store, model, concurrency=8).execute("doc")
+    assert reused and second is first and len(model.calls) == 1
+
+
 def test_previous_edges_are_scoped_to_the_same_chapter():
     use_case = BuildMainEdges(Store(), Model())
     nodes = [
@@ -193,6 +223,29 @@ def test_previous_edges_are_scoped_to_the_same_chapter():
         },
     )
     assert [(edge["source"], edge["target"]) for edge in value["previous_edges_in_chapter"]] == [("a", "b")]
+    assert value["previous_edges_omitted_count"] == 0
+
+
+def test_previous_edges_are_limited_to_edges_touching_the_session_nodes():
+    use_case = BuildMainEdges(Store(), Model())
+    session = {
+        "session_id": "s1", "route": "chapter", "chapter_id": "ch1",
+        "target_node_ids": ["a"], "allowed_node_ids": ["a", "b"], "chunk_ids": ["c1"],
+    }
+    value = use_case._input(
+        session,
+        [{"node_id": value, "name": value} for value in "abcd"],
+        [SimpleNamespace(chunk_id="c1", text="A", order_index=0)],
+        {"c1": {}},
+        [],
+        [
+            {"source": "a", "target": "c", "session_id": "s0"},
+            {"source": "c", "target": "d", "session_id": "s0"},
+        ],
+        {"s0": {"chapter_id": "ch1"}},
+    )
+    assert [(edge["source"], edge["target"]) for edge in value["previous_edges_in_chapter"]] == [("a", "c")]
+    assert value["previous_edges_omitted_count"] == 1
 
 
 def test_executor_retries_only_rejected_operations_once():

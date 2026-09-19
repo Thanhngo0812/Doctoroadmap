@@ -74,6 +74,18 @@ def test_validation_failure_is_logged_then_retried_once():
     assert metrics["judge_calls"] == 2
 
 
+def test_caller_can_disable_validation_retry():
+    model = FakeModel([{"ok": False}])
+
+    values, logs, metrics = run_model_jobs(
+        [job(model, 1)], [], concurrency=1, max_attempts=1
+    )
+
+    assert values == [None] and model.calls == 1
+    assert logs[0]["retries"] == 0
+    assert metrics["judge_calls"] == metrics["judge_invalid"] == 1
+
+
 def test_batch_keeps_input_order_when_workers_finish_out_of_order():
     slow = FakeModel([{"ok": True, "value": 1}], delays=[0.02])
     fast = FakeModel([{"ok": True, "value": 2}])

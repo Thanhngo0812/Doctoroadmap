@@ -31,7 +31,12 @@ class BuildClusters:
 
     def execute(self, doc_id):
         canonical = self.store.load_latest_canonical(doc_id)
-        chunks = self.store.load_latest_chunks(doc_id)
+        candidate_version = canonical.manifest.get("config", {}).get("candidate_version")
+        if candidate_version is None:
+            chunks = self.store.load_latest_chunks(doc_id)
+        else:
+            candidates = self.store.load_candidates(doc_id, candidate_version)
+            chunks = self.store.load_chunks(doc_id, candidates.manifest["upstream_version"])
         if canonical.manifest["source_hash"] != chunks.manifest["source_hash"]:
             raise ValueError("canonical và chunks không cùng tài liệu nguồn")
         leiden = {
@@ -46,7 +51,7 @@ class BuildClusters:
             "constraint_enforcement": 1e12,
         }
         config = {
-            "algorithm_id": "a6-a7-topic-graph-v2",
+            "algorithm_id": "a6-a7-topic-graph-v3",
             "canonical_version": canonical.version,
             "canonical_config_hash": canonical.manifest["config_hash"],
             "chunks_version": chunks.version,
@@ -141,7 +146,7 @@ class BuildClusters:
             config_hash,
             config,
             payload,
-            upstream_version=canonical.version,
+            upstream_version=None,
             manifest_fields={
                 "stage": "clusters",
                 "edge_order": "source,target",

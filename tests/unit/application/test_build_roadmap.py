@@ -72,3 +72,13 @@ def test_roadmap_rejects_unvalidated_edges(tmp_path):
         assert "validated" in str(error)
     else:
         raise AssertionError("roadmap must not duplicate validation")
+
+
+def test_invalid_main_session_does_not_mark_its_targets_as_reviewed(tmp_path):
+    store = Store(tmp_path)
+    store.validated.payload["main_flags"] = [{"kind": "invalid_main_session", "session_id": "main"}]
+    artifact, _ = BuildRoadmap(store, stage_cap=5).execute("doc")
+    assert {node["node_id"]: node["coverage_status"] for node in artifact.payload["nodes"]} == {
+        "a": "unreviewed",
+        "b": "unreviewed",
+    }

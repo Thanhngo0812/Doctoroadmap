@@ -85,9 +85,9 @@ def _parser() -> argparse.ArgumentParser:
     roadmap.add_argument("--doc-id", required=True)
     roadmap.add_argument(
         "--stop-after",
-        choices=("clusters", "mentions", "edges", "stages"),
+        choices=("clusters", "mentions", "provenance", "edges", "stages"),
         default="stages",
-        help="dừng sau stage đã chọn; mentions không gọi mô hình phán",
+        help="dừng sau stage đã chọn; mentions không gọi mô hình, provenance có gọi ít",
     )
     return parser
 

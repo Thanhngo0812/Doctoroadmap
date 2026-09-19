@@ -117,6 +117,8 @@ def test_mentions_stage_reuses_chunk_vectors_and_reuses_artifact():
         first.payload["stats"]["citation_hard_count"] + first.payload["stats"]["citation_soft_count"]
     )
     assert first.payload["flags"] == []
+    assert "node_vectors" not in first.payload
+    assert first.payload["node_vectors_version"] == store.graph.version
     calls = len(embedding.calls)
     second, reused = use_case.execute("doc")
     assert reused and second is first and len(embedding.calls) == calls

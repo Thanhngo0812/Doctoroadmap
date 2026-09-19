@@ -15,7 +15,7 @@ Tên v1, v2.1, v3 chỉ dùng để mô tả trong tài liệu. Nhận diện ch
 
 - A3 băm system, section, glean, validation, few-shot, schema, model, tham số sinh và seed node types.
 - A4 băm prompt của khâu, schema, model, tham số sinh; describe/check còn băm luật ngôn ngữ và phiên bản validator câu.
-- A8 băm prompt sản phẩm của pass chính hoặc pass phụ, schema, model và tham số sinh.
+- A8 băm prompt sản phẩm của provenance, pass chính hoặc pass phụ, schema, model và tham số sinh.
 
 Đổi prompt là đổi hành vi. Khi đổi có chủ đích, phải cập nhật hash vàng, ghi lại fixture hợp đồng, chạy lại và chấm theo
 luật viết trước khi chạy. Không chỉnh prompt rồi chấm lại trên cùng bộ vàng.

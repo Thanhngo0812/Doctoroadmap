@@ -11,6 +11,8 @@ class ValidateGraph:
     def _edges(self, doc_id, latest):
         artifact = latest
         while artifact.payload.get("stage") != "edges":
+            if artifact.payload.get("stage") == "clusters":
+                raise ValueError("artifact graph không trỏ về stage edges")
             upstream = artifact.manifest.get("upstream_version")
             if upstream is None:
                 raise ValueError("artifact graph không trỏ về stage edges")
@@ -19,13 +21,22 @@ class ValidateGraph:
             raise ValueError("tầng validate cần artifact edges hoàn tất cả pass chính và pass phụ")
         return artifact
 
-    def execute(self, doc_id):
-        latest = self.store.load_latest_graph(doc_id)
-        edges_artifact = self._edges(doc_id, latest)
-        canonical = self.store.load_latest_canonical(doc_id)
+    def execute(self, doc_id, *, upstream=None):
+        edges_artifact = upstream if upstream is not None else self._edges(
+            doc_id, self.store.load_latest_graph(doc_id)
+        )
+        if edges_artifact.payload.get("stage") != "edges":
+            raise ValueError("tầng validate cần artifact edges")
+        edge_config = edges_artifact.manifest.get("config", {})
+        canonical_version = edge_config.get("canonical_version")
+        canonical = (
+            self.store.load_canonical(doc_id, canonical_version)
+            if canonical_version is not None
+            else self.store.load_latest_canonical(doc_id)
+        )
         aliases = self.store.load_type_aliases()
         config = {
-            "algorithm_id": "a9-global-validation-v3",
+            "algorithm_id": "a9-global-validation-v4",
             "edges_version": edges_artifact.version,
             "edges_config_hash": edges_artifact.manifest["config_hash"],
             "cycle_scope": "requires-learnable-scc",
@@ -48,10 +59,15 @@ class ValidateGraph:
             *edges_artifact.payload.get("main_flags", []),
             *edges_artifact.payload.get("secondary_flags", []),
         ]
+        node_vectors_version = edges_artifact.payload.get("node_vectors_version")
+        if node_vectors_version is None:
+            base_vectors = edges_artifact.payload.get("node_vectors", {})
+        else:
+            base_vectors = self.store.load_graph(doc_id, node_vectors_version).payload["node_vectors"]
         nodes, node_vectors, resolution_log = apply_resolved_nodes(
             edges_artifact.payload["nodes"],
             raw_flags,
-            edges_artifact.payload.get("node_vectors", {}),
+            base_vectors,
         )
         suspected = {
             frozenset((row["left"], row["right"])): len(row.get("sources", []))
@@ -107,11 +123,20 @@ class ValidateGraph:
             "validation_flag_count": len(validation_flags),
             "incremental_node_count": len(resolution_log),
         }
+        edge_payload = {
+            key: value
+            for key, value in edges_artifact.payload.items()
+            if key not in {"decision_log", "node_vectors"}
+        }
         payload = {
-            **edges_artifact.payload,
+            **edge_payload,
             "stage": "validated",
             "nodes": nodes,
-            "node_vectors": node_vectors,
+            "decision_log_version": edges_artifact.version,
+            "node_vectors_version": node_vectors_version,
+            "incremental_node_vectors": {
+                key: value for key, value in node_vectors.items() if key not in base_vectors
+            },
             "requires_edges": result["requires_edges"],
             "removed_cycle_edges": result["removed_cycle_edges"],
             "cycle_resolution": result["cycle_resolution"],

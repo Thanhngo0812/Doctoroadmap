@@ -68,6 +68,7 @@ class Store:
                 "source_hash": source_hash,
                 "config_hash": config_hash,
                 "config": config,
+                "upstream_version": kwargs["upstream_version"],
                 **kwargs.get("manifest_fields", {}),
             },
         )
@@ -107,6 +108,7 @@ def test_clusters_stage_is_deterministic_and_reused_without_embedding_call():
         "constraint_enforcement": 1e12,
     }
     assert first.manifest["edge_order"] == "source,target"
+    assert first.manifest["upstream_version"] is None
 
 
 def test_default_resolution_comes_from_weighted_concept_density_and_is_reported():
@@ -115,6 +117,7 @@ def test_default_resolution_comes_from_weighted_concept_density_and_is_reported(
     resolution = artifact.manifest["leiden_resolution"]
     assert resolution["formula"] == "sum(concept_edge_weight)/(concept_count*(concept_count-1)/2)"
     assert resolution["value"] == artifact.payload["stats"]["leiden_resolution"]
+    assert resolution["value"] != 1.0
     assert set(artifact.payload["stats"]) >= {
         "raw_cluster_count", "raw_tiny_cluster_count", "merge_count", "merge_affected_concept_ratio"
     }

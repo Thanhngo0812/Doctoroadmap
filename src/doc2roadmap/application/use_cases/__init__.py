@@ -1,6 +1,7 @@
 from .extract_entities import ExtractEntities, ExtractionSummary
 from .build_clusters import BuildClusters
 from .build_mentions import BuildMentions
+from .build_provenance import BuildProvenance
 from .build_main_edges import BuildMainEdges
 from .build_secondary_edges import BuildSecondaryEdges
 from .validate_graph import ValidateGraph
@@ -16,6 +17,7 @@ __all__ = [
     "ExtractionSummary",
     "BuildClusters",
     "BuildMentions",
+    "BuildProvenance",
     "BuildMainEdges",
     "BuildSecondaryEdges",
     "ValidateGraph",
