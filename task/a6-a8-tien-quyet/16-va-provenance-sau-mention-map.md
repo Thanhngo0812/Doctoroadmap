@@ -10,7 +10,7 @@ Luật ở [spec vá](../../doc/va-provenance-sau-mention-map-spec.md). Gốc v�
 **Blocked by:** đợt sửa F104/F98/F99 (vì stage mới phải nối đúng chuỗi artifact). **Phải xong trước vé 11**, vì ba
 tài liệu mới cần được vá provenance ngay từ lượt chạy đầu, và trước khi ai gán vàng.
 
-**Status:** blocked — code, test, chạy thật và cache đã đạt ngày 2026-09-19; còn thiếu file nhãn thử đã điền để tính E1
+**Status:** done — code, test, chạy thật, cache, kiểm tay và bảng E1 trước/sau đều đạt ngày 2026-09-19
 
 - [x] Stage `provenance` trong tầng `graph`; `--stop-after` nhận thêm giá trị này; `mentions` vẫn **0 lời gọi**.
 - [x] Tập ứng viên từ mention map (exact ∪ dense), trừ chunk đã có trong provenance, trần 12 chunk theo thứ tự tài
@@ -85,8 +85,8 @@ Cổng nhận của spec vá đã đạt: kiểm tay 9/9 chunk được thêm (p
 `xstk-ch3-1-chuong-10-13-A1.xlsx` trong scratchpad vé 04. Đây là **template trống**, không phải lượt gán thử được
 nhắc ở F105: checker trả `edges=0`, `flags=0`, hai thời gian đều rỗng và cảnh báo `chưa có quan hệ nào được ghi`.
 Nhánh `ve-05-bo-cham` cũng ghi rõ số thật còn chờ bộ vàng; trong workspace và hai worktree không có file A1 khác.
-Vì không có 52 cạnh ở dạng máy đọc được nên chưa thể lập bảng E1 trước/sau mà không bịa dữ liệu. Vé 11 tiếp tục bị
-chặn cho tới khi file đã điền (hoặc JSON từ `a8-gold-check`) được đặt vào workspace.
+Ghi chú này mô tả lần tìm nhầm ban đầu. File đã điền sau đó được tìm thấy trong `artifacts/a8-gold/`, checker đọc
+được 52 cạnh và bảng E1 phía trên đã đóng cổng; Vé 11 không còn bị vé 16 chặn.
 
 ## Ghi chú cho người làm
 

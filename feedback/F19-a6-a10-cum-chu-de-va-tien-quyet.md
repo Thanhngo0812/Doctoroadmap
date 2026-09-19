@@ -981,3 +981,49 @@ Cột "Nơi dạy" nay lấy từ artifact stage `provenance` khi truyền `--gr
 nghĩa máy tìm được"** in nguyên văn câu mà stage provenance đã trích và code đã kiểm. Hướng dẫn gán và sheet Hướng dẫn
 ghi rõ: cột Nơi dạy là **trang bắt đầu** của đoạn, đoạn có thể vắt sang trang kế. Hai test mới khoá hành vi: nơi dạy
 đi theo provenance đã vá, câu trích bị loại không lên file gán, và đổi phạm vi đích thì `concept_hash` đổi theo.
+
+---
+
+# Vòng 33 — Chạy Vé 11, dừng tại `doc-3` · 2026-09-19
+
+Chủ dự án xác nhận Vé 11 hết chặn và yêu cầu chạy đúng `doc-3` → `doc-1` → `doc-2`. Tôi chạy thật `doc-3`, không
+sửa code. Ingest, A3 và A3' thành công; A4 dừng trước khi sinh artifact. Vì thứ tự của vé và điều khoản "cần sửa
+code thì dừng và báo", `doc-1`/`doc-2` chưa được đụng tới.
+
+| Số đo `doc-3` | Kết quả |
+|---|---:|
+| Trang / section / chunk / window | 110 / 93 / 94 / 85 |
+| Node A3 / `learnable` / media / cạnh A3 | 201 / 105 / 96 / 120 |
+| Lời gọi A3 | 256 |
+| Cỡ parse tree / chunks / candidates / retrieval | 10,01 / 0,14 / 4,41 / 2,12 MiB |
+| Phiên bản | parse v1, chunks v1, candidates v1, retrieval v1 |
+| Cache khóa mạng | `extract` và `index` đều tái dùng v1 |
+
+Parse giữ 483/488 node, bỏ 1 caption và 4 formula, sắp lại 9 trang; cảnh báo cuối gồm caption mồ côi, formula rỗng
+và heading lặp. A3 không có section lỗi nhưng có 5 extraction rỗng, 16 `evidence_missing_name` và 2 kiểu
+`learnable_low_confidence`.
+
+## F107 🔴 — A3 trích biến `X` thành khái niệm học được, A4 dừng ở bất biến tên ký hiệu
+
+Candidate `candidate_e70160c0a9cacaf16e6e4a95` là `X`, kiểu `concept`, `learnable=true`. Prompt mặc định đã cấm
+variable symbols, nên đây là đầu ra lọt qua validation A3. Cả `a4 --prepare` và `a4 --names-only` đều dừng với
+`node chỉ có tên ký hiệu`; lần `names-only` chứng minh lỗi không phụ thuộc mạng/embedding.
+
+Không xoá tay candidate và không sửa A3/A4 trong Vé 11. Cần ticket regression riêng: mô hình trả entity chỉ là ký
+hiệu đơn phải bị A3 loại hoặc chuyển thành symbol không học được, và test phải thấy đỏ khi bỏ guard.
+
+## F108 🟡 — Telemetry A3 chỉ lưu calls, làm thiếu token và chi phí bắt buộc của Vé 11
+
+Artifact ghi `llm_calls=256`, nhưng không giữ usage của từng reply hay tổng input/output token. Với 92 ảnh và hội
+thoại nhiều lượt, không thể suy ngược chính xác từ text. Do đó lượt này chưa thể báo token/USD mà không bịa; phải
+thêm telemetry A3 trước khi chạy `doc-1` và đặc biệt `doc-2` dưới trần 50 USD.
+
+## F109 🔴 — Gold guard A4 mâu thuẫn với đường chạy tài liệu mới của Vé 11
+
+CLI yêu cầu bộ vàng phải chứa chính `doc_id`. Hai file gold hiện hành chỉ chứa bốn tài liệu cũ, còn kế hoạch cấm sửa
+fixture đóng băng. Vì vậy sau F107, `doc-3` vẫn không thể chạy A4/A5 đầy đủ. Cần quyết định rõ: gold bốn tài liệu là
+cổng chất lượng toàn cục, hay mỗi tài liệu mới phải qua một lượt gán mù riêng. Không được thêm document rỗng để lách
+guard.
+
+**Kết luận vòng:** Vé 16 thật sự đã xong; Vé 11 được mở đúng nhưng phát hiện ba chặn mới. Watermark doc-1 và luật
+ngôn ngữ A5 chưa được kiểm vì pipeline chưa được phép vượt doc-3.

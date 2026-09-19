@@ -26,8 +26,9 @@ kế A10 cần một đợt nghiên cứu riêng **sau** đợt này trước kh
 | Claude | 04, 05, 12, 13, 14 |
 
 **Cập nhật 2026-09-19:** nhân viên đã hoàn tất code và chạy thật các vé 01, 02, 03, 06, 07, 08, 09, 10. Vé 16
-được thêm sau mention map; code/test/cache/precision đã đạt, còn thiếu bảng E1 vì file nhãn thử tìm được là template
-trống. Vé 11 đã có đủ ba PDF nhưng bị vé 16 chặn.
+được thêm sau mention map và đã qua đủ code/test/cache/precision cùng cổng E1. Chủ dự án đã mở Vé 11; lượt chạy
+`doc-3` hoàn tất ingest, A3 và chỉ mục nhưng phát hiện ba chặn mới F107–F109: biến ký hiệu lọt A3 làm A4 dừng, A3
+không lưu token usage, và gold guard A4 chưa có luật cho tài liệu mới. Chưa chạy `doc-1`/`doc-2` để giữ đúng thứ tự.
 Số đo thật, chi phí và danh sách mutation nằm trong feedback của từng vé.
 
 ## Thứ tự và cạnh chặn
@@ -40,8 +41,8 @@ Số đo thật, chi phí và danh sách mutation nằm trong feedback của t�
 16 ─> 11 nạp tài liệu mới ─────────────────────┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
 ```
 
-Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 11 bị chặn bởi vé 16; vé 04 nằm trên đường găng vì việc gán nhãn tốn
-người.
+Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 11 không còn bị vé 16 chặn, nhưng đang dừng ở F107–F109 phát hiện
+khi chạy thật `doc-3`; vé 04 nằm trên đường găng vì việc gán nhãn tốn người.
 
 ## Luật chung cho mọi vé
 

@@ -5,10 +5,11 @@ nhánh chỉ mục vector, A4 và A5, để có bảng node canonical làm đầ
 
 Không sửa code ở vé này. Nếu phải sửa thì dừng và báo, vì đó là thay đổi hành vi của phase đã đóng.
 
-**Blocked by:** vé 16. Ba tài liệu đã có, nhưng chỉ được chạy sau khi stage provenance đạt đủ cổng, gồm bảng E1
-trước/sau trên nhãn thử.
+**Blocked by:** F107 và F109 phát hiện khi chạy thật `doc-3`. Vé 16 đã qua cổng E1 và chủ dự án mở vé ngày
+2026-09-19; chặn hiện tại không còn thuộc provenance.
 
-**Status:** blocked — chủ dự án đã gửi đủ file; đang chờ dữ liệu nhãn thử đã điền để đóng vé 16 (2026-09-19)
+**Status:** blocked khi chạy thật — `doc-3` đã xong ingest, A3 và chỉ mục, nhưng A4 dừng ở ứng viên chỉ có tên ký
+hiệu; chưa được phép sang `doc-1` theo thứ tự của vé (2026-09-19)
 
 > **Ba tài liệu đã có trong workspace, đã nằm trong `.gitignore`.** Soi trước khi nạp (2026-09-18):
 > - `doc-1.pdf` — *Bài giảng Đại số tuyến tính*, tiếng Việt, 159 trang, 208 nghìn ký tự, có `Chương` và ba cấp mục.
@@ -37,7 +38,53 @@ trước/sau trên nhãn thử.
 
 ## Feedback bàn giao
 
-- Vé không có thay đổi code và chưa được phép giả lập dữ liệu.
-- Chặn hiện tại: workspace chưa có hai giáo trình đầy đủ và một tài liệu phẳng mà vé yêu cầu. Khi nhận đủ file,
-  chạy A1–A5, ghi cảnh báo parse/số đo/chi phí rồi kiểm tra lại cache khi khóa mạng.
-- Chưa có tài liệu gốc mới nào được thêm vào Git.
+- Vé không có thay đổi code và không giả lập dữ liệu. Ba PDF đều có trong workspace và vẫn bị Git bỏ qua.
+- Chủ dự án mở chặn vé 16 ngày 2026-09-19. Đã bắt đầu đúng thứ tự `doc-3` → `doc-1` → `doc-2`, rồi dừng ở
+  `doc-3` theo luật của vé khi gặp lỗi cần sửa phase đã đóng.
+- Chưa chạy `doc-1`, nên chưa có PDF/chunk nào chứa watermark hoặc email được gửi tới Gemini. Chưa chạy `doc-2`.
+
+## Lượt chạy thật đầu tiên — `doc-3`, 2026-09-19
+
+| Bước | Phiên bản | Kết quả | Cỡ artifact |
+|---|---:|---|---:|
+| parse tree | v1 | 110 trang; 93 section; giữ 483/488 node | 10,01 MiB |
+| chunks | v1 | 94 chunk; 85 window | 0,14 MiB |
+| A3 | v1 | 201 node, 105 `learnable`, 96 media, 120 cạnh; 0 section lỗi | 4,41 MiB |
+| chỉ mục A3' | v1 | 94 chunk | 2,12 MiB |
+| A4/A5 | — | **dừng**, chưa sinh canonical/nominations | — |
+
+Parse bỏ 1 `caption` và 4 `formula`, sắp lại 9 trang; engine OCR báo nhiều vùng ảnh không phát hiện chữ. Cảnh báo
+cấu trúc cuối: 1 caption mồ côi (URL Swarovski), 4 formula rỗng và heading `Deep Learning` lặp hai lần. A3 báo 5
+window rỗng, 2 kiểu `learnable` độ tin cậy thấp và 16 ứng viên có evidence không chứa nguyên tên.
+
+Phát lại khi đặt `HTTP_PROXY`/`HTTPS_PROXY` về `127.0.0.1:9`: `extract` trả **tái dùng** candidates v1 và `index`
+trả **tái dùng** retrieval v1. A4 `--names-only` vẫn lỗi giống hệt, chứng minh blocker không phụ thuộc mạng hay
+embedding.
+
+### F107 — A3 cho biến đơn `X` thành node học được, A4 không thể dựng lớp tên
+
+Ứng viên `candidate_e70160c0a9cacaf16e6e4a95` có `name="X"`, `node_type="concept"`, `learnable=true`, lấy từ chunk
+`c_110c9d5cbcbb3a2cc1905eee`. Prompt A3 mặc định đã ghi rõ không trích variable symbols, nhưng đầu ra này vẫn lọt.
+Cả `a4 --prepare` và `a4 --names-only` dừng xác định với:
+
+```text
+lỗi: node chỉ có tên ký hiệu: candidate_e70160c0a9cacaf16e6e4a95
+```
+
+Cần ticket sửa A3/A4 riêng, có test đột biến cho ký hiệu đơn được mô hình trả về. Vé 11 cấm sửa code nên dừng tại
+đây; không âm thầm xoá ứng viên khỏi artifact.
+
+### F108 — A3 không lưu usage token, không thể nghiệm thu chi phí của Vé 11
+
+A3 lưu `llm_calls=256` nhưng payload/manifest không lưu `promptTokenCount`, `candidatesTokenCount`, tổng token hay
+USD. Vì vậy chỉ có thể báo **256 lời gọi**, không thể tính chính xác token và chi phí đã phát sinh. Không ước lượng
+từ độ dài text vì doc-3 có 92 ảnh và hội thoại nhiều lượt. Checklist chi phí của vé cần telemetry A3 trước khi chạy
+hai giáo trình lớn.
+
+### F109 — cổng gold A4 không có đường chạy cho tài liệu mới
+
+Ngay cả sau khi sửa F107, CLI A4 đầy đủ yêu cầu `--gold` và từ chối nếu `doc_id` không có trong `documents` của bộ
+vàng. `artifacts/a4-gold.json` và fixture đóng băng chỉ chứa `baocao-canhan`, `naive-bayes`, `nhap-mon-ml`,
+`xstk-ch3-1`; kế hoạch chung đồng thời cấm sửa bộ vàng đã đóng băng. Cần chốt một trong hai hướng ở ticket riêng:
+coi bộ vàng bốn tài liệu là cổng chất lượng toàn pipeline, hoặc gán mù thêm từng tài liệu mới trước A4. Không được
+thêm `doc-3` rỗng vào JSON để lách guard.
