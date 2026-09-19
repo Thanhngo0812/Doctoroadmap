@@ -29,7 +29,7 @@ from doc2roadmap.domain.gold_scoring import (
     undirected,
 )
 
-GRAPH_STAGES = ("mentions", "edges", "validated", "stages")
+GRAPH_STAGES = ("mentions", "provenance", "edges", "validated", "stages")
 GOLD_MODES = ("union", "intersection")
 
 
@@ -78,6 +78,20 @@ def _check_same_concepts(scope, payload, gold):
     missing = sorted(scope_ids - graph_ids)
     if missing:
         raise ValueError(f"artifact graph thiếu {len(missing)} khái niệm của bộ vàng, ví dụ {missing[0]}")
+
+
+def with_source_provenance(payload):
+    """Bản payload dùng provenance gốc của A3/A4, để so E1 trước và sau khi vá (spec vá, mục Luật chấm)."""
+    missing = [node for node in payload["nodes"] if "defining_chunk_ids_source" not in node]
+    if missing:
+        raise ValueError("artifact chưa qua stage provenance nên không có defining_chunk_ids_source để so")
+    return {
+        **payload,
+        "nodes": [
+            {**node, "defining_chunk_ids": list(node["defining_chunk_ids_source"])}
+            for node in payload["nodes"]
+        ],
+    }
 
 
 def _context(payload, chunks, sections, *, chapter_level):
@@ -270,7 +284,10 @@ def _prediction_section(predicted, gold, targets, *, samples, seed):
     return section
 
 
-def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", samples=2000, seed=20260918):
+def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", samples=2000, seed=20260918,
+                     provenance="patched"):
+    if provenance not in ("patched", "source"):
+        raise ValueError("provenance phải là 'patched' hoặc 'source'")
     golds = [load_gold(path) for path in gold_paths]
     if len({gold["doc_id"] for gold in golds}) != 1 or golds[0]["doc_id"] != doc_id:
         raise ValueError("các file vàng phải cùng một doc_id với tham số --doc-id")
@@ -279,6 +296,8 @@ def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", sam
     payload = load_graph_payload(graph_path)
     if payload.get("doc_id") not in (None, doc_id):
         raise ValueError(f"artifact graph thuộc {payload['doc_id']!r}, không phải {doc_id!r}")
+    if provenance == "source":
+        payload = with_source_provenance(payload)
     first = golds[0]
     inputs = scope_inputs(store, doc_id, first["canonical_version"])
     scope = annotation_scope(
@@ -288,4 +307,5 @@ def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", sam
     report = score_gold(scope, payload, inputs["chunks"], inputs["sections"], golds,
                         mode=mode, samples=samples, seed=seed)
     report["graph_path"] = str(graph_path)
+    report["provenance_mode"] = provenance
     return report

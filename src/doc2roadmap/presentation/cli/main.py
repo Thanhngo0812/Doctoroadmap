@@ -68,6 +68,8 @@ def _parser() -> argparse.ArgumentParser:
                               help="cách gộp khi có hai người gán")
     prereq_score.add_argument("--bootstrap", type=int, default=2000, help="số lần lấy mẫu lại; 0 để bỏ khoảng tin cậy")
     prereq_score.add_argument("--seed", type=int, default=20260918)
+    prereq_score.add_argument("--provenance", choices=("patched", "source"), default="patched",
+                              help="chấm theo provenance đã vá, hoặc bản gốc A3/A4 để so trước sau")
     prereq_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
     prereq_check = commands.add_parser("a8-gold-check", help="đọc và kiểm file Excel tiên quyết đã gán")
     prereq_check.add_argument("--doc-id", required=True)
@@ -314,7 +316,8 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "a8-score":
             store = build_artifact_store()
             report = a8_score.score_from_store(store, args.doc_id, args.graph, args.gold,
-                                               mode=args.gold_mode, samples=args.bootstrap, seed=args.seed)
+                                               mode=args.gold_mode, samples=args.bootstrap, seed=args.seed,
+                                               provenance=args.provenance)
             if args.output:
                 output = _inside_artifacts(store, args.output)
                 output.parent.mkdir(parents=True, exist_ok=True)
