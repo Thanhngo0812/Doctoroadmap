@@ -860,3 +860,70 @@ Chạy chính bộ đọc của vé 04 trên file `xstk-ch3-1-chuong-10-13-A1.xl
 template sinh ngày 2026-09-16, không phải dữ liệu lượt gán thử 52 quan hệ/27 cờ ở F105. Do đó chưa thể tính bảng E1
 hai lần. Cần file Excel đã điền hoặc JSON sạch từ `a8-gold-check`; tới lúc đó vé 16 và vé 11 vẫn chặn đúng theo tài
 liệu mới.
+
+---
+
+# Vòng 32 — Kiểm chứng sau sửa F96, F98–F105 và vé 16 · 2026-09-19
+
+Kiểm trên bản chép của cây làm việc (commit `7dc89f7`) và trên artifact thật, chỉ đọc. Nhân viên đã commit cả
+`a033b89` (A6–A10) lẫn `7dc89f7` (vòng 32 và vé 16), nên lần này không còn việc chưa commit nào.
+
+## Kết luận: **nhận**
+
+Mọi con số nhân viên khai đều khớp khi tôi đo lại độc lập, không sai một chữ số nào.
+
+| Hạng mục | Cách tôi kiểm | Kết quả |
+|---|---|---|
+| Test | toàn bộ suite, chặn socket, `HF_HUB_OFFLINE=1` | ✅ **383/383** |
+| F104 | đọc code; `clusters` nay ghi `upstream_version=None`, vòng lần ngược dừng và báo lỗi ở `clusters` | ✅ |
+| F98 | bộ điều phối truyền thẳng artifact vừa tạo sang stage kế; mọi stage nhận `upstream=` | ✅ |
+| F99 | chạy lại phép thử rớt-mạng của tôi (4 node, 3 cặp, rớt ở từng cặp) trên code mới | ✅ **cả bốn kịch bản ra artifact giống hệt nhau**, mọi cặp đều có dòng log |
+| F100 | đọc artifact `stages` của bốn tài liệu | ✅ cả bốn `a10-kahn-stage-v5`, `mode=requires`, cổng đạt |
+| F96 | đếm lại `evidence_hard` trên artifact `validated` | ✅ **286 cứng / 41 mềm**, khớp khai |
+| F101 | đo lại khối "cạnh trước" trong nhật ký pass chính | ✅ `xstk` 69.013 → **29.609** ký tự chỗ lớn nhất, tổng 1.392.009 → **417.006**; log có `previous_edges_omitted_count` |
+| F102 | đo cỡ payload từng stage | ✅ `xstk` bản cuối 10,80 → **2,07 MB**; bảy payload của cả lượt còn 17,72 MB |
+| Vé 16 | đếm lại `provenance_log`, kiểm quote độc lập, kiểm bất biến add-only | ✅ 18 lời gọi, **9 chunk được thêm**, 0 quote sai, 0 vi phạm add-only, 0 node learnable rỗng provenance |
+| Chi phí | cộng lại `usd` từ manifest của cả ba stage có gọi mô hình | ✅ **0,790044 USD**, đúng tới chữ số cuối |
+| Tái lập | chạy `roadmap --stop-after stages` cho `naive-bayes` trên bản chép artifact, chặn socket | ✅ `v19`, `reused=true`, 0 lời gọi |
+
+## Hai điều tôi kiểm khác kết luận của nhân viên
+
+**Bốn cờ "nơi dạy sai" của người gán: một là lỗi provenance thật, ba là lỗi nhãn trang.** Tôi tra thẳng PDF:
+
+- `Hàm ước lượng`: câu định nghĩa nằm ở chunk trang 22, trước đây không có trong provenance. Stage mới **thêm đúng
+  chunk đó** — đây là ca F105 thật.
+- `Khoảng tin cậy`, `Độ tin cậy`, `Xác suất mắc sai lầm`: cả ba **đã có sẵn** chunk `c_7d32d39dc6` trong provenance,
+  và chunk ấy **thật sự chứa** câu "Số thực 1 − α được gọi là độ tin cậy của ước lượng, số thực α là xác suất mắc sai
+  lầm của ước lượng". Nhân viên nói đúng. Nhưng câu đó nằm ở **PDF trang 23**, trong khi artifact ghi chunk ở
+  `page: 22`, vì chunk **bắt đầu** ở trang 22 rồi vắt sang 23.
+
+Nghĩa là ba cờ kia không phải lỗi provenance mà là **lỗi nhãn trang trong file gán** — cột "Nơi dạy" hiển thị trang
+bắt đầu của chunk, nên người gán bị chỉ sớm một trang ở mọi chunk vắt trang. Đây là lỗi công cụ vé 04, **của tôi**,
+ghi thành F106 dưới đây.
+
+**File nhãn đã điền có tồn tại.** Nhân viên tìm trong scratchpad và kết luận chỉ có template trống; file thật nằm ở
+`artifacts/a8-gold/xstk-ch3-1-chuong-10-13-A1-output.xlsx`, và bản JSON đã kiểm là `artifacts/a8-gold/A1.json`.
+Tôi đã chạy cổng E1 trước/sau và dán bảng vào vé 16: vá làm **2 trong 52 cạnh** đổi loại vị trí, cả hai đi về "cùng
+chunk". Vé 16 nay đủ cổng.
+
+## F106 🟡 — Cột "Nơi dạy" chỉ trang bắt đầu của chunk, chunk vắt trang thì chỉ sai chỗ — **của tôi (vé 04)**
+
+**Bằng chứng.** Chunk `c_7d32d39dc6` ghi `page: 22`; câu định nghĩa nó chứa nằm ở PDF trang 23. Người gán cắm ba cờ
+"nơi dạy sai" chỉ vì lý do này, và mỗi cờ tốn công đọc dò của họ.
+
+**Nguyên nhân.** Metadata chunk chỉ có **một** trường `page` — trang đầu — không có trang cuối. Công cụ vé 04 in
+thẳng trường đó.
+
+**Cách sửa, theo thứ tự rẻ dần.**
+- (a) Hướng dẫn gán ghi rõ: "một đoạn có thể vắt sang trang kế; tìm câu định nghĩa quanh trang ghi trong cột". Sửa
+  trong một câu, không đụng code.
+- (b) Với node có chunk được stage `provenance` thêm vào, in luôn **câu định nghĩa** mà mô hình đã trích và code đã
+  kiểm nguyên văn — người gán không phải dò trang nữa.
+- (c) Ghi `page_start`/`page_end` cho chunk. Đúng nhất nhưng đụng phase B0 đã đóng.
+
+Tôi làm (a) và (b) trước khi sinh file gán cho hai chương vàng; (c) để lại cho đợt nghiên cứu sau.
+
+## Điều kiện để mở vé 11
+
+Đã đủ. Vé 16 qua cổng, vé 11 không còn bị chặn về kỹ thuật. Trước khi chạy `doc-2` nên xem lại hai điểm đã ghi trong
+vé 11: watermark của `doc-1` và luật ngôn ngữ của A5 với tài liệu tiếng Anh.

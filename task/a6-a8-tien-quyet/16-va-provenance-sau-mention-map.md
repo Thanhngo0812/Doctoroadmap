@@ -25,8 +25,8 @@ tài liệu mới cần được vá provenance ngay từ lượt chạy đầu,
 - [x] `provenance_log` và `stats` đủ các trường ở V6 của spec vá, gồm số node đổi `first_order_index`.
 - [x] Chạy thật bốn tài liệu cũ: dán số khái niệm được xét, số lời gọi, số chunk được thêm, số đề xuất bị loại vì
       trích sai, và chi phí. Chạy lại khi chặn mạng phải `reused=true`, 0 lời gọi.
-- [ ] Dán **bảng E1 tính hai lần** cho `xstk-ch3-1` trên nhãn gán thử đang có: một lần với provenance gốc, một lần
-      với provenance đã vá. Đây là số cho thấy cái giá của lỗi.
+- [x] Dán **bảng E1 tính hai lần** cho `xstk-ch3-1` trên nhãn gán thử đang có: một lần với provenance gốc, một lần
+      với provenance đã vá. Đây là số cho thấy cái giá của lỗi. → reviewer chạy, bảng ở dưới.
 - [x] Test theo hai seam và các đột biến tối thiểu ghi ở spec vá.
 
 ## Kết quả chạy thật — 2026-09-19
@@ -53,7 +53,33 @@ tài liệu mới cần được vá provenance ngay từ lượt chạy đầu,
 - Toàn bộ suite **383/383** xanh; seam riêng vé 16 có 23 test. Năm đột biến tối thiểu đều có test độc lập: ghi đè provenance,
   bỏ kiểm quote, bỏ dense, gọi mô hình khi không có dấu hiệu, và quên dựng lại citation.
 
-## Cổng E1 còn thiếu
+## Cổng E1 — reviewer chạy xong, 2026-09-19
+
+File nhãn đã điền **không nằm trong scratchpad** mà ở `artifacts/a8-gold/xstk-ch3-1-chuong-10-13-A1-output.xlsx`,
+và bản JSON đã qua `a8-gold-check` là `artifacts/a8-gold/A1.json` (52 quan hệ, 27 cờ, 0 lỗi). Bộ chấm vé 05 nay có
+cờ `--provenance patched|source` để chấm cùng một artifact theo provenance đã vá hoặc bản gốc của A3/A4.
+
+Chạy `a8-score --doc-id xstk-ch3-1 --graph artifacts/graph/xstk-ch3-1/v15/graph.json --gold artifacts/a8-gold/A1.json`
+hai lần, trên 52 cạnh vàng của 26 khái niệm đích:
+
+| Loại vị trí | Provenance gốc | Sau khi vá | Chênh |
+|---|---:|---:|---:|
+| cùng chunk | 8 | **10** | **+2** |
+| cùng mục | 2 | 1 | −1 |
+| cùng chương | 2 | 2 | |
+| cùng cụm chủ đề | 5 | 4 | −1 |
+| bắc cầu (kênh cứng) | 31 | 31 | |
+| bắc cầu (chỉ dense) | 1 | 1 | |
+| ngầm | 3 | 3 | |
+| **NMI cụm vs chương** | 0,698 | 0,698 | |
+
+Vá làm 2 trong 52 cạnh (3,8%) đổi loại vị trí, đều đi từ loại rộng về **cùng chunk** — đúng chiều dự đoán ở F105.
+Trên một chương và một người gán thì mức chênh này nhỏ; nó chỉ cho thấy phép đo E1 **có** nhạy với provenance, nên
+việc vá trước khi gán vàng là đúng chỗ. Số thật của hai chương vàng sẽ đo lại ở vé 12.
+
+Cổng nhận của spec vá đã đạt: kiểm tay 9/9 chunk được thêm (precision quan sát 1,00 ≥ 0,90), và bảng trước/sau đã có.
+
+## Ghi chú cũ về cổng E1 (đã giải quyết)
 
 Đã tìm và chạy `a8-gold-check` trên file
 `xstk-ch3-1-chuong-10-13-A1.xlsx` trong scratchpad vé 04. Đây là **template trống**, không phải lượt gán thử được
