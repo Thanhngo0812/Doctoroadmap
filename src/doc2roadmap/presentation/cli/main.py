@@ -59,6 +59,7 @@ def _parser() -> argparse.ArgumentParser:
     prereq_sheet.add_argument("--annotator", help="mã người gán, ví dụ A1")
     prereq_sheet.add_argument("--output", type=Path)
     prereq_sheet.add_argument("--list-chapters", action="store_true", help="chỉ liệt kê chương và số khái niệm đích")
+    prereq_sheet.add_argument("--graph", type=Path, help="graph.json của stage provenance: nơi dạy theo provenance đã vá")
     prereq_sheet.add_argument("--force", action="store_true", help="ghi đè file đã có (có thể làm mất nhãn đã gán)")
     prereq_score = commands.add_parser("a8-score", help="chấm E1 và E2 từ bộ vàng; không gọi mô hình")
     prereq_score.add_argument("--doc-id", required=True)
@@ -78,6 +79,7 @@ def _parser() -> argparse.ArgumentParser:
     prereq_check.add_argument("--chapter-level", type=int, default=1)
     prereq_check.add_argument("--canonical-version", type=int)
     prereq_check.add_argument("--file", type=Path, required=True)
+    prereq_check.add_argument("--graph", type=Path, help="phải dùng đúng graph.json đã dùng lúc sinh file")
     prereq_check.add_argument("--output", type=Path, help="ghi nhãn đã kiểm thành JSON, chỉ khi không có lỗi")
     evaluation = commands.add_parser("a4-evaluate", help="chấm canonical trên bộ vàng")
     evaluation.add_argument("--doc-id", required=True)
@@ -274,6 +276,16 @@ def _inside_artifacts(store, path: Path) -> Path:
     return path
 
 
+def _graph_payload(path: Path | None):
+    """Payload stage `provenance` cho file gán nhãn: nơi dạy đi theo provenance đã vá (spec D13, F105/F106)."""
+    if path is None:
+        return None
+    payload = json.loads(Path(path).read_text(encoding="utf-8"))
+    if payload.get("stage") != "provenance":
+        raise ValueError(f"cần artifact stage 'provenance', file này là {payload.get('stage')!r}")
+    return payload
+
+
 def _json(value) -> None:
     print(json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True))
 
@@ -304,12 +316,14 @@ def main(argv: list[str] | None = None) -> int:
             unit = "".join(ch if ch.isalnum() or ch == "-" else "_" for ch in args.chapter)
             default = store.root / "a8-gold" / f"{args.doc_id}-chuong-{unit}-{code}.xlsx"
             output = _inside_artifacts(store, args.output or default)
-            scope = scope_from_store(store, args.doc_id, chapter=args.chapter, **options)
+            scope = scope_from_store(store, args.doc_id, chapter=args.chapter,
+                                     graph_payload=_graph_payload(args.graph), **options)
             _json(write_annotation_sheet(scope, output, annotator=args.annotator, overwrite=args.force))
         elif args.command == "a8-gold-check":
             store = build_artifact_store()
             scope = scope_from_store(store, args.doc_id, chapter=args.chapter, chapter_level=args.chapter_level,
-                                     canonical_version=args.canonical_version)
+                                     canonical_version=args.canonical_version,
+                                     graph_payload=_graph_payload(args.graph))
             result = read_annotation_sheet(args.file, scope)
             summary = {"annotator": result["annotator"], "edges": len(result["edges"]),
                        "flags": len(result["flags"]), "timing": result["timing"],

@@ -192,7 +192,7 @@ def test_sheet_offers_only_chapter_targets_and_every_concept(tmp_path):
     assert workbook[CONCEPT_SHEET].protection.sheet
     assert workbook[LIST_SHEET].sheet_state == "hidden"
     assert workbook[META_SHEET].sheet_state == "veryHidden"
-    concept_rows = {row[5]: row for row in workbook[CONCEPT_SHEET].iter_rows(min_row=2, values_only=True)}
+    concept_rows = {row[6]: row for row in workbook[CONCEPT_SHEET].iter_rows(min_row=2, values_only=True)}
     assert concept_rows["n_xacsuat"][1] == "probability"
     assert "còn gọi là" not in " ".join(str(v) for row in concept_rows.values() for v in row)
     guide = {row[0]: row[1] for row in workbook[GUIDE_SHEET].iter_rows(values_only=True) if row[0]}
@@ -395,3 +395,49 @@ def test_cli_refuses_to_write_outside_the_artifact_directory(tmp_path, monkeypat
                  "--output", str(outside)]) == 2
     assert "chỉ ghi trong artifact_dir" in capsys.readouterr().err
     assert not outside.exists()
+
+
+def graph_payload(**extra):
+    """Payload stage provenance tối thiểu: node kèm provenance đã vá, và nhật ký có câu trích."""
+    return {
+        "stage": "provenance",
+        "doc_id": "xstk",
+        "nodes": [{**n, "defining_chunk_ids": list(n["defining_chunk_ids"])} for n in NODES],
+        "provenance_log": [],
+        **extra,
+    }
+
+
+def test_location_follows_patched_provenance_and_shows_the_quote():
+    # Node "Ước lượng điểm" được A3/A4 gán provenance ở c3 (trang 12); stage provenance thêm c4 (trang 13).
+    payload = graph_payload()
+    node = next(n for n in payload["nodes"] if n["node_id"] == "n_uocluong")
+    node["defining_chunk_ids"] = ["c3", "c4"]
+    payload["provenance_log"] = [
+        {"node_id": "n_uocluong", "chunk_id": "c4", "status": "added",
+         "quote": "Ước   lượng điểm được gọi là\nước lượng bằng một số."},
+        {"node_id": "n_mau", "chunk_id": "c2", "status": "rejected_quote", "quote": "câu bịa"},
+    ]
+    patched = annotation_scope("xstk", 7, NODES, SECTIONS, CHUNKS, chapter=2, graph_payload=payload)
+    plain = scope()
+
+    before = next(c for c in plain["concepts"] if c["node_id"] == "n_uocluong")
+    after = next(c for c in patched["concepts"] if c["node_id"] == "n_uocluong")
+    assert "tr. 12" in before["location"] and "13" not in before["location"]
+    assert "tr. 12, 13" in after["location"]
+    assert after["definition_quote"] == "Ước lượng điểm được gọi là ước lượng bằng một số."
+    # Câu bị loại vì trích sai không được lên file gán.
+    assert all(c["definition_quote"] != "câu bịa" for c in patched["concepts"])
+    assert before["definition_quote"] == ""
+
+
+def test_patched_provenance_that_changes_the_target_set_changes_the_concept_hash():
+    payload = graph_payload()
+    # Biến cố được dạy ở chương 1; thêm một chunk của chương 2 thì nó thành khái niệm đích.
+    node = next(n for n in payload["nodes"] if n["node_id"] == "n_bienco")
+    node["defining_chunk_ids"] = ["c1", "c3"]
+    patched = annotation_scope("xstk", 7, NODES, SECTIONS, CHUNKS, chapter=2, graph_payload=payload)
+
+    assert next(c for c in scope()["concepts"] if c["node_id"] == "n_bienco")["in_scope"] is False
+    assert next(c for c in patched["concepts"] if c["node_id"] == "n_bienco")["in_scope"] is True
+    assert patched["concept_hash"] != scope()["concept_hash"]

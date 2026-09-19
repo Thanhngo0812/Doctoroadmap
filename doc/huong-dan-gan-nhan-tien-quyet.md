@@ -38,6 +38,11 @@ File Excel có bốn sheet nhìn thấy:
 khái niệm được dạy trong chương bạn đang gán. Cột *Nơi dạy* ghi chương, mục và trang, ví dụ
 `[C3] 3.2 Ước lượng khoảng — tr. 71, 72`.
 
+> **Về số trang.** Sách được cắt thành từng đoạn, và cột *Nơi dạy* ghi trang **bắt đầu** của đoạn. Một đoạn có thể
+> vắt sang trang kế, nên câu định nghĩa đôi khi nằm ở **trang liền sau** trang ghi trong cột. Không thấy ở trang đó
+> thì xem thêm trang sau, đừng vội đánh cờ *Nơi dạy sai*. Cột **Câu định nghĩa máy tìm được** cho biết đúng câu cần
+> tìm ở những khái niệm mà máy tìm được; cột này trống nghĩa là máy không tìm thấy, không có nghĩa là sách không có.
+
 ## 3. Quan hệ tiên quyết là gì
 
 > **B là tiên quyết của A** khi người đọc phải biết B thì mới hiểu được A.

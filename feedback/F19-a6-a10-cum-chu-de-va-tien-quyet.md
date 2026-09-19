@@ -927,3 +927,57 @@ Tôi làm (a) và (b) trước khi sinh file gán cho hai chương vàng; (c) đ
 
 Đã đủ. Vé 16 qua cổng, vé 11 không còn bị chặn về kỹ thuật. Trước khi chạy `doc-2` nên xem lại hai điểm đã ghi trong
 vé 11: watermark của `doc-1` và luật ngôn ngữ của A5 với tài liệu tiếng Anh.
+
+---
+
+## Lượt gán thử hai người — `xstk-ch3-1` §2, 2026-09-19
+
+Hai người gán độc lập trên cùng đơn vị 10–13 (26 khái niệm đích, 98 khái niệm cho phép chọn làm tiên quyết). Đây là
+**lượt gán thử** trên tài liệu phát triển, không phải bộ vàng; giá trị của nó là đo xem giao thức có được hiểu giống
+nhau không, **trước** khi tiêu công vào hai chương vàng thật.
+
+| | A1 | A2 |
+|---|---:|---:|
+| Quan hệ ghi được | 52 | 55 |
+| Cờ | 27 | 9 |
+| Bộ đọc `a8-gold-check` | 0 lỗi | 0 lỗi |
+| Thời gian gán / rà soát | chưa điền | chưa điền |
+
+**Đồng thuận** (không gian 2.522 cặp ứng viên = 26 đích × mọi khái niệm):
+
+| Cách tính | κ | Cùng ghi | Chỉ A1 | Chỉ A2 |
+|---|---:|---:|---:|---:|
+| Cạnh trực tiếp | **0,360** | 20 | 32 | 35 |
+| Có tính đồng thuận ngầm qua bắc cầu | **0,429** | 75 | 44 | 130 |
+
+**Đọc số này thế nào.** PREAP gốc báo κ 0,45–0,71 sau khi có hướng dẫn, gán thử và hội ý; các bộ dữ liệu tiên quyết
+khác báo 0,16–0,60 và 0,01–0,27. Lượt này đạt 0,36 (0,43 nếu tính bắc cầu) **khi chưa có bước hội ý và chưa thống
+nhất cách hiểu**, nên nằm đúng chỗ dự đoán được. Hai người chỉ trùng nhau 20 trên 87 cạnh của hợp — chênh lệch chủ
+yếu là **mức chi tiết**: một người ghi chuỗi ngắn, người kia ghi thêm các cạnh bắc cầu; đúng cái mà phép tính có
+đồng thuận ngầm làm nhẹ đi (20 → 75 cặp cùng khẳng định).
+
+**Việc phải làm trước khi gán chương vàng thật:** hai người **hội ý** 67 cạnh lệch, chốt lại ba điểm — thế nào là
+"trực tiếp", có ghi cạnh đã suy ra được qua bắc cầu không, và khi nào dùng mức *Hữu ích* thay vì *Bắt buộc*. Sau đó
+mới gán `doc-1` và `doc-2`. Cũng nên điền hai ô thời gian, vì báo cáo cần chi phí công sức.
+
+**E1/E2 trên bộ vàng hợp của lượt thử** (87 cạnh, chỉ để tham khảo, không phải số của báo cáo):
+
+| Loại vị trí | Cạnh | Tỉ lệ | KTC 95% |
+|---|---:|---:|---|
+| cùng chunk | 19 | 21,8% | 12–34% |
+| cùng mục | 3 | 3,4% | 0–10% |
+| cùng chương | 9 | 10,3% | 4–17% |
+| cùng cụm chủ đề | 5 | 5,7% | 1–11% |
+| **bắc cầu (kênh cứng)** | **39** | **44,8%** | 34–55% |
+| bắc cầu (chỉ dense) | 4 | 4,6% | 1–9% |
+| ngầm | 8 | 9,2% | 3–17% |
+
+Bộ sinh: `contact` một mình recall 0,62 với 848 cặp; `contact + same_section` 0,80; thêm `citation_hard` 0,87; thêm
+`proposed_relation` 0,91; cả năm 0,92 với 1.104 cặp. `citation_soft` chỉ đóng góp **1** cạnh mà không bộ nào khác có.
+
+## F106 — đã sửa, 2026-09-19
+
+Cột "Nơi dạy" nay lấy từ artifact stage `provenance` khi truyền `--graph`, và sheet Khái niệm có thêm cột **"Câu định
+nghĩa máy tìm được"** in nguyên văn câu mà stage provenance đã trích và code đã kiểm. Hướng dẫn gán và sheet Hướng dẫn
+ghi rõ: cột Nơi dạy là **trang bắt đầu** của đoạn, đoạn có thể vắt sang trang kế. Hai test mới khoá hành vi: nơi dạy
+đi theo provenance đã vá, câu trích bị loại không lên file gán, và đổi phạm vi đích thì `concept_hash` đổi theo.

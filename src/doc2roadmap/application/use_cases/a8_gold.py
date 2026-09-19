@@ -45,7 +45,7 @@ RELATION_HEADERS = ["STT", "Khái niệm đích (A)", "Cần biết trước (B)
                     "Loại bằng chứng", "Mức cần", "Ghi chú"]
 FLAG_HEADERS = ["STT", "Loại cờ", "Khái niệm liên quan", "Tên khái niệm thiếu", "Vị trí trong sách", "Ghi chú"]
 CONCEPT_HEADERS = ["Tên (dùng để chọn)", "Tên khác trong tài liệu", "Kiểu", "Thuộc chương đang gán",
-                   "Nơi dạy", "Mã node"]
+                   "Nơi dạy", "Câu định nghĩa máy tìm được", "Mã node"]
 # Ô người gán tự ghi thời gian, cùng tinh thần PREAP đo thời gian gán; địa chỉ cố định để đọc ngược.
 TIMING_CELLS = {"annotation_minutes": "B13", "revision_minutes": "B14"}
 MIN_ROWS, ROWS_PER_TARGET, MAX_ROWS = 200, 8, 2000
@@ -140,8 +140,30 @@ def list_chapters(nodes, sections, chunks, *, chapter_level=1):
              "targets": counts[_value(s, "section_id")]} for i, s in enumerate(chapters, 1)]
 
 
-def annotation_scope(doc_id, canonical_version, nodes, sections, chunks, *, chapter, chapter_level=1):
-    """Danh sách khái niệm cho một đợt gán: khái niệm đích là node học được có provenance trong chương đã chọn."""
+def provenance_overrides(graph_payload):
+    """Provenance đã vá và câu định nghĩa máy trích được, lấy từ artifact stage `provenance` (spec vá, V1)."""
+    if graph_payload is None:
+        return {}, {}
+    patched = {
+        node["node_id"]: list(node.get("defining_chunk_ids", []))
+        for node in graph_payload.get("nodes", [])
+        if node.get("learnable")
+    }
+    quotes = {}
+    for row in graph_payload.get("provenance_log", []):
+        if row.get("status") == "added" and row.get("quote") and row["node_id"] not in quotes:
+            quotes[row["node_id"]] = " ".join(str(row["quote"]).split())
+    return patched, quotes
+
+
+def annotation_scope(doc_id, canonical_version, nodes, sections, chunks, *, chapter, chapter_level=1,
+                     graph_payload=None):
+    """Danh sách khái niệm cho một đợt gán: khái niệm đích là node học được có provenance trong chương đã chọn.
+
+    `graph_payload` là payload stage `provenance`: khi có, cột "Nơi dạy" đi theo provenance **đã vá** và kèm câu
+    định nghĩa mà máy đã trích, thay vì provenance gốc của A3/A4 (spec D13, F105/F106).
+    """
+    patched, quotes = provenance_overrides(graph_payload)
     chapters = _chapters(sections, chapter_level)
     chosen = _resolve_chapter(chapters, chapter)
     chosen_ids = [_value(section, "section_id") for _, section in chosen]
@@ -164,9 +186,11 @@ def annotation_scope(doc_id, canonical_version, nodes, sections, chunks, *, chap
         }
     concepts = []
     for node in _learnable(nodes):
-        places = [chunk_info[c] for c in node.get("defining_chunk_ids", []) if c in chunk_info]
+        provenance = patched.get(node["node_id"], node.get("defining_chunk_ids", []))
+        places = [chunk_info[c] for c in provenance if c in chunk_info]
         order = min((p["order"] for p in places), default=node.get("first_order_index", 0))
         concepts.append({
+            "definition_quote": quotes.get(node["node_id"], ""),
             "node_id": node["node_id"],
             "name": " ".join(str(node["name"]).split()),
             # Alias trong node canonical là object kèm câu bằng chứng; chỉ tên mới vào file gán.
@@ -227,10 +251,10 @@ def _assign_labels(concepts):
             concept["label"] = label
 
 
-def scope_from_store(store, doc_id, *, chapter, chapter_level=1, canonical_version=None):
+def scope_from_store(store, doc_id, *, chapter, chapter_level=1, canonical_version=None, graph_payload=None):
     inputs = scope_inputs(store, doc_id, canonical_version)
     return annotation_scope(doc_id, inputs["version"], inputs["nodes"], inputs["sections"], inputs["chunks"],
-                            chapter=chapter, chapter_level=chapter_level)
+                            chapter=chapter, chapter_level=chapter_level, graph_payload=graph_payload)
 
 
 def chapters_from_store(store, doc_id, *, chapter_level=1, canonical_version=None):
@@ -313,16 +337,17 @@ def write_annotation_sheet(scope, path: Path, *, annotator: str, overwrite: bool
     _list_validation(flags, "DS_TAT_CA", "C2:C101", "Chỉ chọn khái niệm có trong sheet Khái niệm.")
 
     sheet = wb.create_sheet(CONCEPT_SHEET)
-    _style_header(sheet, CONCEPT_HEADERS, [38, 34, 18, 14, 60, 30])
+    _style_header(sheet, CONCEPT_HEADERS, [38, 34, 18, 14, 60, 70, 30])
     for row, concept in enumerate(concepts, 2):
         values = [concept["label"], "; ".join(concept["aliases"]), concept["node_type"],
-                  "Có" if concept["in_scope"] else "", concept["location"], concept["node_id"]]
+                  "Có" if concept["in_scope"] else "", concept["location"],
+                  concept.get("definition_quote", ""), concept["node_id"]]
         for column, value in enumerate(values, 1):
             cell = sheet.cell(row=row, column=column, value=value)
             cell.alignment = Alignment(wrap_text=True, vertical="top")
             if concept["in_scope"]:
                 cell.font = Font(bold=True)
-    sheet.auto_filter.ref = f"A1:F{len(concepts) + 1}"
+    sheet.auto_filter.ref = f"A1:G{len(concepts) + 1}"
     sheet.protection.sheet = True
     sheet.protection.autoFilter = False
     sheet.protection.sort = False
@@ -401,6 +426,9 @@ def _write_guide(ws, scope, annotator, target_count, concept_count):
         "6. Chọn tên từ danh sách (gõ vài chữ để tìm). Ghi trang hoặc mục, loại bằng chứng, mức cần.",
         "7. Danh sách khái niệm có gì sai thì ghi ở sheet Cờ, không tự thêm khái niệm vào sheet Quan hệ.",
         "8. Gán xong, đọc lại đoạn văn của từng quan hệ mình ghi rồi mới chốt (rà soát).",
+        "Lưu ý về trang: cột Nơi dạy ghi trang **bắt đầu** của đoạn, mà một đoạn có thể vắt sang trang kế. "
+        "Không thấy câu định nghĩa ở trang đó thì tìm thêm ở trang liền sau; cột 'Câu định nghĩa máy tìm được' "
+        "cho biết chính xác câu cần tìm khi máy tìm được.",
         "9. Làm độc lập: không bàn với người gán khác và không xem kết quả của máy trước khi nộp.",
         "Màu ở sheet Quan hệ: đỏ = A trùng B; vàng = cặp bị ghi hai lần; tím = có cả A cần B lẫn B cần A.",
     ]
