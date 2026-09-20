@@ -107,7 +107,11 @@ class _Session:
             raise value
         if callable(value):
             value = value(prompt)
-        return ExtractionReply(value, "fixture")
+        if isinstance(value, tuple):
+            value, usage = value
+        else:
+            usage = None
+        return ExtractionReply(value, "fixture", usage=usage)
 
 
 class _Extractor:
@@ -287,6 +291,55 @@ def test_one_section_uses_images_formulas_evidence_glean_and_batch_validation() 
     assert "P(C|x)" in requests[0][0]
     assert "caption_status=missing" in requests[0][0]
     assert "section bên cạnh" not in requests[0][0]
+
+
+def test_symbol_only_name_is_rejected_but_abbreviation_and_symbol_alias_survive(
+    tmp_path,
+) -> None:
+    text = "Deep Learning (DL), ký hiệu X, là một lĩnh vực học máy."
+    chunk = _chunk(text)
+    store = _stored_document(tmp_path, [chunk])
+    usage = {
+        "promptTokenCount": 10,
+        "candidatesTokenCount": 2,
+        "thoughtsTokenCount": 1,
+        "totalTokenCount": 13,
+    }
+    extractor = _Extractor([[
+        (_reply(entities=[
+            {
+                "name": "X", "node_type": "concept", "description_draft": "Biến.",
+                "evidence": "X", "aliases": [],
+            },
+            {
+                "name": "DL", "node_type": "concept", "description_draft": "Deep Learning.",
+                "evidence": text,
+                "aliases": [{"name": "X", "evidence": text}],
+            },
+        ]), usage),
+        (_reply(), usage),
+        ({"remove_entity_ids": [], "remove_edge_ids": []}, usage),
+    ]])
+
+    summary = ExtractEntities(
+        store, extractor, None, generation={"temperature": 0}
+    ).execute("book", max_workers=1)
+
+    assert [entity.name for entity in summary.result.entities] == ["DL"]
+    assert [alias.name for alias in summary.result.entities[0].aliases] == ["X"]
+    assert summary.result.stats["rejected_symbol_only_name"] == 1
+    expected = {
+        "model_id": "gemini-3.1-flash-lite",
+        "input_tokens": 30,
+        "output_tokens": 9,
+        "usd": 30 * 0.25 / 1_000_000 + 9 * 1.50 / 1_000_000,
+    }
+    cost = summary.result.stats["cost_summary"]
+    assert {key: cost[key] for key in expected} == expected
+    assert cost["pricing_source"]["url"] == "https://ai.google.dev/gemini-api/docs/pricing"
+    assert summary.artifact_path is not None
+    manifest = store._read(summary.artifact_path / "manifest.json")
+    assert manifest["cost_summary"] == cost
 
 
 def test_table_description_uses_existing_text_without_multimodal_input() -> None:
@@ -536,7 +589,7 @@ def test_same_name_with_cross_type_learnable_conflict_is_reported(tmp_path) -> N
 
 
 def test_document_stats_count_distinct_model_edge_types_only(tmp_path) -> None:
-    chunk = _chunk("A khác B. A cần B.")
+    chunk = _chunk("Alpha khác Beta. Alpha cần Beta.")
     store = _stored_document(tmp_path, [chunk])
     extractor = _Extractor(
         [[
@@ -550,18 +603,21 @@ def test_document_stats_count_distinct_model_edge_types_only(tmp_path) -> None:
                         "learnable": True,
                         "aliases": [],
                     }
-                    for name, evidence in (("A", "A khác B."), ("B", "A khác B."))
+                    for name, evidence in (
+                        ("Alpha", "Alpha khác Beta."),
+                        ("Beta", "Alpha khác Beta."),
+                    )
                 ],
                 edges=[
                     {
-                        "source": "A",
-                        "target": "B",
+                        "source": "Alpha",
+                        "target": "Beta",
                         "edge_type": edge_type,
                         "evidence": evidence,
                     }
                     for edge_type, evidence in (
-                        ("contrasts_with", "A khác B."),
-                        ("requires", "A cần B."),
+                        ("contrasts_with", "Alpha khác Beta."),
+                        ("requires", "Alpha cần Beta."),
                     )
                 ],
             ),
@@ -748,6 +804,9 @@ def test_document_run_embeds_after_barrier_freezes_and_reuses_candidates(tmp_pat
     manifest_text = first.artifact_path.joinpath("manifest.json").read_text(encoding="utf-8")
     assert "gemini-3.1-flash-lite" in manifest_text
     assert "API_KEY" not in manifest_text and "AIza" not in manifest_text
+    assert first.result.stats["cost_summary"]["input_tokens"] == 0
+    assert first.result.stats["cost_summary"]["output_tokens"] == 0
+    assert first.result.stats["cost_summary"]["usd"] == 0
     assert second.result.entities[0].name == "Naïve Bayes"
 
 

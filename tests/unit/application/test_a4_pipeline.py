@@ -35,8 +35,9 @@ def embedding():
 
 class FakeModel:
     model_id = "fixture-model"
-    def __init__(self, invalid=0, description_invalid=False, merge_all=False):
+    def __init__(self, invalid=0, description_invalid=False, merge_all=False, usage=None):
         self.calls, self.invalid, self.description_invalid, self.merge_all = [], invalid, description_invalid, merge_all
+        self.usage = usage
     def start_session(self, prompt):
         return self
     def ask_json(self, prompt, *, response_schema):
@@ -58,7 +59,41 @@ class FakeModel:
             chunk = "outside" if self.description_invalid else data["chunks"][-1]["chunk_id"]
             value = {"sentences": [{"text": "Tài liệu trình bày khái niệm này.", "chunk_ids": [chunk]}],
                      "defining_chunk_ids": [chunk], "nghi_gop_nham": False, "reason": "fixture"}
-        return SimpleNamespace(payload=value)
+        return SimpleNamespace(payload=value, usage=self.usage)
+
+
+def test_canonical_manifest_records_token_cost_and_gold_gate(tmp_path):
+    usage = {
+        "promptTokenCount": 10,
+        "candidatesTokenCount": 2,
+        "thoughtsTokenCount": 1,
+        "totalTokenCount": 13,
+    }
+    store = fixture_store(tmp_path)
+    model = FakeModel(usage=usage)
+    result, _ = Canonicalize(
+        store, embedding(), reasoning=CanonicalReasoning(model, model)
+    ).execute(
+        "baocao-canhan",
+        a4_gold_coverage="none",
+        gold_sheet_id="frozen-sheet",
+    )
+
+    calls = sum(
+        value for key, value in result.payload["stats"].items()
+        if key.endswith("_calls")
+    )
+    expected = {
+        "model_id": "fixture-model",
+        "input_tokens": calls * 10,
+        "output_tokens": calls * 3,
+        "usd": calls * (10 * 0.25 + 3 * 1.50) / 1_000_000,
+    }
+    cost = result.payload["cost_summary"]
+    assert {key: cost[key] for key in expected} == expected
+    assert result.manifest["cost_summary"] == cost
+    assert result.manifest["a4_gold_coverage"] == "none"
+    assert result.manifest["gold_sheet_id"] == "frozen-sheet"
 
 
 def test_canonical_concurrency_bound_order_retry_and_cache(tmp_path):

@@ -1066,3 +1066,102 @@ Vé 17 **sửa code trong hai phase đã đóng** (A3 và A4). Tôi đề nghị
 không đổi hành vi trên bốn tài liệu cũ: guard ký hiệu chỉ chạm ứng viên mà A4 vốn đã từ chối, telemetry chỉ thêm
 trường vào manifest, cổng bộ vàng chỉ nới cho tài liệu **không** có trong bộ vàng. Điều kiện nhận: sau khi sửa,
 bốn tài liệu cũ chạy lại phải cho `reused=true` và điểm vàng A4 giữ nguyên 31/0/16.
+
+---
+
+# Vòng 34 — Hoàn tất Vé 17, chạy tiếp Vé 11 và dừng ở watermark · 2026-09-20
+
+Ba sửa hẹp F107–F109 đã hoàn tất. A3 loại tên chính có `alias_kind == symbol` nhưng giữ viết tắt và alias ký hiệu;
+A3 cùng A4/A5 ghi `cost_summary`; A4 chỉ cho tài liệu ngoài bộ vàng đi tiếp khi có `--no-gold-for-doc`, đồng thời
+ghi coverage `none` và `gold_sheet_id`. Bộ vàng đóng băng không đổi.
+
+## Bằng chứng code, test và hồi quy
+
+- Test mới đã đỏ trên hành vi cũ cho cả ba lỗi rồi xanh sau vá. Mutation đổi `symbol → abbreviation`, loại alias
+  ký hiệu, bỏ thought token và bỏ cổng cờ đều bị test bắt. Ca không có usage ghi 0 thay vì lỗi.
+- Toàn suite **434/434** xanh. Bốn A4 cũ chạy trong sandbox mạng cho `reused=true` ở v8/v7/v7/v7.
+- Ticket ghi baseline `31/0/16`, nhưng đó là A4 v1 trước quyết định Vòng 27. `main` hiện hành đã nhận quan hệ mở v3;
+  số đúng không đổi là **35/2/12** (11/0/0, 10/0/0, 7/1/3, 7/1/9). Không sinh artifact A4 cũ mới.
+
+## Số thật `doc-3`
+
+| Bước | Kết quả | Token / chi phí |
+|---|---|---|
+| A3 v2 | 201→198 ứng viên; 105→102 learnable; guard loại `X`, `Y`; 117 cạnh | 256 calls; 671.846 in + 47.240 out; **0,2388215 USD** |
+| A3' | 94 chunk, tái dùng v1 | 0 lời gọi |
+| A4/A5 v1 | 154 node (58 text, 96 media), 129 cạnh; ngôn ngữ `en` | 56 calls; 57.327 in + 16.733 out; **0,03943125 USD** |
+| Tổng | 312 calls | 729.173 in + 63.973 out; **0,27825275 USD** |
+
+Guard đếm đúng 2. Tổng ứng viên giảm 3 vì ngoài `X`, `Y`, một bản lặp `Deep Learning` ở section khác không xuất hiện
+trong lần gọi thật mới; đây là biến thiên model, không phải guard. Manifest canonical ghi coverage `none`; 58/58 mô
+tả text qua luật tiếng Anh. Replay A3/A4 không mạng đều tái dùng.
+
+## Điều kiện dừng ở `doc-1`
+
+Ingest `doc-1` v1 hoàn tất: 159 trang, 118 section, 229 chunk, 80 window. Trước bất kỳ lời gọi A3 nào, quét chunk
+tìm thấy **114/229 chunk trên 110 trang** còn chuỗi `lOMoARcPSD`; một chunk còn `Scan to open on Studeersnel`.
+Regex email không thấy địa chỉ, nhưng watermark một mình đã đủ kích hoạt điều kiện dừng. Không nội dung doc-1 nào được
+gửi Gemini; `doc-2` chưa chạy. Vé 11 vì vậy chặn ở khâu làm sạch dữ liệu, không còn chặn ở code F107–F109.
+
+---
+
+# Vòng 34 — Hội ý bộ vàng, và kiểm vé 17 · 2026-09-20
+
+## Hội ý: giao thức chạy được, và cả hai người đều đóng góp
+
+Chủ dự án chọn hướng (a) — hội ý thật từng cạnh lệch — và đã làm xong trên lượt gán thử `xstk-ch3-1` §2.
+
+| | Số |
+|---|---:|
+| Cả hai cùng ghi, vào thẳng bộ vàng | 20 |
+| Cạnh lệch phải quyết | 67 |
+| Quyết **Giữ** | 42 |
+| Quyết **Bỏ** | 25 |
+| **Bộ vàng cuối** | **62 cạnh / 26 khái niệm đích** |
+
+Phân bố quyết định theo người đề xuất: của A1 giữ 25 bỏ 7; của A2 giữ 17 bỏ 18. Nghĩa là **cả hai người đều đóng
+góp cạnh đúng**, và nếu lúc đầu lấy nguyên nhãn của một người thì mất 17 hoặc 25 cạnh thật. Đây là lý do spec D13
+bắt buộc hội ý, và lượt này chứng minh luật ấy đáng giá.
+
+**Cả 67 dòng đều có ghi lý do.** Ba kiểu lý do hay gặp, đáng đưa vào báo cáo làm ví dụ: cạnh bắc cầu đã suy ra được
+từ hai cạnh khác nên bỏ; "bài toán ngược" là quan hệ đối sánh chứ không phải tiên quyết; và cạnh đi thẳng từ công
+thức nên giữ dù người kia không ghi.
+
+## E1 và E2 trên bộ vàng đã hội ý
+
+Vẫn là tài liệu phát triển nên **không phải số của báo cáo**, nhưng đây là hình dạng thật mà hai chương vàng sẽ cho.
+
+| Loại vị trí | Hội ý (62 cạnh) | Nếu lấy hợp (87 cạnh) |
+|---|---:|---:|
+| cùng chunk | 13 · 21,0% | 19 |
+| cùng mục | 2 · 3,2% | 3 |
+| cùng chương | 7 · 11,3% | 9 |
+| cùng cụm chủ đề | 3 · 4,8% | 5 |
+| **bắc cầu (kênh cứng)** | **30 · 48,4%** | 39 |
+| bắc cầu (chỉ dense) | 3 · 4,8% | 4 |
+| ngầm | 4 · 6,5% | 8 |
+
+Kết luận trung tâm **không đổi khi siết bộ vàng**: khoảng một nửa số cạnh tiên quyết không nằm cùng chương lẫn cùng
+cụm, chỉ nối được nhờ một chunk nhắc cả hai đầu. Hội ý làm giảm đều cả bảy loại chứ không cắt riêng loại nào.
+
+E2 trên bộ vàng hội ý: `contact` một mình recall 0,65 với 848 cặp; `contact + same_section` 0,84; thêm
+`proposed_relation` 0,90; thêm `citation_hard` 0,94; cả năm 0,95 với 1.104 cặp. `citation_soft` vẫn chỉ có **1**
+cạnh riêng nó. Trục chương một mình phủ 0,97.
+
+## Kiểm vé 17 — nhận
+
+| Khai của nhân viên | Tôi đếm lại | |
+|---|---|---|
+| A3 `doc-3` 201 → 198 ứng viên, guard loại đúng `X` và `Y` | v1 có `X`, `Y`; v2 không còn, `DL`/`AI` vẫn sống | ✅ |
+| `rejected_symbol_only_name = 2` | đúng 2 | ✅ |
+| Telemetry A3 671.846 / 47.240 token, 0,2388215 USD | khớp manifest, kèm `pricing_source` có URL và ngày kiểm | ✅ |
+| A4/A5 `doc-3` 0,03943125 USD, `a4_gold_coverage=none` | khớp, có cả `gold_sheet_id` của bộ vàng cổng hồi quy | ✅ |
+| `doc-1`: 114/229 chunk còn watermark, 0 chunk có email | đếm lại đúng 114 và 0 | ✅ |
+
+Nhân viên dừng đúng chỗ ở `doc-1` thay vì lặng lẽ lọc trong artifact. Chặn này thành **vé 18**.
+
+## Việc còn treo
+
+- **Vé 18** cần chủ dự án chọn hướng làm sạch watermark; tôi đề xuất (a) — ingest nhận mẫu dòng cần bỏ, mặc định
+  không đổi nên bốn tài liệu cũ không bị ảnh hưởng.
+- Sau đó vé 11 chạy tiếp `doc-1` rồi `doc-2`, và hai chương vàng đã chốt là `doc-1` Chương 5 và `doc-2` mục 3C.

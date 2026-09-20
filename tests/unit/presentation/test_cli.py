@@ -109,6 +109,40 @@ def test_parser_exposes_repeatable_a3_operations() -> None:
         "--exclude-subtype-item", "first", "--exclude-subtype-item", "second",
     ])
     assert a4_evaluate.exclude_subtype_item == ["first", "second"]
+    a4_new = parser.parse_args([
+        "a4", "--doc-id", "new-book", "--gold", "gold.json", "--no-gold-for-doc",
+    ])
+    assert a4_new.no_gold_for_doc is True
+
+
+def test_a4_new_document_requires_explicit_gold_exception(monkeypatch, capsys) -> None:
+    calls = []
+
+    class UseCase:
+        def execute(self, doc_id, **kwargs):
+            calls.append((doc_id, kwargs))
+            return SimpleNamespace(
+                path=Path("artifact"), version=1,
+                payload={"stage": "complete", "stats": {}, "cost_summary": {}},
+            ), False
+
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_artifact_store", lambda: object())
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_canonical", lambda: UseCase())
+    monkeypatch.setattr(
+        "doc2roadmap.presentation.cli.main.load_gold",
+        lambda *args, **kwargs: {"documents": {"old-book": {}}, "sheet_id": "frozen-sheet"},
+    )
+
+    base = ["a4", "--doc-id", "new-book", "--gold", "gold.json"]
+    assert main(base) == 2
+    assert "bộ vàng không có tài liệu này" in capsys.readouterr().err
+    assert calls == []
+
+    assert main([*base, "--no-gold-for-doc"]) == 0
+    assert calls == [(
+        "new-book",
+        {"a4_gold_coverage": "none", "gold_sheet_id": "frozen-sheet"},
+    )]
 
 
 def test_extract_cli_forwards_few_shot_override(monkeypatch) -> None:

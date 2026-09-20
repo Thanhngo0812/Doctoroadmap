@@ -25,9 +25,9 @@ kế A10 cần một đợt nghiên cứu riêng **sau** đợt này trước kh
 | Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11, 16, **17** |
 | Claude | 04, 05, 12, 13, 14, 15 |
 
-**Vé 17 — chủ dự án đồng ý ngoại lệ ngày 2026-09-20:** vé này được phép **sửa code trong phase A3 và A4 đã đóng**,
-trong đúng ba mục của vé và không hơn. Điều kiện nhận lại: bốn tài liệu cũ chạy lại cho `reused=true`, và điểm vàng
-A4 giữ nguyên 31/0/16.
+**Vé 17 — xong ngày 2026-09-20:** chủ dự án cho phép sửa đúng ba điểm hẹp trong phase A3/A4. Bốn tài liệu cũ
+`reused=true`; mốc `31/0/16` trong bản giao việc là baseline v1 cũ, còn baseline có thẩm quyền trên `main` sau khi
+nhận quan hệ mở là **35/2/12** và vẫn giữ nguyên. Vé 11 đã chạy tiếp, rồi dừng ở `doc-1` vì 114 chunk còn watermark.
 
 **Cập nhật 2026-09-19:** nhân viên đã hoàn tất code và chạy thật các vé 01, 02, 03, 06, 07, 08, 09, 10. Vé 16
 được thêm sau mention map và đã qua đủ code/test/cache/precision cùng cổng E1. Chủ dự án đã mở Vé 11; lượt chạy
@@ -46,8 +46,8 @@ Số đo thật, chi phí và danh sách mutation nằm trong feedback của t�
                                                                                         └─> 15 báo cáo luồng 2b
 ```
 
-Vé **01, 02 và 04 không chặn bởi gì cả**. **Vé 17 là việc chặn duy nhất còn lại của máy:** vé 11 không chạy tiếp
-được cho tới khi nó xong. Vé 04 nằm trên đường găng của người, vì việc gán nhãn tốn người chứ không tốn máy.
+Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 17 đã xong; Vé 11 hiện chặn bởi watermark `doc-1`, không còn chặn
+code. Vé 04 nằm trên đường găng của người, vì việc gán nhãn tốn người chứ không tốn máy.
 
 ## Luật chung cho mọi vé
 

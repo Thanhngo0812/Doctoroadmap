@@ -21,6 +21,10 @@ from doc2roadmap.application.extraction_prompt import (
 from doc2roadmap.application.ports import ArtifactStore, StoredChunks
 from doc2roadmap.application.ports.embedding import EmbeddingPort, EmbeddingRequest
 from doc2roadmap.application.ports.extraction import EntityExtractor, PromptImage
+from doc2roadmap.application.prerequisite_prompt import (
+    PRICING_SOURCE,
+    PRICING_USD_PER_MILLION,
+)
 from doc2roadmap.domain.entities import (
     CandidateEdge,
     EntityCandidate,
@@ -38,7 +42,7 @@ from doc2roadmap.domain.entities import (
     verify_alias,
 )
 from doc2roadmap.domain.models import Chunk
-from doc2roadmap.domain.canonical import candidate_warnings
+from doc2roadmap.domain.canonical import alias_kind, candidate_warnings
 from doc2roadmap.domain.normalization import normalize_text
 from doc2roadmap.domain.ports import TokenCounter
 
@@ -170,6 +174,13 @@ def _find_evidence(chunks: Iterable[Chunk], quote: str) -> EvidenceSpan | None:
     return None
 
 
+def _record_usage(stats: dict[str, Any], reply: Any) -> None:
+    usage = getattr(reply, "usage", None) or {}
+    stats["input_tokens"] += int(usage.get("promptTokenCount", 0))
+    stats["output_tokens"] += int(usage.get("candidatesTokenCount", 0))
+    stats["output_tokens"] += int(usage.get("thoughtsTokenCount", 0))
+
+
 def _entity_names(entity: EntityCandidate) -> set[str]:
     return {_identity(entity.name), *(_identity(alias.name) for alias in entity.aliases)}
 
@@ -192,6 +203,9 @@ def _add_entity(
         return None, False
     if not name:
         stats["rejected_malformed_entities"] += 1
+        return None, False
+    if alias_kind(name) == "symbol":
+        stats["rejected_symbol_only_name"] += 1
         return None, False
     learnable = raw.get("learnable", True)
     if not isinstance(learnable, bool):
@@ -401,6 +415,7 @@ def extract_section(
         "rejected_edge_endpoint": 0,
         "rejected_edge_type": 0,
         "rejected_reserved_or_missing_type": 0,
+        "rejected_symbol_only_name": 0,
         "rejected_malformed_entities": 0,
         "rejected_malformed_edges": 0,
         "validation_removed_entities": 0,
@@ -415,6 +430,8 @@ def extract_section(
         "orphan_media": 0,
         "unknown_orphan_media": 0,
         "media_grounded_entities": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
     }
     entities: list[EntityCandidate] = []
     edges: list[CandidateEdge] = []
@@ -461,6 +478,7 @@ def extract_section(
         response_schema=ENTITY_SCHEMA,
         images=context.images,
     )
+    _record_usage(stats, first)
     stats["new_entities_per_round"].append(
         _process_reply(first.payload, context, entities, edges, media_descriptions, stats)
     )
@@ -470,6 +488,7 @@ def extract_section(
             glean_prompt([entity.name for entity in entities], prompts),
             response_schema=ENTITY_SCHEMA,
         )
+        _record_usage(stats, reply)
         added = _process_reply(
             reply.payload, context, entities, edges, media_descriptions, stats
         )
@@ -480,10 +499,12 @@ def extract_section(
             stats["glean_limit_reached"] = True
 
     validation_entities, validation_edges = _validation_items(entities, edges)
-    validation = session.ask_json(
+    validation_reply = session.ask_json(
         validation_prompt(validation_entities, validation_edges, prompts),
         response_schema=VALIDATION_SCHEMA,
-    ).payload
+    )
+    _record_usage(stats, validation_reply)
+    validation = validation_reply.payload
     remove_entities = set(_list(validation, "remove_entity_ids"))
     remove_edges = set(_list(validation, "remove_edge_ids"))
     stats["validation_removed_entities"] = sum(
@@ -857,7 +878,7 @@ class ExtractEntities:
             self.embedding.embedding_model_id if self.embedding is not None else None
         )
         config = {
-            "algorithm_id": "a3-section-conversation-v4",
+            "algorithm_id": "a3-section-conversation-v5",
             "reviewed_node_types": reviewed_types,
             "chunks_config_hash": stored.manifest["config_hash"],
             "extractor_id": self.extractor.identifier,
@@ -998,6 +1019,20 @@ class ExtractEntities:
                 for key in rejection_keys
             }
         )
+        input_tokens = sum(int(outcome.stats["input_tokens"]) for outcome in outcomes)
+        output_tokens = sum(int(outcome.stats["output_tokens"]) for outcome in outcomes)
+        cost_summary = {
+            "model_id": self.extractor.model_id,
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+            "usd": (
+                input_tokens * PRICING_USD_PER_MILLION["input"]
+                + output_tokens * PRICING_USD_PER_MILLION["output"]
+            ) / 1_000_000,
+            "pricing_usd_per_million": PRICING_USD_PER_MILLION,
+            "pricing_source": PRICING_SOURCE,
+        }
+        aggregate["cost_summary"] = cost_summary
         media_count = sum(entity.is_media for entity in entities)
         aggregate["missing_media_descriptions"] = sum(
             entity.is_media and not entity.description for entity in entities
@@ -1123,6 +1158,7 @@ class ExtractEntities:
             "tokenizer_id": stored.manifest["config"].get("tokenizer_id"),
             "type_registry": asdict(registry),
             "stats": aggregate,
+            "cost_summary": cost_summary,
             "vector_stage": "description_draft",
             "jaccard_previous": previous_jaccard,
         }

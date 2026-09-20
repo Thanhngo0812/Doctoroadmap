@@ -5,11 +5,11 @@ nhánh chỉ mục vector, A4 và A5, để có bảng node canonical làm đầ
 
 Không sửa code ở vé này. Nếu phải sửa thì dừng và báo, vì đó là thay đổi hành vi của phase đã đóng.
 
-**Blocked by:** F107 và F109 phát hiện khi chạy thật `doc-3`. Vé 16 đã qua cổng E1 và chủ dự án mở vé ngày
-2026-09-19; chặn hiện tại không còn thuộc provenance.
+**Blocked by:** watermark của `doc-1` còn trong 114 chunk. F107–F109 đã xong ở Vé 17; chặn hiện tại là dữ liệu
+nhạy cảm sẽ đi vào prompt nếu tiếp tục A3.
 
-**Status:** blocked khi chạy thật — `doc-3` đã xong ingest, A3 và chỉ mục, nhưng A4 dừng ở ứng viên chỉ có tên ký
-hiệu; chưa được phép sang `doc-1` theo thứ tự của vé (2026-09-19)
+**Status:** blocked khi chạy thật — `doc-3` đã đi hết A1–A5; `doc-1` ingest xong nhưng quét thấy watermark trong
+114/229 chunk nên đã dừng trước A3; chưa chạy `doc-2` (2026-09-20).
 
 > **Ba tài liệu đã có trong workspace, đã nằm trong `.gitignore`.** Soi trước khi nạp (2026-09-18):
 > - `doc-1.pdf` — *Bài giảng Đại số tuyến tính*, tiếng Việt, 159 trang, 208 nghìn ký tự, có `Chương` và ba cấp mục.
@@ -29,7 +29,7 @@ hiệu; chưa được phép sang `doc-1` theo thứ tự của vé (2026-09-19)
 - [ ] Dán số lời gọi, token và **chi phí cộng dồn** của cả ba tài liệu; so với trần 50 USD.
 - [ ] Chạy lại khi chặn mạng: `reused=true` cho cả ba.
 - [ ] Không có tài liệu gốc nào bị commit vào repo.
-- [ ] **`doc-1`: kiểm và báo số chunk còn chứa watermark.** Dòng `lOMoARcPSD|…`, `Scan to open on Studeersnel` và
+- [x] **`doc-1`: kiểm và báo số chunk còn chứa watermark.** Dòng `lOMoARcPSD|…`, `Scan to open on Studeersnel` và
       dòng có email cá nhân xuất hiện ở **cả 159 trang**; parser đang bỏ được `page_footer` (chân trang của
       `xstk-ch3-1` không lọt vào chunk nào), nhưng watermark của Studocu có thể không được gắn nhãn như vậy. Nếu
       còn sót thì **dừng và báo**: dữ liệu này sẽ đi thẳng vào prompt gửi Gemini và nằm lại trong artifact.
@@ -88,3 +88,22 @@ vàng. `artifacts/a4-gold.json` và fixture đóng băng chỉ chứa `baocao-ca
 `xstk-ch3-1`; kế hoạch chung đồng thời cấm sửa bộ vàng đã đóng băng. Cần chốt một trong hai hướng ở ticket riêng:
 coi bộ vàng bốn tài liệu là cổng chất lượng toàn pipeline, hoặc gán mù thêm từng tài liệu mới trước A4. Không được
 thêm `doc-3` rỗng vào JSON để lách guard.
+
+## Lượt chạy tiếp sau Vé 17 — `doc-3` rồi `doc-1`, 2026-09-20
+
+`doc-3` đã đi hết A1–A5. A3 v2 còn 198 ứng viên (102 learnable, 96 media), 117 cạnh; A4/A5 v1 ra 154 node và
+129 cạnh. Tổng 312 lời gọi, 729.173 input + 63.973 output token, chi phí **0,27825275 USD**. A5 nhận đúng ngôn ngữ
+`en`, và 58/58 mô tả node text qua bộ kiểm tiếng Anh. Replay không mạng tái dùng candidates v2, retrieval v1 và
+canonical v1. Tài liệu mới không có bộ vàng A4 riêng; manifest ghi rõ coverage `none` và bộ vàng bốn tài liệu dùng
+làm cổng hồi quy.
+
+Sau đó ingest `doc-1` v1: 159 trang, 118 section, 229 chunk, 80 window; giữ 2.503/2.579 node, stitch 71 lần, sắp
+lại 15 trang, 14 ảnh và 1 caption. Quét **trước A3** cho kết quả:
+
+- 114 chunk trên 110 trang (trang 1–158) chứa `lOMoARcPSD`;
+- 1 chunk còn dòng `Scan to open on Studeersnel`;
+- regex email: 0 chunk, nhưng điều kiện dừng dùng watermark **hoặc** email nên vẫn dừng;
+- chưa có byte nội dung doc-1 nào gửi Gemini; `doc-2` chưa ingest/chạy.
+
+Muốn mở lại vé phải có quyết định và ticket riêng để làm sạch watermark rồi ingest lại; không được lặng lẽ lọc
+ngay trong artifact đã sinh.

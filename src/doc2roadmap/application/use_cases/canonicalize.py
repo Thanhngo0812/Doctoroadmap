@@ -3,6 +3,10 @@ from __future__ import annotations
 from collections import Counter
 
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
+from doc2roadmap.application.prerequisite_prompt import (
+    PRICING_SOURCE,
+    PRICING_USD_PER_MILLION,
+)
 from doc2roadmap.application.use_cases.extract_entities import DocumentExtraction
 from doc2roadmap.domain.canonical import (
     digest, name_key, group_names, build_nodes, remap_edges, compare_nodes, redirects, candidate_warnings,
@@ -19,7 +23,7 @@ class Canonicalize:
         if reasoning and embedding is None:
             raise ValueError("A4 đầy đủ cần embedding tên")
 
-    def execute(self, doc_id):
+    def execute(self, doc_id, *, a4_gold_coverage=None, gold_sheet_id=None):
         source = self.store.load_latest_candidates(doc_id)
         chunks = self.store.load_chunks(doc_id, source.manifest["upstream_version"])
         extraction = DocumentExtraction.from_payload(source.payload)
@@ -112,6 +116,25 @@ class Canonicalize:
                    "relation_other_type_than_a3": relation_other_type_than_a3,
                    "relation_new_pair": relation_new_pair,
                    "deferred_ratio": len(deferred)/len(groups) if groups else 0}
+        input_tokens = sum(
+            int(value) for key, value in reasoning_metrics.items()
+            if key.endswith("_input_tokens")
+        )
+        output_tokens = sum(
+            int(value) for key, value in reasoning_metrics.items()
+            if key.endswith("_output_tokens")
+        )
+        cost_summary = {
+            "model_id": self.reasoning.judge.model_id if self.reasoning else None,
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+            "usd": (
+                input_tokens * PRICING_USD_PER_MILLION["input"]
+                + output_tokens * PRICING_USD_PER_MILLION["output"]
+            ) / 1_000_000,
+            "pricing_usd_per_million": PRICING_USD_PER_MILLION,
+            "pricing_source": PRICING_SOURCE,
+        }
         for id in set(previous.payload.get("redirects", {})) & {n["node_id"] for n in nodes} if previous else []:
             log.append({"action": "restore_id", "node_id": id})
         payload = {"schema_version": 1, "doc_id": doc_id, "stage": config["stage"], "nodes": nodes,
@@ -120,8 +143,17 @@ class Canonicalize:
                    "decision_log": log, "review": review, "deferred": deferred, "redirects": redirect,
                    "deferred_pairs": deferred_pairs,
                    "nominations": nominations, "stats": metrics, "candidate_quality": quality,
+                   "cost_summary": cost_summary,
                    "source_candidates": source.payload["entities"]}
+        manifest_fields = {
+            "stats": metrics,
+            "jaccard_previous": compare_nodes(old, nodes) if previous else None,
+            "cost_summary": cost_summary,
+        }
+        if a4_gold_coverage is not None:
+            manifest_fields["a4_gold_coverage"] = a4_gold_coverage
+            manifest_fields["gold_sheet_id"] = gold_sheet_id
         artifact = self.store.save_canonical(doc_id, source.manifest["source_hash"], config_hash, config,
             payload, upstream_version=source.version,
-            manifest_fields={"stats": metrics, "jaccard_previous": compare_nodes(old, nodes) if previous else None})
+            manifest_fields=manifest_fields)
         return artifact, False
