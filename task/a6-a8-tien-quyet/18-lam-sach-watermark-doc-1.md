@@ -44,3 +44,9 @@ Reviewer đề xuất **(a)**; **chủ dự án chốt (a)** ngày 2026-09-20. H
 - [ ] Ingest lại `doc-1` với ba mẫu đã đo, rồi **kiểm lại**: 0 chunk chứa `lOMoARcPSD`, 0 chunk chứa `Studeersnel`,
       0 chunk chứa email. Dán số chunk trước/sau.
 - [ ] Chạy tiếp vé 11: `doc-1` qua A1–A5, rồi `doc-2`.
+
+## Thêm từ review vòng 35 (làm cùng vé này)
+
+- [ ] **F111:** guard tên ký hiệu của vé 17 chỉ đếm, không ghi tên bị loại. Thêm danh sách có trần 50 tên vào
+      artifact ứng viên, để vòng sau kiểm được F110 trên `doc-2`.
+- [ ] **F112:** thêm test ghim `load_gold(..., require_complete=True)`; hiện đổi thành `False` không test nào đỏ.

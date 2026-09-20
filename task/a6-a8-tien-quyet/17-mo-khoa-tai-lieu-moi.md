@@ -11,7 +11,8 @@ Gốc: [F107, F108, F109](../../feedback/F19-a6-a10-cum-chu-de-va-tien-quyet.md)
 **Status:** done — **chủ dự án đã đồng ý ngoại lệ ngày 2026-09-20**: vé này được sửa code trong phase A3
 và A4 đã đóng, đúng ba mục dưới đây và không hơn. Code, test, chạy thật và replay hoàn tất ngày 2026-09-20.
 
-**Điều kiện nhận lại:** bốn tài liệu cũ chạy lại cho `reused=true`, và điểm vàng A4 giữ nguyên **31/0/16**. Kèm
+**Điều kiện nhận lại:** bốn tài liệu cũ chạy lại cho `reused=true`, và điểm vàng A4 giữ nguyên **35/2/12**
+(reviewer tính lại ngày 2026-09-20: 11/0/0 · 10/0/0 · 7/1/3 · 7/1/9; mốc 31/0/16 trong bản giao việc là baseline v1 cũ, nhân viên đính chính đúng). Kèm
 danh sách đột biến đã thử cho từng mục, như mọi vé khác.
 
 > **Đính chính mốc nghiệm thu:** `31/0/16` là baseline A4 v1 trước khi chủ dự án nhận quan hệ mở v3 ở Vòng 27.

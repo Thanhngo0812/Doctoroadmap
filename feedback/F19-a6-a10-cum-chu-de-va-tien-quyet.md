@@ -1165,3 +1165,74 @@ Nhân viên dừng đúng chỗ ở `doc-1` thay vì lặng lẽ lọc trong art
 - **Vé 18** cần chủ dự án chọn hướng làm sạch watermark; tôi đề xuất (a) — ingest nhận mẫu dòng cần bỏ, mặc định
   không đổi nên bốn tài liệu cũ không bị ảnh hưởng.
 - Sau đó vé 11 chạy tiếp `doc-1` rồi `doc-2`, và hai chương vàng đã chốt là `doc-1` Chương 5 và `doc-2` mục 3C.
+
+---
+
+# Vòng 35 — Kiểm thử chi tiết vé 17 · 2026-09-20
+
+Vòng 34 mới đếm artifact. Vòng này đọc code, chạy suite, chạy đột biến và tính lại mốc điểm vàng.
+
+## Kết luận: **nhận vé 17**, kèm ba mục phải làm trước khi `doc-2` thành chương vàng
+
+| Hạng mục | Cách kiểm | Kết quả |
+|---|---|---|
+| Suite | toàn bộ trên bản chép, chặn socket, `HF_HUB_OFFLINE=1` | ✅ **434/434** |
+| Đột biến | 12 con nhắm thẳng ba guard của vé | **11 bắt, 1 lọt** (xem F112) |
+| Guard ký hiệu | đọc code: nằm trong nhánh phân tích entity, sau khi kiểm tên rỗng, trước mọi thứ khác | ✅ chỉ chạm **tên node**, không chạm alias |
+| A3 `doc-3` | đếm lại candidates v1 → v2 | ✅ 201 → 198; `X`, `Y` mất; `DL`, `AI` còn; `rejected_symbol_only_name = 2` |
+| Telemetry A3 | đọc manifest v2 | ✅ 671.846 / 47.240 token, 0,2388215 USD, kèm `pricing_source` có URL và ngày kiểm |
+| Telemetry A4/A5 | đọc manifest canonical `doc-3` | ✅ 57.327 / 16.733 token, 0,03943125 USD |
+| Cổng bộ vàng | đọc code CLI | ✅ vẫn bắt buộc bộ vàng hợp lệ; tài liệu ngoài bộ vàng cần cờ tường minh; manifest ghi `a4_gold_coverage=none` và `gold_sheet_id` |
+| `doc-1` | đếm lại chunk | ✅ 114/229 còn watermark, **0** chunk có email — đúng khai |
+
+## Nhân viên đính chính tôi, và họ đúng
+
+Tôi đặt điều kiện nhận lại là điểm vàng A4 giữ **31/0/16**. Nhân viên chỉ ra đó là baseline v1 cũ. Tôi chạy lại
+`a4-evaluate` trên bốn artifact hiện hành: **11/0/0 · 10/0/0 · 7/1/3 · 7/1/9**, tổng **35/2/12**. Đúng như họ nói.
+Mốc nghiệm thu đúng từ nay là 35/2/12; tôi sửa lại điều kiện trong vé.
+
+## F110 🟠 — Guard tên ký hiệu sẽ loại cả khái niệm được gọi bằng ký hiệu, và `doc-2` đầy loại đó
+
+Guard đúng với ca của `doc-3`: `X` và `Y` trong câu *"X and Y can be anything"* không phải khái niệm. Nhưng luật là
+`alias_kind(name) == "symbol"`, và trên tên kiểu Axler nó cho:
+
+| Tên | `alias_kind` | |
+|---|---|---|
+| `X`, `Y`, `π`, `χ²` | symbol | đúng, nên loại |
+| `DL`, `AI`, `ERD`, `S²` | abbreviation | đúng, được giữ |
+| **`R^n`, `F^n`, `L(V,W)`, `P(F)`, `𝐅`, `𝐑𝑛`** | **symbol** | **sẽ bị loại — nhưng đây là khái niệm trung tâm của `doc-2`** |
+
+`doc-2` là *Linear Algebra Done Right*, và mục 3C đã chọn làm chương vàng nói suốt về `ℒ(V,W)`, `𝐅^{m,n}`, `𝐅ⁿ`.
+Nếu A3 trả các khái niệm ấy bằng tên ký hiệu thì guard loại **im lặng**, và bộ vàng sẽ có khái niệm đích mà pipeline
+không hề biết.
+
+**Không sửa vội.** Có thể mô hình vẫn đặt tên chữ cho chúng ("the vector space of linear maps") và để ký hiệu vào
+trường `symbols`, đúng như `CONTEXT.md` mô tả. Nhưng phải **đo trước khi dùng `doc-2` làm chương vàng**:
+
+- [ ] Sau khi `doc-2` chạy A3: đọc `rejected_symbol_only_name` và **danh sách tên bị loại** (cần F111), lọc riêng
+      các trang của mục 3C.
+- [ ] Nếu có khái niệm thật bị loại: đổi guard thành "loại tên ký hiệu **chỉ khi** entity không có alias nào là tên
+      chữ; có alias chữ thì lấy alias làm tên và giữ ký hiệu vào `symbols`".
+
+## F111 🟡 — Guard chỉ đếm, không ghi tên bị loại
+
+`stats["rejected_symbol_only_name"]` là một con số; artifact không giữ tên nào. Không có nó thì F110 không kiểm
+được, và người đọc báo cáo cũng không biết đã mất gì. Thêm một danh sách có trần, ví dụ 50 tên, vào `warnings` hoặc
+một khoá riêng. Việc nhỏ, nên làm cùng vé 18.
+
+## F112 🟢 — Một đột biến lọt: bộ vàng không cần "hoàn chỉnh"
+
+Đổi `load_gold(..., require_complete=True)` thành `False` không làm test nào đỏ. Cả lý do giữ `--gold` bắt buộc là
+để nó làm **cổng hồi quy**; bộ vàng rút gọn thì cổng ấy vô nghĩa. Thêm một test ghim `require_complete`.
+
+## Một chỗ nữa cần ghi vào báo cáo
+
+`algorithm_id` của A3 lên `a3-section-conversation-v5`. Bốn tài liệu phát triển giữ artifact cũ sinh bởi **v4**, ba
+tài liệu mới dùng **v5**. Không ai sai, nhưng corpus có **hai cấu hình A3 khác nhau**, và báo cáo phải nói rõ thay
+vì để người đọc tự phát hiện.
+
+## Một lỗi sổ sách của tôi
+
+Code vé 17 nằm trong commit `3bcf9cc` mang thông điệp review của tôi, vì nhân viên đã `git add` sẵn và lệnh commit
+của tôi cuốn theo. Nội dung repo không sai, nhưng thông điệp commit không mô tả đúng thứ nó chứa. Tôi không viết lại
+lịch sử vì nhân viên đã commit tiếp lên trên; ghi lại ở đây để ai đọc `git log` sau này không bị lạc.
