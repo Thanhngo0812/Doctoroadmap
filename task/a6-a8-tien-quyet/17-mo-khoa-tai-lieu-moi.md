@@ -8,7 +8,11 @@ Gốc: [F107, F108, F109](../../feedback/F19-a6-a10-cum-chu-de-va-tien-quyet.md)
 
 **Blocked by:** None. **Chặn:** vé 11 không chạy tiếp được cho tới khi vé này xong.
 
-**Status:** ready-for-agent
+**Status:** ready-for-agent — **chủ dự án đã đồng ý ngoại lệ ngày 2026-09-20**: vé này được sửa code trong phase A3
+và A4 đã đóng, đúng ba mục dưới đây và không hơn.
+
+**Điều kiện nhận lại:** bốn tài liệu cũ chạy lại cho `reused=true`, và điểm vàng A4 giữ nguyên **31/0/16**. Kèm
+danh sách đột biến đã thử cho từng mục, như mọi vé khác.
 
 ## A. F107 — A3 phải tự loại tên chỉ là ký hiệu
 

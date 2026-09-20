@@ -22,8 +22,12 @@ kế A10 cần một đợt nghiên cứu riêng **sau** đợt này trước kh
 
 | Ai | Vé |
 |---|---|
-| Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11 |
-| Claude | 04, 05, 12, 13, 14 |
+| Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11, 16, **17** |
+| Claude | 04, 05, 12, 13, 14, 15 |
+
+**Vé 17 — chủ dự án đồng ý ngoại lệ ngày 2026-09-20:** vé này được phép **sửa code trong phase A3 và A4 đã đóng**,
+trong đúng ba mục của vé và không hơn. Điều kiện nhận lại: bốn tài liệu cũ chạy lại cho `reused=true`, và điểm vàng
+A4 giữ nguyên 31/0/16.
 
 **Cập nhật 2026-09-19:** nhân viên đã hoàn tất code và chạy thật các vé 01, 02, 03, 06, 07, 08, 09, 10. Vé 16
 được thêm sau mention map và đã qua đủ code/test/cache/precision cùng cổng E1. Chủ dự án đã mở Vé 11; lượt chạy
@@ -38,11 +42,12 @@ Số đo thật, chi phí và danh sách mutation nằm trong feedback của t�
 02 clusters ──┴─> 03 mentions ─> 16 provenance ─┬─> 06 pass chính ─> 07 pass phụ ─> 10 fixture ─┐
                                                │              └──> 08 tầng 3 ─> 09 A10         │
 04 excel vàng ─────────────────┴─> 05 bộ chấm ─┐                               │
-16 ─> 11 nạp tài liệu mới ─────────────────────┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
+17 mở khoá tài liệu mới ─> 11 nạp tài liệu mới ┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
+                                                                                        └─> 15 báo cáo luồng 2b
 ```
 
-Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 11 không còn bị vé 16 chặn, nhưng đang dừng ở F107–F109 phát hiện
-khi chạy thật `doc-3`; vé 04 nằm trên đường găng vì việc gán nhãn tốn người.
+Vé **01, 02 và 04 không chặn bởi gì cả**. **Vé 17 là việc chặn duy nhất còn lại của máy:** vé 11 không chạy tiếp
+được cho tới khi nó xong. Vé 04 nằm trên đường găng của người, vì việc gán nhãn tốn người chứ không tốn máy.
 
 ## Luật chung cho mọi vé
 
