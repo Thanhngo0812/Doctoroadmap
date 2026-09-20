@@ -5,7 +5,11 @@
 
 **Blocked by:** None. **Chặn:** vé 11 không chạy tiếp `doc-1` và `doc-2` cho tới khi vé này xong.
 
-**Status:** chờ chủ dự án chọn hướng
+**Status:** ready-for-agent — **chủ dự án chốt hướng (a) ngày 2026-09-20**
+
+Hướng (a) đụng vào bước ingest của phase B0 đã đóng, nên đây là **ngoại lệ có chủ đích** như vé 17: chỉ thêm một
+tham số, **mặc định giữ nguyên hành vi**. Điều kiện nhận lại: không khai mẫu thì bốn tài liệu cũ và `doc-3` phải
+`reused=true` ở đúng phiên bản hiện có, và toàn bộ suite xanh.
 
 ## Đo được gì
 
@@ -28,9 +32,9 @@ map.
 | (b) | Luật chung: bỏ dòng ngắn lặp trên ≥60% số trang, ghi mọi dòng đã bỏ vào manifest | tự động cho mọi tài liệu sau này | đổi hành vi phase B0 đã đóng; nếu ai ingest lại bốn tài liệu cũ thì mọi artifact phía sau phải chạy lại |
 | (c) | Chủ dự án tìm bản PDF sạch của cùng giáo trình | không đụng code | phụ thuộc có bản khác hay không |
 
-Reviewer đề xuất **(a)**, và ghi (b) lại làm việc của đợt nghiên cứu sau.
+Reviewer đề xuất **(a)**; **chủ dự án chốt (a)** ngày 2026-09-20. Hướng (b) ghi lại làm việc của đợt nghiên cứu sau.
 
-## Việc phải làm nếu chọn (a)
+## Việc phải làm
 
 - [ ] `ingest` nhận `--strip-line` lặp nhiều lần, so khớp **sau khi chuẩn hoá khoảng trắng**, áp trước khi cắt chunk.
 - [ ] Manifest của `parse_tree` và `chunks` ghi đủ danh sách mẫu và **số dòng đã bỏ**.

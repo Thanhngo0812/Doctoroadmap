@@ -22,7 +22,7 @@ kế A10 cần một đợt nghiên cứu riêng **sau** đợt này trước kh
 
 | Ai | Vé |
 |---|---|
-| Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11, 16, **17** |
+| Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11, 16, 17, **18** |
 | Claude | 04, 05, 12, 13, 14, 15 |
 
 **Vé 17 — xong ngày 2026-09-20:** chủ dự án cho phép sửa đúng ba điểm hẹp trong phase A3/A4. Bốn tài liệu cũ
@@ -42,12 +42,12 @@ Số đo thật, chi phí và danh sách mutation nằm trong feedback của t�
 02 clusters ──┴─> 03 mentions ─> 16 provenance ─┬─> 06 pass chính ─> 07 pass phụ ─> 10 fixture ─┐
                                                │              └──> 08 tầng 3 ─> 09 A10         │
 04 excel vàng ─────────────────┴─> 05 bộ chấm ─┐                               │
-17 mở khoá tài liệu mới ─> 11 nạp tài liệu mới ┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
+17 ─> 18 làm sạch watermark ─> 11 nạp tài liệu mới ┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
                                                                                         └─> 15 báo cáo luồng 2b
 ```
 
-Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 17 đã xong; Vé 11 hiện chặn bởi watermark `doc-1`, không còn chặn
-code. Vé 04 nằm trên đường găng của người, vì việc gán nhãn tốn người chứ không tốn máy.
+Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 17 đã xong. **Vé 18 là chặn duy nhất còn lại của máy**: chủ dự án
+chốt hướng (a) ngày 2026-09-20, ingest nhận mẫu dòng cần bỏ và mặc định giữ nguyên hành vi. Vé 04 nằm trên đường găng của người, vì việc gán nhãn tốn người chứ không tốn máy.
 
 ## Luật chung cho mọi vé
 
