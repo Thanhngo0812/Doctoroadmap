@@ -1027,3 +1027,42 @@ guard.
 
 **Kết luận vòng:** Vé 16 thật sự đã xong; Vé 11 được mở đúng nhưng phát hiện ba chặn mới. Watermark doc-1 và luật
 ngôn ngữ A5 chưa được kiểm vì pipeline chưa được phép vượt doc-3.
+
+---
+
+# Vòng 33 — Kiểm chứng ba chặn của vé 11 · 2026-09-20
+
+Nhân viên chạy thật `doc-3`, gặp ba chặn và **dừng đúng luật của vé** ("cần sửa code thì dừng và báo"), không tự sửa
+phase đã đóng, không xoá tay ứng viên, không đụng `doc-1`/`doc-2`. Cách xử lý này đúng.
+
+## Kiểm lại từng chặn
+
+| Mã | Khai của nhân viên | Tôi kiểm | Kết luận |
+|---|---|---|---|
+| F107 | A3 trả ứng viên tên `X`, `learnable=true`; A4 dừng ở bất biến tên ký hiệu | đọc artifact `candidates/doc-3/v1`: đúng `candidate_e70160c0a9cacaf16e6e4a95` tên `X`, kiểu `concept`, bằng chứng *"X and Y can be anything…"*; còn một ứng viên tên `Y` cùng kiểu | ✅ đúng, và **nặng hơn một bậc**: luật cấm ký hiệu chỉ nằm trong prompt few-shot, code A3 không có guard nào — trái user story 40 |
+| F108 | A3 chỉ lưu `llm_calls`, không có token | grep `extract_entities.py`: không bắt `usage`; manifest `doc-3` chỉ có `llm_calls=256` | ✅ đúng; và **A4/A5 cũng thiếu**, không riêng A3 |
+| F109 | cổng bộ vàng A4 chặn tài liệu mới | `main.py:369` — `if args.doc_id not in gold["documents"]: raise` | ✅ đúng |
+
+Hai điểm tôi bổ sung so với báo cáo của nhân viên: guard ký hiệu **chưa từng tồn tại trong code** (không phải "lọt qua
+validation"), và telemetry thiếu ở **cả A4/A5**, nên vé 17 gộp luôn.
+
+## Quyết định
+
+- **F107 — sửa A3, giữ nguyên bất biến A4.** Loại ứng viên có tên chỉ gồm ký hiệu ngay ở validation của A3, đếm vào
+  stats. Viết tắt (`DL`, `AI`) phải sống sót. Bất biến `node chỉ có tên ký hiệu` của `canonical.py` giữ nguyên làm
+  chốt cuối. Đây là đưa một luật đang nằm trong prompt về đúng chỗ của nó là code.
+- **F108 — thêm telemetry cho A3 và A4/A5**, đúng khuôn `model_calls.py` của A8, kèm nguồn bảng giá và ngày kiểm.
+  Bắt buộc phải có **trước** `doc-2`, nếu không thì không giữ được trần 50 USD.
+- **F109 — không gán bộ vàng A4 mới cho tài liệu mới.** Căn cứ có sẵn ở spec D13: cờ node sai của người gán nhãn
+  tiên quyết chính là mẫu kiểm A4 cho tài liệu mới. `a4` vẫn bắt buộc một bộ vàng hợp lệ làm **cổng hồi quy**, nhưng
+  tài liệu ngoài bộ vàng chạy được bằng một cờ tường minh, và manifest ghi `a4_gold_coverage: "none"`. Báo cáo cuối
+  phải nói rõ hạn chế này.
+
+Cả ba nằm trong **vé 17**. Vé 11 chặn cho tới khi vé 17 xong.
+
+## Một điều cần chủ dự án đồng ý
+
+Vé 17 **sửa code trong hai phase đã đóng** (A3 và A4). Tôi đề nghị đồng ý, vì cả ba mục đều hẹp, có test riêng, và
+không đổi hành vi trên bốn tài liệu cũ: guard ký hiệu chỉ chạm ứng viên mà A4 vốn đã từ chối, telemetry chỉ thêm
+trường vào manifest, cổng bộ vàng chỉ nới cho tài liệu **không** có trong bộ vàng. Điều kiện nhận: sau khi sửa,
+bốn tài liệu cũ chạy lại phải cho `reused=true` và điểm vàng A4 giữ nguyên 31/0/16.
