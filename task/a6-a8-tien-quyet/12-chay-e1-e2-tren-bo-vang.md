@@ -10,6 +10,17 @@
 > **Hai chương vàng (chủ dự án chốt 2026-09-18, hướng a):** một chương giữa của `doc-1` (tiếng Việt) và một
 > chương giữa của `doc-2` (tiếng Anh). Bộ vàng song ngữ, nên **mọi bảng phải tách theo từng chương**, không gộp
 > hai ngôn ngữ thành một con số. Xem spec D13.
+>
+> **Danh sách rút gọn do reviewer đề xuất (2026-09-20, đo thẳng trên PDF vì vé 11 chưa chạy):**
+>
+> | | `doc-1` (tiếng Việt) | `doc-2` (Axler, tiếng Anh) |
+> |---|---|---|
+> | ⭐ đề xuất | **Chương 5 — Ánh xạ tuyến tính**, tr. 89–100 (12 tr, 10 "Định nghĩa") | **3C — Matrices**, tr. 83–96 (14 tr, 9 "definition") |
+> | B | Chương 4 — Không gian véc-tơ, tr. 60–88 (29 tr, 19) | 5A — Invariant Subspaces, tr. 147–156 (10 tr, 5) |
+> | C | Chương 3 — Hệ phương trình tuyến tính, tr. 43–59 (17 tr, 5) | 2A — Span and Linear Independence, tr. 43–52 (10 tr, 8) |
+>
+> Số khái niệm đích thật chỉ biết được sau vé 11 (`a8-gold-sheet --list-chapters`); nếu chương chọn ra dưới 15 hoặc
+> trên 45 khái niệm thì ghép thêm/bớt một mục liền kề, đúng cơ chế dải mục của vé 04.
 
 - [ ] Hai người gán đã nộp file, độ đồng thuận đã tính (có kể đồng thuận ngầm qua bắc cầu), và **đã hội ý** xong;
       bộ vàng đóng băng trước khi chạy.
