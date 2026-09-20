@@ -583,3 +583,196 @@ def _result(scope, annotator, edges, flags, timing, errors, warnings):
         "errors": errors,
         "warnings": warnings,
     }
+
+
+# ---------------------------------------------------------------------------
+# Hội ý: chốt bộ vàng từ nhãn của hai người (spec D13 — "bộ vàng chính là kết quả hội ý")
+# ---------------------------------------------------------------------------
+
+ADJUDICATION_SHEET, AGREED_SHEET = "Cạnh lệch", "Hai người cùng ghi"
+DECISIONS = {"Giữ": "keep", "Bỏ": "drop"}
+ADJUDICATION_HEADERS = ["STT", "Khái niệm đích (A)", "Cần biết trước (B)", "Ai ghi", "Loại bằng chứng",
+                        "Mức cần", "Vị trí trong sách", "Ghi chú của người gán", "Quyết định", "Lý do"]
+AGREED_HEADERS = ["STT", "Khái niệm đích (A)", "Cần biết trước (B)", "Loại bằng chứng của từng người"]
+
+
+def _pair_key(edge):
+    return edge["target"], edge["prerequisite"]
+
+
+def adjudication_rows(scope, golds):
+    """Chia cạnh của hai người thành phần trùng và phần lệch. Không đụng tới bất kỳ cạnh nào của pipeline."""
+    if len(golds) != 2:
+        raise ValueError("hội ý cần đúng hai bộ nhãn")
+    for gold in golds:
+        if gold.get("errors"):
+            raise ValueError(f"nhãn của {gold.get('annotator')!r} còn lỗi chưa sửa")
+        if gold["concept_hash"] != scope["concept_hash"]:
+            raise ValueError(f"nhãn của {gold.get('annotator')!r} gán cho danh sách khái niệm khác")
+    if golds[0].get("annotator") == golds[1].get("annotator"):
+        raise ValueError("hai file cùng một mã người gán; cần nhãn của hai người khác nhau")
+    label_of = {c["node_id"]: c["label"] for c in scope["concepts"]}
+    maps = [{_pair_key(e): e for e in gold["edges"]} for gold in golds]
+    names = [gold.get("annotator") or f"người {index + 1}" for index, gold in enumerate(golds)]
+    agreed, differing = [], []
+    for key in sorted(set(maps[0]) | set(maps[1])):
+        target, prerequisite = key
+        if target not in label_of or prerequisite not in label_of:
+            raise ValueError(f"nhãn trỏ tới khái niệm ngoài danh sách: {key}")
+        present = [(name, source[key]) for name, source in zip(names, maps) if key in source]
+        record = {"target": target, "prerequisite": prerequisite,
+                  "target_label": label_of[target], "prerequisite_label": label_of[prerequisite],
+                  "by": [name for name, _ in present]}
+        if len(present) == 2:
+            record["evidence"] = {name: edge["evidence_kind"] for name, edge in present}
+            agreed.append(record)
+        else:
+            name, edge = present[0]
+            record.update({"evidence_kind": edge["evidence_kind"], "strength": edge.get("strength"),
+                           "location": edge.get("location") or "", "note": edge.get("note") or ""})
+            differing.append(record)
+    return {"annotators": names, "agreed": agreed, "differing": differing}
+
+
+def write_adjudication_sheet(scope, data, path: Path, *, overwrite: bool = False) -> dict[str, Any]:
+    """Sinh file hội ý: mỗi cạnh lệch một dòng để hai người quyết giữ hay bỏ."""
+    if path.exists() and not overwrite:
+        raise FileExistsError(f"{path} đã tồn tại; không ghi đè để khỏi mất quyết định đã ghi (dùng --force)")
+    workbook = Workbook()
+    guide = workbook.active
+    guide.title = GUIDE_SHEET
+    guide.column_dimensions["A"].width = 34
+    guide.column_dimensions["B"].width = 96
+    guide["A1"] = "Hội ý bộ vàng tiên quyết"
+    guide["A1"].font = Font(bold=True, size=14)
+    rows = [
+        ("Tài liệu", scope["doc_id"]),
+        ("Chương", f"C{scope['chapter']['label']}: " + " · ".join(scope["chapter"]["titles"])),
+        ("Hai người gán", " và ".join(data["annotators"])),
+        ("Cạnh cả hai cùng ghi", f"{len(data['agreed'])} — vào thẳng bộ vàng, không phải quyết"),
+        ("Cạnh lệch cần quyết", str(len(data["differing"]))),
+        ("", ""),
+        ("Cách làm", "Mỗi dòng ở sheet 'Cạnh lệch' là một quan hệ chỉ một người ghi. Hai người cùng đọc lại "
+                     "đoạn văn ở cột Vị trí, rồi chọn Giữ hoặc Bỏ ở cột Quyết định."),
+        ("", "Giữ nghĩa là cả hai đồng ý quan hệ đó có thật theo cách sách trình bày. Bỏ nghĩa là cả hai đồng ý "
+             "không có. Không để trống dòng nào; còn trống thì bộ đọc sẽ báo lỗi."),
+        ("", "Cột Lý do không bắt buộc, nhưng nên ghi một câu cho những ca tranh luận lâu — báo cáo cần ví dụ."),
+        ("", "Vẫn chưa được xem đầu ra của máy trước khi chốt xong."),
+    ]
+    for index, (left, right) in enumerate(rows, 3):
+        guide[f"A{index}"], guide[f"B{index}"] = left, right
+        guide[f"A{index}"].font = Font(bold=True)
+        guide[f"B{index}"].alignment = Alignment(wrap_text=True, vertical="top")
+
+    sheet = workbook.create_sheet(ADJUDICATION_SHEET)
+    _style_header(sheet, ADJUDICATION_HEADERS, [6, 34, 34, 10, 26, 12, 30, 44, 14, 40])
+    for index, row in enumerate(data["differing"], 2):
+        values = [index - 1, row["target_label"], row["prerequisite_label"], ", ".join(row["by"]),
+                  row["evidence_kind"], row.get("strength") or "", row["location"], row["note"], "", ""]
+        for column, value in enumerate(values, 1):
+            cell = sheet.cell(row=index, column=column, value=value)
+            cell.alignment = Alignment(wrap_text=True, vertical="top")
+    last = max(2, len(data["differing"]) + 1)
+    _list_validation(sheet, "DS_QUYET", f"I2:I{last}", "Chọn Giữ hoặc Bỏ.", allow_blank=False)
+    sheet.freeze_panes = "A2"
+
+    agreed = workbook.create_sheet(AGREED_SHEET)
+    _style_header(agreed, AGREED_HEADERS, [6, 38, 38, 40])
+    for index, row in enumerate(data["agreed"], 2):
+        evidence = "; ".join(f"{name}: {kind}" for name, kind in sorted(row["evidence"].items()))
+        for column, value in enumerate([index - 1, row["target_label"], row["prerequisite_label"], evidence], 1):
+            agreed.cell(row=index, column=column, value=value).alignment = Alignment(wrap_text=True, vertical="top")
+    agreed.protection.sheet = True
+
+    lists = workbook.create_sheet(LIST_SHEET)
+    lists["A1"] = "DS_QUYET"
+    for index, value in enumerate(DECISIONS, 2):
+        lists[f"A{index}"] = value
+    workbook.defined_names["DS_QUYET"] = DefinedName(
+        "DS_QUYET", attr_text="'" + LIST_SHEET + "'!$A$2:$A$" + str(len(DECISIONS) + 1))
+    lists.sheet_state = "hidden"
+
+    meta = workbook.create_sheet(META_SHEET)
+    for index, (key, value) in enumerate(_meta_values(scope, "+".join(data["annotators"])).items(), 1):
+        meta[f"A{index}"], meta[f"B{index}"] = key, value
+    meta.sheet_state = "veryHidden"
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    workbook.save(path)
+    return {"path": str(path), "agreed": len(data["agreed"]), "differing": len(data["differing"]),
+            "annotators": data["annotators"], "concept_hash": scope["concept_hash"]}
+
+
+def read_adjudication_sheet(path: Path, scope, golds) -> dict[str, Any]:
+    """Đọc file hội ý thành bộ vàng cuối: cạnh cả hai cùng ghi, cộng cạnh lệch được quyết Giữ."""
+    data = adjudication_rows(scope, golds)
+    workbook = load_workbook(path, data_only=True)
+    errors, warnings = [], []
+    missing = sorted({ADJUDICATION_SHEET, META_SHEET} - set(workbook.sheetnames))
+    if missing:
+        return _adjudicated(scope, data, [], [f"file thiếu sheet: {', '.join(missing)}"], warnings)
+    meta = {_text(row[0]): row[1] for row in workbook[META_SHEET].iter_rows(values_only=True) if row[0] is not None}
+    expected = _meta_values(scope, "+".join(data["annotators"]))
+    for key, value in expected.items():
+        if str(meta.get(key)) != str(value):
+            errors.append(f"file hội ý gán cho {key}={meta.get(key)!r}, còn hiện tại là {value!r}")
+    if errors:
+        return _adjudicated(scope, data, [], errors, warnings)
+    decisions = {}
+    for number, row in enumerate(workbook[ADJUDICATION_SHEET].iter_rows(min_row=2, max_col=10, values_only=True), 2):
+        target, prerequisite = _text(row[1]), _text(row[2])
+        decision, reason = _text(row[8]), _text(row[9])
+        if not any((target, prerequisite, decision)):
+            continue
+        where = f"{ADJUDICATION_SHEET}, dòng {number}"
+        if decision not in DECISIONS:
+            errors.append(f"{where}: quyết định {decision!r} không hợp lệ" if decision
+                          else f"{where}: chưa quyết định cho {target!r} ← {prerequisite!r}")
+            continue
+        decisions[target, prerequisite] = (DECISIONS[decision], reason)
+    kept = []
+    for row in data["differing"]:
+        key = (row["target_label"], row["prerequisite_label"])
+        if key not in decisions:
+            errors.append(f"{ADJUDICATION_SHEET}: thiếu dòng cho {key[0]!r} ← {key[1]!r}")
+            continue
+        decision, reason = decisions[key]
+        kept.append({**row, "decision": decision, "reason": reason})
+    return _adjudicated(scope, data, kept, errors, warnings)
+
+
+def _adjudicated(scope, data, kept, errors, warnings):
+    edges, log = [], []
+    if not errors:
+        for row in data["agreed"]:
+            kind = sorted(row["evidence"].values())[0]
+            edges.append({"target": row["target"], "prerequisite": row["prerequisite"], "evidence_kind": kind,
+                          "strength": None, "location": "", "note": "", "source": "both"})
+        for row in kept:
+            log.append({"target": row["target"], "prerequisite": row["prerequisite"], "by": row["by"],
+                        "decision": row["decision"], "reason": row["reason"]})
+            if row["decision"] == "keep":
+                edges.append({"target": row["target"], "prerequisite": row["prerequisite"],
+                              "evidence_kind": row["evidence_kind"], "strength": row.get("strength"),
+                              "location": row["location"], "note": row["note"],
+                              "source": "+".join(row["by"])})
+    return {
+        "schema": SHEET_SCHEMA,
+        "sheet_version": SHEET_VERSION,
+        "doc_id": scope["doc_id"],
+        "canonical_version": scope["canonical_version"],
+        "chapter_level": scope["chapter_level"],
+        "chapter": scope["chapter"],
+        "concept_hash": scope["concept_hash"],
+        "annotator": "+".join(data["annotators"]) + " (hội ý)",
+        "targets": [c["node_id"] for c in scope["concepts"] if c["in_scope"]],
+        "edges": sorted(edges, key=lambda e: (e["target"], e["prerequisite"])),
+        "adjudication_log": log,
+        "agreed_count": len(data["agreed"]),
+        "differing_count": len(data["differing"]),
+        "kept_count": sum(row["decision"] == "keep" for row in kept),
+        "flags": [],
+        "timing": {"annotation_minutes": None, "revision_minutes": None},
+        "errors": errors,
+        "warnings": warnings,
+    }

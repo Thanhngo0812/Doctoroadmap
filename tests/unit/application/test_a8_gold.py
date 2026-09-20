@@ -5,17 +5,22 @@ import pytest
 from openpyxl import load_workbook
 
 from doc2roadmap.application.use_cases.a8_gold import (
+    ADJUDICATION_SHEET,
+    AGREED_SHEET,
     CONCEPT_SHEET,
     FLAG_SHEET,
     GUIDE_SHEET,
     LIST_SHEET,
     META_SHEET,
     RELATION_SHEET,
+    adjudication_rows,
     annotation_scope,
     chapters_from_store,
     list_chapters,
+    read_adjudication_sheet,
     read_annotation_sheet,
     scope_from_store,
+    write_adjudication_sheet,
     write_annotation_sheet,
 )
 
@@ -441,3 +446,110 @@ def test_patched_provenance_that_changes_the_target_set_changes_the_concept_hash
     assert next(c for c in scope()["concepts"] if c["node_id"] == "n_bienco")["in_scope"] is False
     assert next(c for c in patched["concepts"] if c["node_id"] == "n_bienco")["in_scope"] is True
     assert patched["concept_hash"] != scope()["concept_hash"]
+
+
+def gold(annotator, edges, *, concept_hash=None, errors=()):
+    base = scope()
+    return {
+        "schema": base["schema"], "sheet_version": base["sheet_version"], "doc_id": "xstk",
+        "canonical_version": 7, "chapter_level": 1, "chapter": base["chapter"],
+        "concept_hash": concept_hash or base["concept_hash"], "annotator": annotator,
+        "targets": [c["node_id"] for c in base["concepts"] if c["in_scope"]],
+        "edges": [{"target": t, "prerequisite": p, "evidence_kind": k, "strength": "strong",
+                   "location": f"tr. {index + 10}", "note": f"ghi chú {annotator}", "row": index + 2}
+                  for index, (t, p, k) in enumerate(edges)],
+        "flags": [], "timing": {"annotation_minutes": None, "revision_minutes": None},
+        "errors": list(errors), "warnings": [],
+    }
+
+
+FIRST = gold("A1", [("n_uocluong", "n_mau", "noi_ro"), ("n_khoang", "n_uocluong", "trong_dinh_nghia"),
+                    ("n_khoang", "n_mau", "mach_trinh_bay")])
+SECOND = gold("A2", [("n_uocluong", "n_mau", "trong_dinh_nghia"), ("n_tru", "n_mau", "noi_ro")])
+
+
+def test_adjudication_splits_agreed_from_differing():
+    data = adjudication_rows(scope(), [FIRST, SECOND])
+
+    assert data["annotators"] == ["A1", "A2"]
+    assert [(r["target"], r["prerequisite"]) for r in data["agreed"]] == [("n_uocluong", "n_mau")]
+    assert data["agreed"][0]["evidence"] == {"A1": "noi_ro", "A2": "trong_dinh_nghia"}
+    assert {(r["target"], r["prerequisite"], tuple(r["by"])) for r in data["differing"]} == {
+        ("n_khoang", "n_uocluong", ("A1",)), ("n_khoang", "n_mau", ("A1",)), ("n_tru", "n_mau", ("A2",)),
+    }
+
+
+def test_adjudication_refuses_mismatched_or_duplicated_annotators():
+    with pytest.raises(ValueError, match="danh sách khái niệm khác"):
+        adjudication_rows(scope(), [FIRST, gold("A2", [], concept_hash="00" * 32)])
+    with pytest.raises(ValueError, match="hai người khác nhau"):
+        adjudication_rows(scope(), [FIRST, gold("A1", [])])
+    with pytest.raises(ValueError, match="còn lỗi chưa sửa"):
+        adjudication_rows(scope(), [FIRST, gold("A2", [], errors=["dòng 3 sai"])])
+    with pytest.raises(ValueError, match="đúng hai bộ nhãn"):
+        adjudication_rows(scope(), [FIRST])
+
+
+def decide(path, decisions):
+    workbook = load_workbook(path)
+    sheet = workbook[ADJUDICATION_SHEET]
+    for row in sheet.iter_rows(min_row=2, max_col=10):
+        key = (row[1].value, row[2].value)
+        if key in decisions:
+            row[8].value = decisions[key]
+    workbook.save(path)
+
+
+def test_adjudication_sheet_carries_only_human_labels_and_reads_back_the_gold(tmp_path):
+    data = adjudication_rows(scope(), [FIRST, SECOND])
+    path = tmp_path / "hoi-y.xlsx"
+    summary = write_adjudication_sheet(scope(), data, path)
+    assert summary["agreed"] == 1 and summary["differing"] == 3
+
+    workbook = load_workbook(path)
+    assert set(workbook.sheetnames) == {GUIDE_SHEET, ADJUDICATION_SHEET, AGREED_SHEET, LIST_SHEET, META_SHEET}
+    rows = [[c.value for c in r] for r in workbook[ADJUDICATION_SHEET].iter_rows(min_row=2, max_col=10)]
+    assert len(rows) == 3 and all(row[8] is None for row in rows)
+    assert {row[3] for row in rows} == {"A1", "A2"}
+
+    unfinished = read_adjudication_sheet(path, scope(), [FIRST, SECOND])
+    assert unfinished["errors"] and "chưa quyết định" in unfinished["errors"][0]
+    assert unfinished["edges"] == []
+
+    decide(path, {("Khoảng tin cậy", "Ước lượng điểm"): "Giữ",
+                  ("Khoảng tin cậy", "Mẫu"): "Bỏ",
+                  ("Trung bình [statistic]", "Mẫu"): "Giữ"})
+    result = read_adjudication_sheet(path, scope(), [FIRST, SECOND])
+
+    assert result["errors"] == []
+    assert result["agreed_count"] == 1 and result["differing_count"] == 3 and result["kept_count"] == 2
+    assert {(e["target"], e["prerequisite"], e["source"]) for e in result["edges"]} == {
+        ("n_uocluong", "n_mau", "both"), ("n_khoang", "n_uocluong", "A1"), ("n_tru", "n_mau", "A2"),
+    }
+    assert result["annotator"] == "A1+A2 (hội ý)"
+    assert [row["decision"] for row in result["adjudication_log"]].count("drop") == 1
+
+
+def test_adjudication_file_made_for_another_chapter_is_refused(tmp_path):
+    data = adjudication_rows(scope(), [FIRST, SECOND])
+    path = tmp_path / "hoi-y.xlsx"
+    write_adjudication_sheet(scope(), data, path)
+    workbook = load_workbook(path)
+    meta = workbook[META_SHEET]
+    for row in meta.iter_rows(max_col=2):
+        if row[0].value == "chapter_label":
+            row[1].value = "9"
+    workbook.save(path)
+
+    result = read_adjudication_sheet(path, scope(), [FIRST, SECOND])
+    assert result["errors"] and "chapter_label" in result["errors"][0]
+    assert result["edges"] == []
+
+
+def test_adjudication_sheet_never_overwrites_decisions(tmp_path):
+    data = adjudication_rows(scope(), [FIRST, SECOND])
+    path = tmp_path / "hoi-y.xlsx"
+    write_adjudication_sheet(scope(), data, path)
+    with pytest.raises(FileExistsError, match="không ghi đè"):
+        write_adjudication_sheet(scope(), data, path)
+    write_adjudication_sheet(scope(), data, path, overwrite=True)
