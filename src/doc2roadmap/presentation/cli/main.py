@@ -44,6 +44,11 @@ def _parser() -> argparse.ArgumentParser:
     mode.add_argument("--names-only", action="store_true", help="chỉ lớp tên, không mạng")
     mode.add_argument("--prepare", action="store_true", help="chỉ đề cử bằng embedding, chưa phán")
     canonical.add_argument("--gold", type=Path, help="bộ vàng đã gán mù, bắt buộc trước khi gọi LLM")
+    canonical.add_argument(
+        "--no-gold-for-doc",
+        action="store_true",
+        help="cho phép tài liệu mới không nằm trong bộ vàng; vẫn kiểm bộ vàng hoàn chỉnh",
+    )
     comparison = commands.add_parser("a4-compare", help="so hai phiên bản canonical")
     comparison.add_argument("--doc-id", required=True)
     comparison.add_argument("--first", type=int, required=True)
@@ -358,6 +363,7 @@ def main(argv: list[str] | None = None) -> int:
                                      exclude_subtype_items=args.exclude_subtype_item))
         elif args.command == "a4":
             store = build_artifact_store()
+            execution_options = {}
             if args.names_only:
                 use_case = Canonicalize(store)
             elif args.prepare:
@@ -367,11 +373,17 @@ def main(argv: list[str] | None = None) -> int:
                     raise ValueError("task 06 chưa xong: cần --gold đã gán mù; dùng --prepare hoặc --names-only trước")
                 gold = load_gold(args.gold, store, require_complete=True)
                 if args.doc_id not in gold["documents"]:
-                    raise ValueError("bộ vàng không có tài liệu này")
+                    if not args.no_gold_for_doc:
+                        raise ValueError("bộ vàng không có tài liệu này")
+                    execution_options = {
+                        "a4_gold_coverage": "none",
+                        "gold_sheet_id": gold["sheet_id"],
+                    }
                 use_case = build_canonical()
-            artifact, reused = use_case.execute(args.doc_id)
+            artifact, reused = use_case.execute(args.doc_id, **execution_options)
             _json({"path": str(artifact.path), "version": artifact.version, "reused": reused,
-                   "stage": artifact.payload["stage"], "stats": artifact.payload["stats"]})
+                   "stage": artifact.payload["stage"], "stats": artifact.payload["stats"],
+                   "cost_summary": artifact.payload.get("cost_summary", {})})
         elif args.command == "a4-compare":
             store = build_artifact_store()
             first = store.load_canonical(args.doc_id, args.first)
