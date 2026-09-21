@@ -166,6 +166,8 @@ class JsonArtifactStore:
         config: dict[str, Any],
         tree: DocumentTree,
         images: dict[str, bytes] | None = None,
+        *,
+        manifest_fields: dict[str, Any] | None = None,
     ) -> StoredParse:
         images = images or {}
         existing = self.find_parse(doc_id, source_hash, parser_config_hash)
@@ -185,6 +187,7 @@ class JsonArtifactStore:
             config,
             parser_config_hash=parser_config_hash,
             parse_stats=tree.parse_stats,
+            **(manifest_fields or {}),
         )
         for image_id, image in sorted(images.items()):
             self._write_bytes(path / "images" / f"{image_id}.png", image)
@@ -217,6 +220,8 @@ class JsonArtifactStore:
         config: dict[str, Any],
         parse_version: int,
         result: ChunkingResult,
+        *,
+        manifest_fields: dict[str, Any] | None = None,
     ) -> StoredChunks:
         versions = self._versions("chunks", doc_id)
         for version, path in reversed(versions):
@@ -234,6 +239,7 @@ class JsonArtifactStore:
             config,
             parse_version=parse_version,
             structure_warnings=result.structure_warnings,
+            **(manifest_fields or {}),
         )
         self._write(path / "sections.json", [section.to_dict() for section in result.sections])
         self._write(path / "chunks.json", [chunk.to_dict() for chunk in result.chunks])

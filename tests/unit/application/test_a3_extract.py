@@ -328,6 +328,10 @@ def test_symbol_only_name_is_rejected_but_abbreviation_and_symbol_alias_survive(
     assert [entity.name for entity in summary.result.entities] == ["DL"]
     assert [alias.name for alias in summary.result.entities[0].aliases] == ["X"]
     assert summary.result.stats["rejected_symbol_only_name"] == 1
+    assert summary.result.stats["rejected_symbol_only_names"] == ["X"]
+    assert JsonArtifactStore(tmp_path).load_latest_candidates("book").manifest["config"][
+        "algorithm_id"
+    ] == "a3-section-conversation-v6"
     expected = {
         "model_id": "gemini-3.1-flash-lite",
         "input_tokens": 30,
@@ -340,6 +344,100 @@ def test_symbol_only_name_is_rejected_but_abbreviation_and_symbol_alias_survive(
     assert summary.artifact_path is not None
     manifest = store._read(summary.artifact_path / "manifest.json")
     assert manifest["cost_summary"] == cost
+
+
+def test_rejected_symbol_only_names_are_capped_at_fifty(tmp_path) -> None:
+    text = "Deep Learning là một lĩnh vực học máy."
+    symbols = ["x" + "'" * index for index in range(1, 52)]
+    entities = [
+        {
+            "name": name,
+            "node_type": "concept",
+            "description_draft": "Ký hiệu.",
+            "evidence": name,
+            "aliases": [],
+        }
+        for name in symbols
+    ]
+    entities.append({
+        "name": "DL",
+        "node_type": "concept",
+        "description_draft": "Deep Learning.",
+        "evidence": text,
+        "aliases": [],
+    })
+    extractor = _Extractor([[
+        _reply(entities=entities),
+        _reply(),
+        {"remove_entity_ids": [], "remove_edge_ids": []},
+    ]])
+    summary = ExtractEntities(
+        _stored_document(tmp_path, [_chunk(text)]),
+        extractor,
+        None,
+        generation={"temperature": 0},
+    ).execute("book", max_workers=1)
+
+    assert summary.result.stats["rejected_symbol_only_name"] == 51
+    assert summary.result.stats["rejected_symbol_only_names"] == symbols[:50]
+
+
+def test_symbol_name_uses_verified_lexical_alias_and_remains_an_edge_endpoint(
+    tmp_path,
+) -> None:
+    text = (
+        "The vector space of linear maps ℒ(V, W) acts on vector spaces; "
+        "the unrelated symbol X also appears."
+    )
+    extractor = _Extractor([[
+        _reply(
+            entities=[
+                {
+                    "name": "ℒ(V, W)",
+                    "node_type": "concept",
+                    "description_draft": "A vector space of linear maps.",
+                    "evidence": text,
+                    "aliases": [{"name": "linear maps", "evidence": text}],
+                },
+                {
+                    "name": "vector spaces",
+                    "node_type": "concept",
+                    "description_draft": "Spaces with vector operations.",
+                    "evidence": text,
+                    "aliases": [],
+                },
+                {
+                    "name": "X",
+                    "node_type": "concept",
+                    "description_draft": "An unrelated symbol.",
+                    "evidence": text,
+                    "aliases": [{"name": "random variable", "evidence": text}],
+                },
+            ],
+            edges=[{
+                "source": "ℒ(V, W)",
+                "target": "vector spaces",
+                "edge_type": "uses",
+                "evidence": text,
+            }],
+        ),
+        _reply(),
+        {"remove_entity_ids": [], "remove_edge_ids": []},
+    ]])
+    summary = ExtractEntities(
+        _stored_document(tmp_path, [_chunk(text)]),
+        extractor,
+        None,
+        generation={"temperature": 0},
+    ).execute("book", max_workers=1)
+
+    entities = {entity.name: entity for entity in summary.result.entities}
+    assert set(entities) == {"linear maps", "vector spaces"}
+    assert [alias.name for alias in entities["linear maps"].aliases] == ["ℒ(V, W)"]
+    assert len(summary.result.edges) == 1
+    assert summary.result.edges[0].source_candidate_id == entities["linear maps"].candidate_id
+    assert summary.result.stats["rejected_symbol_only_name"] == 1
+    assert summary.result.stats["rejected_symbol_only_names"] == ["X"]
 
 
 def test_table_description_uses_existing_text_without_multimodal_input() -> None:

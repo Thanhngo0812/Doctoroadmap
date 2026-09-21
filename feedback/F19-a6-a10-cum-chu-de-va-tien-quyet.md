@@ -1236,3 +1236,33 @@ vì để người đọc tự phát hiện.
 Code vé 17 nằm trong commit `3bcf9cc` mang thông điệp review của tôi, vì nhân viên đã `git add` sẵn và lệnh commit
 của tôi cuốn theo. Nội dung repo không sai, nhưng thông điệp commit không mô tả đúng thứ nó chứa. Tôi không viết lại
 lịch sử vì nhân viên đã commit tiếp lên trên; ghi lại ở đây để ai đọc `git log` sau này không bị lạc.
+
+---
+
+# Xử lý Vé 18 và chạy tiếp Vé 11 · 2026-09-21
+
+Vé 18 cài hướng (a): `ingest --strip-line` lặp lại, so khớp sau chuẩn hóa khoảng trắng trước cắt chunk; không
+khai mẫu thì config/hash và nội dung giữ nguyên. Manifest parse/chunk cùng ghi mẫu và số dòng bị tác động. Test
+đã thấy đỏ khi bỏ chuẩn hóa khoảng trắng, dời lọc sau lưu parse và quên manifest chunk; thêm ca `raw_text`, đếm
+một dòng dù khớp hai lần, giữ nguyên text khi không có mẫu. Toàn bộ suite xanh. `baocao-canhan` và `doc-3`
+tái dùng artifact không mẫu; chưa thể nghiệm thu đủ **4/4** tài liệu cũ: hai artifact cũ có adapter config khác
+hiện hành (đã dừng parse trước khi ghi version), còn PDF `nhap-mon-ml` không có trong workspace.
+
+`doc-1`: 229 → **218 chunk**; 140 dòng bị tác động. Kiểm độc lập toàn bộ parse v3 (`text` và `raw_text`) và
+JSON chunk/section/document v3: **0** mã theo dõi, **0** Studeersnel, **0** email. Phát lại ingest tái dùng v3.
+`raw_text` của bản v2 từng còn 140 node có mã; bản v3 đã sạch. Các artifact v1/v2 nhạy cảm vẫn nằm ở kho cục bộ,
+không tự ý xóa. A3 v2 từ v3: 153 ứng viên/139 learnable/227 cạnh; chỉ mục v2 218 chunk; A4/A5 canonical v2
+98 node/214 cạnh, replay `reused=true`. Chi phí mới A3 0,50755425 USD, A4/A5 0,03890375 USD; xem [Vé 11](../task/a6-a8-tien-quyet/11-nap-ba-tai-lieu-moi.md)
+để phân biệt tổng các lần chạy khỏi hóa đơn thực.
+
+**F111 đóng:** A3 ghi danh sách tên ký hiệu bị loại, khử trùng lặp và trần 50, bên cạnh số lượt; có test 51
+tên. **F112 đóng:** test CLI ghim `load_gold(..., require_complete=True)` ở cả nhánh từ chối và nhánh chấp
+nhận tài liệu mới; đột biến đổi `False` đã bị bắt.
+
+**F110 vẫn mở về chất lượng `doc-2`:** guard đã cứu tên ký hiệu khi có alias chữ và evidence xác thực (ký hiệu
+được giữ làm alias, endpoint cạnh được nối lại; test đỏ trước sửa). Nhưng A3 `doc-2` v2 vẫn loại **47 lượt/36
+tên**; `ℒ(V,W)`, `L(V,W)`, `𝐅^{m,n}` trong số đó. A3 có 1.370 ứng viên, 1.298 learnable, 606 cạnh; chỉ mục
+1.038 chunk. Không chạy A4/A5 hay lấy mục 3C làm vàng khi các khái niệm trung tâm còn mất. Cây parse còn gắn
+`Exercises 3C` dưới `3.56`, nên cần kiểm scope chương. **Vấn đề mới về `doc-1`:** A5 phân loại `en` cho PDF
+tiếng Việt bị lỗi mã; 51 mô tả viết lại, 27 fallback. Artifact canonical hoàn thành về mặt kỹ thuật nhưng không
+đạt chất lượng ngôn ngữ để gán vàng. Vé 11 vẫn mở; cần ticket riêng cho hai vấn đề đầu vào/chất lượng này.

@@ -66,6 +66,8 @@ class ArtifactStore(Protocol):
         config: dict[str, Any],
         tree: DocumentTree,
         images: dict[str, bytes] | None = None,
+        *,
+        manifest_fields: dict[str, Any] | None = None,
     ) -> StoredParse: ...
 
     def save_chunks(
@@ -76,6 +78,8 @@ class ArtifactStore(Protocol):
         config: dict[str, Any],
         parse_version: int,
         result: ChunkingResult,
+        *,
+        manifest_fields: dict[str, Any] | None = None,
     ) -> StoredChunks: ...
 
     def load_latest_chunks(self, doc_id: str) -> StoredChunks: ...

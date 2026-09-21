@@ -48,6 +48,7 @@ from doc2roadmap.domain.ports import TokenCounter
 
 
 MAX_GLEAN_ROUNDS = 5
+MAX_REJECTED_SYMBOL_NAMES = 50
 
 
 class ExtractionGateError(RuntimeError):
@@ -204,32 +205,10 @@ def _add_entity(
     if not name:
         stats["rejected_malformed_entities"] += 1
         return None, False
-    if alias_kind(name) == "symbol":
-        stats["rejected_symbol_only_name"] += 1
-        return None, False
     learnable = raw.get("learnable", True)
     if not isinstance(learnable, bool):
         stats["rejected_malformed_entities"] += 1
         return None, False
-    evidence = _find_evidence(context.chunks, quote)
-    media_evidence_id = str(raw.get("media_evidence_id", "")).strip() or None
-    media_ref = next(
-        (
-            (chunk, reference)
-            for chunk in context.chunks
-            for reference in chunk.image_refs
-            if reference.image_id == media_evidence_id
-        ),
-        None,
-    )
-    if evidence is None and media_ref is None:
-        stats["rejected_entity_evidence"] += 1
-        return None, False
-    source_chunk = (
-        next(chunk for chunk in context.chunks if chunk.chunk_id == evidence.chunk_id)
-        if evidence is not None
-        else media_ref[0]
-    )
     aliases = []
     for alias in raw.get("aliases", []):
         if not isinstance(alias, dict) or "name" not in alias or "evidence" not in alias:
@@ -244,6 +223,50 @@ def _add_entity(
             stats["rejected_alias_evidence"] += 1
         elif all(_identity(item.name) != _identity(verified.name) for item in aliases):
             aliases.append(verified)
+    evidence = _find_evidence(context.chunks, quote)
+    media_evidence_id = str(raw.get("media_evidence_id", "")).strip() or None
+    media_ref = next(
+        (
+            (chunk, reference)
+            for chunk in context.chunks
+            for reference in chunk.image_refs
+            if reference.image_id == media_evidence_id
+        ),
+        None,
+    )
+    if alias_kind(name) == "symbol":
+        promoted = next(
+            (alias for alias in aliases if alias_kind(alias.name) == "name"),
+            None,
+        )
+        symbol_alias = None
+        if promoted is not None:
+            for alias_quote in (quote, promoted.evidence.quote):
+                for chunk in context.chunks:
+                    symbol_alias = verify_alias(chunk, name, alias_quote)
+                    if symbol_alias is not None:
+                        break
+                if symbol_alias is not None:
+                    break
+        if promoted is None or symbol_alias is None:
+            stats["rejected_symbol_only_name"] += 1
+            names = stats["symbol_only_names"]
+            if name not in names and len(names) < MAX_REJECTED_SYMBOL_NAMES:
+                names.append(name)
+            return None, False
+        name = promoted.name
+        evidence = promoted.evidence
+        aliases.remove(promoted)
+        if all(_identity(item.name) != _identity(symbol_alias.name) for item in aliases):
+            aliases.append(symbol_alias)
+    if evidence is None and media_ref is None:
+        stats["rejected_entity_evidence"] += 1
+        return None, False
+    source_chunk = (
+        next(chunk for chunk in context.chunks if chunk.chunk_id == evidence.chunk_id)
+        if evidence is not None
+        else media_ref[0]
+    )
     description = str(raw.get("description_draft", "")).strip() or None
     candidate = EntityCandidate(
         candidate_id=candidate_id_for(source_chunk.doc_id, context.section_id, name),
@@ -416,6 +439,7 @@ def extract_section(
         "rejected_edge_type": 0,
         "rejected_reserved_or_missing_type": 0,
         "rejected_symbol_only_name": 0,
+        "symbol_only_names": [],
         "rejected_malformed_entities": 0,
         "rejected_malformed_edges": 0,
         "validation_removed_entities": 0,
@@ -878,7 +902,7 @@ class ExtractEntities:
             self.embedding.embedding_model_id if self.embedding is not None else None
         )
         config = {
-            "algorithm_id": "a3-section-conversation-v5",
+            "algorithm_id": "a3-section-conversation-v6",
             "reviewed_node_types": reviewed_types,
             "chunks_config_hash": stored.manifest["config_hash"],
             "extractor_id": self.extractor.identifier,
@@ -1019,6 +1043,16 @@ class ExtractEntities:
                 for key in rejection_keys
             }
         )
+        symbol_only_names = []
+        for outcome in outcomes:
+            for name in outcome.stats["symbol_only_names"]:
+                if name not in symbol_only_names:
+                    symbol_only_names.append(name)
+                if len(symbol_only_names) == MAX_REJECTED_SYMBOL_NAMES:
+                    break
+            if len(symbol_only_names) == MAX_REJECTED_SYMBOL_NAMES:
+                break
+        aggregate["rejected_symbol_only_names"] = symbol_only_names
         input_tokens = sum(int(outcome.stats["input_tokens"]) for outcome in outcomes)
         output_tokens = sum(int(outcome.stats["output_tokens"]) for outcome in outcomes)
         cost_summary = {

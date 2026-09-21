@@ -10,6 +10,7 @@ from typing import Any
 from doc2roadmap.application.ports import ArtifactStore, DocumentParser
 from doc2roadmap.application.windows import assemble_windows
 from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, chunk_document
+from doc2roadmap.domain.models import DocumentTree
 from doc2roadmap.domain.ports import SentenceSplitter, TokenCounter
 
 
@@ -25,6 +26,33 @@ def validate_doc_id(doc_id: str) -> str:
 def _hash(value: Any) -> str:
     payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def _strip_line_patterns(tree: DocumentTree, patterns: list[str]) -> int:
+    if not patterns:
+        return 0
+    matchers = [
+        re.compile(r"\s+".join(re.escape(part) for part in pattern.split()))
+        for pattern in patterns
+    ]
+    removed = 0
+    for node in tree.nodes:
+        def clean(value: str) -> tuple[str, int]:
+            lines = []
+            count = 0
+            for line in value.splitlines(keepends=True):
+                original = line
+                for matcher in matchers:
+                    line = matcher.sub("", line)
+                count += line != original
+                lines.append(line)
+            return "".join(lines).strip(), count
+
+        node.text, count = clean(node.text)
+        removed += count
+        if node.raw_text is not None:
+            node.raw_text, _ = clean(node.raw_text)
+    return removed
 
 
 @dataclass(slots=True)
@@ -65,6 +93,7 @@ class IngestDocument:
         hard_cap_tokens: int = 6000,
         target_tokens: int = 256,
         sentence_overlap: int = 1,
+        strip_lines: list[str] | tuple[str, ...] = (),
     ) -> IngestSummary:
         validate_doc_id(doc_id)
         suffix = Path(filename).suffix.lower()
@@ -78,6 +107,9 @@ class IngestDocument:
             raise ValueError("max_table_tokens và hard_cap_tokens phải lớn hơn 0")
         if sentence_overlap < 0:
             raise ValueError("sentence_overlap không được âm")
+        normalized_patterns = list(dict.fromkeys(" ".join(value.split()) for value in strip_lines))
+        if any(not value for value in normalized_patterns):
+            raise ValueError("strip_lines không được chứa mẫu rỗng")
 
         source_hash = hashlib.sha256(source).hexdigest()
         parser_config = {
@@ -85,6 +117,9 @@ class IngestDocument:
             "adapter_version": self.parser.adapter_version,
             "image_scale": self.parser.image_scale,
         }
+        if normalized_patterns:
+            parser_config["strip_lines"] = normalized_patterns
+            parser_config["strip_line_algorithm"] = "normalized-substring-all-fields-v2"
         parser_config_hash = _hash(parser_config)
         config = {
             "parser": parser_config,
@@ -106,8 +141,18 @@ class IngestDocument:
         config_hash = _hash(config)
         stored_parse = self.store.find_parse(doc_id, source_hash, parser_config_hash)
         source_seen_before = stored_parse is not None
+        stripped_line_count = 0
         if stored_parse is None:
             parsed = self.parser.parse(source, filename)
+            stripped_line_count = _strip_line_patterns(parsed.tree, normalized_patterns)
+            manifest_fields = (
+                {
+                    "strip_lines": normalized_patterns,
+                    "stripped_line_count": stripped_line_count,
+                }
+                if normalized_patterns
+                else None
+            )
             stored_parse = self.store.save_parse(
                 doc_id,
                 source_hash,
@@ -116,7 +161,19 @@ class IngestDocument:
                 config,
                 parsed.tree,
                 parsed.images,
+                manifest_fields=manifest_fields,
             )
+        elif normalized_patterns:
+            stripped_line_count = int(stored_parse.manifest["stripped_line_count"])
+
+        manifest_fields = (
+            {
+                "strip_lines": normalized_patterns,
+                "stripped_line_count": stripped_line_count,
+            }
+            if normalized_patterns
+            else None
+        )
 
         result = chunk_document(
             stored_parse.tree,
@@ -137,6 +194,7 @@ class IngestDocument:
             config,
             stored_parse.version,
             result,
+            manifest_fields=manifest_fields,
         )
         return IngestSummary(
             doc_id=doc_id,

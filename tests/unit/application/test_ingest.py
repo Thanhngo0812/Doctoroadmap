@@ -49,6 +49,13 @@ def test_frozen_parse_is_reused_but_new_chunk_config_gets_new_version(tmp_path: 
     assert first.artifact_path.joinpath("manifest.json").is_file()
     assert not tmp_path.joinpath("parse_tree", "book", "v1", "images").exists()
     chunk_config = store.load_latest_chunks("book").manifest["config"]["chunk"]
+    parse_manifest = store.load_parse("book", 1).manifest
+    chunk_manifest = store.load_latest_chunks("book").manifest
+    assert "strip_lines" not in parse_manifest
+    assert "stripped_line_count" not in parse_manifest
+    assert "strip_lines" not in parse_manifest["config"]["parser"]
+    assert "strip_lines" not in chunk_manifest
+    assert "stripped_line_count" not in chunk_manifest
     assert chunk_config["algorithm_id"] == CHUNK_ALGORITHM_ID
     assert chunk_config["max_table_tokens"] == 2048
     assert chunk_config["hard_cap_tokens"] == 6000
@@ -60,6 +67,73 @@ def test_frozen_parse_is_reused_but_new_chunk_config_gets_new_version(tmp_path: 
         and chunk["oversize_reason"] is None
         for chunk in payload
     )
+
+
+def test_strip_lines_before_chunking_and_record_both_manifests(tmp_path: Path) -> None:
+    parser = FakeParser()
+    store = JsonArtifactStore(tmp_path)
+    use_case = IngestDocument(parser, store, WordCounter(), splitter())
+
+    summary = use_case.execute(
+        b"Alpha MARKER   CODE Omega.\nMARKER\tCODE",
+        "book.pdf",
+        "book",
+        strip_lines=["MARKER CODE"],
+    )
+
+    parse = store.load_parse("book", summary.parse_version)
+    chunks = store.load_latest_chunks("book")
+    assert summary.parse_version == 1 and summary.chunk_version == 1
+    assert "MARKER" not in parse.tree.nodes[0].text
+    assert "Alpha" in parse.tree.nodes[0].text and "Omega" in parse.tree.nodes[0].text
+    assert all("MARKER" not in chunk.text for chunk in chunks.result.chunks)
+    for manifest in (parse.manifest, chunks.manifest):
+        assert manifest["strip_lines"] == ["MARKER CODE"]
+        assert manifest["stripped_line_count"] == 2
+
+
+def test_no_strip_lines_preserves_parse_text_exactly(tmp_path: Path) -> None:
+    store = JsonArtifactStore(tmp_path)
+    source = b"  keep original spacing  "
+
+    summary = IngestDocument(FakeParser(), store, WordCounter(), splitter()).execute(
+        source, "book.pdf", "book"
+    )
+
+    assert store.load_parse("book", summary.parse_version).tree.nodes[0].text == source.decode()
+
+
+def test_strip_lines_cleans_raw_text_without_double_counting(tmp_path: Path) -> None:
+    class RawParser(FakeParser):
+        def parse(self, source: bytes, filename: str) -> ParsedDocument:
+            parsed = super().parse(source, filename)
+            parsed.tree.nodes[0].raw_text = source.decode()
+            return parsed
+
+    store = JsonArtifactStore(tmp_path)
+    summary = IngestDocument(RawParser(), store, WordCounter(), splitter()).execute(
+        b"Alpha MARKER   CODE Omega.",
+        "book.pdf",
+        "book",
+        strip_lines=["MARKER CODE"],
+    )
+    parse = store.load_parse("book", summary.parse_version)
+
+    assert parse.tree.nodes[0].text == parse.tree.nodes[0].raw_text
+    assert parse.manifest["stripped_line_count"] == 1
+    assert store.load_latest_chunks("book").manifest["stripped_line_count"] == 1
+
+
+def test_strip_lines_counts_matched_lines_not_occurrences(tmp_path: Path) -> None:
+    store = JsonArtifactStore(tmp_path)
+    summary = IngestDocument(FakeParser(), store, WordCounter(), splitter()).execute(
+        b"Alpha MARKER CODE and MARKER CODE Omega.",
+        "book.pdf",
+        "book",
+        strip_lines=["MARKER CODE"],
+    )
+
+    assert store.load_parse("book", summary.parse_version).manifest["stripped_line_count"] == 1
 
 
 def test_new_source_hash_creates_new_parse_version(tmp_path: Path) -> None:

@@ -34,9 +34,11 @@ def test_inspect_shows_tree_empty_sections_and_direct_windows(tmp_path, monkeypa
 def test_ingest_prints_each_warning_and_parse_stats(tmp_path, monkeypatch, capsys) -> None:
     source = tmp_path / "book.pdf"
     source.write_bytes(b"pdf")
+    calls = []
 
     class UseCase:
         def execute(self, *args, **kwargs):
+            calls.append(kwargs)
             return SimpleNamespace(
                 doc_id="book",
                 section_count=2,
@@ -66,9 +68,10 @@ def test_ingest_prints_each_warning_and_parse_stats(tmp_path, monkeypatch, capsy
     )
     monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_ingest", lambda: (UseCase(), settings))
 
-    _ingest(source, "book")
+    _ingest(source, "book", strip_lines=["first", "second"])
 
     output = capsys.readouterr().out
+    assert calls[0]["strip_lines"] == ["first", "second"]
     assert "parse: giữ 3/5; bỏ: caption=1, formula=1" in output
     assert "stitch=0; sắp lại trang=0" in output
     assert "media: ảnh=2; chú thích=2 (lấy lại=1, mồ côi=1)" in output
@@ -79,6 +82,12 @@ def test_ingest_prints_each_warning_and_parse_stats(tmp_path, monkeypatch, capsy
 
 def test_parser_exposes_repeatable_a3_operations() -> None:
     parser = _parser()
+
+    ingest = parser.parse_args([
+        "ingest", "book.pdf", "--doc-id", "book",
+        "--strip-line", "first", "--strip-line", "second",
+    ])
+    assert ingest.strip_line == ["first", "second"]
 
     extract = parser.parse_args(
         ["extract", "--doc-id", "book", "--few-shot", "prompts/fine.txt"]
@@ -117,6 +126,7 @@ def test_parser_exposes_repeatable_a3_operations() -> None:
 
 def test_a4_new_document_requires_explicit_gold_exception(monkeypatch, capsys) -> None:
     calls = []
+    gold_calls = []
 
     class UseCase:
         def execute(self, doc_id, **kwargs):
@@ -128,10 +138,11 @@ def test_a4_new_document_requires_explicit_gold_exception(monkeypatch, capsys) -
 
     monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_artifact_store", lambda: object())
     monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_canonical", lambda: UseCase())
-    monkeypatch.setattr(
-        "doc2roadmap.presentation.cli.main.load_gold",
-        lambda *args, **kwargs: {"documents": {"old-book": {}}, "sheet_id": "frozen-sheet"},
-    )
+    def load_gold(*args, **kwargs):
+        gold_calls.append(kwargs)
+        return {"documents": {"old-book": {}}, "sheet_id": "frozen-sheet"}
+
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.load_gold", load_gold)
 
     base = ["a4", "--doc-id", "new-book", "--gold", "gold.json"]
     assert main(base) == 2
@@ -143,6 +154,7 @@ def test_a4_new_document_requires_explicit_gold_exception(monkeypatch, capsys) -
         "new-book",
         {"a4_gold_coverage": "none", "gold_sheet_id": "frozen-sheet"},
     )]
+    assert gold_calls == [{"require_complete": True}, {"require_complete": True}]
 
 
 def test_extract_cli_forwards_few_shot_override(monkeypatch) -> None:

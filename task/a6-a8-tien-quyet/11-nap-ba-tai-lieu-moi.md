@@ -5,11 +5,11 @@ nhánh chỉ mục vector, A4 và A5, để có bảng node canonical làm đầ
 
 Không sửa code ở vé này. Nếu phải sửa thì dừng và báo, vì đó là thay đổi hành vi của phase đã đóng.
 
-**Blocked by:** watermark của `doc-1` còn trong 114 chunk. F107–F109 đã xong ở Vé 17; chặn hiện tại là dữ liệu
-nhạy cảm sẽ đi vào prompt nếu tiếp tục A3.
+**Blocked by:** watermark của `doc-1` đã xử lý ở Vé 18; hiện còn kiểm chất lượng ngôn ngữ `doc-1` và mất khái niệm
+ký hiệu của `doc-2` trước khi dùng hai chương này làm vàng.
 
-**Status:** blocked khi chạy thật — `doc-3` đã đi hết A1–A5; `doc-1` ingest xong nhưng quét thấy watermark trong
-114/229 chunk nên đã dừng trước A3; chưa chạy `doc-2` (2026-09-20).
+**Status:** đang chạy tiếp ngày 2026-09-21 — `doc-3` xong A1–A5; `doc-1` đã sạch và chạy lại A3/chỉ mục, A4/A5
+đang kiểm; `doc-2` ingest/A3/chỉ mục xong nhưng không đưa vào A4/chương vàng khi ký hiệu 3C còn bị loại.
 
 > **Ba tài liệu đã có trong workspace, đã nằm trong `.gitignore`.** Soi trước khi nạp (2026-09-18):
 > - `doc-1.pdf` — *Bài giảng Đại số tuyến tính*, tiếng Việt, 159 trang, 208 nghìn ký tự, có `Chương` và ba cấp mục.
@@ -22,13 +22,13 @@ nhạy cảm sẽ đi vào prompt nếu tiếp tục A3.
 > Thứ tự chạy: `doc-3` → `doc-1` → `doc-2`, và chỉ chạy `doc-2` sau khi F101 và F102 đã xong, vì nó là tài liệu
 > chịu ảnh hưởng nặng nhất của hai lỗi đó.
 
-- [ ] Ba tài liệu ingest xong; dán cảnh báo parse của từng tài liệu vào vé.
+- [x] Ba tài liệu ingest xong; dán cảnh báo parse của từng tài liệu vào vé.
 - [ ] A3, chỉ mục vector, A4 và A5 chạy xong cho cả ba.
 - [ ] Dán bảng cỡ tài liệu vào vé: số trang, chunk, section, node, node `learnable`, media, cạnh đề xuất — dùng
       để chọn chương gán nhãn và để biết định tuyến sẽ chọn nhánh nào.
 - [ ] Dán số lời gọi, token và **chi phí cộng dồn** của cả ba tài liệu; so với trần 50 USD.
 - [ ] Chạy lại khi chặn mạng: `reused=true` cho cả ba.
-- [ ] Không có tài liệu gốc nào bị commit vào repo.
+- [x] Không có tài liệu gốc nào bị commit vào repo.
 - [x] **`doc-1`: kiểm và báo số chunk còn chứa watermark.** Dòng `lOMoARcPSD|…`, `Scan to open on Studeersnel` và
       dòng có email cá nhân xuất hiện ở **cả 159 trang**; parser đang bỏ được `page_footer` (chân trang của
       `xstk-ch3-1` không lọt vào chunk nào), nhưng watermark của Studocu có thể không được gắn nhãn như vậy. Nếu
@@ -107,3 +107,32 @@ lại 15 trang, 14 ảnh và 1 caption. Quét **trước A3** cho kết quả:
 
 Muốn mở lại vé phải có quyết định và ticket riêng để làm sạch watermark rồi ingest lại; không được lặng lẽ lọc
 ngay trong artifact đã sinh.
+
+## Lượt chạy tiếp sau Vé 18 — 2026-09-21 (chưa nghiệm thu Vé 11)
+
+Vé 18 đã làm sạch `doc-1` trước khi chia chunk: **229 → 218 chunk**, 118 section, 79 window. Ba mẫu và 140 dòng
+bị tác động nằm trong manifest parse/chunk v3; quét `node.text`, `node.raw_text` và JSON chunk/section/document không
+còn mã theo dõi, Studeersnel hoặc email. A3 v2 từ chunk v3: 153 ứng viên, 139 learnable, 14 media, 227 cạnh;
+246 lời gọi, 1.597.617 input + 72.100 output token, 0,50755425 USD. Chỉ mục v2 có 218 chunk. A4/A5 canonical
+v2 hoàn thành với 98 node (84 text, 14 media), 214 cạnh cuối; lượt mới dùng 54 lời gọi mô tả,
+70.709 input + 14.151 output token, 0,03890375 USD; các quyết định gộp/vá trúng cache. Chạy lại A4 trả
+`reused=true` ở v2. **Nhưng** luật A5 suy ra `document_language=en` cho giáo trình tiếng Việt vì chữ Docling
+bị lỗi mã; 51 mô tả bị viết lại theo luật này và 27 fallback. Artifact tồn tại để chẩn đoán, **không đạt chất
+lượng ngôn ngữ cho chương vàng `doc-1` Chương 5**. Parse còn 5.591 ký tự private-use, 15 trang đổi reading order,
+71 đoạn nối, 14 ảnh, 1 caption mồ côi và cảnh báo heading lặp; đã bỏ 3 document_index + 2 formula rỗng.
+
+`doc-2` (*Linear Algebra Done Right*, **en**) ingest v1: **404 trang, 557 section, 1.038 chunk, 521 window**;
+7.062/7.087 node được giữ, 66 ảnh, 61 trang sắp lại, 1 stitch; bỏ 18 caption và 6 document_index. A3 sau
+guard alias có bằng chứng (v2): **1.370 ứng viên, 1.298 learnable, 71 media, 606 cạnh**, 1.657 lời gọi,
+3.670.371 input + 308.164 output token, 1,37983875 USD, 40 section rỗng, 0 lỗi; chỉ mục v1 có 1.038 chunk.
+F111 ghi 47 lượt tên ký hiệu bị loại / 36 tên phân biệt; trong đó vẫn có `ℒ(V,W)`, `L(V,W)` và `𝐅^{m,n}`
+(các biến thể khoảng trắng cũng có). Guard có thể đổi tên khi mô hình trả alias chữ xác thực, cứu được 3 ứng viên,
+nhưng **không đủ cho mục 3C**. Heading `Exercises 3C` còn nằm dưới `3.56` trong cây parse, cần kiểm scope
+trước khi gán vàng. Dừng trước A4/A5 `doc-2`, không giả định khái niệm bị loại là noise.
+
+`doc-3` là tài liệu **en** và A5 đã qua bộ kiểm tiếng Anh 58/58 mô tả như lượt trước. Tổng USD của các lượt
+**thành công và có telemetry** tới đây: 0,27825275 (`doc-3`) + 0,50755425 × 2 (A3 `doc-1` trước/sau v3)
++ 0,1146865 + 0,03890375 (A4/A5 `doc-1`) + 1,378743 + 1,37983875 (A3 `doc-2` trước/sau guard)
+= **4,20553325 USD**, dưới trần 50 USD. Số này không gồm lượt A3 `doc-1` từng thất bại ở embedding
+và chi phí embedding chưa được telemetry định giá; không gọi nó là tổng hóa đơn. `doc-1` và `doc-2` còn thiếu
+nghiệm thu chất lượng/ngôn ngữ, nên các ô A1–A5, cache cả ba và bảng vàng vẫn để mở.

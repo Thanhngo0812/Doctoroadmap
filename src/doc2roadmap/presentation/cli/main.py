@@ -95,6 +95,12 @@ def _parser() -> argparse.ArgumentParser:
     ingest = commands.add_parser("ingest", help="parse và cắt một PDF/DOCX")
     ingest.add_argument("file", type=Path)
     ingest.add_argument("--doc-id", required=True)
+    ingest.add_argument(
+        "--strip-line",
+        action="append",
+        default=[],
+        help="bỏ mẫu văn bản trước khi cắt chunk; có thể lặp lại",
+    )
     inspect = commands.add_parser("inspect", help="xem cây section và window đã lưu")
     inspect.add_argument("--doc-id", required=True)
     extract = commands.add_parser("extract", help="trích ứng viên thực thể A3")
@@ -134,7 +140,7 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _ingest(path: Path, doc_id: str) -> None:
+def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None) -> None:
     if not path.is_file():
         raise FileNotFoundError(f"không đọc được file: {path}")
     use_case, settings = build_ingest()
@@ -147,6 +153,7 @@ def _ingest(path: Path, doc_id: str) -> None:
         hard_cap_tokens=settings.hard_cap_tokens,
         target_tokens=settings.target_tokens,
         sentence_overlap=settings.sentence_overlap,
+        strip_lines=strip_lines or [],
     )
     seen = " (đã ingest trước đó; tái dùng parse tree)" if summary.source_seen_before else ""
     print(
@@ -392,7 +399,7 @@ def main(argv: list[str] | None = None) -> int:
                    "redirect_count": len(second.payload["redirects"]),
                    "first_version": first.version, "second_version": second.version})
         elif args.command == "ingest":
-            _ingest(args.file, args.doc_id)
+            _ingest(args.file, args.doc_id, strip_lines=args.strip_line)
         elif args.command == "inspect":
             _inspect(args.doc_id)
         elif args.command == "extract":
