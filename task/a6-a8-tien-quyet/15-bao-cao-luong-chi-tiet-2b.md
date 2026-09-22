@@ -9,7 +9,9 @@ Khác vé 14: vé 14 là **báo cáo thực nghiệm** (E1–E8, số đo, kho�
 
 **Blocked by:** 13 (cần số của lượt chạy thật cuối). Viết nháp được ngay sau vé 11. (Việc của Claude.)
 
-**Status:** ready-for-agent
+**Status:** **nháp xong ngày 2026-09-22** — [`report/luong-chi-tiet-2b-tien-quyet.md`](../../report/luong-chi-tiet-2b-tien-quyet.md).
+Phủ hết tới A8 với số thật của bốn tài liệu phát triển. **Hai mục A9/A10 để trống có chủ đích**: vé 20 và 21 đang
+thay phần lớn hành vi của chúng. Bản cuối chờ vé 13 (số của lượt chạy thật) và vé 20/21 (hành vi mới).
 
 - [ ] Đi hết một ví dụ thật từ đầu tới cuối: một khái niệm đích, phiên nào chứa nó, prompt nhận gì, mô hình trả gì,
       executor xử ra sao, cạnh vào nhật ký nào, và cuối cùng nằm ở tầng nào của lộ trình.
