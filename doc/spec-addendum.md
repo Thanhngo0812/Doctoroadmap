@@ -510,7 +510,15 @@ Chỉ suy luận trên:
 LLM nhận tóm tắt 2 cluster + các boundary concept, output edge cùng schema trên. Edge sinh ra ở đây
 vẫn phải tuân I-G1 — chỉ `requires` giữa hai concept.
 
-### A9. Validate graph
+### A9. Kiểm tra tính nhất quán cấu trúc *(trước gọi là "Validate graph")*
+
+> **Đổi tên ngày 2026-09-22 (V10).** Trong văn liệu, "kiểm định quan hệ tiên quyết" nghĩa là kiểm định trên **biểu
+> hiện của học viên** — thứ dự án không có dữ liệu để làm. Cái A9 làm hẹp hơn hẳn: kiểm tính nhất quán **cấu trúc**
+> của đồ thị. Bài báo phải dùng đúng chữ này.
+>
+> **Ba luật dưới đây đã bị vá.** Luật 1 bị V6 thay ngưỡng và cách đếm; luật 2 và 3 **lỗi thời hoàn toàn** — xem ghi
+> chú ngay trong từng luật. Nguồn chân lý hiện hành: D11 của `A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md`
+> và `va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md`.
 
 > **Toàn bộ A9 chỉ đọc cạnh `requires`**, trên node `learnable = true` — xem §0.1. Đây không phải chi
 > tiết hình thức: đọc cả các kiểu cạnh khác gây hai lỗi câm mô tả ngay dưới. Vì là danh sách **cho
@@ -519,8 +527,18 @@ vẫn phải tuân I-G1 — chỉ `requires` giữa hai concept.
 
 Theo đúng thứ tự:
 
-1. **Quality gate** — **chỉ đếm cạnh `requires`, mẫu số là node `learnable = true`**: nếu số cạnh
-   `requires` < ~0.5 × số node học được, hoặc > 60% node học được bị cô lập (không cạnh `requires` nào) → tài liệu không có cấu trúc tiên quyết rõ (sổ tay, tài liệu quy trình). Chuyển sang **fallback**: lộ trình theo thứ tự chương gốc, mỗi stage = 1 nhóm section liền kề + cluster chủ đề; graph chỉ dùng để hiển thị liên quan, không dùng để khóa/mở. Pipeline nhảy thẳng tới A11.
+1. **Quality gate** — **chỉ đếm cạnh `requires`, mẫu số là node `learnable = true`**, và **chỉ đếm cạnh không mang
+   `redundant_via`** *(sửa 2026-09-22, V6: một cạnh suy ra được từ hai cạnh khác không thêm cấu trúc nào)*. Cổng
+   đóng → **fallback**: lộ trình theo thứ tự chương gốc; graph chỉ dùng để hiển thị liên quan, không dùng để
+   khoá/mở; pipeline nhảy thẳng tới A11. Cổng **luôn** ghi số đo ra manifest kể cả khi mở, và khi đóng thì sinh
+   **cảnh báo đọc được** chứ không im lặng đổi chế độ.
+
+   > **Hai hằng số 0,5 cạnh/node và 60% cô lập đã bị hạ xuống mức chỉ còn bắt lỗi pipeline chết (V6).** Lý do:
+   > dải mật độ của **mọi đồ thị tiên quyết hợp lệ đã công bố** trải từ 0,34 đến 5,89 cạnh/node và từ 1,1% đến
+   > 77,7% node cô lập — mạng tiên quyết môn học của Johns Hopkins kích hoạt **cả hai** cổng cũ. Không hằng số
+   > đơn nào phân tách "có cấu trúc" khỏi "không có cấu trúc" qua dải đó; hai đại lượng này đo **mức chi tiết của
+   > node và quy ước gán nhãn**, không đo chất lượng. Và **không tìm thấy nguồn nào** dùng ngưỡng mật độ để kích
+   > hoạt phương án dự phòng — đây là chỗ dự án phải tự đo.
 
    > **Vì sao phải giới hạn mẫu số:** media không bao giờ có cạnh `requires`, nên đưa chúng vào mẫu số
    > làm tỉ lệ tụt mà tử số không đổi, đồng thời chúng bị đếm là "node cô lập" **miễn phí**. Ví dụ: 200
@@ -529,13 +547,23 @@ Theo đúng thứ tự:
    > **không có gì báo lỗi**. Cùng lý do: chỉ đếm cạnh `requires`, vì đếm cả `example_of` hay
    > `relates_to` sẽ làm tử số phồng lên và cổng luôn mở dù DAG rỗng.
 
-2. **Remove cycle** — **chạy trên đồ thị con `requires`**: tìm chu trình (Tarjan SCC); trong mỗi chu trình cắt edge có `confidence` thấp nhất (heuristic minimum feedback arc set). Log lại edge bị cắt để human review.
+2. **Remove cycle** — ~~trong mỗi chu trình cắt edge có `confidence` thấp nhất~~ **LỖI THỜI, ĐỪNG THEO.**
+   Luật hiện hành là D11 của `A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md` và V3/V4 của
+   `va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md`: tách thành phần liên thông mạnh, đưa cặp hai chiều ra
+   thành cờ, rồi giải **minimum feedback arc set có trọng số** bằng liệt kê chu trình đơn + phủ tập hợp.
+   **`confidence` do mô hình tự khai không tham gia quyết định** — đo trên corpus nó chỉ nhận ba giá trị, và văn
+   liệu đo AUROC của nó ở mức xấp xỉ 0,5 *(xem `report/nghien-cuu-a9-a10-kiem-dinh-va-lo-trinh.md` mục 8)*.
 
    > **Vì sao phải lọc:** Tarjan không phân biệt kiểu cạnh nếu không ai bảo nó. Chạy trên đồ thị đầy
    > đủ thì `A requires B` + `B illustrated_by F` + `F illustrates A` thành **chu trình giả**, và bước
    > này sẽ đi cắt một cạnh `requires` **thật** để gỡ nó.
 
-3. **Transitive reduction** — **chạy trên đồ thị con `requires`**: xóa edge dư (đã có A→B→C thì bỏ A→C). NetworkX có sẵn `transitive_reduction`. Bước này làm layering đúng tầng hơn và graph UI sạch hơn đáng kể.
+3. **Transitive reduction** — ~~xóa edge dư~~ **LỖI THỜI, ĐỪNG THEO.** Luật hiện hành: cạnh bắc cầu **chỉ được
+   đánh dấu** `redundant_via`, **không bao giờ xoá** (D11 điểm 6, V5). Hai lý do: người duyệt gỡ một cạnh sai thì
+   cạnh trực tiếp đúng đã biến mất và không tự quay lại; và đo được rằng **một** cạnh sai làm mất cạnh đúng trong
+   **37,7%** số lần trên đồ thị mật độ tương đương, tệ nhất 25 cạnh. Thêm nữa, rút gọn bắc cầu **thiên lệch**: cạnh
+   nhiễu ít bị bắc cầu hàm ý hơn cạnh thật, nên xoá cạnh thừa sẽ ưu tiên xoá cạnh đúng và giữ lại cạnh nhiễu.
+   Và nó **không xác định** trên đồ thị còn chu trình, nên bắt buộc chạy sau bước 2.
 
    > **Vì sao phải lọc:** chạy trên đồ thị đầy đủ có thể xoá cạnh `illustrates` vì "đã có đường khác",
    > làm mất liên kết hình↔khái niệm mà pha B cần.
