@@ -1524,3 +1524,122 @@ cả ba là DAG, qua cổng, phủ đủ 58/225/438 node học được. Phát l
 chạy xong; **E1/E2 và các kết luận dựa trên vàng chưa thể chạy** vì hai người chưa nộp nhãn.
 Điều kiện tên `ℒ(V,W)`/`𝒫ₙ(𝐅)` đúng từng byte còn chờ chủ dự án quyết định có chấp nhận
 biến thể OCR tương đương nhưng giữ nguyên bằng chứng nguồn hay không.
+
+---
+
+# Vòng 38 — Kiểm thử vé 19, 20 (v9) và 21 · 2026-09-22
+
+Cây làm việc sạch, mọi thứ đã commit ở `7a88104`, nên kiểm thẳng trên repo.
+
+## Kết luận: **nhận cả ba vé.** Ba finding của vòng 37 đều đóng.
+
+| Vòng 37 | Đã sửa thế nào | Kiểm lại |
+|---|---|---|
+| **F117** ngân sách không chặn thời gian | thêm `work_budget=10000` **bên trong** bộ giải, ném `_CycleWorkLimit`, ghi `work_budget_exceeded` vào artifact | ✅ SCC 6 node / 409 chu trình: **14,72 s → 0,29 s**, tự gắn nhãn `approximate`, kết quả vẫn phi chu trình |
+| **F118** guard không có test, mất khi `-O` | `assert` → `if not _acyclic(...): raise ValueError(...)` | ✅ `raise` thật, không bị `-O` tước |
+| **F119** repo đỏ vì `heapq` | thêm `heapq` vào danh sách cho phép của tầng domain | ✅ quyết định tường minh, có trong `test_architecture.py` |
+
+**Suite: 466 xanh, 0 đỏ, chặn mạng.**
+
+## Vé 19 — điều kiện nhận V1 **đạt**
+
+`doc-2` A3 v9: tên ký hiệu bị loại giảm từ **47 lượt / 36 tên** xuống **22 lượt / 17 tên**. Và quan trọng hơn con số
+là danh tính: kiểm trực tiếp trong 1.394 ứng viên, **mọi khái niệm trung tâm của mục 3C đều có mặt** —
+`ℒ(V, W)`, `ℒ(𝑉, 𝑊)`, `ℒ (𝑉)`, `L(V, W)`, `𝐅^{m,n}`, `F^m,n`, `F^n`, `𝒫 (𝐅)`, `𝒫 𝑛 (𝐅)`, **`ℳ`**, `B(V, W)`,
+`S ⊗ T`, `V^m`, `𝐶[-𝜋 , 𝜋]`.
+
+17 tên còn bị loại: `i` `F` `R` `C` `V` `0` `{0}` (ký hiệu trơ) · `3.65` `3.68` `3.94` `6.49` `6.54` (số hiệu định
+lý) · `V(2)` `V(m)` `𝛼𝑇` (chủ dự án đã phán) · `𝐂 4` · **`𝐅 ∞`**.
+
+**Vé 19 — V2 cũng đạt.** `doc-1` mới qua toàn bộ A1–A5: `document_language = vi`, `language_decision = detected`,
+**231/231 mô tả có dấu tiếng Việt** (trước: 37/98), `a5_rewritten_language` từ 51 xuống **2**, `a5_fallback` từ 27
+xuống **1**. Mô tả đọc được: *"Tập hợp tất cả các tổ hợp tuyến tính của các véc tơ trong một tập hợp S."*
+
+## Vé 21 — A10 đạt **tối ưu lý thuyết trên cả bảy tài liệu**
+
+| tài liệu | node | tầng | tầng 1 | stage | stage 1 khái niệm | cỡ TB | cận dưới | đạt? |
+|---|---|---|---|---|---|---|---|---|
+| `baocao-canhan` | 36 | 5 | 7 | 5 | **0** | 7,2 | 5 | ✅ |
+| `naive-bayes` | 34 | 6 | 7 | 6 | **0** | 5,7 | 6 | ✅ |
+| `nhap-mon-ml` | 75 | 10 | 8 | 10 | **0** | 7,5 | 10 | ✅ |
+| `xstk-ch3-1` | 98 | 13 | 8 | **13** | **0** | 7,5 | 13 | ✅ |
+| `doc-1` | 225 | 29 | 8 | 29 | **0** | 7,8 | 29 | ✅ |
+| `doc-2` | 438 | 55 | 8 | 55 | **0** | 8,0 | 55 | ✅ |
+| `doc-3` | 58 | 8 | 8 | 8 | **0** | 7,2 | 8 | ✅ |
+
+`xstk-ch3-1` đi từ **63 stage / 39 stage đơn lẻ** xuống **13 stage / 0 stage đơn lẻ**, tức đúng bằng
+`max(xích dài nhất, ⌈n/8⌉)`. Không phải "nằm trong cận (2 − 2/W)" mà là **đạt cận dưới**. Và **0 cạnh tiên quyết
+nào nằm gọn trong một stage** ở cả bảy — bất biến mà chủ dự án chốt được giữ tuyệt đối.
+
+**Và bảy tài liệu giờ chạy trọn A1→A10.** Lần đầu tiên trong đợt. Chi phí cộng dồn **9,50 / 50 USD**.
+
+## Đột biến
+
+**Vé 20:** 11/12 bắt (vòng 37), và F118 giờ đã đóng nên phép lọt duy nhất ấy hết hiệu lực.
+
+**Vé 21:** tôi thử 8 phép, **3 bắt, 5 lọt**. Nhưng phải nói thẳng: **hai phép là tôi nhắm hỏng, một phép quá yếu.**
+
+- **A1** tôi sửa chuỗi `len(stages[layer]) < width` tưởng là ở bước xếp tầng, hoá ra nó nằm trong `_balance` dòng 58,
+  và ở đó nó **thừa** vì đã có guard `len(stages[new]) < len(stages[old])` ngay sau. Phép đột biến vô hiệu, không
+  phải lỗ hổng test.
+- **A6** hạ `stage_floor` từ 3 xuống 1: đầu ra **y hệt** trên `doc-1` (29 stage, cùng phân bố cỡ). Sàn chưa bao giờ
+  ràng buộc vì Coffman–Graham cộng bước cân bằng đã cho stage cỡ 5–8. Phép vô hiệu — nhưng nó phát hiện ra rằng
+  **sàn hiện là mã chết trên corpus này**, nên đừng ai tưởng nó đang làm việc.
+- **A5** đổi phá hoà từ số hậu duệ sang chỉ khoá stage: vẫn **không dùng thứ tự chương**, nên vẫn thoả yêu cầu của
+  Đ13. Phép yếu, không phải lỗ hổng.
+
+Còn lại **hai lỗ hổng thật**, và cả hai đúng loại mà `AGENTS.md` §5 vừa đặt tên.
+
+## F120 🟡 — bất biến trung tâm của A10 không có test nào làm nó đỏ
+
+`_order_stages` có `raise AssertionError("cạnh requires nằm trong cùng stage")`. Thay nó bằng `pass` thì
+**không test nào đỏ**.
+
+Đây không phải guard phụ: nó **chính là định nghĩa "stage" mà chủ dự án đã chốt** — nhóm học song song được. Toàn
+bộ lý do bác phương án D (τ 0,98 nhưng 34–64% cạnh nằm trong stage) nằm ở bất biến này. Mà hiện không có gì ngăn
+ai đó gỡ nó.
+
+`AGENTS.md` §5 nói đúng ca này: *"Exercise the branch that the guard claims to protect, not only the happy path"* và
+*"Trace every documented invariant to a named runnable assertion"*. Cách sửa rẻ: gọi thẳng `_order_stages` với một
+danh sách stage dựng tay có cạnh nội bộ, kỳ vọng nó ném.
+
+## F121 🟢 — kiểm đầu vào `stage_cap` không có test
+
+Vô hiệu hoá `if type(stage_cap) is not int or stage_cap < 1` thì không gì đỏ. Việc nhỏ, ghép cùng F120.
+
+## F122 🟡 — `𝐅 ∞` vẫn bị loại, và nó là khái niệm Axler định nghĩa hẳn
+
+`𝐅^∞` (không gian dãy vô hạn) được định nghĩa ở mục 1B của `doc-2`. Predicate `structured_symbol` trượt nó vì nhánh
+"hai phần" đòi **cả hai** phần là ký tự MATHEMATICAL, mà `∞` thì không — trong khi `𝐅 𝑛` và `𝐅 𝑆` qua được vì `𝑛`,
+`𝑆` là MATHEMATICAL. Nới nhánh ấy cho phần sau là MATHEMATICAL **hoặc** `∞` là đủ.
+
+Ghi kèm: **`𝐂 4` bị loại còn `P4(R)` và `𝒫 2(𝐑)` được giữ** — ba cái cùng dạng "đối số là con số cụ thể" nhưng ba
+kết quả khác nhau. Đây là **mâu thuẫn trong danh sách điều kiện nhận của tôi**, không phải lỗi của nhân viên: tôi
+xếp `P4(R)` vào vế giữ trong khi chủ dự án sau đó phán `V(2)` cùng dạng là loại. Cần một đường ranh, đề xuất:
+**giữ khi số mũ/đối số là ký hiệu (`n`, `m`, `S`, `∞`), loại khi là con số cụ thể.**
+
+## Một chỗ cần nói lại cho đúng
+
+Vé 20 ghi "gỡ chu trình bằng nghiệm **chính xác** ở mọi cỡ". Sau khi thêm `work_budget`, ranh giới thật là: nhánh
+chính xác chạy tới khoảng **80–90 chu trình đơn**, trên đó rơi sang xấp xỉ. Ví dụ đo được: SCC 7 node / 22 cạnh /
+79 chu trình → `exact`; 10 node / 27 cạnh / 99 chu trình → `approximate`.
+
+Đây **không phải lỗi** — artifact ghi trung thực `method` và `work_budget_exceeded`, và trên corpus thật SCC lớn
+nhất chỉ có 1 chu trình nên luôn `exact`. Nhưng câu chữ trong vé và trong báo cáo phải nói "chính xác trong ngân
+sách, xấp xỉ có ghi nhãn ngoài ngân sách", không nói "chính xác ở mọi cỡ".
+
+## Số đo quan trọng nhất của vòng này
+
+τ so thứ tự giáo trình, **sau khi Đ13 gỡ bỏ phá hoà theo thứ tự chương**:
+
+| `baocao-canhan` | `naive-bayes` | `nhap-mon-ml` | `xstk-ch3-1` | `doc-1` | `doc-2` | `doc-3` |
+|---|---|---|---|---|---|---|
+| 0,01 | **−0,09** | 0,17 | 0,18 | 0,09 | 0,12 | **−0,02** |
+
+Trước đây τ dao động 0,02–0,53, nhưng con số ấy **nhiễm đối chứng** vì thứ tự chương vừa dùng để phá hoà vừa dùng
+để chấm. Giờ đã sạch, và câu trả lời thật là: **thứ tự lộ trình gần như không tương quan với thứ tự giáo trình**,
+hai tài liệu còn âm nhẹ.
+
+Đây **không phải lỗi của vé 21** — vé 21 làm đúng thứ được giao, và chính việc sửa Đ13 mới làm con số trở nên
+trung thực. Nhưng nó đặt câu hỏi khoa học trung tâm của cả đợt lên bàn: **đồ thị sai, hay thứ tự sách không liên
+quan tới tiên quyết?** Chỉ bộ vàng trả lời được, và vé 22 là dụng cụ đo.
