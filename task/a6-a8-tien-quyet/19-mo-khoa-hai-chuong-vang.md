@@ -80,9 +80,38 @@ V1, V2, V11 (F115) · căn cứ ở [`report/nghien-cuu-a9-a10-kiem-dinh-va-lo-t
 **Chủ dự án chốt Chương 3 ngày 2026-09-22.** Nó là chương giữa thật, đủ dày để cho lượng khái niệm tương đương
 lượt thử nghiệm (26 khái niệm đích, 87 dòng phải phán), và mạch tiên quyết của nó rõ.
 
-**Vẫn phải dán số khái niệm đích thật vào vé** sau khi `doc-1` mới chạy xong A3–A5. Nếu Chương 3 cho **dưới 15
-hoặc trên 45** khái niệm đích thì ghép thêm hoặc bớt một mục liền kề, đúng cơ chế dải mục của vé 04 — không đổi
-chương, chỉ chỉnh phạm vi.
+**Số thật, đo sau khi `doc-1` mới chạy xong A3–A5 (2026-09-22):** Chương 3 nguyên vẹn cho **57 khái niệm đích** —
+vượt trần 45, nên phải chỉnh phạm vi như vé đã dự liệu. Chia theo mục con: 3.1 = 10 · 3.2 = 3 · 3.3 = 12 ·
+3.4 = 19 · 3.5 = 14.
+
+**Phạm vi đã chốt: dải mục `10-12` cấp 2, tức 3.1 → 3.3** (Khái niệm không gian véc tơ → Độc lập/Phụ thuộc tuyến
+tính → Cơ sở và số chiều). **26 khái niệm đích, 208 dòng quan hệ.** Lý do chọn dải này thay vì `10-13` (44 khái
+niệm, 360 dòng): bảng thử nghiệm `xstk-ch3-1` mà chủ dự án đã gán xong **cũng đúng 208 dòng**, nên đây là khối
+lượng đã được hiệu chuẩn bằng một lượt thật. Dải 10-13 nhiều hơn 73%.
+
+Đây cũng là mạch tiên quyết xương sống của chương, và tiên quyết của nó bắc ngược về Chương 1 (trường) và Chương 2
+(ma trận, hạng), nên bộ vàng có cạnh xuyên chương đúng như D13 muốn.
+
+**`doc-2` mục 3C = dải mục `98-115` cấp 2**, từ *Representing a Linear Map by a Matrix* tới *3.56 column-row
+factorization*; mục `#116` (3.59 invertible) đã là 3D. **23 khái niệm đích, 200 dòng quan hệ.**
+
+### Bốn bảng đã sinh (2026-09-22)
+
+| file trong `artifacts/a8-gold/` | người gán | dòng phải phán |
+|---|---|---|
+| `doc-1-chuong-10-12-A1.xlsx` | A1 | 208 |
+| `doc-1-chuong-10-12-A2.xlsx` | A2 | 208 |
+| `doc-2-chuong-98-115-A1.xlsx` | A1 | 200 |
+| `doc-2-chuong-98-115-A2.xlsx` | A2 | 200 |
+
+Kiểm: A1 và A2 của cùng chương có **cùng `concept_hash`** (mù đúng nghĩa, cùng phạm vi), cả bốn **0 ô đã điền**.
+Cột "Nơi dạy" lấy từ artifact stage `provenance` (`doc-1/v3`, `doc-2/v3`) đúng D13 và F105/F106 — kiểm chéo bằng
+cách sinh lại một bản và so từng ô: **0/438 khác nhau**.
+
+**Cặp `doc-1-chuong-10-13-*.xlsx` sinh lúc 19:02 đã bị thay thế** — bỏ qua, đừng gán vào đó.
+
+**Thiếu sót của công cụ, ghi để sửa sau:** trang `_meta` của bảng **không ghi phiên bản artifact graph** đã dùng cho
+cột "Nơi dạy", nên không tái lập được từ chính file. Thêm `graph_version` vào `_meta`.
 
 ## Ghi chú
 
