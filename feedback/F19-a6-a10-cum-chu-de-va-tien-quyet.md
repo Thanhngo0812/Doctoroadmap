@@ -1369,3 +1369,94 @@ Ba số đo quyết định hướng đi, tất cả lấy từ artifact thật:
 
 Và hai chỗ spec đang dẫn nguồn sai, phải viết lại: lý lẽ giữ chu trình hai cạnh (tác giả bộ dữ liệu viết ngược lại
 điều ta đang dẫn họ), và mọi viện dẫn tâm lý học cho con số 5–8 (chính tác giả của "7±2" gọi nó là trùng hợp tai hại).
+
+---
+
+# Vòng 37 — Kiểm thử vé 20 (A9 v2) · 2026-09-22
+
+Kiểm trên **bản chép** cây làm việc, vì nhân viên đang làm song song vé 19, 20 và 21 và chưa commit gì. Bản chép
+dùng `PYTHONPATH` trỏ vào `src` của nó nên không nạp nhầm mã thật.
+
+## Kết luận: **nhận vé 20**, kèm hai mục phải làm và một chỗ repo đang đỏ
+
+| Hạng mục | Cách kiểm | Kết quả |
+|---|---|---|
+| Bốn tài liệu, số khai trong vé | đọc thẳng artifact mới sinh | ✅ **khớp từng con số** |
+| Đồ thị sau A9 là DAG | tự chạy SCC trên `requires_edges` | ✅ SCC lớn nhất = 1 ở cả bốn |
+| `confidence` ra khỏi quyết định | đọc `cycle_keep_order` trong manifest | ✅ `['evidence_kind','provenance_order','independent_source_count']` |
+| Mã hoá trọng số theo bậc cơ số | đọc mã, kiểm bất đẳng thức | ✅ `evidence_base` lớn hơn **tổng** mọi số hạng bậc dưới trên toàn bộ cạnh |
+| Liệt kê chu trình đơn | đọc mã | ✅ dạng chuẩn tắc Johnson (chỉ đi tới node lớn hơn node gốc) → đầy đủ khi chưa bị chặn |
+| Phủ tập hợp | đọc mã | ✅ nhánh trên **một** chu trình chưa phủ → đúng là lời giải chính xác |
+| Cặp hai chiều | đọc mã + artifact | ✅ tìm **toàn cục** chứ không theo từng SCC, nên bắt được cả cặp nằm trong SCC lớn |
+| Đột biến | 12 phép, nhắm thẳng luật của vé | **11 bắt, 1 lọt** |
+| Suite | toàn bộ, chặn socket | 456 xanh · 1 đỏ thật (xem F119) · 1 đỏ do bản chép thiếu `.env.example` |
+
+Số khớp: `naive-bayes` 38/9/24 · `nhap-mon-ml` 84/11/8 · `baocao-canhan` 20/1/10 · `xstk-ch3-1` 180/51/19
+(cạnh / cạnh thừa / cờ duyệt).
+
+**Cặp hai chiều: 1 → 4 trên `baocao-canhan`.** Luật cũ chỉ bắt cặp khi SCC đúng hai node; luật mới tìm toàn cục nên
+ba cặp nữa lộ ra từ trong hai SCC lớn. Hệ quả: 29 cạnh thô → 20 cạnh (8 cạnh thành cờ, 1 cạnh gỡ `exact`). Cạnh bị
+gỡ là `trong_dinh_nghia / ngược / 0.8` — bị gỡ vì **ngược thứ tự trình bày**, không vì confidence thấp, đúng luật mới.
+
+## F117 🟠 — `cycle_budget = 1000` không chặn thời gian chạy
+
+Vé 20 sinh ra để sửa chuyện "vét cạn không mở rộng được". Tôi đo nhánh **chính xác** của bản mới trên đồ thị đầy đủ
+có hướng:
+
+| n | cạnh | chu trình đơn | thời gian |
+|---|---|---|---|
+| 3 | 6 | 5 | 0,00 s |
+| 4 | 12 | 20 | 0,00 s |
+| 5 | 20 | 84 | **0,04 s** |
+| 6 | 30 | 409 | **14,72 s** |
+
+Từ 84 lên 409 chu trình, thời gian tăng **370 lần**. Ngân sách đang đặt ở **1.000** — tức nó cho phép chạy xa hơn
+điểm đo 14,7 giây rất nhiều trước khi kịp bật. Ngân sách đếm **đúng đại lượng về khái niệm** (số chu trình, không
+phải số tập con cạnh) nhưng **sai đại lượng về chi phí**.
+
+Đáng chú ý: bản cũ chặn ở 16 cạnh nội bộ, tức tối đa `2¹⁶` tập con, đo được **217 ms** — tức **luật cũ chặn thời
+gian chạy tốt hơn luật mới**, dù nó chặn sai thứ về mặt khái niệm.
+
+Trên corpus hiện tại chuyện này chưa cắn: SCC lớn nhất có 3 cạnh nội bộ và 1 chu trình. Nhưng một SCC 6 node mà mọi
+cặp đòi nhau không phải điều không thể xảy ra từ A8.
+
+**Đề xuất:** giữ ngân sách theo số chu trình, **thêm một ngân sách công việc hoặc thời gian bên trong bộ giải phủ
+tập hợp**, và rơi về `approximate` khi chạm. Sửa nhỏ, và làm cho lời hứa "chính xác" thành lời hứa đúng.
+
+## F118 🟡 — guard phi chu trình không có test, và biến mất khi chạy `-O`
+
+`assert _acyclic(learnable, kept)` là bất biến mà **toàn bộ A10 dựa vào**. Nhưng:
+
+- Xoá nó đi **không test nào đỏ** (đột biến V8 và V13 đều lọt).
+- `assert` bị **tước bỏ hoàn toàn** khi chạy `python -O`. Một lượt chạy tối ưu hoá sẽ không có guard này.
+
+**Đề xuất:** đổi thành một phép kiểm thật có `raise`, và ghim bằng một test dựng đồ thị còn chu trình rồi kỳ vọng
+nó nổ. Rẻ, và nó là bất biến quan trọng nhất mà A9 giao cho A10.
+
+## F119 🔴 — repo đang đỏ, và không phải lỗi vé 20
+
+`tests/unit/test_architecture.py::test_domain_only_uses_stdlib_and_specified_graph_dependency` **đỏ trong repo
+thật**:
+
+```
+src\doc2roadmap\domain\roadmap.py: heapq
+assert 'heapq' in {'__future__', 'collections', 'dataclasses', 'hashlib', 'itertools', 'json', ...}
+```
+
+Đây là việc vé 21 đang làm dở: `domain/roadmap.py` vừa nhập `heapq`, mà tầng domain có danh sách cho phép và
+`heapq` không nằm trong đó. Cần **một quyết định tường minh** — thêm `heapq` vào danh sách cho phép vì nó là thư
+viện chuẩn thuần tuý, hoặc bỏ lời nhập — chứ không để test đỏ qua đêm. Ghi ở đây để vé 21 không quên.
+
+## Một chỗ cần theo dõi, chưa thành finding
+
+`baocao-canhan` mất 8 cạnh vào cờ hai chiều, nên mật độ cạnh không thừa tụt **0,64 → 0,528** và tỉ lệ node cô lập
+tăng **0,139 → 0,278**. Đúng ý thiết kế — những cặp ấy là nghi lỗi kiểu quan hệ. Nhưng đây là tài liệu gần cổng
+nhất, và nếu cờ hai chiều nhiều lên ở tài liệu khác thì cổng sẽ là chỗ đầu tiên kêu. Vé 22 nên đưa mật độ trước/sau
+khi tách cặp hai chiều vào bảng theo dõi.
+
+## Hai quyết định của chủ dự án, ghi ngày 2026-09-22
+
+- **Chương vàng của `doc-1`: Chương 3 — Không gian véc tơ** (tr. 44–74, 5 mục). Nếu chương cho dưới 15 hoặc trên 45
+  khái niệm đích thì chỉnh phạm vi bằng cơ chế dải mục của vé 04, không đổi chương.
+- **`V(2)`, `V(m)` và `𝛼𝑇` đều bị loại** — là thể hiện ký hiệu, không phải khái niệm được định nghĩa. Đã vào danh
+  sách "phải loại" của điều kiện nhận vé 19.

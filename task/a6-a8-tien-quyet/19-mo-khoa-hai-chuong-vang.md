@@ -37,7 +37,9 @@ V1, V2, V11 (F115) · căn cứ ở [`report/nghien-cuu-a9-a10-kiem-dinh-va-lo-t
 - [ ] Điều kiện nhận của V1, **đo trên `doc-2` thật**, không phải trên test tổng hợp:
       **phải có mặt** `ℒ(V,W)`, `𝐅^{m,n}`, `ℳ`, `𝒫ₙ(𝐅)`, `L(V, W)`, `B(V, W)`;
       **không được có mặt** `3.65`, `3.68`, `3.94`, `6.49`, `6.54`, `i`, `0`, `V`, `C`, `F`, `R`, `{0}`.
-- [ ] Hai ca phải tự phán và **nêu lựa chọn trong vé**: `V(2)` / `V(m)` và `𝛼𝑇`. Mặc định đề xuất là loại.
+- [x] ~~Hai ca phải tự phán~~ — **chủ dự án đã phán ngày 2026-09-22: `V(2)`, `V(m)` và `𝛼𝑇` đều bị LOẠI.** Chúng
+      là thể hiện ký hiệu, không phải khái niệm được định nghĩa. Ba tên này vào danh sách "phải loại" của điều
+      kiện nhận bên trên.
 - [ ] `ℳ` là ca khó nhất vì là ký tự đơn. Nếu predicate cú pháp không giữ được, được phép dùng **bằng chứng**
       (provenance ở chunk mang tín hiệu định nghĩa). Ghi rõ đã dùng cách nào.
 - [ ] **V2 — cổng chất lượng chữ ở ingest.** Manifest ghi số ký tự chữ cái, tỉ lệ ký tự có dấu, tỉ lệ PUA và tỉ lệ
@@ -63,7 +65,7 @@ V1, V2, V11 (F115) · căn cứ ở [`report/nghien-cuu-a9-a10-kiem-dinh-va-lo-t
       quên ghi cách quyết định vào manifest.
 - [ ] Toàn bộ suite xanh khi chặn mạng.
 
-## Chọn lại chương vàng cho `doc-1` (chờ chủ dự án chốt)
+## Chương vàng của `doc-1`: **Chương 3 — Không gian véc tơ** (chủ dự án chốt 2026-09-22)
 
 `doc-1` mới có **102 trang, 5 chương**:
 
@@ -75,12 +77,12 @@ V1, V2, V11 (F115) · căn cứ ở [`report/nghien-cuu-a9-a10-kiem-dinh-va-lo-t
 | 4 | Ánh xạ tuyến tính | 75–87 | 3 | **phương án hai** — ngắn hơn (13 trang) nhưng **trùng chủ đề với mục 3C của `doc-2`** (ánh xạ tuyến tính, ma trận của ánh xạ). Đối chiếu song ngữ trên cùng chủ đề là điểm hấp dẫn, nhưng cũng là một biến gây nhiễu khi so hai ngôn ngữ |
 | 5 | Trị riêng, véctơ riêng và dạng toàn phương | 88–102 | 2 (7 mục con) | chương **cuối**, không phải chương giữa như D13 yêu cầu |
 
-**Reviewer đề xuất Chương 3.** Nó là chương giữa thật, đủ dày để cho khoảng lượng khái niệm tương đương lượt thử
-nghiệm (26 khái niệm đích, 87 dòng phải phán), và mạch tiên quyết của nó rõ. Chương 4 là phương án hai nếu chủ dự
-án muốn đối chiếu song ngữ trên cùng chủ đề.
+**Chủ dự án chốt Chương 3 ngày 2026-09-22.** Nó là chương giữa thật, đủ dày để cho lượng khái niệm tương đương
+lượt thử nghiệm (26 khái niệm đích, 87 dòng phải phán), và mạch tiên quyết của nó rõ.
 
-**Số khái niệm đích thật chỉ biết được sau khi `doc-1` mới chạy xong A3–A5.** Vé này phải dán con số đó vào để chủ
-dự án chốt chương trước khi reviewer sinh bảng gán.
+**Vẫn phải dán số khái niệm đích thật vào vé** sau khi `doc-1` mới chạy xong A3–A5. Nếu Chương 3 cho **dưới 15
+hoặc trên 45** khái niệm đích thì ghép thêm hoặc bớt một mục liền kề, đúng cơ chế dải mục của vé 04 — không đổi
+chương, chỉ chỉnh phạm vi.
 
 ## Ghi chú
 
