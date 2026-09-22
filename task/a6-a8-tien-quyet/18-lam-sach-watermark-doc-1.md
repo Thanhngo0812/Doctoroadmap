@@ -5,7 +5,10 @@
 
 **Blocked by:** None. **Chặn:** vé 11 không chạy tiếp `doc-1` và `doc-2` cho tới khi vé này xong.
 
-**Status:** đã cài và kiểm sạch ingest ngày 2026-09-21; phần chạy tiếp vé 11 còn chặn chất lượng A3/A5 (xem dưới).
+**Status:** **nhận ngày 2026-09-22** (review vòng 36) — suite xanh khi chặn mạng; `doc-1` từ 159 lần `lOMoARcPSD`
+xuống 0, 229 → 218 chunk; tương thích ngược đúng vì `strip_lines` chỉ vào `parser_config` khi có mẫu; F111 và F112
+đóng. Hai chặn chất lượng A3/A5 nêu dưới đã thành **vé 19**; một thiếu sót nhỏ của bước bỏ dòng (F115, chỉ chạm
+`text`/`raw_text`) cũng ghép vào vé 19.
 **Chủ dự án chốt hướng (a) ngày 2026-09-20.**
 
 Hướng (a) đụng vào bước ingest của phase B0 đã đóng, nên đây là **ngoại lệ có chủ đích** như vé 17: chỉ thêm một

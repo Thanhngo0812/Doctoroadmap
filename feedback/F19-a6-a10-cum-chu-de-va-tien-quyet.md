@@ -1266,3 +1266,106 @@ tên**; `ℒ(V,W)`, `L(V,W)`, `𝐅^{m,n}` trong số đó. A3 có 1.370 ứng v
 `Exercises 3C` dưới `3.56`, nên cần kiểm scope chương. **Vấn đề mới về `doc-1`:** A5 phân loại `en` cho PDF
 tiếng Việt bị lỗi mã; 51 mô tả viết lại, 27 fallback. Artifact canonical hoàn thành về mặt kỹ thuật nhưng không
 đạt chất lượng ngôn ngữ để gán vàng. Vé 11 vẫn mở; cần ticket riêng cho hai vấn đề đầu vào/chất lượng này.
+
+---
+
+# Vòng 36 — Nghiên cứu A9/A10, kiểm thử vé 18, và đợt vá vé 19–22 · 2026-09-22
+
+Vòng này có ba phần: một đợt khảo sát văn liệu cho A9/A10, kiểm thử vé 18, và một spec vá cắt thành bốn vé.
+Toàn bộ căn cứ nằm ở [`report/nghien-cuu-a9-a10-kiem-dinh-va-lo-trinh.md`](../report/nghien-cuu-a9-a10-kiem-dinh-va-lo-trinh.md)
+cùng hai phụ lục văn liệu; spec ở
+[`doc/va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md`](../doc/va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md).
+
+## Kết luận vé 18: **nhận**
+
+| Hạng mục | Cách kiểm | Kết quả |
+|---|---|---|
+| Suite | toàn bộ, chặn socket, `HF_HUB_OFFLINE=1` | ✅ thoát mã 0 |
+| `doc-1` sạch watermark | đếm lại trên `chunks.json` cả ba phiên bản | ✅ v1 có **159** lần `lOMoARcPSD` và 2 lần `Studeersnel`; v2/v3 **0 và 0**; 229 → 218 chunk |
+| Tương thích ngược | đọc mã | ✅ `strip_lines` chỉ vào `parser_config` **khi có mẫu**, nên bốn tài liệu cũ giữ nguyên hash |
+| F111 | đọc artifact `doc-2` | ✅ `rejected_symbol_only_names` có 36 mục, trần 50 |
+| F112 | đọc test | ✅ ghim `require_complete=True` ở cả hai nhánh |
+
+**Nhân viên làm vượt vé, và báo cáo trung thực về chỗ nó không đủ.** Vé 18 chỉ yêu cầu *ghi* tên bị loại (F111).
+Họ cài luôn bản sửa F110 mà vòng 35 đề xuất — có alias chữ thì lấy alias làm tên, giữ ký hiệu làm alias — rồi **tự
+đo và nói thẳng rằng nó chỉ cứu được 3 ứng viên, không đủ cho mục 3C**. `algorithm_id` lên `a3-section-conversation-v6`.
+
+## F110 nay là số đo, không còn là cảnh báo
+
+Tôi đọc lại danh sách 36 tên bị loại trên `doc-2`. Guard đang làm lẫn hai việc:
+
+- **Loại đúng:** `i`, `0`, `{0}`, `V`, `C`, `F`, `R` — ký hiệu trơ. Và `3.65`, `3.68`, `3.94`, `6.49`, `6.54` —
+  **số hiệu định lý**.
+- **Loại sai:** `ℒ(V,W)`, `ℒ(𝑉, 𝑊)`, `L(V, W)`, `ℒ(𝑉)`, `𝐅^{m,n}`, `F^m,n`, `F^n`, `𝒫(𝐅)`, `𝒫ₙ(𝐅)`, `𝒫 2(𝐑)`,
+  `P4(R)`, `ℳ`, `B(V, W)`, `S ⊗ T`, `V^m`, `𝐶[-𝜋 , 𝜋]` — **đúng những đối tượng mà mục 3C nói về**.
+
+Luật `alias_kind` cho ra `symbol` khi không có từ nào dài hơn một ký tự chứa chữ Latin. `ℒ(V,W)` rơi vào đó vì
+`ℒ`, `V`, `W` đều dài một ký tự. → vé 19 V1.
+
+## F114 🔴 — A5 đoán sai ngôn ngữ của `doc-1`, và nó chặn chương vàng tiếng Việt
+
+Đây là phát hiện nặng nhất của vòng, do nhân viên nêu và tôi kiểm lại độc lập trên `artifacts/canonical/doc-1/v2`:
+
+- manifest: `document_language = 'en'`, `a5_rewritten_language = 51`, `a5_fallback = 27`
+- **81/98 tên node có dấu tiếng Việt** — nội dung đúng là tiếng Việt
+- **61/98 mô tả không có dấu tiếng Việt** — tức được viết bằng tiếng Anh
+
+Gốc: parse còn **5.591 ký tự vùng dùng riêng**, nên bộ đoán ngôn ngữ đọc chúng như chữ lạ. Hệ quả: `doc-1` Chương 5
+**không dùng làm chương vàng được** — người gán sẽ đọc mô tả tiếng Anh cho một giáo trình tiếng Việt. → vé 19 V2.
+
+## F113 🟢 — cờ rỗng lọt vào trang duyệt
+
+`nhap-mon-ml` có **hai cờ rỗng `{}`** trong `secondary_flags`. Chúng qua A9 thành `{"status": "unresolved"}` không
+`kind`, không `node_id`, không lý do, rồi vào `display_flags`. Không ai xử lý được, và chúng làm phồng
+`validation_flag_count`. Gốc: `domain/secondary.py:139` kiểm kiểu của **danh sách**, không kiểm **từng phần tử**.
+→ vé 20 V11.
+
+## F115 🟢 — bước bỏ watermark hứa nhiều hơn nó làm
+
+`strip_line_algorithm` tên là `normalized-substring-all-fields-v2`, nhưng `_strip_line_patterns` chỉ chạm
+`node.text` và `node.raw_text`. `DocumentNode` còn có `table_rows` và `context_prefix`. Với `doc-1` thì đủ (quét độc
+lập cho 0 kết quả), nhưng một watermark nằm trong ô bảng sẽ lọt im lặng. Hoặc phủ đủ, hoặc đổi tên. → vé 19 V11.
+
+## F116 🟡 — A3 trích số hiệu định lý làm tên khái niệm
+
+`3.65`, `3.68`, `3.94`, `6.49`, `6.54` xuất hiện trong danh sách tên bị loại của `doc-2`, tức A3 **đã** đề cử chúng
+làm khái niệm. Guard ký hiệu đang che việc đó. Khi vé 19 nới guard, chúng phải tiếp tục bị loại — nhưng nguyên nhân
+gốc nằm ở prompt/luật của A3, không ở guard. Ghi lại để đợt A3 sau xử lý; chưa cắt vé.
+
+## Một việc dở của tôi, đã xong trong vòng này
+
+Lệnh CLI `a8-gold-merge` (hội ý bộ vàng) **chưa từng được commit và không có test nào phủ**: commit `c8700bf` chỉ
+mang các hàm ở tầng use-case cùng test của chúng, còn phần nối vào CLI nằm lại trên máy tôi.
+
+*(Đính chính bản nháp đầu của mục này: tôi có viết "toàn bộ mặt CLI của nhóm `a8-gold` chưa có test nào" — sai.
+`a8-gold-sheet` và `a8-gold-check` **có** test CLI, nằm ở `tests/unit/application/test_a8_gold.py` chứ không ở
+`tests/unit/presentation/test_cli.py`, nên lượt grep đầu của tôi không thấy. Lỗ hổng thật chỉ gồm `a8-gold-merge`
+— nay đã vá — và **`a8-score` vẫn chưa có test CLI nào**.)*
+
+Đã thêm một test hành vi ghim bốn thứ: `--graph` phải đi tới scope dưới dạng provenance đã vá (D13, F105/F106);
+phải nhận **cả hai** người gán, vì rơi mất một người thì mọi cạnh lệch thành cạnh đồng thuận; có lỗi thì **không
+ghi** bộ vàng ra đĩa; và không ghi được ra ngoài `artifact_dir`. **4/4 đột biến bị bắt.**
+
+## Đợt vá: vé 19–22
+
+Chủ dự án chốt ba hướng ngày 2026-09-22: **(1)** sửa cả hai chặn, giữ nguyên hai chương vàng; **(2)** stage vẫn là
+**nhóm học song song được**, đổi thuật toán chứ không đổi định nghĩa; **(3)** chu trình hai cạnh được **gắn cờ nghi
+lỗi kiểu quan hệ và loại khỏi `requires`**.
+
+| Vé | Nội dung | Ai | Chặn bởi |
+|---|---|---|---|
+| **19** | Mở khoá hai chương vàng (V1 tên ký hiệu, V2 ngôn ngữ, F115) | nhân viên | — **đường găng của cả đợt** |
+| **20** | A9 v2: MFAS có trọng số giải chính xác, cặp hai chiều, thứ tự bước, cổng, F113 | nhân viên | — |
+| **21** | A10 v2: Coffman–Graham có trần độ rộng, bỏ phép giao cụm | nhân viên | vé 20 |
+| **22** | Hai chỉ số đánh giá lộ trình: τ so mục lục, tỉ lệ vi phạm cạnh vàng | Claude | vé 21 |
+
+Ba số đo quyết định hướng đi, tất cả lấy từ artifact thật:
+
+- `xstk-ch3-1`: 98 khái niệm → **63 stage, 39 stage một khái niệm**, trong khi cận dưới lý thuyết là **13**.
+  Bỏ phép giao cụm và thêm trần độ rộng cho **16 stage**, tầng 1 từ 12 xuống 8, **không mất bất biến nào**.
+- Lộ trình trùng thứ tự giáo trình ở **51,0%** số cặp trên `baocao-canhan` — không phân biệt được với tung đồng xu.
+- Trên bộ vàng hội ý: cạnh vàng cho τ **+0,803**, cạnh máy cho **+0,603**, và **11/62 cạnh vàng bị lộ trình máy xếp
+  ngược**.
+
+Và hai chỗ spec đang dẫn nguồn sai, phải viết lại: lý lẽ giữ chu trình hai cạnh (tác giả bộ dữ liệu viết ngược lại
+điều ta đang dẫn họ), và mọi viện dẫn tâm lý học cho con số 5–8 (chính tác giả của "7±2" gọi nó là trùng hợp tai hại).

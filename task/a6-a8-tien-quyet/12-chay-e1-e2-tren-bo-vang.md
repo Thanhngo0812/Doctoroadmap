@@ -11,15 +11,21 @@
 > chương giữa của `doc-2` (tiếng Anh). Bộ vàng song ngữ, nên **mọi bảng phải tách theo từng chương**, không gộp
 > hai ngôn ngữ thành một con số. Xem spec D13.
 >
-> **Danh sách rút gọn do reviewer đề xuất (2026-09-20, đo thẳng trên PDF vì vé 11 chưa chạy):**
+> **⚠️ Danh sách rút gọn cho `doc-1` đã hết hiệu lực ngày 2026-09-22.** Chủ dự án thay `doc-1` bằng một PDF khác
+> vì bản cũ hỏng lớp text (24 ký tự có dấu trên 42.087 ký tự chữ cái = 0,06%; `Tính chất` ra thành `T‰nh ch§t`).
+> Bản mới là **một cuốn khác** — *Bài giảng Đại số tuyến tính*, Đại học Hàng hải, **102 trang, 5 chương**, sạch
+> watermark, 25,46% ký tự có dấu. Mọi số trang và tên chương của `doc-1` ở bản trước đều không còn dùng được.
+> **Danh sách rút gọn mới nằm ở vé 19**, reviewer đề xuất **Chương 3 — Không gian véc tơ** (tr. 44–74, 5 mục).
 >
-> | | `doc-1` (tiếng Việt) | `doc-2` (Axler, tiếng Anh) |
-> |---|---|---|
-> | ⭐ đề xuất | **Chương 5 — Ánh xạ tuyến tính**, tr. 89–100 (12 tr, 10 "Định nghĩa") | **3C — Matrices**, tr. 83–96 (14 tr, 9 "definition") |
-> | B | Chương 4 — Không gian véc-tơ, tr. 60–88 (29 tr, 19) | 5A — Invariant Subspaces, tr. 147–156 (10 tr, 5) |
-> | C | Chương 3 — Hệ phương trình tuyến tính, tr. 43–59 (17 tr, 5) | 2A — Span and Linear Independence, tr. 43–52 (10 tr, 8) |
+> **Danh sách rút gọn cho `doc-2` vẫn giữ nguyên (2026-09-20, đo thẳng trên PDF):**
 >
-> Số khái niệm đích thật chỉ biết được sau vé 11 (`a8-gold-sheet --list-chapters`); nếu chương chọn ra dưới 15 hoặc
+> | | `doc-2` (Axler, tiếng Anh) |
+> |---|---|
+> | ⭐ đề xuất | **3C — Matrices**, tr. 83–96 (14 tr, 9 "definition") |
+> | B | 5A — Invariant Subspaces, tr. 147–156 (10 tr, 5) |
+> | C | 2A — Span and Linear Independence, tr. 43–52 (10 tr, 8) |
+>
+> Số khái niệm đích thật chỉ biết được sau vé 19 (`a8-gold-sheet --list-chapters`); nếu chương chọn ra dưới 15 hoặc
 > trên 45 khái niệm thì ghép thêm/bớt một mục liền kề, đúng cơ chế dải mục của vé 04.
 
 - [ ] Hai người gán đã nộp file, độ đồng thuận đã tính (có kể đồng thuận ngầm qua bắc cầu), và **đã hội ý** xong;

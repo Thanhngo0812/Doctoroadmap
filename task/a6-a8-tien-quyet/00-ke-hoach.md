@@ -22,8 +22,20 @@ kế A10 cần một đợt nghiên cứu riêng **sau** đợt này trước kh
 
 | Ai | Vé |
 |---|---|
-| Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11, 16, 17, **18** |
-| Claude | 04, 05, 12, 13, 14, 15 |
+| Nhân viên | 01, 02, 03, 06, 07, 08, 09, 10, 11, 16, 17, 18, **19, 20, 21** |
+| Claude | 04, 05, 12, 13, 14, 15, **22** |
+
+**Đợt vá A9–A10 (vé 19–22), cắt ngày 2026-09-22.** Nguồn chân lý:
+[`doc/va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md`](../../doc/va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md),
+căn cứ ở [`report/nghien-cuu-a9-a10-kiem-dinh-va-lo-trinh.md`](../../report/nghien-cuu-a9-a10-kiem-dinh-va-lo-trinh.md).
+Đây chính là đợt nghiên cứu riêng cho A10 mà chủ dự án đã hẹn khi chốt phạm vi ngày 2026-09-17. Ba quyết định của
+chủ dự án ngày 2026-09-22: **(1)** sửa cả hai chặn của chương vàng, giữ hai giáo trình `doc-1` và `doc-2` (mục 3C);
+**(2)** stage vẫn là **nhóm học song song được**, đổi thuật toán chứ không đổi định nghĩa; **(3)** chu trình hai
+cạnh được **gắn cờ nghi lỗi kiểu quan hệ và loại khỏi `requires`**, không giữ và cũng không gộp.
+
+**Cùng ngày, `doc-1` được thay bằng PDF khác.** Bản cũ hỏng lớp text (0,06% ký tự có dấu); bản mới là một cuốn
+khác — Đại học Hàng hải, 102 trang, 5 chương, 25,46% ký tự có dấu, 0 watermark. **Chương vàng của `doc-1` phải
+chọn lại**; reviewer đề xuất Chương 3 — Không gian véc tơ, chi tiết ở vé 19.
 
 **Vé 17 — xong ngày 2026-09-20:** chủ dự án cho phép sửa đúng ba điểm hẹp trong phase A3/A4. Bốn tài liệu cũ
 `reused=true`; mốc `31/0/16` trong bản giao việc là baseline v1 cũ, còn baseline có thẩm quyền trên `main` sau khi
@@ -39,15 +51,25 @@ Số đo thật, chi phí và danh sách mutation nằm trong feedback của t�
 
 ```text
 01 prefactor ─┐
-02 clusters ──┴─> 03 mentions ─> 16 provenance ─┬─> 06 pass chính ─> 07 pass phụ ─> 10 fixture ─┐
-                                               │              └──> 08 tầng 3 ─> 09 A10         │
-04 excel vàng ─────────────────┴─> 05 bộ chấm ─┐                               │
-17 ─> 18 làm sạch watermark ─> 11 nạp tài liệu mới ┴─> 12 chạy E1/E2 ──────────────┴─> 13 chạy 2b + E3/E4/E6 ─> 14 báo cáo
-                                                                                        └─> 15 báo cáo luồng 2b
+02 clusters ──┴─> 03 mentions ─> 16 provenance ─┬─> 06 pass chính ─> 07 pass phụ ─> 10 fixture
+                                                └─> 08 tầng 3 ─> 09 A10
+04 excel vàng ─> 05 bộ chấm
+
+17 ─> 18 watermark ─> 19 mở khoá chương vàng ─> 11 nạp tài liệu ─> 12 E1/E2 ─> 13 2b + E3/E4/E6 ─┬─> 14 báo cáo
+                                                                                                 └─> 15 luồng 2b
+20 A9 v2 ─> 21 A10 v2 ─> 22 chỉ số lộ trình ───────────────────────────────────────────────────────┘
 ```
 
-Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 17 đã xong. **Vé 18 là chặn duy nhất còn lại của máy**: chủ dự án
-chốt hướng (a) ngày 2026-09-20, ingest nhận mẫu dòng cần bỏ và mặc định giữ nguyên hành vi. Vé 04 nằm trên đường găng của người, vì việc gán nhãn tốn người chứ không tốn máy.
+Vé **01, 02 và 04 không chặn bởi gì cả**. Vé 17 và 18 đã xong.
+
+**Vé 19 là đường găng duy nhất của cả đợt.** Cả hai chương vàng đang bị chặn: `doc-2` mục 3C mất `ℒ(V,W)`,
+`𝐅^{m,n}`, `ℳ` vì guard tên ký hiệu (36 tên phân biệt bị loại), còn `doc-1` bị A5 đoán `document_language=en` nên
+61/98 mô tả viết bằng tiếng Anh cho một giáo trình tiếng Việt. Người gán nhãn không ngồi xuống được cho tới khi vé
+19 xong, và việc gán nhãn tốn người chứ không tốn máy.
+
+**Vé 20 và 21 chạy song song với 19** vì chúng đo trên artifact đã có. Nhưng 21 chặn bởi 20 (A10 chỉ đúng khi A9
+giao cho nó một DAG thật), và 22 chặn bởi 21 (đo τ trên lộ trình còn phá hoà theo thứ tự chương thì đối chứng đã
+nhiễm).
 
 ## Luật chung cho mọi vé
 
