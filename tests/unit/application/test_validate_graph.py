@@ -1,7 +1,9 @@
 import json
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from doc2roadmap.application.use_cases.validate_graph import ValidateGraph
+from doc2roadmap.domain.global_validation import validate_graph_rules
 
 
 class Store:
@@ -57,6 +59,7 @@ class Store:
         return None
 
     def save_graph(self, doc_id, source_hash, config_hash, config, payload, **kwargs):
+        self.manifest_fields = kwargs["manifest_fields"]
         self.saved = SimpleNamespace(
             payload=json.loads(json.dumps(payload)), version=5, path=None,
             manifest={"source_hash": source_hash, "config_hash": config_hash, "config": config, "upstream_version": kwargs["upstream_version"]},
@@ -74,6 +77,10 @@ def test_validate_stage_is_pure_cached_and_preserves_requires():
     assert first.payload["decision_log_version"] == store.edges.version
     assert first.payload["node_vectors_version"] == store.clusters.version
     assert first.payload["incremental_node_vectors"] == {}
+    assert first.payload["quality_gate"] == store.manifest_fields["quality_gate"]
+    assert store.manifest_fields["quality_gate"]["nonredundant_requires_edge_count"] == 1
+    assert store.manifest_fields["check_name"] == "structural_consistency_check"
+    assert first.payload["stats"]["remaining_scc_size_distribution"] == {"1": 2}
     second, reused = ValidateGraph(store).execute("doc")
     assert reused and second is first
 
@@ -87,3 +94,46 @@ def test_validate_rejects_incomplete_edge_artifact():
         assert "hoàn tất" in str(error)
     else:
         raise AssertionError("incomplete edges must be rejected")
+
+
+def test_closed_quality_gate_is_a_visible_review_flag():
+    store = Store()
+    store.edges.payload["main_edges"] = []
+    artifact, _ = ValidateGraph(store).execute("doc")
+    assert not artifact.payload["quality_gate"]["passed"]
+    assert any(
+        flag["kind"] == "structural_consistency_gate_closed" and flag["reason"]
+        for flag in artifact.payload["validation_flags"]
+    )
+
+
+def test_legacy_empty_secondary_flags_are_diagnosed_not_sent_to_review():
+    store = Store()
+    store.edges.payload["secondary_flags"] = [{}, {"kind": ""}]
+    artifact, _ = ValidateGraph(store).execute("doc")
+    assert artifact.payload["stats"]["invalid_upstream_flag_count"] == 2
+    assert all(flag.get("kind") for flag in artifact.payload["validation_flags"])
+    assert any(flag["kind"] == "invalid_upstream_flags" for flag in artifact.payload["validation_flags"])
+
+
+def test_new_node_cluster_assignment_happens_after_structural_check():
+    store = Store()
+    store.edges.payload["flags"] = [
+        {
+            "kind": "resolved_new_node",
+            "resolved_node": {"node_id": "c", "name": "C", "learnable": True},
+            "semantic_vector": [1.0, 0.0],
+        },
+        {
+            "kind": "resolved_new_node",
+            "resolved_node": {"node_id": "d", "name": "D", "learnable": True},
+            "semantic_vector": [0.0, 1.0],
+        },
+    ]
+    with patch("doc2roadmap.application.use_cases.validate_graph.validate_graph_rules", wraps=validate_graph_rules) as check:
+        artifact, _ = ValidateGraph(store).execute("doc")
+    checked = next(node for node in check.call_args.args[0] if node["node_id"] == "c")
+    assigned = next(node for node in artifact.payload["nodes"] if node["node_id"] == "c")
+    assert "cluster_id" not in checked
+    assert assigned["cluster_id"] == "g1"
+    assert next(node for node in artifact.payload["nodes"] if node["node_id"] == "d")["cluster_id"] == "g1"

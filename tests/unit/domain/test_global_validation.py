@@ -1,4 +1,7 @@
-from doc2roadmap.domain.global_validation import validate_graph_rules
+import pytest
+
+from doc2roadmap.domain import global_validation
+from doc2roadmap.domain.global_validation import strongly_connected_components, validate_graph_rules
 
 
 def node(node_id, *, learnable=True):
@@ -34,7 +37,7 @@ def test_cycle_cut_keeps_evidence_before_confidence_and_ignores_open_or_media_ed
     assert result["two_way_flags"] == []
 
 
-def test_two_edge_cycle_is_flagged_kept_and_does_not_fail_quality_gate():
+def test_two_edge_cycle_is_flagged_removed_and_does_not_count_toward_quality_gate():
     result = validate_graph_rules(
         [node("a"), node("b")],
         [
@@ -43,17 +46,19 @@ def test_two_edge_cycle_is_flagged_kept_and_does_not_fail_quality_gate():
         ],
         [],
     )
-    assert [(row["source"], row["target"]) for row in result["requires_edges"]] == [("a", "b"), ("b", "a")]
+    assert result["requires_edges"] == []
     assert result["removed_cycle_edges"] == []
     flag = result["two_way_flags"][0]
-    assert flag["kind"] == "two_way_requires"
+    assert flag["kind"] == "suspected_relation_type_error"
     assert flag["node_ids"] == ["a", "b"]
     assert [(row["source"], row["target"], row["evidence_kind"]) for row in flag["edges"]] == [
         ("a", "b", "noi_ro"),
         ("b", "a", "mach_trinh_bay"),
     ]
-    assert result["quality_gate"]["passed"] is True
-    assert result["quality_gate"]["fallback"] is None
+    assert flag["reason"]
+    assert result["quality_gate"]["nonredundant_requires_edge_count"] == 0
+    assert result["quality_gate"]["passed"] is False
+    assert result["quality_gate"]["warning"]
 
 
 def test_redundant_edge_is_marked_not_removed_and_gate_counts_only_requires_learnable():
@@ -71,10 +76,13 @@ def test_redundant_edge_is_marked_not_removed_and_gate_counts_only_requires_lear
     assert result["quality_gate"] == {
         "passed": True,
         "requires_edge_count": 3,
+        "nonredundant_requires_edge_count": 2,
         "learnable_node_count": 3,
         "isolated_learnable_count": 0,
         "isolated_ratio": 0.0,
+        "nonredundant_edges_per_learnable": 2 / 3,
         "fallback": None,
+        "warning": None,
     }
 
 
@@ -100,41 +108,65 @@ def test_open_edge_cycle_does_not_change_requires_dag():
     assert result["removed_cycle_edges"] == []
 
 
-def test_quality_gate_keeps_exact_half_threshold():
+def test_quality_gate_uses_pipeline_health_threshold():
     passing = validate_graph_rules(
-        [node(value) for value in "abcd"],
-        [edge("a", "b", "noi_ro", 0.9), edge("c", "d", "noi_ro", 0.9)],
+        [node(str(value)) for value in range(20)],
+        [edge("0", "1", "noi_ro", 0.9), edge("2", "3", "noi_ro", 0.9), edge("4", "5", "noi_ro", 0.9)],
         [],
     )
     failing = validate_graph_rules(
-        [node(value) for value in "abcde"],
-        [edge("a", "b", "noi_ro", 0.9), edge("c", "d", "noi_ro", 0.9)],
+        [node(str(value)) for value in range(21)],
+        [edge("0", "1", "noi_ro", 0.9), edge("2", "3", "noi_ro", 0.9), edge("4", "5", "noi_ro", 0.9)],
         [],
     )
     assert passing["quality_gate"]["passed"] is True
     assert failing["quality_gate"]["passed"] is False
+    assert failing["quality_gate"]["warning"]
 
 
-def test_large_strong_component_uses_bounded_cycle_heuristic():
+def test_cycle_count_budget_records_approximation_and_keeps_a_dag():
     nodes = [node(value) for value in "abcde"]
     requires = [
         edge(source, target, "noi_ro", 0.9)
-        for source in "abcde"
-        for target in "abcde"
-        if source != target
+        for index, source in enumerate("abcde")
+        for offset in (1, 2)
+        for target in ["abcde"[(index + offset) % 5]]
     ]
-    result = validate_graph_rules(nodes, requires, [])
-    assert result["cycle_resolution"] == [{
-        "node_ids": list("abcde"),
-        "internal_edge_count": 20,
-        "removed_edge_count": 10,
-        "method": "eades_priority",
-    }]
+    result = validate_graph_rules(nodes, requires, [], cycle_budget=2)
+    assert result["cycle_resolution"][0]["method"] == "approximate"
+    assert result["cycle_resolution"][0]["simple_cycle_count"] > 2
+    assert result["cycle_resolution"][0]["removed_weight"] > 0
     kept = {(row["source"], row["target"]) for row in result["requires_edges"]}
     assert not any((target, source) in kept for source, target in kept)
+    assert max(map(len, strongly_connected_components([row["node_id"] for row in nodes], result["requires_edges"]))) == 1
 
 
-def test_eades_prefers_strong_outgoing_evidence_and_selects_the_highest_score_node():
+def test_exact_cycle_cover_has_independent_work_budget():
+    vertices = "abcde"
+    internal = [
+        edge(source, target, "noi_ro", 0.9)
+        for source in vertices for target in vertices if source != target
+    ]
+    removed, method, cycle_count, _ = global_validation._feedback_edges(
+        list(vertices), internal, cycle_budget=1000, work_budget=1
+    )
+    kept = [row for row in internal if row not in removed]
+    assert method == "approximate" and cycle_count > 1
+    assert all(len(component) == 1 for component in strongly_connected_components(vertices, kept))
+
+
+def test_validate_dag_guard_is_a_real_error_even_if_solver_regresses(monkeypatch):
+    monkeypatch.setattr(global_validation, "_feedback_edges", lambda *args, **kwargs: ([], "exact", 1, 0))
+    with pytest.raises(ValueError, match="A9 cycle removal"):
+        validate_graph_rules(
+            [node(value) for value in "abc"],
+            [edge("a", "b", "noi_ro", 0.9), edge("b", "c", "noi_ro", 0.9),
+             edge("c", "a", "noi_ro", 0.9)],
+            [],
+        )
+
+
+def test_all_reciprocal_pairs_are_flagged_before_cycle_resolution():
     nodes = [node(value) for value in "abcde"]
     requires = [
         edge(
@@ -148,12 +180,12 @@ def test_eades_prefers_strong_outgoing_evidence_and_selects_the_highest_score_no
         if source != target
     ]
     result = validate_graph_rules(nodes, requires, [])
-    assert {(row["source"], row["target"]) for row in result["requires_edges"]} == {
-        (source, target) for source in "abcde" for target in "abcde" if source < target
-    }
+    assert result["requires_edges"] == []
+    assert len(result["two_way_flags"]) == 10
+    assert result["cycle_resolution"] == []
 
 
-def test_quality_gate_rejects_an_isolated_ratio_of_point_seven():
+def test_quality_gate_rejects_all_redundant_edges_despite_moderate_isolation():
     nodes = [node(str(index)) for index in range(10)]
     requires = [
         edge("0", "1", "noi_ro", 0.9),
@@ -165,4 +197,96 @@ def test_quality_gate_rejects_an_isolated_ratio_of_point_seven():
     result = validate_graph_rules(nodes, requires, [])
     assert result["quality_gate"]["requires_edge_count"] == 5
     assert result["quality_gate"]["isolated_ratio"] == 0.7
+    assert result["quality_gate"]["nonredundant_requires_edge_count"] == 0
     assert result["quality_gate"]["passed"] is False
+
+
+def test_weighted_feedback_removes_two_cheap_edges_instead_of_one_expensive_edge():
+    nodes = [node(value) for value in "abcd"]
+    requires = [
+        edge("a", "b", "noi_ro", 0.1),
+        edge("b", "c", "mach_trinh_bay", 0.99),
+        edge("c", "a", "mach_trinh_bay", 0.99),
+        edge("b", "d", "mach_trinh_bay", 0.99),
+        edge("d", "a", "mach_trinh_bay", 0.99),
+    ]
+    result = validate_graph_rules(nodes, requires, [])
+    assert len(result["removed_cycle_edges"]) == 2
+    assert ("a", "b") in {(row["source"], row["target"]) for row in result["requires_edges"]}
+    assert result["cycle_resolution"][0]["simple_cycle_count"] == 2
+    assert result["cycle_resolution"][0]["method"] == "exact"
+    assert result == validate_graph_rules(nodes, requires, [])
+
+
+def test_more_than_sixteen_edges_with_one_cycle_is_still_exact():
+    ids = [f"n{index:02}" for index in range(17)]
+    result = validate_graph_rules(
+        [node(value) for value in ids],
+        [edge(ids[index], ids[(index + 1) % len(ids)], "noi_ro", 0.9) for index in range(len(ids))],
+        [],
+    )
+    assert result["cycle_resolution"][0]["simple_cycle_count"] == 1
+    assert result["cycle_resolution"][0]["method"] == "exact"
+    assert len(result["removed_cycle_edges"]) == 1
+
+
+def test_confidence_does_not_break_equal_priority_cycle_tie():
+    nodes = [node(value) for value in "abc"]
+    requires = [
+        edge("a", "b", "noi_ro", 0.1),
+        edge("b", "c", "noi_ro", 0.9),
+        edge("c", "a", "noi_ro", 0.9),
+    ]
+    first = validate_graph_rules(nodes, requires, [])
+    second = validate_graph_rules(nodes, [{**row, "confidence": 1 - row["confidence"]} for row in requires], [])
+    assert [(row["source"], row["target"]) for row in first["removed_cycle_edges"]] == [
+        (row["source"], row["target"]) for row in second["removed_cycle_edges"]
+    ]
+
+
+def test_reciprocal_pair_inside_larger_component_is_removed_before_cycle_cut():
+    nodes = [node(value) for value in "abc"]
+    requires = [
+        edge("a", "b", "noi_ro", 0.9),
+        edge("b", "a", "noi_ro", 0.9),
+        edge("b", "c", "noi_ro", 0.9),
+        edge("c", "a", "noi_ro", 0.9),
+    ]
+    result = validate_graph_rules(nodes, requires, [])
+    assert len(result["two_way_flags"]) == 1
+    assert {(row["source"], row["target"]) for row in result["requires_edges"]} == {("b", "c"), ("c", "a")}
+    assert result["cycle_resolution"] == []
+
+
+def test_redundancy_is_marked_only_after_cycle_edge_is_removed():
+    nodes = [node(value) for value in "abcd"]
+    requires = [
+        edge("a", "b", "noi_ro", 0.9),
+        edge("a", "c", "noi_ro", 0.9),
+        edge("b", "c", "noi_ro", 0.9),
+        edge("c", "d", "noi_ro", 0.9),
+        edge("d", "b", "mach_trinh_bay", 0.7),
+    ]
+    result = validate_graph_rules(nodes, requires, [])
+    assert [(row["source"], row["target"]) for row in result["removed_cycle_edges"]] == [("d", "b")]
+    direct = next(row for row in result["requires_edges"] if (row["source"], row["target"]) == ("a", "b"))
+    assert "redundant_via" not in direct
+    assert len(result["requires_edges"]) == 4
+
+
+def test_gate_ignores_redundant_edges_even_if_raw_density_passes():
+    nodes = [node(str(value)) for value in range(30)]
+    requires = [
+        edge("0", "1", "noi_ro", 0.9),
+        edge("1", "2", "noi_ro", 0.9),
+        edge("0", "2", "noi_ro", 0.9),
+        edge("3", "4", "noi_ro", 0.9),
+        edge("4", "5", "noi_ro", 0.9),
+        edge("3", "5", "noi_ro", 0.9),
+    ]
+    gate = validate_graph_rules(nodes, requires, [])["quality_gate"]
+    assert gate["requires_edge_count"] == 6
+    assert gate["nonredundant_requires_edge_count"] == 4
+    assert gate["isolated_ratio"] == 0.8
+    assert gate["passed"] is False
+    assert gate["warning"]

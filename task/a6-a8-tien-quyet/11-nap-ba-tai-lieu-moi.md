@@ -8,8 +8,8 @@ Không sửa code ở vé này. Nếu phải sửa thì dừng và báo, vì đ�
 **Blocked by:** watermark của `doc-1` đã xử lý ở Vé 18; hiện còn kiểm chất lượng ngôn ngữ `doc-1` và mất khái niệm
 ký hiệu của `doc-2` trước khi dùng hai chương này làm vàng.
 
-**Status:** đang chạy tiếp ngày 2026-09-21 — `doc-3` xong A1–A5; `doc-1` đã sạch và chạy lại A3/chỉ mục, A4/A5
-đang kiểm; `doc-2` ingest/A3/chỉ mục xong nhưng không đưa vào A4/chương vàng khi ký hiệu 3C còn bị loại.
+**Status:** A1–A5 của cả ba tài liệu đã hoàn tất ngày 2026-09-22; A6–A10 đang chạy theo nhịp
+vé 19–21. Các đoạn bên dưới giữ lại lịch sử lỗi của PDF cũ, không phải trạng thái hiện hành.
 
 > **Ba tài liệu đã có trong workspace, đã nằm trong `.gitignore`.** Soi trước khi nạp (2026-09-18):
 > - `doc-1.pdf` — *Bài giảng Đại số tuyến tính*, tiếng Việt, 159 trang, 208 nghìn ký tự, có `Chương` và ba cấp mục.
@@ -23,17 +23,17 @@ ký hiệu của `doc-2` trước khi dùng hai chương này làm vàng.
 > chịu ảnh hưởng nặng nhất của hai lỗi đó.
 
 - [x] Ba tài liệu ingest xong; dán cảnh báo parse của từng tài liệu vào vé.
-- [ ] A3, chỉ mục vector, A4 và A5 chạy xong cho cả ba.
-- [ ] Dán bảng cỡ tài liệu vào vé: số trang, chunk, section, node, node `learnable`, media, cạnh đề xuất — dùng
+- [x] A3, chỉ mục vector, A4 và A5 chạy xong cho cả ba.
+- [x] Dán bảng cỡ tài liệu vào vé: số trang, chunk, section, node, node `learnable`, media, cạnh đề xuất — dùng
       để chọn chương gán nhãn và để biết định tuyến sẽ chọn nhánh nào.
-- [ ] Dán số lời gọi, token và **chi phí cộng dồn** của cả ba tài liệu; so với trần 50 USD.
-- [ ] Chạy lại khi chặn mạng: `reused=true` cho cả ba.
+- [x] Dán số lời gọi, token và **chi phí cộng dồn** của cả ba tài liệu; so với trần 50 USD.
+- [x] Chạy lại khi chặn mạng: `reused=true` cho cả ba.
 - [x] Không có tài liệu gốc nào bị commit vào repo.
 - [x] **`doc-1`: kiểm và báo số chunk còn chứa watermark.** Dòng `lOMoARcPSD|…`, `Scan to open on Studeersnel` và
       dòng có email cá nhân xuất hiện ở **cả 159 trang**; parser đang bỏ được `page_footer` (chân trang của
       `xstk-ch3-1` không lọt vào chunk nào), nhưng watermark của Studocu có thể không được gắn nhãn như vậy. Nếu
       còn sót thì **dừng và báo**: dữ liệu này sẽ đi thẳng vào prompt gửi Gemini và nằm lại trong artifact.
-- [ ] Ghi rõ ngôn ngữ từng tài liệu vào bảng cỡ; `doc-2` và `doc-3` là tiếng Anh, nên phải kiểm luật ngôn ngữ của
+- [x] Ghi rõ ngôn ngữ từng tài liệu vào bảng cỡ; `doc-2` và `doc-3` là tiếng Anh, nên phải kiểm luật ngôn ngữ của
       A5 (`token-majority-prose-vi20-v2`) có xử lý đúng không, và báo nếu mô tả sinh ra lẫn lộn hai thứ tiếng.
 
 ## Feedback bàn giao
@@ -136,3 +136,50 @@ trước khi gán vàng. Dừng trước A4/A5 `doc-2`, không giả định kh�
 = **4,20553325 USD**, dưới trần 50 USD. Số này không gồm lượt A3 `doc-1` từng thất bại ở embedding
 và chi phí embedding chưa được telemetry định giá; không gọi nó là tổng hóa đơn. `doc-1` và `doc-2` còn thiếu
 nghiệm thu chất lượng/ngôn ngữ, nên các ô A1–A5, cache cả ba và bảng vàng vẫn để mở.
+
+## Lượt nạp hợp lệ sau vé 19 — 2026-09-22
+
+Chủ dự án xác nhận thay `doc-1.pdf` bằng bản mới SHA-256
+`f55d6fde678bd441473327f430755e70ac87c498888e6712546dec6fea943ace`.
+Bản mới **102 trang**, không phải 159 trang của lịch sử trên; ingest không `--strip-line`, quét
+parse/chunk cho **0 watermark và 0 email**. Cổng chất lượng chữ không cảnh báo bản mới, nhưng
+cảnh báo đúng chunk v3 của bản cũ. Ngôn ngữ A5: `doc-3=en`, `doc-1=vi`, `doc-2=en`, đều
+`language_decision=detected`. Mô tả trong phạm vi vàng doc-1 qua bộ kiểm tiếng Việt **45/45**
+sau provenance; mô tả doc-2 không thấy câu tiếng Việt khi soát dấu (dấu Latin nằm trong tên
+riêng André/René).
+
+| Tài liệu | Trang | Section | Chunk | A3 ứng viên | Canonical node | Learnable | Media | Cạnh A4/A5 | Ngôn ngữ |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| `doc-3` | 110 | 93 | 94 | 198 | 154 | 58 | 96 | 129 | en |
+| `doc-1` mới | 102 | 99 | 199 | 339 | 231 | 225 | 6 | 245 | vi |
+| `doc-2` | 404 | 557 | 1.038 | 1.394 | 510 | 438 | 71 | 836 | en |
+
+| Tài liệu | A3 lời gọi | A3 input/output token | A3 USD | A4/A5 input/output token | A4/A5 USD | Cộng A3–A5 USD |
+|---|---:|---:|---:|---:|---:|---:|
+| `doc-3` | 256 | 671.846 / 47.240 | 0,2388215 | 57.327 / 16.733 | 0,03943125 | 0,27825275 |
+| `doc-1` mới | 258 | 752.507 / 66.250 | 0,28750175 | 354.435 / 77.743 | 0,20522325 | 0,492725 |
+| `doc-2` | 1.654 | 3.664.939 / 307.473 | 1,37744425 | 1.387.456 / 217.303 | 0,6728185 | 2,05026275 |
+
+**Cộng ba artifact A3–A5 đang dùng: 2,8212405 USD**, dưới trần 50 USD. Đây là tổng
+telemetry của phiên bản hiện hành, **không phải tổng hóa đơn**: không cộng lượt thử lỗi/phiên
+bản cũ, embedding và các bước A6–A8. A4/A5 chạy lặp `reused=true` ở cả ba; A3 `doc-1`
+v3 còn theo thuật toán v8, còn `doc-2` v5 theo v9, đúng ghi chú mixed-config ở vé 19.
+
+Sau A1–A5: cả ba đã qua A6–A10 theo đúng thứ tự cạnh A8 trước, A9/A10 sau.
+`doc-3` A9 DAG 58 node/41 cạnh, 8 stage; `doc-1` DAG 225 node/337 cạnh, 29 stage;
+`doc-2` DAG 438 node/864 cạnh, 55 stage. Cổng A9 của cả ba đều mở, SCC lớn nhất = 1,
+mọi node learnable nằm trong đúng một stage, không stage nào quá 8 node. `doc-2` A8
+hoàn tất 352 phiên chính/565 cặp phụ sau một lần tiếp tục từ checkpoint. Bảng vàng trống đã tạo:
+`doc-1` Chương 3 mục 3.1–3.4 có 45 đích sau provenance; `doc-2` mục 3C có 24 đích.
+Hai người gán chưa điền nhãn, nên E1/E2 và các vé phụ thuộc bộ vàng vẫn chờ con người.
+
+| Tài liệu | Provenance lời gọi / USD | A8 chính / phụ | A8 input/output token | A8 USD | Tổng A3–A8 của artifact hiện hành |
+|---|---:|---:|---:|---:|---:|
+| `doc-3` | 1 / 0,0003165 | 40 / 89 | 194.482 / 21.786 | 0,0812995 | 0,35986875 |
+| `doc-1` mới | 47 / 0,0417175 | 67 / 707 | 1.723.799 / 129.026 | 0,62448875 | 1,15893125 |
+| `doc-2` | 51 / 0,05083575 | 363 / 682 | 5.858.770 / 269.927 | 1,869583 | 3,9706815 |
+
+**Tổng ba artifact A3–A8 hiện hành: 5,4894815 USD** theo telemetry, vẫn dưới trần
+50 USD; không phải hoá đơn API lịch sử vì các phiên bản cũ, lần lỗi và embedding không nằm
+trong tổng này. A9/A10 không gọi mô hình. Phát lại cả ba lệnh `roadmap --stop-after stages`
+với `HTTP_PROXY`/`HTTPS_PROXY` trỏ `127.0.0.1:9` đều trả `reused=true` ở v7, không gọi API.

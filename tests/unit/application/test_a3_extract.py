@@ -331,7 +331,7 @@ def test_symbol_only_name_is_rejected_but_abbreviation_and_symbol_alias_survive(
     assert summary.result.stats["rejected_symbol_only_names"] == ["X"]
     assert JsonArtifactStore(tmp_path).load_latest_candidates("book").manifest["config"][
         "algorithm_id"
-    ] == "a3-section-conversation-v6"
+    ] == "a3-section-conversation-v9"
     expected = {
         "model_id": "gemini-3.1-flash-lite",
         "input_tokens": 30,
@@ -438,6 +438,77 @@ def test_symbol_name_uses_verified_lexical_alias_and_remains_an_edge_endpoint(
     assert summary.result.edges[0].source_candidate_id == entities["linear maps"].candidate_id
     assert summary.result.stats["rejected_symbol_only_name"] == 1
     assert summary.result.stats["rejected_symbol_only_names"] == ["X"]
+
+
+def test_structured_symbols_survive_but_theorem_numbers_and_bare_variables_do_not(tmp_path) -> None:
+    keep = [
+        "ℒ(V,W)", "ℒ(𝑉)", "L(V, W)", "𝐅^{m,n}", "F^m,n", "F^n",
+        "𝒫(𝐅)", "𝒫ₙ(𝐅)", "P4(R)", "B(V, W)", "S ⊗ T", "V^m", "ℳ",
+    ]
+    reject = ["3.65", "6.49", "i", "0", "V", "{0}", "V(2)", "V(m)", "𝛼𝑇"]
+    text = "3.31 definition: matrix of a linear map, ℳ(T). " + " · ".join(keep + reject)
+    entities = [
+        {"name": name, "node_type": "concept", "description_draft": "A concept.",
+         "evidence": "3.31 definition: matrix of a linear map, ℳ(T)" if name == "ℳ" else name,
+         "aliases": []}
+        for name in keep + reject
+    ]
+    extractor = _Extractor([[_reply(entities=entities), _reply(),
+                            {"remove_entity_ids": [], "remove_edge_ids": []}]])
+
+    result = ExtractEntities(
+        _stored_document(tmp_path, [_chunk(text)]), extractor, None,
+        generation={"temperature": 0},
+    ).execute("book", max_workers=1).result
+
+    names = {entity.name: entity for entity in result.entities}
+    assert set(keep) <= names.keys()
+    assert not set(reject) & names.keys()
+    assert all(names[name].name_kind == "symbol" for name in keep)
+    assert set(reject) <= set(result.stats["rejected_symbol_only_names"])
+
+
+def test_defined_script_symbol_can_use_earlier_chunk_in_same_section() -> None:
+    definition = _chunk(
+        "3.31 definition: matrix of a linear map, ℳ(T) is a matrix.",
+        chunk_id="definition",
+    )
+    mention = _chunk("The matrix ℳ(T) depends on the basis.", chunk_id="mention", char_start=600)
+    extractor = _Extractor([[
+        _reply(entities=[{
+            "name": "ℳ", "node_type": "concept", "description_draft": "Matrix notation.",
+            "evidence": mention.text, "aliases": [],
+        }]),
+        _reply(),
+        {"remove_entity_ids": [], "remove_edge_ids": []},
+    ]])
+
+    result = extract_section(
+        SectionContext("s1", "Matrices", [], [definition, mention], [], []), extractor
+    )
+
+    assert [(entity.name, entity.name_kind) for entity in result.entities] == [("ℳ", "symbol")]
+
+
+def test_defined_script_symbol_uses_document_definition_with_local_evidence() -> None:
+    definition = _chunk("3.31 definition: matrix of a linear map, ℳ(T).", chunk_id="definition")
+    mention = _chunk("Then ℳ is an isomorphism between two spaces.", chunk_id="mention")
+    extractor = _Extractor([[
+        _reply(entities=[{
+            "name": "ℳ", "node_type": "concept", "description_draft": "Matrix map.",
+            "evidence": mention.text, "aliases": [],
+        }]),
+        _reply(),
+        {"remove_entity_ids": [], "remove_edge_ids": []},
+    ]])
+
+    result = extract_section(
+        SectionContext("s2", "Isomorphism", [], [mention], [], [],
+                       definition_chunks=[definition]),
+        extractor,
+    )
+
+    assert [(entity.name, entity.name_kind) for entity in result.entities] == [("ℳ", "symbol")]
 
 
 def test_table_description_uses_existing_text_without_multimodal_input() -> None:

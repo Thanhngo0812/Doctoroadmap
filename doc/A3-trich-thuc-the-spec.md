@@ -82,8 +82,8 @@ Từ góc nhìn người dùng, sau đợt này:
     hai ngôn ngữ, để người đọc sách tiếng Việt không bị hiện thuật ngữ Anh trần trụi.
 18. Là **người dựng đồ thị**, tôi muốn alias chỉ được nhận khi có mặt trong văn bản, để không sinh viết
     tắt tự động đụng nghĩa với thứ khác.
-19. Là **người dựng lộ trình**, tôi muốn độ khó tính từ độ sâu trong DAG, để nó tất định và không trôi
-    khi đổi mô hình.
+19. Là **người dựng lộ trình**, tôi muốn gọi độ sâu trong DAG là **độ sâu tiên quyết**, không suy ra
+    độ khó nhận thức của người học từ đại lượng cấu trúc này.
 20. Là **người vận hành**, tôi muốn section trích ra rỗng có cảnh báo, để phân biệt mục thủ tục với lỗi
     prompt.
 21. Là **người vận hành**, tôi muốn pipeline dừng khi quá 40% section rỗng, để không chạy hết 116 section

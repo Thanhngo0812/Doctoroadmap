@@ -7,6 +7,7 @@ _DOMAIN_STDLIB = {
     "collections",
     "dataclasses",
     "hashlib",
+    "heapq",
     "json",
     "itertools",
     "math",

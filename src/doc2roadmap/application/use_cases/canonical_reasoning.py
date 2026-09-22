@@ -41,7 +41,8 @@ class CanonicalReasoning:
         return digest([self.prompts[stage], schema, model.model_id, self.generation,
                        [self.language_rule, "sentence-language-v2"] if stage in {"describe", "check"} else None])
 
-    def execute(self, initial_nodes, groups, chunks, nominations, previous_log, type_aliases):
+    def execute(self, initial_nodes, groups, chunks, nominations, previous_log, type_aliases,
+                declared_language=None):
         chunks_by_id = {c.chunk_id: c for c in chunks.chunks}
         group_map = {node["node_id"]: group for node, group in zip(initial_nodes, groups, strict=True) if not node["media_id"]}
         node_map = {n["node_id"]: n for n in initial_nodes}
@@ -171,7 +172,7 @@ class CanonicalReasoning:
         edges = list(edges.values())
         metrics["relation_edges"] = len(edges)
         metrics["relation_types"] = dict(sorted(Counter(edge["edge_type"] for edge in edges).items()))
-        language = document_language(chunks.chunks)
+        language = declared_language or document_language(chunks.chunks)
         def description_input(node, draft=False):
             source_chunks = sorted((chunks_by_id[c] for c in node["source_chunk_ids"]), key=lambda c: c.order_index)
             tokens = sum(c.token_count for c in source_chunks)
@@ -258,4 +259,7 @@ class CanonicalReasoning:
         metrics["deferred_pairs"] = len(deferred_pairs)
         metrics["merged_group_count"] = len(group_map) - len(components)
         logs.extend({"stage": "deferred_pair", **row} for row in deferred_pairs)
-        return nodes, edges, logs, review, sorted(deferred), deferred_pairs, {**metrics, "document_language": language}
+        return nodes, edges, logs, review, sorted(deferred), deferred_pairs, {
+            **metrics, "document_language": language,
+            "language_decision": "declared" if declared_language else "detected",
+        }

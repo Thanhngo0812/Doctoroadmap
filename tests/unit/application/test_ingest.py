@@ -6,6 +6,7 @@ import pytest
 
 from doc2roadmap.application.ports import ParsedDocument
 from doc2roadmap.application.use_cases import IngestDocument
+from doc2roadmap.application.use_cases.ingest_document import _text_quality
 from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, OVERSIZE_SENTENCE_BOUNDARY
 from doc2roadmap.domain.models import DocumentNode, DocumentTree
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
@@ -103,6 +104,28 @@ def test_no_strip_lines_preserves_parse_text_exactly(tmp_path: Path) -> None:
     assert store.load_parse("book", summary.parse_version).tree.nodes[0].text == source.decode()
 
 
+def test_text_quality_warns_for_damaged_vietnamese_but_not_clean_or_english(tmp_path: Path) -> None:
+    damaged = _text_quality(["a" * 42000 + "á" * 24 + "\ue000" * 60])
+    clean = _text_quality(["a" * 47000 + "á" * 16000 + "\ue000" * 44])
+    english = _text_quality(["a" * 42000])
+
+    assert damaged["readable_letter_count"] == 42024
+    assert damaged["accented_letter_ratio"] < 0.001
+    assert damaged["private_use_ratio"] > 0.001
+    assert len(damaged["warnings"]) == 1
+    assert "không đủ chất lượng làm nguồn bộ vàng" in damaged["warnings"][0]
+    assert clean["warnings"] == english["warnings"] == []
+    assert clean["accented_letter_ratio"] > 0.25
+    assert english["replacement_character_ratio"] == 0
+
+    store = JsonArtifactStore(tmp_path)
+    summary = IngestDocument(FakeParser(), store, WordCounter(), splitter()).execute(
+        ("a" * 42000 + "á" * 24 + "\ue000" * 60).encode(), "book.pdf", "book"
+    )
+    assert summary.quality_warnings == damaged["warnings"]
+    assert store.load_latest_chunks("book").manifest["text_quality"] == damaged
+
+
 def test_strip_lines_cleans_raw_text_without_double_counting(tmp_path: Path) -> None:
     class RawParser(FakeParser):
         def parse(self, source: bytes, filename: str) -> ParsedDocument:
@@ -134,6 +157,25 @@ def test_strip_lines_counts_matched_lines_not_occurrences(tmp_path: Path) -> Non
     )
 
     assert store.load_parse("book", summary.parse_version).manifest["stripped_line_count"] == 1
+
+
+def test_strip_lines_also_cleans_table_cells_and_context_prefix(tmp_path: Path) -> None:
+    class TableParser(FakeParser):
+        def parse(self, source: bytes, filename: str) -> ParsedDocument:
+            parsed = super().parse(source, filename)
+            parsed.tree.nodes[0].table_rows = [["label", "MARKER  CODE"]]
+            parsed.tree.nodes[0].context_prefix = "heading MARKER\tCODE"
+            return parsed
+
+    store = JsonArtifactStore(tmp_path)
+    summary = IngestDocument(TableParser(), store, WordCounter(), splitter()).execute(
+        b"ordinary text", "book.pdf", "book", strip_lines=["MARKER CODE"]
+    )
+    node = store.load_parse("book", summary.parse_version).tree.nodes[0]
+
+    assert node.table_rows == [["label", ""]]
+    assert node.context_prefix == "heading"
+    assert store.load_latest_chunks("book").manifest["stripped_line_count"] > 0
 
 
 def test_new_source_hash_creates_new_parse_version(tmp_path: Path) -> None:

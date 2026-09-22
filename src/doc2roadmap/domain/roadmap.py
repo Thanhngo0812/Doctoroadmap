@@ -1,83 +1,132 @@
 from __future__ import annotations
 
-from collections import defaultdict
+from collections import Counter, defaultdict
+from heapq import heappop, heappush
 
 from .canonical import digest
 from .global_validation import strongly_connected_components
 
 
-def _kahn(node_ids, edges):
-    indegree = {node_id: 0 for node_id in node_ids}
-    adjacency = defaultdict(list)
+def _coffman_graham(node_ids, edges, width):
+    parents = {node_id: set() for node_id in node_ids}
+    children = {node_id: set() for node_id in node_ids}
     for edge in edges:
-        if edge.get("edge_type") != "requires" or edge["source"] not in indegree or edge["target"] not in indegree:
-            continue
-        adjacency[edge["source"]].append(edge["target"])
-        indegree[edge["target"]] += 1
-    roots = sorted(node_id for node_id, value in indegree.items() if value == 0)
-    queue = roots
-    layers, visited = {node_id: 1 for node_id in roots}, 0
-    while queue:
-        node_id = queue.pop(0)
-        visited += 1
-        for target in sorted(adjacency[node_id]):
-            layers[target] = max(layers.get(target, 1), layers[node_id] + 1)
-            indegree[target] -= 1
-            if indegree[target] == 0:
-                queue.append(target)
-                queue.sort()
-    if visited != len(node_ids):
+        source, target = edge["source"], edge["target"]
+        parents[target].add(source)
+        children[source].add(target)
+
+    # Coffman–Graham: label sinks first by their decreasing successor-label vectors.
+    remaining = {node_id: len(children[node_id]) for node_id in node_ids}
+    ready = [((), node_id) for node_id in node_ids if not remaining[node_id]]
+    ready.sort()
+    labels = {}
+    while ready:
+        _, node_id = heappop(ready)
+        labels[node_id] = len(labels) + 1
+        for parent in parents[node_id]:
+            remaining[parent] -= 1
+            if not remaining[parent]:
+                heappush(ready, (tuple(sorted((labels[child] for child in children[parent]), reverse=True)), parent))
+    if len(labels) != len(node_ids):
         raise ValueError("đồ thị requires còn chu trình sau tầng validate")
-    return layers
+
+    stages = []
+    layer_of = {}
+    longest = {}
+    for node_id in sorted(node_ids, key=lambda value: -labels[value]):
+        earliest = max((layer_of[parent] + 1 for parent in parents[node_id]), default=0)
+        longest[node_id] = 1 + max((longest[parent] for parent in parents[node_id]), default=0)
+        layer = earliest
+        while layer < len(stages) and len(stages[layer]) >= width:
+            layer += 1
+        if layer == len(stages):
+            stages.append([])
+        stages[layer].append(node_id)
+        layer_of[node_id] = layer
+    return stages, parents, children, max(longest.values(), default=0)
 
 
-def _requires_components(node_ids, edges):
-    components = strongly_connected_components(node_ids, edges)
-    oversized = [component for component in components if len(component) > 2]
-    if oversized:
-        raise ValueError(f"tầng validate còn SCC requires lớn hơn hai node: {oversized[0]}")
-    return components
+def _balance(stages, parents, children, width):
+    layer_of = {node_id: layer for layer, members in enumerate(stages) for node_id in members}
+    # One adjacent move per node; both feasibility and population checks are O(V+E).
+    for node_id in sorted(layer_of):
+        old = layer_of[node_id]
+        if len(stages[old]) == 1:
+            continue
+        earliest = max((layer_of[parent] + 1 for parent in parents[node_id]), default=0)
+        latest = min((layer_of[child] - 1 for child in children[node_id]), default=len(stages) - 1)
+        choices = [layer for layer in (old - 1, old + 1) if earliest <= layer <= latest and len(stages[layer]) < width]
+        if choices:
+            new = min(choices, key=lambda layer: (len(stages[layer]), layer))
+            if len(stages[new]) < len(stages[old]):
+                stages[old].remove(node_id)
+                stages[new].append(node_id)
+                layer_of[node_id] = new
 
 
-def _contracted_layers(components, edges):
-    component_by_node = {
-        node_id: tuple(component)
-        for component in components
-        for node_id in component
-    }
-    contracted_edges = {
-        (component_by_node[edge["source"]], component_by_node[edge["target"]])
-        for edge in edges
-        if component_by_node[edge["source"]] != component_by_node[edge["target"]]
-    }
-    component_layers = _kahn(
-        set(component_by_node.values()),
-        [
-            {"source": source, "target": target, "edge_type": "requires"}
-            for source, target in sorted(contracted_edges)
-        ],
-    )
-    return {
-        node_id: component_layers[component]
-        for node_id, component in component_by_node.items()
-    }
+def _merge_small(stages, children, width, floor):
+    unmergeable = []
+    index = 0
+    while index < len(stages):
+        if len(stages[index]) >= floor:
+            index += 1
+            continue
+        choices = []
+        for neighbor in (index - 1, index + 1):
+            if not 0 <= neighbor < len(stages) or len(stages[index]) + len(stages[neighbor]) > width:
+                continue
+            left, right = set(stages[index]), set(stages[neighbor])
+            if any(child in right for node_id in left for child in children[node_id]):
+                continue
+            if any(child in left for node_id in right for child in children[node_id]):
+                continue
+            choices.append(neighbor)
+        if not choices:
+            unmergeable.append(sorted(stages[index]))
+            index += 1
+            continue
+        neighbor = min(choices, key=lambda value: (len(stages[value]), value))
+        stages[neighbor].extend(stages[index])
+        stages.pop(index)
+        if neighbor < index:
+            index = max(neighbor - 1, 0)
+    return unmergeable
 
 
-def _fallback_layers(components, node_by_id, stage_cap):
-    ordered = sorted(
-        components,
-        key=lambda component: min(
-            (node_by_id[node_id].get("first_order_index", 0), node_id)
-            for node_id in component
-        ),
-    )
-    layers, layer, count = {}, 1, 0
-    for component in ordered:
-        if count and count + len(component) > stage_cap:
-            layer, count = layer + 1, 0
-        layers.update({node_id: layer for node_id in component})
-        count += len(component)
-    return layers
+def _order_stages(stages, children):
+    stage_of = {node_id: index for index, members in enumerate(stages) for node_id in members}
+    keys = [digest(sorted(members)) for members in stages]
+    stage_children = [set() for _ in stages]
+    indegree = [0] * len(stages)
+    for node_id, targets in children.items():
+        source_stage = stage_of[node_id]
+        for target in targets:
+            target_stage = stage_of[target]
+            if target_stage == source_stage:
+                raise AssertionError("cạnh requires nằm trong cùng stage")
+            if target_stage not in stage_children[source_stage]:
+                stage_children[source_stage].add(target_stage)
+                indegree[target_stage] += 1
+    descendants = [set() for _ in stages]
+    for index in reversed(range(len(stages))):
+        for child in stage_children[index]:
+            descendants[index].add(child)
+            descendants[index].update(descendants[child])
+    ready = []
+    for index, count in enumerate(indegree):
+        if not count:
+            heappush(ready, (-len(descendants[index]), keys[index], index))
+    ordered = []
+    while ready:
+        _, _, index = heappop(ready)
+        ordered.append(stages[index])
+        for child in stage_children[index]:
+            indegree[child] -= 1
+            if not indegree[child]:
+                heappush(ready, (-len(descendants[child]), keys[child], child))
+    if len(ordered) != len(stages):
+        raise AssertionError("stage graph còn chu trình")
+    return ordered
 
 
 def build_roadmap(
@@ -89,22 +138,30 @@ def build_roadmap(
     *,
     stage_cap,
     quality_gate,
+    stage_floor=3,
 ):
-    if type(stage_cap) is not int or not 5 <= stage_cap <= 8:
-        raise ValueError("stage_cap phải nằm trong [5, 8]")
+    if type(stage_cap) is not int or stage_cap < 1:
+        raise ValueError("stage_cap phải là số nguyên dương")
+    if type(stage_floor) is not int or not 1 <= stage_floor <= stage_cap:
+        raise ValueError("stage_floor phải nằm trong [1, stage_cap]")
     learnable = [dict(node) for node in nodes if node.get("learnable")]
     node_by_id = {node["node_id"]: node for node in learnable}
     filtered_edges = [
         edge for edge in requires_edges
         if edge.get("edge_type") == "requires" and edge.get("source") in node_by_id and edge.get("target") in node_by_id
     ]
-    components = _requires_components(set(node_by_id), filtered_edges)
-    if quality_gate.get("passed", False):
-        layers = _contracted_layers(components, filtered_edges)
-        mode = "requires"
-    else:
-        layers = _fallback_layers(components, node_by_id, stage_cap)
-        mode = "document_order_fallback"
+    components = strongly_connected_components(set(node_by_id), filtered_edges)
+    cyclic = [component for component in components if len(component) > 1]
+    if cyclic:
+        raise ValueError(f"tầng validate còn SCC requires: {cyclic[0]}")
+    if any(edge["source"] == edge["target"] for edge in filtered_edges):
+        raise ValueError("tầng validate còn SCC requires tự nối")
+    stages, parents, children, longest_path = _coffman_graham(set(node_by_id), filtered_edges, stage_cap)
+    _balance(stages, parents, children, stage_cap)
+    unmergeable = _merge_small(stages, children, stage_cap, stage_floor)
+    if len(stages) < max(longest_path, (len(learnable) + stage_cap - 1) // stage_cap):
+        raise AssertionError("số stage nhỏ hơn cận dưới xếp tầng")
+    stages = _order_stages(stages, children)
 
     reviewed = defaultdict(list)
     for session in main_sessions:
@@ -120,40 +177,38 @@ def build_roadmap(
                     reviewed[node_id].append("secondary_" + pair_id)
     incoming = {edge["target"] for edge in filtered_edges}
     coverage_flags = []
-    for node in learnable:
-        node_id = node["node_id"]
-        sessions = sorted(set(reviewed[node_id]))
-        node["reviewed_session_ids"] = sessions
-        if not sessions:
-            node["coverage_status"] = "unreviewed"
-            coverage_flags.append({"kind": "unreviewed_learnable_node", "node_id": node_id})
-        elif node_id not in incoming:
-            node["coverage_status"] = "reviewed_no_prerequisite"
-        else:
-            node["coverage_status"] = "reviewed_with_prerequisite"
-        node["layer"] = layers[node_id]
-
-    grouped = defaultdict(list)
-    for node in learnable:
-        grouped[node["layer"], node["cluster_id"]].append(node)
-    stages = []
-    for (layer, cluster_id), members in sorted(grouped.items()):
-        members.sort(key=lambda node: (node.get("first_order_index", 0), node["node_id"]))
-        for part, start in enumerate(range(0, len(members), stage_cap)):
-            batch = members[start : start + stage_cap]
-            stage_id = "stage_" + digest([layer, cluster_id, part, [node["node_id"] for node in batch]])[:24]
-            stages.append({
-                "stage_id": stage_id,
-                "layer": layer,
-                "cluster_id": cluster_id,
-                "part": part,
-                "node_ids": [node["node_id"] for node in batch],
-                "first_order_index": min(node.get("first_order_index", 0) for node in batch),
-            })
-            for node in batch:
-                node["stage_id"] = stage_id
-    stages.sort(key=lambda row: (row["layer"], row["first_order_index"], row["cluster_id"], row["part"]))
-    stage_order = {stage["stage_id"]: index for index, stage in enumerate(stages)}
+    result_stages = []
+    for layer, members in enumerate(stages, 1):
+        members.sort(key=lambda node_id: (node_by_id[node_id].get("cluster_id", ""), node_id))
+        cluster_id = min(Counter(node_by_id[node_id].get("cluster_id", "") for node_id in members).items(), key=lambda item: (-item[1], item[0]))[0]
+        title = min(
+            (node_by_id[node_id].get("name", node_id) for node_id in members
+             if node_by_id[node_id].get("cluster_id", "") == cluster_id),
+            key=lambda name: (len(name.split()), len(name), name.casefold()),
+        )
+        stage_id = "stage_" + digest([layer, members])[:24]
+        result_stages.append({
+            "stage_id": stage_id,
+            "layer": layer,
+            "cluster_id": cluster_id,
+            "title": title,
+            "node_ids": members,
+            "first_order_index": min(node_by_id[node_id].get("first_order_index", 0) for node_id in members),
+        })
+        for node_id in members:
+            node = node_by_id[node_id]
+            sessions = sorted(set(reviewed[node_id]))
+            node["reviewed_session_ids"] = sessions
+            if not sessions:
+                node["coverage_status"] = "unreviewed"
+                coverage_flags.append({"kind": "unreviewed_learnable_node", "node_id": node_id})
+            elif node_id not in incoming:
+                node["coverage_status"] = "reviewed_no_prerequisite"
+            else:
+                node["coverage_status"] = "reviewed_with_prerequisite"
+            node["layer"] = layer
+            node["stage_id"] = stage_id
+    stage_order = {stage["stage_id"]: index for index, stage in enumerate(result_stages)}
     chunk_stages = defaultdict(set)
     for node in learnable:
         for chunk_id in node.get("defining_chunk_ids", []):
@@ -163,10 +218,12 @@ def build_roadmap(
         ordered = sorted(stage_ids, key=lambda stage_id: stage_order[stage_id])
         chunk_stage_map[chunk_id] = {"stage_id": ordered[0], "all_stage_ids": ordered}
     return {
-        "mode": mode,
+        "mode": "requires",
         "nodes": learnable,
-        "stages": stages,
+        "stages": result_stages,
         "chunk_stage_map": chunk_stage_map,
         "coverage_flags": coverage_flags,
-        "contracted_components": [component for component in components if len(component) == 2],
+        "contracted_components": [],
+        "unmergeable_small_stages": unmergeable,
+        "longest_path": longest_path,
     }

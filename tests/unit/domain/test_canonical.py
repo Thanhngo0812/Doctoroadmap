@@ -25,6 +25,16 @@ def test_name_and_alias_boundaries():
         assert alias_kind(name) == "name"
 
 
+def test_verified_structured_symbol_can_be_a_canonical_node():
+    symbol = entity("s", "ℒ(V,W)")
+    symbol.name_kind = "symbol"
+
+    nodes, _, _ = build_nodes([[symbol]], "ℒ(V,W)")
+
+    assert nodes[0]["name"] == "ℒ(V,W)"
+    assert nodes[0]["name_kind"] == "symbol"
+
+
 def test_quality_warnings_are_advisory_and_section_scoped():
     a, b = entity("a", "Học"), entity("b", "Spam Filtering")
     a.evidence = [EvidenceSpan("a", 0, 3, "hoc")]

@@ -32,9 +32,12 @@ def is_contradiction_error(error):
 def document_language(chunks):
     chunks = list(chunks)
     prose = [c for c in chunks if not set(getattr(c, "block_types", None) or ["text"]) <= NON_PROSE] or chunks
-    vi = sum(c.token_count for c in prose if vietnamese(c.text))
-    total = sum(c.token_count for c in prose)
-    return "vi" if vi * 2 >= total else "en"
+    letters = [char for chunk in prose for char in chunk.text
+               if char.isalpha() and unicodedata.category(char) not in {"Co", "Cn"}]
+    accented = sum(char in "ăâđêôơưĂÂĐÊÔƠƯ" or any(
+        mark in unicodedata.normalize("NFD", char) for mark in "\u0300\u0301\u0303\u0309\u0323"
+    ) for char in letters)
+    return "vi" if letters and accented / len(letters) >= .1 else "en"
 
 
 def validate_partition(value, source):

@@ -147,6 +147,7 @@ class BuildProvenance:
         old_first = {node["node_id"]: node.get("first_order_index") for node in nodes}
         for node in nodes:
             node["defining_chunk_ids_source"] = list(node.get("defining_chunk_ids", []))
+            node["defining_chunk_ids"] = list(node["defining_chunk_ids_source"])
         for node, value in zip(node_by_job, values, strict=True):
             if value is None:
                 provenance_log.append({

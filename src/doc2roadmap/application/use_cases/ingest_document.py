@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import re
+import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
@@ -28,6 +29,40 @@ def _hash(value: Any) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+def _text_quality(texts: list[str]) -> dict[str, Any]:
+    text = "".join(texts)
+    letters = [char for char in text if char.isalpha() and unicodedata.category(char) != "Co"]
+    accented = sum(
+        char in "ăâđêôơưĂÂĐÊÔƠƯ"
+        or any(mark in unicodedata.normalize("NFD", char) for mark in "\u0300\u0301\u0303\u0309\u0323")
+        for char in letters
+    )
+    private_use = sum(unicodedata.category(char) == "Co" for char in text)
+    replacement = text.count("\ufffd")
+    letter_count = len(letters)
+    accent_ratio = accented / letter_count if letter_count else 0.0
+    private_ratio = private_use / letter_count if letter_count else 0.0
+    replacement_ratio = replacement / len(text) if text else 0.0
+    warnings = []
+    if letter_count >= 1000 and accent_ratio < 0.01 and (
+        private_ratio >= 0.001 or replacement_ratio >= 0.001
+    ):
+        warnings.append(
+            "Lớp text có thể hỏng font: "
+            f"{letter_count} chữ cái đọc được, {accent_ratio:.2%} có dấu, "
+            f"{private_ratio:.2%} ký tự vùng dùng riêng, "
+            f"{replacement_ratio:.2%} ký tự thay thế; "
+            "không đủ chất lượng làm nguồn bộ vàng."
+        )
+    return {
+        "readable_letter_count": letter_count,
+        "accented_letter_ratio": accent_ratio,
+        "private_use_ratio": private_ratio,
+        "replacement_character_ratio": replacement_ratio,
+        "warnings": warnings,
+    }
+
+
 def _strip_line_patterns(tree: DocumentTree, patterns: list[str]) -> int:
     if not patterns:
         return 0
@@ -49,9 +84,23 @@ def _strip_line_patterns(tree: DocumentTree, patterns: list[str]) -> int:
             return "".join(lines).strip(), count
 
         node.text, count = clean(node.text)
-        removed += count
+        counts = [count]
         if node.raw_text is not None:
-            node.raw_text, _ = clean(node.raw_text)
+            node.raw_text, count = clean(node.raw_text)
+            counts.append(count)
+        if node.context_prefix is not None:
+            node.context_prefix, count = clean(node.context_prefix)
+            counts.append(count)
+        if node.table_rows is not None:
+            rows = []
+            table_count = 0
+            for row in node.table_rows:
+                cleaned = [clean(cell) for cell in row]
+                rows.append([value for value, _ in cleaned])
+                table_count += sum(count for _, count in cleaned)
+            node.table_rows = rows
+            counts.append(table_count)
+        removed += max(counts)
     return removed
 
 
@@ -63,6 +112,7 @@ class IngestSummary:
     window_count: int
     structure_warnings: list[str]
     parse_stats: dict[str, Any]
+    quality_warnings: list[str]
     source_seen_before: bool
     parse_version: int
     chunk_version: int
@@ -119,7 +169,7 @@ class IngestDocument:
         }
         if normalized_patterns:
             parser_config["strip_lines"] = normalized_patterns
-            parser_config["strip_line_algorithm"] = "normalized-substring-all-fields-v2"
+            parser_config["strip_line_algorithm"] = "normalized-substring-all-fields-v3"
         parser_config_hash = _hash(parser_config)
         config = {
             "parser": parser_config,
@@ -187,6 +237,8 @@ class IngestDocument:
             sentence_overlap=sentence_overlap,
         )
         windows = assemble_windows(result.chunks)
+        quality = _text_quality([chunk.text for chunk in result.chunks])
+        manifest_fields = {**(manifest_fields or {}), "text_quality": quality}
         stored_chunks = self.store.save_chunks(
             doc_id,
             source_hash,
@@ -203,6 +255,7 @@ class IngestDocument:
             window_count=len(windows),
             structure_warnings=result.structure_warnings,
             parse_stats=stored_parse.tree.parse_stats,
+            quality_warnings=quality["warnings"],
             source_seen_before=source_seen_before,
             parse_version=stored_parse.version,
             chunk_version=stored_chunks.version,

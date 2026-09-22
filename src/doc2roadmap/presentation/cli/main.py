@@ -28,7 +28,10 @@ from doc2roadmap.domain.canonical import compare_nodes
 from doc2roadmap.application.use_cases.a4_gold import gold_items, write_gold_sheet, load_gold, evaluate_canonical
 from doc2roadmap.application.use_cases import a8_score
 from doc2roadmap.application.use_cases.a8_gold import (
+    adjudication_rows,
     chapters_from_store,
+    read_adjudication_sheet,
+    write_adjudication_sheet,
     read_annotation_sheet,
     scope_from_store,
     write_annotation_sheet,
@@ -44,6 +47,7 @@ def _parser() -> argparse.ArgumentParser:
     mode.add_argument("--names-only", action="store_true", help="chỉ lớp tên, không mạng")
     mode.add_argument("--prepare", action="store_true", help="chỉ đề cử bằng embedding, chưa phán")
     canonical.add_argument("--gold", type=Path, help="bộ vàng đã gán mù, bắt buộc trước khi gọi LLM")
+    canonical.add_argument("--language", choices=("vi", "en"), help="khai ngôn ngữ tài liệu cho A5")
     canonical.add_argument(
         "--no-gold-for-doc",
         action="store_true",
@@ -78,6 +82,18 @@ def _parser() -> argparse.ArgumentParser:
     prereq_score.add_argument("--provenance", choices=("patched", "source"), default="patched",
                               help="chấm theo provenance đã vá, hoặc bản gốc A3/A4 để so trước sau")
     prereq_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
+    prereq_merge = commands.add_parser("a8-gold-merge",
+                                       help="hội ý hai bộ nhãn: sinh file quyết, hoặc đọc ngược thành bộ vàng")
+    prereq_merge.add_argument("--doc-id", required=True)
+    prereq_merge.add_argument("--chapter", required=True)
+    prereq_merge.add_argument("--chapter-level", type=int, default=1)
+    prereq_merge.add_argument("--canonical-version", type=int)
+    prereq_merge.add_argument("--graph", type=Path, help="đúng graph.json đã dùng lúc sinh file gán")
+    prereq_merge.add_argument("--gold", type=Path, action="append", required=True,
+                              help="hai JSON từ a8-gold-check, mỗi người một file")
+    prereq_merge.add_argument("--file", type=Path, help="file hội ý đã điền; không có thì sinh file mới")
+    prereq_merge.add_argument("--output", type=Path, help="nơi ghi file hội ý mới, hoặc bộ vàng cuối dạng JSON")
+    prereq_merge.add_argument("--force", action="store_true", help="ghi đè file hội ý đã có")
     prereq_check = commands.add_parser("a8-gold-check", help="đọc và kiểm file Excel tiên quyết đã gán")
     prereq_check.add_argument("--doc-id", required=True)
     prereq_check.add_argument("--chapter", required=True)
@@ -172,9 +188,10 @@ def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None) ->
             f"media: ảnh={stats.get('images_extracted', 0)}; chú thích="
             f"{captions['total']} (lấy lại={captions['recovered']}, mồ côi={captions['orphaned']})"
         )
-    if summary.structure_warnings:
+    warnings = [*summary.structure_warnings, *summary.quality_warnings]
+    if warnings:
         print("Cảnh báo:")
-        for warning in summary.structure_warnings:
+        for warning in warnings:
             print(f"- {warning}")
     else:
         print("Cảnh báo: không")
@@ -348,6 +365,31 @@ def main(argv: list[str] | None = None) -> int:
                 summary["output"] = str(output)
             _json(summary)
             return 1 if result["errors"] else 0
+        elif args.command == "a8-gold-merge":
+            store = build_artifact_store()
+            scope = scope_from_store(store, args.doc_id, chapter=args.chapter, chapter_level=args.chapter_level,
+                                     canonical_version=args.canonical_version,
+                                     graph_payload=_graph_payload(args.graph))
+            golds = [a8_score.load_gold(path) for path in args.gold]
+            if args.file is None:
+                data = adjudication_rows(scope, golds)
+                unit = "".join(ch if ch.isalnum() or ch == "-" else "_" for ch in args.chapter)
+                default = store.root / "a8-gold" / f"{args.doc_id}-chuong-{unit}-hoi-y.xlsx"
+                output = _inside_artifacts(store, args.output or default)
+                _json(write_adjudication_sheet(scope, data, output, overwrite=args.force))
+                return 0
+            result = read_adjudication_sheet(args.file, scope, golds)
+            summary = {key: result[key] for key in
+                       ("annotator", "agreed_count", "differing_count", "kept_count", "errors", "warnings")}
+            summary["edges"] = len(result["edges"])
+            if args.output and not result["errors"]:
+                output = _inside_artifacts(store, args.output)
+                output.parent.mkdir(parents=True, exist_ok=True)
+                output.write_text(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                                  encoding="utf-8")
+                summary["output"] = str(output)
+            _json(summary)
+            return 1 if result["errors"] else 0
         elif args.command == "a8-score":
             store = build_artifact_store()
             report = a8_score.score_from_store(store, args.doc_id, args.graph, args.gold,
@@ -387,6 +429,8 @@ def main(argv: list[str] | None = None) -> int:
                         "gold_sheet_id": gold["sheet_id"],
                     }
                 use_case = build_canonical()
+            if args.language:
+                execution_options["declared_language"] = args.language
             artifact, reused = use_case.execute(args.doc_id, **execution_options)
             _json({"path": str(artifact.path), "version": artifact.version, "reused": reused,
                    "stage": artifact.payload["stage"], "stats": artifact.payload["stats"],

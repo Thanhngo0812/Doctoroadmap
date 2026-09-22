@@ -129,9 +129,11 @@ def test_description_and_language_boundaries():
     chunks = [SimpleNamespace(text="học máy", token_count=100), SimpleNamespace(text="English text", token_count=99)]
     assert document_language(chunks) == "vi"
     chunks[1].token_count = 101
+    assert document_language(chunks) == "vi"
+    chunks[1].text = "English text and more English words across the page"
     assert document_language(chunks) == "en"
     chunks[1].token_count = 100
-    assert document_language(chunks) == "vi"
+    assert document_language(chunks) == "en"
 
 
 def test_description_rejects_multiple_sentences_per_citation():
@@ -229,6 +231,15 @@ def test_tables_and_code_do_not_decide_description_language():
                            token_count=200, block_types=["code"])
     assert document_language([prose, prose, table, code]) == "vi"
     assert document_language([table, code]) == "en"
+
+
+def test_language_uses_readable_letter_ratio_not_word_vote_or_private_use():
+    prose = SimpleNamespace(text="Hóa a a a a a " + "\ue000 " * 100,
+                            token_count=120, block_types=["text"])
+    english = SimpleNamespace(text="Learning requires practice.",
+                              token_count=3, block_types=["text"])
+    assert document_language([prose]) == "vi"
+    assert document_language([english]) == "en"
 
 
 def test_subtype_conflicting_with_a3_relation_is_found_in_either_direction():  # F75

@@ -196,5 +196,9 @@ def build_learning_graph():
             generation=generation,
         ),
         ValidateGraph(store),
-        BuildRoadmap(store, stage_cap=settings.roadmap_stage_cap),
+        BuildRoadmap(
+            store,
+            stage_cap=settings.roadmap_stage_cap,
+            stage_floor=settings.roadmap_stage_floor,
+        ),
     ), settings

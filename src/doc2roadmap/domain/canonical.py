@@ -41,8 +41,28 @@ def alias_kind(text: str) -> str:
     if len(text) > 1 and text.isalnum() and text.isupper() and any(c.isalpha() for c in text):
         return "abbreviation"
     words = re.findall(r"[^\W\d_]+", text)
-    lexical = [w for w in words if len(w) > 1 and any("LATIN" in unicodedata.name(c, "") for c in w)]
+    lexical = [w for w in words if len(w) > 1
+               and any("LATIN" in unicodedata.name(c, "") for c in w)
+               and not any("SUBSCRIPT" in unicodedata.name(c, "") for c in w)]
     return "name" if lexical else "symbol"
+
+
+def structured_symbol(text: str) -> bool:
+    text = " ".join(text.split())
+    if alias_kind(text) != "symbol" or not any(char.isupper() for char in text):
+        return False
+    if "⊗" in text or "^" in text or any("SUBSCRIPT" in unicodedata.name(char, "") for char in text):
+        return True
+    match = re.fullmatch(r"(.+?)\s*[\(\[]([^\)\]]+)[\)\]]", text)
+    if match:
+        head, arguments = match.groups()
+        return ("," in arguments or any(char.isdigit() for char in head)
+                or any("SCRIPT CAPITAL" in unicodedata.name(char, "") for char in head))
+    parts = text.split()
+    return len(parts) == 2 and all(
+        any("MATHEMATICAL" in unicodedata.name(char, "") for char in part)
+        for part in parts
+    )
 
 
 def evidence_missing_name(entity: EntityCandidate) -> bool:
@@ -118,7 +138,9 @@ def build_nodes(groups, document_text: str, type_aliases=None):
         node_id = anchor.candidate_id if anchor.is_media else "node_" + digest([anchor.doc_id, anchor.candidate_id])[:24]
         choices = [e for e in members if name_tier(e.name) < 3]
         if not choices and not anchor.is_media:
-            raise ValueError(f"node chỉ có tên ký hiệu: {anchor.candidate_id}")
+            choices = [e for e in members if e.name_kind == "symbol"]
+            if not choices:
+                raise ValueError(f"node chỉ có tên ký hiệu: {anchor.candidate_id}")
         if anchor.is_media:
             chosen = anchor
         else:
@@ -160,6 +182,7 @@ def build_nodes(groups, document_text: str, type_aliases=None):
                     collection.append(entry)
         nodes.append({"node_id": node_id, "anchor_candidate_id": anchor.candidate_id,
                       "name": chosen.name, "node_type": kind, "learnable": learnable,
+                      "name_kind": chosen.name_kind or alias_kind(chosen.name),
                       "members": [e.candidate_id for e in members], "aliases": aliases, "symbols": symbols,
                       "source_chunk_ids": sorted({c for e in members for c in e.source_chunk_ids}),
                       "evidence": [asdict(span) for e in members for span in e.evidence],

@@ -23,7 +23,12 @@ class Canonicalize:
         if reasoning and embedding is None:
             raise ValueError("A4 đầy đủ cần embedding tên")
 
-    def execute(self, doc_id, *, a4_gold_coverage=None, gold_sheet_id=None):
+    def execute(self, doc_id, *, a4_gold_coverage=None, gold_sheet_id=None,
+                declared_language=None):
+        if declared_language not in {None, "vi", "en"}:
+            raise ValueError("ngôn ngữ khai báo phải là vi hoặc en")
+        if declared_language and not self.reasoning:
+            raise ValueError("chỉ khai ngôn ngữ khi chạy A4/A5 đầy đủ")
         source = self.store.load_latest_candidates(doc_id)
         chunks = self.store.load_chunks(doc_id, source.manifest["upstream_version"])
         extraction = DocumentExtraction.from_payload(source.payload)
@@ -38,6 +43,8 @@ class Canonicalize:
                   "subtype_rule": "a3-conflict-log-v1",
                   "relation_rule": "open-v1",
                   "stage": "complete" if self.reasoning else "nominations" if self.embedding else "names"}
+        if declared_language:
+            config["declared_language"] = declared_language
         config_hash = digest(config)
         cached = self.store.find_canonical(doc_id, source.manifest["source_hash"], config_hash)
         if cached:
@@ -69,7 +76,8 @@ class Canonicalize:
             previous_log = [dict(row, origin_version=row.get("origin_version", previous.version))
                             for row in previous.payload["decision_log"]] if previous else []
             nodes, extra_edges, decisions, additional_review, deferred, deferred_pairs, reasoning_metrics = self.reasoning.execute(
-                nodes, groups, chunks.result, nominations, previous_log, aliases)
+                nodes, groups, chunks.result, nominations, previous_log, aliases,
+                declared_language=declared_language)
             log.extend(decisions)
             review.extend(additional_review)
         edges, edge_metrics = remap_edges(nodes, extraction.edges)
@@ -150,6 +158,9 @@ class Canonicalize:
             "jaccard_previous": compare_nodes(old, nodes) if previous else None,
             "cost_summary": cost_summary,
         }
+        if self.reasoning:
+            manifest_fields["document_language"] = reasoning_metrics["document_language"]
+            manifest_fields["language_decision"] = reasoning_metrics["language_decision"]
         if a4_gold_coverage is not None:
             manifest_fields["a4_gold_coverage"] = a4_gold_coverage
             manifest_fields["gold_sheet_id"] = gold_sheet_id

@@ -72,8 +72,8 @@ hình chỉ xuất hiện ở hai loại lượt:
   cặp nghi tiên quyết nằm vắt ngang trục của pass chính.
 - **A9 — tầng 3.** Chu trình giải theo thành phần liên thông mạnh, không theo "cạnh nào đến trước thì thắng".
   Cạnh thừa chỉ được **đánh dấu**, không xoá.
-- **A10 — lộ trình.** Xếp tầng Kahn trên đúng cạnh `requires` của node `learnable`, stage là giao của tầng với
-  cụm chủ đề.
+- **A10 — lộ trình.** Xếp tầng có trần độ rộng trên đúng cạnh `requires` của node `learnable`; mỗi stage là
+  một tầng, còn cụm chủ đề chỉ hỗ trợ sắp thứ tự bên trong. Xem bản sửa [V7–V8](va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md).
 
 Song song với sản phẩm là phần đo, vì đầu ra của đợt này còn là một **báo cáo thực nghiệm**:
 
@@ -437,12 +437,10 @@ Theo thứ tự:
 
 ### D12 — A10 và trang xem *(Q6)*
 
-- Xếp tầng Kahn **chỉ trên đồ thị con `requires` của node `learnable`**, và chạy trên **đồ thị co** *(sửa
-  2026-09-17, F88)*: mỗi thành phần liên thông mạnh còn lại sau tầng 3 (tức các chu trình hai cạnh đã giữ) được co
-  thành một khối. Mọi khái niệm trong khối nằm **cùng một tầng**; cạnh vào và ra khối vẫn quyết định thứ tự như thường.
-  Tầng tính theo **đường dài nhất** từ gốc. Nếu sau tầng 3 còn thành phần nào lớn hơn hai node, đó là lỗi của tầng 3
-  và phải dừng, không được xếp tiếp.
-- Stage = giao của một tầng với một cụm chủ đề, trần 5–8 khái niệm.
+- Chỉ xếp node `learnable` theo đồ thị con `requires`. A9 phải giao DAG thật; còn SCC lớn hơn một node là lỗi,
+  không co để xếp tiếp. Coffman–Graham xếp tầng có trần độ rộng mặc định 8, cân bằng và gộp tầng nhỏ khi không
+  làm hai đầu cạnh `requires` rơi vào cùng stage ([V7–V8](va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md)).
+- Stage = một tầng, không giao với cụm chủ đề. Cụm chỉ hỗ trợ thứ tự khái niệm bên trong stage.
 - **Phân biệt hai loại node không có tiên quyết:** node đã được xét mà không tìm thấy tiên quyết, và node chưa
   từng nằm trong phiên nào. Mỗi node ghi các phiên đã xét nó. Loại thứ hai là lỗi phủ, phải báo, không được lặng
   lẽ rơi vào tầng 1.
@@ -573,7 +571,7 @@ chạy **khi chặn mạng**, không ghi lại fixture, và không phụ thuộc
 - Quy `evidence_kind` ra confidence; `suy_doan` bị từ chối; `order_relation` tính từ provenance.
 - Giải chu trình theo thành phần liên thông mạnh, đúng thứ tự ưu tiên giữ cạnh; chu trình hai cạnh ra cờ danh
   tính chứ không cắt.
-- Đánh dấu cạnh thừa, xếp tầng Kahn, cắt stage theo trần.
+- Đánh dấu cạnh thừa, xếp tầng có trần độ rộng, kiểm bất biến stage.
 
 **Seam ③ — fixture hợp đồng LLM (đã có, kiểu `test_a4_llm_contract`).**
 

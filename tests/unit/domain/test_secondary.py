@@ -81,6 +81,15 @@ def test_pair_contract_rejects_outside_edge_and_two_orders_must_agree():
     )["decision"] == "defer"
 
 
+def test_secondary_flags_must_each_have_a_nonempty_kind():
+    pair = {"pair_id": "ab", "left": "a", "right": "b"}
+    base = {"pair_id": "ab", "decision": "defer", "flags": []}
+    validate_secondary_response(base, pair)
+    for malformed in ({}, {"kind": ""}, {"kind": 1}, "unknown"):
+        with pytest.raises(ValueError, match="flag cần kind"):
+            validate_secondary_response({**base, "flags": [malformed]}, pair)
+
+
 def test_dossier_contains_sources_weights_text_descriptions_order_and_weak_path():
     nodes = [node("a", "g1"), node("b", "g1")]
     chunks = [type("Chunk", (), {"chunk_id": "c1", "text": "A needs B", "order_index": 3})()]

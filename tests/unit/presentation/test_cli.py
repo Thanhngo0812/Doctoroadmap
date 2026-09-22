@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -45,10 +46,11 @@ def test_ingest_prints_each_warning_and_parse_stats(tmp_path, monkeypatch, capsy
                 chunk_count=3,
                 window_count=1,
                 source_seen_before=False,
-                structure_warnings=[
-                    "rejected_heading: trong đó:",
-                    "sentence_splitter_no_boundary: page 7",
-                ],
+                    structure_warnings=[
+                        "rejected_heading: trong đó:",
+                        "sentence_splitter_no_boundary: page 7",
+                    ],
+                    quality_warnings=[],
                 parse_stats={
                     "items_total": 5,
                     "nodes_kept": 3,
@@ -122,6 +124,7 @@ def test_parser_exposes_repeatable_a3_operations() -> None:
         "a4", "--doc-id", "new-book", "--gold", "gold.json", "--no-gold-for-doc",
     ])
     assert a4_new.no_gold_for_doc is True
+    assert a4_new.language is None
 
 
 def test_a4_new_document_requires_explicit_gold_exception(monkeypatch, capsys) -> None:
@@ -155,6 +158,13 @@ def test_a4_new_document_requires_explicit_gold_exception(monkeypatch, capsys) -
         {"a4_gold_coverage": "none", "gold_sheet_id": "frozen-sheet"},
     )]
     assert gold_calls == [{"require_complete": True}, {"require_complete": True}]
+
+    assert main([*base, "--no-gold-for-doc", "--language", "vi"]) == 0
+    assert calls[-1] == (
+        "new-book",
+        {"a4_gold_coverage": "none", "gold_sheet_id": "frozen-sheet",
+         "declared_language": "vi"},
+    )
 
 
 def test_extract_cli_forwards_few_shot_override(monkeypatch) -> None:
@@ -199,3 +209,61 @@ def test_a3_cli_forwards_few_shot_override(monkeypatch) -> None:
         ["a3", "--doc-id", "book", "--few-shot", "prompts/coarse.txt"]
     ) == 0
     assert selected == [Path("prompts/coarse.txt")]
+
+
+def test_a8_gold_merge_keeps_both_labels_and_refuses_to_write_a_broken_gold(
+    tmp_path, monkeypatch, capsys
+) -> None:
+    graph = tmp_path / "graph.json"
+    graph.write_text(json.dumps({"stage": "provenance", "nodes": []}), encoding="utf-8")
+    errors: list[str] = []
+    seen: dict = {}
+
+    def scope_from_store(_store, doc_id, **kwargs):
+        seen["scope"] = (doc_id, kwargs)
+        return {"doc_id": doc_id}
+
+    def read_adjudication_sheet(path, scope, golds):
+        seen["annotators"] = [gold["annotator"] for gold in golds]
+        return {
+            "annotator": "hoi-y", "agreed_count": 20, "differing_count": 67, "kept_count": 42,
+            "errors": list(errors), "warnings": [],
+            "edges": [{"prerequisite": "p", "target": "t"}],
+        }
+
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_artifact_store",
+                        lambda: SimpleNamespace(root=tmp_path))
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.scope_from_store", scope_from_store)
+    monkeypatch.setattr("doc2roadmap.application.use_cases.a8_score.load_gold",
+                        lambda path: {"annotator": Path(path).stem, "edges": []})
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.read_adjudication_sheet",
+                        read_adjudication_sheet)
+
+    output = tmp_path / "vang-hoi-y.json"
+    command = [
+        "a8-gold-merge", "--doc-id", "book", "--chapter", "10-13", "--chapter-level", "2",
+        "--graph", str(graph),
+        "--gold", str(tmp_path / "A1.json"), "--gold", str(tmp_path / "A2.json"),
+        "--file", str(tmp_path / "hoi-y.xlsx"), "--output", str(output),
+    ]
+
+    assert main(command) == 0
+    doc_id, kwargs = seen["scope"]
+    assert doc_id == "book"
+    assert (kwargs["chapter"], kwargs["chapter_level"]) == ("10-13", 2)
+    # nơi dạy phải đi theo provenance đã vá, không phải canonical (D13, F105/F106)
+    assert kwargs["graph_payload"]["stage"] == "provenance"
+    # hội ý cần đúng hai người; rơi mất một người thì mọi cạnh lệch thành cạnh đồng thuận
+    assert seen["annotators"] == ["A1", "A2"]
+    assert json.loads(output.read_text(encoding="utf-8"))["kept_count"] == 42
+
+    output.unlink()
+    errors.append("thiếu quyết định ở 3 dòng")
+    assert main(command) == 1
+    assert not output.exists()
+
+    errors.clear()
+    outside = tmp_path.parent / "ngoai-artifact.json"
+    assert main([*command[:-1], str(outside)]) == 2
+    assert "chỉ ghi trong artifact_dir" in capsys.readouterr().err
+    assert not outside.exists()

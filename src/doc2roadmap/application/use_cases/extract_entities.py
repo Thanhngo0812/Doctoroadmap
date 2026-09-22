@@ -2,6 +2,8 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
+import unicodedata
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import asdict, dataclass, field
@@ -42,13 +44,24 @@ from doc2roadmap.domain.entities import (
     verify_alias,
 )
 from doc2roadmap.domain.models import Chunk
-from doc2roadmap.domain.canonical import alias_kind, candidate_warnings
+from doc2roadmap.domain.canonical import alias_kind, candidate_warnings, structured_symbol
 from doc2roadmap.domain.normalization import normalize_text
 from doc2roadmap.domain.ports import TokenCounter
 
 
 MAX_GLEAN_ROUNDS = 5
 MAX_REJECTED_SYMBOL_NAMES = 50
+
+
+def _defined_script_symbol(
+    name: str, evidence: EvidenceSpan | None, chunks: list[Chunk]
+) -> bool:
+    if (evidence is None or len(name) != 1
+            or "SCRIPT CAPITAL" not in unicodedata.name(name, "")):
+        return False
+    cue = re.compile(r"\b(?:definition|denote|called|denoted)\b.{0,120}" + re.escape(name),
+                     re.IGNORECASE | re.DOTALL)
+    return any(cue.search(chunk.text) for chunk in chunks)
 
 
 class ExtractionGateError(RuntimeError):
@@ -71,6 +84,7 @@ class SectionContext:
     images: list[PromptImage]
     formulas: list[FormulaContext]
     media_captions: dict[tuple[str, str], str] = field(default_factory=dict)
+    definition_chunks: list[Chunk] = field(default_factory=list)
 
 
 @dataclass(slots=True)
@@ -234,6 +248,7 @@ def _add_entity(
         ),
         None,
     )
+    name_kind = None
     if alias_kind(name) == "symbol":
         promoted = next(
             (alias for alias in aliases if alias_kind(alias.name) == "name"),
@@ -248,17 +263,22 @@ def _add_entity(
                         break
                 if symbol_alias is not None:
                     break
-        if promoted is None or symbol_alias is None:
+        if promoted is not None and symbol_alias is not None:
+            name = promoted.name
+            evidence = promoted.evidence
+            aliases.remove(promoted)
+            if all(_identity(item.name) != _identity(symbol_alias.name) for item in aliases):
+                aliases.append(symbol_alias)
+        elif structured_symbol(name) or _defined_script_symbol(
+            name, evidence, context.definition_chunks or context.chunks
+        ):
+            name_kind = "symbol"
+        else:
             stats["rejected_symbol_only_name"] += 1
             names = stats["symbol_only_names"]
             if name not in names and len(names) < MAX_REJECTED_SYMBOL_NAMES:
                 names.append(name)
             return None, False
-        name = promoted.name
-        evidence = promoted.evidence
-        aliases.remove(promoted)
-        if all(_identity(item.name) != _identity(symbol_alias.name) for item in aliases):
-            aliases.append(symbol_alias)
     if evidence is None and media_ref is None:
         stats["rejected_entity_evidence"] += 1
         return None, False
@@ -284,6 +304,7 @@ def _add_entity(
             else []
         ),
         media_evidence_id=media_evidence_id if evidence is None else None,
+        name_kind=name_kind,
     )
 
     names = _entity_names(candidate)
@@ -638,6 +659,7 @@ def _entity_to_dict(entity: EntityCandidate) -> dict[str, Any]:
         "source_refs": [asdict(item) for item in entity.source_refs],
         "orphan_reason": entity.orphan_reason,
         "media_evidence_id": entity.media_evidence_id,
+        "name_kind": entity.name_kind,
     }
 
 
@@ -663,6 +685,7 @@ def _entity_from_dict(item: dict[str, Any]) -> EntityCandidate:
         source_refs=[SourceRef(**value) for value in item.get("source_refs", [])],
         orphan_reason=item.get("orphan_reason"),
         media_evidence_id=item.get("media_evidence_id"),
+        name_kind=item.get("name_kind"),
     )
 
 
@@ -767,6 +790,7 @@ def _build_contexts(store: ArtifactStore, stored: StoredChunks) -> list[SectionC
                         *(reference.table_id for chunk in chunks for reference in chunk.table_refs),
                     }
                 },
+                stored.result.chunks,
             )
         )
     return sorted(contexts, key=lambda context: sections[context.section_id].order_index)
@@ -902,7 +926,7 @@ class ExtractEntities:
             self.embedding.embedding_model_id if self.embedding is not None else None
         )
         config = {
-            "algorithm_id": "a3-section-conversation-v6",
+            "algorithm_id": "a3-section-conversation-v9",
             "reviewed_node_types": reviewed_types,
             "chunks_config_hash": stored.manifest["config_hash"],
             "extractor_id": self.extractor.identifier,

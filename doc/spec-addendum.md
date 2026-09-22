@@ -42,14 +42,13 @@ A8. Suy luận prerequisite                      |
   |   8a. nội cluster (confidence + evidence)  |
   |   8b. liên cluster (boundary concepts)     |
   |                                            |
-A9. Validate graph     [CHỈ đọc cạnh requires] |
-  |   9a. Quality gate (đủ mật độ edge?)       |
-  |       -> không: fallback thứ tự chương     |
-  |   9b. Remove cycle (cắt edge min-conf)     |
-  |   9c. Transitive reduction                 |
+A9. Kiểm tra nhất quán [CHỈ cạnh requires]     |
+  |   9a. Quality gate (lỗi pipeline chết)     |
+  |   9b. Gỡ chu trình, giao DAG thật          |
+  |   9c. Đánh dấu cạnh bắc cầu                 |
   |                                            |
-A10. Topological layering -> tạo stages        |
-  |    [CHỈ requires; media gắn vào stage sau] |
+A10. Xếp tầng có trần -> tạo stages             |
+  |    [CHỈ requires; chưa gắn media]          |
   |                                            |
 A11. Stage enrichment (objectives, quiz)       |
   |                                            |
@@ -336,8 +335,8 @@ niệm thừa thì tầng sau lọc được; khái niệm thiếu thì mất v�
 
 - **Bắt buộc bằng chứng cho khái niệm**, không chỉ cho cạnh. Khái niệm không trích được câu bằng chứng
   trong chunk nguồn ⇒ loại. Khái niệm bịa sinh ra node mà mọi thứ khác bám vào, nguy hiểm hơn cạnh bịa.
-- Schema A3 có `description_draft` nhưng **không có `difficulty`**. Độ khó được tính từ độ sâu DAG sau
-  A10 nên tất định và không trôi theo mô hình.
+- Schema A3 có `description_draft` nhưng **không có `difficulty`**. Độ sâu tiên quyết của DAG là một
+  chỉ số cấu trúc, không phải độ khó của khái niệm.
 - Chạy song song theo section; không ghép nội dung section láng giềng vì evidence chỉ được dò trong
   đúng section hiện tại.
 
@@ -429,7 +428,7 @@ tuyệt đối. Đây là thứ B0 để lại sẵn; đừng dựng lại bằn
   gộp nhầm.
 - A5 chỉ ra chunk **định nghĩa/giảng** (`defining_chunk_ids`) ⇒ nguồn của `first_order_index`.
 - Ngôn ngữ mô tả = ngôn ngữ chủ đạo của tài liệu (code đo, ghi manifest).
-- Độ khó được tính từ độ sâu DAG sau A10. Description dùng cho hiển thị UI, ngữ cảnh suy luận edge và
+- Độ sâu tiên quyết là chỉ số cấu trúc của DAG, không phải trường `difficulty`. Description dùng cho hiển thị UI, ngữ cảnh suy luận edge và
   sinh quiz — nhưng luật *"Y trong định nghĩa X"* của 2b đọc **câu bằng chứng nguyên văn**, không đọc mô tả này.
 - **Media đi đường khác**: mô tả đã chốt ở A3.2 (chú thích gốc hoặc mô tả đã qua kiểm định). **Không**
   đọc `source_chunk_ids` để viết lại — làm thế là để mô hình suy diễn về nội dung ảnh từ văn bản xung
@@ -568,52 +567,45 @@ Theo đúng thứ tự:
    > **Vì sao phải lọc:** chạy trên đồ thị đầy đủ có thể xoá cạnh `illustrates` vì "đã có đường khác",
    > làm mất liên kết hình↔khái niệm mà pha B cần.
 
-### A10. Topological layering → tạo stages
+### A10. Xếp tầng có trần độ rộng → tạo stages
 
-> **Kahn chỉ đọc cạnh `requires`, chỉ trên node `learnable = true`.** Chạy trên đồ thị đầy đủ thì mọi
-> node media có in-degree 0 (không gì `requires` một bức hình) ⇒ **toàn bộ 79 hình và bảng rơi vào lớp
-> 1**, và giai đoạn học đầu tiên thành một đống mọi hình trong sách. Lỗi này chỉ lộ ra khi mở UI, tức
-> sau khi đã chạy hết pipeline.
+> A10 chỉ đọc cạnh `requires` giữa node `learnable = true`; A9 phải giao DAG thật. Media không có tầng riêng
+> và hiện chưa được gắn vào stage. Quy tắc hiện hành là [V7–V8](va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md).
 
-- **Layering (Kahn)**: lớp 1 = mọi node học được có in-degree 0 **theo cạnh `requires`**; gỡ lớp 1, node nào lộ ra in-degree 0 thành lớp 2; lặp đến hết. Node cùng lớp không phụ thuộc nhau → học song song được trong cùng giai đoạn.
-- **Stage = layer ∩ cluster**: trong mỗi lớp, gom node theo `cluster_id`. Cap kích thước 5–8 concept/stage; lớp quá lớn thì tách theo cluster thành nhiều stage con (thứ tự giữa các stage con cùng lớp là tùy ý — chọn theo thứ tự chương).
-- **Gắn media vào stage sau khi phân tầng** — media **không có `layer` riêng**: mỗi node media về stage
-  của node học được **sớm nhất** mà nó nối tới. Media nối nhiều stage thì thuộc stage sớm nhất, và
-  lưu thêm mảng `all_stage_ids` (cùng luật đã dùng cho chunk ở A12). Media mồ côi — không nối node nào —
-  bị gắn cờ ở tầng 3 (bất biến I-G2), **không** im lặng rơi vào stage 1.
-- **LLM pass cuối**: đặt tên stage tự nhiên, sắp thứ tự concept bên trong stage theo mạch trình bày. LLM **không** được đổi thứ tự giữa các stage — thứ tự đó do graph quyết định.
+- Coffman–Graham xếp tầng với trần mặc định 8; cân bằng và gộp tầng nhỏ chỉ khi mọi cạnh `requires` vẫn đi từ
+  stage trước tới stage sau. Mỗi stage là một tầng, không giao với cụm chủ đề.
+- Cụm chủ đề chỉ dùng để sắp thứ tự khái niệm trong stage và chọn một tên khái niệm ngắn làm `title` đại diện;
+  không có lượt LLM đặt tên stage. Các stage ngang hàng phá hoà bằng số hậu duệ và khoá stage, không bằng thứ tự chương.
 
 ```json
 {
-  "stage_id": "st_03",
-  "title": "Kiểm soát overfitting",
-  "order": 3,
+  "stage_id": "stage_03",
+  "title": "Overfitting",
   "layer": 3,
   "cluster_id": "cl_2",
-  "concept_ids": ["cpt_overfitting", "cpt_regularization_l1", "cpt_regularization_l2"],
-  "media_ids": ["fig_a3f19c2b8d40", "tbl_7e21b09c4d13"],
-  "chunk_ids": ["c_0040", "c_0041", "c_0042", "c_0043"],
-  "prerequisite_stage_ids": ["st_01", "st_02"]
+  "node_ids": ["cpt_overfitting", "cpt_regularization_l1", "cpt_regularization_l2"],
+  "first_order_index": 42
 }
 ```
 
-`concept_ids` giữ tên cũ vì tương thích ngược, nhưng nó chứa **mọi node học được** của stage — kể cả
-các kiểu do LLM nghĩ ra như `theorem` hay `algorithm`.
+`node_ids` chứa mọi node học được của stage, kể cả kiểu như `theorem` hay `algorithm`.
 
-### A11. Stage enrichment
+### A11. Stage enrichment (dự kiến, chưa triển khai)
 
-Sinh offline (không sinh on-the-fly lúc học — chậm và không nhất quán giữa các user), từ chính `chunk_ids` **và `media_ids`** của stage:
+Khi triển khai, sinh offline (không sinh on-the-fly lúc học) từ chunk thuộc stage. `media_ids` chỉ dùng được
+sau một vé riêng gắn media vào stage; artifact A10 hiện không có trường đó.
 - `objectives`: 3–5 mục tiêu học tập đo lường được.
 - `summary`: tóm tắt 150–300 từ.
 - `quiz`: 5–8 câu trắc nghiệm (kèm đáp án + giải thích + `concept_id` mà câu hỏi kiểm tra) + 1–2 câu tự luận ngắn (kèm rubric chấm). Câu hỏi được phép tham chiếu `media_id` của stage — *"nhìn Hình 3.4, đường cong nào thể hiện quá khớp?"*; UI render kèm ảnh.
 - `estimated_minutes`: ước lượng thời gian học.
 
-Hình và bảng của stage là nguyên liệu sẵn có cho cả `summary` lẫn `quiz` — không dùng là bỏ phí thứ đã trích.
+Hình và bảng chỉ trở thành nguyên liệu của stage sau khi có phép gắn media đã kiểm chứng.
 
-### A12. Gắn stage_id ngược về chunk (điểm hội tụ 2 nhánh)
+### A12. Gắn stage_id ngược về chunk (kế hoạch pha B)
 
-- Với mỗi stage, update `stage_id` cho mọi chunk trong `chunk_ids` trên vector DB. Chunk thuộc nhiều concept ở nhiều stage → gán stage sớm nhất, lưu thêm mảng `all_stage_ids`.
-- **Node media cũng nhận `stage_id`** theo cùng luật — nếu không, gia sư ở pha B sẽ khoe hình của chương người học chưa tới.
+- A10 hiện sinh `chunk_stage_map` trong artifact: chunk thuộc nhiều stage được gán stage sớm nhất, kèm
+  `all_stage_ids`. Chưa đồng bộ trường này sang vector DB.
+- Media hiện chưa nhận `stage_id`. Pha B phải chặn media chưa được gắn stage cho đến khi có luật gắn riêng.
 - Từ đây scoped RAG hoạt động được: filter `stage_id <= current_stage`.
 - `stage_id` **không** nằm trong bất kỳ khoá băm nào (chunk hay node), nên cập nhật nó là ghi cột thường — **không phải embed lại**. Đây là hệ quả trực tiếp của ADR 0002.
 

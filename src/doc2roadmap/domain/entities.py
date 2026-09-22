@@ -56,6 +56,7 @@ class EntityCandidate:
     source_refs: list[SourceRef] = field(default_factory=list)
     orphan_reason: str | None = None
     media_evidence_id: str | None = None
+    name_kind: str | None = None
 
     def __post_init__(self) -> None:
         if self.node_type.casefold() in _MEDIA_TYPES and self.learnable:

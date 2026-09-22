@@ -138,6 +138,8 @@ def validate_secondary_response(value, pair):
         raise ValueError("phán quyết ngoài bốn giá trị cho phép")
     if not isinstance(value.get("flags"), list):
         raise ValueError("phán quyết cần flags dạng mảng")
+    if any(not isinstance(flag, dict) or not isinstance(flag.get("kind"), str) or not flag["kind"].strip() for flag in value["flags"]):
+        raise ValueError("flag cần kind")
     if "confidence" in value:
         raise ValueError("mô hình không được trả confidence")
     if value["decision"] != "create":

@@ -3,7 +3,6 @@ from __future__ import annotations
 import math
 import re
 from collections import defaultdict, deque
-from itertools import combinations
 
 
 EVIDENCE_RANK = {"noi_ro": 3, "trong_dinh_nghia": 2, "mach_trinh_bay": 1}
@@ -70,23 +69,105 @@ def _edge_key(edge):
     return edge["source"], edge["target"], edge.get("session_id", ""), edge.get("operation_index", 0)
 
 
-def _keep_priority(edge):
-    return (
-        EVIDENCE_RANK.get(edge.get("evidence_kind"), 0),
-        ORDER_RANK.get(edge.get("order_relation"), 0),
-        int(edge.get("independent_source_count", len(edge.get("origins", [])) or 1)),
-        float(edge.get("confidence", 0.0)),
-    )
+def _edge_weights(edges):
+    count = len(edges)
+    sources = [max(0, int(edge.get("independent_source_count", len(edge.get("origins", [])) or 1))) for edge in edges]
+    max_sources = max(sources, default=1)
+    order_base = count * max_sources + 1
+    evidence_base = count * (2 * order_base + max_sources) + 1
+    return [
+        EVIDENCE_RANK.get(edge.get("evidence_kind"), 0) * evidence_base
+        + ORDER_RANK.get(edge.get("order_relation"), 0) * order_base
+        + source_count
+        for edge, source_count in zip(edges, sources, strict=True)
+    ]
 
 
-def _feedback_edges(component, internal, *, exhaustive_limit=16):
-    if len(internal) > exhaustive_limit:
+def _simple_cycles(component, edges, budget):
+    adjacency = defaultdict(list)
+    for index, edge in enumerate(edges):
+        adjacency[edge["source"]].append((edge["target"], index))
+    for values in adjacency.values():
+        values.sort(key=lambda value: (value[0], _edge_key(edges[value[1]])))
+    cycles = []
+    for start in sorted(component):
+        def visit(node_id, visited, path):
+            for target, index in adjacency[node_id]:
+                if target == start:
+                    cycles.append(tuple(path + [index]))
+                    if len(cycles) > budget:
+                        return True
+                elif target > start and target not in visited:
+                    if visit(target, visited | {target}, path + [index]):
+                        return True
+            return False
+        if visit(start, {start}, []):
+            break
+    return cycles
+
+
+class _CycleWorkLimit(Exception):
+    pass
+
+
+def _minimum_cycle_cover(cycles, weights, edges, work_budget):
+    coverage = [0] * len(edges)
+    for cycle_index, cycle in enumerate(cycles):
+        for edge_index in cycle:
+            coverage[edge_index] |= 1 << cycle_index
+    edge_keys = [_edge_key(edge) for edge in edges]
+
+    memo = {}
+    work = 0
+
+    def solve(uncovered):
+        nonlocal work
+        work += 1
+        if work > work_budget:
+            raise _CycleWorkLimit
+        if not uncovered:
+            return 0, ()
+        if uncovered in memo:
+            return memo[uncovered]
+        cycle_index = min(
+            (index for index in range(len(cycles)) if uncovered & (1 << index)),
+            key=lambda index: (len(cycles[index]), cycles[index]),
+        )
+        best = None
+        for edge_index in sorted(cycles[cycle_index], key=lambda index: (weights[index], edge_keys[index])):
+            cost, selected = solve(uncovered & ~coverage[edge_index])
+            candidate = (
+                cost + weights[edge_index],
+                tuple(sorted((*selected, edge_index), key=lambda index: edge_keys[index])),
+            )
+            if best is None or (candidate[0], tuple(edge_keys[index] for index in candidate[1])) < (
+                best[0], tuple(edge_keys[index] for index in best[1])
+            ):
+                best = candidate
+        memo[uncovered] = best
+        return best
+
+    return list(solve((1 << len(cycles)) - 1)[1])
+
+
+def _feedback_edges(component, internal, *, cycle_budget=1000, work_budget=10000):
+    weights = _edge_weights(internal)
+    weight_by_id = {id(edge): weight for edge, weight in zip(internal, weights, strict=True)}
+    cycles = _simple_cycles(component, internal, cycle_budget)
+    work_limited = False
+    if len(cycles) <= cycle_budget:
+        try:
+            removed_indexes = _minimum_cycle_cover(cycles, weights, internal, work_budget)
+        except _CycleWorkLimit:
+            work_limited = True
+        else:
+            return [internal[index] for index in removed_indexes], "exact", len(cycles), sum(weights[index] for index in removed_indexes)
+    if len(cycles) > cycle_budget or work_limited:
         remaining = set(component)
         left, right = [], []
 
         def score(edge):
-            evidence, order, sources, confidence = _keep_priority(edge)
-            return evidence * 1_000_000 + order * 100_000 + sources * 1_000 + confidence
+            return weight_by_id[id(edge)]
 
         while remaining:
             active = [
@@ -119,27 +200,7 @@ def _feedback_edges(component, internal, *, exhaustive_limit=16):
             left.append(node_id)
         position = {node_id: index for index, node_id in enumerate([*left, *right])}
         removed = [edge for edge in internal if position[edge["source"]] >= position[edge["target"]]]
-        return removed, "eades_priority"
-    indexed = list(enumerate(internal))
-    candidates = []
-    for count in range(1, len(internal) + 1):
-        for removed in combinations(indexed, count):
-            removed_indexes = {index for index, _ in removed}
-            kept = [edge for index, edge in indexed if index not in removed_indexes]
-            if _acyclic(component, kept):
-                removed_edges = [edge for _, edge in removed]
-                candidates.append(removed_edges)
-        if candidates:
-            break
-    return min(
-        candidates,
-        key=lambda values: (
-            sorted(_keep_priority(edge) for edge in values),
-            sorted(_edge_key(edge) for edge in values),
-        ),
-    ), "exhaustive"
-
-
+        return removed, "approximate", len(cycles), sum(weight_by_id[id(edge)] for edge in removed)
 def _alternate_path(edges, source, target, excluded_index):
     adjacency = defaultdict(list)
     for index, edge in enumerate(edges):
@@ -196,7 +257,7 @@ def _unit(vector):
     return tuple(float(value) / norm for value in vector) if norm else tuple(0.0 for _ in vector)
 
 
-def apply_resolved_nodes(nodes, flags, node_vectors):
+def apply_resolved_nodes(nodes, flags, node_vectors, *, assign_clusters=True):
     result = [dict(node) for node in nodes]
     vectors = {key: _unit(value) for key, value in node_vectors.items()}
     log = []
@@ -207,24 +268,28 @@ def apply_resolved_nodes(nodes, flags, node_vectors):
             continue
         candidate = _unit(vector)
         centroids = {}
-        for cluster_id in sorted({value["cluster_id"] for value in result}):
-            members = [vectors[value["node_id"]] for value in result if value["cluster_id"] == cluster_id and value["node_id"] in vectors]
+        for cluster_id in sorted({value["cluster_id"] for value in result if "cluster_id" in value}):
+            members = [vectors[value["node_id"]] for value in result if value.get("cluster_id") == cluster_id and value["node_id"] in vectors]
             if members:
                 centroids[cluster_id] = _unit(tuple(sum(column) / len(members) for column in zip(*members, strict=True)))
         if not centroids:
             continue
-        cluster_id = max(
-            sorted(centroids),
-            key=lambda value: sum(left * right for left, right in zip(candidate, centroids[value], strict=True)),
-        )
-        resolved = {**node, "cluster_id": cluster_id}
+        if assign_clusters:
+            cluster_id = max(
+                sorted(centroids),
+                key=lambda value: sum(left * right for left, right in zip(candidate, centroids[value], strict=True)),
+            )
+            resolved = {**node, "cluster_id": cluster_id}
+        else:
+            resolved = {key: value for key, value in node.items() if key != "cluster_id"}
         result.append(resolved)
         vectors[resolved["node_id"]] = candidate
-        log.append({"action": "incremental_cluster_assignment", "node_id": resolved["node_id"], "cluster_id": cluster_id})
+        if assign_clusters:
+            log.append({"action": "incremental_cluster_assignment", "node_id": resolved["node_id"], "cluster_id": cluster_id})
     return result, {key: list(value) for key, value in vectors.items()}, log
 
 
-def validate_graph_rules(nodes, requires_edges, open_edges, *, type_aliases=None):
+def validate_graph_rules(nodes, requires_edges, open_edges, *, type_aliases=None, cycle_budget=1000, work_budget=10000):
     learnable = {node["node_id"] for node in nodes if node.get("learnable")}
     requires = [
         dict(edge)
@@ -232,48 +297,65 @@ def validate_graph_rules(nodes, requires_edges, open_edges, *, type_aliases=None
         if edge.get("edge_type") == "requires" and edge.get("source") in learnable and edge.get("target") in learnable
     ]
     requires.sort(key=_edge_key)
+    normalized_open, registry, type_flags = _type_registry(open_edges, type_aliases or {})
     two_way_flags, removed, cycle_resolution = [], [], []
+    by_pair = {(edge["source"], edge["target"]) for edge in requires}
+    reciprocal = {
+        frozenset((source, target))
+        for source, target in by_pair
+        if source != target and (target, source) in by_pair
+    }
+    for pair in sorted(reciprocal, key=lambda value: sorted(value)):
+        two_way_flags.append({
+            "kind": "suspected_relation_type_error",
+            "node_ids": sorted(pair),
+            "reason": "reciprocal_requires_may_have_wrong_relation_type; review both directions",
+            "edges": [dict(edge) for edge in requires if frozenset((edge["source"], edge["target"])) == pair],
+        })
+    requires = [edge for edge in requires if frozenset((edge["source"], edge["target"])) not in reciprocal]
     for component in strongly_connected_components(learnable, requires):
         if len(component) < 2:
             continue
         internal = [edge for edge in requires if edge["source"] in component and edge["target"] in component]
-        if len(component) == 2 and {(edge["source"], edge["target"]) for edge in internal} >= {
-            (component[0], component[1]), (component[1], component[0])
-        }:
-            two_way_flags.append({
-                "kind": "two_way_requires",
-                "node_ids": component,
-                "reason": "two_edge_requires_cycle",
-                "edges": sorted((dict(edge) for edge in internal), key=_edge_key),
-            })
-            continue
-        component_removed, method = _feedback_edges(component, internal)
+        component_removed, method, cycle_count, removed_weight = _feedback_edges(
+            component, internal, cycle_budget=cycle_budget, work_budget=work_budget
+        )
         removed.extend(component_removed)
         cycle_resolution.append({
             "node_ids": component,
             "internal_edge_count": len(internal),
             "removed_edge_count": len(component_removed),
             "method": method,
+            "simple_cycle_count": cycle_count,
+            "simple_cycle_count_capped": cycle_count > cycle_budget,
+            "work_budget_exceeded": method == "approximate" and cycle_count <= cycle_budget,
+            "removed_weight": removed_weight,
         })
     removed_keys = {_edge_key(edge) for edge in removed}
     kept = [edge for edge in requires if _edge_key(edge) not in removed_keys]
+    if not _acyclic(learnable, kept):
+        raise ValueError("A9 cycle removal must precede redundancy marking")
     marked = []
     for index, edge in enumerate(kept):
         alternate = _alternate_path(kept, edge["source"], edge["target"], index)
-        marked.append({**edge, **({"redundant_via": alternate} if alternate else {})})
+        marked.append({**{key: value for key, value in edge.items() if key != "redundant_via"}, **({"redundant_via": alternate} if alternate else {})})
     incident = {edge["source"] for edge in marked} | {edge["target"] for edge in marked}
     isolated = len(learnable - incident)
     ratio = isolated / len(learnable) if learnable else 0.0
-    passed = len(marked) >= 0.5 * len(learnable) and ratio <= 0.6
+    nonredundant = sum("redundant_via" not in edge for edge in marked)
+    density = nonredundant / len(learnable) if learnable else 0.0
+    passed = density >= 0.15 and ratio <= 0.85
     quality_gate = {
         "passed": passed,
         "requires_edge_count": len(marked),
+        "nonredundant_requires_edge_count": nonredundant,
         "learnable_node_count": len(learnable),
         "isolated_learnable_count": isolated,
         "isolated_ratio": ratio,
+        "nonredundant_edges_per_learnable": density,
         "fallback": None if passed else "document_order",
+        "warning": None if passed else "A9 structural consistency gate closed: prerequisite graph is too sparse or isolated; A10 will use document order",
     }
-    normalized_open, registry, type_flags = _type_registry(open_edges, type_aliases or {})
     return {
         "requires_edges": marked,
         "removed_cycle_edges": sorted((dict(edge) for edge in removed), key=_edge_key),

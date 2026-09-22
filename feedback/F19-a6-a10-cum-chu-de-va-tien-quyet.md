@@ -1460,3 +1460,67 @@ khi tách cặp hai chiều vào bảng theo dõi.
   khái niệm đích thì chỉnh phạm vi bằng cơ chế dải mục của vé 04, không đổi chương.
 - **`V(2)`, `V(m)` và `𝛼𝑇` đều bị loại** — là thể hiện ký hiệu, không phải khái niệm được định nghĩa. Đã vào danh
   sách "phải loại" của điều kiện nhận vé 19.
+
+## Phản hồi thực thi tiếp — 2026-09-22
+
+- **F117 đã sửa:** A9 v9 thêm ngân sách 10.000 lượt gọi trong bộ giải phủ chu trình, độc lập với trần
+  1.000 chu trình. Chạm một trần thì dùng `approximate`, ghi tách `work_budget_exceeded` và
+  `simple_cycle_count_capped`. SCC đầy đủ 6 node/409 chu trình rơi về xấp xỉ trong 0,126 giây;
+  test ép chạm ngân sách công việc đỏ trên mã v8, xanh trên v9.
+- **F118 đã sửa:** kiểm DAG sau cắt chu trình dùng `raise ValueError`, không còn `assert` bị tước khi
+  chạy `-O`. Test giả lập bộ giải trả thiếu cạnh chứng minh guard thực sự nổ.
+- **F119 đã sửa:** `heapq` là thư viện chuẩn được thêm vào allowlist kiến trúc; suite đầy đủ xanh.
+- **Vé 20–21 đã chạy thật trên bốn tài liệu cũ:** A9 v9 giao DAG không còn SCC >1; A10 v7 giảm số
+  stage `naive-bayes` 16→6, `nhap-mon-ml` 43→10, `baocao-canhan` 22→5,
+  `xstk-ch3-1` 63→13. Không stage nào quá 8 node, không cạnh `requires` cùng stage hoặc đi ngược;
+  chạy lại A9/A10 đều `reused=true`, không tốn mô hình. Bảng cỡ chi tiết ở [vé 21](../task/a6-a8-tien-quyet/21-a10-xep-tang-co-tran-do-rong.md).
+- **Vé 19 đang kiểm trên nguồn thật:** PDF `doc-1` mới đã ingest không strip, 99 section/199 chunk,
+  0 watermark/email; cổng chất lượng cảnh báo đúng bản cũ nhưng không báo nhầm bản mới hay hai tài liệu
+  tiếng Anh. A3 `doc-1` mới có 339 ứng viên, 333 học được, 258 lời gọi, 752.507 input + 66.250 output
+  token, 0,28750175 USD. A4/A5 `doc-1` và A3 `doc-2` còn đang chạy; chưa đánh dấu vé 19/11 hoàn tất.
+
+## Phản hồi thực thi tiếp — A1–A10 tài liệu mới, 2026-09-22
+
+- **Vé 19, A1–A5 đã chạy xong trên ba PDF hợp lệ.** `doc-1` mới: A3 339 ứng viên/333 learnable,
+  A4/A5 231 node (225 learnable), `vi`; `doc-2`: A3 v5 1.394 ứng viên/1.322 learnable,
+  A4/A5 510 node (438 learnable), `en`; `doc-3`: 154 canonical node (58 learnable), `en`.
+  Tổng telemetry của các artifact A3–A5 hiện hành là **2,8212405 USD** (không tính bản cũ,
+  lượt lỗi, embedding và A6–A8). Bảng chi tiết ở [vé 11](../task/a6-a8-tien-quyet/11-nap-ba-tai-lieu-moi.md).
+- **Tên ký hiệu trên PDF thật:** `𝐅^{m,n}`, `ℳ`, `L(V, W)`, `B(V, W)` được giữ; `3.65`,
+  `3.68`, `3.94`, `6.49`, `6.54`, `i`, `0`, `V`, `C`, `F`, `R`, `{0}`, `V(2)`,
+  `V(m)`, `𝛼𝑇` bị loại. PDF mã hoá hai biểu thức còn lại thành `ℒ (𝑉 , 𝑊)`/`ℒ(V, W)`
+  và `𝒫 𝑛 (𝐅)`; tên ứng viên giữ nguyên nguồn theo V1. Vì điều kiện vé 19 viết đúng từng byte
+  `ℒ(V,W)` và `𝒫ₙ(𝐅)`, ô ấy vẫn mở để reviewer chấp nhận tương đương hình thức, không
+  âm thầm sửa tên làm đứt evidence. `ℳ` được cứu bằng tín hiệu định nghĩa xuyên chunk.
+- **Provenance F120 (mới lộ trên doc-1):** node fallback `Tổ hợp tuyến tính` thiếu khóa
+  `defining_chunk_ids`; `BuildProvenance` truy cập trực tiếp khiến bước A8 dừng. Test hồi quy
+  đỏ trên mã cũ, sửa khởi tạo danh sách trước khi thêm quote, test và suite đầy đủ xanh.
+- **Vé 11 nhịp 1:** `doc-3` qua A6–A8 ($0,0812995 cho A8), A9 v9 giao DAG 58 node,
+  A10 v7 ra 8 stage. `doc-1` provenance 47 lời gọi/$0,0417175, A8 67 phiên chính +
+  513 cặp phụ/$0,62448875; A9 giao DAG 225 node/337 cạnh, A10 ra 29 stage. `doc-2`
+  mentions 7.050, provenance 51 lời gọi/$0,05083575; A8 đang chạy một lượt có checkpoint.
+  A9/A10 `doc-2` chỉ chạy sau khi A8 kết thúc.
+- **Bộ vàng hai chương đã sẵn bảng trống cho người gán:** `doc-1` Chương 3 mục 3.1–3.4
+  có 45 đích sau provenance, hai bảng A1/A2 mỗi bảng 360 dòng quan hệ; `doc-2` mục 3C
+  có 24 đích, hai bảng mỗi bảng 200 dòng. Chưa có nhãn người thật, nên E1/E2, hội ý và
+  các kết luận dựa trên vàng chưa được nhận là hoàn tất.
+- **Sự cố vận hành A8 doc-2:** Windows từ chối `os.replace` file checkpoint; khả năng cao
+  trùng đúng lúc lệnh soi tiến độ đang mở file để đọc. Checkpoint chính còn nguyên; đã chạy
+  tiếp từ đó và ngừng đọc file
+  checkpoint trong lúc mô hình ghi. Không xoá checkpoint hoặc chạy lại từ đầu.
+
+### Chốt lượt chạy ba tài liệu
+
+`doc-2` A8 đã kết thúc từ checkpoint: **352 phiên chính**, **565 cặp phụ**, 821 cạnh chính +
+49 cạnh phụ, 5.858.770 input + 269.927 output token, **1,869583 USD**. A9 v9 trên edge
+artifact v5 giao DAG 438 node học được/864 cạnh `requires`, 602 cạnh không thừa, cổng cấu
+trúc mở; A10 v7 xếp đủ 438 node thành **55 stage**, cỡ lớn nhất 8, không thiếu node.
+
+Ba artifact A3–A8 hiện hành cộng **5,4894815 USD** telemetry; con số này không phải hoá
+đơn tích luỹ mọi lượt cũ. A9/A10 của `doc-3`, `doc-1`, `doc-2` lần lượt ra 8/29/55 stage;
+cả ba là DAG, qua cổng, phủ đủ 58/225/438 node học được. Phát lại
+`roadmap --stop-after stages` với proxy trỏ `127.0.0.1:9` đều `reused=true` ở graph v7. Suite đầy đủ xanh,
+`git diff --check` không có lỗi khoảng trắng. Vé 11, 20, 21 và phần triển khai vé 19 đã
+chạy xong; **E1/E2 và các kết luận dựa trên vàng chưa thể chạy** vì hai người chưa nộp nhãn.
+Điều kiện tên `ℒ(V,W)`/`𝒫ₙ(𝐅)` đúng từng byte còn chờ chủ dự án quyết định có chấp nhận
+biến thể OCR tương đương nhưng giữ nguyên bằng chứng nguồn hay không.

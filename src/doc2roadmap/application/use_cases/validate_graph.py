@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from doc2roadmap.domain.canonical import digest
-from doc2roadmap.domain.global_validation import apply_resolved_nodes, validate_graph_rules
+from doc2roadmap.domain.global_validation import apply_resolved_nodes, strongly_connected_components, validate_graph_rules
 
 
 class ValidateGraph:
@@ -36,17 +36,20 @@ class ValidateGraph:
         )
         aliases = self.store.load_type_aliases()
         config = {
-            "algorithm_id": "a9-global-validation-v4",
+            "algorithm_id": "a9-structural-consistency-v9",
+            "check_name": "structural_consistency_check",
             "edges_version": edges_artifact.version,
             "edges_config_hash": edges_artifact.manifest["config_hash"],
             "cycle_scope": "requires-learnable-scc",
-            "cycle_keep_order": ["evidence_kind", "provenance_order", "independent_source_count", "confidence"],
-            "two_edge_cycle": "flag-contract-no-quality-penalty-v2",
-            "quality_min_edges_per_learnable": 0.5,
-            "quality_max_isolated_ratio": 0.6,
+            "cycle_keep_order": ["evidence_kind", "provenance_order", "independent_source_count"],
+            "cycle_method": "weighted-simple-cycle-cover",
+            "cycle_budget": 1000,
+            "cycle_work_budget": 10000,
+            "two_edge_cycle": "suspected-relation-type-error-exclude-both",
+            "quality_min_nonredundant_edges_per_learnable": 0.15,
+            "quality_max_isolated_ratio": 0.85,
             "redundancy": "mark-only",
-            "cycle_exhaustive_edge_limit": 16,
-            "cycle_large_component_method": "eades_priority",
+            "cycle_large_component_method": "approximate-eades-priority",
             "type_aliases": aliases,
         }
         config_hash = digest(config)
@@ -59,15 +62,21 @@ class ValidateGraph:
             *edges_artifact.payload.get("main_flags", []),
             *edges_artifact.payload.get("secondary_flags", []),
         ]
+        valid_flags = [
+            flag for flag in raw_flags
+            if isinstance(flag, dict) and isinstance(flag.get("kind"), str) and flag["kind"].strip()
+        ]
+        invalid_upstream_flag_count = len(raw_flags) - len(valid_flags)
         node_vectors_version = edges_artifact.payload.get("node_vectors_version")
         if node_vectors_version is None:
             base_vectors = edges_artifact.payload.get("node_vectors", {})
         else:
             base_vectors = self.store.load_graph(doc_id, node_vectors_version).payload["node_vectors"]
-        nodes, node_vectors, resolution_log = apply_resolved_nodes(
+        pending_nodes, _, _ = apply_resolved_nodes(
             edges_artifact.payload["nodes"],
-            raw_flags,
+            valid_flags,
             base_vectors,
+            assign_clusters=False,
         )
         suspected = {
             frozenset((row["left"], row["right"])): len(row.get("sources", []))
@@ -91,15 +100,28 @@ class ValidateGraph:
                 ),
             })
         result = validate_graph_rules(
-            nodes,
+            pending_nodes,
             requires,
             canonical.payload.get("edges", []),
             type_aliases=aliases,
+            cycle_budget=config["cycle_budget"],
+            work_budget=config["cycle_work_budget"],
         )
+        nodes, node_vectors, resolution_log = apply_resolved_nodes(
+            edges_artifact.payload["nodes"], valid_flags, base_vectors
+        )
+        remaining_scc_sizes = [
+            len(component) for component in strongly_connected_components(
+                (node["node_id"] for node in nodes if node.get("learnable")), result["requires_edges"]
+            )
+        ]
+        remaining_scc_size_distribution = {
+            str(size): remaining_scc_sizes.count(size) for size in sorted(set(remaining_scc_sizes))
+        }
         backlog = [
             {**flag, "status": "unresolved"}
-            for flag in raw_flags
-            if isinstance(flag, dict) and not flag.get("resolved_node")
+            for flag in valid_flags
+            if not flag.get("resolved_node")
         ]
         backlog.extend(
             {"kind": "deferred_identity_group", "value": value, "status": "unresolved"}
@@ -114,6 +136,18 @@ class ValidateGraph:
             *result["two_way_flags"],
             *result["type_flags"],
         ]
+        if invalid_upstream_flag_count:
+            validation_flags.append({
+                "kind": "invalid_upstream_flags",
+                "count": invalid_upstream_flag_count,
+                "reason": "Legacy edge artifact contains flags without a nonempty kind; omitted from review",
+            })
+        if not result["quality_gate"]["passed"]:
+            validation_flags.append({
+                "kind": "structural_consistency_gate_closed",
+                "reason": result["quality_gate"]["warning"],
+                "quality_gate": result["quality_gate"],
+            })
         stats = {
             "requires_edge_count": len(result["requires_edges"]),
             "removed_cycle_edge_count": len(result["removed_cycle_edges"]),
@@ -122,6 +156,8 @@ class ValidateGraph:
             "redundant_edge_count": sum("redundant_via" in edge for edge in result["requires_edges"]),
             "validation_flag_count": len(validation_flags),
             "incremental_node_count": len(resolution_log),
+            "invalid_upstream_flag_count": invalid_upstream_flag_count,
+            "remaining_scc_size_distribution": remaining_scc_size_distribution,
         }
         edge_payload = {
             key: value
@@ -156,6 +192,7 @@ class ValidateGraph:
             upstream_version=edges_artifact.version,
             manifest_fields={
                 "stage": "validated",
+                "check_name": "structural_consistency_check",
                 "quality_gate": result["quality_gate"],
                 "type_registry": result["type_registry"],
                 "stats": stats,

@@ -13,7 +13,7 @@ def render_roadmap_html(payload):
     for stage in payload["stages"]:
         concepts = "".join(f"<li>{html.escape(names[node_id])}</li>" for node_id in stage["node_ids"])
         stage_rows.append(
-            f'<section><h2>{html.escape(stage["stage_id"])} · layer {stage["layer"]}</h2><ul>{concepts}</ul></section>'
+            f'<section><h2>{html.escape(stage["title"])} · layer {stage["layer"]}</h2><ul>{concepts}</ul></section>'
         )
     edge_rows = []
     for edge in payload.get("requires_edges", []):
@@ -30,11 +30,14 @@ def render_roadmap_html(payload):
 
 
 class BuildRoadmap:
-    def __init__(self, store, *, stage_cap=8):
-        if type(stage_cap) is not int or not 5 <= stage_cap <= 8:
-            raise ValueError("stage_cap phải nằm trong [5, 8]")
+    def __init__(self, store, *, stage_cap=8, stage_floor=3):
+        if type(stage_cap) is not int or stage_cap < 1:
+            raise ValueError("stage_cap phải là số nguyên dương")
+        if type(stage_floor) is not int or not 1 <= stage_floor <= stage_cap:
+            raise ValueError("stage_floor phải nằm trong [1, stage_cap]")
         self.store = store
         self.stage_cap = stage_cap
+        self.stage_floor = stage_floor
 
     def _validated(self, doc_id, latest):
         artifact = latest
@@ -54,14 +57,13 @@ class BuildRoadmap:
         if validated.payload.get("stage") != "validated":
             raise ValueError("stage roadmap cần artifact validated")
         config = {
-            "algorithm_id": "a10-kahn-stage-v5",
+            "algorithm_id": "a10-coffman-graham-stage-v7",
             "validated_version": validated.version,
             "validated_config_hash": validated.manifest["config_hash"],
-            "stage_rule": "layer-intersection-topic-cluster",
-            "kahn_queue": "global-node-id-min-heap",
-            "requires_cycles": "contract-two-node-scc-reject-larger-v1",
+            "stage_rule": "width-capped-layer-with-safe-floor-merge",
+            "requires_cycles": "assert-dag",
             "stage_cap": self.stage_cap,
-            "fallback": "document-order-when-quality-gate-fails",
+            "stage_floor": self.stage_floor,
         }
         config_hash = digest(config)
         source_hash = digest(validated.payload)
@@ -84,6 +86,7 @@ class BuildRoadmap:
             validated.payload.get("completed_secondary_pairs", []),
             validated.payload.get("suspected_pairs", []),
             stage_cap=self.stage_cap,
+            stage_floor=self.stage_floor,
             quality_gate=validated.payload["quality_gate"],
         )
         display_flags = [
@@ -95,6 +98,8 @@ class BuildRoadmap:
             "stage_count": len(roadmap["stages"]),
             "unreviewed_node_count": len(roadmap["coverage_flags"]),
             "contracted_component_count": len(roadmap["contracted_components"]),
+            "unmergeable_small_stage_count": len(roadmap["unmergeable_small_stages"]),
+            "longest_path": roadmap["longest_path"],
         }
         payload = {
             **validated.payload,
@@ -105,6 +110,7 @@ class BuildRoadmap:
             "chunk_stage_map": roadmap["chunk_stage_map"],
             "coverage_flags": roadmap["coverage_flags"],
             "contracted_components": roadmap["contracted_components"],
+            "unmergeable_small_stages": roadmap["unmergeable_small_stages"],
             "display_flags": display_flags,
             "stats": stats,
         }

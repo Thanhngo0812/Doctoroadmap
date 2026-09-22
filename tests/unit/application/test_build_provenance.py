@@ -162,6 +162,19 @@ def test_valid_quote_adds_provenance_and_rebuilds_derivatives():
     assert len(artifact.payload["provenance_decision_log"]) == 1
 
 
+def test_missing_source_definition_list_accepts_verified_quote():
+    store = Store()
+    del store.mentions.payload["nodes"][0]["defining_chunk_ids"]
+    model = Model([{"chunk_id": "c1", "quote": "Alpha is defined as the first concept."}])
+
+    artifact, _ = BuildProvenance(store, model, concurrency=1).execute("doc")
+
+    alpha = next(node for node in artifact.payload["nodes"] if node["node_id"] == "a")
+    assert alpha["defining_chunk_ids_source"] == []
+    assert alpha["defining_chunk_ids"] == ["c1"]
+    assert artifact.payload["mention_map"]["c1"]["a"]["level"] == "definition"
+
+
 def test_non_verbatim_quote_is_rejected_without_retry_or_overwrite():
     store = Store()
     model = Model([{"chunk_id": "c1", "quote": "Alpha is the first concept."}])

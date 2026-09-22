@@ -5,7 +5,8 @@
 
 **Blocked by:** 05, 11, và việc gán nhãn đã đóng băng. (Việc của Claude.)
 
-**Status:** ready-for-agent — bộ chấm đã xong ở vé 05 (nhánh `ve-05-bo-cham`), chỉ còn chờ nhãn người
+**Status:** chờ hai người gán nhãn độc lập — bộ chấm đã xong ở vé 05; bốn bảng trống đã sinh
+từ artifact provenance thật ngày 2026-09-22, chưa có nhãn để chạy E1/E2.
 
 > **Hai chương vàng (chủ dự án chốt 2026-09-18, hướng a):** một chương giữa của `doc-1` (tiếng Việt) và một
 > chương giữa của `doc-2` (tiếng Anh). Bộ vàng song ngữ, nên **mọi bảng phải tách theo từng chương**, không gộp
@@ -37,3 +38,15 @@
 - [ ] Áp **luật chọn bộ sinh mặc định** đã viết trước ở D5, và ghi kết quả áp luật.
 - [ ] Mọi số kèm khoảng tin cậy; chỗ nào khoảng chồng lấn thì viết "chưa phân biệt được".
 - [ ] Báo cáo cả số trên hợp và trên giao nhãn của hai người, để xem độ nhạy.
+
+## Bảng gán đã chuẩn bị — 2026-09-22
+
+| Tài liệu/chương | Phạm vi section cấp 2 | Đích sau provenance | Dòng quan hệ mỗi bảng | File A1/A2 trong `artifacts/a8-gold/` |
+|---|---|---:|---:|---|
+| `doc-1` Chương 3, mục 3.1–3.4 | `10-13` | 45 | 360 | `doc-1-chuong-10-13-A1.xlsx` / `doc-1-chuong-10-13-A2.xlsx` |
+| `doc-2` mục 3C, tr. 85–95 có đích | `98-115` | 24 | 200 | `doc-2-chuong-98-115-A1.xlsx` / `doc-2-chuong-98-115-A2.xlsx` |
+
+Cả hai bảng của mỗi chương dùng cùng `concept_hash` và cùng graph provenance v3 để bảo đảm
+phạm vi giống nhau, nhưng là **bảng trống** cho hai người làm riêng; không dùng mô hình tự điền.
+`doc-1` sau provenance có 45/45 mô tả qua luật tiếng Việt; `doc-2` có 24/24 qua luật tiếng Anh.
+Khi nhận lại file, kiểm A1/A2 thực sự khác nhau trước khi tính đồng thuận như checklist trên.

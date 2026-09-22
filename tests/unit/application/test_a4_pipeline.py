@@ -96,6 +96,26 @@ def test_canonical_manifest_records_token_cost_and_gold_gate(tmp_path):
     assert result.manifest["gold_sheet_id"] == "frozen-sheet"
 
 
+def test_declared_language_overrides_detection_and_changes_only_declared_cache(tmp_path):
+    store = fixture_store(tmp_path)
+    model = FakeModel()
+    use_case = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model))
+
+    detected, reused = use_case.execute("baocao-canhan")
+    declared, declared_reused = use_case.execute("baocao-canhan", declared_language="en")
+    replay, replay_reused = use_case.execute("baocao-canhan")
+
+    assert not reused and not declared_reused and replay_reused
+    assert replay.version == detected.version
+    assert declared.version != detected.version
+    assert "declared_language" not in detected.manifest["config"]
+    assert declared.manifest["config"]["declared_language"] == "en"
+    assert detected.manifest["document_language"] == "vi"
+    assert detected.manifest["language_decision"] == "detected"
+    assert declared.manifest["document_language"] == "en"
+    assert declared.manifest["language_decision"] == "declared"
+
+
 def test_canonical_concurrency_bound_order_retry_and_cache(tmp_path):
     class Probe:
         model_id = "fixture-model"
