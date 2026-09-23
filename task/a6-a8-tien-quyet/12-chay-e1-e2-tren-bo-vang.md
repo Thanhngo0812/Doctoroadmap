@@ -89,10 +89,10 @@ Khoảng 83 phút (`doc-1` A2) và 152 phút (`doc-2` A2) là **khoảng từ l�
 - [x] Hai file gán phải **khác nhau**: đây là hai người làm độc lập, không phải một bản chép làm hai. Kiểm ngay khi
       nhận file, hai file trùng khít thì κ vô nghĩa và bộ vàng không dùng được.
 - [x] E1: bảng sáu loại vị trí, kèm NMI giữa cụm chủ đề và chương, cho cả hai giáo trình.
-- [x] E2: bảng theo từng bộ sinh — **còn thiếu** phần ba cấu hình định tuyến.
-- [ ] Áp **luật chọn bộ sinh mặc định** đã viết trước ở D5, và ghi kết quả áp luật.
+- [x] E2: bảng theo từng bộ sinh và ba cấu hình định tuyến.
+- [x] Áp **luật chọn bộ sinh mặc định** đã viết trước ở D5, và ghi kết quả áp luật.
 - [x] Mọi số kèm khoảng tin cậy; chỗ nào khoảng chồng lấn thì viết "chưa phân biệt được".
-- [ ] Báo cáo cả số trên hợp và trên giao nhãn của hai người, để xem độ nhạy.
+- [x] Báo cáo cả số trên hợp và trên giao nhãn của hai người, để xem độ nhạy.
 
 ## Kết quả E1/E2/E3 — 2026-09-23
 
@@ -149,3 +149,76 @@ Cả hai bảng của mỗi chương dùng cùng `concept_hash` và cùng graph 
 phạm vi giống nhau, nhưng là **bảng trống** cho hai người làm riêng; không dùng mô hình tự điền.
 `doc-1` sau provenance có 45/45 mô tả qua luật tiếng Việt; `doc-2` có 24/24 qua luật tiếng Anh.
 Khi nhận lại file, kiểm A1/A2 thực sự khác nhau trước khi tính đồng thuận như checklist trên.
+
+### E2 đầy đủ — bộ sinh, ba cấu hình định tuyến, và áp luật D5
+
+**Bộ sinh, `doc-1` (40 cạnh vàng) / `doc-2` (61 cạnh vàng).** Cột **RIÊNG** là số cạnh vàng **chỉ bộ ấy** phủ —
+đây là cột mà luật D5 xét, không phải cột recall.
+
+| Bộ sinh | `doc-1` recall | RIÊNG | cặp | `doc-2` recall | RIÊNG | cặp |
+|---|---|---|---|---|---|---|
+| **contact** | **60,0%** [0,46–0,73] | **2** | 3.123 | **54,1%** [0,45–0,65] | **5** | 9.334 |
+| same_section | 52,5% [0,38–0,68] | 1 | 559 | 6,6% [0,02–0,12] | 2 | 342 |
+| citation_hard | 50,0% [0,34–0,68] | **0** | 1.184 | 47,5% [0,36–0,59] | 1 | 2.869 |
+| proposed_relation | 30,0% [0,20–0,39] | **0** | 199 | 27,9% [0,16–0,43] | 2 | 597 |
+| citation_soft | 15,0% [0,05–0,27] | **0** | 575 | 13,1% [0,05–0,23] | 1 | 416 |
+
+**Ba cấu hình định tuyến** (sinh cặp theo cả hai trục dù định tuyến chọn trục nào, đúng D6):
+
+| Cấu hình | `doc-1` recall | cặp | `doc-2` recall | cặp |
+|---|---|---|---|---|
+| **cả hai trục + bộ sinh** | 92,5% [0,85–1,00] | 7.961 | **85,2%** [0,77–0,94] | 24.645 |
+| cả hai trục | **92,5%** [0,85–1,00] | 7.916 | 78,7% [0,68–0,87] | 23.849 |
+| chỉ trục cụm chủ đề | 87,5% [0,79–0,96] | 6.435 | 77,0% [0,67–0,86] | 21.100 |
+| chỉ trục chương + bộ sinh | 85,0% [0,76–0,94] | 5.578 | 75,4% [0,64–0,88] | 14.227 |
+| chỉ trục chương | 85,0% [0,76–0,94] | 5.519 | 67,2% [0,55–0,80] | 12.927 |
+| chỉ hợp các bộ sinh | 80,0% [0,71–0,90] | 3.668 | 72,1% [0,62–0,84] | 9.984 |
+
+**Đọc theo đúng luật "khoảng chồng lấn thì chưa phân biệt được":**
+
+- Trên `doc-1`, **mọi khoảng đều chồng lấn nhau** — 92,5% [0,85–1,00] và 80,0% [0,71–0,90] vẫn giao nhau. Kết luận
+  đúng cho `doc-1` là **chưa phân biệt được cấu hình nào hơn**, dù điểm ước lượng xếp hạng rõ.
+- Trên `doc-2` thì phân biệt được một cặp: **cả hai trục + bộ sinh [0,77–0,94] so với chỉ trục chương [0,55–0,80]**
+  gần như không giao. Các cặp còn lại chồng lấn.
+- Điểm ước lượng **nhất quán cùng chiều trên cả hai tài liệu**: hai trục ≥ một trục, và trục cụm ≥ trục chương.
+  Đây là bằng chứng ủng hộ D6 (sinh cặp cả hai trục bất kể định tuyến), nhưng phải nói là **xu hướng nhất quán**,
+  không phải khác biệt có ý nghĩa thống kê.
+- `doc-1`: thêm các bộ sinh lên trên hai trục **không thêm cạnh vàng nào** (37 → 37). `doc-2` thêm **4** cạnh
+  (48 → 52). Bộ sinh có giá trị hay không **phụ thuộc giáo trình**.
+
+### Áp luật D5 — và một lỗ hổng của chính luật
+
+Luật viết trước: *"Một bộ sinh chỉ bị bỏ khỏi mặc định khi trên bộ vàng nó không đóng góp cạnh vàng nào mà các bộ
+khác bỏ sót."*
+
+| | bộ sinh có RIÊNG = 0 |
+|---|---|
+| `doc-1` | `citation_hard`, `citation_soft`, `proposed_relation` |
+| `doc-2` | **không bộ nào** |
+
+**Luật cho hai câu trả lời ngược nhau, và nó không nói phải áp trên từng chương hay trên cả corpus.** Đây là lỗ
+hổng của luật, không phải của số đo.
+
+**Phán quyết: giữ cả năm bộ sinh.** Lý do bám đúng triết lý mà chính D5 viết ra — *"cặp bỏ sót thì mất vĩnh viễn,
+cặp thừa thì bước phán tự loại"*. Bỏ `citation_hard` sẽ mất 1 cạnh vàng trên `doc-2`, `citation_soft` mất 1,
+`proposed_relation` mất 2. Mất là mất vĩnh viễn; giữ thì chỉ tốn thêm vài USD tiền phán.
+
+**Spec cần sửa:** D5 phải nói rõ *một bộ sinh chỉ bị bỏ khi nó có phủ riêng bằng 0 trên **mọi** chương vàng*. Ghi
+lại để đợt sửa spec tiếp theo làm.
+
+### Độ nhạy theo cách gộp nhãn
+
+Recall từng bộ sinh, tính trên ba cách dựng bộ vàng:
+
+| | cạnh vàng | contact | citation_hard | same_section | proposed_relation | citation_soft |
+|---|---|---|---|---|---|---|
+| `doc-1` hợp nhãn | 52 | 62,7% | 47,1% | 56,9% | 31,4% | 13,7% |
+| `doc-1` giao nhãn | 23 | 60,9% | 56,5% | 60,9% | 39,1% | 13,0% |
+| `doc-1` **sau hội ý** | 40 | 60,0% | 50,0% | 52,5% | 30,0% | 15,0% |
+| `doc-2` hợp nhãn | 67 | 50,7% | 44,8% | 6,0% | 28,4% | 11,9% |
+| `doc-2` giao nhãn | 46 | 60,9% | 50,0% | 8,7% | 32,6% | 17,4% |
+| `doc-2` **sau hội ý** | 61 | 54,1% | 47,5% | 6,6% | 27,9% | 13,1% |
+
+**Xếp hạng bộ sinh ổn định qua cả ba cách gộp** trên cả hai tài liệu: `contact` luôn đứng đầu, `citation_soft`
+luôn cuối. Kết luận của E2 **không phụ thuộc** vào việc chọn hợp, giao hay bản sau hội ý — đó là điều đáng nói,
+vì nó loại trừ khả năng kết quả là sản phẩm của một cách gộp nhãn có lợi.
