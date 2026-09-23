@@ -5,7 +5,7 @@
 
 **Blocked by:** 05, 11, và việc gán nhãn đã đóng băng. (Việc của Claude.)
 
-**Status:** **đã có nhãn của cả hai người trên cả hai chương (2026-09-23)**; κ đã tính và đạt mốc văn liệu.
+**Status:** **hội ý xong, bộ vàng đóng băng, E1/E2/E3 đã chạy (2026-09-23).** doc-1 40 cạnh, doc-2 61 cạnh.
 Chờ **hội ý** hai file `-hoi-y.xlsx` rồi mới đóng băng bộ vàng và chạy E1/E2.
 
 > **Hai chương vàng (chủ dự án chốt 2026-09-18, hướng a):** một chương giữa của `doc-1` (tiếng Việt) và một

@@ -1795,3 +1795,112 @@ tra toàn bộ đầu và đuôi của 67 cạnh vàng `doc-2`. Nên **nhãn kh�
 **Và một luật phương pháp nên viết vào spec:** *một khi bộ vàng đã gán, cấu hình A3/A4 phải đóng băng cho tới khi
 thí nghiệm chạy xong.* Bộ vàng là artifact đắt nhất của đợt — nó tốn người, không tốn máy — nên pipeline phải đứng
 yên quanh nó, chứ không phải ngược lại. Hiện không có gì trong spec nói điều này, và F122 suýt vi phạm nó.
+
+---
+
+# Vòng 41 — Hội ý xong, bộ vàng đóng băng, và E1/E2 chạy thật · 2026-09-23
+
+Suite **478 xanh** khi chặn mạng.
+
+## Bộ vàng cuối
+
+| | cùng ghi | phải quyết | giữ | bỏ | **bộ vàng cuối** |
+|---|---|---|---|---|---|
+| `doc-1` Chương 3 (VN) | 23 | 29 | 17 | 12 | **40 cạnh** |
+| `doc-2` mục 3C (EN) | 46 | 21 | 15 | 6 | **61 cạnh** |
+
+Đọc ngược cả hai file hội ý: **0 lỗi, 0 cảnh báo**, và **50/50 dòng lệch đều có ghi lý do**. Lý do viết cụ thể,
+bám văn bản — ví dụ *"Sách chứng minh tiêu chuẩn: hệ phụ thuộc khi một véc tơ biểu diễn được qua các véc tơ còn
+lại"*, *"A1 đối chiếu 3.29: định nghĩa nêu m, n là số nguyên KHÔNG ÂM"*.
+
+## F125 🟡 — bộ vàng cuối gần như trùng khít nhãn của A1
+
+Đây là điều báo cáo **phải nói ra**, vì người phản biện sẽ tự thấy:
+
+| | bộ vàng | A1 | A2 | vàng ≡ A1? | cạnh chỉ A2 có mà vào được vàng |
+|---|---|---|---|---|---|
+| `doc-1` | 40 | 40 | 35 | **đúng, không lệch một cạnh** | **0** |
+| `doc-2` | 61 | 59 | 54 | + đúng 2 cạnh | **2** |
+
+Trên cả hai chương, **không một cạnh nào của A1 bị bác**, và A2 đóng góp tổng cộng **2 cạnh**. Trên `doc-1`, mọi
+cạnh chỉ-A1 được giữ (17/17) và mọi cạnh chỉ-A2 bị bỏ (12/12) — một phân tách hoàn hảo theo người đề xuất.
+
+**Điều này không làm hỏng gì**, và tôi không gọi đó là gian: κ được tính **trước** hội ý trên hai bộ nhãn độc lập
+nên vẫn là số đo đồng thuận thật; và 50 dòng đều có lý lẽ viết tay, nên hội ý đúng là làm từng dòng.
+
+Nhưng nó đổi **cách gọi tên đóng góp**. Không nên viết "bộ vàng hai người gán có hội ý" như thể cả hai định hình
+kết quả. Câu đúng là: **hai người gán độc lập, κ 0,61 và 0,81; hội ý giải mọi khác biệt, và kết quả trùng nhãn của
+A1 trừ hai cạnh.** Nói cách khác, giá trị của người thứ hai ở lượt này là **kiểm chứng** rằng nhãn của A1 chịu
+được soi xét, không phải đóng góp nội dung. Đó vẫn là một thiết kế hợp lệ, chỉ là một tuyên bố khiêm tốn hơn.
+
+## F124 🟠 — bộ chấm của tôi từ chối mọi bộ vàng thật
+
+Chấm bộ vàng vừa đóng băng thì nổ ngay:
+
+```
+lỗi: bộ vàng gán cho danh sách khái niệm khác với canonical đang dùng
+     (vàng 862407a855db…, canonical 31c1789bf839…)
+```
+
+Gốc nằm trong mã **của tôi**, từ vé 05: `score_from_store` gọi `annotation_scope` **không truyền `graph_payload`**,
+nên danh tính khái niệm dựng từ canonical thô. Nhưng D13 bắt cột "Nơi dạy" lấy từ stage `provenance`, nên **mọi
+bảng gán thật đều sinh có `--graph`**. Hai bên dựng hash khác nhau, và bộ chấm tự từ chối đúng thứ nó sinh ra để
+chấm.
+
+Kiểm chứng: truyền `graph_payload` tái hiện **chính xác** hash của bộ vàng ở cả hai tài liệu, ở cả v3 và v6.
+
+Sửa: dựng scope từ chính payload được truyền vào, và chỉ đổi về provenance gốc **sau** khi đã chốt danh tính —
+chế độ `source` chỉ để so E1 trước/sau khi vá, nên nó không được đổi danh tính khái niệm. Test mới đỏ trước bản
+sửa với đúng thông điệp lỗi thật.
+
+*Suy luận:* lỗi này sống sót qua vé 05 vì fixture của test dùng `defining_chunk_ids` **giống hệt** giữa kho và
+payload, nên vá hay không vá đều ra một hash. Một fixture "không có gì khác nhau" thì không phân biệt được hai
+đường đi. Đúng tinh thần `AGENTS.md` §5: test phải **thấy được sự khác biệt** mà nó tuyên bố là giữ.
+
+## E1 — cạnh tiên quyết của giáo trình nằm ở đâu
+
+Câu hỏi trung tâm của đợt, giờ có số. **Hai giáo trình khác nhau rất xa**, nên D13 đúng khi bắt tách theo chương.
+
+| Loại vị trí | `doc-1` (VN, 40 cạnh) | `doc-2` (EN, 61 cạnh) |
+|---|---|---|
+| cùng chunk | **30,0%** [0,16–0,46] | 3,3% [0,00–0,08] |
+| cùng mục | **22,5%** [0,10–0,36] | 3,3% [0,00–0,08] |
+| cùng chương | 2,5% | 0,0% |
+| cùng cụm chủ đề | 2,5% | **18,0%** [0,09–0,29] |
+| **bắc cầu qua chunk nhắc cả hai, kênh cứng** | **25,0%** [0,11–0,39] | **42,6%** [0,31–0,55] |
+| bắc cầu, chỉ kênh dense | 0,0% | **9,8%** [0,03–0,18] |
+| ngầm (không nối được) | 17,5% [0,08–0,27] | 23,0% [0,10–0,35] |
+
+NMI giữa cụm chủ đề và chương: **0,756** (`doc-1`), **0,789** (`doc-2`).
+
+Ba điều đọc được:
+
+1. **`doc-1` là giáo trình "cục bộ": 52,5% cạnh nằm trong cùng chunk hoặc cùng mục.** `doc-2` gần như ngược hẳn —
+   chỉ **6,6%** cục bộ, còn **52,4%** phải đi qua cầu nhắc tên. Axler viết theo lối dẫn chiếu ngược liên tục; giáo
+   trình Việt viết theo lối định nghĩa tại chỗ.
+2. **Mention map gánh phần lớn cạnh của `doc-2`**, và **9,8% cạnh chỉ kênh dense mới với tới** — tức kênh dense
+   không thừa. Đây là bằng chứng định lượng đầu tiên cho thành phần mà dự án coi là đóng góp.
+3. **Cạnh "ngầm" 17,5% và 23,0% là trần recall.** Không bộ sinh nào với tới chúng, nên dù A8 hoàn hảo cũng không
+   thể vượt ~80%.
+
+**Khoảng tin cậy rộng** vì n = 40 và 61. Mọi câu trích ra ngoài phải mang theo khoảng, không trích điểm trần trụi.
+
+## E2 — bộ sinh cặp nào đáng giữ (`doc-2`)
+
+| Bộ sinh | phủ | recall | phủ riêng | số cặp sinh ra |
+|---|---|---|---|---|
+| **contact** (mention map) | 33/61 | **54,1%** | **5** | 9.334 |
+| citation_hard | 29/61 | 47,5% | 1 | 2.869 |
+| proposed_relation | 17/61 | 27,9% | 2 | 597 |
+| citation_soft | 8/61 | 13,1% | 1 | 416 |
+| same_section | 4/61 | 6,6% | 2 | 342 |
+
+`contact` vừa recall cao nhất vừa phủ riêng nhiều nhất — nhưng cũng sinh **9.334 cặp**, gấp ba bộ đứng nhì. Luật
+chọn bộ sinh mặc định viết trước ở D5 phải được áp lên đúng bảng này, và kết quả áp luật ghi vào vé 12.
+
+## E3 sơ bộ (`doc-2`, có tính bắc cầu)
+
+precision **0,147** · recall **0,551** · F1 **0,232** — 435 cạnh thừa, 61 cạnh thiếu trên 136 cạnh vàng sau bao
+đóng. Recall 55% khớp với phép đo ở vòng 39 (13/13 ca lộ trình xếp sai đều là cạnh máy không có). **Precision
+0,147 là con số phải giải thích**, không phải con số để giấu: nó nói A8 sinh thừa rất nhiều, và E7 sẽ đo xem các
+bước nhất quán của A9 cắt được bao nhiêu phần thừa ấy.
