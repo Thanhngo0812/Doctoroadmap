@@ -1904,3 +1904,100 @@ precision **0,147** · recall **0,551** · F1 **0,232** — 435 cạnh thừa, 6
 đóng. Recall 55% khớp với phép đo ở vòng 39 (13/13 ca lộ trình xếp sai đều là cạnh máy không có). **Precision
 0,147 là con số phải giải thích**, không phải con số để giấu: nó nói A8 sinh thừa rất nhiều, và E7 sẽ đo xem các
 bước nhất quán của A9 cắt được bao nhiêu phần thừa ấy.
+
+---
+
+# Vòng 42 — Truy recall tới tận gốc, và một lỗi thiết kế đo được · 2026-09-23
+
+Vé 12 xong toàn bộ checklist. Vòng này đi tìm câu trả lời cho "làm sao để đồ thị dùng được", và tìm ra một thứ
+lớn hơn dự tính.
+
+## Trước hết, hai con số tôi đưa sai phải sửa
+
+**Một.** Tôi báo cáo **precision 0,147**. Đó là bản **có tính bắc cầu**, và nó phạt máy vì đồ thị máy sâu hơn bộ
+vàng. Con số đọc được là bản **trực tiếp**:
+
+| | precision | recall | F1 | đúng / thừa / thiếu |
+|---|---|---|---|---|
+| `doc-1` | **0,656** | 0,525 | 0,583 | 21 / 11 / 19 |
+| `doc-2` | **0,644** | 0,475 | 0,547 | 29 / 16 / 32 |
+
+P ≈ 0,65 và R ≈ 0,50, **nhất quán qua hai giáo trình và hai ngôn ngữ**. Bản bắc cầu vẫn phải báo cáo, nhưng phải
+gọi đúng tên và giải thích vì sao nó thấp hơn.
+
+**Hai.** Tôi viết *"pass phụ mới xử 14% sổ cặp của `doc-1` và 6% của `doc-2`"*, ngụ ý nó hết ngân sách. **Sai.**
+Nó xử **513/513** và **565/565** cặp mà luật cho phép hỏi — tức **100%**. Không có trần ngân sách nào trong mã.
+
+## Recall mất ở đâu: ba phép loại trừ
+
+| Chặng | `doc-1` | `doc-2` |
+|---|---|---|
+| Cạnh vàng có cả hai đầu cùng phiên hoặc trong sổ cặp | 92,5% | 78,7% |
+| Bộ sinh đề cử được cặp | 80,0% | 72,1% |
+| Máy thật sự tạo ra cạnh | 52,5% | 47,5% |
+
+- **Executor từ chối 0 cạnh vàng.** Luật bằng chứng D9 không cắt mất gì. Recall không phải do ta tự bắn vào chân.
+- **Sinh cặp không phải nút thắt.** 92,5% và 78,7% cặp vàng đã có cả hai đầu trước mặt mô hình.
+- **26 trên 51 cạnh vàng thiếu nằm sẵn trong sổ cặp nghi** mà pass phụ chưa bao giờ hỏi tới.
+
+## Xếp hạng sổ cặp: thử và **thất bại**, ghi lại vì câu "không được" cũng là kết quả
+
+Trước khi tiêu tiền tôi thử xếp hạng sổ bằng ba tín hiệu miễn phí — số bộ sinh đề cử, số chunk nhắc cả hai, và
+bộ sinh nào — rồi xem cạnh vàng còn thiếu nằm ở đâu:
+
+| Cách xếp | `doc-1`: quét bao nhiêu sổ để phủ 80% | `doc-2` |
+|---|---|---|
+| thứ tự sổ (đối chứng) | 71,3% | 69,5% |
+| số chunk chạm ↓ | **13,2%** | 93,5% |
+| số bộ sinh ↓ rồi chunk ↓ | **11,5%** | 95,8% |
+| bộ sinh ưu tiên ↓ rồi chunk ↓ | 33,2% | 70,8% |
+
+**Chạy tốt trên `doc-1`, thất bại hoàn toàn trên `doc-2`** — ở đó mọi tín hiệu ngang hoặc **tệ hơn** đối chứng
+ngẫu nhiên. Với n = 2 thì không kết luận được gì ngoài: **các tín hiệu rẻ này không tổng quát hoá.** Ghi lại để
+đợt sau đừng thử lại cùng một thứ.
+
+## F126 🔴 — 78% cạnh tiên quyết là **liên cụm**, mà D6 cấm pass phụ hỏi đúng vùng đó
+
+| | cạnh vàng | cùng cụm | **liên cụm** | |
+|---|---|---|---|---|
+| `doc-1` | 40 | 9 | **31** | **77,5%** |
+| `doc-2` | 61 | 13 | **48** | **78,7%** |
+
+D6 viết: tuyến `chapter` → pass phụ *"quét **cùng cụm chủ đề**: cặp nghi tiên quyết cùng cụm chưa có đường nối"*.
+Mã thi hành đúng vậy (`select_secondary_pairs`, `if route == "chapter" and not same_cluster: continue`).
+
+Hệ quả đo được: **25 trên 26 cạnh vàng thiếu nằm trong sổ là cặp liên cụm — cấu trúc không cho phép hỏi.** Chỉ
+đúng **1** cặp là cùng cụm.
+
+**Vì sao luật này sai, và nó sai theo cách đẹp đẽ.** NMI giữa cụm chủ đề và chương là **0,756** và **0,789** — cụm
+gần như trùng chương. Nên "cùng cụm" ≈ "cùng chương", mà **cùng chương chính là vùng pass chính đã quét rồi**. Luật
+D6 đang chĩa pass phụ vào đúng chỗ đã được phủ, và cấm nó vào đúng chỗ còn trống. Pass phụ chạy 707 và 682 lời
+gọi để soi lại vùng pass chính vừa đi qua.
+
+Điều này cũng khớp E1: trên `doc-2`, "cùng cụm chủ đề" chỉ chiếm 18,0% cạnh vàng, còn 52,4% là cạnh bắc cầu qua
+chunk nhắc tên — tức **cụm chủ đề không chứa quan hệ tiên quyết**, nó chứa quan hệ *chủ đề*. Hai thứ khác nhau, và
+spec đã ngầm coi chúng là một.
+
+*Suy luận:* đây không phải lỗi cài đặt mà là **giả định nền sai**. Lúc viết D6 chưa ai có bộ vàng để biết cạnh
+tiên quyết nằm đâu; giả định "cụm chủ đề gom được khái niệm liên quan nên tiên quyết nằm trong cụm" là hợp lý khi
+chưa đo. Giờ đo rồi thì nó sai, và sai ở mức 78%.
+
+## Việc phải làm, và giá
+
+Đổi luật pass phụ cho tuyến `chapter`: **hỏi cặp liên cụm** thay vì cặp cùng cụm — hoặc hỏi cả hai và để bước tỉa
+theo khả đạt làm việc của nó.
+
+| | cặp phải hỏi thêm | giá ước tính |
+|---|---|---|
+| `doc-1` | 3.155 | ~2,4 USD |
+| `doc-2` | 9.419 | ~7,1 USD |
+| | | **~9,5 USD** |
+
+Giá lấy từ telemetry thật: `doc-2` xử 565 cặp hết 0,428 USD, tức **0,00076 USD/cặp**. Ngân sách đã dùng 9,50/50,
+nên lượt này đưa lên ~19/50.
+
+**Biên trên thu lại: 25 cạnh vàng.** Nhưng đó là biên trên — mô hình có thể trả lời "không có quan hệ". Vòng 38 đo
+pass phụ chỉ cho 0,07 cạnh mỗi lời gọi, nên con số thật sẽ thấp hơn. **Đây chính là thí nghiệm E6** (trích mở so
+kiểm cặp), nên tiền tiêu ra vừa sửa sản phẩm vừa trả lời một câu của báo cáo.
+
+**Đây là quyết định của chủ dự án**, vì nó sửa một luật đã chốt trong spec, không phải một lỗi cài đặt.
