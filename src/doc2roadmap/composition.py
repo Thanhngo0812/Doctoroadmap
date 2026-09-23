@@ -137,7 +137,7 @@ def build_canonical(*, prepare=False):
     return Canonicalize(store, embedding, graph_config=graph, reasoning=reasoning)
 
 
-def build_learning_graph():
+def build_learning_graph(*, allow_spend=False):
     from doc2roadmap.application.use_cases import (
         BuildClusters,
         BuildLearningGraph,
@@ -150,15 +150,18 @@ def build_learning_graph():
         ValidateGraph,
     )
 
+    from doc2roadmap.application.spend_guard import SpendGuard
+
     settings, store, embedding = _a3_dependencies()
-    model = GeminiEntityExtractor(
+    # Mọi lời gọi trả tiền của chuỗi đồ thị đi qua chốt chặn: một đổi thuật toán (như F126) không được lặng lẽ tiêu tiền.
+    model = SpendGuard(GeminiEntityExtractor(
         settings.gemini_api_key.get_secret_value(),
         settings.roadmap_model_id,
         timeout_seconds=settings.gemini_timeout_seconds,
         max_retries=settings.gemini_max_retries,
         temperature=0.0,
         max_output_tokens=settings.extraction_max_output_tokens,
-    )
+    ), allowed=allow_spend)
     generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}
     return BuildLearningGraph(
         BuildClusters(

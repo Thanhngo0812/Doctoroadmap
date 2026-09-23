@@ -15,6 +15,11 @@ Hệ thống gồm **2 pha** và **2 nhánh**:
 
 Nguyên tắc vận hành xuyên suốt: **mỗi bước ghi output trung gian ra storage** (bảng riêng hoặc file JSON có version). Các bước dùng LLM là đắt và dễ lỗi nhất — khi cần chỉnh prompt hay retry, chỉ chạy lại từ bước đó.
 
+**Không chi tiêu ngầm** (spec v2, W1): mọi lời gọi mô hình trả tiền của chuỗi đồ thị đi qua một chốt chặn; lệnh
+`roadmap` chỉ được gọi mô hình khi có `--allow-spend`, thiếu cờ thì dừng ở stage đầu tiên định chi và nói tên stage.
+Stage có cache không cần cờ. Lý do: đổi thuật toán một stage (như F126 đổi pass phụ) làm mọi tài liệu chạy lại stage
+đó khi gọi `roadmap`, và không ai được biết trước nếu lệnh không dừng lại.
+
 ```
 PHA A (offline)
 

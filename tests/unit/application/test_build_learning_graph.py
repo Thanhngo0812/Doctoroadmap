@@ -96,3 +96,25 @@ def test_switching_configuration_a_b_a_reuses_the_original_a_chain():
     current["value"] = "A"
     second_a, reused = use_case.execute("doc", stop_after="mentions")
     assert reused and second_a is first_a and mentions.calls == 2
+
+
+def test_a_blocked_paid_call_is_reported_with_the_stage_that_made_it():
+    import pytest
+
+    from doc2roadmap.application.spend_guard import SpendNotAllowed
+
+    calls = []
+
+    class Paid(Stage):
+        def execute(self, doc_id, *, upstream=None):
+            calls.append(self.name)
+            raise SpendNotAllowed()
+
+    use_case = BuildLearningGraph(
+        Stage("clusters", calls), Stage("mentions", calls), Stage("provenance", calls), Stage("main", calls),
+        Paid("secondary", calls), Stage("validated", calls), Stage("teaching", calls), Stage("stages", calls),
+    )
+    with pytest.raises(SpendNotAllowed) as error:
+        use_case.execute("doc")
+    assert error.value.stage == "secondary_edges" and "secondary_edges" in str(error.value)
+    assert calls[-1] == "secondary"  # dừng ngay, không chạy stage nào sau đó

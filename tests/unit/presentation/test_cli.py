@@ -267,3 +267,20 @@ def test_a8_gold_merge_keeps_both_labels_and_refuses_to_write_a_broken_gold(
     assert main([*command[:-1], str(outside)]) == 2
     assert "chỉ ghi trong artifact_dir" in capsys.readouterr().err
     assert not outside.exists()
+
+
+def test_roadmap_spends_only_when_explicitly_allowed(monkeypatch, capsys):
+    seen = []
+
+    class UseCase:
+        def execute(self, doc_id, **kwargs):
+            return SimpleNamespace(path=Path("artifact"), version=1, payload={"stage": "stages", "stats": {}}), True
+
+    def build(**kwargs):
+        seen.append(kwargs)
+        return UseCase(), None
+
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_learning_graph", build)
+    assert main(["roadmap", "--doc-id", "doc-2"]) == 0
+    assert main(["roadmap", "--doc-id", "doc-2", "--allow-spend"]) == 0
+    assert seen == [{"allow_spend": False}, {"allow_spend": True}]

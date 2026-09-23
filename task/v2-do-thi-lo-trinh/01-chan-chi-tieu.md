@@ -7,7 +7,7 @@ stage nào định chi.
 
 **Blocked by:** —
 
-**Status:** ready
+**Status:** done — 2026-09-23
 
 ## Vì sao làm trước
 
@@ -16,8 +16,15 @@ Sau F126 (pass phụ v4), chạy `roadmap` trên bất kỳ tài liệu nào ngo
 
 ## Acceptance
 
-- [ ] `SpendGuard` bọc mô hình trả tiền trong `build_learning_graph(allow_spend=...)`; lời gọi `start_session` đầu tiên
-      ném `SpendNotAllowed` khi chưa cho phép.
-- [ ] Bộ điều phối gắn tên stage vào lỗi; CLI in thông báo tiếng Việt và thoát mã khác 0.
-- [ ] Stage có cache vẫn chạy được khi không có cờ.
-- [ ] Test: bị chặn đúng stage; có cờ thì chạy; stage có cache không bị chặn. Mỗi test đã thấy đỏ trước.
+- [x] `SpendGuard` bọc mô hình trả tiền trong `build_learning_graph(allow_spend=...)`; lời gọi `start_session` đầu tiên
+      ném `SpendNotAllowed` khi chưa cho phép. Ngoại lệ **không** kế thừa `RuntimeError`, vì `run_model_jobs` coi
+      `RuntimeError` là phản hồi hỏng và sẽ nuốt nó.
+- [x] Bộ điều phối gắn tên stage vào lỗi; CLI in thông báo tiếng Việt và thoát mã 2.
+- [x] Stage có cache vẫn chạy được khi không có cờ.
+- [x] 5 test, đều thấy đỏ trước; ba đột biến (kế thừa `RuntimeError`, bỏ gắn tên stage, bỏ chốt chặn) đều bị giết.
+      Toàn suite 530/530.
+
+## Kiểm đầu–cuối
+
+`roadmap --doc-id doc-2` không có cờ: `lỗi: stage secondary_edges cần gọi mô hình trả tiền; chạy lại với --allow-spend
+nếu muốn chi`, thoát mã 2, số phiên bản `doc-2` giữ nguyên 11, không tạo checkpoint mới. Đúng cái bẫy ~7,4 USD của F126.

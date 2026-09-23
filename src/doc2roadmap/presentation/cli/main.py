@@ -162,6 +162,8 @@ def _parser() -> argparse.ArgumentParser:
         default="stages",
         help="dừng sau stage đã chọn; mentions không gọi mô hình, provenance có gọi ít",
     )
+    roadmap.add_argument("--allow-spend", action="store_true",
+                         help="cho phép gọi mô hình trả tiền; thiếu cờ thì lệnh dừng ở stage đầu tiên định chi")
     return parser
 
 
@@ -475,7 +477,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "search":
             _search(args.doc_id, args.query, args.top_k, args.stage_id)
         elif args.command == "roadmap":
-            use_case, _ = build_learning_graph()
+            use_case, _ = build_learning_graph(allow_spend=args.allow_spend)
             artifact, reused = use_case.execute(args.doc_id, stop_after=args.stop_after)
             _json({
                 "path": str(artifact.path),
