@@ -1492,7 +1492,7 @@ khi tách cặp hai chiều vào bảng theo dõi.
   và `𝒫 𝑛 (𝐅)`; tên ứng viên giữ nguyên nguồn theo V1. Vì điều kiện vé 19 viết đúng từng byte
   `ℒ(V,W)` và `𝒫ₙ(𝐅)`, ô ấy vẫn mở để reviewer chấp nhận tương đương hình thức, không
   âm thầm sửa tên làm đứt evidence. `ℳ` được cứu bằng tín hiệu định nghĩa xuyên chunk.
-- **Provenance F120 (mới lộ trên doc-1):** node fallback `Tổ hợp tuyến tính` thiếu khóa
+- **Lỗi provenance mới lộ trên doc-1:** node fallback `Tổ hợp tuyến tính` thiếu khóa
   `defining_chunk_ids`; `BuildProvenance` truy cập trực tiếp khiến bước A8 dừng. Test hồi quy
   đỏ trên mã cũ, sửa khởi tạo danh sách trước khi thêm quote, test và suite đầy đủ xanh.
 - **Vé 11 nhịp 1:** `doc-3` qua A6–A8 ($0,0812995 cho A8), A9 v9 giao DAG 58 node,
@@ -1590,7 +1590,7 @@ nào nằm gọn trong một stage** ở cả bảy — bất biến mà chủ d
 
 Còn lại **hai lỗ hổng thật**, và cả hai đúng loại mà `AGENTS.md` §5 vừa đặt tên.
 
-## F120 🟡 — bất biến trung tâm của A10 không có test nào làm nó đỏ
+## F120 ✅ — bất biến trung tâm của A10 có test trực tiếp
 
 `_order_stages` có `raise AssertionError("cạnh requires nằm trong cùng stage")`. Thay nó bằng `pass` thì
 **không test nào đỏ**.
@@ -1603,11 +1603,18 @@ ai đó gỡ nó.
 *"Trace every documented invariant to a named runnable assertion"*. Cách sửa rẻ: gọi thẳng `_order_stages` với một
 danh sách stage dựng tay có cạnh nội bộ, kỳ vọng nó ném.
 
-## F121 🟢 — kiểm đầu vào `stage_cap` không có test
+**Đã đóng ngày 2026-09-23:** `test_stage_rejects_an_internal_requires_edge` dựng một stage chứa hai node và một
+cạnh `requires` nội bộ, rồi kiểm đúng `AssertionError`. Test đi thẳng vào nhánh guard, không suy ra gián tiếp từ
+đầu ra thuận.
+
+## F121 ✅ — kiểm đầu vào `stage_cap` có test biên
 
 Vô hiệu hoá `if type(stage_cap) is not int or stage_cap < 1` thì không gì đỏ. Việc nhỏ, ghép cùng F120.
 
-## F122 🟡 — `𝐅 ∞` vẫn bị loại, và nó là khái niệm Axler định nghĩa hẳn
+**Đã đóng ngày 2026-09-23:** `test_stage_cap_must_be_a_positive_integer` kiểm cả `0` và `True`; ca `True` bảo vệ
+riêng điều kiện kiểu vì Python coi `bool` là lớp con của `int`.
+
+## F122 ✅ — `𝐅 ∞` được giữ, số cụ thể bị loại nhất quán
 
 `𝐅^∞` (không gian dãy vô hạn) được định nghĩa ở mục 1B của `doc-2`. Predicate `structured_symbol` trượt nó vì nhánh
 "hai phần" đòi **cả hai** phần là ký tự MATHEMATICAL, mà `∞` thì không — trong khi `𝐅 𝑛` và `𝐅 𝑆` qua được vì `𝑛`,
@@ -1617,6 +1624,12 @@ Ghi kèm: **`𝐂 4` bị loại còn `P4(R)` và `𝒫 2(𝐑)` được giữ*
 kết quả khác nhau. Đây là **mâu thuẫn trong danh sách điều kiện nhận của tôi**, không phải lỗi của nhân viên: tôi
 xếp `P4(R)` vào vế giữ trong khi chủ dự án sau đó phán `V(2)` cùng dạng là loại. Cần một đường ranh, đề xuất:
 **giữ khi số mũ/đối số là ký hiệu (`n`, `m`, `S`, `∞`), loại khi là con số cụ thể.**
+
+**Đã đóng ngày 2026-09-23:** `structured_symbol` chấp nhận `∞` ở phần ký hiệu thứ hai và loại tên có chữ số cụ
+thể trước các nhánh cấu trúc. Test A3 giữ `𝐅 ∞`, đồng thời loại `𝐂 4`, `P4(R)` và `𝒫 2(𝐑)`; các ca ký hiệu
+`𝐅^{m,n}`, `F^n`, `𝒫ₙ(𝐅)` vẫn được giữ. `algorithm_id` tăng thành `a3-section-conversation-v10` để artifact cũ
+không bị tái dùng nhầm. Lượt sửa nhỏ này không gọi mô hình; artifact `doc-2/candidates/v5` vẫn ghi trung thực A3
+v9 và sẽ chỉ được thay khi chủ động chạy lại A3. Suite đầy đủ: **469 test xanh**.
 
 ## Một chỗ cần nói lại cho đúng
 

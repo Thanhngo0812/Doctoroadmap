@@ -143,6 +143,19 @@ def test_small_stages_merge_only_without_requires_between_them():
     assert blocked == [["a"], ["b"]]
 
 
+def test_stage_rejects_an_internal_requires_edge():
+    with pytest.raises(AssertionError, match="cạnh requires nằm trong cùng stage"):
+        roadmap._order_stages([["a", "b"]], {"a": {"b"}, "b": set()})
+
+
+@pytest.mark.parametrize("stage_cap", [0, True])
+def test_stage_cap_must_be_a_positive_integer(stage_cap):
+    with pytest.raises(ValueError, match="stage_cap phải là số nguyên dương"):
+        build_roadmap(
+            [], [], [], [], [], stage_cap=stage_cap, quality_gate={"passed": True},
+        )
+
+
 def test_stage_lower_bound_assertion_rejects_broken_scheduler(monkeypatch):
     monkeypatch.setattr(
         roadmap, "_coffman_graham",

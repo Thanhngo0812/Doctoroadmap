@@ -926,7 +926,7 @@ class ExtractEntities:
             self.embedding.embedding_model_id if self.embedding is not None else None
         )
         config = {
-            "algorithm_id": "a3-section-conversation-v9",
+            "algorithm_id": "a3-section-conversation-v10",
             "reviewed_node_types": reviewed_types,
             "chunks_config_hash": stored.manifest["config_hash"],
             "extractor_id": self.extractor.identifier,

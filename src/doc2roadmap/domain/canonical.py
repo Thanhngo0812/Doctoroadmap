@@ -51,17 +51,23 @@ def structured_symbol(text: str) -> bool:
     text = " ".join(text.split())
     if alias_kind(text) != "symbol" or not any(char.isupper() for char in text):
         return False
+    if any(char.isdigit() for char in text):
+        return False
     if "⊗" in text or "^" in text or any("SUBSCRIPT" in unicodedata.name(char, "") for char in text):
         return True
     match = re.fullmatch(r"(.+?)\s*[\(\[]([^\)\]]+)[\)\]]", text)
     if match:
         head, arguments = match.groups()
-        return ("," in arguments or any(char.isdigit() for char in head)
+        return ("," in arguments
                 or any("SCRIPT CAPITAL" in unicodedata.name(char, "") for char in head))
     parts = text.split()
-    return len(parts) == 2 and all(
-        any("MATHEMATICAL" in unicodedata.name(char, "") for char in part)
-        for part in parts
+    return (
+        len(parts) == 2
+        and any("MATHEMATICAL" in unicodedata.name(char, "") for char in parts[0])
+        and (
+            parts[1] == "∞"
+            or any("MATHEMATICAL" in unicodedata.name(char, "") for char in parts[1])
+        )
     )
 
 

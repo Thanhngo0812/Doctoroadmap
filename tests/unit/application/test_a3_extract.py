@@ -331,7 +331,7 @@ def test_symbol_only_name_is_rejected_but_abbreviation_and_symbol_alias_survive(
     assert summary.result.stats["rejected_symbol_only_names"] == ["X"]
     assert JsonArtifactStore(tmp_path).load_latest_candidates("book").manifest["config"][
         "algorithm_id"
-    ] == "a3-section-conversation-v9"
+    ] == "a3-section-conversation-v10"
     expected = {
         "model_id": "gemini-3.1-flash-lite",
         "input_tokens": 30,
@@ -443,9 +443,12 @@ def test_symbol_name_uses_verified_lexical_alias_and_remains_an_edge_endpoint(
 def test_structured_symbols_survive_but_theorem_numbers_and_bare_variables_do_not(tmp_path) -> None:
     keep = [
         "ℒ(V,W)", "ℒ(𝑉)", "L(V, W)", "𝐅^{m,n}", "F^m,n", "F^n",
-        "𝒫(𝐅)", "𝒫ₙ(𝐅)", "P4(R)", "B(V, W)", "S ⊗ T", "V^m", "ℳ",
+        "𝒫(𝐅)", "𝒫ₙ(𝐅)", "𝐅 ∞", "B(V, W)", "S ⊗ T", "V^m", "ℳ",
     ]
-    reject = ["3.65", "6.49", "i", "0", "V", "{0}", "V(2)", "V(m)", "𝛼𝑇"]
+    reject = [
+        "3.65", "6.49", "i", "0", "V", "{0}", "V(2)", "V(m)",
+        "𝛼𝑇", "𝐂 4", "P4(R)", "𝒫 2(𝐑)",
+    ]
     text = "3.31 definition: matrix of a linear map, ℳ(T). " + " · ".join(keep + reject)
     entities = [
         {"name": name, "node_type": "concept", "description_draft": "A concept.",

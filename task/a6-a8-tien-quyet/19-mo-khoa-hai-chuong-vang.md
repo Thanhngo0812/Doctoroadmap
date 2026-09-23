@@ -116,7 +116,10 @@ cột "Nơi dạy", nên không tái lập được từ chính file. Thêm `gra
 ## Ghi chú
 
 `algorithm_id` của A3 lại tăng một bậc. Bốn tài liệu phát triển **không** chạy lại. Corpus sẽ có nhiều cấu hình A3
-cùng lúc — ghi vào vé tài liệu nào thuộc cấu hình nào, báo cáo sẽ cần bảng đó.
+cùng lúc — ghi vào vé tài liệu nào thuộc cấu hình nào, báo cáo sẽ cần bảng đó. Bổ sung F122 ngày 2026-09-23 tăng
+mã hiện hành từ v9 lên `a3-section-conversation-v10`: `𝐅 ∞` được giữ, còn số mũ/đối số cụ thể như `𝐂 4`,
+`P4(R)`, `𝒫 2(𝐑)` bị loại. Artifact `doc-2/candidates/v5` vẫn là v9; lượt sửa này chỉ đổi mã và test, không gọi
+mô hình hay viết lại artifact lịch sử.
 
 Ngân sách: lượt A3 `doc-2` gần nhất tốn 1,38 USD; tổng đã dùng tới nay khoảng 4,21 USD trên trần 50 USD.
 
