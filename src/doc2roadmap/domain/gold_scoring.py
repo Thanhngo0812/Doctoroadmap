@@ -452,3 +452,44 @@ def gold_order_violations(stages, gold_edges, *, names=None):
         **counts,
         "rows": rows,
     }
+
+
+BLIND_ANSWERS = ("x_truoc_y_truc_tiep", "x_truoc_y_gian_tiep", "y_truoc_x_truc_tiep", "y_truoc_x_gian_tiep",
+                 "khong_can_thu_tu", "khong_chac")
+
+
+def blind_review_counts(items, answers):
+    """Đếm phán quyết chấm mù so với **chiều của máy**, bất kể cặp được hiện theo thứ tự nào.
+
+    Cặp có cạnh máy A → B (dư hoặc đúng theo vàng) rơi vào: đồng ý trực tiếp, đồng ý gián tiếp (A trước B qua khái
+    niệm khác — thừa nhưng không làm sai thứ tự học), ngược chiều (có hại), không cần thứ tự, không chắc. Cặp ngẫu
+    nhiên không có cạnh máy chỉ hỏi người gán có thấy một thứ tự học hay không — đó là mức vàng bỏ sót nền.
+    """
+    counts = {
+        "fp": dict.fromkeys(("agree_direct", "agree_indirect", "reversed", "none", "unsure", "unanswered"), 0),
+        "tp": dict.fromkeys(("agree_direct", "agree_indirect", "reversed", "none", "unsure", "unanswered"), 0),
+        "random": dict.fromkeys(("ordered", "none", "unsure", "unanswered"), 0),
+    }
+    for item in items:
+        answer = answers.get(item["item"])
+        bucket = counts[item["category"]]
+        if answer is None:
+            bucket["unanswered"] += 1
+            continue
+        if answer not in BLIND_ANSWERS:
+            raise ValueError(f"cặp {item['item']}: phán quyết {answer!r} ngoài sáu lựa chọn")
+        if answer == "khong_chac":
+            bucket["unsure"] += 1
+        elif answer == "khong_can_thu_tu":
+            bucket["none"] += 1
+        elif item["machine"] is None:
+            bucket["ordered"] += 1
+        else:
+            first = item["x"] if answer.startswith("x_truoc_y") else item["y"]
+            if first != item["machine"][0]:
+                bucket["reversed"] += 1
+            elif answer.endswith("truc_tiep"):
+                bucket["agree_direct"] += 1
+            else:
+                bucket["agree_indirect"] += 1
+    return counts

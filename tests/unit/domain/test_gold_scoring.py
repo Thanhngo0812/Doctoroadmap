@@ -324,3 +324,34 @@ def test_learning_order_error_counts_every_gold_edge_not_learned_strictly_before
 
 def test_learning_order_error_is_undefined_for_an_empty_gold_not_a_pass():
     assert gold_order_violations([["p"], ["t"]], set())["learning_order_error"] is None
+
+
+def test_blind_review_reads_each_answer_against_the_machine_direction_whatever_order_the_pair_was_shown():
+    from doc2roadmap.domain.gold_scoring import blind_review_counts
+
+    items = [
+        # Cặp hiện theo đúng chiều máy (X = tiên quyết của máy).
+        {"item": 1, "category": "fp", "x": "a", "y": "b", "machine": ["a", "b"]},
+        # Cặp hiện đảo chiều: "Y trước X" mới là đồng ý với máy.
+        {"item": 2, "category": "fp", "x": "d", "y": "c", "machine": ["c", "d"]},
+        {"item": 3, "category": "fp", "x": "e", "y": "f", "machine": ["e", "f"]},
+        {"item": 4, "category": "tp", "x": "h", "y": "g", "machine": ["g", "h"]},
+        # Cặp ngẫu nhiên không có cạnh máy: chỉ hỏi có thứ tự học hay không.
+        {"item": 5, "category": "random", "x": "p", "y": "q", "machine": None},
+        {"item": 6, "category": "random", "x": "r", "y": "s", "machine": None},
+        {"item": 7, "category": "fp", "x": "u", "y": "v", "machine": ["u", "v"]},
+    ]
+    answers = {1: "x_truoc_y_truc_tiep", 2: "y_truoc_x_gian_tiep", 3: "y_truoc_x_truc_tiep",
+               4: "y_truoc_x_truc_tiep", 5: "y_truoc_x_truc_tiep", 6: "khong_can_thu_tu", 7: "khong_chac"}
+    counts = blind_review_counts(items, answers)
+    assert counts["fp"] == {"agree_direct": 1, "agree_indirect": 1, "reversed": 1, "none": 0, "unsure": 1,
+                            "unanswered": 0}
+    assert counts["tp"]["agree_direct"] == 1
+    assert counts["random"] == {"ordered": 1, "none": 1, "unsure": 0, "unanswered": 0}
+
+
+def test_blind_review_refuses_an_answer_outside_the_six_choices():
+    from doc2roadmap.domain.gold_scoring import blind_review_counts
+
+    with pytest.raises(ValueError, match="ngoài sáu lựa chọn"):
+        blind_review_counts([{"item": 1, "category": "fp", "x": "a", "y": "b", "machine": ["a", "b"]}], {1: "co"})
