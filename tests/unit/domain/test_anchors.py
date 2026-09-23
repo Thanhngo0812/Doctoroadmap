@@ -34,6 +34,26 @@ def test_an_alias_counts_as_naming_the_concept():
     assert any(c["chunk_id"] == "c90" for c in candidate_sentences(NODE, CHUNKS, limit=10))
 
 
+def test_math_letters_and_spacing_do_not_hide_the_name():
+    # PDF toán cho chữ nghiêng toán học và khoảng trắng lạc: "𝑉1 × ⋯ × 𝑉 𝑚" vẫn là "V1 × ⋯ × Vm".
+    node = {"node_id": "p", "name": "Addition on V1 × ⋯ × Vm", "aliases": []}
+    text = "Addition on 𝑉1 × ⋯ × 𝑉 𝑚 is defined by the formula."
+    assert [c["sentence"] for c in candidate_sentences(node, [chunk("c7", 7, text)])] == [text]
+
+
+def test_the_a3_evidence_sentence_is_a_candidate_even_when_the_name_never_appears():
+    # Tên mô tả do mô hình đặt ("Hàng hoặc cột tỷ lệ") không có nguyên văn; câu căn cứ A3 là nơi đã kiểm có trong sách.
+    text = "Định thức bằng không nếu: Có hai hàng (hay hai cột) tỷ lệ; Có một hàng bằng không."
+    node = {"node_id": "tl", "name": "Hàng hoặc cột tỷ lệ", "aliases": [],
+            # offset căn cứ tính trên toàn văn bản, không trên chunk — không được dùng làm chỉ số vào chunk.text
+            "evidence": [{"chunk_id": "c3", "char_start": 22478, "char_end": 22510, "quote": "Có hai hàng (hay hai cột) tỷ lệ;"}]}
+    candidates = candidate_sentences(node, [chunk("c3", 3, text), chunk("c4", 4, "Câu khác.")])
+    assert [c["chunk_id"] for c in candidates] == ["c3"]
+    first = candidates[0]
+    assert text[first["char_start"]:first["char_start"] + len(first["sentence"])] == first["sentence"]
+    assert "Có hai hàng" in first["sentence"]
+
+
 def reply(status, **extra):
     return {"node_id": "cs", "status": status, "reason": "vì đoạn nói vậy", **extra}
 

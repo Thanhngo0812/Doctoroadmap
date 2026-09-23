@@ -140,8 +140,12 @@ Báo trung bình, số đích đủ trọn, và cỡ trung vị của tổ tiên
 ### Gói B — neo định nghĩa
 
 **W11 — Ứng viên câu, không phải cả chunk.** Mỗi khái niệm: gom chunk định nghĩa hiện có, chunk có mention cứng, chunk
-căn cứ A3; tách câu; giữ câu có tên hoặc alias; xếp theo tín hiệu định nghĩa (đã có trong provenance: "là", "được gọi là",
-"we define", "is called", …) rồi theo vị trí; lấy tối đa 6 câu từ các chunk khác nhau, kèm một câu ngữ cảnh mỗi phía.
+căn cứ A3; tách câu; giữ câu có tên hoặc alias (so sau NFKC và bỏ khoảng trắng, vì PDF toán cho `𝑉 𝑚` thay `Vm`) và
+câu chứa câu trích căn cứ A3 (khớp theo câu trích, không theo offset — offset căn cứ tính trên toàn văn bản); xếp câu
+căn cứ và câu có tín hiệu định nghĩa (đã có trong provenance: "là", "được gọi là", "we define", "is called", …)
+trước, rồi theo vị trí; lấy tối đa 6 câu từ các chunk khác nhau, kèm một câu ngữ cảnh mỗi phía. Chỉ khớp tên nguyên
+văn thì 98/438 khái niệm doc-2 và 22/225 doc-1 không có ứng viên nào (tên mô tả do mô hình đặt, ký hiệu toán); sau
+sửa còn 1 và 0 — phần còn lại là khái niệm không có căn cứ A3 (ảnh).
 
 **W12 — Một lời gọi cho mỗi khái niệm, trạng thái là thuộc tính của khái niệm.** Mô hình thấy mọi ứng viên cùng lúc và trả:
 câu neo (mã ứng viên + câu trích nguyên văn, kiểm chuỗi bằng mã) hoặc không; và trạng thái `defined_here` /

@@ -87,7 +87,8 @@ chạy gói neo trên N1.
 
 ## T4 — Kiểm tay 50 câu neo
 
-Sau vé 04: `artifacts/a8-gold/kiem-cau-neo.xlsx`, 50 khái niệm ngẫu nhiên trên ≥ 3 tài liệu, mỗi dòng có câu neo và vị trí.
+**Sẵn sàng (2026-09-24):** `artifacts/a8-gold/kiem-cau-neo.xlsx` — 50 khái niệm ngẫu nhiên trên 6 tài liệu (không có
+`xstk-ch3-1`, tài liệu tập giữ lại), mỗi dòng có câu neo trong ngữ cảnh, trang và mục. Khoá: `kiem-cau-neo-khoa.json`.
 Chọn: *Đúng nơi dạy* / *Sai — chỉ nhắc qua* / *Sai — nói về nghĩa khác* / *Không chắc*.
 
 ## T5 — Duyệt gộp khái niệm

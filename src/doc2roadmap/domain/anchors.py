@@ -23,33 +23,49 @@ def _norm(text):
     return " ".join(unicodedata.normalize("NFC", str(text)).casefold().split())
 
 
+def _compact(text):
+    # NFKC gộp chữ nghiêng toán học về chữ thường (𝑉 → V); bỏ khoảng trắng vì PDF toán hay chèn khoảng lạc (𝑉 𝑚).
+    return "".join(unicodedata.normalize("NFKC", str(text)).casefold().split())
+
+
 def _sentences(text):
     return [(match.start(), match.group(0).strip()) for match in _SENTENCE.finditer(text) if match.group(0).strip()]
 
 
 def _names(node):
     values = {node["name"], *(alias["name"] if isinstance(alias, dict) else alias for alias in node.get("aliases", []))}
-    return {_norm(value) for value in values if len(_norm(value)) >= 2}
+    return {_compact(value) for value in values if len(_compact(value)) >= 2}
 
 
 def candidate_sentences(node, chunks, *, limit=6):
-    """Câu nhắc tên hoặc alias của khái niệm, câu có tín hiệu định nghĩa trước, rồi theo vị trí trong tài liệu.
+    """Câu nhắc tên hoặc alias của khái niệm, hoặc chứa căn cứ A3 của nó; câu có tín hiệu định nghĩa hay căn cứ A3 đứng
+    trước, rồi theo vị trí trong tài liệu.
 
-    Ưu tiên mỗi chunk một câu trước khi lấy câu thứ hai của cùng chunk, để ứng viên phủ nhiều nơi.
+    Câu căn cứ A3 luôn là ứng viên: tên do mô hình đặt ("Hàng hoặc cột tỷ lệ") thường không có nguyên văn trong sách,
+    còn căn cứ thì đã được kiểm là có. Ưu tiên mỗi chunk một câu trước khi lấy câu thứ hai của cùng chunk.
     """
     names = _names(node)
     signals = tuple(_norm(signal) for signal in DEFAULT_DEFINITION_SIGNALS)
+    # Khớp theo câu trích chứ không theo offset: offset căn cứ tính trên toàn văn bản, không trên chunk.
+    evidence = {}
+    for span in node.get("evidence", []):
+        if isinstance(span, dict) and "chunk_id" in span and _compact(span.get("quote", "")):
+            evidence.setdefault(span["chunk_id"], []).append(_compact(span["quote"]))
     found = []
     for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id)):
         sentences = _sentences(chunk.text)
         for index, (start, sentence) in enumerate(sentences):
             flat = _norm(sentence)
-            if not any(name in flat for name in names):
+            compact = _compact(sentence)
+            # Câu chứa đầu câu trích, hoặc nằm trọn trong câu trích dài nhiều câu.
+            cited = any(quote[:40] in compact or (len(compact) >= 8 and compact in quote)
+                        for quote in evidence.get(chunk.chunk_id, []))
+            if not cited and not any(name in compact for name in names):
                 continue
             context = " ".join(text for _, text in sentences[max(0, index - 1): index + 2])
             found.append({"chunk_id": chunk.chunk_id, "order_index": chunk.order_index, "char_start": start,
                           "sentence": sentence, "context": context,
-                          "signal": any(signal in flat for signal in signals)})
+                          "signal": cited or any(signal in flat for signal in signals)})
     seen, ranked = set(), []
     for row in sorted(found, key=lambda r: (not r["signal"], r["order_index"], r["char_start"])):
         ranked.append((row["chunk_id"] in seen, row))

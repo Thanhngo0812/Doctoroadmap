@@ -52,7 +52,8 @@ class AnchorConcepts:
         config = {"algorithm_id": "a10-teaching-anchor-v3", "validated_version": upstream.version,
                   "validated_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks_artifact.version,
                   "model_id": self.model.model_id, "generation": self.generation, "prompt_hash": prompt_hash,
-                  "candidates": CANDIDATES, "pricing_usd_per_million": PRICING_USD_PER_MILLION,
+                  "candidates": CANDIDATES, "candidate_rule": "nfkc-name+a3-evidence",
+                  "pricing_usd_per_million": PRICING_USD_PER_MILLION,
                   "pricing_source": PRICING_SOURCE}
         config_hash, source_hash = digest(config), digest(upstream.payload)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
