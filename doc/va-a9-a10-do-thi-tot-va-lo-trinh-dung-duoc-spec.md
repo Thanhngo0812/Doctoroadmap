@@ -322,6 +322,10 @@ Cả hai phải chạy được trên **hai tập cạnh** — cạnh vàng và 
 ấy mới tách được "giáo trình sắp xếp kém" khỏi "đồ thị của ta nhiễu". Trên bộ vàng thử nghiệm, phép so ấy cho vàng
 τ +0,803 và máy τ +0,603.
 
+> **Sửa V9, 2026-09-23 — xem V14.** Chỉ số thứ tự nay là `learning_order_error` khắt khe trên **vàng hội ý**, và
+> mọi so sánh giữa hai cách xếp ở A10 phải kèm phân bố nhiễu. Công thức "vi phạm / cặp đã xếp được thứ tự" ở trên
+> giữ lại dưới tên `rate` để so với số cũ, không dùng làm cổng.
+
 ### V10 — Cách gọi tên, ghi vào spec và báo cáo
 
 | Đang gọi | Gọi lại thành | Lý do |
@@ -430,3 +434,48 @@ chứng đã nhiễm và con số bỏ đi. Thứ tự đúng là V8 rồi mới
 **Một rủi ro cần nói trước.** V1 giữ lại các tên ký hiệu có cấu trúc, tức bảng ứng viên của `doc-2` sẽ phình. Vé
 phải đo số ứng viên trước/sau và kiểm rằng A4 vẫn hợp nhất được — guard của vé 17 ra đời chính vì ký hiệu lọt A3
 từng làm A4 dừng. Nếu A4 lại dừng thì đó là thông tin, không phải thất bại: nó nói vấn đề nằm ở A4 chứ không ở A3.
+
+## Sửa đổi sau đo lường (2026-09-23)
+
+Các quyết định dưới đây thay phần tương ứng ở trên. Số liệu và chẩn đoán đầy đủ ở
+`report/ke-hoach-dua-do-thi-toi-muc-dung-duoc.md`, mục 13–17.
+
+### V14 — Chỉ số thứ tự và giao thức chấm
+
+- **Chỉ số:** `learning_order_error = (ngược + cùng stage + thiếu đầu) / |vàng|`, trên **vàng hội ý**. Stage là tập
+  học song song nên cùng stage chưa bảo đảm học trước; đầu cạnh vắng mặt khỏi lộ trình là lỗi, để việc bỏ node không
+  làm mẫu số nhỏ đi. Vàng rỗng cho `None` — chưa đánh giá, không phải đạt.
+- **Bộ chấm từ chối** vàng khác `doc_id`, khác phiên bản canonical hoặc chương, hoặc nhắc khái niệm đồ thị không có;
+  ghim SHA-256 của mọi tệp đã đọc.
+- **Tách phần tất định khỏi phần may rủi.** Cạnh vàng có đường đi trong đồ thị máy luôn được mọi cách xếp hợp lệ tôn
+  trọng; cạnh vàng không có đường đi được đặt theo cách phá thế hoà của bộ xếp. Báo cả hai: **tỉ lệ cạnh vàng có đường
+  đi** (chất lượng đồ thị, tất định) và U1 của lộ trình đã xuất.
+- **Giao thức cho mọi thay đổi ở A10:** chấm so với **phân bố nhiễu** — 30 lần xếp lại cùng đồ thị với cách phá thế
+  hoà ngẫu nhiên (hoán vị tên node) — và báo z. Đo được: `doc-1` v10 9,2% ± 2,6; `doc-2` v7 14,4% ± 3,0. Chênh cỡ một
+  độ lệch chuẩn là nhiễu. Cổng dạng "U1 không được tăng" cho một can thiệp ở A10 là cổng sai.
+
+### V15 — Cách phá thế hoà của A10 giữ nguyên, có ghi nhận
+
+Cách phá thế hoà hiện tại (`node_id`) tệ hơn cả 30 cách ngẫu nhiên trên hai đồ thị thưa (z +1,67 và +1,77). Đặt vị
+trí trong sách làm khoá chính khi đặt node (C9) tốt hơn cả 30 cách ngẫu nhiên trên `doc-1` v7 (z −2,78) nhưng không
+giúp gì trên đồ thị dày sau C1 (z −0,65, **+4 stage**); chỉ dùng vị trí sách để phá thế hoà trong Coffman–Graham
+(C9b) không hơn ngẫu nhiên. **V8 giữ nguyên** — thứ tự sách không vào bộ xếp — vì hai lý do: dùng nó để xếp rồi dùng
+τ để chấm là nhiễm đối chứng, và đòn bẩy thật là recall của đồ thị: khi có đủ ràng buộc, cách phá thế hoà hết quan
+trọng.
+
+### V16 — Hai stage thử nghiệm, không nằm trong chuỗi mặc định
+
+- `teaching` (C8): mỗi đoạn định nghĩa có thật sự dạy khái niệm không, hỏi riêng `kind` và `role`. Đạt cổng an toàn
+  trên dữ liệu mới (loại nhầm 2/134), **trượt** cổng `doc-1` (bỏ lọt một node hành chính có công thức tính điểm).
+  Nhãn `prior_knowledge` chưa đủ tin: kích nhầm bởi giả thiết định lý ("Suppose V is a complex inner product space").
+- `verified` (C10): định nghĩa của đích có dùng tiên quyết không. **Trượt**: gỡ 3 cạnh đúng và 4 cạnh sai trong phạm
+  vi chấm, giữ 23/29 cạnh dư với lý do hợp lý. Tiêu chí "định nghĩa dùng A" hẹp hơn khái niệm tiên quyết của người
+  gán (họ tính cả tiên quyết để *làm* được bài).
+
+Cả hai giữ mã và test để dùng cho phiên bản sau; chuỗi mặc định vẫn là `validated → stages`.
+
+### V17 — Precision cạnh phải đo bằng chấm mù
+
+Precision so với vàng đóng băng không phân biệt được máy sai với vàng thiếu: C10 và cách đọc của reviewer cùng cho thấy
+phần lớn cạnh dư là quan hệ hợp lý mà vàng không ghi, hoặc trùng danh tính node. Quyết định chi tiền cho A8 (mở rộng
+C1) dựa trên **chấm mù** — `scripts/cham-mu/` — không dựa trên precision so với vàng.

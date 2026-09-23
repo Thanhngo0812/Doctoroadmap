@@ -241,6 +241,8 @@ _Tránh dùng_: prerequisite, depends on, tiên quyết
 ### Lộ trình
 
 **Stage**:
-Một bậc trong lộ trình học — giao của một tầng topological với một cụm chủ đề, giới hạn số khái niệm để học
-được trong một lần.
+Một đợt khái niệm **có thể bắt đầu học song song**: mọi tiên quyết `requires` của chúng đã nằm ở các stage trước.
+Là một tầng của phép xếp tầng có trần độ rộng (cắt lát khi vượt trần). Cụm chủ đề **không** dùng để chia stage —
+chỉ để đặt tên và sắp thứ tự bên trong stage (spec A9–A10, V8). Hai khái niệm cùng stage **chưa** được bảo đảm học
+cái nào trước.
 _Tránh dùng_: level, bước, module, bài

@@ -891,3 +891,56 @@ C1 vẫn **chưa** được mở rộng sang `doc-2`: cổng precision của C1 
 chứ không cần thêm một bộ lọc. Nhưng số liệu cũng cho thấy cổng precision không đo cái ta cần: C1 kéo U1 của `doc-1`
 **30,0% → 7,5%**, **0** cạnh dư nào ngược chiều bao đóng vàng, và phần lớn cạnh dư là quan hệ hợp lý. Quyết định có
 mở rộng C1 (≈ 7,4 USD cho 9 984 cặp của `doc-2`) nên dựa trên phép chấm mù, không dựa trên precision so với vàng.
+
+---
+
+## 17. Sàn nhiễu của U1 — và vì sao C9 vẫn không được nhận (2026-09-23)
+
+Trên `doc-2`, chỉ gỡ 85 cạnh **ngoài** phạm vi vàng (C10) mà U1 nhảy 14,8% → 19,7%. Đo thẳng: giữ nguyên đồ thị, xếp
+lại 30 lần với cách phá thế hoà ngẫu nhiên (hoán vị tên node).
+
+| | cạnh vàng có đường đi trong đồ thị máy | phó mặc bộ xếp | U1 qua 30 lần | bản đã xuất |
+|---|---|---|---|---|
+| `doc-1` v7 | — | — | 26,2% ± 2,3 | 30,0% (tệ hơn cả 30) |
+| `doc-1` v10 | 32 / 40 | 8 | 9,2% ± 2,6 (5,0–15,0) | 7,5% |
+| `doc-2` v7 | 34 / 61 | 27 | 14,4% ± 3,0 (8,2–19,7) | 19,7% (tệ hơn cả 30) |
+
+Ba hệ quả:
+
+1. **Chênh U1 cỡ một độ lệch chuẩn giữa hai cách xếp là nhiễu.** Cổng "U1 không được tăng" mà tôi đặt cho C8 đo nhiễu
+   — nay có số chứng minh. Từ nay mọi thay đổi ở A10 chấm bằng z so với phân bố này (spec A9–A10, V14).
+2. **Cách phá thế hoà mặc định tình cờ rơi vào ca xui nhất** trên cả hai đồ thị thưa. Một phần lỗi thứ tự ta từng đổ
+   cho đồ thị là xui của bộ xếp.
+3. **Phần tất định mới là chất lượng đồ thị:** tỉ lệ cạnh vàng có đường đi trong đồ thị máy — 80% trên `doc-1` sau
+   C1, **56%** trên `doc-2`. Đó là thứ C1 nâng lên, và là lý do C1 là đòn bẩy lớn nhất.
+
+So ba cách phá thế hoà với phân bố nhiễu:
+
+| | `doc-1` v7 | `doc-1` v10 | `doc-2` v7 |
+|---|---|---|---|
+| CG hiện tại | 30,0% · z +1,67 | 7,5% · z −0,65 | 19,7% · z +1,77 |
+| C9 cũ (vị trí sách là khoá chính) | **20,0% · z −2,78** · +1 stage | 7,5% · z −0,65 · **+4 stage** | **11,5% · z −1,00** · +1 stage |
+| C9b (vị trí sách chỉ phá thế hoà trong CG) | 25,0% · z −0,56 | 10,0% · z +0,32 | 16,4% · z +0,66 |
+
+C9 cũ giúp thật trên đồ thị thưa, đúng cơ chế lý thuyết (cặp không có cạnh thì theo sách). Nhưng trên đồ thị dày sau
+C1 nó không giúp gì mà tốn 4 stage, và spec V8 cấm đưa thứ tự sách vào bộ xếp vì τ dùng chính nó làm đối chứng. C9b —
+phương án "sạch" giữ bảo chứng số stage của Coffman–Graham — không hơn ngẫu nhiên, bác bỏ. **C9 không được nhận.**
+
+## 18. Trạng thái và việc tiếp theo
+
+**Đã vào sản phẩm trong vòng này:** bộ chấm thứ tự khắt khe có kiểm danh tính (`fe4e6ae`); công cụ chấm mù
+(`68698bd`). **Không vào:** C8 v2, C10, C9 — đều có mã, test, số liệu và lý do ghi lại.
+
+**Đang chờ chủ dự án:**
+
+1. **Chấm mù** — `artifacts/a8-gold/cham-mu-doc-1.xlsx` (57 cặp) và `cham-mu-doc-2.xlsx` (30 cặp). Hai người gán làm
+   riêng, không mở bộ vàng cũ, ~30–40 phút mỗi người; lưu thành `cham-mu-<doc>-A1.xlsx` / `-A2.xlsx`. Chấm bằng
+   `scripts/cham-mu/cham_bang.py`. Kết quả quyết định có mở rộng C1 sang `doc-2` (≈ 7,4 USD, 9 984 cặp) hay không.
+2. **C8 v2 như bản tạm** — trượt cổng đã khoá nên tôi không bật; bật hay không là quyền chủ dự án (xem mục 16).
+
+**Luật quyết định cho C1 trên `doc-2`, khoá từ bây giờ, trước khi có phán quyết chấm mù nào:** mở rộng nếu, trên cạnh
+dư của `doc-1`, người gán đánh **ngược chiều ≤ 10%** (cạnh có hại) và precision ước lượng theo chấm mù ("không làm sai
+thứ tự học") **≥ 0,80**; đồng thời người gán xác nhận lại **≥ 80%** mẫu cạnh đúng (nếu thấp hơn, chính lần chấm mù
+không đủ tin để quyết).
+
+**Chi phí vòng này:** kiểm nguồn dạy (v1 + v2, 7 tài liệu) và C10 (2 tài liệu) ≈ 1,6 USD. Tổng đã tiêu ≈ **13,8 / 50 USD**.
