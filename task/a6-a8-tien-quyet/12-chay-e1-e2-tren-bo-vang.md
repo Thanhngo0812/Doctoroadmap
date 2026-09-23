@@ -6,7 +6,8 @@
 **Blocked by:** 05, 11, và việc gán nhãn đã đóng băng. (Việc của Claude.)
 
 **Status:** **hội ý xong, bộ vàng đóng băng, E1/E2/E3 đã chạy (2026-09-23).** `doc-1` 40 cạnh, `doc-2` 61 cạnh.
-Số ở mục "Kết quả E1/E2/E3" dưới. Còn lại: áp luật chọn bộ sinh của D5, và bảng theo ba cấu hình định tuyến.
+**Xong toàn bộ checklist ngày 2026-09-23.** Số ở hai mục "Kết quả E1/E2/E3" và "E2 đầy đủ" dưới.
+Phán quyết D5: **giữ cả năm bộ sinh** — và luật D5 cần sửa vì nó cho hai câu trả lời ngược nhau trên hai chương.
 
 > **Hai chương vàng (chủ dự án chốt 2026-09-18, hướng a):** một chương giữa của `doc-1` (tiếng Việt) và một
 > chương giữa của `doc-2` (tiếng Anh). Bộ vàng song ngữ, nên **mọi bảng phải tách theo từng chương**, không gộp
