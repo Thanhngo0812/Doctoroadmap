@@ -8,6 +8,8 @@ from doc2roadmap.application.teaching_prompt import TEACHING_SCHEMA, teaching_pr
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.teaching import teaching_status, validate_teaching_response, verdict_of
 
+NODE_BATCH = 8
+
 
 def _alias_names(node):
     return sorted({str(alias["name"] if isinstance(alias, dict) else alias) for alias in node.get("aliases", [])})
@@ -75,29 +77,36 @@ class CheckTeachingSources:
 
         system_prompt = teaching_system_prompt()
         nodes = validated.payload["nodes"]
-        for node in sorted((value for value in nodes if value.get("learnable")), key=lambda value: value["node_id"]):
-            if node["node_id"] in completed:
-                continue
-            passages = sorted((chunk_by_id[chunk_id] for chunk_id in set(node.get("defining_chunk_ids", []))
-                               if chunk_id in chunk_by_id), key=lambda chunk: (chunk.order_index, chunk.chunk_id))
-            jobs = []
-            for chunk in passages:
-                data = {
-                    "node_id": node["node_id"],
-                    "chunk_id": chunk.chunk_id,
-                    "concept": {"name": node["name"], "description": node.get("description", ""),
-                                "aliases": _alias_names(node)},
-                    "passage": {"section_path": list(getattr(chunk, "section_path", []) or []), "text": chunk.text},
-                }
+        pending = [node for node in sorted((value for value in nodes if value.get("learnable")),
+                                           key=lambda value: value["node_id"]) if node["node_id"] not in completed]
+        # Mỗi node chỉ có ~1–2 đoạn, nên gom nhiều node một lượt thì mức song song mới được dùng hết.
+        for start in range(0, len(pending), NODE_BATCH):
+            group = pending[start:start + NODE_BATCH]
+            jobs, owners = [], []
+            for node in group:
+                passages = sorted((chunk_by_id[chunk_id] for chunk_id in set(node.get("defining_chunk_ids", []))
+                                   if chunk_id in chunk_by_id), key=lambda chunk: (chunk.order_index, chunk.chunk_id))
+                for chunk in passages:
+                    data = {
+                        "node_id": node["node_id"],
+                        "chunk_id": chunk.chunk_id,
+                        "concept": {"name": node["name"], "description": node.get("description", ""),
+                                    "aliases": _alias_names(node)},
+                        "passage": {"section_path": list(getattr(chunk, "section_path", []) or []),
+                                    "text": chunk.text},
+                    }
 
-                def validate(value, node_id=node["node_id"], chunk=chunk):
-                    validate_teaching_response(value, node_id=node_id, chunk_id=chunk.chunk_id, chunk_text=chunk.text)
+                    def validate(value, node_id=node["node_id"], chunk=chunk):
+                        validate_teaching_response(value, node_id=node_id, chunk_id=chunk.chunk_id,
+                                                   chunk_text=chunk.text)
 
-                jobs.append(ModelJob("teaching", self.model, system_prompt, prompt_hash, data, TEACHING_SCHEMA, validate))
+                    jobs.append(ModelJob("teaching", self.model, system_prompt, prompt_hash, data, TEACHING_SCHEMA,
+                                         validate))
+                    owners.append((node, chunk))
             values, rows, counts = run_model_jobs(jobs, decision_log, concurrency=self.concurrency)
             decision_log.extend(rows)
             metrics.update(counts)
-            for chunk, value in zip(passages, values):
+            for (node, chunk), value in zip(owners, values):
                 # Hết lượt sửa mà phản hồi vẫn hỏng thì không dùng nó để loại node: coi là chưa đủ căn cứ.
                 answer = value or {"kind": "uncertain", "role": "uncertain", "reason": "invalid_response"}
                 teaching_log.append({
@@ -110,7 +119,7 @@ class CheckTeachingSources:
                     "quote": answer.get("quote"),
                     "reason": answer["reason"],
                 })
-            completed.add(node["node_id"])
+            completed.update(node["node_id"] for node in group)
             self.store.save_checkpoint(doc_id, checkpoint_id, {
                 "source_hash": source_hash,
                 "completed_nodes": sorted(completed),

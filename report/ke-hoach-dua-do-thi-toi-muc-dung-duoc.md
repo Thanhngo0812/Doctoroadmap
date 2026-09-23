@@ -789,9 +789,8 @@ Loại nhầm **2 / 134** node phải giữ trên ba tài liệu chưa từng ch
   sẽ thoát nếu một đoạn nào đó gọi nó là khái niệm. Để dành cho v3, cần dữ liệu mới để chấm.
 - `Sự kiện` — mô hình đọc "Gọi A, B là hai sự kiện" thành *kiến thức cần có trước*: kéo giãn `prior_knowledge`.
 
-Ghi chú phụ, **có từ trước và chung cho mọi prompt**: `.gitattributes` để `* text=auto` với `core.autocrlf=true` mà
-không ghim `eol=lf` cho `prompts/*.txt`. Blob trong git là LF, nhưng một bản checkout mới trên Windows có thể đổi
-xuống dòng thành CRLF và làm đổi mọi `prompt_hash`. Ngoài phạm vi việc này; nêu để chủ dự án quyết.
+Ghi chú phụ — **đính chính ngay**: tôi từng nêu rủi ro `autocrlf` làm đổi `prompt_hash`. Kiểm trực tiếp thì không có:
+`load_prompt` đọc bằng `read_text` ở chế độ xuống dòng phổ quát, cùng một prompt ở CRLF và LF cho **cùng** chuỗi.
 
 ---
 

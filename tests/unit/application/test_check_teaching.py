@@ -133,6 +133,7 @@ def test_a_run_resumes_from_its_checkpoint_without_asking_finished_nodes_again()
     checkpoint = next(iter(store.checkpoints.values()))
     finished = {row["node_id"] for row in checkpoint["teaching_log"]}
     assert finished == {"dtp", "thang"}
+    assert checkpoint["completed_nodes"] == ["dtp", "thang"]  # cả nhóm node, không chỉ node cuối của lượt
     # Giả lập lượt chạy bị ngắt sau node đầu tiên: xoá artifact đã lưu, giữ checkpoint chỉ còn node `dtp`.
     store.saved.clear()
     store.latest = store.validated
