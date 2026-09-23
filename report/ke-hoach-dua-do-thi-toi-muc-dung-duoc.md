@@ -740,3 +740,40 @@ Cách đọc của reviewer, **không phải vàng**; chỉ dùng để quyết 
 3. Toàn kho: 0 cạnh cứng vi phạm trong lộ trình mới; số stage không tăng.
 
 Trượt bất kỳ cổng nào thì **không** nhận C8, và đọc nguyên nhân trước khi sửa gì.
+
+### Kết quả v1 trên `doc-3`: **trượt cổng 1**
+
+Loại được **5/13** node phải loại (cổng đòi ≥ 10) — `Class participation`, `Final project`, `Homework
+assignments` (hành chính), `Python`, `Machine learning concepts` (kiến thức nền) — và **0/33** loại nhầm. Toàn bộ
+nhóm nhãn trong ví dụ/hình bị lọt. Chi phí 0,025 USD, 0 phản hồi hỏng.
+
+**Nguyên nhân là thiết kế của tôi, không phải mô hình.** Với 7/8 node bị lọt, lý do mô hình tự viết đúng y định
+nghĩa nhóm cần loại — *"lists GPA as an independent variable in a dataset"*, *"lists the term as a label for a
+formula"* — nhưng nó chọn `mentions_only`. Hai nhóm không loại trừ nhau: một nhãn trong hình vừa "không phải kiến
+thức môn học" vừa "được nêu tên mà không dạy". Tôi đã trộn hai câu hỏi độc lập vào một trường. Ngoài ra 4 node
+(`VGG-19`, `GenAI`, `34-layer plain/residual`) không có đoạn định nghĩa nào nên không được kiểm.
+
+### v2 — hai câu hỏi độc lập, đăng ký trước khi chạy
+
+`kind` (thứ này là gì: `concept` / `course_logistics` / `example_detail` / `non_subject` / `uncertain`) và `role`
+(đoạn làm gì với nó: `teaches` / `mentions` / `prior_knowledge` / `uncertain`). **Luật loại chỉ đọc `kind`**, nên
+một cột dữ liệu ví dụ "được nêu tên" vẫn bị loại. Luật trạng thái node, co cạnh và phạm vi loại giữ nguyên v1.
+
+**Giới hạn phải nói trước.** Soi cả kho thì rác kiểu nhãn-trong-ví-dụ **chỉ có ở `doc-3`** — `naive-bayes`,
+`baocao-canhan`, `nhap-mon-ml` toàn khái niệm thật. Nên khả năng **bắt** rác của v2 chỉ đo được trên `doc-3`, là dữ
+liệu đã dùng để chẩn đoán v1: con số đó là **bằng chứng phát triển, không phải xác nhận**. Tài liệu mới chỉ kiểm được
+chiều **an toàn** (không loại nhầm).
+
+| cổng | dữ liệu | điều kiện |
+|---|---|---|
+| **A — an toàn, dữ liệu mới** | `naive-bayes` (34), `baocao-canhan` (36), `nhap-mon-ml` (75): chưa chạy mô hình nào | loại nhầm **≤ 2** trong số node phải giữ |
+| B — bắt rác, **đã nhìn thấy** | `doc-3`, cùng nhãn đã khoá | ≥ 10/13 loại đúng, ≤ 1/33 loại nhầm; báo là bằng chứng phát triển |
+| C — `doc-1` | như cổng 2 đã khoá | loại cả 3 node hành chính; U1 không tăng; đọc tay mọi node bị loại, sai ≤ 2 |
+| D — toàn kho | 7 tài liệu | 0 cạnh cứng vi phạm; số stage không tăng |
+| E — `xstk-ch3-1` | chưa soi node | đọc tay mọi node bị loại, báo là kiểm sau |
+
+Nhãn cổng A: mọi node học được là **phải giữ**, trừ các node lưng chừng không chấm — `naive-bayes`: *Xác suất
+p(x i |c), Bảng từ vựng, Real time Prediction*; `baocao-canhan`: *Project Skeleton, Refactor, Branching strategy*;
+`nhap-mon-ml`: *Tập học quá bé, Mô hình quá phức tạp, Ghi lịch sử, Mô tả ảnh, Lọc thư rác*.
+
+Trượt cổng A hoặc C thì không nhận v2. Trượt riêng cổng B thì v2 vẫn an toàn nhưng chưa đạt mục tiêu bắt rác.

@@ -6,7 +6,7 @@ from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.teaching_prompt import TEACHING_SCHEMA, teaching_prompt_hash, teaching_system_prompt
 from doc2roadmap.domain.canonical import digest
-from doc2roadmap.domain.teaching import teaching_status, validate_teaching_response
+from doc2roadmap.domain.teaching import teaching_status, validate_teaching_response, verdict_of
 
 
 def _alias_names(node):
@@ -46,7 +46,7 @@ class CheckTeachingSources:
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks_artifact.result.chunks}
         prompt_hash = teaching_prompt_hash(self.model.model_id, self.generation)
         config = {
-            "algorithm_id": "a10-teaching-sources-v1",
+            "algorithm_id": "a10-teaching-sources-v2",
             "validated_version": validated.version,
             "validated_config_hash": validated.manifest["config_hash"],
             "chunks_version": chunks_artifact.version,
@@ -99,14 +99,16 @@ class CheckTeachingSources:
             metrics.update(counts)
             for chunk, value in zip(passages, values):
                 # Hết lượt sửa mà phản hồi vẫn hỏng thì không dùng nó để loại node: coi là chưa đủ căn cứ.
-                verdict = value or {"verdict": "uncertain", "reason": "invalid_response"}
+                answer = value or {"kind": "uncertain", "role": "uncertain", "reason": "invalid_response"}
                 teaching_log.append({
                     "node_id": node["node_id"],
                     "chunk_id": chunk.chunk_id,
                     "order_index": chunk.order_index,
-                    "verdict": verdict["verdict"],
-                    "quote": verdict.get("quote"),
-                    "reason": verdict["reason"],
+                    "kind": answer["kind"],
+                    "role": answer["role"],
+                    "verdict": verdict_of(answer),
+                    "quote": answer.get("quote"),
+                    "reason": answer["reason"],
                 })
             completed.add(node["node_id"])
             self.store.save_checkpoint(doc_id, checkpoint_id, {

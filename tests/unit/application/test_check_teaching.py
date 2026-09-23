@@ -12,10 +12,12 @@ CHUNKS = {
 }
 
 VERDICTS = {
-    ("dtp", "de_cuong"): {"verdict": "mentions_only", "reason": "chỉ liệt kê trong đề cương"},
-    ("dtp", "c80"): {"verdict": "teaches", "quote": "Dạng toàn phương là một đa thức", "reason": "định nghĩa"},
-    ("thang", "danh_gia"): {"verdict": "not_subject_matter", "quote": "Thang điểm chữ A, B, C, D", "reason": "chấm điểm"},
+    ("dtp", "de_cuong"): {"kind": "concept", "role": "mentions", "reason": "chỉ liệt kê trong đề cương"},
+    ("dtp", "c80"): {"kind": "concept", "role": "teaches", "quote": "Dạng toàn phương là một đa thức", "reason": "định nghĩa"},
+    ("thang", "danh_gia"): {"kind": "course_logistics", "role": "mentions", "quote": "Thang điểm chữ A, B, C, D",
+                            "reason": "chấm điểm"},
 }
+EXPECTED = {("dtp", "de_cuong"): "mentions_only", ("dtp", "c80"): "teaches", ("thang", "danh_gia"): "not_subject_matter"}
 
 
 class Model:
@@ -101,8 +103,9 @@ def test_every_defining_passage_is_judged_and_provenance_is_left_untouched():
     assert nodes["dtp"]["teaching_chunk_ids"] == ["c80"] and nodes["dtp"]["teaching_order_index"] == 80
     assert nodes["dtp"]["defining_chunk_ids"] == ["de_cuong", "c80"] and nodes["dtp"]["first_order_index"] == 10
     assert nodes["thang"]["teaching_status"] == "not_subject_matter"
-    assert {(row["node_id"], row["chunk_id"], row["verdict"]) for row in artifact.payload["teaching_log"]} == {
-        (node_id, chunk_id, value["verdict"]) for (node_id, chunk_id), value in VERDICTS.items()}
+    assert {(row["node_id"], row["chunk_id"]): row["verdict"] for row in artifact.payload["teaching_log"]} == EXPECTED
+    assert {(row["kind"], row["role"]) for row in artifact.payload["teaching_log"] if row["node_id"] == "thang"} == {
+        ("course_logistics", "mentions")}
 
 
 def test_an_unchanged_input_is_reused_without_calling_the_model_again():
@@ -115,7 +118,8 @@ def test_an_unchanged_input_is_reused_without_calling_the_model_again():
 
 def test_a_reply_that_keeps_failing_validation_keeps_the_node_as_uncertain():
     # Câu trích bịa ra thì không được dùng để loại node: hết lượt sửa thì coi là chưa đủ căn cứ, và giữ node.
-    bad = {**VERDICTS, ("thang", "danh_gia"): {"verdict": "not_subject_matter", "quote": "câu không có", "reason": "x"}}
+    bad = {**VERDICTS, ("thang", "danh_gia"): {"kind": "course_logistics", "role": "mentions", "quote": "câu không có",
+                                               "reason": "x"}}
     artifact, _ = CheckTeachingSources(Store(), Model(bad)).execute("doc-1")
     nodes = {value["node_id"]: value for value in artifact.payload["nodes"]}
     assert nodes["thang"]["teaching_status"] == "uncertain"

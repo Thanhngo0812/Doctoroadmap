@@ -1,42 +1,61 @@
 import pytest
 
-from doc2roadmap.domain.teaching import bypass_excluded, teaching_status, validate_teaching_response
+from doc2roadmap.domain.teaching import bypass_excluded, teaching_status, validate_teaching_response, verdict_of
 
 TEXT = "Định nghĩa. Ma trận là một bảng số gồm m hàng và n cột."
 
 
-def reply(verdict, **extra):
-    return {"node_id": "n", "chunk_id": "c1", "verdict": verdict, "reason": "vì đoạn nói vậy", **extra}
+def reply(kind, role, **extra):
+    return {"node_id": "n", "chunk_id": "c1", "kind": kind, "role": role, "reason": "vì đoạn nói vậy", **extra}
 
 
 def check(value):
     validate_teaching_response(value, node_id="n", chunk_id="c1", chunk_text=TEXT)
 
 
-def test_a_teaching_verdict_must_quote_the_passage_verbatim():
-    check(reply("teaches", quote="Ma trận là một bảng số"))
-    check(reply("teaches", quote="  Ma trận là   một bảng số "))  # khoảng trắng không phải nội dung
+def test_a_claim_about_the_passage_must_quote_it_verbatim():
+    check(reply("concept", "teaches", quote="Ma trận là một bảng số"))
+    check(reply("concept", "teaches", quote="  Ma trận là   một bảng số "))  # khoảng trắng không phải nội dung
     with pytest.raises(ValueError, match="không có trong đoạn"):
-        check(reply("teaches", quote="Ma trận là một hàm số"))
-    for verdict in ("teaches", "prior_knowledge", "not_subject_matter"):
+        check(reply("concept", "teaches", quote="Ma trận là một hàm số"))
+    for kind, role in (("concept", "teaches"), ("concept", "prior_knowledge"), ("course_logistics", "mentions"),
+                       ("example_detail", "mentions"), ("non_subject", "uncertain")):
         with pytest.raises(ValueError, match="cần quote"):
-            check(reply(verdict))
+            check(reply(kind, role))
 
 
-def test_verdicts_without_a_claim_about_the_passage_need_no_quote():
-    check(reply("mentions_only"))
-    check(reply("uncertain"))
+def test_answers_that_claim_nothing_about_the_passage_need_no_quote():
+    check(reply("concept", "mentions"))
+    check(reply("concept", "uncertain"))
+    check(reply("uncertain", "teaches"))
 
 
-def test_the_response_contract_rejects_foreign_ids_unknown_verdicts_confidence_and_empty_reasons():
+def test_the_response_contract_rejects_foreign_ids_unknown_answers_confidence_and_empty_reasons():
     with pytest.raises(ValueError, match="node_id hoặc chunk_id"):
-        check({**reply("uncertain"), "chunk_id": "c9"})
-    with pytest.raises(ValueError, match="năm giá trị"):
-        check(reply("defines"))
+        check({**reply("concept", "mentions"), "chunk_id": "c9"})
+    with pytest.raises(ValueError, match="kind"):
+        check(reply("definition", "mentions"))
+    with pytest.raises(ValueError, match="role"):
+        check(reply("concept", "defines"))
     with pytest.raises(ValueError, match="confidence"):
-        check(reply("uncertain", confidence=0.9))
+        check(reply("concept", "mentions", confidence=0.9))
     with pytest.raises(ValueError, match="reason"):
-        check({**reply("uncertain"), "reason": "  "})
+        check({**reply("concept", "mentions"), "reason": "  "})
+
+
+@pytest.mark.parametrize(("kind", "role", "verdict"), [
+    # Ca v1 hỏng: một cột của bộ dữ liệu ví dụ "được nêu tên" vẫn không phải kiến thức môn học.
+    ("example_detail", "mentions", "not_subject_matter"),
+    ("course_logistics", "teaches", "not_subject_matter"),
+    ("non_subject", "mentions", "not_subject_matter"),
+    ("uncertain", "teaches", "uncertain"),
+    ("concept", "teaches", "teaches"),
+    ("concept", "mentions", "mentions_only"),
+    ("concept", "prior_knowledge", "prior_knowledge"),
+    ("concept", "uncertain", "uncertain"),
+])
+def test_what_the_item_is_decides_exclusion_before_what_the_passage_does_with_it(kind, role, verdict):
+    assert verdict_of({"kind": kind, "role": role}) == verdict
 
 
 def row(chunk_id, verdict, order):

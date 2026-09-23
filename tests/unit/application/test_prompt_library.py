@@ -70,7 +70,7 @@ def test_product_prompt_hashes_are_intentionally_versioned():
     assert a3_actual == a3_expected, HASH_CHANGE_WARNING
     assert a4_actual == a4_expected, HASH_CHANGE_WARNING
     assert a8_actual == a8_expected, HASH_CHANGE_WARNING
-    assert teaching_prompt_hash("golden-model", GENERATION) == "34644cf00057aeab7b2fc0fc9a0fb4733d7f03d526c056bb3ee013595848a3aa", HASH_CHANGE_WARNING
+    assert teaching_prompt_hash("golden-model", GENERATION) == "de62504800ed434c8b3d833c5876d7f6a8004eb4d8aaa97bd1da3ba502c8b123", HASH_CHANGE_WARNING
 
 
 def test_product_prompt_catalog_is_exact_and_loadable():
