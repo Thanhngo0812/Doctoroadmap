@@ -5,8 +5,8 @@
 
 **Blocked by:** 05, 11, và việc gán nhãn đã đóng băng. (Việc của Claude.)
 
-**Status:** chờ hai người gán nhãn độc lập — bộ chấm đã xong ở vé 05; bốn bảng trống đã sinh
-từ artifact provenance thật ngày 2026-09-22, chưa có nhãn để chạy E1/E2.
+**Status:** **đã có nhãn của cả hai người trên cả hai chương (2026-09-23)**; κ đã tính và đạt mốc văn liệu.
+Chờ **hội ý** hai file `-hoi-y.xlsx` rồi mới đóng băng bộ vàng và chạy E1/E2.
 
 > **Hai chương vàng (chủ dự án chốt 2026-09-18, hướng a):** một chương giữa của `doc-1` (tiếng Việt) và một
 > chương giữa của `doc-2` (tiếng Anh). Bộ vàng song ngữ, nên **mọi bảng phải tách theo từng chương**, không gộp
@@ -74,10 +74,15 @@ phải điền trước khi ký ức về lượt gán phai.
 
 ## Bảng gán đã chuẩn bị — 2026-09-22
 
+> **Bảng dưới đã lỗi thời cho `doc-1`.** Dải `10-13` (45 đích, 360 dòng) **không được dùng**; reviewer chốt lại
+> dải `10-12` ngày 2026-09-22 vì 360 dòng nhiều hơn 73% so với khối lượng đã hiệu chuẩn bằng lượt thử. Lượt gán
+> thật chạy trên dải `10-12`. Giữ bảng để tra lịch sử.
+
 | Tài liệu/chương | Phạm vi section cấp 2 | Đích sau provenance | Dòng quan hệ mỗi bảng | File A1/A2 trong `artifacts/a8-gold/` |
 |---|---|---:|---:|---|
-| `doc-1` Chương 3, mục 3.1–3.4 | `10-13` | 45 | 360 | `doc-1-chuong-10-13-A1.xlsx` / `doc-1-chuong-10-13-A2.xlsx` |
-| `doc-2` mục 3C, tr. 85–95 có đích | `98-115` | 24 | 200 | `doc-2-chuong-98-115-A1.xlsx` / `doc-2-chuong-98-115-A2.xlsx` |
+| ~~`doc-1` Chương 3, mục 3.1–3.4~~ | ~~`10-13`~~ | ~~45~~ | ~~360~~ | ~~`doc-1-chuong-10-13-*.xlsx`~~ **không dùng** |
+| **`doc-1` Chương 3, mục 3.1–3.3** | **`10-12`** | **26** | **208** | `doc-1-chuong-10-12-A1.xlsx` / `-A2.xlsx` |
+| `doc-2` mục 3C, tr. 85–95 có đích | `98-115` | 24 | 200 | `doc-2-chuong-98-115-A1.xlsx` / `-A2.xlsx` |
 
 Cả hai bảng của mỗi chương dùng cùng `concept_hash` và cùng graph provenance v3 để bảo đảm
 phạm vi giống nhau, nhưng là **bảng trống** cho hai người làm riêng; không dùng mô hình tự điền.
