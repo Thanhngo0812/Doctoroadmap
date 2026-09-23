@@ -47,8 +47,11 @@ def select_secondary_pairs(nodes, suspected_pairs, pair_cluster_ledger, edges, *
         if left not in node_by_id or right not in node_by_id:
             continue
         same_cluster = node_by_id[left]["cluster_id"] == node_by_id[right]["cluster_id"]
-        if route == "chapter" and not same_cluster:
-            continue
+        # Tuyến `chapter` **không** lọc theo cụm nữa (F126, 2026-09-23). Luật cũ chỉ hỏi cặp cùng cụm, nhưng đo
+        # trên hai chương vàng thì **78% cạnh tiên quyết là liên cụm** (31/40 và 48/61), và NMI cụm↔chương là
+        # 0,756/0,789 nên "cùng cụm" gần như là "cùng chương" — đúng vùng pass chính vừa quét. Luật cũ vì thế
+        # chĩa pass phụ vào vùng đã phủ và cấm nó vào vùng còn trống. Phép tỉa theo khả đạt bên dưới vẫn là thứ
+        # giữ chi phí trong tầm.
         if route == "topic_cluster":
             cluster_pair = frozenset((node_by_id[left]["cluster_id"], node_by_id[right]["cluster_id"]))
             if same_cluster or cluster_pair not in selected_clusters:

@@ -33,13 +33,15 @@ def test_secondary_route_and_explicit_reachability_pruning():
         {"source": "a", "target": "x", "edge_type": "requires", "explicit_evidence": True},
         {"source": "x", "target": "b", "edge_type": "requires", "explicit_evidence": False},
     ]
+    # Từ F126 (2026-09-23) tuyến `chapter` không lọc theo cụm nữa, nên cặp liên cụm `ac` luôn còn lại trừ khi
+    # chính nó bị tỉa. Phần test này giữ nguyên mục đích cũ: ghim **phép tỉa theo khả đạt tường minh**.
     selected, pruned = select_secondary_pairs(nodes, suspected, [], explicit, route="chapter")
-    assert selected == [] and pruned[0]["pair_id"] == "ab"
+    assert [row["pair_id"] for row in selected] == ["ac"] and pruned[0]["pair_id"] == "ab"
     selected, pruned = select_secondary_pairs(nodes, suspected, [], weak, route="chapter")
-    assert [row["pair_id"] for row in selected] == ["ab"] and not pruned
+    assert [row["pair_id"] for row in selected] == ["ab", "ac"] and not pruned
     direct_weak = [{"source": "a", "target": "b", "edge_type": "requires", "explicit_evidence": False}]
     selected, pruned = select_secondary_pairs(nodes, suspected, [], direct_weak, route="chapter")
-    assert selected == [] and pruned[0]["status"] == "pruned_direct_edge"
+    assert [row["pair_id"] for row in selected] == ["ac"] and pruned[0]["status"] == "pruned_direct_edge"
     selected, pruned = select_secondary_pairs(
         nodes,
         suspected,
@@ -47,7 +49,7 @@ def test_secondary_route_and_explicit_reachability_pruning():
         [{"source": "b", "target": "a", "edge_type": "requires", "explicit_evidence": True}],
         route="chapter",
     )
-    assert selected == [] and pruned[0]["edge"] == {"source": "b", "target": "a"}
+    assert [row["pair_id"] for row in selected] == ["ac"] and pruned[0]["edge"] == {"source": "b", "target": "a"}
     selected, _ = select_secondary_pairs(
         nodes,
         suspected,
@@ -107,3 +109,25 @@ def test_dossier_contains_sources_weights_text_descriptions_order_and_weak_path(
     assert dossier["nodes"][0]["description"] == "a"
     assert dossier["provenance_order"] == {"a": 3, "b": 3}
     assert dossier["indirect_path"]["all_explicit"] is False
+
+
+def test_chapter_route_asks_cross_cluster_pairs_because_that_is_where_gold_edges_live():
+    # F126: 78% cạnh tiên quyết vàng là liên cụm (31/40 và 48/61 trên hai chương vàng), và NMI cụm↔chương
+    # là 0,756/0,789 nên "cùng cụm" gần như là "cùng chương" — đúng vùng pass chính đã quét. Luật cũ chĩa
+    # pass phụ vào vùng đã phủ và cấm nó vào vùng còn trống.
+    nodes = [node("a", "g1"), node("b", "g1"), node("c", "g2")]
+    suspected = [
+        {"pair_id": "ab", "left": "a", "right": "b", "sources": ["citation"], "details": {}},
+        {"pair_id": "ac", "left": "a", "right": "c", "sources": ["contact"], "details": {}},
+    ]
+    selected, pruned = select_secondary_pairs(nodes, suspected, [], [], route="chapter")
+    assert [row["pair_id"] for row in selected] == ["ab", "ac"] and not pruned
+
+    # Phép tỉa theo khả đạt vẫn phải chặn cặp liên cụm đã có đường tường minh.
+    path = [
+        {"source": "a", "target": "x", "edge_type": "requires", "explicit_evidence": True},
+        {"source": "x", "target": "c", "edge_type": "requires", "explicit_evidence": True},
+    ]
+    selected, pruned = select_secondary_pairs(nodes, suspected, [], path, route="chapter")
+    assert [row["pair_id"] for row in selected] == ["ab"]
+    assert [row["pair_id"] for row in pruned] == ["ac"]

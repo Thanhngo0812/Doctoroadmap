@@ -293,7 +293,7 @@ Báo cáo cho từng bộ sinh: số cặp, recall cạnh vàng, và phần reca
 | Điều kiện | Pass chính | Pass phụ |
 |---|---|---|
 | ≤ 20 khái niệm học được trong cả tài liệu | một phiên duy nhất | không |
-| Cây khai báo có phân cấp thật | theo **chương**: mỗi (siêu) section một phiên, tuần tự trong chương, các chương song song | quét **cùng cụm chủ đề**: cặp nghi tiên quyết cùng cụm chưa có đường nối |
+| Cây khai báo có phân cấp thật | theo **chương**: mỗi (siêu) section một phiên, tuần tự trong chương, các chương song song | ~~quét **cùng cụm chủ đề**~~ → **quét mọi cặp nghi tiên quyết chưa có đường nối, không lọc theo cụm** *(sửa 2026-09-23, F126)* |
 | Cây thoái hoá hoặc không có heading | theo **cụm chủ đề**: mỗi cụm một phiên, song song | **liên cụm**: cặp nghi tiên quyết từ sổ cặp cụm |
 
 - Ngưỡng đếm theo **khái niệm học được**, không theo số trang: bốn tài liệu cũ có 36, 34, 75 và 98 khái niệm học
@@ -301,6 +301,14 @@ Báo cáo cho từng bộ sinh: số cặp, recall cạnh vàng, và phần reca
 - **Cặp nghi tiên quyết vẫn được sinh theo cả hai trục** dù định tuyến chọn trục nào. Định tuyến chỉ quyết cặp
   nào nằm chung một phiên, và trục nào là pass chính. Nhờ vậy E2 so được ba cấu hình — chỉ trục chương, chỉ trục
   cụm, hợp cả hai — mà không cần gọi mô hình.
+- **Vì sao bỏ bộ lọc cụm ở pass phụ** *(F126, đo trên hai chương vàng 2026-09-23)*: **78% cạnh tiên quyết vàng là
+  liên cụm** — 31/40 trên `doc-1` và 48/61 trên `doc-2`. Và NMI giữa cụm chủ đề và chương là **0,756** / **0,789**,
+  nên "cùng cụm" gần như là "cùng chương", tức **đúng vùng pass chính vừa quét**. Luật cũ vì thế chĩa pass phụ vào
+  vùng đã phủ và cấm nó vào vùng còn trống: **25 trên 26 cạnh vàng thiếu mà nằm trong sổ cặp là cặp liên cụm**,
+  cấu trúc không cho phép hỏi. Cụm chủ đề chứa quan hệ **chủ đề**, không chứa quan hệ **tiên quyết**; spec cũ đã
+  ngầm coi hai thứ là một khi chưa có bộ vàng để đo.
+- Thứ giữ chi phí trong tầm không phải bộ lọc cụm mà là **phép tỉa theo khả đạt tường minh**: cặp đã có cạnh trực
+  tiếp hoặc đã có đường đi tường minh thì không hỏi.
 - Lựa chọn định tuyến và lý do ghi vào manifest.
 
 ### D7 — Pass chính: trích mở, một lời gọi mỗi phiên, không tool *(Q9, Q19, Q20 · ADR 0008)*

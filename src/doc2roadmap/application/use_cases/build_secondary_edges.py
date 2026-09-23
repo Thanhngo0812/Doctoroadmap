@@ -82,7 +82,7 @@ class BuildSecondaryEdges:
         route = main.payload["routing"]["route"]
         prompt_hash = secondary_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-secondary-pass-v3",
+            "algorithm_id": "a8-secondary-pass-v4",
             "main_version": main.version,
             "main_config_hash": main.manifest["config_hash"],
             "canonical_version": main_config.get("canonical_version"),
