@@ -304,3 +304,18 @@ def test_tau_follows_the_teaching_position_when_the_check_has_found_one(tmp_path
                       "n_uocluong": {"first_order_index": 2, "teaching_order_index": 5}}.get(value["node_id"], {}))
     report = score_roadmap_order(write_graph(tmp_path, payload), [])
     assert report["presentation_agreement"]["tau"] == pytest.approx(1.0)
+
+
+def test_a_sequence_roadmap_is_scored_on_the_sequence_and_tau_is_reported_as_book_adherence(tmp_path):
+    # Dãy học là thứ tự đầy đủ: không có rổ "cùng stage"; cặp vàng nằm cùng module vẫn được xếp thứ tự.
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong"), ("n_uocluong", "n_khoang")})
+    payload = staged_payload([["n_mau", "n_uocluong", "n_khoang"]])
+    payload.pop("stages")
+    payload["sequence"] = ["n_mau", "n_khoang", "n_uocluong"]  # n_uocluong → n_khoang bị đặt ngược
+    payload["modules"] = [{"module_id": "module_001", "node_ids": payload["sequence"]}]
+    report = score_roadmap_order(write_graph(tmp_path, payload), [gold])
+    order = report["gold_order"]
+    assert (order["respected"], order["violated"], order["same_stage"]) == (1, 1, 0)
+    assert order["learning_order_error"] == pytest.approx(1 / 2)
+    assert report["order_unit"] == "sequence" and report["unit_count"] == 1
+    assert "độ bám sách" in report["presentation_caveat"]

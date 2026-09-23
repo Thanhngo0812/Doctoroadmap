@@ -7,7 +7,7 @@ chấm và trang HTML đọc hợp đồng mới; spec tổng, `CONTEXT.md` và 
 
 **Blocked by:** —
 
-**Status:** ready
+**Status:** done — 2026-09-23
 
 ## Cổng nhận (khoá trước khi chạy)
 
@@ -34,3 +34,30 @@ Số Q6 dự kiến (đã đo ở phân tích, dữ liệu phát triển): 5,0% 
       (V18 thay V7–V8 cho sản phẩm).
 - [ ] Chạy trên bảy tài liệu **không gọi mô hình**, dán bảng: số khái niệm, số module, cỡ module, Q6 (hai chương vàng),
       độ bám sách.
+
+## Kết quả — 2026-09-23
+
+Chạy `scripts/phan-tich-v2/chay_a10_neo_sach.py` (không gọi mô hình; upstream là artifact teaching C8 v2). Mọi
+assertion của cổng qua trên bảy tài liệu: mỗi khái niệm đủ điều kiện đúng một lần; nối module ra đúng dãy; 0 cạnh cứng
+đi ngược; không module nào vượt 8.
+
+| tài liệu | khái niệm | module | cỡ module | cấp chương/mục | Q6 | độ bám sách |
+|---|---|---|---|---|---|---|
+| `doc-1` v18 | 222 | 41 | 1×3, 2×2, 3×5, 4×2, 5×3, 6×12, 7×7, 8×7 | 1 / 2 | **5,0%** (CG 10,0%) | +0,912 |
+| `doc-2` v13 | 432 | 70 | 3×4, 4×8, 5×10, 6×15, 7×16, 8×17 | — / 1 | **8,2%** (CG 14,8%) | +0,894 |
+| `doc-3` v13 | 46 | 6 | 7×2, 8×4 | — / — | | |
+| `baocao-canhan` v101 | 36 | 6 | 4×1, 5×2, 6×1, 8×2 | — / 1 | | |
+| `naive-bayes` v31 | 31 | 4 | 7×1, 8×3 | — / — | | |
+| `nhap-mon-ml` v31 | 75 | 13 | 3×2, 4×1, 5×2, 6×2, 7×5, 8×1 | 1 / 2 | | |
+| `xstk-ch3-1` v31 | 98 | 18 | 4×5, 5×5, 6×4, 7×3, 8×1 | 1 / 2 | | |
+
+Lần chạy đầu (trước phạt dưới sàn) cho 13 module một khái niệm trên `doc-1` và 13 trên `doc-2`; thêm phạt dưới sàn
+(test đỏ trước) đưa về 3 và 0. Ba module lẻ còn lại của `doc-1` đều ở ranh giới cấu trúc: `Điểm đánh giá học phần`
+(node hành chính C8 v2 bỏ lọt, một mình trong mục đề cương), `KerT` (chỉ dạy trong mục bài tập), `Định lý về số chiều`
+(nút cuối của chuỗi dài nhất).
+
+Mở đầu lộ trình `doc-1` nay đọc như giáo trình: module 2–3 "1.1 Tập hợp", module 4 "1.2 Quan hệ và ánh xạ".
+
+Test: 14 test domain (đột biến bỏ ràng buộc cạnh, khoá vị trí theo mã node, bỏ phạt mục, đảo chiều phá hoà đều bị giết —
+đột biến khoá vị trí ban đầu **sống sót** vì dữ liệu test trùng thứ tự chữ cái; đã sửa test), 3 test ứng dụng, 1 test bộ
+chấm. Độ mạch lạc chấm bằng người ở vé 10 (T6).

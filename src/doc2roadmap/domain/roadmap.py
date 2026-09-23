@@ -129,6 +129,24 @@ def _order_stages(stages, children):
     return ordered
 
 
+def reviewed_sessions(node_ids, main_sessions, completed_secondary_pairs, suspected_pairs):
+    """Phiên A8 nào đã xét từng khái niệm: phiên pass chính nhận nó làm đích, hoặc cặp pass phụ có nó ở một đầu."""
+    node_ids = set(node_ids)
+    reviewed = defaultdict(list)
+    for session in main_sessions:
+        for node_id in session.get("target_node_ids", []):
+            if node_id in node_ids:
+                reviewed[node_id].append(session["session_id"])
+    pair_by_id = {row["pair_id"]: row for row in suspected_pairs}
+    for pair_id in completed_secondary_pairs:
+        pair = pair_by_id.get(pair_id)
+        if pair:
+            for node_id in (pair["left"], pair["right"]):
+                if node_id in node_ids:
+                    reviewed[node_id].append("secondary_" + pair_id)
+    return reviewed
+
+
 def build_roadmap(
     nodes,
     requires_edges,
@@ -163,18 +181,7 @@ def build_roadmap(
         raise AssertionError("số stage nhỏ hơn cận dưới xếp tầng")
     stages = _order_stages(stages, children)
 
-    reviewed = defaultdict(list)
-    for session in main_sessions:
-        for node_id in session.get("target_node_ids", []):
-            if node_id in node_by_id:
-                reviewed[node_id].append(session["session_id"])
-    pair_by_id = {row["pair_id"]: row for row in suspected_pairs}
-    for pair_id in completed_secondary_pairs:
-        pair = pair_by_id.get(pair_id)
-        if pair:
-            for node_id in (pair["left"], pair["right"]):
-                if node_id in node_by_id:
-                    reviewed[node_id].append("secondary_" + pair_id)
+    reviewed = reviewed_sessions(node_by_id, main_sessions, completed_secondary_pairs, suspected_pairs)
     incoming = {edge["target"] for edge in filtered_edges}
     coverage_flags = []
     result_stages = []

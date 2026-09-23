@@ -335,7 +335,16 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
     payload = json.loads(Path(graph_path).read_text(encoding="utf-8"))
     if payload.get("stage") != "stages":
         raise ValueError(f"{graph_path}: cần artifact graph ở stage 'stages', đang là {payload.get('stage')!r}")
-    stages = [stage["node_ids"] for stage in payload["stages"]]
+    # A10 neo sách (ADR 0010) giao một dãy học đầy đủ: chấm trên dãy, mỗi khái niệm một vị trí, nên không còn rổ
+    # "cùng stage". Artifact cũ vẫn chấm theo stage để so lịch sử.
+    if "sequence" in payload:
+        stages = [[node_id] for node_id in payload["sequence"]]
+        unit = {"order_unit": "sequence", "unit_count": len(payload.get("modules", []))}
+        caveat = "τ đo độ bám sách: dãy học dùng vị trí dạy làm khoá phá hoà, nên τ không còn là bằng chứng chất lượng"
+    else:
+        stages = [stage["node_ids"] for stage in payload["stages"]]
+        unit = {"order_unit": "stage", "unit_count": len(stages), "stage_count": len(stages)}
+        caveat = "τ dùng một văn bản tham chiếu duy nhất; có thể có nhiều thứ tự chấp nhận được"
     nodes = payload["nodes"]
     # Node bị bước kiểm nguồn dạy loại khỏi stage vẫn thuộc danh tính của đồ thị: vàng cần nó thì là lỗi lộ trình.
     names = {node["node_id"]: node.get("name") for node in [*nodes, *payload.get("excluded_nodes", [])]}
@@ -347,10 +356,10 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
     })
     report: dict[str, Any] = {
         "doc_id": payload.get("doc_id"),
-        "stage_count": len(stages),
+        **unit,
         "learnable_node_count": len(nodes),
         "presentation_agreement": order,
-        "presentation_caveat": "τ dùng một văn bản tham chiếu duy nhất; có thể có nhiều thứ tự chấp nhận được",
+        "presentation_caveat": caveat,
         "inputs": {"graph": _pinned(graph_path), "golds": [_pinned(path) for path in gold_paths]},
     }
     if not gold_paths:

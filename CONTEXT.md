@@ -240,9 +240,18 @@ _Tránh dùng_: prerequisite, depends on, tiên quyết
 
 ### Lộ trình
 
-**Stage**:
-Một đợt khái niệm **có thể bắt đầu học song song**: mọi tiên quyết `requires` của chúng đã nằm ở các stage trước.
-Là một tầng của phép xếp tầng có trần độ rộng (cắt lát khi vượt trần). Cụm chủ đề **không** dùng để chia stage —
-chỉ để đặt tên và sắp thứ tự bên trong stage (spec A9–A10, V8). Hai khái niệm cùng stage **chưa** được bảo đảm học
-cái nào trước.
-_Tránh dùng_: level, bước, module, bài
+**Dãy học**:
+Thứ tự học đầy đủ của mọi khái niệm trên lộ trình: một phép sắp topo đồ thị `requires`, luôn lấy khái niệm sẵn sàng
+đứng sớm nhất theo thứ tự dạy của tài liệu (ADR 0010). Lỗi thứ tự Q6 được chấm trên dãy này.
+_Tránh dùng_: thứ tự tầng, layer order
+
+**Module**:
+Đơn vị của lộ trình: một đoạn liền mạch của dãy học, tối đa 8 khái niệm, **có thứ tự bên trong** — một buổi học. Cạnh
+`requires` được phép nằm trong một module (tiên quyết đứng trước trong module). Pha B mở khoá, làm quiz và lọc RAG
+theo module.
+_Tránh dùng_: stage (nghĩa cũ khác hẳn), bài, chặng
+
+**Stage** *(không còn là đơn vị của lộ trình)*:
+Một tầng của phép xếp Coffman–Graham: các khái niệm học song song được, không cạnh `requires` nào nằm trong một
+tầng. Chỉ còn trong biến thể đối chứng và artifact cũ. Tên stage pipeline `stages` của artifact graph giữ nguyên.
+_Tránh dùng_ cho đơn vị lộ trình mới — dùng **Module**

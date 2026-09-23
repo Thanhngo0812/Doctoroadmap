@@ -483,3 +483,12 @@ thức (`Điểm đánh giá học phần`), và nhãn `prior_knowledge` loại 
 Precision so với vàng đóng băng không phân biệt được máy sai với vàng thiếu: C10 và cách đọc của reviewer cùng cho thấy
 phần lớn cạnh dư là quan hệ hợp lý mà vàng không ghi, hoặc trùng danh tính node. Quyết định chi tiền cho A8 (mở rộng
 C1) dựa trên **chấm mù** — `scripts/cham-mu/` — không dựa trên precision so với vàng.
+
+### V18 — A10 sản phẩm chuyển sang dãy học neo sách và module (2026-09-23)
+
+Thay V7–V8 cho chuỗi sản phẩm; quyết định kiến trúc ở [ADR 0010](adr/0010-lo-trinh-la-day-hoc-chia-module.md), quy tắc
+ở [spec v2, W2–W8](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). V15 vẫn đúng **cho Coffman–Graham**: đưa vị trí sách vào
+bộ xếp tầng đó không giúp trên đồ thị dày. A10 mới không phải "Coffman–Graham cộng vị trí sách" mà là một hợp đồng khác:
+dãy học đầy đủ, chia module có thứ tự, và đối chứng độc lập là Q6 trên bộ vàng; τ chỉ còn là độ bám sách. Coffman–Graham
+giữ làm biến thể đối chứng. Trên hai chương vàng: Q6 **5,0%** và **8,2%**, so với U1 khắt khe của Coffman–Graham 10,0% và
+14,8% trên cùng đồ thị.

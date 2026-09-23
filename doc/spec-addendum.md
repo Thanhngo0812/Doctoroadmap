@@ -37,7 +37,7 @@ A3. Extract concepts + thực thể media          A3'. Embed chunks
   |   (kèm chunk_ids, vị trí xuất hiện)        |    -> Vector DB
 A4. Merge duplicate concepts                   |    (metadata: section,
   |                                            |     page, order_index,
-A5. Tổng hợp description hoàn chỉnh            |     stage_id = null)
+A5. Tổng hợp description hoàn chỉnh            |     module_id = null)
   |                                            |
 A6. Semantic graph (co-occurrence + similarity)|
   |                                            |
@@ -52,12 +52,14 @@ A9. Kiểm tra nhất quán [CHỈ cạnh requires]     |
   |   9b. Gỡ chu trình, giao DAG thật          |
   |   9c. Đánh dấu cạnh bắc cầu                 |
   |                                            |
-A10. Xếp tầng có trần -> tạo stages             |
+A9'. Kiểm nguồn dạy (C8 v2, bản tạm)           |
+  |                                            |
+A10. Dãy học neo sách -> chia module           |
   |    [CHỈ requires; chưa gắn media]          |
   |                                            |
-A11. Stage enrichment (objectives, quiz)       |
+A11. Module enrichment (objectives, quiz)      |
   |                                            |
-A12. Gắn stage_id ngược về chunk <-------------+
+A12. Gắn module_id ngược về chunk <------------+
   |
 A13. (Tùy chọn) Human review + version hóa
   |
@@ -312,14 +314,14 @@ cần khi tài liệu có hình "tổng quan toàn chương" nối hàng chục 
 }
 ```
 
-> `stage_id` **không** nằm trong chunk artifact — A12 gắn nó ở tầng chỉ mục vector, đúng khuôn "tham
+> `stage_id` (sẽ đổi tên thành `module_id` khi triển khai A12 — ADR 0010) **không** nằm trong chunk artifact — A12 gắn nó ở tầng chỉ mục vector, đúng khuôn "tham
 > chiếu đứng ngoài khoá băm" để cập nhật `stage_id` không phải embed lại. Xem A3'.
 
 ### A3'. Nhánh chỉ mục vector (chạy song song với A3–A11)
 
 - **Mục đích**: nền tảng retrieval cho pha học. Không có bước này thì "user truy vấn từng giai đoạn" không hoạt động.
 - **Kỹ thuật**: embedding đa ngữ nếu tài liệu tiếng Việt (`bge-m3` hoặc `multilingual-e5-large`); lưu vào Postgres + pgvector (đơn giản) hoặc Qdrant/Weaviate (nếu cần scale).
-- **Metadata bắt buộc trên mỗi vector**: `doc_id, chunk_id, section_id, page, order_index, stage_id` (tạm null, điền ở A12).
+- **Metadata bắt buộc trên mỗi vector**: `doc_id, chunk_id, section_id, page, order_index, stage_id` (tạm null, điền ở A12; đổi tên thành `module_id` khi triển khai A12 — ADR 0010).
 
 ### A3. Extract concepts + thực thể media theo section
 
@@ -572,51 +574,66 @@ Theo đúng thứ tự:
    > **Vì sao phải lọc:** chạy trên đồ thị đầy đủ có thể xoá cạnh `illustrates` vì "đã có đường khác",
    > làm mất liên kết hình↔khái niệm mà pha B cần.
 
-### A10. Xếp tầng có trần độ rộng → tạo stages
+### A10. Dãy học neo sách → chia module
 
-> A10 chỉ đọc cạnh `requires` giữa node `learnable = true`; A9 phải giao DAG thật. Media không có tầng riêng
-> và hiện chưa được gắn vào stage. Quy tắc hiện hành là [V7–V8](va-a9-a10-do-thi-tot-va-lo-trinh-dung-duoc-spec.md).
+> Quyết định kiến trúc: [ADR 0010](adr/0010-lo-trinh-la-day-hoc-chia-module.md). Quy tắc chi tiết:
+> [spec v2, W2–W8](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). A10 chỉ đọc cạnh `requires` (kể cả cạnh co qua node bị
+> loại ở A9') giữa node `learnable = true`; A9 phải giao DAG thật. Media chưa được gắn vào module.
 
-- Coffman–Graham xếp tầng với trần mặc định 8; cân bằng và gộp tầng nhỏ chỉ khi mọi cạnh `requires` vẫn đi từ
-  stage trước tới stage sau. Mỗi stage là một tầng, không giao với cụm chủ đề.
-- Cụm chủ đề chỉ dùng để sắp thứ tự khái niệm trong stage và chọn một tên khái niệm ngắn làm `title` đại diện;
-  không có lượt LLM đặt tên stage. Các stage ngang hàng phá hoà bằng số hậu duệ và khoá stage, không bằng thứ tự chương.
+- **Dãy học**: sắp topo bằng Kahn, hàng đợi ưu tiên theo vị trí dạy `(chỉ số chunk dạy, vị trí ký tự trong chunk)` —
+  luôn lấy khái niệm sẵn sàng đứng sớm nhất trong tài liệu. Mọi cạnh đi trước ra sau; chỗ tài liệu đặt một khái niệm
+  trước tiên quyết của nó thì dãy sửa lại.
+- **Module**: chia dãy thành đoạn liền mạch ≤ 8 khái niệm bằng quy hoạch động kiểu ngắt dòng; chi phí ưu tiên module
+  đầy và cân, không vắt qua mục hoặc chương, không dưới 3 khái niệm. Cấp "mục" và "chương" chọn theo từng tài liệu
+  (trung vị số khái niệm mỗi mục ≥ 4); tài liệu phẳng thì chỉ chia theo cỡ.
+- **Trong module có thứ tự**; không tuyên bố "học song song". Mỗi khái niệm mang `sequence_index`, `module_id` và
+  danh sách tiên quyết trực tiếp.
+- Tên module lấy từ tiêu đề mục chiếm nhiều khái niệm nhất; module vắt qua hai mục ghép hai tiêu đề bằng " · ".
+- Coffman–Graham (stage song song) giữ ở tầng domain làm biến thể đối chứng, không nằm trong chuỗi sản phẩm.
 
 ```json
 {
-  "stage_id": "stage_03",
-  "title": "Overfitting",
-  "layer": 3,
-  "cluster_id": "cl_2",
-  "node_ids": ["cpt_overfitting", "cpt_regularization_l1", "cpt_regularization_l2"],
-  "first_order_index": 42
+  "sequence": ["cpt_bias", "cpt_variance", "cpt_overfitting", "cpt_regularization_l2"],
+  "modules": [
+    {
+      "module_id": "module_003",
+      "index": 2,
+      "title": "3.2 Overfitting",
+      "node_ids": ["cpt_overfitting", "cpt_regularization_l2"],
+      "section_ids": ["sec_3_2"],
+      "first_order_index": 42
+    }
+  ]
 }
 ```
 
-`node_ids` chứa mọi node học được của stage, kể cả kiểu như `theorem` hay `algorithm`.
+Đánh giá: lỗi thứ tự Q6 = (ngược + thiếu đầu) / |vàng| trên dãy. τ so thứ tự dạy từ nay là **độ bám sách**, không
+phải bằng chứng chất lượng, vì dãy dùng chính vị trí dạy để phá hoà.
 
-### A11. Stage enrichment (dự kiến, chưa triển khai)
+### A11. Module enrichment (dự kiến, chưa triển khai)
 
-Khi triển khai, sinh offline (không sinh on-the-fly lúc học) từ chunk thuộc stage. `media_ids` chỉ dùng được
-sau một vé riêng gắn media vào stage; artifact A10 hiện không có trường đó.
+Khi triển khai, sinh offline (không sinh on-the-fly lúc học) từ chunk thuộc module. `media_ids` chỉ dùng được
+sau một vé riêng gắn media vào module; artifact A10 hiện không có trường đó.
 - `objectives`: 3–5 mục tiêu học tập đo lường được.
 - `summary`: tóm tắt 150–300 từ.
-- `quiz`: 5–8 câu trắc nghiệm (kèm đáp án + giải thích + `concept_id` mà câu hỏi kiểm tra) + 1–2 câu tự luận ngắn (kèm rubric chấm). Câu hỏi được phép tham chiếu `media_id` của stage — *"nhìn Hình 3.4, đường cong nào thể hiện quá khớp?"*; UI render kèm ảnh.
+- `quiz`: 5–8 câu trắc nghiệm (kèm đáp án + giải thích + `concept_id` mà câu hỏi kiểm tra) + 1–2 câu tự luận ngắn (kèm rubric chấm). Câu hỏi được phép tham chiếu `media_id` của module — *"nhìn Hình 3.4, đường cong nào thể hiện quá khớp?"*; UI render kèm ảnh.
 - `estimated_minutes`: ước lượng thời gian học.
 
-Hình và bảng chỉ trở thành nguyên liệu của stage sau khi có phép gắn media đã kiểm chứng.
+Hình và bảng chỉ trở thành nguyên liệu của module sau khi có phép gắn media đã kiểm chứng.
 
-### A12. Gắn stage_id ngược về chunk (kế hoạch pha B)
+### A12. Gắn module_id ngược về chunk (kế hoạch pha B)
 
-- A10 hiện sinh `chunk_stage_map` trong artifact: chunk thuộc nhiều stage được gán stage sớm nhất, kèm
-  `all_stage_ids`. Chưa đồng bộ trường này sang vector DB.
-- Media hiện chưa nhận `stage_id`. Pha B phải chặn media chưa được gắn stage cho đến khi có luật gắn riêng.
-- Từ đây scoped RAG hoạt động được: filter `stage_id <= current_stage`.
-- `stage_id` **không** nằm trong bất kỳ khoá băm nào (chunk hay node), nên cập nhật nó là ghi cột thường — **không phải embed lại**. Đây là hệ quả trực tiếp của ADR 0002.
+- A10 sinh `chunk_module_map` trong artifact: chunk dạy khái niệm của nhiều module được gán module sớm nhất, kèm
+  `all_module_ids`. Chưa đồng bộ sang vector DB; trường chỉ mục hiện tên `stage_id` và chưa có dữ liệu — đổi thành
+  `module_id` khi triển khai bước này (ADR 0010).
+- Media hiện chưa nhận `module_id`. Pha B phải chặn media chưa được gắn module cho đến khi có luật gắn riêng.
+- Từ đây scoped RAG hoạt động được: filter `module_index <= current_module_index` — module có thứ tự toàn phần.
+- `module_id` **không** nằm trong bất kỳ khoá băm nào (chunk hay node), nên cập nhật nó là ghi cột thường — **không phải embed lại**. Đây là hệ quả trực tiếp của ADR 0002.
 
 ### A13. Human review (tùy chọn nhưng rất nên có)
 
-- Admin xem graph + danh sách stage, sửa tay: thêm/xóa edge, đổi tên, chuyển concept giữa stage. Mọi bản sinh ra đều version hóa (`graph_version`) — user đang học version cũ không bị vỡ tiến độ khi admin sửa.
+- Admin xem graph + danh sách module, sửa tay: thêm/xóa edge, đổi tên, chuyển concept giữa module (A10 kiểm lại
+  mọi cạnh vẫn đi trước ra sau). Mọi bản sinh ra đều version hóa (`graph_version`) — user đang học version cũ không bị vỡ tiến độ khi admin sửa.
 
 **Bốn việc riêng của hệ kiểu mở, xếp theo độ dễ soát bằng mắt:**
 
@@ -921,13 +938,14 @@ ghi lại, tầng 3 chuẩn hoá, A13 duyệt.
 {
   "user_id": "u_9",
   "doc_id": "doc_001",
-  "current_stage": "st_03",
+  "current_module": "module_003",
   "concept_mastery": {"cpt_overfitting": 0.85, "cpt_regularization_l2": 0.4},
-  "quiz_history": [{"stage_id": "st_02", "score": 0.8, "ts": "..."}]
+  "quiz_history": [{"module_id": "module_002", "score": 0.8, "ts": "..."}]
 }
 ```
 
-- UI graph: node **học được** vẽ theo trạng thái (khóa / đang học / hoàn thành); stage là nhóm node; click node mở panel học. Render bằng React Flow hoặc Cytoscape.js.
+- UI graph: node **học được** vẽ theo trạng thái (khóa / đang học / hoàn thành); module là một buổi học có thứ tự bên
+  trong; click node mở panel học, kèm "vì sao đứng ở đây" (tiên quyết trực tiếp). Render bằng React Flow hoặc Cytoscape.js.
 - **Node media vẽ khác**: `figure` hiện thumbnail, `table` hiện biểu tượng bảng — không tô màu trạng
   thái vì chúng không phải thứ để "hoàn thành". Cạnh `illustrates`/`tabulates` vẽ nét đứt để phân biệt
   với `requires` nét liền.
@@ -935,26 +953,28 @@ ghi lại, tầng 3 chuẩn hoá, A13 duyệt.
   kèm nhãn tên kiểu; cạnh kiểu lạ dùng nét mảnh kèm nhãn. Hệ kiểu mở mà UI phải cập nhật theo từng kiểu
   mới thì mở cũng bằng không.
 - Bật/tắt lớp hiển thị theo kiểu cạnh — người học muốn nhìn lộ trình thuần thì tắt hết trừ `requires`.
-- Cho phép xem trước stage sau ở chế độ read-only (đừng khóa cứng gây ức chế), và **test-out**: làm quiz để nhảy cóc stage.
+- Cho phép xem trước module sau ở chế độ read-only (đừng khóa cứng gây ức chế), và **test-out**: làm quiz để nhảy cóc module.
+- **Lộ trình tới mục tiêu** (spec v2, W9): người học chọn khái niệm đích, nhận đúng đích và tổ tiên của nó theo thứ tự
+  dãy học, chia module.
 
 ### B2. Tutor agent (scoped RAG)
 
 Luồng xử lý mỗi câu hỏi:
 1. Graph lookup: câu hỏi chạm concept nào (match tên/alias + embedding trên description).
-2. Xác định phạm vi: concept thuộc stage ≤ hiện tại → retrieval bình thường. Thuộc stage tương lai → trả lời khái quát 1–2 câu + "phần này sẽ học kỹ ở giai đoạn N" (graph cho biết chính xác N).
-3. Vector search top-k với filter `stage_id <= current_stage`, ưu tiên chunk thuộc stage hiện tại.
+2. Xác định phạm vi: concept thuộc module ≤ hiện tại → retrieval bình thường. Thuộc module tương lai → trả lời khái quát 1–2 câu + "phần này sẽ học kỹ ở module N" (graph cho biết chính xác N).
+3. Vector search top-k với filter `module_index <= current_module_index`, ưu tiên chunk thuộc module hiện tại.
 4. Trả lời kèm trích dẫn trang/section (metadata chunk có sẵn) để user tra lại tài liệu gốc.
 5. **Kèm hình khi hình nói tốt hơn chữ**: nếu khái niệm được hỏi có node `figure`/`table` nối tới trong
-   phạm vi stage cho phép, agent chèn nó vào câu trả lời. Đây là lý do tồn tại của node media.
+   phạm vi module cho phép, agent chèn nó vào câu trả lời. Đây là lý do tồn tại của node media.
 
 Tools của agent:
 
 | Tool | Việc |
 |---|---|
-| `search_stage_content(query, stage_scope)` | Vector search có lọc phạm vi |
+| `search_module_content(query, module_scope)` | Vector search có lọc phạm vi |
 | `lookup_concept(name)` | Resolve tên/alias về node |
-| `get_stage_info(stage_id)` | Mục tiêu, tóm tắt, danh sách node của stage |
-| **`get_media_for_concept(concept_id, stage_scope)`** | **Trả hình/bảng nối tới khái niệm, kèm mô tả và `caption_source`. Lọc theo `stage_id <= current`** |
+| `get_module_info(module_id)` | Mục tiêu, tóm tắt, danh sách node theo thứ tự của module |
+| **`get_media_for_concept(concept_id, module_scope)`** | **Trả hình/bảng nối tới khái niệm, kèm mô tả và `caption_source`. Lọc theo `module_index <= current`** |
 | **`traverse(node_id, edge_type, direction)`** | **Đi theo bất kỳ loại cạnh nào — `example_of`, `contrasts_with`, kiểu LLM tự đặt. Đây là chỗ hệ kiểu mở trả lương** |
 
 Hai tool cuối là điều kiện cần để đồ thị giàu kiểu có ý nghĩa: **không có chúng thì đồ thị có node hình
@@ -965,14 +985,14 @@ nên kiểu mới dùng được ngay không cần sửa code tool.
 
 ### B3. Assessment agent
 
-- Quiz cuối stage lấy từ bộ đã sinh ở A11 (xáo trộn, chọn ngẫu nhiên). Tự luận chấm bằng LLM theo rubric.
-- Điểm được quy về **mastery theo từng concept** (mỗi câu hỏi đã gắn `concept_id`). Đạt ngưỡng tổng (vd ≥ 70%) và không concept nào < 40% → unlock stage kế.
-- Rớt concept cụ thể → điều hướng ôn đúng concept đó (tutor agent sinh giải thích bổ sung từ evidence chunks), không bắt học lại cả stage.
+- Quiz cuối module lấy từ bộ đã sinh ở A11 (xáo trộn, chọn ngẫu nhiên). Tự luận chấm bằng LLM theo rubric.
+- Điểm được quy về **mastery theo từng concept** (mỗi câu hỏi đã gắn `concept_id`). Đạt ngưỡng tổng (vd ≥ 70%) và không concept nào < 40% → unlock module kế.
+- Rớt concept cụ thể → điều hướng ôn đúng concept đó (tutor agent sinh giải thích bổ sung từ evidence chunks), không bắt học lại cả module.
 
 ### B4. Adaptive loop
 
 - Cập nhật `concept_mastery` sau mỗi quiz và cả từ tín hiệu hội thoại (user hỏi lại nhiều lần về 1 concept → mastery giảm).
-- Tùy chọn nâng cao: spaced repetition — chèn câu ôn tập concept cũ vào quiz của stage mới.
+- Tùy chọn nâng cao: spaced repetition — chèn câu ôn tập concept cũ vào quiz của module mới.
 
 ---
 

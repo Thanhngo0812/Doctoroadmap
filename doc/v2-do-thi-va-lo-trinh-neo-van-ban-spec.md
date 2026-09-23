@@ -88,9 +88,15 @@ cạnh co qua node bị loại) đi từ trước ra sau.
 *Đã cân nhắc:* tối ưu khoảng cách Kendall tới thứ tự sách — khó hơn và chưa có bằng chứng hơn; Coffman–Graham — xem ADR.
 
 **W3 — Chia module bằng quy hoạch động.** Chia dãy thành đoạn liền mạch, mỗi đoạn ≤ `W` (mặc định 8, giữ trần hiện có).
-Chi phí một phương án = Σ module `[1 + α·((W − cỡ)/W)² + λ_mục·(số mục − 1) + λ_chương·(số chương − 1)]` + Σ vết cắt nằm
-giữa hai khái niệm cùng mục `λ_cắt`. Mặc định `α = 1, λ_mục = 2, λ_chương = 4, λ_cắt = 1`. Bài toán giống ngắt dòng
-Knuth–Plass: `O(n·W)`, tối ưu toàn cục, tất định (khi hoà chọn điểm cắt sớm nhất).
+Chi phí một phương án = Σ module `[1 + α·((W − cỡ)/W)² + λ_mục·(số mục − 1) + λ_chương·(số chương − 1) +
+λ_nhỏ·max(0, sàn − cỡ)]` + Σ vết cắt nằm giữa hai khái niệm cùng mục `λ_cắt`. Mặc định `α = 1, λ_mục = 2, λ_chương = 4,
+λ_cắt = 1, sàn = 3, λ_nhỏ = 2`. Bài toán giống ngắt dòng Knuth–Plass: `O(n·W²)`, tối ưu toàn cục, tính bằng số nguyên
+(nhân `W²`) để ca hoà là hoà thật; khi hoà, module phía trước đầy hơn (20 khái niệm phẳng → 7 + 7 + 6).
+
+*Phạt dưới sàn thêm sau lần chạy đầu trên bảy tài liệu*: không có nó, một khái niệm bị đồ thị kéo từ mục khác lên thành
+module đứng một mình — 13 module như vậy trên `doc-1`, 13 trên `doc-2`. Đây là quan sát cấu trúc, không phải chỉnh trên
+bộ vàng (Q6 không phụ thuộc cách chia module). Có phạt: `doc-1` còn 3 (đều ở ranh giới cấu trúc: node hành chính trong
+đề cương, khái niệm chỉ dạy trong mục bài tập, nút cuối của chuỗi dài nhất), `doc-2` 0.
 
 Các hệ số là **mặc định thiết kế, không chỉnh trên bộ vàng**: Q6 không phụ thuộc cách chia module, còn độ mạch lạc chỉ
 được chấm bằng người (Q8). Lý do từng hệ số: `α` bậc hai ưu tiên module đầy và cân (12 khái niệm → 6 + 6, không 8 + 4);
