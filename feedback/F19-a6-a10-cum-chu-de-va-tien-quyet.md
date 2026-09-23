@@ -1726,3 +1726,72 @@ Bốn rổ của tỉ lệ vi phạm không chồng nhau — tôn trọng, vi ph
 tính trên cặp thật sự được xếp thứ tự. Rổ "cùng stage" tồn tại vì với định nghĩa stage mà chủ dự án chốt, một cặp
 tiên quyết nằm chung stage **không phải** tôn trọng: lộ trình không xếp thứ tự cho nó. Trên hai chương thật rổ ấy
 bằng 0, đúng như bất biến của vé 21 hứa.
+
+---
+
+# Vòng 40 — Kiểm thử F120, F121, F122 · 2026-09-23
+
+Commit `941c32f`, cây sạch, suite **477 xanh** khi chặn mạng.
+
+## F120 và F121: **đóng**, kiểm bằng đột biến
+
+| | Test mới | Đột biến từng lọt ở vòng 38 | Giờ |
+|---|---|---|---|
+| **F120** | `test_stage_rejects_an_internal_requires_edge` | A3 "bỏ kiểm cạnh nằm trong cùng stage" | **BẮT** |
+| **F121** | `test_stage_cap_must_be_a_positive_integer[0, True]` | A7 "nhận stage_cap âm" | **BẮT** |
+
+Test F120 làm đúng thứ `AGENTS.md` §5 đòi: gọi thẳng `_order_stages(["a","b"], {"a": {"b"}})` và kỳ vọng nó ném —
+tức **chạy đúng nhánh mà guard bảo vệ**, không chỉ đi đường hạnh phúc.
+
+Test F121 có một ca tinh tế đáng khen: tham số hoá với `True`. `bool` lọt `isinstance(x, int)` nhưng không lọt
+`type(x) is int`, nên ca ấy ghim đúng cách viết trong mã.
+
+Ba phép còn lọt (A1, A5, A6) là ba phép **tôi đã xác định ở vòng 38 là nhắm hỏng, vô hiệu và quá yếu** — không
+phải lỗ hổng test.
+
+## F122: **mã xong, số đo chưa có**
+
+Predicate đã đúng trên cả 36 tên của danh sách điều kiện nhận, trừ một ca sẽ nói ở dưới:
+
+- `𝐅 ∞` **được cứu** — nhánh "hai phần" giờ nhận phần sau là `∞` bên cạnh ký tự MATHEMATICAL.
+- Thêm một luật chặn chung: **tên chứa chữ số thì loại**. Luật này thực hiện đúng đường ranh tôi đề xuất ở vòng
+  38 — *giữ khi số mũ là ký hiệu, loại khi là con số cụ thể* — nên `P4(R)`, `𝒫 2(𝐑)`, `𝐂 4` giờ bị loại nhất quán
+  với `V(2)` mà chủ dự án đã phán. Chỗ tự mâu thuẫn trong danh sách của tôi đã hết.
+
+**Nhưng `doc-2` chưa chạy lại.** Artifact mới nhất là `candidates/doc-2/v5` tạo **22/9 09:40**, còn bản sửa commit
+**23/9 14:30**. `algorithm_id` đã lên `a3-section-conversation-v10`, nghĩa là lượt sau sẽ khác. Điều kiện nhận của
+vé 19 ghi rõ **"đo trên `doc-2` thật, không phải trên test tổng hợp"**, nên F122 chưa đóng được.
+
+**Một chỗ tôi phải nói cho đúng:** `structured_symbol('ℳ')` trả `False`, nhưng `ℳ` **vẫn có mặt** trong `v5`. Lý
+do là A3 xét nhánh **promote alias chữ trước**, predicate chỉ là nhánh sau. Nên mọi phép kiểm ở mức predicate chỉ
+là xấp xỉ; phép kiểm thật phải đọc artifact. Tôi có chạy một mô phỏng ở mức canonical và nó **báo thừa** rằng `ℳ`
+sẽ bị loại — đừng dùng con số ấy.
+
+## F123 🟠 — chạy lại A3 lúc này sẽ **vô hiệu hoá bộ vàng vừa gán**
+
+Đây là hệ quả mà cả tôi lẫn nhân viên đều chưa tính khi cắt F122.
+
+Bộ vàng gắn cứng vào phiên bản canonical: `doc-1` ở **canonical v4**, `doc-2` ở **canonical v2**, và mỗi bộ mang
+một `concept_hash`. `a8_gold.py:610` từ chối bộ vàng khi hash không khớp scope hiện hành:
+
+```python
+if gold["concept_hash"] != scope["concept_hash"]:
+```
+
+Chạy lại A3 với `v10` → canonical mới → `concept_hash` mới → **`a8-gold-merge` từ chối hai file hội ý vừa sinh**,
+và 50 dòng hội ý chưa quyết sẽ không quyết được.
+
+Phần nhẹ nhõm: ba tên mà luật mới loại (`P4(R)`, `𝒫 2(𝐑)`, `𝐂 4`) **không nút nào được bộ vàng dùng** — tôi đã
+tra toàn bộ đầu và đuôi của 67 cạnh vàng `doc-2`. Nên **nhãn không mất**, chỉ có công cụ từ chối vì hash lệch.
+
+**Đề xuất, theo thứ tự:**
+
+1. **Đóng băng A3 ở `v9` cho corpus thí nghiệm này.** Hội ý xong, đóng băng bộ vàng, chạy E1/E2/E3.
+2. Chỉ sau đó mới chạy lại A3 `v10` trên `doc-2`, và khi ấy đo F122 như một **lượt so trước/sau** chứ không phải
+   một lượt thay thế.
+3. Nếu chủ dự án muốn F122 vào corpus chính, thì phải chấp nhận gán nhãn lại — và điều đó không đáng, vì ba tên bị
+   ảnh hưởng không nằm trong bộ vàng.
+
+**Và một luật phương pháp nên viết vào spec:** *một khi bộ vàng đã gán, cấu hình A3/A4 phải đóng băng cho tới khi
+thí nghiệm chạy xong.* Bộ vàng là artifact đắt nhất của đợt — nó tốn người, không tốn máy — nên pipeline phải đứng
+yên quanh nó, chứ không phải ngược lại. Hiện không có gì trong spec nói điều này, và F122 suýt vi phạm nó.
