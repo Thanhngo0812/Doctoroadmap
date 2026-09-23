@@ -73,9 +73,10 @@ Ghi vào một tệp văn bản `artifacts/a8-gold/liet-ke-mu.md`, mỗi phần 
 
 ## T6 — Chấm độ mạch lạc module
 
-Sau vé 02 tôi sinh `artifacts/a8-gold/cham-module.xlsx`: khoảng 20 đơn vị từ lộ trình cũ và 20 từ lộ trình mới, xáo trộn,
-ẩn tên hệ thống. Mỗi dòng chấm **độ mạch lạc** 1–5 (5 = một buổi học có chủ đề rõ) và **tên có đúng nội dung không**
-(đúng / một phần / không). Hai người, riêng.
+**Đã sẵn sàng (2026-09-24).** `artifacts/a8-gold/cham-module.xlsx`: 20 đơn vị từ lộ trình cũ và 20 từ lộ trình mới, xáo trộn,
+ẩn tên hệ thống. Sheet **Đơn vị** chỉ hiện danh sách khái niệm (không tên, không thứ tự — tên và thứ tự sẽ để lộ hệ
+thống); chấm **độ mạch lạc** 1–5. Xong hẳn sheet đó rồi mới mở sheet **Tên module** (15 module khác), chấm tên đúng /
+một phần / không. Hai người, riêng; lưu thành `cham-module-A1.xlsx`, `cham-module-A2.xlsx`.
 
 ## T3 — Gán nhãn khái niệm mù trên N1
 
