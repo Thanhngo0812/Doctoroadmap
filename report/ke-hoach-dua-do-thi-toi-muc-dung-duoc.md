@@ -821,3 +821,73 @@ Thông tin kèm, không phải cổng: C10 trên `doc-2` v7 (chưa có C1); tỉ
 việc gỡ nhầm); và phân bố phán quyết trên các cạnh dư.
 
 Qua cả ba thì C1 được mở rộng sang `doc-2` **kèm** C10. Trượt thì dừng chi tiền cho A8 và đọc nguyên nhân.
+
+---
+
+## 16. Kết quả C8 v2 và C10 — cả hai **không được nhận** (2026-09-23)
+
+### C8 v2: đạt A, B, D — trượt C
+
+| cổng | kết quả | |
+|---|---|---|
+| **A** an toàn, dữ liệu mới | loại nhầm **2 / 134** | **đạt**, đúng bằng ngưỡng |
+| B bắt rác, `doc-3` đã nhìn thấy | loại đúng **10 / 13**, loại nhầm **1 / 33** | đạt, sát ngưỡng cả hai chiều — bằng chứng phát triển |
+| **C** `doc-1` | loại **2 / 3** node hành chính; U1 **7,5% → 10,0%** | **trượt** |
+| D toàn kho | 0 vi phạm cạnh cứng ở mọi tài liệu; số stage không tăng (`doc-3` 8 → 6) | đạt |
+| E `xstk-ch3-1` | 0 node bị loại | không có gì để đọc tay |
+
+Cổng C trượt vì hai lý do khác bản chất:
+
+- **Bỏ lọt thật:** `Điểm đánh giá học phần` được chấm `concept/teaches` vì đoạn có công thức `Z = 0,2X + 0,8Y`. Một
+  công thức làm mô hình tưởng đó là kiến thức môn học.
+- **Cổng nhiễu:** U1 tăng vì **một cặp vàng rơi vào cùng stage**, 0 đầu cạnh vàng bị loại. Cả v1 và v2 đều cho đúng
+  hiện tượng này: bỏ vài node làm Coffman–Graham xếp lại, và 14 cặp vàng mà máy còn thiếu cạnh được đặt theo may rủi
+  của bộ xếp. Một thay đổi ở A10 dịch U1 ±1 cạnh (2,5 điểm) mà không nói gì về chất lượng của thay đổi đó. Đây là
+  **lỗi thiết kế cổng của tôi** — nhưng nó đã khoá, nên kết quả vẫn là trượt.
+
+Theo luật đã khoá ("trượt cổng A hoặc C thì không nhận"): **C8 v2 không được nhận**, và được gỡ khỏi chuỗi mặc định.
+Mã và test giữ lại để dùng cho phiên bản sau.
+
+**Điều nên biết khi chủ dự án quyết:** thất bại của v2 là **bỏ sót**, không phải **gây hại** — trên dữ liệu mới nó loại
+nhầm 2/134, trên `doc-1` cả 3 node nó loại đều đúng (`Thi viết rọc phách`, `Thang điểm chữ`, và `det(Y)` là một câu
+bài tập), 0 đầu cạnh vàng bị mất. Bật nó như bản tạm là quyết định của chủ dự án, không phải của tôi: tôi đã viết luật
+trước khi chạy và sẽ không tự lật nó sau khi thấy số.
+
+### C10: **trượt**, và phép thử bác bỏ chính tiền đề
+
+| `doc-1`, gói C1 + C10 | trước | sau | cổng |
+|---|---|---|---|
+| precision | 0,473 | **0,479** | ≥ 0,606 — trượt |
+| recall | 0,650 | 0,575 | |
+| cạnh vàng mất | — | **3** | ≤ 1 — trượt |
+| U1 | 10,0% | 10,0% | ≤ 10,0% — đạt |
+
+Phán quyết trên 517 cạnh: `requires` 433, `supports` 46, `unresolved` 31, `reversed` 4, `unrelated` 3. Trong phạm vi
+chấm, C10 gỡ **3 cạnh đúng và 4 cạnh sai** — gần như tung đồng xu.
+
+Ba cạnh vàng bị gỡ cho thấy ba kiểu hỏng khác nhau:
+
+1. `Không gian véc tơ → Véc tơ` bị chấm `reversed`, trong khi lý do mô hình tự viết khẳng định **đúng** chiều vàng
+   (*"vector space is required to define a vector"*). Phán quyết mâu thuẫn với chính lý do.
+2. `Hệ PT tuyến tính thuần nhất → Độc lập tuyến tính` bị hạ thành `supports` vì hệ thuần nhất "là công cụ kiểm tra,
+   không nằm trong định nghĩa". **Đúng theo tiêu chí C10, sai theo bộ vàng**: người gán coi đó là tiên quyết vì muốn
+   *làm* được bài độc lập tuyến tính thì phải giải được hệ. Tiêu chí "định nghĩa của B có dùng A" **hẹp hơn** khái niệm
+   tiên quyết của bộ vàng — và của người học.
+3. `Hệ sinh → Cơ sở` bị hạ thành `supports` dựa vào câu hệ quả "mỗi cơ sở đều là một hệ sinh", trong khi định nghĩa cơ
+   sở là "hệ sinh độc lập tuyến tính".
+
+Và C10 **giữ 23 / 29 cạnh dư** với lý do nghe hợp lý (`Vô hướng → Không gian véc tơ`: *"the definition of a vector
+space explicitly requires the concept of scalars"*). Tiền đề của C10 là phần lớn cạnh dư là lỗi quan hệ mà đọc lại
+định nghĩa sẽ bắt được. Phép thử cho thấy ngược lại: phần lớn cạnh dư là quan hệ mà **cả C10 lẫn một người đọc cẩn
+thận đều thấy hợp lý** — tức là vàng thiếu, trùng danh tính, hoặc lệch độ mịn — không phải lỗi quan hệ.
+
+**Kết luận: precision đo trên vàng đóng băng không phân biệt được "máy sai" với "vàng thiếu", nên không bước kiểm tự
+động nào nâng được nó mà không cắt nhầm cạnh đúng.** Muốn biết precision thật phải đo bằng người: cho người gán chấm
+mù một mẫu cạnh dư của máy trộn với cạnh đúng và cặp ngẫu nhiên. C10 bị gỡ khỏi chuỗi mặc định.
+
+### Hệ quả cho C1
+
+C1 vẫn **chưa** được mở rộng sang `doc-2`: cổng precision của C1 chưa qua, và đo lại được nó cần phép chấm mù ở trên
+chứ không cần thêm một bộ lọc. Nhưng số liệu cũng cho thấy cổng precision không đo cái ta cần: C1 kéo U1 của `doc-1`
+**30,0% → 7,5%**, **0** cạnh dư nào ngược chiều bao đóng vàng, và phần lớn cạnh dư là quan hệ hợp lý. Quyết định có
+mở rộng C1 (≈ 7,4 USD cho 9 984 cặp của `doc-2`) nên dựa trên phép chấm mù, không dựa trên precision so với vàng.

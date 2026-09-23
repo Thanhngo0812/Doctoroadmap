@@ -4,16 +4,13 @@ from __future__ import annotations
 class BuildLearningGraph:
     STAGES = ("clusters", "mentions", "provenance", "edges", "stages")
 
-    def __init__(self, clusters, mentions, provenance, main_edges, secondary_edges, validator, teaching, relations,
-                 roadmap):
+    def __init__(self, clusters, mentions, provenance, main_edges, secondary_edges, validator, roadmap):
         self.clusters = clusters
         self.mentions = mentions
         self.provenance = provenance
         self.main_edges = main_edges
         self.secondary_edges = secondary_edges
         self.validator = validator
-        self.teaching = teaching
-        self.relations = relations
         self.roadmap = roadmap
 
     def execute(self, doc_id, *, stop_after="stages"):
@@ -37,10 +34,6 @@ class BuildLearningGraph:
         if stop_after == "edges":
             return artifact, reused
         artifact, current_reused = self.validator.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        artifact, current_reused = self.teaching.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        artifact, current_reused = self.relations.execute(doc_id, upstream=artifact)
         reused = reused and current_reused
         artifact, current_reused = self.roadmap.execute(doc_id, upstream=artifact)
         return artifact, reused and current_reused
