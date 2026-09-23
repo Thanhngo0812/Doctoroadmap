@@ -5,6 +5,7 @@ cộng canonical và chunks đúng phiên bản mà bộ vàng đã gán.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 from typing import Any
@@ -318,12 +319,18 @@ def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", sam
     return report
 
 
+def _pinned(path) -> dict[str, str]:
+    return {"path": str(path), "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()}
+
+
 def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") -> dict[str, Any]:
-    """Chấm **thứ tự** của lộ trình: τ so mục lục, và cạnh vàng nào bị xếp ngược.
+    """Chấm **thứ tự** của lộ trình: τ so mục lục, và cạnh vàng nào lộ trình chưa bảo đảm học trước.
 
     Hai chỉ số tách bạch. τ đo lộ trình lệch mục lục bao nhiêu — nó là **dấu hiệu chẩn đoán**, không phải mục
-    tiêu, vì thứ tự sách không phải chân lý về tiên quyết. Tỉ lệ vi phạm cạnh vàng mới là phép chấm đúng/sai,
-    và nó chỉ tính trên cặp mà lộ trình thật sự xếp được thứ tự.
+    tiêu, vì thứ tự sách không phải chân lý về tiên quyết. `learning_order_error` mới là phép chấm đúng/sai.
+
+    Bộ vàng khác tài liệu, khác phiên bản canonical, hoặc nhắc khái niệm mà đồ thị không có thì **không chấm**:
+    một điểm trên danh tính lệch là điểm giả. Mỗi báo cáo ghim SHA-256 của đúng các tệp đã đọc.
     """
     payload = json.loads(Path(graph_path).read_text(encoding="utf-8"))
     if payload.get("stage") != "stages":
@@ -340,11 +347,21 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
         "learnable_node_count": len(nodes),
         "presentation_agreement": order,
         "presentation_caveat": "τ dùng một văn bản tham chiếu duy nhất; có thể có nhiều thứ tự chấp nhận được",
+        "inputs": {"graph": _pinned(graph_path), "golds": [_pinned(path) for path in gold_paths]},
     }
     if not gold_paths:
         return report
     golds = [load_gold(path) for path in gold_paths]
+    if len({gold["doc_id"] for gold in golds}) != 1 or golds[0]["doc_id"] != payload.get("doc_id"):
+        raise ValueError(f"bộ vàng và artifact graph phải cùng một doc_id, đang là "
+                         f"{sorted({gold['doc_id'] for gold in golds})} và {payload.get('doc_id')!r}")
+    if len({(gold["canonical_version"], json.dumps(gold["chapter"], sort_keys=True)) for gold in golds}) != 1:
+        raise ValueError("các file vàng phải cùng một chương và cùng phiên bản canonical")
     edges = merge_gold(golds, mode=mode)
+    unknown = sorted({node_id for edge in edges for node_id in edge} - set(names))
+    if unknown:
+        raise ValueError(f"{len(unknown)} khái niệm của bộ vàng không có trong đồ thị, ví dụ {unknown[0]}; "
+                         "bộ vàng này không thuộc danh tính của artifact đang chấm")
     violations = gold_order_violations(stages, edges, names=names)
     report["gold_mode"] = mode
     report["gold_edge_count"] = len(edges)

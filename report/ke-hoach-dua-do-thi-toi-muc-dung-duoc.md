@@ -586,3 +586,98 @@ cặp. Xếp làm **C10**, sau C1 — vì trước hết phải biết C1 đẻ 
 
 **Tách loại cạnh cứng/mềm** vẫn làm, nhưng xuống hạng: nó đúng về khái niệm và rẻ, nhưng đã đo là **không phải
 nguyên nhân** của bất kỳ triệu chứng nào đang thấy.
+
+---
+
+## 13. Thẩm định độc lập kế hoạch này (2026-09-23) — kiểm từng ý, và đính chính
+
+Tài liệu [kien-nghi-luong-do-thi-va-roadmap-dat-chuan.md](kien-nghi-luong-do-thi-va-roadmap-dat-chuan.md)
+thẩm định kế hoạch tại commit `deedbbb` và tự tái lập số liệu. Tôi kiểm lại **mọi khẳng định kiểm được** bằng mã
+của dự án. **Cả năm đều đúng**, và ba trong số đó là lỗi của tôi.
+
+### Đính chính
+
+| Tôi đã nói | Đúng là | Kiểm bằng |
+|---|---|---|
+| Precision `doc-1` sau C1 là **0,500** | **0,473** (26 / 55) — tôi dùng phạm vi tự chế thay cho `score_edges` | `score_edges(..., targets=gold["targets"])` |
+| C1 là "đổi ngang", "recall đáng giá hơn precision" | **C1 trượt cổng đã khoá trước**: mục 5 đặt "precision không giảm quá 0,05", thực tế giảm **0,183**. Lời biện hộ sau khi thấy số là đúng thứ mục 6 cấm | bảng dưới |
+| Mục 12: ba cặp "vẫn sẽ đảo ngược ngay cả khi cạnh thiếu được bổ sung" | **Sai.** Cạnh đã nằm trong DAG thì không bộ xếp lớp hợp lệ nào đảo được. Bổ sung 19 cạnh vàng thiếu vào v7: **40/40 đúng thứ tự, 0 cùng lớp, vẫn 29 lớp** (đối chứng oracle, không đưa vào sản phẩm) | xếp lại qua `build_roadmap` |
+| "Thước đo khắt khe nhất: vi phạm / (tôn trọng + vi phạm + cùng lớp)" | Khắt khe nhất phải tính **cùng lớp là lỗi**: stage là tập học song song, cùng stage chưa bảo đảm học trước | định nghĩa stage |
+| U1 = 26,1% / 15,2% | Hai số đó chấm trên **vàng giao** (`gold_mode: intersection`, 23 / 46 cạnh), trong khi P/R chấm trên vàng hội ý — hai bảng khác đối tượng | trường `gold_mode` trong hai tệp `*-roadmap-score.json` |
+| Mục 12 gọi "lớp một mình" là vỡ **U5** | Lớp một mình thuộc **U4**; U5 là độ phủ node | bảng U ở mục 1 |
+
+Và C9 trên bộ cạnh **sau** C1: lỗi học trước **7,5% → 7,5%**, số lớp **30 → 34**. C1 đã hấp thụ toàn bộ lợi ích
+của C9 trên `doc-1`; hiệu quả hai can thiệp **không cộng được**.
+
+### U1 chính thức từ nay: `learning_order_error` trên vàng hội ý
+
+`learning_order_error = (ngược + cùng lớp + thiếu đầu) / |vàng|`. Bộ vàng rỗng → **chưa đánh giá**, không phải
+đạt. Đã cài vào `gold_order_violations` và `score_roadmap_order`; bộ chấm nay **từ chối** vàng khác `doc_id`,
+khác phiên bản canonical, hoặc nhắc khái niệm đồ thị không có, và ghim SHA-256 của mọi tệp đã đọc. 7 test mới,
+cả 7 đã được thấy đỏ trước khi có mã; toàn suite 485/485.
+
+| | lớp | tôn trọng | ngược | cùng lớp | thiếu đầu | **U1** | chỉ số cũ | τ |
+|---|---|---|---|---|---|---|---|---|
+| `doc-1` v7 | 29 | 28 | 9 | 3 | 0 | **30,0%** | 24,3% | +0,087 |
+| `doc-1` v10 (C1) | 30 | 37 | 1 | 2 | 0 | **7,5%** | 2,6% | +0,436 |
+| `doc-2` v7 | 55 | 49 | 11 | 1 | 0 | **19,7%** | 18,3% | +0,125 |
+
+Báo cáo đầy đủ: `artifacts/a8-gold/<doc>-v<n>-roadmap-score-vang.json`.
+
+### Giải phẫu 29 cạnh dư của C1 — và giới hạn của chính phép chấm precision
+
+Theo phạm vi chính thức: **10 suy ra được từ bao đóng vàng** (thừa nhưng vô hại cho thứ tự), **19 lạ**, **0 ngược
+chiều**; 18 cạnh mới so với v7, không cạnh vàng nào mất. Đọc 19 cạnh lạ — **cách đọc của reviewer, chưa phải nhãn**:
+
+| nhóm | ~số | ví dụ | can thiệp đúng chỗ |
+|---|---|---|---|
+| nhầm ví dụ / trường hợp riêng với định nghĩa | 4 | `Cộng ma trận → Không gian véc tơ`; `Véc tơ → Hàm thực liên tục` ("C[a,b] là một ví dụ") | C10 |
+| nối bằng định lý hoặc động cơ, không phải định nghĩa | 4 | `Độc lập tuyến tính cực đại → Số chiều` (qua Định lý 2); `Hệ PT tuyến tính → Không gian véc tơ` ("motivated by") | C10 → quan hệ mềm |
+| vướng danh tính node | 5 | `Hệ véc tơ độc lập tuyến tính` và `Độc lập tuyến tính` là hai node một khái niệm; `Phần tử trung hòa` hai nghĩa | xung đột danh tính |
+| trông đúng mà vàng không có | 6 | `Vô hướng → Không gian véc tơ` (ba biến thể); `Nhóm → Phần tử trung hòa` | không phải lỗi máy? |
+
+Nhóm cuối là điểm mấu chốt: **precision so với vàng đóng băng không phân biệt được "máy sai" với "vàng không
+liệt kê"**. Người gán có thể đã cố ý không ghi `Vô hướng → Không gian véc tơ` vì coi `Trường` là tiên quyết trực
+tiếp — đó là quyền của họ, và tôi không được tự "sửa" vàng. Cách đo đúng là **cho người gán chấm mù một mẫu**
+gồm cạnh dư của máy trộn với cạnh đúng và cặp ngẫu nhiên làm đối chứng. Việc này cần người.
+
+### Sổ chi phí
+
+Mẻ C1 trên `doc-1` tốn **2,71 USD** (pass phụ; pass chính được tái dùng, 0,25 USD đã tính từ trước). Tổng đã
+tiêu ≈ **12,2 / 50 USD**. Con số 9,50 ở mục 2 là số **trước** C1.
+
+### Tập kiểm giữ lại
+
+Hai chương vàng đã dùng để chẩn đoán, chọn can thiệp, so `k` và chọn C9 — nay chúng là **dữ liệu phát triển**.
+Bộ gán `xstk-ch3-1-chuong-10-13` (A1, A2, hội ý; 18–20/09) mới chỉ dùng cho E1 ở vé 16, **chưa từng dùng để
+chọn can thiệp A8/A10**. Nó là ứng viên tốt nhất hiện có cho tập giữ lại — nhưng không nguyên sơ, và phải được
+**khoá từ bây giờ**: không mở nhãn cho tới lần xác nhận cuối. Chủ dự án quyết.
+
+### Bộ tiêu chí sửa theo thẩm định
+
+- **U1** = `learning_order_error` trên vàng hội ý, như trên.
+- **U4** tách làm ba: *bắt buộc* (0 vi phạm cạnh cứng, không vượt trần, mỗi node đúng một lần); *mềm* (ít stage
+  vụn, mỗi stage nhỏ có lý do); *hiệu suất* (báo số stage / cận dưới). Bỏ "số stage = cận dưới" khỏi phần bắt buộc:
+  phản ví dụ 3 node → M → 3 node, W = 2 cần 5 stage trong khi cận dưới là 4, và stage chứa M buộc phải đơn lẻ.
+- **U0b** = **0 xung đột danh tính chưa được xử lý**. Chung alias là lý do đưa cặp ra xét, không phải bằng chứng
+  trùng: `ℒ(V,W)` và `Linear map` cùng alias `linear maps` mà một bên là tập các ánh xạ.
+- **Nhãn bằng chứng không phải nhãn mức bắt buộc.** `trong_dinh_nghia` là *dạng* bằng chứng; cứng hay mềm phải
+  do một bước kiểm quan hệ quyết, không suy thẳng từ nhãn.
+
+### Thứ tự mới — nhận khung P0–P3 của bản thẩm định
+
+1. **P0 — đã xong phần mã:** bộ chấm thứ tự, kiểm danh tính, ghim tệp. Phần còn lại: đổi tên U4/U0b trong mọi
+   cổng, và ca `Matrix → Nonnegative integers` ở `doc-2` (máy và vàng ngược nhau, gây SCC khi gộp).
+2. **P1a — C8 đo offline trước:** nhãn vai trò vùng văn bản, node đủ điều kiện lên lộ trình, vị trí dạy sạch —
+   đo trên **bộ cạnh cố định**, chưa chạy lại A8. Chỉ chạy lại A8 nếu phép đo offline cho thấy đáng.
+3. **P1b — C10:** hồ sơ chứa đoạn dạy của **cả hai** đầu, câu hỏi hẹp "định nghĩa của B có dùng A không", có quyền
+   trả `unresolved`. **Cổng khoá trước:** gói C1 + C10 phải qua đúng cổng mà C1 một mình đã trượt — so với v7,
+   precision giảm không quá 0,05 (tức ≥ 0,606), và mất không quá 1 trong 26 cạnh vàng đã tìm được. Không dời cột gôn.
+4. **C1 không mở rộng sang `doc-2`** cho tới khi gói C1 + C10 qua cổng trên `doc-1`.
+5. **P2:** C2 với planner thật và trần token; so CG / C9 / bộ xếp theo tập sẵn sàng trên **cùng đồ thị**; tên,
+   mục tiêu và nguồn đọc của stage.
+6. **P3:** xác nhận trên tập giữ lại; pilot người học.
+
+Ý tưởng curriculum planner trong `feedbackd1.md`: nhận đánh giá ở mục 9 của bản thẩm định — làm một planner tĩnh
+có ràng buộc cứng ở P2; **bác** tạo cạnh từ độ gần embedding (đối xứng, trong khi tiên quyết có hướng), điểm tự
+báo của mô hình, và RL/BKT khi chưa có dữ liệu người học.

@@ -290,7 +290,7 @@ def test_gold_violations_name_the_exact_reversed_pair():
     assert result["rows"] == [{
         "prerequisite": "p", "target": "t",
         "prerequisite_name": "Phân phối chuẩn", "target_name": "Độ tin cậy",
-        "prerequisite_stage": 1, "target_stage": 0,
+        "prerequisite_stage": 1, "target_stage": 0, "bucket": "violated",
     }]
 
 
@@ -306,3 +306,21 @@ def test_gold_edge_outside_the_staged_concepts_is_reported_not_dropped():
     assert result["out_of_scope"] == 2
     assert result["respected"] == 1
     assert result["rate"] == pytest.approx(0.0)  # tỉ lệ chỉ tính trên cặp nằm trong phạm vi
+
+
+def test_learning_order_error_counts_every_gold_edge_not_learned_strictly_before():
+    # Stage là tập học song song: cùng stage chưa bảo đảm học tiên quyết trước, và đầu cạnh vắng mặt khỏi lộ
+    # trình cũng là lỗi. Mẫu số là **toàn bộ** bộ vàng, để bỏ node khỏi output không làm điểm đẹp lên.
+    stages = [["p"], ["t", "u"]]
+    gold = {("p", "t"), ("t", "u"), ("u", "p"), ("p", "vang_mat")}
+    result = gold_order_violations(stages, gold)
+    assert (result["respected"], result["violated"], result["same_stage"], result["out_of_scope"]) == (1, 1, 1, 1)
+    assert result["learning_order_error"] == pytest.approx(3 / 4)
+    assert result["rate"] == pytest.approx(1 / 2)  # chỉ số lịch sử, giữ để so với số đã báo trước đây
+    assert sorted((row["bucket"], row["prerequisite"], row["target"]) for row in result["rows"]) == [
+        ("out_of_scope", "p", "vang_mat"), ("same_stage", "t", "u"), ("violated", "u", "p"),
+    ]
+
+
+def test_learning_order_error_is_undefined_for_an_empty_gold_not_a_pass():
+    assert gold_order_violations([["p"], ["t"]], set())["learning_order_error"] is None

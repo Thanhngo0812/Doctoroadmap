@@ -1,10 +1,11 @@
+import hashlib
 import json
 from types import SimpleNamespace
 
 import pytest
 
 from doc2roadmap.application.use_cases.a8_gold import scope_from_store
-from doc2roadmap.application.use_cases.a8_score import load_gold, merge_gold, score_from_store
+from doc2roadmap.application.use_cases.a8_score import load_gold, merge_gold, score_from_store, score_roadmap_order
 
 
 def section(section_id, title, level, parent, order):
@@ -240,3 +241,45 @@ def test_gold_made_from_patched_provenance_is_scoreable(tmp_path):
     gold = write_gold(tmp_path, {("n_mau", "n_uocluong")}, concept_hash=scope["concept_hash"])
     report = score_from_store(FakeStore(), "xstk", write_graph(tmp_path, patched), [gold], samples=0)
     assert report["gold"]["edges"] == 1
+
+
+def staged_payload(stages, *, doc_id="xstk", nodes=NODES):
+    return {"stage": "stages", "doc_id": doc_id, "nodes": [value for value in nodes if value["learnable"]],
+            "stages": [{"stage_id": f"s{index}", "node_ids": list(members)} for index, members in enumerate(stages)]}
+
+
+def test_roadmap_order_refuses_a_gold_made_for_another_document(tmp_path):
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong")})
+    graph = write_graph(tmp_path, staged_payload([["n_mau"], ["n_uocluong"]], doc_id="doc-khac"))
+    with pytest.raises(ValueError, match="doc_id"):
+        score_roadmap_order(graph, [gold])
+
+
+def test_roadmap_order_refuses_golds_of_two_canonical_versions(tmp_path):
+    first = write_gold(tmp_path, {("n_mau", "n_uocluong")}, annotator="A1")
+    second = write_gold(tmp_path, {("n_mau", "n_uocluong")}, annotator="A2")
+    value = json.loads(second.read_text(encoding="utf-8"))
+    second.write_text(json.dumps({**value, "canonical_version": 8}, ensure_ascii=False), encoding="utf-8")
+    graph = write_graph(tmp_path, staged_payload([["n_mau"], ["n_uocluong"]]))
+    with pytest.raises(ValueError, match="canonical"):
+        score_roadmap_order(graph, [first, second])
+
+
+def test_roadmap_order_refuses_a_gold_whose_concepts_the_graph_does_not_have(tmp_path):
+    # Khác danh tính thì không có điểm nào để trả: điểm "đạt" trên khái niệm không tồn tại là điểm giả.
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong")})
+    nodes = [value for value in NODES if value["node_id"] != "n_mau"]
+    graph = write_graph(tmp_path, staged_payload([["n_uocluong"]], nodes=nodes))
+    with pytest.raises(ValueError, match="không có trong đồ thị"):
+        score_roadmap_order(graph, [gold])
+
+
+def test_roadmap_order_counts_a_concept_left_out_of_the_stages_and_pins_its_inputs(tmp_path):
+    # Node có trong đồ thị mà không lên lộ trình là lỗi của lộ trình, không được làm mẫu số nhỏ đi.
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong"), ("n_uocluong", "n_khoang")})
+    graph = write_graph(tmp_path, staged_payload([["n_mau"], ["n_uocluong"]]))
+    report = score_roadmap_order(graph, [gold])
+    assert report["gold_order"]["out_of_scope"] == 1
+    assert report["gold_order"]["learning_order_error"] == pytest.approx(1 / 2)
+    assert report["inputs"]["graph"]["sha256"] == hashlib.sha256(graph.read_bytes()).hexdigest()
+    assert [row["sha256"] for row in report["inputs"]["golds"]] == [hashlib.sha256(gold.read_bytes()).hexdigest()]

@@ -410,39 +410,45 @@ def presentation_agreement(stages, presentation_index):
 
 
 def gold_order_violations(stages, gold_edges, *, names=None):
-    """Cạnh vàng nào bị lộ trình xếp ngược: tiên quyết bị đặt **sau** khái niệm cần nó.
+    """Cạnh vàng nào lộ trình **chưa bảo đảm** học tiên quyết trước khái niệm cần nó.
 
-    Bốn rổ, không chồng nhau: `respected`, `violated`, `same_stage` (lộ trình không xếp thứ tự cho cặp ấy, nên
-    không phải tôn trọng cũng không phải vi phạm) và `out_of_scope` (một đầu không nằm trong lộ trình). Tỉ lệ chỉ
-    tính trên các cặp thật sự được xếp thứ tự.
+    Bốn rổ, không chồng nhau: `respected`, `violated` (tiên quyết bị đặt sau), `same_stage` và `out_of_scope`
+    (một đầu không nằm trong lộ trình). Stage là tập học **song song**, nên cùng stage cũng chưa bảo đảm học trước.
+
+    `learning_order_error` là chỉ số nghiệm thu: ba rổ lỗi chia cho **toàn bộ** bộ vàng, để việc bỏ node khỏi lộ
+    trình không làm mẫu số nhỏ đi. Bộ vàng rỗng cho `None` — chưa đánh giá, không phải đạt. `rate` chỉ tính trên
+    cặp đã xếp được thứ tự; giữ lại để so với các số đã báo trước đây, không dùng làm cổng.
     """
     rank = {node_id: index for index, members in enumerate(stages) for node_id in members}
     names = names or {}
-    respected = violated = same_stage = out_of_scope = 0
+    counts = {"respected": 0, "violated": 0, "same_stage": 0, "out_of_scope": 0}
     rows = []
     for prerequisite, target in sorted(gold_edges):
         if prerequisite not in rank or target not in rank:
-            out_of_scope += 1
+            bucket = "out_of_scope"
         elif rank[prerequisite] == rank[target]:
-            same_stage += 1
+            bucket = "same_stage"
         elif rank[prerequisite] < rank[target]:
-            respected += 1
+            bucket = "respected"
         else:
-            violated += 1
+            bucket = "violated"
+        counts[bucket] += 1
+        if bucket != "respected":
             rows.append({
                 "prerequisite": prerequisite,
                 "target": target,
                 "prerequisite_name": names.get(prerequisite),
                 "target_name": names.get(target),
-                "prerequisite_stage": rank[prerequisite],
-                "target_stage": rank[target],
+                "prerequisite_stage": rank.get(prerequisite),
+                "target_stage": rank.get(target),
+                "bucket": bucket,
             })
-    ordered = respected + violated
+    ordered = counts["respected"] + counts["violated"]
+    total = sum(counts.values())
+    errors = counts["violated"] + counts["same_stage"] + counts["out_of_scope"]
     return {
-        "rate": violated / ordered if ordered else None,
-        "respected": respected,
-        "violated": violated,
-        "same_stage": same_stage,
-        "out_of_scope": out_of_scope,
+        "rate": counts["violated"] / ordered if ordered else None,
+        "learning_order_error": errors / total if total else None,
+        **counts,
         "rows": rows,
     }
