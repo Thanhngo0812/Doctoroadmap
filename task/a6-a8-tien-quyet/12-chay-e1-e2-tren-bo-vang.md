@@ -59,8 +59,30 @@ người kia ghi đường vòng"** — đúng ca *long dependencies* mà Lectur
 | `artifacts/a8-gold/doc-1-chuong-10-12-hoi-y.xlsx` | 23 | **29** |
 | `artifacts/a8-gold/doc-2-chuong-98-115-hoi-y.xlsx` | 46 | **21** |
 
-⚠️ **Ô thời gian còn trống ở cả bốn bảng** (`annotation_minutes`, `revision_minutes` đều `null`). E7 cần chúng —
-phải điền trước khi ký ức về lượt gán phai.
+### Thời gian gán: **không đo được ở lượt này** (chủ dự án chốt 2026-09-23, cách b)
+
+> **Đính chính của reviewer.** Tôi có viết hai lần rằng "E7 cần ô thời gian" — **sai**. E7 đo *cái giá của các bước
+> nhất quán* (cạnh vàng bị cắt chu trình, bị đánh dấu thừa, bị tỉa; precision theo `evidence_hard`), **không dùng
+> thời gian gán**. Ô thời gian tồn tại vì lý do khác: PREAP đo thời gian gán như một dữ kiện về giao thức.
+
+Cả bốn bảng để trống `annotation_minutes` và `revision_minutes`. Luật của dự án từ phase trước
+(`task/a4-a5-hop-nhat/06-nguoi-dung-gan-mu-bo-vang.md`) là **"ghi thời gian gán thật, không ước lượng"**, nên
+không điền số suy đoán. **Báo cáo phải ghi thẳng: lượt gán này không đo thời gian.**
+
+Chủ dự án tự khai: cặp làm trước vào buổi chiều, cặp sau vào chiều 23/9. Metadata trong file cho thấy khác một
+ngày ở cặp trước, và đây là toàn bộ bằng chứng cứng có được:
+
+| file | created | modified | đọc ra |
+|---|---|---|---|
+| `doc-2-...-A2-output` | 22/9 12:02:04 | **22/9 14:34:26** | có vết sửa thật |
+| `doc-1-...-A2-output` | 22/9 13:10:56 | **22/9 14:34:26** | có vết sửa thật |
+| `doc-1-...-A1-output` | 23/9 07:25:26,25 | 23/9 07:25:26,25 | máy ghi, **không có vết sửa** |
+| `doc-2-...-A1-output` | 23/9 07:25:26,32 | 23/9 07:25:26,32 | máy ghi, **không có vết sửa** |
+
+Bảng trống chỉ sinh ngày **22/9** (doc-2 lúc 12:02, doc-1 lúc 13:10), nên **không thể gán ngày 21/9**.
+
+Khoảng 83 phút (`doc-1` A2) và 152 phút (`doc-2` A2) là **khoảng từ lúc sinh bảng tới lúc lưu**, tức **biên trên**,
+**không phải thời gian ngồi làm**. Đừng trích chúng như số đo.
 
 - [x] Hai người gán đã nộp file, độ đồng thuận đã tính (có kể đồng thuận ngầm qua bắc cầu); **còn chờ hội ý**;
       bộ vàng đóng băng trước khi chạy.
