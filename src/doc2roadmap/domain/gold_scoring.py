@@ -371,3 +371,78 @@ def metric_by_target(predicted, gold, *, metric, closure=False):
             return None
         return 2 * precision * recall / (precision + recall)
     return statistic
+
+
+def presentation_agreement(stages, presentation_index):
+    """τ Kendall giữa thứ tự lộ trình và thứ tự trình bày của giáo trình.
+
+    Hai loại cặp ra khỏi mẫu số vì không bên nào xếp thứ tự cho chúng: cặp nằm cùng một stage (lộ trình không
+    xếp) và cặp có cùng vị trí trình bày (sách không xếp). Hai con số ấy **đếm độc lập** và được trả về, vì một
+    cặp có thể thuộc cả hai.
+
+    Cảnh báo phải mang theo mỗi khi trích τ: phép đo dùng **một** văn bản tham chiếu duy nhất, trong khi có thể
+    có nhiều thứ tự chấp nhận được (Lapata 2006, §5).
+    """
+    rank = {node_id: index for index, members in enumerate(stages) for node_id in members}
+    rows = sorted((rank[node_id], presentation_index[node_id], node_id)
+                  for node_id in rank if node_id in presentation_index)
+    concordant = discordant = same_stage = same_position = 0
+    for (left_stage, left_book, _), (right_stage, right_book, _) in combinations(rows, 2):
+        tied_stage, tied_book = left_stage == right_stage, left_book == right_book
+        same_stage += tied_stage
+        same_position += tied_book
+        if tied_stage or tied_book:
+            continue
+        if (left_stage < right_stage) == (left_book < right_book):
+            concordant += 1
+        else:
+            discordant += 1
+    comparable = concordant + discordant
+    return {
+        "tau": (concordant - discordant) / comparable if comparable else None,
+        "concordant": concordant,
+        "discordant": discordant,
+        "comparable_pairs": comparable,
+        "same_stage_pairs": same_stage,
+        "same_position_pairs": same_position,
+        "concepts": len(rows),
+    }
+
+
+def gold_order_violations(stages, gold_edges, *, names=None):
+    """Cạnh vàng nào bị lộ trình xếp ngược: tiên quyết bị đặt **sau** khái niệm cần nó.
+
+    Bốn rổ, không chồng nhau: `respected`, `violated`, `same_stage` (lộ trình không xếp thứ tự cho cặp ấy, nên
+    không phải tôn trọng cũng không phải vi phạm) và `out_of_scope` (một đầu không nằm trong lộ trình). Tỉ lệ chỉ
+    tính trên các cặp thật sự được xếp thứ tự.
+    """
+    rank = {node_id: index for index, members in enumerate(stages) for node_id in members}
+    names = names or {}
+    respected = violated = same_stage = out_of_scope = 0
+    rows = []
+    for prerequisite, target in sorted(gold_edges):
+        if prerequisite not in rank or target not in rank:
+            out_of_scope += 1
+        elif rank[prerequisite] == rank[target]:
+            same_stage += 1
+        elif rank[prerequisite] < rank[target]:
+            respected += 1
+        else:
+            violated += 1
+            rows.append({
+                "prerequisite": prerequisite,
+                "target": target,
+                "prerequisite_name": names.get(prerequisite),
+                "target_name": names.get(target),
+                "prerequisite_stage": rank[prerequisite],
+                "target_stage": rank[target],
+            })
+    ordered = respected + violated
+    return {
+        "rate": violated / ordered if ordered else None,
+        "respected": respected,
+        "violated": violated,
+        "same_stage": same_stage,
+        "out_of_scope": out_of_scope,
+        "rows": rows,
+    }

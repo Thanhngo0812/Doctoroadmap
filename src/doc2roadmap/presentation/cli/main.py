@@ -82,6 +82,15 @@ def _parser() -> argparse.ArgumentParser:
     prereq_score.add_argument("--provenance", choices=("patched", "source"), default="patched",
                               help="chấm theo provenance đã vá, hoặc bản gốc A3/A4 để so trước sau")
     prereq_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
+    roadmap_score = commands.add_parser(
+        "a8-roadmap-score",
+        help="chấm thứ tự lộ trình: tau so mục lục và tỉ lệ vi phạm cạnh vàng; không gọi mô hình")
+    roadmap_score.add_argument("--graph", type=Path, required=True,
+                               help="graph.json ở stage stages")
+    roadmap_score.add_argument("--gold", type=Path, action="append", default=[],
+                               help="JSON từ a8-gold-check; lặp lại cho người gán thứ hai")
+    roadmap_score.add_argument("--gold-mode", choices=("union", "intersection"), default="union")
+    roadmap_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
     prereq_merge = commands.add_parser("a8-gold-merge",
                                        help="hội ý hai bộ nhãn: sinh file quyết, hoặc đọc ngược thành bộ vàng")
     prereq_merge.add_argument("--doc-id", required=True)
@@ -390,6 +399,17 @@ def main(argv: list[str] | None = None) -> int:
                 summary["output"] = str(output)
             _json(summary)
             return 1 if result["errors"] else 0
+        elif args.command == "a8-roadmap-score":
+            report = a8_score.score_roadmap_order(args.graph, args.gold, mode=args.gold_mode)
+            if args.output:
+                store = build_artifact_store()
+                output = _inside_artifacts(store, args.output)
+                output.parent.mkdir(parents=True, exist_ok=True)
+                output.write_text(json.dumps(report, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+                                  encoding="utf-8")
+                report = {**report, "output": str(output)}
+            _json({key: value for key, value in report.items() if key != "violations"})
+            return 0
         elif args.command == "a8-score":
             store = build_artifact_store()
             report = a8_score.score_from_store(store, args.doc_id, args.graph, args.gold,

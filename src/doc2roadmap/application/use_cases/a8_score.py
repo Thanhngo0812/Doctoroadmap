@@ -18,10 +18,12 @@ from doc2roadmap.domain.gold_scoring import (
     classify_positions,
     coverage_rows,
     generator_rows,
+    gold_order_violations,
     metric_by_target,
     normalized_mutual_information,
     pairs_within,
     position_counts,
+    presentation_agreement,
     recall_by_target,
     score_edges,
     share_by_target,
@@ -308,4 +310,39 @@ def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", sam
                         mode=mode, samples=samples, seed=seed)
     report["graph_path"] = str(graph_path)
     report["provenance_mode"] = provenance
+    return report
+
+
+def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") -> dict[str, Any]:
+    """Chấm **thứ tự** của lộ trình: τ so mục lục, và cạnh vàng nào bị xếp ngược.
+
+    Hai chỉ số tách bạch. τ đo lộ trình lệch mục lục bao nhiêu — nó là **dấu hiệu chẩn đoán**, không phải mục
+    tiêu, vì thứ tự sách không phải chân lý về tiên quyết. Tỉ lệ vi phạm cạnh vàng mới là phép chấm đúng/sai,
+    và nó chỉ tính trên cặp mà lộ trình thật sự xếp được thứ tự.
+    """
+    payload = json.loads(Path(graph_path).read_text(encoding="utf-8"))
+    if payload.get("stage") != "stages":
+        raise ValueError(f"{graph_path}: cần artifact graph ở stage 'stages', đang là {payload.get('stage')!r}")
+    stages = [stage["node_ids"] for stage in payload["stages"]]
+    nodes = payload["nodes"]
+    names = {node["node_id"]: node.get("name") for node in nodes}
+    order = presentation_agreement(
+        stages, {node["node_id"]: node.get("first_order_index", 0) for node in nodes}
+    )
+    report: dict[str, Any] = {
+        "doc_id": payload.get("doc_id"),
+        "stage_count": len(stages),
+        "learnable_node_count": len(nodes),
+        "presentation_agreement": order,
+        "presentation_caveat": "τ dùng một văn bản tham chiếu duy nhất; có thể có nhiều thứ tự chấp nhận được",
+    }
+    if not gold_paths:
+        return report
+    golds = [load_gold(path) for path in gold_paths]
+    edges = merge_gold(golds, mode=mode)
+    violations = gold_order_violations(stages, edges, names=names)
+    report["gold_mode"] = mode
+    report["gold_edge_count"] = len(edges)
+    report["gold_order"] = {key: value for key, value in violations.items() if key != "rows"}
+    report["violations"] = violations["rows"]
     return report

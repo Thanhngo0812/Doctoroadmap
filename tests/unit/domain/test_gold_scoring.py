@@ -9,7 +9,9 @@ from doc2roadmap.domain.gold_scoring import (
     coverage_rows,
     generator_rows,
     index_stream,
+    gold_order_violations,
     metric_by_target,
+    presentation_agreement,
     normalized_mutual_information,
     pairs_within,
     position_counts,
@@ -239,3 +241,68 @@ def test_closure_metric_by_target_uses_closed_edges():
     # Bao đóng thêm (a, c) vào cả hai phía, nên recall theo đích c vẫn 1,0 và đích c có hai cạnh.
     assert closed(("c",)) == pytest.approx(1.0)
     assert math.isclose(closed(("b", "c")), 1.0)
+
+
+def test_presentation_agreement_is_one_when_the_roadmap_follows_the_book():
+    stages = [["a"], ["b"], ["c"]]
+    book = {"a": 10, "b": 20, "c": 30}
+    result = presentation_agreement(stages, book)
+    assert result["tau"] == pytest.approx(1.0)
+    assert (result["concordant"], result["discordant"]) == (3, 0)
+
+
+def test_presentation_agreement_is_minus_one_when_the_roadmap_reverses_the_book():
+    result = presentation_agreement([["c"], ["b"], ["a"]], {"a": 10, "b": 20, "c": 30})
+    assert result["tau"] == pytest.approx(-1.0)
+    assert (result["concordant"], result["discordant"]) == (0, 3)
+
+
+def test_presentation_agreement_drops_ties_from_the_ratio_but_still_reports_them():
+    # Hai khái niệm cùng stage không được lộ trình xếp thứ tự; hai khái niệm cùng vị trí sách thì
+    # sách không xếp thứ tự. Cả hai loại phải ra khỏi mẫu số, nhưng phải đếm được.
+    stages = [["a", "b"], ["c"]]
+    book = {"a": 10, "b": 10, "c": 30}
+    result = presentation_agreement(stages, book)
+    assert result["comparable_pairs"] == 2  # chỉ (a,c) và (b,c)
+    assert result["same_stage_pairs"] == 1
+    assert result["same_position_pairs"] == 1
+    assert result["tau"] == pytest.approx(1.0)
+
+
+def test_presentation_agreement_has_no_tau_when_nothing_is_comparable():
+    result = presentation_agreement([["a", "b"]], {"a": 10, "b": 20})
+    assert result["comparable_pairs"] == 0
+    assert result["tau"] is None
+
+
+def test_gold_violations_are_empty_when_the_roadmap_respects_every_gold_edge():
+    stages = [["p"], ["t"]]
+    result = gold_order_violations(stages, {("p", "t")})
+    assert result["violated"] == 0 and result["respected"] == 1
+    assert result["rate"] == pytest.approx(0.0)
+    assert result["rows"] == []
+
+
+def test_gold_violations_name_the_exact_reversed_pair():
+    stages = [["t"], ["p"]]
+    result = gold_order_violations(stages, {("p", "t")}, names={"p": "Phân phối chuẩn", "t": "Độ tin cậy"})
+    assert result["violated"] == 1 and result["rate"] == pytest.approx(1.0)
+    assert result["rows"] == [{
+        "prerequisite": "p", "target": "t",
+        "prerequisite_name": "Phân phối chuẩn", "target_name": "Độ tin cậy",
+        "prerequisite_stage": 1, "target_stage": 0,
+    }]
+
+
+def test_gold_edge_inside_one_stage_is_its_own_bucket_not_a_silent_pass():
+    # Cùng stage nghĩa là lộ trình không xếp thứ tự cho cặp ấy — không phải tôn trọng, cũng không phải vi phạm.
+    result = gold_order_violations([["p", "t"]], {("p", "t")})
+    assert (result["respected"], result["violated"], result["same_stage"]) == (0, 0, 1)
+    assert result["rate"] is None  # không có cặp nào xếp được thứ tự thì tỉ lệ không xác định
+
+
+def test_gold_edge_outside_the_staged_concepts_is_reported_not_dropped():
+    result = gold_order_violations([["p"], ["t"]], {("p", "t"), ("p", "ngoai"), ("x", "t")})
+    assert result["out_of_scope"] == 2
+    assert result["respected"] == 1
+    assert result["rate"] == pytest.approx(0.0)  # tỉ lệ chỉ tính trên cặp nằm trong phạm vi
