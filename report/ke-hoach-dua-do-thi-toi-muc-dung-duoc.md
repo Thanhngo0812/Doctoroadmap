@@ -357,3 +357,83 @@ hành**), chỉ là chưa đủ để kết luận "lộ trình dùng được".
 thưởng cho rác.
 
 **U0b là tiêu chí rẻ nhất trong toàn bộ danh sách** — 0 lời gọi mô hình, và corpus hiện có **9 vi phạm**.
+
+---
+
+## 11. Phản biện thứ hai — người đọc lộ trình `doc-1` v7 (2026-09-23)
+
+Phản biện này đưa một giả thuyết cụ thể và kiểm được: **cạnh bị đảo hướng**. Tôi có bộ vàng cho đúng chương ấy nên
+kiểm thẳng được.
+
+### Giả thuyết đảo hướng: **bác bỏ**
+
+| | |
+|---|---|
+| cạnh máy chạm khái niệm đã gán | 58 |
+| khớp vàng **đúng** hướng | **21** |
+| khớp vàng **ngược** hướng | **0** |
+| cặp cả hai cùng có nhưng khác chiều | **0 / 21** |
+
+Hướng cạnh đúng. Không có batch nào hiểu ngược schema.
+
+### Nhưng quan sát của họ đúng, và nguyên nhân nằm chỗ khác
+
+**`Véc tơ` ở layer 15** không do đảo hướng mà do đúng một cạnh:
+
+> `Không gian véc tơ` → `Véc tơ` · `trong_dinh_nghia` · lý do: *"Vectors are defined as the elements of a vector
+> space V."*
+
+Giáo trình này **thật sự** định nghĩa véc tơ là phần tử của không gian véc tơ, ở vị trí 121 và 123 — cạnh **thuận**
+thứ tự sách và **trung thành với sách**. Người phản biện so với *"thứ tự chuẩn của một giáo trình ĐSTT"*, tức một
+chuẩn bên ngoài, chứ không so với cuốn này.
+
+Đây là câu hỏi thật và chưa có câu trả lời trong spec: **"tiên quyết theo định nghĩa" khác "tiên quyết theo sư
+phạm"**. Khi sách định nghĩa A bằng B, ta ghi B → A. Người học thì cần thấy véc tơ trước không gian véc tơ. Hai
+thứ này mâu thuẫn nhau, và hiện ta chỉ ghi loại thứ nhất. **Đưa vào Limitations, và là câu hỏi mở cho đợt sau.**
+
+**`Dạng toàn phương` ở layer 1** thì đúng là lỗi: nó có **0 cạnh vào** và 7 cạnh ra. Đây là lỗi recall trên khái
+niệm chương cuối, đúng loại C1/C2 đang chữa.
+
+### 29 tầng: **không phải do cạnh giả** — và chính họ đã đoán đúng độ sâu thật
+
+| | |
+|---|---|
+| chuỗi phụ thuộc **thật** (bỏ cạnh thừa) | **10 bước** |
+| ước lượng của người phản biện | "khoảng 10–12 bước" |
+| node học được | 225 |
+| `⌈225 / 8⌉` | **29** |
+| số tầng thật | **29** |
+
+**Số tầng bị ép bởi trần độ rộng, không bởi chuỗi phụ thuộc.** Đồ thị không phồng; nó sâu đúng mức họ đoán.
+
+Hệ quả quan trọng: **cách sửa độ sâu không phải sửa cạnh mà là dọn node.** Chính điểm 2 và 3 của họ (node rác,
+trùng lặp) là cách chữa điểm 5 của họ. Với ~120 node sạch và trần 8 thì còn 15 chặng; trần 12 thì còn 10 — đúng
+con số họ kỳ vọng.
+
+### Một phát hiện mới, do phản biện này gợi ra
+
+**Đề cương đầu sách làm hỏng `first_order_index` của 49 / 225 khái niệm (22%).**
+
+`Dạng toàn phương` có vị trí **10**, sớm hơn `Tập hợp` (19) — vì nó được **liệt kê trong đề cương chi tiết** ở đầu
+sách, không phải vì nó được dạy ở đó. Cùng vùng ấy: `Số phức` (8), `Vành` (8), `Đa thức` (8), và cả ba node rác
+`Thang điểm chữ`, `Thi viết rọc phách`, `Điểm đánh giá học phần`.
+
+Đề cương gây **hai** thiệt hại cùng lúc: nó bơm node hành chính vào, **và** nó làm hỏng vị trí trình bày của một
+phần năm số khái niệm. Mà vị trí ấy là thứ τ dùng làm đối chứng và là thứ phá thế hoà. **Một phần của τ = +0,087
+trên `doc-1` là do ô nhiễm này, không phải do lộ trình sai.**
+
+**Can thiệp mới — C8:** loại vùng đầu sách (bìa, mục lục, đề cương) khỏi nguồn provenance và khỏi `first_order_index`.
+Phase B0/A4. Rẻ, không gọi mô hình, và sửa cùng lúc một phần node rác lẫn đối chứng τ.
+
+### Ba ý còn lại
+
+**U8 của họ chính là τ tôi đã cài** ở vé 22 (`a8-roadmap-score`). Giá trị đo được: `doc-1` **+0,087**, `doc-2`
+**+0,125**. Họ đoán đúng rằng nó phải dương rõ rệt với một giáo trình, và nó **không** — nhưng nguyên nhân là ô
+nhiễm đề cương cộng recall thấp, chứ không phải hướng cạnh.
+
+**Luật chuẩn hoá tên tiếng Việt — nhận, và rất cụ thể.** `"2" ↔ "hai"`, `"(cột)" ↔ "hoặc cột"`, `"Véctơ" ↔ "Véc
+tơ"`, bỏ tiền tố `"Hệ véc tơ"`. Đây là luật trước khi so embedding, đúng chỗ A4 đang yếu. Ghép vào **C4**.
+
+**Prior theo thứ tự tài liệu — spec đã có**, ở D8: cạnh ngược thứ tự bị trừ 0,1, và spec tự ghi *"con số 0,1 là
+tạm, không nguồn nào ủng hộ"*, để **E8** hiệu chỉnh trên bộ vàng. Giờ đã có bộ vàng nên E8 chạy được. Đề xuất của
+họ trùng với việc đã lên kế hoạch; điều mới là **giờ hiệu chỉnh được bằng số**.
