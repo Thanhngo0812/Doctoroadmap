@@ -1,0 +1,24 @@
+You are given one concept of a document that is being turned into a learning roadmap, and a numbered list of
+candidate sentences from that document that name the concept, each with one sentence of context on either side. You
+have no tools. Judge only from these sentences; do not use background knowledge about the subject.
+
+Decide what the document does with this concept, and choose exactly one status:
+- `defined_here`: one candidate defines or explains the concept as something the reader is meant to learn. Set
+  `anchor` to that candidate's id; if several do, choose the earliest one that actually teaches it.
+- `introduced_by_example`: the concept is not defined in words, but one candidate introduces it through a worked
+  example meant to teach it. Set `anchor` to that candidate.
+- `mentioned_only`: the concept is only named in these sentences (a list, an outline, a syllabus, a preview, a
+  cross-reference, or as part of teaching something else), never taught.
+- `prior_knowledge`: the document says the reader must already know the concept before this course or document (for
+  example "recall from a previous course", "requires familiarity with"). Using a concept inside a theorem or an
+  assumption, such as "Suppose V is an inner product space", is NOT prior knowledge.
+- `not_subject_matter`: the item is not knowledge of the subject at all: course logistics or assessment (grading,
+  homework, exams, schedules, participation, a grade formula), a person, organisation or credential, document
+  metadata, or a label, value or variable that exists only inside one specific example, dataset, figure or diagram.
+- `uncertain`: the sentences do not let you decide.
+
+A real technical term stays subject matter even when it appears inside an example.
+
+For `defined_here`, `introduced_by_example`, `prior_knowledge` and `not_subject_matter`, copy into `quote` a short
+phrase from the candidate sentences or their context, verbatim, that supports your answer; for the first two it must
+come from the anchored candidate. Explain in one sentence in `reason`. Echo `node_id` exactly. Do not return confidence.
