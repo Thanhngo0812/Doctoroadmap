@@ -29,9 +29,42 @@ từ artifact provenance thật ngày 2026-09-22, chưa có nhãn để chạy E
 > Số khái niệm đích thật chỉ biết được sau vé 19 (`a8-gold-sheet --list-chapters`); nếu chương chọn ra dưới 15 hoặc
 > trên 45 khái niệm thì ghép thêm/bớt một mục liền kề, đúng cơ chế dải mục của vé 04.
 
-- [ ] Hai người gán đã nộp file, độ đồng thuận đã tính (có kể đồng thuận ngầm qua bắc cầu), và **đã hội ý** xong;
+## Lượt gán thật — 2026-09-23
+
+Bốn bảng đã nộp và **kiểm hợp lệ: 0 lỗi, 0 cảnh báo** ở cả bốn.
+
+| | A1 | A2 | cùng ghi | chỉ A1 | chỉ A2 | Jaccard | **κ trực tiếp** | **κ có bắc cầu** |
+|---|---|---|---|---|---|---|---|---|
+| `doc-1` Chương 3, dải 10-12 (VN) · 26 đích / 225 khái niệm | 40 | 35 | 23 | 17 | 12 | 0,442 | **0,611** | **0,733** |
+| `doc-2` mục 3C, dải 98-115 (EN) · 24 đích / 438 khái niệm | 59 | 54 | 46 | 13 | 8 | 0,687 | **0,813** | **0,818** |
+
+Cờ người gán nêu: doc-1 A1 17 / A2 13 · doc-2 A1 18 / A2 14.
+
+**Hai file của mỗi chương khác nhau thật** — không có ca trùng khít, nên κ có nghĩa.
+
+**Đối chiếu văn liệu** (báo cáo vòng 36 mục 7): LectureBank đạt **κ = 0,7** với hai nghiên cứu sinh gán nhãn nhị
+phân, và nói rõ bản ba mức trước đó chỉ được **κ = 0,3** trên **cùng các cặp**. PREAP đạt **0,45–0,71** khi gán
+trong lúc đọc giáo trình. Vậy `doc-2` ở 0,813 **vượt mốc LectureBank**, còn `doc-1` ở 0,611 trực tiếp / 0,733 có
+bắc cầu nằm **trong dải PREAP và đạt mốc LectureBank khi tính đồng thuận ngầm**.
+
+**Một bất đối xứng đáng đưa vào báo cáo:** bắc cầu nâng κ của `doc-1` từ 0,611 lên 0,733 (+0,122) nhưng chỉ nâng
+`doc-2` từ 0,813 lên 0,818 (+0,005). Nghĩa là phần lớn bất đồng trên `doc-1` là **"một người ghi cạnh trực tiếp,
+người kia ghi đường vòng"** — đúng ca *long dependencies* mà LectureBank chỉ đích danh là nguồn bất đồng chính.
+Đây là lý do D13 bắt tách số theo từng chương thay vì gộp hai ngôn ngữ.
+
+**File hội ý đã sinh:**
+
+| file | cùng ghi | phải quyết |
+|---|---|---|
+| `artifacts/a8-gold/doc-1-chuong-10-12-hoi-y.xlsx` | 23 | **29** |
+| `artifacts/a8-gold/doc-2-chuong-98-115-hoi-y.xlsx` | 46 | **21** |
+
+⚠️ **Ô thời gian còn trống ở cả bốn bảng** (`annotation_minutes`, `revision_minutes` đều `null`). E7 cần chúng —
+phải điền trước khi ký ức về lượt gán phai.
+
+- [x] Hai người gán đã nộp file, độ đồng thuận đã tính (có kể đồng thuận ngầm qua bắc cầu); **còn chờ hội ý**;
       bộ vàng đóng băng trước khi chạy.
-- [ ] Hai file gán phải **khác nhau**: đây là hai người làm độc lập, không phải một bản chép làm hai. Kiểm ngay khi
+- [x] Hai file gán phải **khác nhau**: đây là hai người làm độc lập, không phải một bản chép làm hai. Kiểm ngay khi
       nhận file, hai file trùng khít thì κ vô nghĩa và bộ vàng không dùng được.
 - [ ] E1: bảng sáu loại vị trí, kèm NMI giữa cụm chủ đề và chương, cho cả hai giáo trình.
 - [ ] E2: bảng theo từng bộ sinh và từng tổ hợp, kèm recall riêng và ba cấu hình định tuyến.
