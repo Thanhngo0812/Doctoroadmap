@@ -437,3 +437,152 @@ tơ"`, bỏ tiền tố `"Hệ véc tơ"`. Đây là luật trước khi so embe
 **Prior theo thứ tự tài liệu — spec đã có**, ở D8: cạnh ngược thứ tự bị trừ 0,1, và spec tự ghi *"con số 0,1 là
 tạm, không nguồn nào ủng hộ"*, để **E8** hiệu chỉnh trên bộ vàng. Giờ đã có bộ vàng nên E8 chạy được. Đề xuất của
 họ trùng với việc đã lên kế hoạch; điều mới là **giờ hiệu chỉnh được bằng số**.
+
+---
+
+## 12. Phản biện thứ ba — phân loại "A trước B" (2026-09-23)
+
+Phản biện này trả lời đúng câu tôi nhờ chủ dự án hỏi lại, **tự rút ba ý của chính họ**, và đưa ra một phân loại:
+phụ thuộc định nghĩa (cứng) / lý do sư phạm (mềm) / quy ước (yếu nhất). Ba ý họ rút — `Véc tơ`→`Không gian véc
+tơ`, `Cơ sở trực chuẩn`→`Gram-Schmidt`, `Xác định dương/âm` — trùng đúng ba chỗ tôi đã bác ở mục 11 bằng số.
+
+### Phân loại của họ: ta đã có nhãn, nhưng chưa dùng
+
+Cả bộ vàng lẫn cạnh máy **đã ghi sẵn loại bằng chứng**. Nên đề xuất "gold phải ghi loại và lý do" không phải việc
+phải làm mới — mà là việc phải **đem ra dùng**. Đo trên dữ liệu đang có:
+
+| | `noi_ro` | `trong_dinh_nghia` | `mach_trinh_bay` |
+|---|---|---|---|
+| vàng `doc-1` (40 cạnh) | 9 | 29 | **2** |
+| vàng `doc-2` (61 cạnh) | 12 | 49 | **0** |
+| máy `doc-1` (337 cạnh) | 7 | 311 | **19** |
+| máy `doc-2` (864 cạnh) | — | 836 | **28** |
+
+**Bộ vàng gần như không có cạnh mềm nào:** 38/40 và 61/61 là cạnh cứng. Người gán đã tự lọc quy ước ra từ đầu.
+Nên "chỉ tính U1 trên cạnh `requires`" gần như không đổi gì: `doc-1` 24,3% → 22,9%, `doc-2` 18,3% → 18,3%.
+Lo ngại "U1 phạt oan vì bộ vàng chứa thói quen của người gán" **không đúng với bộ vàng này**.
+
+### Cơ chế họ lo: đã kiểm trên toàn kho, **chưa từng xảy ra**
+
+Họ cảnh báo *"cạnh mềm có thể tạo vòng hợp lệ, nên nếu đưa vào sort cứng thì bước remove-cycle sẽ cắt nhầm"*.
+Đếm trên **31 lượt chạy của 7 tài liệu**:
+
+- chỉ 2 tài liệu từng bị cắt vòng (`baocao-canhan`, `naive-bayes`), tổng 31 cạnh bị cắt;
+- **0/31 cạnh bị cắt là cạnh mềm** — tất cả đều là cạnh định nghĩa;
+- trong đồ thị đã xuất, **0 cạnh mềm nào nằm trên bất kỳ vòng nào**.
+
+Bỏ cạnh mềm khỏi ràng buộc cứng chỉ rút chuỗi dài nhất `doc-2` từ 21 xuống 20 bước, và không đổi gì ở `doc-1`.
+Suy luận của họ đúng về mặt lý thuyết nhưng **lượng không đủ để thành nguyên nhân**: cạnh mềm chỉ chiếm 5,6% và
+3,2%. Tách loại cạnh vẫn nên làm vì nó đúng về khái niệm, nhưng **không được tính nó là một can thiệp sửa lộ trình**.
+
+### Năm vi phạm cứng họ liệt kê: **cả sáu đều là cạnh thiếu**
+
+| cặp | lớp | máy có cạnh? |
+|---|---|---|
+| `Ma trận` → `Ma trận của dạng toàn phương` | 3 → 2 | **thiếu** |
+| `Không gian véc tơ` → `Dạng toàn phương` | 8 → 1 | **thiếu** |
+| `Nhân hai ma trận` → `Ma trận nghịch đảo` | 14 → 12 | **thiếu** |
+| `Ma trận đơn vị` → `Ma trận nghịch đảo` | 16 → 12 | **thiếu** |
+| `Toán tử tuyến tính` → `Véctơ riêng` | 19 → 15 | **thiếu** |
+| `Định thức` → `Đa thức đặc trưng` | 5 → 5 | **thiếu** |
+
+**Không cạnh nào sai chiều.** Khớp đúng chuỗi nhân quả đã chứng minh ở mục 3: vi phạm thứ tự là lỗ hổng recall,
+không phải lỗi hướng.
+
+### Đề xuất tách nghĩa `Véc tơ`: **đồ thị đã tách rồi, và nó không cứu được gì**
+
+Họ đề nghị tách `Véc tơ` thành `Véc tơ n thành phần` (cụ thể) và gộp nghĩa trừu tượng vào `Không gian véc tơ`.
+`doc-1` **đã có đủ cả hai node**: `Véc tơ` ở lớp 15 và `Véc tơ n thành phần` ở lớp **27** — nút cụ thể mà họ muốn
+đặt lên trước lại nằm sau nút trừu tượng 12 lớp. Thuốc đã uống, triệu chứng nặng hơn. Nguyên nhân nằm ở chỗ khác,
+và chính chỗ đó là phát hiện lớn nhất của vòng này.
+
+### Nguyên nhân gốc **thứ hai**: bước xếp lớp, không phải bộ cạnh
+
+`Véc tơ n thành phần` có **0 cạnh vào**. Cạnh chỉ ép nó xuống **lớp 1**. Nó nằm ở lớp 27 hoàn toàn do bước xếp lớp.
+Đo tách bạch "lớp do cạnh ép" khỏi "lớp thực tế" trên cả `doc-1`:
+
+- **143/225 khái niệm (64%) bị đẩy xuống dưới mức cạnh ép**, trung bình **12,5 lớp**;
+- cạnh chỉ ép tối đa **15 lớp**, lộ trình có **29**;
+- `Nhân hai ma trận` cạnh ép lớp 4 → thực tế 14; `Ma trận đơn vị` 7 → 16; `Toán tử tuyến tính` 10 → 19.
+
+Ba cặp "vi phạm" họ nhìn thấy ở bảng trên **vẫn sẽ đảo ngược ngay cả khi cạnh thiếu được bổ sung**, vì thứ đẩy
+chúng ra sau không phải tiên quyết mà là bộ xếp lớp.
+
+Mã ở `src/doc2roadmap/domain/roadmap.py:36` xếp nút theo **nhãn Coffman–Graham**, một thứ tự thuần cấu trúc không
+tham chiếu thứ tự sách; nút nào gặp lớp đầy thì bị đẩy tiếp xuống. CG **tối ưu đúng mục tiêu của nó** — 29 lớp
+chính là cận dưới ⌈225/8⌉ nên không thể tốt hơn về số lớp. Vấn đề là mục tiêu ấy sai cho lộ trình học: **trong vô
+số cách xếp 29 lớp hợp lệ, CG chọn một cách tuỳ ý thay vì cách bám sách nhất.**
+
+### Can thiệp mới — C9: đổi tiêu chí phá thế hoà của bộ xếp lớp
+
+Giữ nguyên ràng buộc tiên quyết và trần bề rộng; chỉ đổi thứ tự **đặt nút** khi lớp chưa đầy, từ nhãn CG sang
+`(sàn cạnh ép, first_order_index)`. Sàn cạnh ép phải đứng trước trong khoá sắp xếp, nếu không cha có thể bị đặt
+sau con và vòng lặp đặt nút vỡ. **Không gọi mô hình, không tốn tiền.**
+
+Có **hai** chỗ vứt bỏ thứ tự sách chứ không phải một, nên phải tách đóng góp. Chạy qua đúng `build_roadmap` thật,
+đủ cả `_balance`, `_merge_small`, `_order_stages`:
+
+| biến thể | `doc-1` lớp / vi phạm | `doc-2` lớp / vi phạm |
+|---|---|---|
+| **A** hiện tại | 29 / **9** (22,5%) | 55 / **11** (18,0%) |
+| **B** chỉ đổi xếp lớp (`_order_stages`) | 29 / **8** (20,0%) | 55 / **8** (13,1%) |
+| **C** chỉ đổi xếp nút (`_coffman_graham`) | 30 / **5** (12,5%) | 56 / **4** (6,6%) |
+| **D** đổi cả hai | 30 / **5** (12,5%) | 56 / **5** (8,2%) |
+
+*(tỉ lệ theo thước đo khắt khe nhất: mẫu số tính cả cặp rơi vào cùng lớp)*
+
+**Đổi chỗ đặt nút làm gần hết việc.** `_order_stages` cũng vứt thứ tự sách — nó phá thế hoà bằng `digest` băm nội
+dung — nhưng sửa riêng nó chỉ được 1 và 3 cạnh. Và **D không tốt hơn C**: ở `doc-2` nó còn tệ hơn (5 so với 4).
+Nên can thiệp là **C**, thay đổi nhỏ hơn và có bằng chứng độc lập mạnh hơn.
+
+Giá phải trả trên hai tài liệu có bộ vàng: **đúng 1 lớp**, và **U5 không hề suy suyển** — `_merge_small` dọn sạch,
+0 lớp một mình ở mọi biến thể.
+
+> **Đính chính phép đo đầu tiên của tôi.** Lần đo đầu tôi chạy bộ xếp lớp trần, bỏ qua `_balance` và `_merge_small`,
+> nên báo +2/+4 lớp và U5 vỡ ở 4 tài liệu. Cả hai con số đều sai vì phép đo không công bằng. Qua đường thật:
+> +1 lớp, U5 nguyên vẹn. τ trong phép đo trần (+0,828 / +0,846) cũng là của thứ tự sách thuần, không phải của C.
+
+### Nhưng C9 **không** là thắng lợi miễn phí trên toàn kho
+
+Quét đủ 7 tài liệu qua đường thật:
+
+| tài liệu | lớp A → C | lớp một mình A → C | τ A → C |
+|---|---|---|---|
+| `doc-1` | 29 → 30 | 0 → 0 | +0,087 → **+0,414** |
+| `doc-2` | 55 → 56 | 0 → 0 | +0,125 → **+0,329** |
+| `doc-3` | 8 → 9 | 0 → 0 | −0,019 → **+0,472** |
+| `baocao-canhan` | 5 → 6 | 0 → 0 | +0,010 → +0,159 |
+| `nhap-mon-ml` | 10 → 12 | 0 → **2** | +0,167 → +0,503 |
+| `naive-bayes` | 6 → 7 | 0 → **1** | −0,090 → +0,199 |
+| `xstk-ch3-1` | 13 → **16** | 0 → **1** | +0,179 → **+0,101** |
+
+`xstk-ch3-1` **thụt lùi trên cả ba trục**: τ giảm, thêm 3 lớp, sinh lớp một mình — mà đó đúng là tài liệu vé 21
+vừa đưa về tối ưu lý thuyết (63 lớp/39 lớp một mình → 13/0). Ba tài liệu nhỏ đều vỡ U5.
+
+Hai điều rút ra. Thứ nhất, **bằng chứng độc lập (U1 so với bộ vàng) chỉ tồn tại cho `doc-1` và `doc-2`** — ở đó C9
+thắng lớn và chắc. Trên năm tài liệu còn lại ta chỉ có τ, mà τ thì thiên vị sẵn cho C9. Thứ hai, τ **tụt** ở
+`xstk-ch3-1` là dấu hiệu `first_order_index` của nó nhiễu nặng — đúng thứ C8 sinh ra để dọn.
+
+**Kết luận điều kiện: C9 phải chạy sau C8, và phải có cổng theo từng tài liệu** — từ chối nếu số lớp phình quá
+trần đã đặt, hoặc U5 sinh lớp một mình, hoặc τ giảm. Đây là lần đầu hai can thiệp có ràng buộc thứ tự cứng, và là
+can thiệp đầu tiên trong kế hoạch **cần cổng riêng cho từng tài liệu** thay vì một phán quyết chung.
+
+### Ý cuối của họ: đọc lại đoạn định nghĩa — **nhận, và nó đã có nửa hạ tầng**
+
+Đề xuất *"với mỗi cạnh `requires` được đề xuất, đọc lại đoạn định nghĩa của B và hỏi: định nghĩa này có dùng A
+không?"* là đúng tinh thần dự án: bám văn bản, không bám kiến thức nền của mô hình. Mỗi node đã có
+`defining_chunk_ids`, nên đoạn cần đọc lại **đã sẵn**. Đây là một cổng hậu kiểm rẻ chạy trên 337 cạnh thay vì 3668
+cặp. Xếp làm **C10**, sau C1 — vì trước hết phải biết C1 đẻ thêm bao nhiêu cạnh sai thì mới biết cổng này có đáng không.
+
+### Thứ tự cập nhật lần hai
+
+1. **C8** (đề cương) → **C9** (tiêu chí xếp nút) — cả hai không tốn tiền, C9 phụ thuộc C8, và trên hai tài liệu
+   có bộ vàng thì C9 đang là can thiệp mạnh nhất đo được (vi phạm 22,5% → 12,5% và 18,0% → 6,6%, giá đúng 1 lớp).
+   **Làm trước cả khi C1 chạy xong.** Nhưng C9 chỉ được bật cho tài liệu nào qua cổng riêng của nó —
+   `xstk-ch3-1` hiện **trượt**, và phải đo lại sau C8 rồi mới quyết.
+2. C1 (đang chạy) → chấm cặp đôi trước/sau.
+3. C2 trên `doc-2`, rồi C1 trên `doc-2` nếu cả hai cổng qua.
+4. C10 (đọc lại định nghĩa) — chỉ nếu C1 làm tụt precision.
+
+**Tách loại cạnh cứng/mềm** vẫn làm, nhưng xuống hạng: nó đúng về khái niệm và rẻ, nhưng đã đo là **không phải
+nguyên nhân** của bất kỳ triệu chứng nào đang thấy.
