@@ -262,3 +262,98 @@ trong khi artifact thật cho 38/61 và 31/40. Dùng nó để **so tương đ�
 
 Tình cờ mà may: `doc-1` là tài liệu C2 vô dụng, nên lượt C1 đang chạy trên nó là **một phép đo C1 sạch, không lẫn
 tác dụng của C2**. Giữ nguyên thiết kế ấy.
+
+---
+
+## 10. Phản biện từ người đọc `doc-3` (2026-09-23) — kiểm từng ý
+
+Một người ngoài đọc lộ trình `doc-3` và chỉ ra rằng **U4 và U5 chấm "đạt" cho một output tệ**, nên bộ tiêu chí
+thiếu chiều đo. Tôi kiểm từng ý bằng số thay vì nhận hay bác cả gói.
+
+### Đúng, và đã kiểm được
+
+**Node rác có thật.** `doc-3` có 58 node học được, trong đó `GPA`, `Homework assignments`, `Final project`,
+`Class participation` là **việc hành chính của môn học**, không phải khái niệm. Thêm `Top node`, `Middle node`,
+`Bottom node` (mô tả vị trí trong một hình vẽ), `A single number`, `A few numbers`. Khoảng **10–12 trên 58 ≈ 20%**
+node là rác — tệ hơn hẳn mức 7–12% "tên giống phát biểu" tôi đo trên `doc-1`/`doc-2`.
+
+**Trùng lặp có thật**, dù ví dụ họ nêu không phải dạng chỉ-khác-hoa-thường: `output layer` và `Output layer node`
+là hai node; `Machine Learning`, `Machine Learning Model`, `Machine learning concepts` là ba; `Independent
+variables` và `Input variables` là hai.
+
+**Và có một dạng trùng lặp kiểm được bằng máy, không cần mô hình:** hai node canonical cùng khai một `alias`. Đó
+là lỗi hợp nhất của A4 **theo định nghĩa**. Đếm trên cả corpus:
+
+| tài liệu | node | **alias đụng** | ví dụ |
+|---|---|---|---|
+| `doc-1` | 225 | 1 | `định lý 6` |
+| `doc-2` | 438 | **6** | `additive identity`, `bilinear functional`, `finite-dimensional` |
+| `doc-3` | 58 | 1 | `weights` dùng bởi cả `Coefficients` và `parameters` |
+| `naive-bayes` | 34 | 1 | `likelihood` |
+| ba tài liệu còn lại | | 0 | |
+
+**U5 khuyến khích rác — đây là ý sắc nhất của họ và tôi nhận.** "0 node chưa xét" nghĩa là `GPA` đã được xét và
+đưa vào lộ trình. Độ phủ cao trên một tập node bẩn không phải điểm tốt; U5 như đang viết **thưởng cho việc nhồi
+rác vào lộ trình**.
+
+**Tên stage không tồn tại.** Họ thấy `... · layer 4` vì A10 **chưa từng có lượt đặt tên stage** — `spec-addendum`
+mô tả nó, mã không có. Tôi đã ghi việc này ở V12 nhưng xếp nó là "gỡ khỏi spec hoặc cắt vé"; người đọc thật cho
+thấy nó là **lỗi người học thấy đầu tiên**.
+
+### Một chỗ lập luận của họ không áp được vào ta, nhưng kết luận vẫn đúng qua đường khác
+
+Họ viết: *"một cạnh vàng có thể khớp node này nhưng lệch node kia, gây nhiễu recall"*. Trong thiết kế của ta
+**không có khe lệch ấy**: người gán **chọn node từ chính danh sách của hệ thống** trong file Excel, nên cạnh vàng
+tham chiếu đúng `node_id` của hệ thống.
+
+Nhưng kết luận của họ vẫn đúng, qua một cơ chế **mạnh hơn**: chính vì bộ vàng được gán **trên danh sách node của
+hệ thống**, node rác **vô hình với mọi chỉ số cạnh theo đúng cấu tạo**. Người gán thấy `GPA` thì đơn giản là không
+nối nó; `GPA` góp 0 vào precision và 0 vào recall. **Một tập node bẩn không bị phạt ở bất kỳ đâu.** Đó chính là lý
+do U0 cần thiết — và là lý lẽ mạnh hơn cái họ đưa.
+
+Trùng lặp thì có hại thật, qua đường khác: người gán nối cạnh vào **một** trong hai node trùng, máy có thể đã sinh
+cạnh ở node kia. Đó là mất recall thật. **[giả thuyết]**, chưa đo.
+
+### Một ý của họ đã được kiểm và **bị bác**
+
+Họ đề xuất đo *"tỉ lệ cạnh prerequisite thực ra là is_a / part_of"*, nhắm vào lỗi kiểu "AI sau Deep Learning".
+Tôi đo bằng dấu hiệu tên-chứa-nhau, rồi đối chiếu với bộ vàng:
+
+| | cạnh trong phạm vi chấm | tên chứa nhau | **precision nhóm ấy** | precision nhóm còn lại |
+|---|---|---|---|---|
+| `doc-1` | 31 | 8 (26%) | 0,62 | 0,70 |
+| `doc-2` | 44 | 12 (27%) | **0,92** | **0,56** |
+
+**Trên `doc-2` nhóm ấy tốt hơn hẳn phần còn lại**, không tệ hơn. Người gán công nhận `matrix → matrix addition`,
+`không gian véc tơ → véc tơ` là tiên quyết thật dù tên lồng nhau. Trên `doc-1` kém hơn chút nhưng n = 8, nằm trong
+nhiễu. **Không có bằng chứng cho tác hại họ nghi.** Dạng lỗi ấy có tồn tại — ca `ERD ↔ Thiết kế CSDL` đúng là
+bộ phận–toàn thể bị đoán ngược — nhưng nó hiếm, và **cờ chu trình hai cạnh đã bắt được nó**.
+
+Giữ phép đo này làm **chẩn đoán**, không làm cổng, và báo cáo cả kết quả âm này.
+
+### Một khuyến nghị của họ mà bằng chứng của tôi nói ngược
+
+Họ khuyên *"giữ precision chặt và nới recall, vì cạnh sai hại hơn cạnh thiếu"*. Với **tính đúng thứ tự** thì số đo
+nói ngược: **13/13 ca lộ trình xếp sai đều do cạnh thiếu; cạnh sai gây ra 0 ca.** Nên với U1, recall mới là ràng
+buộc đang siết.
+
+Lời khuyên của họ vẫn có thể đúng cho **những tác hại tôi chưa đo được** — một cạnh sai ép người học theo thứ tự
+không cần thiết, dù nó không vi phạm cạnh vàng nào. Ghi lại là **câu hỏi mở**, và đừng đảo ưu tiên khi chưa có số.
+
+### Bốn tiêu chí bổ sung — nhận
+
+| # | Tiêu chí | Phép đo | Ngưỡng |
+|---|---|---|---|
+| **U0** | Tập node sạch | tỉ lệ node rác trên mẫu người chấm | ≤ 10% |
+| **U0b** | Không trùng lặp | **số cặp node cùng khai một alias** (kiểm bằng máy, 0 lời gọi) | **= 0** |
+| **U6** | Stage mạch lạc chủ đề | người hoặc mô hình chấm 1–5 | TB ≥ 4 |
+| **U7** | Tên stage có nghĩa | có tên, và tên tóm đúng nội dung | ≥ 90% đạt |
+
+**U0 là điều kiện tiên quyết cho U2 và U3**: đo cạnh trên tập node bẩn là đo trên nền đất lún. Nhưng **không** vì
+thế mà vứt các con số hiện có — chúng đo đúng thứ chúng nói (precision/recall **của cạnh, trên tập node hiện
+hành**), chỉ là chưa đủ để kết luận "lộ trình dùng được".
+
+**U5 phải viết lại**: từ *"0 node chưa xét"* thành *"0 node chưa xét **trong số node đã qua U0**"*. Như cũ thì nó
+thưởng cho rác.
+
+**U0b là tiêu chí rẻ nhất trong toàn bộ danh sách** — 0 lời gọi mô hình, và corpus hiện có **9 vi phạm**.
