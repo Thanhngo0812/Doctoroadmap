@@ -472,7 +472,11 @@ trọng.
   vi chấm, giữ 23/29 cạnh dư với lý do hợp lý. Tiêu chí "định nghĩa dùng A" hẹp hơn khái niệm tiên quyết của người
   gán (họ tính cả tiên quyết để *làm* được bài).
 
-Cả hai giữ mã và test để dùng cho phiên bản sau; chuỗi mặc định vẫn là `validated → stages`.
+Cả hai giữ mã và test để dùng cho phiên bản sau.
+
+**Cập nhật cùng ngày — chủ dự án bật C8 v2 làm bản tạm**, dù nó trượt cổng C. Chuỗi mặc định nay là
+`validated → teaching → stages`; C10 vẫn ngoài chuỗi. Giới hạn đã biết của bản tạm: bỏ lọt node hành chính có công
+thức (`Điểm đánh giá học phần`), và nhãn `prior_knowledge` loại nhầm khái niệm chỉ xuất hiện trong giả thiết định lý.
 
 ### V17 — Precision cạnh phải đo bằng chấm mù
 
