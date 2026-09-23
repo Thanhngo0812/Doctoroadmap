@@ -48,7 +48,7 @@ class BuildRoadmap:
 
     def _validated(self, doc_id, latest):
         artifact = latest
-        while artifact.payload.get("stage") not in ("teaching", "validated"):
+        while artifact.payload.get("stage") not in ("verified", "teaching", "validated"):
             if artifact.payload.get("stage") == "clusters":
                 raise ValueError("stage roadmap cần artifact validated")
             upstream = artifact.manifest.get("upstream_version")
@@ -61,7 +61,7 @@ class BuildRoadmap:
         validated = upstream if upstream is not None else self._validated(
             doc_id, self.store.load_latest_graph(doc_id)
         )
-        if validated.payload.get("stage") not in ("teaching", "validated"):
+        if validated.payload.get("stage") not in ("verified", "teaching", "validated"):
             raise ValueError("stage roadmap cần artifact validated")
         config = {
             "algorithm_id": "a10-coffman-graham-stage-v8",

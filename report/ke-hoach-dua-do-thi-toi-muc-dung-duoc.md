@@ -777,3 +777,48 @@ p(x i |c), Bảng từ vựng, Real time Prediction*; `baocao-canhan`: *Project 
 `nhap-mon-ml`: *Tập học quá bé, Mô hình quá phức tạp, Ghi lịch sử, Mô tả ảnh, Lọc thư rác*.
 
 Trượt cổng A hoặc C thì không nhận v2. Trượt riêng cổng B thì v2 vẫn an toàn nhưng chưa đạt mục tiêu bắt rác.
+
+### Cổng A của v2: **đạt, sát ngưỡng**
+
+Loại nhầm **2 / 134** node phải giữ trên ba tài liệu chưa từng chạy mô hình (ngưỡng ≤ 2). `baocao-canhan` và
+`nhap-mon-ml`: 0 node bị loại. `naive-bayes`: loại `Bảng từ vựng` (lưng chừng, không chấm), và nhầm hai node:
+
+- `Spam Filtering` — một đoạn nói nó là `concept`, đoạn ví dụ email gọi nó là `example_detail`, và luật gộp để
+  `not_subject_matter` thắng `mentioned_only`. Về nguyên tắc *thứ này là gì* là thuộc tính của node, nên một đoạn coi
+  nó là khái niệm là đủ giữ. **Không sửa ở v2**: phát hiện trên chính dữ liệu cổng A, và luật mới có giá — `GPA` cũng
+  sẽ thoát nếu một đoạn nào đó gọi nó là khái niệm. Để dành cho v3, cần dữ liệu mới để chấm.
+- `Sự kiện` — mô hình đọc "Gọi A, B là hai sự kiện" thành *kiến thức cần có trước*: kéo giãn `prior_knowledge`.
+
+Ghi chú phụ, **có từ trước và chung cho mọi prompt**: `.gitattributes` để `* text=auto` với `core.autocrlf=true` mà
+không ghim `eol=lf` cho `prompts/*.txt`. Blob trong git là LF, nhưng một bản checkout mới trên Windows có thể đổi
+xuống dòng thành CRLF và làm đổi mọi `prompt_hash`. Ngoài phạm vi việc này; nêu để chủ dự án quyết.
+
+---
+
+## 15. C10 — kiểm từng cạnh `requires` bằng đoạn dạy của cả hai đầu: đăng ký trước khi chạy (2026-09-23)
+
+Stage `verified` giữa `teaching` và `stages`. Hồ sơ mỗi cạnh A → B: đoạn dạy của A và của B (đoạn định nghĩa nếu
+chưa có đoạn dạy; tối đa 2 mỗi đầu) và tối đa 3 đoạn bằng chứng của cạnh. Câu hỏi hẹp: *định nghĩa hoặc phát biểu
+của B, trong các đoạn này, có dùng A không?* Năm lựa chọn loại trừ nhau theo đúng tiêu chí đó: `requires` / `supports`
+(giúp học nhưng định nghĩa không dùng: ví dụ, trường hợp riêng, động cơ, nối qua định lý) / `reversed` / `unrelated` /
+`unresolved`. Ba lựa chọn khẳng định phải kèm câu trích có thật trong hồ sơ.
+
+- `requires`, `unresolved`, phản hồi hỏng → **giữ là ràng buộc cứng**: bước kiểm chỉ được gỡ ràng buộc khi có câu trích
+  chứng minh, không gỡ vì thiếu câu trả lời.
+- `supports` → sang danh sách `recommended_edges`, **không** ràng buộc stage. Đây là phần của đề xuất tách
+  `requires` / `recommended_before` ở mục 12, đặt đúng chỗ nó có tác dụng.
+- `reversed`, `unrelated` → `rejected_edges`, ghi lý do; **không** tự lật chiều.
+
+### Cổng nhận, khoá trước khi chạy
+
+Gói **C1 + C10** trên `doc-1` phải qua đúng cổng mà C1 một mình đã trượt, so với v7:
+
+1. precision (`score_edges`, phạm vi chính thức) **≥ 0,606**;
+2. mất **≤ 1** trong 26 cạnh vàng mà v10 đã tìm được;
+3. U1 **≤ 10,0%**. Ngưỡng này nới đúng một cạnh so với 7,5% của v10, vì lần chạy v1 trên `doc-1` cho thấy chỉ bỏ 2 node
+   đã làm U1 nhảy 7,5% → 10,0% do bộ xếp lớp đặt lại 14 cặp vàng mà máy còn thiếu cạnh. Chọn trước khi C10 chạy.
+
+Thông tin kèm, không phải cổng: C10 trên `doc-2` v7 (chưa có C1); tỉ lệ cạnh vàng bị C10 gỡ (thước đo trực tiếp của
+việc gỡ nhầm); và phân bố phán quyết trên các cạnh dư.
+
+Qua cả ba thì C1 được mở rộng sang `doc-2` **kèm** C10. Trượt thì dừng chi tiền cho A8 và đọc nguyên nhân.

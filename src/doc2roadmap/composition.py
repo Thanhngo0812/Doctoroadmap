@@ -148,6 +148,7 @@ def build_learning_graph():
         BuildSecondaryEdges,
         CheckTeachingSources,
         ValidateGraph,
+        VerifyRelations,
     )
 
     settings, store, embedding = _a3_dependencies()
@@ -198,6 +199,12 @@ def build_learning_graph():
         ),
         ValidateGraph(store),
         CheckTeachingSources(
+            store,
+            model,
+            concurrency=settings.roadmap_concurrency,
+            generation=generation,
+        ),
+        VerifyRelations(
             store,
             model,
             concurrency=settings.roadmap_concurrency,
