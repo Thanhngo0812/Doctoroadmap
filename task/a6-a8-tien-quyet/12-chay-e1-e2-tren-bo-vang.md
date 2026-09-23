@@ -5,8 +5,8 @@
 
 **Blocked by:** 05, 11, và việc gán nhãn đã đóng băng. (Việc của Claude.)
 
-**Status:** **hội ý xong, bộ vàng đóng băng, E1/E2/E3 đã chạy (2026-09-23).** doc-1 40 cạnh, doc-2 61 cạnh.
-Chờ **hội ý** hai file `-hoi-y.xlsx` rồi mới đóng băng bộ vàng và chạy E1/E2.
+**Status:** **hội ý xong, bộ vàng đóng băng, E1/E2/E3 đã chạy (2026-09-23).** `doc-1` 40 cạnh, `doc-2` 61 cạnh.
+Số ở mục "Kết quả E1/E2/E3" dưới. Còn lại: áp luật chọn bộ sinh của D5, và bảng theo ba cấu hình định tuyến.
 
 > **Hai chương vàng (chủ dự án chốt 2026-09-18, hướng a):** một chương giữa của `doc-1` (tiếng Việt) và một
 > chương giữa của `doc-2` (tiếng Anh). Bộ vàng song ngữ, nên **mọi bảng phải tách theo từng chương**, không gộp
@@ -88,11 +88,50 @@ Khoảng 83 phút (`doc-1` A2) và 152 phút (`doc-2` A2) là **khoảng từ l�
       bộ vàng đóng băng trước khi chạy.
 - [x] Hai file gán phải **khác nhau**: đây là hai người làm độc lập, không phải một bản chép làm hai. Kiểm ngay khi
       nhận file, hai file trùng khít thì κ vô nghĩa và bộ vàng không dùng được.
-- [ ] E1: bảng sáu loại vị trí, kèm NMI giữa cụm chủ đề và chương, cho cả hai giáo trình.
-- [ ] E2: bảng theo từng bộ sinh và từng tổ hợp, kèm recall riêng và ba cấu hình định tuyến.
+- [x] E1: bảng sáu loại vị trí, kèm NMI giữa cụm chủ đề và chương, cho cả hai giáo trình.
+- [x] E2: bảng theo từng bộ sinh — **còn thiếu** phần ba cấu hình định tuyến.
 - [ ] Áp **luật chọn bộ sinh mặc định** đã viết trước ở D5, và ghi kết quả áp luật.
-- [ ] Mọi số kèm khoảng tin cậy; chỗ nào khoảng chồng lấn thì viết "chưa phân biệt được".
+- [x] Mọi số kèm khoảng tin cậy; chỗ nào khoảng chồng lấn thì viết "chưa phân biệt được".
 - [ ] Báo cáo cả số trên hợp và trên giao nhãn của hai người, để xem độ nhạy.
+
+## Kết quả E1/E2/E3 — 2026-09-23
+
+Chấm trên `artifacts/graph/<doc>/v6/graph.json` (stage `validated`), bộ vàng sau hội ý. Báo cáo đầy đủ ở
+`artifacts/a8-gold/<doc>-score-vang.json`.
+
+**E1 — cạnh tiên quyết nằm ở đâu.** NMI cụm↔chương: **0,756** (`doc-1`), **0,789** (`doc-2`).
+
+| Loại vị trí | `doc-1` (VN, 40 cạnh) | `doc-2` (EN, 61 cạnh) |
+|---|---|---|
+| cùng chunk | **30,0%** [0,16–0,46] | 3,3% [0,00–0,08] |
+| cùng mục | **22,5%** [0,10–0,36] | 3,3% [0,00–0,08] |
+| cùng chương | 2,5% | 0,0% |
+| cùng cụm chủ đề | 2,5% | **18,0%** [0,09–0,29] |
+| **bắc cầu qua chunk nhắc cả hai, kênh cứng** | **25,0%** [0,11–0,39] | **42,6%** [0,31–0,55] |
+| bắc cầu, chỉ kênh dense | 0,0% | **9,8%** [0,03–0,18] |
+| ngầm (không nối được) | 17,5% [0,08–0,27] | 23,0% [0,10–0,35] |
+
+**Hai giáo trình khác nhau rất xa**, nên D13 đúng khi bắt tách theo chương. `doc-1` cục bộ (52,5% cạnh nằm cùng
+chunk hoặc cùng mục); `doc-2` chỉ 6,6% cục bộ và 52,4% phải đi qua cầu nhắc tên. **9,8% cạnh của `doc-2` chỉ kênh
+dense mới với tới** — kênh dense không thừa. Cạnh "ngầm" 17,5% và 23,0% là **trần recall**: không bộ sinh nào với
+tới chúng.
+
+**E2 — bộ sinh cặp (`doc-2`).**
+
+| Bộ sinh | phủ | recall | phủ riêng | số cặp sinh ra |
+|---|---|---|---|---|
+| **contact** (mention map) | 33/61 | **54,1%** | **5** | 9.334 |
+| citation_hard | 29/61 | 47,5% | 1 | 2.869 |
+| proposed_relation | 17/61 | 27,9% | 2 | 597 |
+| citation_soft | 8/61 | 13,1% | 1 | 416 |
+| same_section | 4/61 | 6,6% | 2 | 342 |
+
+`contact` cao nhất cả recall lẫn phủ riêng, nhưng sinh **9.334 cặp**, gấp ba bộ đứng nhì. Luật D5 phải áp lên đúng
+bảng này.
+
+**E3 sơ bộ (`doc-2`, có tính bắc cầu):** precision **0,147** · recall **0,551** · F1 **0,232**; 435 cạnh thừa,
+61 cạnh thiếu trên 136 cạnh vàng sau bao đóng. Recall 55% khớp phép đo vòng 39 (13/13 ca lộ trình xếp sai đều là
+cạnh máy không có).
 
 ## Bảng gán đã chuẩn bị — 2026-09-22
 
