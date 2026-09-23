@@ -76,7 +76,8 @@ có thứ tự bên trong** (≤ 8 khái niệm, ưu tiên cắt ở ranh giới
 với **1/30** stage của CG. Trên `doc-2` cách cắt thử quá vụn (97 module) vì cấp mục của sách Axler rất mịn — cấp mục dùng
 để cắt phải chọn theo từng tài liệu.
 
-**3.3. Cạnh "nằm trong định nghĩa" dò được phần lớn mà không gọi mô hình.** Bộ vàng có 29/40 và 49/61 cạnh loại này. Dò
+**3.3. Cạnh "nằm trong định nghĩa" dò được 37–48% mà không gọi mô hình.** Bộ vàng có 29/40 và 49/61 cạnh loại này; bộ
+dò bắt được 14/29 và 18/49 trong số đó. Dò
 "câu căn cứ nguyên văn của B nhắc tên hoặc alias của A": bắn 71 và 69 cặp, trúng 16 và 22 cạnh vàng (P 0,23 / 0,32), và
 chỉ ra **2 và 4 cạnh vàng mà máy chưa có**. Quá nhiễu để làm cạnh, nhưng là **bộ sinh ứng viên rẻ nhất**: C1 phải hỏi
 9 984 cặp (~7,4 USD) cho `doc-2`. Recall của bộ dò bị kìm vì câu căn cứ hiện là câu A3 dùng để trích, không phải câu định
