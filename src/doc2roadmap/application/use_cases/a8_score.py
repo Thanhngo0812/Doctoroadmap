@@ -337,10 +337,14 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
         raise ValueError(f"{graph_path}: cần artifact graph ở stage 'stages', đang là {payload.get('stage')!r}")
     stages = [stage["node_ids"] for stage in payload["stages"]]
     nodes = payload["nodes"]
-    names = {node["node_id"]: node.get("name") for node in nodes}
-    order = presentation_agreement(
-        stages, {node["node_id"]: node.get("first_order_index", 0) for node in nodes}
-    )
+    # Node bị bước kiểm nguồn dạy loại khỏi stage vẫn thuộc danh tính của đồ thị: vàng cần nó thì là lỗi lộ trình.
+    names = {node["node_id"]: node.get("name") for node in [*nodes, *payload.get("excluded_nodes", [])]}
+    # τ so với nơi khái niệm được **dạy** khi đã biết; `first_order_index` có thể bị đề cương đầu sách kéo lệch.
+    order = presentation_agreement(stages, {
+        node["node_id"]: node["teaching_order_index"] if node.get("teaching_order_index") is not None
+        else node.get("first_order_index", 0)
+        for node in nodes
+    })
     report: dict[str, Any] = {
         "doc_id": payload.get("doc_id"),
         "stage_count": len(stages),

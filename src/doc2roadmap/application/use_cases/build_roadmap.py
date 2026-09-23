@@ -5,6 +5,7 @@ import json
 
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.roadmap import build_roadmap
+from doc2roadmap.domain.teaching import EXCLUDED_STATUSES, bypass_excluded
 
 
 def render_roadmap_html(payload):
@@ -22,11 +23,17 @@ def render_roadmap_html(payload):
         edge_rows.append(
             f"<li>{html.escape(names.get(edge['source'], edge['source']))} → {html.escape(names.get(edge['target'], edge['target']))} · chunks {html.escape(evidence)}{redundant}</li>"
         )
+    excluded_rows = []
+    for status, heading in (("prior_knowledge", "Kiến thức nền cần có"), ("not_subject_matter", "Không đưa vào lộ trình")):
+        members = [node for node in payload.get("excluded_nodes", []) if node.get("teaching_status") == status]
+        if members:
+            items = "".join(f"<li>{html.escape(node.get('name', node['node_id']))}</li>" for node in members)
+            excluded_rows.append(f"<section><h2>{heading}</h2><ul>{items}</ul></section>")
     flags = html.escape(json.dumps(payload.get("display_flags", []), ensure_ascii=False, indent=2))
     return """<!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Doc2Roadmap review</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem}section{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}code,pre{background:#f6f6f6;padding:.75rem;white-space:pre-wrap}</style></head>
-<body><h1>Learning roadmap</h1>""" + "".join(stage_rows) + "<h2>Requires edges</h2><ul>" + "".join(edge_rows) + "</ul><h2>Flags</h2><pre>" + flags + "</pre></body></html>\n"
+<body><h1>Learning roadmap</h1>""" + "".join(stage_rows) + "".join(excluded_rows) + "<h2>Requires edges</h2><ul>" + "".join(edge_rows) + "</ul><h2>Flags</h2><pre>" + flags + "</pre></body></html>\n"
 
 
 class BuildRoadmap:
@@ -41,7 +48,7 @@ class BuildRoadmap:
 
     def _validated(self, doc_id, latest):
         artifact = latest
-        while artifact.payload.get("stage") != "validated":
+        while artifact.payload.get("stage") not in ("teaching", "validated"):
             if artifact.payload.get("stage") == "clusters":
                 raise ValueError("stage roadmap cần artifact validated")
             upstream = artifact.manifest.get("upstream_version")
@@ -54,10 +61,11 @@ class BuildRoadmap:
         validated = upstream if upstream is not None else self._validated(
             doc_id, self.store.load_latest_graph(doc_id)
         )
-        if validated.payload.get("stage") != "validated":
+        if validated.payload.get("stage") not in ("teaching", "validated"):
             raise ValueError("stage roadmap cần artifact validated")
         config = {
-            "algorithm_id": "a10-coffman-graham-stage-v7",
+            "algorithm_id": "a10-coffman-graham-stage-v8",
+            "eligibility": "exclude-prior-knowledge-and-not-subject-matter-v1",
             "validated_version": validated.version,
             "validated_config_hash": validated.manifest["config_hash"],
             "stage_rule": "width-capped-layer-with-safe-floor-merge",
@@ -75,9 +83,15 @@ class BuildRoadmap:
             for flag in validated.payload.get("main_flags", [])
             if flag.get("kind") == "invalid_main_session"
         }
+        # C8: node không phải kiến thức môn học, hoặc chỉ được liệt kê là kiến thức nền, rời khỏi stage. Cạnh đi
+        # qua chúng được co lại để việc bỏ node không làm mất ràng buộc học trước.
+        excluded = sorted((node for node in validated.payload["nodes"]
+                           if node.get("teaching_status") in EXCLUDED_STATUSES), key=lambda node: node["node_id"])
+        excluded_ids = {node["node_id"] for node in excluded}
+        edges, bypassed = bypass_excluded(validated.payload["requires_edges"], excluded_ids)
         roadmap = build_roadmap(
-            validated.payload["nodes"],
-            validated.payload["requires_edges"],
+            [node for node in validated.payload["nodes"] if node["node_id"] not in excluded_ids],
+            edges,
             [
                 session
                 for session in validated.payload.get("main_sessions", [])
@@ -111,6 +125,8 @@ class BuildRoadmap:
             "coverage_flags": roadmap["coverage_flags"],
             "contracted_components": roadmap["contracted_components"],
             "unmergeable_small_stages": roadmap["unmergeable_small_stages"],
+            "excluded_nodes": excluded,
+            "bypassed_edges": bypassed,
             "display_flags": display_flags,
             "stats": stats,
         }

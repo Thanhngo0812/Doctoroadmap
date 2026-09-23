@@ -22,7 +22,7 @@ def test_one_use_case_stops_at_each_public_stage_without_touching_later_stages()
         "mentions": ["clusters", "mentions"],
         "provenance": ["clusters", "mentions", "provenance"],
         "edges": ["clusters", "mentions", "provenance", "main", "secondary"],
-        "stages": ["clusters", "mentions", "provenance", "main", "secondary", "validated", "stages"],
+        "stages": ["clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "stages"],
     }
     for stop_after, wanted in expected.items():
         calls = []
@@ -33,6 +33,7 @@ def test_one_use_case_stops_at_each_public_stage_without_touching_later_stages()
             Stage("main", calls),
             Stage("secondary", calls),
             Stage("validated", calls),
+            Stage("teaching", calls),
             Stage("stages", calls),
         )
         artifact, reused = use_case.execute("doc", stop_after=stop_after)
@@ -53,9 +54,10 @@ def test_orchestrator_passes_the_exact_returned_artifact_to_the_next_stage():
             return artifact, reused
 
     calls = []
-    stages = [TrackingStage(name, calls) for name in ("clusters", "mentions", "provenance", "main", "secondary", "validated", "stages")]
+    names = ("clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "stages")
+    stages = [TrackingStage(name, calls) for name in names]
     BuildLearningGraph(*stages).execute("doc")
-    assert calls == ["clusters", "mentions", "provenance", "main", "secondary", "validated", "stages"]
+    assert calls == list(names)
 
 
 def test_switching_configuration_a_b_a_reuses_the_original_a_chain():
@@ -87,7 +89,7 @@ def test_switching_configuration_a_b_a_reuses_the_original_a_chain():
 
     clusters, mentions = Clusters(), Mentions()
     unused = Stage("unused", [])
-    use_case = BuildLearningGraph(clusters, mentions, unused, unused, unused, unused, unused)
+    use_case = BuildLearningGraph(clusters, mentions, unused, unused, unused, unused, unused, unused)
     first_a, _ = use_case.execute("doc", stop_after="mentions")
     current["value"] = "B"
     use_case.execute("doc", stop_after="mentions")

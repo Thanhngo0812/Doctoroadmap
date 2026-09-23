@@ -283,3 +283,24 @@ def test_roadmap_order_counts_a_concept_left_out_of_the_stages_and_pins_its_inpu
     assert report["gold_order"]["learning_order_error"] == pytest.approx(1 / 2)
     assert report["inputs"]["graph"]["sha256"] == hashlib.sha256(graph.read_bytes()).hexdigest()
     assert [row["sha256"] for row in report["inputs"]["golds"]] == [hashlib.sha256(gold.read_bytes()).hexdigest()]
+
+
+def test_a_gold_concept_left_out_by_the_teaching_check_counts_as_an_error_not_as_a_foreign_identity(tmp_path):
+    # Node bị bước kiểm nguồn dạy loại vẫn thuộc danh tính của đồ thị: nếu vàng cần nó, đó là lỗi của lộ trình.
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong")})
+    payload = staged_payload([["n_uocluong"]])
+    payload["nodes"] = [value for value in payload["nodes"] if value["node_id"] != "n_mau"]
+    payload["excluded_nodes"] = [{**next(value for value in NODES if value["node_id"] == "n_mau"),
+                                  "teaching_status": "not_subject_matter"}]
+    report = score_roadmap_order(write_graph(tmp_path, payload), [gold])
+    assert report["gold_order"]["out_of_scope"] == 1 and report["gold_order"]["learning_order_error"] == 1.0
+
+
+def test_tau_follows_the_teaching_position_when_the_check_has_found_one(tmp_path):
+    # `first_order_index` của mẫu bị đề cương kéo về sau ước lượng; vị trí dạy thật mới là đối chứng đúng.
+    payload = staged_payload([["n_mau"], ["n_uocluong"]])
+    for value in payload["nodes"]:
+        value.update({"n_mau": {"first_order_index": 9, "teaching_order_index": 1},
+                      "n_uocluong": {"first_order_index": 2, "teaching_order_index": 5}}.get(value["node_id"], {}))
+    report = score_roadmap_order(write_graph(tmp_path, payload), [])
+    assert report["presentation_agreement"]["tau"] == pytest.approx(1.0)

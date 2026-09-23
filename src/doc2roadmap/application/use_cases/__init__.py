@@ -5,6 +5,7 @@ from .build_provenance import BuildProvenance
 from .build_main_edges import BuildMainEdges
 from .build_secondary_edges import BuildSecondaryEdges
 from .validate_graph import ValidateGraph
+from .check_teaching import CheckTeachingSources
 from .build_roadmap import BuildRoadmap
 from .build_learning_graph import BuildLearningGraph
 from .index_document import IndexDocument, IndexSummary, SearchDocument
@@ -21,6 +22,7 @@ __all__ = [
     "BuildMainEdges",
     "BuildSecondaryEdges",
     "ValidateGraph",
+    "CheckTeachingSources",
     "BuildRoadmap",
     "BuildLearningGraph",
     "IndexDocument",

@@ -16,6 +16,7 @@ from doc2roadmap.application.prerequisite_prompt import (
     provenance_prompt_hash,
     secondary_prompt_hash,
 )
+from doc2roadmap.application.teaching_prompt import teaching_prompt_hash
 from doc2roadmap.application.use_cases.canonical_reasoning import CanonicalReasoning
 
 
@@ -69,6 +70,7 @@ def test_product_prompt_hashes_are_intentionally_versioned():
     assert a3_actual == a3_expected, HASH_CHANGE_WARNING
     assert a4_actual == a4_expected, HASH_CHANGE_WARNING
     assert a8_actual == a8_expected, HASH_CHANGE_WARNING
+    assert teaching_prompt_hash("golden-model", GENERATION) == "34644cf00057aeab7b2fc0fc9a0fb4733d7f03d526c056bb3ee013595848a3aa", HASH_CHANGE_WARNING
 
 
 def test_product_prompt_catalog_is_exact_and_loadable():
@@ -86,6 +88,7 @@ def test_product_prompt_catalog_is_exact_and_loadable():
         Path("a8/main.txt"),
         Path("a8/provenance.txt"),
         Path("a8/secondary.txt"),
+        Path("a10/teaching.txt"),
     }
     actual = {path.relative_to(PROMPT_ROOT) for path in PROMPT_ROOT.rglob("*.txt")}
 

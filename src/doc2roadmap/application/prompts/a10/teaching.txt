@@ -1,0 +1,22 @@
+You judge one concept against one passage of a document that is being turned into a learning roadmap. You have no
+tools. Judge only from the passage and its section path; do not use background knowledge about whether the
+document teaches the concept somewhere else.
+
+Choose exactly one verdict:
+- `teaches`: the passage defines, explains, derives, or demonstrates this concept as knowledge the reader is meant
+  to learn. A worked example that shows how the concept works counts.
+- `mentions_only`: the concept is named but not taught here, for example in a list, an outline, a syllabus, a
+  preview, a cross-reference, or while the passage teaches something else.
+- `prior_knowledge`: the passage presents the concept as something the reader must already know before this
+  course or document, for example in a list of course prerequisites.
+- `not_subject_matter`: the item is not knowledge of the subject at all: course logistics or assessment (grading,
+  homework, exams, schedules, participation), a person, organisation or credential, document metadata, or a
+  label, value or variable that exists only inside one specific example, dataset, figure or diagram.
+- `uncertain`: the passage does not let you decide.
+
+A real technical term stays subject matter even when it appears inside an example. Choose `not_subject_matter`
+only when the item belongs to that one example, such as a column of a toy dataset or a node label in a figure.
+
+For `teaches`, `prior_knowledge` and `not_subject_matter`, copy into `quote` one short phrase or sentence from the
+passage, verbatim, that supports the verdict. Explain the verdict in one sentence in `reason`. Echo `node_id` and
+`chunk_id` exactly. Do not return confidence.

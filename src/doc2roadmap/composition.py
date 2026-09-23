@@ -146,6 +146,7 @@ def build_learning_graph():
         BuildProvenance,
         BuildRoadmap,
         BuildSecondaryEdges,
+        CheckTeachingSources,
         ValidateGraph,
     )
 
@@ -196,6 +197,12 @@ def build_learning_graph():
             generation=generation,
         ),
         ValidateGraph(store),
+        CheckTeachingSources(
+            store,
+            model,
+            concurrency=settings.roadmap_concurrency,
+            generation=generation,
+        ),
         BuildRoadmap(
             store,
             stage_cap=settings.roadmap_stage_cap,
