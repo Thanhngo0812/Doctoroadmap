@@ -225,3 +225,18 @@ def test_bootstrap_can_be_switched_off_and_report_stays_deterministic(tmp_path):
     assert without["e1"]["positions"][0]["interval"]["samples"] == 0
     assert score_from_store(FakeStore(), "xstk", graph, [gold], samples=30) == score_from_store(
         FakeStore(), "xstk", graph, [gold], samples=30)
+
+
+def test_gold_made_from_patched_provenance_is_scoreable(tmp_path):
+    # D13 bắt cột "Nơi dạy" lấy từ stage provenance, nên mọi bảng gán thật đều sinh có --graph. Bộ chấm phải
+    # dựng scope từ **cùng** payload ấy, nếu không nó tự từ chối mọi bộ vàng thật (F124).
+    patched = graph_payload(nodes=[
+        {**value, "defining_chunk_ids": ["c3", "c2"]} if value["node_id"] == "n_khoang" else value
+        for value in NODES
+    ])
+    scope = scope_from_store(FakeStore(), "xstk", chapter=2, graph_payload=patched)
+    assert scope["concept_hash"] != scope_from_store(FakeStore(), "xstk", chapter=2)["concept_hash"]
+
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong")}, concept_hash=scope["concept_hash"])
+    report = score_from_store(FakeStore(), "xstk", write_graph(tmp_path, patched), [gold], samples=0)
+    assert report["gold"]["edges"] == 1

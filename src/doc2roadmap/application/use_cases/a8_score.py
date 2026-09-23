@@ -298,14 +298,19 @@ def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", sam
     payload = load_graph_payload(graph_path)
     if payload.get("doc_id") not in (None, doc_id):
         raise ValueError(f"artifact graph thuộc {payload['doc_id']!r}, không phải {doc_id!r}")
-    if provenance == "source":
-        payload = with_source_provenance(payload)
     first = golds[0]
     inputs = scope_inputs(store, doc_id, first["canonical_version"])
+    # Danh tính khái niệm phải dựng từ **đúng payload đã sinh bảng gán**: D13 bắt cột "Nơi dạy" đi theo
+    # provenance đã vá, nên bảng gán nào cũng sinh có `--graph`. Dựng scope từ canonical thô thì `concept_hash`
+    # lệch và bộ chấm tự từ chối mọi bộ vàng thật (F124).
     scope = annotation_scope(
         doc_id, inputs["version"], inputs["nodes"], inputs["sections"], inputs["chunks"],
+        graph_payload=payload,
         chapter=",".join(first["chapter"]["section_ids"]), chapter_level=first["chapter_level"],
     )
+    # Đổi về provenance gốc **sau** khi đã chốt danh tính, vì chế độ này chỉ để so E1 trước và sau khi vá.
+    if provenance == "source":
+        payload = with_source_provenance(payload)
     report = score_gold(scope, payload, inputs["chunks"], inputs["sections"], golds,
                         mode=mode, samples=samples, seed=seed)
     report["graph_path"] = str(graph_path)
