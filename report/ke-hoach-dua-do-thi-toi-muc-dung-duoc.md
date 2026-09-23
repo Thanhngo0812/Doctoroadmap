@@ -681,3 +681,62 @@ chọn can thiệp A8/A10**. Nó là ứng viên tốt nhất hiện có cho t�
 Ý tưởng curriculum planner trong `feedbackd1.md`: nhận đánh giá ở mục 9 của bản thẩm định — làm một planner tĩnh
 có ràng buộc cứng ở P2; **bác** tạo cạnh từ độ gần embedding (đối xứng, trong khi tiên quyết có hướng), điểm tự
 báo của mô hình, và RL/BKT khi chưa có dữ liệu người học.
+
+---
+
+## 14. C8 sửa lại: kiểm **nguồn dạy** ở cấp (node, đoạn) — đăng ký trước khi chạy (2026-09-23)
+
+### Đính chính thêm: ô nhiễm đề cương nhỏ hơn tôi báo sáu lần
+
+Mục 11 nói **49/225 (22%)** khái niệm có vị trí trong vùng đầu sách. Ngưỡng tôi dùng (< 40) nuốt cả Chương 1, vốn
+bắt đầu ở chunk 16. Đếm đúng ranh giới: **8/225 (3,6%)** — 3 node hành chính (`Thang điểm chữ`, `Thi viết rọc
+phách`, `Điểm đánh giá học phần`, đứng lớp 1–2) và 5 khái niệm thật bị đề cương làm lệch vị trí (`Dạng toàn phương`,
+`Vành`, `Đa thức`, `Số phức`, `Phân thức hữu tỉ`). Hệ quả: lý do "C8 phải chạy trước C9 vì 22% chỉ số hỏng" mất
+phần lớn sức nặng.
+
+### Vì sao không phân loại theo vùng
+
+Rác của `doc-3` chỉ một phần nằm ở vùng hành chính (`Homework assignments`, `Final project` ở slide *Grading*;
+`Python` ở slide *Prerequisites*). Phần còn lại là **nhãn trong ví dụ và hình vẽ giữa bài giảng**: `GPA`,
+`Experience` (biến của bộ dữ liệu ví dụ), `Top/Middle/Bottom node` (nhãn hình). Phân loại vùng không bắt được.
+Nên câu hỏi đặt ở cấp **(node, đoạn định nghĩa)**: đoạn này dạy khái niệm, chỉ nhắc tên, liệt kê nó như kiến thức
+cần có trước, hay thứ này không phải kiến thức của môn học?
+
+### Thiết kế
+
+- Stage mới `teaching` giữa `validated` và `stages`: không chạy lại A8/A9. Ghi **thêm** `teaching_status`,
+  `teaching_chunk_ids`, `teaching_order_index` — **không sửa** `defining_chunk_ids`, nên `concept_hash` của vàng
+  đóng băng giữ nguyên.
+- Năm phán quyết cho mỗi cặp: `teaches` / `mentions_only` / `prior_knowledge` / `not_subject_matter` / `uncertain`;
+  `teaches`, `prior_knowledge`, `not_subject_matter` phải kèm câu trích **có thật trong đoạn**.
+- **Chỉ loại khỏi stage hai trạng thái**: `not_subject_matter` và `prior_knowledge` (hiện ở danh sách "kiến thức
+  nền"). Node chỉ được nhắc tên **vẫn giữ**, gắn cờ — vì `Neural Networks` của `doc-3` có đoạn định nghĩa duy nhất
+  là một slide liệt kê, trong khi cả bài dạy về nó. Loại theo "không có đoạn dạy" sẽ xoá chủ đề chính của bài.
+- Có `teaches` thì thắng mọi phán quyết khác (giữ node, gắn cờ mâu thuẫn).
+- Cạnh qua node bị loại được **co lại** (A → X → B thành A → B), để bỏ node không làm mất ràng buộc học trước.
+- ~1215 cặp trên cả 7 tài liệu, ~0,2 USD.
+
+### Nhãn tham chiếu `doc-3`, khoá trước khi chạy
+
+Cách đọc của reviewer, **không phải vàng**; chỉ dùng để quyết cổng của C8.
+
+- **Phải loại (13):** Class participation, Final project, Homework assignments, Experience, GPA, Top node,
+  Middle node, Bottom node, A few numbers, A single number, Multi-modal example, Python, Machine learning concepts.
+- **Phải giữ (33):** Artificial Intelligence, Traditional approach, Polanyi's Paradox, Machine Learning,
+  Classification and Regression Tree, Linear Regression, Machine Learning Model, Support Vector Machines,
+  Gradient Boosted Machines, Neural Networks, Random Forests, Feature extraction, Deep Learning, GenAI,
+  Logistic Regression, Independent variables, Coefficients, Intercept, linear functions, Layer, Dense,
+  Activation function, Linear activation function, ReLU, Hidden layers, Input variables, Output variable,
+  output layer, Sigmoid activation function, Input Layer, parameters, Feedforward neural network,
+  Network architecture.
+- **Lưng chừng, không chấm (12):** 34-layer plain, 34-layer residual, VGG-19, Sensor, Human bottleneck, Smart
+  representations, Axon, Dendrite, Synapse, Stable Diffusion, MusicLM, Output layer node.
+
+### Cổng nhận, khoá trước khi chạy
+
+1. `doc-3`: loại **≥ 10/13** node phải loại, và loại nhầm **≤ 1/33** node phải giữ.
+2. `doc-1`: loại cả 3 node hành chính; **U1 không được tăng** (tức 0 đầu cạnh vàng bị loại — bộ chấm mới tính đầu
+   cạnh vắng mặt là lỗi); đọc tay **mọi** node bị loại, loại nhầm **≤ 2**.
+3. Toàn kho: 0 cạnh cứng vi phạm trong lộ trình mới; số stage không tăng.
+
+Trượt bất kỳ cổng nào thì **không** nhận C8, và đọc nguyên nhân trước khi sửa gì.
