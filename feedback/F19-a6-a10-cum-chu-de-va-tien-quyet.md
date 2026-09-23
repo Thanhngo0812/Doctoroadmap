@@ -1656,3 +1656,73 @@ hai tài liệu còn âm nhẹ.
 Đây **không phải lỗi của vé 21** — vé 21 làm đúng thứ được giao, và chính việc sửa Đ13 mới làm con số trở nên
 trung thực. Nhưng nó đặt câu hỏi khoa học trung tâm của cả đợt lên bàn: **đồ thị sai, hay thứ tự sách không liên
 quan tới tiên quyết?** Chỉ bộ vàng trả lời được, và vé 22 là dụng cụ đo.
+
+---
+
+# Vòng 39 — Vé 22 và phép đo đầu tiên của lộ trình trên bộ vàng thật · 2026-09-23
+
+Vé 22 xong: hai chỉ số, lệnh `a8-roadmap-score`, 7 test mới với **7/7 đột biến bị bắt**, suite **477 xanh** khi
+chặn mạng. Nhưng thứ đáng nói không phải là mã, mà là con số nó đo ra.
+
+## Lộ trình vi phạm 15–26% cạnh vàng
+
+Chấm lộ trình thật (`doc-1/v7`, `doc-2/v7`) trên bộ vàng đã gán, lấy **giao nhãn** của hai người:
+
+| | stage | τ so mục lục | cạnh vàng | tôn trọng | **vi phạm** | cùng stage | ngoài phạm vi |
+|---|---|---|---|---|---|---|---|
+| `doc-1` Chương 3 | 29 | +0,087 | 23 | 17 | **6 (26,1%)** | 0 | 0 |
+| `doc-2` mục 3C | 55 | +0,125 | 46 | 39 | **7 (15,2%)** | 0 | 0 |
+
+Trên **hợp nhãn**: 12/49 (24,5%) và 13/66 (19,7%). Đây là phép chấm đúng/sai đầu tiên của lộ trình, và nó là con
+số thật chứ không còn là suy đoán.
+
+## Và nguyên nhân không nằm ở A10
+
+Với mỗi cạnh vàng bị xếp ngược, tôi tra xem đồ thị máy **có cạnh ấy không**:
+
+| | cạnh bị xếp ngược | máy có cạnh trực tiếp | máy chỉ có đường bắc cầu | **máy không có gì** |
+|---|---|---|---|---|
+| `doc-1` | 6 | 0 | 0 | **6** |
+| `doc-2` | 7 | 0 | 0 | **7** |
+
+**13 trên 13.** Không một ca vi phạm nào là do A10 xếp sai một cạnh nó biết — **mọi ca đều là cạnh A8 không tìm ra**.
+Nói cách khác: **A10 tôn trọng 100% số cạnh tiên quyết được giao cho nó.** Trần chất lượng của lộ trình do **recall
+của A8** đặt ra, không do thuật toán xếp tầng.
+
+Recall thô của A8 trên giao nhãn: **16/23 = 70%** (`doc-1`), **25/46 = 54%** (`doc-2`).
+
+Các ca vi phạm đọc rất rõ, và đều cùng một hình dạng — **khái niệm nền rơi xuống cuối**:
+
+- `doc-1`: cần *Vô hướng* (stage 12) và *Véc tơ* (stage 14) trước *Tổ hợp tuyến tính*, nhưng máy đặt *Tổ hợp tuyến
+  tính* ở **stage 0**. Nó thành gốc vì không có cạnh nào đi vào nó.
+- `doc-2`: cần *Matrix addition* (stage 54) trước *additive identity of 𝐅^{m,n}* (stage 25) và trước *dim 𝐅^{m,n} =
+  mn* (stage 45). Phép cộng ma trận nằm ở stage 54 trên 55 là sai rõ ràng.
+
+## Điều này đổi thứ tự ưu tiên của cả đợt
+
+Vòng 36 đặt câu hỏi: **đồ thị sai, hay thứ tự sách không liên quan tới tiên quyết?** Giờ có câu trả lời, và nó là
+vế thứ nhất — nhưng sai ở **A8 thiếu cạnh**, không phải ở A9 hay A10.
+
+Hệ quả cho kế hoạch:
+
+1. **Vé 21 đúng nhưng không phải nút thắt.** Nó sửa hình dạng lộ trình (63 → 13 stage, hết stage đơn lẻ) và đạt tối
+   ưu lý thuyết. Nhưng hình dạng đẹp trên một đồ thị thiếu 30–46% cạnh vẫn cho lộ trình sai 15–26%.
+2. **τ gần bằng 0 giờ giải thích được.** Nó không phải bằng chứng A10 hỏng, cũng không phải bằng chứng sách sắp
+   xếp kém — nó là **bóng của recall thấp**: thiếu cạnh thì nhiều khái niệm thành gốc, và thứ tự trôi tự do.
+3. **Việc đáng làm tiếp là nâng recall của A8**, không phải tinh chỉnh A10. E2 (bộ sinh cặp) và E6 (trích mở so
+   kiểm cặp) là hai thí nghiệm đã thiết kế sẵn để trả lời *cạnh bị mất ở đâu* — chúng vừa chuyển từ "nên chạy"
+   sang "phải chạy trước".
+4. **Một phép chẩn đoán rẻ nên làm ngay ở vé 13:** với mỗi cạnh vàng máy không tìm ra, tra xem nó thuộc loại vị
+   trí nào trong sáu loại của E1. Nếu cạnh mất tập trung ở một loại — ví dụ xuyên chương, hay nối qua một lần
+   nhắc tên — thì biết ngay phải sửa bộ sinh nào.
+
+## Về hai chỉ số
+
+τ và tỉ lệ vi phạm **không thay thế nhau**. τ đo lệch mục lục và là **dấu hiệu chẩn đoán** — thứ tự sách không phải
+chân lý về tiên quyết, nên τ thấp tự nó không kết tội ai. Tỉ lệ vi phạm cạnh vàng mới là phép chấm đúng/sai. Lệnh
+trả cả hai, kèm cảnh báo *single reference* của Lapata 2006 ngay trong báo cáo JSON để không ai trích τ trần trụi.
+
+Bốn rổ của tỉ lệ vi phạm không chồng nhau — tôn trọng, vi phạm, **cùng stage**, **ngoài phạm vi** — và tỉ lệ chỉ
+tính trên cặp thật sự được xếp thứ tự. Rổ "cùng stage" tồn tại vì với định nghĩa stage mà chủ dự án chốt, một cặp
+tiên quyết nằm chung stage **không phải** tôn trọng: lộ trình không xếp thứ tự cho nó. Trên hai chương thật rổ ấy
+bằng 0, đúng như bất biến của vé 21 hứa.

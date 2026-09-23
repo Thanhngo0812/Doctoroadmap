@@ -9,7 +9,9 @@ V9 · thí nghiệm E9–E11 ở [`report/nghien-cuu-a9-a10-kiem-dinh-va-lo-trin
 
 **Ai làm:** Claude (cùng chỗ với bộ chấm bộ vàng của vé 05).
 
-**Status:** ready-for-agent
+**Status:** **xong ngày 2026-09-23** — hai chỉ số, lệnh `a8-roadmap-score`, 7 test với 7/7 đột biến bị bắt.
+Đã chấm trên bộ vàng thật: lộ trình vi phạm 26,1% cạnh vàng ở `doc-1`, 15,2% ở `doc-2`, và **13/13 ca vi phạm
+là cạnh A8 không tìm ra**. Còn lại E11 (bảng ablation) và chuyển ba script đo của vòng 36 vào repo.
 
 ## Vì sao cần
 
