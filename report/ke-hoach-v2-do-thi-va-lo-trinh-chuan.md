@@ -4,6 +4,11 @@ Ngày 2026-09-23. Thay phần "việc tiếp theo" của [kế hoạch đưa đ�
 (mục 1–18 vẫn là nhật ký và bằng chứng). Mọi con số dưới đây đo trên artifact thật, bằng mã trong repo hoặc script ghi
 đường dẫn; không có con số nào là ước lượng trừ khi ghi rõ.
 
+> **Cập nhật 2026-09-23:** chủ dự án duyệt toàn bộ kế hoạch và ngưỡng. Thiết kế chi tiết ở
+> [`doc/v2-do-thi-va-lo-trinh-neo-van-ban-spec.md`](../doc/v2-do-thi-va-lo-trinh-neo-van-ban-spec.md), vé ở
+> [`task/v2-do-thi-lo-trinh/`](../task/v2-do-thi-lo-trinh/00-ke-hoach.md), việc của chủ dự án ở vé 10. Q8 bỏ ngưỡng tự
+> động (chia module theo mục tự tối ưu chỉ số đó); chỉ còn ngưỡng chấm người ≥ 4/5.
+
 ## 0. Tóm tắt
 
 Sau 18 mục thí nghiệm, lỗi của sản phẩm quy về **bốn gốc**, và luồng hiện tại đặt sai trọng tâm ở hai gốc:
