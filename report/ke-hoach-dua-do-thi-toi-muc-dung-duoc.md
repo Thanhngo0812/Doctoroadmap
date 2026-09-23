@@ -201,3 +201,64 @@ Ba thứ nên làm trước khi tiêu thêm tiền:
    quyết định C2 có đáng không, và không gọi một lời mô hình nào.
 2. **C5 đọc tay** — đọc 10 cạnh "ngầm" mỗi chương, mô tả chúng nối nhau bằng gì.
 3. **C7 cổng** — nối `a8-roadmap-score` vào lượt build.
+
+---
+
+## 9. Kết quả đo offline của C2 (2026-09-23) — và nó đổi phán quyết
+
+Chạy lại việc dựng phiên với một bước gộp: **hàng liền kề cùng chương được gộp cho tới khi phiên đạt `k` khái niệm
+đích**. Không gọi một lời mô hình nào. "Có cơ hội" = tiên quyết nằm trong `allowed` và đích nằm trong `target` của
+cùng một phiên — điều kiện mà **100%** cạnh vàng tìm được đều thoả.
+
+**`doc-1` — gộp không đổi gì cả:**
+
+| `k` | phiên | đích TB | phiên ≤1 | cơ hội / cạnh vàng | cơ hội / cạnh thiếu |
+|---|---|---|---|---|---|
+| 1 *(hiện tại)* | 66 | 3,6 | 16 | 30/40 (75%) | 9/19 (47%) |
+| 3 | 50 | 4,6 | 2 | 30/40 | 9/19 |
+| 8 | 28 | 8,2 | 1 | 30/40 | 9/19 |
+
+**`doc-2` — gộp giúp nhiều:**
+
+| `k` | phiên | đích TB | phiên ≤1 | cơ hội / cạnh vàng | cơ hội / cạnh thiếu |
+|---|---|---|---|---|---|
+| 1 *(hiện tại)* | 337 | 1,6 | **203** | 35/61 (57%) | **6/32 (19%)** |
+| 3 | 153 | 3,4 | 6 | 42/61 (69%) | 13/32 (41%) |
+| 6 | 91 | 5,5 | 3 | 43/61 (70%) | 14/32 (44%) |
+| **8** | **76** | **6,5** | **8** | **46/61 (75%)** | **17/32 (53%)** |
+
+*(Mô phỏng dựng lại hàng từ section nên lệch 1–3 cạnh so với `main_sessions` thật: ở `k=1` nó cho 35/61 và 30/40,
+trong khi artifact thật cho 38/61 và 31/40. Dùng nó để **so tương đối**, không trích tuyệt đối.)*
+
+### Ba điều đọc được
+
+1. **C2 là can thiệp phụ thuộc hình dạng sách, không phải phụ thuộc ngôn ngữ.** Nó vô dụng với `doc-1` (section đã
+   đủ lớn) và có giá trị lớn với `doc-2` (Axler đánh heading theo từng định lý, 203/337 phiên chỉ một khái niệm).
+2. **Một luật duy nhất phục vụ được cả hai**, vì "gộp cho tới khi đạt `k`" **tự không làm gì** khi section đã đủ
+   lớn. Không cần tham số riêng cho từng tài liệu. Đề xuất mặc định **`k = 6`**, gộp theo **chương** chứ không
+   theo cha — gộp theo cha để lại 49 phiên đơn lẻ ở `k=8`, gộp theo chương chỉ còn 8.
+3. **Gộp còn làm pass chính rẻ hơn**: `doc-2` từ 337 phiên xuống 76, `doc-1` từ 66 xuống 31.
+
+### Phán quyết cập nhật cho C2
+
+**Nâng C2 lên ngang C1 về mức ưu tiên**, và làm nó **trước** khi tiêu tiền C1 cho `doc-2`:
+
+- Với `doc-2`, C2 đưa cạnh thiếu **có cơ hội** từ 6 lên 17 — gần bằng phần C1 hứa (15 cạnh nằm trong sổ cặp), mà
+  giá chỉ **~1,4 USD** so với ~9 USD, và còn làm pass chính rẻ đi.
+- Hai can thiệp **không chồng nhau**: C2 cho pass chính cơ hội thấy cặp; C1 cho pass phụ hỏi thẳng cặp. Nên chạy
+  C2 trước rồi mới đo C1 trên phần còn lại — nếu không sẽ không biết công của cái nào.
+- **[giả thuyết]** phiên lớn hơn có thể làm tụt precision vì mô hình có nhiều khái niệm hơn để nối. Không đo
+  offline được. Phải chấm sau khi chạy, và luật chuyển của D9 áp cho cả ca này.
+
+### Thứ tự sửa lại
+
+| Bước | Việc | Giá | Ghi chú |
+|---|---|---|---|
+| 1 | C1 trên `doc-1` *(đang chạy)* | ~3 USD | đo C1 tách biệt, trên tài liệu mà C2 vô dụng — **đây là thiết kế sạch** |
+| 2 | Chấm C1 trên `doc-1`, so bắt cặp | 0 | |
+| 3 | **C2 trên `doc-2`, `k = 6`, gộp theo chương** | ~1,4 USD | rẻ hơn C1 sáu lần, hiệu quả tương đương |
+| 4 | Chấm C2 trên `doc-2` | 0 | |
+| 5 | C1 trên `doc-2` **sau** C2 | ~9 USD | chỉ khi bước 2 và 4 đều đạt |
+
+Tình cờ mà may: `doc-1` là tài liệu C2 vô dụng, nên lượt C1 đang chạy trên nó là **một phép đo C1 sạch, không lẫn
+tác dụng của C2**. Giữ nguyên thiết kế ấy.
