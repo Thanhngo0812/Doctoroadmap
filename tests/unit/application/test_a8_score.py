@@ -319,3 +319,13 @@ def test_a_sequence_roadmap_is_scored_on_the_sequence_and_tau_is_reported_as_boo
     assert order["learning_order_error"] == pytest.approx(1 / 2)
     assert report["order_unit"] == "sequence" and report["unit_count"] == 1
     assert "độ bám sách" in report["presentation_caveat"]
+
+
+def test_the_order_report_carries_target_coverage_q7(tmp_path):
+    # Vàng: n_mau → n_uocluong → n_khoang. Máy chỉ có n_mau → n_uocluong: đích n_khoang thiếu cả hai tổ tiên.
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong"), ("n_uocluong", "n_khoang")})
+    payload = staged_payload([["n_mau"], ["n_uocluong"], ["n_khoang"]])
+    payload["requires_edges"] = [{"source": "n_mau", "target": "n_uocluong", "edge_type": "requires"}]
+    coverage = score_roadmap_order(write_graph(tmp_path, payload), [gold])["target_coverage"]
+    assert coverage["targets"] == 2 and coverage["complete"] == 1
+    assert coverage["mean_coverage"] == pytest.approx((1 + 0) / 2)

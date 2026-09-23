@@ -29,6 +29,7 @@ from doc2roadmap.domain.gold_scoring import (
     score_edges,
     share_by_target,
     subset_rows,
+    target_coverage,
     undirected,
 )
 
@@ -379,5 +380,9 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
     report["gold_mode"] = mode
     report["gold_edge_count"] = len(edges)
     report["gold_order"] = {key: value for key, value in violations.items() if key != "rows"}
+    machine = {(edge["source"], edge["target"])
+               for edge in [*payload.get("requires_edges", []), *payload.get("bypassed_edges", [])]}
+    targets = sorted({target for gold in golds for target in gold["targets"]})
+    report["target_coverage"] = target_coverage(edges, machine, targets)
     report["violations"] = violations["rows"]
     return report

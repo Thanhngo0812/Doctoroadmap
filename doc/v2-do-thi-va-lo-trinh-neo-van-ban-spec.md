@@ -128,9 +128,11 @@ giao thức nhiễu V14 (giao thức đó vẫn áp cho mọi so sánh dùng Cof
 
 ### Gói E — lộ trình tới mục tiêu
 
-**W9 — Dãy con theo tổ tiên.** Với tập đích `T`: giữ các khái niệm thuộc `T` ∪ tổ tiên của `T`, theo đúng thứ tự dãy học
-toàn cục, rồi chia module bằng W3. Dãy con của một phần mở rộng tuyến tính vẫn là phần mở rộng tuyến tính của đồ thị con,
-nên mọi cạnh vẫn đi trước ra sau. Lệnh `roadmap-target --graph <artifact> --concept <tên hoặc mã>`.
+**W9 — Lọc lộ trình toàn cục theo tổ tiên.** Với tập đích `T`: giữ các khái niệm thuộc `T` ∪ tổ tiên của `T` trong
+chính các module của lộ trình toàn cục, theo đúng thứ tự; bỏ module rỗng. **Không chia module lại**: người học vẫn định
+hướng trong cùng khung buổi học với lộ trình đầy đủ ("module 12: chỉ cần 5 trong 8 khái niệm"). Dãy con của một phần mở
+rộng tuyến tính vẫn là phần mở rộng tuyến tính của đồ thị con, nên mọi cạnh vẫn đi trước ra sau. Lệnh
+`roadmap-target --graph <artifact> --concept <tên, alias hoặc mã>`; một tên khớp nhiều khái niệm thì báo lỗi, không đoán.
 
 **W10 — Q7.** Với mỗi đích vàng có tiên quyết: phủ = |tổ-tiên-vàng ∩ tổ-tiên-máy| / |tổ-tiên-vàng| trên bao đóng bắc cầu.
 Báo trung bình, số đích đủ trọn, và cỡ trung vị của tổ tiên máy (để thấy lộ trình có phình không).

@@ -284,3 +284,25 @@ def test_roadmap_spends_only_when_explicitly_allowed(monkeypatch, capsys):
     assert main(["roadmap", "--doc-id", "doc-2"]) == 0
     assert main(["roadmap", "--doc-id", "doc-2", "--allow-spend"]) == 0
     assert seen == [{"allow_spend": False}, {"allow_spend": True}]
+
+
+def test_roadmap_target_prints_only_what_the_chosen_concept_needs(tmp_path, capsys):
+    def node(node_id, name, module_id):
+        return {"node_id": node_id, "name": name, "learnable": True, "module_id": module_id, "prerequisites": []}
+
+    payload = {
+        "stage": "stages", "doc_id": "doc",
+        "nodes": [node("a", "Alpha", "module_001"), node("d", "Delta", "module_001"), node("c", "Gamma", "module_002")],
+        "sequence": ["a", "d", "c"],
+        "modules": [{"module_id": "module_001", "index": 0, "title": "Mục 1", "node_ids": ["a", "d"]},
+                    {"module_id": "module_002", "index": 1, "title": "Mục 2", "node_ids": ["c"]}],
+        "requires_edges": [{"source": "a", "target": "c", "edge_type": "requires"}],
+    }
+    graph = tmp_path / "graph.json"
+    graph.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+    assert main(["roadmap-target", "--graph", str(graph), "--concept", "gamma"]) == 0
+    output = json.loads(capsys.readouterr().out)
+    assert [[concept["name"] for concept in module["concepts"]] for module in output["modules"]] == [["Alpha"], ["Gamma"]]
+    assert output["targets"] == ["c"] and output["concept_count"] == 2
+    assert main(["roadmap-target", "--graph", str(graph), "--concept", "Omega"]) == 2
+    assert "không có khái niệm" in capsys.readouterr().err

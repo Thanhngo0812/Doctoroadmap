@@ -27,6 +27,7 @@ from doc2roadmap.application.use_cases.canonicalize import Canonicalize
 from doc2roadmap.domain.canonical import compare_nodes
 from doc2roadmap.application.use_cases.a4_gold import gold_items, write_gold_sheet, load_gold, evaluate_canonical
 from doc2roadmap.application.use_cases import a8_score
+from doc2roadmap.application.use_cases.build_roadmap import render_roadmap_html, target_roadmap
 from doc2roadmap.application.use_cases.a8_gold import (
     adjudication_rows,
     chapters_from_store,
@@ -91,6 +92,12 @@ def _parser() -> argparse.ArgumentParser:
                                help="JSON từ a8-gold-check; lặp lại cho người gán thứ hai")
     roadmap_score.add_argument("--gold-mode", choices=("union", "intersection"), default="union")
     roadmap_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
+    roadmap_target = commands.add_parser(
+        "roadmap-target", help="lộ trình tới một hoặc vài khái niệm đích; không gọi mô hình")
+    roadmap_target.add_argument("--graph", type=Path, required=True, help="graph.json ở stage stages")
+    roadmap_target.add_argument("--concept", action="append", required=True,
+                                help="tên, alias hoặc mã node; lặp lại để chọn nhiều đích")
+    roadmap_target.add_argument("--output", type=Path, help="ghi trang HTML của lộ trình tới mục tiêu")
     prereq_merge = commands.add_parser("a8-gold-merge",
                                        help="hội ý hai bộ nhãn: sinh file quyết, hoặc đọc ngược thành bộ vàng")
     prereq_merge.add_argument("--doc-id", required=True)
@@ -411,6 +418,26 @@ def main(argv: list[str] | None = None) -> int:
                                   encoding="utf-8")
                 report = {**report, "output": str(output)}
             _json({key: value for key, value in report.items() if key != "violations"})
+            return 0
+        elif args.command == "roadmap-target":
+            payload = json.loads(args.graph.read_text(encoding="utf-8"))
+            result = target_roadmap(payload, args.concept)
+            if args.output:
+                store = build_artifact_store()
+                output = _inside_artifacts(store, args.output)
+                output.parent.mkdir(parents=True, exist_ok=True)
+                kept = {concept["node_id"] for module in result["modules"] for concept in module["concepts"]}
+                view = {
+                    **payload,
+                    "modules": [module for module in payload["modules"] if set(module["node_ids"]) & kept],
+                    "requires_edges": [edge for edge in payload.get("requires_edges", [])
+                                       if edge["source"] in kept and edge["target"] in kept],
+                }
+                view["modules"] = [{**module, "node_ids": [node for node in module["node_ids"] if node in kept]}
+                                   for module in view["modules"]]
+                output.write_text(render_roadmap_html(view), encoding="utf-8", newline="\n")
+                result = {**result, "output": str(output)}
+            _json(result)
             return 0
         elif args.command == "a8-score":
             store = build_artifact_store()

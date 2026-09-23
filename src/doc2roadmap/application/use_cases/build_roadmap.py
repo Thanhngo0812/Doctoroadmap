@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import html
 import json
+import unicodedata
 
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.roadmap import reviewed_sessions
-from doc2roadmap.domain.sequence import DEFAULT_WEIGHTS, build_sequence_roadmap
+from doc2roadmap.domain.sequence import DEFAULT_WEIGHTS, build_sequence_roadmap, target_modules
 from doc2roadmap.domain.teaching import EXCLUDED_STATUSES, bypass_excluded
 
 _FAR = 10**9
@@ -42,6 +43,50 @@ def render_roadmap_html(payload):
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Doc2Roadmap review</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem}section{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}small{color:#666}code,pre{background:#f6f6f6;padding:.75rem;white-space:pre-wrap}</style></head>
 <body><h1>Learning roadmap</h1>""" + "".join(module_rows) + "".join(excluded_rows) + "<h2>Requires edges</h2><ul>" + "".join(edge_rows) + "</ul><h2>Flags</h2><pre>" + flags + "</pre></body></html>\n"
+
+
+def _norm(text):
+    return " ".join(unicodedata.normalize("NFC", str(text)).casefold().split())
+
+
+def target_roadmap(payload, concepts):
+    """Lộ trình tới mục tiêu (spec v2, W9): lọc module của một artifact lộ trình, giữ đích và mọi tổ tiên.
+
+    Khái niệm được chọn bằng mã node, tên hoặc alias; một tên khớp nhiều khái niệm thì báo lỗi thay vì đoán.
+    """
+    if "sequence" not in payload:
+        raise ValueError("artifact chưa phải lộ trình dãy học (ADR 0010); chạy lại A10")
+    nodes = {node["node_id"]: node for node in payload["nodes"]}
+    targets = []
+    for query in concepts:
+        hits = [query] if query in nodes else [
+            node_id for node_id, node in nodes.items()
+            if _norm(node.get("name", "")) == _norm(query)
+            or _norm(query) in {_norm(alias["name"] if isinstance(alias, dict) else alias)
+                                for alias in node.get("aliases", [])}
+        ]
+        if not hits:
+            raise ValueError(f"không có khái niệm {query!r} trên lộ trình")
+        if len(hits) > 1:
+            raise ValueError(f"{query!r} khớp nhiều khái niệm: {sorted(hits)}")
+        targets.append(hits[0])
+    modules = target_modules(payload["modules"],
+                             [*payload.get("requires_edges", []), *payload.get("bypassed_edges", [])], targets)
+    return {
+        "targets": targets,
+        "concept_count": sum(len(module["node_ids"]) for module in modules),
+        "modules": [{
+            "module_id": module["module_id"],
+            "index": module.get("index"),
+            "title": module.get("title"),
+            "concepts": [{
+                "node_id": node_id,
+                "name": nodes[node_id]["name"],
+                "prerequisites": [nodes[parent]["name"] for parent in nodes[node_id].get("prerequisites", [])
+                                  if parent in nodes],
+            } for node_id in module["node_ids"]],
+        } for module in modules],
+    }
 
 
 class BuildRoadmap:

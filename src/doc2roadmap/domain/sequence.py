@@ -190,3 +190,27 @@ def build_sequence_roadmap(nodes, edges, *, position, ancestry, section_titles, 
         "levels": {"chapter": chapter_level, "unit": unit_level},
         "longest_path": _longest_path(sequence, parents),
     }
+
+
+def target_modules(modules, edges, targets):
+    """Lộ trình tới mục tiêu (spec v2, W9): lọc module của lộ trình toàn cục, giữ đích và mọi tổ tiên theo đúng thứ tự.
+
+    Không chia module lại: người học vẫn định hướng trong cùng khung buổi học với lộ trình đầy đủ, chỉ thấy phần cần.
+    """
+    parents = {}
+    for edge in edges:
+        if edge.get("edge_type", "requires") == "requires":
+            parents.setdefault(edge["target"], set()).add(edge["source"])
+    keep, stack = set(targets), list(targets)
+    while stack:
+        node = stack.pop()
+        for parent in parents.get(node, ()):
+            if parent not in keep:
+                keep.add(parent)
+                stack.append(parent)
+    result = []
+    for module in modules:
+        members = [node for node in module["node_ids"] if node in keep]
+        if members:
+            result.append({**module, "node_ids": members})
+    return result

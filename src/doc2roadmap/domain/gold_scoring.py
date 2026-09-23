@@ -493,3 +493,36 @@ def blind_review_counts(items, answers):
             else:
                 bucket["agree_indirect"] += 1
     return counts
+
+
+def _median(values):
+    ordered = sorted(values)
+    if not ordered:
+        return None
+    middle = len(ordered) // 2
+    return ordered[middle] if len(ordered) % 2 else (ordered[middle - 1] + ordered[middle]) / 2
+
+
+def target_coverage(gold_edges, machine_edges, targets):
+    """Q7: với mỗi đích có tiên quyết vàng, tổ tiên của nó trong đồ thị máy mang theo bao nhiêu phần tổ tiên vàng.
+
+    Tính trên bao đóng bắc cầu của cả hai phía. Báo kèm cỡ trung vị tập tổ tiên máy để thấy lộ trình có phình không.
+    """
+    gold_ancestors, machine_ancestors = {}, {}
+    for source, target in transitive_closure(gold_edges):
+        gold_ancestors.setdefault(target, set()).add(source)
+    for source, target in transitive_closure(machine_edges):
+        machine_ancestors.setdefault(target, set()).add(source)
+    rows = []
+    for target in targets:
+        need = gold_ancestors.get(target, set())
+        if not need:
+            continue
+        have = machine_ancestors.get(target, set())
+        rows.append((len(need & have) / len(need), need <= have, len(have)))
+    return {
+        "targets": len(rows),
+        "complete": sum(1 for _, complete, _ in rows if complete),
+        "mean_coverage": sum(value for value, _, _ in rows) / len(rows) if rows else None,
+        "median_machine_ancestors": _median([size for _, _, size in rows]),
+    }

@@ -355,3 +355,17 @@ def test_blind_review_refuses_an_answer_outside_the_six_choices():
 
     with pytest.raises(ValueError, match="ngoài sáu lựa chọn"):
         blind_review_counts([{"item": 1, "category": "fp", "x": "a", "y": "b", "machine": ["a", "b"]}], {1: "co"})
+
+
+def test_target_coverage_counts_how_much_of_what_a_target_needs_the_machine_graph_brings_along():
+    from doc2roadmap.domain.gold_scoring import target_coverage
+
+    # Vàng: a → b → t và c → t. Máy có a → b → t nhưng thiếu c → t.
+    gold = {("a", "b"), ("b", "t"), ("c", "t")}
+    machine = {("a", "b"), ("b", "t"), ("x", "t")}
+    result = target_coverage(gold, machine, ["t", "b", "a"])
+    # t cần {a, b, c}, máy mang theo {a, b} → 2/3; b cần {a}, máy có → 1/1; a không cần gì nên không tính.
+    assert result["targets"] == 2
+    assert result["complete"] == 1
+    assert result["mean_coverage"] == pytest.approx((2 / 3 + 1) / 2)
+    assert result["median_machine_ancestors"] == pytest.approx((3 + 1) / 2)  # t: {a, b, x}; b: {a}

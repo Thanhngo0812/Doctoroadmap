@@ -115,3 +115,22 @@ def test_a_lone_concept_from_another_section_is_folded_into_a_neighbour_instead_
     modules = segment_modules(sequence, width=8, unit_of=unit_of)
     assert all(len(module) >= 3 for module in modules)
     assert ["b0"] not in modules
+
+
+# --- W9: lộ trình tới mục tiêu ---------------------------------------------------------------------------------------
+
+
+def test_a_target_path_keeps_exactly_the_target_and_its_ancestors_in_roadmap_order():
+    from doc2roadmap.domain.sequence import target_modules
+
+    edges = [edge("a", "c"), edge("b", "c"), edge("c", "e"), edge("d", "f")]
+    modules = [{"module_id": "module_001", "node_ids": ["a", "d", "b"]},
+               {"module_id": "module_002", "node_ids": ["c", "f", "e"]}]
+    assert target_modules(modules, edges, ["e"]) == [
+        {"module_id": "module_001", "node_ids": ["a", "b"]},
+        {"module_id": "module_002", "node_ids": ["c", "e"]},
+    ]
+    # Đích không có tiên quyết chỉ còn chính nó; module không còn khái niệm nào thì bỏ.
+    assert target_modules(modules, edges, ["d"]) == [{"module_id": "module_001", "node_ids": ["d"]}]
+    # Nhiều đích: hợp tổ tiên.
+    assert [m["node_ids"] for m in target_modules(modules, edges, ["c", "f"])] == [["a", "d", "b"], ["c", "f"]]
