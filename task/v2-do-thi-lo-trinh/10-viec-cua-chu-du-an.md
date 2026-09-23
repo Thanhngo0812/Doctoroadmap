@@ -93,7 +93,8 @@ Chọn: *Đúng nơi dạy* / *Sai — chỉ nhắc qua* / *Sai — nói về ng
 
 ## T5 — Duyệt gộp khái niệm
 
-Sau vé 05: danh sách các gộp chạm khái niệm của bộ vàng (dự kiến 10–20 dòng), mỗi dòng có hai câu neo. Chọn *Đồng ý gộp* /
+**Sẵn sàng (2026-09-24):** `artifacts/a8-gold/duyet-danh-tinh.xlsx` — 10 cặp (4 chạm vàng, bắt buộc; 6 còn lại nên duyệt),
+mỗi dòng có hai câu neo và đề xuất của hệ thống. Chọn *Đồng ý gộp* /
 *Không gộp* / *Là hai nghĩa khác nhau*.
 
 ## T11 — Chấm mù vòng hai

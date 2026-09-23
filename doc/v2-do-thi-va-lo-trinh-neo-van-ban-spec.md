@@ -169,6 +169,10 @@ chung chung (`Hệ véc tơ …`); hai khái niệm cùng câu neo; một tên c
 bản đồ áp **trước** A9 khi dời lên thượng nguồn, còn ở hạ nguồn thì chạy lại hàm gỡ chu trình của A9 (thuần, không gọi mô
 hình) sau khi áp. Bộ chấm áp cùng bản đồ lên bộ vàng; tệp vàng không bị sửa. Mọi gộp chạm khái niệm của bộ vàng phải được
 chủ dự án duyệt.
+Chỉ gộp nhóm mà **mọi cặp** đều được phán `same` — phán theo cặp không bắc cầu được (a≈b, b≈c chưa cho a≈c); nhóm
+thiếu phán là nhóm mở, tính vào Q2. Đại diện là khái niệm được dạy sớm nhất. Đo trên lượt 2 của vé 04: "cùng câu neo"
+chiếm 57/60 ứng viên doc-1, và mọi cặp đọc tay đầu tiên đều là khái niệm khác nhau định nghĩa chung một câu
+(bốn phép biến đổi sơ cấp; tiên nghiệm / hợp lý / hậu nghiệm), nên phán là bắt buộc.
 
 ### Gói D — recall có mục tiêu
 

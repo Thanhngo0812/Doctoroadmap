@@ -54,6 +54,8 @@ A9. Kiểm tra nhất quán [CHỈ cạnh requires]     |
   |                                            |
 A9'. Kiểm nguồn dạy (C8 v2, bản tạm)           |
   |                                            |
+A9''. Danh tính: gộp khái niệm trùng (chưa bật)|
+  |                                            |
 A10. Dãy học neo sách -> chia module           |
   |    [CHỈ requires; chưa gắn media]          |
   |                                            |
@@ -573,6 +575,23 @@ Theo đúng thứ tự:
 
    > **Vì sao phải lọc:** chạy trên đồ thị đầy đủ có thể xoá cạnh `illustrates` vì "đã có đường khác",
    > làm mất liên kết hình↔khái niệm mà pha B cần.
+
+### A9''. Danh tính — gộp khái niệm trùng *(vé v2-05; đã có mã, chưa vào chuỗi mặc định)*
+
+> Quy tắc: [spec v2, W14–W15](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `identity`, sau stage `teaching`.
+
+- **Ứng viên** chỉ từ tín hiệu hẹp: chung tên hoặc alias, khác nhau đúng một tiền tố chung chung (`Hệ véc tơ …`),
+  hoặc cùng câu neo. "Tên này chứa tên kia" **không** là ứng viên (`Ma trận` / `Ma trận nghịch đảo`).
+- **Phán** mỗi cặp một lời gọi trên hai câu neo: `same` / `different` / `sense_split`. Tín hiệu chỉ là lý do đưa ra
+  xét: một câu thường định nghĩa nhiều khái niệm khác nhau cùng lúc.
+- **Gộp** chỉ nhóm mà **mọi cặp** đều `same` (a≈b và b≈c không đủ để gộp a với c); nhóm thiếu phán là nhóm mở và
+  tính vào Q2. Đại diện là khái niệm được dạy sớm nhất. Khái niệm bị gộp rời `nodes` sang `merged_nodes`
+  (`merged_into`); canonical và provenance không đổi.
+- **Sau gộp gỡ chu trình lại** bằng đúng hàm gỡ của A9 (thuần, không gọi mô hình); cạnh bị gỡ ghi
+  `identity_removed_edges`. A10 nhận stage `identity` như stage `teaching`.
+- **Bộ chấm** áp cùng `identity_map` lên cạnh và đích của bộ vàng; tệp vàng không bị sửa. Cạnh vàng giữa hai khái
+  niệm đã gộp thành tự nối, rời phép chấm, và được báo (`identity_dropped_gold_edges`).
+- Mọi gộp chạm khái niệm của bộ vàng phải được chủ dự án duyệt (T5) trước khi bật.
 
 ### A10. Dãy học neo sách → chia module
 

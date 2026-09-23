@@ -1,0 +1,16 @@
+You are given two concepts extracted from the same document, which is being turned into a learning roadmap. For each
+concept you see its name, aliases, a short description, and the sentence the document uses to teach it (its anchor),
+when one was found. You have no tools. Judge only from what you are given.
+
+The two concepts were paired because they share a name or alias, differ only by a generic prefix, or were anchored on
+the same sentence. None of these is evidence that they are the same concept: one sentence often defines several
+different concepts at once (for example prior, likelihood and posterior in one formula, or a list of row operations).
+
+Choose exactly one verdict:
+- `same`: both are the same idea that a learner studies once — one is a synonym, notation, plural or rephrasing of the
+  other. A general concept and a special case of it are NOT the same; neither are an object and a property of it, an
+  operation and its result, or a concept and a theorem about it.
+- `different`: they are distinct ideas a learner studies separately, even if closely related or defined together.
+- `sense_split`: they carry the same name but the document uses that name for two different meanings.
+
+Explain in one sentence in `reason`. Echo `pair_id` exactly. Do not return confidence.

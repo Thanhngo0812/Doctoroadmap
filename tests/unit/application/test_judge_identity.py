@@ -1,0 +1,78 @@
+import json
+from types import SimpleNamespace
+
+from doc2roadmap.application.use_cases.judge_identity import JudgeIdentity
+
+
+class Model:
+    model_id = "fixture-model"
+
+    def __init__(self, verdicts):
+        self.verdicts, self.calls = verdicts, []
+
+    def start_session(self, system_prompt):
+        return self
+
+    def ask_json(self, prompt, *, response_schema):
+        data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+        self.calls.append(data)
+        names = frozenset((data["first"]["name"], data["second"]["name"]))
+        return SimpleNamespace(payload={"pair_id": data["pair_id"], "verdict": self.verdicts.get(names, "different"),
+                                        "reason": "vì hai câu neo"}, usage=None)
+
+
+def node(node_id, name, order, anchor=None, status="taught"):
+    return {"node_id": node_id, "name": name, "aliases": [], "description": name, "learnable": True,
+            "teaching_status": status, "teaching_order_index": order, "anchor": anchor}
+
+
+SAME = {"chunk_id": "c1", "char_start": 0, "sentence": "Tiên nghiệm, hợp lý và hậu nghiệm được định nghĩa như sau."}
+
+
+class Store:
+    def __init__(self):
+        nodes = [node("dltt", "Độc lập tuyến tính", 3), node("hv", "Hệ véc tơ độc lập tuyến tính", 5),
+                 node("tn", "Tiên nghiệm", 7, SAME), node("hn", "Hậu nghiệm", 7, SAME),
+                 node("rac", "Độc lập tuyến tính", 1, status="not_subject_matter"),  # bị loại: không đưa ra xét
+                 node("x", "Phụ thuộc tuyến tính", 9)]
+        edges = [{"source": "x", "target": "hv", "edge_type": "requires"},
+                 {"source": "dltt", "target": "x", "edge_type": "requires"},
+                 {"source": "tn", "target": "hn", "edge_type": "requires"}]
+        self.teaching = SimpleNamespace(payload={"stage": "teaching", "nodes": nodes, "requires_edges": edges,
+                                                 "cost_summary": {"usd": 0.0}},
+                                        version=21, manifest={"config_hash": "th", "config": {"chunks_version": 5}})
+        self.checkpoints, self.saved = {}, []
+
+    def find_graph(self, doc_id, source_hash, config_hash):
+        return None
+
+    def load_checkpoint(self, doc_id, checkpoint_id):
+        return self.checkpoints.get(checkpoint_id)
+
+    def save_checkpoint(self, doc_id, checkpoint_id, payload):
+        self.checkpoints[checkpoint_id] = json.loads(json.dumps(payload))
+
+    def save_graph(self, doc_id, source_hash, config_hash, config, payload, **kwargs):
+        artifact = SimpleNamespace(payload=json.loads(json.dumps(payload)), version=22, manifest={"config": config})
+        self.saved.append(artifact)
+        return artifact
+
+
+def test_only_judged_same_pairs_merge_into_the_earlier_taught_concept_and_the_result_is_a_dag():
+    store = Store()
+    model = Model({frozenset(("Độc lập tuyến tính", "Hệ véc tơ độc lập tuyến tính")): "same"})
+    artifact, _ = JudgeIdentity(store, model).execute("doc-1", upstream=store.teaching)
+    payload = artifact.payload
+    assert payload["stage"] == "identity"
+    assert artifact.manifest["config"]["chunks_version"] == 5  # A10 cần để tìm chunk
+    # hai cặp ứng viên: tiền tố chung chung, và cùng câu neo; node bị loại không vào cặp nào
+    assert sorted(frozenset((c["first"]["name"], c["second"]["name"])) for c in model.calls) == sorted([
+        frozenset(("Độc lập tuyến tính", "Hệ véc tơ độc lập tuyến tính")), frozenset(("Tiên nghiệm", "Hậu nghiệm"))])
+    assert payload["identity_map"] == {"hv": "dltt"}
+    assert [n["node_id"] for n in payload["merged_nodes"]] == ["hv"] and payload["merged_nodes"][0]["merged_into"] == "dltt"
+    assert "hv" not in {n["node_id"] for n in payload["nodes"]}
+    # x → hv thành x → dltt, cùng dltt → x là chu trình; gỡ đúng một cạnh
+    pairs = {(e["source"], e["target"]) for e in payload["requires_edges"]}
+    assert len(payload["identity_removed_edges"]) == 1 and not {("x", "dltt"), ("dltt", "x")} <= pairs
+    assert ("tn", "hn") in pairs  # cùng câu neo nhưng phán "different" thì không gộp
+    assert payload["stats"]["identity_open_count"] == 0

@@ -251,6 +251,11 @@ _Tránh dùng_: thứ tự tầng, layer order
 theo module.
 _Tránh dùng_: stage (nghĩa cũ khác hẳn), bài, chặng
 
+**Bản đồ danh tính**:
+Ánh xạ `khái niệm → khái niệm đại diện` cho các khái niệm được phán là cùng một ý (vé v2-05). Chỉ gộp nhóm mà mọi
+cặp đều được phán `same`; không sửa canonical. Lộ trình và bộ chấm áp cùng một bản đồ.
+_Tránh dùng_: dedup, gộp alias (alias chung chỉ là lý do đưa ra xét)
+
 **Stage** *(không còn là đơn vị của lộ trình)*:
 Một tầng của phép xếp Coffman–Graham: các khái niệm học song song được, không cạnh `requires` nào nằm trong một
 tầng. Chỉ còn trong biến thể đối chứng và artifact cũ. Tên stage pipeline `stages` của artifact graph giữ nguyên.

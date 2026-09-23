@@ -329,3 +329,21 @@ def test_the_order_report_carries_target_coverage_q7(tmp_path):
     coverage = score_roadmap_order(write_graph(tmp_path, payload), [gold])["target_coverage"]
     assert coverage["targets"] == 2 and coverage["complete"] == 1
     assert coverage["mean_coverage"] == pytest.approx((1 + 0) / 2)
+
+
+def test_the_order_scorer_applies_the_identity_map_to_gold_without_touching_the_gold_file(tmp_path):
+    # n_khoang gộp vào n_uocluong: cạnh vàng n_uocluong → n_khoang thành tự nối và rời phép chấm; n_mau → n_khoang
+    # thành n_mau → n_uocluong. Khái niệm bị gộp vẫn thuộc danh tính của đồ thị, không phải "không có trong đồ thị".
+    gold = write_gold(tmp_path, {("n_mau", "n_khoang"), ("n_uocluong", "n_khoang")})
+    before = gold.read_bytes()
+    payload = staged_payload([["n_mau", "n_uocluong"]])
+    payload.pop("stages")
+    payload["nodes"] = [value for value in payload["nodes"] if value["node_id"] != "n_khoang"]
+    payload["merged_nodes"] = [{**next(v for v in NODES if v["node_id"] == "n_khoang"), "merged_into": "n_uocluong"}]
+    payload["identity_map"] = {"n_khoang": "n_uocluong"}
+    payload["sequence"] = ["n_uocluong", "n_mau"]  # n_mau → n_uocluong bị đặt ngược
+    payload["modules"] = [{"module_id": "module_001", "node_ids": payload["sequence"]}]
+    report = score_roadmap_order(write_graph(tmp_path, payload), [gold])
+    assert report["gold_edge_count"] == 1 and report["identity_dropped_gold_edges"] == 1
+    assert report["gold_order"]["violated"] == 1 and report["gold_order"]["out_of_scope"] == 0
+    assert gold.read_bytes() == before

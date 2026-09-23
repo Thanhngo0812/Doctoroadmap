@@ -83,3 +83,7 @@ viên làm mô hình dễ tìm được một câu "dạy" cho node minh hoạ. 
 PDF toán một "câu neo" có thể là cả khối nhiều dòng (ví dụ doc-1 `Nhân một hàng hoặc một cột với số k`: khối gồm "Cho ma
 trận / Tính det(A^2010) / … Nếu cộng nhiều hàng …"). Nếu T4 cho tỉ lệ sai cao ở các dòng loại này, sửa tách câu trước khi
 chạy N1.
+
+**Quyết định chủ dự án (2026-09-24):** loại `det(Y)` là **đúng** — câu bài tập ("Tính det(Y), biết:") không phải khái
+niệm để dạy. Tiêu chí 1 của lượt 2 vẫn ghi là đã kích hoạt như lúc chạy; quyết định này là phán xét của chủ dự án về
+node đó, không phải sửa tiêu chí. Nhãn N1 (T3) có sẵn lựa chọn *Loại — chi tiết của một ví dụ* cho loại node này.

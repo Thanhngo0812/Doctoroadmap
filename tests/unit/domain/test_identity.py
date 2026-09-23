@@ -33,3 +33,44 @@ def test_merging_redirects_edges_drops_self_loops_and_reports_cycles_it_creates(
     merged, cycles = apply_identity_map(edges, {"a2": "a"})
     assert {(e["source"], e["target"]) for e in merged} == {("a", "b"), ("b", "a"), ("a", "c")}
     assert cycles == [["a", "b"]]
+
+
+def test_only_verified_cliques_merge_and_a_chain_of_same_verdicts_is_not_enough():
+    from doc2roadmap.domain.identity import identity_map
+
+    position = {"a": 1, "b": 2, "c": 3, "d": 4, "e": 5}
+    verdicts = [
+        {"left": "a", "right": "b", "verdict": "same"},
+        {"left": "b", "right": "c", "verdict": "same"},  # a–c chưa ai phán → nhóm {a,b,c} không được gộp
+        {"left": "d", "right": "e", "verdict": "same"},
+        {"left": "a", "right": "d", "verdict": "different"},
+    ]
+    mapping, open_groups = identity_map(verdicts, position)
+    assert mapping == {"e": "d"}  # đại diện là khái niệm được dạy sớm hơn
+    assert open_groups == [["a", "b", "c"]]
+    verdicts.append({"left": "a", "right": "c", "verdict": "same"})
+    mapping, open_groups = identity_map(verdicts, position)
+    assert mapping == {"b": "a", "c": "a", "e": "d"} and open_groups == []
+
+
+def test_merging_then_breaking_cycles_leaves_a_dag():
+    from doc2roadmap.domain.identity import merge_and_break_cycles
+
+    edges = [edge("a", "b"), edge("b", "a2"), edge("a2", "c")]
+    merged, removed = merge_and_break_cycles(edges, {"a2": "a"})
+    pairs = {(e["source"], e["target"]) for e in merged}
+    assert len(removed) == 1 and {(e["source"], e["target"]) for e in removed} <= {("a", "b"), ("b", "a")}
+    assert ("a", "c") in pairs and not ({("a", "b"), ("b", "a")} <= pairs)
+
+
+def test_the_judge_contract():
+    import pytest
+
+    from doc2roadmap.domain.identity import validate_identity_response
+
+    validate_identity_response({"pair_id": "p1", "verdict": "same", "reason": "cùng định nghĩa"}, pair_id="p1")
+    for bad, match in (({"pair_id": "p2", "verdict": "same", "reason": "x"}, "pair_id"),
+                       ({"pair_id": "p1", "verdict": "maybe", "reason": "x"}, "verdict"),
+                       ({"pair_id": "p1", "verdict": "same", "reason": " "}, "reason")):
+        with pytest.raises(ValueError, match=match):
+            validate_identity_response(bad, pair_id="p1")

@@ -348,7 +348,9 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
         caveat = "τ dùng một văn bản tham chiếu duy nhất; có thể có nhiều thứ tự chấp nhận được"
     nodes = payload["nodes"]
     # Node bị bước kiểm nguồn dạy loại khỏi stage vẫn thuộc danh tính của đồ thị: vàng cần nó thì là lỗi lộ trình.
-    names = {node["node_id"]: node.get("name") for node in [*nodes, *payload.get("excluded_nodes", [])]}
+    # Khái niệm bị gộp (vé v2-05) cũng vậy: bản đồ danh tính chuyển nó sang đại diện.
+    names = {node["node_id"]: node.get("name")
+             for node in [*nodes, *payload.get("excluded_nodes", []), *payload.get("merged_nodes", [])]}
     # τ so với nơi khái niệm được **dạy** khi đã biết; `first_order_index` có thể bị đề cương đầu sách kéo lệch.
     order = presentation_agreement(stages, {
         node["node_id"]: node["teaching_order_index"] if node.get("teaching_order_index") is not None
@@ -376,13 +378,19 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
     if unknown:
         raise ValueError(f"{len(unknown)} khái niệm của bộ vàng không có trong đồ thị, ví dụ {unknown[0]}; "
                          "bộ vàng này không thuộc danh tính của artifact đang chấm")
+    # Áp cùng bản đồ danh tính của đồ thị lên vàng (spec v2, W15); tệp vàng không bị sửa. Cạnh vàng giữa hai khái niệm
+    # đã gộp thành tự nối và rời phép chấm — báo số lượng để không lặng lẽ thu nhỏ mẫu số.
+    identity = payload.get("identity_map", {})
+    mapped = {(identity.get(a, a), identity.get(b, b)) for a, b in edges}
+    report["identity_dropped_gold_edges"] = sum(1 for a, b in mapped if a == b)
+    edges = {(a, b) for a, b in mapped if a != b}
     violations = gold_order_violations(stages, edges, names=names)
     report["gold_mode"] = mode
     report["gold_edge_count"] = len(edges)
     report["gold_order"] = {key: value for key, value in violations.items() if key != "rows"}
     machine = {(edge["source"], edge["target"])
                for edge in [*payload.get("requires_edges", []), *payload.get("bypassed_edges", [])]}
-    targets = sorted({target for gold in golds for target in gold["targets"]})
+    targets = sorted({identity.get(target, target) for gold in golds for target in gold["targets"]})
     report["target_coverage"] = target_coverage(edges, machine, targets)
     report["violations"] = violations["rows"]
     return report
