@@ -51,3 +51,32 @@ Chủ dự án xác nhận 2026-09-24: hai người thật chấm riêng. Không
 - **Hệ quả cho vé 06:** thêm cạnh mới có rủi ro chính là thừa ràng buộc, không phải ngược chiều. Bộ sinh ứng viên cần ưu
   tiên độ chính xác; cổng 2 (Q4 trên cạnh mới, chấm mù vòng hai) giữ nguyên. Luật C1 cho `doc-2` không đổi: chỉ xét khi
   cổng 1–3 đạt mà Q5 vẫn dưới 85%.
+
+## Chẩn đoán offline trước khi xây (2026-09-24, 0 USD)
+
+Trên đồ thị validated hiện hành (doc-1 v9, doc-2 v6), cạnh vàng không có đường đi trong đồ thị máy: doc-1 8/40, doc-2 27/61.
+
+**Vì sao thiếu** (S = hai đầu cùng một phiên pass chính; A = cặp nghi vấn đã hỏi ở pass phụ; P = nghi vấn chưa hỏi):
+- doc-1: 4 SA (đã hỏi, bị trả "không"), 4 chưa từng là ứng viên. doc-1 đã hỏi hết cặp nghi vấn (C1).
+- doc-2: 10 cùng phiên chính (8 trong đó là nghi vấn chưa hỏi), 3 nghi vấn khác phiên chưa hỏi, 14 chưa từng là ứng viên.
+
+**Trần cấu trúc:** pass chính loại mọi cạnh mà chunk căn cứ không nhắc cả hai đầu (`prerequisites.py:162`,
+`evidence_missing_both_endpoints`; spec A6–A8 dòng 377), và cặp nghi vấn chỉ sinh từ đồng xuất hiện. Cạnh vàng thiếu
+**không có chunk nào nhắc cả hai đầu**: doc-1 4/8, doc-2 16/27 — với luật hiện tại, không bộ sinh ứng viên hay pass nào tạo
+được chúng.
+
+**Các bộ sinh ứng viên đã đo (không gọi mô hình):**
+
+| bộ sinh | doc-1 | doc-2 |
+|---|---|---|
+| hỏi hết nghi vấn chưa hỏi (C1) | 0 cặp (đã hỏi hết) | 9.419 cặp ≈ 7,1 USD, bắt tối đa 11/27 → Q5 ≤ 74% |
+| chỉ nghi vấn cùng phiên chính | 0 | 8.131 cặp ≈ 6,2 USD, tối đa 8/27 |
+| tên A trong mô tả / câu neo của B (W16 bước 1) | 949 cặp, 6/8 | 2.732 cặp, 4/27 |
+| tên A trong chunk định nghĩa / chunk dạy của B | 1.206 cặp, 2/8; 0,2% là vàng | 3.265 cặp, 2/27; 0,2% là vàng |
+
+**Giả thuyết đã bác:** "vàng nhiều cạnh yếu kéo Q5 xuống" — cạnh `strong` còn được phủ kém hơn (doc-1 9/14, doc-2 7/14).
+"Vàng nhiễu do người gán" — ở doc-2, cạnh cả hai người gán độc lập cùng chọn cũng chỉ 27/46 = 59% (doc-1: 20/23 = 87%).
+
+**Hệ quả:** W16 bước (1)–(3) không đưa doc-2 tới Q5 85%; C1 có trần 74% với 7 USD. Muốn vượt phải nới luật "chunk căn
+cứ nhắc cả hai đầu" cho một loại cạnh mới (định nghĩa của B dùng A một cách ngầm) — thay đổi hợp đồng chống bịa của A8,
+cần chủ dự án quyết trước khi xây. Chờ quyết định.
