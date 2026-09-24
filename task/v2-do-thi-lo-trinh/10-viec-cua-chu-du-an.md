@@ -39,7 +39,8 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 | T4 | **xong** — phán quyết người, AI hỗ trợ ghi; không có giờ làm thật. Q9 44/48 |
 | T5 | **xong** — như T4. 4/4 gộp chạm vàng được duyệt; `Trace` "Không chắc" → giữ tách |
 | T3 | chờ N1 |
-| T6, T7 | chưa nhận tệp |
+| T6 | chưa nhận tệp |
+| T7 | tệp mẫu `liet-ke-mu.md` sẵn sàng; chưa nhận kết quả |
 | T8 | **sẵn sàng**: `doc-4-chuong-8-A1.xlsx` / `-A2.xlsx` — Chương VIII, 47 khái niệm đích, 376 dòng; hai người gán riêng rồi hội ý |
 | T10, T11 | chưa tới lượt |
 
@@ -97,6 +98,10 @@ Sáu phần, bốc ngẫu nhiên với seed cố định (số trang là trang c
 Với mỗi phần: đọc các trang đó, rồi viết danh sách **khái niệm mà người học phải nắm được từ chính các trang này** — mỗi
 dòng một tên, theo cách tài liệu gọi. Không liệt kê khái niệm chỉ được nhắc qua. Không mở danh sách khái niệm của máy.
 Ghi vào một tệp văn bản `artifacts/a8-gold/liet-ke-mu.md`, mỗi phần một tiêu đề. Nên do người thứ hai làm.
+
+**Sẵn sàng (2026-09-24):** tệp mẫu `artifacts/a8-gold/liet-ke-mu.md` đã có sáu tiêu đề và chỗ ghi giờ. Chấm bằng
+`scripts/liet-ke-mu/cham_q3.py`: khớp đúng tên/alias thì tính tự động; còn lại script sinh `liet-ke-mu-doi-chieu.xlsx` với
+ba khái niệm máy gần nhất, người điền cột xác nhận (tên khái niệm máy, hoặc «Không có») rồi chạy lại để ra Q3.
 
 ## T6 — Chấm độ mạch lạc module
 
