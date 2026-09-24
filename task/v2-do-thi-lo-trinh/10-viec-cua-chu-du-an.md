@@ -30,6 +30,22 @@ Không phải việc cho agent. Vé này tồn tại để các cạnh chặn t�
 
 Ba việc đầu làm được ngay và không phụ thuộc gì.
 
+### Trạng thái (2026-09-24)
+
+| | trạng thái |
+|---|---|
+| T1 | **xong** — hai người thật, riêng (chủ dự án xác nhận); không ghi giờ. Kết quả ở vé 06 |
+| T2 | **N2 xong**: `doc-4.pdf` (giáo trình Triết học Mác–Lênin, 214 trang); chương gán vàng đề xuất: Chương VIII. **N1 còn thiếu** — tiêu chí chi tiết ở mục T2 |
+| T4 | **xong** — phán quyết người, AI hỗ trợ ghi; không có giờ làm thật. Q9 44/48 |
+| T5 | **xong** — như T4. 4/4 gộp chạm vàng được duyệt; `Trace` "Không chắc" → giữ tách |
+| T3 | chờ N1 |
+| T6, T7 | chưa nhận tệp |
+| T8 | chờ tôi sinh bảng gán cho chương N2 (sau khi nhập doc-4) |
+| T10, T11 | chưa tới lượt |
+
+Luật ghi giờ: bảng nhận ngày 2026-09-24 có mốc giờ là của AI hỗ trợ ghi, không phải của người. Từ nay xin ghi giờ người
+bắt đầu / xong ở ô ghi chú dòng đầu, tách khỏi mọi mốc giờ do công cụ sinh.
+
 ## T1 — Chấm mù cạnh dư
 
 **Vì sao:** precision so với bộ vàng không phân biệt được "máy sai" với "vàng không ghi". Chỉ người đọc mù mới trả lời
@@ -47,6 +63,17 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 - **N1 — để kiểm lần đầu gói neo định nghĩa.** Một bài giảng dạng slide, **có** trang hành chính (điểm số, bài tập, giới
   thiệu giảng viên) **và** có ví dụ dùng bảng dữ liệu hoặc hình có nhãn. 30–80 trang; tiếng Việt hoặc tiếng Anh; khác các
   tài liệu đang có. Đây là chỗ C8 từng bỏ lọt rác, nên tài liệu càng "bẩn" càng tốt cho phép thử.
+  Danh sách kiểm (bổ sung 2026-09-24, sau khi doc-4 được xếp vào N2):
+  - **Dạng:** PDF xuất từ slide bài giảng đại học (PowerPoint / Beamer), không phải giáo trình văn xuôi.
+  - **Có trang "rác" thật:** giới thiệu môn học / đề cương, thang điểm hoặc cách đánh giá, lịch học, thông tin giảng viên,
+    bài tập về nhà. Ít nhất 3 trang loại này.
+  - **Có ví dụ cụ thể:** bảng dữ liệu, hình có nhãn (sơ đồ, biểu đồ), ví dụ tính toán với tên biến / giá trị riêng.
+  - **Môn khác các tài liệu đã có:** không phải đại số tuyến tính, học máy nhập môn, Naive Bayes, xác suất thống kê,
+    triết học, báo cáo dự án phần mềm. Ví dụ hợp: Cơ sở dữ liệu, Mạng máy tính, Cấu trúc dữ liệu và giải thuật, Kinh tế
+    vi mô, Hệ điều hành — buổi 1–3 của một môn (thường có sẵn trang giới thiệu môn).
+  - **Cỡ:** 30–80 trang slide, 40–80 khái niệm.
+  - **Có chữ thật trong PDF** (bôi đen chọn được chữ), không phải ảnh chụp.
+  - Nếu gộp nhiều tệp slide thành một PDF thì giữ nguyên thứ tự buổi học.
 - **N2 — tập giữ lại.** Một chương giáo trình hoặc bộ slide khác môn và khác nguồn với N1, khoảng 30–60 khái niệm.
 - Gửi tôi đường dẫn hai tệp PDF. Tôi nhập bằng `ingest` và chạy tới bảng khái niệm; chi phí A3–A4 ước ~1 USD mỗi tài liệu,
   tôi dán số thật. **Đừng đọc kỹ N2 trước T8** để lúc gán vàng vẫn là lần đọc đầu.
