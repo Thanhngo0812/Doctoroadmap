@@ -87,3 +87,16 @@ chạy N1.
 **Quyết định chủ dự án (2026-09-24):** loại `det(Y)` là **đúng** — câu bài tập ("Tính det(Y), biết:") không phải khái
 niệm để dạy. Tiêu chí 1 của lượt 2 vẫn ghi là đã kích hoạt như lúc chạy; quyết định này là phán xét của chủ dự án về
 node đó, không phải sửa tiêu chí. Nhãn N1 (T3) có sẵn lựa chọn *Loại — chi tiết của một ví dụ* cho loại node này.
+
+### T4 — kết quả nhận 2026-09-24 (`scripts/cham-neo/cham_bang.py`)
+
+**Nguồn nhãn: AI, không phải người.** Ô ghi chú dòng 1 ghi "Lượt phân tích AI: bắt đầu 2026-09-24 00:03:05 UTC; kết thúc
+00:14:56 UTC". Cổng 1 (Q9) định nghĩa là *kiểm tay*, nên kết quả dưới đây **không dùng làm cổng**; ghi làm bằng chứng
+phát triển cho tới khi chủ dự án xác nhận ai kiểm.
+
+- Q9 theo nhãn AI: đúng nơi dạy 44/48 = 92% (Wilson 95% 80%–97%), không chắc 2. Cận dưới 80% < 90%: ngay cả khi coi là
+  nhãn người, 48 dòng chưa đủ để khẳng định ≥ 90%.
+- Theo tài liệu: doc-1 12/12, doc-2 11/12, doc-3 6/6, nhap-mon-ml 7/7, naive-bayes 5/6, **baocao-canhan 3/5**.
+- Câu neo nhiều dòng 26/28 so một dòng 18/20 — **điểm yếu tách câu tôi ghi trước không thấy trong dữ liệu này**.
+- Bốn dòng sai đều là "chỉ nhắc qua": `Cauchy sequence` (dùng như kiến thức sẵn có), `Dữ liệu liên tục`,
+  `Pessimistic Locking`, `Concurrency` (báo cáo kể việc đã làm, không dạy).

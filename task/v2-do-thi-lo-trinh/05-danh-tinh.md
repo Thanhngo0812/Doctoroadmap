@@ -67,3 +67,13 @@ của toán tử, mà sách định nghĩa vết toán tử riêng; chờ T5.
 
 Đọc: bước gộp nhỏ và bảo thủ (8/108 cặp); nó không phải đòn bẩy của Q6/Q7. Giá trị của nó là đồ thị không còn hai nút cho
 một ý (doc-1 trước đây học `Độc lập tuyến tính` và `Hệ véc tơ độc lập tuyến tính` như hai bài). Chưa nối vào composition.
+
+### T5 — kết quả nhận 2026-09-24
+
+**Nguồn nhãn: AI** (cùng phiên 00:03–00:14 UTC với T4; sheet Hướng dẫn ghi "thời gian … là thời gian của lượt phân tích
+AI"). Cổng 2 đòi *chữ duyệt của chủ dự án*, nên **chưa tính là đạt**.
+
+- 8 gộp: đồng ý 7, **không chắc 1** (`Trace → Trace of a square matrix`: "nếu là vết toán tử thì giữ tách") — trùng với
+  cặp tôi đã nghi.
+- 2 sense_split: cả hai đồng ý "hai nghĩa khác nhau"; kèm đề nghị đặt tên rõ (`Zero vector` / `Zero linear map`) và gắn lại
+  câu neo của `Định lý 6`.

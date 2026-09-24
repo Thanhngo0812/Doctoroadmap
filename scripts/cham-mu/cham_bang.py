@@ -46,7 +46,8 @@ def main(doc, paths):
               f"không cần thứ tự {rate(fp['none'], judged_fp)} | không chắc {fp['unsure']}, bỏ trống {fp['unanswered']}")
         print(f"  cạnh đúng lấy mẫu ({key['counts']['tp_sampled']}): người gán xác nhận lại {rate(tp['agree_direct'] + tp['agree_indirect'], judged_tp)} "
               f"— độ tin của chính lần chấm này")
-        print(f"  cặp ngẫu nhiên ({key['counts']['random']}): thấy có thứ tự {rate(rnd['ordered'], judged_rnd)} — mức vàng bỏ sót nền")
+        print(f"  cặp ngẫu nhiên ({key['counts']['random']}): thấy có thứ tự {rate(rnd['ordered'], judged_rnd)} — gồm cả cặp đã nằm trong bao đóng vàng; "
+              f"số vàng bỏ sót thật xem phan_tich_hai_nguoi.py")
         predicted = key["counts"]["predicted_in_scope"]
         tp_total = key["counts"]["tp_total"]
         if judged_fp:
