@@ -101,3 +101,32 @@ identity đó (doc-1 v27, doc-2 v21). Q5 = tỉ lệ cạnh vàng (sau bản đ�
   nhiễu U1), Q7; độ dài lộ trình tới đích (T1 cho thấy cạnh thừa làm lộ trình dài ra) — trung bình số khái niệm tổ tiên
   của các đích vàng trước và sau.
 - Chi phí dự kiến: doc-1 ≈ 225 lời gọi, doc-2 ≈ 438, tổng < 1 USD.
+
+### Lượt 1 — kết quả, 0,683 USD (`scripts/phan-tich-v2/chay_canh_ngam.py`)
+
+| | implicit → stages | đích hỏi | đề xuất | thêm | gỡ do chu trình | đích hỏng | Q5 trước → sau | tổ tiên TB của đích vàng |
+|---|---|---|---|---|---|---|---|---|
+| doc-1 | v28 → v29 | 217 | 188 | 165 | 23 | 2 | 32/39 = 82% → 36/39 = 92% | 46,6 → 68,2 |
+| doc-2 | v22 → v23 | 426 | 405 | 389 | 16 | 9 | 34/61 = 56% → 47/61 = 77% | 20,9 → 32,5 |
+
+Bất biến: 0 chu trình, 0 câu trích sai — đạt. Cổng 1 (Q5 tăng cả hai chương) — **đạt theo chữ**; 18,6 và 27,8 cạnh vàng
+mới / USD so C1 1,8. Cổng 3 (0 cạnh vàng mất đường) — đạt. Cổng 2 (T11) — chưa chấm. Q6 2,6% / 9,8%, Q7 98% / 68%.
+
+**Đối chứng (thêm sau khi thấy số, 0 USD; không đổi cổng, nhưng đổi cách đọc cổng 1).** Cùng số cạnh mỗi đích, cùng danh
+sách 30 ứng viên, cùng luật bỏ cạnh khép chu trình (tham lam, áp như nhau cho mọi bên):
+
+| | gốc | mô hình | ngẫu nhiên (10 seed) | n gần nhất (không mô hình) |
+|---|---|---|---|---|
+| doc-1 | 32 | 36 | 34,3 (33–36) | **36** |
+| doc-2 | 34 | 47 | 38,4 (36–42) | **47** |
+
+- **Mức tăng Q5 của mô hình bằng đúng luật "nối mỗi đích với n khái niệm dạy ngay trước"** — Q5 đo bao đóng nên thưởng cho
+  cạnh theo thứ tự sách. Mức tăng Q5 **không** chứng minh mô hình chọn đúng.
+- Theo từng cạnh (cạnh tới đích vàng là cạnh vàng trực tiếp): doc-2 mô hình 9/25 = 36% (Wilson 20–55%) so gần nhất 4/25 =
+  16% (6–35%); doc-1 1/16 so 0/16. Mô hình nhỉnh hơn nhưng khoảng chồng nhau, và tỉ lệ tuyệt đối thấp.
+- Lần đo đầu dùng hàm gỡ chu trình chính xác của A9 cho mỗi seed, chạy 3 giờ không xong (bùng nổ tổ hợp khi cạnh ngẫu nhiên
+  tạo nhiều chu trình) — đã dừng, thay bằng luật tham lam áp chung.
+
+**Hệ quả:** (1) Q5 từ nay phải báo kèm đường cơ sở "n gần nhất" cùng số cạnh; can thiệp chỉ được ghi công phần vượt đường
+cơ sở. (2) Pass cạnh ngầm **chưa bật**; quyết định dựa vào T11 (ngược chiều và "không cần thứ tự" trên chính các cạnh ngầm),
+vì lợi ích Q5 không phân biệt được với cạnh theo thứ tự sách, còn chi phí (lộ trình tới đích dài thêm ≈ 50%) là thật.

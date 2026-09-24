@@ -32,7 +32,7 @@ Neo mọi thứ vào văn bản, dùng mô hình cho phần văn bản không t�
 | Q2 | không trùng, không đa nghĩa chưa xử lý | xung đột danh tính còn mở trong phạm vi xuất bản | 0 |
 | Q3 | không sót khái niệm trọng yếu | người đọc liệt kê mù trên mục lấy mẫu | ≥ 90% |
 | Q4 | cạnh đúng | chấm mù: "không làm sai thứ tự học"; ngược chiều | ≥ 0,90; ≤ 5% |
-| Q5 | đủ ràng buộc | tỉ lệ cạnh vàng có đường đi trong đồ thị máy | ≥ 85% |
+| Q5 | đủ ràng buộc | tỉ lệ cạnh vàng có đường đi trong đồ thị máy; từ 2026-09-24 báo kèm đường cơ sở "nối mỗi đích với n khái niệm dạy ngay trước" cùng số cạnh thêm, can thiệp chỉ được ghi công phần vượt đường cơ sở (vé 06: Q5 thưởng cạnh theo thứ tự sách) | ≥ 85% |
 | Q6 | thứ tự lộ trình | (ngược + thiếu đầu) / \|vàng\| trên dãy học | ≤ 5% |
 | Q7 | lộ trình tới mục tiêu | trung bình tỉ lệ tổ tiên-vàng có trong tổ tiên-máy; tỉ lệ đích đủ trọn | ≥ 95%; ≥ 80% |
 | Q8 | module mạch lạc | thang 1–5, hai người chấm mù A/B; chỉ số tự động chỉ để kiểm tra tỉnh táo | ≥ 4 / 5 |
