@@ -187,7 +187,7 @@ viên mới, để mỗi tài liệu chỉ trả tiền A8 một lần. Mọi l�
 
 **W18 — Ba tập, ba vai.** *Phát triển*: `doc-1`, `doc-2` (bộ vàng cạnh), `doc-3` (nhãn khái niệm đã nhìn thấy), ba tài liệu
 của cổng A C8. *Kiểm mới cho gói B*: tài liệu N1 do chủ dự án cung cấp, gán nhãn khái niệm mù trước khi chạy. *Giữ lại*:
-`xstk-ch3-1` (bộ vàng chương 10–13 đã gán, chưa từng dùng để chọn can thiệp — khoá từ nay) và một chương slide N2 gán vàng
+`xstk-ch3-1` (bộ vàng chương 10–13 đã gán, chưa từng dùng để chọn can thiệp — khoá từ nay) và một chương N2 gán vàng (2026-09-24: `doc-4`, giáo trình Triết học Mác–Lênin, Chương VIII — 47 khái niệm đích)
 mới. Tập giữ lại chỉ mở một lần, với cấu hình đã khoá.
 
 **W19 — Mỗi con số mang theo nguồn gốc.** Commit, đường dẫn và SHA-256 của artifact và nhãn, `algorithm_id`, `prompt_hash`,

@@ -101,5 +101,5 @@ node đó, không phải sửa tiêu chí. Nhãn N1 (T3) có sẵn lựa chọn 
 - Bốn dòng sai đều là "chỉ nhắc qua": `Cauchy sequence` (dùng như kiến thức sẵn có), `Dữ liệu liên tục`,
   `Pessimistic Locking`, `Concurrency` (báo cáo kể việc đã làm, không dạy).
 
-**Cổng 1 (Q9) — đạt** theo ngưỡng khoá: 44/48 = 92% ≥ 90% (Wilson 95% 80%–97%; cận dưới dưới ngưỡng, ghi kèm). Cổng 2–3
+**Cổng 1 (Q9):** ước lượng điểm 44/48 = 92% ≥ 90% nên đạt theo chữ của cổng; nhưng Wilson 95% là 80%–97%, chứa vùng trượt — theo luật của vé 07 ("khoảng chứa vùng trượt thì chưa đủ bằng chứng") thì Q9 **chưa đủ bằng chứng**. Muốn khẳng định cần mẫu lớn hơn (≈ 120 dòng nếu tỉ lệ thật 92%). Cổng 2–3
 vẫn chờ N1 (T2 phần N1, T3). doc-4 đã nhận nhưng chủ dự án xếp vào vai N2.
