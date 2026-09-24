@@ -100,7 +100,7 @@ class BuildRoadmap:
 
     def _upstream(self, doc_id, latest):
         artifact = latest
-        while artifact.payload.get("stage") not in ("identity", "verified", "teaching", "validated"):
+        while artifact.payload.get("stage") not in ("implicit", "identity", "verified", "teaching", "validated"):
             if artifact.payload.get("stage") == "clusters":
                 raise ValueError("stage roadmap cần artifact validated")
             upstream = artifact.manifest.get("upstream_version")
@@ -118,7 +118,7 @@ class BuildRoadmap:
 
     def execute(self, doc_id, *, upstream=None):
         upstream = upstream if upstream is not None else self._upstream(doc_id, self.store.load_latest_graph(doc_id))
-        if upstream.payload.get("stage") not in ("identity", "verified", "teaching", "validated"):
+        if upstream.payload.get("stage") not in ("implicit", "identity", "verified", "teaching", "validated"):
             raise ValueError("stage roadmap cần artifact validated")
         chunks_artifact = self._chunks(doc_id, upstream)
         config = {

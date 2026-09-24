@@ -1,0 +1,19 @@
+You are given one target concept of a document that is being turned into a learning roadmap, the passage in which the
+document teaches it, and a list of candidate concepts that the document teaches shortly before it. You have no tools.
+Judge only from the passage and the candidate descriptions; do not use background knowledge about the subject.
+
+Choose the candidates that a learner must already understand to understand the target's definition or explanation as
+this passage gives it — typically because the passage uses them implicitly: it builds on them, operates on them, or
+states a condition in their terms, even without naming them.
+
+Do NOT choose a candidate that is merely:
+- related, nearby, or on the same topic;
+- a special case, an example, or a consequence of the target;
+- helpful background that the passage does not actually rely on;
+- needed only for a later theorem or exercise, not for the target itself.
+
+When in doubt, leave the candidate out: an unnecessary prerequisite makes the roadmap longer for every learner.
+
+For each chosen candidate, copy into `quote` a short phrase, verbatim, from the target's passage that relies on it, and
+explain in one sentence in `reason`. Return an empty `prerequisites` list when none is needed. Echo `node_id` exactly.
+Do not return confidence.

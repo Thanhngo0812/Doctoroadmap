@@ -528,6 +528,16 @@ Chỉ suy luận trên:
 LLM nhận tóm tắt 2 cluster + các boundary concept, output edge cùng schema trên. Edge sinh ra ở đây
 vẫn phải tuân I-G1 — chỉ `requires` giữa hai concept.
 
+### A8'. Pass cạnh ngầm *(vé v2-06; có mã, chưa vào chuỗi mặc định)*
+
+> Quy tắc: [spec v2, W20](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `implicit`, sau `teaching`/`identity`.
+
+- Ngoại lệ có kiểm soát của luật "chunk căn cứ nhắc cả hai đầu" (A8): căn cứ của cạnh ngầm là **một cụm nguyên văn
+  trong đoạn dạy khái niệm đích** mà việc hiểu nó cần tiên quyết; mã kiểm chuỗi. Tiên quyết chỉ lấy trong K = 30
+  khái niệm dạy ngay trước và chưa là tổ tiên; không đề xuất ngược thứ tự dạy.
+- Cạnh mang `evidence_kind="ngam"`, `origin="implicit_pass"`, độ tin 0,6; gỡ chu trình bằng hàm của A9, cạnh ngầm hạng
+  thấp nhất nên bị gỡ trước. A10 nhận stage `implicit`.
+
 ### A9. Kiểm tra tính nhất quán cấu trúc *(trước gọi là "Validate graph")*
 
 > **Đổi tên ngày 2026-09-22 (V10).** Trong văn liệu, "kiểm định quan hệ tiên quyết" nghĩa là kiểm định trên **biểu

@@ -180,6 +180,15 @@ chiếm 57/60 ứng viên doc-1, và mọi cặp đọc tay đầu tiên đều 
 `plan_main_sessions` có trần token. (3) Chỉ khi (1)–(2) chưa đạt Q5 mới mở rộng sang toàn bộ cặp nghi vấn (C1). Phán cặp
 dùng pass phụ hiện có (hai chiều, hoà giải), dossier thêm câu neo của hai đầu.
 
+**W20 — Pass cạnh ngầm (2026-09-24, chủ dự án chọn).** Chẩn đoán vé 06: cạnh vàng thiếu mà không chunk nào nhắc cả hai
+đầu — doc-1 4/8, doc-2 16/27 — không thể sinh ra dưới luật "chunk căn cứ nhắc cả hai đầu" của pass chính; mọi bộ sinh
+dựa trên nhắc tên cho 0,2–1% vàng. Pass mới: mỗi khái niệm đích B một lời gọi, thấy đoạn dạy B (chunk câu neo, không có
+thì chunk định nghĩa) và K = 30 khái niệm dạy ngay trước chưa là tổ tiên (K = 30 phủ 17/27 và 4/8 cạnh thiếu; 60 chỉ
+thêm 2). Căn cứ là cụm nguyên văn trong đoạn của B mà việc hiểu nó cần A, kiểm chuỗi bằng mã. Cạnh mang
+`evidence_kind="ngam"`, độ tin 0,6, hạng căn cứ 0 — bị gỡ đầu tiên nếu khép chu trình. Chỉ đề xuất xuôi thứ tự dạy.
+Rủi ro đã biết từ T1: cạnh thừa ("không cần thứ tự") là lỗi chính của cạnh dư, nên prompt dặn "nghi thì bỏ" và cổng
+Q4 chấm riêng cạnh ngầm (T11).
+
 **W17 — Một lần chạy lại A8 cho mỗi tài liệu.** Neo (B) và bản đồ danh tính (C) dời lên trước A8 cùng lúc với bộ sinh ứng
 viên mới, để mỗi tài liệu chỉ trả tiền A8 một lần. Mọi lần chạy đi qua chốt chặn W1.
 

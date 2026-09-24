@@ -80,3 +80,24 @@ Trên đồ thị validated hiện hành (doc-1 v9, doc-2 v6), cạnh vàng khô
 **Hệ quả:** W16 bước (1)–(3) không đưa doc-2 tới Q5 85%; C1 có trần 74% với 7 USD. Muốn vượt phải nới luật "chunk căn
 cứ nhắc cả hai đầu" cho một loại cạnh mới (định nghĩa của B dùng A một cách ngầm) — thay đổi hợp đồng chống bịa của A8,
 cần chủ dự án quyết trước khi xây. Chờ quyết định.
+
+## Quyết định chủ dự án (2026-09-24): pass cạnh ngầm (spec v2 W20)
+
+Mã: `domain/implicit.py` (ứng viên K gần nhất chưa là tổ tiên; kiểm câu trả lời; thêm cạnh rồi gỡ chu trình),
+`use_cases/find_implicit.py` (stage `implicit`), prompt `a8/implicit.txt`. Đột biến bỏ kiểm câu trích → 2 test đỏ.
+
+### Lượt 1 — khoá trước khi chạy (2026-09-24)
+
+Đầu vào: identity doc-1 v26, doc-2 v20 (chuỗi teaching → identity → implicit → stages). Đối chứng: stages từ chính
+identity đó (doc-1 v27, doc-2 v21). Q5 = tỉ lệ cạnh vàng (sau bản đồ danh tính) có đường đi qua `requires_edges` +
+`bypassed_edges` của artifact stages.
+
+- **Bất biến (sai là lỗi mã, dừng):** DAG; mọi cạnh ngầm có câu trích nguyên văn trong chunk căn cứ; nguồn dạy trước đích.
+- **Cổng 1:** Q5 tăng trên cả hai chương; báo cạnh vàng mới trên mỗi USD để so C1 (+5 / 2,71 USD ≈ 1,8 cạnh/USD).
+- **Cổng 2 (Q4 cạnh mới):** chấm mù vòng hai T11 trên cạnh ngầm trong phạm vi hai chương vàng, trộn cạnh đúng và cặp ngẫu
+  nhiên: ngược ≤ 5% và "không làm sai thứ tự học" ≥ 0,90, cả hai người. Chưa có T11 thì cổng này **chưa chấm**.
+- **Cổng 3:** không cạnh vàng nào đang có đường mất đường (gỡ chu trình chỉ được bỏ cạnh ngầm).
+- **Báo kèm, không phải cổng:** số cạnh ngầm thêm; trong phạm vi chương vàng, bao nhiêu trùng cạnh vàng; Q6 (kèm sàn
+  nhiễu U1), Q7; độ dài lộ trình tới đích (T1 cho thấy cạnh thừa làm lộ trình dài ra) — trung bình số khái niệm tổ tiên
+  của các đích vàng trước và sau.
+- Chi phí dự kiến: doc-1 ≈ 225 lời gọi, doc-2 ≈ 438, tổng < 1 USD.
