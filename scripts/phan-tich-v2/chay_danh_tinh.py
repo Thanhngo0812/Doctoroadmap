@@ -16,9 +16,27 @@ from doc2roadmap.domain.global_validation import strongly_connected_components  
 TEACHING = {"doc-1": 21, "doc-2": 16, "doc-3": 16, "naive-bayes": 34, "nhap-mon-ml": 34, "baocao-canhan": 104}
 GOLD = {"doc-1": "artifacts/a8-gold/doc-1-10-12-vang.json", "doc-2": "artifacts/a8-gold/doc-2-98-115-vang.json"}
 
+
+def load_review(path="artifacts/a8-gold/duyet-danh-tinh-output.xlsx"):
+    """Quyết định T5 (người duyệt), khớp về cặp node qua khoá của bảng."""
+    import openpyxl
+    if not Path(path).exists():
+        return {}
+    key = json.loads(Path("artifacts/a8-gold/duyet-danh-tinh-khoa.json").read_text(encoding="utf-8"))
+    by_item = {row["item"]: row for row in key["items"]}
+    review = {}
+    for row in list(openpyxl.load_workbook(path, read_only=True)["Cặp"].iter_rows(values_only=True))[1:]:
+        if row and row[0] is not None and row[9]:
+            item = by_item[int(row[0])]
+            review[frozenset((item["left"], item["right"]))] = row[9]
+    return review
+
+
+REVIEW = load_review()
 pipeline, _ = build_learning_graph(allow_spend=True)
 store = pipeline.teaching.store
-judge = JudgeIdentity(store, pipeline.teaching.model, concurrency=4)
+judge = JudgeIdentity(store, pipeline.teaching.model, concurrency=4, review=REVIEW)
+print(f"quyết định T5 nạp: {len(REVIEW)}")
 roadmap = BuildRoadmap(store, stage_cap=8)
 total, summary = 0.0, {}
 for doc in (sys.argv[1:] or list(TEACHING)):
@@ -39,6 +57,10 @@ for doc in (sys.argv[1:] or list(TEACHING)):
     names = {n["node_id"]: n["name"] for n in [*p["nodes"], *p["merged_nodes"]]}
     for source, head in p["identity_map"].items():
         print(f"    gộp: {names[source]!r} → {names[head]!r}")
+    for row in p["identity_log"]:
+        if row.get("human_decision") and row["model_verdict"] != row["verdict"]:
+            print(f"    người duyệt đổi: {names[row['left']]!r} / {names[row['right']]!r}: "
+                  f"{row['model_verdict']} → {row['verdict']} ({row['human_decision']})")
     for group in p["identity_open_groups"]:
         print(f"    nhóm mở: {[names[n] for n in group]}")
     touched = []
@@ -53,6 +75,6 @@ for doc in (sys.argv[1:] or list(TEACHING)):
               f"gộp chạm vàng {len(touched)}")
     summary[doc] = {"identity_version": identity.version, "stages_version": stages.version,
                     "gold_touching": [{"merged": s, "into": h} for s, h in touched]}
-Path("artifacts/a8-gold/danh-tinh-luot-1.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
+Path("artifacts/a8-gold/danh-tinh-luot-2.json").write_text(json.dumps(summary, ensure_ascii=False, indent=2) + "\n",
                                                            encoding="utf-8")
 print(f"Tổng chi vòng này: {total:.3f} USD")

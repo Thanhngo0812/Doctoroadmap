@@ -7,7 +7,7 @@ chấm áp cùng bản đồ; gộp xong gỡ chu trình lại.
 
 **Blocked by:** 04 (cần câu neo); vé 10 — T5 (duyệt các gộp chạm bộ vàng)
 
-**Status:** mã xong, lượt 1 đã chạy; cổng 2 chờ T5
+**Status:** qua cổng (2026-09-24); chưa nối vào chuỗi mặc định, chờ vé 04
 
 ## Cổng nhận
 
@@ -70,10 +70,24 @@ một ý (doc-1 trước đây học `Độc lập tuyến tính` và `Hệ véc
 
 ### T5 — kết quả nhận 2026-09-24
 
-**Nguồn nhãn: AI** (cùng phiên 00:03–00:14 UTC với T4; sheet Hướng dẫn ghi "thời gian … là thời gian của lượt phân tích
-AI"). Cổng 2 đòi *chữ duyệt của chủ dự án*, nên **chưa tính là đạt**.
+**Nguồn nhãn:** phán quyết của người (đồng nghiệp chủ dự án), AI hỗ trợ ghi; chủ dự án xác nhận 2026-09-24. Không có
+giờ làm thật của người (mốc trong bảng là giờ của AI).
 
 - 8 gộp: đồng ý 7, **không chắc 1** (`Trace → Trace of a square matrix`: "nếu là vết toán tử thì giữ tách") — trùng với
   cặp tôi đã nghi.
 - 2 sense_split: cả hai đồng ý "hai nghĩa khác nhau"; kèm đề nghị đặt tên rõ (`Zero vector` / `Zero linear map`) và gắn lại
   câu neo của `Định lý 6`.
+
+### Lượt 2 — áp quyết định T5 (2026-09-24, 0,021 USD)
+
+`JudgeIdentity(review=…)`: quyết định người duyệt thắng phán mô hình; chỉ "Đồng ý gộp" cho gộp, "Không chắc" giữ tách.
+Log giữ cả `model_verdict` lẫn `human_decision`; `review_hash` vào config.
+
+| tài liệu | identity → stages | gộp | người duyệt đổi | mở | chu trình | Q6 | Q7 |
+|---|---|---|---|---|---|---|---|
+| doc-1 | v26 → v27 | 3 | 0 | 0 | 0 | 2,6% (1 cạnh vàng rời do gộp) | 90% |
+| doc-2 | v20 → v21 | 4 | `Trace` / `Trace of a square matrix`: same → giữ tách | 0 | 0 | 9,8% | 58% |
+
+**Cổng:** 1 (Q2 = 0) đạt; 2 (mọi gộp chạm vàng được người duyệt: 4/4) đạt; 3 (DAG, Q6 báo lại) đạt. **Vé 05 qua cổng.**
+Chưa nối vào composition: bước danh tính cần câu neo (vé 04), mà vé 04 còn chờ N1. Đề nghị đổi tên của người duyệt
+(`Zero vector` / `Zero linear map`, gắn lại neo `Định lý 6`) chưa làm — là sửa tên hiển thị, ghi lại để làm khi bật.

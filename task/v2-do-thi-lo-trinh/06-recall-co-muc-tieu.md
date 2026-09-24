@@ -27,8 +27,7 @@ cho mỗi tài liệu với neo và bản đồ danh tính đã dời lên trư�
 ## T1 — kết quả nhận 2026-09-24 (bằng chứng đầu vào, không phải cổng của vé này)
 
 Chấm bằng `scripts/cham-mu/cham_bang.py` và `phan_tich_hai_nguoi.py` trên bốn bản `cham-mu-doc-{1,2}-A{1,2}-output.xlsx`.
-Bảng T1 không có dấu hiệu AI trong ô nào, nhưng **chưa có xác nhận là người chấm** (bản A2 lưu cùng phút với T4/T5 do AI
-điền) và không bản nào ghi giờ làm.
+Chủ dự án xác nhận 2026-09-24: hai người thật chấm riêng. Không bản nào ghi giờ làm.
 
 | | doc-1 (29 cạnh dư) | doc-2 (16 cạnh dư) |
 |---|---|---|

@@ -26,6 +26,9 @@ IDENTITY_SCHEMA: dict[str, Any] = {
     "required": ["pair_id", "verdict", "reason"],
 }
 PAIR_BATCH = 8
+# Quyết định của người duyệt (T5) thắng phán của mô hình. Chỉ "Đồng ý gộp" cho gộp; "Không chắc" thì giữ tách.
+HUMAN_VERDICT = {"Đồng ý gộp": "same", "Không gộp": "different", "Là hai nghĩa khác nhau": "sense_split",
+                 "Không chắc": "different"}
 
 
 def identity_prompt_hash(model_id, generation):
@@ -47,8 +50,10 @@ class JudgeIdentity:
     và provenance không đổi; bộ chấm áp cùng `identity_map` lên bộ vàng.
     """
 
-    def __init__(self, store, model, *, concurrency=4, generation=None):
+    def __init__(self, store, model, *, concurrency=4, generation=None, review=None):
+        """`review`: {frozenset((node_id, node_id)): quyết định trong bảng T5}."""
         self.store = store
+        self.review = dict(review or {})
         self.model = model
         self.concurrency = concurrency
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 1024}
@@ -63,6 +68,7 @@ class JudgeIdentity:
                   "chunks_version": upstream.manifest.get("config", {}).get("chunks_version"),
                   "model_id": self.model.model_id,
                   "generation": self.generation, "prompt_hash": prompt_hash, "merge_rule": "verified-clique-v1",
+                  "review_hash": digest(sorted([sorted(pair), decision] for pair, decision in self.review.items())),
                   "pricing_usd_per_million": PRICING_USD_PER_MILLION, "pricing_source": PRICING_SOURCE}
         config_hash, source_hash = digest(config), digest(upstream.payload)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
@@ -103,8 +109,14 @@ class JudgeIdentity:
             self.store.save_checkpoint(doc_id, checkpoint_id, {"source_hash": source_hash, "answers": answers,
                                                                "decision_log": decision_log, "metrics": dict(metrics)})
 
-        log = [{**pair, "verdict": answers[pair["pair_id"]]["verdict"], "reason": answers[pair["pair_id"]]["reason"]}
-               for pair in pairs]
+        log = []
+        for pair in pairs:
+            answer = answers[pair["pair_id"]]
+            row = {**pair, "model_verdict": answer["verdict"], "verdict": answer["verdict"], "reason": answer["reason"]}
+            decision = self.review.get(frozenset((pair["left"], pair["right"])))
+            if decision is not None:
+                row.update(verdict=HUMAN_VERDICT[decision], human_decision=decision)
+            log.append(row)
         position = {n["node_id"]: (n.get("teaching_order_index") if n.get("teaching_order_index") is not None
                                    else n.get("first_order_index", 0)) for n in placed}
         mapping, open_groups = identity_map(log, position)

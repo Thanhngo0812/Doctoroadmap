@@ -76,3 +76,19 @@ def test_only_judged_same_pairs_merge_into_the_earlier_taught_concept_and_the_re
     assert len(payload["identity_removed_edges"]) == 1 and not {("x", "dltt"), ("dltt", "x")} <= pairs
     assert ("tn", "hn") in pairs  # cùng câu neo nhưng phán "different" thì không gộp
     assert payload["stats"]["identity_open_count"] == 0
+
+
+def test_a_human_review_overrides_the_model_and_only_an_approved_merge_is_applied():
+    # Mô hình phán `same` cho cả hai cặp; người duyệt để "Không chắc" ở cặp dltt/hv → không gộp cặp đó.
+    store = Store()
+    model = Model({frozenset(("Độc lập tuyến tính", "Hệ véc tơ độc lập tuyến tính")): "same",
+                   frozenset(("Tiên nghiệm", "Hậu nghiệm")): "same"})
+    review = {frozenset(("dltt", "hv")): "Không chắc", frozenset(("tn", "hn")): "Đồng ý gộp"}
+    artifact, _ = JudgeIdentity(store, model, review=review).execute("doc-1", upstream=store.teaching)
+    payload = artifact.payload
+    assert payload["identity_map"] == {"tn": "hn"}  # cùng vị trí dạy → hoà phá theo node_id
+    rows = {frozenset((r["left"], r["right"])): r for r in payload["identity_log"]}
+    assert rows[frozenset(("dltt", "hv"))]["model_verdict"] == "same"
+    assert rows[frozenset(("dltt", "hv"))]["verdict"] == "different"
+    assert rows[frozenset(("dltt", "hv"))]["human_decision"] == "Không chắc"
+    assert "review_hash" in artifact.manifest["config"]
