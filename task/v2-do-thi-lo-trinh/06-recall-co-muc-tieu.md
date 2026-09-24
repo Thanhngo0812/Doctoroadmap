@@ -130,3 +130,14 @@ sách 30 ứng viên, cùng luật bỏ cạnh khép chu trình (tham lam, áp n
 **Hệ quả:** (1) Q5 từ nay phải báo kèm đường cơ sở "n gần nhất" cùng số cạnh; can thiệp chỉ được ghi công phần vượt đường
 cơ sở. (2) Pass cạnh ngầm **chưa bật**; quyết định dựa vào T11 (ngược chiều và "không cần thứ tự" trên chính các cạnh ngầm),
 vì lợi ích Q5 không phân biệt được với cạnh theo thứ tự sách, còn chi phí (lộ trình tới đích dài thêm ≈ 50%) là thật.
+
+### T11 — bảng sẵn sàng (2026-09-24), ghi trước khi có kết quả
+
+`artifacts/a8-gold/cham-mu-v2-doc-1.xlsx` (25 cặp: 12 cạnh ngầm tới đích vàng, 5 cạnh vàng khác, 8 ngẫu nhiên) và
+`cham-mu-v2-doc-2.xlsx` (37 cặp: 24 cạnh ngầm, 5 vàng khác, 8 ngẫu nhiên); khuôn và sheet Khái niệm như T1, đảo chiều
+ngẫu nhiên, seed 20260925. Chấm: `scripts/cham-mu/cham_bang_v2.py` — gộp mọi cạnh ngầm một rổ, từng người.
+
+**Giới hạn cỡ mẫu, biết trước:** 12 và 24 cạnh là toàn bộ cạnh ngầm trong phạm vi hai chương vàng. Với 24 cạnh, kể cả
+24/24 đúng thì cận dưới Wilson 95% chỉ 86% < 90%; với 12 cạnh là 76%. Theo luật "khoảng chứa vùng trượt thì chưa đủ bằng
+chứng", T11 chỉ có thể cho **trượt** hoặc **chưa đủ bằng chứng**, không cho "đạt chắc". Ghi ra để không đọc kết quả theo ý
+muốn. Tách hàm `write_sheet` khỏi `tao_bang.py`: sinh lại T1 trong thư mục nháp cho đúng từng cặp như khoá cũ (57/57, 30/30).

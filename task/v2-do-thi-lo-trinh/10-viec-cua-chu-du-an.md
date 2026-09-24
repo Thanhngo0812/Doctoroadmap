@@ -42,7 +42,8 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 | T6 | chưa nhận tệp |
 | T7 | tệp mẫu `liet-ke-mu.md` sẵn sàng; chưa nhận kết quả |
 | T8 | **sẵn sàng**: `doc-4-chuong-8-A1.xlsx` / `-A2.xlsx` — Chương VIII, 47 khái niệm đích, 376 dòng; hai người gán riêng rồi hội ý |
-| T10, T11 | chưa tới lượt |
+| T11 | **sẵn sàng**: `cham-mu-v2-doc-1.xlsx` (25 cặp), `cham-mu-v2-doc-2.xlsx` (37 cặp); hai người riêng, như T1, lưu `-A1-output` / `-A2-output` |
+| T10 | chưa tới lượt |
 
 Luật ghi giờ: bảng nhận ngày 2026-09-24 có mốc giờ là của AI hỗ trợ ghi, không phải của người. Từ nay xin ghi giờ người
 bắt đầu / xong ở ô ghi chú dòng đầu, tách khỏi mọi mốc giờ do công cụ sinh.

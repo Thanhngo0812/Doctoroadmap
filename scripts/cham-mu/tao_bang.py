@@ -82,6 +82,14 @@ def build(doc, chapter, version, tp_sample, random_sample, rng):
             flip = rng.random() < 0.5
             x, y = (b, a) if flip else (a, b)
             items.append({"category": category, "x": x, "y": y, "machine": [a, b] if category != "random" else None})
+    counts = {"fp": len(fp), "tp_sampled": len(tp), "tp_total": len(in_scope & gold), "random": len(randoms),
+              "predicted_in_scope": len(in_scope)}
+    out, key_path = write_sheet(doc, items, rng, header, body, by_node, sheet_path, graph_path, gold_path, counts,
+                                name=f"cham-mu-{doc}")
+    return out, key_path, counts
+
+
+def write_sheet(doc, items, rng, header, body, by_node, sheet_path, graph_path, gold_path, counts, *, name):
     missing = sorted({node for item in items for node in (item["x"], item["y"])} - set(by_node))
     if missing:
         raise ValueError(f"{doc}: {len(missing)} khái niệm không có trong sheet Khái niệm, ví dụ {missing[0]}")
@@ -123,21 +131,20 @@ def build(doc, chapter, version, tp_sample, random_sample, rng):
     for row in body:
         concepts.append(list(row))
 
-    out = Path(f"artifacts/a8-gold/cham-mu-{doc}.xlsx")
+    out = Path(f"artifacts/a8-gold/{name}.xlsx")
     workbook.save(out)
     key = {
         "doc_id": doc, "seed": SEED, "labels": LABELS,
-        "counts": {"fp": len(fp), "tp_sampled": len(tp), "tp_total": len(in_scope & gold), "random": len(randoms),
-                   "predicted_in_scope": len(in_scope)},
+        "counts": counts,
         "inputs": {"graph": {"path": str(graph_path), "sha256": sha256(graph_path)},
                    "gold": {"path": str(gold_path), "sha256": sha256(gold_path)},
                    "concept_sheet": {"path": str(sheet_path), "sha256": sha256(sheet_path)}},
         "sheet": {"path": str(out), "sha256": sha256(out)},
         "items": items,
     }
-    key_path = Path(f"artifacts/a8-gold/cham-mu-{doc}-khoa.json")
+    key_path = Path(f"artifacts/a8-gold/{name}-khoa.json")
     key_path.write_text(json.dumps(key, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    return out, key_path, key["counts"]
+    return out, key_path
 
 
 if __name__ == "__main__":
