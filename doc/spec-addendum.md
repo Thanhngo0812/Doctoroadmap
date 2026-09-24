@@ -56,6 +56,8 @@ A9'. Kiểm nguồn dạy (C8 v2, bản tạm)           |
   |                                            |
 A9''. Danh tính: gộp khái niệm trùng (chưa bật)|
   |                                            |
+A9'''. Cạnh ngầm (chưa bật; xem A8')           |
+  |                                            |
 A10. Dãy học neo sách -> chia module           |
   |    [CHỈ requires; chưa gắn media]          |
   |                                            |
@@ -531,6 +533,9 @@ vẫn phải tuân I-G1 — chỉ `requires` giữa hai concept.
 ### A8'. Pass cạnh ngầm *(vé v2-06; có mã, chưa vào chuỗi mặc định)*
 
 > Quy tắc: [spec v2, W20](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `implicit`, sau `teaching`/`identity`.
+> **Vị trí hiện tại:** chạy **sau A9** — sau A9' (neo) và A9'' (danh tính), vì cần câu neo và bản đồ danh tính;
+> tự gỡ chu trình bằng hàm của A9 nên đầu ra vẫn là DAG. Tên "A8'" là vị trí đích theo W17: khi neo và danh tính
+> dời lên trước A8, pass này nằm ngay sau A8b, trước A9. Chưa dời.
 
 - Ngoại lệ có kiểm soát của luật "chunk căn cứ nhắc cả hai đầu" (A8): căn cứ của cạnh ngầm là **một cụm nguyên văn
   trong đoạn dạy khái niệm đích** mà việc hiểu nó cần tiên quyết; mã kiểm chuỗi. Tiên quyết chỉ lấy trong K = 30
