@@ -266,6 +266,16 @@ cần khi tài liệu có hình "tổng quan toàn chương" nối hàng chục 
 ```
 
 - **Lưu ý**: đừng dùng extract text thô (`page.extract_text()`) — mất heading là mất xương sống của toàn pipeline.
+- **Bộ đọc PDF** *(2026-09-24)*: mặc định `docling-parse`. `ingest --pdf-backend pypdfium2` cho PDF dùng font tiếng
+  Việt cũ mà `docling-parse` tách rời âm tiết ("Ph ươ ng pháp"): trên 5 trang của doc-4, `docling-parse` cho 34,5% token
+  ngắn có dấu, `pypdfium2` 19,2% — mức của tiếng Việt bình thường (từ đơn "là", "và"). Lựa chọn nằm trong `adapter`
+  của cấu hình parser nên đi vào hash; bộ đọc mặc định giữ nguyên identifier để hash của tài liệu cũ không đổi.
+  **Kiểm trước khi chạy A3**: văn bản chunk có chữ liền (tỉ lệ token ngắn có dấu ≲ 20%), vì A3 trên chữ vỡ phí tiền
+  và sinh tên khái niệm hỏng.
+- **Thang tiêu đề** *(2026-09-24)*: `ingest --heading-scheme vn-textbook` cho giáo trình tiếng Việt đánh số lại từ đầu
+  trong mỗi cấp (Phần → Chương → A./B. → I- → 1. → a), cấp 1–6). Luật mặc định đếm dấu chấm nên đặt "1." lên trên
+  "Chương" và loại tiêu đề La Mã dài hơn 15 từ như văn bản; trên doc-4 điều đó để các mục của Chương VIII nằm ngoài
+  chương. Chỉ ghi vào `config.chunk` khi bật, để hash của tài liệu cũ không đổi.
 
 ### A2. Chunking theo cấu trúc
 

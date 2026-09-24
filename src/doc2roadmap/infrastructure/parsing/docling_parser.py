@@ -118,29 +118,45 @@ _SYMBOL_BYTES.update(
 _SYMBOL_TRANSLATION = {0xF000 + code: character for code, character in _SYMBOL_BYTES.items()}
 
 
+# Bộ đọc PDF của docling. `docling-parse` là mặc định và giữ nguyên identifier để hash parse của tài liệu cũ không đổi.
+# `pypdfium2` dùng cho PDF font tiếng Việt cũ mà docling-parse tách rời âm tiết ("Ph ươ ng pháp"): doc-4 có 34% mảnh
+# âm tiết với docling-parse, còn pypdfium2 cho chữ liền.
+PDF_BACKENDS = ("docling-parse", "pypdfium2")
+
+
 class DoclingParser:
-    def __init__(self) -> None:
+    def __init__(self, pdf_backend: str = "docling-parse") -> None:
+        if pdf_backend not in PDF_BACKENDS:
+            raise ValueError(f"pdf_backend phải là một trong {PDF_BACKENDS}")
+        self.pdf_backend = pdf_backend
         self._converter_instance: Any | None = None
 
     @staticmethod
-    def _new_converter() -> Any:
+    def _new_converter(backend: str = "docling-parse") -> Any:
         from docling.datamodel.base_models import InputFormat
         from docling.datamodel.pipeline_options import PdfPipelineOptions
         from docling.document_converter import DocumentConverter, PdfFormatOption
 
         options = PdfPipelineOptions(images_scale=IMAGE_SCALE, generate_picture_images=True)
+        extra: dict[str, Any] = {}
+        if backend == "pypdfium2":
+            from docling.backend.pypdfium2_backend import PyPdfiumDocumentBackend
+
+            extra["backend"] = PyPdfiumDocumentBackend
         return DocumentConverter(
-            format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=options)}
+            format_options={InputFormat.PDF: PdfFormatOption(pipeline_options=options, **extra)}
         )
 
     def _get_converter(self) -> Any:
         if self._converter_instance is None:
-            self._converter_instance = self._new_converter()
+            self._converter_instance = (self._new_converter() if self.pdf_backend == "docling-parse"
+                                        else self._new_converter(self.pdf_backend))
         return self._converter_instance
 
     @property
     def identifier(self) -> str:
-        return f"docling:{importlib.metadata.version('docling')}"
+        base = f"docling:{importlib.metadata.version('docling')}"
+        return base if self.pdf_backend == "docling-parse" else f"{base}+{self.pdf_backend}"
 
     @property
     def adapter_version(self) -> int:

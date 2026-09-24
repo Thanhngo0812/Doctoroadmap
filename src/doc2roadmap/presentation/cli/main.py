@@ -127,6 +127,10 @@ def _parser() -> argparse.ArgumentParser:
     ingest = commands.add_parser("ingest", help="parse và cắt một PDF/DOCX")
     ingest.add_argument("file", type=Path)
     ingest.add_argument("--doc-id", required=True)
+    ingest.add_argument("--pdf-backend", choices=["docling-parse", "pypdfium2"], default="docling-parse",
+                        help="bộ đọc PDF; pypdfium2 cho PDF font tiếng Việt cũ bị tách rời âm tiết")
+    ingest.add_argument("--heading-scheme", choices=["vn-textbook"], default=None,
+                        help="thang tiêu đề Phần → Chương → I- → 1. → a) của giáo trình tiếng Việt")
     ingest.add_argument(
         "--strip-line",
         action="append",
@@ -174,10 +178,11 @@ def _parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None) -> None:
+def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None,
+            pdf_backend: str = "docling-parse", heading_scheme: str | None = None) -> None:
     if not path.is_file():
         raise FileNotFoundError(f"không đọc được file: {path}")
-    use_case, settings = build_ingest()
+    use_case, settings = build_ingest(pdf_backend)
     summary = use_case.execute(
         path.read_bytes(),
         path.name,
@@ -188,6 +193,7 @@ def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None) ->
         target_tokens=settings.target_tokens,
         sentence_overlap=settings.sentence_overlap,
         strip_lines=strip_lines or [],
+        heading_scheme=heading_scheme,
     )
     seen = " (đã ingest trước đó; tái dùng parse tree)" if summary.source_seen_before else ""
     print(
@@ -492,7 +498,8 @@ def main(argv: list[str] | None = None) -> int:
                    "redirect_count": len(second.payload["redirects"]),
                    "first_version": first.version, "second_version": second.version})
         elif args.command == "ingest":
-            _ingest(args.file, args.doc_id, strip_lines=args.strip_line)
+            _ingest(args.file, args.doc_id, strip_lines=args.strip_line, pdf_backend=args.pdf_backend,
+                    heading_scheme=args.heading_scheme)
         elif args.command == "inspect":
             _inspect(args.doc_id)
         elif args.command == "extract":

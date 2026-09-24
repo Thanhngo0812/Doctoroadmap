@@ -16,12 +16,12 @@ from doc2roadmap.infrastructure.parsing import DoclingParser
 from doc2roadmap.infrastructure.text import SentencePieceTokenCounter, UnicodeSentenceSplitter
 
 
-def build_ingest() -> tuple[IngestDocument, Settings]:
+def build_ingest(pdf_backend: str = "docling-parse") -> tuple[IngestDocument, Settings]:
     settings = Settings()
     store = JsonArtifactStore(settings.artifact_dir)
     counter = SentencePieceTokenCounter(settings.tokenizer_model, settings.tokenizer_id)
     return (
-        IngestDocument(DoclingParser(), store, counter, UnicodeSentenceSplitter()),
+        IngestDocument(DoclingParser(pdf_backend), store, counter, UnicodeSentenceSplitter()),
         settings,
     )
 

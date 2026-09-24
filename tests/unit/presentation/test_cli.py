@@ -68,9 +68,12 @@ def test_ingest_prints_each_warning_and_parse_stats(tmp_path, monkeypatch, capsy
         target_tokens=256,
         sentence_overlap=1,
     )
-    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_ingest", lambda: (UseCase(), settings))
+    backends = []
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_ingest",
+                        lambda pdf_backend: backends.append(pdf_backend) or (UseCase(), settings))
 
     _ingest(source, "book", strip_lines=["first", "second"])
+    assert backends == ["docling-parse"]
 
     output = capsys.readouterr().out
     assert calls[0]["strip_lines"] == ["first", "second"]

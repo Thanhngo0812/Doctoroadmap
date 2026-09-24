@@ -754,3 +754,45 @@ def test_repeated_heading_rule_exempts_numbered_and_keeps_single_body_match() ->
         "Overview",
         "2.1 Numbered",
     }
+
+
+def _vn_textbook_tree() -> DocumentTree:
+    # Thang của giáo trình doc-4: Phần → Chương → I- → 1. → a); số mục đánh lại từ đầu trong mỗi cấp.
+    rows = [
+        ("section_header", "Phần II"),
+        ("section_header", "Chương VIII"),
+        ("section_header", "I- Khái niệm quy luật"),
+        ("section_header", "1. Khái niệm \"quy luật\""),
+        ("paragraph", "Quy luật là mối liên hệ bản chất."),
+        ("section_header", "II- Quy luật chuyển hóa từ những sự thay đổi về lượng thành những sự thay đổi về chất và ngược lại"),
+        ("section_header", "1. Khái niệm chất và khái niệm lượng"),
+        ("section_header", "a) Khái niệm chất"),
+        ("paragraph", "Chất là tính quy định vốn có."),
+        ("section_header", "3.Ý nghĩa phương pháp luận"),
+        ("paragraph", "Cần tích lũy về lượng."),
+        ("section_header", "Chương IX"),
+        ("section_header", "1. Bản chất của nhận thức"),
+        ("paragraph", "Nhận thức là phản ánh."),
+    ]
+    return DocumentTree([DocumentNode(kind, text, order, level=1, page=1) for order, (kind, text) in enumerate(rows)])
+
+
+def test_the_vn_textbook_scheme_nests_restarted_numbering_under_its_chapter() -> None:
+    chunked = chunk_document(_vn_textbook_tree(), "book", WordCounter(), splitter(), target_tokens=1,
+                             heading_scheme="vn-textbook")
+    level = {s.title: s.level for s in chunked.sections}
+    assert (level["Phần II"], level["Chương VIII"], level["I- Khái niệm quy luật"]) == (1, 2, 4)
+    assert level["1. Khái niệm \"quy luật\""] == 5 and level["a) Khái niệm chất"] == 6
+    assert level["3.Ý nghĩa phương pháp luận"] == 5  # "3." dính chữ vẫn là mục số
+    # tiêu đề La Mã dài hơn 15 từ không bị loại như văn bản
+    long_roman = next(s for s in chunked.sections if s.title.startswith("II- Quy luật"))
+    paths = {c.text: c.section_path for c in chunked.chunks}
+    assert paths["Chất là tính quy định vốn có."][:4] == ["Phần II", "Chương VIII", long_roman.title,
+                                                         "1. Khái niệm chất và khái niệm lượng"]
+    assert paths["Nhận thức là phản ánh."][:2] == ["Phần II", "Chương IX"]
+
+
+def test_without_the_scheme_the_default_levels_are_unchanged() -> None:
+    # Mặc định không đổi: tài liệu cũ (doc-1, xstk) giữ nguyên cây mục và danh tính chunk.
+    chunked = chunk_document(_vn_textbook_tree(), "book", WordCounter(), splitter(), target_tokens=1)
+    assert not any(s.title.startswith("II- Quy luật") for s in chunked.sections)

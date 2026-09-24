@@ -81,6 +81,26 @@ def _table_markdown(node: DocumentNode) -> str:
     return "\n".join(lines)
 
 
+# Thang tiêu đề của giáo trình tiếng Việt (doc-4): Phần → Chương → A./B. → I- → 1. → a). Số mục đánh lại từ đầu trong mỗi
+# cấp nên luật mặc định (đếm dấu chấm: "1." là cấp 1) đẩy "1." lên trên "Chương". Chỉ bật khi ingest chọn
+# `heading_scheme="vn-textbook"`; mặc định giữ nguyên để cây mục và danh tính chunk của tài liệu cũ không đổi.
+HEADING_SCHEMES = ("vn-textbook",)
+_VN_TEXTBOOK_LEVELS = (
+    (re.compile(r"^Phần\s+[IVXLCDM\d]+\b", re.IGNORECASE), 1),
+    (re.compile(r"^Chương\s+[IVXLCDM\d]+\b", re.IGNORECASE), 2),
+    (re.compile(r"^[A-ZĐ]\.\s+"), 3),
+    (re.compile(r"^[IVXLCDM]+\s*[-–.]\s*"), 4),
+    (re.compile(r"^\d+\s*[.)]\s*"), 5),
+    (re.compile(r"^[a-zđ]\)\s*"), 6),
+)
+
+
+def _scheme_level(title: str, scheme: str | None) -> int | None:
+    if scheme != "vn-textbook":
+        return None
+    return next((level for pattern, level in _VN_TEXTBOOK_LEVELS if pattern.match(title)), None)
+
+
 def _heading_number_level(title: str) -> int | None:
     match = _NUMBERED_HEADING.match(title)
     return match.group(1).count(".") + 1 if match else None
@@ -91,9 +111,9 @@ def _is_numbered_heading(title: str) -> bool:
 
 
 def _false_heading_reason(
-    title: str, body_texts: list[str], *, sequence_member: bool = False
+    title: str, body_texts: list[str], *, sequence_member: bool = False, scheme: str | None = None
 ) -> str | None:
-    if _is_numbered_heading(title) or sequence_member:
+    if _is_numbered_heading(title) or sequence_member or _scheme_level(title, scheme) is not None:
         return None
     if title[0] in _LEADING_BULLETS or unicodedata.category(title[0]) == "Pd":
         return "bullet"
@@ -331,7 +351,10 @@ def chunk_document(
     hard_cap_tokens: int = 6000,
     target_tokens: int = 256,
     sentence_overlap: int = 1,
+    heading_scheme: str | None = None,
 ) -> ChunkingResult:
+    if heading_scheme is not None and heading_scheme not in HEADING_SCHEMES:
+        raise ValueError(f"heading_scheme phải là một trong {HEADING_SCHEMES}")
     if not 0 < target_tokens <= max_tokens:
         raise ValueError("target_tokens phải lớn hơn 0 và không vượt max_tokens")
     if max_table_tokens <= 0 or hard_cap_tokens <= 0:
@@ -533,6 +556,7 @@ def chunk_document(
                 title,
                 body_texts,
                 sequence_member=node_index in sequence_members,
+                scheme=heading_scheme,
             )
             if false_heading_reason:
                 warning_type = (
@@ -544,8 +568,12 @@ def chunk_document(
                 node_type = "text"
             else:
                 flush()
+                scheme_level = _scheme_level(title, heading_scheme)
                 explicit_level = _heading_number_level(title)
-                if explicit_level is not None:
+                if scheme_level is not None:
+                    level = numbered_level = scheme_level
+                    numbered_heading_seen = True
+                elif explicit_level is not None:
                     level = explicit_level
                     numbered_level = level
                     numbered_heading_seen = True

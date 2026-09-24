@@ -144,6 +144,7 @@ class IngestDocument:
         target_tokens: int = 256,
         sentence_overlap: int = 1,
         strip_lines: list[str] | tuple[str, ...] = (),
+        heading_scheme: str | None = None,
     ) -> IngestSummary:
         validate_doc_id(doc_id)
         suffix = Path(filename).suffix.lower()
@@ -188,6 +189,9 @@ class IngestDocument:
             },
             "tokenizer_id": self.counter.identifier,
         }
+        if heading_scheme is not None:
+            # chỉ ghi khi bật, để hash cấu hình của tài liệu cũ không đổi
+            config["chunk"]["heading_scheme"] = heading_scheme
         config_hash = _hash(config)
         stored_parse = self.store.find_parse(doc_id, source_hash, parser_config_hash)
         source_seen_before = stored_parse is not None
@@ -235,6 +239,7 @@ class IngestDocument:
             hard_cap_tokens=hard_cap_tokens,
             target_tokens=target_tokens,
             sentence_overlap=sentence_overlap,
+            heading_scheme=heading_scheme,
         )
         windows = assemble_windows(result.chunks)
         quality = _text_quality([chunk.text for chunk in result.chunks])
