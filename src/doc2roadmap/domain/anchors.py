@@ -35,6 +35,22 @@ def _compact(text):
     return "".join(folded.split())
 
 
+def _symbolic(name):
+    # Tên viết bằng ký hiệu toán: có chữ số, dấu LaTeX/phân cách, hoặc ký tự đổi khi NFKC (𝐅, 𝑇, ℒ).
+    return any(char.isdigit() or char in "^_{},()" or unicodedata.normalize("NFKC", char) != char for char in name)
+
+
+def symbolic_name_chunks(node, chunks):
+    """Chunk nào nhắc tên ký hiệu của khái niệm, tìm trên toàn tài liệu sau khi bỏ khoảng trắng.
+
+    Mention map (A6) khớp tên theo ranh giới từ nên bỏ sót `𝐅 𝑚 , 𝑛` của tên `𝐅^{m,n}`; tên chữ thường thì không cần — và
+    so sau khi bỏ khoảng trắng sẽ khớp nhầm ("Addition" trong "additional").
+    """
+    values = [node["name"], *(alias["name"] if isinstance(alias, dict) else alias for alias in node.get("aliases", []))]
+    names = {_compact(value) for value in values if _symbolic(value) and len(_compact(value)) >= 3}
+    return {chunk.chunk_id for chunk in chunks if names and any(name in _compact(chunk.text) for name in names)}
+
+
 def _sentences(text):
     return [(match.start(), match.group(0).strip()) for match in _SENTENCE.finditer(text) if match.group(0).strip()]
 

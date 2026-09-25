@@ -146,6 +146,10 @@ căn cứ và câu có tín hiệu định nghĩa (đã có trong provenance: "l
 trước, rồi theo vị trí; lấy tối đa 6 câu từ các chunk khác nhau, kèm một câu ngữ cảnh mỗi phía. Chỉ khớp tên nguyên
 văn thì 98/438 khái niệm doc-2 và 22/225 doc-1 không có ứng viên nào (tên mô tả do mô hình đặt, ký hiệu toán); sau
 sửa còn 1 và 0 — phần còn lại là khái niệm không có căn cứ A3 (ảnh).
+Lượt 3–4 (2026-09-25): so tên còn bỏ dấu LaTeX `^ _ { } \` và gộp gạch nối (– — − → -); với **tên ký hiệu** (chữ số,
+dấu LaTeX/phân cách, ký tự đổi khi NFKC) thì tìm tên trên **toàn tài liệu** — mention map A6 khớp theo ranh giới từ nên bỏ
+sót `𝐅 𝑚 , 𝑛` của `𝐅^{m,n}`, làm vị trí dạy rơi về chunk dùng muộn (3/6 vi phạm Q6 của chương vàng doc-2). Tên chữ thường
+không tìm toàn tài liệu: bỏ khoảng trắng rồi so sẽ khớp nhầm ("Addition" trong "additional").
 
 **W12 — Một lời gọi cho mỗi khái niệm, trạng thái là thuộc tính của khái niệm.** Mô hình thấy mọi ứng viên cùng lúc và trả:
 câu neo (mã ứng viên + câu trích nguyên văn, kiểm chuỗi bằng mã) hoặc không; và trạng thái `defined_here` /

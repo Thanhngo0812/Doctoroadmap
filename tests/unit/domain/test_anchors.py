@@ -122,3 +122,15 @@ def test_latex_markup_and_dash_variants_do_not_hide_the_name():
     dashed = {"node_id": "crf", "name": "Column-row factorization", "aliases": []}
     text = "3.56 column–row factorization: every matrix is a product of two matrices."
     assert candidate_sentences(dashed, [chunk("c379", 379, text)])
+
+
+def test_a_symbolic_name_is_searched_across_the_whole_document_but_a_plain_word_is_not():
+    from doc2roadmap.domain.anchors import symbolic_name_chunks
+
+    chunks = [chunk("c356", 356, "The set of all 𝑚-by-𝑛 matrices with entries in 𝐅 is denoted by 𝐅 𝑚 , 𝑛 ."),
+              chunk("c431", 431, "Suppose 𝐴 ∈ 𝐅 𝑚 , 𝑛 and 𝐶 ∈ 𝐅 𝑛 , 𝑝 ."),
+              chunk("c500", 500, "An additional remark about addition.")]
+    fmn = {"node_id": "fmn", "name": "𝐅^{m,n}", "aliases": []}
+    assert symbolic_name_chunks(fmn, chunks) == {"c356", "c431"}
+    # tên chữ thường đã được mention map (A6) khớp theo ranh giới từ; so sau khi bỏ khoảng trắng sẽ khớp nhầm "additional"
+    assert symbolic_name_chunks({"node_id": "add", "name": "Addition", "aliases": []}, chunks) == set()

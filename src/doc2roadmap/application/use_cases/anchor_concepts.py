@@ -6,7 +6,13 @@ from typing import Any
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.prompt_library import load_prompt
-from doc2roadmap.domain.anchors import STATUSES, anchor_fields, candidate_sentences, validate_anchor_response
+from doc2roadmap.domain.anchors import (
+    STATUSES,
+    anchor_fields,
+    candidate_sentences,
+    symbolic_name_chunks,
+    validate_anchor_response,
+)
 from doc2roadmap.domain.canonical import digest
 
 ANCHOR_SCHEMA: dict[str, Any] = {
@@ -52,7 +58,7 @@ class AnchorConcepts:
         config = {"algorithm_id": "a10-teaching-anchor-v3", "validated_version": upstream.version,
                   "validated_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks_artifact.version,
                   "model_id": self.model.model_id, "generation": self.generation, "prompt_hash": prompt_hash,
-                  "candidates": CANDIDATES, "candidate_rule": "nfkc-latex-dash-name+a3-evidence",
+                  "candidates": CANDIDATES, "candidate_rule": "nfkc-latex-dash-name+a3-evidence+symbolic-whole-doc",
                   "pricing_usd_per_million": PRICING_USD_PER_MILLION,
                   "pricing_source": PRICING_SOURCE}
         config_hash, source_hash = digest(config), digest(upstream.payload)
@@ -80,6 +86,7 @@ class AnchorConcepts:
                 continue
             ids = set(node.get("defining_chunk_ids", [])) | mentioned.get(node["node_id"], set())
             ids |= {span["chunk_id"] for span in node.get("evidence", []) if isinstance(span, dict) and "chunk_id" in span}
+            ids |= symbolic_name_chunks(node, chunks_artifact.result.chunks)
             candidates_of[node["node_id"]] = candidate_sentences(
                 node, [chunk_by_id[c] for c in ids if c in chunk_by_id], limit=CANDIDATES)
         pending = [node for node in sorted(nodes, key=lambda n: n["node_id"])

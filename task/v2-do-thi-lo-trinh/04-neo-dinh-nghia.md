@@ -170,3 +170,19 @@ danh tính (áp quyết định T5) và A10 cho doc-1, doc-2. Coi là **hồi qu
 - thiếu đầu cạnh vàng > 0 trên doc-1 hoặc doc-2.
 Kỳ vọng (không phải cổng): các vi phạm Q6 doc-2 dính `𝐅^{m,n}` biến mất nếu nút này nhận câu neo ở chunk 356. Q6 báo kèm sàn
 nhiễu U1.
+
+### Lượt 3 — kết quả, 0,468 USD (`scripts/phan-tich-v2/chay_luot3.py`)
+
+Tiêu chí hồi quy **đạt hết**: doc-1 không loại gì ngoài 3 node hành chính và `det(Y)`; doc-3 loại nhầm 0/33 (loại đúng 6/13);
+cổng A loại nhầm tổng 1 (`API foundation`); doc-5 0/25; thiếu đầu cạnh vàng 0. Q6 doc-1 2,6%, doc-2 9,8% — **kỳ vọng không
+thành**: `𝐅^{m,n}` vẫn `mentioned_only`. **Lỗi đo của tôi:** phép đếm offline tìm tên trên *mọi* chunk, còn bộ chọn câu chỉ tìm
+trong chunk đã gom (định nghĩa, mention cứng, căn cứ A3) — chunk 356 không thuộc các chunk đó vì mention map A6 cũng so tên
+kiểu cũ. Sửa luật so tên là cần nhưng chưa đủ.
+
+### Lượt 4 — khoá trước khi chạy (2026-09-25): tìm tên ký hiệu trên toàn tài liệu
+
+Đo đúng thứ sẽ đổi (tập câu ứng viên) trên ba phương án: tìm mọi tên trên toàn tài liệu → doc-2 122 nút đổi (khớp nhầm
+"Addition" trong "additional"); chỉ nút thiếu câu tín hiệu → 87; **chỉ tên ký hiệu** (chữ số, `^ _ { } , ( )`, ký tự đổi khi
+NFKC) → **doc-2 26, doc-1 3, mọi tài liệu khác 0**, và `𝐅^{m,n}` nhận câu định nghĩa chunk 356 làm ứng viên đầu. Chọn phương án
+cuối (`symbolic_name_chunks`). Chỉ chạy doc-1, doc-2 — tài liệu khác 0 nút đổi ứng viên nên kết quả lượt 3 giữ nguyên.
+Tiêu chí hồi quy như lượt 3 (doc-1; thiếu đầu cạnh vàng = 0). Kỳ vọng (không phải cổng): vi phạm dính `𝐅^{m,n}` biến mất.

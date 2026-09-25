@@ -41,6 +41,8 @@ def load_review(path="artifacts/a8-gold/duyet-danh-tinh-output.xlsx"):
 
 
 VALIDATED = {"doc-1": 9, "doc-2": 6, "doc-3": 6, "baocao-canhan": 96, "naive-bayes": 26, "nhap-mon-ml": 26, "doc-5": 6}
+if len(sys.argv) > 1:  # lượt 4: chỉ các tài liệu có nút đổi ứng viên
+    VALIDATED = {doc: VALIDATED[doc] for doc in sys.argv[1:]}
 GOLD = {"doc-1": "artifacts/a8-gold/doc-1-10-12-vang.json", "doc-2": "artifacts/a8-gold/doc-2-98-115-vang.json"}
 
 pipeline, _ = build_learning_graph(allow_spend=True)
