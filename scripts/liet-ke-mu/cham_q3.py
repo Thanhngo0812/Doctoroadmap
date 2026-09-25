@@ -5,9 +5,11 @@ Hai bước, vì so tên mờ không được để máy tự quyết:
    hoá NFKC, chữ thường, bỏ khoảng trắng thừa) là khớp tự động; còn lại ghi vào `liet-ke-mu-doi-chieu.xlsx` kèm ba khái
    niệm máy gần nhất để người xác nhận.
 2. Người điền cột «Xác nhận» (tên khái niệm máy tương ứng, hoặc «Không có»), rồi chạy lại: Q3 = khớp / tổng.
+   Dòng ghép nhiều khái niệm ("Ẩn chính và ẩn phụ"): ghi tên máy cho từng phần, ngăn bằng «;», phần máy không có thì
+   «Không có: <tên>». Dòng chỉ tính là có khi không phần nào «Không có».
 
 Khái niệm máy là khái niệm `learnable` của bản canonical mới nhất của tài liệu — lộ trình dựng trên đúng danh sách này.
-Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/liet-ke-mu/cham_q3.py
+Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/liet-ke-mu/cham_q3.py [tệp liệt kê]
 """
 import difflib
 import math
@@ -87,7 +89,7 @@ def main():
                 hit += 1
                 continue
             answer = confirmed.get(key)
-            if answer and answer != NONE:
+            if answer and NONE not in str(answer):
                 hit += 1
             elif answer is None:
                 close = difflib.get_close_matches(norm(name), list(names), n=3, cutoff=0.5)
@@ -103,7 +105,8 @@ def main():
         sheet = workbook.active
         sheet.title = "Đối chiếu"
         sheet.append(["STT", "Tài liệu", "Phần", "Khái niệm người liệt kê", "Người ghi (?)", "Gần nhất 1", "Gần nhất 2",
-                      "Xác nhận (tên khái niệm máy tương ứng, hoặc «Không có»)"])
+                      "Xác nhận: tên khái niệm máy tương ứng; dòng ghép nhiều khái niệm thì mỗi phần một tên, ngăn bằng «;»,"
+                      " phần máy không có ghi «Không có: <tên>»"])
         for index, row in enumerate(pending, 1):
             sheet.append([index, row[0], row[1], row[2], row[3], row[4], row[5], None])
         for cell in sheet[1]:
@@ -121,4 +124,6 @@ def main():
 
 
 if __name__ == "__main__":
+    if len(sys.argv) > 1:  # danh sách khác tệp mặc định, ví dụ bản phương án (b)
+        LIST = Path(sys.argv[1])
     main()

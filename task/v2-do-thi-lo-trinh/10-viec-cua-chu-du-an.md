@@ -40,7 +40,7 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 | T5 | **xong** — như T4. 4/4 gộp chạm vàng được duyệt; `Trace` "Không chắc" → giữ tách |
 | T3 | **sẵn sàng**: `nhan-khai-niem-doc-5.xlsx` — 25 khái niệm của doc-5 (N1), khoảng 5–10 phút; phải do người, trước khi tôi chạy neo trên doc-5 |
 | T6 | **nhận 2026-09-25** — Q8: 4,40 / 4,20 (stage cũ 1,70 / 1,95); chủ dự án xác nhận AI chỉ hỗ trợ ghi |
-| T7 | **nhận nhưng chưa dùng được**: tệp ghi "AI đọc độc lập; chưa được người chấm xác nhận", và đọc **trang in** thay vì trang PDF (doc-2 lệch 14 trang, doc-1 lệch 1) — cần làm lại theo trang PDF, do người |
+| T7 | **phương án (b), 2026-09-25**: dùng trang PDF thực đọc làm mẫu (lệch ghi trong tệp). Khớp đúng tên tự động 15/73; **58 tên cần người xác nhận** ở `liet-ke-mu-doi-chieu.xlsx` (cột H; dòng ghép nhiều khái niệm ghi từng phần, ngăn «;») rồi mới ra Q3 |
 | T8 | **xong 2026-09-25** — bộ vàng N2 khoá: `doc-4-chuong-8-vang.json`, 72 cạnh (41 trùng + 31/36 giữ sau hội ý) |
 | T11 | **xong 2026-09-25** — pass cạnh ngầm trượt cổng 2 (17–58% "không làm sai thứ tự học"), không bật |
 | T10 | chưa tới lượt |
