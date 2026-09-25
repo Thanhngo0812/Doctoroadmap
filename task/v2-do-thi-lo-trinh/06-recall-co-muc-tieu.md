@@ -7,7 +7,7 @@ cho mỗi tài liệu với neo và bản đồ danh tính đã dời lên trư�
 
 **Blocked by:** 04, 05; vé 10 — T1 (chấm mù) để biết precision thật của cạnh dư
 
-**Status:** chờ 04, 05, T1
+**Status:** lượt 1 xong (2026-09-25): pass cạnh ngầm trượt cổng 2, không bật
 
 ## Cổng nhận (khoá trước khi chạy)
 
@@ -141,3 +141,23 @@ ngẫu nhiên, seed 20260925. Chấm: `scripts/cham-mu/cham_bang_v2.py` — gộ
 24/24 đúng thì cận dưới Wilson 95% chỉ 86% < 90%; với 12 cạnh là 76%. Theo luật "khoảng chứa vùng trượt thì chưa đủ bằng
 chứng", T11 chỉ có thể cho **trượt** hoặc **chưa đủ bằng chứng**, không cho "đạt chắc". Ghi ra để không đọc kết quả theo ý
 muốn. Tách hàm `write_sheet` khỏi `tao_bang.py`: sinh lại T1 trong thư mục nháp cho đúng từng cặp như khoá cũ (57/57, 30/30).
+
+### T11 — kết quả nhận 2026-09-25 (`scripts/cham-mu/cham_bang_v2.py`)
+
+Tệp `cham-mu-v2-doc-{1,2}-A{1,2}.xlsx`; không có dấu hiệu AI trong ô nào; không ghi giờ làm.
+
+| cạnh ngầm | doc-1 A1 | doc-1 A2 | doc-2 A1 | doc-2 A2 |
+|---|---|---|---|---|
+| "không làm sai thứ tự học" | 2/12 = 17% (5–45%) | 5/12 = 42% (19–68%) | 14/24 = 58% (39–76%) | 12/24 = 50% (31–69%) |
+| ngược chiều | 0/12 | 0/12 | 0/24 | 0/24 |
+| **không cần thứ tự** | 10/12 | 7/12 | 10/24 | 12/24 |
+| cạnh vàng khác xác nhận lại | 5/5 | 4/5 | 5/5 | 5/5 |
+
+**Cổng 2 — trượt** trên cả hai chương, theo cả hai người; cận trên Wilson (45–76%) nằm hẳn dưới 0,90. Lỗi không phải ngược
+chiều mà là **thừa ràng buộc** — đúng loại lỗi T1 đã thấy ở cạnh dư. Người chấm xác nhận lại cạnh vàng 19/20, nên phép chấm
+đáng tin.
+
+**Quyết định: không bật pass cạnh ngầm.** Mã và stage `implicit` giữ lại (không nối composition) làm bằng chứng. Đọc chung với
+đối chứng: mức tăng Q5 bằng đúng luật "n gần nhất", còn chính các cạnh thêm vào thì phần lớn là ràng buộc không cần. Vé 06 kết
+thúc lượt 1 với **Q5 không đổi** trong chuỗi mặc định; hướng recall tiếp theo (nếu có) phải nhắm cạnh `strong` và đo thẳng
+"không cần thứ tự", không đo bằng Q5 bao đóng.

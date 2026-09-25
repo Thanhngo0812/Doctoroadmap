@@ -61,3 +61,16 @@ Mở đầu lộ trình `doc-1` nay đọc như giáo trình: module 2–3 "1.1 
 Test: 14 test domain (đột biến bỏ ràng buộc cạnh, khoá vị trí theo mã node, bỏ phạt mục, đảo chiều phá hoà đều bị giết —
 đột biến khoá vị trí ban đầu **sống sót** vì dữ liệu test trùng thứ tự chữ cái; đã sửa test), 3 test ứng dụng, 1 test bộ
 chấm. Độ mạch lạc chấm bằng người ở vé 10 (T6).
+
+## T6 / Q8 — kết quả nhận 2026-09-25 (`scripts/cham-module/cham_bang.py`)
+
+| | A1 | A2 |
+|---|---|---|
+| module mới (neo sách), mạch lạc TB | **4,40** (bootstrap 95% 3,90–4,80), ≥ 4 điểm 17/20 | **4,20** (3,65–4,65), 17/20 |
+| stage cũ (Coffman–Graham) | 1,70, ≥ 4 điểm 1/20 | 1,95, 1/20 |
+| tên module đúng nội dung | 80% (n = 15) | 73% (n = 15) |
+
+Hai người lệch ≤ 1 điểm ở 40/40 dòng. **Nguồn nhãn:** bản A2 ghi ở ô ghi chú "Bắt đầu 12:17; xong 12:23 (giờ VN, **AI thực
+hiện**)"; bản A1 không ghi giờ, không có dấu hiệu AI. Q8 (≥ 4/5): ước lượng điểm đạt với cả hai bản; khoảng bootstrap chứa
+vùng dưới 4 nên theo luật khoảng tin cậy là **chưa đủ bằng chứng**. Điều chắc chắn hơn: module mới hơn hẳn stage cũ (chênh
+≈ 2,5 điểm, khoảng không chồng nhau). Chờ chủ dự án xác nhận nguồn nhãn A2 trước khi dùng làm cổng.

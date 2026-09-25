@@ -103,3 +103,12 @@ node đó, không phải sửa tiêu chí. Nhãn N1 (T3) có sẵn lựa chọn 
 
 **Cổng 1 (Q9):** ước lượng điểm 44/48 = 92% ≥ 90% nên đạt theo chữ của cổng; nhưng Wilson 95% là 80%–97%, chứa vùng trượt — theo luật của vé 07 ("khoảng chứa vùng trượt thì chưa đủ bằng chứng") thì Q9 **chưa đủ bằng chứng**. Cỡ mẫu để cận dưới Wilson ≥ 90%: ≈ 830 dòng nếu tỉ lệ thật 92%, ≈ 127 nếu 95%, ≈ 69 nếu 97% — với tỉ lệ quanh 92% thì kiểm thêm không phải cách khả thi; đường thực tế là nâng chất lượng neo (4 lỗi đều "chỉ nhắc qua"). Cổng 2–3
 vẫn chờ N1 (T2 phần N1, T3). doc-4 đã nhận nhưng chủ dự án xếp vào vai N2.
+
+## N1 = doc-5 (nhận 2026-09-24, kiểm 2026-09-25)
+
+`doc-5.pdf`: slide "Chương 3 — Đại số quan hệ", môn Cơ sở dữ liệu (ĐH CNTT), 31 trang, chữ thật. Đạt: dạng slide, khác
+môn, nhiều ví dụ dùng bảng dữ liệu riêng (NHANVIEN/NV001…, TAIXE, KETQUATHI, S#/P#) và 9 "Câu hỏi" bài tập. **Không đạt:
+không có trang hành chính nào** (đề cương, điểm, lịch, giảng viên) — "điểm thi" chỉ nằm trong bảng ví dụ. Hệ quả: cổng 2
+("loại đúng ≥ 80% khái niệm phải loại") trên N1 chủ yếu đo việc loại **chi tiết của ví dụ**; loại trang hành chính không
+được kiểm trên dữ liệu mới, chỉ có bằng chứng phát triển (doc-1 3/3). Ghi trước khi chạy.
+Quy trình: nhập → A3 → A4 → bảng nhãn T3 → **người** gán nhãn → mới chạy neo trên doc-5.
