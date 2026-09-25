@@ -46,3 +46,7 @@ Tôi chỉ đọc số đếm, không mở nội dung nhãn. Không sửa tệp 
 
 Q1 chưa có phép đo; thêm việc T12 (vé 10): sau lần chạy, bốc 50 khái niệm ngẫu nhiên từ lộ trình mỗi tài liệu giữ lại, người
 kiểm tay. Seed ghi vào vé này trước khi bốc.
+
+## Q7b (thêm 2026-09-25)
+
+Chủ dự án thêm Q7b (độ chính xác tổ tiên trong chương, ≥ 70%); lần chạy của vé này chấm Q1–Q9 và Q7b.

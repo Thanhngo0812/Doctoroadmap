@@ -35,6 +35,7 @@ Neo mọi thứ vào văn bản, dùng mô hình cho phần văn bản không t�
 | Q5 | đủ ràng buộc | tỉ lệ cạnh vàng có đường đi trong đồ thị máy; từ 2026-09-24 báo kèm đường cơ sở "nối mỗi đích với n khái niệm dạy ngay trước" cùng số cạnh thêm, can thiệp chỉ được ghi công phần vượt đường cơ sở (vé 06: Q5 thưởng cạnh theo thứ tự sách) | ≥ 85% |
 | Q6 | thứ tự lộ trình | (ngược + thiếu đầu) / \|vàng\| trên dãy học | ≤ 5% |
 | Q7 | lộ trình tới mục tiêu | trung bình tỉ lệ tổ tiên-vàng có trong tổ tiên-máy; tỉ lệ đích đủ trọn | ≥ 95%; ≥ 80% |
+| Q7b | lộ trình tới mục tiêu không thừa *(chủ dự án thêm 2026-09-25)* | với mỗi đích của chương vàng: trong các tổ tiên-máy thuộc chương vàng, tỉ lệ là tổ tiên-vàng; trung bình trên các đích có ít nhất một tổ tiên-máy trong chương. Cận dưới — vàng chặt. Lý do: Q7 chỉ đo phủ nên nối thừa theo thứ tự sách cũng đẩy Q7 lên (doc-2: phủ 58% → 80%, chính xác 93% → 33%) | ≥ 70% |
 | Q8 | module mạch lạc | thang 1–5, hai người chấm mù A/B; chỉ số tự động chỉ để kiểm tra tỉnh táo | ≥ 4 / 5 |
 | Q9 | nguồn đọc đúng | kiểm tay mẫu 50 câu neo | ≥ 90% |
 | Q10 | khái quát | Q1–Q9 trên tập giữ lại, cấu hình đã khoá | đạt Q1–Q9 |

@@ -347,3 +347,17 @@ def test_the_order_scorer_applies_the_identity_map_to_gold_without_touching_the_
     assert report["gold_edge_count"] == 1 and report["identity_dropped_gold_edges"] == 1
     assert report["gold_order"]["violated"] == 1 and report["gold_order"]["out_of_scope"] == 0
     assert gold.read_bytes() == before
+
+
+def test_the_order_report_carries_target_precision_q7b(tmp_path):
+    # Chương vàng: n_mau, n_uocluong, n_khoang. Vàng chỉ có n_mau → n_uocluong. Máy thêm n_mau → n_khoang (trong chương,
+    # vàng nói không cần) và n_bienco → n_uocluong (n_bienco ngoài chương: không phán được, bỏ qua).
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong")})
+    payload = staged_payload([["n_mau", "n_bienco"], ["n_uocluong", "n_khoang"]])
+    payload["requires_edges"] = [{"source": "n_mau", "target": "n_uocluong", "edge_type": "requires"},
+                                 {"source": "n_mau", "target": "n_khoang", "edge_type": "requires"},
+                                 {"source": "n_bienco", "target": "n_uocluong", "edge_type": "requires"}]
+    precision = score_roadmap_order(write_graph(tmp_path, payload), [gold])["target_precision"]
+    # n_uocluong: {n_mau} cần → 1; n_khoang: {n_mau} không cần → 0.
+    assert precision["targets"] == 2 and precision["mean_precision"] == pytest.approx(0.5)
+    assert (precision["in_chapter_ancestors"], precision["needed"]) == (2, 1)

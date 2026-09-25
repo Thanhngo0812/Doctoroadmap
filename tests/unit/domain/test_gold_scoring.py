@@ -369,3 +369,19 @@ def test_target_coverage_counts_how_much_of_what_a_target_needs_the_machine_grap
     assert result["complete"] == 1
     assert result["mean_coverage"] == pytest.approx((2 / 3 + 1) / 2)
     assert result["median_machine_ancestors"] == pytest.approx((3 + 1) / 2)  # t: {a, b, x}; b: {a}
+
+
+def test_target_precision_q7b_counts_how_much_of_what_the_machine_makes_a_target_require_is_really_needed():
+    from doc2roadmap.domain.gold_scoring import target_precision
+
+    # Chương vàng gồm t, b, a, x. Vàng: a → b → t và c → t (c ngoài chương). Máy: a → b → t, x → t, z → t (z ngoài chương).
+    gold = {("a", "b"), ("b", "t"), ("c", "t")}
+    machine = {("a", "b"), ("b", "t"), ("x", "t"), ("z", "t")}
+    result = target_precision(gold, machine, ["t", "b", "a", "x"])
+    # t: tổ tiên máy trong chương {a, b, x}, cần {a, b} → 2/3 (z ngoài chương không tính); b: {a}, cần → 1/1;
+    # a và x không có tổ tiên máy trong chương nên không tính.
+    assert result["targets"] == 2
+    assert result["mean_precision"] == pytest.approx((2 / 3 + 1) / 2)
+    assert (result["in_chapter_ancestors"], result["needed"]) == (4, 3)
+    # Đích mà vàng nói không cần gì nhưng máy bắt học trước một khái niệm trong chương: độ chính xác 0, vẫn tính.
+    assert target_precision(set(), {("a", "x")}, ["a", "x"])["mean_precision"] == 0

@@ -52,6 +52,23 @@ cũng là tổ tiên theo vàng. Đây là cận dưới của độ chính xác
 - doc-1 đã thừa (59%); doc-2 thiếu (58%). Độ thừa doc-1 phân tán: bỏ riêng cạnh "cầu nối" tệ nhất chỉ bớt 6/54 tổ tiên thừa.
 - Loại căn cứ không tách được cạnh cần/thừa: gần như mọi cạnh là `trong_dinh_nghia` (đối chiếu T1).
 
-**Đề xuất (chờ chủ dự án duyệt, không áp hồi tố):** thêm **Q7b — độ chính xác tổ tiên trong chương**, báo cạnh Q7, để can thiệp
+**Quyết định chủ dự án 2026-09-25: thêm Q7b, ngưỡng ≥ 70%**, áp từ nay (kể cả tập giữ lại, vé 07). Đề xuất gốc: thêm **Q7b — độ chính xác tổ tiên trong chương**, báo cạnh Q7, để can thiệp
 tăng phủ bằng cách nối thừa không được tính là tiến bộ. Ngưỡng cần chủ dự án chốt trước khi dùng làm cổng; tôi không tự đặt ngưỡng
 sau khi đã thấy số trên dữ liệu phát triển.
+
+Mã: `gold_scoring.target_precision`, báo trong `score_roadmap_order` dưới khoá `target_precision` cạnh `target_coverage`
+(cùng tập cạnh `requires` + `bypassed`, cùng bản đồ danh tính). Đột biến bỏ lọc "chỉ tổ tiên trong chương" → 2 test đỏ.
+
+### Q7b chấm bằng bộ chấm (2026-09-25)
+
+| | Q6 | Q7 phủ | đích đủ | **Q7b** (cần / tổ tiên trong chương) |
+|---|---|---|---|---|
+| doc-1 C8 v2 (chuỗi mặc định, stages v18) | 5,0% | 89% | 9/24 | 60% (119/175) |
+| doc-1 neo + danh tính (lượt 4, stages v35) | 2,6% | 90% | 9/23 | **59%** (108/162) |
+| doc-1 + pass cạnh ngầm (stages v29) | 2,6% | 98% | 20/23 | 51% (130/218) |
+| doc-2 C8 v2 (chuỗi mặc định, stages v13) | 8,2% | 58% | 0/23 | 93% (26/28) |
+| doc-2 neo + danh tính (lượt 4, stages v29) | 4,9% | 58% | 0/23 | **93%** (26/28) |
+| doc-2 + pass cạnh ngầm (stages v23, dựng trước khi sửa `𝐅^{m,n}`) | 9,8% | 68% | 0/23 | 69% (42/69) |
+
+Q7b ≥ 70%: doc-2 đạt, **doc-1 trượt (59%)** ở mọi cấu hình — đồ thị doc-1 nối thừa từ A8, không do bước neo hay danh tính.
+Q7 (≥ 95%, ≥ 80% đích đủ) trượt cả hai chương. Hai chương lệch hai phía: doc-1 thừa, doc-2 thiếu.

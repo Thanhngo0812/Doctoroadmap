@@ -526,3 +526,28 @@ def target_coverage(gold_edges, machine_edges, targets):
         "mean_coverage": sum(value for value, _, _ in rows) / len(rows) if rows else None,
         "median_machine_ancestors": _median([size for _, _, size in rows]),
     }
+
+
+def target_precision(gold_edges, machine_edges, targets):
+    """Q7b (chủ dự án thêm 2026-09-25): tổ tiên máy của mỗi đích có thật sự cần không.
+
+    Chỉ xét tổ tiên máy thuộc chương vàng (`targets`) — ngoài chương vàng chưa gán đủ để phán. Đích không có tổ tiên máy nào
+    trong chương thì không tính. Là cận dưới: vàng chặt, người chấm mù coi khoảng nửa cạnh dư là cần (T1).
+    """
+    scope = set(targets)
+    gold_ancestors, machine_ancestors = {}, {}
+    for source, target in transitive_closure(gold_edges):
+        gold_ancestors.setdefault(target, set()).add(source)
+    for source, target in transitive_closure(machine_edges):
+        machine_ancestors.setdefault(target, set()).add(source)
+    rows = []
+    for target in targets:
+        have = machine_ancestors.get(target, set()) & scope
+        if have:
+            rows.append((len(have & gold_ancestors.get(target, set())), len(have)))
+    return {
+        "targets": len(rows),
+        "mean_precision": sum(needed / size for needed, size in rows) / len(rows) if rows else None,
+        "in_chapter_ancestors": sum(size for _, size in rows),
+        "needed": sum(needed for needed, _ in rows),
+    }
