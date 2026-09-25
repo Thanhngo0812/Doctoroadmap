@@ -132,3 +132,18 @@ nhắc", 0 phải loại**. Ghi chú dòng 1 có câu "Bản này do AI gán"; c
 - **Báo kèm, không phải cổng:** khớp "được dạy" ↔ `taught` và "chỉ được nhắc" ↔ `mentioned_only` giữa C8 v3 và nhãn; cùng
   các số đó cho C8 v2 (bản tạm đang bật) để so.
 Chạy: `roadmap --allow-spend` cho doc-5 tới đồ thị validated (chuỗi mặc định, có C8 v2), rồi neo C8 v3 trên validated đó.
+
+### N1 doc-5 — kết quả (2026-09-25, `scripts/phan-tich-v2/cham_n1.py`)
+
+Chuỗi mặc định doc-5: validated v6 → C8 v2 v7 → stages v8 (25 khái niệm, 4 module), 0,105 USD. Neo C8 v3: teaching v9, 0,014
+USD. Nhãn T3 SHA-256 `3fb3e3f3c19dca94…`.
+
+| | C8 v3 (neo) | C8 v2 (bản tạm) |
+|---|---|---|
+| loại nhầm (cổng: 0/25) | **0/25** | 0/25 |
+| loại đúng | không có mẫu số | không có mẫu số |
+| "được dạy" → `taught` | 17/19 | 16/19 |
+| "chỉ được nhắc" → `mentioned_only` | 2/6 | 3/6 |
+
+Vế loại nhầm **đạt theo chữ**; 0/25 có cận trên Wilson 95% 13% nên theo luật khoảng thì **chưa đủ bằng chứng** cho "≤ 2%" — cần
+gộp thêm N1 (doc-6). Vế loại đúng chưa chấm được. Trên doc-5, v3 và v2 ngang nhau.

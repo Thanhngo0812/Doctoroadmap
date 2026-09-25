@@ -29,6 +29,16 @@ def _hash(value: Any) -> str:
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
+# Âm tiết tiếng Việt bị tách ("th ứ c", "Gi ớ i"): một token chỉ gồm phụ âm đầu đứng ngay trước một token mở đầu bằng
+# nguyên âm tiếng Việt có dấu. Văn bản thường gần như không có mẫu này; biến toán học một chữ ("n", "m") không đứng trước
+# nguyên âm tiếng Việt. Đo trên kho: bản vỡ chữ doc-4 22,4%, doc-6 3,6%; mọi bản sạch <= 0,27%.
+_ONSET = r"(?:ngh|ng|nh|ch|tr|th|ph|kh|gh|gi|qu|[bcdđghklmnpqrstvx])"
+_VIETNAMESE_VOWELS = "ăâêôơưàáảãạằắẳẵặầấẩẫậèéẻẽẹềếểễệìíỉĩịòóỏõọồốổỗộờớởỡợùúủũụừứửữựỳýỷỹỵ"
+_SPLIT_SYLLABLE = re.compile(rf"(?<!\S){_ONSET} [{_VIETNAMESE_VOWELS}]", re.IGNORECASE)
+SPLIT_SYLLABLE_RATIO = 0.01
+SPLIT_SYLLABLE_MIN = 20
+
+
 def _text_quality(texts: list[str]) -> dict[str, Any]:
     text = "".join(texts)
     letters = [char for char in text if char.isalpha() and unicodedata.category(char) != "Co"]
@@ -54,8 +64,18 @@ def _text_quality(texts: list[str]) -> dict[str, Any]:
             f"{replacement_ratio:.2%} ký tự thay thế; "
             "không đủ chất lượng làm nguồn bộ vàng."
         )
+    joined = unicodedata.normalize("NFC", " ".join(texts))
+    split_count = len(_SPLIT_SYLLABLE.findall(joined))
+    word_count = len(joined.split())
+    split_ratio = split_count / word_count if word_count else 0.0
+    if split_count >= SPLIT_SYLLABLE_MIN and split_ratio >= SPLIT_SYLLABLE_RATIO:
+        warnings.append(
+            f"Chữ tiếng Việt có thể bị tách rời âm tiết: {split_count} chỗ ({split_ratio:.2%} số từ) dạng \"th ứ c\"; "
+            "đọc lại bằng `ingest --pdf-backend pypdfium2` trước khi chạy A3."
+        )
     return {
         "readable_letter_count": letter_count,
+        "split_syllable_ratio": split_ratio,
         "accented_letter_ratio": accent_ratio,
         "private_use_ratio": private_ratio,
         "replacement_character_ratio": replacement_ratio,

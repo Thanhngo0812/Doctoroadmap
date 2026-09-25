@@ -388,3 +388,16 @@ def test_unsplittable_warning_is_stored_in_chunk_manifest(tmp_path: Path) -> Non
     warning = f"{OVERSIZE_SENTENCE_BOUNDARY}: section <document>"
     assert summary.structure_warnings == [warning]
     assert store.load_latest_chunks("book").manifest["structure_warnings"] == [warning]
+
+
+def test_text_quality_warns_when_vietnamese_syllables_are_split_apart() -> None:
+    # Mẫu thật của doc-6 đọc bằng docling-parse: phụ âm đầu và vần bị tách thành hai token ("th ứ c").
+    split = "D ữ li ệ u là m ộ t mô t ả hình th ứ c v ề nh ữ ng s ự ki ệ n. "
+    clean = "Dữ liệu là một mô tả hình thức về những sự kiện. "
+    math = "Suppose n m v are vectors and T is a linear map on V with n rows. "
+    broken = _text_quality([split * 30])
+    assert broken["split_syllable_ratio"] > 0.01
+    assert len(broken["warnings"]) == 1 and "pypdfium2" in broken["warnings"][0]
+    assert _text_quality([clean * 30])["warnings"] == []
+    assert _text_quality([math * 30])["split_syllable_ratio"] == 0
+    assert _text_quality([split * 2 + clean * 200])["warnings"] == []  # dưới 20 lần xuất hiện: không cảnh báo
