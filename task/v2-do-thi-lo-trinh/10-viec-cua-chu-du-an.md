@@ -27,6 +27,7 @@ Không phải việc cho agent. Vé này tồn tại để các cạnh chặn t�
 | T11 | chấm mù vòng hai (cạnh mới) | 2 người, riêng | ~15 phút / người | sau vé 06 | cổng vé 06 |
 | T8 | gán vàng cạnh cho N2 (tập giữ lại) | 2 người + hội ý | ~1,5–2 giờ / người + ~30 phút | sau vé 04–05 | vé 07 |
 | T10 | duyệt cấu hình khoá | chủ dự án | ~10 phút | trước vé 07 | vé 07 |
+| T12 | kiểm tay 50 khái niệm lộ trình / tài liệu giữ lại (Q1) | 1 người | ~20 phút / tài liệu | ngay sau lần chạy vé 07 | vé 07 |
 
 Ba việc đầu làm được ngay và không phụ thuộc gì.
 
@@ -103,6 +104,14 @@ Ghi vào một tệp văn bản `artifacts/a8-gold/liet-ke-mu.md`, mỗi phần 
 **Sẵn sàng (2026-09-24):** tệp mẫu `artifacts/a8-gold/liet-ke-mu.md` đã có sáu tiêu đề và chỗ ghi giờ. Chấm bằng
 `scripts/liet-ke-mu/cham_q3.py`: khớp đúng tên/alias thì tính tự động; còn lại script sinh `liet-ke-mu-doi-chieu.xlsx` với
 ba khái niệm máy gần nhất, người điền cột xác nhận (tên khái niệm máy, hoặc «Không có») rồi chạy lại để ra Q3.
+
+## T12 — Kiểm tay khái niệm trên lộ trình (Q1)
+
+**Vì sao:** Q1 ("khái niệm trên lộ trình là kiến thức môn học", ≥ 97%) chưa có việc đo nào; vé 07 phải chấm Q1 trên tập giữ
+lại. Ngay sau lần chạy duy nhất của vé 07, tôi sinh cho mỗi tài liệu giữ lại (`xstk-ch3-1`, `doc-4`) một bảng 50 khái niệm
+bốc ngẫu nhiên từ **lộ trình** (không từ danh sách loại), kèm trang xuất hiện. Mỗi dòng chọn: *Kiến thức môn học* /
+*Không phải — hành chính* / *Không phải — chi tiết ví dụ* / *Không phải — người, tổ chức, siêu dữ liệu* / *Không chắc*.
+Bằng chứng phát triển đã có: doc-5 25/25 (nhãn T3).
 
 ## T6 — Chấm độ mạch lạc module
 

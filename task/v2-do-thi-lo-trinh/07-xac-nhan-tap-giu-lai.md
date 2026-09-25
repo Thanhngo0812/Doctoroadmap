@@ -41,3 +41,8 @@ trùng + 31/36 cạnh lệch được giữ khi hội ý; 0 lỗi.
 - SHA-256 bộ vàng: `df0c6cb9d42fffc4007f4e18c1922f1898ea932644fda4d5a483bfb05f8bc9ed`
 - SHA-256 bảng hội ý đã điền: `bbb995017f297ed02bff2b3a7cd119e8aec9bf8f657bdbef650930ee5c3f9baa`
 Tôi chỉ đọc số đếm, không mở nội dung nhãn. Không sửa tệp này nữa; chỉ mở ở lần chạy duy nhất của vé này.
+
+## Q1 trên tập giữ lại (thêm 2026-09-25)
+
+Q1 chưa có phép đo; thêm việc T12 (vé 10): sau lần chạy, bốc 50 khái niệm ngẫu nhiên từ lộ trình mỗi tài liệu giữ lại, người
+kiểm tay. Seed ghi vào vé này trước khi bốc.
