@@ -32,3 +32,26 @@ module; và đo Q7 trên bộ vàng.
   véc tơ`, cạnh mà giải phẫu cạnh dư (kế hoạch cũ mục 13) xếp là *động cơ*, không phải tiên quyết. Đây là cái giá cụ thể
   của cạnh mềm với người học — thứ Q6 không thấy mà lộ trình tới mục tiêu phơi ra. Chấm mù (vé 10, T1) sẽ cho biết
   cạnh loại này nhiều tới đâu.
+
+## Phân tích Q7 — độ phủ và độ chính xác (2026-09-25, 0 USD)
+
+Độ chính xác trong chương: với mỗi đích vàng, trong các tổ tiên máy **là khái niệm của chương vàng** (đã gán đầy đủ), tỉ lệ
+cũng là tổ tiên theo vàng. Đây là cận dưới của độ chính xác thật (T1: khoảng nửa cạnh dư được người chấm coi là cần).
+
+| | Q7 phủ | chính xác trong chương | tổ tiên TB / đích |
+|---|---|---|---|
+| doc-1 đồ thị hiện tại (lượt 4, stages v35) | 90% | 59% | 46,6 |
+| doc-1 + pass cạnh ngầm | 98% | 51% | 68,2 |
+| doc-1 + nối 1 khái niệm dạy ngay trước | 98% | 39% | 106,7 |
+| doc-2 đồ thị hiện tại (lượt 4, stages v29) | 58% | 93% | 20,9 |
+| doc-2 + pass cạnh ngầm | 68% | 69% | 32,5 |
+| doc-2 + nối 1 khái niệm dạy ngay trước | 80% | 33% | 135,6 |
+| vàng | 100% | 100% | 8,4 / 5,7 |
+
+- **Q7 chỉ đo phủ nên làm đẹp được** bằng cách nối theo thứ tự sách: phủ tăng, độ chính xác sụp, lộ trình tới đích dài gấp 6.
+- doc-1 đã thừa (59%); doc-2 thiếu (58%). Độ thừa doc-1 phân tán: bỏ riêng cạnh "cầu nối" tệ nhất chỉ bớt 6/54 tổ tiên thừa.
+- Loại căn cứ không tách được cạnh cần/thừa: gần như mọi cạnh là `trong_dinh_nghia` (đối chiếu T1).
+
+**Đề xuất (chờ chủ dự án duyệt, không áp hồi tố):** thêm **Q7b — độ chính xác tổ tiên trong chương**, báo cạnh Q7, để can thiệp
+tăng phủ bằng cách nối thừa không được tính là tiến bộ. Ngưỡng cần chủ dự án chốt trước khi dùng làm cổng; tôi không tự đặt ngưỡng
+sau khi đã thấy số trên dữ liệu phát triển.
