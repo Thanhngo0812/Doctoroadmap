@@ -112,3 +112,11 @@ không có trang hành chính nào** (đề cương, điểm, lịch, giảng vi
 ("loại đúng ≥ 80% khái niệm phải loại") trên N1 chủ yếu đo việc loại **chi tiết của ví dụ**; loại trang hành chính không
 được kiểm trên dữ liệu mới, chỉ có bằng chứng phát triển (doc-1 3/3). Ghi trước khi chạy.
 Quy trình: nhập → A3 → A4 → bảng nhãn T3 → **người** gán nhãn → mới chạy neo trên doc-5.
+
+**Nhập doc-5 (2026-09-25):** chunks v1 (42 chunk, 6,5k token; ký hiệu Symbol dịch đúng σ π × ÷ ∪ ∩, thiếu ⋈), A3 0,090 USD,
+A4 0,024 USD. Canonical v1: 71 node = 25 khái niệm `learnable` + 22 bảng + 24 hình. **Cả 25 khái niệm learnable đều là kiến
+thức môn học** (các phép toán đại số quan hệ); A3 đã tách mọi dữ liệu ví dụ thành node bảng/hình không learnable và không
+trích thực thể ví dụ nào. Hệ quả cho cổng 2 trên N1: "loại nhầm ≤ 2%" đo được trên 25 khái niệm (một lần loại nhầm là
+trượt); "loại đúng ≥ 80% khái niệm phải loại" **gần như không có mẫu số** — N1 này không kiểm được vế loại.
+Bảng T3: `artifacts/a8-gold/nhan-khai-niem-doc-5.xlsx` (25 dòng, không hiện mô tả A5 để không lộ đáp án), khoá
+`nhan-khai-niem-doc-5-khoa.json`. Chưa chạy neo trên doc-5.

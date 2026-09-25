@@ -38,7 +38,7 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 | T2 | **N2 xong**: `doc-4.pdf` (giáo trình Triết học Mác–Lênin, 214 trang); chương gán vàng đề xuất: Chương VIII. **N1 còn thiếu** — tiêu chí chi tiết ở mục T2 |
 | T4 | **xong** — phán quyết người, AI hỗ trợ ghi; không có giờ làm thật. Q9 44/48 |
 | T5 | **xong** — như T4. 4/4 gộp chạm vàng được duyệt; `Trace` "Không chắc" → giữ tách |
-| T3 | chờ N1 |
+| T3 | **sẵn sàng**: `nhan-khai-niem-doc-5.xlsx` — 25 khái niệm của doc-5 (N1), khoảng 5–10 phút; phải do người, trước khi tôi chạy neo trên doc-5 |
 | T6 | **nhận 2026-09-25** — Q8: 4,40 / 4,20 (stage cũ 1,70 / 1,95); bản A2 ghi "AI thực hiện" → chờ xác nhận nguồn |
 | T7 | **nhận nhưng chưa dùng được**: tệp ghi "AI đọc độc lập; chưa được người chấm xác nhận", và đọc **trang in** thay vì trang PDF (doc-2 lệch 14 trang, doc-1 lệch 1) — cần làm lại theo trang PDF, do người |
 | T8 | **phần 1 xong**: A1 65 cạnh / 13 cờ, A2 53 cạnh / 2 cờ, không lỗi, không ghi giờ. **Phần 2 — hội ý**: `doc-4-chuong-8-hoi-y.xlsx`, 41 dòng trùng, **36 dòng lệch** cần hai người cùng quyết |
