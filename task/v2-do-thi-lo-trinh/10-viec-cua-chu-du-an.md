@@ -39,7 +39,7 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 | T2 | **N2 xong**: `doc-4.pdf` (giáo trình Triết học Mác–Lênin, 214 trang); chương gán vàng đề xuất: Chương VIII. **N1 còn thiếu** — tiêu chí chi tiết ở mục T2 |
 | T4 | **xong** — phán quyết người, AI hỗ trợ ghi; không có giờ làm thật. Q9 44/48 |
 | T5 | **xong** — như T4. 4/4 gộp chạm vàng được duyệt; `Trace` "Không chắc" → giữ tách |
-| T3 | **sẵn sàng**: `nhan-khai-niem-doc-5.xlsx` — 25 khái niệm của doc-5 (N1), khoảng 5–10 phút; phải do người, trước khi tôi chạy neo trên doc-5 |
+| T3 | doc-5 **xong** (25/25 giữ; neo loại nhầm 0/25). **doc-6 sẵn sàng**: `nhan-khai-niem-doc-6.xlsx`, 28 khái niệm, ~10 phút; do người, trước khi tôi chạy neo trên doc-6 |
 | T6 | **nhận 2026-09-25** — Q8: 4,40 / 4,20 (stage cũ 1,70 / 1,95); chủ dự án xác nhận AI chỉ hỗ trợ ghi |
 | T7 | **phương án (b), 2026-09-25**: dùng trang PDF thực đọc làm mẫu (lệch ghi trong tệp). Khớp đúng tên tự động 15/73; **58 tên cần người xác nhận** ở `liet-ke-mu-doi-chieu.xlsx` (cột H; dòng ghép nhiều khái niệm ghi từng phần, ngăn «;») rồi mới ra Q3 |
 | T8 | **xong 2026-09-25** — bộ vàng N2 khoá: `doc-4-chuong-8-vang.json`, 72 cạnh (41 trùng + 31/36 giữ sau hội ý) |

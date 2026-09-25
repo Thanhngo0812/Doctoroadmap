@@ -147,3 +147,12 @@ USD. Nhãn T3 SHA-256 `3fb3e3f3c19dca94…`.
 
 Vế loại nhầm **đạt theo chữ**; 0/25 có cận trên Wilson 95% 13% nên theo luật khoảng thì **chưa đủ bằng chứng** cho "≤ 2%" — cần
 gộp thêm N1 (doc-6). Vế loại đúng chưa chấm được. Trên doc-5, v3 và v2 ngang nhau.
+
+## N1 bổ sung = doc-6 (nhận 2026-09-25)
+
+`doc-6.pdf`: slide buổi 1 cùng môn Cơ sở dữ liệu (ĐH CNTT) — "Chương 1 — Tổng quan về CSDL", 25 trang. Có trang thông tin
+môn (thời lượng, khoa, trường), trang **đề cương liệt kê các chương sau** (SQL, ràng buộc toàn vẹn, phụ thuộc hàm, dạng chuẩn)
+và slide "Nội dung" lặp 6 lần; không có trang điểm số/lịch. Bộ đọc mặc định vỡ chữ (tách âm tiết 3,6%) → nhập lại
+`--pdf-backend pypdfium2` (chunks v2, 27 chunk, 1,5k token). A3 0,057 USD, A4 0,014 USD: 28 khái niệm learnable + 11 hình.
+Bảng T3: `artifacts/a8-gold/nhan-khai-niem-doc-6.xlsx`. Cổng 2 (hai vế) chấm trên **doc-5 + doc-6 gộp**; khoá: loại nhầm
+≤ 2% khái niệm phải giữ (gộp 53 khái niệm → tối đa 1 lần loại nhầm), loại đúng ≥ 80% khái niệm phải loại (nếu mẫu số ≥ 1).
