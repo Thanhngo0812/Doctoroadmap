@@ -39,9 +39,9 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 | T4 | **xong** — phán quyết người, AI hỗ trợ ghi; không có giờ làm thật. Q9 44/48 |
 | T5 | **xong** — như T4. 4/4 gộp chạm vàng được duyệt; `Trace` "Không chắc" → giữ tách |
 | T3 | **sẵn sàng**: `nhan-khai-niem-doc-5.xlsx` — 25 khái niệm của doc-5 (N1), khoảng 5–10 phút; phải do người, trước khi tôi chạy neo trên doc-5 |
-| T6 | **nhận 2026-09-25** — Q8: 4,40 / 4,20 (stage cũ 1,70 / 1,95); bản A2 ghi "AI thực hiện" → chờ xác nhận nguồn |
+| T6 | **nhận 2026-09-25** — Q8: 4,40 / 4,20 (stage cũ 1,70 / 1,95); chủ dự án xác nhận AI chỉ hỗ trợ ghi |
 | T7 | **nhận nhưng chưa dùng được**: tệp ghi "AI đọc độc lập; chưa được người chấm xác nhận", và đọc **trang in** thay vì trang PDF (doc-2 lệch 14 trang, doc-1 lệch 1) — cần làm lại theo trang PDF, do người |
-| T8 | **phần 1 xong**: A1 65 cạnh / 13 cờ, A2 53 cạnh / 2 cờ, không lỗi, không ghi giờ. **Phần 2 — hội ý**: `doc-4-chuong-8-hoi-y.xlsx`, 41 dòng trùng, **36 dòng lệch** cần hai người cùng quyết |
+| T8 | **xong 2026-09-25** — bộ vàng N2 khoá: `doc-4-chuong-8-vang.json`, 72 cạnh (41 trùng + 31/36 giữ sau hội ý) |
 | T11 | **xong 2026-09-25** — pass cạnh ngầm trượt cổng 2 (17–58% "không làm sai thứ tự học"), không bật |
 | T10 | chưa tới lượt |
 

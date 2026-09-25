@@ -73,4 +73,4 @@ chấm. Độ mạch lạc chấm bằng người ở vé 10 (T6).
 Hai người lệch ≤ 1 điểm ở 40/40 dòng. **Nguồn nhãn:** bản A2 ghi ở ô ghi chú "Bắt đầu 12:17; xong 12:23 (giờ VN, **AI thực
 hiện**)"; bản A1 không ghi giờ, không có dấu hiệu AI. Q8 (≥ 4/5): ước lượng điểm đạt với cả hai bản; khoảng bootstrap chứa
 vùng dưới 4 nên theo luật khoảng tin cậy là **chưa đủ bằng chứng**. Điều chắc chắn hơn: module mới hơn hẳn stage cũ (chênh
-≈ 2,5 điểm, khoảng không chồng nhau). Chờ chủ dự án xác nhận nguồn nhãn A2 trước khi dùng làm cổng.
+≈ 2,5 điểm, khoảng không chồng nhau). Chủ dự án xác nhận 2026-09-25: AI chỉ hỗ trợ ghi, phán quyết của người — dùng làm cổng; không có giờ người làm thật.

@@ -120,3 +120,15 @@ trích thực thể ví dụ nào. Hệ quả cho cổng 2 trên N1: "loại nh�
 trượt); "loại đúng ≥ 80% khái niệm phải loại" **gần như không có mẫu số** — N1 này không kiểm được vế loại.
 Bảng T3: `artifacts/a8-gold/nhan-khai-niem-doc-5.xlsx` (25 dòng, không hiện mô tả A5 để không lộ đáp án), khoá
 `nhan-khai-niem-doc-5-khoa.json`. Chưa chạy neo trên doc-5.
+
+### N1 doc-5 — khoá trước khi chạy neo (2026-09-25)
+
+Nhãn T3 (`nhan-khai-niem-doc-5-output.xlsx`, SHA-256 ghi ở báo cáo chạy): 25 khái niệm, **19 "Giữ — được dạy", 6 "Giữ — chỉ được
+nhắc", 0 phải loại**. Ghi chú dòng 1 có câu "Bản này do AI gán"; chủ dự án xác nhận AI chỉ hỗ trợ ghi.
+- **Cổng 2, vế loại nhầm:** ≤ 2% khái niệm phải giữ → với 25 khái niệm là **0 lần loại** (`prior_knowledge` hoặc
+  `not_subject_matter`). Một lần loại là trượt.
+- **Cổng 2, vế loại đúng:** không có mẫu số trên doc-5 — **không chấm**, không tính là đạt.
+- **Cổng 3:** doc-5 không có vàng cạnh — không áp dụng.
+- **Báo kèm, không phải cổng:** khớp "được dạy" ↔ `taught` và "chỉ được nhắc" ↔ `mentioned_only` giữa C8 v3 và nhãn; cùng
+  các số đó cho C8 v2 (bản tạm đang bật) để so.
+Chạy: `roadmap --allow-spend` cho doc-5 tới đồ thị validated (chuỗi mặc định, có C8 v2), rồi neo C8 v3 trên validated đó.

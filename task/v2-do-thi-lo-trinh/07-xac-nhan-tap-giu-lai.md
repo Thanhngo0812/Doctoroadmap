@@ -33,3 +33,11 @@ chấm Q1–Q9; báo nguyên kết quả kể cả trượt.
 `a8-gold-check` qua cả hai bản, không lỗi: A1 65 cạnh, 13 cờ; A2 53 cạnh, 2 cờ; không bản nào ghi giờ. JSON:
 `doc-4-chuong-8-A1.json`, `-A2.json`. Bảng hội ý `doc-4-chuong-8-hoi-y.xlsx` (`a8-gold-merge`): 41 dòng trùng, 36 dòng lệch,
 concept_hash `7da62117ab70…`. Tôi không mở nội dung nhãn (tập giữ lại). Còn chờ: hội ý, rồi chuyển thành bộ vàng khoá.
+
+## Bộ vàng N2 — khoá 2026-09-25
+
+`a8-gold-merge --file doc-4-chuong-8-hoi-y-output.xlsx` → `artifacts/a8-gold/doc-4-chuong-8-vang.json`: 72 cạnh = 41 hai người
+trùng + 31/36 cạnh lệch được giữ khi hội ý; 0 lỗi.
+- SHA-256 bộ vàng: `df0c6cb9d42fffc4007f4e18c1922f1898ea932644fda4d5a483bfb05f8bc9ed`
+- SHA-256 bảng hội ý đã điền: `bbb995017f297ed02bff2b3a7cd119e8aec9bf8f657bdbef650930ee5c3f9baa`
+Tôi chỉ đọc số đếm, không mở nội dung nhãn. Không sửa tệp này nữa; chỉ mở ở lần chạy duy nhất của vé này.
