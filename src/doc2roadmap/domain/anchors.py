@@ -23,9 +23,16 @@ def _norm(text):
     return " ".join(unicodedata.normalize("NFC", str(text)).casefold().split())
 
 
+# Tên do mô hình viết hay mang dấu LaTeX (`𝐅^{m,n}`, `null T^k`) mà văn bản PDF không có (`𝐅 𝑚 , 𝑛`); gạch nối có nhiều
+# biến thể (– — −). Bỏ dấu LaTeX và gộp gạch nối trước khi so, cả tên lẫn câu.
+_LATEX_MARKUP = {ord(char): None for char in "^_{}\\"}
+_DASHES = {ord(char): "-" for char in "‐‑‒–—−"}
+
+
 def _compact(text):
     # NFKC gộp chữ nghiêng toán học về chữ thường (𝑉 → V); bỏ khoảng trắng vì PDF toán hay chèn khoảng lạc (𝑉 𝑚).
-    return "".join(unicodedata.normalize("NFKC", str(text)).casefold().split())
+    folded = unicodedata.normalize("NFKC", str(text)).casefold().translate(_LATEX_MARKUP).translate(_DASHES)
+    return "".join(folded.split())
 
 
 def _sentences(text):

@@ -111,3 +111,14 @@ def test_an_anchor_returned_with_a_non_teaching_status_is_not_used_as_the_teachi
     candidates = candidate_sentences(NODE, CHUNKS, limit=4)
     fields = anchor_fields(reply("mentioned_only", anchor=candidates[0]["cand_id"]), candidates)
     assert fields["teaching_chunk_ids"] == [] and fields["anchor"] is None
+
+
+def test_latex_markup_and_dash_variants_do_not_hide_the_name():
+    # doc-2: nút `𝐅^{m,n}` không bao giờ thấy câu định nghĩa "… is denoted by 𝐅 𝑚 , 𝑛" vì `^{ }`; vị trí dạy rơi về chunk
+    # dùng muộn và gây 3/6 vi phạm Q6 của chương vàng.
+    node = {"node_id": "fmn", "name": "𝐅^{m,n}", "aliases": []}
+    text = "The set of all 𝑚-by-𝑛 matrices with entries in 𝐅 is denoted by 𝐅 𝑚 , 𝑛 ."
+    assert [c["sentence"] for c in candidate_sentences(node, [chunk("c356", 356, text)])] == [text]
+    dashed = {"node_id": "crf", "name": "Column-row factorization", "aliases": []}
+    text = "3.56 column–row factorization: every matrix is a product of two matrices."
+    assert candidate_sentences(dashed, [chunk("c379", 379, text)])

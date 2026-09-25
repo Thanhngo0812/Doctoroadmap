@@ -156,3 +156,17 @@ và slide "Nội dung" lặp 6 lần; không có trang điểm số/lịch. Bộ
 `--pdf-backend pypdfium2` (chunks v2, 27 chunk, 1,5k token). A3 0,057 USD, A4 0,014 USD: 28 khái niệm learnable + 11 hình.
 Bảng T3: `artifacts/a8-gold/nhan-khai-niem-doc-6.xlsx`. Cổng 2 (hai vế) chấm trên **doc-5 + doc-6 gộp**; khoá: loại nhầm
 ≤ 2% khái niệm phải giữ (gộp 53 khái niệm → tối đa 1 lần loại nhầm), loại đúng ≥ 80% khái niệm phải loại (nếu mẫu số ≥ 1).
+
+### Lượt 3 — khoá trước khi chạy (2026-09-25): bỏ dấu LaTeX và gộp gạch nối khi so tên (W11)
+
+Chẩn đoán Q6 doc-2 (stages v21): 6/6 vi phạm đều là "vị trí dạy của tiên quyết nằm sau đích và máy không có cạnh sửa"; 4/6 do
+nút không có câu neo nên vị trí rơi về chunk dùng muộn — `𝐅^{m,n}` (định nghĩa thật ở chunk 356 "… is denoted by 𝐅 𝑚 , 𝑛",
+nhưng tên `f^{m,n}` không khớp văn bản `fm,n` vì `^{ }`) gây 3 vi phạm. Sửa `_compact`: bỏ `^ _ { } \`, gộp – — − về `-`.
+Đếm offline: thêm 10 nút doc-2 tìm thấy tên trong văn bản, 2 nút xstk (chỉ đếm khớp tên), 0 ở tài liệu khác.
+Chạy: neo trên doc-1, doc-2, doc-3, naive-bayes, nhap-mon-ml, baocao-canhan, doc-5 (không chạy xstk — tập giữ lại); rồi
+danh tính (áp quyết định T5) và A10 cho doc-1, doc-2. Coi là **hồi quy** nếu bất kỳ:
+- doc-1 loại nhầm ngoài 3 node hành chính và `det(Y)` (chủ dự án đã xác nhận `det(Y)` đúng);
+- doc-3 loại nhầm > 0/33; ba tài liệu cổng A loại nhầm tổng > 1; doc-5 loại nhầm > 0/25;
+- thiếu đầu cạnh vàng > 0 trên doc-1 hoặc doc-2.
+Kỳ vọng (không phải cổng): các vi phạm Q6 doc-2 dính `𝐅^{m,n}` biến mất nếu nút này nhận câu neo ở chunk 356. Q6 báo kèm sàn
+nhiễu U1.
