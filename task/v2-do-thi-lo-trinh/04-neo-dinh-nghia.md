@@ -186,3 +186,17 @@ kiểu cũ. Sửa luật so tên là cần nhưng chưa đủ.
 NFKC) → **doc-2 26, doc-1 3, mọi tài liệu khác 0**, và `𝐅^{m,n}` nhận câu định nghĩa chunk 356 làm ứng viên đầu. Chọn phương án
 cuối (`symbolic_name_chunks`). Chỉ chạy doc-1, doc-2 — tài liệu khác 0 nút đổi ứng viên nên kết quả lượt 3 giữ nguyên.
 Tiêu chí hồi quy như lượt 3 (doc-1; thiếu đầu cạnh vàng = 0). Kỳ vọng (không phải cổng): vi phạm dính `𝐅^{m,n}` biến mất.
+
+### Lượt 4 — kết quả, 0,366 USD
+
+| | teaching → identity → stages | Q6 | Q7 | ghi chú |
+|---|---|---|---|---|
+| doc-1 | v33 → v34 → v35 | 2,6% (1/39) | 90% (9/23 đích đủ) | loại: đúng 3 node hành chính + `det(Y)` |
+| doc-2 | v27 → v28 → v29 | **4,9% (3/61)** — lượt 3: 9,8% | 58% (0/23) | `𝐅^{m,n}` taught tại chunk 356 |
+
+Tiêu chí hồi quy đạt (doc-1; thiếu đầu 0). Kỳ vọng thành: ba vi phạm dính `𝐅^{m,n}` biến mất; mức giảm 4,9 điểm vượt sàn nhiễu
+U1 (±3,0) và có cơ chế truy được. Q6 doc-2 đạt ngưỡng ≤ 5% theo ước lượng điểm; Wilson 95% của 3/61 là 1,7–13,5% nên theo luật
+khoảng là **chưa đủ bằng chứng**. Ba vi phạm còn lại: `Column-row factorization` không có câu neo (vị trí rơi về chunk 379, trước
+`Column rank` 385); `Operator` — sách đặt ngược thật (định nghĩa ở 5.1, dùng từ chương 3); `Nonnegative integers → Matrix` —
+cạnh vàng đáng ngờ, máy có đường ngược.
+So với C8 v2 (chuỗi mặc định hiện hành, trước identity): Q6 doc-1 5,0% → 2,6%, doc-2 8,2% → 4,9%.
