@@ -8,15 +8,37 @@ from collections import Counter
 from pathlib import Path
 
 sys.path.insert(0, "src")
-sys.path.insert(0, "scripts/phan-tich-v2")
 from doc2roadmap.application.use_cases.a8_score import score_roadmap_order  # noqa: E402
 from doc2roadmap.application.use_cases.anchor_concepts import AnchorConcepts  # noqa: E402
 from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap  # noqa: E402
 from doc2roadmap.application.use_cases.judge_identity import JudgeIdentity  # noqa: E402
 from doc2roadmap.composition import build_learning_graph  # noqa: E402
 from doc2roadmap.domain.teaching import EXCLUDED_STATUSES  # noqa: E402
-from chay_neo import ADMIN_DOC1, BORDER, DOC3_KEEP, DOC3_OUT  # noqa: E402
-from chay_danh_tinh import load_review  # noqa: E402
+import openpyxl  # noqa: E402
+
+# Chép từ chay_neo.py / chay_danh_tinh.py: hai script đó chạy pipeline ngay khi import.
+DOC3_OUT = {"Class participation", "Final project", "Homework assignments", "Experience", "GPA", "Top node", "Middle node",
+            "Bottom node", "A few numbers", "A single number", "Multi-modal example", "Python", "Machine learning concepts"}
+DOC3_KEEP = {"Artificial Intelligence", "Traditional approach", "Polanyi's Paradox", "Machine Learning",
+             "Classification and Regression Tree", "Linear Regression", "Machine Learning Model", "Support Vector Machines",
+             "Gradient Boosted Machines", "Neural Networks", "Random Forests", "Feature extraction", "Deep Learning", "GenAI",
+             "Logistic Regression", "Independent variables", "Coefficients", "Intercept", "linear functions", "Layer",
+             "Dense", "Activation function", "Linear activation function", "ReLU", "Hidden layers", "Input variables",
+             "Output variable", "output layer", "Sigmoid activation function", "Input Layer", "parameters",
+             "Feedforward neural network", "Network architecture"}
+BORDER = {"naive-bayes": {"Xác suất p(x i |c)", "Bảng từ vựng", "Real time Prediction"},
+          "baocao-canhan": {"Project Skeleton", "Refactor", "Branching strategy"},
+          "nhap-mon-ml": {"Tập học quá bé", "Mô hình quá phức tạp", "Ghi lịch sử", "Mô tả ảnh", "Lọc thư rác"}}
+ADMIN_DOC1 = {"Thang điểm chữ", "Thi viết rọc phách", "Điểm đánh giá học phần"}
+
+
+def load_review(path="artifacts/a8-gold/duyet-danh-tinh-output.xlsx"):
+    key = json.loads(Path("artifacts/a8-gold/duyet-danh-tinh-khoa.json").read_text(encoding="utf-8"))
+    by_item = {row["item"]: row for row in key["items"]}
+    rows = list(openpyxl.load_workbook(path, read_only=True)["Cặp"].iter_rows(values_only=True))[1:]
+    return {frozenset((by_item[int(r[0])]["left"], by_item[int(r[0])]["right"])): r[9]
+            for r in rows if r and r[0] is not None and r[9]}
+
 
 VALIDATED = {"doc-1": 9, "doc-2": 6, "doc-3": 6, "baocao-canhan": 96, "naive-bayes": 26, "nhap-mon-ml": 26, "doc-5": 6}
 GOLD = {"doc-1": "artifacts/a8-gold/doc-1-10-12-vang.json", "doc-2": "artifacts/a8-gold/doc-2-98-115-vang.json"}
