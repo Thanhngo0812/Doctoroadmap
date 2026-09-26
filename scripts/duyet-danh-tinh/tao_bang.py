@@ -3,10 +3,12 @@
 Mọi cặp mà bước phán danh tính không phán `different`: các gộp (bắt buộc duyệt những gộp chạm khái niệm vàng) và các
 cặp `sense_split` (hệ thống giữ tách). Không cần mù: đây là duyệt đề xuất, người duyệt được thấy hệ thống đề xuất gì.
 
-Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/duyet-danh-tinh/tao_bang.py
+Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/duyet-danh-tinh/tao_bang.py [doc phiên-bản-identity tệp-vàng]
+Có tham số thì sinh bảng riêng cho tài liệu đó (`duyet-danh-tinh-<doc>.xlsx`), ví dụ cho tập giữ lại ở vé 07.
 """
 import hashlib
 import json
+import sys
 from pathlib import Path
 
 import openpyxl
@@ -39,6 +41,10 @@ def sha256(path):
 
 
 def main():
+    global IDENTITY, GOLD
+    suffix = ""
+    if len(sys.argv) == 4:
+        IDENTITY, GOLD, suffix = {sys.argv[1]: int(sys.argv[2])}, {sys.argv[1]: sys.argv[3]}, f"-{sys.argv[1]}"
     rows = []
     for doc, version in IDENTITY.items():
         path = Path(f"artifacts/graph/{doc}/v{version}/graph.json")
@@ -83,14 +89,14 @@ def main():
     choice = DataValidation(type="list", formula1=f'"{CHOICES}"', allow_blank=True)
     sheet.add_data_validation(choice)
     choice.add(f"J2:J{len(rows) + 1}")
-    out = Path("artifacts/a8-gold/duyet-danh-tinh.xlsx")
+    out = Path(f"artifacts/a8-gold/duyet-danh-tinh{suffix}.xlsx")
     workbook.save(out)
     key = {"inputs": {doc: {"version": v, "sha256": sha256(f"artifacts/graph/{doc}/v{v}/graph.json")}
                       for doc, v in IDENTITY.items()},
            "sheet": {"path": str(out), "sha256": sha256(out)},
            "items": [{"item": r["item"], "doc_id": r["doc_id"], "pair_id": r["pair_id"], "left": r["left"]["node_id"],
                       "right": r["right"]["node_id"], "proposal": r["proposal"], "gold": r["gold"]} for r in rows]}
-    Path("artifacts/a8-gold/duyet-danh-tinh-khoa.json").write_text(json.dumps(key, ensure_ascii=False, indent=2) + "\n",
+    Path(f"artifacts/a8-gold/duyet-danh-tinh{suffix}-khoa.json").write_text(json.dumps(key, ensure_ascii=False, indent=2) + "\n",
                                                                    encoding="utf-8")
     print(f"{out}: {len(rows)} cặp, {sum(r['gold'] for r in rows)} chạm vàng")
 

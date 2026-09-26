@@ -31,6 +31,22 @@ HUMAN_VERDICT = {"Đồng ý gộp": "same", "Không gộp": "different", "Là h
                  "Không chắc": "different"}
 
 
+def load_identity_review(path, *, doc_id):
+    """Đọc quyết định duyệt danh tính (T5) của một tài liệu: {"doc_id", "decisions": [{"left", "right", "decision"}]}."""
+    import json
+    from pathlib import Path
+
+    data = json.loads(Path(path).read_text(encoding="utf-8"))
+    if data.get("doc_id") != doc_id:
+        raise ValueError(f"tệp duyệt danh tính của doc_id {data.get('doc_id')!r}, không phải {doc_id!r}")
+    review = {}
+    for row in data.get("decisions", []):
+        if row.get("decision") not in HUMAN_VERDICT:
+            raise ValueError(f"quyết định {row.get('decision')!r} ngoài {sorted(HUMAN_VERDICT)}")
+        review[frozenset((row["left"], row["right"]))] = row["decision"]
+    return review
+
+
 def identity_prompt_hash(model_id, generation):
     return digest([load_prompt("a10", "identity"), IDENTITY_SCHEMA, model_id, generation])
 

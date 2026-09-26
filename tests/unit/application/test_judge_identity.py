@@ -92,3 +92,22 @@ def test_a_human_review_overrides_the_model_and_only_an_approved_merge_is_applie
     assert rows[frozenset(("dltt", "hv"))]["verdict"] == "different"
     assert rows[frozenset(("dltt", "hv"))]["human_decision"] == "Không chắc"
     assert "review_hash" in artifact.manifest["config"]
+
+
+def test_a_review_file_is_loaded_for_one_document_and_unknown_decisions_are_refused(tmp_path):
+    import pytest
+
+    from doc2roadmap.application.use_cases.judge_identity import load_identity_review
+
+    path = tmp_path / "duyet.json"
+    path.write_text(json.dumps({"doc_id": "doc-4", "decisions": [
+        {"left": "a", "right": "b", "decision": "Đồng ý gộp"},
+        {"left": "c", "right": "d", "decision": "Không chắc"}]}, ensure_ascii=False), encoding="utf-8")
+    review = load_identity_review(path, doc_id="doc-4")
+    assert review == {frozenset(("a", "b")): "Đồng ý gộp", frozenset(("c", "d")): "Không chắc"}
+    with pytest.raises(ValueError, match="doc_id"):
+        load_identity_review(path, doc_id="doc-1")  # quyết định của tài liệu khác không được áp nhầm
+    path.write_text(json.dumps({"doc_id": "doc-4", "decisions": [{"left": "a", "right": "b", "decision": "Gộp đi"}]},
+                               ensure_ascii=False), encoding="utf-8")
+    with pytest.raises(ValueError, match="quyết định"):
+        load_identity_review(path, doc_id="doc-4")

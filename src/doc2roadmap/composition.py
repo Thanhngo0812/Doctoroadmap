@@ -137,7 +137,7 @@ def build_canonical(*, prepare=False):
     return Canonicalize(store, embedding, graph_config=graph, reasoning=reasoning)
 
 
-def build_learning_graph(*, allow_spend=False):
+def build_learning_graph(*, allow_spend=False, identity_review=None):
     from doc2roadmap.application.use_cases import (
         AnchorConcepts,
         BuildClusters,
@@ -204,7 +204,7 @@ def build_learning_graph(*, allow_spend=False):
         # Neo định nghĩa C8 v3 thay C8 v2 từ 2026-09-26 (chủ dự án duyệt, vé v2-04); danh tính sau neo (vé v2-05).
         # Giữ generation mặc định của hai stage — đúng cấu hình đã đo trên dữ liệu phát triển.
         AnchorConcepts(store, model, concurrency=settings.roadmap_concurrency),
-        JudgeIdentity(store, model, concurrency=settings.roadmap_concurrency),
+        JudgeIdentity(store, model, concurrency=settings.roadmap_concurrency, review=identity_review),
         BuildRoadmap(
             store,
             stage_cap=settings.roadmap_stage_cap,

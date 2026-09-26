@@ -619,6 +619,9 @@ Theo đúng thứ tự:
 - **Bộ chấm** áp cùng `identity_map` lên cạnh và đích của bộ vàng; tệp vàng không bị sửa. Cạnh vàng giữa hai khái
   niệm đã gộp thành tự nối, rời phép chấm, và được báo (`identity_dropped_gold_edges`).
 - Mọi gộp chạm khái niệm của bộ vàng phải được chủ dự án duyệt (T5) trước khi bật.
+- Quyết định duyệt nạp vào chuỗi bằng `roadmap --identity-review <json>` ({"doc_id", "decisions": [{left, right,
+  decision}]}; sinh từ bảng đã điền bằng `scripts/duyet-danh-tinh/doi_json.py`). Quyết định người thắng phán mô hình; chỉ
+  "Đồng ý gộp" cho gộp. Tệp của tài liệu khác bị từ chối.
 
 ### A10. Dãy học neo sách → chia module
 
