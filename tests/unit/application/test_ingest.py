@@ -70,6 +70,29 @@ def test_frozen_parse_is_reused_but_new_chunk_config_gets_new_version(tmp_path: 
     )
 
 
+def test_refresh_roles_uses_only_saved_sections_keeps_chunks_and_is_idempotent(tmp_path):
+    from doc2roadmap.application.use_cases.ingest_document import refresh_chunk_roles
+    from doc2roadmap.domain.chunking import chunk_document
+
+    store = JsonArtifactStore(tmp_path)
+    tree = DocumentTree([DocumentNode("section_header", "Câu hỏi ôn tập", 0, level=1),
+                         DocumentNode("text", "Một câu hỏi.", 1)])
+    result = chunk_document(tree, "doc", WordCounter(), splitter())
+    result.sections[-1].role = result.chunks[0].role = "noi_dung"  # giả lập artifact trước R1
+    config = {"chunk": {"algorithm_id": "section-id-v8"}}
+    original = store.save_chunks("doc", "source", "old", config, 1, result)
+    original_bytes = (original.path / "chunks.json").read_bytes()
+    original_chunks = [c.to_dict() for c in original.result.chunks]
+    updated = refresh_chunk_roles(store, "doc")
+    assert updated.version == 2 and updated.result.chunks[0].role == "bai_tap"
+    assert [c.chunk_id for c in updated.result.chunks] == [c["chunk_id"] for c in original_chunks]
+    assert [{k: v for k, v in c.to_dict().items() if k != "role"} for c in updated.result.chunks] == [
+        {k: v for k, v in c.items() if k != "role"} for c in original_chunks]
+    assert (original.path / "chunks.json").read_bytes() == original_bytes
+    assert updated.manifest["config"]["chunk"]["role_algorithm_id"] == CHUNK_ALGORITHM_ID
+    assert refresh_chunk_roles(store, "doc").version == 2
+
+
 def test_strip_lines_before_chunking_and_record_both_manifests(tmp_path: Path) -> None:
     parser = FakeParser()
     store = JsonArtifactStore(tmp_path)

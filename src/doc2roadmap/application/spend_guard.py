@@ -31,5 +31,10 @@ class SpendGuard:
             raise SpendNotAllowed()
         return self._model.start_session(system_prompt)
 
+    def embed(self, requests):
+        if not self._allowed:
+            raise SpendNotAllowed()
+        return self._model.embed(requests)
+
     def __getattr__(self, name):
         return getattr(self._model, name)

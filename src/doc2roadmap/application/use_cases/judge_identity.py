@@ -4,11 +4,14 @@ from collections import Counter
 from typing import Any
 
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
+from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.identity import (
     VERDICTS,
+    SEMANTIC_TOP_K,
+    SEMANTIC_MIN_SIMILARITY,
     identity_candidates,
     identity_map,
     merge_and_break_cycles,
@@ -66,35 +69,53 @@ class JudgeIdentity:
     và provenance không đổi; bộ chấm áp cùng `identity_map` lên bộ vàng.
     """
 
-    def __init__(self, store, model, *, concurrency=4, generation=None, review=None):
+    def __init__(self, store, model, *, concurrency=4, generation=None, review=None,
+                 semantic_top_k=SEMANTIC_TOP_K, semantic_min_similarity=SEMANTIC_MIN_SIMILARITY):
         """`review`: {frozenset((node_id, node_id)): quyết định trong bảng T5}."""
         self.store = store
         self.review = dict(review or {})
         self.model = model
         self.concurrency = concurrency
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 1024}
+        self.semantic_top_k = semantic_top_k
+        self.semantic_min_similarity = semantic_min_similarity
 
     def execute(self, doc_id, *, upstream):
+        return self._run(doc_id, upstream=upstream)
+
+    def plan(self, doc_id, *, upstream):
+        return self._run(doc_id, upstream=upstream, planning=True)
+
+    def _run(self, doc_id, *, upstream, planning=False):
         if upstream.payload.get("stage") != "teaching":
             raise ValueError("stage identity cần artifact teaching")
         prompt_hash = identity_prompt_hash(self.model.model_id, self.generation)
-        config = {"algorithm_id": "a10-identity-v1", "teaching_version": upstream.version,
+        config = {"algorithm_id": "a10-identity-v2", "teaching_version": upstream.version,
                   "teaching_config_hash": upstream.manifest["config_hash"],
                   # A10 tìm chunk theo config của artifact đầu vào
                   "chunks_version": upstream.manifest.get("config", {}).get("chunks_version"),
                   "model_id": self.model.model_id,
                   "generation": self.generation, "prompt_hash": prompt_hash, "merge_rule": "verified-clique-v1",
+                  "candidate_rule": "nfkc-latex-dash+initialism+generic-prefix+same-anchor+description-top-k-v2",
+                  "semantic_top_k": self.semantic_top_k, "semantic_min_similarity": self.semantic_min_similarity,
+                  "semantic_vectors": "a6-description; anchor-sentence-in-judge-input",
                   "review_hash": digest(sorted([sorted(pair), decision] for pair, decision in self.review.items())),
                   "pricing_usd_per_million": PRICING_USD_PER_MILLION, "pricing_source": PRICING_SOURCE}
         config_hash, source_hash = digest(config), digest(upstream.payload)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
 
         nodes = upstream.payload["nodes"]
         placed = [n for n in nodes if n.get("learnable") and n.get("teaching_status") not in EXCLUDED_STATUSES]
         by_id = {n["node_id"]: n for n in placed}
-        pairs = [{"pair_id": f"p{index}", **row} for index, row in enumerate(identity_candidates(placed), 1)]
+        vector_version = upstream.payload.get("node_vectors_version")
+        vectors = (self.store.load_graph(doc_id, vector_version).payload["node_vectors"] if vector_version is not None
+                   else upstream.payload.get("node_vectors", {}))
+        vectors = {**vectors, **upstream.payload.get("incremental_node_vectors", {})}
+        pairs = [{"pair_id": f"p{index}", **row} for index, row in enumerate(identity_candidates(
+            placed, vectors=vectors, semantic_top_k=self.semantic_top_k,
+            semantic_min_similarity=self.semantic_min_similarity), 1)]
 
         checkpoint_id = "identity-" + config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
@@ -104,6 +125,12 @@ class JudgeIdentity:
         metrics = Counter(checkpoint["metrics"]) if resumable else Counter()
         system_prompt = load_prompt("a10", "identity")
         pending = [pair for pair in pairs if pair["pair_id"] not in answers]
+        if planning:
+            inputs = [{"pair_id": pair["pair_id"], "paired_because": pair["reasons"],
+                       "first": _concept(by_id[pair["left"]]), "second": _concept(by_id[pair["right"]])}
+                      for pair in pending]
+            return model_plan(inputs, system_prompt=system_prompt, generation=self.generation, unit="pair",
+                              checkpoint_id=checkpoint_id, metrics=metrics)
         for start in range(0, len(pending), PAIR_BATCH):
             group = pending[start:start + PAIR_BATCH]
             jobs = []

@@ -87,8 +87,14 @@ _Tránh dùng_: caption rác, caption mất, chú thích suy đoán
 
 **Section**:
 Một heading cùng vị trí của nó trong cây phân cấp. Section **không** được embed — nó chỉ sống trong bảng
-riêng để các bước sau ráp ngữ cảnh lúc chạy.
+riêng để các bước sau ráp ngữ cảnh lúc chạy. Section mang vai trò vùng; chunk kế thừa vai trò này.
 _Tránh dùng_: mục, chương, heading
+
+**Vai trò vùng**:
+Nhãn `noi_dung`, `bai_tap`, `de_cuong`, `mo_dau` hoặc `hanh_chinh`, tính bằng tiêu đề và cây section (v3 R1),
+không gọi mô hình. Vùng kéo tới heading cùng cấp hoặc cao hơn; nội dung trước chương có số đầu tiên là `mo_dau`
+trừ vùng có nhãn tường minh. Tài liệu không có chương có số không bị coi toàn bộ là lời nói đầu.
+_Tránh dùng_: trạng thái dạy (đó là thuộc tính của khái niệm), loại chunk, loại khái niệm
 
 **Preamble**:
 Các block nằm giữa một heading và heading con đầu tiên của nó. Đây là nội dung *trực tiếp* của section đó,
@@ -255,6 +261,18 @@ _Tránh dùng_: stage (nghĩa cũ khác hẳn), bài, chặng
 Ánh xạ `khái niệm → khái niệm đại diện` cho các khái niệm được phán là cùng một ý (vé v2-05). Chỉ gộp nhóm mà mọi
 cặp đều được phán `same`; không sửa canonical. Lộ trình và bộ chấm áp cùng một bản đồ.
 _Tránh dùng_: dedup, gộp alias (alias chung chỉ là lý do đưa ra xét)
+
+**Ứng viên danh tính mở rộng**:
+Cặp node canonical đưa ra phán vì tên/alias chuẩn hoá trùng, viết tắt theo chữ đầu, tiền tố chung chung, cùng câu
+neo, hoặc top-3 độ gần mô tả bằng vector A6 với cosine ≥ 0,85 (v3 R8). Vector chỉ đề cử; mô tả và câu neo của cả
+hai node đi vào lời phán. `same` vẫn phải kiểm đủ mọi cặp trong nhóm; gộp chạm vàng vẫn cần người duyệt.
+_Tránh dùng_: gộp bằng embedding, alias tự động
+
+**Dự toán chạy thử**:
+`roadmap --dry-run` chỉ đọc artifact và checkpoint đúng cấu hình, báo từng stage `tái dùng` / `sẽ chạy` / `chưa biết`.
+Tổng USD chỉ cộng phần đã biết, không phải trần ngân sách. Không gọi mô hình, không ghi artifact hay checkpoint;
+stage phụ thuộc đầu ra chưa có không được nhận một artifact cũ để làm giả dự toán đầy đủ.
+_Tránh dùng_: chi phí thật, cam kết giá, chạy không có cờ (lệnh đó chỉ dừng ở lần chi đầu)
 
 **Stage** *(không còn là đơn vị của lộ trình)*:
 Một tầng của phép xếp Coffman–Graham: các khái niệm học song song được, không cạnh `requires` nào nằm trong một

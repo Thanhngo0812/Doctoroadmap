@@ -5,6 +5,7 @@ from time import perf_counter
 
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.mentions import (
     build_mention_derivatives,
     build_mention_map,
@@ -47,6 +48,12 @@ class BuildMentions:
         return artifact
 
     def execute(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream)
+
+    def plan(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream, planning=True)
+
+    def _run(self, doc_id, *, upstream=None, planning=False):
         clusters = upstream if upstream is not None else self._clusters(doc_id)
         if clusters.payload.get("stage") != "clusters":
             raise ValueError("tầng mentions cần artifact clusters")
@@ -92,7 +99,12 @@ class BuildMentions:
         source_hash = digest([clusters.payload, retrieval.payload, canonical.payload.get("edges", [])])
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
+        if planning:
+            count = sum(bool(n.get("learnable")) for n in clusters.payload["nodes"])
+            return StagePlan("run", remaining_items=count, unit="embedding_text", calls_estimate=count,
+                             usd_estimate=None if count else 0,
+                             note="Embedding: số text cần embed (adapter có thể gom batch); giá không nằm trong prerequisite_prompt.")
         started = perf_counter()
         nodes = [dict(node) for node in clusters.payload["nodes"]]
         learnable = sorted((node for node in nodes if node.get("learnable")), key=lambda node: node["node_id"])

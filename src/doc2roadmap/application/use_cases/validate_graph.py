@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.global_validation import apply_resolved_nodes, strongly_connected_components, validate_graph_rules
 
 
@@ -22,6 +23,12 @@ class ValidateGraph:
         return artifact
 
     def execute(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream)
+
+    def plan(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream, planning=True)
+
+    def _run(self, doc_id, *, upstream=None, planning=False):
         edges_artifact = upstream if upstream is not None else self._edges(
             doc_id, self.store.load_latest_graph(doc_id)
         )
@@ -56,7 +63,9 @@ class ValidateGraph:
         source_hash = digest([edges_artifact.payload, canonical.payload.get("edges", [])])
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
+        if planning:
+            return StagePlan("run", remaining_items=1, note="Luật thuần, không gọi mô hình.")
         raw_flags = [
             *edges_artifact.payload.get("flags", []),
             *edges_artifact.payload.get("main_flags", []),

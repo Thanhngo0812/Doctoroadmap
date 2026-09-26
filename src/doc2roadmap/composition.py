@@ -155,6 +155,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
 
     settings, store, embedding = _a3_dependencies()
     # Mọi lời gọi trả tiền của chuỗi đồ thị đi qua chốt chặn: một đổi thuật toán (như F126) không được lặng lẽ tiêu tiền.
+    embedding = SpendGuard(embedding, allowed=allow_spend)
     model = SpendGuard(GeminiEntityExtractor(
         settings.gemini_api_key.get_secret_value(),
         settings.roadmap_model_id,

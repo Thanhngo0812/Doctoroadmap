@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
+from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import (
     SECONDARY_SCHEMA,
     PRICING_SOURCE,
@@ -63,6 +64,12 @@ class BuildSecondaryEdges:
         }
 
     def execute(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream)
+
+    def plan(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream, planning=True)
+
+    def _run(self, doc_id, *, upstream=None, planning=False):
         if upstream is None:
             edge_checkpoint = self._edge_checkpoint(doc_id, self.store.load_latest_graph(doc_id))
             main = self._main(doc_id, edge_checkpoint)
@@ -101,7 +108,7 @@ class BuildSecondaryEdges:
         source_hash = digest(main.payload)
         cached = self.store.find_graph(doc_id, source_hash, base_config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
         checkpoint_id = "secondary-" + base_config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
@@ -127,6 +134,20 @@ class BuildSecondaryEdges:
         )
         pending = [pair for pair in pairs if pair["pair_id"] not in completed]
         system_prompt = secondary_system_prompt()
+        if planning:
+            existing = list(main.payload.get("main_edges", [])) + secondary_edges
+            askable, pruned = select_secondary_pairs(nodes, pending, main.payload.get("pair_cluster_ledger", []),
+                                                     existing, route=route)
+            inputs = [{"session_id": "secondary_" + pair["pair_id"] + "_left",
+                       "dossier": {**pair_dossier(pair, nodes, chunks, main.payload["mention_map"],
+                                                   main.payload.get("pair_cluster_ledger", []), existing),
+                                   "presentation_order": [pair["left"], pair["right"]]}} for pair in askable]
+            result = model_plan(inputs, system_prompt=system_prompt, generation=self.generation, unit="pair",
+                                checkpoint_id=checkpoint_id, metrics=metrics, calls_per_item=2)
+            result.remaining_items = len(pending)
+            result.note += (f" {len(askable)} cặp cần phán hai chiều, {len(pruned)} cặp cắt được ngay; "
+                            "cạnh mới có thể cắt thêm cặp nên số lời gọi có thể giảm.")
+            return result
 
         def save_progress():
             self.store.save_checkpoint(doc_id, checkpoint_id, {

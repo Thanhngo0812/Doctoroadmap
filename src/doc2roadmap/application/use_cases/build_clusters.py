@@ -7,6 +7,7 @@ from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.application.leiden_cluster import cluster_nodes, weighted_concept_density
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.topic_graph import build_topic_edges
+from doc2roadmap.application.planning import StagePlan
 
 
 class BuildClusters:
@@ -30,6 +31,12 @@ class BuildClusters:
         self.concept_cap = concept_cap
 
     def execute(self, doc_id):
+        return self._run(doc_id)
+
+    def plan(self, doc_id):
+        return self._run(doc_id, planning=True)
+
+    def _run(self, doc_id, *, planning=False):
         canonical = self.store.load_latest_canonical(doc_id)
         candidate_version = canonical.manifest.get("config", {}).get("candidate_version")
         if candidate_version is None:
@@ -77,7 +84,12 @@ class BuildClusters:
         source_hash = digest([canonical.payload, chunk_fingerprint])
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
+        if planning:
+            count = len(canonical.payload["nodes"])
+            return StagePlan("run", remaining_items=count, unit="embedding_text", calls_estimate=count,
+                             usd_estimate=None if count else 0,
+                             note="Embedding: số text cần embed (adapter có thể gom batch); giá không nằm trong prerequisite_prompt.")
 
         started = perf_counter()
 

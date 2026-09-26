@@ -46,3 +46,12 @@ def test_a_cached_answer_needs_no_permission():
     _, rows, _ = run_model_jobs([job(SpendGuard(inner, allowed=True))], [], concurrency=1)
     values, _, _ = run_model_jobs([job(SpendGuard(inner, allowed=False))], rows, concurrency=1)
     assert values == [{"ok": True}] and inner.sessions == 1
+
+
+def test_embedding_also_requires_explicit_spend_permission():
+    calls = []
+    embedding = SimpleNamespace(identifier="embedding", embed=lambda requests: calls.extend(requests) or [[1]])
+    with pytest.raises(SpendNotAllowed):
+        SpendGuard(embedding, allowed=False).embed(["text"])
+    assert calls == []
+    assert SpendGuard(embedding, allowed=True).embed(["text"]) == [[1]] and calls == ["text"]

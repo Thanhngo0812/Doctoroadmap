@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter, defaultdict
 
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
+from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import (
     MAIN_SCHEMA,
     PRICING_SOURCE,
@@ -101,6 +102,12 @@ class BuildMainEdges:
         }
 
     def execute(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream)
+
+    def plan(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream, planning=True)
+
+    def _run(self, doc_id, *, upstream=None, planning=False):
         mentions = upstream if upstream is not None else self._provenance(
             doc_id, self.store.load_latest_graph(doc_id)
         )
@@ -160,7 +167,7 @@ class BuildMainEdges:
         source_hash = digest(mentions.payload)
         cached = self.store.find_graph(doc_id, source_hash, base_config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
         checkpoint_id = "main-" + base_config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
@@ -176,6 +183,11 @@ class BuildMainEdges:
         pending = [session for session in sessions if session["session_id"] not in completed]
         session_by_id = {session["session_id"]: session for session in sessions}
         system_prompt = main_system_prompt()
+        if planning:
+            inputs = [self._input(session, nodes, chunks.chunks, mentions.payload["mention_map"],
+                                 canonical.payload.get("edges", []), edges, session_by_id) for session in pending]
+            return model_plan(inputs, system_prompt=system_prompt, generation=self.generation,
+                              unit="session", checkpoint_id=checkpoint_id, metrics=metrics)
         for wave in self._waves(pending):
             inputs = [
                 self._input(

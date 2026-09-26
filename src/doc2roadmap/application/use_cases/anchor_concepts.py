@@ -4,6 +4,7 @@ from collections import Counter
 from typing import Any
 
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
+from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.domain.anchors import (
@@ -49,6 +50,12 @@ class AnchorConcepts:
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 2048}
 
     def execute(self, doc_id, *, upstream):
+        return self._run(doc_id, upstream=upstream)
+
+    def plan(self, doc_id, *, upstream):
+        return self._run(doc_id, upstream=upstream, planning=True)
+
+    def _run(self, doc_id, *, upstream, planning=False):
         if upstream.payload.get("stage") != "validated":
             raise ValueError("stage teaching cần artifact validated")
         edges = self.store.load_graph(doc_id, upstream.manifest["config"]["edges_version"])
@@ -64,7 +71,7 @@ class AnchorConcepts:
         config_hash, source_hash = digest(config), digest(upstream.payload)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
 
         mentioned = {}
         for chunk_id, rows in upstream.payload.get("mention_map", {}).items():
@@ -93,6 +100,11 @@ class AnchorConcepts:
                    if node["node_id"] in candidates_of and candidates_of[node["node_id"]]
                    and node["node_id"] not in answers]
         system_prompt = load_prompt("a10", "anchor")
+        if planning:
+            inputs = [{"node_id": node["node_id"], "concept": node,
+                       "candidates": candidates_of[node["node_id"]]} for node in pending]
+            return model_plan(inputs, system_prompt=system_prompt, generation=self.generation, unit="concept",
+                              checkpoint_id=checkpoint_id, metrics=metrics)
         for start in range(0, len(pending), NODE_BATCH):
             group = pending[start:start + NODE_BATCH]
             jobs = []

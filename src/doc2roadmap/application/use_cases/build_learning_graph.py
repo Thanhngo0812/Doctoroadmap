@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from doc2roadmap.application.spend_guard import SpendNotAllowed
+from doc2roadmap.application.planning import PRICING_SOURCE, PRICING_USD_PER_MILLION, StagePlan
 
 
 class BuildLearningGraph:
@@ -16,6 +17,32 @@ class BuildLearningGraph:
         self.teaching = teaching
         self.identity = identity
         self.roadmap = roadmap
+
+    def plan(self, doc_id, *, stop_after="stages"):
+        if stop_after not in self.STAGES:
+            raise ValueError(f"stage không hợp lệ: {stop_after}")
+        chain = [("clusters", self.clusters), ("mentions", self.mentions), ("provenance", self.provenance),
+                 ("main_edges", self.main_edges), ("secondary_edges", self.secondary_edges),
+                 ("validated", self.validator), ("teaching", self.teaching), ("identity", self.identity),
+                 ("stages", self.roadmap)]
+        upstream, rows = None, []
+        for name, use_case in chain:
+            if name == "clusters":
+                result = use_case.plan(doc_id)
+            elif upstream is None:
+                result = StagePlan("unknown", remaining_items=None, calls_estimate=None, usd_estimate=None,
+                                   note="Phụ thuộc stage trước chưa có artifact đúng cấu hình; không dùng artifact cũ thay thế.")
+            else:
+                result = use_case.plan(doc_id, upstream=upstream)
+            rows.append({"stage": name, **result.to_dict()})
+            upstream = result.artifact
+            if name == stop_after or (name == "secondary_edges" and stop_after == "edges"):
+                break
+        return {"doc_id": doc_id, "dry_run": True, "stages": rows,
+                "known_usd_estimate": round(sum(row["usd_estimate"] or 0 for row in rows), 6),
+                "estimate_complete": all(row["usd_estimate"] is not None for row in rows),
+                "pricing_usd_per_million": PRICING_USD_PER_MILLION, "pricing_source": PRICING_SOURCE,
+                "note": "Tổng chỉ gồm phần đã biết, không phải ngân sách tối đa; chạy lại --dry-run sau khi có artifact mới."}
 
     def execute(self, doc_id, *, stop_after="stages"):
         if stop_after not in self.STAGES:

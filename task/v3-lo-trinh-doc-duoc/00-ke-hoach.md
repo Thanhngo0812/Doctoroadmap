@@ -1,5 +1,10 @@
 # v3 — Lộ trình chuẩn chỉ và đọc được: kế hoạch vé
 
+> **Bàn giao nhân viên 2026-09-26:** 01 và 03 đã cài/kiểm; 10 đã cài và chạy thật trên ba tài liệu, kết quả thử
+> chưa xuất bản (hai gộp mới chạm vàng, Q6 doc-1 hồi quy, doc-2 còn nhóm mở). Xem
+> [báo cáo 01/03/10](../../report/v3-01-03-10-ket-qua-2026-09-26.md). Không chạy lại A8. Vé 04 có thể làm tiếp;
+> doc-2 cần sửa cây mục trước khi áp vai trò để loại nơi dạy.
+
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md) · **Căn cứ:** [báo cáo đánh giá 2026-09-26](../../report/danh-gia-lo-trinh-2026-09-26.md)
 
 **Quy trình (chủ dự án chốt 2026-09-26):** tôi viết spec và vé → chủ dự án giao nhân viên cài đặt → tôi kiểm thử theo mục

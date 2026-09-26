@@ -111,3 +111,20 @@ def test_a_review_file_is_loaded_for_one_document_and_unknown_decisions_are_refu
                                ensure_ascii=False), encoding="utf-8")
     with pytest.raises(ValueError, match="quyết định"):
         load_identity_review(path, doc_id="doc-4")
+
+
+def test_description_only_candidate_needs_same_verdict_and_reuses_a6_vectors_with_anchor_context():
+    for verdict, expected in (("different", {}), ("same", {"b": "a"})):
+        store = Store()
+        store.teaching.payload["nodes"] = [node("a", "Im f", 1, SAME), node("b", "Ảnh", 2,
+            {**SAME, "char_start": 99})]
+        store.teaching.payload["requires_edges"] = []
+        store.teaching.payload["node_vectors_version"] = 7
+        store.load_graph = lambda doc, version: SimpleNamespace(payload={"node_vectors": {"a": [1, 0], "b": [1, .01]}})
+        model = Model({frozenset(("Im f", "Ảnh")): verdict})
+        artifact, _ = JudgeIdentity(store, model).execute("doc", upstream=store.teaching)
+        assert artifact.payload["identity_map"] == expected
+        assert len(model.calls) == 1 and model.calls[0]["paired_because"] == ["description_similarity"]
+        assert model.calls[0]["first"]["anchor_sentence"] == SAME["sentence"]
+        config = artifact.manifest["config"]
+        assert config["semantic_top_k"] == 3 and config["semantic_min_similarity"] == 0.85

@@ -74,3 +74,32 @@ def test_the_judge_contract():
                        ({"pair_id": "p1", "verdict": "same", "reason": " "}, "reason")):
         with pytest.raises(ValueError, match=match):
             validate_identity_response(bad, pair_id="p1")
+
+
+def test_v3_name_sources_nominate_but_never_merge_by_themselves():
+    cases = [
+        ("CSDL", "Cơ sở dữ liệu", "initialism"),
+        ("Upper triangular matrix", "Upper-triangular matrix", "normalized_name"),
+        ("𝐅^{m,n}", "F m,n", "normalized_name"),
+        ("Độc lập tuyến tính cực đại", "Hệ độc lập tuyến tính cực đại", "generic_prefix"),
+        ("Cộng", "Phép cộng", "generic_prefix"),
+    ]
+    for first, second, reason in cases:
+        assert reason in identity_candidates([node("a", first), node("b", second)])[0]["reasons"]
+    assert not identity_candidates([node("a", "C"), node("b", "Cơ sở dữ liệu")])
+
+
+def test_description_neighbors_are_bounded_thresholded_and_deterministic():
+    nodes = [node("a", "Im f"), node("b", "Ảnh"), node("c", "Unrelated"), node("d", "Different")]
+    vectors = {"a": [1, 0], "b": [1, 0.01], "c": [0, 1], "d": [0, -1]}
+    pairs = identity_candidates(nodes, vectors=vectors, semantic_top_k=3, semantic_min_similarity=0.9)
+    assert pairs == [{"left": "a", "right": "b", "reasons": ["description_similarity"]}]
+    assert identity_candidates(nodes[::-1], vectors=vectors, semantic_top_k=3, semantic_min_similarity=0.9) == pairs
+    assert identity_candidates(nodes, vectors=vectors, semantic_min_similarity=1.0) == []
+
+
+def test_top_k_limits_semantic_pairs_and_uses_union_not_mutual():
+    # Sáu vector bằng nhau: mỗi node chỉ chọn ba ID nhỏ nhất khác nó. d-e không lọt; a-f vẫn lọt từ đầu f.
+    nodes = [node(key, "Concept " + key) for key in "abcdef"]
+    pairs = {(p["left"], p["right"]) for p in identity_candidates(nodes, vectors={k: [1, 0] for k in "abcdef"})}
+    assert len(pairs) == 12 and ("d", "e") not in pairs and ("a", "f") in pairs

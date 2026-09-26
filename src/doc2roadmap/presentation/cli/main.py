@@ -171,10 +171,12 @@ def _parser() -> argparse.ArgumentParser:
         "--stop-after",
         choices=("clusters", "mentions", "provenance", "edges", "stages"),
         default="stages",
-        help="dừng sau stage đã chọn; mentions không gọi mô hình, provenance có gọi ít",
+        help="dừng sau stage đã chọn; clusters/mentions cần embedding nếu thiếu cache, provenance có gọi LLM",
     )
     roadmap.add_argument("--allow-spend", action="store_true",
                          help="cho phép gọi mô hình trả tiền; thiếu cờ thì lệnh dừng ở stage đầu tiên định chi")
+    roadmap.add_argument("--dry-run", action="store_true",
+                         help="chỉ đọc cache/checkpoint và dự toán mọi stage; không gọi mô hình hoặc ghi artifact")
     roadmap.add_argument("--identity-review", type=Path, default=None,
                          help="JSON quyết định duyệt danh tính (T5) của tài liệu; quyết định người thắng phán mô hình")
     return parser
@@ -518,7 +520,10 @@ def main(argv: list[str] | None = None) -> int:
                 from doc2roadmap.application.use_cases.judge_identity import load_identity_review
 
                 review = load_identity_review(args.identity_review, doc_id=args.doc_id)
-            use_case, _ = build_learning_graph(allow_spend=args.allow_spend, identity_review=review)
+            use_case, _ = build_learning_graph(allow_spend=args.allow_spend and not args.dry_run, identity_review=review)
+            if args.dry_run:
+                _json(use_case.plan(args.doc_id, stop_after=args.stop_after))
+                return 0
             artifact, reused = use_case.execute(args.doc_id, stop_after=args.stop_after)
             _json({
                 "path": str(artifact.path),

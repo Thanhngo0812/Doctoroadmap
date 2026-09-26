@@ -24,7 +24,7 @@ from .ports import SentenceSplitter, TextSpan, TokenCounter
 HEADING_TYPES = {"title", "section_header"}
 MERGEABLE_TYPES = {"text", "paragraph", "list_item", "figure", "table", "formula"}
 TEXT_BLOCK_TYPES = {"text", "paragraph", "list_item"}
-CHUNK_ALGORITHM_ID = "section-id-v8"
+CHUNK_ALGORITHM_ID = "section-id-v9-roles"
 OVERSIZE_TABLE_ROW = "table_row_exceeds_max_tokens"
 OVERSIZE_TABLE_PRESERVED = "table_kept_whole_above_text_limit"
 OVERSIZE_SENTENCE_BOUNDARY = "sentence_splitter_no_boundary"
@@ -35,6 +35,65 @@ _ARABIC_NUMBER = re.compile(r"\d+")
 _ROMAN_NUMBER = re.compile(r"(?<![^\W\d_])[IVXLCDM]+(?![^\W\d_])", re.IGNORECASE)
 _TRAILING_PAGE_NUMBER = re.compile(r"\s+\d+\s*$")
 _LEADING_BULLETS = frozenset("•▪▫◦‣⁃∙●○■□-–—")
+
+# R1: chỉ mẫu tiêu đề, không tìm từ khoá trong thân bài ("bài toán" không phải "bài tập").
+ROLE_PATTERNS = {
+    "bai_tap": (r"bai tap\b", r"cau hoi on tap\b", r"de so\b", r"exercises?\b", r"problems\b"),
+    "de_cuong": (r"noi dung mon hoc\b", r"de cuong\b", r"muc\s*luc\b", r"(?:table of )?contents\b",
+                 r"noi dung(?:\s*\([^)]*\))?$"),
+    "mo_dau": (r"loi noi dau\b", r"preface\b", r"foreword\b", r"about the author\b",
+               r"major improvements\b", r"mo\s*dau\b"),
+    "hanh_chinh": (r"thang diem\b", r"lich (?:hoc|thi|trinh)\b", r"thong tin giang vien\b",
+                   r"hinh thuc va tieu chuan danh gia\b", r"grading\b", r"schedule\b", r"instructor information\b"),
+}
+
+
+def _role_title(title):
+    value = unicodedata.normalize("NFKD", title).casefold().replace("đ", "d")
+    value = " ".join("".join(c for c in value if not unicodedata.combining(c)).split())
+    value = value.lstrip("".join(_LEADING_BULLETS) + " ")
+    return re.sub(r"^\d+(?:\.\d+)*[.)]?\s+", "", value)
+
+
+def heading_role(title):
+    title = _role_title(title)
+    return next((role for role, patterns in ROLE_PATTERNS.items()
+                 if any(re.match(pattern, title) for pattern in patterns)), None)
+
+
+def assign_section_roles(sections, chunks=()):
+    """Tính lại vai trò từ cây section đã lưu, không đọc PDF; không đổi ID/text/offset.
+
+    `is_toc` giữ dấu phát hiện _toc_runs ở lần chunk. Vùng không có chương đánh số chỉ dùng mẫu tiêu đề,
+    không coi cả tài liệu phẳng là lời nói đầu. Vai trò vùng theo cây: anh em cùng cấp tự đóng vùng trước.
+    """
+    ordered = sorted(sections, key=lambda s: (s.order_index, s.level))
+    first_chapter = next((s.order_index for s in ordered
+                          if re.match(r"^(?:chuong|chapter)\s+(?:\d+|[ivxlcdm]+)\b", _role_title(s.title))), None)
+    by_id = {}
+    for section in ordered:
+        explicit = "de_cuong" if section.is_toc and not section.has_direct_content else heading_role(section.title)
+        parent = by_id.get(section.parent_section_id)
+        if explicit:
+            role = explicit
+        elif parent is not None and parent.level > 0:
+            role = parent.role
+        elif first_chapter is not None and section.order_index < first_chapter:
+            role = "mo_dau"
+        else:
+            role = "noi_dung"
+        # Chương có số luôn mở vùng dạy mới, không kế thừa lời nói đầu của gốc.
+        if not explicit and re.match(r"^(?:chuong|chapter)\s+(?:\d+|[ivxlcdm]+)\b", _role_title(section.title)):
+            role = "noi_dung"
+        section.role = role
+        by_id[section.section_id] = section
+    for chunk in chunks:
+        chunk.role = by_id[chunk.parent_section_id].role
+
+
+def chunk_roles(chunks):
+    """Bảng chunk_id → vai trò; artifact cũ không khai vai trò mặc định là nội dung."""
+    return {chunk.chunk_id: chunk.role for chunk in chunks}
 
 
 @dataclass(slots=True)
@@ -627,6 +686,7 @@ def chunk_document(
         if not text:
             continue
         if node_index in toc_indexes:
+            stack[-1].is_toc = True
             if node_index in toc_warnings:
                 structure_warnings.append(toc_warnings[node_index])
             continue
@@ -663,6 +723,7 @@ def chunk_document(
             )
 
     flush()
+    assign_section_roles(sections, chunks)
     if len(heading_levels) >= 4 and len(set(heading_levels)) == 1:
         structure_warnings.append(
             f"flat_heading_tree: {len(heading_levels)} headings at level {heading_levels[0]}"

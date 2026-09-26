@@ -5,6 +5,7 @@ import json
 import unicodedata
 
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.roadmap import reviewed_sessions
 from doc2roadmap.domain.sequence import DEFAULT_WEIGHTS, build_sequence_roadmap, target_modules
 from doc2roadmap.domain.teaching import EXCLUDED_STATUSES, bypass_excluded
@@ -117,6 +118,12 @@ class BuildRoadmap:
         return self.store.load_chunks(doc_id, version)
 
     def execute(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream)
+
+    def plan(self, doc_id, *, upstream=None):
+        return self._run(doc_id, upstream=upstream, planning=True)
+
+    def _run(self, doc_id, *, upstream=None, planning=False):
         upstream = upstream if upstream is not None else self._upstream(doc_id, self.store.load_latest_graph(doc_id))
         if upstream.payload.get("stage") not in ("implicit", "identity", "verified", "teaching", "validated"):
             raise ValueError("stage roadmap cần artifact validated")
@@ -136,7 +143,9 @@ class BuildRoadmap:
         source_hash = digest(upstream.payload)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
-            return cached, True
+            return StagePlan("reused", artifact=cached) if planning else (cached, True)
+        if planning:
+            return StagePlan("run", remaining_items=1, note="Dãy học và module bằng luật thuần, không gọi mô hình.")
 
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks_artifact.result.chunks}
         sections = {section.section_id: section for section in chunks_artifact.result.sections}

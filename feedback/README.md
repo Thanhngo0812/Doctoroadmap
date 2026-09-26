@@ -1,5 +1,8 @@
 # Feedback — Pha B0.1–B0.4
 
+- **Bàn giao v3, 2026-09-26** — vé 01/03 đã cài và kiểm, vé 10 đã chạy thật (0,28330450 USD), chưa xuất bản gộp mới;
+  Q6 doc-1 hồi quy và doc-2 còn nhóm mở, không che bằng số node giảm → [chi tiết](./v3-01-03-10.md).
+
 - **Vòng 1** — 2026-08-14 · review code theo [`task/b0-chunking/`](../task/b0-chunking/) · F1–F10 · **đã xử lý xong**
 - **Vòng 2** — 2026-08-15 · review **kết quả chạy thật** trên `nhap-mon-ml` · F11–F21 · **đã xử lý xong**
 - **Vòng 3** — 2026-08-15 · review [`note.md`](../task/b0-va-cau-truc/note.md) (sửa reading order + stitch) · F22–F26 · **đã xử lý xong** ↓

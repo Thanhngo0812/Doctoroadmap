@@ -66,6 +66,8 @@ class Section:
     section_path: list[str]
     order_index: int
     has_direct_content: bool = False
+    role: str = "noi_dung"
+    is_toc: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -126,6 +128,7 @@ class Chunk:
     table_refs: list[TableRef] = field(default_factory=list)
     formula_refs: list[FormulaRef] = field(default_factory=list)
     oversize_reason: str | None = None
+    role: str = "noi_dung"
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

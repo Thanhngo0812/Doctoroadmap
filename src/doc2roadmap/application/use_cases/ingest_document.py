@@ -10,7 +10,7 @@ from typing import Any
 
 from doc2roadmap.application.ports import ArtifactStore, DocumentParser
 from doc2roadmap.application.windows import assemble_windows
-from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, chunk_document
+from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, assign_section_roles, chunk_document
 from doc2roadmap.domain.models import DocumentTree
 from doc2roadmap.domain.ports import SentenceSplitter, TokenCounter
 
@@ -27,6 +27,25 @@ def validate_doc_id(doc_id: str) -> str:
 def _hash(value: Any) -> str:
     payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def refresh_chunk_roles(store: ArtifactStore, doc_id: str, *, version: int | None = None):
+    """Bổ sung R1 từ cây section có sẵn, giữ nguyên toàn bộ định danh và văn bản.
+
+    Ghi version mới chứ không sửa artifact đóng băng. Vai trò không đổi cây heading; lỗi cấp mục cần vé v3-04.
+    Dấu _toc_runs của artifact mới là `is_toc`; artifact cũ vẫn nhận mục lục bằng tiêu đề.
+    """
+    validate_doc_id(doc_id)
+    stored = store.load_chunks(doc_id, version) if version is not None else store.load_latest_chunks(doc_id)
+    assign_section_roles(stored.result.sections, stored.result.chunks)
+    config = {**stored.manifest["config"], "chunk": {**stored.manifest["config"]["chunk"],
+              "role_algorithm_id": CHUNK_ALGORITHM_ID}}
+    return store.save_chunks(doc_id, stored.manifest["source_hash"], _hash(config), config,
+                             stored.manifest["parse_version"], stored.result,
+                             manifest_fields={"roles_from_chunks_version": version or stored.version,
+                                              **{key: stored.manifest[key] for key in
+                                                 ("text_quality", "strip_lines", "stripped_line_count")
+                                                 if key in stored.manifest}})
 
 
 # Âm tiết tiếng Việt bị tách ("th ứ c", "Gi ớ i"): một token chỉ gồm phụ âm đầu đứng ngay trước một token mở đầu bằng

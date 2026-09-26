@@ -103,3 +103,15 @@ tên) → R8, R9 → R12 (đắt) → R13 (sau vé 07). Vé 07 (tập giữ lạ
 ## Không đổi
 
 Luật neo C8 v3 hiện hành ngoài phạm vi R3; dãy học Kahn theo vị trí dạy; chia module quy hoạch động; bộ vàng và các script chấm.
+
+## Ghi chú cài đặt vé 01, 03, 10 (2026-09-26)
+
+- R10: mỗi stage có `plan()` chỉ đọc, dùng chung nhánh cấu hình/cache với `execute()`. USD là ước lượng phần đã biết;
+  không gán 0 cho stage chưa biết hoặc giá embedding chưa khai. Dự toán bao gồm A6/A7; `--dry-run` thắng `--allow-spend`.
+- R1: trước chương có số chỉ áp khi tài liệu thực sự có chương có số. Bổ sung mẫu PDF dính chữ `MỤCLỤC`, `MỞĐẦU`,
+  cùng mẫu hành chính “Hình thức và tiêu chuẩn đánh giá”. Giữ cách loại text `_toc_runs`, lưu dấu `is_toc` để tái tính.
+  Tái gán vai trò không sửa lỗi cấp heading: doc-2 vẫn cần vé 04 trước khi dùng vai trò để loại nơi dạy.
+- R8: top-3 hợp hai chiều (không đòi mutual), cosine mặc định 0,85. Dùng vector mô tả A6 sẵn có để đề cử;
+  câu neo được xét trong lời phán, không tạo một loại embedding câu neo mới. Giữ nguyên luật gộp/duyệt.
+- Công cụ kiểm chứng R8: `scripts/doc-lo-trinh/chay_danh_tinh_v3.py` mặc định dự toán; chỉ thêm `--allow-spend` khi
+  được duyệt. Ngân sách lượt này tối đa 1,50 USD, có sổ chi và chốt dừng; kết quả thử không làm cache mặc định.

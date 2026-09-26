@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R10 · **Ai:** nhân viên · **Phụ thuộc:** — · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã cài đặt và kiểm chứng (2026-09-26), chờ reviewer nghiệm thu
 
 ## Vì sao
 Sự cố 2026-09-26: `roadmap --allow-spend` chạy lại pass phụ A8 cho doc-2 (≈ 7,4 USD nếu để hết) mà không ai thấy trước. Chốt chặn
@@ -21,3 +21,11 @@ hiện chỉ báo stage **đầu tiên** định chi.
 - Test: chuỗi giả có stage cache và stage thiếu → báo đúng trạng thái từng stage; không lời gọi mô hình nào (mô hình giả ném lỗi
   nếu bị gọi).
 - **Tôi kiểm:** `--dry-run` trên doc-2 phải báo pass phụ "sẽ chạy" với số cặp ≈ phần còn thiếu của checkpoint `secondary-9bb6…`.
+
+## Kiểm thử của nhân viên
+
+Đã thấy test đỏ trước sửa; `test_roadmap_plan.py` kiểm chuỗi cache/thiếu/chưa biết, mọi use case trả tiền không gọi
+model/embed và không ghi, trừ checkpoint đúng nguồn, dry-run thắng allow-spend. Kiểm cả `SpendGuard` của embedding.
+Doc-2 báo đúng `secondary-9bb6…`: 9.360 cặp còn lại, 2.650 cặp cắt ngay, 6.710 cần phán hai chiều,
+ước 7,179442 USD; các stage sau báo chưa biết. So SHA-256/mtime 78 file trước–sau không đổi. Không chạy A8.
+Chi tiết và giới hạn dự toán: [báo cáo](../../report/v3-01-03-10-ket-qua-2026-09-26.md).
