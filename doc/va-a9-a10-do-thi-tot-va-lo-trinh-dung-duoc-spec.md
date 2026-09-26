@@ -474,6 +474,9 @@ trọng.
 
 Cả hai giữ mã và test để dùng cho phiên bản sau.
 
+**Cập nhật 2026-09-26 — chuỗi mặc định thay C8 v2 bằng neo C8 v3 + danh tính** (spec v2, W11–W15; vé v2-04, v2-05). C8 v2
+giữ trong mã, không còn trong chuỗi. Đoạn dưới là lịch sử.
+
 **Cập nhật cùng ngày — chủ dự án bật C8 v2 làm bản tạm**, dù nó trượt cổng C. Chuỗi mặc định nay là
 `validated → teaching → stages`; C10 vẫn ngoài chuỗi. Giới hạn đã biết của bản tạm: bỏ lọt node hành chính có công
 thức (`Điểm đánh giá học phần`), và nhãn `prior_knowledge` loại nhầm khái niệm chỉ xuất hiện trong giả thiết định lý.

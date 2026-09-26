@@ -6,6 +6,8 @@ from .build_main_edges import BuildMainEdges
 from .build_secondary_edges import BuildSecondaryEdges
 from .validate_graph import ValidateGraph
 from .check_teaching import CheckTeachingSources
+from .anchor_concepts import AnchorConcepts
+from .judge_identity import JudgeIdentity
 from .verify_relations import VerifyRelations
 from .build_roadmap import BuildRoadmap
 from .build_learning_graph import BuildLearningGraph
@@ -24,6 +26,8 @@ __all__ = [
     "BuildSecondaryEdges",
     "ValidateGraph",
     "CheckTeachingSources",
+    "AnchorConcepts",
+    "JudgeIdentity",
     "VerifyRelations",
     "BuildRoadmap",
     "BuildLearningGraph",

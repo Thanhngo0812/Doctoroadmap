@@ -50,3 +50,10 @@ kiểm tay. Seed ghi vào vé này trước khi bốc.
 ## Q7b (thêm 2026-09-25)
 
 Chủ dự án thêm Q7b (độ chính xác tổ tiên trong chương, ≥ 70%); lần chạy của vé này chấm Q1–Q9 và Q7b.
+
+## Chuỗi mặc định cho lần chạy (cập nhật 2026-09-26)
+
+Chuỗi mặc định nay là `validated → teaching (neo C8 v3) → identity → stages`. Theo W15, trước khi chấm, mọi gộp danh tính chạm
+khái niệm của bộ vàng giữ lại (xstk chương 10–13, doc-4 Chương VIII) phải được chủ dự án duyệt — thêm bảng duyệt kiểu T5 cho
+hai tài liệu này trong lần chạy. Cần một cách nạp quyết định duyệt vào chuỗi (hiện chỉ script phát triển nạp được) — làm khi
+chuẩn bị T10.

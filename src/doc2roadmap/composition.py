@@ -139,6 +139,7 @@ def build_canonical(*, prepare=False):
 
 def build_learning_graph(*, allow_spend=False):
     from doc2roadmap.application.use_cases import (
+        AnchorConcepts,
         BuildClusters,
         BuildLearningGraph,
         BuildMainEdges,
@@ -146,7 +147,7 @@ def build_learning_graph(*, allow_spend=False):
         BuildProvenance,
         BuildRoadmap,
         BuildSecondaryEdges,
-        CheckTeachingSources,
+        JudgeIdentity,
         ValidateGraph,
     )
 
@@ -200,12 +201,10 @@ def build_learning_graph(*, allow_spend=False):
             generation=generation,
         ),
         ValidateGraph(store),
-        CheckTeachingSources(
-            store,
-            model,
-            concurrency=settings.roadmap_concurrency,
-            generation=generation,
-        ),
+        # Neo định nghĩa C8 v3 thay C8 v2 từ 2026-09-26 (chủ dự án duyệt, vé v2-04); danh tính sau neo (vé v2-05).
+        # Giữ generation mặc định của hai stage — đúng cấu hình đã đo trên dữ liệu phát triển.
+        AnchorConcepts(store, model, concurrency=settings.roadmap_concurrency),
+        JudgeIdentity(store, model, concurrency=settings.roadmap_concurrency),
         BuildRoadmap(
             store,
             stage_cap=settings.roadmap_stage_cap,

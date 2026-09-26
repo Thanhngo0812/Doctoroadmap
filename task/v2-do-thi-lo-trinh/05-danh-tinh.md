@@ -7,7 +7,7 @@ chấm áp cùng bản đồ; gộp xong gỡ chu trình lại.
 
 **Blocked by:** 04 (cần câu neo); vé 10 — T5 (duyệt các gộp chạm bộ vàng)
 
-**Status:** qua cổng (2026-09-24); chưa nối vào chuỗi mặc định, chờ vé 04
+**Status:** qua cổng (2026-09-24); trong chuỗi mặc định từ 2026-09-26
 
 ## Cổng nhận
 

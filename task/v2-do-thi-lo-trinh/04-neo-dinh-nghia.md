@@ -8,7 +8,7 @@ niệm. Thay stage `teaching` v2.
 **Blocked by:** vé 10 — T2 (tài liệu N1) và T3 (nhãn khái niệm mù trên N1). Có thể viết mã và chạy trên dữ liệu phát
 triển trước; cổng chỉ chấm được khi có nhãn N1.
 
-**Status:** ready (viết mã); cổng chờ T3
+**Status:** trong chuỗi mặc định từ 2026-09-26 (chủ dự án duyệt); vế "loại đúng" của cổng 2 chưa đo được
 
 ## Cổng nhận (khoá trước khi chạy trên N1)
 
@@ -218,3 +218,14 @@ Nhãn T3 (`nhan-khai-niem-doc-6-output.xlsx`, SHA-256 `7862027cd1779b8f…`): 17
 chưa đủ bằng chứng cho "≤ 2%". **Vế loại đúng: không đo được** — cả hai tài liệu N1 đều có 0 khái niệm phải loại, vì A3 đã tách
 dữ liệu ví dụ thành bảng/hình và không trích tổ chức/người thành khái niệm learnable. Bằng chứng về vế này chỉ có trên dữ liệu
 phát triển và là **điểm yếu**: doc-3 loại đúng 6/13 (C8 v3) — dưới 80%; doc-1 3/3 node hành chính.
+
+## Quyết định chủ dự án (2026-09-26): đổi chuỗi mặc định sang neo + danh tính
+
+Cổng khoá: (1) Q9 44/48 — đạt theo điểm, Wilson chưa đủ; (2) N1 loại nhầm 0/52 — đạt theo điểm, Wilson chưa đủ; **vế loại
+đúng không đo được** trên N1 (0 khái niệm phải loại ở cả doc-5 lẫn doc-6) — điểm yếu đã biết trên dữ liệu phát triển (doc-3
+loại đúng 6/13); (3) 0 đầu cạnh vàng bị loại. Chủ dự án xác nhận nhãn T3 doc-6 là của người (AI hỗ trợ ghi) và chọn đổi, ghi rõ
+vế chưa đo. Lý do chính: Q6 doc-1 5,0% → 2,6%, doc-2 8,2% → 4,9% so với C8 v2.
+`composition.build_learning_graph`: `AnchorConcepts` thay `CheckTeachingSources`; thêm `JudgeIdentity` giữa `teaching` và
+`stages` (orchestrator có stage `identity`). Giữ generation mặc định của hai stage — đúng cấu hình đã đo. Kiểm thật: chạy
+`roadmap --doc-id doc-1` không `--allow-spend` → neo tái dùng cache lượt 4, dừng ở `identity` (chuỗi mặc định không mang quyết
+định duyệt T5 nên phải phán lại). `CheckTeachingSources` (C8 v2) giữ trong mã, không còn trong chuỗi.

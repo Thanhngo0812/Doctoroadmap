@@ -52,11 +52,11 @@ A9. Kiểm tra nhất quán [CHỈ cạnh requires]     |
   |   9b. Gỡ chu trình, giao DAG thật          |
   |   9c. Đánh dấu cạnh bắc cầu                 |
   |                                            |
-A9'. Kiểm nguồn dạy (C8 v2, bản tạm)           |
+A9'. Neo định nghĩa (C8 v3, mặc định)          |
   |                                            |
-A9''. Danh tính: gộp khái niệm trùng (chưa bật)|
+A9''. Danh tính: gộp khái niệm trùng           |
   |                                            |
-A9'''. Cạnh ngầm (chưa bật; xem A8')           |
+A9'''. Cạnh ngầm (loại, vé 06)                 |
   |                                            |
 A10. Dãy học neo sách -> chia module           |
   |    [CHỈ requires; chưa gắn media]          |
@@ -532,7 +532,7 @@ Chỉ suy luận trên:
 LLM nhận tóm tắt 2 cluster + các boundary concept, output edge cùng schema trên. Edge sinh ra ở đây
 vẫn phải tuân I-G1 — chỉ `requires` giữa hai concept.
 
-### A8'. Pass cạnh ngầm *(vé v2-06; có mã, chưa vào chuỗi mặc định)*
+### A8'. Pass cạnh ngầm *(vé v2-06; có mã, **đã loại** 2026-09-25: trượt chấm mù T11, không vào chuỗi mặc định)*
 
 > Quy tắc: [spec v2, W20](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `implicit`, sau `teaching`/`identity`.
 > **Vị trí hiện tại:** chạy **sau A9** — sau A9' (neo) và A9'' (danh tính), vì cần câu neo và bản đồ danh tính;
@@ -603,7 +603,7 @@ Theo đúng thứ tự:
    > **Vì sao phải lọc:** chạy trên đồ thị đầy đủ có thể xoá cạnh `illustrates` vì "đã có đường khác",
    > làm mất liên kết hình↔khái niệm mà pha B cần.
 
-### A9''. Danh tính — gộp khái niệm trùng *(vé v2-05; đã có mã, chưa vào chuỗi mặc định)*
+### A9''. Danh tính — gộp khái niệm trùng *(vé v2-05; trong chuỗi mặc định từ 2026-09-26)*
 
 > Quy tắc: [spec v2, W14–W15](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `identity`, sau stage `teaching`.
 
