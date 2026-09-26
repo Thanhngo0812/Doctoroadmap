@@ -4,6 +4,8 @@
 > đạt (27/44 phán `same` mới đúng, đại diện có thể là nút chỉ-nhắc, gỡ chu trình sau gộp xoá nhầm cạnh) → vé mới
 > [10b](10b-danh-tinh-xac-minh.md). **Không chạy `roadmap --allow-spend` để xuất bản lộ trình trước khi 10b xong.** Báo cáo của nhân
 > viên: [01/03/10](../../report/v3-01-03-10-ket-qua-2026-09-26.md).
+> **Cập nhật:** 10b **đạt** (Claude đọc các cặp lệch, bỏ cổng số theo chủ trương tăng tốc, chạy ba tài liệu: 0 gộp sai rõ; doc-1 Q6
+> về 1/39). Chờ nhân viên commit mã 10b; vé 07 chỉ còn chờ vé 05.
 
 > **Rà soát đa ngôn ngữ 2026-09-26 (Claude, theo chủ dự án):** tài liệu có thể thuộc bất kỳ ngôn ngữ nào; spec v3 thêm mục "Nguyên tắc:
 > tài liệu đa ngôn ngữ" kèm bảng các chỗ đang vi phạm. Vé mới: 14, 15, 16, 17, 02b, T19. Phần từ khoá của vé 03/04 được thay ở vé 14;
@@ -16,6 +18,8 @@
 
 ## Luật chung cho người làm
 
+- **Tăng tốc (chủ dự án 2026-09-26):** số đo trong vé là thông tin cho reviewer, không phải cổng buộc dừng. Chạy đủ phần việc của vé
+  (trong trần chi được duyệt) rồi báo số; reviewer đọc và quyết đạt hay chưa.
 - Viết test đỏ trước cho bất biến của vé; test phải được thấy đỏ trên mã cũ.
 - Sửa `doc/spec-addendum.md`, `CONTEXT.md` và spec liên quan **cùng commit** với mã.
 - Mọi lệnh gọi mô hình đi qua `SpendGuard`; chạy `--allow-spend` trên tài liệu có artifact cũ chỉ sau khi chạy không cờ (hoặc

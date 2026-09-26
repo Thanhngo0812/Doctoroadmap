@@ -4,7 +4,8 @@
 **Chi phí mô hình:** lượt xác minh ≈ 0,02 USD (tập kiểm và ba tài liệu phát triển); lượt 1 danh tính v2 trên kho mặc định nếu
 chưa có (≈ 0,28 USD; 0 nếu tái dùng được checkpoint của bản thử khi checkpoint_id khớp cấu hình)
 
-**Trạng thái:** chờ giao. **Chặn vé 07:** lọc khái niệm chỉ-nhắc khỏi dãy học chỉ an toàn khi đại diện nhóm là khái niệm được dạy.
+**Trạng thái:** **đạt** — Claude kiểm thử 2026-09-26 (mục cuối): nhận prompt xác minh bản 2 sau khi đọc các cặp lệch, bỏ cổng số
+theo chủ trương tăng tốc, đã chạy ba tài liệu. Không còn chặn vé 07; còn T18 (người duyệt gộp chạm vàng), không chặn.
 
 ## Vì sao (kiểm thử vé 10, 2026-09-26)
 
@@ -74,6 +75,8 @@ chưa có (≈ 0,28 USD; 0 nếu tái dùng được checkpoint của bản th�
   - với 9 cặp T5 (nhãn người): khớp ≥ 8/9;
   - 8 cặp vùng xám báo riêng, không làm cổng.
 - Báo từng cặp lệch nhãn. Trượt ngưỡng thì báo và dừng; không sửa prompt quá hai phiên bản.
+- *Sửa 2026-09-26 (Claude):* các ngưỡng trên trái chủ trương tăng tốc của chủ dự án (không cần một con số chuẩn; reviewer đọc và
+  quyết). Từ nay số trên tập kiểm là **thông tin** cho reviewer, không phải cổng buộc dừng.
 - Rồi chạy luồng mặc định doc-1/doc-2/doc-6 (chạy `--dry-run` trước), bảng kiểm R11 trước/sau, Q6/Q7/Q7b. Tôi đọc lại mọi gộp.
 
 ## Sau vé này
@@ -96,3 +99,27 @@ các nhóm đã kiểm đủ: {Matrix, Matrix of a linear map, Matrix of T}, {�
   dùng nó để chọn đúng cạnh cần gỡ.
 - Thứ tự trình bày của sách là tín hiệu về chiều tiên quyết (Wang và cộng sự, CIKM 2016; A8 `order_relation`; dãy học neo sách
   của A10), nên sau khi gộp phải tính theo vị trí của đại diện.
+
+## Kiểm thử (Claude, 2026-09-26) — đạt
+
+- **Bỏ cổng số.** Cổng "bác ≥ 9/10, giữ ≥ 23/26, trượt thì dừng" do tôi đặt, trái chủ trương tăng tốc (không cần một con số chuẩn;
+  reviewer đọc và quyết). Nhân viên dừng đúng luật; lỗi ở vé.
+- **Chọn prompt bản 2** (bản đang trong mã) sau khi đọc 8 cặp lệch: gộp sai 1 cặp, bản 1 gộp sai 2 cặp. Gộp sai làm mất khái niệm,
+  bỏ sót chỉ để lại bản trùng, nên ưu tiên ít gộp sai. 3/4 cặp bản 2 bỏ sót là cặp tôi đọc lại thấy thuộc vùng xám (họ khái niệm so
+  với phần tử có tham số cố định: Multilinear forms ↔ m-linear form, Null spaces of powers ↔ null T^m; "Alternating n-linear forms" có
+  câu neo nói về không gian các dạng). Bỏ sót rõ: Cặp chỉ số quán tính ↔ Chỉ số quán tính. Cặp T5 bị bác không ảnh hưởng vì quyết định
+  người thắng. Việc xếp lại ba nhãn diễn ra sau khi thấy kết quả — ghi rõ, không dùng để nói cổng "đạt".
+- **Chạy ba tài liệu** (tôi chạy; prompt bản 2; lượt 1 tái dùng hết): 52 lời xác minh, **0,019449 USD**; cả đợt 10b 0,0555 USD, dưới
+  trần 0,15 USD. Kết quả ở `artifacts/v3-identity-verification` (kho thử, chưa thay kho mặc định).
+- **Đọc mọi gộp:** doc-1 11 nhóm, doc-2 16 nhóm (1 nhóm mở), doc-6 1 nhóm. **0 gộp sai rõ** theo nhãn của tôi. Mọi cặp sai rõ của bản thử
+  v3-10 đều bị bác (Set ↔ Finite set, singular values, Schur, null T′, column rank, Matrix of a linear map ↔ ℳ, FD vector space ↔
+  subspace, normal operator). Còn 2 gộp vùng xám: ĐLTT cực đại ← Hệ ĐLTT cực đại (chạm vàng → T18), Trace ← Trace of an operator.
+  doc-6 lấy "Cơ sở dữ liệu" (được dạy) làm đại diện, alias CSDL.
+- **Quan sát:** xác minh không ổn định tuyệt đối ở temperature 0 — hai cặp (Multilinear forms ↔ m-linear form; FD vector space ↔ FD
+  subspace) cho kết quả khác nhau giữa lượt tập kiểm và lượt tài liệu. Ghi nhận, không chặn.
+- **Hồi quy:** doc-1 Q6 1/39, Q7 89,67%, Q7b 58,90% (bằng mặc định; hồi quy của bản thử v3-10 đã hết). doc-2 Q6 3/57 (mẫu số giảm vì
+  nhóm Matrix gộp các nút vàng), Q7 58,04%, Q7b 92,11%. Bảng kiểm doc-1 so mặc định v37: tên module trùng 10 → 8, chỉ-nhắc trong dãy
+  17 → 13, "cần" quá dài 38 → 35, mục bị xé 7 → 6.
+- **Việc tiếp:** nhân viên commit mã 10b, tách khỏi phần từ khoá của vé 04 (phần đó làm lại theo vé 14). Khi chạy luồng mặc định, tái
+  dùng checkpoint lượt 1 của kho thử nếu khớp cấu hình, để khỏi trả lại ≈ 0,28 USD. T18 (bảng duyệt người cho gộp chạm vàng) làm song
+  song, không chặn. Vé 07 chỉ còn chờ vé 05.
