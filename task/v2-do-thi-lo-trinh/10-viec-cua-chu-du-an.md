@@ -28,6 +28,11 @@ Không phải việc cho agent. Vé này tồn tại để các cạnh chặn t�
 | T8 | gán vàng cạnh cho N2 (tập giữ lại) | 2 người + hội ý | ~1,5–2 giờ / người + ~30 phút | sau vé 04–05 | vé 07 |
 | T10 | duyệt cấu hình khoá | chủ dự án | ~10 phút | trước vé 07 | vé 07 |
 | T12 | kiểm tay 50 khái niệm lộ trình / tài liệu giữ lại (Q1) | 1 người | ~20 phút / tài liệu | ngay sau lần chạy vé 07 | vé 07 |
+| **T13** | liệt kê mù Q3 trên tập giữ lại (`liet-ke-mu-giu-lai.md`, 6 mục, **trang PDF**) | 1 người chưa xem đầu ra máy của xstk/doc-4 | ~1,5 giờ | **ngay** | vé 07 |
+| T14 | duyệt gộp danh tính chạm vàng của xstk, doc-4 (khuôn T5) | chủ dự án | ~10 phút | sau bước chạy vé 07 | vé 07 |
+| T15 | chấm mù cạnh dư trên xstk, doc-4 (khuôn T1) — Q4 | 2 người, riêng | ~30 phút / người | sau bước chạy vé 07 | vé 07 |
+| T16 | kiểm 50 câu neo trên xstk, doc-4 (khuôn T4) — Q9 | 1 người | ~25 phút | sau bước chạy vé 07 | vé 07 |
+| T17 | chấm mạch lạc module xstk, doc-4 (khuôn T6) — Q8 | 2 người, riêng | ~30 phút / người | sau bước chạy vé 07 | vé 07 |
 
 Ba việc đầu làm được ngay và không phụ thuộc gì.
 

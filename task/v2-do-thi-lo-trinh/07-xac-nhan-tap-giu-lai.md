@@ -57,3 +57,20 @@ Chuỗi mặc định nay là `validated → teaching (neo C8 v3) → identity �
 khái niệm của bộ vàng giữ lại (xstk chương 10–13, doc-4 Chương VIII) phải được chủ dự án duyệt — thêm bảng duyệt kiểu T5 cho
 hai tài liệu này trong lần chạy. Cần một cách nạp quyết định duyệt vào chuỗi (hiện chỉ script phát triển nạp được) — làm khi
 chuẩn bị T10.
+
+## Kế hoạch lần chạy (lập 2026-09-26)
+
+Q10 = Q1–Q9 và Q7b trên `xstk-ch3-1` (vàng: cấp 2, dải 10–13 = mục 2.1–2.4, 26 đích) và `doc-4` (vàng: Chương VIII, 47 đích).
+
+| bước | việc | ai | phụ thuộc |
+|---|---|---|---|
+| 0 | **T13** liệt kê mù Q3 trên tập giữ lại — `liet-ke-mu-giu-lai.md` (seed 20260926: xstk 2.1, 2.3, 2.4; doc-4 I, II, III) | người | **làm ngay**, không cần đầu ra máy |
+| 1 | T10 khoá cấu hình: commit, `prompt_hash` từng stage, tham số, ngưỡng (tôi sinh bảng) | chủ dự án | trước bước 2 |
+| 2 | chạy chuỗi mặc định `roadmap --allow-spend` trên hai tài liệu (doc-4 cả cuốn: A6–A10 ước ≈ 2–4 USD) | tôi | 1 |
+| 3 | **T14** duyệt gộp danh tính chạm vàng (bảng kiểu T5) → `--identity-review` → chạy lại `identity`/`stages` | chủ dự án | 2 |
+| 4 | chuyển bảng hội ý xstk thành JSON (`a8-gold-check`) — ngay trước khi chấm | tôi | 3 |
+| 5 | chấm tự động: Q2, Q5 (kèm đường cơ sở "n gần nhất"), Q6, Q7, Q7b | tôi | 4 |
+| 6 | sinh bảng người: **T12** Q1 (50 khái niệm lộ trình / tài liệu), **T15** Q4 chấm mù cạnh dư (khuôn T1), **T16** Q9 kiểm 50 câu neo (khuôn T4), **T17** Q8 mạch lạc module (khuôn T6), đối chiếu tên Q3 (khuôn T7) | tôi → người | 5 |
+| 7 | chấm, báo nguyên kết quả kể cả trượt, kèm Wilson | tôi | 6 |
+
+Đã biết trước sẽ trượt trên dữ liệu phát triển: Q3 (81%), Q4 (0,72–0,90), Q5, Q7; Q7b trượt ở doc-1. Không sửa gì sau khi thấy số.
