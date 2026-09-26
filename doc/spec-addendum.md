@@ -1,5 +1,7 @@
 # Pipeline chuẩn: Biến tài liệu PDF/DOCX thành lộ trình học tương tác
 
+> **Kế hoạch v3 (2026-09-26):** lộ trình chuẩn chỉ và đọc được — vai trò vùng văn bản, dãy học chỉ gồm khái niệm được dạy, tiên quyết rút gọn, tên module theo nội dung, danh tính mở rộng. Xem [spec v3](v3-lo-trinh-doc-duoc-spec.md); các mục dưới được sửa theo từng vé khi cài đặt.
+
 Tài liệu này đặc tả luồng đi chuẩn, chi tiết từng bước, kèm input/output, kỹ thuật đề xuất và hợp đồng dữ liệu (JSON schema) giữa các module.
 
 > **Tài liệu này là nguồn chân lý.** Khi nó mâu thuẫn với `spec-preview.md` (hệ nhãn T1–T4) hoặc bất kỳ
