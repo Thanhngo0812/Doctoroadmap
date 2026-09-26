@@ -37,7 +37,7 @@ def parse(text):
     """{(doc_id, tiêu đề phần): [(tên, không chắc)]} — chỉ các tiêu đề `## doc-…`."""
     sections, current = {}, None
     for line in text.splitlines():
-        heading = re.match(r"^##\s+(doc-\d+)\s+—\s+(.+?)\s*$", line)
+        heading = re.match(r"^##\s+(\S+)\s+—\s+(.+?)\s*$", line)
         if heading:
             current = (heading.group(1), heading.group(2))
             sections[current] = []

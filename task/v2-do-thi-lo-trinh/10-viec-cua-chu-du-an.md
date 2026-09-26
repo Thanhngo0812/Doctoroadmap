@@ -28,7 +28,7 @@ Không phải việc cho agent. Vé này tồn tại để các cạnh chặn t�
 | T8 | gán vàng cạnh cho N2 (tập giữ lại) | 2 người + hội ý | ~1,5–2 giờ / người + ~30 phút | sau vé 04–05 | vé 07 |
 | T10 | duyệt cấu hình khoá | chủ dự án | ~10 phút | trước vé 07 | vé 07 |
 | T12 | kiểm tay 50 khái niệm lộ trình / tài liệu giữ lại (Q1) | 1 người | ~20 phút / tài liệu | ngay sau lần chạy vé 07 | vé 07 |
-| **T13** | liệt kê mù Q3 trên tập giữ lại (`liet-ke-mu-giu-lai.md`, 6 mục, **trang PDF**) | 1 người chưa xem đầu ra máy của xstk/doc-4 | ~1,5 giờ | **ngay** | vé 07 |
+| **T13** | liệt kê mù Q3 trên tập giữ lại — **xong 2026-09-26, do Claude làm theo ủy quyền** (không phải nhãn người; doc-4 bốc lại, xem vé 07) | — | — | — | vé 07 |
 | T14 | duyệt gộp danh tính chạm vàng của xstk, doc-4 (khuôn T5) | chủ dự án | ~10 phút | sau bước chạy vé 07 | vé 07 |
 | T15 | chấm mù cạnh dư trên xstk, doc-4 (khuôn T1) — Q4 | 2 người, riêng | ~30 phút / người | sau bước chạy vé 07 | vé 07 |
 | T16 | kiểm 50 câu neo trên xstk, doc-4 (khuôn T4) — Q9 | 1 người | ~25 phút | sau bước chạy vé 07 | vé 07 |
@@ -49,7 +49,7 @@ Ba việc đầu làm được ngay và không phụ thuộc gì.
 | T7 | **phương án (b), 2026-09-25**: dùng trang PDF thực đọc làm mẫu (lệch ghi trong tệp). Khớp đúng tên tự động 15/73; **58 tên cần người xác nhận** ở `liet-ke-mu-doi-chieu.xlsx` (cột H; dòng ghép nhiều khái niệm ghi từng phần, ngăn «;») rồi mới ra Q3 |
 | T8 | **xong 2026-09-25** — bộ vàng N2 khoá: `doc-4-chuong-8-vang.json`, 72 cạnh (41 trùng + 31/36 giữ sau hội ý) |
 | T11 | **xong 2026-09-25** — pass cạnh ngầm trượt cổng 2 (17–58% "không làm sai thứ tự học"), không bật |
-| T10 | chưa tới lượt |
+| T10 | **chủ dự án giao tôi quyết (2026-09-26): hoãn** tới khi vé v3-03 … v3-11 xong |
 
 Luật ghi giờ: bảng nhận ngày 2026-09-24 có mốc giờ là của AI hỗ trợ ghi, không phải của người. Từ nay xin ghi giờ người
 bắt đầu / xong ở ô ghi chú dòng đầu, tách khỏi mọi mốc giờ do công cụ sinh.

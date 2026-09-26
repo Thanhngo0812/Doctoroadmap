@@ -74,3 +74,20 @@ Q10 = Q1–Q9 và Q7b trên `xstk-ch3-1` (vàng: cấp 2, dải 10–13 = mục 
 | 7 | chấm, báo nguyên kết quả kể cả trượt, kèm Wilson | tôi | 6 |
 
 Đã biết trước sẽ trượt trên dữ liệu phát triển: Q3 (81%), Q4 (0,72–0,90), Q5, Q7; Q7b trượt ở doc-1. Không sửa gì sau khi thấy số.
+
+## T10 và T13 — chủ dự án giao tôi quyết (2026-09-26)
+
+**T10 (khoá cấu hình): hoãn** tới khi vé v3-03 … v3-11 (spec v3) xong. Lý do: tập giữ lại chỉ mở một lần (W18); khoá bây giờ là
+kiểm trên luồng chính tôi đã đánh giá chưa chuẩn (báo cáo 2026-09-26), sau v3 sẽ không còn tập sạch để kiểm lại. Khi v3 xong: chạy
+lại `scripts/khoa-cau-hinh/tao_bang.py`, ghi bản khoá vào `07b-cau-hinh-khoa.md`, rồi mới chạy bước 2 của kế hoạch trên.
+
+**T13 (liệt kê mù Q3 trên tập giữ lại): xong, do Claude làm** — không phải nhãn người; ghi rõ trong tệp.
+- Mức mù: chưa xem danh sách khái niệm máy của các mục được bốc. Đã thấy trước: 47 khái niệm đích Chương VIII doc-4 (in ra khi sinh
+  bảng T8) và vài tên trong cảnh báo A3 (chương II, IV, V, IX, XI doc-4); vài tên mục 3 (kiểm định) của xstk.
+- Vì vậy **bốc lại doc-4** (seed 20260927) trong 21 mục của các chương chưa thấy tên (III, VI, VII, X, XII, XIII, XIV): VII-IV Tất
+  nhiên và ngẫu nhiên (tr. PDF 109–111), VII-VII Khả năng và hiện thực (116–119), XII-I Nhà nước (174–180). xstk giữ mẫu seed 20260926:
+  2.1 (21–23), 2.3 (30–33), 2.4 (33–35). Bốc lại dựa trên việc người làm đã thấy gì, không dựa trên kết quả máy.
+- 84 khái niệm (xstk 34, doc-4 50), mỗi dòng một khái niệm, tính cả mệnh đề/phân loại có tên; 9 dòng đánh `(?)`.
+- Tệp `artifacts/a8-gold/liet-ke-mu-giu-lai.md`, SHA-256 `40893176582ea921054632b0038fb08c232248c4068de8c11a794bf55c90a49f`. **Chưa chấm** — chấm Q3 ở lần chạy vé 07
+  (`scripts/liet-ke-mu/cham_q3.py artifacts/a8-gold/liet-ke-mu-giu-lai.md <bảng đối chiếu>`); bước đối chiếu tên cũng do tôi làm,
+  theo luật dòng ghép đã có.
