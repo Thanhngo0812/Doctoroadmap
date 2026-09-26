@@ -5,6 +5,10 @@
 > [10b](10b-danh-tinh-xac-minh.md). **Không chạy `roadmap --allow-spend` để xuất bản lộ trình trước khi 10b xong.** Báo cáo của nhân
 > viên: [01/03/10](../../report/v3-01-03-10-ket-qua-2026-09-26.md).
 
+> **Rà soát đa ngôn ngữ 2026-09-26 (Claude, theo chủ dự án):** tài liệu có thể thuộc bất kỳ ngôn ngữ nào; spec v3 thêm mục "Nguyên tắc:
+> tài liệu đa ngôn ngữ" kèm bảng các chỗ đang vi phạm. Vé mới: 14, 15, 16, 17, 02b, T19. Phần từ khoá của vé 03/04 được thay ở vé 14;
+> vé 05, 09, 11, 12, 13 có thêm mục sửa. Nặng nhất là vé 16: tên chữ không Latin đang bị coi là ký hiệu, nên A3 loại gần hết khái niệm.
+
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md) · **Căn cứ:** [báo cáo đánh giá 2026-09-26](../../report/danh-gia-lo-trinh-2026-09-26.md)
 
 **Quy trình (chủ dự án chốt 2026-09-26):** tôi viết spec và vé → chủ dự án giao nhân viên cài đặt → tôi kiểm thử theo mục
@@ -19,6 +23,10 @@
 - Không mở tập giữ lại (`artifacts/a8-gold/xstk-ch3-1-chuong-10-13-*`, `doc-4-chuong-8-vang.json`); không sửa bộ vàng đóng băng.
 - Chỉ dùng `gemini-3.1-flash-lite`, temperature 0. Không đẩy nội dung sách ra dịch vụ nào khác Gemini.
 - `artifacts/` và `tmp/` không commit.
+- **Tài liệu đa ngôn ngữ** (spec v3, mục Nguyên tắc): không thêm danh sách từ hay regex của một ngôn ngữ vào luồng; dùng bằng chứng cấu
+  trúc trong tài liệu hoặc một lời gọi mô hình với tập nhãn đóng. Test của vé chạm luật văn bản có fixture ở ít nhất hai ngôn ngữ ngoài
+  vi/en (một chữ viết không Latin, một chữ viết không cách từ). Không vì sửa luật mà bắt chạy lại stage tốn tiền trên tài liệu hiện có:
+  chạy `--dry-run` trên sáu tài liệu trước và sau.
 
 ## Vé
 
@@ -26,6 +34,7 @@
 |---|---|---|---|---|---|
 | 01 | chạy thử có dự toán (R10) | CLI | nhân viên | — | 0 |
 | 02 | bảng kiểm đọc được (R11) | kiểm thử | **tôi** | — | 0 |
+| 02b | bảng kiểm không phụ thuộc ngôn ngữ (R11 sửa) | kiểm thử | **tôi** | 03 | 0 |
 | 03 | vai trò vùng văn bản (R1) | A2 | nhân viên | — | 0 |
 | 04 | cấu trúc mục kiểu sách toán (R2) | A2 | nhân viên | 03 | 0 |
 | 05 | neo và vị trí chỉ từ vùng dạy (R3) | A9' | nhân viên | 03 | chạy lại neo ≈ 0,5 USD toàn kho phát triển |
@@ -38,14 +47,21 @@
 | 11 | tên khái niệm có nội dung (R9) | sau A5 | nhân viên | 05 | ≈ 0,02 USD / tài liệu |
 | 12 | cạnh theo định nghĩa ở A8 (R12) | A8 | nhân viên | 03–11 | ≈ 1–7 USD / tài liệu — **chủ dự án duyệt trước khi chạy** |
 | 13 | trích mệnh đề có tên ở A3 (R13) | A3 | nhân viên | sau vé 07 v2 | chạy lại A3–A10; cần kế hoạch ánh xạ vàng |
+| 14 | vai trò vùng và cấu trúc mục không phụ thuộc ngôn ngữ (R1, R2 viết lại) | A2 | nhân viên | 03; làm tiếp trên vé 04 | ≈ 0,001–0,01 USD / tài liệu |
+| 15 | ngôn ngữ tài liệu bất kỳ ở A5 (R14) | A5 | nhân viên | — | ≈ 0,0001 USD / tài liệu |
+| 16 | tên, ký hiệu và tìm nhắc tên không phụ thuộc chữ viết (R15) — **ưu tiên** | A3, A4, A6 | nhân viên | — | 0 |
+| 17 | tiền tố danh tính từ bằng chứng trong tài liệu (R16) | A9'' | nhân viên | 10b | ≈ 0,01 USD / tài liệu |
+| T19 | cung cấp tài liệu thật ngôn ngữ thứ ba: một chữ viết không Latin (ví dụ tiếng Trung, Nga) và một chữ Latin ngoài vi/en (ví dụ tiếng Pháp) | kiểm thử | **chủ dự án** | — | 0 |
 
-Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05.
+Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
+tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12, 13. Chạy thử tài liệu T19 sau 14–17.
 
 ## Tôi kiểm thử thế nào
 
 Mỗi vé: đọc diff, chạy test (thấy đỏ trên mã cũ bằng `git stash` hoặc đột biến), chạy **bảng kiểm đọc được** (vé 02) trước/sau trên
 doc-1, doc-2, doc-6, nhap-mon-ml, doc-3, naive-bayes, và **đọc lộ trình** trước/sau — ghi phán xét vào mục "Kiểm thử" của vé. Số đo cũ
-(Q6, Q7, Q7b) báo kèm để bắt hồi quy.
+(Q6, Q7, Q7b) báo kèm để bắt hồi quy. Vé chạm luật văn bản: kiểm thêm có fixture đa ngôn ngữ, không còn danh sách từ của một ngôn ngữ
+trong phần mã mới, và `--dry-run` trước/sau.
 
 ## Liên quan tới vé 07 v2 (tập giữ lại)
 

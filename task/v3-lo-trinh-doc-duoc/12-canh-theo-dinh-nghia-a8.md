@@ -15,3 +15,12 @@
   neo → bị từ chối.
 - **Tôi kiểm (trên dữ liệu phát triển, sau khi chủ dự án duyệt chi):** đọc lộ trình doc-1, doc-2; Q7b doc-1 phải tăng rõ (hiện 59%) mà
   Q6 không tụt quá sàn nhiễu; chấm mù nhỏ kiểu T11 trên cạnh `can_de_hieu` mới nếu chủ dự án muốn.
+
+## Bổ sung theo nguyên tắc đa ngôn ngữ (Claude, 2026-09-26; spec v3 R16)
+
+Làm cùng lượt chạy lại A6–A8 của vé này:
+- Thay `DEFAULT_COMMON_NAMES` (A6, danh sách vi/en) bằng tên xuất hiện ở quá một tỉ lệ chunk đặt trong config, đo trên chính tài liệu
+  (kiểu IDF).
+- Bỏ `DEFAULT_DEFINITION_SIGNALS` (A7, cụm định nghĩa vi/en). Tín hiệu nơi định nghĩa là chunk chứa câu bằng chứng A3 hoặc câu neo của
+  khái niệm.
+- Nghiệm thu thêm: test tổng hợp ở một ngôn ngữ ngoài vi/en cho cả hai luật; báo số tên bị coi là quá chung trên từng tài liệu phát triển.

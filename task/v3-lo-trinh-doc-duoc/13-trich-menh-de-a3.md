@@ -12,3 +12,9 @@
 ## Nghiệm thu
 - Test trích trên các mẫu T7 bị thiếu (trị riêng là nghiệm đa thức tối tiểu; phương pháp Cramer; bất đẳng thức tam giác…).
 - **Tôi kiểm:** chấm lại Q3 bằng T7 (bảng đối chiếu đã có) — kỳ vọng ≥ 90%.
+
+## Bổ sung theo nguyên tắc đa ngôn ngữ (Claude, 2026-09-26; spec v3 R16)
+
+Làm cùng lượt chạy lại A3 của vé này: thay cụm "definition/denote/called" trong `_defined_script_symbol` bằng bằng chứng trong tài liệu —
+câu bằng chứng A3 (đã kiểm có trong văn bản) chứa ký hiệu đó, và ký hiệu còn xuất hiện ở ít nhất một chunk khác. Test với câu định
+nghĩa ký hiệu bằng tiếng Việt và tiếng Pháp.

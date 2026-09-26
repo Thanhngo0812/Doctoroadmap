@@ -28,3 +28,10 @@
   "Bibliography", "Tài liệu tham khảo"; mỗi mẫu một test. "Photo Credits" của doc-2 phải ra `cuoi_sach`, không phải `noi_dung`.
 - **Luật "chương có số luôn mở lại vùng nội dung"** (vé 03) hiện không có test nào đỏ khi tắt nó. Thêm test (một chương có số nằm dưới
   tiêu đề `mo_dau` hoặc `de_cuong` vẫn là `noi_dung`); hoặc, nếu cây mới khiến luật thừa, bỏ luật kèm test chứng minh.
+
+## Rà soát đa ngôn ngữ (Claude, 2026-09-26)
+
+Phần từ khoá của bản đang làm (`_MATH_CHAPTER` "Chapter", `_MATH_EXERCISES` "Exercises", `_MATH_RESULT` "định lý/ví dụ…", từ
+"Exercises" trong `_MATH_PAGE_HEADING`) trái nguyên tắc đa ngôn ngữ của spec v3, và cờ sách toán bật chỉ vì một tiêu đề lẻ. Làm lại
+theo vé [14](14-vai-tro-cau-truc-da-ngon-ngu.md) trước khi commit; phần phục hồi tiêu đề bị Docling coi là page_header được giữ, nhưng
+chỉ dựa vào mã mục (ví dụ "3C", "3B").

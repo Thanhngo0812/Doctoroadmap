@@ -54,3 +54,9 @@ Danh sách, số lượng và cách tái dùng: [báo cáo](../../report/v3-01-0
     theorem"); chỉ 161 chunk nằm dưới chính các tiêu đề Exercises. "Photo Credits" (8 chunk) cũng đang mang `bai_tap` → điều kiện 2.
 - **Điều kiện, ghi vào vé 04:** (1) thêm test cho luật chương có số, hoặc bỏ luật nếu cây mới không cần nó; (2) sau khi sửa cây, doc-2
   chỉ còn khoảng 161 chunk `bai_tap`, không mục kết quả đánh số nào mang `bai_tap`, và phần cuối sách không thành `noi_dung`.
+
+## Rà soát đa ngôn ngữ (Claude, 2026-09-26)
+
+Luật theo mẫu tiêu đề tiếng Việt/tiếng Anh (`ROLE_PATTERNS`, tìm chương đầu bằng "chương|chapter") trái nguyên tắc đa ngôn ngữ của spec
+v3. Cách tính vai trò được thay ở vé [14](14-vai-tro-cau-truc-da-ngon-ngu.md); giao diện `role`, `chunk_roles` và cách ghi version
+chunks giữ nguyên, nên các vé 05, 06, 07 không phải chờ.
