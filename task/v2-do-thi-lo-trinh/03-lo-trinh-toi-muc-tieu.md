@@ -72,3 +72,16 @@ Mã: `gold_scoring.target_precision`, báo trong `score_roadmap_order` dưới k
 
 Q7b ≥ 70%: doc-2 đạt, **doc-1 trượt (59%)** ở mọi cấu hình — đồ thị doc-1 nối thừa từ A8, không do bước neo hay danh tính.
 Q7 (≥ 95%, ≥ 80% đích đủ) trượt cả hai chương. Hai chương lệch hai phía: doc-1 thừa, doc-2 thiếu.
+
+## Q3 — kết quả T7 (2026-09-26, `scripts/liet-ke-mu/cham_q3.py`, phương án b)
+
+Q3 = 59/73 = 81% (Wilson 95% 70–88%) — **trượt** (≥ 90%). Theo phần: doc-1 12/15, 13/13, 16/17; doc-2 5/8, 4/7, 9/13. Dòng ghép
+chỉ tính có khi mọi phần đều có (luật đã ghi trong bảng). 14 mục thiếu:
+- **Mệnh đề/định lý có tên** (10): phương pháp Cramer; điều kiện hệ thuần nhất có nghiệm không tầm thường; hệ thuần nhất nhiều
+  ẩn hơn phương trình; ma trận của tổng / của tích vô hướng ánh xạ tuyến tính; trị riêng là nghiệm đa thức tối tiểu; phân tích đa
+  thức tối tiểu trên ℂ; đa thức triệt tiêu toán tử là bội của đa thức tối tiểu; không có dạng m-tuyến tính thay phiên khác 0 khi
+  m > dim V; công thức hoán vị cho dạng đa tuyến tính thay phiên.
+- **Khái niệm** (4): dạng ma trận của hệ phương trình; bất đẳng thức tam giác; lũy thừa Descartes Vᵐ; không gian các dạng
+  m-tuyến tính.
+Gốc: A3 trích khái niệm thành phần nhưng không trích mệnh đề thành nút riêng. Sửa ở A3 đổi danh sách khái niệm → mọi bộ vàng (gắn
+`concept_hash`) phải gán lại hoặc ánh xạ — cần chủ dự án quyết.

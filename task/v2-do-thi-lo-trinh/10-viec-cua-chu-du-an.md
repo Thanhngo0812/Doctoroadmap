@@ -153,3 +153,11 @@ hội ý. Kết quả khoá lại, chỉ mở ở vé 07.
 
 Trước vé 07 tôi đưa: commit, `prompt_hash` từng khâu, tham số, ngưỡng. Bạn xác nhận không đổi gì nữa; từ đó mọi thay đổi là
 hậu kiểm.
+
+## Kết quả nhận 2026-09-26
+
+- **T3 doc-6:** 27 giữ + 1 không chắc; neo loại nhầm 0/27. Ô ghi chú dòng 1 ghi "BẢN THAM KHẢO DO AI GÁN — KHÔNG PHẢI NHÃN
+  NGƯỜI" — chờ chủ dự án xác nhận.
+- **T7 (đối chiếu đã điền):** **Q3 = 59/73 = 81%** (Wilson 70–88%) — **trượt** ngưỡng ≥ 90%. doc-1 41/45, doc-2 18/28. 14 mục
+  máy thiếu, phần lớn là **mệnh đề/định lý có tên** (Axler) mà A3 chỉ trích khái niệm thành phần; vài khái niệm thiếu thật (bất
+  đẳng thức tam giác, Vᵐ, không gian dạng m-tuyến tính). Chi tiết ở vé 03.

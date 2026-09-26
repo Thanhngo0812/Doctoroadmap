@@ -200,3 +200,21 @@ khoảng là **chưa đủ bằng chứng**. Ba vi phạm còn lại: `Column-ro
 `Column rank` 385); `Operator` — sách đặt ngược thật (định nghĩa ở 5.1, dùng từ chương 3); `Nonnegative integers → Matrix` —
 cạnh vàng đáng ngờ, máy có đường ngược.
 So với C8 v2 (chuỗi mặc định hiện hành, trước identity): Q6 doc-1 5,0% → 2,6%, doc-2 8,2% → 4,9%.
+
+### N1 doc-6 — kết quả (2026-09-26)
+
+Nhãn T3 (`nhan-khai-niem-doc-6-output.xlsx`, SHA-256 `7862027cd1779b8f…`): 17 "được dạy", 10 "chỉ được nhắc", 1 "không chắc",
+**0 phải loại**. **Ô ghi chú dòng 1 ghi: "BẢN THAM KHẢO DO AI GÁN — KHÔNG PHẢI NHÃN NGƯỜI"** — trái với xác nhận trước của chủ dự
+án; chờ xác nhận lại. Chuỗi mặc định doc-6: validated v6 → C8 v2 v7 → stages v8 (28 khái niệm, 4 module). Neo C8 v3: teaching v9,
+0,011 USD.
+
+| | C8 v3 (neo) | C8 v2 |
+|---|---|---|
+| loại nhầm | **0/27** | 0/27 |
+| "được dạy" → `taught` | 12/17 | 13/17 |
+| "chỉ được nhắc" → `mentioned_only` | 10/10 | 10/10 |
+
+**Cổng 2 gộp N1 (doc-5 + doc-6):** loại nhầm **0/52** — đạt theo điểm (≤ 1 cho phép); Wilson 95% 0–6,9% nên theo luật khoảng
+chưa đủ bằng chứng cho "≤ 2%". **Vế loại đúng: không đo được** — cả hai tài liệu N1 đều có 0 khái niệm phải loại, vì A3 đã tách
+dữ liệu ví dụ thành bảng/hình và không trích tổ chức/người thành khái niệm learnable. Bằng chứng về vế này chỉ có trên dữ liệu
+phát triển và là **điểm yếu**: doc-3 loại đúng 6/13 (C8 v3) — dưới 80%; doc-1 3/3 node hành chính.

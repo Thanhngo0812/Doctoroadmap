@@ -126,4 +126,6 @@ def main():
 if __name__ == "__main__":
     if len(sys.argv) > 1:  # danh sách khác tệp mặc định, ví dụ bản phương án (b)
         LIST = Path(sys.argv[1])
+    if len(sys.argv) > 2:  # bảng đối chiếu người đã điền, nếu lưu tên khác
+        SHEET = Path(sys.argv[2])
     main()
