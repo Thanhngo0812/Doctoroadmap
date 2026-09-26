@@ -34,7 +34,7 @@
 |---|---|---|---|---|---|
 | 01 | chạy thử có dự toán (R10) | CLI | nhân viên | — | 0 |
 | 02 | bảng kiểm đọc được (R11) | kiểm thử | **tôi** | — | 0 |
-| 02b | bảng kiểm không phụ thuộc ngôn ngữ (R11 sửa) | kiểm thử | **tôi** | 03 | 0 |
+| 02b | bảng kiểm không phụ thuộc ngôn ngữ (R11 sửa) | kiểm thử | **tôi** | 14 | 0 |
 | 03 | vai trò vùng văn bản (R1) | A2 | nhân viên | — | 0 |
 | 04 | cấu trúc mục kiểu sách toán (R2) | A2 | nhân viên | 03 | 0 |
 | 05 | neo và vị trí chỉ từ vùng dạy (R3) | A9' | nhân viên | 03 | chạy lại neo ≈ 0,5 USD toàn kho phát triển |

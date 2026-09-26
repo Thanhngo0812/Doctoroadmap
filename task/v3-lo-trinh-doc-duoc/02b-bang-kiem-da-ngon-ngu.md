@@ -1,9 +1,10 @@
 # 02b — Bảng kiểm đọc được không phụ thuộc ngôn ngữ
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R11 (sửa 2026-09-26) · **Ai:** **tôi** (công cụ kiểm thử) ·
-**Phụ thuộc:** 03 · **Chi phí mô hình:** 0
+**Phụ thuộc:** 14 (vai trò doc-2 còn sai tới khi cây mục được sửa; chuyển sớm sẽ làm lệch mốc đo) · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ làm
+**Trạng thái:** chờ vé 14. Trong lúc chờ, bản regex hiện có vẫn dùng để nghiệm thu trên sáu tài liệu phát triển (đều vi/en), kèm giới
+hạn này.
 
 ## Vì sao
 `scripts/doc-lo-trinh/kiem_doc_duoc.py` dùng regex tiếng Việt/tiếng Anh: `NON_TEACHING` cho vùng không dạy, `NUMBERED_LABEL` và `GENERIC`
