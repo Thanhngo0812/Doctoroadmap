@@ -1,0 +1,1006 @@
+{
+ "purpose": "Tập kiểm lượt xác minh danh tính (vé v3-10b). Không dùng làm ví dụ trong prompt.",
+ "criterion": "same khi và chỉ khi hai nút cùng ngoại diên: cùng định nghĩa/cùng tập đối tượng, chỉ khác cách gọi (đồng nghĩa, ký hiệu, viết tắt, số ít/nhiều, cách viết, dịch, đổi tên biến tự do). Trường hợp riêng/lớp con/thể hiện, bằng nhau nhờ định lý hay đặc trưng, hai mệnh đề khác nhau, đối tượng với ánh xạ/phép dựng → different.",
+ "labelers": {
+  "claude-review": "Claude đọc mô tả, câu neo và định nghĩa trong sách, 2026-09-26 (đánh giá chất lượng theo ủy quyền của chủ dự án) — KHÔNG phải nhãn người; cặp chạm vàng vẫn cần người duyệt trước khi áp",
+  "human-T5": "quyết định người duyệt T5 (artifacts/a8-gold/duyet-danh-tinh-*.json)"
+ },
+ "sources": {
+  "trial": "artifacts/v3-identity-evaluation/review-pending.json (bản thử v3-10: doc-1 teaching v33, doc-2 v27, doc-6 v9)"
+ },
+ "pairs": [
+  {
+   "doc_id": "doc-1",
+   "left": "node_054da7d242e55aad81b04d86",
+   "right": "node_4d418222f0814bdf58e9bb7d",
+   "left_name": "Tự đồng cấu",
+   "right_name": "Toán tử tuyến tính",
+   "trial_pair_id": "p26",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_1de43855d6fa4df76949402f",
+   "right": "node_4370e7b675f6f20fdad8ce7e",
+   "left_name": "Đổi chỗ hai hàng hoặc hai cột",
+   "right_name": "Tính chất 2",
+   "trial_pair_id": "p64",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_1ec9d8ce06c1065587ad19d3",
+   "right": "node_2342d2500f4c5612dcb51ae2",
+   "left_name": "Nhân",
+   "right_name": "KerT",
+   "trial_pair_id": "p67",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_22c4892fdc800f6c65f00afe",
+   "right": "node_6ba7251105e6bd2d86515f4c",
+   "left_name": "Hàm thực liên tục",
+   "right_name": "Không gian C [ a, b ]",
+   "trial_pair_id": "p75",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": true,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "nút 'Hàm thực liên tục' mô tả tập C[a,b]; tên gây hiểu nhầm (vé 11), danh tính đúng"
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_2f27486fc090de18d149cb91",
+   "right": "node_5fc9bb7fe30faf0e17851b62",
+   "left_name": "Cặp chỉ số quán tính",
+   "right_name": "Chỉ số quán tính",
+   "trial_pair_id": "p105",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_3527ea9310ba5e0632752a79",
+   "right": "node_951c58cc9e67e2e842590c85",
+   "left_name": "Imf",
+   "right_name": "Ảnh của ánh xạ tuyến tính",
+   "trial_pair_id": "p122",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_6c56b8ebbc6f16eaadbe0455",
+   "right": "node_ae562fe8b08ab24b2558c2c2",
+   "left_name": "Hệ độc lập tuyến tính cực đại",
+   "right_name": "Độc lập tuyến tính cực đại",
+   "trial_pair_id": "p245",
+   "candidate_reasons": [
+    "generic_prefix",
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": true,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "hai định nghĩa riêng trong sách: trong V (mục cơ sở) và trong S (mục hạng); V là trường hợp S = V"
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_7b0e57c9a3ad9e469131c056",
+   "right": "node_b182c75815b631d843b00697",
+   "left_name": "Bao tuyến tính",
+   "right_name": "Không gian con sinh bởi hệ véc tơ",
+   "trial_pair_id": "p266",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_c339ecb79bb17304a072c787",
+   "right": "node_ccc753ab4dc41c361e7b877c",
+   "left_name": "Hạng của f",
+   "right_name": "dim(Imf)",
+   "trial_pair_id": "p360",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_090bab438a73c85695ff8a9c",
+   "right": "node_9f5f1acb0320299ed171f90c",
+   "left_name": "Alternating multilinear form",
+   "right_name": "Alternating m-linear form",
+   "trial_pair_id": "p49",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_091843665b7cb6a7e2abe9bc",
+   "right": "node_1b75cd9f4fe231ab9abf4bbf",
+   "left_name": "null T'",
+   "right_name": "(range T)0",
+   "trial_pair_id": "p50",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "bang_nhau_theo_menh_de",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "null T' = (range T)^0 là định lý 3.107, không phải định nghĩa"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_0faf5cb26dcb0adf27e1d36c",
+   "right": "node_a1a1662b9de3bc77b5a8fceb",
+   "left_name": "Matrix",
+   "right_name": "Matrix of a linear map",
+   "trial_pair_id": "p85",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": true,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "nút 'Matrix' được mô tả là ma trận của ánh xạ tuyến tính theo cơ sở, không phải mảng số nói chung"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_0faf5cb26dcb0adf27e1d36c",
+   "right": "node_f02742d5a399daab9d5ea294",
+   "left_name": "Matrix",
+   "right_name": "Matrix of T",
+   "trial_pair_id": "p86",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": true,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_1060e748f80f8b113b34ad2c",
+   "right": "node_64aa76a4477b1aa28167bf83",
+   "left_name": "distributive property",
+   "right_name": "Distributive properties",
+   "trial_pair_id": "p90",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_12dcf4c77be929e6ae94872f",
+   "right": "node_33d83cb838afac3f4387cbee",
+   "left_name": "Linear functionals",
+   "right_name": "Linear functional",
+   "trial_pair_id": "p97",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_171e917572d8520425bc4450",
+   "right": "node_9770a85052d8f8f30d147d93",
+   "left_name": "Direct sum",
+   "right_name": "Direct sum of two subspaces",
+   "trial_pair_id": "p126",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "trường hợp m = 2; câu neo là ví dụ"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_1adbf2cd745caf2b222185da",
+   "right": "node_77eb8370b5bf408e6baec0b6",
+   "left_name": "column rank of M(T)",
+   "right_name": "Column rank",
+   "trial_pair_id": "p142",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": true,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "khái niệm chung áp lên một đối tượng cụ thể; câu neo là định lý dim range T = column rank of M(T)"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_1adbf2cd745caf2b222185da",
+   "right": "node_f5053792757b91a29c2c9a08",
+   "left_name": "column rank of M(T)",
+   "right_name": "dim range T",
+   "trial_pair_id": "p145",
+   "candidate_reasons": [
+    "description_similarity",
+    "same_anchor"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "bang_nhau_theo_menh_de",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_1c59a31bcbc8452d81009706",
+   "right": "node_b551198bf82bb24543b1f6b4",
+   "left_name": "upper-triangular form always exists if 𝐅 = 𝐂",
+   "right_name": "Schur's theorem",
+   "trial_pair_id": "p154",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "menh_de_khac",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "Schur cần cơ sở trực chuẩn trên không gian tích trong; kết quả kia chỉ nói tồn tại ma trận tam giác trên"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_203bc6c03fd3fe401eb32d64",
+   "right": "node_aff7aeb0acebd201bf2524e5",
+   "left_name": "null 𝑇",
+   "right_name": "null T",
+   "trial_pair_id": "p168",
+   "candidate_reasons": [
+    "normalized_name",
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_4342d8ef85471704e032e36b",
+   "right": "node_a17672d4f7453d7d4d33dd43",
+   "left_name": "𝒫 𝑛 (𝐅)",
+   "right_name": "set of all polynomials with coefficients in 𝐅 and degree at most 𝑚",
+   "trial_pair_id": "p317",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_472ae382c6f0e5ccd55cc903",
+   "right": "node_f3b773310122dad888e5c007",
+   "left_name": "Multilinear forms",
+   "right_name": "m-linear form",
+   "trial_pair_id": "p339",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_532eaf3f3f92b16dbcfa01eb",
+   "right": "node_cd6be7795ce05d136dc90b93",
+   "left_name": "Volume",
+   "right_name": "Volume of a box",
+   "trial_pair_id": "p375",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "thể tích hộp là trường hợp gốc; thể tích tập tổng quát định nghĩa qua hộp"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_58d0c239dd2313b9ebc09a82",
+   "right": "node_b7f3feea42487904108ab8e3",
+   "left_name": "Alternating n-linear forms",
+   "right_name": "Alternating n-linear form",
+   "trial_pair_id": "p398",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_6010709d49dd4507c2403819",
+   "right": "node_8d87063509d32c718e37d6da",
+   "left_name": "positive square root",
+   "right_name": "Square root of a positive operator",
+   "trial_pair_id": "p421",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "căn bậc hai dương của toán tử dương; nút kia chỉ được nhắc ở phần dẫn"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_628ab41f3dda37021110d495",
+   "right": "node_76ebdbecd2aad99075896aaf",
+   "left_name": "Bilinear forms",
+   "right_name": "Bilinear form",
+   "trial_pair_id": "p442",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_68bc89f3fdfe228654a8a23a",
+   "right": "node_c1975fd6f8fdbc0ab4f5608f",
+   "left_name": "invariant under T",
+   "right_name": "Invariant subspaces",
+   "trial_pair_id": "p466",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_6ca92d5de3f5c92ae60a3ee1",
+   "right": "node_aff7aeb0acebd201bf2524e5",
+   "left_name": "Null Space",
+   "right_name": "null T",
+   "trial_pair_id": "p483",
+   "candidate_reasons": [
+    "normalized_name",
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_6f0b26a0cf52e0c00eb81c50",
+   "right": "node_d1f1e17473aabbfa2b0e7a27",
+   "left_name": "Restriction",
+   "right_name": "Restriction operator",
+   "trial_pair_id": "p491",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "toán tử hạn chế cần U bất biến; hạn chế hàm là khái niệm chung"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_76d9be8f67daabe0cb5cf78d",
+   "right": "node_e61ed6068d809a3b1e608e08",
+   "left_name": "Isomorphism between L(V, W) and F^m,n",
+   "right_name": "ℳ",
+   "trial_pair_id": "p511",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_7d61ea8a50b48aa2f4f5c6dd",
+   "right": "node_9443e02d80abbdc455d28451",
+   "left_name": "Null spaces of powers of an operator",
+   "right_name": "null T^m",
+   "trial_pair_id": "p538",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_804ca1fab25f621409dcba05",
+   "right": "node_adc67ecb6f6845e64437963b",
+   "left_name": "Trace of an operator",
+   "right_name": "Trace",
+   "trial_pair_id": "p547",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "khac",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "nút 'Trace' trộn vết ma trận (câu neo) với vết toán tử (mô tả); T5 để 'Không chắc' với vết ma trận"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_87403b3424864bfbec467ce7",
+   "right": "node_8c596c1b81a4c36b0307e7b4",
+   "left_name": "singular values",
+   "right_name": "positive singular values",
+   "trial_pair_id": "p560",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "giá trị kỳ dị dương là tập con"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_88657b20da03b76579179ad1",
+   "right": "node_ce352acdd72eafb15220e896",
+   "left_name": "Finite-dimensional vector space",
+   "right_name": "Finite-dimensional subspace",
+   "trial_pair_id": "p563",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "câu neo là kết quả 2.25 về không gian con hữu hạn chiều"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_90f74df88f91d30aa5a496ac",
+   "right": "node_a1a1662b9de3bc77b5a8fceb",
+   "left_name": "Matrix of an operator",
+   "right_name": "Matrix of a linear map",
+   "trial_pair_id": "p585",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": true,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "ma trận của toán tử: V = W, một cơ sở — trường hợp riêng có định nghĩa riêng trong sách"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_90f74df88f91d30aa5a496ac",
+   "right": "node_f02742d5a399daab9d5ea294",
+   "left_name": "Matrix of an operator",
+   "right_name": "Matrix of T",
+   "trial_pair_id": "p586",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": true,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "như p585"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_9a4429356dc7a7c579ca06c4",
+   "right": "node_f3f61dbc5902208b961859c2",
+   "left_name": "Finite set",
+   "right_name": "Set",
+   "trial_pair_id": "p609",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "tập hữu hạn là lớp con của tập hợp"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_9f5f1acb0320299ed171f90c",
+   "right": "node_b7f3feea42487904108ab8e3",
+   "left_name": "Alternating m-linear form",
+   "right_name": "Alternating n-linear form",
+   "trial_pair_id": "p623",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "truong_hop_rieng",
+   "gray": true,
+   "labeler": "claude-review",
+   "note": "n cố định bằng dim V"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_a1a1662b9de3bc77b5a8fceb",
+   "right": "node_e61ed6068d809a3b1e608e08",
+   "left_name": "Matrix of a linear map",
+   "right_name": "ℳ",
+   "trial_pair_id": "p639",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": true,
+   "label": "different",
+   "relation": "doi_tuong_khac_loai",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "ma trận của một ánh xạ ≠ ánh xạ ℳ: T ↦ ℳ(T)"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_a1a1662b9de3bc77b5a8fceb",
+   "right": "node_f02742d5a399daab9d5ea294",
+   "left_name": "Matrix of a linear map",
+   "right_name": "Matrix of T",
+   "trial_pair_id": "p640",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": false,
+   "touches_gold": true,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_b4881c96664d33e949891994",
+   "right": "node_e2cc13d3b8ec685de9e94cfc",
+   "left_name": "Translate",
+   "right_name": "Sum of a vector and a subset",
+   "trial_pair_id": "p668",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_bd8642ccfde93e9942351300",
+   "right": "node_cb2f5697806c66cf17b4645c",
+   "left_name": "Addition on 𝐂",
+   "right_name": "Complex addition",
+   "trial_pair_id": "p684",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": ""
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_d6fe25c435fa58b3b0c251fb",
+   "right": "node_d76bb7015c9b74be92072c79",
+   "left_name": "Characterization of normal operators",
+   "right_name": "Normal operator",
+   "trial_pair_id": "p708",
+   "candidate_reasons": [
+    "description_similarity"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "different",
+   "relation": "bang_nhau_theo_menh_de",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "định lý đặc trưng (7.20) ≠ định nghĩa toán tử chuẩn tắc"
+  },
+  {
+   "doc_id": "doc-6",
+   "left": "node_9c4ab11321a8c7b45b06d581",
+   "right": "node_e097d3d7888cac213ae5a8ce",
+   "left_name": "CSDL",
+   "right_name": "Cơ sở dữ liệu",
+   "trial_pair_id": "p25",
+   "candidate_reasons": [
+    "initialism"
+   ],
+   "model_verdict": "same",
+   "applied_in_trial": true,
+   "touches_gold": false,
+   "label": "same",
+   "relation": "dong_nhat",
+   "gray": false,
+   "labeler": "claude-review",
+   "note": "gộp đúng; đại diện phải là nút được dạy 'Cơ sở dữ liệu', không phải 'CSDL' ở đề cương"
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_24f4d60ad4506fbcf7c18a08",
+   "right": "node_ee7632ab34b0d99aa9fd7fa2",
+   "left_name": "Hệ véc tơ độc lập tuyến tính",
+   "right_name": "Độc lập tuyến tính",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "same",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Đồng ý gộp"
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_46832b38ee6e1d6e6bc8f020",
+   "right": "node_b1069de94d9d055e801d0814",
+   "left_name": "Phụ thuộc tuyến tính",
+   "right_name": "Hệ véc tơ phụ thuộc tuyến tính",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "same",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Đồng ý gộp"
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_5a78fa52c0b53209c192bf08",
+   "right": "node_cea0789f20610e8de50a3ebb",
+   "left_name": "Véc tơ tọa độ",
+   "right_name": "Tọa độ",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "same",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Đồng ý gộp"
+  },
+  {
+   "doc_id": "doc-1",
+   "left": "node_3412dfbd2ed7d50272d2ac7f",
+   "right": "node_f3e9b16369664b04dcff549b",
+   "left_name": "Định lý 6",
+   "right_name": "Định lý Cramer",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "different",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Là hai nghĩa khác nhau"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_9d5a414372ffb26609309d00",
+   "right": "node_a0daf07b4591c6ad4b05ae1e",
+   "left_name": "Additive identity",
+   "right_name": "zero",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "different",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Là hai nghĩa khác nhau"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_5687bce25cfae81ee3a5c1fa",
+   "right": "node_7a5f529d8787225a9a9cb512",
+   "left_name": "Upper-triangular matrix",
+   "right_name": "upper triangular",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "same",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Đồng ý gộp"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_62a7707f057bfac98a7058a5",
+   "right": "node_9f08563b2518850ec130ff69",
+   "left_name": "Degree",
+   "right_name": "degree of a polynomial",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "same",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Đồng ý gộp"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_0a889a60f95c6f9c582ad977",
+   "right": "node_601d1466639a6f6cf434747c",
+   "left_name": "Vector space of bilinear functionals",
+   "right_name": "B(V, W)",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "same",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Đồng ý gộp"
+  },
+  {
+   "doc_id": "doc-2",
+   "left": "node_203bc6c03fd3fe401eb32d64",
+   "right": "node_6ca92d5de3f5c92ae60a3ee1",
+   "left_name": "null 𝑇",
+   "right_name": "Null Space",
+   "trial_pair_id": null,
+   "candidate_reasons": null,
+   "model_verdict": null,
+   "applied_in_trial": null,
+   "touches_gold": true,
+   "label": "same",
+   "relation": null,
+   "gray": false,
+   "labeler": "human-T5",
+   "note": "Đồng ý gộp"
+  }
+ ]
+}

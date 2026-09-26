@@ -1,8 +1,9 @@
 # 07 — Dãy học chỉ gồm khái niệm được dạy
 
-**Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R5 · **Ai:** nhân viên · **Phụ thuộc:** 05 · **Chi phí mô hình:** 0
+**Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R5 · **Ai:** nhân viên · **Phụ thuộc:** 05, 10b · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao
+**Trạng thái:** chờ giao. **Chờ vé 10b:** đại diện nhóm danh tính hiện có thể là nút chỉ-nhắc (doc-6: "CSDL" ở đề cương thay cho
+"Cơ sở dữ liệu" được dạy); lọc `mentioned_only` trước khi 10b sửa luật đại diện sẽ làm mất khái niệm được dạy.
 
 ## Việc cần làm
 - A10 chỉ xếp `taught` và `uncertain` vào dãy học và module. `mentioned_only`, `unchecked` rời dãy học; cạnh qua chúng co lại như

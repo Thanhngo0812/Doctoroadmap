@@ -28,6 +28,9 @@ Mỗi section mang `role` ∈ `noi_dung` · `bai_tap` · `de_cuong` · `mo_dau` 
   lặp lại giữa bài.
 - `mo_dau`: phần trước chương đầu tiên có số — "Lời nói đầu", "Preface", "Foreword", "About the author", "Major improvements…".
 - `hanh_chinh`: thang điểm, lịch, thông tin giảng viên (từ khoá có danh sách, kiểm tra được).
+- `cuoi_sach` *(bổ sung 2026-09-26 sau kiểm thử vé 03, làm ở vé 04)*: "Photo Credits", "Index", "Symbol Index", "References",
+  "Bibliography", "Tài liệu tham khảo". Không phải nơi dạy; bảng chỉ mục chứa gần hết tên khái niệm, nên để nó thành `noi_dung` sẽ
+  làm bẩn bước neo.
 Luật bằng mẫu tiêu đề và vị trí (không gọi mô hình), danh sách mẫu nằm trong mã và có test từng mẫu. *Lý do:* Wang và cộng sự 2016
 dùng cấu trúc sách làm tín hiệu — nhưng chỉ khi vùng đúng; mọi lỗi L1 đến từ việc coi đề cương/bài tập là nơi dạy.
 
@@ -71,6 +74,20 @@ Thêm nguồn ứng viên: (a) chuẩn hoá tên như bước neo (NFKC, bỏ d�
 từ: CSDL ↔ Cơ sở dữ liệu); (c) tên có ký hiệu ↔ tên chữ (Im f ↔ Ảnh; Ker ↔ Nhân) qua **độ tương tự mô tả + câu neo** (embedding
 đã có, top-k nhỏ); (d) tiền tố chung chung thêm "Hệ ", "Phép ". Phán và luật gộp giữ nguyên (nhóm kiểm đủ; người duyệt gộp chạm vàng).
 
+### R8b — Danh tính là cùng ngoại diên; đại diện được dạy; gỡ chu trình theo vị trí đại diện *(A9''; bổ sung 2026-09-26 sau kiểm thử vé 10)*
+Kiểm thử vé 10: phán `same` cho cặp từ nguồn mới chỉ đúng 27/44; lỗi là trường hợp riêng, bằng nhau nhờ định lý, hai mệnh đề khác
+nhau, đối tượng với ánh xạ. Quyết định:
+- **Tiêu chí danh tính:** hai nút là một khi và chỉ khi cùng ngoại diên (cùng định nghĩa, cùng tập đối tượng), chỉ khác cách gọi
+  (đồng nghĩa, ký hiệu, viết tắt, số ít/số nhiều, cách viết, bản dịch, đổi tên biến tự do). Trường hợp riêng/lớp con/thể hiện, bằng
+  nhau nhờ định lý hay đặc trưng, hai mệnh đề khác nhau, đối tượng với phép dựng — đều **không** gộp.
+- **Lượt xác minh:** mọi phán `same` qua thêm một lời gọi độc lập (không thấy phán lượt 1), phân loại quan hệ vào tập đóng; chỉ
+  `dong_nhat` được gộp. Quyết định người vẫn thắng.
+- **Đại diện** là thành viên `taught` được dạy sớm nhất (không có ai `taught` thì lấy thành viên sớm nhất); tên thành viên khác thành
+  alias của đại diện.
+- **Gỡ chu trình sau gộp:** cạnh bị đổi đầu mút được tính lại `order_relation` theo vị trí của đại diện trước khi gỡ.
+*Lý do:* sameAs bị dùng lẫn cho quan hệ yếu hơn (Halpin và cộng sự, 2010); kiểm chứng độc lập giảm lỗi (Chain-of-Verification, 2024);
+thứ tự sách là tín hiệu chiều tiên quyết nên phải đo theo vị trí thật của nút sau gộp. Vé: [10b](../task/v3-lo-trinh-doc-duoc/10b-danh-tinh-xac-minh.md).
+
 ### R9 — Tên khái niệm có nội dung *(sau A5; sửa L7)*
 Tên chỉ là nhãn đánh số ("Tính chất 1", "Định lý 4", "Hệ quả 2") hoặc từ chung ("Definition", "Theorem") không được làm tên hiển
 thị: từ chung bị loại khỏi khái niệm; nhãn đánh số được đổi thành tên nội dung ngắn sinh từ câu neo (kiểm câu trích), nhãn cũ giữ
@@ -97,7 +114,8 @@ A3 trích định lý/mệnh đề/công thức/phương pháp có tên thành n
 ## Thứ tự
 
 R10 và R11 trước (an toàn chi tiêu, công cụ kiểm) → R1, R2 (vai trò vùng, cấu trúc) → R3, R4, R5 (dùng vai trò) → R6, R7 (hiển thị,
-tên) → R8, R9 → R12 (đắt) → R13 (sau vé 07). Vé 07 (tập giữ lại) nên chạy **sau** R1–R9 để khoá cấu hình một lần trên luồng đã sửa:
+tên) → R8, R9 → R12 (đắt) → R13 (sau vé 07). R8b phải xong trước R5, vì lọc khái niệm chỉ-nhắc cần đại diện nhóm là khái
+niệm được dạy. Vé 07 (tập giữ lại) nên chạy **sau** R1–R9 để khoá cấu hình một lần trên luồng đã sửa:
 đề nghị hoãn duyệt T10 tới khi các vé đó xong; T13 (liệt kê mù) làm được bất cứ lúc nào.
 
 ## Không đổi

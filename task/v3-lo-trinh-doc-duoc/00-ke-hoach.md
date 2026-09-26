@@ -1,9 +1,9 @@
 # v3 — Lộ trình chuẩn chỉ và đọc được: kế hoạch vé
 
-> **Bàn giao nhân viên 2026-09-26:** 01 và 03 đã cài/kiểm; 10 đã cài và chạy thật trên ba tài liệu, kết quả thử
-> chưa xuất bản (hai gộp mới chạm vàng, Q6 doc-1 hồi quy, doc-2 còn nhóm mở). Xem
-> [báo cáo 01/03/10](../../report/v3-01-03-10-ket-qua-2026-09-26.md). Không chạy lại A8. Vé 04 có thể làm tiếp;
-> doc-2 cần sửa cây mục trước khi áp vai trò để loại nơi dạy.
+> **Kiểm thử 2026-09-26 (Claude):** 01 đạt; 03 đạt, hai điều kiện chuyển sang vé 04; 10 đạt phần đề cử, còn áp tự động thì chưa
+> đạt (27/44 phán `same` mới đúng, đại diện có thể là nút chỉ-nhắc, gỡ chu trình sau gộp xoá nhầm cạnh) → vé mới
+> [10b](10b-danh-tinh-xac-minh.md). **Không chạy `roadmap --allow-spend` để xuất bản lộ trình trước khi 10b xong.** Báo cáo của nhân
+> viên: [01/03/10](../../report/v3-01-03-10-ket-qua-2026-09-26.md).
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md) · **Căn cứ:** [báo cáo đánh giá 2026-09-26](../../report/danh-gia-lo-trinh-2026-09-26.md)
 
@@ -30,15 +30,16 @@
 | 04 | cấu trúc mục kiểu sách toán (R2) | A2 | nhân viên | 03 | 0 |
 | 05 | neo và vị trí chỉ từ vùng dạy (R3) | A9' | nhân viên | 03 | chạy lại neo ≈ 0,5 USD toàn kho phát triển |
 | 06 | cạnh không lấy căn cứ từ đề cương/lời nói đầu (R4) | A9 | nhân viên | 03 | 0 |
-| 07 | dãy học chỉ gồm khái niệm được dạy (R5) | A10 | nhân viên | 05 | 0 |
+| 07 | dãy học chỉ gồm khái niệm được dạy (R5) | A10 | nhân viên | 05, 10b | 0 |
 | 08 | hiển thị tiên quyết rút gọn và phụ thuộc cấp module (R6) | A10, CLI | nhân viên | 07 | 0 |
 | 09 | tên module theo nội dung (R7) | A10/A11 | nhân viên | 03 | ≈ 0,05 USD / tài liệu |
 | 10 | danh tính mở rộng (R8) | A9'' | nhân viên | — | ≈ 0,05 USD / tài liệu |
+| 10b | xác minh quan hệ danh tính, đại diện được dạy, gỡ chu trình theo vị trí đại diện (R8b) | A9'' | nhân viên | 10 | ≈ 0,02 USD xác minh (+ ≈ 0,28 USD lượt 1 nếu kho mặc định chưa có) |
 | 11 | tên khái niệm có nội dung (R9) | sau A5 | nhân viên | 05 | ≈ 0,02 USD / tài liệu |
 | 12 | cạnh theo định nghĩa ở A8 (R12) | A8 | nhân viên | 03–11 | ≈ 1–7 USD / tài liệu — **chủ dự án duyệt trước khi chạy** |
 | 13 | trích mệnh đề có tên ở A3 (R13) | A3 | nhân viên | sau vé 07 v2 | chạy lại A3–A10; cần kế hoạch ánh xạ vàng |
 
-Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 07 sau 05; 08 sau 07; 11 sau 05.
+Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05.
 
 ## Tôi kiểm thử thế nào
 

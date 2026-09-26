@@ -58,6 +58,8 @@ lỗi chính của cạnh là **thừa ràng buộc**, không phải ngược; Q
 tính cực đại ≈ Hệ độc lập tuyến tính cực đại (doc-1); CSDL ≈ Cơ sở dữ liệu (doc-6); Upper triangular matrix ≈ Upper-triangular
 matrix (doc-2). Bước danh tính chỉ sinh ứng viên từ trùng tên/alias, tiền tố chung chung, cùng câu neo — không bắt viết tắt, ký
 hiệu, biến thể gạch nối.
+*Đính chính 2026-09-26 (kiểm thử vé 10):* "Độc lập tuyến tính cực đại" và "Hệ độc lập tuyến tính cực đại" là hai định nghĩa riêng
+trong sách (trong V ở mục cơ sở, trong S ở mục hạng), tức trường hợp riêng, **không** phải trùng; tiêu chí danh tính ở spec v3 R8b.
 
 **L7 — Tên khái niệm vô nghĩa với người học.** "Tính chất 1", "Tính chất 3", "Định lý 4", "Định lý 7", "Hệ quả 2" (doc-1);
 "Definition", "Theorem" (doc-2).
