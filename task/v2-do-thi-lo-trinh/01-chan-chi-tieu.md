@@ -28,3 +28,13 @@ Sau F126 (pass phụ v4), chạy `roadmap` trên bất kỳ tài liệu nào ngo
 
 `roadmap --doc-id doc-2` không có cờ: `lỗi: stage secondary_edges cần gọi mô hình trả tiền; chạy lại với --allow-spend
 nếu muốn chi`, thoát mã 2, số phiên bản `doc-2` giữ nguyên 11, không tạo checkpoint mới. Đúng cái bẫy ~7,4 USD của F126.
+
+## Sự cố 2026-09-26 — chi ngoài dự kiến ≈ 0,64 USD
+
+Khi sinh lộ trình bằng chuỗi mặc định mới cho các tài liệu phát triển, tôi chạy `roadmap --allow-spend` hàng loạt mà không chạy
+thử không chi trước. Với doc-2 (và doc-3), chuỗi không tái dùng cạnh cũ mà **chạy lại pass phụ A8** theo luật hiện hành — đúng
+rủi ro W1 đã ghi (≈ 7,4 USD cho doc-2). Phát hiện sau khoảng 15 phút qua checkpoint `secondary-…` mới, dừng tay, diệt cả vòng
+lặp: doc-2 624 cặp, 1.039 lời gọi, 1,92M token vào / 98k ra ≈ 0,627 USD; doc-3 20 lời gọi ≈ 0,007 USD. Checkpoint giữ lại (chạy
+tiếp được nếu sau này quyết chạy lại pass phụ).
+Bài học: trước mọi `--allow-spend` trên tài liệu có artifact cũ, chạy không cờ để xem stage nào định chi. Đề xuất (cho vé mới):
+lệnh chạy thử liệt kê **mọi** stage sẽ gọi mô hình kèm dự toán số lời gọi / USD — hiện chốt chặn chỉ báo stage **đầu tiên**.
