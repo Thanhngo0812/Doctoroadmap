@@ -74,6 +74,10 @@ không có danh sách từ của ngôn ngữ nào:
 *Lý do:* Wang và cộng sự 2016 dùng cấu trúc sách làm tín hiệu — nhưng chỉ khi vùng đúng; mọi lỗi L1 đến từ việc coi đề cương/bài
 tập là nơi dạy. Bảng chỉ mục chứa gần hết tên khái niệm, nên để nó thành `noi_dung` sẽ làm bẩn bước neo. Bản đầu (vé 03) dùng
 danh sách mẫu vi/en trong mã; vé 14 thay.
+*Bổ sung 2026-09-27 (kiểm thử vé 14):* một lời gọi gán nhãn hàng trăm tiêu đề không tin được (doc-2: 104 mục bài giảng bị gắn đề cương).
+Lớp nhãn nghĩa chia lô theo chương (khoảng 40 tiêu đề mỗi lời gọi), kiểm nhãn bằng luật cấu trúc (`mo_dau` không nằm sau chương đầu,
+`cuoi_sach` phải ở cuối hoặc có dạng chỉ mục/tài liệu tham khảo, đề cương/mở đầu/hành chính không phải văn xuôi dài), hỏi lại một lần rồi
+mới về `noi_dung`. Chunk thuộc version cũ nhận vai trò từ cây đã sửa bằng khớp văn bản, không hỏi mô hình trên cây vỡ. Vé 14b.
 
 ### R2 — Nhận cấu trúc mục từ cách đánh số *(A2; sửa L4; viết lại 2026-09-26 theo nguyên tắc đa ngôn ngữ)*
 Cấp mục suy từ chính cách đánh số của tài liệu, không từ tên mục của ngôn ngữ nào:
@@ -192,7 +196,8 @@ Mỗi sửa dưới đây đổi đầu ra ngay trên tài liệu vi/en, nên g�
 - **Tên quá chung (A6 — vé 12):** thay `DEFAULT_COMMON_NAMES` bằng tên xuất hiện ở quá một tỉ lệ chunk đặt trong config, đo trên chính
   tài liệu (kiểu IDF, Spärck Jones 1972).
 - **Nơi định nghĩa (A7 — vé 12):** bỏ `DEFAULT_DEFINITION_SIGNALS`; tín hiệu là chunk chứa câu bằng chứng A3 hoặc câu neo của khái niệm
-  (đều do mô hình trích và mã đã kiểm có trong văn bản). R12 vốn đã lấy câu neo làm căn cứ.
+  (đều do mô hình trích và mã đã kiểm có trong văn bản). R12 vốn đã lấy câu neo làm căn cứ. Cùng lượt: `candidate_sentences` của bước neo
+  hiện còn xếp hạng câu theo chính danh sách này (chỉ xếp hạng, không lọc) — thay bằng câu bằng chứng A3 trước, rồi theo vị trí.
 - **Ký hiệu chữ hoa kiểu script (A3 — vé 13):** thay cụm "definition/denote/called" bằng: câu bằng chứng A3 (đã kiểm có trong văn bản)
   chứa ký hiệu đó, và ký hiệu còn xuất hiện ở ít nhất một chunk khác.
 - **Tiền tố chung chung (danh tính, chỉ đề cử — vé 17):** thay danh sách "hệ/phép/tính/the notion of" bằng tiền tố hoặc hậu tố (≤ 2 từ)

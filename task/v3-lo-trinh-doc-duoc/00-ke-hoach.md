@@ -3,6 +3,11 @@
 > **Cập nhật nhân viên 2026-09-27:** 10b đã commit riêng (`dc0cbce`). Mã và phép đo 05, 14, 16 đã xong, chờ reviewer nghiệm thu;
 > xem [báo cáo](../../report/v3-05-14-16-ket-qua-2026-09-27.md). Vé 07 và 11 được mở đường sau 05; vé 15, 17 và T19 để sau theo chủ dự án.
 
+> **Kiểm thử 2026-09-27 (Claude):** 16 **đạt** (0/1.705 tên đổi phân loại, dry-run A6–A8 tái dùng); 05 **đạt về mã** ("Số phức", "Đa
+> thức" chỉ-nhắc là đúng — sách không dạy; hai lỗi Q6 mới là nút chỉ-nhắc nằm tạm cuối dãy tới vé 07); 14 lớp cấu trúc **đạt**, lớp nhãn
+> bằng mô hình **chưa đạt** — doc-2 cây cũ có 104 mục bài giảng bị gắn đề cương, làm 42 khái niệm mất trạng thái được dạy → vé mới
+> [14b](14b-nhan-vai-tro-chia-lo.md). Vé 06, 07 làm được ngay; nghiệm thu 07 trên doc-2 chờ 14b.
+
 > **Kiểm thử 2026-09-26 (Claude):** 01 đạt; 03 đạt, hai điều kiện chuyển sang vé 04; 10 đạt phần đề cử, còn áp tự động thì chưa
 > đạt (27/44 phán `same` mới đúng, đại diện có thể là nút chỉ-nhắc, gỡ chu trình sau gộp xoá nhầm cạnh) → vé mới
 > [10b](10b-danh-tinh-xac-minh.md). **Không chạy `roadmap --allow-spend` để xuất bản lộ trình trước khi 10b xong.** Báo cáo của nhân
@@ -46,7 +51,7 @@
 | 04 | cấu trúc mục kiểu sách toán (R2) | A2 | nhân viên | 03 | 0 |
 | 05 | neo và vị trí chỉ từ vùng dạy (R3) | A9' | nhân viên | 03 | chạy lại neo ≈ 0,5 USD toàn kho phát triển |
 | 06 | cạnh không lấy căn cứ từ đề cương/lời nói đầu (R4) | A9 | nhân viên | 03 | 0 |
-| 07 | dãy học chỉ gồm khái niệm được dạy (R5) | A10 | nhân viên | 05, 10b | 0 |
+| 07 | dãy học chỉ gồm khái niệm được dạy (R5) | A10 | nhân viên | 05, 10b; nghiệm thu doc-2 chờ 14b | 0 |
 | 08 | hiển thị tiên quyết rút gọn và phụ thuộc cấp module (R6) | A10, CLI | nhân viên | 07 | 0 |
 | 09 | tên module theo nội dung (R7) | A10/A11 | nhân viên | 03 | ≈ 0,05 USD / tài liệu |
 | 10 | danh tính mở rộng (R8) | A9'' | nhân viên | — | ≈ 0,05 USD / tài liệu |
@@ -55,6 +60,7 @@
 | 12 | cạnh theo định nghĩa ở A8 (R12) | A8 | nhân viên | 03–11 | ≈ 1–7 USD / tài liệu — **chủ dự án duyệt trước khi chạy** |
 | 13 | trích mệnh đề có tên ở A3 (R13) | A3 | nhân viên | sau vé 07 v2 | chạy lại A3–A10; cần kế hoạch ánh xạ vàng |
 | 14 | vai trò vùng và cấu trúc mục không phụ thuộc ngôn ngữ (R1, R2 viết lại) | A2 | nhân viên | 03; làm tiếp trên vé 04 | ≈ 0,001–0,01 USD / tài liệu |
+| 14b | nhãn vai trò chia lô theo chương, luật kiểm cấu trúc, chuyển vai trò sang chunk cũ (R1 bổ sung) — **ưu tiên** | A2 | nhân viên | 14 | ≈ 0,005–0,02 USD / tài liệu + chạy lại neo doc-2 ≈ 0,05 USD |
 | 15 | ngôn ngữ tài liệu bất kỳ ở A5 (R14) | A5 | nhân viên | — | ≈ 0,0001 USD / tài liệu |
 | 16 | tên, ký hiệu và tìm nhắc tên không phụ thuộc chữ viết (R15) — **ưu tiên** | A3, A4, A6 | nhân viên | — | 0 |
 | 17 | tiền tố danh tính từ bằng chứng trong tài liệu (R16) | A9'' | nhân viên | 10b | ≈ 0,01 USD / tài liệu |
@@ -62,6 +68,8 @@
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
 tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12, 13. Chạy thử tài liệu T19 sau 14–17.
+**Hiện tại (2026-09-27):** đã xong 01, 02, 03, 05, 10, 10b, 16; 14 xong phần cấu trúc. Làm tiếp theo thứ tự: **14b** (ưu tiên), 06 và
+07 song song (nghiệm thu 07 trên doc-2 sau 14b), rồi 08, 09, 11. Hoãn theo chủ dự án: 15, 17, T19.
 
 ## Tôi kiểm thử thế nào
 

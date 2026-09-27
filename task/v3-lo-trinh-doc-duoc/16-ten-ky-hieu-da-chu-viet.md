@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R15 · **Ai:** nhân viên · **Phụ thuộc:** — ·
 **Chi phí mô hình:** 0 · **Ưu tiên:** cao nhất trong nhóm vé đa ngôn ngữ
 
-**Trạng thái:** đã triển khai và kiểm thử 2026-09-27; chờ reviewer nghiệm thu. [Kết quả](../../report/v3-05-14-16-ket-qua-2026-09-27.md).
+**Trạng thái:** **đạt** — Claude kiểm thử 2026-09-27 (mục cuối). [Kết quả nhân viên](../../report/v3-05-14-16-ket-qua-2026-09-27.md).
 
 ## Vì sao
 - `canonical.alias_kind` chỉ coi một chuỗi là "tên" khi có chữ cái LATIN. Thử 2026-09-26: "Векторное пространство", "向量空间",
@@ -38,3 +38,11 @@
 - **Tôi kiểm:** 0 khác biệt phân loại và khớp trên sáu tài liệu phát triển (doc-4, xstk so bằng hash, không đọc nội dung); `--dry-run`
   sáu tài liệu không có stage tốn tiền nào chuyển sang "sẽ chạy". Khi có T19: chạy A3 trên tài liệu chữ không Latin, xem số
   `rejected_symbol_only_name`.
+
+## Kiểm thử (Claude, 2026-09-27) — đạt
+
+- Tôi so độc lập luật tên cũ và mới trên **1.705 tên** khác nhau của sáu tài liệu phát triển: **0** tên đổi phân loại. Nhân viên báo 0 khác
+  biệt nhắc tên và token BM25. Dry-run sáu tài liệu: A6–A8 vẫn tái dùng.
+- Đột biến 3/3 bị bắt: chữ toán học được tính là tên; chữ viết không cách từ vẫn đòi ranh giới từ; BM25 không tách bigram. Hàm luật cũ
+  (`_legacy_alias_kind`) chỉ giữ để so trước khi làm vô hiệu cache — hợp lý.
+- Chưa kiểm được trên tài liệu thật chữ không Latin (T19 đang hoãn).

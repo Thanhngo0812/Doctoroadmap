@@ -4,7 +4,7 @@
 **Phụ thuộc:** 03; làm tiếp ngay trên phần vé 04 đang dở · **Chi phí mô hình:** một lời gọi Gemini mỗi tài liệu cho nhãn nghĩa
 (≈ 0,001–0,01 USD)
 
-**Trạng thái:** đã triển khai và kiểm thử 2026-09-27; chờ reviewer nghiệm thu. **Thay** phần từ khoá của vé 03 và vé 04. [Kết quả](../../report/v3-05-14-16-ket-qua-2026-09-27.md).
+**Trạng thái:** lớp cấu trúc **đạt**; lớp nhãn bằng mô hình **chưa đạt** trên tài liệu nhiều tiêu đề → vé [14b](14b-nhan-vai-tro-chia-lo.md) — Claude kiểm thử 2026-09-27 (mục cuối). **Thay** phần từ khoá của vé 03 và vé 04. [Kết quả nhân viên](../../report/v3-05-14-16-ket-qua-2026-09-27.md).
 
 ## Vì sao
 Rà soát 2026-09-26: vai trò vùng (vé 03) và cấu trúc mục (vé 04) dựa vào danh sách từ tiếng Việt/tiếng Anh — `ROLE_PATTERNS`, tìm
@@ -60,3 +60,20 @@ use case mới cho nhãn nghĩa, prompt mới trong `prompts/`.
   - ID và text chunk của doc-1, xstk, doc-4 không đổi (so hash, không đọc nội dung tập giữ lại);
   - `--dry-run` trên sáu tài liệu: không stage tốn tiền nào chuyển sang "sẽ chạy" vì vé này;
   - khi có T19: chạy trên tài liệu thật ngôn ngữ thứ ba và đọc vai trò.
+
+## Kiểm thử (Claude, 2026-09-27) — lớp cấu trúc đạt; lớp nhãn bằng mô hình chưa đạt → vé 14b
+
+- **Lớp cấu trúc** (`document_structure.py`) không dùng từ nào của ngôn ngữ nào: chương = họ tiêu đề cùng tiền tố, số tăng dần; mục mã
+  chữ cần ít nhất ba chữ liên tiếp; kết quả đánh số nhận bằng mật độ, độ dài thân và việc chạy qua các mục; phần cuối sách nhận bằng
+  thống kê dòng số trang, trích dẫn. Giới hạn thận trọng: họ kết quả có tiền tố chữ ("Định lý 2.1") chỉ bị hạ thành khối khi sách có mục
+  mã chữ; ở sách khác chúng vẫn là tiêu đề — mặc định an toàn, xem lại khi có mẫu.
+- **Test:** xanh. Đột biến 4/4 bị bắt: một tiêu đề số+chữ lẻ bật chế độ mục mã chữ; mô hình ghi đè vai trò của lớp cấu trúc; nhãn sai
+  vẫn được nhận; trước chương đầu không thành `mo_dau`. ID/text chunk doc-1, doc-4, xstk không đổi (hash của nhân viên); dry-run sáu
+  tài liệu: A6–A8 vẫn tái dùng.
+- **doc-2 cây mới (v5, vai trò v7):** sáu mục Exercises lấy mẫu đều bắt đầu ở bài 1 và kết thúc ở bài cuối, không lẫn bài giảng của mục
+  sau. 207 chunk `bai_tap` là đúng; mốc khoảng 161 lấy từ cây cũ bị vỡ. "Photo Credits" → `cuoi_sach`.
+- **Lớp nhãn bằng mô hình** đúng trên tài liệu nhỏ (doc-1, doc-6, nhap-mon-ml, doc-3, naive-bayes; chọn giữa `mo_dau`/`hanh_chinh` có
+  khi khác nhau nhưng mọi vùng không dạy đều bị loại). **Sai trên doc-2 cây cũ (v6):** 104 mục bài giảng bị gắn `de_cuong` (106 chunk),
+  ví dụ "Representing a Linear Map by a Matrix", "Jordan Form", "QR Factorization", "8.14 definition: nilpotent" dù dòng đầu là định
+  nghĩa. Một lời gọi gán ~540 tiêu đề (80 nghìn token) là quá dài để tin được; cây cũ vỡ còn gây nhiễu đường dẫn. Hệ quả đo ở vé 05.
+  Trên cây mới (khoảng 190 tiêu đề) chỉ còn 26 trang mở chương bị gắn `de_cuong` (8 chunk) — vô hại.
