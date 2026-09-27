@@ -1,5 +1,8 @@
 # Feedback — Pha B0.1–B0.4
 
+- **Bàn giao v3-10b, cập nhật 2026-09-27** — reviewer nhận prompt 2 và chạy ba tài liệu, tổng 0,05554175 USD;
+  commit mã 10b riêng. Phần từ khoá 04 chuyển sang vé 14 → [chi tiết](./v3-10b-04.md).
+
 - **Bàn giao v3, 2026-09-26** — vé 01/03 đã cài và kiểm, vé 10 đã chạy thật (0,28330450 USD), chưa xuất bản gộp mới;
   Q6 doc-1 hồi quy và doc-2 còn nhóm mở, không che bằng số node giảm → [chi tiết](./v3-01-03-10.md).
 

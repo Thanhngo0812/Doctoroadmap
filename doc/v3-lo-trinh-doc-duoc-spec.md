@@ -223,6 +223,13 @@ Luật neo C8 v3 hiện hành ngoài phạm vi R3; dãy học Kahn theo vị tr�
   văn bản, nhưng hai phía khớp được chuẩn hoá như nhau nên không làm sai ngôn ngữ khác.
 - Giao diện HTML, thông báo lỗi, bảng gán nhãn cho người gán: ngôn ngữ giao diện.
 
+## Ghi chú cài đặt vé 10b (2026-09-27)
+
+- R8b: checkpoint lượt 1 giữ đúng khoá v2; checkpoint xác minh riêng theo prompt + hồ sơ. Hai lượt có log/token riêng.
+  Lỗi xác minh để uncertain, không gộp. Đại diện taught trước, alias có nguồn identity; chỉ cạnh đổi đầu mút tính lại chiều.
+- Tập kiểm giữ nguyên số cả hai prompt. Reviewer đã nhận prompt 2 sau khi đọc các cặp lệch và chạy ba tài liệu;
+  số không còn làm cổng buộc dừng. Vé 07 chỉ còn chờ 05; T18 chưa tự duyệt. Mã 10b commit riêng khỏi cấu trúc vé 04/14.
+
 ## Ghi chú cài đặt vé 01, 03, 10 (2026-09-26)
 
 - R10: mỗi stage có `plan()` chỉ đọc, dùng chung nhánh cấu hình/cache với `execute()`. USD là ước lượng phần đã biết;

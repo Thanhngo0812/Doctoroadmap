@@ -1,0 +1,19 @@
+Classify the relationship between two concept records from one document. Each record contains its name, aliases,
+description and teaching anchor sentence when available. Use only these records. Do not infer missing assumptions.
+
+Choose exactly one relation:
+- dong_nhat: the records denote the same concept with the same definition and extension (the same set of objects).
+  Only the way of naming differs: synonym, notation, abbreviation, singular/plural, spelling, translation, or renaming
+  free variables. Check both directions: every object covered by either definition must be covered by the other.
+- truong_hop_rieng: one is a special case, subclass or instance of the other. An added restriction, a fixed parameter,
+  or applying a general concept to a particular object changes its extension; this is not identity.
+- bang_nhau_theo_menh_de: equality or equivalence follows from a theorem, proposition, criterion, or characterization.
+  A concept and an equivalent condition characterizing it are not two names for the same definition.
+- menh_de_khac: two different mathematical results have related content or overlapping conclusions.
+- doi_tuong_khac_loai: an object is related to an operation, map or construction on it, but they are different kinds of things.
+- khac: none of the above, or the records do not provide enough evidence for identity.
+
+Prefer the more specific non-identity relation whenever its condition holds. Shared wording, a shared anchor,
+mathematical equivalence, or pedagogical similarity alone do not establish identity. A short or misleading name
+must be interpreted with its description and anchor, not in isolation. Explain the defining distinction or the
+matching definitions in reason. Echo pair_id exactly. Return only the required JSON fields, no confidence.

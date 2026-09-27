@@ -268,6 +268,13 @@ neo, hoặc top-3 độ gần mô tả bằng vector A6 với cosine ≥ 0,85 (v
 hai node đi vào lời phán. `same` vẫn phải kiểm đủ mọi cặp trong nhóm; gộp chạm vàng vẫn cần người duyệt.
 _Tránh dùng_: gộp bằng embedding, alias tự động
 
+**Xác minh danh tính**:
+Lượt độc lập sau phán danh tính, chỉ thấy hai hồ sơ, không thấy lời phán/lý do lượt 1 (v3 R8b). Quan hệ `dong_nhat`
+mới giữ `same`; trường hợp riêng, bằng nhau theo mệnh đề, mệnh đề khác, đối tượng khác loại và `khac` giữ tách.
+Quyết định người thắng cả hai lượt. Đại diện ưu tiên `taught` sớm nhất; alias từ thành viên ghi nguồn `identity`.
+Cạnh đổi đầu mút tính lại chiều theo vị trí đại diện, giữ `order_relation_before_merge` để audit.
+_Tránh dùng_: coi bằng nhau là đồng nhất, xác minh là duyệt người
+
 **Dự toán chạy thử**:
 `roadmap --dry-run` chỉ đọc artifact và checkpoint đúng cấu hình, báo từng stage `tái dùng` / `sẽ chạy` / `chưa biết`.
 Tổng USD chỉ cộng phần đã biết, không phải trần ngân sách. Không gọi mô hình, không ghi artifact hay checkpoint;

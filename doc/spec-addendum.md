@@ -48,6 +48,20 @@ cosine ≥ 0,85; cả k/ngưỡng/quy tắc nằm trong config để vô hiệu 
 hai câu neo và mô tả đi vào lời phán. Giữ nguyên nhóm kiểm đủ, gỡ chu trình sau gộp, quyết định người thắng mô hình
 và cổng duyệt gộp chạm vàng. Lượt kiểm chứng mới lưu riêng ở `artifacts/v3-identity-evaluation`, không tự xuất bản.
 
+**Xác minh danh tính** (v3 R8b, vé 10b): `a10-identity-v3` giữ nguyên prompt, nguồn đề cử và khoá checkpoint v2 của lượt 1;
+mọi `model_verdict=same` được hỏi lại độc lập bằng `identity_verify.txt`, chỉ chứa `pair_id`, hai hồ sơ tên/alias/mô tả/câu neo.
+Tập quan hệ: `dong_nhat`, `truong_hop_rieng`, `bang_nhau_theo_menh_de`, `menh_de_khac`, `doi_tuong_khac_loai`, `khac`.
+Chỉ `dong_nhat` giữ same; phản hồi lỗi sau sửa là uncertain và không gộp. `--identity-review` thắng cả hai lượt.
+Log thêm `verify_relation`/`verify_reason`; telemetry và checkpoint xác minh riêng (`identity-verify-…`), khoá theo prompt,
+schema, model, generation và hồ sơ. Đổi prompt xác minh không hỏi lại lượt 1. Dự toán giả định tối đa mọi cặp chưa phán
+đều cần xác minh; ghi rõ đây là ước bảo thủ.
+Đại diện là thành viên taught sớm nhất (nếu không có thì sớm nhất), tên/alias thành viên thêm vào alias với `source=identity`
+và `node_id` nguồn. Chỉ cạnh đổi đầu mút được tính lại `order_relation` trước MFAS; lưu chiều cũ, không sửa chiều A8 của
+cạnh không đổi. Config ghi tập quan hệ, hash prompt, luật đại diện và luật chiều.
+**Reviewer đã nhận prompt 2:** số tập kiểm được giữ để báo cáo, không còn làm cổng theo chủ trương mới. Reviewer đã chạy
+ba tài liệu ở kho thử và nhận 10b; vé 07 chỉ còn chờ 05. T18 là duyệt người riêng, không tự duyệt.
+Xem [vé 10b](../task/v3-lo-trinh-doc-duoc/10b-danh-tinh-xac-minh.md).
+
 ```
 PHA A (offline)
 

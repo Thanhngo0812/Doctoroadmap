@@ -103,3 +103,31 @@ def test_top_k_limits_semantic_pairs_and_uses_union_not_mutual():
     nodes = [node(key, "Concept " + key) for key in "abcdef"]
     pairs = {(p["left"], p["right"]) for p in identity_candidates(nodes, vectors={k: [1, 0] for k in "abcdef"})}
     assert len(pairs) == 12 and ("d", "e") not in pairs and ("a", "f") in pairs
+
+
+def test_representative_prefers_taught_then_earliest_and_falls_back_without_taught():
+    from doc2roadmap.domain.identity import identity_map
+
+    verdicts = [{"left": "a", "right": "b", "verdict": "same"}]
+    assert identity_map(verdicts, {"a": 1, "b": 20}, taught={"b"})[0] == {"a": "b"}
+    assert identity_map(verdicts, {"a": 1, "b": 20}, taught=set())[0] == {"b": "a"}
+
+
+def test_changed_endpoints_recompute_order_before_cycle_breaking_but_unchanged_edges_keep_a8():
+    from doc2roadmap.domain.identity import merge_and_break_cycles
+
+    def e(a, b, relation="ngược"):
+        return {**edge(a, b), "order_relation": relation, "evidence_kind": "explicit", "independent_source_count": 1}
+
+    # Khi còn thành viên cũ, cả ba cạnh đều ngược. Sau gộp chỉ R→P còn ngược.
+    edges = [e("P", "M2"), e("M2", "R"), e("R", "P2"), e("X", "Y", "ngược"), e("M2", "Z")]
+    position = {"P": 131, "M": 139, "R": 160, "M2": 163, "P2": 170, "X": 1, "Y": 2, "Z": 139}
+    kept, removed = merge_and_break_cycles(edges, {"M2": "M", "P2": "P"}, position)
+    assert [(e["source"], e["target"]) for e in removed] == [("R", "P")]
+    by_pair = {(e["source"], e["target"]): e for e in kept}
+    assert by_pair["P", "M"]["order_relation"] == "thuận"
+    assert by_pair["P", "M"]["order_relation_before_merge"] == "ngược"
+    assert by_pair["M", "Z"]["order_relation"] == "cùng chunk"
+    assert by_pair["X", "Y"]["order_relation"] == "ngược"
+    assert "order_relation_before_merge" not in by_pair["X", "Y"]
+    assert all(e["order_relation"] == "ngược" for e in edges)  # không sửa đầu vào

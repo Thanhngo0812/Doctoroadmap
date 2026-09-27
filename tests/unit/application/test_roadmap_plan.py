@@ -87,7 +87,7 @@ def test_dry_run_cli_uses_plan_even_with_allow_spend(monkeypatch, capsys):
     ("build_provenance", "BuildProvenance", "mentions", 1),
     ("build_main_edges", "BuildMainEdges", "mentions", 1),
     ("anchor_concepts", "AnchorConcepts", "validated", 2),
-    ("judge_identity", "JudgeIdentity", "teaching", 2),
+    ("judge_identity", "JudgeIdentity", "teaching", 4),
 ])
 def test_each_paid_stage_plan_never_calls_model_or_writes(module, klass, upstream, expected):
     fixture = import_module("tests.unit.application.test_" + module)

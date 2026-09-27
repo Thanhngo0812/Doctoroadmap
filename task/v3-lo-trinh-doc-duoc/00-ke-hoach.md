@@ -1,5 +1,8 @@
 # v3 — Lộ trình chuẩn chỉ và đọc được: kế hoạch vé
 
+> **Nhân viên 2026-09-27:** commit mã 10b riêng theo kết luận reviewer bên dưới; không đưa phần từ khoá vé 04 vào commit.
+> Tiếp theo: 05, 16, 14. Vé 15, 17 và T19 để sau theo chủ dự án. [Báo cáo 10b](../../report/v3-10b-04-ket-qua-2026-09-26.md).
+
 > **Kiểm thử 2026-09-26 (Claude):** 01 đạt; 03 đạt, hai điều kiện chuyển sang vé 04; 10 đạt phần đề cử, còn áp tự động thì chưa
 > đạt (27/44 phán `same` mới đúng, đại diện có thể là nút chỉ-nhắc, gỡ chu trình sau gộp xoá nhầm cạnh) → vé mới
 > [10b](10b-danh-tinh-xac-minh.md). **Không chạy `roadmap --allow-spend` để xuất bản lộ trình trước khi 10b xong.** Báo cáo của nhân

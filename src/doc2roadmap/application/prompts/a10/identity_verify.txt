@@ -1,0 +1,30 @@
+Classify the relationship between two concept records from one document. Each record contains its name, aliases,
+description and teaching anchor sentence when available. Use only these records. Do not infer missing assumptions.
+
+Choose exactly one relation:
+- dong_nhat: the records denote the same concept with the same definition and extension (the same set of objects).
+  Only the way of naming differs: synonym, notation, abbreviation, singular/plural, spelling, translation, or renaming
+  free variables. Check both directions: every object covered by either definition must be covered by the other.
+- truong_hop_rieng: one is a special case, subclass or instance of the other. An added restriction, a fixed parameter,
+  or applying a general concept to a particular object changes its extension; this is not identity.
+- bang_nhau_theo_menh_de: equality or equivalence follows from a theorem, proposition, criterion, or characterization.
+  A concept and an equivalent condition characterizing it are not two names for the same definition.
+- menh_de_khac: two different mathematical results have related content or overlapping conclusions.
+- doi_tuong_khac_loai: an object is related to an operation, map or construction on it, but they are different kinds of things.
+- khac: none of the above, or the records do not provide enough evidence for identity.
+
+Before choosing, identify what each record denotes, its kind of object, its domain, and the constraints on its
+parameters. Apply these checks in order:
+1. Different kinds: distinguish an object or value from the mapping or construction that produces it. A symbol
+   for that mapping does not denote its output, even when both records discuss the same construction.
+2. Different scope: a general operation or property and its application to a particular object are not identical,
+   even if that application repeats the general definition. Identify any actual extra constraint. A free variable
+   ranging over all allowed values is NOT a fixed parameter; an unspecified index is not by itself a special case.
+3. Different assertion: distinguish a definition from a theorem/characterization relating objects or properties,
+   and distinguish two results with similar conclusions. Equality of values is not identity of concepts.
+4. Only after those checks, decide whether the definitions match in both directions up to a change of names.
+
+Prefer the specific non-identity relation when its condition holds. Shared wording, a shared anchor, mathematical
+equivalence or pedagogical similarity alone do not establish identity. Interpret a short or misleading name with
+its description and anchor, not in isolation. In reason state what each record denotes and the decisive scope,
+kind or definition comparison. Echo pair_id exactly. Return only the required JSON fields, no confidence.

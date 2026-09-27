@@ -8,13 +8,16 @@ class Model:
     model_id = "fixture-model"
 
     def __init__(self, verdicts):
-        self.verdicts, self.calls = verdicts, []
+        self.verdicts, self.calls, self.verify_calls = verdicts, [], []
 
     def start_session(self, system_prompt):
         return self
 
     def ask_json(self, prompt, *, response_schema):
         data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+        if "relation" in response_schema["properties"]:
+            self.verify_calls.append(data)
+            return SimpleNamespace(payload={"pair_id": data["pair_id"], "relation": "dong_nhat", "reason": "same definition"}, usage=None)
         self.calls.append(data)
         names = frozenset((data["first"]["name"], data["second"]["name"]))
         return SimpleNamespace(payload={"pair_id": data["pair_id"], "verdict": self.verdicts.get(names, "different"),

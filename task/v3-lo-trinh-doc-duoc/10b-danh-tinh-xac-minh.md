@@ -82,6 +82,19 @@ theo chủ trương tăng tốc, đã chạy ba tài liệu. Không còn chặn 
 ## Sau vé này
 Sinh bảng duyệt người cho các gộp chạm vàng còn lại sau xác minh (T18, dùng `scripts/duyet-danh-tinh/tao_bang.py`). Không tự duyệt.
 
+## Kiểm thử của nhân viên — 2026-09-26
+
+- Đã thấy test đỏ trước sửa: độc lập lượt xác minh, từ chối trường hợp riêng, ưu tiên taught, alias, tính lại chiều.
+  Test tiếp tục checkpoint, thay prompt không hỏi lại lượt 1, lỗi xác minh không gộp; quyết định người vẫn thắng.
+- B/C chạy thuần trên phán bản thử v3-10: doc-1 **Q6 1/39**, Q7 89,67%, Q7b 58,90%; doc-2 **3/61**, 57,65%, 92,86%.
+  Doc-6 đại diện Cơ sở dữ liệu taught, alias CSDL. Kết quả ở `tmp/v3-10b-pure`, không giả là lượt xác minh hoàn chỉnh.
+- Dry-run: tập kiểm 53 lời gọi; ba tài liệu còn 12/39/1 lời xác minh, **0 lời lượt 1** nhờ checkpoint khớp.
+- Chủ dự án duyệt trần **0,15 USD**. Hai prompt × 53 cặp = **106 lời gọi**, **0,03609275 USD thật**, 0 USD còn giữ chỗ.
+  Prompt 1: bác **8/10** (trượt), giữ 24/26, T5 8/9. Prompt 2: bác 9/10, giữ **22/26** (trượt), T5 8/9.
+  Tám cặp xám báo riêng. Không dùng ca của tập kiểm làm ví dụ prompt; không đổi nhãn/ngưỡng, không thử prompt thứ ba.
+- Đúng luật dừng: **không chạy ba tài liệu, không chạy A8, không xuất bản, chưa sinh T18**. Cần reviewer/chủ dự án quyết hướng tiếp.
+- [Báo cáo đủ từng cặp lệch nhãn, prompt/hash, token/USD và kiểm hồi quy](../../report/v3-10b-04-ket-qua-2026-09-26.md).
+
 ## Không làm
 Không thêm nguồn đề cử; không đổi lượt 1; không "hoàn tất nhóm mở". Với nhãn của tôi, xác minh đúng tự tách ba nhóm mở doc-2 thành
 các nhóm đã kiểm đủ: {Matrix, Matrix of a linear map, Matrix of T}, {ℳ, Isomorphism between L(V, W) and F^m,n},

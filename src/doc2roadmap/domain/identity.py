@@ -12,6 +12,7 @@ from .topic_graph import _dot, _unit
 # là lý do đưa ra xét, không phải bằng chứng trùng. "Tên này chứa tên kia" bị loại có chủ ý: `Ma trận` nằm trong
 # `Ma trận nghịch đảo` mà hai khái niệm khác hẳn nhau.
 VERDICTS = ("same", "different", "sense_split")
+VERIFY_RELATIONS = ("dong_nhat", "truong_hop_rieng", "bang_nhau_theo_menh_de", "menh_de_khac", "doi_tuong_khac_loai", "khac")
 GENERIC_PREFIXES = ("hệ véc tơ ", "hệ vectơ ", "hệ vector ", "tính ", "khái niệm ", "the notion of ", "the concept of ",
                     "hệ ", "phép ")
 SEMANTIC_TOP_K = 3
@@ -112,7 +113,7 @@ def validate_identity_response(value, *, pair_id):
         raise ValueError("phán quyết thiếu reason")
 
 
-def identity_map(verdicts, position):
+def identity_map(verdicts, position, *, taught=()):
     """Bản đồ `node → đại diện` từ các phán `same`; đại diện là khái niệm được dạy sớm nhất trong nhóm.
 
     Chỉ gộp nhóm mà mọi cặp đều được phán `same`: a≈b và b≈c không đủ để gộp a với c khi chưa ai so a với c. Nhóm như vậy
@@ -139,13 +140,40 @@ def identity_map(verdicts, position):
         if not all(frozenset(pair) in same for pair in combinations(members, 2)):
             open_groups.append(sorted(members))
             continue
-        head = min(members, key=lambda node: (position.get(node, float("inf")), node))
+        head = min(members, key=lambda node: (node not in taught, position.get(node, float("inf")), node))
         mapping.update({node: head for node in members if node != head})
     return dict(sorted(mapping.items())), sorted(open_groups)
 
 
-def merge_and_break_cycles(edges, identity):
+def merge_identity_nodes(nodes, identity):
+    """Giữ hồ sơ dạy của đại diện, bổ sung tên/alias thành viên; không sửa canonical đầu vào."""
+    kept = {n["node_id"]: {**n, "aliases": list(n.get("aliases", []))} for n in nodes if n["node_id"] not in identity}
+    for node in nodes:
+        if node["node_id"] not in identity:
+            continue
+        head = kept[identity[node["node_id"]]]
+        for alias in [{"name": node["name"], "evidence": node.get("anchor")}, *node.get("aliases", [])]:
+            alias = alias if isinstance(alias, dict) else {"name": alias}
+            if _norm(alias["name"]) == _norm(head["name"]):
+                continue
+            entry = {**alias, "source": "identity", "node_id": node["node_id"]}
+            if entry not in head["aliases"]:
+                head["aliases"].append(entry)
+    return list(kept.values())
+
+
+def merge_and_break_cycles(edges, identity, position=None):
     """Áp bản đồ rồi gỡ chu trình mà phép gộp sinh ra bằng đúng hàm gỡ của A9 (thuần, không gọi mô hình)."""
+    if position is not None:
+        recomputed = []
+        for edge in edges:
+            source, target = identity.get(edge["source"], edge["source"]), identity.get(edge["target"], edge["target"])
+            if (source, target) != (edge["source"], edge["target"]):
+                a, b = position[source], position[target]
+                edge = {**edge, "order_relation_before_merge": edge.get("order_relation"),
+                        "order_relation": "cùng chunk" if a == b else ("thuận" if a < b else "ngược")}
+            recomputed.append(edge)
+        edges = recomputed
     merged, cycles = apply_identity_map(edges, identity)
     removed = []
     for component in cycles:
