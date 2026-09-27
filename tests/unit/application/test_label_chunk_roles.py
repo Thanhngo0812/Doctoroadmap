@@ -4,7 +4,9 @@ from types import SimpleNamespace
 import pytest
 
 from doc2roadmap.application.spend_guard import SpendNotAllowed
-from doc2roadmap.application.use_cases.label_chunk_roles import LabelChunkRoles
+from doc2roadmap.application.use_cases.label_chunk_roles import (
+    LabelChunkRoles, _batches, _invalid_role, transfer_chunk_roles,
+)
 from doc2roadmap.domain.models import DocumentNode
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
 from tests.unit.domain.test_section_roles import chunk
@@ -44,10 +46,10 @@ def test_semantic_roles_one_call_cache_and_identity_preservation(tmp_path):
     model = Model()
     uc = LabelChunkRoles(store,model,allow_spend=True)
     before = {p:p.read_bytes() for p in tmp_path.rglob('*.json')}
-    assert uc.plan('roles',chunks_version=base.version).calls_estimate==1
+    assert uc.plan('roles',chunks_version=base.version).calls_estimate==2
     assert model.calls==[] and before=={p:p.read_bytes() for p in tmp_path.rglob('*.json')}
     labeled,reused = uc.execute('roles',chunks_version=base.version)
-    assert not reused and len(model.calls)==1
+    assert not reused and len(model.calls)==2
     titles = {s.title:s for s in labeled.result.sections}
     assert titles['练习'].role=='bai_tap'
     assert titles['前言'].role=='mo_dau'
@@ -58,7 +60,7 @@ def test_semantic_roles_one_call_cache_and_identity_preservation(tmp_path):
         {k:v for k,v in c.to_dict().items() if k!='role'} for c in labeled.result.chunks]
     assert store.load_chunks('roles',base.version).result==base.result
     assert store.load_role_chunks('roles',base.version).version==labeled.version
-    assert uc.execute('roles')[1] and len(model.calls)==1
+    assert uc.execute('roles')[1] and len(model.calls)==2
     assert uc.plan('roles').status=='reused'
 
 
@@ -83,3 +85,57 @@ def test_spend_guard_and_corrupt_metadata_are_not_silently_accepted(tmp_path):
     store._write(artifact.path/'chunks.json',rows)
     with pytest.raises(ValueError,match='identity'):
         store.load_role_chunks('roles',base.version)
+
+
+def test_batches_bound_size_and_keep_chapters_separate():
+    sections = [SimpleNamespace(section_id=str(i),title=f'第{i//45+1}章' if i in (0,45) else f'主题 {i}',
+                                level=1 if i in (0,45) else 2,order_index=i) for i in range(90)]
+    batches = _batches(sections,set(range(90)))
+    assert [len(group) for group in batches]==[40,5,40,5]
+    assert all(max(group)-min(group)<45 for group in batches)
+
+
+def test_after_last_chapter_is_its_own_batch():
+    sections = [SimpleNamespace(section_id=str(i),title=title,level=level,order_index=i)
+                for i,(title,level) in enumerate([('第1章',1),('内容',2),('第2章',1),('内容',2),
+                                                   ('索引',1),('术语',2)])]
+    assert _batches(sections,set(range(6)))==[[0,1],[2,3],[4,5]]
+
+
+def test_structural_validation_rejects_impossible_roles_in_other_scripts():
+    prose = ('Это длинная строка о линейной алгебре и векторном пространстве.\n'*40)
+    assert _invalid_role('mo_dau',4,1,8,'short')=='front_after_chapter'
+    assert _invalid_role('cuoi_sach',4,1,8,'short')=='back_before_last_chapter'
+    assert _invalid_role('de_cuong',4,1,8,prose)=='long_prose'
+    assert _invalid_role('hanh_chinh',4,1,8,prose)=='long_prose'
+    assert _invalid_role('cuoi_sach',9,1,8,'索引 42\n概念 43\n空间 44') is None
+
+
+def test_transfer_uses_majority_text_when_chunk_boundaries_change():
+    old = [SimpleNamespace(chunk_id='old',text='alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu')]
+    new = [SimpleNamespace(text='alpha beta gamma delta epsilon zeta eta theta iota',role='noi_dung'),
+           SimpleNamespace(text='iota kappa lambda mu',role='bai_tap')]
+    assert transfer_chunk_roles(old,new)=={'old':'noi_dung'}
+
+
+def test_transfer_uses_reading_order_for_repeated_text():
+    old = [SimpleNamespace(chunk_id='old',text='alpha beta gamma delta epsilon zeta eta theta')]
+    new = [SimpleNamespace(text=old[0].text,role='noi_dung'),
+           SimpleNamespace(text=old[0].text,role='bai_tap')]
+    assert transfer_chunk_roles(old,new)=={'old':'noi_dung'}
+
+
+def test_invalid_first_label_is_reasked_once_in_small_batch(tmp_path):
+    store,base = stored(tmp_path)
+    class RetryModel(Model):
+        def ask_json(self,prompt,*,response_schema):
+            rows = json.loads(prompt)['headings']
+            self.calls.append(rows)
+            role = 'mo_dau' if len(self.calls)==1 else 'noi_dung'
+            return SimpleNamespace(payload={'labels':[{'index':r['index'],'role':role} for r in rows]},usage=None)
+    model = RetryModel()
+    labeled,_ = LabelChunkRoles(store,model,allow_spend=True).execute('roles',chunks_version=base.version)
+    assert len(model.calls)==3  # two chapter batches, then one targeted retry
+    assert len(model.calls[-1])==1
+    assert labeled.manifest['role_validation_counts']['front_after_chapter']==1
+    assert next(s for s in labeled.result.sections if s.title=='练习').role=='noi_dung'

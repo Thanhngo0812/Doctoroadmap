@@ -3,8 +3,8 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R1 (bổ sung 2026-09-27) · **Ai:** nhân viên · **Phụ thuộc:** 14 ·
 **Chi phí mô hình:** vài lời gọi mỗi tài liệu (≈ 0,005–0,02 USD); chạy lại neo doc-2 chỉ phần đầu vào đổi (≈ 0,05 USD)
 
-**Trạng thái:** chờ giao. **Nghiệm thu vé 07 trên doc-2 chờ vé này:** lọc khái niệm chỉ-nhắc khỏi dãy học khi doc-2 còn 42 khái niệm mất
-trạng thái được dạy do nhãn sai sẽ làm mất bài học thật.
+**Trạng thái:** đã triển khai và kiểm thử 2026-09-27; chờ reviewer nghiệm thu. [Báo cáo 14b](../../report/v3-14b-ket-qua-2026-09-27.md).
+**Vé 07:** đã có thể nghiệm thu doc-2 trên nhãn mới; 18/42 khái niệm vẫn không được neo dạy theo bằng chứng hiện tại, không ép nhãn.
 
 ## Vì sao (kiểm thử vé 14, 2026-09-27)
 - doc-2 v6 (vai trò cho chunk v1, là bản đồ thị A8 hiện có đang dùng): mô hình gắn `de_cuong` cho 104 mục bài giảng (106 chunk), ví dụ

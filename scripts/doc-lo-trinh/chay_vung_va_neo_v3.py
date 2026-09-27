@@ -21,36 +21,56 @@ DOC2_STRUCTURE_VERSION = 5
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--allow-spend',action='store_true')
-    parser.add_argument('--phase',choices=('roles','anchors'),required=True)
+    parser.add_argument('--phase',choices=('roles','anchors','roles14b','anchors14b'),required=True)
+    parser.add_argument('--doc',choices=tuple(VALIDATED))
     args = parser.parse_args()
     settings = Settings()
     root = settings.artifact_dir / 'v3-region-anchor-evaluation'
     base,output = JsonArtifactStore(settings.artifact_dir),JsonArtifactStore(root)
     store = EvaluationStore(base,output)
     # One shared ledger for both sequential phases; never run two copies concurrently.
-    cap = 16384 if args.phase=='roles' else 2048
+    cap = 16384 if args.phase.startswith('roles') else 2048
     generation = {'temperature':0.0,'max_output_tokens':cap}
     raw = MeteredGemini(settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else 'no-key',
                         max_usd=1.0,ledger_path=root/'spend.json',max_output_tokens=cap)
     prepared,plans = [],{}
     for doc,version in VALIDATED.items():
+        if args.doc and doc!=args.doc:
+            continue
+        if args.phase in ('roles14b','anchors14b') and doc not in ('doc-2','nhap-mon-ml','doc-3'):
+            continue
+        if args.phase=='anchors14b' and doc!='doc-2':
+            continue
         upstream = base.load_graph(doc,version)
         edges = base.load_graph(doc,upstream.manifest['config']['edges_version'])
         chunks_version = edges.manifest['config']['chunks_version']
-        if args.phase=='roles':
+        if args.phase.startswith('roles'):
             uc = LabelChunkRoles(base,raw,allow_spend=args.allow_spend,generation=generation)
-            versions = [chunks_version,DOC2_STRUCTURE_VERSION] if doc=='doc-2' else [chunks_version]
+            versions = ([DOC2_STRUCTURE_VERSION,chunks_version] if doc=='doc-2' and args.phase=='roles14b'
+                        else [chunks_version,DOC2_STRUCTURE_VERSION] if doc=='doc-2' else [chunks_version])
             for v in versions:
                 key = f'{doc}/chunks-v{v}'
-                plans[key] = uc.plan(doc,chunks_version=v).to_dict()
-                prepared.append((key,doc,uc,{'chunks_version':v}))
+                kwargs = {'chunks_version':v}
+                if doc=='doc-2' and args.phase=='roles14b' and v==chunks_version:
+                    kwargs['transfer_from_chunks_version']=DOC2_STRUCTURE_VERSION
+                if kwargs.get('transfer_from_chunks_version'):
+                    plans[key] = {'status':'depends_on_new_roles','label':'chờ nhãn v5 mới'}
+                else:
+                    plans[key] = uc.plan(doc,**kwargs).to_dict()
+                prepared.append((key,doc,uc,kwargs))
         else:
+            reuse = None
+            if args.phase=='anchors14b':
+                prior_path = root/'anchors14b-summary.json'
+                prior = output._read(prior_path if prior_path.exists() else root/'anchors-summary.json')
+                reuse = output.load_graph(doc,prior[doc]['version'])
             uc = AnchorConcepts(store,SpendGuard(raw,allowed=args.allow_spend),
-                                concurrency=settings.roadmap_concurrency,generation=generation)
+                                concurrency=settings.roadmap_concurrency,generation=generation,
+                                reuse_artifact=reuse)
             plans[doc] = uc.plan(doc,upstream=upstream).to_dict()
             prepared.append((doc,doc,uc,{'upstream':upstream}))
     print(json.dumps(plans,ensure_ascii=False,indent=2),flush=True)
-    print('estimate USD',sum(p['usd_estimate'] for p in plans.values()),flush=True)
+    print('estimate USD',sum(p.get('usd_estimate',0) for p in plans.values()),flush=True)
     if not args.allow_spend:
         return
     summary_path = root/f'{args.phase}-summary.json'
@@ -58,7 +78,7 @@ def main():
     for key,doc,uc,kwargs in prepared:
         artifact,reused = uc.execute(doc,**kwargs)
         row = {'path':str(artifact.path),'version':artifact.version,'reused':reused}
-        if args.phase=='roles':
+        if args.phase.startswith('roles'):
             row.update(counts=artifact.manifest['role_counts'],warnings=artifact.manifest['role_warnings'])
         else:
             roadmap,_ = BuildRoadmap(store).execute(doc,upstream=artifact)

@@ -69,7 +69,10 @@
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
 tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12, 13. Chạy thử tài liệu T19 sau 14–17.
-**Hiện tại (2026-09-27):** đã xong 01, 02, 03, 05, 10, 10b, 16; 14 xong phần cấu trúc. Làm tiếp theo thứ tự: **14b** (ưu tiên);
+
+**Cập nhật nhân viên 2026-09-27:** vé 14b đã triển khai và đo trên doc-2, nhap-mon-ml, doc-3; [báo cáo](../../report/v3-14b-ket-qua-2026-09-27.md), chờ reviewer nghiệm thu.
+
+**Hiện tại (2026-09-27):** đã xong 01, 02, 03, 05, 10, 10b, 16; 14 xong phần cấu trúc. Sau 14b,
 06, 07 và **18** song song (07 và 18 cùng chạm dãy học; nghiệm thu 06, 07 trên doc-2 sau 14b); rồi 08, 09, 11. Sau 07 + 18, đo lại
 lỗi thứ tự còn lại để quyết vé 12. Hoãn theo chủ dự án: 15, 17, T19.
 

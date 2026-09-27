@@ -63,11 +63,12 @@ class AnchorConcepts:
     vốn hay trỏ vào đoạn dùng. Chỉ ghi thêm trường; provenance gốc giữ nguyên nên danh tính vàng không đổi.
     """
 
-    def __init__(self, store, model, *, concurrency=4, generation=None):
+    def __init__(self, store, model, *, concurrency=4, generation=None, reuse_artifact=None):
         self.store = store
         self.model = model
         self.concurrency = concurrency
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 2048}
+        self.reuse_artifact = reuse_artifact
 
     def execute(self, doc_id, *, upstream):
         return self._run(doc_id, upstream=upstream)
@@ -98,8 +99,9 @@ class AnchorConcepts:
         old_config = {**config, "algorithm_id": "a10-teaching-anchor-v4",
                       "candidate_rule": "content-only+unicode-sentences+nfkc-latex-dash+a3+symbolic-v4"}
         previous = self.store.find_graph(doc_id, source_hash, digest(old_config))
-        old_log = previous.payload.get("anchor_decision_log", []) if previous else []
-        old_prior_log = previous.payload.get("anchor_prior_verify_decision_log", []) if previous else []
+        old = previous or self.reuse_artifact
+        old_log = old.payload.get("anchor_decision_log", []) if old else []
+        old_prior_log = old.payload.get("anchor_prior_verify_decision_log", []) if old else []
 
         mentioned = {}
         for chunk_id, rows in upstream.payload.get("mention_map", {}).items():
