@@ -9,6 +9,8 @@ from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.roadmap import reviewed_sessions
 from doc2roadmap.domain.sequence import DEFAULT_WEIGHTS, build_sequence_roadmap, target_modules
 from doc2roadmap.domain.teaching import EXCLUDED_STATUSES, bypass_excluded
+from doc2roadmap.domain.anchors import symbolic_name_chunks
+from doc2roadmap.domain.mentions import exact_mentions
 
 _FAR = 10**9
 
@@ -138,6 +140,7 @@ class BuildRoadmap:
             "module_cap": self.stage_cap,
             "weights": DEFAULT_WEIGHTS,
             "level_rule": "median-concepts-per-section-at-least-half-cap",
+            "placement_rule": "content-only+earliest-name-mention-v2",
         }
         config_hash = digest(config)
         source_hash = digest(upstream.payload)
@@ -149,15 +152,24 @@ class BuildRoadmap:
 
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks_artifact.result.chunks}
         sections = {section.section_id: section for section in chunks_artifact.result.sections}
+        content_chunks = [c for c in chunks_artifact.result.chunks if getattr(c, "role", "noi_dung") == "noi_dung"]
 
         def place(node):
             """Khoá vị trí (chỉ số chunk dạy, vị trí ký tự trong chunk) và chunk dạy sớm nhất."""
-            chunk_ids = node.get("teaching_chunk_ids") or node.get("defining_chunk_ids", [])
-            chunks = sorted((chunk_by_id[value] for value in chunk_ids if value in chunk_by_id),
+            chunk_ids = node.get("teaching_chunk_ids") or []
+            # Artifact trước bước neo vẫn dùng provenance; sau neo không được rơi về đoạn chỉ được dùng/nhắc.
+            if "teaching_status" not in node:
+                chunk_ids = node.get("defining_chunk_ids", [])
+            chunks = sorted((chunk_by_id[value] for value in chunk_ids if value in chunk_by_id
+                             and getattr(chunk_by_id[value], "role", "noi_dung") == "noi_dung"),
                             key=lambda chunk: (chunk.order_index, chunk.chunk_id))
             if not chunks:
-                order = node.get("teaching_order_index")
-                return ((order if order is not None else node.get("first_order_index", _FAR)), _FAR), None
+                searchable = [c for c in content_chunks if getattr(c, "text", "")]
+                mentions = exact_mentions([node], searchable, common_names=())
+                ids = set(mentions) | symbolic_name_chunks(node, searchable)
+                chunks = sorted((c for c in searchable if c.chunk_id in ids), key=lambda c: (c.order_index, c.chunk_id))
+            if not chunks:
+                return (_FAR, _FAR), None
             first = chunks[0]
             offsets = [span["char_start"] for span in node.get("evidence", [])
                        if isinstance(span, dict) and span.get("chunk_id") == first.chunk_id

@@ -263,6 +263,26 @@ class JsonArtifactStore:
     def load_chunks(self, doc_id: str, version: int) -> StoredChunks:
         return self._stored_chunks(version, self.root / "chunks" / doc_id / f"v{version}")
 
+    def find_chunks(self, doc_id, source_hash, config_hash):
+        for version,path in reversed(self._versions('chunks',doc_id)):
+            manifest = self._read(path / 'manifest.json')
+            if manifest['source_hash']==source_hash and manifest['config_hash']==config_hash:
+                return self._stored_chunks(version,path)
+        return None
+
+    def load_role_chunks(self, doc_id, version):
+        """A10 may consume metadata-only labels; A3–A8 keep their pinned source versions."""
+        base = self.load_chunks(doc_id,version)
+        for candidate,path in reversed(self._versions('chunks',doc_id)):
+            manifest = self._read(path / 'manifest.json')
+            if manifest.get('semantic_roles') and manifest.get('roles_from_chunks_version')==version:
+                labeled = self._stored_chunks(candidate,path)
+                identity = lambda result: [(c.chunk_id,c.text,c.char_start,c.char_end) for c in result.chunks]
+                if manifest['source_hash']!=base.manifest['source_hash'] or identity(labeled.result)!=identity(base.result):
+                    raise ValueError('role artifact changed chunk identity or source')
+                return labeled
+        return base
+
     def load_canonical(self, doc_id: str, version: int) -> StoredStageArtifact:
         return self._load_stage("canonical", doc_id, version)
 

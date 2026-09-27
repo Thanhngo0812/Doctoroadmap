@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-import re
 import unicodedata
 
 from .provenance import DEFAULT_DEFINITION_SIGNALS
+from .sentence_splitter import UnicodeSentenceSplitter
 
 # Neo định nghĩa (spec v2, W11–W12): mỗi khái niệm có một câu nguyên văn nơi tài liệu dạy nó; trạng thái là thuộc tính
 # của khái niệm, quyết trên mọi ứng viên cùng lúc — khắc phục lỗi gộp theo từng đoạn của C8 v2.
@@ -12,11 +12,6 @@ STATUSES = ("defined_here", "introduced_by_example", "mentioned_only", "prior_kn
 ANCHORED = {"defined_here", "introduced_by_example"}
 TO_TEACHING = {"defined_here": "taught", "introduced_by_example": "taught", "mentioned_only": "mentioned_only",
                "prior_knowledge": "prior_knowledge", "not_subject_matter": "not_subject_matter", "uncertain": "uncertain"}
-# `prior_knowledge` chỉ hợp lệ khi câu trích tự nói người đọc phải biết trước. v2 kích nhầm bởi giả thiết định lý
-# ("Suppose V is a complex inner product space") — dùng một khái niệm không có nghĩa là đòi biết trước nó.
-PRIOR_SIGNALS = ("recall", "previous course", "familiar", "prerequisite", "assume the reader", "you should know",
-                 "đã học", "đã biết", "nhắc lại", "kiến thức cần có", "yêu cầu kiến thức", "cần biết trước")
-_SENTENCE = re.compile(r"\S.*?(?:[.!?](?=\s|$)|$)", re.S)
 
 
 def _norm(text):
@@ -52,7 +47,7 @@ def symbolic_name_chunks(node, chunks):
 
 
 def _sentences(text):
-    return [(match.start(), match.group(0).strip()) for match in _SENTENCE.finditer(text) if match.group(0).strip()]
+    return [(span.start, text[span.start:span.end].strip()) for span in UnicodeSentenceSplitter().split(text)]
 
 
 def _names(node):
@@ -76,6 +71,8 @@ def candidate_sentences(node, chunks, *, limit=6):
             evidence.setdefault(span["chunk_id"], []).append(_compact(span["quote"]))
     found = []
     for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id)):
+        if getattr(chunk, "role", "noi_dung") != "noi_dung":
+            continue
         sentences = _sentences(chunk.text)
         for index, (start, sentence) in enumerate(sentences):
             flat = _norm(sentence)
@@ -121,8 +118,6 @@ def validate_anchor_response(value, *, node_id, candidates):
         scope = [by_id[value["anchor"]]] if status in ANCHORED else candidates
         if not any(_norm(quote) in _norm(candidate["context"]) for candidate in scope):
             raise ValueError("quote không có trong ứng viên")
-        if status == "prior_knowledge" and not any(signal in _norm(quote) for signal in PRIOR_SIGNALS):
-            raise ValueError("prior_knowledge cần câu trích có tín hiệu tường minh")
 
 
 def anchor_fields(value, candidates):

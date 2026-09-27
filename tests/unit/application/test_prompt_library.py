@@ -83,6 +83,7 @@ def test_product_prompt_hashes_are_intentionally_versioned():
 
 def test_product_prompt_catalog_is_exact_and_loadable():
     expected = {
+        Path("a2/region-roles.txt"),
         Path("a3/system.txt"),
         Path("a3/section.txt"),
         Path("a3/glean.txt"),
@@ -102,6 +103,7 @@ def test_product_prompt_catalog_is_exact_and_loadable():
         Path("a10/anchor.txt"),
         Path("a10/identity.txt"),
         Path("a10/identity_verify.txt"),
+        Path("a10/prior_verify.txt"),
     }
     actual = {path.relative_to(PROMPT_ROOT) for path in PROMPT_ROOT.rglob("*.txt")}
 

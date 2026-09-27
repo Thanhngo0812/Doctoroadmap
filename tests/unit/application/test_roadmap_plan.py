@@ -86,7 +86,7 @@ def test_dry_run_cli_uses_plan_even_with_allow_spend(monkeypatch, capsys):
     ("build_mentions", "BuildMentions", "graph", 2),
     ("build_provenance", "BuildProvenance", "mentions", 1),
     ("build_main_edges", "BuildMainEdges", "mentions", 1),
-    ("anchor_concepts", "AnchorConcepts", "validated", 2),
+    ("anchor_concepts", "AnchorConcepts", "validated", 4),
     ("judge_identity", "JudgeIdentity", "teaching", 4),
 ])
 def test_each_paid_stage_plan_never_calls_model_or_writes(module, klass, upstream, expected):
@@ -128,6 +128,6 @@ def test_anchor_plan_uses_answers_from_only_the_matching_checkpoint():
     plan = uc.plan("doc", upstream=store.validated)
     store.checkpoints[plan.checkpoint_id] = {"source_hash": digest(store.validated.payload),
         "answers": {"cs": {}}, "decision_log": [], "metrics": {}}
-    assert uc.plan("doc", upstream=store.validated).calls_estimate == 1
-    store.checkpoints[plan.checkpoint_id]["source_hash"] = "wrong-source"
     assert uc.plan("doc", upstream=store.validated).calls_estimate == 2
+    store.checkpoints[plan.checkpoint_id]["source_hash"] = "wrong-source"
+    assert uc.plan("doc", upstream=store.validated).calls_estimate == 4

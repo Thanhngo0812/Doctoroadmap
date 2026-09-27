@@ -4,7 +4,7 @@
 **Phụ thuộc:** 03; làm tiếp ngay trên phần vé 04 đang dở · **Chi phí mô hình:** một lời gọi Gemini mỗi tài liệu cho nhãn nghĩa
 (≈ 0,001–0,01 USD)
 
-**Trạng thái:** chờ giao. **Thay** phần từ khoá của vé 03 và vé 04.
+**Trạng thái:** đã triển khai và kiểm thử 2026-09-27; chờ reviewer nghiệm thu. **Thay** phần từ khoá của vé 03 và vé 04. [Kết quả](../../report/v3-05-14-16-ket-qua-2026-09-27.md).
 
 ## Vì sao
 Rà soát 2026-09-26: vai trò vùng (vé 03) và cấu trúc mục (vé 04) dựa vào danh sách từ tiếng Việt/tiếng Anh — `ROLE_PATTERNS`, tìm

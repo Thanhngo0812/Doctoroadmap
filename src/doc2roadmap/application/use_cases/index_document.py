@@ -7,6 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from doc2roadmap.application.ports import ArtifactStore
+from doc2roadmap.domain.unicode_text import TEXT_RULE_VERSION
 from doc2roadmap.application.ports.embedding import EmbeddingPort, EmbeddingRequest
 from doc2roadmap.domain.retrieval import (
     HybridRetriever,
@@ -112,6 +113,7 @@ class IndexDocument:
             manifest_fields={
                 "embedding_model_id": self.embedding.embedding_model_id,
                 "chunk_count": len(chunks),
+                "text_rules": TEXT_RULE_VERSION,
                 "input_format": "section-path-v1",
             },
         )

@@ -10,6 +10,56 @@ from doc2roadmap.infrastructure.parsing import DoclingParser
 from tests.conftest import WordCounter, load_docling_fixture, splitter
 
 
+def test_math_section_mislabelled_as_page_header_is_recovered_but_running_headers_stay_out():
+    def item(text, label, y, page=1):
+        return SimpleNamespace(text=text, label=label, level=1,
+            prov=[SimpleNamespace(page_no=page, bbox=SimpleNamespace(l=20, t=y, r=200, b=y-10))])
+
+    body = item("Definition of a matrix.", "text", 500)
+    recovered = item("3C Matrices", "page_header", 580)
+    exercise = item("Exercises 3C", "page_header", 580, page=2)
+    headers = [item("Section 3C Matrices 69", "page_header", 620), item("3C Matrices", "page_header", 620, page=2),
+               item("Linear Algebra", "page_footer", 20)]
+    preceding = [item('3A Maps','section_header',700),item('3B Null Spaces','section_header',660)]
+    document = SimpleNamespace(iterate_items=lambda: iter([*((p,1) for p in preceding),(body, 1)]),
+                               texts=[*preceding,recovered, exercise, *headers, body])
+    tree = DoclingParser().adapt(document, "math.pdf").tree
+    assert [(n.node_type, n.text) for n in tree.nodes] == [
+        ('section_header','3A Maps'),('section_header','3B Null Spaces'),
+        ("section_header", "3C Matrices"), ("text", "Definition of a matrix."), ("section_header", "Exercises 3C")]
+    assert any("recovered_math_heading" in w for w in tree.structure_warnings)
+
+
+def test_recovery_does_not_duplicate_a_math_heading_already_in_body_or_touch_docx():
+    bbox = SimpleNamespace(l=0, t=50, r=100, b=40)
+    body = SimpleNamespace(text="3C Matrices", label="section_header", level=1, prov=[SimpleNamespace(page_no=1, bbox=bbox)])
+    furniture = SimpleNamespace(text="3C Matrices", label="page_header", prov=body.prov)
+    document = SimpleNamespace(iterate_items=lambda: iter([(body, 1)]), texts=[body, furniture])
+    for filename in ("a.pdf", "a.docx"):
+        assert [n.text for n in DoclingParser().adapt(document, filename).tree.nodes] == ["3C Matrices"]
+
+
+def test_unproven_page_header_is_not_recovered_by_exercises_keyword():
+    item = SimpleNamespace(text="Exercises 4", label="page_header",
+        prov=[SimpleNamespace(page_no=1, bbox=SimpleNamespace(l=20, t=500, r=200, b=490))])
+    document = SimpleNamespace(iterate_items=lambda: iter([(item, 1)]), texts=[item])
+    assert DoclingParser().adapt(document, "math.pdf").tree.nodes == []
+
+
+def test_repeated_furniture_band_is_excluded_even_for_a_new_known_section_code():
+    def item(text,label,page,top):
+        return SimpleNamespace(text=text,label=label,level=1,
+            prov=[SimpleNamespace(page_no=page,bbox=SimpleNamespace(l=20,t=top,r=200,b=top-10))])
+    headings = [item('3A Maps','section_header',1,580),item('3B Kernels','section_header',2,580)]
+    furniture = [item('Repère 3A','page_header',page,620) for page in (1,2,3)]
+    furniture += [item('Repère 3C','page_header',4,620),item('3C Matrices','page_header',4,580)]
+    body = item('A definition.','text',4,500)
+    doc = SimpleNamespace(iterate_items=lambda:iter([*((h,1) for h in headings),(body,1)]),
+                          texts=[*headings,*furniture,body])
+    texts = [n.text for n in DoclingParser().adapt(doc,'book.pdf').tree.nodes]
+    assert '3C Matrices' in texts and all(not t.startswith('Repère') for t in texts)
+
+
 def label(item) -> str:
     value = getattr(item, "label", "text")
     return str(getattr(value, "value", value)).lower()

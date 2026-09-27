@@ -19,12 +19,13 @@ from .models import (
 )
 from .normalization import normalize_text
 from .ports import SentenceSplitter, TextSpan, TokenCounter
+from .document_structure import chapter_members, back_matter, structure_profile, RESULT_MIN_COUNT, RESULT_MAX_BODY_CHARS
 
 
 HEADING_TYPES = {"title", "section_header"}
 MERGEABLE_TYPES = {"text", "paragraph", "list_item", "figure", "table", "formula"}
 TEXT_BLOCK_TYPES = {"text", "paragraph", "list_item"}
-CHUNK_ALGORITHM_ID = "section-id-v9-roles"
+CHUNK_ALGORITHM_ID = "section-id-v11-document-structure"
 OVERSIZE_TABLE_ROW = "table_row_exceeds_max_tokens"
 OVERSIZE_TABLE_PRESERVED = "table_kept_whole_above_text_limit"
 OVERSIZE_SENTENCE_BOUNDARY = "sentence_splitter_no_boundary"
@@ -36,56 +37,37 @@ _ROMAN_NUMBER = re.compile(r"(?<![^\W\d_])[IVXLCDM]+(?![^\W\d_])", re.IGNORECASE
 _TRAILING_PAGE_NUMBER = re.compile(r"\s+\d+\s*$")
 _LEADING_BULLETS = frozenset("•▪▫◦‣⁃∙●○■□-–—")
 
-# R1: chỉ mẫu tiêu đề, không tìm từ khoá trong thân bài ("bài toán" không phải "bài tập").
-ROLE_PATTERNS = {
-    "bai_tap": (r"bai tap\b", r"cau hoi on tap\b", r"de so\b", r"exercises?\b", r"problems\b"),
-    "de_cuong": (r"noi dung mon hoc\b", r"de cuong\b", r"muc\s*luc\b", r"(?:table of )?contents\b",
-                 r"noi dung(?:\s*\([^)]*\))?$"),
-    "mo_dau": (r"loi noi dau\b", r"preface\b", r"foreword\b", r"about the author\b",
-               r"major improvements\b", r"mo\s*dau\b"),
-    "hanh_chinh": (r"thang diem\b", r"lich (?:hoc|thi|trinh)\b", r"thong tin giang vien\b",
-                   r"hinh thuc va tieu chuan danh gia\b", r"grading\b", r"schedule\b", r"instructor information\b"),
-}
-
-
-def _role_title(title):
-    value = unicodedata.normalize("NFKD", title).casefold().replace("đ", "d")
-    value = " ".join("".join(c for c in value if not unicodedata.combining(c)).split())
-    value = value.lstrip("".join(_LEADING_BULLETS) + " ")
-    return re.sub(r"^\d+(?:\.\d+)*[.)]?\s+", "", value)
-
-
-def heading_role(title):
-    title = _role_title(title)
-    return next((role for role, patterns in ROLE_PATTERNS.items()
-                 if any(re.match(pattern, title) for pattern in patterns)), None)
-
 
 def assign_section_roles(sections, chunks=()):
     """Tính lại vai trò từ cây section đã lưu, không đọc PDF; không đổi ID/text/offset.
 
-    `is_toc` giữ dấu phát hiện _toc_runs ở lần chunk. Vùng không có chương đánh số chỉ dùng mẫu tiêu đề,
-    không coi cả tài liệu phẳng là lời nói đầu. Vai trò vùng theo cây: anh em cùng cấp tự đóng vùng trước.
+    `is_toc` giữ dấu phát hiện _toc_runs. Vùng chưa đủ bằng chứng cấu trúc để lớp nhãn nghĩa quyết,
+    không dùng từ khóa tiêu đề và không coi cả tài liệu phẳng là lời nói đầu.
     """
     ordered = sorted(sections, key=lambda s: (s.order_index, s.level))
-    first_chapter = next((s.order_index for s in ordered
-                          if re.match(r"^(?:chuong|chapter)\s+(?:\d+|[ivxlcdm]+)\b", _role_title(s.title))), None)
+    chapters = chapter_members([(i,s.title,s.level,s.order_index) for i,s in enumerate(ordered) if s.level>0])
+    first_chapter = min(chapters,default=None)
+    last_chapter = max(chapters,default=len(ordered))
+    contents = defaultdict(list)
+    for c in chunks:
+        contents[c.parent_section_id].append(c.text)
+    first_children = {}
+    for s in ordered:
+        first_children.setdefault(s.parent_section_id,s.section_id)
+    repeated = Counter(s.title for s in ordered if s.section_id==first_children.get(s.parent_section_id))
     by_id = {}
-    for section in ordered:
-        explicit = "de_cuong" if section.is_toc and not section.has_direct_content else heading_role(section.title)
-        parent = by_id.get(section.parent_section_id)
-        if explicit:
-            role = explicit
-        elif parent is not None and parent.level > 0:
-            role = parent.role
-        elif first_chapter is not None and section.order_index < first_chapter:
-            role = "mo_dau"
-        else:
-            role = "noi_dung"
-        # Chương có số luôn mở vùng dạy mới, không kế thừa lời nói đầu của gốc.
-        if not explicit and re.match(r"^(?:chuong|chapter)\s+(?:\d+|[ivxlcdm]+)\b", _role_title(section.title)):
-            role = "noi_dung"
+    for i,section in enumerate(ordered):
+        role,source = "noi_dung",""
+        if i>last_chapter and back_matter('\n'.join(contents[section.section_id])):
+            role,source = "cuoi_sach","structure"
+        elif (section.is_toc and not section.has_direct_content) or repeated[section.title]>=3:
+            role,source = "de_cuong","structure"
+        elif first_chapter is not None and i<first_chapter:
+            role,source = "mo_dau","structure"
+        elif i in chapters:
+            role,source = "noi_dung","structure"
         section.role = role
+        section.role_source = source
         by_id[section.section_id] = section
     for chunk in chunks:
         chunk.role = by_id[chunk.parent_section_id].role
@@ -170,8 +152,13 @@ def _is_numbered_heading(title: str) -> bool:
 
 
 def _false_heading_reason(
-    title: str, body_texts: list[str], *, sequence_member: bool = False, scheme: str | None = None
+    title: str, body_texts: list[str], *, sequence_member: bool = False, scheme: str | None = None,
+    numbered_result: bool = False, structural: bool = False
 ) -> str | None:
+    if numbered_result:
+        return "numbered_result"
+    if structural:
+        return None
     if _is_numbered_heading(title) or sequence_member or _scheme_level(title, scheme) is not None:
         return None
     if title[0] in _LEADING_BULLETS or unicodedata.category(title[0]) == "Pd":
@@ -194,11 +181,12 @@ def _roman_value(value: str) -> int:
     return result
 
 
-def _chapter_sequences(nodes: list[DocumentNode]) -> tuple[set[int], dict[int, int]]:
+def _chapter_sequences(nodes: list[DocumentNode], *, result_indexes=()) -> tuple[set[int], dict[int, int]]:
     headings = [
         (index, normalize_text(node.text))
         for index, node in enumerate(nodes)
         if node.node_type in HEADING_TYPES and normalize_text(node.text)
+        and index not in result_indexes
     ]
     groups: dict[str, list[tuple[int, int, int]]] = defaultdict(list)
     for heading_position, (node_index, title) in enumerate(headings):
@@ -411,6 +399,8 @@ def chunk_document(
     target_tokens: int = 256,
     sentence_overlap: int = 1,
     heading_scheme: str | None = None,
+    result_min_count: int = RESULT_MIN_COUNT,
+    result_max_body_chars: int = RESULT_MAX_BODY_CHARS,
 ) -> ChunkingResult:
     if heading_scheme is not None and heading_scheme not in HEADING_SCHEMES:
         raise ValueError(f"heading_scheme phải là một trong {HEADING_SCHEMES}")
@@ -420,9 +410,13 @@ def chunk_document(
         raise ValueError("max_table_tokens và hard_cap_tokens phải lớn hơn 0")
     if sentence_overlap < 0:
         raise ValueError("sentence_overlap không được âm")
+    if result_min_count < 3 or result_max_body_chars <= 0:
+        raise ValueError('result_min_count phải >= 3 và result_max_body_chars phải > 0')
 
     nodes = sorted(tree.nodes, key=lambda node: node.reading_order)
-    sequence_members, sequence_levels = _chapter_sequences(nodes)
+    profile = (structure_profile(nodes,result_min_count=result_min_count,result_max_body_chars=result_max_body_chars)
+               if heading_scheme is None else {'levels':{},'results':set()})
+    sequence_members, sequence_levels = _chapter_sequences(nodes, result_indexes=profile['results'])
     known_headings = {
         title
         for node in nodes
@@ -616,6 +610,7 @@ def chunk_document(
                 body_texts,
                 sequence_member=node_index in sequence_members,
                 scheme=heading_scheme,
+                numbered_result=node_index in profile['results'], structural=node_index in profile['levels'],
             )
             if false_heading_reason:
                 warning_type = (
@@ -629,7 +624,11 @@ def chunk_document(
                 flush()
                 scheme_level = _scheme_level(title, heading_scheme)
                 explicit_level = _heading_number_level(title)
-                if scheme_level is not None:
+                structure_level = profile['levels'].get(node_index)
+                if structure_level is not None:
+                    level = numbered_level = structure_level
+                    numbered_heading_seen = True
+                elif scheme_level is not None:
                     level = numbered_level = scheme_level
                     numbered_heading_seen = True
                 elif explicit_level is not None:
@@ -652,6 +651,7 @@ def chunk_document(
                 parent_depth = heading_depth[stack[-1].section_id]
                 if (
                     node.tree_depth is not None
+                    and structure_level is None
                     and parent_depth is not None
                     and node.tree_depth > parent_depth
                     and level <= stack[-1].level

@@ -92,8 +92,8 @@ def _private_use(text: str) -> int:
 
 
 def test_batch_versions_are_bumped_once() -> None:
-    assert ADAPTER_VERSION == 8
-    assert CHUNK_ALGORITHM_ID == "section-id-v9-roles"
+    assert ADAPTER_VERSION == 11
+    assert CHUNK_ALGORITHM_ID == "section-id-v11-document-structure"
 
 
 def test_new_fixtures_round_trip_with_images_and_exact_sizes() -> None:

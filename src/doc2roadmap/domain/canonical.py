@@ -10,6 +10,7 @@ from itertools import combinations
 
 from .entities import EntityCandidate
 from .normalization import normalize_text
+from .unicode_text import lexical_word
 
 
 def digest(value) -> str:
@@ -36,7 +37,8 @@ def normalize_edge_type(edge_type: str) -> str:
     return " ".join(edge_type.casefold().split())
 
 
-def alias_kind(text: str) -> str:
+def _legacy_alias_kind(text: str) -> str:
+    # Cache migration only: compare actual classifications before invalidating paid stages.
     text = normalize_text(text).strip()
     if len(text) > 1 and text.isalnum() and text.isupper() and any(c.isalpha() for c in text):
         return "abbreviation"
@@ -45,6 +47,17 @@ def alias_kind(text: str) -> str:
                and any("LATIN" in unicodedata.name(c, "") for c in w)
                and not any("SUBSCRIPT" in unicodedata.name(c, "") for c in w)]
     return "name" if lexical else "symbol"
+
+
+def alias_kind(text: str) -> str:
+    text = normalize_text(text).strip()
+    if len(text) > 1 and text.isalnum() and text.isupper() and any(c.isalpha() for c in text):
+        return "abbreviation"
+    return "name" if lexical_word(text) else "symbol"
+
+
+def alias_kinds_changed(names):
+    return any(alias_kind(name) != _legacy_alias_kind(name) for name in names)
 
 
 def structured_symbol(text: str) -> bool:

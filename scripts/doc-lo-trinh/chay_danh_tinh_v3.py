@@ -42,18 +42,18 @@ class BudgetStop(Exception):
 class MeteredGemini(GeminiEntityExtractor):
     """Tính từng HTTP completion, kể cả sửa JSON; giữ chỗ trước khi gửi, không retry transport.
 
-    Dự phòng input bằng số byte UTF-8 + 4096 token overhead và trần output thật 1024.
+    Dự phòng input bằng số byte UTF-8 + 4096 token overhead và trần output được cấu hình (mặc định 1024).
     Phản hồi lỗi/thiếu usage giữ nguyên dự phòng, không coi là miễn phí. Sổ chi tiếp tục qua các lần chạy.
     """
 
-    def __init__(self, key, *, max_usd, ledger_path):
-        super().__init__(key, "gemini-3.1-flash-lite", max_output_tokens=1024, temperature=0, max_retries=0)
+    def __init__(self, key, *, max_usd, ledger_path, max_output_tokens=1024):
+        super().__init__(key, "gemini-3.1-flash-lite", max_output_tokens=max_output_tokens, temperature=0, max_retries=0)
         self.limit, self.ledger_path, self.lock = max_usd, ledger_path, Lock()
         self.ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else []
 
     def _complete(self, system_prompt, turns, response_schema):
         content = system_prompt + json.dumps(response_schema, ensure_ascii=False) + "".join(t.text for t in turns)
-        reserve = ((len(content.encode("utf-8")) + 4096) * PRICE["input"] + 1024 * PRICE["output"]) / 1e6
+        reserve = ((len(content.encode("utf-8")) + 4096) * PRICE["input"] + self._max_output_tokens * PRICE["output"]) / 1e6
         with self.lock:
             if sum(r["usd"] for r in self.ledger) + reserve > self.limit:
                 raise BudgetStop("Chạm dự phòng ngân sách; giữ checkpoint, không gọi thêm.")

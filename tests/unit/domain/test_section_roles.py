@@ -23,15 +23,15 @@ def chunk(nodes):
     ("Grading", "hanh_chinh"), ("Schedule", "hanh_chinh"), ("Instructor information", "hanh_chinh"),
 ])
 @pytest.mark.parametrize("unaccented", [False, True])
-def test_each_role_heading_pattern_with_and_without_accents(title, role, unaccented):
+def test_unproven_heading_words_are_left_for_semantic_classifier(title, role, unaccented):
     if unaccented:
         title = "".join(c for c in unicodedata.normalize("NFD", title) if not unicodedata.combining(c)).replace("Đ", "D").replace("đ", "d")
     result = chunk([DocumentNode("section_header", title, 0, level=1), DocumentNode("text", "Một đoạn.", 1)])
-    assert result.sections[-1].role == role
-    assert result.chunks[0].role == role
+    assert result.sections[-1].role == result.chunks[0].role == 'noi_dung'
+    assert result.sections[-1].role_source == ''
 
 
-def test_region_inherits_to_children_but_closes_at_same_or_higher_level():
+def test_region_hierarchy_closes_at_same_or_higher_level_before_semantic_labels():
     result = chunk([
         DocumentNode("section_header", "Chapter 1", 0, level=1),
         DocumentNode("section_header", "Exercises 3B", 1, level=2),
@@ -42,7 +42,9 @@ def test_region_inherits_to_children_but_closes_at_same_or_higher_level():
         DocumentNode("section_header", "Chapter 2", 6, level=1),
         DocumentNode("text", "New chapter.", 7),
     ])
-    assert [c.role for c in result.chunks] == ["bai_tap", "noi_dung", "noi_dung"]
+    assert [c.role for c in result.chunks] == ['noi_dung']*3
+    assert result.chunks[0].section_path[-2:] == ['Exercises 3B','Hints']
+    assert 'Exercises 3B' not in result.chunks[1].section_path
 
 
 def test_front_matter_and_role_refresh_preserve_ids_text_and_spans():
@@ -56,15 +58,16 @@ def test_front_matter_and_role_refresh_preserve_ids_text_and_spans():
         DocumentNode("text", "Before numbered chapter.", 4),
         DocumentNode("section_header", "Chương 1: Tập hợp", 5, level=1),
         DocumentNode("text", "Tập hợp được định nghĩa...", 6),
+        DocumentNode("section_header", "Chương 2: Ánh xạ", 7, level=1),
     ])
-    assert [c.role for c in result.chunks] == ["mo_dau", "de_cuong", "mo_dau", "noi_dung"]
+    assert [c.role for c in result.chunks] == ["mo_dau", "mo_dau", "mo_dau", "noi_dung"]
     before = [{k: v for k, v in c.to_dict().items() if k != "role"} for c in result.chunks]
     for s in result.sections:
         s.role = "noi_dung"
     for c in result.chunks:
         c.role = "noi_dung"
     assign_section_roles(result.sections, result.chunks)
-    assert list(chunk_roles(result.chunks).values()) == ["mo_dau", "de_cuong", "mo_dau", "noi_dung"]
+    assert list(chunk_roles(result.chunks).values()) == ["mo_dau", "mo_dau", "mo_dau", "noi_dung"]
     assert before == [{k: v for k, v in c.to_dict().items() if k != "role"} for c in result.chunks]
 
 
@@ -97,13 +100,14 @@ def test_roles_roundtrip_and_legacy_defaults():
 
     result = chunk([DocumentNode("section_header", "Bài tập", 0, level=1), DocumentNode("text", "Làm bài.", 1)])
     for obj, model in ((result.sections[-1], Section), (result.chunks[0], Chunk)):
+        obj.role = 'bai_tap'
         value = obj.to_dict()
         assert model.from_dict(value).role == "bai_tap"
         del value["role"]
         assert model.from_dict(value).role == "noi_dung"
 
 
-def test_outline_children_keep_outline_role_even_before_first_numbered_chapter():
+def test_unproven_outline_is_not_assigned_by_english_keyword():
     result = chunk([
         DocumentNode("section_header", "Contents", 0, level=1),
         DocumentNode("section_header", "Part A", 1, level=2),
@@ -111,4 +115,4 @@ def test_outline_children_keep_outline_role_even_before_first_numbered_chapter()
         DocumentNode("section_header", "Chapter 1", 3, level=1),
         DocumentNode("text", "First lesson.", 4),
     ])
-    assert [c.role for c in result.chunks] == ["de_cuong", "noi_dung"]
+    assert [c.role for c in result.chunks] == ['noi_dung','noi_dung']

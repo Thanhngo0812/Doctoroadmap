@@ -1,7 +1,7 @@
 # v3 — Lộ trình chuẩn chỉ và đọc được: kế hoạch vé
 
-> **Nhân viên 2026-09-27:** commit mã 10b riêng theo kết luận reviewer bên dưới; không đưa phần từ khoá vé 04 vào commit.
-> Tiếp theo: 05, 16, 14. Vé 15, 17 và T19 để sau theo chủ dự án. [Báo cáo 10b](../../report/v3-10b-04-ket-qua-2026-09-26.md).
+> **Cập nhật nhân viên 2026-09-27:** 10b đã commit riêng (`dc0cbce`). Mã và phép đo 05, 14, 16 đã xong, chờ reviewer nghiệm thu;
+> xem [báo cáo](../../report/v3-05-14-16-ket-qua-2026-09-27.md). Vé 07 và 11 được mở đường sau 05; vé 15, 17 và T19 để sau theo chủ dự án.
 
 > **Kiểm thử 2026-09-26 (Claude):** 01 đạt; 03 đạt, hai điều kiện chuyển sang vé 04; 10 đạt phần đề cử, còn áp tự động thì chưa
 > đạt (27/44 phán `same` mới đúng, đại diện có thể là nút chỉ-nhắc, gỡ chu trình sau gộp xoá nhầm cạnh) → vé mới

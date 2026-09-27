@@ -31,16 +31,13 @@ input ≈ 3 ký tự/token, output trung bình checkpoint hoặc 512 token/lời
 lời phán/cặp sau các phép cắt hiện có, cạnh mới có thể cắt thêm. Giá embedding chưa khai ở bảng đó nên báo USD chưa
 biết, không giả là miễn phí. Tổng phần đã biết không phải trần chi.
 
-**Vai trò vùng văn bản** (v3 R1, vé 03): `Section.role` và `Chunk.role` thuộc `noi_dung`, `bai_tap`, `de_cuong`,
-`mo_dau`, `hanh_chinh`; chunk kế thừa section. Danh sách mẫu nằm ở `domain/chunking.py::ROLE_PATTERNS`, chuẩn hoá
-dấu/hoa thường và số đầu tiêu đề. Con kế thừa vùng cha, heading cùng cấp/cao hơn đóng vùng; phần trước chương có số
-đầu tiên là mở đầu, trừ vùng có mẫu tường minh. `_toc_runs` vẫn loại text mục lục khỏi chunk như trước và lưu dấu
-`Section.is_toc`; chỉ section không có thân bài còn lại mới nhận toàn vùng là mục lục từ dấu này. Không đổi ID/text/
-offset. `CHUNK_ALGORITHM_ID=section-id-v9-roles`. Dùng `chunk_roles(chunks)` ở các vé sau; tính lại từ cây đã có bằng
-`assign_section_roles(sections, chunks)`, hoặc ghi version mới không nhập PDF bằng
-`scripts/doc-lo-trinh/vai_tro_vung.py --doc-id X --save` (`role_algorithm_id` trong config). Artifact cũ không bị sửa;
-stage đang ghim version cũ không tự đổi đầu vào. Sửa cấu trúc sách toán và áp vai trò lên neo/cạnh là vé 04–06,
-không nằm trong vé 03.
+**Vai trò vùng văn bản** (v3 R1/R2, vé 14): A2 suy cấu trúc từ chuỗi chương và họ đánh số, không dùng từ khoá vi/en.
+Các section chưa có bằng chứng cấu trúc nhận một nhãn trong sáu vai trò qua `label-roles --doc-id X --chunks-version N`;
+`--dry-run` chỉ đọc, `--allow-spend` mới cho phép gọi Gemini. Lớp nghĩa không ghi đè lớp cấu trúc; phản hồi thiếu/sai
+nhãn mặc định `noi_dung` và ghi cảnh báo. Version nhãn giữ nguyên chunk ID/text/offset của N; A3–A8 vẫn đọc N, còn A9'/A10
+đọc nhãn tương thích với N qua `load_role_chunks`. `CHUNK_ALGORITHM_ID=section-id-v11-document-structure`;
+`refresh_chunk_roles` chỉ tái tính lớp cấu trúc, không thay lượt nhãn nghĩa. Doc-2 có phiên bản cây mục mới riêng;
+không ánh xạ cạnh cũ sang ID chunk mới.
 
 **Danh tính mở rộng** (v3 R8, vé 10): `a10-identity-v2` thêm NFKC/bỏ dấu LaTeX/gộp gạch nối giữa chữ, viết tắt theo
 chữ đầu bỏ dấu (ít nhất hai từ), tiền tố `hệ ` / `phép `, và láng giềng mô tả A6. Lấy top-3 ở mỗi đầu, hợp hai chiều,

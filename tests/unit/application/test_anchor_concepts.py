@@ -59,6 +59,8 @@ class Store:
     def load_chunks(self, doc_id, version):
         return self.chunks
 
+    load_role_chunks = load_chunks
+
     def find_graph(self, doc_id, source_hash, config_hash):
         return next((a for a in self.saved if a.manifest["source_hash"] == source_hash
                      and a.manifest["config_hash"] == config_hash), None)

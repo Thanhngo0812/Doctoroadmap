@@ -223,6 +223,18 @@ Luật neo C8 v3 hiện hành ngoài phạm vi R3; dãy học Kahn theo vị tr�
   văn bản, nhưng hai phía khớp được chuẩn hoá như nhau nên không làm sai ngôn ngữ khác.
 - Giao diện HTML, thông báo lỗi, bảng gán nhãn cho người gán: ngôn ngữ giao diện.
 
+## Ghi chú cài đặt vé 05, 14, 16 (2026-09-27)
+
+- A2 dùng `section-id-v11-document-structure` và adapter Docling v11. Họ kết quả đánh số dùng ngưỡng mặc định
+  8 tiêu đề/chương, median thân ≤ 2000 ký tự; hai giá trị nằm trong config chunk. Nguồn dùng tiếng khác không cần
+  bổ sung từ khoá. Nhãn nghĩa được ghi ở một version chunk metadata mới, có `role_source` và log cảnh báo.
+- A10 neo từ các câu trong `noi_dung`; nguồn ứng viên gồm căn cứ A3, mention A6, ký hiệu và quét tên chính xác trên
+  các chunk `noi_dung` khi một nút chưa có ứng viên, để bắt lần nhắc tên A6 không đề cử. Tên chỉ có ngoài vùng dạy trở thành `mentioned_only`, có
+  `mentioned_in`. Câu dùng `UnicodeSentenceSplitter`; `prior_knowledge` cần lượt xác minh độc lập.
+- Tên Unicode có từ hai chữ cái thuộc một từ được nhận là tên, trừ chữ toán và chỉ số; chữ viết không cách từ được
+  khớp chuỗi con và truy hồi bằng bigram. Cache A3/A4/A6 chỉ đổi khoá khi phân loại hay khớp thật sự đổi.
+- Kết quả đo, sai khác với dự kiến doc-2 và Q6 xem [báo cáo vé 05/14/16](../report/v3-05-14-16-ket-qua-2026-09-27.md).
+
 ## Ghi chú cài đặt vé 10b (2026-09-27)
 
 - R8b: checkpoint lượt 1 giữ đúng khoá v2; checkpoint xác minh riêng theo prompt + hồ sơ. Hai lượt có log/token riêng.

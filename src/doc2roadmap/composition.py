@@ -116,6 +116,16 @@ def build_artifact_store() -> JsonArtifactStore:
     return JsonArtifactStore(settings.artifact_dir)
 
 
+def build_region_roles(*, allow_spend=False):
+    from doc2roadmap.application.use_cases.label_chunk_roles import LabelChunkRoles
+    settings = Settings()
+    model = GeminiEntityExtractor(
+        settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else 'dry-run-no-key',
+        settings.roadmap_model_id, temperature=0.0, max_output_tokens=16384,
+        timeout_seconds=settings.gemini_timeout_seconds, max_retries=0)
+    return LabelChunkRoles(JsonArtifactStore(settings.artifact_dir), model, allow_spend=allow_spend)
+
+
 def build_canonical(*, prepare=False):
     from doc2roadmap.application.use_cases.canonicalize import Canonicalize
     from doc2roadmap.application.use_cases.canonical_reasoning import CanonicalReasoning

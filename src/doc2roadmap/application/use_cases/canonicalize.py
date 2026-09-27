@@ -9,8 +9,9 @@ from doc2roadmap.application.prerequisite_prompt import (
 )
 from doc2roadmap.application.use_cases.extract_entities import DocumentExtraction
 from doc2roadmap.domain.canonical import (
-    digest, name_key, group_names, build_nodes, remap_edges, compare_nodes, redirects, candidate_warnings,
+    digest, name_key, group_names, build_nodes, remap_edges, compare_nodes, redirects, candidate_warnings, alias_kinds_changed,
 )
+from doc2roadmap.domain.unicode_text import TEXT_RULE_VERSION
 from doc2roadmap.domain.canonical_decisions import find_subtype_conflicts
 from doc2roadmap.domain.nomination import nomination_graph, unit
 
@@ -45,6 +46,8 @@ class Canonicalize:
                   "stage": "complete" if self.reasoning else "nominations" if self.embedding else "names"}
         if declared_language:
             config["declared_language"] = declared_language
+        if alias_kinds_changed(name for e in extraction.entities for name in [e.name, *(a.name for a in e.aliases)]):
+            config["name_kind_rule"] = TEXT_RULE_VERSION
         config_hash = digest(config)
         cached = self.store.find_canonical(doc_id, source.manifest["source_hash"], config_hash)
         if cached:
@@ -154,6 +157,7 @@ class Canonicalize:
                    "cost_summary": cost_summary,
                    "source_candidates": source.payload["entities"]}
         manifest_fields = {
+            "text_rules": TEXT_RULE_VERSION,
             "stats": metrics,
             "jaccard_previous": compare_nodes(old, nodes) if previous else None,
             "cost_summary": cost_summary,

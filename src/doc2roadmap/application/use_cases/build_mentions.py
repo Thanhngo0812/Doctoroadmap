@@ -5,6 +5,7 @@ from time import perf_counter
 
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.domain.unicode_text import TEXT_RULE_VERSION
 from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.mentions import (
     build_mention_derivatives,
@@ -95,6 +96,10 @@ class BuildMentions:
             "pair_cluster_top_k": self.pair_cluster_top_k,
             "missing_concept_heuristic": "disabled-unmeasured-precision",
         }
+        exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=self.common_names)
+        legacy_exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=self.common_names, _legacy=True)
+        if exact != legacy_exact:
+            config["exact_normalization"] = TEXT_RULE_VERSION
         config_hash = digest(config)
         source_hash = digest([clusters.payload, retrieval.payload, canonical.payload.get("edges", [])])
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
@@ -126,7 +131,6 @@ class BuildMentions:
         missing_vectors = {chunk.chunk_id for chunk in chunks.result.chunks} - set(chunk_vectors)
         if missing_vectors:
             raise ValueError(f"chỉ mục thiếu vector chunk: {', '.join(sorted(missing_vectors))}")
-        exact = exact_mentions(nodes, chunks.result.chunks, common_names=self.common_names)
         dense, dense_scores = dense_mentions(
             node_vectors,
             chunk_vectors,
@@ -177,6 +181,6 @@ class BuildMentions:
             config,
             payload,
             upstream_version=clusters.version,
-            manifest_fields={"stage": "mentions", "stats": stats},
+            manifest_fields={"stage": "mentions", "stats": stats, "text_rules": TEXT_RULE_VERSION},
         )
         return artifact, False

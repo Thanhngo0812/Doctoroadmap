@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R3 · **Ai:** nhân viên · **Phụ thuộc:** 03 · **Chi phí mô hình:** chạy lại neo ≈ 0,5 USD toàn kho phát triển
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai và kiểm thử 2026-09-27; chờ reviewer nghiệm thu. [Kết quả](../../report/v3-05-14-16-ket-qua-2026-09-27.md).
 
 ## Việc cần làm
 - Bước neo chỉ lấy câu ứng viên từ chunk `noi_dung`. Khái niệm chỉ có ứng viên ngoài `noi_dung` → `mentioned_only`, ghi vùng

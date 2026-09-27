@@ -44,7 +44,8 @@ from doc2roadmap.domain.entities import (
     verify_alias,
 )
 from doc2roadmap.domain.models import Chunk
-from doc2roadmap.domain.canonical import alias_kind, candidate_warnings, structured_symbol
+from doc2roadmap.domain.canonical import alias_kind, alias_kinds_changed, candidate_warnings, structured_symbol
+from doc2roadmap.domain.unicode_text import TEXT_RULE_VERSION
 from doc2roadmap.domain.normalization import normalize_text
 from doc2roadmap.domain.ports import TokenCounter
 
@@ -940,6 +941,14 @@ class ExtractEntities:
         cached = None if force else self.store.find_candidates(
             doc_id, source_hash, config_hash
         )
+        if cached is not None and cached.manifest.get("text_rules") != TEXT_RULE_VERSION:
+            names = [name for row in cached.payload["entities"]
+                     for name in [row["name"], *(a["name"] for a in row.get("aliases", []))]]
+            names += cached.payload.get("stats", {}).get("rejected_symbol_only_names", [])
+            if alias_kinds_changed(names):
+                config["name_kind_rule"] = TEXT_RULE_VERSION
+                config_hash = _hash(config)
+                cached = self.store.find_candidates(doc_id, source_hash, config_hash)
         if cached is not None:
             return ExtractionSummary(
                 DocumentExtraction.from_payload(cached.payload),
@@ -1210,6 +1219,7 @@ class ExtractEntities:
                 ),
             }
         manifest_fields = {
+            "text_rules": TEXT_RULE_VERSION,
             "model_id": self.extractor.model_id,
             "embedding_model_id": embedding_model_id,
             "prompt_hash": digest,

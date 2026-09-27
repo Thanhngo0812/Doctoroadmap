@@ -68,6 +68,7 @@ class Section:
     has_direct_content: bool = False
     role: str = "noi_dung"
     is_toc: bool = False
+    role_source: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)

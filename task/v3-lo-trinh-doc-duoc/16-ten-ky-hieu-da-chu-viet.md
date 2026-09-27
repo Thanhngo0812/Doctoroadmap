@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R15 · **Ai:** nhân viên · **Phụ thuộc:** — ·
 **Chi phí mô hình:** 0 · **Ưu tiên:** cao nhất trong nhóm vé đa ngôn ngữ
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai và kiểm thử 2026-09-27; chờ reviewer nghiệm thu. [Kết quả](../../report/v3-05-14-16-ket-qua-2026-09-27.md).
 
 ## Vì sao
 - `canonical.alias_kind` chỉ coi một chuỗi là "tên" khi có chữ cái LATIN. Thử 2026-09-26: "Векторное пространство", "向量空间",

@@ -21,6 +21,7 @@ from doc2roadmap.composition import (
     build_search,
     build_canonical,
     build_learning_graph,
+    build_region_roles,
 )
 from doc2roadmap.application.use_cases.report_a3 import review_candidate_types
 from doc2roadmap.application.use_cases.canonicalize import Canonicalize
@@ -42,6 +43,11 @@ from doc2roadmap.application.use_cases.a8_gold import (
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="doc2roadmap")
     commands = parser.add_subparsers(dest="command", required=True)
+    roles = commands.add_parser('label-roles', help='gán vai trò vùng sau A2; không đổi ID/text chunk')
+    roles.add_argument('--doc-id', required=True)
+    roles.add_argument('--chunks-version', type=int)
+    roles.add_argument('--dry-run', action='store_true')
+    roles.add_argument('--allow-spend', action='store_true')
     canonical = commands.add_parser("a4", help="hợp nhất thực thể và mô tả chuẩn (cần --gold); --names-only/--prepare không gọi mô hình phán")
     canonical.add_argument("--doc-id", required=True)
     mode = canonical.add_mutually_exclusive_group()
@@ -501,6 +507,16 @@ def main(argv: list[str] | None = None) -> int:
             _json({**compare_nodes(first.payload["nodes"], second.payload["nodes"]),
                    "redirect_count": len(second.payload["redirects"]),
                    "first_version": first.version, "second_version": second.version})
+        elif args.command == 'label-roles':
+            use_case = build_region_roles(allow_spend=args.allow_spend and not args.dry_run)
+            if args.dry_run:
+                payload = use_case.plan(args.doc_id, chunks_version=args.chunks_version).to_dict()
+            else:
+                artifact,reused = use_case.execute(args.doc_id, chunks_version=args.chunks_version)
+                payload = {'chunks_version':artifact.version,'reused':reused,
+                           'role_counts':artifact.manifest['role_counts'],
+                           'warnings':artifact.manifest['role_warnings']}
+            print(json.dumps(payload,ensure_ascii=False,indent=2))
         elif args.command == "ingest":
             _ingest(args.file, args.doc_id, strip_lines=args.strip_line, pdf_backend=args.pdf_backend,
                     heading_scheme=args.heading_scheme)

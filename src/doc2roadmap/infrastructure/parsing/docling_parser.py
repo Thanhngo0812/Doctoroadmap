@@ -15,9 +15,10 @@ from zipfile import BadZipFile, ZipFile
 from doc2roadmap.application.ports import ParsedDocument
 from doc2roadmap.domain.models import DocumentNode, DocumentTree
 from doc2roadmap.domain.normalization import normalize_text
+from doc2roadmap.domain.document_structure import code_sequences, section_code
 
 
-ADAPTER_VERSION = 8  # Bump whenever the adapter changes how DocumentNode values are built.
+ADAPTER_VERSION = 11  # Bump whenever the adapter changes how DocumentNode values are built.
 IMAGE_SCALE = 2.0
 UNCAPTIONED_FIGURE_TEXT = "[figure]"
 FORMULA_TEXT = "[formula]"
@@ -407,6 +408,38 @@ class DoclingParser:
         suffix = Path(filename).suffix.lower()
         collapse_pdf_glyphs = suffix == ".pdf"
         items = list(document.iterate_items())
+        recovered_headings = set()
+        if collapse_pdf_glyphs:
+            # Furniture chỉ được phục hồi khi mã thuộc một chuỗi mục đã chứng minh trong tài liệu.
+            seen = {normalize_text(str(getattr(item, "text", ""))) for item, _ in items
+                    if self._label(item) in {"section_header", "title"}}
+            codes = code_sequences(normalize_text(str(getattr(item, "text", "")))
+                                   for item in getattr(document, "texts", [])
+                                   if self._label(item) in {"section_header", "title", "page_header"})
+            furniture = [item for item in getattr(document,'texts',[]) if self._label(item)=='page_header']
+            positions = {}
+            for item in furniture:
+                bbox = self._bbox(item)
+                if bbox:
+                    positions.setdefault((str(item.text),round(bbox[1])),set()).add(self._page(item))
+            running_positions = {top for (_,top),pages in positions.items() if len(pages)>=3}
+            for item in getattr(document, "texts", []):
+                title = normalize_text(str(getattr(item, "text", "")))
+                code = section_code(title)
+                if (self._label(item) != "page_header" or code is None or code[0] not in codes
+                    or title in seen or _TRAILING_PAGE_NUMBER.search(title)):
+                    continue
+                page, bbox = self._page(item), self._bbox(item)
+                if page is None or bbox is None or round(bbox[1]) in running_positions:
+                    continue
+                items = [(other, depth) for other, depth in items if other is not item]
+                index = next((i for i, (other, _) in enumerate(items)
+                              if self._page(other) is not None and (self._page(other) > page or
+                                  (self._page(other) == page and self._bbox(other) is not None
+                                   and self._bbox(other)[1] < bbox[1]))), len(items))
+                items.insert(index, (item, 1))
+                recovered_headings.add(id(item))
+                seen.add(title)
         linked_captions = {
             str(getattr(reference, "cref", ""))
             for item, _ in items
@@ -423,6 +456,9 @@ class DoclingParser:
 
         for item_index, (item, tree_level) in enumerate(items, start=1):
             label = self._label(item)
+            if id(item) in recovered_headings:
+                label = "section_header"
+                warnings.append("recovered_math_heading: " + str(item.text))
             image_id = None
             table_rows = None
             table_id = None

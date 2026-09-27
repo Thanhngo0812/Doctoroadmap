@@ -5,6 +5,9 @@ import unicodedata
 from collections import Counter
 from dataclasses import dataclass
 from typing import Iterable, Sequence
+from itertools import groupby
+
+from .unicode_text import unspaced_character
 
 
 _OUTER_PUNCTUATION = ".,;:!?\"'`*“”‘’"
@@ -18,11 +21,19 @@ def embedding_text(section_path: Sequence[str], text: str) -> str:
 
 def _tokens(text: str) -> list[str]:
     normalized = unicodedata.normalize("NFC", text).casefold()
-    return [
-        token
-        for part in normalized.split()
-        if (token := _strip_outer_punctuation(part))
-    ]
+    tokens = []
+    for part in normalized.split():
+        if not any(map(unspaced_character, part)):
+            if token := _strip_outer_punctuation(part):
+                tokens.append(token)
+            continue
+        for unspaced, values in groupby(part, key=unspaced_character):
+            run = ''.join(values)
+            if unspaced:
+                tokens.extend([run] if len(run) == 1 else [run[i:i+2] for i in range(len(run)-1)])
+            elif (token := _strip_outer_punctuation(run)) and any(c.isalnum() for c in token):
+                tokens.append(token)
+    return tokens
 
 
 def _strip_outer_punctuation(token: str) -> str:

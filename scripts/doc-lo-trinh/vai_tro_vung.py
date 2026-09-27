@@ -1,4 +1,4 @@
-"""Liệt kê vai trò từ cây section có sẵn; --save ghi một version chunks mới, không nhập lại PDF hay gọi mô hình.
+"""Liệt kê riêng lớp vai trò cấu trúc; để gán đủ sáu vai trò, dùng `doc2roadmap label-roles`.
 
 python scripts/doc-lo-trinh/vai_tro_vung.py --doc-id doc-1 [--chunk-version 5] [--save]
 Không đổi text, ID, cửa sổ hay offset. Các stage đang ghim chunk version cũ vẫn dùng bản cũ.

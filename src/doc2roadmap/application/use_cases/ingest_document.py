@@ -12,6 +12,7 @@ from doc2roadmap.application.ports import ArtifactStore, DocumentParser
 from doc2roadmap.application.windows import assemble_windows
 from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, assign_section_roles, chunk_document
 from doc2roadmap.domain.models import DocumentTree
+from doc2roadmap.domain.document_structure import RESULT_MIN_COUNT, RESULT_MAX_BODY_CHARS
 from doc2roadmap.domain.ports import SentenceSplitter, TokenCounter
 
 
@@ -32,8 +33,7 @@ def _hash(value: Any) -> str:
 def refresh_chunk_roles(store: ArtifactStore, doc_id: str, *, version: int | None = None):
     """Bổ sung R1 từ cây section có sẵn, giữ nguyên toàn bộ định danh và văn bản.
 
-    Ghi version mới chứ không sửa artifact đóng băng. Vai trò không đổi cây heading; lỗi cấp mục cần vé v3-04.
-    Dấu _toc_runs của artifact mới là `is_toc`; artifact cũ vẫn nhận mục lục bằng tiêu đề.
+    Chỉ lớp cấu trúc; nhãn nghĩa qua LabelChunkRoles (vé 14). Không đổi cây heading hoặc dùng từ khóa tiêu đề.
     """
     validate_doc_id(doc_id)
     stored = store.load_chunks(doc_id, version) if version is not None else store.load_latest_chunks(doc_id)
@@ -184,6 +184,8 @@ class IngestDocument:
         sentence_overlap: int = 1,
         strip_lines: list[str] | tuple[str, ...] = (),
         heading_scheme: str | None = None,
+        result_min_count: int = RESULT_MIN_COUNT,
+        result_max_body_chars: int = RESULT_MAX_BODY_CHARS,
     ) -> IngestSummary:
         validate_doc_id(doc_id)
         suffix = Path(filename).suffix.lower()
@@ -225,6 +227,8 @@ class IngestDocument:
                 "hard_cap_tokens": hard_cap_tokens,
                 "target_tokens": target_tokens,
                 "sentence_overlap": sentence_overlap,
+                "result_min_count": result_min_count,
+                "result_max_body_chars": result_max_body_chars,
             },
             "tokenizer_id": self.counter.identifier,
         }
@@ -279,6 +283,8 @@ class IngestDocument:
             target_tokens=target_tokens,
             sentence_overlap=sentence_overlap,
             heading_scheme=heading_scheme,
+            result_min_count=result_min_count,
+            result_max_body_chars=result_max_body_chars,
         )
         windows = assemble_windows(result.chunks)
         quality = _text_quality([chunk.text for chunk in result.chunks])

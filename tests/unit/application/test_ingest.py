@@ -84,7 +84,8 @@ def test_refresh_roles_uses_only_saved_sections_keeps_chunks_and_is_idempotent(t
     original_bytes = (original.path / "chunks.json").read_bytes()
     original_chunks = [c.to_dict() for c in original.result.chunks]
     updated = refresh_chunk_roles(store, "doc")
-    assert updated.version == 2 and updated.result.chunks[0].role == "bai_tap"
+    assert updated.version == 2 and updated.result.chunks[0].role == "noi_dung"
+    assert updated.result.sections[-1].role_source == ''  # v14: semantic words await the separate classifier
     assert [c.chunk_id for c in updated.result.chunks] == [c["chunk_id"] for c in original_chunks]
     assert [{k: v for k, v in c.to_dict().items() if k != "role"} for c in updated.result.chunks] == [
         {k: v for k, v in c.items() if k != "role"} for c in original_chunks]

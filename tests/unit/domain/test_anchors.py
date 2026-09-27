@@ -74,13 +74,14 @@ def test_an_anchored_status_must_point_to_a_candidate_and_quote_it_verbatim():
         check(reply("introduced_by_example", quote="được gọi là một cơ sở của V"), candidates)
 
 
-def test_prior_knowledge_needs_an_explicit_signal_not_a_theorem_hypothesis():
-    # v2 kích nhầm bởi "Suppose V is a complex inner product space": dùng khái niệm không có nghĩa là đòi biết trước.
+def test_prior_knowledge_quote_is_checked_before_independent_semantic_verification():
+    # Vé 05: kiểm nghĩa đã chuyển sang lượt độc lập; luật thuần chỉ kiểm câu có trong ứng viên.
     candidates = [{"cand_id": "k1", "chunk_id": "x", "order_index": 1, "char_start": 0,
                    "sentence": "Suppose V is a complex inner product space.",
                    "context": "Suppose V is a complex inner product space. Recall from a previous course the dot product."}]
-    with pytest.raises(ValueError, match="tín hiệu tường minh"):
-        check(reply("prior_knowledge", quote="Suppose V is a complex inner product space."), candidates)
+    check(reply("prior_knowledge", quote="Suppose V is a complex inner product space."), candidates)
+    with pytest.raises(ValueError, match="không có trong"):
+        check(reply("prior_knowledge", quote="Made-up quote."), candidates)
     check(reply("prior_knowledge", quote="Recall from a previous course the dot product."), candidates)
 
 

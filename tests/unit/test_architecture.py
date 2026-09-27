@@ -12,6 +12,7 @@ _DOMAIN_STDLIB = {
     "itertools",
     "math",
     "re",
+    "statistics",
     "typing",
     "unicodedata",
 }

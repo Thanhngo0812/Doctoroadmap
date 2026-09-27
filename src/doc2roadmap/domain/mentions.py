@@ -6,7 +6,8 @@ import unicodedata
 from collections import defaultdict
 from itertools import combinations
 
-from .canonical import alias_kind, digest, name_key
+from .canonical import alias_kind, _legacy_alias_kind, digest, name_key
+from .unicode_text import unspaced_character
 
 
 def _mention_normalize(text):
@@ -26,7 +27,7 @@ def _names(node):
     return values
 
 
-def exact_mentions(nodes, chunks, *, common_names):
+def exact_mentions(nodes, chunks, *, common_names, _legacy=False):
     common = {_mention_normalize(value) for value in common_names}
     pattern_nodes = defaultdict(set)
     for node in nodes:
@@ -34,7 +35,8 @@ def exact_mentions(nodes, chunks, *, common_names):
             continue
         for value in _names(node):
             normalized = _mention_normalize(value.strip())
-            if not normalized or normalized in common or alias_kind(value) == "symbol":
+            kind = _legacy_alias_kind(value) if _legacy else alias_kind(value)
+            if not normalized or normalized in common or kind == "symbol":
                 continue
             pattern_nodes[normalized].add(node["node_id"])
     result = {}
@@ -42,7 +44,8 @@ def exact_mentions(nodes, chunks, *, common_names):
         text = _mention_normalize(chunk.text)
         candidates = []
         for pattern, node_ids in pattern_nodes.items():
-            expression = rf"(?<!\w){re.escape(pattern)}(?!\w)"
+            expression = (re.escape(pattern) if not _legacy and any(map(unspaced_character, pattern))
+                          else rf"(?<!\w){re.escape(pattern)}(?!\w)")
             for match in re.finditer(expression, text):
                 candidates.append((match.start(), match.end(), pattern, node_ids))
         selected = set()

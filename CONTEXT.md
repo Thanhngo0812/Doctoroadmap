@@ -91,9 +91,10 @@ riêng để các bước sau ráp ngữ cảnh lúc chạy. Section mang vai tr
 _Tránh dùng_: mục, chương, heading
 
 **Vai trò vùng**:
-Nhãn `noi_dung`, `bai_tap`, `de_cuong`, `mo_dau` hoặc `hanh_chinh`, tính bằng tiêu đề và cây section (v3 R1),
-không gọi mô hình. Vùng kéo tới heading cùng cấp hoặc cao hơn; nội dung trước chương có số đầu tiên là `mo_dau`
-trừ vùng có nhãn tường minh. Tài liệu không có chương có số không bị coi toàn bộ là lời nói đầu.
+Nhãn `noi_dung`, `bai_tap`, `de_cuong`, `mo_dau`, `hanh_chinh` hoặc `cuoi_sach` của section/chunk (v3 R1).
+Lớp cấu trúc nhận chuỗi chương, mục lục và phần cuối từ bằng chứng trong tài liệu; một lượt mô hình gán các section còn lại.
+Vùng kéo tới section kế tiếp cùng cấp hoặc cao hơn. Artifact nhãn là version chunks mới, giữ ID/text/offset; A10 đọc nhãn
+tương thích với version chunk mà đồ thị A8 đã ghim.
 _Tránh dùng_: trạng thái dạy (đó là thuộc tính của khái niệm), loại chunk, loại khái niệm
 
 **Preamble**:

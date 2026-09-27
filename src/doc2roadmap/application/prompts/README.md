@@ -14,10 +14,12 @@ Khung chỉ dẫn viết bằng tiếng Anh. Dữ liệu đầu vào và few-sho
 Tên v1, v2.1, v3 chỉ dùng để mô tả trong tài liệu. Nhận diện chính thức của prompt là `prompt_hash`:
 
 - A3 băm system, section, glean, validation, few-shot, schema, model, tham số sinh và seed node types.
+- A2 nhãn nghĩa băm `a2/region-roles.txt`, schema, model, tham số sinh cùng version chunks đầu vào.
 - A4 băm prompt của khâu, schema, model, tham số sinh; describe/check còn băm luật ngôn ngữ và phiên bản validator câu.
 - A8 băm prompt sản phẩm của provenance, pass chính hoặc pass phụ, schema, model và tham số sinh.
 - A9 băm prompt kiểm quan hệ C10 (`a9/relation-check.txt`), schema, model và tham số sinh.
-- A10 băm prompt kiểm nguồn dạy (`a10/teaching.txt`, C8 v2), prompt neo định nghĩa (`a10/anchor.txt`, C8 v3) và prompt
+- A10 băm prompt kiểm nguồn dạy (`a10/teaching.txt`, C8 v2), prompt neo định nghĩa (`a10/anchor.txt`, C8 v3),
+  lượt xác minh prior độc lập (`a10/prior_verify.txt`) và prompt
   phán danh tính (`a10/identity.txt`, vé v2-05); A8 thêm prompt cạnh ngầm (`a8/implicit.txt`, vé v2-06), schema,
   model và tham số sinh.
 
