@@ -64,12 +64,14 @@
 | 15 | ngôn ngữ tài liệu bất kỳ ở A5 (R14) | A5 | nhân viên | — | ≈ 0,0001 USD / tài liệu |
 | 16 | tên, ký hiệu và tìm nhắc tên không phụ thuộc chữ viết (R15) — **ưu tiên** | A3, A4, A6 | nhân viên | — | 0 |
 | 17 | tiền tố danh tính từ bằng chứng trong tài liệu (R16) | A9'' | nhân viên | 10b | ≈ 0,01 USD / tài liệu |
+| 18 | cạnh ngược thứ tự sách không ép dãy học (R17) | A10 | nhân viên | — (làm cùng 07 được) | 0 |
 | T19 | cung cấp tài liệu thật ngôn ngữ thứ ba: một chữ viết không Latin (ví dụ tiếng Trung, Nga) và một chữ Latin ngoài vi/en (ví dụ tiếng Pháp) | kiểm thử | **chủ dự án** | — | 0 |
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
 tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12, 13. Chạy thử tài liệu T19 sau 14–17.
-**Hiện tại (2026-09-27):** đã xong 01, 02, 03, 05, 10, 10b, 16; 14 xong phần cấu trúc. Làm tiếp theo thứ tự: **14b** (ưu tiên), 06 và
-07 song song (nghiệm thu 07 trên doc-2 sau 14b), rồi 08, 09, 11. Hoãn theo chủ dự án: 15, 17, T19.
+**Hiện tại (2026-09-27):** đã xong 01, 02, 03, 05, 10, 10b, 16; 14 xong phần cấu trúc. Làm tiếp theo thứ tự: **14b** (ưu tiên);
+06, 07 và **18** song song (07 và 18 cùng chạm dãy học; nghiệm thu 06, 07 trên doc-2 sau 14b); rồi 08, 09, 11. Sau 07 + 18, đo lại
+lỗi thứ tự còn lại để quyết vé 12. Hoãn theo chủ dự án: 15, 17, T19.
 
 ## Tôi kiểm thử thế nào
 

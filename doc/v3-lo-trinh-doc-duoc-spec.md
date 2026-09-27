@@ -96,7 +96,7 @@ Câu ứng viên của bước neo chỉ lấy từ chunk `noi_dung`; khái ni�
 `mentioned_only` (ghi rõ vùng). Vị trí dạy không bao giờ rơi về chunk ngoài `noi_dung`.
 
 ### R4 — Cạnh không lấy căn cứ từ đề cương hay lời nói đầu *(A9 — luật kiểm; sửa L1)*
-Cạnh `requires` mà **mọi** chunk căn cứ thuộc `de_cuong` hoặc `mo_dau` bị loại ở A9 (luật thuần, áp được lên đồ thị đã có, không
+Cạnh `requires` mà **mọi** chunk căn cứ thuộc `de_cuong`, `mo_dau`, `hanh_chinh` hoặc `cuoi_sach` bị loại ở A9 (luật thuần, áp được lên đồ thị đã có, không
 chạy lại A8). Cạnh chỉ có căn cứ ở `bai_tap` bị hạ thành cạnh mềm (không ràng buộc dãy học). *Lý do:* thứ tự liệt kê trong đề cương
 không phải phụ thuộc (doc-6: chuỗi 7 cạnh giả).
 
@@ -171,6 +171,15 @@ mỗi tài liệu (≈ 1–7 USD), cần chủ dự án duyệt trước khi ch�
 A3 trích định lý/mệnh đề/công thức/phương pháp có tên thành nút `ket_qua` với tên nội dung. Đổi danh sách khái niệm → cần kế hoạch
 ánh xạ bộ vàng (concept_hash) trước khi làm.
 
+### R17 — Cạnh ngược thứ tự sách không ép dãy học *(A10; bổ sung 2026-09-27 sau khi đọc lộ trình doc-1; vé 18)*
+Cạnh `requires` mà nguồn được dạy **sau** đích (theo vị trí dạy) không ràng buộc dãy học: giữ trong đồ thị dưới dạng cạnh mềm có lý do,
+không hiện ở dòng "cần:", không vào đóng tiên quyết của `roadmap-target`. Chỉ cạnh thuận hoặc cùng chunk ép thứ tự. Không có ngoại lệ
+theo loại căn cứ: 6/6 cạnh ngược "nói rõ" của doc-2 đều sai hoặc thừa.
+*Lý do:* mục tiêu "thứ tự theo sách, trừ chỗ sách buộc phải đảo" — tác giả đã sắp để tiên quyết đi trước; cạnh ngược thường là tổng
+quát hoá hay trường hợp riêng, phụ thuộc của phép chứng minh, hoặc sách dùng khái niệm không hình thức trước khi định nghĩa. Các nghiên
+cứu học tiên quyết từ giáo trình và khoá học cũng dùng vị trí xuất hiện làm tín hiệu (Wang và cộng sự 2016; Pan và cộng sự, ACL 2017).
+Đo ngoại tuyến 2026-09-27: doc-1 mục bị xé 6 → 3, Q6 giữ nguyên, Q7b 58,9% → 64,2%; doc-2 mục bị xé 15 → 9, Q6 giữ nguyên.
+
 ### R14 — Ngôn ngữ tài liệu bất kỳ ở A5 *(A5; bổ sung 2026-09-26 theo nguyên tắc đa ngôn ngữ; vé 15)*
 - `--language` nhận mã ISO 639-1 bất kỳ. Khi không khai, mã được xác định một lần mỗi tài liệu: chữ viết chiếm đa số (thuộc tính
   Unicode), cộng một lời gọi mô hình trên vài đoạn văn mẫu khi một chữ viết dùng cho nhiều ngôn ngữ (Latin, Kirin, Ả Rập…); mã ghi
@@ -208,7 +217,8 @@ Trong lúc chờ các vé 05, 12, 13: tài liệu ngôn ngữ khác vẫn chạy
 
 R10 và R11 trước (an toàn chi tiêu, công cụ kiểm) → R1, R2 (vai trò vùng, cấu trúc) → R3, R4, R5 (dùng vai trò) → R6, R7 (hiển thị,
 tên) → R8, R9 → R12 (đắt) → R13 (sau vé 07). R8b phải xong trước R5, vì lọc khái niệm chỉ-nhắc cần đại diện nhóm là khái
-niệm được dạy. Vé 07 (tập giữ lại) nên chạy **sau** R1–R9 để khoá cấu hình một lần trên luồng đã sửa:
+niệm được dạy. R17 đi cùng R5 (cùng chạm dãy học). Sau R5 + R17, đo lại phần lỗi thứ tự còn lại để quyết R12 (chạy lại A8, đắt) có
+còn đáng chi không. Vé 07 (tập giữ lại) nên chạy **sau** R1–R9 để khoá cấu hình một lần trên luồng đã sửa:
 đề nghị hoãn duyệt T10 tới khi các vé đó xong; T13 (liệt kê mù) làm được bất cứ lúc nào.
 Vé sửa theo nguyên tắc đa ngôn ngữ: 16 (R15, nặng nhất) và 14 (R1/R2) trước, rồi 15 (R14), 17; phần R16 đi cùng vé 05, 12, 13. Các
 vé này không đổi giao diện artifact nên làm song song được với R3–R9. Chạy thử tài liệu ngôn ngữ thứ ba (T19) sau 14–17. Khoá cấu
