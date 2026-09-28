@@ -33,6 +33,8 @@ của Vertex nhận **đúng thân yêu cầu** mà bộ gọi hiện tại gử
 - Phụ thuộc: thêm `google-auth` (ghim phiên bản) vào `pyproject.toml`; không cần `google-genai` cho luồng chính (script thử vẫn dùng nó,
   cài riêng bằng `uv pip install google-genai`).
 - Bảo mật: không ghi token hay đường dẫn khoá vào log; tệp khoá luôn ở ngoài repo.
+- Hạn mức: lần chi thử 2026-09-28 (258 lời gọi, 6 luồng song song) có 2 lời gọi bị `429 RESOURCE_EXHAUSTED`. Giữ luật thử lại có
+  lùi thời gian cho 429 và cho phép đặt `concurrency` riêng khi dùng Vertex; báo số lần 429 trong sổ chi.
 
 ## Tệp liên quan
 `infrastructure/llm/gemini.py`, `infrastructure/embedding/gemini.py`, `config.py`, `composition.py`, `pyproject.toml`,
