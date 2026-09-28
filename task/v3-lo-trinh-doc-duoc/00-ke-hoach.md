@@ -71,7 +71,7 @@
 | 10b | xác minh quan hệ danh tính, đại diện được dạy, gỡ chu trình theo vị trí đại diện (R8b) | A9'' | nhân viên | 10 | ≈ 0,02 USD xác minh (+ ≈ 0,28 USD lượt 1 nếu kho mặc định chưa có) |
 | 11 | tên khái niệm có nội dung (R9) | sau A5 | nhân viên | 05 | ≈ 0,02 USD / tài liệu |
 | 11b | tên khái niệm: căn cứ rộng hơn dòng nhãn, chống trùng tên (R9 bổ sung) | sau danh tính | nhân viên | 11 | ≈ 0,005 USD |
-| 12 | cạnh theo định nghĩa ở A8 (R12) | A8 | nhân viên | 03–11 | ≈ 1–7 USD / tài liệu — **chủ dự án duyệt trước khi chạy** |
+| 12 | cạnh theo định nghĩa ở A8 (R12; cập nhật 2026-09-28: cửa sổ định nghĩa, câu trích kiểm bằng mã) — **làm trước T10** | A8 | nhân viên | 03–11 | ≈ 1–7 USD / tài liệu, dự toán bằng dry-run — **chủ dự án duyệt trước khi chạy** |
 | 13 | trích mệnh đề có tên ở A3 (R13) | A3 | nhân viên | sau vé 07 v2 | chạy lại A3–A10; cần kế hoạch ánh xạ vàng |
 | 14 | vai trò vùng và cấu trúc mục không phụ thuộc ngôn ngữ (R1, R2 viết lại) | A2 | nhân viên | 03; làm tiếp trên vé 04 | ≈ 0,001–0,01 USD / tài liệu |
 | 14b | nhãn vai trò chia lô theo chương, luật kiểm cấu trúc, chuyển vai trò sang chunk cũ (R1 bổ sung) — **ưu tiên** | A2 | nhân viên | 14 | ≈ 0,005–0,02 USD / tài liệu + chạy lại neo doc-2 ≈ 0,05 USD |
@@ -89,17 +89,16 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 **Hiện tại (2026-09-28, sau kiểm thử `9cc8752`):**
 - **Đã xong:** 01, 02, 03, 05, 05b, 06, 07, 08, 09, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
+- **Ngân sách (chủ dự án 2026-09-28):** có 300 USD credit Google Cloud, cho nâng ngân sách "miễn là dự án tốt, đồ thị chuẩn chỉ". Trần
+  50 USD cũ không còn là ràng buộc; số trần mới chờ chủ dự án chốt (tôi đề xuất 100 USD cho tới hết lượt tập giữ lại). Đã chi ≈ 22,1 USD.
+  Vẫn chỉ dùng `gemini-3.1-flash-lite`.
 - **Làm tiếp:**
-  1. **09c** (nhân viên, gần như không tốn tiền);
-  2. **02b** (tôi);
-  3. **chủ dự án quyết: có làm vé 12 trước khi khoá cấu hình (T10) cho lượt tập giữ lại (07 v2) không.**
-     - Tập giữ lại chỉ chạy một lần, nên thứ gì muốn có trong hệ thống cuối phải xong trước lượt đó.
-     - Trong v3, dãy học đã theo thứ tự sách và cạnh ngược đã mềm, nên vé 12 không đổi thứ tự học. Vé 12 chỉ đổi dòng "cần:", phụ thuộc
-       module và `roadmap-target`.
-     - Bằng chứng v2-06: thêm cạnh chủ yếu thừa ràng buộc. Vé 12 nhắm độ chính xác (chỉ cạnh căn cứ định nghĩa ràng buộc), chi ≈ 1–7 USD
-       mỗi tài liệu.
-     - **Đề xuất của tôi:** khoá cấu hình sau 09c, không có vé 12, giữ ngân sách (còn ≈ 28 USD) cho lượt tập giữ lại. Vé 12 để làm hướng
-       sau, trừ khi chủ dự án cần phương pháp này cho báo cáo.
+  1. **09c** (nhân viên, gần như không tốn tiền) và **12** (nhân viên; [vé đã cập nhật](12-canh-theo-dinh-nghia-a8.md)). Có thể làm song
+     song vì khác tầng (A10 hiển thị và A8). Vé 12 chạy thật chỉ sau khi dry-run sáu tài liệu và chủ dự án duyệt con số.
+  2. **02b** (tôi).
+  3. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần). Tập giữ lại chỉ chạy được một lần, nên vé 12 phải xong trước.
+  - Đề xuất trước đây "khoá cấu hình không có vé 12 để giữ ngân sách" **bỏ**: nó dựa vào trần 50 USD. Vé 12 là đòn bẩy chính còn lại cho
+    độ chuẩn của cạnh (dòng "cần:", phụ thuộc module, `roadmap-target`).
 - **Không đề xuất dựng lại doc-2 từ A3** trên cây mục mới:
   - ID node đổi thì bộ vàng đóng băng không chấm được nếu chưa có kế hoạch ánh xạ (xem vé 13);
   - hệ quả của cây vỡ đã được xử lý ở tầng hiển thị (14b, 09b, 09c).

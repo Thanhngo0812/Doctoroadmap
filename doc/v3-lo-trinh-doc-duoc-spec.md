@@ -182,6 +182,13 @@ Dời neo và danh tính lên trước A8 (W17 cũ). Căn cứ của cạnh "c�
 căn cứ ở ví dụ, bài tập hay phương pháp giải được gắn loại `cong_cu` (nên biết trước khi làm bài), không ràng buộc hiểu định nghĩa.
 *Lý do:* RefD (tiên quyết bất đối xứng theo tham chiếu trong định nghĩa); T1/T11: lỗi chính là thừa ràng buộc. Chi phí: chạy lại A8
 mỗi tài liệu (≈ 1–7 USD), cần chủ dự án duyệt trước khi chạy.
+*Bổ sung 2026-09-28 (kiểm thử 05b; chủ dự án nâng ngân sách):*
+- "Đoạn định nghĩa" = **cửa sổ định nghĩa**: câu neo và tối đa hai câu kế tiếp cùng chunk.
+- Cạnh `can_de_hieu` phải có câu trích nguyên văn trong cửa sổ, kiểm bằng mã. Được phép diễn đạt khác tên tiên quyết: chỉ khoảng một nửa
+  cạnh vàng có tên nguyên văn trong cửa sổ.
+- Chỉ `can_de_hieu` là cạnh cứng. Giữ bộ sinh ứng viên hiện có, không thêm (v2-06).
+- Đo 0 USD trên doc-1: cạnh có tên tiên quyết trong cửa sổ đúng theo bao đóng vàng 0,88, không có tên thì 0,50.
+- Làm trước khi khoá cấu hình cho tập giữ lại. Vé 12.
 
 ### R13 — Trích mệnh đề có tên ở A3 *(A3; sửa L8 — sau vé 07, theo quyết định chủ dự án)*
 A3 trích định lý/mệnh đề/công thức/phương pháp có tên thành nút `ket_qua` với tên nội dung. Đổi danh sách khái niệm → cần kế hoạch
