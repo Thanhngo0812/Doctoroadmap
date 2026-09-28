@@ -36,3 +36,38 @@
   khác) không còn vượt câu định nghĩa thật; fixture ở ít nhất hai ngôn ngữ ngoài vi/en.
 - **Tôi kiểm:** đọc neo của "Matrix", "Matrix of a linear map", "Column-row factorization", "Jordan basis" (doc-2) và vài khái niệm doc-1;
   Q6/Q7/Q7b doc-1, doc-2 end-to-end sau danh tính; bảng kiểm R11 sáu tài liệu.
+
+## Kiểm thử (Claude, 2026-09-28) — **đạt**; Q7 doc-2 còn thấp nhưng **không do bước neo**
+
+- **Neo:**
+  - "Matrix of a linear map" (và "Matrix of T") được danh tính gộp `dong_nhat` vào "Matrix". Gộp này khớp mô tả của node A3 "Matrix"
+    ("representation of a linear map with respect to chosen bases"). Neo chung ở câu mở khối 3.32, là khối dạy.
+  - "Column-row factorization" neo ở phát biểu 3.56. "Jordan basis" `uncertain`, không neo — chấp nhận.
+  - Đọc thêm doc-2: Transpose, Row rank, Column rank, Linear map lemma, Isomorphic, Invertible. Đọc thêm doc-1: Ma trận, Định thức,
+    Không gian véc tơ, Cơ sở, Hạng của ma trận, Ánh xạ tuyến tính, Trị riêng. Tất cả neo ở câu định nghĩa.
+- **Test và prompt:**
+  - Đột biến "bỏ bảo đảm ứng viên hạng khối tiêu đề" và "hạ khối tiêu đề xuống hạng 2" đều làm test đỏ.
+  - Fixture tiếng Pháp và tiếng Trung.
+  - Prompt dùng định nghĩa chức năng, không danh sách cụm từ.
+- **Số đo** (tính lại từ graph v6, khớp báo cáo): doc-1 Q6 0,103, Q7 0,825, Q7b 0,660; doc-2 Q6 0,228, Q7 0,469, Q7b 1,0.
+- **Phân rã doc-2** (`scripts/doc-lo-trinh/phan_ra_pham_vi_vang.py`; chỉ để chẩn đoán, số chính thức giữ nguyên). 13 cạnh ngoài phạm vi
+  gồm:
+  - 9 cạnh vào hai định lý **chỉ có trong bài tập**: "Injective operator equivalence" ×7 và "Rank of A is 1" ×2 (`mentioned_in: bai_tap`,
+    căn cứ "Prove that…"). Loại chúng là đúng thiết kế v3: không có bài học bài tập.
+  - 3 cạnh vào "Distributive/Associative property of matrix multiplication". Sách chỉ nói một câu "Matrix multiplication is distributive
+    and associative (see Exercises 11 and 12)"; `mentioned_only` bảo vệ được.
+  - 1 cạnh từ "Nonnegative integers", một node A3 rác lấy từ câu xem trước "We begin by defining two nonnegative integers associated with
+    each matrix".
+  - **Không cạnh nào do neo "Matrix".** Đề xuất của báo cáo nhân viên (vé nhỏ sửa "Matrix" ở A3) không khớp bằng chứng, nên không mở.
+- **Q7 doc-2:**
+  - 0,469 chính thức → 0,579 nếu chỉ tính 17 đích trong dãy học → ≈ 0,67 nếu bỏ thêm cạnh vàng chạm node rác.
+  - Phần còn lại là **hồi tưởng A8**: 18/44 cạnh vàng có hai đầu trong dãy học mà máy không có đường đi (Column vector → Transpose/
+    Column rank/Row-column rule, Matrix multiplication → Row-column rule, 𝐅^{m,n} → Column rank/Row rank, Linear map lemma → Matrix…).
+  - Chỉ 1/18 có nguyên văn tên tiên quyết trong câu neo của đích; phần còn lại được nhắc bằng diễn đạt khác ("the columns of A"). Vì vậy
+    vé 12 phải để mô hình đề xuất cạnh với cụm trích từ định nghĩa của đích, không đòi khớp tên nguyên văn.
+- **doc-1:**
+  - 3 cạnh ngoài phạm vi: "Không gian véc tơ phức" ×2 và "Đa thức" ×1.
+    - "Không gian véc tơ phức": sách định nghĩa trong một câu rồi nói chỉ học không gian thực. Phán `mentioned_only` sát ranh, chấp nhận.
+    - "Đa thức": sách không dạy, đã ghi ở vé 05.
+  - 1 cạnh ngược "Véc tơ → Phần tử trung hòa": sách dạy phần tử trung hoà ở 1.3 Nhóm, trước véc tơ; đây là lệch giữa vàng và sách.
+- Đóng vé 05b. Việc còn lại của doc-2 thuộc vé 12 (A8) và vé 09c (chia/đặt tên module).

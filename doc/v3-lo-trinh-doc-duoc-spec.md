@@ -129,6 +129,14 @@ trong vùng `noi_dung` dưới dạng "Nhắc tới (học ở phần khác / ng
 *Bổ sung 2026-09-28 (kiểm thử vé 09):* phần phụ không lặp hay chứa tên nền, không là mẩu của một tên khái niệm, phải có chữ cái;
 sai thì hỏi lại một lần rồi dùng trọn tên khái niệm tiêu biểu; không bao giờ in "(1/1)". Đồ thị trên version chunks cũ lấy đường
 dẫn mục để đặt tên từ cây đã sửa (phép chuyển của vé 14b). Vé 09b.
+*Bổ sung 2026-09-28, lần 2 (kiểm thử vé 09b):*
+- Ranh giới module cũng tính trên cây đã sửa (cùng phép chuyển). Chia trên cây vỡ làm module vắt qua hai mục nên tên rơi về cấp chương;
+  thử trên doc-2, module nằm gọn trong một mục tăng 33/48 → 43/53.
+- Nút gốc không phải mục nội dung.
+- Mục chứa (không có nội dung trực tiếp) không bị loại vì vai trò của chính nó.
+- Tiêu đề chỉ có mã (tiền tố + số của họ chương, hoặc mã mục) được bổ sung từ mục lục hay dòng đầu của mục.
+- Tiêu đề mở đầu bằng chữ thường, trong khi ≥ 90% tiêu đề cùng cấp mở đầu bằng chữ hoa, là nhãn đầu đoạn, không làm tên nền.
+Vé 09c.
 
 ### R8 — Danh tính mở rộng *(A9'' — danh tính; sửa L6)*
 Thêm nguồn ứng viên: (a) chuẩn hoá tên như bước neo (NFKC, bỏ dấu LaTeX, gộp gạch nối); (b) viết tắt ↔ tên đầy đủ (chữ đầu các

@@ -22,3 +22,25 @@
 ## Nghiệm thu
 - Test: căn cứ mở rộng khi câu neo chỉ là dòng nhãn; trùng tên khái niệm khác bị bác và hỏi lại; fixture ở ít nhất hai ngôn ngữ ngoài vi/en.
 - **Tôi kiểm:** đọc doc-1 ("Tính chất 1–4", "Định lý 4, 6, 7") và các nhãn số của tài liệu khác nếu có.
+
+## Kiểm thử (Claude, 2026-09-28) — **đạt**
+
+- **Test:** đột biến "tắt chặn trùng tên" và "tắt căn cứ mở rộng" đều làm test đỏ. Fixture tiếng Nhật và tiếng Pháp.
+- **Trùng tên:** sau chuẩn hoá, không `display_name` nào trùng tên, alias hay tên hiển thị của khái niệm khác, trên cả sáu tài liệu.
+  Năm tài liệu kia không có nhãn số cần đặt tên.
+- **Đọc doc-1, theo văn bản gốc:**
+  - Đúng:
+    - "Tính chất 3" → "Công thức khai triển định thức theo hàng i";
+    - "Tính chất 4" → "… theo cột j";
+    - "Định lý 5" → "dim W ≤ dim V".
+  - Chấp nhận:
+    - "Tính chất 2" → "Đổi chỗ hai hàng hay hai cột": thiếu vế "thì định thức đổi dấu";
+    - "Định lý 7" → "Hạng ma trận của hệ đối với một cơ sở": gọi tên đại lượng thay vì mệnh đề "hạng hệ = hạng ma trận";
+    - "Tính chất 1" → "Tính chất cơ bản của định thức": nội dung chỉ nằm trong công thức, nên chung chung nhưng có căn cứ;
+    - "Định lý 4" giữ nhãn và có cảnh báo, đúng đường fallback.
+  - **Sai lạc:** "Định lý 6" → "không gian con của không gian véc tơ".
+    - Tên lấy từ giả thiết ("Giả sử U và W là các không gian con của không gian véc tơ hữu hạn chiều V").
+    - Kết luận là công thức số chiều, đã mất thành `[formula]`.
+    - Người đọc sẽ tưởng đây là bài "Không gian con".
+- **Ghi nhận, chưa mở vé:** khi sửa prompt đặt tên lần tới, yêu cầu tên nêu điều kết quả khẳng định. Nếu điều đó chỉ nằm trong công thức
+  không đọc được thì không đặt tên (giữ nhãn).

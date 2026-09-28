@@ -1,7 +1,8 @@
 """Bảng kiểm đọc được (spec v3 R11, vé v3-02) trên một artifact `stages`. Không gọi mô hình.
 
-Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/doc-lo-trinh/kiem_doc_duoc.py <doc> [phiên bản stages]
+Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/doc-lo-trinh/kiem_doc_duoc.py <doc> [phiên bản stages] [--goc=<kho>]
 In từng vi phạm và dòng tổng; mã thoát 0 dù có vi phạm (đây là công cụ đọc, không phải cổng).
+`--goc` trỏ tới một kho thử (vd. artifacts/v3-05b-a9v10-evaluation); mặc định là kho chính `artifacts`.
 """
 import json
 import re
@@ -16,11 +17,12 @@ NUMBERED_LABEL = re.compile(r"^(tính chất|định lý|định lí|hệ quả|
                             r"property|example)\s*\d+[\w.]*$", re.IGNORECASE)
 GENERIC = {"definition", "theorem", "định nghĩa", "định lý", "định lí", "ví dụ", "example", "proof", "chứng minh"}
 MAX_SHOWN_PREREQUISITES = 3
+ROOT = Path("artifacts")
 
 
 def latest_stages(doc):
-    for version in sorted((int(p.name[1:]) for p in Path(f"artifacts/graph/{doc}").glob("v*")), reverse=True):
-        manifest = json.loads(Path(f"artifacts/graph/{doc}/v{version}/manifest.json").read_text(encoding="utf-8"))
+    for version in sorted((int(p.name[1:]) for p in (ROOT / "graph" / doc).glob("v*")), reverse=True):
+        manifest = json.loads((ROOT / "graph" / doc / f"v{version}" / "manifest.json").read_text(encoding="utf-8"))
         if manifest.get("stage") == "stages":
             return version
     raise SystemExit(f"{doc}: chưa có artifact stages")
@@ -28,7 +30,7 @@ def latest_stages(doc):
 
 def main(doc, version=None):
     version = version or latest_stages(doc)
-    payload = json.loads(Path(f"artifacts/graph/{doc}/v{version}/graph.json").read_text(encoding="utf-8"))
+    payload = json.loads((ROOT / "graph" / doc / f"v{version}" / "graph.json").read_text(encoding="utf-8"))
     nodes = {n["node_id"]: n for n in payload["nodes"]}
     modules = payload["modules"]
     problems = Counter()
@@ -76,4 +78,5 @@ def main(doc, version=None):
 
 if __name__ == "__main__":
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    ROOT = Path(next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--goc=")), "artifacts"))
     main(args[0], int(args[1]) if len(args) > 1 else None)

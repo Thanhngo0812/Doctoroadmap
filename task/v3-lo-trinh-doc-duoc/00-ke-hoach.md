@@ -1,5 +1,13 @@
 # v3 — Lộ trình chuẩn chỉ và đọc được: kế hoạch vé
 
+> **Kiểm thử 2026-09-28 (Claude), commit `9cc8752`:**
+> - **Đạt:** 19 (Vertex trung tính với cache, dry-run trùng từng byte; embedding lệch 8,5×10⁻⁹), 05b, 11b.
+> - **09b:** luật phần phụ đạt, tên doc-2 chưa đạt → vé mới [09c](09c-module-theo-cay-sua.md) (module chia theo cây sửa, bỏ nút gốc
+>   "document>", tiêu đề chỉ có mã).
+> - **Q7 doc-2 = 0,469 không do neo:**
+>   - 13 cạnh ngoài phạm vi = 9 vào định lý chỉ có trong bài tập + 3 vào tính chất nói một câu + 1 từ node A3 rác;
+>   - phần còn lại là hồi tưởng A8: 18/44 cạnh vàng trong dãy học không có đường đi → căn cứ để quyết vé 12.
+
 > **Cập nhật nhân viên 2026-09-27:** 10b đã commit riêng (`dc0cbce`). Mã và phép đo 05, 14, 16 đã xong, chờ reviewer nghiệm thu;
 > xem [báo cáo](../../report/v3-05-14-16-ket-qua-2026-09-27.md). Vé 07 và 11 được mở đường sau 05; vé 15, 17 và T19 để sau theo chủ dự án.
 
@@ -56,6 +64,7 @@
 | 08 | hiển thị tiên quyết rút gọn và phụ thuộc cấp module (R6) | A10, CLI | nhân viên | 07 | 0 |
 | 09 | tên module theo nội dung (R7) | A10/A11 | nhân viên | 03 | ≈ 0,05 USD / tài liệu |
 | 09b | tên module: phần phụ có nghĩa, tên nền từ cây đã sửa (R7 bổ sung) | A10 | nhân viên | 09 | ≈ 0,01 USD |
+| 09c | module chia theo cây đã sửa; tên nền không lấy nút gốc, tiêu đề chỉ có mã hay nhãn đầu đoạn (R7 bổ sung lần 2) | A10 | nhân viên | 09b | ≈ 0,01 USD |
 | 10 | danh tính mở rộng (R8) | A9'' | nhân viên | — | ≈ 0,05 USD / tài liệu |
 | 10b | xác minh quan hệ danh tính, đại diện được dạy, gỡ chu trình theo vị trí đại diện (R8b) | A9'' | nhân viên | 10 | ≈ 0,02 USD xác minh (+ ≈ 0,28 USD lượt 1 nếu kho mặc định chưa có) |
 | 11 | tên khái niệm có nội dung (R9) | sau A5 | nhân viên | 05 | ≈ 0,02 USD / tài liệu |
@@ -68,7 +77,7 @@
 | 16 | tên, ký hiệu và tìm nhắc tên không phụ thuộc chữ viết (R15) — **ưu tiên** | A3, A4, A6 | nhân viên | — | 0 |
 | 17 | tiền tố danh tính từ bằng chứng trong tài liệu (R16) | A9'' | nhân viên | 10b | ≈ 0,01 USD / tài liệu |
 | 18 | cạnh ngược thứ tự sách không ép dãy học (R17) | A10 | nhân viên | — (làm cùng 07 được) | 0 |
-| 19 | gọi mô hình qua Vertex AI để dùng credit Google Cloud (hạ tầng) | LLM | nhân viên | — | thử < 0,01 USD; chạy thật trừ credit — **chủ dự án quyết trần** |
+| 19 | gọi mô hình qua Vertex AI để dùng credit Google Cloud (hạ tầng) | LLM | nhân viên | — | thử < 0,01 USD; chi qua Vertex tính vào trần dự án 50 USD (chủ dự án quyết 2026-09-28) |
 | T19 | cung cấp tài liệu thật ngôn ngữ thứ ba: một chữ viết không Latin (ví dụ tiếng Trung, Nga) và một chữ Latin ngoài vi/en (ví dụ tiếng Pháp) | kiểm thử | **chủ dự án** | — | 0 |
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
@@ -76,10 +85,18 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 **Cập nhật nhân viên 2026-09-27:** vé 14b đã triển khai và đo trên doc-2, nhap-mon-ml, doc-3; [báo cáo](../../report/v3-14b-ket-qua-2026-09-27.md), chờ reviewer nghiệm thu.
 
-**Hiện tại (2026-09-28):** đã xong 01, 02, 03, 05, 06, 08, 10, 10b, 14, 14b, 16; 07, 18, 09, 11 đạt về mã (chờ nhân viên
-commit). Làm tiếp: **05b** (ưu tiên) rồi chạy **end-to-end** neo → danh tính → A9 → A10 → đặt tên trong một kho thử để nghiệm thu chất
-lượng 07, 18 trên doc-2; song song 09b, 11b. Sau đó đo lại để quyết vé 12 và việc dựng lại doc-2 trên cây mục mới. Hoãn theo chủ dự án:
-15, 17, T19.
+**Hiện tại (2026-09-28, sau kiểm thử `9cc8752`):**
+- **Đã xong:** 01, 02, 03, 05, 05b, 06, 07, 08, 09, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
+- **Làm tiếp:**
+  1. **09c** (nhân viên, gần như không tốn tiền);
+  2. **02b** (tôi);
+  3. **quyết vé 12** (chủ dự án duyệt chi): Q7 doc-2 giờ bị giới hạn bởi hồi tưởng A8, không còn bởi neo, danh tính hay đặt tên.
+- **Không đề xuất dựng lại doc-2 từ A3** trên cây mục mới:
+  - ID node đổi thì bộ vàng đóng băng không chấm được nếu chưa có kế hoạch ánh xạ (xem vé 13);
+  - hệ quả của cây vỡ đã được xử lý ở tầng hiển thị (14b, 09b, 09c).
+- **Kho chính còn cũ:** `roadmap --dry-run` cho thấy `secondary_edges` sẽ chạy lại ở doc-2 (≈ 7,2 USD), nhap-mon-ml (≈ 2,0), naive-bayes
+  (≈ 0,25), doc-3 (≈ 0,12). Không chạy lại dưới prompt A8 hiện tại; gộp vào lượt chạy lại A8 của vé 12 để khỏi trả hai lần.
+- **Hoãn theo chủ dự án:** 15, 17, T19.
 
 ## Tôi kiểm thử thế nào
 

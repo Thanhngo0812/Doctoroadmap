@@ -26,3 +26,35 @@ R n"), hay chỉ là mẩu tên ("2.1 Ma trận — thực", "Vector — space",
 ## Nghiệm thu
 - Test từng luật kiểm (lặp tên nền, mẩu tên, không chữ cái, "(1/1)"), trên tiêu đề tổng hợp ở ít nhất hai ngôn ngữ ngoài vi/en.
 - **Tôi kiểm:** đọc lại toàn bộ tên module doc-1, doc-2 và một tài liệu khác.
+
+## Kiểm thử (Claude, 2026-09-28) — luật phần phụ **đạt**; mục tiêu tên doc-2 **chưa đạt** → vé [09c](09c-module-theo-cay-sua.md)
+
+- **Đột biến trên luật phần phụ:**
+  - Bắt được: tắt luật lặp tên nền, tắt luật mẩu tên, tắt phép chuyển cây → test đỏ.
+  - **Lọt:** tắt luật "phải có chữ cái" → test vẫn xanh. Ca không chữ duy nhất trong test là "(1/1)", mà ca này đã bị luật căn cứ bác vì
+    "1" không có trong tên nguồn. Cần một ca cô lập, như
+    `grounded_suffix("3 · 4", ["Satz 3", "Satz 4"], "Kapitel", ["Satz 3", "Satz 4"])` phải sai.
+  - Nhánh "(k/n)" chỉ chạy khi có ít nhất hai module anh em, nên đột biến "(1/1)" không đổi hành vi. Không phải lỗ hổng.
+- Sáu tài liệu không còn tên trùng, không còn "(1/1)".
+- **Đọc tên từng tài liệu:**
+  - doc-1: tốt; còn 8 tên quá 12 từ.
+  - nhap-mon-ml: được; 5 tên dài.
+  - **doc-6:** "document> — Cơ sở dữ liệu", "document> — Hệ Quản Trị CSDL". Nút gốc `<document>` bị lấy làm tên nền (bước làm sạch bỏ dấu
+    "<"). Lỗi có từ vé 09: kho `v3-title-label-evaluation` đã có tên "document>". Bảng kiểm R11 cũng không bắt được (ghi cho vé 02b).
+  - **doc-2:**
+    - 15/48 tên nền ở cấp chương ("Chapter 1/2/3/4/5/7/8/9" kèm phần phụ);
+    - "6B" trơ mã;
+    - "identities" là nhãn in đậm đầu đoạn bị nhận nhầm làm tiêu đề;
+    - vài module lấy tên khái niệm đầu ("List of length one", "Upper bound on number of distinct eigenvalues").
+- **Nguyên nhân gốc doc-2** (kiểm bằng `scripts/doc-lo-trinh/thu_module_cay_sua.py`; chia lại trên cây vỡ trùng module hiện tại):
+  - Cây đã sửa mới chỉ được chuyển cho **tên**. **Ranh giới module** vẫn tính trên cây vỡ, nên module vắt qua 3C/3D, 5B/5C, 7C/7D….
+  - Chia lại trên đường dẫn mục của cây đã sửa (dãy học, ID, cạnh giữ nguyên):
+    - module nằm gọn trong một mục cấp 2: 33/48 → 43/53;
+    - tên nền cấp chương: 15 → 11;
+    - có thêm "3D Invertibility and Isomorphisms", "5C Upper-Triangular Matrices", "5D Diagonalizable Operators", "7D Isometries…",
+      "9D Tensor Products".
+- **Còn lại sau khi chia đúng cây:**
+  - tiêu đề chỉ có mã ("Chapter 1": tên chương "Vector Spaces" là dòng đầu của chunk; "6B", "7C": tên chỉ có trong mục lục hoặc bị mất);
+  - nhãn viết thường bị nhận làm tiêu đề ("identities", "conjugate symmetry");
+  - **8A/8B/8C bị lớp nhãn của vé 14b gắn `de_cuong`.** Đây là mục chứa không có nội dung trực tiếp nên không chunk nào nhận sai vai trò,
+    nhưng luật tên nền đòi `noi_dung` nên rơi về "Chapter 8".

@@ -50,3 +50,24 @@ của Vertex nhận **đúng thân yêu cầu** mà bộ gọi hiện tại gử
   `vertex` luôn có độ dài 1.
 - **Tôi kiểm:** `so_embedding.py` qua bộ gọi mới cho cosine 1 và lệch sau chuẩn hoá ≤ 1e-6; dry-run sáu tài liệu không đổi trạng thái stage; chạy một bước thật nhỏ qua Vertex (ví dụ vé 11b hoặc lượt xác minh danh
   tính trên một tài liệu), so kết quả và số token với lần chạy qua Developer API; đọc sổ chi.
+
+## Kiểm thử (Claude, 2026-09-28) — **đạt**
+
+- Toàn bộ `tests/unit` + `tests/integration` xanh (mã thoát 0, `--basetemp=tmp/pytest-review3b`).
+- **Trung tính với cache:** `roadmap --dry-run` sáu tài liệu, một lần `DOC2ROADMAP_LLM_TRANSPORT=developer_api`, một lần `vertex`:
+  kế hoạch **trùng từng byte** 6/6. Manifest ghi `llm_transport: "vertex"` ở mọi stage có gọi mô hình (kho `v3-05b-a9v10-evaluation`).
+- **Embedding qua bộ gọi mới** (`so_embedding.py --bo-goi-moi`, 2 loại tác vụ × 3 ngôn ngữ): 768 chiều, độ dài 1,0000/1,0000, cosine
+  1,00000000, lệch tối đa 8,5×10⁻⁹.
+- **Đột biến:** bỏ chuẩn hoá L2 ở đường Vertex → test đỏ; không làm mới token hết hạn → test đỏ.
+- **Bước thật qua Vertex:** sổ `spend.json` lượt cuối có 1.511 dòng, tổng 0,42305925 USD, `retry_429` = 0 — khớp báo cáo. Sổ lượt chẩn
+  đoán 2.385 dòng, 0,95354775 USD (gồm một reservation chưa tất toán ≈ 0,0053 USD). Tổng chi dự án ước ≈ 22,1/50 USD.
+- Ghi chú, không chặn (sửa khi chạm lại các tệp này):
+  1. Thiếu test cho dòng nghiệm thu "mọi config hash không đổi khi đổi đường gọi; manifest ghi đường gọi". Dry-run ở trên chứng minh
+     hiện tại, nhưng chưa có chốt chặn: thêm một test trên một stage có gọi mô hình (hai model giả khác `transport` → cùng
+     `config_hash`, manifest ghi đúng `llm_transport`).
+  2. `_embed_batch` có nhánh Vertex không bao giờ chạy (sau `if self._vertex: return …`, phần `model`/`url`/`headers` cho Vertex là mã
+     chết) → xoá.
+  3. `_embed_vertex` chưa đổi phản hồi hỏng (JSON lỗi, thiếu `predictions`) thành `RuntimeError` như đường Developer API.
+  4. A4/A5 (`build_canonical`) vẫn dùng `canonical_concurrency` khi chạy Vertex, còn A6–A10 đổi sang `vertex_concurrency` — để ý 429
+     khi chạy lại A4.
+  5. Embedding Vertex gọi tuần tự từng câu (API chỉ nhận một văn bản mỗi lời gọi); lập chỉ mục A3' cho tài liệu lớn sẽ chậm.

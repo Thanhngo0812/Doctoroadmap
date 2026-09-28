@@ -4,7 +4,9 @@ Câu hỏi: đổi nguồn embedding sang Vertex có giữ nguyên vector không
 khoá cache như lời gọi sinh văn bản; nếu không, trộn vector hai nguồn trong cùng tài liệu sẽ làm sai phép so độ giống.
 Văn bản thử là câu tự đặt, không có nội dung giáo trình. API key đọc qua Settings như luồng chính, không in ra.
 
-Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/thu-vertex/so_embedding.py [--project ID] [--location global]
+Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/thu-vertex/so_embedding.py [--project ID] [--location global] [--bo-goi-moi]
+`--bo-goi-moi` (kiểm thử vé 19): phía Vertex đi qua `GeminiEmbedding(transport="vertex")` của luồng chính thay cho google-genai;
+khi đó cả hai phía phải có độ dài 1.
 """
 import argparse
 import math
@@ -29,6 +31,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument("--project", default="gen-lang-client-0947038321")
     parser.add_argument("--location", default="global")
+    parser.add_argument("--bo-goi-moi", action="store_true")
     args = parser.parse_args()
     settings = Settings()
     if settings.gemini_api_key is None:
@@ -37,17 +40,24 @@ def main():
     developer = GeminiEmbedding(settings.gemini_api_key.get_secret_value(), model=settings.embedding_model_id,
                                 output_dimensionality=dimensions)
 
-    from google import genai
-    from google.genai import types
-    client = genai.Client(vertexai=True, project=args.project, location=args.location)
+    if args.bo_goi_moi:
+        vertex = GeminiEmbedding(None, model=settings.embedding_model_id, output_dimensionality=dimensions,
+                                 transport="vertex", vertex_project=args.project, vertex_location=args.location)
+    else:
+        from google import genai
+        from google.genai import types
+        client = genai.Client(vertexai=True, project=args.project, location=args.location)
 
     worst = 1.0
     for task in TASKS:
         ours = developer.embed([EmbeddingRequest(text, task) for text in TEXTS])
-        theirs = [client.models.embed_content(
-            model=settings.embedding_model_id, contents=text,
-            config=types.EmbedContentConfig(task_type=task, output_dimensionality=dimensions)).embeddings[0].values
-            for text in TEXTS]
+        if args.bo_goi_moi:
+            theirs = vertex.embed([EmbeddingRequest(text, task) for text in TEXTS])
+        else:
+            theirs = [client.models.embed_content(
+                model=settings.embedding_model_id, contents=text,
+                config=types.EmbedContentConfig(task_type=task, output_dimensionality=dimensions)).embeddings[0].values
+                for text in TEXTS]
         for text, a, b in zip(TEXTS, ours, theirs):
             similarity = cosine(a, b)
             worst = min(worst, similarity)
@@ -55,7 +65,9 @@ def main():
             diff = max(abs(x / norm_a - y / norm_b) for x, y in zip(a, b))
             print(f"{task:<20} {len(a)}/{len(b)} chiều  độ dài {norm_a:.4f}/{norm_b:.4f}  cosine {similarity:.8f}"
                   f"  lệch sau chuẩn hoá {diff:.1e}  | {text[:30]}")
-    print(f"cosine thấp nhất: {worst:.8f} (Developer API/Vertex; Vertex chưa chuẩn hoá vector khi giảm số chiều)")
+    note = ("bộ gọi mới chuẩn hoá L2 cả hai đường" if args.bo_goi_moi
+            else "Vertex chưa chuẩn hoá vector khi giảm số chiều")
+    print(f"cosine thấp nhất: {worst:.8f} (Developer API/Vertex; {note})")
 
 
 if __name__ == "__main__":
