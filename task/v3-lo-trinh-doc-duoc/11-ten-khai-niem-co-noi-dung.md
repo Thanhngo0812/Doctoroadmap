@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R9 · **Ai:** nhân viên · **Phụ thuộc:** 05 · **Chi phí mô hình:** ≈ 0,02 USD / tài liệu
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai sau bước danh tính để không phán neo/danh tính lại; chạy sáu tài liệu, 8 nhãn doc-1 được hỏi, 5 tên có nội dung đạt kiểm. **Chưa đạt nghiệm thu đủ**: `Tính chất 3`, `Tính chất 4`, `Định lý 6` có câu neo chỉ là đầu đề/nghèo nội dung nên còn tên đánh số. Doc-2 không có họ nhãn `Definition`/`Theorem` theo luật bằng chứng hiện tại; hai nút này đã rời dãy học nhờ vé 07. Xem [báo cáo](../../report/v3-06-11-ket-qua-2026-09-28.md).
 
 ## Việc cần làm
 - Nhận nhãn đánh số và từ chung bằng bằng chứng trong tài liệu, không bằng danh sách từ *(sửa 2026-09-26 theo spec v3 R9)*: **họ nhãn**

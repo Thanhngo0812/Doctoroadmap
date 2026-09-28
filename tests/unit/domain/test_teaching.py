@@ -109,3 +109,8 @@ def test_bypassing_does_not_duplicate_a_constraint_that_already_exists():
 def test_an_excluded_leaf_simply_disappears():
     kept, added = bypass_excluded([edge("a", "x"), edge("a", "b")], {"x"})
     assert added == [] and [(value["source"], value["target"]) for value in kept] == [("a", "b")]
+
+
+def test_soft_exercise_edge_never_becomes_hard_through_excluded_node():
+    kept, added = bypass_excluded([edge("a", "x", soft=True), edge("x", "b")], {"x"})
+    assert kept == [] and added == []

@@ -101,6 +101,8 @@ def test_product_prompt_catalog_is_exact_and_loadable():
         Path("a9/relation-check.txt"),
         Path("a10/teaching.txt"),
         Path("a10/anchor.txt"),
+        Path("a10/display_name.txt"),
+        Path("a10/module_title.txt"),
         Path("a10/identity.txt"),
         Path("a10/identity_verify.txt"),
         Path("a10/prior_verify.txt"),

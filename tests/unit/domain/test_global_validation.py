@@ -290,3 +290,35 @@ def test_gate_ignores_redundant_edges_even_if_raw_density_passes():
     assert gate["isolated_ratio"] == 0.8
     assert gate["passed"] is False
     assert gate["warning"]
+
+
+def test_outline_only_requires_is_removed_but_content_evidence_keeps_edge():
+    nodes = [node("a"), node("b"), node("c")]
+    outline = {**edge("a", "b", "noi_ro", 0.9), "chunk_ids": ["outline", "front", "admin", "back"]}
+    content = {**edge("b", "c", "noi_ro", 0.9), "chunk_ids": ["outline", "body"]}
+    result = validate_graph_rules(
+        nodes, [outline, content], [],
+        chunk_roles={"outline": "de_cuong", "front": "mo_dau", "admin": "hanh_chinh",
+                     "back": "cuoi_sach", "body": "noi_dung"},
+    )
+    assert [(row["source"], row["target"]) for row in result["requires_edges"]] == [("b", "c")]
+    assert result["region_flags"] == [{
+        "kind": "requires_non_teaching_evidence",
+        "edge": outline,
+        "reason": "all cited chunks are non-teaching regions",
+    }]
+
+
+def test_exercise_only_requires_is_soft_and_does_not_close_hard_dag():
+    nodes = [node("a"), node("b")]
+    hard = {**edge("a", "b", "noi_ro", 0.9), "chunk_ids": ["body"]}
+    exercise = {**edge("b", "a", "noi_ro", 0.9), "chunk_ids": ["exercise"]}
+    result = validate_graph_rules(
+        nodes, [hard, exercise], [],
+        chunk_roles={"body": "noi_dung", "exercise": "bai_tap"},
+    )
+    assert [(row["source"], row["target"]) for row in result["requires_edges"]] == [("a", "b"), ("b", "a")]
+    assert next(row for row in result["requires_edges"] if row["source"] == "b")["soft"] is True
+    assert result["two_way_flags"] == []
+    assert result["cycle_resolution"] == []
+    assert result["quality_gate"]["requires_edge_count"] == 1

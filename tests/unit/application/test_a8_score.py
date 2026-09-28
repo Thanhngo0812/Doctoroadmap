@@ -331,6 +331,32 @@ def test_the_order_report_carries_target_coverage_q7(tmp_path):
     assert coverage["mean_coverage"] == pytest.approx((1 + 0) / 2)
 
 
+def test_q7_reports_hard_roadmap_and_all_edges_separately(tmp_path):
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong")})
+    payload = staged_payload([["n_mau"], ["n_uocluong"]])
+    payload["sequence"] = ["n_mau", "n_uocluong"]
+    payload["modules"] = [{"module_id": "m", "node_ids": payload["sequence"]}]
+    payload["requires_edges"] = [{"source": "n_mau", "target": "n_uocluong", "edge_type": "requires",
+                                  "soft": True, "soft_reason": "exercise-only"}]
+    payload["soft_backward_edges"] = [payload["requires_edges"][0]]
+    report = score_roadmap_order(write_graph(tmp_path, payload), [gold])
+    assert report["target_coverage"]["mean_coverage"] == 0
+    assert report["target_coverage_with_soft"]["mean_coverage"] == 1
+    assert report["target_precision"]["targets"] == 0
+
+
+def test_q7_cannot_count_a_mentioned_only_endpoint_that_is_absent_from_sequence(tmp_path):
+    gold = write_gold(tmp_path, {("n_mau", "n_uocluong")})
+    payload = staged_payload([["n_uocluong"]])
+    payload["sequence"] = ["n_uocluong"]
+    payload["modules"] = [{"module_id": "m", "node_ids": payload["sequence"]}]
+    payload["nodes"] = [node for node in payload["nodes"] if node["node_id"] != "n_mau"]
+    payload["mentioned_nodes"] = [next(node for node in NODES if node["node_id"] == "n_mau")]
+    payload["requires_edges"] = [{"source": "n_mau", "target": "n_uocluong", "edge_type": "requires"}]
+    report = score_roadmap_order(write_graph(tmp_path, payload), [gold])
+    assert report["target_coverage"]["mean_coverage"] == 0
+
+
 def test_the_order_scorer_applies_the_identity_map_to_gold_without_touching_the_gold_file(tmp_path):
     # n_khoang gộp vào n_uocluong: cạnh vàng n_uocluong → n_khoang thành tự nối và rời phép chấm; n_mau → n_khoang
     # thành n_mau → n_uocluong. Khái niệm bị gộp vẫn thuộc danh tính của đồ thị, không phải "không có trong đồ thị".

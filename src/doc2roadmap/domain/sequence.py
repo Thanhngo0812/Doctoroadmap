@@ -21,7 +21,7 @@ def learning_sequence(node_ids, edges, position):
     parents = {node: set() for node in nodes}
     children = {node: set() for node in nodes}
     for edge in edges:
-        if edge.get("edge_type", "requires") != "requires":
+        if edge.get("edge_type", "requires") != "requires" or edge.get("soft"):
             continue
         source, target = edge["source"], edge["target"]
         if source in nodes and target in nodes and source != target:
@@ -41,6 +41,27 @@ def learning_sequence(node_ids, edges, position):
     if len(order) != len(nodes):
         raise ValueError("đồ thị requires còn chu trình; A9 phải giao DAG")
     return order
+
+
+def soften_backward_edges(edges, position):
+    """R17: a prerequisite taught in a later chunk must not reorder an earlier lesson.
+
+    Same-chunk edges stay hard regardless of character offset. A missing teaching position
+    (A10's 10**9 sentinel) is left to the mentioned-only bridge, not classified backward.
+    """
+    hard, soft = [], []
+    for edge in edges:
+        if edge.get("soft"):
+            soft.append(edge)
+            continue
+        source, target = position.get(edge["source"]), position.get(edge["target"])
+        if (edge.get("edge_type", "requires") == "requires"
+                and source is not None and target is not None
+                and source[0] < 10**9 and target[0] < 10**9 and source[0] > target[0]):
+            soft.append({**edge, "soft": True, "soft_reason": "ngược thứ tự sách"})
+        else:
+            hard.append(edge)
+    return hard, soft
 
 
 def choose_levels(ancestry, width):
@@ -115,6 +136,43 @@ def _longest_path(order, parents):
     return max(depth.values(), default=0)
 
 
+def transitive_reduction(edges):
+    """Return only the direct arcs of a DAG; keep the original graph elsewhere."""
+    pairs = {(edge["source"], edge["target"]) for edge in edges
+             if edge.get("edge_type", "requires") == "requires" and not edge.get("soft")
+             and edge["source"] != edge["target"]}
+    children = {}
+    for source, target in pairs:
+        children.setdefault(source, set()).add(target)
+    reduced = set()
+    for source, target in pairs:
+        stack = list(children.get(source, set()) - {target})
+        seen = set()
+        while stack:
+            current = stack.pop()
+            if current == target:
+                break
+            if current not in seen:
+                seen.add(current)
+                stack.extend(children.get(current, ()))
+        else:
+            reduced.add((source, target))
+    return reduced
+
+
+def module_dependencies(modules, edges):
+    module_of = {node: module["module_id"] for module in modules for node in module["node_ids"]}
+    pairs = {(module_of[edge["source"]], module_of[edge["target"]]) for edge in edges
+             if edge.get("edge_type", "requires") == "requires" and not edge.get("soft")
+             and edge["source"] in module_of and edge["target"] in module_of
+             and module_of[edge["source"]] != module_of[edge["target"]]}
+    reduced = transitive_reduction({"source": source, "target": target} for source, target in pairs)
+    order = {module["module_id"]: index for index, module in enumerate(modules)}
+    return {module["module_id"]: sorted((source for source, target in reduced
+                                           if target == module["module_id"]), key=order.get)
+            for module in modules}
+
+
 def build_sequence_roadmap(nodes, edges, *, position, ancestry, section_titles, width, reviewed, weights=None):
     """A10 neo sách (ADR 0010): dãy học, module, và các trường giải thích cho từng khái niệm.
 
@@ -122,7 +180,7 @@ def build_sequence_roadmap(nodes, edges, *, position, ancestry, section_titles, 
     """
     learnable = [dict(node) for node in nodes if node.get("learnable")]
     by_id = {node["node_id"]: node for node in learnable}
-    hard = [edge for edge in edges if edge.get("edge_type", "requires") == "requires"
+    hard = [edge for edge in edges if edge.get("edge_type", "requires") == "requires" and not edge.get("soft")
             and edge["source"] in by_id and edge["target"] in by_id and edge["source"] != edge["target"]]
     sequence = learning_sequence(list(by_id), hard, position)
     chapter_level, unit_level = choose_levels({node: ancestry.get(node, []) for node in by_id}, width)
@@ -193,24 +251,15 @@ def build_sequence_roadmap(nodes, edges, *, position, ancestry, section_titles, 
 
 
 def target_modules(modules, edges, targets):
-    """Lộ trình tới mục tiêu (spec v2, W9): lọc module của lộ trình toàn cục, giữ đích và mọi tổ tiên theo đúng thứ tự.
-
-    Không chia module lại: người học vẫn định hướng trong cùng khung buổi học với lộ trình đầy đủ, chỉ thấy phần cần.
-    """
-    parents = {}
-    for edge in edges:
-        if edge.get("edge_type", "requires") == "requires":
-            parents.setdefault(edge["target"], set()).add(edge["source"])
-    keep, stack = set(targets), list(targets)
+    """Keep complete modules on the module-level prerequisite path to a target."""
+    module_of = {node: module["module_id"] for module in modules for node in module["node_ids"]}
+    parents = module_dependencies(modules, edges)
+    keep, stack = {module_of[node] for node in targets if node in module_of}, [module_of[node] for node in targets
+                                                                    if node in module_of]
     while stack:
-        node = stack.pop()
-        for parent in parents.get(node, ()):
+        module_id = stack.pop()
+        for parent in parents.get(module_id, ()):
             if parent not in keep:
                 keep.add(parent)
                 stack.append(parent)
-    result = []
-    for module in modules:
-        members = [node for node in module["node_ids"] if node in keep]
-        if members:
-            result.append({**module, "node_ids": members})
-    return result
+    return [module for module in modules if module["module_id"] in keep]

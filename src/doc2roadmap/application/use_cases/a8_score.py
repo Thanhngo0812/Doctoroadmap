@@ -351,7 +351,8 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
     # Node bị bước kiểm nguồn dạy loại khỏi stage vẫn thuộc danh tính của đồ thị: vàng cần nó thì là lỗi lộ trình.
     # Khái niệm bị gộp (vé v2-05) cũng vậy: bản đồ danh tính chuyển nó sang đại diện.
     names = {node["node_id"]: node.get("name")
-             for node in [*nodes, *payload.get("excluded_nodes", []), *payload.get("merged_nodes", [])]}
+             for node in [*nodes, *payload.get("excluded_nodes", []), *payload.get("merged_nodes", []),
+                          *payload.get("mentioned_nodes", [])]}
     # τ so với nơi khái niệm được **dạy** khi đã biết; `first_order_index` có thể bị đề cương đầu sách kéo lệch.
     order = presentation_agreement(stages, {
         node["node_id"]: node["teaching_order_index"] if node.get("teaching_order_index") is not None
@@ -389,10 +390,18 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
     report["gold_mode"] = mode
     report["gold_edge_count"] = len(edges)
     report["gold_order"] = {key: value for key, value in violations.items() if key != "rows"}
-    machine = {(edge["source"], edge["target"])
-               for edge in [*payload.get("requires_edges", []), *payload.get("bypassed_edges", [])]}
+    sequence_nodes = set(payload["sequence"]) if "sequence" in payload else None
+    machine_rows = [*payload.get("requires_edges", []), *payload.get("bypassed_edges", [])]
+    machine_rows += payload.get("soft_backward_edges", [])
+    machine_all = {(edge["source"], edge["target"]) for edge in machine_rows
+                   if edge.get("edge_type", "requires") == "requires"
+                   and (sequence_nodes is None or {edge["source"], edge["target"]} <= sequence_nodes)}
+    machine = {(edge["source"], edge["target"]) for edge in machine_rows
+               if edge.get("edge_type", "requires") == "requires" and not edge.get("soft")
+               and (sequence_nodes is None or {edge["source"], edge["target"]} <= sequence_nodes)}
     targets = sorted({identity.get(target, target) for gold in golds for target in gold["targets"]})
     report["target_coverage"] = target_coverage(edges, machine, targets)
+    report["target_coverage_with_soft"] = target_coverage(edges, machine_all, targets)
     report["target_precision"] = target_precision(edges, machine, targets)
     report["violations"] = violations["rows"]
     return report

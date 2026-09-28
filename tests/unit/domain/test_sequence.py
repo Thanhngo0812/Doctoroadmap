@@ -2,7 +2,7 @@ import random
 
 import pytest
 
-from doc2roadmap.domain.sequence import choose_levels, learning_sequence, segment_modules
+from doc2roadmap.domain.sequence import choose_levels, learning_sequence, segment_modules, soften_backward_edges
 
 
 def edge(source, target):
@@ -49,6 +49,31 @@ def test_every_edge_of_a_random_dag_goes_forward():
 def test_a_cycle_is_refused():
     with pytest.raises(ValueError, match="chu trình"):
         learning_sequence(["a", "b"], [edge("a", "b"), edge("b", "a")], {"a": (1, 0), "b": (2, 0)})
+
+
+def test_backward_edges_become_soft_without_moving_the_book_order():
+    position = {"early": (1, 2), "same": (1, 9), "late": (3, 0)}
+    backward = {**edge("late", "early"), "chunk_ids": ["proof"]}
+    hard, soft = soften_backward_edges(
+        [backward, edge("early", "late"), edge("same", "early")], position
+    )
+    assert [(e["source"], e["target"]) for e in hard] == [
+        ("early", "late"), ("same", "early")
+    ]
+    assert soft == [{**backward, "soft": True, "soft_reason": "ngược thứ tự sách"}]
+    assert backward == edge("late", "early") | {"chunk_ids": ["proof"]}
+    # Same-chunk reverse edge is hard: it may be a real within-paragraph prerequisite.
+    assert learning_sequence(["late", "early"], hard, position) == ["early", "late"]
+
+
+def test_missing_teaching_position_is_not_called_backward_and_existing_soft_edge_stays_soft():
+    old_soft = {**edge("late", "early"), "soft": True, "soft_reason": "manual"}
+    hard, soft = soften_backward_edges(
+        [edge("late", "unknown"), edge("missing", "early"), old_soft],
+        {"late": (3, 0), "unknown": (10**9, 10**9), "early": (1, 0)},
+    )
+    assert len(hard) == 2 and soft == [old_soft]
+    assert learning_sequence(["early", "late"], [old_soft], {"early": (1, 0), "late": (3, 0)}) == ["early", "late"]
 
 
 # --- W3: chia module -----------------------------------------------------------------------------------------------
@@ -126,11 +151,19 @@ def test_a_target_path_keeps_exactly_the_target_and_its_ancestors_in_roadmap_ord
     edges = [edge("a", "c"), edge("b", "c"), edge("c", "e"), edge("d", "f")]
     modules = [{"module_id": "module_001", "node_ids": ["a", "d", "b"]},
                {"module_id": "module_002", "node_ids": ["c", "f", "e"]}]
-    assert target_modules(modules, edges, ["e"]) == [
-        {"module_id": "module_001", "node_ids": ["a", "b"]},
-        {"module_id": "module_002", "node_ids": ["c", "e"]},
-    ]
-    # Đích không có tiên quyết chỉ còn chính nó; module không còn khái niệm nào thì bỏ.
-    assert target_modules(modules, edges, ["d"]) == [{"module_id": "module_001", "node_ids": ["d"]}]
-    # Nhiều đích: hợp tổ tiên.
-    assert [m["node_ids"] for m in target_modules(modules, edges, ["c", "f"])] == [["a", "d", "b"], ["c", "f"]]
+    assert target_modules(modules, edges, ["e"]) == modules
+    # A whole lesson remains even when the target has no individual prerequisites.
+    assert target_modules(modules, edges, ["d"]) == [modules[0]]
+    assert target_modules(modules, edges, ["c", "f"]) == modules
+
+
+def test_module_dependencies_and_display_reduction_remove_transitive_arcs():
+    from doc2roadmap.domain.sequence import module_dependencies, transitive_reduction, target_modules
+
+    modules = [{"module_id": f"module_00{i}", "node_ids": [letter]}
+               for i, letter in enumerate("abc", 1)]
+    edges = [edge("a", "b"), edge("b", "c"), edge("a", "c")]
+    assert transitive_reduction(edges) == {("a", "b"), ("b", "c")}
+    assert module_dependencies(modules, edges) == {
+        "module_001": [], "module_002": ["module_001"], "module_003": ["module_002"]}
+    assert target_modules(modules, edges, ["c"]) == modules

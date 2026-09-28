@@ -7,6 +7,7 @@ from collections import defaultdict, deque
 
 EVIDENCE_RANK = {"noi_ro": 3, "trong_dinh_nghia": 2, "mach_trinh_bay": 1}
 ORDER_RANK = {"thuận": 2, "cùng chunk": 1, "ngược": 0}
+NON_TEACHING_ROLES = {"de_cuong", "mo_dau", "hanh_chinh", "cuoi_sach"}
 
 
 def strongly_connected_components(node_ids, edges):
@@ -289,14 +290,25 @@ def apply_resolved_nodes(nodes, flags, node_vectors, *, assign_clusters=True):
     return result, {key: list(value) for key, value in vectors.items()}, log
 
 
-def validate_graph_rules(nodes, requires_edges, open_edges, *, type_aliases=None, cycle_budget=1000, work_budget=10000):
+def validate_graph_rules(nodes, requires_edges, open_edges, *, type_aliases=None, cycle_budget=1000, work_budget=10000, chunk_roles=None):
     learnable = {node["node_id"] for node in nodes if node.get("learnable")}
-    requires = [
+    candidates = [
         dict(edge)
         for edge in requires_edges
         if edge.get("edge_type") == "requires" and edge.get("source") in learnable and edge.get("target") in learnable
     ]
+    requires, soft_edges, region_flags = [], [], []
+    for edge in candidates:
+        roles = [chunk_roles.get(chunk_id) for chunk_id in edge.get("chunk_ids", [])] if chunk_roles else []
+        if roles and all(role in NON_TEACHING_ROLES for role in roles):
+            region_flags.append({"kind": "requires_non_teaching_evidence", "edge": edge,
+                                 "reason": "all cited chunks are non-teaching regions"})
+        elif roles and all(role == "bai_tap" for role in roles):
+            soft_edges.append({**edge, "soft": True})
+        else:
+            requires.append(edge)
     requires.sort(key=_edge_key)
+    soft_edges.sort(key=_edge_key)
     normalized_open, registry, type_flags = _type_registry(open_edges, type_aliases or {})
     two_way_flags, removed, cycle_resolution = [], [], []
     by_pair = {(edge["source"], edge["target"]) for edge in requires}
@@ -357,7 +369,8 @@ def validate_graph_rules(nodes, requires_edges, open_edges, *, type_aliases=None
         "warning": None if passed else "A9 structural consistency gate closed: prerequisite graph is too sparse or isolated; A10 will use document order",
     }
     return {
-        "requires_edges": marked,
+        "requires_edges": sorted([*marked, *soft_edges], key=_edge_key),
+        "region_flags": region_flags,
         "removed_cycle_edges": sorted((dict(edge) for edge in removed), key=_edge_key),
         "cycle_resolution": cycle_resolution,
         "two_way_flags": two_way_flags,

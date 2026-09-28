@@ -18,7 +18,7 @@ class Store:
                 "main_complete": True,
                 "secondary_complete": True,
                 "nodes": nodes,
-                "main_edges": [{"source": "a", "target": "b", "edge_type": "requires", "evidence_kind": "noi_ro", "order_relation": "thuận", "confidence": 0.9}],
+                "main_edges": [{"source": "a", "target": "b", "edge_type": "requires", "evidence_kind": "noi_ro", "order_relation": "thuận", "confidence": 0.9, "chunk_ids": ["body"]}],
                 "secondary_edges": [],
                 "main_flags": [],
                 "secondary_flags": [],
@@ -27,7 +27,7 @@ class Store:
                 "decision_log": [{"input": "large"}],
             },
             version=4,
-            manifest={"source_hash": "edge-source", "config_hash": "edge-config"},
+            manifest={"source_hash": "edge-source", "config_hash": "edge-config", "config": {"chunks_version": 3}},
         )
         self.latest = self.edges
         self.clusters = SimpleNamespace(
@@ -36,6 +36,11 @@ class Store:
             manifest={"upstream_version": None},
         )
         self.canonical = SimpleNamespace(payload={"edges": []}, version=1, manifest={})
+        self.role_chunks = SimpleNamespace(version=6, manifest={"config_hash": "role-config"}, result=SimpleNamespace(
+            chunks=[SimpleNamespace(chunk_id="body", role="noi_dung"),
+                    SimpleNamespace(chunk_id="front", role="mo_dau"),
+                    SimpleNamespace(chunk_id="exercise", role="bai_tap")]
+        ))
         self.saved = None
 
     def load_latest_graph(self, doc_id):
@@ -52,6 +57,10 @@ class Store:
 
     def load_type_aliases(self):
         return {}
+
+    def load_role_chunks(self, doc_id, version):
+        assert version == 3
+        return self.role_chunks
 
     def find_graph(self, doc_id, source_hash, config_hash):
         if self.saved and self.saved.manifest["source_hash"] == source_hash and self.saved.manifest["config_hash"] == config_hash:
@@ -137,3 +146,15 @@ def test_new_node_cluster_assignment_happens_after_structural_check():
     assert "cluster_id" not in checked
     assert assigned["cluster_id"] == "g1"
     assert next(node for node in artifact.payload["nodes"] if node["node_id"] == "d")["cluster_id"] == "g1"
+
+
+def test_validate_uses_pinned_role_overlay_and_records_excluded_edge():
+    store = Store()
+    store.edges.payload["main_edges"] = [
+        {"source": "a", "target": "b", "edge_type": "requires", "chunk_ids": ["front"]},
+    ]
+    artifact, _ = ValidateGraph(store).execute("doc")
+    assert artifact.payload["requires_edges"] == []
+    assert any(flag["kind"] == "requires_non_teaching_evidence" for flag in artifact.payload["validation_flags"])
+    assert artifact.manifest["config"]["role_chunks_version"] == 6
+    assert artifact.payload["stats"]["excluded_region_edge_count"] == 1

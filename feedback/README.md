@@ -568,3 +568,6 @@ là đúng.
 - `pytest tests/unit -q`: **20 passed**.
 - `pytest -q`: **25 passed** trong 35,4 giây, gồm **5 integration test** chạy Docling thật.
 - Quét trailing whitespace trên toàn bộ tệp đã sửa: không phát hiện lỗi.
+# Đợt v3-06/07/18 → 08/09/11 — 2026-09-28
+
+Đã triển khai và kiểm sáu tài liệu phát triển; 06/08 đạt tiêu chí mã, 09 chạy tên module trong trần chi. **Chưa đóng chất lượng 07/18 và 11** vì neo sai vị trí ở doc-2 và ba nhãn doc-1 có câu neo thiếu nội dung. [Phản hồi](./v3-06-11-2026-09-28.md) · [báo cáo/số đo](../report/v3-06-11-ket-qua-2026-09-28.md).

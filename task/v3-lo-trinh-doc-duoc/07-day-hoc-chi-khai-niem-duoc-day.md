@@ -2,7 +2,9 @@
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R5 · **Ai:** nhân viên · **Phụ thuộc:** 05, 10b · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao. **Chờ vé 10b:** đại diện nhóm danh tính hiện có thể là nút chỉ-nhắc (doc-6: "CSDL" ở đề cương thay cho
+**Trạng thái:** đã triển khai, sáu artifact đánh giá không còn `mentioned_only`/`unchecked` trong dãy học; nghiệm thu chất lượng còn mở vì Q7 doc-2 giảm và phép đo hiện là composite evaluation trước danh tính 10b. Xem [báo cáo](../../report/v3-06-11-ket-qua-2026-09-28.md).
+
+**Ghi chú lịch sử:** trước vé 10b, đại diện nhóm danh tính hiện có thể là nút chỉ-nhắc (doc-6: "CSDL" ở đề cương thay cho
 "Cơ sở dữ liệu" được dạy); lọc `mentioned_only` trước khi 10b sửa luật đại diện sẽ làm mất khái niệm được dạy.
 
 ## Việc cần làm

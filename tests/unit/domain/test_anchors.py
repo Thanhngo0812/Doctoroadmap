@@ -2,7 +2,8 @@ from types import SimpleNamespace
 
 import pytest
 
-from doc2roadmap.domain.anchors import anchor_fields, candidate_sentences, validate_anchor_response
+from doc2roadmap.domain.anchors import (anchor_fields, candidate_sentences, label_families,
+                                        validate_anchor_response, validate_display_name)
 
 
 def chunk(chunk_id, order, text):
@@ -135,3 +136,29 @@ def test_a_symbolic_name_is_searched_across_the_whole_document_but_a_plain_word_
     assert symbolic_name_chunks(fmn, chunks) == {"c356", "c431"}
     # tên chữ thường đã được mention map (A6) khớp theo ranh giới từ; so sau khi bỏ khoảng trắng sẽ khớp nhầm "additional"
     assert symbolic_name_chunks({"node_id": "add", "name": "Addition", "aliases": []}, chunks) == set()
+
+
+def test_label_families_use_two_distinct_numbers_in_names_or_headings_across_scripts():
+    names = ["Tính chất 1", "Tính chất 3", "Theorem 4", "Theorem 7", "Teorema 2", "Teorema 8",
+             "定理2", "定理5", "Lemma 1"]
+    nodes = [{"name": name} for name in names]
+    headings = [SimpleNamespace(section_path=["Định lý 4"]), SimpleNamespace(section_path=["Định lý 7"])]
+    assert label_families(nodes, headings) == {"tính chất", "theorem", "teorema", "定理", "định lý"}
+    assert "lemma" not in label_families(nodes, headings)
+
+
+def test_display_name_must_be_short_and_grounded_in_anchor_sentence():
+    sentence = "Tính chất 1. Nếu ma trận A khả nghịch thì định thức của A khác không."
+    validate_display_name({"node_id": "n", "display_name": "Định thức khác không"},
+                          node_id="n", label="Tính chất 1", sentence=sentence)
+    with pytest.raises(ValueError, match="không nằm"):
+        validate_display_name({"node_id": "n", "display_name": "Định thức luôn dương"},
+                              node_id="n", label="Tính chất 1", sentence=sentence)
+    with pytest.raises(ValueError, match="nhãn đánh số"):
+        validate_display_name({"node_id": "n", "display_name": "Tính chất 1"},
+                              node_id="n", label="Tính chất 1", sentence=sentence)
+    with pytest.raises(ValueError, match="nhãn đánh số"):
+        validate_display_name({"node_id": "n", "display_name": "Tính chất"},
+                              node_id="n", label="Tính chất 1", sentence=sentence)
+    validate_display_name({"node_id": "z", "display_name": "逆行列"}, node_id="z", label="定理2",
+                          sentence="定理2。逆行列が存在する。")

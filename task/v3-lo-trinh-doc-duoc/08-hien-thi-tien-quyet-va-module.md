@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R6 · **Ai:** nhân viên · **Phụ thuộc:** 07 · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai, test rút gọn bắc cầu, giới hạn ba tên, phụ thuộc module và `roadmap-target` xanh (2026-09-28); xem [báo cáo](../../report/v3-06-11-ket-qua-2026-09-28.md).
 
 ## Việc cần làm
 - Dòng "cần:" (HTML và payload `display_prerequisites`) chỉ hiện cạnh của rút gọn bắc cầu, tối đa 3, kèm "và N khái niệm khác";

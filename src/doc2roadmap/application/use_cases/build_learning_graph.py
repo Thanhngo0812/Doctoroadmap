@@ -7,7 +7,8 @@ from doc2roadmap.application.planning import PRICING_SOURCE, PRICING_USD_PER_MIL
 class BuildLearningGraph:
     STAGES = ("clusters", "mentions", "provenance", "edges", "stages")
 
-    def __init__(self, clusters, mentions, provenance, main_edges, secondary_edges, validator, teaching, identity, roadmap):
+    def __init__(self, clusters, mentions, provenance, main_edges, secondary_edges, validator, teaching, identity,
+                 roadmap, module_titles=None, concept_labels=None):
         self.clusters = clusters
         self.mentions = mentions
         self.provenance = provenance
@@ -17,14 +18,20 @@ class BuildLearningGraph:
         self.teaching = teaching
         self.identity = identity
         self.roadmap = roadmap
+        self.module_titles = module_titles
+        self.concept_labels = concept_labels
 
     def plan(self, doc_id, *, stop_after="stages"):
         if stop_after not in self.STAGES:
             raise ValueError(f"stage không hợp lệ: {stop_after}")
         chain = [("clusters", self.clusters), ("mentions", self.mentions), ("provenance", self.provenance),
                  ("main_edges", self.main_edges), ("secondary_edges", self.secondary_edges),
-                 ("validated", self.validator), ("teaching", self.teaching), ("identity", self.identity),
-                 ("stages", self.roadmap)]
+                 ("validated", self.validator), ("teaching", self.teaching), ("identity", self.identity)]
+        if self.concept_labels is not None:
+            chain.append(("concept_labels", self.concept_labels))
+        chain.append(("stages", self.roadmap))
+        if stop_after == "stages" and self.module_titles is not None:
+            chain.append(("module_titles", self.module_titles))
         upstream, rows = None, []
         for name, use_case in chain:
             if name == "clusters":
@@ -36,7 +43,8 @@ class BuildLearningGraph:
                 result = use_case.plan(doc_id, upstream=upstream)
             rows.append({"stage": name, **result.to_dict()})
             upstream = result.artifact
-            if name == stop_after or (name == "secondary_edges" and stop_after == "edges"):
+            if (name == stop_after and (name != "stages" or self.module_titles is None)
+                    or (name == "secondary_edges" and stop_after == "edges")):
                 break
         return {"doc_id": doc_id, "dry_run": True, "stages": rows,
                 "known_usd_estimate": round(sum(row["usd_estimate"] or 0 for row in rows), 6),
@@ -85,6 +93,15 @@ class BuildLearningGraph:
         self._current = "identity"
         artifact, current_reused = self.identity.execute(doc_id, upstream=artifact)
         reused = reused and current_reused
+        if self.concept_labels is not None:
+            self._current = "concept_labels"
+            artifact, current_reused = self.concept_labels.execute(doc_id, upstream=artifact)
+            reused = reused and current_reused
         self._current = "stages"
         artifact, current_reused = self.roadmap.execute(doc_id, upstream=artifact)
-        return artifact, reused and current_reused
+        reused = reused and current_reused
+        if self.module_titles is not None:
+            self._current = "module_titles"
+            artifact, current_reused = self.module_titles.execute(doc_id, upstream=artifact)
+            reused = reused and current_reused
+        return artifact, reused

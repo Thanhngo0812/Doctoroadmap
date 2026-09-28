@@ -41,12 +41,16 @@ class ValidateGraph:
             if canonical_version is not None
             else self.store.load_latest_canonical(doc_id)
         )
+        role_chunks = self.store.load_role_chunks(doc_id, edge_config["chunks_version"])
+        chunk_roles = {chunk.chunk_id: chunk.role for chunk in role_chunks.result.chunks}
         aliases = self.store.load_type_aliases()
         config = {
-            "algorithm_id": "a9-structural-consistency-v9",
+            "algorithm_id": "a9-structural-consistency-v10",
             "check_name": "structural_consistency_check",
             "edges_version": edges_artifact.version,
             "edges_config_hash": edges_artifact.manifest["config_hash"],
+            "role_chunks_version": role_chunks.version,
+            "role_chunks_config_hash": role_chunks.manifest["config_hash"],
             "cycle_scope": "requires-learnable-scc",
             "cycle_keep_order": ["evidence_kind", "provenance_order", "independent_source_count"],
             "cycle_method": "weighted-simple-cycle-cover",
@@ -115,13 +119,15 @@ class ValidateGraph:
             type_aliases=aliases,
             cycle_budget=config["cycle_budget"],
             work_budget=config["cycle_work_budget"],
+            chunk_roles=chunk_roles,
         )
         nodes, node_vectors, resolution_log = apply_resolved_nodes(
             edges_artifact.payload["nodes"], valid_flags, base_vectors
         )
         remaining_scc_sizes = [
             len(component) for component in strongly_connected_components(
-                (node["node_id"] for node in nodes if node.get("learnable")), result["requires_edges"]
+                (node["node_id"] for node in nodes if node.get("learnable")),
+                [edge for edge in result["requires_edges"] if not edge.get("soft")],
             )
         ]
         remaining_scc_size_distribution = {
@@ -144,6 +150,7 @@ class ValidateGraph:
             *backlog,
             *result["two_way_flags"],
             *result["type_flags"],
+            *result["region_flags"],
         ]
         if invalid_upstream_flag_count:
             validation_flags.append({
@@ -159,6 +166,8 @@ class ValidateGraph:
             })
         stats = {
             "requires_edge_count": len(result["requires_edges"]),
+            "excluded_region_edge_count": len(result["region_flags"]),
+            "soft_requires_edge_count": sum(edge.get("soft") is True for edge in result["requires_edges"]),
             "removed_cycle_edge_count": len(result["removed_cycle_edges"]),
             "cycle_component_count": len(result["cycle_resolution"]),
             "two_way_requires_count": len(result["two_way_flags"]),

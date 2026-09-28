@@ -326,7 +326,9 @@ def test_roadmap_target_prints_only_what_the_chosen_concept_needs(tmp_path, caps
     graph.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
     assert main(["roadmap-target", "--graph", str(graph), "--concept", "gamma"]) == 0
     output = json.loads(capsys.readouterr().out)
-    assert [[concept["name"] for concept in module["concepts"]] for module in output["modules"]] == [["Alpha"], ["Gamma"]]
-    assert output["targets"] == ["c"] and output["concept_count"] == 2
+    assert [[concept["name"] for concept in module["concepts"]] for module in output["modules"]] == [["Alpha", "Delta"], ["Gamma"]]
+    assert output["targets"] == ["c"] and output["concept_count"] == 3
+    assert output["target_module_id"] == "module_002"
+    assert output["modules"][-1]["target_node_ids"] == ["c"]
     assert main(["roadmap-target", "--graph", str(graph), "--concept", "Omega"]) == 2
     assert "không có khái niệm" in capsys.readouterr().err

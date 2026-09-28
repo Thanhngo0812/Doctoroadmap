@@ -62,6 +62,24 @@ def test_orchestrator_passes_the_exact_returned_artifact_to_the_next_stage():
     assert calls == list(names)
 
 
+def test_module_titles_run_after_roadmap_and_are_part_of_final_stages():
+    calls = []
+    stages = [Stage(name, calls) for name in
+              ("clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "identity", "stages")]
+    stage = BuildLearningGraph(*stages, module_titles=Stage("module_titles", calls))
+    artifact, reused = stage.execute("doc")
+    assert reused and artifact.payload["stage"] == "module_titles"
+    assert calls[-2:] == ["stages", "module_titles"]
+
+
+def test_concept_labels_run_after_identity_without_reexecuting_teaching():
+    calls = []
+    stages = [Stage(name, calls) for name in
+              ("clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "identity", "stages")]
+    BuildLearningGraph(*stages, concept_labels=Stage("concept_labels", calls)).execute("doc")
+    assert calls[-4:] == ["teaching", "identity", "concept_labels", "stages"]
+
+
 def test_switching_configuration_a_b_a_reuses_the_original_a_chain():
     current = {"value": "A"}
 

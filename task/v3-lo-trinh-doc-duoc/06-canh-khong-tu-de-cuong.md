@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R4 · **Ai:** nhân viên · **Phụ thuộc:** 03 · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai và kiểm trên sáu tài liệu phát triển (2026-09-28). A9 loại 11/9/0/6/0/15 cạnh chỉ có căn cứ vùng không dạy theo thứ tự doc-1/doc-2/doc-3/doc-6/naive-bayes/nhap-mon-ml; cạnh chỉ có căn cứ bài tập thành mềm. ML đã sửa lỗi vai trò 14b bằng phát lại phản hồi lưu, không gọi mô hình. Xem [báo cáo](../../report/v3-06-11-ket-qua-2026-09-28.md).
 
 ## Việc cần làm
 - Luật mới ở A9 (thuần): cạnh `requires` mà **mọi** chunk căn cứ có vai trò `de_cuong` hoặc `mo_dau` bị loại, ghi vào

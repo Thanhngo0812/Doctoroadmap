@@ -1042,8 +1042,10 @@ ghi lại, tầng 3 chuẩn hoá, A13 duyệt.
   mới thì mở cũng bằng không.
 - Bật/tắt lớp hiển thị theo kiểu cạnh — người học muốn nhìn lộ trình thuần thì tắt hết trừ `requires`.
 - Cho phép xem trước module sau ở chế độ read-only (đừng khóa cứng gây ức chế), và **test-out**: làm quiz để nhảy cóc module.
-- **Lộ trình tới mục tiêu** (spec v2, W9): người học chọn khái niệm đích, nhận đúng đích và tổ tiên của nó theo thứ tự
-  dãy học, chia module.
+- **Lộ trình tới mục tiêu** (spec v3, R6): người học chọn khái niệm đích, nhận trọn các module cần học theo đóng phụ thuộc
+  cấp module; khái niệm đích được đánh dấu trong module cuối. Cạnh mềm không ép đóng tiên quyết.
+- **Tên khái niệm đánh số** (spec v3, R9): bước đặt `display_name` chạy sau phán danh tính để tái dùng quyết định neo/danh tính;
+  không đổi `name` và `node_id`. Nếu câu neo chỉ là tiêu đề, giữ nhãn cũ và báo thiếu căn cứ, không tạo tên chung giả.
 
 ### B2. Tutor agent (scoped RAG)
 

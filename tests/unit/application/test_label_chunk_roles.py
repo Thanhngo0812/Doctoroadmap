@@ -104,6 +104,7 @@ def test_after_last_chapter_is_its_own_batch():
 
 def test_structural_validation_rejects_impossible_roles_in_other_scripts():
     prose = ('Это длинная строка о линейной алгебре и векторном пространстве.\n'*40)
+    assert _invalid_role('mo_dau',0,1,8,prose) is None
     assert _invalid_role('mo_dau',4,1,8,'short')=='front_after_chapter'
     assert _invalid_role('cuoi_sach',4,1,8,'short')=='back_before_last_chapter'
     assert _invalid_role('de_cuong',4,1,8,prose)=='long_prose'

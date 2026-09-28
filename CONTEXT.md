@@ -252,6 +252,22 @@ Thứ tự học đầy đủ của mọi khái niệm trên lộ trình: một 
 đứng sớm nhất theo thứ tự dạy của tài liệu (ADR 0010). Lỗi thứ tự Q6 được chấm trên dãy này.
 _Tránh dùng_: thứ tự tầng, layer order
 
+**Cạnh mềm**:
+Quan hệ `requires` còn giữ căn cứ nhưng không ép dãy học hay đóng tiên quyết, ví dụ chỉ có căn cứ ở bài tập hoặc đi ngược
+thứ tự dạy trong sách. Cạnh vẫn ở artifact với `soft: true` và lý do để người kiểm có thể đọc.
+
+**Nhắc tới**:
+Khái niệm `mentioned_only` hoặc `unchecked` không thuộc dãy học; A10 đặt ở mục phụ của module nơi được nhắc đầu tiên,
+hoặc tổng quan nếu không xuất hiện trong vùng dạy. Không được âm thầm tính là khái niệm đã dạy.
+
+**Tiên quyết hiển thị**:
+Các cạnh trực tiếp sau rút gọn bắc cầu, tối đa ba tên mỗi dòng; `prerequisites` đầy đủ và đồ thị gốc không bị sửa.
+Phụ thuộc module cũng rút gọn bắc cầu; `roadmap-target` giữ trọn module cần học.
+
+**Tên hiển thị**:
+`display_name` là nhãn ngắn có căn cứ để đọc lộ trình, không thay `name` gốc hoặc `node_id` của khái niệm.
+Nhãn đánh số chỉ được đổi khi câu neo có đủ từ cho tên mới; không dùng tên chung không có nội dung.
+
 **Module**:
 Đơn vị của lộ trình: một đoạn liền mạch của dãy học, tối đa 8 khái niệm, **có thứ tự bên trong** — một buổi học. Cạnh
 `requires` được phép nằm trong một module (tiên quyết đứng trước trong module). Pha B mở khoá, làm quiz và lọc RAG

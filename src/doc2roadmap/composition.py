@@ -162,6 +162,8 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
     )
 
     from doc2roadmap.application.spend_guard import SpendGuard
+    from doc2roadmap.application.use_cases.name_modules import NameModules
+    from doc2roadmap.application.use_cases.name_concept_labels import NameConceptLabels
 
     settings, store, embedding = _a3_dependencies()
     # Mọi lời gọi trả tiền của chuỗi đồ thị đi qua chốt chặn: một đổi thuật toán (như F126) không được lặng lẽ tiêu tiền.
@@ -220,4 +222,6 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
             store,
             stage_cap=settings.roadmap_stage_cap,
         ),
+        NameModules(store, model, concurrency=settings.roadmap_concurrency),
+        NameConceptLabels(store, model, concurrency=settings.roadmap_concurrency),
     ), settings

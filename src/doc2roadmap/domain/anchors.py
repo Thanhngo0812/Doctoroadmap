@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unicodedata
+import re
 
 from .provenance import DEFAULT_DEFINITION_SIGNALS
 from .sentence_splitter import UnicodeSentenceSplitter
@@ -12,6 +13,57 @@ STATUSES = ("defined_here", "introduced_by_example", "mentioned_only", "prior_kn
 ANCHORED = {"defined_here", "introduced_by_example"}
 TO_TEACHING = {"defined_here": "taught", "introduced_by_example": "taught", "mentioned_only": "mentioned_only",
                "prior_knowledge": "prior_knowledge", "not_subject_matter": "not_subject_matter", "uncertain": "uncertain"}
+
+
+def numbered_label(text):
+    match = re.fullmatch(r"(.+?)\s*(\d+(?:[.]\d+)*)(?:[.:])?", unicodedata.normalize("NFC", text).strip())
+    if not match:
+        return None
+    prefix, number = match.group(1).strip(), match.group(2)
+    words = prefix.split()
+    if len(words) > 2 or not words:
+        return None
+    if len(words) == 1 and not any(char.isspace() for char in text[:match.start(2)]):
+        # Chữ viết không cách từ: chỉ một–hai ký tự, ví dụ 定理2.
+        if len(prefix) > 2:
+            return None
+    if not all(all(char.isalpha() or unicodedata.category(char).startswith("M") for char in word)
+               for word in words):
+        return None
+    return _norm(prefix), number
+
+
+def label_families(nodes, chunks):
+    """Tiền tố có ít nhất hai số khác nhau trong tên hoặc tiêu đề cùng tài liệu."""
+    numbers = {}
+    titles = [node.get("name", "") for node in nodes]
+    titles += [part for chunk in chunks for part in (getattr(chunk, "section_path", None) or [])]
+    for title in titles:
+        match = numbered_label(str(title))
+        if match:
+            prefix, number = match
+            numbers.setdefault(prefix, set()).add(number)
+    return {prefix for prefix, seen in numbers.items() if len(seen) >= 2}
+
+
+def validate_display_name(value, *, node_id, label, sentence):
+    if not isinstance(value, dict) or value.get("node_id") != node_id:
+        raise ValueError("display_name sai node_id")
+    name = value.get("display_name")
+    if not isinstance(name, str) or not name.strip() or len(name) > 100:
+        raise ValueError("display_name rỗng hoặc quá dài")
+    prefix = (numbered_label(label) or ("",))[0]
+    if _norm(name) in {_norm(label), prefix} or any(char.isdigit() for char in name):
+        raise ValueError("display_name vẫn là nhãn đánh số")
+    words = re.findall(r"\w+", unicodedata.normalize("NFC", name).casefold())
+    source = re.findall(r"\w+", unicodedata.normalize("NFC", sentence).casefold())
+    if len(words) > 10:
+        raise ValueError("display_name quá dài")
+    if (len(words) == 1 and len(words[0]) > 2 and " " not in sentence
+            and words[0] in unicodedata.normalize("NFC", sentence).casefold()):
+        return
+    if not words or not all(word in source for word in words):
+        raise ValueError("từ trong display_name không nằm trong câu neo")
 
 
 def _norm(text):

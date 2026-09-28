@@ -51,7 +51,7 @@ def _invalid_role(role,position,first,last,body):
     if role=='cuoi_sach' and position<last and not back_matter(body):
         return 'back_before_last_chapter'
     lines = [line.strip() for line in body.splitlines() if line.strip()]
-    if (role in {'de_cuong','mo_dau','hanh_chinh'} and len(body)>=PROSE_MIN_CHARS
+    if (role in {'de_cuong','hanh_chinh'} and len(body)>=PROSE_MIN_CHARS
         and len(lines)>=3 and sum(len(line)>=PROSE_LINE_MIN_CHARS for line in lines)>len(lines)/2):
         return 'long_prose'
     return None
@@ -114,7 +114,7 @@ class LabelChunkRoles:
             raise ValueError('transfer requires the same source document')
         prompt = load_prompt('a2','region-roles')
         config = {**base.manifest['config'], 'region_roles':{
-            'algorithm_id':STRUCTURE_RULE+'+semantic-v2', 'chunks_version':base.version,
+            'algorithm_id':STRUCTURE_RULE+'+semantic-v3', 'chunks_version':base.version,
             'transfer_reference_version':reference.version if reference else None,
             'batch_rule':'chapter-and-separate-tail-v2',
             'batch_size':BATCH_SIZE,'retry_size':RETRY_SIZE,'prose_min_chars':PROSE_MIN_CHARS,

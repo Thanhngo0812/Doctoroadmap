@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R7 · **Ai:** nhân viên · **Phụ thuộc:** 03 · **Chi phí mô hình:** ≈ 0,05 USD / tài liệu
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai và chạy sáu tài liệu phát triển: 0 tên trùng; đánh giá chất lượng tên bằng người vẫn cần. Xem [báo cáo](../../report/v3-06-11-ket-qua-2026-09-28.md).
 
 ## Việc cần làm
 - Làm sạch tiêu đề, không phụ thuộc ngôn ngữ *(sửa 2026-09-26 theo spec v3 R7)*:

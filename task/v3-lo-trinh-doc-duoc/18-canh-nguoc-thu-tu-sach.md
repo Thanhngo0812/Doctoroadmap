@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R17 · **Ai:** nhân viên · **Phụ thuộc:** — (làm cùng lúc với vé 07
 được: cùng chạm `build_roadmap`/`sequence`) · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai, cạnh ngược giữ trong artifact với `soft_reason`, không ép dãy học; Q7 báo cả không/có cạnh mềm. Nghiệm thu chất lượng còn mở do Q7 doc-2 giảm sau đổi luật. Xem [báo cáo](../../report/v3-06-11-ket-qua-2026-09-28.md).
 
 ## Vì sao (đọc lộ trình doc-1 sau vé 05 và 10b, 2026-09-27)
 - Mục 2.2 Định thức bị xé: phần khai triển định thức bị đẩy ra sau mục 2.3 vì cạnh "Định thức con cấp p (mục 2.4) → Công thức khai triển

@@ -86,8 +86,10 @@ def bypass_excluded(edges, excluded):
     excluded = set(excluded)
     children = {}
     for edge in edges:
+        if edge.get("soft"):
+            continue
         children.setdefault(edge["source"], set()).add(edge["target"])
-    kept = [edge for edge in edges if edge["source"] not in excluded and edge["target"] not in excluded]
+    kept = [edge for edge in edges if not edge.get("soft") and edge["source"] not in excluded and edge["target"] not in excluded]
     present = {(edge["source"], edge["target"]) for edge in kept}
     added = []
     for source in sorted({edge["source"] for edge in edges} - excluded):
