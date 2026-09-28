@@ -63,11 +63,26 @@
   - 0,469 chính thức → 0,579 nếu chỉ tính 17 đích trong dãy học → ≈ 0,67 nếu bỏ thêm cạnh vàng chạm node rác.
   - Phần còn lại là **hồi tưởng A8**: 18/44 cạnh vàng có hai đầu trong dãy học mà máy không có đường đi (Column vector → Transpose/
     Column rank/Row-column rule, Matrix multiplication → Row-column rule, 𝐅^{m,n} → Column rank/Row rank, Linear map lemma → Matrix…).
-  - Chỉ 1/18 có nguyên văn tên tiên quyết trong câu neo của đích; phần còn lại được nhắc bằng diễn đạt khác ("the columns of A"). Vì vậy
-    vé 12 phải để mô hình đề xuất cạnh với cụm trích từ định nghĩa của đích, không đòi khớp tên nguyên văn.
+  - Chỉ 1/18 có nguyên văn tên tiên quyết trong câu neo của đích; phần còn lại được nhắc bằng diễn đạt khác ("the columns of A").
+  - **Đọc cùng bằng chứng v2 (vé v2-06), không coi 18/44 là lộ trình sai:**
+    - Q5/Q7 đo trên bao đóng nên thưởng cạnh theo thứ tự sách. Mức tăng của pass cạnh ngầm (một lời gọi mỗi đích, câu trích nguyên văn)
+      bằng đúng đường cơ sở "nối n khái niệm dạy ngay trước".
+    - Chấm mù T11 coi phần lớn cạnh thêm là "không cần thứ tự".
+    - Vàng doc-2 chỉ 27/46 = 59% cạnh được cả hai người gán độc lập cùng chọn.
+    - Trong v3, dãy học theo thứ tự sách và cạnh ngược đã mềm (vé 18), nên cạnh A8 không đổi thứ tự học. Cạnh A8 chỉ quyết dòng "cần:",
+      phụ thuộc module và `roadmap-target`.
 - **doc-1:**
   - 3 cạnh ngoài phạm vi: "Không gian véc tơ phức" ×2 và "Đa thức" ×1.
     - "Không gian véc tơ phức": sách định nghĩa trong một câu rồi nói chỉ học không gian thực. Phán `mentioned_only` sát ranh, chấp nhận.
     - "Đa thức": sách không dạy, đã ghi ở vé 05.
   - 1 cạnh ngược "Véc tơ → Phần tử trung hòa": sách dạy phần tử trung hoà ở 1.3 Nhóm, trước véc tơ; đây là lệch giữa vàng và sách.
-- Đóng vé 05b. Việc còn lại của doc-2 thuộc vé 12 (A8) và vé 09c (chia/đặt tên module).
+- **Lỗi nhỏ, chưa mở vé:** node `uncertain` "Inner product on F^n with positive weights" (doc-2) bị xếp cuối dãy học, trong module Tensor
+  products.
+  - `BuildRoadmap.place` không dùng `defining_chunk_ids` sau bước neo. Nó tìm tên nguyên văn trong vùng dạy, không thấy thì dùng vị trí
+    xa nhất.
+  - Chunk định nghĩa thật ở thứ tự 832 (chương 6), vùng `noi_dung`.
+  - Bốn node `uncertain` khác của doc-2 được xếp đúng nhờ tìm thấy tên.
+- Đã kiểm dãy học sáu tài liệu: 0 cạnh cứng ngược thứ tự sách. Dãy trùng thứ tự dạy, trừ 3 cặp kề nhau ở doc-2, đều do node `uncertain`
+  không có chỉ số dạy.
+- Đóng vé 05b. Việc còn lại của doc-2: vé 09c (chia và đặt tên module). Thiếu cạnh A8 so với vàng thuộc vé 12, nhưng lợi ích của vé 12
+  phải đo từng cạnh, so với đường cơ sở "n gần nhất" và bằng tiêu chí "không cần thứ tự", không bằng Q7 đơn thuần.

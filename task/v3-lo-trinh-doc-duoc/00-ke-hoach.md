@@ -6,7 +6,9 @@
 >   "document>", tiêu đề chỉ có mã).
 > - **Q7 doc-2 = 0,469 không do neo:**
 >   - 13 cạnh ngoài phạm vi = 9 vào định lý chỉ có trong bài tập + 3 vào tính chất nói một câu + 1 từ node A3 rác;
->   - phần còn lại là hồi tưởng A8: 18/44 cạnh vàng trong dãy học không có đường đi → căn cứ để quyết vé 12.
+>   - phần còn lại là A8 thiếu cạnh so với vàng: 18/44 cạnh trong dãy học không có đường đi.
+> - **Không đọc 18/44 là lộ trình sai.** Bằng chứng v2-06: thêm cạnh chủ yếu thừa ràng buộc (T11), độ phủ bao đóng thưởng cạnh theo thứ tự
+>   sách, vàng doc-2 chỉ 59% cạnh được cả hai người cùng chọn.
 
 > **Cập nhật nhân viên 2026-09-27:** 10b đã commit riêng (`dc0cbce`). Mã và phép đo 05, 14, 16 đã xong, chờ reviewer nghiệm thu;
 > xem [báo cáo](../../report/v3-05-14-16-ket-qua-2026-09-27.md). Vé 07 và 11 được mở đường sau 05; vé 15, 17 và T19 để sau theo chủ dự án.
@@ -90,7 +92,14 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 - **Làm tiếp:**
   1. **09c** (nhân viên, gần như không tốn tiền);
   2. **02b** (tôi);
-  3. **quyết vé 12** (chủ dự án duyệt chi): Q7 doc-2 giờ bị giới hạn bởi hồi tưởng A8, không còn bởi neo, danh tính hay đặt tên.
+  3. **chủ dự án quyết: có làm vé 12 trước khi khoá cấu hình (T10) cho lượt tập giữ lại (07 v2) không.**
+     - Tập giữ lại chỉ chạy một lần, nên thứ gì muốn có trong hệ thống cuối phải xong trước lượt đó.
+     - Trong v3, dãy học đã theo thứ tự sách và cạnh ngược đã mềm, nên vé 12 không đổi thứ tự học. Vé 12 chỉ đổi dòng "cần:", phụ thuộc
+       module và `roadmap-target`.
+     - Bằng chứng v2-06: thêm cạnh chủ yếu thừa ràng buộc. Vé 12 nhắm độ chính xác (chỉ cạnh căn cứ định nghĩa ràng buộc), chi ≈ 1–7 USD
+       mỗi tài liệu.
+     - **Đề xuất của tôi:** khoá cấu hình sau 09c, không có vé 12, giữ ngân sách (còn ≈ 28 USD) cho lượt tập giữ lại. Vé 12 để làm hướng
+       sau, trừ khi chủ dự án cần phương pháp này cho báo cáo.
 - **Không đề xuất dựng lại doc-2 từ A3** trên cây mục mới:
   - ID node đổi thì bộ vàng đóng băng không chấm được nếu chưa có kế hoạch ánh xạ (xem vé 13);
   - hệ quả của cây vỡ đã được xử lý ở tầng hiển thị (14b, 09b, 09c).
