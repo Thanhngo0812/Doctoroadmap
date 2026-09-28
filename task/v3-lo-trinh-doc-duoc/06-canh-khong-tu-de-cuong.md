@@ -24,3 +24,10 @@
 - A9 phải đọc vai trò qua `load_role_chunks` đúng version chunks mà đồ thị A8 ghim (như bước neo ở vé 05), không đọc version mới nhất.
 - Nghiệm thu trên doc-2 chờ vé 14b (vai trò doc-2 cây cũ đang sai: 104 mục bài giảng bị gắn đề cương). Các tài liệu khác nghiệm thu
   được ngay.
+
+## Kiểm thử (Claude, 2026-09-28) — đạt
+
+- Đột biến 2/2 bị bắt: giữ cạnh chỉ có căn cứ ở vùng không dạy; để cạnh chỉ có căn cứ bài tập thành cạnh cứng. A9 đọc vai trò qua
+  `load_role_chunks` đúng version chunks mà đồ thị ghim; cạnh mềm không tham gia gỡ chu trình hay bắc cầu.
+- Đo: loại cạnh vùng không dạy doc-1 11, doc-2 9, doc-6 6, nhap-mon-ml 15; cạnh chỉ căn cứ bài tập thành mềm doc-1 10, doc-2 44, doc-3 4.
+  doc-6 mất chuỗi giả CSDL → … → Dạng chuẩn; nhap-mon-ml mất "Siêu tham số → SVM".

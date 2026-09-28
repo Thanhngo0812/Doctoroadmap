@@ -94,6 +94,9 @@ bằng từ khoá tiếng Anh/Việt; vé 14 thay.
 ### R3 — Neo và vị trí chỉ lấy từ vùng `noi_dung` *(A9' — neo; sửa L1, L2)*
 Câu ứng viên của bước neo chỉ lấy từ chunk `noi_dung`; khái niệm chỉ xuất hiện ở `de_cuong`/`mo_dau`/`bai_tap` nhận trạng thái
 `mentioned_only` (ghi rõ vùng). Vị trí dạy không bao giờ rơi về chunk ngoài `noi_dung`.
+*Bổ sung 2026-09-28 (kiểm thử vé 07/18):* câu ứng viên xếp hạng: câu căn cứ A3 → khối có tiêu đề mang tên khái niệm (dòng tiêu đề kèm
+một–hai câu đầu) → câu nhắc tên còn lại theo vị trí; bỏ xếp hạng theo cụm định nghĩa vi/en. Câu chỉ báo trước hay nhắc lại một khái
+niệm không phải nơi dạy. Neo sai vị trí làm R17 hiểu nhầm cạnh đúng là ngược thứ tự. Vé 05b.
 
 ### R4 — Cạnh không lấy căn cứ từ đề cương hay lời nói đầu *(A9 — luật kiểm; sửa L1)*
 Cạnh `requires` mà **mọi** chunk căn cứ thuộc `de_cuong`, `mo_dau`, `hanh_chinh` hoặc `cuoi_sach` bị loại ở A9 (luật thuần, áp được lên đồ thị đã có, không
@@ -123,6 +126,9 @@ trong vùng `noi_dung` dưới dạng "Nhắc tới (học ở phần khác / ng
   "1.1 Tập hợp — Phép toán và lượng từ", viết bằng ngôn ngữ của tài liệu. Một lời gọi mỗi module trùng, ≈ vài chục lời gọi mỗi tài
   liệu.
 *Lý do:* nguyên tắc tín hiệu (hai phân tích gộp) — tiêu đề có nghĩa giúp hiểu, nhất là người ít kiến thức nền.
+*Bổ sung 2026-09-28 (kiểm thử vé 09):* phần phụ không lặp hay chứa tên nền, không là mẩu của một tên khái niệm, phải có chữ cái;
+sai thì hỏi lại một lần rồi dùng trọn tên khái niệm tiêu biểu; không bao giờ in "(1/1)". Đồ thị trên version chunks cũ lấy đường
+dẫn mục để đặt tên từ cây đã sửa (phép chuyển của vé 14b). Vé 09b.
 
 ### R8 — Danh tính mở rộng *(A9'' — danh tính; sửa L6)*
 Thêm nguồn ứng viên: (a) chuẩn hoá tên như bước neo (NFKC, bỏ dấu LaTeX, gộp gạch nối); (b) viết tắt ↔ tên đầy đủ (chữ đầu các
@@ -150,6 +156,8 @@ làm tên hiển thị. Nhận bằng bằng chứng trong tài liệu, không b
 hai số khác nhau trong tên khái niệm hoặc tiêu đề của cùng tài liệu. Tên là một phần tử của họ nhãn → nhãn đánh số: đổi thành tên nội
 dung ngắn sinh từ câu neo, viết bằng ngôn ngữ của tài liệu (mã kiểm từ có trong câu neo), nhãn cũ giữ làm alias. Tên đúng bằng tiền tố
 của họ → từ chung: bị loại khỏi khái niệm. Không đổi `node_id` — bộ vàng không bị ảnh hưởng.
+*Bổ sung 2026-09-28 (kiểm thử vé 11):* câu neo chỉ là dòng nhãn thì căn cứ gồm cả một–hai câu kế tiếp trong cùng chunk; tên hiển thị
+không được trùng tên, alias hay tên hiển thị của khái niệm khác. Vé 11b.
 
 ### R10 — Chạy thử có dự toán *(CLI; bài học sự cố 2026-09-26)*
 `roadmap --dry-run`: liệt kê **mọi** stage sẽ gọi mô hình (không chỉ stage đầu), kèm số lời gọi ước và USD ước; không gọi mô hình.

@@ -35,3 +35,11 @@
 - Test: cạnh ngược không ép thứ tự (đích giữ vị trí sách); cạnh thuận vẫn ép; cạnh mềm không hiện ở "cần:" và không vào
   `roadmap-target`; payload giữ cạnh mềm có lý do.
 - **Tôi kiểm:** đọc lộ trình doc-1, doc-2, nhap-mon-ml trước/sau; bảng kiểm R11 (nhất là mục bị xé); Q6/Q7/Q7b.
+
+## Kiểm thử (Claude, 2026-09-28) — đạt về mã; giữ luật R17
+
+- Đột biến bị bắt (cạnh ngược vẫn ép thứ tự). Q7 báo cả hai cách; cạnh mềm giữ lý do trong payload.
+- Q7 doc-2 giảm (0,576 → 0,402) không do R17 sai. Neo của "Matrix of a linear map" rơi vào câu xem trước đầu chương 3 ("A major concept
+  that we will introduce in this chapter is…"), nên vị trí dạy của nó bị kéo sớm, và các cạnh đúng "Linear map → Matrix of a linear map",
+  "Matrix → Matrix of a linear map" thành ngược thứ tự. Sửa ở nguồn: vé [05b](05b-cau-ung-vien-neo.md). R17 chỉ đúng khi vị trí dạy đúng;
+  sau 05b đo lại.

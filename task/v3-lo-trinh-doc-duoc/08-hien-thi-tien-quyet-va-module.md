@@ -17,3 +17,8 @@
 ## Nghiệm thu
 - Test: a → b → c và a → c: "cần" của c chỉ hiện b; phụ thuộc module không có cạnh bắc cầu; target roadmap trả đúng module.
 - **Tôi kiểm:** "Hệ phương trình tuyến tính" (doc-1) hiện ≤ 3 tiên quyết; lộ trình tới "Cơ sở" đọc được theo module.
+
+## Kiểm thử (Claude, 2026-09-28) — đạt
+
+- Đột biến 2/2 bị bắt: hiện tới 4 tiên quyết; không rút gọn bắc cầu khi hiển thị. "Cần" quá dài: 0 trên sáu tài liệu (doc-1 37 → 0,
+  doc-2 55 → 0). Phụ thuộc cấp module và `roadmap-target` trả trọn module theo đóng phụ thuộc cấp module.

@@ -50,13 +50,16 @@
 | 03 | vai trò vùng văn bản (R1) | A2 | nhân viên | — | 0 |
 | 04 | cấu trúc mục kiểu sách toán (R2) | A2 | nhân viên | 03 | 0 |
 | 05 | neo và vị trí chỉ từ vùng dạy (R3) | A9' | nhân viên | 03 | chạy lại neo ≈ 0,5 USD toàn kho phát triển |
+| 05b | câu ứng viên của bước neo ưu tiên khối mang tên khái niệm; câu xem trước không phải nơi dạy (R3 bổ sung) — **ưu tiên** | A9' | nhân viên | 05 | chạy lại neo phần đổi ≈ 0,1–0,4 USD |
 | 06 | cạnh không lấy căn cứ từ đề cương/lời nói đầu (R4) | A9 | nhân viên | 03 | 0 |
 | 07 | dãy học chỉ gồm khái niệm được dạy (R5) | A10 | nhân viên | 05, 10b; nghiệm thu doc-2 chờ 14b | 0 |
 | 08 | hiển thị tiên quyết rút gọn và phụ thuộc cấp module (R6) | A10, CLI | nhân viên | 07 | 0 |
 | 09 | tên module theo nội dung (R7) | A10/A11 | nhân viên | 03 | ≈ 0,05 USD / tài liệu |
+| 09b | tên module: phần phụ có nghĩa, tên nền từ cây đã sửa (R7 bổ sung) | A10 | nhân viên | 09 | ≈ 0,01 USD |
 | 10 | danh tính mở rộng (R8) | A9'' | nhân viên | — | ≈ 0,05 USD / tài liệu |
 | 10b | xác minh quan hệ danh tính, đại diện được dạy, gỡ chu trình theo vị trí đại diện (R8b) | A9'' | nhân viên | 10 | ≈ 0,02 USD xác minh (+ ≈ 0,28 USD lượt 1 nếu kho mặc định chưa có) |
 | 11 | tên khái niệm có nội dung (R9) | sau A5 | nhân viên | 05 | ≈ 0,02 USD / tài liệu |
+| 11b | tên khái niệm: căn cứ rộng hơn dòng nhãn, chống trùng tên (R9 bổ sung) | sau danh tính | nhân viên | 11 | ≈ 0,005 USD |
 | 12 | cạnh theo định nghĩa ở A8 (R12) | A8 | nhân viên | 03–11 | ≈ 1–7 USD / tài liệu — **chủ dự án duyệt trước khi chạy** |
 | 13 | trích mệnh đề có tên ở A3 (R13) | A3 | nhân viên | sau vé 07 v2 | chạy lại A3–A10; cần kế hoạch ánh xạ vàng |
 | 14 | vai trò vùng và cấu trúc mục không phụ thuộc ngôn ngữ (R1, R2 viết lại) | A2 | nhân viên | 03; làm tiếp trên vé 04 | ≈ 0,001–0,01 USD / tài liệu |
@@ -72,9 +75,10 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 **Cập nhật nhân viên 2026-09-27:** vé 14b đã triển khai và đo trên doc-2, nhap-mon-ml, doc-3; [báo cáo](../../report/v3-14b-ket-qua-2026-09-27.md), chờ reviewer nghiệm thu.
 
-**Hiện tại (2026-09-27):** đã xong 01, 02, 03, 05, 10, 10b, 16; 14 xong phần cấu trúc. Sau 14b,
-06, 07 và **18** song song (07 và 18 cùng chạm dãy học; nghiệm thu 06, 07 trên doc-2 sau 14b); rồi 08, 09, 11. Sau 07 + 18, đo lại
-lỗi thứ tự còn lại để quyết vé 12. Hoãn theo chủ dự án: 15, 17, T19.
+**Hiện tại (2026-09-28):** đã xong 01, 02, 03, 05, 06, 08, 10, 10b, 14, 14b, 16; 07, 18, 09, 11 đạt về mã (chờ nhân viên
+commit). Làm tiếp: **05b** (ưu tiên) rồi chạy **end-to-end** neo → danh tính → A9 → A10 → đặt tên trong một kho thử để nghiệm thu chất
+lượng 07, 18 trên doc-2; song song 09b, 11b. Sau đó đo lại để quyết vé 12 và việc dựng lại doc-2 trên cây mục mới. Hoãn theo chủ dự án:
+15, 17, T19.
 
 ## Tôi kiểm thử thế nào
 

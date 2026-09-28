@@ -21,3 +21,11 @@
 - Test nhận diện họ nhãn và từ chung trên tên tổng hợp ở tiếng Việt, tiếng Anh và ít nhất hai ngôn ngữ khác (một chữ viết không cách
   từ); tiền tố chỉ đi với một số không thành họ nhãn; test kiểm từ của `display_name`.
 - **Tôi kiểm:** doc-1 không còn "Tính chất 1…4", "Định lý 4…7" trên lộ trình; doc-2 không còn "Definition", "Theorem".
+
+## Kiểm thử (Claude, 2026-09-28) — đạt về mã; kết quả chưa đạt → vé 11b
+
+- Đột biến 2/2 bị bắt: họ nhãn chỉ cần một số; tên hiển thị không cần căn cứ câu neo.
+- Đọc doc-1: "Tính chất 2" → "Đổi chỗ hai hàng hay hai cột" (tốt). Nhưng "Định lý 4" → "Ma trận chuyển cơ sở" và "Định lý 7" → "Hạng của
+  hệ véc tơ" **trùng tên khái niệm có sẵn**, người học sẽ nhầm; "Tính chất 1" → "Tính chất cơ bản của định thức" quá chung (công thức nằm
+  trong `[formula]`). Ba nhãn còn số ("Tính chất 3", "Tính chất 4", "Định lý 6") có câu neo chỉ là dòng nhãn, mệnh đề nằm ở câu ngay sau.
+  → vé [11b](11b-ten-khai-niem-can-cu-va-trung.md).

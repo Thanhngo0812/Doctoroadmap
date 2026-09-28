@@ -48,3 +48,13 @@ thì dùng nhãn theo lô (A, B). Báo tỉ lệ chunk cũ khớp được. Vẫ
   nhất hai ngôn ngữ ngoài vi/en.
 - **Tôi kiểm:** đọc lại vai trò doc-2 (không mục bài giảng nào bị gắn đề cương, mở đầu hay hành chính); đọc lại danh sách 42 khái niệm
   doc-2 từng mất trạng thái được dạy; bảng kiểm R11 và Q6/Q7/Q7b doc-2. Số đo là thông tin để tôi đọc, không phải cổng dừng.
+
+## Kiểm thử (Claude, 2026-09-28) — đạt
+
+- Đột biến 4/4 bị bắt: bỏ giới hạn lô; nhận `mo_dau` sau chương đầu; nhận `cuoi_sach` sai chỗ; bỏ lượt hỏi lại.
+- doc-2: chunk v1 bị gắn đề cương 106 → 0; chuyển vai trò 1.032/1.038 chunk (99,4%); bốn mục tôi nêu ở vé 14 nay đều là `noi_dung`;
+  khái niệm được dạy 292 → 312; 24/42 khái niệm phục hồi.
+- Đọc mẫu 18 khái niệm còn lại: một phần đúng là không được dạy ("Definition" là từ chung; "Cauchy sequence" là kiến thức nền theo đề bài
+  tập; "0 vector" là tên khác của additive identity). Phần còn lại chung nguyên nhân chọn câu ứng viên của bước neo → vé
+  [05b](05b-cau-ung-vien-neo.md).
+- Luật "văn xuôi dài" tôi viết trong vé từng áp cả `mo_dau` — sai, vì lời nói đầu vốn là văn xuôi. Nhân viên đã sửa (commit cùng đợt 06–11).

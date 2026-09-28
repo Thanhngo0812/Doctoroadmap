@@ -23,3 +23,11 @@
 - Test làm sạch tiêu đề và kiểm từ của phần phụ (từ lạ bị từ chối) trên tiêu đề tổng hợp ở ít nhất hai ngôn ngữ ngoài vi/en (một chữ
   viết không cách từ); test không còn tên trùng.
 - **Tôi kiểm:** bảng kiểm vé 02 — 0 tên trùng, 0 tên từ vùng ngoài `noi_dung` trên sáu tài liệu; đọc tên module doc-1, doc-2.
+
+## Kiểm thử (Claude, 2026-09-28) — đạt về mã; chất lượng tên chưa đạt → vé 09b
+
+- Đột biến bị bắt (phần phụ bịa từ). 0 tên module trùng trên sáu tài liệu; chi phí rất nhỏ.
+- Đọc tên: phần phụ hay lặp tên nền ("2.1 Ma trận — Ma trận", "5.2 Dạng toàn phương trên không gian R n — trên không gian R n"), hay chỉ là
+  mẩu tên ("2.1 Ma trận — thực", "Vector — space", "Matrix — multiplication"), có cả "Jordan basis — Jordan basis" và "(1/1)". Luật kiểm
+  hiện chỉ đòi mọi từ có trong tên khái niệm, nên mẩu chữ và câu lặp vẫn lọt. doc-2 có nhiều tên nền "Chapter n" vì cây mục cũ.
+  → vé [09b](09b-ten-module-chat-luong.md).
