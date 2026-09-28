@@ -35,7 +35,8 @@ của Vertex nhận **đúng thân yêu cầu** mà bộ gọi hiện tại gử
 - Bảo mật: không ghi token hay đường dẫn khoá vào log; tệp khoá luôn ở ngoài repo.
 
 ## Tệp liên quan
-`infrastructure/llm/gemini.py`, `config.py`, `composition.py`, `pyproject.toml`, `CONTEXT.md`/`doc/spec-addendum.md` (ghi đường gọi mới).
+`infrastructure/llm/gemini.py`, `infrastructure/embedding/gemini.py`, `config.py`, `composition.py`, `pyproject.toml`,
+`CONTEXT.md`/`doc/spec-addendum.md` (ghi đường gọi mới).
 
 ## Nghiệm thu
 - Test không mạng (token và HTTP giả): dựng đúng URL và header cho `vertex`; thân yêu cầu giống hệt `developer_api`; làm mới token khi
