@@ -73,8 +73,9 @@ def main():
         started = time.perf_counter()
         response = client.models.generate_content(
             model=args.model, contents=PROMPT,
-            config=types.GenerateContentConfig(temperature=0.0, max_output_tokens=512,
-                                               response_mime_type="application/json", response_schema=SCHEMA))
+            config=types.GenerateContentConfig(
+                temperature=0.0, max_output_tokens=512, response_mime_type="application/json", response_schema=SCHEMA,
+                automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True)))
         seconds = time.perf_counter() - started
     except errors.APIError as error:
         print(f"Lỗi API {error.code} {error.status}: {error.message}")
