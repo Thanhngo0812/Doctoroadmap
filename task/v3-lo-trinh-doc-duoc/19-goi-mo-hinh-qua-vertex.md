@@ -3,8 +3,12 @@
 **Nguồn chân lý:** vé này (hạ tầng, không đổi luật của spec v3) · **Ai:** nhân viên · **Phụ thuộc:** — ·
 **Chi phí mô hình:** thử nghiệm vài lời gọi (< 0,01 USD); tiền chạy thật sau này trừ vào credit Google Cloud của chủ dự án
 
-**Trạng thái:** chờ giao. **Chủ dự án đã quyết (2026-09-28):** chi qua Vertex tính vào trần ngân sách của dự án (hiện 50 USD), không có
+**Trạng thái (2026-09-28):** hoàn tất tích hợp và nghiệm thu kỹ thuật trên sáu tài liệu. Lượt A9 v10 → danh tính → nhãn → A10 → tên ghi 1.511 lời gọi Vertex, 0,42305925 USD theo sổ token, 0 lần 429; sáu artifact đều hoàn tất. Lượt chẩn đoán trước đó trên A9 v9 không phải kết quả chất lượng cuối. [Báo cáo](../../report/ket-qua-v3-05b-09b-11b-vertex-2026-09-28.md). **Chủ dự án đã quyết (2026-09-28):** chi qua Vertex tính vào trần ngân sách của dự án (hiện 50 USD), không có
 trần riêng; sổ chi cộng cả hai đường gọi vào một tổng.
+
+**Giá đã đối chiếu 2026-09-28:** [bảng giá chính thức Google Cloud](https://cloud.google.com/gemini-enterprise-agent-platform/generative-ai/pricing),
+Gemini 3.1 Flash-Lite text ở `global`: input 0,25 USD/triệu token, output (gồm reasoning) 1,50 USD/triệu token;
+trùng giá Developer API đang dùng trong `PRICING_USD_PER_MILLION`. Không dùng giá Flex/Batch cho REST trực tiếp.
 
 ## Vì sao
 Chủ dự án có 300 USD credit Google Cloud trên project `gen-lang-client-0947038321`. Thử 2026-09-28 (`scripts/thu-vertex/goi_thu_vertex.py`

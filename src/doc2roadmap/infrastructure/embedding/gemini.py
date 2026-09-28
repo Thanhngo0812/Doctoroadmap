@@ -8,6 +8,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
+from doc2roadmap.infrastructure.google_auth import VertexCredentials
 
 
 _TASK_TYPES = {
@@ -30,14 +31,21 @@ class GeminiEmbedding:
         timeout: float = 60.0,
         batch_size: int = 100,
         max_retries: int = 3,
+        transport: str = "developer_api",
+        vertex_project: str | None = None,
+        vertex_location: str = "global",
     ) -> None:
-        if not api_key or not api_key.strip():
+        if transport not in {"developer_api", "vertex"}:
+            raise ValueError("Gemini embedding transport không hợp lệ")
+        if transport == "developer_api" and not (api_key and api_key.strip()):
             raise ValueError("thiếu Gemini API key cho embedding")
         if not model or "/" in model:
             raise ValueError("tên mô hình embedding Gemini không hợp lệ")
         if output_dimensionality <= 0 or timeout <= 0 or batch_size <= 0 or max_retries < 0:
             raise ValueError("cấu hình embedding phải lớn hơn 0")
-        self._api_key = api_key.strip()
+        self._api_key = api_key.strip() if api_key else None
+        self.transport = transport
+        self._vertex = VertexCredentials(vertex_project, vertex_location) if transport == "vertex" else None
         self._model = model
         self._output_dimensionality = output_dimensionality
         self._timeout = timeout
@@ -64,7 +72,10 @@ class GeminiEmbedding:
         return vectors
 
     def _embed_batch(self, requests: list[EmbeddingRequest]) -> list[list[float]]:
-        model = f"models/{self._model}"
+        if self._vertex:
+            return [self._embed_vertex(item) for item in requests]
+        model = (f"projects/{self._vertex.project}/locations/{self._vertex.location}"
+                 f"/publishers/google/models/{self._model}") if self._vertex else f"models/{self._model}"
         payload = {
             "requests": [
                 {
@@ -78,14 +89,13 @@ class GeminiEmbedding:
                 for item in requests
             ]
         }
+        url = (self._vertex.url(self._model, "batchEmbedContents") if self._vertex else
+               f"https://generativelanguage.googleapis.com/v1beta/models/{self._model}:batchEmbedContents")
+        headers = self._vertex.headers() if self._vertex else {"x-goog-api-key": self._api_key}
         request = Request(
-            "https://generativelanguage.googleapis.com/v1beta/"
-            f"models/{self._model}:batchEmbedContents",
+            url,
             data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-            headers={
-                "Content-Type": "application/json",
-                "x-goog-api-key": self._api_key,
-            },
+            headers={"Content-Type": "application/json", **headers},
             method="POST",
         )
         for attempt in range(self._max_retries + 1):
@@ -110,6 +120,29 @@ class GeminiEmbedding:
         if any(not isinstance(vector, list) for vector in vectors):
             raise RuntimeError("Gemini embedding thiếu giá trị vector")
         return [self._normalize(vector) for vector in vectors]
+
+    def _embed_vertex(self, item: EmbeddingRequest) -> list[float]:
+        payload = {"instances": [{"content": item.text, "task_type": item.task_type}],
+                   "parameters": {"outputDimensionality": self._output_dimensionality}}
+        request = Request(
+            self._vertex.url(self._model, "predict"),
+            data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+            headers={"Content-Type": "application/json", **self._vertex.headers()},
+            method="POST",
+        )
+        for attempt in range(self._max_retries + 1):
+            try:
+                with urlopen(request, timeout=self._timeout) as response:
+                    value = json.loads(response.read())
+                return self._normalize(value["predictions"][0]["embeddings"]["values"])
+            except HTTPError as error:
+                if error.code not in _RETRYABLE_HTTP or attempt == self._max_retries:
+                    raise RuntimeError(f"Vertex embedding lỗi HTTP {error.code}") from error
+            except (URLError, TimeoutError) as error:
+                if attempt == self._max_retries:
+                    raise RuntimeError("không kết nối được Vertex embedding") from error
+            sleep(2**attempt)
+        raise AssertionError("unreachable")
 
     def _normalize(self, values: list[object]) -> list[float]:
         try:

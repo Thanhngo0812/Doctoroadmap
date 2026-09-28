@@ -11,6 +11,7 @@ from doc2roadmap.domain.anchors import (
     STATUSES,
     anchor_fields,
     candidate_sentences,
+    heading_chunks,
     symbolic_name_chunks,
     validate_anchor_response,
 )
@@ -85,10 +86,10 @@ class AnchorConcepts:
         prompt_hash = anchor_prompt_hash(self.model.model_id, self.generation)
         prior_prompt = load_prompt("a10", "prior_verify")
         prior_hash = digest([prior_prompt, PRIOR_SCHEMA, self.model.model_id, self.generation])
-        config = {"algorithm_id": "a10-teaching-anchor-v5", "validated_version": upstream.version,
+        config = {"algorithm_id": "a10-teaching-anchor-v7", "validated_version": upstream.version,
                   "validated_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks_artifact.version,
                   "model_id": self.model.model_id, "generation": self.generation, "prompt_hash": prompt_hash,
-                  "candidates": CANDIDATES, "candidate_rule": "content-only+whole-document-exact-name+unicode-sentences+nfkc-latex-dash+a3+symbolic-v5",
+                  "candidates": CANDIDATES, "candidate_rule": "content-only+a3+heading-reserved+position+unicode-sentences-v7",
                   "prior_verify_prompt_hash": prior_hash,
                   "pricing_usd_per_million": PRICING_USD_PER_MILLION,
                   "pricing_source": PRICING_SOURCE}
@@ -96,9 +97,17 @@ class AnchorConcepts:
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
             return StagePlan("reused", artifact=cached) if planning else (cached, True)
-        old_config = {**config, "algorithm_id": "a10-teaching-anchor-v4",
-                      "candidate_rule": "content-only+unicode-sentences+nfkc-latex-dash+a3+symbolic-v4"}
+        old_config = {**config, "algorithm_id": "a10-teaching-anchor-v6",
+                      "candidate_rule": "content-only+a3+named-heading+position+unicode-sentences-v6"}
         previous = self.store.find_graph(doc_id, source_hash, digest(old_config))
+        if previous is None:
+            old_config.update(algorithm_id="a10-teaching-anchor-v5",
+                              candidate_rule="content-only+whole-document-exact-name+unicode-sentences+nfkc-latex-dash+a3+symbolic-v5")
+            previous = self.store.find_graph(doc_id, source_hash, digest(old_config))
+        if previous is None:
+            old_config.update(algorithm_id="a10-teaching-anchor-v4",
+                              candidate_rule="content-only+unicode-sentences+nfkc-latex-dash+a3+symbolic-v4")
+            previous = self.store.find_graph(doc_id, source_hash, digest(old_config))
         old = previous or self.reuse_artifact
         old_log = old.payload.get("anchor_decision_log", []) if old else []
         old_prior_log = old.payload.get("anchor_prior_verify_decision_log", []) if old else []
@@ -123,18 +132,22 @@ class AnchorConcepts:
         for node in nodes:
             if not node.get("learnable"):
                 continue
+            headings = heading_chunks(node, content_chunks)
             ids = set(node.get("defining_chunk_ids", [])) | mentioned.get(node["node_id"], set())
             ids |= {span["chunk_id"] for span in node.get("evidence", []) if isinstance(span, dict) and "chunk_id" in span}
             ids |= symbolic_name_chunks(node, chunks_artifact.result.chunks)
+            ids.update(headings)
             outside_of[node["node_id"]] = sorted({getattr(chunk_by_id[c], "role", "noi_dung")
                 for c in ids if c in chunk_by_id and getattr(chunk_by_id[c], "role", "noi_dung") != "noi_dung"})
-            candidates = candidate_sentences(node,[chunk_by_id[c] for c in ids if c in chunk_by_id],limit=CANDIDATES)
+            candidates = candidate_sentences(node,[chunk_by_id[c] for c in ids if c in chunk_by_id],
+                                             limit=CANDIDATES, headings=headings)
             if not candidates:
                 # A6 can omit literal mentions outside its retrieved pairs. Scan only
                 # nodes otherwise marked mentioned_only, avoiding a full corpus join.
                 new_ids = exact_mentions([node],content_chunks,common_names=())
                 ids.update(new_ids)
-                candidates = candidate_sentences(node,[chunk_by_id[c] for c in ids if c in chunk_by_id],limit=CANDIDATES)
+                candidates = candidate_sentences(node,[chunk_by_id[c] for c in ids if c in chunk_by_id],
+                                                 limit=CANDIDATES, headings=headings)
             candidates_of[node["node_id"]] = candidates
         pending = [node for node in sorted(nodes, key=lambda n: n["node_id"])
                    if node["node_id"] in candidates_of and candidates_of[node["node_id"]]
@@ -236,5 +249,6 @@ class AnchorConcepts:
                    "stats": stats}
         artifact = self.store.save_graph(doc_id, source_hash, config_hash, config, payload,
                                          upstream_version=upstream.version,
-                                         manifest_fields={"stage": "teaching", "stats": stats})
+                                         manifest_fields={"stage": "teaching", "stats": stats,
+                                                          "llm_transport": getattr(self.model, "transport", "unknown")})
         return artifact, False

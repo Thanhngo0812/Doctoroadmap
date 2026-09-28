@@ -298,6 +298,11 @@ Tổng USD chỉ cộng phần đã biết, không phải trần ngân sách. Kh
 stage phụ thuộc đầu ra chưa có không được nhận một artifact cũ để làm giả dự toán đầy đủ.
 _Tránh dùng_: chi phí thật, cam kết giá, chạy không có cờ (lệnh đó chỉ dừng ở lần chi đầu)
 
+**Đường gọi mô hình**:
+`developer_api` và `vertex` là hai đường vận chuyển cùng hợp đồng Gemini, không phải hai phương pháp trích xuất.
+Đổi đường gọi không đổi `model_id`, prompt hash hay khóa cache; manifest và sổ chi ghi đường đã dùng.
+Vertex lấy token qua Application Default Credentials và chuẩn hóa L2 embedding trước khi lưu.
+
 **Stage** *(không còn là đơn vị của lộ trình)*:
 Một tầng của phép xếp Coffman–Graham: các khái niệm học song song được, không cạnh `requires` nào nằm trong một
 tầng. Chỉ còn trong biến thể đối chứng và artifact cũ. Tên stage pipeline `stages` của artifact graph giữ nguyên.

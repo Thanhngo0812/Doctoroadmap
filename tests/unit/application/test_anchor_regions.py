@@ -53,6 +53,32 @@ def test_content_name_match_outside_a6_mention_map_is_still_candidate():
     assert artifact.payload['nodes'][0]['teaching_chunk_ids']==['c40']
 
 
+def test_named_section_without_body_name_is_sent_to_anchor_model():
+    store = Store()
+    store.validated.payload['nodes'] = [node('crf', 'Column-row factorization', [])]
+    store.validated.payload['mention_map'] = {}
+    store.chunks.result.chunks[1].section_path = ['3.56 column-row factorization']
+    store.chunks.result.chunks[1].text = 'Suppose A is an m-by-n matrix. Then A = CR.'
+
+    class Define:
+        model_id = 'fixture-model'
+
+        def start_session(self, prompt):
+            return self
+
+        def ask_json(self, prompt, *, response_schema):
+            data = json.loads(prompt)
+            candidate = data['candidates'][0]
+            assert candidate['chunk_id'] == 'c40'
+            assert candidate['sentence'] == 'Suppose A is an m-by-n matrix.'
+            return SimpleNamespace(payload={'node_id': 'crf', 'status': 'defined_here',
+                                            'anchor': candidate['cand_id'], 'quote': 'Suppose A',
+                                            'reason': 'definition'}, usage=None)
+
+    artifact, _ = AnchorConcepts(store, Define()).execute('doc', upstream=store.validated)
+    assert artifact.payload['nodes'][0]['teaching_chunk_ids'] == ['c40']
+
+
 def test_previous_verdict_is_reused_only_when_exact_model_input_is_unchanged():
     store,model=Store(),Model()
     store.validated.payload['nodes']=[node('cs','Cơ sở',['c5'])]

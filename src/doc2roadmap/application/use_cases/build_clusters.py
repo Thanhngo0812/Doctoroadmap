@@ -161,6 +161,7 @@ class BuildClusters:
             upstream_version=None,
             manifest_fields={
                 "stage": "clusters",
+                "embedding_transport": getattr(self.embedding, "transport", "unknown"),
                 "edge_order": "source,target",
                 "stats": stats,
                 "warnings": topic_graph["warnings"],

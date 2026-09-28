@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R7 (bổ sung 2026-09-28) · **Ai:** nhân viên · **Phụ thuộc:** 09 ·
 **Chi phí mô hình:** hỏi lại các module vi phạm (≈ 0,01 USD cho kho phát triển)
 
-**Trạng thái:** chờ giao
+**Trạng thái (2026-09-28):** đã triển khai, test và chạy lại sáu tài liệu trên A9 v10. Không còn tên module trùng trong cả sáu; doc-1 và doc-2 không có phần phụ lặp nguyên tên nền hay `(1/1)`. Vẫn còn tên nền chung như `Chapter 1`/`Chapter 9` ở doc-2 và tiêu đề dài do cây mục, ngoài phạm vi luật phần phụ của vé. [Báo cáo](../../report/ket-qua-v3-05b-09b-11b-vertex-2026-09-28.md).
 
 ## Vì sao (kiểm thử vé 09, 2026-09-28)
 Tên không còn trùng, nhưng phần phụ hay lặp tên nền ("2.1 Ma trận — Ma trận", "5.2 Dạng toàn phương trên không gian R n — trên không gian

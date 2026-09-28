@@ -1114,4 +1114,8 @@ nên kiểu mới dùng được ngay không cần sửa code tool.
 > **Sổ đăng ký kiểu nên có từ MVP** dù lúc đó chỉ chứa vài kiểu — thêm sau nghĩa là phải hồi tố mọi
 > node và cạnh đã sinh. Rẻ lúc đầu, đắt lúc sau.
 
+Đường gọi Vertex AI là thay đổi hạ tầng theo [vé v3-19](../task/v3-lo-trinh-doc-duoc/19-goi-mo-hinh-qua-vertex.md),
+không đổi thuật toán, prompt hay cache của A3–A10. Khi dùng Vertex, cấu hình `DOC2ROADMAP_LLM_TRANSPORT=vertex`,
+`DOC2ROADMAP_VERTEX_PROJECT`, `DOC2ROADMAP_VERTEX_LOCATION=global`; xác thực bằng ADC, không đặt khóa vào repo.
+
 Nguyên tắc chung: đo chất lượng graph bằng mắt người trên 2–3 tài liệu thật **trước khi** đầu tư vào phần adaptive — graph sai thì mọi thứ phía sau sai theo.

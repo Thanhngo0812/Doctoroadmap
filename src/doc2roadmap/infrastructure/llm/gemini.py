@@ -4,11 +4,13 @@ import base64
 import json
 import re
 from random import random
+from threading import local
 from time import sleep
 from typing import Any, Sequence
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from doc2roadmap.infrastructure.google_auth import VertexCredentials
 from doc2roadmap.application.ports.extraction import (
     ConversationTurn,
     ExtractionReply,
@@ -30,15 +32,20 @@ class MalformedModelResponse(ValueError):
 class GeminiEntityExtractor:
     def __init__(
         self,
-        api_key: str,
+        api_key: str | None,
         model_id: str = DEFAULT_MODEL_ID,
         *,
         timeout_seconds: float = 120,
         max_retries: int = 3,
         temperature: float = 0,
         max_output_tokens: int = 8192,
+        transport: str = "developer_api",
+        vertex_project: str | None = None,
+        vertex_location: str = "global",
     ) -> None:
-        if not api_key.strip():
+        if transport not in {"developer_api", "vertex"}:
+            raise ValueError("Gemini transport không hợp lệ")
+        if transport == "developer_api" and not (api_key and api_key.strip()):
             raise ValueError("thiếu DOC2ROADMAP_GEMINI_API_KEY")
         if not _MODEL_ID.fullmatch(model_id):
             raise ValueError("Gemini model_id không hợp lệ")
@@ -51,11 +58,15 @@ class GeminiEntityExtractor:
         if max_output_tokens <= 0:
             raise ValueError("Gemini max_output_tokens phải lớn hơn 0")
         self._api_key = api_key
+        self.transport = transport
+        self._vertex = VertexCredentials(vertex_project, vertex_location) if transport == "vertex" else None
         self._model_id = model_id
         self._timeout_seconds = timeout_seconds
         self._max_retries = max_retries
         self._temperature = temperature
         self._max_output_tokens = max_output_tokens
+        self.retry_429_count = 0
+        self._retry_state = local()
 
     @property
     def identifier(self) -> str:
@@ -101,13 +112,12 @@ class GeminiEntityExtractor:
                 "responseJsonSchema": response_schema,
             },
         }
+        url = self._vertex.url(self._model_id, "generateContent") if self._vertex else _ENDPOINT.format(model=self._model_id)
+        headers = self._vertex.headers() if self._vertex else {"x-goog-api-key": self._api_key}
         request = Request(
-            _ENDPOINT.format(model=self._model_id),
+            url,
             data=json.dumps(body, ensure_ascii=False, separators=(",", ":")).encode(),
-            headers={
-                "Content-Type": "application/json",
-                "x-goog-api-key": self._api_key,
-            },
+            headers={"Content-Type": "application/json", **headers},
             method="POST",
         )
         response = self._post(request)
@@ -134,6 +144,9 @@ class GeminiEntityExtractor:
                 with urlopen(request, timeout=self._timeout_seconds) as response:
                     return response.read()
             except HTTPError as error:
+                if error.code == 429:
+                    self.retry_429_count += 1
+                    self._retry_state.count = getattr(self._retry_state, "count", 0) + 1
                 if error.code not in _RETRYABLE_HTTP:
                     raise ModelTransportError(f"Gemini API trả HTTP {error.code}") from error
                 failure: Exception = error

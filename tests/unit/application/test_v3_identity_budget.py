@@ -19,7 +19,7 @@ def test_evaluation_budget_refuses_before_the_network_and_accounts_for_real_usag
 
     def complete(self, *args):
         calls.append(args)
-        assert self._max_output_tokens == 1024 and self._max_retries == 0 and self._temperature == 0
+        assert self._max_output_tokens == 1024 and self._max_retries == 3 and self._temperature == 0
         return "{}", {"promptTokenCount": 100, "candidatesTokenCount": 10, "thoughtsTokenCount": 5}
 
     monkeypatch.setattr(module.GeminiEntityExtractor, "_complete", complete)
@@ -50,3 +50,24 @@ def test_failed_completion_keeps_reservation_instead_of_claiming_zero_cost(monke
         model._complete("system", [], {})
     rows = json.loads(ledger.read_text())
     assert len(rows) == 1 and rows[0]["reserved"] and rows[0]["usd"] > 0
+
+
+def test_windows_ledger_replace_conflict_retries_before_network(monkeypatch, tmp_path):
+    module = runner()
+    original = module.JsonArtifactStore._write
+    attempts = []
+
+    def flaky(path, payload):
+        attempts.append(path)
+        if len(attempts) == 1:
+            raise PermissionError("file briefly open")
+        return original(path, payload)
+
+    monkeypatch.setattr(module.JsonArtifactStore, "_write", staticmethod(flaky))
+    monkeypatch.setattr(module, "sleep", lambda seconds: None)
+    monkeypatch.setattr(module.GeminiEntityExtractor, "_complete",
+                        lambda self, *args: ("{}", {"promptTokenCount": 1, "candidatesTokenCount": 1}))
+    ledger = tmp_path / "spend.json"
+    module.MeteredGemini("key", max_usd=1, ledger_path=ledger)._complete("system", [], {})
+    assert len(attempts) == 3  # reserve retried once; final actual usage written once
+    assert json.loads(ledger.read_text())[0]["reserved"] is False

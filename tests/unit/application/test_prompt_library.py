@@ -74,7 +74,7 @@ def test_product_prompt_hashes_are_intentionally_versioned():
     assert a3_actual == a3_expected, HASH_CHANGE_WARNING
     assert a4_actual == a4_expected, HASH_CHANGE_WARNING
     assert a8_actual == a8_expected, HASH_CHANGE_WARNING
-    assert anchor_prompt_hash("golden-model", GENERATION) == "8471d0b1c3b9cf1b58b4682641f7c6d2a7c8c57cfc5b4ed00b4afed37a684026", HASH_CHANGE_WARNING
+    assert anchor_prompt_hash("golden-model", GENERATION) == "fe6f3800411039a0847f3567583fa50cb01d9fdf580df98f19f2d6df1462d51f", HASH_CHANGE_WARNING
     assert identity_prompt_hash("golden-model", GENERATION) == "63c8b598fbf7fafcfb124f8620efbb4fde4b4b6f60cef8e9e8debbac9dad80b8", HASH_CHANGE_WARNING
     assert implicit_prompt_hash("golden-model", GENERATION) == "c85420aa9be04ebc97182c89c79dfcfe6a48bda6ce0402e3a39bd2c363b40bf5", HASH_CHANGE_WARNING
     assert relation_prompt_hash("golden-model", GENERATION) == "e527ece3e33e870797fabca5bc59fb280bcf692744795ff0466e8bfec90f2173", HASH_CHANGE_WARNING

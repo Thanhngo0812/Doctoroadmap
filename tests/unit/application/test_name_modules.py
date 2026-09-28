@@ -14,7 +14,12 @@ class Store:
 
     def load_role_chunks(self, doc_id, version):
         assert version == 4
-        return Obj(version=version, result=Obj(sections=self.sections, chunks=self.chunks))
+        manifest = {"role_transfer": {"reference_version": 7}} if hasattr(self, "reference") else {}
+        return Obj(version=version, manifest=manifest, result=Obj(sections=self.sections, chunks=self.chunks))
+
+    def load_chunks(self, doc_id, version):
+        assert version == 7
+        return self.reference
 
     def find_graph(self, *args):
         return None
@@ -45,6 +50,11 @@ class Model:
         return Obj(payload={"suffix": "unrelated"})
 
 
+class RepairModel(Model):
+    def ask_json(self, prompt, response_schema):
+        return Obj(payload={"suffix": "Addition" if "module_001" in prompt else "Multiplication"})
+
+
 def upstream():
     return Obj(version=1, manifest={"config": {"chunks_version": 4}, "config_hash": "base"},
                payload={"stage": "stages", "nodes": [
@@ -65,7 +75,7 @@ def test_name_modules_dry_run_then_invalid_suffix_falls_back_to_unique_titles():
     artifact, reused = stage.execute("doc", upstream=upstream())
     assert not reused and model.calls == 4
     assert [row["title"] for row in artifact.payload["modules"]] == [
-        "Operations (1/2)", "Operations (2/2)"]
+        "Operations — Addition", "Operations — Multiplication"]
     assert all(row["title_source"] == "section" for row in artifact.payload["modules"])
 
 
@@ -87,3 +97,54 @@ def test_title_uses_all_members_not_only_top_two_ranked_sections():
     artifact, _ = NameModules(store, model).execute("doc", upstream=base)
     assert artifact.payload["modules"][0]["title"] == "Introduction"
     assert model.calls == 0
+
+
+def test_single_concept_title_does_not_gain_one_of_one():
+    store, model, base = Store(), Model(), upstream()
+    store.chunks[0].parent_section_id = "missing"
+    base.payload["modules"] = [base.payload["modules"][0]]
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert artifact.payload["modules"][0]["title"] == "Addition"
+    assert model.calls == 0
+
+
+def test_valid_prior_decision_is_reused_but_invalid_old_suffix_is_reasked():
+    old = Obj(payload={"module_title_decision_log": [
+        {"valid": True, "input": {"module_id": "module_001", "section_title": "Operations",
+                                  "concept_names": ["Addition"]}, "output": {"suffix": "Addition"}},
+        {"valid": True, "input": {"module_id": "module_002", "section_title": "Operations",
+                                  "concept_names": ["Multiplication"]}, "output": {"suffix": "Operations"}},
+    ]})
+    store, model = Store(), RepairModel()
+    stage = NameModules(store, model, reuse_artifact=old)
+    assert stage.plan("doc", upstream=upstream()).remaining_items == 1
+    artifact, _ = stage.execute("doc", upstream=upstream())
+    assert model.calls == 1
+    assert [m["title"] for m in artifact.payload["modules"]] == [
+        "Operations — Addition", "Operations — Multiplication"]
+
+
+def test_reference_tree_replaces_broken_section_path_for_titles_only():
+    store, model, base = Store(), Model(), upstream()
+    store.chunks = [Obj(chunk_id="c1", text="uno dos tres cuatro cinco seis siete ocho",
+                        parent_section_id="unit", role="noi_dung", order_index=0)]
+    store.sections = [Obj(section_id="unit", title="Chapter 1", parent_section_id=None, role="noi_dung")]
+    store.reference = Obj(version=7, result=Obj(
+        sections=[Obj(section_id="real", title="Álgebra lineal", parent_section_id=None, role="noi_dung")],
+        chunks=[Obj(chunk_id="new", text="uno dos tres cuatro cinco seis siete ocho",
+                    parent_section_id="real", role="noi_dung", order_index=0)]))
+    base.payload["modules"] = [base.payload["modules"][0]]
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert artifact.payload["modules"][0]["title"] == "Álgebra lineal"
+    assert base.payload["modules"][0]["node_ids"] == ["a"]
+
+
+def test_fallback_uses_first_and_highest_outdegree_full_concept_names():
+    store, model, base = Store(), Model(), upstream()
+    base.payload["nodes"].append({"node_id": "c", "name": "Division", "teaching_chunk_ids": ["c2"]})
+    base.payload["modules"][0]["node_ids"] = ["a", "b", "c"]
+    base.payload["modules"][1]["node_ids"] = ["c"]
+    base.payload["requires_edges"] = [{"source": "b", "target": "a"},
+                                      {"source": "b", "target": "c"}]
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert artifact.payload["modules"][0]["title"] == "Operations — Addition · Multiplication"

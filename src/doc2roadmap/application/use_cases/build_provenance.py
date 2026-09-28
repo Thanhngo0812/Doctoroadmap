@@ -251,6 +251,7 @@ class BuildProvenance:
             config,
             payload,
             upstream_version=mentions.version,
-            manifest_fields={"stage": "provenance", "stats": stats},
+            manifest_fields={"stage": "provenance", "stats": stats,
+                             "llm_transport": getattr(self.model, "transport", "unknown")},
         )
         return artifact, False

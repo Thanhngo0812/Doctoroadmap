@@ -3,7 +3,6 @@ from __future__ import annotations
 import unicodedata
 import re
 
-from .provenance import DEFAULT_DEFINITION_SIGNALS
 from .sentence_splitter import UnicodeSentenceSplitter
 
 # Neo định nghĩa (spec v2, W11–W12): mỗi khái niệm có một câu nguyên văn nơi tài liệu dạy nó; trạng thái là thuộc tính
@@ -107,15 +106,36 @@ def _names(node):
     return {_compact(value) for value in values if len(_compact(value)) >= 2}
 
 
-def candidate_sentences(node, chunks, *, limit=6):
-    """Câu nhắc tên hoặc alias của khái niệm, hoặc chứa căn cứ A3 của nó; câu có tín hiệu định nghĩa hay căn cứ A3 đứng
-    trước, rồi theo vị trí trong tài liệu.
+def heading_chunks(node, chunks):
+    """First chunk of a named section, or a chunk opening with a named block title."""
+    names = _names(node)
+    found, previous_path = {}, ()
+    for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id)):
+        if getattr(chunk, "role", "noi_dung") != "noi_dung":
+            continue
+        path = tuple(getattr(chunk, "section_path", None) or ())
+        if path != previous_path and path and any(name in _compact(path[-1]) for name in names):
+            found[chunk.chunk_id] = (path[-1], 0)
+        previous_path = path
+        offset = 0
+        for line in chunk.text.splitlines(keepends=True)[:3]:
+            title = line.strip()
+            offset += len(line)
+            if (title and len(title) <= 140 and not title.endswith((".", "。", "!", "?", "؟"))
+                    and any(name in _compact(title) for name in names)):
+                found[chunk.chunk_id] = (title, offset)
+                break
+    return found
+
+
+def candidate_sentences(node, chunks, *, limit=6, headings=None):
+    """Căn cứ A3, rồi khối mang tên khái niệm, rồi câu nhắc tên theo vị trí.
 
     Câu căn cứ A3 luôn là ứng viên: tên do mô hình đặt ("Hàng hoặc cột tỷ lệ") thường không có nguyên văn trong sách,
     còn căn cứ thì đã được kiểm là có. Ưu tiên mỗi chunk một câu trước khi lấy câu thứ hai của cùng chunk.
     """
     names = _names(node)
-    signals = tuple(_norm(signal) for signal in DEFAULT_DEFINITION_SIGNALS)
+    headings = heading_chunks(node, chunks) if headings is None else headings
     # Khớp theo câu trích chứ không theo offset: offset căn cứ tính trên toàn văn bản, không trên chunk.
     evidence = {}
     for span in node.get("evidence", []):
@@ -125,9 +145,16 @@ def candidate_sentences(node, chunks, *, limit=6):
     for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id)):
         if getattr(chunk, "role", "noi_dung") != "noi_dung":
             continue
+        title = headings.get(chunk.chunk_id)
+        if title:
+            body = _sentences(chunk.text[title[1]:])
+            if body:
+                start, sentence = body[0]
+                found.append({"chunk_id": chunk.chunk_id, "order_index": chunk.order_index,
+                              "char_start": title[1] + start, "sentence": sentence,
+                              "context": " ".join([title[0], *(text for _, text in body[:2])]), "rank": 1})
         sentences = _sentences(chunk.text)
         for index, (start, sentence) in enumerate(sentences):
-            flat = _norm(sentence)
             compact = _compact(sentence)
             # Câu chứa đầu câu trích, hoặc nằm trọn trong câu trích dài nhiều câu.
             cited = any(quote[:40] in compact or (len(compact) >= 8 and compact in quote)
@@ -137,14 +164,18 @@ def candidate_sentences(node, chunks, *, limit=6):
             context = " ".join(text for _, text in sentences[max(0, index - 1): index + 2])
             found.append({"chunk_id": chunk.chunk_id, "order_index": chunk.order_index, "char_start": start,
                           "sentence": sentence, "context": context,
-                          "signal": cited or any(signal in flat for signal in signals)})
+                          "rank": 0 if cited else 2})
     seen, ranked = set(), []
-    for row in sorted(found, key=lambda r: (not r["signal"], r["order_index"], r["char_start"])):
+    for row in sorted(found, key=lambda r: (r["rank"], r["order_index"], r["char_start"])):
         ranked.append((row["chunk_id"] in seen, row))
         seen.add(row["chunk_id"])
     picked = [row for _, row in sorted(ranked, key=lambda pair: pair[0])][:limit]
-    picked.sort(key=lambda r: (not r["signal"], r["order_index"], r["char_start"]))
-    return [{"cand_id": f"k{index}", **{k: v for k, v in row.items() if k != "signal"}}
+    if limit and not any(row["rank"] == 1 for row in picked):
+        first_heading = next((row for row in found if row["rank"] == 1), None)
+        if first_heading is not None:
+            picked[-1:] = [first_heading]
+    picked.sort(key=lambda r: (r["rank"], r["order_index"], r["char_start"]))
+    return [{"cand_id": f"k{index}", **{k: v for k, v in row.items() if k != "rank"}}
             for index, row in enumerate(picked, 1)]
 
 

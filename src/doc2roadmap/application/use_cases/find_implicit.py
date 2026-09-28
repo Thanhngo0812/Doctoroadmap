@@ -147,5 +147,6 @@ class FindImplicitPrerequisites:
                    "stats": stats}
         artifact = self.store.save_graph(doc_id, source_hash, config_hash, config, payload,
                                          upstream_version=upstream.version,
-                                         manifest_fields={"stage": "implicit", "stats": stats})
+                                         manifest_fields={"stage": "implicit", "stats": stats,
+                                                          "llm_transport": getattr(self.model, "transport", "unknown")})
         return artifact, False

@@ -112,6 +112,7 @@ class IndexDocument:
             upstream_version=stored.version,
             manifest_fields={
                 "embedding_model_id": self.embedding.embedding_model_id,
+                "embedding_transport": getattr(self.embedding, "transport", "unknown"),
                 "chunk_count": len(chunks),
                 "text_rules": TEXT_RULE_VERSION,
                 "input_format": "section-path-v1",

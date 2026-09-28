@@ -7,6 +7,7 @@ import argparse
 import json
 from pathlib import Path
 from threading import Lock
+from time import sleep
 
 from doc2roadmap.application.prerequisite_prompt import PRICING_USD_PER_MILLION as PRICE
 from doc2roadmap.application.spend_guard import SpendGuard
@@ -46,10 +47,23 @@ class MeteredGemini(GeminiEntityExtractor):
     Phản hồi lỗi/thiếu usage giữ nguyên dự phòng, không coi là miễn phí. Sổ chi tiếp tục qua các lần chạy.
     """
 
-    def __init__(self, key, *, max_usd, ledger_path, max_output_tokens=1024):
-        super().__init__(key, "gemini-3.1-flash-lite", max_output_tokens=max_output_tokens, temperature=0, max_retries=0)
+    def __init__(self, key, *, max_usd, ledger_path, max_output_tokens=1024,
+                 transport="developer_api", vertex_project=None, vertex_location="global"):
+        super().__init__(key, "gemini-3.1-flash-lite", max_output_tokens=max_output_tokens,
+                         temperature=0, max_retries=3, transport=transport,
+                         vertex_project=vertex_project, vertex_location=vertex_location)
         self.limit, self.ledger_path, self.lock = max_usd, ledger_path, Lock()
         self.ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else []
+
+    def _write_ledger(self):
+        for attempt in range(5):
+            try:
+                JsonArtifactStore._write(self.ledger_path, self.ledger)
+                return
+            except PermissionError:
+                if attempt == 4:
+                    raise
+                sleep(0.1 * (attempt + 1))
 
     def _complete(self, system_prompt, turns, response_schema):
         content = system_prompt + json.dumps(response_schema, ensure_ascii=False) + "".join(t.text for t in turns)
@@ -57,17 +71,19 @@ class MeteredGemini(GeminiEntityExtractor):
         with self.lock:
             if sum(r["usd"] for r in self.ledger) + reserve > self.limit:
                 raise BudgetStop("Chạm dự phòng ngân sách; giữ checkpoint, không gọi thêm.")
-            row = {"usd": reserve, "reserved": True}
+            row = {"usd": reserve, "reserved": True, "transport": self.transport}
             self.ledger.append(row)
             call_index = len(self.ledger)
-            JsonArtifactStore._write(self.ledger_path, self.ledger)
+            self._write_ledger()
+        before_429 = getattr(self._retry_state, "count", 0)
         text, usage = super()._complete(system_prompt, turns, response_schema)
         if usage.get("promptTokenCount") is not None and usage.get("candidatesTokenCount") is not None:
             with self.lock:
                 row.update(usage=usage, reserved=False,
+                           retry_429=getattr(self._retry_state, "count", 0) - before_429,
                     usd=(usage["promptTokenCount"] * PRICE["input"] +
                          (usage["candidatesTokenCount"] + usage.get("thoughtsTokenCount", 0)) * PRICE["output"]) / 1e6)
-                JsonArtifactStore._write(self.ledger_path, self.ledger)
+                self._write_ledger()
                 if call_index % 50 == 0:
                     print(f"completion {call_index}; spent/reserved {sum(r['usd'] for r in self.ledger):.6f} USD", flush=True)
         return text, usage
@@ -85,7 +101,9 @@ def main():
     output = JsonArtifactStore(root)
     store = EvaluationStore(JsonArtifactStore(settings.artifact_dir), output)
     key = settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else "dry-run-no-key"
-    raw = MeteredGemini(key, max_usd=args.max_usd, ledger_path=root / "spend.json")
+    raw = MeteredGemini(key, max_usd=args.max_usd, ledger_path=root / "spend.json",
+                        transport=settings.llm_transport, vertex_project=settings.vertex_project,
+                        vertex_location=settings.vertex_location)
     model = SpendGuard(raw, allowed=args.allow_spend)
     prepared = []
     for doc, version in TEACHING.items():

@@ -1,6 +1,6 @@
 from types import SimpleNamespace as Obj
 
-from doc2roadmap.domain.module_titles import clean_titles, common_content_title, grounded_suffix
+from doc2roadmap.domain.module_titles import clean_titles, common_content_title, grounded_suffix, transfer_chunk_sections
 
 
 def section(identifier, title, parent=None, role="noi_dung"):
@@ -31,5 +31,24 @@ def test_common_title_must_be_shared_content_section():
 def test_suffix_rejects_unseen_content_words_across_scripts():
     assert grounded_suffix("Algèbre linéaire", ["Algèbre des matrices", "Transformation linéaire"])
     assert not grounded_suffix("topologie linéaire", ["Algèbre des matrices", "Transformation linéaire"])
-    assert grounded_suffix("学習", ["機械学習", "方法"])
+    assert not grounded_suffix("学習", ["機械学習", "方法"])
     assert not grounded_suffix("分析", ["機械学習", "方法"])
+
+
+def test_suffix_rejects_base_repetition_fragments_and_nonletters_across_languages():
+    assert not grounded_suffix("Algèbre", ["Algèbre linéaire"], "2.1 Algèbre")
+    assert not grounded_suffix("linéaire Algèbre", ["Algèbre linéaire"], "Algèbre")
+    assert not grounded_suffix("Matrices", ["Matrices inversibles"], "Matrices inversibles avancées")
+    assert not grounded_suffix("linéaire", ["Algèbre linéaire"], "Matrices")
+    assert not grounded_suffix("実", ["実数空間"], "空間")
+    assert not grounded_suffix("(1/1)", ["Vecteurs"], "Chapitre 1")
+    assert grounded_suffix("Algèbre linéaire", ["Algèbre linéaire"], "Matrices")
+    assert grounded_suffix("実数空間", ["実数空間"], "行列")
+
+
+def test_transfer_section_path_by_text_not_broken_old_tree():
+    old = [Obj(chunk_id="old", text="uno dos tres cuatro cinco seis siete ocho", parent_section_id="broken")]
+    new = [Obj(chunk_id="new-a", text="uno dos tres cuatro cinco seis", parent_section_id="correct"),
+           Obj(chunk_id="new-b", text="tres cuatro cinco seis siete ocho", parent_section_id="correct")]
+    assert transfer_chunk_sections(old, new) == {"old": "correct"}
+    assert old[0].parent_section_id == "broken"

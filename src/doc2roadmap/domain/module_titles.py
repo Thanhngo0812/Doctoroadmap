@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import re
 import unicodedata
-from collections import Counter
+from collections import Counter, defaultdict
 
 from .unicode_text import unspaced_character
 
@@ -60,14 +60,56 @@ def common_content_title(section_ids, sections, cleaned):
     return answer
 
 
-def grounded_suffix(suffix, source_names):
+def transfer_chunk_sections(old_chunks, new_chunks):
+    """Display-only section transfer using the 14b text-shingle/nearest-order rule."""
+    def shingles(text):
+        words = text.split()
+        width = min(6, len(words))
+        return [tuple(words[i:i + width]) for i in range(len(words) - width + 1)] if width else []
+
+    index = defaultdict(list)
+    for i, chunk in enumerate(new_chunks):
+        for shingle in set(shingles(chunk.text)):
+            index[shingle].append(i)
+    transferred = {}
+    for old_index, chunk in enumerate(old_chunks):
+        tokens = shingles(chunk.text)
+        expected = old_index * len(new_chunks) / max(len(old_chunks), 1)
+        scores = Counter(min(index[token], key=lambda i: abs(i - expected))
+                         for token in tokens if token in index)
+        by_section = Counter()
+        for i, score in scores.items():
+            by_section[new_chunks[i].parent_section_id] += score
+        if by_section:
+            section_id, count = by_section.most_common(1)[0]
+            if count >= len(tokens) / 2 and count > sum(by_section.values()) - count:
+                transferred[chunk.chunk_id] = section_id
+    return transferred
+
+
+def _normalized(text):
+    return "".join(char.casefold() for char in unicodedata.normalize("NFKC", str(text))
+                   if unicodedata.category(char)[0] in "LMN")
+
+
+def grounded_suffix(suffix, source_names, base_title="", concept_names=None):
     """A model may rearrange source words, never invent content words."""
     suffix = " ".join(str(suffix).split())
+    normalized = _normalized(suffix)
+    base = _normalized(base_title)
     source = " ".join(source_names).casefold()
     source_words = set(re.findall(r"[^\W_]+", source, flags=re.UNICODE))
-    if not suffix or len(suffix) > 72 or "\n" in suffix:
+    if (not suffix or len(suffix) > 72 or "\n" in suffix
+            or not any(unicodedata.category(char).startswith("L") for char in suffix)
+            or (base and (normalized in base or base in normalized))):
         return False
-    for word in re.findall(r"[^\W_]+", suffix.casefold(), flags=re.UNICODE):
+    words = re.findall(r"[^\W_]+", suffix.casefold(), flags=re.UNICODE)
+    for name in source_names if concept_names is None else concept_names:
+        name_words = re.findall(r"[^\W_]+", name.casefold(), flags=re.UNICODE)
+        if (normalized != _normalized(name)
+                and (normalized in _normalized(name) or set(words) <= set(name_words))):
+            return False
+    for word in words:
         if word not in source_words and not (any(unspaced_character(char) for char in word) and word in source):
             return False
     return True

@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R3 (bổ sung 2026-09-28) · **Ai:** nhân viên · **Phụ thuộc:** 05 ·
 **Chi phí mô hình:** chạy lại neo phần đầu vào đổi trên kho phát triển (ước bằng `--dry-run` trước; dự kiến ≈ 0,1–0,4 USD)
 
-**Trạng thái:** chờ giao. **Ưu tiên cao nhất đợt này:** nghiệm thu chất lượng vé 07 và 18 trên doc-2 chờ vé này.
+**Trạng thái (2026-09-28):** đã triển khai và chạy end-to-end sáu tài liệu trên A9 v10; **chưa đạt mục tiêu chất lượng doc-2**. Neo "Matrix of a linear map" đã chuyển tới khối dạy ở thứ tự 343, "Column-row factorization" ở 391; "Matrix" vẫn là node A3 nhập nhằng nghĩa với ma trận của ánh xạ tuyến tính, còn "Jordan basis" chưa đủ căn cứ (`uncertain`). Q7 doc-2 = 0,469; 13/57 cạnh vàng ngoài phạm vi. [Báo cáo](../../report/ket-qua-v3-05b-09b-11b-vertex-2026-09-28.md).
 
 ## Vì sao (kiểm thử vé 07, 18, 2026-09-28)
 - doc-2: "Matrix of a linear map" bị neo vào câu xem trước đầu chương 3 ("A major concept that we will introduce in this chapter is the

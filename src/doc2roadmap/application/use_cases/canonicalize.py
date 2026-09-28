@@ -165,6 +165,7 @@ class Canonicalize:
         if self.reasoning:
             manifest_fields["document_language"] = reasoning_metrics["document_language"]
             manifest_fields["language_decision"] = reasoning_metrics["language_decision"]
+            manifest_fields["llm_transport"] = getattr(self.reasoning.judge, "transport", "unknown")
         if a4_gold_coverage is not None:
             manifest_fields["a4_gold_coverage"] = a4_gold_coverage
             manifest_fields["gold_sheet_id"] = gold_sheet_id

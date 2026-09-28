@@ -1221,7 +1221,9 @@ class ExtractEntities:
         manifest_fields = {
             "text_rules": TEXT_RULE_VERSION,
             "model_id": self.extractor.model_id,
+            "llm_transport": getattr(self.extractor, "transport", "unknown"),
             "embedding_model_id": embedding_model_id,
+            "embedding_transport": getattr(self.embedding, "transport", "unknown"),
             "prompt_hash": digest,
             "tokenizer_id": stored.manifest["config"].get("tokenizer_id"),
             "type_registry": asdict(registry),

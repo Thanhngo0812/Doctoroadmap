@@ -170,6 +170,7 @@ class CheckTeachingSources:
             config,
             payload,
             upstream_version=validated.version,
-            manifest_fields={"stage": "teaching", "stats": stats},
+            manifest_fields={"stage": "teaching", "stats": stats,
+                             "llm_transport": getattr(self.model, "transport", "unknown")},
         )
         return artifact, False

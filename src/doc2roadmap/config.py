@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import Literal
 
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -21,6 +22,10 @@ class Settings(BaseSettings):
     tokenizer_model: Path = Path("vendor/gemma/tokenizer.model")
     tokenizer_id: str = "google-gemma-sentencepiece-v1"
     gemini_api_key: SecretStr | None = None
+    llm_transport: Literal["developer_api", "vertex"] = "developer_api"
+    vertex_project: str | None = None
+    vertex_location: str = "global"
+    vertex_concurrency: int = Field(default=2, gt=0)
     extraction_model_id: str = "gemini-3.1-flash-lite"
     extraction_few_shot: Path | None = None
     merge_model_id: str = "gemini-3.1-flash-lite"

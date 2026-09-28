@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R9 (bổ sung 2026-09-28) · **Ai:** nhân viên · **Phụ thuộc:** 11 ·
 **Chi phí mô hình:** vài lời gọi (≈ 0,005 USD cho kho phát triển)
 
-**Trạng thái:** chờ giao
+**Trạng thái (2026-09-28):** đã triển khai, test và chạy lại sáu tài liệu. doc-1 có tên hiển thị hợp lệ cho 7/8 nhãn cần kiểm; `Định lý 4` giữ nhãn cũ kèm cảnh báo `display_name quá dài`, đúng đường fallback của vé. Không nhận tên trùng với khái niệm khác. [Báo cáo](../../report/ket-qua-v3-05b-09b-11b-vertex-2026-09-28.md).
 
 ## Vì sao (kiểm thử vé 11, 2026-09-28)
 - "Định lý 4" → "Ma trận chuyển cơ sở", "Định lý 7" → "Hạng của hệ véc tơ": tên hiển thị **trùng tên khái niệm có sẵn** trong sách.

@@ -181,6 +181,7 @@ class BuildMentions:
             config,
             payload,
             upstream_version=clusters.version,
-            manifest_fields={"stage": "mentions", "stats": stats, "text_rules": TEXT_RULE_VERSION},
+            manifest_fields={"stage": "mentions", "stats": stats, "text_rules": TEXT_RULE_VERSION,
+                             "embedding_transport": getattr(self.embedding, "transport", "unknown")},
         )
         return artifact, False

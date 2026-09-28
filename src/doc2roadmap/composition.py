@@ -33,9 +33,9 @@ def build_inspect() -> InspectDocument:
 
 def _a3_dependencies() -> tuple[Settings, JsonArtifactStore, GeminiEmbedding]:
     settings = Settings()
-    if settings.gemini_api_key is None:
+    if settings.llm_transport == "developer_api" and settings.gemini_api_key is None:
         raise ValueError("thiếu DOC2ROADMAP_GEMINI_API_KEY")
-    key = settings.gemini_api_key.get_secret_value()
+    key = settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None
     store = JsonArtifactStore(settings.artifact_dir)
     embedding = GeminiEmbedding(
         key,
@@ -43,20 +43,24 @@ def _a3_dependencies() -> tuple[Settings, JsonArtifactStore, GeminiEmbedding]:
         output_dimensionality=settings.embedding_dimensions,
         timeout=settings.gemini_timeout_seconds,
         max_retries=settings.gemini_max_retries,
+        transport=settings.llm_transport, vertex_project=settings.vertex_project,
+        vertex_location=settings.vertex_location,
     )
     return settings, store, embedding
 
 
 def _extractor(settings: Settings) -> GeminiEntityExtractor:
-    if settings.gemini_api_key is None:
+    if settings.llm_transport == "developer_api" and settings.gemini_api_key is None:
         raise ValueError("thiếu DOC2ROADMAP_GEMINI_API_KEY")
     return GeminiEntityExtractor(
-        settings.gemini_api_key.get_secret_value(),
+        settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None,
         settings.extraction_model_id,
         timeout_seconds=settings.gemini_timeout_seconds,
         max_retries=settings.gemini_max_retries,
         temperature=settings.extraction_temperature,
         max_output_tokens=settings.extraction_max_output_tokens,
+        transport=settings.llm_transport, vertex_project=settings.vertex_project,
+        vertex_location=settings.vertex_location,
     )
 
 
@@ -122,7 +126,9 @@ def build_region_roles(*, allow_spend=False):
     model = GeminiEntityExtractor(
         settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else 'dry-run-no-key',
         settings.roadmap_model_id, temperature=0.0, max_output_tokens=16384,
-        timeout_seconds=settings.gemini_timeout_seconds, max_retries=0)
+        timeout_seconds=settings.gemini_timeout_seconds, max_retries=0,
+        transport=settings.llm_transport, vertex_project=settings.vertex_project,
+        vertex_location=settings.vertex_location)
     return LabelChunkRoles(JsonArtifactStore(settings.artifact_dir), model, allow_spend=allow_spend)
 
 
@@ -136,9 +142,11 @@ def build_canonical(*, prepare=False):
     if prepare:
         return Canonicalize(store, embedding, graph_config=graph)
     def model(model_id):
-        return GeminiEntityExtractor(settings.gemini_api_key.get_secret_value(), model_id,
+        return GeminiEntityExtractor(settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None, model_id,
             timeout_seconds=settings.gemini_timeout_seconds, max_retries=settings.gemini_max_retries,
-            temperature=settings.extraction_temperature, max_output_tokens=settings.extraction_max_output_tokens)
+            temperature=settings.extraction_temperature, max_output_tokens=settings.extraction_max_output_tokens,
+            transport=settings.llm_transport, vertex_project=settings.vertex_project,
+            vertex_location=settings.vertex_location)
     reasoning = CanonicalReasoning(model(settings.merge_model_id), model(settings.description_model_id),
         generation={"temperature": settings.extraction_temperature, "max_output_tokens": settings.extraction_max_output_tokens},
         language_rule=settings.canonical_language_rule, batch_size=settings.canonical_batch_size,
@@ -166,15 +174,19 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
     from doc2roadmap.application.use_cases.name_concept_labels import NameConceptLabels
 
     settings, store, embedding = _a3_dependencies()
+    roadmap_concurrency = (settings.vertex_concurrency if settings.llm_transport == "vertex"
+                           else settings.roadmap_concurrency)
     # Mọi lời gọi trả tiền của chuỗi đồ thị đi qua chốt chặn: một đổi thuật toán (như F126) không được lặng lẽ tiêu tiền.
     embedding = SpendGuard(embedding, allowed=allow_spend)
     model = SpendGuard(GeminiEntityExtractor(
-        settings.gemini_api_key.get_secret_value(),
+        settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None,
         settings.roadmap_model_id,
         timeout_seconds=settings.gemini_timeout_seconds,
         max_retries=settings.gemini_max_retries,
         temperature=0.0,
         max_output_tokens=settings.extraction_max_output_tokens,
+        transport=settings.llm_transport, vertex_project=settings.vertex_project,
+        vertex_location=settings.vertex_location,
     ), allowed=allow_spend)
     generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}
     return BuildLearningGraph(
@@ -197,31 +209,31 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
         BuildProvenance(
             store,
             model,
-            concurrency=settings.roadmap_concurrency,
+            concurrency=roadmap_concurrency,
             generation=generation,
         ),
         BuildMainEdges(
             store,
             model,
             single_session_limit=settings.roadmap_single_session_limit,
-            concurrency=settings.roadmap_concurrency,
+            concurrency=roadmap_concurrency,
             generation=generation,
         ),
         BuildSecondaryEdges(
             store,
             model,
-            concurrency=settings.roadmap_concurrency,
+            concurrency=roadmap_concurrency,
             generation=generation,
         ),
         ValidateGraph(store),
         # Neo định nghĩa C8 v3 thay C8 v2 từ 2026-09-26 (chủ dự án duyệt, vé v2-04); danh tính sau neo (vé v2-05).
         # Giữ generation mặc định của hai stage — đúng cấu hình đã đo trên dữ liệu phát triển.
-        AnchorConcepts(store, model, concurrency=settings.roadmap_concurrency),
-        JudgeIdentity(store, model, concurrency=settings.roadmap_concurrency, review=identity_review),
+        AnchorConcepts(store, model, concurrency=roadmap_concurrency),
+        JudgeIdentity(store, model, concurrency=roadmap_concurrency, review=identity_review),
         BuildRoadmap(
             store,
             stage_cap=settings.roadmap_stage_cap,
         ),
-        NameModules(store, model, concurrency=settings.roadmap_concurrency),
-        NameConceptLabels(store, model, concurrency=settings.roadmap_concurrency),
+        NameModules(store, model, concurrency=roadmap_concurrency),
+        NameConceptLabels(store, model, concurrency=roadmap_concurrency),
     ), settings

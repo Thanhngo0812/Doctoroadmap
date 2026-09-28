@@ -213,6 +213,7 @@ class LabelChunkRoles:
             base.manifest['parse_version'],result,manifest_fields={
                 'semantic_roles':True,'roles_from_chunks_version':base.version,
                 'role_counts':dict(Counter(c.role for c in result.chunks)),
+                'llm_transport':getattr(self.model,'transport','unknown'),
                 'role_warnings':warnings,'role_decision_log':logs,'role_metrics':dict(metrics),
                 'role_validation_counts':dict(violations),
                 'role_transfer':{'matched':len(transferred),'total':len(result.chunks),

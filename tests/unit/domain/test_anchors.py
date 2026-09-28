@@ -21,14 +21,67 @@ CHUNKS = [
 ]
 
 
-def test_candidates_are_sentences_naming_the_concept_with_definition_signals_first():
+def test_candidates_without_evidence_follow_document_order_not_language_signals():
     candidates = candidate_sentences(NODE, CHUNKS, limit=3)
-    assert [c["chunk_id"] for c in candidates][0] == "c40"  # câu có "được gọi là" đứng đầu
-    first = candidates[0]
+    assert [c["chunk_id"] for c in candidates] == ["de_cuong", "c40", "c41"]
+    first = candidates[1]
     assert first["sentence"] == "Một hệ véc tơ được gọi là một cơ sở của V nếu nó độc lập tuyến tính và sinh ra V."
     assert CHUNKS[1].text[first["char_start"]:first["char_start"] + len(first["sentence"])] == first["sentence"]
     assert "Nhắc lại hệ sinh." in first["context"]  # một câu ngữ cảnh mỗi phía
     assert len(candidates) == 3 and all(c["chunk_id"] != "c99" for c in candidates)
+
+
+@pytest.mark.parametrize("name,title,first", [
+    ("espace vectoriel", "3.31 définition : espace vectoriel", "Soit V un ensemble muni de deux opérations."),
+    ("向量空间", "定义：向量空间", "设 V 是一个集合。"),
+])
+def test_heading_named_block_precedes_preview_and_teaches_from_first_body_sentence(name, title, first):
+    chunks = [chunk("preview", 1, f"{name} sera étudié plus tard."),
+              chunk("real", 9, f"{title}\n{first} Autre détail.")]
+    candidates = candidate_sentences({"name": name}, chunks)
+    assert candidates[0]["chunk_id"] == "real"
+    assert candidates[0]["sentence"] == first
+    assert chunks[1].text[candidates[0]["char_start"]:].startswith(first)
+    assert title in candidates[0]["context"]
+
+
+def test_section_title_is_a_candidate_when_body_never_repeats_name():
+    chunks = [chunk("preview", 1, "Column-row factorization will be introduced later."),
+              chunk("real", 9, "Suppose A is an m-by-n matrix. Then A = CR.")]
+    chunks[1].section_path = ["3.56 column-row factorization"]
+    candidates = candidate_sentences({"name": "Column-row factorization"}, chunks)
+    assert candidates[0]["chunk_id"] == "real"
+    assert candidates[0]["sentence"] == "Suppose A is an m-by-n matrix."
+    assert "3.56 column-row factorization" in candidates[0]["context"]
+
+
+def test_other_definition_signals_do_not_outrank_true_heading():
+    chunks = [chunk("other", 2, "A square matrix is called invertible."),
+              chunk("real", 20, "An m-by-n matrix A is a rectangular array of scalars.")]
+    chunks[1].section_path = ["3.29 definition: matrix"]
+    candidates = candidate_sentences({"name": "Matrix"}, chunks)
+    assert candidates[0]["chunk_id"] == "real"
+
+
+def test_a3_citation_stays_ahead_of_named_heading():
+    chunks = [chunk("evidence", 30, "Câu căn cứ mô tả tính chất cốt lõi."),
+              chunk("heading", 10, "Định nghĩa: Khái niệm X\nĐây là câu đầu tiên.")]
+    node = {"name": "Khái niệm X", "evidence": [{"chunk_id": "evidence", "quote": "Câu căn cứ mô tả tính chất cốt lõi."}]}
+    candidates = candidate_sentences(node, chunks)
+    assert [c["chunk_id"] for c in candidates[:2]] == ["evidence", "heading"]
+
+
+def test_named_teaching_block_survives_six_a3_mentions_in_top_six():
+    previews = [chunk(f"e{i}", i, f"The matrix of a linear map is discussed in chapter {i}.")
+                for i in range(6)]
+    real = chunk("real", 50, "Now we come to the key definition.\n"
+                 "3.31 definition: matrix of a linear map\n"
+                 "Suppose T is a linear map. Its matrix contains the coordinates of T applied to basis vectors.")
+    node = {"name": "Matrix of a linear map", "evidence": [
+        {"chunk_id": value.chunk_id, "quote": value.text} for value in previews]}
+    candidates = candidate_sentences(node, [*previews, real], limit=6)
+    assert any(value["chunk_id"] == "real" and value["sentence"].startswith("Suppose T")
+               for value in candidates)
 
 
 def test_an_alias_counts_as_naming_the_concept():
@@ -65,7 +118,7 @@ def check(value, candidates):
 
 def test_an_anchored_status_must_point_to_a_candidate_and_quote_it_verbatim():
     candidates = candidate_sentences(NODE, CHUNKS, limit=4)
-    anchor = candidates[0]["cand_id"]
+    anchor = next(c["cand_id"] for c in candidates if c["chunk_id"] == "c40")
     check(reply("defined_here", anchor=anchor, quote="được gọi là một cơ sở của V"), candidates)
     with pytest.raises(ValueError, match="ứng viên"):
         check(reply("defined_here", anchor="k99", quote="được gọi là một cơ sở của V"), candidates)
@@ -100,7 +153,7 @@ def test_the_contract_rejects_unknown_status_confidence_and_empty_reason():
 
 def test_an_anchor_keeps_the_node_and_moves_its_position_to_where_it_is_taught():
     candidates = candidate_sentences(NODE, CHUNKS, limit=4)
-    anchor = candidates[0]
+    anchor = next(c for c in candidates if c["chunk_id"] == "c40")
     fields = anchor_fields(reply("defined_here", anchor=anchor["cand_id"], quote="được gọi là một cơ sở của V"), candidates)
     assert fields["teaching_status"] == "taught"
     assert fields["teaching_chunk_ids"] == ["c40"] and fields["teaching_order_index"] == 40

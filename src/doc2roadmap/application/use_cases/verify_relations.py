@@ -175,6 +175,7 @@ class VerifyRelations:
             config,
             payload,
             upstream_version=upstream.version,
-            manifest_fields={"stage": "verified", "stats": stats},
+            manifest_fields={"stage": "verified", "stats": stats,
+                             "llm_transport": getattr(self.model, "transport", "unknown")},
         )
         return artifact, False

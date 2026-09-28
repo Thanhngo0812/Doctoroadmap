@@ -5,6 +5,7 @@ Mỗi bản được gán vai trò một lần; không chuyển node/cạnh cũ 
 """
 import argparse
 import json
+from pathlib import Path
 
 from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini
 from doc2roadmap.application.spend_guard import SpendGuard
@@ -21,19 +22,25 @@ DOC2_STRUCTURE_VERSION = 5
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--allow-spend',action='store_true')
-    parser.add_argument('--phase',choices=('roles','anchors','roles14b','anchors14b'),required=True)
+    parser.add_argument('--phase',choices=('roles','anchors','roles14b','anchors14b','anchors05b','anchors05b_a9'),required=True)
     parser.add_argument('--doc',choices=tuple(VALIDATED))
     args = parser.parse_args()
     settings = Settings()
-    root = settings.artifact_dir / 'v3-region-anchor-evaluation'
+    root = settings.artifact_dir / ('v3-05b-a9v10-evaluation' if args.phase=='anchors05b_a9' else
+                                    'v3-05b-evaluation' if args.phase=='anchors05b' else 'v3-region-anchor-evaluation')
     base,output = JsonArtifactStore(settings.artifact_dir),JsonArtifactStore(root)
     store = EvaluationStore(base,output)
     # One shared ledger for both sequential phases; never run two copies concurrently.
     cap = 16384 if args.phase.startswith('roles') else 2048
     generation = {'temperature':0.0,'max_output_tokens':cap}
     raw = MeteredGemini(settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else 'no-key',
-                        max_usd=1.0,ledger_path=root/'spend.json',max_output_tokens=cap)
+                        max_usd=5.0 if args.phase.startswith('anchors05b') else 1.0,
+                        ledger_path=root/'spend.json',max_output_tokens=cap,
+                        transport=settings.llm_transport,vertex_project=settings.vertex_project,
+                        vertex_location=settings.vertex_location)
     prepared,plans = [],{}
+    a9_summary = (json.loads((settings.artifact_dir/'v3-first-wave-evaluation'/'summary.json').read_text(encoding='utf-8'))
+                  if args.phase=='anchors05b_a9' else {})
     for doc,version in VALIDATED.items():
         if args.doc and doc!=args.doc:
             continue
@@ -41,7 +48,11 @@ def main():
             continue
         if args.phase=='anchors14b' and doc!='doc-2':
             continue
-        upstream = base.load_graph(doc,version)
+        if args.phase=='anchors05b_a9':
+            a9_path = Path(a9_summary[doc]['a9_path'])
+            upstream = JsonArtifactStore(a9_path.parents[2]).load_graph(doc,int(a9_path.name[1:]))
+        else:
+            upstream = base.load_graph(doc,version)
         edges = base.load_graph(doc,upstream.manifest['config']['edges_version'])
         chunks_version = edges.manifest['config']['chunks_version']
         if args.phase.startswith('roles'):
@@ -60,12 +71,20 @@ def main():
                 prepared.append((key,doc,uc,kwargs))
         else:
             reuse = None
-            if args.phase=='anchors14b':
-                prior_path = root/'anchors14b-summary.json'
-                prior = output._read(prior_path if prior_path.exists() else root/'anchors-summary.json')
-                reuse = output.load_graph(doc,prior[doc]['version'])
+            if args.phase in ('anchors14b','anchors05b','anchors05b_a9'):
+                prior_root = (settings.artifact_dir/'v3-05b-evaluation' if args.phase=='anchors05b_a9' else
+                              settings.artifact_dir/'v3-region-anchor-evaluation'
+                              if args.phase=='anchors05b' else root)
+                prior_store = JsonArtifactStore(prior_root)
+                prior_path = (prior_root/'anchors05b-summary.json' if args.phase=='anchors05b_a9' else
+                              prior_root/'anchors14b-summary.json')
+                fallback = prior_root/'anchors-summary.json'
+                prior = prior_store._read(prior_path if prior_path.exists() else fallback)
+                if doc in prior:
+                    reuse = prior_store.load_graph(doc,prior[doc]['version'])
             uc = AnchorConcepts(store,SpendGuard(raw,allowed=args.allow_spend),
-                                concurrency=settings.roadmap_concurrency,generation=generation,
+                                concurrency=(settings.vertex_concurrency if settings.llm_transport=='vertex'
+                                             else settings.roadmap_concurrency),generation=generation,
                                 reuse_artifact=reuse)
             plans[doc] = uc.plan(doc,upstream=upstream).to_dict()
             prepared.append((doc,doc,uc,{'upstream':upstream}))
@@ -73,7 +92,7 @@ def main():
     print('estimate USD',sum(p.get('usd_estimate',0) for p in plans.values()),flush=True)
     if not args.allow_spend:
         return
-    summary_path = root/f'{args.phase}-summary.json'
+    summary_path = root/f'{"anchors05b" if args.phase=="anchors05b_a9" else args.phase}-summary.json'
     summary = output._read(summary_path) if summary_path.exists() else {}
     for key,doc,uc,kwargs in prepared:
         artifact,reused = uc.execute(doc,**kwargs)

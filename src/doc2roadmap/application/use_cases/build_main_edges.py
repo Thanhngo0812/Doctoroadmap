@@ -330,7 +330,8 @@ class BuildMainEdges:
             base_config,
             payload,
             upstream_version=mentions.version,
-            manifest_fields={"stage": "edges", "edge_pass": "main", "complete": True, "routing": payload["routing"], "stats": stats},
+            manifest_fields={"stage": "edges", "edge_pass": "main", "complete": True, "routing": payload["routing"], "stats": stats,
+                             "llm_transport": getattr(self.model, "transport", "unknown")},
         )
         self.store.clear_checkpoint(doc_id, checkpoint_id)
         return artifact, False

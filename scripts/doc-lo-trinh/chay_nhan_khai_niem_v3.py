@@ -1,7 +1,4 @@
-"""Vé 11 trên sáu artifact teaching đã có; mặc định dry-run, không chạy lại A8/neo/danh tính.
-
-Vé 09 và 11 dùng chung spend.json; chạy hai driver tuần tự để giữ trần 0,75 USD.
-"""
+"""Vé 11b: đặt nhãn trên artifact teaching; mặc định dry-run."""
 import argparse
 import json
 from pathlib import Path
@@ -17,26 +14,32 @@ from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--allow-spend", action="store_true")
-    parser.add_argument("--max-usd", type=float, default=0.75)
+    parser.add_argument("--max-usd", type=float, default=5.0)
+    parser.add_argument("--upstream-summary", type=Path)
+    parser.add_argument("--ledger-path", type=Path)
     args = parser.parse_args()
-    if not 0 < args.max_usd <= 0.75:
-        parser.error("trần chung vé 09 và 11: tối đa 0,75 USD")
+    if not 0 < args.max_usd <= 50:
+        parser.error("trần chung dự án: tối đa 50 USD")
+    if args.allow_spend and args.ledger_path is None:
+        parser.error("--allow-spend cần --ledger-path dùng chung với 05b và 09b")
     settings = Settings()
     root = settings.artifact_dir
-    source = JsonArtifactStore(root / "v3-first-wave-evaluation")
-    output_root = root / "v3-concept-label-evaluation"
+    output_root = root / "v3-11b-evaluation"
     output = JsonArtifactStore(output_root)
     store = EvaluationStore(JsonArtifactStore(root), output)
     raw = MeteredGemini(settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else "no-key",
-                        max_usd=args.max_usd, ledger_path=root / "v3-title-label-evaluation" / "spend.json",
-                        max_output_tokens=512)
+                        max_usd=args.max_usd, ledger_path=args.ledger_path or output_root / "spend.json",
+                        max_output_tokens=512, transport=settings.llm_transport,
+                        vertex_project=settings.vertex_project, vertex_location=settings.vertex_location)
     stage = NameConceptLabels(store, SpendGuard(raw, allowed=args.allow_spend),
-                              concurrency=settings.roadmap_concurrency)
-    summary = json.loads((root / "v3-first-wave-evaluation" / "summary.json").read_text(encoding="utf-8"))
+                              concurrency=(settings.vertex_concurrency if settings.llm_transport == "vertex"
+                                           else settings.roadmap_concurrency))
+    summary = json.loads((args.upstream_summary or root / "v3-first-wave-evaluation" / "summary.json").read_text(encoding="utf-8"))
     prepared, plans = [], {}
     for doc, row in summary.items():
-        version = int(Path(row["teaching_reuse_path"]).name[1:])
-        upstream = source.load_graph(doc, version)
+        artifact_path = Path(row["teaching_reuse_path"])
+        version = int(artifact_path.name[1:])
+        upstream = JsonArtifactStore(artifact_path.parents[2]).load_graph(doc, version)
         prepared.append((doc, upstream))
         plans[doc] = stage.plan(doc, upstream=upstream).to_dict()
     print(json.dumps(plans, ensure_ascii=True, indent=2), flush=True)

@@ -318,7 +318,8 @@ class BuildSecondaryEdges:
             base_config,
             payload,
             upstream_version=main.version,
-            manifest_fields={"stage": "edges", "edge_pass": "secondary", "complete": True, "stats": stats},
+            manifest_fields={"stage": "edges", "edge_pass": "secondary", "complete": True, "stats": stats,
+                             "llm_transport": getattr(self.model, "transport", "unknown")},
         )
         self.store.clear_checkpoint(doc_id, checkpoint_id)
         return artifact, False
