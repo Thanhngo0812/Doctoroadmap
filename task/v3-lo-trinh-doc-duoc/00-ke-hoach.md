@@ -91,6 +91,7 @@
 | 18 | cạnh ngược thứ tự sách không ép dãy học (R17) | A10 | nhân viên | — (làm cùng 07 được) | 0 |
 | 19 | gọi mô hình qua Vertex AI để dùng credit Google Cloud (hạ tầng) | LLM | nhân viên | — | thử < 0,01 USD; chi qua Vertex tính vào trần dự án 50 USD (chủ dự án quyết 2026-09-28) |
 | T19 | cung cấp tài liệu thật ngôn ngữ thứ ba: một chữ viết không Latin (ví dụ tiếng Trung, Nga) và một chữ Latin ngoài vi/en (ví dụ tiếng Pháp) | kiểm thử | **chủ dự án** | — | 0 |
+| T10 · 07 v2 | khoá cấu hình và chạy tập giữ lại một lần — [giao thức](T10-07v2-giao-thuc-tap-giu-lai.md) soạn xong 2026-10-01, chưa khoá; bảng khoá sinh bằng `scripts/khoa-cau-hinh/tao_bang.py`, chấm bằng `scripts/doc-lo-trinh/cham_tap_giu_lai.py` | kiểm thử | tôi (soạn, chấm) · nhân viên (chạy) · **chủ dự án** (duyệt khoá, chi, T14) | 12, 09d | ước 15–40 USD, dry-run theo bậc |
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
 tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12, 13. Chạy thử tài liệu T19 sau 14–17.
@@ -113,7 +114,7 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
   1. **Vé 12** (nhân viên): ba sửa trên. Chạy lại pass chính (≈ 2 USD) và pilot (≈ 0,45 USD). Tôi đọc ngay rồi mới chạy pass phụ đầy đủ
      (≈ 31 USD, dry-run trước), sau đó A9/A10 và nghiệm thu.
   2. **09d** (nhân viên, < 0,01 USD): sửa cách sinh tên, song song.
-  3. Tôi: đọc lượt chạy lại khi nhân viên báo; soạn giao thức T10/07 v2.
+  3. Tôi: đọc lượt chạy lại khi nhân viên báo. Giao thức T10/07 v2 **đã soạn** ([tệp](T10-07v2-giao-thuc-tap-giu-lai.md)): T14 dời lên trước A8 vì danh tính đứng trước A8 trong chuỗi v3.
   4. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần).
 - **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD). Đã chi ≈ 28,7 USD tới lượt cửa sổ −4…+2, ước theo sổ token, chưa phải hoá đơn. Vẫn chỉ dùng
   `gemini-3.1-flash-lite`.
