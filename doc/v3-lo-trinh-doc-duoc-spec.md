@@ -139,6 +139,8 @@ dẫn mục để đặt tên từ cây đã sửa (phép chuyển của vé 14b
 Vé 09c.
 *Ghi chú 2026-10-01 (kiểm thử 09c):* nhánh "không có tiêu đề mục → sinh tên bằng mô hình từ tên khái niệm" chưa được cài từ vé 09; mã lấy
 nguyên tên khái niệm đầu ("Intercept", "output layer", "Xây dựng"). Vé 09d.
+*Sửa 2026-10-01 (kiểm thử 09d):* để mô hình tự ghép tên dưới luật căn cứ sinh ra chuỗi mẩu tên ghép liền ("Basis bilinear m-linear Inner
+product"). Nay mô hình **chọn 2–3 tên khái niệm nguyên vẹn** của module, mã kiểm khớp chính xác rồi nối bằng " · ".
 
 ### R8 — Danh tính mở rộng *(A9'' — danh tính; sửa L6)*
 Thêm nguồn ứng viên: (a) chuẩn hoá tên như bước neo (NFKC, bỏ dấu LaTeX, gộp gạch nối); (b) viết tắt ↔ tên đầy đủ (chữ đầu các
@@ -198,6 +200,16 @@ mỗi tài liệu (≈ 1–7 USD), cần chủ dự án duyệt trước khi ch�
 - Câu trích nằm trong cửa sổ mà thiếu chunk neo thì executor tự gắn.
 - Chấm lại 0 USD trên đề xuất đã có: doc-1 sau rút gọn ngang đồ thị cuối của luồng cũ về độ chính xác (trực tiếp 15/25 so với 18/29).
 - Mốc để quyết chạy pass phụ là đồ thị cuối của luồng cũ sau rút gọn, không phải riêng pass chính cũ.
+*Sửa 2026-10-01, lần 2 (lượt chạy cửa sổ −4…+2):*
+- Câu trích so **sau khi gộp mọi khoảng trắng**, kể cả xuống dòng, và lưu lại đúng đoạn văn gốc. Mô hình hay chép câu nhiều dòng thành một
+  dòng; doc-1 có 15/27 lần bác vì câu trích chỉ lệch ở đó.
+- Gộp hai thứ tự hỏi của pass phụ:
+  - cùng tạo, cùng chiều, cùng loại → tạo cạnh dù nhãn `evidence_kind` khác (lấy nhãn độ tin thấp hơn);
+  - cùng chiều nhưng khác loại → `cong_cu`;
+  - khác chiều hoặc khác quyết định → hoãn.
+- Câu trích `can_de_hieu` phải lấy từ chính định nghĩa/phát biểu, kể cả giả thiết giới thiệu đối tượng của nó. Không lấy câu dẫn dắt hay
+  báo trước, ví dụ, bước chứng minh hay hệ quả.
+- Chấm lại 0 USD với cách so mới: doc-1 bao đóng P 118/145, R 118/131; luồng cũ P 106/129, R 106/131.
 
 ### R13 — Trích mệnh đề có tên ở A3 *(A3; sửa L8 — sau vé 07, theo quyết định chủ dự án)*
 A3 trích định lý/mệnh đề/công thức/phương pháp có tên thành nút `ket_qua` với tên nội dung. Đổi danh sách khái niệm → cần kế hoạch

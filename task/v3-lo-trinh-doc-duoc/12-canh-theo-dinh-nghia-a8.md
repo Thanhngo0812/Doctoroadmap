@@ -142,3 +142,64 @@ Làm cùng lượt chạy lại A6–A8 của vé này:
 - Bỏ `DEFAULT_DEFINITION_SIGNALS` (A7, cụm định nghĩa vi/en). Tín hiệu nơi định nghĩa là chunk chứa câu bằng chứng A3 hoặc câu neo của
   khái niệm.
 - Nghiệm thu thêm: test tổng hợp ở một ngôn ngữ ngoài vi/en cho cả hai luật; báo số tên bị coi là quá chung trên từng tài liệu phát triển.
+
+## Kiểm thử lượt cửa sổ −4…+2 (Claude, 2026-10-01) — kết quả đạt mốc; ba sửa nhỏ rồi chạy pass phụ đầy đủ
+
+**Mã:**
+- Toàn bộ `tests/unit` + `tests/integration` xanh trên mã chưa commit (mã thoát 0).
+- Số câu trước/sau nằm trong config và khoá cache. Pass phụ lấy đúng thông số từ pass chính.
+- Đột biến 4/4 bắt được: bỏ tự gắn chunk neo, bỏ câu trước neo, bỏ ranh giới đoạn, tắt chốt `target_not_taught`.
+
+**Số đo:** tái lập bằng `so_sanh_a8_cua_so_v3.py`, khớp báo cáo.
+
+| | doc-1 trực tiếp | doc-1 bao đóng | doc-2 trực tiếp | doc-2 bao đóng |
+|---|---|---|---|---|
+| đồ thị cuối luồng cũ, rút gọn | P 18/29 · R 18/28 | P 106/129 · R 106/131 | P 11/17 · R 11/32 | P 22/23 · R 22/68 |
+| lượt chạy thật: chính + pilot, A9, rút gọn | P 15/25 · R 15/28 | P 108/127 · R 108/131 | P 11/14 · R 11/32 | P 19/23 · R 19/68 |
+| + so câu trích sau khi gộp khoảng trắng (chấm lại 0 USD) | P 17/28 · R 17/28 | P 118/145 · R 118/131 | P 12/15 · R 12/32 | P 21/25 · R 21/68 |
+
+- Lượt thật tốt hơn cận dưới tôi ước, nên điều kiện ở mục trước đã đạt.
+- Với bước gộp khoảng trắng, luồng mới ngang luồng cũ về độ chính xác và vượt về độ phủ bao đóng ở doc-1 (0,90 so với 0,81). Ở doc-2,
+  trực tiếp tốt hơn (P 0,80 so với 0,65); bao đóng P thấp hơn (0,84 so với 0,96), R gần bằng (21 so với 22).
+
+**Đọc 14 cạnh cứng mới:**
+- 12 chấp nhận được, trong đó "Phần tử trung hòa → Không gian véc tơ" đúng theo sách.
+- 2 đáng ngờ: "Số chiều → Cơ sở chính tắc" (lấy từ câu ví dụ "Vậy dim R n = n…") và "Row rank → Column rank" (hai khái niệm định nghĩa cùng
+  khối).
+
+**Cạnh mất so với luồng cũ:**
+- doc-1: "Véc tơ → Véc tơ n thành phần"; quan hệ "Tổ hợp tuyến tính ⇒ Phụ thuộc / Độc lập tuyến tính".
+- doc-2: "Matrix → Scalar multiplication on matrices", "Linear combination of the columns → Column-row factorization". Hai cạnh vào tính chất
+  kết hợp/phân phối mất do thiết kế (đích chỉ-nhắc).
+
+**Nguyên cớ mất cạnh (đọc log):**
+1. **Câu trích chỉ lệch khoảng trắng.** Mô hình chép câu nhiều dòng thành một dòng ("nếu hệ thức\n[formula]\nchỉ xảy ra" → "… [formula] chỉ xảy
+   ra"). Chunk đều NFC, nên không phải lỗi Unicode.
+   - Trong số bị bác vì `quote_outside_evidence_chunk`: doc-1 15/27, doc-2 33/71.
+   - "Tổ hợp tuyến tính → Độc lập tuyến tính" bị bác ba lần vì đúng lỗi này.
+   - Chấm lại (`thu_khoang_trang_a8.py`) lấy lại được: chính +4 / pilot +8 (doc-1), +5 / +1 (doc-2), kể cả bốn cạnh mất ở trên.
+2. **Gộp hai thứ tự hỏi quá ngặt.**
+   - 6 cặp bị hoãn chỉ vì hai thứ tự khác **nhãn loại căn cứ** (`evidence_kind`), dù cùng chiều và cùng loại cạnh.
+   - 2 cặp cùng chiều nhưng khác cứng/công cụ.
+   - Các cặp "một bên tạo, một bên không" (doc-1 9, doc-2 2) là bất đồng thật, hoãn là đúng.
+3. **Cửa sổ rộng cho lọt câu không phải định nghĩa:**
+   - câu báo trước "As we will soon see, for a linear map the next definition…" → Linear map → injective;
+   - câu chứng minh "Khi đó từ tính độc lập tuyến tính … suy ra" → Độc lập tuyến tính → Ma trận tọa độ;
+   - câu ví dụ đứng trước định nghĩa.
+
+**Pass phụ đầy đủ trên pass chính mới:** dry-run 0 USD, 23.796 lời gọi ≈ 31,12 USD (doc-2 ≈ 20,70).
+
+**Việc còn lại, theo thứ tự:**
+1. So câu trích **sau khi gộp mọi khoảng trắng** (kể cả xuống dòng) ở cả hai phép kiểm (chunk căn cứ và cửa sổ).
+   - Lưu lại đúng đoạn văn gốc làm `quote`.
+   - Test: câu trích bị dàn một dòng được nhận; câu diễn đạt khác vẫn bị bác.
+2. Gộp hai thứ tự của pass phụ:
+   - cùng tạo, cùng chiều, cùng loại → tạo cạnh dù `evidence_kind` khác (lấy loại có độ tin thấp hơn);
+   - cùng chiều nhưng khác loại → cạnh mềm `cong_cu`;
+   - khác chiều hoặc khác quyết định → vẫn hoãn.
+3. Prompt pass chính và pass phụ: câu trích `can_de_hieu` phải lấy từ chính định nghĩa/phát biểu, kể cả giả thiết giới thiệu đối tượng của
+   nó. Không lấy câu dẫn dắt hay báo trước, ví dụ, bước chứng minh hay hệ quả; khi chỉ có những câu ấy thì `cong_cu` hoặc không tạo cạnh. Viết
+   bằng định nghĩa chức năng, không danh sách cụm từ.
+4. Chạy lại pass chính (≈ 2 USD) và pilot (≈ 0,45 USD). Gửi bảng như trên cùng danh sách cạnh cứng mới có câu trích.
+5. Tôi đọc ngay. Nếu không tệ hơn hàng cuối của bảng trên → chạy **pass phụ đầy đủ** (dry-run trước, ≈ 31 USD, trong ngân sách đã duyệt),
+   rồi A9/A10 và nghiệm thu.

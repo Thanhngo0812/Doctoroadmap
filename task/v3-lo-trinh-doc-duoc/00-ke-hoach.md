@@ -104,13 +104,18 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
   - Pass chính mất độ phủ vì cửa sổ định nghĩa **tôi đặc tả sai**: thiếu các câu giả thiết đứng trước câu neo. Đặc tả đã sửa thành −4…+2.
   - Cổng pilot so nhầm mốc; mốc đúng là đồ thị cuối luồng cũ sau rút gọn. Chấm lại 0 USD cho thấy với cửa sổ sửa, doc-1 ngang luồng cũ về
     độ chính xác.
+- **Cập nhật 2026-10-01 (kiểm thử lượt cửa sổ −4…+2, mã chưa commit):**
+  - Kết quả đạt mốc: doc-1 bao đóng P 108/127, R 108/131, so với luồng cũ 106/129, 106/131.
+  - Còn ba sửa nhỏ trước khi chi ≈ 31 USD cho pass phụ đầy đủ: so câu trích sau khi gộp khoảng trắng, gộp hai thứ tự bớt ngặt, câu trích phải
+    từ chính định nghĩa.
+  - 09d: cơ chế đạt, nhưng tên ghép liền mẩu tên → đổi sang chọn tên khái niệm nguyên vẹn rồi nối " · ".
 - **Làm tiếp:**
-  1. **Vé 12** (nhân viên): sửa cửa sổ, tự gắn chunk neo, thêm test `target_not_taught`. Chạy lại pass chính (≈ 2,1 USD) và pilot
-     (≈ 0,6 USD). Tôi đọc kết quả rồi mới chạy pass phụ production (≈ 31 USD, dry-run trước), sau đó A9/A10 và nghiệm thu.
-  2. **09d** (nhân viên, < 0,01 USD), song song.
-  3. Tôi: đọc lượt chạy lại của vé 12 khi nhân viên báo, quyết pass phụ; chuẩn bị T10.
+  1. **Vé 12** (nhân viên): ba sửa trên. Chạy lại pass chính (≈ 2 USD) và pilot (≈ 0,45 USD). Tôi đọc ngay rồi mới chạy pass phụ đầy đủ
+     (≈ 31 USD, dry-run trước), sau đó A9/A10 và nghiệm thu.
+  2. **09d** (nhân viên, < 0,01 USD): sửa cách sinh tên, song song.
+  3. Tôi: đọc lượt chạy lại khi nhân viên báo; soạn giao thức T10/07 v2.
   4. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần).
-- **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD). Đã chi ≈ 26,2 USD, ước theo sổ token, chưa phải hoá đơn. Vẫn chỉ dùng
+- **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD). Đã chi ≈ 28,7 USD tới lượt cửa sổ −4…+2, ước theo sổ token, chưa phải hoá đơn. Vẫn chỉ dùng
   `gemini-3.1-flash-lite`.
 - **Kho chính:** sáu tài liệu đã có A6 → A7 → neo → danh tính → A8 pass chính v5 (doc-1 v38–42, doc-2 v30–34…); pass phụ chưa chạy.
 - **Không đề xuất dựng lại doc-2 từ A3** trên cây mục mới:
