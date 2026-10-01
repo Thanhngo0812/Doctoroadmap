@@ -97,14 +97,18 @@ def main():
         "chunk neo; chỉ `can_de_hieu` là cạnh cứng",
         f"- A10: trọng số chia module {DEFAULT_WEIGHTS}; trần module {settings.roadmap_stage_cap}", "",
         "## Đầu vào đã có của tập giữ lại (dùng lại — bộ vàng gắn với canonical này)", "",
-        "| tài liệu | chunks | candidates (A3) | canonical (A4/A5) |", "|---|---|---|---|",
+        "Chunks gắn với A3 là version mà candidates trỏ tới, không phải version mới nhất. Ingest lại cây tham chiếu ở bậc 1 tạo version",
+        "mới hơn chỉ dùng để chuyển vai trò và tên mục.", "",
+        "| tài liệu | chunks gắn A3 | chunks mới nhất | candidates (A3) | canonical (A4/A5) |", "|---|---|---|---|---|",
     ]
     for doc in HELD_OUT:
-        chunks = store.load_latest_chunks(doc)
         canonical = store.load_latest_canonical(doc)
         candidates = store.load_candidates(doc, canonical.manifest["upstream_version"])
-        parser = chunks.manifest.get("config", {}).get("parser", {})
-        lines.append(f"| {doc} | v{chunks.version} (`{parser.get('adapter')}`) | v{candidates.version} | v{canonical.version} |")
+        pinned = store.load_chunks(doc, candidates.manifest["upstream_version"])
+        latest = store.load_latest_chunks(doc)
+        parser = pinned.manifest.get("config", {}).get("parser", {})
+        lines.append(f"| {doc} | v{pinned.version} (`{parser.get('adapter')}`) | v{latest.version} | v{candidates.version} | "
+                     f"v{canonical.version} |")
     lines += ["", "## Tệp nhãn của tập giữ lại (chỉ băm, không mở)", "", "| tệp | SHA-256 |", "|---|---|"]
     for pattern in HELD_OUT_LABELS:
         for path in sorted(Path("artifacts/a8-gold").glob(pattern)):

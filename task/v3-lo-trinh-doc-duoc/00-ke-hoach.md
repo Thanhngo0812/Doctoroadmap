@@ -92,6 +92,8 @@
 | 19 | gọi mô hình qua Vertex AI để dùng credit Google Cloud (hạ tầng) | LLM | nhân viên | — | thử < 0,01 USD; chi qua Vertex tính vào trần dự án 50 USD (chủ dự án quyết 2026-09-28) |
 | T19 | cung cấp tài liệu thật ngôn ngữ thứ ba: một chữ viết không Latin (ví dụ tiếng Trung, Nga) và một chữ Latin ngoài vi/en (ví dụ tiếng Pháp) | kiểm thử | **chủ dự án** | — | 0 |
 | T10 · 07 v2 | khoá cấu hình và chạy tập giữ lại một lần — [giao thức](T10-07v2-giao-thuc-tap-giu-lai.md) soạn xong 2026-10-01, chưa khoá; bảng khoá sinh bằng `scripts/khoa-cau-hinh/tao_bang.py`, chấm bằng `scripts/doc-lo-trinh/cham_tap_giu_lai.py` | kiểm thử | tôi (soạn, chấm) · nhân viên (chạy) · **chủ dự án** (duyệt khoá, chi, T14) | 12, 09d | ước 15–40 USD, dry-run theo bậc |
+| T10a | lệnh chuẩn cho lượt tập giữ lại: `label-roles --transfer-from-chunks-version`, `roadmap --stop-after identity`, bảng duyệt danh tính không đọc vàng — [vé](T10a-cli-tap-giu-lai.md) | CLI | nhân viên | — (song song pass phụ vé 12) | 0 |
+| T15-dev | chấm mù đối đầu cạnh dư đồ thị cũ và mới trên hai chương vàng phát triển — bộ tạo/chấm `scripts/cham-mu/tao_bang_v3.py`, `cham_bang_v3.py` (seed 20261001, ghi trước) | kiểm thử | tôi (sinh bảng, chấm) · **hai người chấm** do chủ dự án xếp | đồ thị cuối vé 12 | 0 USD, ≈ 1 giờ/người |
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
 tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12, 13. Chạy thử tài liệu T19 sau 14–17.
@@ -119,7 +121,9 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
      A10 → tên module trong kho đánh giá cuối. Báo `cham_tap_giu_lai.py` (doc-1, doc-2) và `kiem_doc_duoc.py` (sáu tài liệu).
   2. Tôi: đọc lộ trình sáu tài liệu, nghiệm thu vé 12, điền "mức tài liệu phát triển" vào
      [giao thức T10/07 v2](T10-07v2-giao-thuc-tap-giu-lai.md).
-  3. Chủ dự án (nên có): xếp hai người chấm mù cạnh cứng hai chương vàng (kiểu T15), vì gold không còn phân định được giữa các phương án.
+  3. Chủ dự án (nên có): xếp hai người chấm mù (T15-dev, ≈ 1 giờ/người). Bảng đặt đầu đối đầu cạnh dư của đồ thị cũ và mới, sinh khi
+     đồ thị cuối vé 12 có. Giới hạn ghi trước: mỗi đồ thị khoảng 15–20 cạnh dư trên hai chương, chỉ phân biệt được chênh lệch lớn.
+  3b. **T10a** (nhân viên, 0 USD, song song pass phụ): ba lệnh chuẩn cho lượt tập giữ lại.
   4. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần).
 - **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD).
   - Đã chi ≈ 31,1 USD tới lượt ba sửa, ước theo sổ token, chưa phải hoá đơn.

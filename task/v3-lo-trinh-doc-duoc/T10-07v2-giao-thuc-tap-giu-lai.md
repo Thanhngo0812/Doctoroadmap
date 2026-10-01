@@ -29,7 +29,11 @@
 2. Toàn bộ `tests/unit` + `tests/integration` xanh trên commit sẽ khoá; cây làm việc sạch.
 3. Bảng khoá đã sinh bằng `scripts/khoa-cau-hinh/tao_bang.py` (không `--nhap`). `prompt_hash` trong bảng khớp manifest của lượt nghiệm
    thu vé 12; lệch là dừng. Chủ dự án đã duyệt.
-4. CLI chính nạp được quyết định duyệt danh tính (`roadmap --identity-review`) cho T14.
+4. Vé [T10a](T10a-cli-tap-giu-lai.md) xong:
+   - `label-roles --transfer-from-chunks-version`;
+   - `roadmap --stop-after identity`;
+   - bảng duyệt danh tính không đọc vàng.
+   Quy trình bậc 1–3 đã viết thành lệnh CLI cụ thể.
 
 ## Cách chạy — một lần, theo bậc, không đổi cấu hình giữa các bậc
 - **Bậc 0 — khoá (T10):**
@@ -43,7 +47,8 @@
 - **Bậc 2:** dry-run cả chuỗi. Chủ dự án duyệt dự toán phần trước A8, rồi chạy `--allow-spend` tới hết danh tính: clusters → mentions →
   provenance → neo → danh tính.
 - **Bậc 2b — T14, trước A8:**
-  - Chủ dự án duyệt các gộp danh tính chạm khái niệm của bộ vàng giữ lại, bảng kiểu T5. Người duyệt chỉ thấy cặp gộp, không thấy cạnh vàng.
+  - Chủ dự án duyệt **mọi** cặp mà bước danh tính không phán `different` (gộp và tách nghĩa), bảng kiểu T5, chế độ không đọc vàng của vé
+    T10a. Tập này lớn hơn yêu cầu "gộp chạm vàng" của W15, nên không ai phải mở vàng trước bậc 5.
   - Sau đó chạy lại danh tính bằng `--identity-review` (rẻ).
   - Lý do đặt ở đây: trong chuỗi v3, danh tính đứng **trước** A8. Duyệt sau A8 như kế hoạch v2 sẽ buộc chạy lại A8.
 - **Bậc 3:** dry-run A8, lúc này có số thật. Chủ dự án duyệt, rồi chạy A8 chính + phụ → A9 → tên khái niệm → A10 → tên module, trên danh
@@ -98,8 +103,8 @@ ghi trong bảng.
 - Trước bậc 5, không ai mở tệp vàng giữ lại hay đọc đồ thị, lộ trình của hai tài liệu. Ngoại lệ duy nhất là T14 của chủ dự án, và chỉ
   thấy cặp gộp.
 - Không dùng nhãn vàng giữ lại để chọn cặp, prompt hay tham số, kể cả gián tiếp.
-  - Danh sách khái niệm của bộ vàng chỉ dùng cho T14 (chọn cặp gộp cần người duyệt, như W15) và ở bậc chấm.
-  - Nhãn cạnh chỉ dùng ở bậc chấm.
+  - Danh sách khái niệm và nhãn cạnh của bộ vàng chỉ dùng ở bậc chấm.
+  - T14 duyệt mọi cặp danh tính nên không cần chúng.
 - Sau khi thấy số, mọi thay đổi luồng là hậu kiểm, báo tách riêng. Kết quả giữ lại vẫn là kết quả chính.
 
 ## Chi phí
@@ -137,7 +142,7 @@ ghi trong bảng.
 | 0 | duyệt bảng khoá, đặt trần chi | chủ dự án |
 | 1–3 | chạy theo bậc, báo số đếm và chi | nhân viên |
 | 1–3 | duyệt chi từng bậc | chủ dự án |
-| 2b | T14 duyệt gộp danh tính, trước A8 | chủ dự án |
+| 2b | T14 duyệt mọi cặp danh tính (không đọc vàng), trước A8 | chủ dự án |
 | 5 | chuyển vàng xstk, chấm tự động, đọc lộ trình | tôi |
 | 6 | (tuỳ chọn) sinh bảng chấm người T15, T12, T16, T17 → người chấm | tôi → người |
 | 7 | báo cáo kết quả, kể cả trượt | tôi |
