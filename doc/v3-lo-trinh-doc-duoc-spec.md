@@ -137,6 +137,8 @@ dẫn mục để đặt tên từ cây đã sửa (phép chuyển của vé 14b
 - Tiêu đề chỉ có mã (tiền tố + số của họ chương, hoặc mã mục) được bổ sung từ mục lục hay dòng đầu của mục.
 - Tiêu đề mở đầu bằng chữ thường, trong khi ≥ 90% tiêu đề cùng cấp mở đầu bằng chữ hoa, là nhãn đầu đoạn, không làm tên nền.
 Vé 09c.
+*Ghi chú 2026-10-01 (kiểm thử 09c):* nhánh "không có tiêu đề mục → sinh tên bằng mô hình từ tên khái niệm" chưa được cài từ vé 09; mã lấy
+nguyên tên khái niệm đầu ("Intercept", "output layer", "Xây dựng"). Vé 09d.
 
 ### R8 — Danh tính mở rộng *(A9'' — danh tính; sửa L6)*
 Thêm nguồn ứng viên: (a) chuẩn hoá tên như bước neo (NFKC, bỏ dấu LaTeX, gộp gạch nối); (b) viết tắt ↔ tên đầy đủ (chữ đầu các
@@ -189,6 +191,13 @@ mỗi tài liệu (≈ 1–7 USD), cần chủ dự án duyệt trước khi ch�
 - Chỉ `can_de_hieu` là cạnh cứng. Giữ bộ sinh ứng viên hiện có, không thêm (v2-06).
 - Đo 0 USD trên doc-1: cạnh có tên tiên quyết trong cửa sổ đúng theo bao đóng vàng 0,88, không có tên thì 0,50.
 - Làm trước khi khoá cấu hình cho tập giữ lại. Vé 12.
+*Sửa 2026-10-01 (kiểm thử phần đầu vé 12):* cửa sổ "câu neo + hai câu sau" **sai cho định nghĩa toán**.
+- Câu giả thiết, nơi tiên quyết được gọi tên ("Giả sử K là một trường.", "Suppose A is an m-by-n matrix."), đứng **trước** câu "được gọi là".
+  68/71 (doc-1) và 106/124 (doc-2) đề xuất bị bác vì cửa sổ có câu trích nằm trước câu neo, trong chính chunk neo.
+- Cửa sổ định nghĩa mới = câu neo, **tối đa bốn câu trước** và hai câu sau, trong cùng chunk neo.
+- Câu trích nằm trong cửa sổ mà thiếu chunk neo thì executor tự gắn.
+- Chấm lại 0 USD trên đề xuất đã có: doc-1 sau rút gọn ngang đồ thị cuối của luồng cũ về độ chính xác (trực tiếp 15/25 so với 18/29).
+- Mốc để quyết chạy pass phụ là đồ thị cuối của luồng cũ sau rút gọn, không phải riêng pass chính cũ.
 
 ### R13 — Trích mệnh đề có tên ở A3 *(A3; sửa L8 — sau vé 07, theo quyết định chủ dự án)*
 A3 trích định lý/mệnh đề/công thức/phương pháp có tên thành nút `ket_qua` với tên nội dung. Đổi danh sách khái niệm → cần kế hoạch

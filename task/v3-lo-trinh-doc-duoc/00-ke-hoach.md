@@ -1,5 +1,14 @@
 # v3 — Lộ trình chuẩn chỉ và đọc được: kế hoạch vé
 
+> **Kiểm thử 2026-10-01 (Claude), commit `64fbc24`, `57a7d8d`, `1ed9c34`:**
+> - **09c đạt.** Bất biến dãy học và cạnh đúng ở sáu tài liệu; doc-2 module gọn trong một mục 42/53. Phát hiện thêm doc-3, naive-bayes cũng
+>   từng có tên "document>"; tên thay thế là tên khái niệm đầu module → vé mới [09d](09d-ten-module-khong-co-muc.md).
+> - **Vé 12:**
+>   - phần đầu đạt về mã;
+>   - mất độ phủ do cửa sổ định nghĩa tôi đặc tả sai, đã sửa;
+>   - cổng pilot so nhầm mốc;
+>   - [việc còn lại](12-canh-theo-dinh-nghia-a8.md#sửa-đặc-tả-claude-2026-10-01-và-việc-còn-lại).
+
 > **Kiểm thử 2026-09-28 (Claude), commit `9cc8752`:**
 > - **Đạt:** 19 (Vertex trung tính với cache, dry-run trùng từng byte; embedding lệch 8,5×10⁻⁹), 05b, 11b.
 > - **09b:** luật phần phụ đạt, tên doc-2 chưa đạt → vé mới [09c](09c-module-theo-cay-sua.md) (module chia theo cây sửa, bỏ nút gốc
@@ -67,6 +76,7 @@
 | 09 | tên module theo nội dung (R7) | A10/A11 | nhân viên | 03 | ≈ 0,05 USD / tài liệu |
 | 09b | tên module: phần phụ có nghĩa, tên nền từ cây đã sửa (R7 bổ sung) | A10 | nhân viên | 09 | ≈ 0,01 USD |
 | 09c | module chia theo cây đã sửa; tên nền không lấy nút gốc, tiêu đề chỉ có mã hay nhãn đầu đoạn (R7 bổ sung lần 2) | A10 | nhân viên | 09b | ≈ 0,01 USD |
+| 09d | module không có tiêu đề mục chung: sinh tên từ tên khái niệm (R7, nhánh chưa cài từ vé 09) | A10 | nhân viên | 09c | < 0,01 USD |
 | 10 | danh tính mở rộng (R8) | A9'' | nhân viên | — | ≈ 0,05 USD / tài liệu |
 | 10b | xác minh quan hệ danh tính, đại diện được dạy, gỡ chu trình theo vị trí đại diện (R8b) | A9'' | nhân viên | 10 | ≈ 0,02 USD xác minh (+ ≈ 0,28 USD lượt 1 nếu kho mặc định chưa có) |
 | 11 | tên khái niệm có nội dung (R9) | sau A5 | nhân viên | 05 | ≈ 0,02 USD / tài liệu |
@@ -87,23 +97,25 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 **Cập nhật nhân viên 2026-09-27:** vé 14b đã triển khai và đo trên doc-2, nhap-mon-ml, doc-3; [báo cáo](../../report/v3-14b-ket-qua-2026-09-27.md), chờ reviewer nghiệm thu.
 
-**Hiện tại (2026-09-28, sau kiểm thử `9cc8752`):**
-- **Đã xong:** 01, 02, 03, 05, 05b, 06, 07, 08, 09, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
-- **Ngân sách (chủ dự án 2026-09-28):** có 300 USD credit Google Cloud, cho nâng ngân sách "miễn là dự án tốt, đồ thị chuẩn chỉ". Trần
-  50 USD cũ không còn là ràng buộc; số trần mới chờ chủ dự án chốt (tôi đề xuất 100 USD cho tới hết lượt tập giữ lại). Đã chi ≈ 22,1 USD.
-  Vẫn chỉ dùng `gemini-3.1-flash-lite`.
+**Hiện tại (2026-10-01, sau kiểm thử `64fbc24`):**
+- **Đã xong:** 01, 02, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
+- **Vé 12 đang dở:**
+  - Mã phần đầu đạt.
+  - Pass chính mất độ phủ vì cửa sổ định nghĩa **tôi đặc tả sai**: thiếu các câu giả thiết đứng trước câu neo. Đặc tả đã sửa thành −4…+2.
+  - Cổng pilot so nhầm mốc; mốc đúng là đồ thị cuối luồng cũ sau rút gọn. Chấm lại 0 USD cho thấy với cửa sổ sửa, doc-1 ngang luồng cũ về
+    độ chính xác.
 - **Làm tiếp:**
-  1. **09c** (nhân viên, gần như không tốn tiền) và **12** (nhân viên; [vé đã cập nhật](12-canh-theo-dinh-nghia-a8.md)). Có thể làm song
-     song vì khác tầng (A10 hiển thị và A8). Vé 12 chạy thật chỉ sau khi dry-run sáu tài liệu và chủ dự án duyệt con số.
-  2. **02b** (tôi).
-  3. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần). Tập giữ lại chỉ chạy được một lần, nên vé 12 phải xong trước.
-  - Đề xuất trước đây "khoá cấu hình không có vé 12 để giữ ngân sách" **bỏ**: nó dựa vào trần 50 USD. Vé 12 là đòn bẩy chính còn lại cho
-    độ chuẩn của cạnh (dòng "cần:", phụ thuộc module, `roadmap-target`).
+  1. **Vé 12** (nhân viên): sửa cửa sổ, tự gắn chunk neo, thêm test `target_not_taught`. Chạy lại pass chính (≈ 2,1 USD) và pilot
+     (≈ 0,6 USD). Tôi đọc kết quả rồi mới chạy pass phụ production (≈ 31 USD, dry-run trước), sau đó A9/A10 và nghiệm thu.
+  2. **09d** (nhân viên, < 0,01 USD), song song.
+  3. **02b** (tôi).
+  4. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần).
+- **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD). Đã chi ≈ 26,2 USD, ước theo sổ token, chưa phải hoá đơn. Vẫn chỉ dùng
+  `gemini-3.1-flash-lite`.
+- **Kho chính:** sáu tài liệu đã có A6 → A7 → neo → danh tính → A8 pass chính v5 (doc-1 v38–42, doc-2 v30–34…); pass phụ chưa chạy.
 - **Không đề xuất dựng lại doc-2 từ A3** trên cây mục mới:
   - ID node đổi thì bộ vàng đóng băng không chấm được nếu chưa có kế hoạch ánh xạ (xem vé 13);
   - hệ quả của cây vỡ đã được xử lý ở tầng hiển thị (14b, 09b, 09c).
-- **Kho chính còn cũ:** `roadmap --dry-run` cho thấy `secondary_edges` sẽ chạy lại ở doc-2 (≈ 7,2 USD), nhap-mon-ml (≈ 2,0), naive-bayes
-  (≈ 0,25), doc-3 (≈ 0,12). Không chạy lại dưới prompt A8 hiện tại; gộp vào lượt chạy lại A8 của vé 12 để khỏi trả hai lần.
 - **Hoãn theo chủ dự án:** 15, 17, T19.
 
 ## Tôi kiểm thử thế nào

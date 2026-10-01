@@ -80,3 +80,27 @@
   - tên module doc-6;
   - Q6/Q7/Q7b doc-1, doc-2 phải **giữ nguyên** (dãy học không đổi — bất biến kiểm được).
 - **Tôi kiểm:** đọc toàn bộ tên module doc-1, doc-2, doc-6, nhap-mon-ml; bảng kiểm R11 (bản 02b nếu đã có).
+
+## Kiểm thử (Claude, 2026-10-01) — **đạt**
+
+- **Test:** toàn bộ `tests/unit` + `tests/integration` xanh (mã thoát 0, `--basetemp=tmp/pytest-review4`).
+- **Đột biến:** 5/6 bắt được: cho nút gốc làm tên nền, bỏ luật mục chứa, tắt luật chữ thường, tắt bổ sung từ mục lục, chia module trên
+  cây vỡ. **Lọt:** cho dòng đầu mở bằng chữ số (luật loại "7.34 definition: positive operator") — chưa có test cô lập. Thêm một ca khi chạm
+  lại tệp.
+- **Bất biến:** đã kiểm `sequence` và `requires_edges` trùng hệ v6 → v10 ở cả sáu tài liệu. Q6/Q7/Q7b doc-1, doc-2 giữ nguyên.
+- **Bảng kiểm R11 (v10):** khớp báo cáo.
+  - doc-1: tên dài 6, nhãn số 1 (Định lý 4, fallback), mục bị xé 1.
+  - doc-2: mục bị xé 0, một cờ báo nhầm "Problems" (việc của 02b).
+  - nhap-mon-ml: tên dài 3.
+- **Đọc tên doc-2:**
+  - Tốt hơn rõ: "Chapter 1 Vector Spaces", "3D Invertibility and Isomorphisms" (2 module), "5C Upper-Triangular Matrices", "5D Diagonalizable
+    Operators", "8A …", "8B …", "Matrix Multiplication", "Products of Vector Spaces", "Quotient Spaces", "Properties of Determinants".
+  - Còn lại đúng như vé cho phép: 5 tên chỉ có mã ("Chapter 3/7/8", "6B", "7C") vì trang mục lục mất khi parse.
+  - Hai module đặt theo tên khái niệm đầu ("List of length one", "Basis of V⊗W").
+- **Phát hiện thêm:** lỗi "document>" không chỉ ở doc-6. Lượt v6 của doc-3 và naive-bayes cũng có ("document> — Polanyi's Paradox", "document>
+  — Likelihood"…). 09c sửa cả ba, nhưng thay bằng **tên khái niệm đầu module**:
+  - doc-6: "Dữ liệu", "Xây dựng";
+  - doc-3: "Artificial Intelligence", "Intercept", "output layer";
+  - naive-bayes: "Naïve Bayes Classification", "Posterior probability", "Bernoulli Naive Bayes".
+- R7 nói: không có tiêu đề mục thì **sinh tên bằng mô hình từ tên các khái niệm trong module**. Mã hiện lấy nguyên tên khái niệm đầu (có từ
+  vé 09). Với tài liệu dạng slide, mọi module đều rơi vào đường này → vé [09d](09d-ten-module-khong-co-muc.md).

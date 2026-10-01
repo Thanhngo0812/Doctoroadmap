@@ -4,7 +4,9 @@ Cửa sổ định nghĩa = câu neo của đích và hai câu kế tiếp trong
 alias hoặc tên thành viên đã gộp của tiên quyết xuất hiện trọn từ trong cửa sổ (so sau NFKC, casefold, tách từ Unicode). Chỉ xét cạnh cứng có
 hai đầu thuộc các đích của bộ vàng, chấm với bao đóng vàng (cách đọc Q7b). Đây là đường cơ sở luật thuần mà vé 12 phải vượt: mô hình được
 phép nhận diễn đạt khác của tiên quyết ("the columns of A"), luật tên nguyên văn thì không. Không gọi mô hình. Chạy từ gốc repo:
-  .venv/Scripts/python.exe scripts/doc-lo-trinh/thu_canh_cua_so_neo.py doc-1 doc-1-10-12-vang.json [--goc=<kho>] [--phien-ban=6]
+  .venv/Scripts/python.exe scripts/doc-lo-trinh/thu_canh_cua_so_neo.py doc-1 doc-1-10-12-vang.json [--goc=<kho>] [--phien-ban=6] [--truoc=0]
+`--truoc=K` (kiểm thử vé 12, 2026-10-01) mở cửa sổ thêm K câu **trước** câu neo trong cùng chunk: định nghĩa toán thường đặt giả thiết
+("Giả sử K là một trường.", "Suppose A is an m-by-n matrix.") trước câu "được gọi là". K = 0 là cửa sổ gốc của vé 12.
 """
 import json
 import re
@@ -32,6 +34,7 @@ def main():
     root = Path(next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--goc=")),
                      "artifacts/v3-05b-a9v10-evaluation"))
     version = next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--phien-ban=")), "6")
+    before = int(next((a.split("=", 1)[1] for a in sys.argv[1:] if a.startswith("--truoc=")), "0"))
     folder = root / "graph" / doc / f"v{version}"
     graph = json.loads((folder / "graph.json").read_text(encoding="utf-8"))
     manifest = json.loads((folder / "manifest.json").read_text(encoding="utf-8"))
@@ -56,7 +59,7 @@ def main():
         spans = split(chunk.text)
         start = anchor.get("char_start", 0)
         index = next((i for i, span in enumerate(spans) if span.start <= start < span.end), 0)
-        return words(chunk.text[spans[index].start:spans[min(index + 2, len(spans) - 1)].end])
+        return words(chunk.text[spans[max(0, index - before)].start:spans[min(index + 2, len(spans) - 1)].end])
 
     def grounded(source, target):
         text = f" {window(target)} "

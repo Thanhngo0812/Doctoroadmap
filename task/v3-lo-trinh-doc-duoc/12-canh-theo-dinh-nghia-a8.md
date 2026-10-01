@@ -63,6 +63,77 @@
   không cần thứ tự / ngược". Ghi trước giới hạn cỡ mẫu như T11.
 - **Tôi kiểm:** đọc dòng "cần:" và phụ thuộc module của doc-1, doc-2 đối chiếu sách; bảng kiểm R11.
 
+## Kiểm thử phần đầu (Claude, 2026-10-01) — mã đạt; mất độ phủ do **đặc tả cửa sổ của tôi sai**; cổng pilot so nhầm mốc
+
+Đã kiểm `64fbc24`, `57a7d8d`, `1ed9c34`.
+
+**Mã và cách chạy**
+- Toàn bộ test xanh.
+- Hợp đồng đúng như vé:
+  - đích chỉ là đại diện `taught`/`uncertain`;
+  - câu trích `can_de_hieu` phải nằm trong cửa sổ;
+  - `cong_cu` là cạnh mềm có lý do riêng;
+  - không đòi câu trích chứa tên tiên quyết.
+- Đột biến 4/5 bắt được. **Lọt:** tắt chốt `target_not_taught` trong hàm kiểm vẫn xanh, vì phiên đã lọc trước. Cần một test gửi thẳng đề
+  xuất có đích chỉ-nhắc vào hàm kiểm, vì đích chỉ-nhắc vẫn có thể nằm trong `allowed_node_ids`.
+- Kiểm soát chi tốt: dry-run trước, sổ có trần, pilot ở kho riêng. Không chạy pass phụ production khi chưa rõ nguyên nhân là quyết định
+  đúng.
+
+**Vì sao pass chính mất độ phủ** (bao đóng doc-1: 55 → 23/131 cạnh vàng)
+- Trong `executor_log`, mọi đề xuất bị bác vì `quote_outside_definition_window` (doc-1 71, doc-2 124) đều có câu trích **nằm trong chính chunk
+  neo**.
+- 68/71 và 106/124 câu nằm **trước** câu neo, phần lớn 1–4 câu trước (doc-1 65/71, doc-2 104/124). Đó là câu giả thiết của định nghĩa toán,
+  đúng nơi tiên quyết được gọi tên:
+  - "Giả sử K là một trường." → Trường → Không gian véc tơ;
+  - "Suppose A is an m-by-n matrix." → Matrix → Column vector;
+  - "Cho A là ma trận vuông cấp n có trị riêng λ…" → Trị riêng → Không gian riêng.
+- Cửa sổ "câu neo + hai câu sau" do **tôi** đặt trong vé này đã cắt mất phần đó. Các cạnh này bị hạ thành `cong_cu` hoặc hoãn.
+  Ví dụ "Tổ hợp tuyến tính → Biểu diễn tuyến tính" và "Matrix → Row/Column vector" (đều là cạnh vàng) thành cạnh mềm.
+- `definition_chunk_not_cited` (doc-2 260): phần lớn câu trích lấy từ chunk khác (bằng chứng đồng xuất hiện), nên hạ cấp là đúng. Chỉ
+  2 + 6 ca câu trích nằm đúng trong cửa sổ mà quên ghi chunk neo.
+
+**Chấm lại 0 USD** (`scripts/doc-lo-trinh/thu_cua_so_rong_a8.py`)
+- Phương pháp: cho chính các đề xuất mô hình đã trả qua lại đúng hàm kiểm, cửa sổ −4…+2. Ở cửa sổ gốc, script ra đúng số của nhân viên.
+- Phạm vi: hai đầu thuộc đích vàng, sau luật A9 và rút gọn bắc cầu, tức đúng các cạnh hiện ở dòng "cần:".
+
+| | doc-1 trực tiếp | doc-1 bao đóng | doc-2 trực tiếp | doc-2 bao đóng |
+|---|---|---|---|---|
+| đồ thị cuối luồng cũ (A8 chính + phụ cũ → A9) | P 18/29 · R 18/28 | P 106/129 · R 106/131 | P 11/17 · R 11/32 | P 22/23 · R 22/68 |
+| chính + pilot, cửa sổ gốc (số của nhân viên) | P 13/25 · R 13/28 | P 67/82 · R 67/131 | P 8/11 · R 8/32 | P 12/16 · R 12/68 |
+| chính + pilot, cửa sổ −4…+2 (cận dưới) | P 15/25 · R 15/28 | P 91/105 · R 91/131 | P 10/13 · R 10/32 | P 18/22 · R 18/68 |
+
+- **Cổng pilot so nhầm mốc.** Mốc đúng để quyết chạy pass phụ là **đồ thị cuối của luồng cũ**, không phải riêng pass chính cũ (P 17/21).
+  Pass phụ vốn thêm cạnh gián tiếp, nên độ chính xác trực tiếp trước rút gọn luôn thấp hơn pass chính. Bản thân đồ thị cuối luồng cũ cũng
+  chỉ P 21/42 trước rút gọn.
+- Với cửa sổ sửa:
+  - doc-1 ngang luồng cũ về độ chính xác (trực tiếp 0,60 so với 0,62; bao đóng 0,87 so với 0,82), độ phủ còn thấp hơn (bao đóng 0,69 so với
+    0,81);
+  - doc-2 trực tiếp tốt hơn (0,77 so với 0,65), bao đóng kém hơn (P 0,82 so với 0,96; R 0,26 so với 0,32).
+- Đây là cận dưới vì mô hình chưa từng được xem cửa sổ rộng.
+
+**Đọc năm cạnh pilot nhân viên nghi** (doc-1, ngoài bao đóng vàng)
+- "Phần tử trung hòa → Không gian véc tơ": **đúng theo sách**. Tiên đề không gian véc tơ cần phần tử trung hoà, đã dạy ở 1.3 Nhóm. Vàng mới là
+  bên ghi ngược (đã thấy ở kiểm thử 05b).
+- "Vô hướng → Hàm thực liên tục": neo **không** sai so với node. Node A3 thực chất là ví dụ "tập C[a, b] các hàm thực liên tục", nên đây là
+  độ hạt của A3.
+- Ba cạnh nền ("Vô hướng → Không gian véc tơ thực", "Ma trận → Ma trận chuyển cơ sở / Ma trận tọa độ") là tiên quyết thật nhưng thô.
+- Khi mở cửa sổ, pilot có thêm vài cạnh đáng ngờ, ví dụ "Số chiều → Cơ sở chính tắc", lấy từ câu ví dụ "Vậy dim R n = n…" đứng trước câu
+  "được gọi là cơ sở chính tắc". Cửa sổ rộng hơn đổi một phần độ chính xác lấy độ phủ, nên phải đọc lại sau lượt chạy thật.
+
+## Sửa đặc tả (Claude, 2026-10-01) và việc còn lại
+1. **Cửa sổ định nghĩa = câu neo, tối đa bốn câu trước nó và hai câu sau nó, trong cùng chunk neo.** Giữ dòng tiêu đề khối nếu có.
+   - Số câu trước đặt trong config, vào khoá cache.
+   - Bốn câu phủ 65/71 (doc-1) và 104/124 (doc-2) câu trích bị bác. Mở tới đầu chunk không thêm gì trên phép đo tên nguyên văn, mà dễ kéo
+     theo định nghĩa trước đó trong chunk dài.
+2. Câu trích nằm trong cửa sổ mà quên chunk neo → executor tự gắn chunk neo, không bác.
+3. Thêm test cho chốt `target_not_taught` (xem trên).
+4. **Chạy lại pass chính sáu tài liệu** (≈ 2,1 USD) và **pilot 216 cặp** (≈ 0,6 USD) với cửa sổ mới. Báo bảng như trên, mốc là đồ thị cuối
+   luồng cũ, cùng phân bố lỗi bác mới.
+5. Nếu bảng thật không tệ hơn cận dưới và tôi đọc các cạnh cứng mới thấy chấp nhận được, **chạy pass phụ production** (dry-run trước, ≈ 31
+   USD, nằm trong ngân sách chủ dự án đã duyệt). Sau đó A9/A10 và nghiệm thu đầy đủ như mục Nghiệm thu.
+   - Đây là quyết định đọc, không phải cổng số (luật tăng tốc).
+   - Không dùng độ chính xác trực tiếp trước rút gọn so với riêng pass chính cũ làm cổng.
+
 ## Bổ sung theo nguyên tắc đa ngôn ngữ (Claude, 2026-09-26; spec v3 R16)
 
 Làm cùng lượt chạy lại A6–A8 của vé này:
