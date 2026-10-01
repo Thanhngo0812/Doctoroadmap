@@ -81,7 +81,7 @@ def select_secondary_pairs(nodes, suspected_pairs, pair_cluster_ledger, edges, *
     return selected, pruned
 
 
-def pair_dossier(pair, nodes, chunks, mention_map, pair_cluster_ledger, edges):
+def pair_dossier(pair, nodes, chunks, mention_map, pair_cluster_ledger, edges, *, definition_before=4, definition_after=2):
     node_by_id = {node["node_id"]: node for node in nodes}
     chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
     left, right = pair["left"], pair["right"]
@@ -129,7 +129,8 @@ def pair_dossier(pair, nodes, chunks, mention_map, pair_cluster_ledger, edges):
                 "description": node_by_id[node_id].get("description", ""),
                 "defining_chunk_ids": node_by_id[node_id].get("defining_chunk_ids", []),
                 "teaching_status": node_by_id[node_id].get("teaching_status"),
-                "definition_window": definition_window(node_by_id[node_id], chunks),
+                "definition_window": definition_window(node_by_id[node_id], chunks,
+                                                       before=definition_before, after=definition_after),
             }
             for node_id in (left, right)
         ],

@@ -23,13 +23,16 @@ from doc2roadmap.domain.prerequisites import (
 
 
 class BuildMainEdges:
-    def __init__(self, store, model, *, single_session_limit=20, concurrency=4, generation=None):
+    def __init__(self, store, model, *, single_session_limit=20, concurrency=4, generation=None,
+                 definition_before=4, definition_after=2):
         if type(concurrency) is not int or concurrency < 1:
             raise ValueError("concurrency phải là số nguyên dương")
         self.store = store
         self.model = model
         self.single_session_limit = single_session_limit
         self.concurrency = concurrency
+        self.definition_before = definition_before
+        self.definition_after = definition_after
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
 
     def _provenance(self, doc_id, latest):
@@ -97,7 +100,9 @@ class BuildMainEdges:
                 for chunk_id in session["chunk_ids"]
             ],
             "target_concepts": [{**self._concept(node_by_id[node_id]),
-                                  "definition_window": definition_window(node_by_id[node_id], list(chunk_by_id.values()))}
+                                  "definition_window": definition_window(node_by_id[node_id], list(chunk_by_id.values()),
+                                                                         before=getattr(self, "definition_before", 4),
+                                                                         after=getattr(self, "definition_after", 2))}
                                  for node_id in session["target_node_ids"]],
             "mentioned_elsewhere": [self._concept(node_by_id[node_id]) for node_id in mentioned],
             "previous_edges_in_chapter": previous,
@@ -152,7 +157,7 @@ class BuildMainEdges:
         }[route]
         prompt_hash = main_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-main-pass-v5",
+            "algorithm_id": "a8-main-pass-v6",
             "provenance_version": mentions.version,
             "provenance_config_hash": mentions.manifest["config_hash"],
             "mentions_version": mention_config.get("mentions_version"),
@@ -163,9 +168,11 @@ class BuildMainEdges:
             "generation": self.generation,
             "prompt_hash": prompt_hash,
             "single_session_limit": self.single_session_limit,
+            "definition_before": self.definition_before,
+            "definition_after": self.definition_after,
             "route": route,
             "route_reason": reason,
-            "executor": "definition-window-quote-v1",
+            "executor": "definition-paragraph-window-autoattach-v2",
             "reverse_order_penalty": REVERSE_ORDER_PENALTY,
             "checkpoint": "progress-file-outside-version-chain-v1",
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,
@@ -232,6 +239,8 @@ class BuildMainEdges:
                     mentions.payload["mention_map"],
                     existing_edges=edges,
                     require_kind=mentions.payload["stage"] == "identity",
+                    definition_before=self.definition_before,
+                    definition_after=self.definition_after,
                 )
                 results[session["session_id"]] = (accepted, session_flags, operation_log, retry)
                 if retry:
@@ -273,6 +282,8 @@ class BuildMainEdges:
                         mentions.payload["mention_map"],
                         existing_edges=edges + accepted,
                         require_kind=mentions.payload["stage"] == "identity",
+                        definition_before=self.definition_before,
+                        definition_after=self.definition_after,
                     )
                     for invalid in still_invalid:
                         if invalid["error"] != "quote_outside_definition_window":
@@ -281,7 +292,8 @@ class BuildMainEdges:
                         softer, _, downgrade_log, downgrade_retry = validate_main_proposals(
                             {"edges": [downgraded], "flags": []}, session, nodes, chunks.chunks,
                             mentions.payload["mention_map"], existing_edges=edges + accepted + fixed,
-                            require_kind=True)
+                            require_kind=True, definition_before=self.definition_before,
+                            definition_after=self.definition_after)
                         fixed.extend(softer)
                         fixed_log.extend(downgrade_log)
                         if not downgrade_retry:

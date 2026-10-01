@@ -134,6 +134,10 @@
    - Đây là quyết định đọc, không phải cổng số (luật tăng tốc).
    - Không dùng độ chính xác trực tiếp trước rút gọn so với riêng pass chính cũ làm cổng.
 
+## Kết quả triển khai 2026-10-01 — dừng chờ đọc
+
+Hợp đồng cửa sổ −4…+2 và tự gắn chunk neo đã triển khai; unit test toàn bộ xanh. Pass chính sáu tài liệu và pilot chỉ trong hai chương vàng đã chạy ở kho đánh giá riêng, **không chạy pass phụ đầy đủ**. Báo cáo số, bảng so đồ thị cuối luồng cũ sau rút gọn và danh sách 14 cạnh cứng mới: `report/ket-qua-v3-12-cua-so-dinh-nghia-2026-10-01.md`. Kết quả hỗn hợp (doc-1 bao đóng đúng 106→108, doc-2 22→19); cần chủ dự án đọc cạnh trước khi quyết định bước tiếp.
+
 ## Bổ sung theo nguyên tắc đa ngôn ngữ (Claude, 2026-09-26; spec v3 R16)
 
 Làm cùng lượt chạy lại A6–A8 của vé này:

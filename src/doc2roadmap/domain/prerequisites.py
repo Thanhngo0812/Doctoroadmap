@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
+import re
 import unicodedata
 
 from .sentence_splitter import UnicodeSentenceSplitter
@@ -125,7 +126,7 @@ def validate_main_response(value):
             raise ValueError("flag cần kind")
 
 
-def definition_window(node, chunks):
+def definition_window(node, chunks, *, before=4, after=2):
     anchor = node.get("anchor") or {}
     chunk = next((row for row in chunks if row.chunk_id == anchor.get("chunk_id")), None)
     sentence = anchor.get("sentence")
@@ -137,11 +138,16 @@ def definition_window(node, chunks):
         start = text.find(unicodedata.normalize("NFC", sentence))
     if start < 0:
         return ""
-    spans = UnicodeSentenceSplitter().split(text)
-    index = next((i for i, span in enumerate(spans) if span.start <= start < span.end), None)
+    boundaries = list(re.finditer(r"\n\s*\n", text))
+    paragraph_start = max((match.end() for match in boundaries if match.end() <= start), default=0)
+    paragraph_end = min((match.start() for match in boundaries if match.start() > start), default=len(text))
+    paragraph = text[paragraph_start:paragraph_end]
+    spans = UnicodeSentenceSplitter().split(paragraph)
+    local_start = start - paragraph_start
+    index = next((i for i, span in enumerate(spans) if span.start <= local_start < span.end), None)
     if index is None:
         return ""
-    window = text[spans[index].start:spans[min(index + 2, len(spans) - 1)].end]
+    window = paragraph[spans[max(0, index - before)].start:spans[min(index + after, len(spans) - 1)].end]
     heading = heading_chunks(node, [chunk]).get(chunk.chunk_id)
     if heading and heading[1] <= start:
         window = heading[0] + "\n" + window
@@ -158,7 +164,8 @@ def _order_relation(source, target, node_by_id, chunk_by_id):
     return "thuận" if source_order <= target_order else "ngược"
 
 
-def validate_main_proposals(output, session, nodes, chunks, mention_map, *, existing_edges, require_kind=False):
+def validate_main_proposals(output, session, nodes, chunks, mention_map, *, existing_edges, require_kind=False,
+                            definition_before=4, definition_after=2):
     validate_main_response(output)
     node_by_id = {node["node_id"]: node for node in nodes}
     chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
@@ -168,6 +175,14 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
     accepted, flags, log, retry = [], [], [], []
     for index, edge in enumerate(output["edges"]):
         source, target = edge["prerequisite"], edge["target"]
+        evidence_ids = list(edge["chunk_ids"])
+        if target in node_by_id and edge.get("prerequisite_kind") == "can_de_hieu":
+            anchor_id = (node_by_id[target].get("anchor") or {}).get("chunk_id")
+            quote = edge.get("quote")
+            window = definition_window(node_by_id[target], chunks, before=definition_before, after=definition_after)
+            if anchor_id in chunk_by_id and isinstance(quote, str) and quote.strip() and quote in window:
+                if anchor_id not in evidence_ids:
+                    evidence_ids.append(anchor_id)
         error = None
         if source not in node_by_id or target not in node_by_id:
             error = "unknown_node"
@@ -187,24 +202,24 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             error = "unknown_evidence_kind"
         elif require_kind and edge.get("prerequisite_kind") not in {"can_de_hieu", "cong_cu"}:
             error = "unknown_prerequisite_kind"
-        elif not edge["chunk_ids"] or any(chunk_id not in chunk_by_id for chunk_id in edge["chunk_ids"]):
+        elif not evidence_ids or any(chunk_id not in chunk_by_id for chunk_id in evidence_ids):
             error = "unknown_evidence_chunk"
         elif require_kind and (not isinstance(edge.get("quote"), str) or not edge["quote"].strip()
                                or not any(edge["quote"] in chunk_by_id[chunk_id].text
-                                          for chunk_id in edge["chunk_ids"])):
+                                          for chunk_id in evidence_ids)):
             error = "quote_outside_evidence_chunk"
         elif edge.get("prerequisite_kind") == "can_de_hieu" and (
-            (node_by_id[target].get("anchor") or {}).get("chunk_id") not in edge["chunk_ids"]
+            (node_by_id[target].get("anchor") or {}).get("chunk_id") not in evidence_ids
         ):
             error = "definition_chunk_not_cited"
         elif edge.get("prerequisite_kind") != "can_de_hieu" and any(
             source not in mention_map.get(chunk_id, {}) or target not in mention_map.get(chunk_id, {})
-            for chunk_id in edge["chunk_ids"]
+            for chunk_id in evidence_ids
         ):
             error = "evidence_missing_both_endpoints"
         elif edge.get("prerequisite_kind") == "can_de_hieu" and (
             not isinstance(edge.get("quote"), str) or not edge["quote"].strip()
-            or edge["quote"] not in definition_window(node_by_id[target], chunks)
+            or edge["quote"] not in window
         ):
             error = "quote_outside_definition_window"
         if error:
@@ -233,14 +248,14 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
         evidence_hard = any(
             bool(HARD_MENTION_CHANNELS & set(mention_map.get(chunk_id, {}).get(source, {}).get("channels", [])))
             and bool(HARD_MENTION_CHANNELS & set(mention_map.get(chunk_id, {}).get(target, {}).get("channels", [])))
-            for chunk_id in edge["chunk_ids"]
+            for chunk_id in evidence_ids
         )
         proposal = {
             "source": source,
             "target": target,
             "edge_type": "requires",
             "evidence_kind": edge["evidence_kind"],
-            "chunk_ids": sorted(set(edge["chunk_ids"])),
+            "chunk_ids": sorted(set(evidence_ids)),
             "reason": edge["reason"],
             **({"prerequisite_kind": edge["prerequisite_kind"]} if edge.get("prerequisite_kind") else {}),
             **({"quote": edge["quote"]} if edge.get("quote") else {}),

@@ -15,8 +15,8 @@ from doc2roadmap.config import Settings
 from doc2roadmap.domain.secondary import select_secondary_pairs
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
 
-CASES = (("doc-1", 42, "doc-1-10-12-vang.json"),
-         ("doc-2", 34, "doc-2-98-115-vang.json"))
+CASES = (("doc-1", "doc-1-10-12-vang.json"),
+         ("doc-2", "doc-2-98-115-vang.json"))
 
 
 def pilot_pairs(payload, target_ids):
@@ -39,18 +39,18 @@ def main():
     settings = Settings()
     if settings.llm_transport != "vertex":
         raise ValueError("pilot này chỉ được duyệt qua Vertex")
-    output_root = settings.artifact_dir / "v3-r12-secondary-pilot"
+    output_root = settings.artifact_dir / "v3-r12-window-evaluation"
     store = EvaluationStore(JsonArtifactStore(settings.artifact_dir), JsonArtifactStore(output_root))
     raw = MeteredGemini(settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None,
-                        max_usd=args.max_usd, ledger_path=output_root / "llm-ledger.json",
+                        max_usd=args.max_usd, ledger_path=output_root / "pilot-llm-ledger.json",
                         max_output_tokens=settings.extraction_max_output_tokens,
                         transport=settings.llm_transport, vertex_project=settings.vertex_project,
                         vertex_location=settings.vertex_location)
     model = SpendGuard(raw, allowed=args.allow_spend)
-    for doc_id, version, gold_name in CASES:
-        main_artifact = store.base.load_graph(doc_id, version)
+    for doc_id, gold_name in CASES:
+        main_artifact = store.output.load_graph(doc_id, 1)
         if main_artifact.payload.get("stage") != "edges" or not main_artifact.payload.get("main_complete"):
-            raise ValueError(f"{doc_id} v{version} không phải A8 main hoàn chỉnh")
+            raise ValueError(f"{doc_id} v{main_artifact.version} không phải A8 main hoàn chỉnh")
         # Đọc đúng trường targets. Nhãn edges của bộ vàng không đi vào payload hay prompt.
         target_ids = json.loads((settings.artifact_dir / "a8-gold" / gold_name).read_text(encoding="utf-8"))["targets"]
         pairs = pilot_pairs(main_artifact.payload, target_ids)

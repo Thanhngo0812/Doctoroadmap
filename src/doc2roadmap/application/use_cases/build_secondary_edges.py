@@ -78,6 +78,8 @@ class BuildSecondaryEdges:
         if main.payload.get("stage") != "edges" or not main.payload.get("main_complete"):
             raise ValueError("pass phụ cần artifact pass chính hoàn chỉnh")
         main_config = main.manifest.get("config", {})
+        definition_before = main_config.get("definition_before", 0)
+        definition_after = main_config.get("definition_after", 2)
         require_kind = bool(main.payload.get("definition_contract"))
         chunks_version = main_config.get("chunks_version")
         chunks_artifact = (
@@ -99,6 +101,8 @@ class BuildSecondaryEdges:
             "generation": self.generation,
             "prompt_hash": prompt_hash,
             "route": route,
+            "definition_before": definition_before,
+            "definition_after": definition_after,
             "order_check": "fully-reversed-dossier-v2",
             "prune_rule": "direct-hard-or-explicit-hard-path-v3",
             "checkpoint": "progress-file-outside-version-chain-v1",
@@ -141,7 +145,8 @@ class BuildSecondaryEdges:
                                                      existing, route=route)
             inputs = [{"session_id": "secondary_" + pair["pair_id"] + "_left",
                        "dossier": {**pair_dossier(pair, nodes, chunks, main.payload["mention_map"],
-                                                   main.payload.get("pair_cluster_ledger", []), existing),
+                                                   main.payload.get("pair_cluster_ledger", []), existing,
+                                                   definition_before=definition_before, definition_after=definition_after),
                                    "presentation_order": [pair["left"], pair["right"]]}} for pair in askable]
             result = model_plan(inputs, system_prompt=system_prompt, generation=self.generation, unit="pair",
                                 checkpoint_id=checkpoint_id, metrics=metrics, calls_per_item=2)
@@ -213,6 +218,7 @@ class BuildSecondaryEdges:
                         main.payload["mention_map"],
                         existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
                         require_kind=require_kind,
+                        definition_before=definition_before, definition_after=definition_after,
                     )
                     if retry:
                         raise ValueError(retry[0]["error"])
@@ -245,7 +251,7 @@ class BuildSecondaryEdges:
                     _, _, _, invalid = validate_main_proposals(
                         output, pair_session, nodes, chunks, main.payload["mention_map"],
                         existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
-                        require_kind=True)
+                        require_kind=True, definition_before=definition_before, definition_after=definition_after)
                 except (ValueError, TypeError, KeyError):
                     continue
                 if not invalid:
@@ -278,6 +284,7 @@ class BuildSecondaryEdges:
                     main.payload["mention_map"],
                     existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
                     require_kind=require_kind,
+                    definition_before=definition_before, definition_after=definition_after,
                 )
                 secondary_edges, duplicate_log = merge_main_proposals(proposals, secondary_edges)
                 secondary_flags.extend(pair_flags)

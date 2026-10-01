@@ -89,6 +89,20 @@ def test_number_only_titles_use_same_document_contents_or_first_line():
     assert "k1" in flags and "j1" in flags
 
 
+def test_numbering_only_title_does_not_take_first_content_line_starting_with_digit():
+    sections = [Obj(section_id="c1", title="Chapter 1", parent_section_id=None, level=1,
+                    role="noi_dung", order_index=0),
+                Obj(section_id="c2", title="Chapter 2", parent_section_id=None, level=1,
+                    role="noi_dung", order_index=10)]
+    chunks = [Obj(parent_section_id="c1", role="noi_dung", order_index=1,
+                  text="3 matrix operations\nSubsequent teaching text"),
+              Obj(parent_section_id="c2", role="noi_dung", order_index=11,
+                  text="Vector spaces\nSubsequent teaching text")]
+    titles, flags = prepare_module_titles(sections, chunks)
+    assert titles["c1"] == "Chapter 1" and "c1" in flags
+    assert titles["c2"] == "Chapter 2 Vector spaces" and "c2" not in flags
+
+
 def test_document_case_majority_filters_lowercase_labels_but_not_uncased_script():
     sections = [Obj(section_id=f"s{i}", title=title, parent_section_id=None, level=2,
                     role="noi_dung", order_index=i)

@@ -105,7 +105,8 @@ def test_single_concept_title_does_not_gain_one_of_one():
     base.payload["modules"] = [base.payload["modules"][0]]
     artifact, _ = NameModules(store, model).execute("doc", upstream=base)
     assert artifact.payload["modules"][0]["title"] == "Addition"
-    assert model.calls == 0
+    assert model.calls == 2
+    assert artifact.payload["modules"][0]["title_source"] == "model_from_concepts"
 
 
 def test_valid_prior_decision_is_reused_but_invalid_old_suffix_is_reasked():
@@ -179,3 +180,77 @@ def test_long_base_does_not_force_numbered_title_when_no_full_concept_fits():
     base.payload["nodes"][1]["name"] = "Bài toán phân loại"
     artifact, _ = NameModules(store, model).execute("doc", upstream=base)
     assert all("(" not in module["title"] for module in artifact.payload["modules"])
+
+
+def test_concept_only_module_is_named_by_model_in_spanish():
+    store, base = Store(), upstream()
+    store.chunks[0].parent_section_id = "missing"
+    base.payload["modules"] = [{**base.payload["modules"][0], "node_ids": ["a", "b"]}]
+    base.payload["nodes"][0]["name"] = "Suma de vectores"
+    base.payload["nodes"][1]["name"] = "Producto de matrices"
+
+    class SpanishModel(Model):
+        def ask_json(self, prompt, response_schema):
+            return Obj(payload={"suffix": "Suma de matrices"})
+
+    model = SpanishModel()
+    stage = NameModules(store, model)
+    assert stage.plan("doc", upstream=base).remaining_items == 1
+    artifact, _ = stage.execute("doc", upstream=base)
+    assert model.calls == 1
+    assert artifact.payload["modules"][0]["title"] == "Suma de matrices"
+    assert artifact.payload["modules"][0]["title_source"] == "model_from_concepts"
+
+
+def test_concept_only_rejects_invented_and_single_concept_title_then_falls_back():
+    store, base = Store(), upstream()
+    store.chunks[0].parent_section_id = "missing"
+    base.payload["modules"] = [{**base.payload["modules"][0], "node_ids": ["a", "b"]}]
+    base.payload["nodes"][0]["name"] = "Cálculo vectorial"
+    base.payload["nodes"][1]["name"] = "Álgebra matricial"
+
+    class InvalidModel(Model):
+        def ask_json(self, prompt, response_schema):
+            return Obj(payload={"suffix": "Cálculo vectorial" if self.calls == 1 else "Palabra inventada"})
+
+    model = InvalidModel()
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert model.calls == 2
+    assert artifact.payload["modules"][0]["title"] == "Cálculo vectorial · Álgebra matricial"
+    assert artifact.payload["modules"][0]["title_source"] == "model_from_concepts"
+
+
+def test_concept_only_unspaced_script_accepts_grounded_name_and_section_title_skips_model():
+    store, base = Store(), upstream()
+    store.chunks[0].parent_section_id = "missing"
+    base.payload["modules"] = [{**base.payload["modules"][0], "node_ids": ["a", "b"]}]
+    base.payload["nodes"][0]["name"] = "ข้อมูลและตาราง"
+    base.payload["nodes"][1]["name"] = "ตารางสัมพันธ์"
+
+    class ThaiModel(Model):
+        def ask_json(self, prompt, response_schema):
+            return Obj(payload={"suffix": "ข้อมูลและตาราง · ตารางสัมพันธ์"})
+
+    model = ThaiModel()
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert model.calls == 1
+    assert artifact.payload["modules"][0]["title"] == "ข้อมูลและตาราง · ตารางสัมพันธ์"
+
+    store.chunks[0].parent_section_id = "unit"
+    model = ThaiModel()
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert model.calls == 0
+    assert artifact.payload["modules"][0]["title"] == "Operations"
+
+
+def test_unchanged_section_modules_reuse_titles_without_model_calls():
+    store, model, base = Store(), Model(), upstream()
+    previous = Obj(payload={"modules": [
+        {**base.payload["modules"][0], "title": "Operations — Addition", "title_source": "section"},
+        {**base.payload["modules"][1], "title": "Operations — Multiplication", "title_source": "section"}]})
+    stage = NameModules(store, model, reuse_artifact=previous)
+    assert stage.plan("doc", upstream=base).remaining_items == 0
+    artifact, _ = stage.execute("doc", upstream=base)
+    assert model.calls == 0
+    assert [row["title"] for row in artifact.payload["modules"]] == [
+        "Operations — Addition", "Operations — Multiplication"]

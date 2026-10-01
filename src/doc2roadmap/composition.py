@@ -217,6 +217,8 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
             store,
             model,
             single_session_limit=settings.roadmap_single_session_limit,
+            definition_before=settings.a8_definition_before,
+            definition_after=settings.a8_definition_after,
             concurrency=roadmap_concurrency,
             generation=generation,
         ),

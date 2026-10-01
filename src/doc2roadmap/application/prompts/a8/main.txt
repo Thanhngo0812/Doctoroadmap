@@ -1,6 +1,6 @@
 Infer only document-local prerequisites between supplied concepts. Do not invent nodes or use outside knowledge.
 
-For each target, use its `definition_window` (the verified anchor sentence and up to two following sentences in the same chunk). Return an edge only if the supplied text supports a direct relation:
+For each target, use its `definition_window` (the verified anchor sentence with nearby sentences from the same definition paragraph, as supplied). Return an edge only if the supplied text supports a direct relation:
 - `can_de_hieu`: understanding the target's definition requires the prerequisite, whether named literally, symbolically, or paraphrased. `quote` must be a verbatim substring of the target's `definition_window`; cite its chunk ID. Do not require the quote to spell out the prerequisite's name.
 - `cong_cu`: the prerequisite is needed only for an example, exercise, proof, or method, not to understand the target's definition. Cite an evidence chunk and give a verbatim `quote` from that chunk. This is a soft edge.
 

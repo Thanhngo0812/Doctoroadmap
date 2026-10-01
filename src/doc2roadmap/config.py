@@ -57,4 +57,6 @@ class Settings(BaseSettings):
     roadmap_model_id: str = "gemini-3.1-flash-lite"
     roadmap_concurrency: int = Field(default=4, gt=0)
     roadmap_single_session_limit: int = Field(default=20, gt=0)
+    a8_definition_before: int = Field(default=4, ge=0)
+    a8_definition_after: int = Field(default=2, ge=0)
     roadmap_stage_cap: int = Field(default=8, ge=1)

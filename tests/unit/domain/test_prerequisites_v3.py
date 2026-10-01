@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 
-from doc2roadmap.domain.prerequisites import plan_main_sessions, validate_main_proposals
+from doc2roadmap.domain.prerequisites import definition_window, plan_main_sessions, validate_main_proposals
 from doc2roadmap.domain.global_validation import validate_graph_rules
 from doc2roadmap.domain.secondary import select_secondary_pairs
 
@@ -28,7 +28,7 @@ def test_can_de_hieu_quote_must_be_in_target_window_not_merely_same_chunk():
         {"node_id": "b", "name": "เมทริกซ์", "learnable": True, "cluster_id": "g", "defining_chunk_ids": ["c"],
          "teaching_status": "taught", "anchor": {"chunk_id": "c", "char_start": 27, "sentence": "เมทริกซ์ใช้คอลัมน์ของ A."}},
     ]
-    text = "เวกเตอร์เป็นวัตถุพื้นฐาน. เมทริกซ์ใช้คอลัมน์ของ A. ตัวอย่างใช้เวกเตอร์."
+    text = "เวกเตอร์เป็นวัตถุพื้นฐาน.\n\nเมทริกซ์ใช้คอลัมน์ของ A. ตัวอย่างใช้เวกเตอร์."
     chunks = [SimpleNamespace(chunk_id="c", parent_section_id="s", order_index=0, text=text)]
     session = {"session_id": "s", "allowed_node_ids": ["a", "b"], "chunk_ids": ["c"]}
     mentions = {"c": {"a": {"channels": ["exact"]}, "b": {"channels": ["exact"]}}}
@@ -38,6 +38,39 @@ def test_can_de_hieu_quote_must_be_in_target_window_not_merely_same_chunk():
     accepted, _, _, retry = validate_main_proposals({"edges": [good, bad], "flags": []}, session, nodes, chunks, mentions, existing_edges=[])
     assert len(accepted) == 1 and accepted[0]["prerequisite_kind"] == "can_de_hieu"
     assert retry[0]["error"] == "quote_outside_definition_window"
+
+
+def test_definition_window_is_configurable_and_stays_inside_paragraph():
+    text = "Earlier paragraph.\n\nFirst. Second. Third. Fourth. Fifth. Matrix is defined. Example. Next. Last.\n\nExercises."
+    chunk = SimpleNamespace(chunk_id="c", order_index=0, text=text)
+    node = {"name": "Matrix", "anchor": {"chunk_id": "c", "char_start": text.index("Matrix"),
+            "sentence": "Matrix is defined."}}
+    window = definition_window(node, [chunk], before=4, after=2)
+    assert "Second." in window and "Last." not in window
+    assert "First." not in window and "Earlier paragraph." not in window and "Exercises." not in window
+    assert "Fourth." in definition_window(node, [chunk], before=2, after=0)
+    assert "Third." not in definition_window(node, [chunk], before=2, after=0)
+
+
+def test_definition_quote_auto_attaches_anchor_chunk_and_mentioned_target_is_rejected():
+    text = "Assume A. Matrix uses A."
+    nodes = [{"node_id": "a", "name": "A", "learnable": True, "teaching_status": "taught",
+              "defining_chunk_ids": ["c"]},
+             {"node_id": "b", "name": "Matrix", "learnable": True, "teaching_status": "taught",
+              "defining_chunk_ids": ["c"], "anchor": {"chunk_id": "c", "char_start": text.index("Matrix"),
+              "sentence": "Matrix uses A."}},
+             {"node_id": "m", "name": "Mentioned", "learnable": True, "teaching_status": "mentioned_only",
+              "defining_chunk_ids": ["c"], "anchor": {"chunk_id": "c", "char_start": 0,
+              "sentence": "Assume A."}}]
+    chunks = [SimpleNamespace(chunk_id="c", order_index=0, text=text)]
+    session = {"session_id": "s", "allowed_node_ids": ["a", "b", "m"], "chunk_ids": ["c"]}
+    edge = {"target": "b", "prerequisite": "a", "prerequisite_kind": "can_de_hieu",
+            "evidence_kind": "trong_dinh_nghia", "chunk_ids": [], "quote": "Assume A.", "reason": "A is assumed"}
+    mentioned = {**edge, "target": "m"}
+    accepted, _, _, retry = validate_main_proposals({"edges": [edge, mentioned], "flags": []}, session,
+        nodes, chunks, {}, existing_edges=[], require_kind=True)
+    assert len(accepted) == 1 and accepted[0]["chunk_ids"] == ["c"]
+    assert retry[0]["error"] == "target_not_taught"
 
 
 def test_cong_cu_is_soft_with_its_own_reason():

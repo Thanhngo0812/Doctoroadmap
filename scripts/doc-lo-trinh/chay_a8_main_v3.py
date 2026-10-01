@@ -1,12 +1,12 @@
-"""Vé 12: A8 pass chính trên sáu artifact danh tính đã chốt; không chạy pass phụ.
+"""Vé 12: A8 pass chính trên sáu artifact danh tính đã chốt trong kho đánh giá.
 
-Mặc định chỉ dry-run. Lượt trả tiền cần --allow-spend --max-usd 2.50.
+Mặc định chỉ dry-run. Lượt trả tiền cần --allow-spend --max-usd; không chạy pass phụ.
 """
 import argparse
 import json
 import sys
 
-from chay_danh_tinh_v3 import MeteredGemini
+from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.application.use_cases.build_main_edges import BuildMainEdges
 from doc2roadmap.application.use_cases.judge_identity import JudgeIdentity, load_identity_review
@@ -23,18 +23,19 @@ def main():
     sys.stdout.reconfigure(encoding="utf-8")
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--allow-spend", action="store_true")
-    parser.add_argument("--max-usd", type=float, default=2.5)
+    parser.add_argument("--max-usd", type=float, default=5.0)
     args = parser.parse_args()
-    if not 0 < args.max_usd <= 2.5:
-        parser.error("trần được duyệt cho A8 main: 2.50 USD")
+    if not 0 < args.max_usd <= 5.0:
+        parser.error("trần an toàn cho A8 main đánh giá: 5 USD")
     settings = Settings()
-    store = JsonArtifactStore(settings.artifact_dir)
+    output_root = settings.artifact_dir / "v3-r12-window-evaluation"
+    store = EvaluationStore(JsonArtifactStore(settings.artifact_dir), JsonArtifactStore(output_root))
     concurrency = settings.vertex_concurrency if settings.llm_transport == "vertex" else settings.roadmap_concurrency
     generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}
     raw = MeteredGemini(
         settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None,
         max_usd=args.max_usd,
-        ledger_path=settings.artifact_dir / "v3-r12-main-a8" / "llm-ledger.json",
+        ledger_path=output_root / "main-llm-ledger.json",
         max_output_tokens=settings.extraction_max_output_tokens,
         transport=settings.llm_transport,
         vertex_project=settings.vertex_project,
@@ -48,11 +49,13 @@ def main():
         teaching = store.load_graph(doc_id, identity.manifest["upstream_version"])
         review_path = settings.artifact_dir / "a8-gold" / f"duyet-danh-tinh-{doc_id}.json"
         review = load_identity_review(review_path, doc_id=doc_id) if review_path.exists() else {}
-        check = JudgeIdentity(store, model, concurrency=concurrency, review=review).plan(doc_id, upstream=teaching)
+        check = JudgeIdentity(store.base, model, concurrency=concurrency, review=review).plan(doc_id, upstream=teaching)
         if check.status != "reused" or check.artifact.version != version:
             raise ValueError(f"{doc_id}: artifact danh tính không khớp review/cấu hình hiện tại")
         main = BuildMainEdges(store, model, single_session_limit=settings.roadmap_single_session_limit,
-                              concurrency=concurrency, generation=generation)
+                              concurrency=concurrency, generation=generation,
+                              definition_before=settings.a8_definition_before,
+                              definition_after=settings.a8_definition_after)
         plan = main.plan(doc_id, upstream=identity)
         print(doc_id, json.dumps(plan.to_dict(), ensure_ascii=False), flush=True)
         if not args.allow_spend:

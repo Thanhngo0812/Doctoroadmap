@@ -37,7 +37,7 @@ class NameModules:
         if reference_version == chunks.version:
             reference_version = None
         reference = self.store.load_chunks(doc_id, reference_version) if reference_version else None
-        config = {"algorithm_id": "a10-module-titles-v5", "upstream_version": upstream.version,
+        config = {"algorithm_id": "a10-module-titles-v7", "upstream_version": upstream.version,
                   "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks.version,
                   "title_sections_version": reference_version or chunks.version,
                   "model_id": self.model.model_id, "generation": GENERATION, "prompt_hash": prompt_hash}
@@ -72,8 +72,19 @@ class NameModules:
                     if all(section_ids) else "")
             module["title"] = base or names[module["node_ids"][0]]
             module["title_source"] = "section" if base else "concept"
+        if self.reuse_artifact:
+            previous_modules = {row["module_id"]: row for row in self.reuse_artifact.payload.get("modules", [])}
+            for module in modules:
+                previous = previous_modules.get(module["module_id"])
+                if (module["title_source"] == "section" and previous
+                        and previous.get("title_source") == "section"
+                        and previous.get("node_ids") == module["node_ids"]
+                        and (previous.get("title") == module["title"]
+                             or previous.get("title", "").startswith(module["title"] + " — "))):
+                    module["title"] = previous["title"]
         counts = Counter(module["title"].casefold() for module in modules)
-        duplicate = [module for module in modules if counts[module["title"].casefold()] > 1]
+        needs_model = [module for module in modules if module["title_source"] == "concept"
+                       or counts[module["title"].casefold()] > 1]
         groups = defaultdict(list)
         for module in modules:
             groups[module["title"].casefold()].append(module)
@@ -84,7 +95,10 @@ class NameModules:
         old_metrics = Counter(checkpoint.get("metrics", {})) if resumable else Counter()
         inputs = [{"module_id": module["module_id"], "section_title": module["title"],
                    "concept_names": [names[node_id] for node_id in module["node_ids"]]}
-                  for module in duplicate]
+                  for module in needs_model]
+        for data, module in zip(inputs, needs_model):
+            if module["title_source"] == "concept":
+                data["section_title"] = ""
         prior = self.reuse_artifact.payload.get("module_title_decision_log", []) if self.reuse_artifact else []
         def short_title_possible(data):
             return any(grounded_suffix(name, [name], data["section_title"], [name])
@@ -95,15 +109,27 @@ class NameModules:
             return (len((data["section_title"] + " — " + suffix).split()) <= 12
                     or not short_title_possible(data))
 
+        def valid_title(data, value):
+            if not isinstance(value, dict) or not isinstance(value.get("suffix"), str):
+                return False
+            suffix = value["suffix"].strip()
+            concepts = data["concept_names"]
+            if not grounded_suffix(suffix, [data["section_title"], *concepts],
+                                   data["section_title"], concepts) or not acceptable_length(data, suffix):
+                return False
+            if not data["section_title"] and any(
+                    module["module_id"] != data["module_id"]
+                    and suffix.casefold() == module["title"].casefold() for module in modules):
+                return False
+            return not (not data["section_title"] and len(concepts) > 1
+                        and any(suffix.casefold() == name.casefold() for name in concepts))
+
         for data in inputs:
             if any(row.get("input_hash") == digest([self.model.model_id, prompt_hash, data])
                    and row.get("valid") for row in old_log):
                 continue
             previous = next((row for row in prior if row.get("valid") and row.get("input") == data), None)
-            if previous and grounded_suffix(previous.get("output", {}).get("suffix", ""),
-                                            [data["section_title"], *data["concept_names"]],
-                                            data["section_title"], data["concept_names"]) and acceptable_length(
-                                                data, previous["output"]["suffix"]):
+            if previous and valid_title(data, previous.get("output")):
                 old_log.append({**previous, "revalidated_for_prompt_hash": prompt_hash,
                                 "input_hash": digest([self.model.model_id, prompt_hash, data]), "reused": True})
         reusable = {row["input_hash"] for row in old_log if row.get("valid")}
@@ -116,10 +142,7 @@ class NameModules:
             jobs = []
             for data in inputs[start:start + 8]:
                 def validate(value, data=data):
-                    allowed = [data["section_title"], *data["concept_names"]]
-                    if not isinstance(value, dict) or not grounded_suffix(value.get("suffix", ""), allowed,
-                                                                           data["section_title"], data["concept_names"]) or not acceptable_length(
-                                                                               data, value["suffix"]):
+                    if not valid_title(data, value):
                         raise ValueError("phần phụ lặp tên nền, cắt mẩu tên khái niệm, thiếu chữ hoặc không có căn cứ")
                 jobs.append(ModelJob("module_title", self.model, prompt, prompt_hash, data, SCHEMA, validate))
             batch_values, batch_rows, counts = run_model_jobs(jobs, rows, concurrency=self.concurrency)
@@ -132,7 +155,7 @@ class NameModules:
         values_by_id = {data["module_id"]: value for data, value in zip(inputs, values)}
         degree = Counter(edge["source"] for edge in upstream.payload.get("requires_edges", [])
                          if not edge.get("soft"))
-        for module in duplicate:
+        for module in needs_model:
             siblings = groups[module["title"].casefold()]
             value = values_by_id[module["module_id"]]
             if value:
@@ -142,20 +165,25 @@ class NameModules:
                 ranked = [first, *sorted(module["node_ids"], key=lambda node_id: (-degree[node_id],
                                                                                      module["node_ids"].index(node_id)))]
                 chosen = []
-                short_possible = any(grounded_suffix(names[node_id], [names[node_id]], module["title"], [names[node_id]])
+                base_title = module["title"] if module["title_source"] == "section" else ""
+                short_possible = bool(base_title) and any(grounded_suffix(names[node_id], [names[node_id]], base_title, [names[node_id]])
                                      and len((module["title"] + " — " + names[node_id]).split()) <= 12
                                      for node_id in module["node_ids"])
                 for node_id in ranked:
                     name = names[node_id]
                     candidate = " · ".join([*chosen, name])
-                    if (name not in chosen and grounded_suffix(name, [name], module["title"], [name])
+                    if (name not in chosen and grounded_suffix(name, [name], base_title, [name])
                             and (not short_possible or len((module["title"] + " — " + candidate).split()) <= 12)):
                         chosen.append(name)
                     if len(chosen) == 2:
                         break
                 suffix = " · ".join(chosen)
             if suffix:
-                module["title"] += " — " + suffix
+                if module["title_source"] == "concept":
+                    module["title"] = suffix
+                    module["title_source"] = "model_from_concepts"
+                else:
+                    module["title"] += " — " + suffix
             elif len(siblings) > 1:
                 module["title"] += f" ({siblings.index(module) + 1}/{len(siblings)})"
         # Two grounded suffixes may still coincide. Deterministic fallback always produces distinct titles.
