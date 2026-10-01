@@ -3,8 +3,11 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R11 (sửa 2026-09-26) · **Ai:** **tôi** (công cụ kiểm thử) ·
 **Phụ thuộc:** 14 (vai trò doc-2 còn sai tới khi cây mục được sửa; chuyển sớm sẽ làm lệch mốc đo) · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ vé 14. Trong lúc chờ, bản regex hiện có vẫn dùng để nghiệm thu trên sáu tài liệu phát triển (đều vi/en), kèm giới
-hạn này.
+**Trạng thái:** **xong (2026-10-01).**
+- `kiem_doc_duoc.py` không còn regex của ngôn ngữ nào; thêm ba kiểm "tên nền là gốc", "tên nền chỉ có mã", "tên theo khái niệm đầu".
+- `--tu-kiem` có ví dụ tiếng Đức và tiếng Nhật; ba đột biến đều làm nó đỏ.
+- Mốc mới và giải thích mọi chênh lệch ở [vé 02](02-bang-kiem-doc-duoc.md#bản-không-phụ-thuộc-ngôn-ngữ-vé-02b-tôi-2026-10-01--mốc-mới).
+- Luật "chỉ có mã" dùng khung tiêu đề lặp ở ít nhất hai chương, nên nhận cả "第3章" (số nằm giữa), không chỉ "Chapter 3".
 
 ## Vì sao
 `scripts/doc-lo-trinh/kiem_doc_duoc.py` dùng regex tiếng Việt/tiếng Anh: `NON_TEACHING` cho vùng không dạy, `NUMBERED_LABEL` và `GENERIC`

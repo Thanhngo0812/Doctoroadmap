@@ -98,7 +98,7 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 **Cập nhật nhân viên 2026-09-27:** vé 14b đã triển khai và đo trên doc-2, nhap-mon-ml, doc-3; [báo cáo](../../report/v3-14b-ket-qua-2026-09-27.md), chờ reviewer nghiệm thu.
 
 **Hiện tại (2026-10-01, sau kiểm thử `64fbc24`):**
-- **Đã xong:** 01, 02, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
+- **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
 - **Vé 12 đang dở:**
   - Mã phần đầu đạt.
   - Pass chính mất độ phủ vì cửa sổ định nghĩa **tôi đặc tả sai**: thiếu các câu giả thiết đứng trước câu neo. Đặc tả đã sửa thành −4…+2.
@@ -108,7 +108,7 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
   1. **Vé 12** (nhân viên): sửa cửa sổ, tự gắn chunk neo, thêm test `target_not_taught`. Chạy lại pass chính (≈ 2,1 USD) và pilot
      (≈ 0,6 USD). Tôi đọc kết quả rồi mới chạy pass phụ production (≈ 31 USD, dry-run trước), sau đó A9/A10 và nghiệm thu.
   2. **09d** (nhân viên, < 0,01 USD), song song.
-  3. **02b** (tôi).
+  3. Tôi: đọc lượt chạy lại của vé 12 khi nhân viên báo, quyết pass phụ; chuẩn bị T10.
   4. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần).
 - **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD). Đã chi ≈ 26,2 USD, ước theo sổ token, chưa phải hoá đơn. Vẫn chỉ dùng
   `gemini-3.1-flash-lite`.
