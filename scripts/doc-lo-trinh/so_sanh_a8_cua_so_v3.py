@@ -1,4 +1,5 @@
 """Bảng A8 cửa sổ mới so đồ thị cuối luồng cũ sau rút gọn; không gọi LLM."""
+import argparse
 import sys
 from pathlib import Path
 
@@ -21,8 +22,11 @@ def hard_pairs(edges, identity, targets):
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--evaluation-root", type=Path, default=Path("artifacts/v3-r12-window-evaluation"))
+    args = parser.parse_args()
     base = JsonArtifactStore(Path("artifacts"))
-    evaluation = JsonArtifactStore(Path("artifacts/v3-r12-window-evaluation"))
+    evaluation = JsonArtifactStore(args.evaluation_root)
     old_store = JsonArtifactStore(Path("artifacts/v3-05b-a9v10-evaluation"))
     for doc_id, gold_name in CASES:
         main = evaluation.load_graph(doc_id, 1).payload
@@ -49,10 +53,13 @@ def main():
         old_pairs = hard_pairs(old_final, old.get("identity_map", {}), targets)
         gold_pairs = {(identity.get(a, a), identity.get(b, b)) for a, b in merge_gold([gold], mode="union")}
         names = {node["node_id"]: node["name"] for node in main["nodes"]}
+        citations = {(edge["source"], edge["target"]): edge.get("quote", "")
+                     for edge in structural["requires_edges"] if not edge.get("soft")}
         print(f"  Cạnh cứng mới trong phạm vi vàng: {len(new_pairs - old_pairs)}")
         for source, target in sorted(new_pairs - old_pairs):
             print(f"    {'VÀNG' if (source, target) in gold_pairs else 'CHƯA VÀNG'}: "
-                  f"{names.get(source, source)} → {names.get(target, target)} [{source} → {target}]")
+                  f"{names.get(source, source)} → {names.get(target, target)} [{source} → {target}] "
+                  f"quote={citations.get((source, target), '')!r}")
 
 
 if __name__ == "__main__":

@@ -16,7 +16,7 @@ def main():
     args = parser.parse_args()
     settings = Settings()
     source = settings.artifact_dir / "v3-05b-a9v10-evaluation"
-    root = settings.artifact_dir / "v3-09d-evaluation"
+    root = settings.artifact_dir / "v3-09d-selection-evaluation"
     old_store, output = JsonArtifactStore(source), JsonArtifactStore(root)
     store = EvaluationStore(JsonArtifactStore(settings.artifact_dir), output)
     raw = MeteredGemini(
@@ -50,7 +50,9 @@ def main():
         print(doc_id, json.dumps(row, ensure_ascii=True), flush=True)
     if args.allow_spend:
         output._write(root / "09d-summary.json", summary)
-        print("spent/reserved USD", sum(row["usd"] for row in raw.ledger), flush=True)
+        print("Vertex spent USD", sum(row["usd"] for row in raw.ledger if not row.get("reserved")),
+              "failed-run reservation USD", sum(row["usd"] for row in raw.ledger if row.get("reserved")),
+              flush=True)
 
 
 if __name__ == "__main__":

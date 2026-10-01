@@ -73,6 +73,28 @@ def test_definition_quote_auto_attaches_anchor_chunk_and_mentioned_target_is_rej
     assert retry[0]["error"] == "target_not_taught"
 
 
+def test_whitespace_only_quote_match_keeps_source_span_and_rejects_paraphrase():
+    text = "Assume A.\nMatrix uses A."
+    nodes = [{"node_id": "a", "name": "A", "learnable": True, "teaching_status": "taught",
+              "defining_chunk_ids": ["c"]},
+             {"node_id": "b", "name": "Matrix", "learnable": True, "teaching_status": "taught",
+              "defining_chunk_ids": ["c"], "anchor": {"chunk_id": "c", "char_start": text.index("Matrix"),
+              "sentence": "Matrix uses A."}}]
+    chunk = SimpleNamespace(chunk_id="c", order_index=0, text=text)
+    edge = {"target": "b", "prerequisite": "a", "prerequisite_kind": "can_de_hieu",
+            "evidence_kind": "trong_dinh_nghia", "chunk_ids": [],
+            "quote": "Assume A. Matrix uses A.", "reason": "A is assumed"}
+    wrong = {**edge, "quote": "Suppose A. Matrix uses A."}
+    accepted, _, _, retry = validate_main_proposals(
+        {"edges": [edge, wrong], "flags": []},
+        {"session_id": "s", "allowed_node_ids": ["a", "b"], "chunk_ids": ["c"]},
+        nodes, [chunk], {}, existing_edges=[], require_kind=True)
+    assert len(accepted) == 1
+    assert accepted[0]["chunk_ids"] == ["c"]
+    assert accepted[0]["quote"] == text
+    assert len(retry) == 1
+
+
 def test_cong_cu_is_soft_with_its_own_reason():
     nodes = [{"node_id": i, "name": i, "learnable": True, "cluster_id": "g", "defining_chunk_ids": ["c"]}
              for i in ("a", "b")]

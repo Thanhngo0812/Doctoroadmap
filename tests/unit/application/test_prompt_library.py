@@ -74,9 +74,9 @@ def test_product_prompt_hashes_are_intentionally_versioned():
         "secondary": secondary_prompt_hash("golden-model", GENERATION),
     }
     a8_expected = {
-        "main": "e749d15f8da9035b4453a2896a883be1a75e3d7a81588b7cf3c380e678f58020",
+        "main": "e38a50bf51a1a459c11f7f2d150cb3f4cd6a21adcd3d896bcf5379debeccb8b7",
         "provenance": "65776d7757bf3e2a6a79fb05a5cd37b424686edd0f667aa7aeb1e84618772dad",
-        "secondary": "d036b84408cdaed72f420b9077b6aa594c060a697b5173ff62cbbbedc64a395e",
+        "secondary": "a538616c0859379896d184221a021f126cb85495fb9dd0ac1ea458070ff0aeae",
     }
 
     assert a3_actual == a3_expected, HASH_CHANGE_WARNING

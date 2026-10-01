@@ -3,10 +3,13 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R7 · **Ai:** nhân viên · **Phụ thuộc:** 09c ·
 **Chi phí mô hình:** một lời gọi mỗi module không có tiêu đề mục (sáu tài liệu phát triển: khoảng 10 lời gọi, < 0,01 USD)
 
-**Trạng thái:** đã triển khai và chạy thử sáu tài liệu; chờ sếp đọc tên module trong kho đánh giá, chưa commit.
+**Trạng thái:** đã sửa cách sinh theo kết luận kiểm thử, kiểm thử và chạy thử sáu tài liệu; chờ sếp đọc tên module mới trong kho đánh giá, chưa commit phần sửa này.
 
 **Kết quả:** [báo cáo 09d](../../report/ket-qua-v3-09d-2026-10-01.md), artifact cuối ở
 `artifacts/v3-09d-evaluation/graph/*/v2`.
+
+Lượt sửa chọn tên nguyên vẹn: [báo cáo bên dưới](../../report/ket-qua-v3-09d-2026-10-01.md#sửa-tên-2026-10-01);
+artifact mới tại `artifacts/v3-09d-selection-evaluation/graph/*/v1`.
 
 ## Vì sao (kiểm thử vé 09c, 2026-10-01)
 R7: "Tên = tiêu đề mục `noi_dung` cụ thể nhất chung cho module; nếu trùng với module khác **hoặc không có**, sinh tên ngắn bằng mô hình từ

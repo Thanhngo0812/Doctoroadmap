@@ -83,6 +83,26 @@ def test_pair_contract_rejects_outside_edge_and_two_orders_must_agree():
     )["decision"] == "defer"
 
 
+def test_same_direction_reconciles_weaker_evidence_and_different_kinds_to_soft():
+    hard = {"pair_id": "ab", "decision": "create", "prerequisite": "a", "target": "b",
+            "prerequisite_kind": "can_de_hieu", "evidence_kind": "noi_ro", "chunk_ids": ["c1"],
+            "quote": "Definition of b uses a.", "reason": "definition", "flags": []}
+    weaker = {**hard, "evidence_kind": "mach_trinh_bay", "chunk_ids": ["c2"],
+              "quote": "A is introduced before B."}
+    result = reconcile_pair_verdicts(hard, weaker)
+    assert result["decision"] == "create"
+    assert result["evidence_kind"] == "mach_trinh_bay"
+    assert result["chunk_ids"] == ["c1", "c2"]
+    assert result["quote"] == weaker["quote"]
+    tool = {**hard, "prerequisite_kind": "cong_cu", "quote": "Use a in an example.",
+            "chunk_ids": ["c3"]}
+    result = reconcile_pair_verdicts(hard, tool)
+    assert result["decision"] == "create"
+    assert result["prerequisite_kind"] == "cong_cu"
+    assert result["quote"] == tool["quote"]
+    assert result["chunk_ids"] == ["c3"]
+
+
 def test_secondary_flags_must_each_have_a_nonempty_kind():
     pair = {"pair_id": "ab", "left": "a", "right": "b"}
     base = {"pair_id": "ab", "decision": "defer", "flags": []}

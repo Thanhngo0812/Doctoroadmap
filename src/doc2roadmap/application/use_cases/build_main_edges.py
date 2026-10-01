@@ -157,7 +157,7 @@ class BuildMainEdges:
         }[route]
         prompt_hash = main_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-main-pass-v6",
+            "algorithm_id": "a8-main-pass-v7",
             "provenance_version": mentions.version,
             "provenance_config_hash": mentions.manifest["config_hash"],
             "mentions_version": mention_config.get("mentions_version"),
@@ -172,7 +172,7 @@ class BuildMainEdges:
             "definition_after": self.definition_after,
             "route": route,
             "route_reason": reason,
-            "executor": "definition-paragraph-window-autoattach-v2",
+            "executor": "definition-paragraph-window-whitespace-v3",
             "reverse_order_penalty": REVERSE_ORDER_PENALTY,
             "checkpoint": "progress-file-outside-version-chain-v1",
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,

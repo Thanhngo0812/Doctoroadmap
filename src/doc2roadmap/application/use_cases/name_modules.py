@@ -37,7 +37,7 @@ class NameModules:
         if reference_version == chunks.version:
             reference_version = None
         reference = self.store.load_chunks(doc_id, reference_version) if reference_version else None
-        config = {"algorithm_id": "a10-module-titles-v7", "upstream_version": upstream.version,
+        config = {"algorithm_id": "a10-module-titles-v8", "upstream_version": upstream.version,
                   "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks.version,
                   "title_sections_version": reference_version or chunks.version,
                   "model_id": self.model.model_id, "generation": GENERATION, "prompt_hash": prompt_hash}
@@ -83,8 +83,10 @@ class NameModules:
                              or previous.get("title", "").startswith(module["title"] + " — "))):
                     module["title"] = previous["title"]
         counts = Counter(module["title"].casefold() for module in modules)
-        needs_model = [module for module in modules if module["title_source"] == "concept"
-                       or counts[module["title"].casefold()] > 1]
+        needs_model = [module for module in modules
+                       if ((module["title_source"] == "concept" and len(module["node_ids"]) > 1)
+                           or (module["title_source"] == "section"
+                               and counts[module["title"].casefold()] > 1))]
         groups = defaultdict(list)
         for module in modules:
             groups[module["title"].casefold()].append(module)
@@ -109,20 +111,25 @@ class NameModules:
             return (len((data["section_title"] + " — " + suffix).split()) <= 12
                     or not short_title_possible(data))
 
+        def selected_concepts(data, suffix):
+            selected = [name.strip() for name in suffix.split("·")]
+            names = data["concept_names"]
+            if (not 2 <= len(selected) <= 3 or len(set(selected)) != len(selected)
+                    or any(name not in names for name in selected)):
+                return None
+            return list(dict.fromkeys(name for name in names if name in selected))
+
         def valid_title(data, value):
             if not isinstance(value, dict) or not isinstance(value.get("suffix"), str):
                 return False
             suffix = value["suffix"].strip()
             concepts = data["concept_names"]
+            if not data["section_title"]:
+                return selected_concepts(data, suffix) is not None
             if not grounded_suffix(suffix, [data["section_title"], *concepts],
                                    data["section_title"], concepts) or not acceptable_length(data, suffix):
                 return False
-            if not data["section_title"] and any(
-                    module["module_id"] != data["module_id"]
-                    and suffix.casefold() == module["title"].casefold() for module in modules):
-                return False
-            return not (not data["section_title"] and len(concepts) > 1
-                        and any(suffix.casefold() == name.casefold() for name in concepts))
+            return True
 
         for data in inputs:
             if any(row.get("input_hash") == digest([self.model.model_id, prompt_hash, data])
@@ -143,7 +150,7 @@ class NameModules:
             for data in inputs[start:start + 8]:
                 def validate(value, data=data):
                     if not valid_title(data, value):
-                        raise ValueError("phần phụ lặp tên nền, cắt mẩu tên khái niệm, thiếu chữ hoặc không có căn cứ")
+                        raise ValueError("chọn 2–3 tên khái niệm nguyên vẹn hoặc phần phụ có căn cứ; không bịa, cắt mẩu hay lặp tên nền")
                 jobs.append(ModelJob("module_title", self.model, prompt, prompt_hash, data, SCHEMA, validate))
             batch_values, batch_rows, counts = run_model_jobs(jobs, rows, concurrency=self.concurrency)
             values.extend(batch_values)
@@ -160,6 +167,9 @@ class NameModules:
             value = values_by_id[module["module_id"]]
             if value:
                 suffix = value["suffix"].strip()
+                if module["title_source"] == "concept":
+                    data = next(data for data in inputs if data["module_id"] == module["module_id"])
+                    suffix = " · ".join(selected_concepts(data, suffix))
             else:
                 first = module["node_ids"][0]
                 ranked = [first, *sorted(module["node_ids"], key=lambda node_id: (-degree[node_id],
@@ -187,11 +197,13 @@ class NameModules:
             elif len(siblings) > 1:
                 module["title"] += f" ({siblings.index(module) + 1}/{len(siblings)})"
         # Two grounded suffixes may still coincide. Deterministic fallback always produces distinct titles.
-        seen = Counter(module["title"].casefold() for module in modules)
+        duplicates = defaultdict(list)
         for module in modules:
-            if seen[module["title"].casefold()] > 1:
-                sibling = [row for row in modules if row["title"].casefold() == module["title"].casefold()]
-                module["title"] += f" ({sibling.index(module) + 1}/{len(sibling)})"
+            duplicates[module["title"].casefold()].append(module)
+        for siblings in duplicates.values():
+            if len(siblings) > 1:
+                for index, module in enumerate(siblings, 1):
+                    module["title"] += f" ({index}/{len(siblings)})"
         payload = {**upstream.payload, "modules": modules,
                    "module_title_flags": [{"kind": "numbering_only_title", "section_id": section_id}
                                           for section_id in sorted(numbering_flags)],

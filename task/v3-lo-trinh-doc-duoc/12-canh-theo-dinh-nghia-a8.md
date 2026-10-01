@@ -208,6 +208,12 @@ Làm cùng lượt chạy lại A6–A8 của vé này:
 5. Tôi đọc ngay. Nếu không tệ hơn hàng cuối của bảng trên → chạy **pass phụ đầy đủ** (dry-run trước, ≈ 31 USD, trong ngân sách đã duyệt),
    rồi A9/A10 và nghiệm thu.
 
+## Lượt ba sửa 2026-10-01 — đã chạy, chờ đọc
+
+Ba sửa đã triển khai: so câu trích sau gộp khoảng trắng và lưu span gốc; hoà giải hai thứ tự cùng chiều bằng nhãn căn cứ yếu hơn hoặc hạ cạnh mềm khi khác loại; prompt chỉ lấy phát biểu định nghĩa/giả thiết, không lấy dẫn dắt/ví dụ/chứng minh/hệ quả. Test tái hiện đã đỏ trước sửa rồi xanh. Đã chạy lại pass chính sáu tài liệu và pilot hai chương vàng trong kho đánh giá riêng; **chưa chạy pass phụ đầy đủ**. Bảng so đồ thị cuối luồng cũ, usage và 22 cạnh cứng mới kèm câu trích ở `report/ket-qua-v3-12-ba-sua-2026-10-01.md`.
+
+Lượt thật doc-1: trực tiếp 17/29, bao đóng 109/134; doc-2: trực tiếp 11/16, bao đóng 20/25. Cải thiện so với lượt trước nhưng chưa đạt hàng chấm lại 0 USD, và vài câu ví dụ/chứng minh vẫn lọt. Dừng chờ chủ dự án đọc, **không tự suy từ “nếu không tệ hơn” để chạy pass phụ đầy đủ**.
+
 ## Kiểm thử lượt ba sửa (Claude, 2026-10-01) — **cho chạy pass phụ đầy đủ**
 
 **Mã:**

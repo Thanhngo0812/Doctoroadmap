@@ -5,6 +5,7 @@ Mặc định chỉ dry-run. Lượt trả tiền cần --allow-spend --max-usd;
 import argparse
 import json
 import sys
+from pathlib import Path
 
 from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini
 from doc2roadmap.application.spend_guard import SpendGuard
@@ -24,11 +25,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--allow-spend", action="store_true")
     parser.add_argument("--max-usd", type=float, default=5.0)
+    parser.add_argument("--evaluation-root", type=Path, default=Path("artifacts/v3-r12-window-evaluation"))
     args = parser.parse_args()
     if not 0 < args.max_usd <= 5.0:
         parser.error("trần an toàn cho A8 main đánh giá: 5 USD")
     settings = Settings()
-    output_root = settings.artifact_dir / "v3-r12-window-evaluation"
+    output_root = args.evaluation_root
     store = EvaluationStore(JsonArtifactStore(settings.artifact_dir), JsonArtifactStore(output_root))
     concurrency = settings.vertex_concurrency if settings.llm_transport == "vertex" else settings.roadmap_concurrency
     generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}

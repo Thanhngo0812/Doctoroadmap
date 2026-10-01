@@ -6,6 +6,7 @@ Mặc định dry-run. --allow-spend --max-usd 2 cần chủ dự án duyệt tr
 import argparse
 import json
 import sys
+from pathlib import Path
 from types import SimpleNamespace
 
 from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini
@@ -33,13 +34,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--allow-spend", action="store_true")
     parser.add_argument("--max-usd", type=float, default=2.0)
+    parser.add_argument("--evaluation-root", type=Path, default=Path("artifacts/v3-r12-window-evaluation"))
     args = parser.parse_args()
     if not 0 < args.max_usd <= 2:
         parser.error("trần pilot nếu được duyệt: 2 USD")
     settings = Settings()
     if settings.llm_transport != "vertex":
         raise ValueError("pilot này chỉ được duyệt qua Vertex")
-    output_root = settings.artifact_dir / "v3-r12-window-evaluation"
+    output_root = args.evaluation_root
     store = EvaluationStore(JsonArtifactStore(settings.artifact_dir), JsonArtifactStore(output_root))
     raw = MeteredGemini(settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None,
                         max_usd=args.max_usd, ledger_path=output_root / "pilot-llm-ledger.json",

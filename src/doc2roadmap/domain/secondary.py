@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections import deque
 
-from .prerequisites import definition_window
+from .prerequisites import EVIDENCE_CONFIDENCE, definition_window
 
 
 DECISIONS = {"create", "no_direct_relation", "indirect_path", "defer"}
@@ -170,11 +170,15 @@ def reconcile_pair_verdicts(first, second):
     if first["decision"] != second["decision"]:
         return {"pair_id": first["pair_id"], "decision": "defer", "reason": "inconsistent_orders", "flags": []}
     if first["decision"] == "create":
-        keys = ("prerequisite", "target", "evidence_kind", "prerequisite_kind")
+        keys = ("prerequisite", "target")
         if any(first.get(key) != second.get(key) for key in keys):
             return {"pair_id": first["pair_id"], "decision": "defer", "reason": "inconsistent_orders", "flags": []}
+        if first.get("prerequisite_kind") != second.get("prerequisite_kind"):
+            chosen = first if first.get("prerequisite_kind") == "cong_cu" else second
+            return {**chosen, "flags": first.get("flags", []) + second.get("flags", [])}
+        chosen = min((first, second), key=lambda row: EVIDENCE_CONFIDENCE[row["evidence_kind"]])
         return {
-            **first,
+            **chosen,
             "chunk_ids": sorted(set(first.get("chunk_ids", [])) | set(second.get("chunk_ids", []))),
             "flags": first.get("flags", []) + second.get("flags", []),
         }

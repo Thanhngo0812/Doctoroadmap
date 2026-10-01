@@ -164,6 +164,13 @@ def _order_relation(source, target, node_by_id, chunk_by_id):
     return "thuận" if source_order <= target_order else "ngược"
 
 
+def _source_quote(quote, text):
+    if not isinstance(quote, str) or not quote.split():
+        return None
+    match = re.search(r"\s+".join(re.escape(part) for part in quote.split()), text)
+    return match.group(0) if match else None
+
+
 def validate_main_proposals(output, session, nodes, chunks, mention_map, *, existing_edges, require_kind=False,
                             definition_before=4, definition_after=2):
     validate_main_response(output)
@@ -176,13 +183,21 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
     for index, edge in enumerate(output["edges"]):
         source, target = edge["prerequisite"], edge["target"]
         evidence_ids = list(edge["chunk_ids"])
+        quote = edge.get("quote")
+        window_quote = None
         if target in node_by_id and edge.get("prerequisite_kind") == "can_de_hieu":
             anchor_id = (node_by_id[target].get("anchor") or {}).get("chunk_id")
-            quote = edge.get("quote")
             window = definition_window(node_by_id[target], chunks, before=definition_before, after=definition_after)
-            if anchor_id in chunk_by_id and isinstance(quote, str) and quote.strip() and quote in window:
+            window_quote = _source_quote(quote, window)
+            if anchor_id in chunk_by_id and window_quote:
                 if anchor_id not in evidence_ids:
                     evidence_ids.append(anchor_id)
+        evidence_quote = None
+        for chunk_id in evidence_ids:
+            if chunk_id in chunk_by_id:
+                evidence_quote = _source_quote(quote, chunk_by_id[chunk_id].text)
+                if evidence_quote:
+                    break
         error = None
         if source not in node_by_id or target not in node_by_id:
             error = "unknown_node"
@@ -204,9 +219,7 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             error = "unknown_prerequisite_kind"
         elif not evidence_ids or any(chunk_id not in chunk_by_id for chunk_id in evidence_ids):
             error = "unknown_evidence_chunk"
-        elif require_kind and (not isinstance(edge.get("quote"), str) or not edge["quote"].strip()
-                               or not any(edge["quote"] in chunk_by_id[chunk_id].text
-                                          for chunk_id in evidence_ids)):
+        elif require_kind and not evidence_quote:
             error = "quote_outside_evidence_chunk"
         elif edge.get("prerequisite_kind") == "can_de_hieu" and (
             (node_by_id[target].get("anchor") or {}).get("chunk_id") not in evidence_ids
@@ -218,8 +231,7 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
         ):
             error = "evidence_missing_both_endpoints"
         elif edge.get("prerequisite_kind") == "can_de_hieu" and (
-            not isinstance(edge.get("quote"), str) or not edge["quote"].strip()
-            or edge["quote"] not in window
+            not window_quote
         ):
             error = "quote_outside_definition_window"
         if error:
@@ -258,7 +270,7 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             "chunk_ids": sorted(set(evidence_ids)),
             "reason": edge["reason"],
             **({"prerequisite_kind": edge["prerequisite_kind"]} if edge.get("prerequisite_kind") else {}),
-            **({"quote": edge["quote"]} if edge.get("quote") else {}),
+            **({"quote": evidence_quote or quote} if quote else {}),
             **({"soft": True, "soft_reason": "cong_cu"} if edge.get("prerequisite_kind") == "cong_cu" else {}),
             "confidence": confidence,
             "explicit_evidence": edge["evidence_kind"] in {"noi_ro", "trong_dinh_nghia"},

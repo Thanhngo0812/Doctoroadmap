@@ -92,7 +92,7 @@ class BuildSecondaryEdges:
         route = main.payload["routing"]["route"]
         prompt_hash = secondary_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-secondary-pass-v5",
+            "algorithm_id": "a8-secondary-pass-v6",
             "main_version": main.version,
             "main_config_hash": main.manifest["config_hash"],
             "canonical_version": main_config.get("canonical_version"),
@@ -104,6 +104,7 @@ class BuildSecondaryEdges:
             "definition_before": definition_before,
             "definition_after": definition_after,
             "order_check": "fully-reversed-dossier-v2",
+            "reconcile_rule": "same-direction-weaker-evidence-or-soft-v2",
             "prune_rule": "direct-hard-or-explicit-hard-path-v3",
             "checkpoint": "progress-file-outside-version-chain-v1",
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,

@@ -105,8 +105,8 @@ def test_single_concept_title_does_not_gain_one_of_one():
     base.payload["modules"] = [base.payload["modules"][0]]
     artifact, _ = NameModules(store, model).execute("doc", upstream=base)
     assert artifact.payload["modules"][0]["title"] == "Addition"
-    assert model.calls == 2
-    assert artifact.payload["modules"][0]["title_source"] == "model_from_concepts"
+    assert model.calls == 0
+    assert artifact.payload["modules"][0]["title_source"] == "concept"
 
 
 def test_valid_prior_decision_is_reused_but_invalid_old_suffix_is_reasked():
@@ -191,14 +191,14 @@ def test_concept_only_module_is_named_by_model_in_spanish():
 
     class SpanishModel(Model):
         def ask_json(self, prompt, response_schema):
-            return Obj(payload={"suffix": "Suma de matrices"})
+            return Obj(payload={"suffix": "Producto de matrices · Suma de vectores"})
 
     model = SpanishModel()
     stage = NameModules(store, model)
     assert stage.plan("doc", upstream=base).remaining_items == 1
     artifact, _ = stage.execute("doc", upstream=base)
     assert model.calls == 1
-    assert artifact.payload["modules"][0]["title"] == "Suma de matrices"
+    assert artifact.payload["modules"][0]["title"] == "Suma de vectores · Producto de matrices"
     assert artifact.payload["modules"][0]["title_source"] == "model_from_concepts"
 
 
@@ -241,6 +241,42 @@ def test_concept_only_unspaced_script_accepts_grounded_name_and_section_title_sk
     artifact, _ = NameModules(store, model).execute("doc", upstream=base)
     assert model.calls == 0
     assert artifact.payload["modules"][0]["title"] == "Operations"
+
+
+def test_concept_selection_rejects_fragments():
+    store, base = Store(), upstream()
+    store.chunks[0].parent_section_id = "missing"
+    base.payload["modules"] = [{**base.payload["modules"][0], "node_ids": ["a", "b"]}]
+    base.payload["nodes"][0]["name"] = "Suma de vectores"
+    base.payload["nodes"][1]["name"] = "Producto de matrices"
+
+    class SelectionModel(Model):
+        def ask_json(self, prompt, response_schema):
+            return Obj(payload={"suffix": "Suma de matrices" if self.calls == 1
+                        else "Producto de matrices · Suma de vectores"})
+
+    model = SelectionModel()
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert model.calls == 2
+    assert artifact.payload["modules"][0]["title"] == "Suma de vectores · Producto de matrices"
+
+
+def test_identical_valid_concept_selections_remain_distinct():
+    store, base = Store(), upstream()
+    store.chunks[0].parent_section_id = "missing"
+    store.chunks[1].parent_section_id = "missing"
+    base.payload["modules"] = [{**module, "node_ids": ["a", "b"]}
+                               for module in base.payload["modules"]]
+
+    class SameSelection(Model):
+        def ask_json(self, prompt, response_schema):
+            return Obj(payload={"suffix": "Addition · Multiplication"})
+
+    model = SameSelection()
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert model.calls == 2
+    assert [module["title"] for module in artifact.payload["modules"]] == [
+        "Addition · Multiplication (1/2)", "Addition · Multiplication (2/2)"]
 
 
 def test_unchanged_section_modules_reuse_titles_without_model_calls():
