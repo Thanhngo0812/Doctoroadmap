@@ -110,14 +110,21 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
   - Còn ba sửa nhỏ trước khi chi ≈ 31 USD cho pass phụ đầy đủ: so câu trích sau khi gộp khoảng trắng, gộp hai thứ tự bớt ngặt, câu trích phải
     từ chính định nghĩa.
   - 09d: cơ chế đạt, nhưng tên ghép liền mẩu tên → đổi sang chọn tên khái niệm nguyên vẹn rồi nối " · ".
+- **Cập nhật 2026-10-01 (kiểm thử lượt ba sửa):**
+  - Hợp đồng A8 **chốt**: trên hai chương vàng ngang luồng cũ trong nhiễu đo (mọi khoảng tin cậy Wilson chồng nhau).
+  - **Cho chạy pass phụ đầy đủ.**
+  - 09d **đạt**.
 - **Làm tiếp:**
-  1. **Vé 12** (nhân viên): ba sửa trên. Chạy lại pass chính (≈ 2 USD) và pilot (≈ 0,45 USD). Tôi đọc ngay rồi mới chạy pass phụ đầy đủ
-     (≈ 31 USD, dry-run trước), sau đó A9/A10 và nghiệm thu.
-  2. **09d** (nhân viên, < 0,01 USD): sửa cách sinh tên, song song.
-  3. Tôi: đọc lượt chạy lại khi nhân viên báo. Giao thức T10/07 v2 **đã soạn** ([tệp](T10-07v2-giao-thuc-tap-giu-lai.md)): T14 dời lên trước A8 vì danh tính đứng trước A8 trong chuỗi v3.
+  1. **Vé 12** (nhân viên): commit mốc. Dry-run rồi chạy pass phụ đầy đủ (≈ 31 USD) trên pass chính lượt ba sửa. Sau đó A9 → tên khái niệm →
+     A10 → tên module trong kho đánh giá cuối. Báo `cham_tap_giu_lai.py` (doc-1, doc-2) và `kiem_doc_duoc.py` (sáu tài liệu).
+  2. Tôi: đọc lộ trình sáu tài liệu, nghiệm thu vé 12, điền "mức tài liệu phát triển" vào
+     [giao thức T10/07 v2](T10-07v2-giao-thuc-tap-giu-lai.md).
+  3. Chủ dự án (nên có): xếp hai người chấm mù cạnh cứng hai chương vàng (kiểu T15), vì gold không còn phân định được giữa các phương án.
   4. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần).
-- **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD). Đã chi ≈ 28,7 USD tới lượt cửa sổ −4…+2, ước theo sổ token, chưa phải hoá đơn. Vẫn chỉ dùng
-  `gemini-3.1-flash-lite`.
+- **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD).
+  - Đã chi ≈ 31,1 USD tới lượt ba sửa, ước theo sổ token, chưa phải hoá đơn.
+  - Dự kiến: pass phụ ≈ 31 USD và tập giữ lại 15–40 USD, tổng cuối ≈ 77–102 USD.
+  - Vẫn chỉ dùng `gemini-3.1-flash-lite`.
 - **Kho chính:** sáu tài liệu đã có A6 → A7 → neo → danh tính → A8 pass chính v5 (doc-1 v38–42, doc-2 v30–34…); pass phụ chưa chạy.
 - **Không đề xuất dựng lại doc-2 từ A3** trên cây mục mới:
   - ID node đổi thì bộ vàng đóng băng không chấm được nếu chưa có kế hoạch ánh xạ (xem vé 13);

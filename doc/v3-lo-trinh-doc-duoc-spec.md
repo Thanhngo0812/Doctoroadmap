@@ -210,6 +210,11 @@ mỗi tài liệu (≈ 1–7 USD), cần chủ dự án duyệt trước khi ch�
 - Câu trích `can_de_hieu` phải lấy từ chính định nghĩa/phát biểu, kể cả giả thiết giới thiệu đối tượng của nó. Không lấy câu dẫn dắt hay
   báo trước, ví dụ, bước chứng minh hay hệ quả.
 - Chấm lại 0 USD với cách so mới: doc-1 bao đóng P 118/145, R 118/131; luồng cũ P 106/129, R 106/131.
+*Chốt 2026-10-01 (kiểm thử lượt ba sửa):* hợp đồng trên được chốt để chạy pass phụ đầy đủ.
+- Trên hai chương vàng, kết quả ngang luồng cũ trong nhiễu đo: mọi khoảng tin cậy Wilson 95% chồng nhau.
+- Đã thử hai luật thuần ở A9 để hạ cạnh có câu trích không phải định nghĩa của đích ("hai khái niệm chung một câu neo"; "câu trích là câu
+  neo của chính tiên quyết") và bỏ cả hai, vì chúng bắt nhầm cạnh đúng.
+- Câu trích từ ví dụ hay chứng minh chỉ chặn được bằng prompt; để lại cho đọc và chấm mù.
 
 ### R13 — Trích mệnh đề có tên ở A3 *(A3; sửa L8 — sau vé 07, theo quyết định chủ dự án)*
 A3 trích định lý/mệnh đề/công thức/phương pháp có tên thành nút `ket_qua` với tên nội dung. Đổi danh sách khái niệm → cần kế hoạch

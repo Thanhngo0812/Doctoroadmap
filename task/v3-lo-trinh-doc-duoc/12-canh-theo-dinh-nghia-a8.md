@@ -207,3 +207,65 @@ Làm cùng lượt chạy lại A6–A8 của vé này:
 4. Chạy lại pass chính (≈ 2 USD) và pilot (≈ 0,45 USD). Gửi bảng như trên cùng danh sách cạnh cứng mới có câu trích.
 5. Tôi đọc ngay. Nếu không tệ hơn hàng cuối của bảng trên → chạy **pass phụ đầy đủ** (dry-run trước, ≈ 31 USD, trong ngân sách đã duyệt),
    rồi A9/A10 và nghiệm thu.
+
+## Kiểm thử lượt ba sửa (Claude, 2026-10-01) — **cho chạy pass phụ đầy đủ**
+
+**Mã:**
+- Toàn bộ `tests/unit` + `tests/integration` xanh (mã thoát 0).
+- Đột biến 4/4 bắt được: so nguyên văn thay vì gộp khoảng trắng, lưu câu mô hình thay đoạn gốc, khác loại thành hoãn, lấy nhãn căn cứ của
+  thứ tự đầu.
+- Prompt dùng định nghĩa chức năng, không danh sách cụm từ.
+
+**Số đo:** tái lập bằng `so_sanh_a8_cua_so_v3.py --evaluation-root artifacts/v3-r12-quote-evaluation`. Ngoặc là khoảng tin cậy Wilson 95%.
+
+| | luồng cũ cuối, rút gọn | lượt ba sửa: chính + pilot, A9, rút gọn |
+|---|---|---|
+| doc-1 trực tiếp P · R | 18/29 (0,44–0,77) · 18/28 | 17/29 (0,41–0,74) · 17/28 |
+| doc-1 bao đóng P · R | 106/129 (0,75–0,88) · 106/131 (0,73–0,87) | 109/134 (0,74–0,87) · 109/131 (0,76–0,89) |
+| doc-2 trực tiếp P · R | 11/17 (0,41–0,83) · 11/32 | 11/16 (0,44–0,86) · 11/32 |
+| doc-2 bao đóng P · R | 22/23 (0,79–0,99) · 22/68 (0,22–0,44) | 20/25 (0,61–0,91) · 20/68 (0,20–0,41) |
+
+- **Mọi khoảng tin cậy đều chồng nhau.** Với 28–32 cạnh vàng mỗi chương, chênh vài cạnh giữa các lượt là nhiễu đo. Gold không phân định được
+  thêm.
+- So với hàng chấm lại 0 USD của mục trước, lượt thật thấp hơn chút về độ phủ (doc-1 bao đóng 109 so với 118). Phép chấm lại đó chưa tính
+  luật prompt mới, vốn cố ý bớt cạnh; độ chính xác thì bằng nhau. Tôi quyết bằng đọc, không coi hàng đó là cổng số (luật tăng tốc).
+- Đổi cạnh cụ thể so với luồng cũ:
+  - Lấy lại: "Tổ hợp tuyến tính → Độc lập tuyến tính", "Matrix multiplication → Row-column rule / Linear combination of the columns",
+    "Column vector → Row-column rule", "Row vector → Row rank".
+  - Mất: "Ma trận tọa độ → Ma trận chuyển cơ sở", "Matrix → Matrix multiplication", "Matrix → Column vector", "Linear combination of the
+    columns → Column-row factorization".
+
+**Đọc 22 cạnh cứng mới:**
+- Khoảng 16 đúng hoặc chấp nhận được, gồm 7 cạnh vàng trực tiếp.
+- Khoảng 5–6 đáng ngờ:
+  - "Số chiều → Cơ sở chính tắc" và "Độc lập tuyến tính → Cơ sở chính tắc": trích câu kết hoặc chứng minh của ví dụ;
+  - "Không gian véc tơ thực → Cơ sở": sai độ cụ thể, đúng ra là "Không gian véc tơ";
+  - "Không gian véc tơ hữu hạn sinh → Không gian véc tơ vô hạn chiều": câu trích nói về cơ sở;
+  - "Row rank → Column rank": trích câu định nghĩa của chính tiên quyết.
+
+**Đã thử hai luật thuần ở A9 để hạ các cạnh này; bỏ cả hai vì bắt nhầm cạnh đúng:**
+1. "hai khái niệm chung một câu neo": doc-1 bao đóng 109 → 85. Nó bắt "Hệ sinh → Cơ sở", vì định nghĩa (a)/(b) bị bộ tách câu gộp thành một
+   câu.
+2. "câu trích là câu neo của chính tiên quyết": trong 9 cạnh nó bắt, chỉ "Row rank → Column rank" sai rõ. Nó bắt nhầm "Square matrix →
+   Determinant of a matrix" và "Dạng tam giác → Tính định thức bằng biến đổi sơ cấp".
+
+Các cạnh đáng ngờ còn lại thuộc loại câu nói gì (ví dụ, chứng minh), executor không kiểm được. Để lại cho đọc và chấm mù.
+
+**Quyết định:** chốt hợp đồng lượt ba sửa và chạy pass phụ đầy đủ. Lý do:
+- trên vàng ngang luồng cũ trong nhiễu đo;
+- mỗi cạnh cứng có câu trích từ chính định nghĩa của đích, kiểm bằng mã;
+- cạnh công cụ tách thành cạnh mềm;
+- thêm vòng sửa chỉ đổi qua lại vài cạnh mà gold không phân định được.
+
+**Việc tiếp theo cho nhân viên:**
+1. Commit lượt ba sửa và 09d làm mốc.
+2. Dry-run pass phụ đầy đủ trên pass chính của lượt ba sửa (tái dùng, không gọi lại pass chính) cho sáu tài liệu. Lần dry-run gần nhất ước
+   ≈ 31 USD.
+3. Chạy `--allow-spend` trong một kho đánh giá cuối (ngân sách lớn chủ dự án đã duyệt). Sau đó A9 → tên khái niệm → A10 → tên module.
+4. Báo:
+   - chi phí và số lần 429;
+   - số cạnh cứng/mềm mỗi tài liệu;
+   - `cham_tap_giu_lai.py` cho doc-1, doc-2 trên artifact `stages` cuối;
+   - `kiem_doc_duoc.py` sáu tài liệu.
+5. Tôi đọc lộ trình sáu tài liệu và nghiệm thu vé 12. Số nghiệm thu thành "mức tài liệu phát triển" trong giao thức T10/07 v2.
+6. Nên có chấm mù kiểu T15 trên cạnh cứng của hai chương vàng nếu chủ dự án xếp được người, vì gold không còn phân định được.

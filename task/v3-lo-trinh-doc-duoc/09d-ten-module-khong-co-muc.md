@@ -67,3 +67,11 @@ Một khái niệm lẻ không nói module học gì.
 - Mã kiểm bằng khớp chính xác với danh sách, rồi nối bằng " · " theo thứ tự trong module. Module một khái niệm dùng tên khái niệm đó.
 - Giữ fallback và luật không trùng tên module khác; thêm test cô lập cho luật này.
 - Fixture đa ngôn ngữ như hiện có. Chi phí như cũ (< 0,01 USD).
+
+## Kiểm thử lượt chọn tên nguyên vẹn (Claude, 2026-10-01) — **đạt**
+
+- Tên mới (`artifacts/v3-09d-selection-evaluation/graph/*/v1`) nối các tên khái niệm có thật bằng " · " và đọc được, ví dụ "Linearly
+  dependent · Linear dependence lemma · Gaussian elimination", "Hệ Quản Trị CSDL · Mức quan niệm".
+- Bảng kiểm R11 bản 02b: không cờ nào ở ba tài liệu slide.
+- Vài lựa chọn chưa tiêu biểu ("Polanyi's Paradox", "Smart representations"), nhưng đều là khái niệm có trong module, chấp nhận.
+- Test xanh trong lượt kiểm toàn bộ test của vé 12.
