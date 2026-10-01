@@ -13,6 +13,8 @@ Bao đóng: doc-1 main mới 23/24 P, 23/131 R → pilot 67/82 P, 67/131 R; doc-
 
 Sau pilot, việc cần làm trước lượt paid mới: đối chiếu mù các cạnh pilot không khớp vàng với sách (ưu tiên doc-1), xác định lỗi là vàng thiếu, mô hình suy diễn quá rộng, hay cửa sổ neo sai; sửa đúng nguyên nhân và chứng minh trên mẫu giữ lại độc lập. Sau đó mới dry-run lại và cân nhắc chạy production. Không được dùng tập vàng để chọn cặp production hoặc nhét nhãn vàng vào prompt.
 
+Rà soát sơ bộ năm cạnh cứng doc-1 **ngoài bao đóng vàng** (chưa phải chấm mù độc lập): `Vô hướng → Hàm thực liên tục` dùng câu về không gian C[a,b] làm neo cho khái niệm hàm liên tục — dấu hiệu neo sai đích; `Vô hướng → Không gian véc tơ thực` và `Ma trận → Ma trận chuyển cơ sở / Ma trận tọa độ` có thể là tiên quyết nền hợp lý nhưng không được ghi cạnh trực tiếp trong vàng; `Phần tử trung hòa → Không gian véc tơ` ngược bao đóng vàng. Không nên chữa cả năm bằng một luật chuỗi ký tự. Cần đối chiếu sách và quyết định vai trò/neo ở A7–C8, rồi mới sửa hợp đồng A8 nếu lỗi thực sự thuộc phán quyết cạnh.
+
 **Tạm ngưng mọi lời gọi mô hình.** Mã chưa commit; A8 pass phụ production và pilot chưa chạy trả tiền. Không coi vé 12 đã hoàn tất hoặc đồ thị/lộ trình đã đạt chuẩn.
 
 ## Đã làm và kiểm tra

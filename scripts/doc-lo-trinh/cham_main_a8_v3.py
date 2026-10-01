@@ -1,5 +1,6 @@
 """Chấm A8 main-only cũ/mới và đếm cặp pass phụ trong hai chương vàng; không gọi mô hình."""
 import json
+import sys
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -30,6 +31,7 @@ def grade(payload, gold, identity, present):
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8")
     store = JsonArtifactStore(Path("artifacts"))
     for doc_id, old_version, new_version, gold_file in CASES:
         gold = load_gold(Path("artifacts/a8-gold") / gold_file)
@@ -55,6 +57,14 @@ def main():
         gold_path = transitive_closure(gold_direct)
         pilot_hard = {(representative(edge["source"]), representative(edge["target"]))
                       for edge in pilot_result["secondary_edges"] if not edge.get("soft")}
+        names = {node["node_id"]: node["name"] for node in new["nodes"]}
+        for edge in pilot_result["secondary_edges"]:
+            pair = (representative(edge["source"]), representative(edge["target"]))
+            if edge.get("soft") or pair in gold_path:
+                continue
+            print(json.dumps({"doc_id": doc_id, "review_pair": [names.get(edge["source"]), names.get(edge["target"])],
+                              "opposes_gold_path": pair[::-1] in gold_path,
+                              "quote": edge.get("quote"), "reason": edge.get("reason")}, ensure_ascii=False))
         print(json.dumps({"doc_id": doc_id, "old_main": grade(old, gold, identity, present),
                           "new_main": grade(new, gold, identity, present),
                           "new_main_plus_pilot": grade(with_pilot, gold, identity, present),
