@@ -15,6 +15,8 @@ Sau pilot, việc cần làm trước lượt paid mới: đối chiếu mù cá
 
 Rà soát sơ bộ năm cạnh cứng doc-1 **ngoài bao đóng vàng** (chưa phải chấm mù độc lập): `Vô hướng → Hàm thực liên tục` dùng câu về không gian C[a,b] làm neo cho khái niệm hàm liên tục — dấu hiệu neo sai đích; `Vô hướng → Không gian véc tơ thực` và `Ma trận → Ma trận chuyển cơ sở / Ma trận tọa độ` có thể là tiên quyết nền hợp lý nhưng không được ghi cạnh trực tiếp trong vàng; `Phần tử trung hòa → Không gian véc tơ` ngược bao đóng vàng. Không nên chữa cả năm bằng một luật chuỗi ký tự. Cần đối chiếu sách và quyết định vai trò/neo ở A7–C8, rồi mới sửa hợp đồng A8 nếu lỗi thực sự thuộc phán quyết cạnh.
 
+Kiểm tra **thuần luật tạm thời**, áp cùng hàm A9 `validate_graph_rules` rồi `transitive_reduction` lên main+pilot (chưa phải artifact production A9, chưa dùng chunk-role/type-alias của lượt đầy đủ): doc-1 cạnh trực tiếp còn P=13/25=0,520, R=13/28=0,464; doc-2 P=8/11=0,727, R=8/32=0,250. Nghĩa là A9 có bỏ bớt cạnh dư nhưng **không** cứu được cổng doc-1; một số cạnh khác bị loại do xung đột/chu trình. Không đánh tráo phép thử này với nghiệm thu A9/A10 cuối.
+
 **Tạm ngưng mọi lời gọi mô hình.** Mã chưa commit; A8 pass phụ production và pilot chưa chạy trả tiền. Không coi vé 12 đã hoàn tất hoặc đồ thị/lộ trình đã đạt chuẩn.
 
 ## Đã làm và kiểm tra
