@@ -136,6 +136,8 @@ class JudgeIdentity:
                   "teaching_config_hash": upstream.manifest["config_hash"],
                   # A10 tìm chunk theo config của artifact đầu vào
                   "chunks_version": upstream.manifest.get("config", {}).get("chunks_version"),
+                  **({"canonical_version": upstream.manifest.get("config", {}).get("canonical_version")}
+                     if upstream.payload.get("requires_edges") is None else {}),
                   "model_id": self.model.model_id,
                   "generation": self.generation, "prompt_hash": prompt_hash, "merge_rule": "verified-clique-v1",
                   "candidate_rule": "nfkc-latex-dash+initialism+generic-prefix+same-anchor+description-top-k-v2",
@@ -235,7 +237,7 @@ class JudgeIdentity:
         position = {n["node_id"]: (n.get("teaching_order_index") if n.get("teaching_order_index") is not None
                                    else n.get("first_order_index", 0)) for n in nodes}
         mapping, open_groups = identity_map(log, position, taught={n["node_id"] for n in placed if n.get("teaching_status") == "taught"})
-        edges, removed = merge_and_break_cycles(upstream.payload["requires_edges"], mapping, position)
+        edges, removed = merge_and_break_cycles(upstream.payload.get("requires_edges", []), mapping, position)
         open_pairs = [row["pair_id"] for row in log if row["verdict"] == "uncertain"]
         tokens_in = sum(v for k, v in metrics.items() if k.endswith("_input_tokens"))
         tokens_out = sum(v for k, v in metrics.items() if k.endswith("_output_tokens"))
@@ -253,6 +255,24 @@ class JudgeIdentity:
                    "identity_verify_decision_log": verify_log,
                    "cost_summary": {**previous, "identity_usd": cost, "usd": float(previous.get("usd", 0.0)) + cost},
                    "stats": stats}
+        if "requires_edges" not in upstream.payload:
+            payload["mention_map"] = {
+                chunk_id: {
+                    representative: {**row, "channels": sorted({channel for member, mention in rows.items()
+                                                             if mapping.get(member, member) == representative
+                                                             for channel in mention.get("channels", [])})}
+                    for representative, row in ((mapping.get(node_id, node_id), mention)
+                                                for node_id, mention in rows.items())
+                }
+                for chunk_id, rows in upstream.payload.get("mention_map", {}).items()
+            }
+            pairs = {}
+            for row in upstream.payload.get("suspected_pairs", []):
+                left, right = mapping.get(row["left"], row["left"]), mapping.get(row["right"], row["right"])
+                if left != right:
+                    key = tuple(sorted((left, right)))
+                    pairs[key] = {**row, "left": key[0], "right": key[1], "pair_id": "|".join(key)}
+            payload["suspected_pairs"] = list(pairs.values())
         artifact = self.store.save_graph(doc_id, source_hash, config_hash, config, payload,
                                          upstream_version=upstream.version,
                                          manifest_fields={"stage": "identity", "stats": stats,

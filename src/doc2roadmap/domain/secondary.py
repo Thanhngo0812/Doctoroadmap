@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from collections import deque
 
+from .prerequisites import definition_window
+
 
 DECISIONS = {"create", "no_direct_relation", "indirect_path", "defer"}
 
@@ -9,7 +11,7 @@ DECISIONS = {"create", "no_direct_relation", "indirect_path", "defer"}
 def _path(edges, start, target, *, explicit_only=False):
     adjacency = {}
     for edge in edges:
-        if edge.get("edge_type") != "requires" or (explicit_only and not edge.get("explicit_evidence")):
+        if edge.get("edge_type") != "requires" or edge.get("soft") or (explicit_only and not edge.get("explicit_evidence")):
             continue
         adjacency.setdefault(edge["source"], []).append(edge)
     queue = deque([(start, [])])
@@ -58,7 +60,7 @@ def select_secondary_pairs(nodes, suspected_pairs, pair_cluster_ledger, edges, *
                 continue
         direct = next((
             edge for edge in edges
-            if edge.get("edge_type") == "requires"
+            if edge.get("edge_type") == "requires" and not edge.get("soft")
             and {edge.get("source"), edge.get("target")} == {left, right}
         ), None)
         path = _either_path(edges, left, right, explicit_only=True)
@@ -84,11 +86,11 @@ def pair_dossier(pair, nodes, chunks, mention_map, pair_cluster_ledger, edges):
     chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
     left, right = pair["left"], pair["right"]
     evidence_ids = sorted(
-        (
-            chunk_id
-            for chunk_id, rows in mention_map.items()
-            if left in rows and right in rows and chunk_id in chunk_by_id
-        ),
+        ({chunk_id for chunk_id, rows in mention_map.items()
+          if left in rows and right in rows and chunk_id in chunk_by_id}
+         | {node_by_id[node_id].get("anchor", {}).get("chunk_id")
+            for node_id in (left, right) if node_by_id[node_id].get("anchor")}
+        ) & set(chunk_by_id),
         key=lambda chunk_id: (chunk_by_id[chunk_id].order_index, chunk_id),
     )
     cluster_pair = frozenset((node_by_id[left]["cluster_id"], node_by_id[right]["cluster_id"]))
@@ -126,6 +128,8 @@ def pair_dossier(pair, nodes, chunks, mention_map, pair_cluster_ledger, edges):
                 "name": node_by_id[node_id]["name"],
                 "description": node_by_id[node_id].get("description", ""),
                 "defining_chunk_ids": node_by_id[node_id].get("defining_chunk_ids", []),
+                "teaching_status": node_by_id[node_id].get("teaching_status"),
+                "definition_window": definition_window(node_by_id[node_id], chunks),
             }
             for node_id in (left, right)
         ],
@@ -151,7 +155,8 @@ def validate_secondary_response(value, pair):
         raise ValueError("cạnh ngoài hồ sơ cặp")
     if value.get("prerequisite") == value.get("target"):
         raise ValueError("cạnh tự nối")
-    for key in ("evidence_kind", "reason"):
+    required = ("evidence_kind", "reason") + (("quote", "prerequisite_kind") if "prerequisite_kind" in value else ())
+    for key in required:
         if not isinstance(value.get(key), str) or not value[key]:
             raise ValueError(f"phán quyết tạo cạnh thiếu {key}")
     if not isinstance(value.get("chunk_ids"), list) or not all(isinstance(item, str) for item in value["chunk_ids"]):
@@ -164,7 +169,7 @@ def reconcile_pair_verdicts(first, second):
     if first["decision"] != second["decision"]:
         return {"pair_id": first["pair_id"], "decision": "defer", "reason": "inconsistent_orders", "flags": []}
     if first["decision"] == "create":
-        keys = ("prerequisite", "target", "evidence_kind")
+        keys = ("prerequisite", "target", "evidence_kind", "prerequisite_kind")
         if any(first.get(key) != second.get(key) for key in keys):
             return {"pair_id": first["pair_id"], "decision": "defer", "reason": "inconsistent_orders", "flags": []}
         return {

@@ -14,6 +14,7 @@ from doc2roadmap.application.prerequisite_prompt import (
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.prerequisites import (
     REVERSE_ORDER_PENALTY,
+    definition_window,
     merge_main_proposals,
     plan_main_sessions,
     validate_main_proposals,
@@ -33,7 +34,7 @@ class BuildMainEdges:
 
     def _provenance(self, doc_id, latest):
         artifact = latest
-        while artifact.payload.get("stage") != "provenance":
+        while artifact.payload.get("stage") not in {"provenance", "identity"}:
             if artifact.payload.get("stage") in {"clusters", "mentions"}:
                 raise ValueError("artifact graph không trỏ về stage provenance")
             upstream = artifact.manifest.get("upstream_version")
@@ -64,6 +65,8 @@ class BuildMainEdges:
             "aliases": node.get("aliases", []),
             "description": node.get("description", ""),
             "defining_chunk_ids": node.get("defining_chunk_ids", []),
+            "teaching_status": node.get("teaching_status"),
+            "anchor": node.get("anchor"),
         }
 
     def _input(self, session, nodes, chunks, mention_map, proposed_relations, existing_edges, session_by_id):
@@ -71,6 +74,9 @@ class BuildMainEdges:
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
         targets = set(session["target_node_ids"])
         mentioned = [node_id for node_id in session["allowed_node_ids"] if node_id not in targets]
+        mentioned += sorted({node_id for chunk_id in session["chunk_ids"]
+                             for node_id in mention_map.get(chunk_id, {})
+                             if node_id in node_by_id and node_id not in targets and node_id not in mentioned})
         previous_in_chapter = [
             edge
             for edge in existing_edges
@@ -90,7 +96,9 @@ class BuildMainEdges:
                 {"chunk_id": chunk_id, "text": chunk_by_id[chunk_id].text}
                 for chunk_id in session["chunk_ids"]
             ],
-            "target_concepts": [self._concept(node_by_id[node_id]) for node_id in session["target_node_ids"]],
+            "target_concepts": [{**self._concept(node_by_id[node_id]),
+                                  "definition_window": definition_window(node_by_id[node_id], list(chunk_by_id.values()))}
+                                 for node_id in session["target_node_ids"]],
             "mentioned_elsewhere": [self._concept(node_by_id[node_id]) for node_id in mentioned],
             "previous_edges_in_chapter": previous,
             "previous_edges_omitted_count": len(previous_in_chapter) - len(previous),
@@ -111,8 +119,8 @@ class BuildMainEdges:
         mentions = upstream if upstream is not None else self._provenance(
             doc_id, self.store.load_latest_graph(doc_id)
         )
-        if mentions.payload.get("stage") != "provenance":
-            raise ValueError("pass chính cần artifact provenance")
+        if mentions.payload.get("stage") not in {"provenance", "identity"}:
+            raise ValueError("pass chính cần artifact identity hoặc provenance")
         mention_config = mentions.manifest.get("config", {})
         chunks_version = mention_config.get("chunks_version")
         chunks_artifact = (
@@ -144,7 +152,7 @@ class BuildMainEdges:
         }[route]
         prompt_hash = main_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-main-pass-v4",
+            "algorithm_id": "a8-main-pass-v5",
             "provenance_version": mentions.version,
             "provenance_config_hash": mentions.manifest["config_hash"],
             "mentions_version": mention_config.get("mentions_version"),
@@ -157,7 +165,7 @@ class BuildMainEdges:
             "single_session_limit": self.single_session_limit,
             "route": route,
             "route_reason": reason,
-            "executor": "requires-reverse-order-v2",
+            "executor": "definition-window-quote-v1",
             "reverse_order_penalty": REVERSE_ORDER_PENALTY,
             "checkpoint": "progress-file-outside-version-chain-v1",
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,
@@ -223,6 +231,7 @@ class BuildMainEdges:
                     chunks.chunks,
                     mentions.payload["mention_map"],
                     existing_edges=edges,
+                    require_kind=mentions.payload["stage"] == "identity",
                 )
                 results[session["session_id"]] = (accepted, session_flags, operation_log, retry)
                 if retry:
@@ -263,7 +272,20 @@ class BuildMainEdges:
                         chunks.chunks,
                         mentions.payload["mention_map"],
                         existing_edges=edges + accepted,
+                        require_kind=mentions.payload["stage"] == "identity",
                     )
+                    for invalid in still_invalid:
+                        if invalid["error"] != "quote_outside_definition_window":
+                            continue
+                        downgraded = {**invalid["operation"], "prerequisite_kind": "cong_cu"}
+                        softer, _, downgrade_log, downgrade_retry = validate_main_proposals(
+                            {"edges": [downgraded], "flags": []}, session, nodes, chunks.chunks,
+                            mentions.payload["mention_map"], existing_edges=edges + accepted + fixed,
+                            require_kind=True)
+                        fixed.extend(softer)
+                        fixed_log.extend(downgrade_log)
+                        if not downgrade_retry:
+                            invalid["status"] = "downgraded_to_cong_cu"
                     accepted.extend(fixed)
                     session_flags.extend(fixed_flags)
                     operation_log.extend(fixed_log)
@@ -311,6 +333,7 @@ class BuildMainEdges:
             **mentions.payload,
             "stage": "edges",
             "main_complete": True,
+            "definition_contract": mentions.payload["stage"] == "identity",
             "main_base_config_hash": base_config_hash,
             "routing": {"route": route, "reason": reason, "single_session_limit": self.single_session_limit},
             "main_sessions": sessions,

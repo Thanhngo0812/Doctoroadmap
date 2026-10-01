@@ -1,6 +1,7 @@
 from types import SimpleNamespace as Obj
 
-from doc2roadmap.domain.module_titles import clean_titles, common_content_title, grounded_suffix, transfer_chunk_sections
+from doc2roadmap.domain.module_titles import (clean_titles, common_content_title, grounded_suffix,
+                                              prepare_module_titles, transfer_chunk_sections)
 
 
 def section(identifier, title, parent=None, role="noi_dung"):
@@ -52,3 +53,54 @@ def test_transfer_section_path_by_text_not_broken_old_tree():
            Obj(chunk_id="new-b", text="tres cuatro cinco seis siete ocho", parent_section_id="correct")]
     assert transfer_chunk_sections(old, new) == {"old": "correct"}
     assert old[0].parent_section_id == "broken"
+
+
+def test_root_and_empty_container_titles_follow_real_content():
+    rows = [Obj(section_id="root", title="<document>", parent_section_id=None, level=0, role="noi_dung"),
+            Obj(section_id="chapter", title="Kapitel 3", parent_section_id="root", level=1,
+                role="de_cuong", has_direct_content=False),
+            Obj(section_id="a", title="Vektoren", parent_section_id="chapter", level=2, role="noi_dung"),
+            Obj(section_id="b", title="Matrizen", parent_section_id="chapter", level=2, role="noi_dung")]
+    sections = {row.section_id: row for row in rows}
+    assert common_content_title(["a", "b"], sections, clean_titles(rows)) == "Kapitel 3"
+    sections["chapter"].has_direct_content = True
+    assert common_content_title(["a", "b"], sections, clean_titles(rows)) == ""
+    assert common_content_title(["a", "b"], sections, {"root": "document"}) == ""
+
+
+def test_number_only_titles_use_same_document_contents_or_first_line():
+    sections = [Obj(section_id="toc", title="Inhalt", parent_section_id=None, level=0,
+                    role="mo_dau", order_index=0),
+                Obj(section_id="k1", title="Kapitel 1", parent_section_id=None, level=1,
+                    role="noi_dung", order_index=10),
+                Obj(section_id="k3", title="Kapitel 3", parent_section_id=None, level=1,
+                    role="noi_dung", order_index=30),
+                Obj(section_id="j1", title="第1章", parent_section_id=None, level=1,
+                    role="noi_dung", order_index=40),
+                Obj(section_id="j3", title="第3章", parent_section_id=None, level=1,
+                    role="noi_dung", order_index=60)]
+    chunks = [Obj(parent_section_id="toc", role="mo_dau", order_index=1,
+                  text="Kapitel 3 Lineare Abbildungen 51"),
+              Obj(parent_section_id="j3", role="noi_dung", order_index=61,
+                  text="線形写像\n本文")]
+    titles, flags = prepare_module_titles(sections, chunks)
+    assert titles["k3"] == "Kapitel 3 Lineare Abbildungen"
+    assert titles["j3"] == "第3章 線形写像"
+    assert "k1" in flags and "j1" in flags
+
+
+def test_document_case_majority_filters_lowercase_labels_but_not_uncased_script():
+    sections = [Obj(section_id=f"s{i}", title=title, parent_section_id=None, level=2,
+                    role="noi_dung", order_index=i)
+                for i, title in enumerate(["Vector Spaces", "Linear Maps", "Matrix Algebra", "Eigenvalues",
+                                           "Inner Products", "Orthogonal Projections", "Spectral Theory",
+                                           "Normal Operators", "Jordan Form", "Basis Changes", "positivity"])]
+    sections.append(Obj(section_id="ja", title="線形写像", parent_section_id=None,
+                        level=3, role="noi_dung", order_index=20))
+    titles, _ = prepare_module_titles(sections, [])
+    assert "s10" not in titles
+    assert titles["ja"] == "線形写像"
+
+
+def test_suffix_must_contain_letter_even_when_source_only_has_digits():
+    assert not grounded_suffix("123", ["123"], concept_names=[])

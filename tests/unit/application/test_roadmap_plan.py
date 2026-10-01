@@ -26,14 +26,15 @@ def test_plan_lists_all_stages_and_marks_unknown_downstream_without_executing_an
                 return StagePlan("run", remaining_items=7, calls_estimate=14, usd_estimate=0.03)
             return StagePlan("reused", artifact=SimpleNamespace(payload={"stage": self.name}, version=1))
 
-    names = ["clusters", "mentions", "provenance", "main_edges", "secondary_edges", "validated", "teaching", "identity", "stages"]
-    pipeline = BuildLearningGraph(*(Stage(n, n == "secondary_edges") for n in names))
+    names = ["clusters", "mentions", "provenance", "teaching", "identity", "main_edges", "secondary_edges", "validated", "stages"]
+    pipeline = BuildLearningGraph(*(Stage(n, n == "secondary_edges") for n in
+        ["clusters", "mentions", "provenance", "main_edges", "secondary_edges", "validated", "teaching", "identity", "stages"]))
     report = pipeline.plan("doc")
     assert [row["stage"] for row in report["stages"]] == names
-    assert [row["status"] for row in report["stages"]] == ["reused"] * 4 + ["run"] + ["unknown"] * 4
-    assert report["stages"][4]["remaining_items"] == 7
+    assert [row["status"] for row in report["stages"]] == ["reused"] * 6 + ["run"] + ["unknown"] * 2
+    assert report["stages"][6]["remaining_items"] == 7
     assert report["known_usd_estimate"] == 0.03 and not report["estimate_complete"]
-    assert visited == names[:5]
+    assert visited == names[:7]
 
 
 def test_secondary_plan_resumes_exact_checkpoint_and_never_calls_or_writes():
@@ -114,8 +115,10 @@ def test_each_paid_stage_plan_never_calls_model_or_writes(module, klass, upstrea
     assert result.status == "run" and result.calls_estimate == expected
     if module in ("build_clusters", "build_mentions"):
         assert result.usd_estimate is None  # giá embedding chưa khai, không báo giả 0 USD
-    else:
+    elif expected:
         assert result.usd_estimate > 0
+    else:
+        assert result.usd_estimate == 0
 
 
 def test_anchor_plan_uses_answers_from_only_the_matching_checkpoint():

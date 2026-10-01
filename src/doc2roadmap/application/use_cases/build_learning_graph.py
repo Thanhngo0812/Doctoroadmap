@@ -25,8 +25,9 @@ class BuildLearningGraph:
         if stop_after not in self.STAGES:
             raise ValueError(f"stage không hợp lệ: {stop_after}")
         chain = [("clusters", self.clusters), ("mentions", self.mentions), ("provenance", self.provenance),
+                 ("teaching", self.teaching), ("identity", self.identity),
                  ("main_edges", self.main_edges), ("secondary_edges", self.secondary_edges),
-                 ("validated", self.validator), ("teaching", self.teaching), ("identity", self.identity)]
+                 ("validated", self.validator)]
         if self.concept_labels is not None:
             chain.append(("concept_labels", self.concept_labels))
         chain.append(("stages", self.roadmap))
@@ -76,6 +77,12 @@ class BuildLearningGraph:
         reused = reused and current_reused
         if stop_after == "provenance":
             return artifact, reused
+        self._current = "teaching"
+        artifact, current_reused = self.teaching.execute(doc_id, upstream=artifact)
+        reused = reused and current_reused
+        self._current = "identity"
+        artifact, current_reused = self.identity.execute(doc_id, upstream=artifact)
+        reused = reused and current_reused
         self._current = "main_edges"
         artifact, current_reused = self.main_edges.execute(doc_id, upstream=artifact)
         reused = reused and current_reused
@@ -86,12 +93,6 @@ class BuildLearningGraph:
             return artifact, reused
         self._current = "validated"
         artifact, current_reused = self.validator.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        self._current = "teaching"
-        artifact, current_reused = self.teaching.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        self._current = "identity"
-        artifact, current_reused = self.identity.execute(doc_id, upstream=artifact)
         reused = reused and current_reused
         if self.concept_labels is not None:
             self._current = "concept_labels"

@@ -48,11 +48,14 @@ def definition_signals_near_name(text, names, signals):
     })
 
 
-def select_provenance_candidates(node, chunks, mention_map, *, signals, limit):
+def select_provenance_candidates(node, chunks, mention_map, *, signals=None, limit):
     if type(limit) is not int or isinstance(limit, bool) or limit < 1:
         raise ValueError("trần ứng viên provenance phải là số nguyên dương")
     names = _names(node)
     existing = set(node.get("defining_chunk_ids", []))
+    evidence = [(span.get("chunk_id"), span.get("quote", "")) for span in node.get("evidence", [])
+                if isinstance(span, dict)]
+    anchor = node.get("anchor") or {}
     rows = []
     for chunk in chunks:
         mention = mention_map.get(chunk.chunk_id, {}).get(node["node_id"], {})
@@ -63,7 +66,11 @@ def select_provenance_candidates(node, chunks, mention_map, *, signals, limit):
             "chunk_id": chunk.chunk_id,
             "text": chunk.text,
             "channels": channels,
-            "definition_signals": definition_signals_near_name(chunk.text, names, signals),
+            "definition_signals": definition_signals_near_name(chunk.text, names, signals) if signals else [],
+            "definition_evidence": any(cid == chunk.chunk_id and quote_is_verbatim(quote, chunk.text)
+                                       for cid, quote in evidence)
+                                   or (anchor.get("chunk_id") == chunk.chunk_id
+                                       and quote_is_verbatim(anchor.get("sentence", ""), chunk.text)),
             "order_index": chunk.order_index,
         })
     rows.sort(key=lambda row: (

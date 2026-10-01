@@ -81,6 +81,23 @@ def test_only_judged_same_pairs_merge_into_the_earlier_taught_concept_and_the_re
     assert payload["stats"]["identity_open_count"] == 0
 
 
+def test_pre_a8_identity_merges_mentions_without_requiring_edges():
+    store = Store()
+    store.teaching.payload.pop("requires_edges")
+    store.teaching.payload["mention_map"] = {"c1": {
+        "hv": {"channels": ["exact"]}, "dltt": {"channels": ["provenance"]}}}
+    store.teaching.payload["suspected_pairs"] = [
+        {"pair_id": "old", "left": "hv", "right": "x", "sources": ["citation"]}]
+    store.teaching.manifest["config"]["canonical_version"] = 3
+    model = Model({frozenset(("Độc lập tuyến tính", "Hệ véc tơ độc lập tuyến tính")): "same"})
+    artifact, _ = JudgeIdentity(store, model).execute("doc-1", upstream=store.teaching)
+    assert artifact.payload["requires_edges"] == []
+    assert set(artifact.payload["mention_map"]["c1"]) == {"dltt"}
+    assert set(artifact.payload["mention_map"]["c1"]["dltt"]["channels"]) == {"exact", "provenance"}
+    assert artifact.payload["suspected_pairs"][0]["left"] == "dltt"
+    assert artifact.manifest["config"]["canonical_version"] == 3
+
+
 def test_a_human_review_overrides_the_model_and_only_an_approved_merge_is_applied():
     # Mô hình phán `same` cho cả hai cặp; người duyệt để "Không chắc" ở cặp dltt/hv → không gộp cặp đó.
     store = Store()

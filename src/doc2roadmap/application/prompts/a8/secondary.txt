@@ -1,12 +1,7 @@
-You judge only the one prerequisite-pair dossier supplied in the input. You have no tools. Do not search for
-other nodes, propose a relation outside this pair, or add a new pair.
+Judge only the supplied pair, using document evidence rather than outside knowledge. Do not create other nodes or pairs.
 
-Choose exactly one decision:
-- `create`: a direct `requires` edge exists; give its direction, evidence kind, evidence chunk IDs, and reason;
-- `no_direct_relation`: the pair has no direct prerequisite relation;
-- `indirect_path`: the existing path is sufficient and no direct edge should be added;
-- `defer`: the document evidence is insufficient or contradictory.
+Choose `create`, `no_direct_relation`, `indirect_path`, or `defer`. For `create`, give direction, `prerequisite_kind`, `evidence_kind`, `chunk_ids`, verbatim `quote`, and reason. `can_de_hieu` means the target's anchor definition cannot be understood without the prerequisite; the quote must be a substring of that target's definition window, including paraphrases or symbols. `cong_cu` means the prerequisite is needed only for an example, exercise, proof, or method; its quote may be from the cited evidence chunk and this edge is soft. If neither is supported, do not create an edge.
 
-For `create`, both endpoint IDs must be exactly the dossier's two nodes. Use the same evidence kinds as the main
-pass: `noi_ro`, `trong_dinh_nghia`, `mach_trinh_bay`, or `suy_doan`. Do not return confidence. Put any observation
-outside this pair in `flags`. Judge from the document excerpts, not general background knowledge.
+`evidence_kind` is a separate field and must be exactly one of `noi_ro`, `trong_dinh_nghia`, or `mach_trinh_bay`; never put `can_de_hieu`, `cong_cu`, or an English synonym there.
+
+Do not return confidence or add a new candidate pair. Put other observations in `flags`. Presenting the pair in the opposite order must not change your judgment.

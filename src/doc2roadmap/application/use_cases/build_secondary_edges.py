@@ -78,6 +78,7 @@ class BuildSecondaryEdges:
         if main.payload.get("stage") != "edges" or not main.payload.get("main_complete"):
             raise ValueError("pass phụ cần artifact pass chính hoàn chỉnh")
         main_config = main.manifest.get("config", {})
+        require_kind = bool(main.payload.get("definition_contract"))
         chunks_version = main_config.get("chunks_version")
         chunks_artifact = (
             self.store.load_chunks(doc_id, chunks_version)
@@ -89,7 +90,7 @@ class BuildSecondaryEdges:
         route = main.payload["routing"]["route"]
         prompt_hash = secondary_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-secondary-pass-v4",
+            "algorithm_id": "a8-secondary-pass-v5",
             "main_version": main.version,
             "main_config_hash": main.manifest["config_hash"],
             "canonical_version": main_config.get("canonical_version"),
@@ -99,7 +100,7 @@ class BuildSecondaryEdges:
             "prompt_hash": prompt_hash,
             "route": route,
             "order_check": "fully-reversed-dossier-v2",
-            "prune_rule": "direct-any-strength-or-explicit-path-v2",
+            "prune_rule": "direct-hard-or-explicit-hard-path-v3",
             "checkpoint": "progress-file-outside-version-chain-v1",
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,
             "pricing_source": PRICING_SOURCE,
@@ -196,6 +197,8 @@ class BuildSecondaryEdges:
                             "target": value["target"],
                             "prerequisite": value["prerequisite"],
                             "evidence_kind": value["evidence_kind"],
+                            **({"prerequisite_kind": value["prerequisite_kind"], "quote": value["quote"]}
+                               if "prerequisite_kind" in value else {}),
                             "chunk_ids": value["chunk_ids"],
                             "reason": value["reason"],
                             **({"confidence": value["confidence"]} if "confidence" in value else {}),
@@ -209,6 +212,7 @@ class BuildSecondaryEdges:
                         chunks,
                         main.payload["mention_map"],
                         existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
+                        require_kind=require_kind,
                     )
                     if retry:
                         raise ValueError(retry[0]["error"])
@@ -222,6 +226,31 @@ class BuildSecondaryEdges:
                 for data in inputs
             ]
             values, rows, counts = run_model_jobs(jobs, decision_log, concurrency=min(self.concurrency, 2))
+            for index, (value, row) in enumerate(zip(values, rows, strict=True)):
+                if value is not None or row.get("error") != "quote_outside_definition_window":
+                    continue
+                original = row.get("last_output")
+                if not isinstance(original, dict) or original.get("decision") != "create":
+                    continue
+                downgraded = {**original, "prerequisite_kind": "cong_cu"}
+                output = {"edges": [{"target": downgraded.get("target"),
+                                     "prerequisite": downgraded.get("prerequisite"),
+                                     "prerequisite_kind": "cong_cu",
+                                     "evidence_kind": downgraded.get("evidence_kind"),
+                                     "chunk_ids": downgraded.get("chunk_ids"),
+                                     "quote": downgraded.get("quote"),
+                                     "reason": downgraded.get("reason")}], "flags": []}
+                try:
+                    validate_secondary_response(downgraded, pair)
+                    _, _, _, invalid = validate_main_proposals(
+                        output, pair_session, nodes, chunks, main.payload["mention_map"],
+                        existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
+                        require_kind=True)
+                except (ValueError, TypeError, KeyError):
+                    continue
+                if not invalid:
+                    values[index] = downgraded
+                    row["downgraded_to_cong_cu_after_retry"] = True
             decision_log.extend(rows)
             metrics.update(counts)
             if any(value is None for value in values):
@@ -234,6 +263,8 @@ class BuildSecondaryEdges:
                         "target": verdict["target"],
                         "prerequisite": verdict["prerequisite"],
                         "evidence_kind": verdict["evidence_kind"],
+                        **({"prerequisite_kind": verdict["prerequisite_kind"], "quote": verdict["quote"]}
+                           if "prerequisite_kind" in verdict else {}),
                         "chunk_ids": verdict["chunk_ids"],
                         "reason": verdict["reason"],
                     }],
@@ -246,6 +277,7 @@ class BuildSecondaryEdges:
                     chunks,
                     main.payload["mention_map"],
                     existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
+                    require_kind=require_kind,
                 )
                 secondary_edges, duplicate_log = merge_main_proposals(proposals, secondary_edges)
                 secondary_flags.extend(pair_flags)

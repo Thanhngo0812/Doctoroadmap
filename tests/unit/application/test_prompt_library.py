@@ -12,8 +12,10 @@ from doc2roadmap.application.canonical_prompt import (
 from doc2roadmap.application.extraction_prompt import load_prompts, prompt_hash
 from doc2roadmap.application.prompt_library import PROMPT_ROOT, load_prompt
 from doc2roadmap.application.prerequisite_prompt import (
+    SECONDARY_SCHEMA,
     main_prompt_hash,
     provenance_prompt_hash,
+    secondary_system_prompt,
     secondary_prompt_hash,
 )
 from doc2roadmap.application.relation_prompt import relation_prompt_hash
@@ -29,6 +31,12 @@ HASH_CHANGE_WARNING = (
     "chấm theo luật viết trước"
 )
 GENERATION = {"temperature": 0.0, "max_output_tokens": 8192}
+
+
+def test_secondary_evidence_kind_contract_names_only_supported_values():
+    allowed = {"noi_ro", "trong_dinh_nghia", "mach_trinh_bay"}
+    assert set(SECONDARY_SCHEMA["properties"]["evidence_kind"]["enum"]) == allowed
+    assert all(kind in secondary_system_prompt() for kind in allowed)
 
 
 def test_product_prompt_hashes_are_intentionally_versioned():
@@ -66,9 +74,9 @@ def test_product_prompt_hashes_are_intentionally_versioned():
         "secondary": secondary_prompt_hash("golden-model", GENERATION),
     }
     a8_expected = {
-        "main": "dd74068e852d265b12bb9690f056f3f442f51147b6747f11dce32523e6a5be98",
+        "main": "66de3b2c00f03cbdd12d1372083dea4b5ebf152d027abbc176cd90b3542f7edc",
         "provenance": "65776d7757bf3e2a6a79fb05a5cd37b424686edd0f667aa7aeb1e84618772dad",
-        "secondary": "0d4d06ecc160d5b726d2bc160ab58a62d6f6bfa0c7d5cf7891c0d2091cd278d1",
+        "secondary": "d036b84408cdaed72f420b9077b6aa594c060a697b5173ff62cbbbedc64a395e",
     }
 
     assert a3_actual == a3_expected, HASH_CHANGE_WARNING

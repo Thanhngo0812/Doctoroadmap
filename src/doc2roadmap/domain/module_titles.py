@@ -5,6 +5,8 @@ import re
 import unicodedata
 from collections import Counter, defaultdict
 
+from .document_structure import chapter_members, section_code
+from .sentence_splitter import UnicodeSentenceSplitter
 from .unicode_text import unspaced_character
 
 
@@ -39,6 +41,71 @@ def clean_titles(sections, *, max_words=12, max_unspaced_chars=36):
     return cleaned
 
 
+def _first_cased(title):
+    marker = re.match(r"^([^\W\d_]|\d+)(\S)\s*", title, flags=re.UNICODE)
+    if marker and unicodedata.category(marker[2]) in {"Pe", "Po"}:
+        title = title[marker.end():]
+    return next((unicodedata.category(char) for char in title
+                 if unicodedata.category(char) in {"Lu", "Ll"}), None)
+
+
+def prepare_module_titles(sections, chunks):
+    """Use only headings, front-matter TOC, and the section's first line as title evidence."""
+    cleaned = clean_titles(sections)
+    by_id = {section.section_id: section for section in sections}
+    by_level = defaultdict(list)
+    for section_id, title in cleaned.items():
+        case = _first_cased(title)
+        if case:
+            by_level[getattr(by_id[section_id], "level", 1)].append(case)
+    for section_id, title in list(cleaned.items()):
+        peers = by_level[getattr(by_id[section_id], "level", 1)]
+        if peers and peers.count("Lu") / len(peers) >= .9 and _first_cased(title) == "Ll":
+            del cleaned[section_id]
+
+    chapters = chapter_members([(index, section.title, getattr(section, "level", 0),
+                                 getattr(section, "order_index", index))
+                                for index, section in enumerate(sections) if getattr(section, "level", 0) > 0])
+    chapter_ids = {sections[index].section_id for index in chapters}
+    first_chapter = min((getattr(by_id[section_id], "order_index", 0)
+                         for section_id in chapter_ids), default=10**12)
+    front = [chunk for chunk in chunks if getattr(chunk, "role", "") in {"mo_dau", "de_cuong"}
+             and getattr(chunk, "order_index", 10**12) < first_chapter]
+    flags = set()
+    splitter = UnicodeSentenceSplitter()
+    for section_id, title in list(cleaned.items()):
+        code = section_code(title)
+        code_only = code is not None and code.span() == (0, len(title))
+        if not code_only and section_id not in chapter_ids:
+            continue
+        supplement = ""
+        for chunk in front:
+            for line in chunk.text.splitlines():
+                match = re.search(rf"(?<!\w){re.escape(title)}\s+(.+?)\s+\d+(?=\s|$)", line)
+                if match:
+                    supplement = match[1].strip()
+                    break
+            if supplement:
+                break
+        if not supplement:
+            own = sorted((chunk for chunk in chunks if chunk.parent_section_id == section_id),
+                         key=lambda chunk: chunk.order_index)
+            if own:
+                lines = [line.strip() for line in own[0].text.splitlines() if line.strip()]
+                if lines and lines[0] == title:
+                    lines = lines[1:]
+                if lines:
+                    line = lines[0]
+                    if (len(line.split()) <= 12 and not re.search(r"\[(?:formula|figure)\]", line, re.I)
+                            and not line[0].isdigit() and len(splitter.split(line + " Next")) == 1):
+                        supplement = line
+        if supplement:
+            cleaned[section_id] = f"{title} {supplement}"
+        else:
+            flags.add(section_id)
+    return cleaned, flags
+
+
 def common_content_title(section_ids, sections, cleaned):
     """Deepest shared ancestor that is itself a content section with a valid title."""
     paths = []
@@ -55,7 +122,9 @@ def common_content_title(section_ids, sections, cleaned):
         if len(set(ids)) != 1:
             break
         candidate = ids[0]
-        if sections[candidate].role == "noi_dung" and candidate in cleaned:
+        section = sections[candidate]
+        if (getattr(section, "level", 1) > 0 and candidate in cleaned
+                and (section.role == "noi_dung" or not getattr(section, "has_direct_content", True))):
             answer = cleaned[candidate]
     return answer
 

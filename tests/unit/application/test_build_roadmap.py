@@ -1,7 +1,7 @@
 import json
 from types import SimpleNamespace
 
-from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap
+from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap, target_roadmap
 
 
 class Store:
@@ -38,7 +38,7 @@ class Store:
         ]
         chunks = [SimpleNamespace(chunk_id=f"c{i}", order_index=i, parent_section_id="s1" if i < 5 else "s2")
                   for i in range(1, 9)]
-        self.chunks = SimpleNamespace(result=SimpleNamespace(chunks=chunks, sections=sections), version=1)
+        self.chunks = SimpleNamespace(result=SimpleNamespace(chunks=chunks, sections=sections), version=1, manifest={})
 
     def load_chunks(self, doc_id, version):
         assert version == 1
@@ -177,6 +177,21 @@ def test_backward_edge_does_not_pull_later_chapter_ahead(tmp_path):
     assert html.index("Beta") < html.index("Gamma") < html.index("Alpha") and "cần: Alpha" not in html
 
 
+def test_forward_tool_edge_stays_visible_but_does_not_create_learning_dependency(tmp_path):
+    store = Store(tmp_path)
+    store.validated.payload.update(
+        nodes=[concept("a", "Alpha", "c1", 1), concept("b", "Beta", "c2", 2)],
+        requires_edges=[{"source": "a", "target": "b", "edge_type": "requires",
+                         "prerequisite_kind": "cong_cu", "soft": True, "soft_reason": "cong_cu"}],
+    )
+    artifact, _ = BuildRoadmap(store, stage_cap=1).execute("doc")
+    nodes = {node["node_id"]: node for node in artifact.payload["nodes"]}
+    assert nodes["b"]["prerequisites"] == []
+    assert all(not module["module_dependencies"] for module in artifact.payload["modules"])
+    assert artifact.payload["requires_edges"][0]["soft_reason"] == "cong_cu"
+    assert target_roadmap(artifact.payload, ["b"])["concept_count"] == 1
+
+
 def test_display_reduces_transitive_prerequisites_but_keeps_full_graph(tmp_path):
     store = Store(tmp_path)
     store.validated.payload.update(
@@ -242,3 +257,33 @@ def test_modules_follow_the_sections_of_the_book_and_map_chunks_back(tmp_path):
     assert [module["module_id"] for module in modules] == ["module_001", "module_002"]
     assert [module["title"] for module in modules] == ["1.1 Mở đầu", "1.2 Tiếp theo"]
     assert artifact.payload["chunk_module_map"]["c5"] == {"module_id": "module_002", "all_module_ids": ["module_002"]}
+
+
+def test_corrected_tree_changes_module_boundary_without_changing_learning_order(tmp_path):
+    def prepared(root):
+        store = Store(root)
+        store.chunks.manifest = {}
+        for index, chunk in enumerate(store.chunks.result.chunks, 1):
+            chunk.parent_section_id = "s1"
+            chunk.text = f"unique{index} alpha beta gamma delta epsilon zeta"
+        store.validated.payload.update(nodes=[concept(f"n{i}", f"Name {i}", f"c{i}", i)
+                                              for i in range(1, 9)], requires_edges=[])
+        return store
+
+    old = prepared(tmp_path / "old")
+    baseline, _ = BuildRoadmap(old, stage_cap=8).execute("doc")
+    fixed = prepared(tmp_path / "fixed")
+    fixed.chunks.manifest = {"role_transfer": {"reference_version": 2}}
+    corrected = SimpleNamespace(version=2, result=SimpleNamespace(
+        sections=fixed.chunks.result.sections,
+        chunks=[SimpleNamespace(chunk_id=f"r{i}", text=chunk.text,
+                                parent_section_id="s1" if i <= 4 else "s2")
+                for i, chunk in enumerate(fixed.chunks.result.chunks, 1)]))
+    fixed.load_chunks = lambda doc_id, version: corrected if version == 2 else fixed.chunks
+    artifact, _ = BuildRoadmap(fixed, stage_cap=8).execute("doc")
+    assert artifact.payload["sequence"] == baseline.payload["sequence"]
+    assert [module["node_ids"] for module in baseline.payload["modules"]] == [baseline.payload["sequence"]]
+    assert [module["node_ids"] for module in artifact.payload["modules"]] == [
+        artifact.payload["sequence"][:4], artifact.payload["sequence"][4:]]
+    assert artifact.payload["modules"][1]["section_ids"] == ["s2"]
+    assert artifact.manifest["config"]["title_sections_version"] == 2

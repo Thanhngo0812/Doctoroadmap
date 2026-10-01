@@ -5,6 +5,7 @@ import os
 import re
 from datetime import UTC, datetime
 from pathlib import Path
+from time import sleep
 from typing import Any
 
 from doc2roadmap.application.ports import StoredChunks, StoredParse, StoredStageArtifact
@@ -69,7 +70,14 @@ class JsonArtifactStore:
         with temporary.open("w", encoding="utf-8", newline="\n") as handle:
             json.dump(value, handle, ensure_ascii=False, sort_keys=True, indent=2)
             handle.write("\n")
-        os.replace(temporary, path)
+        for attempt in range(5):
+            try:
+                os.replace(temporary, path)
+                break
+            except PermissionError:
+                if attempt == 4:
+                    raise
+                sleep(0.1 * (attempt + 1))
 
     @staticmethod
     def _write_bytes(path: Path, value: bytes) -> None:

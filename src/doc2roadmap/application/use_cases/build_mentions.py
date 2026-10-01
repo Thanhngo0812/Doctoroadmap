@@ -11,14 +11,9 @@ from doc2roadmap.domain.mentions import (
     build_mention_derivatives,
     build_mention_map,
     dense_mentions,
+    document_common_names,
     exact_mentions,
 )
-
-
-DEFAULT_COMMON_NAMES = {
-    "data", "dữ liệu", "hệ thống", "kết quả", "method", "model",
-    "mô hình", "phương pháp", "process", "quá trình", "result", "system",
-}
 
 
 class BuildMentions:
@@ -30,14 +25,14 @@ class BuildMentions:
         dense_top_k=3,
         dense_min_z=0.0,
         pair_cluster_top_k=3,
-        common_names=None,
+        common_name_fraction=0.5,
     ):
         self.store = store
         self.embedding = embedding
         self.dense_top_k = dense_top_k
         self.dense_min_z = dense_min_z
         self.pair_cluster_top_k = pair_cluster_top_k
-        self.common_names = set(DEFAULT_COMMON_NAMES if common_names is None else common_names)
+        self.common_name_fraction = common_name_fraction
 
     def _clusters(self, doc_id):
         artifact = self.store.load_latest_graph(doc_id)
@@ -76,8 +71,10 @@ class BuildMentions:
             raise ValueError("retrieval và chunks không cùng tài liệu nguồn")
         if retrieval.manifest.get("embedding_model_id") != self.embedding.embedding_model_id:
             raise ValueError("mô hình embedding query không khớp chỉ mục chunk")
+        common_names = document_common_names(clusters.payload["nodes"], chunks.result.chunks,
+                                              threshold=self.common_name_fraction)
         config = {
-            "algorithm_id": "mention-map-v3",
+            "algorithm_id": "mention-map-v4",
             "clusters_version": clusters.version,
             "clusters_config_hash": clusters.manifest["config_hash"],
             "canonical_version": canonical.version,
@@ -88,7 +85,8 @@ class BuildMentions:
             "embedding_model_id": self.embedding.embedding_model_id,
             "query_task": "RETRIEVAL_QUERY",
             "exact_normalization": "nfc-casefold-tone-position-final-i-y-v1",
-            "common_names": sorted(self.common_names),
+            "common_name_fraction": self.common_name_fraction,
+            "common_names": sorted(common_names),
             "dense_top_k": self.dense_top_k,
             "dense_min_z": self.dense_min_z,
             "dense_centering": "2*cos-row_mean-column_mean-v1",
@@ -96,8 +94,8 @@ class BuildMentions:
             "pair_cluster_top_k": self.pair_cluster_top_k,
             "missing_concept_heuristic": "disabled-unmeasured-precision",
         }
-        exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=self.common_names)
-        legacy_exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=self.common_names, _legacy=True)
+        exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=common_names)
+        legacy_exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=common_names, _legacy=True)
         if exact != legacy_exact:
             config["exact_normalization"] = TEXT_RULE_VERSION
         config_hash = digest(config)
@@ -159,6 +157,7 @@ class BuildMentions:
             "suspected_pair_count": len(derivatives["suspected_pairs"]),
             "missing_concept_flag_count": len(flags),
             "embedding_request_count": len(requests),
+            "common_name_count": len(common_names),
             "runtime_seconds": perf_counter() - started,
         }
         cluster_payload = {

@@ -36,9 +36,10 @@ def test_a8_real_contract_replays_offline(name, schema, system_prompt, prompt_ha
     )
     fixture = json.loads((ROOT / f"{name}.json").read_text(encoding="utf-8"))
     request = fixture["calls"][0]["request"]
-    replay = ReplayEntityExtractor(ROOT / f"{name}.json", prompt_hash=prompt_hash)
-    reply = replay.start_session(system_prompt).ask_json(
-        request["prompt"], response_schema=schema
+    assert fixture["prompt_hash"] != prompt_hash  # v3 deliberately supersedes, never rewrites archived calls.
+    replay = ReplayEntityExtractor(ROOT / f"{name}.json", prompt_hash=fixture["prompt_hash"])
+    reply = replay.start_session(fixture["system_prompt"]).ask_json(
+        request["prompt"], response_schema=request["response_schema"]
     )
     if name == "main":
         validate_main_response(reply.payload)

@@ -112,7 +112,8 @@ def test_mentions_stage_reuses_chunk_vectors_and_reuses_artifact():
     assert all(request.task_type == "RETRIEVAL_QUERY" for request in embedding.calls)
     assert first.payload["mention_map"]["c1"]["a"]["level"] == "definition"
     assert first.payload["mention_map"]["c1"]["a"]["confidence"] == 1.0
-    assert "confidence" not in first.payload["mention_map"]["c1"]["b"]
+    assert "b" not in first.payload["mention_map"]["c1"]  # Beta xuất hiện trong 2/2 chunk: tên quá chung theo tài liệu.
+    assert first.payload["stats"]["common_name_count"] == 1
     assert first.payload["stats"]["citation_count"] == (
         first.payload["stats"]["citation_hard_count"] + first.payload["stats"]["citation_soft_count"]
     )

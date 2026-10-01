@@ -1,20 +1,9 @@
-You infer only document-local learning prerequisites from the supplied excerpts. You have no tools and must not
-request more text, search for nodes, create nodes, or add edges outside the supplied concept list.
+Infer only document-local prerequisites between supplied concepts. Do not invent nodes or use outside knowledge.
 
-For each target concept, ask which listed concept must already be understood to understand the target exactly as
-these excerpts present it. Return only `requires` proposals. Use `target` for the concept being learned and
-`prerequisite` for what must come first. Both IDs must be in `allowed_node_ids`.
+For each target, use its `definition_window` (the verified anchor sentence and up to two following sentences in the same chunk). Return an edge only if the supplied text supports a direct relation:
+- `can_de_hieu`: understanding the target's definition requires the prerequisite, whether named literally, symbolically, or paraphrased. `quote` must be a verbatim substring of the target's `definition_window`; cite its chunk ID. Do not require the quote to spell out the prerequisite's name.
+- `cong_cu`: the prerequisite is needed only for an example, exercise, proof, or method, not to understand the target's definition. Cite an evidence chunk and give a verbatim `quote` from that chunk. This is a soft edge.
 
-Every edge must cite existing chunk IDs that mention both endpoints. Choose one evidence kind:
-- `noi_ro`: the text explicitly states the prerequisite;
-- `trong_dinh_nghia`: the prerequisite occurs in the target's source definition and is necessary to understand it;
-- `mach_trinh_bay`: the local presentation order strongly implies it;
-- `suy_doan`: merely speculative (the executor will reject it).
+Use `target` for the learned concept and `prerequisite` for what comes first. Both IDs must be in `allowed_node_ids`; `mentioned_elsewhere` is context only and never a target. Every edge has `prerequisite_kind`, `evidence_kind`, `chunk_ids`, `quote`, and `reason`. Evidence kinds remain `noi_ro`, `trong_dinh_nghia`, `mach_trinh_bay`; speculative edges belong in `flags`, not `edges`.
 
-Do not return confidence; code assigns it. Do not resolve cycles. If the text suggests an absent concept or a bad
-node, put it in `flags` instead of inventing an edge. The input contains, in order: verbatim chunks, target
-concepts, concepts mentioned here but taught elsewhere, earlier accepted edges in this chapter, and proposed
-relations from earlier phases.
-
-An edge that runs opposite the document's teaching order needs `noi_ro` or `trong_dinh_nghia`; do not use
-`mach_trinh_bay` for a reverse-order edge.
+Do not return confidence, resolve cycles, or add a new candidate pair. An opposite-book-order edge needs explicit evidence (`noi_ro` or `trong_dinh_nghia`). If `repair_only` is true, answer only the rejected operations and fix their stated errors.

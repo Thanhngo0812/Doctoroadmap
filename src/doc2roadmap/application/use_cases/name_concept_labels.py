@@ -53,9 +53,13 @@ class NameConceptLabels:
         return self._run(doc_id, upstream=upstream)
 
     def _run(self, doc_id, *, upstream, planning=False):
-        if upstream.payload.get("stage") not in {"teaching", "identity"}:
-            raise ValueError("đặt tên nhãn cần artifact teaching/identity")
-        chunks = self.store.load_role_chunks(doc_id, upstream.manifest["config"]["chunks_version"]).result.chunks
+        if upstream.payload.get("stage") not in {"teaching", "identity", "validated"}:
+            raise ValueError("đặt tên nhãn cần artifact teaching/identity/validated")
+        chunks_version = upstream.manifest["config"].get("chunks_version")
+        if chunks_version is None:
+            edges = self.store.load_graph(doc_id, upstream.manifest["config"]["edges_version"])
+            chunks_version = edges.manifest["config"]["chunks_version"]
+        chunks = self.store.load_role_chunks(doc_id, chunks_version).result.chunks
         nodes = upstream.payload["nodes"]
         families = label_families(nodes, chunks)
         generic_ids = {n["node_id"] for n in nodes if n.get("learnable")
@@ -69,7 +73,7 @@ class NameConceptLabels:
         prompt = load_prompt("a10", "display_name")
         prompt_hash = digest([prompt, DISPLAY_SCHEMA, self.model.model_id, self.generation])
         config = {"algorithm_id": "a10-concept-labels-v3", "upstream_version": upstream.version,
-                  "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": upstream.manifest["config"]["chunks_version"],
+                  "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks_version,
                   "label_rule": "document-family-two-distinct-numbers-v1", "prompt_hash": prompt_hash,
                   "model_id": self.model.model_id, "generation": self.generation,
                   "pricing_usd_per_million": PRICING_USD_PER_MILLION, "pricing_source": PRICING_SOURCE}

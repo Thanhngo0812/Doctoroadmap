@@ -1,9 +1,30 @@
+import os
 from pathlib import Path
 
 import pytest
 
 from doc2roadmap.domain.models import DocumentNode, DocumentTree
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
+
+
+def test_checkpoint_write_retries_transient_windows_replace_lock(tmp_path, monkeypatch):
+    store = JsonArtifactStore(tmp_path)
+    path = store._checkpoint_path("doc", "main-checkpoint")
+    store.save_checkpoint("doc", "main-checkpoint", {"completed": 1})
+    original = os.replace
+    attempts = []
+
+    def locked_once(source, target):
+        attempts.append((source, target))
+        if len(attempts) == 1:
+            raise PermissionError("WinError 5: file is temporarily in use")
+        return original(source, target)
+
+    monkeypatch.setattr("doc2roadmap.infrastructure.artifacts.json_store.os.replace", locked_once)
+    store.save_checkpoint("doc", "main-checkpoint", {"completed": 2})
+    assert len(attempts) == 2
+    assert store.load_checkpoint("doc", "main-checkpoint") == {"completed": 2}
+    assert not path.with_suffix(".json.tmp").exists()
 
 
 def test_registry_only_loads_explicit_human_decisions(tmp_path: Path) -> None:

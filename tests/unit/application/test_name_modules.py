@@ -139,6 +139,18 @@ def test_reference_tree_replaces_broken_section_path_for_titles_only():
     assert base.payload["modules"][0]["node_ids"] == ["a"]
 
 
+def test_a10_section_assignment_is_reused_for_names_without_second_transfer():
+    store, model, base = Store(), Model(), upstream()
+    store.reference = Obj(version=7, result=Obj(
+        sections=[Obj(section_id="new", title="Álgebra lineal", parent_section_id=None,
+                      level=2, role="noi_dung", order_index=1)], chunks=[]))
+    base.manifest["config"]["title_sections_version"] = 7
+    base.payload["modules"] = [{**base.payload["modules"][0], "title_section_ids": ["new"]}]
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert artifact.payload["modules"][0]["title"] == "Álgebra lineal"
+    assert model.calls == 0
+
+
 def test_fallback_uses_first_and_highest_outdegree_full_concept_names():
     store, model, base = Store(), Model(), upstream()
     base.payload["nodes"].append({"node_id": "c", "name": "Division", "teaching_chunk_ids": ["c2"]})
@@ -148,3 +160,22 @@ def test_fallback_uses_first_and_highest_outdegree_full_concept_names():
                                       {"source": "b", "target": "c"}]
     artifact, _ = NameModules(store, model).execute("doc", upstream=base)
     assert artifact.payload["modules"][0]["title"] == "Operations — Addition · Multiplication"
+
+
+def test_fallback_keeps_full_concepts_but_does_not_make_sentence_long_title():
+    store, model, base = Store(), Model(), upstream()
+    base.payload["nodes"][0]["name"] = "Upper bound on number of distinct eigenvalues"
+    base.payload["nodes"][1]["name"] = "Product of polynomials"
+    base.payload["modules"][0]["node_ids"] = ["a", "b"]
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert all(len(module["title"].split()) <= 12 for module in artifact.payload["modules"])
+    assert "Upper bound on number of distinct eigenvalues" in artifact.payload["modules"][0]["title"]
+
+
+def test_long_base_does_not_force_numbered_title_when_no_full_concept_fits():
+    store, model, base = Store(), Model(), upstream()
+    store.sections[1].title = "1.1 Các khái niệm và bài toán học cơ bản"
+    base.payload["nodes"][0]["name"] = "Lọc thư rác"
+    base.payload["nodes"][1]["name"] = "Bài toán phân loại"
+    artifact, _ = NameModules(store, model).execute("doc", upstream=base)
+    assert all("(" not in module["title"] for module in artifact.payload["modules"])

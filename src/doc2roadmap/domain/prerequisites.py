@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 from collections import defaultdict
+import unicodedata
+
+from .sentence_splitter import UnicodeSentenceSplitter
+from .anchors import heading_chunks
 
 
 EVIDENCE_CONFIDENCE = {
@@ -13,7 +17,8 @@ REVERSE_ORDER_PENALTY = 0.1
 
 
 def plan_main_sessions(nodes, chunks, sections, mention_map, *, single_limit):
-    learnable = [node for node in nodes if node.get("learnable")]
+    learnable = [node for node in nodes if node.get("learnable") and not node.get("merged_into")
+                 and node.get("teaching_status", "taught") in {"taught", "uncertain"}]
     node_by_id = {node["node_id"]: node for node in learnable}
     chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
 
@@ -120,6 +125,29 @@ def validate_main_response(value):
             raise ValueError("flag cần kind")
 
 
+def definition_window(node, chunks):
+    anchor = node.get("anchor") or {}
+    chunk = next((row for row in chunks if row.chunk_id == anchor.get("chunk_id")), None)
+    sentence = anchor.get("sentence")
+    if chunk is None or not isinstance(sentence, str) or not sentence:
+        return ""
+    text = unicodedata.normalize("NFC", chunk.text)
+    start = text.find(unicodedata.normalize("NFC", sentence), max(0, int(anchor.get("char_start", 0)) - 8))
+    if start < 0:
+        start = text.find(unicodedata.normalize("NFC", sentence))
+    if start < 0:
+        return ""
+    spans = UnicodeSentenceSplitter().split(text)
+    index = next((i for i, span in enumerate(spans) if span.start <= start < span.end), None)
+    if index is None:
+        return ""
+    window = text[spans[index].start:spans[min(index + 2, len(spans) - 1)].end]
+    heading = heading_chunks(node, [chunk]).get(chunk.chunk_id)
+    if heading and heading[1] <= start:
+        window = heading[0] + "\n" + window
+    return window
+
+
 def _order_relation(source, target, node_by_id, chunk_by_id):
     source_chunks = set(node_by_id[source].get("defining_chunk_ids", []))
     target_chunks = set(node_by_id[target].get("defining_chunk_ids", []))
@@ -130,15 +158,13 @@ def _order_relation(source, target, node_by_id, chunk_by_id):
     return "thuận" if source_order <= target_order else "ngược"
 
 
-def validate_main_proposals(output, session, nodes, chunks, mention_map, *, existing_edges):
+def validate_main_proposals(output, session, nodes, chunks, mention_map, *, existing_edges, require_kind=False):
     validate_main_response(output)
     node_by_id = {node["node_id"]: node for node in nodes}
     chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
     allowed = set(session["allowed_node_ids"])
-    existing = {
-        (edge["source"], edge["target"], edge.get("edge_type", "requires"))
-        for edge in existing_edges
-    }
+    existing = {(edge["source"], edge["target"], edge.get("edge_type", "requires")):
+                not edge.get("soft") for edge in existing_edges}
     accepted, flags, log, retry = [], [], [], []
     for index, edge in enumerate(output["edges"]):
         source, target = edge["prerequisite"], edge["target"]
@@ -147,6 +173,8 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             error = "unknown_node"
         elif source not in allowed or target not in allowed:
             error = "outside_session"
+        elif node_by_id[target].get("teaching_status") in {"mentioned_only", "unchecked", "prior_knowledge", "not_subject_matter"}:
+            error = "target_not_taught"
         elif not node_by_id[source].get("learnable") or not node_by_id[target].get("learnable"):
             error = "non_learnable_node"
         elif "confidence" in edge:
@@ -157,13 +185,28 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             error = "speculative_evidence"
         elif edge["evidence_kind"] not in EVIDENCE_CONFIDENCE:
             error = "unknown_evidence_kind"
+        elif require_kind and edge.get("prerequisite_kind") not in {"can_de_hieu", "cong_cu"}:
+            error = "unknown_prerequisite_kind"
         elif not edge["chunk_ids"] or any(chunk_id not in chunk_by_id for chunk_id in edge["chunk_ids"]):
             error = "unknown_evidence_chunk"
-        elif any(
+        elif require_kind and (not isinstance(edge.get("quote"), str) or not edge["quote"].strip()
+                               or not any(edge["quote"] in chunk_by_id[chunk_id].text
+                                          for chunk_id in edge["chunk_ids"])):
+            error = "quote_outside_evidence_chunk"
+        elif edge.get("prerequisite_kind") == "can_de_hieu" and (
+            (node_by_id[target].get("anchor") or {}).get("chunk_id") not in edge["chunk_ids"]
+        ):
+            error = "definition_chunk_not_cited"
+        elif edge.get("prerequisite_kind") != "can_de_hieu" and any(
             source not in mention_map.get(chunk_id, {}) or target not in mention_map.get(chunk_id, {})
             for chunk_id in edge["chunk_ids"]
         ):
             error = "evidence_missing_both_endpoints"
+        elif edge.get("prerequisite_kind") == "can_de_hieu" and (
+            not isinstance(edge.get("quote"), str) or not edge["quote"].strip()
+            or edge["quote"] not in definition_window(node_by_id[target], chunks)
+        ):
+            error = "quote_outside_definition_window"
         if error:
             row = {"session_id": session["session_id"], "operation_index": index, "status": "rejected", "error": error, "operation": edge}
             log.append(row)
@@ -173,7 +216,7 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
         if source == target:
             log.append({"session_id": session["session_id"], "operation_index": index, "status": "dropped_self", "operation": edge})
             continue
-        if key in existing:
+        if key in existing and (existing[key] or edge.get("prerequisite_kind") != "can_de_hieu"):
             log.append({"session_id": session["session_id"], "operation_index": index, "status": "dropped_duplicate", "operation": edge})
             continue
         order_relation = _order_relation(source, target, node_by_id, chunk_by_id)
@@ -188,8 +231,8 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
         if order_relation == "ngược":
             confidence -= REVERSE_ORDER_PENALTY
         evidence_hard = any(
-            bool(HARD_MENTION_CHANNELS & set(mention_map[chunk_id][source].get("channels", [])))
-            and bool(HARD_MENTION_CHANNELS & set(mention_map[chunk_id][target].get("channels", [])))
+            bool(HARD_MENTION_CHANNELS & set(mention_map.get(chunk_id, {}).get(source, {}).get("channels", [])))
+            and bool(HARD_MENTION_CHANNELS & set(mention_map.get(chunk_id, {}).get(target, {}).get("channels", [])))
             for chunk_id in edge["chunk_ids"]
         )
         proposal = {
@@ -199,6 +242,9 @@ def validate_main_proposals(output, session, nodes, chunks, mention_map, *, exis
             "evidence_kind": edge["evidence_kind"],
             "chunk_ids": sorted(set(edge["chunk_ids"])),
             "reason": edge["reason"],
+            **({"prerequisite_kind": edge["prerequisite_kind"]} if edge.get("prerequisite_kind") else {}),
+            **({"quote": edge["quote"]} if edge.get("quote") else {}),
+            **({"soft": True, "soft_reason": "cong_cu"} if edge.get("prerequisite_kind") == "cong_cu" else {}),
             "confidence": confidence,
             "explicit_evidence": edge["evidence_kind"] in {"noi_ro", "trong_dinh_nghia"},
             "evidence_hard": evidence_hard,

@@ -53,6 +53,7 @@ class Settings(BaseSettings):
     mention_dense_top_k: int = Field(default=3, gt=0)
     mention_dense_min_z: float = 0.0
     mention_pair_cluster_top_k: int = Field(default=3, gt=0)
+    mention_common_name_fraction: float = Field(default=0.5, gt=0, lt=1)
     roadmap_model_id: str = "gemini-3.1-flash-lite"
     roadmap_concurrency: int = Field(default=4, gt=0)
     roadmap_single_session_limit: int = Field(default=20, gt=0)

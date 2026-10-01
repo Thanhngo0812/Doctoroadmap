@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R7 (bổ sung 2026-09-28, lần 2) · **Ai:** nhân viên ·
 **Phụ thuộc:** 09b · **Chi phí mô hình:** 0 cho chia module và tên nền; hỏi lại phần phụ cho module mới trùng tên (≈ 0,01 USD)
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai và nghiệm thu trên sáu tài liệu (2026-09-29); [báo cáo](../../report/ket-qua-v3-09c-2026-09-29.md)
 
 ## Vì sao (kiểm thử vé 09b, 2026-09-28)
 - doc-6 có hai module tên "document> — …". `common_content_title` đi từ gốc cây: nút `<document>` mang vai trò `noi_dung`, bước làm sạch

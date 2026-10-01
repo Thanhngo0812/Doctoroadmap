@@ -170,6 +170,33 @@ def test_secondary_uses_both_verdicts_and_defers_when_decisions_differ():
     assert artifact.payload["secondary_log"][-1]["reason"] == "inconsistent_orders"
 
 
+def test_secondary_downgrades_hard_quote_outside_definition_after_one_retry():
+    class OutsideWindowModel(Model):
+        def ask_json(self, prompt, *, response_schema):
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            self.calls.append(data)
+            return SimpleNamespace(payload={
+                "pair_id": data["dossier"]["pair_id"], "decision": "create",
+                "prerequisite": "a", "target": "b", "evidence_kind": "noi_ro",
+                "prerequisite_kind": "can_de_hieu", "chunk_ids": ["c1"],
+                "quote": "A helps solve the exercise.", "reason": "Only an exercise uses A.", "flags": [],
+            })
+
+    store, model = Store(), OutsideWindowModel()
+    store.main.payload["definition_contract"] = True
+    store.main.payload["nodes"][1]["anchor"] = {
+        "chunk_id": "c1", "char_start": 0, "sentence": "B is a concept."
+    }
+    store.chunks.result.chunks[0].text = (
+        "B is a concept. It has properties. We study it. A helps solve the exercise."
+    )
+    artifact, _ = BuildSecondaryEdges(store, model, concurrency=2).execute("doc")
+    assert len(model.calls) == 4  # Two orders, one repair each.
+    edge = artifact.payload["secondary_edges"][0]
+    assert edge["soft"] is True and edge["soft_reason"] == "cong_cu"
+    assert all(row.get("downgraded_to_cong_cu_after_retry") for row in artifact.payload["decision_log"])
+
+
 def test_secondary_rejects_an_incomplete_main_pass():
     store = Store()
     store.main.payload["main_complete"] = False

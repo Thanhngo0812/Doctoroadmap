@@ -3,11 +3,13 @@ import json
 import unicodedata
 from pathlib import Path
 
-from doc2roadmap.application.use_cases.build_mentions import DEFAULT_COMMON_NAMES
 from doc2roadmap.domain.canonical import alias_kind, _legacy_alias_kind, digest
 from doc2roadmap.domain.mentions import exact_mentions
 from doc2roadmap.domain.retrieval import _tokens, _strip_outer_punctuation
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
+
+LEGACY_COMMON_NAMES = {"data", "dữ liệu", "hệ thống", "kết quả", "method", "model",
+                       "mô hình", "phương pháp", "process", "quá trình", "result", "system"}
 
 
 def main():
@@ -23,8 +25,8 @@ def main():
         old_kinds, new_kinds = [_legacy_alias_kind(n) for n in names], [alias_kind(n) for n in names]
         chunks = store.load_latest_chunks(doc).result.chunks
         nodes = store.load_latest_canonical(doc).payload['nodes']
-        old_mentions = exact_mentions(nodes,chunks,common_names=DEFAULT_COMMON_NAMES,_legacy=True)
-        new_mentions = exact_mentions(nodes,chunks,common_names=DEFAULT_COMMON_NAMES)
+        old_mentions = exact_mentions(nodes,chunks,common_names=LEGACY_COMMON_NAMES,_legacy=True)
+        new_mentions = exact_mentions(nodes,chunks,common_names=LEGACY_COMMON_NAMES)
         old_tokens = [[t for p in unicodedata.normalize('NFC',c.text).casefold().split()
                        if (t := _strip_outer_punctuation(p))] for c in chunks]
         new_tokens = [_tokens(c.text) for c in chunks]

@@ -8,7 +8,8 @@ from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.application.use_cases.build_roadmap import render_roadmap_html
 from doc2roadmap.domain.canonical import digest
-from doc2roadmap.domain.module_titles import clean_titles, common_content_title, grounded_suffix, transfer_chunk_sections
+from doc2roadmap.domain.module_titles import (common_content_title, grounded_suffix,
+                                              prepare_module_titles, transfer_chunk_sections)
 
 SCHEMA = {"type": "object", "properties": {"suffix": {"type": "string"}}, "required": ["suffix"]}
 GENERATION = {"temperature": 0.0, "max_output_tokens": 128}
@@ -31,9 +32,12 @@ class NameModules:
         prompt = load_prompt("a10", "module_title")
         prompt_hash = digest([prompt, SCHEMA, self.model.model_id, GENERATION])
         chunks = self.store.load_role_chunks(doc_id, upstream.manifest["config"]["chunks_version"])
-        reference_version = (chunks.manifest.get("role_transfer") or {}).get("reference_version")
+        reference_version = upstream.manifest["config"].get("title_sections_version") or (
+            chunks.manifest.get("role_transfer") or {}).get("reference_version")
+        if reference_version == chunks.version:
+            reference_version = None
         reference = self.store.load_chunks(doc_id, reference_version) if reference_version else None
-        config = {"algorithm_id": "a10-module-titles-v2", "upstream_version": upstream.version,
+        config = {"algorithm_id": "a10-module-titles-v5", "upstream_version": upstream.version,
                   "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks.version,
                   "title_sections_version": reference_version or chunks.version,
                   "model_id": self.model.model_id, "generation": GENERATION, "prompt_hash": prompt_hash}
@@ -44,24 +48,26 @@ class NameModules:
 
         title_chunks = reference or chunks
         sections = {section.section_id: section for section in title_chunks.result.sections}
-        cleaned = clean_titles(list(sections.values()))
+        cleaned, numbering_flags = prepare_module_titles(list(sections.values()), title_chunks.result.chunks)
         nodes = {node["node_id"]: node for node in upstream.payload["nodes"]}
         names = {node_id: node["name"] for node_id, node in nodes.items()}
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks.result.chunks}
-        section_of = (transfer_chunk_sections(chunks.result.chunks, title_chunks.result.chunks)
-                      if reference else {})
         modules = [dict(module) for module in upstream.payload["modules"]]
+        section_of = (transfer_chunk_sections(chunks.result.chunks, title_chunks.result.chunks)
+                      if reference and any("title_section_ids" not in module for module in modules) else {})
         for module in modules:
-            section_ids = []
-            for node_id in module["node_ids"]:
-                node = nodes[node_id]
-                chunk_ids = node.get("teaching_chunk_ids") or (
-                    node.get("defining_chunk_ids", []) if "teaching_status" not in node else [])
-                teaching = sorted((chunk_by_id[chunk_id] for chunk_id in chunk_ids
-                                   if chunk_id in chunk_by_id and chunk_by_id[chunk_id].role == "noi_dung"),
-                                  key=lambda chunk: chunk.order_index)
-                section_ids.append(section_of.get(teaching[0].chunk_id, teaching[0].parent_section_id)
-                                   if teaching else None)
+            section_ids = module.get("title_section_ids")
+            if section_ids is None:
+                section_ids = []
+                for node_id in module["node_ids"]:
+                    node = nodes[node_id]
+                    chunk_ids = node.get("teaching_chunk_ids") or (
+                        node.get("defining_chunk_ids", []) if "teaching_status" not in node else [])
+                    teaching = sorted((chunk_by_id[chunk_id] for chunk_id in chunk_ids
+                                       if chunk_id in chunk_by_id and chunk_by_id[chunk_id].role == "noi_dung"),
+                                      key=lambda chunk: chunk.order_index)
+                    section_ids.append(section_of.get(teaching[0].chunk_id, teaching[0].parent_section_id)
+                                       if teaching else None)
             base = (common_content_title(section_ids, sections, cleaned)
                     if all(section_ids) else "")
             module["title"] = base or names[module["node_ids"][0]]
@@ -80,6 +86,15 @@ class NameModules:
                    "concept_names": [names[node_id] for node_id in module["node_ids"]]}
                   for module in duplicate]
         prior = self.reuse_artifact.payload.get("module_title_decision_log", []) if self.reuse_artifact else []
+        def short_title_possible(data):
+            return any(grounded_suffix(name, [name], data["section_title"], [name])
+                       and len((data["section_title"] + " — " + name).split()) <= 12
+                       for name in data["concept_names"])
+
+        def acceptable_length(data, suffix):
+            return (len((data["section_title"] + " — " + suffix).split()) <= 12
+                    or not short_title_possible(data))
+
         for data in inputs:
             if any(row.get("input_hash") == digest([self.model.model_id, prompt_hash, data])
                    and row.get("valid") for row in old_log):
@@ -87,7 +102,8 @@ class NameModules:
             previous = next((row for row in prior if row.get("valid") and row.get("input") == data), None)
             if previous and grounded_suffix(previous.get("output", {}).get("suffix", ""),
                                             [data["section_title"], *data["concept_names"]],
-                                            data["section_title"], data["concept_names"]):
+                                            data["section_title"], data["concept_names"]) and acceptable_length(
+                                                data, previous["output"]["suffix"]):
                 old_log.append({**previous, "revalidated_for_prompt_hash": prompt_hash,
                                 "input_hash": digest([self.model.model_id, prompt_hash, data]), "reused": True})
         reusable = {row["input_hash"] for row in old_log if row.get("valid")}
@@ -102,7 +118,8 @@ class NameModules:
                 def validate(value, data=data):
                     allowed = [data["section_title"], *data["concept_names"]]
                     if not isinstance(value, dict) or not grounded_suffix(value.get("suffix", ""), allowed,
-                                                                           data["section_title"], data["concept_names"]):
+                                                                           data["section_title"], data["concept_names"]) or not acceptable_length(
+                                                                               data, value["suffix"]):
                         raise ValueError("phần phụ lặp tên nền, cắt mẩu tên khái niệm, thiếu chữ hoặc không có căn cứ")
                 jobs.append(ModelJob("module_title", self.model, prompt, prompt_hash, data, SCHEMA, validate))
             batch_values, batch_rows, counts = run_model_jobs(jobs, rows, concurrency=self.concurrency)
@@ -125,9 +142,14 @@ class NameModules:
                 ranked = [first, *sorted(module["node_ids"], key=lambda node_id: (-degree[node_id],
                                                                                      module["node_ids"].index(node_id)))]
                 chosen = []
+                short_possible = any(grounded_suffix(names[node_id], [names[node_id]], module["title"], [names[node_id]])
+                                     and len((module["title"] + " — " + names[node_id]).split()) <= 12
+                                     for node_id in module["node_ids"])
                 for node_id in ranked:
                     name = names[node_id]
-                    if name not in chosen and grounded_suffix(name, [name], module["title"], [name]):
+                    candidate = " · ".join([*chosen, name])
+                    if (name not in chosen and grounded_suffix(name, [name], module["title"], [name])
+                            and (not short_possible or len((module["title"] + " — " + candidate).split()) <= 12)):
                         chosen.append(name)
                     if len(chosen) == 2:
                         break
@@ -142,7 +164,10 @@ class NameModules:
             if seen[module["title"].casefold()] > 1:
                 sibling = [row for row in modules if row["title"].casefold() == module["title"].casefold()]
                 module["title"] += f" ({sibling.index(module) + 1}/{len(sibling)})"
-        payload = {**upstream.payload, "modules": modules, "module_title_decision_log": rows,
+        payload = {**upstream.payload, "modules": modules,
+                   "module_title_flags": [{"kind": "numbering_only_title", "section_id": section_id}
+                                          for section_id in sorted(numbering_flags)],
+                   "module_title_decision_log": rows,
                    "module_title_metrics": dict(metrics)}
         artifact = self.store.save_graph(doc_id, source_hash, config_hash, config, payload,
                                          upstream_version=upstream.version,

@@ -60,6 +60,24 @@ def exact_mentions(nodes, chunks, *, common_names, _legacy=False):
     return result
 
 
+def document_common_names(nodes, chunks, *, threshold):
+    """Names present in more than `threshold` of this document's chunks."""
+    if not 0 < threshold < 1:
+        raise ValueError("common-name threshold must be between zero and one")
+    names = sorted({value.strip() for node in nodes if node.get("learnable")
+                    for value in _names(node) if isinstance(value, str) and value.strip()})
+    normalized_chunks = [_mention_normalize(chunk.text) for chunk in chunks]
+    common = set()
+    for name in names:
+        if alias_kind(name) == "symbol":
+            continue
+        pattern = _mention_normalize(name)
+        expression = re.escape(pattern) if any(map(unspaced_character, pattern)) else rf"(?<!\w){re.escape(pattern)}(?!\w)"
+        if chunks and sum(bool(re.search(expression, text)) for text in normalized_chunks) / len(chunks) > threshold:
+            common.add(name)
+    return common
+
+
 def _unit(vector):
     norm = math.sqrt(sum(float(value) ** 2 for value in vector))
     return tuple(float(value) / norm for value in vector) if norm else tuple(0.0 for _ in vector)

@@ -34,6 +34,7 @@ class Store:
                 "cluster_id": "g1",
                 "defining_chunk_ids": ["c2"],
                 "source_chunk_ids": ["c2"],
+                "evidence": [{"chunk_id": "c1", "quote": "Alpha is defined as the first concept."}],
                 "first_order_index": 1,
             },
             {

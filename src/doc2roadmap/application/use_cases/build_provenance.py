@@ -12,19 +12,17 @@ from doc2roadmap.application.prerequisite_prompt import (
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.mentions import build_mention_derivatives, build_mention_map
 from doc2roadmap.domain.provenance import (
-    DEFAULT_DEFINITION_SIGNALS,
     quote_is_verbatim,
     select_provenance_candidates,
 )
 
 
 class BuildProvenance:
-    def __init__(self, store, model, *, signals=None, candidate_limit=12, concurrency=4, generation=None):
+    def __init__(self, store, model, *, candidate_limit=12, concurrency=4, generation=None):
         if type(concurrency) is not int or concurrency < 1:
             raise ValueError("concurrency phải là số nguyên dương")
         self.store = store
         self.model = model
-        self.signals = tuple(DEFAULT_DEFINITION_SIGNALS if signals is None else signals)
         self.candidate_limit = candidate_limit
         self.concurrency = concurrency
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
@@ -79,13 +77,12 @@ class BuildProvenance:
         )
         prompt_hash = provenance_prompt_hash(self.model.model_id, self.generation)
         config = {
-            "algorithm_id": "provenance-refinement-v1",
+            "algorithm_id": "provenance-refinement-v2",
             "mentions_version": mentions.version,
             "mentions_config_hash": mentions.manifest["config_hash"],
             "chunks_version": chunks_artifact.version,
             "canonical_version": canonical.version,
-            "definition_signals": list(self.signals),
-            "definition_proximity": "same-sentence-v1",
+            "definition_evidence": "a3-or-existing-anchor-verbatim-v1",
             "candidate_channels": ["exact", "dense"],
             "candidate_limit": self.candidate_limit,
             "update_rule": "add-only-v1",
@@ -109,7 +106,6 @@ class BuildProvenance:
                 node,
                 chunks,
                 mentions.payload["mention_map"],
-                signals=self.signals,
                 limit=self.candidate_limit,
             )
             for node in nodes
@@ -119,7 +115,7 @@ class BuildProvenance:
         node_by_job = []
         for node in sorted((row for row in nodes if row.get("learnable")), key=lambda row: row["node_id"]):
             rows = candidates[node["node_id"]]
-            if not any(row["definition_signals"] for row in rows):
+            if not any(row["definition_evidence"] for row in rows):
                 continue
             inputs.append({
                 "node_id": node["node_id"],

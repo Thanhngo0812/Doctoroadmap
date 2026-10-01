@@ -299,6 +299,9 @@ def validate_graph_rules(nodes, requires_edges, open_edges, *, type_aliases=None
     ]
     requires, soft_edges, region_flags = [], [], []
     for edge in candidates:
+        if edge.get("soft"):
+            soft_edges.append(edge)
+            continue
         roles = [chunk_roles.get(chunk_id) for chunk_id in edge.get("chunk_ids", [])] if chunk_roles else []
         if roles and all(role in NON_TEACHING_ROLES for role in roles):
             region_flags.append({"kind": "requires_non_teaching_evidence", "edge": edge,

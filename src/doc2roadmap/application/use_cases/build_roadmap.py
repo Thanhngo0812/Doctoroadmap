@@ -12,6 +12,7 @@ from doc2roadmap.domain.sequence import (DEFAULT_WEIGHTS, build_sequence_roadmap
 from doc2roadmap.domain.teaching import EXCLUDED_STATUSES, bypass_excluded
 from doc2roadmap.domain.anchors import symbolic_name_chunks
 from doc2roadmap.domain.mentions import exact_mentions
+from doc2roadmap.domain.module_titles import transfer_chunk_sections
 
 _FAR = 10**9
 
@@ -46,21 +47,22 @@ def render_roadmap_html(payload):
         if members:
             items = "".join(f"<li>{html.escape(node.get('name', node['node_id']))}</li>" for node in members)
             excluded_rows.append(f"<section><h2>{heading}</h2><ul>{items}</ul></section>")
-    edge_rows = []
+    edge_rows, tool_rows = [], []
     overview = "".join(f"<li>{html.escape(names[node_id])}</li>"
                        for node_id in payload.get("overview_mentioned_node_ids", []))
     overview = f"<section><h2>Tổng quan môn học</h2><ul>{overview}</ul></section>" if overview else ""
     for edge in payload.get("requires_edges", []):
         evidence = ", ".join(edge.get("chunk_ids", [])) or "(none)"
         redundant = f' · redundant via {html.escape(" → ".join(edge["redundant_via"]))}' if edge.get("redundant_via") else ""
-        edge_rows.append(
+        row = (
             f"<li>{html.escape(names.get(edge['source'], edge['source']))} → {html.escape(names.get(edge['target'], edge['target']))} · chunks {html.escape(evidence)}{redundant}</li>"
         )
+        (tool_rows if edge.get("soft_reason") == "cong_cu" else edge_rows).append(row)
     flags = html.escape(json.dumps(payload.get("display_flags", []), ensure_ascii=False, indent=2))
     return """<!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Doc2Roadmap review</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem}section{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}small{color:#666}code,pre{background:#f6f6f6;padding:.75rem;white-space:pre-wrap}</style></head>
-<body><h1>Learning roadmap</h1>""" + overview + "".join(module_rows) + "".join(excluded_rows) + "<h2>Requires edges</h2><ul>" + "".join(edge_rows) + "</ul><h2>Flags</h2><pre>" + flags + "</pre></body></html>\n"
+<body><h1>Learning roadmap</h1>""" + overview + "".join(module_rows) + "".join(excluded_rows) + "<h2>Requires edges</h2><ul>" + "".join(edge_rows) + "</ul>" + ("<h2>Cạnh công cụ (không bắt buộc học trước)</h2><ul>" + "".join(tool_rows) + "</ul>" if tool_rows else "") + "<h2>Flags</h2><pre>" + flags + "</pre></body></html>\n"
 
 
 def _norm(text):
@@ -89,7 +91,8 @@ def target_roadmap(payload, concepts):
         if len(hits) > 1:
             raise ValueError(f"{query!r} khớp nhiều khái niệm: {sorted(hits)}")
         targets.append(hits[0])
-    edges = [*payload.get("requires_edges", []), *payload.get("bypassed_edges", [])]
+    edges = [edge for edge in [*payload.get("requires_edges", []), *payload.get("bypassed_edges", [])]
+             if not edge.get("soft")]
     modules = target_modules(payload["modules"], edges, targets)
     dependencies = module_dependencies(payload["modules"], edges)
     chosen_modules = {module["module_id"] for module in modules}
@@ -152,11 +155,14 @@ class BuildRoadmap:
         if upstream.payload.get("stage") not in ("implicit", "identity", "verified", "teaching", "validated"):
             raise ValueError("stage roadmap cần artifact validated")
         chunks_artifact = self._chunks(doc_id, upstream)
+        reference_version = (chunks_artifact.manifest.get("role_transfer") or {}).get("reference_version")
+        title_chunks = self.store.load_chunks(doc_id, reference_version) if reference_version else chunks_artifact
         config = {
             "algorithm_id": "a10-book-anchored-sequence-v2",
             "upstream_version": upstream.version,
             "upstream_config_hash": upstream.manifest["config_hash"],
             "chunks_version": chunks_artifact.version,
+            "title_sections_version": title_chunks.version,
             "eligibility": "taught-or-uncertain-only-with-mentioned-aside-v2",
             "requires_cycles": "assert-dag",
             "module_cap": self.stage_cap,
@@ -174,7 +180,10 @@ class BuildRoadmap:
             return StagePlan("run", remaining_items=1, note="Dãy học và module bằng luật thuần, không gọi mô hình.")
 
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks_artifact.result.chunks}
-        sections = {section.section_id: section for section in chunks_artifact.result.sections}
+        sections = {section.section_id: section for section in title_chunks.result.sections}
+        old_sections = {section.section_id: section for section in chunks_artifact.result.sections}
+        section_of = (transfer_chunk_sections(chunks_artifact.result.chunks, title_chunks.result.chunks)
+                      if reference_version else {})
         content_chunks = [c for c in chunks_artifact.result.chunks if getattr(c, "role", "noi_dung") == "noi_dung"]
 
         def place(node):
@@ -200,10 +209,11 @@ class BuildRoadmap:
             return (first.order_index, min(offsets, default=_FAR)), first
 
         def chain(section_id):
-            path, current = [], sections.get(section_id)
+            source = sections if section_id in sections else old_sections
+            path, current = [], source.get(section_id)
             while current is not None and current.level >= 1:
                 path.append(current.section_id)
-                current = sections.get(current.parent_section_id)
+                current = source.get(current.parent_section_id)
             return path[::-1]
 
         # C8: khái niệm không phải kiến thức môn học, hoặc chỉ được liệt kê là kiến thức nền, rời khỏi lộ trình. Cạnh đi
@@ -216,11 +226,13 @@ class BuildRoadmap:
         excluded_ids = {node["node_id"] for node in [*excluded, *mentioned]}
         edges, bypassed = bypass_excluded(upstream.payload["requires_edges"], excluded_ids)
         placed = [node for node in upstream.payload["nodes"] if node.get("learnable") and node["node_id"] not in excluded_ids]
-        position, ancestry = {}, {}
+        position, ancestry, taught_sections = {}, {}, {}
         for node in placed:
             key, chunk = place(node)
             position[node["node_id"]] = key
-            ancestry[node["node_id"]] = chain(chunk.parent_section_id) if chunk is not None else []
+            section_id = (section_of.get(chunk.chunk_id) or chunk.parent_section_id) if chunk is not None else None
+            ancestry[node["node_id"]] = chain(section_id)
+            taught_sections[node["node_id"]] = section_id
         hard_edges, soft_edges = soften_backward_edges(edges, position)
         soft_pairs = {(edge["source"],edge["target"]) for edge in soft_edges}
         displayed_edges = [({**edge,"soft":True,"soft_reason":"ngược thứ tự sách"}
@@ -246,10 +258,12 @@ class BuildRoadmap:
             hard_edges,
             position=position,
             ancestry=ancestry,
-            section_titles={section_id: section.title for section_id, section in sections.items()},
+            section_titles={section_id: section.title for section_id, section in {**old_sections, **sections}.items()},
             width=self.stage_cap,
             reviewed=reviewed,
         )
+        for module in roadmap["modules"]:
+            module["title_section_ids"] = [taught_sections.get(node_id) for node_id in module["node_ids"]]
         direct = transitive_reduction(hard_edges)
         for node in roadmap["nodes"]:
             prerequisites = [parent for parent in node["prerequisites"] if (parent, node["node_id"]) in direct]

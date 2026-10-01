@@ -78,21 +78,28 @@ class AnchorConcepts:
         return self._run(doc_id, upstream=upstream, planning=True)
 
     def _run(self, doc_id, *, upstream, planning=False):
-        if upstream.payload.get("stage") != "validated":
-            raise ValueError("stage teaching cần artifact validated")
-        edges = self.store.load_graph(doc_id, upstream.manifest["config"]["edges_version"])
-        chunks_artifact = self.store.load_role_chunks(doc_id, edges.manifest["config"]["chunks_version"])
+        if upstream.payload.get("stage") not in {"validated", "provenance"}:
+            raise ValueError("stage teaching cần artifact provenance hoặc validated")
+        if upstream.payload["stage"] == "validated":
+            edges = self.store.load_graph(doc_id, upstream.manifest["config"]["edges_version"])
+            chunks_version = edges.manifest["config"]["chunks_version"]
+        else:
+            chunks_version = upstream.manifest["config"]["chunks_version"]
+        chunks_artifact = self.store.load_role_chunks(doc_id, chunks_version)
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks_artifact.result.chunks}
         prompt_hash = anchor_prompt_hash(self.model.model_id, self.generation)
         prior_prompt = load_prompt("a10", "prior_verify")
         prior_hash = digest([prior_prompt, PRIOR_SCHEMA, self.model.model_id, self.generation])
-        config = {"algorithm_id": "a10-teaching-anchor-v7", "validated_version": upstream.version,
+        config = {"algorithm_id": "a10-teaching-anchor-v8" if upstream.payload["stage"] == "provenance" else "a10-teaching-anchor-v7",
+                  "validated_version": upstream.version,
                   "validated_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks_artifact.version,
                   "model_id": self.model.model_id, "generation": self.generation, "prompt_hash": prompt_hash,
                   "candidates": CANDIDATES, "candidate_rule": "content-only+a3+heading-reserved+position+unicode-sentences-v7",
                   "prior_verify_prompt_hash": prior_hash,
                   "pricing_usd_per_million": PRICING_USD_PER_MILLION,
                   "pricing_source": PRICING_SOURCE}
+        if upstream.payload["stage"] == "provenance":
+            config.update(upstream_stage="provenance", canonical_version=upstream.manifest["config"].get("canonical_version"))
         config_hash, source_hash = digest(config), digest(upstream.payload)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:

@@ -859,6 +859,8 @@ hiện; cạnh đề xuất của tầng 1 đã ánh xạ về node (bỏ cạnh
 
 > **Thiết kế hiện hành của tầng này nằm ở [`A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md`](./A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md)** (2026-09-16): pass chính trích mở, pass phụ chỉ kiểm cặp nghi tiên quyết, không tool, chu trình giải ở tầng 3 (ADR 0008). Mục dưới đây giữ làm hồ sơ.
 
+**Bổ sung v3 (R12, vé 12):** A8 ghi `prerequisite_kind=can_de_hieu` khi quote nguyên văn nằm trong cửa sổ câu neo của đích (tối đa hai câu sau trong cùng chunk). `cong_cu` là cạnh `requires` mềm với `soft_reason=cong_cu`: vẫn giữ trong artifact và hiện ở mục riêng “Cạnh công cụ” của HTML để reviewer kiểm, nhưng không vào dòng “cần:”, `roadmap-target`, dãy học hay phụ thuộc module. Cạnh mềm ngược thứ tự sách giữ luật R17 riêng. Bộ sinh ứng viên hai pass không đổi; neo và danh tính chạy trước A8.
+
 Đơn vị phân vùng **không cố định** — chọn theo cấu trúc tài liệu, quyết định bằng heuristic ngay sau A1 (có heading phân cấp rõ hay không):
 
 **Nhánh 1 — tài liệu có chương/heading rõ → pass chính theo CHƯƠNG.** Mỗi chương một agent loop độc lập chạy song song; heading lộn xộn thì gom section liên tiếp thành partition ~10–20k token. Ưu thế: giữ mạch trình bày, evidence theo section, doc-order prior mạnh. **Pass phụ**: quét theo cụm chủ đề — chạy A7 trên bảng node canonical, chỉ xét các cặp node cùng cụm chưa có đường nối — để vớt edge giữa các khái niệm liên quan nằm xa nhau trong tài liệu.

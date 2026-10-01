@@ -205,6 +205,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
             dense_top_k=settings.mention_dense_top_k,
             dense_min_z=settings.mention_dense_min_z,
             pair_cluster_top_k=settings.mention_pair_cluster_top_k,
+            common_name_fraction=settings.mention_common_name_fraction,
         ),
         BuildProvenance(
             store,

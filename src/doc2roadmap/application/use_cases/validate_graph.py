@@ -97,10 +97,10 @@ class ValidateGraph:
         }
         requires = []
         seen = set()
-        for edge in [
+        for edge in sorted([
             *edges_artifact.payload.get("main_edges", []),
             *edges_artifact.payload.get("secondary_edges", []),
-        ]:
+        ], key=lambda row: bool(row.get("soft"))):
             key = edge["source"], edge["target"], edge.get("edge_type")
             if key in seen:
                 continue

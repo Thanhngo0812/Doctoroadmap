@@ -53,7 +53,7 @@ def run_model_jobs(
                 counts[job.stage + "_reused"] += 1
                 return row["output"], row, counts
 
-        error, attempts = None, []
+        error, attempts, last_output = None, [], None
         for attempt in range(max_attempts):
             counts[job.stage + "_calls"] += 1
             reply = None
@@ -71,6 +71,7 @@ def run_model_jobs(
                     counts[job.stage + "_output_tokens"] += output_tokens
                     counts[job.stage + "_total_tokens"] += int(usage.get("totalTokenCount", input_tokens + output_tokens))
                 value = reply.payload
+                last_output = value
                 job.validate(value)
             except ModelTransportError:
                 raise
@@ -115,6 +116,8 @@ def run_model_jobs(
         }
         if cache_invalid_error is not None:
             row["cache_invalid_error"] = cache_invalid_error
+        if last_output is not None:
+            row["last_output"] = last_output
         counts[job.stage + "_invalid"] += 1
         return None, row, counts
 
