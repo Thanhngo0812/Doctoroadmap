@@ -306,3 +306,20 @@ Bảng `cham-mu-v3-doc-{1,2}-A{1,2}.xlsx`, chấm bằng `scripts/cham-mu/cham_b
   - Hai luồng ngang nhau, mà luồng mới có câu trích kiểm bằng mã và tách cạnh công cụ.
   - Luật thuần để hạ loại cạnh này đã thử và bắt nhầm (mục trước).
   - Ghi "thừa ràng buộc ≈ 1/3 cạnh dư" làm giới hạn đã biết khi báo cáo.
+
+**Ghi nhận 2026-10-02:**
+- Chủ dự án xác nhận hai người chấm làm riêng, không dùng AI. Kết quả T15-dev dùng được làm bằng chứng.
+- **doc-1, đồ thị cuối** (`v3-r12-final-evaluation` v6, `cham_tap_giu_lai.py`), so với đồ thị cuối luồng cũ:
+
+  | chỉ số | luồng mới | luồng cũ |
+  |---|---|---|
+  | Q6 | 4/39 | 4/39 |
+  | Q7 độ phủ | 0,667 | 0,825 |
+  | Q7b độ chính xác | **0,877** | 0,660 |
+  | cạnh trực tiếp P | 17/27 | 18/29 |
+  | cạnh bao đóng P · R | **97/111** · 97/131 | 106/129 · 106/131 |
+
+  - Đường cơ sở "n gần nhất" có Q7b 0,381.
+  - Luồng mới **chính xác hơn rõ, độ phủ thấp hơn**, đúng hướng "ít tiên quyết trực tiếp, đều cần thật".
+  - Ghép với chấm mù: trong 27 cạnh hiển thị thuộc phạm vi vàng có 17 cạnh vàng và 10 cạnh dư, người chấm cho 3/10 là không cần. Tức khoảng
+    **89% dòng "cần:" là cần thật**, 0 cạnh ngược.
