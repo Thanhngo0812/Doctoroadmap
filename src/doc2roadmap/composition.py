@@ -191,17 +191,19 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
                            else settings.roadmap_concurrency)
     # Mọi lời gọi trả tiền của chuỗi đồ thị đi qua chốt chặn: một đổi thuật toán (như F126) không được lặng lẽ tiêu tiền.
     embedding = SpendGuard(embedding, allowed=allow_spend)
-    model = SpendGuard(GeminiEntityExtractor(
-        settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None,
-        settings.roadmap_model_id,
-        timeout_seconds=settings.gemini_timeout_seconds,
-        max_retries=settings.gemini_max_retries,
-        temperature=0.0,
-        max_output_tokens=settings.extraction_max_output_tokens,
-        transport=settings.llm_transport, vertex_project=settings.vertex_project,
-        vertex_location=settings.vertex_location,
-        limiter=embedding.limiter,
-    ), allowed=allow_spend)
+    def model_for(max_output_tokens):
+        return SpendGuard(GeminiEntityExtractor(
+            settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None,
+            settings.roadmap_model_id,
+            timeout_seconds=settings.gemini_timeout_seconds,
+            max_retries=settings.gemini_max_retries,
+            temperature=0.0,
+            max_output_tokens=max_output_tokens,
+            transport=settings.llm_transport, vertex_project=settings.vertex_project,
+            vertex_location=settings.vertex_location,
+            limiter=embedding.limiter,
+        ), allowed=allow_spend)
+    model = model_for(settings.extraction_max_output_tokens)
     generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}
     return BuildLearningGraph(
         BuildClusters(
@@ -246,12 +248,12 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
         ValidateGraph(store),
         # Neo định nghĩa C8 v3 thay C8 v2 từ 2026-09-26 (chủ dự án duyệt, vé v2-04); danh tính sau neo (vé v2-05).
         # Giữ generation mặc định của hai stage — đúng cấu hình đã đo trên dữ liệu phát triển.
-        AnchorConcepts(store, model, concurrency=roadmap_concurrency),
-        JudgeIdentity(store, model, concurrency=roadmap_concurrency, review=identity_review),
+        AnchorConcepts(store, model_for(2048), concurrency=roadmap_concurrency),
+        JudgeIdentity(store, model_for(1024), concurrency=roadmap_concurrency, review=identity_review),
         BuildRoadmap(
             store,
             stage_cap=settings.roadmap_stage_cap,
         ),
-        NameModules(store, model, concurrency=roadmap_concurrency),
-        NameConceptLabels(store, model, concurrency=roadmap_concurrency),
+        NameModules(store, model_for(128), concurrency=roadmap_concurrency),
+        NameConceptLabels(store, model_for(512), concurrency=roadmap_concurrency),
     ), settings

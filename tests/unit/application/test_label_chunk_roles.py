@@ -64,6 +64,24 @@ def test_semantic_roles_one_call_cache_and_identity_preservation(tmp_path):
     assert uc.plan('roles').status=='reused'
 
 
+def test_cli_transfers_labeled_roles_back_to_original_chunks(tmp_path, monkeypatch, capsys):
+    from doc2roadmap.presentation.cli.main import main
+
+    store, base = stored(tmp_path)
+    labeled, _ = LabelChunkRoles(store, Model(), allow_spend=True).execute('roles', chunks_version=base.version)
+    monkeypatch.setattr('doc2roadmap.presentation.cli.main.build_region_roles',
+                        lambda **kwargs: LabelChunkRoles(store, Model(), allow_spend=kwargs['allow_spend']))
+    command = ['label-roles', '--doc-id', 'roles', '--chunks-version', str(base.version),
+               '--transfer-from-chunks-version', str(labeled.version)]
+    assert main([*command, '--dry-run']) == 0
+    assert json.loads(capsys.readouterr().out)['calls_estimate'] == 0
+    assert main(command) == 0
+    transferred = store.load_latest_chunks('roles')
+    assert transferred.manifest['role_transfer']['reference_version'] == labeled.version
+    assert [(chunk.chunk_id, chunk.role) for chunk in transferred.result.chunks] == [
+        (chunk.chunk_id, chunk.role) for chunk in labeled.result.chunks]
+
+
 def test_missing_duplicate_invalid_labels_default_to_content_with_warning(tmp_path):
     store,base = stored(tmp_path)
     artifact,_ = LabelChunkRoles(store,Model(broken=True),allow_spend=True).execute('roles')

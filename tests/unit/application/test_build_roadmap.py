@@ -79,6 +79,59 @@ def test_roadmap_stage_writes_static_review_page_and_reuses(tmp_path):
     assert reused and second is first
 
 
+def test_open_edges_keep_media_endpoints_in_final_payload(tmp_path):
+    store = Store(tmp_path)
+    media = {"node_id": "figure-1", "name": "Figure 1", "learnable": False,
+             "media_id": "image-1", "orphan_reason": "no_concept_in_chunk", "source_chunk_ids": ["c1"]}
+    store.validated.payload["nodes"].append(media)
+    store.validated.payload["open_edges"] = [
+        {"source": "figure-1", "target": "a", "edge_type": "illustrates"},
+    ]
+    artifact, _ = BuildRoadmap(store).execute("doc")
+    payload = artifact.payload
+    present = {node["node_id"] for key in ("nodes", "mentioned_nodes", "merged_nodes", "excluded_nodes", "non_learnable_nodes")
+               for node in payload.get(key, [])}
+    assert all(edge["source"] in present and edge["target"] in present for edge in payload["open_edges"])
+    assert payload["non_learnable_nodes"] == [media]
+    assert payload["sequence"] == ["a", "b"]
+    assert payload["requires_edges"] == store.validated.payload["requires_edges"]
+
+
+def test_mentioned_evidence_places_nonliteral_name_and_groups_unplaced_multilingual_nodes(tmp_path):
+    store = Store(tmp_path)
+    for chunk in store.chunks.result.chunks:
+        chunk.role, chunk.text = "noi_dung", "unrelated prose"
+    mentioned = [
+        {"node_id": "content", "name": "Assoziativität", "learnable": True,
+         "teaching_status": "mentioned_only", "defining_chunk_ids": ["c2"], "teaching_chunk_ids": []},
+        {"node_id": "outline", "name": "線形代数", "learnable": True,
+         "teaching_status": "unchecked", "defining_chunk_ids": [], "mentioned_in": ["bai_tap", "mo_dau"]},
+        {"node_id": "exercise", "name": "Übung", "learnable": True,
+         "teaching_status": "mentioned_only", "defining_chunk_ids": [], "mentioned_in": "bai_tap"},
+        {"node_id": "admin", "name": "履修登録", "learnable": True,
+         "teaching_status": "mentioned_only", "defining_chunk_ids": [], "mentioned_in": "hanh_chinh"},
+        {"node_id": "back", "name": "Anhang", "learnable": True,
+         "teaching_status": "mentioned_only", "defining_chunk_ids": [], "mentioned_in": "cuoi_sach"},
+        {"node_id": "unknown", "name": "未分類", "learnable": True,
+         "teaching_status": "mentioned_only", "defining_chunk_ids": []},
+    ]
+    store.validated.payload["nodes"].extend(mentioned)
+    artifact, _ = BuildRoadmap(store).execute("doc")
+    payload = artifact.payload
+    by_id = {node["node_id"]: node for node in payload["mentioned_nodes"]}
+    assert by_id["content"]["mention_module_id"] == "module_001"
+    assert "content" in payload["modules"][0]["mentioned_node_ids"]
+    assert payload["overview_groups"] == {
+        "tong_quan": ["outline"], "chi_trong_bai_tap": ["exercise"],
+        "thong_tin_hoc_phan": ["admin"], "cuoi_sach": ["back"], "khong_ro": ["unknown"],
+    }
+    assert payload["overview_mentioned_node_ids"] == ["outline"]
+    html = (artifact.path / "roadmap.html").read_text(encoding="utf-8")
+    assert "Tổng quan môn học" in html and "線形代数" in html
+    assert "Chỉ xuất hiện trong bài tập" in html and "Übung" in html
+    assert "履修登録" not in html and "Anhang" not in html and "未分類" not in html
+
+
 def test_roadmap_rejects_unvalidated_edges(tmp_path):
     store = Store(tmp_path)
     store.validated.payload["stage"] = "edges"
@@ -167,7 +220,7 @@ def test_backward_edge_does_not_pull_later_chapter_ahead(tmp_path):
     payload = artifact.payload
     assert payload["sequence"] == ["b", "c", "a"]
     assert "stages" not in payload and "chunk_stage_map" not in payload
-    assert artifact.manifest["config"]["algorithm_id"] == "a10-book-anchored-sequence-v2"
+    assert artifact.manifest["config"]["algorithm_id"] == "a10-book-anchored-sequence-v3"
     nodes = {node["node_id"]: node for node in payload["nodes"]}
     assert [nodes[n]["sequence_index"] for n in ("b", "c", "a")] == [0, 1, 2]
     assert nodes["b"]["prerequisites"] == []

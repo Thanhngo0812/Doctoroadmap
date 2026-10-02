@@ -3,7 +3,7 @@
 **Nguồn chân lý:** spec-addendum (cờ `learnable`; "loại cạnh khác thì mở … phục vụ agent pha B") · **Ai:** nhân viên ·
 **Phụ thuộc:** — · **Chi phí mô hình:** 0 (A10 không gọi mô hình; bước tên module tái dùng, có thể hỏi lại < 0,01 USD)
 
-**Trạng thái:** chờ giao — **làm trước T10** vì đổi định dạng tệp lộ trình mà lượt tập giữ lại sẽ dùng.
+**Trạng thái:** đã triển khai và chạy lại A10 sáu tài liệu (2026-10-03); số đo ở [báo cáo](../../report/v3-20-21-t10a-2026-10-03.md).
 
 ## Vì sao (Claude, 2026-10-02)
 - Quan hệ mở của A3/A4 **được giữ trọn** tới tệp lộ trình cuối: `open_edges` có 245 cạnh ở doc-1 (`subtype_of`, `component_of`, `uses`,

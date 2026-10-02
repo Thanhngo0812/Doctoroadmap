@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [giao thức T10/07 v2](T10-07v2-giao-thuc-tap-giu-lai.md) · **Ai:** nhân viên · **Phụ thuộc:** — (làm song song với pass phụ
 vé 12) · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao
+**Trạng thái:** đã triển khai lệnh và kiểm tương đương trên doc-6/doc-1 (2026-10-03); chưa chạy tập giữ lại. [Báo cáo](../../report/v3-20-21-t10a-2026-10-03.md).
 
 ## Vì sao (Claude, 2026-10-01, khi kiểm giao thức với mã hiện có)
 - **Chuyển vai trò sang version chunks cũ chưa có lệnh chuẩn.** Bậc 1 của giao thức phải làm như doc-2: ingest lại làm cây tham chiếu, gán

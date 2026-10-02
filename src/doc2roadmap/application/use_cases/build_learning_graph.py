@@ -5,7 +5,7 @@ from doc2roadmap.application.planning import PRICING_SOURCE, PRICING_USD_PER_MIL
 
 
 class BuildLearningGraph:
-    STAGES = ("clusters", "mentions", "provenance", "edges", "stages")
+    STAGES = ("clusters", "mentions", "provenance", "teaching", "identity", "edges", "stages")
 
     def __init__(self, clusters, mentions, provenance, main_edges, secondary_edges, validator, teaching, identity,
                  roadmap, module_titles=None, concept_labels=None):
@@ -80,9 +80,13 @@ class BuildLearningGraph:
         self._current = "teaching"
         artifact, current_reused = self.teaching.execute(doc_id, upstream=artifact)
         reused = reused and current_reused
+        if stop_after == "teaching":
+            return artifact, reused
         self._current = "identity"
         artifact, current_reused = self.identity.execute(doc_id, upstream=artifact)
         reused = reused and current_reused
+        if stop_after == "identity":
+            return artifact, reused
         self._current = "main_edges"
         artifact, current_reused = self.main_edges.execute(doc_id, upstream=artifact)
         reused = reused and current_reused

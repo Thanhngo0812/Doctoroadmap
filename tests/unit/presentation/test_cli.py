@@ -289,6 +289,27 @@ def test_roadmap_spends_only_when_explicitly_allowed(monkeypatch, capsys):
     assert seen == [{"allow_spend": False, "identity_review": None}, {"allow_spend": True, "identity_review": None}]
 
 
+def test_label_roles_cli_passes_transfer_version_to_plan_and_execute(monkeypatch, capsys):
+    seen = []
+
+    class UseCase:
+        def plan(self, doc_id, **kwargs):
+            seen.append(("plan", doc_id, kwargs))
+            return SimpleNamespace(to_dict=lambda: {"status": "reused"})
+
+        def execute(self, doc_id, **kwargs):
+            seen.append(("execute", doc_id, kwargs))
+            return SimpleNamespace(version=3, manifest={"role_counts": {}, "role_warnings": []}), True
+
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_region_roles", lambda **kwargs: UseCase())
+    base = ["label-roles", "--doc-id", "doc", "--chunks-version", "2",
+            "--transfer-from-chunks-version", "4"]
+    assert main([*base, "--dry-run"]) == 0
+    assert main(base) == 0
+    assert seen == [(mode, "doc", {"chunks_version": 2, "transfer_from_chunks_version": 4})
+                    for mode in ("plan", "execute")]
+
+
 def test_roadmap_passes_the_identity_review_of_the_same_document(monkeypatch, tmp_path):
     import json
 

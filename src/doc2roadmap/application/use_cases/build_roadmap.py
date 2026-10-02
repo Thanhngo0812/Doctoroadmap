@@ -19,7 +19,8 @@ _FAR = 10**9
 
 def render_roadmap_html(payload):
     node_by_id = {node["node_id"]: node for node in [*payload["nodes"], *payload.get("excluded_nodes", []),
-                                                      *payload.get("mentioned_nodes", [])]}
+                                                      *payload.get("mentioned_nodes", []),
+                                                      *payload.get("non_learnable_nodes", [])]}
     names = {node_id: node.get("display_name") or node.get("name", node_id) for node_id, node in node_by_id.items()}
     module_rows = []
     for module in payload["modules"]:
@@ -48,9 +49,13 @@ def render_roadmap_html(payload):
             items = "".join(f"<li>{html.escape(node.get('name', node['node_id']))}</li>" for node in members)
             excluded_rows.append(f"<section><h2>{heading}</h2><ul>{items}</ul></section>")
     edge_rows, tool_rows = [], []
+    groups = payload.get("overview_groups", {})
     overview = "".join(f"<li>{html.escape(names[node_id])}</li>"
-                       for node_id in payload.get("overview_mentioned_node_ids", []))
+                       for node_id in groups.get("tong_quan", payload.get("overview_mentioned_node_ids", [])))
     overview = f"<section><h2>Tổng quan môn học</h2><ul>{overview}</ul></section>" if overview else ""
+    exercises = "".join(f"<li>{html.escape(names[node_id])}</li>"
+                        for node_id in groups.get("chi_trong_bai_tap", []))
+    exercises = f"<section><h2>Chỉ xuất hiện trong bài tập</h2><ul>{exercises}</ul></section>" if exercises else ""
     for edge in payload.get("requires_edges", []):
         evidence = ", ".join(edge.get("chunk_ids", [])) or "(none)"
         redundant = f' · redundant via {html.escape(" → ".join(edge["redundant_via"]))}' if edge.get("redundant_via") else ""
@@ -62,7 +67,7 @@ def render_roadmap_html(payload):
     return """<!doctype html>
 <html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Doc2Roadmap review</title><style>body{font-family:system-ui;max-width:1000px;margin:2rem auto;padding:0 1rem}section{border:1px solid #ddd;border-radius:8px;padding:1rem;margin:1rem 0}small{color:#666}code,pre{background:#f6f6f6;padding:.75rem;white-space:pre-wrap}</style></head>
-<body><h1>Learning roadmap</h1>""" + overview + "".join(module_rows) + "".join(excluded_rows) + "<h2>Requires edges</h2><ul>" + "".join(edge_rows) + "</ul>" + ("<h2>Cạnh công cụ (không bắt buộc học trước)</h2><ul>" + "".join(tool_rows) + "</ul>" if tool_rows else "") + "<h2>Flags</h2><pre>" + flags + "</pre></body></html>\n"
+<body><h1>Learning roadmap</h1>""" + overview + exercises + "".join(module_rows) + "".join(excluded_rows) + "<h2>Requires edges</h2><ul>" + "".join(edge_rows) + "</ul>" + ("<h2>Cạnh công cụ (không bắt buộc học trước)</h2><ul>" + "".join(tool_rows) + "</ul>" if tool_rows else "") + "<h2>Flags</h2><pre>" + flags + "</pre></body></html>\n"
 
 
 def _norm(text):
@@ -158,7 +163,7 @@ class BuildRoadmap:
         reference_version = (chunks_artifact.manifest.get("role_transfer") or {}).get("reference_version")
         title_chunks = self.store.load_chunks(doc_id, reference_version) if reference_version else chunks_artifact
         config = {
-            "algorithm_id": "a10-book-anchored-sequence-v2",
+            "algorithm_id": "a10-book-anchored-sequence-v3",
             "upstream_version": upstream.version,
             "upstream_config_hash": upstream.manifest["config_hash"],
             "chunks_version": chunks_artifact.version,
@@ -168,7 +173,7 @@ class BuildRoadmap:
             "module_cap": self.stage_cap,
             "weights": DEFAULT_WEIGHTS,
             "level_rule": "median-concepts-per-section-at-least-half-cap",
-            "placement_rule": "content-only+earliest-name-mention-v2",
+            "placement_rule": "content-evidence-before-name-mention-v3",
             "backward_edges": "backward-edges-soft-v1",
         }
         config_hash = digest(config)
@@ -186,9 +191,9 @@ class BuildRoadmap:
                       if reference_version else {})
         content_chunks = [c for c in chunks_artifact.result.chunks if getattr(c, "role", "noi_dung") == "noi_dung"]
 
-        def place(node):
+        def place(node, *, mentioned_node=False):
             """Khoá vị trí (chỉ số chunk dạy, vị trí ký tự trong chunk) và chunk dạy sớm nhất."""
-            chunk_ids = node.get("teaching_chunk_ids") or []
+            chunk_ids = node.get("defining_chunk_ids", []) if mentioned_node else node.get("teaching_chunk_ids") or []
             # Artifact trước bước neo vẫn dùng provenance; sau neo không được rơi về đoạn chỉ được dùng/nhắc.
             if "teaching_status" not in node:
                 chunk_ids = node.get("defining_chunk_ids", [])
@@ -220,6 +225,8 @@ class BuildRoadmap:
         # qua chúng được co lại để việc bỏ khái niệm không làm mất ràng buộc học trước.
         excluded = sorted((node for node in upstream.payload["nodes"]
                            if node.get("teaching_status") in EXCLUDED_STATUSES), key=lambda node: node["node_id"])
+        non_learnable = sorted((node for node in upstream.payload["nodes"] if not node.get("learnable")),
+                               key=lambda node: node["node_id"])
         mentioned = sorted((node for node in upstream.payload["nodes"]
                             if node.get("teaching_status") in {"mentioned_only", "unchecked"}),
                            key=lambda node: node["node_id"])
@@ -274,11 +281,25 @@ class BuildRoadmap:
             module["module_dependencies"] = dependencies[module["module_id"]]
         for module in roadmap["modules"]:
             module["mentioned_node_ids"] = []
-        mention_rows, overview = [], []
+        mention_rows = []
+        overview_groups = {key: [] for key in ("tong_quan", "chi_trong_bai_tap", "thong_tin_hoc_phan", "cuoi_sach", "khong_ro")}
+
+        def add_overview(node):
+            regions = node.get("mentioned_in") or []
+            regions = {regions} if isinstance(regions, str) else set(regions)
+            for group, accepted in (("tong_quan", {"de_cuong", "mo_dau"}),
+                                    ("chi_trong_bai_tap", {"bai_tap"}),
+                                    ("thong_tin_hoc_phan", {"hanh_chinh"}),
+                                    ("cuoi_sach", {"cuoi_sach"})):
+                if regions & accepted:
+                    overview_groups[group].append(node["node_id"])
+                    return
+            overview_groups["khong_ro"].append(node["node_id"])
+
         for node in mentioned:
-            key, chunk = place(node)
+            key, chunk = place(node, mentioned_node=True)
             if chunk is None:
-                overview.append(node["node_id"])
+                add_overview(node)
                 mention_rows.append({**node, "mention_module_id": None})
                 continue
             # Mention belongs to the last module whose taught content starts no later than the mention.
@@ -290,7 +311,7 @@ class BuildRoadmap:
             if module:
                 module["mentioned_node_ids"].append(node["node_id"])
             else:
-                overview.append(node["node_id"])
+                add_overview(node)
             mention_rows.append({**node, "mention_module_id": module["module_id"] if module else None})
         stats = {
             "module_count": len(roadmap["modules"]),
@@ -313,8 +334,10 @@ class BuildRoadmap:
             "chunk_module_map": roadmap["chunk_module_map"],
             "coverage_flags": roadmap["coverage_flags"],
             "excluded_nodes": excluded,
+            "non_learnable_nodes": non_learnable,
             "mentioned_nodes": mention_rows,
-            "overview_mentioned_node_ids": overview,
+            "overview_groups": overview_groups,
+            "overview_mentioned_node_ids": overview_groups["tong_quan"],
             "requires_edges": displayed_edges,
             "bypassed_edges": effective_bypassed,
             "soft_backward_edges": [edge for edge in soft_edges if edge.get("soft_reason")=="ngược thứ tự sách"],

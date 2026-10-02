@@ -307,3 +307,22 @@ Vertex lấy token qua Application Default Credentials và chuẩn hóa L2 embed
 Một tầng của phép xếp Coffman–Graham: các khái niệm học song song được, không cạnh `requires` nào nằm trong một
 tầng. Chỉ còn trong biến thể đối chứng và artifact cũ. Tên stage pipeline `stages` của artifact graph giữ nguyên.
 _Tránh dùng_ cho đơn vị lộ trình mới — dùng **Module**
+
+## Lệnh bậc 1–3 của lượt tập giữ lại (T10a; chỉ chạy sau khi khoá T10)
+
+Các lệnh dưới đây là khuôn thao tác, **không phải lệnh cho phép mở vàng hay chạy tập giữ lại ngay**. Thay `<pdf-da-khoa>` và `<v-cay-moi>` bằng đường dẫn/version ghi trong bảng khoá; giữ chunk cũ xstk v2, doc-4 v3. Chạy riêng từng `DOC` (`xstk-ch3-1`, rồi `doc-4`), không sửa cấu hình giữa các bậc.
+
+```powershell
+$env:UV_CACHE_DIR='.uv-cache-local'
+$DOC='xstk-ch3-1'; $OLD=2
+.\.tools\uv.exe run doc2roadmap ingest <pdf-da-khoa> --doc-id $DOC
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --dry-run
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --allow-spend
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --chunks-version $OLD --transfer-from-chunks-version <v-cay-moi> --dry-run
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --chunks-version $OLD --transfer-from-chunks-version <v-cay-moi> --allow-spend
+.\.tools\uv.exe run doc2roadmap roadmap --doc-id $DOC --dry-run --stop-after identity
+.\.tools\uv.exe run doc2roadmap roadmap --doc-id $DOC --allow-spend --stop-after identity
+.\.tools\uv.exe run python scripts/duyet-danh-tinh/tao_bang.py $DOC <v-identity> --no-gold --output-dir tmp/duyet-danh-tinh-giu-lai
+```
+
+Ở bậc 2b, chủ dự án duyệt **mọi** cặp trong bảng không vàng rồi xuất JSON quyết định T14. Chạy lại `roadmap --doc-id $DOC --identity-review <json-t14> --allow-spend --stop-after identity` và xác nhận artifact danh tính mới trước khi sang bậc 3. Bậc 3: `roadmap --doc-id $DOC --identity-review <json-t14> --dry-run` để lấy dự toán A8 thật; sau khi được duyệt chi mới chạy cùng lệnh với `--allow-spend` thay `--dry-run`. Bảng danh tính ở `tmp/` không chứa/chạm tệp vàng; nhãn vàng chỉ mở ở bậc 5 theo giao thức T10/07 v2.

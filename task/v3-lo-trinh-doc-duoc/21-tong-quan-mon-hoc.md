@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R5 ("… hoặc ở mục 'Tổng quan' nếu chỉ có trong đề cương") · **Ai:** nhân viên ·
 **Phụ thuộc:** — (làm cùng lượt chạy lại A10 của vé 20) · **Chi phí mô hình:** 0
 
-**Trạng thái:** chờ giao — **làm trước T10**.
+**Trạng thái:** đã triển khai và chạy lại A10 sáu tài liệu (2026-10-03); số đo và giới hạn còn lại ở [báo cáo](../../report/v3-20-21-t10a-2026-10-03.md).
 
 ## Vì sao (Claude, 2026-10-02)
 "Tổng quan môn học" trong `roadmap.html` không phải bản tóm tắt môn học. Đó chỉ là danh sách tên khái niệm `mentioned_only`/`unchecked` mà

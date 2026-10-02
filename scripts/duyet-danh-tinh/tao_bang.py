@@ -6,9 +6,9 @@ cặp `sense_split` (hệ thống giữ tách). Không cần mù: đây là duy�
 Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/duyet-danh-tinh/tao_bang.py [doc phiên-bản-identity tệp-vàng]
 Có tham số thì sinh bảng riêng cho tài liệu đó (`duyet-danh-tinh-<doc>.xlsx`), ví dụ cho tập giữ lại ở vé 07.
 """
+import argparse
 import hashlib
 import json
-import sys
 from pathlib import Path
 
 import openpyxl
@@ -40,18 +40,33 @@ def sha256(path):
     return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 
 
-def main():
-    global IDENTITY, GOLD
+def main(argv=None):
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("doc_id", nargs="?")
+    parser.add_argument("identity_version", nargs="?", type=int)
+    parser.add_argument("gold", nargs="?", type=Path)
+    parser.add_argument("--no-gold", action="store_true", help="duyệt mọi cặp không đọc nhãn vàng")
+    parser.add_argument("--artifact-dir", type=Path, default=Path("artifacts"))
+    parser.add_argument("--output-dir", type=Path, default=Path("artifacts/a8-gold"))
+    args = parser.parse_args(argv)
+    if (args.doc_id is None) != (args.identity_version is None):
+        parser.error("cần cả doc_id và identity_version")
+    if not args.no_gold and args.doc_id is not None and args.gold is None:
+        parser.error("cần tệp vàng hoặc --no-gold")
     suffix = ""
-    if len(sys.argv) == 4:
-        IDENTITY, GOLD, suffix = {sys.argv[1]: int(sys.argv[2])}, {sys.argv[1]: sys.argv[3]}, f"-{sys.argv[1]}"
+    identity = {args.doc_id: args.identity_version} if args.doc_id else IDENTITY
+    gold_files = {args.doc_id: args.gold} if args.doc_id else GOLD
+    if args.doc_id:
+        suffix = f"-{args.doc_id}"
     rows = []
-    for doc, version in IDENTITY.items():
-        path = Path(f"artifacts/graph/{doc}/v{version}/graph.json")
+    for doc, version in identity.items():
+        path = args.artifact_dir / "graph" / doc / f"v{version}" / "graph.json"
         payload = json.loads(path.read_text(encoding="utf-8"))
         by_id = {n["node_id"]: n for n in [*payload["nodes"], *payload["merged_nodes"]]}
-        gold = json.loads(Path(GOLD[doc]).read_text(encoding="utf-8"))
-        concepts = {n for e in gold["edges"] for n in (e["prerequisite"], e["target"])} | set(gold["targets"])
+        concepts = set()
+        if not args.no_gold:
+            gold = json.loads(Path(gold_files[doc]).read_text(encoding="utf-8"))
+            concepts = {n for e in gold["edges"] for n in (e["prerequisite"], e["target"])} | set(gold["targets"])
         for row in payload["identity_log"]:
             if row["verdict"] == "different":
                 continue
@@ -68,7 +83,7 @@ def main():
     workbook = openpyxl.Workbook()
     guide = workbook.active
     guide.title = "Hướng dẫn"
-    for line in GUIDE:
+    for line in ([*GUIDE[:-2], GUIDE[-1]] if args.no_gold else GUIDE):
         guide.append([line])
     guide["A1"].font = Font(bold=True, size=13)
     guide.column_dimensions["A"].width = 120
@@ -89,16 +104,17 @@ def main():
     choice = DataValidation(type="list", formula1=f'"{CHOICES}"', allow_blank=True)
     sheet.add_data_validation(choice)
     choice.add(f"J2:J{len(rows) + 1}")
-    out = Path(f"artifacts/a8-gold/duyet-danh-tinh{suffix}.xlsx")
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+    out = args.output_dir / f"duyet-danh-tinh{suffix}.xlsx"
     workbook.save(out)
-    key = {"inputs": {doc: {"version": v, "sha256": sha256(f"artifacts/graph/{doc}/v{v}/graph.json")}
-                      for doc, v in IDENTITY.items()},
+    key = {"inputs": {doc: {"version": v, "sha256": sha256(args.artifact_dir / "graph" / doc / f"v{v}" / "graph.json")}
+                      for doc, v in identity.items()},
            "sheet": {"path": str(out), "sha256": sha256(out)},
            "items": [{"item": r["item"], "doc_id": r["doc_id"], "pair_id": r["pair_id"], "left": r["left"]["node_id"],
                       "right": r["right"]["node_id"], "proposal": r["proposal"], "gold": r["gold"]} for r in rows]}
-    Path(f"artifacts/a8-gold/duyet-danh-tinh{suffix}-khoa.json").write_text(json.dumps(key, ensure_ascii=False, indent=2) + "\n",
+    (args.output_dir / f"duyet-danh-tinh{suffix}-khoa.json").write_text(json.dumps(key, ensure_ascii=False, indent=2) + "\n",
                                                                    encoding="utf-8")
-    print(f"{out}: {len(rows)} cặp, {sum(r['gold'] for r in rows)} chạm vàng")
+    print(f"{out}: {len(rows)} pairs, {sum(r['gold'] for r in rows)} gold-linked")
 
 
 if __name__ == "__main__":

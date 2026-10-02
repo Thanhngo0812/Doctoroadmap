@@ -46,6 +46,7 @@ def _parser() -> argparse.ArgumentParser:
     roles = commands.add_parser('label-roles', help='gán vai trò vùng sau A2; không đổi ID/text chunk')
     roles.add_argument('--doc-id', required=True)
     roles.add_argument('--chunks-version', type=int)
+    roles.add_argument('--transfer-from-chunks-version', type=int)
     roles.add_argument('--dry-run', action='store_true')
     roles.add_argument('--allow-spend', action='store_true')
     canonical = commands.add_parser("a4", help="hợp nhất thực thể và mô tả chuẩn (cần --gold); --names-only/--prepare không gọi mô hình phán")
@@ -175,7 +176,7 @@ def _parser() -> argparse.ArgumentParser:
     roadmap.add_argument("--doc-id", required=True)
     roadmap.add_argument(
         "--stop-after",
-        choices=("clusters", "mentions", "provenance", "edges", "stages"),
+        choices=("clusters", "mentions", "provenance", "teaching", "identity", "edges", "stages"),
         default="stages",
         help="dừng sau stage đã chọn; clusters/mentions cần embedding nếu thiếu cache, provenance có gọi LLM",
     )
@@ -510,9 +511,11 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == 'label-roles':
             use_case = build_region_roles(allow_spend=args.allow_spend and not args.dry_run)
             if args.dry_run:
-                payload = use_case.plan(args.doc_id, chunks_version=args.chunks_version).to_dict()
+                payload = use_case.plan(args.doc_id, chunks_version=args.chunks_version,
+                                        transfer_from_chunks_version=args.transfer_from_chunks_version).to_dict()
             else:
-                artifact,reused = use_case.execute(args.doc_id, chunks_version=args.chunks_version)
+                artifact,reused = use_case.execute(args.doc_id, chunks_version=args.chunks_version,
+                                                   transfer_from_chunks_version=args.transfer_from_chunks_version)
                 payload = {'chunks_version':artifact.version,'reused':reused,
                            'role_counts':artifact.manifest['role_counts'],
                            'warnings':artifact.manifest['role_warnings']}
