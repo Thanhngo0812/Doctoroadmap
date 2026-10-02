@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R12 · **Ai:** nhân viên · **Phụ thuộc:** 03–11 (đã xong) ·
 **Chi phí mô hình:** chạy lại A8 sáu tài liệu phát triển. Dự toán bằng `--dry-run` trước; chủ dự án duyệt con số trước khi chạy.
 
-**Trạng thái:** **đã hoàn tất chạy và đo trên kho đánh giá; chờ chủ dự án đọc/ nghiệm thu (2026-10-03)**. Pass phụ đầy đủ và A9/A10 trên sáu tài liệu đã xong; số liệu cuối ở [báo cáo](../../report/ket-qua-v3-12-cuoi-2026-10-03.md). Các đoạn tiến độ bên dưới giữ làm lịch sử. Chủ dự án nâng ngân sách 2026-09-28: có
+**Trạng thái:** **đã hoàn tất chạy và đo trên kho đánh giá (2026-10-03). Claude nghiệm thu phần chạy và đo: đạt; chờ chủ dự án quyết khoá** (xem mục nghiệm thu cuối file). Pass phụ đầy đủ và A9/A10 trên sáu tài liệu đã xong; số liệu cuối ở [báo cáo](../../report/ket-qua-v3-12-cuoi-2026-10-03.md). Các đoạn tiến độ bên dưới giữ làm lịch sử. Chủ dự án nâng ngân sách 2026-09-28: có
 300 USD credit Google Cloud, "miễn là dự án tốt, đồ thị chuẩn chỉ".
 
 **Cổng chi phí A8:** Pass chính đã chạy trong trần 2,50 USD; pilot evaluation-only đã chạy trong trần 2 USD. Chủ dự án đã duyệt ngân sách lớn, nhưng dry-run pass phụ production ước 24.472 calls / 31,299322 USD trên sáu tài liệu và pilot chưa đạt cổng chất lượng. **Không chạy production pass phụ trước khi đối chiếu mù cạnh sai/thiếu và chứng minh bản sửa**, dù ngân sách sẵn có.
@@ -323,3 +323,60 @@ Bảng `cham-mu-v3-doc-{1,2}-A{1,2}.xlsx`, chấm bằng `scripts/cham-mu/cham_b
   - Luồng mới **chính xác hơn rõ, độ phủ thấp hơn**, đúng hướng "ít tiên quyết trực tiếp, đều cần thật".
   - Ghép với chấm mù: trong 27 cạnh hiển thị thuộc phạm vi vàng có 17 cạnh vàng và 10 cạnh dư, người chấm cho 3/10 là không cần. Tức khoảng
     **89% dòng "cần:" là cần thật**, 0 cạnh ngược.
+
+## Nghiệm thu của Claude trên kho cuối (2026-10-03) — **đạt phần chạy và đo; chờ chủ dự án quyết khoá**
+- **Tái tạo số liệu.** Tôi chấm lại mọi số của [báo cáo cuối](../../report/ket-qua-v3-12-cuoi-2026-10-03.md) bằng script của tôi trên v8. Số
+  giống v6, vì vé 20/21 không đổi cạnh hay dãy học.
+
+  | chỉ số | doc-1 | doc-2 |
+  |---|---|---|
+  | Q6 lỗi thứ tự học | 4/39 (1 ngược, 3 ngoài phạm vi) | 13/57 (0 ngược, 13 ngoài phạm vi) |
+  | Q7 độ phủ · "n gần nhất" | 0,667 · 0,921 | 0,395 · 0,703 |
+  | Q7b độ chính xác · "n gần nhất" | 0,877 · 0,381 | 0,869 · 0,356 |
+  | trực tiếp P · R | 17/27 · 17/28 | 11/16 · 11/32 |
+  | bao đóng P · R | 97/111 · 97/131 | 20/25 · 20/68 |
+
+  - Chấm mù doc-2 theo đồ thị cuối (`--moi-cuoi`): mỗi người chấm cho 3/5 cạnh dư không sai thứ tự, 2/5 không cần, 0/5 ngược. Không có cạnh
+    dư hiển thị nào nằm ngoài bảng.
+  - Bảng kiểm đọc được sáu tài liệu khớp báo cáo.
+- **13 cạnh vàng "ngoài phạm vi" của doc-2.** Mọi đầu cạnh nằm ngoài dãy học đều là node `mentioned_only`. Phần lớn là **kết quả hay tính
+  chất** mà C8 không tìm được câu dạy: "Injective operator equivalence" (7 cạnh), hai tính chất của phép nhân ma trận (3), "Rank of A is 1"
+  (2). Đúng hướng vé 13 (mệnh đề có tên ở A3). doc-1 có 3 cạnh như vậy, qua "Số phức", "Đa thức", "Không gian véc tơ phức".
+- **Tính cả cạnh mềm thì sao.** Độ phủ doc-1 0,667 → 0,810, nhưng số tổ tiên trung vị 12 → 26. doc-2 0,395 → 0,522, tổ tiên 23 → 84. Cạnh
+  mềm có thêm thông tin nhưng không thay được cạnh cứng.
+- **Tổng chi vé 12, cộng mọi sổ.** Báo cáo cuối mới cộng sổ của kho cuối; luật "một tổng chi" cần cộng hết.
+
+  | sổ | theo usage (USD) | giữ chỗ bị ngắt (USD) |
+  |---|---|---|
+  | `v3-r12-final-evaluation` (JSONL) | 27,66 | 2,31 |
+  | `v3-r12-main-a8` | 2,14 | 0 |
+  | `v3-r12-pre-a8` | 1,10 | 0 |
+  | `v3-r12-quote-evaluation` (chính + pilot) | 2,43 | 0 |
+  | `v3-r12-window-evaluation` (chính + pilot) | 2,43 | 0,05 |
+  | `v3-r12-secondary-pilot` | 0,82 | 0,03 |
+  | **cộng** | **36,59** | **2,39** |
+
+  Cận trên là 38,98 USD, nếu mọi lời gọi bị ngắt đều bị tính tiền. Sổ cũ `llm-ledger.json` của kho cuối đã nằm trong JSONL (16.456 dòng
+  `legacy-`, 15,55 USD), nên không cộng hai lần.
+- **Đọc lộ trình sáu tài liệu:**
+  - doc-1: module đi đúng mạch sách (Tập hợp → Quan hệ → Ánh xạ → Nhóm, Vành, Trường → Ma trận → Định thức → …). Tên có nghĩa. Dòng "cần:"
+    phần lớn đúng, ví dụ "Song ánh cần: Toàn ánh, Đơn ánh", "Không gian véc tơ cần: Trường". Vài dòng lỏng, như "Vô hướng cần: Tập hợp".
+  - doc-2: bám cấu trúc 1A…9D. Phụ thuộc module hợp lý, ví dụ 5A cần độc lập tuyến tính và khả nghịch; 9C cần 5C và 9B. Có 5 tên chỉ có
+    mã ("Chapter 3", "6B", "7C", "Chapter 7", "Chapter 8"), xem [vé 23](23-ten-module-chi-co-ma.md).
+  - nhap-mon-ml, naive-bayes, doc-6, doc-3: nhỏ, đọc được. doc-6 và naive-bayes gần như không có cạnh cứng (3 và 6 cạnh), nên dãy học dựa
+    vào thứ tự sách.
+  - Dòng "cần:" người học thấy (`display_prerequisites`) không bao giờ trỏ ra ngoài dãy học; tôi đã kiểm cả sáu tài liệu. `requires_edges`
+    trong payload là danh sách để kiểm toán, có cả cạnh từ node chỉ-nhắc; A10 co các cạnh đó lại trước khi xếp và hiển thị (R5).
+- **Kết luận và đánh đổi** (chủ dự án quyết):
+  - **Được:**
+    - mọi cạnh cứng có câu trích nguyên văn trong cửa sổ định nghĩa;
+    - Q7b khoảng 0,87 ở cả hai chương, hơn hai lần đường cơ sở;
+    - 0 cạnh ngược ở chấm mù;
+    - đường tới một đích ở doc-1 gọn còn khoảng một nửa: 103,0 → 51,5 khái niệm, 16,2 → 7,7 module (trung bình 26 đích vàng, `target_modules`
+      trên cạnh cứng). doc-2 thì **không gọn hơn**: 60,4 → 61,9 khái niệm, 9,0 → 9,25 module. Mốc cũ ở đây là mốc của giao thức
+      (`v3-05b-a9v10-evaluation` v10). Số "cũ" trong báo cáo cuối (doc-1 104,73; doc-2 111) lấy từ artifact khác và không tái tạo được
+      trên mốc này; số "mới" thì khớp.
+  - **Mất:** độ phủ. Q7 doc-1 0,825 → 0,667, doc-2 0,469 → 0,395; bao đóng doc-2 R 20/68. Thứ tự học không bị ảnh hưởng (0–1 cạnh vàng
+    ngược). Nhưng dòng "cần:" và "đường tới đích" thiếu nhiều tiên quyết thật, nhất là doc-2.
+  - **Đề nghị: khoá cấu hình này cho tập giữ lại.** Tập giữ lại sẽ cho biết độ chính xác có giữ được trên tài liệu mới không. Muốn tăng độ
+    phủ thì cần vé 13 và nhận dạng công thức ở A1; cả hai đổi A3 nên phải có tập giữ lại mới.

@@ -5,7 +5,8 @@
 **Ai:** tôi soạn và chấm · nhân viên chạy · chủ dự án duyệt khoá, chi và T14.
 **Chi phí:** dự toán theo bậc bằng dry-run; trần chi do chủ dự án duyệt ở bậc 0.
 
-**Trạng thái:** soạn 2026-10-01, **chưa khoá**. Các ô "chờ vé 12" điền lúc khoá.
+**Trạng thái:** soạn 2026-10-01, **chưa khoá**. Cập nhật 2026-10-03: đã điền mức tài liệu phát triển sau vé 12 và thông số vé 12. Điều
+kiện 2, 4, 5, 6 đạt; điều kiện 1 chờ chủ dự án quyết nhận đánh đổi của vé 12; điều kiện 3 có bản nháp, mọi `prompt_hash` khớp.
 
 ## Vì sao phải viết trước
 - Mọi chỉnh sửa v3 dựa trên sáu tài liệu phát triển (bộ vàng doc-1, doc-2), nên số đo trên đó thiên lệch.
@@ -26,7 +27,8 @@
 
 ## Điều kiện bắt đầu (tất cả phải đúng)
 1. Vé 12 nghiệm thu xong trên sáu tài liệu phát triển (pass phụ đầy đủ, A9/A10, tôi đọc). Vé 09d đạt.
-2. Toàn bộ `tests/unit` + `tests/integration` xanh trên commit sẽ khoá; cây làm việc sạch.
+2. Toàn bộ `tests/unit` + `tests/integration` xanh trên commit sẽ khoá. Cây làm việc sạch ở mọi đường ảnh hưởng mã chạy (`src/`,
+   `scripts/`, `pyproject.toml`, `uv.lock`). Tệp riêng khác của chủ dự án chưa commit thì bảng khoá liệt kê, không chặn.
 3. Bảng khoá đã sinh bằng `scripts/khoa-cau-hinh/tao_bang.py` (không `--nhap`). `prompt_hash` trong bảng khớp manifest của lượt nghiệm
    thu vé 12; lệch là dừng. Chủ dự án đã duyệt.
 4. Vé [T10a](T10a-cli-tap-giu-lai.md) xong:
@@ -90,15 +92,15 @@ ghi trong bảng.
 
 ## Cách đọc kết quả — đã chốt trước, không có cổng buộc dừng
 - Mỗi tỉ lệ kèm khoảng tin cậy Wilson 95%.
-- **So với mức tài liệu phát triển sau vé 12** (bảng ở mục cuối, điền lúc khoá):
+- **So với mức tài liệu phát triển sau vé 12** (bảng ở mục "Mức tài liệu phát triển sau vé 12"):
   - điểm giữ lại nằm trong khoảng của tài liệu phát triển, hoặc hai khoảng tin cậy chồng nhau → **giữ được**;
   - cận trên khoảng tin cậy thấp hơn mức phát triển → **không tổng quát hoá ở chỉ số đó**, báo rõ.
 - Ngưỡng v2 chỉ báo làm mốc tham chiếu: Q1 ≥ 97%, Q4 ≥ 0,90 và ngược ≤ 5%, Q6 ≤ 5%, Q7 ≥ 95%, Q7b ≥ 70%. Kèm ghi chú chỉ số nào tài liệu
   phát triển đã không đạt từ trước.
-- **Q7 chỉ đọc cùng Q7b và đường cơ sở.** Trên tài liệu phát triển, chỉ nối mỗi khái niệm với 2 khái niệm đứng ngay trước nó trong dãy
-  học đã có Q7 **cao hơn** đồ thị máy (doc-1: 0,921 so với 0,825; doc-2: 0,703 so với 0,469), nhưng Q7b thấp hơn nhiều (0,378 so với
-  0,660; 0,356 so với 1,000). Độ phủ tổ tiên thưởng cạnh theo thứ tự sách. Đồ thị máy chỉ có giá trị khi độ chính xác vượt rõ đường cơ sở
-  mà độ phủ không kém quá xa.
+- **Q7 chỉ đọc cùng Q7b và đường cơ sở.** Trên tài liệu phát triển sau vé 12, chỉ nối mỗi khái niệm với 2 khái niệm đứng ngay trước nó
+  trong dãy học đã có Q7 **cao hơn** đồ thị máy (doc-1: 0,921 so với 0,667; doc-2: 0,703 so với 0,395), nhưng Q7b thấp hơn nhiều (0,381
+  so với 0,877; 0,356 so với 0,869). Độ phủ tổ tiên thưởng cạnh theo thứ tự sách. Đồ thị máy chỉ có giá trị khi độ chính xác vượt rõ
+  đường cơ sở mà độ phủ không kém quá xa. Ở mức phát triển, độ chính xác vượt rõ còn độ phủ kém khá xa; đây là giới hạn đã biết của vé 12.
 - Bộ vàng có nhiễu (doc-2: hai người gán độc lập chỉ cùng chọn 59% cạnh). "Ngoài vàng" không tự động là sai; đọc cạnh trước khi kết luận.
 - Báo nguyên kết quả, kể cả xấu. Không chọn lại tài liệu, chương hay chỉ số sau khi thấy số.
 
@@ -117,25 +119,40 @@ ghi trong bảng.
   - xstk nhỏ hơn.
 - Số chắc chắn có ở bậc 3. Mọi lời gọi đi qua `SpendGuard`, `--allow-spend` theo từng bậc.
 
-## Mốc hiện tại trên tài liệu phát triển (trước vé 12 — sẽ thay bằng số sau nghiệm thu vé 12)
+## Mức tài liệu phát triển sau vé 12 (điền 2026-10-03) — mốc để so khi đọc kết quả giữ lại
 
-Đồ thị cuối của luồng cũ, kho `v3-05b-a9v10-evaluation` v10, đo bằng `cham_tap_giu_lai.py`. Trong ngoặc là Wilson 95%.
+Đồ thị cuối của luồng vé 12: kho `v3-r12-final-evaluation` v8 (sau vé 20/21; cạnh và dãy học giống v6). Đo bằng `cham_tap_giu_lai.py`,
+Claude chạy lại độc lập. Trong ngoặc là Wilson 95%.
 
 | chỉ số | doc-1 | doc-2 |
 |---|---|---|
-| Q6 lỗi thứ tự học | 4/39 = 0,103 (0,041–0,236) | 13/57 = 0,228 (0,138–0,352) |
-| Q7 độ phủ (TB) · n gần nhất | 0,825 · 0,921 (n = 2) | 0,469 · 0,703 (n = 2) |
-| Q7 đích trọn | 9/23 = 0,391 | 0/21 = 0,000 |
-| Q7b độ chính xác (TB) · n gần nhất | 0,660 · 0,378 | 1,000 · 0,356 |
-| cạnh trực tiếp sau rút gọn P · R | 18/29 = 0,621 · 18/28 = 0,643 | 11/17 = 0,647 · 11/32 = 0,344 |
-| cạnh bao đóng sau rút gọn P · R | 106/129 = 0,822 · 106/131 = 0,809 | 22/23 = 0,957 · 22/68 = 0,324 |
-| Q2 danh tính còn mở (nhóm) | 0 | 1 |
+| Q6 lỗi thứ tự học | 4/39 = 0,103 (0,041–0,236); 1 ngược, 3 ngoài phạm vi | 13/57 = 0,228 (0,138–0,352); 0 ngược, 13 ngoài phạm vi |
+| Q7 độ phủ (TB) · n gần nhất | 0,667 · 0,921 (n = 2) | 0,395 · 0,703 (n = 2) |
+| Q7 đích trọn | 4/23 = 0,174 (0,070–0,371) | 0/21 = 0,000 (0,000–0,155) |
+| Q7b độ chính xác (TB) · n gần nhất | 0,877 · 0,381 | 0,869 · 0,356 |
+| cạnh trực tiếp sau rút gọn P · R | 17/27 = 0,630 (0,442–0,785) · 17/28 = 0,607 (0,424–0,764) | 11/16 = 0,688 (0,444–0,858) · 11/32 = 0,344 (0,204–0,517) |
+| cạnh bao đóng sau rút gọn P · R | 97/111 = 0,874 (0,799–0,923) · 97/131 = 0,740 (0,659–0,808) | 20/25 = 0,800 (0,609–0,911) · 20/68 = 0,294 (0,199–0,411) |
+| Q2 danh tính còn mở (nhóm) | 0 | 1 (0 cặp) |
+| chấm mù cạnh dư (T15-dev, đồ thị cuối) | 3/10 không cần, 0 ngược | mỗi người 2/5 không cần, 0/5 ngược |
 
-## Thông số chờ vé 12 chốt (điền lúc khoá)
-- Cửa sổ định nghĩa (hiện −4…+2), luật so câu trích (gộp khoảng trắng), luật gộp hai thứ tự của pass phụ, prompt pass chính/phụ lượt 3,
-  cách sinh tên của 09d.
-- **Mức tài liệu phát triển để so:** doc-1, doc-2 sau nghiệm thu vé 12, gồm Q6, Q7 (kèm "n gần nhất"), Q7b, P/R cạnh trực tiếp và bao
-  đóng, R11.
+R11 (`kiem_doc_duoc.py`, sáu tài liệu, v8): doc-1 có 6 tên dài, 1 tên khái niệm vô nghĩa ("Định lý 4"), 1 mục bị xé; doc-2 có 5 tên module
+chỉ có mã; nhap-mon-ml có 3 tên dài; doc-3, doc-6, naive-bayes 0.
+
+Luồng cũ, để tham khảo (kho `v3-05b-a9v10-evaluation` v10): doc-1 Q7 0,825, Q7b 0,660, bao đóng 106/129 · 106/131; doc-2 Q7 0,469,
+Q7b 1,000, bao đóng 22/23 · 22/68.
+
+## Thông số vé 12 đã chốt (điền 2026-10-03)
+- Cửa sổ định nghĩa: câu neo, 4 câu trước, 2 câu sau, trong cùng đoạn của chunk neo (`a8_definition_before = 4`,
+  `a8_definition_after = 2`).
+- Câu trích của cạnh `can_de_hieu`: phải nằm trong cửa sổ định nghĩa của đích; so sau khi gộp khoảng trắng, lưu nguyên văn. Chỉ
+  `can_de_hieu` là cạnh cứng; `cong_cu` là cạnh mềm (`soft_reason: cong_cu`).
+- Pass phụ hỏi mỗi cặp theo hai thứ tự. Gộp: cùng chiều, cùng loại, khác `evidence_kind` → giữ loại yếu hơn; cùng chiều, khác loại →
+  `cong_cu`.
+- Prompt pass chính, pass phụ lượt 3 và mọi stage khác: `prompt_hash` trong bảng khoá, khớp manifest lượt nghiệm thu của doc-1 và doc-6.
+- Tên module (09d): chọn tên khái niệm nguyên vẹn, nối " · ".
+- Trần token đầu ra của adapter (T10a mục 5): provenance, pass chính, pass phụ 8192; neo 2048; danh tính 1024; tên khái niệm 512; tên
+  module 128.
+- Độ song song và bộ giới hạn (vé 22) không thuộc phương pháp: phát lại 0 USD cho kết quả y hệt.
 
 ## Ai làm gì
 

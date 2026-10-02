@@ -3,7 +3,7 @@
 **Nguồn chân lý:** spec-addendum (cờ `learnable`; "loại cạnh khác thì mở … phục vụ agent pha B") · **Ai:** nhân viên ·
 **Phụ thuộc:** — · **Chi phí mô hình:** 0 (A10 không gọi mô hình; bước tên module tái dùng, có thể hỏi lại < 0,01 USD)
 
-**Trạng thái:** đã triển khai và chạy lại A10 sáu tài liệu (2026-10-03); số đo ở [báo cáo](../../report/v3-20-21-t10a-2026-10-03.md).
+**Trạng thái:** đã triển khai và chạy lại A10 sáu tài liệu (2026-10-03); số đo ở [báo cáo](../../report/v3-20-21-t10a-2026-10-03.md). **Claude nghiệm thu: đạt (2026-10-03).**
 
 ## Vì sao (Claude, 2026-10-02)
 - Quan hệ mở của A3/A4 **được giữ trọn** tới tệp lộ trình cuối: `open_edges` có 245 cạnh ở doc-1 (`subtype_of`, `component_of`, `uses`,
@@ -40,3 +40,13 @@
 - Chạy lại A10 và tên module cho sáu tài liệu trên kho đánh giá cuối (sau khi doc-2 xong pass phụ). Báo số cạnh treo trước/sau (phải về 0)
   và xác nhận dãy học, cạnh không đổi.
 - **Tôi kiểm:** chạy test bất biến, đếm lại cạnh treo trên sáu tài liệu.
+
+## Kiểm thử của Claude (2026-10-03) — **đạt**
+- **Mã:** `non_learnable_nodes` gồm mọi node có `learnable` không đúng. Đây cùng quy ước với bộ lọc dãy học (`placed`), nên không node nào
+  vừa ở dãy học vừa ở danh sách này. `algorithm_id` đã lên v3.
+- **Test bất biến** `test_open_edges_keep_media_endpoints_in_final_payload`: tôi chạy test mới trên `src` của `1424db0` (trước sửa) thì
+  **đỏ**, trên `2d255e4` thì xanh. Toàn bộ 825 test xanh trên `2d255e4`.
+- **Đếm lại độc lập** trên kho cuối v6 → v8, bằng script riêng của tôi:
+  - cạnh mở treo: doc-1 22 → 0, doc-2 156 → 0, doc-3 105 → 0, doc-6 19 → 0, naive-bayes 21 → 0, nhap-mon-ml 11 → 0;
+  - `sequence`, `requires_edges`, `nodes`, `open_edges` bằng đúng v6; module chỉ khác `mentioned_node_ids`;
+  - không node nào nằm ở hai danh sách node; `non_learnable_nodes` không chứa node học được.

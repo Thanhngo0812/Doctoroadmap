@@ -91,11 +91,12 @@
 | 18 | cạnh ngược thứ tự sách không ép dãy học (R17) | A10 | nhân viên | — (làm cùng 07 được) | 0 |
 | 19 | gọi mô hình qua Vertex AI để dùng credit Google Cloud (hạ tầng) | LLM | nhân viên | — | thử < 0,01 USD; chi qua Vertex tính vào trần dự án 50 USD (chủ dự án quyết 2026-09-28) |
 | T19 | cung cấp tài liệu thật ngôn ngữ thứ ba: một chữ viết không Latin (ví dụ tiếng Trung, Nga) và một chữ Latin ngoài vi/en (ví dụ tiếng Pháp) | kiểm thử | **chủ dự án** | — | 0 |
-| T10 · 07 v2 | khoá cấu hình và chạy tập giữ lại một lần — [giao thức](T10-07v2-giao-thuc-tap-giu-lai.md) soạn xong 2026-10-01, chưa khoá; bảng khoá sinh bằng `scripts/khoa-cau-hinh/tao_bang.py`, chấm bằng `scripts/doc-lo-trinh/cham_tap_giu_lai.py` | kiểm thử | tôi (soạn, chấm) · nhân viên (chạy) · **chủ dự án** (duyệt khoá, chi, T14) | 12, 09d | ước 15–40 USD, dry-run theo bậc |
+| T10 · 07 v2 | khoá cấu hình và chạy tập giữ lại một lần — [giao thức](T10-07v2-giao-thuc-tap-giu-lai.md) soạn xong 2026-10-01, chưa khoá; mức tài liệu phát triển điền 2026-10-03; bảng khoá sinh bằng `scripts/khoa-cau-hinh/tao_bang.py`, chấm bằng `scripts/doc-lo-trinh/cham_tap_giu_lai.py` | kiểm thử | tôi (soạn, chấm) · nhân viên (chạy) · **chủ dự án** (duyệt khoá, chi, T14) | 12, 09d | ước 15–40 USD, dry-run theo bậc |
 | T10a | lệnh chuẩn cho lượt tập giữ lại: `label-roles --transfer-from-chunks-version`, `roadmap --stop-after identity`, bảng duyệt danh tính không đọc vàng — [vé](T10a-cli-tap-giu-lai.md) | CLI | nhân viên | — (song song pass phụ vé 12) | 0 |
 | 20 | tệp lộ trình giữ node hình/bảng và thực thể bối cảnh (`non_learnable_nodes`) để cạnh mở `illustrates`/`tabulates` không bị treo — [vé](20-giu-node-media-trong-lo-trinh.md) | A10 | nhân viên | — (trước T10) | 0 |
 | 21 | "Tổng quan môn học" chỉ gồm khái niệm của đề cương/lời nói đầu; khái niệm chỉ-nhắc có căn cứ trong bài thì gắn vào module; nhóm bài tập/hành chính/cuối sách tách riêng — [vé](21-tong-quan-mon-hoc.md) | A10 | nhân viên | — (cùng lượt chạy lại A10 của vé 20, trước T10) | 0 |
 | 22 | gọi mô hình song song cấu hình được (≥ 100): bộ giới hạn chung theo token/phút và 429, pass phụ "hỏi trước, chốt theo thứ tự" (kết quả y hệt tuần tự), điểm lưu theo lô — [vé](22-song-song-cau-hinh-duoc.md), [nghiên cứu](../../report/nghien-cuu-song-song-cao-2026-10-02.md) | hạ tầng | nhân viên | — (trước khi chạy tiếp doc-2 và T10) | 0 |
+| 23 | tên module chỉ có mã mục ("6B", "Chapter 7") thì thêm tên khái niệm nguyên vẹn — [vé](23-ten-module-chi-co-ma.md) | tên module | nhân viên | — (chủ dự án quyết trước khoá T10 hay sau tập giữ lại) | gần 0 |
 | T15-dev | chấm mù đối đầu cạnh dư đồ thị cũ và mới trên hai chương vàng phát triển — bộ tạo/chấm `scripts/cham-mu/tao_bang_v3.py`, `cham_bang_v3.py` (seed 20261001, ghi trước). **Bảng đã sinh 2026-10-01**: `artifacts/a8-gold/cham-mu-v3-doc-{1,2}.xlsx` (35 + 22 cặp), từ pass chính + pilot lượt ba sửa vì đồ thị cuối chưa có; chấm lại theo đồ thị cuối bằng `--moi-cuoi` | kiểm thử | tôi (sinh bảng, chấm) · **hai người chấm** do chủ dự án xếp | đồ thị cuối vé 12 | 0 USD, ≈ 1 giờ/người |
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
@@ -103,8 +104,23 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 **Cập nhật nhân viên 2026-09-27:** vé 14b đã triển khai và đo trên doc-2, nhap-mon-ml, doc-3; [báo cáo](../../report/v3-14b-ket-qua-2026-09-27.md), chờ reviewer nghiệm thu.
 
+**Cập nhật 2026-10-03 — xong pha A:**
+- **Vé 12:** pass phụ doc-2 xong (9.513/9.513 cặp); sáu tài liệu đủ A9 → A10 → tên module.
+  - Claude tái tạo mọi số và nghiệm thu phần chạy và đo: **đạt** (mục cuối [vé 12](12-canh-theo-dinh-nghia-a8.md)).
+  - Đánh đổi: Q7b khoảng 0,87 ở cả hai chương vàng, 0 cạnh ngược; nhưng độ phủ thấp (Q7 doc-1 0,667, doc-2 0,395).
+  - **Chủ dự án quyết** có khoá cấu hình này cho tập giữ lại không. Claude đề nghị khoá.
+- **Vé 20, 21, T10a:** Claude nghiệm thu **đạt** (test đỏ trước sửa; đếm lại độc lập; kiểm tương đương 11/11 tầng; đột biến bị bắt).
+  - Ba mục hành chính trong Tổng quan doc-1: nguyên nhân là neo C8 không hỏi `kind` với node chỉ có căn cứ ngoài nội dung, không phải nhãn
+    vùng. Ghi giới hạn đã biết, đưa vào hướng v4.
+- **Vé 23 mới** (tên module chỉ có mã, gần 0 USD): chủ dự án quyết làm trước khoá hay sau tập giữ lại.
+- **Giao thức T10/07 v2:** đã điền mức tài liệu phát triển và thông số vé 12. Bảng khoá nháp: cả 10 `prompt_hash` khớp lượt nghiệm thu.
+- **Chi vé 12, cộng mọi sổ:** 36,59 USD theo usage; cận trên 38,98 USD nếu tính cả lời gọi bị ngắt.
+- **Kế tiếp — pha B:** chủ dự án quyết (khoá vé 12; vé 23 trước hay sau) → Claude sinh bảng khoá thật → chủ dự án duyệt và đặt trần chi →
+  chạy theo bậc.
+
 **Hiện tại (2026-10-02):**
-- **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
+- **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:
+  09d, 20, 21, 22, T10a; vé 12 xong phần chạy và đo.
 - **Vé 12 đang dở:**
   - Mã phần đầu đạt.
   - Pass chính mất độ phủ vì cửa sổ định nghĩa **tôi đặc tả sai**: thiếu các câu giả thiết đứng trước câu neo. Đặc tả đã sửa thành −4…+2.
@@ -157,6 +173,8 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 - **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD).
   - Đã chi ≈ 31,1 USD tới lượt ba sửa, ước theo sổ token, chưa phải hoá đơn.
   - Dự kiến: pass phụ ≈ 31 USD và tập giữ lại 15–40 USD, tổng cuối ≈ 77–102 USD.
+  - Cập nhật 2026-10-03: sổ kho cuối (pass phụ đầy đủ và các bước sau) 27,66 USD; cả vé 12 cộng mọi sổ 36,59 USD (cận trên 38,98). Số
+    chốt là hoá đơn Google Cloud.
   - Vẫn chỉ dùng `gemini-3.1-flash-lite`.
 - **Kho chính:** sáu tài liệu đã có A6 → A7 → neo → danh tính → A8 pass chính v5 (doc-1 v38–42, doc-2 v30–34…); pass phụ chưa chạy.
 - **Không đề xuất dựng lại doc-2 từ A3** trên cây mục mới:
@@ -178,6 +196,7 @@ Cách làm:
 | A1 | công thức thành `[formula]`, mô hình phán định nghĩa mà không thấy toán | doc-1: 80/199 câu neo (40%), 141/199 cửa sổ định nghĩa (71%) chứa `[formula]`; nhap-mon-ml, doc-3 gần 0. Hệ quả đã thấy: tên "Định lý 6" lấy từ giả thiết vì kết luận là `[formula]` |
 | A1/A2 | trang mục lục mất; bộ tách câu gộp "(a)…(b)" trong định nghĩa liệt kê | doc-2: 6 tiêu đề chỉ có mã (09c); luật thử ở A9 bắt nhầm "Hệ sinh → Cơ sở" vì (a)/(b) chung một câu |
 | A3 | thiếu kết quả có tên (vé 13); độ hạt (node ví dụ, node rác) | Q3 = 81%; "Hàm thực liên tục" là ví dụ C[a,b]; "Nonnegative integers" từ câu dẫn |
+| C8 | node chỉ có căn cứ ngoài vùng nội dung không bao giờ được hỏi `kind`, nên mục hành chính lọt vào "Tổng quan môn học"; kết quả/tính chất không có câu dạy thành `mentioned_only` | doc-1: "Thi viết rọc phách", "Thang điểm chữ", "Điểm đánh giá học phần" (lời nói đầu); doc-2: 13 cạnh vàng ngoài phạm vi, đều qua node `mentioned_only` như "Injective operator equivalence" |
 | A6 | nhắc tên bằng diễn đạt khác không thành cặp ứng viên | cạnh vàng "Column vector → …" có căn cứ "the columns of A"; độ phủ cạnh còn ~2/3 |
 | A8 | khoảng 1/3 cạnh dư không cần (chấm mù) | T15-dev; cẩn thận bài học v2-06: tăng độ phủ thường kéo theo cạnh thừa |
 | đánh giá | vàng nhiễu; chưa thử với người học | doc-2: hai người gán chỉ cùng chọn 59% cạnh |

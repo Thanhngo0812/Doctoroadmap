@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [giao thức T10/07 v2](T10-07v2-giao-thuc-tap-giu-lai.md) · **Ai:** nhân viên · **Phụ thuộc:** — (làm song song với pass phụ
 vé 12) · **Chi phí mô hình:** 0
 
-**Trạng thái:** đã triển khai lệnh và kiểm tương đương trên doc-6/doc-1 (2026-10-03); chưa chạy tập giữ lại. [Báo cáo](../../report/v3-20-21-t10a-2026-10-03.md).
+**Trạng thái:** đã triển khai lệnh và kiểm tương đương trên doc-6/doc-1 (2026-10-03); chưa chạy tập giữ lại. [Báo cáo](../../report/v3-20-21-t10a-2026-10-03.md). **Claude nghiệm thu: đạt (2026-10-03).**
 
 ## Vì sao (Claude, 2026-10-01, khi kiểm giao thức với mã hiện có)
 - **Chuyển vai trò sang version chunks cũ chưa có lệnh chuẩn.** Bậc 1 của giao thức phải làm như doc-2: ingest lại làm cây tham chiếu, gán
@@ -45,3 +45,23 @@ vé 12) · **Chi phí mô hình:** 0
   - `roadmap --dry-run --stop-after identity` cho doc-1;
   - sinh bảng duyệt chế độ không vàng cho artifact identity v3 của doc-1, ghi vào `tmp/`.
 - **Tôi kiểm:** đọc diff, chạy test, đối chiếu lệnh với giao thức.
+
+## Kiểm thử của Claude (2026-10-03) — **đạt**
+- **Test:** các test mới (dừng sau `teaching`/`identity`, plan không chạm A8, `label-roles` chuyển vai trò qua CLI) đỏ trên mã trước sửa,
+  xanh sau sửa. Toàn bộ 825 test xanh trên `2d255e4`.
+- **Kiểm tương đương chuỗi:** tôi chạy lại `kiem_tuong_duong_chuoi.py`. Cả doc-6 và doc-1 đạt 11/11 tầng "tái dùng". Trần token của adapter
+  khớp manifest: provenance, pass chính, pass phụ 8192; neo 2048; danh tính 1024; tên khái niệm 512; tên module 128.
+- **Đột biến**, để chắc script biết báo lệch:
+  - đổi trần token neo 2048 → 4096, chỉ ở adapter: script báo `teaching` lệch ở cả hai tài liệu, mã thoát 1. Config hash vẫn bằng, nên
+    phép so trần token là chốt duy nhất bắt được loại lệch này;
+  - đặt `DOC2ROADMAP_A8_DEFINITION_AFTER=3`: `main_edges` ra "run", báo lệch, mã thoát 1.
+- **Bảng duyệt không vàng:** `tmp/t10a-doc-1/` có 12 cặp, đúng bằng 11 `same` + 1 `sense_split` của identity v41; 369 cặp `different` bị bỏ
+  đúng; 0 cặp chạm vàng. Test fixture không có tệp vàng vẫn chạy.
+- **Lệnh bậc 1–3** trong `CONTEXT.md` khớp giao thức, kể cả bậc 2b T14 trước A8.
+- **Bảng khoá** (`scripts/khoa-cau-hinh/tao_bang.py`, của tôi) đã cập nhật theo vé này và vé 22:
+  - thêm cột so `prompt_hash` với manifest lượt nghiệm thu của doc-1 và doc-6;
+  - ghi trần token thật của từng adapter;
+  - ghi thiết lập bộ giới hạn (`llm_max_in_flight`, `llm_tpm_budget`, `llm_rpm_budget`) vào nhóm không thuộc phương pháp;
+  - chỉ chặn khoá khi mã chạy (`src/`, `scripts/`, `pyproject.toml`, `uv.lock`) chưa commit. Tệp riêng của chủ dự án thì chỉ liệt kê;
+  - lệnh khoá thật từ chối ghi khi lệch. Đột biến `prompt_hash` pass phụ: mã thoát 1, không ghi tệp khoá.
+  - Bản nháp hiện tại: cả 10 `prompt_hash` khớp ở cả hai tài liệu.

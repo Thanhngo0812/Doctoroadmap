@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R5 ("… hoặc ở mục 'Tổng quan' nếu chỉ có trong đề cương") · **Ai:** nhân viên ·
 **Phụ thuộc:** — (làm cùng lượt chạy lại A10 của vé 20) · **Chi phí mô hình:** 0
 
-**Trạng thái:** đã triển khai và chạy lại A10 sáu tài liệu (2026-10-03); số đo và giới hạn còn lại ở [báo cáo](../../report/v3-20-21-t10a-2026-10-03.md).
+**Trạng thái:** đã triển khai và chạy lại A10 sáu tài liệu (2026-10-03); số đo và giới hạn còn lại ở [báo cáo](../../report/v3-20-21-t10a-2026-10-03.md). **Claude nghiệm thu: đạt (2026-10-03)**; giới hạn còn lại do neo C8, không do nhãn vùng (xem mục kiểm thử).
 
 ## Vì sao (Claude, 2026-10-02)
 "Tổng quan môn học" trong `roadmap.html` không phải bản tóm tắt môn học. Đó chỉ là danh sách tên khái niệm `mentioned_only`/`unchecked` mà
@@ -45,3 +45,24 @@ Hai lỗi:
 - **Chạy lại A10 sáu tài liệu cùng vé 20.** Báo số mục mỗi nhóm trước/sau; nhóm `khong_ro` của doc-2, doc-3 phải giảm rõ. Dãy học và cạnh
   không đổi.
 - **Tôi kiểm:** đọc "Tổng quan môn học" và "Nhắc tới" của doc-1, doc-2, nhap-mon-ml, doc-6.
+
+## Kiểm thử của Claude (2026-10-03) — **đạt**; nguyên nhân giới hạn còn lại khác báo cáo
+- **Test:** test mới (fixture tiếng Đức, tiếng Nhật) đỏ trên mã trước sửa, xanh sau sửa.
+- **Số nhóm** khớp báo cáo (tôi đếm độc lập trên v8). Khái niệm chỉ-nhắc gắn được vào module: doc-2 56 → 74, doc-3 21 → 25, doc-6 9 → 10.
+- **Đọc bốn tài liệu:**
+  - nhap-mon-ml: 12 mục Tổng quan là các chủ đề lời nói đầu liệt kê (SVM, K-NN, Ridge, LASSO…). Đúng ý R5.
+  - doc-6: 4 mục lấy từ đề cương (Ràng buộc toàn vẹn, Phụ thuộc hàm, Dạng chuẩn, Ngôn ngữ đại số quan hệ). Đúng.
+  - doc-2: 18 khái niệm mới gắn module đều hợp với chunk căn cứ, ví dụ "Associative property of matrix multiplication" → "Matrix
+    Multiplication". Vài node trùng nghĩa chưa gộp ("Alternating n-linear form" và "…forms"; "Upper triangular matrix" rơi vào 7D) là lỗi
+    danh tính và A3, không thuộc vé này.
+  - doc-2: Tổng quan còn "color". Đây là gói LaTeX ở trang bản quyền, A3 trích nhầm; node có cả `mo_dau` và `cuoi_sach`, thứ tự ưu tiên
+    đưa nó vào `tong_quan`.
+- **Nguyên nhân thật của ba mục hành chính doc-1:**
+  - Chunk nguồn (order 14) là lời nói đầu: "Thi viết rọc phách, thời gian làm bài: 75 phút. Thang điểm: thang điểm chữ A, B, C, D, F. Điểm
+    đánh giá học phần: … Bài giảng này là tài liệu…". Nhãn `mo_dau` **đúng**, vì thông tin đánh giá nằm ngay trong lời nói đầu. Đổi nhãn
+    vùng thành `hanh_chinh` sẽ giấu luôn phần lời nói đầu thật, nên **không** sửa theo hướng báo cáo đề xuất.
+  - Lỗ hổng nằm ở neo C8 (`anchor_concepts.py`). Node chỉ có căn cứ ngoài `noi_dung` thì không có câu ứng viên, nên **không bao giờ được
+    hỏi `kind`** và nhận thẳng `mentioned_only`. C8 đã có loại `course_logistics` để loại đúng những mục này, nhưng không chạy tới chúng.
+  - Sửa ở C8 đổi hash của neo, kéo theo chạy lại danh tính và A8 (cỡ 30 USD). Không đáng làm trước T10.
+  - Quy mô trên sáu tài liệu: 4/25 mục Tổng quan không phải kiến thức (doc-1: 3/5, doc-2: 1/4).
+  - Ghi thành giới hạn đã biết. Đưa vào hướng v4: C8 hỏi `kind` cả với node chỉ có căn cứ ngoài nội dung.
