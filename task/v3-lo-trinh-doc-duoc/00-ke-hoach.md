@@ -185,6 +185,13 @@ Cách làm:
 Ghi chú:
 - **Gộp A1 (công thức) với lượt chạy lại A3 của vé 13.** Cả hai đổi đầu vào A3 trở xuống và buộc ánh xạ lại bộ vàng, nên chỉ trả một lần.
   Nhận dạng công thức phải chạy tại máy (ví dụ mô hình công thức của docling) hoặc qua Gemini; không gửi sách ra dịch vụ khác.
+- **A1 tốc độ cho ứng dụng** (chủ dự án muốn A1 rất nhanh; tạm ngưng 2026-10-02, tính sau). Điều đã biết:
+  - đo cũ ≈ 7,2 giây/trang trên máy này, tức ≈ 48 phút cho sách 400 trang;
+  - `DoclingParser` để gần như mặc định: CPU, 4 luồng, OCR bật, bảng chế độ chính xác, ảnh 2×;
+  - cả bốn PDF thử đều có lớp chữ, nên OCR gần như chạy thừa;
+  - docling 2.114 có pipeline song song theo trang (`ThreadedStandardPdfPipeline`).
+  Đổi tuỳ chọn nào làm đổi đầu ra parse thì đổi luôn chunk trở xuống, nên phải gộp vào lượt chạy lại v4. Đổi tuỳ chọn không đổi đầu ra
+  (số luồng, song song theo trang, GPU) thì làm lúc nào cũng được. Script đo viết dở ở `tmp/thu-a1/do_toc_do_parse.py`, chưa có số.
 - **Tập giữ lại chỉ dùng một lần.** Sau 07 v2, mọi cải tiến v4 cần **tập giữ lại mới** (tài liệu mới và vàng mới) mới chứng minh được.
   Nên chuẩn bị người gán sớm; tài liệu T19 (ngôn ngữ thứ ba) có thể kiêm.
 
