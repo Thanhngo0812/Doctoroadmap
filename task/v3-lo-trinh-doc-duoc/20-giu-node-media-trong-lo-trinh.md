@@ -25,7 +25,7 @@
   hình/bảng → khái niệm, đúng loại thông tin cần cho bài giảng.
 
 ## Việc cần làm
-- A10 mang thêm danh sách `media_nodes`: mọi node `learnable: false` của đầu vào, giữ nguyên trường (`media_id`, `caption_source`,
+- A10 mang thêm danh sách `non_learnable_nodes`: mọi node `learnable: false` của đầu vào — media (hình, bảng) và thực thể bối cảnh (ví dụ node `license` "Creative Commons…" của doc-2), giữ nguyên trường (`media_id`, `caption_source`,
   `source_chunk_ids`, `orphan_reason`…).
   - Không lọc ở đây. Hình rác (`orphan_reason: no_concept_in_chunk`, như ảnh trang trí slide) giữ nguyên cờ; tầng trình bày tự lọc.
 - Không đổi `sequence`, `nodes`, `requires_edges`, `modules`.
@@ -34,7 +34,7 @@
 ## Nghiệm thu
 - Test bất biến:
   - **mọi đầu của mọi cạnh trong `open_edges` có mặt** trong một danh sách node của tệp lộ trình (`nodes`, `mentioned_nodes`,
-    `merged_nodes`, `excluded_nodes`, `media_nodes`);
+    `merged_nodes`, `excluded_nodes`, `non_learnable_nodes`);
   - `sequence` và `requires_edges` không đổi so với trước sửa.
   - Test phải đỏ trên mã hiện tại.
 - Chạy lại A10 và tên module cho sáu tài liệu trên kho đánh giá cuối (sau khi doc-2 xong pass phụ). Báo số cạnh treo trước/sau (phải về 0)
