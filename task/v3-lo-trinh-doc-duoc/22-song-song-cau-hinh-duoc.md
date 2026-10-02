@@ -26,10 +26,13 @@ hình, để sau này phục vụ người dùng.
 
 ## Việc cần làm
 1. **Bộ giới hạn chung cho mọi lời gọi mô hình**, dùng chung giữa sinh văn bản (`GeminiEntityExtractor`) và embedding (`GeminiEmbedding`)
-   trong cùng tiến trình.
+   trong cùng tiến trình. **Không phụ thuộc đường gọi:** chủ dự án dùng Vertex trong lúc còn credit, sau đó quay lại Gemini Developer API.
    - `llm_max_in_flight`: trần số lời gọi đồng thời, ví dụ 100.
-   - `llm_tpm_budget`: ngân sách token/phút, mặc định 1.600.000, tức 80% bậc 1, để chừa chỗ cho việc khác. Ước token trước khi gửi theo số
-     byte/3 như dự toán hiện có, rồi chỉnh theo `usageMetadata`.
+   - `llm_tpm_budget`: ngân sách token/phút. Ước token trước khi gửi theo số byte/3 như dự toán hiện có, rồi chỉnh theo `usageMetadata`.
+   - `llm_rpm_budget`: ngân sách lời gọi/phút (bỏ trống = không giới hạn). Developer API giới hạn theo dự án trên ba chiều RPM, TPM, RPD.
+   - Mọi giá trị đặt trong `.env`, không viết cứng theo đường gọi. `.env.example` ghi gợi ý:
+     - Vertex bậc 1: TPM 1.600.000 (80% thông lượng nền), RPM bỏ trống;
+     - Developer API: lấy RPM/TPM từ trang giới hạn của dự án trong AI Studio, đặt 80%.
    - **Tự điều chỉnh:** gặp 429/503 thì hạ mức đồng thời hiện hành còn một nửa (tối thiểu 2) và tạm dừng có jitter; sau N lời gọi thành
      công liên tiếp thì tăng 1, không quá trần. Có `Retry-After` thì tôn trọng.
    - Các thông số này **không vào khoá cache hay config hash** (như `llm_transport`, vé 19), vì không đổi kết quả. Ghi vào manifest để kiểm

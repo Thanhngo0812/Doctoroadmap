@@ -77,6 +77,18 @@ Vì sao pass phụ phải có thứ tự:
   - **Flex PayGo:** trực tuyến nhưng chậm và bị bóp nhiều hơn. Google khuyên tăng timeout (ví dụ 30 phút) thay vì thử lại dồn dập
     ([Flex PayGo](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/flex-paygo)).
 
+### Khi quay lại Gemini Developer API (sau khi hết credit Vertex)
+Chủ dự án chỉ dùng Vertex trong lúc còn 300 USD credit.
+- **Cơ chế giới hạn của Developer API** ([Rate limits](https://ai.google.dev/gemini-api/docs/rate-limits), đọc trực tiếp 2026-10-02):
+  - tính **theo dự án**, trên ba chiều RPM, TPM (token vào), RPD; vượt chiều nào cũng bị 429;
+  - bậc dùng theo tổng chi: bậc 1 = có tài khoản thanh toán, bậc 2 = đã trả ≥ 100 USD, bậc 3 = ≥ 1.000 USD;
+  - mỗi bậc có trần chi theo 10 phút: 10 / 50 / 200 USD. Ở 0,00095 USD/lời gọi, trần bậc 1 (≈ 1 USD/phút) tương đương khoảng 1.000 lời
+    gọi/phút.
+- Trang không còn ghi RPM/TPM cụ thể của từng mô hình; xem trong AI Studio của dự án.
+- **Developer API cũng có Batch API**, bảng giới hạn riêng.
+- Vì vậy vé 22 làm bộ giới hạn **không phụ thuộc đường gọi**: trần đồng thời, ngân sách token/phút và ngân sách lời gọi/phút đều cấu hình
+  được. Cách "hỏi trước, chốt theo thứ tự" của pass phụ giữ nguyên.
+
 ## 4. Đề xuất
 
 **Ngay (vé 22):**
@@ -106,6 +118,7 @@ Các thông số này không vào khoá cache, nên doc-2 chạy tiếp từ đi
 
 ## Nguồn
 - [Reduce 429 errors on Vertex AI](https://cloud.google.com/blog/products/ai-machine-learning/reduce-429-errors-on-vertex-ai): đọc trực tiếp.
+- [Gemini API rate limits](https://ai.google.dev/gemini-api/docs/rate-limits): đọc trực tiếp.
 - [Standard PayGo](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/standard-paygo),
   [dynamic shared quota](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/dynamic-shared-quota),
   [Batch inference with Gemini](https://docs.cloud.google.com/vertex-ai/generative-ai/docs/multimodal/batch-prediction-gemini),
