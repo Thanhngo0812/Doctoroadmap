@@ -87,3 +87,36 @@
   88 cạnh, trượt cache 8/1.381 (0,579%). Không câu trả lời giả nào lọt vào cạnh cuối.
 - Dry-run sáu tài liệu với max 100/cửa sổ 50: năm tài liệu đã xong đều `reused`; doc-2 tiếp tục đúng checkpoint
   `secondary-5a1e6d…`, còn 5.996 cặp, 4.758 cặp cần hỏi hai chiều, ước 9.516 lời gọi/8,252907 USD trước retry.
+
+## Góp ý giữa chừng (Claude, 2026-10-02) — giới hạn sụp 64→1 trong một đợt nghẽn
+
+**Chẩn đoán của nhân viên đúng.** `AdaptiveModelLimiter.release` chia đôi `current_limit` cho **mỗi** 429. Một đợt nghẽn làm hàng chục lời gọi
+đang bay cùng nhận 429, nên giới hạn bị chia đôi hàng chục lần. Đây là lỗi kinh điển của AIMD; TCP xử lý bằng luật "mỗi sự kiện nghẽn chỉ
+giảm một lần".
+
+**Không nên khử trùng theo cửa sổ thời gian** (cách trong test đang viết dở: "một lần mỗi cửa sổ tạm dừng"). Một lời gọi gửi **trước** lần
+giảm có thể trả 429 **sau** khi cửa sổ 1–2 giây đã hết: độ trễ một lời gọi 2–5 giây, tới timeout. Khi đó vẫn bị chia đôi thêm cho cùng một
+đợt nghẽn.
+
+**Làm theo thế hệ (epoch):**
+- `acquire` ghi `permit.epoch = limiter.epoch`.
+- 429 trên permit có `epoch == limiter.epoch`, tức gửi sau lần giảm gần nhất:
+  - chia đôi, tối thiểu `llm_min_in_flight` (mặc định 2, như vé đã ghi; mã hiện để 1);
+  - `epoch += 1`;
+  - đặt tạm dừng chung.
+- 429 trên permit **thế hệ cũ**: không đổi giới hạn, không xoá chuỗi thành công. Chỉ tạm dừng và thử lại lời gọi đó. Đếm riêng
+  `throttle_same_event` để báo.
+- **Hồi phục:** +1 sau `current_limit` lời gọi thành công liên tiếp của thế hệ hiện tại (khoảng một vòng, như pha tránh nghẽn của TCP), thay
+  cho mốc cố định 20. Từ 32 lên 64 mất khoảng 32 vòng, thay vì 640 lời gọi không một lỗi.
+
+**Test đỏ trước khi sửa:**
+- 8 permit cùng thế hệ đều 429, **có cái nhả sau khi đồng hồ giả đã vượt cửa sổ tạm dừng** → giới hạn chỉ giảm một lần (8 → 4).
+- Permit lấy **sau** lần giảm rồi 429 → giảm lần nữa (4 → 2).
+- Không bao giờ dưới `llm_min_in_flight`.
+- Hồi phục: sau đúng `current_limit` thành công cùng thế hệ thì tăng 1; 429 thế hệ cũ không xoá chuỗi.
+- Đột biến bỏ kiểm `epoch` → test đầu đỏ.
+
+**Ghi chú thêm:**
+- Bộ chuyển đổi (`gemini.py`) vừa để bộ giới hạn tạm dừng chung, vừa tự `sleep(2**attempt + random())`. Giữ được, nhưng kiểm `gemini_max_retries`
+  đủ lớn khi chạy song song cao, để một đợt nghẽn không làm lời gọi bỏ cuộc và dừng cả stage.
+- Báo trong lượt chạy thật: số 429 theo thế hệ, `current_limit` theo thời gian, lời gọi/phút.
