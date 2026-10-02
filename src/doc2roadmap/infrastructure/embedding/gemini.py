@@ -3,12 +3,14 @@ from __future__ import annotations
 import json
 import math
 from collections.abc import Sequence
+from concurrent.futures import ThreadPoolExecutor
 from time import sleep
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
+from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 
 
 _TASK_TYPES = {
@@ -34,6 +36,7 @@ class GeminiEmbedding:
         transport: str = "developer_api",
         vertex_project: str | None = None,
         vertex_location: str = "global",
+        limiter: AdaptiveModelLimiter | None = None,
     ) -> None:
         if transport not in {"developer_api", "vertex"}:
             raise ValueError("Gemini embedding transport không hợp lệ")
@@ -51,6 +54,7 @@ class GeminiEmbedding:
         self._timeout = timeout
         self._batch_size = batch_size
         self._max_retries = max_retries
+        self.limiter = limiter
 
     @property
     def embedding_model_id(self) -> str:
@@ -73,9 +77,10 @@ class GeminiEmbedding:
 
     def _embed_batch(self, requests: list[EmbeddingRequest]) -> list[list[float]]:
         if self._vertex:
-            return [self._embed_vertex(item) for item in requests]
-        model = (f"projects/{self._vertex.project}/locations/{self._vertex.location}"
-                 f"/publishers/google/models/{self._model}") if self._vertex else f"models/{self._model}"
+            workers = min(len(requests), self.limiter.max_in_flight if self.limiter else self._batch_size)
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                return list(pool.map(self._embed_vertex, requests))
+        model = f"models/{self._model}"
         payload = {
             "requests": [
                 {
@@ -131,14 +136,33 @@ class GeminiEmbedding:
             method="POST",
         )
         for attempt in range(self._max_retries + 1):
+            estimated_tokens = len(item.text.encode("utf-8")) // 3 + 32
+            permit = self.limiter.acquire(estimated_tokens) if self.limiter is not None else None
             try:
                 with urlopen(request, timeout=self._timeout) as response:
                     value = json.loads(response.read())
-                return self._normalize(value["predictions"][0]["embeddings"]["values"])
+                vector = self._normalize(value["predictions"][0]["embeddings"]["values"])
+                if self.limiter is not None:
+                    self.limiter.release(permit, success=True)
+                    self.limiter.reconcile(permit, estimated_tokens)
+                return vector
+            except (UnicodeDecodeError, json.JSONDecodeError, KeyError, IndexError, TypeError, RuntimeError) as error:
+                if self.limiter is not None:
+                    self.limiter.release(permit, success=False)
+                raise RuntimeError("Vertex embedding trả phản hồi không hợp lệ") from error
             except HTTPError as error:
+                if self.limiter is not None:
+                    retry_after = error.headers.get("Retry-After") if error.headers else None
+                    try:
+                        retry_after = float(retry_after) if retry_after is not None else None
+                    except ValueError:
+                        retry_after = None
+                    self.limiter.release(permit, success=False, throttled=error.code in {429, 503}, retry_after=retry_after)
                 if error.code not in _RETRYABLE_HTTP or attempt == self._max_retries:
                     raise RuntimeError(f"Vertex embedding lỗi HTTP {error.code}") from error
             except (URLError, TimeoutError) as error:
+                if self.limiter is not None:
+                    self.limiter.release(permit, success=False)
                 if attempt == self._max_retries:
                     raise RuntimeError("không kết nối được Vertex embedding") from error
             sleep(2**attempt)

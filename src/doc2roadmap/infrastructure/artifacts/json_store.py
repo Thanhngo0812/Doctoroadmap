@@ -51,7 +51,7 @@ class JsonArtifactStore:
         return self._read(path) if path.exists() else None
 
     def save_checkpoint(self, doc_id: str, checkpoint_id: str, payload: dict[str, Any]) -> None:
-        self._write(self._checkpoint_path(doc_id, checkpoint_id), payload)
+        self._write(self._checkpoint_path(doc_id, checkpoint_id), payload, compact=True)
 
     def clear_checkpoint(self, doc_id: str, checkpoint_id: str) -> None:
         path = self._checkpoint_path(doc_id, checkpoint_id)
@@ -64,11 +64,13 @@ class JsonArtifactStore:
             return json.load(handle)
 
     @staticmethod
-    def _write(path: Path, value: Any) -> None:
+    def _write(path: Path, value: Any, *, compact: bool = False) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_suffix(path.suffix + ".tmp")
         with temporary.open("w", encoding="utf-8", newline="\n") as handle:
-            json.dump(value, handle, ensure_ascii=False, sort_keys=True, indent=2)
+            json.dump(value, handle, ensure_ascii=False, sort_keys=True,
+                      indent=None if compact else 2,
+                      separators=(",", ":") if compact else None)
             handle.write("\n")
         for attempt in range(5):
             try:

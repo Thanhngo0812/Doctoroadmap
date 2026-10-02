@@ -23,6 +23,7 @@ from doc2roadmap.application.use_cases.name_modules import NameModules
 from doc2roadmap.application.use_cases.validate_graph import ValidateGraph
 from doc2roadmap.config import Settings
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
+from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 
 DOCS = ("doc-3", "doc-6", "naive-bayes", "nhap-mon-ml", "doc-1", "doc-2")
 INPUT = Path("artifacts/v3-r12-quote-evaluation")
@@ -120,12 +121,18 @@ def main():
     output = JsonArtifactStore(OUTPUT)
     store = FinalStore(JsonArtifactStore(settings.artifact_dir), output)
     key = settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else "dry-run-no-key"
-    ledger = OUTPUT / "llm-ledger.json"
+    ledger = OUTPUT / ("llm-ledger.jsonl" if args.allow_spend else "llm-ledger.json")
+    limiter = AdaptiveModelLimiter(
+        settings.llm_max_in_flight,
+        settings.llm_tpm_budget,
+        requests_per_minute=settings.llm_rpm_budget,
+    )
 
     def model(max_output_tokens):
         raw = MeteredGemini(key, max_usd=args.max_usd, ledger_path=ledger,
                             max_output_tokens=max_output_tokens, transport=settings.llm_transport,
-                            vertex_project=settings.vertex_project, vertex_location=settings.vertex_location)
+                            vertex_project=settings.vertex_project, vertex_location=settings.vertex_location,
+                            limiter=limiter)
         return SpendGuard(raw, allowed=args.allow_spend)
 
     summary_path = OUTPUT / "summary.json"
@@ -136,7 +143,8 @@ def main():
         main_artifact = pinned_main(source, output, doc_id, write=args.allow_spend)
         secondary_model = model(settings.extraction_max_output_tokens)
         secondary = BuildSecondaryEdges(store, secondary_model,
-                                        concurrency=settings.vertex_concurrency,
+                                        concurrency=settings.llm_max_in_flight,
+                                        window_pairs=settings.secondary_window_pairs,
                                         generation=main_artifact.manifest["config"]["generation"])
         plan = secondary.plan(doc_id, upstream=main_artifact)
         print(doc_id, "secondary", json.dumps(plan.to_dict(), ensure_ascii=False), flush=True)
@@ -149,13 +157,13 @@ def main():
                                        "completed_secondary_pairs", [])))
         validated, _ = ValidateGraph(store).execute(doc_id, upstream=edges)
         labels_model = model(512)
-        labels_stage = NameConceptLabels(store, labels_model, concurrency=settings.vertex_concurrency)
+        labels_stage = NameConceptLabels(store, labels_model, concurrency=settings.llm_max_in_flight)
         labels, _ = retry_temporary(lambda: labels_stage.execute(doc_id, upstream=validated),
                                     stage=f"{doc_id}:concept-labels", event_path=retry_log,
                                     progress=lambda: sum(not row.get("reserved") for row in labels_model.ledger))
         roadmap, _ = BuildRoadmap(store, stage_cap=settings.roadmap_stage_cap).execute(doc_id, upstream=labels)
         titles_model = model(128)
-        titles_stage = NameModules(store, titles_model, concurrency=settings.vertex_concurrency)
+        titles_stage = NameModules(store, titles_model, concurrency=settings.llm_max_in_flight)
         titled, _ = retry_temporary(lambda: titles_stage.execute(doc_id, upstream=roadmap),
                                     stage=f"{doc_id}:module-titles", event_path=retry_log,
                                     progress=lambda: sum(not row.get("reserved") for row in titles_model.ledger))
@@ -165,8 +173,9 @@ def main():
         output._write(summary_path, summary)
         print(doc_id, json.dumps(summary[doc_id], ensure_ascii=False), flush=True)
     if args.allow_spend:
-        rows = json.loads(ledger.read_text(encoding="utf-8"))
+        rows = model(1).ledger
         print("spent/reserved USD", round(sum(row["usd"] for row in rows), 6), flush=True)
+        print("limiter", json.dumps(limiter.snapshot(), ensure_ascii=False), flush=True)
 
 
 if __name__ == "__main__":

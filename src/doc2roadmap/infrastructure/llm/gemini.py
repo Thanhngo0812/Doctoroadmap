@@ -11,6 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
+from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter, _Permit
 from doc2roadmap.application.ports.extraction import (
     ConversationTurn,
     ExtractionReply,
@@ -42,6 +43,7 @@ class GeminiEntityExtractor:
         transport: str = "developer_api",
         vertex_project: str | None = None,
         vertex_location: str = "global",
+        limiter: AdaptiveModelLimiter | None = None,
     ) -> None:
         if transport not in {"developer_api", "vertex"}:
             raise ValueError("Gemini transport không hợp lệ")
@@ -67,6 +69,7 @@ class GeminiEntityExtractor:
         self._max_output_tokens = max_output_tokens
         self.retry_429_count = 0
         self._retry_state = local()
+        self.limiter = limiter
 
     @property
     def identifier(self) -> str:
@@ -120,7 +123,8 @@ class GeminiEntityExtractor:
             headers={"Content-Type": "application/json", **headers},
             method="POST",
         )
-        response = self._post(request)
+        estimated_tokens = len(request.data or b"") // 3 + self._max_output_tokens
+        response, permit = self._post(request, estimated_tokens=estimated_tokens)
         try:
             payload = json.loads(response)
             candidates = payload["candidates"]
@@ -133,24 +137,41 @@ class GeminiEntityExtractor:
                 for key, value in payload.get("usageMetadata", {}).items()
                 if isinstance(value, (int, float)) and not isinstance(value, bool)
             }
+            if self.limiter is not None and permit is not None:
+                self.limiter.reconcile(permit, int(usage.get("totalTokenCount", estimated_tokens)))
             return text, usage
         except (json.JSONDecodeError, KeyError, IndexError, TypeError) as error:
             raise RuntimeError("Gemini trả phản hồi không có nội dung văn bản") from error
 
-    def _post(self, request: Request) -> bytes:
+    def _post(self, request: Request, *, estimated_tokens: int) -> tuple[bytes, _Permit | None]:
         attempts = self._max_retries + 1
         for attempt in range(attempts):
+            permit = self.limiter.acquire(estimated_tokens) if self.limiter is not None else None
             try:
                 with urlopen(request, timeout=self._timeout_seconds) as response:
-                    return response.read()
+                    value = response.read()
+                if self.limiter is not None:
+                    self.limiter.release(permit, success=True)
+                return value, permit
             except HTTPError as error:
                 if error.code == 429:
                     self.retry_429_count += 1
                     self._retry_state.count = getattr(self._retry_state, "count", 0) + 1
                 if error.code not in _RETRYABLE_HTTP:
+                    if self.limiter is not None:
+                        self.limiter.release(permit, success=False)
                     raise ModelTransportError(f"Gemini API trả HTTP {error.code}") from error
+                if self.limiter is not None:
+                    retry_after = error.headers.get("Retry-After") if error.headers else None
+                    try:
+                        retry_after = float(retry_after) if retry_after is not None else None
+                    except ValueError:
+                        retry_after = None
+                    self.limiter.release(permit, success=False, throttled=error.code in {429, 503}, retry_after=retry_after)
                 failure: Exception = error
             except (URLError, TimeoutError) as error:
+                if self.limiter is not None:
+                    self.limiter.release(permit, success=False)
                 failure = error
             if attempt == attempts - 1:
                 raise ModelTransportError(

@@ -12,6 +12,7 @@ from doc2roadmap.config import Settings
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
 from doc2roadmap.infrastructure.embedding import GeminiEmbedding
 from doc2roadmap.infrastructure.llm import GeminiEntityExtractor
+from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 from doc2roadmap.infrastructure.parsing import DoclingParser
 from doc2roadmap.infrastructure.text import SentencePieceTokenCounter, UnicodeSentenceSplitter
 
@@ -37,6 +38,11 @@ def _a3_dependencies() -> tuple[Settings, JsonArtifactStore, GeminiEmbedding]:
         raise ValueError("thiếu DOC2ROADMAP_GEMINI_API_KEY")
     key = settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else None
     store = JsonArtifactStore(settings.artifact_dir)
+    limiter = AdaptiveModelLimiter(
+        settings.llm_max_in_flight,
+        settings.llm_tpm_budget,
+        requests_per_minute=settings.llm_rpm_budget,
+    )
     embedding = GeminiEmbedding(
         key,
         model=settings.embedding_model_id,
@@ -45,11 +51,12 @@ def _a3_dependencies() -> tuple[Settings, JsonArtifactStore, GeminiEmbedding]:
         max_retries=settings.gemini_max_retries,
         transport=settings.llm_transport, vertex_project=settings.vertex_project,
         vertex_location=settings.vertex_location,
+        limiter=limiter,
     )
     return settings, store, embedding
 
 
-def _extractor(settings: Settings) -> GeminiEntityExtractor:
+def _extractor(settings: Settings, limiter=None) -> GeminiEntityExtractor:
     if settings.llm_transport == "developer_api" and settings.gemini_api_key is None:
         raise ValueError("thiếu DOC2ROADMAP_GEMINI_API_KEY")
     return GeminiEntityExtractor(
@@ -61,6 +68,7 @@ def _extractor(settings: Settings) -> GeminiEntityExtractor:
         max_output_tokens=settings.extraction_max_output_tokens,
         transport=settings.llm_transport, vertex_project=settings.vertex_project,
         vertex_location=settings.vertex_location,
+        limiter=limiter,
     )
 
 
@@ -76,7 +84,7 @@ def build_extract(
     return (
         ExtractEntities(
             store,
-            _extractor(settings),
+            _extractor(settings, embedding.limiter),
             embedding,
             generation=generation,
             counter=counter,
@@ -103,7 +111,7 @@ def build_a3(
     counter = SentencePieceTokenCounter(settings.tokenizer_model, settings.tokenizer_id)
     extraction = ExtractEntities(
         store,
-        _extractor(settings),
+        _extractor(settings, embedding.limiter),
         embedding,
         generation={
             "temperature": settings.extraction_temperature,
@@ -128,7 +136,12 @@ def build_region_roles(*, allow_spend=False):
         settings.roadmap_model_id, temperature=0.0, max_output_tokens=16384,
         timeout_seconds=settings.gemini_timeout_seconds, max_retries=0,
         transport=settings.llm_transport, vertex_project=settings.vertex_project,
-        vertex_location=settings.vertex_location)
+        vertex_location=settings.vertex_location,
+        limiter=AdaptiveModelLimiter(
+            settings.llm_max_in_flight,
+            settings.llm_tpm_budget,
+            requests_per_minute=settings.llm_rpm_budget,
+        ))
     return LabelChunkRoles(JsonArtifactStore(settings.artifact_dir), model, allow_spend=allow_spend)
 
 
@@ -146,7 +159,7 @@ def build_canonical(*, prepare=False):
             timeout_seconds=settings.gemini_timeout_seconds, max_retries=settings.gemini_max_retries,
             temperature=settings.extraction_temperature, max_output_tokens=settings.extraction_max_output_tokens,
             transport=settings.llm_transport, vertex_project=settings.vertex_project,
-            vertex_location=settings.vertex_location)
+            vertex_location=settings.vertex_location, limiter=embedding.limiter)
     reasoning = CanonicalReasoning(model(settings.merge_model_id), model(settings.description_model_id),
         generation={"temperature": settings.extraction_temperature, "max_output_tokens": settings.extraction_max_output_tokens},
         language_rule=settings.canonical_language_rule, batch_size=settings.canonical_batch_size,
@@ -174,7 +187,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
     from doc2roadmap.application.use_cases.name_concept_labels import NameConceptLabels
 
     settings, store, embedding = _a3_dependencies()
-    roadmap_concurrency = (settings.vertex_concurrency if settings.llm_transport == "vertex"
+    roadmap_concurrency = (settings.llm_max_in_flight if settings.llm_transport == "vertex"
                            else settings.roadmap_concurrency)
     # Mọi lời gọi trả tiền của chuỗi đồ thị đi qua chốt chặn: một đổi thuật toán (như F126) không được lặng lẽ tiêu tiền.
     embedding = SpendGuard(embedding, allowed=allow_spend)
@@ -187,6 +200,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
         max_output_tokens=settings.extraction_max_output_tokens,
         transport=settings.llm_transport, vertex_project=settings.vertex_project,
         vertex_location=settings.vertex_location,
+        limiter=embedding.limiter,
     ), allowed=allow_spend)
     generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}
     return BuildLearningGraph(
@@ -226,6 +240,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
             store,
             model,
             concurrency=roadmap_concurrency,
+            window_pairs=settings.secondary_window_pairs,
             generation=generation,
         ),
         ValidateGraph(store),

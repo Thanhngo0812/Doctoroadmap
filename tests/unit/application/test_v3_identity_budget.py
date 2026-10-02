@@ -71,3 +71,21 @@ def test_windows_ledger_replace_conflict_retries_before_network(monkeypatch, tmp
     module.MeteredGemini("key", max_usd=1, ledger_path=ledger)._complete("system", [], {})
     assert len(attempts) == 3  # reserve retried once; final actual usage written once
     assert json.loads(ledger.read_text())[0]["reserved"] is False
+
+
+def test_jsonl_ledger_appends_and_recovers_latest_event(monkeypatch, tmp_path):
+    module = runner()
+    monkeypatch.setattr(module.GeminiEntityExtractor, "_complete",
+                        lambda self, *args: ("{}", {"promptTokenCount": 10, "candidatesTokenCount": 2}))
+    legacy = tmp_path / "spend.json"
+    legacy.write_text(json.dumps([{"usd": .25, "reserved": False, "transport": "vertex"}]), encoding="utf-8")
+    ledger = tmp_path / "spend.jsonl"
+    model = module.MeteredGemini("key", max_usd=1, ledger_path=ledger)
+    model._complete("system", [], {})
+
+    events = [json.loads(line) for line in ledger.read_text(encoding="utf-8").splitlines()]
+    assert len(events) == 3  # migrated legacy + reserve + completion; no full-file rewrite.
+    assert events[-2]["call_id"] == events[-1]["call_id"] and events[-2]["reserved"] and not events[-1]["reserved"]
+    recovered = module.MeteredGemini("key", max_usd=1, ledger_path=ledger)
+    assert len(recovered.ledger) == 2
+    assert sum(row["usd"] for row in recovered.ledger) == pytest.approx(.25 + events[-1]["usd"])

@@ -22,12 +22,15 @@ from doc2roadmap.domain.secondary import (
 
 
 class BuildSecondaryEdges:
-    def __init__(self, store, model, *, concurrency=4, generation=None):
+    def __init__(self, store, model, *, concurrency=4, window_pairs=None, generation=None):
         if type(concurrency) is not int or concurrency < 1:
             raise ValueError("concurrency phải là số nguyên dương")
+        if window_pairs is not None and (type(window_pairs) is not int or window_pairs < 1):
+            raise ValueError("cửa sổ pass phụ phải là số nguyên dương")
         self.store = store
         self.model = model
         self.concurrency = concurrency
+        self.window_pairs = window_pairs or max(1, concurrency // 2)
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
 
     def _edge_checkpoint(self, doc_id, latest):
@@ -168,34 +171,19 @@ class BuildSecondaryEdges:
                 "secondary_model_metrics": dict(sorted(metrics.items())),
             })
 
-        for pair in pending:
-            askable, pruned = select_secondary_pairs(
-                nodes,
-                [pair],
-                main.payload.get("pair_cluster_ledger", []),
-                list(main.payload.get("main_edges", [])) + secondary_edges,
-                route=route,
-            )
-            if not askable:
-                secondary_log.extend(pruned)
-                completed.add(pair["pair_id"])
-                save_progress()
-                continue
-            dossier = pair_dossier(
-                pair,
-                nodes,
-                chunks,
-                main.payload["mention_map"],
-                main.payload.get("pair_cluster_ledger", []),
-                list(main.payload.get("main_edges", [])) + secondary_edges,
-            )
-            pair_session = {
-                "session_id": "secondary_" + pair["pair_id"],
-                "allowed_node_ids": [pair["left"], pair["right"]],
-                "chunk_ids": [row["chunk_id"] for row in dossier["evidence_chunks"]],
-            }
+        ledger = main.payload.get("pair_cluster_ledger", [])
+        main_edges = list(main.payload.get("main_edges", []))
 
-            def validate(value, pair=pair, pair_session=pair_session):
+        def prepare(pair, existing):
+            dossier = pair_dossier(
+                pair, nodes, chunks, main.payload["mention_map"], ledger, existing,
+                definition_before=definition_before, definition_after=definition_after,
+            )
+            pair_session = {"session_id": "secondary_" + pair["pair_id"],
+                            "allowed_node_ids": [pair["left"], pair["right"]],
+                            "chunk_ids": [row["chunk_id"] for row in dossier["evidence_chunks"]]}
+
+            def validate(value):
                 validate_secondary_response(value, pair)
                 if value["decision"] == "create":
                     output = {
@@ -217,22 +205,15 @@ class BuildSecondaryEdges:
                         nodes,
                         chunks,
                         main.payload["mention_map"],
-                        existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
+                        existing_edges=existing,
                         require_kind=require_kind,
                         definition_before=definition_before, definition_after=definition_after,
                     )
                     if retry:
                         raise ValueError(retry[0]["error"])
+            return dossier, pair_session, validate
 
-            inputs = [
-                {"session_id": pair_session["session_id"] + "_left", "dossier": {**dossier, "presentation_order": [pair["left"], pair["right"]]}},
-                {"session_id": pair_session["session_id"] + "_right", "dossier": self._reverse_dossier(dossier)},
-            ]
-            jobs = [
-                ModelJob("secondary", self.model, system_prompt, prompt_hash, data, SECONDARY_SCHEMA, validate)
-                for data in inputs
-            ]
-            values, rows, counts = run_model_jobs(jobs, decision_log, concurrency=min(self.concurrency, 2))
+        def downgrade(pair, pair_session, validate, values, rows, existing):
             for index, (value, row) in enumerate(zip(values, rows, strict=True)):
                 if value is not None or row.get("error") != "quote_outside_definition_window":
                     continue
@@ -240,53 +221,39 @@ class BuildSecondaryEdges:
                 if not isinstance(original, dict) or original.get("decision") != "create":
                     continue
                 downgraded = {**original, "prerequisite_kind": "cong_cu"}
-                output = {"edges": [{"target": downgraded.get("target"),
-                                     "prerequisite": downgraded.get("prerequisite"),
-                                     "prerequisite_kind": "cong_cu",
-                                     "evidence_kind": downgraded.get("evidence_kind"),
-                                     "chunk_ids": downgraded.get("chunk_ids"),
-                                     "quote": downgraded.get("quote"),
+                output = {"edges": [{"target": downgraded.get("target"), "prerequisite": downgraded.get("prerequisite"),
+                                     "prerequisite_kind": "cong_cu", "evidence_kind": downgraded.get("evidence_kind"),
+                                     "chunk_ids": downgraded.get("chunk_ids"), "quote": downgraded.get("quote"),
                                      "reason": downgraded.get("reason")}], "flags": []}
                 try:
                     validate_secondary_response(downgraded, pair)
                     _, _, _, invalid = validate_main_proposals(
-                        output, pair_session, nodes, chunks, main.payload["mention_map"],
-                        existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
+                        output, pair_session, nodes, chunks, main.payload["mention_map"], existing_edges=existing,
                         require_kind=True, definition_before=definition_before, definition_after=definition_after)
                 except (ValueError, TypeError, KeyError):
                     continue
                 if not invalid:
                     values[index] = downgraded
                     row["downgraded_to_cong_cu_after_retry"] = True
-            decision_log.extend(rows)
-            metrics.update(counts)
+
+        def commit(pair, pair_session, values):
+            nonlocal secondary_edges
             if any(value is None for value in values):
-                verdict = {"pair_id": pair["pair_id"], "decision": "defer", "reason": "invalid_or_outside_dossier", "flags": [{"kind": "outside_or_invalid_secondary_edge", "pair_id": pair["pair_id"]}]}
+                verdict = {"pair_id": pair["pair_id"], "decision": "defer", "reason": "invalid_or_outside_dossier",
+                           "flags": [{"kind": "outside_or_invalid_secondary_edge", "pair_id": pair["pair_id"]}]}
             else:
                 verdict = reconcile_pair_verdicts(values[0], values[1])
             if verdict["decision"] == "create":
-                output = {
-                    "edges": [{
-                        "target": verdict["target"],
-                        "prerequisite": verdict["prerequisite"],
-                        "evidence_kind": verdict["evidence_kind"],
-                        **({"prerequisite_kind": verdict["prerequisite_kind"], "quote": verdict["quote"]}
-                           if "prerequisite_kind" in verdict else {}),
-                        "chunk_ids": verdict["chunk_ids"],
-                        "reason": verdict["reason"],
-                    }],
-                    "flags": verdict.get("flags", []),
-                }
+                output = {"edges": [{"target": verdict["target"], "prerequisite": verdict["prerequisite"],
+                                     "evidence_kind": verdict["evidence_kind"],
+                                     **({"prerequisite_kind": verdict["prerequisite_kind"], "quote": verdict["quote"]}
+                                        if "prerequisite_kind" in verdict else {}),
+                                     "chunk_ids": verdict["chunk_ids"], "reason": verdict["reason"]}],
+                          "flags": verdict.get("flags", [])}
                 proposals, pair_flags, operation_log, retry = validate_main_proposals(
-                    output,
-                    pair_session,
-                    nodes,
-                    chunks,
-                    main.payload["mention_map"],
-                    existing_edges=list(main.payload.get("main_edges", [])) + secondary_edges,
-                    require_kind=require_kind,
-                    definition_before=definition_before, definition_after=definition_after,
-                )
+                    output, pair_session, nodes, chunks, main.payload["mention_map"],
+                    existing_edges=main_edges + secondary_edges, require_kind=require_kind,
+                    definition_before=definition_before, definition_after=definition_after)
                 secondary_edges, duplicate_log = merge_main_proposals(proposals, secondary_edges)
                 secondary_flags.extend(pair_flags)
                 executor_log.extend(operation_log)
@@ -297,13 +264,70 @@ class BuildSecondaryEdges:
                     secondary_log.append({"pair_id": pair["pair_id"], "status": "created", "edge_count": len(proposals)})
             else:
                 secondary_flags.extend(verdict.get("flags", []))
-                secondary_log.append({
-                    "pair_id": pair["pair_id"],
-                    "status": "deferred" if verdict["decision"] == "defer" else "rejected",
-                    "reason": verdict.get("reason", verdict["decision"]),
-                    "decision": verdict["decision"],
-                })
-            completed.add(pair["pair_id"])
+                secondary_log.append({"pair_id": pair["pair_id"],
+                                      "status": "deferred" if verdict["decision"] == "defer" else "rejected",
+                                      "reason": verdict.get("reason", verdict["decision"]),
+                                      "decision": verdict["decision"]})
+
+        while True:
+            pending = [pair for pair in pairs if pair["pair_id"] not in completed]
+            if not pending:
+                break
+            snapshot = main_edges + secondary_edges
+            window, prefix = [], []
+            for pair in pending:
+                prefix.append(pair)
+                askable, _ = select_secondary_pairs(nodes, [pair], ledger, snapshot, route=route)
+                if askable:
+                    window.append(pair)
+                    if len(window) == self.window_pairs:
+                        break
+            if not window:
+                for pair in prefix:
+                    _, pruned = select_secondary_pairs(nodes, [pair], ledger, snapshot, route=route)
+                    secondary_log.extend(pruned)
+                    completed.add(pair["pair_id"])
+                save_progress()
+                continue
+
+            specs, jobs = {}, []
+            for pair in window:
+                dossier, pair_session, validate = prepare(pair, snapshot)
+                inputs = [
+                    {"session_id": pair_session["session_id"] + "_left",
+                     "dossier": {**dossier, "presentation_order": [pair["left"], pair["right"]]}},
+                    {"session_id": pair_session["session_id"] + "_right", "dossier": self._reverse_dossier(dossier)},
+                ]
+                start = len(jobs)
+                jobs.extend(ModelJob("secondary", self.model, system_prompt, prompt_hash, data, SECONDARY_SCHEMA, validate)
+                            for data in inputs)
+                specs[pair["pair_id"]] = (dossier, pair_session, validate, start)
+
+            values, rows, counts = run_model_jobs(jobs, decision_log, concurrency=self.concurrency)
+            answered = {}
+            for pair in window:
+                dossier, pair_session, validate, start = specs[pair["pair_id"]]
+                pair_values = values[start:start + 2]
+                downgrade(pair, pair_session, validate, pair_values, rows[start:start + 2], snapshot)
+                answered[pair["pair_id"]] = pair_values
+            decision_log.extend(rows)
+            metrics.update(counts)
+
+            for pair in prefix:
+                current = main_edges + secondary_edges
+                askable, pruned = select_secondary_pairs(nodes, [pair], ledger, current, route=route)
+                if not askable:
+                    secondary_log.extend(pruned)
+                    completed.add(pair["pair_id"])
+                    continue
+                dossier, pair_session, _, start = specs[pair["pair_id"]]
+                current_dossier = pair_dossier(
+                    pair, nodes, chunks, main.payload["mention_map"], ledger, current,
+                    definition_before=definition_before, definition_after=definition_after)
+                if current_dossier != dossier:
+                    break
+                commit(pair, pair_session, answered[pair["pair_id"]])
+                completed.add(pair["pair_id"])
             save_progress()
         pruned_count = sum(
             row.get("status") in {"pruned_direct_edge", "pruned_explicit_path"}
@@ -359,7 +383,12 @@ class BuildSecondaryEdges:
             payload,
             upstream_version=main.version,
             manifest_fields={"stage": "edges", "edge_pass": "secondary", "complete": True, "stats": stats,
-                             "llm_transport": getattr(self.model, "transport", "unknown")},
+                             "llm_transport": getattr(self.model, "transport", "unknown"),
+                             "execution_limits": {
+                                 "concurrency": self.concurrency,
+                                 "window_pairs": self.window_pairs,
+                                 **(self.model.limiter.snapshot() if getattr(self.model, "limiter", None) else {}),
+                             }},
         )
         self.store.clear_checkpoint(doc_id, checkpoint_id)
         return artifact, False

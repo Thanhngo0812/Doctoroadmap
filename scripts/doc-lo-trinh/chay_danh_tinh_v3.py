@@ -48,22 +48,57 @@ class MeteredGemini(GeminiEntityExtractor):
     """
 
     def __init__(self, key, *, max_usd, ledger_path, max_output_tokens=1024,
-                 transport="developer_api", vertex_project=None, vertex_location="global"):
+                 transport="developer_api", vertex_project=None, vertex_location="global", limiter=None):
         super().__init__(key, "gemini-3.1-flash-lite", max_output_tokens=max_output_tokens,
                          temperature=0, max_retries=3, transport=transport,
-                         vertex_project=vertex_project, vertex_location=vertex_location)
+                         vertex_project=vertex_project, vertex_location=vertex_location, limiter=limiter)
         self.limit, self.ledger_path, self.lock = max_usd, ledger_path, Lock()
-        self.ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else []
+        if ledger_path.suffix == ".jsonl":
+            rows = [json.loads(line) for line in ledger_path.read_text(encoding="utf-8").splitlines()] if ledger_path.exists() else []
+            latest, order = {}, []
+            for row in rows:
+                call_id = row.get("call_id")
+                if call_id is None:
+                    call_id = f"legacy-{len(order) + 1}"
+                if call_id not in latest:
+                    order.append(call_id)
+                latest[call_id] = row
+            legacy = ledger_path.with_suffix(".json")
+            if not rows and legacy.exists():
+                for row in json.loads(legacy.read_text(encoding="utf-8")):
+                    call_id = f"legacy-{len(order) + 1}"
+                    row = {**row, "call_id": call_id}
+                    order.append(call_id)
+                    latest[call_id] = row
+                    self._append_event(row)
+            self.ledger = [latest[call_id] for call_id in order]
+        else:
+            self.ledger = json.loads(ledger_path.read_text(encoding="utf-8")) if ledger_path.exists() else []
 
-    def _write_ledger(self):
+    def _append_event(self, row):
+        self.ledger_path.parent.mkdir(parents=True, exist_ok=True)
         for attempt in range(5):
             try:
-                JsonArtifactStore._write(self.ledger_path, self.ledger)
+                with self.ledger_path.open("a", encoding="utf-8", newline="\n") as handle:
+                    handle.write(json.dumps(row, ensure_ascii=False, separators=(",", ":")) + "\n")
                 return
             except PermissionError:
                 if attempt == 4:
                     raise
                 sleep(0.1 * (attempt + 1))
+
+    def _write_ledger(self, row):
+        if self.ledger_path.suffix == ".jsonl":
+            self._append_event(row)
+        else:
+            for attempt in range(5):
+                try:
+                    JsonArtifactStore._write(self.ledger_path, self.ledger)
+                    return
+                except PermissionError:
+                    if attempt == 4:
+                        raise
+                    sleep(0.1 * (attempt + 1))
 
     def _complete(self, system_prompt, turns, response_schema):
         content = system_prompt + json.dumps(response_schema, ensure_ascii=False) + "".join(t.text for t in turns)
@@ -71,10 +106,11 @@ class MeteredGemini(GeminiEntityExtractor):
         with self.lock:
             if sum(r["usd"] for r in self.ledger) + reserve > self.limit:
                 raise BudgetStop("Chạm dự phòng ngân sách; giữ checkpoint, không gọi thêm.")
-            row = {"usd": reserve, "reserved": True, "transport": self.transport}
+            row = {"call_id": f"call-{len(self.ledger) + 1}", "usd": reserve,
+                   "reserved": True, "transport": self.transport}
             self.ledger.append(row)
             call_index = len(self.ledger)
-            self._write_ledger()
+            self._write_ledger(row)
         before_429 = getattr(self._retry_state, "count", 0)
         text, usage = super()._complete(system_prompt, turns, response_schema)
         if usage.get("promptTokenCount") is not None and usage.get("candidatesTokenCount") is not None:
@@ -83,7 +119,7 @@ class MeteredGemini(GeminiEntityExtractor):
                            retry_429=getattr(self._retry_state, "count", 0) - before_429,
                     usd=(usage["promptTokenCount"] * PRICE["input"] +
                          (usage["candidatesTokenCount"] + usage.get("thoughtsTokenCount", 0)) * PRICE["output"]) / 1e6)
-                self._write_ledger()
+                self._write_ledger(row)
                 if call_index % 50 == 0:
                     print(f"completion {call_index}; spent/reserved {sum(r['usd'] for r in self.ledger):.6f} USD", flush=True)
         return text, usage

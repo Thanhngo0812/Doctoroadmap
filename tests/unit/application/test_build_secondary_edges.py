@@ -156,7 +156,7 @@ def test_secondary_asks_both_orders_uses_executor_and_reuses_final_artifact():
     assert all(row.get("stage") == "secondary" for row in first.payload["decision_log"])
     assert first.payload["stats"]["evidence_hard_count"] == 0
     assert first.payload["stats"]["evidence_soft_count"] == 1
-    second, reused = use_case.execute("doc")
+    second, reused = BuildSecondaryEdges(store, model, concurrency=100, window_pairs=50).execute("doc")
     assert reused and second is first and len(model.calls) == 2
     assert store.saved_versions == 1
     assert not store.checkpoints
@@ -248,3 +248,40 @@ def test_secondary_resume_and_uninterrupted_run_prune_the_same_pairs_with_logs()
     assert resumed.payload["stats"]["pruned_secondary_pair_count"] == 1
     assert resumed.payload["stats"]["completed_secondary_pair_count"] == 2
     assert any(row["pair_id"] == "ac" and row["status"] == "pruned_explicit_path" for row in resumed.payload["secondary_log"])
+
+
+@pytest.mark.parametrize("window", [1, 4, 50])
+def test_secondary_windows_commit_exactly_like_sequential_and_reask_changed_dossier(window):
+    class WindowStore(Store):
+        def __init__(self):
+            super().__init__()
+            self.main.payload["nodes"].append({
+                "node_id": "c", "name": "C", "description": "C", "cluster_id": "g1",
+                "learnable": True, "defining_chunk_ids": ["c1"],
+            })
+            self.main.payload["mention_map"]["c1"]["c"] = {"channels": ["exact"]}
+            self.main.payload["suspected_pairs"] = [
+                {"pair_id": "ab", "left": "a", "right": "b", "sources": ["citation"], "details": {}},
+                {"pair_id": "ac", "left": "a", "right": "c", "sources": ["citation"], "details": {}},
+            ]
+            self.main.payload["main_edges"] = [{
+                "source": "b", "target": "c", "edge_type": "requires", "explicit_evidence": True,
+            }]
+
+    class WindowModel(PairModel):
+        def ask_json(self, prompt, *, response_schema):
+            reply = super().ask_json(prompt, response_schema=response_schema)
+            reply.payload["evidence_kind"] = "mach_trinh_bay"
+            return reply
+
+    sequential_store, sequential_model = WindowStore(), WindowModel()
+    sequential, _ = BuildSecondaryEdges(sequential_store, sequential_model, concurrency=2, window_pairs=1).execute("doc")
+    batched_store, batched_model = WindowStore(), WindowModel()
+    batched, _ = BuildSecondaryEdges(batched_store, batched_model, concurrency=100, window_pairs=window).execute("doc")
+
+    assert batched.payload["secondary_edges"] == sequential.payload["secondary_edges"]
+    assert batched.payload["secondary_log"] == sequential.payload["secondary_log"]
+    if window > 1:
+        ac_calls = [row for row in batched_model.calls if row["dossier"]["pair_id"] == "ac"]
+        assert len(ac_calls) == 4
+        assert ac_calls[-1]["dossier"]["indirect_path"] is not None

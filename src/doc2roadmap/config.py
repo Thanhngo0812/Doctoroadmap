@@ -26,6 +26,10 @@ class Settings(BaseSettings):
     vertex_project: str | None = None
     vertex_location: str = "global"
     vertex_concurrency: int = Field(default=2, gt=0)
+    llm_max_in_flight: int = Field(default=100, gt=0)
+    llm_tpm_budget: int = Field(default=1_600_000, gt=0)
+    llm_rpm_budget: int | None = Field(default=None, gt=0)
+    secondary_window_pairs: int | None = Field(default=None, gt=0)
     extraction_model_id: str = "gemini-3.1-flash-lite"
     extraction_few_shot: Path | None = None
     merge_model_id: str = "gemini-3.1-flash-lite"

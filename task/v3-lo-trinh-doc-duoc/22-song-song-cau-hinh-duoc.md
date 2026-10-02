@@ -3,8 +3,8 @@
 **Nguồn chân lý:** vé này (hạ tầng, không đổi phương pháp) · [báo cáo nghiên cứu](../../report/nghien-cuu-song-song-cao-2026-10-02.md) ·
 **Ai:** nhân viên · **Phụ thuộc:** — · **Chi phí mô hình:** 0 để làm và kiểm; chạy tiếp doc-2 như dự toán cũ (≈ 6–9 USD)
 
-**Trạng thái:** chờ giao — **làm trước khi chạy tiếp doc-2 và trước T10**. Chủ dự án yêu cầu 2026-10-02: tăng song song lên 100 hoặc hơn tuỳ cấu
-hình, để sau này phục vụ người dùng.
+**Trạng thái:** mã và nghiệm thu 0 USD đã xong 2026-10-02; lượt chạy thật doc-2 tiếp tục thuộc vé 12. Chủ dự án yêu cầu
+2026-10-02: tăng song song lên 100 hoặc hơn tuỳ cấu hình, để sau này phục vụ người dùng.
 
 ## Vì sao
 - Pass phụ chạy **từng cặp một** (2 lời gọi song song cho hai thứ tự hỏi), khoảng 46 lời gọi/phút. Pass phụ đầy đủ sáu tài liệu (24,7 nghìn
@@ -74,3 +74,16 @@ hình, để sau này phục vụ người dùng.
 - **Chạy thật:** chạy tiếp doc-2 với `llm_max_in_flight` = 64 rồi 100 (dry-run trước). Báo lời gọi/phút, số 429, mức đồng thời thực tế bộ tự
   điều chỉnh giữ được, chi phí. Sau đó A9/A10 như kế hoạch.
 - **Tôi kiểm:** đọc diff, chạy test, đột biến bộ giới hạn và phép chốt theo thứ tự, đối chiếu số lời gọi thừa với mô phỏng.
+
+## Kết quả triển khai 2026-10-02
+
+- Một `AdaptiveModelLimiter` dùng chung cho sinh văn bản và embedding trong từng tiến trình, có trần đồng thời, TPM, RPM tùy chọn,
+  giảm một nửa khi gặp 429/503, hồi phục dần và tôn trọng `Retry-After`. Các giới hạn chỉ nằm trong manifest, không tham gia config hash.
+- Pass phụ hỏi trước theo cửa sổ rồi chốt đúng thứ tự cũ; checkpoint ghi một lần mỗi lô, đọc được checkpoint doc-2 cũ. Ledger đánh giá
+  chuyển sang JSONL nối thêm nhưng vẫn đọc/migrate được JSON cũ. Vertex embedding chạy song song và giữ nguyên thứ tự kết quả.
+- Unit test toàn kho và 6 integration test đều xanh. Test riêng bao phủ cửa sổ 1/4/50, cặp bị cắt, hồ sơ đổi phải hỏi lại, trần
+  concurrent/TPM/RPM, hạ rồi hồi phục sau throttle, ledger JSONL và phản hồi Vertex hỏng.
+- Phát lại 0 USD, cửa sổ 50: `doc-3` khớp tuyệt đối 18 cạnh, trượt cache 2/380 (0,526%); `nhap-mon-ml` khớp tuyệt đối
+  88 cạnh, trượt cache 8/1.381 (0,579%). Không câu trả lời giả nào lọt vào cạnh cuối.
+- Dry-run sáu tài liệu với max 100/cửa sổ 50: năm tài liệu đã xong đều `reused`; doc-2 tiếp tục đúng checkpoint
+  `secondary-5a1e6d…`, còn 5.996 cặp, 4.758 cặp cần hỏi hai chiều, ước 9.516 lời gọi/8,252907 USD trước retry.

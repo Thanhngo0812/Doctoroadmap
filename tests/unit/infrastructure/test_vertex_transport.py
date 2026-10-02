@@ -1,5 +1,7 @@
 import json
 from io import BytesIO
+from threading import Barrier, Lock
+from time import sleep
 from types import SimpleNamespace
 from urllib.error import HTTPError
 
@@ -9,6 +11,7 @@ from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
 from doc2roadmap.infrastructure.llm.gemini import GeminiEntityExtractor
+from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 
 
 def test_vertex_token_refresh_without_exposing_key(monkeypatch):
@@ -73,6 +76,43 @@ def test_vertex_embedding_normalizes_each_prediction(monkeypatch):
     assert json.loads(requests[0].data)["instances"] == [{"content": "alpha", "task_type": "RETRIEVAL_DOCUMENT"}]
     assert model.identifier == "gemini-rest-embedding-v1"
     assert model.embedding_model_id == "gemini-embedding-001:2"
+
+
+def test_vertex_embedding_runs_concurrently_but_preserves_result_order(monkeypatch):
+    monkeypatch.setattr(VertexCredentials, "headers", lambda self: {"Authorization": "Bearer token"})
+    barrier, lock = Barrier(3), Lock()
+    active = peak = 0
+
+    def fake_open(request, timeout):
+        nonlocal active, peak
+        text = json.loads(request.data)["instances"][0]["content"]
+        with lock:
+            active += 1
+            peak = max(peak, active)
+        barrier.wait()
+        sleep({"first": .03, "second": .02, "third": .01}[text])
+        with lock:
+            active -= 1
+        values = {"first": [3, 4], "second": [0, 5], "third": [8, 6]}[text]
+        return BytesIO(json.dumps({"predictions": [{"embeddings": {"values": values}}]}).encode())
+
+    monkeypatch.setattr("doc2roadmap.infrastructure.embedding.gemini.urlopen", fake_open)
+    limiter = AdaptiveModelLimiter(3, 1_000_000)
+    model = GeminiEmbedding(None, transport="vertex", vertex_project="project-1",
+                            output_dimensionality=2, limiter=limiter)
+    vectors = model.embed([EmbeddingRequest(name) for name in ("first", "second", "third")])
+    assert peak == 3
+    assert all(actual == pytest.approx(expected)
+               for actual, expected in zip(vectors, [[.6, .8], [0, 1], [.8, .6]], strict=True))
+
+
+def test_vertex_embedding_rejects_malformed_prediction(monkeypatch):
+    monkeypatch.setattr(VertexCredentials, "headers", lambda self: {"Authorization": "Bearer token"})
+    monkeypatch.setattr("doc2roadmap.infrastructure.embedding.gemini.urlopen",
+                        lambda request, timeout: BytesIO(b'{"predictions": []}'))
+    with pytest.raises(RuntimeError, match="không hợp lệ"):
+        GeminiEmbedding(None, transport="vertex", vertex_project="project-1", output_dimensionality=2).embed(
+            [EmbeddingRequest("broken")])
 
 
 def test_vertex_429_retries_and_counts_per_call(monkeypatch):
