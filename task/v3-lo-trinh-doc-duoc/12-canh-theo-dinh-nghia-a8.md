@@ -275,3 +275,34 @@ Các cạnh đáng ngờ còn lại thuộc loại câu nói gì (ví dụ, ch�
    - `kiem_doc_duoc.py` sáu tài liệu.
 5. Tôi đọc lộ trình sáu tài liệu và nghiệm thu vé 12. Số nghiệm thu thành "mức tài liệu phát triển" trong giao thức T10/07 v2.
 6. Nên có chấm mù kiểu T15 trên cạnh cứng của hai chương vàng nếu chủ dự án xếp được người, vì gold không còn phân định được.
+
+## Chấm mù T15-dev (hai người, 2026-10-02) — luồng mới **ngang** luồng cũ; không cạnh nào ngược chiều
+
+Bảng `cham-mu-v3-doc-{1,2}-A{1,2}.xlsx`, chấm bằng `scripts/cham-mu/cham_bang_v3.py`. doc-1 phía mới chấm theo đồ thị cuối
+(`v3-r12-final-evaluation` v6; 0 cạnh hiển thị nằm ngoài bảng). doc-2 chấm theo đồ thị tạm, vì pass phụ doc-2 chưa xong; chấm lại bằng
+`--moi-cuoi` khi xong.
+
+| cạnh dư (không phải cạnh vàng trực tiếp) | A1 | A2 |
+|---|---|---|
+| cũ: không làm sai thứ tự học (doc-1 + doc-2) | 12/16 = 75% | 11/17 = 65% |
+| mới: không làm sai thứ tự học (doc-1 + doc-2) | 10/15 = 67% | 10/15 = 67% |
+| ngược chiều, cả hai luồng | 0 | 0 |
+
+- **Độ tin người chấm:**
+  - cạnh vàng được xác nhận đúng chiều: A1 10/10, A2 8/10;
+  - đồng thuận cao: kappa +0,87 (doc-1) và +0,72 (doc-2), so với T1 là +0,40 / +0,19.
+- **Kết luận:**
+  - Hai luồng ngang nhau. Lỗi duy nhất là thừa ràng buộc, khoảng một phần ba cạnh dư, như T1/T11; không có lỗi ngược chiều.
+  - Ngưỡng Q4 của v2 (≥ 0,90) cả hai luồng đều chưa đạt.
+- **Cạnh cả hai người cùng cho là không cần**, luồng mới:
+  - "Số chiều → Cơ sở chính tắc";
+  - "Không gian véc tơ hữu hạn sinh → Không gian véc tơ vô hạn chiều";
+  - "Row rank → Column rank";
+  - "Scalar multiplication on matrices → additive identity of F^m,n";
+  - "Không gian véc tơ thực → Hàm thực liên tục".
+  Ba cạnh đầu tôi đã đánh dấu đáng ngờ khi đọc (câu trích từ ví dụ, hoặc là định nghĩa của chính tiên quyết). Cách đọc của tôi khớp người
+  chấm. "Hàm thực liên tục" là node ví dụ của A3, có ở cả hai luồng.
+- **Quyết định:** giữ hợp đồng vé 12, không mở vòng sửa thêm.
+  - Hai luồng ngang nhau, mà luồng mới có câu trích kiểm bằng mã và tách cạnh công cụ.
+  - Luật thuần để hạ loại cạnh này đã thử và bắt nhầm (mục trước).
+  - Ghi "thừa ràng buộc ≈ 1/3 cạnh dư" làm giới hạn đã biết khi báo cáo.
