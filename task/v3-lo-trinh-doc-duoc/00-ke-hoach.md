@@ -103,7 +103,7 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 **Cập nhật nhân viên 2026-09-27:** vé 14b đã triển khai và đo trên doc-2, nhap-mon-ml, doc-3; [báo cáo](../../report/v3-14b-ket-qua-2026-09-27.md), chờ reviewer nghiệm thu.
 
-**Hiện tại (2026-10-01, sau kiểm thử `64fbc24`):**
+**Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật.
 - **Vé 12 đang dở:**
   - Mã phần đầu đạt.
@@ -119,15 +119,41 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
   - Hợp đồng A8 **chốt**: trên hai chương vàng ngang luồng cũ trong nhiễu đo (mọi khoảng tin cậy Wilson chồng nhau).
   - **Cho chạy pass phụ đầy đủ.**
   - 09d **đạt**.
-- **Làm tiếp:**
-  1. **Vé 12** (nhân viên): commit mốc. Dry-run rồi chạy pass phụ đầy đủ (≈ 31 USD) trên pass chính lượt ba sửa. Sau đó A9 → tên khái niệm →
-     A10 → tên module trong kho đánh giá cuối. Báo `cham_tap_giu_lai.py` (doc-1, doc-2) và `kiem_doc_duoc.py` (sáu tài liệu).
-  2. Tôi: đọc lộ trình sáu tài liệu, nghiệm thu vé 12, điền "mức tài liệu phát triển" vào
-     [giao thức T10/07 v2](T10-07v2-giao-thuc-tap-giu-lai.md).
-  3. Chủ dự án (nên có): xếp hai người chấm mù (T15-dev, ≈ 1 giờ/người). Bảng đặt đầu đối đầu cạnh dư của đồ thị cũ và mới, sinh khi
-     đồ thị cuối vé 12 có. Giới hạn ghi trước: mỗi đồ thị khoảng 15–20 cạnh dư trên hai chương, chỉ phân biệt được chênh lệch lớn.
-  3b. **T10a** (nhân viên, 0 USD, song song pass phụ): ba lệnh chuẩn cho lượt tập giữ lại.
-  4. Sau đó **T10** (khoá cấu hình) và **07 v2** (tập giữ lại, chạy một lần).
+- **Cập nhật 2026-10-02:**
+  - Chấm mù T15-dev: luồng mới ngang luồng cũ, 0 cạnh ngược.
+  - Vé 22 (song song cấu hình được, giảm theo thế hệ) đã commit.
+  - doc-2 chạy tiếp pass phụ bằng mã mới.
+- **Lộ trình còn lại, theo thứ tự** (rà quy trình 2026-10-02):
+  - **Pha A — xong tài liệu phát triển** (≈ 0 USD ngoài phần doc-2 còn lại):
+    1. Nhân viên: doc-2 xong pass phụ → A9 → tên khái niệm → A10 → tên module. Báo cáo cuối vé 12 gồm:
+       - tổng chi mọi sổ (một con số);
+       - 429 theo thế hệ, lời gọi/phút;
+       - cạnh cứng/mềm;
+       - `cham_tap_giu_lai.py` doc-1, doc-2;
+       - `kiem_doc_duoc.py` sáu tài liệu.
+    2. Nhân viên: vé **20** và **21** (A10, 0 USD), chạy lại A10 và tên module sáu tài liệu trên kho cuối.
+    3. Nhân viên: vé **T10a**, gồm **kiểm tương đương chuỗi**: lệnh `roadmap` phải "tái dùng" mọi stage trên artifact nghiệm thu.
+    4. Nhân viên: commit hết, cây sạch.
+    5. Tôi: nghiệm thu vé 12/20/21/22/T10a:
+       - đọc lộ trình sáu tài liệu;
+       - chấm lại chấm mù doc-2 theo đồ thị cuối (`cham_bang_v3.py --moi-cuoi`);
+       - điền "mức tài liệu phát triển" vào [giao thức](T10-07v2-giao-thuc-tap-giu-lai.md).
+  - **Pha B — khoá và tập giữ lại** (ước 15–40 USD, chạy một lần):
+    1. Tôi sinh bảng khoá; chủ dự án duyệt và đặt trần chi.
+    2. Nhân viên: bậc 1 (vai trò, chuyển sang chunks cũ) và bậc 2 (tới danh tính), dry-run trước, chủ dự án duyệt chi.
+    3. Chủ dự án: T14, duyệt mọi cặp danh tính không "different" (không cần mở vàng).
+    4. Nhân viên: bậc 3 (A8 → A10), dry-run trước, chủ dự án duyệt chi.
+    5. Tôi: chấm theo giao thức, đọc hai lộ trình, báo kết quả kể cả xấu. Chấm người (T15, T12, T16, T17) nếu chủ dự án xếp được.
+  - **Pha C — sau tập giữ lại:**
+    - báo cáo tổng kết v3;
+    - thử với 3–5 sinh viên học một chương;
+    - rồi tới vé 13 (trích mệnh đề A3), tạo bài giảng (dùng cạnh mở, hình/bảng, cạnh công cụ), tích hợp web (giới hạn chung nhiều worker,
+      hàng đợi), về Gemini API khi hết credit (chỉ đổi `.env`), thử Flex/Batch để giảm 50% chi phí, T19.
+- **Luật quy trình bổ sung (rà 2026-10-02):**
+  - Đổi hợp đồng có tốn tiền thì tôi **phát lại 0 USD trên nhật ký cũ trước**. Bài học: cửa sổ "+2 câu" của vé 12 tôi đặc tả mà chưa đo.
+  - Nhân viên **commit trước khi báo kiểm thử**.
+  - Đường chạy đo nghiệm thu phải là đường chạy sản phẩm (kiểm tương đương).
+  - Mỗi báo cáo tốn tiền ghi một **tổng chi duy nhất** cộng mọi sổ.
 - **Ngân sách:** chủ dự án đã duyệt ngân sách lớn (credit 300 USD).
   - Đã chi ≈ 31,1 USD tới lượt ba sửa, ước theo sổ token, chưa phải hoá đơn.
   - Dự kiến: pass phụ ≈ 31 USD và tập giữ lại 15–40 USD, tổng cuối ≈ 77–102 USD.

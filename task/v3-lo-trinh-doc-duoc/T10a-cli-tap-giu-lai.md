@@ -26,6 +26,15 @@ vé 12) · **Chi phí mô hình:** 0
    - tham số thư mục ra (mặc định giữ như cũ);
    - đọc được artifact `identity` của chuỗi v3.
 4. Viết lại quy trình bậc 1–3 của giao thức thành lệnh CLI cụ thể trong `CONTEXT.md` hoặc `doc/spec-addendum.md`.
+5. **Kiểm tương đương chuỗi** (thêm 2026-10-02):
+   - Số nghiệm thu vé 12 đến từ các script đánh giá (`chay_tien_a8_v3.py`, `chay_a8_full_v3.py`), còn lượt tập giữ lại chạy bằng lệnh
+     `roadmap` (`composition.build_learning_graph`). Hai đường dựng stage riêng. Ví dụ script dùng mô hình `max_output_tokens` 2048 cho neo,
+     1024 cho danh tính, 512 cho tên khái niệm; composition dùng một mô hình 8192 cho mọi stage.
+   - Viết script 0 USD: với mỗi stage của chuỗi composition, gọi `plan(doc, upstream=<artifact đầu vào trong kho đánh giá cuối>)` và so với
+     artifact kế tiếp trong kho đó. Mọi stage phải ra **"tái dùng"** (cùng source hash và config hash).
+   - Stage nào lệch thì sửa cho hai đường khớp, rồi kiểm lại. Lệch tham số chỉ ở bộ chuyển đổi, như `max_output_tokens` của mô hình, không
+     vào config hash nhưng vẫn đổi lời gọi thật, cũng phải khớp hoặc ghi rõ là vô hại.
+   - Chạy cho ít nhất doc-6 và doc-1 trên `v3-r12-final-evaluation`.
 
 ## Nghiệm thu
 - **Test:**

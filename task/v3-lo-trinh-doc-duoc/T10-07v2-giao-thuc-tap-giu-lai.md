@@ -34,6 +34,9 @@
    - `roadmap --stop-after identity`;
    - bảng duyệt danh tính không đọc vàng.
    Quy trình bậc 1–3 đã viết thành lệnh CLI cụ thể.
+5. **Đường chạy giữ lại là đường đã nghiệm thu.** Kiểm tương đương chuỗi (vé T10a mục 5): mọi stage của lệnh `roadmap` ra "tái dùng"
+   trên artifact nghiệm thu của tài liệu phát triển.
+6. Vé 20, 21, 22 đã xong; A10 sáu tài liệu chạy lại sau vé 20/21. "Mức tài liệu phát triển" lấy từ artifact sau bước này.
 
 ## Cách chạy — một lần, theo bậc, không đổi cấu hình giữa các bậc
 - **Bậc 0 — khoá (T10):**
