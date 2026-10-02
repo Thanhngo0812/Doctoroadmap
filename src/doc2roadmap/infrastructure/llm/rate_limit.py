@@ -11,6 +11,7 @@ from typing import Callable
 @dataclass(slots=True)
 class _Permit:
     event: list[float]
+    generation: int
     released: bool = False
 
 
@@ -23,23 +24,22 @@ class AdaptiveModelLimiter:
         tokens_per_minute: int,
         *,
         requests_per_minute: int | None = None,
-        recovery_successes: int = 20,
         clock: Callable[[], float] = monotonic,
         sleeper: Callable[[float], None] = sleep,
         jitter: Callable[[], float] = random,
     ) -> None:
-        if min(max_in_flight, tokens_per_minute, recovery_successes) < 1 or (
+        if max_in_flight < 2 or tokens_per_minute < 1 or (
             requests_per_minute is not None and requests_per_minute < 1
         ):
-            raise ValueError("giới hạn mô hình phải là số nguyên dương")
+            raise ValueError("trần đồng thời phải từ 2; ngân sách mô hình phải dương")
         self.max_in_flight = max_in_flight
         self.tokens_per_minute = tokens_per_minute
         self.requests_per_minute = requests_per_minute
         self.current_limit = max_in_flight
-        self._recovery_successes = recovery_successes
         self._clock, self._sleep, self._jitter = clock, sleeper, jitter
         self._condition = Condition()
         self._active = self._success_streak = 0
+        self._generation = 0
         self._events: deque[list[float]] = deque()
         self._blocked_until = 0.0
         self.max_observed = self.throttle_count = 0
@@ -66,7 +66,7 @@ class AdaptiveModelLimiter:
                     self._events.append(event)
                     self._active += 1
                     self.max_observed = max(self.max_observed, self._active)
-                    return _Permit(event)
+                    return _Permit(event, self._generation)
                 waits = [0.05]
                 if now < self._blocked_until:
                     waits.append(self._blocked_until - now)
@@ -90,13 +90,15 @@ class AdaptiveModelLimiter:
                     pass
             if throttled:
                 self.throttle_count += 1
-                self.current_limit = min(self.max_in_flight, max(1, self.current_limit // 2))
-                self._success_streak = 0
+                if permit.generation == self._generation:
+                    self.current_limit = max(2, self.current_limit // 2)
+                    self._generation += 1
+                    self._success_streak = 0
                 pause = retry_after if retry_after is not None else 1 + self._jitter()
                 self._blocked_until = max(self._blocked_until, self._clock() + max(pause, 0))
             elif success:
                 self._success_streak += 1
-                if self._success_streak >= self._recovery_successes and self.current_limit < self.max_in_flight:
+                if self._success_streak >= self.current_limit and self.current_limit < self.max_in_flight:
                     self.current_limit += 1
                     self._success_streak = 0
             self._condition.notify_all()
@@ -113,6 +115,7 @@ class AdaptiveModelLimiter:
                 "current_limit": self.current_limit,
                 "max_observed": self.max_observed,
                 "throttle_count": self.throttle_count,
+                "generation": self._generation,
                 "tokens_per_minute": self.tokens_per_minute,
                 "requests_per_minute": self.requests_per_minute,
             }

@@ -19,7 +19,7 @@ def test_evaluation_budget_refuses_before_the_network_and_accounts_for_real_usag
 
     def complete(self, *args):
         calls.append(args)
-        assert self._max_output_tokens == 1024 and self._max_retries == 3 and self._temperature == 0
+        assert self._max_output_tokens == 1024 and self._max_retries == 8 and self._temperature == 0
         return "{}", {"promptTokenCount": 100, "candidatesTokenCount": 10, "thoughtsTokenCount": 5}
 
     monkeypatch.setattr(module.GeminiEntityExtractor, "_complete", complete)

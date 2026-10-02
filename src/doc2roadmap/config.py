@@ -48,7 +48,7 @@ class Settings(BaseSettings):
     extraction_max_output_tokens: int = Field(default=8192, gt=0)
     embedding_dimensions: int = Field(default=768, gt=0)
     gemini_timeout_seconds: float = Field(default=120.0, gt=0)
-    gemini_max_retries: int = Field(default=3, ge=0)
+    gemini_max_retries: int = Field(default=8, ge=0)
     topic_neighbors: int = Field(default=3, gt=0)
     topic_edge_quantile: float = Field(default=0.5, ge=0.0, le=1.0)
     topic_resolution: float | None = Field(default=None, gt=0.0)

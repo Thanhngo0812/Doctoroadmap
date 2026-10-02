@@ -88,6 +88,14 @@
 - Dry-run sáu tài liệu với max 100/cửa sổ 50: năm tài liệu đã xong đều `reused`; doc-2 tiếp tục đúng checkpoint
   `secondary-5a1e6d…`, còn 5.996 cặp, 4.758 cặp cần hỏi hai chiều, ước 9.516 lời gọi/8,252907 USD trước retry.
 
+### Sửa sau phép chạy thật 2026-10-02
+
+- 429 được giảm theo **thế hệ permit**: một làn sóng nghẽn chỉ chia đôi concurrency một lần, kể cả phản hồi cùng thế hệ về sau khi
+  thời gian tạm dừng đã hết. Permit của thế hệ mới mới được phép giảm tiếp; sàn concurrency là 2.
+- Hồi phục cộng 1 sau mỗi `current_limit` lời gọi thành công thay vì mốc cố định 20. Retry Gemini mặc định tăng từ 3 lên 8 để một làn
+  sóng nghẽn khi chạy song song cao không làm cả stage bỏ cuộc quá sớm.
+- Test hồi quy đã được nhìn thấy đỏ trên mã cũ (`2 != 4` khi 429 cũ về muộn), rồi xanh sau sửa; toàn bộ unit test xanh.
+
 ## Góp ý giữa chừng (Claude, 2026-10-02) — giới hạn sụp 64→1 trong một đợt nghẽn
 
 **Chẩn đoán của nhân viên đúng.** `AdaptiveModelLimiter.release` chia đôi `current_limit` cho **mỗi** 429. Một đợt nghẽn làm hàng chục lời gọi

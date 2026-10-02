@@ -41,16 +41,17 @@ class BudgetStop(Exception):
 
 
 class MeteredGemini(GeminiEntityExtractor):
-    """Tính từng HTTP completion, kể cả sửa JSON; giữ chỗ trước khi gửi, không retry transport.
+    """Tính từng HTTP completion, kể cả sửa JSON; giữ chỗ trước khi gửi và qua retry transport.
 
     Dự phòng input bằng số byte UTF-8 + 4096 token overhead và trần output được cấu hình (mặc định 1024).
     Phản hồi lỗi/thiếu usage giữ nguyên dự phòng, không coi là miễn phí. Sổ chi tiếp tục qua các lần chạy.
     """
 
     def __init__(self, key, *, max_usd, ledger_path, max_output_tokens=1024,
-                 transport="developer_api", vertex_project=None, vertex_location="global", limiter=None):
+                 transport="developer_api", vertex_project=None, vertex_location="global", limiter=None,
+                 max_retries=8):
         super().__init__(key, "gemini-3.1-flash-lite", max_output_tokens=max_output_tokens,
-                         temperature=0, max_retries=3, transport=transport,
+                         temperature=0, max_retries=max_retries, transport=transport,
                          vertex_project=vertex_project, vertex_location=vertex_location, limiter=limiter)
         self.limit, self.ledger_path, self.lock = max_usd, ledger_path, Lock()
         if ledger_path.suffix == ".jsonl":

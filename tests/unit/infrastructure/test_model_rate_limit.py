@@ -55,15 +55,39 @@ def test_limiter_respects_optional_request_budget_with_fake_clock():
 
 def test_limiter_halves_on_throttle_then_recovers():
     now = [0.0]
-    limiter = AdaptiveModelLimiter(100, 1_000_000, recovery_successes=2,
+    limiter = AdaptiveModelLimiter(8, 1_000_000,
                                    clock=lambda: now[0], sleeper=lambda seconds: now.__setitem__(0, now[0] + seconds),
                                    jitter=lambda: 0)
     failed = limiter.acquire(10)
     limiter.release(failed, success=False, throttled=True, retry_after=3)
-    assert limiter.current_limit == 50
+    assert limiter.current_limit == 4
     recovered = limiter.acquire(10)
     assert now[0] >= 3
+    for _ in range(4):
+        limiter.release(recovered, success=True)
+        recovered = limiter.acquire(10)
+    assert limiter.current_limit == 5
     limiter.release(recovered, success=True)
-    recovered = limiter.acquire(10)
-    limiter.release(recovered, success=True)
-    assert limiter.current_limit == 51
+
+
+def test_late_throttle_from_old_generation_does_not_reduce_again():
+    now = [0.0]
+    limiter = AdaptiveModelLimiter(
+        8, 1_000_000, clock=lambda: now[0],
+        sleeper=lambda seconds: now.__setitem__(0, now[0] + seconds), jitter=lambda: 0,
+    )
+    first, late = limiter.acquire(1), limiter.acquire(1)
+    limiter.release(first, success=False, throttled=True, retry_after=1)
+    assert limiter.current_limit == 4
+
+    now[0] = 10
+    limiter.release(late, success=False, throttled=True, retry_after=1)
+    assert limiter.current_limit == 4
+
+    fresh = limiter.acquire(1)
+    limiter.release(fresh, success=False, throttled=True, retry_after=1)
+    assert limiter.current_limit == 2
+    now[0] = 20
+    fresh = limiter.acquire(1)
+    limiter.release(fresh, success=False, throttled=True, retry_after=1)
+    assert limiter.current_limit == 2
