@@ -164,6 +164,30 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
   - hệ quả của cây vỡ đã được xử lý ở tầng hiển thị (14b, 09b, 09c).
 - **Hoãn theo chủ dự án:** 15, 17, T19.
 
+## Hướng v4 (dự kiến, sau tập giữ lại) — nghiên cứu theo lỗi, không rải đều mọi khâu
+
+Cách làm:
+1. Lấy kết quả tập giữ lại và tài liệu phát triển, truy **mỗi lỗi người học nhìn thấy về khâu gây ra nó**.
+2. Xếp theo tác động × bằng chứng / chi phí.
+3. Mỗi vòng chỉ sửa một–hai khâu, đo 0 USD trước khi chi.
+
+Ứng viên đã có bằng chứng (Claude, 2026-10-02):
+
+| khâu | vấn đề | bằng chứng |
+|---|---|---|
+| A1 | công thức thành `[formula]`, mô hình phán định nghĩa mà không thấy toán | doc-1: 80/199 câu neo (40%), 141/199 cửa sổ định nghĩa (71%) chứa `[formula]`; nhap-mon-ml, doc-3 gần 0. Hệ quả đã thấy: tên "Định lý 6" lấy từ giả thiết vì kết luận là `[formula]` |
+| A1/A2 | trang mục lục mất; bộ tách câu gộp "(a)…(b)" trong định nghĩa liệt kê | doc-2: 6 tiêu đề chỉ có mã (09c); luật thử ở A9 bắt nhầm "Hệ sinh → Cơ sở" vì (a)/(b) chung một câu |
+| A3 | thiếu kết quả có tên (vé 13); độ hạt (node ví dụ, node rác) | Q3 = 81%; "Hàm thực liên tục" là ví dụ C[a,b]; "Nonnegative integers" từ câu dẫn |
+| A6 | nhắc tên bằng diễn đạt khác không thành cặp ứng viên | cạnh vàng "Column vector → …" có căn cứ "the columns of A"; độ phủ cạnh còn ~2/3 |
+| A8 | khoảng 1/3 cạnh dư không cần (chấm mù) | T15-dev; cẩn thận bài học v2-06: tăng độ phủ thường kéo theo cạnh thừa |
+| đánh giá | vàng nhiễu; chưa thử với người học | doc-2: hai người gán chỉ cùng chọn 59% cạnh |
+
+Ghi chú:
+- **Gộp A1 (công thức) với lượt chạy lại A3 của vé 13.** Cả hai đổi đầu vào A3 trở xuống và buộc ánh xạ lại bộ vàng, nên chỉ trả một lần.
+  Nhận dạng công thức phải chạy tại máy (ví dụ mô hình công thức của docling) hoặc qua Gemini; không gửi sách ra dịch vụ khác.
+- **Tập giữ lại chỉ dùng một lần.** Sau 07 v2, mọi cải tiến v4 cần **tập giữ lại mới** (tài liệu mới và vàng mới) mới chứng minh được.
+  Nên chuẩn bị người gán sớm; tài liệu T19 (ngôn ngữ thứ ba) có thể kiêm.
+
 ## Tôi kiểm thử thế nào
 
 Mỗi vé: đọc diff, chạy test (thấy đỏ trên mã cũ bằng `git stash` hoặc đột biến), chạy **bảng kiểm đọc được** (vé 02) trước/sau trên
