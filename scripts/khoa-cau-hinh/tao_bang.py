@@ -92,7 +92,8 @@ def main():
     anchor_generation = AnchorConcepts(store, None).generation
     identity_generation = JudgeIdentity(store, None).generation
     label_generation = {"temperature": 0.0, "max_output_tokens": 512}
-    dirty = [line[3:] for line in git("status", "--porcelain", "--untracked-files=no").splitlines()]
+    # `git()` cắt khoảng trắng đầu chuỗi, nên dòng đầu mất cột trạng thái trống: tách theo khoảng trắng thay vì cắt 3 ký tự.
+    dirty = [line.split(maxsplit=1)[1] for line in git("status", "--porcelain", "--untracked-files=no").splitlines()]
     blocking = [path for path in dirty if path.startswith(RUNTIME_PATHS)]
     if blocking:
         tree = "**có thay đổi chưa commit ở mã chạy — không được khoá ở trạng thái này**: " + ", ".join(f"`{p}`" for p in blocking)
