@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md), R12 · **Ai:** nhân viên · **Phụ thuộc:** 03–11 (đã xong) ·
 **Chi phí mô hình:** chạy lại A8 sáu tài liệu phát triển. Dự toán bằng `--dry-run` trước; chủ dự án duyệt con số trước khi chạy.
 
-**Trạng thái:** **đang triển khai, chưa đạt cổng chất lượng (2026-10-01)**. Sáu tài liệu đã chạy xong A6 → A7 → neo → danh tính và A8 pass chính; pilot pass phụ trong kho đánh giá đã hoàn tất, nhưng doc-1 chỉ 3/15 cạnh cứng mới khớp vàng trực tiếp. **A8 pass phụ production, A9/A10 mới, chấm mù và nghiệm thu cuối chưa làm**. Số liệu, artifact, chi phí và việc tiếp theo ở [báo cáo cập nhật](../../report/ket-qua-v3-12-tam-ngung-2026-09-29.md). Làm trước khi khoá cấu hình (T10) cho lượt tập giữ lại (07 v2). Chủ dự án nâng ngân sách 2026-09-28: có
+**Trạng thái:** **đã hoàn tất chạy và đo trên kho đánh giá; chờ chủ dự án đọc/ nghiệm thu (2026-10-03)**. Pass phụ đầy đủ và A9/A10 trên sáu tài liệu đã xong; số liệu cuối ở [báo cáo](../../report/ket-qua-v3-12-cuoi-2026-10-03.md). Các đoạn tiến độ bên dưới giữ làm lịch sử. Chủ dự án nâng ngân sách 2026-09-28: có
 300 USD credit Google Cloud, "miễn là dự án tốt, đồ thị chuẩn chỉ".
 
 **Cổng chi phí A8:** Pass chính đã chạy trong trần 2,50 USD; pilot evaluation-only đã chạy trong trần 2 USD. Chủ dự án đã duyệt ngân sách lớn, nhưng dry-run pass phụ production ước 24.472 calls / 31,299322 USD trên sáu tài liệu và pilot chưa đạt cổng chất lượng. **Không chạy production pass phụ trước khi đối chiếu mù cạnh sai/thiếu và chứng minh bản sửa**, dù ngân sách sẵn có.
