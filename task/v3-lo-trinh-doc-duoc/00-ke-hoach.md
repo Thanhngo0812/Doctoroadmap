@@ -208,8 +208,18 @@ trình và tiền cho mỗi tài liệu** trước hết.
   - pass phụ A8 hỏi gần như mọi cặp nên chi tăng theo bình phương số khái niệm: doc-4 (khoảng 616 khái niệm) 22.142 cặp, 44.284 lời
     gọi, khoảng 69 USD; doc-2 9.513 cặp, 18.945 lời gọi. Chạy mất nhiều giờ vì giới hạn 429;
   - kho đánh giá cuối vé 12 (pass phụ sáu tài liệu và các bước sau): 28,6 nghìn lời gọi, 27,7 USD.
-- Hướng đã có bằng chứng: lọc cặp trước khi hỏi pass phụ, hỏi một chiều khi chắc chiều, Batch/Flex (giảm 50%), song song cao trên
-  Developer API (vé 22), tăng tốc A1 (nghiên cứu dở, tạm ngưng 2026-10-02).
+- **Đường gọi sản phẩm: Gemini Developer API**, song song cao (chủ dự án, 2026-10-03). Vertex chỉ dùng khi còn credit 300 USD; chuyển
+  về chỉ cần đổi `.env`, bộ giới hạn của vé 22 không phụ thuộc đường gọi. Hệ quả cho thiết kế, theo
+  [nghiên cứu song song](../../report/nghien-cuu-song-song-cao-2026-10-02.md) (kiểm lại bảng giới hạn lúc chuyển, vì Google hay đổi):
+  - Song song chỉ giảm **thời gian**; **tiền** tính theo token nên không đổi.
+  - Developer API giới hạn theo dự án, theo bậc chi, kèm trần chi mỗi 10 phút: 10 / 50 / 200 USD ở bậc 1 / 2 / 3. Vậy ở bậc 1,
+    **một việc tốn X USD cần ít nhất khoảng X phút**, dù song song bao nhiêu: pass phụ doc-4 (khoảng 69 USD) mất ít nhất khoảng 70
+    phút. Giảm tiền cũng là giảm thời gian.
+  - Batch và Flex rẻ hơn 50% nhưng chậm (Batch xử lý tới 24 giờ, Flex bị bóp nhiều hơn). Chỉ hợp việc nền, ví dụ xử lý sẵn giáo
+    trình phổ biến; không hợp người dùng đang chờ lộ trình.
+  - Muốn vừa nhanh vừa rẻ thì phải **giảm số lời gọi và token**: lọc cặp trước khi hỏi pass phụ, hỏi một chiều khi chắc chiều, prompt
+    gọn hơn.
+- Hướng khác đã có bằng chứng: tăng tốc A1 (nghiên cứu dở, tạm ngưng 2026-10-02).
 - Mục tiêu số cụ thể (USD/cuốn, phút/cuốn) chờ chủ dự án chốt. Không áp nguyên tắc này vào lượt tập giữ lại v3 đang chạy (đã khoá).
 
 Cách làm:
