@@ -5,7 +5,8 @@
 **Ai:** tôi soạn và chấm · nhân viên chạy · chủ dự án duyệt khoá, chi và T14.
 **Chi phí:** dự toán theo bậc bằng dry-run; trần chi do chủ dự án duyệt ở bậc 0.
 
-**Trạng thái:** soạn 2026-10-01, **chưa khoá**. Cập nhật 2026-10-03: đã điền mức tài liệu phát triển sau vé 12 và thông số vé 12. Điều
+**Trạng thái:** **ĐÃ KHOÁ 2026-10-03** — chủ dự án duyệt [bảng khoá](T10-cau-hinh-khoa.md) (commit `2f03781`), nhận đánh đổi của vé 12 và
+đặt trần **50 USD** cho cả lượt. Chạy theo vé [T10b](T10b-chay-tap-giu-lai.md). Lịch sử: soạn 2026-10-01. Cập nhật 2026-10-03: đã điền mức tài liệu phát triển sau vé 12 và thông số vé 12. Điều
 kiện 2, 4, 5, 6 đạt (vé 23 đã nghiệm thu); điều kiện 3: [bảng khoá](T10-cau-hinh-khoa.md) đã sinh tại commit `2f03781`, mọi
 `prompt_hash` khớp. **Chờ chủ dự án:** nhận đánh đổi của vé 12 (điều kiện 1), duyệt bảng khoá, đặt trần chi.
 

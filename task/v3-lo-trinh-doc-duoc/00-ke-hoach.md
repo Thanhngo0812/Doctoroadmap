@@ -92,6 +92,7 @@
 | 19 | gọi mô hình qua Vertex AI để dùng credit Google Cloud (hạ tầng) | LLM | nhân viên | — | thử < 0,01 USD; chi qua Vertex tính vào trần dự án 50 USD (chủ dự án quyết 2026-09-28) |
 | T19 | cung cấp tài liệu thật ngôn ngữ thứ ba: một chữ viết không Latin (ví dụ tiếng Trung, Nga) và một chữ Latin ngoài vi/en (ví dụ tiếng Pháp) | kiểm thử | **chủ dự án** | — | 0 |
 | T10 · 07 v2 | khoá cấu hình và chạy tập giữ lại một lần — [giao thức](T10-07v2-giao-thuc-tap-giu-lai.md) soạn xong 2026-10-01, chưa khoá; mức tài liệu phát triển điền 2026-10-03; bảng khoá sinh bằng `scripts/khoa-cau-hinh/tao_bang.py`, chấm bằng `scripts/doc-lo-trinh/cham_tap_giu_lai.py` | kiểm thử | tôi (soạn, chấm) · nhân viên (chạy) · **chủ dự án** (duyệt khoá, chi, T14) | 12, 09d | ước 15–40 USD, dry-run theo bậc |
+| T10b | chạy tập giữ lại một lần theo bậc, trần 50 USD — [vé](T10b-chay-tap-giu-lai.md) | kiểm thử | nhân viên · **chủ dự án** (duyệt chi, T14) | T10 đã khoá 2026-10-03 | ước 15–40 USD |
 | T10a | lệnh chuẩn cho lượt tập giữ lại: `label-roles --transfer-from-chunks-version`, `roadmap --stop-after identity`, bảng duyệt danh tính không đọc vàng — [vé](T10a-cli-tap-giu-lai.md) | CLI | nhân viên | — (song song pass phụ vé 12) | 0 |
 | 20 | tệp lộ trình giữ node hình/bảng và thực thể bối cảnh (`non_learnable_nodes`) để cạnh mở `illustrates`/`tabulates` không bị treo — [vé](20-giu-node-media-trong-lo-trinh.md) | A10 | nhân viên | — (trước T10) | 0 |
 | 21 | "Tổng quan môn học" chỉ gồm khái niệm của đề cương/lời nói đầu; khái niệm chỉ-nhắc có căn cứ trong bài thì gắn vào module; nhóm bài tập/hành chính/cuối sách tách riêng — [vé](21-tong-quan-mon-hoc.md) | A10 | nhân viên | — (cùng lượt chạy lại A10 của vé 20, trước T10) | 0 |
@@ -115,7 +116,8 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 - **Vé 23** (tên module chỉ có mã): làm trước khoá; Claude nghiệm thu **đạt** (doc-2: 5 tên chỉ có mã → 0; chi 0,0007 USD).
 - **Giao thức T10/07 v2:** đã điền mức tài liệu phát triển và thông số vé 12. Bảng khoá nháp: cả 10 `prompt_hash` khớp lượt nghiệm thu.
 - **Chi vé 12, cộng mọi sổ:** 36,59 USD theo usage; cận trên 38,98 USD nếu tính cả lời gọi bị ngắt.
-- **Kế tiếp — pha B:** Claude sinh bảng khoá thật → chủ dự án quyết nhận đánh đổi vé 12, duyệt bảng khoá và đặt trần chi → chạy theo bậc.
+- **Pha B bắt đầu:** chủ dự án duyệt bảng khoá (commit `2f03781`), nhận đánh đổi vé 12, trần 50 USD. Nhân viên chạy theo
+  [T10b](T10b-chay-tap-giu-lai.md); chủ dự án duyệt chi từng bậc và T14; Claude chấm ở bậc 5.
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:

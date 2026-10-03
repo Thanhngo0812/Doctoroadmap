@@ -1,6 +1,8 @@
 # T10 — Cấu hình khoá cho lần chạy tập giữ lại 07 v2 (chuỗi v3)
 
 Sinh bởi `scripts/khoa-cau-hinh/tao_bang.py`.
+
+**Chủ dự án duyệt 2026-10-03; trần chi 50 USD cho cả lượt.**
 Chủ dự án duyệt bảng này trước bước chạy của [giao thức](T10-07v2-giao-thuc-tap-giu-lai.md); từ lúc duyệt, mọi thay đổi là
 hậu kiểm, báo tách riêng, không thay kết quả tập giữ lại.
 
