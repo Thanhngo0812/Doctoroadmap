@@ -140,6 +140,8 @@ def main(doc, version=None):
             flag("ten-la-cau-dai", title)
         if base in root_titles:
             flag("ten-nen-la-goc", title)
+        # Cả tên chỉ có mã (đổi theo vé 23): "6B — khái niệm · khái niệm" đọc được nên không bật. Mục mất tên vẫn ghi ở cờ
+        # `numbering_only_title` trong payload tên module.
         if _norm(title) in code_titles:
             flag("ten-nen-chi-co-ma", title)
         if module.get("title_source") == "concept":

@@ -121,7 +121,7 @@ ghi trong bảng.
 
 ## Mức tài liệu phát triển sau vé 12 (điền 2026-10-03) — mốc để so khi đọc kết quả giữ lại
 
-Đồ thị cuối của luồng vé 12: kho `v3-r12-final-evaluation` v8 (sau vé 20/21; cạnh và dãy học giống v6). Đo bằng `cham_tap_giu_lai.py`,
+Đồ thị cuối của luồng vé 12: kho `v3-r12-final-evaluation` v8 (sau vé 20/21), tên module ở v9 (sau vé 23); cạnh và dãy học giống v6. Đo bằng `cham_tap_giu_lai.py`,
 Claude chạy lại độc lập. Trong ngoặc là Wilson 95%.
 
 | chỉ số | doc-1 | doc-2 |
@@ -135,8 +135,8 @@ Claude chạy lại độc lập. Trong ngoặc là Wilson 95%.
 | Q2 danh tính còn mở (nhóm) | 0 | 1 (0 cặp) |
 | chấm mù cạnh dư (T15-dev, đồ thị cuối) | 3/10 không cần, 0 ngược | mỗi người 2/5 không cần, 0/5 ngược |
 
-R11 (`kiem_doc_duoc.py`, sáu tài liệu, v8): doc-1 có 6 tên dài, 1 tên khái niệm vô nghĩa ("Định lý 4"), 1 mục bị xé; doc-2 có 5 tên module
-chỉ có mã; nhap-mon-ml có 3 tên dài; doc-3, doc-6, naive-bayes 0.
+R11 (`kiem_doc_duoc.py`, sáu tài liệu, v9): doc-1 có 6 tên dài, 1 tên khái niệm vô nghĩa ("Định lý 4"), 1 mục bị xé; nhap-mon-ml có 3 tên
+dài; doc-2, doc-3, doc-6, naive-bayes 0. Trước vé 23, doc-2 có 5 tên module chỉ có mã.
 
 Luồng cũ, để tham khảo (kho `v3-05b-a9v10-evaluation` v10): doc-1 Q7 0,825, Q7b 0,660, bao đóng 106/129 · 106/131; doc-2 Q7 0,469,
 Q7b 1,000, bao đóng 22/23 · 22/68.

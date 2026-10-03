@@ -96,7 +96,7 @@
 | 20 | tệp lộ trình giữ node hình/bảng và thực thể bối cảnh (`non_learnable_nodes`) để cạnh mở `illustrates`/`tabulates` không bị treo — [vé](20-giu-node-media-trong-lo-trinh.md) | A10 | nhân viên | — (trước T10) | 0 |
 | 21 | "Tổng quan môn học" chỉ gồm khái niệm của đề cương/lời nói đầu; khái niệm chỉ-nhắc có căn cứ trong bài thì gắn vào module; nhóm bài tập/hành chính/cuối sách tách riêng — [vé](21-tong-quan-mon-hoc.md) | A10 | nhân viên | — (cùng lượt chạy lại A10 của vé 20, trước T10) | 0 |
 | 22 | gọi mô hình song song cấu hình được (≥ 100): bộ giới hạn chung theo token/phút và 429, pass phụ "hỏi trước, chốt theo thứ tự" (kết quả y hệt tuần tự), điểm lưu theo lô — [vé](22-song-song-cau-hinh-duoc.md), [nghiên cứu](../../report/nghien-cuu-song-song-cao-2026-10-02.md) | hạ tầng | nhân viên | — (trước khi chạy tiếp doc-2 và T10) | 0 |
-| 23 | tên module chỉ có mã mục ("6B", "Chapter 7") thì thêm tên khái niệm nguyên vẹn — [vé](23-ten-module-chi-co-ma.md) | tên module | nhân viên | — (chủ dự án quyết trước khoá T10 hay sau tập giữ lại) | gần 0 |
+| 23 | tên module chỉ có mã mục ("6B", "Chapter 7") thì thêm tên khái niệm nguyên vẹn — [vé](23-ten-module-chi-co-ma.md) | tên module | nhân viên | — (làm trước khoá T10; nghiệm thu đạt 2026-10-03) | 0,0007 USD |
 | T15-dev | chấm mù đối đầu cạnh dư đồ thị cũ và mới trên hai chương vàng phát triển — bộ tạo/chấm `scripts/cham-mu/tao_bang_v3.py`, `cham_bang_v3.py` (seed 20261001, ghi trước). **Bảng đã sinh 2026-10-01**: `artifacts/a8-gold/cham-mu-v3-doc-{1,2}.xlsx` (35 + 22 cặp), từ pass chính + pilot lượt ba sửa vì đồ thị cuối chưa có; chấm lại theo đồ thị cuối bằng `--moi-cuoi` | kiểm thử | tôi (sinh bảng, chấm) · **hai người chấm** do chủ dự án xếp | đồ thị cuối vé 12 | 0 USD, ≈ 1 giờ/người |
 
 Có thể làm song song: 01, 03, 10 ngay; 04, 05, 06, 09 sau 03; 10b sau 10; 07 sau 05 và 10b; 08 sau 07; 11 sau 05; 16, 15 ngay; 14 làm
@@ -112,11 +112,10 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 - **Vé 20, 21, T10a:** Claude nghiệm thu **đạt** (test đỏ trước sửa; đếm lại độc lập; kiểm tương đương 11/11 tầng; đột biến bị bắt).
   - Ba mục hành chính trong Tổng quan doc-1: nguyên nhân là neo C8 không hỏi `kind` với node chỉ có căn cứ ngoài nội dung, không phải nhãn
     vùng. Ghi giới hạn đã biết, đưa vào hướng v4.
-- **Vé 23 mới** (tên module chỉ có mã, gần 0 USD): chủ dự án quyết làm trước khoá hay sau tập giữ lại.
+- **Vé 23** (tên module chỉ có mã): làm trước khoá; Claude nghiệm thu **đạt** (doc-2: 5 tên chỉ có mã → 0; chi 0,0007 USD).
 - **Giao thức T10/07 v2:** đã điền mức tài liệu phát triển và thông số vé 12. Bảng khoá nháp: cả 10 `prompt_hash` khớp lượt nghiệm thu.
 - **Chi vé 12, cộng mọi sổ:** 36,59 USD theo usage; cận trên 38,98 USD nếu tính cả lời gọi bị ngắt.
-- **Kế tiếp — pha B:** chủ dự án quyết (khoá vé 12; vé 23 trước hay sau) → Claude sinh bảng khoá thật → chủ dự án duyệt và đặt trần chi →
-  chạy theo bậc.
+- **Kế tiếp — pha B:** Claude sinh bảng khoá thật → chủ dự án quyết nhận đánh đổi vé 12, duyệt bảng khoá và đặt trần chi → chạy theo bậc.
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:
