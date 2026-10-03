@@ -219,6 +219,16 @@ trình và tiền cho mỗi tài liệu** trước hết.
     trình phổ biến; không hợp người dùng đang chờ lộ trình.
   - Muốn vừa nhanh vừa rẻ thì phải **giảm số lời gọi và token**: lọc cặp trước khi hỏi pass phụ, hỏi một chiều khi chắc chiều, prompt
     gọn hơn.
+- **Đề xuất (Claude, 2026-10-03): bộ lọc cặp bằng học máy trước pass phụ, dùng chung với seminar.**
+  - Kiểu tầng: bộ lọc rẻ chấm mọi cặp, chỉ cặp chưa chắc mới hỏi LLM. Bộ lọc học từ nhãn LLM có sẵn trong nhật ký pass phụ (doc-2:
+    9.513 cặp được hỏi, chỉ 1.060 cặp thành cạnh) và được đo trên vàng người.
+  - Cùng mô hình là bản đầu của A8 không LLM cho seminar. Khi đạt ngang LLM trên vàng người thì nhận dần thêm quyết định thay LLM.
+  - Điều kiện: giữ ≥ 98–99% cặp mà LLM cho là cạnh, và Q7 cùng độ phủ bao đóng trên vàng không giảm. Bài học F126: luật cũ chỉ hỏi
+    cặp cùng cụm đã bỏ qua 78% cạnh vàng, vì phần lớn cạnh tiên quyết là liên cụm.
+  - Bắt đầu bằng luật và mô hình đơn giản trên đặc trưng rẻ (nhắc tên trong cửa sổ định nghĩa, vị trí trong sách, độ giống embedding);
+    chỉ lên DL khi cần. Đặc trưng phải đa ngôn ngữ để sản phẩm dùng được.
+  - Bước đầu 0 USD: đo trên nhật ký pass phụ sáu tài liệu phát triển xem luật đơn giản giữ bao nhiêu cạnh và bớt bao nhiêu lời gọi.
+    Nhật ký của doc-4 và xstk chỉ dùng làm dữ liệu huấn luyện sau khi chấm xong tập giữ lại v3.
 - Hướng khác đã có bằng chứng: tăng tốc A1 (nghiên cứu dở, tạm ngưng 2026-10-02).
 - Mục tiêu số cụ thể (USD/cuốn, phút/cuốn) chờ chủ dự án chốt. Không áp nguyên tắc này vào lượt tập giữ lại v3 đang chạy (đã khoá).
 
