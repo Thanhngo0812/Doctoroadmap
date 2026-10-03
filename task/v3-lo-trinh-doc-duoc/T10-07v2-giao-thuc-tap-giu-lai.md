@@ -6,7 +6,8 @@
 **Chi phí:** dự toán theo bậc bằng dry-run; trần chi do chủ dự án duyệt ở bậc 0.
 
 **Trạng thái:** soạn 2026-10-01, **chưa khoá**. Cập nhật 2026-10-03: đã điền mức tài liệu phát triển sau vé 12 và thông số vé 12. Điều
-kiện 2, 4, 5, 6 đạt; điều kiện 1 chờ chủ dự án quyết nhận đánh đổi của vé 12; điều kiện 3 có bản nháp, mọi `prompt_hash` khớp.
+kiện 2, 4, 5, 6 đạt (vé 23 đã nghiệm thu); điều kiện 3: [bảng khoá](T10-cau-hinh-khoa.md) đã sinh tại commit `2f03781`, mọi
+`prompt_hash` khớp. **Chờ chủ dự án:** nhận đánh đổi của vé 12 (điều kiện 1), duyệt bảng khoá, đặt trần chi.
 
 ## Vì sao phải viết trước
 - Mọi chỉnh sửa v3 dựa trên sáu tài liệu phát triển (bộ vàng doc-1, doc-2), nên số đo trên đó thiên lệch.
@@ -43,6 +44,7 @@ kiện 2, 4, 5, 6 đạt; điều kiện 1 chờ chủ dự án quyết nhận �
 ## Cách chạy — một lần, theo bậc, không đổi cấu hình giữa các bậc
 - **Bậc 0 — khoá (T10):**
   - Sinh bảng khoá vào `T10-cau-hinh-khoa.md`, ghi commit vào giao thức này.
+    - 2026-10-03: sinh tại commit `2f03781`. Mã `src/` giống `fce6c48` (vé 23); các commit sau đó chỉ đổi tài liệu và script đánh giá.
   - Chủ dự án duyệt và đặt trần chi của lượt (đề xuất 50 USD trên sổ chi riêng).
 - **Bậc 1 — vai trò vùng và cây mục**, theo đúng đường đã dùng cho doc-2:
   - A3–A5 và bộ vàng gắn với version chunks cũ (xstk v2, doc-4 v3), nên **giữ nguyên** version đó.
