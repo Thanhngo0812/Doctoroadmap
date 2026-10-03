@@ -198,9 +198,23 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 ## Hướng v4 (dự kiến, sau tập giữ lại) — nghiên cứu theo lỗi, không rải đều mọi khâu
 
+**Nguyên tắc số một của đợt sửa tới (chủ dự án, 2026-10-03):** đây là ứng dụng phục vụ người dùng, nên phải **tối ưu thời gian tạo lộ
+trình và tiền cho mỗi tài liệu** trước hết.
+- Mỗi spec và vé v4 ghi và đo hai số, trước và sau sửa, trên cùng bộ tài liệu phát triển: **phút/cuốn** và **USD/cuốn**.
+- Chất lượng vẫn đo trên vàng phát triển như v3. Cách giảm tiền hay thời gian nào làm tụt chất lượng thì báo đánh đổi bằng số, chủ
+  dự án quyết; không hạ chất lượng ngầm.
+- Mức v3 để so:
+  - A1 parse khoảng 7,2 giây/trang ở máy này, tức khoảng 48 phút cho sách 400 trang;
+  - pass phụ A8 hỏi gần như mọi cặp nên chi tăng theo bình phương số khái niệm: doc-4 (khoảng 616 khái niệm) 22.142 cặp, 44.284 lời
+    gọi, khoảng 69 USD; doc-2 9.513 cặp, 18.945 lời gọi. Chạy mất nhiều giờ vì giới hạn 429;
+  - kho đánh giá cuối vé 12 (pass phụ sáu tài liệu và các bước sau): 28,6 nghìn lời gọi, 27,7 USD.
+- Hướng đã có bằng chứng: lọc cặp trước khi hỏi pass phụ, hỏi một chiều khi chắc chiều, Batch/Flex (giảm 50%), song song cao trên
+  Developer API (vé 22), tăng tốc A1 (nghiên cứu dở, tạm ngưng 2026-10-02).
+- Mục tiêu số cụ thể (USD/cuốn, phút/cuốn) chờ chủ dự án chốt. Không áp nguyên tắc này vào lượt tập giữ lại v3 đang chạy (đã khoá).
+
 Cách làm:
 1. Lấy kết quả tập giữ lại và tài liệu phát triển, truy **mỗi lỗi người học nhìn thấy về khâu gây ra nó**.
-2. Xếp theo tác động × bằng chứng / chi phí.
+2. Xếp theo tác động lên người học và mức giảm phút/USD mỗi cuốn, nhân bằng chứng, chia chi phí làm.
 3. Mỗi vòng chỉ sửa một–hai khâu, đo 0 USD trước khi chi.
 
 Ứng viên đã có bằng chứng (Claude, 2026-10-02):
