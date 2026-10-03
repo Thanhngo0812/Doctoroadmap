@@ -219,7 +219,9 @@ trình và tiền cho mỗi tài liệu** trước hết.
     trình phổ biến; không hợp người dùng đang chờ lộ trình.
   - Muốn vừa nhanh vừa rẻ thì phải **giảm số lời gọi và token**: lọc cặp trước khi hỏi pass phụ, hỏi một chiều khi chắc chiều, prompt
     gọn hơn.
-- **Đề xuất (Claude, 2026-10-03): bộ lọc cặp bằng học máy trước pass phụ, dùng chung với seminar.**
+- **Ý tưởng, mới nghĩ tới (2026-10-03), chưa nghiên cứu và chưa quyết: bộ lọc cặp bằng học máy trước pass phụ, dùng chung với
+  seminar.** Khi tới lúc, chủ dự án sẽ giao Claude nghiên cứu khoa học (tổng quan tài liệu, thí nghiệm) rồi lập kế hoạch triển khai.
+  Các ý dưới đây chỉ là ghi chú ban đầu, chưa phải kế hoạch:
   - Kiểu tầng: bộ lọc rẻ chấm mọi cặp, chỉ cặp chưa chắc mới hỏi LLM. Bộ lọc học từ nhãn LLM có sẵn trong nhật ký pass phụ (doc-2:
     9.513 cặp được hỏi, chỉ 1.060 cặp thành cạnh) và được đo trên vàng người.
   - Cùng mô hình là bản đầu của A8 không LLM cho seminar. Khi đạt ngang LLM trên vàng người thì nhận dần thêm quyết định thay LLM.
