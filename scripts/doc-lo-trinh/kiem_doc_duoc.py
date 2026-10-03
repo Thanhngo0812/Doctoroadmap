@@ -140,7 +140,7 @@ def main(doc, version=None):
             flag("ten-la-cau-dai", title)
         if base in root_titles:
             flag("ten-nen-la-goc", title)
-        if base in code_titles:
+        if _norm(title) in code_titles:
             flag("ten-nen-chi-co-ma", title)
         if module.get("title_source") == "concept":
             flag("ten-theo-khai-niem-dau", title)

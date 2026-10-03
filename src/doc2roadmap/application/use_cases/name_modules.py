@@ -8,6 +8,7 @@ from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.application.use_cases.build_roadmap import render_roadmap_html
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.domain.document_structure import section_code
 from doc2roadmap.domain.module_titles import (common_content_title, grounded_suffix,
                                               prepare_module_titles, transfer_chunk_sections)
 
@@ -37,7 +38,7 @@ class NameModules:
         if reference_version == chunks.version:
             reference_version = None
         reference = self.store.load_chunks(doc_id, reference_version) if reference_version else None
-        config = {"algorithm_id": "a10-module-titles-v8", "upstream_version": upstream.version,
+        config = {"algorithm_id": "a10-module-titles-v9", "upstream_version": upstream.version,
                   "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks.version,
                   "title_sections_version": reference_version or chunks.version,
                   "model_id": self.model.model_id, "generation": GENERATION, "prompt_hash": prompt_hash}
@@ -49,6 +50,7 @@ class NameModules:
         title_chunks = reference or chunks
         sections = {section.section_id: section for section in title_chunks.result.sections}
         cleaned, numbering_flags = prepare_module_titles(list(sections.values()), title_chunks.result.chunks)
+        numbering_titles = {cleaned[section_id] for section_id in numbering_flags if section_id in cleaned}
         nodes = {node["node_id"]: node for node in upstream.payload["nodes"]}
         names = {node_id: node["name"] for node_id, node in nodes.items()}
         chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks.result.chunks}
@@ -72,6 +74,11 @@ class NameModules:
                     if all(section_ids) else "")
             module["title"] = base or names[module["node_ids"][0]]
             module["title_source"] = "section" if base else "concept"
+        code_only_bases = {module["module_id"]: module["title"] for module in modules
+                           if module["title_source"] == "section"
+                           and (module["title"] in numbering_titles
+                                or ((code := section_code(module["title"])) is not None
+                                    and code.span() == (0, len(module["title"]))))}
         if self.reuse_artifact:
             previous_modules = {row["module_id"]: row for row in self.reuse_artifact.payload.get("modules", [])}
             for module in modules:
@@ -85,6 +92,8 @@ class NameModules:
         counts = Counter(module["title"].casefold() for module in modules)
         needs_model = [module for module in modules
                        if ((module["title_source"] == "concept" and len(module["node_ids"]) > 1)
+                           or (module["module_id"] in code_only_bases
+                               and module["title"] == code_only_bases[module["module_id"]])
                            or (module["title_source"] == "section"
                                and counts[module["title"].casefold()] > 1))]
         groups = defaultdict(list)
@@ -96,7 +105,8 @@ class NameModules:
         old_log = list(checkpoint.get("decision_log", [])) if resumable else []
         old_metrics = Counter(checkpoint.get("metrics", {})) if resumable else Counter()
         inputs = [{"module_id": module["module_id"], "section_title": module["title"],
-                   "concept_names": [names[node_id] for node_id in module["node_ids"]]}
+                   "concept_names": [names[node_id] for node_id in module["node_ids"]],
+                   **({"numbering_only": True} if module["module_id"] in code_only_bases else {})}
                   for module in needs_model]
         for data, module in zip(inputs, needs_model):
             if module["title_source"] == "concept":
@@ -111,10 +121,10 @@ class NameModules:
             return (len((data["section_title"] + " — " + suffix).split()) <= 12
                     or not short_title_possible(data))
 
-        def selected_concepts(data, suffix):
+        def selected_concepts(data, suffix, *, minimum=2):
             selected = [name.strip() for name in suffix.split("·")]
             names = data["concept_names"]
-            if (not 2 <= len(selected) <= 3 or len(set(selected)) != len(selected)
+            if (not minimum <= len(selected) <= 3 or len(set(selected)) != len(selected)
                     or any(name not in names for name in selected)):
                 return None
             return list(dict.fromkeys(name for name in names if name in selected))
@@ -126,6 +136,8 @@ class NameModules:
             concepts = data["concept_names"]
             if not data["section_title"]:
                 return selected_concepts(data, suffix) is not None
+            if data.get("numbering_only"):
+                return selected_concepts(data, suffix, minimum=1) is not None and acceptable_length(data, suffix)
             if not grounded_suffix(suffix, [data["section_title"], *concepts],
                                    data["section_title"], concepts) or not acceptable_length(data, suffix):
                 return False
@@ -167,9 +179,10 @@ class NameModules:
             value = values_by_id[module["module_id"]]
             if value:
                 suffix = value["suffix"].strip()
-                if module["title_source"] == "concept":
+                if module["title_source"] == "concept" or module["module_id"] in code_only_bases:
                     data = next(data for data in inputs if data["module_id"] == module["module_id"])
-                    suffix = " · ".join(selected_concepts(data, suffix))
+                    suffix = " · ".join(selected_concepts(data, suffix,
+                                                          minimum=1 if data.get("numbering_only") else 2))
             else:
                 first = module["node_ids"][0]
                 ranked = [first, *sorted(module["node_ids"], key=lambda node_id: (-degree[node_id],

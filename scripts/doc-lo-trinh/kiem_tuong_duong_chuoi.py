@@ -48,7 +48,7 @@ def main():
                 break
             artifact = base.load_graph(doc, artifact.manifest["upstream_version"])
         chain.reverse()
-        expected = chain + [final.load_graph(doc, version) for version in (1, 2, 3, 4, 7, 8)]
+        expected = chain + [final.load_graph(doc, version) for version in (1, 2, 3, 4, 7, 9)]
         previous = None
         for (name, stage), target in zip(stages, expected, strict=True):
             try:

@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec v3](../../doc/v3-lo-trinh-doc-duoc-spec.md) R7 (tên module có nghĩa), bảng kiểm R11 (`ten-nen-chi-co-ma`) ·
 **Ai:** nhân viên · **Phụ thuộc:** — · **Chi phí mô hình:** gần 0 (chỉ hỏi lại module bị đổi tên; tên tối đa 128 token)
 
-**Trạng thái:** chờ chủ dự án quyết: làm trước khi khoá T10, hay sau tập giữ lại.
+**Trạng thái:** đã làm trước T10 theo giao việc 2026-10-03; [kết quả](../../report/v3-23-ten-module-chi-co-ma-2026-10-03.md). Chưa chạy tập giữ lại.
 
 ## Vì sao (Claude, 2026-10-03)
 - doc-2 (`v3-r12-final-evaluation` v8) có 5/53 module mà tên chỉ là mã: "Chapter 3", "6B", "7C", "Chapter 7", "Chapter 8". Người học không

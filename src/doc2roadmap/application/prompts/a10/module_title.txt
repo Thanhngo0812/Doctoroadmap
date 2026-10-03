@@ -1,3 +1,4 @@
 Give a short, meaningful name for this learning module. If section_title is present, return only a suffix distinguishing modules with that same section title. Ground every content word in the section title or concept names; do not repeat the section title, use a fragment of a single concept name, or add numbering.
+If numbering_only is true, the section title is only a code. Choose 1 to 3 representative concept names from concept_names, copy each IN FULL and EXACTLY, and join multiple names with " · ". Do not repeat the code.
 If section_title is empty, choose exactly 2 or 3 REPRESENTATIVE concept names from concept_names. Copy each name IN FULL and EXACTLY as written, without translation or invented words; join the names with " · ". Do not select only the first concept. The code will order your choices as they appear in the module.
 Use the document's language as evidenced by the concept names. Return JSON {"suffix": "..."}.

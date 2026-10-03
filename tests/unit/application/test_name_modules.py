@@ -1,5 +1,7 @@
 from types import SimpleNamespace as Obj
 
+import pytest
+
 from doc2roadmap.application.use_cases.name_modules import NameModules
 
 
@@ -290,3 +292,26 @@ def test_unchanged_section_modules_reuse_titles_without_model_calls():
     assert model.calls == 0
     assert [row["title"] for row in artifact.payload["modules"]] == [
         "Operations — Addition", "Operations — Multiplication"]
+
+
+@pytest.mark.parametrize("section_title,concepts", [
+    ("Kapitel 3", ["Eigenraum", "Gram-Schmidt-Verfahren"]),
+    ("第3章", ["固有空間", "直交基底"]),
+])
+def test_number_only_section_gets_whole_concept_name_without_toc(section_title, concepts):
+    store, model, base = Store(), Model(), upstream()
+    store.sections = [Obj(section_id="chapter", title=section_title, parent_section_id=None,
+                          level=1, role="noi_dung", order_index=0),
+                      Obj(section_id="next", title=section_title.replace("3", "4"), parent_section_id=None,
+                          level=1, role="noi_dung", order_index=3)]
+    store.chunks = [Obj(chunk_id=f"c{index}", text="12345", parent_section_id="chapter",
+                        role="noi_dung", order_index=index) for index in (1, 2)]
+    base.payload["nodes"][0]["name"], base.payload["nodes"][1]["name"] = concepts
+    base.payload["modules"] = [{"module_id": "module_001", "node_ids": ["a", "b"],
+                                "title_section_ids": ["chapter", "chapter"], "title": "Old"}]
+    stage = NameModules(store, model)
+    assert stage.plan("doc", upstream=base).remaining_items == 1
+    artifact, _ = stage.execute("doc", upstream=base)
+    title = artifact.payload["modules"][0]["title"]
+    assert title.startswith(section_title + " — ")
+    assert any(name in title for name in concepts)
