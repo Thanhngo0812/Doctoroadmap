@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [giao thức T10/07 v2](T10-07v2-giao-thuc-tap-giu-lai.md) · [bảng khoá](T10-cau-hinh-khoa.md) · lệnh mẫu ở `CONTEXT.md`
 (mục "Lệnh bậc 1–3") · **Ai:** nhân viên chạy; chủ dự án duyệt chi từng bậc và T14; Claude chấm · **Chi phí:** ước 15–40 USD, **trần 50 USD**
 
-**Trạng thái:** chờ giao. Chủ dự án duyệt bảng khoá và trần 50 USD ngày 2026-10-03.
+**Trạng thái:** bậc 3 đang dừng ở cổng ngân sách ngày 2026-10-03. Xstk hoàn tất lộ trình/tên module v46; doc-4 xong A8 chính v7. Pass phụ doc-4 dry-run 68,903300 USD; tổng luỹ kế đã biết/dự phòng 6,04454155 USD, cộng 1,5 lần dự toán là 109,39949155 USD > trần 50 USD. Chưa chạy pass phụ doc-4, cần chủ dự án duyệt trần mới. [Báo cáo bậc 3](../../report/T10b-bac-3-2026-10-03.md) · [bậc 1–2b](../../report/T10b-bac-1-2026-10-03.md). Danh tính đã T14: xstk v40, doc-4 v6; 13/13 quyết định đạt. Chủ dự án duyệt bảng khoá và trần 50 USD ngày 2026-10-03; trần riêng bậc 2 là 10 USD.
 
 ## Luật trong suốt lượt chạy
 - **Không đổi gì.** Mã chạy từ commit đã khoá (`src/` giống `fce6c48`). Không sửa mã, prompt, `.env` phương pháp, cờ hay tham số giữa các
