@@ -152,7 +152,8 @@ def main():
         "## Đầu vào đã có của tập giữ lại (dùng lại — bộ vàng gắn với canonical này)", "",
         "Chunks gắn với A3 là version mà candidates trỏ tới, không phải version mới nhất. Ingest lại cây tham chiếu ở bậc 1 tạo version",
         "mới hơn chỉ dùng để chuyển vai trò và tên mục.", "",
-        "| tài liệu | chunks gắn A3 | chunks mới nhất | candidates (A3) | canonical (A4/A5) |", "|---|---|---|---|---|",
+        "| tài liệu | chunks gắn A3 | chunks mới nhất | candidates (A3) | canonical (A4/A5) | cờ `ingest` bậc 1 |",
+        "|---|---|---|---|---|---|",
     ]
     for doc in HELD_OUT:
         canonical = store.load_latest_canonical(doc)
@@ -160,8 +161,15 @@ def main():
         pinned = store.load_chunks(doc, candidates.manifest["upstream_version"])
         latest = store.load_latest_chunks(doc)
         parser = pinned.manifest.get("config", {}).get("parser", {})
+        # Cây tham chiếu bậc 1 phải đọc PDF và chia mục đúng như chunks gắn A3, để văn bản khớp khi chuyển vai trò (vé 14b).
+        backend = "pypdfium2" if str(parser.get("adapter", "")).endswith("+pypdfium2") else None
+        scheme = pinned.manifest.get("config", {}).get("chunk", {}).get("heading_scheme")
+        flags = " ".join(flag for flag in (backend and f"--pdf-backend {backend}", scheme and f"--heading-scheme {scheme}")
+                         if flag) or "mặc định"
         lines.append(f"| {doc} | v{pinned.version} (`{parser.get('adapter')}`) | v{latest.version} | v{candidates.version} | "
-                     f"v{canonical.version} |")
+                     f"v{canonical.version} | `{flags}` |")
+    lines += ["", "Cờ `ingest` bậc 1 lấy từ manifest chunks gắn A3 (bộ đọc PDF, thang tiêu đề), không chọn theo kết quả. Ingest lại khác "
+              "thiết lập này thì văn bản không khớp khi chuyển vai trò; doc-4 tách rời âm tiết với bộ đọc mặc định."]
     lines += ["", "## Tệp nhãn của tập giữ lại (chỉ băm, không mở)", "", "| tệp | SHA-256 |", "|---|---|"]
     for pattern in HELD_OUT_LABELS:
         for path in sorted(Path("artifacts/a8-gold").glob(pattern)):

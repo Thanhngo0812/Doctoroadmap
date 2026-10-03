@@ -325,4 +325,6 @@ $DOC='xstk-ch3-1'; $OLD=2
 .\.tools\uv.exe run python scripts/duyet-danh-tinh/tao_bang.py $DOC <v-identity> --no-gold --output-dir tmp/duyet-danh-tinh-giu-lai
 ```
 
+Lệnh `ingest` phải mang đúng cột "cờ `ingest` bậc 1" của bảng khoá (`T10-cau-hinh-khoa.md`): xstk không cờ; doc-4 thêm `--pdf-backend pypdfium2 --heading-scheme vn-textbook`, giống chunks gắn A3 (doc-4 v3), để văn bản khớp khi chuyển vai trò.
+
 Ở bậc 2b, chủ dự án duyệt **mọi** cặp trong bảng không vàng rồi xuất JSON quyết định T14. Chạy lại `roadmap --doc-id $DOC --identity-review <json-t14> --allow-spend --stop-after identity` và xác nhận artifact danh tính mới trước khi sang bậc 3. Bậc 3: `roadmap --doc-id $DOC --identity-review <json-t14> --dry-run` để lấy dự toán A8 thật; sau khi được duyệt chi mới chạy cùng lệnh với `--allow-spend` thay `--dry-run`. Bảng danh tính ở `tmp/` không chứa/chạm tệp vàng; nhãn vàng chỉ mở ở bậc 5 theo giao thức T10/07 v2.

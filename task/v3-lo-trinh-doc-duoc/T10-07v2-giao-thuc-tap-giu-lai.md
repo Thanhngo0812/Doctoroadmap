@@ -46,8 +46,11 @@ kiện 2, 4, 5, 6 đạt; điều kiện 1 chờ chủ dự án quyết nhận �
   - Chủ dự án duyệt và đặt trần chi của lượt (đề xuất 50 USD trên sổ chi riêng).
 - **Bậc 1 — vai trò vùng và cây mục**, theo đúng đường đã dùng cho doc-2:
   - A3–A5 và bộ vàng gắn với version chunks cũ (xstk v2, doc-4 v3), nên **giữ nguyên** version đó.
-  - Ingest lại bằng mã đã khoá chỉ để làm cây tham chiếu. Dùng lệnh mặc định, không cờ theo tài liệu. Nếu mã khoá vẫn cần ngoại lệ cũ
-    `--heading-scheme vn-textbook` cho doc-4 thì ghi vào bảng khoá trước khi chạy.
+  - Ingest lại bằng mã đã khoá chỉ để làm cây tham chiếu, với **đúng bộ đọc PDF và thang tiêu đề của chunks gắn A3** (cột "cờ `ingest`
+    bậc 1" của bảng khoá): xstk dùng mặc định; doc-4 dùng `--pdf-backend pypdfium2 --heading-scheme vn-textbook`.
+    - Lý do: văn bản phải khớp khi chuyển vai trò, mà bộ đọc mặc định tách rời âm tiết ở 34% từ của doc-4.
+    - Hai cờ này đã dùng khi tạo chunks gắn vàng; bảng khoá đọc chúng từ manifest, không chọn theo kết quả.
+    - Sửa 2026-10-03, trước khoá. Bản trước ghi "dùng lệnh mặc định" và sót bộ đọc PDF.
   - `label-roles` gán vai trò và chuyển sang chunk cũ bằng khớp văn bản (vé 14b). Tên mục lấy từ cây tham chiếu (vé 09b/09c).
 - **Bậc 2:** dry-run cả chuỗi. Chủ dự án duyệt dự toán phần trước A8, rồi chạy `--allow-spend` tới hết danh tính: clusters → mentions →
   provenance → neo → danh tính.
