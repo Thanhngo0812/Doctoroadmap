@@ -130,6 +130,7 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
   - **Bậc 3 dừng ở cổng ngân sách** (luỹ kế 6,04 USD): xstk xong lộ trình (v46); doc-4 xong A8 chính (v7). Pass phụ doc-4 dry-run 22.142
     cặp, 44.284 lời gọi, ≈ 68,9 USD trước retry, vượt trần 50 USD. Giao thức ước sai (15–40 USD) vì doc-4 cả cuốn. Chờ chủ dự án quyết
     nâng trần (đường sạch) hay dừng doc-4. Không cắt phạm vi pass phụ: đổi cấu hình giữa lượt là "không sạch".
+    **Chủ dự án chọn nâng trần cả lượt lên 90 USD**; nhân viên chạy pass phụ doc-4 tới hết lộ trình, dừng nếu chi thật vượt 90 USD.
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:
@@ -210,6 +211,7 @@ Cách làm:
 | A1/A2 | trang mục lục mất; bộ tách câu gộp "(a)…(b)" trong định nghĩa liệt kê | doc-2: 6 tiêu đề chỉ có mã (09c); luật thử ở A9 bắt nhầm "Hệ sinh → Cơ sở" vì (a)/(b) chung một câu |
 | A3 | thiếu kết quả có tên (vé 13); độ hạt (node ví dụ, node rác) | Q3 = 81%; "Hàm thực liên tục" là ví dụ C[a,b]; "Nonnegative integers" từ câu dẫn |
 | C8 | node chỉ có căn cứ ngoài vùng nội dung không bao giờ được hỏi `kind`, nên mục hành chính lọt vào "Tổng quan môn học"; kết quả/tính chất không có câu dạy thành `mentioned_only` | doc-1: "Thi viết rọc phách", "Thang điểm chữ", "Điểm đánh giá học phần" (lời nói đầu); doc-2: 13 cạnh vàng ngoài phạm vi, đều qua node `mentioned_only` như "Injective operator equivalence" |
+| chi phí A8 | pass phụ hỏi gần như mọi cặp nên chi tăng theo bình phương số khái niệm; không hợp để phục vụ người dùng | doc-4 cả cuốn (≈ 616 khái niệm): 22.142 cặp, 44.284 lời gọi, ≈ 69 USD. Hướng: lọc cặp trước khi hỏi (vị trí sách, nhắc tên trong cửa sổ định nghĩa, cụm), hỏi một chiều khi chắc chiều, Batch/Flex (−50%); đo độ phủ mất bao nhiêu trên vàng phát triển trước khi đổi |
 | A6 | nhắc tên bằng diễn đạt khác không thành cặp ứng viên | cạnh vàng "Column vector → …" có căn cứ "the columns of A"; độ phủ cạnh còn ~2/3 |
 | A8 | khoảng 1/3 cạnh dư không cần (chấm mù) | T15-dev; cẩn thận bài học v2-06: tăng độ phủ thường kéo theo cạnh thừa |
 | đánh giá | vàng nhiễu; chưa thử với người học | doc-2: hai người gán chỉ cùng chọn 59% cạnh |
