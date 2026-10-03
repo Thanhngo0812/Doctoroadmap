@@ -118,6 +118,10 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 - **Chi vé 12, cộng mọi sổ:** 36,59 USD theo usage; cận trên 38,98 USD nếu tính cả lời gọi bị ngắt.
 - **Pha B bắt đầu:** chủ dự án duyệt bảng khoá (commit `2f03781`), nhận đánh đổi vé 12, trần 50 USD. Nhân viên chạy theo
   [T10b](T10b-chay-tap-giu-lai.md); chủ dự án duyệt chi từng bậc và T14; Claude chấm ở bậc 5.
+  - **Bậc 1 xong** (2026-10-03, chi 0,036 USD). Claude kiểm số đếm và manifest, không đọc nội dung: cùng `source_hash`; doc-4 đọc bằng
+    `pypdfium2` + `vn-textbook`; chuyển vai trò khớp 126/126 (xstk v2 → v5) và 671/671 (doc-4 v3 → v6); `load_role_chunks` của chuỗi sẽ
+    lấy đúng v5/v6. **Theo dõi khi chấm:** xstk có 48/126 chunk (38%) nhãn `de_cuong`, cao hơn mọi tài liệu phát triển (doc-6 26%, còn
+    lại ≤ 2%). Nếu A2 gán nhầm nội dung thành đề cương, bậc 5 sẽ thấy nhiều cạnh vàng xstk "ngoài phạm vi". Không sửa giữa lượt.
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:
