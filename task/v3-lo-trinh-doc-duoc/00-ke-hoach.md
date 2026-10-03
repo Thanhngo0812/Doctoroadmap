@@ -127,6 +127,9 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
     doc-1 phát triển. Danh tính: xstk 6 `same`; doc-4 6 `same` + 1 `sense_split`.
   - **Bậc 2b:** Claude sinh bảng T14 không vàng (không mở nội dung) ở `tmp/duyet-danh-tinh-giu-lai/`: xstk 6 cặp, doc-4 7 cặp. Chủ dự án đã duyệt đủ 13 cặp
     (xstk: 5 gộp, 1 không gộp; doc-4: 4 gộp, 2 không gộp, 1 hai nghĩa; 0 "không chắc"). JSON: `tmp/duyet-danh-tinh-giu-lai/t14-<doc>.json`.
+  - **Bậc 3 dừng ở cổng ngân sách** (luỹ kế 6,04 USD): xstk xong lộ trình (v46); doc-4 xong A8 chính (v7). Pass phụ doc-4 dry-run 22.142
+    cặp, 44.284 lời gọi, ≈ 68,9 USD trước retry, vượt trần 50 USD. Giao thức ước sai (15–40 USD) vì doc-4 cả cuốn. Chờ chủ dự án quyết
+    nâng trần (đường sạch) hay dừng doc-4. Không cắt phạm vi pass phụ: đổi cấu hình giữa lượt là "không sạch".
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:
