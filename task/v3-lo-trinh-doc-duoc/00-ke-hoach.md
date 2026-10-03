@@ -122,6 +122,10 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
     `pypdfium2` + `vn-textbook`; chuyển vai trò khớp 126/126 (xstk v2 → v5) và 671/671 (doc-4 v3 → v6); `load_role_chunks` của chuỗi sẽ
     lấy đúng v5/v6. **Theo dõi khi chấm:** xstk có 48/126 chunk (38%) nhãn `de_cuong`, cao hơn mọi tài liệu phát triển (doc-6 26%, còn
     lại ≤ 2%). Nếu A2 gán nhầm nội dung thành đề cương, bậc 5 sẽ thấy nhiều cạnh vàng xstk "ngoài phạm vi". Không sửa giữa lượt.
+  - **Bậc 2 xong** (chi 0,94 USD, luỹ kế 0,97 USD + khoản chưa quan sát từ một lượt doc-4 bị ngắt). Claude kiểm manifest: chuỗi clusters →
+    danh tính đúng prompt_hash bảng khoá; provenance dùng chunks gắn A3 (v2/v3), neo và danh tính dùng bản có vai trò (v5/v6), giống mẫu
+    doc-1 phát triển. Danh tính: xstk 6 `same`; doc-4 6 `same` + 1 `sense_split`.
+  - **Bậc 2b:** Claude sinh bảng T14 không vàng (không mở nội dung) ở `tmp/duyet-danh-tinh-giu-lai/`: xstk 6 cặp, doc-4 7 cặp. Chờ chủ dự án duyệt.
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:
