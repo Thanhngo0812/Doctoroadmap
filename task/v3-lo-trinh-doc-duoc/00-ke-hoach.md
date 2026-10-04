@@ -204,6 +204,8 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
 
 ## Hướng v4 (dự kiến, sau tập giữ lại) — nghiên cứu theo lỗi, không rải đều mọi khâu
 
+**Đã chuyển sang [kế hoạch v4](../v4/00-ke-hoach.md) (2026-10-04)**; phần dưới giữ làm lịch sử và nguồn ý.
+
 **Nguyên tắc số một của đợt sửa tới (chủ dự án, 2026-10-03):** đây là ứng dụng phục vụ người dùng, nên phải **tối ưu thời gian tạo lộ
 trình và tiền cho mỗi tài liệu** trước hết.
 - Mỗi spec và vé v4 ghi và đo hai số, trước và sau sửa, trên cùng bộ tài liệu phát triển: **phút/cuốn** và **USD/cuốn**.
