@@ -29,4 +29,5 @@
 | 04 | đọc nhật ký phản hồi lỗi của pass phụ (12% cặp doc-4) | Claude | 0 | chưa làm |
 | 05 | sửa chất lượng từ tập giữ lại: A2 "Cách giải", C8 bỏ qua khái niệm ngoài nội dung, R17, cạnh khái niệm khung | Claude soạn | cần tập giữ lại mới | chưa soạn |
 | T-01 | chọn 2 tài liệu mới và người gán vàng cho tập giữ lại v4 | **chủ dự án** | 0 | chưa làm |
-| — | lọc cặp bằng học máy trước pass phụ | chủ dự án giao sau | — | ý tưởng |
+| R-01 | nghiên cứu nguồn gốc: Gemini Developer API (giá, giới hạn, cache, Batch), rút gọn ngữ cảnh, độ lệch vị trí → `report/nghien-cuu-v4-gemini-va-rut-gon-ngu-canh-2026-10-04.md` | Claude (tác tử nền) | 0 | đang làm |
+| R-02 | nghiên cứu ML/DL: lọc cặp trước pass phụ (v4) và học tiên quyết không LLM (seminar) → `report/nghien-cuu-ml-dl-loc-cap-va-tien-quyet-2026-10-04.md` | Claude (tác tử nền) | 0 | đang làm, chủ dự án giao 2026-10-04 |
