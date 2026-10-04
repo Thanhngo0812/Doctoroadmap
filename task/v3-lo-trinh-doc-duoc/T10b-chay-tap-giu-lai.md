@@ -1,19 +1,19 @@
 # T10b — Chạy tập giữ lại một lần theo bậc (07 v2)
 
 **Nguồn chân lý:** [giao thức T10/07 v2](T10-07v2-giao-thuc-tap-giu-lai.md) · [bảng khoá](T10-cau-hinh-khoa.md) · lệnh mẫu ở `CONTEXT.md`
-(mục "Lệnh bậc 1–3") · **Ai:** nhân viên chạy; chủ dự án duyệt chi từng bậc và T14; Claude chấm · **Chi phí:** ước 15–40 USD, **trần 50 USD**
+(mục "Lệnh bậc 1–3") · **Ai:** nhân viên chạy; chủ dự án duyệt chi từng bậc và T14; Claude chấm · **Chi phí:** **trần 90 USD** cho toàn lượt (chủ dự án nâng ngày 2026-10-03)
 
-**Trạng thái:** bậc 3 đang dừng ở cổng ngân sách ngày 2026-10-03. Xstk hoàn tất lộ trình/tên module v46; doc-4 xong A8 chính v7. Pass phụ doc-4 dry-run 68,903300 USD; tổng luỹ kế đã biết/dự phòng 6,04454155 USD, cộng 1,5 lần dự toán là 109,39949155 USD > trần 50 USD. Chưa chạy pass phụ doc-4, cần chủ dự án duyệt trần mới. [Báo cáo bậc 3](../../report/T10b-bac-3-2026-10-03.md) · [bậc 1–2b](../../report/T10b-bac-1-2026-10-03.md). Danh tính đã T14: xstk v40, doc-4 v6; 13/13 quyết định đạt. Chủ dự án duyệt bảng khoá và trần 50 USD ngày 2026-10-03; trần riêng bậc 2 là 10 USD.
+**Trạng thái:** **hoàn tất bậc 1–3 và bàn giao bậc 4 ngày 2026-10-04**. Xstk cuối **v46**, doc-4 cuối **v12** (tên module, lúc 18:11:49 Asia/Saigon); doc-4 tái dùng identity v6/main v7 và nối checkpoint, hoàn tất 22.972/22.972 cặp rồi A9 → tên khái niệm → A10 → tên module. CLI và watcher đã thoát thành công; heartbeat tạm dừng sau bàn giao. **Tổng luỹ kế ghi nhận + dự phòng embedding: 51,96653480 USD / trần 90 USD**, chưa gồm usage lời gọi đang bay khi ngắt, lượt neo cũ bị ngắt và retry embedding chưa đo được. Số HTTP 429 chính xác chưa đo được; 768 sự kiện throttle trong manifest của lượt nối gộp 429/503, không thay số 429. Không đổi mã/prompt/cấu hình/cờ; không đọc/chấm holdout. [Báo cáo bậc 3](../../report/T10b-bac-3-2026-10-03.md) · [bậc 1–2b](../../report/T10b-bac-1-2026-10-03.md). Danh tính T14 đạt 13/13 quyết định. **Chờ Claude làm bậc 5**, không tự chạy chấm. Trần riêng bậc 2 là 10 USD.
 
 ## Luật trong suốt lượt chạy
 - **Không đổi gì.** Mã chạy từ commit đã khoá (`src/` giống `fce6c48`). Không sửa mã, prompt, `.env` phương pháp, cờ hay tham số giữa các
   bậc. Lỗi chặn chạy thì **dừng và báo**; bản sửa là hậu kiểm, kết quả ghi "không sạch".
 - **Không đọc nội dung.** Chỉ báo trạng thái, số đếm, chi phí. Không mở đồ thị, lộ trình hay tệp vàng của xstk-ch3-1 và doc-4. Không
   chạy `cham_tap_giu_lai.py`, `kiem_doc_duoc.py` hay `a8-gold-check` trên hai tài liệu này.
-- **Trần 50 USD cho cả lượt, hai tài liệu cộng lại.** Lệnh `roadmap` không có sổ chi riêng, nên giữ trần bằng thủ tục:
+- **Trần 90 USD cho cả lượt, hai tài liệu cộng lại** theo chỉ thị mới ngày 2026-10-03. Lệnh `roadmap` không có sổ chi riêng, nên giữ trần bằng thủ tục:
   - mỗi bậc tốn tiền: dry-run trước, gửi chủ dự án con số, chờ duyệt rồi mới `--allow-spend`;
   - sau mỗi bậc: cộng chi thật theo token trong manifest các stage vừa chạy, báo **một tổng chi luỹ kế**;
-  - nếu chi luỹ kế + 1,5 × dự toán bậc kế tiếp vượt 50 USD thì dừng, hỏi chủ dự án.
+  - riêng lượt doc-4 đã được chủ dự án duyệt dù dự toán cộng dự phòng 1,5 lần vượt trần: theo dõi usage từ checkpoint, **dừng nếu tổng chi thật vượt 90 USD**; không đổi phương pháp/cờ/cấu hình, không tự nâng trần.
 - Sập giữa chừng thì chạy tiếp từ checkpoint, không đổi cấu hình.
 - Chạy riêng từng tài liệu: `xstk-ch3-1` trước (nhỏ), rồi `doc-4`.
 
