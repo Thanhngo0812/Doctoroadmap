@@ -131,6 +131,10 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
     cặp, 44.284 lời gọi, ≈ 68,9 USD trước retry, vượt trần 50 USD. Giao thức ước sai (15–40 USD) vì doc-4 cả cuốn. Chờ chủ dự án quyết
     nâng trần (đường sạch) hay dừng doc-4. Không cắt phạm vi pass phụ: đổi cấu hình giữa lượt là "không sạch".
     **Chủ dự án chọn nâng trần cả lượt lên 90 USD**; nhân viên chạy pass phụ doc-4 tới hết lộ trình, dừng nếu chi thật vượt 90 USD.
+  - **Bậc 1–4 xong 2026-10-04** (51,97 USD). **Bậc 5 (Claude) xong**: [kết quả tập giữ lại](../../report/ket-qua-tap-giu-lai-v3-2026-10-04.md).
+    Lượt sạch (11/11 tầng tái dùng). Tổng quát hoá một phần: doc-4 giữ thứ tự học và độ phủ cạnh, không giữ độ chính xác (bao đóng P 0,58);
+    xstk hỏng phạm vi (29/60 cạnh vàng ngoài dãy học do A2 gán mục "Cách giải" là đề cương, lan sang C8). Q3 83%. Lỗi đã truy về khâu
+    cho v4: A2, C8, R17, cạnh khái niệm khung ở A8, cấu trúc mục A1/A2, vàng nhiễu.
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:
