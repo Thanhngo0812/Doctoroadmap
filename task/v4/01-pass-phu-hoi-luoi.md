@@ -22,6 +22,8 @@
 - Giữ bảo đảm của vé 22: song song cấu hình được, **chốt theo thứ tự cặp**, kết quả y hệt chạy tuần tự. Thứ tự sau của một cặp chỉ gửi sau
   khi có kết quả thứ tự đầu của cặp đó; các cặp khác vẫn chạy song song.
 - `secondary_log` ghi rõ cặp chốt sớm, ví dụ `reason: "first_order_final"`, để chẩn đoán tách được với loại "cả hai đều không".
+- **Mẫu theo dõi độ lệch vị trí** (theo R-01): một mẫu 3% số cặp, chọn bằng băm `pair_id` với seed cố định, luôn hỏi đủ hai thứ tự. Mẫu này
+  không đổi đầu ra (luật gộp như cũ) nhưng giữ được số đo độ lệch vị trí: báo tỉ lệ (không, có) và (có, không) theo tài liệu.
 - Đổi `algorithm_id`/config của pass phụ để cache không lẫn với v3. Prompt, hồ sơ cặp và luật gộp giữ nguyên.
 
 ## Nghiệm thu

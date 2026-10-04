@@ -13,6 +13,22 @@
 
 **Trạng thái:** soạn 2026-10-04, chờ chủ dự án duyệt thứ tự và giao vé.
 
+## Ràng buộc sản phẩm từ nghiên cứu R-01 (Claude kiểm lại trên trang chính thức 2026-10-04)
+
+Nghiên cứu [R-01](../../report/nghien-cuu-v4-gemini-va-rut-gon-ngu-canh-2026-10-04.md) đổi vài giả định của v4. Các điểm dưới đây Claude đã
+tự đọc lại trên trang gốc:
+- **Trần chi theo tháng trên cả tài khoản thanh toán** (trang Billing, 2026-09-28): bậc 1 250 USD, bậc 2 2.000 USD (đã trả 100 USD và qua
+  3 ngày), bậc 3 20.000–100.000 USD. Chạm trần thì mọi project của tài khoản dừng tới chu kỳ sau. Theo giá v3, bậc 1 chỉ đủ khoảng 5 cuốn
+  cỡ doc-4 mỗi tháng. Ngoài ra còn trần 10/50/200 USD mỗi 10 phút trượt.
+- **Credit chào mừng của Google Cloud không trả được Gemini API**; Developer API phải nạp trước (Prepay). Đúng với cách đang làm: dùng
+  Vertex trong lúc còn credit.
+- **`gemini-3.1-flash-lite` tắt sớm nhất ngày 2027-05-07** (trang Deprecations). Mô hình thay thế `gemini-3.5-flash-lite` giá 0,30/2,50 USD,
+  đắt hơn khoảng 31% mỗi lời gọi pass phụ. Đổi mô hình là đổi cấu hình, phải đo lại chất lượng.
+- **Cache không áp dụng cho pass phụ**: dòng Gemini 3 cần tiền tố ít nhất 4.096 token, lớn hơn cả một lời gọi.
+- **Batch** rẻ 50% nhưng mục tiêu 24 giờ, chỉ hợp việc nền. **Flex** rẻ 50%, gọi đồng bộ, độ trễ mục tiêu 1–15 phút: ứng viên cho người dùng
+  chờ, cần thử nhỏ.
+- RPM/TPM/RPD theo mô hình chỉ xem được trong AI Studio; phải xem trước khi chuyển sang Developer API (một cuốn cần khoảng 44.000 lời gọi).
+
 ## Dữ liệu dùng được
 
 - Tập giữ lại v3 (xstk, doc-4) **đã dùng**. Từ v4, hai tài liệu này là tài liệu phát triển, cùng sáu tài liệu cũ.
@@ -45,6 +61,9 @@ các khâu sau phải chạy lại, và nếu đổi chunk hay khái niệm thì
 | 04 | đọc nhật ký phản hồi lỗi của pass phụ (12% cặp doc-4) | Claude | 0 | chưa làm |
 | 05 | sửa chất lượng từ tập giữ lại: A2 "Cách giải", C8 bỏ qua khái niệm ngoài nội dung, R17, cạnh khái niệm khung | Claude soạn | cần tập giữ lại mới | chưa soạn |
 | T-01 | chọn 2 tài liệu mới và người gán vàng cho tập giữ lại v4 | **chủ dự án** | 0 | chưa làm |
-| R-01 | nghiên cứu nguồn gốc: Gemini Developer API (giá, giới hạn, cache, Batch), rút gọn ngữ cảnh, độ lệch vị trí → `report/nghien-cuu-v4-gemini-va-rut-gon-ngu-canh-2026-10-04.md` | Claude (tác tử nền) | 0 | đang làm |
+| R-01 | nghiên cứu nguồn gốc: Gemini Developer API (giá, giới hạn, cache, Batch), rút gọn ngữ cảnh, độ lệch vị trí → [báo cáo](../../report/nghien-cuu-v4-gemini-va-rut-gon-ngu-canh-2026-10-04.md) | Claude (tác tử nền) | 0 | **xong 2026-10-04** |
+| 06 | đổi `responseJsonSchema` (đã deprecated) sang `responseFormat` ở bộ chuyển đổi Gemini, kiểm bằng phát lại; xử lý lỗi 402 khi hết tiền nạp trước | nhân viên | 0 | chưa soạn |
+| 07 | thử Flex nhỏ: độ trễ thật, tỉ lệ bị từ chối (503), đầu ra có y hệt Standard không | Claude soạn | dưới 1 USD, chờ duyệt | chưa soạn |
+| 08 | kế hoạch chuyển sang `gemini-3.5-flash-lite` trước 2027-05: đo chất lượng và USD/cuốn | Claude soạn | cần tập giữ lại mới | chưa soạn |
 | R-02 | nghiên cứu ML/DL: lọc cặp trước pass phụ (v4) và học tiên quyết không LLM (seminar) → `report/nghien-cuu-ml-dl-loc-cap-va-tien-quyet-2026-10-04.md` | Claude (tác tử nền) | 0 | đang làm, chủ dự án giao 2026-10-04 |
 | R-03 | nghiên cứu A1: tuỳ chọn tốc độ của docling 2.114 (đọc mã nguồn đã cài), tuỳ chọn nào giữ nguyên đầu ra, nhận dạng công thức chạy tại máy → `report/nghien-cuu-v4-a1-docling-2026-10-04.md`; sau đó Claude đo tại máy (0 USD) | Claude | 0 | đang làm (mở lại nghiên cứu tạm ngưng 2026-10-02) |
