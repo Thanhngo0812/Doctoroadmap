@@ -135,6 +135,8 @@ tiếp ngay trên vé 04 đang dở; 17 sau 10b. Phần R16 đi cùng vé 05, 12
     Lượt sạch (11/11 tầng tái dùng). Tổng quát hoá một phần: doc-4 giữ thứ tự học và độ phủ cạnh, không giữ độ chính xác (bao đóng P 0,58);
     xstk hỏng phạm vi (29/60 cạnh vàng ngoài dãy học do A2 gán mục "Cách giải" là đề cương, lan sang C8). Q3 83%. Lỗi đã truy về khâu
     cho v4: A2, C8, R17, cạnh khái niệm khung ở A8, cấu trúc mục A1/A2, vàng nhiễu.
+  - **T15 giữ lại** (chủ dự án đồng ý): bảng `artifacts/a8-gold/cham-mu-giu-lai-{xstk-ch3-1,doc-4}.xlsx` (26 + 37 cặp, khoảng 1 giờ/người),
+    chờ hai người chấm làm riêng, không dùng AI. Có kết quả thì viết báo cáo tổng kết v3.
 
 **Hiện tại (2026-10-02):**
 - **Đã xong:** 01, 02, 02b, 03, 05, 05b, 06, 07, 08, 09, 09c, 10, 10b, 11, 11b, 14, 14b, 16, 18, 19; 09b đạt phần luật. Thêm 2026-10-03:

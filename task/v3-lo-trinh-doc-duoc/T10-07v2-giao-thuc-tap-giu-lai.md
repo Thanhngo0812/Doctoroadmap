@@ -95,6 +95,10 @@ ghi trong bảng.
 - T16 — Q9, 50 câu neo.
 - T17 — Q8, mạch lạc module.
 - Seed bốc mẫu ghi vào giao thức trước khi bốc.
+- **T15 trên tập giữ lại (chủ dự án đồng ý 2026-10-04, sau khi có điểm):** đo độ chính xác thật vì vàng nhiễu. Bộ tạo
+  `scripts/cham-mu/tao_bang_giu_lai.py`, seed 20261004. Mỗi tài liệu gồm **mọi** cạnh dư hiển thị (không lấy mẫu), 5 cạnh vàng, 8 cặp
+  ngẫu nhiên: xstk 26 cặp (13 dư), doc-4 37 cặp (24 dư). Bảng ở `artifacts/a8-gold/cham-mu-giu-lai-<doc>.xlsx`; chấm bằng
+  `cham_bang_v3.py`. Đây là đo bổ sung sau khi thấy số, báo tách riêng, không thay kết quả chính.
 
 **Đọc:** tôi đọc toàn bộ hai lộ trình (tên module, dòng "cần:", đối chiếu sách) và ghi nhận xét có ví dụ.
 
