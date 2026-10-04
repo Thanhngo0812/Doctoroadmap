@@ -19,6 +19,22 @@
 - Mọi sửa chất lượng của v4 cần **tập giữ lại mới**: tài liệu mới và vàng mới, chọn trước khi sửa. Đổi tiền và thời gian mà đầu ra y hệt
   (như v4-01) thì không cần.
 
+## Phạm vi theo khâu (cả Pha A, A1 → A10)
+
+v4 là đợt tiếp theo của dự án, phủ mọi khâu. Mỗi khâu có thể có việc về thời gian, tiền hoặc chất lượng. Việc đổi đầu ra của một khâu thì
+các khâu sau phải chạy lại, và nếu đổi chunk hay khái niệm thì phải ánh xạ lại vàng, nên các việc như vậy gom vào một lượt chạy lại.
+
+| khâu | thời gian / tiền | chất lượng | nguồn bằng chứng |
+|---|---|---|---|
+| A1 đọc PDF (docling 2.114) | khoảng 7,2 giây/trang, tức khoảng 48 phút cho sách 400 trang: luồng, pipeline song song theo trang, tắt OCR khi PDF có lớp chữ, chế độ bảng | công thức thành `[formula]` (doc-1: 71% cửa sổ định nghĩa); cây mục dạng bài giảng §1, §2 (xstk) | nghiên cứu A1 tạm ngưng 2026-10-02, nay mở lại (R-03); script đo dở ở `tmp/thu-a1/` |
+| A2 chunk, vai trò vùng | nhỏ | mục "Cách giải" bị gán đề cương (xstk 48/126 đoạn) | kết quả tập giữ lại |
+| A3 trích khái niệm | khoảng 0,8 USD/cuốn | thiếu kết quả có tên (vé 13); độ hạt | v3 |
+| A4/A5 gộp, mô tả | khoảng 0,6 USD/cuốn | — | — |
+| A6 cụm, nhắc tên | nhỏ; số cặp ứng viên quyết định số lời gọi pass phụ | diễn đạt khác không thành cặp | v3 |
+| A7, C8 neo, A9'' danh tính | khoảng 0,8 USD/cuốn | C8 không hỏi `kind` với khái niệm chỉ có căn cứ ngoài nội dung; neo sai câu (doc-4 "Kết cấu") | tập giữ lại, vé 21 |
+| A8 pass chính, pass phụ | **khoảng 48 USD/cuốn, nhiều giờ**: v4-01, v4-03, bộ lọc cặp (R-02) | cạnh khái niệm khung (doc-4) | nghiên cứu tiền và thời gian |
+| A9, A10, tên | gần 0 | R17 làm mềm cạnh ngược sách cả khi đúng (5/11 cạnh ngược doc-4); tên module theo cây mục hỏng | tập giữ lại |
+
 ## Vé
 
 | vé | việc | ai | chi phí mô hình | trạng thái |
@@ -31,3 +47,4 @@
 | T-01 | chọn 2 tài liệu mới và người gán vàng cho tập giữ lại v4 | **chủ dự án** | 0 | chưa làm |
 | R-01 | nghiên cứu nguồn gốc: Gemini Developer API (giá, giới hạn, cache, Batch), rút gọn ngữ cảnh, độ lệch vị trí → `report/nghien-cuu-v4-gemini-va-rut-gon-ngu-canh-2026-10-04.md` | Claude (tác tử nền) | 0 | đang làm |
 | R-02 | nghiên cứu ML/DL: lọc cặp trước pass phụ (v4) và học tiên quyết không LLM (seminar) → `report/nghien-cuu-ml-dl-loc-cap-va-tien-quyet-2026-10-04.md` | Claude (tác tử nền) | 0 | đang làm, chủ dự án giao 2026-10-04 |
+| R-03 | nghiên cứu A1: tuỳ chọn tốc độ của docling 2.114 (đọc mã nguồn đã cài), tuỳ chọn nào giữ nguyên đầu ra, nhận dạng công thức chạy tại máy → `report/nghien-cuu-v4-a1-docling-2026-10-04.md`; sau đó Claude đo tại máy (0 USD) | Claude | 0 | đang làm (mở lại nghiên cứu tạm ngưng 2026-10-02) |
