@@ -42,7 +42,7 @@ các khâu sau phải chạy lại, và nếu đổi chunk hay khái niệm thì
 
 | khâu | thời gian / tiền | chất lượng | nguồn bằng chứng |
 |---|---|---|---|
-| A1 đọc PDF (docling 2.114) | khoảng 7,2 giây/trang, tức khoảng 48 phút cho sách 400 trang: luồng, pipeline song song theo trang, tắt OCR khi PDF có lớp chữ, chế độ bảng | công thức thành `[formula]` (doc-1: 71% cửa sổ định nghĩa); cây mục dạng bài giảng §1, §2 (xstk) | nghiên cứu A1 tạm ngưng 2026-10-02, nay mở lại (R-03); script đo dở ở `tmp/thu-a1/` |
+| A1 đọc PDF (docling 2.114) | khoảng 7,2 giây/trang, tức khoảng 48 phút cho sách 400 trang. Pipeline song song theo trang **đã là mặc định**. Đòn bẩy chính: **OCR** (docling OCR mọi ảnh phủ ≥ 5% trang, kể cả trang có lớp chữ; engine tự chọn không đọc được dấu tiếng Việt và chữ OCR trong hình không tới adapter) và **số luồng** (mặc định 4, máy có 8 nhân) | công thức thành `[formula]`; cây mục dạng §1, §2; tách âm tiết doc-4 (`enforce_same_font`) | [R-03](../../report/nghien-cuu-v4-a1-docling-2026-10-04.md); script đo dở ở `tmp/thu-a1/` |
 | A2 chunk, vai trò vùng | nhỏ | mục "Cách giải" bị gán đề cương (xstk 48/126 đoạn) | kết quả tập giữ lại |
 | A3 trích khái niệm | khoảng 0,8 USD/cuốn | thiếu kết quả có tên (vé 13); độ hạt | v3 |
 | A4/A5 gộp, mô tả | khoảng 0,6 USD/cuốn | — | — |
@@ -66,4 +66,6 @@ các khâu sau phải chạy lại, và nếu đổi chunk hay khái niệm thì
 | 07 | thử Flex nhỏ: độ trễ thật, tỉ lệ bị từ chối (503), đầu ra có y hệt Standard không | Claude soạn | dưới 1 USD, chờ duyệt | chưa soạn |
 | 08 | kế hoạch chuyển sang `gemini-3.5-flash-lite` trước 2027-05: đo chất lượng và USD/cuốn | Claude soạn | cần tập giữ lại mới | chưa soạn |
 | R-02 | nghiên cứu ML/DL: lọc cặp trước pass phụ (v4) và học tiên quyết không LLM (seminar) → `report/nghien-cuu-ml-dl-loc-cap-va-tien-quyet-2026-10-04.md` | Claude (tác tử nền) | 0 | đang làm, chủ dự án giao 2026-10-04 |
-| R-03 | nghiên cứu A1: tuỳ chọn tốc độ của docling 2.114 (đọc mã nguồn đã cài), tuỳ chọn nào giữ nguyên đầu ra, nhận dạng công thức chạy tại máy → `report/nghien-cuu-v4-a1-docling-2026-10-04.md`; sau đó Claude đo tại máy (0 USD) | Claude | 0 | đang làm (mở lại nghiên cứu tạm ngưng 2026-10-02) |
+| R-03 | nghiên cứu A1: tuỳ chọn tốc độ của docling 2.114 (đọc mã nguồn đã cài), tuỳ chọn nào giữ nguyên đầu ra, nhận dạng công thức chạy tại máy → [báo cáo](../../report/nghien-cuu-v4-a1-docling-2026-10-04.md) | Claude (tác tử nền) | 0 | **xong 2026-10-04** |
+| 09 | khoá cache parse gồm **mọi** tuỳ chọn pipeline docling và engine OCR ghi đích danh (không để tự chọn), để đổi tuỳ chọn không âm thầm dùng lại parse cũ; làm trước mọi đổi A1 | nhân viên | 0 | chưa soạn |
+| 10 | đo A1 tại máy (0 USD): cấu hình hiện tại chạy hai lần (có tất định không), số luồng 8, tắt OCR, rồi các tuỳ chọn khác; kiểm đầu ra y hệt ở bốn tầng (JSON docling, từng mục, adapter, tập `chunk_id`); chạy lúc máy rảnh | Claude | 0 | chưa làm |
