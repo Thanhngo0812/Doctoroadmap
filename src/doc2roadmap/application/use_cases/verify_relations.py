@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.relation_prompt import RELATION_SCHEMA, relation_prompt_hash, relation_system_prompt
@@ -44,6 +45,7 @@ class VerifyRelations:
             return config["chunks_version"]
         return self.store.load_graph(doc_id, config["edges_version"]).manifest["config"]["chunks_version"]
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         upstream = upstream if upstream is not None else self._upstream(doc_id, self.store.load_latest_graph(doc_id))
         if upstream.payload.get("stage") not in ("teaching", "validated"):
@@ -90,6 +92,7 @@ class VerifyRelations:
         checkpoint_id = "relation-" + config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         if checkpoint is not None and checkpoint.get("source_hash") == source_hash:
+            resume_measurements(checkpoint)
             verdicts = dict(checkpoint["verdicts"])
             decision_log = list(checkpoint["decision_log"])
             metrics = Counter(checkpoint["relation_model_metrics"])

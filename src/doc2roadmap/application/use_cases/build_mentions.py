@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from time import perf_counter
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.unicode_text import TEXT_RULE_VERSION
@@ -43,6 +44,7 @@ class BuildMentions:
             artifact = self.store.load_graph(doc_id, upstream)
         return artifact
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         return self._run(doc_id, upstream=upstream)
 

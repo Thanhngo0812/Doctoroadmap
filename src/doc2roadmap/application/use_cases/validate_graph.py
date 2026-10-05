@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.global_validation import apply_resolved_nodes, strongly_connected_components, validate_graph_rules
@@ -22,6 +23,7 @@ class ValidateGraph:
             raise ValueError("tầng validate cần artifact edges hoàn tất cả pass chính và pass phụ")
         return artifact
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         return self._run(doc_id, upstream=upstream)
 

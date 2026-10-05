@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import (
@@ -114,6 +115,7 @@ class BuildMainEdges:
             ],
         }
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         return self._run(doc_id, upstream=upstream)
 
@@ -186,6 +188,7 @@ class BuildMainEdges:
         checkpoint_id = "main-" + base_config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
+        resume_measurements(checkpoint if resumable else None)
         if resumable:
             completed = set(checkpoint.get("completed_main_sessions", []))
             edges = list(checkpoint.get("main_edges", []))

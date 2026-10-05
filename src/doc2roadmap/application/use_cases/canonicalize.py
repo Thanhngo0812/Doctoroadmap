@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.application.prerequisite_prompt import (
     PRICING_SOURCE,
@@ -24,6 +25,7 @@ class Canonicalize:
         if reasoning and embedding is None:
             raise ValueError("A4 đầy đủ cần embedding tên")
 
+    @measure_stage
     def execute(self, doc_id, *, a4_gold_coverage=None, gold_sheet_id=None,
                 declared_language=None):
         if declared_language not in {None, "vi", "en"}:

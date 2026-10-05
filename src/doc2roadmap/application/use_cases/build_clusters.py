@@ -3,6 +3,7 @@ from __future__ import annotations
 from importlib.metadata import version
 from time import perf_counter
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.application.leiden_cluster import cluster_nodes, weighted_concept_density
 from doc2roadmap.domain.canonical import digest
@@ -30,6 +31,7 @@ class BuildClusters:
         self.seed = seed
         self.concept_cap = concept_cap
 
+    @measure_stage
     def execute(self, doc_id):
         return self._run(doc_id)
 

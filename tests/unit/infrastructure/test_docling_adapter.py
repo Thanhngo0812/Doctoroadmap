@@ -10,6 +10,11 @@ from doc2roadmap.infrastructure.parsing import DoclingParser
 from tests.conftest import WordCounter, load_docling_fixture, splitter
 
 
+def test_page_count_includes_pages_with_no_extracted_nodes():
+    document = SimpleNamespace(iterate_items=lambda: iter([]), texts=[], pages={1: object(), 2: object(), 3: object()})
+    assert DoclingParser().adapt(document, "book.pdf").tree.parse_stats["page_count"] == 3
+
+
 def test_math_section_mislabelled_as_page_header_is_recovered_but_running_headers_stay_out():
     def item(text, label, y, page=1):
         return SimpleNamespace(text=text, label=label, level=1,

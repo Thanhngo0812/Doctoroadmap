@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
@@ -74,6 +75,7 @@ def verify_identity_pairs(store, model, doc_id, inputs, *, generation, concurren
     checkpoint_id = "identity-verify-" + digest([prompt_hash, source_hash])
     checkpoint = store.load_checkpoint(doc_id, checkpoint_id)
     resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
+    resume_measurements(checkpoint if resumable else None)
     answers = dict(checkpoint["answers"]) if resumable else {}
     log = list(checkpoint["decision_log"]) if resumable else []
     metrics = Counter(checkpoint["metrics"]) if resumable else Counter()
@@ -122,6 +124,7 @@ class JudgeIdentity:
         self.semantic_top_k = semantic_top_k
         self.semantic_min_similarity = semantic_min_similarity
 
+    @measure_stage
     def execute(self, doc_id, *, upstream):
         return self._run(doc_id, upstream=upstream)
 
@@ -172,6 +175,7 @@ class JudgeIdentity:
         checkpoint_id = "identity-" + first_config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
+        resume_measurements(checkpoint if resumable else None)
         answers = dict(checkpoint["answers"]) if resumable else {}
         decision_log = list(checkpoint["decision_log"]) if resumable else []
         metrics = Counter(checkpoint["metrics"]) if resumable else Counter()

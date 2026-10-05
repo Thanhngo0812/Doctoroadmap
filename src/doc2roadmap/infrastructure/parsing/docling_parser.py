@@ -3,9 +3,11 @@ from __future__ import annotations
 import hashlib
 import importlib.metadata
 import json
+import math
 import re
 import tempfile
 from collections import Counter
+from dataclasses import asdict, dataclass
 from io import BytesIO
 from itertools import groupby
 from pathlib import Path
@@ -125,20 +127,107 @@ _SYMBOL_TRANSLATION = {0xF000 + code: character for code, character in _SYMBOL_B
 PDF_BACKENDS = ("docling-parse", "pypdfium2")
 
 
+@dataclass(frozen=True, slots=True)
+class PipelineConfig:
+    """Docling 2.114 defaults, with its current automatic OCR pinned to torch.
+
+    Only non-default output options enter the legacy parse key; thread count
+    is execution metadata. Add future page-partition options here when used.
+    """
+    images_scale: float = IMAGE_SCALE
+    generate_picture_images: bool = True
+    do_ocr: bool = True
+    ocr_engine: str = "rapidocr"
+    ocr_backend: str = "torch"
+    bitmap_area_threshold: float = 0.05
+    force_full_page_ocr: bool = False
+    do_table_structure: bool = True
+    table_mode: str = "accurate"
+    do_cell_matching: bool = True
+    layout_model: str = "heron"
+    num_threads: int | None = None
+    ocr_batch_size: int = 4
+    layout_batch_size: int = 4
+    table_batch_size: int = 4
+    queue_max_size: int = 100
+    batch_polling_interval_seconds: float = 0.5
+
+    def __post_init__(self) -> None:
+        if not all(math.isfinite(n) for n in (self.images_scale, self.bitmap_area_threshold,
+                                             self.batch_polling_interval_seconds)):
+            raise ValueError("tuỳ chọn pipeline phải hữu hạn")
+        if self.images_scale <= 0 or not 0 <= self.bitmap_area_threshold <= 1:
+            raise ValueError("images_scale phải > 0; bitmap_area_threshold thuộc [0, 1]")
+        if self.ocr_engine not in {"rapidocr", "easyocr"}:
+            raise ValueError("ocr_engine phải là rapidocr hoặc easyocr (không tự chọn theo môi trường)")
+        if self.ocr_backend not in {"torch", "onnxruntime", "openvino", "paddle"}:
+            raise ValueError("ocr_backend không hợp lệ")
+        if self.table_mode not in {"accurate", "fast"}:
+            raise ValueError("table_mode phải là accurate hoặc fast")
+        if self.layout_model not in {"heron", "heron-101", "egret-medium", "egret-large", "v2"}:
+            raise ValueError("layout_model không hợp lệ")
+        if any(n <= 0 for n in (self.ocr_batch_size, self.layout_batch_size,
+                                self.table_batch_size, self.queue_max_size)):
+            raise ValueError("batch size và queue size phải > 0")
+        if self.num_threads is not None and self.num_threads <= 0:
+            raise ValueError("num_threads phải > 0")
+        if self.batch_polling_interval_seconds <= 0:
+            raise ValueError("batch_polling_interval_seconds phải > 0")
+        if self.ocr_engine != "rapidocr" and self.ocr_backend != "torch":
+            raise ValueError("ocr_backend chỉ áp dụng cho rapidocr")
+
+    def cache_options(self) -> dict[str, Any]:
+        defaults = asdict(PipelineConfig())
+        return {key: value for key, value in asdict(self).items()
+                if key != "num_threads" and value != defaults[key]}
+
+    def options(self) -> Any:
+        from docling.datamodel.accelerator_options import AcceleratorOptions
+        from docling.datamodel import layout_model_specs
+        from docling.datamodel.pipeline_options import (
+            EasyOcrOptions, LayoutOptions, PdfPipelineOptions,
+            RapidOcrOptions, TableFormerMode, TableStructureOptions,
+        )
+
+        values = asdict(self)
+        threads = values.pop("num_threads")
+        engine = values.pop("ocr_engine")
+        backend = values.pop("ocr_backend")
+        ocr = {key: values.pop(key) for key in ("bitmap_area_threshold", "force_full_page_ocr")}
+        values["ocr_options"] = (RapidOcrOptions(backend=backend, **ocr) if engine == "rapidocr"
+                                 else EasyOcrOptions(**ocr))
+        values["table_structure_options"] = TableStructureOptions(
+            mode=TableFormerMode(values.pop("table_mode")),
+            do_cell_matching=values.pop("do_cell_matching"),
+        )
+        model = values.pop("layout_model").upper().replace("-", "_")
+        values["layout_options"] = LayoutOptions(
+            model_spec=getattr(layout_model_specs, f"DOCLING_LAYOUT_{model}")
+        )
+        if threads is not None:
+            values["accelerator_options"] = AcceleratorOptions(num_threads=threads)
+        return PdfPipelineOptions(**values)
+
+
 class DoclingParser:
-    def __init__(self, pdf_backend: str = "docling-parse") -> None:
+    def __init__(self, pdf_backend: str = "docling-parse", *,
+                 pipeline: PipelineConfig | None = None) -> None:
         if pdf_backend not in PDF_BACKENDS:
             raise ValueError(f"pdf_backend phải là một trong {PDF_BACKENDS}")
         self.pdf_backend = pdf_backend
+        self._pipeline = pipeline or PipelineConfig()
         self._converter_instance: Any | None = None
 
+    @property
+    def pipeline(self) -> PipelineConfig:
+        return self._pipeline
+
     @staticmethod
-    def _new_converter(backend: str = "docling-parse") -> Any:
+    def _new_converter(backend: str = "docling-parse", pipeline: PipelineConfig | None = None) -> Any:
         from docling.datamodel.base_models import InputFormat
-        from docling.datamodel.pipeline_options import PdfPipelineOptions
         from docling.document_converter import DocumentConverter, PdfFormatOption
 
-        options = PdfPipelineOptions(images_scale=IMAGE_SCALE, generate_picture_images=True)
+        options = (pipeline or PipelineConfig()).options()
         extra: dict[str, Any] = {}
         if backend == "pypdfium2":
             from docling.backend.pypdfium2_backend import PyPdfiumDocumentBackend
@@ -150,7 +239,9 @@ class DoclingParser:
 
     def _get_converter(self) -> Any:
         if self._converter_instance is None:
-            self._converter_instance = (self._new_converter() if self.pdf_backend == "docling-parse"
+            self._converter_instance = (self._new_converter(self.pdf_backend, self.pipeline)
+                                        if self.pipeline != PipelineConfig()
+                                        else self._new_converter() if self.pdf_backend == "docling-parse"
                                         else self._new_converter(self.pdf_backend))
         return self._converter_instance
 
@@ -165,7 +256,15 @@ class DoclingParser:
 
     @property
     def image_scale(self) -> float:
-        return IMAGE_SCALE
+        return self.pipeline.images_scale
+
+    @property
+    def pipeline_config(self) -> dict[str, Any]:
+        return self.pipeline.cache_options()
+
+    @property
+    def runtime_config(self) -> dict[str, Any]:
+        return {"num_threads": self.pipeline.options().accelerator_options.num_threads}
 
     @staticmethod
     def _label(item: Any) -> str:
@@ -583,6 +682,7 @@ class DoclingParser:
                 nodes=nodes,
                 structure_warnings=warnings,
                 parse_stats={
+                    "page_count": len(document.pages) if getattr(document, "pages", None) is not None else None,
                     "items_total": len(items),
                     "nodes_kept": len(nodes),
                     "dropped": dict(sorted(dropped.items())),

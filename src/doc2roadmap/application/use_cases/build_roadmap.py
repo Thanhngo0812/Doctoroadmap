@@ -4,6 +4,7 @@ import html
 import json
 import unicodedata
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.roadmap import reviewed_sessions
@@ -149,6 +150,7 @@ class BuildRoadmap:
             version = self.store.load_graph(doc_id, config["edges_version"]).manifest["config"]["chunks_version"]
         return self.store.load_role_chunks(doc_id, version)
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         return self._run(doc_id, upstream=upstream)
 

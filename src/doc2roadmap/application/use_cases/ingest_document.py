@@ -6,8 +6,10 @@ import re
 import unicodedata
 from dataclasses import dataclass
 from pathlib import Path
+from time import perf_counter
 from typing import Any
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.ports import ArtifactStore, DocumentParser
 from doc2roadmap.application.windows import assemble_windows
 from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, assign_section_roles, chunk_document
@@ -28,6 +30,21 @@ def validate_doc_id(doc_id: str) -> str:
 def _hash(value: Any) -> str:
     payload = json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def parse_config(parser: DocumentParser, strip_lines=()) -> dict[str, Any]:
+    config = {"adapter": parser.identifier, "adapter_version": parser.adapter_version,
+              "image_scale": parser.image_scale}
+    pipeline = getattr(parser, "pipeline_config", {})
+    if pipeline:
+        config["pipeline"] = pipeline
+    patterns = list(dict.fromkeys(" ".join(value.split()) for value in strip_lines))
+    if any(not value for value in patterns):
+        raise ValueError("strip_lines không được chứa mẫu rỗng")
+    if patterns:
+        config["strip_lines"] = patterns
+        config["strip_line_algorithm"] = "normalized-substring-all-fields-v3"
+    return config
 
 
 def refresh_chunk_roles(store: ArtifactStore, doc_id: str, *, version: int | None = None):
@@ -171,6 +188,7 @@ class IngestDocument:
         self.counter = counter
         self.splitter = splitter
 
+    @measure_stage
     def execute(
         self,
         source: bytes,
@@ -204,14 +222,7 @@ class IngestDocument:
             raise ValueError("strip_lines không được chứa mẫu rỗng")
 
         source_hash = hashlib.sha256(source).hexdigest()
-        parser_config = {
-            "adapter": self.parser.identifier,
-            "adapter_version": self.parser.adapter_version,
-            "image_scale": self.parser.image_scale,
-        }
-        if normalized_patterns:
-            parser_config["strip_lines"] = normalized_patterns
-            parser_config["strip_line_algorithm"] = "normalized-substring-all-fields-v3"
+        parser_config = parse_config(self.parser, normalized_patterns)
         parser_config_hash = _hash(parser_config)
         config = {
             "parser": parser_config,
@@ -239,8 +250,11 @@ class IngestDocument:
         stored_parse = self.store.find_parse(doc_id, source_hash, parser_config_hash)
         source_seen_before = stored_parse is not None
         stripped_line_count = 0
+        parse_runtime_seconds = 0.0
         if stored_parse is None:
+            parse_started = perf_counter()
             parsed = self.parser.parse(source, filename)
+            parse_runtime_seconds = perf_counter() - parse_started
             stripped_line_count = _strip_line_patterns(parsed.tree, normalized_patterns)
             manifest_fields = (
                 {
@@ -250,6 +264,8 @@ class IngestDocument:
                 if normalized_patterns
                 else None
             )
+            manifest_fields = {**(manifest_fields or {}), "parse_runtime_seconds": parse_runtime_seconds,
+                               "parser_runtime": getattr(self.parser, "runtime_config", {})}
             stored_parse = self.store.save_parse(
                 doc_id,
                 source_hash,
@@ -288,7 +304,10 @@ class IngestDocument:
         )
         windows = assemble_windows(result.chunks)
         quality = _text_quality([chunk.text for chunk in result.chunks])
-        manifest_fields = {**(manifest_fields or {}), "text_quality": quality}
+        manifest_fields = {**(manifest_fields or {}), "text_quality": quality,
+                           "page_count": stored_parse.tree.parse_stats.get("page_count"),
+                           "parse_runtime_seconds": parse_runtime_seconds,
+                           "parse_reused": source_seen_before}
         stored_chunks = self.store.save_chunks(
             doc_id,
             source_hash,

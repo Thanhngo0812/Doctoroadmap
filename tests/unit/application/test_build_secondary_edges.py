@@ -72,6 +72,26 @@ class PairModel(Model):
         })
 
 
+@pytest.mark.parametrize("decision", ["no_direct_relation", "defer", "indirect_path", None])
+def test_first_order_final_never_asks_second_order(decision):
+    class FinalModel(Model):
+        def ask_json(self, prompt, *, response_schema):
+            data = json.loads(prompt.split("\nCorrect this validation error:")[0])
+            self.calls.append(data)
+            return SimpleNamespace(payload={} if decision is None else {
+                "pair_id": data["dossier"]["pair_id"],
+                "decision": decision, "flags": [],
+            })
+
+    store, model = Store(), FinalModel()
+    artifact, _ = BuildSecondaryEdges(store, model, concurrency=2).execute("doc")
+    assert len(model.calls) == (2 if decision is None else 1)
+    assert all(row["session_id"].endswith("_left") for row in model.calls)
+    assert artifact.payload["secondary_edges"] == []
+    assert artifact.payload["secondary_log"][0]["status"] == ("deferred" if decision in (None, "defer") else "rejected")
+    assert artifact.payload["secondary_log"][0]["reason"] == "first_order_final"
+
+
 class Store:
     def __init__(self):
         nodes = [

@@ -3,6 +3,7 @@ from collections import Counter, defaultdict
 from copy import deepcopy
 
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.application.spend_guard import SpendGuard
@@ -96,6 +97,7 @@ class LabelChunkRoles:
     def plan(self, doc_id, *, chunks_version=None, transfer_from_chunks_version=None):
         return self._run(doc_id, chunks_version, transfer_from_chunks_version, planning=True)
 
+    @measure_stage
     def execute(self, doc_id, *, chunks_version=None, transfer_from_chunks_version=None):
         return self._run(doc_id, chunks_version, transfer_from_chunks_version, planning=False)
 

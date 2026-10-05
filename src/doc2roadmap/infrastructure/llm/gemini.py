@@ -11,6 +11,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
+from doc2roadmap.application.stage_measurements import record_model_call, record_usage
 from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter, _Permit
 from doc2roadmap.application.ports.extraction import (
     ConversationTurn,
@@ -127,6 +128,7 @@ class GeminiEntityExtractor:
         response, permit = self._post(request, estimated_tokens=estimated_tokens)
         try:
             payload = json.loads(response)
+            record_usage(payload.get("usageMetadata", {}))
             candidates = payload["candidates"]
             parts = candidates[0]["content"]["parts"]
             text = "".join(part.get("text", "") for part in parts)
@@ -148,6 +150,7 @@ class GeminiEntityExtractor:
         for attempt in range(attempts):
             permit = self.limiter.acquire(estimated_tokens) if self.limiter is not None else None
             try:
+                record_model_call()
                 with urlopen(request, timeout=self._timeout_seconds) as response:
                     value = response.read()
                 if self.limiter is not None:

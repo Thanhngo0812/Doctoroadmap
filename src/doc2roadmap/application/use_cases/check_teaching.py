@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.teaching_prompt import TEACHING_SCHEMA, teaching_prompt_hash, teaching_system_prompt
@@ -39,6 +40,7 @@ class CheckTeachingSources:
             artifact = self.store.load_graph(doc_id, upstream)
         return artifact
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         validated = upstream if upstream is not None else self._validated(doc_id, self.store.load_latest_graph(doc_id))
         if validated.payload.get("stage") != "validated":
@@ -68,6 +70,7 @@ class CheckTeachingSources:
         checkpoint_id = "teaching-" + config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         if checkpoint is not None and checkpoint.get("source_hash") == source_hash:
+            resume_measurements(checkpoint)
             completed = set(checkpoint["completed_nodes"])
             teaching_log = list(checkpoint["teaching_log"])
             decision_log = list(checkpoint["decision_log"])

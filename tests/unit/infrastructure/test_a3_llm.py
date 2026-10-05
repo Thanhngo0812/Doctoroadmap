@@ -114,6 +114,40 @@ def test_gemini_exposes_usage_metadata(monkeypatch) -> None:
     assert reply.usage == {"promptTokenCount": 12, "candidatesTokenCount": 3, "thoughtsTokenCount": 2, "totalTokenCount": 17}
 
 
+def test_stage_counts_http_retry_json_repair_and_parallel_calls(tmp_path, monkeypatch):
+    from threading import Barrier, local
+    from doc2roadmap.application.stage_measurements import measure_stage
+    from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
+    from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+
+    state = local()
+    barrier = Barrier(2)
+    def respond(request, timeout):
+        state.attempt = getattr(state, "attempt", 0) + 1
+        if state.attempt == 1:
+            barrier.wait(timeout=5)
+            raise HTTPError(request.full_url, 429, "busy", {}, None)
+        return _response("not json" if state.attempt == 2 else '{"entities":[]}',
+                         {"promptTokenCount": 10, "candidatesTokenCount": 3, "thoughtsTokenCount": 2})
+    monkeypatch.setattr("doc2roadmap.infrastructure.llm.gemini.urlopen", respond)
+    monkeypatch.setattr("doc2roadmap.infrastructure.llm.gemini.sleep", lambda _: None)
+    store = JsonArtifactStore(tmp_path)
+    model = GeminiEntityExtractor("fake-key", max_retries=1)
+    @measure_stage
+    def execute():
+        jobs = [ModelJob("test", model, "system", "hash", {"item": i}, SCHEMA, lambda _: None) for i in range(2)]
+        values, _, _ = run_model_jobs(jobs, [], concurrency=2)
+        assert values == [{"entities": []}, {"entities": []}]
+        return store.save_graph("book", "s", "c", {}, {}, upstream_version=1)
+    stats = execute().manifest["stats"]
+    # Two requests, each with 429 -> malformed JSON -> repair, regardless of pool scheduling.
+    assert stats["model_calls"] == 6
+    assert stats["usage_responses"] == 4
+    assert stats["input_tokens"] == 40
+    assert stats["output_tokens"] == 20
+    assert stats["token_usage_complete"] is False  # don't silently claim usage for missing 429 responses
+
+
 def test_session_repairs_malformed_json_once_in_the_same_conversation(
     monkeypatch,
 ) -> None:

@@ -140,6 +140,35 @@ def test_embedding_replay_never_falls_through_to_network(tmp_path) -> None:
         replay.embed([EmbeddingRequest("unknown")])
 
 
+def test_vertex_embedding_counts_parallel_retries_and_reported_tokens(tmp_path, monkeypatch):
+    from threading import Barrier, local
+    from types import SimpleNamespace
+    from urllib.error import HTTPError
+    from doc2roadmap.application.stage_measurements import measure_stage
+    from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+    state, barrier = local(), Barrier(2)
+    def respond(request, timeout):
+        if not getattr(state, "retried", False):
+            state.retried = True
+            barrier.wait(timeout=5)
+            raise HTTPError(request.full_url, 429, "busy", {}, None)
+        return _Response({"predictions": [{"embeddings": {"values": [3, 4], "statistics": {"token_count": 6}}}]})
+    monkeypatch.setattr("doc2roadmap.infrastructure.embedding.gemini.urlopen", respond)
+    monkeypatch.setattr("doc2roadmap.infrastructure.embedding.gemini.sleep", lambda _: None)
+    embedding = GeminiEmbedding("fake-key", output_dimensionality=2, batch_size=2, max_retries=1)
+    embedding._vertex = SimpleNamespace(url=lambda *args: "https://fake.invalid/predict", headers=lambda: {})
+    store = JsonArtifactStore(tmp_path)
+    @measure_stage
+    def execute():
+        assert embedding.embed([EmbeddingRequest("one"), EmbeddingRequest("two")]) == [[0.6, 0.8], [0.6, 0.8]]
+        return store.save_retrieval("book", "s", "c", {}, {}, upstream_version=1)
+    stats = execute().manifest["stats"]
+    assert (stats["model_calls"], stats["input_tokens"], stats["output_tokens"]) == (4, 12, 0)
+    assert stats["usage_responses"] == 2
+    assert stats["embedding_model_calls"] == 4
+    assert stats["embedding_input_tokens"] == 12
+
+
 def test_committed_embedding_fixture_has_all_reviewed_chunks() -> None:
     fixture = __import__("pathlib").Path("tests/fixtures/embedding/a3-chunks.json")
     payload = json.loads(fixture.read_text(encoding="utf-8"))

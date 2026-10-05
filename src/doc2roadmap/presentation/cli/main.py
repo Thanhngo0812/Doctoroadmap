@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -28,6 +29,7 @@ from doc2roadmap.application.use_cases.canonicalize import Canonicalize
 from doc2roadmap.domain.canonical import compare_nodes
 from doc2roadmap.application.use_cases.a4_gold import gold_items, write_gold_sheet, load_gold, evaluate_canonical
 from doc2roadmap.application.use_cases import a8_score
+from doc2roadmap.infrastructure.parsing.docling_parser import PipelineConfig
 from doc2roadmap.application.use_cases.build_roadmap import render_roadmap_html, target_roadmap
 from doc2roadmap.application.use_cases.a8_gold import (
     adjudication_rows,
@@ -138,6 +140,19 @@ def _parser() -> argparse.ArgumentParser:
                         help="bộ đọc PDF; pypdfium2 cho PDF font tiếng Việt cũ bị tách rời âm tiết")
     ingest.add_argument("--heading-scheme", choices=["vn-textbook"], default=None,
                         help="thang tiêu đề Phần → Chương → I- → 1. → a) của giáo trình tiếng Việt")
+    ingest.add_argument("--dry-run", action="store_true", help="chỉ kiểm cache parse; không parse/cắt chunk/ghi artifact")
+    defaults = PipelineConfig()
+    for name in ("do_ocr", "generate_picture_images", "force_full_page_ocr", "do_table_structure", "do_cell_matching"):
+        ingest.add_argument("--" + name.replace("_", "-"), action=argparse.BooleanOptionalAction,
+                            default=getattr(defaults, name))
+    for name in ("images_scale", "bitmap_area_threshold", "batch_polling_interval_seconds"):
+        ingest.add_argument("--" + name.replace("_", "-"), type=float, default=getattr(defaults, name))
+    for name in ("num_threads", "ocr_batch_size", "layout_batch_size", "table_batch_size", "queue_max_size"):
+        ingest.add_argument("--" + name.replace("_", "-"), type=int, default=getattr(defaults, name))
+    ingest.add_argument("--ocr-engine", choices=("rapidocr", "easyocr"), default=defaults.ocr_engine)
+    ingest.add_argument("--ocr-backend", choices=("torch", "onnxruntime", "openvino", "paddle"), default=defaults.ocr_backend)
+    ingest.add_argument("--table-mode", choices=("accurate", "fast"), default=defaults.table_mode)
+    ingest.add_argument("--layout-model", choices=("heron", "heron-101", "egret-medium", "egret-large", "v2"), default=defaults.layout_model)
     ingest.add_argument(
         "--strip-line",
         action="append",
@@ -190,10 +205,24 @@ def _parser() -> argparse.ArgumentParser:
 
 
 def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None,
-            pdf_backend: str = "docling-parse", heading_scheme: str | None = None) -> None:
+            pdf_backend: str = "docling-parse", heading_scheme: str | None = None,
+            pipeline: PipelineConfig | None = None, dry_run: bool = False) -> None:
     if not path.is_file():
         raise FileNotFoundError(f"không đọc được file: {path}")
-    use_case, settings = build_ingest(pdf_backend)
+    use_case, settings = (build_ingest(pdf_backend) if pipeline is None
+                          else build_ingest(pdf_backend, pipeline=pipeline))
+    if dry_run:
+        from doc2roadmap.application.use_cases.ingest_document import _hash, parse_config, validate_doc_id
+        validate_doc_id(doc_id)
+        if path.suffix.lower() not in {".pdf", ".docx"} or path.stat().st_size == 0:
+            raise ValueError("cần file PDF/DOCX không rỗng")
+        config = parse_config(use_case.parser, strip_lines or [])
+        stored = use_case.store.find_parse(doc_id, hashlib.sha256(path.read_bytes()).hexdigest(), _hash(config))
+        _json({"doc_id": doc_id, "parse": "tái dùng" if stored else "cần parse mới",
+               "parser_config_hash": _hash(config), "parser_config": config,
+               "parse_version": stored.version if stored else None,
+               "parser_runtime": stored.manifest.get("parser_runtime", "chưa ghi ở artifact cũ") if stored else None})
+        return
     summary = use_case.execute(
         path.read_bytes(),
         path.name,
@@ -522,7 +551,9 @@ def main(argv: list[str] | None = None) -> int:
             print(json.dumps(payload,ensure_ascii=False,indent=2))
         elif args.command == "ingest":
             _ingest(args.file, args.doc_id, strip_lines=args.strip_line, pdf_backend=args.pdf_backend,
-                    heading_scheme=args.heading_scheme)
+                    heading_scheme=args.heading_scheme,
+                    pipeline=PipelineConfig(**{name: getattr(args, name) for name in PipelineConfig.__dataclass_fields__}),
+                    dry_run=args.dry_run)
         elif args.command == "inspect":
             _inspect(args.doc_id)
         elif args.command == "extract":

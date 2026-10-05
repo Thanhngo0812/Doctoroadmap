@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.prompt_library import load_prompt
@@ -53,6 +54,7 @@ class FindImplicitPrerequisites:
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 2048}
         self.k = k
 
+    @measure_stage
     def execute(self, doc_id, *, upstream):
         if upstream.payload.get("stage") not in ("teaching", "identity"):
             raise ValueError("stage implicit cần artifact teaching hoặc identity")
@@ -91,6 +93,7 @@ class FindImplicitPrerequisites:
         checkpoint_id = "implicit-" + config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
+        resume_measurements(checkpoint if resumable else None)
         answers = dict(checkpoint["answers"]) if resumable else {}
         decision_log = list(checkpoint["decision_log"]) if resumable else []
         metrics = Counter(checkpoint["metrics"]) if resumable else Counter()

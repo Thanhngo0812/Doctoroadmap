@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
@@ -71,6 +72,7 @@ class AnchorConcepts:
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 2048}
         self.reuse_artifact = reuse_artifact
 
+    @measure_stage
     def execute(self, doc_id, *, upstream):
         return self._run(doc_id, upstream=upstream)
 
@@ -128,6 +130,7 @@ class AnchorConcepts:
         checkpoint_id = "anchor-" + config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
+        resume_measurements(checkpoint if resumable else None)
         answers = dict(checkpoint["answers"]) if resumable else {}
         decision_log = list(checkpoint["decision_log"]) if resumable else list(old_log)
         metrics = Counter(checkpoint["metrics"]) if resumable else Counter()
@@ -201,6 +204,7 @@ class AnchorConcepts:
         prior_inputs = _prior_inputs(nodes, answers)
         prior_key = "anchor-prior-" + digest([prior_hash, prior_inputs])
         prior_checkpoint = self.store.load_checkpoint(doc_id, prior_key) or {}
+        resume_measurements(prior_checkpoint)
         verified = dict(prior_checkpoint.get("answers", {}))
         prior_log = list(prior_checkpoint.get("decision_log", old_prior_log))
         prior_metrics = Counter(prior_checkpoint.get("metrics", {}))

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
@@ -49,6 +50,7 @@ class NameConceptLabels:
     def plan(self, doc_id, *, upstream):
         return self._run(doc_id, upstream=upstream, planning=True)
 
+    @measure_stage
     def execute(self, doc_id, *, upstream):
         return self._run(doc_id, upstream=upstream)
 
@@ -83,6 +85,7 @@ class NameConceptLabels:
             return StagePlan("reused", artifact=cached) if planning else (cached, True)
         checkpoint_id = "concept-labels-" + config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id) or {}
+        resume_measurements(checkpoint)
         log = list(checkpoint.get("decision_log", []))
         answers = dict(checkpoint.get("answers", {}))
         metrics = Counter(checkpoint.get("metrics", {}))

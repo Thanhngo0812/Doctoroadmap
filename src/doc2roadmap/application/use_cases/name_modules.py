@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from collections import Counter, defaultdict
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prompt_library import load_prompt
@@ -24,6 +25,7 @@ class NameModules:
     def plan(self, doc_id, *, upstream):
         return self._run(doc_id, upstream, planning=True)
 
+    @measure_stage
     def execute(self, doc_id, *, upstream):
         return self._run(doc_id, upstream, planning=False)
 
@@ -102,6 +104,7 @@ class NameModules:
         checkpoint_id = "module-title-" + config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id) or {}
         resumable = checkpoint.get("source_hash") == source_hash
+        resume_measurements(checkpoint if resumable else None)
         old_log = list(checkpoint.get("decision_log", [])) if resumable else []
         old_metrics = Counter(checkpoint.get("metrics", {})) if resumable else Counter()
         inputs = [{"module_id": module["module_id"], "section_title": module["title"],

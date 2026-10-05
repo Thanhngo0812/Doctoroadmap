@@ -6,10 +6,12 @@ import re
 import unicodedata
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextvars import copy_context
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.extraction_prompt import (
     ENTITY_SCHEMA,
     ExtractionPrompts,
@@ -810,7 +812,7 @@ def _run_contexts(
     failed: list[SectionContext] = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = {
-            executor.submit(extract_section, context, extractor, prompts=prompts): context
+            executor.submit(copy_context().run, extract_section, context, extractor, prompts=prompts): context
             for context in contexts
         }
         for future in as_completed(futures):
@@ -913,6 +915,7 @@ class ExtractEntities:
         self.counter = counter
         self.prompts = prompts or load_prompts()
 
+    @measure_stage
     def execute(
         self, doc_id: str, *, max_workers: int = 4, force: bool = False
     ) -> ExtractionSummary:

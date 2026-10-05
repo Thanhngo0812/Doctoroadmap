@@ -4,11 +4,13 @@ import json
 import math
 from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from time import sleep
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
+from doc2roadmap.application.stage_measurements import record_model_call, record_usage
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
 from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 
@@ -79,7 +81,8 @@ class GeminiEmbedding:
         if self._vertex:
             workers = min(len(requests), self.limiter.max_in_flight if self.limiter else self._batch_size)
             with ThreadPoolExecutor(max_workers=workers) as pool:
-                return list(pool.map(self._embed_vertex, requests))
+                return list(pool.map(lambda item: item[0].run(self._embed_vertex, item[1]),
+                                     ((copy_context(), item) for item in requests)))
         model = f"models/{self._model}"
         payload = {
             "requests": [
@@ -105,8 +108,10 @@ class GeminiEmbedding:
         )
         for attempt in range(self._max_retries + 1):
             try:
+                record_model_call(embedding=True)
                 with urlopen(request, timeout=self._timeout) as response:
                     value = json.loads(response.read())
+                record_usage(value.get("usageMetadata", {}), embedding=True)
                 break
             except (UnicodeDecodeError, json.JSONDecodeError) as error:
                 raise RuntimeError("Gemini embedding trả JSON không hợp lệ") from error
@@ -139,8 +144,11 @@ class GeminiEmbedding:
             estimated_tokens = len(item.text.encode("utf-8")) // 3 + 32
             permit = self.limiter.acquire(estimated_tokens) if self.limiter is not None else None
             try:
+                record_model_call(embedding=True)
                 with urlopen(request, timeout=self._timeout) as response:
                     value = json.loads(response.read())
+                statistics = value["predictions"][0]["embeddings"].get("statistics", {})
+                record_usage({"promptTokenCount": statistics["token_count"]} if "token_count" in statistics else {}, embedding=True)
                 vector = self._normalize(value["predictions"][0]["embeddings"]["values"])
                 if self.limiter is not None:
                     self.limiter.release(permit, success=True)

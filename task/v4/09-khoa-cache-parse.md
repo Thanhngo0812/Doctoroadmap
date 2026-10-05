@@ -3,7 +3,11 @@
 **Nguồn chân lý:** [R-03](../../report/nghien-cuu-v4-a1-docling-2026-10-04.md) mục 1, [đo A1 lượt 1](../../report/v4-10-do-a1-tai-may-2026-10-05.md) ·
 **Ai:** nhân viên · **Phụ thuộc:** — · **Chi phí mô hình:** 0
 
-**Trạng thái:** soạn 2026-10-05. Phải xong **trước** mọi vé đổi cấu hình A1.
+**Trạng thái:** đã triển khai 2026-10-05; nghiệm thu khóa cache/dry-run/engine trong
+[báo cáo v4-09](../../report/v4-09-khoa-cache-parse-2026-10-05.md).
+Giữ nguyên 30/30 khóa artifact parse hiện có; không chạy lại khâu LLM.
+Tham số chia đoạn trang phải được thêm vào cấu hình đóng băng khi vé 10 đưa
+chia đoạn vào luồng ingest (hiện luồng vẫn parse cả cuốn).
 
 ## Vì sao (Claude, 2026-10-05)
 
@@ -44,3 +48,16 @@
   - Test "cache không dùng lại" phải đỏ trên mã hiện tại.
 - **Dry-run** `ingest` trên một tài liệu đã có parse, cấu hình mặc định: báo "tái dùng", không parse lại.
 - Báo một con số: số artifact parse cũ còn dùng lại được, phải là tất cả.
+
+## Kiểm thử của Claude (2026-10-05) — **đạt**, chờ commit
+
+- **Bộ test:** 861/861 test xanh trên thư mục làm việc (gồm v4-01, v4-02, v4-09). Test "đổi tuỳ chọn thì không dùng lại parse" được báo
+  đỏ trước sửa (`parser.calls == 1`); test hash mốc dùng đúng adapter v8 của artifact cũ.
+- **Mã:** `PipelineConfig` đóng băng là nguồn duy nhất của tuỳ chọn; `cache_options` bỏ `num_threads` và chỉ giữ trường khác mặc định.
+  Mặc định khớp converter cũ; `_get_converter` vẫn đi nhánh cũ khi cấu hình mặc định.
+- **Một điểm cần ghi rõ:** mặc định giờ ghim `RapidOcrOptions(backend="torch")` thay cho `OcrAutoOptions`, nhưng khoá cache không đổi.
+  - Trên máy này hai cách tương đương: nhánh "tự chọn" ra đúng RapidOCR/torch, và đã so 8 trang mẫu.
+  - Trên máy cài thêm onnxruntime, parse cũ được tạo bằng "tự chọn" có thể khác parse mới cùng khoá. Không chặn vé, vì sản phẩm dựng môi
+    trường từ khoá phụ thuộc của repo.
+- **Quy trình:** mã v4-01, v4-02, v4-09 vẫn **chưa commit**. Lượt D-01 bước 2 của Claude đang chạy trên thư mục làm việc này. Nhân viên commit
+  nguyên trạng, và **không sửa `src/` khi lượt D-01 còn chạy**.

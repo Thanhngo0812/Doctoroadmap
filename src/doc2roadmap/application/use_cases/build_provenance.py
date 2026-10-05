@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import (
@@ -52,6 +53,7 @@ class BuildProvenance:
             ):
                 raise ValueError("phán quyết provenance chứa selection không hợp lệ")
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         return self._run(doc_id, upstream=upstream)
 

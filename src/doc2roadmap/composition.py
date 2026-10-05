@@ -14,15 +14,16 @@ from doc2roadmap.infrastructure.embedding import GeminiEmbedding
 from doc2roadmap.infrastructure.llm import GeminiEntityExtractor
 from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 from doc2roadmap.infrastructure.parsing import DoclingParser
+from doc2roadmap.infrastructure.parsing.docling_parser import PipelineConfig
 from doc2roadmap.infrastructure.text import SentencePieceTokenCounter, UnicodeSentenceSplitter
 
 
-def build_ingest(pdf_backend: str = "docling-parse") -> tuple[IngestDocument, Settings]:
+def build_ingest(pdf_backend: str = "docling-parse", *, pipeline: PipelineConfig | None = None) -> tuple[IngestDocument, Settings]:
     settings = Settings()
     store = JsonArtifactStore(settings.artifact_dir)
     counter = SentencePieceTokenCounter(settings.tokenizer_model, settings.tokenizer_id)
     return (
-        IngestDocument(DoclingParser(pdf_backend), store, counter, UnicodeSentenceSplitter()),
+        IngestDocument(DoclingParser(pdf_backend, pipeline=pipeline), store, counter, UnicodeSentenceSplitter()),
         settings,
     )
 

@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.ports import ArtifactStore
 from doc2roadmap.domain.unicode_text import TEXT_RULE_VERSION
 from doc2roadmap.application.ports.embedding import EmbeddingPort, EmbeddingRequest
@@ -55,6 +56,7 @@ class IndexDocument:
         self.store = store
         self.embedding = embedding
 
+    @measure_stage
     def execute(self, doc_id: str) -> IndexSummary:
         stored = self.store.load_latest_chunks(doc_id)
         config = {

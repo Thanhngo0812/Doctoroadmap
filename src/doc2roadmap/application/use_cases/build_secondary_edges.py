@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import (
@@ -66,6 +67,7 @@ class BuildSecondaryEdges:
             "presentation_order": [dossier["right"], dossier["left"]],
         }
 
+    @measure_stage
     def execute(self, doc_id, *, upstream=None):
         return self._run(doc_id, upstream=upstream)
 
@@ -95,7 +97,7 @@ class BuildSecondaryEdges:
         route = main.payload["routing"]["route"]
         prompt_hash = secondary_prompt_hash(self.model.model_id, self.generation)
         base_config = {
-            "algorithm_id": "a8-secondary-pass-v6",
+            "algorithm_id": "a8-secondary-pass-lazy-v7",
             "main_version": main.version,
             "main_config_hash": main.manifest["config_hash"],
             "canonical_version": main_config.get("canonical_version"),
@@ -121,6 +123,7 @@ class BuildSecondaryEdges:
         checkpoint_id = "secondary-" + base_config_hash
         checkpoint = self.store.load_checkpoint(doc_id, checkpoint_id)
         resumable = checkpoint is not None and checkpoint.get("source_hash") == source_hash
+        resume_measurements(checkpoint if resumable else None)
         if resumable:
             completed = set(checkpoint.get("completed_secondary_pairs", []))
             secondary_edges = list(checkpoint.get("secondary_edges", []))
@@ -155,8 +158,8 @@ class BuildSecondaryEdges:
             result = model_plan(inputs, system_prompt=system_prompt, generation=self.generation, unit="pair",
                                 checkpoint_id=checkpoint_id, metrics=metrics, calls_per_item=2)
             result.remaining_items = len(pending)
-            result.note += (f" {len(askable)} cặp cần phán hai chiều, {len(pruned)} cặp cắt được ngay; "
-                            "cạnh mới có thể cắt thêm cặp nên số lời gọi có thể giảm.")
+            result.note += (f" {len(askable)} cặp cần phán tối đa hai chiều, {len(pruned)} cặp cắt được ngay; "
+                            "chỉ hỏi chiều sau khi chiều đầu tạo cạnh; cạnh mới có thể cắt thêm cặp nên số lời gọi có thể giảm.")
             return result
 
         def save_progress():
@@ -241,6 +244,8 @@ class BuildSecondaryEdges:
             if any(value is None for value in values):
                 verdict = {"pair_id": pair["pair_id"], "decision": "defer", "reason": "invalid_or_outside_dossier",
                            "flags": [{"kind": "outside_or_invalid_secondary_edge", "pair_id": pair["pair_id"]}]}
+            elif len(values) == 1:
+                verdict = values[0]
             else:
                 verdict = reconcile_pair_verdicts(values[0], values[1])
             if verdict["decision"] == "create":
@@ -266,7 +271,8 @@ class BuildSecondaryEdges:
                 secondary_flags.extend(verdict.get("flags", []))
                 secondary_log.append({"pair_id": pair["pair_id"],
                                       "status": "deferred" if verdict["decision"] == "defer" else "rejected",
-                                      "reason": verdict.get("reason", verdict["decision"]),
+                                      "reason": "first_order_final" if len(values) == 1 else verdict.get("reason", verdict["decision"]),
+                                      **({"verdict_reason": verdict.get("reason", verdict["decision"])} if len(values) == 1 else {}),
                                       "decision": verdict["decision"]})
 
         while True:
@@ -299,19 +305,29 @@ class BuildSecondaryEdges:
                     {"session_id": pair_session["session_id"] + "_right", "dossier": self._reverse_dossier(dossier)},
                 ]
                 start = len(jobs)
-                jobs.extend(ModelJob("secondary", self.model, system_prompt, prompt_hash, data, SECONDARY_SCHEMA, validate)
-                            for data in inputs)
-                specs[pair["pair_id"]] = (dossier, pair_session, validate, start)
+                jobs.append(ModelJob("secondary", self.model, system_prompt, prompt_hash, inputs[0], SECONDARY_SCHEMA, validate))
+                specs[pair["pair_id"]] = (dossier, pair_session, validate, start, inputs[1])
 
             values, rows, counts = run_model_jobs(jobs, decision_log, concurrency=self.concurrency)
-            answered = {}
+            answered, second_jobs, second_pairs = {}, [], []
             for pair in window:
-                dossier, pair_session, validate, start = specs[pair["pair_id"]]
-                pair_values = values[start:start + 2]
-                downgrade(pair, pair_session, validate, pair_values, rows[start:start + 2], snapshot)
+                dossier, pair_session, validate, start, second_input = specs[pair["pair_id"]]
+                pair_values = values[start:start + 1]
+                downgrade(pair, pair_session, validate, pair_values, rows[start:start + 1], snapshot)
                 answered[pair["pair_id"]] = pair_values
+                if pair_values[0] is not None and pair_values[0]["decision"] == "create":
+                    second_jobs.append(ModelJob("secondary", self.model, system_prompt, prompt_hash, second_input, SECONDARY_SCHEMA, validate))
+                    second_pairs.append(pair)
             decision_log.extend(rows)
             metrics.update(counts)
+            second_values, second_rows, second_counts = run_model_jobs(second_jobs, decision_log, concurrency=self.concurrency)
+            for index, pair in enumerate(second_pairs):
+                _, pair_session, validate, _, _ = specs[pair["pair_id"]]
+                pair_values = second_values[index:index + 1]
+                downgrade(pair, pair_session, validate, pair_values, second_rows[index:index + 1], snapshot)
+                answered[pair["pair_id"]].extend(pair_values)
+            decision_log.extend(second_rows)
+            metrics.update(second_counts)
 
             for pair in prefix:
                 current = main_edges + secondary_edges
@@ -320,7 +336,7 @@ class BuildSecondaryEdges:
                     secondary_log.extend(pruned)
                     completed.add(pair["pair_id"])
                     continue
-                dossier, pair_session, _, start = specs[pair["pair_id"]]
+                dossier, pair_session, _, start, _ = specs[pair["pair_id"]]
                 current_dossier = pair_dossier(
                     pair, nodes, chunks, main.payload["mention_map"], ledger, current,
                     definition_before=definition_before, definition_after=definition_after)

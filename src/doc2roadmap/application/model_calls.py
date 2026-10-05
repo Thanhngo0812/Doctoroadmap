@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 from collections import Counter
 from concurrent.futures import ThreadPoolExecutor
+from contextvars import copy_context
 from dataclasses import dataclass
 from typing import Any, Callable, Iterable
 
@@ -122,7 +123,8 @@ def run_model_jobs(
         return None, row, counts
 
     with ThreadPoolExecutor(max_workers=concurrency) as pool:
-        results = list(pool.map(call, jobs))
+        results = list(pool.map(lambda item: item[0].run(call, item[1]),
+                                ((copy_context(), job) for job in jobs)))
     values, logs, metrics = [], [], Counter()
     for value, row, counts in results:
         values.append(value)

@@ -11,6 +11,7 @@ from typing import Any
 from doc2roadmap.application.ports import StoredChunks, StoredParse, StoredStageArtifact
 from doc2roadmap.domain.models import Chunk, ChunkingResult, DocumentTree, Section
 from doc2roadmap.domain.entities import validate_llm_node_type
+from doc2roadmap.application.stage_measurements import checkpoint_measurements, register_manifest, track_checkpoint
 
 
 _VERSION = re.compile(r"^v(\d+)$")
@@ -48,10 +49,13 @@ class JsonArtifactStore:
 
     def load_checkpoint(self, doc_id: str, checkpoint_id: str) -> dict[str, Any] | None:
         path = self._checkpoint_path(doc_id, checkpoint_id)
-        return self._read(path) if path.exists() else None
+        payload = checkpoint_measurements(self._read(path) if path.exists() else None, key=f"{doc_id}/{checkpoint_id}", restore=True)
+        track_checkpoint(self, path, payload, loaded=True)
+        return payload
 
     def save_checkpoint(self, doc_id: str, checkpoint_id: str, payload: dict[str, Any]) -> None:
-        self._write(self._checkpoint_path(doc_id, checkpoint_id), payload, compact=True)
+        self._write(self._checkpoint_path(doc_id, checkpoint_id), checkpoint_measurements(payload, key=f"{doc_id}/{checkpoint_id}"), compact=True)
+        track_checkpoint(self, self._checkpoint_path(doc_id, checkpoint_id), payload)
 
     def clear_checkpoint(self, doc_id: str, checkpoint_id: str) -> None:
         path = self._checkpoint_path(doc_id, checkpoint_id)
@@ -251,6 +255,7 @@ class JsonArtifactStore:
             structure_warnings=result.structure_warnings,
             **(manifest_fields or {}),
         )
+        register_manifest(self, path, manifest)
         self._write(path / "sections.json", [section.to_dict() for section in result.sections])
         self._write(path / "chunks.json", [chunk.to_dict() for chunk in result.chunks])
         self._write(
@@ -387,6 +392,7 @@ class JsonArtifactStore:
             upstream_version=upstream_version,
             **(manifest_fields or {}),
         )
+        register_manifest(self, path, manifest)
         self._write(path / f"{artifact}.json", payload)
         self._write(path / "manifest.json", manifest)
         return StoredStageArtifact(payload, version, path, manifest)

@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [nghiên cứu tiền và thời gian](../../report/nghien-cuu-v4-chi-phi-thoi-gian-2026-10-04.md), mục 4A · **Ai:** nhân viên ·
 **Phụ thuộc:** — · **Chi phí mô hình:** 0 (nghiệm thu bằng phát lại nhật ký)
 
-**Trạng thái:** chờ giao.
+**Trạng thái:** đã triển khai và phát lại đủ 5 tài liệu (0 USD); chờ chốt điều kiện nghiệm thu về 4 cờ chẩn đoán. Cạnh và lộ trình y hệt. Xem [báo cáo](../../report/v4-01-02-nghiem-thu-2026-10-04.md).
 
 ## Vì sao (Claude, 2026-10-04)
 - Pass phụ chiếm 91% tiền của một giáo trình trọn cuốn (doc-4: 45,9/50,4 USD).
@@ -40,3 +40,16 @@
   - `secondary_flags` chỉ được giảm đúng số cặp (thứ tự đầu "không", thứ tự sau lỗi); báo số này;
   - báo số lời gọi bớt được mỗi tài liệu, phải khớp bảng của báo cáo (sai số do thử lại).
 - **Tôi kiểm:** đọc diff, chạy test, tự phát lại một tài liệu.
+
+## Bàn giao nhân viên — 2026-10-04
+
+- `algorithm_id=a8-secondary-pass-lazy-v7`; lượt phải chỉ gửi sau khi lượt trái tạo cạnh (kể cả nhánh hạ xuống `cong_cu` sau sửa phản hồi).
+- Giữ cửa sổ, tỉa động và thứ tự chốt của vé 22. Test `first_order_final` đã đỏ trên mã cũ; create/create, create/no và các cửa sổ
+  1/4/50 tiếp tục qua.
+- Phát lại xác nhận `secondary_edges`, `sequence`, `requires_edges`, `modules` y hệt trên cả 5 tài liệu. Không ghi đè artifact cũ.
+- Có mâu thuẫn trong vé: luật triển khai bỏ lượt sau cho **mọi** quyết định không phải `create`, nhưng luật cờ nghiệm thu chỉ nhắc
+  `no_direct_relation`. Doc-2 mất thêm 1 cờ sau `defer`, 1 sau `indirect_path`; doc-4 mất thêm 2 sau `indirect_path`. Đây đều là cờ
+  `outside_or_invalid_secondary_edge` của lượt sau không còn chạy. Không thêm cờ và không mất cạnh.
+- **Chưa tự sửa hợp đồng nghiệm thu:** đề nghị cho phép giảm cờ khi lượt đầu hợp lệ và không tạo cạnh, lượt sau cũ lỗi; đang chờ chủ dự án/sếp chốt.
+- Bớt bản ghi hỏi mô hình: doc-1 2.194; doc-2 6.141; nhap-mon-ml 767; xstk 555; doc-4 17.029. Đây là số bản ghi, không phải số HTTP
+  thực tế hay số phút đo được. Chênh với mục 4A được tách rõ trong báo cáo.

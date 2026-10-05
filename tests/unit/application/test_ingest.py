@@ -52,6 +52,8 @@ def test_frozen_parse_is_reused_but_new_chunk_config_gets_new_version(tmp_path: 
     chunk_config = store.load_latest_chunks("book").manifest["config"]["chunk"]
     parse_manifest = store.load_parse("book", 1).manifest
     chunk_manifest = store.load_latest_chunks("book").manifest
+    assert chunk_manifest["parse_reused"] is True
+    assert chunk_manifest["parse_runtime_seconds"] == 0
     assert "strip_lines" not in parse_manifest
     assert "stripped_line_count" not in parse_manifest
     assert "strip_lines" not in parse_manifest["config"]["parser"]
@@ -68,6 +70,26 @@ def test_frozen_parse_is_reused_but_new_chunk_config_gets_new_version(tmp_path: 
         and chunk["oversize_reason"] is None
         for chunk in payload
     )
+
+
+def test_ingest_records_parse_duration_and_page_count_without_hashing_time(tmp_path, monkeypatch):
+    import doc2roadmap.application.use_cases.ingest_document as ingest
+    class Parser(FakeParser):
+        def parse(self, source, filename):
+            parsed = super().parse(source, filename)
+            parsed.tree.parse_stats["page_count"] = 3  # includes a blank final page
+            return parsed
+    clock = iter([10.0, 14.0])
+    monkeypatch.setattr(ingest, "perf_counter", lambda: next(clock))
+    store = JsonArtifactStore(tmp_path)
+    summary = IngestDocument(Parser(), store, WordCounter(), splitter()).execute(b"A sentence.", "book.pdf", "book")
+    manifest = store.load_chunks("book", summary.chunk_version).manifest
+    assert manifest["page_count"] == 3
+    assert manifest["parse_runtime_seconds"] == 4
+    assert manifest["stats"]["runtime_seconds"] >= 0
+    assert manifest["stats"]["model_calls"] == 0
+    assert "parse_runtime_seconds" not in manifest["config"]
+    assert "runtime_seconds" not in manifest["config"]
 
 
 def test_refresh_roles_uses_only_saved_sections_keeps_chunks_and_is_idempotent(tmp_path):
