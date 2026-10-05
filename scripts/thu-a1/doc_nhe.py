@@ -53,6 +53,11 @@ PRIVATE_USE = re.compile(r"[\ue000-\uf8ff]")
 # Dấu đầu dòng của font Symbol/Wingdings mà PDF ghi vào vùng ký tự riêng (U+F0B7 "•", U+F0A7 "§", U+F076 "v", U+F0D8, U+F0FC…).
 PUA_BULLET = re.compile(r"^\s*[\uf000-\uf0ff]\s+")
 STRONG_MATH = set("=+−×÷∑∫∏√≤≥≠≈∈∉⊂⊆∪∩→⇒⇔∀∃∞∂∇±^")
+# Riêng tiếng Việt (đồ án chỉ làm tiếng Việt): âm tiết có dấu, dùng để tách tiêu đề với công thức Word và dòng mã lệnh.
+VIET_LETTER = re.compile(r"[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]")
+MATH_WORDS = {"sin", "cos", "tan", "tg", "cot", "cotg", "lim", "log", "ln", "lg", "exp", "max", "min", "dx", "dy", "dz", "dt",
+              "arcsin", "arccos", "arctg", "arctan", "det", "rank", "sup", "inf", "mod"}
+MONO_FONT = re.compile(r"courier|consola|mono|lucida console|menlo", re.I)
 CHAPTER_LABEL = re.compile(r"(?:chương|phần|chapter|part)\s+[\divxlc]+\.?", re.I)
 CAPTION = re.compile(r"^\s*(hình|bảng|sơ đồ|biểu đồ|figure|table)\s+\d", re.I)
 SYMBOLS = set("=+−-×÷∑∫∏√≤≥≠≈∈∉⊂⊆⊃∪∩→←⇒⇔↔∀∃∞∂∇±·°()[]{}|,.^_/<>′'αβγδεζηθλμνξπρστφχψωΓΔΘΛΞΠΣΦΨΩ")
@@ -101,8 +106,13 @@ def describe(chars, page_no, height):
     math = sum(bool(MATH_FONT.search(c.font)) for c in non_bullet) / max(len(non_bullet), 1)
     letters = sum(c.ch.isalpha() and c.ch not in SYMBOLS and not PRIVATE_USE.match(c.ch) for c in visible)
     text_letters = sum(c.ch.isalpha() and not MATH_FONT.search(c.font) and not PRIVATE_USE.match(c.ch) for c in visible)
+    tokens = re.findall(r"[^\W\d_]+", text)
     return {"page": page_no, "text": text, "x0": min(c.left for c in visible), "x1": max(c.right for c in visible),
-            "letters": letters, "text_letters": text_letters,
+            "letters": letters, "text_letters": text_letters, "tokens": len(tokens),
+            "viet": sum(bool(VIET_LETTER.search(token.lower())) for token in tokens),
+            "single": sum(len(token) == 1 for token in tokens) / max(len(tokens), 1),
+            "math_words": sum(token.lower() in MATH_WORDS for token in tokens),
+            "mono": sum(bool(MONO_FONT.search(c.font)) for c in visible) / len(visible),
             "top": max(c.top for c in visible), "bottom": min(c.bottom for c in visible), "size": sizes[len(sizes) // 2],
             "bold": sum(c.weight >= 600 or bool(BOLD_FONT.search(c.font)) for c in visible) / len(visible) >= 0.6,
             "math": math, "symbol_share": 1 - letters / len(visible), "height": height,
@@ -149,20 +159,26 @@ def parse(path):
             return "formula" if mathy else "text"
         if (r["math"] >= 0.6 and r["text_letters"] <= 4) or (r["symbol_share"] >= 0.7 and words <= 12 and mathy):
             return "formula"
+        if r["viet"] == 0 and r["tokens"] >= 2 and r["mono"] < 0.6 and (r["single"] >= 0.4 or r["math_words"] > 0):
+            return "formula"  # công thức Word (Times nghiêng): không có âm tiết tiếng Việt, nhiều biến một chữ hoặc tên hàm
+        if r["mono"] >= 0.6:
+            return "text"  # dòng mã lệnh (font đơn cách)
         bare = PUA_BULLET.sub("", LIST_START.sub("", r["text"])) if (PUA_BULLET.match(r["text"]) or LIST_START.match(r["text"])) else r["text"]
         if CAPTION.match(r["text"]) and words <= 40:
             return "caption"
-        wordy = r["letters"] >= 3 and not TABLE_ROW_END.search(r["text"])
+        wordy = r["letters"] >= 3 and not TABLE_ROW_END.search(r["text"]) and r["single"] < 0.4
+        vietnamese = r["viet"] >= 1 and r["single"] < 0.3  # tiêu đề không đánh số phải có âm tiết tiếng Việt
         if wordy and words <= 20 and HEADING_NUMBER.match(r["text"]) and (r["bold"] or r["size"] >= 1.1 * body) \
                 and not r["text"].endswith(","):
             return "section_header"
-        if wordy and words <= 15 and ENUMERATOR.match(r["text"]) and r["bold"]:
+        if wordy and vietnamese and words <= 15 and ENUMERATOR.match(r["text"]) and r["bold"]:
             return "section_header"
-        if wordy and words <= 15 and r["size"] >= 1.2 * body and not r["text"].endswith((".", ",", ";")):
+        if wordy and vietnamese and words <= 15 and r["size"] >= 1.2 * body and not r["text"].endswith((".", ",", ";")):
             return "section_header"
-        if wordy and words <= 15 and r["bold"] and bare != r["text"] and bare[:1].isupper() and not r["text"].endswith((",", ";", ".")):
+        if wordy and vietnamese and words <= 15 and r["bold"] and bare != r["text"] and bare[:1].isupper() \
+                and not r["text"].endswith((",", ";", ".")):
             return "section_header"  # tiêu đề in đậm mở đầu bằng dấu đầu dòng (xstk: "• Mẫu tổng quát và mẫu cụ thể")
-        if wordy and standalone and words <= 12 and r["bold"] and r["size"] >= 0.98 * body and bare[:1].isupper() \
+        if wordy and vietnamese and standalone and words <= 12 and r["bold"] and r["size"] >= 0.98 * body and bare[:1].isupper() \
                 and not r["text"].endswith((",", ";")):
             return "section_header"
         if LIST_START.match(r["text"]):
@@ -206,6 +222,7 @@ def parse(path):
     from doc2roadmap.infrastructure.parsing.docling_parser import DoclingParser
     for node in nodes:  # cùng bước làm sạch chữ của adapter dự án (ánh xạ ký tự Symbol vùng riêng, gộp glyph PDF)
         node["text"], _ = DoclingParser._clean_text(node["text"], collapse_pdf_glyphs=True)
+        node["text"] = node["text"].replace("ƣ", "ư").replace("Ƣ", "Ư")  # glyph sai của font Việt cũ (README D-01)
     return nodes, {"pages": pages, "body_size": body, "repeated_lines_removed": len(rows) - len(body_rows)}
 
 
@@ -220,8 +237,10 @@ def heading_level(text):
 
 
 def words(text):
-    """Tách chuỗi chữ và chuỗi số riêng ("x1" thành "x", "1"), vì hai bộ đọc đặt khoảng trắng quanh chỉ số khác nhau."""
-    return re.findall(r"[^\W\d_]+|\d+", unicodedata.normalize("NFC", text).casefold())
+    """Tách chuỗi chữ và chuỗi số riêng ("x1" thành "x", "1"), vì hai bộ đọc đặt khoảng trắng quanh chỉ số khác nhau. "ƣ" coi như "ư"
+    ở cả hai phía, để lỗi glyph có sẵn trong PDF không thành khác biệt giữa hai bộ đọc."""
+    text = unicodedata.normalize("NFC", text).replace("ƣ", "ư").replace("Ƣ", "Ư")
+    return re.findall(r"[^\W\d_]+|\d+", text.casefold())
 
 
 def compare(nodes, reference):

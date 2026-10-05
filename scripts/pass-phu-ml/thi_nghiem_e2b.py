@@ -14,7 +14,7 @@ ngoài mẫu của chính các tài liệu học (F1 mức dòng lớn nhất), 
 viên bằng tỉ lệ dương gộp của nhãn trên tài liệu học. Chính sách thứ ba (`nguong_hieu_chinh`): hiệu chỉnh isotonic trên dự đoán ngoài mẫu
 của tài liệu học, giữ số ứng viên bằng tổng xác suất đã hiệu chỉnh trên tài liệu đo. Cả ba chốt trước khi chấm vàng.
 Đầu ra: `tmp/pass-phu-ml/diem/<lượt>/<doc>.csv` (pair_id, x, y, score; dòng ngoài ứng viên điểm 0) và `nguong.json`.
-Chạy: tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e2b.py [--nhan=v3|y-dinh|y-dinh-cung] [--mo-hinh=lightgbm|logistic] [--them-anh] [--ngu-nghia] [--tach-tu] [--luot=<tên>]
+Chạy: tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e2b.py [--nhan=v3|y-dinh|y-dinh-cung] [--mo-hinh=lightgbm|logistic] [--them-anh] [--ngu-nghia] [--tach-tu] [--khong-main] [--luot=<tên>]
 """
 import json
 import sys
@@ -70,11 +70,14 @@ def load(docs, label, semantic=False):
     data["nhan"] = (data.y_label if label == "v3" else data.apply(hard_intent, axis=1) if label == "y-dinh-cung"
                     else data.apply(intent, axis=1))
     features = [c for c in data.columns if c not in NOT_FEATURES]
+    if NO_MAIN:  # `--khong-main`: bỏ đặc trưng lấy từ cạnh A8 pass chính (dữ liệu D-01 không chạy pass chính)
+        features = [c for c in features if not c.startswith("main_")]
     data[features] = data[features].apply(pd.to_numeric, errors="coerce")
     return data, features
 
 
 WORDS = "--tach-tu" in sys.argv
+NO_MAIN = "--khong-main" in sys.argv
 
 
 def make_model(name, seed=20261005):
@@ -108,7 +111,7 @@ def main():
     extra = ENGLISH if "--them-anh" in sys.argv else ()
     semantic = "--ngu-nghia" in sys.argv
     run = options.get("luot", f"{model_name}-{label}" + ("-anh" if extra else "") + ("-ngu-nghia" if semantic else "")
-                      + ("-tach-tu" if WORDS else ""))
+                      + ("-tach-tu" if WORDS else "") + ("-khong-main" if NO_MAIN else ""))
     out = Path("tmp/pass-phu-ml/diem") / run
     out.mkdir(parents=True, exist_ok=True)
     data, features = load(VIETNAMESE + extra, label, semantic)
