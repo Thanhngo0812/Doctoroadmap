@@ -9,7 +9,8 @@
   3. đầu ra adapter của dự án (`DoclingParser.adapt`): băm các trường quyết định chunk (loại nút, chữ, cấp, trang, bảng, ảnh, công thức).
   Tầng 3 giống nhau thì chunk giống nhau, các khâu sau không phải chạy lại.
 - Thời gian: bật `profile_pipeline_timings`, ghi tổng từng khâu docling và thời gian tường của lượt đo (sau một trang khởi động).
-Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/thu-a1/do_a1.py [--trang=20] [--ra=tmp/thu-a1/ket-qua]
+Chạy từ gốc repo:  .venv/Scripts/python.exe scripts/thu-a1/do_a1.py [--trang=20] [--ra=tmp/thu-a1/ket-qua] [--lam-lai]
+(mặc định giữ cấu hình đã có tệp kết quả, để chạy tiếp lượt bị ngắt; `--lam-lai` đo lại tất cả)
 """
 import hashlib
 import json
@@ -111,12 +112,15 @@ def main():
         results = {}
         for config in ORDER:
             out = out_dir / f"{key}-{config}.json"
-            command = [sys.executable, __file__, "--chay", f"--cau-hinh={config}", f"--tep={ROOT / filename}", f"--tu={start}",
-                       f"--den={start + pages - 1}", f"--bo-doc={backend}", f"--ra={out}"]
-            done = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
-            if done.returncode != 0:
-                print(f"{key} {config}: LỖI\n{done.stderr[-1500:]}", flush=True)
-                continue
+            if out.exists() and "--lam-lai" not in sys.argv:  # lượt trước bị ngắt: giữ cấu hình đã đo xong
+                print(f"{key} {config}: dùng kết quả đã có", flush=True)
+            else:
+                command = [sys.executable, __file__, "--chay", f"--cau-hinh={config}", f"--tep={ROOT / filename}", f"--tu={start}",
+                           f"--den={start + pages - 1}", f"--bo-doc={backend}", f"--ra={out}"]
+                done = subprocess.run(command, cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
+                if done.returncode != 0:
+                    print(f"{key} {config}: LỖI\n{done.stderr[-1500:]}", flush=True)
+                    continue
             results[config] = json.loads(out.read_text(encoding="utf-8"))
             row = results[config]
             print(f"{key} {config}: {row['wall_seconds']}s / {row['page_count']} trang", flush=True)
