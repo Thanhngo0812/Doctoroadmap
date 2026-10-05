@@ -31,7 +31,8 @@ miễn là dùng vertex".
 | d01-03 | Hoá | **xong tới danh tính** (graph v5); 1,50 USD | — |
 | d01-04 | Hoá | tới C8 (graph v4); 1,57 USD | `roadmap --stop-after identity` (tự tái dùng v1–v4) |
 | d01-05 | Sinh | chunk vai trò v2 | A3 (lượt dở bị dừng) → A4 → roadmap |
-| d01-06 → d01-16 | 6 lĩnh vực | chunk v1 (A1) | A2 → A3 → A4 → roadmap |
+| d01-06 → d01-15 | 6 lĩnh vực | chunk v1 (A1) | A2 → A3 → A4 → roadmap |
+| d01-16 | Nông nghiệp | chunk vai trò v2. Vòng A2 của Claude chưa dừng hẳn, chạy xong lúc 17:22, sau yêu cầu ngưng; khoảng 0,005 USD | A3 → A4 → roadmap |
 
 Chi đã ghi trong manifest: 3,96 USD. Các lượt A3 hỏng của d01-01 và d01-05 không để lại số đo, ước 2–3 USD; số chính xác xem trên hoá đơn Vertex.
 Nhật ký từng bước: `tmp/pass-phu-ml/d01-chay*.jsonl`.
