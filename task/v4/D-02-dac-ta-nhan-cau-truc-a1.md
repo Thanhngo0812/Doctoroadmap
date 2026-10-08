@@ -6,7 +6,7 @@
 **Chi phí mô hình của dự án:** 0 USD.
 
 **Trạng thái:** soạn 2026-10-08. Sách mới đã kiểm (mục "Sách"), cả hai đợt bổ sung `new-doc-2` và `new-doc-3`. Tập khoá đủ 8 cuốn PDF gốc
-(toán rời rạc không cần nữa). Chờ chủ dự án xác nhận quyền dùng.
+(toán rời rạc không cần nữa). Chủ dự án xác nhận quyền dùng 8 cuốn khoá gốc ngày 2026-10-08; ghi ở `document-data/manifest-d02.json` (nháp, còn thiếu URL nguồn).
 
 **Phạm vi chỉ có PDF gốc** (chủ dự án chốt, sửa đặc tả ngày 2026-10-08): bản quét không gán nhãn, chỉ dùng để kiểm bộ định tuyến.
 
@@ -25,8 +25,8 @@
 20 PDF trong `document-data/new-data-document/`, 10 lĩnh vực. Thêm đợt bổ sung `document-data/new-doc-2/`: 8 tệp, trong đó 3 cuốn mới.
 - **Không trùng với sách đã có.** Không cuốn nào trùng byte với sách test (chỉ so băm, không đọc nội dung sách test), hay với sách D-01, doc-1,
   doc-4, xstk. Nội dung trùng với sách cũ tối đa 2%.
-- **Thiếu tệp đi kèm.** README nhắc `manifest-d02.json` và báo cáo nghiệm thu, nhưng hai tệp này **chưa có**.
-- **Bản quyền chưa ghi.**
+- **Thiếu tệp đi kèm.** README nhắc `manifest-d02.json` và báo cáo nghiệm thu, nhưng hai tệp này **chưa có**. Ngày 2026-10-08 Claude soạn nháp `manifest-d02.json` từ tệp tại máy; báo cáo nghiệm thu vẫn chưa có.
+- **Bản quyền:** ghi trong manifest nháp. 8 cuốn khoá gốc có xác nhận của chủ dự án; các cuốn khác `unconfirmed`, chỉ dùng tại máy.
 
 **Phát hiện chính: 16/20 cuốn là sách quét kèm lớp chữ OCR, không phải PDF gốc.**
 - Mỗi trang là một ảnh phủ kín trang; chữ là lớp OCR ẩn, phần lớn do Internet Archive làm, dùng font `GlyphLessFont`. Lớp này không có đậm,
@@ -46,7 +46,7 @@
 | tam-ly-hoc-dai-cuong-hcmue | KHXH | 145 | gốc (Google Docs), có mục lục điện tử 225 mục | 0,995 | 0 | **khoá, gốc** |
 | ly-thuyet-mach-ptit | Kỹ thuật | 183 | gốc (Word) | 0,927, nhiều công thức | 0 | **khoá, gốc** |
 | vat-ly-2-dien-tu-quang-ptit | Vật lý | 310 | gốc (Word) | 0,954, nhiều công thức | 0 | **khoá, gốc** |
-| mang-may-tinh-nguyen-toan-thang | CNTT | 214 | gốc (in từ trình duyệt); trang bản quyền có lỗi OCR; ghi bản quyền NXB Giáo dục | 0,901 | 0 | **khoá, gốc** |
+| mang-may-tinh-nguyen-toan-thang | CNTT | 214 | gốc (in từ trình duyệt); trang bản quyền có lỗi OCR; dòng cấm sao chép của NXB Giao thông vận tải (trước ghi nhầm NXB Giáo dục, sửa 2026-10-08) | 0,901 | 0 | **khoá, gốc** |
 | xahoi-hoc-dai-cuong-ussh-vnu | KHXH | 369 | quét + OCR | 0,964 | 0 | khoá, chỉ kiểm định tuyến |
 | tai-chinh-doanh-nghiep-le-thi-xuan | Kinh tế | 408 | quét + OCR | 0,980 | 8 | khoá, chỉ kiểm định tuyến |
 | nha-nuoc-va-phap-luat-dai-cuong-vnu | Pháp luật | 350 | quét + OCR | 0,995 | 1 | khoá, chỉ kiểm định tuyến |
@@ -181,8 +181,8 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
 1. **Chủ dự án xác nhận quyền dùng 8 cuốn khoá gốc và dịch vụ agentic sẽ nhận nội dung.** Bản quét không gửi đi đâu.
    - Chạy A1 tại máy để nghiên cứu là 0 USD và không gửi sách đi đâu.
    - Agentic gán nhãn là gửi ảnh và chữ của trang cho một dịch vụ ngoài, nên cần xác nhận như D-01.
-   - Cuốn mạng máy tính có dòng cấm sao chép của NXB Giáo dục.
-   - Cùng lúc, bổ sung `manifest-d02.json`: tên, tác giả, năm, nguồn tải, quyền.
+   - Cuốn mạng máy tính có dòng cấm sao chép của NXB Giao thông vận tải; chủ dự án xác nhận vẫn dùng (2026-10-08).
+   - Cùng lúc, bổ sung `manifest-d02.json`: tên, tác giả, năm, nguồn tải, quyền. Claude soạn nháp 2026-10-08; chủ dự án điền URL nguồn và kiểm các trường thư mục.
 2. Nhân viên làm vé 15, pha 1 (xuất phiếu); Claude kiểm.
 3. Agentic gán L1 cho 6 cuốn phát triển trước, để nhân viên viết bộ chấm (xong 2026-10-08). Sau đó gán L1 và L2 cho 8 cuốn khoá gốc.
 4. Chủ dự án duyệt mẫu theo mục "Người duyệt".
