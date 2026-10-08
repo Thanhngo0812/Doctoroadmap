@@ -5,8 +5,8 @@
 **Ai:** chủ dự án gán bằng agentic và duyệt mẫu; nhân viên xuất phiếu và viết bộ chấm; Claude chấm tập khoá ·
 **Chi phí mô hình của dự án:** 0 USD.
 
-**Trạng thái:** soạn 2026-10-08. Sách mới đã kiểm (mục "Sách"), cả đợt bổ sung `new-doc-2`. Tập khoá có 6 cuốn PDF gốc: còn thiếu 2 cuốn (tải
-lại toán rời rạc, thêm ít nhất 1 cuốn ngoài toán). Chờ chủ dự án xác nhận quyền dùng.
+**Trạng thái:** soạn 2026-10-08. Sách mới đã kiểm (mục "Sách"), cả hai đợt bổ sung `new-doc-2` và `new-doc-3`. Tập khoá đủ 8 cuốn PDF gốc
+(toán rời rạc không cần nữa). Chờ chủ dự án xác nhận quyền dùng.
 
 ## Vì sao (Claude, 2026-10-08)
 
@@ -39,6 +39,8 @@ lại toán rời rạc, thêm ít nhất 1 cuốn ngoài toán). Chờ chủ d�
 | dai-so-tuyen-tinh-bui-xuan-dieu-hust (`new-doc-2`) | Toán | 97 | gốc (LaTeX), có mục lục điện tử 104 mục; chỉ trùng 1,7% nội dung với doc-1 | 0,924, nhiều công thức | 0 | **khoá, gốc** |
 | giai-tich-1-le-chi-ngoc-hust (`new-doc-2`) | Toán | 139 | gốc (Word), bài giảng khổ A4 | 0,854, nhiều công thức | 0 | **khoá, gốc** |
 | toan-roi-rac-nguyen-duc-nghia-hust (`new-doc-2`) | Toán | — | **tệp tải thiếu**: dừng giữa bảng xref, không có `startxref` hay `%%EOF`; pypdfium2 không mở được | — | — | tải lại rồi kiểm |
+| kinh-te-vi-mo-1-ptit (`new-doc-3`) | Kinh tế | 180 | gốc (Word); khác d01-09, chỉ trùng 0,2% | 0,978 | 0 | **khoá, gốc** |
+| luat-kinh-doanh-ptit (`new-doc-3`) | Pháp luật | 264 | gốc (Word) | 0,995 | 0 | **khoá, gốc** |
 | tam-ly-hoc-dai-cuong-hcmue | KHXH | 145 | gốc (Google Docs), có mục lục điện tử 225 mục | 0,995 | 0 | **khoá, gốc** |
 | ly-thuyet-mach-ptit | Kỹ thuật | 183 | gốc (Word) | 0,927, nhiều công thức | 0 | **khoá, gốc** |
 | vat-ly-2-dien-tu-quang-ptit | Vật lý | 310 | gốc (Word) | 0,954, nhiều công thức | 0 | **khoá, gốc** |
@@ -66,7 +68,7 @@ lại toán rời rạc, thêm ít nhất 1 cuốn ngoài toán). Chờ chủ d�
 
 | tập | sách | ai được xem |
 |---|---|---|
-| **khoá, gốc** | 6 cuốn đánh dấu "khoá, gốc" ở bảng trên, **cộng toán rời rạc (sau khi tải lại) và ít nhất 1 cuốn gốc ngoài toán** | chỉ Claude và chủ dự án |
+| **khoá, gốc** | 8 cuốn đánh dấu "khoá, gốc" ở bảng trên | chỉ Claude và chủ dự án |
 | **khoá, quét** | 6 cuốn quét đánh dấu "khoá, quét" | chỉ Claude và chủ dự án |
 | **phát triển có nhãn** | 6 cuốn D-01: d01-02 (toán), d01-06 (sinh), d01-07 (CNTT), d01-10 (kinh tế), d01-11 (luật), d01-15 (nông nghiệp) | nhân viên được xem hết |
 | kiểm cổng chữ | hoá hữu cơ, giải phẫu Nguyễn Văn Huy | nhân viên (vé 13b) |
