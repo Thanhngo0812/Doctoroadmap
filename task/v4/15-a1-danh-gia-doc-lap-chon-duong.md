@@ -5,7 +5,7 @@
 - [vé 14](14-hoc-nhan-tieu-de.md) và các báo cáo `report/v4-14-*`;
 - [D-02](D-02-dac-ta-nhan-cau-truc-a1.md) (sách và nhãn).
 
-**Ai:** nhân viên làm pha 0–3 và 5; Claude chạy pha 4 (đánh giá khoá); chủ dự án gán nhãn D-02 và quyết định ·
+**Ai:** nhân viên làm pha 0, 1, 2, 3 và 5; agentic gán nhãn và chủ dự án duyệt ở pha 1b; Claude chạy pha 4 (đánh giá khoá); chủ dự án quyết định ·
 **Phụ thuộc:** nhãn D-02 (tập phát triển trước); vé 13b nên xong trước pha 4 ·
 **Chi phí mô hình:** 0 USD. Phép kiểm trả tiền ở pha 5 là tuỳ chọn, cần duyệt riêng.
 
@@ -64,6 +64,23 @@
   - chọn trang L2 tất định;
   - script kiểm bắt được nhãn sai mã dòng, `cha` sai cấp, trang L2 thiếu dòng. Các test này phải đỏ trước khi viết luật kiểm.
 - Chạy trên 6 cuốn phát triển. Với tập khoá, bàn giao lệnh cho Claude chạy; **nhân viên không mở PDF hay đầu ra của tập khoá**.
+
+### Pha 1b — agentic gán nhãn, chủ dự án duyệt (không phải việc của nhân viên)
+
+Pha 2–4 cần đáp án. Đáp án do agentic gán theo [D-02](D-02-dac-ta-nhan-cau-truc-a1.md), mục "Quyền và thứ tự làm".
+
+- **Đưa agentic:** chỉ [hướng dẫn gán D-02](../../report/huong-dan-agentic-gan-nhan-d02.md), thư mục phiếu của từng cuốn và
+  `kiem_nhan_d02.py`. Không đưa đặc tả D-02, vé này, hay đầu ra của docling và bộ đọc nhẹ.
+- **Agentic làm, cho từng cuốn:**
+  - L1, cây mục: mỗi tiêu đề một dòng gồm mã dòng, `cap`, `cha`;
+  - L2, 8 trang mẫu: vai trò và thứ tự đọc của mọi dòng. Bắt buộc với tập khoá. Với tập phát triển, D-02 để tuỳ chọn, nhưng nên làm để M4
+    được thử trước pha 4;
+  - tự chạy `kiem_nhan_d02.py` tới khi in "ĐẠT" rồi mới nộp.
+- **Thứ tự:**
+  1. Đợt 1: L1 của 6 cuốn phát triển, xong trước pha 2 để nhân viên có đáp án viết bộ chấm.
+  2. Đợt 2: L1 và L2 của tập khoá. Claude xuất phiếu tập khoá và giao chủ dự án; nhãn tập khoá nộp thẳng cho Claude, nhân viên không thấy.
+- **Chủ dự án duyệt mẫu** theo D-02, mục "Người duyệt": sửa ghi vào `duyet/<sach>.jsonl`. Phần người sửa là vàng, phần còn lại là bạc.
+- **Điều kiện trước:** chủ dự án xác nhận quyền dùng sách và dịch vụ agentic, vì agentic gửi chữ và ảnh trang ra dịch vụ ngoài.
 
 ### Pha 2 — bộ chấm, chạy trên tập phát triển
 
