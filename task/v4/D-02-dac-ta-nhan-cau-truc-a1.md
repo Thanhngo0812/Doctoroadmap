@@ -5,7 +5,8 @@
 **Ai:** chủ dự án gán bằng agentic và duyệt mẫu; nhân viên xuất phiếu và viết bộ chấm; Claude chấm tập khoá ·
 **Chi phí mô hình của dự án:** 0 USD.
 
-**Trạng thái:** soạn 2026-10-08. Sách mới đã kiểm (mục "Sách"). Chờ chủ dự án xác nhận quyền dùng và bổ sung sách PDF gốc.
+**Trạng thái:** soạn 2026-10-08. Sách mới đã kiểm (mục "Sách"), cả đợt bổ sung `new-doc-2`. Tập khoá có 6 cuốn PDF gốc: còn thiếu 2 cuốn (tải
+lại toán rời rạc, thêm ít nhất 1 cuốn ngoài toán). Chờ chủ dự án xác nhận quyền dùng.
 
 ## Vì sao (Claude, 2026-10-08)
 
@@ -19,7 +20,7 @@
 
 ## Sách (Claude kiểm 2026-10-08, 0 USD)
 
-20 PDF trong `document-data/new-data-document/`, 10 lĩnh vực.
+20 PDF trong `document-data/new-data-document/`, 10 lĩnh vực. Thêm đợt bổ sung `document-data/new-doc-2/`: 8 tệp, trong đó 3 cuốn mới.
 - **Không trùng với sách đã có.** Không cuốn nào trùng byte với sách test (chỉ so băm, không đọc nội dung sách test), hay với sách D-01, doc-1,
   doc-4, xstk. Nội dung trùng với sách cũ tối đa 2%.
 - **Thiếu tệp đi kèm.** README nhắc `manifest-d02.json` và báo cáo nghiệm thu, nhưng hai tệp này **chưa có**.
@@ -35,6 +36,9 @@
 
 | sách | lĩnh vực | trang | loại | chữ (âm tiết hợp lệ) | trang bị cờ | vai trò đề xuất |
 |---|---|---:|---|---|---:|---|
+| dai-so-tuyen-tinh-bui-xuan-dieu-hust (`new-doc-2`) | Toán | 97 | gốc (LaTeX), có mục lục điện tử 104 mục; chỉ trùng 1,7% nội dung với doc-1 | 0,924, nhiều công thức | 0 | **khoá, gốc** |
+| giai-tich-1-le-chi-ngoc-hust (`new-doc-2`) | Toán | 139 | gốc (Word), bài giảng khổ A4 | 0,854, nhiều công thức | 0 | **khoá, gốc** |
+| toan-roi-rac-nguyen-duc-nghia-hust (`new-doc-2`) | Toán | — | **tệp tải thiếu**: dừng giữa bảng xref, không có `startxref` hay `%%EOF`; pypdfium2 không mở được | — | — | tải lại rồi kiểm |
 | tam-ly-hoc-dai-cuong-hcmue | KHXH | 145 | gốc (Google Docs), có mục lục điện tử 225 mục | 0,995 | 0 | **khoá, gốc** |
 | ly-thuyet-mach-ptit | Kỹ thuật | 183 | gốc (Word) | 0,927, nhiều công thức | 0 | **khoá, gốc** |
 | vat-ly-2-dien-tu-quang-ptit | Vật lý | 310 | gốc (Word) | 0,954, nhiều công thức | 0 | **khoá, gốc** |
@@ -62,16 +66,20 @@
 
 | tập | sách | ai được xem |
 |---|---|---|
-| **khoá, gốc** | 4 cuốn gốc ở bảng trên, **cộng ít nhất 4 cuốn gốc chủ dự án bổ sung** | chỉ Claude và chủ dự án |
+| **khoá, gốc** | 6 cuốn đánh dấu "khoá, gốc" ở bảng trên, **cộng toán rời rạc (sau khi tải lại) và ít nhất 1 cuốn gốc ngoài toán** | chỉ Claude và chủ dự án |
 | **khoá, quét** | 6 cuốn quét đánh dấu "khoá, quét" | chỉ Claude và chủ dự án |
 | **phát triển có nhãn** | 6 cuốn D-01: d01-02 (toán), d01-06 (sinh), d01-07 (CNTT), d01-10 (kinh tế), d01-11 (luật), d01-15 (nông nghiệp) | nhân viên được xem hết |
 | kiểm cổng chữ | hoá hữu cơ, giải phẫu Nguyễn Văn Huy | nhân viên (vé 13b) |
 | dự phòng | 8 cuốn còn lại | đo tốc độ và kiểm lỗi chạy; không gán |
 
-- **Sách gốc cần bổ sung:** ít nhất 4 cuốn, xuất từ Word, LaTeX hay Google Docs; **không** lấy bản quét Internet Archive. Ưu tiên toán, hoá, sinh,
-  kinh tế hoặc luật, y.
+- **Sách gốc còn thiếu:** xuất từ Word, LaTeX hay Google Docs; **không** lấy bản quét Internet Archive.
   - Lý do: chủ dự án nói đầu vào sau này sẽ sạch như doc-4, doc-1, nên quyết định cho PDF gốc là quyết định chính.
-  - Cần ít nhất 8 cuốn để quyết định theo từng cuốn; chỉ có 4 thì kết quả chỉ để tham khảo.
+  - Cần ít nhất 8 cuốn để quyết định theo từng cuốn; ít hơn thì kết quả chỉ để tham khảo.
+- **Đợt `new-doc-2` (2026-10-08):** 8 tệp.
+  - 5 tệp trùng byte với đợt trước: 4 cuốn gốc và giải phẫu Nguyễn Văn Huy. Chỉ dùng một bản.
+  - Giải phẫu Nguyễn Văn Huy vẫn là bản quét: ảnh phủ kín mọi trang, chữ OCR lỗi nặng ("Các Sòi C(J. các bó sơi co'"). Nó không tính là sách gốc.
+  - 2 cuốn toán HUST dùng được; toán rời rạc phải tải lại.
+  - Sau đợt này đã có 3 cuốn toán (tính cả toán rời rạc), nên cuốn bổ sung phải **ngoài toán**: hoá, sinh, kinh tế, luật hoặc y.
 - **Khoá nghĩa là:** nhân viên không mở PDF, không xem nhãn, không xem kết quả từng cuốn của tập khoá. Claude (hoặc chủ dự án) chạy script xuất
   phiếu của nhân viên trên tập khoá. Đánh giá cuối do Claude chạy **một lần**, với cấu hình đã đóng băng (vé 15, pha 4).
 
