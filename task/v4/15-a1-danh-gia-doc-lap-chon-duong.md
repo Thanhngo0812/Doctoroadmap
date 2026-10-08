@@ -19,10 +19,10 @@
   - R20–R25 sửa từng trang cụ thể; có nguy cơ khớp riêng tập phát triển.
 - **Chưa biết docling sai tới đâu.** Chưa từng đo docling trên đáp án độc lập. Có thể docling cũng chỉ đạt mức đó, khi ấy so "nhẹ với docling" là
   câu hỏi sai.
-- **Có hai loại đầu vào.**
-  - 16/20 sách mới là bản quét kèm lớp OCR, không có đậm hay font. Bộ đọc nhẹ mất tín hiệu mạnh nhất; mô hình bố cục của docling nhìn ảnh nên
-    vẫn chạy.
-  - A1 cần nhận ra loại đầu vào và chọn đường theo loại.
+- **Phạm vi chỉ có PDF gốc** (chủ dự án chốt; ghi vào vé ngày 2026-10-08, trước khi có số của tập khoá).
+  - 16/20 sách mới là bản quét kèm lớp OCR, không có đậm hay font. Bộ đọc nhẹ mất tín hiệu mạnh nhất ở loại này.
+  - Bản quét nằm ngoài sản phẩm. A1 chỉ cần nhận ra bản quét để từ chối, không cần chọn đường cho nó.
+  - Hướng đi là bộ đọc nhẹ thay docling cho PDF gốc. Thay hay không vẫn theo luật pha 4.
 - **Tốc độ có giá trị nhưng có trần.** Trên laptop, docling khoảng 11 phút/cuốn; các khâu LLM khoảng 42 phút/cuốn (vé 12). Trong sản phẩm,
   Developer API chạy song song cao nên phần của A1 sẽ lớn hơn.
 
@@ -34,7 +34,7 @@
 |---|---|
 | S0 | sản phẩm hiện tại: docling 2.114, bộ đọc chữ pypdfium2, adapter 13, chunker mặc định |
 | S1 | bộ đọc nhẹ, cấu hình tốt nhất của chuỗi R; chọn chỉ bằng dữ liệu phát triển |
-| S2 | định tuyến: S1 cho PDF gốc, S0 cho bản quét. Có thể thêm cổng của R7: trang có bảng hay hình phức tạp thì dùng S0 |
+| S2 | S1 kèm bộ định tuyến: PDF gốc đi S1, bản quét bị từ chối. Có thể thêm cổng của R7: trang có bảng hay hình phức tạp thì dùng S0 |
 | S3 | tuỳ chọn: lớp sửa cây mục theo mục lục, đặt trên S0 hoặc S1. Có mục lục điện tử thì dùng; không có thì đọc trang "MỤC LỤC" in sẵn và nối từng dòng mục lục với tiêu đề trong thân sách. 18/20 sách mới có trang mục lục. Không dùng LLM, hợp với seminar |
 | S4 | chỉ để đo tốc độ, đầu ra phải y hệt S0: docling chạy song song theo đoạn trang (đã kiểm đầu ra y hệt ở vé 10) |
 
@@ -78,9 +78,10 @@ Pha 2–4 cần đáp án. Đáp án do agentic gán theo [D-02](D-02-dac-ta-nha
   - tự chạy `kiem_nhan_d02.py` tới khi in "ĐẠT" rồi mới nộp.
 - **Thứ tự:**
   1. Đợt 1: L1 của 6 cuốn phát triển, xong trước pha 2 để nhân viên có đáp án viết bộ chấm.
-  2. Đợt 2: L1 và L2 của tập khoá. Claude xuất phiếu tập khoá và giao chủ dự án; nhãn tập khoá nộp thẳng cho Claude, nhân viên không thấy.
+  2. Đợt 2: L1 và L2 của 8 cuốn khoá gốc; bản quét không gán nhãn. Claude xuất phiếu tập khoá và giao chủ dự án; nhãn tập khoá nộp thẳng cho
+     Claude, nhân viên không thấy.
 - **Chủ dự án duyệt mẫu** theo D-02, mục "Người duyệt": sửa ghi vào `duyet/<sach>.jsonl`. Phần người sửa là vàng, phần còn lại là bạc.
-- **Điều kiện trước:** chủ dự án xác nhận quyền dùng sách và dịch vụ agentic, vì agentic gửi chữ và ảnh trang ra dịch vụ ngoài.
+- **Điều kiện trước:** chủ dự án xác nhận quyền dùng 8 cuốn khoá gốc và dịch vụ agentic, vì agentic gửi chữ và ảnh trang ra dịch vụ ngoài.
 
 ### Pha 2 — bộ chấm, chạy trên tập phát triển
 
@@ -89,7 +90,7 @@ Pha 2–4 cần đáp án. Đáp án do agentic gán theo [D-02](D-02-dac-ta-nha
   - dòng của bộ đọc nhẹ có dòng nguồn.
 
   Sau khi căn, mỗi mã dòng có vai trò và đường dẫn mục theo từng hệ.
-- **Chỉ số theo từng cuốn.** Báo trung vị và cuốn tệ nhất, tách PDF gốc với bản quét.
+- **Chỉ số theo từng cuốn.** Báo trung vị và cuốn tệ nhất. Chỉ chấm PDF gốc.
 
 | mã | chỉ số |
 |---|---|
@@ -114,13 +115,21 @@ Pha 2–4 cần đáp án. Đáp án do agentic gán theo [D-02](D-02-dac-ta-nha
   - Báo cả số giảm.
   - Không viết luật theo mã sách.
 - **Bộ định tuyến** nhận ra PDF gốc, bản quét kèm OCR, và trang không có chữ, theo tín hiệu của chính PDF: chế độ hiển thị chữ 3 (ẩn),
-  `GlyphLessFont`, ảnh phủ kín trang. Kiểm trên đủ 39 PDF đã biết loại.
+  `GlyphLessFont`, ảnh phủ kín trang. Bản quét bị từ chối.
+  - Kiểm trên đủ 43 PDF đã biết loại: 27 gốc, 16 quét.
+  - Manifest `report/v4-15-router-custodian-39-2026-10-08.json` mới có 39 cuốn, thiếu 4 cuốn khoá gốc:
+    `new-doc-2/toan-hoc/dai-so-tuyen-tinh-bui-xuan-dieu-hust.pdf`, `new-doc-2/toan-hoc/giai-tich-1-le-chi-ngoc-hust.pdf`,
+    `new-doc-3/kinh-te-vi-mo-1-ptit.pdf`, `new-doc-3/luat-kinh-doanh-ptit.pdf` (đều dưới `document-data/`). Nhân viên thêm theo tên tệp,
+    không mở tệp.
 - **Hạn mức:** tối đa 3 ngày làm việc, hoặc khi M3 trên tập phát triển không tăng qua hai vòng liên tiếp, thì đóng băng.
+- **Điểm bắt đầu:** [chẩn đoán lỗi tiêu đề của bộ đọc nhẹ](../../report/nghien-cuu-bo-doc-nhe-loi-tieu-de-2026-10-08.md), mục 5:
+  chuẩn hoá cờ đậm theo cuốn, ngữ pháp đánh số, cây cha–con từ đánh số và mục lục, học trên nhãn D-02 theo fold bỏ chính cuốn.
 
 ### Pha 4 — đánh giá khoá (Claude chạy một lần)
 
 - Chạy trên tập khoá D-02 với cấu hình đóng băng và hash đã ghi. Claude công bố báo cáo.
-- **Luật quyết định, ghi trước khi chạy.**
+- **Luật quyết định, ghi trước khi chạy.** Ngày 2026-10-08 sửa luật bản quét và dòng số cuốn theo phạm vi PDF gốc, trước khi có số của
+  tập khoá; luật cho PDF gốc giữ nguyên.
   - **PDF gốc:** S1 hoặc S2 thành mặc định nếu đạt đủ bốn điều:
     - M3 trung vị không thấp hơn S0 quá 0,02;
     - không cuốn nào thấp hơn S0 quá 0,10;
@@ -129,14 +138,17 @@ Pha 2–4 cần đáp án. Đáp án do agentic gán theo [D-02](D-02-dac-ta-nha
 
     Không đạt thì giữ S0 cho PDF gốc và đi theo hướng tăng tốc S4.
   - **S3:** nhận nếu M3 trung vị tăng ít nhất 0,03 và không cuốn nào giảm quá 0,05.
-  - **Bản quét:** giữ S0, trừ khi phương án khác đạt cùng luật.
-  - **Số cuốn:** tập khoá PDF gốc cần ít nhất 8 cuốn mới quyết định; với 4 cuốn hiện có, kết quả chỉ để tham khảo.
+  - **Bản quét:** ngoài phạm vi, không chấm chất lượng. Bộ định tuyến đóng băng phải đúng trên cả 43 PDF đã biết loại; từ chối nhầm một PDF
+    gốc là lỗi chặn.
+  - **Số cuốn:** tập khoá PDF gốc có 8 cuốn, đủ ngưỡng 8 cuốn để quyết định.
 
 ### Pha 5 — tích hợp theo quyết định
 
 - **Cờ chọn đường:** `ingest --a1 {docling,nhe,tu-dong}`. Định danh đường A1 nằm trong khoá cache parse, như vé 09.
   - Mặc định chỉ đổi khi pha 4 đạt, và sau khi báo chủ dự án.
   - Tài liệu cũ chạy lại theo cờ đã khoá, không đổi.
+- **Cổng phạm vi**, làm bất kể kết quả pha 4, áp cho mọi đường A1: ingest gặp bản quét thì dừng trước A2, báo rõ tệp là bản quét và nằm
+  ngoài phạm vi. Test: PDF tổng hợp (chữ ẩn, `GlyphLessFont`, ảnh phủ kín trang) bị từ chối; PDF gốc đi tiếp.
 - **Tốc độ S0** (nếu giữ S0): đo song song theo đoạn trang trên máy triển khai khi có; trong lúc chờ, báo số trên laptop.
 - **Tuỳ chọn, cần duyệt chi** và quyền gửi sách D-02 lên Gemini: chạy A2 → A9'' trên 2 cuốn khoá với hai đường A1 rồi so:
   - vai trò vùng;
@@ -151,5 +163,6 @@ Pha 2–4 cần đáp án. Đáp án do agentic gán theo [D-02](D-02-dac-ta-nha
 - Pha 1: script xuất phiếu, script kiểm định dạng, test đỏ rồi xanh; phiếu của 6 cuốn phát triển.
 - Pha 2: bộ chấm, test chỉ số, báo cáo tập phát triển có S0 so với vàng.
 - Pha 4: báo cáo của Claude kết luận theo luật quyết định, kèm số từng cuốn.
-- Pha 5: chỉ khi pha 4 đạt. Có test khoá cache; tài liệu cũ không đổi khoá.
+- Pha 5: cổng phạm vi bản quét có test, làm bất kể kết quả pha 4. Phần cờ chọn đường chỉ làm khi pha 4 đạt; có test khoá cache; tài liệu cũ
+  không đổi khoá.
 - Không dùng LLM trong A1. Không mở `document-data/test/`. Nhân viên không mở tập khoá D-02.

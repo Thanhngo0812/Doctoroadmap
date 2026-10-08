@@ -8,6 +8,8 @@
 **Trạng thái:** soạn 2026-10-08. Sách mới đã kiểm (mục "Sách"), cả hai đợt bổ sung `new-doc-2` và `new-doc-3`. Tập khoá đủ 8 cuốn PDF gốc
 (toán rời rạc không cần nữa). Chờ chủ dự án xác nhận quyền dùng.
 
+**Phạm vi chỉ có PDF gốc** (chủ dự án chốt, sửa đặc tả ngày 2026-10-08): bản quét không gán nhãn, chỉ dùng để kiểm bộ định tuyến.
+
 ## Vì sao (Claude, 2026-10-08)
 
 - **Thước đo đang dùng không đủ.**
@@ -45,12 +47,12 @@
 | ly-thuyet-mach-ptit | Kỹ thuật | 183 | gốc (Word) | 0,927, nhiều công thức | 0 | **khoá, gốc** |
 | vat-ly-2-dien-tu-quang-ptit | Vật lý | 310 | gốc (Word) | 0,954, nhiều công thức | 0 | **khoá, gốc** |
 | mang-may-tinh-nguyen-toan-thang | CNTT | 214 | gốc (in từ trình duyệt); trang bản quyền có lỗi OCR; ghi bản quyền NXB Giáo dục | 0,901 | 0 | **khoá, gốc** |
-| xahoi-hoc-dai-cuong-ussh-vnu | KHXH | 369 | quét + OCR | 0,964 | 0 | **khoá, quét** |
-| tai-chinh-doanh-nghiep-le-thi-xuan | Kinh tế | 408 | quét + OCR | 0,980 | 8 | **khoá, quét** |
-| nha-nuoc-va-phap-luat-dai-cuong-vnu | Pháp luật | 350 | quét + OCR | 0,995 | 1 | **khoá, quét** |
-| sinh-hoc-te-bao-nguyen-nhu-hien | Sinh | 259 | quét + OCR | 0,927 | 0 | **khoá, quét** |
-| giai-phau-nguoi-dai-hoc-y-ha-noi | Y | 516 | quét + OCR | 0,961 | 0 | **khoá, quét** |
-| cau-truc-du-lieu-giai-thuat-do-xuan-loi | CNTT | 305 | quét + OCR; mã giả | 0,942 | 12 | **khoá, quét** |
+| xahoi-hoc-dai-cuong-ussh-vnu | KHXH | 369 | quét + OCR | 0,964 | 0 | khoá, chỉ kiểm định tuyến |
+| tai-chinh-doanh-nghiep-le-thi-xuan | Kinh tế | 408 | quét + OCR | 0,980 | 8 | khoá, chỉ kiểm định tuyến |
+| nha-nuoc-va-phap-luat-dai-cuong-vnu | Pháp luật | 350 | quét + OCR | 0,995 | 1 | khoá, chỉ kiểm định tuyến |
+| sinh-hoc-te-bao-nguyen-nhu-hien | Sinh | 259 | quét + OCR | 0,927 | 0 | khoá, chỉ kiểm định tuyến |
+| giai-phau-nguoi-dai-hoc-y-ha-noi | Y | 516 | quét + OCR | 0,961 | 0 | khoá, chỉ kiểm định tuyến |
+| cau-truc-du-lieu-giai-thuat-do-xuan-loi | CNTT | 305 | quét + OCR; mã giả | 0,942 | 12 | khoá, chỉ kiểm định tuyến |
 | hoa-hoc-huu-co-tap-1-tran-manh-binh | Hoá | 373 | quét + OCR; OCR ra chữ Kirin (2% chữ cái) | 0,803 | 286 | kiểm cổng chữ, không gán |
 | giai-phau-nguoi-nguyen-van-huy | Y | 204 | quét + OCR; tách âm tiết 6,3% | 0,939 | 124 | kiểm cổng chữ, không gán |
 | vat-ly-dai-cuong-tap-1-co-nhiet | Vật lý | 515 | quét + OCR | 0,959 | 16 | dự phòng |
@@ -69,12 +71,12 @@
 | tập | sách | ai được xem |
 |---|---|---|
 | **khoá, gốc** | 8 cuốn đánh dấu "khoá, gốc" ở bảng trên | chỉ Claude và chủ dự án |
-| **khoá, quét** | 6 cuốn quét đánh dấu "khoá, quét" | chỉ Claude và chủ dự án |
+| khoá, chỉ kiểm định tuyến | 6 cuốn quét đánh dấu "khoá, chỉ kiểm định tuyến"; không gán nhãn, không gửi agentic | chỉ Claude và chủ dự án |
 | **phát triển có nhãn** | 6 cuốn D-01: d01-02 (toán), d01-06 (sinh), d01-07 (CNTT), d01-10 (kinh tế), d01-11 (luật), d01-15 (nông nghiệp) | nhân viên được xem hết |
 | kiểm cổng chữ | hoá hữu cơ, giải phẫu Nguyễn Văn Huy | nhân viên (vé 13b) |
-| dự phòng | 8 cuốn còn lại | đo tốc độ và kiểm lỗi chạy; không gán |
+| dự phòng | 8 cuốn quét còn lại | kiểm định tuyến và lỗi chạy; không gán |
 
-- **Sách gốc còn thiếu:** xuất từ Word, LaTeX hay Google Docs; **không** lấy bản quét Internet Archive.
+- **Sách gốc (đã đủ 8 cuốn):** xuất từ Word, LaTeX hay Google Docs; **không** lấy bản quét Internet Archive.
   - Lý do: chủ dự án nói đầu vào sau này sẽ sạch như doc-4, doc-1, nên quyết định cho PDF gốc là quyết định chính.
   - Cần ít nhất 8 cuốn để quyết định theo từng cuốn; ít hơn thì kết quả chỉ để tham khảo.
 - **Đợt `new-doc-2` (2026-10-08):** 8 tệp.
@@ -154,7 +156,7 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
 ### Người duyệt (vàng)
 
 - **Chủ dự án duyệt:**
-  - toàn bộ L1 của 2 cuốn khoá (1 gốc, 1 quét);
+  - toàn bộ L1 của 2 cuốn khoá gốc;
   - 10% tiêu đề ngẫu nhiên của các cuốn khoá còn lại;
   - 20 trang L2 ngẫu nhiên.
 - Sửa ghi vào tệp riêng `duyet/<sach>.jsonl`; không ghi đè nhãn agentic.
@@ -176,11 +178,11 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
 
 ## Quyền và thứ tự làm
 
-1. **Chủ dự án xác nhận quyền dùng 20 cuốn và dịch vụ agentic sẽ nhận nội dung.**
+1. **Chủ dự án xác nhận quyền dùng 8 cuốn khoá gốc và dịch vụ agentic sẽ nhận nội dung.** Bản quét không gửi đi đâu.
    - Chạy A1 tại máy để nghiên cứu là 0 USD và không gửi sách đi đâu.
    - Agentic gán nhãn là gửi ảnh và chữ của trang cho một dịch vụ ngoài, nên cần xác nhận như D-01.
    - Cuốn mạng máy tính có dòng cấm sao chép của NXB Giáo dục.
    - Cùng lúc, bổ sung `manifest-d02.json`: tên, tác giả, năm, nguồn tải, quyền.
 2. Nhân viên làm vé 15, pha 1 (xuất phiếu); Claude kiểm.
-3. Agentic gán L1 cho 6 cuốn phát triển trước, để nhân viên viết bộ chấm. Sau đó gán L1 và L2 cho tập khoá.
+3. Agentic gán L1 cho 6 cuốn phát triển trước, để nhân viên viết bộ chấm (xong 2026-10-08). Sau đó gán L1 và L2 cho 8 cuốn khoá gốc.
 4. Chủ dự án duyệt mẫu theo mục "Người duyệt".
