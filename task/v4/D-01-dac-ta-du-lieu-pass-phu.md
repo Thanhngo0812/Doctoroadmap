@@ -7,6 +7,10 @@ lượt trả tiền.
 
 **Trạng thái:** soạn 2026-10-05; chủ dự án đề nghị tự làm dữ liệu cùng ngày.
 
+**Cảnh báo cho chủ dự án (Claude, 2026-10-08): không đưa tệp này cho agentic.** Cả năm ví dụ ở mục "Ví dụ lấy từ dữ liệu dự án" trùng
+đúng cặp của phiếu kiểm, đưa vào là lộ đáp án. Agentic chỉ nhận `phieu.jsonl`, [hướng dẫn gán](../../report/huong-dan-agentic-gan-nhan-d01.md)
+và `scripts/pass-phu-ml/kiem_nhan_d01.py`; không nhận `khoa.jsonl`.
+
 ## Vì sao (Claude, 2026-10-05)
 
 Bộ kiểm cạnh cứng của vòng 1 học từ phán quyết của `gemini-3.1-flash-lite` trên bốn giáo trình tiếng Việt: đại số tuyến tính, nhập môn ML, xác
@@ -77,17 +81,22 @@ Luật chung:
 - **Căn cứ vào đoạn văn được cho.** Hiểu biết môn học chỉ dùng để hiểu đoạn văn, không dùng để thêm quan hệ mà đoạn văn không thể hiện. Giao
   thức này giống giao thức vàng của dự án, vốn bám câu chữ giáo trình.
 - **Chỉ quan hệ trực tiếp.** Nếu X cần cho Y chỉ vì Y cần Z và Z cần X, mà Z cũng là ứng viên, thì chọn `khong` và ghi Z vào `trung_gian`.
-- Với `can_de_hieu`, `cong_cu`, `nguoc`: ghi `cau` là chỉ số câu làm căn cứ, lấy trong danh sách câu đã cho.
+- Với `can_de_hieu`, `cong_cu`: ghi `cau` là chỉ số câu làm căn cứ, lấy trong danh sách câu đã cho. Với `nguoc`: chỉ số câu, hoặc `null` khi
+  căn cứ chỉ nằm trong `x_dinh_nghia` (bổ sung 2026-10-08).
 - Không chắc thì chọn `khong_ro`, **không đoán**.
 
-Định dạng trả về: mỗi cặp (Y, X) một dòng JSONL, mỗi lượt gán trả đủ mọi cặp đúng một lần.
+Định dạng trả về: mỗi cặp (phiếu, X) một dòng JSONL, mỗi lượt gán trả đủ mọi cặp đúng một lần.
+- **`phieu_id` bắt buộc** (bổ sung 2026-10-08). Phiếu lặp có cùng `doc_id`, `y_id` với phiếu gốc, nên thiếu `phieu_id` thì không tách được
+  hai lần gán.
+- Luật đầy đủ của `cau` và `trung_gian` ở mục 8 của [hướng dẫn gán](../../report/huong-dan-agentic-gan-nhan-d01.md).
+- `scripts/pass-phu-ml/kiem_nhan_d01.py` kiểm định dạng.
 
 ```json
-{"doc_id": "sach-07", "y_id": "node_…", "x_id": "node_…", "nhan": "can_de_hieu", "cau": 2, "trung_gian": null,
+{"phieu_id": "p_…", "doc_id": "sach-…", "y_id": "node_…", "x_id": "node_…", "nhan": "can_de_hieu", "cau": 2, "trung_gian": null,
  "ly_do": "tối đa 30 từ", "nguoi_gan": "tên agent + mô hình + phiên bản", "luot": "A"}
 ```
 
-## Ví dụ lấy từ dữ liệu dự án
+## Ví dụ lấy từ dữ liệu dự án (chỉ cho người đọc đặc tả; trùng phiếu kiểm, không đưa cho agentic)
 
 Các ví dụ này đã có nhãn vàng người hoặc đã được đọc lại:
 
