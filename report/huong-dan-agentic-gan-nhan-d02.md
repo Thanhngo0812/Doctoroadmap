@@ -152,7 +152,7 @@ Trên mỗi trang trong `chon-trang-mau/<sach>.json`, gán **mọi** mã dòng c
 | `ma_lenh` | mã nguồn, mã giả, câu lệnh |
 | `chu_thich_hinh` | chú thích hình hoặc bảng ("Hình 3.2 …", "Bảng 1.4 …"), kể cả các dòng nối tiếp |
 | `chu_trong_hinh` | chữ nằm trong hình, sơ đồ, biểu đồ: nhãn, trục, chú giải |
-| `dau_trang` | dòng đầu trang lặp lại, kể cả khi dính số trang ("48 Chương 3. Không gian véctơ") |
+| `dau_trang` | dòng đầu trang lặp lại, kể cả khi dính số trang ("34 Chương 3. Dòng chảy sông ngòi") |
 | `chan_trang` | dòng chân trang lặp lại (tên trường, bản quyền), kể cả khi dính số trang |
 | `so_trang` | dòng chỉ có số trang, kể cả "Trang 12" |
 | `chu_thich_cuoi_trang` | chú thích cuối trang |
