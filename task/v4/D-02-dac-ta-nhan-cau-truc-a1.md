@@ -89,7 +89,7 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
 - `dong/<sach>.jsonl`: mỗi dòng chữ của lớp chữ PDF (pypdfium2) một bản ghi, gồm `id` dạng `p0012-l003`, `trang`, `text`, `bbox`, `co_chu`, `dam`.
   Đây là **mã dòng chuẩn**; mọi nhãn trỏ vào mã này.
 - `trang/<sach>/p0012.png`: ảnh trang khoảng 110 dpi.
-- `muc_luc_dien_tu`: mục lục điện tử (bookmark) nếu PDF có. Chỉ là gợi ý, phải đối chiếu với trang.
+- `muc_luc_dien_tu/<sach>.json`: mục lục điện tử (bookmark) nếu PDF có. Chỉ là gợi ý, phải đối chiếu với trang.
 
 ### L1 — cây mục của cả cuốn (bắt buộc)
 
@@ -132,7 +132,7 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
 ### L2 — trang mẫu (bắt buộc với tập khoá; tuỳ chọn với tập phát triển)
 
 - **Chọn trang:** script xuất phiếu chọn 8 trang mỗi cuốn, tất định theo seed, phân tầng: trang mở chương, trang có bảng, trang có hình, trang
-  nhiều công thức, hai trang thường, một trang cuối sách, một trang ngẫu nhiên.
+  nhiều công thức, hai trang thường, một trang cuối sách, một trang ngẫu nhiên. Ghi danh sách trang vào `chon-trang-mau/<sach>.json`.
 - **Đầu ra:** `trang-mau/<sach>.jsonl`, mỗi trang một dòng:
 
 ```json
@@ -168,8 +168,9 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
   - `thu_tu` là hoán vị đúng tập dòng cần xếp.
 - Cuốn tâm lý học có mục lục điện tử: so cây của agentic với mục lục đó để kiểm nhanh. Mục lục điện tử không phải vàng, vì có thể thiếu mục.
 - Nếu làm được: hai lượt agentic độc lập trên 2 cuốn, báo độ khớp.
-- **Khi đưa agentic gán nhãn:** chỉ đưa hướng dẫn gán D-02 (Claude soạn sau khi có phiếu, như
-  [hướng dẫn D-01](../../report/huong-dan-agentic-gan-nhan-d01.md)), phiếu và script kiểm. Không đưa kết quả của docling hay bộ đọc nhẹ.
+- **Khi đưa agentic gán nhãn:** chỉ đưa [hướng dẫn gán D-02](../../report/huong-dan-agentic-gan-nhan-d02.md) (soạn 2026-10-08), phiếu và
+  script kiểm. Không đưa tệp đặc tả này, không đưa kết quả của docling hay bộ đọc nhẹ. Tên tệp và luật định dạng trong hướng dẫn là chuẩn
+  cho script xuất phiếu và script kiểm (vé 15, pha 1).
 
 ## Quyền và thứ tự làm
 

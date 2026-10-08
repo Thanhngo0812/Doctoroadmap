@@ -52,7 +52,12 @@
 
 - Viết script `scripts/a1-d02/` xuất `dong/`, `trang/`, `muc_luc_dien_tu` và trang mẫu L2 theo [D-02](D-02-dac-ta-nhan-cau-truc-a1.md).
   - Mã dòng lấy từ dòng pypdfium2. Dùng lại `page_lines` và `describe` của bộ đọc nhẹ, để mã dòng khớp với dòng mà S1 dùng.
-- Viết script kiểm định dạng nhãn trả về.
+- Tên tệp xuất ra theo đúng [hướng dẫn gán D-02](../../report/huong-dan-agentic-gan-nhan-d02.md) mục 1: `dong/`, `trang/`,
+  `chon-trang-mau/`, `muc_luc_dien_tu/`.
+- Viết script kiểm `kiem_nhan_d02.py`.
+  - Chạy được bằng lệnh `python kiem_nhan_d02.py --sach <sach> --thu-muc <dir>`, chỉ dùng thư viện chuẩn, vì agentic chạy nó ở máy khác.
+  - Kiểm đủ luật ở mục 2.6 và 3.3 của hướng dẫn, kể cả luật khớp giữa vai trò `tieu_de` của trang mẫu và cây mục.
+  - In "ĐẠT" khi không có lỗi.
 - **Test:**
   - mã dòng ổn định giữa hai lần chạy;
   - mỗi ký tự có chữ của trang thuộc đúng một dòng;
