@@ -162,6 +162,10 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
 - Sửa ghi vào tệp riêng `duyet/<sach>.jsonl`; không ghi đè nhãn agentic.
 - Báo độ khớp giữa agentic và người: F1 tiêu đề, độ đúng của cha, độ đúng vai trò dòng.
 - Khi chấm, chỗ có bản người sửa thì dùng bản người (vàng), chỗ khác dùng nhãn agentic (bạc). Báo số trên cả hai.
+- **Chủ dự án chốt 2026-10-10:** người duyệt tập khoá dùng agentic để đọc và duyệt.
+  - Phần đã duyệt vì thế là "agentic + duyệt agentic", không gọi là vàng người; báo cáo pha 4 ghi rõ điều này.
+  - Bản duyệt lưu thành tệp đầy đủ riêng, không vá từng bản ghi, nên không cần thêm giao thức thêm/xoá cho `duyet/`.
+  - Vẫn báo độ khớp giữa lượt gán và lượt duyệt.
 
 ### Kiểm chất lượng
 
