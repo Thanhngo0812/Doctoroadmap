@@ -9,6 +9,13 @@
 **Phụ thuộc:** nhãn D-02 (tập phát triển trước); vé 13b nên xong trước pha 4 ·
 **Chi phí mô hình:** 0 USD. Phép kiểm trả tiền ở pha 5 là tuỳ chọn, cần duyệt riêng.
 
+**Chủ dự án chốt 2026-10-10:**
+- Đổi mặc định A1 sang bộ đọc nhẹ R2 ngay, không chờ pha 4.
+- Đây là đánh đổi tốc độ và nguồn lực. Trên tập phát triển R2 trượt c1 (M3 thấp hơn 0,065) và c3 (M1 thấp hơn 0,043) của luật pha 4, nên không ghi là đạt.
+- Pha 4 hoãn; tập khoá giữ niêm phong cho một lần đánh giá sau.
+- Pha 5 và nghiên cứu cây cha–con chuyển sang [vé 16](16-a1-bo-doc-nhe-mac-dinh-va-cay-cha-con.md).
+- Kiểm thử pha 0–3: [báo cáo](../../report/kiem-thu-ve-15-pha-0-3-2026-10-10.md).
+
 **Trạng thái:** soạn 2026-10-08. Thay phần "A1 mở rộng" đang mở của vé 14.
 
 ## Vì sao (Claude, 2026-10-08)
