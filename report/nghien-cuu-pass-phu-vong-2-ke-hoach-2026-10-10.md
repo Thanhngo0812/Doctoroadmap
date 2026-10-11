@@ -497,7 +497,63 @@ Hai việc của E0' đều xong:
 | xstk-ch3-1 | 0,706 | 0,707 |
 | doc-4 | 0,338 | 0,354 |
 
-Việc kế tiếp là E5: LightGBM học trên D-01 chia theo sách, kèm đường học theo cỡ dữ liệu; đo E4 trên doc-1, xstk, doc-4.
+### 8.3 E5: LightGBM học trên D-01
+
+**Cách làm** (`scripts/pass-phu-ml/thi_nghiem_e5.py`):
+- Học trên 34.391 dòng D-01: phiếu thật, X có tên trong cửa sổ. Tập này gồm 5.414 phiếu, 16 sách, tỉ lệ dương (`can_de_hieu` của lượt A) 0,388;
+  94% là cặp mà luồng có hỏi.
+- Dùng đúng mô hình và 82 đặc trưng của vòng 1 (bỏ nhóm `main_*`).
+- Ngưỡng chốt trên dự đoán ngoài mẫu của D-01 (chia theo sách) trước khi nhìn vàng.
+- Chấm doc-1, xstk, doc-4 bằng bộ E4 của vòng 1. Bộ này chưa từng thấy ba tài liệu đó, và cũng không thấy lĩnh vực của chúng ở dạng nhãn.
+
+**Kiểm bộ đo:** mốc vòng 1 chạy lại trên mã `src/` hôm nay ra **đúng từng số** của báo cáo vòng 1, nên mọi chênh lệch dưới đây là do điểm, không do mã
+phát lại.
+
+Bảng dưới so ba phương án: LLM v3 (số của vòng 1), vòng 1 (học trên ý định LLM v3), và E5 (học trên D-01, ngưỡng hiệu chỉnh), Wilson 95%:
+
+| tài liệu | phương án | cạnh phụ | Q7 | Q7b | bao đóng P | bao đóng R |
+|---|---|---:|---:|---:|---|---|
+| doc-4 | LLM v3 | 1.473 | 0,322 | 0,606 | 0,584 (0,50–0,67) | 0,459 (0,38–0,54) |
+| | vòng 1 | 701 | **0,595** | 0,720 | 0,717 (0,63–0,79) | 0,478 (0,40–0,56) |
+| | **E5** | 690 | 0,476 | **0,873** | **0,872 (0,79–0,93)** | **0,516 (0,44–0,59)** |
+| doc-1 | LLM v3 | 468 | 0,667 | **0,877** | **0,874** (0,80–0,92) | **0,740** (0,66–0,81) |
+| | vòng 1 | 167 | **0,672** | 0,802 | 0,815 (0,73–0,88) | 0,672 (0,59–0,75) |
+| | E5 | 195 | 0,603 | 0,743 | 0,821 (0,74–0,88) | 0,664 (0,58–0,74) |
+| xstk | LLM v3 | 171 | **0,414** | **0,644** | **0,636** (0,47–0,78) | **0,214** (0,14–0,30) |
+| | vòng 1 | 51 | 0,195 | 0,511 | 0,593 (0,41–0,76) | 0,163 (0,10–0,25) |
+| | E5 | 58 | 0,214 | 0,445 | 0,562 (0,39–0,72) | 0,184 (0,12–0,27) |
+
+**Đường học và hai phép bỏ** (ngưỡng hiệu chỉnh; mỗi ô là Q7 / Q7b / bao đóng P / bao đóng R):
+
+| học trên | doc-1 | xstk | doc-4 |
+|---|---|---|---|
+| 10% phiếu (3.436 dòng) | 0,675 / 0,589 / 0,671 / 0,733 | 0,230 / 0,750 / 0,750 / 0,214 | 0,412 / 0,870 / 0,878 / 0,453 |
+| 25% | 0,532 / 0,663 / 0,775 / 0,656 | 0,267 / 0,730 / 0,767 / 0,235 | 0,440 / 0,864 / 0,870 / 0,421 |
+| 50% | 0,561 / 0,739 / 0,820 / 0,626 | 0,238 / 0,730 / 0,793 / 0,235 | 0,449 / 0,873 / 0,900 / 0,509 |
+| 100% | 0,603 / 0,743 / 0,821 / 0,664 | 0,214 / 0,445 / 0,562 / 0,184 | 0,476 / 0,873 / 0,872 / 0,516 |
+| 100%, chỉ cặp của luồng | 0,607 / 0,740 / 0,815 / 0,672 | 0,206 / 0,497 / 0,593 / 0,163 | 0,489 / 0,873 / 0,902 / 0,522 |
+| 100%, bỏ nhóm dễ dãi (mục 8.1) | 0,583 / 0,747 / 0,822 / 0,634 | 0,206 / 0,482 / 0,571 / 0,163 | 0,455 / 0,873 / 0,901 / 0,516 |
+
+**Đọc kết quả** (phán xét của Claude):
+- **doc-4:** mọi biến thể học trên D-01 đều cho bao đóng P 0,87–0,90 và Q7b 0,86–0,87, so với 0,717 / 0,720 của vòng 1 và 0,584 / 0,606 của LLM v3.
+  - Đây là tài liệu lớn nhất, có 72 cạnh vàng, và kết quả ổn định qua mọi cỡ dữ liệu, nên đây là tín hiệu thật: nhãn agentic đa lĩnh vực làm bộ kiểm
+    **chặt hơn**.
+  - Cái giá là Q7: 0,41–0,49, so với 0,595 của vòng 1. Bao đóng R thì ngang vòng 1.
+- **doc-1 và xstk:** kết quả nhảy rất mạnh giữa các cấu hình gần như giống nhau.
+  - Ở xstk, bao đóng P là 0,75–0,79 khi học trên 10–50% dữ liệu, nhưng 0,56 khi học trên 100%.
+  - Ở doc-1, Q7 dao động từ 0,53 tới 0,68.
+  - Vàng xstk rất nhỏ và nhiễu (vòng 1, mục 9), và lắp cạnh có tỉa cặp nên vài cạnh đổi là đổi cả bao đóng. Không kết luận được E5 hơn hay kém vòng 1
+    ở hai tài liệu này.
+- **Đường học phẳng:** học trên 10% D-01 đã ngang 100%.
+  - Với LightGBM trên đặc trưng cấu trúc, giới hạn nằm ở **đặc trưng**, không ở lượng nhãn.
+  - 65 nghìn cặp D-01 chỉ đáng giá nếu mô hình đọc được văn bản cửa sổ, tức E6 (cross-encoder).
+- **Hai phép bỏ** không đổi kết luận. Nhóm người gán dễ dãi và 6% dòng không phải cặp của luồng không làm hỏng bộ học.
+
+**Hệ quả cho kế hoạch:**
+- **E9 phải làm trước khi chọn cấu hình:** nhiều seed và bootstrap theo cạnh. Nhiễu của phép đo đầu cuối trên doc-1 và xstk lớn hơn chênh lệch giữa các
+  phương án.
+- **E6 (cross-encoder) là đòn bẩy kế tiếp**, cần máy GPU.
+- Kết luận cuối vẫn chờ T-01.
 
 ## 9. Chạy lại
 
@@ -515,6 +571,11 @@ Các lệnh sau tái lập số của báo cáo:
 # E0': bảng đặc trưng D-01 (cần khoa.jsonl; tmp/venv-ml có underthesea)
 tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/dung_bang_d01.py --phieu tmp/d01-phieu/phieu.jsonl --khoa tmp/d01-phieu/khoa.jsonl \
     --nhan tmp/d01-gan-nhan/nhan-A-gop.jsonl --nhan-cu tmp/d01-gan-nhan/nhan-A.jsonl
+# E5: điểm và ngưỡng (biến thể: --ti-le-phieu=0.1|0.25|0.5, --chi-cap, "--bo-nhom=Codex / GPT-6 / 2026-10" --luot=e5-d01-a-bo-nhom-de-dai)
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e5.py
+# E4 cho từng tài liệu vàng (doc-1, xstk-ch3-1, doc-4); kết quả ở tmp/pass-phu-ml/ket-qua/e5.jsonl
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/lap_canh.py <doc> --diem=tmp/pass-phu-ml/diem/e5-d01-a/<doc>.csv \
+    --nguong-tu=tmp/pass-phu-ml/diem/e5-d01-a/nguong.json --chinh-sach=hieu-chinh --chi-cung --tach-tu --nhan=e5-a-hieu-chinh
 ```
 
 Số ở mục 1 đo bằng script tạm trong scratchpad trên `tmp/d01-gan-nhan/` lúc 17:24–18:10. Tệp nhãn còn đang ghi, nên chạy lại sẽ ra số khác.
