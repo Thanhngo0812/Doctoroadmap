@@ -12,7 +12,7 @@ from tests.unit.application.test_ingest import FakeParser
 def test_cli_pipeline_flags_reach_ingest(monkeypatch, tmp_path):
     calls = []
     monkeypatch.setattr("doc2roadmap.presentation.cli.main._ingest", lambda *a, **kw: calls.append(kw))
-    assert main(["ingest", str(tmp_path / "book.pdf"), "--doc-id", "book", "--no-do-ocr",
+    assert main(["ingest", str(tmp_path / "book.pdf"), "--doc-id", "book", "--a1", "docling", "--no-do-ocr",
                  "--table-mode", "fast", "--ocr-engine", "rapidocr", "--ocr-backend", "onnxruntime",
                  "--num-threads", "8", "--layout-model", "egret-medium", "--dry-run"]) == 0
     pipeline = calls[0]["pipeline"]
@@ -20,7 +20,15 @@ def test_cli_pipeline_flags_reach_ingest(monkeypatch, tmp_path):
                                       num_threads=8, layout_model="egret-medium")
     assert calls[0]["dry_run"] is True
     default = _parser().parse_args(["ingest", "book.pdf", "--doc-id", "book"])
-    assert PipelineConfig(**{name: getattr(default, name) for name in PipelineConfig.__dataclass_fields__}) == PipelineConfig()
+    assert default.a1 == "nhe"
+    assert all(getattr(default, name) is None for name in PipelineConfig.__dataclass_fields__)
+
+
+def test_legacy_pdf_text_policy_reaches_ingest(monkeypatch):
+    calls = []
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main._ingest", lambda *a, **kw: calls.append(kw))
+    assert main(["ingest", "book.pdf", "--doc-id", "book", "--a1", "docling", "--pdf-text-policy", "legacy", "--dry-run"]) == 0
+    assert calls[0]["pipeline"].pdf_text_policy == "legacy"
 
 
 def test_dry_run_reuses_without_parse_or_writes(monkeypatch, tmp_path, capsys):

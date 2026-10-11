@@ -1,0 +1,280 @@
+{
+  "scope": "four cached development fixtures, not a blinded quality benchmark",
+  "source_hashes": {
+    "src/doc2roadmap/infrastructure/parsing/docling_parser.py": "184b6d0e8077ccfe373a3161ed95fd49c1150a912451420e89b8f1c8509b21f6",
+    "scripts/doc-nhe/do_bao_toan_production.py": "67ff1245509578834136eb61b220f1a281355910acbab71a07e8a2068ca729d5"
+  },
+  "books": {
+    "nhap-mon-ml": {
+      "metrics": {
+        "legacy": {
+          "nodes": 156,
+          "sections": 27,
+          "chunks": 41,
+          "letters": 23759,
+          "refs": {
+            "image": 9,
+            "table": 0,
+            "formula": 1
+          },
+          "chunk_ids_sha256": "1f69ad2ee2ae5f4e1ed2d4ba24f460660bfe7d419c7f06074bfb064723225074",
+          "warnings": {
+            "empty_node": 1,
+            "orphan_caption": 1,
+            "rejected_heading": 1
+          }
+        },
+        "preserve": {
+          "nodes": 156,
+          "sections": 27,
+          "chunks": 41,
+          "letters": 23899,
+          "refs": {
+            "image": 9,
+            "table": 0,
+            "formula": 1
+          },
+          "chunk_ids_sha256": "59606d22b69250c3272c7b521d278f919af6ea633c751fc8d79b86eac3d2f644",
+          "warnings": {
+            "empty_node": 1,
+            "orphan_caption": 1,
+            "rejected_heading": 1
+          }
+        }
+      },
+      "changed_node_fields": {
+        "text": 27,
+        "raw_text": 28
+      },
+      "examples": [
+        {
+          "page": 5,
+          "field": "text",
+          "before": "Cụ thể hơn, theo Mitchell [1997], một hệ thống có khả năng học nếu nó có khả năng tự cải thiện bản thân nó theo tiêu chí P khi giải quyết một nhiệm vụ T , dựa vào dữ liệu hoặc kinh nghiệm E . Một bài toán học máy có thể được mô tả bằng bộ ba ( T , P , E ) . Như vậy, đây là một quan điểm rất cụ thể về khả năng học của một hệ thống. Theo quan điểm này, chúng ta có thể đưa nhiều nhiệm vụ trong thực tế về các bài toán học máy. Dưới đây là vài ví dụ.",
+          "after": "Cụ thể hơn, theo Mitchell [1997], một hệ thống có khả năng học nếu nó có khả năng tự cải thiện bản thân nó theo tiêu chí P P P khi giải quyết một nhiệm vụ T T T , dựa vào dữ liệu hoặc kinh nghiệm E E E . Một bài toán học máy có thể được mô tả bằng bộ ba ( T T T , P P P , E E E ) . Như vậy, đây là một quan điểm rất cụ thể về khả năng học của một hệ thống. Theo quan điểm này, chúng ta có thể đưa nhiều nhiệm vụ trong thực tế về các bài toán học máy. Dưới đây là vài ví dụ."
+        },
+        {
+          "page": 5,
+          "field": "raw_text",
+          "before": "Cụ thể hơn, theo Mitchell [1997], một hệ thống có khả năng học nếu nó có khả năng tự cải thiện bản thân nó theo tiêu chí P khi giải quyết một nhiệm vụ T , dựa vào dữ liệu hoặc kinh nghiệm E . Một bài toán học máy có thể được mô tả bằng bộ ba ( T , P , E ) . Như vậy, đây là một quan điểm rất cụ thể về khả năng học của một hệ thống. Theo quan điểm này, chúng ta có thể đưa nhiều nhiệm vụ trong thực tế về các bài toán học máy. Dưới đây là vài ví dụ.",
+          "after": "Cụ thể hơn, theo Mitchell [1997], một hệ thống có khả năng học nếu nó có khả năng tự cải thiện bản thân nó theo tiêu chí P P P khi giải quyết một nhiệm vụ T T T , dựa vào dữ liệu hoặc kinh nghiệm E E E . Một bài toán học máy có thể được mô tả bằng bộ ba ( T T T , P P P , E E E ) . Như vậy, đây là một quan điểm rất cụ thể về khả năng học của một hệ thống. Theo quan điểm này, chúng ta có thể đưa nhiều nhiệm vụ trong thực tế về các bài toán học máy. Dưới đây là vài ví dụ."
+        },
+        {
+          "page": 6,
+          "field": "text",
+          "before": "T : Cần phán đoán một email cho trước có phải là thư rác hay không",
+          "after": "T T T : Cần phán đoán một email cho trước có phải là thư rác hay không"
+        },
+        {
+          "page": 6,
+          "field": "raw_text",
+          "before": "· T : Cần phán đoán một email cho trước có phải là thư rác hay không",
+          "after": "· T T T : Cần phán đoán một email cho trước có phải là thư rác hay không"
+        },
+        {
+          "page": 6,
+          "field": "text",
+          "before": "P : Độ chính xác phán đoán (tỷ lệ emails được dự đoán đúng)",
+          "after": "P P P : Độ chính xác phán đoán (tỷ lệ emails được dự đoán đúng)"
+        },
+        {
+          "page": 6,
+          "field": "raw_text",
+          "before": "· P : Độ chính xác phán đoán (tỷ lệ emails được dự đoán đúng)",
+          "after": "· P P P : Độ chính xác phán đoán (tỷ lệ emails được dự đoán đúng)"
+        },
+        {
+          "page": 6,
+          "field": "text",
+          "before": "E : Tập hợp các email trong quá khứ, mỗi email đã được gán nhãn (rác/thường) tương ứng.",
+          "after": "E E E : Tập hợp các email trong quá khứ, mỗi email đã được gán nhãn (rác/thường) tương ứng."
+        },
+        {
+          "page": 6,
+          "field": "raw_text",
+          "before": "· E : Tập hợp các email trong quá khứ, mỗi email đã được gán nhãn (rác/thường) tương ứng.",
+          "after": "· E E E : Tập hợp các email trong quá khứ, mỗi email đã được gán nhãn (rác/thường) tương ứng."
+        }
+      ]
+    },
+    "xstk-ch3-1": {
+      "metrics": {
+        "legacy": {
+          "nodes": 987,
+          "sections": 43,
+          "chunks": 126,
+          "letters": 53219,
+          "refs": {
+            "image": 5,
+            "table": 51,
+            "formula": 263
+          },
+          "chunk_ids_sha256": "f12e2c21bfbd1ccf303266e22a961233ca649e767793a880b87b741e16d4b9f9",
+          "warnings": {
+            "orphan_caption": 2,
+            "empty_node": 1,
+            "remaining_private_use": 1,
+            "rejected_heading_bullet": 23,
+            "rejected_heading_repeated": 2
+          }
+        },
+        "preserve": {
+          "nodes": 987,
+          "sections": 43,
+          "chunks": 126,
+          "letters": 53234,
+          "refs": {
+            "image": 5,
+            "table": 51,
+            "formula": 263
+          },
+          "chunk_ids_sha256": "04b99d0b66e9073bf23380dae2a35c10054957a428f65e1920734d9f139bdab4",
+          "warnings": {
+            "orphan_caption": 2,
+            "empty_node": 1,
+            "remaining_private_use": 1,
+            "rejected_heading_bullet": 23,
+            "rejected_heading_repeated": 2
+          }
+        }
+      },
+      "changed_node_fields": {
+        "raw_text": 17,
+        "text": 5,
+        "table_rows": 5
+      },
+      "examples": [
+        {
+          "page": 3,
+          "field": "raw_text",
+          "before": "1 2 ... n x n + + + =",
+          "after": "1 2 ... n x x x x n + + + ="
+        },
+        {
+          "page": 3,
+          "field": "raw_text",
+          "before": "2 2 2 2 1 2 ( ) ( ) ... ( ) n x s − + − + + − =",
+          "after": "2 2 2 2 1 2 ( ) ( ) ... ( ) n x x x x x x s − + − + + − ="
+        },
+        {
+          "page": 3,
+          "field": "raw_text",
+          "before": "2 2 2 1 1 2 2 1 2 ... ... + + + = = − + + + k x n x n x n x s x x n",
+          "after": "2 2 2 1 1 2 2 1 2 ... ... + + + = = − + + + k k k x n x n x n x s x x n n n"
+        },
+        {
+          "page": 3,
+          "field": "raw_text",
+          "before": "2 2 2 2 1 1 2 2 1 2 ... ... + + + = + + + k x n x n x n x n",
+          "after": "2 2 2 2 1 1 2 2 1 2 ... ... + + + = + + + k k k x n x n x n x n n n"
+        },
+        {
+          "page": 4,
+          "field": "raw_text",
+          "before": "2 2 2 2 2 2 2 2 2 2 2 5 17 10 28 15 30 20 25 13,15 100 5 17 10 28 15 30 20 25 199,75 100 199,75 13,15 26,8275 100 26,8275 27,0985 1 99 26,8275 5,1795 27,0985 5,2056 × + × + × + × = = × + × + × + × = = = − = × = = ≈ − = = ≈ = = ≈ x x s n s s n s",
+          "after": "2 2 2 2 2 2 2 2 2 2 2 5 17 10 28 15 30 20 25 13,15 100 5 17 10 28 15 30 20 25 199,75 100 199,75 13,15 26,8275 100 26,8275 27,0985 1 99 26,8275 5,1795 27,0985 5,2056 × + × + × + × = = × + × + × + × = = = − = × = = ≈ − = = ≈ = = ≈ x x s n s s n s s s s"
+        },
+        {
+          "page": 4,
+          "field": "raw_text",
+          "before": "1 2 2 2 2 2 1 2 2 2 2 2 1 2 X  + X  + ... + X X n (X X )  + (X X)  + ... + (X X) S n (X X )  + (X X)  + ... + (X X) S n 1 = − − − = − − − = − n",
+          "after": "1 2 2 2 2 2 1 2 2 2 2 2 1 2 X  + X  + ... + X X n (X X )  + (X X)  + ... + (X X) S n (X X )  + (X X)  + ... + (X X) S n 1 = − − − = − − − = − n n n"
+        },
+        {
+          "page": 4,
+          "field": "raw_text",
+          "before": "2 2 2 2 1 = = = − n s n",
+          "after": "2 2 2 2 1 = = = − n s s s s s s n"
+        },
+        {
+          "page": 6,
+          "field": "raw_text",
+          "before": "2 2 2 2 12700 34,7945 365 443466 1214,9753 1214,9753 34,7945 4,3181 365 365 4,3181 4,33 4,33 2,0809 364 = = = = ⇒ = − = × = = = = x x s",
+          "after": "2 2 2 2 12700 34,7945 365 443466 1214,9753 1214,9753 34,7945 4,3181 365 365 4,3181 4,33 4,33 2,0809 364 = = = = ⇒ = − = × = = = = x x s s s"
+        }
+      ]
+    },
+    "baocao-canhan": {
+      "metrics": {
+        "legacy": {
+          "nodes": 213,
+          "sections": 27,
+          "chunks": 26,
+          "letters": 10486,
+          "refs": {
+            "image": 3,
+            "table": 0,
+            "formula": 0
+          },
+          "chunk_ids_sha256": "b8f40f85dbbb3e0a1d72842a1c5e7b1d24c6bf41f5d9a7c0363523035c34a7b0",
+          "warnings": {
+            "empty_node": 2,
+            "non_linguistic_block": 1,
+            "toc_block": 1
+          }
+        },
+        "preserve": {
+          "nodes": 213,
+          "sections": 27,
+          "chunks": 26,
+          "letters": 10486,
+          "refs": {
+            "image": 3,
+            "table": 0,
+            "formula": 0
+          },
+          "chunk_ids_sha256": "b8f40f85dbbb3e0a1d72842a1c5e7b1d24c6bf41f5d9a7c0363523035c34a7b0",
+          "warnings": {
+            "empty_node": 2,
+            "non_linguistic_block": 1,
+            "toc_block": 1
+          }
+        }
+      },
+      "changed_node_fields": {},
+      "examples": []
+    },
+    "naive-bayes": {
+      "metrics": {
+        "legacy": {
+          "nodes": 223,
+          "sections": 32,
+          "chunks": 40,
+          "letters": 8582,
+          "refs": {
+            "image": 2,
+            "table": 13,
+            "formula": 32
+          },
+          "chunk_ids_sha256": "384df010f3e2a05b3d009fef3b97d110bb3f2cf9f1887e8900dc892d289365a4",
+          "warnings": {
+            "empty_node": 1,
+            "remaining_private_use": 1,
+            "rejected_heading_repeated": 2,
+            "flat_heading_tree": 1
+          }
+        },
+        "preserve": {
+          "nodes": 223,
+          "sections": 32,
+          "chunks": 40,
+          "letters": 8582,
+          "refs": {
+            "image": 2,
+            "table": 13,
+            "formula": 32
+          },
+          "chunk_ids_sha256": "384df010f3e2a05b3d009fef3b97d110bb3f2cf9f1887e8900dc892d289365a4",
+          "warnings": {
+            "empty_node": 1,
+            "remaining_private_use": 1,
+            "rejected_heading_repeated": 2,
+            "flat_heading_tree": 1
+          }
+        }
+      },
+      "changed_node_fields": {},
+      "examples": []
+    }
+  }
+}

@@ -15,15 +15,29 @@ from doc2roadmap.infrastructure.llm import GeminiEntityExtractor
 from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter
 from doc2roadmap.infrastructure.parsing import DoclingParser
 from doc2roadmap.infrastructure.parsing.docling_parser import PipelineConfig
+from doc2roadmap.infrastructure.parsing.pdf_scope import require_native_pdf
 from doc2roadmap.infrastructure.text import SentencePieceTokenCounter, UnicodeSentenceSplitter
 
 
-def build_ingest(pdf_backend: str = "docling-parse", *, pipeline: PipelineConfig | None = None) -> tuple[IngestDocument, Settings]:
+def build_ingest(pdf_backend: str | None = None, *, pipeline: PipelineConfig | None = None,
+                 a1: str = "docling") -> tuple[IngestDocument, Settings]:
+    """Legacy programmatic callers keep Docling; the CLI explicitly selects its A1 default."""
     settings = Settings()
     store = JsonArtifactStore(settings.artifact_dir)
     counter = SentencePieceTokenCounter(settings.tokenizer_model, settings.tokenizer_id)
+    if a1 == "nhe":
+        if pdf_backend is not None or pipeline is not None:
+            raise ValueError("Cờ PDF/pipeline docling chỉ dùng với --a1 docling")
+        from doc2roadmap.infrastructure.parsing.nhe_parser import NheParser
+        parser = NheParser()
+    elif a1 == "docling":
+        parser = DoclingParser(pdf_backend or "pypdfium2", pipeline=pipeline)
+    else:
+        raise ValueError("A1 phải là nhe hoặc docling")
     return (
-        IngestDocument(DoclingParser(pdf_backend, pipeline=pipeline), store, counter, UnicodeSentenceSplitter()),
+        IngestDocument(parser, store, counter, UnicodeSentenceSplitter(),
+                       allow_backend_fallback=a1 == "docling" and pdf_backend is None,
+                       pdf_scope_validator=require_native_pdf),
         settings,
     )
 

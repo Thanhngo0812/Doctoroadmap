@@ -9,6 +9,7 @@ from doc2roadmap.application.leiden_cluster import cluster_nodes, weighted_conce
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.topic_graph import build_topic_edges
 from doc2roadmap.application.planning import StagePlan
+from doc2roadmap.application.use_cases.ingest_document import require_text_quality
 
 
 class BuildClusters:
@@ -46,6 +47,8 @@ class BuildClusters:
         else:
             candidates = self.store.load_candidates(doc_id, candidate_version)
             chunks = self.store.load_chunks(doc_id, candidates.manifest["upstream_version"])
+        if not planning:
+            require_text_quality(chunks, reason=getattr(self, "quality_reason", None), store=self.store)
         if canonical.manifest["source_hash"] != chunks.manifest["source_hash"]:
             raise ValueError("canonical và chunks không cùng tài liệu nguồn")
         leiden = {

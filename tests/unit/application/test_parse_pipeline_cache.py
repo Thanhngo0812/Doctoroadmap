@@ -55,7 +55,7 @@ def test_threads_do_not_invalidate_cache_and_new_parse_records_threads(tmp_path)
 def test_every_exposed_output_option_changes_the_cache_key(name):
     defaults = PipelineConfig()
     alternatives = {"ocr_engine": "easyocr", "ocr_backend": "onnxruntime",
-                    "table_mode": "fast", "layout_model": "egret-medium"}
+                    "table_mode": "fast", "layout_model": "egret-medium", "pdf_text_policy": "legacy"}
     current = getattr(defaults, name)
     value = alternatives.get(name, not current if isinstance(current, bool) else current * 2)
     assert _hash(parse_config(DoclingParser(pipeline=replace(defaults, **{name: value})))) != _hash(parse_config(DoclingParser()))

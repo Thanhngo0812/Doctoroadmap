@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from doc2roadmap.application.stage_measurements import measure_stage
+from doc2roadmap.application.use_cases.ingest_document import require_text_quality
 from doc2roadmap.application.extraction_prompt import (
     ENTITY_SCHEMA,
     ExtractionPrompts,
@@ -920,6 +921,7 @@ class ExtractEntities:
         self, doc_id: str, *, max_workers: int = 4, force: bool = False
     ) -> ExtractionSummary:
         stored = self.store.load_latest_chunks(doc_id)
+        require_text_quality(stored, reason=getattr(self, "quality_reason", None), store=self.store)
         reviewed_types = self.store.load_reviewed_node_types()
         digest = prompt_hash(
             model_id=self.extractor.model_id,

@@ -6,6 +6,7 @@ from types import SimpleNamespace
 from doc2roadmap.domain.chunking import chunk_document
 from doc2roadmap.domain.models import DocumentNode
 from doc2roadmap.infrastructure.parsing import DoclingParser
+from doc2roadmap.infrastructure.parsing.docling_parser import PipelineConfig
 
 from tests.conftest import WordCounter, load_docling_fixture, splitter
 
@@ -188,7 +189,7 @@ def test_adapter_repairs_pdf_floats_before_stitching_page_breaks() -> None:
     assert [node.reading_order for node in tree.nodes] == list(range(len(tree.nodes)))
 
 
-def test_pdf_glyph_repetitions_are_removed_without_touching_vietnamese_words() -> None:
+def test_legacy_pdf_glyph_cleanup_reproduces_v11_without_touching_vietnamese_words() -> None:
     cases = {
         "tiêu chí P P P khi giải quyết": "tiêu chí P khi giải quyết",
         "T T T : Cần phán đoán": "T : Cần phán đoán",
@@ -209,11 +210,12 @@ def test_pdf_glyph_repetitions_are_removed_without_touching_vietnamese_words() -
                 for text in cases
             ]
 
-    tree = DoclingParser().adapt(Document(), "fixture.pdf").tree
+    parser = DoclingParser(pipeline=PipelineConfig(pdf_text_policy="legacy"))
+    tree = parser.adapt(Document(), "fixture.pdf").tree
 
     assert [node.text for node in tree.nodes] == list(cases.values())
 
-    tree = DoclingParser().adapt(load_docling_fixture(), "nhap-mon-ml.pdf").tree
+    tree = parser.adapt(load_docling_fixture(), "nhap-mon-ml.pdf").tree
     repeated = re.compile(r"(?<![A-Za-z])([A-Za-z])(?: \1){2,}")
     assert not any(repeated.search(node.text) for node in tree.nodes)
 

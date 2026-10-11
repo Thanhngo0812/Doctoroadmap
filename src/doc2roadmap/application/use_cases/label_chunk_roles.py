@@ -10,7 +10,7 @@ from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.chunking import assign_section_roles
 from doc2roadmap.domain.document_structure import STRUCTURE_RULE, back_matter, chapter_members
-from .ingest_document import validate_doc_id
+from .ingest_document import validate_doc_id, require_text_quality
 
 ROLES = ('noi_dung', 'bai_tap', 'de_cuong', 'mo_dau', 'hanh_chinh', 'cuoi_sach')
 ROLE_SCHEMA = {'type':'object', 'properties':{'labels':{'type':'array','items':{'type':'object',
@@ -108,6 +108,8 @@ class LabelChunkRoles:
         # Repeating the CLI without --chunks-version must not label its own output again.
         if base.manifest.get('semantic_roles'):
             base = self.store.load_chunks(doc_id, base.manifest['roles_from_chunks_version'])
+        if not planning:
+            require_text_quality(base, reason=getattr(self, "quality_reason", None), store=self.store)
         reference = (self.store.load_role_chunks(doc_id,transfer_from_chunks_version)
                      if transfer_from_chunks_version is not None else None)
         if reference and not reference.manifest.get('semantic_roles'):
@@ -220,5 +222,5 @@ class LabelChunkRoles:
                 'role_validation_counts':dict(violations),
                 'role_transfer':{'matched':len(transferred),'total':len(result.chunks),
                                  'reference_version':reference.version} if reference else None,
-                **{k:base.manifest[k] for k in ('text_quality','strip_lines','stripped_line_count') if k in base.manifest}})
+                **{k:base.manifest[k] for k in ('text_quality','text_quality_selection','text_quality_override_reason','strip_lines','stripped_line_count') if k in base.manifest}})
         return saved,False

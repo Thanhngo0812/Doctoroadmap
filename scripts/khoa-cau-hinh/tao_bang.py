@@ -39,6 +39,7 @@ SETTINGS = ("extraction_model_id", "merge_model_id", "description_model_id", "em
 NOT_METHOD = ("llm_transport", "vertex_location", "vertex_concurrency", "roadmap_concurrency", "llm_max_in_flight",
               "llm_tpm_budget", "llm_rpm_budget")
 HELD_OUT = ("xstk-ch3-1", "doc-4")
+XSTK_TEXT_QUALITY_REASON = "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
 HELD_OUT_LABELS = ("xstk-ch3-1-chuong-10-13-*", "doc-4-chuong-8-*")
 CHAIN = ("vai trò vùng (A2, `label-roles`) → clusters → mentions → provenance → teaching (neo C8 v3, vé 05/05b) → identity (vé 10b) → "
          "edges chính → edges phụ (hợp đồng cửa sổ định nghĩa, vé 12) → validated (A9) → concept_labels (vé 11/11b) → stages (A10 neo "
@@ -162,14 +163,21 @@ def main():
         latest = store.load_latest_chunks(doc)
         parser = pinned.manifest.get("config", {}).get("parser", {})
         # Cây tham chiếu bậc 1 phải đọc PDF và chia mục đúng như chunks gắn A3, để văn bản khớp khi chuyển vai trò (vé 14b).
-        backend = "pypdfium2" if str(parser.get("adapter", "")).endswith("+pypdfium2") else None
+        backend = "pypdfium2" if str(parser.get("adapter", "")).endswith("+pypdfium2") else "docling-parse"
         scheme = pinned.manifest.get("config", {}).get("chunk", {}).get("heading_scheme")
-        flags = " ".join(flag for flag in (backend and f"--pdf-backend {backend}", scheme and f"--heading-scheme {scheme}")
+        policy = parser.get("pipeline", {}).get("pdf_text_policy", "legacy" if parser.get("adapter_version", 11) <= 11 else "preserve")
+        flags = " ".join(flag for flag in ("--a1 docling", backend and f"--pdf-backend {backend}", f"--pdf-text-policy {policy}",
+                         scheme and f"--heading-scheme {scheme}",
+                         f'--allow-text-quality-reason "{XSTK_TEXT_QUALITY_REASON}"' if doc == "xstk-ch3-1" else None)
                          if flag) or "mặc định"
         lines.append(f"| {doc} | v{pinned.version} (`{parser.get('adapter')}`) | v{latest.version} | v{candidates.version} | "
                      f"v{canonical.version} | `{flags}` |")
     lines += ["", "Cờ `ingest` bậc 1 lấy từ manifest chunks gắn A3 (bộ đọc PDF, thang tiêu đề), không chọn theo kết quả. Ingest lại khác "
               "thiết lập này thì văn bản không khớp khi chuyển vai trò; doc-4 tách rời âm tiết với bộ đọc mặc định."]
+    lines += ["", "Lý do vượt cổng chữ của xstk do chủ dự án duyệt ngày 2026-10-08; giữ văn bản đã khóa, không làm sạch. "
+              "Khi tái lập bước trả tiền dùng chunks cũ chưa lưu lý do, truyền cùng `--allow-text-quality-reason`. Không tự áp lý do này cho tài liệu khác."]
+    lines += ["", "Chủ dự án chấp nhận xstk tái dùng parse v3 đúng khóa cache ngày 2026-10-08: legacy là adapter 11; "
+              "parse v2 cũ là adapter 7. Không nhầm phiên bản parse này với chunks v2 gắn A3, không đổi artifact đã khóa."]
     lines += ["", "## Tệp nhãn của tập giữ lại (chỉ băm, không mở)", "", "| tệp | SHA-256 |", "|---|---|"]
     for pattern in HELD_OUT_LABELS:
         for path in sorted(Path("artifacts/a8-gold").glob(pattern)):

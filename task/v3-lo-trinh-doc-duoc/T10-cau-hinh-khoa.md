@@ -70,10 +70,17 @@ mới hơn chỉ dùng để chuyển vai trò và tên mục.
 
 | tài liệu | chunks gắn A3 | chunks mới nhất | candidates (A3) | canonical (A4/A5) | cờ `ingest` bậc 1 |
 |---|---|---|---|---|---|
-| xstk-ch3-1 | v2 (`docling:2.114.0`) | v2 | v5 | v7 | `mặc định` |
-| doc-4 | v3 (`docling:2.114.0+pypdfium2`) | v3 | v1 | v1 | `--pdf-backend pypdfium2 --heading-scheme vn-textbook` |
+| xstk-ch3-1 | v2 (`docling:2.114.0`) | v2 | v5 | v7 | `--a1 docling --pdf-backend docling-parse --pdf-text-policy legacy --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"` |
+| doc-4 | v3 (`docling:2.114.0+pypdfium2`) | v3 | v1 | v1 | `--a1 docling --pdf-backend pypdfium2 --pdf-text-policy legacy --heading-scheme vn-textbook` |
 
 Cờ `ingest` bậc 1 lấy từ manifest chunks gắn A3 (bộ đọc PDF, thang tiêu đề), không chọn theo kết quả. Ingest lại khác thiết lập này thì văn bản không khớp khi chuyển vai trò; doc-4 tách rời âm tiết với bộ đọc mặc định.
+
+Lý do vượt cổng chữ xstk ở trên được chủ dự án duyệt ngày 2026-10-08 (vé 13b).
+Khi tái lập bước trả tiền từ chunks cũ chưa lưu lý do, truyền cùng cờ
+`--allow-text-quality-reason`; không làm sạch xstk và không áp lý do này cho tài liệu khác.
+Dry-run lệnh này tái dùng **parse v3 (adapter 11)**, được chủ dự án chấp nhận
+ngày 2026-10-08. Không nhầm với chunks v2 gắn A3 trong bảng, hoặc parse v2
+cũ dùng adapter 7. Không đổi khóa cache để ép hai adapter khác nhau dùng chung cây.
 
 ## Tệp nhãn của tập giữ lại (chỉ băm, không mở)
 

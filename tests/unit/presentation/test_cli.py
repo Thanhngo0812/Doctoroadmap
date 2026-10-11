@@ -73,7 +73,7 @@ def test_ingest_prints_each_warning_and_parse_stats(tmp_path, monkeypatch, capsy
                         lambda pdf_backend: backends.append(pdf_backend) or (UseCase(), settings))
 
     _ingest(source, "book", strip_lines=["first", "second"])
-    assert backends == ["docling-parse"]
+    assert backends == [None]  # auto; composition starts with pypdfium2
 
     output = capsys.readouterr().out
     assert calls[0]["strip_lines"] == ["first", "second"]

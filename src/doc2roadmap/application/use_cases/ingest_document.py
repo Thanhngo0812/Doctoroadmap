@@ -5,6 +5,7 @@ import json
 import re
 import unicodedata
 from dataclasses import dataclass
+from collections import defaultdict
 from pathlib import Path
 from time import perf_counter
 from typing import Any
@@ -61,7 +62,8 @@ def refresh_chunk_roles(store: ArtifactStore, doc_id: str, *, version: int | Non
                              stored.manifest["parse_version"], stored.result,
                              manifest_fields={"roles_from_chunks_version": version or stored.version,
                                               **{key: stored.manifest[key] for key in
-                                                 ("text_quality", "strip_lines", "stripped_line_count")
+                                                 ("text_quality", "text_quality_selection", "text_quality_override_reason",
+                                                  "strip_lines", "stripped_line_count")
                                                  if key in stored.manifest}})
 
 
@@ -73,6 +75,11 @@ _VIETNAMESE_VOWELS = "ăâêôơưàáảãạằắẳẵặầấẩẫậèé
 _SPLIT_SYLLABLE = re.compile(rf"(?<!\S){_ONSET} [{_VIETNAMESE_VOWELS}]", re.IGNORECASE)
 SPLIT_SYLLABLE_RATIO = 0.01
 SPLIT_SYLLABLE_MIN = 20
+_SYLLABLE = re.compile(rf"^{_ONSET}?[aeiouy{_VIETNAMESE_VOWELS}]{{1,3}}(?:ch|ng|nh|[cmnpt])?$", re.IGNORECASE)
+_STRANGE = re.compile(r"[†‰ıŒœ¡⁄�]")
+_VNI = re.compile(r"(?:[aeou][äøùûï]|oâ|eâ|[a-z]ö[ôùûú]|ñ)", re.IGNORECASE)
+_QUALITY_TEXT_TYPES = {"paragraph", "title", "list_item", "text", "section_header"}
+NON_LATIN_GREEK_RATIO = 0.01
 
 
 def _text_quality(texts: list[str]) -> dict[str, Any]:
@@ -104,6 +111,11 @@ def _text_quality(texts: list[str]) -> dict[str, Any]:
     split_count = len(_SPLIT_SYLLABLE.findall(joined))
     word_count = len(joined.split())
     split_ratio = split_count / word_count if word_count else 0.0
+    tokens = re.findall(r"[^\W\d_]+", joined.casefold().replace("ƣ", "ư").replace("Ƣ", "Ư"))
+    syllables = [token for token in tokens if len(token) >= 2]
+    normalized_letters = [c for c in unicodedata.normalize("NFKC", text) if c.isalpha()]
+    foreign_letters = sum(not any(script in unicodedata.name(c, "") for script in ("LATIN", "GREEK"))
+                          for c in normalized_letters)
     if split_count >= SPLIT_SYLLABLE_MIN and split_ratio >= SPLIT_SYLLABLE_RATIO:
         warnings.append(
             f"Chữ tiếng Việt có thể bị tách rời âm tiết: {split_count} chỗ ({split_ratio:.2%} số từ) dạng \"th ứ c\"; "
@@ -111,12 +123,89 @@ def _text_quality(texts: list[str]) -> dict[str, Any]:
         )
     return {
         "readable_letter_count": letter_count,
+        "non_latin_greek_letter_count": foreign_letters,
+        "nfkc_letter_count": len(normalized_letters),
+        "non_latin_greek_letter_ratio": foreign_letters / max(len(normalized_letters), 1),
         "split_syllable_ratio": split_ratio,
         "accented_letter_ratio": accent_ratio,
         "private_use_ratio": private_ratio,
         "replacement_character_ratio": replacement_ratio,
+        "valid_vietnamese_syllable_ratio": sum(bool(_SYLLABLE.fullmatch(t)) for t in syllables) / max(len(syllables), 1),
+        "single_letter_token_ratio": sum(len(t) == 1 for t in tokens) / max(len(tokens), 1),
+        "strange_character_ratio": len(_STRANGE.findall(joined)) / max(len(joined), 1),
+        "vni_sequence_count": len(_VNI.findall(joined)),
+        "vni_sequence_ratio": len(_VNI.findall(joined)) / max(len(tokens), 1),
         "warnings": warnings,
     }
+
+
+def tree_text_quality(tree: DocumentTree) -> dict[str, Any]:
+    pages = defaultdict(list)
+    for node in tree.nodes:
+        if node.node_type in _QUALITY_TEXT_TYPES:
+            pages[node.page].append(node.text)
+
+    def assess(texts):
+        quality = _text_quality(texts)
+        if quality["nfkc_letter_count"] >= 100 and quality["non_latin_greek_letter_ratio"] >= NON_LATIN_GREEK_RATIO:
+            quality["warnings"].append(
+                f"Chữ ngoài hệ Latin/Hy Lạp: {quality['non_latin_greek_letter_ratio']:.2%} "
+                "chữ cái sau NFKC; có thể bị thay hệ chữ/font.")
+        # English and short labels alone must not trigger the Vietnamese syllable gate.
+        if quality["readable_letter_count"] >= 100 and (
+            quality["strange_character_ratio"] >= 0.005
+            or (quality["vni_sequence_count"] >= 3 and quality["vni_sequence_ratio"] >= 0.01)
+            or (quality["valid_vietnamese_syllable_ratio"] < 0.80
+                and quality["split_syllable_ratio"] >= 0.01)
+        ):
+            quality["warnings"].append("Chất lượng chữ không đạt: âm tiết/font tiếng Việt")
+        return quality
+
+    overall = assess([text for texts in pages.values() for text in texts])
+    page_metrics = [{"page": page, **assess(texts)} for page, texts in pages.items()]
+    bad = [row for row in page_metrics if row["warnings"]]
+    bad_vni_nodes = [node.page for node in tree.nodes
+                     if node.node_type in _QUALITY_TEXT_TYPES
+                     and len(_VNI.findall(node.text)) >= 3
+                     and _text_quality([node.text])["vni_sequence_ratio"] >= 0.05]
+    if bad_vni_nodes:
+        overall["warnings"].append("Dòng mã VNI chưa chuyển Unicode ở trang: " + ", ".join(map(str, dict.fromkeys(bad_vni_nodes))))
+    if bad:
+        overall["warnings"].append("Trang có chất lượng chữ chưa đạt: " + ", ".join(str(r["page"]) for r in bad))
+    overall["pages"] = page_metrics
+    return overall
+
+
+def require_text_quality(stored, *, reason=None, store=None) -> None:
+    if reason is not None and not reason.strip():
+        raise ValueError("lý do cho phép chữ hỏng không được rỗng")
+    warnings = list(stored.manifest.get("text_quality", {}).get("warnings", []))
+    # Historic chunks predate the page-level gate; inspect their pinned parse,
+    # not today's PDF or the newest parse from another backend.
+    if store is not None and "parse_version" in stored.manifest:
+        try:
+            tree = store.load_parse(stored.result.doc_id, stored.manifest["parse_version"]).tree
+        except FileNotFoundError:
+            pass  # Legacy/in-memory stores may have chunks without a parse tree.
+        else:
+            warnings.extend(tree_text_quality(tree)["warnings"])
+    if warnings and not (reason or stored.manifest.get("text_quality_override_reason")):
+        raise ValueError("chất lượng chữ chưa xác nhận; dừng trước khi chi tiền: "
+                         + "; ".join(dict.fromkeys(warnings))
+                         + ". Đọc lại PDF hoặc dùng --allow-text-quality-reason với lý do.")
+
+
+def quality_selection_report(selection):
+    """Keep full measurements in manifests, but CLI shows only the worst pages."""
+    attempts = []
+    for attempt in selection["attempts"]:
+        quality = attempt["quality"]
+        if quality is not None:
+            pages = quality.get("pages", [])
+            quality = {**quality, "pages_checked": len(pages),
+                       "pages": [page for page in pages if page["warnings"]][:10]}
+        attempts.append({**attempt, "quality": quality})
+    return {**selection, "attempts": attempts}
 
 
 def _strip_line_patterns(tree: DocumentTree, patterns: list[str]) -> int:
@@ -182,11 +271,60 @@ class IngestDocument:
         store: ArtifactStore,
         counter: TokenCounter,
         splitter: SentenceSplitter,
+        *,
+        allow_backend_fallback: bool = True,
+        pdf_scope_validator=None,
     ) -> None:
         self.parser = parser
         self.store = store
         self.counter = counter
         self.splitter = splitter
+        self.allow_backend_fallback = allow_backend_fallback
+        self.pdf_scope_validator = pdf_scope_validator
+
+    def select_parse(self, source, filename, doc_id, strip_lines=(), *, dry_run=False, quality_reason=None):
+        if quality_reason is not None and not quality_reason.strip():
+            raise ValueError("lý do cho phép chữ hỏng không được rỗng")
+        if Path(filename).suffix.lower() == ".pdf" and self.pdf_scope_validator is not None:
+            self.pdf_scope_validator(source)
+        source_hash = hashlib.sha256(source).hexdigest()
+        parser = self.parser
+        attempts = []
+        candidates = []
+        elapsed = 0.0
+        for index in range(2):
+            pconfig = parse_config(parser, strip_lines)
+            stored = self.store.find_parse(doc_id, source_hash, _hash(pconfig))
+            parsed = None
+            stripped = 0
+            if stored is None and not dry_run:
+                started = perf_counter()
+                parsed = parser.parse(source, filename)
+                elapsed += perf_counter() - started
+                stripped = _strip_line_patterns(parsed.tree, list(strip_lines))
+            tree = stored.tree if stored else parsed.tree if parsed else None
+            quality = tree_text_quality(tree) if tree is not None else None
+            backend = getattr(parser, "pdf_backend", parser.identifier)
+            attempts.append({"backend": backend, "reused": stored is not None, "quality": quality,
+                             "quality_status": "chưa đo" if quality is None else "cảnh báo" if quality["warnings"] else "đạt"})
+            candidates.append((parser, stored, parsed, stripped, quality))
+            if (not self.allow_backend_fallback or quality is None or not quality["warnings"]
+                    or not hasattr(parser, "with_pdf_backend") or Path(filename).suffix.lower() != ".pdf"):
+                break
+            parser = parser.with_pdf_backend("pypdfium2" if backend == "docling-parse" else "docling-parse")
+        selected = min(candidates, key=lambda c: (2 if c[4] is None else int(bool(c[4]["warnings"])),
+                                                 -(c[4] or {}).get("valid_vietnamese_syllable_ratio", 1)))
+        parser, stored, parsed, stripped, quality = selected
+        self.last_parse_selection = {"selected_backend": getattr(parser, "pdf_backend", parser.identifier) if quality is not None else None,
+                                     "planned_backend": getattr(parser, "pdf_backend", parser.identifier),
+                                     "mode": "auto" if self.allow_backend_fallback else "pinned",
+                                     "reason": "unmeasured" if quality is None else "quality_fallback" if parser is not self.parser else "requested_backend",
+                                     "attempts": attempts}
+        if quality and quality["warnings"] and (hasattr(self.parser, "with_pdf_backend")
+                                                 or self.parser.identifier.startswith("a1-nhe:")) and not quality_reason:
+            raise ValueError("chất lượng chữ không đạt ở bộ đọc đã đo: " + json.dumps(quality_selection_report(self.last_parse_selection), ensure_ascii=False)
+                             + "; thử --a1 docling với --pdf-backend, hoặc --allow-text-quality-reason với lý do")
+        return parser, stored, parsed, stripped, quality, elapsed
 
     @measure_stage
     def execute(
@@ -204,6 +342,7 @@ class IngestDocument:
         heading_scheme: str | None = None,
         result_min_count: int = RESULT_MIN_COUNT,
         result_max_body_chars: int = RESULT_MAX_BODY_CHARS,
+        quality_reason: str | None = None,
     ) -> IngestSummary:
         validate_doc_id(doc_id)
         suffix = Path(filename).suffix.lower()
@@ -222,7 +361,11 @@ class IngestDocument:
             raise ValueError("strip_lines không được chứa mẫu rỗng")
 
         source_hash = hashlib.sha256(source).hexdigest()
-        parser_config = parse_config(self.parser, normalized_patterns)
+        if quality_reason is not None and not quality_reason.strip():
+            raise ValueError("lý do cho phép chữ hỏng không được rỗng")
+        selected_parser, stored_parse, parsed, stripped_line_count, tree_quality, parse_runtime_seconds = self.select_parse(
+            source, filename, doc_id, normalized_patterns, quality_reason=quality_reason)
+        parser_config = parse_config(selected_parser, normalized_patterns)
         parser_config_hash = _hash(parser_config)
         config = {
             "parser": parser_config,
@@ -247,15 +390,8 @@ class IngestDocument:
             # chỉ ghi khi bật, để hash cấu hình của tài liệu cũ không đổi
             config["chunk"]["heading_scheme"] = heading_scheme
         config_hash = _hash(config)
-        stored_parse = self.store.find_parse(doc_id, source_hash, parser_config_hash)
         source_seen_before = stored_parse is not None
-        stripped_line_count = 0
-        parse_runtime_seconds = 0.0
         if stored_parse is None:
-            parse_started = perf_counter()
-            parsed = self.parser.parse(source, filename)
-            parse_runtime_seconds = perf_counter() - parse_started
-            stripped_line_count = _strip_line_patterns(parsed.tree, normalized_patterns)
             manifest_fields = (
                 {
                     "strip_lines": normalized_patterns,
@@ -265,7 +401,8 @@ class IngestDocument:
                 else None
             )
             manifest_fields = {**(manifest_fields or {}), "parse_runtime_seconds": parse_runtime_seconds,
-                               "parser_runtime": getattr(self.parser, "runtime_config", {})}
+                               "parser_runtime": getattr(selected_parser, "runtime_config", {}),
+                               "text_quality_selection": self.last_parse_selection}
             stored_parse = self.store.save_parse(
                 doc_id,
                 source_hash,
@@ -304,7 +441,11 @@ class IngestDocument:
         )
         windows = assemble_windows(result.chunks)
         quality = _text_quality([chunk.text for chunk in result.chunks])
+        if hasattr(self.parser, "with_pdf_backend") or self.parser.identifier.startswith("a1-nhe:"):
+            quality = tree_quality
         manifest_fields = {**(manifest_fields or {}), "text_quality": quality,
+                           "text_quality_selection": self.last_parse_selection,
+                           **({"text_quality_override_reason": quality_reason} if quality_reason else {}),
                            "page_count": stored_parse.tree.parse_stats.get("page_count"),
                            "parse_runtime_seconds": parse_runtime_seconds,
                            "parse_reused": source_seen_before}

@@ -23,7 +23,7 @@ def main():
     if "chi" in options:
         wanted = set(options["chi"].split(","))
         books = [book for book in books if book["id"] in wanted]
-    backend = options.get("bo-doc", "docling-parse")
+    backend = options.get("bo-doc", "pypdfium2")
     log = ROOT / "tmp/thu-a1/ingest-d01.jsonl"
     log.parent.mkdir(parents=True, exist_ok=True)
     for book in books:
@@ -32,7 +32,7 @@ def main():
         doc_id = book["id"]  # cùng mã sách; đổi bộ đọc thì `ingest` tạo phiên bản parse mới (khoá cache có tên bộ đọc)
         began = time.perf_counter()
         done = subprocess.run([str(ROOT / ".venv/Scripts/doc2roadmap.exe"), "ingest", str(path), "--doc-id", doc_id,
-                               "--pdf-backend", backend], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
+                               "--a1", "docling", "--pdf-backend", backend], cwd=ROOT, capture_output=True, text=True, encoding="utf-8", errors="replace")
         row = {"id": book["id"], "doc_id": doc_id, "field": book["field"], "backend": backend, "returncode": done.returncode,
                "wall_seconds": round(time.perf_counter() - began, 1),
                "summary": (done.stdout.strip().splitlines() or [""])[0][:200], "error": done.stderr[-600:] if done.returncode else ""}

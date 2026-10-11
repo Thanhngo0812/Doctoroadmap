@@ -3,7 +3,24 @@
 **Nguồn chân lý:** [kiểm thử vé 12–14](../../report/kiem-thu-ve-12-13-14-a1-mo-rong-2026-10-08.md) mục 3 · [vé 13](13-a1-bo-doc-chu-tieng-viet.md) ·
 **Ai:** nhân viên · **Phụ thuộc:** vé 13 (mã chưa commit) · **Chi phí mô hình:** 0
 
-**Trạng thái:** soạn 2026-10-08. Không chặn việc gán nhãn D-01.
+**Trạng thái:** hoàn tất triển khai và nghiệm thu 2026-10-08; chưa commit. Không chặn việc gán nhãn D-01.
+
+**F1/F2 sau kiểm của Claude đã sửa trong v4-16 pha 1 (2026-10-10):** F1 khẳng định đúng `docling-parse` và không chọn lý do `unmeasured`, đã đỏ khi xếp bản chưa đo lên đầu; F2 bổ sung cờ lý do xstk vào khuôn ingest/label-roles/roadmap trong CONTEXT.md. Dry-run xstk/doc-4 với `--a1 docling` vẫn tái dùng parse v3, 51 manifest parse cũ không đổi. Xem [báo cáo v4-16](../../report/v4-16-pha-1-2026-10-10.md).
+
+**Bàn giao:** [báo cáo 13b](../../report/v4-13b-cong-chat-luong-2026-10-08.md) ·
+[số đo đầy đủ](../../report/v4-13b-so-do-2026-10-08.json).
+Ngưỡng 1% sau NFKC bắt sáu bản docling bị thay hệ chữ và 23 trang d01-05;
+không thêm trang gắn cờ ở 20 cuốn còn lại (không phải FPR trên vàng độc lập).
+Đã đo đủ 21 tài liệu × hai bộ đọc, 3.353 trang cây ghim;
+51/51 manifest parse giữ nguyên byte và khóa. CLI ghim không fallback,
+dry-run chưa đo không coi là sạch; T10 và bảng số vé 13 đã cập nhật.
+Toàn suite: **1.090 passed, 5 skipped**, 0 USD API mới; không sửa artifact D-01/xstk.
+
+**Chốt của chủ dự án trong chat, 2026-10-08:**
+- Duyệt lý do xstk: “Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc”.
+- Sửa tiêu chí phiên bản ở dưới thành **parse v3 đúng khóa cache**: v2 dùng adapter 7;
+  `--pdf-text-policy legacy` dùng adapter 11 và khớp v3 có sẵn. Không ép tái dùng v2
+  trái cấu hình hoặc đổi khóa cache. Dry-run đã kiểm đúng v3, một bộ đọc, không parse mới.
 
 ## Vì sao (Claude, 2026-10-08)
 
@@ -74,6 +91,6 @@ Kiểm thử vé 13 tái hiện hai lỗi của cổng chất lượng chữ.
     - có cờ lý do: dùng lại parse đã lưu, không parse mới;
   - dry-run không chọn lượt chưa đo.
 - **Bảng ngưỡng** theo mục 1, kèm số trang bị bắt nhầm.
-- **Dry-run lệnh T10 của xstk** (có cờ lý do) phải báo dùng lại parse v2.
+- **Dry-run lệnh T10 của xstk** (có cờ lý do) phải báo dùng lại parse v3 đúng khóa (chủ dự án chốt 2026-10-08; xem ghi chú đầu vé).
 - Toàn bộ test xanh. Kiểm khoá cache như vé 09: mọi manifest parse giữ nguyên `parser_config_hash`.
 - Báo cáo `report/v4-13b-...md`.

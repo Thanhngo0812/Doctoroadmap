@@ -6,6 +6,7 @@ from doc2roadmap.infrastructure.parsing import DoclingParser
 
 
 @pytest.mark.integration
+@pytest.mark.parametrize("backend", ["docling-parse", "pypdfium2"])
 @pytest.mark.parametrize(
     "fixture",
     [
@@ -14,11 +15,11 @@ from doc2roadmap.infrastructure.parsing import DoclingParser
         Path("tests/fixtures/two-column.pdf"),
     ],
 )
-def test_docling_parses_real_document(fixture: Path) -> None:
+def test_docling_parses_real_document(fixture: Path, backend: str) -> None:
     if not fixture.exists():
         pytest.skip("fixture được tạo bởi scripts/create_smoke_pdf.py")
 
-    parsed = DoclingParser().parse(fixture.read_bytes(), fixture.name)
+    parsed = DoclingParser(backend).parse(fixture.read_bytes(), fixture.name)
     tree = parsed.tree
 
     assert tree.nodes

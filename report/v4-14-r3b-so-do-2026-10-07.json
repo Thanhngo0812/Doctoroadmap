@@ -1,0 +1,621 @@
+{
+  "fixtures_before": {
+    "adapter_version": 12,
+    "parser_sha256": "184b6d0e8077ccfe373a3161ed95fd49c1150a912451420e89b8f1c8509b21f6",
+    "books": {
+      "nhap-mon-ml": {
+        "tree_without_caption_metadata_sha256": "a4bc21eee1f8ae14b7dcc3a01be1da53ad20c72f7d7e345f30eeb9223809c10a",
+        "chunks_sha256": "f31f16bfa969940fafb4be32bda85b0b72f43200e2a211503bfe063099e0ccb5",
+        "image_hashes": {
+          "1965522e84fc918767842214cf8bb7b9ef1a23c5400837cf21c4a5df2f756ba2": "1965522e84fc918767842214cf8bb7b9ef1a23c5400837cf21c4a5df2f756ba2",
+          "f69256d645a432ff5b944d1ebeca214e27358d969914e6efa5d0d7d7a9b05977": "f69256d645a432ff5b944d1ebeca214e27358d969914e6efa5d0d7d7a9b05977",
+          "39fb312aec644cffcab3b1cc1549179a01e350c208744eecdccedee597aa8156": "39fb312aec644cffcab3b1cc1549179a01e350c208744eecdccedee597aa8156",
+          "1c075849a6c149a8f8c72de7ad64b656d8f8e272b4e9679d919263b1398f83c6": "1c075849a6c149a8f8c72de7ad64b656d8f8e272b4e9679d919263b1398f83c6",
+          "33ded2e298e83fdb6f1226a27a75609a9fe3f75fe611ecb1ccfb818adaa9d78a": "33ded2e298e83fdb6f1226a27a75609a9fe3f75fe611ecb1ccfb818adaa9d78a",
+          "faa71862d70903046418e2742d96a9eadc10b2d7480f5203e633e543bcd42523": "faa71862d70903046418e2742d96a9eadc10b2d7480f5203e633e543bcd42523",
+          "239f77c3feda185d48e46f87534db567f0fa530708df676f6fe119097ac0d97c": "239f77c3feda185d48e46f87534db567f0fa530708df676f6fe119097ac0d97c",
+          "5f50542f3cb4a813b58e76403b1f5d3364e5aa176cc3dbd63817593923666b4e": "5f50542f3cb4a813b58e76403b1f5d3364e5aa176cc3dbd63817593923666b4e",
+          "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b": "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b"
+        },
+        "caption_metadata": null,
+        "caption_metadata_bytes": 0
+      },
+      "xstk-ch3-1": {
+        "tree_without_caption_metadata_sha256": "c4168e483d8db26b13dd7e7b8010e452a81efcacbdb938e4f1c25c95a7bb16d0",
+        "chunks_sha256": "12ec89b5c7ac952dde448f771012b2debc947a3f835ee760b934cc132b176980",
+        "image_hashes": {
+          "61e7af193b750c8aa3537121818cb3e90fd59b1344c55b3e14b4b9e4b8736932": "61e7af193b750c8aa3537121818cb3e90fd59b1344c55b3e14b4b9e4b8736932",
+          "1b47f8b82745b5233b2ae6ac111d724c8e6299c3282ac22a239b2a9d12b559cb": "1b47f8b82745b5233b2ae6ac111d724c8e6299c3282ac22a239b2a9d12b559cb",
+          "98f7bbbee7371322d756d4ab77fed65c73e7fed620708722fbe757a8c7dd7604": "98f7bbbee7371322d756d4ab77fed65c73e7fed620708722fbe757a8c7dd7604",
+          "65116e24e37e10875aecdfa48933341ffaf19f58a80b94810f374d19476e5dbf": "65116e24e37e10875aecdfa48933341ffaf19f58a80b94810f374d19476e5dbf",
+          "1bcd747ca00c640b3571ead3ba8b38db4a656895f34e82da5334dcf2393010df": "1bcd747ca00c640b3571ead3ba8b38db4a656895f34e82da5334dcf2393010df"
+        },
+        "caption_metadata": null,
+        "caption_metadata_bytes": 0
+      },
+      "baocao-canhan": {
+        "tree_without_caption_metadata_sha256": "cc47d7f397cdd5271c0eabb8419c73e75633becb98ea09764d602bf01428b832",
+        "chunks_sha256": "0f3f5cd4aacc51a829623d2a9d9de16420bcc9e4b426046b464b892a880d03da",
+        "image_hashes": {
+          "0a88f52b03cba815f28cb33145ed4657a936a5b09dd203531c2067e92b5e0219": "0a88f52b03cba815f28cb33145ed4657a936a5b09dd203531c2067e92b5e0219",
+          "855ea73ca96b471d08fda85a5091d73d4f668223e845bfa3f604335147ca0172": "855ea73ca96b471d08fda85a5091d73d4f668223e845bfa3f604335147ca0172",
+          "0658892bf7f0c3f952adf5e7d3663ae5f5ae04c36ca982f90d88d906ddee4d17": "0658892bf7f0c3f952adf5e7d3663ae5f5ae04c36ca982f90d88d906ddee4d17"
+        },
+        "caption_metadata": null,
+        "caption_metadata_bytes": 0
+      },
+      "naive-bayes": {
+        "tree_without_caption_metadata_sha256": "b6e7716e316c12fe3a3d3cebe154777e6f6aebc8fc9e858a76f725cd2ffe5282",
+        "chunks_sha256": "23e8539b102dd8824f8045351b1ceb48d5044ae934950b00b417ffa67293aa34",
+        "image_hashes": {
+          "c3c8ba31c88cbf66169a72d40ce5cbe271edb04560f2166fa4a950f4aa589151": "c3c8ba31c88cbf66169a72d40ce5cbe271edb04560f2166fa4a950f4aa589151",
+          "bc3d42273bd74ed7ef9f5b73feb784f5944c7105a634a29149d237a138e3ee4b": "bc3d42273bd74ed7ef9f5b73feb784f5944c7105a634a29149d237a138e3ee4b"
+        },
+        "caption_metadata": null,
+        "caption_metadata_bytes": 0
+      }
+    }
+  },
+  "fixtures_after": {
+    "adapter_version": 13,
+    "parser_sha256": "d8ca156d842e3a5962a647b0008b9eaf8a4e6658a8e4b8f1443ce4c8d8be2ffb",
+    "books": {
+      "nhap-mon-ml": {
+        "tree_without_caption_metadata_sha256": "a4bc21eee1f8ae14b7dcc3a01be1da53ad20c72f7d7e345f30eeb9223809c10a",
+        "chunks_sha256": "f31f16bfa969940fafb4be32bda85b0b72f43200e2a211503bfe063099e0ccb5",
+        "image_hashes": {
+          "1965522e84fc918767842214cf8bb7b9ef1a23c5400837cf21c4a5df2f756ba2": "1965522e84fc918767842214cf8bb7b9ef1a23c5400837cf21c4a5df2f756ba2",
+          "f69256d645a432ff5b944d1ebeca214e27358d969914e6efa5d0d7d7a9b05977": "f69256d645a432ff5b944d1ebeca214e27358d969914e6efa5d0d7d7a9b05977",
+          "39fb312aec644cffcab3b1cc1549179a01e350c208744eecdccedee597aa8156": "39fb312aec644cffcab3b1cc1549179a01e350c208744eecdccedee597aa8156",
+          "1c075849a6c149a8f8c72de7ad64b656d8f8e272b4e9679d919263b1398f83c6": "1c075849a6c149a8f8c72de7ad64b656d8f8e272b4e9679d919263b1398f83c6",
+          "33ded2e298e83fdb6f1226a27a75609a9fe3f75fe611ecb1ccfb818adaa9d78a": "33ded2e298e83fdb6f1226a27a75609a9fe3f75fe611ecb1ccfb818adaa9d78a",
+          "faa71862d70903046418e2742d96a9eadc10b2d7480f5203e633e543bcd42523": "faa71862d70903046418e2742d96a9eadc10b2d7480f5203e633e543bcd42523",
+          "239f77c3feda185d48e46f87534db567f0fa530708df676f6fe119097ac0d97c": "239f77c3feda185d48e46f87534db567f0fa530708df676f6fe119097ac0d97c",
+          "5f50542f3cb4a813b58e76403b1f5d3364e5aa176cc3dbd63817593923666b4e": "5f50542f3cb4a813b58e76403b1f5d3364e5aa176cc3dbd63817593923666b4e",
+          "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b": "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b"
+        },
+        "caption_metadata": {
+          "schema_version": 1,
+          "label_source": "docling_unreviewed",
+          "items": [
+            {
+              "source_ref": "#/texts/39",
+              "text": "Hình 1: Ví dụ về một email.",
+              "orig": "Hình 1: Ví dụ về một email.",
+              "provenance": [
+                {
+                  "page": 6,
+                  "bbox": [
+                    256.05,
+                    645.2519664484375,
+                    367.57134439999976,
+                    636.8372118441023
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    27
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/0",
+                  "node_type": "figure",
+                  "image_id": "1965522e84fc918767842214cf8bb7b9ef1a23c5400837cf21c4a5df2f756ba2",
+                  "table_id": null
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/71",
+              "text": "lychee-inspired spherical chair",
+              "orig": "lychee-inspired spherical chair",
+              "provenance": [
+                {
+                  "page": 7,
+                  "bbox": [
+                    77.3237613684,
+                    671.0212078428754,
+                    210.93854328959333,
+                    662.2375766115539
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    31
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/1",
+                  "node_type": "figure",
+                  "image_id": "f69256d645a432ff5b944d1ebeca214e27358d969914e6efa5d0d7d7a9b05977",
+                  "table_id": null
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/76",
+              "text": "a girl giving cat a gentle hug",
+              "orig": "a girl giving cat a gentle hug",
+              "provenance": [
+                {
+                  "page": 7,
+                  "bbox": [
+                    254.55211148,
+                    677.0779852228753,
+                    378.27671126416135,
+                    668.2943539915539
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    30
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/2",
+                  "node_type": "figure",
+                  "image_id": "39fb312aec644cffcab3b1cc1549179a01e350c208744eecdccedee597aa8156",
+                  "table_id": null
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/77",
+              "text": "Hình 2: Tập các bức ảnh và các mô tả về chúng.",
+              "orig": "Hình 2: Tập các bức ảnh và các mô tả về chúng.",
+              "provenance": [
+                {
+                  "page": 7,
+                  "bbox": [
+                    216.777,
+                    643.0109664484376,
+                    406.8434828,
+                    634.5962118441023
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    46
+                  ]
+                }
+              ],
+              "owners": []
+            },
+            {
+              "source_ref": "#/texts/82",
+              "text": "a small hedgehog holding a piece of watermelon",
+              "orig": "a small hedgehog holding a piece of watermelon",
+              "provenance": [
+                {
+                  "page": 7,
+                  "bbox": [
+                    430.76297053999997,
+                    684.0665799828753,
+                    546.724964891045,
+                    663.3247087515539
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    46
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/3",
+                  "node_type": "figure",
+                  "image_id": "1c075849a6c149a8f8c72de7ad64b656d8f8e272b4e9679d919263b1398f83c6",
+                  "table_id": null
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/98",
+              "text": "Hình 3: Ví dụ về một tập dữ liệu đã được gắn nhãn. Mỗi ảnh là một mẫu dữ liệu, và nhãn tương ứng (\"mèo\" hoặc \"chó\").",
+              "orig": "Hình 3: Ví dụ về một tập dữ liệu đã được gắn nhãn. Mỗi ảnh là một mẫu dữ liệu, và nhãn tương ứng (\"mèo\" hoặc \"chó\").",
+              "provenance": [
+                {
+                  "page": 9,
+                  "bbox": [
+                    72.17,
+                    573.6259664484376,
+                    551.4507607999996,
+                    565.2112118441023
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    116
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/4",
+                  "node_type": "figure",
+                  "image_id": "33ded2e298e83fdb6f1226a27a75609a9fe3f75fe611ecb1ccfb818adaa9d78a",
+                  "table_id": null
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/123",
+              "text": "Hình 4: Quy trình xây dựng một hệ thống dựa trên học máy.",
+              "orig": "Hình 4: Quy trình xây dựng một hệ thống dựa trên học máy.",
+              "provenance": [
+                {
+                  "page": 11,
+                  "bbox": [
+                    192.638,
+                    591.1769664484375,
+                    430.9832423999998,
+                    582.7622118441022
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    57
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/6",
+                  "node_type": "figure",
+                  "image_id": "239f77c3feda185d48e46f87534db567f0fa530708df676f6fe119097ac0d97c",
+                  "table_id": null
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/194",
+              "text": "Hình 5: Minh họa về quá khớp (Overfitting) và kém khớp (Underfitting). \"Test error\" mô tả lỗi phán đoán của mô hình đối với những mẫu dữ liệu không có mặt trong quá trình huấn luyện mô hình ấy.",
+              "orig": "Hình 5: Minh họa về quá khớp (Overfitting) và kém khớp (Underfitting). \"Test error\" mô tả lỗi phán đoán của mô hình đối với những mẫu dữ liệu không có mặt trong quá trình huấn luyện mô hình ấy.",
+              "provenance": [
+                {
+                  "page": 16,
+                  "bbox": [
+                    70.866,
+                    539.0149664484376,
+                    552.7569619999995,
+                    518.6452118441023
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    193
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/7",
+                  "node_type": "figure",
+                  "image_id": "5f50542f3cb4a813b58e76403b1f5d3364e5aa176cc3dbd63817593923666b4e",
+                  "table_id": null
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/212",
+              "text": "Hình 6: Ví dụ về một số hàm khi xấp xỉ một tập dữ liệu (các dấu chấm). y ∗ là hàm đúng (ground truth), nhưng ta thường không biết.",
+              "orig": "Hình 6: Ví dụ về một số hàm khi xấp xỉ một tập dữ liệu (các dấu chấm). y ∗ là hàm đúng (ground truth), nhưng ta thường không biết.",
+              "provenance": [
+                {
+                  "page": 17,
+                  "bbox": [
+                    70.86599999999999,
+                    650.2932955484375,
+                    552.7568373999997,
+                    627.6782118441023
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    130
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/pictures/8",
+                  "node_type": "figure",
+                  "image_id": "b3cf15ed4181c904639a8ad3d00d881b539bf249a1e6bde7d647e91709de8c7b",
+                  "table_id": null
+                }
+              ]
+            }
+          ],
+          "unresolved_links": []
+        },
+        "caption_metadata_bytes": 5073
+      },
+      "xstk-ch3-1": {
+        "tree_without_caption_metadata_sha256": "c4168e483d8db26b13dd7e7b8010e452a81efcacbdb938e4f1c25c95a7bb16d0",
+        "chunks_sha256": "12ec89b5c7ac952dde448f771012b2debc947a3f835ee760b934cc132b176980",
+        "image_hashes": {
+          "61e7af193b750c8aa3537121818cb3e90fd59b1344c55b3e14b4b9e4b8736932": "61e7af193b750c8aa3537121818cb3e90fd59b1344c55b3e14b4b9e4b8736932",
+          "1b47f8b82745b5233b2ae6ac111d724c8e6299c3282ac22a239b2a9d12b559cb": "1b47f8b82745b5233b2ae6ac111d724c8e6299c3282ac22a239b2a9d12b559cb",
+          "98f7bbbee7371322d756d4ab77fed65c73e7fed620708722fbe757a8c7dd7604": "98f7bbbee7371322d756d4ab77fed65c73e7fed620708722fbe757a8c7dd7604",
+          "65116e24e37e10875aecdfa48933341ffaf19f58a80b94810f374d19476e5dbf": "65116e24e37e10875aecdfa48933341ffaf19f58a80b94810f374d19476e5dbf",
+          "1bcd747ca00c640b3571ead3ba8b38db4a656895f34e82da5334dcf2393010df": "1bcd747ca00c640b3571ead3ba8b38db4a656895f34e82da5334dcf2393010df"
+        },
+        "caption_metadata": {
+          "schema_version": 1,
+          "label_source": "docling_unreviewed",
+          "items": [
+            {
+              "source_ref": "#/texts/76",
+              "text": "Bước2. Lập bảng gồm năm cột như sau:",
+              "orig": "Bước2. Lập bảng gồm năm cột như sau:",
+              "provenance": [
+                {
+                  "page": 6,
+                  "bbox": [
+                    90.024,
+                    500.35972,
+                    335.86,
+                    488.27128
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    36
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/tables/3",
+                  "node_type": "table",
+                  "image_id": null,
+                  "table_id": "8ea8a8ca14339eddae9057b6a203c567f7850d2beecb2e7b43715098b5a84c60"
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/139",
+              "text": "Khi đó ta có các kết quả sau:",
+              "orig": "Khi đó ta có các kết quả sau:",
+              "provenance": [
+                {
+                  "page": 9,
+                  "bbox": [
+                    90.024,
+                    364.39972,
+                    282.92,
+                    352.31128
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    29
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/tables/6",
+                  "node_type": "table",
+                  "image_id": null,
+                  "table_id": "fa8cca8d42b63e908341c176ed67d96c74e3d4ee0762fbb104d0927977eb0353"
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/172",
+              "text": "Chú ý . Với mẫu hai chiều như sau:",
+              "orig": "Chú ý . Với mẫu hai chiều như sau:",
+              "provenance": [
+                {
+                  "page": 11,
+                  "bbox": [
+                    90.024,
+                    277.076,
+                    313.88,
+                    261.93581818181815
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    34
+                  ]
+                }
+              ],
+              "owners": []
+            },
+            {
+              "source_ref": "#/texts/177",
+              "text": "Trong đó: m j = n 1j + n 2j + ... + n kj (j = 1,2, ... ,h) và m 1 + m2 + ... + m h = n.",
+              "orig": "Trong đó: m j = n 1j + n 2j + ... + n kj (j = 1,2, ... ,h) và m 1 + m2 + ... + m h = n.",
+              "provenance": [
+                {
+                  "page": 12,
+                  "bbox": [
+                    90.024,
+                    633.8297200000001,
+                    524.29,
+                    620.548
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    87
+                  ]
+                }
+              ],
+              "owners": []
+            },
+            {
+              "source_ref": "#/texts/199",
+              "text": "n Ví dụ . Tính các số đặc trưng của mẫu hai chiều sau:",
+              "orig": "n Ví dụ . Tính các số đặc trưng của mẫu hai chiều sau:",
+              "provenance": [
+                {
+                  "page": 13,
+                  "bbox": [
+                    107.42,
+                    341.2153605055,
+                    400.18,
+                    313.2878763636363
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    54
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/tables/15",
+                  "node_type": "table",
+                  "image_id": null,
+                  "table_id": "35dcb46e841df6bc492508c0cb867d108f375a7f60dec748261a734236b5b7bf"
+                }
+              ]
+            },
+            {
+              "source_ref": "#/texts/271",
+              "text": "Bấm SHIFT , bấm 9 , chọn cách thoát , bấm  = , bấm AC. Ví dụ . Tính các đặc trưng của mẫu sau:",
+              "orig": "Bấm SHIFT , bấm 9 , chọn cách thoát , bấm  = , bấm AC. Ví dụ . Tính các đặc trưng của mẫu sau:",
+              "provenance": [
+                {
+                  "page": 16,
+                  "bbox": [
+                    90.024,
+                    715.3297200000001,
+                    454.93,
+                    687.1378763636363
+                  ],
+                  "coord_origin": "BOTTOMLEFT",
+                  "charspan": [
+                    0,
+                    94
+                  ]
+                }
+              ],
+              "owners": [
+                {
+                  "source_ref": "#/tables/16",
+                  "node_type": "table",
+                  "image_id": null,
+                  "table_id": "8577a9dd586964a00063ff0c1421ff7d6c45f2e831c03a4e3e812be3db4e7ad3"
+                }
+              ]
+            }
+          ],
+          "unresolved_links": []
+        },
+        "caption_metadata_bytes": 2733
+      },
+      "baocao-canhan": {
+        "tree_without_caption_metadata_sha256": "cc47d7f397cdd5271c0eabb8419c73e75633becb98ea09764d602bf01428b832",
+        "chunks_sha256": "0f3f5cd4aacc51a829623d2a9d9de16420bcc9e4b426046b464b892a880d03da",
+        "image_hashes": {
+          "0a88f52b03cba815f28cb33145ed4657a936a5b09dd203531c2067e92b5e0219": "0a88f52b03cba815f28cb33145ed4657a936a5b09dd203531c2067e92b5e0219",
+          "855ea73ca96b471d08fda85a5091d73d4f668223e845bfa3f604335147ca0172": "855ea73ca96b471d08fda85a5091d73d4f668223e845bfa3f604335147ca0172",
+          "0658892bf7f0c3f952adf5e7d3663ae5f5ae04c36ca982f90d88d906ddee4d17": "0658892bf7f0c3f952adf5e7d3663ae5f5ae04c36ca982f90d88d906ddee4d17"
+        },
+        "caption_metadata": {
+          "schema_version": 1,
+          "label_source": "docling_unreviewed",
+          "items": [],
+          "unresolved_links": []
+        },
+        "caption_metadata_bytes": 96
+      },
+      "naive-bayes": {
+        "tree_without_caption_metadata_sha256": "b6e7716e316c12fe3a3d3cebe154777e6f6aebc8fc9e858a76f725cd2ffe5282",
+        "chunks_sha256": "23e8539b102dd8824f8045351b1ceb48d5044ae934950b00b417ffa67293aa34",
+        "image_hashes": {
+          "c3c8ba31c88cbf66169a72d40ce5cbe271edb04560f2166fa4a950f4aa589151": "c3c8ba31c88cbf66169a72d40ce5cbe271edb04560f2166fa4a950f4aa589151",
+          "bc3d42273bd74ed7ef9f5b73feb784f5944c7105a634a29149d237a138e3ee4b": "bc3d42273bd74ed7ef9f5b73feb784f5944c7105a634a29149d237a138e3ee4b"
+        },
+        "caption_metadata": {
+          "schema_version": 1,
+          "label_source": "docling_unreviewed",
+          "items": [],
+          "unresolved_links": []
+        },
+        "caption_metadata_bytes": 96
+      }
+    },
+    "baseline_sha256": "d64cf52e25ef22fd894d470ff25be5bdef3cfe04f0a221929ac6d0860c6c1b7f",
+    "unchanged_payload_verified": true
+  },
+  "pilot": {
+    "books": [
+      {
+        "book": "d01-04",
+        "page": 138,
+        "seconds": 32.82345840000016,
+        "node_counts": {
+          "text": 8,
+          "list_item": 6,
+          "formula": 7,
+          "figure": 1
+        },
+        "caption_records": 2,
+        "caption_rows": 2,
+        "rejected": [],
+        "unresolved_links": []
+      },
+      {
+        "book": "d01-06",
+        "page": 90,
+        "seconds": 1.6195750999995653,
+        "node_counts": {
+          "figure": 1,
+          "text": 4,
+          "formula": 2
+        },
+        "caption_records": 1,
+        "caption_rows": 1,
+        "rejected": [],
+        "unresolved_links": []
+      },
+      {
+        "book": "d01-07",
+        "page": 47,
+        "seconds": 5.127414900000076,
+        "node_counts": {
+          "section_header": 3,
+          "table": 2,
+          "text": 2,
+          "list_item": 1,
+          "formula": 1
+        },
+        "caption_records": 0,
+        "caption_rows": 0,
+        "rejected": [],
+        "unresolved_links": []
+      },
+      {
+        "book": "d01-14",
+        "page": 199,
+        "seconds": 8.068051399999604,
+        "node_counts": {
+          "text": 6,
+          "formula": 1,
+          "figure": 2,
+          "section_header": 1
+        },
+        "caption_records": 2,
+        "caption_rows": 2,
+        "rejected": [],
+        "unresolved_links": []
+      }
+    ],
+    "script_sha256": "67f0fffea55a328fbda500ae449148d6f3d301b359f05dcfe9374cff1532d301",
+    "parser_sha256": "d8ca156d842e3a5962a647b0008b9eaf8a4e6658a8e4b8f1443ce4c8d8be2ffb",
+    "api_usd": 0
+  }
+}

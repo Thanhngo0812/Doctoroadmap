@@ -11,6 +11,10 @@
 **Ai:** nhân viên làm cả hai pha; Claude kiểm khi chủ dự án giao · **Chi phí mô hình:** 0 USD, không LLM ·
 **Hạn mức:** pha 2 tối đa 3 ngày làm việc (xem mục pha 2).
 
+**Trạng thái nhân viên 2026-10-10:** **hoàn tất pha 1 phía nhân viên**. Suite 1.185 test xanh và test DOCX bổ sung xanh; tương đương cùng mô hình full đạt 6/6 cuốn; dry-run xstk/doc-4 giữ parse v3; kiểm cuối 51 manifest parse không đổi. Wheel đã build và kiểm hash tài sản; test chọn đường/cache bắt được đột biến, nhóm CLI chạy lại đạt 12/12. Đủ 12/12 phép đo mới ở `tmp/a1-v416/phase1-idle-20261010`, driver exit 0 lúc 18:43; trung vị nhẹ 0,264 phút/260,6 MiB, Docling 12,561 phút/3.470,6 MiB. Báo cáo có bảng đếm bảng/công thức/hình và giới hạn phép đo. Pha 2 chưa bắt đầu; Claude kiểm lại 43 PDF khi được giao, nhân viên không mở tập khóa. Báo cáo: [v4-16 pha 1](../../report/v4-16-pha-1-2026-10-10.md).
+
+**Mốc commit 2026-10-11:** theo yêu cầu chủ dự án, gom phần A1 vé 13b, 14 và pha 1 vé 16 (kèm phụ thuộc mã replay/benchmark D-02) thành commit riêng. Snapshot staging đã kiểm độc lập: **1.107 test xanh**; toàn worktree trước đóng mốc **1.188 test xanh**. Không commit sách, nhãn, `.gitignore`, tài liệu riêng hoặc sửa checkpoint/retry D-01. Không mở pha 2.
+
 ## Quyết định của chủ dự án, 2026-10-10
 
 - **Đổi mặc định A1 sang bộ đọc nhẹ ngay**, không chờ pha 4 của vé 15.
@@ -30,6 +34,8 @@
 - **Cây cha–con là điểm yếu nhất của cả hai bộ đọc**, nên là việc nghiên cứu của pha 2. Cây này ảnh hưởng tới tên module ở A10 (lỗi "tên module theo cây mục hỏng" của v3) và tới mọi khâu dùng đường dẫn mục.
 
 ## Pha 1 — đưa bộ đọc nhẹ vào sản phẩm (làm trước)
+
+**Chốt bổ sung của chủ dự án trong chat, 2026-10-10:** nghiệm thu tương đương khi cả adapter sản phẩm và R2 nghiên cứu dùng cùng mô hình `full`. R2 pha 3 trên sáu cuốn dùng mô hình bỏ-cuốn, nên đầu ra lịch sử không thể đồng thời giữ nguyên khi đổi sang `full`. Báo riêng khác biệt lịch sử; không đưa luật chọn mô hình theo mã sách vào sản phẩm. Đây là điều chỉnh tiêu chí tương đương tại 1.1, không thay đổi mô hình hay mục tiêu pha 2.
 
 ### 1.1 Adapter sản phẩm
 

@@ -308,6 +308,15 @@ Một tầng của phép xếp Coffman–Graham: các khái niệm học song so
 tầng. Chỉ còn trong biến thể đối chứng và artifact cũ. Tên stage pipeline `stages` của artifact graph giữ nguyên.
 _Tránh dùng_ cho đơn vị lộ trình mới — dùng **Module**
 
+**Cây mục khai báo (`declared-v1`, v4-14 R14c)**:
+Hợp đồng API chunking khi bên cung cấp đã quyết định tập heading và cây cha–con.
+`DocumentNode.level` là độ sâu nguyên thực của cây (gốc 1, không nhảy thiếu cấp);
+heading rỗng, thiếu level, boolean hoặc số thực bị bác. Chunker giữ tập heading
+và cha–con đã khai báo, không chạy luật bác heading hoặc ghi đè cấp mục.
+Scheme tách khoá chunk nhưng tái dùng parse. Không bật ở CLI hoặc mặc định
+Docling; không dùng cho cây level phẳng chưa xác minh. Đây là hợp đồng truyền
+cây, **không** phải chứng nhận chất lượng bộ phân tầng nhẹ.
+
 ## Lệnh bậc 1–3 của lượt tập giữ lại (T10a; chỉ chạy sau khi khoá T10)
 
 Các lệnh dưới đây là khuôn thao tác, **không phải lệnh cho phép mở vàng hay chạy tập giữ lại ngay**. Thay `<pdf-da-khoa>` và `<v-cay-moi>` bằng đường dẫn/version ghi trong bảng khoá; giữ chunk cũ xstk v2, doc-4 v3. Chạy riêng từng `DOC` (`xstk-ch3-1`, rồi `doc-4`), không sửa cấu hình giữa các bậc.
@@ -315,16 +324,21 @@ Các lệnh dưới đây là khuôn thao tác, **không phải lệnh cho phép
 ```powershell
 $env:UV_CACHE_DIR='.uv-cache-local'
 $DOC='xstk-ch3-1'; $OLD=2
-.\.tools\uv.exe run doc2roadmap ingest <pdf-da-khoa> --doc-id $DOC
-.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --dry-run
-.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --allow-spend
-.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --chunks-version $OLD --transfer-from-chunks-version <v-cay-moi> --dry-run
-.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --chunks-version $OLD --transfer-from-chunks-version <v-cay-moi> --allow-spend
-.\.tools\uv.exe run doc2roadmap roadmap --doc-id $DOC --dry-run --stop-after identity
-.\.tools\uv.exe run doc2roadmap roadmap --doc-id $DOC --allow-spend --stop-after identity
+.\.tools\uv.exe run doc2roadmap ingest <pdf-da-khoa> --doc-id $DOC --a1 docling --pdf-backend docling-parse --pdf-text-policy legacy --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --dry-run --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --allow-spend --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --chunks-version $OLD --transfer-from-chunks-version <v-cay-moi> --dry-run --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
+.\.tools\uv.exe run doc2roadmap label-roles --doc-id $DOC --chunks-version $OLD --transfer-from-chunks-version <v-cay-moi> --allow-spend --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
+.\.tools\uv.exe run doc2roadmap roadmap --doc-id $DOC --dry-run --stop-after identity --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
+.\.tools\uv.exe run doc2roadmap roadmap --doc-id $DOC --allow-spend --stop-after identity --allow-text-quality-reason "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc"
 .\.tools\uv.exe run python scripts/duyet-danh-tinh/tao_bang.py $DOC <v-identity> --no-gold --output-dir tmp/duyet-danh-tinh-giu-lai
 ```
 
-Lệnh `ingest` phải mang đúng cột "cờ `ingest` bậc 1" của bảng khoá (`T10-cau-hinh-khoa.md`): xstk không cờ; doc-4 thêm `--pdf-backend pypdfium2 --heading-scheme vn-textbook`, giống chunks gắn A3 (doc-4 v3), để văn bản khớp khi chuyển vai trò.
+Lệnh `ingest` phải mang đúng cột "cờ `ingest` bậc 1" của bảng khoá (`T10-cau-hinh-khoa.md`): xstk thêm `--a1 docling --pdf-backend docling-parse --pdf-text-policy legacy` và cờ lý do như khuôn trên cho ingest, label-roles, roadmap; doc-4 thêm `--a1 docling --pdf-backend pypdfium2 --heading-scheme vn-textbook`, giống chunks gắn A3 (doc-4 v3), để văn bản khớp khi chuyển vai trò. Từ v4-13, mặc định mới là pypdfium2; tái lập tài liệu cũ phải chỉ rõ bộ đọc đã khoá. Từ v4-14 R2-P, **cả hai lệnh tái lập cũ thêm `--pdf-text-policy legacy`** (adapter 11); không thay mặc định giữa các bậc của một lượt đã khoá.
+
+Ingest mới mặc định `--pdf-text-policy preserve` (adapter 13): không xoá chuỗi chữ lặp như `G G G`/`x x x` chỉ dựa trên regex. Bản 13 thêm `parse_stats.caption_provenance`: chữ, tất cả bbox/charspan/gốc tọa độ và liên kết hình/bảng của caption nguồn, ghi rõ nhãn Docling chưa xác minh; không nhân đôi caption trong chunk. Phiên bản adapter nằm trong khoá cache; không dùng nhầm parse v11/v12. Cache/artifact cũ không bị ghi đè hay tự chuyển đổi. `legacy` giữ chính xác cleanup và khoá v11 khi các tham số khác không đổi; không có cờ tái lập adapter 12. `preserve` chưa phải khử glyph chồng dựa trên toạ độ: lỗi lặp từ bộ đọc nguồn có thể vẫn còn. Đây là sửa bảo toàn ký tự/provenance, không phải thay Docling bằng mô hình heading nhẹ.
 
 Ở bậc 2b, chủ dự án duyệt **mọi** cặp trong bảng không vàng rồi xuất JSON quyết định T14. Chạy lại `roadmap --doc-id $DOC --identity-review <json-t14> --allow-spend --stop-after identity` và xác nhận artifact danh tính mới trước khi sang bậc 3. Bậc 3: `roadmap --doc-id $DOC --identity-review <json-t14> --dry-run` để lấy dự toán A8 thật; sau khi được duyệt chi mới chạy cùng lệnh với `--allow-spend` thay `--dry-run`. Bảng danh tính ở `tmp/` không chứa/chạm tệp vàng; nhãn vàng chỉ mở ở bậc 5 theo giao thức T10/07 v2.
+
+
+Từ v4-16, `ingest` mặc định `--a1 nhe` (R2 full, PDF gốc). Cờ PDF/pipeline chỉ dùng với `--a1 docling`; mọi lượt tái lập cũ giữ `--a1 docling`. Bản nhẹ nhanh hơn nhưng không đạt luật chất lượng pha 4 của vé 15; đây là đánh đổi đã được chủ dự án duyệt, không phải kết luận chất lượng tương đương Docling.

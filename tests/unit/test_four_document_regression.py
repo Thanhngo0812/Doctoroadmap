@@ -7,7 +7,7 @@ from docling_core.types.doc import DoclingDocument
 
 from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, chunk_document
 from doc2roadmap.infrastructure.parsing import DoclingParser
-from doc2roadmap.infrastructure.parsing.docling_parser import ADAPTER_VERSION
+from doc2roadmap.infrastructure.parsing.docling_parser import ADAPTER_VERSION, PipelineConfig
 from doc2roadmap.infrastructure.text import (
     SentencePieceTokenCounter,
     UnicodeSentenceSplitter,
@@ -92,7 +92,8 @@ def _private_use(text: str) -> int:
 
 
 def test_batch_versions_are_bumped_once() -> None:
-    assert ADAPTER_VERSION == 11
+    assert ADAPTER_VERSION == 13
+    assert DoclingParser(pipeline=PipelineConfig(pdf_text_policy="legacy")).adapter_version == 11
     assert CHUNK_ALGORITHM_ID == "section-id-v11-document-structure"
 
 
@@ -118,14 +119,16 @@ def test_new_fixtures_round_trip_with_images_and_exact_sizes() -> None:
         assert Path(f"tests/fixtures/docling/{name}.json").stat().st_size == byte_count
 
 
-def test_four_document_pipeline_matches_reviewed_gold() -> None:
+def test_legacy_four_document_pipeline_matches_reviewed_gold() -> None:
     counter = SentencePieceTokenCounter(
         Path("vendor/gemma/tokenizer.model"), "google-gemma-sentencepiece-v1"
     )
     observed = {}
 
     for name, extension in SOURCES.items():
-        parsed = DoclingParser().adapt(load_docling_fixture(name), name + extension)
+        parsed = DoclingParser(pipeline=PipelineConfig(pdf_text_policy="legacy")).adapt(
+            load_docling_fixture(name), name + extension
+        )
         result = chunk_document(
             parsed.tree, name, counter, UnicodeSentenceSplitter()
         )
@@ -197,3 +200,17 @@ def test_a3_reviewed_gold_locks_entity_media_and_vector_counts() -> None:
     assert corpus["learnable_entities"] == 395
     assert corpus["nonlearnable_context_entities"] == 0
     assert corpus["vector_count"] == 474
+
+
+def test_preserving_policy_keeps_layout_assets_and_valid_chunk_references():
+    import importlib.util
+
+    path = Path('scripts/doc-nhe/do_bao_toan_production.py')
+    spec = importlib.util.spec_from_file_location('preservation_audit', path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    records = module.audit()['books']  # assertions validate actual geometry, assets, offsets and hashes
+    assert records['nhap-mon-ml']['changed_node_fields']['text'] == 27
+    assert records['xstk-ch3-1']['changed_node_fields']['table_rows'] == 5
+    assert records['baocao-canhan']['changed_node_fields'] == {}
+    assert records['naive-bayes']['changed_node_fields'] == {}

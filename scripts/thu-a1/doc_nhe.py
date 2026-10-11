@@ -43,6 +43,7 @@ DOCS = {"doc-1": ("doc-1.pdf", "artifacts/parse_tree/doc-1/v5/tree.json"),
         "xstk": ("xstk-ch3-1.pdf", "artifacts/parse_tree/xstk-ch3-1/v2/tree.json")}
 MATH_FONT = re.compile(r"CMMI|CMSY|CMEX|CMBSY|MSBM|MSAM|EUFM|RSFS|STMARY|WASY|Symbol|Euclid|MT ?Extra|Math|LMMath|STIX", re.I)
 BOLD_FONT = re.compile(r"bold|black|heavy|semibold|demi|[-,+](bd|b)\b|VNBX|BX\d|CMBX", re.I)
+ITALIC_FONT = re.compile(r"italic|oblique|slant|CMTI|CMSL", re.I)
 BULLET = "•●◦▪■□♦◆✓✔➢►‣⁃∙·-–—+*"
 LIST_START = re.compile(r"^\s*(?:[" + re.escape(BULLET) + r"\uf000-\uf0ff]\s+|\(?[a-zđ]\)\s+|\(?[ivx]{1,4}\)\s+|\d{1,2}\)\s+)")
 HEADING_NUMBER = re.compile(r"^\s*(?:(?:chương|phần|bài|mục|chapter|part)\s+[\divxlc]+\b|§\s*\d+|\d{1,2}(?:\.\d{1,2}){0,3}\.?\s+\S|"
@@ -96,7 +97,7 @@ def page_lines(page):
     return lines
 
 
-def describe(chars, page_no, height):
+def describe(chars, page_no, height, width=None):
     visible = [c for c in chars if c.ch.strip()]
     if not visible:
         return None
@@ -116,21 +117,24 @@ def describe(chars, page_no, height):
             "top": max(c.top for c in visible), "bottom": min(c.bottom for c in visible), "size": sizes[len(sizes) // 2],
             "bold": sum(c.weight >= 600 or bool(BOLD_FONT.search(c.font)) for c in visible) / len(visible) >= 0.6,
             "math": math, "symbol_share": 1 - letters / len(visible), "height": height,
-            "chars": len(visible)}
+            "chars": len(visible), "width": width,
+            "italic": sum(bool(ITALIC_FONT.search(c.font)) for c in visible) / len(visible),
+            "font": Counter(c.font for c in visible).most_common(1)[0][0]}
 
 
 def norm_repeat(text):
     return re.sub(r"\d+", "#", " ".join(unicodedata.normalize("NFC", text).casefold().split()))
 
 
-def parse(path):
+def extract_rows(path):
+    """Đọc dòng thô một lần; các trường bố cục thêm chỉ dành cho thí nghiệm v4-14."""
     pdf = pdfium.PdfDocument(path)
     rows, figures = [], []
     for page_index in range(len(pdf)):
         page = pdf[page_index]
         width, height = page.get_size()
         for chars in page_lines(page):
-            row = describe(chars, page_index + 1, height)
+            row = describe(chars, page_index + 1, height, width)
             if row:
                 rows.append(row)
         for obj in page.get_objects(max_depth=2):
@@ -138,7 +142,10 @@ def parse(path):
                 left, bottom, right, top = obj.get_bounds()
                 if (right - left) * (top - bottom) >= 0.03 * width * height:
                     figures.append({"page": page_index + 1, "top": top, "bbox": (left, bottom, right, top)})
-    pages = len(pdf)
+    return rows, figures, len(pdf)
+
+
+def prepare_rows(rows):
     # Đầu trang, chân trang: chuỗi lặp ở vùng 8% trên/dưới, hoặc chỉ là số trang.
     zone = lambda r: r["top"] > 0.92 * r["height"] or r["bottom"] < 0.08 * r["height"]  # noqa: E731
     seen = defaultdict(set)
@@ -151,42 +158,60 @@ def parse(path):
     for r in body_rows:
         weights[r["size"]] += r["chars"]
     body = weights.most_common(1)[0][0] if weights else 10.0
+    return body_rows, body
 
-    def kind(r, standalone):
-        words = len(r["text"].split())
-        mathy = r["math"] >= 0.5 or any(ch in STRONG_MATH or PRIVATE_USE.match(ch) for ch in r["text"] if not PUA_BULLET.match(ch + " "))
-        if r["letters"] == 0:
-            return "formula" if mathy else "text"
-        if (r["math"] >= 0.6 and r["text_letters"] <= 4) or (r["symbol_share"] >= 0.7 and words <= 12 and mathy):
-            return "formula"
-        if r["viet"] == 0 and r["tokens"] >= 2 and r["mono"] < 0.6 and (r["single"] >= 0.4 or r["math_words"] > 0):
-            return "formula"  # công thức Word (Times nghiêng): không có âm tiết tiếng Việt, nhiều biến một chữ hoặc tên hàm
-        if r["mono"] >= 0.6:
-            return "text"  # dòng mã lệnh (font đơn cách)
-        bare = PUA_BULLET.sub("", LIST_START.sub("", r["text"])) if (PUA_BULLET.match(r["text"]) or LIST_START.match(r["text"])) else r["text"]
-        if CAPTION.match(r["text"]) and words <= 40:
-            return "caption"
-        wordy = r["letters"] >= 3 and not TABLE_ROW_END.search(r["text"]) and r["single"] < 0.4
-        vietnamese = r["viet"] >= 1 and r["single"] < 0.3  # tiêu đề không đánh số phải có âm tiết tiếng Việt
-        if wordy and words <= 20 and HEADING_NUMBER.match(r["text"]) and (r["bold"] or r["size"] >= 1.1 * body) \
-                and not r["text"].endswith(","):
-            return "section_header"
-        if wordy and vietnamese and words <= 15 and ENUMERATOR.match(r["text"]) and r["bold"]:
-            return "section_header"
-        if wordy and vietnamese and words <= 15 and r["size"] >= 1.2 * body and not r["text"].endswith((".", ",", ";")):
-            return "section_header"
-        if wordy and vietnamese and words <= 15 and r["bold"] and bare != r["text"] and bare[:1].isupper() \
-                and not r["text"].endswith((",", ";", ".")):
-            return "section_header"  # tiêu đề in đậm mở đầu bằng dấu đầu dòng (xstk: "• Mẫu tổng quát và mẫu cụ thể")
-        if wordy and vietnamese and standalone and words <= 12 and r["bold"] and r["size"] >= 0.98 * body and bare[:1].isupper() \
-                and not r["text"].endswith((",", ";")):
-            return "section_header"
-        if LIST_START.match(r["text"]):
-            return "list_item"
-        if r["bottom"] < 0.15 * r["height"] and r["size"] < 0.85 * body:
-            return "footnote"
-        return "text"
 
+def classify_row(r, standalone, body, *, headings=True):
+    words = len(r["text"].split())
+    mathy = r["math"] >= 0.5 or any(ch in STRONG_MATH or PRIVATE_USE.match(ch) for ch in r["text"] if not PUA_BULLET.match(ch + " "))
+    if r["letters"] == 0:
+        return "formula" if mathy else "text"
+    if (r["math"] >= 0.6 and r["text_letters"] <= 4) or (r["symbol_share"] >= 0.7 and words <= 12 and mathy):
+        return "formula"
+    if r["viet"] == 0 and r["tokens"] >= 2 and r["mono"] < 0.6 and (r["single"] >= 0.4 or r["math_words"] > 0):
+        return "formula"  # công thức Word (Times nghiêng): không có âm tiết tiếng Việt, nhiều biến một chữ hoặc tên hàm
+    if r["mono"] >= 0.6:
+        return "text"  # dòng mã lệnh (font đơn cách)
+    bare = PUA_BULLET.sub("", LIST_START.sub("", r["text"])) if (PUA_BULLET.match(r["text"]) or LIST_START.match(r["text"])) else r["text"]
+    if CAPTION.match(r["text"]) and words <= 40:
+        return "caption"
+    wordy = r["letters"] >= 3 and not TABLE_ROW_END.search(r["text"]) and r["single"] < 0.4
+    vietnamese = r["viet"] >= 1 and r["single"] < 0.3  # tiêu đề không đánh số phải có âm tiết tiếng Việt
+    if headings and wordy and words <= 20 and HEADING_NUMBER.match(r["text"]) and (r["bold"] or r["size"] >= 1.1 * body) \
+            and not r["text"].endswith(","):
+        return "section_header"
+    if headings and wordy and vietnamese and words <= 15 and ENUMERATOR.match(r["text"]) and r["bold"]:
+        return "section_header"
+    if headings and wordy and vietnamese and words <= 15 and r["size"] >= 1.2 * body and not r["text"].endswith((".", ",", ";")):
+        return "section_header"
+    if headings and wordy and vietnamese and words <= 15 and r["bold"] and bare != r["text"] and bare[:1].isupper() \
+            and not r["text"].endswith((",", ";", ".")):
+        return "section_header"  # tiêu đề in đậm mở đầu bằng dấu đầu dòng (xstk: "• Mẫu tổng quát và mẫu cụ thể")
+    if headings and wordy and vietnamese and standalone and words <= 12 and r["bold"] and r["size"] >= 0.98 * body and bare[:1].isupper() \
+            and not r["text"].endswith((",", ";")):
+        return "section_header"
+    if LIST_START.match(r["text"]):
+        return "list_item"
+    if r["bottom"] < 0.15 * r["height"] and r["size"] < 0.85 * body:
+        return "footnote"
+    return "text"
+
+
+def standalone_flags(rows):
+    previous = None
+    flags = []
+    for row in rows:
+        gap = previous["bottom"] - row["top"] if previous and previous["page"] == row["page"] else None
+        flags.append(gap is None or gap > 0.5 * max(row["size"], 1.0) or previous["text"].endswith((".", ":", "?", "!")))
+        previous = row
+    return flags
+
+
+def group_rows(rows, figures, pages, heading_flags=None):
+    """Cùng gom khối v4; cờ mô hình chỉ thay quyết định tiêu đề ở các dòng còn lại."""
+    body_rows, body = prepare_rows(rows)
+    if heading_flags is not None and len(heading_flags) != len(body_rows):
+        raise ValueError("heading prediction count must equal retained row count")
     margins = {}
     for page in {r["page"] for r in body_rows}:
         lefts = sorted(r["x0"] for r in body_rows if r["page"] == page and r["letters"] >= 3)
@@ -194,11 +219,12 @@ def parse(path):
         margins[page] = (lefts[len(lefts) // 5] if lefts else 0.0, rights[-(len(rights) // 5) - 1] if rights else 0.0)
     nodes = []
     previous = None
-    for r in body_rows:
+    for index, (r, standalone) in enumerate(zip(body_rows, standalone_flags(body_rows))):
         gap = (previous["bottom"] - r["top"]) if previous and previous["page"] == r["page"] else None
         line_height = max(r["size"], 1.0)
-        standalone = gap is None or gap > 0.5 * line_height or previous["text"].endswith((".", ":", "?", "!"))
-        current = kind(r, standalone)
+        current = classify_row(r, standalone, body, headings=heading_flags is None)
+        if heading_flags is not None and heading_flags[index]:
+            current = "section_header"
         joinable = previous is not None and nodes and previous["page"] == r["page"] and gap is not None and -line_height < gap < 1.2 * line_height
         last = nodes[-1] if nodes else None
         left, right = margins[r["page"]]
@@ -224,6 +250,13 @@ def parse(path):
         node["text"], _ = DoclingParser._clean_text(node["text"], collapse_pdf_glyphs=True)
         node["text"] = node["text"].replace("ƣ", "ư").replace("Ƣ", "Ư")  # glyph sai của font Việt cũ (README D-01)
     return nodes, {"pages": pages, "body_size": body, "repeated_lines_removed": len(rows) - len(body_rows)}
+
+
+def parse(path, heading_predictor=None):
+    rows, figures, pages = extract_rows(path)
+    body_rows, body = prepare_rows(rows)
+    flags = heading_predictor(body_rows, body) if heading_predictor is not None else None
+    return group_rows(rows, figures, pages, flags)
 
 
 def heading_level(text):

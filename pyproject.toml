@@ -16,6 +16,11 @@ dependencies = [
   "leidenalg==0.12.0",
   "openpyxl==3.1.5",
   "google-auth[requests]==2.58.1",
+  "pypdfium2==5.12.1",
+  "numpy==2.5.2",
+  "lightgbm==4.7.0",
+  "scikit-learn==1.9.1",
+  "joblib==1.6.0",
 ]
 
 [project.optional-dependencies]
@@ -26,6 +31,9 @@ doc2roadmap = "doc2roadmap.presentation.cli.main:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/doc2roadmap"]
+
+[tool.hatch.build.targets.wheel.force-include]
+"vendor/a1-nhe" = "doc2roadmap/infrastructure/parsing/nhe_models"
 
 [tool.pytest.ini_options]
 addopts = "-q"

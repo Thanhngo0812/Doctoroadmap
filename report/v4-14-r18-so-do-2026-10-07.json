@@ -1,0 +1,3086 @@
+{
+ "api_usd": 0,
+ "books": [
+  {
+   "id": "d01-01",
+   "split": "train",
+   "qualified": 1,
+   "changed": [
+    {
+     "row_index": 4574,
+     "text": "Hình 3.2 Thuật toán Sarus",
+     "page": 87,
+     "r1": 0,
+     "r3": 0
+    }
+   ],
+   "model_sha256": {
+    "M2f": "b441d715047c7c265e1373847d32bca785ea19b307d0b1a990269333f1e2e243",
+    "B2": "5c2c5ec2306554cc279b5a35e03594e72c262ee73adc3a0784fe2fc352c7fa25"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 225,
+       "fp": 44,
+       "fn": 14,
+       "precision": 0.8364312267657993,
+       "recall": 0.9414225941422594,
+       "f1": 0.8858267716535432,
+       "evaluated": 7831,
+       "total": 19711
+      },
+      "r3": {
+       "tp": 225,
+       "fp": 38,
+       "fn": 14,
+       "precision": 0.8555133079847909,
+       "recall": 0.9414225941422594,
+       "f1": 0.8964143426294819,
+       "evaluated": 6621,
+       "total": 19711
+      }
+     },
+     "heading_strict": {
+      "tp": 212,
+      "fp": 93,
+      "fn": 13,
+      "precision": 0.6950819672131148,
+      "recall": 0.9422222222222222,
+      "f1": 0.7999999999999999
+     },
+     "leaf_strict": {
+      "hits": 241,
+      "eligible": 324,
+      "total": 372,
+      "share": 0.6478494623655914,
+      "eligible_share": 0.8709677419354839
+     },
+     "chunk_legacy": {
+      "chunk": [
+       372,
+       513
+      ],
+      "duong_muc_giong": 0.187,
+      "so_duong_muc": [
+       179,
+       239
+      ],
+      "docling_co_ban_tu_0_8": 0.417,
+      "docling_co_ban_tu_0_5": 0.871,
+      "nhe_co_ban_tu_0_8": 0.302,
+      "nhe_co_ban_tu_0_5": 0.713,
+      "jaccard_tb_docling": 0.723,
+      "cung_muc_la": 0.763
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 225,
+       "fp": 43,
+       "fn": 14,
+       "precision": 0.8395522388059702,
+       "recall": 0.9414225941422594,
+       "f1": 0.8875739644970415,
+       "evaluated": 7831,
+       "total": 19711
+      },
+      "r3": {
+       "tp": 225,
+       "fp": 37,
+       "fn": 14,
+       "precision": 0.8587786259541985,
+       "recall": 0.9414225941422594,
+       "f1": 0.8982035928143712,
+       "evaluated": 6621,
+       "total": 19711
+      }
+     },
+     "heading_strict": {
+      "tp": 212,
+      "fp": 92,
+      "fn": 13,
+      "precision": 0.6973684210526315,
+      "recall": 0.9422222222222222,
+      "f1": 0.8015122873345936
+     },
+     "leaf_strict": {
+      "hits": 242,
+      "eligible": 324,
+      "total": 372,
+      "share": 0.6505376344086021,
+      "eligible_share": 0.8709677419354839
+     },
+     "chunk_legacy": {
+      "chunk": [
+       372,
+       513
+      ],
+      "duong_muc_giong": 0.187,
+      "so_duong_muc": [
+       179,
+       239
+      ],
+      "docling_co_ban_tu_0_8": 0.414,
+      "docling_co_ban_tu_0_5": 0.871,
+      "nhe_co_ban_tu_0_8": 0.3,
+      "nhe_co_ban_tu_0_5": 0.713,
+      "jaccard_tb_docling": 0.723,
+      "cung_muc_la": 0.763
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-02",
+   "split": "train",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "e2c3af3a7d2b62dc9692fb57e7e00a6276930b81a05b29e84707d9b43a5474fa",
+    "B2": "adb2caab5325404746e49d41478b0c8cd6a3e2f261acf2aeb2dad2b5c9692335"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 208,
+       "fp": 45,
+       "fn": 56,
+       "precision": 0.8221343873517787,
+       "recall": 0.7878787878787878,
+       "f1": 0.8046421663442941,
+       "evaluated": 3983,
+       "total": 11808
+      },
+      "r3": {
+       "tp": 207,
+       "fp": 33,
+       "fn": 56,
+       "precision": 0.8625,
+       "recall": 0.7870722433460076,
+       "f1": 0.823061630218688,
+       "evaluated": 3163,
+       "total": 11808
+      }
+     },
+     "heading_strict": {
+      "tp": 194,
+      "fp": 64,
+      "fn": 71,
+      "precision": 0.751937984496124,
+      "recall": 0.7320754716981132,
+      "f1": 0.7418738049713193
+     },
+     "leaf_strict": {
+      "hits": 116,
+      "eligible": 171,
+      "total": 221,
+      "share": 0.5248868778280543,
+      "eligible_share": 0.7737556561085973
+     },
+     "chunk_legacy": {
+      "chunk": [
+       221,
+       391
+      ],
+      "duong_muc_giong": 0.652,
+      "so_duong_muc": [
+       154,
+       168
+      ],
+      "docling_co_ban_tu_0_8": 0.285,
+      "docling_co_ban_tu_0_5": 0.774,
+      "nhe_co_ban_tu_0_8": 0.161,
+      "nhe_co_ban_tu_0_5": 0.486,
+      "jaccard_tb_docling": 0.642,
+      "cung_muc_la": 0.67
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 208,
+       "fp": 45,
+       "fn": 56,
+       "precision": 0.8221343873517787,
+       "recall": 0.7878787878787878,
+       "f1": 0.8046421663442941,
+       "evaluated": 3983,
+       "total": 11808
+      },
+      "r3": {
+       "tp": 207,
+       "fp": 33,
+       "fn": 56,
+       "precision": 0.8625,
+       "recall": 0.7870722433460076,
+       "f1": 0.823061630218688,
+       "evaluated": 3163,
+       "total": 11808
+      }
+     },
+     "heading_strict": {
+      "tp": 194,
+      "fp": 64,
+      "fn": 71,
+      "precision": 0.751937984496124,
+      "recall": 0.7320754716981132,
+      "f1": 0.7418738049713193
+     },
+     "leaf_strict": {
+      "hits": 116,
+      "eligible": 171,
+      "total": 221,
+      "share": 0.5248868778280543,
+      "eligible_share": 0.7737556561085973
+     },
+     "chunk_legacy": {
+      "chunk": [
+       221,
+       391
+      ],
+      "duong_muc_giong": 0.652,
+      "so_duong_muc": [
+       154,
+       168
+      ],
+      "docling_co_ban_tu_0_8": 0.285,
+      "docling_co_ban_tu_0_5": 0.774,
+      "nhe_co_ban_tu_0_8": 0.161,
+      "nhe_co_ban_tu_0_5": 0.486,
+      "jaccard_tb_docling": 0.642,
+      "cung_muc_la": 0.67
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-03",
+   "split": "train",
+   "qualified": 5,
+   "changed": [
+    {
+     "row_index": 103,
+     "text": "Hình 1.1 Mẫu nguyên tử đơn giản.",
+     "page": 6,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 561,
+     "text": "Hình 1.3. Xác suất có mặt electron theo r và hình dạng mây electron s",
+     "page": 18,
+     "r1": -1,
+     "r3": -1
+    }
+   ],
+   "model_sha256": {
+    "M2f": "766093f3569a606f18f07a07d35a8d24c6fa2136f04822401d1298bbd800208e",
+    "B2": "624c8ed0837439f30d00c80c9d766556a3b2c77911dbf4101ba8c19b84ae980a"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 242,
+       "fp": 76,
+       "fn": 3,
+       "precision": 0.7610062893081762,
+       "recall": 0.9877551020408163,
+       "f1": 0.8596802841918296,
+       "evaluated": 2423,
+       "total": 3793
+      },
+      "r3": {
+       "tp": 235,
+       "fp": 59,
+       "fn": 3,
+       "precision": 0.7993197278911565,
+       "recall": 0.9873949579831933,
+       "f1": 0.8834586466165414,
+       "evaluated": 1883,
+       "total": 3793
+      }
+     },
+     "heading_strict": {
+      "tp": 231,
+      "fp": 103,
+      "fn": 27,
+      "precision": 0.6916167664670658,
+      "recall": 0.8953488372093024,
+      "f1": 0.7804054054054054
+     },
+     "leaf_strict": {
+      "hits": 164,
+      "eligible": 228,
+      "total": 272,
+      "share": 0.6029411764705882,
+      "eligible_share": 0.8382352941176471
+     },
+     "chunk_legacy": {
+      "chunk": [
+       272,
+       312
+      ],
+      "duong_muc_giong": 0.086,
+      "so_duong_muc": [
+       201,
+       239
+      ],
+      "docling_co_ban_tu_0_8": 0.511,
+      "docling_co_ban_tu_0_5": 0.838,
+      "nhe_co_ban_tu_0_8": 0.446,
+      "nhe_co_ban_tu_0_5": 0.747,
+      "jaccard_tb_docling": 0.744,
+      "cung_muc_la": 0.684
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 242,
+       "fp": 76,
+       "fn": 3,
+       "precision": 0.7610062893081762,
+       "recall": 0.9877551020408163,
+       "f1": 0.8596802841918296,
+       "evaluated": 2423,
+       "total": 3793
+      },
+      "r3": {
+       "tp": 235,
+       "fp": 59,
+       "fn": 3,
+       "precision": 0.7993197278911565,
+       "recall": 0.9873949579831933,
+       "f1": 0.8834586466165414,
+       "evaluated": 1883,
+       "total": 3793
+      }
+     },
+     "heading_strict": {
+      "tp": 231,
+      "fp": 101,
+      "fn": 27,
+      "precision": 0.6957831325301205,
+      "recall": 0.8953488372093024,
+      "f1": 0.7830508474576272
+     },
+     "leaf_strict": {
+      "hits": 166,
+      "eligible": 229,
+      "total": 272,
+      "share": 0.6102941176470589,
+      "eligible_share": 0.8419117647058824
+     },
+     "chunk_legacy": {
+      "chunk": [
+       272,
+       310
+      ],
+      "duong_muc_giong": 0.087,
+      "so_duong_muc": [
+       201,
+       237
+      ],
+      "docling_co_ban_tu_0_8": 0.518,
+      "docling_co_ban_tu_0_5": 0.842,
+      "nhe_co_ban_tu_0_8": 0.455,
+      "nhe_co_ban_tu_0_5": 0.752,
+      "jaccard_tb_docling": 0.746,
+      "cung_muc_la": 0.691
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-04",
+   "split": "train",
+   "qualified": 67,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "e553f146865796faac1252a4304aeb19e6b4c957c674e859183ba6648e130586",
+    "B2": "a63f638e616b777c994d7d4e1252ad02750c0f461edcbdfc3cbf4d46caeab8fb"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 178,
+       "fp": 31,
+       "fn": 8,
+       "precision": 0.8516746411483254,
+       "recall": 0.956989247311828,
+       "f1": 0.9012658227848102,
+       "evaluated": 3342,
+       "total": 5654
+      },
+      "r3": {
+       "tp": 173,
+       "fp": 21,
+       "fn": 6,
+       "precision": 0.8917525773195877,
+       "recall": 0.9664804469273743,
+       "f1": 0.9276139410187668,
+       "evaluated": 2791,
+       "total": 5654
+      }
+     },
+     "heading_strict": {
+      "tp": 178,
+      "fp": 38,
+      "fn": 10,
+      "precision": 0.8240740740740741,
+      "recall": 0.9468085106382979,
+      "f1": 0.8811881188118812
+     },
+     "leaf_strict": {
+      "hits": 203,
+      "eligible": 260,
+      "total": 300,
+      "share": 0.6766666666666666,
+      "eligible_share": 0.8666666666666667
+     },
+     "chunk_legacy": {
+      "chunk": [
+       300,
+       346
+      ],
+      "duong_muc_giong": 0.478,
+      "so_duong_muc": [
+       144,
+       157
+      ],
+      "docling_co_ban_tu_0_8": 0.53,
+      "docling_co_ban_tu_0_5": 0.867,
+      "nhe_co_ban_tu_0_8": 0.46,
+      "nhe_co_ban_tu_0_5": 0.772,
+      "jaccard_tb_docling": 0.768,
+      "cung_muc_la": 0.74
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 178,
+       "fp": 31,
+       "fn": 8,
+       "precision": 0.8516746411483254,
+       "recall": 0.956989247311828,
+       "f1": 0.9012658227848102,
+       "evaluated": 3342,
+       "total": 5654
+      },
+      "r3": {
+       "tp": 173,
+       "fp": 21,
+       "fn": 6,
+       "precision": 0.8917525773195877,
+       "recall": 0.9664804469273743,
+       "f1": 0.9276139410187668,
+       "evaluated": 2791,
+       "total": 5654
+      }
+     },
+     "heading_strict": {
+      "tp": 178,
+      "fp": 38,
+      "fn": 10,
+      "precision": 0.8240740740740741,
+      "recall": 0.9468085106382979,
+      "f1": 0.8811881188118812
+     },
+     "leaf_strict": {
+      "hits": 203,
+      "eligible": 260,
+      "total": 300,
+      "share": 0.6766666666666666,
+      "eligible_share": 0.8666666666666667
+     },
+     "chunk_legacy": {
+      "chunk": [
+       300,
+       346
+      ],
+      "duong_muc_giong": 0.478,
+      "so_duong_muc": [
+       144,
+       157
+      ],
+      "docling_co_ban_tu_0_8": 0.53,
+      "docling_co_ban_tu_0_5": 0.867,
+      "nhe_co_ban_tu_0_8": 0.46,
+      "nhe_co_ban_tu_0_5": 0.772,
+      "jaccard_tb_docling": 0.768,
+      "cung_muc_la": 0.74
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-05",
+   "split": "train",
+   "qualified": 6,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "b856189062ac717050e6ac8afcf33f2392887edb265793eecfa2416a0605ff88",
+    "B2": "8117676f2e5bc4c2e80126e346854553bdd999249eabb2a60ca88dc4d8314a8f"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 297,
+       "fp": 33,
+       "fn": 9,
+       "precision": 0.9,
+       "recall": 0.9705882352941176,
+       "f1": 0.9339622641509434,
+       "evaluated": 3826,
+       "total": 4585
+      },
+      "r3": {
+       "tp": 291,
+       "fp": 31,
+       "fn": 7,
+       "precision": 0.9037267080745341,
+       "recall": 0.9765100671140939,
+       "f1": 0.9387096774193548,
+       "evaluated": 3469,
+       "total": 4585
+      }
+     },
+     "heading_strict": {
+      "tp": 281,
+      "fp": 48,
+      "fn": 31,
+      "precision": 0.8541033434650456,
+      "recall": 0.9006410256410257,
+      "f1": 0.8767550702028082
+     },
+     "leaf_strict": {
+      "hits": 291,
+      "eligible": 334,
+      "total": 354,
+      "share": 0.8220338983050848,
+      "eligible_share": 0.943502824858757
+     },
+     "chunk_legacy": {
+      "chunk": [
+       354,
+       364
+      ],
+      "duong_muc_giong": 0.734,
+      "so_duong_muc": [
+       233,
+       233
+      ],
+      "docling_co_ban_tu_0_8": 0.845,
+      "docling_co_ban_tu_0_5": 0.944,
+      "nhe_co_ban_tu_0_8": 0.819,
+      "nhe_co_ban_tu_0_5": 0.923,
+      "jaccard_tb_docling": 0.9,
+      "cung_muc_la": 0.876
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 297,
+       "fp": 33,
+       "fn": 9,
+       "precision": 0.9,
+       "recall": 0.9705882352941176,
+       "f1": 0.9339622641509434,
+       "evaluated": 3826,
+       "total": 4585
+      },
+      "r3": {
+       "tp": 291,
+       "fp": 31,
+       "fn": 7,
+       "precision": 0.9037267080745341,
+       "recall": 0.9765100671140939,
+       "f1": 0.9387096774193548,
+       "evaluated": 3469,
+       "total": 4585
+      }
+     },
+     "heading_strict": {
+      "tp": 281,
+      "fp": 48,
+      "fn": 31,
+      "precision": 0.8541033434650456,
+      "recall": 0.9006410256410257,
+      "f1": 0.8767550702028082
+     },
+     "leaf_strict": {
+      "hits": 291,
+      "eligible": 334,
+      "total": 354,
+      "share": 0.8220338983050848,
+      "eligible_share": 0.943502824858757
+     },
+     "chunk_legacy": {
+      "chunk": [
+       354,
+       364
+      ],
+      "duong_muc_giong": 0.734,
+      "so_duong_muc": [
+       233,
+       233
+      ],
+      "docling_co_ban_tu_0_8": 0.845,
+      "docling_co_ban_tu_0_5": 0.944,
+      "nhe_co_ban_tu_0_8": 0.819,
+      "nhe_co_ban_tu_0_5": 0.923,
+      "jaccard_tb_docling": 0.9,
+      "cung_muc_la": 0.876
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-06",
+   "split": "train",
+   "qualified": 8,
+   "changed": [
+    {
+     "row_index": 1361,
+     "text": "Hình 4.5. Callus (A) và tái sinh chồi từ callus (B) của chi Lilium",
+     "page": 45,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2001,
+     "text": "Hình 4.13. Thao tác chuyển gen bằng phương thức dội bom",
+     "page": 66,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3160,
+     "text": "Hình 3.9. Lên men bằng phương pháp nuôi cấy chìm trong môi trường lỏng ở",
+     "page": 105,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3677,
+     "text": "Hình 6.2. Phương thức phát sinh đột biến ssDNA không dùng PCR",
+     "page": 121,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4941,
+     "text": "Hình 6.10. Sơ đồ sắc ký trao đổi ion",
+     "page": 160,
+     "r1": -1,
+     "r3": -1
+    }
+   ],
+   "model_sha256": {
+    "M2f": "5ae24ffd85b20dc9e2ec6361e4b49df98d7ccdff7df88df520d03d67c981e221",
+    "B2": "69916a6a9e59b316c2d278945bf73270c362830dba42596befd6337f24852501"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 254,
+       "fp": 27,
+       "fn": 23,
+       "precision": 0.9039145907473309,
+       "recall": 0.9169675090252708,
+       "f1": 0.9103942652329748,
+       "evaluated": 3801,
+       "total": 5502
+      },
+      "r3": {
+       "tp": 249,
+       "fp": 21,
+       "fn": 23,
+       "precision": 0.9222222222222223,
+       "recall": 0.9154411764705882,
+       "f1": 0.9188191881918819,
+       "evaluated": 3679,
+       "total": 5502
+      }
+     },
+     "heading_strict": {
+      "tp": 232,
+      "fp": 88,
+      "fn": 45,
+      "precision": 0.725,
+      "recall": 0.8375451263537906,
+      "f1": 0.7772194304857621
+     },
+     "leaf_strict": {
+      "hits": 238,
+      "eligible": 305,
+      "total": 346,
+      "share": 0.6878612716763006,
+      "eligible_share": 0.8815028901734104
+     },
+     "chunk_legacy": {
+      "chunk": [
+       346,
+       366
+      ],
+      "duong_muc_giong": 0.408,
+      "so_duong_muc": [
+       221,
+       245
+      ],
+      "docling_co_ban_tu_0_8": 0.699,
+      "docling_co_ban_tu_0_5": 0.882,
+      "nhe_co_ban_tu_0_8": 0.661,
+      "nhe_co_ban_tu_0_5": 0.839,
+      "jaccard_tb_docling": 0.819,
+      "cung_muc_la": 0.777
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 254,
+       "fp": 27,
+       "fn": 23,
+       "precision": 0.9039145907473309,
+       "recall": 0.9169675090252708,
+       "f1": 0.9103942652329748,
+       "evaluated": 3801,
+       "total": 5502
+      },
+      "r3": {
+       "tp": 249,
+       "fp": 21,
+       "fn": 23,
+       "precision": 0.9222222222222223,
+       "recall": 0.9154411764705882,
+       "f1": 0.9188191881918819,
+       "evaluated": 3679,
+       "total": 5502
+      }
+     },
+     "heading_strict": {
+      "tp": 232,
+      "fp": 83,
+      "fn": 45,
+      "precision": 0.7365079365079366,
+      "recall": 0.8375451263537906,
+      "f1": 0.7837837837837839
+     },
+     "leaf_strict": {
+      "hits": 242,
+      "eligible": 305,
+      "total": 346,
+      "share": 0.6994219653179191,
+      "eligible_share": 0.8815028901734104
+     },
+     "chunk_legacy": {
+      "chunk": [
+       346,
+       364
+      ],
+      "duong_muc_giong": 0.411,
+      "so_duong_muc": [
+       221,
+       241
+      ],
+      "docling_co_ban_tu_0_8": 0.708,
+      "docling_co_ban_tu_0_5": 0.882,
+      "nhe_co_ban_tu_0_8": 0.673,
+      "nhe_co_ban_tu_0_5": 0.838,
+      "jaccard_tb_docling": 0.821,
+      "cung_muc_la": 0.789
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-07",
+   "split": "train",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "73de1e018fff12feb3052c22a708abf1d6029358b8908788fe7b8567dd233ec1",
+    "B2": "62b8c7d406767dd87af01b09abd1ec9291a494549fbf77f9473fe8fcb0f4181c"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 216,
+       "fp": 1167,
+       "fn": 0,
+       "precision": 0.1561822125813449,
+       "recall": 1.0,
+       "f1": 0.2701688555347092,
+       "evaluated": 2905,
+       "total": 3604
+      },
+      "r3": {
+       "tp": 213,
+       "fp": 975,
+       "fn": 0,
+       "precision": 0.17929292929292928,
+       "recall": 1.0,
+       "f1": 0.30406852248394,
+       "evaluated": 2578,
+       "total": 3604
+      }
+     },
+     "heading_strict": {
+      "tp": 194,
+      "fp": 1130,
+      "fn": 28,
+      "precision": 0.14652567975830816,
+      "recall": 0.8738738738738738,
+      "f1": 0.25097024579560157
+     },
+     "leaf_strict": {
+      "hits": 70,
+      "eligible": 192,
+      "total": 304,
+      "share": 0.23026315789473684,
+      "eligible_share": 0.631578947368421
+     },
+     "chunk_legacy": {
+      "chunk": [
+       304,
+       517
+      ],
+      "duong_muc_giong": 0.226,
+      "so_duong_muc": [
+       164,
+       500
+      ],
+      "docling_co_ban_tu_0_8": 0.263,
+      "docling_co_ban_tu_0_5": 0.632,
+      "nhe_co_ban_tu_0_8": 0.155,
+      "nhe_co_ban_tu_0_5": 0.381,
+      "jaccard_tb_docling": 0.586,
+      "cung_muc_la": 0.27
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 216,
+       "fp": 1167,
+       "fn": 0,
+       "precision": 0.1561822125813449,
+       "recall": 1.0,
+       "f1": 0.2701688555347092,
+       "evaluated": 2905,
+       "total": 3604
+      },
+      "r3": {
+       "tp": 213,
+       "fp": 975,
+       "fn": 0,
+       "precision": 0.17929292929292928,
+       "recall": 1.0,
+       "f1": 0.30406852248394,
+       "evaluated": 2578,
+       "total": 3604
+      }
+     },
+     "heading_strict": {
+      "tp": 194,
+      "fp": 1130,
+      "fn": 28,
+      "precision": 0.14652567975830816,
+      "recall": 0.8738738738738738,
+      "f1": 0.25097024579560157
+     },
+     "leaf_strict": {
+      "hits": 70,
+      "eligible": 192,
+      "total": 304,
+      "share": 0.23026315789473684,
+      "eligible_share": 0.631578947368421
+     },
+     "chunk_legacy": {
+      "chunk": [
+       304,
+       517
+      ],
+      "duong_muc_giong": 0.226,
+      "so_duong_muc": [
+       164,
+       500
+      ],
+      "docling_co_ban_tu_0_8": 0.263,
+      "docling_co_ban_tu_0_5": 0.632,
+      "nhe_co_ban_tu_0_8": 0.155,
+      "nhe_co_ban_tu_0_5": 0.381,
+      "jaccard_tb_docling": 0.586,
+      "cung_muc_la": 0.27
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-08",
+   "split": "train",
+   "qualified": 81,
+   "changed": [
+    {
+     "row_index": 517,
+     "text": "Hình 0-4 Kiến trúc đa xử lý đối xứng",
+     "page": 13,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 567,
+     "text": "Hình 0-5 Cấu trúc chung của hệ khách hàng-máy phục vụ",
+     "page": 14,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 1175,
+     "text": "Hình 0-3 – Cấu trúc hệ thống của UNIX",
+     "page": 29,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 1238,
+     "text": "Hình 0-5 Cấu trúc phân tầng của OS/2",
+     "page": 31,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2394,
+     "text": "Hình 0-3 Hiển thị một định mức thời gian nhỏ hơn tăng chuyển đổi ngữ cảnh như thế nào",
+     "page": 62,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2416,
+     "text": "Hình 0-4 Hiển thị cách thời gian hoàn thành biến đổi theo định mức thời gian",
+     "page": 63,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2465,
+     "text": "Hình 0-6 Các hàng đợi phản hồi nhiều cấp",
+     "page": 65,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2601,
+     "text": "Hình 0-7 Độ trễ gửi",
+     "page": 68,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2856,
+     "text": "Hình 0-1 Quá trình đơn và đa luồng",
+     "page": 75,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4077,
+     "text": "Hình 0-15 Hình ảnh dưới dạng biểu đồ của monitor",
+     "page": 104,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4101,
+     "text": "Hình 0-16 Monitor với các biến điều kiện",
+     "page": 105,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4518,
+     "text": "Hình 0-1 Đồ thị cấp phát tài nguyên",
+     "page": 116,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4551,
+     "text": "Hình 0-2 Đồ thị cấp phát tài nguyên với deadlock",
+     "page": 117,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4757,
+     "text": "Hình 0-4 Không gian trạng thái an toàn, không an toàn, deadlock",
+     "page": 122,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4823,
+     "text": "Hình 0-6 Trạng thái không an toàn trong đồ thị cấp phát tài nguyên",
+     "page": 124,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4957,
+     "text": "Hình 0-7 a) Đồ thị cấp phát tài nguyên. b) Đồ thị chờ tương ứng",
+     "page": 127,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5200,
+     "text": "Hình 0-1 Xử lý nhiều bước của chương trình người dùng",
+     "page": 134,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5332,
+     "text": "Hình 0-4- Hoán vị hai quá trình dùng đĩa như là backing store",
+     "page": 138,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5396,
+     "text": "Hình 0-5 Hỗ trợ phần cứng cho các thanh ghi tái định vị và các giới hạn",
+     "page": 140,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5558,
+     "text": "Hình 0-10 Quản lý bộ nhớ bằng danh sách liên kết",
+     "page": 144,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5694,
+     "text": "Hình 0-12 Phần cứng phân trang",
+     "page": 148,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5717,
+     "text": "Hình 0-13 Mô hình phân trang của bộ nhớ luận lý và vật lý",
+     "page": 149,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5778,
+     "text": "Hình 0-15 các khung trống. (a) trước khi cấp phát. (b) sau khi cấp phát",
+     "page": 151,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5855,
+     "text": "Hình 0-16 phần cứng phân trang với TBL",
+     "page": 153,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5911,
+     "text": "Hình 0-17 Bit hợp lệ (v) và không hợp lệ (i) trong một bảng trang",
+     "page": 155,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5933,
+     "text": "Hình 0-18 Cơ chế bảng trang hai cấp",
+     "page": 156,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 5960,
+     "text": "Hình 0-19 Dịch địa chỉ cho kiến trúc phân trang hai cấp 32-bit",
+     "page": 157,
+     "r1": 0,
+     "r3": 0
+    },
+    {
+     "row_index": 6001,
+     "text": "Hình 0-20 Bảng trang được băm",
+     "page": 158,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6025,
+     "text": "Hình 0-21 Bảng trang đảo",
+     "page": 159,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6082,
+     "text": "Hình 0-22 chia sẻ mã trong môi trường phân trang",
+     "page": 161,
+     "r1": 0,
+     "r3": 0
+    },
+    {
+     "row_index": 6141,
+     "text": "Hình 0-24 Phần cứng phân đoạn",
+     "page": 163,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6151,
+     "text": "Hình 0-25 Thí dụ về phân đoạn",
+     "page": 164,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6170,
+     "text": "Hình 0-26 Chia sẻ các phân đoạn trong một hệ thống bộ nhớ được phân đoạn",
+     "page": 165,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6275,
+     "text": "Hình 0-27 Dịch địa chỉ Intel 386",
+     "page": 168,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6395,
+     "text": "Hình 0-1 Lưu đồ minh hoạ bộ nhớ ảo lơn hơn bộ nhớ vật lý",
+     "page": 171,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6421,
+     "text": "Hình 0-2 Chuyển bộ nhớ được phân trang tới không gian đĩa liên tục",
+     "page": 172,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6432,
+     "text": "Hình 0-3 Bảng trang khi một số trang không ở trong bộ nhớ chính",
+     "page": 173,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6461,
+     "text": "Hình 0-4 Các bước quản lý lỗi trang",
+     "page": 174,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6529,
+     "text": "Hình 0-5 Thay thế trang",
+     "page": 176,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6567,
+     "text": "Hình 0-6 giải thuật thay thế trang FIFO",
+     "page": 177,
+     "r1": 1,
+     "r3": 1
+    },
+    {
+     "row_index": 6582,
+     "text": "Hình 0-7 Đường cong lỗi trang cho thay thế FIFO trên chuỗi tham khảo",
+     "page": 178,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6603,
+     "text": "Hình 0-8 giải thuật thay thế trang tối ưu",
+     "page": 178,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6611,
+     "text": "Hình 0-9 giải thuật thay thế trang LRU",
+     "page": 179,
+     "r1": 1,
+     "r3": 1
+    },
+    {
+     "row_index": 6631,
+     "text": "Hình 0-10 giải thuật thay thế trang",
+     "page": 179,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6705,
+     "text": "Hình 0-12 giải thuật thay thế trang cơ hội thứ hai",
+     "page": 182,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 6876,
+     "text": "Hình 0-13 Mô hình tập làm việc",
+     "page": 186,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7134,
+     "text": "Hình 0-1 Truy xuất tập tin tuần tự",
+     "page": 192,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7158,
+     "text": "Hình 0-2 Mô phỏng truy xuất tuần tự trên truy xuất trực tiếp",
+     "page": 193,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7168,
+     "text": "Hình 0-3 Thí dụ về chỉ mục và các tập tin liên quan",
+     "page": 193,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7187,
+     "text": "Hình 0-4 tổ chức hệ thống tập tin điển hình",
+     "page": 194,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7212,
+     "text": "Hình 0-5 Thư mục đơn cấp",
+     "page": 195,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7231,
+     "text": "Hình 0-6 thư mục hai cấp",
+     "page": 196,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7314,
+     "text": "Hình 0-7 cấu trúc thư mục dạng cây",
+     "page": 198,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7357,
+     "text": "Hình 0-8 cấu trúc đồ thị không chứa chu trình",
+     "page": 199,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7426,
+     "text": "Hình 0-9 thư mục đồ thị tổng quát",
+     "page": 201,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7483,
+     "text": "Hình 0-10 Hệ thống tập tin. (a) đã tồn tại. (b) phân khu chưa được gắn",
+     "page": 203,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7505,
+     "text": "Hình 0-11 Điểm gắn vào",
+     "page": 204,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7704,
+     "text": "Hình 0-1 hệ thống tập tin phân tầng",
+     "page": 209,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7782,
+     "text": "Hình 0-2 Một khối điều khiển tập tin điển hình",
+     "page": 211,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7796,
+     "text": "Hình 0-3 Cấu trúc hệ thống trong bộ nhớ. (a) mở tập tin. (b) đọc tập tin.",
+     "page": 212,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 7924,
+     "text": "Hình 0-5 Không gian đĩa được cấp phát kề",
+     "page": 216,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8012,
+     "text": "Hình 0-6 cấp phát không gian đĩa liên kết",
+     "page": 218,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8053,
+     "text": "Hình 0-7 Bảng cấp phát tập tin",
+     "page": 219,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8071,
+     "text": "Hình 0-8 Cấp phát không gian đĩa được lập chỉ mục",
+     "page": 220,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8122,
+     "text": "Hình 0-9 Inode của UNIX",
+     "page": 222,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8195,
+     "text": "Hình 0-10 danh sách không gian trống được liên kết trên đĩa",
+     "page": 224,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8344,
+     "text": "Hình 0-1 Chu kỳ nhập/xuất hướng ngắt",
+     "page": 228,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8361,
+     "text": "Hình 0-2 Các bước trong việc truyền dữ liệu của DMA",
+     "page": 229,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8386,
+     "text": "Hình 0-3 Cấu trúc của nhân nhập/xuất",
+     "page": 230,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8558,
+     "text": "Hình 0-5 Chu trình sống của yêu cầu nhập/xuất",
+     "page": 235,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 8592,
+     "text": "Hình 0-6 Tiến trình mô tả chức năng thiết bị",
+     "page": 236,
+     "r1": -1,
+     "r3": -1
+    }
+   ],
+   "model_sha256": {
+    "M2f": "3d67837508d853ae244a9ccc09ddf6fb9d24d954fe5aa4c0b268d815cb062e48",
+    "B2": "5338438c644455f8957e3707b5b2491a70ab85ce70afd20633be91886d42158d"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 323,
+       "fp": 80,
+       "fn": 0,
+       "precision": 0.8014888337468983,
+       "recall": 1.0,
+       "f1": 0.8898071625344354,
+       "evaluated": 7410,
+       "total": 9095
+      },
+      "r3": {
+       "tp": 320,
+       "fp": 76,
+       "fn": 0,
+       "precision": 0.8080808080808081,
+       "recall": 1.0,
+       "f1": 0.893854748603352,
+       "evaluated": 6946,
+       "total": 9095
+      }
+     },
+     "heading_strict": {
+      "tp": 322,
+      "fp": 186,
+      "fn": 1,
+      "precision": 0.6338582677165354,
+      "recall": 0.9969040247678018,
+      "f1": 0.7749699157641395
+     },
+     "leaf_strict": {
+      "hits": 434,
+      "eligible": 586,
+      "total": 676,
+      "share": 0.6420118343195266,
+      "eligible_share": 0.8668639053254438
+     },
+     "chunk_legacy": {
+      "chunk": [
+       676,
+       645
+      ],
+      "duong_muc_giong": 0.328,
+      "so_duong_muc": [
+       311,
+       402
+      ],
+      "docling_co_ban_tu_0_8": 0.646,
+      "docling_co_ban_tu_0_5": 0.867,
+      "nhe_co_ban_tu_0_8": 0.678,
+      "nhe_co_ban_tu_0_5": 0.912,
+      "jaccard_tb_docling": 0.8,
+      "cung_muc_la": 0.698
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 321,
+       "fp": 78,
+       "fn": 2,
+       "precision": 0.8045112781954887,
+       "recall": 0.9938080495356038,
+       "f1": 0.8891966759002771,
+       "evaluated": 7410,
+       "total": 9095
+      },
+      "r3": {
+       "tp": 318,
+       "fp": 74,
+       "fn": 2,
+       "precision": 0.8112244897959183,
+       "recall": 0.99375,
+       "f1": 0.8932584269662921,
+       "evaluated": 6946,
+       "total": 9095
+      }
+     },
+     "heading_strict": {
+      "tp": 320,
+      "fp": 117,
+      "fn": 3,
+      "precision": 0.7322654462242563,
+      "recall": 0.9907120743034056,
+      "f1": 0.8421052631578948
+     },
+     "leaf_strict": {
+      "hits": 514,
+      "eligible": 591,
+      "total": 676,
+      "share": 0.7603550295857988,
+      "eligible_share": 0.8742603550295858
+     },
+     "chunk_legacy": {
+      "chunk": [
+       676,
+       631
+      ],
+      "duong_muc_giong": 0.467,
+      "so_duong_muc": [
+       311,
+       348
+      ],
+      "docling_co_ban_tu_0_8": 0.72,
+      "docling_co_ban_tu_0_5": 0.874,
+      "nhe_co_ban_tu_0_8": 0.772,
+      "nhe_co_ban_tu_0_5": 0.926,
+      "jaccard_tb_docling": 0.831,
+      "cung_muc_la": 0.82
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-09",
+   "split": "train",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "9902e630e2117b4e30964fe0ace55ebff82129b8dee4bc7eefc5e84c5016d92e",
+    "B2": "f2a5e3b8505e52b796dcdb71333da40e6835f4faad3f11a0b80b39712c9adbf4"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 198,
+       "fp": 23,
+       "fn": 12,
+       "precision": 0.8959276018099548,
+       "recall": 0.9428571428571428,
+       "f1": 0.9187935034802783,
+       "evaluated": 7192,
+       "total": 11671
+      },
+      "r3": {
+       "tp": 197,
+       "fp": 21,
+       "fn": 12,
+       "precision": 0.9036697247706422,
+       "recall": 0.9425837320574163,
+       "f1": 0.9227166276346606,
+       "evaluated": 6892,
+       "total": 11671
+      }
+     },
+     "heading_strict": {
+      "tp": 175,
+      "fp": 81,
+      "fn": 34,
+      "precision": 0.68359375,
+      "recall": 0.8373205741626795,
+      "f1": 0.7526881720430109
+     },
+     "leaf_strict": {
+      "hits": 352,
+      "eligible": 523,
+      "total": 574,
+      "share": 0.6132404181184669,
+      "eligible_share": 0.9111498257839721
+     },
+     "chunk_legacy": {
+      "chunk": [
+       574,
+       621
+      ],
+      "duong_muc_giong": 0.159,
+      "so_duong_muc": [
+       161,
+       204
+      ],
+      "docling_co_ban_tu_0_8": 0.629,
+      "docling_co_ban_tu_0_5": 0.911,
+      "nhe_co_ban_tu_0_8": 0.581,
+      "nhe_co_ban_tu_0_5": 0.868,
+      "jaccard_tb_docling": 0.811,
+      "cung_muc_la": 0.733
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 198,
+       "fp": 23,
+       "fn": 12,
+       "precision": 0.8959276018099548,
+       "recall": 0.9428571428571428,
+       "f1": 0.9187935034802783,
+       "evaluated": 7192,
+       "total": 11671
+      },
+      "r3": {
+       "tp": 197,
+       "fp": 21,
+       "fn": 12,
+       "precision": 0.9036697247706422,
+       "recall": 0.9425837320574163,
+       "f1": 0.9227166276346606,
+       "evaluated": 6892,
+       "total": 11671
+      }
+     },
+     "heading_strict": {
+      "tp": 175,
+      "fp": 81,
+      "fn": 34,
+      "precision": 0.68359375,
+      "recall": 0.8373205741626795,
+      "f1": 0.7526881720430109
+     },
+     "leaf_strict": {
+      "hits": 352,
+      "eligible": 523,
+      "total": 574,
+      "share": 0.6132404181184669,
+      "eligible_share": 0.9111498257839721
+     },
+     "chunk_legacy": {
+      "chunk": [
+       574,
+       621
+      ],
+      "duong_muc_giong": 0.159,
+      "so_duong_muc": [
+       161,
+       204
+      ],
+      "docling_co_ban_tu_0_8": 0.629,
+      "docling_co_ban_tu_0_5": 0.911,
+      "nhe_co_ban_tu_0_8": 0.581,
+      "nhe_co_ban_tu_0_5": 0.868,
+      "jaccard_tb_docling": 0.811,
+      "cung_muc_la": 0.733
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-10",
+   "split": "train",
+   "qualified": 1,
+   "changed": [
+    {
+     "row_index": 5357,
+     "text": "Hình 7.1: Lạm pháp ở Việt Nam giai đoạn 1980-2010",
+     "page": 204,
+     "r1": -1,
+     "r3": -1
+    }
+   ],
+   "model_sha256": {
+    "M2f": "12c029d6e92eb8db1100a1c12b58e37313b2327acf11c960d7093ef9164f9c25",
+    "B2": "264d21682a751a8a02339feac6833856e31b47de98778ad0d758da5f268ec9c3"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 413,
+       "fp": 106,
+       "fn": 8,
+       "precision": 0.7957610789980732,
+       "recall": 0.9809976247030879,
+       "f1": 0.8787234042553193,
+       "evaluated": 5059,
+       "total": 7318
+      },
+      "r3": {
+       "tp": 401,
+       "fp": 58,
+       "fn": 8,
+       "precision": 0.8736383442265795,
+       "recall": 0.980440097799511,
+       "f1": 0.923963133640553,
+       "evaluated": 4322,
+       "total": 7318
+      }
+     },
+     "heading_strict": {
+      "tp": 400,
+      "fp": 158,
+      "fn": 21,
+      "precision": 0.7168458781362007,
+      "recall": 0.9501187648456056,
+      "f1": 0.8171603677221655
+     },
+     "leaf_strict": {
+      "hits": 345,
+      "eligible": 427,
+      "total": 472,
+      "share": 0.7309322033898306,
+      "eligible_share": 0.9046610169491526
+     },
+     "chunk_legacy": {
+      "chunk": [
+       472,
+       560
+      ],
+      "duong_muc_giong": 0.553,
+      "so_duong_muc": [
+       322,
+       423
+      ],
+      "docling_co_ban_tu_0_8": 0.669,
+      "docling_co_ban_tu_0_5": 0.905,
+      "nhe_co_ban_tu_0_8": 0.564,
+      "nhe_co_ban_tu_0_5": 0.78,
+      "jaccard_tb_docling": 0.825,
+      "cung_muc_la": 0.775
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 413,
+       "fp": 106,
+       "fn": 8,
+       "precision": 0.7957610789980732,
+       "recall": 0.9809976247030879,
+       "f1": 0.8787234042553193,
+       "evaluated": 5059,
+       "total": 7318
+      },
+      "r3": {
+       "tp": 401,
+       "fp": 58,
+       "fn": 8,
+       "precision": 0.8736383442265795,
+       "recall": 0.980440097799511,
+       "f1": 0.923963133640553,
+       "evaluated": 4322,
+       "total": 7318
+      }
+     },
+     "heading_strict": {
+      "tp": 400,
+      "fp": 157,
+      "fn": 21,
+      "precision": 0.718132854578097,
+      "recall": 0.9501187648456056,
+      "f1": 0.8179959100204498
+     },
+     "leaf_strict": {
+      "hits": 347,
+      "eligible": 427,
+      "total": 472,
+      "share": 0.7351694915254238,
+      "eligible_share": 0.9046610169491526
+     },
+     "chunk_legacy": {
+      "chunk": [
+       472,
+       560
+      ],
+      "duong_muc_giong": 0.554,
+      "so_duong_muc": [
+       322,
+       422
+      ],
+      "docling_co_ban_tu_0_8": 0.669,
+      "docling_co_ban_tu_0_5": 0.905,
+      "nhe_co_ban_tu_0_8": 0.564,
+      "nhe_co_ban_tu_0_5": 0.78,
+      "jaccard_tb_docling": 0.825,
+      "cung_muc_la": 0.784
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-11",
+   "split": "train",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "fdd59f4a56ccc6c2857b7991c859518da33bd5118df6fd68548ced22da54f5ed",
+    "B2": "3cdc158d37d2e7c9928cd0cdb7b3bc9d90f8caef07632667c7d18dec0aafe13d"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 251,
+       "fp": 94,
+       "fn": 43,
+       "precision": 0.7275362318840579,
+       "recall": 0.8537414965986394,
+       "f1": 0.7856025039123631,
+       "evaluated": 2945,
+       "total": 4203
+      },
+      "r3": {
+       "tp": 249,
+       "fp": 20,
+       "fn": 43,
+       "precision": 0.9256505576208178,
+       "recall": 0.8527397260273972,
+       "f1": 0.8877005347593583,
+       "evaluated": 2452,
+       "total": 4203
+      }
+     },
+     "heading_strict": {
+      "tp": 191,
+      "fp": 114,
+      "fn": 52,
+      "precision": 0.6262295081967213,
+      "recall": 0.7860082304526749,
+      "f1": 0.6970802919708029
+     },
+     "leaf_strict": {
+      "hits": 177,
+      "eligible": 301,
+      "total": 324,
+      "share": 0.5462962962962963,
+      "eligible_share": 0.9290123456790124
+     },
+     "chunk_legacy": {
+      "chunk": [
+       324,
+       359
+      ],
+      "duong_muc_giong": 0.61,
+      "so_duong_muc": [
+       207,
+       252
+      ],
+      "docling_co_ban_tu_0_8": 0.639,
+      "docling_co_ban_tu_0_5": 0.929,
+      "nhe_co_ban_tu_0_8": 0.574,
+      "nhe_co_ban_tu_0_5": 0.861,
+      "jaccard_tb_docling": 0.823,
+      "cung_muc_la": 0.605
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 251,
+       "fp": 94,
+       "fn": 43,
+       "precision": 0.7275362318840579,
+       "recall": 0.8537414965986394,
+       "f1": 0.7856025039123631,
+       "evaluated": 2945,
+       "total": 4203
+      },
+      "r3": {
+       "tp": 249,
+       "fp": 20,
+       "fn": 43,
+       "precision": 0.9256505576208178,
+       "recall": 0.8527397260273972,
+       "f1": 0.8877005347593583,
+       "evaluated": 2452,
+       "total": 4203
+      }
+     },
+     "heading_strict": {
+      "tp": 191,
+      "fp": 114,
+      "fn": 52,
+      "precision": 0.6262295081967213,
+      "recall": 0.7860082304526749,
+      "f1": 0.6970802919708029
+     },
+     "leaf_strict": {
+      "hits": 177,
+      "eligible": 301,
+      "total": 324,
+      "share": 0.5462962962962963,
+      "eligible_share": 0.9290123456790124
+     },
+     "chunk_legacy": {
+      "chunk": [
+       324,
+       359
+      ],
+      "duong_muc_giong": 0.61,
+      "so_duong_muc": [
+       207,
+       252
+      ],
+      "docling_co_ban_tu_0_8": 0.639,
+      "docling_co_ban_tu_0_5": 0.929,
+      "nhe_co_ban_tu_0_8": 0.574,
+      "nhe_co_ban_tu_0_5": 0.861,
+      "jaccard_tb_docling": 0.823,
+      "cung_muc_la": 0.605
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-12",
+   "split": "train",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "2cd6467d8f9981d56c608745634f0a88f9f89a0b1b747d00137a8c8dfb7a3b97",
+    "B2": "97d4918a239d04f9bd8f881fc0b68e57714f03f0053a27a426d33eb5fac77492"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 203,
+       "fp": 42,
+       "fn": 5,
+       "precision": 0.8285714285714286,
+       "recall": 0.9759615384615384,
+       "f1": 0.8962472406181016,
+       "evaluated": 2815,
+       "total": 3321
+      },
+      "r3": {
+       "tp": 198,
+       "fp": 33,
+       "fn": 5,
+       "precision": 0.8571428571428571,
+       "recall": 0.9753694581280788,
+       "f1": 0.9124423963133641,
+       "evaluated": 2590,
+       "total": 3321
+      }
+     },
+     "heading_strict": {
+      "tp": 179,
+      "fp": 56,
+      "fn": 35,
+      "precision": 0.7617021276595745,
+      "recall": 0.8364485981308412,
+      "f1": 0.7973273942093542
+     },
+     "leaf_strict": {
+      "hits": 211,
+      "eligible": 252,
+      "total": 266,
+      "share": 0.793233082706767,
+      "eligible_share": 0.9473684210526315
+     },
+     "chunk_legacy": {
+      "chunk": [
+       266,
+       281
+      ],
+      "duong_muc_giong": 0.425,
+      "so_duong_muc": [
+       144,
+       157
+      ],
+      "docling_co_ban_tu_0_8": 0.812,
+      "docling_co_ban_tu_0_5": 0.947,
+      "nhe_co_ban_tu_0_8": 0.769,
+      "nhe_co_ban_tu_0_5": 0.922,
+      "jaccard_tb_docling": 0.901,
+      "cung_muc_la": 0.883
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 203,
+       "fp": 42,
+       "fn": 5,
+       "precision": 0.8285714285714286,
+       "recall": 0.9759615384615384,
+       "f1": 0.8962472406181016,
+       "evaluated": 2815,
+       "total": 3321
+      },
+      "r3": {
+       "tp": 198,
+       "fp": 33,
+       "fn": 5,
+       "precision": 0.8571428571428571,
+       "recall": 0.9753694581280788,
+       "f1": 0.9124423963133641,
+       "evaluated": 2590,
+       "total": 3321
+      }
+     },
+     "heading_strict": {
+      "tp": 179,
+      "fp": 56,
+      "fn": 35,
+      "precision": 0.7617021276595745,
+      "recall": 0.8364485981308412,
+      "f1": 0.7973273942093542
+     },
+     "leaf_strict": {
+      "hits": 211,
+      "eligible": 252,
+      "total": 266,
+      "share": 0.793233082706767,
+      "eligible_share": 0.9473684210526315
+     },
+     "chunk_legacy": {
+      "chunk": [
+       266,
+       281
+      ],
+      "duong_muc_giong": 0.425,
+      "so_duong_muc": [
+       144,
+       157
+      ],
+      "docling_co_ban_tu_0_8": 0.812,
+      "docling_co_ban_tu_0_5": 0.947,
+      "nhe_co_ban_tu_0_8": 0.769,
+      "nhe_co_ban_tu_0_5": 0.922,
+      "jaccard_tb_docling": 0.901,
+      "cung_muc_la": 0.883
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-13",
+   "split": "train",
+   "qualified": 12,
+   "changed": [
+    {
+     "row_index": 1267,
+     "text": "Hình 3.21 hình chiếu của hình chóp",
+     "page": 45,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 1296,
+     "text": "Hình 3.24 Hình trụ Hình 3.25 Hình chiếu hình trụ",
+     "page": 47,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 1321,
+     "text": "Hình 3.26. Hình nón",
+     "page": 48,
+     "r1": -1,
+     "r3": -1
+    }
+   ],
+   "model_sha256": {
+    "M2f": "89f23511e2719d81af5711f37c1a56174222bfbcb06c0d4b5dbdc1853fcf7ec8",
+    "B2": "2e3f75c4f9a02a39e5192913715f7aabd76782d09ace8665f7ef7626948cd09f"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 290,
+       "fp": 172,
+       "fn": 14,
+       "precision": 0.6277056277056277,
+       "recall": 0.9539473684210527,
+       "f1": 0.7571801566579635,
+       "evaluated": 2424,
+       "total": 3611
+      },
+      "r3": {
+       "tp": 287,
+       "fp": 145,
+       "fn": 13,
+       "precision": 0.6643518518518519,
+       "recall": 0.9566666666666667,
+       "f1": 0.7841530054644809,
+       "evaluated": 2217,
+       "total": 3611
+      }
+     },
+     "heading_strict": {
+      "tp": 277,
+      "fp": 193,
+      "fn": 28,
+      "precision": 0.5893617021276596,
+      "recall": 0.9081967213114754,
+      "f1": 0.7148387096774194
+     },
+     "leaf_strict": {
+      "hits": 172,
+      "eligible": 259,
+      "total": 305,
+      "share": 0.5639344262295082,
+      "eligible_share": 0.8491803278688524
+     },
+     "chunk_legacy": {
+      "chunk": [
+       305,
+       328
+      ],
+      "duong_muc_giong": 0.321,
+      "so_duong_muc": [
+       222,
+       277
+      ],
+      "docling_co_ban_tu_0_8": 0.58,
+      "docling_co_ban_tu_0_5": 0.849,
+      "nhe_co_ban_tu_0_8": 0.537,
+      "nhe_co_ban_tu_0_5": 0.826,
+      "jaccard_tb_docling": 0.758,
+      "cung_muc_la": 0.721
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 290,
+       "fp": 172,
+       "fn": 14,
+       "precision": 0.6277056277056277,
+       "recall": 0.9539473684210527,
+       "f1": 0.7571801566579635,
+       "evaluated": 2424,
+       "total": 3611
+      },
+      "r3": {
+       "tp": 287,
+       "fp": 145,
+       "fn": 13,
+       "precision": 0.6643518518518519,
+       "recall": 0.9566666666666667,
+       "f1": 0.7841530054644809,
+       "evaluated": 2217,
+       "total": 3611
+      }
+     },
+     "heading_strict": {
+      "tp": 277,
+      "fp": 190,
+      "fn": 28,
+      "precision": 0.5931477516059958,
+      "recall": 0.9081967213114754,
+      "f1": 0.7176165803108809
+     },
+     "leaf_strict": {
+      "hits": 173,
+      "eligible": 259,
+      "total": 305,
+      "share": 0.5672131147540984,
+      "eligible_share": 0.8491803278688524
+     },
+     "chunk_legacy": {
+      "chunk": [
+       305,
+       326
+      ],
+      "duong_muc_giong": 0.326,
+      "so_duong_muc": [
+       222,
+       275
+      ],
+      "docling_co_ban_tu_0_8": 0.587,
+      "docling_co_ban_tu_0_5": 0.849,
+      "nhe_co_ban_tu_0_8": 0.546,
+      "nhe_co_ban_tu_0_5": 0.831,
+      "jaccard_tb_docling": 0.76,
+      "cung_muc_la": 0.725
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-14",
+   "split": "train",
+   "qualified": 42,
+   "changed": [
+    {
+     "row_index": 2442,
+     "text": "Hình 1.5- Dòng điện chỉnh lưu",
+     "page": 124,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2892,
+     "text": "Hình 2.7- Đầu ra trên tiết chế vi mạch",
+     "page": 144,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2948,
+     "text": "Hình 2.10- Khi máy phát đang phát điện",
+     "page": 146,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 2974,
+     "text": "Hình 2.14- Khi cực S bị ngắt",
+     "page": 149,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3001,
+     "text": "Hình 2.17- Tiết chế vi mạch nhận biết điện áp ở máy phát",
+     "page": 151,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3019,
+     "text": "Hình 2.18- Sơ đồ máy phát có cực M",
+     "page": 152,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3025,
+     "text": "Hình 2.20- Khi bộ phận sưởi không làm việc",
+     "page": 153,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3487,
+     "text": "Hình 10.1: Sơ đồ hệ thống chiếu sáng",
+     "page": 178,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3504,
+     "text": "Hình 10.2: Bóng đèn loại dây tóc",
+     "page": 179,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3507,
+     "text": "Hình 10.3: Sơ đồ công tắc điều khiển đèn đầu loại dương chờ",
+     "page": 179,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3526,
+     "text": "Hình 10.4: Sơ đồ mạch điều khiển đèn kiểu âm chờ",
+     "page": 180,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3774,
+     "text": "Hình 11.6: Tiếp điểm đóng (đèn báo rẽ sáng)",
+     "page": 194,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3927,
+     "text": "Hình 11.13: Cấu tạo còi",
+     "page": 202,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 3945,
+     "text": "Hình 11.16: Sơ đồ mạch chuông nhạc.",
+     "page": 204,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 4562,
+     "text": "Hình 12.4: Sơ đồ mạch điện khi công tắc gạt nước ở vị trí HIGH",
+     "page": 234,
+     "r1": -1,
+     "r3": -1
+    }
+   ],
+   "model_sha256": {
+    "M2f": "8e09fe83a550575eda2b3153fcf246e9a95c250b47ab310233b6de52741397c6",
+    "B2": "839d95065d16c8e5666d4134f231affe36cad78b7b23d7eb931609b6bcc3ce3d"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 383,
+       "fp": 132,
+       "fn": 23,
+       "precision": 0.7436893203883496,
+       "recall": 0.9433497536945813,
+       "f1": 0.8317046688382194,
+       "evaluated": 3877,
+       "total": 5327
+      },
+      "r3": {
+       "tp": 369,
+       "fp": 73,
+       "fn": 23,
+       "precision": 0.834841628959276,
+       "recall": 0.9413265306122449,
+       "f1": 0.8848920863309352,
+       "evaluated": 3400,
+       "total": 5327
+      }
+     },
+     "heading_strict": {
+      "tp": 365,
+      "fp": 317,
+      "fn": 120,
+      "precision": 0.5351906158357771,
+      "recall": 0.7525773195876289,
+      "f1": 0.6255355612682091
+     },
+     "leaf_strict": {
+      "hits": 266,
+      "eligible": 410,
+      "total": 490,
+      "share": 0.5428571428571428,
+      "eligible_share": 0.8367346938775511
+     },
+     "chunk_legacy": {
+      "chunk": [
+       490,
+       572
+      ],
+      "duong_muc_giong": 0.172,
+      "so_duong_muc": [
+       384,
+       477
+      ],
+      "docling_co_ban_tu_0_8": 0.569,
+      "docling_co_ban_tu_0_5": 0.837,
+      "nhe_co_ban_tu_0_8": 0.483,
+      "nhe_co_ban_tu_0_5": 0.734,
+      "jaccard_tb_docling": 0.765,
+      "cung_muc_la": 0.606
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 383,
+       "fp": 132,
+       "fn": 23,
+       "precision": 0.7436893203883496,
+       "recall": 0.9433497536945813,
+       "f1": 0.8317046688382194,
+       "evaluated": 3877,
+       "total": 5327
+      },
+      "r3": {
+       "tp": 369,
+       "fp": 73,
+       "fn": 23,
+       "precision": 0.834841628959276,
+       "recall": 0.9413265306122449,
+       "f1": 0.8848920863309352,
+       "evaluated": 3400,
+       "total": 5327
+      }
+     },
+     "heading_strict": {
+      "tp": 365,
+      "fp": 302,
+      "fn": 120,
+      "precision": 0.5472263868065967,
+      "recall": 0.7525773195876289,
+      "f1": 0.6336805555555556
+     },
+     "leaf_strict": {
+      "hits": 271,
+      "eligible": 410,
+      "total": 490,
+      "share": 0.5530612244897959,
+      "eligible_share": 0.8367346938775511
+     },
+     "chunk_legacy": {
+      "chunk": [
+       490,
+       564
+      ],
+      "duong_muc_giong": 0.176,
+      "so_duong_muc": [
+       384,
+       468
+      ],
+      "docling_co_ban_tu_0_8": 0.58,
+      "docling_co_ban_tu_0_5": 0.837,
+      "nhe_co_ban_tu_0_8": 0.498,
+      "nhe_co_ban_tu_0_5": 0.739,
+      "jaccard_tb_docling": 0.768,
+      "cung_muc_la": 0.62
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-15",
+   "split": "train",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "785a9833605fefaf8db4e576bc9968c3ac0a97702afbae18451146392195df86",
+    "B2": "fe7f349752b384d01e76259e3f2d03e04ff065a0a60eb264b8e768453b4b8b97"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 515,
+       "fp": 217,
+       "fn": 50,
+       "precision": 0.703551912568306,
+       "recall": 0.911504424778761,
+       "f1": 0.7941403238242097,
+       "evaluated": 6388,
+       "total": 7660
+      },
+      "r3": {
+       "tp": 513,
+       "fp": 160,
+       "fn": 50,
+       "precision": 0.7622585438335809,
+       "recall": 0.911190053285968,
+       "f1": 0.8300970873786407,
+       "evaluated": 5736,
+       "total": 7660
+      }
+     },
+     "heading_strict": {
+      "tp": 511,
+      "fp": 307,
+      "fn": 125,
+      "precision": 0.6246943765281173,
+      "recall": 0.8034591194968553,
+      "f1": 0.702888583218707
+     },
+     "leaf_strict": {
+      "hits": 417,
+      "eligible": 594,
+      "total": 655,
+      "share": 0.6366412213740458,
+      "eligible_share": 0.9068702290076336
+     },
+     "chunk_legacy": {
+      "chunk": [
+       655,
+       700
+      ],
+      "duong_muc_giong": 0.068,
+      "so_duong_muc": [
+       453,
+       516
+      ],
+      "docling_co_ban_tu_0_8": 0.736,
+      "docling_co_ban_tu_0_5": 0.907,
+      "nhe_co_ban_tu_0_8": 0.689,
+      "nhe_co_ban_tu_0_5": 0.85,
+      "jaccard_tb_docling": 0.848,
+      "cung_muc_la": 0.67
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 515,
+       "fp": 217,
+       "fn": 50,
+       "precision": 0.703551912568306,
+       "recall": 0.911504424778761,
+       "f1": 0.7941403238242097,
+       "evaluated": 6388,
+       "total": 7660
+      },
+      "r3": {
+       "tp": 513,
+       "fp": 160,
+       "fn": 50,
+       "precision": 0.7622585438335809,
+       "recall": 0.911190053285968,
+       "f1": 0.8300970873786407,
+       "evaluated": 5736,
+       "total": 7660
+      }
+     },
+     "heading_strict": {
+      "tp": 511,
+      "fp": 307,
+      "fn": 125,
+      "precision": 0.6246943765281173,
+      "recall": 0.8034591194968553,
+      "f1": 0.702888583218707
+     },
+     "leaf_strict": {
+      "hits": 417,
+      "eligible": 594,
+      "total": 655,
+      "share": 0.6366412213740458,
+      "eligible_share": 0.9068702290076336
+     },
+     "chunk_legacy": {
+      "chunk": [
+       655,
+       700
+      ],
+      "duong_muc_giong": 0.068,
+      "so_duong_muc": [
+       453,
+       516
+      ],
+      "docling_co_ban_tu_0_8": 0.736,
+      "docling_co_ban_tu_0_5": 0.907,
+      "nhe_co_ban_tu_0_8": 0.689,
+      "nhe_co_ban_tu_0_5": 0.85,
+      "jaccard_tb_docling": 0.848,
+      "cung_muc_la": 0.67
+     }
+    }
+   }
+  },
+  {
+   "id": "d01-16",
+   "split": "train",
+   "qualified": 7,
+   "changed": [
+    {
+     "row_index": 138,
+     "text": "Hình 1.1 Mô hình thủy canh",
+     "page": 8,
+     "r1": -1,
+     "r3": -1
+    },
+    {
+     "row_index": 350,
+     "text": "Hình 1.5. Hệ thống thủy canh (water culture)",
+     "page": 15,
+     "r1": -1,
+     "r3": -1
+    }
+   ],
+   "model_sha256": {
+    "M2f": "68ab0dd6e025dffd1464f3a1387e8c875c3ec7ea8dc624917a6b83111129de64",
+    "B2": "0f93f91d2327dc5d3b016f57a5f3f1a0d59c3b8af93b79bfb4e8492d61bfc698"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 116,
+       "fp": 13,
+       "fn": 3,
+       "precision": 0.8992248062015504,
+       "recall": 0.9747899159663865,
+       "f1": 0.935483870967742,
+       "evaluated": 1149,
+       "total": 1378
+      },
+      "r3": {
+       "tp": 114,
+       "fp": 8,
+       "fn": 3,
+       "precision": 0.9344262295081968,
+       "recall": 0.9743589743589743,
+       "f1": 0.9539748953974896,
+       "evaluated": 1017,
+       "total": 1378
+      }
+     },
+     "heading_strict": {
+      "tp": 107,
+      "fp": 19,
+      "fn": 8,
+      "precision": 0.8492063492063492,
+      "recall": 0.9304347826086956,
+      "f1": 0.8879668049792531
+     },
+     "leaf_strict": {
+      "hits": 102,
+      "eligible": 109,
+      "total": 119,
+      "share": 0.8571428571428571,
+      "eligible_share": 0.9159663865546218
+     },
+     "chunk_legacy": {
+      "chunk": [
+       119,
+       121
+      ],
+      "duong_muc_giong": 0.627,
+      "so_duong_muc": [
+       91,
+       94
+      ],
+      "docling_co_ban_tu_0_8": 0.782,
+      "docling_co_ban_tu_0_5": 0.916,
+      "nhe_co_ban_tu_0_8": 0.769,
+      "nhe_co_ban_tu_0_5": 0.901,
+      "jaccard_tb_docling": 0.866,
+      "cung_muc_la": 0.916
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 116,
+       "fp": 13,
+       "fn": 3,
+       "precision": 0.8992248062015504,
+       "recall": 0.9747899159663865,
+       "f1": 0.935483870967742,
+       "evaluated": 1149,
+       "total": 1378
+      },
+      "r3": {
+       "tp": 114,
+       "fp": 8,
+       "fn": 3,
+       "precision": 0.9344262295081968,
+       "recall": 0.9743589743589743,
+       "f1": 0.9539748953974896,
+       "evaluated": 1017,
+       "total": 1378
+      }
+     },
+     "heading_strict": {
+      "tp": 107,
+      "fp": 17,
+      "fn": 8,
+      "precision": 0.8629032258064516,
+      "recall": 0.9304347826086956,
+      "f1": 0.895397489539749
+     },
+     "leaf_strict": {
+      "hits": 102,
+      "eligible": 109,
+      "total": 119,
+      "share": 0.8571428571428571,
+      "eligible_share": 0.9159663865546218
+     },
+     "chunk_legacy": {
+      "chunk": [
+       119,
+       121
+      ],
+      "duong_muc_giong": 0.67,
+      "so_duong_muc": [
+       91,
+       94
+      ],
+      "docling_co_ban_tu_0_8": 0.782,
+      "docling_co_ban_tu_0_5": 0.916,
+      "nhe_co_ban_tu_0_8": 0.769,
+      "nhe_co_ban_tu_0_5": 0.901,
+      "jaccard_tb_docling": 0.866,
+      "cung_muc_la": 0.916
+     }
+    }
+   }
+  },
+  {
+   "id": "doc-1",
+   "split": "external",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70",
+    "B2": "92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 108,
+       "fp": 62,
+       "fn": 3,
+       "precision": 0.6352941176470588,
+       "recall": 0.972972972972973,
+       "f1": 0.7686832740213523,
+       "evaluated": 3981,
+       "total": 8307
+      },
+      "r3": {
+       "tp": 107,
+       "fp": 29,
+       "fn": 3,
+       "precision": 0.7867647058823529,
+       "recall": 0.9727272727272728,
+       "f1": 0.8699186991869919,
+       "evaluated": 2100,
+       "total": 8307
+      }
+     },
+     "heading_strict": {
+      "tp": 106,
+      "fp": 108,
+      "fn": 3,
+      "precision": 0.4953271028037383,
+      "recall": 0.9724770642201835,
+      "f1": 0.6563467492260062
+     },
+     "leaf_strict": {
+      "hits": 92,
+      "eligible": 183,
+      "total": 199,
+      "share": 0.4623115577889447,
+      "eligible_share": 0.9195979899497487
+     },
+     "chunk_legacy": {
+      "chunk": [
+       199,
+       303
+      ],
+      "duong_muc_giong": 0.161,
+      "so_duong_muc": [
+       80,
+       169
+      ],
+      "docling_co_ban_tu_0_8": 0.472,
+      "docling_co_ban_tu_0_5": 0.92,
+      "nhe_co_ban_tu_0_8": 0.31,
+      "nhe_co_ban_tu_0_5": 0.647,
+      "jaccard_tb_docling": 0.757,
+      "cung_muc_la": 0.593
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 108,
+       "fp": 62,
+       "fn": 3,
+       "precision": 0.6352941176470588,
+       "recall": 0.972972972972973,
+       "f1": 0.7686832740213523,
+       "evaluated": 3981,
+       "total": 8307
+      },
+      "r3": {
+       "tp": 107,
+       "fp": 29,
+       "fn": 3,
+       "precision": 0.7867647058823529,
+       "recall": 0.9727272727272728,
+       "f1": 0.8699186991869919,
+       "evaluated": 2100,
+       "total": 8307
+      }
+     },
+     "heading_strict": {
+      "tp": 106,
+      "fp": 108,
+      "fn": 3,
+      "precision": 0.4953271028037383,
+      "recall": 0.9724770642201835,
+      "f1": 0.6563467492260062
+     },
+     "leaf_strict": {
+      "hits": 92,
+      "eligible": 183,
+      "total": 199,
+      "share": 0.4623115577889447,
+      "eligible_share": 0.9195979899497487
+     },
+     "chunk_legacy": {
+      "chunk": [
+       199,
+       303
+      ],
+      "duong_muc_giong": 0.161,
+      "so_duong_muc": [
+       80,
+       169
+      ],
+      "docling_co_ban_tu_0_8": 0.472,
+      "docling_co_ban_tu_0_5": 0.92,
+      "nhe_co_ban_tu_0_8": 0.31,
+      "nhe_co_ban_tu_0_5": 0.647,
+      "jaccard_tb_docling": 0.757,
+      "cung_muc_la": 0.593
+     }
+    }
+   }
+  },
+  {
+   "id": "doc-4",
+   "split": "external",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70",
+    "B2": "92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 329,
+       "fp": 17,
+       "fn": 9,
+       "precision": 0.9508670520231214,
+       "recall": 0.9733727810650887,
+       "f1": 0.9619883040935673,
+       "evaluated": 6276,
+       "total": 8072
+      },
+      "r3": {
+       "tp": 327,
+       "fp": 9,
+       "fn": 8,
+       "precision": 0.9732142857142857,
+       "recall": 0.9761194029850746,
+       "f1": 0.9746646795827123,
+       "evaluated": 6139,
+       "total": 8072
+      }
+     },
+     "heading_strict": {
+      "tp": 266,
+      "fp": 59,
+      "fn": 38,
+      "precision": 0.8184615384615385,
+      "recall": 0.875,
+      "f1": 0.8457869634340222
+     },
+     "leaf_strict": {
+      "hits": 537,
+      "eligible": 638,
+      "total": 671,
+      "share": 0.8002980625931445,
+      "eligible_share": 0.9508196721311475
+     },
+     "chunk_legacy": {
+      "chunk": [
+       671,
+       732
+      ],
+      "duong_muc_giong": 0.084,
+      "so_duong_muc": [
+       219,
+       231
+      ],
+      "docling_co_ban_tu_0_8": 0.754,
+      "docling_co_ban_tu_0_5": 0.951,
+      "nhe_co_ban_tu_0_8": 0.693,
+      "nhe_co_ban_tu_0_5": 0.883,
+      "jaccard_tb_docling": 0.876,
+      "cung_muc_la": 0.914
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 329,
+       "fp": 17,
+       "fn": 9,
+       "precision": 0.9508670520231214,
+       "recall": 0.9733727810650887,
+       "f1": 0.9619883040935673,
+       "evaluated": 6276,
+       "total": 8072
+      },
+      "r3": {
+       "tp": 327,
+       "fp": 9,
+       "fn": 8,
+       "precision": 0.9732142857142857,
+       "recall": 0.9761194029850746,
+       "f1": 0.9746646795827123,
+       "evaluated": 6139,
+       "total": 8072
+      }
+     },
+     "heading_strict": {
+      "tp": 266,
+      "fp": 59,
+      "fn": 38,
+      "precision": 0.8184615384615385,
+      "recall": 0.875,
+      "f1": 0.8457869634340222
+     },
+     "leaf_strict": {
+      "hits": 537,
+      "eligible": 638,
+      "total": 671,
+      "share": 0.8002980625931445,
+      "eligible_share": 0.9508196721311475
+     },
+     "chunk_legacy": {
+      "chunk": [
+       671,
+       732
+      ],
+      "duong_muc_giong": 0.084,
+      "so_duong_muc": [
+       219,
+       231
+      ],
+      "docling_co_ban_tu_0_8": 0.754,
+      "docling_co_ban_tu_0_5": 0.951,
+      "nhe_co_ban_tu_0_8": 0.693,
+      "nhe_co_ban_tu_0_5": 0.883,
+      "jaccard_tb_docling": 0.876,
+      "cung_muc_la": 0.914
+     }
+    }
+   }
+  },
+  {
+   "id": "xstk-ch3-1",
+   "split": "external",
+   "qualified": 0,
+   "changed": [],
+   "model_sha256": {
+    "M2f": "90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70",
+    "B2": "92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb"
+   },
+   "models": {
+    "existing": {
+     "full_raw": {
+      "r1": {
+       "tp": 63,
+       "fp": 9,
+       "fn": 8,
+       "precision": 0.875,
+       "recall": 0.8873239436619719,
+       "f1": 0.881118881118881,
+       "evaluated": 1878,
+       "total": 3700
+      },
+      "r3": {
+       "tp": 60,
+       "fp": 7,
+       "fn": 8,
+       "precision": 0.8955223880597015,
+       "recall": 0.8823529411764706,
+       "f1": 0.888888888888889,
+       "evaluated": 1561,
+       "total": 3700
+      }
+     },
+     "heading_strict": {
+      "tp": 56,
+      "fp": 11,
+      "fn": 11,
+      "precision": 0.835820895522388,
+      "recall": 0.835820895522388,
+      "f1": 0.835820895522388
+     },
+     "leaf_strict": {
+      "hits": 80,
+      "eligible": 114,
+      "total": 126,
+      "share": 0.6349206349206349,
+      "eligible_share": 0.9047619047619048
+     },
+     "chunk_legacy": {
+      "chunk": [
+       126,
+       142
+      ],
+      "duong_muc_giong": 0.0,
+      "so_duong_muc": [
+       35,
+       30
+      ],
+      "docling_co_ban_tu_0_8": 0.476,
+      "docling_co_ban_tu_0_5": 0.905,
+      "nhe_co_ban_tu_0_8": 0.423,
+      "nhe_co_ban_tu_0_5": 0.831,
+      "jaccard_tb_docling": 0.744,
+      "cung_muc_la": 0.73
+     }
+    },
+    "caption": {
+     "full_raw": {
+      "r1": {
+       "tp": 63,
+       "fp": 9,
+       "fn": 8,
+       "precision": 0.875,
+       "recall": 0.8873239436619719,
+       "f1": 0.881118881118881,
+       "evaluated": 1878,
+       "total": 3700
+      },
+      "r3": {
+       "tp": 60,
+       "fp": 7,
+       "fn": 8,
+       "precision": 0.8955223880597015,
+       "recall": 0.8823529411764706,
+       "f1": 0.888888888888889,
+       "evaluated": 1561,
+       "total": 3700
+      }
+     },
+     "heading_strict": {
+      "tp": 56,
+      "fp": 11,
+      "fn": 11,
+      "precision": 0.835820895522388,
+      "recall": 0.835820895522388,
+      "f1": 0.835820895522388
+     },
+     "leaf_strict": {
+      "hits": 80,
+      "eligible": 114,
+      "total": 126,
+      "share": 0.6349206349206349,
+      "eligible_share": 0.9047619047619048
+     },
+     "chunk_legacy": {
+      "chunk": [
+       126,
+       142
+      ],
+      "duong_muc_giong": 0.0,
+      "so_duong_muc": [
+       35,
+       30
+      ],
+      "docling_co_ban_tu_0_8": 0.476,
+      "docling_co_ban_tu_0_5": 0.905,
+      "nhe_co_ban_tu_0_8": 0.423,
+      "nhe_co_ban_tu_0_5": 0.831,
+      "jaccard_tb_docling": 0.744,
+      "cung_muc_la": 0.73
+     }
+    }
+   }
+  }
+ ],
+ "code_sha256": {
+  "scripts\\doc-nhe\\do_caption_hinh_r18.py": "e792569cc837fb36cf0a69b95837a1483863181dd6ac8024b81427176b0494f8",
+  "scripts\\doc-nhe\\caption_hinh_r18.py": "c1e4da5aa61f65c4c0a23d401d6e56550ba75fb2455e1ae5334acb122fe4a462",
+  "report\\v4-14-r18-giao-thuc-2026-10-07.md": "46c4b6e6f2cb21f3ac8a33d5413d535e777d9c0fae601a751be539f8183eaa5f"
+ },
+ "visual_review": {
+  "status": "agent_proposals_not_gold_not_training",
+  "book": "d01-08",
+  "pages": [
+   177,
+   179
+  ],
+  "png_sha256": {
+   "tmp\\pdfs\\a1-r18\\os-177.png": "73aeadfbfc82203f6295ab2a06df2ddbe45a0affc499c9c873526328659301b5",
+   "tmp\\pdfs\\a1-r18\\os-179.png": "f2c7f16e44b87fef8ac36a752e677d47740670c021895d047bb457dd546ef34a"
+  }
+ }
+}

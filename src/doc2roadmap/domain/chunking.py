@@ -125,7 +125,7 @@ def _table_markdown(node: DocumentNode) -> str:
 # Thang tiêu đề của giáo trình tiếng Việt (doc-4): Phần → Chương → A./B. → I- → 1. → a). Số mục đánh lại từ đầu trong mỗi
 # cấp nên luật mặc định (đếm dấu chấm: "1." là cấp 1) đẩy "1." lên trên "Chương". Chỉ bật khi ingest chọn
 # `heading_scheme="vn-textbook"`; mặc định giữ nguyên để cây mục và danh tính chunk của tài liệu cũ không đổi.
-HEADING_SCHEMES = ("vn-textbook",)
+HEADING_SCHEMES = ("vn-textbook", "declared-v1")
 _VN_TEXTBOOK_LEVELS = (
     (re.compile(r"^Phần\s+[IVXLCDM\d]+\b", re.IGNORECASE), 1),
     (re.compile(r"^Chương\s+[IVXLCDM\d]+\b", re.IGNORECASE), 2),
@@ -140,6 +140,17 @@ def _scheme_level(title: str, scheme: str | None) -> int | None:
     if scheme != "vn-textbook":
         return None
     return next((level for pattern, level in _VN_TEXTBOOK_LEVELS if pattern.match(title)), None)
+
+
+def _validate_declared_hierarchy(nodes: list[DocumentNode]) -> None:
+    previous_level = 0
+    for node in nodes:
+        if node.node_type not in HEADING_TYPES:
+            continue
+        if (not normalize_text(node.text) or type(node.level) is not int
+                or not 1 <= node.level <= previous_level + 1):
+            raise ValueError("declared-v1 requires nonempty headings and positive integer depths without skipped parents")
+        previous_level = node.level
 
 
 def _heading_number_level(title: str) -> int | None:
@@ -414,6 +425,9 @@ def chunk_document(
         raise ValueError('result_min_count phải >= 3 và result_max_body_chars phải > 0')
 
     nodes = sorted(tree.nodes, key=lambda node: node.reading_order)
+    use_declared_tree = heading_scheme == "declared-v1"
+    if use_declared_tree:
+        _validate_declared_hierarchy(nodes)
     profile = (structure_profile(nodes,result_min_count=result_min_count,result_max_body_chars=result_max_body_chars)
                if heading_scheme is None else {'levels':{},'results':set()})
     sequence_members, sequence_levels = _chapter_sequences(nodes, result_indexes=profile['results'])
@@ -605,7 +619,7 @@ def chunk_document(
             title = normalize_text(node.text)
             if not title:
                 continue
-            false_heading_reason = _false_heading_reason(
+            false_heading_reason = None if use_declared_tree else _false_heading_reason(
                 title,
                 body_texts,
                 sequence_member=node_index in sequence_members,
@@ -625,7 +639,9 @@ def chunk_document(
                 scheme_level = _scheme_level(title, heading_scheme)
                 explicit_level = _heading_number_level(title)
                 structure_level = profile['levels'].get(node_index)
-                if structure_level is not None:
+                if use_declared_tree:
+                    level = node.level
+                elif structure_level is not None:
                     level = numbered_level = structure_level
                     numbered_heading_seen = True
                 elif scheme_level is not None:
@@ -650,7 +666,8 @@ def chunk_document(
 
                 parent_depth = heading_depth[stack[-1].section_id]
                 if (
-                    node.tree_depth is not None
+                    not use_declared_tree
+                    and node.tree_depth is not None
                     and structure_level is None
                     and parent_depth is not None
                     and node.tree_depth > parent_depth

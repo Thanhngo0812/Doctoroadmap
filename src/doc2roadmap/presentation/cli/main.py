@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import sys
 from concurrent.futures import ThreadPoolExecutor
@@ -136,23 +135,26 @@ def _parser() -> argparse.ArgumentParser:
     ingest = commands.add_parser("ingest", help="parse và cắt một PDF/DOCX")
     ingest.add_argument("file", type=Path)
     ingest.add_argument("--doc-id", required=True)
-    ingest.add_argument("--pdf-backend", choices=["docling-parse", "pypdfium2"], default="docling-parse",
-                        help="bộ đọc PDF; pypdfium2 cho PDF font tiếng Việt cũ bị tách rời âm tiết")
+    ingest.add_argument("--a1", choices=("nhe", "docling"), default="nhe",
+                        help="bộ đọc A1; mặc định nhẹ R2, tài liệu cũ ghim docling")
+    ingest.add_argument("--pdf-backend", choices=["docling-parse", "pypdfium2"], default=None,
+                        help="ghim bộ đọc PDF; bỏ cờ để tự chọn, bắt đầu bằng pypdfium2 và đổi khi chữ hỏng")
     ingest.add_argument("--heading-scheme", choices=["vn-textbook"], default=None,
                         help="thang tiêu đề Phần → Chương → I- → 1. → a) của giáo trình tiếng Việt")
     ingest.add_argument("--dry-run", action="store_true", help="chỉ kiểm cache parse; không parse/cắt chunk/ghi artifact")
-    defaults = PipelineConfig()
+    ingest.add_argument("--pdf-text-policy", choices=("preserve", "legacy"), default=None,
+                        help="preserve: giữ chữ lặp; legacy: tái lập cleanup/cache adapter v11")
     for name in ("do_ocr", "generate_picture_images", "force_full_page_ocr", "do_table_structure", "do_cell_matching"):
         ingest.add_argument("--" + name.replace("_", "-"), action=argparse.BooleanOptionalAction,
-                            default=getattr(defaults, name))
+                            default=None)
     for name in ("images_scale", "bitmap_area_threshold", "batch_polling_interval_seconds"):
-        ingest.add_argument("--" + name.replace("_", "-"), type=float, default=getattr(defaults, name))
+        ingest.add_argument("--" + name.replace("_", "-"), type=float, default=None)
     for name in ("num_threads", "ocr_batch_size", "layout_batch_size", "table_batch_size", "queue_max_size"):
-        ingest.add_argument("--" + name.replace("_", "-"), type=int, default=getattr(defaults, name))
-    ingest.add_argument("--ocr-engine", choices=("rapidocr", "easyocr"), default=defaults.ocr_engine)
-    ingest.add_argument("--ocr-backend", choices=("torch", "onnxruntime", "openvino", "paddle"), default=defaults.ocr_backend)
-    ingest.add_argument("--table-mode", choices=("accurate", "fast"), default=defaults.table_mode)
-    ingest.add_argument("--layout-model", choices=("heron", "heron-101", "egret-medium", "egret-large", "v2"), default=defaults.layout_model)
+        ingest.add_argument("--" + name.replace("_", "-"), type=int, default=None)
+    ingest.add_argument("--ocr-engine", choices=("rapidocr", "easyocr"), default=None)
+    ingest.add_argument("--ocr-backend", choices=("torch", "onnxruntime", "openvino", "paddle"), default=None)
+    ingest.add_argument("--table-mode", choices=("accurate", "fast"), default=None)
+    ingest.add_argument("--layout-model", choices=("heron", "heron-101", "egret-medium", "egret-large", "v2"), default=None)
     ingest.add_argument(
         "--strip-line",
         action="append",
@@ -201,26 +203,33 @@ def _parser() -> argparse.ArgumentParser:
                          help="chỉ đọc cache/checkpoint và dự toán mọi stage; không gọi mô hình hoặc ghi artifact")
     roadmap.add_argument("--identity-review", type=Path, default=None,
                          help="JSON quyết định duyệt danh tính (T5) của tài liệu; quyết định người thắng phán mô hình")
+    for command in (ingest, roles, commands.choices["a3"], commands.choices["extract"], commands.choices["roadmap"]):
+        command.add_argument("--allow-text-quality-reason", help="cho phép chữ cảnh báo với lý do xác nhận; không xoá cảnh báo")
     return parser
 
 
 def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None,
-            pdf_backend: str = "docling-parse", heading_scheme: str | None = None,
-            pipeline: PipelineConfig | None = None, dry_run: bool = False) -> None:
+            pdf_backend: str | None = None, heading_scheme: str | None = None,
+            pipeline: PipelineConfig | None = None, dry_run: bool = False, quality_reason=None,
+            a1: str = "docling") -> None:
     if not path.is_file():
         raise FileNotFoundError(f"không đọc được file: {path}")
-    use_case, settings = (build_ingest(pdf_backend) if pipeline is None
+    if a1 == "nhe" and path.suffix.lower() != ".pdf":
+        raise ValueError("A1 nhẹ chỉ hỗ trợ PDF gốc; DOCX dùng --a1 docling")
+    use_case, settings = (build_ingest(a1="nhe") if a1 == "nhe" else build_ingest(pdf_backend) if pipeline is None
                           else build_ingest(pdf_backend, pipeline=pipeline))
     if dry_run:
-        from doc2roadmap.application.use_cases.ingest_document import _hash, parse_config, validate_doc_id
+        from doc2roadmap.application.use_cases.ingest_document import _hash, parse_config, validate_doc_id, quality_selection_report
         validate_doc_id(doc_id)
         if path.suffix.lower() not in {".pdf", ".docx"} or path.stat().st_size == 0:
             raise ValueError("cần file PDF/DOCX không rỗng")
-        config = parse_config(use_case.parser, strip_lines or [])
-        stored = use_case.store.find_parse(doc_id, hashlib.sha256(path.read_bytes()).hexdigest(), _hash(config))
+        selected, stored, _, _, _, _ = use_case.select_parse(path.read_bytes(), path.name, doc_id, strip_lines or [],
+                                                          dry_run=True, quality_reason=quality_reason)
+        config = parse_config(selected, strip_lines or [])
         _json({"doc_id": doc_id, "parse": "tái dùng" if stored else "cần parse mới",
                "parser_config_hash": _hash(config), "parser_config": config,
                "parse_version": stored.version if stored else None,
+               "text_quality_selection": quality_selection_report(use_case.last_parse_selection),
                "parser_runtime": stored.manifest.get("parser_runtime", "chưa ghi ở artifact cũ") if stored else None})
         return
     summary = use_case.execute(
@@ -234,6 +243,7 @@ def _ingest(path: Path, doc_id: str, *, strip_lines: list[str] | None = None,
         sentence_overlap=settings.sentence_overlap,
         strip_lines=strip_lines or [],
         heading_scheme=heading_scheme,
+        **({"quality_reason": quality_reason} if quality_reason is not None else {}),
     )
     seen = " (đã ingest trước đó; tái dùng parse tree)" if summary.source_seen_before else ""
     print(
@@ -311,9 +321,10 @@ def _print_extraction(summary) -> None:
 
 
 def _extract(
-    doc_id: str, *, force: bool = False, few_shot_path: Path | None = None
+    doc_id: str, *, force: bool = False, few_shot_path: Path | None = None, quality_reason=None
 ) -> None:
     use_case, settings = build_extract(few_shot_path=few_shot_path)
+    use_case.quality_reason = quality_reason
     _print_extraction(
         use_case.execute(
             doc_id,
@@ -333,8 +344,12 @@ def _index(doc_id: str) -> None:
     )
 
 
-def _a3(doc_id: str, *, few_shot_path: Path | None = None) -> None:
+def _a3(doc_id: str, *, few_shot_path: Path | None = None, quality_reason=None) -> None:
     extraction, index, settings = build_a3(few_shot_path=few_shot_path)
+    extraction.quality_reason = quality_reason
+    if hasattr(extraction, "store"):
+        from doc2roadmap.application.use_cases.ingest_document import require_text_quality
+        require_text_quality(extraction.store.load_latest_chunks(doc_id), reason=quality_reason, store=extraction.store)
     with ThreadPoolExecutor(max_workers=2) as executor:
         extraction_future = executor.submit(
             extraction.execute,
@@ -539,6 +554,7 @@ def main(argv: list[str] | None = None) -> int:
                    "first_version": first.version, "second_version": second.version})
         elif args.command == 'label-roles':
             use_case = build_region_roles(allow_spend=args.allow_spend and not args.dry_run)
+            use_case.quality_reason = args.allow_text_quality_reason
             if args.dry_run:
                 payload = use_case.plan(args.doc_id, chunks_version=args.chunks_version,
                                         transfer_from_chunks_version=args.transfer_from_chunks_version).to_dict()
@@ -550,18 +566,22 @@ def main(argv: list[str] | None = None) -> int:
                            'warnings':artifact.manifest['role_warnings']}
             print(json.dumps(payload,ensure_ascii=False,indent=2))
         elif args.command == "ingest":
+            pipeline_flags = {name: getattr(args, name) for name in PipelineConfig.__dataclass_fields__
+                              if getattr(args, name) is not None}
+            if args.a1 == "nhe" and (args.pdf_backend is not None or pipeline_flags):
+                raise ValueError("--pdf-backend, --pdf-text-policy và cờ pipeline chỉ dùng với --a1 docling")
             _ingest(args.file, args.doc_id, strip_lines=args.strip_line, pdf_backend=args.pdf_backend,
                     heading_scheme=args.heading_scheme,
-                    pipeline=PipelineConfig(**{name: getattr(args, name) for name in PipelineConfig.__dataclass_fields__}),
-                    dry_run=args.dry_run)
+                    pipeline=PipelineConfig(**pipeline_flags) if args.a1 == "docling" else None,
+                    dry_run=args.dry_run, quality_reason=args.allow_text_quality_reason, a1=args.a1)
         elif args.command == "inspect":
             _inspect(args.doc_id)
         elif args.command == "extract":
-            _extract(args.doc_id, force=args.force, few_shot_path=args.few_shot)
+            _extract(args.doc_id, force=args.force, few_shot_path=args.few_shot, quality_reason=args.allow_text_quality_reason)
         elif args.command == "index":
             _index(args.doc_id)
         elif args.command == "a3":
-            _a3(args.doc_id, few_shot_path=args.few_shot)
+            _a3(args.doc_id, few_shot_path=args.few_shot, quality_reason=args.allow_text_quality_reason)
         elif args.command == "search":
             _search(args.doc_id, args.query, args.top_k, args.stage_id)
         elif args.command == "roadmap":
@@ -571,6 +591,8 @@ def main(argv: list[str] | None = None) -> int:
 
                 review = load_identity_review(args.identity_review, doc_id=args.doc_id)
             use_case, _ = build_learning_graph(allow_spend=args.allow_spend and not args.dry_run, identity_review=review)
+            if hasattr(use_case, "clusters"):
+                use_case.clusters.quality_reason = args.allow_text_quality_reason
             if args.dry_run:
                 _json(use_case.plan(args.doc_id, stop_after=args.stop_after))
                 return 0

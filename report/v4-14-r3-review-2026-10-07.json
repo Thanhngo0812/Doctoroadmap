@@ -1,0 +1,28 @@
+{
+  "status": "agent_proposals_not_gold",
+  "reviewer": "Codex, single agent",
+  "image_directory": "tmp/pdfs/a1-r3",
+  "limitations": [
+    "19 books were already inspected in previous rounds; not a new blind test",
+    "Targeted cases were selected after reading silver labels; not an accuracy sample",
+    "Audit prefix is the first six audit entries in the frozen packet; one silver label had already appeared in earlier text inspection",
+    "Poppler warned about missing Symbol and ArialUnicode display fonts; formula role review is not a glyph transcription audit",
+    "14 of 271 entries inspected; remaining entries are not implicitly approved"
+  ],
+  "entries": [
+    {"id":"d01-04:4563","selection":"targeted","page":138,"proposed_label":"caption","confidence":"medium","evidence":"Italic author/year immediately below the caption of Figure 5.4; not a formula. Source attribution can be caption extension or text depending on ontology; needs explicit relation."},
+    {"id":"d01-07:1489","selection":"targeted","page":47,"proposed_label":"code","confidence":"high","evidence":"sp_addrole syntax beneath the instruction to create a role, followed by parameter explanations."},
+    {"id":"d01-07:1490","selection":"targeted","page":47,"proposed_label":"code","confidence":"high","evidence":"Continuation of the optional ownername argument in sp_addrole syntax, not a mathematical expression."},
+    {"id":"d01-02:518","selection":"targeted","page":15,"proposed_label":"list_item","confidence":"high","evidence":"Third starred item in the body under 3. Cac cach cho ham so. Bottom position alone does not make a footnote."},
+    {"id":"d01-02:3834","selection":"targeted","page":76,"proposed_label":"formula","confidence":"high","evidence":"Fragment of the displayed integration-by-parts derivation in Vi du 4. Text order omits two-dimensional operators; do not call it ordinary prose."},
+    {"id":"d01-02:3866","selection":"targeted","page":76,"proposed_label":"formula","confidence":"high","evidence":"ax+b fragment within displayed integration patterns; formula role agrees, exact glyph reconstruction not assessed."},
+    {"id":"d01-06:2743","selection":"targeted","page":90,"proposed_label":"diagram_text","confidence":"high","evidence":"Dien cuc pH points to a component inside the fermenter illustration. The initial eight-class ontology has no suitable diagram-label class; keep outside training rather than force text/formula."},
+    {"id":"d01-06:2754","selection":"targeted","page":90,"proposed_label":"formula","confidence":"high","evidence":"Fragment of the denominator of the displayed R_batch equation (5)."},
+    {"id":"d01-05:2017","selection":"audit_prefix_6","page":75,"proposed_label":"table","confidence":"high","evidence":"Text from separate cells in the first visible table row. Correct row role does not certify cell segmentation or reading order."},
+    {"id":"d01-10:4648","selection":"audit_prefix_6","page":175,"proposed_label":"formula","confidence":"medium","evidence":"Bounding box lies at the brace of the displayed numerical system. Extracted i-acute is a font/glyph artifact; do not accept its literal transcription as correct."},
+    {"id":"d01-14:3854","selection":"audit_prefix_6","page":199,"proposed_label":"formula","confidence":"high","evidence":"Standalone displayed T=T1+T2 followed by variable definitions."},
+    {"id":"d01-06:1062","selection":"audit_prefix_6","page":35,"proposed_label":"list_item","confidence":"high","evidence":"Dash-led body item continuing the previous page before section 2.8."},
+    {"id":"doc-4:6437","selection":"audit_prefix_6","page":175,"proposed_label":"heading","confidence":"high","evidence":"Bold numbered section 2 followed by a new paragraph and nested a) subheading."},
+    {"id":"doc-1:942","selection":"audit_prefix_6","page":19,"proposed_label":"text","confidence":"high","evidence":"Unbolded prose line continuing the worked example after the displayed matrix power; not a page footer despite low position."}
+  ]
+}

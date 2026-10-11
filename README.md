@@ -20,6 +20,8 @@ LibreOffice là phụ thuộc tuỳ chọn cho DOCX chứa hình vẽ DrawingML.
 
 ```powershell
 .\.tools\uv.exe run doc2roadmap ingest path\to\book.pdf --doc-id book-v1
+# Đường Docling tường minh (PDF/DOCX; bắt buộc khi tái lập các lượt cũ):
+.\.tools\uv.exe run doc2roadmap ingest path\to\book.pdf --doc-id book-v1 --a1 docling
 .\.tools\uv.exe run doc2roadmap inspect --doc-id book-v1
 .\.tools\uv.exe run doc2roadmap a3 --doc-id book-v1
 .\.tools\uv.exe run doc2roadmap extract --doc-id book-v1 --few-shot path\to\few-shot.txt
@@ -29,6 +31,12 @@ LibreOffice là phụ thuộc tuỳ chọn cho DOCX chứa hình vẽ DrawingML.
 
 Artifact mặc định nằm trong `artifacts/`; ảnh nằm tại `parse_tree/<doc_id>/vN/images/`. Đổi root bằng
 `DOC2ROADMAP_ARTIFACT_DIR`.
+
+`ingest` mặc định `--a1 nhe`: R2 với hai mô hình `full` có SHA-256 tại `vendor/a1-nhe/`, chỉ nhận PDF gốc.
+Bản quét/OCR nằm ngoài phạm vi của cả hai đường. Trang bìa toàn ảnh không tự làm PDF gốc thành bản quét.
+DOCX, `--pdf-backend`, `--pdf-text-policy` và cờ pipeline dùng `--a1 docling`. Cảnh báo chữ chặn ingest;
+chỉ cho qua khi có `--allow-text-quality-reason` hợp lệ, không tự đổi đường. Bộ nhẹ ưu tiên tốc độ/RAM;
+không được diễn giải thành đã đạt luật chất lượng pha 4 của vé 15.
 
 Ba trần chunk có thể đổi qua `DOC2ROADMAP_MAX_TOKENS` (512), `DOC2ROADMAP_MAX_TABLE_TOKENS` (2048) và
 `DOC2ROADMAP_HARD_CAP_TOKENS` (6000). Mọi giá trị được ghi vào manifest và tham gia version hash.

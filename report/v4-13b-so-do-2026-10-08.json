@@ -1,0 +1,2405 @@
+{
+  "date": "2026-10-08",
+  "scope": "16 train PDFs plus five existing development PDFs; no document-data/test",
+  "threshold": 0.01,
+  "normalization": "NFKC",
+  "minimum_letters": 100,
+  "api_usd": 0,
+  "full_measurements": [
+    {
+      "doc_id": "doc-1",
+      "pdf_sha256": "f55d6fde678bd441473327f430755e70ac87c498888e6712546dec6fea943ace",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        25,
+        51,
+        76,
+        102
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 102,
+          "seconds": 0.157451699997182,
+          "full": {
+            "readable_letter_count": 71428,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 71428,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0000898391878537418,
+            "accented_letter_ratio": 0.254578036624293,
+            "private_use_ratio": 0.020188161505292044,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.941404433421175,
+            "single_letter_token_ratio": 0.3073867296542839,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 5140,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 5140,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2776264591439689,
+            "private_use_ratio": 0.0029182879377431907,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9506666666666667,
+            "single_letter_token_ratio": 0.20424403183023873,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 102,
+          "seconds": 11.514415999998164,
+          "full": {
+            "readable_letter_count": 71419,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 71419,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2546101177557793,
+            "private_use_ratio": 0.02019070555454431,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9651751906564984,
+            "single_letter_token_ratio": 0.35294523620552815,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 5140,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 5140,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2776264591439689,
+            "private_use_ratio": 0.0029182879377431907,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9725651577503429,
+            "single_letter_token_ratio": 0.25038560411311056,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "doc-4",
+      "pdf_sha256": "6e69a2f7294df03d22e94f0c748f407f22231321b8cea1dd661b1f2c9e36e171",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        53,
+        107,
+        160,
+        214
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 214,
+          "seconds": 1.0050302000017837,
+          "full": {
+            "readable_letter_count": 430313,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 430313,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.000007819403066769883,
+            "accented_letter_ratio": 0.29388375438343717,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9889295055872401,
+            "single_letter_token_ratio": 0.013221040002525811,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 11700,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 11700,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2847008547008547,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9828777410633824,
+            "single_letter_token_ratio": 0.015380065069506064,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 214,
+          "seconds": 78.26159030000417,
+          "full": {
+            "readable_letter_count": 430313,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 430313,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0009848563847660097,
+            "accented_letter_ratio": 0.29388375438343717,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7033183856502242,
+            "single_letter_token_ratio": 0.608303115229534,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 11700,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 11700,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0008683068017366136,
+            "accented_letter_ratio": 0.2847008547008547,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7074155653450808,
+            "single_letter_token_ratio": 0.6007621280961454,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "doc-6",
+      "pdf_sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+      "sample_pages": [
+        1,
+        5,
+        6,
+        10,
+        12,
+        18,
+        25
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 25,
+          "seconds": 0.029337899999518413,
+          "full": {
+            "readable_letter_count": 4333,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 4333,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.24971151627048235,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.907035175879397,
+            "single_letter_token_ratio": 0.0591016548463357,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 1103,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 1103,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.25294650951949227,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9087947882736156,
+            "single_letter_token_ratio": 0.0696969696969697,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 25,
+          "seconds": 1.953434399998514,
+          "full": {
+            "readable_letter_count": 4333,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 4333,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.24971151627048235,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8765541740674956,
+            "single_letter_token_ratio": 0.2463186077643909,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 1103,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 1103,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.25294650951949227,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8835616438356164,
+            "single_letter_token_ratio": 0.26262626262626265,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "xstk-ch3-1",
+      "pdf_sha256": "c265d409800af5515ba6e71408a9998020b38670369dfec4a5c01246e07fd20c",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        14,
+        29,
+        44,
+        59
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 59,
+          "seconds": 0.25113940000301227,
+          "full": {
+            "readable_letter_count": 56050,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 56050,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.28620874219446923,
+            "private_use_ratio": 0.03239964317573595,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.966676951558161,
+            "single_letter_token_ratio": 0.11380290932954172,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 8,
+            "vni_sequence_ratio": 0.0004374931641693099,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6127,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6127,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.28039823731026603,
+            "private_use_ratio": 0.041455851150644686,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9644469525959368,
+            "single_letter_token_ratio": 0.09221311475409837,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 1,
+            "vni_sequence_ratio": 0.0005122950819672131,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 59,
+          "seconds": 5.5412008999992395,
+          "full": {
+            "readable_letter_count": 56050,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 56050,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.28620874219446923,
+            "private_use_ratio": 0.03239964317573595,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.970520697573388,
+            "single_letter_token_ratio": 0.1248166856770409,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 8,
+            "vni_sequence_ratio": 0.00043452283960675685,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6127,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6127,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.28039823731026603,
+            "private_use_ratio": 0.041455851150644686,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9671015314804311,
+            "single_letter_token_ratio": 0.10553018772196854,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 1,
+            "vni_sequence_ratio": 0.0005073566717402334,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "naive-bayes",
+      "pdf_sha256": "ec58dfdee3860805be93bd17d1faa6fe67a6cbe122474e73b882d769a33c6dff",
+      "sample_pages": [
+        1,
+        5,
+        9,
+        10,
+        18,
+        27,
+        36
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 36,
+          "seconds": 0.04356790000019828,
+          "full": {
+            "readable_letter_count": 6702,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6702,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.18874962697702177,
+            "private_use_ratio": 0.01148910772903611,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.776969696969697,
+            "single_letter_token_ratio": 0.0924092409240924,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 17,
+            "vni_sequence_ratio": 0.00935093509350935,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 1133,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 1133,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.19505736981465135,
+            "private_use_ratio": 0.00706090026478376,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7829181494661922,
+            "single_letter_token_ratio": 0.09935897435897435,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 4,
+            "vni_sequence_ratio": 0.01282051282051282,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 36,
+          "seconds": 1.2944722999964142,
+          "full": {
+            "readable_letter_count": 6702,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6702,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.18874962697702177,
+            "private_use_ratio": 0.01148910772903611,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7787934186471663,
+            "single_letter_token_ratio": 0.10278840896664844,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 17,
+            "vni_sequence_ratio": 0.009294696555494806,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 1133,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 1133,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.19505736981465135,
+            "private_use_ratio": 0.00706090026478376,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.779783393501805,
+            "single_letter_token_ratio": 0.12341772151898735,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 4,
+            "vni_sequence_ratio": 0.012658227848101266,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-01",
+      "pdf_sha256": "da229424e4823cf16b1b50ba6ef12fae520417c8e14ba63670e0547c06898bef",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        59,
+        118,
+        177,
+        237
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 237,
+          "seconds": 0.46700699999928474,
+          "full": {
+            "readable_letter_count": 142664,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 142664,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0001616572174174105,
+            "accented_letter_ratio": 0.25805388885773567,
+            "private_use_ratio": 0.05017383502495374,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9555784591600103,
+            "single_letter_token_ratio": 0.28226656556876817,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 4729,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 4729,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2706703319940791,
+            "private_use_ratio": 0.0074011418904631,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9315068493150684,
+            "single_letter_token_ratio": 0.16518424396442186,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 237,
+          "seconds": 20.860182099997473,
+          "full": {
+            "readable_letter_count": 111849,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 111849,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.00024139688329801788,
+            "private_use_ratio": 0.06399699594989673,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.3565496622743882,
+            "single_letter_token_ratio": 0.6195925359093526,
+            "strange_character_ratio": 0.02051237234387875,
+            "vni_sequence_count": 1,
+            "vni_sequence_ratio": 0.00001404080257227503,
+            "warnings": [
+              "Lớp text có thể hỏng font: 111849 chữ cái đọc được, 0.02% có dấu, 6.40% ký tự vùng dùng riêng, 0.00% ký tự thay thế; không đủ chất lượng làm nguồn bộ vàng."
+            ]
+          },
+          "sample": {
+            "readable_letter_count": 3670,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 3670,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.007356948228882834,
+            "private_use_ratio": 0.009536784741144414,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.3802363050483351,
+            "single_letter_token_ratio": 0.5620884289746002,
+            "strange_character_ratio": 0.027847823703541278,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": [
+              "Lớp text có thể hỏng font: 3670 chữ cái đọc được, 0.74% có dấu, 0.95% ký tự vùng dùng riêng, 0.00% ký tự thay thế; không đủ chất lượng làm nguồn bộ vàng."
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-02",
+      "pdf_sha256": "9c54e467714b42ed43774f32f0aa2a719bcb1c803c11bc15b24dbbda37acf817",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        49,
+        99,
+        149,
+        199
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 199,
+          "seconds": 0.3650497999988147,
+          "full": {
+            "readable_letter_count": 77114,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 77114,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.20582514199756205,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7818241163853399,
+            "single_letter_token_ratio": 0.3072326129792939,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 1191,
+            "vni_sequence_ratio": 0.038472720224827985,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 2253,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 2253,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.21881935197514424,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7897990726429676,
+            "single_letter_token_ratio": 0.20123456790123456,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 51,
+            "vni_sequence_ratio": 0.06296296296296296,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 199,
+          "seconds": 15.583510600001318,
+          "full": {
+            "readable_letter_count": 77114,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 77114,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.20582514199756205,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.6860276704474635,
+            "single_letter_token_ratio": 0.651703928803994,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 1203,
+            "vni_sequence_ratio": 0.026112437594964184,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 2253,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 2253,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.21881935197514424,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.6726190476190477,
+            "single_letter_token_ratio": 0.5932203389830508,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 51,
+            "vni_sequence_ratio": 0.04116222760290557,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-03",
+      "pdf_sha256": "cf3fc0b892d21fbdd32d66ff7b4c6a7fbc2ef08bc5a50f9f3e9eb1c67941e865",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        31,
+        62,
+        93,
+        125
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 125,
+          "seconds": 0.36733470000035595,
+          "full": {
+            "readable_letter_count": 106222,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 106222,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00005614192679092747,
+            "accented_letter_ratio": 0.2583645572480277,
+            "private_use_ratio": 0.004810679520250043,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9060562866708655,
+            "single_letter_token_ratio": 0.08365480999969624,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 4003,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 4003,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2610542093429928,
+            "private_use_ratio": 0.0027479390457157134,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9110723626852659,
+            "single_letter_token_ratio": 0.09040444091990484,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 125,
+          "seconds": 16.651751099998364,
+          "full": {
+            "readable_letter_count": 106222,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 106222,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0003607828988905926,
+            "accented_letter_ratio": 0.2583645572480277,
+            "private_use_ratio": 0.004537666396791625,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7436579151434585,
+            "single_letter_token_ratio": 0.4727938170420698,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 4003,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 4003,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2610542093429928,
+            "private_use_ratio": 0.0017486884836372721,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.776803118908382,
+            "single_letter_token_ratio": 0.46254583551597694,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-04",
+      "pdf_sha256": "81b08c6bfd17ad37a44ff960b55e122e72125c716567eb5f0fcb6f513ec83435",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        44,
+        89,
+        133,
+        178
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 178,
+          "seconds": 0.556190899995272,
+          "full": {
+            "readable_letter_count": 192361,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 192361,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00007353887448752597,
+            "accented_letter_ratio": 0.20502076824304302,
+            "private_use_ratio": 0.0019182682560394259,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.846847393211636,
+            "single_letter_token_ratio": 0.05789704229912202,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6732,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6732,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.19414735591206178,
+            "private_use_ratio": 0.000445632798573975,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8357314148681055,
+            "single_letter_token_ratio": 0.06763555058692007,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 178,
+          "seconds": 22.573536299998523,
+          "full": {
+            "readable_letter_count": 192361,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 192361,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.000036023703596966805,
+            "accented_letter_ratio": 0.20502076824304302,
+            "private_use_ratio": 0.0019390624918772517,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8463248070473188,
+            "single_letter_token_ratio": 0.06104871755956898,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6732,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6732,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.19414735591206178,
+            "private_use_ratio": 0.000445632798573975,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8357314148681055,
+            "single_letter_token_ratio": 0.07023411371237458,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-05",
+      "pdf_sha256": "27357612772f428b470633224bcb1c71201e60cf1a22b1be977b53da30ce2171",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        37,
+        75,
+        112,
+        150
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 150,
+          "seconds": 0.3758680999962962,
+          "full": {
+            "readable_letter_count": 200900,
+            "non_latin_greek_letter_count": 751,
+            "nfkc_letter_count": 200900,
+            "non_latin_greek_letter_ratio": 0.003738178198108512,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.27304131408661025,
+            "private_use_ratio": 0.000004977600796416127,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9466078650118533,
+            "single_letter_token_ratio": 0.017704873120783535,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 21,
+            "vni_sequence_ratio": 0.0003595767268244238,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6261,
+            "non_latin_greek_letter_count": 23,
+            "nfkc_letter_count": 6261,
+            "non_latin_greek_letter_ratio": 0.0036735345791407124,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2833413192780706,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9534501642935378,
+            "single_letter_token_ratio": 0.016163793103448277,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 150,
+          "seconds": 25.843198999995366,
+          "full": {
+            "readable_letter_count": 200232,
+            "non_latin_greek_letter_count": 31912,
+            "nfkc_letter_count": 200232,
+            "non_latin_greek_letter_ratio": 0.159375124855168,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.11495665028566862,
+            "private_use_ratio": 0.000004994206720204563,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.45959737663521905,
+            "single_letter_token_ratio": 0.03288391418638175,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 21,
+            "vni_sequence_ratio": 0.00035614347494276264,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6229,
+            "non_latin_greek_letter_count": 1016,
+            "nfkc_letter_count": 6229,
+            "non_latin_greek_letter_ratio": 0.16310804302456253,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.1200834804944614,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.4578047435190292,
+            "single_letter_token_ratio": 0.040740740740740744,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-06",
+      "pdf_sha256": "2b0a3641e9208546b92bbc51cd9986e5a9514f28ae9d1a14bc06a0084edfeceb",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        42,
+        85,
+        128,
+        171
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 171,
+          "seconds": 1.4426442999974824,
+          "full": {
+            "readable_letter_count": 216679,
+            "non_latin_greek_letter_count": 1,
+            "nfkc_letter_count": 216679,
+            "non_latin_greek_letter_ratio": 0.000004615121908445212,
+            "split_syllable_ratio": 0.00001638377351071499,
+            "accented_letter_ratio": 0.2511780098671306,
+            "private_use_ratio": 0.00002769073145067127,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9130234620106398,
+            "single_letter_token_ratio": 0.019739591168162596,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 2,
+            "vni_sequence_ratio": 0.00003342860485717629,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 7180,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 7180,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.24484679665738163,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8891202498698595,
+            "single_letter_token_ratio": 0.022391857506361322,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 171,
+          "seconds": 33.784977300005266,
+          "full": {
+            "readable_letter_count": 216075,
+            "non_latin_greek_letter_count": 31357,
+            "nfkc_letter_count": 216075,
+            "non_latin_greek_letter_ratio": 0.14512090709244474,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.10352886729144972,
+            "private_use_ratio": 0.000027768136063866712,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.41668667878829463,
+            "single_letter_token_ratio": 0.03708108286672283,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 2,
+            "vni_sequence_ratio": 0.000033034372264341046,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 7160,
+            "non_latin_greek_letter_count": 961,
+            "nfkc_letter_count": 7160,
+            "non_latin_greek_letter_ratio": 0.13421787709497207,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.10810055865921787,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.42303664921465967,
+            "single_letter_token_ratio": 0.035840484603735484,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-07",
+      "pdf_sha256": "1ae35176ae2026ce58beb58db4f8f928a8c83354c939c36d125f29d9136dd5cc",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        28,
+        57,
+        86,
+        115
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 115,
+          "seconds": 0.19778849999420345,
+          "full": {
+            "readable_letter_count": 122885,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 122885,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00005709880948982214,
+            "accented_letter_ratio": 0.2254302803434105,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8542927526535081,
+            "single_letter_token_ratio": 0.03427514097744361,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 6,
+            "vni_sequence_ratio": 0.00017622180451127819,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 5999,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 5999,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.20970161693615602,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8406169665809768,
+            "single_letter_token_ratio": 0.04187192118226601,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 6,
+            "vni_sequence_ratio": 0.003694581280788177,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 115,
+          "seconds": 16.645504000000074,
+          "full": {
+            "readable_letter_count": 123910,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 123910,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00005634755169887868,
+            "accented_letter_ratio": 0.2235654910822371,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.8508825134954813,
+            "single_letter_token_ratio": 0.0378734827264239,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 6,
+            "vni_sequence_ratio": 0.00017507002801120448,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6024,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6024,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.20883134130146083,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.833547557840617,
+            "single_letter_token_ratio": 0.06038647342995169,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 6,
+            "vni_sequence_ratio": 0.0036231884057971015,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-08",
+      "pdf_sha256": "d6034f8e26779e2107b776fb73a8f666bc045acbdd54fc01720a7009d19a5e46",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        59,
+        118,
+        177,
+        237
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 237,
+          "seconds": 1.6302608999976655,
+          "full": {
+            "readable_letter_count": 441094,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 441094,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.28049576734210846,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9644548256904059,
+            "single_letter_token_ratio": 0.01757727130814861,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 12145,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 12145,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2747632770687526,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9678086237448317,
+            "single_letter_token_ratio": 0.016555329654371186,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 237,
+          "seconds": 94.95092589999695,
+          "full": {
+            "readable_letter_count": 441094,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 441094,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0003638745360599665,
+            "accented_letter_ratio": 0.28049576734210846,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.7071143552311435,
+            "single_letter_token_ratio": 0.5780114173066656,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 12145,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 12145,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00044457617071724955,
+            "accented_letter_ratio": 0.2747632770687526,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.6928746928746928,
+            "single_letter_token_ratio": 0.5700920476837181,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-09",
+      "pdf_sha256": "db018d75e66397322ee3ba246df6d2cd1cd3d88c50441a8fe2df4ad8d63cea46",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        94,
+        189,
+        284,
+        379
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 379,
+          "seconds": 2.572641899998416,
+          "full": {
+            "readable_letter_count": 488169,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 488169,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00003410152706638203,
+            "accented_letter_ratio": 0.292718300424648,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9910246181901071,
+            "single_letter_token_ratio": 0.027899150353500032,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6874,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6874,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2801862089031132,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9749232343909928,
+            "single_letter_token_ratio": 0.015120967741935484,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 379,
+          "seconds": 92.6065069000033,
+          "full": {
+            "readable_letter_count": 488169,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 488169,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0005952422392247231,
+            "accented_letter_ratio": 0.292718300424648,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.713421886566469,
+            "single_letter_token_ratio": 0.5726391520248535,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6874,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6874,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00024838549428713363,
+            "accented_letter_ratio": 0.2801862089031132,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.6937424789410349,
+            "single_letter_token_ratio": 0.5703205791106515,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-10",
+      "pdf_sha256": "07766ca6d23a29a79058e2299273b98d1f22f80923c743d09725dd095a3ab31c",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        65,
+        130,
+        195,
+        260
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 260,
+          "seconds": 0.8023824999982025,
+          "full": {
+            "readable_letter_count": 236526,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 236526,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00002636122790599586,
+            "accented_letter_ratio": 0.27709004506904106,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9651428655721261,
+            "single_letter_token_ratio": 0.05101140897319241,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6310,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6310,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2554675118858954,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9305084745762712,
+            "single_letter_token_ratio": 0.026402640264026403,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 260,
+          "seconds": 31.416420200002904,
+          "full": {
+            "readable_letter_count": 236566,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 236566,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.27708123737138896,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.968562874251497,
+            "single_letter_token_ratio": 0.06257989218029233,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6350,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6350,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2552755905511811,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9283314669652856,
+            "single_letter_token_ratio": 0.038751345532831,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-11",
+      "pdf_sha256": "33cbc52647b333503e5194a1420ee2a5d694d3f5851a08ad0e7d538ad1ea6be7",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        33,
+        67,
+        100,
+        134
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 134,
+          "seconds": 0.4505935999986832,
+          "full": {
+            "readable_letter_count": 180058,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 180058,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2857634762132202,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9979990094105993,
+            "single_letter_token_ratio": 0.023713274404750392,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6762,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 6762,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.27314404022478556,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9931362196409715,
+            "single_letter_token_ratio": 0.011482254697286013,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 134,
+          "seconds": 18.46514880000177,
+          "full": {
+            "readable_letter_count": 179692,
+            "non_latin_greek_letter_count": 34039,
+            "nfkc_letter_count": 179692,
+            "non_latin_greek_letter_ratio": 0.18942969080426508,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.09467310731696459,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.35034466318361507,
+            "single_letter_token_ratio": 0.03216565407982773,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 6756,
+            "non_latin_greek_letter_count": 1199,
+            "nfkc_letter_count": 6756,
+            "non_latin_greek_letter_ratio": 0.1774718768502072,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.09502664298401421,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.38168343038644786,
+            "single_letter_token_ratio": 0.01716961498439126,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-12",
+      "pdf_sha256": "0f0aefa90ea31126b216ec850dc3b99d67f6bd7709a243ec397ed51cd178cbf4",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        25,
+        50,
+        75,
+        101
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 101,
+          "seconds": 0.3915354999990086,
+          "full": {
+            "readable_letter_count": 143768,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 143768,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2932850147459796,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9991746571185823,
+            "single_letter_token_ratio": 0.004470758820686322,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 8290,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 8290,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2827503015681544,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.994034938219003,
+            "single_letter_token_ratio": 0.0038200339558573855,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 101,
+          "seconds": 15.16584409999632,
+          "full": {
+            "readable_letter_count": 143768,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 143768,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2932850147459796,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9991746571185823,
+            "single_letter_token_ratio": 0.004494816461661149,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 8290,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 8290,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2827503015681544,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.994034938219003,
+            "single_letter_token_ratio": 0.004242681374628765,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-13",
+      "pdf_sha256": "d1a59b4809737e8da2c66a551b6935bbc07c3e20fb782cbee40a930c66a46244",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        41,
+        82,
+        123,
+        165
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 165,
+          "seconds": 0.5616244999982882,
+          "full": {
+            "readable_letter_count": 99111,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 99111,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.0000613591041570793,
+            "accented_letter_ratio": 0.2962839644439063,
+            "private_use_ratio": 0.0006457406342383792,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.983568241376868,
+            "single_letter_token_ratio": 0.05343255564494503,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 3132,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 3132,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.3007662835249042,
+            "private_use_ratio": 0.001277139208173691,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.984994640943194,
+            "single_letter_token_ratio": 0.06606606606606606,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 165,
+          "seconds": 17.90942460000224,
+          "full": {
+            "readable_letter_count": 99285,
+            "non_latin_greek_letter_count": 14443,
+            "nfkc_letter_count": 99285,
+            "non_latin_greek_letter_ratio": 0.14547011129576473,
+            "split_syllable_ratio": 0.000029405710588996384,
+            "accented_letter_ratio": 0.15185576874653775,
+            "private_use_ratio": 0.0006446089540212519,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.47544872021807627,
+            "single_letter_token_ratio": 0.08730492099906298,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 3132,
+            "non_latin_greek_letter_count": 493,
+            "nfkc_letter_count": 3132,
+            "non_latin_greek_letter_ratio": 0.1574074074074074,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.14335887611749681,
+            "private_use_ratio": 0.001277139208173691,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.45085470085470086,
+            "single_letter_token_ratio": 0.09477756286266925,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-14",
+      "pdf_sha256": "6b9081097e82189dbc60d51ac2e9395abeacb76df4919b6d25f0b4364b2eb31b",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        65,
+        131,
+        196,
+        262
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 262,
+          "seconds": 0.5681008000028669,
+          "full": {
+            "readable_letter_count": 178307,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 178309,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00021037130535394972,
+            "accented_letter_ratio": 0.29177766436539226,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9494013354823855,
+            "single_letter_token_ratio": 0.03501397966930213,
+            "strange_character_ratio": 0.0002759479798636817,
+            "vni_sequence_count": 27,
+            "vni_sequence_ratio": 0.0004999351935860166,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 4405,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 4405,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2883087400681044,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9512578616352201,
+            "single_letter_token_ratio": 0.029748283752860413,
+            "strange_character_ratio": 0.000636841267314122,
+            "vni_sequence_count": 14,
+            "vni_sequence_ratio": 0.010678871090770405,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 262,
+          "seconds": 21.14919099999679,
+          "full": {
+            "readable_letter_count": 178307,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 178309,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0.00024345709068776628,
+            "accented_letter_ratio": 0.29177766436539226,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9496401496977257,
+            "single_letter_token_ratio": 0.03753440345789386,
+            "strange_character_ratio": 0.00026305109203781925,
+            "vni_sequence_count": 27,
+            "vni_sequence_ratio": 0.0004987346916157157,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 4405,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 4405,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.2883087400681044,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9512578616352201,
+            "single_letter_token_ratio": 0.029748283752860413,
+            "strange_character_ratio": 0.0006083650190114068,
+            "vni_sequence_count": 14,
+            "vni_sequence_ratio": 0.010678871090770405,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-15",
+      "pdf_sha256": "0a37a5e25c332097551e15ba33efcdce0c14e7450d45a8fc165c38c017555903",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        56,
+        112,
+        168,
+        225
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 225,
+          "seconds": 0.6039639000009629,
+          "full": {
+            "readable_letter_count": 297045,
+            "non_latin_greek_letter_count": 55,
+            "nfkc_letter_count": 297045,
+            "non_latin_greek_letter_ratio": 0.00018515713107441632,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.26905014391758825,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9463342061413949,
+            "single_letter_token_ratio": 0.014416591396966534,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 5833,
+            "non_latin_greek_letter_count": 6,
+            "nfkc_letter_count": 5833,
+            "non_latin_greek_letter_ratio": 0.001028630207440425,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.24978570204011658,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9052383755150089,
+            "single_letter_token_ratio": 0.016213086276780544,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 225,
+          "seconds": 33.188610899997,
+          "full": {
+            "readable_letter_count": 296510,
+            "non_latin_greek_letter_count": 45349,
+            "nfkc_letter_count": 296510,
+            "non_latin_greek_letter_ratio": 0.15294256517486762,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.11469427675289198,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.45627176869125435,
+            "single_letter_token_ratio": 0.022491692415320935,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 5794,
+            "non_latin_greek_letter_count": 828,
+            "nfkc_letter_count": 5794,
+            "non_latin_greek_letter_ratio": 0.14290645495340007,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.10269244045564377,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.44634433962264153,
+            "single_letter_token_ratio": 0.03581580443433769,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    },
+    {
+      "doc_id": "d01-16",
+      "pdf_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+      "sample_pages": [
+        1,
+        5,
+        10,
+        13,
+        26,
+        39,
+        52
+      ],
+      "backends": [
+        {
+          "backend": "pypdfium2",
+          "pages": 52,
+          "seconds": 0.11749269999563694,
+          "full": {
+            "readable_letter_count": 52258,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 52258,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.27050403765930575,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9557414653892862,
+            "single_letter_token_ratio": 0.02009784477059368,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 5860,
+            "non_latin_greek_letter_count": 0,
+            "nfkc_letter_count": 5860,
+            "non_latin_greek_letter_ratio": 0,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.26808873720136517,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.9634146341463414,
+            "single_letter_token_ratio": 0.01737567405632115,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        },
+        {
+          "backend": "docling-parse",
+          "pages": 52,
+          "seconds": 3.0805819000015617,
+          "full": {
+            "readable_letter_count": 52143,
+            "non_latin_greek_letter_count": 8601,
+            "nfkc_letter_count": 52143,
+            "non_latin_greek_letter_ratio": 0.16495023301306025,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.10354218207621349,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.4389782403027436,
+            "single_letter_token_ratio": 0.027662789933635586,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          },
+          "sample": {
+            "readable_letter_count": 5856,
+            "non_latin_greek_letter_count": 985,
+            "nfkc_letter_count": 5856,
+            "non_latin_greek_letter_ratio": 0.1682035519125683,
+            "split_syllable_ratio": 0,
+            "accented_letter_ratio": 0.09887295081967214,
+            "private_use_ratio": 0,
+            "replacement_character_ratio": 0,
+            "valid_vietnamese_syllable_ratio": 0.4297924297924298,
+            "single_letter_token_ratio": 0.02033492822966507,
+            "strange_character_ratio": 0,
+            "vni_sequence_count": 0,
+            "vni_sequence_ratio": 0,
+            "warnings": []
+          }
+        }
+      ]
+    }
+  ],
+  "pinned": [
+    {
+      "chunks_version": 7,
+      "parse_version": 5,
+      "doc_id": "doc-1",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 98,
+      "eligible_pages": 96,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 6,
+      "parse_version": 2,
+      "doc_id": "doc-4",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 211,
+      "eligible_pages": 205,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 4,
+      "parse_version": 2,
+      "doc_id": "doc-6",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 25,
+      "eligible_pages": 18,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 5,
+      "parse_version": 2,
+      "doc_id": "xstk-ch3-1",
+      "warnings": [
+        "Dòng mã VNI chưa chuyển Unicode ở trang: 3",
+        "Trang có chất lượng chữ chưa đạt: 3"
+      ],
+      "ratio": 0,
+      "pages_checked": 59,
+      "eligible_pages": 58,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 3,
+      "parse_version": 1,
+      "doc_id": "naive-bayes",
+      "warnings": [
+        "Trang có chất lượng chữ chưa đạt: 11"
+      ],
+      "ratio": 0.00014940983116689077,
+      "pages_checked": 35,
+      "eligible_pages": 26,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 3,
+      "parse_version": 2,
+      "doc_id": "d01-01",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 233,
+      "eligible_pages": 222,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 6,
+      "parse_version": 2,
+      "doc_id": "d01-02",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 195,
+      "eligible_pages": 161,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-03",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 125,
+      "eligible_pages": 119,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 4,
+      "parse_version": 2,
+      "doc_id": "d01-04",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 172,
+      "eligible_pages": 165,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 4,
+      "parse_version": 2,
+      "doc_id": "d01-05",
+      "warnings": [
+        "Trang có chất lượng chữ chưa đạt: 26, 27, 46, 49, 50, 51, 52, 56, 74, 81, 85, 86, 87, 95, 102, 105, 106, 108, 142, 143, 144, 145, 150"
+      ],
+      "ratio": 0.003514983448367605,
+      "pages_checked": 145,
+      "eligible_pages": 143,
+      "flagged_pages": [
+        {
+          "page": 26,
+          "nfkc_letter_count": 1935,
+          "non_latin_greek_letter_count": 21,
+          "non_latin_greek_letter_ratio": 0.010852713178294573
+        },
+        {
+          "page": 27,
+          "nfkc_letter_count": 1050,
+          "non_latin_greek_letter_count": 18,
+          "non_latin_greek_letter_ratio": 0.017142857142857144
+        },
+        {
+          "page": 46,
+          "nfkc_letter_count": 1633,
+          "non_latin_greek_letter_count": 19,
+          "non_latin_greek_letter_ratio": 0.011635027556644213
+        },
+        {
+          "page": 49,
+          "nfkc_letter_count": 1426,
+          "non_latin_greek_letter_count": 18,
+          "non_latin_greek_letter_ratio": 0.012622720897615708
+        },
+        {
+          "page": 50,
+          "nfkc_letter_count": 1438,
+          "non_latin_greek_letter_count": 25,
+          "non_latin_greek_letter_ratio": 0.017385257301808066
+        },
+        {
+          "page": 51,
+          "nfkc_letter_count": 1423,
+          "non_latin_greek_letter_count": 18,
+          "non_latin_greek_letter_ratio": 0.012649332396345749
+        },
+        {
+          "page": 52,
+          "nfkc_letter_count": 1096,
+          "non_latin_greek_letter_count": 11,
+          "non_latin_greek_letter_ratio": 0.010036496350364963
+        },
+        {
+          "page": 56,
+          "nfkc_letter_count": 1324,
+          "non_latin_greek_letter_count": 18,
+          "non_latin_greek_letter_ratio": 0.013595166163141994
+        },
+        {
+          "page": 74,
+          "nfkc_letter_count": 236,
+          "non_latin_greek_letter_count": 3,
+          "non_latin_greek_letter_ratio": 0.012711864406779662
+        },
+        {
+          "page": 81,
+          "nfkc_letter_count": 1533,
+          "non_latin_greek_letter_count": 17,
+          "non_latin_greek_letter_ratio": 0.011089367253750815
+        },
+        {
+          "page": 85,
+          "nfkc_letter_count": 1438,
+          "non_latin_greek_letter_count": 32,
+          "non_latin_greek_letter_ratio": 0.022253129346314324
+        },
+        {
+          "page": 86,
+          "nfkc_letter_count": 1371,
+          "non_latin_greek_letter_count": 20,
+          "non_latin_greek_letter_ratio": 0.014587892049598834
+        },
+        {
+          "page": 87,
+          "nfkc_letter_count": 1420,
+          "non_latin_greek_letter_count": 20,
+          "non_latin_greek_letter_ratio": 0.014084507042253521
+        },
+        {
+          "page": 95,
+          "nfkc_letter_count": 710,
+          "non_latin_greek_letter_count": 8,
+          "non_latin_greek_letter_ratio": 0.011267605633802818
+        },
+        {
+          "page": 102,
+          "nfkc_letter_count": 1626,
+          "non_latin_greek_letter_count": 18,
+          "non_latin_greek_letter_ratio": 0.01107011070110701
+        },
+        {
+          "page": 105,
+          "nfkc_letter_count": 1206,
+          "non_latin_greek_letter_count": 17,
+          "non_latin_greek_letter_ratio": 0.014096185737976783
+        },
+        {
+          "page": 106,
+          "nfkc_letter_count": 1385,
+          "non_latin_greek_letter_count": 22,
+          "non_latin_greek_letter_ratio": 0.01588447653429603
+        },
+        {
+          "page": 108,
+          "nfkc_letter_count": 263,
+          "non_latin_greek_letter_count": 6,
+          "non_latin_greek_letter_ratio": 0.022813688212927757
+        },
+        {
+          "page": 142,
+          "nfkc_letter_count": 1331,
+          "non_latin_greek_letter_count": 16,
+          "non_latin_greek_letter_ratio": 0.012021036814425245
+        },
+        {
+          "page": 143,
+          "nfkc_letter_count": 729,
+          "non_latin_greek_letter_count": 15,
+          "non_latin_greek_letter_ratio": 0.0205761316872428
+        },
+        {
+          "page": 144,
+          "nfkc_letter_count": 999,
+          "non_latin_greek_letter_count": 10,
+          "non_latin_greek_letter_ratio": 0.01001001001001001
+        },
+        {
+          "page": 145,
+          "nfkc_letter_count": 1244,
+          "non_latin_greek_letter_count": 35,
+          "non_latin_greek_letter_ratio": 0.028135048231511254
+        },
+        {
+          "page": 150,
+          "nfkc_letter_count": 674,
+          "non_latin_greek_letter_count": 12,
+          "non_latin_greek_letter_ratio": 0.017804154302670624
+        }
+      ]
+    },
+    {
+      "chunks_version": 3,
+      "parse_version": 2,
+      "doc_id": "d01-06",
+      "warnings": [],
+      "ratio": 0.000004705638766934418,
+      "pages_checked": 168,
+      "eligible_pages": 162,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 3,
+      "parse_version": 2,
+      "doc_id": "d01-07",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 111,
+      "eligible_pages": 107,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-08",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 237,
+      "eligible_pages": 237,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-09",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 361,
+      "eligible_pages": 355,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-10",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 260,
+      "eligible_pages": 259,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-11",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 133,
+      "eligible_pages": 132,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-12",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 97,
+      "eligible_pages": 96,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-13",
+      "warnings": [],
+      "ratio": 0.0002267818574514039,
+      "pages_checked": 159,
+      "eligible_pages": 156,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 3,
+      "parse_version": 2,
+      "doc_id": "d01-14",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 257,
+      "eligible_pages": 246,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 3,
+      "parse_version": 2,
+      "doc_id": "d01-15",
+      "warnings": [],
+      "ratio": 0.0000346763483031129,
+      "pages_checked": 223,
+      "eligible_pages": 218,
+      "flagged_pages": []
+    },
+    {
+      "chunks_version": 2,
+      "parse_version": 1,
+      "doc_id": "d01-16",
+      "warnings": [],
+      "ratio": 0,
+      "pages_checked": 49,
+      "eligible_pages": 48,
+      "flagged_pages": []
+    }
+  ],
+  "sweep": [
+    {
+      "threshold": 0.005,
+      "documents": [
+        "d01-05:docling-parse",
+        "d01-06:docling-parse",
+        "d01-11:docling-parse",
+        "d01-13:docling-parse",
+        "d01-15:docling-parse",
+        "d01-16:docling-parse"
+      ],
+      "pages": [
+        "naive-bayes:6",
+        "d01-05:1",
+        "d01-05:3",
+        "d01-05:12",
+        "d01-05:20",
+        "d01-05:22",
+        "d01-05:25",
+        "d01-05:26",
+        "d01-05:27",
+        "d01-05:28",
+        "d01-05:32",
+        "d01-05:34",
+        "d01-05:39",
+        "d01-05:46",
+        "d01-05:49",
+        "d01-05:50",
+        "d01-05:51",
+        "d01-05:52",
+        "d01-05:56",
+        "d01-05:57",
+        "d01-05:60",
+        "d01-05:74",
+        "d01-05:75",
+        "d01-05:81",
+        "d01-05:85",
+        "d01-05:86",
+        "d01-05:87",
+        "d01-05:88",
+        "d01-05:92",
+        "d01-05:94",
+        "d01-05:95",
+        "d01-05:102",
+        "d01-05:105",
+        "d01-05:106",
+        "d01-05:108",
+        "d01-05:113",
+        "d01-05:138",
+        "d01-05:139",
+        "d01-05:142",
+        "d01-05:143",
+        "d01-05:144",
+        "d01-05:145",
+        "d01-05:146",
+        "d01-05:150",
+        "d01-13:41",
+        "d01-13:77"
+      ]
+    },
+    {
+      "threshold": 0.01,
+      "documents": [
+        "d01-05:docling-parse",
+        "d01-06:docling-parse",
+        "d01-11:docling-parse",
+        "d01-13:docling-parse",
+        "d01-15:docling-parse",
+        "d01-16:docling-parse"
+      ],
+      "pages": [
+        "d01-05:26",
+        "d01-05:27",
+        "d01-05:46",
+        "d01-05:49",
+        "d01-05:50",
+        "d01-05:51",
+        "d01-05:52",
+        "d01-05:56",
+        "d01-05:74",
+        "d01-05:81",
+        "d01-05:85",
+        "d01-05:86",
+        "d01-05:87",
+        "d01-05:95",
+        "d01-05:102",
+        "d01-05:105",
+        "d01-05:106",
+        "d01-05:108",
+        "d01-05:142",
+        "d01-05:143",
+        "d01-05:144",
+        "d01-05:145",
+        "d01-05:150"
+      ]
+    },
+    {
+      "threshold": 0.015,
+      "documents": [
+        "d01-05:docling-parse",
+        "d01-06:docling-parse",
+        "d01-11:docling-parse",
+        "d01-13:docling-parse",
+        "d01-15:docling-parse",
+        "d01-16:docling-parse"
+      ],
+      "pages": [
+        "d01-05:27",
+        "d01-05:50",
+        "d01-05:85",
+        "d01-05:106",
+        "d01-05:108",
+        "d01-05:143",
+        "d01-05:145",
+        "d01-05:150"
+      ]
+    },
+    {
+      "threshold": 0.02,
+      "documents": [
+        "d01-05:docling-parse",
+        "d01-06:docling-parse",
+        "d01-11:docling-parse",
+        "d01-13:docling-parse",
+        "d01-15:docling-parse",
+        "d01-16:docling-parse"
+      ],
+      "pages": [
+        "d01-05:85",
+        "d01-05:108",
+        "d01-05:143",
+        "d01-05:145"
+      ]
+    }
+  ],
+  "cache_check": {
+    "baseline": "tmp/thu-a1/v413b/parse-manifests-before.json",
+    "count": 51,
+    "file_sha256_unchanged": true,
+    "parser_config_hash_unchanged": true,
+    "excluded_invalid_baseline": "tmp/thu-a1/v413b/manifests-before.json (empty; wrong path in initial measurement process; not evidence)"
+  },
+  "xstk_dry_run": {
+    "reused": true,
+    "parse_version": 3,
+    "backend": "docling-parse",
+    "adapter_version": 11,
+    "attempts": 1,
+    "parser_config_hash": "4b897c487e4570a11d6fbca40c6a34212d02e2f6631d630e446c8c7750344acd",
+    "approved_reason": "Tái lập T10 trên văn bản xstk đã khóa; chấp nhận lỗi chữ VNI đã ghi nhận ở trang 3, không làm sạch hoặc đổi bộ đọc",
+    "without_reason": "nonzero exit; warned about VNI page 3; no fallback"
+  },
+  "tests": {
+    "passed": 1090,
+    "skipped": 5,
+    "warnings": 7,
+    "seconds": 183.21
+  },
+  "limits": [
+    "Development-only calibration, no independent gold FPR/recall",
+    "Full PDF raw text includes formulas/tables; pinned tree gate only examines text-like nodes",
+    "Script ratio below threshold can miss corruption",
+    "Non-Latin-language books need a different language-aware policy"
+  ]
+}

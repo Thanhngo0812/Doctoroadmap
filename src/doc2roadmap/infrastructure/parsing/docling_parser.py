@@ -11,6 +11,7 @@ from dataclasses import asdict, dataclass
 from io import BytesIO
 from itertools import groupby
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 from zipfile import BadZipFile, ZipFile
 
@@ -20,7 +21,7 @@ from doc2roadmap.domain.normalization import normalize_text
 from doc2roadmap.domain.document_structure import code_sequences, section_code
 
 
-ADAPTER_VERSION = 11  # Bump whenever the adapter changes how DocumentNode values are built.
+ADAPTER_VERSION = 13  # Preserve caption provenance; explicit legacy retains the v11 contract.
 IMAGE_SCALE = 2.0
 UNCAPTIONED_FIGURE_TEXT = "[figure]"
 FORMULA_TEXT = "[formula]"
@@ -151,8 +152,11 @@ class PipelineConfig:
     table_batch_size: int = 4
     queue_max_size: int = 100
     batch_polling_interval_seconds: float = 0.5
+    pdf_text_policy: str = "preserve"
 
     def __post_init__(self) -> None:
+        if self.pdf_text_policy not in {"preserve", "legacy"}:
+            raise ValueError("pdf_text_policy phải là preserve hoặc legacy")
         if not all(math.isfinite(n) for n in (self.images_scale, self.bitmap_area_threshold,
                                              self.batch_polling_interval_seconds)):
             raise ValueError("tuỳ chọn pipeline phải hữu hạn")
@@ -179,7 +183,8 @@ class PipelineConfig:
     def cache_options(self) -> dict[str, Any]:
         defaults = asdict(PipelineConfig())
         return {key: value for key, value in asdict(self).items()
-                if key != "num_threads" and value != defaults[key]}
+                # Text policy is encoded by adapter_version, preserving the v11 cache key.
+                if key not in {"num_threads", "pdf_text_policy"} and value != defaults[key]}
 
     def options(self) -> Any:
         from docling.datamodel.accelerator_options import AcceleratorOptions
@@ -190,6 +195,7 @@ class PipelineConfig:
         )
 
         values = asdict(self)
+        values.pop("pdf_text_policy")  # adapter policy, not a Docling model option
         threads = values.pop("num_threads")
         engine = values.pop("ocr_engine")
         backend = values.pop("ocr_backend")
@@ -222,6 +228,9 @@ class DoclingParser:
     def pipeline(self) -> PipelineConfig:
         return self._pipeline
 
+    def with_pdf_backend(self, backend: str) -> DoclingParser:
+        return DoclingParser(backend, pipeline=self.pipeline)
+
     @staticmethod
     def _new_converter(backend: str = "docling-parse", pipeline: PipelineConfig | None = None) -> Any:
         from docling.datamodel.base_models import InputFormat
@@ -252,7 +261,7 @@ class DoclingParser:
 
     @property
     def adapter_version(self) -> int:
-        return ADAPTER_VERSION
+        return 11 if self.pipeline.pdf_text_policy == "legacy" else ADAPTER_VERSION
 
     @property
     def image_scale(self) -> float:
@@ -301,7 +310,7 @@ class DoclingParser:
 
     @classmethod
     def _table_rows(
-        cls, item: Any, *, collapse_pdf_glyphs: bool
+        cls, item: Any, *, collapse_pdf_glyphs: bool, preserve_pdf_letters: bool = False
     ) -> tuple[list[list[str]], int]:
         grid = getattr(getattr(item, "data", None), "grid", None) or []
         rows: list[list[str]] = []
@@ -312,6 +321,7 @@ class DoclingParser:
                 text, cell_mapped = cls._clean_text(
                     str(getattr(cell, "text", "") or ""),
                     collapse_pdf_glyphs=collapse_pdf_glyphs,
+                    preserve_pdf_letters=preserve_pdf_letters,
                 )
                 clean_row.append(text)
                 mapped += cell_mapped
@@ -332,6 +342,49 @@ class DoclingParser:
         except (AttributeError, TypeError):
             return None
 
+    @classmethod
+    def _caption_provenance(cls, document: Any, items, assets) -> dict[str, Any]:
+        """Keep source labels/geometry separately; never duplicate captions in chunks.
+
+        Source boxes retain their explicit coordinate origin, including multipage
+        char spans. Missing geometry/owners remain missing, not inferred from assets.
+        """
+        owners: dict[str, list[dict[str, Any]]] = {}
+        for item, _ in items:
+            owner_ref = getattr(item, "self_ref", None)
+            for ref in getattr(item, "captions", None) or []:
+                caption_ref = str(getattr(ref, "cref", ""))
+                owner = {"source_ref": owner_ref, "node_type": cls._label(item),
+                         "image_id": None, "table_id": None, **assets.get(owner_ref, {})}
+                if owner not in owners.setdefault(caption_ref, []):
+                    owners[caption_ref].append(owner)
+        records, seen = [], set()
+        for item in [*(item for item, _ in items), *(getattr(document, "texts", None) or [])]:
+            if cls._label(item) != "caption":
+                continue
+            source_ref = getattr(item, "self_ref", None)
+            key = source_ref if source_ref is not None else id(item)
+            if key in seen:
+                continue
+            seen.add(key)
+            provenance = []
+            for prov in getattr(item, "prov", None) or []:
+                box = getattr(prov, "bbox", None)
+                bbox = cls._bbox(SimpleNamespace(prov=[prov]))
+                origin = getattr(box, "coord_origin", None)
+                span = getattr(prov, "charspan", None)
+                provenance.append({"page": int(prov.page_no), "bbox": list(bbox) if bbox else None,
+                                   "coord_origin": str(getattr(origin, "value", origin)) if origin is not None else None,
+                                   "charspan": list(span) if span is not None else None})
+            records.append({"source_ref": source_ref, "text": str(getattr(item, "text", "") or ""),
+                            "orig": str(getattr(item, "orig", "") or ""), "provenance": provenance,
+                            "owners": owners.get(source_ref, [])})
+        known = {record["source_ref"] for record in records}
+        unresolved = [{"owner_ref": owner["source_ref"], "caption_ref": ref}
+                      for ref, parents in owners.items() if ref not in known for owner in parents]
+        return {"schema_version": 1, "label_source": "docling_unreviewed",
+                "items": records, "unresolved_links": unresolved}
+
     @staticmethod
     def _image_bytes(item: Any, document: Any) -> bytes | None:
         try:
@@ -345,11 +398,15 @@ class DoclingParser:
         return output.getvalue()
 
     @staticmethod
-    def _clean_text(text: str, *, collapse_pdf_glyphs: bool) -> tuple[str, int]:
+    def _clean_text(text: str, *, collapse_pdf_glyphs: bool,
+                    preserve_pdf_letters: bool = False) -> tuple[str, int]:
+        # The helper's legacy default is retained for frozen research scripts.
+        # Production adapt() always passes the selected policy explicitly.
         text = _HTML_COMMENT.sub("", text).strip()
         if not collapse_pdf_glyphs:
             return text, 0
-        text = _REPEATED_PDF_GLYPH.sub(r"\1", text)
+        if not preserve_pdf_letters:
+            text = _REPEATED_PDF_GLYPH.sub(r"\1", text)
         mapped = sum(ord(character) in _SYMBOL_TRANSLATION for character in text)
         return text.translate(_SYMBOL_TRANSLATION), mapped
 
@@ -506,6 +563,7 @@ class DoclingParser:
     def adapt(self, document: Any, filename: str) -> ParsedDocument:
         suffix = Path(filename).suffix.lower()
         collapse_pdf_glyphs = suffix == ".pdf"
+        preserve_pdf_letters = self.pipeline.pdf_text_policy == "preserve"
         items = list(document.iterate_items())
         recovered_headings = set()
         if collapse_pdf_glyphs:
@@ -545,6 +603,7 @@ class DoclingParser:
             for reference in (getattr(item, "captions", None) or [])
         }
         nodes: list[DocumentNode] = []
+        source_assets: dict[str, dict[str, Any]] = {}
         images: dict[str, bytes] = {}
         dropped: Counter[str] = Counter()
         warnings: list[str] = []
@@ -585,7 +644,8 @@ class DoclingParser:
                 level = None
                 text = self._table_text(item, document)
                 table_rows, table_mapped = self._table_rows(
-                    item, collapse_pdf_glyphs=collapse_pdf_glyphs
+                    item, collapse_pdf_glyphs=collapse_pdf_glyphs,
+                    preserve_pdf_letters=preserve_pdf_letters,
                 )
                 symbol_characters_mapped += table_mapped
                 table_id = self._table_id(table_rows)
@@ -609,12 +669,18 @@ class DoclingParser:
                 level = None
                 text = str(getattr(item, "text", "") or "")
 
+            source_ref = getattr(item, "self_ref", None)
+            if source_ref is not None and node_type in {"figure", "table"}:
+                source_assets[source_ref] = {"node_type": node_type, "image_id": image_id, "table_id": table_id}
+
             text, text_mapped = self._clean_text(
-                text, collapse_pdf_glyphs=collapse_pdf_glyphs
+                text, collapse_pdf_glyphs=collapse_pdf_glyphs,
+                preserve_pdf_letters=preserve_pdf_letters,
             )
             raw_text, raw_mapped = self._clean_text(
                 str(getattr(item, "orig", "") or ""),
                 collapse_pdf_glyphs=collapse_pdf_glyphs,
+                preserve_pdf_letters=preserve_pdf_letters,
             )
             symbol_characters_mapped += text_mapped + raw_mapped
             if node_type == "list_item" or (
@@ -642,6 +708,7 @@ class DoclingParser:
                 context_prefix, context_mapped = self._clean_text(
                     self._caption(item, document) or "",
                     collapse_pdf_glyphs=collapse_pdf_glyphs,
+                    preserve_pdf_letters=preserve_pdf_letters,
                 )
                 symbol_characters_mapped += context_mapped
             nodes.append(
@@ -697,6 +764,8 @@ class DoclingParser:
                     "runs_stitched": runs_stitched,
                     "symbol_characters_mapped": symbol_characters_mapped,
                     "stripped_pua_bullets": stripped_pua_bullets,
+                    **({"caption_provenance": self._caption_provenance(document, items, source_assets)}
+                       if preserve_pdf_letters else {}),
                 },
             ),
             images=images,
