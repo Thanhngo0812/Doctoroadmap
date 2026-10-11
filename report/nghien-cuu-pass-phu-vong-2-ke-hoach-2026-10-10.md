@@ -665,6 +665,43 @@ trung bình ± độ lệch chuẩn qua 3 seed:
 - Lượt B vẫn có ích: B là thước đo độ nhiễu của nhãn, và là dữ liệu đối chứng cho E6.
 - Nút thắt nằm ở mô hình và đặc trưng. Đòn bẩy kế tiếp là E6 (cross-encoder đọc cửa sổ). Kết luận cuối vẫn chờ T-01.
 
+### 8.7 Chuẩn bị E6 (cross-encoder)
+
+**Ước thời gian** (2026-10-11, chưa thử, chưa biết con GPU cụ thể): khoảng 2–3 ngày theo lịch, trong đó Claude làm trực tiếp chừng 1–1,5 ngày, phần
+còn lại máy GPU tự chạy qua đêm.
+
+| bước | việc | thời gian |
+|---|---|---|
+| dựng máy | kiểm GPU, driver; cài torch CUDA, transformers; chép dữ liệu; chạy thử một lô | 1–2 giờ |
+| dựng dữ liệu | đầu vào = tên Y, cửa sổ có đánh dấu X, `x_dinh_nghia`; cho D-01 và doc-1, xstk, doc-4; kiểm khớp bảng E5 | 3–4 giờ |
+| huấn luyện | khoảng 36 nghìn cặp trong cửa sổ; PhoBERT-base và multilingual-e5-base (đóng băng embedding); 3 seed; 2–3 epoch; ước 2–4 giờ mỗi lượt | 12–24 giờ máy |
+| đo | chấm ba tài liệu vàng, ghép với LightGBM, E4, phút/cuốn trên CPU | 3–4 giờ |
+| báo cáo | | 1–2 giờ |
+
+Bản rút gọn để quyết có làm tiếp không (chỉ PhoBERT, 1 seed, 2 epoch) mất khoảng 1 ngày. Không dùng bản này để kết luận, vì E9 cho thấy một seed
+dễ cho số "may".
+
+**Rủi ro thời gian:**
+- con GPU 4 GB cụ thể làm tốc độ chênh 2–3 lần;
+- e5-base có thể không vừa bộ nhớ, khi đó chỉ làm PhoBERT;
+- PhoBERT cần câu đã tách từ; dùng underthesea sẽ lệch với cách tách lúc huấn luyện trước.
+
+**Bộ nhớ chỉ là chuyện lúc fine-tune.** Lúc fine-tune phải giữ gradient và trạng thái Adam, khoảng 16 byte mỗi tham số. Lúc suy luận trong sản phẩm chỉ
+còn trọng số:
+- PhoBERT-base: khoảng 0,54 GB fp32, 0,14 GB int8;
+- e5-base: khoảng 1,1 GB fp32.
+
+Sản phẩm chạy cross-encoder trên CPU, không cần GPU. Cái giá là thời gian CPU: ước 10–30 cặp mỗi giây, vài phút cho một cuốn cỡ doc-4 (4.124 ứng
+viên). E6 phải đo số này. Cách tăng tốc nếu cần:
+- ONNX cộng int8;
+- cắt độ dài đầu vào;
+- chỉ chấm cặp mà LightGBM chưa chắc.
+
+**Chủ dự án cần cung cấp trước E6:**
+- kết quả `nvidia-smi`, RAM, ổ đĩa còn trống;
+- máy để chạy qua đêm được không;
+- cách SSH. Không ghi thông tin đăng nhập vào repo, bộ nhớ hay báo cáo.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
