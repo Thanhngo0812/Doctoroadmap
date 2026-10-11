@@ -120,13 +120,20 @@ def main():
 
     if args.so_voi:
         other = {(r["phieu_id"], r["x_id"]): r for r in read_jsonl(args.so_voi)}
-        common = [k_ for k_ in other if k_ in labels and other[k_].get("luot") == labels[k_].get("luot")]
+        common = [k_ for k_ in other if k_ in labels and key[k_[0]]["loai"] == "thuc"]
         pairs = [(other[k_]["nhan"], labels[k_]["nhan"]) for k_ in common]
         po, kp = kappa(pairs)
-        po_h, kp_h = kappa([(a == "can_de_hieu", b == "can_de_hieu") for a, b in pairs])
-        po_c, kp_c = kappa([(a == "cong_cu", b == "cong_cu") for a, b in pairs])
-        print(f"== so với {args.so_voi}: {len(pairs)} cặp chung | năm nhãn khớp {po:.2f} kappa {kp:.2f} | cạnh cứng kappa {kp_h:.2f}"
-              f" | cong_cu kappa {kp_c:.2f}")
+        print(f"== so với {args.so_voi}, trên phiếu thật: {len(pairs)} cặp chung | năm nhãn khớp {po:.2f} kappa {kp:.2f}")
+        for lab in ("can_de_hieu", "cong_cu", "khong", "khop_nham", "nguoc"):
+            po_l, kp_l = kappa([(a == lab, b == lab) for a, b in pairs])
+            print(f"  {lab:12s} tệp kia {sum(a == lab for a, _ in pairs):5d} | tệp này {sum(b == lab for _, b in pairs):5d} | kappa {kp_l:.2f}")
+        confusion = collections.Counter(pairs)
+        print("  bảng chéo (tệp kia, tệp này), 8 ô lớn nhất ngoài đường chéo:",
+              [(a, b, v) for (a, b), v in confusion.most_common() if a != b][:8])
+        by_field = collections.defaultdict(list)
+        for k_ in common:
+            by_field[sheets[k_[0]]["linh_vuc"]].append((other[k_]["nhan"] == "can_de_hieu", labels[k_]["nhan"] == "can_de_hieu"))
+        print("  cạnh cứng theo lĩnh vực:", {field: f"{kappa(v)[1]:.2f} (n={len(v)})" for field, v in sorted(by_field.items())})
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@ ngoài mẫu của chính các tài liệu học (F1 mức dòng lớn nhất), 
 viên bằng tỉ lệ dương gộp của nhãn trên tài liệu học. Chính sách thứ ba (`nguong_hieu_chinh`): hiệu chỉnh isotonic trên dự đoán ngoài mẫu
 của tài liệu học, giữ số ứng viên bằng tổng xác suất đã hiệu chỉnh trên tài liệu đo. Cả ba chốt trước khi chấm vàng.
 Đầu ra: `tmp/pass-phu-ml/diem/<lượt>/<doc>.csv` (pair_id, x, y, score; dòng ngoài ứng viên điểm 0) và `nguong.json`.
-Chạy: tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e2b.py [--nhan=v3|y-dinh|y-dinh-cung] [--mo-hinh=lightgbm|logistic] [--them-anh] [--ngu-nghia] [--tach-tu] [--khong-main] [--luot=<tên>]
+Chạy: tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e2b.py [--nhan=v3|y-dinh|y-dinh-cung] [--mo-hinh=lightgbm|logistic] [--them-anh] [--ngu-nghia] [--tach-tu] [--khong-main] [--seed=<n>] [--luot=<tên>]
 """
 import json
 import sys
@@ -78,6 +78,8 @@ def load(docs, label, semantic=False):
 
 WORDS = "--tach-tu" in sys.argv
 NO_MAIN = "--khong-main" in sys.argv
+# `--seed=<n>`: seed của LightGBM (E9, vòng 2). Mặc định giữ seed của vòng 1 nên kết quả cũ không đổi.
+SEED = int(next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--seed=")), 20261005))
 
 
 def make_model(name, seed=20261005):
@@ -88,7 +90,7 @@ def make_model(name, seed=20261005):
 
 
 def fit_predict(name, train, test, features):
-    model = make_model(name)
+    model = make_model(name, seed=SEED)
     model.fit(train[features].fillna(-1.0).to_numpy(), train.nhan.to_numpy())
     return model, model.predict_proba(test[features].fillna(-1.0).to_numpy())[:, 1]
 

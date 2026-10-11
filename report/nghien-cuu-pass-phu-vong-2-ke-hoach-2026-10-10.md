@@ -555,6 +555,73 @@ Bảng dưới so ba phương án: LLM v3 (số của vòng 1), vòng 1 (học t
 - **E6 (cross-encoder) là đòn bẩy kế tiếp**, cần máy GPU.
 - Kết luận cuối vẫn chờ T-01.
 
+### 8.4 Lượt B
+
+Lượt B xong ngày 2026-10-11, từ 10:28 tới 11:02, chia 91 lô. Script kiểm định dạng chạy không `--mot-phan`: 10.178/10.178 cặp, ĐẠT, mã thoát 0.
+
+**Người gán không phải Claude như mục 1.5 đề xuất.** Tệp ghi `OpenAI Codex multi-agent / GPT-6-Astra + GPT-6.1-Sol`, cùng họ GPT-6 với lượt A.
+- A và B vẫn là hai phiên độc lập, khác mô hình con.
+- Nhưng đồng thuận A∩B không loại được thiên lệch chung của họ GPT-6. Báo cáo gọi nó là "đồng thuận hai lượt cùng họ mô hình".
+
+Chấm bằng `kiem_chat_luong_d01.py`:
+
+| phép đo | lượt A | lượt B |
+|---|---|---|
+| phiếu kiểm, cạnh cứng (cùng 371 cặp) | P 0,67, R 0,79, khớp 0,84 | **P 0,81**, R 0,77, **khớp 0,89** |
+| phiếu lặp, năm nhãn / cạnh cứng (kappa) | 0,45 / 0,49 (3.142 cặp) | **0,85 / 0,90** (465 cặp) |
+| `can_de_hieu` trong cửa sổ, cùng 5.195 cặp của 831 phiếu thật | 39% | 31% |
+| `khop_nham` trong cửa sổ, cùng các cặp đó | 2% | 11% |
+
+**A so với B**, trên 9.342 cặp của 831 phiếu thật trong mẫu:
+- năm nhãn: khớp 0,75, kappa 0,47;
+- theo từng nhãn (một với còn lại): `can_de_hieu` 0,56; `khong` 0,49; `cong_cu` 0,29; `khop_nham` 0,28; `nguoc` 0,11;
+- cạnh cứng theo lĩnh vực: từ 0,46 (Sinh học) tới 0,65 (CNTT);
+- bất đồng lớn nhất: A gán `can_de_hieu` mà B gán `khong` (685 cặp), chiều ngược lại 443 cặp; A gán `khong` mà B gán `khop_nham` 379 cặp,
+  B gán `nguoc` 211 cặp.
+
+**Đọc kết quả** (phán xét của Claude):
+- B chặt và ổn định hơn A, và gần vàng hơn trên phiếu kiểm.
+- Kappa A–B với cạnh cứng (0,56) nằm trong khoảng đồng thuận người theo PREAP (0,45–0,71). Hai nhãn hiếm `nguoc` và `cong_cu` thì gần như không
+  đồng thuận.
+- E10 sẽ so học trên A, trên B và trên A∩B, ở cùng cỡ dữ liệu trên 831 phiếu này.
+
+### 8.5 E9: nhiều seed
+
+**Cách làm.** Học lại vòng 1 (ý định LLM v3) và E5 (nhãn A) với 5 seed LightGBM mới (1–5), cộng seed gốc 20261005: 6 seed mỗi phương án. Mỗi seed lắp
+cạnh với ngưỡng hiệu chỉnh và chấm E4 trên ba tài liệu vàng.
+- Tham số `--seed` thêm vào `thi_nghiem_e2b.py`; E5 dùng chung qua đó.
+- Không truyền seed thì điểm vòng 1 ra y hệt bản đã lưu, đã kiểm trên cả ba tài liệu.
+
+Mỗi ô ghi trung bình ± độ lệch chuẩn [min–max] qua 6 seed:
+
+| tài liệu | phương án | Q7 | Q7b | bao đóng P | bao đóng R |
+|---|---|---|---|---|---|
+| doc-1 | vòng 1 | 0,630 ± 0,088 [0,47–0,70] | 0,722 ± 0,069 [0,64–0,80] | 0,788 ± 0,052 [0,70–0,83] | 0,684 ± 0,066 [0,56–0,74] |
+| | E5 | 0,596 ± 0,010 [0,58–0,60] | 0,747 ± 0,002 | 0,825 ± 0,004 | 0,654 ± 0,015 |
+| xstk | vòng 1 | 0,200 ± 0,004 | 0,498 ± 0,034 | 0,591 ± 0,019 | 0,177 ± 0,011 |
+| | E5 | 0,228 ± 0,025 | 0,546 ± 0,083 [0,45–0,62] | 0,645 ± 0,067 [0,56–0,72] | 0,184 ± 0,013 |
+| doc-4 | vòng 1 | 0,581 ± 0,011 | 0,717 ± 0,004 | 0,712 ± 0,009 | 0,473 ± 0,014 |
+| | E5 | 0,483 ± 0,004 | 0,866 ± 0,008 | 0,877 ± 0,011 | 0,518 ± 0,003 |
+
+Hiệu E5 trừ vòng 1, ghép theo seed (số seed E5 hơn trên 6):
+
+| tài liệu | Q7 | Q7b | bao đóng P | bao đóng R |
+|---|---|---|---|---|
+| doc-1 | −0,034 ± 0,093 (2/6) | +0,025 ± 0,070 (4/6) | +0,037 ± 0,054 (4/6) | −0,030 ± 0,074 (1/6) |
+| xstk | **+0,028 ± 0,023 (6/6)** | +0,048 ± 0,104 (4/6) | +0,054 ± 0,071 (4/6) | +0,007 ± 0,011 (2/6) |
+| doc-4 | **−0,098 ± 0,013 (0/6)** | **+0,149 ± 0,009 (6/6)** | **+0,166 ± 0,017 (6/6)** | **+0,045 ± 0,012 (6/6)** |
+
+**Đọc kết quả** (phán xét của Claude):
+- **Vòng 1 không ổn định ở doc-1.** Q7 dao động từ 0,47 tới 0,70 chỉ vì đổi seed. Con số 0,672 của báo cáo vòng 1 là một seed khá may: trung bình là
+  0,630. Kết luận "doc-1 sát LLM" của vòng 1 vì vậy cần đọc lại với độ lệch này.
+- **E5 ổn định hơn hẳn ở doc-1:** độ lệch chuẩn của bao đóng P là 0,004, so với 0,052 của vòng 1. Học trên 34 nghìn nhãn đa lĩnh vực cho bộ kiểm ít
+  phụ thuộc may rủi hơn học trên vài nghìn nhãn LLM của ba tài liệu.
+- **doc-4: kết luận vững.** E5 hơn vòng 1 ở P, Q7b, R trong 6/6 seed, với chênh lệch gấp hơn 10 lần độ lệch chuẩn. E5 kém Q7 trong 6/6 seed.
+- **doc-1 và xstk:** chênh lệch nằm trong nhiễu, trừ Q7 của xstk (E5 hơn 6/6, +0,028). Cũng chính xstk là nơi E5 dao động theo seed nhiều nhất, vì
+  vàng nhỏ.
+- **Đánh đổi lặp lại ở cả hai tài liệu lớn:** E5 cho P và Q7b cao hơn nhưng Q7 thấp hơn. Bộ kiểm học từ nhãn agentic chặt hơn, giữ ít cạnh gián tiếp
+  hơn. Chọn bên nào là chọn giữa độ chính xác và độ phủ tổ tiên. Kết luận cuối phải đo trên T-01.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
