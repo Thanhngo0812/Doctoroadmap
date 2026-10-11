@@ -7,6 +7,9 @@ Với **mỗi** ứng viên X của **mỗi** phiếu, bạn chọn **đúng m�
 
 Nhãn của bạn dùng để huấn luyện một bộ phân loại quan hệ tiên quyết, chạy không cần mô hình ngôn ngữ lớn.
 
+> **Bản 1.1, 2026-10-10.** Bản này thêm ca khó 12 (mục 6) và ví dụ 10 (mục 7), không đổi luật cũ. Hai mục mới nói rõ cách áp ca 2, ca 3 và
+> ca 11 khi cửa sổ có câu định nghĩa một khái niệm khác ngoài Y. Agent đang gán dở phải đọc hai mục này trước lô kế tiếp.
+
 ## 1. Bạn nhận gì, trả gì
 
 | tệp | vai trò |
@@ -113,6 +116,16 @@ Ba nguyên tắc:
     - Không có mô tả rõ thì chọn `khong`.
 11. **Bắc cầu.** Y cần Z, Z cần X, và Z cũng là ứng viên: X là `khong`, `trung_gian` là Z. Nhưng câu định nghĩa Y dùng thẳng X thì X là
     `can_de_hieu`.
+12. **Cửa sổ có câu định nghĩa X** (thêm ở bản 1.1). Cửa sổ thường chép cả câu định nghĩa các khái niệm nằm cạnh Y, nhất là trong mục phân
+    loại ("Có ba loại…: A là…; B là…; C là…"). Câu định nghĩa X **không phải căn cứ** cho `can_de_hieu`.
+    - Căn cứ của `can_de_hieu` phải là câu định nghĩa hay giới thiệu Y, hoặc câu bối cảnh dẫn vào nó. `ly_do` nói định nghĩa Y dùng X thế nào,
+      không chỉ tả X.
+    - Nếu câu bạn định trích chỉ định nghĩa X, xét lần lượt:
+      - định nghĩa X dùng Y, hoặc X là một loại, một dạng, một trường hợp riêng của Y: `nguoc` (ca 2);
+      - X và Y là anh em, cùng một cấp trong một phép phân loại, được định nghĩa hay liệt kê cạnh nhau: `khong` (ca 3), kể cả khi hai câu định
+        nghĩa viết theo cùng một khuôn;
+      - X chỉ nối với Y qua một ứng viên Z khác của cùng phiếu: `khong`, `trung_gian` là Z (ca 11).
+    - Xem ví dụ 10.
 
 ## 7. Ví dụ
 
@@ -210,6 +223,19 @@ Các ví dụ tự soạn để minh hoạ, không lấy từ sách trong phiế
 
 Mọi ứng viên của phiếu này chọn `khong_ro`, `cau` là `null`: không đọc được câu định nghĩa.
 
+**Ví dụ 10 — Y = "Hợp âm thứ": cửa sổ định nghĩa cả anh em và khái niệm dựng trên Y** (thêm ở bản 1.1).
+- [0] Hợp âm ba là hợp âm gồm ba nốt chồng lên nhau theo quãng ba.
+- [1] Hợp âm trưởng là hợp âm ba có quãng ba trưởng ở dưới và quãng ba thứ ở trên.
+- [2]* Hợp âm thứ là hợp âm ba có quãng ba thứ ở dưới và quãng ba trưởng ở trên.
+- [3] Hợp âm La thứ là hợp âm thứ dựng trên nốt La.
+
+| X | nhãn | cau | lý do |
+|---|---|---|---|
+| Hợp âm ba | can_de_hieu | 2 | hợp âm thứ là một loại hợp âm ba |
+| Quãng ba thứ | can_de_hieu | 2 | định nghĩa Y dựa vào vị trí của quãng ba thứ |
+| Hợp âm trưởng | khong | — | anh em cùng là hợp âm ba; câu 1 chỉ định nghĩa X, không phải căn cứ cho Y |
+| Hợp âm La thứ | nguoc | 3 | câu 3 định nghĩa X qua Y |
+
 ## 8. Định dạng trả về
 
 Mỗi dòng là một đối tượng JSON, mã UTF-8, cho đúng một cặp (phiếu, ứng viên):
@@ -244,6 +270,7 @@ Mỗi dòng là một đối tượng JSON, mã UTF-8, cho đúng một cặp (p
    Script in số cặp đã gán và từng lỗi kèm số dòng. Sửa hết lỗi trước khi làm đợt sau.
 2. **Làm tiếp sau khi dừng:** chạy lệnh trên để xem tiến độ, rồi làm tiếp từ phiếu đầu tiên chưa đủ nhãn. Không gán lại cặp đã có.
 3. **Chạy song song nhiều tiến trình:**
+   - mỗi tiến trình đọc đủ hướng dẫn này, bản mới nhất, trước khi gán;
    - chia `phieu.jsonl` theo khoảng dòng, mỗi tiến trình ghi một tệp riêng;
    - xong thì nối các tệp lại;
    - kiểm tệp gộp **không** có `--mot-phan`.
