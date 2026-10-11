@@ -12,6 +12,20 @@ from pathlib import Path
 ADAPTER, ADAPTER_VERSION = "docling:2.114.0+pypdfium2", 11      # giống 16 cuốn D-01 (vd. d01-03 chunks v2)
 A4_GOLD_SHEET = "473a003957560b36d6fb16790066e6e6b2f8c6cd62786d9aa67cb72d0b30051e"  # tests/fixtures/a4/gold-blind.json
 MODEL = "gemini-3.1-flash-lite"
+STATS = ("runtime_seconds", "model_calls", "input_tokens", "output_tokens",
+         "embedding_model_calls", "embedding_input_tokens", "usage_responses",
+         "token_usage_complete", "measurement_history_complete", "section_count",
+         "completed_section_count", "failed_section_count", "empty_section_count")
+COST = ("input_tokens", "output_tokens", "usd")
+ROLES = ("noi_dung", "bai_tap", "cuoi_sach", "de_cuong", "mo_dau")
+
+
+def numbers(value, fields):
+    """Only explicitly allowed numeric scalars; metadata may contain book text."""
+    if value is None:
+        return None
+    return {key: value[key] for key in fields
+            if key in value and isinstance(value[key], (int, float, bool))}
 
 
 def latest(folder):
@@ -33,16 +47,16 @@ def check(root, doc):
     payload = load(canon_dir / "canonical.json")
     info["canonical"] = {"version": canon_v, "stage": payload.get("stage"), "so_nut": len(payload.get("nodes", [])),
                          "gold_sheet_id": (canon_m.get("gold_sheet_id") or "")[:12], "a4_gold_coverage": canon_m.get("a4_gold_coverage"),
-                         "ngon_ngu": canon_m.get("config", {}).get("declared_language"), "chi": canon_m.get("cost_summary")}
+                         "ngon_ngu": canon_m.get("config", {}).get("declared_language"), "chi": numbers(canon_m.get("cost_summary"), COST)}
     cand_v = canon_m.get("upstream_version")
     cand_m = load(root / "candidates" / doc / f"v{cand_v}" / "manifest.json")
     info["candidates"] = {"version": cand_v, "model_id": cand_m.get("model_id"), "llm_transport": cand_m.get("llm_transport"),
-                          "stats": cand_m.get("stats"), "chi": cand_m.get("cost_summary")}
+                          "stats": numbers(cand_m.get("stats"), STATS), "chi": numbers(cand_m.get("cost_summary"), COST)}
     chunk_v = cand_m.get("upstream_version")
     chunk_m = load(root / "chunks" / doc / f"v{chunk_v}" / "manifest.json")
     parser = chunk_m.get("config", {}).get("parser", {})
     info["chunks"] = {"version": chunk_v, "parser": parser, "llm_transport": chunk_m.get("llm_transport"),
-                      "stats": chunk_m.get("stats"), "role_counts": chunk_m.get("role_counts")}
+                      "stats": numbers(chunk_m.get("stats"), STATS), "role_counts": numbers(chunk_m.get("role_counts"), ROLES)}
     info["graph_ton_tai"] = (root / "graph" / doc).exists()
 
     if parser.get("adapter") != ADAPTER or parser.get("adapter_version") != ADAPTER_VERSION:

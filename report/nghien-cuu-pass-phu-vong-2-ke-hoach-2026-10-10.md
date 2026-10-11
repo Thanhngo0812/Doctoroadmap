@@ -702,6 +702,52 @@ viên). E6 phải đo số này. Cách tăng tốc nếu cần:
 - máy để chạy qua đêm được không;
 - cách SSH. Không ghi thông tin đăng nhập vào repo, bộ nhớ hay báo cáo.
 
+### 8.8 Vé T-01a: Claude kiểm, đạt (2026-10-11)
+
+Nhân viên chạy A1 → A5 trên hai cuốn giữ lại và giao bốn phiếu trống ([báo cáo của nhân viên](v4-T01a-2026-10-11.md), commit `e13a6b1`). Claude kiểm
+lại từng tiêu chí của [vé](../task/v4/T-01a-chay-luong-hai-cuon-giu-lai.md) bằng lệnh chỉ in metadata, không mở sách, chunk, canonical hay phiếu.
+
+| tiêu chí | Claude tự kiểm | kết quả |
+|---|---|---|
+| checker in ĐẠT cả hai cuốn, mã thoát 0 | chạy `kiem_t01a.py d01-t01 d01-t02` | đạt: canonical v1 complete (419 và 464 nút), adapter 11, `vi`, flash-lite qua Vertex, chưa có graph |
+| tổng chi ≤ 5 USD | đọc chi trong manifest | đạt: LLM đo được 1,942 USD; phần chưa đo không đủ vượt trần (xem dưới) |
+| hai cặp phiếu A1/A2 có SHA-256 | băm tệp, không mở | đạt: bốn phiếu, hai tệp chọn phạm vi, hai danh sách chương, cả tám hash khớp báo cáo |
+| không có tệp nào của hai cuốn trong git | `git show --stat`, `git ls-files` | đạt: `e13a6b1` chỉ có báo cáo; không tệp nào trong `document-data/` hay `artifacts/` được theo dõi |
+| điều kiện 1 và 2 có ghi | đọc báo cáo; kiểm checkout | đạt: chủ dự án xác nhận quyền 2026-10-11; chạy trên checkout sạch ghim `ff797eb` (kiểm HEAD, không có thay đổi ở `src/`, `scripts/`), 1.107 test xanh |
+
+**Phần chi chưa đo:** một lời gọi A3 của d01-t02 thiếu số token, và 150.289 token embedding chưa quy đổi ra USD. Lời gọi A3 trung bình tốn khoảng
+0,001 USD. Muốn vượt trần thì giá embedding phải trên khoảng 20 USD mỗi triệu token, gấp khoảng 80 lần giá input của chính LLM trong mã (0,25 USD
+mỗi triệu). Số 429 chưa đo được: telemetry chưa ghi riêng số này.
+
+**Sự cố mất mù d01-t01, lỗi do Claude.**
+- **Nguyên nhân:** bản đầu của `kiem_t01a.py` in nguyên `stats` của manifest. Trong `candidates.stats` có `candidate_quality`, chứa tên và mô tả
+  khái niệm (mô tả trùng, tên thiếu bằng chứng, cảnh báo). Khi viết, Claude chỉ thử ca đỏ trên d01-03, doc-4 và ca xanh trên dữ liệu dựng giả, chưa
+  kiểm xem `stats` có chứa chữ hay không.
+- **Ai thấy gì:** agent của nhân viên thấy một phần tên và mô tả khái niệm của d01-t01 khi chạy checker sau A5. Báo cáo và commit không chép nội
+  dung đó; Claude đã kiểm báo cáo không có các khoá của khối bị lộ trước khi đọc.
+- **Xử lý:**
+  - chủ dự án chấp nhận giữ d01-t01 kèm ghi nhận sự cố;
+  - nhân viên vá checker bằng danh sách trường số được phép in, kèm test hồi quy dữ liệu giả;
+  - Claude chạy lại test: đỏ trên bản cũ ở đúng khẳng định "chuỗi bí mật không được lọt ra", xanh trên bản vá.
+- **Ảnh hưởng tới phép đo vòng 2: nhỏ.**
+  - Đầu ra A1 → A5 của d01-t01 đã có trước khi lộ, và mã chạy ghim ở `ff797eb`.
+  - Học trò LightGBM, Claude và hai người gán đều chưa thấy nội dung.
+  - Rủi ro còn lại: nhân viên đã thấy một phần nội dung, nên các vé triển khai vòng 2 không được chỉnh theo d01-t01.
+- **Luật từ nay:** công cụ kiểm trên tập giữ lại chỉ in theo danh sách trường được phép, không in nguyên dict nào của manifest.
+
+**Ghi chú phụ:**
+- Chương do agent chọn từ danh sách chương, là ngoại lệ chủ dự án duyệt, không phải người chọn:
+  - d01-t01: dải 36–40, 46 khái niệm đích;
+  - d01-t02: chương 10, 37 khái niệm đích;
+  - cả hai nằm trong mốc 26–47.
+- Khối "nguyên đầu ra" của checker trong báo cáo nhân viên lệch thứ tự khoá `role_counts` so với đầu ra thật; mọi số y hệt.
+- `scripts/do-chi-phi/bao_cao.py` (của Claude) đòi artifact graph, nên không chạy được trên lượt dừng ở A5. Sửa khi cần.
+- `document-data/` chưa có trong `.gitignore`. Một lệnh `git add -A` sẽ đưa hai cuốn giữ lại vào commit. Đề nghị chủ dự án hoặc nhân viên thêm vào
+  `.gitignore`.
+
+**Còn lại của T-01:** hai người gán nộp phiếu, rồi làm bước 8 của vé (`a8-gold-check`, gộp, hội ý, đóng băng JSON, ghi SHA-256). Sau đó mới tới vé
+đánh giá vòng 2, chạy A6 → A10 trên cấu hình đã khoá.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:

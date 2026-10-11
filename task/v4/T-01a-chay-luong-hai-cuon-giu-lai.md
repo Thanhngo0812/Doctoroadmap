@@ -10,9 +10,27 @@
 
 **Chi phí mô hình:** A2, A3, A4/A5 trên hai cuốn ngắn (92 và 113 trang), qua Vertex, ước dưới 2 USD. **Trần của vé: 5 USD.** Chạm trần thì dừng và báo.
 
-**Trạng thái:** soạn 2026-10-11, chờ giao.
+**Trạng thái:** 2026-10-11, **đã xong chạy A1–A5 và sinh/giao bốn phiếu trống; chờ hai người gán độc lập**. Checker sửa báo ĐẠT cả hai cuốn, canonical v1 complete. Chủ dự án chấp nhận sự cố mất mù cuốn đầu. Checker đã sửa allowlist, test đỏ trước/xanh sau. Không ghi nhận d01-t01 là sạch; mã pipeline giữ nguyên `ff797eb`. Tổng LLM đo được **1,942178 USD**, thiếu token 1 lời gọi A3 và chưa quy đổi embedding; không coi đây là hóa đơn đầy đủ.
 - **Điều kiện 1 đạt:** ngày 2026-10-11, chủ dự án xác nhận quyền dùng hai cuốn, kể cả gửi lên Gemini.
 - **Điều kiện 2 đang làm:** chủ dự án đã giao nhân viên commit phần việc đang làm dở.
+- **Nhân viên kiểm trước chạy 2026-10-11:** mốc A1 đã commit `ff797eb`, Settings đúng Vertex/Flash Lite; nhưng còn mã D-01/checkpoint/retry chưa commit ở `src/`, `scripts/`, nên chưa đạt điều kiện cây sạch. Chưa chạy hoặc chi trên hai cuốn. Xem [báo cáo điều kiện](../../report/v4-T01a-2026-10-11.md); chờ quyết định đóng mốc mã còn lại hoặc chạy checkout sạch ghim commit A1.
+- **Cập nhật sau khi chủ dự án giao quyền chọn phương án:** dùng worktree sạch `tmp/t01a-clean-ff797eb`, HEAD `ff797eb`, giữ nguyên `.env`; không đưa mã dở D-01 vào lượt giữ lại. Test tại checkout sạch **1.107 passed**, exit 0. Điều kiện 2 đạt trên checkout chạy. A1 d01-t01 bắt đầu, đúng Docling/pypdfium2/legacy; chưa chi API, chưa chạy d01-t02. Sau A2 dry-run chờ chủ dự án duyệt dự toán theo vé.
+- **Mốc 11:02 ngày 2026-10-11:** A1 d01-t01 exit 0, parse v1/chunks v1, adapter 11, không cảnh báo chữ. A2 dry-run: 5 lời gọi, **0,010431 USD** trước retry; chờ duyệt, đề nghị trần 0,05 USD cho A2 cuốn đầu. Tổng chi mới 0 USD; chưa chạy d01-t02, A3–A5 hoặc roadmap.
+- **Cập nhật A2:** chủ dự án duyệt trần 0,05 USD; A2 d01-t01 exit 0, chunks v2, 5 lời gọi, 25.241/2.815 token vào/ra, **0,01053275 USD** đo được. Tiếp tục A3 → A4/A5 theo vé trong trần toàn lượt 5 USD; chưa chạy d01-t02. Số 429 chưa đo được.
+- **Mốc dừng sau A5:** candidates v1 (118/118 mục, 0 thất bại), canonical v1 complete (419 nút); checker exit 0/ĐẠT nhưng in nguyên stats có nội dung lồng, trái hợp đồng chỉ metadata. Tổng LLM **0,82737350 USD**, embedding 51.074 token chưa quy đổi USD, 429 chưa đo. Không chạy tiếp, không sửa runtime/checker, chưa xuất chương/Excel. Chi tiết sự cố và số đo trong [báo cáo T-01a](../../report/v4-T01a-2026-10-11.md); cần quyết định xử lý tính mù trước cuốn thứ hai.
+- **Sau quyết định chủ dự án:** chấp nhận ngoại lệ mất mù cuốn đầu và tiếp tục; chỉ sửa checker báo cáo, không sửa pipeline/.env/prompt. Test hồi quy dữ liệu giả đỏ trên bản cũ, xanh sau sửa; kiểm lại d01-t01 ĐẠT. Đã xuất danh sách chương cấp 1 vào artifacts/a8-gold cho chủ dự án (không mở), chờ chọn chương. A1 d01-t02 bắt đầu; chưa chi LLM thêm, chưa sinh Excel.
+- **Ngoại lệ chọn chương do chủ dự án yêu cầu:** giao agent riêng xem danh sách chương để chọn phạm vi và sinh hai phiếu trống, không đọc sách/artifact ngữ nghĩa, không gán nhãn hoặc chấm. Nhân viên chính chỉ nhận số đếm và hash. Ngoại lệ này không khôi phục tính mù của cuốn đầu.
+- **Phiếu cuốn đầu đã giao:** cấp 1, dải số 36-40, 46 khái niệm đích / 331 nguồn, hai phiếu A1/A2 dưới artifacts/a8-gold. Nhân viên không mở phiếu; SHA-256 ghi trong báo cáo. Chờ hai người gán độc lập, không chấm hoặc hội ý trước khi nhận phiếu.
+- **Cuốn thứ hai:** A1 exit 0, parse v1/chunks v1, adapter 11, không cảnh báo chữ, 389,75 giây. A2 dry-run 8 lời gọi, **0,01827 USD** trước retry; đề nghị trần A2 **0,10 USD**, chờ duyệt theo vé. Không có pipeline đang chạy; tổng LLM vẫn **0,82737350 USD** chưa gồm embedding.
+- **Sau duyệt A2 cuốn thứ hai:** chủ dự án duyệt 0,10 USD; A2 exit 0, chunks v2, 8 lời gọi, **0,02083700 USD** theo token. A3 đang chạy; tổng LLM xác nhận **0,84821050 USD** chưa gồm embedding/A3 đang chạy. Không đổi pipeline hoặc cấu hình.
+- **Hai cuốn qua A5:** d01-t02 candidates v1, 210/210 mục, 0 thất bại; canonical v1 complete, 464 nút. Hậu kiểm hai cuốn exit 0/ĐẠT, không graph. Tổng LLM đo được **1,942178 USD**; A3 d01-t02 thiếu usage của 1 lời gọi, embedding 150.289 token chưa quy đổi USD, 429 chưa đo. Không có pipeline đang chạy. Agent đang sinh hai phiếu trống cuốn thứ hai.
+- **Bàn giao bốn phiếu:** d01-t01 cấp 1/dải 36-40 (46 đích), d01-t02 cấp 1/mã 10 (37 đích); mỗi cuốn đủ phiếu trống A1/A2. SHA-256 và lệnh trong báo cáo. Chưa có vàng người hoặc hội ý/gộp, không chấm; không có pipeline đang chạy. Theo vé chỉ commit báo cáo, không stage sách/phiếu hoặc sửa riêng của chủ dự án.
+- **Mốc báo cáo:** commit **e13a6b1** chỉ chứa `report/v4-T01a-2026-10-11.md`, không chứa sách/phiếu. Checker hậu kiểm đã sửa và test xanh ở cây gốc còn chưa commit, đúng phạm vi chỉ commit báo cáo của vé; không dùng checker cũ của checkout ghim để in metadata. Trạng thái vé cập nhật trong worktree, không gộp với commit báo cáo.
+- **Claude kiểm 2026-10-11: đạt phần chạy và giao phiếu** → [báo cáo vòng 2, mục 8.8](../../report/nghien-cuu-pass-phu-vong-2-ke-hoach-2026-10-10.md).
+  - Checker ĐẠT hai cuốn. Tám hash khớp. Checkout ghim `ff797eb` sạch. Chi đo được 1,94 USD, phần chưa đo không đủ vượt trần 5 USD.
+  - Sự cố mất mù d01-t01 là lỗi checker của Claude. Bản vá allowlist của nhân viên đúng: test đỏ trên bản cũ, xanh trên bản vá. Claude commit bản vá
+    và test.
+  - Còn bước 8 khi hai người nộp phiếu.
 
 ## Vì sao
 
