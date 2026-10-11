@@ -11,6 +11,8 @@
 **Chi phí mô hình:** A2, A3, A4/A5 trên hai cuốn ngắn (92 và 113 trang), qua Vertex, ước dưới 2 USD. **Trần của vé: 5 USD.** Chạm trần thì dừng và báo.
 
 **Trạng thái:** soạn 2026-10-11, chờ giao.
+- **Điều kiện 1 đạt:** ngày 2026-10-11, chủ dự án xác nhận quyền dùng hai cuốn, kể cả gửi lên Gemini.
+- **Điều kiện 2 đang làm:** chủ dự án đã giao nhân viên commit phần việc đang làm dở.
 
 ## Vì sao
 
