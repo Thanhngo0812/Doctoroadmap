@@ -14,6 +14,17 @@ Báo cáo dùng các quy ước sau:
 - Đoạn mở đầu bằng *Suy luận:* là ý kiến của người viết, chưa có thí nghiệm.
 - "Từ" khi đếm độ dài là token tách bằng khoảng trắng, như mã hiện tại đếm; với tiếng Việt, mỗi token là một âm tiết.
 
+> **Sửa đổi 2026-10-11 theo quyết định của chủ dự án:** "sau A10 cứ LLM thoải mái", nên cách đặt tên tốt nhất vẫn là LLM.
+> - Khuyến nghị ở mục 6.1 và luật quyết định ở mục 7.6 đã đổi theo hướng này. LLM là đường chính: nó đặt tên và viết mô tả cho mọi module
+>   của đồ án.
+> - Tiêu đề tác giả và ứng viên xếp hạng bằng mã trở thành **đầu vào** của lời gọi, không còn là tầng thay thế LLM.
+> - Bản tất định (tầng 1–2 cũ) chỉ còn hai vai trò:
+>   - đường lùi khi lời gọi hỏng hay không qua kiểm;
+>   - mốc so sánh trong thí nghiệm.
+> - Các luật kiểm bằng mã ở mục 6.2 giữ nguyên.
+> - Ý 7 của Tóm tắt dưới đây là khuyến nghị ban đầu, giữ lại để đối chiếu.
+> - Còn mở: seminar trước đây yêu cầu cả đặt tên module không dùng LLM. Chủ dự án cần xác nhận quyết định mới có áp cho seminar không.
+
 ---
 
 ## Tóm tắt
@@ -409,7 +420,30 @@ của mình, nên có căn cứ để bỏ LLM khi đến lúc.
 
 ### 6.1 Khung chung cho hai môn (phương án e)
 
-Mỗi module đi qua ba tầng; tầng 1 và tầng 2 không dùng LLM:
+> **Đã thay bằng 6.1a (2026-10-11).** Bảng ba tầng dưới đây là khuyến nghị ban đầu, giữ lại để đối chiếu.
+
+### 6.1a Khuyến nghị theo quyết định chủ dự án: LLM đặt tên mọi module (đồ án)
+
+Mỗi module của đồ án đi qua bốn bước:
+
+| bước | việc | ai làm | khi hỏng |
+|---|---|---|---|
+| 1. Chuẩn bị ứng viên | Làm sạch tiêu đề tác giả: đường mục, mục đa số, tổ tiên chung. Xếp hạng 3–5 ứng viên tiêu đề và cụm như 6.3 | mã, 0 USD | — |
+| 2. Lời gọi đặt tên và mô tả | Gửi một lời gọi cho mỗi module. Đầu vào và lược đồ đầu ra theo 6.2, cụ thể: khái niệm của module dùng `display_name` kèm mô tả A5 cắt ngắn; tiêu đề tác giả kèm ứng viên; tên và khái niệm của module ±1 làm đối chứng | LLM | sang bước 4 |
+| 3. Kiểm | Năm luật ở 6.2: từ vựng có căn cứ, không mượn từ module kề, `node_ids` hợp lệ, độ dài, không trùng ±2 | mã | sang bước 4 |
+| 4. Đường lùi | Dùng tên tầng 1–2 tất định (tiêu đề tác giả nếu module trùng một mục, không thì xếp hạng). Dùng mô tả khuôn. Ghi cờ | mã | — |
+
+Với module trùng đúng một mục sách, prompt nói rõ: tiêu đề tác giả là lựa chọn mặc định. Mô hình chỉ đổi tiêu đề khi đó là nhãn chung,
+trùng với module kề, hoặc không phủ nội dung module. Lý do là bằng chứng [21].
+
+Chi phí khi mọi module đều qua lời gọi (khoảng 900–1.500 token vào, 150–200 token ra):
+- doc-4: 87 lời gọi, khoảng 0,035–0,059 USD;
+- doc-1: 32 lời gọi, khoảng 0,013–0,022 USD;
+- thời gian: dưới 1 phút ở song song 16 (*Suy luận*, cần đo).
+
+Hai số trên đều không đáng kể so với USD/cuốn của Pha A.
+
+Mỗi module trước đây đi qua ba tầng; tầng 1 và tầng 2 không dùng LLM:
 
 | tầng | điều kiện vào | việc làm | đầu ra |
 |---|---|---|---|
@@ -632,7 +666,18 @@ Kết luận cuối vẫn lấy từ người chấm (7.4).
 
 ### 7.6 Luật quyết định (viết trước khi đo)
 
-Bốn luật sau phải ghi vào vé trước khi chạy:
+> **Sửa 2026-10-11:** theo quyết định của chủ dự án, LLM là đường chính, nên luật 2 cũ không còn dùng. Luật 2 cũ cho phép bỏ LLM khỏi khâu
+> tên nếu LLM không thắng bản tất định. Luật thay thế có bốn điều sau.
+> - **Không bỏ LLM.** Bản tất định chỉ là mốc so sánh. Nếu LLM thua bản tất định ở chấm mù, ta báo đánh đổi bằng số và chủ dự án quyết; không
+>   tự động quay về.
+> - **Chọn biến thể LLM.** So đối chứng ±1 (L1) với không đối chứng (L2), và so có ứng viên tầng 2 với không có.
+>   - Chọn biến thể thắng ở chấm mù theo cặp: ≥ 59/100 phiếu không ngang, kiểm định dấu p < 0,05.
+>   - Ràng buộc: tỉ lệ mượn ≤ 1% và mọi tên qua luật kiểm.
+>   - Không biến thể nào thắng rõ thì giữ L1, vì có bằng chứng [21], [22].
+> - **Đường lùi.** Tỉ lệ module phải dùng đường lùi phải được báo; trên 10% thì đọc từng ca và sửa prompt hay luật kiểm.
+> - Luật 1, 3, 4 bên dưới vẫn áp; luật 3 nay là một phần của phép chọn biến thể.
+
+Bốn luật ban đầu (giữ để đối chiếu; luật 2 đã thay):
 1. **Thay V0 bằng biến thể tất định tốt nhất** khi đủ ba điều kiện:
    - thắng ở ít nhất 59/100 phiếu không ngang (kiểm định dấu p < 0,05);
    - không tăng số cặp kề trùng;
