@@ -622,6 +622,49 @@ Hiệu E5 trừ vòng 1, ghép theo seed (số seed E5 hơn trên 6):
 - **Đánh đổi lặp lại ở cả hai tài liệu lớn:** E5 cho P và Q7b cao hơn nhưng Q7 thấp hơn. Bộ kiểm học từ nhãn agentic chặt hơn, giữ ít cạnh gián tiếp
   hơn. Chọn bên nào là chọn giữa độ chính xác và độ phủ tổ tiên. Kết luận cuối phải đo trên T-01.
 
+### 8.6 E10: so nguồn nhãn ở cùng cỡ
+
+**Cách làm.** Học trên 831 phiếu thật của mẫu lượt B (5.195 dòng trong cửa sổ, 16 sách), với ba nguồn nhãn:
+- **A:** nhãn lượt A, chỉ trên mẫu;
+- **B:** nhãn lượt B;
+- **A∩B:** chỉ giữ cặp A và B cùng nói cạnh cứng hoặc cùng nói không; còn 4.063 dòng.
+
+Mỗi nguồn chạy 3 seed (1–3), ngưỡng hiệu chỉnh, chấm E4. Thêm hai mốc ở cùng seed 1–3 lấy từ E9: vòng 1, và A trên đủ 65 nghìn cặp (E5). Mỗi ô ghi
+trung bình ± độ lệch chuẩn qua 3 seed:
+
+| tài liệu | nguồn nhãn | cạnh | Q7 | Q7b | bao đóng P | bao đóng R |
+|---|---|---:|---|---|---|---|
+| doc-1 | vòng 1 (ý định LLM v3) | 166 | 0,578 ± 0,104 | 0,719 ± 0,069 | 0,803 ± 0,047 | 0,656 ± 0,086 |
+| | A, đủ 65 nghìn cặp | 195 | 0,596 ± 0,012 | **0,748** ± 0,001 | **0,827** ± 0,004 | 0,654 ± 0,017 |
+| | A, mẫu | 199 | **0,597** ± 0,013 | **0,748** ± 0,001 | **0,827** ± 0,004 | **0,657** ± 0,020 |
+| | B, mẫu | 172 | 0,550 ± 0,018 | 0,692 ± 0,041 | 0,794 ± 0,024 | 0,634 ± 0,013 |
+| | A∩B, mẫu | 172 | 0,568 ± 0,013 | 0,678 ± 0,005 | 0,789 ± 0,001 | 0,629 ± 0,005 |
+| xstk | vòng 1 | 49 | 0,200 ± 0,004 | 0,496 ± 0,046 | 0,584 ± 0,028 | 0,177 ± 0,012 |
+| | A, đủ | 57 | 0,213 ± 0,007 | 0,530 ± 0,077 | 0,632 ± 0,061 | 0,184 ± 0,021 |
+| | A, mẫu | 69 | **0,249** ± 0,004 | 0,449 ± 0,051 | 0,495 ± 0,018 | **0,228** ± 0,029 |
+| | B, mẫu | 51 | 0,221 ± 0,001 | **0,701** ± 0,099 | **0,707** ± 0,087 | 0,221 ± 0,012 |
+| | A∩B, mẫu | 57 | 0,226 ± 0,007 | 0,490 ± 0,005 | 0,538 ± 0,000 | 0,214 ± 0,000 |
+| doc-4 | vòng 1 | 700 | **0,579** ± 0,014 | 0,715 ± 0,005 | 0,708 ± 0,012 | 0,468 ± 0,019 |
+| | A, đủ | 679 | 0,484 ± 0,002 | **0,864** ± 0,008 | 0,876 ± 0,013 | **0,518** ± 0,003 |
+| | A, mẫu | 724 | 0,413 ± 0,026 | 0,826 ± 0,013 | 0,860 ± 0,024 | 0,465 ± 0,039 |
+| | B, mẫu | 730 | 0,422 ± 0,003 | 0,860 ± 0,005 | 0,876 ± 0,012 | 0,501 ± 0,003 |
+| | A∩B, mẫu | 636 | 0,439 ± 0,023 | 0,860 ± 0,011 | **0,887** ± 0,012 | 0,478 ± 0,000 |
+
+**Đọc kết quả** (phán xét của Claude):
+- **Mức tăng ở doc-4 đến từ nhãn agentic đa lĩnh vực nói chung, không từ riêng lượt A.** Cả ba nguồn trên mẫu 831 phiếu đều cho P 0,86–0,89 và Q7b
+  0,83–0,86, so với 0,708 và 0,715 của vòng 1.
+- **Nhãn "sạch hơn" không cho kết quả đầu cuối tốt hơn.** B và A∩B gần vàng hơn A trên phiếu kiểm (mục 8.4), nhưng ở doc-1 lại kém A ở cả bốn chỉ số.
+  Ở doc-4, A∩B chỉ nhỉnh hơn về P (0,887 so với 0,860). Ở xstk, B tốt nhất về P nhưng dao động lớn (± 0,087).
+  - Điều này khớp với Cache & Distil (R-02 §3.4): học trò khá bền với nhiễu của thầy.
+  - Nó cũng khớp với đường học phẳng (mục 8.3): với bộ đặc trưng này, chất lượng nhãn và lượng nhãn đều không còn là nút thắt.
+- **Đủ 65 nghìn cặp so với mẫu 831 phiếu:** ngang nhau ở doc-1. Ở doc-4, bản đủ dữ liệu giữ Q7 và R tốt hơn (0,484 / 0,518 so với 0,413 / 0,465),
+  ổn định hơn qua seed.
+
+**Hệ quả cho kế hoạch:**
+- Nguồn nhãn cho bản triển khai LightGBM là **lượt A đủ 65 nghìn cặp**. Không cần gán lượt B cho toàn bộ D-01, và không cần lọc đồng thuận.
+- Lượt B vẫn có ích: B là thước đo độ nhiễu của nhãn, và là dữ liệu đối chứng cho E6.
+- Nút thắt nằm ở mô hình và đặc trưng. Đòn bẩy kế tiếp là E6 (cross-encoder đọc cửa sổ). Kết luận cuối vẫn chờ T-01.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:

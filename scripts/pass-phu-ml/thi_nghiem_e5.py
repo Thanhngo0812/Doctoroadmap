@@ -28,6 +28,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import thi_nghiem_e2b as e2b  # noqa: E402
 
 warnings.filterwarnings("ignore", category=UserWarning)
+# E10: `--nhan=b` (lượt B), `--nhan=ab` (đồng thuận A và B về cạnh cứng), `--mau-b` (nhãn A nhưng chỉ phiếu của mẫu B, để cùng cỡ).
+SAMPLE_B = "--mau-b" in sys.argv
+B_LABELS = next((a.split("=", 1)[1] for a in sys.argv if a.startswith("--tep-b=")), "tmp/d01-gan-nhan-B/nhan-B.jsonl")
 ROLES = ("noi_dung", "bai_tap", "loi_giai", "de_cuong", "mo_dau", "hanh_chinh", "cuoi_sach")
 OLD_DOCS = ("doc-1", "nhap-mon-ml", "xstk-ch3-1", "doc-4")
 
@@ -45,9 +48,18 @@ def load_d01(label, only_pairs, ticket_share, drop_group, original_labels):
     frame = frame[(frame.loai == "thuc") & (frame.trong_cua_so == 1)]
     source_cols = [c for c in frame.columns if c.startswith("src_") and c != "src_so_chunk_contact"]
     frame = frame.assign(la_cap=(frame[source_cols].sum(axis=1) > 0).astype(int))
-    column = {"a": "nhan_a", "a-cu": "nhan_a_cu"}[label]
-    frame = frame[frame[column].notna() & (frame[column] != "")]
-    frame["nhan"] = (frame[column] == "can_de_hieu").astype(int)
+    if label in ("b", "ab") or SAMPLE_B:  # E10: nhãn lượt B ghép thẳng từ tệp, chỉ phiếu thuộc mẫu B
+        with open(B_LABELS, encoding="utf-8") as handle:
+            b = {(r["phieu_id"], r["x_id"]): r["nhan"] for r in map(json.loads, handle)}
+        frame["nhan_b"] = [b.get(k, "") for k in zip(frame.phieu_id, frame.x)]
+        frame = frame[frame.nhan_b != ""]
+    if label == "ab":  # đồng thuận: giữ cặp A và B cùng nói cạnh cứng hoặc cùng nói không
+        a_hard, b_hard = frame.nhan_a == "can_de_hieu", frame.nhan_b == "can_de_hieu"
+        frame = frame[a_hard == b_hard].assign(nhan=lambda f: (f.nhan_a == "can_de_hieu").astype(int))
+    else:
+        column = {"a": "nhan_a", "a-cu": "nhan_a_cu", "b": "nhan_b"}[label]
+        frame = frame[frame[column].notna() & (frame[column] != "")]
+        frame["nhan"] = (frame[column] == "can_de_hieu").astype(int)
     if only_pairs:
         frame = frame[frame.la_cap == 1]
     if ticket_share < 1.0:
