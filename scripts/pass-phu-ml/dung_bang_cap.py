@@ -131,6 +131,164 @@ def window_sentences(node, chunks, before, after):
     return sentences, index
 
 
+class Context:
+    """Ngữ cảnh một tài liệu cho đặc trưng cặp: nút, chunk, mention map, trích dẫn, sổ cặp cụm, cạnh pass chính (nếu có), cửa sổ định nghĩa.
+    Chỉ dùng thứ có trước pass phụ, nên dựng được cả từ artifact danh tính (D-01, chưa chạy A8): khi đó nhóm `main_*` bằng 0."""
+
+    def __init__(self, payload, chunks, before, after):
+        import networkx as nx
+        self.nodes = payload["nodes"]
+        self.node_by_id = {node["node_id"]: node for node in self.nodes}
+        self.chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
+        self.chunk_count = max(len(chunks), 1)
+        # Nhắc tên theo chunk, theo mức (definition/extracted/mention) và kênh.
+        self.mentioned = defaultdict(set)
+        self.exact_in = defaultdict(set)
+        for chunk_id, rows in payload["mention_map"].items():
+            for node_id, row in rows.items():
+                self.mentioned[node_id].add(chunk_id)
+                if "exact" in row.get("channels", []):
+                    self.exact_in[node_id].add(chunk_id)
+        self.order = {chunk.chunk_id: chunk.order_index for chunk in chunks}
+        # Đồ thị trích dẫn có hướng (Y trích X: X được nhắc trong chunk định nghĩa của Y) và PageRank trên hướng "Y tham chiếu X".
+        self.citation = {(row["source"], row["target"]): row for row in payload.get("citations", [])}
+        refers = nx.DiGraph()
+        refers.add_nodes_from(self.node_by_id)
+        refers.add_edges_from((target, source) for source, target in self.citation)
+        self.rank = nx.pagerank(refers) if refers.number_of_edges() else {node_id: 0.0 for node_id in self.node_by_id}
+        self.main_hard = nx.DiGraph()
+        self.main_hard.add_nodes_from(self.node_by_id)
+        self.main_any = nx.DiGraph()
+        self.main_any.add_nodes_from(self.node_by_id)
+        for edge in payload.get("main_edges", []):
+            if edge.get("edge_type", "requires") != "requires":
+                continue
+            self.main_any.add_edge(edge["source"], edge["target"])
+            if not edge.get("soft"):
+                self.main_hard.add_edge(edge["source"], edge["target"])
+        self.ledger = {frozenset((row["left_cluster"], row["right_cluster"])): row for row in payload.get("pair_cluster_ledger", [])}
+        self.pattern_cache = {node_id: regexes(node) for node_id, node in self.node_by_id.items()}
+        self.word_cache = {node_id: word_regexes(node) for node_id, node in self.node_by_id.items()} if WORDS else {}
+        self.window_cache = {node_id: window_sentences(node, chunks, before, after) for node_id, node in self.node_by_id.items()}
+        # Ai được nhắc trong cửa sổ của ai: độ "khung" của X (bao nhiêu khái niệm được dạy nhắc X trong cửa sổ định nghĩa) và số khái niệm cùng
+        # được nhắc trong một cửa sổ.
+        taught = [node_id for node_id, node in self.node_by_id.items()
+                  if node.get("teaching_status") == "taught" and self.window_cache[node_id][0]]
+        normalized_windows = {y: [_mention_normalize(s) for s in self.window_cache[y][0]] for y in taught}
+        self.named_in = {y: {x for x in self.node_by_id
+                             if x != y and any(p.search(s) for p in self.pattern_cache[x] for s in normalized_windows[y])}
+                         for y in taught}
+        self.frame_count = defaultdict(int)
+        for y, named in self.named_in.items():
+            for x in named:
+                self.frame_count[x] += 1
+        self.taught_count = max(len(taught), 1)
+
+    def provenance(self, node_id):
+        values = [self.order[c] for c in self.node_by_id[node_id].get("defining_chunk_ids", []) if c in self.order]
+        return min(values) if values else None
+
+    def first_chunk(self, node_id):
+        values = sorted((self.order[c], c) for c in self.node_by_id[node_id].get("defining_chunk_ids", []) if c in self.order)
+        return self.chunk_by_id[values[0][1]] if values else None
+
+    def span(self, node_id):
+        values = [self.order[c] for c in self.mentioned[node_id] if c in self.order]
+        return (max(values) - min(values)) / self.chunk_count if values else 0.0
+
+    def window_features(self, x, y):
+        """Tên X trong cửa sổ định nghĩa của Y: số câu có tên, có trong câu neo không, vị trí câu gần neo nhất, từ báo đứng trước."""
+        sentences, anchor_index = self.window_cache[y]
+        hits = [i for i, sentence in enumerate(sentences) if found(self.pattern_cache[x], sentence)]
+        anchor = (self.node_by_id[y].get("anchor") or {}).get("sentence", "")
+        relative = min((i - anchor_index for i in hits), key=abs) if hits and anchor_index is not None else None
+        cues = set().union(*(cues_before(self.pattern_cache[x], sentences[i]) for i in hits)) if hits else set()
+        # Trong câu neo, tên Y đứng trước tên X ("Y là … X") hay sau.
+        normalized = _mention_normalize(anchor)
+        x_at = min((m.start() for p in self.pattern_cache[x] for m in p.finditer(normalized)), default=None)
+        y_at = min((m.start() for p in self.pattern_cache[y] for m in p.finditer(normalized)), default=None)
+        word_hits = [i for i in hits if found_words(self.word_cache[x], sentences[i])] if WORDS else []
+        return {"cau": len(sentences), "co_ten": len(hits), "trong_neo": int(bool(anchor) and found(self.pattern_cache[x], anchor)),
+                "co_tu": len(word_hits),
+                "neo_tu": int(WORDS and bool(anchor) and found(self.pattern_cache[x], anchor) and found_words(self.word_cache[x], anchor)),
+                "vi_tri": relative, "cues": cues, "y_truoc_x_neo": int(x_at is not None and y_at is not None and y_at < x_at),
+                "truoc_neo": int(any(anchor_index is not None and i < anchor_index for i in hits))}
+
+
+def pair_features(ctx, x, y, pair=None):
+    """Đặc trưng có hướng X→Y. `pair` là cặp ứng viên của luồng (nguồn, chi tiết tiếp xúc); không có thì nhóm `src_*` bằng 0."""
+    import networkx as nx
+    pair = pair or {}
+    node_by_id, chunk_by_id, mentioned, exact_in, chunk_count = ctx.node_by_id, ctx.chunk_by_id, ctx.mentioned, ctx.exact_in, ctx.chunk_count
+    rank, main_hard, main_any, pattern_cache = ctx.rank, ctx.main_hard, ctx.main_any, ctx.pattern_cache
+    nx_, ny = node_by_id[x], node_by_id[y]
+    cluster_row = ctx.ledger.get(frozenset((nx_["cluster_id"], ny["cluster_id"])), {})
+    details = pair.get("details", {})
+    px, py = ctx.provenance(x), ctx.provenance(y)
+    cx, cy = ctx.first_chunk(x), ctx.first_chunk(y)
+    path_x = cx.section_path if cx else []
+    path_y = cy.section_path if cy else []
+    common = next((i for i, (a, b) in enumerate(zip(path_x, path_y)) if a != b), min(len(path_x), len(path_y)))
+    def_x, def_y = set(nx_.get("defining_chunk_ids", [])), set(ny.get("defining_chunk_ids", []))
+    x_in_ydef = len(def_y & mentioned[x]) / len(def_y) if def_y else 0.0
+    y_in_xdef = len(def_x & mentioned[y]) / len(def_x) if def_x else 0.0
+    both = mentioned[x] & mentioned[y]
+    union = mentioned[x] | mentioned[y]
+    wx, wy = ctx.window_features(x, y), ctx.window_features(y, x)
+    cit_xy, cit_yx = ctx.citation.get((x, y)), ctx.citation.get((y, x))
+    return {
+        # Nguồn cặp và sổ cặp cụm.
+        **{f"src_{name}": int(name in pair.get("sources", [])) for name in SOURCES},
+        "src_so_chunk_contact": len(details.get("contact", [])),
+        "cit_hard_xy": int(bool(cit_xy) and cit_xy["strength"] == "hard"), "cit_soft_xy": int(bool(cit_xy) and cit_xy["strength"] == "soft"),
+        "cit_hard_yx": int(bool(cit_yx) and cit_yx["strength"] == "hard"), "cit_soft_yx": int(bool(cit_yx) and cit_yx["strength"] == "soft"),
+        "cit_chunk_xy": len(cit_xy["chunk_ids"]) if cit_xy else 0, "cit_chunk_yx": len(cit_yx["chunk_ids"]) if cit_yx else 0,
+        "cung_cum": int(nx_["cluster_id"] == ny["cluster_id"]),
+        "w_exact": cluster_row.get("exact_weight", 0.0), "w_dense": cluster_row.get("dense_weight", 0.0),
+        # Thứ tự và cấu trúc mục.
+        "ord_x": px / chunk_count if px is not None else "", "ord_y": py / chunk_count if py is not None else "",
+        "ord_hieu": (py - px) / chunk_count if px is not None and py is not None else "",
+        "x_truoc_y": int(px is not None and py is not None and px < py),
+        "cung_chunk": int(bool(def_x & def_y)),
+        "cung_muc": int(bool(cx and cy and cx.parent_section_id == cy.parent_section_id)),
+        "cung_chuong": int(bool(path_x and path_y and path_x[0] == path_y[0])),
+        "muc_chung": common, "sau_muc_x": len(path_x), "sau_muc_y": len(path_y),
+        # Tham chiếu có hướng: cửa sổ định nghĩa (S2) và RefD trên chunk định nghĩa (S4).
+        "ywin_cau": wx["cau"], "x_trong_ywin": wx["co_ten"], "x_trong_neo_y": wx["trong_neo"],
+        **({"x_trong_ywin_tu": wx["co_tu"], "x_trong_neo_y_tu": wx["neo_tu"], "y_trong_xwin_tu": wy["co_tu"]} if WORDS else {}),
+        "x_ywin_vi_tri": "" if wx["vi_tri"] is None else wx["vi_tri"],
+        "xwin_cau": wy["cau"], "y_trong_xwin": wy["co_ten"], "y_trong_neo_x": wy["trong_neo"],
+        "y_xwin_vi_tri": "" if wy["vi_tri"] is None else wy["vi_tri"],
+        **{f"tu_bao_{name}": int(name in wx["cues"]) for name in CUES},
+        "y_truoc_x_trong_neo": wx["y_truoc_x_neo"], "x_trong_ywin_truoc_neo": wx["truoc_neo"],
+        "x_khung": ctx.frame_count[x] / ctx.taught_count, "y_khung": ctx.frame_count[y] / ctx.taught_count,
+        "ywin_so_ten": len(ctx.named_in.get(y, ())), "xwin_so_ten": len(ctx.named_in.get(x, ())),
+        "x_trong_ydef": x_in_ydef, "y_trong_xdef": y_in_xdef, "refd": x_in_ydef - y_in_xdef,
+        "x_exact_ydef": int(bool(def_y & exact_in[x])), "y_exact_xdef": int(bool(def_x & exact_in[y])),
+        # Độ phủ, đồng xuất hiện.
+        "phu_x": len(mentioned[x]) / chunk_count, "phu_y": len(mentioned[y]) / chunk_count,
+        "phu_log_ti": math.log((len(mentioned[x]) + 1) / (len(mentioned[y]) + 1)),
+        "trai_x": ctx.span(x), "trai_y": ctx.span(y), "dong_xh": len(both), "jaccard": len(both) / len(union) if union else 0.0,
+        # Đồ thị: PageRank trên quan hệ "được tham chiếu", cạnh pass chính.
+        "pr_x": rank.get(x, 0.0), "pr_y": rank.get(y, 0.0), "pr_hieu": rank.get(x, 0.0) - rank.get(y, 0.0),
+        "main_duong_xy": int(nx.has_path(main_hard, x, y)), "main_duong_yx": int(nx.has_path(main_hard, y, x)),
+        "main_mem_xy": int(main_any.has_edge(x, y)), "main_mem_yx": int(main_any.has_edge(y, x)),
+        "main_vao_y": main_hard.in_degree(y), "main_ra_x": main_hard.out_degree(x),
+        "main_vao_x": main_hard.in_degree(x), "main_ra_y": main_hard.out_degree(y),
+        # Thuộc tính nút và tên.
+        "x_day": int(nx_.get("teaching_status") == "taught"), "y_day": int(ny.get("teaching_status") == "taught"),
+        # Hợp đồng `validate_main_proposals`: đích bị loại khi trạng thái thuộc NOT_TARGET; hai đầu phải học được.
+        "hop_dong_cho_phep": int(ny.get("teaching_status") not in NOT_TARGET and bool(ny.get("learnable"))
+                                 and bool(nx_.get("learnable"))),
+        "x_hoc_duoc": int(bool(nx_.get("learnable"))), "y_hoc_duoc": int(bool(ny.get("learnable"))),
+        "x_so_def": len(def_x), "y_so_def": len(def_y),
+        "vai_tro_neo_y": (chunk_by_id.get((ny.get("anchor") or {}).get("chunk_id")).role
+                          if (ny.get("anchor") or {}).get("chunk_id") in chunk_by_id else ""),
+        "ten_x_trong_ten_y": int(found(pattern_cache[x], ny["name"])), "ten_y_trong_ten_x": int(found(pattern_cache[y], nx_["name"])),
+        "do_dai_ten_x": len(_mention_normalize(nx_["name"]).split()), "do_dai_ten_y": len(_mention_normalize(ny["name"]).split()),
+    }
+
+
 def build(doc):
     root, version, language, gold_file = DOCS[doc]
     store = JsonArtifactStore(Path(root))
@@ -141,55 +299,10 @@ def build(doc):
     chunks_version = config["chunks_version"]
     chunk_root = Path(root) if (Path(root) / "chunks" / doc / f"v{chunks_version}").exists() else Path("artifacts")
     chunks = JsonArtifactStore(chunk_root).load_chunks(doc, chunks_version).result.chunks
-    before, after = config.get("definition_before", 4), config.get("definition_after", 2)
-    nodes = payload["nodes"]
-    node_by_id = {node["node_id"]: node for node in nodes}
-    chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
-    chunk_count = max(len(chunks), 1)
-    mention_map = payload["mention_map"]
+    ctx = Context(payload, chunks, config.get("definition_before", 4), config.get("definition_after", 2))
+    nodes, node_by_id, pattern_cache = ctx.nodes, ctx.node_by_id, ctx.pattern_cache
     route = payload["routing"]["route"]
     pairs, _ = select_secondary_pairs(nodes, payload.get("suspected_pairs", []), payload.get("pair_cluster_ledger", []), [], route=route)
-
-    # Nhắc tên theo chunk, theo mức (definition/extracted/mention) và kênh.
-    mentioned = defaultdict(set)
-    exact_in = defaultdict(set)
-    for chunk_id, rows in mention_map.items():
-        for node_id, row in rows.items():
-            mentioned[node_id].add(chunk_id)
-            if "exact" in row.get("channels", []):
-                exact_in[node_id].add(chunk_id)
-    order = {chunk.chunk_id: chunk.order_index for chunk in chunks}
-
-    def provenance(node_id):
-        values = [order[c] for c in node_by_id[node_id].get("defining_chunk_ids", []) if c in order]
-        return min(values) if values else None
-
-    def first_chunk(node_id):
-        values = sorted((order[c], c) for c in node_by_id[node_id].get("defining_chunk_ids", []) if c in order)
-        return chunk_by_id[values[0][1]] if values else None
-
-    def span(node_id):
-        values = [order[c] for c in mentioned[node_id] if c in order]
-        return (max(values) - min(values)) / chunk_count if values else 0.0
-
-    # Đồ thị trích dẫn có hướng (Y trích X: X được nhắc trong chunk định nghĩa của Y) và PageRank trên hướng "Y tham chiếu X".
-    citation = {(row["source"], row["target"]): row for row in payload.get("citations", [])}
-    import networkx as nx
-    refers = nx.DiGraph()
-    refers.add_nodes_from(node_by_id)
-    refers.add_edges_from((target, source) for source, target in citation)
-    rank = nx.pagerank(refers) if refers.number_of_edges() else {node_id: 0.0 for node_id in node_by_id}
-    main_hard = nx.DiGraph()
-    main_hard.add_nodes_from(node_by_id)
-    main_any = nx.DiGraph()
-    main_any.add_nodes_from(node_by_id)
-    for edge in payload.get("main_edges", []):
-        if edge.get("edge_type", "requires") != "requires":
-            continue
-        main_any.add_edge(edge["source"], edge["target"])
-        if not edge.get("soft"):
-            main_hard.add_edge(edge["source"], edge["target"])
-    ledger = {frozenset((row["left_cluster"], row["right_cluster"])): row for row in payload.get("pair_cluster_ledger", [])}
 
     # Nhãn v3.
     log = {row["pair_id"]: row for row in payload.get("secondary_log", []) if "pair_id" in row}
@@ -222,67 +335,17 @@ def build(doc):
         gold_edges = {(identity.get(e["prerequisite"], e["prerequisite"]), identity.get(e["target"], e["target"])) for e in gold["edges"]}
         gold_targets = {identity.get(t, t) for t in gold["targets"]}
 
-    pattern_cache = {node_id: regexes(node) for node_id, node in node_by_id.items()}
-    word_cache = {node_id: word_regexes(node) for node_id, node in node_by_id.items()} if WORDS else {}
-    window_cache = {node_id: window_sentences(node, chunks, before, after) for node_id, node in node_by_id.items()}
-    # Ai được nhắc trong cửa sổ của ai: độ "khung" của X (bao nhiêu khái niệm được dạy nhắc X trong cửa sổ định nghĩa) và số khái niệm cùng
-    # được nhắc trong một cửa sổ.
-    taught = [node_id for node_id, node in node_by_id.items() if node.get("teaching_status") == "taught" and window_cache[node_id][0]]
-    normalized_windows = {y: [_mention_normalize(s) for s in window_cache[y][0]] for y in taught}
-    named_in = {y: {x for x in node_by_id if x != y and any(p.search(s) for p in pattern_cache[x] for s in normalized_windows[y])}
-                for y in taught}
-    frame_count = defaultdict(int)
-    for y, named in named_in.items():
-        for x in named:
-            frame_count[x] += 1
-    taught_count = max(len(taught), 1)
-
-    def window_features(x, y):
-        """Tên X trong cửa sổ định nghĩa của Y: số câu có tên, có trong câu neo không, vị trí câu gần neo nhất, từ báo đứng trước."""
-        sentences, anchor_index = window_cache[y]
-        hits = [i for i, sentence in enumerate(sentences) if found(pattern_cache[x], sentence)]
-        anchor = (node_by_id[y].get("anchor") or {}).get("sentence", "")
-        relative = min((i - anchor_index for i in hits), key=abs) if hits and anchor_index is not None else None
-        cues = set().union(*(cues_before(pattern_cache[x], sentences[i]) for i in hits)) if hits else set()
-        # Trong câu neo, tên Y đứng trước tên X ("Y là … X") hay sau.
-        normalized = _mention_normalize(anchor)
-        x_at = min((m.start() for p in pattern_cache[x] for m in p.finditer(normalized)), default=None)
-        y_at = min((m.start() for p in pattern_cache[y] for m in p.finditer(normalized)), default=None)
-        word_hits = [i for i in hits if found_words(word_cache[x], sentences[i])] if WORDS else []
-        return {"cau": len(sentences), "co_ten": len(hits), "trong_neo": int(bool(anchor) and found(pattern_cache[x], anchor)),
-                "co_tu": len(word_hits),
-                "neo_tu": int(WORDS and bool(anchor) and found(pattern_cache[x], anchor) and found_words(word_cache[x], anchor)),
-                "vi_tri": relative, "cues": cues, "y_truoc_x_neo": int(x_at is not None and y_at is not None and y_at < x_at),
-                "truoc_neo": int(any(anchor_index is not None and i < anchor_index for i in hits))}
-
     rows = []
     for index, pair in enumerate(pairs):
-        left, right = pair["left"], pair["right"]
         status_row = log.get(pair["pair_id"], {})
         status = status_row.get("status", "missing")
         reason = status_row.get("reason", "")
         edges = created.get(pair["pair_id"], [])
-        same_cluster = node_by_id[left]["cluster_id"] == node_by_id[right]["cluster_id"]
-        cluster_row = ledger.get(frozenset((node_by_id[left]["cluster_id"], node_by_id[right]["cluster_id"])), {})
-        details = pair.get("details", {})
-        for x, y in ((left, right), (right, left)):
-            nx_, ny = node_by_id[x], node_by_id[y]
-            px, py = provenance(x), provenance(y)
-            cx, cy = first_chunk(x), first_chunk(y)
-            path_x = cx.section_path if cx else []
-            path_y = cy.section_path if cy else []
-            common = next((i for i, (a, b) in enumerate(zip(path_x, path_y)) if a != b), min(len(path_x), len(path_y)))
-            def_x, def_y = set(nx_.get("defining_chunk_ids", [])), set(ny.get("defining_chunk_ids", []))
-            x_in_ydef = len(def_y & mentioned[x]) / len(def_y) if def_y else 0.0
-            y_in_xdef = len(def_x & mentioned[y]) / len(def_x) if def_x else 0.0
-            both = mentioned[x] & mentioned[y]
-            union = mentioned[x] | mentioned[y]
-            wx, wy = window_features(x, y), window_features(y, x)
+        for x, y in ((pair["left"], pair["right"]), (pair["right"], pair["left"])):
             edge = next((e for e in edges if (e["source"], e["target"]) == (x, y)), None)
-            cit_xy, cit_yx = citation.get((x, y)), citation.get((y, x))
             rows.append({
                 "doc": doc, "ngon_ngu": language, "pair_id": pair["pair_id"], "thu_tu_cap": index, "x": x, "y": y,
-                "ten_x": nx_["name"], "ten_y": ny["name"],
+                "ten_x": node_by_id[x]["name"], "ten_y": node_by_id[y]["name"],
                 "status": status, "reason": reason if status != "rejected" or len(reason) < 40 else "llm_reason",
                 "y_label": int(edge is not None),
                 "kind": (edge or {}).get("prerequisite_kind", ""), "evidence_kind": (edge or {}).get("evidence_kind", ""),
@@ -290,54 +353,7 @@ def build(doc):
                 "dec_trai": decision(pair["pair_id"], "left", x, y), "dec_phai": decision(pair["pair_id"], "right", x, y),
                 "loai_trai": decision_kind(pair["pair_id"], "left"), "loai_phai": decision_kind(pair["pair_id"], "right"),
                 "vang_xy": int((x, y) in gold_edges), "vang_yx": int((y, x) in gold_edges), "vang_pham_vi": int(y in gold_targets),
-                # Nguồn cặp và sổ cặp cụm.
-                **{f"src_{name}": int(name in pair.get("sources", [])) for name in SOURCES},
-                "src_so_chunk_contact": len(details.get("contact", [])),
-                "cit_hard_xy": int(bool(cit_xy) and cit_xy["strength"] == "hard"), "cit_soft_xy": int(bool(cit_xy) and cit_xy["strength"] == "soft"),
-                "cit_hard_yx": int(bool(cit_yx) and cit_yx["strength"] == "hard"), "cit_soft_yx": int(bool(cit_yx) and cit_yx["strength"] == "soft"),
-                "cit_chunk_xy": len(cit_xy["chunk_ids"]) if cit_xy else 0, "cit_chunk_yx": len(cit_yx["chunk_ids"]) if cit_yx else 0,
-                "cung_cum": int(same_cluster), "w_exact": cluster_row.get("exact_weight", 0.0), "w_dense": cluster_row.get("dense_weight", 0.0),
-                # Thứ tự và cấu trúc mục.
-                "ord_x": px / chunk_count if px is not None else "", "ord_y": py / chunk_count if py is not None else "",
-                "ord_hieu": (py - px) / chunk_count if px is not None and py is not None else "",
-                "x_truoc_y": int(px is not None and py is not None and px < py),
-                "cung_chunk": int(bool(def_x & def_y)),
-                "cung_muc": int(bool(cx and cy and cx.parent_section_id == cy.parent_section_id)),
-                "cung_chuong": int(bool(path_x and path_y and path_x[0] == path_y[0])),
-                "muc_chung": common, "sau_muc_x": len(path_x), "sau_muc_y": len(path_y),
-                # Tham chiếu có hướng: cửa sổ định nghĩa (S2) và RefD trên chunk định nghĩa (S4).
-                "ywin_cau": wx["cau"], "x_trong_ywin": wx["co_ten"], "x_trong_neo_y": wx["trong_neo"],
-                **({"x_trong_ywin_tu": wx["co_tu"], "x_trong_neo_y_tu": wx["neo_tu"], "y_trong_xwin_tu": wy["co_tu"]} if WORDS else {}),
-                "x_ywin_vi_tri": "" if wx["vi_tri"] is None else wx["vi_tri"],
-                "xwin_cau": wy["cau"], "y_trong_xwin": wy["co_ten"], "y_trong_neo_x": wy["trong_neo"],
-                "y_xwin_vi_tri": "" if wy["vi_tri"] is None else wy["vi_tri"],
-                **{f"tu_bao_{name}": int(name in wx["cues"]) for name in CUES},
-                "y_truoc_x_trong_neo": wx["y_truoc_x_neo"], "x_trong_ywin_truoc_neo": wx["truoc_neo"],
-                "x_khung": frame_count[x] / taught_count, "y_khung": frame_count[y] / taught_count,
-                "ywin_so_ten": len(named_in.get(y, ())), "xwin_so_ten": len(named_in.get(x, ())),
-                "x_trong_ydef": x_in_ydef, "y_trong_xdef": y_in_xdef, "refd": x_in_ydef - y_in_xdef,
-                "x_exact_ydef": int(bool(def_y & exact_in[x])), "y_exact_xdef": int(bool(def_x & exact_in[y])),
-                # Độ phủ, đồng xuất hiện.
-                "phu_x": len(mentioned[x]) / chunk_count, "phu_y": len(mentioned[y]) / chunk_count,
-                "phu_log_ti": math.log((len(mentioned[x]) + 1) / (len(mentioned[y]) + 1)),
-                "trai_x": span(x), "trai_y": span(y), "dong_xh": len(both), "jaccard": len(both) / len(union) if union else 0.0,
-                # Đồ thị: PageRank trên quan hệ "được tham chiếu", cạnh pass chính.
-                "pr_x": rank.get(x, 0.0), "pr_y": rank.get(y, 0.0), "pr_hieu": rank.get(x, 0.0) - rank.get(y, 0.0),
-                "main_duong_xy": int(nx.has_path(main_hard, x, y)), "main_duong_yx": int(nx.has_path(main_hard, y, x)),
-                "main_mem_xy": int(main_any.has_edge(x, y)), "main_mem_yx": int(main_any.has_edge(y, x)),
-                "main_vao_y": main_hard.in_degree(y), "main_ra_x": main_hard.out_degree(x),
-                "main_vao_x": main_hard.in_degree(x), "main_ra_y": main_hard.out_degree(y),
-                # Thuộc tính nút và tên.
-                "x_day": int(nx_.get("teaching_status") == "taught"), "y_day": int(ny.get("teaching_status") == "taught"),
-                # Hợp đồng `validate_main_proposals`: đích bị loại khi trạng thái thuộc NOT_TARGET; hai đầu phải học được.
-                "hop_dong_cho_phep": int(ny.get("teaching_status") not in NOT_TARGET and bool(ny.get("learnable"))
-                                         and bool(nx_.get("learnable"))),
-                "x_hoc_duoc": int(bool(nx_.get("learnable"))), "y_hoc_duoc": int(bool(ny.get("learnable"))),
-                "x_so_def": len(def_x), "y_so_def": len(def_y),
-                "vai_tro_neo_y": (chunk_by_id.get((ny.get("anchor") or {}).get("chunk_id")).role
-                                  if (ny.get("anchor") or {}).get("chunk_id") in chunk_by_id else ""),
-                "ten_x_trong_ten_y": int(found(pattern_cache[x], ny["name"])), "ten_y_trong_ten_x": int(found(pattern_cache[y], nx_["name"])),
-                "do_dai_ten_x": len(_mention_normalize(nx_["name"]).split()), "do_dai_ten_y": len(_mention_normalize(ny["name"]).split()),
+                **pair_features(ctx, x, y, pair),
             })
     return rows, {"doc": doc, "pairs": len(pairs), "secondary_pair_count": artifact.manifest.get("stats", {}).get("secondary_pair_count"),
                   "edges_v3": len(payload.get("secondary_edges", [])),

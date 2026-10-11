@@ -447,7 +447,59 @@ Claude soạn vé triển khai stage `a8-secondary-ml-v1` trong `src/` theo quy 
 
 Nhân viên cài đặt, Claude kiểm thử.
 
-## 8. Chạy lại
+## 8. Cập nhật 2026-10-11: lượt A xong, E0' xong
+
+### 8.1 Lượt A
+
+Agentic gộp xong `nhan-A-gop.jsonl` lúc 01:05 ngày 2026-10-11. Script kiểm định dạng chạy không `--mot-phan`: 65.525/65.525 cặp, ĐẠT, mã thoát 0.
+Phân bố nhãn:
+- `khong` 47.114;
+- `can_de_hieu` 15.658;
+- `cong_cu` 1.607;
+- `khop_nham` 801;
+- `nguoc` 336;
+- `khong_ro` 9.
+
+Claude chấm bằng `scripts/pass-phu-ml/kiem_chat_luong_d01.py` (cần khoá), được ba kết quả:
+- **Phiếu kiểm**, đủ 83 phiếu, 371 cặp: cạnh cứng P 0,67, R 0,79, khớp 0,84 (TP 81, FP 40, FN 21, TN 229).
+  - Kết quả này tốt hơn hẳn mẫu 23 cặp lúc đầu (P khoảng 0,4, mục 1.4).
+  - Để so: ở vòng 1, LLM v3 được P 0,36–0,75 ở mức cặp (mục 7 vòng 1).
+  - Lưu ý lạc quan ở mục 1.4 vẫn còn.
+- **Phiếu lặp**, 3.142 cặp: năm nhãn khớp 0,76, kappa 0,45; cạnh cứng kappa 0,49. Cùng agentic gán lại cùng phiếu mà chỉ đồng thuận mức trung bình,
+  đúng với đo ở mục 1.2.
+- **Theo nhóm người gán:**
+  - Tệp gộp có ít nhất 17 nhãn `nguoi_gan` khác nhau, gồm GPT-6 và GPT-6.1-sol.
+  - Trên phiếu kiểm, không nhóm nào kém hẳn: P từ 0,54 tới 0,79, R từ 0,68 tới 0,85, mỗi nhóm 2–18 phiếu.
+  - Riêng nhóm "Codex / GPT-6 / 2026-10" (269 phiếu, từ phiếu 4582 tới 5495, 3.077 cặp) gán `can_de_hieu` 74% trong cửa sổ, so với 32–46% ở các nhóm
+    lớn khác. Nhóm này chỉ có 2 phiếu kiểm. E5 sẽ thử bỏ nhóm này.
+- **Lý do lặp nguyên văn** chỉ rơi vào nhãn `khong`, kiểu "Đoạn văn không cho thấy quan hệ tiên quyết trực tiếp với Y" (5.414 lần).
+  - Với nhãn âm thì lý do chung chung là tự nhiên, nên chưa đủ để nói là điền hàng loạt.
+  - Phiếu kiểm cho R 0,79, tức `khong` không nuốt quá nhiều cạnh vàng.
+- **`cong_cu` gần như biến mất** (2,5% số cặp), đúng hướng tác dụng phụ đã thấy sau bản 1.1 (mục 1.5). Cạnh mềm E8 vì vậy thiếu dữ liệu.
+
+### 8.2 E0'
+
+Hai việc của E0' đều xong:
+- **Bảng đặc trưng D-01:** `scripts/pass-phu-ml/dung_bang_d01.py` cho 16 cuốn, 5.818 phiếu (thật và lặp), 65.154 dòng. Con số này đúng bằng 65.525 trừ
+  371 cặp phiếu kiểm.
+  - Không dòng nào thiếu nhãn A.
+  - Kiểm chéo: cột "X có tên trong cửa sổ" tính lại từ đặc trưng trùng trường `trong_cua_so` của phiếu ở **cả 65.154 dòng**. Đặc trưng và phiếu dùng
+    đúng một cửa sổ.
+- **Tách hàm có kiểm hồi quy:** phần tính đặc trưng của `dung_bang_cap.py` đã tách thành `Context` và `pair_features` để dùng chung. Bảng vòng 1 dựng
+  lại bằng mã mới **khớp từng byte** với bản gốc trên doc-1 và nhap-mon-ml (cùng mã `src/` hôm nay); bản gốc cũng khớp từng byte với bảng ngày
+  2026-10-05.
+- **Bỏ đặc trưng pass chính không làm hụt:** vòng 1 đã đo bằng `--khong-main`, nên không chạy lại.
+
+| tài liệu | AP đủ 90 đặc trưng | AP bỏ 8 đặc trưng `main_*` |
+|---|---:|---:|
+| doc-1 | 0,596 | 0,587 |
+| nhap-mon-ml | 0,479 | 0,528 |
+| xstk-ch3-1 | 0,706 | 0,707 |
+| doc-4 | 0,338 | 0,354 |
+
+Việc kế tiếp là E5: LightGBM học trên D-01 chia theo sách, kèm đường học theo cỡ dữ liệu; đo E4 trên doc-1, xstk, doc-4.
+
+## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
 
@@ -457,6 +509,12 @@ Các lệnh sau tái lập số của báo cáo:
     --ra <gói>/phieu.jsonl --ds-ra tmp/d01-luot-B/chon.json
 # VI-AL-CPL: tải AL-CPL, liên kết Wikidata, đoạn mở đầu vi.wikipedia (có đệm ở tmp/pass-phu-ml/vi-al-cpl/dem.json)
 .venv/Scripts/python.exe -I scripts/pass-phu-ml/vi_al_cpl.py
+# chấm chất lượng lượt A (cần khoa.jsonl)
+.venv/Scripts/python.exe -I scripts/pass-phu-ml/kiem_chat_luong_d01.py --phieu tmp/d01-phieu/phieu.jsonl --khoa tmp/d01-phieu/khoa.jsonl \
+    --nhan tmp/d01-gan-nhan/nhan-A-gop.jsonl
+# E0': bảng đặc trưng D-01 (cần khoa.jsonl; tmp/venv-ml có underthesea)
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/dung_bang_d01.py --phieu tmp/d01-phieu/phieu.jsonl --khoa tmp/d01-phieu/khoa.jsonl \
+    --nhan tmp/d01-gan-nhan/nhan-A-gop.jsonl --nhan-cu tmp/d01-gan-nhan/nhan-A.jsonl
 ```
 
 Số ở mục 1 đo bằng script tạm trong scratchpad trên `tmp/d01-gan-nhan/` lúc 17:24–18:10. Tệp nhãn còn đang ghi, nên chạy lại sẽ ra số khác.
