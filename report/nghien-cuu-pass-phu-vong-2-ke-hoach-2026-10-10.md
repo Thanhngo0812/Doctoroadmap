@@ -760,6 +760,54 @@ Chủ dự án hỏi trạng thái dạy, neo và danh tính có quan trọng v�
 - **E8 và cạnh mềm:** cạnh vàng chỉ có đường đi qua cạnh mềm là 11 với E5 và 22 với LLM v3 (doc-4 chiếm 10 và 17), do cạnh `cong_cu` và luật
   làm mềm cạnh ngược thứ tự sách (R17).
 
+### 8.10 E6: cross-encoder (2026-10-12, đang chạy)
+
+**Máy.** Chủ dự án cấp SSH máy GPU ngày 2026-10-12: laptop Dell, RTX 3050 Laptop 4 GB, Ryzen 5 5600H, RAM 6,6 GiB, Ubuntu 26.04, Python 3.14. Môi
+trường: torch 2.14.1 (CUDA 13.0), transformers 5.19.0. Dựng máy gặp hai sự cố:
+- **Driver NVIDIA không nạp.** Kernel tự cập nhật lên 7.0.0-34 nhưng module NVIDIA chỉ có cho 7.0.0-22. Chủ dự án nâng kernel lên 7.0.0-38 và driver
+  lên 595.99.02, rồi khởi động lại.
+- **pip đứt ở đúng 136,6 MB với mọi tệp lớn.** `/tmp` là tmpfs có hạn mức theo người dùng (`usrquota`), mà pip tải tạm vào đó. Lỗi hiện thành
+  "Connection interrupted", tới cuối mới ra "Disk quota exceeded". Cách chữa: đặt `TMPDIR` sang ổ chính.
+
+**Dữ liệu** (`dung_du_lieu_e6.py`). Mỗi dòng là một cặp "X là tiên quyết của Y" kèm văn bản cửa sổ định nghĩa của Y:
+- **Học:** 34.386 cặp trong cửa sổ, từ 5.541 phiếu thật D-01 của 16 sách, nhãn lượt A. Bỏ 5 cặp `khong_ro`, còn 5 nhãn: `can_de_hieu` 13.340,
+  `khong` 18.773, `cong_cu` 1.330, `khop_nham` 759, `nguoc` 184. Phiếu kiểm và phiếu lặp không vào tập học.
+- **Chấm:** ứng viên của ba tài liệu vàng, đúng tập `ung_vien` của E5: doc-1 1.017, xstk 277, doc-4 4.124. Số dòng khớp bảng E5 ở cả ba.
+- **Đánh dấu:** tên X bọc `@ … @`, tên Y bọc `# … #`, theo kiểu entity marker dạng dấu câu, dùng dấu có sẵn trong từ vựng. Câu được tách từ bằng
+  underthesea trước rồi mới chèn dấu, vì underthesea dính dấu vào từ bên cạnh ("@_K"). Chỉ đánh dấu lần nhắc trùng ranh giới từ. 69 cặp học (0,2%)
+  không đặt được dấu X, vì cách tách từ theo câu lệch với cách tách của luồng.
+- Mỗi văn bản có hai bản: âm tiết cách nhau (multilingual-e5) và từ ghép nối `_` (PhoBERT).
+
+**Dữ liệu đã chép lên máy GPU** (2026-10-12, vào `~/e6/du-lieu`), theo luật ghi lại mọi văn bản giáo trình rời laptop:
+
+| tệp | nội dung | SHA-256 |
+|---|---|---|
+| `d01.jsonl` | 34.386 cặp học của 16 sách D-01 (phần học), văn bản cửa sổ, nhãn A | `c850e718c7f195d8eeeccc4787ac37b5096076c3fe3823a5e7540d3311577d04` |
+| `doc-1.jsonl` | 1.017 ứng viên, văn bản cửa sổ | `d3681460833f277e82fb4141f05ae739aa85e84b950676f14b48e4c3ade14f6d` |
+| `xstk-ch3-1.jsonl` | 277 ứng viên | `614d85fc8fa65a3a37ae55d3c6cc9a52bc022a8efdf809d07799622f0e4733a1` |
+| `doc-4.jsonl` | 4.124 ứng viên | `fb3b5c602dac126bdf55f511e3b5bc8b110e276a306932d3daf9094258a9bbb0` |
+
+Không chép gì của T-01, không chép `khoa.jsonl` hay đáp án phiếu kiểm. Cột `nhom` (mã sách D-01) lấy từ khoá, để chia nhóm theo sách.
+
+**Thiết kế** (`e6_cross_encoder.py` trên máy GPU, `thi_nghiem_e6.py` trên laptop):
+- **Đầu vào:** đoạn A là "# Y # @ X @ : câu định nghĩa của X", tối đa 64 token; đoạn B là các câu của cửa sổ. Hết chỗ thì giữ trước câu neo có X,
+  câu có X gần neo nhất, câu neo, rồi tới các câu gần neo.
+- **Chia:** bốn nhóm sách cố định, cân số dòng (8,1–9,2 nghìn cặp, tỉ lệ dương 0,36–0,42). Mỗi nếp học trên 12 sách, đoán 4 sách còn lại và ba tài
+  liệu đo. Điểm trên tài liệu đo là trung bình bốn mô hình nếp.
+- **Học:** 5 lớp; điểm cạnh cứng là xác suất `can_de_hieu`. Đóng băng embedding từ, bf16, AdamW, tối đa 3 epoch. Số epoch chọn bằng AP ngoài mẫu
+  trên D-01, không nhìn vàng.
+- **So và ghép:** LightGBM của E5 học lại trên đúng bốn nhóm sách, để so AP theo sách cho công bằng; số E5 cũ học trên 15 sách nên có lợi hơn.
+  Ghép bằng trung bình xác suất đã hiệu chỉnh theo nếp.
+- **Ngưỡng:** ba chính sách như E5, chốt trên D-01. E4 dùng chính sách hiệu chỉnh, `--chi-cung --tach-tu`, như `e5-a-hieu-chinh`.
+- **Mô hình:** `vinai/phobert-base` (MIT, đầu vào tách từ) và `intfloat/multilingual-e5-base` (MIT), mỗi mô hình 3 seed.
+- **Cấu hình chạy**, chốt sau các lượt chạy thử 512 dòng: lô 8, tích luỹ 4 (lô hiệu dụng 32), lr 3e-5.
+  - PhoBERT: 256 token, cũng là trần của mô hình. 20% số cặp phải bỏ bớt câu; bộ nhớ đỉnh 2,42 GiB. Lô 16 chạm 3,28 GiB kèm một lần cấp phát hụt,
+    nên đã hạ lô.
+  - e5: 384 token. Ở 256 token, 47% số cặp phải bỏ câu, vì XLM-R tốn nhiều token hơn cho mỗi âm tiết; ở 384 còn 5,5%. Bộ nhớ đỉnh 3,34 GiB trên
+    3,95 GiB, không cần gradient checkpointing (có checkpointing thì 2,36 GiB nhưng chậm hơn 50%).
+  - Ước thời gian: khoảng 1,75 giờ mỗi seed PhoBERT, 2,3 giờ mỗi seed e5; sáu lượt khoảng 12 giờ. Hàng đợi chạy từ 11:27 ngày 2026-10-12.
+- **Phút/cuốn trên CPU:** `e6_toc_do_cpu.py` chạy trên laptop, đo bản fp32 và bản int8 động.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
@@ -781,6 +829,18 @@ tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e5.py
 # E4 cho từng tài liệu vàng (doc-1, xstk-ch3-1, doc-4); kết quả ở tmp/pass-phu-ml/ket-qua/e5.jsonl
 tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/lap_canh.py <doc> --diem=tmp/pass-phu-ml/diem/e5-d01-a/<doc>.csv \
     --nguong-tu=tmp/pass-phu-ml/diem/e5-d01-a/nguong.json --chinh-sach=hieu-chinh --chi-cung --tach-tu --nhan=e5-a-hieu-chinh
+# E6, trên laptop: dữ liệu cross-encoder (cần khoa.jsonl), rồi chép tmp/pass-phu-ml/e6/du-lieu/*.jsonl và hai script e6_* lên máy GPU
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/dung_du_lieu_e6.py
+# E6, trên máy GPU (~/e6): venv có torch, transformers; hang-doi.txt mỗi dòng một lượt, ví dụ
+#   phobert-s1 --mo-hinh=vinai/phobert-base --tach-tu --seed=1 --lo=8 --tich-luy=4 --luu-mo-hinh
+#   e5-s1 --mo-hinh=intfloat/multilingual-e5-base --do-dai=384 --seed=1 --lo=8 --tich-luy=4 --luu-mo-hinh
+bash e6_chay_hang_doi.sh
+# E6, trên laptop: chép ~/e6/ket-qua/<lượt> về tmp/pass-phu-ml/e6/ket-qua/, chốt ngưỡng, rồi E4 như E5
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e6.py --ket-qua=tmp/pass-phu-ml/e6/ket-qua/<lượt> [--ghep=lightgbm]
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/lap_canh.py <doc> --diem=tmp/pass-phu-ml/diem/e6-<lượt>/<doc>.csv \
+    --nguong-tu=tmp/pass-phu-ml/diem/e6-<lượt>/nguong.json --chinh-sach=hieu-chinh --chi-cung --tach-tu --nhan=e6-<lượt>-hieu-chinh
+# E6: phút/cuốn trên CPU (tmp/venv-e6 có torch bản CPU), với mô hình nếp 0 chép về
+tmp/venv-e6/Scripts/python.exe scripts/pass-phu-ml/e6_toc_do_cpu.py --mo-hinh=<thư mục mo-hinh> [--tach-tu] --int8
 ```
 
 Số ở mục 1 đo bằng script tạm trong scratchpad trên `tmp/d01-gan-nhan/` lúc 17:24–18:10. Tệp nhãn còn đang ghi, nên chạy lại sẽ ra số khác.
