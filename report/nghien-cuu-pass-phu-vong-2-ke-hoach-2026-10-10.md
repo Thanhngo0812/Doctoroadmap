@@ -499,6 +499,9 @@ Hai việc của E0' đều xong:
 
 ### 8.3 E5: LightGBM học trên D-01
 
+> Số của mục này đo với bộ khớp tên có lỗi (mục 8.11). Sau khi sửa, E5 gần như không đổi (doc-4 P bao đóng 0,856, R 0,522); vòng 1 đổi nhiều hơn.
+> Bảng mới ở mục 8.11.
+
 **Cách làm** (`scripts/pass-phu-ml/thi_nghiem_e5.py`):
 - Học trên 34.391 dòng D-01: phiếu thật, X có tên trong cửa sổ. Tập này gồm 5.414 phiếu, 16 sách, tỉ lệ dương (`can_de_hieu` của lượt A) 0,388;
   94% là cặp mà luồng có hỏi.
@@ -586,6 +589,9 @@ Chấm bằng `kiem_chat_luong_d01.py`:
 - E10 sẽ so học trên A, trên B và trên A∩B, ở cùng cỡ dữ liệu trên 831 phiếu này.
 
 ### 8.5 E9: nhiều seed
+
+> Số dưới đây đo với bộ khớp tên có lỗi (mục 8.11). E9 đã chạy lại sau khi sửa: bảng và cách đọc mới ở mục 8.11. Khoảng cách của E5 ở doc-4 còn
+> khoảng một nửa, và độ bất ổn Q7 của vòng 1 ở doc-1 phần lớn do lỗi.
 
 **Cách làm.** Học lại vòng 1 (ý định LLM v3) và E5 (nhãn A) với 5 seed LightGBM mới (1–5), cộng seed gốc 20261005: 6 seed mỗi phương án. Mỗi seed lắp
 cạnh với ngưỡng hiệu chỉnh và chấm E4 trên ba tài liệu vàng.
@@ -849,8 +855,36 @@ bí danh chứa âm tiết "y" (doc-1 4 dòng, xstk 42 dòng, nhap-mon-ml không
   qua bắc cầu.
 - **Vòng 1 ở doc-1 đổi mạnh** dù doc-1 chỉ thêm 1 ứng viên: tập học của vòng 1 gồm cả doc-4, nên đổi doc-4 là đổi mô hình. Độ nhạy này khớp với
   kết luận của E9 rằng doc-1 và xstk nhiễu hơn chênh lệch giữa các phương án.
-- **E9 và E10 chưa chạy lại.** Hai thí nghiệm này so các phương án trên cùng tập ứng viên (bị thiếu như nhau), và kết quả chính của E5 gần như không
-  đổi, nên tôi chưa ưu tiên chạy lại.
+- **E10 chưa chạy lại.** E10 so các nguồn nhãn trên cùng tập ứng viên (bị thiếu như nhau), nên chưa ưu tiên.
+
+**E9 chạy lại sau khi sửa** (6 seed mỗi phương án: seed gốc và seed 1–5; mỗi ô là trung bình ± độ lệch chuẩn [min–max]; kết quả ở
+`tmp/pass-phu-ml/ket-qua/e9-sua-y.jsonl`):
+
+| tài liệu | phương án | Q7 | Q7b | bao đóng P | bao đóng R |
+|---|---|---|---|---|---|
+| doc-1 | vòng 1 | 0,687 ± 0,029 [0,64–0,72] | 0,705 ± 0,077 [0,60–0,80] | 0,761 ± 0,056 [0,68–0,82] | 0,729 ± 0,046 [0,66–0,76] |
+| | E5 | 0,589 ± 0,016 [0,56–0,60] | 0,746 ± 0,004 | 0,824 ± 0,004 | 0,648 ± 0,017 |
+| xstk | vòng 1 | 0,197 ± 0,003 | 0,515 ± 0,005 | 0,595 ± 0,003 | 0,170 ± 0,010 |
+| | E5 | 0,215 ± 0,011 | 0,555 ± 0,087 [0,46–0,71] | 0,656 ± 0,074 [0,58–0,77] | 0,189 ± 0,022 |
+| doc-4 | vòng 1 | 0,561 ± 0,017 | 0,780 ± 0,033 [0,73–0,81] | 0,772 ± 0,046 [0,70–0,81] | 0,468 ± 0,017 |
+| | E5 | 0,464 ± 0,032 [0,42–0,49] | 0,853 ± 0,007 | 0,865 ± 0,010 | 0,518 ± 0,006 |
+
+Hiệu E5 trừ vòng 1, ghép theo seed (số seed E5 hơn trên 6):
+
+| tài liệu | Q7 | Q7b | bao đóng P | bao đóng R |
+|---|---|---|---|---|
+| doc-1 | −0,098 ± 0,038 (0/6) | +0,041 ± 0,074 (4/6) | **+0,063 ± 0,054 (6/6)** | −0,081 ± 0,059 (0/6) |
+| xstk | **+0,018 ± 0,013 (6/6)** | +0,040 ± 0,087 (4/6) | +0,060 ± 0,075 (3/6) | +0,019 ± 0,028 (4/6) |
+| doc-4 | −0,097 ± 0,047 (0/6) | **+0,073 ± 0,036 (6/6)** | **+0,093 ± 0,043 (6/6)** | **+0,050 ± 0,022 (6/6)** |
+
+**So với mục 8.5** (phán xét của Claude):
+- **doc-4: E5 vẫn hơn vòng 1 ở P, Q7b, R trong 6/6 seed, nhưng khoảng cách còn khoảng một nửa** (P +0,093 so với +0,166 trước khi sửa). Phần đổi
+  nằm ở vòng 1: P của vòng 1 lên 0,772 (trước 0,712), vì tập học của vòng 1 gồm các cặp «Quy luật» của chính doc-4 mà trước đây bị che. Câu "chênh
+  lệch gấp hơn 10 lần độ lệch chuẩn" ở mục 8.5 không còn đúng: nay chỉ khoảng 2 lần.
+- **doc-1: đánh đổi rõ hơn.** E5 có P cao hơn ở 6/6 seed, nhưng Q7 và R thấp hơn ở 0/6 seed.
+- **"Vòng 1 không ổn định ở doc-1" phần lớn do lỗi bộ khớp.** Độ lệch chuẩn Q7 của vòng 1 còn 0,029 (trước 0,088). P và Q7b của vòng 1 vẫn dao động
+  hơn E5 nhiều (0,056 và 0,077, so với 0,004).
+- **Đánh đổi chung giữ nguyên:** E5 chặt hơn (P, Q7b), vòng 1 phủ tổ tiên rộng hơn (Q7). Kết luận cuối vẫn chờ T-01.
 
 ### 8.12 Khảo sát phạm vi E7 và E8 (2026-10-12, 0 USD)
 
