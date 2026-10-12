@@ -38,8 +38,8 @@ Sau khi gộp, stage canonical (lệnh `a4` đầy đủ) làm ba việc nối t
 1. **Gộp ứng viên (A4):** giữ nguyên như hiện nay. Lời phán cụm cũ được tái dùng, nên tập node canonical và id node không đổi.
 2. **A5 mới:** lời gọi mô tả và kiểm mô tả của A5 quyết định luôn câu neo và trạng thái dạy cho từng khái niệm, đúng ngữ nghĩa của C8. Câu ứng
    viên cho neo do mã dựng sẵn, như C8 đang làm. Chunk chứa câu neo được thêm vào chunk định nghĩa, thay cho phần việc của provenance.
-3. **Danh tính:** chạy sau A5 mới, trên câu neo và mô tả cuối. Các cặp nghi trùng được phán theo cụm thay vì từng cặp, rồi xác minh cặp gộp.
-   Kết quả là một bản đồ danh tính phủ lên node canonical, không sửa tập node.
+3. **Danh tính:** chạy sau A5 mới, trên câu neo và mô tả cuối. Các cặp nghi trùng được phán theo lô (nhiều cặp mỗi lời gọi, mỗi cặp vẫn độc
+   lập) thay vì mỗi cặp một lời gọi, rồi xác minh cặp gộp. Kết quả là một bản đồ danh tính phủ lên node canonical, không sửa tập node.
 
 Chuỗi đồ thị mới bỏ ba stage provenance, neo và danh tính. Bản đồ danh tính được áp ngay ở stage đầu (A6). A8 nhận đúng hợp đồng như hiện nay:
 - node mang trạng thái dạy, câu neo, chunk dạy, vị trí dạy;
@@ -80,7 +80,7 @@ người gán vàng, người duyệt danh tính, và các stage phía sau.
 23. Là nhân viên, tôi muốn danh tính trong stage canonical dùng đủ các nguồn đề cử hiện có: tên hoặc alias chuẩn hoá trùng, viết tắt theo chữ
     đầu, tiền tố chung lặp trong tài liệu, cùng câu neo, và độ gần mô tả.
 24. Là nhân viên, tôi muốn vector mô tả dùng để đề cử chỉ đề cử, không tự gộp (ADR 0006).
-25. Là nhân viên, tôi muốn các cặp nghi trùng được gom thành cụm ứng viên danh tính và phán theo cụm, có trần cỡ cụm, để giảm số lời gọi.
+25. Là nhân viên, tôi muốn các cặp nghi trùng được gom thành lô và phán nhiều cặp trong một lời gọi, mỗi cặp vẫn độc lập, để giảm số lời gọi.
 26. Là nhân viên, tôi muốn chỉ nhóm mà mọi cặp đều được phán đồng nhất và qua xác minh độc lập mới được gộp.
 27. Là người duyệt danh tính, tôi muốn quyết định của người thắng phán của mô hình như hiện nay, với cùng định dạng tệp duyệt.
 28. Là người duyệt danh tính, tôi muốn mọi gộp chạm khái niệm của bộ vàng vẫn cần chủ dự án duyệt trước khi bật.
@@ -187,10 +187,15 @@ Payload canonical có thêm nhật ký neo và nhật ký lời phán của ph�
 
   Các tham số nằm trong config. Vector mô tả được embed trong stage canonical bằng đúng mô hình embedding đã ghi ở manifest (ADR 0004). Vector chỉ
   đề cử (ADR 0006).
-- **Phán theo cụm.** Các cặp nghi trùng được gom thành thành phần liên thông, cắt theo trần cỡ cụm cấu hình được, gọi là cụm ứng viên danh tính.
-  Mỗi cụm một lời gọi. Đầu vào mỗi khái niệm: tên, alias, mô tả, câu neo. Đầu ra là phân hoạch cụm thành các nhóm, kèm quan hệ trong tập đóng
-  hiện có: `dong_nhat`, `truong_hop_rieng`, `bang_nhau_theo_menh_de`, `menh_de_khac`, `doi_tuong_khac_loai`, `khac`. Tiêu chí là cùng ngoại
-  diên (R8b). Prompt nhắc rằng một câu thường định nghĩa nhiều khái niệm khác nhau.
+- **Phán theo lô cặp, không theo cụm.** Mỗi lời gọi chứa một lô cặp nghi trùng, kích thước lô cấu hình được và nằm trong khoá cache. Mỗi cặp
+  vẫn được phán độc lập, với đầu vào cho mỗi khái niệm: tên, alias, mô tả, câu neo. Đầu ra mỗi cặp là một quan hệ trong tập đóng hiện có:
+  `dong_nhat`, `truong_hop_rieng`, `bang_nhau_theo_menh_de`, `menh_de_khac`, `doi_tuong_khac_loai`, `khac`. Tiêu chí là cùng ngoại diên (R8b).
+  Prompt nhắc rằng một câu thường định nghĩa nhiều khái niệm khác nhau. Một cặp trong lô trượt kiểm thì chỉ cặp đó được hỏi lại riêng.
+
+  *Vì sao không phán theo cụm:* đo trên nhật ký danh tính của 19 cuốn, đồ thị cặp nghi trùng gần như là một khối liên thông khổng lồ, vì đề cử
+  theo top-3 độ gần mô tả nối hầu hết khái niệm với nhau (doc-4: 473/563 nút trong một khối). Cắt khối thành cụm nhỏ sẽ tạo rất nhiều cặp bị cắt
+  ngang, mỗi cặp cần một lời phán sửa. A4 đang chịu đúng hiện tượng này: ở doc-4 có 305 cạnh bị cắt sinh 307 lời gọi sửa, nhiều hơn 180 lời gọi phán
+  cụm. Gom lô cặp giữ nguyên ngữ nghĩa từng cặp và luật "mọi cặp đều đồng nhất" của danh tính hiện nay.
 - **Xác minh:** mọi cặp được phán đồng nhất qua một lời gọi độc lập, chỉ thấy hai hồ sơ, như lượt xác minh hiện nay. Chỉ `dong_nhat` giữ gộp.
 - **Luật gộp** như hiện nay:
   - chỉ gộp nhóm mà mọi cặp đều đồng nhất sau xác minh;
@@ -299,7 +304,8 @@ Spec này không làm các việc sau:
   đo khi nghiệm thu.
 - **Rủi ro chính và cách đo:**
   - C8 cố ý phán một khái niệm mỗi lời gọi; gom vào lô A5 có thể làm neo kém đi. Tham số lô neo cho phép đo cả hai trên cùng tài liệu;
-  - phán danh tính theo cụm có thể gộp sai nhiều hơn phán từng cặp. Lượt xác minh từng cặp đồng nhất được giữ để chặn;
+  - phán danh tính theo lô cặp có thể kém hơn phán từng cặp một lời gọi. Lượt xác minh độc lập từng cặp đồng nhất được giữ để chặn gộp sai, và
+    kích thước lô cấu hình được để đo;
   - vector mô tả cuối được embed sớm hơn (ở stage canonical); mô hình và số chiều không đổi nên tập cặp đề cử phải giống chuỗi v3 trên cùng mô
     tả. Lệch thì đó là dấu hiệu lỗi cài đặt.
 - **Quan hệ với vé khác:**
