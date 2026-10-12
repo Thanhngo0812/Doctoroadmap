@@ -196,6 +196,52 @@ Nếu chủ dự án duyệt lập kế hoạch, thứ tự đề xuất như sa
 Dữ liệu học có sẵn: nhật ký phán LLM của C8 và danh tính trên 16 cuốn D-01 (đã chạy tới danh tính) và các tài liệu phát triển, dùng làm nhãn bạc
 để chưng cất như cách làm với pass phụ.
 
+## 4b. Đề xuất gộp khâu để bớt lời gọi, vẫn giữ LLM (chủ dự án hỏi 2026-10-12)
+
+Chủ dự án đề xuất ba thay đổi:
+- danh tính gộp vào A4;
+- trạng thái dạy gộp vào A3;
+- A5 kiêm luôn việc chọn neo.
+
+Số đo trên 19 cuốn (3 tài liệu phát triển và 16 cuốn D-01), bằng `scripts/pass-phu-ml/do_neo_va_a3.py`, tổng 6.300 khái niệm được dạy có neo:
+
+| câu neo của C8 lấy từ đâu | số khái niệm | tỉ lệ |
+|---|---:|---:|
+| trùng đúng câu bằng chứng A3 (luật hạng 0 của C8) | 5.582 | 88,6% |
+| cùng chunk với bằng chứng A3 | 5.772 | 91,6% |
+| chỉ có nhờ provenance thêm chunk | 190 | 3,0% |
+| C8 tự tìm bằng mã (chunk nhắc tên, khối tiêu đề, ký hiệu) | 326 | 5,2% |
+
+Danh tính gộp chủ yếu nhờ tín hiệu "mô tả giống nhau" (`description_similarity`). Trên ba tài liệu chạy A4 đầy đủ, danh tính chỉ gộp thêm 11, 5
+và 4 nút, trong khi phải phán 381, 169 và 901 cặp, và ít nhất 3 lần gộp là sai (mục 3.3). Trên 16 cuốn D-01, A4 chỉ chạy lớp tên
+(`--names-only`), nên danh tính gánh gần hết việc gộp: 704 nút trên 19 cuốn.
+
+Đánh giá từng đề xuất:
+- **A5 kiêm neo và trạng thái dạy: khả thi.**
+  - Bộ dựng câu ứng viên của C8 là mã thuần: chunk có bằng chứng A3, chunk nhắc tên chính xác, khối tiêu đề, ký hiệu. Tất cả có sẵn ngay sau A4.
+    Riêng provenance gọi LLM, và chỉ quyết định 3% số neo; phần này thay được bằng luật.
+  - Gộp thì mất một khâu tuần tự và 618 lời gọi trên doc-4.
+  - Tiền tiết kiệm nhỏ hơn số lời gọi gợi ý, vì câu ứng viên vẫn phải gửi đi; chỉ bớt phần hướng dẫn lặp lại ở mỗi lời gọi.
+  - Rủi ro: C8 cố ý phán một khái niệm mỗi lời gọi, còn A5 gom 10 khái niệm. Phải đo độ khớp neo và trạng thái dạy so với C8 hiện tại.
+- **Trạng thái dạy gộp vào A3: không nên đúng như vậy.** A3 đọc từng cửa sổ và không thấy các cửa sổ khác, trong khi "được dạy", "chỉ nhắc"
+  hay "kiến thức nền" là kết luận trên cả tài liệu. A3 chỉ nên thêm một cờ gợi ý "dạy ở đây" cho mỗi ứng viên; quyết định cuối nằm ở bước A5 mới.
+- **Danh tính gộp vào A4: khả thi.**
+  - A4 đã phán theo cụm. Cần thêm các tín hiệu đề cử của danh tính vào bước chặn của A4: mô tả nháp giống nhau, viết tắt, tiền tố chung, tên
+    chuẩn hoá.
+  - Phán theo tiêu chí cùng ngoại diên trên câu bằng chứng A3, vốn trùng câu neo ở 89% số khái niệm.
+  - Giữ lượt xác minh cho cặp gộp khác tên, vì gộp sai là lỗi đo được.
+  - Chọn đại diện (khái niệm được dạy sớm nhất) bằng mã, sau bước A5 mới.
+
+**Lịch:** không áp dụng trước khi vòng 2 của pass phụ đo xong trên T-01, vì hai lý do:
+- phiếu vàng T-01 gắn với `concept_hash` của canonical v1, nên đổi A4 là vàng hết khớp;
+- đổi thượng nguồn giữa vòng đo làm lẫn tác động.
+
+Nghiệm thu đề xuất cho một vé sau vòng 2, trên 19 cuốn đã có artifact để so:
+- độ khớp neo và trạng thái dạy so với C8 hiện tại;
+- nhóm gộp so với danh tính hiện tại;
+- E4 của cả hai pass trên ba tài liệu vàng không giảm;
+- phút/cuốn và USD/cuốn trước và sau.
+
 ## 5. Giới hạn
 
 - Ba tài liệu, mỗi tài liệu một chương vàng, 172 cạnh. Mất mát do trạng thái dạy dồn gần hết vào một cuốn. Cần xác nhận trên vàng T-01.
