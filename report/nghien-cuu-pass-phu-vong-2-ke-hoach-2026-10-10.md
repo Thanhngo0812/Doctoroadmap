@@ -748,6 +748,18 @@ mỗi triệu). Số 429 chưa đo được: telemetry chưa ghi riêng số nà
 **Còn lại của T-01:** hai người gán nộp phiếu, rồi làm bước 8 của vé (`a8-gold-check`, gộp, hội ý, đóng băng JSON, ghi SHA-256). Sau đó mới tới vé
 đánh giá vòng 2, chạy A6 → A10 trên cấu hình đã khoá.
 
+### 8.9 Quy lỗi thượng nguồn: hệ quả cho vòng 2 (2026-10-12)
+
+Chủ dự án hỏi trạng thái dạy, neo và danh tính có quan trọng với A8 không. Báo cáo riêng:
+[quy lỗi thượng nguồn](quy-loi-thuong-nguon-a8-2026-10-12.md). Trên 172 cạnh vàng của doc-1, xstk và doc-4, pass phụ LLM v3 và E5 cùng tìm được
+73 cạnh; E5 ít cạnh thừa hơn (26/90 so với 34/93). Phép quy lỗi đổi thứ tự ưu tiên của vòng 2 ở ba điểm:
+- **Trần hồi tưởng do thượng nguồn:** 36/99 cạnh thiếu nằm ở trạng thái dạy, danh tính và cửa sổ. Không mô hình chấm nào lấy lại được các cạnh
+  này, kể cả E6. Riêng xstk, chuỗi A2 → C8 làm mất 29/62 cạnh vàng (vé 05).
+- **E7 có trần rõ ràng:** 49/136 cạnh vàng có tên X ngoài cửa sổ của Y. E5 chỉ lấy được 8 cạnh trong số đó, LLM v3 lấy được 15. Đây là phần lớn
+  nhất mà pass phụ ML còn để lại.
+- **E8 và cạnh mềm:** cạnh vàng chỉ có đường đi qua cạnh mềm là 11 với E5 và 22 với LLM v3 (doc-4 chiếm 10 và 17), do cạnh `cong_cu` và luật
+  làm mềm cạnh ngược thứ tự sách (R17).
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
