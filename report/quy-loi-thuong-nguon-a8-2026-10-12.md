@@ -90,12 +90,15 @@ Trạng thái của đích vàng trên từng tài liệu:
 - doc-4: 45/45 được dạy.
 
 Ở xstk, 7/8 khái niệm "chỉ nhắc" có chunk định nghĩa bị A2 gán vai trò `de_cuong`. Đây là lỗi đã ghi từ tập giữ lại v3: mục "Cách giải" bị gán
-đề cương. C8 xử lý 8 khái niệm này như sau:
+đề cương. Cả 13 mục "Cách giải" đều bị gán bởi **lớp cấu trúc tất định** của A2 (`role_source = structure`), không phải lớp LLM. Luật "tiêu đề
+lặp lại ở đầu nhiều mục là đề cương" vốn dùng để bắt slide lặp lại dàn ý, nhưng ở đây lại bắt nhầm một tiêu đề phụ lặp lại trong bài. Lớp LLM
+của A2 chỉ gán các mục khác (22 `noi_dung`, 5 `bai_tap`, 3 `de_cuong`). C8 xử lý 8 khái niệm này như sau:
 - 4 khái niệm không được hỏi gì (không có bản ghi C8), vì luật bỏ qua khái niệm chỉ có căn cứ ngoài vùng nội dung;
 - 3 khái niệm có chunk định nghĩa bị gán đề cương, toàn bộ hoặc một phần; C8 có hỏi LLM và LLM kết luận "chỉ nhắc";
 - 1 khái niệm ("Bài toán tìm kích thước mẫu") có chunk định nghĩa thuộc nội dung, nhưng LLM vẫn kết luận "chỉ nhắc".
 
-Như vậy gốc của 29 cạnh mất ở xstk là nhãn vai trò của A2 cộng một luật của C8. LLM của C8 phán sai trên đúng dữ liệu được thấy chỉ là ca hiếm.
+Như vậy gốc của 29 cạnh mất ở xstk là một luật cấu trúc của A2 cộng một luật của C8, đều không dùng LLM. LLM của C8 phán sai trên đúng dữ liệu
+được thấy chỉ là ca hiếm.
 Hai lỗi này nằm sẵn trong [vé 05](../task/v4/00-ke-hoach.md) ("A2 'Cách giải'", "C8 bỏ qua khái niệm ngoài nội dung"); nay có số đo: 29/62 cạnh vàng
 của xstk.
 
@@ -170,7 +173,7 @@ Bảng dưới là chi của từng khâu trên doc-4 trọn cuốn (616 khái n
 
 **Nhưng số liệu không cho thấy LLM là chỗ yếu của ba khâu.**
 - LLM chọn câu neo đúng khoảng 94%.
-- Cạnh mất do trạng thái dạy đến từ nhãn vai trò của A2 cộng một luật của C8.
+- Cạnh mất do trạng thái dạy đến từ một luật cấu trúc của A2 cộng một luật của C8, cả hai đều không dùng LLM.
 - Danh tính gộp sai ít.
 
 Vì vậy lý do bỏ LLM ở ba khâu là phạm vi và chi phí:
@@ -185,7 +188,7 @@ Nếu chủ dự án duyệt lập kế hoạch, thứ tự đề xuất như sa
    ngoài nội dung. Việc này độc lập với chuyện có LLM hay không. Đo lại bằng chính script này và trên vàng T-01.
 2. **Danh tính không LLM**, rủi ro thấp nhất. Dùng luật dè dặt (chuẩn hoá, viết tắt, ký hiệu ↔ chữ) và không gộp khi không chắc, vì lỗi đo được
    là gộp sai chứ không phải gộp thiếu. Cân nhắc gộp chung với A4 sau khi dời neo lên sớm.
-3. **Trạng thái dạy không LLM**, làm cùng vai trò vùng A2, vì A2 cũng gọi LLM và là gốc lỗi.
+3. **Trạng thái dạy không LLM**, làm cùng lớp nghĩa của vai trò vùng A2 (`label-roles`, cũng gọi LLM).
 4. **Neo không LLM sau cùng**, rủi ro cao nhất.
    - Trước hết cần một bộ vàng neo do người duyệt; 84 câu Claude đã đọc dùng làm hạt giống.
    - Cổng: độ đúng không thấp hơn bản LLM, và E4 của cả hai pass không giảm.
