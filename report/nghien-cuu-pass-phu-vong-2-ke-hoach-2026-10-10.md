@@ -815,6 +815,41 @@ Không chép gì của T-01, không chép `khoa.jsonl` hay đáp án phiếu ki�
   - Ước thời gian: khoảng 1,75 giờ mỗi seed PhoBERT, 2,3 giờ mỗi seed e5; sáu lượt khoảng 12 giờ. Hàng đợi chạy từ 11:27 ngày 2026-10-12.
 - **Phút/cuốn trên CPU:** `e6_toc_do_cpu.py` chạy trên laptop, đo bản fp32 và bản int8 động.
 
+**Kết quả sớm: PhoBERT seed 1** (2026-10-12, sau khi sửa bộ khớp ở mục 8.11; e5 và seed 2–3 còn chạy). Lượt chạy mất khoảng 3 giờ trên máy GPU,
+GPU ở 86–88°C nên bị hạ xung (705–780 MHz).
+
+Trên D-01, dự đoán ngoài mẫu so với nhãn agentic `can_de_hieu`:
+- AP gộp theo epoch: 0,640 / 0,680 / 0,679, nên chọn epoch 2.
+- PhoBERT đạt AP 0,680, LightGBM học trên đúng bốn nhóm sách đạt 0,663, bản ghép đạt **0,714**.
+- PhoBERT hơn LightGBM ở 13/16 sách, phần lớn chỉ hơn ít (rõ nhất ở d01-15: 0,557 so với 0,486; d01-11: 0,559 so với 0,515).
+
+E4 trên vàng người (ngưỡng hiệu chỉnh, `--chi-cung --tach-tu`; mỗi ô là số cạnh pass phụ / Q7 / Q7b / bao đóng P / bao đóng R):
+
+| tài liệu | LLM v3 | E5 | E6 PhoBERT | E6 ghép LightGBM |
+|---|---|---|---|---|
+| doc-4 | 1.473 / 0,322 / 0,606 / 0,584 / 0,459 | 727 / **0,483** / 0,859 / 0,856 / **0,522** | 818 / 0,421 / 0,844 / **0,871** / 0,509 | 770 / 0,429 / 0,848 / 0,859 / 0,497 |
+| doc-1 | 468 / **0,667** / **0,877** / **0,874** / **0,740** | 196 / 0,603 / 0,743 / 0,821 / 0,664 | 218 / 0,605 / 0,780 / 0,859 / 0,557 | 201 / 0,603 / 0,685 / 0,798 / 0,664 |
+| xstk | 171 / **0,414** / 0,644 / 0,636 / 0,214 | 59 / 0,206 / 0,530 / 0,593 / 0,163 | 58 / 0,342 / 0,802 / 0,810 / 0,173 | 62 / 0,331 / **0,811** / **0,821** / **0,235** |
+
+Khoảng Wilson của bao đóng P: doc-4 E6 0,79–0,93, E5 0,77–0,91; xstk E6 0,60–0,92, E5 0,41–0,76.
+
+**Đọc kết quả** (phán xét của Claude, mới một seed):
+- **doc-4:** E6 ngang E5; mọi chênh lệch nằm trong khoảng tin cậy.
+- **doc-1:** E6 không hơn E5. Bản riêng chặt hơn (P 0,859) nhưng R thấp hơn (0,557); bản ghép thì ngang E5. LLM v3 vẫn tốt nhất ở doc-1.
+- **xstk:** E6 hơn E5 rõ ở Q7, Q7b, P; bản ghép có R cao hơn cả LLM v3. Nhưng E9 cho thấy P của E5 ở xstk dao động 0,58–0,77 chỉ vì đổi seed, nên
+  phải chờ thêm seed.
+- Trên D-01, đọc văn bản giúp ít (+0,017 AP), còn ghép với LightGBM giúp rõ (+0,051). Trên vàng, ghép chưa hơn từng mô hình riêng.
+
+**Phút/cuốn** (doc-4, 4.652 ứng viên, PhoBERT nếp 0):
+- **CPU laptop** (Ryzen 7 7730U, 8 luồng): fp32 5,5 cặp/giây, khoảng 14 phút; mã hoá chỉ mất 2,2 giây.
+- **int8 động của PyTorch:** 8,6 cặp/giây nhưng hỏng điểm (lệch tối đa 0,78, Spearman 0,58 so với fp32), không dùng được.
+- **GPU** (máy GPU, đang hạ xung): theo log, khoảng 135 cặp/giây, tức khoảng 35 giây cho doc-4.
+- So sánh: LightGBM mất 1–2 phút mỗi cuốn, LLM v3 mất 4,5–5 giờ.
+- Chủ dự án cho biết có thể host mô hình trên máy GPU và nối bằng dây LAN. Nếu E6 đáng dùng thì phương án là:
+  - một dịch vụ suy luận nhỏ trên máy GPU;
+  - pass phụ gọi dịch vụ đó;
+  - không gọi được thì lùi về LightGBM.
+
 ### 8.11 Lỗi bộ khớp tên theo ranh giới từ (2026-10-12, lỗi của Claude)
 
 **Phát hiện.** Khi đọc 49 cạnh vàng mà phép quy lỗi (mục 8.9) xếp vào loại "X ngoài cửa sổ" để chuẩn bị E7, Claude thấy 10/23 cạnh của doc-4 có X là
