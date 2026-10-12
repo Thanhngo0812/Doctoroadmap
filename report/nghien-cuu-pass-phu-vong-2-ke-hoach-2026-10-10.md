@@ -852,6 +852,50 @@ bí danh chứa âm tiết "y" (doc-1 4 dòng, xstk 42 dòng, nhap-mon-ml không
 - **E9 và E10 chưa chạy lại.** Hai thí nghiệm này so các phương án trên cùng tập ứng viên (bị thiếu như nhau), và kết quả chính của E5 gần như không
   đổi, nên tôi chưa ưu tiên chạy lại.
 
+### 8.12 Khảo sát phạm vi E7 và E8 (2026-10-12, 0 USD)
+
+**E7: ứng viên không nguyên văn.** Đọc 49 cạnh vàng mà bản đầu của phép quy lỗi xếp là "X ngoài cửa sổ". 10 cạnh hoá ra do lỗi bộ khớp (mục 8.11),
+còn 39 cạnh. Cách X có mặt trong 39 cạnh này:
+- **một phần tên:** "độ chính xác" cho «Độ chính xác trong ước lượng tỉ lệ», "phổ biến" cho «Tính phổ biến», "khả đảo" cho «Ma trận khả đảo»;
+- **ký hiệu, công thức:** `det P`, `[β]S`, `(X1, …, Xn)`;
+- **nhắc ngoài cửa sổ nhưng trong chunk dạy Y:** cửa sổ dừng ở ranh giới đoạn văn;
+- **lỗi trích chữ của PDF:** "t ất nhiên";
+- **ngầm hiểu:** sách không nhắc X, vàng dựa vào kiến thức môn học; ví dụ «Cơ sở» định nghĩa bằng "biểu diễn tuyến tính **duy nhất**".
+
+Đo bốn bộ sinh ứng viên trên các cặp hợp đồng cho phép mà X không có trong cửa sổ (`pham_vi_e7.py`, đọc artifact pass phụ v3):
+
+| bộ sinh | bắt được / 39 | cặp sinh thêm (doc-1 + xstk + doc-4) |
+|---|---:|---:|
+| tên X trong chunk neo hay chunk dạy của Y, ngoài cửa sổ | 13 | 4.005 |
+| một phần tên X (tiền tố, hậu tố ≥ 2 âm tiết, bỏ "sự", "tính"…) trong cửa sổ | 22 | 48.403 |
+| cặp nghi ngờ sẵn có của luồng (`suspected_pairs`) | 29 | 41.817 |
+| hợp cả ba | 37 | 82.130 |
+
+Tập ứng viên hiện có (X trong cửa sổ) là 5.968 cặp, chứa 97 cạnh vàng. Bộ sinh rẻ nhất cũng làm tập ứng viên phình thêm 67% để với tới 13 cạnh.
+Thêm nữa, hợp đồng A8 đòi câu trích của cạnh cứng nằm trong cửa sổ, nên cạnh E7 sẽ trích một câu không nhắc tên X: lộ trình có cạnh mà căn cứ không
+nói gì về tiên quyết. **Đánh giá của Claude: E7 lợi thấp, hoãn.** Nếu làm thì chỉ thử bộ "chunk dạy Y" sau E6, với bộ chấm đọc văn bản.
+
+**E8: cạnh mềm.** Trong đồ thị A10 của E5 ở doc-4, 332/1.208 cạnh là mềm: 304 cạnh do R17 (`soften_backward_edges`: tiên quyết được dạy sau đích
+thì làm mềm, để lộ trình giữ thứ tự sách), 28 cạnh `cong_cu`. Phát lại A9 → A10 khi tắt R17 (`phat_lai_tat_r17.py`, monkeypatch trong script
+nghiên cứu, không sửa `src/`).
+Bản có R17 của LLM v3 ra đúng từng số đã báo:
+
+| tài liệu | hệ | R17 | cạnh cứng A10 | Q6 | Q7 | Q7b | bao đóng P | bao đóng R |
+|---|---|---|---:|---:|---:|---:|---|---|
+| doc-4 | LLM v3 | bật | 870 | 0,157 | 0,322 | 0,606 | 0,584 (0,50–0,67) | 0,459 (0,38–0,54) |
+| | | tắt | 1.071 | 0,157 | 0,522 | 0,366 | 0,551 (0,45–0,65) | 0,340 (0,27–0,42) |
+| | E5 | bật | 876 | 0,143 | 0,483 | 0,859 | 0,856 (0,77–0,91) | 0,522 (0,45–0,60) |
+| | | tắt | 1.180 | 0,100 | 0,703 | 0,503 | 0,747 (0,64–0,83) | 0,371 (0,30–0,45) |
+| doc-1 | E5 | bật / tắt | 376 / 395 | 0,103 / 0,179 | 0,603 / 0,603 | 0,743 / 0,679 | 0,821 / 0,857 | 0,664 / 0,641 |
+| xstk | E5 | bật / tắt | 121 / 127 | không đổi | | | | |
+
+**Đọc kết quả:**
+- R17 không phải lỗ thuần. Tắt R17 thì doc-4 lấy lại phần lớn cạnh vàng "chỉ có đường mềm" (Q7 tăng 0,20–0,22), nhưng kéo theo rất nhiều tiên
+  quyết sai (Q7b giảm 0,24–0,36). Bao đóng P và R trên rút gọn bắc cầu cũng giảm, vì thêm cạnh cứng làm các cạnh trực tiếp giữa đích vàng thành bắc
+  cầu.
+- Hướng có lý của E8 là **làm cứng có chọn lọc**: chỉ cạnh ngược mà bộ chấm tin chắc, hoặc chỉ cạnh ngược trong cùng một mục. Việc này đổi luật
+  của A10 (`src/`), nên phải qua vé, và phải tránh khớp riêng doc-4, tài liệu duy nhất mà R17 tác động mạnh.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
@@ -885,6 +929,14 @@ tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/lap_canh.py <doc> --diem=tmp/
     --nguong-tu=tmp/pass-phu-ml/diem/e6-<lượt>/nguong.json --chinh-sach=hieu-chinh --chi-cung --tach-tu --nhan=e6-<lượt>-hieu-chinh
 # E6: phút/cuốn trên CPU (tmp/venv-e6 có torch bản CPU), với mô hình nếp 0 chép về
 tmp/venv-e6/Scripts/python.exe scripts/pass-phu-ml/e6_toc_do_cpu.py --mo-hinh=<thư mục mo-hinh> [--tach-tu] --int8
+# sau khi sửa bộ khớp (mục 8.11): dựng lại bảng --tach-tu, bảng D-01, dữ liệu E6, rồi quy lỗi
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/dung_bang_cap.py doc-1 nhap-mon-ml xstk-ch3-1 doc-4 --tach-tu
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/quy_loi_thuong_nguon.py --tach-tu --he=khong,llm-v3,e5-a-hieu-chinh
+# vòng 1 sau khi sửa, rồi lap_canh như E5 với --nhan=vong1-hieu-chinh-sua-y
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e2b.py --nhan=y-dinh-cung --tach-tu --khong-main --luot=vong1-sua-y
+# khảo sát E7 và E8 (mục 8.12)
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/pham_vi_e7.py
+.venv/Scripts/python.exe scripts/pass-phu-ml/phat_lai_tat_r17.py --he=llm-v3,e5-a-hieu-chinh
 ```
 
 Số ở mục 1 đo bằng script tạm trong scratchpad trên `tmp/d01-gan-nhan/` lúc 17:24–18:10. Tệp nhãn còn đang ghi, nên chạy lại sẽ ra số khác.
