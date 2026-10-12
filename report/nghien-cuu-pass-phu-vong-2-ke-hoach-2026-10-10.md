@@ -751,13 +751,14 @@ mỗi triệu). Số 429 chưa đo được: telemetry chưa ghi riêng số nà
 ### 8.9 Quy lỗi thượng nguồn: hệ quả cho vòng 2 (2026-10-12)
 
 Chủ dự án hỏi trạng thái dạy, neo và danh tính có quan trọng với A8 không. Báo cáo riêng:
-[quy lỗi thượng nguồn](quy-loi-thuong-nguon-a8-2026-10-12.md). Trên 172 cạnh vàng của doc-1, xstk và doc-4, pass phụ LLM v3 và E5 cùng tìm được
-73 cạnh; E5 ít cạnh thừa hơn (26/90 so với 34/93). Phép quy lỗi đổi thứ tự ưu tiên của vòng 2 ở ba điểm:
+[quy lỗi thượng nguồn](quy-loi-thuong-nguon-a8-2026-10-12.md). Số dưới đây đã đo lại sau khi sửa lỗi bộ khớp (mục 8.11). Trên 172 cạnh vàng của
+doc-1, xstk và doc-4, pass phụ LLM v3 tìm được 73 cạnh, E5 tìm được 74; E5 ít cạnh thừa hơn (27/92 so với 34/93). Phép quy lỗi đổi thứ tự ưu tiên
+của vòng 2 ở ba điểm:
 - **Trần hồi tưởng do thượng nguồn:** 36/99 cạnh thiếu nằm ở trạng thái dạy, danh tính và cửa sổ. Không mô hình chấm nào lấy lại được các cạnh
   này, kể cả E6. Riêng xstk, chuỗi A2 → C8 làm mất 29/62 cạnh vàng (vé 05).
-- **E7 có trần rõ ràng:** 49/136 cạnh vàng có tên X ngoài cửa sổ của Y. E5 chỉ lấy được 8 cạnh trong số đó, LLM v3 lấy được 15. Đây là phần lớn
-  nhất mà pass phụ ML còn để lại.
-- **E8 và cạnh mềm:** cạnh vàng chỉ có đường đi qua cạnh mềm là 11 với E5 và 22 với LLM v3 (doc-4 chiếm 10 và 17), do cạnh `cong_cu` và luật
+- **E7 có trần rõ ràng:** 39/136 cạnh vàng có tên X ngoài cửa sổ của Y (bản đầu ghi 49, do lỗi bộ khớp). E5 chỉ lấy được 3 cạnh trong số đó,
+  LLM v3 lấy được 8. Đây là phần lớn nhất mà pass phụ ML còn để lại sau phần "mô hình".
+- **E8 và cạnh mềm:** cạnh vàng chỉ có đường đi qua cạnh mềm là 15 với E5 và 25 với LLM v3 (doc-4 chiếm 14 và 20), do cạnh `cong_cu` và luật
   làm mềm cạnh ngược thứ tự sách (R17).
 
 ### 8.10 E6: cross-encoder (2026-10-12, đang chạy)
@@ -807,6 +808,49 @@ Không chép gì của T-01, không chép `khoa.jsonl` hay đáp án phiếu ki�
     3,95 GiB, không cần gradient checkpointing (có checkpointing thì 2,36 GiB nhưng chậm hơn 50%).
   - Ước thời gian: khoảng 1,75 giờ mỗi seed PhoBERT, 2,3 giờ mỗi seed e5; sáu lượt khoảng 12 giờ. Hàng đợi chạy từ 11:27 ngày 2026-10-12.
 - **Phút/cuốn trên CPU:** `e6_toc_do_cpu.py` chạy trên laptop, đo bản fp32 và bản int8 động.
+
+### 8.11 Lỗi bộ khớp tên theo ranh giới từ (2026-10-12, lỗi của Claude)
+
+**Phát hiện.** Khi đọc 49 cạnh vàng mà phép quy lỗi (mục 8.9) xếp vào loại "X ngoài cửa sổ" để chuẩn bị E7, Claude thấy 10/23 cạnh của doc-4 có X là
+«Quy luật», trong khi cửa sổ của Y viết rõ "những quy luật…".
+
+**Nguyên nhân.** `segmented()` trong `dung_bang_cap.py` (chế độ `--tach-tu`) chuẩn hoá cả câu sau khi underthesea đã nối từ ghép bằng `_`. Phép đổi
+y→i cuối âm tiết của `_mention_normalize` chỉ áp khi sau "y" không phải chữ, mà `_` lại là chữ (`\w`). Tên thì được chuẩn hoá khi âm tiết còn cách
+nhau, nên "quy luật" thành mẫu `qui[ _]luật`, còn câu vẫn là `quy_luật`: không bao giờ khớp. Mọi tên có âm tiết **không đứng cuối** tận cùng
+bằng "y" đều trượt: quy luật, tỷ lệ, lý thuyết, mức ý nghĩa, chủ nghĩa duy vật, không suy biến. "Định lý" vẫn khớp vì "lý" đứng cuối.
+
+**Sửa.** Chuẩn hoá từng âm tiết rồi mới nối `_`. Test `tests/unit/scripts/test_khop_tu_am_tiet_y.py`: đỏ trên mã cũ ở cả bốn ca có "y", xanh
+sau khi sửa; ca chặn ("chất" không khớp vào "vật chất") xanh cả hai lần. Dựng lại bảng vòng 1: chỉ ba cột `*_tu` đổi, và chỉ ở dòng có tên hoặc
+bí danh chứa âm tiết "y" (doc-1 4 dòng, xstk 42 dòng, nhap-mon-ml không đổi).
+
+**Ảnh hưởng đo được:**
+- **Tập ứng viên** (hợp đồng cho phép, tên X trong cửa sổ) thiếu: doc-4 528 cặp (13%; 300 cặp LLM v3 đã hỏi; 10 cạnh vàng), xstk 21, doc-1 1.
+- **Phiếu D-01:** 816 cặp đã gán nhãn bị đánh dấu `trong_cua_so: false` lúc xuất, nên không vào tập học của E5 và E6. Agentic gán các cặp này
+  khi được báo X không có trong cửa sổ, nên nhãn của chúng có thể nghiêng về `khong`.
+- **Các số đã báo bị ảnh hưởng:** E5, vòng 1 chạy lại với `--tach-tu`, E9, E10 (tập ứng viên và câu trích của `lap_canh.py --tach-tu`); phép quy
+  lỗi (mục 8.9 và báo cáo quy lỗi: trần của E7 không phải 49 cạnh). Số LLM v3 và "không pass phụ" không đổi. Bảng và kết quả cũ giữ ở các thư
+  mục `*-truoc-sua-y` trong `tmp/pass-phu-ml/`.
+- **E6:** hàng đợi đầu tiên dừng sau 7 phút, dữ liệu dựng lại theo bộ khớp đã sửa: 35.202 cặp học (thêm 816), doc-4 4.652 ứng viên (thêm 528),
+  xstk 298, doc-1 1.018. Trong 816 cặp mới vào tập học, tỉ lệ `can_de_hieu` chỉ 23,5%, so với 38% của cả tập. Có thể vì agentic gán chúng khi
+  được báo X không có trong cửa sổ. Hàng đợi chạy lại từ 11:52.
+
+**Chạy lại E5 và vòng 1 sau khi sửa** (ngưỡng hiệu chỉnh, `--chi-cung --tach-tu`; mỗi ô là số cạnh pass phụ / Q7 / Q7b / bao đóng P / bao đóng R):
+
+| tài liệu | E5 trước | E5 sau | vòng 1 trước | vòng 1 sau |
+|---|---|---|---|---|
+| doc-4 | 690 / 0,476 / 0,873 / 0,872 / 0,516 | 727 / 0,483 / 0,859 / 0,856 / 0,522 | 701 / 0,595 / 0,720 / 0,717 / 0,478 | 740 / 0,547 / 0,727 / 0,703 / 0,447 |
+| doc-1 | 195 / 0,603 / 0,743 / 0,821 / 0,664 | 196 / 0,603 / 0,743 / 0,821 / 0,664 | 167 / 0,672 / 0,802 / 0,815 / 0,672 | 168 / 0,711 / 0,722 / 0,781 / 0,763 |
+| xstk | 58 / 0,214 / 0,445 / 0,562 / 0,184 | 59 / 0,206 / 0,530 / 0,593 / 0,163 | 51 / 0,195 / 0,511 / 0,593 / 0,163 | 53 / 0,202 / 0,522 / 0,600 / 0,184 |
+
+**Đọc kết quả** (phán xét của Claude):
+- **Kết luận chính của E5 không đổi.** Ở doc-4, E5 vẫn chặt hơn vòng 1 rõ rệt (bao đóng P 0,856 so với 0,703). Mọi chênh lệch trước và sau khi sửa
+  đều nằm trong khoảng Wilson.
+- 528 ứng viên mới của doc-4 thêm 37 cạnh pass phụ cho E5, nhưng bao đóng chỉ thêm 1 cặp đúng (83 so với 82). Các cạnh «Quy luật» trước đây đã có
+  qua bắc cầu.
+- **Vòng 1 ở doc-1 đổi mạnh** dù doc-1 chỉ thêm 1 ứng viên: tập học của vòng 1 gồm cả doc-4, nên đổi doc-4 là đổi mô hình. Độ nhạy này khớp với
+  kết luận của E9 rằng doc-1 và xstk nhiễu hơn chênh lệch giữa các phương án.
+- **E9 và E10 chưa chạy lại.** Hai thí nghiệm này so các phương án trên cùng tập ứng viên (bị thiếu như nhau), và kết quả chính của E5 gần như không
+  đổi, nên tôi chưa ưu tiên chạy lại.
 
 ## 9. Chạy lại
 

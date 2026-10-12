@@ -1,7 +1,9 @@
 """E6 (vòng 2): dữ liệu cho cross-encoder. Mỗi dòng là một cặp "X là tiên quyết của Y" kèm văn bản cửa sổ định nghĩa của Y. 0 USD.
 
-- **Học:** phiếu thật của D-01 (`loai = thuc` trong khoá; bỏ phiếu kiểm vì chúng lấy từ doc-1, xstk, doc-4), ứng viên `trong_cua_so`, nhãn lượt A
-  gộp. Bỏ `khong_ro` (5 cặp), còn 5 nhãn. Tên, bí danh, câu định nghĩa của X lấy thẳng từ phiếu. Cột `nhom` là mã sách, để chia theo sách.
+- **Học:** phiếu thật của D-01 (`loai = thuc` trong khoá; bỏ phiếu kiểm vì chúng lấy từ doc-1, xstk, doc-4), ứng viên có tên trong cửa sổ, nhãn
+  lượt A gộp. Bỏ `khong_ro`, còn 5 nhãn. Tên, bí danh, câu định nghĩa của X lấy thẳng từ phiếu. Cột `nhom` là mã sách, để chia theo sách.
+  "Có tên trong cửa sổ" và câu có tên X **tính lại** bằng bộ khớp hiện tại (`found` và `found_words`, như lúc xuất phiếu), không dùng cờ
+  `trong_cua_so` của phiếu: bộ khớp lúc xuất phiếu có lỗi y→i ("quy luật"), sửa 2026-10-12.
 - **Chấm:** dòng ứng viên của `tmp/pass-phu-ml/bang/<doc>.csv` cho ba tài liệu có vàng (hợp đồng cho phép, tên X trong cửa sổ theo ranh giới
   từ, như `ung_vien` của E5). Cửa sổ dựng lại từ artifact pass phụ v3 bằng đúng hàm của `dung_bang_cap.py`.
 - **Đánh dấu:** tên X bọc `@ … @`, tên Y bọc `# … #` (dấu câu có sẵn trong từ vựng, kiểu entity marker dạng dấu câu). Câu được tách từ bằng
@@ -137,14 +139,18 @@ def build_d01(out):
         sentences = [row["text"] for row in sheet["cau"]]
         y_names = [sheet["y_ten"], *sheet["y_bi_danh"]]
         for cand in sheet["ung_vien"]:
-            if not cand["trong_cua_so"]:
+            node = {"name": cand["x_ten"], "aliases": cand["x_bi_danh"]}
+            raw, word = dbc.regexes(node), dbc.word_regexes(node)
+            hits = {i for i, s in enumerate(sentences) if dbc.found(raw, s) and dbc.found_words(word, s)}
+            counts["phieu_ngoai_nay_trong"] += int(bool(hits) and not cand["trong_cua_so"])
+            counts["phieu_trong_nay_ngoai"] += int(cand["trong_cua_so"] and not hits)
+            if not hits:
                 continue
             value = label.get((sheet["phieu_id"], cand["x_id"]), "")
             if value not in LABELS:
                 counts["bo_" + (value or "thieu_nhan")] += 1
                 continue
-            body, miss = make_row(sentences, sheet["cau_neo"], set(cand["cau_co_ten"]), [cand["x_ten"], *cand["x_bi_danh"]], y_names,
-                                  cand["x_dinh_nghia"])
+            body, miss = make_row(sentences, sheet["cau_neo"], hits, [cand["x_ten"], *cand["x_bi_danh"]], y_names, cand["x_dinh_nghia"])
             missed += miss
             without_marker += int(not has_x_marker(body))
             counts[value] += 1

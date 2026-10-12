@@ -5,8 +5,9 @@ Mỗi dòng là một ứng viên X của một phiếu về Y, đọc là "X l�
 Nhãn ghép theo `(phieu_id, x_id)`: lượt A (bản gộp), và tuỳ chọn nhãn A cũ (trước khi gán lại 1–240) và lượt B.
 Phiếu kiểm không vào bảng (chúng thuộc doc-1, xstk, doc-4). Phiếu lặp vào bảng với `loai = lap` để bộ học tự bỏ.
 
-Kiểm chéo: `x_trong_ywin_tu > 0` phải trùng `trong_cua_so` của phiếu, vì xuất phiếu và đặc trưng cùng khớp tên theo ranh giới từ trên cùng
-cửa sổ. Lệch thì in số dòng lệch.
+`trong_cua_so` tính lại bằng `x_trong_ywin_tu > 0` (bộ khớp hiện tại); cờ lúc xuất phiếu giữ ở `trong_cua_so_phieu`. Hai cờ lệch nhau ở các
+tên có âm tiết giữa từ ghép tận cùng bằng "y" ("quy luật"), vì bộ khớp lúc xuất phiếu có lỗi y→i (sửa 2026-10-12). In số dòng lệch theo
+từng chiều: phiếu nói ngoài mà nay trong cửa sổ (do sửa lỗi), và ngược lại (phải bằng 0).
 
 Cần `khoa.jsonl` (mã sách thật), nên chỉ Claude chạy. Ghi vào `tmp/` vì dòng có tên khái niệm. Chạy bằng `tmp/venv-ml` (underthesea):
   tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/dung_bang_d01.py --phieu tmp/d01-phieu/phieu.jsonl --khoa tmp/d01-phieu/khoa.jsonl \
@@ -67,17 +68,19 @@ def main():
         payload = artifact.payload
         ctx = dbc.Context(payload, chunks_for(doc, artifact), 4, 2)
         pair_by_nodes = {frozenset((p["left"], p["right"])): p for p in payload.get("suspected_pairs", [])}
-        rows, mismatch = [], 0
+        rows, now_inside, now_outside = [], 0, 0
         for sheet in by_doc[doc]:
             y = sheet["y_id"]
             for cand in sheet["ung_vien"]:
                 x = cand["x_id"]
                 features = dbc.pair_features(ctx, x, y, pair_by_nodes.get(frozenset((x, y))))
                 features = {name: value for name, value in features.items() if not name.startswith("main_")}
-                mismatch += int((features["x_trong_ywin_tu"] > 0) != cand["trong_cua_so"])
+                inside = features["x_trong_ywin_tu"] > 0
+                now_inside += int(inside and not cand["trong_cua_so"])
+                now_outside += int(cand["trong_cua_so"] and not inside)
                 rows.append({"doc": doc, "linh_vuc": sheet["linh_vuc"], "phieu_id": sheet["phieu_id"], "loai": key[sheet["phieu_id"]]["loai"],
                              "x": x, "y": y, "ten_x": cand["x_ten"], "ten_y": sheet["y_ten"],
-                             "trong_cua_so": int(cand["trong_cua_so"]), "so_cau_co_ten": len(cand["cau_co_ten"]),
+                             "trong_cua_so": int(inside), "trong_cua_so_phieu": int(cand["trong_cua_so"]), "so_cau_co_ten": len(cand["cau_co_ten"]),
                              "nhan_a": label_a.get((sheet["phieu_id"], x), ""), "nhan_a_cu": label_old.get((sheet["phieu_id"], x), ""),
                              "nhan_b": label_b.get((sheet["phieu_id"], x), ""), **features})
         with (out / f"{doc}.csv").open("w", encoding="utf-8", newline="") as handle:
@@ -85,7 +88,8 @@ def main():
             writer.writeheader()
             writer.writerows(rows)
         print(json.dumps({"doc": doc, "phieu": len(by_doc[doc]), "dong": len(rows), "thieu_nhan_a": sum(1 for r in rows if not r["nhan_a"]),
-                          "lech_trong_cua_so": mismatch, "giay": round(time.time() - started)}, ensure_ascii=False), flush=True)
+                          "phieu_ngoai_nay_trong": now_inside, "phieu_trong_nay_ngoai": now_outside, "giay": round(time.time() - started)},
+                         ensure_ascii=False), flush=True)
 
 
 if __name__ == "__main__":

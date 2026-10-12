@@ -4,19 +4,24 @@ Chủ dự án hỏi trạng thái dạy, neo và danh tính có quan trọng v�
 duyệt kế hoạch bỏ LLM ở ba khâu này. Báo cáo này đo câu trả lời trên ba tài liệu phát triển có vàng người (doc-1, xstk-ch3-1, doc-4), tổng cộng
 172 cạnh vàng. Chi phí: 0 USD, không gọi mô hình.
 
+> **Đính chính 2026-10-12 (chiều).** Bản đầu dùng bộ khớp tên theo ranh giới từ có lỗi: tên có âm tiết giữa từ ghép tận cùng bằng "y" ("quy luật",
+> "tỷ lệ") không bao giờ khớp, nên 10 cạnh vàng của doc-4 (X là «Quy luật») bị xếp nhầm vào "X ngoài cửa sổ". Chi tiết lỗi và cách sửa ở mục 8.11 của
+> [báo cáo vòng 2](nghien-cuu-pass-phu-vong-2-ke-hoach-2026-10-10.md). Các số dưới đây đã đo lại sau khi sửa: tập ứng viên của E5 đổi nên E5 cũng
+> chạy lại. Số của LLM v3 và "chỉ pass chính" không đổi. Bảng cũ giữ ở `tmp/pass-phu-ml/quy-loi-truoc-sua-y/`.
+
 ## Tóm tắt
 
-- **Một phần ba số cạnh vàng bị thiếu là do thượng nguồn.** Hai pass phụ LLM v3 và LightGBM E5 đều tìm được 73/172 cạnh. Trong 99 cạnh thiếu, 36
-  cạnh do thượng nguồn: 32 do trạng thái dạy, 3 do danh tính, 1 do Y không có cửa sổ định nghĩa. Mô hình A8 có giỏi hơn đến mấy cũng không lấy lại
-  được 36 cạnh này.
+- **Một phần ba số cạnh vàng bị thiếu là do thượng nguồn.** Pass phụ LLM v3 tìm được 73/172 cạnh, LightGBM E5 tìm được 74/172. Trong 99 cạnh thiếu
+  của LLM v3, 36 cạnh do thượng nguồn: 32 do trạng thái dạy, 3 do danh tính, 1 do Y không có cửa sổ định nghĩa. Mô hình A8 có giỏi hơn đến mấy cũng
+  không lấy lại được 36 cạnh này.
 - **Trạng thái dạy mất nhiều nhất, nhưng dồn vào một cuốn và gốc không ở LLM của C8.** 29/32 cạnh thuộc xstk. Ở đó 8/24 đích vàng bị coi là
   "chỉ nhắc", trong đó 7 khái niệm có chunk định nghĩa bị A2 gán vai trò `de_cuong`. Luật của C8 bỏ qua khái niệm chỉ có căn cứ ngoài vùng nội
   dung, hoặc chỉ cho LLM xem phần bị gán sai. doc-4 không mất cạnh nào, doc-1 mất 3.
 - **Câu neo phần lớn đúng.** Claude đọc 84 câu neo của đích vàng, thấy 79 câu đúng chỗ (khoảng 94%). Năm câu neo đáng ngờ, tức 6% số đích, lại hút
-  7/34 cạnh thừa của LLM v3 (21%) và 4/26 cạnh thừa của E5.
-- **Giới hạn lớn hơn là thiết kế cửa sổ định nghĩa.** Trong 136 cạnh vàng có hai đầu qua được cổng trạng thái dạy và Y có cửa sổ, 49 cạnh (36%)
-  có tên X không nằm trong cửa sổ của Y. Khi X có trong cửa sổ, LLM v3 tìm được 67% số cạnh và E5 tìm được 75%. Khi X nằm ngoài, LLM v3 chỉ tìm được 31% và E5
-  16%.
+  7/34 cạnh thừa của LLM v3 (21%) và 3/27 cạnh thừa của E5.
+- **Giới hạn lớn hơn là thiết kế cửa sổ định nghĩa.** Trong 136 cạnh vàng có hai đầu qua được cổng trạng thái dạy và Y có cửa sổ, 39 cạnh (29%)
+  có tên X không nằm trong cửa sổ của Y. Khi X có trong cửa sổ, LLM v3 tìm được 67% số cạnh (65/97) và E5 tìm được 73% (71/97). Khi X nằm ngoài,
+  LLM v3 chỉ tìm được 21% (8/39) và E5 8% (3/39).
 - **Danh tính ít ảnh hưởng tới phép đo.** Ba lần gộp sai làm mất 3 cạnh vàng (2%). Số cặp đáng gộp mà bị bỏ sót thì bộ vàng này không đo được.
 - **Ba khâu tốn khoảng 0,76 USD trên doc-4 trọn cuốn**, gồm provenance, C8 (neo và trạng thái dạy) và danh tính, khoảng 1.600 lời gọi. Con số này
   bằng khoảng một phần sáu phần chi LLM còn lại của một cuốn, sau khi pass phụ chuyển sang ML.
@@ -55,27 +60,27 @@ Bảng dưới cộng cả ba tài liệu, 172 cạnh vàng.
 
 | | chỉ pass chính | pass phụ LLM v3 | pass phụ LightGBM (E5) |
 |---|---:|---:|---:|
-| **có** | 46 | **73** | **73** |
+| **có** | 46 | **73** | **74** |
 | thiếu: danh tính gộp hai đầu | 3 | 3 | 3 |
 | thiếu: trạng thái dạy (Y hoặc X) | 32 | 32 | 32 |
 | thiếu: Y không có cửa sổ | 1 | 1 | 1 |
-| thiếu: X ngoài cửa sổ (trong chunk dạy Y / không nhắc gần Y) | 42 (12 / 30) | 34 (10 / 24) | 41 (12 / 29) |
-| thiếu: mô hình (chỉ có đường mềm / không tạo) | 48 (5 / 43) | 29 (22 / 7) | 22 (11 / 11) |
-| có, khi X trong cửa sổ | 39/87 | 58/87 | 65/87 |
-| có, khi X ngoài cửa sổ | 7/49 | 15/49 | 8/49 |
-| cạnh hiện ở "cần:" sai / tổng | 7/53 | 34/93 | 26/90 |
+| thiếu: X ngoài cửa sổ (trong chunk dạy Y / không nhắc gần Y) | 37 (12 / 25) | 31 (10 / 21) | 36 (12 / 24) |
+| thiếu: mô hình (chỉ có đường mềm / không tạo) | 53 (5 / 48) | 32 (25 / 7) | 26 (15 / 11) |
+| có, khi X trong cửa sổ | 44/97 | 65/97 | 71/97 |
+| có, khi X ngoài cửa sổ | 2/39 | 8/39 | 3/39 |
+| cạnh hiện ở "cần:" sai / tổng | 7/53 | 34/93 | 27/92 |
 
 Bảng sau tách theo tài liệu, với hệ LLM v3:
 
 | | doc-1 | xstk-ch3-1 | doc-4 |
 |---|---:|---:|---:|
 | cạnh vàng | 40 | 62 | 70 |
-| có (LLM v3 / E5) | 22 / 21 | 16 / 13 | 35 / 39 |
+| có (LLM v3 / E5) | 22 / 21 | 16 / 13 | 35 / 40 |
 | thiếu do trạng thái dạy | 3 | 29 | 0 |
 | thiếu do danh tính | 1 | 2 | 0 |
 | thiếu do Y không có cửa sổ | 0 | 1 | 0 |
-| thiếu do X ngoài cửa sổ | 12 | 7 | 15 |
-| thiếu do mô hình | 2 | 7 | 20 (17 chỉ có đường mềm) |
+| thiếu do X ngoài cửa sổ | 12 | 7 | 12 |
+| thiếu do mô hình | 2 | 7 | 23 (20 chỉ có đường mềm) |
 
 `[CHÈN HÌNH – cột chồng cho từng hệ: phần "có" và năm nhóm nguyên nhân thiếu, cộng ba tài liệu; màu riêng cho nhóm thượng nguồn (danh tính, dạy,
 neo), nhóm cửa sổ và nhóm mô hình. Số liệu ở bảng trên.]`
@@ -120,15 +125,16 @@ nghĩa hoặc giới thiệu: doc-1 24/24, xstk 13/15, doc-4 42/45. Năm câu đ
 | doc-4 | Quy luật chuyển hóa lượng–chất | neo vào câu tóm tắt ba quy luật, không vào mục dạy riêng |
 | doc-4 | Kết cấu | câu chủ yếu nói về "Chất"; đây là nguồn của cạnh ngược "Chất → Kết cấu" ở tập giữ lại v3 |
 
-Năm đích này chỉ chiếm 6% số đích nhưng nhận 7/34 cạnh thừa của LLM v3 (21%) và 4/26 cạnh thừa của E5 (15%). Chúng làm mất ít cạnh vàng: 4/6 cạnh
+Năm đích này chỉ chiếm 6% số đích nhưng nhận 7/34 cạnh thừa của LLM v3 (21%) và 3/27 cạnh thừa của E5 (11%). Chúng làm mất ít cạnh vàng: 4/6 cạnh
 vàng vào chúng bị thiếu với LLM v3, cả bốn do X nằm ngoài cửa sổ.
 
-**Giới hạn của cửa sổ là thiết kế, không phải lỗi neo.** Xét 136 cạnh vàng có hai đầu qua được cổng trạng thái dạy và Y có cửa sổ. Trong đó 49
-cạnh (36%) có tên X không nằm trong cửa sổ định nghĩa của Y:
+**Giới hạn của cửa sổ là thiết kế, không phải lỗi neo.** Xét 136 cạnh vàng có hai đầu qua được cổng trạng thái dạy và Y có cửa sổ. Trong đó 39
+cạnh (29%) có tên X không nằm trong cửa sổ định nghĩa của Y:
 - 12 cạnh có tên X trong chunk neo hoặc chunk dạy của Y nhưng ngoài cửa sổ, tức cửa sổ quá hẹp hoặc lệch chỗ;
 - các cạnh còn lại không có tên X ở gần Y. Đây là tiên quyết ngầm, giáo trình không nói ra cạnh định nghĩa.
 
-E5 chỉ lấy được 8/49 cạnh loại này, nhờ bắc cầu qua cạnh khác. Đây đúng là phần mà E7 (ứng viên không nguyên văn) nhắm tới, với trần là 49 cạnh.
+E5 chỉ lấy được 3/39 cạnh loại này, nhờ bắc cầu qua cạnh khác. Đây đúng là phần mà E7 (ứng viên không nguyên văn) nhắm tới, với trần là 39 cạnh.
+Bản đầu ghi 49 cạnh; 10 cạnh chênh là các cạnh «Quy luật» của doc-4 bị lỗi bộ khớp xếp nhầm (xem đính chính ở đầu).
 
 ### 3.3 Danh tính
 

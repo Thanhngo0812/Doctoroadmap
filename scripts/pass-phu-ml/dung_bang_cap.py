@@ -81,10 +81,12 @@ _SEGMENTED = {}
 
 
 def segmented(text):
-    """Câu đã tách từ tiếng Việt (underthesea), từ ghép nối bằng `_`, rồi chuẩn hoá như kênh exact. Chỉ dùng khi có `--tach-tu`."""
+    """Câu đã tách từ tiếng Việt (underthesea), từ ghép nối bằng `_`, mỗi âm tiết chuẩn hoá như kênh exact. Chỉ dùng khi có `--tach-tu`.
+    Chuẩn hoá **từng âm tiết** chứ không chuẩn hoá cả câu đã nối `_`: phép đổi y→i cuối âm tiết của `_mention_normalize` không áp khi
+    sau "y" là `_`, nên trước 2026-10-12 tên như "quy luật", "tỷ lệ", "mức ý nghĩa" không bao giờ khớp ở chế độ này."""
     if text not in _SEGMENTED:
         from underthesea import word_tokenize
-        _SEGMENTED[text] = _mention_normalize(word_tokenize(text, format="text"))
+        _SEGMENTED[text] = " ".join("_".join(_mention_normalize(part) for part in word.split()) for word in word_tokenize(text))
     return _SEGMENTED[text]
 
 
