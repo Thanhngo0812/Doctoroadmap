@@ -56,14 +56,16 @@ Mỗi cặp là một dòng JSONL. Phiếu **không** ghi hệ đề xuất, đi
  "y": {"ten": "Độ co giãn của cầu", "bi_danh": [], "muc": ["Chương 2", "2.3 Độ co giãn"],
        "cau": [{"i": 0, "text": "…"}, {"i": 1, "text": "…"}], "cau_neo": 1, "cau_co_ten_x": [1]},
  "x": {"ten": "Hàm cầu", "bi_danh": [], "muc": ["Chương 4", "4.1 Hàm cầu"],
-       "cau": [{"i": 0, "text": "…"}, {"i": 1, "text": "…"}], "cau_neo": 0},
- "khoang_cach": {"cung_chuong": false, "so_muc_giua": 5}}
+       "cau": [{"i": 0, "text": "…"}, {"i": 1, "text": "…"}], "cau_neo": 0}}
 ```
 
 - `y.cau` là cửa sổ định nghĩa của Y, đúng cửa sổ của hợp đồng vé 12 và phiếu D-01: tối đa bốn câu trước câu neo, câu neo và hai câu sau.
 - `x.cau` là cửa sổ định nghĩa của X, dựng cùng cách, tại chỗ X được dạy (về sau trong sách).
 - `cau_co_ten_x` là các câu trong cửa sổ Y có tên hay bí danh của X. Mảng có thể rỗng, vì cạnh của LLM không bắt buộc nhắc tên X.
-- `muc` là chuỗi tiêu đề mục từ cấp 1 xuống. `so_muc_giua` là số mục lá nằm giữa chỗ dạy Y và chỗ dạy X.
+- `muc` là chuỗi tiêu đề mục từ cấp 1 xuống.
+- Khoảng cách (`cung_chuong`; `so_muc_giua`, tức số mục lá nằm giữa chỗ dạy Y và chỗ dạy X) chỉ ghi ở khoá, không ghi trên phiếu. Lý do: cấp 1 của
+  cây mục có khi là cả một phần sách, như ở doc-4, nên `cung_chuong` dễ đọc sai; và một số đo độ xa có thể kéo nhãn theo nó. Sửa 2026-10-15,
+  sau khi đọc phiếu mẫu.
 
 ## Bước 3 — Gán nhãn (agentic)
 
