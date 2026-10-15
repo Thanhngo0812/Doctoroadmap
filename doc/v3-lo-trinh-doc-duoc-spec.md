@@ -117,6 +117,15 @@ trong vùng `noi_dung` dưới dạng "Nhắc tới (học ở phần khác / ng
 *Lý do:* sơ đồ Hasse là cách trình bày chuẩn của quan hệ thứ tự (KST; Aho–Garey–Ullman 1972); cấp module bền với lỗi từng cạnh.
 
 ### R7 — Tên module theo nội dung và không trùng *(A10/A11; sửa L3)*
+
+> **Thay thế ngày 2026-10-15** bởi [ADR 0014](adr/0014-ten-module-do-llm-dat.md) và [spec Pha B](pha-b-spec.md) mục 2.
+> - Cơ chế mới: LLM đặt tên và viết mô tả cho mọi module, có đường lùi tất định.
+> - Câu lý do bên dưới sửa lại theo [báo cáo tên module](../report/nghien-cuu-ten-va-mo-ta-module-2026-10-11.md) mục 4, câu hỏi 5. Hai phân tích
+>   gộp được dẫn (Schneider và cộng sự 2018; Alpizar và cộng sự 2020) nói về tín hiệu trong học đa phương tiện nói chung, không riêng tiêu đề.
+> - Câu lý do đúng: tiêu đề có nội dung là tín hiệu giúp nhớ và tìm thông tin; tín hiệu nói chung có hiệu ứng nhỏ tới vừa; bằng chứng về người
+>   ít kiến thức nền không nhất quán (Richter và cộng sự 2016 ủng hộ, Schneider và cộng sự 2018 thì không).
+>
+> Phần dưới giữ để đối chiếu lịch sử.
 - Làm sạch tiêu đề không phụ thuộc ngôn ngữ *(sửa 2026-09-26)*: bỏ ký tự đầu dòng theo loại Unicode (ký hiệu, vùng dùng riêng,
   dấu đầu dòng) và tiền tố một ký tự lặp ở đầu nhiều tiêu đề của cùng tài liệu (như "u " do font ký hiệu); chuẩn khoảng trắng; chữ
   dính ("MỞĐẦU") chỉ tách khi chính tài liệu có bằng chứng (cùng tiêu đề xuất hiện ở chỗ khác có khoảng trắng); không nhận câu văn

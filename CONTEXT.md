@@ -317,6 +317,69 @@ Scheme tách khoá chunk nhưng tái dùng parse. Không bật ở CLI hoặc m�
 Docling; không dùng cho cây level phẳng chưa xác minh. Đây là hợp đồng truyền
 cây, **không** phải chứng nhận chất lượng bộ phân tầng nhẹ.
 
+### Pha B (spec Pha B, 2026-10-15)
+
+**Mô tả module**:
+1–2 câu "học gì, cần gì trước" do LLM viết ở khâu tên; mỗi câu kèm `node_ids` mà mã kiểm. Hỏng thì dùng mô tả khuôn dựng từ đồ thị.
+Số mục sách nằm ở `section_code`, không nằm trong tên.
+
+**Bài giảng**:
+Nội dung học của **một khái niệm**, mở khi người học bấm vào khái niệm đó (ADR 0011). Phần do mã dựng hiện ngay; phần LLM viết hiện theo từng ý đã
+kiểm. Nút bấm và công cụ `get_lecture` của trợ lý trả cùng một bài.
+_Tránh dùng_: bài giảng của module, bài (theo nghĩa module)
+
+**Ngữ cảnh đã lắp**:
+JSON chuẩn hoá của mọi khối gửi mô hình cho một lần sinh. Băm của nó (`context_hash`) nằm trong khoá cache; đổi phiên bản đồ thị mà ngữ cảnh không
+đổi thì không sinh lại.
+_Tránh dùng_: khoá theo phiên bản đồ thị
+
+**Nhãn nguồn**:
+Mã ngắn thay cho `chunk_id` trong ngữ cảnh gửi mô hình. Mã giữ bảng tra nhãn → chunk, trang, vị trí. Các họ nhãn:
+- `S#` đoạn, `N#` câu neo tiên quyết, `Q#` câu trích cạnh `requires`;
+- `R#` cạnh mở, `H#` hình/bảng, `B#` bài tập, `CT#` công thức;
+- `K#` khái niệm, `D#` ứng viên câu nhiễu.
+
+**Nội dung ngoài sách**:
+Ví dụ hay diễn giải không có trong tài liệu. Được phép khi có nhãn `outside_document` và khung riêng, không gắn trích dẫn. Định nghĩa, công thức và
+khẳng định về nội dung sách không bao giờ thuộc loại này.
+
+**Ngân hàng câu**:
+Câu trắc nghiệm 3 phương án của **một khái niệm**: 2 câu ở hai mức Bloom, cache chung cho mọi người học. Mỗi câu đã qua luật mã và lời gọi kiểm giải mù.
+_Tránh dùng_: quiz của module (quiz là một lần làm, rút từ ngân hàng)
+
+**Lần làm**:
+Một quiz cụ thể của một người học, rút từ ngân hàng của các khái niệm trong phạm vi; `origin` ∈ {`module_button`, `assistant`}. Lần làm chỉ để tự
+kiểm tra, không khoá module, không tính trình độ.
+
+**Giải mù**:
+Lời gọi kiểm sau khi sinh câu hỏi. Mô hình nhận câu hỏi đã xáo phương án, không đánh dấu đáp án, rồi tự chọn phương án và phán từng phương án theo nguồn.
+
+**Trợ lý**:
+Agent gọi công cụ trên đồ thị học và chỉ mục, chỉ trong tài liệu đã tải lên (ADR 0012). Tối đa 5 vòng công cụ mỗi tin nhắn. Module đang mở là ưu tiên,
+không phải ranh giới.
+
+**Ngữ cảnh mồi**:
+Phần mã lắp trước lời gọi đầu của trợ lý, gồm thẻ module đang mở, khái niệm liên kết được, và vài đoạn truy hồi có ưu tiên module.
+
+**Khối nhắc khái niệm nền**:
+Dòng do mã sinh ở cuối câu trả lời, nhắc tối đa 3 tiên quyết Hasse kèm câu trích. Không lặp lại trong một phiên, không có ở câu từ chối.
+
+**Tài liệu theo yêu cầu**:
+Markdown có trích dẫn do công cụ `make_document` tạo theo yêu cầu tự do của một người học. Lưu theo người học, không cache chung.
+
+**Lớp gán module**:
+Đầu ra của A12 (ADR 0013): `module_id`, `all_module_ids` và `module_source` cho mỗi chunk của chỉ mục, không ghi lại vector. `module_source` có
+ba giá trị:
+- `chunk_module_map`;
+- `hint` (module của chunk dạy đứng trước);
+- `none`.
+
+**Ảnh công thức**:
+Ảnh cắt từ trang PDF theo `bbox` của nút công thức, làm sẵn ở bước tải tài liệu. Web thay nhãn `[CTk]` bằng ảnh này; LLM không tự viết công thức.
+
+**Sổ chi Pha B**:
+Dòng ghi cho mỗi lời gọi mô hình hay embedding ở Pha B: mục đích, token, USD, TTFT, tổng ms, `context_hash`.
+
 ## Lệnh bậc 1–3 của lượt tập giữ lại (T10a; chỉ chạy sau khi khoá T10)
 
 Các lệnh dưới đây là khuôn thao tác, **không phải lệnh cho phép mở vàng hay chạy tập giữ lại ngay**. Thay `<pdf-da-khoa>` và `<v-cay-moi>` bằng đường dẫn/version ghi trong bảng khoá; giữ chunk cũ xstk v2, doc-4 v3. Chạy riêng từng `DOC` (`xstk-ch3-1`, rồi `doc-4`), không sửa cấu hình giữa các bậc.

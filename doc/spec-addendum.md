@@ -676,7 +676,12 @@ Theo đúng thứ tự:
   (trung vị số khái niệm mỗi mục ≥ 4); tài liệu phẳng thì chỉ chia theo cỡ.
 - **Trong module có thứ tự**; không tuyên bố "học song song". Mỗi khái niệm mang `sequence_index`, `module_id` và
   danh sách tiên quyết trực tiếp.
-- Tên module lấy từ tiêu đề mục chiếm nhiều khái niệm nhất; module vắt qua hai mục ghép hai tiêu đề bằng " · ".
+- Tên module: từ 2026-10-15, LLM đặt tên và viết mô tả 1–2 câu cho mọi module, cho cả đồ án lẫn seminar.
+  - Mặc định giữ tiêu đề tác giả khi module trùng đúng một mục.
+  - Mã kiểm từ vựng có căn cứ và chặn mượn từ module kề.
+  - Hỏng thì đi đường lùi tất định.
+  - Số mục không nằm trong tên mà ở `section_code`.
+  - Chi tiết: [ADR 0014](adr/0014-ten-module-do-llm-dat.md), [spec Pha B](pha-b-spec.md) mục 2. Luật R7 cũ (spec v3) không còn dùng.
 - Coffman–Graham (stage song song) giữ ở tầng domain làm biến thể đối chứng, không nằm trong chuỗi sản phẩm.
 
 ```json
@@ -700,6 +705,15 @@ phải bằng chứng chất lượng, vì dãy dùng chính vị trí dạy đ�
 
 ### A11. Module enrichment (dự kiến, chưa triển khai)
 
+> **Thay bằng [spec Pha B](pha-b-spec.md) (2026-10-15).** Không còn sinh offline mà theo ba cách:
+> - mô tả module sinh ở khâu tên của A10;
+> - bài giảng theo khái niệm sinh ở lần bấm đầu;
+> - ngân hàng quiz theo khái niệm sinh khi bấm "làm quiz".
+>
+> Hai loại sau cache chung theo băm ngữ cảnh ([ADR 0011](adr/0011-noi-dung-hoc-sinh-khi-can-cache-theo-ngu-canh.md)). Quiz có 3 phương án,
+> không có tự luận chấm bằng LLM. Media `confirmed` được dùng không cần gắn module
+> ([ADR 0013](adr/0013-lop-gan-module-va-media-da-xac-nhan.md)). Phần dưới giữ để đối chiếu lịch sử.
+
 Khi triển khai, sinh offline (không sinh on-the-fly lúc học) từ chunk thuộc module. `media_ids` chỉ dùng được
 sau một vé riêng gắn media vào module; artifact A10 hiện không có trường đó.
 - `objectives`: 3–5 mục tiêu học tập đo lường được.
@@ -710,6 +724,14 @@ sau một vé riêng gắn media vào module; artifact A10 hiện không có tr�
 Hình và bảng chỉ trở thành nguyên liệu của module sau khi có phép gắn media đã kiểm chứng.
 
 ### A12. Gắn module_id ngược về chunk (kế hoạch pha B)
+
+> **Thay bằng [ADR 0013](adr/0013-lop-gan-module-va-media-da-xac-nhan.md) và [spec Pha B](pha-b-spec.md) mục 3 (2026-10-15).**
+> - A12 sinh một lớp gán module riêng, không ghi lại tệp vector. Mỗi chunk có `module_id`, `all_module_ids` và `module_source` ∈
+>   {`chunk_module_map`, `hint`, `none`}; `hint` lấy theo chunk dạy đứng trước.
+> - Truy hồi **xếp ưu tiên** theo module đang mở, **không lọc** `module_index <= hiện tại`.
+> - Media `confirmed` được hiện dù chưa gắn module.
+>
+> Các gạch đầu dòng dưới giữ để đối chiếu lịch sử.
 
 - A10 sinh `chunk_module_map` trong artifact: chunk dạy khái niệm của nhiều module được gán module sớm nhất, kèm
   `all_module_ids`. Chưa đồng bộ sang vector DB; trường chỉ mục hiện tên `stage_id` và chưa có dữ liệu — đổi thành
@@ -1019,6 +1041,19 @@ ghi lại, tầng 3 chuẩn hoá, A13 duyệt.
 ---
 
 ## PHA B — LEARNING LOOP
+
+> **Thiết kế hiện hành là [spec Pha B](pha-b-spec.md) (2026-10-15).** Nó thắng các mục B1–B4 dưới đây khi mâu thuẫn. Năm điểm khác chính:
+> - **Không mở khoá module, không mastery, không vòng thích nghi** (B3 phần unlock, B4): đề cương để mô hình hoá trình độ ngoài phạm vi. Quiz chỉ để
+>   tự kiểm tra, có phản hồi và lịch sử tối giản.
+> - **Trợ lý là agent gọi công cụ** ([ADR 0012](adr/0012-tro-ly-la-agent-goi-cong-cu.md)):
+>   - mười công cụ, gồm `why_here`, `path_to`, `get_lecture`, `make_quiz`, `make_document`;
+>   - tối đa 5 vòng công cụ mỗi tin nhắn;
+>   - tìm cả tài liệu, ưu tiên module đang mở, không lọc theo tiến độ.
+> - **Bài giảng theo khái niệm sinh ở lần bấm đầu**, cache chung ([ADR 0011](adr/0011-noi-dung-hoc-sinh-khi-can-cache-theo-ngu-canh.md)).
+> - **Media `confirmed` được hiện dù chưa gắn module** ([ADR 0013](adr/0013-lop-gan-module-va-media-da-xac-nhan.md)).
+> - **Web và API do nhóm web thiết kế** theo hợp đồng JSON ở spec Pha B mục 13.
+>
+> Các mục dưới giữ để đối chiếu lịch sử.
 
 ### B1. State và UI
 
