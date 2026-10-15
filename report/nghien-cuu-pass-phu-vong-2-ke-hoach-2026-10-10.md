@@ -767,7 +767,7 @@ của vòng 2 ở ba điểm:
 - **E8 và cạnh mềm:** cạnh vàng chỉ có đường đi qua cạnh mềm là 15 với E5 và 25 với LLM v3 (doc-4 chiếm 14 và 20), do cạnh `cong_cu` và luật
   làm mềm cạnh ngược thứ tự sách (R17).
 
-### 8.10 E6: cross-encoder (2026-10-12, đang chạy)
+### 8.10 E6: cross-encoder (2026-10-12 → 2026-10-15, xong)
 
 **Máy.** Chủ dự án cấp SSH máy GPU ngày 2026-10-12: laptop Dell, RTX 3050 Laptop 4 GB, Ryzen 5 5600H, RAM 6,6 GiB, Ubuntu 26.04, Python 3.14. Môi
 trường: torch 2.14.1 (CUDA 13.0), transformers 5.19.0. Dựng máy gặp hai sự cố:
@@ -849,6 +849,57 @@ Khoảng Wilson của bao đóng P: doc-4 E6 0,79–0,93, E5 0,77–0,91; xstk E
   - một dịch vụ suy luận nhỏ trên máy GPU;
   - pass phụ gọi dịch vụ đó;
   - không gọi được thì lùi về LightGBM.
+
+**Kết quả đủ seed** (2026-10-15). Sáu lượt (PhoBERT và e5, mỗi mô hình 3 seed) học xong trên máy GPU từ 11:52 ngày 2026-10-12 tới 06:48 ngày
+2026-10-13. Lượt nào cũng đủ 4 nếp và thoát mã 0. Mỗi lượt PhoBERT mất 2,6–2,9 giờ, mỗi lượt e5 mất 3,4–3,7 giờ, đều chậm hơn ước vì GPU bị hạ xung.
+Bảng sinh bằng `tong_hop_e6.py`, lưu ở `tmp/pass-phu-ml/ket-qua/e6-tong-hop.md`. Mốc so dùng bộ khớp đã sửa:
+- E5: sáu seed của E9 sau khi sửa (`e9-sua-y.jsonl`, `sua-y.jsonl`);
+- LLM v3: bản bật R17, một lượt.
+
+AP ngoài mẫu trên D-01, so với nhãn agentic `can_de_hieu`. LightGBM học trên đúng bốn nhóm sách đạt 0,663 ở mọi lượt, vì nó không phụ thuộc seed của
+cross-encoder.
+
+| mô hình | epoch chọn | E6 riêng | ghép LightGBM |
+|---|---|---|---|
+| PhoBERT | 2, 3, 3 | 0,680 ± 0,009 [0,669–0,691] | **0,719** ± 0,005 [0,714–0,725] |
+| multilingual-e5 | 3, 2, 3 | 0,644 ± 0,007 [0,639–0,654] | 0,701 ± 0,004 [0,697–0,706] |
+
+E4 trên vàng người, trung bình ± độ lệch chuẩn qua các seed (ngưỡng hiệu chỉnh, `--chi-cung --tach-tu`). Mỗi ô là Q7 / Q7b / bao đóng P / bao đóng R:
+
+| tài liệu | LLM v3 (1) | E5 (6 seed) | E6 PhoBERT (3) | PhoBERT ghép (3) | E6 e5 (3) | e5 ghép (3) |
+|---|---|---|---|---|---|---|
+| doc-4 | 0,322 / 0,606 / 0,584 / 0,459 | **0,464** ± 0,032 / 0,853 / **0,865** ± 0,010 / **0,518** ± 0,006 | 0,419 / 0,851 / 0,859 ± 0,011 / 0,509 | 0,431 / 0,856 / 0,863 / 0,499 | 0,412 / 0,853 / 0,845 / 0,465 ± 0,033 | 0,442 / 0,848 / 0,840 / 0,507 |
+| doc-1 | **0,667 / 0,877 / 0,874 / 0,740** | 0,589 / 0,746 / 0,824 / 0,648 ± 0,017 | 0,586 / 0,812 / 0,872 ± 0,009 / 0,555 | 0,590 / 0,740 / 0,813 / 0,639 | 0,558 / 0,766 / 0,812 / 0,578 | 0,607 / 0,666 / 0,777 / 0,672 |
+| xstk | 0,414 / 0,644 / 0,636 / 0,214 | 0,215 / 0,555 ± 0,087 / 0,656 ± 0,074 / 0,189 | 0,334 ± 0,017 / **0,802** / **0,813** ± 0,004 / 0,177 | 0,319 / 0,775 / 0,807 / 0,201 | **0,419** / 0,524 / 0,527 / 0,201 | 0,303 / 0,480 / 0,606 / 0,204 |
+
+Số cạnh pass phụ ở doc-4: LLM v3 1.473, E5 738 ± 7, PhoBERT 793 ± 25, PhoBERT ghép 766 ± 3, e5 830 ± 7.
+
+Phút/cuốn trên CPU laptop (doc-4, 4.652 ứng viên, fp32, 8 luồng): PhoBERT 5,5 cặp/giây, khoảng **14 phút**; e5 (384 token) 2,7 cặp/giây,
+khoảng **29 phút**. LightGBM mất 1–2 phút.
+
+**Đọc kết quả** (phán xét của Claude):
+- **Đọc văn bản giúp ít.** Trên D-01, PhoBERT chỉ hơn LightGBM +0,017 AP, đều qua ba seed. e5 còn kém LightGBM (−0,019). Phần lợi rõ đến từ
+  ghép hai mô hình (+0,056 AP). Như vậy văn bản cửa sổ chứa tín hiệu mà đặc trưng cấu trúc bỏ sót, nhưng tín hiệu đó không lớn.
+- **Trên vàng, phần lợi ở D-01 không chuyển thành lợi đầu cuối.**
+  - doc-4, cuốn lớn nhất: không bản E6 nào hơn E5. Q7 còn thấp hơn (0,419–0,442 so với 0,464); P và R ngang E5 trong biên seed.
+  - doc-1: PhoBERT riêng đổi R lấy P (P 0,872, R 0,555, so với P 0,824, R 0,648 của E5). Bản ghép ngang E5. LLM v3 vẫn tốt nhất.
+  - xstk: PhoBERT riêng hơn E5 ở Q7, Q7b và P, và nhất quán qua ba seed (P 0,81–0,82, trong khi E5 dao động 0,58–0,77). Nhưng xstk chỉ có 62 cạnh
+    vàng, 29 cạnh đã mất ở thượng nguồn (mục 8.9), và R của mọi hệ ML đều chỉ khoảng 0,2.
+- **PhoBERT hơn multilingual-e5** ở AP, ở P cả ba tài liệu, và chạy nhanh gấp đôi trên CPU. Mô hình đơn ngữ tách từ hợp với bài toán này hơn mô hình
+  đa ngữ. Đây là kết quả đáng ghi cho seminar. e5 bị loại.
+- **Ghép không ổn định trên vàng.** Bản ghép hơn trên D-01 nhưng ở doc-1 và xstk thường kém PhoBERT riêng về P. Có thể ngưỡng hiệu chỉnh chốt trên
+  nhãn bạc chưa hợp với điểm ghép; chưa đo.
+
+**Phán xét: chưa đưa cross-encoder vào sản phẩm.**
+- Pass phụ sản phẩm giữ LightGBM E5 (vé `a8-secondary-ml-v1`, mục 7). Trên ba tài liệu vàng, E6 không hơn E5 ở cuốn lớn nhất, chỉ hơn ở cuốn có
+  vàng nhỏ và nhiễu.
+- Chi phí của E6 không nhỏ. Chạy CPU thì mất 14 phút mỗi cuốn cỡ doc-4, so với 1–2 phút. Host trên máy GPU qua LAN thì nhanh (khoảng 35 giây), nhưng
+  thêm một dịch vụ phải giữ chạy, và vẫn phải có đường lùi về LightGBM.
+- PhoBERT giữ làm **ứng viên nghiên cứu**. Kết luận cuối đo trên vàng T-01: E5, PhoBERT riêng và bản ghép, cùng ngưỡng hiệu chỉnh. Nếu T-01 cho thấy
+  PhoBERT hơn rõ, nhất là ở sách kiểu xstk, thì mới làm dịch vụ GPU qua LAN, kèm đường lùi về LightGBM.
+- Các cách giảm chi phí chỉ đáng làm khi T-01 cho thấy E6 có lợi:
+  - chỉ chấm lại bằng PhoBERT các cặp mà LightGBM chưa chắc (điểm gần ngưỡng), để giảm số cặp phải chạy trên CPU;
+  - lượng tử hoá int8 theo kênh qua ONNX, thay cho int8 động của PyTorch đã hỏng điểm.
 
 ### 8.11 Lỗi bộ khớp tên theo ranh giới từ (2026-10-12, lỗi của Claude)
 
@@ -998,6 +1049,8 @@ tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/lap_canh.py <doc> --diem=tmp/
     --nguong-tu=tmp/pass-phu-ml/diem/e6-<lượt>/nguong.json --chinh-sach=hieu-chinh --chi-cung --tach-tu --nhan=e6-<lượt>-hieu-chinh
 # E6: phút/cuốn trên CPU (tmp/venv-e6 có torch bản CPU), với mô hình nếp 0 chép về
 tmp/venv-e6/Scripts/python.exe scripts/pass-phu-ml/e6_toc_do_cpu.py --mo-hinh=<thư mục mo-hinh> [--tach-tu] --int8
+# E6: bảng tổng hợp qua các seed (AP D-01, E4 so với E5 sáu seed và LLM v3, phút/cuốn CPU)
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/tong_hop_e6.py
 # sau khi sửa bộ khớp (mục 8.11): dựng lại bảng --tach-tu, bảng D-01, dữ liệu E6, rồi quy lỗi
 tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/dung_bang_cap.py doc-1 nhap-mon-ml xstk-ch3-1 doc-4 --tach-tu
 tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/quy_loi_thuong_nguon.py --tach-tu --he=khong,llm-v3,e5-a-hieu-chinh
