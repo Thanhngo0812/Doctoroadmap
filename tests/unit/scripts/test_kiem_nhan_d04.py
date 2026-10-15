@@ -46,6 +46,15 @@ def test_each_error_kind_is_caught(rows, fragment):
     assert any(fragment in error for error in errors), errors
 
 
+def test_partial_mode_skips_only_missing_labels():
+    module = _load()
+    lines = [json.dumps(GOOD[0])]
+    assert module.check(CARDS, lines, partial=True) == []
+    assert any("thiếu nhãn" in e for e in module.check(CARDS, lines))
+    bad = [json.dumps({**GOOD[0], "nhan": "can_de_hieu"})]
+    assert any("nhãn lạ" in e for e in module.check(CARDS, bad, partial=True))
+
+
 def test_two_runs_are_checked_separately():
     run_b = [{**row, "luot": "B"} for row in GOOD]
     assert _check(GOOD + run_b) == []

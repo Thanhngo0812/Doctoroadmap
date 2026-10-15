@@ -2,7 +2,8 @@
 
 Báo từng lỗi kèm `phieu_id`: dòng không đọc được hay thiếu trường; nhãn ngoài bảy giá trị; phiếu lạ, thiếu nhãn, hoặc nhiều hơn một nhãn trong
 một lượt; `cau_y` thiếu hoặc ngoài danh sách câu của Y; `cau_giai_thich` có mặt khi và chỉ khi nhãn là `du_tai_cho`, và nằm trong danh sách câu.
-Chạy:  python kiem_nhan_d04.py <phieu.jsonl> <nhan.jsonl>
+`--mot-phan`: đang gán dở, bỏ qua lỗi "thiếu nhãn"; in số phiếu đã gán. Tệp nộp cuối phải qua khi **không** có `--mot-phan`.
+Chạy:  python kiem_nhan_d04.py <phieu.jsonl> <nhan.jsonl> [--mot-phan]
 """
 import json
 import sys
@@ -12,7 +13,7 @@ NEEDS_SENTENCE = {"can_hoc_truoc", "du_tai_cho", "kien_thuc_nen", "nghia_khac"}
 REQUIRED = ("phieu_id", "nhan", "ly_do", "nguoi_gan", "luot")
 
 
-def check(cards, lines):
+def check(cards, lines, partial=False):
     """`cards`: các phiếu đã đọc; `lines`: các dòng văn bản của tệp nhãn. Trả danh sách lỗi (chuỗi)."""
     sentences = {card["phieu_id"]: {row["i"] for row in card["y"]["cau"]} for card in cards}
     errors, seen = [], {}
@@ -54,7 +55,7 @@ def check(cards, lines):
     for (pid, run), count in sorted(seen.items()):
         if count > 1:
             errors.append(f"{pid}: {count} nhãn trong lượt {run}")
-    for run in sorted({run for _, run in seen}):
+    for run in [] if partial else sorted({run for _, run in seen}):
         absent = sorted(pid for pid in sentences if (pid, run) not in seen)
         errors += [f"{pid}: thiếu nhãn trong lượt {run}" for pid in absent]
     if not seen:
@@ -64,15 +65,26 @@ def check(cards, lines):
 
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
-    if len(sys.argv) != 3:
+    partial = "--mot-phan" in sys.argv
+    paths = [arg for arg in sys.argv[1:] if not arg.startswith("--")]
+    if len(paths) != 2:
         print(__doc__)
         return 2
-    with open(sys.argv[1], encoding="utf-8") as handle:
+    with open(paths[0], encoding="utf-8") as handle:
         cards = [json.loads(line) for line in handle if line.strip()]
-    with open(sys.argv[2], encoding="utf-8") as handle:
-        errors = check(cards, handle.read().splitlines())
+    with open(paths[1], encoding="utf-8") as handle:
+        lines = handle.read().splitlines()
+    errors = check(cards, lines, partial)
     for error in errors:
         print(error)
+    if partial:
+        done = set()
+        for line in lines:
+            try:
+                done.add(json.loads(line).get("phieu_id"))
+            except (json.JSONDecodeError, AttributeError):
+                pass
+        print(f"đã gán {len(done & {card['phieu_id'] for card in cards})}/{len(cards)} phiếu")
     print(f"{len(errors)} lỗi" if errors else "HỢP LỆ")
     return 1 if errors else 0
 
