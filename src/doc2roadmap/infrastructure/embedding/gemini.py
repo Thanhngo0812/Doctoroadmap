@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import math
+from http.client import HTTPException
 from collections.abc import Sequence
 from concurrent.futures import ThreadPoolExecutor
 from contextvars import copy_context
@@ -119,7 +120,7 @@ class GeminiEmbedding:
                 if error.code not in _RETRYABLE_HTTP or attempt == self._max_retries:
                     raise RuntimeError(f"Gemini embedding lỗi HTTP {error.code}") from error
                 sleep(2**attempt)
-            except (URLError, TimeoutError) as error:
+            except (URLError, OSError, HTTPException) as error:
                 if attempt == self._max_retries:
                     raise RuntimeError("không kết nối được Gemini embedding") from error
                 sleep(2**attempt)
@@ -168,11 +169,14 @@ class GeminiEmbedding:
                     self.limiter.release(permit, success=False, throttled=error.code in {429, 503}, retry_after=retry_after)
                 if error.code not in _RETRYABLE_HTTP or attempt == self._max_retries:
                     raise RuntimeError(f"Vertex embedding lỗi HTTP {error.code}") from error
-            except (URLError, TimeoutError) as error:
+            except (URLError, OSError, HTTPException) as error:
                 if self.limiter is not None:
                     self.limiter.release(permit, success=False)
                 if attempt == self._max_retries:
                     raise RuntimeError("không kết nối được Vertex embedding") from error
+            finally:
+                if self.limiter is not None:
+                    self.limiter.release(permit, success=False)
             sleep(2**attempt)
         raise AssertionError("unreachable")
 

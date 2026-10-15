@@ -318,6 +318,9 @@ def _print_extraction(summary) -> None:
     print(
         f"artifact: {summary.artifact_path or 'không ghi vì coverage_incomplete'}"
     )
+    if summary.result.coverage_incomplete:
+        raise ValueError("coverage_incomplete: không ghi ứng viên; các mục hỏng: "
+                         + ", ".join(summary.result.failed_sections))
 
 
 def _extract(

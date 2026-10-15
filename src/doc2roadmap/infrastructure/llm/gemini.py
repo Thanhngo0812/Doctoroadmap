@@ -3,6 +3,7 @@ from __future__ import annotations
 import base64
 import json
 import re
+from http.client import HTTPException
 from random import random
 from threading import local
 from time import sleep
@@ -148,6 +149,7 @@ class GeminiEntityExtractor:
     def _post(self, request: Request, *, estimated_tokens: int) -> tuple[bytes, _Permit | None]:
         attempts = self._max_retries + 1
         for attempt in range(attempts):
+            retry_after = None
             permit = self.limiter.acquire(estimated_tokens) if self.limiter is not None else None
             try:
                 record_model_call()
@@ -164,23 +166,27 @@ class GeminiEntityExtractor:
                     if self.limiter is not None:
                         self.limiter.release(permit, success=False)
                     raise ModelTransportError(f"Gemini API trả HTTP {error.code}") from error
+                retry_after = error.headers.get("Retry-After") if error.headers else None
+                try:
+                    retry_after = float(retry_after) if retry_after is not None else None
+                except ValueError:
+                    retry_after = None
                 if self.limiter is not None:
-                    retry_after = error.headers.get("Retry-After") if error.headers else None
-                    try:
-                        retry_after = float(retry_after) if retry_after is not None else None
-                    except ValueError:
-                        retry_after = None
                     self.limiter.release(permit, success=False, throttled=error.code in {429, 503}, retry_after=retry_after)
                 failure: Exception = error
-            except (URLError, TimeoutError) as error:
+            except (URLError, OSError, HTTPException) as error:
                 if self.limiter is not None:
                     self.limiter.release(permit, success=False)
                 failure = error
+            finally:
+                # release is idempotent: also cover unexpected exceptions/cancellation.
+                if self.limiter is not None:
+                    self.limiter.release(permit, success=False)
             if attempt == attempts - 1:
                 raise ModelTransportError(
                     f"Gemini API lỗi tạm thời sau {attempts} lần thử"
                 ) from failure
-            sleep(2**attempt + random())
+            sleep(max(2**attempt + random(), retry_after or 0))
         raise AssertionError("unreachable")
 
 
@@ -214,7 +220,8 @@ class GeminiExtractionSession:
 
     @staticmethod
     def _decode(raw_text: str) -> Any:
-        return json.loads(raw_text)
+        # PDF evidence may contain literal C0 characters; preserve the quoted source.
+        return json.loads(raw_text, strict=False)
 
     def ask_json(
         self,

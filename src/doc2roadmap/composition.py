@@ -149,7 +149,7 @@ def build_region_roles(*, allow_spend=False):
     model = GeminiEntityExtractor(
         settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else 'dry-run-no-key',
         settings.roadmap_model_id, temperature=0.0, max_output_tokens=16384,
-        timeout_seconds=settings.gemini_timeout_seconds, max_retries=0,
+        timeout_seconds=settings.gemini_timeout_seconds, max_retries=settings.gemini_max_retries,
         transport=settings.llm_transport, vertex_project=settings.vertex_project,
         vertex_location=settings.vertex_location,
         limiter=AdaptiveModelLimiter(

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import re
 import unicodedata
 from collections import Counter
@@ -11,7 +12,7 @@ from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from typing import Any, Iterable
 
-from doc2roadmap.application.stage_measurements import measure_stage
+from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.use_cases.ingest_document import require_text_quality
 from doc2roadmap.application.extraction_prompt import (
     ENTITY_SCHEMA,
@@ -806,27 +807,35 @@ def _run_contexts(
     *,
     max_workers: int,
     prompts: ExtractionPrompts,
+    completed=(),
+    on_completed=None,
 ) -> tuple[list[SectionExtraction], list[SectionContext]]:
     if max_workers <= 0:
         raise ValueError("max_workers phải lớn hơn 0")
-    outcomes: list[SectionExtraction] = []
+    outcomes: list[SectionExtraction] = list(completed)
+    ensure_empty_rate(sum(item.empty for item in outcomes), len(contexts))
+    done_ids = {outcome.section_id for outcome in outcomes}
     failed: list[SectionContext] = []
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         futures = {
             executor.submit(copy_context().run, extract_section, context, extractor, prompts=prompts): context
-            for context in contexts
+            for context in contexts if context.section_id not in done_ids
         }
         for future in as_completed(futures):
             context = futures[future]
             try:
                 outcome = future.result()
-            except Exception:
+            except Exception as error:
+                logging.getLogger(__name__).warning("A3 section %s failed: %s", context.section_id, type(error).__name__)
                 failed.append(context)
                 continue
             if outcome.stats["missing_media_descriptions"]:
+                logging.getLogger(__name__).warning("A3 section %s: missing_media_descriptions", context.section_id)
                 failed.append(context)
                 continue
             outcomes.append(outcome)
+            if on_completed is not None:
+                on_completed(outcome)
             try:
                 ensure_empty_rate(sum(item.empty for item in outcomes), len(contexts))
             except ExtractionGateError:
@@ -838,13 +847,16 @@ def _run_contexts(
     for context in sorted(failed, key=lambda item: contexts.index(item)):
         try:
             outcome = extract_section(context, extractor, prompts=prompts)
-        except Exception:
+        except Exception as error:
+            logging.getLogger(__name__).warning("A3 section %s retry failed: %s", context.section_id, type(error).__name__)
             retry_failed.append(context)
             continue
         # Keep the final partial result for diagnostics; failed blocks artifact publication.
         outcomes.append(outcome)
         if outcome.stats["missing_media_descriptions"]:
             retry_failed.append(context)
+        elif on_completed is not None:
+            on_completed(outcome)
         ensure_empty_rate(sum(item.empty for item in outcomes), len(contexts))
     order = {context.section_id: index for index, context in enumerate(contexts)}
     outcomes.sort(key=lambda item: order[item.section_id])
@@ -966,12 +978,35 @@ class ExtractEntities:
         contexts = _build_contexts(self.store, stored)
         if not contexts:
             raise ExtractionGateError("dừng A3: tài liệu không có section có nội dung")
+        checkpoint_id = "a3-" + config_hash
+        checkpoint = None if force else self.store.load_checkpoint(doc_id, checkpoint_id)
+        completed = {}
+        if checkpoint and checkpoint.get("source_hash") == source_hash and checkpoint.get("chunks_version") == stored.version:
+            resume_measurements(checkpoint)
+            completed = {row["section_id"]: SectionExtraction(
+                row["section_id"], row["title"], [_entity_from_dict(e) for e in row["entities"]],
+                [_edge_from_dict(e) for e in row["edges"]], row["stats"])
+                for row in checkpoint["completed"]}
+
+        def save_completed(outcome=None):
+            if outcome is not None:
+                completed[outcome.section_id] = outcome
+            self.store.save_checkpoint(doc_id, checkpoint_id, {
+                "source_hash": source_hash, "chunks_version": stored.version,
+                "completed": [{"section_id": item.section_id, "title": item.title,
+                               "entities": [_entity_to_dict(e) for e in item.entities],
+                               "edges": [_edge_to_dict(e) for e in item.edges], "stats": item.stats}
+                              for item in completed.values()]})
+
+        save_completed()
         outcomes, failed = _run_contexts(
             contexts,
             self.extractor,
             max_workers=max_workers,
             prompts=self.prompts,
+            completed=completed.values(), on_completed=save_completed,
         )
+        save_completed()  # Include usage of failed attempts, even when coverage is incomplete.
         entities, edges = _dedupe_document_candidates(outcomes)
         learnable_votes: dict[str, Counter[bool]] = {}
         for entity in entities:
@@ -1247,6 +1282,7 @@ class ExtractEntities:
             manifest_fields=manifest_fields,
             force_new=force,
         )
+        self.store.clear_checkpoint(doc_id, checkpoint_id)
         return ExtractionSummary(
             result, config_hash, False, artifact.path, artifact.version
         )
