@@ -1016,6 +1016,57 @@ Bản có R17 của LLM v3 ra đúng từng số đã báo:
 - Hướng có lý của E8 là **làm cứng có chọn lọc**: chỉ cạnh ngược mà bộ chấm tin chắc, hoặc chỉ cạnh ngược trong cùng một mục. Việc này đổi luật
   của A10 (`src/`), nên phải qua vé, và phải tránh khớp riêng doc-4, tài liệu duy nhất mà R17 tác động mạnh.
 
+### 8.13 E8: làm cứng có chọn lọc (2026-10-15, 0 USD)
+
+Chủ dự án duyệt làm E8 ngày 2026-10-15. Script `thi_nghiem_e8.py` phát lại A9 → A10 như mục 8.12, thay R17 bằng monkeypatch, không sửa `src/`.
+
+**Chốt trước khi chấm.** Thống kê mô tả, không nhìn vàng: R17 làm mềm 304 cạnh ở doc-4 (E5), 19 cạnh ở doc-1, 6 cạnh ở xstk. Trong 304 cạnh của
+doc-4 có 177 cạnh cùng chương, 75 cạnh confidence 0,9, 66 cạnh từ pass chính, chỉ 6 cạnh cùng section. Từ đó chốt bốn phương án giữ cứng cạnh ngược:
+- `cung-chuong`: X và Y dạy trong cùng chương;
+- `pass-chinh`: cạnh đến từ pass chính;
+- `tin-chac`: confidence ≥ 0,9;
+- `cung-chuong-tin-chac`: cả hai điều kiện.
+
+Phương án "cùng section" bị bỏ vì chỉ đổi 6 cạnh.
+
+Tiêu chí "đáng làm vé", so với `bat` trên cùng tài liệu: Q7 tăng ≥ 0,05, Q7b giảm ≤ 0,05, bao đóng P giảm ≤ 0,03, và doc-1, xstk không xấu đi quá các
+ngưỡng đó. Hai phương án `bat` và `tat` ra đúng từng số của mục 8.12.
+
+doc-4 (cạnh cứng A10 / Q6 / Q7 / Q7b / bao đóng P / bao đóng R):
+
+| phương án | E5 | LLM v3 |
+|---|---|---|
+| `bat` (R17 hiện tại) | 876 / 0,143 / 0,483 / 0,859 / 0,856 / 0,522 | 870 / 0,157 / 0,322 / 0,606 / 0,584 / 0,459 |
+| `tat` | 1.180 / 0,100 / 0,703 / 0,503 / 0,747 / 0,371 | 1.071 / 0,157 / 0,522 / 0,366 / 0,551 / 0,340 |
+| `cung-chuong` | 1.053 / 0,100 / 0,584 / 0,681 / 0,854 / 0,553 | 992 / 0,129 / 0,398 / 0,496 / 0,530 / 0,440 |
+| `pass-chinh` | 942 / **0,100** / 0,558 / 0,757 / **0,862** / 0,509 | 936 / **0,129** / **0,400** / **0,580** / 0,570 / 0,459 |
+| `tin-chac` | 951 / 0,100 / 0,486 / 0,838 / 0,856 / 0,522 | 910 / 0,157 / 0,340 / 0,574 / 0,579 / 0,484 |
+| `cung-chuong-tin-chac` | như `tin-chac` | 905 / như `tin-chac` |
+
+doc-1 và xstk:
+- **E5:** mọi phương án chọn lọc giữ nguyên số của `bat`.
+- **LLM v3 ở doc-1:** mọi phương án khác `bat`, kể cả `pass-chinh` chỉ làm cứng 3 cạnh, đều làm Q7b giảm từ 0,877 xuống 0,733. Một cạnh ngược làm
+  cứng kéo cả chuỗi tổ tiên của X vào Y.
+
+**Kiểm trực tiếp các cạnh được làm cứng.** Vàng doc-4 chỉ phủ chương 8. Trong 304 cạnh ngược của E5, chỉ 4 cạnh có cả hai đầu là đích vàng: 2 cạnh
+đúng, 2 cạnh sai. Với `pass-chinh` chỉ có 1 cạnh chấm được, và cạnh đó đúng. Q7 và Q7b đổi chủ yếu vì các đường đi vòng qua nút ngoài vàng, nên
+bộ vàng không cho biết chính các cạnh ngược đúng hay sai.
+
+**Đọc kết quả** (phán xét của Claude):
+- Không phương án nào đạt tiêu chí ở mọi nơi.
+- `pass-chinh` gần đạt nhất.
+  - Với LLM v3 ở doc-4: Q7 +0,078, Q7b −0,026, P −0,014, Q6 giảm từ 0,157 xuống 0,129. Đạt cả bốn ngưỡng.
+  - Nhưng ở doc-1, Q7b của LLM v3 giảm 0,144.
+  - Với E5 ở doc-4: Q7 +0,075, Q7b −0,102, trượt ngưỡng Q7b.
+- `tin-chac` gần như không đổi gì. Confidence của cạnh không tách được cạnh ngược đúng khỏi cạnh ngược sai.
+- **Kết luận: bộ vàng phát triển không đủ để quyết E8.** R17 chỉ tác động mạnh ở một cuốn. Trong cuốn đó, gần như không cạnh ngược nào có hai đầu
+  trong vàng, nên mọi chỉ số đổi theo chuỗi gián tiếp. Chọn luật trên số này là khớp nhiễu của doc-4.
+- **Việc tiếp:** đo trực tiếp độ đúng của cạnh ngược.
+  - Lấy mẫu cạnh ngược từ doc-4 và các sách D-01. D-01 đã chạy pass chính, nên có sẵn cạnh và vị trí dạy.
+  - Gán nhãn: "X có thật cần trước Y không", và "nếu cần thì có nên kéo X lên trước không, hay giữ thứ tự sách và nhắc xem trước".
+  - Từ nhãn đó tính độ chính xác của từng luật, theo cách làm của D-01: đặc tả nhãn, agentic gán, nhãn là bạc.
+  - Chưa soạn vé sửa A10 khi chưa có số này.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
@@ -1059,6 +1110,8 @@ tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e2b.py --nhan=y-di
 # khảo sát E7 và E8 (mục 8.12)
 tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/pham_vi_e7.py
 .venv/Scripts/python.exe scripts/pass-phu-ml/phat_lai_tat_r17.py --he=llm-v3,e5-a-hieu-chinh
+# E8: làm cứng có chọn lọc (mục 8.13)
+.venv/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e8.py --he=llm-v3,e5-a-hieu-chinh > tmp/pass-phu-ml/ket-qua/e8.jsonl
 ```
 
 Số ở mục 1 đo bằng script tạm trong scratchpad trên `tmp/d01-gan-nhan/` lúc 17:24–18:10. Tệp nhãn còn đang ghi, nên chạy lại sẽ ra số khác.
