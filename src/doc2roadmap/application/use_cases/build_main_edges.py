@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
+from doc2roadmap.application.graph_chain import artifact_chain, graph_chain_fields
 from doc2roadmap.application.prerequisite_prompt import (
     MAIN_SCHEMA,
     PRICING_SOURCE,
@@ -38,7 +39,8 @@ class BuildMainEdges:
 
     def _provenance(self, doc_id, latest):
         artifact = latest
-        while artifact.payload.get("stage") not in {"provenance", "identity"}:
+        while (artifact.payload.get("stage") not in {"provenance", "identity"}
+               and not (artifact.payload.get("stage") == "mentions" and artifact_chain(artifact) == "gop")):
             if artifact.payload.get("stage") in {"clusters", "mentions"}:
                 raise ValueError("artifact graph không trỏ về stage provenance")
             upstream = artifact.manifest.get("upstream_version")
@@ -126,7 +128,8 @@ class BuildMainEdges:
         mentions = upstream if upstream is not None else self._provenance(
             doc_id, self.store.load_latest_graph(doc_id)
         )
-        if mentions.payload.get("stage") not in {"provenance", "identity"}:
+        if (mentions.payload.get("stage") not in {"provenance", "identity"}
+                and not (mentions.payload.get("stage") == "mentions" and artifact_chain(mentions) == "gop")):
             raise ValueError("pass chính cần artifact identity hoặc provenance")
         mention_config = mentions.manifest.get("config", {})
         chunks_version = mention_config.get("chunks_version")
@@ -142,6 +145,9 @@ class BuildMainEdges:
             if canonical_version is not None
             else self.store.load_latest_canonical(doc_id)
         )
+        chain_fields = graph_chain_fields(mentions, canonical)
+        definition_contract = (chain_fields.get("canonical_has_anchors", False) if chain_fields else
+                               mentions.payload["stage"] == "identity")
         nodes = mentions.payload["nodes"]
         sessions = plan_main_sessions(
             nodes,
@@ -159,6 +165,7 @@ class BuildMainEdges:
         }[route]
         prompt_hash = main_prompt_hash(self.model.model_id, self.generation)
         base_config = {
+            **chain_fields,
             "algorithm_id": "a8-main-pass-v7",
             "provenance_version": mentions.version,
             "provenance_config_hash": mentions.manifest["config_hash"],
@@ -241,7 +248,7 @@ class BuildMainEdges:
                     chunks.chunks,
                     mentions.payload["mention_map"],
                     existing_edges=edges,
-                    require_kind=mentions.payload["stage"] == "identity",
+                    require_kind=definition_contract,
                     definition_before=self.definition_before,
                     definition_after=self.definition_after,
                 )
@@ -284,7 +291,7 @@ class BuildMainEdges:
                         chunks.chunks,
                         mentions.payload["mention_map"],
                         existing_edges=edges + accepted,
-                        require_kind=mentions.payload["stage"] == "identity",
+                        require_kind=definition_contract,
                         definition_before=self.definition_before,
                         definition_after=self.definition_after,
                     )
@@ -346,9 +353,10 @@ class BuildMainEdges:
         }
         payload = {
             **mentions.payload,
+            **chain_fields,
             "stage": "edges",
             "main_complete": True,
-            "definition_contract": mentions.payload["stage"] == "identity",
+            "definition_contract": definition_contract,
             "main_base_config_hash": base_config_hash,
             "routing": {"route": route, "reason": reason, "single_session_limit": self.single_session_limit},
             "main_sessions": sessions,

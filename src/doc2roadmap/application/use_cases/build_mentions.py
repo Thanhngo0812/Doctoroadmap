@@ -8,6 +8,7 @@ from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.unicode_text import TEXT_RULE_VERSION
 from doc2roadmap.application.planning import StagePlan
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.domain.mentions import (
     build_mention_derivatives,
     build_mention_map,
@@ -76,6 +77,7 @@ class BuildMentions:
         common_names = document_common_names(clusters.payload["nodes"], chunks.result.chunks,
                                               threshold=self.common_name_fraction)
         config = {
+            **graph_chain_fields(clusters, canonical),
             "algorithm_id": "mention-map-v4",
             "clusters_version": clusters.version,
             "clusters_config_hash": clusters.manifest["config_hash"],
@@ -167,6 +169,7 @@ class BuildMentions:
         }
         payload = {
             **cluster_payload,
+            **graph_chain_fields(clusters, canonical),
             "stage": "mentions",
             "node_vectors_version": clusters.version,
             "cluster_stats": clusters.payload.get("stats", {}),

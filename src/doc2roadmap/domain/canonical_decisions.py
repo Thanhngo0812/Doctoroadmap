@@ -18,6 +18,10 @@ NON_PROSE = {"table", "code", "formula", "figure"}
 IDENTITY_EDGE_TYPES = frozenset(
     {"same_as", "equivalent_to", "identical_to", "synonym_of", "alias_of"}
 )
+GOP_IDENTITY_EDGE_TYPES = IDENTITY_EDGE_TYPES | {
+    "synonym", "alias", "abbreviation", "abbreviation_of", "acronym", "acronym_of",
+    "initialism_of", "translation", "translation_of",
+}
 
 
 class ContradictionError(ValueError):
@@ -40,7 +44,7 @@ def document_language(chunks):
     return "vi" if letters and accented / len(letters) >= .1 else "en"
 
 
-def validate_partition(value, source):
+def validate_partition(value, source, *, gop=False):
     if not isinstance(value, dict) or set(value) != {"nodes", "relations", "deferred"}:
         raise ValueError("cần nodes, relations, deferred")
     ids = set(source)
@@ -62,17 +66,18 @@ def validate_partition(value, source):
         if not isinstance(edge, dict) or set(edge) != {"source", "target", "edge_type", "chunk_ids", "reason"}:
             raise ValueError("mỗi relation cần source, target, edge_type, chunk_ids, reason")
     contradictions = []
+    identity_types = GOP_IDENTITY_EDGE_TYPES if gop else IDENTITY_EDGE_TYPES
     for edge in value["relations"]:
         a, b, raw_type = edge["source"], edge["target"], edge["edge_type"]
         if a == b or a not in owner or b not in owner or not isinstance(raw_type, str):
             continue
         edge_type = normalize_edge_type(raw_type)
-        if owner[a] == owner[b] and edge_type not in IDENTITY_EDGE_TYPES:
+        if owner[a] == owner[b] and edge_type not in identity_types:
             contradictions.append(
                 f"R1: {a} → {b} ({raw_type}) nằm trong cùng node; "
                 "hãy tách hai nhóm hoặc bỏ/sửa relation"
             )
-        elif owner[a] != owner[b] and edge_type in IDENTITY_EDGE_TYPES:
+        elif owner[a] != owner[b] and edge_type in identity_types:
             contradictions.append(
                 f"R2: {a} → {b} ({raw_type}) là quan hệ đồng nhất giữa hai node; "
                 "hãy gộp hai nhóm hoặc bỏ/sửa relation"

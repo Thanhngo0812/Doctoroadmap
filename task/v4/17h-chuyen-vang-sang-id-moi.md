@@ -1,7 +1,7 @@
 # 17h — Chuyển vàng cũ sang id node mới
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 6.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** sẵn sàng giao
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã cài và kiểm chứng (2026-10-16); xem [báo cáo cài đặt và kiểm chứng](../../report/v4-17-phan-tich-va-kiem-chung-2026-10-16.md)
 
 ## Vì sao
 
@@ -24,12 +24,12 @@ riêng và dựng lại chỉ số sau.
 
 ## Nghiệm thu
 
-- [ ] Test trên vàng và bảng chuyển hướng dựng tay:
+- [x] Test trên vàng và bảng chuyển hướng dựng tay:
   - id được quy qua bảng chuyển hướng, kể cả chuỗi hai bước;
   - cạnh có hai đầu bị gộp được đếm và rời phép chấm;
   - đích vàng cũng được quy;
   - khái niệm không quy được làm bộ chấm từ chối và liệt kê;
   - vòng chuyển hướng báo lỗi;
   - tệp vàng gốc không bị sửa (so băm trước và sau).
-- [ ] Không bật tuỳ chọn thì bộ chấm giữ hành vi cũ, kể cả thông báo từ chối id lạ.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Không bật tuỳ chọn thì bộ chấm giữ hành vi cũ, kể cả thông báo từ chối id lạ.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.

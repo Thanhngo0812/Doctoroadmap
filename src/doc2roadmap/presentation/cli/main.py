@@ -63,6 +63,13 @@ def _parser() -> argparse.ArgumentParser:
     mode.add_argument("--prepare", action="store_true", help="chỉ đề cử bằng embedding, chưa phán")
     canonical.add_argument("--gold", type=Path, help="bộ vàng đã gán mù, bắt buộc trước khi gọi LLM")
     canonical.add_argument("--language", choices=("vi", "en"), help="khai ngôn ngữ tài liệu cho A5")
+    canonical.add_argument("--merge-review", type=Path,
+                           help="quyết định duyệt gộp ở A4 chuỗi gop, cùng định dạng --identity-review")
+    canonical.add_argument("--upstream-chain", choices=("v3", "gop"), default=None,
+                           help="chuỗi thượng nguồn; mặc định cấu hình v3")
+    canonical.add_argument("--anchor-batch-mode", choices=("single", "a5"), default=None)
+    canonical.add_argument("--allow-spend", action="store_true", help="cho phép mô hình/embedding của chuỗi gop")
+    canonical.add_argument("--dry-run", action="store_true", help="dự toán từng phần; không gọi mô hình hay embedding")
     canonical.add_argument(
         "--no-gold-for-doc",
         action="store_true",
@@ -97,6 +104,10 @@ def _parser() -> argparse.ArgumentParser:
     prereq_score.add_argument("--provenance", choices=("patched", "source"), default="patched",
                               help="chấm theo provenance đã vá, hoặc bản gốc A3/A4 để so trước sau")
     prereq_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
+    prereq_score.add_argument("--remap-gold-ids", action="store_true",
+                              help="quy id vàng qua chuyển hướng canonical của graph trước khi chấm")
+    prereq_score.add_argument("--gold-graph", type=Path,
+                              help="graph gán vàng gốc nếu vàng dùng provenance đã vá; cần --remap-gold-ids")
     roadmap_score = commands.add_parser(
         "a8-roadmap-score",
         help="chấm thứ tự lộ trình: tau so mục lục và tỉ lệ vi phạm cạnh vàng; không gọi mô hình")
@@ -105,6 +116,8 @@ def _parser() -> argparse.ArgumentParser:
     roadmap_score.add_argument("--gold", type=Path, action="append", default=[],
                                help="JSON từ a8-gold-check; lặp lại cho người gán thứ hai")
     roadmap_score.add_argument("--gold-mode", choices=("union", "intersection"), default="union")
+    roadmap_score.add_argument("--remap-gold-ids", action="store_true",
+                               help="quy id vàng qua chuyển hướng canonical của graph trước khi chấm")
     roadmap_score.add_argument("--output", type=Path, help="ghi báo cáo đầy đủ ra JSON")
     roadmap_target = commands.add_parser(
         "roadmap-target", help="lộ trình tới một hoặc vài khái niệm đích; không gọi mô hình")
@@ -197,6 +210,8 @@ def _parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--candidate-version", type=int)
     roadmap = commands.add_parser("roadmap", help="chạy A6 đến A10 trên một tài liệu")
     roadmap.add_argument("--doc-id", required=True)
+    roadmap.add_argument("--upstream-chain", choices=("v3", "gop"), default=None,
+                         help="chuỗi phải khớp canonical; mặc định lấy theo canonical đang dùng")
     roadmap.add_argument(
         "--stop-after",
         choices=("clusters", "mentions", "provenance", "teaching", "identity", "edges", "stages"),
@@ -479,7 +494,9 @@ def main(argv: list[str] | None = None) -> int:
             _json(summary)
             return 1 if result["errors"] else 0
         elif args.command == "a8-roadmap-score":
-            report = a8_score.score_roadmap_order(args.graph, args.gold, mode=args.gold_mode)
+            remap_options = ({"remap_gold_ids": True, "store": build_artifact_store()}
+                             if args.remap_gold_ids else {})
+            report = a8_score.score_roadmap_order(args.graph, args.gold, mode=args.gold_mode, **remap_options)
             if args.output:
                 store = build_artifact_store()
                 output = _inside_artifacts(store, args.output)
@@ -511,9 +528,14 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         elif args.command == "a8-score":
             store = build_artifact_store()
+            remap_options = {}
+            if args.gold_graph is not None and not args.remap_gold_ids:
+                raise ValueError("--gold-graph cần --remap-gold-ids")
+            if args.remap_gold_ids:
+                remap_options = {"remap_gold_ids": True, "gold_graph_path": args.gold_graph}
             report = a8_score.score_from_store(store, args.doc_id, args.graph, args.gold,
                                                mode=args.gold_mode, samples=args.bootstrap, seed=args.seed,
-                                               provenance=args.provenance)
+                                               provenance=args.provenance, **remap_options)
             if args.output:
                 output = _inside_artifacts(store, args.output)
                 output.parent.mkdir(parents=True, exist_ok=True)
@@ -530,12 +552,27 @@ def main(argv: list[str] | None = None) -> int:
             _json(evaluate_canonical(artifact, gold, second,
                                      exclude_subtype_items=args.exclude_subtype_item))
         elif args.command == "a4":
+            from doc2roadmap.config import Settings
+            chain = args.upstream_chain or Settings().upstream_chain
+            if chain == "gop" and (args.names_only or args.prepare):
+                raise ValueError("chuỗi gop cần A4/A5 đầy đủ; không dùng --names-only hoặc --prepare")
+            if args.merge_review is not None and chain != "gop":
+                raise ValueError("--merge-review chỉ dùng ở chuỗi gop; v3 dùng roadmap --identity-review")
             store = build_artifact_store()
+            build_options = {}
+            if chain == "gop" or args.upstream_chain is not None or args.anchor_batch_mode is not None or args.dry_run:
+                build_options = {"upstream_chain": chain, "anchor_batch_mode": args.anchor_batch_mode,
+                                 "allow_spend": args.allow_spend and not args.dry_run, "dry_run": args.dry_run}
             execution_options = {}
+            if args.merge_review is not None:
+                import hashlib
+                from doc2roadmap.application.use_cases.judge_identity import load_identity_review
+                build_options.update(merge_review=load_identity_review(args.merge_review, doc_id=args.doc_id),
+                                     merge_review_hash=hashlib.sha256(args.merge_review.read_bytes()).hexdigest())
             if args.names_only:
                 use_case = Canonicalize(store)
             elif args.prepare:
-                use_case = build_canonical(prepare=True)
+                use_case = build_canonical(prepare=True, **build_options)
             else:
                 if args.gold is None:
                     raise ValueError("task 06 chưa xong: cần --gold đã gán mù; dùng --prepare hoặc --names-only trước")
@@ -547,9 +584,14 @@ def main(argv: list[str] | None = None) -> int:
                         "a4_gold_coverage": "none",
                         "gold_sheet_id": gold["sheet_id"],
                     }
-                use_case = build_canonical()
+                use_case = build_canonical(**build_options)
             if args.language:
                 execution_options["declared_language"] = args.language
+            if args.dry_run:
+                _json({"doc_id": args.doc_id, "upstream_chain": chain,
+                       "phases": {phase: plan.to_dict() for phase, plan in
+                                  use_case.plan(args.doc_id, **execution_options).items()}})
+                return 0
             artifact, reused = use_case.execute(args.doc_id, **execution_options)
             _json({"path": str(artifact.path), "version": artifact.version, "reused": reused,
                    "stage": artifact.payload["stage"], "stats": artifact.payload["stats"],
@@ -608,7 +650,9 @@ def main(argv: list[str] | None = None) -> int:
                 from doc2roadmap.application.use_cases.judge_identity import load_identity_review
 
                 review = load_identity_review(args.identity_review, doc_id=args.doc_id)
-            use_case, _ = build_learning_graph(allow_spend=args.allow_spend and not args.dry_run, identity_review=review)
+            options = {"upstream_chain": args.upstream_chain} if args.upstream_chain is not None else {}
+            use_case, _ = build_learning_graph(allow_spend=args.allow_spend and not args.dry_run,
+                                              identity_review=review, **options)
             if hasattr(use_case, "clusters"):
                 use_case.clusters.quality_reason = args.allow_text_quality_reason
             if args.dry_run:

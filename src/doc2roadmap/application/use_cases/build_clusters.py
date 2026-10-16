@@ -9,6 +9,7 @@ from doc2roadmap.application.leiden_cluster import cluster_nodes, weighted_conce
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.topic_graph import build_topic_edges
 from doc2roadmap.application.planning import StagePlan
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.use_cases.ingest_document import require_text_quality
 
 
@@ -63,6 +64,7 @@ class BuildClusters:
             "constraint_enforcement": 1e12,
         }
         config = {
+            **graph_chain_fields(canonical, canonical),
             "algorithm_id": "a6-a7-topic-graph-v3",
             "canonical_version": canonical.version,
             "canonical_config_hash": canonical.manifest["config_hash"],
@@ -146,6 +148,7 @@ class BuildClusters:
             **cluster_stats,
         }
         payload = {
+            **graph_chain_fields(canonical, canonical),
             "schema_version": 1,
             "doc_id": doc_id,
             "stage": "clusters",

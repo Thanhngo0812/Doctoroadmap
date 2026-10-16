@@ -6,6 +6,7 @@ from collections import Counter, defaultdict
 from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.application.use_cases.build_roadmap import render_roadmap_html
 from doc2roadmap.domain.canonical import digest
@@ -40,7 +41,7 @@ class NameModules:
         if reference_version == chunks.version:
             reference_version = None
         reference = self.store.load_chunks(doc_id, reference_version) if reference_version else None
-        config = {"algorithm_id": "a10-module-titles-v9", "upstream_version": upstream.version,
+        config = {**graph_chain_fields(upstream), "algorithm_id": "a10-module-titles-v9", "upstream_version": upstream.version,
                   "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks.version,
                   "title_sections_version": reference_version or chunks.version,
                   "model_id": self.model.model_id, "generation": GENERATION, "prompt_hash": prompt_hash}

@@ -69,3 +69,34 @@ kiểm draft xong mới viết lại.
 Concurrency không vào khóa cache. Chạy bốn tiến trình với concurrency 4 có thể đạt 16 lời gọi đồng thời;
 đây không phải giới hạn toàn hệ thống hay giới hạn requests/phút. A3 dùng `DOC2ROADMAP_EXTRACTION_CONCURRENCY` riêng.
 Xem [trạng thái task, cách chạy và giới hạn kiểm chứng](feedback/F18-a4-a5-hop-nhat.md).
+
+### Chuỗi gộp trước A8 (vé 17)
+
+Chuỗi `v3` vẫn mặc định. Chọn `--upstream-chain gop` khi chạy A4/A5 đầy đủ;
+`--names-only` và `--prepare` chỉ dùng với `v3`.
+
+```powershell
+.\.tools\uv.exe run doc2roadmap a4 --doc-id book --gold tests/fixtures/a4/gold-blind.json --no-gold-for-doc --upstream-chain gop --dry-run
+# Sau khi duyệt dự toán, thay --dry-run bằng --allow-spend.
+.\.tools\uv.exe run doc2roadmap roadmap --doc-id book --dry-run
+```
+
+`roadmap` tự theo chuỗi của canonical đang dùng; tùy chọn `--upstream-chain` dùng để
+kiểm chuỗi mong đợi. Chuỗi `gop` đã có neo trong canonical và bỏ ba stage
+`provenance`, `teaching`, `identity` khỏi đồ thị.
+
+`--anchor-batch-mode a5` gom neo vào lời gọi mô tả/kiểm A5; `single` là đối chứng.
+`DOC2ROADMAP_CANONICAL_REPAIR_BATCH_SIZE` đặt số mục trong lô phán sửa (mặc định 1, mỗi cặp một lời gọi).
+`DOC2ROADMAP_MERGE_DESCRIPTION_TOP_K` (3) và `DOC2ROADMAP_MERGE_DESCRIPTION_MIN_SIMILARITY`
+(0,85) điều chỉnh nguồn đề cử từ vector mô tả nháp A3 đã lưu.
+
+Quyết định người duyệt vào `a4 --merge-review review.json` ở chuỗi `gop`, theo định dạng
+`{"doc_id":"book","decisions":[{"left":"node_…","right":"node_…","decision":"Không gộp"}]}`.
+Các lựa chọn giống `--identity-review`: `Đồng ý gộp`, `Không gộp`, `Là hai nghĩa khác nhau`,
+`Không chắc`. Danh sách gộp khác tên kèm bằng chứng nằm ở `merge_review` trong canonical.
+
+Để chấm vàng cũ, thêm `--remap-gold-ids` cho `a8-score` hoặc `a8-roadmap-score`.
+Nếu vàng gán theo provenance đã vá, `a8-score` cần thêm `--gold-graph <graph-gán-gốc>`
+để xác thực tập gán trước khi chuyển ID. Bộ chấm liệt kê và từ chối bộ vàng có ID không
+quy được; tệp vàng gốc giữ nguyên. Nghiệm thu mô hình thật và quyết định đổi mặc định
+thuộc vé 17i.

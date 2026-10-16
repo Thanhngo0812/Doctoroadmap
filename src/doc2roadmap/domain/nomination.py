@@ -17,7 +17,8 @@ def unit(vector):
     return [x / norm for x in vector]
 
 
-def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2., seed=42, cap=9):
+def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2., seed=42, cap=9,
+                     additional=None):
     if k < 1 or cap < 2 or resolution <= 0 or not 0 < ngram_threshold <= 1:
         raise ValueError("tham số đồ thị A4 không hợp lệ")
     ids = sorted(groups)
@@ -38,6 +39,7 @@ def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2.,
     def grams(key):
         return {text[i:i+3] for e in groups[key] for text in [unaccented(e.name)] for i in range(len(text)-2)}
     labels_by_id, grams_by_id = {i: labels(i) for i in ids}, {i: grams(i) for i in ids}
+    added = {tuple(sorted((row["left"], row["right"]))): row["reasons"] for row in additional or []}
     graph, edges = nx.Graph(), []
     for a, b in combinations(ids, 2):
         names_a, alias_a = labels_by_id[a]
@@ -50,6 +52,9 @@ def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2.,
             channels.append("ngram"); weights.append(max(cosine(a, b), .5))
         if b in nearest[a] and a in nearest[b] and cosine(a, b) > 0:
             channels.append("name"); weights.append(cosine(a, b))
+        if (a, b) in added:
+            channels.extend(channel for channel in added[a, b] if channel not in channels)
+            weights.append(1.)
         if channels:
             weight = max(weights)
             graph.add_edge(a, b, weight=weight)
@@ -65,8 +70,10 @@ def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2.,
     clusters = sorted((c for component in initial for c in split(component, resolution*2)), key=lambda c: c[0])
     owner = {item: i for i, cluster in enumerate(clusters) for item in cluster}
     cut = [edge for edge in edges if owner[edge["source"]] != owner[edge["target"]]]
+    channels = (("alias", "ngram", "name") if additional is None else
+                sorted({"alias", "ngram", "name", *(channel for row in additional for channel in row["reasons"])}))
     return {"edges": edges, "clusters": [c for c in clusters if len(c) > 1], "cut_edges": cut,
             "metrics": {"nomination_edges": len(edges),
-                        "nomination_channels": {ch: sum(ch in e["channels"] for e in edges) for ch in ("alias", "ngram", "name")},
+                        "nomination_channels": {ch: sum(ch in e["channels"] for e in edges) for ch in channels},
                         "cluster_count": sum(len(c) > 1 for c in clusters),
                         "largest_cluster": max(map(len, clusters), default=0), "cut_edge_count": len(cut)}}

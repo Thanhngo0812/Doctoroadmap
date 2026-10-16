@@ -1,7 +1,7 @@
 # 17b — Công tắc chuỗi và neo trong stage canonical
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 1, 2, 4 và 6 (chi phí).
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17a · **Trạng thái:** chờ 17a
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17a · **Trạng thái:** đã cài và kiểm chứng (2026-10-16); xem [báo cáo cài đặt và kiểm chứng](../../report/v4-17-phan-tich-va-kiem-chung-2026-10-16.md)
 
 ## Vì sao
 
@@ -49,16 +49,16 @@
 
 ## Nghiệm thu
 
-- [ ] Test qua `execute` của stage canonical trên fixture tài liệu thật, với mô hình giả:
+- [x] Test qua `execute` của stage canonical trên fixture tài liệu thật, với mô hình giả:
   - neo và trạng thái dạy được ghi đúng trường;
   - mã câu neo không có trong ứng viên thì bị bác;
   - câu trích nằm ngoài ngữ cảnh thì bị bác;
   - khái niệm không có ứng viên không sinh lời gọi nào;
   - `prior_knowledge` không được xác minh thì hạ xuống `uncertain`;
   - chunk neo được thêm vào `defining_chunk_ids`, không chunk cũ nào bị xoá.
-- [ ] Ứng viên không lấy từ kênh độ gần nghĩa hay provenance. Test có một chunk chỉ gần nghĩa, và chunk đó không thành ứng viên.
-- [ ] Canonical `v3` giữ nguyên băm config. Một canonical v3 có sẵn được tái dùng.
-- [ ] Đổi chuỗi hay đổi cỡ lô phần neo thì khoá cache đổi. Chạy lại cùng cấu hình thì tái dùng toàn bộ.
-- [ ] Ở chuỗi `gop`, thiếu `--allow-spend` thì chặn trước lời gọi đầu tiên. `--dry-run` không gọi mô hình hay embedding.
-- [ ] `--names-only` / `--prepare` với chuỗi `gop` thì dừng với thông báo rõ.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ (AGENTS.md mục 5). Toàn bộ test qua.
+- [x] Ứng viên không lấy từ kênh độ gần nghĩa hay provenance. Test có một chunk chỉ gần nghĩa, và chunk đó không thành ứng viên.
+- [x] Canonical `v3` giữ nguyên băm config. Một canonical v3 có sẵn được tái dùng.
+- [x] Đổi chuỗi hay đổi cỡ lô phần neo thì khoá cache đổi. Chạy lại cùng cấu hình thì tái dùng toàn bộ.
+- [x] Ở chuỗi `gop`, thiếu `--allow-spend` thì chặn trước lời gọi đầu tiên. `--dry-run` không gọi mô hình hay embedding.
+- [x] `--names-only` / `--prepare` với chuỗi `gop` thì dừng với thông báo rõ.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ (AGENTS.md mục 5). Toàn bộ test qua.

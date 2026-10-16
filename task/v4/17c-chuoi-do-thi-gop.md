@@ -1,7 +1,7 @@
 # 17c — Chuỗi đồ thị gộp chạy tới A10
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 2, 5 và 6.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17b · **Trạng thái:** chờ 17b
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17b · **Trạng thái:** đã cài và kiểm chứng (2026-10-16); xem [báo cáo cài đặt và kiểm chứng](../../report/v4-17-phan-tich-va-kiem-chung-2026-10-16.md)
 
 ## Vì sao
 
@@ -40,15 +40,15 @@ clusters (A6–A7) → mentions → main_edges → secondary_edges → validated
 
 ## Nghiệm thu
 
-- [ ] Test điều phối với stage giả: thứ tự stage của chuỗi gộp và của chuỗi v3; `--stop-after` hợp lệ và không hợp lệ; `--dry-run` không gọi
+- [x] Test điều phối với stage giả: thứ tự stage của chuỗi gộp và của chuỗi v3; `--stop-after` hợp lệ và không hợp lệ; `--dry-run` không gọi
       mô hình hay embedding.
-- [ ] Test hợp đồng pass chính:
+- [x] Test hợp đồng pass chính:
   - với upstream chuỗi gộp có khai báo neo, hợp đồng theo định nghĩa được bật;
   - với cùng upstream nhưng bỏ khai báo neo, hợp đồng không bật;
   - với upstream chuỗi v3, hành vi như cũ.
-- [ ] Test đầu-cuối trên fixture tài liệu thật, với mô hình giả: canonical chuỗi gộp → `roadmap` ra artifact `stages` và lộ trình. Khái niệm có
+- [x] Test đầu-cuối trên fixture tài liệu thật, với mô hình giả: canonical chuỗi gộp → `roadmap` ra artifact `stages` và lộ trình. Khái niệm có
       trạng thái `taught` vào dãy học. Không artifact nào có stage `provenance`, `teaching` hay `identity`.
-- [ ] Chuỗi gộp chạy được với pass phụ `ml` và với pass phụ `llm`.
-- [ ] A10 và bộ chấm A8 chạy được trên artifact không có `identity_map`.
-- [ ] Tuỳ chọn chuỗi không khớp canonical thì dừng với thông báo rõ. `--identity-review` trong chuỗi gộp bị từ chối.
-- [ ] Hồi quy: artifact chuỗi v3 trong fixture vẫn qua A8, A10 và bộ chấm; chuỗi v3 vẫn là mặc định. Toàn bộ test qua.
+- [x] Chuỗi gộp chạy được với pass phụ `ml` và với pass phụ `llm`.
+- [x] A10 và bộ chấm A8 chạy được trên artifact không có `identity_map`.
+- [x] Tuỳ chọn chuỗi không khớp canonical thì dừng với thông báo rõ. `--identity-review` trong chuỗi gộp bị từ chối.
+- [x] Hồi quy: artifact chuỗi v3 trong fixture vẫn qua A8, A10 và bộ chấm; chuỗi v3 vẫn là mặc định. Toàn bộ test qua.

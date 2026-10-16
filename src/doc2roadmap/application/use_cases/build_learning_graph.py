@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from doc2roadmap.application.spend_guard import SpendNotAllowed
 from doc2roadmap.application.planning import PRICING_SOURCE, PRICING_USD_PER_MILLION, StagePlan
+from doc2roadmap.application.graph_chain import artifact_chain
 
 
 class BuildLearningGraph:
     STAGES = ("clusters", "mentions", "provenance", "teaching", "identity", "edges", "stages")
 
     def __init__(self, clusters, mentions, provenance, main_edges, secondary_edges, validator, teaching, identity,
-                 roadmap, module_titles=None, concept_labels=None):
+                 roadmap, module_titles=None, concept_labels=None, *, upstream_chain=None, identity_review=None):
         self.clusters = clusters
         self.mentions = mentions
         self.provenance = provenance
@@ -20,19 +21,36 @@ class BuildLearningGraph:
         self.roadmap = roadmap
         self.module_titles = module_titles
         self.concept_labels = concept_labels
+        self.upstream_chain, self.identity_review = upstream_chain, identity_review
 
-    def plan(self, doc_id, *, stop_after="stages"):
+    def _chain(self, doc_id, stop_after):
         if stop_after not in self.STAGES:
             raise ValueError(f"stage không hợp lệ: {stop_after}")
-        chain = [("clusters", self.clusters), ("mentions", self.mentions), ("provenance", self.provenance),
-                 ("teaching", self.teaching), ("identity", self.identity),
-                 ("main_edges", self.main_edges), ("secondary_edges", self.secondary_edges),
-                 ("validated", self.validator)]
+        store = getattr(self.clusters, "store", None)
+        selected = artifact_chain(store.load_latest_canonical(doc_id)) if store is not None else "v3"
+        if self.upstream_chain not in (None, "v3", "gop"):
+            raise ValueError("upstream_chain phải là v3 hoặc gop")
+        if self.upstream_chain is not None and self.upstream_chain != selected:
+            raise ValueError(f"chuỗi {self.upstream_chain} không khớp canonical chuỗi {selected}")
+        if selected == "gop":
+            if stop_after in {"provenance", "teaching", "identity"}:
+                raise ValueError(f"{stop_after} đã nằm trong stage canonical của chuỗi gộp")
+            if self.identity_review is not None:
+                raise ValueError("--identity-review không dùng trong chuỗi gộp; nạp quyết định người duyệt ở A4")
+        chain = [("clusters", self.clusters), ("mentions", self.mentions)]
+        if selected == "v3":
+            chain.extend([("provenance", self.provenance), ("teaching", self.teaching), ("identity", self.identity)])
+        chain.extend([("main_edges", self.main_edges), ("secondary_edges", self.secondary_edges),
+                      ("validated", self.validator)])
         if self.concept_labels is not None:
             chain.append(("concept_labels", self.concept_labels))
         chain.append(("stages", self.roadmap))
         if stop_after == "stages" and self.module_titles is not None:
             chain.append(("module_titles", self.module_titles))
+        return chain
+
+    def plan(self, doc_id, *, stop_after="stages"):
+        chain = self._chain(doc_id, stop_after)
         upstream, rows = None, []
         for name, use_case in chain:
             if name == "clusters":
@@ -54,59 +72,22 @@ class BuildLearningGraph:
                 "note": "Tổng chỉ gồm phần đã biết, không phải ngân sách tối đa; chạy lại --dry-run sau khi có artifact mới."}
 
     def execute(self, doc_id, *, stop_after="stages"):
-        if stop_after not in self.STAGES:
-            raise ValueError(f"stage không hợp lệ: {stop_after}")
+        chain = self._chain(doc_id, stop_after)
         self._current = "clusters"
         try:
-            return self._execute(doc_id, stop_after)
+            return self._execute(doc_id, stop_after, chain)
         except SpendNotAllowed as error:
             # Gắn tên stage để người chạy biết lần chi nào vừa bị chặn.
             raise SpendNotAllowed(self._current) from error
 
-    def _execute(self, doc_id, stop_after):
-        artifact, reused = self.clusters.execute(doc_id)
-        if stop_after == "clusters":
-            return artifact, reused
-        self._current = "mentions"
-        artifact, current_reused = self.mentions.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        if stop_after == "mentions":
-            return artifact, reused
-        self._current = "provenance"
-        artifact, current_reused = self.provenance.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        if stop_after == "provenance":
-            return artifact, reused
-        self._current = "teaching"
-        artifact, current_reused = self.teaching.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        if stop_after == "teaching":
-            return artifact, reused
-        self._current = "identity"
-        artifact, current_reused = self.identity.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        if stop_after == "identity":
-            return artifact, reused
-        self._current = "main_edges"
-        artifact, current_reused = self.main_edges.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        self._current = "secondary_edges"
-        artifact, current_reused = self.secondary_edges.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        if stop_after == "edges":
-            return artifact, reused
-        self._current = "validated"
-        artifact, current_reused = self.validator.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        if self.concept_labels is not None:
-            self._current = "concept_labels"
-            artifact, current_reused = self.concept_labels.execute(doc_id, upstream=artifact)
+    def _execute(self, doc_id, stop_after, chain):
+        artifact, reused = None, True
+        for name, use_case in chain:
+            self._current = name
+            artifact, current_reused = (use_case.execute(doc_id) if name == "clusters" else
+                                       use_case.execute(doc_id, upstream=artifact))
             reused = reused and current_reused
-        self._current = "stages"
-        artifact, current_reused = self.roadmap.execute(doc_id, upstream=artifact)
-        reused = reused and current_reused
-        if self.module_titles is not None:
-            self._current = "module_titles"
-            artifact, current_reused = self.module_titles.execute(doc_id, upstream=artifact)
-            reused = reused and current_reused
+            if (name == stop_after and (name != "stages" or self.module_titles is None)
+                    or (name == "secondary_edges" and stop_after == "edges")):
+                break
         return artifact, reused

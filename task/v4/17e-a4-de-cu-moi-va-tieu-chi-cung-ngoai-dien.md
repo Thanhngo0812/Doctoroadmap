@@ -1,7 +1,7 @@
 # 17e — A4 đề cử thêm nguồn của danh tính, phán theo tiêu chí cùng ngoại diên
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 3.1, 3.3 và 3.7.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17b · **Trạng thái:** chờ 17b
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17b · **Trạng thái:** đã cài và kiểm chứng (2026-10-16); xem [báo cáo cài đặt và kiểm chứng](../../report/v4-17-phan-tich-va-kiem-chung-2026-10-16.md)
 
 ## Vì sao
 
@@ -41,12 +41,12 @@ phán (ADR 0006). Tham số của các nguồn nằm trong config.
 
 ## Nghiệm thu
 
-- [ ] Test trên fixture tài liệu thật, với mô hình giả:
+- [x] Test trên fixture tài liệu thật, với mô hình giả:
   - mỗi nguồn mới sinh cặp nghi trùng đúng loại;
   - không nguồn nào tự gộp khi mô hình không phán gộp, kể cả cặp có cosine mô tả 0,99;
   - cặp được phán "trường hợp riêng" giữ tách và ra một quan hệ đề xuất;
   - nhóm thiếu vector mô tả không gây lỗi và không được đề cử theo nguồn mô tả.
-- [ ] Không có lời gọi embedding nào ngoài embedding tên đã có.
-- [ ] Số cặp theo nguồn có trong `stats` và khớp số cặp trong nhật ký.
-- [ ] Đổi tham số nguồn đề cử thì khoá cache đổi. Canonical v3 giữ nguyên băm config.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Không có lời gọi embedding nào ngoài embedding tên đã có.
+- [x] Số cặp theo nguồn có trong `stats` và khớp số cặp trong nhật ký.
+- [x] Đổi tham số nguồn đề cử thì khoá cache đổi. Canonical v3 giữ nguyên băm config.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.

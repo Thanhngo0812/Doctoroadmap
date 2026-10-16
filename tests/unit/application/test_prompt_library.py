@@ -100,6 +100,7 @@ def test_product_prompt_catalog_is_exact_and_loadable():
         Path("a3/few-shot/statistics.txt"),
         Path("a3/few-shot/technical-report.txt"),
         Path("a4/partition.txt"),
+        Path("a4/partition-gop.txt"),
         Path("a4/describe.txt"),
         Path("a4/check.txt"),
         Path("a8/main.txt"),
@@ -125,10 +126,10 @@ def test_product_prompt_catalog_is_exact_and_loadable():
     assert str(missing) in str(error.value)
 
 
-def test_merge_and_repair_share_the_only_partition_prompt():
+def test_merge_and_repair_share_the_v3_partition_prompt():
     prompts = canonical_prompts()
 
     assert prompts["merge"] == prompts["repair"] == load_prompt("a4", "partition")
     assert {path.name for path in (PROMPT_ROOT / "a4").glob("*.txt")} == {
-        "partition.txt", "describe.txt", "check.txt",
+        "partition.txt", "partition-gop.txt", "describe.txt", "check.txt",
     }

@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 3.2.
 **Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17e (cùng đoạn mã; lợi chỉ thấy khi số cặp bị cắt tăng)
-· **Trạng thái:** chờ 17e
+· **Trạng thái:** đã cài và kiểm chứng (2026-10-16); xem [báo cáo cài đặt và kiểm chứng](../../report/v4-17-phan-tich-va-kiem-chung-2026-10-16.md)
 
 ## Vì sao
 
@@ -22,10 +22,10 @@ Chỉ áp ở chuỗi `gop`. Chuỗi v3 giữ nguyên.
 
 ## Nghiệm thu
 
-- [ ] Test qua `execute` của stage canonical, với mô hình giả:
+- [x] Test qua `execute` của stage canonical, với mô hình giả:
   - các cặp bị cắt được phán theo lô, và số lời gọi đúng bằng số lô;
   - một mục hỏng trong lô chỉ làm mục đó bị hỏi lại riêng; các mục khác giữ lời phán;
   - mục hỏng tiếp thì cặp đó thành `repair_invalid` và giữ tách.
-- [ ] Cùng phản hồi giả thì lô cỡ 1 và lô cỡ lớn cho cùng tập node.
-- [ ] Đổi cỡ lô thì khoá cache đổi. Chuỗi v3 giữ nguyên băm config.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Cùng phản hồi giả thì lô cỡ 1 và lô cỡ lớn cho cùng tập node.
+- [x] Đổi cỡ lô thì khoá cache đổi. Chuỗi v3 giữ nguyên băm config.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.

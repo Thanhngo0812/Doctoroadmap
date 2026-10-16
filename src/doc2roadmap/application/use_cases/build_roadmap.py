@@ -6,6 +6,7 @@ import unicodedata
 
 from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.roadmap import reviewed_sessions
 from doc2roadmap.domain.sequence import (DEFAULT_WEIGHTS, build_sequence_roadmap, target_modules,
@@ -165,6 +166,7 @@ class BuildRoadmap:
         reference_version = (chunks_artifact.manifest.get("role_transfer") or {}).get("reference_version")
         title_chunks = self.store.load_chunks(doc_id, reference_version) if reference_version else chunks_artifact
         config = {
+            **graph_chain_fields(upstream),
             "algorithm_id": "a10-book-anchored-sequence-v3",
             "upstream_version": upstream.version,
             "upstream_config_hash": upstream.manifest["config_hash"],

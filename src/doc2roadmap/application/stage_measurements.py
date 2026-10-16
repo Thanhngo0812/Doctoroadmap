@@ -1,5 +1,6 @@
 """Execution telemetry, separate from semantic payloads and cache keys."""
 from contextvars import ContextVar
+from contextlib import contextmanager
 from functools import wraps
 from threading import Lock
 from time import perf_counter
@@ -26,6 +27,7 @@ class _Measurements:
         self.checkpoint_paths = {}
         self.lock = Lock()
         self.manifests = []
+        self.phases = {}
 
     def snapshot(self):
         with self.lock:
@@ -59,6 +61,8 @@ def measure_stage(execute):
             stats = state.snapshot()
             for store, path, manifest in state.manifests:
                 manifest["stats"] = {**manifest.get("stats", {}), **stats}
+                if state.phases:
+                    manifest["phase_measurements"] = state.phases
                 store._write(path / "manifest.json", manifest)
             return result
         except BaseException:
@@ -76,6 +80,18 @@ def measure_stage(execute):
         finally:
             _current.reset(token)
     return measured
+
+
+@contextmanager
+def measure_phase(name):
+    """Accumulate phase time in the enclosing stage's manifest, outside payload/hash."""
+    state, started = _current.get(), perf_counter()
+    try:
+        yield
+    finally:
+        if state is not None and name:
+            phase = state.phases.setdefault(name, {"runtime_seconds": 0.0})
+            phase["runtime_seconds"] += perf_counter() - started
 
 
 def register_manifest(store, path, manifest):

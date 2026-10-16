@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.planning import StagePlan
 from doc2roadmap.domain.global_validation import apply_resolved_nodes, strongly_connected_components, validate_graph_rules
 
@@ -47,6 +48,7 @@ class ValidateGraph:
         chunk_roles = {chunk.chunk_id: chunk.role for chunk in role_chunks.result.chunks}
         aliases = self.store.load_type_aliases()
         config = {
+            **graph_chain_fields(edges_artifact, canonical),
             "algorithm_id": "a9-structural-consistency-v10",
             "check_name": "structural_consistency_check",
             "edges_version": edges_artifact.version,

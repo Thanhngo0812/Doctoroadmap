@@ -1,61 +1,24 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Any
 
 from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
-from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
+from doc2roadmap.application.anchor_core import (
+    ANCHOR_SCHEMA,
+    CANDIDATES,
+    NODE_BATCH,
+    PRIOR_SCHEMA,
+    AnchorCore,
+    _anchor_input,
+    _prior_inputs,
+    anchor_prompt_hash,
+)
 from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.prompt_library import load_prompt
-from doc2roadmap.domain.anchors import (
-    STATUSES,
-    anchor_fields,
-    candidate_sentences,
-    heading_chunks,
-    symbolic_name_chunks,
-    validate_anchor_response,
-)
 from doc2roadmap.domain.canonical import digest
-from doc2roadmap.domain.mentions import exact_mentions
 
-ANCHOR_SCHEMA: dict[str, Any] = {
-    "type": "object",
-    "properties": {
-        "node_id": {"type": "string"},
-        "status": {"type": "string", "enum": list(STATUSES)},
-        "anchor": {"type": "string"},
-        "quote": {"type": "string"},
-        "reason": {"type": "string"},
-    },
-    "required": ["node_id", "status", "reason"],
-}
 HARD_CHANNELS = {"exact", "alias", "provenance"}
-CANDIDATES = 6
-NODE_BATCH = 8
-PRIOR_SCHEMA = {"type": "object", "properties": {"node_id": {"type": "string"},
-    "explicit_prior": {"type": "boolean"}, "reason": {"type": "string"}},
-    "required": ["node_id", "explicit_prior", "reason"]}
-
-
-def anchor_prompt_hash(model_id, generation):
-    return digest([load_prompt("a10", "anchor"), ANCHOR_SCHEMA, model_id, generation])
-
-
-def _prior_inputs(nodes, answers):
-    return [{"node_id": n["node_id"], "concept": {"name": n["name"], "description": n.get("description", "")},
-             "quote": answers[n["node_id"]]["quote"]} for n in nodes
-            if answers.get(n["node_id"], {}).get("status") == "prior_knowledge"]
-
-
-def _anchor_input(node, candidates, chunk_by_id):
-    return {"node_id": node["node_id"],
-            "concept": {"name": node["name"], "description": node.get("description", ""),
-                        "aliases": sorted({str(a["name"] if isinstance(a, dict) else a)
-                                           for a in node.get("aliases", [])})},
-            "candidates": [{"cand_id": c["cand_id"], "chunk_id": c["chunk_id"],
-                            "section_path": list(getattr(chunk_by_id[c["chunk_id"]], "section_path", []) or []),
-                            "sentence": c["sentence"], "context": c["context"]} for c in candidates]}
 
 
 class AnchorConcepts:
@@ -88,7 +51,6 @@ class AnchorConcepts:
         else:
             chunks_version = upstream.manifest["config"]["chunks_version"]
         chunks_artifact = self.store.load_role_chunks(doc_id, chunks_version)
-        chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks_artifact.result.chunks}
         prompt_hash = anchor_prompt_hash(self.model.model_id, self.generation)
         prior_prompt = load_prompt("a10", "prior_verify")
         prior_hash = digest([prior_prompt, PRIOR_SCHEMA, self.model.model_id, self.generation])
@@ -136,35 +98,12 @@ class AnchorConcepts:
         metrics = Counter(checkpoint["metrics"]) if resumable else Counter()
 
         nodes = upstream.payload["nodes"]
-        content_chunks = [c for c in chunks_artifact.result.chunks if getattr(c, "role", "noi_dung") == "noi_dung"]
-        candidates_of = {}
-        outside_of = {}
-        for node in nodes:
-            if not node.get("learnable"):
-                continue
-            headings = heading_chunks(node, content_chunks)
-            ids = set(node.get("defining_chunk_ids", [])) | mentioned.get(node["node_id"], set())
-            ids |= {span["chunk_id"] for span in node.get("evidence", []) if isinstance(span, dict) and "chunk_id" in span}
-            ids |= symbolic_name_chunks(node, chunks_artifact.result.chunks)
-            ids.update(headings)
-            outside_of[node["node_id"]] = sorted({getattr(chunk_by_id[c], "role", "noi_dung")
-                for c in ids if c in chunk_by_id and getattr(chunk_by_id[c], "role", "noi_dung") != "noi_dung"})
-            candidates = candidate_sentences(node,[chunk_by_id[c] for c in ids if c in chunk_by_id],
-                                             limit=CANDIDATES, headings=headings)
-            if not candidates:
-                # A6 can omit literal mentions outside its retrieved pairs. Scan only
-                # nodes otherwise marked mentioned_only, avoiding a full corpus join.
-                new_ids = exact_mentions([node],content_chunks,common_names=())
-                ids.update(new_ids)
-                candidates = candidate_sentences(node,[chunk_by_id[c] for c in ids if c in chunk_by_id],
-                                                 limit=CANDIDATES, headings=headings)
-            candidates_of[node["node_id"]] = candidates
-        pending = [node for node in sorted(nodes, key=lambda n: n["node_id"])
-                   if node["node_id"] in candidates_of and candidates_of[node["node_id"]]
-                   and node["node_id"] not in answers]
-        system_prompt = load_prompt("a10", "anchor")
+        core = AnchorCore(nodes, chunks_artifact.result.chunks, mentioned)
+        candidates_of = core.candidates_of
         if planning:
-            inputs = [_anchor_input(node,candidates_of[node["node_id"]],chunk_by_id) for node in pending]
+            pending = core.pending(answers)
+            system_prompt = load_prompt("a10", "anchor")
+            inputs = [core.anchor_input(node) for node in pending]
             reusable = {row["input_hash"] for row in decision_log if row.get("valid") and "input_hash" in row}
             inputs = [data for data in inputs if digest([self.model.model_id,prompt_hash,data]) not in reusable]
             plan = model_plan(inputs, system_prompt=system_prompt, generation=self.generation, unit="concept",
@@ -180,26 +119,11 @@ class AnchorConcepts:
             plan.usd_estimate = round(plan.usd_estimate + extra.usd_estimate, 6)
             plan.note += " Bao gồm xác minh prior tối đa cho mọi câu trả lời chưa biết; checkpoint xác minh riêng."
             return plan
-        for start in range(0, len(pending), NODE_BATCH):
-            group = pending[start:start + NODE_BATCH]
-            jobs = []
-            for node in group:
-                candidates = candidates_of[node["node_id"]]
-                data = _anchor_input(node,candidates,chunk_by_id)
-
-                def validate(value, node_id=node["node_id"], candidates=candidates):
-                    validate_anchor_response(value, node_id=node_id, candidates=candidates)
-
-                jobs.append(ModelJob("anchor", self.model, system_prompt, prompt_hash, data, ANCHOR_SCHEMA, validate))
-            values, rows, counts = run_model_jobs(jobs, decision_log, concurrency=self.concurrency)
-            decision_log.extend(rows)
-            metrics.update(counts)
-            for node, value in zip(group, values):
-                # Hỏng quá lượt sửa: chưa đủ căn cứ để loại, giữ khái niệm.
-                answers[node["node_id"]] = value or {"node_id": node["node_id"], "status": "uncertain",
-                                                     "reason": "invalid_response"}
-            self.store.save_checkpoint(doc_id, checkpoint_id, {"source_hash": source_hash, "answers": answers,
-                                                               "decision_log": decision_log, "metrics": dict(metrics)})
+        answers, decision_log, metrics = core.judge(
+            self.model, generation=self.generation, concurrency=self.concurrency,
+            answers=answers, decision_log=decision_log, metrics=metrics,
+            save_checkpoint=lambda state: self.store.save_checkpoint(
+                doc_id, checkpoint_id, {"source_hash": source_hash, **state}))
 
         prior_inputs = _prior_inputs(nodes, answers)
         prior_key = "anchor-prior-" + digest([prior_hash, prior_inputs])
@@ -208,43 +132,12 @@ class AnchorConcepts:
         verified = dict(prior_checkpoint.get("answers", {}))
         prior_log = list(prior_checkpoint.get("decision_log", old_prior_log))
         prior_metrics = Counter(prior_checkpoint.get("metrics", {}))
-        remaining = [row for row in prior_inputs if row["node_id"] not in verified]
-        for start in range(0, len(remaining), NODE_BATCH):
-            group = remaining[start:start + NODE_BATCH]
-            jobs = []
-            for data in group:
-                def validate(value, node_id=data["node_id"]):
-                    if (not isinstance(value, dict) or value.get("node_id") != node_id
-                        or type(value.get("explicit_prior")) is not bool
-                        or not isinstance(value.get("reason"), str) or not value["reason"].strip()):
-                        raise ValueError("xác minh prior sai node_id, nhãn hoặc thiếu lý do")
-                jobs.append(ModelJob("anchor_prior_verify", self.model, prior_prompt, prior_hash, data, PRIOR_SCHEMA, validate))
-            values, rows, counts = run_model_jobs(jobs, prior_log, concurrency=self.concurrency)
-            prior_log.extend(rows)
-            prior_metrics.update(counts)
-            verified.update({row["node_id"]: value or {"explicit_prior": None, "reason": "invalid_response"}
-                             for row, value in zip(group, values)})
-            self.store.save_checkpoint(doc_id, prior_key, {"answers": verified, "decision_log": prior_log,
-                                                          "metrics": dict(prior_metrics)})
+        verified, prior_log, prior_metrics = core.verify_prior(
+            self.model, answers, generation=self.generation, concurrency=self.concurrency,
+            verified=verified, decision_log=prior_log, metrics=prior_metrics,
+            save_checkpoint=lambda state: self.store.save_checkpoint(doc_id, prior_key, state))
         metrics.update(prior_metrics)
-        final_answers = {key: dict(value) for key, value in answers.items()}
-        for node_id, check in verified.items():
-            final_answers[node_id].update(model_status="prior_knowledge", prior_verification=check)
-            if check["explicit_prior"] is not True:
-                final_answers[node_id]["status"] = "uncertain"
-        checked = []
-        for node in nodes:
-            if not node.get("learnable"):
-                checked.append(node)
-            elif node["node_id"] in answers:
-                checked.append({**node, **anchor_fields(final_answers[node["node_id"]], candidates_of[node["node_id"]])})
-            elif outside_of.get(node["node_id"]):
-                roles = outside_of[node["node_id"]]
-                checked.append({**node, **anchor_fields({"status": "mentioned_only"}, []),
-                                "mentioned_in": roles[0] if len(roles) == 1 else roles})
-            else:
-                checked.append({**node, "teaching_status": "unchecked", "teaching_chunk_ids": [],
-                                "teaching_order_index": None, "teaching_conflict": False, "anchor": None})
+        checked, final_answers = core.apply(answers, verified)
         tokens_in = sum(v for k, v in metrics.items() if k.endswith("_input_tokens"))
         tokens_out = sum(v for k, v in metrics.items() if k.endswith("_output_tokens"))
         cost = (tokens_in * PRICING_USD_PER_MILLION["input"] + tokens_out * PRICING_USD_PER_MILLION["output"]) / 1e6

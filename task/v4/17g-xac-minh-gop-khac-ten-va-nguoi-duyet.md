@@ -1,7 +1,7 @@
 # 17g — Xác minh cặp gộp khác tên và quyết định người duyệt ở A4
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 3.4, 3.5, 3.6 và 3.7.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17e · **Trạng thái:** chờ 17e
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17e · **Trạng thái:** đã cài và kiểm chứng (2026-10-16); xem [báo cáo cài đặt và kiểm chứng](../../report/v4-17-phan-tich-va-kiem-chung-2026-10-16.md)
 
 ## Vì sao
 
@@ -38,13 +38,13 @@ Chỉ áp ở chuỗi `gop`.
 
 ## Nghiệm thu
 
-- [ ] Test trên fixture tài liệu thật, với mô hình giả:
+- [x] Test trên fixture tài liệu thật, với mô hình giả:
   - cặp gộp khác tên trượt xác minh thì không gộp;
   - cặp chung tên không sinh lời xác minh;
   - đầu vào của lời xác minh không chứa lời phán lượt trước;
   - quyết định người duyệt thắng mô hình ở cả hai chiều, kể cả khi tệp dùng id đã chuyển hướng;
   - tệp duyệt của tài liệu khác bị từ chối;
   - id biến mất được ghi vào bảng chuyển hướng và không bị cấp lại.
-- [ ] Danh sách gộp khác tên có đủ câu bằng chứng hai bên.
-- [ ] Đổi tệp duyệt thì khoá cache đổi.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Danh sách gộp khác tên có đủ câu bằng chứng hai bên.
+- [x] Đổi tệp duyệt thì khoá cache đổi.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.

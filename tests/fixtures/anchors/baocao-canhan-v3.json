@@ -1,0 +1,701 @@
+{
+  "checkpoint_payload_hashes": {
+    "anchor-5f6b4ccd530c4c1467db0ca6621ae2757e193c3e4310aaf48c1e83a681405c92": "70776d74bbbafc95a3248a2568cc9c07d3063fb4c107f27628e8ca26c277c289"
+  },
+  "replies": {
+    "node_04044fac8e269c8db740958f": {
+      "input_hash": "c864524d5d8f8736942b3f777d75d7db26fb5d11e72e652cbe0162c95b745a65",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_04044fac8e269c8db740958f",
+        "quote": "- Kiến trúc Hub - Client:\nNghiên cứu cách kết hợp Goroutines (ReadPump/WritePump) và Channels để xây dựng trạm điều phối tin nhắn trung tâm (Hub), đảm bảo an toàn luồng và tránh rò rỉ bộ nhớ.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_04f88b99f4471fb8f5621b43": {
+      "input_hash": "986058f34e3e4565fa7127436c0755855b2d3ecf4b76ef6846ae617fae3d2e09",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_04f88b99f4471fb8f5621b43",
+        "quote": "Với vai trò là thành viên phụ trách điều phối kỹ thuật và thiết kế nền tảng, em đã tham gia vào hầu hết các giai đoạn quan trọng của dự án thực tế:\n- Quản lý và Quy trình:\nThống nhất cách thức làm việc nhóm trên GitHub, thiết lập quy chuẩn phân nhánh (branching) và phối hợp mã nguồn.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_05e65fca3df1abccab9726bc": {
+      "input_hash": "05ac38d263ae0cdd600e748b66baf4ea98cd852f6841956effe1c50e96abff51",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_05e65fca3df1abccab9726bc",
+        "quote": "- Nội dung thực hiện:\nSử dụng Buffered Channel làm \"van điều tiết\" để giới hạn tối đa 200 request đồng thời cho API lấy thông tin phiên đấu giá.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_0ad572a45b91bb5900c5a355": {
+      "input_hash": "2de9cec31228814c2ddd6f25faaa09a0a2f392e8adb2bc84128ca57a5ecbd202",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_0ad572a45b91bb5900c5a355",
+        "quote": "- Tối ưu hóa và Đóng gói:\n+ Thực hiện tích hợp (Refactor) toàn bộ mã nguồn của nhóm, chuẩn hóa cơ chế xử lý lỗi (Error handling) và ghi nhật ký (Logging) tập trung.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_0bed689c1a8690f6cc6c88f0": {
+      "input_hash": "275320503c18046b5c95675e0db2e761a5f2a9b6ccbd35f2fa48ecaef4fc0f30",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_0bed689c1a8690f6cc6c88f0",
+        "quote": "Để phục vụ quy mô lớn hơn, cần hướng tới việc tách thành các Microservices độc lập.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_13ad3db8d4ac96647bd8c688": {
+      "input_hash": "4d4a3a6cb4503150ca37c134a63775d57fd05c5fdcbd42ab05ca9e07f9567f76",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_13ad3db8d4ac96647bd8c688",
+        "quote": "- Nội dung thực hiện:\nXây dựng API Đặt giá (Bidding) áp dụng kỹ thuật Lock Sharding bằng sync.Mutex ở tầng ứng dụng và Pessimistic Locking (SELECT FOR UPDATE) ở tầng cơ sở dữ liệu.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_1a2bc3511d2d8589b7a223c1": {
+      "input_hash": "bbdbe2ce3cea76a0d645b135406edbc998d4728498a895db7d1e13fe922ae37d",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_1a2bc3511d2d8589b7a223c1",
+        "quote": "+ Phân tích hiện tượng tranh chấp dữ liệu ( Race Condition) và các cơ chế đồng bộ hóa trong môi trường đa luồng.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_1b78c06cf3f1d75a46426c9a": {
+      "input_hash": "8c6163da8389ec10c84a3912825709645d96fc158623f1bfd3619934fcabdcf2",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_1b78c06cf3f1d75a46426c9a",
+        "quote": "- Database Transaction:\nTìm hiểu lý thuyết ACID để áp dụng vào các luồng nghiệp vụ nhạy cảm như nạp/rút tiền, đóng băng số dư và thanh toán phiên đấu giá, đảm bảo tính nguyên tố: \"hoặc thành công tất cả, hoặc không có gì thay đổi\".",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_1ca73de5f12fadd557936f32": {
+      "input_hash": "fd86940225a66e99478bec6601ffe006132b72a1cccd5e39f69ee3b6454f6bd5",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_1ca73de5f12fadd557936f32",
+        "quote": "- Phối hợp nghiệp vụ:\nHỗ trợ các thành viên khác trong việc tích hợp Middleware xác thực (JWT) và kiểm soát phân quyền (RBAC) vào các endpoint của module đấu giá.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_25739d1627bfef813d4c2bc2": {
+      "input_hash": "4878a8c554d0686204ecae7b219f221b6e2086353826d3d87bcee596c27ad60d",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_25739d1627bfef813d4c2bc2",
+        "quote": "- Phối hợp nghiệp vụ:\nHỗ trợ các thành viên khác trong việc tích hợp Middleware xác thực (JWT) và kiểm soát phân quyền (RBAC) vào các endpoint của module đấu giá.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_26703bfc4aa9e286a82550c8": {
+      "input_hash": "6471c69f2c7eb9aa18f93b9bbda46cb7b5735ca3471451735999e98e142862c7",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_26703bfc4aa9e286a82550c8",
+        "quote": "- Thiết kế Cơ sở dữ liệu:\nChịu trách nhiệm chính trong việc phân tích và thiết kế lược đồ cơ sở dữ liệu (ERD) cho toàn bộ hệ thống đấu giá.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_2b4ef4ddf6892b3c44d491b7": {
+      "input_hash": "3b67b7c430e8493a04523f1adbf67b1c8fef19fe179feaccc5e965143cf208f6",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_2b4ef4ddf6892b3c44d491b7",
+        "quote": "- Database Transaction:\nTìm hiểu lý thuyết ACID để áp dụng vào các luồng nghiệp vụ nhạy cảm như nạp/rút tiền, đóng băng số dư và thanh toán phiên đấu giá, đảm bảo tính nguyên tố: \"hoặc thành công tất cả, hoặc không có gì thay đổi\".",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_2cd11a7a69f9f2d000fa3525": {
+      "input_hash": "9cb909991062a886fa10005c721122d6abc8989fb47a0b5cb982f1ee7af06eb3",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_2cd11a7a69f9f2d000fa3525",
+        "quote": "- Thiết kế Cơ sở dữ liệu:\nPhân tích bối cảnh bài toán đấu giá để thiết kế lược đồ ERD gồm 10 bảng thực thể, đảm bảo tính nhất quán dữ liệu thông qua các ràng buộc khóa chính, khóa ngoại và chuẩn hóa đến mức 3NF.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_2f945f2ef1c2ab9039bb0089": {
+      "input_hash": "5078b5a335d17ed89cd3d7208ba8a4a472e97d31c9cf91fd95c52d2fbf95c42f",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_2f945f2ef1c2ab9039bb0089",
+        "quote": "- Docker hóa hệ thống:\nEm chịu trách nhiệm viết file Dockerfile và docker-compose.yml để đóng gói toàn bộ stack ứng dụng (Go App, PostgreSQL, Redis), giúp việc triển khai trở nên nhanh chóng và đồng nhất trên mọi môi trường.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_479cbc28373fe1f52aeb987f": {
+      "input_hash": "4c00c70fabecfbe61d21f861c187b5266a4eddf7dc2d9165d124a47cd8f27c8f",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_479cbc28373fe1f52aeb987f",
+        "quote": "- Kỹ năng xử lý chuyên sâu:\nEm đã làm chủ được các kỹ thuật khó như xử lý tranh chấp dữ liệu (Race Condition) bằng Mutex và Database Locking, cũng như tối ưu hóa hiệu năng truy vấn thông qua Eager Loading (Preload).",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_47e7635ef891f46f58126cce": {
+      "input_hash": "4237c61c4183e2badee2427ba916b489ec4a4960b7ae2edecfb032d30a1932ea",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_47e7635ef891f46f58126cce",
+        "quote": "+ Triển khai dự án bằng Docker Compose, thực hiện kiểm thử đầu cuối (End-to-End testing) và hoàn thiện phiên bản báo cáo cuối cùng.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_5026e71324ea02bc48e73f82": {
+      "input_hash": "48d2cdc5276424ab54b61ceb170ff08aaf056481731eb93731df8e2badbb78cd",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_5026e71324ea02bc48e73f82",
+        "quote": "Trong những tuần đầu tiên, em tập trung nghiên cứu các nguyên lý cốt lõi để định hình dự án:\n- Ngôn ngữ Golang:\nTìm hiểu về lịch sử, bối cảnh ra đời tại Google và các vấn đề mà Go giải quyết như tối ưu hóa hiệu suất phần cứng đa lõi, tốc độ biên dịch và quản lý sự phức tạp của phần mềm.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_505da9e65ea5f30ec067a50d": {
+      "input_hash": "8b91fd2f58ade34882875f42b11df797163ec99258697af008149fd073f975a5",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_505da9e65ea5f30ec067a50d",
+        "quote": "- Nội dung thực hiện:\nXây dựng mô hình Hub - Client kết hợp với hai luồng Goroutines độc lập ( ReadPump và WritePump) cho mỗi kết nối.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_596c0d469c235a9f85bc7099": {
+      "input_hash": "c5731a24c2232fa2d83c261b56ff4491fa7ec6e6c6927353a427124493325872",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_596c0d469c235a9f85bc7099",
+        "quote": "- Kết quả:\nHệ thống có thể phát sóng (Broadcast) mức giá mới nhất đến hàng vạn người dùng cùng lúc với độ trễ cực thấp và tỷ lệ lỗi 0%.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_61a00aa1b3ee6f2ec39d60cb": {
+      "input_hash": "0149db7bed4e3cc29073d97310f9abd90141847ddada5897734d744adf1ecd95",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_61a00aa1b3ee6f2ec39d60cb",
+        "quote": "- Nội dung thực hiện:\nXây dựng cơ chế đọc file cấu hình động, thiết lập hạ tầng qua Dockerfile và docker-compose.yml để liên kết ứng dụng với PostgreSQL.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_76519bc6851b198580729ede": {
+      "input_hash": "9571797c0f60ee1fd8345d9cef9532938e5aa461874df5ae4cd5268bfafd360c",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_76519bc6851b198580729ede",
+        "quote": "Thông qua đồ án này, em đã rút ra được những bài học quý giá về tư duy lập trình hệ thống:\n- Tầm quan trọng của Thiết kế:\nViệc đầu tư kỹ lưỡng vào khâu phân tích CSDL và đặc tả API ngay từ đầu giúp quá trình viết code không bị chồng chéo và hạn chế việc sửa đổi kiến trúc về sau.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_77bf9087412d549ad97f5e8c": {
+      "input_hash": "42b63ee3a24fb51e38bea18e92b4cfe9081e59ba6e4145de75451c7c3cffde3e",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_77bf9087412d549ad97f5e8c",
+        "quote": "- Xây dựng Kiến trúc Layered Architecture:\nEm đã đề xuất và triển khai cấu trúc thư mục chuẩn (Controller - Service - Repository) cho dự án để tách biệt logic nghiệp vụ và hạ tầng, giúp nhóm làm việc song song hiệu quả.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_90c6fbbbbd23ab0d6b9817e8": {
+      "input_hash": "0436fa2cc34daeecfdafa2b6ba0500b59d23763e59217537b98715c52eb50edc",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_90c6fbbbbd23ab0d6b9817e8",
+        "quote": "- Chuẩn hóa hệ thống:\nThực hiện tái cấu trúc (Refactor) mã nguồn toàn dự án, chuẩn hóa cơ chế xử lý lỗi (Error handling) và ghi nhật ký hệ thống (Logging) tập trung để đảm bảo mã nguồn đạt chất lượng công nghiệp.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_92871dc2f2ad67e253882ea4": {
+      "input_hash": "123c8d581930e924537811f5dbf742c029562c8a6fe6019509be98c558446880",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_92871dc2f2ad67e253882ea4",
+        "quote": "Để giải quyết bài toán bảo vệ hệ thống trước các đợt truy cập tăng đột biến, em đã thiết kế bài tập xây dựng Middleware kiểm soát lưu lượng.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_93f3b570b04dc9fdf4f331bb": {
+      "input_hash": "3d79186854e99868c26f6fee5441699e3a4da8b76105e0b64fe668c661c252a9",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_93f3b570b04dc9fdf4f331bb",
+        "quote": "- Quản lý quy trình nhóm:\nEm thiết lập cách thức làm việc trên GitHub, phân chia nhánh (branching strategy) và quy chuẩn hóa các lượt commit/pull request cho toàn nhóm.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_95373ff12cd6ed3deb178765": {
+      "input_hash": "cbef3d887d3752f044a5f423d9e63fd80a8fbca9814d2ae159496fe89b5afc2b",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_95373ff12cd6ed3deb178765",
+        "quote": "- Xây dựng nền tảng (Base API):\nTrực tiếp khởi tạo cấu trúc dự án và xây dựng nền tảng API (API foundation) làm mẫu cho các thành viên khác triển khai module.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_95b4785a1f82a87b829849a1": {
+      "input_hash": "63f0036122a3337fd0ae454048e72b920da05788680511d4f0e825070a7149d1",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_95b4785a1f82a87b829849a1",
+        "quote": "- Bài tập Race Condition:\nTriển khai mã nguồn minh họa lỗi tranh chấp dữ liệu và các giải pháp khắc phục bằng Mutex hoặc các cơ chế khóa.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_9d41ca3d10704c06edfe6a13": {
+      "input_hash": "d25addcb81dab572d49a35af8e465b2ebd9d24ca53f93710281d26155d5aa3ab",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_9d41ca3d10704c06edfe6a13",
+        "quote": "- Đóng gói và Triển khai:\nNghiên cứu về Docker và Docker Compose để container hóa ứng dụng, tạo môi trường vận hành đồng nhất giữa máy cá nhân và máy chủ.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_a2d8d5e58a547eedbff52998": {
+      "input_hash": "0dd01c9460da79a5e2da339090f51a9235bf29dfbc2045a43869ebdda646ca6d",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_a2d8d5e58a547eedbff52998",
+        "quote": "- Giao thức WebSockets:\nTìm hiểu cách nâng cấp từ HTTP lên WebSocket để duy trì kết nối hai chiều liên tục, cho phép Server chủ động đẩy dữ liệu giá thầu mới nhất xuống Client ngay lập tức mà không cần chờ yêu cầu (Polling).",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_a90a05cde7892d6388edef5a": {
+      "input_hash": "548886225e9c44d5ce56fdbe87cd7dc783ece839fef92aaf8502bbc057d50fbc",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_a90a05cde7892d6388edef5a",
+        "quote": "- Kỹ năng xử lý chuyên sâu:\nEm đã làm chủ được các kỹ thuật khó như xử lý tranh chấp dữ liệu (Race Condition) bằng Mutex và Database Locking, cũng như tối ưu hóa hiệu năng truy vấn thông qua Eager Loading (Preload).",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_a92bbb6e987924f601569d77": {
+      "input_hash": "6d463bf7d3ccb7d27019605a33bc08928485d893da521ff3b1e9d82048e3d3d4",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_a92bbb6e987924f601569d77",
+        "quote": "- Thiết kế kiến trúc hệ thống:\nNghiên cứu và đề xuất áp dụng kiến trúc phân lớp ( Layered Architecture) cho toàn bộ dự án để đảm bảo tính tách biệt giữa logic nghiệp vụ và hạ tầng.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_aaa39abf91eed97d37482efc": {
+      "input_hash": "bf074a99ab7349fbef140b45683a666116ee5f781e015577aeb6f72d5c146182",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_aaa39abf91eed97d37482efc",
+        "quote": "+ Phân tích hiện tượng tranh chấp dữ liệu ( Race Condition) và các cơ chế đồng bộ hóa trong môi trường đa luồng.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_b173bd6234012ac0c9c7bdb2": {
+      "input_hash": "8ee0bbdbaa51c052994709961b7bc4e8713e360be02917ecf497c150d10f725c",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_b173bd6234012ac0c9c7bdb2",
+        "quote": "Đây là giai đoạn em chịu trách nhiệm chính trong việc nghiên cứu các cơ chế giúp hệ thống chịu tải cao:\n- Lập trình đồng thời (Concurrency):\nNghiên cứu mô hình G-M-P, Goroutines và Channels của Go để xử lý hàng vạn kết nối đồng thời với tài nguyên cực thấp so với luồng hệ điều hành truyền thống.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_b662d7b39a7a7bf60864ce97": {
+      "input_hash": "1d8299f3c495cb0464d12a15766ef00a062a2c017143a88fd4e9595b593b2d94",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_b662d7b39a7a7bf60864ce97",
+        "quote": "- Bài tập Race Condition:\nTriển khai mã nguồn minh họa lỗi tranh chấp dữ liệu và các giải pháp khắc phục bằng Mutex hoặc các cơ chế khóa.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_be9d2f44306a85139f511303": {
+      "input_hash": "3a6a19853d7496c1fec2b401a1f3c9b6ab910532bb513baecdc02f65d05960ee",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_be9d2f44306a85139f511303",
+        "quote": "Song song với việc nghiên cứu lý thuyết, em đã trực tiếp triển khai các bài tập ứng dụng minh họa cho các chương quan trọng trong báo cáo:\n- Bài tập Concurrency & WebSocket:\nXây dựng các kịch bản thực hành về xử lý đa luồng và truyền tải dữ liệu thời gian thực trong Golang.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_c5b10591dc3998fe687b9df6": {
+      "input_hash": "bc2fd192d5e6b7a6707ecc3c105685b779a01cad4a596c20df1831296b26b6d6",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_c5b10591dc3998fe687b9df6",
+        "quote": "- Tối ưu hóa và Đóng gói:\n+ Thực hiện tích hợp (Refactor) toàn bộ mã nguồn của nhóm, chuẩn hóa cơ chế xử lý lỗi (Error handling) và ghi nhật ký (Logging) tập trung.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_d07b8e459fd2ed49e7045263": {
+      "input_hash": "32d833c0d2e0feba14bd827eda3b86748df74663daa88843369edbf22799bbff",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_d07b8e459fd2ed49e7045263",
+        "quote": "- Phân tích các kỹ thuật nâng cao:\n+ Nghiên cứu lý thuyết về Lập trình đồng thời (Concurrency) và giao thức WebSockets để giải quyết bài toán thời gian thực.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_dfc28fdc1e2cb860d6a72ea7": {
+      "input_hash": "b6e3e78b808a92b6c2491cb450a7ca6f98fa266a48da4a286b7d8d56ee933e66",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_dfc28fdc1e2cb860d6a72ea7",
+        "quote": "- Kiểm thử End-to-End (E2E):\nTrước khi phát hành phiên bản cuối cùng, em đã thực hiện kiểm thử liên thông giữa các module (Auth - User - Wallet - Auction - WebSocket) để đảm bảo luồng nghiệp vụ chạy trơn tru.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_e1f2cf591073dbc644e0ea7c": {
+      "input_hash": "b4b443b079a6e4fda4ddacf9ddd266dbfb30b35455d84767baa914cb0dd4da1a",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_e1f2cf591073dbc644e0ea7c",
+        "quote": "- Kết quả:\nTạo ra một Makefile chứa các lệnh điều khiển tự động hóa quy trình build và run, giúp nhóm làm việc nhất quán trên mọi môi trường.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_e499b92aa9554a7c7c858892": {
+      "input_hash": "62c22c2862fd73b2109273e192f75b21c154a8130598f8a9ebbbd37f118812d1",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_e499b92aa9554a7c7c858892",
+        "quote": "- Phát triển Module nghiệp vụ:\nThiết kế và hoàn thiện Module Auctions (bao gồm quản lý phiên đấu giá, danh mục và sản phẩm), đồng thời tích hợp Transaction để đảm bảo tính toàn vẹn dữ liệu cho các luồng nghiệp vụ này.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_ec562462e83c2c5efe262f64": {
+      "input_hash": "30bb33c8eadb000dca1744a34dedfd2fa8283a9e9f6bbbbfff0c2c7ef070fbef",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_ec562462e83c2c5efe262f64",
+        "quote": "- Nội dung thực hiện:\nXây dựng API Đặt giá (Bidding) áp dụng kỹ thuật Lock Sharding bằng sync.Mutex ở tầng ứng dụng và Pessimistic Locking (SELECT FOR UPDATE) ở tầng cơ sở dữ liệu.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_f00abe4acf9a831fd2eb5b06": {
+      "input_hash": "df39d88cfbd37ec1f6d0db22c7472bd5cf077bfa670a6093cdc5074a0aaeae01",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_f00abe4acf9a831fd2eb5b06",
+        "quote": "- Kiến trúc hệ thống:\nDự án hiện vận hành theo dạng Monolithic.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_f60c4d4e4239aa80e1b2bb83": {
+      "input_hash": "fc6a48896abfb557831e925684253cbefe3abd318afee2d14420b6f1e56b94fd",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_f60c4d4e4239aa80e1b2bb83",
+        "quote": "- Phân tích các kỹ thuật nâng cao:\n+ Nghiên cứu lý thuyết về Lập trình đồng thời (Concurrency) và giao thức WebSockets để giải quyết bài toán thời gian thực.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_fa1afad77ae08586e1020d94": {
+      "input_hash": "715717d98724d8a70d7a95d914cbce8f96d15ac9cd28f81faf3a2e6956c772d9",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_fa1afad77ae08586e1020d94",
+        "quote": "- Khởi tạo dự án (Base API):\nEm trực tiếp tạo nền tảng API ban đầu (Project Skeleton), thiết lập các dependencies cốt lõi và cấu hình môi trường để các thành viên khác có thể bắt tay vào code các module riêng lẻ.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_fa1bca4d66c3a01f7aa24c1a": {
+      "input_hash": "cf624e8f070a1377f38c12342cdb4b927eb35346bb2866bdbcb271d137430870",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_fa1bca4d66c3a01f7aa24c1a",
+        "quote": "- Kết quả:\nTriển khai thành công cơ chế Fail-fast, chủ động trả về mã lỗi HTTP 429 (Too Many Requests) khi hệ thống vượt ngưỡng chịu tải, đảm bảo cơ sở dữ liệu không bị treo.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    },
+    "node_fce6163f27379e046e4c5f54": {
+      "input_hash": "ab66532aa057a6e42aa38204637159af5c13c645def291addff1925d9dae87da",
+      "output": {
+        "anchor": "k1",
+        "node_id": "node_fce6163f27379e046e4c5f54",
+        "quote": "Song song với việc nghiên cứu lý thuyết, em đã trực tiếp triển khai các bài tập ứng dụng minh họa cho các chương quan trọng trong báo cáo:\n- Bài tập Concurrency & WebSocket:\nXây dựng các kịch bản thực hành về xử lý đa luồng và truyền tải dữ liệu thời gian thực trong Golang.",
+        "reason": "frozen fixture replay",
+        "status": "defined_here"
+      },
+      "usage": {
+        "candidatesTokenCount": 2,
+        "promptTokenCount": 10,
+        "totalTokenCount": 12
+      }
+    }
+  },
+  "schema_hash": "3347bbf55a4ef72f3a946e216a990103c79fe5c291a34ebd5c618a817f2c4fef",
+  "system_prompt_hash": "8356b8e423db281939e45ae27a77ca10f0fe70766888e690657fc9cda61d7bb2",
+  "teaching_config_hash": "5f6b4ccd530c4c1467db0ca6621ae2757e193c3e4310aaf48c1e83a681405c92",
+  "teaching_payload_hash": "5170440ad3fb1060bda178af373041265cd0f7c38c7e0b6959dd8c5d6ec427ca"
+}

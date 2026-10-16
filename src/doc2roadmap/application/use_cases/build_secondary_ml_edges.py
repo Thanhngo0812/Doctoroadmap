@@ -3,6 +3,7 @@ from math import isfinite
 
 from doc2roadmap.application.ports.secondary_scoring import SecondaryScorer
 from doc2roadmap.application.planning import StagePlan
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.use_cases.build_secondary_edges import BuildSecondaryEdges
 from doc2roadmap.domain.canonical import digest
@@ -33,7 +34,7 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
                           else self.store.load_latest_chunks(doc_id))
         chunks, payload = chunk_artifact.result.chunks, main.payload
         nodes, ledger, route = payload["nodes"], payload.get("pair_cluster_ledger", []), payload["routing"]["route"]
-        config = {"algorithm_id": "a8-secondary-ml-v1", "mode": "ml", "main_version": main.version,
+        config = {**graph_chain_fields(main), "algorithm_id": "a8-secondary-ml-v1", "mode": "ml", "main_version": main.version,
                   "main_config_hash": main.manifest["config_hash"], "canonical_version": main_config.get("canonical_version"),
                   "chunks_version": chunk_artifact.version, "definition_before": before, "definition_after": after,
                   "scorer": self.scorer.metadata, "feature_version": FEATURE_VERSION,

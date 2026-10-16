@@ -1,7 +1,7 @@
 # 17j — Sửa sau lượt nghiệm thu đầu của chuỗi gộp
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 3.2, 3.3 và 4; số đo của Claude ngày 2026-10-16 (dưới đây).
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17a–17h · **Trạng thái:** sẵn sàng giao
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17a–17h · **Trạng thái:** hoàn tất 2026-10-16
 
 ## Vì sao
 
@@ -51,10 +51,13 @@ Lượt chạy thật đầu tiên của vé 17i, trên kho riêng với gemini-
 
 ## Nghiệm thu
 
-- [ ] Test qua `execute` của stage canonical, với mô hình giả luôn trả lời hỏng cho một lời gọi A5 gộp: stage không sập; phần mô tả nhận
+- [x] Test qua `execute` của stage canonical, với mô hình giả luôn trả lời hỏng cho một lời gọi A5 gộp: stage không sập; phần mô tả nhận
       `draft_fallback_invalid`; neo của các khái niệm trong lời gọi đó được hỏi lại riêng. Test này phải đỏ trên mã hiện nay (`KeyError: 'reused'`).
-- [ ] Không đặt cấu hình thì chuỗi `gop` phán sửa mỗi cặp một lời. Đặt cỡ lô khác 1 thì vẫn gom lô như vé 17f. Khoá cache đổi theo cỡ lô.
-- [ ] Ở chuỗi `gop`, quan hệ `synonym` nối hai node tách rời bị bắt phán lại; `same_category` thì không. Ở chuỗi v3, hành vi và băm config
+- [x] Không đặt cấu hình thì chuỗi `gop` phán sửa mỗi cặp một lời. Đặt cỡ lô khác 1 thì vẫn gom lô như vé 17f. Khoá cache đổi theo cỡ lô.
+- [x] Ở chuỗi `gop`, quan hệ `synonym` nối hai node tách rời bị bắt phán lại; `same_category` thì không. Ở chuỗi v3, hành vi và băm config
       không đổi.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
-- [ ] Commit phần vé 17 (17a–17j) tách riêng khỏi các thay đổi Pha B đang có trong cây làm việc.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Commit phần vé 17 (17a–17j) tách riêng khỏi các thay đổi Pha B đang có trong cây làm việc.
+
+Chi tiết test đỏ trước sửa, phép bỏ luật, băm v3 và phạm vi commit:
+[báo cáo 17j](../../report/v4-17j-sua-sau-nghiem-thu-2026-10-16.md).

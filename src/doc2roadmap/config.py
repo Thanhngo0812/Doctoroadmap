@@ -40,8 +40,13 @@ class Settings(BaseSettings):
     merge_resolution: float = Field(default=2., gt=0)
     merge_seed: int = 42
     merge_cluster_cap: int = Field(default=9, ge=2)
+    merge_description_top_k: int = Field(default=3, gt=0)
+    merge_description_min_similarity: float = Field(default=.85, ge=0, le=1)
     canonical_batch_size: int = Field(default=10, gt=0)
     canonical_concurrency: int = Field(default=4, gt=0)
+    canonical_repair_batch_size: int = Field(default=1, gt=0)
+    upstream_chain: Literal["v3", "gop"] = "v3"
+    anchor_batch_mode: Literal["single", "a5"] = "a5"
     canonical_language_rule: str = "token-majority-prose-vi20-v2"
     embedding_model_id: str = "gemini-embedding-001"
     extraction_concurrency: int = Field(default=4, gt=0)

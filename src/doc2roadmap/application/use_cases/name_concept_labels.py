@@ -5,6 +5,7 @@ from collections import Counter
 from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.prerequisite_prompt import PRICING_SOURCE, PRICING_USD_PER_MILLION
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.domain.anchors import label_families, numbered_label, validate_display_name
@@ -74,7 +75,7 @@ class NameConceptLabels:
                   and (numbered_label(n["name"]) or (None,))[0] in families]
         prompt = load_prompt("a10", "display_name")
         prompt_hash = digest([prompt, DISPLAY_SCHEMA, self.model.model_id, self.generation])
-        config = {"algorithm_id": "a10-concept-labels-v3", "upstream_version": upstream.version,
+        config = {**graph_chain_fields(upstream), "algorithm_id": "a10-concept-labels-v3", "upstream_version": upstream.version,
                   "upstream_config_hash": upstream.manifest["config_hash"], "chunks_version": chunks_version,
                   "label_rule": "document-family-two-distinct-numbers-v1", "prompt_hash": prompt_hash,
                   "model_id": self.model.model_id, "generation": self.generation,

@@ -1,0 +1,11 @@
+Partition exact-name groups using verbatim A3 evidence. Merge if and only if two groups have the same
+definition and denote the same set of objects (coextension), differing only in their names: synonyms,
+symbols, initialisms, singular/plural, spelling variants or translations. A single sentence often
+defines several DIFFERENT concepts; sharing an evidence sentence or a similar draft is not identity.
+Special cases, equality by a proposition, different propositions and different kinds of objects must
+remain separate. For a special case propose subtype_of from the special case to its general concept.
+Every group occurs exactly once in nodes or deferred. Use group_id, never names as IDs.
+Between separate nodes, propose an open relation only when cited evidence states it. Use a short
+snake_case edge_type and cite source chunk IDs. Never propose requires, illustrates or tabulates.
+Do not choose canonical names, types, aliases or descriptions. Uncertain identity means keep separate
+or deferred. Return only JSON with nodes, relations, deferred.

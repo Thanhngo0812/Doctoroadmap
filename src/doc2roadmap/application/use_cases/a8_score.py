@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import Any
 
 from doc2roadmap.application.use_cases.a8_gold import annotation_scope, chapter_lookup, scope_inputs
+from doc2roadmap.domain.gold_redirects import remap_gold
 from doc2roadmap.domain.gold_scoring import (
     POSITION_LABELS,
     POSITIONS,
@@ -160,6 +161,10 @@ def score_gold(scope, payload, chunks, sections, golds, *, mode="union", samples
     """Báo cáo E1 và E2 cho một bộ vàng (hoặc hai bộ đã gộp)."""
     for gold in golds:
         _check_same_concepts(scope, payload, gold)
+    return _score_gold(scope, payload, chunks, sections, golds, mode=mode, samples=samples, seed=seed)
+
+
+def _score_gold(scope, payload, chunks, sections, golds, *, mode, samples, seed):
     chapter_level = scope["chapter_level"]
     context = _context(payload, chunks, sections, chapter_level=chapter_level)
     targets = sorted({node_id for gold in golds for node_id in gold["targets"]})
@@ -289,8 +294,78 @@ def _prediction_section(predicted, gold, targets, *, samples, seed):
     return section
 
 
+class UnresolvedGoldConcepts(ValueError):
+    def __init__(self, report):
+        self.report = report
+        unknown = report["unresolved_gold_concepts"]
+        super().__init__(f"{len(unknown)} khái niệm của bộ vàng không quy được về id trong đồ thị: "
+                         + ", ".join(unknown) + "; từ chối chấm bộ vàng này")
+
+
+def _graph_canonical(store, graph_path, payload):
+    """Đi theo manifest của đúng graph được chấm, không lấy canonical mới nhất."""
+    manifest_path = Path(graph_path).with_name("manifest.json")
+    if not manifest_path.exists():
+        raise ValueError(f"{graph_path}: chuyển id vàng cần manifest.json để xác định canonical của đồ thị")
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    doc_id, seen = payload["doc_id"], set()
+    while True:
+        if manifest.get("doc_id") != doc_id:
+            raise ValueError("manifest graph và bộ vàng phải cùng doc_id")
+        config = manifest.get("config", {})
+        version = config.get("canonical_version")
+        if version is not None:
+            return store.load_canonical(doc_id, version)
+        upstream = manifest.get("upstream_version")
+        if upstream is None:
+            raise ValueError("manifest graph không xác định được canonical; không thể chuyển id vàng")
+        if upstream in seen:
+            raise ValueError("manifest graph có vòng lặp upstream; không thể xác định canonical")
+        seen.add(upstream)
+        manifest = store.load_graph(doc_id, upstream).manifest
+
+
+def _remap_golds(golds, redirects, graph_ids, *, mode):
+    mapped, unknown = [], set()
+    for gold in golds:
+        value = remap_gold(gold_edges(gold), gold["targets"], redirects, graph_ids)
+        unknown.update(value["unresolved_concepts"])
+        mapped.append({**gold, "targets": sorted(value["targets"]),
+                       "edges": [{"prerequisite": a, "target": b} for a, b in sorted(value["edges"])]})
+    summary = remap_gold(merge_gold(golds, mode=mode), (), redirects, graph_ids)
+    report = {"redirect_dropped_gold_edges": summary["dropped_gold_edges"],
+              "unresolved_gold_concepts": sorted(unknown)}
+    if unknown:
+        raise UnresolvedGoldConcepts(report)
+    return mapped, report
+
+
+def _gold_source_scope(store, doc_id, golds, gold_graph_path):
+    first = golds[0]
+    inputs = scope_inputs(store, doc_id, first["canonical_version"])
+    source_payload = None
+    if gold_graph_path is not None:
+        source_payload = load_graph_payload(gold_graph_path)
+        if source_payload.get("doc_id") != doc_id:
+            raise ValueError("graph gán vàng phải cùng doc_id với bộ vàng")
+        if _graph_canonical(store, gold_graph_path, source_payload).version != first["canonical_version"]:
+            raise ValueError("canonical của graph gán vàng không trùng phiên bản canonical của bộ vàng")
+    scope = annotation_scope(
+        doc_id, inputs["version"], inputs["nodes"], inputs["sections"], inputs["chunks"],
+        chapter=",".join(first["chapter"]["section_ids"]), chapter_level=first["chapter_level"],
+        graph_payload=source_payload,
+    )
+    try:
+        for gold in golds:
+            _check_same_concepts(scope, source_payload or {"nodes": inputs["nodes"]}, gold)
+    except ValueError as error:
+        if gold_graph_path is None:
+            raise ValueError(f"{error}; nếu vàng gán theo provenance đã vá, cung cấp --gold-graph là graph gán gốc") from error
+        raise
+
+
 def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", samples=2000, seed=20260918,
-                     provenance="patched"):
+                     provenance="patched", remap_gold_ids=False, gold_graph_path=None):
     if provenance not in ("patched", "source"):
         raise ValueError("provenance phải là 'patched' hoặc 'source'")
     golds = [load_gold(path) for path in gold_paths]
@@ -302,7 +377,24 @@ def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", sam
     if payload.get("doc_id") not in (None, doc_id):
         raise ValueError(f"artifact graph thuộc {payload['doc_id']!r}, không phải {doc_id!r}")
     first = golds[0]
-    inputs = scope_inputs(store, doc_id, first["canonical_version"])
+    remapping = {}
+    canonical_version = first["canonical_version"]
+    if gold_graph_path is not None and not remap_gold_ids:
+        raise ValueError("--gold-graph cần bật --remap-gold-ids")
+    if remap_gold_ids:
+        _gold_source_scope(store, doc_id, golds, gold_graph_path)
+        canonical = _graph_canonical(store, graph_path, payload)
+        canonical_version = canonical.version
+        graph_ids = {node["node_id"] for node in [*payload["nodes"], *payload.get("merged_nodes", [])]
+                     if node.get("learnable")}
+        golds, remapping = _remap_golds(golds, canonical.payload.get("redirects", {}), graph_ids, mode=mode)
+        golds, identity = _remap_golds(golds, payload.get("identity_map", {}),
+                                      {node["node_id"] for node in payload["nodes"] if node.get("learnable")},
+                                      mode=mode)
+        remapping["identity_dropped_gold_edges"] = identity["redirect_dropped_gold_edges"]
+        remapping["gold_id_remapping"] = {"canonical_version": canonical_version,
+                                          "source_canonical_version": first["canonical_version"]}
+    inputs = scope_inputs(store, doc_id, canonical_version)
     # Danh tính khái niệm phải dựng từ **đúng payload đã sinh bảng gán**: D13 bắt cột "Nơi dạy" đi theo
     # provenance đã vá, nên bảng gán nào cũng sinh có `--graph`. Dựng scope từ canonical thô thì `concept_hash`
     # lệch và bộ chấm tự từ chối mọi bộ vàng thật (F124).
@@ -314,8 +406,10 @@ def score_from_store(store, doc_id, graph_path, gold_paths, *, mode="union", sam
     # Đổi về provenance gốc **sau** khi đã chốt danh tính, vì chế độ này chỉ để so E1 trước và sau khi vá.
     if provenance == "source":
         payload = with_source_provenance(payload)
-    report = score_gold(scope, payload, inputs["chunks"], inputs["sections"], golds,
-                        mode=mode, samples=samples, seed=seed)
+    scorer = _score_gold if remap_gold_ids else score_gold
+    report = scorer(scope, payload, inputs["chunks"], inputs["sections"], golds,
+                    mode=mode, samples=samples, seed=seed)
+    report.update(remapping)
     report["graph_path"] = str(graph_path)
     report["provenance_mode"] = provenance
     return report
@@ -325,7 +419,8 @@ def _pinned(path) -> dict[str, str]:
     return {"path": str(path), "sha256": hashlib.sha256(Path(path).read_bytes()).hexdigest()}
 
 
-def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") -> dict[str, Any]:
+def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union", remap_gold_ids=False,
+                        store=None) -> dict[str, Any]:
     """Chấm **thứ tự** của lộ trình: τ so mục lục, và cạnh vàng nào lộ trình chưa bảo đảm học trước.
 
     Hai chỉ số tách bạch. τ đo lộ trình lệch mục lục bao nhiêu — nó là **dấu hiệu chẩn đoán**, không phải mục
@@ -375,6 +470,15 @@ def score_roadmap_order(graph_path: Path, gold_paths, *, mode: str = "union") ->
                          f"{sorted({gold['doc_id'] for gold in golds})} và {payload.get('doc_id')!r}")
     if len({(gold["canonical_version"], json.dumps(gold["chapter"], sort_keys=True)) for gold in golds}) != 1:
         raise ValueError("các file vàng phải cùng một chương và cùng phiên bản canonical")
+    if remap_gold_ids:
+        if store is None:
+            raise ValueError("chuyển id vàng cần kho artifact để đọc canonical của đồ thị")
+        canonical = _graph_canonical(store, graph_path, payload)
+        source_version = golds[0]["canonical_version"]
+        golds, remapping = _remap_golds(golds, canonical.payload.get("redirects", {}), set(names), mode=mode)
+        report.update(remapping)
+        report["gold_id_remapping"] = {"canonical_version": canonical.version,
+                                       "source_canonical_version": source_version}
     edges = merge_gold(golds, mode=mode)
     unknown = sorted({node_id for edge in edges for node_id in edge} - set(names))
     if unknown:

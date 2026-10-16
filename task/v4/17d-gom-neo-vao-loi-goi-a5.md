@@ -1,7 +1,7 @@
 # 17d — Gom phần neo vào lời gọi A5
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 4.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17b · **Trạng thái:** chờ 17b
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17b · **Trạng thái:** đã cài và kiểm chứng (2026-10-16); xem [báo cáo cài đặt và kiểm chứng](../../report/v4-17-phan-tich-va-kiem-chung-2026-10-16.md)
 
 ## Vì sao
 
@@ -45,11 +45,11 @@ nằm trong khoá cache.
 
 ## Nghiệm thu
 
-- [ ] Test qua `execute` của stage canonical, với mô hình giả:
+- [x] Test qua `execute` của stage canonical, với mô hình giả:
   - ở chế độ "theo lô A5", số lời gọi riêng cho phần neo bằng 0 khi mọi phần neo hợp lệ;
   - một khái niệm hỏng phần neo trong lô chỉ làm khái niệm đó bị hỏi lại riêng; hỏng tiếp thì nhận `uncertain` và được giữ;
   - phần mô tả hợp lệ không bị gọi lại khi phần neo hỏng;
   - khái niệm không ứng viên không mang phần neo.
-- [ ] Cùng phản hồi giả thì hai chế độ ghi cùng trường neo lên node. Tập ứng viên của hai chế độ trùng nhau.
-- [ ] Đổi cỡ lô phần neo thì khoá cache đổi.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Cùng phản hồi giả thì hai chế độ ghi cùng trường neo lên node. Tập ứng viên của hai chế độ trùng nhau.
+- [x] Đổi cỡ lô phần neo thì khoá cache đổi.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.

@@ -5,6 +5,7 @@ from collections import Counter
 from doc2roadmap.application.stage_measurements import measure_stage, resume_measurements
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.planning import StagePlan, model_plan
+from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.application.prerequisite_prompt import (
     SECONDARY_SCHEMA,
     PRICING_SOURCE,
@@ -97,6 +98,7 @@ class BuildSecondaryEdges:
         route = main.payload["routing"]["route"]
         prompt_hash = secondary_prompt_hash(self.model.model_id, self.generation)
         base_config = {
+            **graph_chain_fields(main),
             "algorithm_id": "a8-secondary-pass-lazy-v7",
             "main_version": main.version,
             "main_config_hash": main.manifest["config_hash"],
