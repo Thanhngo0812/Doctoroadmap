@@ -155,6 +155,10 @@ lô**: mỗi lời gọi chứa nhiều cặp, mỗi cặp phán độc lập, k
 Lý do gom lô: thêm cạnh đề cử theo mô tả sẽ biến đồ thị đề cử thành gần như một khối liên thông. Đo trên nhật ký danh tính, ở doc-4 có 473/563 nút
 nằm chung một khối. Như vậy số cặp bị cắt tăng mạnh, trong khi hiện A4 đã tốn 307 lời phán sửa trên doc-4, mỗi lời một cặp.
 
+**Đính chính sau đo (2026-10-16, vé 17i/17j):** gom lô lời phán sửa làm mô hình né gộp các cặp đồng nghĩa và bản dịch. Trên nhap-mon-ml,
+lô cỡ 10 gộp lại 1/5 cặp mà v3 có; hỏi từng mục thì gộp lại 5/5. Chi phí gần như bằng nhau (0,094 so với 0,111 USD), vì token vào chiếm phần lớn.
+Vì vậy chuỗi gộp mặc định phán sửa **mỗi cặp một lời**; gom lô chỉ còn là tuỳ chọn để đo.
+
 **3.3. Tiêu chí phán.** Prompt phán cụm và phán sửa dùng tiêu chí **cùng ngoại diên** (R8b): hai nhóm là một thực thể khi và chỉ khi cùng định
 nghĩa, cùng tập đối tượng, chỉ khác cách gọi. Cách gọi khác gồm đồng nghĩa, ký hiệu, viết tắt, số ít/số nhiều, cách viết, bản dịch. Phán trên câu
 bằng chứng nguyên văn. Prompt nhắc rằng một câu thường định nghĩa nhiều khái niệm khác nhau.
