@@ -230,6 +230,8 @@ _Tránh dùng_: main pass, lượt mở
 
 **Pass phụ**:
 Lượt đi theo trục còn lại để bù điểm mù của pass chính. Chỉ phán các cặp nghi tiên quyết, không tự đề xuất cạnh.
+Mặc định phán bằng mô hình học đóng băng (chế độ `ml`, ADR 0015), chỉ tạo cạnh cứng có câu trích; chế độ `llm` hỏi LLM từng cặp
+vẫn chọn được.
 _Tránh dùng_: secondary pass, lượt kiểm
 
 **Khái niệm đích**:

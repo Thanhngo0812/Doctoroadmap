@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec pass phụ không LLM](../../doc/a8-pass-phu-ml-spec.md), mục 1 và 8.
 **Ai:** nhân viên đổi cấu hình · Claude viết ADR và cập nhật `CONTEXT.md` · **Chi phí mô hình:** 0 USD ·
-**Chặn bởi:** 18d, và chủ dự án đồng ý · **Trạng thái:** 18d đạt 2026-10-16, chờ chủ dự án đồng ý
+**Chặn bởi:** 18d, và chủ dự án đồng ý · **Trạng thái:** chủ dự án đồng ý 2026-10-16; phần Claude (ADR 0015, `CONTEXT.md`) xong, chờ nhân viên đổi mặc định
 
 ## Cần làm
 
