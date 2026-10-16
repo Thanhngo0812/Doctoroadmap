@@ -1129,6 +1129,32 @@ Nhãn là **nhãn bạc agentic**:
 - **Phụ phẩm cho C8 và vé 17:** `kien_thuc_nen` chiếm 45–63% cạnh ngược của nguồn 1. Lượt C còn cho thấy nhiều X có chỗ neo muộn hơn chỗ X được dạy
   lần đầu, vì chỗ neo là đoạn tóm tắt cuối bài. Đây là lỗi chọn câu neo hoặc vị trí dạy, đáng kiểm trong vé 17.
 
+### 8.15 Bộ khớp tên "sạch" cho E5 (2026-10-16, 0 USD): không nhận
+
+**Giả thuyết**, rút từ D-04. Trên các cạnh ngược mà E5 đề xuất có hai kiểu khớp hay sai:
+- bí danh là mẩu cắt của tên chính, ví dụ "khoa học" của "Ý thức khoa học": sai 50/71 cạnh;
+- chữ viết tắt khớp không phân biệt hoa thường, ví dụ "DO" khớp "do": sai 7/9 cạnh.
+
+Cờ `--khop-sach` của `dung_bang_cap.py` bỏ loại bí danh trên và bắt chữ viết tắt khớp đúng chữ hoa. Cờ này có test. Trên nhãn D-04, bộ khớp mới bỏ
+87 cạnh ngược: 55 cạnh cả A lẫn B cùng nói là sai, 14 cạnh cả hai cùng nói là đúng.
+
+**Kết quả trên vàng.** Cách làm: dựng lại bảng của bốn tài liệu và bảng D-01, học lại E5, rồi chạy 6 seed như E9. Bảng dưới ghi hiệu so với E5 cũ,
+ghép theo seed; số trong ngoặc là số seed mà bản mới hơn bản cũ.
+
+| | Q7b | trực tiếp P | bao đóng P | bao đóng R |
+|---|---|---|---|---|
+| doc-1 | −0,047 (0/6) | −0,008 (2/6) | −0,035 (0/6) | −0,013 (2/6) |
+| xstk | −0,109 (0/6) | −0,053 (0/6) | −0,102 (0/6) | −0,002 (2/6) |
+| doc-4 | +0,012 (5/6) | −0,023 (1/6) | −0,013 (0/6) | +0,011 (4/6) |
+
+**Phán: không nhận. E5 sản phẩm giữ bộ khớp cũ.**
+- Lọc bí danh cắt cụt làm cạnh ngược sạch hơn. Nhưng ở sách toán, chính các bí danh ngắn đó ("hạng", "ma trận vuông") lại là cách sách gọi khái niệm
+  thật, nên bỏ chúng làm mất cạnh đúng ở cạnh xuôi, là phần lớn số cạnh.
+- Sửa chữ viết tắt thì có nguyên tắc. Nhưng ba tài liệu vàng gần như không có chữ viết tắt trùng từ thường, nên không đo riêng được. Để đo lại riêng
+  trên T-01.
+- Bài học: chỉ số đo trên cạnh ngược (D-04) không đại diện cho toàn bộ cạnh. Mọi thay đổi bộ khớp phải đo trên vàng.
+- Bảng của bộ khớp mới giữ ở `tmp/pass-phu-ml/bang-khop-sach` và `bang-d01-khop-sach`. `bang` và `bang-d01` đã khôi phục về bản cũ.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:

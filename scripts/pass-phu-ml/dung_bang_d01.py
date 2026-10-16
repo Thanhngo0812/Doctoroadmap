@@ -48,6 +48,7 @@ def main():
     ap.add_argument("--nhan-b")
     ap.add_argument("--ra", default="tmp/pass-phu-ml/bang-d01")
     ap.add_argument("--chi", help="chỉ các sách này, phân cách bằng dấu phẩy")
+    ap.add_argument("--khop-sach", action="store_true", help="bộ khớp tên của D-04 (dung_bang_cap đọc thẳng từ sys.argv)")
     args = ap.parse_args()
     sys.stdout.reconfigure(encoding="utf-8")
     out = Path(args.ra)

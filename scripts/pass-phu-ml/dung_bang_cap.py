@@ -11,6 +11,8 @@ Mỗi cặp ứng viên (trái, phải) của pass phụ thành hai dòng có h�
 - `vang_xy`: (X, Y) là cạnh vàng (sau `identity_map`); `vang_pham_vi`: Y là đích vàng.
 - `--tach-tu` (chạy bằng `tmp/venv-ml`, cần underthesea): thêm `x_trong_ywin_tu`, `x_trong_neo_y_tu`, `y_trong_xwin_tu` — khớp tên theo ranh
   giới từ tiếng Việt, để tên một âm tiết không khớp vào giữa từ ghép ("Chất" trong "vật chất").
+- `--khop-sach` (D-04, 2026-10-16): bỏ bí danh là mẩu cắt của tên chính ("khoa học" của "Ý thức khoa học"), và tên viết tắt phải khớp đúng chữ
+  hoa ("DO" không khớp "do"). Trên cạnh ngược E5 của D-04, hai loại khớp này sai 50/71 và 7/9.
 Ghi ra `tmp/` vì dòng có tên khái niệm lấy từ giáo trình. Chạy từ gốc repo:
   .venv/Scripts/python.exe scripts/pass-phu-ml/dung_bang_cap.py [doc ...] [--ra=tmp/pass-phu-ml/bang]
   tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/dung_bang_cap.py [doc ...] --tach-tu
@@ -59,22 +61,45 @@ CUES = {
 }
 
 
-def regexes(node):
-    """Mẫu khớp tên như kênh `exact` của mention map: chuẩn hoá giống hệt, bỏ ký hiệu, ranh giới từ trừ chữ viết không cách từ."""
+CLEAN = "--khop-sach" in sys.argv
+
+
+def matchable_names(node):
+    """(tên, mẫu chữ hoa hay None). Với `--khop-sach`: bỏ bí danh mà dạng chuẩn hoá nằm trọn trong tên chính theo ranh giới từ, và tên viết tắt
+    kèm mẫu khớp đúng chữ hoa trên văn bản gốc."""
+    values = [(value or "").strip() for value in _names(node)]
+    if not CLEAN:
+        return [(value, None) for value in values]
+    main = _mention_normalize(values[0])
     result = []
-    for value in _names(node):
-        value = (value or "").strip()
-        pattern = _mention_normalize(value)
-        if not pattern or alias_kind(value) == "symbol":
+    for index, value in enumerate(values):
+        key = _mention_normalize(value)
+        if index and key and key != main and re.search(rf"(?<!\w){re.escape(key)}(?!\w)", main):
             continue
-        result.append(re.compile(re.escape(pattern) if any(map(unspaced_character, pattern))
-                                 else rf"(?<!\w){re.escape(pattern)}(?!\w)"))
+        raw = re.compile(rf"(?<!\w){re.escape(value)}(?!\w)") if alias_kind(value) == "abbreviation" else None
+        result.append((value, raw))
     return result
 
 
+def regexes(node):
+    """Mẫu khớp tên như kênh `exact` của mention map: chuẩn hoá giống hệt, bỏ ký hiệu, ranh giới từ trừ chữ viết không cách từ.
+    Mỗi mẫu là cặp (mẫu trên văn bản chuẩn hoá, mẫu chữ hoa trên văn bản gốc hay None)."""
+    result = []
+    for value, raw in matchable_names(node):
+        pattern = _mention_normalize(value)
+        if not pattern or alias_kind(value) == "symbol":
+            continue
+        result.append((re.compile(re.escape(pattern) if any(map(unspaced_character, pattern))
+                                  else rf"(?<!\w){re.escape(pattern)}(?!\w)"), raw))
+    return result
+
+
+def hit(patterns, text, normalized):
+    return any(pattern.search(normalized) and (raw is None or raw.search(text)) for pattern, raw in patterns)
+
+
 def found(patterns, text):
-    normalized = _mention_normalize(text)
-    return any(pattern.search(normalized) for pattern in patterns)
+    return hit(patterns, text, _mention_normalize(text))
 
 
 _SEGMENTED = {}
@@ -94,25 +119,25 @@ def word_regexes(node):
     """Mẫu khớp tên theo ranh giới **từ**: giữa các âm tiết của tên cho phép cách hoặc `_`; hai đầu không được dính chữ hay `_`, nên tên
     một âm tiết không khớp vào giữa từ ghép ("chất" không khớp "vật_chất")."""
     result = []
-    for value in _names(node):
-        value = (value or "").strip()
+    for value, raw in matchable_names(node):
         pattern = _mention_normalize(value)
         if not pattern or alias_kind(value) == "symbol":
             continue
-        result.append(re.compile(r"(?<!\w)" + "[ _]".join(re.escape(part) for part in pattern.split()) + r"(?!\w)"))
+        result.append((re.compile(r"(?<!\w)" + "[ _]".join(re.escape(part) for part in pattern.split()) + r"(?!\w)"), raw))
     return result
 
 
 def found_words(patterns, text):
-    normalized = segmented(text)
-    return any(pattern.search(normalized) for pattern in patterns)
+    return hit(patterns, text, segmented(text))
 
 
 def cues_before(patterns, text):
     """Nhóm từ báo (CUES) đứng ngay trước một lần nhắc tên trong câu; mọi lần nhắc đều xét."""
     normalized = _mention_normalize(text)
     result = set()
-    for pattern in patterns:
+    for pattern, raw in patterns:
+        if raw is not None and not raw.search(text):
+            continue
         for match in pattern.finditer(normalized):
             before = " " + " ".join(normalized[:match.start()].split()[-3:])
             for name, words in CUES.items():
@@ -176,9 +201,9 @@ class Context:
         # được nhắc trong một cửa sổ.
         taught = [node_id for node_id, node in self.node_by_id.items()
                   if node.get("teaching_status") == "taught" and self.window_cache[node_id][0]]
-        normalized_windows = {y: [_mention_normalize(s) for s in self.window_cache[y][0]] for y in taught}
+        normalized_windows = {y: [(s, _mention_normalize(s)) for s in self.window_cache[y][0]] for y in taught}
         self.named_in = {y: {x for x in self.node_by_id
-                             if x != y and any(p.search(s) for p in self.pattern_cache[x] for s in normalized_windows[y])}
+                             if x != y and any(hit(self.pattern_cache[x], s, n) for s, n in normalized_windows[y])}
                          for y in taught}
         self.frame_count = defaultdict(int)
         for y, named in self.named_in.items():
@@ -207,8 +232,10 @@ class Context:
         cues = set().union(*(cues_before(self.pattern_cache[x], sentences[i]) for i in hits)) if hits else set()
         # Trong câu neo, tên Y đứng trước tên X ("Y là … X") hay sau.
         normalized = _mention_normalize(anchor)
-        x_at = min((m.start() for p in self.pattern_cache[x] for m in p.finditer(normalized)), default=None)
-        y_at = min((m.start() for p in self.pattern_cache[y] for m in p.finditer(normalized)), default=None)
+        x_at = min((m.start() for p, raw in self.pattern_cache[x] if raw is None or raw.search(anchor)
+                    for m in p.finditer(normalized)), default=None)
+        y_at = min((m.start() for p, raw in self.pattern_cache[y] if raw is None or raw.search(anchor)
+                    for m in p.finditer(normalized)), default=None)
         word_hits = [i for i in hits if found_words(self.word_cache[x], sentences[i])] if WORDS else []
         return {"cau": len(sentences), "co_ten": len(hits), "trong_neo": int(bool(anchor) and found(self.pattern_cache[x], anchor)),
                 "co_tu": len(word_hits),

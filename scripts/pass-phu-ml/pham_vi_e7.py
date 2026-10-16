@@ -47,7 +47,7 @@ def partial_forms(node):
 
 
 def named_in(raw, word, sentences, normalized):
-    return any(any(p.search(n) for p in raw) and dbc.found_words(word, s) for s, n in zip(sentences, normalized))
+    return any(dbc.hit(raw, s, n) and dbc.found_words(word, s) for s, n in zip(sentences, normalized))
 
 
 def main():
