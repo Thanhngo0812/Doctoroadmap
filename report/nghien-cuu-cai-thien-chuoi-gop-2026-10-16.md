@@ -508,3 +508,41 @@ Tất cả nằm ở `tmp/nghien-cuu-chuoi-gop/`. Chạy từ gốc repo bằng 
 
 **Chi phí lạnh:** `q6_chi_phi_lanh.py` → `ket-qua/q6-chi-phi-lanh.json`.
 - Lưu ý: với canonical neo a5, cột `anchor` đếm thừa, vì `anchor_decision_log` mang hàng của lượt trước. Phần neo nên lấy theo `cost_summary`, như 17i.
+
+## 10. Quyết định sau đợt soát (grill) với chủ dự án, 2026-10-17
+
+Chủ dự án đã xác nhận toàn bộ các điểm dưới đây.
+
+1. **Spec "đổi mặc định chuỗi gộp"** gồm:
+   - **sửa A4** (khuyến nghị 1–6): bỏ `same_evidence`; không phán sửa cạnh cắt chỉ có `ngram`; giải mâu thuẫn bắc cầu theo biến thể bảo thủ;
+     chung tên sau chuẩn hoá thì buộc gộp; chia cụm A4 tất định; `coextensive_with` vào R2;
+   - **cấu hình mặc định:** chuỗi gộp, neo "một khái niệm";
+   - **sửa CLI:** `--names-only` tự dùng chuỗi v3;
+   - **tài liệu:** ADR 0016, ADR 0004, `CONTEXT.md`, spec-addendum.
+
+   **Không** đưa L8b vào; L8b để làm nghiên cứu sau.
+2. **Vé tăng tốc, làm song song và trước lượt dựng lại** (khuyến nghị 8–11). Lượt dựng lại sẽ cho số phút/cuốn chuẩn.
+3. **Thí nghiệm của Claude, làm trước lượt dựng lại:**
+   - (15) phát lại phiên pass chính để đo nhiễu; dải nhiễu đo được là ngưỡng E4 của cổng;
+   - (14) bỏ `previous_edges_in_chapter`, trên doc-1 và xstk trước; nhận thì đưa vào spec.
+4. **Cổng kiêm dựng lại artifact:** 6 tài liệu phát triển. Tiêu chí:
+   - neo ở đích vàng không kém 17i;
+   - gộp sai mà vàng phát hiện không quá 3;
+   - E4 trong dải nhiễu;
+   - chi phí và lời gọi trước A8 không vượt mức ước.
+
+   Luật khi trượt:
+   - trượt về chất lượng thì chưa bật, sửa rồi chạy lại phần hỏng;
+   - E4 lệch mà vẫn trong dải nhiễu thì coi là qua;
+   - vượt tiền hay thời gian mà chất lượng đạt thì vẫn bật, và mở vé tối ưu.
+
+   **Trần 10 USD** cho cả đợt, dry-run trước mỗi lượt có chi.
+5. **Sau cổng:**
+   - bật mặc định cùng commit với tài liệu;
+   - **ngay sau đó**, một vé riêng gỡ ba stage cũ, nhánh v3 của A4, và ba tuỳ chọn thua (neo gom A5, đề cử theo mô tả, gom lô lời phán sửa);
+   - giữ khả năng đọc artifact v3 cũ.
+6. **Các mục khác:**
+   - **D-01:** đóng băng, không thêm cuốn mới.
+   - **E5:** chỉ đo bản 0 USD trong lượt dựng lại; học lại khi tụt rõ.
+   - **Pha B:** chấp nhận mất cache bài giảng và quiz; thêm test tích hợp nạp đồ thị chuỗi gộp; báo phiên Pha B qua tệp bàn giao.
+7. **T-01:** chờ có vàng rồi mới dựng canonical chuỗi gộp cho hai cuốn giữ lại; giữ mù theo allowlist. T-01 là số báo cáo, không phải cổng.
