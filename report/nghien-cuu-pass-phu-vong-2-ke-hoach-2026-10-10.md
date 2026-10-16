@@ -1158,6 +1158,21 @@ Bảng trên đã tính lại theo mốc đúng; kết luận không đổi.
 - Bài học: chỉ số đo trên cạnh ngược (D-04) không đại diện cho toàn bộ cạnh. Mọi thay đổi bộ khớp phải đo trên vàng.
 - Bảng của bộ khớp mới giữ ở `tmp/pass-phu-ml/bang-khop-sach` và `bang-d01-khop-sach`. `bang` và `bang-d01` đã khôi phục về bản cũ.
 
+### 8.16 E5 vào sản phẩm: nghiệm thu vé 18 (2026-10-16)
+
+Stage `a8-secondary-ml-v1` do nhân viên cài, gồm commit `8053ace` và `c96e355` (18c-1). Claude nghiệm thu độc lập; chi tiết ở `task/v4/18d-*`.
+- **Điểm mô hình và bộ lắp:**
+  - điểm từng chiều ứng viên trùng lượt `e5-d01-a`, chênh 0;
+  - cùng ngưỡng thì cho cùng tập cạnh với bộ lắp nghiên cứu.
+- **Luật ngưỡng.** Spec bản đầu tính ngưỡng trên mọi cặp chưa bị cạnh pass chính tỉa. Luật này làm doc-1 lệch: Q7 −0,042, R −0,038.
+  - Đã sửa thành điểm bất động trên các cặp được phán, tức không bị tỉa, giống tập nghiên cứu dùng.
+  - Với luật mới: doc-1 trùng hệt nghiên cứu; doc-4 lệch tối đa 0,006; xstk có đủ 59/59 cạnh của nghiên cứu, thừa 1 cạnh.
+- **Chi phí, d01-02 chạy trọn chuỗi** (pass chính dùng chung):
+  - `ml`: cả cuốn 0,124 USD, pass phụ 18 giây;
+  - `llm`: cả cuốn 2,986 USD, pass phụ 26,4 phút, 3.802 lời gọi;
+  - hai chế độ chỉ chung 39 cạnh. d01-02 không có vàng.
+- **Phán:** đạt. Đề xuất đổi mặc định sang `ml` (vé 18e). Chất lượng so với LLM sẽ đo trên T-01.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
