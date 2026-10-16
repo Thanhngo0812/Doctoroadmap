@@ -189,7 +189,19 @@ Biến thể bảo thủ: trong thành phần mâu thuẫn, chỉ giữ cặp ch
 - Nguyên nhân là `canonical_anchors.py:43-44` gọi `exact_mentions([node], …)` cho từng node, nên mỗi node lại chuẩn hoá toàn bộ chunk
   (`domain/mentions.py:43-44`). `heading_chunks` và `symbolic_name_chunks` cũng quét mọi chunk cho từng node (`anchor_core.py:73-76`).
 - Chuẩn hoá chunk một lần là đủ, không đổi ngữ nghĩa.
-- **CHƯA XONG:** số đo của doc-4 đang chạy nền, sẽ ghi vào `ket-qua/q4-cpu-doc-4.json`. Suy đoán: phần lớn 397 giây không đo được là ở đây.
+- **doc-4** (630 node, 671 chunk; kết quả in ra màn hình của lượt chạy nền):
+
+  | Đoạn | Giây |
+  |---|---|
+  | `prepare_anchors` | **260** |
+  | `build_nodes` | 45 |
+  | `nomination_graph` | 25 |
+  | `additional_nominations` | 9 |
+
+  - Bốn đoạn cộng lại khoảng 339 giây, tức phần lớn của 397 giây không đo được.
+  - Đo riêng `exact_mentions`: gọi từng node mất 403 giây, gọi một lần cho mọi node mất 146 giây. Hai số này lớn hơn chính `prepare_anchors`,
+    nên có lẽ máy đang tải nặng lúc đo; chỉ nên đọc là cùng bậc độ lớn.
+  - Chi phí tăng theo tích số node × số chunk.
 
 **Song song:**
 - **Canonical:** `canonical_concurrency=4` (`config.py:47`, truyền vào ở `composition.py:192`), dùng cho mọi phần, kể cả neo
@@ -283,7 +295,7 @@ So cạnh pass chính giữa graph pha A (v3) và graph lượt cuối (v11) the
 | 4 | Chung **tên** sau chuẩn hoá thì buộc gộp | +4 gộp đúng (χ², Gram-Schmidt, Véctơ tọa độ) | chưa thấy ca sai | vé nhỏ | không |
 | 5 | Chia cụm A4 tất định: đổi id thành số nguyên đã sắp trước khi chạy Louvain | tái dùng cache ổn định, bớt nhiễu | không | vé nhỏ | không |
 | 6 | Neo "một khái niệm" cộng luật L8 (bỏ mẫu "Tên:") | −20% lời neo; trên doc-4 rẻ hơn a5 (khoảng 0,62 so với 0,66 USD) mà giữ độ chặt của C8 | 1,5% quá tay so với LLM | spec + vé | không |
-| 7 | `prepare_anchors` chuẩn hoá chunk một lần; đặt `measure_phase` cho các đoạn CPU | doc-1 −25 giây; doc-4 có lẽ phần lớn 397 giây (chờ số) | không | vé nhỏ | không |
+| 7 | `prepare_anchors` chuẩn hoá chunk một lần; đặt `measure_phase` cho các đoạn CPU | doc-1 khoảng −25 giây; doc-4 phần lớn trong 260 giây của `prepare_anchors` (cộng 45 giây `build_nodes` nếu tối ưu tiếp) | không | vé nhỏ | không |
 | 8 | Nâng `canonical_concurrency` lên khoảng 16, bỏ rào `NODE_BATCH` ở canonical, xoá `vertex_concurrency` | phần LLM của canonical doc-4 có thể từ khoảng 390 giây còn khoảng 100 giây (ước) | không | vé nhỏ | đo một lượt cùng 1–3 |
 | 9 | Thí nghiệm bỏ `previous_edges_in_chapter` ở pass chính | pass chính chạy song song; doc-4 có thể từ 13,7 phút còn vài phút | chưa biết, cần E4 | spec | doc-1 + xstk khoảng 0,55 USD; thêm doc-4 khoảng 2,2 USD |
 | 10 | Đo nhiễu pass chính bằng phát lại đầu vào cố định; luật chống lật chiều | quyết E4 bằng số có khoảng nhiễu | không | nghiên cứu | khoảng 0,93 USD |
@@ -329,7 +341,7 @@ Tất cả nằm ở `tmp/nghien-cuu-chuoi-gop/`. Chạy từ gốc repo bằng 
 - `q3e_luat_ky_hieu.py` → `ket-qua/q3e-ky-hieu.json`.
 
 **Câu hỏi 4:**
-- `q4_do_cpu.py <doc> <v>` → `ket-qua/q4-cpu-<doc>.json`. doc-1 đã xong; doc-4 đang chạy nền, nếu dừng thì chạy lại `q4_do_cpu.py doc-4 3`.
+- `q4_do_cpu.py <doc> <v>` → `ket-qua/q4-cpu-<doc>.json`. Đã chạy cho doc-1 v6 và doc-4 v3.
 
 **Câu hỏi 5:**
 - `q5_nhieu_pass_chinh.py` → `ket-qua/q5-nhieu.json`;
@@ -340,7 +352,7 @@ Tất cả nằm ở `tmp/nghien-cuu-chuoi-gop/`. Chạy từ gốc repo bằng 
   như 17i đã làm.
 
 **Bước kế tiếp:**
-1. Lấy số CPU của doc-4.
+1. Đo lại CPU của doc-4 khi máy rảnh.
 2. Lập bảng thời gian chuỗi đồ thị theo stage.
 3. Thử L8 sau khi bỏ mẫu "Tên:".
 4. Đếm cặp cùng câu neo và thử luật chống lật chiều trên vàng.
