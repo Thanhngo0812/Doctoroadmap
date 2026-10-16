@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), Testing Decisions (nghiệm thu nghiên cứu) và mục 7.
 **Ai:** Claude · **Chi phí mô hình:** ước dưới 6 USD; phải chạy dry-run trước và được chủ dự án duyệt · **Chặn bởi:** 17c, 17d, 17f, 17g, 17h
-· **Trạng thái:** chờ nhân viên
+· **Trạng thái:** nghiệm thu xong 2026-10-16 (đạt với cấu hình đã chốt; chi khoảng 9,3 USD trong trần 10 USD chủ dự án nâng); [báo cáo](../../report/v4-17i-nghiem-thu-chuoi-gop-luot-1-2026-10-16.md). ADR 0016 viết khi đổi mặc định
 
 ## Vì sao
 
@@ -48,6 +48,6 @@ chính chạy trên ba tài liệu vàng. Dùng gemini-3.1-flash-lite.
 
 ## Nghiệm thu
 
-- [ ] Dự toán đã được chủ dự án duyệt trước khi chi.
-- [ ] Báo cáo có đủ bốn nhóm số đo, các chỗ đã đọc, và kết luận đạt hay không kèm lý do.
+- [x] Dự toán đã được chủ dự án duyệt trước khi chi.
+- [x] Báo cáo có đủ bốn nhóm số đo, các chỗ đã đọc, và kết luận đạt hay không kèm lý do.
 - [ ] Nếu đạt: ADR 0016, cập nhật ADR 0004, `CONTEXT.md` và spec-addendum đã commit.

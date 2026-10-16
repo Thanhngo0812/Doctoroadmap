@@ -1,6 +1,6 @@
 # Vé 17i — Nghiệm thu chuỗi gộp, lượt 1 (2026-10-16)
 
-**Phán: chưa đạt; chưa đổi gì về mặc định.**
+**Phán (cập nhật sau lượt cuối, mục 7–8): đạt với cấu hình đã chốt; chủ dự án quyết đổi mặc định sau đợt này.** Phần dưới đây là lượt 1.
 - Neo và trạng thái dạy đạt.
 - E4 trên doc-1 và xstk không kém v3.
 - Số gộp sai mà vàng phát hiện được không tăng.
@@ -129,3 +129,63 @@ doc-4 tốn khoảng 2,2 USD, vượt phần trần còn lại.
    - canonical 6 tài liệu, khoảng 0,8 USD;
    - E4 doc-1 và xstk, khoảng 0,55 USD;
    - nếu chủ dự án muốn: E4 doc-4, khoảng 2,6 USD.
+
+## 7. Lượt cuối (sau 17j; đề cử theo mô tả tắt bằng ngưỡng 1,0, nay là cấu hình mặc định của 17k)
+
+**Cấu hình:** neo gom vào A5 (mặc định của 17d), phán sửa từng cặp. Chạy trên 3 tài liệu vàng, đủ cả canonical lẫn chuỗi đồ thị. Lượt này tốn 3,74 USD;
+**tổng của vé 17i khoảng 9,3 USD**, trong trần 10 USD mà chủ dự án đã nâng.
+
+**Chi phí các bước trước A8, một lượt chạy từ đầu.** Cột "chuỗi gộp" lấy hàng nhật ký cho gộp, phán sửa, xác minh và mô tả; phần neo lấy theo
+`cost_summary`, vì nhật ký neo có mang theo hàng của lượt trước.
+
+| | v3 | chuỗi gộp, neo A5 | chuỗi gộp, neo "một khái niệm" (doc-1 đo, doc-4 ước) |
+|---|---|---|---|
+| doc-1 | 918 lời, 0,478 USD | ~309 lời, ~0,356 USD | 514 lời, 0,365 USD |
+| doc-4 | 2.295 lời, 1,367 USD | ~963 lời, ~1,24 USD | ~1.550 lời, ~1,26 USD |
+
+**Thời gian.**
+- canonical: doc-4 14,7 phút, doc-1 2,6 phút, xstk 1,5 phút (có tái dùng phần gộp);
+- chuỗi đồ thị: doc-4 32 phút (pass chính 13,7 phút; pass phụ ML 9,9 phút, dài hơn 3,8 phút đo ở 18d), doc-1 4,3 phút, xstk 3,9 phút.
+
+**E4.**
+
+| | Q7 | Q7b | trực tiếp P / R | bao đóng P / R | khái niệm trong dãy học |
+|---|---|---|---|---|---|
+| doc-1 v3 / pha A / cuối | 0,603 / 0,725 / 0,419 | 0,743 / 0,707 / 0,645 | 0,438-0,500 / 0,577-0,517 / 0,516-0,552 | 0,821-0,664 / 0,802-0,701 / 0,713-0,465 | — / 208 / 205 |
+| xstk v3 / pha A / cuối | 0,206 / 0,230 / 0,278 | 0,530 / 0,730 / 0,506 | 0,333-0,143 / 0,500-0,222 / 0,286-0,111 | 0,593-0,163 / 0,839-0,248 / 0,618-0,324 | — / 72 / 77 |
+| doc-4 v3 / cuối | 0,483 / **0,638** | 0,859 / **0,878** | 0,667-0,566 / **0,739-0,642** | 0,856-0,522 / **0,893-0,629** | 489 / 549 |
+
+**Nhiễu của E4 lớn hơn mọi khác biệt cần đo.**
+- Ở doc-1, Q7 tụt từ 0,725 (pha A) xuống 0,419 (lượt cuối). Nguyên nhân là chiều của một cạnh trục bị đảo: "Không gian véc tơ → Véc tơ" do pass chính
+  tạo ở pha A, còn ở lượt cuối pass chính không tạo, và pass phụ ML chọn chiều ngược lại.
+- Câu neo của hai khái niệm này giống hệt nhau ở hai lượt. Cái khác là đầu vào phiên, vì vài lần gộp khác nhau làm cách xếp phiên khác đi.
+- Vì vậy E4 chạy một lượt không phân định được hai chuỗi. Nó chỉ cho thấy chuỗi gộp không làm hại một cách hệ thống. doc-4 tốt hơn v3 ở mọi chỉ số.
+
+**Neo gom vào A5 so với neo "một khái niệm".**
+- **doc-1:** lệch 5 trạng thái, 6/203 câu neo.
+- **xstk:** đích vàng còn khớp trạng thái v3 21/26, so với 26/26 khi neo "một khái niệm". Trong 5 lần đổi có 4 lần là sửa đúng: 3 đích bị A2 gắn nhầm
+  "đề cương" được đưa về "được dạy" (vé 05), và "Phân phối chuẩn" được đưa về "chỉ nhắc". Nhưng có hai câu neo yếu: một câu liệt kê, một dòng
+  tiêu đề.
+- **doc-4:** 67 khái niệm từ "chỉ nhắc" thành "được dạy", so với 9 khi neo "một khái niệm". Đọc mẫu 12 thì khoảng 9 là chỉ được nhắc. Dãy học
+  dài thêm 60 khái niệm, và E4 không thấy được việc này.
+- **Tiền:** gần bằng nhau, vì lời A5 gộp mang câu ứng viên của nhiều khái niệm. Neo A5 chỉ bớt số lời gọi.
+
+**Gộp sai mà vàng phát hiện được, lượt cuối:** doc-1 0, xstk 3, doc-4 0. Tổng 3, đúng bằng mốc của v3.
+
+## 8. Phán nghiệm thu
+
+**Đạt, với cấu hình đã chốt.** Chủ dự án quyết ngày 2026-10-16: chuỗi gộp thành mặc định sau đợt này. Lý do là ba stage cũ kéo dài thời gian, và
+trình bày tốn công.
+
+**Cấu hình:**
+- tắt đề cử theo mô tả (17k);
+- phán sửa từng cặp (17j);
+- **đề xuất neo "một khái niệm"**: tiền như neo A5, mà phán "được dạy" sát C8. Chờ chủ dự án duyệt.
+
+**Việc tiếp theo** là nghiên cứu cải thiện, báo cáo `report/nghien-cuu-cai-thien-chuoi-gop-2026-10-16.md`:
+- bớt lời gọi neo bằng luật tất định;
+- xem lại hiệu suất từng nguồn đề cử;
+- phục hồi gộp đồng nghĩa bị sót;
+- đo thời gian từng phần (`phase_measurements` đang ra 0);
+- xử lý độ nhạy của pass chính với cạnh trục;
+- lên kế hoạch đổi mặc định: T-01 quy id vàng, gỡ ba stage cũ.
