@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [đặc tả D-04](D-04-dac-ta-nhan-canh-nguoc.md), bước 3 và mục "Kiểm chất lượng".
 **Ai:** **chủ dự án**, bằng agentic · Claude kiểm định dạng · **Chi phí mô hình:** do chủ dự án chọn dịch vụ agentic · **Chặn bởi:** D-04a, D-04b ·
-**Trạng thái:** A, B xong 2026-10-16; chờ lượt C (83 phiếu)
+**Trạng thái:** xong 2026-10-16
 
 ## Vì sao
 
@@ -19,7 +19,7 @@ là nhãn dùng để đo luật.
 
 ## Nghiệm thu
 
-- [ ] Hai tệp nhãn A, B và tệp lượt ba đều qua được bộ kiểm định dạng.
+- [x] Hai tệp nhãn A, B và tệp lượt ba đều qua được bộ kiểm định dạng.
 - [x] Mỗi dòng nhãn ghi `nguoi_gan` (agent, mô hình, phiên bản) và `luot`. A và B khác agent hoặc khác mô hình.
 - [x] Ghi chép của từng lượt (cách chia lô, số subagent, sự cố) được giao kèm.
 
@@ -52,3 +52,6 @@ là nhãn dùng để đo luật.
   - Tổng: 83 phiếu = 71 lệch nhị phân + 12 nhãn giữ chỗ.
   - Chọn bằng `scripts/pass-phu-ml/chon_luot_c_d04.py`.
   - Gói C nằm ngoài repo, ở `Desktop\d04-luot-C\`, gồm phiếu, hướng dẫn 1.0 và bộ kiểm. Không kèm nhãn A, B hay khoá.
+- **Lượt C** (Antigravity / Argon, 2026-10-16): 83/83 phiếu, qua bộ kiểm định dạng. Không phiếu nào được gán `can_hoc_truoc`; lý do C hay nêu là
+  "X đã giới thiệu ở mục trước". Với nhãn đa số, 0 phiếu thành `khong_ro`. Vì C nghiêng một phía, D-04d đo thêm độ nhạy trên nhãn từng lượt và
+  trên A∪B.

@@ -1067,6 +1067,68 @@ bộ vàng không cho biết chính các cạnh ngược đúng hay sai.
   - Từ nhãn đó tính độ chính xác của từng luật, theo cách làm của D-01: đặc tả nhãn, agentic gán, nhãn là bạc.
   - Chưa soạn vé sửa A10 khi chưa có số này.
 
+### 8.14 D-04d: đo trực tiếp các luật giữ cứng cạnh ngược (2026-10-16, 0 USD)
+
+**Dữ liệu.** Gồm 1.368 phiếu D-04 (vé D-04a), tức 1.303 cặp sau khi bỏ phiếu lặp.
+- Nguồn 1: 439 cạnh ngược thật của LLM v3 và E5 trên ba tài liệu phát triển.
+- Nguồn 2: 864 cặp D-01 nạp qua A10.
+
+Nhãn là **nhãn bạc agentic**:
+- Lượt A: Codex / GPT-5.
+- Lượt B: Gemini 3.8 Flash qua script, dùng prompt tóm tắt hướng dẫn. Đây là lệch quy trình, ghi ở vé D-04c.
+- Lượt C: Antigravity / Argon. C chỉ phân xử 83 phiếu, là các phiếu A và B lệch nhau về nhị phân "cần học trước" cộng 12 phiếu B để nhãn giữ chỗ.
+
+**Chất lượng nhãn** (chi tiết ở vé D-04c):
+- A và B khớp nhau 63,5% trên 7 nhãn (kappa 0,53) và 94,8% trên nhị phân `can_hoc_truoc` (kappa 0,48).
+- Mỗi lượt khớp với chính nó trên phiếu lặp: A 81,5%, B 86,2%.
+- `khong_ro`: 0.
+- Claude đọc 80 phiếu: 19/20 phiếu cả hai cùng gán `can_hoc_truoc` là đúng; các phiếu lệch tập trung ở vùng mơ hồ.
+- Lượt C không gán `can_hoc_truoc` cho phiếu nào trong 83 phiếu. Lý do C hay nêu là "X đã được giới thiệu ở mục trước", tức C thấy chỗ neo của X
+  muộn hơn chỗ X được dạy thật. Vì C nghiêng một phía, nhãn đa số có thể đếm thiếu `can_hoc_truoc`. Do đó phép đo chạy thêm trên nhãn từng lượt và
+  trên hợp A∪B (một trong hai lượt nói cần học trước), là cách đếm rộng tay nhất.
+
+**Kết quả, nhóm tất cả 1.303 cặp.** Tiêu chí chốt ở đặc tả D-04 trước khi có nhãn: chính xác ≥ 0,70, cận dưới Wilson ≥ 0,60, phủ ≥ 0,30.
+
+| Luật giữ cứng | Giữ | Chính xác, đa số | Phủ, đa số | Chính xác, A∪B | Phủ, A∪B |
+|---|---:|---:|---:|---:|---:|
+| `tat` (giữ cứng mọi cạnh) | 1.303 | 0,028 | 1,00 | 0,078 | 1,00 |
+| `cung-chuong` | 663 | 0,036 | 0,67 | 0,097 | 0,63 |
+| `pass-chinh` | 71 | 0,070 | 0,14 | 0,169 | 0,12 |
+| `tin-chac` | 102 | 0,039 | 0,11 | 0,078 | 0,08 |
+| `cung-chuong-tin-chac` | 89 | 0,045 | 0,11 | 0,079 | 0,07 |
+| `so-muc-giua<=0` | 233 | 0,069 | 0,44 | 0,146 | 0,33 |
+| `so-muc-giua<=3` | 418 | 0,053 | 0,61 | 0,134 | 0,55 |
+| LightGBM, bỏ một sách, điểm tốt nhất ở phủ ≥ 0,30 | 316 / 329 | 0,051 | 0,44 | 0,119 | 0,38 |
+
+- Không luật nào đạt tiêu chí, ở bất kỳ bộ nhãn nào (đa số, A, B, A∩B, A∪B) và ở bất kỳ nhóm nào (nguồn, hệ, lĩnh vực).
+- Độ chính xác cao nhất ở nhóm con có ít nhất 10 cạnh giữ là 0,21 (Toán học, `so-muc-giua<=0`). Mức này cách ngưỡng 0,70 rất xa.
+- Mô hình học có AP 0,04 trên nhãn đa số, trong khi tỉ lệ nền là 0,028. Đặc trưng cấu trúc gần như không mang thông tin.
+- Vì vậy không phát lại trên vàng: vế đầu của tiêu chí đã trượt.
+
+**Cạnh ngược thật sự là gì.** Phân bố bảy nhãn theo hệ đề xuất, ghi số của lượt A / lượt B:
+
+| Hệ | Cạnh | `can_hoc_truoc` | `du_tai_cho` + `kien_thuc_nen` | `nguoc` | `nghia_khac` | `khong_tien_quyet` |
+|---|---:|---|---|---|---|---|
+| E5 riêng | 228 | 0,01 / 0,00 | 0,54 / 0,61 | 0,03 / 0,02 | **0,21 / 0,26** | 0,20 / 0,11 |
+| LLM v3 riêng | 110 | 0,07 / 0,02 | 0,55 / 0,48 | 0,02 / 0,02 | 0,02 / 0,03 | **0,35 / 0,46** |
+| E5 và LLM v3 cùng đề xuất | 101 | 0,12 / 0,10 | 0,69 / 0,69 | 0,08 / 0,05 | 0,04 / 0,02 | 0,08 / 0,14 |
+| Cặp D-01 (nguồn 2) | 864 | 0,05 / 0,07 | 0,33 / 0,35 | 0,13 / 0,11 | 0,18 / 0,15 | 0,31 / 0,33 |
+
+**Phán xét** (Claude):
+- **Giữ R17. Không soạn vé sửa A10.** Chỉ khoảng 3–8% cạnh ngược là "cần học trước thật". Mọi tín hiệu cấu trúc đều không tách được nhóm này.
+- Khoảng một nửa cạnh ngược là `du_tai_cho` hoặc `kien_thuc_nen`. Với nhóm này, R17 đang làm đúng: hạ thành cạnh mềm và giữ thứ tự sách.
+- **Đòn bẩy thật nằm ở phía ngược lại: 33–48% cạnh ngược là cạnh sai, lẽ ra phải bỏ.**
+  - Với E5, cạnh sai chủ yếu là `nghia_khac`, do bộ khớp tên: chữ viết tắt khớp từ thường không phân biệt hoa thường ("DO" khớp "do"), và bí danh
+    sai (vé D-04b).
+  - Với LLM v3, cạnh sai chủ yếu là `khong_tien_quyet`: X chỉ có mặt trong ví dụ, câu áp dụng hay danh sách.
+  - Cạnh mà cả hai hệ cùng đề xuất sạch hơn hẳn: chỉ 12–16% sai.
+- **Việc tiếp đề xuất:**
+  1. Sửa bộ khớp tên của pass phụ: khớp chữ viết tắt có phân biệt hoa thường, và lọc bí danh. Đo lại E5 bằng vàng.
+  2. Cân nhắc dùng việc E5 và LLM cùng đồng ý làm tín hiệu tin cậy.
+  3. Nhãn D-04 có thể dùng để chấm độ chính xác của cạnh ngược theo hệ sau mỗi lần sửa. Việc này không cần gán thêm.
+- **Phụ phẩm cho C8 và vé 17:** `kien_thuc_nen` chiếm 45–63% cạnh ngược của nguồn 1. Lượt C còn cho thấy nhiều X có chỗ neo muộn hơn chỗ X được dạy
+  lần đầu, vì chỗ neo là đoạn tóm tắt cuối bài. Đây là lỗi chọn câu neo hoặc vị trí dạy, đáng kiểm trong vé 17.
+
 ## 9. Chạy lại
 
 Các lệnh sau tái lập số của báo cáo:
@@ -1112,6 +1174,11 @@ tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/pham_vi_e7.py
 .venv/Scripts/python.exe scripts/pass-phu-ml/phat_lai_tat_r17.py --he=llm-v3,e5-a-hieu-chinh
 # E8: làm cứng có chọn lọc (mục 8.13)
 .venv/Scripts/python.exe scripts/pass-phu-ml/thi_nghiem_e8.py --he=llm-v3,e5-a-hieu-chinh > tmp/pass-phu-ml/ket-qua/e8.jsonl
+# D-04d (mục 8.14): chọn phiếu lượt C, rồi đo luật (cần khoa.jsonl; nhãn A, B ở tmp/goi-A, tmp/goi-B; nhãn C ở Desktop\d04-luot-C)
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/chon_luot_c_d04.py tmp/d04-phieu/phieu.jsonl tmp/goi-A/nhan-A.jsonl tmp/goi-B/nhan-B.jsonl \
+    <thư mục gói C mới> report/huong-dan-agentic-gan-nhan-d04.md scripts/pass-phu-ml/kiem_nhan_d04.py
+tmp/venv-ml/Scripts/python.exe scripts/pass-phu-ml/do_luat_d04.py tmp/d04-phieu/khoa.jsonl tmp/d04-phieu/phieu.jsonl tmp/goi-A/nhan-A.jsonl \
+    tmp/goi-B/nhan-B.jsonl C:/Users/ngoco/Desktop/d04-luot-C/nhan-C.jsonl tmp/d04-do-luat.json
 ```
 
 Số ở mục 1 đo bằng script tạm trong scratchpad trên `tmp/d01-gan-nhan/` lúc 17:24–18:10. Tệp nhãn còn đang ghi, nên chạy lại sẽ ra số khác.
