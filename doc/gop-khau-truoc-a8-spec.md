@@ -6,11 +6,9 @@
 - Danh tính gộp hẳn vào A4. Tập node đổi ngay ở A4 và không còn bản đồ danh tính (phương án 1 trong ba phương án đã đưa ra).
 - Bộ vàng nào không chuyển sang được tập node mới thì để riêng, sau này dựng lại chỉ số đánh giá.
 
-**Lịch: chỉ triển khai sau khi vòng 2 của pass phụ đo xong trên T-01.** Có hai lý do:
-- vòng 2 phải đo trên chuỗi thượng nguồn đã đóng băng;
-- phiếu vàng T-01 gắn với canonical v1 của hai cuốn giữ lại.
-
-Vé có thể soạn và cài trước, nhưng chuỗi mới phải là tuỳ chọn, tắt mặc định, cho tới khi nghiệm thu xong và chủ dự án quyết bật.
+**Lịch (rà lại 2026-10-16):** vòng 2 của pass phụ đã xong và E5 đã vào sản phẩm (vé 18, ADR 0015). Chủ dự án cho cài vé 17 ngay. Chuỗi gộp là
+tuỳ chọn, tắt mặc định, và chỉ bật khi đủ ba điều kiện: nghiệm thu xong, có số trên T-01, chủ dự án quyết. Lý do giữ tắt: phiếu vàng T-01 gắn với
+canonical v1 của hai cuốn giữ lại, nên T-01 phải đo trên chuỗi v3.
 
 **Nguồn:**
 - [báo cáo quy lỗi thượng nguồn của A8](../report/quy-loi-thuong-nguon-a8-2026-10-12.md), mục 3, 4 và 4b;
@@ -63,7 +61,7 @@ người gán vàng, người duyệt gộp, và các stage phía sau.
 1. Là chủ dự án, tôi muốn mỗi cuốn sách tốn ít lời gọi LLM hơn trước A8, để giảm phút/cuốn và USD/cuốn mà không hạ chất lượng.
 2. Là chủ dự án, tôi muốn chỉ còn một bước gộp thực thể, để luồng dễ hiểu và sau này thay bằng bản không LLM chỉ ở một chỗ.
 3. Là chủ dự án, tôi muốn số phút, số lời gọi và USD của từng phần trong stage canonical được đo và ghi trước và sau khi gộp, để quyết bằng số.
-4. Là chủ dự án, tôi muốn chuỗi mới tắt mặc định cho tới khi nghiệm thu xong, để vòng 2 của pass phụ chạy trên chuỗi cũ không bị ảnh hưởng.
+4. Là chủ dự án, tôi muốn chuỗi mới tắt mặc định cho tới khi nghiệm thu xong, để T-01 đo trên chuỗi cũ không bị ảnh hưởng.
 5. Là chủ dự án, tôi muốn bật chuỗi mới bằng một tuỳ chọn duy nhất, ghi trong manifest, để biết mỗi artifact sinh từ chuỗi nào.
 6. Là chủ dự án, tôi muốn `--dry-run` của chuỗi mới liệt kê dự toán của từng phần trong stage canonical (gộp cụm, lời phán sửa, xác minh, mô tả,
    neo), để duyệt chi trước khi chạy.
@@ -129,7 +127,7 @@ chứa câu neo (mục 4).
 ### 2. Công tắc chuỗi và lịch
 
 Thêm một tuỳ chọn cấu hình chọn chuỗi thượng nguồn: chuỗi v3 (hiện nay) hoặc chuỗi gộp. Quy định:
-- **Mặc định là chuỗi v3** cho tới khi nghiệm thu xong và chủ dự án quyết đổi. Vòng 2 của pass phụ đo trên chuỗi v3.
+- **Mặc định là chuỗi v3** cho tới khi nghiệm thu xong, có số T-01 và chủ dự án quyết đổi.
 - Chuỗi được ghi vào config của stage canonical và của chuỗi đồ thị, nên nằm trong khoá cache. Hai chuỗi không bao giờ dùng lẫn artifact của nhau.
 - Canonical chỉ có lớp tên (`--names-only`, dùng cho dữ liệu D-01) vẫn chạy chuỗi v3. Chuỗi gộp đòi canonical đầy đủ và dừng với thông báo rõ nếu
   không có.
@@ -193,7 +191,9 @@ Artifact chuỗi gộp không có `identity_map`, hoặc có nhưng rỗng.
 
 **Câu ứng viên cho neo** được dựng bằng mã ngay sau bước gộp, với luật y hệt C8 hiện nay.
 - Vùng tìm gồm:
-  - chunk định nghĩa mà A5 chọn;
+  - chunk nguồn của node, thay cho chunk định nghĩa mà A5 chọn (sửa 2026-10-16). Khi phần neo gom vào lời gọi A5, câu ứng viên phải dựng
+    trước lời gọi, lúc chưa biết A5 chọn chunk nào. Chunk A5 chọn luôn nằm trong chunk nguồn, nên hai cỡ lô của phần neo dùng cùng một tập
+    ứng viên;
   - chunk có bằng chứng A3;
   - chunk có tên hoặc alias khớp chính xác, tính trực tiếp trên toàn văn bằng hàm khớp tên của mention map, không dùng kênh độ gần nghĩa;
   - chunk nhắc ký hiệu;
@@ -232,6 +232,10 @@ Thêm hai việc:
 
 Payload canonical có thêm nhật ký neo và nhật ký lời phán của phần neo, cùng dạng với chuỗi v3. Media không qua bước này.
 
+Pass phụ ML (ADR 0015) đọc thẳng `teaching_status`, `anchor` và `defining_chunk_ids` để dựng đặc trưng (cửa sổ định nghĩa, vị trí chunk định
+nghĩa, vai trò chunk neo). Vì vậy các trường này phải giữ đúng dạng của chuỗi v3. Chunk định nghĩa giờ có thêm chunk neo, thay cho chunk do
+provenance vá, nên phân bố đặc trưng sẽ lệch. Nghiệm thu đo tác động này.
+
 ### 5. Chuỗi đồ thị gộp
 
 Thứ tự stage của chuỗi gộp như sau:
@@ -243,7 +247,8 @@ clusters (A6–A7) → mentions → main_edges → secondary_edges → validated
 - Mọi stage làm việc trên tập node canonical cuối. Không có bước áp bản đồ danh tính.
 - Mention map, viện dẫn và cặp nghi tiên quyết dựng trên tập node đó, với chunk định nghĩa đã có chunk neo.
 - **A8:** pass chính và pass phụ nhận upstream `mentions` của chuỗi gộp. Hợp đồng cạnh theo định nghĩa và yêu cầu kiểu tiên quyết bật khi canonical
-  khai báo đã có neo. Cửa sổ định nghĩa, bộ kiểm và các luật khác không đổi.
+  khai báo đã có neo. Cửa sổ định nghĩa, bộ kiểm và các luật khác không đổi. Hiện nay pass chính bật hợp đồng này khi upstream là stage
+  `identity`, và chỉ nhận upstream `provenance` hoặc `identity`. Chuỗi gộp phải bật theo khai báo của canonical, không theo tên stage.
 - **`--stop-after`:** giá trị `provenance`, `teaching`, `identity` không hợp lệ trong chuỗi gộp, báo lỗi kèm gợi ý "đã nằm trong stage canonical".
   `--dry-run` liệt kê các stage của chuỗi gộp.
 - `--identity-review` của lệnh `roadmap` không dùng trong chuỗi gộp. Quyết định người duyệt nạp ở A4 (mục 3.5).
@@ -252,19 +257,21 @@ clusters (A6–A7) → mentions → main_edges → secondary_edges → validated
 
 - **Đọc artifact cũ:** A8, A10, bộ chấm và công cụ nghiên cứu vẫn đọc được artifact chuỗi v3 (có stage `identity` và bản đồ danh tính). Thiếu
   `identity_map` được hiểu là bản đồ rỗng.
+- Bộ chấm hiện từ chối vàng có id không nằm trong đồ thị, và làm việc này **trước** khi áp bản đồ danh tính. Với chuỗi gộp, id phải được quy
+  qua bảng chuyển hướng trước bước từ chối đó.
 - **Chuyển vàng cũ sang id mới.** Thêm một công cụ chấm, không gọi mô hình, quy các id của bộ vàng về id hiện hành qua bảng chuyển hướng của canonical
   mà đồ thị đang dùng. Có thể làm thành tuỳ chọn của bộ chấm, áp như cách bộ chấm đang áp bản đồ danh tính. Tệp vàng gốc không bị sửa. Báo cáo của
   công cụ ghi:
   - cạnh vàng có hai đầu bị gộp làm một: rời phép chấm và được đếm, như `identity_dropped_gold_edges` hiện nay;
   - khái niệm của vàng không quy được về id nào, ví dụ vì node bị tách hay biến mất. Có khái niệm như vậy thì công cụ **từ chối chấm** bộ đó và
     liệt kê. Theo quyết định của chủ dự án, bộ đó để riêng và dựng lại chỉ số sau.
-- **T-01:** vòng 2 chạy trên chuỗi v3 với canonical v1, nên không bị ảnh hưởng.
+- **T-01:** đo trên chuỗi v3 với canonical v1, nên không bị ảnh hưởng.
 - **Chi phí:** `cost_summary` của stage canonical tách theo phần (gộp cụm, phán sửa, xác minh gộp, mô tả, neo, xác minh kiến thức nền) và có một
   tổng. Đo thời gian từng phần theo cơ chế đo stage hiện có.
 
 ### 7. Tài liệu đi kèm
 
-- **ADR mới (0011):** "danh tính là một phần của gộp thực thể ở A4; neo và trạng thái dạy quyết ở A5; provenance rời chuỗi".
+- **ADR mới (0016; số 0011–0015 đã dùng):** "danh tính là một phần của gộp thực thể ở A4; neo và trạng thái dạy quyết ở A5; provenance rời chuỗi".
 - **ADR 0004:** thêm mục cập nhật, ghi rằng vector mô tả nháp của A3 nay được dùng để đề cử ở A4.
 - **`CONTEXT.md`:**
   - "Cặp nghi trùng" thêm các nguồn đề cử mới;
@@ -327,7 +334,7 @@ naive-bayes, doc-6, xstk-ch3-1, doc-4), so với artifact chuỗi v3:
   - độ khớp theo từng khái niệm;
   - Claude đọc mọi chỗ lệch trên đích vàng và một mẫu chỗ lệch khác;
   - câu neo đúng trên đích vàng không thấp hơn mốc 79/84.
-- **Chất lượng đầu cuối:** E4 trên doc-1, xstk, doc-4 với vàng đã chuyển id, pass phụ ML cấu hình E5, cộng phép quy lỗi thượng nguồn chạy lại. Hồi
+- **Chất lượng đầu cuối:** E4 trên doc-1, xstk, doc-4 với vàng đã chuyển id, pass phụ sản phẩm `a8-secondary-ml-v1` (mô hình đóng băng của vé 18) ở cả hai chuỗi, cộng phép quy lỗi thượng nguồn chạy lại. Hồi
   tưởng và độ chính xác bao đóng, Q7, Q7b không giảm quá mức nhiễu. Bộ vàng nào bị công cụ từ chối thì ghi lại và để riêng.
 - **Chi phí:** số lời gọi, USD và phút của stage canonical và chuỗi đồ thị, trước và sau, trên doc-4.
 
@@ -343,7 +350,8 @@ Spec này không làm các việc sau:
   hành vi để đo riêng.
 - Chuỗi canonical chỉ có lớp tên (D-01) và bất kỳ việc xuất phiếu D-01 nào.
 - Dựng lại chỉ số đánh giá cho bộ vàng không chuyển được: việc sau, theo quyết định của chủ dự án.
-- Pass phụ ML (vé 11) và việc tích hợp nó; mở rộng cửa sổ định nghĩa hay ứng viên không nguyên văn (E7).
+- Học lại mô hình pass phụ ML. Nếu nghiệm thu thấy E5 tụt trên chuỗi gộp thì học lại là vé riêng (ADR 0015: chỉ đổi tệp mô hình và phiên bản).
+- Mở rộng cửa sổ định nghĩa hay ứng viên không nguyên văn (E7).
 - `a8-gold-sheet` dùng trạng thái dạy để chọn khái niệm của chương: việc tiếp theo nếu cần.
 - Tài liệu tiếng Anh, vì đồ án chỉ làm tiếng Việt.
 
