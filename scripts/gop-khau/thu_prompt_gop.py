@@ -40,6 +40,7 @@ or deferred. Return only JSON with nodes, relations, deferred."""
 
 
 OLD_PROMPT = Path("src/doc2roadmap/application/prompts/a4/partition-gop.txt").read_text(encoding="utf-8")
+V3_PROMPT = Path("src/doc2roadmap/application/prompts/a4/partition.txt").read_text(encoding="utf-8")
 
 
 def pairs(value, groups):
@@ -83,7 +84,11 @@ def main():
                     for item, partition in items:
                         data = {key: value for key, value in item.items() if key != "item_id"}
                         units.append((("don", data), [([g["group_id"] for g in item["groups"]], partition)]))
-        prompt = OLD_PROMPT if mode in ("cu-don", "cu-lo") else PROMPT
+        if "chi-cap" in options:  # chỉ giữ lời phán chứa cả hai nhóm của ít nhất một cặp "A|B;C|D"
+            wanted = [set(pair.split("|")) for pair in options["chi-cap"].split(";")]
+            units = [unit for unit in units
+                     if any(pair <= {names.get(g) for groups, _ in unit[1] for g in groups} for pair in wanted)]
+        prompt = {"cu-don": OLD_PROMPT, "cu-lo": OLD_PROMPT, "v3-don": V3_PROMPT}.get(mode, PROMPT)
 
         def ask(unit):
             (shape, data), parts = unit

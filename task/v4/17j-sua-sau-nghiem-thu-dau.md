@@ -8,7 +8,7 @@
 Lượt chạy thật đầu tiên của vé 17i, trên kho riêng với gemini-3.1-flash-lite, cho ra ba vấn đề.
 
 **1. Chương trình sập khi một lời gọi A5 gộp trượt kiểm sau mọi lượt sửa.**
-- Ở xstk-ch3-1, `a4` chuỗi gộp dừng với `lỗi: 'reused'` sau 115 giây.
+- Ở xstk-ch3-1, `a4` chuỗi gộp dừng với `lỗi: 'reused'` sau 115 giây; doc-4 dừng vì cùng lỗi sau 16 phút. Tài liệu lớn gần như chắc gặp lỗi này.
 - Gốc lỗi:
   - hàng nhật ký mà `run_model_jobs` trả cho lời gọi hỏng không có khoá `reused`;
   - đoạn gắn nhật ký neo của lời gọi A5 gộp lại đọc `row["reused"]`.
