@@ -1144,8 +1144,11 @@ ghép theo seed; số trong ngoặc là số seed mà bản mới hơn bản cũ
 | | Q7b | trực tiếp P | bao đóng P | bao đóng R |
 |---|---|---|---|---|
 | doc-1 | −0,047 (0/6) | −0,008 (2/6) | −0,035 (0/6) | −0,013 (2/6) |
-| xstk | −0,109 (0/6) | −0,053 (0/6) | −0,102 (0/6) | −0,002 (2/6) |
-| doc-4 | +0,012 (5/6) | −0,023 (1/6) | −0,013 (0/6) | +0,011 (4/6) |
+| xstk | −0,123 (0/6) | −0,053 (0/6) | −0,108 (0/6) | +0,002 (2/6) |
+| doc-4 | +0,014 (6/6) | −0,018 (2/6) | −0,010 (1/6) | +0,010 (4/6) |
+
+Sửa ngày 2026-10-16: bản đầu của bảng này lấy mốc seed gốc từ `e5.jsonl`, là số **trước** khi sửa bộ khớp ở mục 8.11. Mốc đúng là `sua-y.jsonl`.
+Bảng trên đã tính lại theo mốc đúng; kết luận không đổi.
 
 **Phán: không nhận. E5 sản phẩm giữ bộ khớp cũ.**
 - Lọc bí danh cắt cụt làm cạnh ngược sạch hơn. Nhưng ở sách toán, chính các bí danh ngắn đó ("hạng", "ma trận vuông") lại là cách sách gọi khái niệm

@@ -31,13 +31,13 @@ Chất lượng trên ba tài liệu vàng, đo bằng E4 (A9 → A10 → chấm
 | | Q7 | Q7b | bao đóng P | bao đóng R | cạnh pass phụ |
 |---|---|---|---|---|---|
 | doc-1, LLM v3 | 0,667 | 0,877 | 0,874 | 0,740 | 468 |
-| doc-1, E5 | 0,603 | 0,743 | 0,821 | 0,664 | 195 |
+| doc-1, E5 | 0,603 | 0,743 | 0,821 | 0,664 | 196 |
 | xstk-ch3-1, LLM v3 | 0,414 | 0,644 | 0,636 | 0,214 | 171 |
-| xstk-ch3-1, E5 | 0,214 | 0,445 | 0,562 | 0,184 | 58 |
+| xstk-ch3-1, E5 | 0,206 | 0,530 | 0,593 | 0,163 | 59 |
 | doc-4, LLM v3 | 0,322 | 0,606 | 0,584 | 0,459 | 1.473 |
-| doc-4, E5 | 0,476 | 0,873 | 0,872 | 0,516 | 690 |
+| doc-4, E5 | 0,483 | 0,859 | 0,856 | 0,522 | 727 |
 
-Số LLM v3 đo trước khi sửa bộ khớp ở mục 8.11, và chỉ dùng để tham khảo. E5 hơn rõ ở cuốn lớn nhất, nhưng kém ở doc-1 và xstk. Đây là đánh đổi chủ
+Số E5 là seed gốc sau khi sửa bộ khớp (`sua-y.jsonl`; bản đầu của spec ghi nhầm số trước khi sửa, đã chữa 2026-10-16). Số LLM v3 đo trước khi sửa bộ khớp ở mục 8.11, và chỉ dùng để tham khảo. E5 hơn rõ ở cuốn lớn nhất, nhưng kém ở doc-1 và xstk. Đây là đánh đổi chủ
 dự án đã chấp nhận khi chốt bỏ LLM. Kết luận cuối sẽ đo trên vàng T-01.
 
 ## Solution — Giải pháp
@@ -47,7 +47,8 @@ Thêm một **stage pass phụ không LLM** vào chuỗi đồ thị. Stage này
 2. Với mỗi cặp, xét hai chiều X → Y. Một chiều là **ứng viên** khi hợp đồng cho phép đích Y, và tên X có trong cửa sổ định nghĩa của Y theo ranh
    giới từ tiếng Việt.
 3. Tính 82 đặc trưng cho mỗi chiều ứng viên. Chấm bằng mô hình LightGBM đóng băng.
-4. Chọn ngưỡng cho từng tài liệu bằng hiệu chỉnh isotonic đóng băng: số cạnh giữ bằng tổng xác suất đã hiệu chỉnh trên các ứng viên.
+4. Chọn ngưỡng cho từng tài liệu bằng hiệu chỉnh isotonic đóng băng: số cạnh giữ bằng tổng xác suất đã hiệu chỉnh trên các ứng viên của những cặp
+   pass phụ thật sự phán (không bị tỉa), tính lặp tới điểm bất động (mục 4 của Implementation Decisions).
 5. Duyệt cặp theo đúng thứ tự của pass phụ LLM. Cặp bị tỉa vì đã có cạnh hay đường cứng thì bỏ qua. Với cặp còn lại, lấy chiều điểm cao hơn; nếu
    điểm vượt ngưỡng thì dựng cạnh cứng (`can_de_hieu`, căn cứ `trong_dinh_nghia`). Câu trích là câu trong cửa sổ định nghĩa của Y có tên X, gần
    câu neo nhất. Cạnh phải qua bộ kiểm hợp đồng của pass chính; không có câu nào qua thì không tạo cạnh.
@@ -154,12 +155,15 @@ Claude nghiệm thu đạt** (mục Testing).
   - mô hình lưu ở định dạng văn bản của LightGBM;
   - bộ hiệu chỉnh và siêu dữ liệu lưu bằng JSON: danh sách đặc trưng theo thứ tự, phiên bản, ngày học, nguồn nhãn, AP ngoài mẫu.
   - Tệp không chứa văn bản giáo trình, nên được đưa vào repo và đóng gói cùng gói như mô hình A1 nhẹ. Băm SHA-256 của các tệp nằm trong config.
-- **Ngưỡng theo từng tài liệu:**
-  - tập ứng viên tính ngưỡng là mọi chiều ứng viên của các cặp còn lại sau khi tỉa bằng cạnh pass chính;
-  - số cạnh dự kiến k = tổng xác suất đã hiệu chỉnh trên tập đó, làm tròn;
-  - ngưỡng là điểm của ứng viên thứ k theo điểm giảm dần; k = 0 thì không tạo cạnh nào.
-  - Chỗ này khác nghiên cứu một điểm. Nghiên cứu dùng các cặp mà pass phụ LLM thật sự đã hỏi (`created`, `rejected`, `deferred`), còn sản phẩm không
-    có nhật ký LLM. Nghiệm thu đo xem khác biệt này có ảnh hưởng không.
+- **Ngưỡng theo từng tài liệu: điểm bất động trên các cặp được phán** (sửa 2026-10-16 sau nghiệm thu 18d; bản đầu ở dưới):
+  - với một ngưỡng t, lắp cạnh như mục 5. **Tập tính ngưỡng** là các chiều ứng viên của những cặp không bị tỉa trong lượt lắp đó, tức các cặp
+    pass phụ thật sự phán. Đây là cách hiểu của nghiên cứu, vốn dùng các cặp mà pass phụ LLM đã hỏi;
+  - k = tổng xác suất đã hiệu chỉnh trên tập đó, làm tròn; t' = điểm của ứng viên thứ k theo điểm giảm dần; k = 0 thì không tạo cạnh nào;
+  - ngưỡng khởi đầu tính trên các cặp chưa bị cạnh pass chính tỉa. Lặp tới khi t' = t;
+  - nếu một ngưỡng lặp lại (vòng dao động, doc-4 dao động giữa hai giá trị) thì chọn ngưỡng **lớn nhất** trong vòng; tối đa 10 lượt, hết lượt thì
+    chọn ngưỡng lớn nhất đã gặp. Cạnh cuối là cạnh của lượt lắp với ngưỡng được chọn.
+  - Đã đo trong 18d (Claude mô phỏng bằng bộ lắp nghiên cứu): doc-1 hội tụ sau 2 lượt, E4 trùng hệt nghiên cứu; doc-4 E4 lệch tối đa 0,006.
+  - **Bản đầu, bỏ:** tính một lần trên các cặp chưa bị cạnh pass chính tỉa. Tập này lớn hơn nên ngưỡng cao hơn; doc-1 mất 9 cạnh, Q7 −0,042, R −0,038.
 - **Đóng băng do Claude làm**, từ script nghiên cứu, vì cần dữ liệu D-01 ngoài repo. Nhân viên chỉ nhận tệp mô hình.
 
 ### 5. Lắp cạnh
