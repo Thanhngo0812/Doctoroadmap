@@ -12,3 +12,6 @@ vendor/gemma/tokenizer.model  binary
 # Fixture Docling: giữ nguyên LF ở mọi hệ, để so sánh giữa các máy
 # là so cùng một thứ
 tests/fixtures/docling/*.json  text eol=lf
+
+# Mô hình pass phụ không LLM (vé 18a): băm SHA-256 tính trên byte LF, nên giữ nguyên LF ở mọi hệ
+vendor/a8-pass-phu-ml/*  text eol=lf
