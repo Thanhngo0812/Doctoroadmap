@@ -180,7 +180,7 @@ trình bày tốn công.
 **Cấu hình:**
 - tắt đề cử theo mô tả (17k);
 - phán sửa từng cặp (17j);
-- **đề xuất neo "một khái niệm"**: tiền như neo A5, mà phán "được dạy" sát C8. Chờ chủ dự án duyệt.
+- **neo "một khái niệm"**: tiền như neo A5, mà phán "được dạy" sát C8. Chủ dự án duyệt 2026-10-16; đổi mặc định gom vào spec đổi mặc định sau đợt nghiên cứu.
 
 **Việc tiếp theo** là nghiên cứu cải thiện, báo cáo `report/nghien-cuu-cai-thien-chuoi-gop-2026-10-16.md`:
 - bớt lời gọi neo bằng luật tất định;
