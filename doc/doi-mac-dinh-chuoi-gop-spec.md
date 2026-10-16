@@ -48,7 +48,7 @@ Làm theo năm pha, đúng thứ tự đã chốt ở đợt soát:
      - chung tên sau chuẩn hoá thì buộc gộp;
      - chia cụm tất định;
      - R2 nhận thêm nhãn `coextensive_with`.
-   - Mặc định mới: chuỗi gộp, neo "một khái niệm".
+   - Trong chuỗi gộp, neo "một khái niệm" là mặc định. Chuỗi thượng nguồn mặc định vẫn là v3 tới pha 4.
    - `--names-only` / `--prepare` tự dùng chuỗi v3.
 2. **Tăng tốc**, không đổi khoá cache: dựng câu ứng viên neo, stage mention, chạy song song ở canonical, pass phụ ML, và đo thời gian đủ phần.
    Làm song song với pha 1, và phải xong trước pha 3.
@@ -128,8 +128,8 @@ Mọi sửa đổi chỉ áp ở chuỗi `gop`. Mỗi sửa đổi có mục ri�
 
 ### Pha 1b. Cấu hình, CLI và (nếu nhận) pass chính song song
 
-**Mặc định mới:**
-- chuỗi thượng nguồn: `gop`;
+**Mặc định mới (sửa khi chia vé 2026-10-17):**
+- chuỗi thượng nguồn: **giữ `v3` tới pha 4**; chỉ đổi sang `gop` sau cổng (vé 19m);
 - chế độ neo: `single`, cả trong cấu hình lẫn mặc định của hàm dựng stage canonical;
 - `merge_description_enabled=false` và cỡ lô phán sửa 1: đã đúng, giữ nguyên.
 
@@ -191,6 +191,8 @@ Mọi sửa đổi chỉ áp ở chuỗi `gop`. Mỗi sửa đổi có mục ri�
 - **Đầu ra:** một báo cáo cổng có số phút/cuốn, USD/cuốn, lời gọi theo phần, và các chỗ đã đọc.
 
 ### Pha 4. Bật mặc định và tài liệu (cùng commit)
+
+- **Cấu hình:** chuỗi thượng nguồn mặc định đổi từ `v3` sang `gop`. README ghi cách chọn chuỗi.
 
 - **ADR 0016:**
   - danh tính là một phần của gộp thực thể ở A4;
