@@ -149,6 +149,11 @@ ADR 0004 phải ghi lại. Vector chỉ đề cử, không bao giờ tự gộp 
 Rủi ro đã biết: ADR 0006 đo thấy mô tả nháp rất nhiễu với các mục trong cùng một danh sách liệt kê. Số cặp đề cử theo từng nguồn phải được đếm và
 ghi lại, để nghiệm thu thấy nguồn nào sinh nhiễu.
 
+**Đính chính sau đo (2026-10-16, vé 17i/17k, chủ dự án duyệt):** rủi ro này xảy ra thật.
+- Với tiêu chí cùng ngoại diên, khoảng 720 cặp chỉ có nguồn mô tả (4 tài liệu) chỉ ra 4 lần gộp, trong đó 1 đúng.
+- Nguồn này lại sinh phần lớn lời phán sửa, làm chuỗi gộp đắt hơn v3 (doc-4 +60%).
+- Vì vậy chuỗi gộp **mặc định tắt nguồn đề cử theo mô tả**; nguồn này chỉ còn là tuỳ chọn để đo.
+
 **3.2. Chia cụm và lời phán sửa.** Chia cụm ứng viên giữ cách hiện có (Leiden, trần cỡ cụm). Cặp bị cắt ngang cụm vẫn được phán sửa, nhưng **gom
 lô**: mỗi lời gọi chứa nhiều cặp, mỗi cặp phán độc lập, kích thước lô cấu hình được. Một cặp trượt kiểm thì chỉ cặp đó được hỏi lại riêng.
 
