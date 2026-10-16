@@ -53,8 +53,8 @@ Thêm một **stage pass phụ không LLM** vào chuỗi đồ thị. Stage này
    điểm vượt ngưỡng thì dựng cạnh cứng (`can_de_hieu`, căn cứ `trong_dinh_nghia`). Câu trích là câu trong cửa sổ định nghĩa của Y có tên X, gần
    câu neo nhất. Cạnh phải qua bộ kiểm hợp đồng của pass chính; không có câu nào qua thì không tạo cạnh.
 
-Stage mới không gọi mô hình và không tốn tiền. Pass phụ LLM vẫn chọn được bằng một tuỳ chọn cấu hình. **Mặc định chuyển sang bản không LLM sau khi
-Claude nghiệm thu đạt** (mục Testing).
+Stage mới không gọi mô hình và không tốn tiền. Pass phụ LLM vẫn chọn được bằng một tuỳ chọn cấu hình. **Mặc định là `ml` từ vé 18e (2026-10-16),
+sau khi Claude nghiệm thu đạt 18d và chủ dự án duyệt.**
 
 ## User Stories
 
@@ -103,7 +103,7 @@ Claude nghiệm thu đạt** (mục Testing).
 
 - Thêm tuỳ chọn cấu hình chọn chế độ pass phụ: `llm` (stage hiện có) hoặc `ml` (stage mới). Chế độ nằm trong config của pass phụ, nên nằm trong khoá
   cache. Hai chế độ không dùng chung artifact.
-- **Mặc định vẫn là `llm` trong lúc cài.** Vé cuối của đợt này đổi mặc định sang `ml`, sau khi Claude nghiệm thu đạt và chủ dự án đồng ý.
+- **Mặc định là `ml` từ vé 18e (2026-10-16)**, sau khi Claude nghiệm thu đạt và chủ dự án đồng ý. Giá trị `llm` vẫn chọn được bằng cấu hình.
 - Stage mới đứng đúng chỗ của pass phụ LLM: sau pass chính hoàn chỉnh, trước ValidateGraph. Đầu vào giống hệt: artifact pass chính, chunk, mention
   map, sổ cặp cụm, cặp nghi tiên quyết, định tuyến.
 - `algorithm_id` là `a8-secondary-ml-v1`. Config ghi:

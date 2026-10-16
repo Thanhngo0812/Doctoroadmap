@@ -1,6 +1,6 @@
 # Pass phụ ML — lệnh cho vé 18b/18c
 
-Đã cài đường chạy E5, nhưng **mặc định vẫn là `llm`**. Chỉ đổi mặc định theo vé 18e sau nghiệm thu 18d và chủ dự án duyệt.
+**Mặc định là `ml` từ vé 18e (2026-10-16)**, sau nghiệm thu 18d và chủ dự án duyệt. Đường LLM vẫn chọn được qua biến môi trường.
 
 ## Xuất bảng 82 đặc trưng
 
@@ -31,13 +31,22 @@ Lệnh này cần các CSV nghiên cứu địa phương; sản phẩm không ph
 ## Chọn chế độ cho chuỗi đồ thị
 
 ```powershell
-$env:DOC2ROADMAP_SECONDARY_MODE='ml'
 .\.tools\uv.exe run doc2roadmap roadmap --doc-id <ma-tai-lieu> --dry-run
 ```
 
-Giá trị hợp lệ: `llm`, `ml`; mặc định `llm`. Không cần sửa `.env` để thử. Đường `ml` tạo algorithm_id `a8-secondary-ml-v1`, có mode/model hash/
+Giá trị hợp lệ: `llm`, `ml`; mặc định `ml`, không cần đặt biến hoặc truyền tuỳ chọn chọn chế độ. Đường `ml` tạo algorithm_id `a8-secondary-ml-v1`, có mode/model hash/
 calibration hash/feature list/tokenizer/rules trong config và khóa cache riêng. Đường LLM cũ giữ nguyên config/cache/luật phán, không mất checkpoint
 hay tự buộc chạy lại bản cũ chỉ vì thêm chế độ mới.
+
+Chọn đường LLM để đối chiếu hoặc quay lại:
+
+```powershell
+$env:DOC2ROADMAP_SECONDARY_MODE='llm'
+.\.tools\uv.exe run doc2roadmap roadmap --doc-id <ma-tai-lieu> --dry-run
+```
+
+Giá trị đã đặt rõ trong môi trường hoặc `.env` vẫn ghi đè mặc định. Nếu trước đây đã ghim `llm`, bỏ dòng đó hoặc đổi thành `ml` để dùng mặc định mới.
+Chương trình không tự ghi đè `.env` riêng của người chạy; `.env.example` đã dùng `ml`.
 
 **Chỉ pass phụ ML là 0 lời gọi, 0 USD và không cần `--allow-spend`.** Pass chính, embedding và các khâu đặt tên trong cùng chuỗi vẫn có thể tốn tiền;
 cổng chi cũ vẫn chặn khi chưa cho phép. Dry-run của cả chuỗi có thể còn chi phí ở các khâu đó hoặc `unknown` nếu chưa có đúng artifact đầu vào.

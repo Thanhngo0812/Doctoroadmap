@@ -13,6 +13,7 @@ def test_example_lists_every_setting_and_keeps_api_key_empty() -> None:
     expected = {f"DOC2ROADMAP_{name.upper()}" for name in Settings.model_fields}
     assert set(values) == expected
     assert values["DOC2ROADMAP_GEMINI_API_KEY"] == ""
+    assert values["DOC2ROADMAP_SECONDARY_MODE"] == Settings.model_fields["secondary_mode"].default == "ml"
 
 
 def test_api_key_is_a_redacted_secret() -> None:
