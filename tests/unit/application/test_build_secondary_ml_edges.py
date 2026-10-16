@@ -26,7 +26,7 @@ class Scorer:
         return self.scores if self.scores is not None else [.8] * len(rows)
 
     def calibrate(self, scores):
-        return [self.probability] * len(scores)
+        return self.probability if isinstance(self.probability, list) else [self.probability] * len(scores)
 
 
 def fixture():
@@ -190,3 +190,126 @@ def test_rejected_nearest_quote_falls_back_to_first_valid_quote():
     artifact, _ = BuildSecondaryMLEdges(store, Scorer(), Tokenize()).execute("doc")
     assert artifact.payload["executor_log"][0]["error"] == "quote_outside_evidence_chunk"
     assert artifact.payload["secondary_edges"][0]["quote"] == "Alpha is a basis."
+
+
+def threshold_fixture(specs):
+    """One candidate direction per pair; all quotes use the real main contract."""
+    store = fixture()
+    names = {key: "Concept" + key for spec in specs for key in spec[:2]}
+    template = store.main.payload["nodes"][0]
+    sentences = {y: f"{names[y]} là khái niệm dùng " + " và ".join(
+        names[x] for x in sorted({x for x, target, _, _ in specs if target == y})) + "." for y in names}
+    store.main.payload["nodes"] = [
+        {**template, "node_id": key, "name": name, "anchor": {"chunk_id": "c1", "sentence": sentences[key]}}
+        for key, name in names.items()]
+    store.chunks.result.chunks[0].text = " ".join(sentences.values())
+    store.main.payload["mention_map"] = {"c1": {key: {} for key in names}}
+    store.main.payload["suspected_pairs"] = [
+        {"pair_id": f"{i:02}", "left": x, "right": y} for i, (x, y, _, _) in enumerate(specs)]
+    scorer = Scorer([score for _, _, score, _ in specs], [p for _, _, _, p in specs])
+    return store, scorer
+
+
+def test_fixed_point_changes_initial_threshold_and_discards_trial_edges_and_logs():
+    store, scorer = threshold_fixture([
+        ("b", "c", .8, .79), ("b", "d", .7, .71), ("c", "f", .8, .79), ("b", "f", .5, .55)])
+    artifact, _ = BuildSecondaryMLEdges(store, scorer, Tokenize()).execute("doc")
+    stats = artifact.payload["stats"]
+    assert {(e["source"], e["target"]) for e in artifact.payload["secondary_edges"]} == {("b", "c"), ("c", "f")}
+    assert stats["threshold_history"] == [.7, .8] and stats["threshold"] == .8
+    assert stats["threshold_iterations"] == 2 and not stats["threshold_oscillation"]
+    assert stats["expected_positive_count"] == 2
+    assert [r["status"] for r in artifact.payload["secondary_log"]] == ["created", "below_threshold", "created", "pruned_explicit_path"]
+    assert len(artifact.payload["executor_log"]) == 2  # only final accepted proposals, no trial operations
+    assert scorer.calls == 1 and store.saved_versions == 1
+
+
+def test_two_threshold_cycle_selects_larger_threshold_not_last_computed():
+    store, scorer = threshold_fixture([("a", "b", .8, .6), ("a", "b", .8, .6), ("c", "d", .9, .6)])
+    artifact, _ = BuildSecondaryMLEdges(store, scorer, Tokenize()).execute("doc")
+    stats = artifact.payload["stats"]
+    assert {(e["source"], e["target"]) for e in artifact.payload["secondary_edges"]} == {("c", "d")}
+    assert stats["threshold_history"] == [.8, .9] and stats["threshold"] == .9
+    assert stats["threshold_iterations"] == 2 and stats["threshold_oscillation"]
+    assert len(artifact.payload["secondary_log"]) == 3 and len(artifact.payload["executor_log"]) == 1
+
+
+def test_zero_k_after_dynamic_pruning_removes_trial_edges_and_stops():
+    store, scorer = threshold_fixture([("a", "b", .9, .3), ("a", "b", .9, .3)])
+    artifact, _ = BuildSecondaryMLEdges(store, scorer, Tokenize()).execute("doc")
+    assert artifact.payload["secondary_edges"] == []
+    assert artifact.payload["stats"]["threshold"] is None
+    assert artifact.payload["stats"]["expected_positive_count"] == 0
+    assert artifact.payload["stats"]["threshold_iterations"] == 1
+    assert [r["status"] for r in artifact.payload["secondary_log"]] == ["below_threshold", "below_threshold"]
+    assert artifact.payload["executor_log"] == []
+
+
+def test_cycle_reassembles_chosen_threshold_instead_of_saving_last_trial():
+    store, scorer = threshold_fixture([
+        ("b", "c", .8, .79), ("a", "b", .6, .63), ("a", "c", .1, .23),
+        ("c", "d", .9, .87), ("b", "d", .9, .87)])
+    store.main.payload["executor_log"] = [{"stage": "main", "keep": True}]
+    artifact, _ = BuildSecondaryMLEdges(store, scorer, Tokenize()).execute("doc")
+    stats = artifact.payload["stats"]
+    assert stats["threshold_history"] == [.8, .6] and stats["threshold"] == .8
+    assert stats["threshold_oscillation"] and stats["threshold_final_reassembled"]
+    assert {(e["source"], e["target"]) for e in artifact.payload["secondary_edges"]} == {("b", "c"), ("c", "d")}
+    assert [r["status"] for r in artifact.payload["secondary_log"]] == [
+        "created", "below_threshold", "below_threshold", "created", "pruned_explicit_path"]
+    assert all(r["threshold"] == .8 for r in artifact.payload["secondary_log"])
+    assert len(artifact.payload["executor_log"]) == 3 and artifact.payload["executor_log"][0] == {"stage": "main", "keep": True}
+    assert scorer.calls == 1 and store.saved_versions == 1
+
+
+def test_cycle_maximum_excludes_transient_threshold_before_cycle():
+    store, scorer = threshold_fixture([
+        ("c", "d", .5, .6), ("d", "e", .8, .2), ("e", "f", .1, .5), ("e", "f", .5, .1),
+        ("e", "f", .2, .7), ("c", "d", .6, .4), ("a", "e", .7, .8), ("a", "c", .8, .1),
+        ("a", "f", .7, .4), ("a", "c", .3, .7), ("a", "d", .4, .9), ("a", "d", .1, .6)])
+    artifact, _ = BuildSecondaryMLEdges(store, scorer, Tokenize()).execute("doc")
+    stats = artifact.payload["stats"]
+    assert stats["threshold_history"] == [.5, .8, .6, .7] and stats["threshold"] == .7
+    assert stats["threshold_oscillation"] and not stats["threshold_final_reassembled"]
+    assert {(e["source"], e["target"]) for e in artifact.payload["secondary_edges"]} == {
+        ("d", "e"), ("a", "e"), ("a", "c"), ("a", "f")}
+
+
+def test_fixed_point_rule_does_not_reuse_old_one_shot_cache():
+    store = fixture()
+    old, _ = BuildSecondaryMLEdges(store, Scorer(), Tokenize()).execute("doc")
+    old.manifest["config"]["threshold_rule"] = "round-sum-isotonic-on-main-unpruned-directions-v1"
+    old.manifest["config_hash"] = digest(old.manifest["config"])
+    artifact, reused = BuildSecondaryMLEdges(store, Scorer(), Tokenize()).execute("doc")
+    assert not reused and store.saved_versions == 2
+    assert artifact.manifest["config"]["threshold_rule"] == "round-sum-isotonic-on-judged-directions-fixed-point-10-v1"
+
+
+def test_threshold_iteration_limit_is_ten_not_early_convergence_or_unbounded(monkeypatch):
+    # Force a long population transient at the selector seam; scoring, assembly,
+    # evidence validation and persistence still run through execute.
+    import doc2roadmap.application.use_cases.build_secondary_ml_edges as module
+
+    specs = [(chr(97 + 2*i), chr(98 + 2*i), (i + 1)/12, 1.0) for i in range(12)]
+    store, scorer = threshold_fixture(specs)
+    select, rounds = module.select_secondary_pairs, []
+
+    def shrinking_population(nodes, pairs, ledger, edges, *, route):
+        if len(pairs) != 1:
+            return select(nodes, pairs, ledger, edges, route=route)
+        pair = pairs[0]
+        excluded = min(len(rounds) + 1, 11)
+        result = ([], [{"pair_id": pair["pair_id"], "status": "pruned_direct_edge"}]) if int(pair["pair_id"]) < excluded else ([pair], [])
+        if pair["pair_id"] == "11":
+            rounds.append(excluded)
+        return result
+
+    monkeypatch.setattr(module, "select_secondary_pairs", shrinking_population)
+    artifact, _ = BuildSecondaryMLEdges(store, scorer, Tokenize()).execute("doc")
+    stats = artifact.payload["stats"]
+    assert stats["threshold_history"] == [(i + 1)/12 for i in range(10)]
+    assert stats["threshold_iterations"] == 10 and not stats["threshold_oscillation"]
+    assert stats["threshold"] == 10/12
+    assert {(e["source"], e["target"]) for e in artifact.payload["secondary_edges"]} == {("u", "v"), ("w", "x")}
+    assert len(artifact.payload["secondary_log"]) == 12 and len(artifact.payload["executor_log"]) == 2
+    assert scorer.calls == 1 and store.saved_versions == 1

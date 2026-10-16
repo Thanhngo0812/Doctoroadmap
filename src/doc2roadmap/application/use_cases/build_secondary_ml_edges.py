@@ -38,7 +38,7 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
                   "chunks_version": chunk_artifact.version, "definition_before": before, "definition_after": after,
                   "scorer": self.scorer.metadata, "feature_version": FEATURE_VERSION,
                   "tokenizer": self.tokenize.identifier, "candidate_rule": CANDIDATE_RULE,
-                  "threshold_rule": "round-sum-isotonic-on-main-unpruned-directions-v1",
+                  "threshold_rule": "round-sum-isotonic-on-judged-directions-fixed-point-10-v1",
                   "prune_rule": "direct-hard-or-explicit-hard-path-v3", "route": route}
         source_hash, config_hash = digest(payload), digest(config)
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
@@ -64,9 +64,64 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
         probabilities = self.scorer.calibrate(scores)
         if len(probabilities) != len(scores) or any(not isfinite(v) or not 0 <= v <= 1 for v in probabilities):
             raise ValueError("bộ hiệu chỉnh pass phụ ML trả xác suất không hợp lệ")
-        k = int(round(sum(probabilities)))
-        threshold = sorted(scores, reverse=True)[k - 1] if k else None
         by_direction = dict(zip(keys, scores, strict=True))
+
+        def choose_threshold(pair_ids):
+            values = [(score, probability) for key, score, probability in zip(keys, scores, probabilities, strict=True)
+                      if key[0] in pair_ids]
+            k = int(round(sum(probability for _, probability in values)))
+            return (sorted((score for score, _ in values), reverse=True)[k - 1] if k else None), k
+
+        threshold, k = choose_threshold({p["pair_id"] for p in eligible})
+        counts, history, oscillation = {threshold: k}, [], False
+        for _ in range(10):
+            history.append(threshold)
+            edges, log, executor_log = self._assemble(payload, ctx, pairs, by_direction, threshold, before, after)
+            judged = {r["pair_id"] for r in log if not r["status"].startswith("pruned_")}
+            next_threshold, next_k = choose_threshold(judged)
+            counts[next_threshold] = next_k
+            if not next_k:
+                threshold, stop_reason = None, "zero_positive"
+                break
+            if next_threshold == threshold:
+                stop_reason = "fixed_point"
+                break
+            if next_threshold in history:
+                threshold = max(history[history.index(next_threshold):])
+                oscillation, stop_reason = True, "cycle"
+                break
+            threshold = next_threshold
+        else:
+            threshold, stop_reason = max(history), "iteration_limit"
+        reassembled = threshold != history[-1]
+        if reassembled:
+            edges, log, executor_log = self._assemble(payload, ctx, pairs, by_direction, threshold, before, after)
+        stats = {"secondary_pair_count": len(pairs), "completed_secondary_pair_count": len(log),
+                 "secondary_candidate_count": len(keys), "pruned_secondary_pair_count": sum(r["status"].startswith("pruned_") for r in log),
+                 "below_threshold_count": sum(r["status"] == "below_threshold" for r in log),
+                 "no_evidence_count": sum(r["status"] == "no_evidence" for r in log),
+                 "secondary_edge_count": len(edges), "threshold": threshold, "expected_positive_count": counts[threshold],
+                 "threshold_history": history, "threshold_iterations": len(history), "threshold_oscillation": oscillation,
+                 "threshold_stop_reason": stop_reason, "threshold_final_reassembled": reassembled,
+                 "evidence_hard_count": sum(e.get("evidence_hard", False) for e in main_edges + edges),
+                 "evidence_soft_count": sum(not e.get("evidence_hard", False) for e in main_edges + edges),
+                 "secondary_calls": 0, "secondary_input_tokens": 0, "secondary_output_tokens": 0}
+        cost = {**payload.get("cost_summary", {}), "main_usd": payload.get("cost_summary", {}).get("usd", 0.0),
+                "secondary_usd": 0.0, "usd": payload.get("cost_summary", {}).get("usd", 0.0)}
+        result = {**payload, "secondary_complete": True, "secondary_base_config_hash": config_hash,
+                  "completed_secondary_pairs": sorted(p["pair_id"] for p in pairs), "secondary_edges": edges,
+                  "secondary_flags": [], "secondary_log": log, "secondary_model_metrics": {"secondary_calls": 0},
+                  "main_decision_log_version": main.version, "decision_log": [], "executor_log": executor_log,
+                  "stats": stats, "cost_summary": cost}
+        artifact = self.store.save_graph(doc_id, source_hash, config_hash, config, result, upstream_version=main.version,
+                                         manifest_fields={"stage": "edges", "edge_pass": "secondary", "complete": True,
+                                                          "stats": stats, "cost_summary": cost, "llm_transport": "none"})
+        return artifact, False
+
+    def _assemble(self, payload, ctx, pairs, by_direction, threshold, before, after):
+        nodes, chunks = ctx.nodes, list(ctx.chunk_by_id.values())
+        ledger, route = payload.get("pair_cluster_ledger", []), payload["routing"]["route"]
+        main_edges = list(payload.get("main_edges", []))
         edges, log, executor_log = [], [], list(payload.get("executor_log", []))
         for pair in pairs:
             current = main_edges + edges
@@ -85,7 +140,7 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
             selected = max(options) if options else None
             if selected is not None:
                 row.update(score=selected[0], source=selected[1], target=selected[2])
-            if selected is None or not k or selected[0] < threshold:
+            if selected is None or threshold is None or selected[0] < threshold:
                 log.append({**row, "status": "below_threshold"})
                 continue
             score, x, y = selected
@@ -115,22 +170,4 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
             edges, duplicate_log = merge_main_proposals(accepted, edges)
             executor_log.extend(duplicate_log)
             log.append({**row, "status": "created", "edge_count": len(accepted)})
-        stats = {"secondary_pair_count": len(pairs), "completed_secondary_pair_count": len(log),
-                 "secondary_candidate_count": len(keys), "pruned_secondary_pair_count": sum(r["status"].startswith("pruned_") for r in log),
-                 "below_threshold_count": sum(r["status"] == "below_threshold" for r in log),
-                 "no_evidence_count": sum(r["status"] == "no_evidence" for r in log),
-                 "secondary_edge_count": len(edges), "threshold": threshold, "expected_positive_count": k,
-                 "evidence_hard_count": sum(e.get("evidence_hard", False) for e in main_edges + edges),
-                 "evidence_soft_count": sum(not e.get("evidence_hard", False) for e in main_edges + edges),
-                 "secondary_calls": 0, "secondary_input_tokens": 0, "secondary_output_tokens": 0}
-        cost = {**payload.get("cost_summary", {}), "main_usd": payload.get("cost_summary", {}).get("usd", 0.0),
-                "secondary_usd": 0.0, "usd": payload.get("cost_summary", {}).get("usd", 0.0)}
-        result = {**payload, "secondary_complete": True, "secondary_base_config_hash": config_hash,
-                  "completed_secondary_pairs": sorted(p["pair_id"] for p in pairs), "secondary_edges": edges,
-                  "secondary_flags": [], "secondary_log": log, "secondary_model_metrics": {"secondary_calls": 0},
-                  "main_decision_log_version": main.version, "decision_log": [], "executor_log": executor_log,
-                  "stats": stats, "cost_summary": cost}
-        artifact = self.store.save_graph(doc_id, source_hash, config_hash, config, result, upstream_version=main.version,
-                                         manifest_fields={"stage": "edges", "edge_pass": "secondary", "complete": True,
-                                                          "stats": stats, "cost_summary": cost, "llm_transport": "none"})
-        return artifact, False
+        return edges, log, executor_log

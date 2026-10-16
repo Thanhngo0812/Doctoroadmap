@@ -1,7 +1,7 @@
 # 18c-1 — Pass phụ `ml`: ngưỡng tính trên các cặp được phán, lặp tới điểm bất động
 
 **Nguồn chân lý:** [spec pass phụ không LLM](../../doc/a8-pass-phu-ml-spec.md), mục 4 "Ngưỡng theo từng tài liệu" (đã sửa 2026-10-16).
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 18c · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 18c · **Trạng thái:** implemented — kiểm thử xanh, chờ Claude nghiệm thu lại 18d
 
 ## Vì sao
 
@@ -26,11 +26,25 @@ cứu, doc-4 lệch tối đa 0,006.
 
 ## Nghiệm thu
 
-- [ ] Test qua `execute`, bộ chấm giả:
+- [x] Test qua `execute`, bộ chấm giả:
   - ca hội tụ: ngưỡng cuối bằng điểm bất động, khác t₀;
   - ca dao động hai giá trị: chọn ngưỡng lớn hơn;
   - ca k = 0;
   - ca chạm giới hạn 10 lượt.
   Mỗi ca phải thấy trượt khi bỏ luật tương ứng.
-- [ ] Test cũ của 18c vẫn qua, trừ test chốt luật ngưỡng cũ: sửa test đó theo luật mới.
+- [x] Test cũ của 18c vẫn qua, trừ test chốt luật ngưỡng cũ: sửa test đó theo luật mới.
 - [ ] Claude chạy lại 18d.
+
+## Bàn giao triển khai — 2026-10-16
+
+- Đổi `threshold_rule` thành `round-sum-isotonic-on-judged-directions-fixed-point-10-v1`, nên không dùng nhầm cache 18c cũ.
+- Chấm điểm/hiệu chỉnh một lần; mỗi lượt lắp từ main, chỉ tính lại ngưỡng từ chiều ứng viên của các cặp không bị tỉa ở lượt đó.
+- Nhật ký và cạnh thử không đi vào artifact. Nếu ngưỡng được chọn khác lượt cuối, lắp lại bằng ngưỡng ấy; k=0 xoá cạnh thử và dừng.
+- Stats có lịch sử ngưỡng, số lượt, dao động, lý do dừng, cờ lắp lại cuối, k và ngưỡng đã chọn.
+- 4 ca bắt buộc đã thấy đỏ trên mã cũ trước sửa; bộ stage hiện **21 passed**. Bộ đột biến **28/28 detected**, gồm 8 đột biến mới cho vé này.
+- Hồi quy toàn worktree: **1.384 passed**; snapshot riêng phần commit (không lấy mã Pha B đang dở): **1.202 passed**.
+- Chạy stage thật trong kho thử riêng: doc-1 **199 cạnh**, xstk **60**, doc-4 **749**. 0 lời gọi API, 0 USD; lần chạy kế tiếp tái dùng cache.
+- Doc-4 đo riêng: **244,58 giây (4,08 phút)**; hai lượt độc lập ra cùng config_hash và SHA-256 payload. Lượt đo cùng kiểm thử: 463,48 giây, ghi
+  riêng trong báo cáo, không dùng làm phép đo tốc độ không tải nền.
+- Chi tiết, lệnh tái lập và số đo: [báo cáo 18c-1](../../report/v4-18c1-nguong-diem-bat-dong-2026-10-16.md).
+- Không đổi mặc định `llm`, không học lại E5/đổi đặc trưng hoặc mở T-01/D-01. Chưa tự đánh dấu nghiệm thu chất lượng 18d.

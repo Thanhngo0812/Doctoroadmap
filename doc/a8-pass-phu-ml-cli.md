@@ -42,10 +42,20 @@ hay tự buộc chạy lại bản cũ chỉ vì thêm chế độ mới.
 **Chỉ pass phụ ML là 0 lời gọi, 0 USD và không cần `--allow-spend`.** Pass chính, embedding và các khâu đặt tên trong cùng chuỗi vẫn có thể tốn tiền;
 cổng chi cũ vẫn chặn khi chưa cho phép. Dry-run của cả chuỗi có thể còn chi phí ở các khâu đó hoặc `unknown` nếu chưa có đúng artifact đầu vào.
 
-Stage từ chối pass chính chưa hoàn chỉnh. Ngưỡng tính trên chiều ứng viên chưa bị cạnh pass chính tỉa, k = round(tổng xác suất hiệu chỉnh), ngưỡng
-là điểm thứ k giảm dần. k = 0 thì threshold null, không tạo cạnh. Sau đó tỉa lại trước từng cặp; chọn chiều điểm cao hơn, thử câu trích gần neo trước,
-chỉ nhận cạnh cứng qua `validate_main_proposals(require_kind=True)`. Hòa điểm chọn theo bộ `(score, source_id, target_id)` lớn nhất, như bộ lắp
-cạnh nghiên cứu. Không fallback sang LLM hoặc `cong_cu`.
+Stage từ chối pass chính chưa hoàn chỉnh. Theo vé **18c-1**, ngưỡng khởi đầu tính trên chiều ứng viên chưa bị cạnh pass chính tỉa: k = round(tổng
+xác suất hiệu chỉnh), ngưỡng là điểm thứ k giảm dần. Mỗi lượt lắp lại từ cạnh main, rồi tính lại ngưỡng trên **hai chiều ứng viên của các cặp
+không bị tỉa** ở lượt ấy (kể cả cặp dưới ngưỡng hoặc không có căn cứ). Dừng ở điểm bất động; dao động thì chọn ngưỡng lớn nhất **trong vòng**,
+không lấy ngưỡng quá độ trước vòng. Tối đa 10 lượt thử; chạm giới hạn thì chọn ngưỡng lớn nhất đã thử. k = 0 thì threshold null, không tạo cạnh
+và dừng. Nếu chọn ngưỡng khác lượt cuối, lắp lại một lần bằng ngưỡng đã chọn. Chỉ lưu cạnh và nhật ký của lượt cuối này.
+
+`stats` có `threshold_history` (các ngưỡng đã thử trong tối đa 10 lượt), `threshold_iterations`, `threshold_oscillation`, `threshold_stop_reason`
+(`fixed_point`, `cycle`, `zero_positive`, `iteration_limit`), `threshold_final_reassembled`, `threshold` và `expected_positive_count` (k sinh ra
+ngưỡng đã chọn, không phải số cạnh cuối). Lượt lắp lại cuối nếu cần không tính vào số lượt thử. Khóa cache mang luật
+`round-sum-isotonic-on-judged-directions-fixed-point-10-v1`, không tái dùng artifact tính ngưỡng một lần của 18c.
+
+Trong mỗi lượt, tỉa lại trước từng cặp; chọn chiều điểm cao hơn, thử câu trích gần neo trước, chỉ nhận cạnh cứng qua
+`validate_main_proposals(require_kind=True)`. Hòa điểm chọn theo bộ `(score, source_id, target_id)` lớn nhất, như bộ lắp cạnh nghiên cứu.
+Không fallback sang LLM hoặc `cong_cu`. Đặc trưng/điểm/hiệu chỉnh chỉ tính **một lần**, không chấm lại mô hình ở từng lượt lắp.
 
 Tệp mô hình mặc định: `vendor/a8-pass-phu-ml/{model.txt,manifest.json}` trong source checkout, hoặc `doc2roadmap/infrastructure/secondary_models/`
 trong wheel. Không dùng pickle, không tự học lại hay tải mô hình lúc suy luận. Bộ tách từ `underthesea==9.5.0` dùng CRF đóng gói trong thư viện,
@@ -61,3 +71,10 @@ cache theo câu. Đừng tự đổi model/tokenizer/rule nếu muốn dùng đ�
 Lệnh thứ nhất chỉ dùng unit test dữ liệu giả, sửa mã trong bộ nhớ của process con rồi bỏ đi; không sửa source. Lệnh thứ hai chỉ cho bốn tài liệu
 phát triển, đọc pass chính cũ và ghi graph vào kho thử riêng, không chạy lại pass chính hoặc chấm vàng. Nghiệm thu Q7/Q7b/bao đóng và chuỗi D-01
 đầy đủ thuộc vé 18d; hai sách khóa T-01 không dùng để chỉnh hoặc kiểm triển khai.
+
+Kiểm lại luật điểm bất động 18c-1 trong kho riêng (không ghi đè mốc 18c):
+
+```powershell
+.\.tools\uv.exe run python scripts/pass-phu-ml/thu_stage_san_pham.py doc-1 --output tmp/v4-18c1-smoke
+.\.tools\uv.exe run python scripts/pass-phu-ml/thu_stage_san_pham.py doc-4 --output tmp/v4-18c1-smoke
+```
