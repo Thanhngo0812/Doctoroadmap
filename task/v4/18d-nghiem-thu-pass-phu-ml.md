@@ -44,3 +44,16 @@ nhầm `e5.jsonl`, là số trước khi sửa; đã chữa.
   - Ở xstk, ±1 cạnh làm P đổi khoảng 0,1. Độ lệch chuẩn của P qua 6 seed E5 là 0,079.
   - Vì vậy mức ±0,03 không đo được trên vàng xstk. Phán xét xstk theo số cạnh trùng. Đây là ghi chú, không phải nới tiêu chí: doc-1 và doc-4 vẫn
     giữ mức ±0,03.
+
+**Chuỗi đầy đủ d01-02** (chủ dự án cho dùng tiền; Vertex, gemini-3.1-flash-lite). Pass chính chạy mới (v11), dùng chung cho hai chế độ.
+
+| | pass chính | pass phụ | USD cả cuốn | cạnh pass phụ | lộ trình A10 |
+|---|---|---|---|---|---|
+| `ml` (v12 → v16) | 25 giây, 67 lời gọi, 0,124 USD | **18 giây, 0 lời gọi, 0 USD** | **0,124** | 119 | 100 khái niệm, 13 module |
+| `llm` (v17 → v21) | dùng lại | **26,4 phút, 3.802 lời gọi, 2,862 USD** | **2,986** | 204 (141 cứng) | 100 khái niệm, 13 module |
+
+- Chế độ `ml` chạy trọn từ pass chính tới A10 và tên module, artifact đọc được. USD của cả cuốn giảm 96%; pass phụ từ 26 phút xuống 18 giây.
+- Dự toán của `llm` là 5.382 lời gọi và 6,12 USD; chạy thật hết 3.802 lời gọi, vì cặp bị tỉa dần trong lúc chạy.
+- **Hai chế độ khác nhau nhiều:** chỉ 39 cạnh chung, và 30 cạnh chung với cạnh cứng của LLM. d01-02 không có vàng nên không nói được bên nào đúng.
+  d01-02 còn là sách trong tập học của E5. Chất lượng so trên T-01 (vé T-01b).
+- Tổng chi của lượt nghiệm thu này: khoảng 3,1 USD.
