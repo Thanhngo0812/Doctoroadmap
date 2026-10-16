@@ -1,7 +1,7 @@
 # 18b — Đặc trưng cặp của pass phụ trong sản phẩm, kèm lệnh xuất bảng
 
 **Nguồn chân lý:** [spec pass phụ không LLM](../../doc/a8-pass-phu-ml-spec.md), mục 2, 3, 6 và 7.
-**Ai:** nhân viên · Claude kiểm khớp · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không vé nào · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên · Claude kiểm khớp · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không vé nào · **Trạng thái:** đã cài và tự kiểm 2026-10-16, chờ Claude ký kiểm khớp
 
 ## Vì sao
 
@@ -22,14 +22,23 @@ Claude một lệnh để so từng giá trị với bảng nghiên cứu.
 
 ## Nghiệm thu
 
-- [ ] Test miền chạy với bộ tách từ giả:
+- [x] Test miền chạy với bộ tách từ giả:
   - tên một âm tiết không khớp giữa từ ghép;
   - tên có âm tiết "y" giữa từ ghép vẫn khớp;
   - ứng viên đòi hợp đồng cho phép;
   - các đặc trưng thứ tự, cùng mục, cùng chương;
   - ô thiếu được để trống, và bản cài chấm thay bằng −1.
-- [ ] Test kiến trúc: miền không import underthesea.
+- [x] Test kiến trúc: miền không import underthesea.
 - [ ] **Claude kiểm khớp**: xuất bảng cho doc-1, nhap-mon-ml, xstk-ch3-1 và doc-4, rồi so với bảng nghiên cứu. Yêu cầu:
   - cùng tập ứng viên;
   - mọi đặc trưng chênh tối đa 1e-9.
   - Cột lệch thì trả vé.
+
+## Bàn giao nhân viên 2026-10-16
+
+- Miền `secondary_features.py`, tokenizer hạ tầng underthesea 9.5.0 có cache theo câu; đã cập nhật phụ thuộc/lockfile.
+- CLI: `doc2roadmap a8-secondary-features --doc-id <mã> --main-version <v> --output-dir <thư mục>`; có `--artifacts` và `--chunks-artifacts`.
+- Đã xuất bốn bảng trong `tmp/v4-18b-features/`. Tự kiểm bằng `scripts/pass-phu-ml/kiem_khop_san_pham.py`: cả bốn cùng tập ứng viên và sai lệch
+  tối đa **0** trên **82** đặc trưng; số ứng viên lần lượt **1.018 / 209 / 298 / 4.652**. Không dùng dữ liệu D-01 hoặc hai sách khóa.
+- Checkbox Claude để mở vì chưa thay người nghiệm thu. Tự kiểm đã đạt để nối 18c; Claude có thể chạy lại nguyên lệnh đã ghi.
+- Xem [báo cáo](../../report/v4-18bc-pass-phu-ml-2026-10-16.md) và [hướng dẫn CLI](../../doc/a8-pass-phu-ml-cli.md).

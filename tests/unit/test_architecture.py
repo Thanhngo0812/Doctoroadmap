@@ -32,7 +32,7 @@ def test_domain_only_uses_stdlib_and_specified_graph_dependency() -> None:
     for path in Path("src/doc2roadmap/domain").rglob("*.py"):
         for module, level in _imports(path):
             if level == 0:
-                allowed = _DOMAIN_STDLIB | ({"networkx"} if path.name == "nomination.py" else set())
+                allowed = _DOMAIN_STDLIB | ({"networkx"} if path.name in {"nomination.py", "secondary_features.py"} else set())
                 assert module.split(".", 1)[0] in allowed, f"{path}: {module}"
 
 

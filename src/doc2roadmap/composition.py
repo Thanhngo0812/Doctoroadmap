@@ -220,6 +220,15 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
         ), allowed=allow_spend)
     model = model_for(settings.extraction_max_output_tokens)
     generation = {"temperature": 0.0, "max_output_tokens": settings.extraction_max_output_tokens}
+    if settings.secondary_mode == "ml":
+        from doc2roadmap.application.use_cases.build_secondary_ml_edges import BuildSecondaryMLEdges
+        from doc2roadmap.infrastructure.secondary_model import LightGBMSecondaryScorer
+        from doc2roadmap.infrastructure.secondary_tokenizer import VietnameseWordTokenizer
+
+        secondary = BuildSecondaryMLEdges(store, LightGBMSecondaryScorer(), VietnameseWordTokenizer())
+    else:
+        secondary = BuildSecondaryEdges(store, model, concurrency=roadmap_concurrency,
+                                         window_pairs=settings.secondary_window_pairs, generation=generation)
     return BuildLearningGraph(
         BuildClusters(
             store,
@@ -253,13 +262,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None):
             concurrency=roadmap_concurrency,
             generation=generation,
         ),
-        BuildSecondaryEdges(
-            store,
-            model,
-            concurrency=roadmap_concurrency,
-            window_pairs=settings.secondary_window_pairs,
-            generation=generation,
-        ),
+        secondary,
         ValidateGraph(store),
         # Neo định nghĩa C8 v3 thay C8 v2 từ 2026-09-26 (chủ dự án duyệt, vé v2-04); danh tính sau neo (vé v2-05).
         # Giữ generation mặc định của hai stage — đúng cấu hình đã đo trên dữ liệu phát triển.

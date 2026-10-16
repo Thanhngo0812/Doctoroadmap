@@ -50,6 +50,12 @@ def _parser() -> argparse.ArgumentParser:
     roles.add_argument('--transfer-from-chunks-version', type=int)
     roles.add_argument('--dry-run', action='store_true')
     roles.add_argument('--allow-spend', action='store_true')
+    features = commands.add_parser('a8-secondary-features', help='xuất CSV 82 đặc trưng E5 từ pass chính, không gọi mô hình')
+    features.add_argument('--doc-id', required=True)
+    features.add_argument('--main-version', type=int, required=True)
+    features.add_argument('--output-dir', type=Path, required=True)
+    features.add_argument('--artifacts', type=Path, help='kho graph; mặc định artifact_dir')
+    features.add_argument('--chunks-artifacts', type=Path, help='kho chunk nếu nằm ngoài kho graph')
     canonical = commands.add_parser("a4", help="hợp nhất thực thể và mô tả chuẩn (cần --gold); --names-only/--prepare không gọi mô hình phán")
     canonical.add_argument("--doc-id", required=True)
     mode = canonical.add_mutually_exclusive_group()
@@ -555,6 +561,15 @@ def main(argv: list[str] | None = None) -> int:
             _json({**compare_nodes(first.payload["nodes"], second.payload["nodes"]),
                    "redirect_count": len(second.payload["redirects"]),
                    "first_version": first.version, "second_version": second.version})
+        elif args.command == 'a8-secondary-features':
+            from doc2roadmap.application.use_cases.export_secondary_features import ExportSecondaryFeatures
+            from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+            from doc2roadmap.infrastructure.secondary_tokenizer import VietnameseWordTokenizer
+
+            store = JsonArtifactStore(args.artifacts) if args.artifacts else build_artifact_store()
+            chunks_store = JsonArtifactStore(args.chunks_artifacts) if args.chunks_artifacts else None
+            _json(ExportSecondaryFeatures(store, VietnameseWordTokenizer()).execute(
+                args.doc_id, main_version=args.main_version, output_dir=args.output_dir, chunks_store=chunks_store))
         elif args.command == 'label-roles':
             use_case = build_region_roles(allow_spend=args.allow_spend and not args.dry_run)
             use_case.quality_reason = args.allow_text_quality_reason

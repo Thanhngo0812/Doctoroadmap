@@ -30,6 +30,7 @@ class Settings(BaseSettings):
     llm_tpm_budget: int = Field(default=1_600_000, gt=0)
     llm_rpm_budget: int | None = Field(default=None, gt=0)
     secondary_window_pairs: int | None = Field(default=None, gt=0)
+    secondary_mode: Literal["llm", "ml"] = "llm"
     extraction_model_id: str = "gemini-3.1-flash-lite"
     extraction_few_shot: Path | None = None
     merge_model_id: str = "gemini-3.1-flash-lite"

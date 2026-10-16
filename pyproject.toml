@@ -21,6 +21,7 @@ dependencies = [
   "lightgbm==4.7.0",
   "scikit-learn==1.9.1",
   "joblib==1.6.0",
+  "underthesea==9.5.0",
 ]
 
 [project.optional-dependencies]
@@ -34,6 +35,7 @@ packages = ["src/doc2roadmap"]
 
 [tool.hatch.build.targets.wheel.force-include]
 "vendor/a1-nhe" = "doc2roadmap/infrastructure/parsing/nhe_models"
+"vendor/a8-pass-phu-ml" = "doc2roadmap/infrastructure/secondary_models"
 
 [tool.pytest.ini_options]
 addopts = "-q"
