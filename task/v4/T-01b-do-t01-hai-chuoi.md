@@ -6,7 +6,7 @@
 - [cổng 19l](../../report/v4-19l-cong-doi-mac-dinh-2026-10-17.md).
 
 **Ai:** Claude · **Chi phí mô hình:** ước 6–8 USD; dry-run từng bước, chủ dự án duyệt chi sau dry-run · **Chặn bởi:** T-01a bước 8 (xong 2026-10-17)
-· **Trạng thái:** chờ duyệt chi
+· **Trạng thái:** xong 2026-10-18 — **đạt**, chi khoảng 4,35 USD; [báo cáo](../../report/v4-T01b-2026-10-18.md)
 
 ## Vì sao
 
@@ -33,6 +33,10 @@ Vàng gắn với canonical v1, tức chuỗi v3.
 | **B — gộp** | checkout sạch `36b81ff` | bản nhãn hiện có | so với A: nghiệm thu đợt gộp |
 | **C — gộp + 05a** | checkout sạch `36b81ff` | `label-roles` lại theo luật 05a | sản phẩm hiện tại; so với B: số của vé 05 |
 
+- **Nhánh C chờ vé [05c](05c-nhan-vung-moi-toi-canonical.md).** Với kiểu sách T-01, nhãn vùng gán lại hiện không tới được canonical, nên
+  chạy C trước khi sửa sẽ ra y hệt B.
+  - Chạy C bằng checkout sạch của commit chứa 05c.
+  - Chủ dự án cho chạy C ngay khi 05c commit xong, không cần hỏi lại (2026-10-17). Khoản này nằm trong khoảng 7 USD đã duyệt.
 - Luật 05a chỉ đổi vai trò ở `d01-t02`: 2 nhóm tiêu đề lặp, 10 mục đang khoá `de_cuong`. Đếm bằng script chỉ in số nguyên. Ở `d01-t01` nhánh C
   trùng nhánh B, không chạy.
 - Cả ba nhánh dùng pass phụ ML mặc định. Không có quyết định người duyệt gộp (`--identity-review`, `--merge-review`).
@@ -81,9 +85,9 @@ Chốt ngày 2026-10-17, trước khi chấm. **Không sửa sau khi thấy số
 
 ## Nghiệm thu
 
-- [ ] Báo cáo `report/v4-T01b-<ngày>.md`, chỉ số liệu:
+- [x] Báo cáo `report/v4-T01b-<ngày>.md`, chỉ số liệu:
   - SHA mã của từng nhánh, bảng nguồn gốc artifact;
   - bảng A/B/C theo cuốn;
   - phán theo tiêu chí trên, kèm chi thật so với dự toán.
-- [ ] Script chấm allowlist có test chuỗi bí mật giả, đã thấy đỏ trên bản ngây thơ.
-- [ ] Kế hoạch v4 ghi kết luận của đợt gộp và việc tiếp theo.
+- [x] Script chấm allowlist có test chuỗi bí mật giả, đã thấy đỏ trên bản ngây thơ.
+- [x] Kế hoạch v4 ghi kết luận của đợt gộp và việc tiếp theo.
