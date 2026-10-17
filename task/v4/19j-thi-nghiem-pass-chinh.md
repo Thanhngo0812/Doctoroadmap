@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md), pha 3.
 **Ai:** Claude · **Chi phí mô hình:** khoảng 1,5 USD (thêm khoảng 2,2 USD nếu chạy doc-4); nằm trong trần 10 USD của đợt, dry-run trước mỗi lượt
-· **Chặn bởi:** không · **Trạng thái:** sẵn sàng
+· **Chặn bởi:** không · **Trạng thái:** xong 2026-10-17, chi thật 3,06 USD
 
 ## Vì sao
 
@@ -19,5 +19,10 @@
 
 ## Nghiệm thu
 
-- [ ] Báo cáo có dải nhiễu E4, kết quả (14) gồm E4 và thời gian, và quyết định về 19k.
-- [ ] Chi phí thật nằm trong trần.
+- [x] Báo cáo có dải nhiễu E4, kết quả (14) gồm E4 và thời gian, và quyết định về 19k.
+- [x] Chi phí thật nằm trong trần.
+
+**Kết quả:** [báo cáo 19j](../../report/v4-19j-thi-nghiem-pass-chinh-2026-10-17.md).
+- Pass chính tất định theo đầu vào, nên nhiễu được đo bằng cách xáo thứ tự `mentioned_elsewhere`.
+- Song song nhanh 3–10 lần, rẻ hơn 20–33%. E4 của doc-1 và doc-4 trong dải; xstk tụt P/R bao đóng.
+- **19k nhận, bật mặc định**; quyết định ghi ở spec mục 1b.

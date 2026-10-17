@@ -144,6 +144,16 @@ Mọi sửa đổi chỉ áp ở chuỗi `gop`. Mỗi sửa đổi có mục ri�
   - các phiên của một chương chạy song song.
 - Nếu không đạt, mục này bị bỏ. Claude ghi kết quả vào spec này trước khi giao vé.
 
+**Kết quả 19j (2026-10-17): nhận, bật làm mặc định** ([báo cáo](../report/v4-19j-thi-nghiem-pass-chinh-2026-10-17.md)).
+- **Tốc độ và tiền:** pass chính doc-1 từ 124–152 s xuống 18,5 s; xstk từ 130–157 s xuống 12,4 s; doc-4 từ 825 s xuống 285 s, nút chặn là trần
+  token/phút. Rẻ hơn 20–33%.
+- **E4:** doc-1 bằng hoặc tốt hơn dải nhiễu; doc-4 lệch lượt 17i tối đa 0,016. xstk (một chương) tụt P/R bao đóng: R 0,18 so với dải 0,26–0,32.
+  Cổng 19l soi lại tài liệu này.
+- **Hình dạng đầu vào khi bật:** giữ khoá `previous_edges_in_chapter` với danh sách rỗng và `previous_edges_omitted_count` bằng 0, đúng như lượt
+  thí nghiệm. Prompt hệ thống không đổi.
+- **Phát hiện kèm theo:** pass chính tất định theo đầu vào. Chạy lại nguyên trạng ra y hệt từng byte, nên dải nhiễu E4 là dải của nhiễu đầu vào
+  không đổi nghĩa.
+
 ### Pha 2. Tăng tốc (không đổi khoá cache)
 
 1. **Dựng câu ứng viên neo:** chuẩn hoá các chunk **một lần** cho cả tài liệu, thay vì cho từng khái niệm. Câu ứng viên phải giống hệt trước.
@@ -153,7 +163,9 @@ Mọi sửa đổi chỉ áp ở chuỗi `gop`. Mỗi sửa đổi có mục ri�
 3. **Stage mention:**
    - tính độ gần ngữ nghĩa bằng thư viện số học vector;
    - khớp tên chính xác một lần cho cả tài liệu;
-   - không embed lại các tên đã embed ở stage cụm.
+   - ~~không embed lại các tên đã embed ở stage cụm~~ — **bỏ (2026-10-17, khi kiểm 19g):** stage cụm embed tên với `SEMANTIC_SIMILARITY`,
+     còn stage mention embed mô tả với `RETRIEVAL_QUERY`, nên không có vector nào dùng lại được. Nghiên cứu mục 4 ghi sai chỗ này. Embed lại
+     khoảng 630 query của doc-4 tốn dưới 0,01 USD và vài giây.
    Mention map phải giống hệt trước.
 4. **Chạy song song ở canonical:**
    - nâng số lời gọi đồng thời mặc định lên khoảng 16, vẫn đi qua bộ giới hạn tốc độ hiện có;

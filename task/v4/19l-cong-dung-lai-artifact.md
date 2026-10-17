@@ -19,7 +19,11 @@
   - trượt về chất lượng thì chưa bật; sửa rồi chạy lại phần hỏng;
   - E4 lệch mà vẫn trong dải nhiễu thì coi là qua;
   - vượt tiền hay thời gian mà chất lượng đạt thì vẫn bật và mở vé tối ưu.
-- **Báo cáo cổng:** phút/cuốn, USD/cuốn, lời gọi theo phần, và các chỗ đã đọc.
+- **Báo cáo cổng:**
+  - phút/cuốn, USD/cuốn, lời gọi theo phần, và các chỗ đã đọc;
+  - thời gian toàn stage mentions của doc-4, cho ô còn mở của 19g.
+- **Lưu ý cấu hình:** `.env` của máy chủ dự án đã sửa ngày 2026-10-17. `CANONICAL_CONCURRENCY` từ 4 thành 16, bỏ `VERTEX_CONCURRENCY`.
+  Trước khi chạy cổng, in `Settings()` để chắc giá trị thật.
 
 ## Nghiệm thu
 
