@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [nghiên cứu vé 05](../../report/v4-05-a2-de-cuong-lap-2026-10-17.md), mục 2 và 6.
 **Ai:** Claude · **Chi phí mô hình:** ước dưới 0,5 USD; dry-run trước, chủ dự án duyệt · **Chặn bởi:** [05a](05a-a2-luat-de-cuong-lap.md) ·
-**Trạng thái:** chờ
+**Trạng thái:** xong 2026-10-17 — đạt, chi khoảng 0,21 USD; [báo cáo](../../report/v4-05b-chay-lai-xstk-doc4-2026-10-17.md)
 
 ## Vì sao
 
@@ -37,7 +37,12 @@ Cả ba phải đo bằng lượt chạy thật.
 
 ## Nghiệm thu
 
-- [ ] Báo cáo có SHA mã, bảng nguồn gốc artifact, chi thật so với dự toán.
-- [ ] Bảng trước và sau trên xstk: khái niệm đích trong dãy học, cạnh vàng trong phạm vi, E4. Có các chỗ đã đọc.
-- [ ] doc-4: nhãn của mục câu hỏi ôn tập; E4 so với cổng 19l. Đọc nếu lệch.
-- [ ] Artifact mới nằm ở kho chính. Kế hoạch v4 ghi việc tiếp theo của hàng 05.
+- [x] Báo cáo có SHA mã, bảng nguồn gốc artifact, chi thật so với dự toán.
+- [x] Bảng trước và sau trên xstk: khái niệm đích trong dãy học, cạnh vàng trong phạm vi, E4. Có các chỗ đã đọc.
+- [x] doc-4: nhãn của mục câu hỏi ôn tập; E4 so với cổng 19l. Đọc nếu lệch.
+- [x] Artifact mới nằm ở kho chính. Kế hoạch v4 ghi việc tiếp theo của hàng 05.
+
+**Kết quả (2026-10-17):**
+- **xstk:** khái niệm đích trong dãy học 16 → 20/25; cạnh vàng trong phạm vi 32 → 50/62; R bao đóng 0,126 → 0,270; Q6 0,541 → 0,262.
+- **doc-4:** câu hỏi ôn tập ra `bai_tap`. Nhãn mới đổi câu ứng viên của 24 khái niệm, không khái niệm nào thuộc vàng, nên không chạy bước 2 (đồ thị doc-4
+  khoảng 1,4 USD). Vì đồ thị không chạy lại nên E4 doc-4 giữ nguyên số của cổng 19l.
