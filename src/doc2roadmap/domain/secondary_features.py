@@ -5,6 +5,7 @@ import math
 import re
 import unicodedata
 from collections import defaultdict
+from functools import cache
 
 from .canonical import alias_kind
 from .mentions import _mention_normalize, _names
@@ -196,6 +197,9 @@ class SecondaryFeatureContext:
 
     def __init__(self, payload, chunks, before=4, after=2, *, tokenize):
         self.tokenize = tokenize
+        self.normalized = cache(_mention_normalize)
+        self.segmented = cache(lambda text: segmented(text, tokenize))
+        self.window_features = cache(self.window_features)
         import networkx as nx
         self.nodes = payload["nodes"]
         self.node_by_id = {node["node_id"]: node for node in self.nodes}
@@ -224,7 +228,7 @@ class SecondaryFeatureContext:
         # được nhắc trong một cửa sổ.
         taught = [node_id for node_id, node in self.node_by_id.items()
                   if node.get("teaching_status") == "taught" and self.window_cache[node_id][0]]
-        normalized_windows = {y: [(s, _mention_normalize(s)) for s in self.window_cache[y][0]] for y in taught}
+        normalized_windows = {y: [(s, self.normalized(s)) for s in self.window_cache[y][0]] for y in taught}
         self.named_in = {y: {x for x in self.node_by_id
                              if x != y and any(hit(self.pattern_cache[x], s, n) for s, n in normalized_windows[y])}
                          for y in taught}
@@ -246,23 +250,29 @@ class SecondaryFeatureContext:
         values = [self.order[c] for c in self.mentioned[node_id] if c in self.order]
         return (max(values) - min(values)) / self.chunk_count if values else 0.0
 
+    def found(self, patterns, text):
+        return hit(patterns, text, self.normalized(text))
+
+    def found_words(self, patterns, text):
+        return hit(patterns, text, self.segmented(text))
+
     def window_features(self, x, y):
         """Tên X trong cửa sổ định nghĩa của Y: số câu có tên, có trong câu neo không, vị trí câu gần neo nhất, từ báo đứng trước."""
         sentences, anchor_index = self.window_cache[y]
-        hits = [i for i, sentence in enumerate(sentences) if found(self.pattern_cache[x], sentence)]
+        hits = [i for i, sentence in enumerate(sentences) if self.found(self.pattern_cache[x], sentence)]
         anchor = (self.node_by_id[y].get("anchor") or {}).get("sentence", "")
         relative = min((i - anchor_index for i in hits), key=abs) if hits and anchor_index is not None else None
         cues = set().union(*(cues_before(self.pattern_cache[x], sentences[i]) for i in hits)) if hits else set()
         # Trong câu neo, tên Y đứng trước tên X ("Y là … X") hay sau.
-        normalized = _mention_normalize(anchor)
+        normalized = self.normalized(anchor)
         x_at = min((m.start() for p, raw in self.pattern_cache[x] if raw is None or raw.search(anchor)
                     for m in p.finditer(normalized)), default=None)
         y_at = min((m.start() for p, raw in self.pattern_cache[y] if raw is None or raw.search(anchor)
                     for m in p.finditer(normalized)), default=None)
-        word_hits = [i for i in hits if found_words(self.word_cache[x], sentences[i], self.tokenize)]
-        return {"cau": len(sentences), "co_ten": len(hits), "trong_neo": int(bool(anchor) and found(self.pattern_cache[x], anchor)),
+        word_hits = [i for i in hits if self.found_words(self.word_cache[x], sentences[i])]
+        return {"cau": len(sentences), "co_ten": len(hits), "trong_neo": int(bool(anchor) and self.found(self.pattern_cache[x], anchor)),
                 "co_tu": len(word_hits),
-                "neo_tu": int(bool(anchor) and found(self.pattern_cache[x], anchor) and found_words(self.word_cache[x], anchor, self.tokenize)),
+                "neo_tu": int(bool(anchor) and self.found(self.pattern_cache[x], anchor) and self.found_words(self.word_cache[x], anchor)),
                 "vi_tri": relative, "cues": cues, "y_truoc_x_neo": int(x_at is not None and y_at is not None and y_at < x_at),
                 "truoc_neo": int(any(anchor_index is not None and i < anchor_index for i in hits))}
 
@@ -331,8 +341,8 @@ def pair_features(ctx, x, y, pair=None):
         "x_so_def": len(def_x), "y_so_def": len(def_y),
         "vai_tro_neo_y": (chunk_by_id.get((ny.get("anchor") or {}).get("chunk_id")).role
                           if (ny.get("anchor") or {}).get("chunk_id") in chunk_by_id else ""),
-        "ten_x_trong_ten_y": int(found(pattern_cache[x], ny["name"])), "ten_y_trong_ten_x": int(found(pattern_cache[y], nx_["name"])),
-        "do_dai_ten_x": len(_mention_normalize(nx_["name"]).split()), "do_dai_ten_y": len(_mention_normalize(ny["name"]).split()),
+        "ten_x_trong_ten_y": int(ctx.found(pattern_cache[x], ny["name"])), "ten_y_trong_ten_x": int(ctx.found(pattern_cache[y], nx_["name"])),
+        "do_dai_ten_x": len(ctx.normalized(nx_["name"]).split()), "do_dai_ten_y": len(ctx.normalized(ny["name"]).split()),
     }
 
     role = result.pop("vai_tro_neo_y")

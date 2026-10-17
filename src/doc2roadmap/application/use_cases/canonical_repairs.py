@@ -4,6 +4,7 @@ from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.stage_measurements import measure_phase
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.canonical_decisions import validate_partition
+from .canonical_a4_rules import DEFAULT_A4_RULES
 
 
 BATCH_INSTRUCTION = """
@@ -23,8 +24,10 @@ def repair_config(size):
 
 def run_repairs(reasoning, repairs, group_input, sources, previous_log, logs, metrics):
     gop = getattr(reasoning, "upstream_chain", "v3") == "gop"
+    rules = getattr(reasoning, "a4_rules", DEFAULT_A4_RULES)
     jobs = [("repair", {"repair_of_cut_edge": True, "groups": [group_input(id) for id in combined]}, PARTITION_SCHEMA,
-             lambda value, combined=combined: validate_partition(value, {id: sources[id] for id in combined}, gop=gop))
+             lambda value, combined=combined: validate_partition(value, {id: sources[id] for id in combined},
+                gop=gop, coextensive_identity=rules["coextensive_identity"]))
             for _, _, combined in repairs]
     if not gop or reasoning.repair_batch_size == 1:
         before = metrics["repair_calls"]

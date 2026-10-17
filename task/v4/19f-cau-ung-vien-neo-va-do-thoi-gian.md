@@ -1,7 +1,7 @@
 # 19f — Dựng câu ứng viên neo một lần, đo thời gian đủ phần
 
 **Nguồn chân lý:** [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md), pha 2 mục 1–2.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** sẵn sàng giao
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã cài và kiểm chứng 2026-10-17
 
 ## Vì sao
 
@@ -17,7 +17,11 @@
 
 ## Nghiệm thu
 
-- [ ] Test trên fixture thật: câu ứng viên trước và sau cùng băm.
-- [ ] Manifest canonical có số đo cho từng đoạn CPU kể trên; manifest đặt tên module có thời gian.
-- [ ] Ghi số giây trước và sau cho một tài liệu lớn có sẵn trong kho, 0 USD, chạy ở kho thử.
-- [ ] Khoá cache không đổi. Toàn bộ test qua.
+- [x] Test trên fixture thật: câu ứng viên trước và sau cùng băm.
+- [x] Manifest canonical có số đo cho từng đoạn CPU kể trên; manifest đặt tên module có thời gian.
+- [x] Ghi số giây trước và sau cho một tài liệu lớn có sẵn trong kho, 0 USD, chạy ở kho thử.
+- [x] Khoá cache không đổi. Toàn bộ test qua.
+
+**Kiểm chứng 2026-10-17:** doc-4 (630 node, 671 chunk), `prepare_anchors`: 257,526 → 38,667 giây (nhanh hơn 6,66 lần), băm ứng viên và băm vùng ngoài nội dung giống hệt. Fixture thật và phép đo CPU: 60 test qua. Chi tiết ở [báo cáo 19f–19h](../../report/v4-19fh-neo-va-song-song-2026-10-17.md).
+
+Toàn kho: **1.617 test qua**, xem [báo cáo tích hợp](../../report/v4-19-phan-tich-va-kiem-chung-2026-10-17.md).

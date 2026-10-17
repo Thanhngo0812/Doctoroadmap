@@ -86,35 +86,35 @@ def _symbolic(name):
     return any(char.isdigit() or char in "^_{},()" or unicodedata.normalize("NFKC", char) != char for char in name)
 
 
-def symbolic_name_chunks(node, chunks):
+def symbolic_name_chunks(node, chunks, *, normalize=_compact):
     """Chunk nào nhắc tên ký hiệu của khái niệm, tìm trên toàn tài liệu sau khi bỏ khoảng trắng.
 
     Mention map (A6) khớp tên theo ranh giới từ nên bỏ sót `𝐅 𝑚 , 𝑛` của tên `𝐅^{m,n}`; tên chữ thường thì không cần — và
     so sau khi bỏ khoảng trắng sẽ khớp nhầm ("Addition" trong "additional").
     """
     values = [node["name"], *(alias["name"] if isinstance(alias, dict) else alias for alias in node.get("aliases", []))]
-    names = {_compact(value) for value in values if _symbolic(value) and len(_compact(value)) >= 3}
-    return {chunk.chunk_id for chunk in chunks if names and any(name in _compact(chunk.text) for name in names)}
+    names = {normalize(value) for value in values if _symbolic(value) and len(normalize(value)) >= 3}
+    return {chunk.chunk_id for chunk in chunks if names and any(name in normalize(chunk.text) for name in names)}
 
 
 def _sentences(text):
     return [(span.start, text[span.start:span.end].strip()) for span in UnicodeSentenceSplitter().split(text)]
 
 
-def _names(node):
+def _names(node, normalize=_compact):
     values = {node["name"], *(alias["name"] if isinstance(alias, dict) else alias for alias in node.get("aliases", []))}
-    return {_compact(value) for value in values if len(_compact(value)) >= 2}
+    return {normalize(value) for value in values if len(normalize(value)) >= 2}
 
 
-def heading_chunks(node, chunks):
+def heading_chunks(node, chunks, *, normalize=_compact):
     """First chunk of a named section, or a chunk opening with a named block title."""
-    names = _names(node)
+    names = _names(node, normalize)
     found, previous_path = {}, ()
     for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id)):
         if getattr(chunk, "role", "noi_dung") != "noi_dung":
             continue
         path = tuple(getattr(chunk, "section_path", None) or ())
-        if path != previous_path and path and any(name in _compact(path[-1]) for name in names):
+        if path != previous_path and path and any(name in normalize(path[-1]) for name in names):
             found[chunk.chunk_id] = (path[-1], 0)
         previous_path = path
         offset = 0
@@ -122,40 +122,40 @@ def heading_chunks(node, chunks):
             title = line.strip()
             offset += len(line)
             if (title and len(title) <= 140 and not title.endswith((".", "。", "!", "?", "؟"))
-                    and any(name in _compact(title) for name in names)):
+                    and any(name in normalize(title) for name in names)):
                 found[chunk.chunk_id] = (title, offset)
                 break
     return found
 
 
-def candidate_sentences(node, chunks, *, limit=6, headings=None):
+def candidate_sentences(node, chunks, *, limit=6, headings=None, normalize=_compact, split_sentences=_sentences):
     """Căn cứ A3, rồi khối mang tên khái niệm, rồi câu nhắc tên theo vị trí.
 
     Câu căn cứ A3 luôn là ứng viên: tên do mô hình đặt ("Hàng hoặc cột tỷ lệ") thường không có nguyên văn trong sách,
     còn căn cứ thì đã được kiểm là có. Ưu tiên mỗi chunk một câu trước khi lấy câu thứ hai của cùng chunk.
     """
-    names = _names(node)
-    headings = heading_chunks(node, chunks) if headings is None else headings
+    names = _names(node, normalize)
+    headings = heading_chunks(node, chunks, normalize=normalize) if headings is None else headings
     # Khớp theo câu trích chứ không theo offset: offset căn cứ tính trên toàn văn bản, không trên chunk.
     evidence = {}
     for span in node.get("evidence", []):
-        if isinstance(span, dict) and "chunk_id" in span and _compact(span.get("quote", "")):
-            evidence.setdefault(span["chunk_id"], []).append(_compact(span["quote"]))
+        if isinstance(span, dict) and "chunk_id" in span and normalize(span.get("quote", "")):
+            evidence.setdefault(span["chunk_id"], []).append(normalize(span["quote"]))
     found = []
     for chunk in sorted(chunks, key=lambda value: (value.order_index, value.chunk_id)):
         if getattr(chunk, "role", "noi_dung") != "noi_dung":
             continue
         title = headings.get(chunk.chunk_id)
         if title:
-            body = _sentences(chunk.text[title[1]:])
+            body = split_sentences(chunk.text[title[1]:])
             if body:
                 start, sentence = body[0]
                 found.append({"chunk_id": chunk.chunk_id, "order_index": chunk.order_index,
                               "char_start": title[1] + start, "sentence": sentence,
                               "context": " ".join([title[0], *(text for _, text in body[:2])]), "rank": 1})
-        sentences = _sentences(chunk.text)
+        sentences = split_sentences(chunk.text)
         for index, (start, sentence) in enumerate(sentences):
-            compact = _compact(sentence)
+            compact = normalize(sentence)
             # Câu chứa đầu câu trích, hoặc nằm trọn trong câu trích dài nhiều câu.
             cited = any(quote[:40] in compact or (len(compact) >= 8 and compact in quote)
                         for quote in evidence.get(chunk.chunk_id, []))

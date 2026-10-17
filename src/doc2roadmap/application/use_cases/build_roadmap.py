@@ -41,8 +41,11 @@ def render_roadmap_html(payload):
         aside = f"<h3>Nhắc tới</h3><ul>{mentions}</ul>" if mentions else ""
         prior = ", ".join(module_id.replace("module_", "") for module_id in module.get("module_dependencies", []))
         prior = f"<p>Học trước: module {html.escape(prior)}</p>" if prior else ""
+        description = ''.join('<p>' + html.escape(sentence['text']) + '</p>'
+                              for sentence in module.get('description', []) if isinstance(sentence, dict))
+        code = ('<small>Mục ' + html.escape(module['section_code']) + '</small>') if module.get('section_code') else ''
         module_rows.append(
-            f'<section><h2>{module["index"] + 1}. {html.escape(module["title"])}</h2>{prior}<ol>{"".join(items)}</ol>{aside}</section>'
+            f'<section><h2>{module["index"] + 1}. {html.escape(module["title"])}</h2>{code}{description}{prior}<ol>{"".join(items)}</ol>{aside}</section>'
         )
     excluded_rows = []
     for status, heading in (("prior_knowledge", "Kiến thức nền cần có"), ("not_subject_matter", "Không đưa vào lộ trình")):

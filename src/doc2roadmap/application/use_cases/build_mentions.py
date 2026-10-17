@@ -3,6 +3,8 @@ from __future__ import annotations
 from collections import Counter
 from time import perf_counter
 
+import numpy as np
+
 from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
 from doc2roadmap.domain.canonical import digest
@@ -12,10 +14,41 @@ from doc2roadmap.application.graph_chain import graph_chain_fields
 from doc2roadmap.domain.mentions import (
     build_mention_derivatives,
     build_mention_map,
-    dense_mentions,
-    document_common_names,
-    exact_mentions,
+    _unit,
+    _rank_dense,
+    document_mentions,
 )
+
+
+def dense_mentions(node_vectors, chunk_vectors, *, top_k, min_z):
+    if not isinstance(top_k, int) or isinstance(top_k, bool) or top_k < 1:
+        raise ValueError("dense top_k phải là số nguyên dương")
+    node_ids, chunk_ids = sorted(node_vectors), sorted(chunk_vectors)
+    nodes = {key: _unit(node_vectors[key]) for key in node_ids}
+    chunks = {key: _unit(chunk_vectors[key]) for key in chunk_ids}
+    if not node_ids or not chunk_ids:
+        return {}, {}
+    raw = np.asarray([nodes[key] for key in node_ids]) @ np.asarray([chunks[key] for key in chunk_ids]).T
+    result, deviations = _rank_dense(raw.tolist(), node_ids, chunk_ids, top_k, min_z)
+    # BLAS and Python sum round differently. Recheck numerically ambiguous
+    # rankings/thresholds with the historical accumulation order.
+    tolerance = 8 * np.finfo(float).eps * (len(nodes[node_ids[0]]) + len(node_ids) + len(chunk_ids))
+    unique_columns = list({chunks[key]: i for i, key in enumerate(chunk_ids)}.values())
+    column_mean = np.asarray([sum(float(value) for value in raw[:, j]) / len(node_ids)
+                              for j in range(len(chunk_ids))])
+    ordered = np.sort((2.0 * raw - column_mean)[..., unique_columns], axis=1)
+    ambiguous = bool(np.any(np.diff(ordered, axis=1) <= tolerance))
+    _, scores = result
+    for node_id in node_ids:
+        if deviations[node_id]:
+            error = 8 * tolerance * (1 + abs(min_z)) / deviations[node_id]
+            ranked = sorted(chunk_ids, key=lambda key: (-scores[node_id, key], key))
+            ambiguous |= any(abs(scores[node_id, key] - min_z) <= error for key in ranked[:top_k])
+    if ambiguous:
+        raw = [[sum(left * right for left, right in zip(nodes[node_id], chunks[chunk_id], strict=True))
+                for chunk_id in chunk_ids] for node_id in node_ids]
+        result, _ = _rank_dense(raw, node_ids, chunk_ids, top_k, min_z)
+    return result
 
 
 class BuildMentions:
@@ -74,8 +107,8 @@ class BuildMentions:
             raise ValueError("retrieval và chunks không cùng tài liệu nguồn")
         if retrieval.manifest.get("embedding_model_id") != self.embedding.embedding_model_id:
             raise ValueError("mô hình embedding query không khớp chỉ mục chunk")
-        common_names = document_common_names(clusters.payload["nodes"], chunks.result.chunks,
-                                              threshold=self.common_name_fraction)
+        common_names, exact, legacy_exact = document_mentions(
+            clusters.payload["nodes"], chunks.result.chunks, threshold=self.common_name_fraction)
         config = {
             **graph_chain_fields(clusters, canonical),
             "algorithm_id": "mention-map-v4",
@@ -98,8 +131,6 @@ class BuildMentions:
             "pair_cluster_top_k": self.pair_cluster_top_k,
             "missing_concept_heuristic": "disabled-unmeasured-precision",
         }
-        exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=common_names)
-        legacy_exact = exact_mentions(clusters.payload["nodes"], chunks.result.chunks, common_names=common_names, _legacy=True)
         if exact != legacy_exact:
             config["exact_normalization"] = TEXT_RULE_VERSION
         config_hash = digest(config)
@@ -107,19 +138,16 @@ class BuildMentions:
         cached = self.store.find_graph(doc_id, source_hash, config_hash)
         if cached is not None:
             return StagePlan("reused", artifact=cached) if planning else (cached, True)
+        nodes = [dict(node) for node in clusters.payload["nodes"]]
+        learnable = sorted((node for node in nodes if node.get("learnable")), key=lambda node: node["node_id"])
         if planning:
-            count = sum(bool(n.get("learnable")) for n in clusters.payload["nodes"])
+            count = len(learnable)
             return StagePlan("run", remaining_items=count, unit="embedding_text", calls_estimate=count,
                              usd_estimate=None if count else 0,
                              note="Embedding: số text cần embed (adapter có thể gom batch); giá không nằm trong prerequisite_prompt.")
         started = perf_counter()
-        nodes = [dict(node) for node in clusters.payload["nodes"]]
-        learnable = sorted((node for node in nodes if node.get("learnable")), key=lambda node: node["node_id"])
-        requests = [
-            EmbeddingRequest(node.get("description") or node["name"], "RETRIEVAL_QUERY")
-            for node in learnable
-        ]
-        values = self.embedding.embed(requests)
+        requests = [EmbeddingRequest(node.get("description") or node["name"], "RETRIEVAL_QUERY") for node in learnable]
+        values = self.embedding.embed(requests) if requests else []
         if len(values) != len(learnable):
             raise ValueError("cổng embedding trả sai số lượng vector query")
         node_vectors = {

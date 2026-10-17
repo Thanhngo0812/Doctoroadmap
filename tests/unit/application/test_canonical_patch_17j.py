@@ -79,7 +79,8 @@ def test_default_gop_repairs_are_single_and_explicit_batching_still_changes_cach
 
 
 @pytest.mark.parametrize("route", ["merge", "repair", "repair_batch"])
-@pytest.mark.parametrize("label,retries", [("synonym", 1), ("same_category", 0)])
+@pytest.mark.parametrize("label,retries", [("synonym", 1), ("same_category", 0),
+                                           ("coextensive_with", 1), ("coextensive_with_candidate", 0)])
 def test_gop_identity_relation_retries_only_exact_identity_labels(tmp_path, monkeypatch, route, label, retries):
     from tests.unit.application.test_canonical_gop import AnchorModel
 
@@ -121,6 +122,5 @@ def test_gop_identity_relation_retries_only_exact_identity_labels(tmp_path, monk
     assert len(model.judgments) == 1 + retries
     assert artifact.payload["stats"]["partition_contradictions"] == retries
     proposed = [edge for edge in artifact.payload["edges"] if "2a" in edge["origins"]]
-    assert all(edge["edge_type"] != "synonym" for edge in proposed)
-    assert any(edge["edge_type"] == "same_category" for edge in proposed) == (not retries)
-    assert artifact.manifest["config"]["reasoning"]["partition_validation"] == "consistency-gop-identity-labels-v2"
+    assert any(edge["edge_type"] == label for edge in proposed) == (not retries)
+    assert artifact.manifest["config"]["reasoning"]["partition_validation"] == "consistency-gop-identity-labels-v3"

@@ -4,7 +4,7 @@ from doc2roadmap.application.use_cases.build_main_edges import BuildMainEdges
 
 
 def test_mentioned_only_node_is_context_not_allowed_target():
-    use_case = object.__new__(BuildMainEdges)
+    use_case = BuildMainEdges(None, None)
     nodes = [{"node_id": "t", "name": "Target", "learnable": True, "teaching_status": "taught",
               "defining_chunk_ids": ["c"], "anchor": {"chunk_id": "c", "char_start": 0,
               "sentence": "Target is introduced."}},

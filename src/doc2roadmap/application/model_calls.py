@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import json
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from contextvars import copy_context
 from dataclasses import dataclass
 from typing import Any, Callable, Iterable
@@ -28,20 +28,26 @@ def run_model_jobs(
     *,
     concurrency: int,
     max_attempts: int = 2,
+    on_complete: Callable[[dict[str, Any], Counter], None] | None = None,
+    completed_log: Iterable[dict[str, Any]] = (),
 ) -> tuple[list[Any | None], list[dict[str, Any]], Counter]:
     if type(concurrency) is not int or concurrency < 1:
         raise ValueError("concurrency phải là số nguyên dương")
     if type(max_attempts) is not int or max_attempts < 1:
         raise ValueError("max_attempts phải là số nguyên dương")
+    completed = {row["input_hash"]: row for row in completed_log}
     cached = {
         row["input_hash"]: row
-        for row in previous_log
+        for row in (*previous_log, *completed.values())
         if row.get("valid") and "input_hash" in row
     }
 
     def call(job: ModelJob):
         counts = Counter()
         key = digest([job.model.model_id, job.prompt_hash, job.data])
+        if key in completed and completed[key].get("valid") is False:
+            counts[job.stage + "_reused"] += 1
+            return None, dict(completed[key], reused=True), counts
         cache_invalid_error = None
         if key in cached:
             row = dict(cached[key], reused=True)
@@ -123,8 +129,24 @@ def run_model_jobs(
         return None, row, counts
 
     with ThreadPoolExecutor(max_workers=concurrency) as pool:
-        results = list(pool.map(lambda item: item[0].run(call, item[1]),
-                                ((copy_context(), job) for job in jobs)))
+        if on_complete is None:
+            results = list(pool.map(lambda item: item[0].run(call, item[1]),
+                                    ((copy_context(), job) for job in jobs)))
+        else:
+            # Workers stay free to start queued jobs while the caller saves progress.
+            futures = {pool.submit(copy_context().run, call, job): i for i, job in enumerate(jobs)}
+            results, failure = [None] * len(futures), None
+            for future in as_completed(futures):
+                try:
+                    result = future.result()
+                except Exception as error:
+                    if failure is None:
+                        failure = error
+                else:
+                    results[futures[future]] = result
+                    on_complete(result[1], result[2])
+            if failure is not None:
+                raise failure
     values, logs, metrics = [], [], Counter()
     for value, row, counts in results:
         values.append(value)

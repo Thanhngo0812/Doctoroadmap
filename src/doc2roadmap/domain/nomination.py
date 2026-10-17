@@ -18,7 +18,7 @@ def unit(vector):
 
 
 def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2., seed=42, cap=9,
-                     additional=None):
+                     additional=None, deterministic=False):
     if k < 1 or cap < 2 or resolution <= 0 or not 0 < ngram_threshold <= 1:
         raise ValueError("tham số đồ thị A4 không hợp lệ")
     ids = sorted(groups)
@@ -59,6 +59,9 @@ def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2.,
             weight = max(weights)
             graph.add_edge(a, b, weight=weight)
             edges.append({"source": a, "target": b, "channels": channels, "weight": weight})
+    ordered_ids = sorted(graph)
+    if deterministic:
+        graph = nx.relabel_nodes(graph, {key: index for index, key in enumerate(ordered_ids)})
     def split(component, level):
         if len(component) <= cap:
             return [sorted(component)]
@@ -67,7 +70,10 @@ def nomination_graph(groups, vectors, *, k=3, ngram_threshold=.5, resolution=2.,
             return split(component, level * 2)
         return [part for subset in partitions for part in split(subset, level * 2)]
     initial = nx.community.louvain_communities(graph, seed=seed, resolution=resolution) if graph.number_of_edges() else []
-    clusters = sorted((c for component in initial for c in split(component, resolution*2)), key=lambda c: c[0])
+    clusters = [part for component in initial for part in split(component, resolution*2)]
+    if deterministic:
+        clusters = [sorted(ordered_ids[index] for index in cluster) for cluster in clusters]
+    clusters = sorted(clusters, key=lambda c: c[0])
     owner = {item: i for i, cluster in enumerate(clusters) for item in cluster}
     cut = [edge for edge in edges if owner[edge["source"]] != owner[edge["target"]]]
     channels = (("alias", "ngram", "name") if additional is None else

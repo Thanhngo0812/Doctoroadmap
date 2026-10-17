@@ -151,8 +151,7 @@ def test_main_contract_follows_pinned_canonical_declaration_and_preserves_v3(cha
         assert artifact.manifest["config"]["canonical_version"] == 1
 
 
-@pytest.mark.parametrize("secondary_mode", ["ml", "llm"])
-def test_real_fixture_canonical_gop_runs_through_roadmap_and_scorers_without_identity_map(tmp_path, secondary_mode):
+def real_fixture_gop_roadmap(tmp_path, secondary_mode):
     from doc2roadmap.application.use_cases.name_modules import NameModules
     from doc2roadmap.application.use_cases.a8_gold import annotation_scope, list_chapters
     from doc2roadmap.application.use_cases.a8_score import score_from_store, score_roadmap_order
@@ -255,6 +254,12 @@ def test_real_fixture_canonical_gop_runs_through_roadmap_and_scorers_without_ide
     count = embed.calls, len(model.calls), scorer.calls
     again, reused = graph.execute(DOC)
     assert reused and again.version == artifact.version and count == (embed.calls, len(model.calls), scorer.calls)
+    return store, canonical, artifact
+
+
+@pytest.mark.parametrize("secondary_mode", ["ml", "llm"])
+def test_real_fixture_canonical_gop_runs_through_roadmap_and_scorers_without_identity_map(tmp_path, secondary_mode):
+    real_fixture_gop_roadmap(tmp_path, secondary_mode)
 
 
 def test_roadmap_cli_passes_explicit_chain_and_dry_run_without_spend(monkeypatch, capsys):

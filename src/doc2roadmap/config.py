@@ -25,7 +25,6 @@ class Settings(BaseSettings):
     llm_transport: Literal["developer_api", "vertex"] = "developer_api"
     vertex_project: str | None = None
     vertex_location: str = "global"
-    vertex_concurrency: int = Field(default=2, gt=0)
     llm_max_in_flight: int = Field(default=100, gt=0)
     llm_tpm_budget: int = Field(default=1_600_000, gt=0)
     llm_rpm_budget: int | None = Field(default=None, gt=0)
@@ -40,13 +39,14 @@ class Settings(BaseSettings):
     merge_resolution: float = Field(default=2., gt=0)
     merge_seed: int = 42
     merge_cluster_cap: int = Field(default=9, ge=2)
+    merge_description_enabled: bool = False
     merge_description_top_k: int = Field(default=3, gt=0)
     merge_description_min_similarity: float = Field(default=.85, ge=0, le=1)
     canonical_batch_size: int = Field(default=10, gt=0)
-    canonical_concurrency: int = Field(default=4, gt=0)
+    canonical_concurrency: int = Field(default=16, gt=0)
     canonical_repair_batch_size: int = Field(default=1, gt=0)
     upstream_chain: Literal["v3", "gop"] = "v3"
-    anchor_batch_mode: Literal["single", "a5"] = "a5"
+    anchor_batch_mode: Literal["single", "a5"] = "single"
     canonical_language_rule: str = "token-majority-prose-vi20-v2"
     embedding_model_id: str = "gemini-embedding-001"
     extraction_concurrency: int = Field(default=4, gt=0)
@@ -66,6 +66,7 @@ class Settings(BaseSettings):
     mention_common_name_fraction: float = Field(default=0.5, gt=0, lt=1)
     roadmap_model_id: str = "gemini-3.1-flash-lite"
     roadmap_concurrency: int = Field(default=4, gt=0)
+    roadmap_main_parallel: bool = True
     roadmap_single_session_limit: int = Field(default=20, gt=0)
     a8_definition_before: int = Field(default=4, ge=0)
     a8_definition_after: int = Field(default=2, ge=0)

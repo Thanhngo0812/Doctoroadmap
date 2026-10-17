@@ -1,7 +1,7 @@
 # 19b — Bớt lời phán sửa vô ích ở A4
 
 **Nguồn chân lý:** [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md), pha 1a mục 1–2.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không (nên làm sau 19a vì cùng đoạn mã đề cử) · **Trạng thái:** sẵn sàng giao
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không (nên làm sau 19a vì cùng đoạn mã đề cử) · **Trạng thái:** đã cài và kiểm chứng 2026-10-17
 
 ## Vì sao
 
@@ -18,9 +18,11 @@ Chỉ áp ở chuỗi `gop`.
 
 ## Nghiệm thu
 
-- [ ] Test trên fixture thật với mô hình giả:
+- [x] Test trên fixture thật với mô hình giả:
   - không cặp nào mang nguồn `same_evidence`;
   - cặp cắt chỉ có `ngram` không sinh lời gọi, giữ tách, và được đếm;
   - cặp cắt có thêm nguồn khác vẫn được phán sửa.
-- [ ] Đổi luật thì khoá cache đổi. Băm config v3 giữ nguyên.
-- [ ] Mỗi luật có test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Đổi luật thì khoá cache đổi. Băm config v3 giữ nguyên.
+- [x] Mỗi luật có test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+
+Hai luật đã được thấy đỏ trước khi sửa. Có kiểm bật lại từng luật, trong đó bật sửa ngram giữ nguyên `nominations`. [Báo cáo 19a–19c](../../report/v4-19abc-sua-a4-2026-10-17.md); toàn kho **1.617 test qua**, xem [báo cáo tích hợp](../../report/v4-19-phan-tich-va-kiem-chung-2026-10-17.md).

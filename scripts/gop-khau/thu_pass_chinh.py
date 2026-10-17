@@ -6,7 +6,7 @@ dãy học như sản phẩm (bỏ đặt tên module), rồi chấm E4 bằng `
 
 Biến thể:
 - `noi`: như sản phẩm — các phiên trong một chương chạy nối tiếp, phiên sau nhận cạnh của phiên trước (`previous_edges_in_chapter`);
-- `song`: mọi phiên chạy một đợt, nên không phiên nào nhận cạnh của phiên trước. Chỉ vá `BuildMainEdges._waves` trong tiến trình này.
+- `song`: mọi phiên chạy một đợt, nên không phiên nào nhận cạnh của phiên trước. Dùng tuỳ chọn sản phẩm của vé 19k.
 
 `--xao=<hạt>`: xáo thứ tự `mentioned_elsewhere` của từng phiên (hạt + id phiên), một nhiễu đầu vào không đổi nghĩa. Lượt chạy lại không xáo
 ra y hệt từng byte lượt 17i (128/128 lời gọi, Vertex flash-lite, temperature 0), nên nhiễu E4 chỉ đo được bằng nhiễu đầu vào.
@@ -62,8 +62,6 @@ def main(argv):
 
     from doc2roadmap.composition import build_learning_graph
     from doc2roadmap.application.use_cases.build_main_edges import BuildMainEdges
-    if variant == "song":
-        BuildMainEdges._waves = staticmethod(lambda sessions: [sessions] if sessions else [])
     seed = flags.get("--xao")
     if seed is not None:
         original = BuildMainEdges._input
@@ -74,6 +72,7 @@ def main(argv):
             return data
         BuildMainEdges._input = shuffled
     graph, settings = build_learning_graph(allow_spend=spend, upstream_chain="gop")
+    graph.main_edges.parallel_sessions = variant == "song"
     store = graph.main_edges.store
     mentions = store.load_graph(doc, MENTIONS[doc])
     if not spend:

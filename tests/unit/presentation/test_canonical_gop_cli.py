@@ -7,15 +7,10 @@ from doc2roadmap.presentation.cli.main import main
 
 
 @pytest.mark.parametrize("mode", ["--names-only", "--prepare"])
-@pytest.mark.parametrize("environment", [False, True])
-def test_gop_cli_rejects_incomplete_modes_before_any_work(monkeypatch, capsys, mode, environment):
+def test_gop_cli_rejects_incomplete_modes_before_any_work(monkeypatch, capsys, mode):
     monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_artifact_store",
                         lambda: pytest.fail("must reject before reading store"))
-    if environment:
-        monkeypatch.setenv("DOC2ROADMAP_UPSTREAM_CHAIN", "gop")
-    args = ["a4", "--doc-id", "book", mode]
-    if not environment:
-        args += ["--upstream-chain", "gop"]
+    args = ["a4", "--doc-id", "book", mode, "--upstream-chain", "gop"]
     assert main(args) == 2
     assert "A4/A5 đầy đủ" in capsys.readouterr().err
 

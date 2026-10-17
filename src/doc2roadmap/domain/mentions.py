@@ -27,7 +27,11 @@ def _names(node):
     return values
 
 
-def exact_mentions(nodes, chunks, *, common_names, _legacy=False):
+def normalize_mention_chunks(chunks):
+    return {chunk.chunk_id: _mention_normalize(chunk.text) for chunk in chunks}
+
+
+def exact_mentions(nodes, chunks, *, common_names, _legacy=False, normalized_chunks=None):
     common = {_mention_normalize(value) for value in common_names}
     pattern_nodes = defaultdict(set)
     for node in nodes:
@@ -41,7 +45,8 @@ def exact_mentions(nodes, chunks, *, common_names, _legacy=False):
             pattern_nodes[normalized].add(node["node_id"])
     result = {}
     for chunk in chunks:
-        text = _mention_normalize(chunk.text)
+        text = (normalized_chunks[chunk.chunk_id] if normalized_chunks is not None
+                else _mention_normalize(chunk.text))
         candidates = []
         for pattern, node_ids in pattern_nodes.items():
             expression = (re.escape(pattern) if not _legacy and any(map(unspaced_character, pattern))
@@ -78,6 +83,56 @@ def document_common_names(nodes, chunks, *, threshold):
     return common
 
 
+def document_mentions(nodes, chunks, *, threshold):
+    """Scan each distinct name once, sharing matches for current and legacy rules."""
+    if not 0 < threshold < 1:
+        raise ValueError("common-name threshold must be between zero and one")
+    names = {value.strip() for node in nodes if node.get("learnable")
+             for value in _names(node) if isinstance(value, str) and value.strip()}
+    normalized = normalize_mention_chunks(chunks)
+    patterns = {}
+    for name in names:
+        pattern = _mention_normalize(name)
+        for legacy in (False, True):
+            if (pattern, legacy) in patterns:
+                continue
+            expression = (re.escape(pattern) if not legacy and any(map(unspaced_character, pattern))
+                          else rf"(?<!\w){re.escape(pattern)}(?!\w)")
+            if legacy and expression == patterns[pattern, False][0]:
+                patterns[pattern, legacy] = patterns[pattern, False]
+            else:
+                compiled = re.compile(expression)
+                patterns[pattern, legacy] = (expression, {
+                    chunk_id: [(match.start(), match.end()) for match in compiled.finditer(text)]
+                    for chunk_id, text in normalized.items()})
+    common = {name for name in names if alias_kind(name) != "symbol" and chunks
+              and sum(bool(matches) for matches in patterns[_mention_normalize(name), False][1].values()) / len(chunks) > threshold}
+    common_keys = {_mention_normalize(name) for name in common}
+    results = []
+    for legacy in (False, True):
+        by_pattern = defaultdict(set)
+        for node in nodes:
+            if node.get("learnable"):
+                for name in _names(node):
+                    pattern = _mention_normalize(name.strip())
+                    kind = _legacy_alias_kind(name) if legacy else alias_kind(name)
+                    if pattern and pattern not in common_keys and kind != "symbol":
+                        by_pattern[pattern].add(node["node_id"])
+        result = {}
+        for chunk in chunks:
+            candidates = [(start, end, pattern, ids) for pattern, ids in by_pattern.items()
+                          for start, end in patterns[pattern, legacy][1][chunk.chunk_id]]
+            selected, covered = set(), -1
+            for start, end, _, ids in sorted(candidates, key=lambda row: (row[0], -(row[1] - row[0]), row[2])):
+                if start >= covered:
+                    selected.update(ids)
+                    covered = end
+            if selected:
+                result[chunk.chunk_id] = selected
+        results.append(result)
+    return common, *results
+
+
 def _unit(vector):
     norm = math.sqrt(sum(float(value) ** 2 for value in vector))
     return tuple(float(value) / norm for value in vector) if norm else tuple(0.0 for _ in vector)
@@ -89,32 +144,34 @@ def dense_mentions(node_vectors, chunk_vectors, *, top_k, min_z):
     node_ids, chunk_ids = sorted(node_vectors), sorted(chunk_vectors)
     nodes = {key: _unit(node_vectors[key]) for key in node_ids}
     chunks = {key: _unit(chunk_vectors[key]) for key in chunk_ids}
-    raw = {
-        (node_id, chunk_id): sum(
-            left * right for left, right in zip(nodes[node_id], chunks[chunk_id], strict=True)
-        )
-        for node_id in node_ids
-        for chunk_id in chunk_ids
-    }
+    if not node_ids or not chunk_ids:
+        return {}, {}
+    raw = [[sum(left * right for left, right in zip(nodes[node_id], chunks[chunk_id], strict=True))
+            for chunk_id in chunk_ids] for node_id in node_ids]
+    return _rank_dense(raw, node_ids, chunk_ids, top_k, min_z)[0]
+
+
+def _rank_dense(raw, node_ids, chunk_ids, top_k, min_z):
     row_mean = {
-        node_id: sum(raw[node_id, chunk_id] for chunk_id in chunk_ids) / len(chunk_ids)
-        for node_id in node_ids
-    } if chunk_ids else {node_id: 0.0 for node_id in node_ids}
-    column_mean = {
-        chunk_id: sum(raw[node_id, chunk_id] for node_id in node_ids) / len(node_ids)
-        for chunk_id in chunk_ids
-    } if node_ids else {chunk_id: 0.0 for chunk_id in chunk_ids}
-    centered = {
-        key: 2.0 * value - row_mean[key[0]] - column_mean[key[1]]
-        for key, value in raw.items()
+        node_id: sum(float(value) for value in raw[i]) / len(chunk_ids)
+        for i, node_id in enumerate(node_ids)
     }
-    zscores = {}
+    column_mean = {
+        chunk_id: sum(float(row[j]) for row in raw) / len(node_ids)
+        for j, chunk_id in enumerate(chunk_ids)
+    }
+    centered = {
+        (node_id, chunk_id): 2.0 * float(raw[i][j]) - row_mean[node_id] - column_mean[chunk_id]
+        for i, node_id in enumerate(node_ids) for j, chunk_id in enumerate(chunk_ids)
+    }
+    zscores, deviations = {}, {}
     selected = defaultdict(set)
     for node_id in node_ids:
         values = [centered[node_id, chunk_id] for chunk_id in chunk_ids]
         mean = sum(values) / len(values) if values else 0.0
         variance = sum((value - mean) ** 2 for value in values) / len(values) if values else 0.0
         deviation = math.sqrt(variance)
+        deviations[node_id] = deviation
         for chunk_id in chunk_ids:
             zscores[node_id, chunk_id] = (
                 (centered[node_id, chunk_id] - mean) / deviation if deviation else 0.0
@@ -123,7 +180,7 @@ def dense_mentions(node_vectors, chunk_vectors, *, top_k, min_z):
         for chunk_id in ranked[:top_k]:
             if zscores[node_id, chunk_id] >= min_z:
                 selected[chunk_id].add(node_id)
-    return dict(selected), zscores
+    return (dict(selected), zscores), deviations
 
 
 def _pair(left, right):

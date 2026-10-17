@@ -6,6 +6,7 @@ _DOMAIN_STDLIB = {
     "__future__",
     "collections",
     "dataclasses",
+    "functools",
     "hashlib",
     "heapq",
     "json",

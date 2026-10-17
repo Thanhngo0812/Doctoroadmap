@@ -44,7 +44,7 @@ def document_language(chunks):
     return "vi" if letters and accented / len(letters) >= .1 else "en"
 
 
-def validate_partition(value, source, *, gop=False):
+def validate_partition(value, source, *, gop=False, coextensive_identity=True):
     if not isinstance(value, dict) or set(value) != {"nodes", "relations", "deferred"}:
         raise ValueError("cần nodes, relations, deferred")
     ids = set(source)
@@ -67,6 +67,8 @@ def validate_partition(value, source, *, gop=False):
             raise ValueError("mỗi relation cần source, target, edge_type, chunk_ids, reason")
     contradictions = []
     identity_types = GOP_IDENTITY_EDGE_TYPES if gop else IDENTITY_EDGE_TYPES
+    if gop and coextensive_identity:
+        identity_types = identity_types | {"coextensive_with"}
     for edge in value["relations"]:
         a, b, raw_type = edge["source"], edge["target"], edge["edge_type"]
         if a == b or a not in owner or b not in owner or not isinstance(raw_type, str):

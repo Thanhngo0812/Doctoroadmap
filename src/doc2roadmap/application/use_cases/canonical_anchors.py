@@ -7,7 +7,7 @@ from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.application.stage_measurements import measure_phase
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.anchors import validate_anchor_response
-from doc2roadmap.domain.mentions import exact_mentions
+from doc2roadmap.domain.mentions import exact_mentions, normalize_mention_chunks
 
 
 GENERATION = {"temperature": 0.0, "max_output_tokens": 2048}
@@ -40,9 +40,10 @@ def anchor_config(model, mode="single"):
 
 def prepare_anchors(nodes, chunks):
     eligible = [node for node in nodes if node.get("learnable") and not node.get("media_id")]
+    normalized = normalize_mention_chunks(chunks)
     hard = {node["node_id"]: set(node.get("source_chunk_ids", [])) |
-            set(exact_mentions([node], chunks, common_names=())) for node in eligible}
-    core = AnchorCore(eligible, chunks, hard)
+            set(exact_mentions([node], chunks, common_names=(), normalized_chunks=normalized)) for node in eligible}
+    core = AnchorCore(eligible, chunks, hard, normalized_mentions=normalized)
     core.a5_answers, core.a5_log, core.a5_metrics, core.a5_seen = {}, [], Counter(), set()
     return core
 
@@ -99,13 +100,13 @@ def anchor_nodes(nodes, chunks, model, *, concurrency, previous=None, core=None)
         answers, log, metrics = core.judge(model, generation=GENERATION, concurrency=concurrency,
             answers=core.a5_answers, decision_log=previous.get("anchor_decision_log", []) + sorted(
                 core.a5_log, key=lambda row: row["input"]["node_id"]),
-            metrics=core.a5_metrics)
+            metrics=core.a5_metrics, batch_size=None)
     if core.a5_metrics or core.a5_log:
         metrics.update(anchor_concepts_in_batch=len(core.a5_answers), anchor_concepts_fallback=fallback)
     with measure_phase("anchor_prior_verify"):
         verified, prior_log, prior_metrics = core.verify_prior(
             model, answers, generation=GENERATION, concurrency=concurrency,
-            decision_log=previous.get("anchor_prior_verify_decision_log", []))
+            decision_log=previous.get("anchor_prior_verify_decision_log", []), batch_size=None)
     metrics.update(prior_metrics)
     checked, final_answers = apply_anchors(nodes, core, answers, verified)
     metrics["teaching_status_counts"] = dict(sorted(Counter(

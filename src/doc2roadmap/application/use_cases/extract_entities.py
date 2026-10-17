@@ -130,14 +130,14 @@ class DocumentExtraction:
         }
 
     @classmethod
-    def from_payload(cls, payload: dict[str, Any]) -> DocumentExtraction:
+    def from_payload(cls, payload: dict[str, Any], *, include_embeddings=True) -> DocumentExtraction:
         return cls(
             doc_id=payload["doc_id"],
             entities=[_entity_from_dict(item) for item in payload["entities"]],
             edges=[_edge_from_dict(item) for item in payload["edges"]],
             candidate_embeddings={
                 key: [float(value) for value in vector]
-                for key, vector in payload.get("candidate_embeddings", {}).items()
+                for key, vector in (payload.get("candidate_embeddings", {}) if include_embeddings else {}).items()
             },
             stats=payload["stats"],
             warnings=list(payload.get("warnings", [])),

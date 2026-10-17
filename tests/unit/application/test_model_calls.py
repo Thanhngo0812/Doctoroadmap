@@ -1,8 +1,11 @@
 import time
 from types import SimpleNamespace
 
+import pytest
+
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.domain.canonical import digest
+from doc2roadmap.application.ports.extraction import ModelTransportError
 
 
 class FakeModel:
@@ -98,3 +101,39 @@ def test_batch_keeps_input_order_when_workers_finish_out_of_order():
 
     assert [value["value"] for value in values] == [1, 2]
     assert [row["stage"] for row in logs] == ["first", "second"]
+
+
+def test_completion_callback_reports_finished_rows_and_keeps_return_order():
+    slow = FakeModel([{'ok': True, 'value': 1}], delays=[.04])
+    fast = FakeModel([{'ok': True, 'value': 2}])
+    completed = []
+    values, rows, _ = run_model_jobs([job(slow, 1), job(fast, 2)], [], concurrency=2,
+        on_complete=lambda row, counts: completed.append((row['input']['value'], counts['judge_calls'])))
+    assert completed == [(2, 1), (1, 1)]
+    assert [v['value'] for v in values] == [r['input']['value'] for r in rows] == [1, 2]
+
+
+def test_completion_callback_drains_successes_even_after_a_transport_failure():
+    class Broken:
+        model_id = 'fixture-model'
+        def start_session(self, prompt):
+            return self
+        def ask_json(self, *args, **kwargs):
+            time.sleep(.01)
+            raise ModelTransportError('offline failure')
+    completed = []
+    with pytest.raises(ModelTransportError, match='offline failure'):
+        run_model_jobs([job(FakeModel([{'ok': True}], delays=[.03]), 1), job(Broken(), 2),
+                        job(FakeModel([{'ok': True}], delays=[.06]), 3)], [], concurrency=3,
+            on_complete=lambda row, counts: completed.append(row['input']['value']))
+    assert completed == [1, 3]
+
+
+def test_completed_terminal_failure_is_reused_without_spending_again():
+    failed = FakeModel([{'ok': False}, {'ok': False}])
+    _, completed, _ = run_model_jobs([job(failed, 1)], [], concurrency=1)
+    model = FakeModel([])
+    values, rows, metrics = run_model_jobs([job(model, 1)], [], concurrency=1, completed_log=completed)
+    assert values == [None] and model.calls == 0
+    assert rows[0] == dict(completed[0], reused=True)
+    assert metrics['judge_reused'] == 1

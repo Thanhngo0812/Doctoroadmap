@@ -26,13 +26,14 @@ from doc2roadmap.domain.prerequisites import (
 
 class BuildMainEdges:
     def __init__(self, store, model, *, single_session_limit=20, concurrency=4, generation=None,
-                 definition_before=4, definition_after=2):
+                 definition_before=4, definition_after=2, parallel_sessions=True):
         if type(concurrency) is not int or concurrency < 1:
             raise ValueError("concurrency phải là số nguyên dương")
         self.store = store
         self.model = model
         self.single_session_limit = single_session_limit
         self.concurrency = concurrency
+        self.parallel_sessions = parallel_sessions
         self.definition_before = definition_before
         self.definition_after = definition_after
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
@@ -83,7 +84,7 @@ class BuildMainEdges:
         mentioned += sorted({node_id for chunk_id in session["chunk_ids"]
                              for node_id in mention_map.get(chunk_id, {})
                              if node_id in node_by_id and node_id not in targets and node_id not in mentioned})
-        previous_in_chapter = [
+        previous_in_chapter = [] if self.parallel_sessions else [
             edge
             for edge in existing_edges
             if session_by_id.get(edge.get("session_id"), {}).get("chapter_id") == session["chapter_id"]
@@ -177,6 +178,7 @@ class BuildMainEdges:
             "generation": self.generation,
             "prompt_hash": prompt_hash,
             "single_session_limit": self.single_session_limit,
+            "parallel_sessions": self.parallel_sessions,
             "definition_before": self.definition_before,
             "definition_after": self.definition_after,
             "route": route,
@@ -203,8 +205,11 @@ class BuildMainEdges:
             decision_log = list(checkpoint.get("decision_log", []))
             executor_log = list(checkpoint.get("executor_log", []))
             metrics = Counter(checkpoint.get("model_metrics", {}))
+            call_cache = {row["input_hash"]: row for row in checkpoint.get("pending_model_results", [])}
+            metrics.update(checkpoint.get("pending_model_metrics", {}))
         else:
             completed, edges, flags, decision_log, executor_log, metrics = set(), [], [], [], [], Counter()
+            call_cache = {}
         pending = [session for session in sessions if session["session_id"] not in completed]
         session_by_id = {session["session_id"]: session for session in sessions}
         system_prompt = main_system_prompt()
@@ -213,7 +218,40 @@ class BuildMainEdges:
                                  canonical.payload.get("edges", []), edges, session_by_id) for session in pending]
             return model_plan(inputs, system_prompt=system_prompt, generation=self.generation,
                               unit="session", checkpoint_id=checkpoint_id, metrics=metrics)
-        for wave in self._waves(pending):
+        pending_counts, unflushed = Counter(), 0
+
+        def save_progress():
+            state = {"source_hash": source_hash, "completed_main_sessions": sorted(completed),
+                     "main_edges": edges, "main_flags": flags, "decision_log": decision_log,
+                     "executor_log": executor_log, "model_metrics": dict(sorted(metrics.items()))}
+            if call_cache:
+                state.update(pending_model_results=list(call_cache.values()),
+                             pending_model_metrics=dict(sorted(pending_counts.items())))
+            self.store.save_checkpoint(doc_id, checkpoint_id, state)
+
+        def cache_result(row, counts):
+            nonlocal unflushed
+            call_cache[row["input_hash"]] = row
+            pending_counts.update(counts)
+            unflushed += 1
+            if unflushed >= 16:
+                save_progress()
+                unflushed = 0
+
+        def run_jobs(jobs, previous):
+            if not self.parallel_sessions:
+                return run_model_jobs(jobs, previous, concurrency=self.concurrency)
+            try:
+                result = run_model_jobs(jobs, previous, completed_log=call_cache.values(),
+                                        concurrency=self.concurrency, on_complete=cache_result)
+            except BaseException:
+                save_progress()
+                raise
+            pending_counts.clear()
+            return result
+
+        for wave in ([pending] if self.parallel_sessions and pending else self._waves(pending)):
+            validation_edges = [] if self.parallel_sessions else edges
             inputs = [
                 self._input(
                     session,
@@ -230,7 +268,7 @@ class BuildMainEdges:
                 ModelJob("main", self.model, system_prompt, prompt_hash, data, MAIN_SCHEMA, validate_main_response)
                 for data in inputs
             ]
-            values, rows, counts = run_model_jobs(jobs, decision_log, concurrency=self.concurrency)
+            values, rows, counts = run_jobs(jobs, decision_log)
             metrics.update(counts)
             decisions = defaultdict(list)
             for row in rows:
@@ -247,7 +285,7 @@ class BuildMainEdges:
                     nodes,
                     chunks.chunks,
                     mentions.payload["mention_map"],
-                    existing_edges=edges,
+                    existing_edges=validation_edges,
                     require_kind=definition_contract,
                     definition_before=self.definition_before,
                     definition_after=self.definition_after,
@@ -271,10 +309,9 @@ class BuildMainEdges:
                     ))
                     repair_sessions.append(session)
             if repair_jobs:
-                repaired, repair_rows, repair_counts = run_model_jobs(
+                repaired, repair_rows, repair_counts = run_jobs(
                     repair_jobs,
                     decision_log + rows,
-                    concurrency=self.concurrency,
                 )
                 metrics.update(repair_counts)
                 for row in repair_rows:
@@ -290,7 +327,7 @@ class BuildMainEdges:
                         nodes,
                         chunks.chunks,
                         mentions.payload["mention_map"],
-                        existing_edges=edges + accepted,
+                        existing_edges=validation_edges + accepted,
                         require_kind=definition_contract,
                         definition_before=self.definition_before,
                         definition_after=self.definition_after,
@@ -301,7 +338,7 @@ class BuildMainEdges:
                         downgraded = {**invalid["operation"], "prerequisite_kind": "cong_cu"}
                         softer, _, downgrade_log, downgrade_retry = validate_main_proposals(
                             {"edges": [downgraded], "flags": []}, session, nodes, chunks.chunks,
-                            mentions.payload["mention_map"], existing_edges=edges + accepted + fixed,
+                            mentions.payload["mention_map"], existing_edges=validation_edges + accepted + fixed,
                             require_kind=True, definition_before=self.definition_before,
                             definition_after=self.definition_after)
                         fixed.extend(softer)
@@ -325,15 +362,10 @@ class BuildMainEdges:
                 executor_log.extend(duplicate_log)
                 decision_log.extend(decisions[session_id])
                 completed.add(session_id)
-                self.store.save_checkpoint(doc_id, checkpoint_id, {
-                    "source_hash": source_hash,
-                    "completed_main_sessions": sorted(completed),
-                    "main_edges": edges,
-                    "main_flags": flags,
-                    "decision_log": decision_log,
-                    "executor_log": executor_log,
-                    "model_metrics": dict(sorted(metrics.items())),
-                })
+            call_cache.clear()
+            pending_counts.clear()
+            unflushed = 0
+            save_progress()
         stats = {
             "session_count": len(sessions),
             "completed_session_count": len(completed),

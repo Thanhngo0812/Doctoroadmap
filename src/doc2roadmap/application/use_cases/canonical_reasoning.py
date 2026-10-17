@@ -11,7 +11,7 @@ from .canonical_describe import describe
 
 
 class CanonicalReasoning:
-    def __init__(self, judge, writer, *, generation=None, language_rule="token-majority-prose-vi20-v2", batch_size=10, counter=None, concurrency=4,
+    def __init__(self, judge, writer, *, generation=None, language_rule="token-majority-prose-vi20-v2", batch_size=10, counter=None, concurrency=16,
                  repair_batch_size=1):
         if batch_size < 1:
             raise ValueError("batch_size phải dương")
@@ -36,7 +36,10 @@ class CanonicalReasoning:
                 "source_budget": 4000, "tokenizer": getattr(self.counter, "identifier", None)}
         if getattr(self, "upstream_chain", "v3") == "gop":
             from .canonical_repairs import repair_config
-            config["partition_validation"] = "consistency-gop-identity-labels-v2"
+            from .canonical_a4_rules import DEFAULT_A4_RULES
+            rules = getattr(self, "a4_rules", DEFAULT_A4_RULES)
+            config["partition_validation"] = ("consistency-gop-identity-labels-v3" if rules["coextensive_identity"]
+                                               else "consistency-gop-identity-labels-v2")
             config["repairs"] = repair_config(self.repair_batch_size)
         return config
 

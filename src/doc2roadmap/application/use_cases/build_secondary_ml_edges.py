@@ -10,7 +10,7 @@ from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.prerequisites import merge_main_proposals, validate_main_proposals
 from doc2roadmap.domain.secondary import select_secondary_pairs
 from doc2roadmap.domain.secondary_features import (
-    CANDIDATE_RULE, FEATURE_VERSION, SecondaryFeatureContext, found, found_words, is_candidate, pair_features,
+    CANDIDATE_RULE, FEATURE_VERSION, SecondaryFeatureContext, is_candidate, pair_features,
 )
 
 
@@ -148,8 +148,8 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
             row.update(source=x, target=y, score=score)
             sentences, anchor_index = ctx.window_cache[y]
             quotes = sorted((abs(i - (anchor_index or 0)), i, sentence) for i, sentence in enumerate(sentences)
-                            if found(ctx.pattern_cache[x], sentence)
-                            and found_words(ctx.word_cache[x], sentence, self.tokenize))
+                            if ctx.found(ctx.pattern_cache[x], sentence)
+                            and ctx.found_words(ctx.word_cache[x], sentence))
             accepted = None
             for _, _, quote in quotes:
                 output = {"edges": [{"prerequisite": x, "target": y, "prerequisite_kind": "can_de_hieu",

@@ -31,7 +31,8 @@ def test_real_fixture_uses_saved_vectors_without_merging_or_embedding_descriptio
                                         for entity in payload["entities"] if not entity.get("media_id")}
     store._write(source.path / "candidates.json", payload)
     uc = Canonicalize(store, embed, reasoning=CanonicalReasoning(model, model),
-                      upstream_chain="gop", anchor_batch_mode="single")
+                      upstream_chain="gop", anchor_batch_mode="single",
+                      nomination_config={"semantic_enabled": True})
     artifact, _ = uc.execute(DOC)
     baseline, _ = Canonicalize(store).execute(DOC)
     assert len(artifact.payload["nodes"]) == len(baseline.payload["nodes"])
@@ -76,7 +77,7 @@ def test_nomination_threshold_changes_gop_cache_and_missing_vectors_are_skipped(
     def run(threshold):
         return Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model),
                             upstream_chain="gop", anchor_batch_mode="single",
-                            nomination_config={"semantic_min_similarity": threshold}).execute(DOC)
+                            nomination_config={"semantic_enabled": True, "semantic_min_similarity": threshold}).execute(DOC)
     first, _ = run(.85)
     second, _ = run(.9)
     again, reused = run(.85)

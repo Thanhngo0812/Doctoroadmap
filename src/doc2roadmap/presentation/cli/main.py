@@ -553,7 +553,7 @@ def main(argv: list[str] | None = None) -> int:
                                      exclude_subtype_items=args.exclude_subtype_item))
         elif args.command == "a4":
             from doc2roadmap.config import Settings
-            chain = args.upstream_chain or Settings().upstream_chain
+            chain = args.upstream_chain or ("v3" if args.names_only or args.prepare else Settings().upstream_chain)
             if chain == "gop" and (args.names_only or args.prepare):
                 raise ValueError("chuỗi gop cần A4/A5 đầy đủ; không dùng --names-only hoặc --prepare")
             if args.merge_review is not None and chain != "gop":

@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 from dataclasses import dataclass
+from dataclasses import replace
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,7 @@ from doc2roadmap.domain.retrieval import (
     RetrievalDocument,
     SearchHit,
     embedding_text,
+    prefer_module_hits,
 )
 
 
@@ -46,6 +48,10 @@ def retriever_from_payload(payload: dict[str, Any]) -> HybridRetriever:
             page=item.get("page"),
             order_index=int(item["order_index"]),
             stage_id=item.get("stage_id"),
+            module_id=item.get("module_id", item.get("stage_id")),
+            all_module_ids=tuple(item.get("all_module_ids", [])),
+            module_source=item.get("module_source", "none"),
+            section_path=tuple(item.get("section_path", [])),
         )
         for item in payload["documents"]
     )
@@ -69,8 +75,23 @@ class IndexDocument:
         source_hash = stored.manifest["source_hash"]
         cached = self.store.find_retrieval(doc_id, source_hash, config_hash)
         if cached is not None:
+            cached_payload = cached.payload
+            cached_documents = cached_payload.get("documents", [])
+            if cached_documents and "section_path" not in cached_documents[0]:
+                chunks_by_id = {chunk.chunk_id: chunk for chunk in stored.result.chunks}
+                cached_payload = {
+                    **cached_payload,
+                    "documents": [
+                        {**item,
+                         "module_id": item.get("module_id", item.get("stage_id")),
+                         "all_module_ids": item.get("all_module_ids", []),
+                         "module_source": item.get("module_source", "none"),
+                         "section_path": list(chunks_by_id[item["chunk_id"]].section_path)}
+                        for item in cached_documents
+                    ],
+                }
             return IndexSummary(
-                cached.payload,
+                cached_payload,
                 cached.manifest,
                 config_hash,
                 True,
@@ -95,12 +116,16 @@ class IndexDocument:
                 {
                     "chunk_id": chunk.chunk_id,
                     "text": chunk.text,
+                    "embedding_input": embedding_text(chunk.section_path, chunk.text),
                     "vector": vector,
                     "doc_id": chunk.doc_id,
                     "section_id": chunk.parent_section_id,
                     "page": chunk.page,
                     "order_index": chunk.order_index,
-                    "stage_id": None,
+                    "module_id": None,
+                    "all_module_ids": [],
+                    "module_source": "none",
+                    "section_path": list(chunk.section_path),
                 }
                 for chunk, vector in zip(chunks, vectors, strict=True)
             ],
@@ -142,6 +167,9 @@ class SearchDocument:
         *,
         top_k: int = 10,
         allowed_stage_ids: set[str] | None = None,
+        module_assignments: dict[str, dict[str, Any]] | None = None,
+        module_order: dict[str, int] | None = None,
+        current_module_id: str | None = None,
     ) -> list[SearchHit]:
         if not query.strip():
             raise ValueError("truy vấn không được rỗng")
@@ -154,9 +182,25 @@ class SearchDocument:
         vectors = self.embedding.embed([EmbeddingRequest(query, "RETRIEVAL_QUERY")])
         if len(vectors) != 1:
             raise ValueError("cổng embedding trả sai số lượng vector truy vấn")
-        return retriever_from_payload(stored.payload).search(
+        hits = retriever_from_payload(stored.payload).search(
             query,
             vectors[0],
             top_k=top_k,
             allowed_stage_ids=allowed_stage_ids,
         )
+        assignments = module_assignments or {}
+        if assignments:
+            hits = [
+                replace(hit, document=replace(
+                    hit.document,
+                    module_id=assignments.get(hit.chunk_id, {}).get("module_id"),
+                    all_module_ids=tuple(assignments.get(hit.chunk_id, {}).get("all_module_ids", [])),
+                    module_source=assignments.get(hit.chunk_id, {}).get("module_source", "none"),
+                ))
+                for hit in hits
+            ]
+        if module_order and current_module_id:
+            hits = prefer_module_hits(
+                hits, assignments, module_order, current_module_id, top_k=min(top_k, 6)
+            )
+        return hits

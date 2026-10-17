@@ -53,6 +53,10 @@ class RetrievalDocument:
     page: int | None = None
     order_index: int = 0
     stage_id: str | None = None
+    module_id: str | None = None
+    all_module_ids: tuple[str, ...] = ()
+    module_source: str = "none"
+    section_path: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -205,3 +209,51 @@ class HybridRetriever:
             hits.append(SearchHit(document, score, dense_rank, bm25_rank))
         hits.sort(key=lambda hit: (-hit.score, hit.document.order_index, hit.chunk_id))
         return hits[:top_k]
+
+
+def prefer_module_hits(
+    hits: Sequence[SearchHit],
+    assignments: dict[str, dict],
+    module_order: dict[str, int],
+    current_module_id: str | None,
+    *,
+    top_k: int = 6,
+) -> list[SearchHit]:
+    """Promote current/prior module hits without filtering later or unassigned chunks."""
+    candidates = list(hits[:20])
+    if not candidates or not current_module_id or current_module_id not in module_order:
+        return candidates[:top_k]
+    current_index = module_order[current_module_id]
+
+    def assigned(hit):
+        row = assignments.get(hit.chunk_id, {})
+        return row.get("all_module_ids") or ([row["module_id"]] if row.get("module_id") else [])
+
+    def preferred(hit):
+        return any(module_id in module_order and module_order[module_id] <= current_index
+                   for module_id in assigned(hit))
+
+    selected: list[SearchHit] = []
+    seen: set[str] = set()
+    # Reserve up to two slots for the unmodified global top five.
+    for hit in candidates[:5][:2]:
+        selected.append(hit)
+        seen.add(hit.chunk_id)
+    # Add up to three current/prior module hits.
+    preferred_count = sum(preferred(hit) for hit in selected)
+    for hit in candidates:
+        if preferred_count >= 3:
+            break
+        if hit.chunk_id not in seen and preferred(hit):
+            selected.append(hit)
+            seen.add(hit.chunk_id)
+            preferred_count += 1
+    for hit in candidates:
+        if len(selected) >= top_k:
+            break
+        if hit.chunk_id not in seen:
+            selected.append(hit)
+            seen.add(hit.chunk_id)
+    rank = {hit.chunk_id: index for index, hit in enumerate(candidates)}
+    selected.sort(key=lambda hit: (not preferred(hit), rank[hit.chunk_id]))
+    return selected

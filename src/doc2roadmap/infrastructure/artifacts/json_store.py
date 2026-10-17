@@ -72,9 +72,9 @@ class JsonArtifactStore:
         path.parent.mkdir(parents=True, exist_ok=True)
         temporary = path.with_suffix(path.suffix + ".tmp")
         with temporary.open("w", encoding="utf-8", newline="\n") as handle:
-            json.dump(value, handle, ensure_ascii=False, sort_keys=True,
-                      indent=None if compact else 2,
-                      separators=(",", ":") if compact else None)
+            handle.write(json.dumps(value, ensure_ascii=False, sort_keys=True,
+                                    indent=None if compact else 2,
+                                    separators=(",", ":") if compact else None))
             handle.write("\n")
         for attempt in range(5):
             try:

@@ -21,12 +21,13 @@ from doc2roadmap.domain.canonical_nominations import SOURCES, additional_nominat
 from doc2roadmap.application.prompt_library import load_prompt
 from .canonical_anchors import anchor_config, anchor_nodes, prepare_anchors
 from .judge_identity import VERIFY_SCHEMA
+from .canonical_a4_rules import DEFAULT_A4_RULES, a4_rules_config
 
 
 class Canonicalize:
     def __init__(self, store, embedding=None, *, graph_config=None, reasoning=None,
-                 upstream_chain="v3", anchor_batch_mode="a5", anchor_model=None,
-                 nomination_config=None, merge_review=None, merge_review_hash=None):
+                 upstream_chain="v3", anchor_batch_mode="single", anchor_model=None,
+                 nomination_config=None, merge_review=None, merge_review_hash=None, a4_rules=None):
         self.store, self.embedding = store, embedding
         self.graph_config = graph_config or {"k": 3, "ngram_threshold": .5, "resolution": 2., "seed": 42, "cap": 9}
         reasoning = copy(reasoning) if reasoning is not None and upstream_chain == "gop" else reasoning
@@ -38,16 +39,22 @@ class Canonicalize:
         if upstream_chain == "gop" and (reasoning is None or embedding is None):
             raise ValueError("chuỗi gop cần A4/A5 đầy đủ; không dùng --names-only hoặc --prepare")
         self.upstream_chain, self.anchor_batch_mode = upstream_chain, anchor_batch_mode
+        self.a4_rules = {**DEFAULT_A4_RULES, **(a4_rules or {})}
+        if upstream_chain == "gop":
+            if set(self.a4_rules) != set(DEFAULT_A4_RULES) or any(type(value) is not bool for value in self.a4_rules.values()):
+                raise ValueError("luật A4 chuỗi gop phải là các công tắc boolean đã khai báo")
+            self.reasoning.a4_rules = self.a4_rules
         self.anchor_model = anchor_model or (reasoning.judge if reasoning else None)
         if merge_review is not None and upstream_chain != "gop":
             raise ValueError("--merge-review chỉ dùng ở chuỗi gop; v3 dùng roadmap --identity-review")
         self.merge_review = dict(merge_review or {})
         self.merge_review_hash = merge_review_hash or digest(sorted(
             [sorted(pair), decision] for pair, decision in self.merge_review.items()))
-        self.nomination_config = {"semantic_top_k": 3, "semantic_min_similarity": .85,
+        self.nomination_config = {"semantic_enabled": False, "semantic_top_k": 3, "semantic_min_similarity": .85,
                                   **(nomination_config or {})}
         if upstream_chain == "gop":
-            if (type(self.nomination_config["semantic_top_k"]) is not int or
+            if (type(self.nomination_config["semantic_enabled"]) is not bool or
+                    type(self.nomination_config["semantic_top_k"]) is not int or
                     self.nomination_config["semantic_top_k"] < 1 or
                     not 0 <= self.nomination_config["semantic_min_similarity"] <= 1):
                 raise ValueError("tham số đề cử mô tả không hợp lệ")
@@ -77,7 +84,8 @@ class Canonicalize:
         chunks = self.store.load_chunks(doc_id, source.manifest["upstream_version"])
         role_chunks = (self.store.load_role_chunks(doc_id, source.manifest["upstream_version"])
                        if self.upstream_chain == "gop" else None)
-        extraction = DocumentExtraction.from_payload(source.payload)
+        extraction = DocumentExtraction.from_payload(source.payload, include_embeddings=(
+            self.upstream_chain != "gop" or self.nomination_config["semantic_enabled"]))
         if extraction.coverage_incomplete:
             raise ValueError("A4 cần pool ứng viên hoàn chỉnh")
         aliases = self.store.load_type_aliases()
@@ -96,6 +104,7 @@ class Canonicalize:
                           anchor_chunks_version=role_chunks.version, anchors=anchor_config(self.anchor_model, self.anchor_batch_mode))
             config["additional_nominations"] = {"rule": "identity-names+a3-evidence+stored-draft-vectors-v1",
                                                 **self.nomination_config}
+            config["a4_rules"] = a4_rules_config(self.a4_rules)
             config["merge_review_hash"] = self.merge_review_hash
             config["merge_verification"] = digest([load_prompt("a10", "identity_verify"), VERIFY_SCHEMA,
                                                     self.reasoning.judge.model_id, self.reasoning.generation])
@@ -133,12 +142,13 @@ class Canonicalize:
                 previous = self.store.load_latest_canonical(doc_id)
             except FileNotFoundError:
                 pass
-        groups = group_names(extraction.entities)
-        nodes, log, review = build_nodes(groups, chunks.result.normalized_full_text, aliases)
-        for group, node in zip(groups, nodes, strict=True):
-            if len(group) > 1:
-                log.append({"action": "exact_name", "name_key": name_key(group[0].name),
-                            "members": node["members"], "node_id": node["node_id"]})
+        with measure_phase("build_nodes" if self.upstream_chain == "gop" else None):
+            groups = group_names(extraction.entities)
+            nodes, log, review = build_nodes(groups, chunks.result.normalized_full_text, aliases)
+            for group, node in zip(groups, nodes, strict=True):
+                if len(group) > 1:
+                    log.append({"action": "exact_name", "name_key": name_key(group[0].name),
+                                "members": node["members"], "node_id": node["node_id"]})
         nominations = {"edges": [], "clusters": [], "cut_edges": [], "metrics": {}}
         if self.embedding:
             text_groups = {n["node_id"]: group for n, group in zip(nodes, groups, strict=True) if not n["media_id"]}
@@ -150,9 +160,15 @@ class Canonicalize:
             by_name = dict(zip(names, map(unit, values), strict=True))
             vectors = {id: unit([sum(column)/len(group) for column in zip(*(by_name[e.name] for e in group), strict=True)])
                        for id, group in text_groups.items()}
-            additional = (additional_nominations(nodes, text_groups, extraction.candidate_embeddings,
-                                                  **self.nomination_config) if self.upstream_chain == "gop" else None)
-            nominations = nomination_graph(text_groups, vectors, additional=additional, **self.graph_config)
+            with measure_phase("additional_nominations" if self.upstream_chain == "gop" else None):
+                additional = (additional_nominations(nodes, text_groups, extraction.candidate_embeddings,
+                    semantic_top_k=self.nomination_config["semantic_top_k"],
+                    semantic_min_similarity=self.nomination_config["semantic_min_similarity"],
+                    same_evidence_enabled=self.a4_rules["same_evidence_enabled"])
+                    if self.upstream_chain == "gop" else None)
+            with measure_phase("nomination_graph" if self.upstream_chain == "gop" else None):
+                rule_options = {"deterministic": self.a4_rules["deterministic_clustering"]} if self.upstream_chain == "gop" else {}
+                nominations = nomination_graph(text_groups, vectors, additional=additional, **rule_options, **self.graph_config)
             if additional is not None:
                 for channel in SOURCES:
                     nominations["metrics"]["nomination_channels"].setdefault(channel, 0)
@@ -166,7 +182,8 @@ class Canonicalize:
             if self.upstream_chain == "gop":
                 nodes, extra_edges, decisions, additional_review, deferred, deferred_pairs, reasoning_metrics = self.reasoning.merge(
                     nodes, groups, chunks.result, nominations, previous_log, aliases)
-                core = prepare_anchors(nodes, role_chunks.result.chunks)
+                with measure_phase("prepare_anchors"):
+                    core = prepare_anchors(nodes, role_chunks.result.chunks)
                 description_log, description_metrics = self.reasoning.describe(
                     nodes, chunks.result, previous_log, declared_language, anchor_core=core,
                     anchor_batch_mode=self.anchor_batch_mode)

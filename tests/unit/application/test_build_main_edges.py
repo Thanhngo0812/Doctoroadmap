@@ -200,7 +200,7 @@ def test_main_cache_key_does_not_depend_on_worker_concurrency():
 
 
 def test_previous_edges_are_scoped_to_the_same_chapter():
-    use_case = BuildMainEdges(Store(), Model())
+    use_case = BuildMainEdges(Store(), Model(), parallel_sessions=False)
     nodes = [
         {"node_id": "a", "name": "A"},
         {"node_id": "b", "name": "B"},
@@ -227,7 +227,7 @@ def test_previous_edges_are_scoped_to_the_same_chapter():
 
 
 def test_previous_edges_are_limited_to_edges_touching_the_session_nodes():
-    use_case = BuildMainEdges(Store(), Model())
+    use_case = BuildMainEdges(Store(), Model(), parallel_sessions=False)
     session = {
         "session_id": "s1", "route": "chapter", "chapter_id": "ch1",
         "target_node_ids": ["a"], "allowed_node_ids": ["a", "b"], "chunk_ids": ["c1"],

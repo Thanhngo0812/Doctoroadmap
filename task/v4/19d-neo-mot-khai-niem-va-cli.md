@@ -1,7 +1,7 @@
 # 19d — Neo "một khái niệm" mặc định; `--names-only` dùng chuỗi v3
 
 **Nguồn chân lý:** [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md), pha 1b.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** sẵn sàng giao
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã cài và kiểm chứng 2026-10-17
 
 ## Vì sao
 
@@ -18,6 +18,10 @@
 
 ## Nghiệm thu
 
-- [ ] Không đặt cấu hình thì chuỗi gộp dùng neo `single`.
-- [ ] Đặt mặc định là `gop`, thì `--names-only` và `--prepare` không có `--upstream-chain` vẫn chạy chuỗi v3. Có `--upstream-chain gop` thì báo lỗi.
-- [ ] Băm config v3 giữ nguyên. Toàn bộ test qua.
+- [x] Không đặt cấu hình thì chuỗi gộp dùng neo `single`.
+- [x] Đặt mặc định là `gop`, thì `--names-only` và `--prepare` không có `--upstream-chain` vẫn chạy chuỗi v3. Có `--upstream-chain gop` thì báo lỗi.
+- [x] Băm config v3 giữ nguyên. Toàn bộ test qua.
+
+**Kiểm chứng 2026-10-17:** 8 test riêng kiểm mặc định, gọi neo riêng và CLI bằng fixture thật/mô hình giả; 3 test đỏ trước sửa. Băm v3 đóng băng vẫn qua. Chi tiết ở [báo cáo 19d–19e](../../report/v4-19de-mac-dinh-va-pha-b-2026-10-17.md).
+
+Toàn kho: **1.617 test qua**, xem [báo cáo tích hợp](../../report/v4-19-phan-tich-va-kiem-chung-2026-10-17.md).

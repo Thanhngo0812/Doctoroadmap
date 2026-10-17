@@ -26,7 +26,7 @@ def test_reuses_identity_name_sources(names, source):
 def test_same_a3_sentence_and_description_are_separate_nomination_sources():
     names = {"a": "Ảnh ánh xạ", "b": "Im f", "c": "Vắng vector"}
     rows = nominate(names, evidence={"a": ["Một câu bằng chứng."], "b": ["Một câu bằng chứng."]},
-                    vectors={"a": [1., 0.], "b": [1., .01]})
+                    vectors={"a": [1., 0.], "b": [1., .01]}, same_evidence_enabled=True)
     assert rows == [{"left": "a", "right": "b", "reasons": ["description_similarity", "same_evidence"]}]
     assert not nominate(names, vectors={"a": [1., 0.]})
     assert not nominate(names, vectors={"a": [1., 0.], "b": [1., .01]}, semantic_min_similarity=1.)

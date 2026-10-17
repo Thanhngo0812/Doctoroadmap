@@ -11,6 +11,11 @@ def shared_names(left, right):
     return bool(names(left) & names(right))
 
 
+def shared_primary_name(left, right):
+    name = _normalized(left["name"])
+    return bool(name) and name == _normalized(right["name"])
+
+
 def validate_merge_verification(value, *, pair_id):
     if not isinstance(value, dict) or value.get("pair_id") != pair_id:
         raise ValueError("xác minh sai pair_id")
@@ -61,17 +66,29 @@ def review_constraints(review, previous, initial_nodes):
     return sorted(same), sorted(different)
 
 
-def reviewed_components(ids, same, different, human_same, human_different):
+def reviewed_components(ids, same, different, human_same, human_different, *,
+                        forced_same=(), conflict_same=()):
     blocks, conflicts = guarded_components(ids, human_same, human_different)
     if conflicts:
         raise ValueError("quyết định người duyệt tự mâu thuẫn bắc cầu")
     owner = {key: index for index, block in enumerate(blocks) for key in block}
     blocked = {(min(owner[a], owner[b]), max(owner[a], owner[b])) for a, b in human_different}
+    if forced_same:
+        forced, _ = guarded_components(list(range(len(blocks))),
+            [(owner[a], owner[b]) for a, b in forced_same], blocked)
+        blocks = [sorted(key for index in component for key in blocks[index]) for component in forced]
+        owner = {key: index for index, block in enumerate(blocks) for key in block}
+        blocked = {tuple(sorted((owner[a], owner[b]))) for a, b in human_different}
     model_same = {(owner[a], owner[b]) for a, b in same
                   if owner[a] != owner[b] and tuple(sorted((owner[a], owner[b]))) not in blocked}
     model_different = {(owner[a], owner[b]) for a, b in different if owner[a] != owner[b]}
     merged, conflicts = guarded_components(list(range(len(blocks))), model_same,
                                            [*model_different, *blocked])
+    for conflict in conflicts:
+        keep = [(owner[a], owner[b]) for a, b in conflict_same if owner[a] in conflict and owner[b] in conflict]
+        if keep:
+            retained, _ = guarded_components(conflict, keep, blocked)
+            merged = [component for component in merged if not set(component) <= set(conflict)] + retained
     expand = lambda component: sorted(key for index in component for key in blocks[index])
     return [expand(component) for component in merged], [expand(component) for component in conflicts]
 

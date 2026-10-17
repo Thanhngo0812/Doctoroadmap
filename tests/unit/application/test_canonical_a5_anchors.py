@@ -83,7 +83,7 @@ class IntegratedModel(FakeModel):
         return reply
 
 
-def run(tmp_path, model=None, mode=None, store=None):
+def run(tmp_path, model=None, mode="a5", store=None):
     store, model = store or fixture_store(tmp_path), model or IntegratedModel()
     use_case = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model),
                            upstream_chain="gop", **({"anchor_batch_mode": mode} if mode else {}))

@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec gộp khâu trước A8](../../doc/gop-khau-truoc-a8-spec.md), mục 3.1 (đính chính 2026-10-16);
 [nghiệm thu 17i lượt 1](../../report/v4-17i-nghiem-thu-chuoi-gop-luot-1-2026-10-16.md), mục 2. Chủ dự án duyệt 2026-10-16.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17j · **Trạng thái:** sẵn sàng giao
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (test bằng mô hình giả) · **Chặn bởi:** 17j · **Trạng thái:** hoàn tất 2026-10-16
 
 ## Vì sao
 
@@ -35,6 +35,9 @@ Tắt nguồn này trên doc-1 (thử bằng ngưỡng cosine 1,0):
 
 ## Nghiệm thu
 
-- [ ] Test trên fixture thật, với mô hình giả: mặc định không có cặp nào mang nguồn mô tả. Bật tuỳ chọn thì có lại, đúng như vé 17e.
-- [ ] Bật hay tắt thì khoá cache đổi. Băm config của chuỗi v3 giữ nguyên.
-- [ ] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+- [x] Test trên fixture thật, với mô hình giả: mặc định không có cặp nào mang nguồn mô tả. Bật tuỳ chọn thì có lại, đúng như vé 17e.
+- [x] Bật hay tắt thì khoá cache đổi. Băm config của chuỗi v3 giữ nguyên.
+- [x] Mỗi luật chặn có ít nhất một test thấy nó trượt khi luật bị bỏ. Toàn bộ test qua.
+
+Cấu hình: `DOC2ROADMAP_MERGE_DESCRIPTION_ENABLED=false`; đặt `true` để bật lại khi đo.
+[Bằng chứng hồi quy và nghiệm thu](../../report/v4-17k-tat-de-cu-mo-ta-2026-10-16.md).

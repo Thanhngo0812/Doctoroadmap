@@ -167,7 +167,7 @@ def build_canonical(*, prepare=False, upstream_chain=None, anchor_batch_mode=Non
 
     from doc2roadmap.application.spend_guard import SpendGuard
     settings, store, embedding = _a3_dependencies()
-    chain = upstream_chain or settings.upstream_chain
+    chain = upstream_chain or ("v3" if prepare else settings.upstream_chain)
     batch_mode = anchor_batch_mode or settings.anchor_batch_mode
     if chain == "gop" and prepare:
         raise ValueError("chuỗi gop cần A4/A5 đầy đủ; không dùng --prepare")
@@ -194,7 +194,8 @@ def build_canonical(*, prepare=False, upstream_chain=None, anchor_batch_mode=Non
     return Canonicalize(store, embedding, graph_config=graph, reasoning=reasoning,
                        upstream_chain=chain, anchor_batch_mode=batch_mode,
                        merge_review=merge_review, merge_review_hash=merge_review_hash,
-                       nomination_config={"semantic_top_k": settings.merge_description_top_k,
+                       nomination_config={"semantic_enabled": settings.merge_description_enabled,
+                                          "semantic_top_k": settings.merge_description_top_k,
                                           "semantic_min_similarity": settings.merge_description_min_similarity},
                        anchor_model=model(settings.roadmap_model_id, anchor=True) if chain == "gop" else None)
 
@@ -214,8 +215,10 @@ def build_learning_graph(*, allow_spend=False, identity_review=None, upstream_ch
     )
 
     from doc2roadmap.application.spend_guard import SpendGuard
-    from doc2roadmap.application.use_cases.name_modules import NameModules
+    from doc2roadmap.application.phase_b.naming import NameModulesB
+    from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
     from doc2roadmap.application.use_cases.name_concept_labels import NameConceptLabels
+    from doc2roadmap.application.stage_measurements import measure_stage
 
     settings, store, embedding = _a3_dependencies()
     roadmap_concurrency = (settings.llm_max_in_flight if settings.llm_transport == "vertex"
@@ -245,6 +248,9 @@ def build_learning_graph(*, allow_spend=False, identity_review=None, upstream_ch
     else:
         secondary = BuildSecondaryEdges(store, model, concurrency=roadmap_concurrency,
                                          window_pairs=settings.secondary_window_pairs, generation=generation)
+    module_titles = NameModulesB(store, model_for(512), concurrency=roadmap_concurrency,
+        phase_b_store=JsonPhaseBStore(settings.artifact_dir / 'phase_b' / 'live.json'), allow_spend=True)
+    module_titles.execute = measure_stage(module_titles.execute)
     return BuildLearningGraph(
         BuildClusters(
             store,
@@ -273,6 +279,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None, upstream_ch
             store,
             model,
             single_session_limit=settings.roadmap_single_session_limit,
+            parallel_sessions=settings.roadmap_main_parallel,
             definition_before=settings.a8_definition_before,
             definition_after=settings.a8_definition_after,
             concurrency=roadmap_concurrency,
@@ -288,7 +295,7 @@ def build_learning_graph(*, allow_spend=False, identity_review=None, upstream_ch
             store,
             stage_cap=settings.roadmap_stage_cap,
         ),
-        NameModules(store, model_for(128), concurrency=roadmap_concurrency),
+        module_titles,
         NameConceptLabels(store, model_for(512), concurrency=roadmap_concurrency),
         upstream_chain=upstream_chain, identity_review=identity_review,
     ), settings

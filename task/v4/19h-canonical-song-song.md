@@ -1,7 +1,7 @@
 # 19h — Canonical chạy song song nhiều hơn
 
 **Nguồn chân lý:** [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md), pha 2 mục 4.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 19f (cùng đoạn mã neo) · **Trạng thái:** chờ 19f
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 19f (đã kiểm chứng lõi neo) · **Trạng thái:** đã cài và kiểm chứng 2026-10-17
 
 ## Vì sao
 
@@ -17,6 +17,10 @@ xuống khoảng 140 giây (nghiên cứu mục 4). Mục cấu hình `vertex_co
 
 ## Nghiệm thu
 
-- [ ] Test với mô hình giả có độ trễ: số lời gọi đồng thời tối đa đạt mức cấu hình; payload và nhật ký giống hệt khi chạy tuần tự.
-- [ ] Bộ giới hạn tốc độ vẫn được tôn trọng.
-- [ ] Khoá cache không đổi. Toàn bộ test qua.
+- [x] Test với mô hình giả có độ trễ: số lời gọi đồng thời tối đa đạt mức cấu hình; payload và nhật ký giống hệt khi chạy tuần tự.
+- [x] Bộ giới hạn tốc độ vẫn được tôn trọng.
+- [x] Khoá cache không đổi. Toàn bộ test qua.
+
+**Kiểm chứng 2026-10-17:** 32 node, neo và xác minh prior đều đạt 16 lời đồng thời; băm payload/nhật ký giống chạy tuần tự. HTTP giả qua extractor thật giữ trần limiter 3 với 24 lời. Teaching vẫn lưu checkpoint ở node 8/16/24. Chi tiết ở [báo cáo 19f–19h](../../report/v4-19fh-neo-va-song-song-2026-10-17.md).
+
+Toàn kho: **1.617 test qua**, xem [báo cáo tích hợp](../../report/v4-19-phan-tich-va-kiem-chung-2026-10-17.md).

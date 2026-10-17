@@ -6,6 +6,8 @@
 
 ## Cần làm
 
+- **Ghim mã trước khi chạy:** dùng commit đã chứa mã 19a–19k và ba mục kiểm cuối 19k; ghi SHA đầy đủ trong báo cáo cổng. Kiểm tra các tệp mã thực sự dùng không có thay đổi ngoài commit; nếu chạy trong checkout đang có việc khác, dùng checkout sạch của commit đó.
+- **Nguồn gốc artifact:** ghi commit sinh ra từng artifact mới trong manifest hoặc bảng đối chiếu của báo cáo (đường dẫn, version, SHA-256 manifest/payload, commit mã). Artifact tái dùng phải giữ nguồn gốc cũ; nếu chưa biết commit sinh ra nó thì ghi rõ chưa biết, không gán commit hiện tại. Không đưa commit vào config hash hay khoá cache.
 - **Chạy ở kho chính, với cấu hình sau pha 1:**
   - canonical chuỗi gộp cho doc-1, xstk, doc-4, nhap-mon-ml, naive-bayes, doc-6;
   - chuỗi đồ thị cho 3 tài liệu có vàng.
@@ -27,5 +29,6 @@
 
 ## Nghiệm thu
 
+- [ ] Báo cáo ghi SHA mã đã chạy và đối chiếu được nguồn gốc từng artifact mới/tái dùng.
 - [ ] Báo cáo cổng có đủ tiêu chí và phán qua hay trượt kèm lý do.
 - [ ] Artifact chuẩn mới của 6 tài liệu nằm ở kho chính.

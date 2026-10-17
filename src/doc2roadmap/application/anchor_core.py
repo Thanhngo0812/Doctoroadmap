@@ -2,12 +2,15 @@
 from __future__ import annotations
 
 from collections import Counter
+from functools import cache
 from typing import Any
 
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.domain.anchors import (
     STATUSES,
+    _compact,
+    _sentences,
     anchor_fields,
     candidate_sentences,
     heading_chunks,
@@ -15,7 +18,7 @@ from doc2roadmap.domain.anchors import (
     validate_anchor_response,
 )
 from doc2roadmap.domain.canonical import digest
-from doc2roadmap.domain.mentions import exact_mentions
+from doc2roadmap.domain.mentions import exact_mentions, normalize_mention_chunks
 
 
 ANCHOR_SCHEMA: dict[str, Any] = {
@@ -57,7 +60,7 @@ def _anchor_input(node, candidates, chunk_by_id):
 
 
 class AnchorCore:
-    def __init__(self, nodes, chunks, hard_mentions):
+    def __init__(self, nodes, chunks, hard_mentions, *, normalized_mentions=None):
         """The caller supplies hard mentions and the node's candidate chunk region.
 
         Teaching uses defining_chunk_ids; canonical supplies source chunks there
@@ -66,26 +69,30 @@ class AnchorCore:
         self.nodes = nodes
         self.chunk_by_id = {chunk.chunk_id: chunk for chunk in chunks}
         content_chunks = [c for c in chunks if getattr(c, "role", "noi_dung") == "noi_dung"]
+        compact, sentences = cache(_compact), cache(_sentences)
+        normalized_mentions = normalized_mentions if normalized_mentions is not None else normalize_mention_chunks(chunks)
         self.candidates_of, self.outside_of = {}, {}
         for node in nodes:
             if not node.get("learnable"):
                 continue
-            headings = heading_chunks(node, content_chunks)
+            headings = heading_chunks(node, content_chunks, normalize=compact)
             ids = set(node.get("defining_chunk_ids", [])) | hard_mentions.get(node["node_id"], set())
             ids |= {span["chunk_id"] for span in node.get("evidence", []) if isinstance(span, dict) and "chunk_id" in span}
-            ids |= symbolic_name_chunks(node, chunks)
+            ids |= symbolic_name_chunks(node, chunks, normalize=compact)
             ids.update(headings)
             self.outside_of[node["node_id"]] = sorted({getattr(self.chunk_by_id[c], "role", "noi_dung")
                 for c in ids if c in self.chunk_by_id and getattr(self.chunk_by_id[c], "role", "noi_dung") != "noi_dung"})
             candidates = candidate_sentences(node, [self.chunk_by_id[c] for c in ids if c in self.chunk_by_id],
-                                             limit=CANDIDATES, headings=headings)
+                                             limit=CANDIDATES, headings=headings, normalize=compact,
+                                             split_sentences=sentences)
             if not candidates:
                 # A6 can omit literal mentions outside its retrieved pairs. Scan only
                 # nodes otherwise marked mentioned_only, avoiding a full corpus join.
-                new_ids = exact_mentions([node], content_chunks, common_names=())
+                new_ids = exact_mentions([node], content_chunks, common_names=(), normalized_chunks=normalized_mentions)
                 ids.update(new_ids)
                 candidates = candidate_sentences(node, [self.chunk_by_id[c] for c in ids if c in self.chunk_by_id],
-                                                 limit=CANDIDATES, headings=headings)
+                                                 limit=CANDIDATES, headings=headings, normalize=compact,
+                                                 split_sentences=sentences)
             self.candidates_of[node["node_id"]] = candidates
 
     def pending(self, answers):
@@ -100,14 +107,15 @@ class AnchorCore:
         return _prior_inputs(self.nodes, answers)
 
     def judge(self, model, *, generation, concurrency=4, answers=None, decision_log=(), metrics=None,
-              save_checkpoint=None):
+              save_checkpoint=None, batch_size=NODE_BATCH):
         """Return answers, decision log and call/token counts; save each completed batch."""
         answers, decision_log, metrics = dict(answers or {}), list(decision_log), Counter(metrics or {})
         pending = self.pending(answers)
+        batch_size = (len(pending) or 1) if batch_size is None else batch_size
         system_prompt = load_prompt("a10", "anchor")
         prompt_hash = anchor_prompt_hash(model.model_id, generation)
-        for start in range(0, len(pending), NODE_BATCH):
-            group = pending[start:start + NODE_BATCH]
+        for start in range(0, len(pending), batch_size):
+            group = pending[start:start + batch_size]
             jobs = []
             for node in group:
                 candidates = self.candidates_of[node["node_id"]]
@@ -129,14 +137,15 @@ class AnchorCore:
         return answers, decision_log, metrics
 
     def verify_prior(self, model, answers, *, generation, concurrency=4, verified=None, decision_log=(), metrics=None,
-                     save_checkpoint=None):
+                     save_checkpoint=None, batch_size=NODE_BATCH):
         """Independently verify prior knowledge, without the first verdict's reason."""
         verified, decision_log, metrics = dict(verified or {}), list(decision_log), Counter(metrics or {})
         prior_prompt = load_prompt("a10", "prior_verify")
         prior_hash = digest([prior_prompt, PRIOR_SCHEMA, model.model_id, generation])
         remaining = [row for row in self.prior_inputs(answers) if row["node_id"] not in verified]
-        for start in range(0, len(remaining), NODE_BATCH):
-            group = remaining[start:start + NODE_BATCH]
+        batch_size = (len(remaining) or 1) if batch_size is None else batch_size
+        for start in range(0, len(remaining), batch_size):
+            group = remaining[start:start + batch_size]
             jobs = []
             for data in group:
                 def validate(value, node_id=data["node_id"]):

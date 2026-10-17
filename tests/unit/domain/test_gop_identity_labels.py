@@ -4,7 +4,8 @@ from doc2roadmap.domain.canonical_decisions import ContradictionError, validate_
 
 
 LABELS = ("synonym", "synonym_of", "same_as", "alias", "alias_of", "abbreviation", "abbreviation_of",
-          "acronym", "acronym_of", "initialism_of", "translation", "translation_of", "equivalent_to", "identical_to")
+          "acronym", "acronym_of", "initialism_of", "translation", "translation_of", "equivalent_to", "identical_to",
+          "coextensive_with")
 
 
 def partition(label, same=False):
@@ -27,3 +28,12 @@ def test_gop_does_not_match_identity_label_substrings(label):
 
 def test_v3_keeps_its_original_identity_label_set():
     assert validate_partition(partition("synonym"), {"a": ["c"], "b": ["c"]})
+    assert validate_partition(partition("coextensive_with"), {"a": ["c"], "b": ["c"]})
+
+
+def test_coextensive_rule_can_be_disabled_without_disabling_other_gop_labels():
+    assert validate_partition(partition("coextensive_with"), {"a": ["c"], "b": ["c"]},
+                              gop=True, coextensive_identity=False)
+    with pytest.raises(ContradictionError, match="R2:"):
+        validate_partition(partition("synonym"), {"a": ["c"], "b": ["c"]},
+                           gop=True, coextensive_identity=False)

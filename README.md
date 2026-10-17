@@ -62,18 +62,19 @@ Xem [định dạng registry và kiểm chứng F53](report/xu-ly-feedback-f53.m
 `doc2roadmap a4 --doc-id baocao-canhan --names-only` chạy lớp tên không mạng.
 `--prepare` chỉ dựng đề cử bằng embedding. Chạy A4/A5 đầy đủ cần `--gold` đã gán mù.
 Bộ 416 nhãn AI đã được chủ dự án chấp nhận: `tests/fixtures/a4/gold-blind.json`.
-Đặt `DOC2ROADMAP_CANONICAL_CONCURRENCY=4` trong `.env` (mặc định 4, số nguyên dương)
+Đặt `DOC2ROADMAP_CANONICAL_CONCURRENCY=16` trong `.env` (mặc định 16, số nguyên dương)
 để giới hạn số lời gọi LLM A4/A5 đồng thời **trong mỗi lượt chạy một tài liệu**; đặt 1 để chạy tuần tự.
 Các job độc lập chạy song song; phán cụm xong mới vá bằng cụm nhỏ đủ thành viên hai node, gộp xong mới mô tả,
 kiểm draft xong mới viết lại.
-Concurrency không vào khóa cache. Chạy bốn tiến trình với concurrency 4 có thể đạt 16 lời gọi đồng thời;
+Concurrency không vào khóa cache. Chạy bốn tiến trình với concurrency 16 có thể đạt 64 lời gọi đồng thời;
 đây không phải giới hạn toàn hệ thống hay giới hạn requests/phút. A3 dùng `DOC2ROADMAP_EXTRACTION_CONCURRENCY` riêng.
 Xem [trạng thái task, cách chạy và giới hạn kiểm chứng](feedback/F18-a4-a5-hop-nhat.md).
 
 ### Chuỗi gộp trước A8 (vé 17)
 
 Chuỗi `v3` vẫn mặc định. Chọn `--upstream-chain gop` khi chạy A4/A5 đầy đủ;
-`--names-only` và `--prepare` chỉ dùng với `v3`.
+`--names-only` và `--prepare` tự chọn `v3` khi không truyền `--upstream-chain`,
+kể cả khi cấu hình chuỗi mặc định là `gop`; chọn `gop` tường minh ở hai chế độ này sẽ báo lỗi.
 
 ```powershell
 .\.tools\uv.exe run doc2roadmap a4 --doc-id book --gold tests/fixtures/a4/gold-blind.json --no-gold-for-doc --upstream-chain gop --dry-run
@@ -85,8 +86,16 @@ Chuỗi `v3` vẫn mặc định. Chọn `--upstream-chain gop` khi chạy A4/A5
 kiểm chuỗi mong đợi. Chuỗi `gop` đã có neo trong canonical và bỏ ba stage
 `provenance`, `teaching`, `identity` khỏi đồ thị.
 
-`--anchor-batch-mode a5` gom neo vào lời gọi mô tả/kiểm A5; `single` là đối chứng.
+Pass chính mặc định chạy các phiên song song, không đưa cạnh của phiên trước vào
+đầu vào phiên. Đặt `DOC2ROADMAP_ROADMAP_MAIN_PARALLEL=false` để chạy nối tiếp trong
+từng chương như trước; tuỳ chọn này có trong khoá cache. Số worker và bộ giới hạn
+tốc độ hiện có vẫn điều khiển mức đồng thời.
+
+Neo mặc định là `single`, mỗi khái niệm một lời gọi. `--anchor-batch-mode a5`
+giữ chế độ gom neo vào lời gọi mô tả/kiểm A5 để đối chứng.
 `DOC2ROADMAP_CANONICAL_REPAIR_BATCH_SIZE` đặt số mục trong lô phán sửa (mặc định 1, mỗi cặp một lời gọi).
+Nguồn đề cử theo mô tả nháp mặc định tắt trong chuỗi `gop`; đặt
+`DOC2ROADMAP_MERGE_DESCRIPTION_ENABLED=true` để bật lại khi đo.
 `DOC2ROADMAP_MERGE_DESCRIPTION_TOP_K` (3) và `DOC2ROADMAP_MERGE_DESCRIPTION_MIN_SIMILARITY`
 (0,85) điều chỉnh nguồn đề cử từ vector mô tả nháp A3 đã lưu.
 
