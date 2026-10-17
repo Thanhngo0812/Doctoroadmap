@@ -286,11 +286,14 @@ class JsonArtifactStore:
         return None
 
     def load_role_chunks(self, doc_id, version):
-        """A10 may consume metadata-only labels; A3–A8 keep their pinned source versions."""
+        """Use newer labels from the same original chunks; keep A3's chunk identity pinned."""
         base = self.load_chunks(doc_id,version)
+        origin = base.manifest['roles_from_chunks_version'] if base.manifest.get('semantic_roles') else version
         for candidate,path in reversed(self._versions('chunks',doc_id)):
+            if candidate <= version:
+                break
             manifest = self._read(path / 'manifest.json')
-            if manifest.get('semantic_roles') and manifest.get('roles_from_chunks_version')==version:
+            if manifest.get('semantic_roles') and manifest.get('roles_from_chunks_version')==origin:
                 labeled = self._stored_chunks(candidate,path)
                 identity = lambda result: [(c.chunk_id,c.text,c.char_start,c.char_end) for c in result.chunks]
                 if manifest['source_hash']!=base.manifest['source_hash'] or identity(labeled.result)!=identity(base.result):

@@ -104,16 +104,22 @@ class Canonicalize:
                 cached = self.store.find_canonical(doc_id, source.manifest["source_hash"], config_hash)
         if cached:
             if planning:
-                return {phase: StagePlan("reused", artifact=cached) for phase in
+                plans = {phase: StagePlan("reused", artifact=cached) for phase in
                         ("embedding", "merge", "repair", "merge_verify", "describe", "check", "anchor", "anchor_prior_verify")}
+                if role_chunks is not None:
+                    plans["anchor"].note = f"anchor_chunks_version={role_chunks.version}"
+                return plans
             return cached, True
         if planning:
             names = {entity.name for entity in extraction.entities if not entity.is_media}
-            return {"embedding": StagePlan("run", remaining_items=len(names), unit="name", calls_estimate=None,
+            plans = {"embedding": StagePlan("run", remaining_items=len(names), unit="name", calls_estimate=None,
                                              usd_estimate=None, note="Embedding tên; số batch và token phụ thuộc adapter."),
                     **{phase: StagePlan("unknown", remaining_items=None, calls_estimate=None, usd_estimate=None,
                                        note="Phụ thuộc kết quả phần trước; chưa biết.") for phase in
                        ("merge", "repair", "merge_verify", "describe", "check", "anchor", "anchor_prior_verify")}}
+            if role_chunks is not None:
+                plans["anchor"].note += f" anchor_chunks_version={role_chunks.version}"
+            return plans
         previous = history
         if self.upstream_chain != "gop":
             try:
