@@ -76,7 +76,7 @@ Hai việc dưới đây không đổi đầu ra, nhưng đổi thời gian và 
 
 **Nghiệm thu bổ sung:** doc-4 ghi checkpoint **1,376 giây**, 16 lần (15 lưu cache phản hồi, 1 trạng thái đã gộp), 112,3 MB; bốn băm đầu ra, config/id và checkpoint cuối không đổi. Đo bằng `tmp/19k-review/benchmark.py replay`, mở rộng phép phát lại 19j đã nêu trên, ghi thật trong kho thử. Mô hình trễ: đỉnh 8/8 worker, trung vị 0,714 → 0,501 giây (5 cặp đo). Writer trên tệp 13,5 MB: 0,461 → 0,211 giây, bytes trùng khít. Test lỗi phủ cả phán chính/lời sửa và kết quả đã kết thúc với lỗi schema; lượt sau không gọi lại kết quả đã xong. **1.632 test qua**, mã thoát 0, 240,85 giây; **0 USD**. Không chạy dry-run/cổng 19l.
 
-## Kiểm lần 2 của Claude 2026-10-17 — đạt; còn một việc nhỏ, không chặn 19l
+## Kiểm lần 2 của Claude 2026-10-17 — đạt; việc dừng sớm đã hoàn thành
 
 **Đã kiểm lại, đạt.** Kiểm trên phản hồi đã lưu của doc-4 trong 19j, 0 USD.
 - **Ghi checkpoint:** 16 lần ghi, tổng 0,11 GB, mất 1,5 giây. Trước khi sửa là 79 giây.
@@ -84,7 +84,7 @@ Hai việc dưới đây không đổi đầu ra, nhưng đổi thời gian và 
 - **Lỗi kéo dài từ lời gọi 60 trở đi:** lượt chạy lại gọi 184 lời. Đúng bằng số lời chưa xong.
 - Ở cả hai ca, cạnh, cờ và `executor_log` bằng lượt chạy liền mạch. `decision_log` chỉ khác ở cờ `reused`.
 
-**Còn một việc: dừng sớm khi lỗi.**
+**Dừng sớm khi lỗi — đã xử lý.** Hiện trạng bên dưới là ghi nhận trước bản vá.
 - Hiện trạng: khi có lỗi vận chuyển, `run_model_jobs` vẫn chạy hết các việc còn trong hàng đợi rồi mới ném lỗi. Thử lỗi kéo dài từ lời gọi 60:
   lượt đầu vẫn gọi đủ 177 lời, tức 117 lời lỗi thêm.
 - Với transport thật, mỗi lời lỗi thử 8 lần, có backoff, tổng khoảng 4 phút.
@@ -93,7 +93,8 @@ Hai việc dưới đây không đổi đầu ra, nhưng đổi thời gian và 
   - Trên Vertex, với 100 lời đồng thời, treo khoảng 8 phút.
 - Cần làm: ở lỗi đầu tiên, huỷ các việc chưa bắt đầu. Vẫn chờ và lưu kết quả của các việc đang chạy, rồi ném lỗi gốc.
   - Lượt chạy lại sẽ gọi các việc đã bị huỷ. Các việc này chưa từng tốn tiền, nên tổng chi không đổi.
-- Lưu ý: `concurrent.futures.CancelledError` kế thừa `BaseException`, không phải `Exception`. Future đã huỷ phải được bỏ qua, nếu không lỗi gốc bị
-  thay bằng `CancelledError`.
-- [ ] Test mô hình giả, lỗi kéo dài từ lời k, `concurrency` = c: lượt đầu gọi không quá k + 2c lời (chừa chỗ cho việc worker vừa nhận) và ném đúng lỗi vận chuyển gốc. Lượt chạy lại
+- Lưu ý đã kiểm trên Python của dự án: `concurrent.futures.CancelledError` kế thừa `Exception`. Bỏ qua future đã huỷ trước khi lấy kết quả; giữ lỗi vận chuyển đầu tiên để ném lại sau khi thu các việc đang chạy.
+- [x] Test mô hình giả, lỗi kéo dài từ lời k, `concurrency` = c: lượt đầu gọi không quá k + 2c lời (chừa chỗ cho việc worker vừa nhận) và ném đúng lỗi vận chuyển gốc. Lượt chạy lại
   ra cạnh, cờ và `executor_log` bằng lượt liền mạch.
+
+**Kiểm chứng bản vá:** `test_persistent_transport_failure_cancels_queued_calls_and_resumes` phủ phán chính/lời sửa × 1/4 worker, k = 6 trên 24 phiên. Cả bốn ca đỏ trước sửa (vẫn gọi 24 việc), xanh sau sửa; checkpoint giữ tất cả kết quả đã trả về, chạy tiếp không gọi lại chúng, nhật ký chỉ khác `reused`, config hash không đổi. Nhóm liên quan **36 test qua**, 8,64 giây; **0 USD API**. [Báo cáo dừng sớm](../../report/v4-19k-dung-som-khi-loi-2026-10-17.md).

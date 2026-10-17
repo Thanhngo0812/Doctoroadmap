@@ -137,11 +137,15 @@ def run_model_jobs(
             futures = {pool.submit(copy_context().run, call, job): i for i, job in enumerate(jobs)}
             results, failure = [None] * len(futures), None
             for future in as_completed(futures):
+                if future.cancelled():
+                    continue
                 try:
                     result = future.result()
                 except Exception as error:
                     if failure is None:
                         failure = error
+                        for pending in futures:
+                            pending.cancel()
                 else:
                     results[futures[future]] = result
                     on_complete(result[1], result[2])

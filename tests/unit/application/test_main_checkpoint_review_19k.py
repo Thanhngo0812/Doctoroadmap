@@ -124,3 +124,50 @@ def test_transport_resume_also_reuses_completed_terminal_schema_failures():
     assert actual.payload['executor_log'] == expected.payload['executor_log']
     clean = lambda rows: [{k: v for k, v in row.items() if k != 'reused'} for row in rows]
     assert clean(actual.payload['decision_log']) == clean(expected.payload['decision_log'])
+
+
+@pytest.mark.parametrize('phase', ['main', 'repair'])
+@pytest.mark.parametrize('concurrency', [1, 4])
+def test_persistent_transport_failure_cancels_queued_calls_and_resumes(phase, concurrency):
+    class PersistentFailure(FailingModel):
+        def __init__(self, fail_phase=None):
+            super().__init__(fail_phase)
+            self.transport_error = ModelTransportError('persistent transport failure')
+            self.phase_calls = Counter()
+
+        def ask_json(self, prompt, *, response_schema):
+            data = json.loads(prompt.split('\nCorrect this validation error:')[0])
+            call_phase = 'repair' if data.get('repair_only') else 'main'
+            key = call_phase, data['session_id']
+            with self.lock:
+                self.calls[key] += 1
+                self.phase_calls[call_phase] += 1
+                fail = call_phase == self.fail_phase and self.phase_calls[call_phase] >= 6
+            sleep(.01)
+            if fail:
+                raise self.transport_error
+            with self.lock:
+                self.returned.add(key)
+            return SimpleNamespace(payload=response(data, repair=True))
+
+    expected = run(many_store(), PersistentFailure(), concurrency=concurrency)
+    store, model = many_store(), PersistentFailure(phase)
+    with pytest.raises(ModelTransportError) as caught:
+        run(store, model, concurrency=concurrency)
+    assert caught.value is model.transport_error
+    assert 6 <= model.phase_calls[phase] <= 6 + 2 * concurrency
+    assert model.phase_calls[phase] < 24  # Queued work actually remained unstarted.
+    finished, before = set(model.returned), model.calls.copy()
+    cached = list(store.checkpoints.values())[0]['pending_model_results']
+    assert {(('repair' if row['input'].get('repair_only') else 'main'), row['input']['session_id'])
+            for row in cached} == finished
+    model.fail_phase = None
+    actual = run(store, model, concurrency=concurrency)
+    assert all(model.calls[key] == before[key] for key in finished)
+    assert len(model.returned) == 48  # Cancelled sessions and repairs were eventually called.
+    for field in ('main_edges', 'main_flags', 'executor_log'):
+        assert actual.payload[field] == expected.payload[field]
+    clean = lambda rows: [{k: v for k, v in row.items() if k != 'reused'} for row in rows]
+    assert clean(actual.payload['decision_log']) == clean(expected.payload['decision_log'])
+    assert actual.manifest['config_hash'] == expected.manifest['config_hash']
+    assert not store.checkpoints
