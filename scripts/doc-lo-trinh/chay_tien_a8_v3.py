@@ -7,7 +7,7 @@ import json
 import sys
 from pathlib import Path
 
-from chay_danh_tinh_v3 import BudgetStop, MeteredGemini
+from evaluation_runtime import BudgetStop, MeteredGemini
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.application.use_cases.anchor_concepts import AnchorConcepts
 from doc2roadmap.application.use_cases.build_mentions import BuildMentions

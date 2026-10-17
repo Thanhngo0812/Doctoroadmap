@@ -80,10 +80,10 @@ def test_roadmap_cli_without_mode_option_runs_ml_and_produces_ml_artifact(monkey
             return upstream, True
 
     def build(**kwargs):
-        assert kwargs == {"allow_spend": False, "identity_review": None}
+        assert kwargs == {"allow_spend": False}
         pipeline, configured = composition.build_learning_graph(**kwargs)
         # Only unrelated stages stand in for cache hits; ML and orchestration are real.
-        for name in ("clusters", "mentions", "provenance", "teaching", "identity", "main_edges",
+        for name in ("clusters", "mentions", "main_edges",
                      "validator", "concept_labels", "roadmap", "module_titles"):
             setattr(pipeline, name, CachedStage("validated" if name == "validator" else name))
         return pipeline, configured
@@ -94,6 +94,6 @@ def test_roadmap_cli_without_mode_option_runs_ml_and_produces_ml_artifact(monkey
     assert store.latest.manifest["config"]["mode"] == "ml"
     assert store.latest.payload["cost_summary"]["secondary_usd"] == 0
     assert scorer.calls == 1 and store.saved_versions == 1
-    assert calls == ["clusters", "mentions", "provenance", "teaching", "identity", "main_edges",
+    assert calls == ["clusters", "mentions", "main_edges",
                      "validated", "concept_labels", "roadmap", "module_titles"]
     assert '"stage": "edges"' in capsys.readouterr().out

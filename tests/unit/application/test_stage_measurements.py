@@ -64,9 +64,9 @@ def test_every_artifact_stage_execute_is_measured():
     import ast
     from pathlib import Path
     stages = ("ingest_document index_document label_chunk_roles extract_entities canonicalize "
-              "build_clusters find_implicit verify_relations anchor_concepts judge_identity "
-              "build_mentions build_provenance build_main_edges build_secondary_edges "
-              "validate_graph name_concept_labels build_roadmap check_teaching name_modules").split()
+              "build_clusters find_implicit verify_relations "
+              "build_mentions build_main_edges build_secondary_edges "
+              "validate_graph name_concept_labels build_roadmap name_modules").split()
     for stage in stages:
         tree = ast.parse((Path("src/doc2roadmap/application/use_cases") / (stage + ".py")).read_text(encoding="utf-8-sig"))
         execute = next(node for node in ast.walk(tree) if isinstance(node, ast.FunctionDef) and node.name == "execute")

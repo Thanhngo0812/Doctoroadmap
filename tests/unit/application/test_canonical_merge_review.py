@@ -40,8 +40,7 @@ def setup_pair(tmp_path, monkeypatch, *, shared=False):
 
 
 def run(store, model, **kwargs):
-    return Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model),
-                        upstream_chain="gop", anchor_batch_mode="single", **kwargs).execute(DOC)[0]
+    return Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model), **kwargs).execute(DOC)[0]
 
 
 def together(artifact, left, right):

@@ -1,20 +1,12 @@
-"""Kiểm chứng v3-10 trên ba artifact phát triển cố định; mặc định chỉ dự toán.
+"""Shared evaluation store and completion budget, independent of retired stages.
 
---allow-spend --max-usd 1.50 mới gọi Gemini. Kết quả thử ở artifacts/v3-identity-evaluation,
-không trở thành cache mặc định và không tự phê duyệt các gộp chạm vàng. Không chạy A8.
+TEACHING retains only the frozen artifact versions used by historical read-only analyses.
 """
-import argparse
 import json
-from pathlib import Path
 from threading import Lock
 from time import sleep
 
 from doc2roadmap.application.prerequisite_prompt import PRICING_USD_PER_MILLION as PRICE
-from doc2roadmap.application.spend_guard import SpendGuard
-from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap
-from doc2roadmap.application.use_cases.judge_identity import JudgeIdentity, load_identity_review
-from doc2roadmap.config import Settings
-from doc2roadmap.domain.global_validation import strongly_connected_components
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
 from doc2roadmap.infrastructure.llm import GeminiEntityExtractor
 
@@ -124,51 +116,3 @@ class MeteredGemini(GeminiEntityExtractor):
                 if call_index % 50 == 0:
                     print(f"completion {call_index}; spent/reserved {sum(r['usd'] for r in self.ledger):.6f} USD", flush=True)
         return text, usage
-
-
-def main():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--allow-spend", action="store_true")
-    parser.add_argument("--max-usd", type=float, default=1.50)
-    args = parser.parse_args()
-    if not 0 < args.max_usd <= 1.50:
-        parser.error("ngân sách được duyệt của lượt này: tối đa 1.50 USD")
-    settings = Settings()
-    root = settings.artifact_dir / "v3-identity-evaluation"
-    output = JsonArtifactStore(root)
-    store = EvaluationStore(JsonArtifactStore(settings.artifact_dir), output)
-    key = settings.gemini_api_key.get_secret_value() if settings.gemini_api_key else "dry-run-no-key"
-    raw = MeteredGemini(key, max_usd=args.max_usd, ledger_path=root / "spend.json",
-                        transport=settings.llm_transport, vertex_project=settings.vertex_project,
-                        vertex_location=settings.vertex_location)
-    model = SpendGuard(raw, allowed=args.allow_spend)
-    prepared = []
-    for doc, version in TEACHING.items():
-        review_path = settings.artifact_dir / "a8-gold" / f"duyet-danh-tinh-{doc}.json"
-        review = load_identity_review(review_path, doc_id=doc) if review_path.exists() else {}
-        judge = JudgeIdentity(store, model, concurrency=settings.roadmap_concurrency, review=review)
-        upstream = store.load_graph(doc, version)
-        plan = judge.plan(doc, upstream=upstream)
-        print(doc, json.dumps(plan.to_dict(), ensure_ascii=False), flush=True)
-        prepared.append((doc, judge, upstream))
-    if not args.allow_spend:
-        return
-    summary = {}
-    for doc, judge, upstream in prepared:
-        artifact, _ = judge.execute(doc, upstream=upstream)
-        roadmap, _ = BuildRoadmap(store).execute(doc, upstream=artifact)
-        payload = artifact.payload
-        edges = payload["requires_edges"]
-        ids = {n["node_id"] for n in payload["nodes"]}
-        assert not [c for c in strongly_connected_components(ids, edges) if len(c) > 1]
-        assert all(e["source"] in ids and e["target"] in ids for e in edges)
-        summary[doc] = {"teaching_version": upstream.version, "identity_path": str(artifact.path),
-                        "stages_path": str(roadmap.path), "stats": payload["stats"],
-                        "identity_usd": payload["cost_summary"]["identity_usd"], "evaluation_only": True}
-        output._write(root / "summary.json", summary)
-        print(doc, json.dumps(summary[doc], ensure_ascii=False), flush=True)
-    print(f"Total spent/reserved: {sum(r['usd'] for r in raw.ledger):.6f} USD", flush=True)
-
-
-if __name__ == "__main__":
-    main()

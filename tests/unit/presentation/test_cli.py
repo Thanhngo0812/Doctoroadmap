@@ -286,7 +286,7 @@ def test_roadmap_spends_only_when_explicitly_allowed(monkeypatch, capsys):
     monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_learning_graph", build)
     assert main(["roadmap", "--doc-id", "doc-2"]) == 0
     assert main(["roadmap", "--doc-id", "doc-2", "--allow-spend"]) == 0
-    assert seen == [{"allow_spend": False, "identity_review": None}, {"allow_spend": True, "identity_review": None}]
+    assert seen == [{"allow_spend": False}, {"allow_spend": True}]
 
 
 def test_label_roles_cli_passes_transfer_version_to_plan_and_execute(monkeypatch, capsys):
@@ -310,25 +310,11 @@ def test_label_roles_cli_passes_transfer_version_to_plan_and_execute(monkeypatch
                     for mode in ("plan", "execute")]
 
 
-def test_roadmap_passes_the_identity_review_of_the_same_document(monkeypatch, tmp_path):
-    import json
-
-    seen = []
-
-    class UseCase:
-        def execute(self, doc_id, **kwargs):
-            return SimpleNamespace(path=Path("artifact"), version=1, payload={"stage": "stages", "stats": {}}), True
-
-    def build(**kwargs):
-        seen.append(kwargs)
-        return UseCase(), None
-
-    review = tmp_path / "duyet.json"
-    review.write_text(json.dumps({"doc_id": "doc-4", "decisions": [{"left": "a", "right": "b", "decision": "Không gộp"}]},
-                                 ensure_ascii=False), encoding="utf-8")
-    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_learning_graph", build)
-    assert main(["roadmap", "--doc-id", "doc-4", "--identity-review", str(review)]) == 0
-    assert seen == [{"allow_spend": False, "identity_review": {frozenset(("a", "b")): "Không gộp"}}]
+def test_roadmap_rejects_retired_identity_review_before_work(capsys):
+    import pytest
+    with pytest.raises(SystemExit) as caught:
+        _parser().parse_args(["roadmap", "--doc-id", "doc-4", "--identity-review", "review.json"])
+    assert caught.value.code == 2 and "--identity-review" in capsys.readouterr().err
 
 
 def test_roadmap_target_prints_only_what_the_chosen_concept_needs(tmp_path, capsys):

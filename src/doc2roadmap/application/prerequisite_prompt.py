@@ -68,34 +68,6 @@ SECONDARY_SCHEMA: dict[str, Any] = {
     "required": ["pair_id", "decision", "flags"],
 }
 
-PROVENANCE_SCHEMA: dict[str, Any] = {
-    "type": "object",
-    "properties": {
-        "node_id": {"type": "string"},
-        "selections": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "properties": {
-                    "chunk_id": {"type": "string"},
-                    "quote": {"type": "string"},
-                },
-                "required": ["chunk_id", "quote"],
-            },
-        },
-    },
-    "required": ["node_id", "selections"],
-}
-
-
-def provenance_system_prompt():
-    return load_prompt("a8", "provenance")
-
-
-def provenance_prompt_hash(model_id, generation):
-    return digest([provenance_system_prompt(), PROVENANCE_SCHEMA, model_id, generation])
-
-
 def main_system_prompt():
     return load_prompt("a8", "main")
 

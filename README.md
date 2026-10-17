@@ -72,10 +72,9 @@ Xem [trạng thái task, cách chạy và giới hạn kiểm chứng](feedback/
 
 ### Chuỗi gộp trước A8 (vé 17)
 
-Chuỗi `gop` là mặc định khi chạy A4/A5 đầy đủ. Muốn chạy chuỗi cũ, chọn
-`--upstream-chain v3` hoặc đặt `DOC2ROADMAP_UPSTREAM_CHAIN=v3`.
-`--names-only` và `--prepare` tự chọn `v3` khi không truyền `--upstream-chain`,
-kể cả khi cấu hình chuỗi mặc định là `gop`; chọn `gop` tường minh ở hai chế độ này sẽ báo lỗi.
+A4/A5 đầy đủ chỉ còn chuỗi `gop`. `--names-only` và `--prepare` giữ đường lớp tên cũ
+cho D-01 đã đóng băng. Artifact v3 cũ vẫn đọc được ở A8, A10, bộ chấm và Pha B;
+để dựng lại toàn bộ pipeline v3, dùng mã trước vé 19n.
 
 ```powershell
 .\.tools\uv.exe run doc2roadmap a4 --doc-id book --gold tests/fixtures/a4/gold-blind.json --no-gold-for-doc --dry-run
@@ -83,28 +82,27 @@ kể cả khi cấu hình chuỗi mặc định là `gop`; chọn `gop` tường
 .\.tools\uv.exe run doc2roadmap roadmap --doc-id book --dry-run
 ```
 
-`roadmap` tự theo chuỗi của canonical đang dùng; tùy chọn `--upstream-chain` dùng để
-kiểm chuỗi mong đợi. **Chạy `a4` mặc định trên tài liệu cũ sẽ chuyển canonical sang
-chuỗi `gop`, đổi chuỗi của lần `roadmap` sau.** Nếu giữ canonical v3 cũ thì `roadmap`
-vẫn dùng v3. Chuỗi `gop` đã có neo trong canonical và bỏ ba stage
-`provenance`, `teaching`, `identity` khỏi đồ thị.
+`roadmap` mới cần canonical của chuỗi gộp. **Chạy `a4` đầy đủ trên tài liệu cũ sẽ
+chuyển canonical sang chuỗi `gop`, đổi đầu vào của lần `roadmap` sau.** Neo và danh
+tính đã nằm trong canonical; ba stage `provenance`, `teaching`, `identity`, các điểm
+dừng tương ứng và cờ `--identity-review` đã gỡ. Quyết định gộp của người duyệt nạp ở
+`a4 --merge-review`.
 
 Pass chính mặc định chạy các phiên song song, không đưa cạnh của phiên trước vào
 đầu vào phiên. Đặt `DOC2ROADMAP_ROADMAP_MAIN_PARALLEL=false` để chạy nối tiếp trong
 từng chương như trước; tuỳ chọn này có trong khoá cache. Số worker và bộ giới hạn
 tốc độ hiện có vẫn điều khiển mức đồng thời.
 
-Neo mặc định là `single`, mỗi khái niệm một lời gọi. `--anchor-batch-mode a5`
-giữ chế độ gom neo vào lời gọi mô tả/kiểm A5 để đối chứng.
-`DOC2ROADMAP_CANONICAL_REPAIR_BATCH_SIZE` đặt số mục trong lô phán sửa (mặc định 1, mỗi cặp một lời gọi).
-Nguồn đề cử theo mô tả nháp mặc định tắt trong chuỗi `gop`; đặt
-`DOC2ROADMAP_MERGE_DESCRIPTION_ENABLED=true` để bật lại khi đo.
-`DOC2ROADMAP_MERGE_DESCRIPTION_TOP_K` (3) và `DOC2ROADMAP_MERGE_DESCRIPTION_MIN_SIMILARITY`
-(0,85) điều chỉnh nguồn đề cử từ vector mô tả nháp A3 đã lưu.
+Neo dùng một lời gọi cho mỗi khái niệm; lời phán sửa dùng riêng từng mục.
+Đã gỡ neo gom A5, đề cử theo mô tả nháp và gom lô lời phán sửa, cùng các cờ chọn
+chuỗi/chế độ neo. Các biến môi trường cũ `UPSTREAM_CHAIN`, `ANCHOR_BATCH_MODE`,
+`MERGE_DESCRIPTION_ENABLED`, `MERGE_DESCRIPTION_TOP_K`, `MERGE_DESCRIPTION_MIN_SIMILARITY`
+và `CANONICAL_REPAIR_BATCH_SIZE` (đều có tiền tố `DOC2ROADMAP_`) bị bỏ qua có cảnh báo;
+xoá chúng khỏi `.env` cũ.
 
 Quyết định người duyệt vào `a4 --merge-review review.json` ở chuỗi `gop`, theo định dạng
 `{"doc_id":"book","decisions":[{"left":"node_…","right":"node_…","decision":"Không gộp"}]}`.
-Các lựa chọn giống `--identity-review`: `Đồng ý gộp`, `Không gộp`, `Là hai nghĩa khác nhau`,
+Các lựa chọn: `Đồng ý gộp`, `Không gộp`, `Là hai nghĩa khác nhau`,
 `Không chắc`. Danh sách gộp khác tên kèm bằng chứng nằm ở `merge_review` trong canonical.
 
 Để chấm vàng cũ, thêm `--remap-gold-ids` cho `a8-score` hoặc `a8-roadmap-score`.

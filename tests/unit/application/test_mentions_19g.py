@@ -8,7 +8,7 @@ import pytest
 from doc2roadmap.application.use_cases.build_mentions import BuildMentions, dense_mentions
 from doc2roadmap.domain import mentions
 from doc2roadmap.domain.canonical import digest
-from tests.unit.application.test_anchor_core_regression import real_upstream
+from tests.legacy_v3 import real_upstream
 from tests.unit.application.test_build_mentions import Embedding, Store
 
 

@@ -6,7 +6,7 @@ Tái dùng lượt 1 đúng khoá/source từ bản thử v3-10, không chạy A
 import argparse
 import json
 
-from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini, TEACHING
+from evaluation_runtime import EvaluationStore, MeteredGemini, TEACHING
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap
 from doc2roadmap.application.use_cases.judge_identity import JudgeIdentity, _concept, load_identity_review, verify_identity_pairs

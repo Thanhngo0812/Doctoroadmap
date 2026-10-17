@@ -8,7 +8,7 @@ from types import SimpleNamespace
 sys.path.insert(0, "src")
 sys.path.insert(0, "scripts/doc-lo-trinh")
 
-from chay_danh_tinh_v3 import EvaluationStore  # noqa: E402
+from evaluation_runtime import EvaluationStore  # noqa: E402
 from doc2roadmap.application.use_cases.build_secondary_edges import BuildSecondaryEdges  # noqa: E402
 from doc2roadmap.domain.canonical import digest  # noqa: E402
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore  # noqa: E402

@@ -3,8 +3,8 @@
 > **Kế hoạch v3 (2026-09-26):** lộ trình chuẩn chỉ và đọc được — vai trò vùng văn bản, dãy học chỉ gồm khái niệm được dạy, tiên quyết rút gọn, tên module theo nội dung, danh tính mở rộng. Xem [spec v3](v3-lo-trinh-doc-duoc-spec.md); các mục dưới được sửa theo từng vé khi cài đặt.
 
 > **Chuỗi gộp là mặc định (2026-10-17, [ADR 0016](adr/0016-danh-tinh-trong-a4-neo-trong-a5.md)).** A4 gộp thực thể và kiêm luôn danh tính. A5
-> viết mô tả, rồi quyết câu neo và trạng thái dạy. Ba stage provenance, neo C8 (A9') và danh tính (A9'') rời luồng mặc định; chúng chỉ còn để
-> đọc artifact chuỗi v3. Quy tắc chi tiết: [spec gộp khâu trước A8](gop-khau-truoc-a8-spec.md) và [spec đổi mặc định](doi-mac-dinh-chuoi-gop-spec.md).
+> viết mô tả, rồi quyết câu neo và trạng thái dạy. Ba stage provenance, neo C8 (A9') và danh tính (A9'') rời luồng, và mã của chúng đã gỡ ở
+> vé 19n. Artifact chuỗi v3 cũ vẫn đọc được. Quy tắc chi tiết: [spec gộp khâu trước A8](gop-khau-truoc-a8-spec.md) và [spec đổi mặc định](doi-mac-dinh-chuoi-gop-spec.md).
 
 Tài liệu này đặc tả luồng đi chuẩn, chi tiết từng bước, kèm input/output, kỹ thuật đề xuất và hợp đồng dữ liệu (JSON schema) giữa các module.
 
@@ -659,6 +659,7 @@ Theo đúng thứ tự:
 > **Rời luồng mặc định từ 2026-10-17 ([ADR 0016](adr/0016-danh-tinh-trong-a4-neo-trong-a5.md)).** Chuỗi gộp gộp ngay ở A4, nên không có stage
 > `identity` và `identity_map`. Mục này giữ để đọc artifact chuỗi v3. A8, A10, bộ chấm và Pha B vẫn đọc được loại artifact đó. Stage C8
 > (`teaching`, A9') cũng chỉ còn ở chuỗi v3; phần neo của nó nay nằm trong A5.
+> **Từ vé 19n, mã của stage này và cờ `--identity-review` đã gỡ.** Các lệnh dưới đây chỉ chạy được trên checkout của `2c93c5a` hoặc cũ hơn.
 
 > Quy tắc: [spec v2, W14–W15](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `identity`, sau stage `teaching`.
 

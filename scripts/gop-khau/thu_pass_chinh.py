@@ -71,7 +71,7 @@ def main(argv):
             random.Random(f"{seed}:{session['session_id']}").shuffle(data["mentioned_elsewhere"])
             return data
         BuildMainEdges._input = shuffled
-    graph, settings = build_learning_graph(allow_spend=spend, upstream_chain="gop")
+    graph, settings = build_learning_graph(allow_spend=spend)
     graph.main_edges.parallel_sessions = variant == "song"
     store = graph.main_edges.store
     mentions = store.load_graph(doc, MENTIONS[doc])

@@ -16,7 +16,7 @@ GOP_STAGES = ["clusters", "mentions", "main_edges", "secondary_edges", "validate
 V3_STAGES = ["clusters", "mentions", "provenance", "teaching", "identity", *GOP_STAGES[2:]]
 
 
-def pipeline(*, canonical_chain="gop", upstream_chain=None, identity_review=None, missing=None):
+def pipeline(*, canonical_chain="gop", missing=None):
     visited, returned = [], []
 
     class Stage:
@@ -44,19 +44,20 @@ def pipeline(*, canonical_chain="gop", upstream_chain=None, identity_review=None
     clusters = Stage("clusters")
     clusters.store = SimpleNamespace(load_latest_canonical=lambda doc_id: SimpleNamespace(
         payload={"upstream_chain": canonical_chain}, manifest={"config": {"upstream_chain": canonical_chain}}))
-    graph = BuildLearningGraph(clusters, Stage("mentions"), Stage("provenance"), Stage("main_edges"),
-                               Stage("secondary_edges"), Stage("validated"), Stage("teaching"), Stage("identity"),
-                               Stage("stages"), module_titles=Stage("module_titles"),
-                               concept_labels=Stage("concept_labels"), upstream_chain=upstream_chain,
-                               identity_review=identity_review)
+    graph = BuildLearningGraph(clusters, Stage("mentions"), Stage("main_edges"), Stage("secondary_edges"), Stage("validated"), Stage("stages"), module_titles=Stage("module_titles"), concept_labels=Stage("concept_labels"))
     return graph, visited
 
 
 @pytest.mark.parametrize("canonical_chain,expected", [("gop", GOP_STAGES), ("v3", V3_STAGES)])
 def test_roadmap_infers_canonical_chain_and_passes_exact_artifacts(canonical_chain, expected):
     graph, visited = pipeline(canonical_chain=canonical_chain)
-    _, reused = graph.execute("doc")
-    assert visited == expected and reused
+    if canonical_chain == "v3":
+        with pytest.raises(ValueError, match="canonical gop"):
+            graph.execute("doc")
+        assert visited == []
+    else:
+        _, reused = graph.execute("doc")
+        assert visited == expected and reused
 
 
 @pytest.mark.parametrize("stop_after,last", [("clusters", "clusters"), ("mentions", "mentions"),
@@ -71,25 +72,8 @@ def test_gop_stops_at_every_public_stage(stop_after, last):
 @pytest.mark.parametrize("operation", ["execute", "plan"])
 def test_gop_rejects_stages_already_in_canonical_before_any_calls(stop_after, operation):
     graph, visited = pipeline()
-    with pytest.raises(ValueError, match="đã nằm trong stage canonical"):
+    with pytest.raises(ValueError, match="đã gỡ"):
         getattr(graph, operation)("doc", stop_after=stop_after)
-    assert visited == []
-
-
-@pytest.mark.parametrize("canonical_chain,option", [("gop", "v3"), ("v3", "gop")])
-@pytest.mark.parametrize("operation", ["execute", "plan"])
-def test_explicit_chain_mismatch_is_rejected_before_any_calls(canonical_chain, option, operation):
-    graph, visited = pipeline(canonical_chain=canonical_chain, upstream_chain=option)
-    with pytest.raises(ValueError, match="canonical"):
-        getattr(graph, operation)("doc")
-    assert visited == []
-
-
-@pytest.mark.parametrize("operation", ["execute", "plan"])
-def test_gop_rejects_identity_review_before_any_calls(operation):
-    graph, visited = pipeline(identity_review="review.json")
-    with pytest.raises(ValueError, match="A4"):
-        getattr(graph, operation)("doc")
     assert visited == []
 
 
@@ -207,11 +191,8 @@ def real_fixture_gop_roadmap(tmp_path, secondary_mode):
         manifest_fields={"embedding_model_id": embed.embedding_model_id})
     secondary = (BuildSecondaryMLEdges(store, scorer, Tokenize()) if secondary_mode == "ml" else
                  BuildSecondaryEdges(store, model))
-    forbidden = SimpleNamespace(execute=lambda *_args, **_kwargs: pytest.fail("old stage executed"),
-                                plan=lambda *_args, **_kwargs: pytest.fail("old stage planned"))
-    graph = BuildLearningGraph(BuildClusters(store, embed), BuildMentions(store, embed), forbidden,
-                               BuildMainEdges(store, model), secondary, ValidateGraph(store), forbidden,
-                               forbidden, BuildRoadmap(store), NameModules(store, model),
+    graph = BuildLearningGraph(BuildClusters(store, embed), BuildMentions(store, embed),
+                               BuildMainEdges(store, model), secondary, ValidateGraph(store), BuildRoadmap(store), NameModules(store, model),
                                NameConceptLabels(store, model))
     # No artifacts exist yet: planning must stop making downstream plans once clusters is unknown.
     report = graph.plan(DOC)
@@ -273,8 +254,8 @@ def test_roadmap_cli_passes_explicit_chain_and_dry_run_without_spend(monkeypatch
         return graph, None
 
     monkeypatch.setattr(cli, "build_learning_graph", build)
-    assert cli.main(["roadmap", "--doc-id", "doc", "--upstream-chain", "gop",
+    assert cli.main(["roadmap", "--doc-id", "doc",
                      "--dry-run", "--allow-spend"]) == 0
-    assert seen == [{"allow_spend": False, "identity_review": None, "upstream_chain": "gop"}]
+    assert seen == [{"allow_spend": False}]
     report = json.loads(capsys.readouterr().out)
     assert [row["stage"] for row in report["stages"]] == GOP_STAGES

@@ -1,7 +1,7 @@
 # 05a — A2: tiêu đề lặp chỉ là đề cương khi thân mục là danh sách tên mục
 
 **Nguồn chân lý:** [nghiên cứu vé 05](../../report/v4-05-a2-de-cuong-lap-2026-10-17.md), mục 1 · kế hoạch v4, hàng 05.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** chờ giao
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** xong 2026-10-17 — Claude kiểm đạt; 05b chạy từ commit này
 
 ## Vì sao
 
@@ -63,13 +63,38 @@ mọi nhóm khác ≤ 0,44; của "Cách giải" là 0.
 
 ## Nghiệm thu
 
-- [ ] **Test dựng tay theo hình dạng các ca thật**, chạy trên `assign_section_roles` và `label-roles` với mô hình giả:
+- [x] **Test dựng tay theo hình dạng các ca thật**, chạy trên `assign_section_roles` và `label-roles` với mô hình giả:
   - nhóm kiểu "Cách giải": là mục con đầu của ≥ 3 mục cha, thân là lời giải → không nhận `de_cuong`, `role_source` rỗng, và được đưa cho mô hình ở
     `label-roles`. **Phải đỏ trên mã hiện nay**;
   - nhóm kiểu "Nội dung": thân là tên các mục phía sau → vẫn `de_cuong`, nguồn `structure`;
   - nhóm thân rỗng → không nhận `de_cuong`;
   - nhóm câu hỏi ôn tập có nhắc vài tên mục, độ phủ dưới 0,5 → để lớp LLM quyết.
-- [ ] **Test khoá cache:** luật mới làm đổi băm cấu hình của `label-roles`. `chunk_id`, văn bản, offset và cấu hình chunk của `ingest` không đổi.
-- [ ] **Bảng kiểm 0 USD** (mục 3) khớp báo cáo nghiên cứu: trên kho thật, chỉ còn "Nội dung" của doc-6 nhận `de_cuong` theo luật lặp. Có số mục chờ
+- [x] **Test khoá cache:** luật mới làm đổi băm cấu hình của `label-roles`. `chunk_id`, văn bản, offset và cấu hình chunk của `ingest` không đổi.
+- [x] **Bảng kiểm 0 USD** (mục 3) khớp báo cáo nghiên cứu: trên kho thật, chỉ còn "Nội dung" của doc-6 nhận `de_cuong` theo luật lặp. Có số mục chờ
       nhãn của xstk và doc-4.
-- [ ] Toàn bộ test qua.
+- [x] Toàn bộ test qua.
+
+## Bàn giao nhân viên 2026-10-17
+
+- Trước sửa: **6 test đỏ**, gồm cả hai assertion "Cách giải" và hai guard cache.
+  Sau sửa: **19 ca mới qua**, nhóm hồi quy **109 qua**, toàn kho **1.555 qua**.
+- Giữ nguyên `CHUNK_ALGORITHM_ID` và hash config ingest; test đóng băng ID/text/offset
+  cùng mọi trường chunk ngoài role, tái dùng version cũ và cache A3 mà không mở phiên mô hình.
+  Hai đường cập nhật vai trò dùng mã riêng `ROLE_ALGORITHM_ID`.
+- Script chỉ đọc `scripts/a2-de-cuong/kiem_05a.py`: **26 tài liệu / 26 nhóm**,
+  chỉ doc-6 / "Nội dung" đạt. 26/26 độ phủ khớp chính xác nghiên cứu; **384 tệp JSON
+  artifact không đổi** khi kiểm. Bỏ T-01 và mọi `smoke*` trước khi đọc tệp.
+- Dry-run: xstk chunk v3 **43 mục / 2 lô**; doc-4 mặc định quy về chunk v3
+  **285 mục / 8 lô**. Chưa chạy nhãn thật hoặc các bước của 05b; chi **0 USD**.
+- Trung vị giữ đúng quy ước giá trị giữa phía trên của bảng nghiên cứu, kể cả nhóm chẵn.
+- [Báo cáo](../../report/v4-05a-sua-luat-de-cuong-lap-2026-10-17.md),
+  [bảng kiểm JSON](../../report/v4-05a-kiem-kho-2026-10-17.json).
+  Trước 05b cần commit mã này rồi ghim checkout sạch theo vé; HEAD nền `3637d94`
+  chưa chứa bản sửa.
+
+## Kiểm của Claude 2026-10-17 — đạt
+
+- **Mã:** đúng luật của vé; mọi nơi gọi `assign_section_roles` đều truyền chunk, nên độ phủ luôn có dữ liệu. `CHUNK_ALGORITHM_ID` giữ nguyên;
+  mã luật vai trò riêng `ROLE_ALGORITHM_ID` đi vào `label-roles` và `refresh_chunk_roles`.
+- **Lưu ý cho 05b:** doc-4 phải gán nhãn theo đúng cách đã làm: nhãn trên chunk v4 rồi chuyển sang v3, như khuôn T10. Dry-run của nhân viên chạy
+  thẳng trên chunk v3 (285 mục chờ nhãn), không phải đường đó.

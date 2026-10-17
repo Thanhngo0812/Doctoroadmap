@@ -50,7 +50,7 @@ def test_temporary_error_retries_from_saved_progress_and_logs_cause(monkeypatch,
 
 def test_nonretryable_error_and_budget_stop_are_not_retried(monkeypatch, tmp_path):
     driver = load_driver(monkeypatch)
-    from chay_danh_tinh_v3 import BudgetStop
+    from evaluation_runtime import BudgetStop
 
     monkeypatch.setattr(driver, "sleep", lambda _: pytest.fail("must not sleep"))
     events = tmp_path / "transport-retries.jsonl"

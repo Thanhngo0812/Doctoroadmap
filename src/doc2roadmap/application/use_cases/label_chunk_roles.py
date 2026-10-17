@@ -8,8 +8,8 @@ from doc2roadmap.application.planning import StagePlan, model_plan
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.domain.canonical import digest
-from doc2roadmap.domain.chunking import assign_section_roles
-from doc2roadmap.domain.document_structure import STRUCTURE_RULE, back_matter, chapter_members
+from doc2roadmap.domain.chunking import ROLE_ALGORITHM_ID, assign_section_roles
+from doc2roadmap.domain.document_structure import back_matter, chapter_members
 from .ingest_document import validate_doc_id, require_text_quality
 
 ROLES = ('noi_dung', 'bai_tap', 'de_cuong', 'mo_dau', 'hanh_chinh', 'cuoi_sach')
@@ -118,7 +118,7 @@ class LabelChunkRoles:
             raise ValueError('transfer requires the same source document')
         prompt = load_prompt('a2','region-roles')
         config = {**base.manifest['config'], 'region_roles':{
-            'algorithm_id':STRUCTURE_RULE+'+semantic-v3', 'chunks_version':base.version,
+            'algorithm_id':ROLE_ALGORITHM_ID+'+semantic-v3', 'chunks_version':base.version,
             'transfer_reference_version':reference.version if reference else None,
             'batch_rule':'chapter-and-separate-tail-v2',
             'batch_size':BATCH_SIZE,'retry_size':RETRY_SIZE,'prose_min_chars':PROSE_MIN_CHARS,

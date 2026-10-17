@@ -9,7 +9,7 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
-from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini
+from evaluation_runtime import EvaluationStore, MeteredGemini
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.application.use_cases.build_secondary_edges import BuildSecondaryEdges
 from doc2roadmap.config import Settings

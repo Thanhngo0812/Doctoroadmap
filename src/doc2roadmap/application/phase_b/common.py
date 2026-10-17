@@ -9,7 +9,7 @@ from typing import Any, Mapping
 
 from doc2roadmap.application.ports.phase_b import JsonCallResult, PhaseBStore
 from doc2roadmap.domain.phase_b_limits import BSettings, usage_row
-from doc2roadmap.domain.provenance import quote_is_verbatim as _quote_is_verbatim
+from doc2roadmap.domain.quotes import quote_is_verbatim as _quote_is_verbatim
 
 
 _INPUT_USD_PER_MILLION = 0.25

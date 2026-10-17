@@ -4,7 +4,7 @@ import json
 import sys
 
 from chay_a8_full_v3 import DOCS, OUTPUT, FinalStore
-from chay_danh_tinh_v3 import MeteredGemini
+from evaluation_runtime import MeteredGemini
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.application.use_cases.name_modules import NameModules
 from doc2roadmap.config import Settings

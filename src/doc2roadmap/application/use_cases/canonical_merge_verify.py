@@ -3,7 +3,7 @@ from itertools import combinations
 from doc2roadmap.application.model_calls import ModelJob, run_model_jobs
 from doc2roadmap.application.prompt_library import load_prompt
 from doc2roadmap.application.stage_measurements import measure_phase
-from doc2roadmap.application.use_cases.judge_identity import VERIFY_SCHEMA
+from doc2roadmap.application.identity_review import VERIFY_SCHEMA
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.canonical_review import shared_names, validate_merge_verification
 from doc2roadmap.domain.canonical_decisions import guarded_components

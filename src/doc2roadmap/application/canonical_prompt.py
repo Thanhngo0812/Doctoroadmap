@@ -25,6 +25,6 @@ SINGLE_SCHEMA = _object({"nodes": _array(_object({"node_id": STRING, "keep": {"t
 
 
 def canonical_prompts():
-    partition = load_prompt("a4", "partition")
+    partition = load_prompt("a4", "partition-gop")
     return {"merge": partition, "repair": partition,
             "describe": load_prompt("a4", "describe"), "check": load_prompt("a4", "check")}

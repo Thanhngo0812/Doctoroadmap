@@ -1,7 +1,9 @@
+import os
+import warnings
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -39,14 +41,8 @@ class Settings(BaseSettings):
     merge_resolution: float = Field(default=2., gt=0)
     merge_seed: int = 42
     merge_cluster_cap: int = Field(default=9, ge=2)
-    merge_description_enabled: bool = False
-    merge_description_top_k: int = Field(default=3, gt=0)
-    merge_description_min_similarity: float = Field(default=.85, ge=0, le=1)
     canonical_batch_size: int = Field(default=10, gt=0)
     canonical_concurrency: int = Field(default=16, gt=0)
-    canonical_repair_batch_size: int = Field(default=1, gt=0)
-    upstream_chain: Literal["v3", "gop"] = "gop"
-    anchor_batch_mode: Literal["single", "a5"] = "single"
     canonical_language_rule: str = "token-majority-prose-vi20-v2"
     embedding_model_id: str = "gemini-embedding-001"
     extraction_concurrency: int = Field(default=4, gt=0)
@@ -71,3 +67,19 @@ class Settings(BaseSettings):
     a8_definition_before: int = Field(default=4, ge=0)
     a8_definition_after: int = Field(default=2, ge=0)
     roadmap_stage_cap: int = Field(default=8, ge=1)
+
+
+    @model_validator(mode="before")
+    @classmethod
+    def warn_retired_options(cls, values):
+        retired = {"upstream_chain", "anchor_batch_mode", "merge_description_enabled",
+                   "merge_description_top_k", "merge_description_min_similarity", "canonical_repair_batch_size"}
+        supplied = {str(key).lower().removeprefix("doc2roadmap_") for key in values}
+        supplied.update(key.lower().removeprefix("doc2roadmap_") for key, value in os.environ.items()
+                        if key.upper().startswith("DOC2ROADMAP_") and value.strip())
+        found = retired & supplied
+        if found:
+            names = ", ".join("DOC2ROADMAP_" + key.upper() for key in sorted(found))
+            warnings.warn(f"Tuỳ chọn đã gỡ ở 19o, bị bỏ qua: {names}. Xoá khỏi cấu hình cũ.",
+                          UserWarning, stacklevel=2)
+        return values

@@ -1,7 +1,6 @@
 from types import SimpleNamespace
 
 from doc2roadmap.application.use_cases.build_learning_graph import BuildLearningGraph
-from doc2roadmap.application.planning import StagePlan
 
 
 class Stage:
@@ -21,11 +20,8 @@ def test_one_use_case_stops_at_each_public_stage_without_touching_later_stages()
     expected = {
         "clusters": ["clusters"],
         "mentions": ["clusters", "mentions"],
-        "provenance": ["clusters", "mentions", "provenance"],
-        "teaching": ["clusters", "mentions", "provenance", "teaching"],
-        "identity": ["clusters", "mentions", "provenance", "teaching", "identity"],
-        "edges": ["clusters", "mentions", "provenance", "teaching", "identity", "main", "secondary"],
-        "stages": ["clusters", "mentions", "provenance", "teaching", "identity", "main", "secondary", "validated",
+        "edges": ["clusters", "mentions", "main", "secondary"],
+        "stages": ["clusters", "mentions", "main", "secondary", "validated",
                    "stages"],
     }
     for stop_after, wanted in expected.items():
@@ -33,40 +29,15 @@ def test_one_use_case_stops_at_each_public_stage_without_touching_later_stages()
         use_case = BuildLearningGraph(
             Stage("clusters", calls),
             Stage("mentions", calls),
-            Stage("provenance", calls),
             Stage("main", calls),
             Stage("secondary", calls),
             Stage("validated", calls),
-            Stage("teaching", calls),
-            Stage("identity", calls),
             Stage("stages", calls),
         )
         artifact, reused = use_case.execute("doc", stop_after=stop_after)
         assert calls == wanted
         assert reused
         assert artifact.payload["stage"] == stop_after
-
-
-def test_identity_plan_never_touches_a8():
-    calls = []
-
-    class Planned(Stage):
-        def plan(self, doc_id, *, upstream=None):
-            self.calls.append(self.name)
-            return StagePlan("reused", artifact=SimpleNamespace(version=1, payload={"stage": self.name}))
-
-    class Forbidden(Stage):
-        def plan(self, *args, **kwargs):
-            raise AssertionError("A8 was planned before identity review")
-
-    stages = [Planned(name, calls) for name in
-              ("clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "identity", "stages")]
-    stages[3] = Forbidden("main", calls)
-    pipeline = BuildLearningGraph(*stages)
-    result = pipeline.plan("doc", stop_after="identity")
-    assert [row["stage"] for row in result["stages"]] == [
-        "clusters", "mentions", "provenance", "teaching", "identity"]
-    assert calls == ["clusters", "mentions", "provenance", "teaching", "identity"]
 
 
 def test_orchestrator_passes_the_exact_returned_artifact_to_the_next_stage():
@@ -81,9 +52,9 @@ def test_orchestrator_passes_the_exact_returned_artifact_to_the_next_stage():
             return artifact, reused
 
     calls = []
-    names = ("clusters", "mentions", "provenance", "teaching", "identity", "main", "secondary", "validated", "stages")
+    names = ("clusters", "mentions", "main", "secondary", "validated", "stages")
     stages = [TrackingStage(name, calls) for name in
-              ("clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "identity", "stages")]
+              ("clusters", "mentions", "main", "secondary", "validated", "stages")]
     BuildLearningGraph(*stages).execute("doc")
     assert calls == list(names)
 
@@ -91,7 +62,7 @@ def test_orchestrator_passes_the_exact_returned_artifact_to_the_next_stage():
 def test_module_titles_run_after_roadmap_and_are_part_of_final_stages():
     calls = []
     stages = [Stage(name, calls) for name in
-              ("clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "identity", "stages")]
+              ("clusters", "mentions", "main", "secondary", "validated", "stages")]
     stage = BuildLearningGraph(*stages, module_titles=Stage("module_titles", calls))
     artifact, reused = stage.execute("doc")
     assert reused and artifact.payload["stage"] == "module_titles"
@@ -101,7 +72,7 @@ def test_module_titles_run_after_roadmap_and_are_part_of_final_stages():
 def test_concept_labels_run_after_identity_without_reexecuting_teaching():
     calls = []
     stages = [Stage(name, calls) for name in
-              ("clusters", "mentions", "provenance", "main", "secondary", "validated", "teaching", "identity", "stages")]
+              ("clusters", "mentions", "main", "secondary", "validated", "stages")]
     BuildLearningGraph(*stages, concept_labels=Stage("concept_labels", calls)).execute("doc")
     assert calls[-4:] == ["secondary", "validated", "concept_labels", "stages"]
 
@@ -135,7 +106,7 @@ def test_switching_configuration_a_b_a_reuses_the_original_a_chain():
 
     clusters, mentions = Clusters(), Mentions()
     unused = Stage("unused", [])
-    use_case = BuildLearningGraph(clusters, mentions, unused, unused, unused, unused, unused, unused, unused)
+    use_case = BuildLearningGraph(clusters, mentions, unused, unused, unused, unused)
     first_a, _ = use_case.execute("doc", stop_after="mentions")
     current["value"] = "B"
     use_case.execute("doc", stop_after="mentions")
@@ -157,8 +128,8 @@ def test_a_blocked_paid_call_is_reported_with_the_stage_that_made_it():
             raise SpendNotAllowed()
 
     use_case = BuildLearningGraph(
-        Stage("clusters", calls), Stage("mentions", calls), Stage("provenance", calls), Stage("main", calls),
-        Paid("secondary", calls), Stage("validated", calls), Stage("teaching", calls), Stage("identity", calls),
+        Stage("clusters", calls), Stage("mentions", calls), Stage("main", calls),
+        Paid("secondary", calls), Stage("validated", calls),
         Stage("stages", calls),
     )
     with pytest.raises(SpendNotAllowed) as error:

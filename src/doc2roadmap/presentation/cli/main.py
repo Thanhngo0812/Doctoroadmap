@@ -64,10 +64,7 @@ def _parser() -> argparse.ArgumentParser:
     canonical.add_argument("--gold", type=Path, help="bộ vàng đã gán mù, bắt buộc trước khi gọi LLM")
     canonical.add_argument("--language", choices=("vi", "en"), help="khai ngôn ngữ tài liệu cho A5")
     canonical.add_argument("--merge-review", type=Path,
-                           help="quyết định duyệt gộp ở A4 chuỗi gop, cùng định dạng --identity-review")
-    canonical.add_argument("--upstream-chain", choices=("v3", "gop"), default=None,
-                           help="chuỗi thượng nguồn; mặc định cấu hình v3")
-    canonical.add_argument("--anchor-batch-mode", choices=("single", "a5"), default=None)
+                           help="quyết định duyệt gộp ở A4 chuỗi gop, định dạng quyết định theo cặp node")
     canonical.add_argument("--allow-spend", action="store_true", help="cho phép mô hình/embedding của chuỗi gop")
     canonical.add_argument("--dry-run", action="store_true", help="dự toán từng phần; không gọi mô hình hay embedding")
     canonical.add_argument(
@@ -210,20 +207,16 @@ def _parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--candidate-version", type=int)
     roadmap = commands.add_parser("roadmap", help="chạy A6 đến A10 trên một tài liệu")
     roadmap.add_argument("--doc-id", required=True)
-    roadmap.add_argument("--upstream-chain", choices=("v3", "gop"), default=None,
-                         help="chuỗi phải khớp canonical; mặc định lấy theo canonical đang dùng")
     roadmap.add_argument(
         "--stop-after",
-        choices=("clusters", "mentions", "provenance", "teaching", "identity", "edges", "stages"),
+        choices=("clusters", "mentions", "edges", "stages"),
         default="stages",
-        help="dừng sau stage đã chọn; clusters/mentions cần embedding nếu thiếu cache, provenance có gọi LLM",
+        help="dừng sau stage đã chọn; provenance/teaching/identity đã gỡ, neo và danh tính nằm trong canonical",
     )
     roadmap.add_argument("--allow-spend", action="store_true",
                          help="cho phép gọi mô hình trả tiền; thiếu cờ thì lệnh dừng ở stage đầu tiên định chi")
     roadmap.add_argument("--dry-run", action="store_true",
                          help="chỉ đọc cache/checkpoint và dự toán mọi stage; không gọi mô hình hoặc ghi artifact")
-    roadmap.add_argument("--identity-review", type=Path, default=None,
-                         help="JSON quyết định duyệt danh tính (T5) của tài liệu; quyết định người thắng phán mô hình")
     for command in (ingest, roles, commands.choices["a3"], commands.choices["extract"], commands.choices["roadmap"]):
         command.add_argument("--allow-text-quality-reason", help="cho phép chữ cảnh báo với lý do xác nhận; không xoá cảnh báo")
     return parser
@@ -552,21 +545,16 @@ def main(argv: list[str] | None = None) -> int:
             _json(evaluate_canonical(artifact, gold, second,
                                      exclude_subtype_items=args.exclude_subtype_item))
         elif args.command == "a4":
-            from doc2roadmap.config import Settings
-            chain = args.upstream_chain or ("v3" if args.names_only or args.prepare else Settings().upstream_chain)
-            if chain == "gop" and (args.names_only or args.prepare):
-                raise ValueError("chuỗi gop cần A4/A5 đầy đủ; không dùng --names-only hoặc --prepare")
-            if args.merge_review is not None and chain != "gop":
-                raise ValueError("--merge-review chỉ dùng ở chuỗi gop; v3 dùng roadmap --identity-review")
+            chain = "v3" if args.names_only or args.prepare else "gop"
+            if args.merge_review is not None and (args.names_only or args.prepare):
+                raise ValueError("--merge-review cần A4/A5 đầy đủ")
             store = build_artifact_store()
-            build_options = {}
-            if chain == "gop" or args.upstream_chain is not None or args.anchor_batch_mode is not None or args.dry_run:
-                build_options = {"upstream_chain": chain, "anchor_batch_mode": args.anchor_batch_mode,
-                                 "allow_spend": args.allow_spend and not args.dry_run, "dry_run": args.dry_run}
+            build_options = {} if args.names_only or args.prepare else {
+                "allow_spend": args.allow_spend and not args.dry_run, "dry_run": args.dry_run}
             execution_options = {}
             if args.merge_review is not None:
                 import hashlib
-                from doc2roadmap.application.use_cases.judge_identity import load_identity_review
+                from doc2roadmap.application.identity_review import load_identity_review
                 build_options.update(merge_review=load_identity_review(args.merge_review, doc_id=args.doc_id),
                                      merge_review_hash=hashlib.sha256(args.merge_review.read_bytes()).hexdigest())
             if args.names_only:
@@ -645,14 +633,7 @@ def main(argv: list[str] | None = None) -> int:
         elif args.command == "search":
             _search(args.doc_id, args.query, args.top_k, args.stage_id)
         elif args.command == "roadmap":
-            review = None
-            if args.identity_review is not None:
-                from doc2roadmap.application.use_cases.judge_identity import load_identity_review
-
-                review = load_identity_review(args.identity_review, doc_id=args.doc_id)
-            options = {"upstream_chain": args.upstream_chain} if args.upstream_chain is not None else {}
-            use_case, _ = build_learning_graph(allow_spend=args.allow_spend and not args.dry_run,
-                                              identity_review=review, **options)
+            use_case, _ = build_learning_graph(allow_spend=args.allow_spend and not args.dry_run)
             if hasattr(use_case, "clusters"):
                 use_case.clusters.quality_reason = args.allow_text_quality_reason
             if args.dry_run:

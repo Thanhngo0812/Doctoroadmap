@@ -414,6 +414,11 @@ Dòng ghi cho mỗi lời gọi mô hình hay embedding ở Pha B: mục đích,
 
 ## Lệnh bậc 1–3 của lượt tập giữ lại (T10a; chỉ chạy sau khi khoá T10)
 
+> **Chỉ chạy được với mã trước vé 19n.** Từ 19n, `roadmap --stop-after identity` và `--identity-review` đã gỡ, và `roadmap` từ chối canonical
+> chuỗi v3. Muốn tái lập T10 đúng như đã khoá, dùng checkout sạch của commit `2c93c5a` (hoặc cũ hơn), như cách ghim mã của cổng 19l. Hai bậc
+> `label-roles` vẫn chạy được với mã hiện tại, nhưng luật vai trò đã đổi ở vé 05a, nên kết quả sẽ khác bản đã khoá. Lượt đo mới trên tập giữ lại
+> (T-01) đi theo chuỗi gộp, không theo khuôn này.
+
 Các lệnh dưới đây là khuôn thao tác, **không phải lệnh cho phép mở vàng hay chạy tập giữ lại ngay**. Thay `<pdf-da-khoa>` và `<v-cay-moi>` bằng đường dẫn/version ghi trong bảng khoá; giữ chunk cũ xstk v2, doc-4 v3. Chạy riêng từng `DOC` (`xstk-ch3-1`, rồi `doc-4`), không sửa cấu hình giữa các bậc.
 
 ```powershell

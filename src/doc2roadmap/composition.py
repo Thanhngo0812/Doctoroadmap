@@ -160,17 +160,14 @@ def build_region_roles(*, allow_spend=False):
     return LabelChunkRoles(JsonArtifactStore(settings.artifact_dir), model, allow_spend=allow_spend)
 
 
-def build_canonical(*, prepare=False, upstream_chain=None, anchor_batch_mode=None,
+def build_canonical(*, prepare=False,
                     allow_spend=False, dry_run=False, merge_review=None, merge_review_hash=None):
     from doc2roadmap.application.use_cases.canonicalize import Canonicalize
     from doc2roadmap.application.use_cases.canonical_reasoning import CanonicalReasoning
 
     from doc2roadmap.application.spend_guard import SpendGuard
     settings, store, embedding = _a3_dependencies()
-    chain = upstream_chain or ("v3" if prepare else settings.upstream_chain)
-    batch_mode = anchor_batch_mode or settings.anchor_batch_mode
-    if chain == "gop" and prepare:
-        raise ValueError("chuỗi gop cần A4/A5 đầy đủ; không dùng --prepare")
+    chain = "v3" if prepare else "gop"
     if chain == "gop":
         embedding = SpendGuard(embedding, allowed=allow_spend and not dry_run)
     graph = {"k": settings.merge_neighbors, "ngram_threshold": settings.merge_ngram_threshold,
@@ -188,29 +185,21 @@ def build_canonical(*, prepare=False, upstream_chain=None, anchor_batch_mode=Non
     reasoning = CanonicalReasoning(model(settings.merge_model_id), model(settings.description_model_id),
         generation={"temperature": settings.extraction_temperature, "max_output_tokens": settings.extraction_max_output_tokens},
         language_rule=settings.canonical_language_rule, batch_size=settings.canonical_batch_size,
-        repair_batch_size=settings.canonical_repair_batch_size,
         concurrency=settings.canonical_concurrency,
         counter=SentencePieceTokenCounter(settings.tokenizer_model, settings.tokenizer_id))
     return Canonicalize(store, embedding, graph_config=graph, reasoning=reasoning,
-                       upstream_chain=chain, anchor_batch_mode=batch_mode,
                        merge_review=merge_review, merge_review_hash=merge_review_hash,
-                       nomination_config={"semantic_enabled": settings.merge_description_enabled,
-                                          "semantic_top_k": settings.merge_description_top_k,
-                                          "semantic_min_similarity": settings.merge_description_min_similarity},
                        anchor_model=model(settings.roadmap_model_id, anchor=True) if chain == "gop" else None)
 
 
-def build_learning_graph(*, allow_spend=False, identity_review=None, upstream_chain=None):
+def build_learning_graph(*, allow_spend=False):
     from doc2roadmap.application.use_cases import (
-        AnchorConcepts,
         BuildClusters,
         BuildLearningGraph,
         BuildMainEdges,
         BuildMentions,
-        BuildProvenance,
         BuildRoadmap,
         BuildSecondaryEdges,
-        JudgeIdentity,
         ValidateGraph,
     )
 
@@ -269,12 +258,6 @@ def build_learning_graph(*, allow_spend=False, identity_review=None, upstream_ch
             pair_cluster_top_k=settings.mention_pair_cluster_top_k,
             common_name_fraction=settings.mention_common_name_fraction,
         ),
-        BuildProvenance(
-            store,
-            model,
-            concurrency=roadmap_concurrency,
-            generation=generation,
-        ),
         BuildMainEdges(
             store,
             model,
@@ -287,15 +270,10 @@ def build_learning_graph(*, allow_spend=False, identity_review=None, upstream_ch
         ),
         secondary,
         ValidateGraph(store),
-        # Neo định nghĩa C8 v3 thay C8 v2 từ 2026-09-26 (chủ dự án duyệt, vé v2-04); danh tính sau neo (vé v2-05).
-        # Giữ generation mặc định của hai stage — đúng cấu hình đã đo trên dữ liệu phát triển.
-        AnchorConcepts(store, model_for(2048), concurrency=roadmap_concurrency),
-        JudgeIdentity(store, model_for(1024), concurrency=roadmap_concurrency, review=identity_review),
         BuildRoadmap(
             store,
             stage_cap=settings.roadmap_stage_cap,
         ),
         module_titles,
         NameConceptLabels(store, model_for(512), concurrency=roadmap_concurrency),
-        upstream_chain=upstream_chain, identity_review=identity_review,
     ), settings

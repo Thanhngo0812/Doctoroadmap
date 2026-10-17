@@ -7,7 +7,7 @@ import pytest
 from doc2roadmap.application.ports import ParsedDocument
 from doc2roadmap.application.use_cases import IngestDocument
 from doc2roadmap.application.use_cases.ingest_document import _text_quality
-from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, OVERSIZE_SENTENCE_BOUNDARY
+from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, ROLE_ALGORITHM_ID, OVERSIZE_SENTENCE_BOUNDARY
 from doc2roadmap.domain.models import DocumentNode, DocumentTree
 from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
 
@@ -112,7 +112,7 @@ def test_refresh_roles_uses_only_saved_sections_keeps_chunks_and_is_idempotent(t
     assert [{k: v for k, v in c.to_dict().items() if k != "role"} for c in updated.result.chunks] == [
         {k: v for k, v in c.items() if k != "role"} for c in original_chunks]
     assert (original.path / "chunks.json").read_bytes() == original_bytes
-    assert updated.manifest["config"]["chunk"]["role_algorithm_id"] == CHUNK_ALGORITHM_ID
+    assert updated.manifest["config"]["chunk"]["role_algorithm_id"] == ROLE_ALGORITHM_ID
     assert refresh_chunk_roles(store, "doc").version == 2
 
 

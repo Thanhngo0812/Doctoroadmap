@@ -3,7 +3,7 @@ from types import SimpleNamespace
 from doc2roadmap.application.use_cases.canonical_anchors import prepare_anchors
 from doc2roadmap.domain import anchors
 from doc2roadmap.domain.canonical import digest
-from tests.unit.application.test_anchor_core_regression import real_upstream
+from tests.legacy_v3 import real_upstream
 from tests.unit.application.test_canonical_gop import DOC, gop
 
 

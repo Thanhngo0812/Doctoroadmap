@@ -14,15 +14,12 @@ from doc2roadmap.application.prompt_library import PROMPT_ROOT, load_prompt
 from doc2roadmap.application.prerequisite_prompt import (
     SECONDARY_SCHEMA,
     main_prompt_hash,
-    provenance_prompt_hash,
     secondary_system_prompt,
     secondary_prompt_hash,
 )
 from doc2roadmap.application.relation_prompt import relation_prompt_hash
-from doc2roadmap.application.use_cases.anchor_concepts import anchor_prompt_hash
+from doc2roadmap.application.anchor_core import anchor_prompt_hash
 from doc2roadmap.application.use_cases.find_implicit import implicit_prompt_hash
-from doc2roadmap.application.use_cases.judge_identity import identity_prompt_hash
-from doc2roadmap.application.teaching_prompt import teaching_prompt_hash
 from doc2roadmap.application.use_cases.canonical_reasoning import CanonicalReasoning
 
 
@@ -63,19 +60,17 @@ def test_product_prompt_hashes_are_intentionally_versioned():
     }
     a4_actual = {stage: reasoning.prompt_hash(stage, schema) for stage, schema in schemas.items()}
     a4_expected = {
-        "merge": "068e51fe7021257c0ccd8de8d21dbfd25b84b31ff499427661fd70d864abec31",
-        "repair": "068e51fe7021257c0ccd8de8d21dbfd25b84b31ff499427661fd70d864abec31",
+        "merge": "ca9e03967b80a95e6377f5acffe53e0cd1c361759ec4334df8cd8c930c3c1832",
+        "repair": "ca9e03967b80a95e6377f5acffe53e0cd1c361759ec4334df8cd8c930c3c1832",
         "describe": "94b1ffe0a23feab8d335136141de8eb904945f38eadd383e1eab3ab10a7d79d2",
         "check": "f01acab2cc39818cef30ce3ed16ad618b3ec24d4b488ab6126ca2ece0902ac0c",
     }
     a8_actual = {
         "main": main_prompt_hash("golden-model", GENERATION),
-        "provenance": provenance_prompt_hash("golden-model", GENERATION),
         "secondary": secondary_prompt_hash("golden-model", GENERATION),
     }
     a8_expected = {
         "main": "e38a50bf51a1a459c11f7f2d150cb3f4cd6a21adcd3d896bcf5379debeccb8b7",
-        "provenance": "65776d7757bf3e2a6a79fb05a5cd37b424686edd0f667aa7aeb1e84618772dad",
         "secondary": "a538616c0859379896d184221a021f126cb85495fb9dd0ac1ea458070ff0aeae",
     }
 
@@ -83,10 +78,8 @@ def test_product_prompt_hashes_are_intentionally_versioned():
     assert a4_actual == a4_expected, HASH_CHANGE_WARNING
     assert a8_actual == a8_expected, HASH_CHANGE_WARNING
     assert anchor_prompt_hash("golden-model", GENERATION) == "fe6f3800411039a0847f3567583fa50cb01d9fdf580df98f19f2d6df1462d51f", HASH_CHANGE_WARNING
-    assert identity_prompt_hash("golden-model", GENERATION) == "63c8b598fbf7fafcfb124f8620efbb4fde4b4b6f60cef8e9e8debbac9dad80b8", HASH_CHANGE_WARNING
     assert implicit_prompt_hash("golden-model", GENERATION) == "c85420aa9be04ebc97182c89c79dfcfe6a48bda6ce0402e3a39bd2c363b40bf5", HASH_CHANGE_WARNING
     assert relation_prompt_hash("golden-model", GENERATION) == "e527ece3e33e870797fabca5bc59fb280bcf692744795ff0466e8bfec90f2173", HASH_CHANGE_WARNING
-    assert teaching_prompt_hash("golden-model", GENERATION) == "de62504800ed434c8b3d833c5876d7f6a8004eb4d8aaa97bd1da3ba502c8b123", HASH_CHANGE_WARNING
 
 
 def test_product_prompt_catalog_is_exact_and_loadable():
@@ -99,20 +92,16 @@ def test_product_prompt_catalog_is_exact_and_loadable():
         Path("a3/few-shot/default.txt"),
         Path("a3/few-shot/statistics.txt"),
         Path("a3/few-shot/technical-report.txt"),
-        Path("a4/partition.txt"),
         Path("a4/partition-gop.txt"),
         Path("a4/describe.txt"),
         Path("a4/check.txt"),
         Path("a8/main.txt"),
-        Path("a8/provenance.txt"),
         Path("a8/secondary.txt"),
         Path("a8/implicit.txt"),
         Path("a9/relation-check.txt"),
-        Path("a10/teaching.txt"),
         Path("a10/anchor.txt"),
         Path("a10/display_name.txt"),
         Path("a10/module_title.txt"),
-        Path("a10/identity.txt"),
         Path("a10/identity_verify.txt"),
         Path("a10/prior_verify.txt"),
     }
@@ -126,10 +115,10 @@ def test_product_prompt_catalog_is_exact_and_loadable():
     assert str(missing) in str(error.value)
 
 
-def test_merge_and_repair_share_the_v3_partition_prompt():
+def test_merge_and_repair_share_the_gop_partition_prompt():
     prompts = canonical_prompts()
 
-    assert prompts["merge"] == prompts["repair"] == load_prompt("a4", "partition")
+    assert prompts["merge"] == prompts["repair"] == load_prompt("a4", "partition-gop")
     assert {path.name for path in (PROMPT_ROOT / "a4").glob("*.txt")} == {
-        "partition.txt", "partition-gop.txt", "describe.txt", "check.txt",
+        "partition-gop.txt", "describe.txt", "check.txt",
     }

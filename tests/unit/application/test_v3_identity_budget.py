@@ -6,7 +6,7 @@ import pytest
 
 
 def runner():
-    path = Path(__file__).resolve().parents[3] / "scripts/doc-lo-trinh/chay_danh_tinh_v3.py"
+    path = Path(__file__).resolve().parents[3] / "scripts/doc-lo-trinh/evaluation_runtime.py"
     spec = importlib.util.spec_from_file_location("identity_v3_run", path)
     module = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(module)

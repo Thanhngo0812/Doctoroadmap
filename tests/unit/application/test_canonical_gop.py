@@ -7,13 +7,10 @@ import pytest
 
 from doc2roadmap.application.use_cases.canonical_reasoning import CanonicalReasoning
 from doc2roadmap.application.use_cases.canonicalize import Canonicalize
-from doc2roadmap.domain.canonical import digest
 from tests.unit.application.test_a4_pipeline import FakeModel, embedding, fixture_store
 
 
 DOC = "baocao-canhan"
-V3_CONFIG_HASH = "67f96297f5d209ad030123ad8057b26e04f6498bd8ae384f29ca334e0aa740a5"
-V3_PAYLOAD_HASH = "ea9dcfe574b523f800f2583a0f778f1a30049631a8c632554b8d4159ae76fd34"
 
 
 class AnchorModel(FakeModel):
@@ -49,22 +46,8 @@ class AnchorModel(FakeModel):
 
 def gop(tmp_path, *, model=None, store=None, **kwargs):
     store, model = store or fixture_store(tmp_path), model or AnchorModel()
-    kwargs.setdefault("anchor_batch_mode", "single")
-    use_case = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model),
-                           upstream_chain="gop", **kwargs)
+    use_case = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model), **kwargs)
     return store, model, use_case
-
-
-def test_v3_fixture_config_payload_and_existing_cache_are_unchanged(tmp_path):
-    store, model = fixture_store(tmp_path), FakeModel()
-    first, _ = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model)).execute(DOC)
-    assert first.manifest["config_hash"] == V3_CONFIG_HASH
-    assert digest(first.payload) == V3_PAYLOAD_HASH
-    assert "upstream_chain" not in first.manifest["config"]
-    calls = len(model.calls)
-    reused, cached = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(model, model),
-                                  upstream_chain="v3").execute(DOC)
-    assert cached and reused.version == first.version and len(model.calls) == calls
 
 
 def test_gop_execute_writes_c8_fields_append_only_definition_and_reuses_all(tmp_path):
@@ -74,7 +57,6 @@ def test_gop_execute_writes_c8_fields_append_only_definition_and_reuses_all(tmp_
     assert artifact.payload["canonical_has_anchors"] is True
     assert artifact.manifest["canonical_has_anchors"] is True
     assert artifact.manifest["config"]["upstream_chain"] == "gop"
-    assert artifact.manifest["config"]["anchor_batch_mode"] == "single"
     assert artifact.payload["anchor_decision_log"] and artifact.payload["anchor_log"]
     order = {c.chunk_id: c.order_index for c in store.load_role_chunks(
         DOC, store.load_latest_candidates(DOC).manifest["upstream_version"]).result.chunks}
@@ -125,9 +107,9 @@ def test_unconfirmed_prior_is_lowered_to_uncertain(tmp_path):
 
 def test_gop_requires_full_a4_and_dry_run_makes_no_paid_calls(tmp_path):
     store = fixture_store(tmp_path)
-    for args in ({}, {"embedding": embedding()}):
-        with pytest.raises(ValueError, match="đầy đủ"):
-            Canonicalize(store, upstream_chain="gop", **args)
+    model = AnchorModel()
+    with pytest.raises(ValueError, match="embedding"):
+        Canonicalize(store, reasoning=CanonicalReasoning(model, model))
     _, model, use_case = gop(tmp_path, store=store)
     use_case.embedding.embed = lambda requests: pytest.fail("dry-run called embedding")
     plan = use_case.plan(DOC)

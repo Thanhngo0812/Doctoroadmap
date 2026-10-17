@@ -19,13 +19,14 @@ from .models import (
 )
 from .normalization import normalize_text
 from .ports import SentenceSplitter, TextSpan, TokenCounter
-from .document_structure import chapter_members, back_matter, structure_profile, RESULT_MIN_COUNT, RESULT_MAX_BODY_CHARS
+from .document_structure import chapter_members, back_matter, structure_profile, STRUCTURE_RULE, RESULT_MIN_COUNT, RESULT_MAX_BODY_CHARS
 
 
 HEADING_TYPES = {"title", "section_header"}
 MERGEABLE_TYPES = {"text", "paragraph", "list_item", "figure", "table", "formula"}
 TEXT_BLOCK_TYPES = {"text", "paragraph", "list_item"}
 CHUNK_ALGORITHM_ID = "section-id-v11-document-structure"
+ROLE_ALGORITHM_ID = STRUCTURE_RULE + "+repeated-outline-coverage-v1"
 OVERSIZE_TABLE_ROW = "table_row_exceeds_max_tokens"
 OVERSIZE_TABLE_PRESERVED = "table_kept_whole_above_text_limit"
 OVERSIZE_SENTENCE_BOUNDARY = "sentence_splitter_no_boundary"
@@ -36,6 +37,50 @@ _ARABIC_NUMBER = re.compile(r"\d+")
 _ROMAN_NUMBER = re.compile(r"(?<![^\W\d_])[IVXLCDM]+(?![^\W\d_])", re.IGNORECASE)
 _TRAILING_PAGE_NUMBER = re.compile(r"\s+\d+\s*$")
 _LEADING_BULLETS = frozenset("•▪▫◦‣⁃∙●○■□-–—")
+_ROLE_TITLE_NUMBER = re.compile(r"^\s*(?:[\dIVXLCDMivxlcdm]+(?:\.\d+)*|[^\W\d_])[.)]\s+")
+
+
+def _role_text(text):
+    text = unicodedata.normalize("NFC", text).casefold()
+    return " ".join(re.sub(r"[^\w\s]|_", " ", text).split())
+
+
+def _heading_body_coverage(body, titles):
+    body = _role_text(body)
+    letters = [i for i, char in enumerate(body) if char.isalnum()]
+    if not letters:
+        return None
+    covered = [False] * len(body)
+    for title in titles:
+        if len(title) < 3:
+            continue
+        for match in re.finditer(r"(?<!\w)" + re.escape(title) + r"(?!\w)", body):
+            for i in range(match.start(), match.end()):
+                covered[i] = True
+    return sum(covered[i] for i in letters) / len(letters)
+
+
+def repeated_heading_coverage(sections, chunks=()):
+    """Upper median for repeated first-child titles, matching the 05a research table."""
+    ordered = sorted(sections, key=lambda s: (s.order_index, s.level))
+    first = {}
+    members, contents = defaultdict(list), defaultdict(list)
+    for section in ordered:
+        first.setdefault(section.parent_section_id, section.section_id)
+        members[section.title].append(section)
+    repeated = Counter(s.title for s in ordered if s.section_id == first[s.parent_section_id])
+    for chunk in chunks:
+        contents[chunk.parent_section_id].append(chunk.text)
+    titles = {_role_text(_ROLE_TITLE_NUMBER.sub("", s.title)) for s in ordered if s.level > 0}
+    medians = {}
+    for title, count in repeated.items():
+        if count < 3:
+            continue
+        others = titles - {_role_text(_ROLE_TITLE_NUMBER.sub("", title)), ""}
+        values = [_heading_body_coverage(" ".join(contents[s.section_id]), others) for s in members[title]]
+        values = sorted(value for value in values if value is not None)
+        medians[title] = values[len(values) // 2] if values else None
+    return medians
 
 
 def assign_section_roles(sections, chunks=()):
@@ -51,16 +96,14 @@ def assign_section_roles(sections, chunks=()):
     contents = defaultdict(list)
     for c in chunks:
         contents[c.parent_section_id].append(c.text)
-    first_children = {}
-    for s in ordered:
-        first_children.setdefault(s.parent_section_id,s.section_id)
-    repeated = Counter(s.title for s in ordered if s.section_id==first_children.get(s.parent_section_id))
+    outlines = {title for title, coverage in repeated_heading_coverage(sections, chunks).items()
+                if coverage is not None and coverage >= .5}
     by_id = {}
     for i,section in enumerate(ordered):
         role,source = "noi_dung",""
         if i>last_chapter and back_matter('\n'.join(contents[section.section_id])):
             role,source = "cuoi_sach","structure"
-        elif (section.is_toc and not section.has_direct_content) or repeated[section.title]>=3:
+        elif (section.is_toc and not section.has_direct_content) or section.title in outlines:
             role,source = "de_cuong","structure"
         elif first_chapter is not None and i<first_chapter:
             role,source = "mo_dau","structure"

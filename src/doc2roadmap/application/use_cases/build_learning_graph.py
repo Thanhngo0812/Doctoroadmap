@@ -6,42 +6,24 @@ from doc2roadmap.application.graph_chain import artifact_chain
 
 
 class BuildLearningGraph:
-    STAGES = ("clusters", "mentions", "provenance", "teaching", "identity", "edges", "stages")
+    STAGES = ("clusters", "mentions", "edges", "stages")
 
-    def __init__(self, clusters, mentions, provenance, main_edges, secondary_edges, validator, teaching, identity,
-                 roadmap, module_titles=None, concept_labels=None, *, upstream_chain=None, identity_review=None):
-        self.clusters = clusters
-        self.mentions = mentions
-        self.provenance = provenance
-        self.main_edges = main_edges
-        self.secondary_edges = secondary_edges
-        self.validator = validator
-        self.teaching = teaching
-        self.identity = identity
-        self.roadmap = roadmap
-        self.module_titles = module_titles
-        self.concept_labels = concept_labels
-        self.upstream_chain, self.identity_review = upstream_chain, identity_review
+    def __init__(self, clusters, mentions, main_edges, secondary_edges, validator,
+                 roadmap, module_titles=None, concept_labels=None):
+        self.clusters, self.mentions = clusters, mentions
+        self.main_edges, self.secondary_edges, self.validator = main_edges, secondary_edges, validator
+        self.roadmap, self.module_titles, self.concept_labels = roadmap, module_titles, concept_labels
 
     def _chain(self, doc_id, stop_after):
         if stop_after not in self.STAGES:
-            raise ValueError(f"stage không hợp lệ: {stop_after}")
+            raise ValueError(f"stage không hợp lệ hoặc đã gỡ: {stop_after}")
         store = getattr(self.clusters, "store", None)
-        selected = artifact_chain(store.load_latest_canonical(doc_id)) if store is not None else "v3"
-        if self.upstream_chain not in (None, "v3", "gop"):
-            raise ValueError("upstream_chain phải là v3 hoặc gop")
-        if self.upstream_chain is not None and self.upstream_chain != selected:
-            raise ValueError(f"chuỗi {self.upstream_chain} không khớp canonical chuỗi {selected}")
-        if selected == "gop":
-            if stop_after in {"provenance", "teaching", "identity"}:
-                raise ValueError(f"{stop_after} đã nằm trong stage canonical của chuỗi gộp")
-            if self.identity_review is not None:
-                raise ValueError("--identity-review không dùng trong chuỗi gộp; nạp quyết định người duyệt ở A4")
-        chain = [("clusters", self.clusters), ("mentions", self.mentions)]
-        if selected == "v3":
-            chain.extend([("provenance", self.provenance), ("teaching", self.teaching), ("identity", self.identity)])
-        chain.extend([("main_edges", self.main_edges), ("secondary_edges", self.secondary_edges),
-                      ("validated", self.validator)])
+        selected = artifact_chain(store.load_latest_canonical(doc_id)) if store is not None else "gop"
+        if selected != "gop":
+            raise ValueError("Đường chạy mới cần canonical gop; chạy lại A4. Artifact v3 cũ vẫn đọc được trực tiếp.")
+        chain = [("clusters", self.clusters), ("mentions", self.mentions),
+                 ("main_edges", self.main_edges), ("secondary_edges", self.secondary_edges),
+                 ("validated", self.validator)]
         if self.concept_labels is not None:
             chain.append(("concept_labels", self.concept_labels))
         chain.append(("stages", self.roadmap))

@@ -1,7 +1,7 @@
 """Kiểm thuần B/C vé 10b trên phán của bản thử cũ; không gọi mô hình, không duyệt gộp mới."""
 from pathlib import Path
 
-from chay_danh_tinh_v3 import EvaluationStore, TEACHING
+from evaluation_runtime import EvaluationStore, TEACHING
 from doc2roadmap.application.use_cases.a8_score import score_roadmap_order
 from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap
 from doc2roadmap.domain.canonical import digest

@@ -16,8 +16,7 @@ from tests.unit.application.test_canonical_gop import AnchorModel, DOC
 
 def run(store, model=None, *, embed=None, **kwargs):
     model = model or AnchorModel()
-    result = Canonicalize(store, embed or embedding(), reasoning=CanonicalReasoning(model, model),
-                          upstream_chain="gop", anchor_batch_mode="single", **kwargs).execute(DOC)[0]
+    result = Canonicalize(store, embed or embedding(), reasoning=CanonicalReasoning(model, model), **kwargs).execute(DOC)[0]
     return result, model
 
 
@@ -32,7 +31,7 @@ from tests.unit.application.test_a4_pipeline import fixture_store, embedding
 from tests.unit.application.test_canonical_gop import AnchorModel, DOC
 model = AnchorModel()
 result, _ = Canonicalize(fixture_store(Path(sys.argv[1])), embedding(),
-    reasoning=CanonicalReasoning(model, model), upstream_chain="gop", anchor_batch_mode="single",
+    reasoning=CanonicalReasoning(model, model),
     graph_config={"k": 3, "ngram_threshold": .5, "resolution": .5, "seed": 42, "cap": 3}).execute(DOC)
 print(json.dumps({"clusters": result.payload["nominations"]["clusters"], "payload": digest(result.payload)}))
 '''

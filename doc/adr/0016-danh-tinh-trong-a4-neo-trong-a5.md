@@ -81,3 +81,10 @@ Các phương án dưới đây đã đo và bị loại. Phần mã của chún
 - **Muốn thay LLM ở gộp thực thể hay ở phần neo** (hướng seminar), chỉ phải thay đúng một bước trong stage canonical.
 - **Lỗi còn lại:** neo một khái niệm vẫn xếp "chỉ nhắc" cho khái niệm được dạy dưới mục mà A2 gắn nhầm vai trò. Ở cổng, xstk mất 3 khái niệm vì lỗi
   này. Sửa thuộc vé 05.
+
+**Cập nhật 2026-10-17 (vé 19n, 19o):** chuỗi v3 đã gỡ khỏi mã.
+- Không còn tuỳ chọn chọn chuỗi (`upstream_chain`) hay chế độ neo (`anchor_batch_mode`). A4 đầy đủ luôn là chuỗi gộp và neo mỗi khái niệm một lời.
+  Artifact vẫn ghi `upstream_chain: gop` để bộ đọc nhận dạng.
+- Ba stage cũ, `--stop-after provenance|teaching|identity` và `--identity-review` đã gỡ. `roadmap` gặp canonical v3 thì yêu cầu chạy lại A4.
+- Ba phương án bị loại ở trên cũng đã gỡ khỏi mã.
+- A8, A10, bộ chấm và Pha B vẫn đọc trực tiếp artifact v3 có `identity_map`. Muốn dựng lại một stage cũ thì dùng checkout của `2c93c5a`.

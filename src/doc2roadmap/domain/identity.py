@@ -6,7 +6,6 @@ from itertools import combinations
 
 from .anchors import _compact
 from .global_validation import _feedback_edges, strongly_connected_components
-from .topic_graph import _dot, _unit
 
 # Danh tính (spec v2, W14–W15). Ứng viên chỉ từ tín hiệu hẹp; mọi ứng viên phải qua phán — chung tên hay chung alias
 # là lý do đưa ra xét, không phải bằng chứng trùng. "Tên này chứa tên kia" bị loại có chủ ý: `Ma trận` nằm trong
@@ -15,8 +14,6 @@ VERDICTS = ("same", "different", "sense_split")
 VERIFY_RELATIONS = ("dong_nhat", "truong_hop_rieng", "bang_nhau_theo_menh_de", "menh_de_khac", "doi_tuong_khac_loai", "khac")
 GENERIC_PREFIXES = ("hệ véc tơ ", "hệ vectơ ", "hệ vector ", "tính ", "khái niệm ", "the notion of ", "the concept of ",
                     "hệ ", "phép ")
-SEMANTIC_TOP_K = 3
-SEMANTIC_MIN_SIMILARITY = 0.85
 
 
 def _norm(text):
@@ -46,25 +43,11 @@ def _normalized(name):
     return re.sub(r"(?<=[^\W\d_])-(?=[^\W\d_])", "", _compact(name))
 
 
-def identity_candidates(nodes, *, vectors=None, semantic_top_k=SEMANTIC_TOP_K,
-                        semantic_min_similarity=SEMANTIC_MIN_SIMILARITY):
-    if type(semantic_top_k) is not int or semantic_top_k < 1:
-        raise ValueError("semantic_top_k phải là số nguyên dương")
-    if not 0 <= semantic_min_similarity <= 1:
-        raise ValueError("semantic_min_similarity phải thuộc [0, 1]")
+def identity_candidates(nodes):
     ordered = sorted(nodes, key=lambda n: n["node_id"])
     names = {n["node_id"]: _names(n) for n in ordered}
     normalized = {key: {_normalized(n) for n in values if _normalized(n)} for key, values in names.items()}
     initials = {key: {_initialism(n) for n in values} - {None} for key, values in names.items()}
-    vectors = {n["node_id"]: _unit(vectors[n["node_id"]]) for n in ordered
-               if vectors is not None and n["node_id"] in vectors}
-    similar = set()
-    for left in sorted(vectors):
-        nearest = sorted(((_dot(vectors[left], vectors[right]), right) for right in vectors if right != left),
-                         key=lambda row: (-row[0], row[1]))[:semantic_top_k]
-        for score, right in nearest:
-            if score >= semantic_min_similarity:
-                similar.add(tuple(sorted((left, right))))
     rows = []
     for left, right in combinations(ordered, 2):
         a_id, b_id = left["node_id"], right["node_id"]
@@ -77,8 +60,6 @@ def identity_candidates(nodes, *, vectors=None, semantic_top_k=SEMANTIC_TOP_K,
             reasons.append("generic_prefix")
         if (names[a_id] & initials[b_id]) or (names[b_id] & initials[a_id]):
             reasons.append("initialism")
-        if (a_id, b_id) in similar:
-            reasons.append("description_similarity")
         a, b = left.get("anchor"), right.get("anchor")
         if a and b and (a["chunk_id"], a["char_start"]) == (b["chunk_id"], b["char_start"]):
             reasons.append("same_anchor")

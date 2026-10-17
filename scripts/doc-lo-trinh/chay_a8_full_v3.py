@@ -13,7 +13,7 @@ from urllib.error import HTTPError, URLError
 
 from google.auth.exceptions import RefreshError, TransportError as AuthTransportError
 
-from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini
+from evaluation_runtime import EvaluationStore, MeteredGemini
 from doc2roadmap.application.ports.extraction import ModelTransportError
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap

@@ -26,15 +26,15 @@ def test_plan_lists_all_stages_and_marks_unknown_downstream_without_executing_an
                 return StagePlan("run", remaining_items=7, calls_estimate=14, usd_estimate=0.03)
             return StagePlan("reused", artifact=SimpleNamespace(payload={"stage": self.name}, version=1))
 
-    names = ["clusters", "mentions", "provenance", "teaching", "identity", "main_edges", "secondary_edges", "validated", "stages"]
+    names = ["clusters", "mentions", "main_edges", "secondary_edges", "validated", "stages"]
     pipeline = BuildLearningGraph(*(Stage(n, n == "secondary_edges") for n in
-        ["clusters", "mentions", "provenance", "main_edges", "secondary_edges", "validated", "teaching", "identity", "stages"]))
+        ["clusters", "mentions", "main_edges", "secondary_edges", "validated", "stages"]))
     report = pipeline.plan("doc")
     assert [row["stage"] for row in report["stages"]] == names
-    assert [row["status"] for row in report["stages"]] == ["reused"] * 6 + ["run"] + ["unknown"] * 2
-    assert report["stages"][6]["remaining_items"] == 7
+    assert [row["status"] for row in report["stages"]] == ["reused"] * 3 + ["run"] + ["unknown"] * 2
+    assert report["stages"][3]["remaining_items"] == 7
     assert report["known_usd_estimate"] == 0.03 and not report["estimate_complete"]
-    assert visited == names[:7]
+    assert visited == names[:4]
 
 
 def test_secondary_plan_resumes_exact_checkpoint_and_never_calls_or_writes():
@@ -85,10 +85,7 @@ def test_dry_run_cli_uses_plan_even_with_allow_spend(monkeypatch, capsys):
 @pytest.mark.parametrize("module,klass,upstream,expected", [
     ("build_clusters", "BuildClusters", None, 3),
     ("build_mentions", "BuildMentions", "graph", 2),
-    ("build_provenance", "BuildProvenance", "mentions", 1),
     ("build_main_edges", "BuildMainEdges", "mentions", 1),
-    ("anchor_concepts", "AnchorConcepts", "validated", 4),
-    ("judge_identity", "JudgeIdentity", "teaching", 4),
 ])
 def test_each_paid_stage_plan_never_calls_model_or_writes(module, klass, upstream, expected):
     fixture = import_module("tests.unit.application.test_" + module)
@@ -119,18 +116,3 @@ def test_each_paid_stage_plan_never_calls_model_or_writes(module, klass, upstrea
         assert result.usd_estimate > 0
     else:
         assert result.usd_estimate == 0
-
-
-def test_anchor_plan_uses_answers_from_only_the_matching_checkpoint():
-    from tests.unit.application.test_anchor_concepts import Store
-    from doc2roadmap.application.use_cases.anchor_concepts import AnchorConcepts
-    from doc2roadmap.domain.canonical import digest
-
-    store = Store()
-    uc = AnchorConcepts(store, SimpleNamespace(model_id="gemini-3.1-flash-lite"))
-    plan = uc.plan("doc", upstream=store.validated)
-    store.checkpoints[plan.checkpoint_id] = {"source_hash": digest(store.validated.payload),
-        "answers": {"cs": {}}, "decision_log": [], "metrics": {}}
-    assert uc.plan("doc", upstream=store.validated).calls_estimate == 2
-    store.checkpoints[plan.checkpoint_id]["source_hash"] = "wrong-source"
-    assert uc.plan("doc", upstream=store.validated).calls_estimate == 4

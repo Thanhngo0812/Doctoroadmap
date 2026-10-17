@@ -8,18 +8,15 @@ from doc2roadmap.domain.canonical import digest
 from doc2roadmap.application.stage_measurements import measure_phase
 from .canonical_merge import merge
 from .canonical_describe import describe
+from .canonical_a4_rules import DEFAULT_A4_RULES
 
 
 class CanonicalReasoning:
-    def __init__(self, judge, writer, *, generation=None, language_rule="token-majority-prose-vi20-v2", batch_size=10, counter=None, concurrency=16,
-                 repair_batch_size=1):
+    def __init__(self, judge, writer, *, generation=None, language_rule="token-majority-prose-vi20-v2", batch_size=10, counter=None, concurrency=16):
         if batch_size < 1:
             raise ValueError("batch_size phải dương")
         if type(concurrency) is not int or concurrency < 1:
             raise ValueError("concurrency phải là số nguyên dương")
-        if type(repair_batch_size) is not int or repair_batch_size < 1:
-            raise ValueError("repair_batch_size phải là số nguyên dương")
-        self.repair_batch_size = repair_batch_size
         self.concurrency = concurrency
         self.judge, self.writer = judge, writer
         self.generation = generation or {"temperature": 0., "max_output_tokens": 8192}
@@ -27,20 +24,15 @@ class CanonicalReasoning:
         self.prompts = canonical_prompts()
 
     def config(self):
+        rules = getattr(self, "a4_rules", DEFAULT_A4_RULES)
         config = {"judge": self.judge.model_id, "writer": self.writer.model_id,
                 "generation": self.generation, "prompts": self.prompts,
                 "schemas": [PARTITION_SCHEMA, DESCRIPTION_SCHEMA, SINGLE_SCHEMA],
                 "language_rule": self.language_rule, "batch_size": self.batch_size,
-                "partition_validation": "consistency-v1",
+                "partition_validation": ("consistency-gop-identity-labels-v3" if rules["coextensive_identity"]
+                                         else "consistency-gop-identity-labels-v2"),
                 "description_validation": "sentence-language-v2",
                 "source_budget": 4000, "tokenizer": getattr(self.counter, "identifier", None)}
-        if getattr(self, "upstream_chain", "v3") == "gop":
-            from .canonical_repairs import repair_config
-            from .canonical_a4_rules import DEFAULT_A4_RULES
-            rules = getattr(self, "a4_rules", DEFAULT_A4_RULES)
-            config["partition_validation"] = ("consistency-gop-identity-labels-v3" if rules["coextensive_identity"]
-                                               else "consistency-gop-identity-labels-v2")
-            config["repairs"] = repair_config(self.repair_batch_size)
         return config
 
     def prompt_hash(self, stage, schema):
@@ -63,13 +55,3 @@ class CanonicalReasoning:
         logs.extend(rows)
         metrics.update(counts)
         return values
-
-    def execute(self, initial_nodes, groups, chunks, nominations, previous_log, type_aliases,
-                declared_language=None):
-        nodes, edges, logs, review, deferred, pairs, metrics = self.merge(
-            initial_nodes, groups, chunks, nominations, previous_log, type_aliases)
-        description_log, description_metrics = self.describe(nodes, chunks, previous_log, declared_language)
-        logs.extend(description_log)
-        logs.extend({"stage": "deferred_pair", **row} for row in pairs)
-        metrics.update(description_metrics)
-        return nodes, edges, logs, review, deferred, pairs, metrics

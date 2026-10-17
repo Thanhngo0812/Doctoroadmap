@@ -5,12 +5,11 @@ import pytest
 
 from doc2roadmap.application.phase_b.lectures import _assemble
 from doc2roadmap.application.phase_b.retrieval import load_learning_graph
-from doc2roadmap.application.use_cases.anchor_concepts import AnchorConcepts
 from doc2roadmap.application.use_cases.build_roadmap import BuildRoadmap
-from doc2roadmap.application.use_cases.judge_identity import JudgeIdentity
 from doc2roadmap.domain.models import DocumentNode, DocumentTree
 from doc2roadmap.domain.phase_b_limits import BSettings
-from tests.unit.application.test_anchor_core_regression import FIXTURE, ReplayAnchors, real_upstream
+from tests.legacy_v3 import legacy_store
+from doc2roadmap.domain.canonical import digest
 from tests.unit.application.test_canonical_gop import DOC
 from tests.unit.application.test_gop_graph import real_fixture_gop_roadmap
 
@@ -33,34 +32,11 @@ def real_roadmap(tmp_path, request):
         store, _, artifact = real_fixture_gop_roadmap(tmp_path, "ml")
         assert "identity_map" not in artifact.payload
     else:
-        store, upstream = real_upstream(tmp_path)
-        recorded = json.loads(FIXTURE.read_text(encoding="utf-8"))
-        teaching, _ = AnchorConcepts(store, ReplayAnchors(recorded)).execute(DOC, upstream=upstream)
-        pair = [node for node in teaching.payload["nodes"]
-                if node.get("learnable") and node.get("teaching_status") == "taught"][:2]
-        teaching.payload["node_vectors"] = {node["node_id"]: [1., 0.] for node in pair}
-        paired_names = {node["name"] for node in pair}
-
-        class DifferentModel:
-            model_id = "fixture-model"
-
-            def start_session(self, prompt):
-                return self
-
-            def ask_json(self, prompt, *, response_schema):
-                data = json.loads(prompt.split("\nCorrect this validation error:")[0])
-                if "relation" in response_schema["properties"]:
-                    return SimpleNamespace(payload={"pair_id": data["pair_id"], "relation": "dong_nhat", "reason": "fixture"})
-                verdict = "same" if {data["first"]["name"], data["second"]["name"]} == paired_names else "different"
-                return SimpleNamespace(payload={"pair_id": data["pair_id"], "verdict": verdict, "reason": "fixture"})
-
-        identity, _ = JudgeIdentity(store, DifferentModel()).execute(DOC, upstream=teaching)
-        identity.payload["requires_edges"] = []
-        for node in identity.payload["nodes"]:
-            node["cluster_id"] = "fixture-cluster"
+        store, identity, frozen = legacy_store(tmp_path)
         artifact, _ = BuildRoadmap(store).execute(DOC, upstream=identity)
-        assert artifact.payload["identity_map"]
-        assert "upstream_chain" not in artifact.manifest["config"]
+        assert digest(artifact.payload) == frozen['roadmap_payload_hash']
+        assert artifact.payload['identity_map']
+        assert 'upstream_chain' not in artifact.manifest['config']
     pinned_parse_for_chunk_fixture(store, artifact)
     return store, artifact
 

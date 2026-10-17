@@ -55,6 +55,14 @@ class FakeModel:
             value = {"pairs": [{"pair_id": p["pair_id"], "label": "different", "child": "", "chunk_ids": [], "reason": "fixture"} for p in data["pairs"]]}
         elif "nodes" in data:
             value = {"nodes": [{"node_id": n["node_id"], "keep": True, "reason": "fixture supported"} for n in data["nodes"]]}
+        elif "pair_id" in data:
+            value = {"pair_id": data["pair_id"], "relation": "dong_nhat", "reason": "fixture verification"}
+        elif "candidates" in data:
+            candidate = data["candidates"][-1]
+            value = {"node_id": data["node_id"], "status": "defined_here", "anchor": candidate["cand_id"],
+                     "quote": candidate["sentence"], "reason": "fixture anchor"}
+        elif "concept" in data and "quote" in data:
+            value = {"node_id": data["node_id"], "explicit_prior": False, "reason": "fixture prior check"}
         else:
             chunk = "outside" if self.description_invalid else data["chunks"][-1]["chunk_id"]
             value = {"sentences": [{"text": "Tài liệu trình bày khái niệm này.", "chunk_ids": [chunk]}],
@@ -217,7 +225,9 @@ def test_a5_defining_chunk_moves_order_and_preserves_conflict(tmp_path):
         if node["media_id"] or len(node["members"]) < 2:
             continue
         expected = max(order[c] for c in node["source_chunk_ids"])
-        assert node["first_order_index"] == expected
+        assert [order[c] for c in node["defining_chunk_ids_source"]] == [expected]
+        assert set(node["defining_chunk_ids"]) == set(node["defining_chunk_ids_source"]) | set(node.get("teaching_chunk_ids", []))
+        assert node["first_order_index"] == min(order[c] for c in node["defining_chunk_ids"])
         assert node["nghi_gop_nham"] is True
         assert node["description_reason"] == "Sources disagree; no reconciliation"
         assert node["description"].startswith("Tài liệu trình bày khái niệm này.")
@@ -242,11 +252,14 @@ def test_real_fixture_names_nominations_and_no_network(tmp_path, monkeypatch):
 def test_reasoning_fixture_cache_and_language_invalidation(tmp_path):
     store, judge, writer = fixture_store(tmp_path), FakeModel(), FakeModel()
     reasoning = CanonicalReasoning(judge, writer)
-    assert reasoning.config()["partition_validation"] == "consistency-v1"
+    assert reasoning.config()["partition_validation"] == "consistency-gop-identity-labels-v3"
     first, _ = Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")
     assert first.payload["stage"] == "complete"
     assert any(n.get("description_sentences") for n in first.payload["nodes"])
-    assert all(n["first_order_index"] >= n["first_mention_index"] for n in first.payload["nodes"])
+    order = {c.chunk_id: c.order_index for c in store.load_chunks("baocao-canhan",
+        store.load_latest_candidates("baocao-canhan").manifest["upstream_version"]).result.chunks}
+    assert all(n["first_order_index"] == min(order[c] for c in n["defining_chunk_ids"])
+               for n in first.payload["nodes"] if n.get("defining_chunk_ids"))
     counts = len(judge.calls), len(writer.calls)
     assert Canonicalize(store, embedding(), reasoning=reasoning).execute("baocao-canhan")[1]
     assert counts == (len(judge.calls), len(writer.calls))
@@ -312,7 +325,7 @@ def test_merge_and_cut_pair_apply_to_real_fixture(tmp_path, monkeypatch, repair)
         ids = {members[0].name: id for id, members in groups.items()}
         pair = [ids["WebSocket"], ids["WebSockets"]]
         edge = {"source": pair[0], "target": pair[1], "channels": ["alias"], "weight": 1.}
-        return {"clusters": [] if repair else [pair], "edges": [edge], "cut_edges": [edge] if repair else [], "metrics": {}}
+        return {"clusters": [] if repair else [pair], "edges": [edge], "cut_edges": [edge] if repair else [], "metrics": {"nomination_channels": {}}}
     monkeypatch.setattr("doc2roadmap.application.use_cases.canonicalize.nomination_graph", graph)
     class Judge(FakeModel):
         def ask_json(self, prompt, *, response_schema):
@@ -492,7 +505,7 @@ def test_singleton_language_and_support_are_independent(tmp_path, monkeypatch, d
     store.save_candidates("baocao-canhan", source.manifest["source_hash"], "new-draft", {}, source.payload,
                           upstream_version=source.manifest["upstream_version"])
     monkeypatch.setattr("doc2roadmap.application.use_cases.canonicalize.nomination_graph",
-                        lambda *a, **k: {"clusters": [], "edges": [], "cut_edges": [], "metrics": {}})
+                        lambda *a, **k: {"clusters": [], "edges": [], "cut_edges": [], "metrics": {"nomination_channels": {}}})
     class Writer(FakeModel):
         def ask_json(self, prompt, *, response_schema):
             result = super().ask_json(prompt, response_schema=response_schema)
@@ -517,7 +530,7 @@ def test_invalid_kept_draft_has_its_own_rewrite_metric(tmp_path, monkeypatch):
     store.save_candidates("baocao-canhan", source.manifest["source_hash"], "invalid-draft", {}, source.payload,
                           upstream_version=source.manifest["upstream_version"])
     monkeypatch.setattr("doc2roadmap.application.use_cases.canonicalize.nomination_graph",
-                        lambda *a, **k: {"clusters": [], "edges": [], "cut_edges": [], "metrics": {}})
+                        lambda *a, **k: {"clusters": [], "edges": [], "cut_edges": [], "metrics": {"nomination_channels": {}}})
     result, _ = Canonicalize(store, embedding(), reasoning=CanonicalReasoning(FakeModel(), FakeModel())).execute("baocao-canhan")
     node = next(n for n in result.payload["nodes"] if n["node_id"] == target["node_id"])
     assert "Một. Hai." not in node["description"]
@@ -531,7 +544,7 @@ def test_partition_subtype_direction_and_uncertainty(tmp_path, monkeypatch, unce
     def graph(groups, vectors, **kwargs):
         ids = {members[0].name: id for id, members in groups.items()}
         pair[:] = [ids["WebSocket"], ids["WebSockets"]]
-        return {"clusters": [pair], "edges": [], "cut_edges": [], "metrics": {}}
+        return {"clusters": [pair], "edges": [], "cut_edges": [], "metrics": {"nomination_channels": {}}}
     monkeypatch.setattr("doc2roadmap.application.use_cases.canonicalize.nomination_graph", graph)
     class Judge(FakeModel):
         def ask_json(self, prompt, *, response_schema):
@@ -562,7 +575,7 @@ def graph_with(clusters_by_name, cut_by_name):
         cut = [edge(a, b) for a, b in cut_by_name]
         inner = [edge(c[i], c[j]) for c in clusters_by_name for i in range(len(c)) for j in range(i + 1, len(c))]
         return {"clusters": [[ids[n] for n in c] for c in clusters_by_name], "edges": inner + cut,
-                "cut_edges": cut, "metrics": {}}
+                "cut_edges": cut, "metrics": {"nomination_channels": {}}}
     return graph
 
 

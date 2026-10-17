@@ -13,7 +13,7 @@ from typing import Any
 from doc2roadmap.application.stage_measurements import measure_stage
 from doc2roadmap.application.ports import ArtifactStore, DocumentParser
 from doc2roadmap.application.windows import assemble_windows
-from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, assign_section_roles, chunk_document
+from doc2roadmap.domain.chunking import CHUNK_ALGORITHM_ID, ROLE_ALGORITHM_ID, assign_section_roles, chunk_document
 from doc2roadmap.domain.models import DocumentTree
 from doc2roadmap.domain.document_structure import RESULT_MIN_COUNT, RESULT_MAX_BODY_CHARS
 from doc2roadmap.domain.ports import SentenceSplitter, TokenCounter
@@ -57,7 +57,7 @@ def refresh_chunk_roles(store: ArtifactStore, doc_id: str, *, version: int | Non
     stored = store.load_chunks(doc_id, version) if version is not None else store.load_latest_chunks(doc_id)
     assign_section_roles(stored.result.sections, stored.result.chunks)
     config = {**stored.manifest["config"], "chunk": {**stored.manifest["config"]["chunk"],
-              "role_algorithm_id": CHUNK_ALGORITHM_ID}}
+              "role_algorithm_id": ROLE_ALGORITHM_ID}}
     return store.save_chunks(doc_id, stored.manifest["source_hash"], _hash(config), config,
                              stored.manifest["parse_version"], stored.result,
                              manifest_fields={"roles_from_chunks_version": version or stored.version,

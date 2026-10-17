@@ -20,50 +20,30 @@ from doc2roadmap.domain.nomination import nomination_graph, unit
 from doc2roadmap.domain.canonical_nominations import SOURCES, additional_nominations
 from doc2roadmap.application.prompt_library import load_prompt
 from .canonical_anchors import anchor_config, anchor_nodes, prepare_anchors
-from .judge_identity import VERIFY_SCHEMA
+from doc2roadmap.application.identity_review import VERIFY_SCHEMA
 from .canonical_a4_rules import DEFAULT_A4_RULES, a4_rules_config
 
 
 class Canonicalize:
     def __init__(self, store, embedding=None, *, graph_config=None, reasoning=None,
-                 upstream_chain="v3", anchor_batch_mode="single", anchor_model=None,
-                 nomination_config=None, merge_review=None, merge_review_hash=None, a4_rules=None):
+                 anchor_model=None, merge_review=None, merge_review_hash=None, a4_rules=None):
         self.store, self.embedding = store, embedding
         self.graph_config = graph_config or {"k": 3, "ngram_threshold": .5, "resolution": 2., "seed": 42, "cap": 9}
-        reasoning = copy(reasoning) if reasoning is not None and upstream_chain == "gop" else reasoning
-        self.reasoning = reasoning
-        if upstream_chain not in {"v3", "gop"}:
-            raise ValueError("upstream_chain phải là v3 hoặc gop")
-        if anchor_batch_mode not in {"single", "a5"}:
-            raise ValueError("anchor_batch_mode phải là single hoặc a5")
-        if upstream_chain == "gop" and (reasoning is None or embedding is None):
-            raise ValueError("chuỗi gop cần A4/A5 đầy đủ; không dùng --names-only hoặc --prepare")
-        self.upstream_chain, self.anchor_batch_mode = upstream_chain, anchor_batch_mode
+        self.reasoning = copy(reasoning) if reasoning is not None else None
+        self.upstream_chain = "gop" if self.reasoning else "v3"
         self.a4_rules = {**DEFAULT_A4_RULES, **(a4_rules or {})}
-        if upstream_chain == "gop":
+        if self.reasoning:
+            if embedding is None:
+                raise ValueError("A4/A5 đầy đủ cần embedding tên; --names-only/--prepare chỉ dựng lớp tên")
             if set(self.a4_rules) != set(DEFAULT_A4_RULES) or any(type(value) is not bool for value in self.a4_rules.values()):
                 raise ValueError("luật A4 chuỗi gop phải là các công tắc boolean đã khai báo")
             self.reasoning.a4_rules = self.a4_rules
         self.anchor_model = anchor_model or (reasoning.judge if reasoning else None)
-        if merge_review is not None and upstream_chain != "gop":
-            raise ValueError("--merge-review chỉ dùng ở chuỗi gop; v3 dùng roadmap --identity-review")
+        if merge_review is not None and not self.reasoning:
+            raise ValueError("--merge-review cần A4/A5 đầy đủ")
         self.merge_review = dict(merge_review or {})
         self.merge_review_hash = merge_review_hash or digest(sorted(
             [sorted(pair), decision] for pair, decision in self.merge_review.items()))
-        self.nomination_config = {"semantic_enabled": False, "semantic_top_k": 3, "semantic_min_similarity": .85,
-                                  **(nomination_config or {})}
-        if upstream_chain == "gop":
-            if (type(self.nomination_config["semantic_enabled"]) is not bool or
-                    type(self.nomination_config["semantic_top_k"]) is not int or
-                    self.nomination_config["semantic_top_k"] < 1 or
-                    not 0 <= self.nomination_config["semantic_min_similarity"] <= 1):
-                raise ValueError("tham số đề cử mô tả không hợp lệ")
-            partition = load_prompt("a4", "partition-gop")
-            self.reasoning.prompts = {**self.reasoning.prompts, "merge": partition, "repair": partition}
-        if reasoning is not None:
-            reasoning.upstream_chain = upstream_chain
-        if reasoning and embedding is None:
-            raise ValueError("A4 đầy đủ cần embedding tên")
 
     @measure_stage
     def execute(self, doc_id, *, a4_gold_coverage=None, gold_sheet_id=None,
@@ -84,8 +64,7 @@ class Canonicalize:
         chunks = self.store.load_chunks(doc_id, source.manifest["upstream_version"])
         role_chunks = (self.store.load_role_chunks(doc_id, source.manifest["upstream_version"])
                        if self.upstream_chain == "gop" else None)
-        extraction = DocumentExtraction.from_payload(source.payload, include_embeddings=(
-            self.upstream_chain != "gop" or self.nomination_config["semantic_enabled"]))
+        extraction = DocumentExtraction.from_payload(source.payload, include_embeddings=False)
         if extraction.coverage_incomplete:
             raise ValueError("A4 cần pool ứng viên hoàn chỉnh")
         aliases = self.store.load_type_aliases()
@@ -100,10 +79,9 @@ class Canonicalize:
         if declared_language:
             config["declared_language"] = declared_language
         if self.upstream_chain == "gop":
-            config.update(upstream_chain="gop", anchor_batch_mode=self.anchor_batch_mode,
-                          anchor_chunks_version=role_chunks.version, anchors=anchor_config(self.anchor_model, self.anchor_batch_mode))
-            config["additional_nominations"] = {"rule": "identity-names+a3-evidence+stored-draft-vectors-v1",
-                                                **self.nomination_config}
+            config.update(upstream_chain="gop",
+                          anchor_chunks_version=role_chunks.version, anchors=anchor_config(self.anchor_model))
+            config["additional_nominations"] = {"rule": "identity-names+a3-evidence-v2"}
             config["a4_rules"] = a4_rules_config(self.a4_rules)
             config["merge_review_hash"] = self.merge_review_hash
             config["merge_verification"] = digest([load_prompt("a10", "identity_verify"), VERIFY_SCHEMA,
@@ -161,9 +139,7 @@ class Canonicalize:
             vectors = {id: unit([sum(column)/len(group) for column in zip(*(by_name[e.name] for e in group), strict=True)])
                        for id, group in text_groups.items()}
             with measure_phase("additional_nominations" if self.upstream_chain == "gop" else None):
-                additional = (additional_nominations(nodes, text_groups, extraction.candidate_embeddings,
-                    semantic_top_k=self.nomination_config["semantic_top_k"],
-                    semantic_min_similarity=self.nomination_config["semantic_min_similarity"],
+                additional = (additional_nominations(nodes,
                     same_evidence_enabled=self.a4_rules["same_evidence_enabled"])
                     if self.upstream_chain == "gop" else None)
             with measure_phase("nomination_graph" if self.upstream_chain == "gop" else None):
@@ -185,15 +161,10 @@ class Canonicalize:
                 with measure_phase("prepare_anchors"):
                     core = prepare_anchors(nodes, role_chunks.result.chunks)
                 description_log, description_metrics = self.reasoning.describe(
-                    nodes, chunks.result, previous_log, declared_language, anchor_core=core,
-                    anchor_batch_mode=self.anchor_batch_mode)
+                    nodes, chunks.result, previous_log, declared_language)
                 decisions.extend(description_log)
                 decisions.extend({"stage": "deferred_pair", **row} for row in deferred_pairs)
                 reasoning_metrics.update(description_metrics)
-            else:
-                nodes, extra_edges, decisions, additional_review, deferred, deferred_pairs, reasoning_metrics = self.reasoning.execute(
-                    nodes, groups, chunks.result, nominations, previous_log, aliases,
-                    declared_language=declared_language)
             log.extend(decisions)
             review.extend(additional_review)
         anchor_payload = {}

@@ -7,7 +7,7 @@ import json
 import sys
 from pathlib import Path
 
-from chay_danh_tinh_v3 import EvaluationStore, MeteredGemini
+from evaluation_runtime import EvaluationStore, MeteredGemini
 from doc2roadmap.application.spend_guard import SpendGuard
 from doc2roadmap.application.use_cases.build_main_edges import BuildMainEdges
 from doc2roadmap.application.use_cases.judge_identity import JudgeIdentity, load_identity_review
