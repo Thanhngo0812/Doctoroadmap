@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md), pha 3 "Cổng".
 **Ai:** Claude · **Chi phí mô hình:** khoảng 5 USD; nằm trong trần 10 USD của đợt, dry-run trước · **Chặn bởi:** 19a, 19b, 19c, 19d, 19f, 19g,
-19h, 19i, 19j, và 19k nếu 19j nhận · **Trạng thái:** chờ
+19h, 19i, 19j, và 19k nếu 19j nhận · **Trạng thái:** xong 2026-10-17 — **qua**, chi khoảng 3,39 USD; [báo cáo cổng](../../report/v4-19l-cong-doi-mac-dinh-2026-10-17.md)
 
 ## Cần làm
 
@@ -29,6 +29,6 @@
 
 ## Nghiệm thu
 
-- [ ] Báo cáo ghi SHA mã đã chạy và đối chiếu được nguồn gốc từng artifact mới/tái dùng.
-- [ ] Báo cáo cổng có đủ tiêu chí và phán qua hay trượt kèm lý do.
-- [ ] Artifact chuẩn mới của 6 tài liệu nằm ở kho chính.
+- [x] Báo cáo ghi SHA mã đã chạy và đối chiếu được nguồn gốc từng artifact mới/tái dùng.
+- [x] Báo cáo cổng có đủ tiêu chí và phán qua hay trượt kèm lý do.
+- [x] Artifact chuẩn mới của 6 tài liệu nằm ở kho chính.

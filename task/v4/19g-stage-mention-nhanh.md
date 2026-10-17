@@ -1,7 +1,7 @@
 # 19g — Stage mention nhanh hơn
 
 **Nguồn chân lý:** [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md), pha 2 mục 3.
-**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (kiểm thử giả) · **Chặn bởi:** không · **Trạng thái:** hoàn thành theo đính chính, đã gỡ cache; đo toàn stage chuyển 19l
+**Ai:** nhân viên · **Chi phí mô hình:** 0 USD (kiểm thử giả) · **Chặn bởi:** không · **Trạng thái:** hoàn thành theo đính chính, đã gỡ cache; đã đo toàn stage doc-4 ở cổng 19l
 
 ## Vì sao
 
@@ -21,7 +21,7 @@ Stage mention mất 400 giây trên doc-4 (nghiên cứu mục 4), vì ba chỗ:
 
 - [x] Test trên fixture thật: mention map trước và sau cùng băm, hoặc chỉ lệch số học trong dung sai đã ghi mà thứ hạng y nguyên.
 - Số lời gọi embedding giảm: bỏ yêu cầu theo đính chính spec; không lưu cache query trong manifest.
-- Đo thời gian toàn stage doc-4: chuyển sang cổng 19l, dùng embedding thật theo dự toán của cổng.
+- [x] Đo thời gian toàn stage doc-4 ở cổng 19l: 744 giây trên Vertex. CPU khoảng 15 giây, phần còn lại là chờ embedding 630 câu truy vấn, mỗi câu một request, bị quota bóp (1.159 lời HTTP). Developer API gom lô thì còn 7 request. Xem [báo cáo cổng](../../report/v4-19l-cong-doi-mac-dinh-2026-10-17.md) mục 2.
 - [x] Toàn bộ test qua sau khi gỡ cache query.
 
 **Kiểm chứng ban đầu 2026-10-17:** CPU doc-4 trên cùng vector lưu sẵn: 158,205 → 14,652 giây (10,80 lần), thứ hạng giữ nguyên; chênh z tối đa 2,69e-14, dung sai tuyệt đối 1e-12. Không có vector `RETRIEVAL_QUERY` cũ để đo toàn stage 0 USD. Vector clusters dùng `SEMANTIC_SIMILARITY`, nên không dùng thay query. Cache query của lượt cài đầu đã gỡ theo kiểm bên dưới. Số đo CPU ở [báo cáo 19g–19i](../../report/v4-19gi-tang-toc-mentions-va-pass-phu-ml-2026-10-17.md).
