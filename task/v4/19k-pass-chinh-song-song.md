@@ -98,3 +98,10 @@ Hai việc dưới đây không đổi đầu ra, nhưng đổi thời gian và 
   ra cạnh, cờ và `executor_log` bằng lượt liền mạch.
 
 **Kiểm chứng bản vá:** `test_persistent_transport_failure_cancels_queued_calls_and_resumes` phủ phán chính/lời sửa × 1/4 worker, k = 6 trên 24 phiên. Cả bốn ca đỏ trước sửa (vẫn gọi 24 việc), xanh sau sửa; checkpoint giữ tất cả kết quả đã trả về, chạy tiếp không gọi lại chúng, nhật ký chỉ khác `reused`, config hash không đổi. Nhóm liên quan **36 test qua**, 8,64 giây; **0 USD API**. [Báo cáo dừng sớm](../../report/v4-19k-dung-som-khi-loi-2026-10-17.md).
+
+**Claude kiểm lại 2026-10-17 (commit `8f1c9d0`):**
+- **Logic:** chỉ huỷ việc chưa bắt đầu. Lời gọi đang chạy vẫn được chờ xong và ghi checkpoint. Future đã huỷ thì bỏ qua, nên không đụng `CancelledError`.
+  Mã ném lại đúng đối tượng lỗi gốc.
+- **Tái lập "đỏ trước sửa":** chạy test trên bản sao `src` có `model_calls.py` của `8f1c9d0^` thì cả 4 ca đỏ; trên mã hiện tại thì xanh.
+
+**Đạt. 19k đóng.**

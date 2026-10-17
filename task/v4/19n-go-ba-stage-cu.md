@@ -13,10 +13,14 @@
 **Giữ đường canonical chỉ lớp tên** (`--names-only`, `--prepare`) cho D-01 đã đóng băng.
 
 **Phải giữ, vì mã khác đang dùng.** Chuyển sang module trung tính nếu module chứa chúng bị gỡ:
-- hàm kiểm câu trích nguyên văn (Pha B dùng);
+- hàm kiểm câu trích nguyên văn (Pha B dùng). Cụ thể là `quote_is_verbatim`: `phase_b/common.py` import nó từ `domain.provenance`. Nếu chuyển hàm,
+  sửa dòng import đó trong cùng commit. Tệp bàn giao Pha B ngày 2026-10-17 đã báo trước việc này;
 - schema xác minh và bộ nạp tệp duyệt (canonical dùng);
 - miền danh tính (đề cử và duyệt ở canonical dùng);
 - lõi neo (canonical dùng).
+
+**Tài liệu (Claude, cùng đợt commit):** khuôn lệnh T10a trong `CONTEXT.md` còn dùng `--stop-after identity` và `--identity-review`. Sau khi gỡ, ghi rõ
+khuôn này chỉ chạy được với mã trước 19n.
 
 **Hợp đồng đọc artifact cũ:** A8, A10, bộ chấm và Pha B vẫn đọc được artifact v3 có `identity_map`.
 

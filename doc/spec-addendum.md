@@ -2,6 +2,10 @@
 
 > **Kế hoạch v3 (2026-09-26):** lộ trình chuẩn chỉ và đọc được — vai trò vùng văn bản, dãy học chỉ gồm khái niệm được dạy, tiên quyết rút gọn, tên module theo nội dung, danh tính mở rộng. Xem [spec v3](v3-lo-trinh-doc-duoc-spec.md); các mục dưới được sửa theo từng vé khi cài đặt.
 
+> **Chuỗi gộp là mặc định (2026-10-17, [ADR 0016](adr/0016-danh-tinh-trong-a4-neo-trong-a5.md)).** A4 gộp thực thể và kiêm luôn danh tính. A5
+> viết mô tả, rồi quyết câu neo và trạng thái dạy. Ba stage provenance, neo C8 (A9') và danh tính (A9'') rời luồng mặc định; chúng chỉ còn để
+> đọc artifact chuỗi v3. Quy tắc chi tiết: [spec gộp khâu trước A8](gop-khau-truoc-a8-spec.md) và [spec đổi mặc định](doi-mac-dinh-chuoi-gop-spec.md).
+
 Tài liệu này đặc tả luồng đi chuẩn, chi tiết từng bước, kèm input/output, kỹ thuật đề xuất và hợp đồng dữ liệu (JSON schema) giữa các module.
 
 > **Tài liệu này là nguồn chân lý.** Khi nó mâu thuẫn với `spec-preview.md` (hệ nhãn T1–T4) hoặc bất kỳ
@@ -22,8 +26,8 @@ Nguyên tắc vận hành xuyên suốt: **mỗi bước ghi output trung gian r
 Stage có cache không cần cờ. Lý do: đổi thuật toán một stage (như F126 đổi pass phụ) làm mọi tài liệu chạy lại stage
 đó khi gọi `roadmap`, và không ai được biết trước nếu lệnh không dừng lại.
 
-**Chạy thử trước khi cho chi** (v3 R10, vé 01): `roadmap --doc-id X --dry-run` liệt kê cả A6, A7, provenance,
-pass chính, pass phụ, A9, neo, danh tính và A10. Mỗi stage gọi cùng phần đọc cấu hình/cache với thực thi; nếu cache
+**Chạy thử trước khi cho chi** (v3 R10, vé 01): `roadmap --doc-id X --dry-run` liệt kê mọi stage của chuỗi: A6, A7,
+mention map, pass chính, pass phụ, A9 và A10. Chuỗi v3 có thêm provenance, neo và danh tính. Mỗi stage gọi cùng phần đọc cấu hình/cache với thực thi; nếu cache
 thiếu thì đếm việc còn lại trong checkpoint khớp `source_hash`. Sau đầu ra còn thiếu, các stage phụ thuộc báo
 `chưa biết`, không tự lấy artifact cũ. Không ghi artifact/checkpoint, không gọi LLM **hay embedding**, kể cả đi
 cùng `--allow-spend`. A6/A7 cũng qua `SpendGuard` khi chạy thật. Dự toán LLM dùng giá trong `prerequisite_prompt`,
@@ -34,18 +38,18 @@ biết, không giả là miễn phí. Tổng phần đã biết không phải tr
 **Vai trò vùng văn bản** (v3 R1/R2, vé 14): A2 suy cấu trúc từ chuỗi chương và họ đánh số, không dùng từ khoá vi/en.
 Các section chưa có bằng chứng cấu trúc nhận một nhãn trong sáu vai trò qua `label-roles --doc-id X --chunks-version N`;
 `--dry-run` chỉ đọc, `--allow-spend` mới cho phép gọi Gemini. Lớp nghĩa không ghi đè lớp cấu trúc; phản hồi thiếu/sai
-nhãn mặc định `noi_dung` và ghi cảnh báo. Version nhãn giữ nguyên chunk ID/text/offset của N; A3–A8 vẫn đọc N, còn A9'/A10
-đọc nhãn tương thích với N qua `load_role_chunks`. `CHUNK_ALGORITHM_ID=section-id-v11-document-structure`;
+nhãn mặc định `noi_dung` và ghi cảnh báo. Version nhãn giữ nguyên chunk ID/text/offset của N; A3–A8 vẫn đọc N, còn phần neo (A5 ở chuỗi gộp,
+A9' ở chuỗi v3) và A10 đọc nhãn tương thích với N qua `load_role_chunks`. `CHUNK_ALGORITHM_ID=section-id-v11-document-structure`;
 `refresh_chunk_roles` chỉ tái tính lớp cấu trúc, không thay lượt nhãn nghĩa. Doc-2 có phiên bản cây mục mới riêng;
 không ánh xạ cạnh cũ sang ID chunk mới.
 
-**Danh tính mở rộng** (v3 R8, vé 10): `a10-identity-v2` thêm NFKC/bỏ dấu LaTeX/gộp gạch nối giữa chữ, viết tắt theo
+**Danh tính mở rộng** (v3 R8, vé 10; *chỉ còn ở chuỗi v3*, chuỗi gộp đưa các nguồn tên vào A4): `a10-identity-v2` thêm NFKC/bỏ dấu LaTeX/gộp gạch nối giữa chữ, viết tắt theo
 chữ đầu bỏ dấu (ít nhất hai từ), tiền tố `hệ ` / `phép `, và láng giềng mô tả A6. Lấy top-3 ở mỗi đầu, hợp hai chiều,
 cosine ≥ 0,85; cả k/ngưỡng/quy tắc nằm trong config để vô hiệu cache đúng lúc. Không embed thêm: vector mô tả đề cử,
 hai câu neo và mô tả đi vào lời phán. Giữ nguyên nhóm kiểm đủ, gỡ chu trình sau gộp, quyết định người thắng mô hình
 và cổng duyệt gộp chạm vàng. Lượt kiểm chứng mới lưu riêng ở `artifacts/v3-identity-evaluation`, không tự xuất bản.
 
-**Xác minh danh tính** (v3 R8b, vé 10b): `a10-identity-v3` giữ nguyên prompt, nguồn đề cử và khoá checkpoint v2 của lượt 1;
+**Xác minh danh tính** (v3 R8b, vé 10b; *chỉ còn ở chuỗi v3*, chuỗi gộp dùng cùng prompt để xác minh cặp gộp khác tên ở A4): `a10-identity-v3` giữ nguyên prompt, nguồn đề cử và khoá checkpoint v2 của lượt 1;
 mọi `model_verdict=same` được hỏi lại độc lập bằng `identity_verify.txt`, chỉ chứa `pair_id`, hai hồ sơ tên/alias/mô tả/câu neo.
 Tập quan hệ: `dong_nhat`, `truong_hop_rieng`, `bang_nhau_theo_menh_de`, `menh_de_khac`, `doi_tuong_khac_loai`, `khac`.
 Chỉ `dong_nhat` giữ same; phản hồi lỗi sau sửa là uncertain và không gộp. `--identity-review` thắng cả hai lượt.
@@ -74,28 +78,22 @@ A2. Chunking theo cấu trúc
   |                                            |
 A3. Extract concepts + thực thể media          A3'. Embed chunks
   |   (kèm chunk_ids, vị trí xuất hiện)        |    -> Vector DB
-A4. Merge duplicate concepts                   |    (metadata: section,
-  |                                            |     page, order_index,
-A5. Tổng hợp description hoàn chỉnh            |     module_id = null)
-  |                                            |
+A4. Gộp thực thể, kiêm danh tính               |    (metadata: section,
+  |   (đề cử -> phán cụm -> xác minh khác tên) |     page, order_index,
+A5. Mô tả + câu neo + trạng thái dạy           |     module_id = null)
+  |   (neo mỗi khái niệm một lời; ADR 0016)    |
 A6. Semantic graph (co-occurrence + similarity)|
   |                                            |
-A7. Cluster (Leiden)                           |
+A7. Cluster (Leiden) + mention map             |
   |                                            |
 A8. Suy luận prerequisite                      |
-  |   8a. nội cluster (confidence + evidence)  |
-  |   8b. liên cluster (boundary concepts)     |
+  |   8a. pass chính LLM (theo trục)           |
+  |   8b. pass phụ ML chấm cặp (ADR 0015)      |
   |                                            |
 A9. Kiểm tra nhất quán [CHỈ cạnh requires]     |
   |   9a. Quality gate (lỗi pipeline chết)     |
   |   9b. Gỡ chu trình, giao DAG thật          |
-  |   9c. Đánh dấu cạnh bắc cầu                 |
-  |                                            |
-A9'. Neo định nghĩa (C8 v3, mặc định)          |
-  |                                            |
-A9''. Danh tính: gộp khái niệm trùng           |
-  |                                            |
-A9'''. Cạnh ngầm (loại, vé 06)                 |
+  |   9c. Đánh dấu cạnh bắc cầu                |
   |                                            |
 A10. Dãy học neo sách -> chia module           |
   |    [CHỈ requires; chưa gắn media]          |
@@ -468,6 +466,16 @@ Việc duy nhất cần LLM là **mô tả ảnh không có chú thích**:
   `first_mention_index`); tên chuẩn là tên gọi đầy đủ tài liệu dùng nhiều nhất trong tên các ứng viên; id theo ứng
   viên neo (ADR 0005).
 - Spec chi tiết: [`A4-A5-hop-nhat-thuc-the-spec.md`](./A4-A5-hop-nhat-thuc-the-spec.md).
+- **Chuỗi gộp (mặc định từ 2026-10-17, ADR 0016):** A4 kiêm luôn danh tính và ra tập node cuối. Phần thay đổi so với tóm tắt trên:
+  - thêm ba nguồn đề cử: tên hoặc alias trùng sau chuẩn hoá, viết tắt theo chữ đầu, khác đúng một tiền tố chung chung;
+  - phán theo tiêu chí cùng ngoại diên;
+  - cặp gộp khác tên qua một lời xác minh độc lập;
+  - hai nhóm trùng tên sau NFKC, bỏ dấu LaTeX và gộp gạch nối thì buộc gộp;
+  - cặp bị cắt ngang cụm được phán sửa mỗi cặp một lời; cặp cắt chỉ có nguồn n-gram thì không phán sửa;
+  - chia cụm tất định;
+  - quyết định người duyệt nạp bằng `a4 --merge-review`.
+
+  Quy tắc: [spec gộp khâu trước A8](gop-khau-truoc-a8-spec.md) mục 3 và [spec đổi mặc định](doi-mac-dinh-chuoi-gop-spec.md) pha 1a.
 
 > Bản trước ghi *"≥ 0.90 merge tự động"* trên embedding `description_draft`. Đo trên bốn tài liệu: cosine giữa hai
 > thực thể bất kỳ đã là 0,80; trong 62 cặp khác tên vượt 0,95 chỉ 8 cặp là trùng thật; ngưỡng 0,90 làm một node nuốt
@@ -489,6 +497,9 @@ tuyệt đối. Đây là thứ B0 để lại sẵn; đừng dựng lại bằn
 - Nguồn mâu thuẫn ⇒ **không hoà giải**, gắn cờ `nghi_gop_nham` cho tầng 3/A13 — mô tả mâu thuẫn là triệu chứng của
   gộp nhầm.
 - A5 chỉ ra chunk **định nghĩa/giảng** (`defining_chunk_ids`) ⇒ nguồn của `first_order_index`.
+- **Chuỗi gộp (mặc định từ 2026-10-17, ADR 0016):** sau mô tả, A5 quyết câu neo và trạng thái dạy, mỗi khái niệm một lời gọi. Luật giữ đúng
+  của C8 cũ (A9'): câu ứng viên do mã dựng, sáu trạng thái, xác minh `prior_knowledge`. Chunk chứa câu neo được thêm vào `defining_chunk_ids`
+  theo luật chỉ thêm, thay cho stage provenance. Quy tắc: [spec gộp khâu trước A8](gop-khau-truoc-a8-spec.md) mục 4.
 - Ngôn ngữ mô tả = ngôn ngữ chủ đạo của tài liệu (code đo, ghi manifest).
 - Độ sâu tiên quyết là chỉ số cấu trúc của DAG, không phải trường `difficulty`. Description dùng cho hiển thị UI, ngữ cảnh suy luận edge và
   sinh quiz — nhưng luật *"Y trong định nghĩa X"* của 2b đọc **câu bằng chứng nguyên văn**, không đọc mô tả này.
@@ -574,6 +585,7 @@ vẫn phải tuân I-G1 — chỉ `requires` giữa hai concept.
 ### A8'. Pass cạnh ngầm *(vé v2-06; có mã, **đã loại** 2026-09-25: trượt chấm mù T11, không vào chuỗi mặc định)*
 
 > Quy tắc: [spec v2, W20](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `implicit`, sau `teaching`/`identity`.
+> Chuỗi gộp (mặc định từ 2026-10-17) không có stage này.
 > **Vị trí hiện tại:** chạy **sau A9** — sau A9' (neo) và A9'' (danh tính), vì cần câu neo và bản đồ danh tính;
 > tự gỡ chu trình bằng hàm của A9 nên đầu ra vẫn là DAG. Tên "A8'" là vị trí đích theo W17: khi neo và danh tính
 > dời lên trước A8, pass này nằm ngay sau A8b, trước A9. Chưa dời.
@@ -642,7 +654,11 @@ Theo đúng thứ tự:
    > **Vì sao phải lọc:** chạy trên đồ thị đầy đủ có thể xoá cạnh `illustrates` vì "đã có đường khác",
    > làm mất liên kết hình↔khái niệm mà pha B cần.
 
-### A9''. Danh tính — gộp khái niệm trùng *(vé v2-05; trong chuỗi mặc định từ 2026-09-26)*
+### A9''. Danh tính — gộp khái niệm trùng *(vé v2-05; chỉ còn ở chuỗi v3)*
+
+> **Rời luồng mặc định từ 2026-10-17 ([ADR 0016](adr/0016-danh-tinh-trong-a4-neo-trong-a5.md)).** Chuỗi gộp gộp ngay ở A4, nên không có stage
+> `identity` và `identity_map`. Mục này giữ để đọc artifact chuỗi v3. A8, A10, bộ chấm và Pha B vẫn đọc được loại artifact đó. Stage C8
+> (`teaching`, A9') cũng chỉ còn ở chuỗi v3; phần neo của nó nay nằm trong A5.
 
 > Quy tắc: [spec v2, W14–W15](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). Stage `identity`, sau stage `teaching`.
 
@@ -666,7 +682,7 @@ Theo đúng thứ tự:
 
 > Quyết định kiến trúc: [ADR 0010](adr/0010-lo-trinh-la-day-hoc-chia-module.md). Quy tắc chi tiết:
 > [spec v2, W2–W8](v2-do-thi-va-lo-trinh-neo-van-ban-spec.md). A10 chỉ đọc cạnh `requires` (kể cả cạnh co qua node bị
-> loại ở A9') giữa node `learnable = true`; A9 phải giao DAG thật. Media chưa được gắn vào module.
+> loại theo trạng thái dạy, ở A5 của chuỗi gộp hay A9' của chuỗi v3) giữa node `learnable = true`; A9 phải giao DAG thật. Media chưa được gắn vào module.
 
 - **Dãy học**: sắp topo bằng Kahn, hàng đợi ưu tiên theo vị trí dạy `(chỉ số chunk dạy, vị trí ký tự trong chunk)` —
   luôn lấy khái niệm sẵn sàng đứng sớm nhất trong tài liệu. Mọi cạnh đi trước ra sau; chỗ tài liệu đặt một khái niệm
@@ -881,7 +897,7 @@ hiện; cạnh đề xuất của tầng 1 đã ánh xạ về node (bỏ cạnh
 
 > **Thiết kế hiện hành của tầng này nằm ở [`A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md`](./A6-A8-cum-chu-de-mention-map-va-tien-quyet-spec.md)** (2026-09-16): pass chính trích mở, pass phụ chỉ kiểm cặp nghi tiên quyết, không tool, chu trình giải ở tầng 3 (ADR 0008). Mục dưới đây giữ làm hồ sơ.
 
-**Bổ sung v3 (R12, vé 12):** A8 ghi `prerequisite_kind=can_de_hieu` khi quote nguyên văn nằm trong cửa sổ câu neo của đích (tối đa hai câu sau trong cùng chunk). `cong_cu` là cạnh `requires` mềm với `soft_reason=cong_cu`: vẫn giữ trong artifact và hiện ở mục riêng “Cạnh công cụ” của HTML để reviewer kiểm, nhưng không vào dòng “cần:”, `roadmap-target`, dãy học hay phụ thuộc module. Cạnh mềm ngược thứ tự sách giữ luật R17 riêng. Bộ sinh ứng viên hai pass không đổi; neo và danh tính chạy trước A8.
+**Bổ sung v3 (R12, vé 12):** A8 ghi `prerequisite_kind=can_de_hieu` khi quote nguyên văn nằm trong cửa sổ câu neo của đích (tối đa hai câu sau trong cùng chunk). `cong_cu` là cạnh `requires` mềm với `soft_reason=cong_cu`: vẫn giữ trong artifact và hiện ở mục riêng “Cạnh công cụ” của HTML để reviewer kiểm, nhưng không vào dòng “cần:”, `roadmap-target`, dãy học hay phụ thuộc module. Cạnh mềm ngược thứ tự sách giữ luật R17 riêng. Bộ sinh ứng viên hai pass không đổi. Neo chạy trước A8: chuỗi gộp quyết ở A5, chuỗi v3 quyết ở stage `teaching`, rồi tới `identity`.
 
 Đơn vị phân vùng **không cố định** — chọn theo cấu trúc tài liệu, quyết định bằng heuristic ngay sau A1 (có heading phân cấp rõ hay không):
 
@@ -1081,7 +1097,7 @@ ghi lại, tầng 3 chuẩn hoá, A13 duyệt.
 - Cho phép xem trước module sau ở chế độ read-only (đừng khóa cứng gây ức chế), và **test-out**: làm quiz để nhảy cóc module.
 - **Lộ trình tới mục tiêu** (spec v3, R6): người học chọn khái niệm đích, nhận trọn các module cần học theo đóng phụ thuộc
   cấp module; khái niệm đích được đánh dấu trong module cuối. Cạnh mềm không ép đóng tiên quyết.
-- **Tên khái niệm đánh số** (spec v3, R9): bước đặt `display_name` chạy sau phán danh tính để tái dùng quyết định neo/danh tính;
+- **Tên khái niệm đánh số** (spec v3, R9): bước đặt `display_name` chạy sau A9 để tái dùng câu neo (chuỗi v3: sau phán danh tính);
   không đổi `name` và `node_id`. Nếu câu neo chỉ là tiêu đề, giữ nhãn cũ và báo thiếu căn cứ, không tạo tên chung giả.
 
 ### B2. Tutor agent (scoped RAG)

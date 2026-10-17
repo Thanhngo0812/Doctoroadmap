@@ -143,7 +143,7 @@ def test_a4_new_document_requires_explicit_gold_exception(monkeypatch, capsys) -
             ), False
 
     monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_artifact_store", lambda: object())
-    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_canonical", lambda: UseCase())
+    monkeypatch.setattr("doc2roadmap.presentation.cli.main.build_canonical", lambda **kwargs: UseCase())
     def load_gold(*args, **kwargs):
         gold_calls.append(kwargs)
         return {"documents": {"old-book": {}}, "sheet_id": "frozen-sheet"}

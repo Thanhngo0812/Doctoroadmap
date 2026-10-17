@@ -137,9 +137,10 @@ Một thực thể đã chốt danh tính sau khi hợp nhất các ứng viên 
 _Tránh dùng_: concept, entity, node
 
 **Cặp nghi trùng**:
-Hai nhóm ứng viên mang tên khác nhau nhưng bị nghi là cùng một thực thể — vì chung alias, tên gần giống hoặc
-tên gần nghĩa — nên được đưa cho mô hình phán. Ngoài các ứng viên trùng tên khít, chỉ cặp nghi trùng mới có
-cơ hội được gộp.
+Hai nhóm ứng viên mang tên khác nhau nhưng bị nghi là cùng một thực thể, nên được đưa cho mô hình phán ở A4.
+Nguồn đề cử (ADR 0016): chung alias, tên gần giống, tên gần nghĩa theo vector tên, tên hoặc alias trùng sau chuẩn
+hoá, viết tắt theo chữ đầu, và hai tên khác nhau đúng một tiền tố chung chung. Mô tả nháp và câu bằng chứng trùng
+nhau không còn là nguồn đề cử. Ngoài các nhóm trùng tên sau chuẩn hoá, chỉ cặp nghi trùng mới có cơ hội được gộp.
 _Tránh dùng_: cặp ứng viên, cặp trùng, candidate pair
 
 **Tên chuẩn**:
@@ -162,8 +163,30 @@ _Tránh dùng_: alias ký hiệu, biến, notation
 
 **Provenance**:
 Tập chunk nơi một khái niệm được **dạy** hoặc **định nghĩa**. Chỗ chỉ nêu tên — kể cả khi bước trích xuất lấy
-ứng viên từ đó, như một câu liệt kê — không phải provenance.
+ứng viên từ đó, như một câu liệt kê — không phải provenance. Trong chuỗi gộp (ADR 0016), provenance là
+`defining_chunk_ids`: các chunk A5 chọn khi viết mô tả, cộng chunk chứa câu neo. Stage `provenance` riêng chỉ còn ở
+artifact chuỗi v3.
 _Tránh dùng_: nguồn, xuất xứ, evidence, mọi chunk đã trích ra ứng viên
+
+**Câu neo**:
+Câu nguyên văn mà A5 chọn làm chỗ tài liệu dạy hoặc định nghĩa một khái niệm. Mô hình chỉ được chọn trong tối đa 6
+câu ứng viên do mã dựng, lấy từ vùng nội dung: chunk nguồn, chunk có bằng chứng A3, chunk khớp tên hoặc alias, chunk
+nhắc ký hiệu, chunk có tiêu đề mang tên. Mã bác mã câu không có trong danh sách và câu trích nằm ngoài ngữ cảnh
+của ứng viên. Vị trí câu neo là vị trí dạy, dùng để xếp dãy học. Câu neo cùng tối đa hai câu sau nó trong chunk là
+cửa sổ định nghĩa của A8.
+_Tránh dùng_: câu bằng chứng (của A3), định nghĩa, anchor
+
+**Trạng thái dạy**:
+Kết luận trên cả tài liệu về việc khái niệm có được dạy ở đây hay không. A5 quyết trạng thái này cùng câu neo, mỗi
+khái niệm một lời gọi, theo luật của C8. Mô hình chọn một trong sáu giá trị: `defined_here`, `introduced_by_example`,
+`mentioned_only`, `prior_knowledge`, `not_subject_matter`, `uncertain`. Trên node, hai giá trị đầu được ghi là
+`taught`.
+- Khái niệm không có câu ứng viên trong vùng nội dung thì mã tự xếp `mentioned_only` hoặc `unchecked`, không gọi
+  mô hình.
+- `prior_knowledge` phải qua một lời xác minh độc lập. Không được xác nhận thì hạ xuống `uncertain`.
+- `taught` và `uncertain` vào dãy học. `mentioned_only` và `unchecked` thành mục nhắc tới. `prior_knowledge` và
+  `not_subject_matter` bị loại khỏi lộ trình.
+_Tránh dùng_: cờ taught, độ tin, confidence
 
 **Mention**:
 Một chỗ trong tài liệu nơi khái niệm được **nhắc tới**, kể cả chỉ gọi tên hoặc diễn đạt lại. Rộng hơn
@@ -279,20 +302,27 @@ _Tránh dùng_: stage (nghĩa cũ khác hẳn), bài, chặng
 **Bản đồ danh tính**:
 Ánh xạ `khái niệm → khái niệm đại diện` cho các khái niệm được phán là cùng một ý (vé v2-05). Chỉ gộp nhóm mà mọi
 cặp đều được phán `same`; không sửa canonical. Lộ trình và bộ chấm áp cùng một bản đồ.
+**Chỉ còn ở artifact chuỗi v3.** Chuỗi gộp gộp ngay ở A4 nên không có bản đồ này; thiếu `identity_map` được hiểu là
+bản đồ rỗng (ADR 0016).
 _Tránh dùng_: dedup, gộp alias (alias chung chỉ là lý do đưa ra xét)
 
 **Ứng viên danh tính mở rộng**:
 Cặp node canonical đưa ra phán vì tên/alias chuẩn hoá trùng, viết tắt theo chữ đầu, tiền tố chung chung, cùng câu
 neo, hoặc top-3 độ gần mô tả bằng vector A6 với cosine ≥ 0,85 (v3 R8). Vector chỉ đề cử; mô tả và câu neo của cả
 hai node đi vào lời phán. `same` vẫn phải kiểm đủ mọi cặp trong nhóm; gộp chạm vàng vẫn cần người duyệt.
+**Chỉ còn ở artifact chuỗi v3.** Chuỗi gộp đưa ba nguồn tên đầu vào làm nguồn đề cử cặp nghi trùng ở A4. Hai nguồn
+cùng câu neo và độ gần mô tả bị bỏ.
 _Tránh dùng_: gộp bằng embedding, alias tự động
 
-**Xác minh danh tính**:
-Lượt độc lập sau phán danh tính, chỉ thấy hai hồ sơ, không thấy lời phán/lý do lượt 1 (v3 R8b). Quan hệ `dong_nhat`
-mới giữ `same`; trường hợp riêng, bằng nhau theo mệnh đề, mệnh đề khác, đối tượng khác loại và `khac` giữ tách.
-Quyết định người thắng cả hai lượt. Đại diện ưu tiên `taught` sớm nhất; alias từ thành viên ghi nguồn `identity`.
-Cạnh đổi đầu mút tính lại chiều theo vị trí đại diện, giữ `order_relation_before_merge` để audit.
-_Tránh dùng_: coi bằng nhau là đồng nhất, xác minh là duyệt người
+**Xác minh cặp gộp khác tên** *(trước gọi là "xác minh danh tính")*:
+Lời gọi độc lập ở A4 cho mỗi cặp nhóm vừa được phán gộp mà không chung tên hay alias sau chuẩn hoá. Lời gọi chỉ thấy
+hai hồ sơ (tên, alias, câu bằng chứng, mô tả nháp), không thấy lời phán trước. Chỉ quan hệ `dong_nhat` giữ gộp.
+Các quan hệ trường hợp riêng, bằng nhau theo mệnh đề, mệnh đề khác, đối tượng khác loại và `khac` thành ràng buộc
+"khác" khi dựng thành phần gộp. Quyết định của người duyệt (`a4 --merge-review`) thắng.
+Ở artifact chuỗi v3, lượt này chạy sau phán danh tính (v3 R8b), trên câu neo thay cho câu bằng chứng. Đại diện ưu
+tiên khái niệm `taught` sớm nhất; alias từ thành viên ghi nguồn `identity`. Cạnh đổi đầu mút được tính lại chiều
+theo vị trí đại diện, giữ `order_relation_before_merge` để audit.
+_Tránh dùng_: xác minh danh tính (tên cũ), coi bằng nhau là đồng nhất, xác minh là duyệt người
 
 **Dự toán chạy thử**:
 `roadmap --dry-run` chỉ đọc artifact và checkpoint đúng cấu hình, báo từng stage `tái dùng` / `sẽ chạy` / `chưa biết`.

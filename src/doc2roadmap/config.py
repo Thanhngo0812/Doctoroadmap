@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     canonical_batch_size: int = Field(default=10, gt=0)
     canonical_concurrency: int = Field(default=16, gt=0)
     canonical_repair_batch_size: int = Field(default=1, gt=0)
-    upstream_chain: Literal["v3", "gop"] = "v3"
+    upstream_chain: Literal["v3", "gop"] = "gop"
     anchor_batch_mode: Literal["single", "a5"] = "single"
     canonical_language_rule: str = "token-majority-prose-vi20-v2"
     embedding_model_id: str = "gemini-embedding-001"

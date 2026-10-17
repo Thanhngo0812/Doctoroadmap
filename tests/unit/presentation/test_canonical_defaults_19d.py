@@ -46,6 +46,51 @@ def test_incomplete_cli_uses_v3_under_gop_default(tmp_path, monkeypatch, capsys,
         assert result.payload["stage"] == ("names" if mode == "--names-only" else "nominations")
 
 
-def test_default_chain_stays_v3_until_gate_19m(monkeypatch):
+def test_default_chain_is_gop_after_gate_19m(monkeypatch):
     monkeypatch.delenv("DOC2ROADMAP_UPSTREAM_CHAIN", raising=False)
-    assert Settings(_env_file=None).upstream_chain == "v3"
+    assert Settings(_env_file=None).upstream_chain == "gop"
+
+
+@pytest.mark.parametrize("explicit", [None, "v3"])
+def test_default_a4_changes_next_roadmap_chain_on_an_old_document(tmp_path, monkeypatch, capsys, explicit):
+    import json
+    from doc2roadmap import composition
+    from doc2roadmap.presentation.cli import main as cli
+    from tests.unit.application.test_gop_graph import GOP_STAGES, V3_STAGES, pipeline
+
+    monkeypatch.delenv("DOC2ROADMAP_UPSTREAM_CHAIN", raising=False)
+    settings = Settings(_env_file=None)
+    store, embed, model = fixture_store(tmp_path), embedding(), AnchorModel()
+    embed.limiter = None
+    old, _ = Canonicalize(store).execute(DOC)
+    monkeypatch.chdir(tmp_path)  # No local .env can supply a chain override.
+    monkeypatch.setattr(cli, "build_artifact_store", lambda: store)
+    monkeypatch.setattr(composition, "_a3_dependencies", lambda: (settings, store, embed))
+    monkeypatch.setattr(composition, "GeminiEntityExtractor", lambda *args, **kwargs: model)
+    monkeypatch.setattr(composition, "SentencePieceTokenCounter", lambda *args: None)
+    monkeypatch.setattr(cli, "build_canonical", composition.build_canonical)
+    monkeypatch.setattr(cli, "load_gold", lambda *args, **kwargs: {"documents": {DOC: {}}})
+
+    def build_graph(**kwargs):
+        assert kwargs == {"allow_spend": False, "identity_review": None}
+        graph, _ = pipeline()
+        graph.clusters.store = store
+        return graph, settings
+
+    monkeypatch.setattr(cli, "build_learning_graph", build_graph)
+    roadmap = ["roadmap", "--doc-id", DOC, "--dry-run"]
+    assert cli.main(roadmap) == 0
+    assert [row["stage"] for row in json.loads(capsys.readouterr().out)["stages"]] == V3_STAGES
+    args = ["a4", "--doc-id", DOC, "--gold", "gold.json", "--allow-spend"]
+    if explicit:
+        args += ["--upstream-chain", explicit]
+    assert cli.main(args) == 0
+    capsys.readouterr()
+    current = store.load_latest_canonical(DOC)
+    chain = current.manifest["config"].get("upstream_chain", "v3")
+    assert chain == (explicit or "gop")
+    assert current.version > old.version
+    assert bool(current.payload.get("canonical_has_anchors")) is (explicit is None)
+    assert cli.main(roadmap) == 0
+    stages = [row["stage"] for row in json.loads(capsys.readouterr().out)["stages"]]
+    assert stages == (V3_STAGES if explicit else GOP_STAGES)

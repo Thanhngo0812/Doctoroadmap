@@ -72,18 +72,21 @@ Xem [trạng thái task, cách chạy và giới hạn kiểm chứng](feedback/
 
 ### Chuỗi gộp trước A8 (vé 17)
 
-Chuỗi `v3` vẫn mặc định. Chọn `--upstream-chain gop` khi chạy A4/A5 đầy đủ;
+Chuỗi `gop` là mặc định khi chạy A4/A5 đầy đủ. Muốn chạy chuỗi cũ, chọn
+`--upstream-chain v3` hoặc đặt `DOC2ROADMAP_UPSTREAM_CHAIN=v3`.
 `--names-only` và `--prepare` tự chọn `v3` khi không truyền `--upstream-chain`,
 kể cả khi cấu hình chuỗi mặc định là `gop`; chọn `gop` tường minh ở hai chế độ này sẽ báo lỗi.
 
 ```powershell
-.\.tools\uv.exe run doc2roadmap a4 --doc-id book --gold tests/fixtures/a4/gold-blind.json --no-gold-for-doc --upstream-chain gop --dry-run
+.\.tools\uv.exe run doc2roadmap a4 --doc-id book --gold tests/fixtures/a4/gold-blind.json --no-gold-for-doc --dry-run
 # Sau khi duyệt dự toán, thay --dry-run bằng --allow-spend.
 .\.tools\uv.exe run doc2roadmap roadmap --doc-id book --dry-run
 ```
 
 `roadmap` tự theo chuỗi của canonical đang dùng; tùy chọn `--upstream-chain` dùng để
-kiểm chuỗi mong đợi. Chuỗi `gop` đã có neo trong canonical và bỏ ba stage
+kiểm chuỗi mong đợi. **Chạy `a4` mặc định trên tài liệu cũ sẽ chuyển canonical sang
+chuỗi `gop`, đổi chuỗi của lần `roadmap` sau.** Nếu giữ canonical v3 cũ thì `roadmap`
+vẫn dùng v3. Chuỗi `gop` đã có neo trong canonical và bỏ ba stage
 `provenance`, `teaching`, `identity` khỏi đồ thị.
 
 Pass chính mặc định chạy các phiên song song, không đưa cạnh của phiên trước vào
@@ -107,5 +110,5 @@ Các lựa chọn giống `--identity-review`: `Đồng ý gộp`, `Không gộp
 Để chấm vàng cũ, thêm `--remap-gold-ids` cho `a8-score` hoặc `a8-roadmap-score`.
 Nếu vàng gán theo provenance đã vá, `a8-score` cần thêm `--gold-graph <graph-gán-gốc>`
 để xác thực tập gán trước khi chuyển ID. Bộ chấm liệt kê và từ chối bộ vàng có ID không
-quy được; tệp vàng gốc giữ nguyên. Nghiệm thu mô hình thật và quyết định đổi mặc định
-thuộc vé 17i.
+quy được; tệp vàng gốc giữ nguyên. Cổng đổi mặc định đã qua ở vé 19l;
+quyết định luồng mặc định ghi ở [ADR 0016](doc/adr/0016-danh-tinh-trong-a4-neo-trong-a5.md).

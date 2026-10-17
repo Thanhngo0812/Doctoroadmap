@@ -6,9 +6,16 @@
 - Danh tính gộp hẳn vào A4. Tập node đổi ngay ở A4 và không còn bản đồ danh tính (phương án 1 trong ba phương án đã đưa ra).
 - Bộ vàng nào không chuyển sang được tập node mới thì để riêng, sau này dựng lại chỉ số đánh giá.
 
-**Lịch (rà lại 2026-10-16):** vòng 2 của pass phụ đã xong và E5 đã vào sản phẩm (vé 18, ADR 0015). Chủ dự án cho cài vé 17 ngay. Chuỗi gộp là
-tuỳ chọn, tắt mặc định, và chỉ bật khi đủ ba điều kiện: nghiệm thu xong, có số trên T-01, chủ dự án quyết. Lý do giữ tắt: phiếu vàng T-01 gắn với
-canonical v1 của hai cuốn giữ lại, nên T-01 phải đo trên chuỗi v3.
+**Lịch (sửa 2026-10-17):**
+- Vé 17 đã cài và đã nghiệm thu (17i).
+- Ngày 2026-10-16, chủ dự án quyết chuỗi gộp thành mặc định mà không chờ số T-01, vì ba stage cũ kéo dài thời gian và làm luồng khó trình bày.
+- Đợt 19 sửa A4 và tăng tốc theo [spec đổi mặc định](doi-mac-dinh-chuoi-gop-spec.md). Cổng 19l qua ngày 2026-10-17.
+- Chuỗi gộp là mặc định từ vé 19m ([ADR 0016](adr/0016-danh-tinh-trong-a4-neo-trong-a5.md)).
+- T-01 đo trên chuỗi gộp khi có vàng; vàng quy id qua bảng chuyển hướng (vé 17h).
+- Ba stage cũ và đường A4/A5 v3 có gọi mô hình được gỡ ở vé 19n.
+
+*Bản cũ (2026-10-16): chuỗi gộp tắt mặc định, chỉ bật khi đã nghiệm thu, có số T-01 và chủ dự án quyết. Lý do lúc đó là phiếu vàng T-01 gắn với
+canonical v1.*
 
 **Nguồn:**
 - [báo cáo quy lỗi thượng nguồn của A8](../report/quy-loi-thuong-nguon-a8-2026-10-12.md), mục 3, 4 và 4b;
@@ -127,7 +134,8 @@ chứa câu neo (mục 4).
 ### 2. Công tắc chuỗi và lịch
 
 Thêm một tuỳ chọn cấu hình chọn chuỗi thượng nguồn: chuỗi v3 (hiện nay) hoặc chuỗi gộp. Quy định:
-- **Mặc định là chuỗi v3** cho tới khi nghiệm thu xong, có số T-01 và chủ dự án quyết đổi.
+- **Mặc định là chuỗi v3** cho tới khi nghiệm thu xong, có số T-01 và chủ dự án quyết đổi. *(Đã thay: chuỗi gộp là mặc định từ vé 19m,
+  2026-10-17. Xem dòng "Lịch".)*
 - Chuỗi được ghi vào config của stage canonical và của chuỗi đồ thị, nên nằm trong khoá cache. Hai chuỗi không bao giờ dùng lẫn artifact của nhau.
 - Canonical chỉ có lớp tên (`--names-only`, dùng cho dữ liệu D-01) vẫn chạy chuỗi v3. Chuỗi gộp đòi canonical đầy đủ và dừng với thông báo rõ nếu
   không có.
@@ -274,7 +282,8 @@ clusters (A6–A7) → mentions → main_edges → secondary_edges → validated
   - cạnh vàng có hai đầu bị gộp làm một: rời phép chấm và được đếm, như `identity_dropped_gold_edges` hiện nay;
   - khái niệm của vàng không quy được về id nào, ví dụ vì node bị tách hay biến mất. Có khái niệm như vậy thì công cụ **từ chối chấm** bộ đó và
     liệt kê. Theo quyết định của chủ dự án, bộ đó để riêng và dựng lại chỉ số sau.
-- **T-01:** đo trên chuỗi v3 với canonical v1, nên không bị ảnh hưởng.
+- **T-01:** đo trên chuỗi v3 với canonical v1, nên không bị ảnh hưởng. *(Đã thay 2026-10-16: T-01 đo trên chuỗi gộp khi có vàng, quy id qua
+  bảng chuyển hướng.)*
 - **Chi phí:** `cost_summary` của stage canonical tách theo phần (gộp cụm, phán sửa, xác minh gộp, mô tả, neo, xác minh kiến thức nền) và có một
   tổng. Đo thời gian từng phần theo cơ chế đo stage hiện có.
 
