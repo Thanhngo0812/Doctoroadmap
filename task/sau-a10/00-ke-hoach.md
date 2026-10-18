@@ -98,8 +98,8 @@ Bốn luật:
 | [41](41-nhan-theo-nguoi-hoc.md) | Nhãn theo người học trong bài giảng | 34, 40 | 0 | đã triển khai/kiểm thử B2; chờ soát |
 | [42](42-tran-chi-theo-ngay.md) | Trần chi theo ngày: người học và hệ thống | 32, 38 | 0 | đã triển khai/kiểm thử B2; chờ soát |
 | [43](43-luot-that-lecture-2.md) | Lượt thật `lecture-2` | 40 | thật 0,06523425 USD / trần duyệt 0,50 USD | đã chạy 12 mẫu, phát lại sau sửa; chờ soát nội dung/thời gian |
-| [44](44-trang-xem-thu-hai-trang.md) | Trang xem thử hai trang | 33, 35, 36, 37, 41, 42 | 0 khi phát lại | đã ghép, 11 test HTTP đạt; thiếu 7 thao tác/ảnh do quyền trình duyệt đang tắt |
-| [45](45-soat-thay-claude-nhan-vien-cap-cao.md) | **Soát thay Claude** (nhân viên cấp cao, chủ dự án giao 2026-10-18): soát các vé Pha B, ghi phán xét, tạo vé sửa từ số 46 | — | 0 (soát); lượt có tiền cần duyệt | ready-for-agent |
+| [44](44-trang-xem-thu-hai-trang.md) | Trang xem thử hai trang | 33, 35, 36, 37, 41, 42 | 0 khi phát lại | đạt theo chủ dự án duyệt 2026-10-18; miễn 7 thao tác/ảnh, chưa thử tay; 11 test HTTP đạt |
+| [45](45-soat-thay-claude-nhan-vien-cap-cao.md) | **Soát thay Claude** (nhân viên cấp cao, chủ dự án giao 2026-10-18): soát các vé Pha B, ghi phán xét, tạo vé sửa từ số 46 | — | 0 (soát); lượt có tiền cần duyệt | đang soát 29–43; 44 được chủ dự án duyệt đạt |
 
 **Cập nhật SA-29–30, 2026-10-18 (Codex):** đã triển khai cùng ba subagent Luna. Vé 29 phục hồi 144 tên từ cache với 0 USD, rồi chạy 160 request Vertex trong khoản chủ dự án đã duyệt, chi ghi nhận 0,142519 USD / cap 0,50 USD. Lượt mới có 136 tên và 82 mô tả LLM, 78 mô tả khuôn; chờ đọc nội dung. Vé 30 phát lại 11/12 bài giảng ready và 6/6 tài liệu ready, chi phí 0 USD. Bộ ghép cuối 206 test xanh. Xem [bàn giao 29–30](../../report/pha-b-sa29-30-ban-giao-2026-10-18.md).
 

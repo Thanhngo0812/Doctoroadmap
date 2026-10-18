@@ -2,7 +2,9 @@
 
 **Nguồn chân lý:** [spec Pha B2](../../doc/pha-b2-spec.md), mục 11 và 10; vé [24](24-trang-xem-thu-pha-b.md) (an ninh, chế độ phát lại).
 **Ai:** nhân viên · Claude kiểm · **Chi phí mô hình:** 0 USD ở chế độ phát lại hay mô hình giả; khi bật `--allow-spend` thì tính trong trần ·
-**Chặn bởi:** 33, 35, 36, 37, 41, 42 · **Trạng thái:** ready-for-agent
+**Chặn bởi:** 33, 35, 36, 37, 41, 42 · **Trạng thái:** đạt theo duyệt của chủ dự án ngày 2026-10-18
+
+**Quyết định nghiệm thu:** chủ dự án yêu cầu "44 thì bạn cho đạt luôn" ngày 2026-10-18. Ghi nhận đạt với 11 test HTTP đã qua và ví dụ hợp đồng đã có. Chủ dự án miễn phần bảy thao tác/ảnh trình duyệt; phần này chưa được thực hiện, không ghi thành kết quả thử tay. Trang ngoại tuyến hiện ở `http://127.0.0.1:8765/`.
 
 ## Vì sao
 
