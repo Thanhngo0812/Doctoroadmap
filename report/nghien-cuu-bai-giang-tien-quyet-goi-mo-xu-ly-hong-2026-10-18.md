@@ -1,10 +1,53 @@
 # Nghiên cứu: bài giảng nhắc tiên quyết, gợi mở khái niệm sau, và xử lý bài hỏng hẳn (2026-10-18)
 
-Trạng thái: đang làm — đã xong mục: 2, 3, 4
+Trạng thái: xong — đã xong mục 1–8 (2026-10-18)
 
 ## 1. Tóm tắt khuyến nghị
 
-(đang làm)
+Báo cáo trả lời hai yêu cầu của chủ dự án: bài giảng phải cho thấy tính tiên quyết ("gợi lại trước, gợi mở sau"), và bản lùi trích câu
+không bao giờ hiện cho người học. Báo cáo chỉ bổ sung cho [nghiên cứu bài giảng 2026-10-11](nghien-cuu-bai-giang-theo-khai-niem-2026-10-11.md).
+Không gọi mô hình (0 USD), không sửa mã. Đoạn *suy luận* là ý của người viết, chưa có thí nghiệm.
+
+**Hiện trạng đo được:**
+- Lượt thật 12 bài: 3 bài có tiên quyết, 0 bài có ý nhắc nền. Lý do: prompt không yêu cầu; tiên quyết thiếu câu neo thì K2 bỏ hết; 2/3 tiên
+  quyết là `legacy_excerpt` (đồ thị cũ không có câu trích cạnh; một ca "vì sao" là dòng mục lục).
+- Trên đồ thị chuỗi gộp, 86–97% khái niệm có tiên quyết hiển thị và 47–59% có khái niệm sau có câu trích. Câu trích cạnh bị cắt ở 120 ký
+  tự với 41–67% cạnh.
+- 5/12 bài hỏng cả hai lần; lần sửa cứu 1/6. **59% tiền bài giảng chi cho bài hỏng**; 0,00365 USD mỗi bài đạt. Bản lùi đang được ghi vào
+  cache như bài thật (`single_flight`).
+
+**Tám khuyến nghị:**
+1. **Gợi lại trước, đầu bài, ngắn, gập được.** Mỗi tiên quyết (tối đa 3) một dòng: tên + "module m" do mã dựng; **một câu nối do LLM viết
+   (≤ 35 âm tiết), chỉ dựa câu trích cạnh `Q#`**; câu trích và câu neo của tiên quyết gập sau nút "vì sao?" và "Nhớ lại định nghĩa".
+   Căn cứ: organizer có hiệu ứng nhỏ nhưng dương (ES 0,17–0,21 với organizer viết, [Luiten 1979](https://files.eric.ed.gov/fulltext/ED171803.pdf));
+   lợi lớn cho người mới, có hại nhỏ hơn cho người đã biết (d = +0,505 so với −0,428, [Tetzlaff 2025](https://doi.org/10.1016/j.learninstruc.2025.102142));
+   gợi nhớ chỉ có ích khi có đáp án (không phản hồi và trả lời đúng ≤ 50%: g = 0,03, [Rowland 2014](https://doi.org/10.1037/a0037559)).
+   Thêm khoảng 0,0003 USD mỗi bài (mục 4.3, 4.7).
+2. **Không có câu trích cạnh thì không viết "vì sao".** Tiên quyết `legacy_excerpt` chỉ hiện tên, vị trí, câu neo. Ba luật mới bằng mã: K10
+   (phủ nhắc nền, thiếu thì hiện phần mã dựng, không sinh lại), K11 (câu trích phải nằm trong `Q#`; không tên khái niệm thứ ba), K12 (độ dài;
+   cấm "như bạn đã học"). Câu dẫn trung tính "Bài này dùng tới", vì hệ không theo dõi người học (mục 4.3, 4.6).
+3. **Gợi mở sau do mã dựng, 0 USD.** Khối "Tiếp theo" cuối bài: 1–2 khái niệm sau theo cạnh `requires` có câu trích, ghi "module m", nút
+   "vì sao?" hiện câu trích đã kiểm ở A8. Bỏ `used_later` khỏi prompt. Gợi mở có bằng chứng yếu nhất, và giá trị sử dụng nói thẳng có thể
+   phản tác dụng ([Canning & Harackiewicz 2015](https://doi.org/10.1037/mot0000015)) (mục 4.4).
+4. **Stream sau cổng (S3).** Giữ ý LLM trong bộ đệm tới khi có đủ 2 ý giải thích đạt (K8), rồi mới gửi; sau cổng, cắt cụt hay JSON dở không
+   làm bài hỏng nữa. Bất biến có test: không bao giờ rút lại ý đã hiện. Nếu khoảng cổng → hết bài dưới 1 giây thì chọn chờ cả bài (mục 5.3).
+5. **Khi hỏng hẳn: giữ phần mã dựng, thay phần LLM bằng lời nhắn không kỹ thuật và ba nút** "Đọc trang p trong sách", "Hỏi trợ lý", "Thử lại"
+   (chỉ cho lỗi API tạm). Không câu nào trích từ đoạn dạy. Căn cứ: PAIR "return control to the user"; HAX G9, G10 (mục 5.5).
+6. **Thử lại ít, ở một tầng, có nhiễu.** Nội dung: sinh lại 1 lần, đổi điều kiện (thử nhiệt độ 1,0). Truyền: 1 lần trên đường bấm, trần cả lần
+   bấm khoảng 30 giây (hiện ca xấu nhất là 3 × 60 giây × 2 lần sinh). Bị chặn nội dung: 0 lần. Lần sửa thứ hai thêm khoảng 28% tiền mỗi bài
+   mà chỉ giảm khoảng 7 điểm tỉ lệ hỏng (mục 5.4).
+7. **Sửa cache:** không ghi `fallback`/`failed` vào cache bài; lỗi API giữ cache âm 60 giây; lỗi luật kiểm ghi bản ghi hỏng 24 giờ (bấm lại 0
+   USD), tự hết khi prompt, luật hay mô hình đổi (mục 5.5).
+8. **Nâng hợp đồng lên `lecture-2`:** `prerequisites[].recall` + `bridge` thay `note`; `why.status`; `next_up` thay `used_later`; bỏ
+   `fallback`; thêm `failure {kind, retryable, retry_after_s, attempts, read_in_book}`; sự kiện `item` chỉ sau cổng; đo TTFT thật (hiện ghi 0)
+   (mục 6).
+
+**Chỉ số cần báo ở lượt đo kế tiếp:** USD mỗi bài **đạt** (gồm cả bài hỏng), tỉ lệ cổng mở ở lần 1, p50/p90 tới cổng và tới `final`, bảng
+lý do hỏng theo luật K (SA-26), số ý bị rút lại (phải bằng 0) (mục 5.6).
+
+**Chỗ không tìm được nguồn chính thức:** số ES của Stone 1983; mục "Looking ahead" cuối chương như chuẩn của giáo trình mở; trang mô tả "Up
+next" của Khan Academy và trường "Recommended experience" của Coursera; nghiên cứu có đối chứng về stream từng ý của văn bản LLM; MiniCheck
+và Check Grounding có hỗ trợ tiếng Việt không. Pre-training (d = 0,75) chỉ đọc qua đoạn trích; số của Richter 2016 qua nguồn thứ cấp.
 
 ## 2. Cơ sở sư phạm và bằng chứng
 
@@ -317,18 +360,489 @@ Ba độ đo, gộp vào giao thức chấm của báo cáo 2026-10-11 mục 6:
 - **Hành vi trên web (khi có web):** tỉ lệ bấm "Nhớ lại định nghĩa", "Mở bài của X", "vì sao?" ở khối "Tiếp theo". *Suy luận:* tỉ lệ bấm
   thấp ở cả hai nút đầu là dấu hiệu khối nhắc nền nên gập mặc định.
 
+### 4.9 Kiểm câu nối có được câu trích đỡ không (bổ sung cho báo cáo 2026-10-11 mục 3.3)
+
+K3 chỉ kiểm câu trích nằm đúng chỗ, không kiểm câu nối có được câu trích đỡ trọn hay không. Ba công cụ mới, chưa có trong báo cáo trước:
+
+| nguồn | là gì | số chính | dùng cho doc2roadmap |
+|---|---|---|---|
+| Slobodkin và cộng sự, "Attribute First, then Generate", ACL 2024 ([Anthology](https://aclanthology.org/2024.acl-long.182/)) | chọn đoạn nguồn trước, lập câu, rồi sinh từng câu theo đoạn đã chọn | trích dẫn gọn hơn, giữ chất lượng; giảm gần một nửa thời gian kiểm của người | đúng khuôn của câu nối: đoạn đã chọn sẵn là `Q#` |
+| Tang, Laban, Durrett, "MiniCheck", EMNLP 2024 ([Anthology](https://aclanthology.org/2024.emnlp-main.499/)) | mô hình nhỏ (770M) kiểm một câu có được tài liệu đỡ không | đạt độ chính xác ngang GPT-4 trên LLM-AggreFact, rẻ hơn 400 lần | ứng viên kiểm offline cho câu nối và câu giải thích. Chưa biết chạy được với tiếng Việt; **không tìm thấy nguồn chính thức** về tiếng Việt |
+| Google Cloud, "Check grounding with RAG", cập nhật 2026-10-13 ([trang](https://cloud.google.com/generative-ai-app-builder/docs/check-grounding)) | API trả điểm đỡ 0–1 và trích dẫn cho từng câu; câu chỉ đỡ một phần thì tính là không đỡ; tối đa 200 "fact", mỗi fact 10.000 ký tự | — | là dịch vụ Vertex AI Search, không phải Gemini Developer API; trang không nói hỗ trợ tiếng Việt; chi Vertex tính chung trần. Chỉ hợp cho lượt đo offline, không đặt trên đường bấm-chờ |
+
+*Suy luận:* câu nối ngắn và chỉ dựa một câu trích, nên chấm người theo khung AIS trên một mẫu là đủ cho bản đầu. Công cụ tự động chỉ cần khi
+số bài lớn.
+
 ## 5. Xử lý bài hỏng hẳn và stream
 
-(đang làm)
+Quyết định đã có: **bản lùi trích câu không bao giờ hiện cho người học** (chủ dự án, ghi ở [SA-26](../task/sau-a10/26-bai-giang-chong-lap-ban-lui-sach.md)).
+Mục này đề xuất hiện gì thay vào, có nên stream, thử lại mấy lần, đo gì. Nguồn truy cập 2026-10-18.
+
+### 5.1 Hiện trạng (đo từ lượt thật, 0 USD)
+
+**Số đo từ 18 lời gọi bài giảng của 12 bài** (`usage_rows` trong `tmp/phaseb-live-group2-v2.json`):
+
+| chỉ số | giá trị |
+|---|---|
+| bài qua ngay lần 1 | 6/12 |
+| bài qua ở lần sửa (lần 2) | 1/6 (doc-1 "Tập hợp") |
+| bài hỏng cả hai lần → `fallback` | 5/12 |
+| USD một lời gọi | 0,00098–0,00199; trung vị 0,00132; trung bình 0,00142 |
+| USD của cả lượt bài giảng | 0,02553 cho 7 bài đạt, tức **0,00365 USD mỗi bài đạt** |
+| USD đã chi cho 5 bài hỏng | 0,01495, tức **59%** tổng chi bài giảng |
+| thời gian một lời gọi | trung vị 3,4 giây; 2,5–7,4 giây; một ca 22,7 giây |
+| thời gian LLM của bài phải gọi hai lần | 5,6–10,4 giây |
+| tốc độ ra | phần lớn 108–219 token/giây (ước bằng token ra / tổng thời gian, gồm cả TTFT) |
+| TTFT | **không đo được**: `ttft_ms = 0` ở mọi dòng sổ chi |
+
+**Năm điểm của mã hiện tại** (đọc 2026-10-18, chỉ đọc):
+- **Bài lùi bị cache như bài thật.** `single_flight` trong `phase_b_store.py` (dòng 90–97) ghi vào cache mọi giá trị `generate()` trả về.
+  Nhánh hỏng trả `status = fallback` chứ không ném lỗi, nên bản lùi nằm trong cache mãi tới khi khoá đổi. Spec ghi "không cache bản lỗi".
+- **Cache âm chỉ áp cho lỗi ném ra** (lỗi API). Hỏng vì luật kiểm thì không có cache âm.
+- **`status = failed` có trong hợp đồng nhưng mã không bao giờ trả.** Mọi đường hỏng về `fallback`.
+- **Thử lại ở tầng truyền:** `infrastructure/llm/phase_b.py` (dòng 77–86) thử tối đa 3 lần cho 429, 503 và lỗi mạng, chờ 1 rồi 2 giây,
+  **không có nhiễu**. Timeout mỗi lần 60 giây. Ca xấu nhất của một lần bấm: 3 × 60 giây ở tầng truyền, nhân 2 lần sinh ở tầng nội dung.
+- **Ý đã stream được trộn vào bản lùi** (báo cáo kiểm thử mục 3.2). Khi bản lùi bị bỏ, các ý đã hiện mà bài lại hỏng là ca "hiện rồi rút
+  lại".
+
+*Suy luận:* lần sửa chỉ cứu được 1/6 bài. Ở nhiệt độ 0, cùng ngữ cảnh thì đầu ra gần giống nhau, nên thử lại cùng điều kiện ít tác dụng.
+Mẫu quá nhỏ (6 ca) để kết luận; bảng lý do hỏng của SA-26 sẽ cho biết lỗi là ngẫu nhiên hay có hệ thống.
+
+### 5.2 Hướng dẫn thiết kế liên quan
+
+| nguồn | nói gì | áp cho bài hỏng |
+|---|---|---|
+| Google PAIR, *People + AI Guidebook*, chương "Errors + Graceful Failure" ([trang](https://pair.withgoogle.com/chapter/errors-failing/)) | Chia lỗi thành giới hạn hệ thống, lỗi ngữ cảnh, lỗi nền (background error: hệ sai mà không ai thấy). "Return control to the user": khi AI hỏng, đường đi tiếp dễ nhất thường là để người dùng tự làm. "Explain the system's limits while inviting people to continue forward." | Thông báo nói rõ giới hạn và đưa đường đi tiếp: đọc trang sách, hỏi trợ lý, thử lại. Bản lùi bị cấm hiện chính là để tránh lỗi nền (đoạn rác mà người học không nhận ra). |
+| Amershi và cộng sự, "Guidelines for Human-AI Interaction", CHI 2019 ([DOI](https://doi.org/10.1145/3290605.3300233); [PDF](https://www.microsoft.com/en-us/research/uploads/prod/2019/01/Guidelines-for-Human-AI-Interaction-camera-ready.pdf)) | 18 nguyên tắc, kiểm với 49 người thiết kế trên 20 sản phẩm. Nhóm "When wrong": G9 "Support efficient correction", G10 "Scope services when in doubt… gracefully degrade". G2 "Make clear how well the system can do what it can do". | G10: không chắc thì thu hẹp dịch vụ (chỉ hiện phần mã dựng đã kiểm), không đưa bài không đạt. G9: một nút thử lại, một nút báo lỗi. |
+| Nielsen, "Response Times: The 3 Important Limits", 1993 ([NN/g](https://www.nngroup.com/articles/response-times-3-important-limits/)) | 0,1 giây: thấy tức thì; 1 giây: mạch nghĩ không đứt; 10 giây: giới hạn giữ chú ý. Quá 10 giây cần báo khi nào xong; thời gian biến động mạnh thì phản hồi càng quan trọng. | Bài một lời gọi (trung vị 3,4 giây) nằm giữa 1 và 10 giây. Bài hai lời gọi chạm 10 giây. Thêm lần thử thứ ba sẽ vượt 10 giây. |
+| NN/g, "Progress Indicators Make a Slow System Less Insufferable", 2014 ([trang](https://www.nngroup.com/articles/progress-indicators/)); "Skeleton Screens 101", 2023, rà lại 2026-09-02 ([trang](https://www.nngroup.com/articles/skeleton-screens/)) | Dùng chỉ báo tiến trình cho thao tác quá khoảng 1 giây; vòng quay cho thao tác nhanh; thanh phần trăm cho ≥ 10 giây. Skeleton screen dùng cho tải cả trang dưới 10 giây. | Phần mã dựng hiện ngay; chỗ của phần LLM hiện khung xám (skeleton). Không cần thanh phần trăm vì thường dưới 10 giây. |
+| Myers, CHI 1985 ([DOI](https://doi.org/10.1145/317456.317459)); Harrison và cộng sự, UIST 2007 ([DOI](https://doi.org/10.1145/1294211.1294231)); Mejtoft và cộng sự, ECCE 2018 ([DOI](https://doi.org/10.1145/3232078.3232086)) | Myers: người dùng thích có chỉ báo tiến trình (thí nghiệm). Harrison: cách thanh chạy đổi cảm nhận thời gian. Mejtoft: skeleton được chấm nhanh và dễ hơn vòng quay nhưng **không có khác biệt có ý nghĩa thống kê** | Bằng chứng cho skeleton là **yếu**: một nghiên cứu nhỏ, không có ý nghĩa thống kê. Dùng skeleton vì hợp bố cục, không vì đã chứng minh nhanh hơn. |
+| NVIDIA, "Stream Smarter and Safer… NeMo Guardrails…" ([blog](https://developer.nvidia.com/blog/stream-smarter-and-safer-learn-how-nvidia-nemo-guardrails-enhance-llm-output-streaming/)) | Kiểm theo cụm khi stream; khi luật bắt lỗi, "the objectionable text might have already been sent to the user. It's the responsibility of the caller to manage this situation." | Xác nhận đánh đổi: stream trước khi kiểm xong thì có ca đã hiện rồi mới biết hỏng. |
+| Gemini API, "Troubleshooting" và "API errors", cập nhật 2026-10-13 ([troubleshooting](https://ai.google.dev/gemini-api/docs/troubleshooting); [errors](https://ai.google.dev/gemini-api/docs/api-errors)) | 429, 503: lùi theo hàm mũ (ví dụ 1, 2, 4, 8 giây), **thêm nhiễu**, chỉ thử lại lỗi tạm (429, 408, 5xx), đặt số lần tối đa. SDK Python mặc định thử tới 4 lần, chờ đầu khoảng 1 giây, tối đa 60 giây. Mã bị chặn như `recitation`, `safety`: "modify your input and retry". | Thử lại cùng đầu vào không giúp gì cho bài bị chặn nội dung. Bài giảng trích nguyên văn sách nên phải ghi `finishReason` để biết có ca `recitation` không. |
+| Gemini API, "Billing" ([trang](https://ai.google.dev/gemini-api/docs/billing)) | "If your request fails with a 400 or 500 error, you won't be charged for the tokens used. However, the request will still count against your quota." | Bài hỏng vì luật kiểm là phản hồi 200, **bị tính đủ tiền**. Mỗi lần sinh lại là trả thêm khoảng 0,0014 USD. |
+| AWS Builders' Library, "Timeouts, retries, and backoff with jitter" ([trang](https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/)); Google SRE Book, "Addressing Cascading Failures" ([trang](https://sre.google/sre-book/addressing-cascading-failures/)) | AWS: thử lại ở **một tầng** của hệ; giới hạn bằng token bucket; chỉ thử lại thao tác idempotent; thêm jitter. SRE: luôn lùi hàm mũ có ngẫu nhiên; giới hạn số lần mỗi yêu cầu; ngân sách thử lại toàn tiến trình (ví dụ 60 lần/phút); tránh thử lại ở nhiều tầng vì số lần nhân lên. | Hiện có hai tầng (truyền × nội dung = tối đa 6 lần gọi HTTP mỗi lần bấm), cộng nút "Thử lại" của người học là tầng ba. Sinh bài là idempotent theo `lecture_key` nhờ single-flight và cache. |
+
+Không tìm thấy nghiên cứu có đối chứng nào so stream từng ý với hiện cả bài cho văn bản do LLM sinh. Các bài viết tìm được là blog của nhà
+cung cấp, không có thí nghiệm (**không tìm thấy nguồn chính thức** cho câu "stream làm người dùng tin hơn").
+
+### 5.3 Stream hay chờ: ba phương án
+
+| phương án | người học thấy | rủi ro hiện rồi rút lại | giây tới chữ LLM đầu tiên (ước từ lượt thật) | độ phức tạp |
+|---|---|---|---|---|
+| S1. Stream từng ý ngay khi qua luật cục bộ (spec hiện tại) | ý hiện dần | **có**: bài hỏng K1, K6, K8 sau khi đã hiện ý | sớm nhất (TTFT + ý đầu; TTFT chưa đo) | đã có |
+| S2. Chờ cả bài qua kiểm | skeleton tới hết, rồi cả bài một lần | không | bằng thời gian cả bài: trung vị 3,4 giây; bài cần sửa 5,6–10,4 giây | thấp nhất |
+| **S3. Stream sau cổng (khuyến nghị)** | skeleton tới khi bài **chắc chắn đạt**, sau đó các ý còn lại stream | không, nếu luật được đổi như dưới | giữa S1 và S2 | vừa |
+
+**S3 cụ thể:**
+1. Máy chủ giữ các ý đã qua luật cục bộ trong bộ đệm, chưa gửi.
+2. **Cổng mở** khi đủ điều kiện mà các ý sau không thể làm bài hỏng nữa. Đề xuất: đủ `lecture_min_explanations` (2) ý giải thích đạt, và mọi ý
+   đã đóng đều đạt hay đã bị bỏ đúng luật.
+3. Cổng mở: gửi một lần mọi ý trong bộ đệm, rồi stream các ý sau như S1.
+4. **Đổi luật toàn bài để sau cổng không gì làm bài hỏng:**
+   - bị cắt vì hết token (K6) sau cổng: giữ các ý đã đạt, bỏ phần dở, `status = ready`, thêm cảnh báo nội bộ `cat_cuoi`;
+   - lặp (K6): xét theo từng ý như đã có (`_is_duplicate_idea`), bỏ ý lặp; không đánh hỏng cả bài;
+   - JSON không đóng (K1) sau cổng: dùng các ý đã tách được, như trên.
+5. Hết stream mà cổng chưa mở: không ý LLM nào đã hiện. Sinh lại một lần (mục 5.4) **từ đầu, không trộn** ý của lần trước. Vẫn hỏng thì
+   `status = failed` (mục 5.5).
+
+Bất biến kiểm bằng test: **không có sự kiện nào làm biến mất một ý đã gửi.** Test: mô hình giả bị cắt ở ý thứ 4 sau khi đã có 2 ý giải thích
+đạt → bài `ready` với 3 ý; mô hình giả chỉ có 1 ý giải thích đạt → không có sự kiện `item` nào, rồi `failed`.
+
+*Suy luận:* S3 giữ lợi ích stream cho phần sau của bài (ví dụ, phân biệt, tự kiểm tra) và loại hẳn ca rút lại. Nếu đo thấy khoảng cách giữa
+"cổng mở" và "hết bài" dưới 1 giây ở p50, S2 đơn giản hơn mà gần như không thua; khi đó chọn S2. Cần số TTFT và giờ mở cổng thật (vé 13 chưa
+có).
+
+### 5.4 Thử lại
+
+**Khuyến nghị:**
+
+| tầng | khi nào | số lần | cách chờ | ghi chú |
+|---|---|---|---|---|
+| truyền (HTTP) | 429, 408, 500, 503, lỗi mạng | **1 lần** trên đường bấm-chờ; 2 lần cho tải trước chạy nền | 1 giây × nhiễu ngẫu nhiên (0,5–1,5) | sửa mã hiện tại: thêm nhiễu; trần thời gian **cả lần bấm** khoảng 25–30 giây (*suy luận*, lớn hơn ca chậm nhất đo được 22,7 giây); timeout 60 giây mỗi lần là quá dài cho người đang chờ |
+| nội dung (luật K) | cổng S3 không mở, hay K1 trước cổng | **1 lần**, như hiện tại | ngay | lần sửa **đổi điều kiện**: gửi danh sách lỗi; *đề xuất thử* nhiệt độ mặc định 1,0 cho lần sửa, vì Google khuyên giữ mặc định với Gemini 3 (báo cáo 2026-10-11 mục 3.6) và lặp lại cùng điều kiện ở nhiệt độ 0 ít tác dụng (1/6) |
+| bị chặn nội dung (`safety`, `recitation`…) | `finishReason` hay mã chặn | **0 lần** | — | Google bảo phải đổi đầu vào; ghi lý do, `failed` |
+| người học bấm "Thử lại" | sau `failed` | không tự động | chỉ bật sau `retry_after_s` | cùng `lecture_key`, đi qua single-flight; xem mục 5.5 về cache lỗi |
+
+Ngân sách: theo SRE, đặt một ngân sách thử lại cho cả tiến trình (ví dụ tối đa 10% số lời gọi bài giảng trong một phút là lời thử lại). Vượt
+thì trả `failed` ngay, không gọi thêm.
+
+**Chi phí và giây chờ của chính sách thử lại** (dùng số lượt thật: qua lần 1 là 50%, lần sửa cứu 17%; một lời gọi 0,00142 USD và 3,4 giây
+trung vị; mẫu nhỏ nên chỉ là ước):
+
+| chính sách nội dung | lời gọi trung bình mỗi bài | USD trung bình mỗi bài | tỉ lệ hỏng hẳn | giây của đường hỏng |
+|---|---:|---:|---:|---:|
+| không sửa | 1,00 | 0,00142 | 50% | khoảng 3,4 |
+| **sửa 1 lần (khuyến nghị, như hiện tại)** | 1,50 | 0,00213 | 42% | khoảng 6,8 (đo: 5,6–10,4) |
+| sửa 2 lần | 1,92 | 0,00272 | 35% | khoảng 10,2 |
+
+Đọc bảng:
+- Lần sửa thứ hai thêm khoảng 0,0006 USD mỗi bài (+28%) để giảm tỉ lệ hỏng khoảng 7 điểm, và đẩy đường hỏng qua mốc 10 giây của Nielsen.
+- Đòn bẩy thật là **giảm tỉ lệ hỏng ở lần 1**: mỗi 10 điểm giảm ở lần 1 bớt khoảng 0,00014 USD mỗi bài và bớt hẳn một lời gọi chờ cho 10% số
+  lượt bấm. Muốn vậy cần bảng lý do hỏng của SA-26.
+- Lời gọi lỗi 4xx/5xx không bị tính tiền token (trang Billing), nên tầng truyền gần như chỉ tốn thời gian.
+
+### 5.5 Khi bài hỏng hẳn: hiện gì
+
+**Giữ nguyên phần do mã dựng.** Phần `skeleton` (vị trí, khối "Bài này dùng tới" phần mã, câu định nghĩa nguyên văn kèm trang, hình đã xác
+nhận, khối "Tiếp theo") đã hiện trước khi gọi LLM ở mọi trường hợp. Đây là dữ liệu đã kiểm từ đồ thị, không phải bản lùi trích câu.
+*Cần chủ dự án xác nhận* (mục 7, câu 1).
+
+**Thay chỗ phần LLM bằng một khối thông báo**, không chứa câu nào trích từ đoạn dạy:
+
+| loại hỏng | lời nhắn (đề xuất) | nút |
+|---|---|---|
+| lỗi API tạm (429, 503, hết thời gian) | "Hệ thống đang bận nên chưa tạo được phần giảng giải. Thử lại sau khoảng một phút." | **Thử lại** (bật sau `retry_after_s`), **Đọc trang p trong sách**, **Hỏi trợ lý** |
+| không đạt luật trích nguồn sau lần sửa | "Chưa tạo được phần giảng giải đủ chuẩn trích nguồn cho khái niệm này. Bạn có thể đọc đoạn gốc trong sách." | **Đọc trang p trong sách**, **Hỏi trợ lý**, **Báo lỗi** (không có "Thử lại" ngay, xem dưới) |
+| bị chặn nội dung | như dòng trên | như dòng trên |
+| hết trần chi | "Đã dùng hết hạn mức tạo bài giảng." | **Đọc trang p**, **Hỏi trợ lý** nếu trợ lý còn trần |
+
+Lý do từng chi tiết:
+- **Không có từ kỹ thuật** (K8, JSON, mô hình). PAIR: "be human, not machine".
+- **Nói giới hạn, đưa đường đi tiếp** (PAIR "Return control to the user"; HAX G9, G10).
+- **Nút "Đọc trang p trong sách"** mở trình xem PDF ở trang của chunk dạy (`page`, offset ký tự đã có). Nó dẫn tới sách gốc, không hiện câu
+  nào thay bài giảng, nên không phải bản lùi. *Cần chủ dự án xác nhận* (mục 7, câu 2).
+- **Không "Thử lại" ngay cho lỗi luật kiểm**: cùng ngữ cảnh, cùng prompt, gần như chắc hỏng lại và tốn tiền (mục 5.4).
+
+**Cache lỗi:**
+- **Sửa ngay:** không ghi `fallback` hay `failed` vào cache bài (`single_flight` hiện ghi mọi giá trị trả về).
+- Lỗi API: giữ cache âm 60 giây như spec.
+- Lỗi luật kiểm: ghi một **bản ghi hỏng** theo `lecture_key`, sống lâu hơn (đề xuất 24 giờ; *suy luận*). Trong thời gian đó bấm lại thì trả
+  `failed` ngay, 0 USD, 0 giây chờ LLM. Khoá đổi khi prompt, lược đồ, mô hình hay `validator_version` đổi, nên sửa prompt xong thì bài tự
+  được sinh lại.
+- Tải trước gặp bản ghi hỏng thì bỏ qua, không gọi.
+
+[CHÈN HÌNH 3 – Sơ đồ trạng thái của một lần bấm bài giảng. Các ô: "bấm" → "skeleton (0 USD, < 0,1 giây)" → rẽ ba nhánh: "trúng cache → ready",
+"có bản ghi hỏng → failed (0 USD)", "gọi LLM lần 1". Từ "gọi LLM lần 1": "cổng mở → stream phần còn lại → ready (vào cache)"; "cổng không mở →
+gọi LLM lần 2 (đổi điều kiện)"; "lỗi API → thử lại truyền 1 lần → … → failed + cache âm 60 giây". Từ "gọi LLM lần 2": "cổng mở → ready"; "không
+mở → failed + bản ghi hỏng 24 giờ". Ghi chú dưới: không nhánh nào hiện bản trích câu; không nhánh nào rút lại ý đã hiện.]
+
+[CHÈN HÌNH 4 – Dòng thời gian (trục ngang 0–12 giây) của ba phương án S1, S2, S3 cho cùng một bài: vạch "skeleton" ở 0 giây; S1 có các chấm ý
+từ khoảng 1,5 giây (minh hoạ, TTFT chưa đo); S2 có một khối ở khoảng 3,4 giây; S3 có khối ở lúc cổng mở rồi các chấm tiếp. Hàng thứ tư: bài phải sửa, kết thúc ở
+khoảng 7 giây (đo 5,6–10,4). Vạch dọc ở 1 giây và 10 giây ghi "giới hạn Nielsen".]
+
+### 5.6 Chỉ số cần đo
+
+Đo ở lượt thật kế tiếp (sau SA-26), tách bài trúng cache và bài sinh mới:
+
+| nhóm | chỉ số | ghi chú |
+|---|---|---|
+| giây | p50, p90 tới `skeleton`; tới lúc cổng mở; tới `final`; tới `failed` | cần TTFT thật (hiện ghi 0) |
+| hỏng | tỉ lệ cổng mở ở lần 1; tỉ lệ lần sửa cứu được; tỉ lệ `failed` theo loại (API, luật, chặn, trần); luật làm hỏng theo K | bảng lý do hỏng là đầu vào sửa prompt |
+| tiền | USD mỗi bài **đạt** (gồm cả lời gọi của bài hỏng); tỉ lệ chi cho bài hỏng (lượt thật: 59%) | chỉ số chính để báo chủ dự án |
+| bất biến | số ý bị rút lại sau khi đã gửi | phải bằng 0; test và đếm ở lượt thật |
+| người học (khi có web) | tỉ lệ bấm "Đọc trang p", "Hỏi trợ lý", "Thử lại" sau `failed`; tỉ lệ thử lại thành công | |
+| cache | tỉ lệ lượt xem trúng cache; tỉ lệ tải trước trúng | tải trước làm phần lớn lượt bấm theo thứ tự trúng cache |
 
 ## 6. Đề xuất sửa spec ở mức trường
 
-(đang làm)
+Đề xuất cho [spec Pha B](../doc/pha-b-spec.md) mục 8 (bài giảng), 13 (hợp đồng), 15 (cấu hình). Đây là đề xuất để tra hỏi, chưa phải spec.
+Các mục đánh dấu **[hỏi]** chờ câu trả lời ở mục 7.
+
+### 6.1 Phiên bản hợp đồng
+
+- Đổi `contract_version` thành **`lecture-2`**: hình dạng `prerequisites[].note` và `used_later` đổi, `fallback` bị bỏ khỏi web.
+- Khoá cache đã chứa phiên bản hợp đồng, nên mọi bài cũ (kể cả bản lùi đang nằm trong cache) tự hết hiệu lực.
+
+### 6.2 Lược đồ LLM (`LECTURE_SCHEMA`)
+
+| trường | hiện tại | đề xuất |
+|---|---|---|
+| `prereq_notes[]` | dùng chung `_grounded_item_schema` (có `relation`, `outside_document`); bắt buộc `text`, `sources`, `quote`, `outside_document` | lược đồ riêng `{prereq, sources, quote, text}`; bắt buộc `prereq`, `sources`, `text`; `prereq` là nhãn `N#`; `sources[0]` là nhãn `Q#` của tiên quyết đó; `quote` bắt buộc **[hỏi: cho phép rỗng để mã gắn câu trích cạnh?]**; bỏ `outside_document` (K7 đã cấm ở đây) |
+| thứ tự khoá | `prereq_notes` → `explanation` → `example` → `contrasts` → `self_check` → `gaps` | giữ nguyên, trừ khi đo thấy ý giải thích đầu tới chậm quá 1,5 giây (mục 4.7) |
+| `gaps` | có | giữ |
+
+### 6.3 Lắp ngữ cảnh
+
+| khối | hiện tại | đề xuất |
+|---|---|---|
+| `prerequisites` | mọi tiên quyết hiển thị, kèm `N`, `Q`, `quote`, `order_note`, `citation_source`, `warning`, `note` | thêm cờ `viet_cau_noi: true/false`. `true` chỉ khi `citation_source = quoted_evidence` và có `N`. Tiên quyết `legacy_excerpt` vẫn có tên trong ngữ cảnh nhưng **không** có nhãn `Q` |
+| `used_later` | tối đa 3 tên; bỏ thứ hai khi vượt trần | **bỏ khỏi prompt** (mã dựng khối "Tiếp theo") |
+| chỉ dẫn | không nhắc `prereq_notes` | thêm 3 câu: "Với mỗi tiên quyết có `viet_cau_noi = true`, viết đúng một ý trong `prereq_notes`: một câu nói khái niệm đích dùng tiên quyết đó thế nào, chỉ dựa câu trích `Q`. Không giả định người học đã học tiên quyết. Không nhắc khái niệm khác." |
+| trần bỏ dần | bài tập → học để làm gì → cạnh mở → chunk định nghĩa thứ hai → cắt đuôi chunk định nghĩa thứ nhất | bài tập → cạnh mở → chunk định nghĩa thứ hai → cắt đuôi chunk định nghĩa thứ nhất. Không bao giờ cắt khối tiên quyết có `viet_cau_noi = true` |
+
+### 6.4 Luật kiểm
+
+Bảng luật mới và luật sửa (bổ sung bảng K1–K9 của spec):
+
+| # | luật | khi hỏng | thay đổi |
+|---|---|---|---|
+| K1 | đúng lược đồ và số mục | trước cổng: sinh lại 1 lần, rồi `failed`. Sau cổng: giữ ý đã đạt, `ready` | bỏ "rồi về mốc trích câu" |
+| K2 | như cũ; thêm: `prereq` thuộc tập `viet_cau_noi = true` | bỏ ý | sửa |
+| K3 | như cũ; với `prereq_notes`, nguồn đầu tiên phải là `Q#` | bỏ ý | sửa |
+| K6 | lặp và cắt cụt | lặp: bỏ ý (theo từng ý). Cắt cụt trước cổng: sinh lại 1 lần. Sau cổng: giữ ý đã đạt, `ready` | sửa |
+| K8 | `explanation` ≥ 2 ý đạt | đây chính là **cổng**: chưa đạt khi hết stream thì sinh lại 1 lần (đổi điều kiện), rồi `failed` | bỏ "dùng mốc trích câu" |
+| **K10** | phủ nhắc nền (mục 4.6) | không làm bài hỏng; dòng tiên quyết hiện phần mã dựng; ghi `missing_prereq_note` vào nhật ký kiểm | mới |
+| **K11** | không bịa quan hệ (mục 4.6) | bỏ ý | mới |
+| **K12** | ≤ `lecture_prereq_note_max_syllables` âm tiết; không có cụm trong `lecture_assumed_known_phrases` | bỏ ý | mới |
+
+Ghi chú: K10–K12 đổi `lecture_validator_version`, nên khoá cache đổi (SA-26 đã yêu cầu khoá đổi khi luật đổi).
+
+### 6.5 Hợp đồng `lecture-2`
+
+**`prerequisites[]`** (mã dựng, gửi ở `skeleton`):
+
+```json
+{"node_id": "…", "name": "…", "module_index": 2,
+ "order_note": "module_truoc | cung_module_truoc | sach_trinh_bay_sau",
+ "why": {"status": "co_cau_trich | khong_co_cau_trich",
+         "quote": "… (≤ 200 ký tự, không cắt ở 120)", "chunk_id": "…", "page": 31, "citation": {}},
+ "recall": {"quote": "câu neo nguyên văn của tiên quyết", "chunk_id": "…", "page": 12, "citation": {}},
+ "bridge": null}
+```
+
+- `why.status = khong_co_cau_trich` khi `legacy_excerpt` hay thiếu `Q`: web **không** hiện nút "vì sao?" và `why.quote = null`.
+- `recall` thay cho `note` hiện tại (hiện `note.text` là câu neo do mã dựng, tên dễ nhầm với câu LLM). `recall = null` khi tiên quyết không
+  có câu neo.
+- `bridge` = câu nối của LLM `{text, citations, check}`, điền ở sự kiện `item` và `final`; `null` khi K10 thiếu hay `viet_cau_noi = false`.
+- Web hiện `order_note = module_truoc` là "ở module m", không "đã học ở module m".
+
+**`next_up[]`** (thay `used_later`, mã dựng, gửi ở `skeleton`, tối đa `lecture_max_next_up` = 2):
+
+```json
+{"node_id": "…", "name": "…", "module_index": 3,
+ "relation": "dung_toi | ke_tiep_lo_trinh",
+ "order_note": "module_sau | cung_module | sach_trinh_bay_truoc",
+ "why": {"quote": "…", "chunk_id": "…", "page": 47, "citation": {}}}
+```
+
+- `relation = dung_toi`: có cạnh `requires` có câu trích từ khái niệm này tới khái niệm sau; `why` khác null.
+- `relation = ke_tiep_lo_trinh`: không có cạnh như vậy, chỉ lấy `position.next_node_id`; `why = null`.
+
+**`status`** ∈ {`ready`, `generating`, `no_source`, `failed`}.
+- Bỏ `fallback` khỏi mọi phản hồi gửi web. Đường trích câu chỉ còn ở chế độ ngoại tuyến của trang xem thử và làm mốc ở vé 21; chế độ đó
+  ghi `generation_mode = extractive`, không đi qua API web.
+
+**`failure`** (mới; chỉ có khi `status = failed`):
+
+```json
+{"kind": "api_tam_thoi | khong_dat_luat | bi_chan | het_tran",
+ "retryable": true, "retry_after_s": 60, "attempts": 2,
+ "read_in_book": {"chunk_id": "…", "page": 31}}
+```
+
+- `read_in_book` trỏ tới chunk dạy đầu tiên, để web mở trình xem PDF đúng trang **[hỏi: có cho link này không]**.
+- Mã luật K không gửi web; nằm ở nhật ký kiểm của SA-26.
+- `retryable = false` với `khong_dat_luat`, `bi_chan` trong thời gian sống của bản ghi hỏng.
+
+**`warnings`:** bỏ `ban_trich_cau`. Giữ `thieu_cong_thuc`, `khong_co_doan_day`.
+
+**`usage`:** thêm `attempts` (số lời gọi nội dung), `transport_retries`; `ttft_ms` phải là số đo thật.
+
+### 6.6 Sự kiện stream
+
+| sự kiện | khi nào | nội dung | thay đổi |
+|---|---|---|---|
+| `skeleton` | ngay khi bấm | mọi phần mã dựng, gồm `prerequisites[].recall`, `why`, `next_up` | thêm trường |
+| `progress` | khi bắt đầu lần sinh lại | `{"stage": "dang_viet_lai"}` | mới, tuỳ chọn; web có thể bỏ qua |
+| `item` | **sau cổng** (mục 5.3): gửi một lượt các ý trong bộ đệm, rồi từng ý | `section_kind`, `item`; thêm `prereq_node_id` khi `section_kind = nhac_nen` | đổi thời điểm |
+| `final` | hết | `status ∈ {ready, failed, no_source}`, có `failure` nếu `failed` | bỏ `fallback` |
+
+Bất biến ghi vào spec, có test:
+- Mọi ý trong các sự kiện `item` đều có trong `final`. Không sự kiện nào xoá ý đã gửi.
+- `status = failed` thì không có sự kiện `item` nào trước đó.
+
+### 6.7 Cache và thử lại
+
+| mục | hiện tại | đề xuất |
+|---|---|---|
+| cache bài | ghi mọi giá trị trả về, kể cả `fallback` | chỉ ghi `ready` và `no_source` |
+| cache âm | 60 giây, chỉ lỗi ném ra | giữ cho `api_tam_thoi` |
+| bản ghi hỏng | không có | `khong_dat_luat`, `bi_chan`: `lecture_failure_ttl_seconds` (đề xuất 86.400) **[hỏi]** |
+| thử lại truyền | 2 lần, chờ 1 và 2 giây, không nhiễu; timeout 60 giây mỗi lần | đường bấm: 1 lần, có nhiễu; tải trước: 2 lần, có nhiễu; trần cả lần bấm `lecture_deadline_seconds` (đề xuất 30) |
+| sinh lại nội dung | 1 lần, cùng nhiệt độ | 1 lần; `lecture_repair_temperature` (đề xuất thử 1,0) **[hỏi]** |
+| bị chặn | không phân biệt | 0 lần thử lại; ghi `finishReason` |
+| ngân sách thử lại | không có | `retry_budget_ratio` (đề xuất 0,1 mỗi phút cho cả tiến trình) |
+
+### 6.8 Cấu hình mới (`BSettings`, mục 15 spec)
+
+| khoá | giá trị đề xuất | trong khoá cache |
+|---|---|---|
+| `lecture_prereq_note_max_syllables` | 35 | có |
+| `lecture_assumed_known_phrases` | "như bạn đã biết", "như đã học", "bạn đã học", "nhớ lại rằng" | có |
+| `lecture_max_next_up` | 2 | không (mã dựng, không vào prompt) |
+| `edge_quote_display_max_chars` | 200 (bằng trần K3; thay số 120 của `_bounded_quote`) | không |
+| `lecture_failure_ttl_seconds` | 86.400 | không |
+| `lecture_deadline_seconds` | 30 | không |
+| `lecture_transport_retries_interactive` / `_prefetch` | 1 / 2 | không |
+| `lecture_repair_temperature` | 1,0 (thử) hoặc giữ 0 | có |
+| `lecture_validator_version` | `lecture-validator-3` | có |
 
 ## 7. Câu hỏi mở cho chủ dự án
 
-(đang làm)
+Mỗi câu kèm khuyến nghị và lý do ngắn, để dùng trong đợt tra hỏi.
+
+**Bài hỏng hẳn**
+1. **Khi bài hỏng, phần do mã dựng (vị trí, tên tiên quyết, câu định nghĩa nguyên văn kèm trang, hình đã xác nhận, khối "Tiếp theo") có
+   được giữ không, hay cũng tính là "bản lùi"?**
+   - Khuyến nghị: **giữ.** Phần này đã hiện ở `skeleton` trước mọi lời gọi, là dữ liệu đã kiểm từ đồ thị, không phải câu chọn bằng TextRank.
+2. **Có cho nút "Đọc trang p trong sách" (mở PDF gốc đúng trang) khi bài hỏng không?**
+   - Khuyến nghị: **có.** Nút này đưa người học về sách, không hiện câu nào thay bài giảng (PAIR: "return control to the user").
+   - Cần quyết thêm: máy chủ có giữ PDF gốc không (câu 2 của báo cáo 2026-10-11).
+3. **Stream: S1 (stream ngay), S2 (chờ cả bài) hay S3 (stream sau cổng K8)?**
+   - Khuyến nghị: **S3**, kèm đổi K1, K6 để sau cổng không gì làm bài hỏng. Bảo đảm không bao giờ rút lại ý đã hiện.
+   - Nếu đo thấy khoảng cách cổng → hết bài dưới 1 giây ở p50 thì chọn S2 cho đơn giản.
+4. **Sinh lại tự động mấy lần?**
+   - Khuyến nghị: **1 lần**, như hiện tại. Lần thứ hai thêm khoảng 28% tiền mỗi bài, chỉ giảm khoảng 7 điểm tỉ lệ hỏng, và đẩy đường hỏng
+     qua 10 giây (mục 5.4).
+5. **Lần sinh lại có đổi nhiệt độ sang mặc định 1,0 không?**
+   - Khuyến nghị: **thử ở lượt đo kế tiếp, so với giữ 0.** Ở nhiệt độ 0, lần sửa chỉ cứu 1/6 bài; Google khuyên giữ mặc định cho Gemini 3.
+6. **Bài hỏng vì luật kiểm có ghi bản ghi hỏng 24 giờ (bấm lại trả "chưa tạo được" ngay, 0 USD) không?**
+   - Khuyến nghị: **có.** Thử lại cùng ngữ cảnh gần như chắc hỏng lại. Sửa prompt hay luật thì khoá đổi và bài tự sinh lại.
+7. **Trên đường bấm-chờ, đặt trần 30 giây cho cả lần bấm và chỉ 1 lần thử lại ở tầng truyền?**
+   - Khuyến nghị: **có.** Hiện ca xấu nhất là 3 × 60 giây ở tầng truyền, nhân 2 lần sinh. Tải trước chạy nền giữ 2 lần thử.
+
+**Nhắc nền**
+
+8. **Câu nối "dùng tới ra sao" do LLM viết (khoảng +0,0003 USD mỗi bài) hay chỉ hiện phần mã dựng (0 USD)?**
+   - Khuyến nghị: **LLM viết, một câu, bám câu trích cạnh.** Câu nối là phần có giá trị nhất (P9, P13), và chi thêm nhỏ (15–25% một lời
+     gọi).
+9. **Thiếu câu nối (K10) thì làm gì?**
+   - Khuyến nghị: **hiện dòng mã dựng, không sinh lại cả bài.** Sinh lại vì một câu nối thì đắt hơn giá trị nó đem lại.
+10. **Câu neo của tiên quyết ("Nhớ lại định nghĩa") mặc định gập hay mở?**
+    - Khuyến nghị: **gập.** Người đã biết bỏ qua được (expertise reversal); người chưa biết bấm để xem (gợi nhớ có phản hồi).
+11. **Tiên quyết ở đồ thị cũ (`legacy_excerpt`, không có câu trích cạnh): chỉ hiện tên và vị trí, hay chạy lại ba cuốn cũ bằng chuỗi gộp?**
+    - Khuyến nghị: **ở bài giảng, chỉ hiện tên, vị trí và câu neo; không câu nối, không nút "vì sao?".** Việc chạy lại nhap-mon-ml,
+      naive-bayes, doc-6 là việc của phía pha A; báo cáo này không ước chi phí phần đó.
+12. **Ý nhắc nền có bắt buộc `quote` không (bỏ đi thì bớt khoảng 0,0001 USD mỗi bài)?**
+    - Khuyến nghị: **bắt buộc ở bản đầu**, để K3 biết câu nối bám đoạn nào trong câu trích cạnh. Xem lại sau lượt chấm người.
+13. **Đổi câu dẫn thành "Bài này dùng tới" và ghi chú "ở module m" thay cho "đã học ở module m"?**
+    - Khuyến nghị: **có**, vì hệ thống không biết người học đã học hay chưa.
+
+**Gợi mở và hợp đồng**
+
+14. **Khối "Tiếp theo": mã dựng 1–2 dòng có câu trích (0 USD), hay LLM viết câu gợi mở (phương án B)?**
+    - Khuyến nghị: **mã dựng.** Bằng chứng cho gợi mở cuối bài yếu nhất; LLM viết thì thêm tiền và thêm rủi ro nối sai.
+15. **Nâng hợp đồng lên `lecture-2` (đổi `note` → `recall` và `bridge`, `used_later` → `next_up`, bỏ `fallback`, thêm `failure`)?**
+    - Khuyến nghị: **có, trước khi nhóm web dựng trang bài giảng.** Đổi sau sẽ tốn công hai lần.
 
 ## 8. Nguồn
 
-(đang làm)
+Mọi nguồn truy cập ngày **2026-10-18**. Siêu dữ liệu kiểm qua Crossref, OpenAlex, ERIC hay arXiv. Mức đọc ghi sau mỗi nguồn. Nguồn đã có
+ở [báo cáo 2026-10-11](nghien-cuu-bai-giang-theo-khai-niem-2026-10-11.md) mục 8 (Merrill, Ausubel 1960, Mayer & Moreno 2003, Kalyuga 2003,
+Roediger & Karpicke 2006, Dunlosky 2013, ALCE, STORM, Shi 2023, tài liệu Gemini về structured output) không ghi lại.
+
+**Advance organizer và kiến thức nền**
+- [P1] J. Luiten, W. Ames, G. Ackerson, "A meta-analysis of the effects of advance organizers on learning and retention," *Am. Educ. Res. J.*,
+  vol. 17, no. 2, pp. 211–218, 1980. https://doi.org/10.3102/00028312017002211 — tóm tắt ERIC EJ233231; **đọc toàn văn** bản báo cáo 1979
+  (ERIC ED171803, https://files.eric.ed.gov/fulltext/ED171803.pdf), Bảng 1–6. Số trong bài lấy từ bản 1979; chưa đối chiếu bản AERJ.
+- [P2] C. L. Stone, "A meta-analysis of advance organizer studies," *J. Exp. Educ.*, vol. 51, no. 4, pp. 194–199, 1983.
+  https://doi.org/10.1080/00220973.1983.11011862 — **chỉ đọc tóm tắt** bản 1982 (ERIC ED220476). Không có số ES.
+- [P3] R. E. Mayer, "Twenty years of research on advance organizers: Assimilation theory is still the best predictor of results," *Instr.
+  Sci.*, vol. 8, no. 2, pp. 133–167, 1979. https://doi.org/10.1007/BF00117008 — **đọc toàn văn phần kết luận** bản báo cáo 79-1 (ERIC
+  ED206691, https://files.eric.ed.gov/fulltext/ED206691.pdf).
+- [P4] B. R. Barnes, E. U. Clawson, "Do advance organizers facilitate learning? …," *Rev. Educ. Res.*, vol. 45, no. 4, pp. 637–659, 1975.
+  https://doi.org/10.3102/00346543045004637; J. T. Lawton, S. K. Wanska, *Rev. Educ. Res.*, 1977 (ERIC EJ166909); D. P. Ausubel, "In
+  defense of advance organizers: A reply to the critics," *Rev. Educ. Res.*, 1978 (ERIC EJ189544); R. E. Mayer, "Can advance organizers
+  influence meaningful learning?," *Rev. Educ. Res.*, 1979 (ERIC EJ205675); J. E. McEneany, *J. Res. Dev. Educ.*, 1990 (ERIC EJ407863) —
+  **chỉ đọc tóm tắt ERIC**.
+- [P5] R. E. Mayer, B. K. Bromage, "Different recall protocols for technical texts due to advance organizers," *J. Educ. Psychol.*, vol. 72,
+  no. 2, pp. 209–225, 1980. https://doi.org/10.1037/0022-0663.72.2.209 — tóm tắt ERIC EJ229165; R. E. Mayer, "Can advance organizers
+  counter the effects of text organization?," 1978 (ERIC ED154376) — **chỉ đọc tóm tắt**.
+- [P6] B. A. Simonsmeier, M. Flaig, A. Deiglmayr, L. Schalk, M. Schneider, "Domain-specific prior knowledge and learning: A meta-analysis,"
+  *Educ. Psychol.*, vol. 57, no. 1, pp. 31–54, 2022. https://doi.org/10.1080/00461520.2021.1939700 — **đọc tóm tắt** trên bản PDF của tác
+  giả (https://www.uni-trier.de/fileadmin/fb1/prof/PSY/PAE/Team/Schneider/SimonsmeierEtAl2021.pdf).
+- [P7] F. Dochy, M. Segers, M. M. Buehl, "The relation between assessment practices and outcomes of studies: The case of research on prior
+  knowledge," *Rev. Educ. Res.*, vol. 69, no. 2, pp. 145–186, 1999. https://doi.org/10.3102/00346543069002145 — tóm tắt Crossref; F. J. R.
+  C. Dochy, báo cáo 1988 (ERIC ED387486) — **chỉ đọc tóm tắt**.
+- [P8] D. D. N. M. Kostons, G. P. C. van der Werf, "The effects of activating prior topic and metacognitive knowledge on text comprehension
+  scores," *Br. J. Educ. Psychol.*, vol. 85, no. 3, pp. 264–275, 2015. https://doi.org/10.1111/bjep.12069 — **chỉ đọc tóm tắt**.
+- [P9] D. E. Alvermann, C. R. Hynd, "Effects of prior knowledge activation modes and text structure on nonscience majors' comprehension of
+  physics," *J. Educ. Res.*, vol. 83, no. 2, pp. 97–102, 1989. https://doi.org/10.1080/00220671.1989.10885937 — **chỉ đọc tóm tắt**.
+- [P13] D. S. McNamara, E. Kintsch, N. B. Songer, W. Kintsch, "Are good texts always better? …," *Cogn. Instr.*, vol. 14, no. 1, pp. 1–43,
+  1996. https://doi.org/10.1207/s1532690xci1401_1 — **chỉ đọc tóm tắt**.
+
+**Pre-training, signaling, expertise reversal**
+- [P10] R. E. Mayer, J. Pilegard, "Principles for managing essential processing in multimedia learning: Segmenting, pre-training, and
+  modality principles," in *The Cambridge Handbook of Multimedia Learning*, 2nd ed., 2014.
+  https://doi.org/10.1017/cbo9781139547369.016 — **chỉ đọc đoạn trích tóm tắt qua kết quả tìm kiếm**; trang Cambridge trả 429.
+- [P11] D. Alpizar, O. O. Adesope, R. M. Wong, "A meta-analysis of signaling principle in multimedia learning environments," *Educ. Technol.
+  Res. Dev.*, vol. 68, no. 5, pp. 2095–2119, 2020. https://doi.org/10.1007/s11423-020-09748-7 — **đọc tóm tắt** trên trang Springer;
+  J. Richter, K. Scheiter, A. Eitel, "Signaling text-picture relations in multimedia learning: A comprehensive meta-analysis," *Educ. Res.
+  Rev.*, vol. 17, pp. 19–36, 2016. https://doi.org/10.1016/j.edurev.2015.12.003 — số r = 0,17 đọc qua tóm tắt chép trên trang dữ liệu
+  b2find (**nguồn thứ cấp**). S. Schneider và cộng sự, *Educ. Res. Rev.* 23, 2018 (https://doi.org/10.1016/j.edurev.2017.11.001) — không
+  đọc được tóm tắt, không dẫn số.
+- [P12] L. Tetzlaff, B. A. Simonsmeier, T. Peters, G. Brod, "A cornerstone of adaptivity – A meta-analysis of the expertise reversal effect,"
+  *Learn. Instr.*, vol. 98, Art. no. 102142, 2025. https://doi.org/10.1016/j.learninstruc.2025.102142 — **đọc tóm tắt** (OpenAlex);
+  S. Kalyuga, "Expertise reversal effect and its implications for learner-tailored instruction," *Educ. Psychol. Rev.*, vol. 19, no. 4,
+  pp. 509–539, 2007. https://doi.org/10.1007/s10648-007-9054-3 — chỉ kiểm siêu dữ liệu.
+
+**Gợi nhớ, hỏi trước, giá trị sử dụng**
+- [P14] C. A. Rowland, "The effect of testing versus restudy on retention: A meta-analytic review of the testing effect," *Psychol. Bull.*,
+  vol. 140, no. 6, pp. 1432–1463, 2014. https://doi.org/10.1037/a0037559 — **đọc toàn văn** phần phương pháp và kết quả (bản PDF trên
+  courseware.epfl.ch).
+- [P15] O. O. Adesope, D. A. Trevisan, N. Sundararajan, "Rethinking the use of tests: A meta-analysis of practice testing," *Rev. Educ.
+  Res.*, vol. 87, no. 3, pp. 659–701, 2017. https://doi.org/10.3102/0034654316689306 — **chỉ đọc tóm tắt** (không có số); P. K. Agarwal,
+  L. Nunes, J. R. Blunt, "Retrieval practice consistently benefits student learning…," *Educ. Psychol. Rev.*, vol. 33, no. 4, pp.
+  1409–1453, 2021. https://doi.org/10.1007/s10648-021-09595-9 — **đọc tóm tắt**.
+- [P16] S. C. Pan, S. K. Carpenter, "Prequestioning and pretesting effects: A review of empirical research, theoretical perspectives, and
+  implications for educational practice," *Educ. Psychol. Rev.*, vol. 35, no. 4, 2023. https://doi.org/10.1007/s10648-023-09814-5 —
+  **đọc tóm tắt**.
+- [P17] C. S. Hulleman, J. M. Harackiewicz, "Promoting interest and performance in high school science classes," *Science*, vol. 326,
+  no. 5958, pp. 1410–1412, 2009. https://doi.org/10.1126/science.1177067; E. A. Canning, J. M. Harackiewicz, "Teach it, don't preach it…,"
+  *Motiv. Sci.*, vol. 1, no. 1, pp. 47–71, 2015. https://doi.org/10.1037/mot0000015 — **chỉ đọc tóm tắt**.
+
+**Sản phẩm và giáo trình** (trang của chính sản phẩm)
+- OpenStax, *Elementary Algebra 2e*, mục 2.1 và lời tựa; *Intermediate Algebra 2e*, lời tựa. https://openstax.org/books/elementary-algebra-2e/pages/2-1-solve-equations-using-the-subtraction-and-addition-properties-of-equality ;
+  https://openstax.org/books/elementary-algebra-2e/pages/preface ; https://openstax.org/books/intermediate-algebra-2e/pages/preface
+- M. Boelkins, *Active Calculus*, "Features of the Text." https://activecalculus.org/single/frontmatter-6.html
+- Khan Academy (nhân viên đăng ở trang trợ giúp), "Update: Introducing Get Ready for Grade Level Math Courses!", 2020-06-16.
+  https://support.khanacademy.org/hc/en-us/community/posts/360068507371 ; "Content Update: New Get ready for AP Calculus & Get ready for AP
+  Statistics Courses", 2021-05-06. https://support.khanacademy.org/hc/en-us/community/posts/360077988172 — bài thứ hai chỉ đọc được câu đầu
+  (lần tải sau bị chặn bởi trang kiểm trình duyệt).
+- Brilliant, "Course placement guide" (cập nhật 2026-10-07), "What are Learning Paths?", "Who is Brilliant for?".
+  https://brilliant.org/help/parents-and-families/course-placement-guide/ ; https://brilliant.org/help/features/what-are-learning-paths ;
+  https://brilliant.org/help/using-brilliant/who-is-brilliant-for
+- Coursera, trang khoá "Machine Learning" (https://www.coursera.org/learn/machine-learning) và blog "Introducing Coursera's new course
+  preview experience" (https://blog.coursera.org/introducing-courseras-new-course-preview-experience) — chỉ đọc nhãn trên trang; blog chỉ
+  đọc qua đoạn trích tìm kiếm.
+- ALEKS, "The Research Behind ALEKS", "Overview." https://www.aleks.com/about_aleks/research_behind ; https://www.aleks.com/about_aleks/overview
+
+**LLM, đồ thị kiến thức, kiểm trích dẫn**
+- A. Slobodkin, E. Hirsch, A. Cattan, T. Schuster, I. Dagan, "Attribute first, then generate: Locally-attributable grounded text
+  generation," in *Proc. 62nd ACL*, 2024, pp. 3309–3344. https://aclanthology.org/2024.acl-long.182/ — **đọc tóm tắt** (arXiv 2403.17104).
+- L. Tang, P. Laban, G. Durrett, "MiniCheck: Efficient fact-checking of LLMs on grounding documents," in *Proc. EMNLP*, 2024, pp.
+  8818–8847. https://aclanthology.org/2024.emnlp-main.499/ — **đọc tóm tắt** (arXiv 2404.10774).
+- P. Ocheja, B. Flanagan, Y. Dai, H. Ogata, "How good is ChatGPT in giving adaptive guidance using knowledge graphs in e-learning
+  environments?," arXiv:2412.03856, 2024. https://arxiv.org/abs/2412.03856 — **đọc tóm tắt**; bản arXiv, chưa thấy nơi đăng.
+- Google Cloud, "Check grounding with RAG," cập nhật 2026-10-13. https://cloud.google.com/generative-ai-app-builder/docs/check-grounding —
+  **đọc trang**.
+- Không tìm thấy nghiên cứu nào sinh trọn bài giảng từ đồ thị tiên quyết rồi đánh giá trên người học (tìm 2026-10-18; báo cáo 2026-10-11 cũng
+  ghi như vậy).
+
+**Thiết kế khi AI hỏng, giây chờ**
+- Google PAIR, *People + AI Guidebook*, "Errors + Graceful Failure." https://pair.withgoogle.com/chapter/errors-failing/ — **đọc trang**.
+- S. Amershi *et al.*, "Guidelines for human-AI interaction," in *Proc. CHI*, 2019, pp. 1–13. https://doi.org/10.1145/3290605.3300233 —
+  **đọc tóm tắt và bảng 18 nguyên tắc** (PDF trên trang Microsoft Research). Trang HAX Toolkit không tải được nội dung.
+- J. Nielsen, "Response times: The 3 important limits," NN/g, 1993. https://www.nngroup.com/articles/response-times-3-important-limits/
+- K. Sherwin, "Progress indicators make a slow system less insufferable," NN/g, 2014. https://www.nngroup.com/articles/progress-indicators/
+- S. Tankala, "Skeleton screens 101," NN/g, 2023, rà lại 2026-09-02. https://www.nngroup.com/articles/skeleton-screens/
+- B. A. Myers, "The importance of percent-done progress indicators for computer-human interfaces," in *Proc. CHI*, 1985, pp. 11–17.
+  https://doi.org/10.1145/317456.317459 — **chỉ đọc tóm tắt**.
+- C. Harrison, B. Amento, S. Kuznetsov, R. Bell, "Rethinking the progress bar," in *Proc. UIST*, 2007, pp. 115–118.
+  https://doi.org/10.1145/1294211.1294231 — **chỉ đọc tóm tắt**.
+- T. Mejtoft, A. Långström, U. Söderström, "The effect of skeleton screens," in *Proc. ECCE*, 2018, pp. 1–4.
+  https://doi.org/10.1145/3232078.3232086 — **chỉ đọc tóm tắt**.
+- NVIDIA, "Stream smarter and safer: Learn how NVIDIA NeMo Guardrails enhance LLM output streaming," NVIDIA Technical Blog.
+  https://developer.nvidia.com/blog/stream-smarter-and-safer-learn-how-nvidia-nemo-guardrails-enhance-llm-output-streaming/ — **đọc trang**.
+- Không tìm thấy nghiên cứu có đối chứng so stream từng ý với hiện cả bài cho văn bản LLM sinh.
+
+**Thử lại, lỗi, giá**
+- Google, Gemini API "Troubleshooting" và "API errors," cập nhật 2026-10-13. https://ai.google.dev/gemini-api/docs/troubleshooting ;
+  https://ai.google.dev/gemini-api/docs/api-errors
+- Google, Gemini API "Billing" (mục "Am I charged for failed requests?"). https://ai.google.dev/gemini-api/docs/billing
+- Google, Gemini API "Pricing," cập nhật 2026-10-16: `gemini-3.1-flash-lite` 0,25 USD vào, 1,50 USD ra cho 1 triệu token (gồm token suy
+  nghĩ). https://ai.google.dev/gemini-api/docs/pricing
+- M. Brooker, "Timeouts, retries, and backoff with jitter," Amazon Builders' Library.
+  https://aws.amazon.com/builders-library/timeouts-retries-and-backoff-with-jitter/
+- Google, *Site Reliability Engineering*, ch. 22 "Addressing cascading failures." https://sre.google/sre-book/addressing-cascading-failures/
+
+**Tài liệu, mã và dữ liệu nội bộ (chỉ đọc)**
+- [Spec Pha B](../doc/pha-b-spec.md) mục 6, 8, 13, 15; [nghiên cứu bài giảng 2026-10-11](nghien-cuu-bai-giang-theo-khai-niem-2026-10-11.md);
+  [kiểm thử Pha B 2026-10-18](kiem-thu-pha-b-2026-10-18.md) mục 3.2; [SA-26](../task/sau-a10/26-bai-giang-chong-lap-ban-lui-sach.md).
+- Mã: `src/doc2roadmap/application/phase_b/lectures.py` (`_assemble`, `_trim_context`, `_valid_item`, `make`);
+  `src/doc2roadmap/domain/learning_graph.py` (`why_here`, `traverse`, `_edge_citation`, `_bounded_quote`);
+  `src/doc2roadmap/domain/phase_b_limits.py`; `src/doc2roadmap/infrastructure/artifacts/phase_b_store.py` (`single_flight`);
+  `src/doc2roadmap/infrastructure/llm/phase_b.py` (`_request`). Đọc trên cây làm việc 2026-10-18, có tệp đang được sửa song song.
+- Dữ liệu: `tmp/phaseb-live-group2-v2.json` (trường `operations`, `usage_rows`); `artifacts/graph/{doc-1/v53, xstk-ch3-1/v64, doc-4/v23,
+  nhap-mon-ml/v46, naive-bayes/v45, doc-6/v17}/graph.json`. Không mở tập giữ lại, `d02-tap-khoa` hay phần `cache` của
+  `artifacts/phase_b/live.json`.
