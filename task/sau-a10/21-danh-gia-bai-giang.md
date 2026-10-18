@@ -26,6 +26,11 @@ Cần trả lời bốn câu hỏi bằng số và bằng người chấm:
 
 **Bảng chấm mù theo cặp:**
 - Rubric: đúng, trung thực, giá trị sư phạm, đọc được, độ dài.
+- **Thêm 2026-10-18, theo spec Pha B2:** chấm trên bản `lecture-2`, với hai tiêu chí:
+  - **câu nối:** đúng quan hệ, đúng nguồn, không bịa;
+  - **phần gợi lại tiên quyết và khối "Tiếp theo":** có ích cho người học.
+
+  "Mốc trích câu" chỉ còn là cấu hình so sánh, không phải thứ người học thấy (ADR 0018).
 - Bảng hiện ảnh công thức gốc (vé 04) và câu trích nguồn.
 
 **Đo tự động:**

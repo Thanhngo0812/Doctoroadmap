@@ -85,6 +85,20 @@ Bốn luật:
 | [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | lượt thật 0,12723425 USD | chưa đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md): 135/160 rơi đường lùi → 29 |
 | [29](29-ten-module-tach-kiem-ten-mo-ta-tu-vung-theo-sach.md) | Tên module: tách kiểm tên và mô tả, từ vựng mô tả lấy từ chính cuốn sách, luật mượn từ bằng mã | — | cache/replay 0; lượt thật 0,142519 USD | đã triển khai/chạy sáu cuốn; chờ Claude đọc nội dung |
 | [30](30-sua-sau-soat-k6-cache-ttft-trich-dan.md) | Sửa sau soát: K6 dò sai, không cache bài hỏng, TTFT, câu trích cụt, tài liệu sau hậu kiểm | — | 0 (phát lại) | đã triển khai/phát lại; chờ Claude soát |
+| [31](31-nen-b2-pham-vi-ham-giai.md) | Nền B2: phạm vi `scope-1`, hàm giải phạm vi, port kho, đồng hồ, cấu hình | 30 | 0 | ready-for-agent |
+| [32](32-phien-module-luu-du-luot.md) | Phiên module lưu đủ lượt; trợ lý hỏi theo phiên (`answer-2`) | 31 | 0 | ready-for-agent |
+| [33](33-phien-toan-lo-trinh-pham-vi-da-cu.md) | Phiên toàn lộ trình, phạm vi đã cũ, thẻ module ngoài phạm vi | 32 | 0 | ready-for-agent |
+| [34](34-tien-do-hoc.md) | Tiến độ học theo khái niệm | 31 | 0 | ready-for-agent |
+| [35](35-thu-vien-theo-pham-vi.md) | Thư viện theo phạm vi; tạo bằng nút | 32 | 0 | ready-for-agent |
+| [36](36-nhac-nen-theo-tien-do.md) | Trợ lý nhắc khái niệm nền theo tiến độ | 33, 34 | 0 | ready-for-agent |
+| [37](37-quiz-ca-lo-trinh-tai-lieu-nhieu-module.md) | Quiz cả lộ trình và tài liệu nhiều module | 34, 35 | 0 | ready-for-agent |
+| [38](38-lecture-2-hong-han-cache-thoi-gian.md) | `lecture-2`: bài hỏng hẳn, bản ghi hỏng, cache, thời gian | 30 | 0 | ready-for-agent |
+| [39](39-stream-sau-cong.md) | Bài giảng stream sau cổng | 38 | 0 | ready-for-agent |
+| [40](40-goi-lai-tien-quyet-cau-noi-tiep-theo.md) | Gợi lại tiên quyết, câu nối, khối "Tiếp theo" | 39 | 0 | ready-for-agent |
+| [41](41-nhan-theo-nguoi-hoc.md) | Nhãn theo người học trong bài giảng | 34, 40 | 0 | ready-for-agent |
+| [42](42-tran-chi-theo-ngay.md) | Trần chi theo ngày: người học và hệ thống | 32, 38 | 0 | ready-for-agent |
+| [43](43-luot-that-lecture-2.md) | Lượt thật `lecture-2` | 40 | dưới 0,10 USD | ready-for-agent |
+| [44](44-trang-xem-thu-hai-trang.md) | Trang xem thử hai trang | 33, 35, 36, 37, 41, 42 | 0 khi phát lại | ready-for-agent |
 
 **Cập nhật SA-29–30, 2026-10-18 (Codex):** đã triển khai cùng ba subagent Luna. Vé 29 phục hồi 144 tên từ cache với 0 USD, rồi chạy 160 request Vertex trong khoản chủ dự án đã duyệt, chi ghi nhận 0,142519 USD / cap 0,50 USD. Lượt mới có 136 tên và 82 mô tả LLM, 78 mô tả khuôn; chờ đọc nội dung. Vé 30 phát lại 11/12 bài giảng ready và 6/6 tài liệu ready, chi phí 0 USD. Bộ ghép cuối 206 test xanh. Xem [bàn giao 29–30](../../report/pha-b-sa29-30-ban-giao-2026-10-18.md).
 
@@ -104,6 +118,13 @@ Ban đầu, vé 01–05 và 19 không có blocker và chạy song song được.
 3. Sau 25 và 26: một lượt thật gộp cho vé 08, 10, 13. Dry-run trước, chủ dự án duyệt.
 4. Sau 27: lượt thật vé 16 nằm trong vé 27.
 5. Rồi mới tới đánh giá 20–23. Đánh giá ghim phiên bản đồ thị và ghi `upstream_chain` của từng cuốn.
+
+**Pha B2** ([spec](../../doc/pha-b2-spec.md); vé 31–44, chia ngày 2026-10-18):
+- Sau vé 30 có hai nhánh chạy song song:
+  - **nhánh phiên:** 31 → 32 → 33, 35; 34 chạy song song với 32; rồi 36, 37;
+  - **nhánh bài giảng:** 38 → 39 → 40 → 41 và 43.
+- Hai nhánh gặp nhau ở 42 và 44.
+- Đánh giá 20–23 chạy sau, trên bản `lecture-2`. Vé 21 thêm tiêu chí câu nối và phần gợi lại.
 
 Không kịp lịch thì báo để dời. Không cắt luật kiểm để kịp.
 
