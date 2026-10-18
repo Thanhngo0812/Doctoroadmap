@@ -468,6 +468,36 @@ Ghi nhớ một bài hỏng hẳn để lần bấm sau không gọi lại mô h
 
 Không phải bài trong cache.
 
+### Web WayFinder (spec web, 2026-10-18)
+
+**Khoá học**:
+Đơn vị người dùng tạo, chia sẻ và tham gia. Trỏ tới đúng một `doc_id` và ghim `published_graph_version` (ADR 0020). Có đúng một chủ khoá.
+_Tránh dùng_: lớp, khoá như một nhóm nhiều tài liệu
+
+**Thành viên** (`owner` / `learner`):
+Tài khoản đã tham gia khoá học, qua link mời, lời mời email, hay khoá mẫu. Người ngoài khoá nhận `not_found`.
+
+**Dữ liệu học theo người × cuốn**:
+Phiên, lượt, tiến độ, tài liệu, lần làm quiz khoá theo (`user_id`, `doc_id`), không theo khoá học. Hai khoá cùng cuốn dùng chung dữ liệu học của một người.
+
+**Bản dựng** (`build`):
+Một lần chạy Pha A cộng chuẩn bị Pha B trên một tệp tải lên, qua bốn bước `doc_reading`, `concepts`, `graph`, `learning_prep`. Dùng lại khi cùng SHA-256 và
+cùng `pipeline_version`.
+_Tránh dùng_: job, pipeline run (trong giao diện)
+
+**Link mời / lời mời**:
+Link mời: token trong URL, có hạn và số lượt, thu hồi được. Lời mời: theo email, chờ người được mời chấp nhận. Cả hai chỉ lưu băm token.
+
+**Khoá mẫu**:
+Khoá học admin đánh dấu, mọi tài khoản tham gia được không cần link. Chỉ tạo từ sáu cuốn phát triển.
+
+**Mức dùng**:
+Phần trần ngày của người học đã dùng (hiện tỉ lệ, không hiện USD), cộng số lượt dựng còn lại trong tháng.
+
+**Tài sản** (`asset_key`):
+Ảnh công thức, media, ảnh trang trên Cloudinary, riêng tư (ADR 0023). Cache chỉ chứa khoá tài sản; máy chủ chuyển ảnh, trình duyệt không cầm link
+Cloudinary.
+
 ## Lệnh bậc 1–3 của lượt tập giữ lại (T10a; chỉ chạy sau khi khoá T10)
 
 > **Chỉ chạy được với mã trước vé 19n.** Từ 19n, `roadmap --stop-after identity` và `--identity-review` đã gỡ, và `roadmap` từ chối canonical
