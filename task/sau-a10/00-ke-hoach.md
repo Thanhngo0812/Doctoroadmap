@@ -73,16 +73,18 @@ Bốn luật:
 | [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | chưa đạt → 27 |
 | [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
 | [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | chưa đạt → 25 |
-| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | Claude xong 2026-10-18; chờ chủ dự án duyệt [19a](19a-dac-ta-bo-cau-hoi-thu.md) |
-| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28** | dưới 1 USD | ready-for-agent |
-| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26** | trần 5 USD | ready-for-agent |
+| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; chờ giao agentic |
+| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | ready-for-agent |
+| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30** | trần 5 USD | ready-for-agent |
 | [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27** | khoảng 1,7 USD | ready-for-agent |
-| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25** | lượt 1 trần khoảng 8 USD | ready-for-agent |
+| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30** | lượt 1 trần khoảng 8 USD | ready-for-agent |
 | [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | đạt |
-| [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | đã triển khai/phát lại; chờ Claude soát |
-| [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đã triển khai/phát lại; chờ Claude soát |
-| [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật 0,0782415 USD | đã triển khai/chạy hai module; chờ Claude soát |
-| [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | lượt thật 0,12723425 USD | đã triển khai/chạy sáu cuốn; nội dung chưa đạt, chờ Claude quyết định |
+| [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | đạt, Claude soát 2026-10-18 [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); trình bày tài liệu → 30 |
+| [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); K6 dò sai, cache bài hỏng → 30 |
+| [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật 0,0782415 USD | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); Claude đồng ý luật tên có điều kiện |
+| [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | lượt thật 0,12723425 USD | chưa đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md): 135/160 rơi đường lùi → 29 |
+| [29](29-ten-module-tach-kiem-ten-mo-ta-tu-vung-theo-sach.md) | Tên module: tách kiểm tên và mô tả, từ vựng mô tả lấy từ chính cuốn sách, luật mượn từ bằng mã | — | bước 1: 0; lượt thật khoảng 0,15–0,25 USD | ready-for-agent |
+| [30](30-sua-sau-soat-k6-cache-ttft-trich-dan.md) | Sửa sau soát: K6 dò sai, không cache bài hỏng, TTFT, câu trích cụt, tài liệu sau hậu kiểm | — | 0 (phát lại) | ready-for-agent |
 
 "Lượt nhỏ" là lượt thử có tiền trong vé, mỗi lượt dưới 0,5 USD, cộng vào trần chung 16 USD và vẫn dry-run trước.
 
