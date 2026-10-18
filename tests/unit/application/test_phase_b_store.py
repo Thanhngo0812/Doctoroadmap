@@ -13,11 +13,11 @@ def test_store_contract(store_kind, tmp_path):
     store.put_cache("k", {"ready": True})
     store.put_record("documents", "d1", {"owner": "learner-1", "markdown": "text"})
     store.put_record("documents", "d2", {"owner": "learner-2", "markdown": "other"})
-    store.append_usage({"doc_id": "d1", "cost_usd": 0.2})
+    store.append_usage({"doc_id": "d1", "cost_usd": 0.2, "created_at": "2026-10-18T00:00:00+00:00"})
     assert store.get_cache("k") == {"ready": True}
     assert store.get_record("documents", "d1")["markdown"] == "text"
     assert [row["owner"] for row in store.list_records("documents", owner="learner-1")] == ["learner-1"]
-    assert store.usage_rows(doc_id="d1") == [{"doc_id": "d1", "cost_usd": 0.2}]
+    assert store.usage_rows(doc_id="d1") == [{"doc_id": "d1", "cost_usd": 0.2, "created_at": "2026-10-18T00:00:00+00:00"}]
 
 
 def test_single_flight_runs_one_generation_for_concurrent_callers():

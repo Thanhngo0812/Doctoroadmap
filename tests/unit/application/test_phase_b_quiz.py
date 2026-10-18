@@ -627,7 +627,9 @@ def test_assistant_make_quiz_tool_returns_only_attempt_reference_and_count():
                                       origin="assistant", allow_spend=False)
 
     assistant = AssistantUseCase(graph, store, Model(), quiz=make_quiz)
-    result = assistant.ask(graph.doc_id, graph.graph_version, "quiz-session", "module_023", "Kiểm tra tôi.",
+    from doc2roadmap.domain.scope import module_scope
+    session = assistant.sessions.create_session("alice", graph.doc_id, module_scope(graph, "module_023"))
+    result = assistant.ask(graph.doc_id, graph.graph_version, session["session_id"], "Kiểm tra tôi.",
                            owner="alice", allow_spend=True)
 
     summary = result["tool_calls"][0]["result_summary"]

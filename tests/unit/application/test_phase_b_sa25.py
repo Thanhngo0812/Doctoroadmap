@@ -34,6 +34,16 @@ def checked(graph, text):
     return AssistantUseCase(graph, InMemoryPhaseBStore(), None)._checked_answer(graph, text)
 
 
+def seed_assistant_session(store, graph, session_id, owner):
+    store.put_record('session', session_id, {'contract_version': 'session-1', 'session_id': session_id,
+        'owner': owner, 'doc_id': graph.doc_id, 'scope': {'kind': 'module', 'node_ids': ['n', 's'],
+        'module_id_at_creation': 'm', 'graph_version_at_creation': getattr(graph, 'graph_version', 1)},
+        'title': 'Phiên học mới', 'title_source': 'rule', 'created_at': '2026-10-18T00:00:00+00:00',
+        'updated_at': '2026-10-18T00:00:00+00:00', 'turn_count': 0,
+        'last_question_preview': '', 'artifact_refs': [],
+        'state': {'reminded_node_ids': [], 'linked_node_ids': [], 'reminders_enabled': True}})
+
+
 @pytest.mark.parametrize('citation', ['[S1].', '. [S1]'])
 def test_sentence_citation_does_not_cover_next_numeric_claim(graph, citation):
     answer, citations, warnings, _ = checked(graph,
@@ -148,16 +158,17 @@ def test_shared_price_change_reaches_assistant_and_document_plans_and_ledgers(gr
 
     settings = replace(BSettings(), assistant_max_usd=1, document_max_usd=1)
     store = InMemoryPhaseBStore()
+    seed_assistant_session(store, graph, 's', 'local')
     assistant = AssistantUseCase(graph, store, Model(), settings=settings)
     documents = DocumentUseCase(Model(), store, settings=settings)
-    first_a = assistant.ask('book', 1, 's', 'm', 'CSDL là gì?', dry_run=True)['usd_estimate']
+    first_a = assistant.ask('book', 1, 's', 'CSDL là gì?', dry_run=True)['usd_estimate']
     first_d = documents.create('book', 1, graph, 'Giải thích', 'n', owner='test', dry_run=True)['estimate_usd']
     old = pricing.PRICES_USD_PER_MILLION[pricing.GENERATION_MODEL]
     monkeypatch.setitem(pricing.PRICES_USD_PER_MILLION, pricing.GENERATION_MODEL,
         {key: value * 2 for key, value in old.items()})
-    assert assistant.ask('book', 1, 's', 'm', 'CSDL là gì?', dry_run=True)['usd_estimate'] == pytest.approx(first_a * 2)
+    assert assistant.ask('book', 1, 's', 'CSDL là gì?', dry_run=True)['usd_estimate'] == pytest.approx(first_a * 2)
     assert documents.create('book', 1, graph, 'Giải thích', 'n', owner='test', dry_run=True)['estimate_usd'] == pytest.approx(first_d * 2)
-    answer = assistant.ask('book', 1, 's', 'm', 'CSDL là gì?', allow_spend=True)
+    answer = assistant.ask('book', 1, 's', 'CSDL là gì?', allow_spend=True)
     document = documents.create('book', 1, graph, 'Giải thích', 'n', owner='test', allow_spend=True)
     expected = pricing.token_cost(pricing.GENERATION_MODEL, usage)
     assert answer['usage']['usd'] == pytest.approx(expected)
@@ -184,11 +195,12 @@ def test_old_client_turn_cache_cannot_bypass_new_sentence_validator(graph):
     store, model = InMemoryPhaseBStore(), Model()
     store.put_record('answer', context_hash(['test', 'book', 's', 't']),
         {'answer': 'Một hệ quản trị có đúng 7 thành phần.', 'status': 'answered'})
+    seed_assistant_session(store, graph, 's', 'test')
     use_case = AssistantUseCase(graph, store, model)
-    answer = use_case.ask('book', 1, 's', 'm', 'CSDL là gì?', owner='test', client_turn_id='t', allow_spend=True)
+    answer = use_case.ask('book', 1, 's', 'CSDL là gì?', owner='test', client_turn_id='t', allow_spend=True)
     assert '7 thành phần' not in answer['answer']
     assert model.calls == 1
-    assert use_case.ask('book', 1, 's', 'm', 'CSDL là gì?', owner='test', client_turn_id='t', allow_spend=True) == answer
+    assert use_case.ask('book', 1, 's', 'CSDL là gì?', owner='test', client_turn_id='t', allow_spend=True) == answer
     assert model.calls == 1
 
 
@@ -206,7 +218,7 @@ def test_shared_price_change_reaches_lecture_plan_and_billed_usage(graph, monkey
             return self
 
         def stream_json(self, *args, **kwargs):
-            return iter([json.dumps({'prereq_notes': [], 'explanation': [
+            return iter([json.dumps({'bridges': [], 'explanation': [
                 {'text': 'Dữ liệu được tổ chức có cấu trúc.', 'sources': ['S1'],
                  'quote': graph.chunks['c1'].text, 'outside_document': False},
                 {'text': 'Các thông tin được lưu trữ cùng nhau.', 'sources': ['S1'],
@@ -237,7 +249,7 @@ def test_shared_prices_change_common_dry_run_and_measured_ledger(monkeypatch):
                 'candidatesTokenCount': 200, 'thoughtsTokenCount': 50})
 
     store = InMemoryPhaseBStore()
-    options = dict(response_schema={}, store=store, purpose='assistant', doc_id='book', context_hash='x')
+    options = dict(response_schema={}, store=store, purpose='assistant', doc_id='book', context_hash='x', learner_id='test')
     result = call_json(Model(), 'abc', allow_spend=True, **options)
     assert result.cost_usd == pytest.approx(0.003)
     assert store.usage_rows()[0]['cost_usd'] == pytest.approx(0.003)

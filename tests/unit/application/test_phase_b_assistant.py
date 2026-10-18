@@ -8,6 +8,7 @@ from doc2roadmap.application.phase_b.assistant import AssistantUseCase
 from doc2roadmap.application.ports.phase_b import Delta, Done, ToolCall
 from doc2roadmap.domain.learning_graph import LearningGraph
 from doc2roadmap.domain.phase_b_limits import BSettings
+from doc2roadmap.domain.scope import module_scope
 from doc2roadmap.infrastructure.artifacts.phase_b_store import InMemoryPhaseBStore
 
 
@@ -45,10 +46,23 @@ class Model:
 
 def run(model, *, store=None, settings=None, **kwargs):
     store = store or InMemoryPhaseBStore()
-    use_case = AssistantUseCase(graph(), store, model, settings=settings)
-    result = use_case.ask('book', 1, 'session', 'm1', 'Ma trận là gì?',
+    g = graph()
+    seed_session(store, g, 'session', 'alice', 'm1')
+    use_case = AssistantUseCase(g, store, model, settings=settings)
+    result = use_case.ask('book', 1, 'session', 'Ma trận là gì?',
                           owner='alice', allow_spend=True, **kwargs)
     return result, store, use_case
+
+
+def seed_session(store, g, session_id, owner, module_id):
+    scope = {"kind": "module", "node_ids": list(g.modules[module_id]["node_ids"]),
+             "module_id_at_creation": module_id, "graph_version_at_creation": getattr(g, "graph_version", 1)}
+    store.put_record('session', session_id, {'contract_version': 'session-1', 'session_id': session_id,
+        'owner': owner, 'doc_id': 'book', 'scope': scope, 'title': 'Phiên học mới',
+        'title_source': 'rule', 'created_at': '2026-10-18T00:00:00+00:00',
+        'updated_at': '2026-10-18T00:00:00+00:00', 'turn_count': 0,
+        'last_question_preview': '', 'artifact_refs': [],
+        'state': {'reminded_node_ids': [], 'linked_node_ids': [], 'reminders_enabled': True}})
 
 
 def test_answer_one_call_has_grounded_citations_and_measured_usage():
@@ -109,9 +123,11 @@ def test_assistant_uses_configured_quote_limit_in_context_and_why_here_tool():
     source.payload['requires_edges'][0]['quote'] = quote.strip()
     model = Model([[ToolCall('why_here', {'concept': 'b'}, '1'), Done({})],
                    [Delta('KHONG_DU'), Done({})]])
-    use_case = AssistantUseCase(source, InMemoryPhaseBStore(), model,
+    store = InMemoryPhaseBStore()
+    seed_session(store, source, 'session', 'alice', 'm2')
+    use_case = AssistantUseCase(source, store, model,
                                settings=replace(BSettings(), quote_max_chars=80))
-    use_case.ask('book', 1, 'session', 'm2', 'Định thức', owner='alice', allow_spend=True)
+    use_case.ask('book', 1, 'session', 'Định thức', owner='alice', allow_spend=True)
     context = json.loads(model.calls[0][0][0]['text'])
     tool_result = model.calls[1][0][-1]['tool_results'][0]['result']
     for detail in (context['concepts'][0], tool_result):
@@ -129,6 +145,29 @@ def test_endless_tool_calls_force_none_on_fifth_round():
     assert len(store.usage_rows()) == 5
 
 
+def test_five_turn_prompt_keeps_only_three_recent_turns_within_history_cap():
+    import json
+    from doc2roadmap.application.phase_b.common import stable_json
+    settings = replace(BSettings(), assistant_history_tokens=1000)
+    model = Model([[Delta('Ma trận là bảng các số. [S1]'), Done({})] for _ in range(5)])
+    store = InMemoryPhaseBStore()
+    g = graph()
+    seed_session(store, g, 'session', 'alice', 'm1')
+    use_case = AssistantUseCase(g, store, model, settings=settings)
+
+    for number in range(5):
+        use_case.ask('book', 1, 'session', f'question-{number} ' + 'x' * 1200,
+                     owner='alice', allow_spend=True)
+
+    context = json.loads(model.calls[4][0][0]['text'])
+    history = context['history']
+    assert context['scope']['kind'] == 'module'
+    assert len(history) == 3
+    assert all(f'question-{number}' in row['question'] for number, row in zip((1, 2, 3), history))
+    assert len(stable_json(history)) // 3 <= settings.assistant_history_tokens
+    assert len(use_case.sessions.list_turns('alice', 'session')) == 5
+
+
 def test_tool_errors_are_structured_and_counted():
     model = Model([[ToolCall('delete_book', {}, '1'), Done({})],
                    [ToolCall('lookup_concept', {'name': 123}, '2'), Done({})],
@@ -137,6 +176,39 @@ def test_tool_errors_are_structured_and_counted():
     assert result['usage']['invalid_tool_calls'] == 2
     assert 'error' in model.calls[1][0][-1]['tool_results'][0]['result']
     assert 'error' in model.calls[2][0][-1]['tool_results'][0]['result']
+
+
+def test_document_scope_limit_survives_tool_result_and_final_answer():
+    generated = []
+    def document(**kwargs):
+        generated.append(kwargs)
+        return {'status': 'failed', 'reason': 'scope_too_large'}
+
+    model = Model([[ToolCall('make_document', {'request': 'Ghi chú', 'scope': ['m1']}, '1'), Done({})],
+                   [Delta('Tôi sẽ giúp bạn thu hẹp phạm vi.'), Done({})]])
+    store = InMemoryPhaseBStore()
+    g = graph()
+    seed_session(store, g, 'session', 'alice', 'm1')
+    result = AssistantUseCase(g, store, model, document=document).ask(
+        'book', 1, 'session', 'Tạo ghi chú', owner='alice', allow_spend=True)
+    tool_result = model.calls[1][0][-1]['tool_results'][0]['result']
+    assert generated and tool_result['error']['code'] == 'scope_too_large'
+    assert 'tối đa 5 module' in tool_result['error']['message']
+    assert 'tối đa 5 module' in result['answer']
+
+
+def test_document_daily_limit_is_preserved_as_a_code_written_message():
+    model = Model([[ToolCall('make_document', {'request': 'Ghi chú', 'scope': ['m1']}, '1'), Done({})],
+                   [Delta('Tạo tài liệu hoàn tất.'), Done({})]])
+    store = InMemoryPhaseBStore()
+    g = graph()
+    seed_session(store, g, 'session', 'alice', 'm1')
+    result = AssistantUseCase(g, store, model, document=lambda **kwargs: {
+        'status': 'failed', 'reason': 'daily_limit'}).ask(
+            'book', 1, 'session', 'Tạo ghi chú', owner='alice', allow_spend=True)
+    tool_result = model.calls[1][0][-1]['tool_results'][0]['result']
+    assert tool_result['error']['code'] == 'daily_limit'
+    assert 'hết hạn mức chi hôm nay' in result['answer']
 
 
 @pytest.mark.parametrize('answer', ['Ma trận là vũ trụ. [S999]', 'Ma trận là vũ trụ.',
@@ -161,13 +233,15 @@ def test_session_followup_idempotency_and_owner_isolation():
     model = Model([[Delta('Định thức dùng ma trận vuông. [S1]'), Done({})],
                    [Delta('Định thức dùng ma trận vuông. [S1]'), Done({})]])
     store = InMemoryPhaseBStore()
-    use_case = AssistantUseCase(graph(), store, model)
-    first = use_case.ask('book', 1, 's', 'm1', 'Định thức là gì?', owner='alice',
+    g = graph()
+    seed_session(store, g, 's', 'alice', 'm1')
+    use_case = AssistantUseCase(g, store, model)
+    first = use_case.ask('book', 1, 's', 'Định thức là gì?', owner='alice',
                          allow_spend=True, client_turn_id='1')
-    replay = use_case.ask('book', 1, 's', 'm1', 'Định thức là gì?', owner='alice',
+    replay = use_case.ask('book', 1, 's', 'Định thức là gì?', owner='alice',
                           allow_spend=True, client_turn_id='1')
     assert replay == first and len(model.calls) == 1
-    second = use_case.ask('book', 1, 's', 'm1', 'Còn cái kia thì sao?', owner='alice', allow_spend=True)
+    second = use_case.ask('book', 1, 's', 'Còn cái kia thì sao?', owner='alice', allow_spend=True)
     assert second['linked_node_ids'] == ['b']
     assert not second['graph_cards'].get('reminders')
     other = use_case.session_state('book', 's', owner='bob')
@@ -179,7 +253,61 @@ def test_dry_run_never_calls_search_model_or_writes_store():
     model = Model([])
     def forbidden(*args, **kwargs):
         raise AssertionError('dry run called search')
-    use_case = AssistantUseCase(graph(), store, model, search=forbidden)
-    result = use_case.ask('book', 1, 's', 'm1', 'Ma trận', owner='alice', dry_run=True)
+    g = graph()
+    seed_session(store, g, 's', 'alice', 'm1')
+    use_case = AssistantUseCase(g, store, model, search=forbidden)
+    result = use_case.ask('book', 1, 's', 'Ma trận', owner='alice', dry_run=True)
     assert result['dry_run'] and not model.calls and not store.usage_rows()
-    assert not store.list_records('session')
+    before = store.get_record('session', 's')
+    assert before['turn_count'] == 0 and not store.list_records('turn') and not store.usage_rows()
+
+
+def test_roadmap_session_searches_all_and_returns_roadmap_and_module_cards():
+    import json
+    g, store = graph(), InMemoryPhaseBStore()
+    store.put_record('session', 'roadmap', {'contract_version': 'session-1', 'session_id': 'roadmap',
+        'owner': 'alice', 'doc_id': 'book', 'scope': {'kind': 'roadmap'}, 'title': 'Phiên học mới',
+        'title_source': 'rule', 'created_at': '2026-10-18T00:00:00+00:00',
+        'updated_at': '2026-10-18T00:00:00+00:00', 'turn_count': 0,
+        'last_question_preview': '', 'artifact_refs': [],
+        'state': {'reminded_node_ids': [], 'linked_node_ids': [], 'reminders_enabled': True}})
+    seen = []
+    def search(query, **kwargs):
+        seen.append(kwargs)
+        return [{'chunk_id': 'c1', 'text': g.chunks['c1'].text, 'page': 1}]
+    model = Model([[Delta('Ma trận là bảng các số. [S1]'), Done({})]])
+    result = AssistantUseCase(g, store, model, search=search,
+        concept_lookup=lambda query: {"matches": [{"node_id": "a"}]}).ask(
+        'book', 1, 'roadmap', 'Ma trận', owner='alice', allow_spend=True)
+    context = json.loads(model.calls[0][0][0]['text'])
+    assert seen[0]['current_module_id'] is None and seen[0]['scope'] == 'all'
+    assert context['scope']['kind'] == 'roadmap'
+    assert context['scope']['modules'] == [[1, 'Ma trận', 1], [2, 'Định thức', 1]]
+    assert len(result['graph_card']['roadmap']) == 2
+    assert not result['graph_card']['reminders']
+    assert result['linked_node_ids'] == ['a'] and result['status'] == 'answered'
+    assert result['graph_card']['module_cards'][0]['module_id'] == 'm1'
+
+
+def test_assistant_requires_existing_owned_session_and_rejects_legacy_module_field():
+    g, store = graph(), InMemoryPhaseBStore()
+    use_case = AssistantUseCase(g, store, Model([]))
+    with pytest.raises(KeyError):
+        use_case.ask('book', 1, 'missing', 'Ma trận', owner='alice', dry_run=True)
+    with pytest.raises(TypeError):
+        use_case.ask('book', 1, 'missing', 'm1', 'Ma trận', owner='alice', dry_run=True)
+
+
+def test_daily_limit_returns_code_written_answer_without_calling_model():
+    from datetime import datetime, timezone
+    g, store = graph(), InMemoryPhaseBStore()
+    seed_session(store, g, 's', 'alice', 'm1')
+    store.append_usage({'purpose': 'assistant', 'model_id': 'fake', 'doc_id': 'book',
+        'learner_id': 'alice', 'cost_usd': 0.20, 'created_at': datetime.now(timezone.utc).isoformat()})
+    model = Model([])
+    result = AssistantUseCase(g, store, model).ask('book', 1, 's', 'Ma trận là gì?', owner='alice',
+                                                   allow_spend=True)
+    assert result['status'] == 'daily_limit'
+    assert 'hôm nay' in result['answer']
+    assert not model.calls and len(store.usage_rows()) == 1
+    assert len(store.list_records('turn', owner='alice')) == 1

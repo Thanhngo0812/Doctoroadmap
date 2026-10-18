@@ -3,6 +3,7 @@ from __future__ import annotations
 import json
 import os
 from copy import deepcopy
+from datetime import datetime, timezone
 from pathlib import Path
 from threading import Event, RLock
 from time import monotonic
@@ -50,14 +51,25 @@ class _PhaseBStore:
             self._records.setdefault(kind, {})[record_id] = deepcopy(dict(value))
             self._persist()
 
-    def list_records(self, kind: str, owner: str | None = None) -> list[dict[str, Any]]:
+    def list_records(self, kind: str, owner: str | None = None, doc_id: str | None = None) -> list[dict[str, Any]]:
         with self._lock:
             rows = self._records.get(kind, {}).values()
-            return [deepcopy(row) for row in rows if owner is None or row.get("owner") == owner]
+            return [deepcopy(row) for row in rows
+                    if (owner is None or row.get("owner") == owner)
+                    and (doc_id is None or row.get("doc_id") == doc_id)]
+
+    def delete_record(self, kind: str, record_id: str) -> None:
+        with self._lock:
+            self._records.get(kind, {}).pop(record_id, None)
+            self._persist()
 
     def append_usage(self, row: Mapping[str, Any]) -> None:
+        if row.get("purpose") in {"assistant", "document"} and not row.get("learner_id"):
+            raise ValueError("assistant/document usage requires learner_id")
         with self._lock:
-            self._usage.append(deepcopy(dict(row)))
+            value = deepcopy(dict(row))
+            value.setdefault("created_at", datetime.now(timezone.utc).isoformat())
+            self._usage.append(value)
             self._persist()
 
     def usage_rows(self, doc_id: str | None = None) -> list[dict[str, Any]]:

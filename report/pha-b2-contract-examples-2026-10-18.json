@@ -1,0 +1,2254 @@
+{
+  "scope-1": {
+    "kind": "module",
+    "node_ids": [
+      "node_2e6c3034736aa5bad67a5a66",
+      "node_2375cfb4e0615c77c9dba5b4",
+      "node_33b84d0455fae32a45999573",
+      "node_879ef7528bba30a2008534d4",
+      "node_8e474a84c5f56fa28496a71c",
+      "node_2a900bf9fe3dddd246aca27c",
+      "node_9a38a78ea508c3c359dc7d56",
+      "node_d8b197474a638cae20003d51"
+    ],
+    "module_id_at_creation": "module_001",
+    "graph_version_at_creation": 57
+  },
+  "session-1": {
+    "contract_version": "session-1",
+    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "owner": "web-example",
+    "doc_id": "doc-1",
+    "scope": {
+      "kind": "module",
+      "node_ids": [
+        "node_2e6c3034736aa5bad67a5a66",
+        "node_2375cfb4e0615c77c9dba5b4",
+        "node_33b84d0455fae32a45999573",
+        "node_879ef7528bba30a2008534d4",
+        "node_8e474a84c5f56fa28496a71c",
+        "node_2a900bf9fe3dddd246aca27c",
+        "node_9a38a78ea508c3c359dc7d56",
+        "node_d8b197474a638cae20003d51"
+      ],
+      "module_id_at_creation": "module_001",
+      "graph_version_at_creation": 57
+    },
+    "title": "Tạo tài liệu về module tiếp theo.",
+    "title_source": "rule",
+    "created_at": "2026-10-18T11:43:38.797968+00:00",
+    "updated_at": "2026-10-18T11:43:39.265752+00:00",
+    "turn_count": 1,
+    "last_question_preview": "Tạo tài liệu về module tiếp theo.",
+    "artifact_refs": [
+      {
+        "kind": "document",
+        "artifact_id": "8e0000ef670d4e0bb5e065184e29a83a"
+      }
+    ],
+    "state": {
+      "owner": "web-example",
+      "doc_id": "doc-1",
+      "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+      "turns": [],
+      "reminded_node_ids": [],
+      "linked_node_ids": [],
+      "reminders_enabled": true
+    }
+  },
+  "turn-1": {
+    "contract_version": "turn-1",
+    "turn_id": "sha256:d6b30ca0a054d62df415b9fb2b887d67e600473304b0c2ae887da01bbc910d6c",
+    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "client_turn_id": "example-turn",
+    "question": "Tạo tài liệu về module tiếp theo.",
+    "answer": {
+      "contract_version": "answer-2",
+      "answer_id": "fa463dfe-2f09-431c-866a-cbbd68ccf7ff",
+      "owner": "web-example",
+      "doc_id": "doc-1",
+      "graph_version": 57,
+      "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+      "client_turn_id": "example-turn",
+      "status": "answered",
+      "answer": "Đã tạo nội dung theo yêu cầu. Bạn có thể mở bằng liên kết đính kèm.",
+      "citations": [],
+      "warnings": [],
+      "linked_node_ids": [],
+      "tool_calls": [
+        {
+          "name": "make_document",
+          "args": {
+            "request": "Tóm tắt định nghĩa trong module đã chọn.",
+            "scope": "module_002"
+          },
+          "by": "model",
+          "result_summary": {
+            "artifact": {
+              "kind": "document",
+              "id": "8e0000ef670d4e0bb5e065184e29a83a"
+            },
+            "title": "Tài liệu ôn tập",
+            "status": "ready"
+          },
+          "ms": 126
+        }
+      ],
+      "created_artifacts": [
+        {
+          "kind": "document",
+          "id": "8e0000ef670d4e0bb5e065184e29a83a"
+        }
+      ],
+      "outside_document_blocks": 0,
+      "graph_cards": {
+        "later_modules": [],
+        "module_cards": [],
+        "reminders": [],
+        "scope_note": null
+      },
+      "graph_card": {
+        "module_cards": [],
+        "reminders": [],
+        "scope_note": null
+      },
+      "nearby_sources": [
+        {
+          "label": "S1",
+          "chunk_id": "c_4e002b6b8c6deee0d5805c5b",
+          "text": "Thi viết rọc phách, thời gian làm bài: 75 phút.\nThang điểm: thang điểm chữ A, B, C, D, F.\nĐiểm đánh giá học phần: Z = 0 , 2 X +0 , 8 Y .\nBài giảng này là tài liệu chính thức và thống nhất của Bộ môn Toán và được dùng để giảng dạy cho sinh viên\nNgày phê duyệt: .../.../2010\nTrưởng Bộ môn: T.S Phạm Văn Minh",
+          "page": 9
+        },
+        {
+          "label": "S2",
+          "chunk_id": "c_08c2cf3eec3fe19860c04331",
+          "text": "Tiếp tục thực hiện đổi biến đối với f 2 theo trường hợp 1 hoặc trường hợp 2 cho đến khi nhận được dạng chính tắc của f :\n[formula]\nĐể tìm ma trận đổi biến Q mà phép đổi biến x = Qy đưa f về dạng chính tắc, ta phải giải ngược các biến x 1 , x 2 , . . . , x n theo các biến y 1 , y 2 , . . . , y n ; hoặc từ biểu diễn của y theo x suy ra y = Px và tính Q = P -1 .\n⊕ Nhận xét Thuật toán Lagrange có thể dẫn đến các dạng chính tắc khác nhau của cùng một dạng toàn phương.\nĐịnh luật quán tính. Khi một dạng toàn phương được đưa về dạng chính tắc bằng các cách khác nhau thì số các hệ số dương bằng nhau và số các hệ số âm bằng nhau.\nTrong dạng chính tắc của dạng toàn phương, số p các hệ số dương được gọi là chỉ số dương quán tính , số q các hệ số âm được gọi là chỉ số âm quán tính , cặp ( p, q ) được gọi là cặp chỉ số quán tính .\nVí dụ 5. Đưa dạng toàn phương trong R 3 sau về dạng chính tắc:",
+          "page": 92
+        },
+        {
+          "label": "S3",
+          "chunk_id": "c_6a1d0b315c0769f06da67fb6",
+          "text": "̸\n✷ Định nghĩa 6. (a) Số phần tử của mỗi cơ sở của không gian véc tơ hữu hạn sinh V = { θ } được gọi là số chiều của V và được ký hiệu là dim V . Nếu V = { θ } ta quy ước dim V = 0 .\n(b) Nếu V không có một cơ sở nào gồm hữu hạn phần tử thì nó được gọi là một không gian véc tơ vô hạn chiều.\nTrong tài liệu này ta chỉ xét các không gian hữu hạn chiều.\n⊙ Bổ đề Trong không gian véc tơ V , giả sử hệ véc tơ S = { α 1 , . . . , α r } độc lập tuyến tính, T = { β 1 , . . . , β s } là một hệ sinh. Khi đó r ≤ s .\nChứng minh Vì T là hệ sinh của V nên\n[formula]\nXét hệ phương trình tuyến tính mà ẩn là c\ni :\n[formula]\nNếu r ≥ s thì hệ thuần nhất này có số phương trình ít hơn số ẩn, do đó nó có nghiệm không tầm thường, nghĩa là tồn tại r số thực c i không đồng thời bằng 0 thỏa mãn s đẳng thức trên. Nhân đẳng thức thứ nhất với β 1 , đẳng thức thứ hai với β 2 , . . . , đẳng thức thứ s với β s rồi cộng lại ta được",
+          "page": 49
+        }
+      ],
+      "media": [],
+      "formula_refs": [],
+      "usage": {
+        "model_calls": 2,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "thought_tokens": 0,
+        "usd": 0.0,
+        "ms": 425,
+        "ttft_ms": null,
+        "invalid_tool_calls": 0,
+        "invalid_tool_call_rate": 0.0,
+        "context_hash": "sha256:8b4a86b1a3f63aa71b5ca4ef0213faa2e6369d6bd84300f0d3ae22a22efb324e"
+      }
+    },
+    "created_at": "2026-10-18T11:43:39.265752+00:00",
+    "owner": "web-example",
+    "doc_id": "doc-1"
+  },
+  "library-1": {
+    "here": {
+      "contract_version": "library-1",
+      "doc_id": "doc-1",
+      "scope_filter": "module:module_001",
+      "items": [
+        {
+          "kind": "document",
+          "id": "8e0000ef670d4e0bb5e065184e29a83a",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:43:39.101964+00:00",
+          "origin": "assistant",
+          "group": "here",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ]
+        },
+        {
+          "kind": "quiz_attempt",
+          "id": "qa_ae863ee31a122e8d303671af",
+          "title": "Quiz",
+          "created_at": "2026-10-18T11:28:00.258895+00:00",
+          "origin": "button",
+          "group": "elsewhere",
+          "module_labels": [
+            "Phần tử · Tập hợp",
+            "Tính chất của phép toán tập hợp",
+            "Quan hệ tương đương, quan hệ thứ tự",
+            "Đồ thị của ánh xạ",
+            "Nhóm, Vành và Trường",
+            "Khái niệm ma trận và các dạng đặc biệt",
+            "Ma trận tam giác"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "document",
+          "id": "554471aa8d9440bf91adc7404386bfef",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:28:00.021965+00:00",
+          "origin": "assistant",
+          "group": "here",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ],
+          "session_deleted": true
+        }
+      ]
+    },
+    "elsewhere": {
+      "contract_version": "library-1",
+      "doc_id": "doc-1",
+      "scope_filter": "module:module_002",
+      "items": [
+        {
+          "kind": "document",
+          "id": "8e0000ef670d4e0bb5e065184e29a83a",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:43:39.101964+00:00",
+          "origin": "assistant",
+          "group": "elsewhere",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "quiz_attempt",
+          "id": "qa_ae863ee31a122e8d303671af",
+          "title": "Quiz",
+          "created_at": "2026-10-18T11:28:00.258895+00:00",
+          "origin": "button",
+          "group": "elsewhere",
+          "module_labels": [
+            "Phần tử · Tập hợp",
+            "Tính chất của phép toán tập hợp",
+            "Quan hệ tương đương, quan hệ thứ tự",
+            "Đồ thị của ánh xạ",
+            "Nhóm, Vành và Trường",
+            "Khái niệm ma trận và các dạng đặc biệt",
+            "Ma trận tam giác"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "document",
+          "id": "554471aa8d9440bf91adc7404386bfef",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:28:00.021965+00:00",
+          "origin": "assistant",
+          "group": "elsewhere",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ],
+          "label": "tạo ở nơi khác",
+          "session_deleted": true
+        }
+      ]
+    },
+    "after_session_delete": {
+      "contract_version": "library-1",
+      "doc_id": "doc-1",
+      "scope_filter": "module:module_001",
+      "items": [
+        {
+          "kind": "quiz_attempt",
+          "id": "qa_27b5648baa71c99cb46ad42a",
+          "title": "Quiz",
+          "created_at": "2026-10-18T11:43:39.373407+00:00",
+          "origin": "button",
+          "group": "elsewhere",
+          "module_labels": [
+            "Phần tử · Tập hợp",
+            "Tính chất của phép toán tập hợp",
+            "Quan hệ tương đương, quan hệ thứ tự",
+            "Đồ thị của ánh xạ",
+            "Nhóm, Vành và Trường",
+            "Khái niệm ma trận và các dạng đặc biệt",
+            "Ma trận tam giác"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "document",
+          "id": "8e0000ef670d4e0bb5e065184e29a83a",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:43:39.101964+00:00",
+          "origin": "assistant",
+          "group": "here",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ],
+          "session_deleted": true
+        },
+        {
+          "kind": "quiz_attempt",
+          "id": "qa_ae863ee31a122e8d303671af",
+          "title": "Quiz",
+          "created_at": "2026-10-18T11:28:00.258895+00:00",
+          "origin": "button",
+          "group": "elsewhere",
+          "module_labels": [
+            "Phần tử · Tập hợp",
+            "Tính chất của phép toán tập hợp",
+            "Quan hệ tương đương, quan hệ thứ tự",
+            "Đồ thị của ánh xạ",
+            "Nhóm, Vành và Trường",
+            "Khái niệm ma trận và các dạng đặc biệt",
+            "Ma trận tam giác"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "document",
+          "id": "554471aa8d9440bf91adc7404386bfef",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:28:00.021965+00:00",
+          "origin": "assistant",
+          "group": "here",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ],
+          "session_deleted": true
+        }
+      ]
+    }
+  },
+  "progress-1": {
+    "contract_version": "progress-1",
+    "doc_id": "doc-1",
+    "nodes": {
+      "node_2e6c3034736aa5bad67a5a66": {
+        "state": "learned",
+        "source": "learner",
+        "updated_at": "2026-10-18T11:43:39.291341+00:00"
+      },
+      "node_2375cfb4e0615c77c9dba5b4": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_33b84d0455fae32a45999573": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_879ef7528bba30a2008534d4": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8e474a84c5f56fa28496a71c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_2a900bf9fe3dddd246aca27c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_9a38a78ea508c3c359dc7d56": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d8b197474a638cae20003d51": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ad8ca23f71b1ba791bf7554b": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_6b461f50f7e92ef9512068ac": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_0d918b95e50271819c19bf16": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ee380b881a7a7804f2efa151": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_42c7ccebf1eaeba45b0493d4": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_fe32b01a8b123af52280e9dd": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_4875720d652ab554d105b36f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_49d44cfe9955d226ef1de294": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c7ef3d5d462cbefe56200a3c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_df8a2a2e358eb5b0415fcb34": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_543e21cd99c9a577bc4d3384": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c8fef85bc698911cd741bc3d": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_5c90e4490d7cfd281474d584": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_fe38f4700f1017b0446c4a73": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c355f400951888c06f13574e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_623aa07230e2585950a1b5dd": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_86bd1c69358dc905758ee196": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_76a654ab41c59eaee82c59e1": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_eb63a49c99dc57ac92202e93": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8087bc8e7d748f848584572a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3527ea9310ba5e0632752a79": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_32e99dd8671b0c6e31304027": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_93c9075a49fc7275460664b8": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_0843b0c96b3d621169f426d3": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_91ead7594631299218cc04ad": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_7f76a5748cb7c611280d2d55": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_2e314170771d12af52da066f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d03f11e00eb5beea03359d2c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_a41803b4e8ba34524a09e9e3": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_aa55c31bed4ac6732da60771": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_b68731b952e90ceb21373a8f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_b30c2ce0538cd3bd3e53913a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c368bb8f7f43969c42b42c05": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_62b3242f2e10aad7a92b96f2": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_928685cdd8b9a3cf3777c16c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_41a885bf1e0d312b20e12c35": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_2decb62274c28e73e138a22b": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_63e56f68ef4cd947ec1cabca": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ffdd95fd3006dde50208b062": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_dceb885e838ce5510e3a5b19": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_86dd91ad47764aff06eb295c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_bca9f0206d298279902cdd04": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_83b7715a4269bcab35d49bfb": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_da34b83fa21a0ab912bbdd87": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_acc5e59aacf46a3400ad04b2": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_6ab014792c3fbd838226d59f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ed955b74cb1d20036fe52a35": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_b9a1d0f7ab8c1bf77c1143e7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3fde72a22d7b671369f58e9b": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_79ea4d468369cee40cfcbe98": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_66a761e0a7a58674121e4adc": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c5aab845f976b4003a4e369e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_49f276871b8136c48783f1b6": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_00e025edd0e76a1fa337e6f0": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_bcbf4fdb9b38dd483ea12e06": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_19d17ec3d2ec79dac74dedcc": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_fe5a2baa68cc9b6c23e8992d": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_56d275d6be0b7cdc76e7b1e7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_fcab564b601af2c0258b9846": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_cd2c97f85324ff884819593b": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8bf9c0732442c027f09e3751": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_bd6fc430a661e7deb00dcdb5": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_55b3342123ea8f84d96d3d2e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f985fcc2b97d5ac84c824846": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_4370e7b675f6f20fdad8ce7e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f312fe136c6e1107ef4e6537": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_68fd2af22f0401bc69b3cc6e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_e631db475fbb5e63522b9179": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_b5fd71bff11a943b6759a0a4": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d13f3bc48e23be62f46a9830": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_0f54b8cd520630390ee8e43a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f245e901fcf59d930e67a11a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_daea0f6c13569a90129a144f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_5532d7f547b891dd382d2842": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_658034a06c96047131b69fd1": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_a96eccb6d853fc0b99823ac8": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_1a9f731706fca688f114663d": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f2a99d89040ceee1b8f67f1b": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_1b2fbcf24dd947855d8142ce": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_76c43c746918bf2691d8cc2f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_0a56140c68f715b91d6e1dcb": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8dc6d79df65061bc5996f30f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3b9fbbb2b7d842a3e0ac4887": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_cb4b961f8858685c013930c9": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_a43a83744ce0f2a7c0f5b33f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_a25cf8cde0ec1f883c288548": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_549c78dab94fef99cc916475": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f632bd4f7b2ab2e2e9e742f7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_423c99b33620291acc6761d0": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8ce297f9be989a93fa21389b": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_6d0c840d4f1fc848144d8dcd": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_967a39323a881288f2a7e63a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f3e9b16369664b04dcff549b": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_80cf4a791730b002b741068d": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_556b4b72945a4d3d024d53e1": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_727cb573e02f1d88831f8e98": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8d1d3e813479a289b5bc06f4": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_888604bcae8e55bcecdb9e86": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_4828dd4e63519dfab5bd0711": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_4257eefe62f9e7ffdc1d92df": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ad4633d69e6c2b51ac7ac631": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_7cb056ef5f39ce6552993bba": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_e8e449d38b18d1bf048e4321": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_b89ae11bb8d95caa8d28d829": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_7e5c58db20b37b301f734c78": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c20fee1b74eabb4f8124f236": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_472a0050f28475f6016ecffb": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8b1d86af8ed7a42752e7c0f2": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_eee3d5cb5f5d36aa2767115a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_952d8a7c5ac60d0f1b088985": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_df530c03bffae0c91c327b73": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_22c4892fdc800f6c65f00afe": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_804b09a3363b346e216638a5": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_0f25975408d5fcb4ce1d8326": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ee7632ab34b0d99aa9fd7fa2": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_46832b38ee6e1d6e6bc8f020": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d90d37b15d1eba899662d887": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_048eac55c33dca7a5bf0d4be": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ae562fe8b08ab24b2558c2c2": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d60ebf4371bef3f4c3996ef7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_1bbecbacefe5a37bf50c8e6c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8847bfbcf214ed3039aa8606": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_03019c15b814bf1173fe47f7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_cea0789f20610e8de50a3ebb": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_5a78fa52c0b53209c192bf08": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_6a300ae6e23de334f3135b05": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_5dcd2a2c1ceb26db4e9c9ea7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c7675e7c73c8b2104d6291b1": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_5c3fc10a203a324de2c670de": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_a1c09bc47f16b9231c5fc813": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_a1d9a83d167e4b443a68bf37": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_cd50ea0e35a87b5e57239068": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3e233f9397560fcc3ec312de": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3412dfbd2ed7d50272d2ac7f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_6c56b8ebbc6f16eaadbe0455": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_e26259ccbb07cde47fdab0cc": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_80d8e8b397906eba554bd559": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8179fe4853e4004678895c6c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_fec06364a031b39460dd476e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_7b0e57c9a3ad9e469131c056": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_b182c75815b631d843b00697": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f729ff49f69d6eed27a9f219": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3b56359cc7d0cd9aaa3b53c2": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_8d98ce010461d3fb51899b4d": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_896f1ec7367e10a4b27abd7c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_0206d65ec77db119dea1de97": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_662f0441cfa68b376c1c33a3": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3667666646ed5a4051cf2804": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_f687b6c51bc0362132c06eb2": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_4c25ab0f5ac6aca76c4011e9": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_0c88944f3df8e9ca1a35a0b1": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_67458a98264ed07d0256b553": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d490e61dbf6b54f8e2e6c8e7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c8be35631360efb9d22ea259": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_7460f3c8ac4578284b6c97ca": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_af14a3ef2a0229575578960e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_fe03d1aa431c7cb4a520e787": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_4d418222f0814bdf58e9bb7d": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_201d031f119cee940d41145c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_2b03fd4e716eb0f949ad661c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_6387130f79fe63a5b3eaac38": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_71e24593705c57c8933bc748": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_2f92e737665d7f6bf10ed1df": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_1ec9d8ce06c1065587ad19d3": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_9e116a1e3f21bfa8bb4e5a12": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_951c58cc9e67e2e842590c85": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_a322333f4bcaf26164e53d29": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_c339ecb79bb17304a072c787": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_9b5153ce01444c2f5c25c923": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_912dbbc956d34d8ec82439a5": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_ba592da1f056ce46b400a4cf": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_dac07d225b5cc8a8713a83e5": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_399d2fccc116ced01f67db44": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_80bb1e24cc2951655525f104": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_9ae11f25e5e4ac559de1a8fd": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_25ccc1f8592ce379ad35470a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_35d25a0048b6bedb41707c05": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_82808b6f35b26fef03b89b84": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_cc93e30e0395a3c4454bc86c": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_4beffadec4cae3b4cd747232": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_debde242dce635c170ba31e0": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_7183069d491d44e66d24a339": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_132c8854cb40928c6b397b71": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_06e6b5173c06faf5aecb116f": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_1762952555d0879de05592f3": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_551593d0def7da1fd1239202": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_87df5bc80356371ea3448064": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_329bdeee42c2ce5d5c393315": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d021f8a03594850660445e9e": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_5fc9bb7fe30faf0e17851b62": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_2da7792676e443f6a86c7234": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_3e26d84b7c1cf4bfc6cfa6a5": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_2f27486fc090de18d149cb91": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_73e2cd010708f190fcc84e98": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_d9c79253a6fd01c76b0cfa6a": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_95987e941eb55b9cf2633af5": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      },
+      "node_b14fa811c9f0acefd69ef3c7": {
+        "state": "not_learned",
+        "source": null,
+        "updated_at": null
+      }
+    },
+    "modules": [
+      {
+        "module_id": "module_001",
+        "learned": 1,
+        "total": 8
+      },
+      {
+        "module_id": "module_002",
+        "learned": 0,
+        "total": 8
+      },
+      {
+        "module_id": "module_003",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_004",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_005",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_006",
+        "learned": 0,
+        "total": 8
+      },
+      {
+        "module_id": "module_007",
+        "learned": 0,
+        "total": 7
+      },
+      {
+        "module_id": "module_008",
+        "learned": 0,
+        "total": 7
+      },
+      {
+        "module_id": "module_009",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_010",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_011",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_012",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_013",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_014",
+        "learned": 0,
+        "total": 5
+      },
+      {
+        "module_id": "module_015",
+        "learned": 0,
+        "total": 4
+      },
+      {
+        "module_id": "module_016",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_017",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_018",
+        "learned": 0,
+        "total": 5
+      },
+      {
+        "module_id": "module_019",
+        "learned": 0,
+        "total": 8
+      },
+      {
+        "module_id": "module_020",
+        "learned": 0,
+        "total": 4
+      },
+      {
+        "module_id": "module_021",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_022",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_023",
+        "learned": 0,
+        "total": 7
+      },
+      {
+        "module_id": "module_024",
+        "learned": 0,
+        "total": 7
+      },
+      {
+        "module_id": "module_025",
+        "learned": 0,
+        "total": 7
+      },
+      {
+        "module_id": "module_026",
+        "learned": 0,
+        "total": 7
+      },
+      {
+        "module_id": "module_027",
+        "learned": 0,
+        "total": 7
+      },
+      {
+        "module_id": "module_028",
+        "learned": 0,
+        "total": 6
+      },
+      {
+        "module_id": "module_029",
+        "learned": 0,
+        "total": 3
+      },
+      {
+        "module_id": "module_030",
+        "learned": 0,
+        "total": 5
+      },
+      {
+        "module_id": "module_031",
+        "learned": 0,
+        "total": 4
+      },
+      {
+        "module_id": "module_032",
+        "learned": 0,
+        "total": 8
+      },
+      {
+        "module_id": "module_033",
+        "learned": 0,
+        "total": 8
+      }
+    ]
+  },
+  "lecture-2": {
+    "contract_version": "lecture-2",
+    "definition": {
+      "chunk_id": "c_bbf7e463cb24c05c3001b502",
+      "citation": {
+        "char_end": 19652,
+        "char_start": 19483,
+        "chunk_id": "c_bbf7e463cb24c05c3001b502",
+        "family": "S",
+        "label": "S1",
+        "page": 17,
+        "quote": "Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận, nghĩa là khi X có chiều hướng tăng lên (giảm xuống) thì Y cũng có chiều hướng tăng lên (giảm xuống).",
+        "section_path": [
+          "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+          "1.8. Hệ số tương quan mẫu"
+        ]
+      },
+      "formula_refs": [
+        {
+          "bbox": [
+            267.29290074025,
+            535.5123153681657,
+            343.518045273325,
+            499.58453658406444
+          ],
+          "formula_id": "01c011c439c83340e134130d66d1e15dd87829f83d550b9eecb1b95544dcd4d0",
+          "image_ref": "images/189252144ecfaac3323e5bde4288090ff576cd749fcc6a20c2a2b5abcdd0b856.png",
+          "label": "CT1",
+          "media_id": "189252144ecfaac3323e5bde4288090ff576cd749fcc6a20c2a2b5abcdd0b856",
+          "occurrence_id": "01c011c439c83340e134130d66d1e15dd87829f83d550b9eecb1b95544dcd4d0@p17:r228",
+          "page": 17,
+          "status": "cut"
+        }
+      ],
+      "page": 17,
+      "quote": "Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận, nghĩa là khi X có chiều hướng tăng lên (giảm xuống) thì Y cũng có chiều hướng tăng lên (giảm xuống)."
+    },
+    "diagnostics": {
+      "generation_count": 1,
+      "skeleton_ms": 7,
+      "gate_ms": 12,
+      "final_ms": 22,
+      "gate_to_final_ms": 10
+    },
+    "doc_id": "xstk-ch3-1",
+    "failure": null,
+    "graph_version": 68,
+    "lecture_key": "sha256:2ff9eea32811922f3427e299a58aad5d9a77b9d2c2c2668948a2aaa167ba2ce0",
+    "media": [],
+    "next_up": [],
+    "node_id": "node_9b61dda52e52f46dc6d9c6f7",
+    "position": {
+      "count_in_module": 5,
+      "index_in_module": 4,
+      "module_id": "module_005",
+      "module_index": 4,
+      "next_node_id": "node_03e8e6aa1f03837d56fdfea6",
+      "previous_node_id": "node_72064690091e8afd27d480ba"
+    },
+    "prerequisites": [
+      {
+        "bridge": {
+          "check": "pass",
+          "citations": [
+            {
+              "char_end": 19550,
+              "char_start": 19483,
+              "chunk_id": "c_bbf7e463cb24c05c3001b502",
+              "family": "Q",
+              "label": "Q1",
+              "page": 17,
+              "quote": "Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận",
+              "section_path": [
+                "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+                "1.8. Hệ số tương quan mẫu"
+              ]
+            }
+          ],
+          "prereq": "node_477eb4e5ec735d735f60f1f9",
+          "text": "Khi đã xác định được hệ số tương quan mẫu, ta có thể xét dấu của nó: \"Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận\""
+        },
+        "recall": {
+          "definition": {
+            "citation": {
+              "char_end": 18816,
+              "char_start": 18687,
+              "chunk_id": "c_bbf7e463cb24c05c3001b502",
+              "family": "N",
+              "label": "N1",
+              "page": 17,
+              "quote": "Hệ số thể hiện cường độ và chiều hướng của quan hệ tương quan giữa hai dấu hiệu X và Y trên mẫu được gọi là hệ số tương quan mẫu.",
+              "section_path": [
+                "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+                "1.8. Hệ số tương quan mẫu"
+              ]
+            },
+            "quote": "Hệ số thể hiện cường độ và chiều hướng của quan hệ tương quan giữa hai dấu hiệu X và Y trên mẫu được gọi là hệ số tương quan mẫu."
+          },
+          "module_index": 4,
+          "module_title": "Hệ số tương quan mẫu và quan hệ giữa hai dấu hiệu",
+          "name": "Hệ số tương quan mẫu",
+          "node_id": "node_477eb4e5ec735d735f60f1f9",
+          "order_note": "cung_module_truoc"
+        },
+        "learner_status": "unknown"
+      }
+    ],
+    "sections": [
+      {
+        "items": [
+          {
+            "check": "pass",
+            "citations": [
+              {
+                "char_end": 19550,
+                "char_start": 19483,
+                "chunk_id": "c_bbf7e463cb24c05c3001b502",
+                "family": "Q",
+                "label": "Q1",
+                "page": 17,
+                "quote": "Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận",
+                "section_path": [
+                  "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+                  "1.8. Hệ số tương quan mẫu"
+                ]
+              }
+            ],
+            "prereq": "node_477eb4e5ec735d735f60f1f9",
+            "text": "Khi đã xác định được hệ số tương quan mẫu, ta có thể xét dấu của nó: \"Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận\""
+          }
+        ],
+        "kind": "cau_noi"
+      },
+      {
+        "items": [
+          {
+            "check": "pass",
+            "citations": [
+              {
+                "char_end": 19652,
+                "char_start": 19483,
+                "chunk_id": "c_bbf7e463cb24c05c3001b502",
+                "family": "S",
+                "label": "S1",
+                "page": 17,
+                "quote": "Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận, nghĩa là khi X có chiều hướng tăng lên (giảm xuống) thì Y cũng có chiều hướng tăng lên (giảm xuống).",
+                "section_path": [
+                  "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+                  "1.8. Hệ số tương quan mẫu"
+                ]
+              }
+            ],
+            "formula_labels": [],
+            "outside_document": false,
+            "text": "Quan hệ tương quan thuận xảy ra khi hệ số tương quan mẫu mang giá trị dương."
+          },
+          {
+            "check": "pass",
+            "citations": [
+              {
+                "char_end": 19652,
+                "char_start": 19552,
+                "chunk_id": "c_bbf7e463cb24c05c3001b502",
+                "family": "S",
+                "label": "S1",
+                "page": 17,
+                "quote": "nghĩa là khi X có chiều hướng tăng lên (giảm xuống) thì Y cũng có chiều hướng tăng lên (giảm xuống).",
+                "section_path": [
+                  "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+                  "1.8. Hệ số tương quan mẫu"
+                ]
+              }
+            ],
+            "formula_labels": [],
+            "outside_document": false,
+            "text": "Trong mối quan hệ này, sự biến thiên của hai dấu hiệu định lượng X và Y cùng chiều với nhau."
+          }
+        ],
+        "kind": "giai_thich"
+      },
+      {
+        "items": [
+          {
+            "answer": "Khi hệ số tương quan mẫu rXY lớn hơn 0.",
+            "citations": [
+              {
+                "char_end": 19550,
+                "char_start": 19483,
+                "chunk_id": "c_bbf7e463cb24c05c3001b502",
+                "family": "S",
+                "label": "S1",
+                "page": 17,
+                "quote": "Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận",
+                "section_path": [
+                  "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+                  "1.8. Hệ số tương quan mẫu"
+                ]
+              }
+            ],
+            "kind": "conceptual",
+            "question": "Dấu hiệu nào cho biết hai biến X và Y có mối quan hệ tương quan thuận?"
+          }
+        ],
+        "kind": "tu_kiem_tra"
+      }
+    ],
+    "self_check": {
+      "answer": "Khi hệ số tương quan mẫu rXY lớn hơn 0.",
+      "citations": [
+        {
+          "char_end": 19550,
+          "char_start": 19483,
+          "chunk_id": "c_bbf7e463cb24c05c3001b502",
+          "family": "S",
+          "label": "S1",
+          "page": 17,
+          "quote": "Nếu rXY > 0 thì hai dấu hiệu X và Y có mối quan hệ tương quan thuận",
+          "section_path": [
+            "THỐNG KÊ TOÁN §1. LÝ THUYẾT MẪU",
+            "1.8. Hệ số tương quan mẫu"
+          ]
+        }
+      ],
+      "kind": "conceptual",
+      "question": "Dấu hiệu nào cho biết hai biến X và Y có mối quan hệ tương quan thuận?"
+    },
+    "status": "ready",
+    "usage": {
+      "candidatesTokenCount": 1035,
+      "cost_usd": 0.0,
+      "elapsed_ms": 9,
+      "model_id": "gemini-3.1-flash-lite",
+      "promptTokenCount": 3769,
+      "thoughtsTokenCount": 0
+    },
+    "warnings": []
+  },
+  "lecture-2-failed": {
+    "contract_version": "lecture-2",
+    "definition": {
+      "chunk_id": "c_eb3a31f1693106b271e6bf5d",
+      "citation": {
+        "char_end": 464971,
+        "char_start": 464687,
+        "chunk_id": "c_eb3a31f1693106b271e6bf5d",
+        "family": "S",
+        "label": "S1",
+        "page": 177,
+        "quote": "Chức năng đối ngoại của nhà nước nhằm bảo vệ biên giới lãnh thổ quốc gia và thực hiện các mối quan hệ kinh tế, chính trị, xã hội với các nhà nước khác vì lợi ích của giai cấp thống trị cũng như lợi ích quốc gia, khi lợi ích quốc gia không mâu thuẫn với lợi ích của giai cấp thống trị.",
+        "section_path": [
+          "Phần II",
+          "Chương XII",
+          "Nhà nước và cách mạng xã hội",
+          "I- Nhà nước",
+          "3. Chức năng cơ bản của nhà nước",
+          "b) Chức năng đối nội và chức năng đối ngoại"
+        ]
+      },
+      "formula_refs": [],
+      "page": 177,
+      "quote": "Chức năng đối ngoại của nhà nước nhằm bảo vệ biên giới lãnh thổ quốc gia và thực hiện các mối quan hệ kinh tế, chính trị, xã hội với các nhà nước khác vì lợi ích của giai cấp thống trị cũng như lợi ích quốc gia, khi lợi ích quốc gia không mâu thuẫn với lợi ích của giai cấp thống trị."
+    },
+    "doc_id": "doc-4",
+    "failure": {
+      "ask_assistant": true,
+      "message": "Bài giảng chưa sẵn sàng; bạn có thể đọc trang sách hoặc hỏi trợ lý.",
+      "read_page": {
+        "chunk_id": "c_eb3a31f1693106b271e6bf5d",
+        "page": 177
+      },
+      "reason_code": "kiem_noi_dung",
+      "retryable": false
+    },
+    "graph_version": 27,
+    "lecture_key": "sha256:e74d795388b2b2ebf49168098cbb514e00d8bd31f1283c9b82a1da8e8cf62663",
+    "media": [],
+    "next_up": [],
+    "node_id": "node_7f67aa65d0ea85a63653c752",
+    "position": {
+      "count_in_module": 7,
+      "index_in_module": 3,
+      "module_id": "module_076",
+      "module_index": 75,
+      "next_node_id": "node_c49fa59887d28a5c49735eba",
+      "previous_node_id": "node_c75b8496136747edee3846d7"
+    },
+    "prerequisites": [
+      {
+        "bridge": null,
+        "learner_status": "unknown",
+        "recall": {
+          "definition": {
+            "citation": {
+              "char_end": 464354,
+              "char_start": 464232,
+              "chunk_id": "c_eb3a31f1693106b271e6bf5d",
+              "family": "N",
+              "label": "N1",
+              "page": 177,
+              "quote": "Chức năng đối nội của nhà nước nhằm duy trì trật tự kinh tế, xã hội, chính trị và những trật tự khác hiện có trong xã hội.",
+              "section_path": [
+                "Phần II",
+                "Chương XII",
+                "Nhà nước và cách mạng xã hội",
+                "I- Nhà nước",
+                "3. Chức năng cơ bản của nhà nước",
+                "b) Chức năng đối nội và chức năng đối ngoại"
+              ]
+            },
+            "quote": "Chức năng đối nội của nhà nước nhằm duy trì trật tự kinh tế, xã hội, chính trị và những trật tự khác hiện có trong xã hội."
+          },
+          "module_index": 75,
+          "module_title": "Chức năng và kiểu nhà nước",
+          "name": "Chức năng đối nội",
+          "node_id": "node_c75b8496136747edee3846d7",
+          "order_note": "cung_module_truoc"
+        }
+      }
+    ],
+    "sections": [],
+    "self_check": null,
+    "status": "failed",
+    "usage": {
+      "candidatesTokenCount": 2213,
+      "cost_usd": 0.0,
+      "model_id": "gemini-3.1-flash-lite",
+      "promptTokenCount": 7340,
+      "thoughtsTokenCount": 0
+    },
+    "warnings": []
+  },
+  "answer-2": {
+    "contract_version": "answer-2",
+    "answer_id": "fa463dfe-2f09-431c-866a-cbbd68ccf7ff",
+    "owner": "web-example",
+    "doc_id": "doc-1",
+    "graph_version": 57,
+    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "client_turn_id": "example-turn",
+    "status": "answered",
+    "answer": "Đã tạo nội dung theo yêu cầu. Bạn có thể mở bằng liên kết đính kèm.",
+    "citations": [],
+    "warnings": [],
+    "linked_node_ids": [],
+    "tool_calls": [
+      {
+        "name": "make_document",
+        "args": {
+          "request": "Tóm tắt định nghĩa trong module đã chọn.",
+          "scope": "module_002"
+        },
+        "by": "model",
+        "result_summary": {
+          "artifact": {
+            "kind": "document",
+            "id": "8e0000ef670d4e0bb5e065184e29a83a"
+          },
+          "title": "Tài liệu ôn tập",
+          "status": "ready"
+        },
+        "ms": 126
+      }
+    ],
+    "created_artifacts": [
+      {
+        "kind": "document",
+        "id": "8e0000ef670d4e0bb5e065184e29a83a"
+      }
+    ],
+    "outside_document_blocks": 0,
+    "graph_cards": {
+      "later_modules": [],
+      "module_cards": [],
+      "reminders": [],
+      "scope_note": null
+    },
+    "graph_card": {
+      "module_cards": [],
+      "reminders": [],
+      "scope_note": null
+    },
+    "nearby_sources": [
+      {
+        "label": "S1",
+        "chunk_id": "c_4e002b6b8c6deee0d5805c5b",
+        "text": "Thi viết rọc phách, thời gian làm bài: 75 phút.\nThang điểm: thang điểm chữ A, B, C, D, F.\nĐiểm đánh giá học phần: Z = 0 , 2 X +0 , 8 Y .\nBài giảng này là tài liệu chính thức và thống nhất của Bộ môn Toán và được dùng để giảng dạy cho sinh viên\nNgày phê duyệt: .../.../2010\nTrưởng Bộ môn: T.S Phạm Văn Minh",
+        "page": 9
+      },
+      {
+        "label": "S2",
+        "chunk_id": "c_08c2cf3eec3fe19860c04331",
+        "text": "Tiếp tục thực hiện đổi biến đối với f 2 theo trường hợp 1 hoặc trường hợp 2 cho đến khi nhận được dạng chính tắc của f :\n[formula]\nĐể tìm ma trận đổi biến Q mà phép đổi biến x = Qy đưa f về dạng chính tắc, ta phải giải ngược các biến x 1 , x 2 , . . . , x n theo các biến y 1 , y 2 , . . . , y n ; hoặc từ biểu diễn của y theo x suy ra y = Px và tính Q = P -1 .\n⊕ Nhận xét Thuật toán Lagrange có thể dẫn đến các dạng chính tắc khác nhau của cùng một dạng toàn phương.\nĐịnh luật quán tính. Khi một dạng toàn phương được đưa về dạng chính tắc bằng các cách khác nhau thì số các hệ số dương bằng nhau và số các hệ số âm bằng nhau.\nTrong dạng chính tắc của dạng toàn phương, số p các hệ số dương được gọi là chỉ số dương quán tính , số q các hệ số âm được gọi là chỉ số âm quán tính , cặp ( p, q ) được gọi là cặp chỉ số quán tính .\nVí dụ 5. Đưa dạng toàn phương trong R 3 sau về dạng chính tắc:",
+        "page": 92
+      },
+      {
+        "label": "S3",
+        "chunk_id": "c_6a1d0b315c0769f06da67fb6",
+        "text": "̸\n✷ Định nghĩa 6. (a) Số phần tử của mỗi cơ sở của không gian véc tơ hữu hạn sinh V = { θ } được gọi là số chiều của V và được ký hiệu là dim V . Nếu V = { θ } ta quy ước dim V = 0 .\n(b) Nếu V không có một cơ sở nào gồm hữu hạn phần tử thì nó được gọi là một không gian véc tơ vô hạn chiều.\nTrong tài liệu này ta chỉ xét các không gian hữu hạn chiều.\n⊙ Bổ đề Trong không gian véc tơ V , giả sử hệ véc tơ S = { α 1 , . . . , α r } độc lập tuyến tính, T = { β 1 , . . . , β s } là một hệ sinh. Khi đó r ≤ s .\nChứng minh Vì T là hệ sinh của V nên\n[formula]\nXét hệ phương trình tuyến tính mà ẩn là c\ni :\n[formula]\nNếu r ≥ s thì hệ thuần nhất này có số phương trình ít hơn số ẩn, do đó nó có nghiệm không tầm thường, nghĩa là tồn tại r số thực c i không đồng thời bằng 0 thỏa mãn s đẳng thức trên. Nhân đẳng thức thứ nhất với β 1 , đẳng thức thứ hai với β 2 , . . . , đẳng thức thứ s với β s rồi cộng lại ta được",
+        "page": 49
+      }
+    ],
+    "media": [],
+    "formula_refs": [],
+    "usage": {
+      "model_calls": 2,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "thought_tokens": 0,
+      "usd": 0.0,
+      "ms": 425,
+      "ttft_ms": null,
+      "invalid_tool_calls": 0,
+      "invalid_tool_call_rate": 0.0,
+      "context_hash": "sha256:8b4a86b1a3f63aa71b5ca4ef0213faa2e6369d6bd84300f0d3ae22a22efb324e"
+    }
+  },
+  "quiz-2": {
+    "contract_version": "quiz-2",
+    "attempt_id": "qa_27b5648baa71c99cb46ad42a",
+    "owner": "web-example",
+    "doc_id": "doc-1",
+    "module_id": null,
+    "graph_version": null,
+    "origin": "button",
+    "home_scope": {
+      "kind": "roadmap"
+    },
+    "session_id": null,
+    "node_ids": [
+      "node_2375cfb4e0615c77c9dba5b4",
+      "node_2e6c3034736aa5bad67a5a66",
+      "node_42c7ccebf1eaeba45b0493d4",
+      "node_c7ef3d5d462cbefe56200a3c",
+      "node_623aa07230e2585950a1b5dd",
+      "node_2e314170771d12af52da066f",
+      "node_ffdd95fd3006dde50208b062",
+      "node_6ab014792c3fbd838226d59f"
+    ],
+    "seed": "44",
+    "created_at": "2026-10-18T11:43:39.373407+00:00",
+    "status": "ready",
+    "total_concepts": 10,
+    "ready_count": 8,
+    "concept_ids": [
+      "node_2375cfb4e0615c77c9dba5b4",
+      "node_2e6c3034736aa5bad67a5a66",
+      "node_42c7ccebf1eaeba45b0493d4",
+      "node_c7ef3d5d462cbefe56200a3c",
+      "node_623aa07230e2585950a1b5dd",
+      "node_2e314170771d12af52da066f",
+      "node_ffdd95fd3006dde50208b062",
+      "node_6ab014792c3fbd838226d59f"
+    ],
+    "items": [
+      {
+        "bloom": "nho",
+        "concept_id": "node_2375cfb4e0615c77c9dba5b4",
+        "generator": "cloze",
+        "item_id": "qi_a02946c7884dade137ee0d3c",
+        "module_id": "module_001",
+        "options": [
+          {
+            "option_id": "o3",
+            "text": "Tập hợp con"
+          },
+          {
+            "option_id": "o2",
+            "text": "Phần tử"
+          },
+          {
+            "option_id": "o1",
+            "text": "Tập hợp"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nNgười ta thường gọi tắt ___ là '___'."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_2e6c3034736aa5bad67a5a66",
+        "generator": "cloze",
+        "item_id": "qi_d0725a4b5f1b65da02529281",
+        "module_id": "module_001",
+        "options": [
+          {
+            "option_id": "o3",
+            "text": "Phần tử đối"
+          },
+          {
+            "option_id": "o2",
+            "text": "Tập hợp"
+          },
+          {
+            "option_id": "o1",
+            "text": "Phần tử"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nCác ___ của một tập hợp thường được kí hiệu bởi các chữ in thường: a, b, c, ."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_42c7ccebf1eaeba45b0493d4",
+        "generator": "cloze",
+        "item_id": "qi_ff33f7210601de04a8df816b",
+        "module_id": "module_002",
+        "options": [
+          {
+            "option_id": "o1",
+            "text": "Công thức De Morgan"
+          },
+          {
+            "option_id": "o3",
+            "text": "Lượng từ tồn tại duy nhất"
+          },
+          {
+            "option_id": "o2",
+            "text": "Phần bù"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___: X \\ ( A ∪ B ) = ( X \\ A ) ∩ ( X \\ B ) , X \\ ( A ∩ B ) = ( X \\ A ) ∪ ( X \\ B ) ."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_c7ef3d5d462cbefe56200a3c",
+        "generator": "cloze",
+        "item_id": "qi_067b1fa409424d7e4980141e",
+        "module_id": "module_003",
+        "options": [
+          {
+            "option_id": "o2",
+            "text": "Quan hệ hai ngôi"
+          },
+          {
+            "option_id": "o3",
+            "text": "Quan hệ tương đương"
+          },
+          {
+            "option_id": "o1",
+            "text": "Tích trực tiếp"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nTrường hợp đặc biệt khi X = Y , ta có ___ X × X của tập X với chính nó."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_623aa07230e2585950a1b5dd",
+        "generator": "cloze",
+        "item_id": "qi_fb802b9431da96cc8ab74ec2",
+        "module_id": "module_004",
+        "options": [
+          {
+            "option_id": "o1",
+            "text": "Quan hệ"
+          },
+          {
+            "option_id": "o3",
+            "text": "Ánh xạ"
+          },
+          {
+            "option_id": "o2",
+            "text": "Quan hệ hai ngôi"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___ R được gọi là một ánh xạ từ X vào Y nếu nó có tính chất sau: với mọi x ∈ X có một và chỉ một y ∈ Y để cho ( x, y ) ∈ R ."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_2e314170771d12af52da066f",
+        "generator": "cloze",
+        "item_id": "qi_aa83c820f1dcabdfac974d83",
+        "module_id": "module_006",
+        "options": [
+          {
+            "option_id": "o3",
+            "text": "Phần tử trung hòa"
+          },
+          {
+            "option_id": "o2",
+            "text": "Tập hợp"
+          },
+          {
+            "option_id": "o1",
+            "text": "Nhóm"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nPhần tử trung hòa của một ___ là duy nhất."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_ffdd95fd3006dde50208b062",
+        "generator": "cloze",
+        "item_id": "qi_0c0da8af5d3c17811211272a",
+        "module_id": "module_007",
+        "options": [
+          {
+            "option_id": "o3",
+            "text": "Ma trận thực"
+          },
+          {
+            "option_id": "o2",
+            "text": "Ma trận"
+          },
+          {
+            "option_id": "o1",
+            "text": "Ma trận cột"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___ là ma trận chỉ có một cột."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_6ab014792c3fbd838226d59f",
+        "generator": "cloze",
+        "item_id": "qi_a3dcafcf7801f69da6b44dbc",
+        "module_id": "module_008",
+        "options": [
+          {
+            "option_id": "o1",
+            "text": "Ma trận chéo"
+          },
+          {
+            "option_id": "o2",
+            "text": "Đường chéo chính"
+          },
+          {
+            "option_id": "o3",
+            "text": "Ma trận tam giác"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nMa trận đơn vị cấp n là ___ với tất cả các phần tử chéo đều bằng 1 ."
+      }
+    ],
+    "usage": {
+      "usd": 0.0,
+      "ms": 70,
+      "input_tokens": 0,
+      "output_tokens": 0
+    },
+    "failed_concepts": [
+      "node_c5aab845f976b4003a4e369e",
+      "node_3527ea9310ba5e0632752a79"
+    ]
+  },
+  "document-2": {
+    "contract_version": "document-2",
+    "document_id": "8e0000ef670d4e0bb5e065184e29a83a",
+    "owner": "web-example",
+    "doc_id": "doc-1",
+    "graph_version": 57,
+    "request": "Tóm tắt định nghĩa trong module đã chọn.",
+    "scope": {
+      "node_ids": [
+        "node_ad8ca23f71b1ba791bf7554b",
+        "node_6b461f50f7e92ef9512068ac",
+        "node_0d918b95e50271819c19bf16"
+      ],
+      "module_ids": [
+        "module_002"
+      ]
+    },
+    "title": "Tài liệu ôn tập",
+    "markdown": "# Tài liệu ôn tập\n\nCho các tập hợp A và B  [N1].",
+    "citations": [
+      {
+        "label": "N1",
+        "family": "N",
+        "chunk_id": "c_3290ded032218764893e8a99",
+        "page": 11,
+        "char_start": 8391,
+        "char_end": 8415,
+        "section_path": [
+          "Chương 1",
+          "1.1 Tập hợp",
+          "1.1.2 Các phép toán trên tập hợp"
+        ],
+        "quote": "Cho các tập hợp A và B ."
+      }
+    ],
+    "outside_document_blocks": 0,
+    "formula_refs": [],
+    "status": "ready",
+    "reason": null,
+    "warnings": [
+      "context_truncated"
+    ],
+    "postcheck": {
+      "unsourced_sentence": 0,
+      "labels_removed": 0,
+      "outside_blocks_removed": 0,
+      "sourced_sentences": 1,
+      "empty_heading_removed": 0
+    },
+    "home_scope": {
+      "kind": "module",
+      "node_ids": [
+        "node_2e6c3034736aa5bad67a5a66",
+        "node_2375cfb4e0615c77c9dba5b4",
+        "node_33b84d0455fae32a45999573",
+        "node_879ef7528bba30a2008534d4",
+        "node_8e474a84c5f56fa28496a71c",
+        "node_2a900bf9fe3dddd246aca27c",
+        "node_9a38a78ea508c3c359dc7d56",
+        "node_d8b197474a638cae20003d51"
+      ],
+      "module_id_at_creation": "module_001",
+      "graph_version_at_creation": 57
+    },
+    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "origin": "assistant",
+    "node_ids": [
+      "node_ad8ca23f71b1ba791bf7554b",
+      "node_6b461f50f7e92ef9512068ac",
+      "node_0d918b95e50271819c19bf16",
+      "node_ee380b881a7a7804f2efa151",
+      "node_42c7ccebf1eaeba45b0493d4",
+      "node_fe32b01a8b123af52280e9dd",
+      "node_4875720d652ab554d105b36f",
+      "node_49d44cfe9955d226ef1de294"
+    ],
+    "created_at": "2026-10-18T11:43:39.101964+00:00",
+    "usage": {
+      "model_id": "demo-offline",
+      "cost_usd": 0.0,
+      "elapsed_ms": 0,
+      "ttft_ms": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "thought_tokens": 0
+    }
+  },
+  "verification": {
+    "network_calls": 0,
+    "new_usd": 0,
+    "same_document_here_elsewhere": true,
+    "delete_session_preserves_document": true
+  }
+}

@@ -49,8 +49,16 @@ class Model:
 
 
 def ask(graph, model, **kwargs):
-    return AssistantUseCase(graph, InMemoryPhaseBStore(), model, **kwargs).ask(
-        'book', 1, 'session', 'm1', 'Ma trận', owner='alice', allow_spend=True)
+    store = InMemoryPhaseBStore()
+    store.put_record('session', 'session', {'contract_version': 'session-1', 'session_id': 'session',
+        'owner': 'alice', 'doc_id': 'book', 'scope': {'kind': 'module', 'node_ids': ['a'],
+        'module_id_at_creation': 'm1', 'graph_version_at_creation': 1}, 'title': 'Phiên học mới',
+        'title_source': 'rule', 'created_at': '2026-10-18T00:00:00+00:00',
+        'updated_at': '2026-10-18T00:00:00+00:00', 'turn_count': 0,
+        'last_question_preview': '', 'artifact_refs': [],
+        'state': {'reminded_node_ids': [], 'linked_node_ids': [], 'reminders_enabled': True}})
+    return AssistantUseCase(graph, store, model, **kwargs).ask(
+        'book', 1, 'session', 'Ma trận', owner='alice', allow_spend=True)
 
 
 def test_ambiguous_lecture_tool_is_an_error_and_does_not_call_lecture_callback():

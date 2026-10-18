@@ -60,7 +60,7 @@ def test_k6_ignores_repeated_verbatim_quotes_when_idea_text_is_distinct():
     assert all("K6" not in row["validation_rules"] for row in diagnostics)
 
 
-def test_k6_still_rejects_repeated_eight_word_phrase_in_idea_text():
+def test_k6_third_occurrence_after_gate_keeps_two_qualified_ideas():
     repeated = "Mỗi phần tử của tập hợp được xét theo một quy tắc xác định."
     payload = _payload(_three_distinct_ideas(repeated))
     model = _PayloadStream([payload, payload])
@@ -68,16 +68,15 @@ def test_k6_still_rejects_repeated_eight_word_phrase_in_idea_text():
 
     result = LectureUseCase(model, store).make("d1", "g1", _graph(), "a", allow_spend=True)
 
-    assert result["status"] == "fallback"
+    assert result["status"] == "ready"
+    assert "cat_ngan" in result["warnings"]
+    assert len(next(s for s in result["sections"] if s["kind"] == "giai_thich")["items"]) == 2
+    assert model.calls == 1
     diagnostics = [row for row in store.usage_rows("d1") if row.get("purpose") == "lecture_validation"]
-    assert all(row["failure_reason"].startswith("K6:") for row in diagnostics)
+    assert any(row["dropped_by_rule"].get("K6", 0) for row in diagnostics)
 
 
-def test_nonready_lecture_is_negative_cached_for_ttl_but_never_persisted(tmp_path, monkeypatch):
-    import doc2roadmap.infrastructure.artifacts.phase_b_store as store_module
-
-    now = [100.0]
-    monkeypatch.setattr(store_module, "monotonic", lambda: now[0])
+def test_failed_lecture_is_memoized_but_never_persisted_as_ready(tmp_path):
     path = tmp_path / "phase-b.json"
     store = JsonPhaseBStore(path)
     model = _PayloadStream([_payload([]) for _ in range(8)])
@@ -87,15 +86,12 @@ def test_nonready_lecture_is_negative_cached_for_ttl_but_never_persisted(tmp_pat
     first = use_case.make("d1", "g1", _graph(), "a", allow_spend=True)
     second = use_case.make("d1", "g1", _graph(), "a", allow_spend=True)
     stored = json.loads(path.read_text(encoding="utf-8"))
-    assert first["status"] == second["status"] == "fallback"
+    assert first["status"] == second["status"] == "failed"
     assert model.calls == 2
     assert stored["cache"] == {}
-
-    now[0] += 31
-    third = use_case.make("d1", "g1", _graph(), "a", allow_spend=True)
-    assert third["status"] == "fallback"
-    assert model.calls == 4
-    assert json.loads(path.read_text(encoding="utf-8"))["cache"] == {}
+    assert "lecture_failure" in stored["records"]
+    assert use_case.make("d1", "g1", _graph(), "a", allow_spend=True)["status"] == "failed"
+    assert model.calls == 2
 
 
 def test_ready_lecture_persists_and_reloads_from_json_cache(tmp_path):
@@ -130,7 +126,7 @@ def test_stale_persisted_fallback_is_not_returned_or_kept(tmp_path):
     assert store.get_cache("lecture-key") == generated
 
 
-def test_concurrent_fallback_requests_share_one_generation_sequence():
+def test_concurrent_failed_requests_share_one_generation_sequence():
     store = InMemoryPhaseBStore()
     model = _PayloadStream([_payload([]) for _ in range(4)], block_first=True)
     use_case = LectureUseCase(model, store)
@@ -150,7 +146,7 @@ def test_concurrent_fallback_requests_share_one_generation_sequence():
         model.release.set()
         first, second = first_future.result(timeout=4), second_future.result(timeout=4)
 
-    assert first["status"] == second["status"] == "fallback"
+    assert first["status"] == second["status"] == "failed"
     assert first["lecture_key"] == second["lecture_key"]
     assert model.calls == 2
 
@@ -212,7 +208,7 @@ def test_replay_does_not_replace_unknown_recorded_ttft_with_replay_speed():
     assert row["ttft_ms"] is None
 
 
-def test_max_tokens_finish_reason_still_fails_k6():
+def test_max_tokens_finish_reason_after_gate_keeps_items_as_short_ready():
     payload = _payload([
         _item("Tập hợp gồm các phần tử có cùng một đặc điểm.", "Tập hợp là một nhóm đối tượng được xác định rõ ràng."),
         _item("Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.", "Tập hợp là một nhóm đối tượng được xác định rõ ràng."),
@@ -234,9 +230,9 @@ def test_max_tokens_finish_reason_still_fails_k6():
     store = InMemoryPhaseBStore()
     result = LectureUseCase(TruncatedModel(), store).make("d1", "g1", _graph(), "a", allow_spend=True)
 
-    assert result["status"] == "fallback"
-    diagnostics = [row for row in store.usage_rows("d1") if row.get("purpose") == "lecture_validation"]
-    assert all(row["failure_reason"].startswith("K6:") for row in diagnostics)
+    assert result["status"] == "ready"
+    assert "cat_ngan" in result["warnings"]
+    assert len(next(s for s in result["sections"] if s["kind"] == "giai_thich")["items"]) == 2
 
 
 def test_custom_quote_limit_reaches_learning_graph_context():

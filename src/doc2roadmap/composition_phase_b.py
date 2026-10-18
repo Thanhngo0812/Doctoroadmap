@@ -13,6 +13,9 @@ from doc2roadmap.application.phase_b.quiz import QuizUseCase
 from doc2roadmap.application.phase_b.retrieval import (
     SearchDocumentB, assert_retrieval_compatible, build_module_assignments, load_learning_graph,
 )
+from doc2roadmap.application.phase_b.clock import SystemClock
+from doc2roadmap.application.phase_b.budget import DailySpendGuard
+from doc2roadmap.application.phase_b.progress import ProgressUseCase
 from doc2roadmap.application.use_cases.index_document import retriever_from_payload
 from doc2roadmap.config import Settings
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
@@ -28,7 +31,7 @@ DEVELOPMENT_DOCS = ('doc-1', 'nhap-mon-ml', 'naive-bayes', 'doc-6', 'xstk-ch3-1'
 
 class PhaseBRuntime:
     def __init__(self, *, settings=None, b_settings=None, allow_spend=False, store_path=None, mode=None,
-                 record_dir=None, replay_dir=None):
+                 record_dir=None, replay_dir=None, clock=None):
         self.settings = settings or Settings()
         self.b_settings = b_settings or BSettings()
         self.allow_spend = allow_spend
@@ -38,6 +41,8 @@ class PhaseBRuntime:
         if self.mode not in {'gemini', 'offline'}:
             raise ValueError('mode phải là gemini hoặc offline')
         self.store = JsonPhaseBStore(store_path or root / ('live.json' if self.mode == 'gemini' else 'offline.json'))
+        self.clock = clock or SystemClock()
+        self.spend_guard = DailySpendGuard(self.store, settings=self.b_settings, clock=self.clock)
         if record_dir and replay_dir:
             raise ValueError('Chọn một trong record_dir và replay_dir')
         self.record_dir = record_dir or (root / 'recordings' / uuid4().hex if allow_spend else None)
@@ -151,18 +156,33 @@ class PhaseBRuntime:
                 break
         return selected
 
-    def lecture(self, graph, node_id, *, dry_run=False, on_event=None, preload_next=False, deterministic=False):
-        model = None if deterministic else self.model('lecture')
-        return LectureUseCase(model, self.store, settings=self.b_settings).make(
+    def sessions(self, graph):
+        from doc2roadmap.application.phase_b.sessions import SessionUseCase
+        return SessionUseCase(self.store, graph, settings=self.b_settings, clock=self.clock)
+
+    def progress(self, graph):
+        return ProgressUseCase(self.store, graph, clock=self.clock)
+
+    def library(self, graph):
+        from doc2roadmap.application.phase_b.library import LibraryUseCase
+        return LibraryUseCase(self.store, graph, settings=self.b_settings)
+
+    def lecture(self, graph, node_id, *, dry_run=False, on_event=None, preload_next=False, deterministic=False, owner=None):
+        model = None if deterministic or (self.mode == 'offline' and not self.replay_dir) else self.model('lecture')
+        return LectureUseCase(model, self.store, settings=self.b_settings, clock=self.clock,
+                              progress=self.progress(graph), spend_guard=self.spend_guard).make(
             graph.doc_id, graph.graph_version, graph, node_id, dry_run=dry_run,
-            allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir), on_event=on_event, preload_next=preload_next)
+            allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir), on_event=on_event,
+            preload_next=preload_next, owner=owner)
 
     def quiz(self, graph):
         model = self.model('quiz_gen') if self.mode == 'gemini' else None
         verifier = self.model('quiz_verify') if self.mode == 'gemini' else None
-        return QuizUseCase(graph, self.store, model, settings=self.b_settings, verifier_model=verifier)
+        return QuizUseCase(graph, self.store, model, settings=self.b_settings, verifier_model=verifier,
+                           progress_use_case=self.progress(graph), spend_guard=self.spend_guard, clock=self.clock)
 
-    def document(self, graph, request, scope, *, owner='local', dry_run=False):
+    def document(self, graph, request, scope, *, owner='local', dry_run=False, home_scope=None,
+                 session_id=None, origin='button'):
         retriever = None
         if self.allow_spend and self.mode == 'gemini':
             embedding = GeminiEmbedding(
@@ -171,23 +191,28 @@ class PhaseBRuntime:
                 transport=self.settings.llm_transport, vertex_project=self.settings.vertex_project,
                 vertex_location=self.settings.vertex_location)
             retriever = SearchDocumentB(self.artifacts, embedding, self.store)
-        return DocumentUseCase(self.model('document'), self.store, settings=self.b_settings, retriever=retriever).create(
+        return DocumentUseCase(self.model('document'), self.store, settings=self.b_settings, retriever=retriever,
+                               clock=self.clock, spend_guard=self.spend_guard).create(
             graph.doc_id, graph.graph_version, graph, request, scope, owner=owner, dry_run=dry_run,
-            allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir))
+            allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir),
+            home_scope=home_scope, session_id=session_id, origin=origin)
 
     def assistant(self, graph):
         def get_lecture(concept, **kwargs):
-            return self.lecture(graph, concept)
+            return self.lecture(graph, concept, owner=kwargs.get('owner'))
 
         def make_quiz(scope, n=None, level=None, *, owner, **kwargs):
             return self.quiz(graph).make_quiz(graph.doc_id, None, owner, n=n, scope=scope,
-                                              level=level, origin='assistant', allow_spend=self.allow_spend)
+                                              level=level, origin='assistant', allow_spend=self.allow_spend,
+                                              home_scope=kwargs.get('home_scope'), session_id=kwargs.get('session_id'))
 
         def make_document(request, scope, *, owner, **kwargs):
-            return self.document(graph, request, scope, owner=owner)
+            return self.document(graph, request, scope, owner=owner, origin='assistant',
+                                 home_scope=kwargs.get('home_scope'), session_id=kwargs.get('session_id'))
         return AssistantUseCase(graph, self.store, self.model('assistant'), settings=self.b_settings,
                                 search=partial(self.search, graph), concept_lookup=partial(self.lookup, graph), lecture=get_lecture,
-                                quiz=make_quiz, document=make_document)
+                                quiz=make_quiz, document=make_document, clock=self.clock,
+                                progress=self.progress(graph), spend_guard=self.spend_guard)
 
     def lookup(self, graph, query):
         named = graph.lookup_concept(query)

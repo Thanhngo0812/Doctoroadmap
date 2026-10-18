@@ -58,14 +58,16 @@ class DemoSession:
         question = context.get('question', '')
         tools = {item['name'] for item in self.tools}
         if messages[-1]['role'] == 'user' and mode == 'AUTO':
-            module = context.get('module', {})
+            scope = context.get('scope', {})
+            module = scope.get('module') or {}
             nodes = module.get('node_ids', [])
+            tool_scope = module.get('module_id') if scope.get('kind') == 'module' else 'roadmap'
             if re.search(r'quiz|trắc nghiệm|câu hỏi ôn', question, re.I) and 'make_quiz' in tools:
-                yield ToolCall('make_quiz', {'scope': module['module_id'], 'n': 5}, 'demo-quiz')
+                yield ToolCall('make_quiz', {'scope': tool_scope, 'n': 5}, 'demo-quiz')
                 yield Done({})
                 return
             if re.search(r'tạo.*tài liệu|đề cương|bản chi tiết', question, re.I) and 'make_document' in tools:
-                yield ToolCall('make_document', {'request': question, 'scope': module['module_id']}, 'demo-document')
+                yield ToolCall('make_document', {'request': question, 'scope': tool_scope}, 'demo-document')
                 yield Done({})
                 return
             if re.search(r'bài giảng|giảng cho', question, re.I) and nodes and 'get_lecture' in tools:

@@ -72,7 +72,7 @@ class QuizUseCase:
     """Build, submit, and review self-check quizzes without tracking mastery."""
 
     def __init__(self, graph, store, model=None, *, verifier_model=None, settings=None,
-                 source_registry=None, rng=None):
+                 source_registry=None, rng=None, progress_use_case=None, spend_guard=None, clock=None):
         self.graph = graph
         self.store = store
         self.model = model
@@ -80,6 +80,9 @@ class QuizUseCase:
         self.settings = settings
         self.sources = source_registry or (graph.new_source_registry() if hasattr(graph, "new_source_registry") else None)
         self.rng = rng or random.Random()
+        self.progress_use_case = progress_use_case
+        self.spend_guard = spend_guard
+        self.clock = clock
         self._emit_lock = threading.Lock()
         self.diagnostics = []
         self._diagnostics_lock = threading.Lock()
@@ -114,17 +117,32 @@ class QuizUseCase:
             self.diagnostics.append(row)
 
     def make_quiz(self, doc_id=None, module_id=None, owner=None, *, scope=None, graph=None,
-                  graph_version=None, origin="module_button", n=None,
+                  graph_version=None, origin="button", n=None,
                   node_ids=None, concept_ids=None, level=None, allow_spend=False,
-                  dry_run=False, on_event=None):
+                  dry_run=False, on_event=None, home_scope=None, session_id=None, seed=None):
         if not doc_id or not owner:
             raise ValueError("doc_id và owner là bắt buộc")
-        if origin not in {"module_button", "assistant"}:
+        if getattr(self.graph, 'doc_id', None) and self.graph.doc_id != doc_id:
+            raise ValueError('doc_id does not match graph')
+        if origin not in {"button", "assistant"}:
             raise ValueError("origin không hợp lệ")
+        if origin == 'button':
+            session_id = None
+        roadmap_scope = isinstance(scope, dict) and scope.get("kind") == "roadmap"
+        saved_scope = home_scope or (scope if isinstance(scope, dict) and scope.get("kind") in {"roadmap", "module"}
+                                     else None)
         if scope is not None:
             if module_id is not None or node_ids is not None or concept_ids is not None:
                 raise ValueError("scope không thể đi cùng module_id hoặc node_ids")
-            module_id, requested = self._resolve_scope(scope)
+            if roadmap_scope:
+                module_id, requested = None, None
+            elif isinstance(scope, dict) and scope.get("kind") == "module":
+                from doc2roadmap.domain.scope import resolve_scope
+                resolved = resolve_scope(scope, self.graph, self._setting("scope_remap_min_jaccard", 0.5))
+                module_id = resolved["module_id"]
+                requested = list(scope.get("node_ids", [])) if resolved["stale"] else None
+            else:
+                module_id, requested = self._resolve_scope(scope)
             if isinstance(scope, (list, tuple)):
                 node_ids = requested
             elif requested is not None:
@@ -137,7 +155,13 @@ class QuizUseCase:
             raise ValueError("level Bloom không hợp lệ")
         requested = node_ids if node_ids is not None else concept_ids
         concepts = self._concepts(module_id, requested)
-        concepts = concepts[:n] if n is not None else concepts
+        if roadmap_scope:
+            cap = min(n or self._setting("quiz_roadmap_max_items", 10), 10)
+            selected_seed = str(seed if seed is not None else secrets.token_hex(8))
+            concepts = self._roadmap_sample(concepts, owner, doc_id, cap, selected_seed)
+        else:
+            selected_seed = str(seed if seed is not None else "")
+            concepts = concepts[:n] if n is not None else concepts
         if dry_run:
             uncached = []
             estimated_input_tokens = estimated_output_tokens = estimated_calls = 0
@@ -166,7 +190,7 @@ class QuizUseCase:
             verifier_id = getattr(self.verifier_model, "model_id", settings_model_id)
             estimate = (estimate_cost(generator_id, generation_input_tokens, generation_output_tokens)
                         + estimate_cost(verifier_id, verifier_input_tokens, verifier_output_tokens))
-            return {"contract_version": "quiz-1", "status": "dry_run", "doc_id": doc_id,
+            return {"contract_version": "quiz-2", "status": "dry_run", "doc_id": doc_id,
                     "module_id": module_id, "total_concepts": len(concepts),
                     "estimated_usd": round(estimate, 6), "estimated_calls": estimated_calls,
                     "estimated_input_tokens": estimated_input_tokens,
@@ -182,7 +206,7 @@ class QuizUseCase:
 
         def generate(concept):
             concept_module = concept.get("module_id") or module_id
-            bank, cost = self._bank(doc_id, concept_module, concept, allow_spend, level)
+            bank, cost = self._bank(doc_id, concept_module, concept, allow_spend, level, owner=owner)
             return concept, bank, cost
 
         with ThreadPoolExecutor(max_workers=max(1, min(8, len(concepts)))) as pool:
@@ -217,7 +241,7 @@ class QuizUseCase:
             for order, public, full in list(completed):
                 concept = next(c for c in concepts if c["node_id"] == public["concept_id"])
                 concept_module = concept.get("module_id") or module_id
-                bank, _ = self._bank(doc_id, concept_module, concept, allow_spend, level)
+                bank, _ = self._bank(doc_id, concept_module, concept, allow_spend, level, owner=owner)
                 alternate = next((candidate for candidate in bank if candidate["item_id"] != full["item_id"]
                                   and not any(self._duplicate(candidate, old[2]) for old in completed)), None)
                 if alternate:
@@ -234,10 +258,21 @@ class QuizUseCase:
         items = [public for _, public, _ in completed]
         private = {full["item_id"]: full for _, _, full in completed}
         usage["ms"] = round((time.perf_counter() - started) * 1000)
+        node_ids = list(dict.fromkeys(item[1]["concept_id"] for item in completed))
+        if saved_scope is None:
+            if module_id is None:
+                saved_scope = {"kind": "roadmap"}
+            else:
+                saved_scope = {"kind": "module",
+                               "node_ids": list(self.graph.modules[module_id].get("node_ids", [])),
+                               "module_id_at_creation": module_id,
+                               "graph_version_at_creation": getattr(self.graph, "graph_version", graph_version)}
         attempt = {
-            "contract_version": "quiz-1", "attempt_id": attempt_id, "owner": owner,
+            "contract_version": "quiz-2", "attempt_id": attempt_id, "owner": owner,
             "doc_id": doc_id, "module_id": module_id, "graph_version": graph_version, "origin": origin,
-            "created_at": datetime.now(timezone.utc).isoformat(),
+            "home_scope": saved_scope, "session_id": session_id, "node_ids": node_ids,
+            "seed": selected_seed or None,
+            "created_at": self.clock.now().isoformat() if self.clock else datetime.now(timezone.utc).isoformat(),
             "status": "ready" if items else "failed", "total_concepts": len(concepts),
             "ready_count": len(items), "concept_ids": [item["concept_id"] for item in items],
             "items": items, "_private": private, "answers": {}, "usage": usage,
@@ -277,7 +312,11 @@ class QuizUseCase:
         attempt["answers"] = dict(answers)
         attempt["submission"] = submitted
         self.store.put_record("quiz_attempt", attempt_id, attempt)
-        return {"contract_version": "quiz-1", "attempt_id": attempt_id, "origin": attempt["origin"],
+        if self.progress_use_case is not None:
+            correct_node_ids = [result["concept_id"] for result in results if result["is_correct"]]
+            if correct_node_ids:
+                self.progress_use_case.mark_quiz_correct(owner, attempt["doc_id"], correct_node_ids)
+        return {"contract_version": "quiz-2", "attempt_id": attempt_id, "origin": attempt["origin"],
                 "correct_count": score, "question_count": len(results), "results": results,
                 "review": review, "submitted_at": submitted["submitted_at"]}
 
@@ -298,7 +337,7 @@ class QuizUseCase:
                              "created_at": row["created_at"],
                              "correct_count": submission.get("correct_count") if submission else None,
                              "question_count": submission.get("question_count", len(row["items"])) if submission else len(row["items"])})
-        return {"contract_version": "quiz-1", "owner": owner, "attempts": attempts}
+        return {"contract_version": "quiz-2", "owner": owner, "attempts": attempts}
 
     def report_question(self, owner, attempt_id, item_id):
         attempt = self._owned_attempt(attempt_id, owner)
@@ -313,12 +352,14 @@ class QuizUseCase:
         hidden = len({r["owner"] for r in record["reports"]}) >= threshold
         if hidden:
             self.store.put_record("quiz_hidden_question", item_id, {"item_id": item_id, "hidden": True})
-        return {"contract_version": "quiz-1", "item_id": item_id,
+        return {"contract_version": "quiz-2", "item_id": item_id,
                 "report_count": len({r["owner"] for r in record["reports"]}), "hidden": hidden}
 
     def _resolve_scope(self, scope):
         if isinstance(scope, (list, tuple)):
             return None, list(scope)
+        if isinstance(scope, str) and self._norm(scope) == "roadmap":
+            return None, None
         if scope in self.graph.modules:
             return scope, None
         normalized = self._norm(scope)
@@ -335,7 +376,14 @@ class QuizUseCase:
         module = self.graph.modules.get(module_id) if module_id is not None else None
         if module_id is not None and module is None:
             raise KeyError(module_id)
-        ids = list(requested if requested is not None else module.get("node_ids", []))
+        if requested is not None:
+            ids = list(requested)
+        elif module is not None:
+            ids = list(module.get("node_ids", []))
+        elif module_id is None:
+            ids = list(self.graph.payload.get("sequence", self.graph.learnable_nodes if hasattr(self.graph, "learnable_nodes") else self.graph.nodes))
+        else:
+            ids = []
         result = []
         for order, node_id in enumerate(ids):
             node = self.graph.nodes.get(node_id)
@@ -345,7 +393,37 @@ class QuizUseCase:
                 result.append({**node, "node_id": node_id, "module_order": module_order})
         return result
 
-    def _bank(self, doc_id, module_id, concept, allow_spend, level):
+    def _roadmap_sample(self, concepts, owner, doc_id, limit, seed):
+        progress = self.progress_use_case.get_progress(owner, doc_id) if self.progress_use_case else {}
+        progress_nodes = progress.get("nodes", {}) if isinstance(progress, dict) else {}
+        learned = {node_id for node_id, value in progress_nodes.items()
+                   if isinstance(value, dict) and value.get("state") == "learned"}
+        rng = random.Random(str(seed))
+        modules = {}
+        for concept in concepts:
+            modules.setdefault(concept.get("module_id"), []).append(concept)
+        module_ids = sorted(modules, key=lambda module_id: (
+            self.graph.modules.get(module_id, {}).get("index", 0), str(module_id)))
+        for rows in modules.values():
+            rows.sort(key=lambda concept: (concept.get("module_order", 0), concept["node_id"]))
+        def round_robin(pool):
+            groups = {module_id: [row for row in modules[module_id] if row["node_id"] in pool]
+                      for module_id in module_ids}
+            for rows in groups.values():
+                rng.shuffle(rows)
+            chosen = []
+            while len(chosen) < limit and any(groups.values()):
+                for module_id in module_ids:
+                    if groups[module_id] and len(chosen) < limit:
+                        chosen.append(groups[module_id].pop(0))
+            return chosen
+        selected = round_robin(learned)
+        if len(selected) < limit:
+            selected.extend(round_robin({row["node_id"] for row in concepts
+                                         if row["node_id"] not in learned})[:limit - len(selected)])
+        return selected
+
+    def _bank(self, doc_id, module_id, concept, allow_spend, level, *, owner=None):
         context = self._context(module_id, concept, level=level)
         key = self._bank_key(doc_id, module_id, concept, level, context=context)
         cached = self.store.get_cache(key)
@@ -356,7 +434,8 @@ class QuizUseCase:
         else:
             try:
                 generated = {}
-                bank = self.store.single_flight(key, lambda: self._generate_bank(concept, context, generated, doc_id))
+                bank = self.store.single_flight(
+                    key, lambda: self._generate_bank(concept, context, generated, doc_id, owner=owner))
             except Exception:
                 bank = []
             if not bank:
@@ -374,7 +453,7 @@ class QuizUseCase:
             "generation_max_output_tokens": self._setting("quiz_generation_max_output_tokens", 1200),
             "verifier_max_output_tokens": self._setting("quiz_verifier_max_output_tokens", 400),
             "variant_count": self._setting("quiz_bank_variants", 2),
-            "contract_version": "quiz-1",
+            "contract_version": "quiz-2",
             "local_rules_version": "quiz-local-rules-v2",
         }
         value = {"doc_id": doc_id, "module_id": module_id, "node_id": concept["node_id"],
@@ -471,7 +550,7 @@ class QuizUseCase:
                            "why_wrong_chars": self._setting("quiz_why_wrong_max_chars", 150),
                            "bank_variants": self._setting("quiz_bank_variants", 2)}}
 
-    def _generate_bank(self, concept, context, generated, doc_id):
+    def _generate_bank(self, concept, context, generated, doc_id, *, owner=None):
         from doc2roadmap.application.phase_b.common import call_json
 
         base = self._generation_prompt(context)
@@ -481,7 +560,8 @@ class QuizUseCase:
             generated_call = call_json(self.model, prompt, response_schema=QUIZ_SCHEMA, store=self.store,
                                        purpose="quiz_gen", doc_id=doc_id,
                                        context_hash=hashlib.sha256(prompt.encode()).hexdigest(),
-                                       allow_spend=True, settings=self.settings)
+                                       allow_spend=True, settings=self.settings,
+                                       spend_guard=self.spend_guard, clock=self.clock)
             self._add_call_usage(usage, generated_call)
             candidates = generated_call.payload.get("items", []) if isinstance(generated_call.payload, dict) else []
             items = []
@@ -525,7 +605,8 @@ class QuizUseCase:
             verified = call_json(self.verifier_model, verifier_prompt, response_schema=VERIFIER_SCHEMA, store=self.store,
                                  purpose="quiz_verify", doc_id=doc_id,
                                  context_hash=hashlib.sha256(verifier_prompt.encode()).hexdigest(),
-                                 allow_spend=True, settings=self.settings)
+                                 allow_spend=True, settings=self.settings,
+                                 spend_guard=self.spend_guard, clock=self.clock)
             self._add_call_usage(usage, verified)
             accepted = set()
             rejected = set()

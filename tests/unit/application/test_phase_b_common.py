@@ -63,7 +63,7 @@ def test_failed_session_json_decode_bills_usage_retained_on_session():
     store = InMemoryPhaseBStore()
     with pytest.raises(ValueError):
         call_json(Model(), "{}", response_schema={"type": "object"}, store=store,
-                  purpose="document", doc_id="d1", context_hash="ctx", allow_spend=True)
+                  purpose="document", doc_id="d1", context_hash="ctx", allow_spend=True, learner_id="tester")
     [row] = store.usage_rows("d1")
     assert row["input_tokens"] == 100
     assert row["output_tokens"] == 20
@@ -97,7 +97,7 @@ def test_replayed_provider_tokens_are_recorded_without_new_spend():
                                     'candidatesTokenCount': 100, 'thoughtsTokenCount': 20})
     store = InMemoryPhaseBStore()
     result = call_json(Replay(), '{}', response_schema={'type': 'object'}, store=store,
-                       purpose='document', doc_id='d', context_hash='h', allow_spend=True)
+                       purpose='document', doc_id='d', context_hash='h', allow_spend=True, learner_id='tester')
     assert result.cost_usd == 0
     assert store.usage_rows()[0]['cost_usd'] == 0
     assert store.usage_rows()[0]['replayed'] is True

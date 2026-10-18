@@ -54,7 +54,7 @@ def test_lecture_context_trim_prunes_dropped_raw_source_from_serialized_prompt()
     assert after_bytes < before_bytes
 
 
-def test_legacy_prerequisite_excerpt_is_shown_with_missing_quote_warning():
+def test_legacy_prerequisite_is_recalled_without_prompting_a_bridge():
     graph = _graph()
     graph.chunks["c2"].text = "Nền tảng hỗ trợ khái niệm Tế bào trong bài học."
     graph.chunks["c2"].char_end = graph.chunks["c2"].char_start + len(graph.chunks["c2"].text)
@@ -69,10 +69,11 @@ def test_legacy_prerequisite_excerpt_is_shown_with_missing_quote_warning():
     assert prerequisite["citation_source"] == "legacy_excerpt"
     assert prerequisite["warning"] == "missing_edge_quote"
     assert "thiếu câu trích" in prerequisite["note"]
-    assert skeleton["prerequisites"][0]["why"]["citation_source"] == "legacy_excerpt"
+    assert skeleton["prerequisites"][0]["bridge"] is None
+    assert skeleton["prerequisites"][0]["recall"]["node_id"] == "n0"
 
 
-def test_no_model_falls_back_locally_and_cache_rebinds_graph_version():
+def test_no_model_returns_failed_skeleton_and_rebinds_graph_version():
     graph = _graph()
     store = InMemoryPhaseBStore()
     use_case = LectureUseCase(None, store)
@@ -80,14 +81,15 @@ def test_no_model_falls_back_locally_and_cache_rebinds_graph_version():
     first = use_case.make("d1", "g1", graph, "n1")
     second = use_case.get("d1", "g2", graph, "n1")
 
-    assert first["status"] == "fallback"
-    assert first["sections"][0]["items"][0]["citations"][0]["chunk_id"] == "c1"
+    assert first["status"] == "failed"
+    assert first["failure"]["reason_code"] == "khong_co_mo_hinh"
+    assert first["sections"] == []
     assert second["lecture_key"] == first["lecture_key"]
     assert second["graph_version"] == "g2"
     assert store.usage_rows("d1") == []
 
 
-def test_extractive_fallback_cache_does_not_hide_later_live_generation():
+def test_no_model_failure_cache_does_not_hide_later_live_generation():
     sentence1 = "Tế bào thực hiện các chức năng sống."
     sentence2 = "Tế bào gồm nhiều thành phần có chức năng khác nhau."
 
@@ -113,7 +115,7 @@ def test_extractive_fallback_cache_does_not_hide_later_live_generation():
     model = LiveModel()
     live = LectureUseCase(model, store).make("d1", "g1", graph, "n1", allow_spend=True)
 
-    assert fallback["status"] == "fallback"
+    assert fallback["status"] == "failed"
     assert live["status"] == "ready"
     assert live["lecture_key"] != fallback["lecture_key"]
     assert model.calls == 1
@@ -137,7 +139,8 @@ def test_missing_formula_warning_survives_local_fallback():
                                         "reading_order": 0, "raw_text": "x = 1", "bbox": None}])
     result = LectureUseCase(None, InMemoryPhaseBStore()).make("d1", "g1", graph, "n1")
     assert "thieu_cong_thuc" in result["warnings"]
-    assert "model_unavailable" in result["warnings"]
+    assert result["status"] == "failed"
+    assert result["failure"]["reason_code"] == "khong_co_mo_hinh"
 
 
 def test_public_lecture_retains_formula_image_ids_for_repeated_occurrences():
@@ -190,20 +193,24 @@ def test_lecture_prefetch_queues_next_concept_after_current_response(monkeypatch
     queued = []
 
     class Background:
-        def __init__(self, *, target, args, kwargs, daemon):
-            queued.append((target, args, kwargs, daemon))
+        def __init__(self, *, target, args=(), kwargs=None, daemon=True):
+            self.target, self.args, self.kwargs = target, args, kwargs
+            if getattr(target, "__name__", "") != "run_single_flight":
+                queued.append((target, args, kwargs, daemon))
 
         def start(self):
-            pass
+            if getattr(self.target, "__name__", "") == "run_single_flight":
+                self.target()
 
     monkeypatch.setattr(lecture_module, "Thread", Background)
     result = LectureUseCase(None, InMemoryPhaseBStore()).make("d1", "g1", graph, "n1", preload_next=True)
-    assert result["status"] == "fallback"
+    assert result["status"] == "failed"
     assert queued[0][1][3] == "n2"
     assert queued[0][3] is True
+    assert queued[0][2]["_background"] is True
 
 
-def test_stream_failure_does_not_retract_validated_item():
+def test_stream_failure_before_gate_emits_no_partial_lecture_items():
     sentence = "Tế bào thực hiện các chức năng sống."
 
     class BrokenStream:
@@ -217,10 +224,10 @@ def test_stream_failure_does_not_retract_validated_item():
 
     store = InMemoryPhaseBStore()
     result = LectureUseCase(BrokenStream(), store).make("d1", "g1", _graph(), "n1", allow_spend=True)
-    explanation = next(section for section in result["sections"] if section["kind"] == "giai_thich")
-    assert sentence in [item["text"] for item in explanation["items"]]
-    assert result["status"] == "fallback"
-    assert len([row for row in store.usage_rows("d1") if row.get("purpose") == "lecture"]) == 2
+    assert result["sections"] == []
+    assert result["status"] == "failed"
+    assert not any(row.get("purpose") == "lecture_timing" for row in store.usage_rows("d1"))
+    assert len([row for row in store.usage_rows("d1") if row.get("purpose") == "lecture"]) == 1
 
 
 def test_document_context_cap_prunes_removed_source_text():
@@ -311,7 +318,9 @@ def test_provider_schemas_require_grounded_lecture_fields_and_document_citations
     citation = DOCUMENT_SCHEMA["properties"]["citations"]["items"]
     assert citation["required"] == ["label", "quote"]
     assert set(citation["properties"]) == {"label", "quote"}
-    for field in ("prereq_notes", "explanation", "example", "contrasts"):
+    bridge = LECTURE_SCHEMA["properties"]["bridges"]["items"]
+    assert {"prereq", "text", "sources", "quote"} <= set(bridge["required"])
+    for field in ("explanation", "example", "contrasts"):
         item = LECTURE_SCHEMA["properties"][field]["items"]
         assert {"text", "sources", "quote", "outside_document"} <= set(item["required"])
     check = LECTURE_SCHEMA["properties"]["self_check"]

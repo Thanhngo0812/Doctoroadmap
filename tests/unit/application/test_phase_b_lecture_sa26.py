@@ -121,7 +121,8 @@ def test_failed_generations_keep_both_attempt_usage_and_log_each_rule_failure():
 
     result = LectureUseCase(model, store).make("d1", "g1", _graph(), "a", allow_spend=True)
 
-    assert result["status"] == "fallback"
+    assert result["status"] == "failed"
+    assert result["failure"]["reason_code"] == "kiem_noi_dung"
     assert result["usage"]["promptTokenCount"] == 30
     assert result["usage"]["candidatesTokenCount"] == 5
     diagnostics = [row for row in store.usage_rows("d1") if row.get("purpose") == "lecture_validation"]
@@ -129,14 +130,14 @@ def test_failed_generations_keep_both_attempt_usage_and_log_each_rule_failure():
     assert [row["validation_rules"] for row in diagnostics] == [["K8"], ["K8"]]
 
 
-def test_used_later_follows_outgoing_requires_edges_only():
+def test_next_up_follows_outgoing_requires_edges_only():
     graph = _graph(with_later=True)
 
-    earlier, _, _ = _assemble(graph, "a", BSettings())
-    later, _, _ = _assemble(graph, "b", BSettings())
+    _, earlier, _ = _assemble(graph, "a", BSettings())
+    _, later, _ = _assemble(graph, "b", BSettings())
 
-    assert earlier["used_later"] == ["Phép hợp"]
-    assert later["used_later"] == []
+    assert [row["name"] for row in earlier["next_up"]] == ["Phép hợp"]
+    assert later["next_up"] == []
 
 
 def test_lecture_cache_key_includes_validator_version():

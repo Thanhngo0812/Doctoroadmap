@@ -3,10 +3,11 @@ from __future__ import annotations
 import json
 import re
 from collections.abc import Mapping
+from datetime import datetime, timezone
 from typing import Any
 from uuid import uuid4
 
-from doc2roadmap.application.phase_b.common import call_json, quote_is_verbatim, stable_json
+from doc2roadmap.application.phase_b.common import DailyLimitExceeded, call_json, quote_is_verbatim, stable_json
 from doc2roadmap.application.phase_b.lectures import _assemble
 from doc2roadmap.application.phase_b.postcheck import COMPOUND, best_matching_source_sentence, check_text
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
@@ -30,8 +31,13 @@ DOCUMENT_SCHEMA: dict[str, Any] = {
 _SYSTEM = """Soạn tài liệu Markdown bằng tiếng Việt theo yêu cầu. Mỗi khẳng định về sách phải có nhãn nguồn trong văn bản và một cặp label/quote đúng nguyên văn trong citations. Không viết công thức, chỉ tham chiếu [CTk]. Nội dung ngoài sách chỉ được ở outside_document_blocks và không được gắn nhãn nguồn. Tuân theo các giới hạn được nêu trong yêu cầu."""
 
 
-def _scope_nodes(graph: Any, scope: Any) -> tuple[list[str], list[str]]:
+def _scope_nodes(graph: Any, scope: Any, *, min_jaccard: float = 0.5) -> tuple[list[str], list[str]]:
     if isinstance(scope, str):
+        if scope.strip().casefold() == "roadmap":
+            module_ids = list(graph.modules)
+            node_ids = [node_id for module_id in module_ids
+                        for node_id in graph.modules[module_id].get("node_ids", [])]
+            return list(dict.fromkeys(node_ids)), module_ids
         if scope in graph.modules:
             module_ids = [scope]
             return list(graph.modules[scope].get("node_ids", [])), module_ids
@@ -43,6 +49,28 @@ def _scope_nodes(graph: Any, scope: Any) -> tuple[list[str], list[str]]:
     if isinstance(scope, (list, tuple)):
         return [str(item) for item in scope], []
     if isinstance(scope, Mapping):
+        if scope.get("kind") == "roadmap":
+            module_ids = list(graph.modules)
+            node_ids = [node_id for module_id in module_ids
+                        for node_id in graph.modules[module_id].get("node_ids", [])]
+            return list(dict.fromkeys(node_ids)), module_ids
+        if scope.get("kind") == "module":
+            from doc2roadmap.domain.scope import resolve_scope
+            resolved = resolve_scope(scope, graph, min_jaccard)
+            if resolved["stale"] or resolved["module_id"] is None:
+                module_ids = list(graph.modules)
+            else:
+                module_ids = [resolved["module_id"]]
+            node_ids = [node_id for module_id in module_ids
+                        for node_id in graph.modules[module_id].get("node_ids", [])]
+            return list(dict.fromkeys(node_ids)), module_ids
+        if scope.get("module_ids"):
+            module_ids = [str(module_id) for module_id in scope["module_ids"]
+                          if module_id in graph.modules]
+            node_ids = list(scope.get("node_ids", []))
+            node_ids.extend(node_id for module_id in module_ids
+                            for node_id in graph.modules[module_id].get("node_ids", []))
+            return list(dict.fromkeys(str(item) for item in node_ids)), module_ids
         node_ids = list(scope.get("node_ids", []))
         module_ids = list(scope.get("module_ids", []))
         for module_id in module_ids:
@@ -173,17 +201,51 @@ def export_markdown(document: Mapping[str, Any]) -> str:
 
 class DocumentUseCase:
     def __init__(self, model: Any, store: Any, *, settings: BSettings | None = None,
-                 retriever: Any | None = None) -> None:
+                 retriever: Any | None = None, spend_guard: Any | None = None,
+                 clock: Any | None = None) -> None:
         self.model = model
         self.store = store
         self.settings = settings or BSettings()
         self.retriever = retriever
+        self.spend_guard = spend_guard
+        self.clock = clock
 
     def create(
         self, doc_id: str, graph_version: str, graph: Any, request: str, scope: Any, *, owner: str,
-        dry_run: bool = False, allow_spend: bool = False,
+        dry_run: bool = False, allow_spend: bool = False, home_scope: Any | None = None,
+        session_id: str | None = None, origin: str = "button",
     ) -> dict[str, Any]:
-        node_ids, module_ids = _scope_nodes(graph, scope)
+        if not owner:
+            raise PermissionError('owner is required')
+        if graph.doc_id and doc_id != graph.doc_id:
+            raise ValueError('doc_id does not match graph')
+        node_ids, module_ids = _scope_nodes(graph, scope, min_jaccard=self.settings.scope_remap_min_jaccard)
+        module_ids = list(dict.fromkeys(
+            graph.nodes[node_id].get("module_id") for node_id in node_ids
+            if node_id in graph.nodes and graph.nodes[node_id].get("module_id") in graph.modules))
+        if origin not in {"button", "assistant"}:
+            raise ValueError("origin không hợp lệ")
+        if origin == 'button':
+            session_id = None
+        if home_scope is None:
+            if isinstance(scope, Mapping) and scope.get("kind") in {"roadmap", "module"}:
+                home_scope = dict(scope)
+            elif isinstance(scope, str) and scope in graph.modules:
+                home_scope = {"kind": "module",
+                              "node_ids": list(graph.modules[scope].get("node_ids", [])),
+                              "module_id_at_creation": scope,
+                              "graph_version_at_creation": getattr(graph, "graph_version", graph_version)}
+            else:
+                home_scope = {"kind": "roadmap"}
+        created_at = self.clock.now().isoformat() if self.clock else datetime.now(timezone.utc).isoformat()
+        if len(set(module_ids)) > self.settings.document_max_modules:
+            return {"contract_version": "document-2", "document_id": uuid4().hex,
+                    "owner": owner, "doc_id": doc_id, "graph_version": graph_version,
+                    "request": request, "scope": {"node_ids": node_ids, "module_ids": module_ids},
+                    "title": "", "markdown": "", "citations": [], "outside_document_blocks": 0,
+                    "formula_refs": [], "status": "failed", "reason": "scope_too_large", "usage": {},
+                    "home_scope": home_scope, "session_id": session_id, "origin": origin,
+                    "node_ids": node_ids, "created_at": created_at}
         if not node_ids or any(node_id not in graph.nodes for node_id in node_ids):
             raise ValueError("scope contains no known concepts")
         concepts = []
@@ -241,29 +303,44 @@ class DocumentUseCase:
         if dry_run:
             estimate = estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
                                      self.settings.document_max_output_tokens) + retrieval_estimate
-            return {"contract_version": "document-1", "doc_id": doc_id,
+            return {"contract_version": "document-2", "doc_id": doc_id,
                     "scope": context["scope"], "request": request, "status": "generating",
                     "dry_run": True, "context_hash": ctx_hash, "estimate_usd": estimate}
         estimated_usd = estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
                                      self.settings.document_max_output_tokens)
         if estimated_usd > self.settings.document_max_usd:
-            return {"contract_version": "document-1", "document_id": uuid4().hex,
+            return {"contract_version": "document-2", "document_id": uuid4().hex,
                     "owner": owner, "doc_id": doc_id, "request": request,
                     "scope": context["scope"], "title": "", "markdown": "",
                     "citations": [], "outside_document_blocks": 0, "formula_refs": [],
-                    "status": "failed", "reason": "estimated_cost_over_limit", "usage": {}}
+                    "status": "failed", "reason": "estimated_cost_over_limit", "usage": {},
+                    "home_scope": home_scope, "session_id": session_id, "origin": origin,
+                    "node_ids": node_ids, "created_at": created_at}
         try:
             result = call_json(
                 self.model, prompt, response_schema=DOCUMENT_SCHEMA, system_prompt=_SYSTEM, store=self.store,
                 purpose="document", doc_id=doc_id, context_hash=ctx_hash, allow_spend=True,
-                settings=self.settings, learner_id=owner,
+                settings=self.settings, learner_id=owner, spend_guard=self.spend_guard,
+                clock=self.clock,
             )
+        except DailyLimitExceeded:
+            failed = {
+                "contract_version": "document-2", "document_id": uuid4().hex, "owner": owner,
+                "doc_id": doc_id, "graph_version": graph_version, "request": request,
+                "scope": context["scope"], "title": "", "markdown": "", "citations": [],
+                "outside_document_blocks": 0, "formula_refs": [], "status": "failed",
+                "reason": "daily_limit", "warnings": [], "usage": {},
+                "home_scope": home_scope, "session_id": session_id, "origin": origin,
+                "node_ids": node_ids, "created_at": created_at,
+            }
+            self.store.put_record("documents", failed["document_id"], failed)
+            return failed
         except Exception as error:
             usage_row = next((row for row in reversed(self.store.usage_rows(doc_id))
                               if row.get("purpose") == "document" and row.get("context_hash") == ctx_hash), {})
             document_id = uuid4().hex
             failed = {
-                "contract_version": "document-1", "document_id": document_id, "owner": owner,
+                "contract_version": "document-2", "document_id": document_id, "owner": owner,
                 "doc_id": doc_id, "graph_version": graph_version, "request": request,
                 "scope": context["scope"], "title": "", "markdown": "", "citations": [],
                 "outside_document_blocks": 0, "formula_refs": [], "status": "failed",
@@ -275,6 +352,10 @@ class DocumentUseCase:
                           "input_tokens": usage_row.get("input_tokens", 0),
                           "output_tokens": usage_row.get("output_tokens", 0),
                           "thought_tokens": usage_row.get("thought_tokens", 0)},
+                "home_scope": home_scope, "session_id": session_id, "origin": origin,
+                "node_ids": node_ids, "created_at": created_at,
+                "home_scope": home_scope, "session_id": session_id, "origin": origin,
+                "node_ids": node_ids, "created_at": created_at,
             }
             self.store.put_record("documents", document_id, failed)
             return failed
@@ -316,7 +397,7 @@ class DocumentUseCase:
         status = "ready" if checked['counts']['sourced_sentences'] else "failed"
         markdown = _render(title, markdown, outside)
         document = {
-            "contract_version": "document-1", "document_id": document_id, "owner": owner,
+            "contract_version": "document-2", "document_id": document_id, "owner": owner,
             "doc_id": doc_id, "graph_version": graph_version, "request": request,
             "scope": context["scope"], "title": title, "markdown": markdown,
             "citations": citations, "outside_document_blocks": len(outside),
@@ -324,6 +405,8 @@ class DocumentUseCase:
             "reason": "no_valid_citations" if not citations else None,
             "warnings": warnings,
             "postcheck": checked['counts'],
+            "home_scope": home_scope, "session_id": session_id, "origin": origin,
+            "node_ids": node_ids, "created_at": created_at,
             "usage": {"model_id": getattr(self.model, "model_id", self.settings.model_id),
                       "cost_usd": result.cost_usd, "elapsed_ms": result.elapsed_ms,
                       "ttft_ms": result.ttft_ms,

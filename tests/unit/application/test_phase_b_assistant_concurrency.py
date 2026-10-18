@@ -88,6 +88,13 @@ def _run_pair(*, bypass_guard=False):
         return {"lecture_key": f"lecture-{number}", "node_id": concept,
                 "sections": [], "status": "ready"}
 
+    store.put_record('session', 'session', {'contract_version': 'session-1', 'session_id': 'session',
+        'owner': 'alice', 'doc_id': 'book', 'scope': {'kind': 'module', 'node_ids': ['a'],
+        'module_id_at_creation': 'm1', 'graph_version_at_creation': 1}, 'title': 'Phiên học mới',
+        'title_source': 'rule', 'created_at': '2026-10-18T00:00:00+00:00',
+        'updated_at': '2026-10-18T00:00:00+00:00', 'turn_count': 0,
+        'last_question_preview': '', 'artifact_refs': [],
+        'state': {'reminded_node_ids': [], 'linked_node_ids': [], 'reminders_enabled': True}})
     use_case = AssistantUseCase(_graph(), store, model, lecture=get_lecture)
     if bypass_guard:
         # Mutation check: calling the underlying implementation bypasses public ask's guard.
@@ -100,7 +107,7 @@ def _run_pair(*, bypass_guard=False):
     def ask(index):
         try:
             barrier.wait(timeout=2)
-            results[index] = use_case.ask("book", 1, "session", "m1", "Ma trận là gì?",
+            results[index] = use_case.ask("book", 1, "session", "Ma trận là gì?",
                                           owner="alice", client_turn_id="same-turn",
                                           allow_spend=True, on_event=events[index].append)
         except BaseException as error:

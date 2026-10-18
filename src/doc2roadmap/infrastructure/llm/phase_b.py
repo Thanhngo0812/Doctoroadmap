@@ -4,6 +4,7 @@ import json
 import os
 import re
 import threading
+from inspect import signature
 from collections.abc import Iterator, Mapping, Sequence
 from pathlib import Path
 from time import perf_counter, sleep
@@ -57,7 +58,8 @@ class GeminiToolModel:
     def ask_json(self, prompt: str, *, response_schema: dict[str, Any], system_prompt: str = "") -> ExtractionReply:
         return self.start_session(system_prompt).ask_json(prompt, response_schema=response_schema)
 
-    def _request(self, operation: str, body: Mapping[str, Any], *, stream: bool) -> Any:
+    def _request(self, operation: str, body: Mapping[str, Any], *, stream: bool,
+                 retries: int = 2, timeout_seconds: float | None = None) -> Any:
         if self.vertex:
             url = self.vertex.url(self.model_id, operation)
             if stream:
@@ -74,14 +76,17 @@ class GeminiToolModel:
             headers={"Content-Type": "application/json", **headers},
             method="POST",
         )
-        for attempt in range(3):
+        if retries < 0:
+            raise ValueError("retries must be non-negative")
+        timeout = self.timeout_seconds if timeout_seconds is None else timeout_seconds
+        for attempt in range(retries + 1):
             try:
-                return urlopen(request, timeout=self.timeout_seconds)
+                return urlopen(request, timeout=timeout)
             except HTTPError as error:
-                if error.code not in {429, 503} or attempt == 2:
+                if error.code not in {429, 503} or attempt == retries:
                     raise RuntimeError("Gemini request failed") from error
             except (URLError, OSError) as error:
-                if attempt == 2:
+                if attempt == retries:
                     raise RuntimeError("Gemini request failed") from error
             sleep(2**attempt)
         raise AssertionError("unreachable")
@@ -157,12 +162,14 @@ class GeminiToolSession:
         value = json.loads(raw_text)
         return ExtractionReply(value, raw_text, usage=self.last_usage)
 
-    def stream_json(self, prompt: str, *, response_schema: dict[str, Any]) -> Iterator[str]:
+    def stream_json(self, prompt: str, *, response_schema: dict[str, Any],
+                    temperature: float | None = None, transport_retries: int | None = None,
+                    timeout_seconds: float | None = None) -> Iterator[str]:
         body = {
             "systemInstruction": {"parts": [{"text": self.system_prompt}]},
             "contents": [{"role": "user", "parts": [{"text": prompt}]}],
             "generationConfig": {
-                "temperature": self.model.temperature,
+                "temperature": self.model.temperature if temperature is None else temperature,
                 "maxOutputTokens": self.model.max_output_tokens,
                 "responseMimeType": "application/json",
                 "responseJsonSchema": response_schema,
@@ -172,7 +179,11 @@ class GeminiToolSession:
         self.last_ttft_ms = None
         self.last_usage = {}
         self.last_finish_reason = None
-        response = self.model._request("streamGenerateContent", body, stream=True)
+        response = self.model._request(
+            "streamGenerateContent", body, stream=True,
+            retries=2 if transport_retries is None else transport_retries,
+            timeout_seconds=timeout_seconds,
+        )
         try:
             for event in self.model._decode_sse(response):
                 self.last_usage.update(event.get("usageMetadata", {}))
@@ -356,13 +367,30 @@ class RecordingToolSession:
                                 "usage": reply.usage or {}}})
         return reply
 
-    def stream_json(self, prompt: str, *, response_schema: dict[str, Any]) -> Iterator[str]:
+    def stream_json(self, prompt: str, *, response_schema: dict[str, Any],
+                    temperature: float | None = None, transport_retries: int | None = None,
+                    timeout_seconds: float | None = None) -> Iterator[str]:
         chunks = []
-        for chunk in self.delegate.stream_json(prompt, response_schema=response_schema):
-            chunks.append(chunk)
-            yield chunk
+        options = {"temperature": temperature, "transport_retries": transport_retries,
+                   "timeout_seconds": timeout_seconds}
+        try:
+            try:
+                supported = signature(self.delegate.stream_json).parameters
+            except (TypeError, ValueError):
+                supported = {}
+            forwarded = {key: value for key, value in options.items()
+                         if key in supported and value is not None}
+            for chunk in self.delegate.stream_json(prompt, response_schema=response_schema, **forwarded):
+                chunks.append(chunk)
+                yield chunk
+        except BaseException as error:
+            self._record({"kind": "json_stream", "prompt": prompt, "schema": response_schema,
+                          "options": options, "chunks": chunks, "usage": self.last_usage,
+                          "ttft_ms": self.last_ttft_ms, "finish_reason": self.last_finish_reason,
+                          "error": {"type": type(error).__name__}})
+            raise
         self._record({"kind": "json_stream", "prompt": prompt, "schema": response_schema,
-                      "chunks": chunks, "usage": self.last_usage,
+                      "options": options, "chunks": chunks, "usage": self.last_usage,
                       "ttft_ms": self.last_ttft_ms, "finish_reason": self.last_finish_reason})
 
     def stream(self, messages: list[dict[str, Any]], *, mode: Literal["AUTO", "NONE"] = "AUTO") -> Iterator[Delta | ToolCall | Done]:
@@ -442,12 +470,24 @@ class ReplayToolSession:
         self.last_usage = reply.get("usage", {})
         return ExtractionReply(reply["payload"], reply["raw_text"], usage=self.last_usage)
 
-    def stream_json(self, prompt: str, *, response_schema: dict[str, Any]) -> Iterator[str]:
+    def stream_json(self, prompt: str, *, response_schema: dict[str, Any],
+                    temperature: float | None = None, transport_retries: int | None = None,
+                    timeout_seconds: float | None = None) -> Iterator[str]:
+        options = {"temperature": temperature, "transport_retries": transport_retries,
+                   "timeout_seconds": timeout_seconds}
         call = self._take("json_stream", {"prompt": prompt, "schema": response_schema})
+        recorded_options = call.get("options")
+        # A click's remaining timeout varies with CPU/IO time; replay does no IO.
+        # Sampling temperature and retry policy still have to match the recording.
+        if recorded_options is not None and any(recorded_options.get(key) != options[key]
+                                                for key in ('temperature', 'transport_retries')):
+            raise ValueError("tool replay stream options do not match")
         self.last_usage = call.get("usage", {})
         self.last_ttft_ms = call.get("ttft_ms")
         self.last_finish_reason = call.get("finish_reason")
         yield from call["chunks"]
+        if "error" in call:
+            raise RuntimeError(f"recorded JSON stream failed: {call['error'].get('type', 'error')}")
 
     def stream(self, messages: list[dict[str, Any]], *, mode: Literal["AUTO", "NONE"] = "AUTO") -> Iterator[Delta | ToolCall | Done]:
         call = self._take("conversation", {"messages": messages, "mode": mode})

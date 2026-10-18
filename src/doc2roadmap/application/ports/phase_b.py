@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from collections.abc import Callable, Mapping
 from dataclasses import dataclass
+from datetime import date, datetime
 from typing import Any, Literal, Protocol, TypeVar
 
 T = TypeVar("T")
@@ -18,7 +19,9 @@ class PhaseBStore(Protocol):
 
     def put_record(self, kind: str, record_id: str, value: Mapping[str, Any]) -> None: ...
 
-    def list_records(self, kind: str, owner: str | None = None) -> list[dict[str, Any]]: ...
+    def list_records(self, kind: str, owner: str | None = None, doc_id: str | None = None) -> list[dict[str, Any]]: ...
+
+    def delete_record(self, kind: str, record_id: str) -> None: ...
 
     def append_usage(self, row: Mapping[str, Any]) -> None: ...
 
@@ -35,6 +38,12 @@ class JsonCallModel(Protocol):
     def ask_json(
         self, prompt: str, *, response_schema: dict[str, Any], system_prompt: str = ""
     ) -> Any: ...
+
+
+class ClockPort(Protocol):
+    def now(self) -> datetime: ...
+
+    def today(self, timezone: str) -> date: ...
 
 
 @dataclass(frozen=True, slots=True)

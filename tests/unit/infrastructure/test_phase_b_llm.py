@@ -114,6 +114,78 @@ def test_json_stream_assembles_fragmented_sse_text_and_final_usage(monkeypatch, 
     assert "?alt=sse" in requests[0].full_url
 
 
+def test_stream_json_applies_call_temperature_retry_budget_and_timeout(monkeypatch):
+    requests = []
+    timeouts = []
+    raw = b'data: {"candidates":[{"content":{"parts":[{"text":"{}"}]}}]}\n\n'
+    monkeypatch.setattr(phase_b, "urlopen", lambda request, timeout: (requests.append(request), timeouts.append(timeout), _Response([raw]))[-1])
+    model = GeminiToolModel("key", temperature=0.2, timeout_seconds=60)
+    session = model.start_session("system")
+    assert "".join(session.stream_json("prompt", response_schema={"type": "object"},
+                                       temperature=0.7, transport_retries=0,
+                                       timeout_seconds=3.5)) == "{}"
+    body = json.loads(requests[0].data)
+    assert body["generationConfig"]["temperature"] == 0.7
+    assert timeouts == [3.5]
+
+
+def test_recording_tool_model_forwards_and_replays_stream_options(monkeypatch, tmp_path):
+    raw = b'data: {"candidates":[{"content":{"parts":[{"text":"{}"}]}}]}\n\n'
+    requests = []
+    monkeypatch.setattr(phase_b, "urlopen", lambda request, timeout:
+                        (requests.append(request) or _Response([raw])))
+    fixture = tmp_path / "options.json"
+    recorder = RecordingToolModel(GeminiToolModel("key", "gemini-test"), fixture,
+                                  prompt_hash="stream-options")
+    session = recorder.start_session("system")
+    options = {"temperature": 0.73, "transport_retries": 1, "timeout_seconds": 4.25}
+    assert "".join(session.stream_json("prompt", response_schema={"type": "object"}, **options)) == "{}"
+    body = json.loads(requests[0].data)
+    assert body["generationConfig"]["temperature"] == 0.73
+    recorded = json.loads(fixture.read_text(encoding="utf-8"))["sessions"][0]["calls"][0]
+    assert recorded["options"] == options
+
+    def no_http(*args, **kwargs):
+        raise AssertionError("replay must not use HTTP")
+    monkeypatch.setattr(phase_b, "urlopen", no_http)
+    replay = ReplayToolModel(fixture, prompt_hash="stream-options").start_session("system")
+    assert "".join(replay.stream_json("prompt", response_schema={"type": "object"}, **options)) == "{}"
+    with pytest.raises(ValueError, match="options do not match"):
+        list(ReplayToolModel(fixture, prompt_hash="stream-options").start_session("system").stream_json(
+            "prompt", response_schema={"type": "object"}, temperature=0.2,
+            transport_retries=1, timeout_seconds=4.25))
+
+
+def test_recording_stream_failure_keeps_chunks_usage_and_replays_after_chunks(monkeypatch, tmp_path):
+    monkeypatch.setattr(phase_b, "urlopen", lambda request, timeout: _Response([]))
+    delegate = GeminiToolModel("key", "gemini-test")
+
+    def disconnected(_response):
+        yield {"candidates": [{"content": {"parts": [{"text": "partial"}]}}],
+               "usageMetadata": {"promptTokenCount": 31, "thoughtsTokenCount": 4}}
+        raise ConnectionError("stream disconnected")
+    delegate._decode_sse = disconnected
+    fixture = tmp_path / "stream-error.json"
+    session = RecordingToolModel(delegate, fixture, prompt_hash="stream-error").start_session("system")
+    iterator = session.stream_json("prompt", response_schema={"type": "object"},
+                                   transport_retries=0)
+    assert next(iterator) == "partial"
+    with pytest.raises(ConnectionError, match="disconnected"):
+        next(iterator)
+    call = json.loads(fixture.read_text(encoding="utf-8"))["sessions"][0]["calls"][0]
+    assert call["chunks"] == ["partial"]
+    assert call["usage"]["thoughtsTokenCount"] == 4
+    assert call["error"]["type"] == "ConnectionError"
+
+    replay = ReplayToolModel(fixture, prompt_hash="stream-error").start_session("system")
+    iterator = replay.stream_json("prompt", response_schema={"type": "object"},
+                                  transport_retries=0)
+    assert next(iterator) == "partial"
+    with pytest.raises(RuntimeError, match="recorded JSON stream failed"):
+        next(iterator)
+    assert replay.last_usage["promptTokenCount"] == 31
+
+
 def test_document_schema_is_sent_to_http_and_typed_reply_replays_offline(monkeypatch, tmp_path):
     from doc2roadmap.application.phase_b.documents import DOCUMENT_SCHEMA
     from doc2roadmap.application.phase_b.lectures import LECTURE_SCHEMA

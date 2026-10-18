@@ -67,7 +67,7 @@ def test_json_first_byte_timing_is_recorded_in_ledger_and_replayed(monkeypatch, 
     recorded = RecordingToolModel(model, fixture, prompt_hash='timing')
     store = InMemoryPhaseBStore()
     result = call_json(recorded, 'prompt', response_schema={}, store=store,
-                       purpose='document', doc_id='dev', context_hash='ctx', allow_spend=True)
+                       purpose='document', doc_id='dev', context_hash='ctx', allow_spend=True, learner_id='tester')
     assert result.payload == {'ok': True}
     assert result.ttft_ms == store.usage_rows()[0]['ttft_ms'] == 2500
     assert result.elapsed_ms == store.usage_rows()[0]['elapsed_ms'] == 5500
@@ -80,7 +80,7 @@ def test_json_first_byte_timing_is_recorded_in_ledger_and_replayed(monkeypatch, 
     replay = ReplayToolModel(fixture, prompt_hash='timing')
     replay_store = InMemoryPhaseBStore()
     replayed = call_json(replay, 'prompt', response_schema={}, store=replay_store,
-                         purpose='document', doc_id='dev', context_hash='ctx', allow_spend=True)
+                         purpose='document', doc_id='dev', context_hash='ctx', allow_spend=True, learner_id='tester')
     assert replayed.ttft_ms == replay_store.usage_rows()[0]['ttft_ms'] == 2500
     assert replayed.cost_usd == 0
 
@@ -91,7 +91,7 @@ def test_invalid_json_keeps_first_byte_timing_on_failed_usage(monkeypatch, tmp_p
     store = InMemoryPhaseBStore()
     with pytest.raises(json.JSONDecodeError):
         call_json(recorded, 'prompt', response_schema={}, store=store,
-                  purpose='document', doc_id='dev', context_hash='ctx', allow_spend=True)
+                  purpose='document', doc_id='dev', context_hash='ctx', allow_spend=True, learner_id='tester')
     [row] = store.usage_rows()
     assert row['failed'] is True
     assert row['ttft_ms'] == 2500

@@ -30,7 +30,7 @@ class BSettings:
     lecture_max_contrasts: int = 2
     lecture_min_source_coverage: float = 0.5
     lecture_duplicate_jaccard_threshold: float = 0.6
-    lecture_validator_version: str = 'lecture-validator-3'
+    lecture_validator_version: str = 'lecture-validator-4'
     connector_sentence_max_chars: int = 60
     quote_max_chars: int = 200
     document_max_usd: float = 0.01
@@ -48,7 +48,23 @@ class BSettings:
     quiz_estimated_module_usd: float = 0.015
     negative_cache_seconds: int = 60
     allow_outside_examples: bool = True
-    contract_version: str = "lecture-1"
+    contract_version: str = "lecture-2"
+    scope_remap_min_jaccard: float = 0.5
+    session_title_max_chars: int = 60
+    roadmap_recent_module_sessions: int = 5
+    learner_daily_max_usd: float = 0.20
+    system_daily_max_usd: float = 5.0
+    spend_day_timezone: str = "Asia/Ho_Chi_Minh"
+    quiz_roadmap_max_items: int = 10
+    document_max_modules: int = 5
+    bridge_max_chars: int = 160
+    bridge_forbidden_phrases: tuple[str, ...] = ("như bạn đã học", "bạn đã biết", "ở bài trước", "như đã học")
+    next_up_max: int = 2
+    lecture_failure_ttl_seconds: int = 86400
+    lecture_click_timeout_seconds: float = 30.0
+    lecture_click_transport_retries: int = 1
+    lecture_preload_transport_retries: int = 2
+    lecture_retry_temperature: float = 0.0
 
 
 def context_hash(value: Any) -> str:
