@@ -99,7 +99,7 @@ Mỗi dòng là một object JSON có **đúng** các trường sau, không thê
 - **Viết bằng lời người học,** không chép câu trong sách. Script cảnh báo khi câu hỏi chép nguyên văn từ 10 từ liền nhau trở lên.
 - **Đa dạng cách hỏi.** Đừng để mọi câu đều là "X là gì?".
 - **Không ghi mã nội bộ** (`node_…`, `c_…`, `module_…`) trong câu hỏi. Người học không thấy mã.
-- **Trải đều câu trên các module.** Không module nào quá 3 câu. Riêng hai cuốn ít module (`doc-6`, `naive-bayes`) thì không quá 6.
+- **Trải đều câu trên các module.** Mọi module đều có câu. Với cuốn có từ 10 module trở lên, không module nào quá 3 câu.
 
 ## 4. Ví dụ (tự soạn, không lấy từ sách được giao)
 

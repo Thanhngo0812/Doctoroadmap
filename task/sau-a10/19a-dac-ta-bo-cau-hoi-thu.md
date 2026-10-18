@@ -7,7 +7,7 @@
 - script xuất gói đầu vào: `scripts/pha-b/xuat_goi_cau_hoi_thu.py`, 0 USD.
 
 **Chi phí mô hình phía dự án:** 0 USD. Phí của dịch vụ agentic do chủ dự án chọn.
-**Trạng thái:** chờ chủ dự án duyệt (mục 13).
+**Trạng thái:** chủ dự án duyệt ngày 2026-10-18 (mục 13); Claude đang làm bước 1–2.
 
 ## Vì sao
 
@@ -35,7 +35,9 @@ Bộ câu phải có bốn tính chất:
 | xstk-ch3-1 | v64 | gộp | 14 | 82 | 126 |
 | nhap-mon-ml | v46 | v3 | 15 | 75 | 41 |
 | naive-bayes | v45 | v3 | 5 | 33 | 40 |
-| doc-6 | v17 | v3 | 4 | 28 | 27 |
+| doc-6 | v25 | gộp | 2 | 11 | 27 |
+
+doc-6 đã chạy lại bằng chuỗi gộp ngày 2026-10-18, chủ dự án duyệt ([báo cáo](../../report/pha-b-chay-lai-doc6-chuoi-gop-2026-10-18.md)).
 
 **Không dùng tập giữ lại.** Script xuất từ chối `d01-t01`, `d01-t02`.
 
@@ -47,7 +49,7 @@ Bộ câu phải có bốn tính chất:
 | Bước | Ai | Việc |
 |---|---|---|
 | 1 | Claude | Chạy script xuất gói cho sáu cuốn. Gói có văn bản các đoạn, danh sách module (tên, số thứ tự), danh sách khái niệm (tên, bí danh, module, mô tả ≤ 200 ký tự). **Không có cạnh đồ thị, câu neo, chunk dạy.** |
-| 2 | Claude | Soạn 12 câu kiểm (2 mỗi cuốn) vào `goi/<doc>/cau_kiem.jsonl`. Đáp án giữ ở `Desktop\pha-b-cau-hoi-thu\khoa-kiem.jsonl`, ngoài repo |
+| 2 | Claude | Soạn 12 câu kiểm (2 mỗi cuốn) vào `goi/<doc>/cau_kiem.jsonl`. Đáp án giữ ở `Desktop\pha-b-cau-hoi-thu-nguoi-giu\khoa-kiem.jsonl`: ngoài repo, và ngoài thư mục giao agentic |
 | 3 | Chủ dự án | Chọn dịch vụ agentic (mục 10). Giao gói, hướng dẫn, script kiểm |
 | 4 | Agentic | Soạn câu vào `cau/<doc>.jsonl`, điền câu kiểm vào `kiem/<doc>.jsonl`. Tự chạy script kiểm tới khi in "ĐẠT" |
 | 5 | Claude | Chạy lại script kiểm; chấm câu kiểm; đọc toàn bộ cảnh báo; chọn mẫu duyệt 40 câu |
@@ -210,10 +212,15 @@ Bộ câu cần đúng hơn cần đủ nhanh:
 | ngoài tài liệu, lạc đề | "Cài numpy trên Windows thế nào?" |
 | nhiều lượt | trước: "Định thức là gì?"; câu chấm: "Vậy tính nó bằng biến đổi sơ cấp được không?" |
 
-## 13. Câu hỏi cho chủ dự án
+## 13. Quyết định của chủ dự án (2026-10-18)
 
-1. **Duyệt chỉ tiêu và bảy loại câu** ở mục 3, 4. Đề xuất: giữ như trên.
-2. **Dịch vụ agentic** nào được nhận toàn văn sáu cuốn? Đề xuất: một họ mô hình khác Gemini.
-3. **Hai thành viên nào duyệt 40 câu?** Có thể là hai người chấm của vé 20–23.
-4. **doc-6 đang là đồ thị chuỗi v3,** không có câu neo. Bộ câu không phụ thuộc câu neo nên vẫn làm được. Nhưng nếu phía pha A sẽ chạy lại doc-6, thì
-   nên chạy trước khi xuất gói, để `chunk_id` không đổi sau khi đã soạn câu.
+Chủ dự án: "câu hỏi 19a tôi chấp nhận hết theo bạn và duyệt doc6 cho bạn luôn".
+1. **Chỉ tiêu và bảy loại câu** giữ như mục 3, 4. doc-6 nay còn 11 khái niệm nhưng vẫn giữ 20 câu: đủ khái niệm và cặp so sánh (ba mức lược đồ; CSDL
+   với hệ thống tập tin).
+2. **Dịch vụ agentic:** dùng một họ mô hình khác Gemini.
+3. **Người duyệt 40 câu:** hai người chấm của vé 20–23.
+4. **doc-6:** đã chạy lại bằng chuỗi gộp trước khi xuất gói (đồ thị v25, khoảng 0,007 USD).
+
+**Bước kế:** Claude làm bước 1 và 2 của mục 2.
+- Thư mục giao agentic: `Desktop\pha-b-cau-hoi-thu\giao-agentic\`. Gồm gói, hướng dẫn và script kiểm.
+- Đáp án câu kiểm: `Desktop\pha-b-cau-hoi-thu-nguoi-giu\`. Thư mục này không giao.
