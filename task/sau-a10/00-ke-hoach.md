@@ -42,51 +42,72 @@ Bốn luật:
 
 ## Vé
 
+**Cập nhật 2026-10-15 (nhân viên):** vé 01–18 và 24 đã cài và chạy các lượt thử được duyệt. Xem [bàn giao](../../report/pha-b-ban-giao-2026-10-15.md).
+
+**Cập nhật 2026-10-18 (Claude kiểm):** xem [báo cáo kiểm thử](../../report/kiem-thu-pha-b-2026-10-18.md).
+- Hạ tầng đạt.
+- Nội dung chưa đạt ở bốn nhóm, mỗi nhóm một vé sửa 25–28.
+- Lượt thật của vé 08, 10, 13, 16 còn thiếu; chạy sau vé sửa tương ứng.
+- **Điều kiện trước của 25–28:** nhân viên commit phần mã Pha B chưa commit (trợ lý, quiz, tài liệu, chỉ mục khái niệm, ảnh công thức, bộ lắp, adapter,
+  CLI, trang xem thử, test).
+
 | vé | việc | chặn bởi | tiền mô hình | trạng thái |
 |---|---|---|---|---|
-| [01](01-nen-pha-b-kho-so-chi-gioi-han.md) | Nền Pha B: kho lưu trữ, sổ chi, giới hạn dùng chung | — | 0 | ready-for-agent |
-| [02](02-do-thi-hoc-nhan-nguon-cong-cu-tra-cuu.md) | Đồ thị học: mô hình đọc, nhãn nguồn, công cụ tra đồ thị | — | 0 | ready-for-agent |
-| [03](03-a12-lop-gan-module-truy-hoi-uu-tien.md) | A12: lớp gán module, truy hồi ưu tiên module, `search_document` | — | 0 (embedding truy vấn khi thử) | ready-for-agent |
-| [04](04-anh-cong-thuc.md) | Ảnh công thức | — | 0 | ready-for-agent |
-| [05](05-ten-module-luat-tat-dinh-duong-lui.md) | Tên module: luật tất định, đường lùi, mô tả khuôn | — | 0 | ready-for-agent |
-| [06](06-ten-mo-ta-module-do-llm-dat.md) | Tên và mô tả module do LLM đặt | 05 | dưới 0,1 USD sáu cuốn | ready-for-agent |
-| [07](07-chi-muc-khai-niem.md) | Chỉ mục khái niệm | 01, 02 | dưới 0,01 USD | ready-for-agent |
-| [08](08-tro-ly-agent-lat-cat-dau.md) | Trợ lý agent, lát cắt đầu: port gọi công cụ, vòng lặp có trần | 01, 02, 03 | lượt nhỏ | ready-for-agent |
-| [09](09-tro-ly-trich-dan-tu-choi-ngoai-tai-lieu.md) | Trợ lý: trích dẫn, từ chối, nội dung ngoài tài liệu | 08 | 0 (phát lại) | ready-for-agent |
-| [10](10-tro-ly-du-cong-cu-nhac-nen-hoi-thoai.md) | Trợ lý: đủ công cụ, nhắc khái niệm nền, hội thoại nhiều lượt | 09 | lượt nhỏ | ready-for-agent |
-| [11](11-bai-giang-khong-llm.md) | Bài giảng không LLM: khung do mã dựng và trích câu | 02 | 0 | ready-for-agent |
-| [12](12-bai-giang-llm-kiem-va-cache.md) | Bài giảng LLM có kiểm và cache | 01, 11 | lượt nhỏ | ready-for-agent |
-| [13](13-bai-giang-stream-tai-truoc.md) | Bài giảng stream và tải trước | 12 | lượt nhỏ | ready-for-agent |
-| [14](14-cong-cu-get-lecture.md) | Công cụ `get_lecture` | 08, 12 | 0 | ready-for-agent |
-| [15](15-quiz-dien-khuyet-dau-cuoi.md) | Quiz điền khuyết đầu-cuối | 01, 02 | 0 | ready-for-agent |
-| [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | ready-for-agent |
-| [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | ready-for-agent |
-| [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | ready-for-agent |
-| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | ready-for-agent |
-| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06 | dưới 1 USD | ready-for-agent |
-| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12 | trần 5 USD | ready-for-agent |
-| [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16 | khoảng 1,7 USD | ready-for-agent |
-| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19 | lượt 1 trần khoảng 8 USD | ready-for-agent |
-| [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | ready-for-agent |
+| [01](01-nen-pha-b-kho-so-chi-gioi-han.md) | Nền Pha B: kho lưu trữ, sổ chi, giới hạn dùng chung | — | 0 | đạt; giá viết cứng sửa ở 25 |
+| [02](02-do-thi-hoc-nhan-nguon-cong-cu-tra-cuu.md) | Đồ thị học: mô hình đọc, nhãn nguồn, công cụ tra đồ thị | — | 0 | chưa đạt: test cạnh mở `requires` (sửa ở 25); thiếu số tên bị chặn vì "tên phổ biến" |
+| [03](03-a12-lop-gan-module-truy-hoi-uu-tien.md) | A12: lớp gán module, truy hồi ưu tiên module, `search_document` | — | 0 (embedding truy vấn khi thử) | đạt; thiếu giây/truy vấn doc-4 |
+| [04](04-anh-cong-thuc.md) | Ảnh công thức | — | 0 | đạt |
+| [05](05-ten-module-luat-tat-dinh-duong-lui.md) | Tên module: luật tất định, đường lùi, mô tả khuôn | — | 0 | chưa đạt → 28 |
+| [06](06-ten-mo-ta-module-do-llm-dat.md) | Tên và mô tả module do LLM đặt | 05 | dưới 0,1 USD sáu cuốn | chưa đạt → 28 |
+| [07](07-chi-muc-khai-niem.md) | Chỉ mục khái niệm | 01, 02 | dưới 0,01 USD | đạt |
+| [08](08-tro-ly-agent-lat-cat-dau.md) | Trợ lý agent, lát cắt đầu: port gọi công cụ, vòng lặp có trần | 01, 02, 03 | lượt nhỏ | test đạt; chờ lượt thật sau 25 |
+| [09](09-tro-ly-trich-dan-tu-choi-ngoai-tai-lieu.md) | Trợ lý: trích dẫn, từ chối, nội dung ngoài tài liệu | 08 | 0 (phát lại) | chưa đạt → 25 |
+| [10](10-tro-ly-du-cong-cu-nhac-nen-hoi-thoai.md) | Trợ lý: đủ công cụ, nhắc khái niệm nền, hội thoại nhiều lượt | 09 | lượt nhỏ | chưa đạt → 25; chờ lượt thật |
+| [11](11-bai-giang-khong-llm.md) | Bài giảng không LLM: khung do mã dựng và trích câu | 02 | 0 | chưa đạt → 26 |
+| [12](12-bai-giang-llm-kiem-va-cache.md) | Bài giảng LLM có kiểm và cache | 01, 11 | lượt nhỏ | chưa đạt → 26 |
+| [13](13-bai-giang-stream-tai-truoc.md) | Bài giảng stream và tải trước | 12 | lượt nhỏ | chờ lượt thật sau 26 |
+| [14](14-cong-cu-get-lecture.md) | Công cụ `get_lecture` | 08, 12 | 0 | đạt |
+| [15](15-quiz-dien-khuyet-dau-cuoi.md) | Quiz điền khuyết đầu-cuối | 01, 02 | 0 | đạt |
+| [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | chưa đạt → 27 |
+| [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
+| [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | chưa đạt → 25 |
+| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | Claude đang làm |
+| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28** | dưới 1 USD | ready-for-agent |
+| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26** | trần 5 USD | ready-for-agent |
+| [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27** | khoảng 1,7 USD | ready-for-agent |
+| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25** | lượt 1 trần khoảng 8 USD | ready-for-agent |
+| [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | đạt |
+| [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | ready-for-agent |
+| [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, bản lùi sạch, ghi lý do hỏng, `usage` đúng | commit mã | 0 (phát lại) | ready-for-agent |
+| [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật vé 16 | ready-for-agent |
+| [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | khoảng 0,2–0,3 USD sáu cuốn | ready-for-agent |
 
 "Lượt nhỏ" là lượt thử có tiền trong vé, mỗi lượt dưới 0,5 USD, cộng vào trần chung 16 USD và vẫn dry-run trước.
 
 ## Thứ tự
 
-Vé 01–05 và 19 không có blocker, chạy song song được. Theo lịch đề cương, trợ lý ở tuần 7 (19–25/10) và bài giảng ở tuần 8, nên đường găng như sau:
-- **Trợ lý:** 01, 02, 03 → 08 → 09 → 10.
-- **Bài giảng:** 02 → 11 → 12 → 13.
+Ban đầu, vé 01–05 và 19 không có blocker và chạy song song được. Đường găng theo lịch đề cương:
+- **Trợ lý (tuần 7, 19–25/10):** 01, 02, 03 → 08 → 09 → 10.
+- **Bài giảng (tuần 8):** 02 → 11 → 12 → 13.
 - **Đánh giá:** chạy cuối mỗi nhánh.
-- **Trang xem thử (vé 24):** làm ngay khi có đủ 06, 10, 13 và 16. Trước đó, mọi chức năng thử được bằng lệnh CLI của từng vé.
+- **Trang xem thử (vé 24):** làm khi có đủ 06, 10, 13 và 16.
+
+**Từ 2026-10-18:**
+1. Nhân viên commit mã còn dở.
+2. Vé 25, 26, 27, 28 chạy song song được. Riêng bảng giá chung (vé 25) làm trước, vì ba vé kia cùng dùng.
+3. Sau 25 và 26: một lượt thật gộp cho vé 08, 10, 13. Dry-run trước, chủ dự án duyệt.
+4. Sau 27: lượt thật vé 16 nằm trong vé 27.
+5. Rồi mới tới đánh giá 20–23. Đánh giá ghim phiên bản đồ thị và ghi `upstream_chain` của từng cuốn.
 
 Không kịp lịch thì báo để dời. Không cắt luật kiểm để kịp.
 
-`[CHÈN HÌNH 1 – Đồ thị phụ thuộc của 24 vé:]`
+`[CHÈN HÌNH 1 – Đồ thị phụ thuộc của 28 vé:]`
 - Mỗi vé là một hộp đánh số, có mũi tên từ vé chặn tới vé bị chặn.
-- Năm làn ngang theo đợt:
+- Sáu làn ngang theo đợt:
   - nền: 01–07;
   - trợ lý và bài giảng: 08–14;
   - quiz và tài liệu: 15–18;
   - đánh giá: 19–23;
-  - xem thử: 24.
+  - xem thử: 24;
+  - sửa sau kiểm: 25–28, có mũi tên tới 20–23.
 - Tô đậm đường găng của trợ lý: 01, 02, 03 → 08 → 09 → 10 → 23.
