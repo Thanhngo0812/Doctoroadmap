@@ -14,6 +14,7 @@ from doc2roadmap.application.use_cases.build_roadmap import render_roadmap_html
 from doc2roadmap.domain.canonical import digest
 from doc2roadmap.domain.module_titles import transfer_chunk_sections
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
+from doc2roadmap.domain.phase_b_pricing import estimate_cost
 
 
 SCHEMA = {
@@ -49,6 +50,16 @@ def _display(node):
 def _aliases(node):
     return [alias.get('name', '') if isinstance(alias, dict) else str(alias)
             for alias in node.get('aliases', [])]
+
+
+def _first_sentence(value):
+    text = ' '.join(str(value or '').split())
+    match = re.search(r'(?<=[.!?])\s+', text)
+    return text[:match.start() + 1] if match else text
+
+
+def _title_key(value):
+    return ' '.join(unicodedata.normalize('NFC', str(value)).casefold().split())
 
 
 class NameModulesB:
@@ -91,6 +102,7 @@ class NameModulesB:
         corpus = Counter(word for chunk in chunks.result.chunks for word in _words(chunk.text))
         function_words = {word for word, count in corpus.most_common(max(1, len(corpus) // 100)) if count >= 3}
         degree = Counter(edge['source'] for edge in upstream.payload.get('requires_edges', []) if not edge.get('soft'))
+        module_by_id = {module['module_id']: (index, module) for index, module in enumerate(modules)}
 
         def path(section_id):
             result, seen = [], set()
@@ -134,8 +146,18 @@ class NameModulesB:
                         'description': [{'text': 'Học: ' + ', '.join(_display(nodes[nid]) for nid in ids) + '.',
                                          'node_ids': list(ids)}], 'description_source': 'template', 'naming_flags': []}
             if dependencies:
-                fallback['description'].append({'text': 'Cần trước: ' + ', '.join(dependencies) + '.',
-                                                'node_ids': [ids[0]], 'module_ids': dependencies})
+                dependency_text = []
+                for dependency in dependencies:
+                    if dependency in module_by_id:
+                        dep_index, dep_module = module_by_id[dependency]
+                        dep_title = clean_title(dep_module.get('title', ''))[0]
+                        if not dep_title or re.search(r'\b(?:module|node)_\w+', dep_title, re.I):
+                            dep_node = nodes[dep_module['node_ids'][0]]
+                            dep_title = _display(dep_node)
+                        dependency_text.append(f'{dep_title} (module {dep_index + 1})')
+                if dependency_text:
+                    fallback['description'].append({'text': 'Cần trước: ' + ', '.join(dependency_text) + '.',
+                                                    'node_ids': [ids[0]], 'module_ids': dependencies})
             target_texts = [text for nid in ids for text in [nodes[nid].get('name', ''), _display(nodes[nid]),
                              nodes[nid].get('description', ''), *_aliases(nodes[nid])]]
             target_texts.extend(headings[sid][0] for sid in target_sections)
@@ -153,7 +175,8 @@ class NameModulesB:
                     'neighbors': neighboring, 'function_words': sorted(function_words),
                     'allowed_module_ids': list(dependencies), 'allowed_vocabulary': sorted(vocabulary | function_words),
                     'format_example': {'title': target_names[0], 'description': [{
-                        'text': ', '.join(target_names[:3]) + '.', 'node_ids': list(ids[:3])}]}}
+                        'text': _first_sentence(nodes[ids[0]].get('description')) or target_names[0] + '.',
+                        'node_ids': list(ids[:3])}]}}
             prepared.append((module, fallback, data, vocabulary | function_words,
                              set(target_names) | {headings[sid][0] for sid in target_sections}))
         return chunks, prepared
@@ -163,10 +186,10 @@ class NameModulesB:
                 'không số đánh mục, không mượn từ module kề. Mọi từ trong title và description.text phải thuộc '
                 'allowed_vocabulary (không phân biệt hoa thường); không tự thêm từ đồng nghĩa hay lời dẫn. '
                 'Giữ tiêu đề tác giả khi exact_author_section=true và tên tốt. '
-                'Mô tả 1–2 câu ngắn chỉ liệt kê tên khái niệm nguyên vẹn như format_example; '
-                'không cần lời dẫn học, tìm hiểu hay nắm vững. Không có phụ thuộc thì không viết câu cần trước. '
+                'Viết mô tả 1–2 câu từ nội dung A5, nêu module dạy gì và dùng để làm gì; '
+                'Không trả danh sách tên khái niệm thay cho câu văn. Bám format_example về câu văn và node_ids. '
+                'Không có phụ thuộc thì không viết câu cần trước. '
                 'text chỉ là câu tiếng Việt cho người học, tuyệt đối không chứa node_id/module_id hoặc tên trường JSON. '
-                'Có thể viết text bằng cách liệt kê nguyên vẹn các display_name liên quan. '
                 'node_ids là mảng JSON riêng, chỉ lấy từ concepts của module đích. '
                 'module_ids là mảng JSON riêng, chỉ lấy từ allowed_module_ids; mảng này rỗng thì bỏ module_ids. '
                 'Không suy đoán tiên quyết từ neighbors. '
@@ -179,8 +202,18 @@ class NameModulesB:
         sentences = value.get('description')
         if not isinstance(title, str) or not title.strip() or not isinstance(sentences, list) or not 1 <= len(sentences) <= 2:
             return 'schema'
+        title = title.strip()
         if len(title) > self.settings.title_max_chars or clean_title(title)[0] != title:
             return 'title_form'
+        title_words = set(_words(title)) - set(self._function_words)
+        target_words = set()
+        for node_id in module['node_ids']:
+            node = self._nodes[node_id]
+            target_words.update(_words(_display(node)))
+            for alias in _aliases(node):
+                target_words.update(_words(alias))
+        if not title_words.intersection(target_words):
+            return 'generic_title'
         if any(title.casefold() == other.casefold() for i, other in enumerate(all_titles)
                if i != index and abs(index - i) <= 2):
             return 'duplicate'
@@ -192,6 +225,8 @@ class NameModulesB:
                     or not set(sentence['node_ids']) <= set(module['node_ids'])
                     or not set(sentence.get('module_ids', [])) <= set(module.get('module_dependencies', []))):
                 return 'references'
+            if re.search(r'\b(?:module|node)_\w+', sentence['text'], re.I):
+                return 'identifier_in_text'
         if any(word not in vocabulary for text in [title, *(s['text'] for s in sentences)] for word in _words(text)):
             return 'vocabulary'
         return None
@@ -204,6 +239,9 @@ class NameModulesB:
 
     def _run(self, doc_id, upstream, *, planning):
         chunks, prepared = self._prepare(doc_id, upstream)
+        self._nodes = {node['node_id']: node for node in upstream.payload['nodes']}
+        corpus = Counter(word for chunk in chunks.result.chunks for word in _words(chunk.text))
+        self._function_words = {word for word, count in corpus.most_common(max(1, len(corpus) // 100)) if count >= 3}
         prompt = self._prompt()
         use_model = self.model is not None and not self.deterministic
         model_id = getattr(self.model, 'model_id', self.settings.model_id)
@@ -214,7 +252,8 @@ class NameModulesB:
         pending = sum(item is None for item in cached) if use_model else 0
         if planning:
             return StagePlan('run', remaining_items=len(prepared), calls_estimate=pending,
-                             usd_estimate=round(pending * (1500 * .25 + self.settings.naming_max_output_tokens * 1.5) / 1e6, 6),
+                             usd_estimate=round(pending * estimate_cost(model_id, 1500,
+                                                                        self.settings.naming_max_output_tokens), 6),
                              note='Tên theo từng module; cache theo ngữ cảnh, không theo graph_version.')
         all_titles = [module.get('title', '') for module in upstream.payload['modules']]
 
@@ -241,22 +280,34 @@ class NameModulesB:
             failure = self._validate(value, module, vocabulary, fragments, all_titles, index)
             if failure:
                 return {**fallback, 'title_source': 'fallback', 'naming_flags': [failure]}
-            return {**fallback, 'title': value['title'].strip(), 'description': value['description'],
+            title = value['title'].strip()
+            title = title[:1].upper() + title[1:] if title else title
+            return {**fallback, 'title': title, 'description': value['description'],
                     'title_source': 'llm', 'description_source': 'llm'}
 
         with ThreadPoolExecutor(max_workers=self.concurrency) as pool:
             modules = list(pool.map(generate, range(len(prepared))))
         # Resolve collisions after every proposal is known; order does not depend on thread completion.
+        seen = {}
         for index, module in enumerate(modules):
-            if any(module['title'].casefold() == modules[prior]['title'].casefold()
-                   for prior in range(max(0, index - 2), index)):
+            key = _title_key(module['title'])
+            if key not in seen:
+                seen[key] = index
+                continue
+            prior = seen[key]
+            prior_section = modules[prior].get('section_code')
+            current_section = module.get('section_code')
+            same_section = bool(prior_section and current_section and prior_section == current_section)
+            if same_section:
+                module['title'] = module['title'].rstrip() + ' (tiếp)'
+                module['title_source'] = 'llm' if module.get('title_source') == 'llm' else module['title_source']
+            else:
                 module.update(title=prepared[index][1]['title'], title_source='fallback', description_source='template',
                               description=prepared[index][1]['description'])
-                module['naming_flags'].append('duplicate')
-                if any(module['title'].casefold() == modules[prior]['title'].casefold()
-                       for prior in range(max(0, index - 2), index)):
-                    module['title'] += f' ({index + 1})'
-        config = {**upstream.manifest['config'], 'algorithm_id': 'phase-b-module-names-v3',
+                if 'duplicate' not in module['naming_flags']:
+                    module['naming_flags'].append('duplicate')
+            seen[_title_key(module['title'])] = index
+        config = {**upstream.manifest['config'], 'algorithm_id': 'phase-b-module-names-v4',
                   'upstream_version': upstream.version, 'settings': asdict(self.settings), 'prompt_hash': digest(prompt),
                   'model_id': model_id, 'deterministic': not use_model}
         payload = {**upstream.payload, 'modules': modules, 'module_naming_contract': 'module-1'}

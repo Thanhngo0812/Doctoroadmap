@@ -88,8 +88,8 @@ def test_no_model_falls_back_locally_and_cache_rebinds_graph_version():
 
 
 def test_extractive_fallback_cache_does_not_hide_later_live_generation():
-    sentence1 = "Tế bào là đơn vị cấu trúc cơ bản của cơ thể."
-    sentence2 = "Tế bào thực hiện các chức năng sống."
+    sentence1 = "Tế bào thực hiện các chức năng sống."
+    sentence2 = "Tế bào gồm nhiều thành phần có chức năng khác nhau."
 
     class LiveModel:
         model_id = "gemini-3.1-flash-lite"
@@ -102,14 +102,16 @@ def test_extractive_fallback_cache_does_not_hide_later_live_generation():
             payload = {"prereq_notes": [], "example": [], "contrasts": [], "gaps": [],
                        "explanation": [
                            {"text": sentence1, "sources": ["S1"], "quote": sentence1},
-                           {"text": sentence2, "sources": ["S1"], "quote": sentence2},
+                           {"text": sentence2, "sources": ["S2"], "quote": sentence2},
                        ]}
             return iter([json.dumps(payload, ensure_ascii=False)])
 
     store = InMemoryPhaseBStore()
-    fallback = LectureUseCase(None, store).make("d1", "g1", _graph(), "n1")
+    graph = _graph()
+    graph.nodes["n1"]["teaching_chunk_ids"] = ["c1", "c2"]
+    fallback = LectureUseCase(None, store).make("d1", "g1", graph, "n1")
     model = LiveModel()
-    live = LectureUseCase(model, store).make("d1", "g1", _graph(), "n1", allow_spend=True)
+    live = LectureUseCase(model, store).make("d1", "g1", graph, "n1", allow_spend=True)
 
     assert fallback["status"] == "fallback"
     assert live["status"] == "ready"
@@ -202,7 +204,7 @@ def test_lecture_prefetch_queues_next_concept_after_current_response(monkeypatch
 
 
 def test_stream_failure_does_not_retract_validated_item():
-    sentence = "Tế bào là đơn vị cấu trúc cơ bản của cơ thể."
+    sentence = "Tế bào thực hiện các chức năng sống."
 
     class BrokenStream:
         model_id = "scripted"
@@ -216,9 +218,9 @@ def test_stream_failure_does_not_retract_validated_item():
     store = InMemoryPhaseBStore()
     result = LectureUseCase(BrokenStream(), store).make("d1", "g1", _graph(), "n1", allow_spend=True)
     explanation = next(section for section in result["sections"] if section["kind"] == "giai_thich")
-    assert explanation["items"][0]["text"] == sentence
+    assert sentence in [item["text"] for item in explanation["items"]]
     assert result["status"] == "fallback"
-    assert len(store.usage_rows("d1")) == 2
+    assert len([row for row in store.usage_rows("d1") if row.get("purpose") == "lecture"]) == 2
 
 
 def test_document_context_cap_prunes_removed_source_text():

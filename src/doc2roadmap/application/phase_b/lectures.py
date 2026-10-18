@@ -2,14 +2,17 @@ from __future__ import annotations
 
 import json
 import re
-from threading import Thread
+import unicodedata
+import uuid
 from collections import Counter
 from collections.abc import Callable, Mapping
+from threading import Thread
 from time import perf_counter
 from typing import Any
 
 from doc2roadmap.application.phase_b.common import quote_is_verbatim, stable_json
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash, lecture_cache_key, usage_row
+from doc2roadmap.domain.phase_b_pricing import estimate_cost, token_cost
 
 
 def _grounded_item_schema() -> dict[str, Any]:
@@ -196,13 +199,19 @@ def _assemble(graph: Any, node_id: str, settings: BSettings, source_registry: An
             break
 
     media = graph.get_media(node_id)
-    used_later = []
-    for edge in graph.traverse(node_id, "requires", "in").get("edges", []):
-        later = graph.nodes.get(edge.get("node_id"), {})
+    module_index = int(module.get("index", 0) or 0)
+    later_nodes = []
+    for edge in graph.traverse(node_id, "requires", "out").get("edges", []):
+        later_id = edge.get("node_id")
+        later = graph.nodes.get(later_id, {})
         if later:
-            used_later.append(later.get("display_name") or later.get("name"))
-        if len(used_later) >= 3:
-            break
+            later_module = graph.modules.get(later.get("module_id"), {})
+            later_index = int(later_module.get("index", 0) or 0)
+            later_nodes.append((later_index, later_id, later))
+    later_nodes.sort(key=lambda row: (0 if row[0] >= module_index else 1,
+                                     abs(row[0] - module_index), row[1]))
+    used_later = [row[2].get("display_name") or row[2].get("name")
+                  for row in later_nodes[:3] if row[2].get("display_name") or row[2].get("name")]
 
     exercise = []
     for chunk in graph.chunks.values():
@@ -356,43 +365,77 @@ def _has_repeated_ngram(text: str) -> bool:
     return any(count >= 3 for count in counts.values())
 
 
+def _three_grams(text: str) -> set[str]:
+    words = unicodedata.normalize("NFC", text).casefold().split()
+    return {" ".join(words[index:index + 3]) for index in range(max(0, len(words) - 2))}
+
+
+def _is_duplicate_idea(text: str, previous: list[str], definition: str, threshold: float) -> bool:
+    grams = _three_grams(text)
+    if not grams:
+        return False
+    for earlier in [definition, *previous]:
+        other = _three_grams(earlier)
+        if other and len(grams & other) / len(grams | other) >= threshold:
+            return True
+    return False
+
+
 def _valid_item(item: Any, context: dict[str, Any], *, section: str, settings: BSettings,
-                outside_seen: int = 0) -> dict[str, Any] | None:
+                outside_seen: int = 0, dropped_by_rule: dict[str, int] | None = None,
+                dropped_by_source_label: dict[str, int] | None = None) -> dict[str, Any] | None:
+    def drop(rule: str, labels: list[str] | None = None) -> None:
+        if dropped_by_rule is not None:
+            dropped_by_rule[rule] = dropped_by_rule.get(rule, 0) + 1
+        if dropped_by_source_label is not None:
+            for label in labels or []:
+                dropped_by_source_label[label] = dropped_by_source_label.get(label, 0) + 1
+
     if not isinstance(item, dict) or not isinstance(item.get("text"), str) or not item["text"].strip():
+        drop("K1")
         return None
     sources = item.get("sources", [])
     outside = bool(item.get("outside_document", False))
     if outside:
         if not settings.allow_outside_examples or section not in {"example", "contrasts"} or outside_seen >= 1:
+            drop("K7")
             return None
         if sources or item.get("quote"):
+            drop("K7")
             return None
         return {"text": item["text"].strip(), "citations": [], "formula_labels": [],
                 "outside_document": True, "check": "pass"}
     if not isinstance(sources, list) or not sources:
+        drop("K2")
         return None
     source_map = {**context["sources"]}
     valid_labels = set(source_map)
     if any(label not in valid_labels for label in sources):
+        drop("K2", [str(label) for label in sources if label not in valid_labels])
         return None
     if section == "prereq_notes":
         prereq = item.get("prereq")
         if not isinstance(prereq, str) or not prereq.startswith("N") or prereq not in sources:
+            drop("K2", [str(prereq)] if prereq else [])
             return None
     if section == "contrasts":
         relation = item.get("relation")
         if not isinstance(relation, str) or not relation.startswith("R") or relation not in sources:
+            drop("K2", [str(relation)] if relation else [])
             return None
     quote = item.get("quote")
     first = str(sources[0])
     text = source_map[first]["text"]
     if not quote_is_verbatim(str(quote or ""), text, max_chars=settings.quote_max_chars):
+        drop("K3", [first])
         return None
     cited_texts = [source_map[label]["text"] for label in sources]
     if not _symbols_valid(item["text"], cited_texts):
+        drop("K5", [str(label) for label in sources])
         return None
     citations = [citation for label in sources if (citation := _citation(context["registry"], label, quote if label == first else None))]
     if not citations:
+        drop("K2", [str(label) for label in sources])
         return None
     check = "pass" if _source_coverage(item["text"], cited_texts) >= settings.lecture_min_source_coverage else "can_soat"
     return {"text": item["text"].strip(), "citations": citations,
@@ -518,14 +561,61 @@ def _merge_emitted(sections: list[dict[str, Any]], emitted: dict[str, list[dict[
             section = {"kind": kinds[field], "items": []}
             sections.append(section)
         if section is not None:
-            seen = {stable_json(item) for item in section["items"]}
-            section["items"].extend(item for item in items if stable_json(item) not in seen)
+            ordered = []
+            seen: set[str] = set()
+            for item in [*items, *section["items"]]:
+                key = stable_json(item)
+                if key not in seen:
+                    seen.add(key)
+                    ordered.append(item)
+            section["items"] = ordered
     return sections
 
 
-def _aggregate_usage(rows: list[dict[str, Any]]) -> dict[str, int]:
-    keys = ("promptTokenCount", "candidatesTokenCount", "thoughtsTokenCount")
-    return {key: sum(int(row.get(key, 0) or 0) for row in rows) for key in keys}
+def _aggregate_usage(rows: list[dict[str, Any]]) -> dict[str, int | float]:
+    return {
+        "promptTokenCount": sum(int(row.get("promptTokenCount", row.get("input_tokens", 0)) or 0) for row in rows),
+        "candidatesTokenCount": sum(int(row.get("candidatesTokenCount", row.get("output_tokens", 0)) or 0) for row in rows),
+        "thoughtsTokenCount": sum(int(row.get("thoughtsTokenCount", row.get("thought_tokens", 0)) or 0) for row in rows),
+        "cost_usd": sum(float(row.get("cost_usd", 0) or 0) for row in rows),
+    }
+
+
+def summarize_lecture_diagnostics(rows: list[dict[str, Any]], *, doc_id: str | None = None) -> dict[str, Any]:
+    """Summarize validation companion rows without counting them as billed usage."""
+    selected = [row for row in rows if row.get("purpose") == "lecture_validation"
+                and (doc_id is None or row.get("doc_id") == doc_id)]
+    failed = [row for row in selected if not row.get("passed", False)]
+
+    def totals(field: str) -> dict[str, int]:
+        result: dict[str, int] = {}
+        for row in selected:
+            for key, value in (row.get(field) or {}).items():
+                result[str(key)] = result.get(str(key), 0) + int(value or 0)
+        return dict(sorted(result.items()))
+
+    failed_by_rule: dict[str, int] = {}
+    for row in failed:
+        for rule in set(row.get("validation_rules") or ()):
+            failed_by_rule[rule] = failed_by_rule.get(rule, 0) + 1
+    return {
+        "doc_id": doc_id,
+        "generation_count": len(selected),
+        "passed_generations": len(selected) - len(failed),
+        "failed_generations": len(failed),
+        "failed_by_rule": dict(sorted(failed_by_rule.items())),
+        "dropped_by_rule": totals("dropped_by_rule"),
+        "dropped_by_source_label": totals("dropped_by_source_label"),
+        "generations": [{key: row.get(key) for key in (
+            "doc_id", "generation_id", "generation_index", "validator_version", "validation_rules",
+            "dropped_by_rule", "dropped_by_source_label", "passed", "failure_reason")}
+            for row in selected],
+    }
+
+
+def _rule_for_error(error: BaseException) -> str:
+    match = re.match(r"\s*(K[1-8])\s*:", str(error))
+    return match.group(1) if match else "K1"
 
 
 class LectureUseCase:
@@ -574,7 +664,8 @@ class LectureUseCase:
             return result
         if dry_run:
             result = {**skeleton, "status": "generating", "dry_run": True,
-                      "estimate_usd": (len(_SYSTEM + prompt) // 3) * 0.25 / 1_000_000 + self.settings.lecture_max_output_tokens * 1.5 / 1_000_000}
+                      "estimate_usd": estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
+                                                     self.settings.lecture_max_output_tokens)}
             if on_event:
                 on_event({"event": "final", "lecture": result})
             return result
@@ -588,46 +679,63 @@ class LectureUseCase:
         def generate() -> dict[str, Any]:
             emitted: dict[str, list[dict[str, Any]]] = {"prereq_notes": [], "explanation": [], "example": [], "contrasts": []}
             outside_count = 0
+            starting_rows = len([row for row in self.store.usage_rows(doc_id)
+                                 if row.get("purpose") == "lecture" and row.get("context_hash") == ctx_hash])
+            generation_index = 0
             try:
                 if self.model is None:
                     sections = _fallback_sections(context)
                     return self._finish(skeleton, sections, "fallback", ["model_unavailable"], {}, 0, key, ctx_hash, doc_id)
                 if not allow_spend:
                     raise PermissionError("paid model call requires allow_spend=True")
-                starting_rows = len([row for row in self.store.usage_rows(doc_id)
-                                     if row.get("purpose") == "lecture" and row.get("context_hash") == ctx_hash])
-                output, usage, elapsed, finish_reason = self._generate(prompt, emitted, on_event, context, outside_count, doc_id, ctx_hash)
-                _validate_top_level(output, self.settings)
-                sections, outside_count = self._validate(output, context)
-                if finish_reason in {"MAX_TOKENS", "LENGTH"} or _has_repeated_ngram(stable_json(output)):
-                    raise ValueError("K6: repeated text or truncated output")
-                if len(next((s["items"] for s in sections if s["kind"] == "giai_thich"), [])) < self.settings.lecture_min_explanations:
-                    raise ValueError("K8: explanation items below minimum")
-                sections = _merge_emitted(sections, emitted)
-                return self._finish(skeleton, sections, "ready", [], usage, elapsed, key, ctx_hash, doc_id)
-            except Exception as first_error:
-                if not allow_spend:
-                    raise
-                # One repair attempt follows K1, K6, and K8 failures. Already emitted items remain live.
+                diag = self._new_validation_row(doc_id, ctx_hash, generation_index)
+                generation_index += 1
                 try:
-                    repair_prompt = prompt + "\nLần trước mắc lỗi: " + str(first_error) + ". Trả JSON đã sửa, giữ nguyên các luật."
-                    output, usage, elapsed, finish_reason = self._generate(repair_prompt, emitted, on_event, context, outside_count, doc_id, ctx_hash)
+                    output, _, elapsed, finish_reason = self._generate(
+                        prompt, emitted, on_event, context, outside_count, doc_id, ctx_hash, diag)
                     _validate_top_level(output, self.settings)
-                    sections, outside_count = self._validate(output, context)
+                    sections, outside_count = self._validate(output, context, diag)
+                    sections = _merge_emitted(sections, emitted)
                     if finish_reason in {"MAX_TOKENS", "LENGTH"} or _has_repeated_ngram(stable_json(output)):
                         raise ValueError("K6: repeated text or truncated output")
                     if len(next((s["items"] for s in sections if s["kind"] == "giai_thich"), [])) < self.settings.lecture_min_explanations:
                         raise ValueError("K8: explanation items below minimum")
-                    rows = [row for row in self.store.usage_rows(doc_id)
-                            if row.get("purpose") == "lecture" and row.get("context_hash") == ctx_hash]
+                    self._finish_validation_row(diag, passed=True)
+                    rows = self._lecture_rows(doc_id, ctx_hash, starting_rows)
+                    return self._finish(skeleton, sections, "ready", [], _aggregate_usage(rows),
+                                        sum(int(row.get("elapsed_ms", 0) or 0) for row in rows), key, ctx_hash, doc_id)
+                except Exception as first_error:
+                    diag["validation_rules"].append(_rule_for_error(first_error))
+                    self._finish_validation_row(diag, passed=False, error=first_error)
+                    raise
+            except Exception as first_error:
+                if not allow_spend:
+                    raise
+                # One repair attempt follows K1, K6, and K8 failures. Already emitted items remain live.
+                diag = self._new_validation_row(doc_id, ctx_hash, generation_index)
+                try:
+                    repair_prompt = prompt + "\nLần trước mắc lỗi: " + str(first_error) + ". Trả JSON đã sửa, giữ nguyên các luật."
+                    output, _, elapsed, finish_reason = self._generate(
+                        repair_prompt, emitted, on_event, context, outside_count, doc_id, ctx_hash, diag)
+                    _validate_top_level(output, self.settings)
+                    sections, outside_count = self._validate(output, context, diag)
                     sections = _merge_emitted(sections, emitted)
-                    return self._finish(skeleton, sections, "ready", [], _aggregate_usage(rows[starting_rows:]), elapsed, key, ctx_hash, doc_id)
-                except Exception:
+                    if finish_reason in {"MAX_TOKENS", "LENGTH"} or _has_repeated_ngram(stable_json(output)):
+                        raise ValueError("K6: repeated text or truncated output")
+                    if len(next((s["items"] for s in sections if s["kind"] == "giai_thich"), [])) < self.settings.lecture_min_explanations:
+                        raise ValueError("K8: explanation items below minimum")
+                    self._finish_validation_row(diag, passed=True)
+                    rows = self._lecture_rows(doc_id, ctx_hash, starting_rows)
+                    return self._finish(skeleton, sections, "ready", [], _aggregate_usage(rows),
+                                        sum(int(row.get("elapsed_ms", 0) or 0) for row in rows), key, ctx_hash, doc_id)
+                except Exception as repair_error:
+                    diag["validation_rules"].append(_rule_for_error(repair_error))
+                    self._finish_validation_row(diag, passed=False, error=repair_error)
                     sections = _fallback_sections(context)
-                    rows = [row for row in self.store.usage_rows(doc_id)
-                            if row.get("purpose") == "lecture" and row.get("context_hash") == ctx_hash]
+                    rows = self._lecture_rows(doc_id, ctx_hash, starting_rows)
                     sections = _merge_emitted(sections, emitted)
-                    return self._finish(skeleton, sections, "fallback", ["ban_trich_cau"], _aggregate_usage(rows[starting_rows:]), 0, key, ctx_hash, doc_id)
+                    return self._finish(skeleton, sections, "fallback", ["ban_trich_cau"], _aggregate_usage(rows),
+                                        sum(int(row.get("elapsed_ms", 0) or 0) for row in rows), key, ctx_hash, doc_id)
 
         result = self.store.single_flight(key, generate)
         if on_event:
@@ -639,8 +747,34 @@ class LectureUseCase:
                        kwargs={"allow_spend": allow_spend, "preload_next": False}, daemon=True).start()
         return result
 
+    def _new_validation_row(self, doc_id: str, ctx_hash: str, index: int) -> dict[str, Any]:
+        return {"generation_id": str(uuid.uuid4()), "generation_index": index,
+                "doc_id": doc_id, "context_hash": ctx_hash, "validator_version": self.settings.lecture_validator_version,
+                "validation_rules": [], "dropped_by_rule": {}, "dropped_by_source_label": {}}
+
+    def _finish_validation_row(self, row: dict[str, Any], *, passed: bool,
+                               error: BaseException | None = None) -> None:
+        row["validation_rules"] = list(dict.fromkeys([*row["validation_rules"], *row["dropped_by_rule"]]))
+        self.store.append_usage({
+            "purpose": "lecture_validation", "model_id": getattr(self.model, "model_id", self.settings.model_id),
+            "doc_id": row.get("doc_id"), "learner_id": None, "context_hash": row["context_hash"],
+            "input_tokens": 0, "output_tokens": 0, "thought_tokens": 0, "cost_usd": 0.0,
+            "ttft_ms": None, "elapsed_ms": 0, "generation_id": row["generation_id"],
+            "generation_index": row["generation_index"], "validator_version": row["validator_version"],
+            "validation_rules": list(dict.fromkeys(row["validation_rules"])),
+            "dropped_by_rule": dict(row["dropped_by_rule"]),
+            "dropped_by_source_label": dict(row["dropped_by_source_label"]),
+            "passed": passed, "failure_reason": str(error) if error else None,
+        })
+
+    def _lecture_rows(self, doc_id: str, ctx_hash: str, offset: int) -> list[dict[str, Any]]:
+        rows = [row for row in self.store.usage_rows(doc_id)
+                if row.get("purpose") == "lecture" and row.get("context_hash") == ctx_hash]
+        return rows[offset:]
+
     def _generate(self, prompt: str, emitted: dict[str, list[dict[str, Any]]], on_event: Any,
-                  context: dict[str, Any], outside_count: int, doc_id: str, ctx_hash: str) -> tuple[dict[str, Any], dict[str, Any], int, str | None]:
+                  context: dict[str, Any], outside_count: int, doc_id: str, ctx_hash: str,
+                  diagnostics: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], int, str | None]:
         started = perf_counter()
         if hasattr(self.model, "start_session"):
             session = self.model.start_session(_SYSTEM)
@@ -650,6 +784,11 @@ class LectureUseCase:
             stream = self.model.stream_json(_SYSTEM, prompt, LECTURE_SCHEMA)
         buffer = ""
         emitted_indices: set[tuple[str, int]] = set()
+        dropped_indices: dict[str, set[int]] = {field: set() for field in emitted}
+        stream_dropped_by_rule: dict[str, int] = {}
+        stream_dropped_by_source_label: dict[str, int] = {}
+        previous_texts = [item["text"] for items in emitted.values() for item in items]
+        definition_text = str(context.get("definition", {}).get("quote", ""))
         try:
             for delta in stream:
                 buffer += delta
@@ -665,48 +804,69 @@ class LectureUseCase:
                     if index >= maximum:
                         continue
                     checked = _valid_item(item, context, section=field, settings=self.settings,
-                                          outside_seen=outside_count)
+                                          outside_seen=outside_count,
+                                          dropped_by_rule=stream_dropped_by_rule,
+                                          dropped_by_source_label=stream_dropped_by_source_label)
                     if checked is None:
+                        continue
+                    if _is_duplicate_idea(checked["text"], previous_texts, definition_text,
+                                          self.settings.lecture_duplicate_jaccard_threshold):
+                        dropped_indices[field].add(index)
+                        diagnostics["dropped_by_rule"]["K6"] = diagnostics["dropped_by_rule"].get("K6", 0) + 1
+                        if "K6" not in diagnostics["validation_rules"]:
+                            diagnostics["validation_rules"].append("K6")
                         continue
                     if checked["outside_document"]:
                         outside_count += 1
                     if checked in emitted[field]:
                         continue
                     emitted[field].append(checked)
+                    previous_texts.append(checked["text"])
                     section_kind = {"prereq_notes": "nhac_nen", "explanation": "giai_thich",
                                     "example": "vi_du", "contrasts": "phan_biet"}[field]
                     if on_event:
                         on_event({"event": "item", "section_kind": section_kind, "item": checked})
             output = json.loads(buffer)
+            for field, indices in dropped_indices.items():
+                if indices:
+                    output[field] = [item for index, item in enumerate(output.get(field, [])) if index not in indices]
             usage = getattr(session, "last_usage", {}) if session is not None else getattr(stream, "usage", {})
             if not usage and getattr(self.model, "last_usage", None):
                 usage = self.model.last_usage
             finish_reason = getattr(session, "last_finish_reason", None) if session is not None else None
             elapsed = round((perf_counter() - started) * 1000)
             ttft = getattr(session, "last_ttft_ms", None) if session is not None else None
-            thoughts = int(usage.get("thoughtsTokenCount", 0) or 0)
-            cost = (int(usage.get("promptTokenCount", 0) or 0) * 0.25 +
-                    (int(usage.get("candidatesTokenCount", 0) or 0) + thoughts) * 1.5) / 1_000_000
+            cost = token_cost(getattr(self.model, "model_id", self.settings.model_id), usage)
             if getattr(self.model, 'is_replay', False):
                 cost = 0.0
-            self.store.append_usage(usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
+            ledger = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
                 doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
-                ttft_ms=ttft, cost_usd=cost))
+                ttft_ms=ttft, cost_usd=cost)
+            ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
+            self.store.append_usage(ledger)
             return output, dict(usage), elapsed, finish_reason
         except BaseException:
+            # A complete candidate may be rejected before a later truncated portion makes the
+            # enclosing JSON invalid. In that case `_validate` never sees it, so preserve the
+            # local stream counts; complete JSON instead gets its single count from `_validate`.
+            for rule, count in stream_dropped_by_rule.items():
+                diagnostics["dropped_by_rule"][rule] = diagnostics["dropped_by_rule"].get(rule, 0) + count
+            for label, count in stream_dropped_by_source_label.items():
+                diagnostics["dropped_by_source_label"][label] = diagnostics["dropped_by_source_label"].get(label, 0) + count
             usage = getattr(session, "last_usage", {}) if session is not None else getattr(self.model, "last_usage", {})
             elapsed = round((perf_counter() - started) * 1000)
-            thoughts = int(usage.get("thoughtsTokenCount", 0) or 0)
-            cost = (int(usage.get("promptTokenCount", 0) or 0) * 0.25 +
-                    (int(usage.get("candidatesTokenCount", 0) or 0) + thoughts) * 1.5) / 1_000_000
+            cost = token_cost(getattr(self.model, "model_id", self.settings.model_id), usage)
             if getattr(self.model, 'is_replay', False):
                 cost = 0.0
-            self.store.append_usage(usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
+            ledger = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
                 doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
-                ttft_ms=getattr(session, "last_ttft_ms", None) if session is not None else None, cost_usd=cost))
+                ttft_ms=getattr(session, "last_ttft_ms", None) if session is not None else None, cost_usd=cost)
+            ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
+            self.store.append_usage(ledger)
             raise
 
-    def _validate(self, output: dict[str, Any], context: dict[str, Any]) -> tuple[list[dict[str, Any]], int]:
+    def _validate(self, output: dict[str, Any], context: dict[str, Any],
+                  diagnostics: dict[str, Any] | None = None) -> tuple[list[dict[str, Any]], int]:
         outside_count = 0
         sections = []
         for field, kind in (("prereq_notes", "nhac_nen"), ("explanation", "giai_thich"),
@@ -718,7 +878,9 @@ class LectureUseCase:
                      "contrasts": self.settings.lecture_max_contrasts}[field]
             for item in output.get(field, [])[:limit]:
                 checked = _valid_item(item, context, section=field, settings=self.settings,
-                                      outside_seen=outside_count)
+                                      outside_seen=outside_count,
+                                      dropped_by_rule=diagnostics["dropped_by_rule"] if diagnostics else None,
+                                      dropped_by_source_label=diagnostics["dropped_by_source_label"] if diagnostics else None)
                 if checked:
                     outside_count += int(checked["outside_document"])
                     items.append(checked)
@@ -727,10 +889,14 @@ class LectureUseCase:
         self_check = output.get("self_check")
         if isinstance(self_check, dict):
             checked = _valid_item({"text": self_check.get("question"), "sources": self_check.get("sources"),
-                                   "quote": self_check.get("quote")}, context, section="self_check", settings=self.settings)
+                                   "quote": self_check.get("quote")}, context, section="self_check", settings=self.settings,
+                                   dropped_by_rule=diagnostics["dropped_by_rule"] if diagnostics else None,
+                                   dropped_by_source_label=diagnostics["dropped_by_source_label"] if diagnostics else None)
             if checked:
                 answer_ok = _valid_item({"text": self_check.get("answer"), "sources": self_check.get("sources"),
-                                         "quote": self_check.get("quote")}, context, section="self_check", settings=self.settings)
+                                         "quote": self_check.get("quote")}, context, section="self_check", settings=self.settings,
+                                         dropped_by_rule=diagnostics["dropped_by_rule"] if diagnostics else None,
+                                         dropped_by_source_label=diagnostics["dropped_by_source_label"] if diagnostics else None)
                 if answer_ok:
                     sections.append({"kind": "tu_kiem_tra", "items":[{"kind":self_check.get("kind"),
                         "question": self_check.get("question"), "answer": self_check.get("answer"),
@@ -740,12 +906,11 @@ class LectureUseCase:
     def _finish(self, skeleton: dict[str, Any], sections: list[dict[str, Any]], status: str,
                 warnings: list[str], usage: dict[str, Any], elapsed: int,
                 key: str, ctx_hash: str, doc_id: str) -> dict[str, Any]:
-        thoughts = int(usage.get("thoughtsTokenCount", 0) or 0)
-        cost = (int(usage.get("promptTokenCount", 0) or 0) * 0.25 +
-                (int(usage.get("candidatesTokenCount", 0) or 0) + thoughts) * 1.5) / 1_000_000
+        model_id = getattr(self.model, "model_id", self.settings.model_id)
+        cost = float(usage.get("cost_usd", token_cost(model_id, usage)) or 0)
         if getattr(self.model, 'is_replay', False):
             cost = 0.0
-        row = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
+        row = usage_row(purpose="lecture", model_id=model_id,
                         doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
                         cost_usd=cost)
         result = {**skeleton, "status": status, "sections": sections,

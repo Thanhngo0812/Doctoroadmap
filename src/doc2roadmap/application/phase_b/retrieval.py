@@ -10,7 +10,7 @@ from doc2roadmap.application.use_cases.index_document import retriever_from_payl
 from doc2roadmap.domain.learning_graph import LearningGraph
 from doc2roadmap.domain.retrieval import embedding_text
 from doc2roadmap.application.ports.embedding import EmbeddingRequest
-from doc2roadmap.application.planning import PRICING_USD_PER_MILLION
+from doc2roadmap.domain.phase_b_pricing import embedding_cost
 
 
 def _hash(value) -> str:
@@ -189,7 +189,7 @@ class SearchDocumentB:
             raise ValueError("mô hình embedding truy vấn không khớp mô hình đã lập chỉ mục")
         fingerprint = assert_retrieval_compatible(index.payload, graph.chunks.values())
         estimated_tokens = max(1, math.ceil(len(query) / 3))
-        estimated_cost = estimated_tokens * PRICING_USD_PER_MILLION["input"] / 1_000_000
+        estimated_cost = embedding_cost(self.embedding.embedding_model_id, estimated_tokens)
         if dry_run:
             return {"dry_run": True, "doc_id": doc_id, "graph_version": graph.graph_version,
                     "scope": scope, "k": k, "estimated_input_tokens": estimated_tokens,

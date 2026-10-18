@@ -3,7 +3,9 @@
 **Nguồn chân lý:** [spec Pha B](../../doc/pha-b-spec.md), mục "Nội dung ngoài sách", trợ lý bước 5 (hậu kiểm), tài liệu theo yêu cầu ("hậu kiểm
 bằng cùng luật"); [báo cáo kiểm thử 2026-10-18](../../report/kiem-thu-pha-b-2026-10-18.md), mục 3.3, 3.4, 3.8, 4.
 **Ai:** nhân viên · Claude kiểm · **Chi phí mô hình:** 0 USD (phát lại phản hồi đã ghi) · **Chặn bởi:** nhân viên commit mã Pha B còn dở ·
-**Trạng thái:** ready-for-agent
+**Trạng thái:** đã triển khai và phát lại 0 USD; chờ Claude soát độc lập
+
+**Bàn giao 2026-10-18:** mã nền đã commit ở `bbcfcc6`. Xem [báo cáo SA-25](../../report/pha-b-sa25-2026-10-18.md): hậu kiểm dùng chung, bảng giá chung, 12 phản hồi phát lại và các ca sửa sai M2/M5/M6. Các ô phán xét nghiệm thu bên dưới dành cho người soát.
 
 ## Vì sao
 

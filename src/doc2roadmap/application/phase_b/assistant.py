@@ -8,12 +8,13 @@ from time import perf_counter
 from uuid import uuid4
 
 from doc2roadmap.application.phase_b.common import stable_json
+from doc2roadmap.application.phase_b.postcheck import POSTCHECK_VERSION, check_text
 from doc2roadmap.application.phase_b.lectures import LectureUseCase
 from doc2roadmap.application.ports.phase_b import Delta, Done, ToolCall
 from doc2roadmap.domain.learning_graph import LearningGraph
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash, usage_row
+from doc2roadmap.domain.phase_b_pricing import estimate_cost, token_cost
 from doc2roadmap.domain.retrieval import HybridRetriever, RetrievalDocument
-from doc2roadmap.domain.sentence_splitter import UnicodeSentenceSplitter
 
 
 REF = re.compile(r'\[((?:CT|S|N|Q|R|H|B|K|D)\d+)\]')
@@ -201,51 +202,14 @@ class AssistantUseCase:
     def _checked_answer(self, graph, text):
         if text.lstrip().startswith('KHONG_DU'):
             return '', [], [], 0
-        outside = []
-        def block(match):
-            body = match[1].strip()
-            if (outside or not self.settings.allow_outside_examples
-                    or re.search(r'định nghĩa|công thức|(?:theo|trong)\s+(?:sách|tài liệu|giáo trình)|[=∑∫√]', body, re.I)):
-                return ''
-            outside.append(':::outside_document\n' + REF.sub('', body) + '\n:::')
-            return ''
-        text = re.sub(r':::outside_document\s*\n(.*?)\n:::', block, text, flags=re.S)
-        citations, flags, accepted = {}, [], []
-        # Labels terminate a sourced unit; an unfinished unit remains buffered until complete.
-        units = re.split(r'(?<=\])\s+(?=[^\[])|\n+', text)
-        for unit in units:
-            if re.search(r'[=∑∫√]|\\(?:frac|sum|int|begin)\b|\$\$', unit):
-                flags.append({'kind': 'generated_formula'})
-                continue
-            formulas = getattr(graph, 'answer_formulas', {})
-            known = [label for label in REF.findall(unit) if graph.sources.resolve(label) or label in formulas]
-            unknown = [label for label in REF.findall(unit) if label not in known]
-            if unknown:
-                flags.append({'kind': 'unknown_label', 'labels': unknown})
-            unit = REF.sub(lambda match: match[0] if match[1] in known else '', unit).strip()
-            if not unit or not known:
-                if unit and re.search(r'\d|[=∑∫√]|\w', unit):
-                    flags.append({'kind': 'unsourced_sentence'})
-                continue
-            accepted.append(unit)
-            for label in dict.fromkeys(known):
-                if label in formulas:
-                    continue
-                record = graph.sources.resolve(label)
-                text_source = record['source_text']
-                quote = record.get('quote')
-                if not quote:
-                    spans = UnicodeSentenceSplitter().split(text_source)
-                    candidates = [text_source[span.start:span.end] for span in spans] or [text_source]
-                    words = set(re.findall(r'\w+', unit.casefold()))
-                    quote = max(candidates, key=lambda sentence: len(words & set(re.findall(r'\w+', sentence.casefold()))))
-                citation = graph.sources.citation(label, quote)
-                if citation:
-                    citations[label] = citation
-        answer = '\n'.join(accepted)
-        if answer and outside:
-            answer += '\n\n' + '\n\n'.join(outside)
-        return answer, list(citations.values()), flags, len(outside) if answer else 0
+        checked = check_text(text, graph=graph, settings=self.settings)
+        if not checked['counts']['sourced_sentences']:
+            return '', [], checked['warnings'], 0
+        answer = checked['text']
+        if checked['outside_blocks']:
+            answer += '\n\n' + '\n\n'.join(':::outside_document\n' + body + '\n:::'
+                for body in checked['outside_blocks'])
+        return answer, checked['citations'], checked['warnings'], len(checked['outside_blocks'])
 
     def ask(self, doc_id, graph_version, session_id, current_module_id, question, *, owner='local',
             client_turn_id=None, allow_spend=False, dry_run=False, on_event=None, reminders_enabled=None):
@@ -258,7 +222,7 @@ class AssistantUseCase:
             nonlocal generated
             generated = True
             return self._ask(doc_id, graph_version, session_id, current_module_id, question, **options)
-        key = context_hash([owner, doc_id, session_id, client_turn_id])
+        key = context_hash([owner, doc_id, session_id, client_turn_id, POSTCHECK_VERSION])
         result = self.store.single_flight('assistant-turn:' + key, generate)
         if not generated and on_event:
             on_event({'event': 'final', 'answer': result})
@@ -273,7 +237,7 @@ class AssistantUseCase:
         if current_module_id not in self.graph.modules:
             raise ValueError('Module đang mở không thuộc đồ thị')
         emit = on_event or (lambda event: None)
-        turn_key = context_hash([owner, doc_id, session_id, client_turn_id]) if client_turn_id else None
+        turn_key = context_hash([owner, doc_id, session_id, client_turn_id, POSTCHECK_VERSION]) if client_turn_id else None
         previous = self.store.get_record('answer', turn_key) if turn_key else None
         if previous and not dry_run:
             emit({'event': 'final', 'answer': previous})
@@ -291,7 +255,7 @@ class AssistantUseCase:
                        'linked_node_ids': linked, 'question': question, 'history': state['turns']}
             tokens = len(stable_json(context)) // 3 + 1600
             return {'dry_run': True, 'contract_version': 'answer-1', 'calls_estimate': [1, self.settings.assistant_max_rounds],
-                    'usd_estimate': (tokens * .25 + self.settings.assistant_max_output_tokens * 1.5) / 1e6,
+                    'usd_estimate': estimate_cost(self.settings.model_id, tokens, self.settings.assistant_max_output_tokens),
                     'embedding_calls_estimate': 1 if self.search else 0, 'context_hash': context_hash(context)}
         if not allow_spend and not getattr(self.model, 'is_replay', False):
             raise PermissionError('Trợ lý cần --allow-spend hoặc chế độ phát lại')
@@ -327,8 +291,8 @@ class AssistantUseCase:
         answer, citations, flags, outside_count = '', [], [], 0
         exhausted, transport_error = False, None
         for round_index in range(self.settings.assistant_max_rounds):
-            estimate = ((len(stable_json(messages)) // 3 + len(prompt) // 3) * .25
-                        + self.settings.assistant_max_output_tokens * 1.5) / 1e6
+            estimate = estimate_cost(self.settings.model_id, len(stable_json(messages)) // 3 + len(prompt) // 3,
+                                     self.settings.assistant_max_output_tokens)
             if cost + estimate > self.settings.assistant_max_usd:
                 exhausted = True
                 break
@@ -360,7 +324,7 @@ class AssistantUseCase:
             incoming = int(usage.get('promptTokenCount', usage.get('input_tokens', 0)))
             outgoing = int(usage.get('candidatesTokenCount', usage.get('output_tokens', 0)))
             thoughts = int(usage.get('thoughtsTokenCount', usage.get('thought_tokens', 0)))
-            call_cost = (incoming * .25 + (outgoing + thoughts) * 1.5) / 1e6
+            call_cost = token_cost(getattr(self.model, 'model_id', self.settings.model_id), usage)
             if getattr(self.model, 'is_replay', False):
                 call_cost = 0.0
             cost += call_cost

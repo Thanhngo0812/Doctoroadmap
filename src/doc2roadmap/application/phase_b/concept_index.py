@@ -7,6 +7,7 @@ import time
 from typing import Any
 
 from doc2roadmap.application.ports.embedding import EmbeddingPort, EmbeddingRequest
+from doc2roadmap.domain.phase_b_pricing import embedding_cost
 
 
 def _hash(value: Any) -> str:
@@ -88,11 +89,11 @@ class IndexConcepts:
             return {**cached, "reused": True, "graph_version": graph_version}
 
         estimated_tokens = sum(max(1, (len(row["text"]) + 2) // 3) for row in inputs)
-        estimated_cost = estimated_tokens * 0.25 / 1_000_000
+        estimated_cost = embedding_cost(self.embedding.embedding_model_id, estimated_tokens)
         if dry_run:
             return {"dry_run": True, "graph_version": graph_version, "concept_count": len(inputs),
                     "estimated_input_tokens": estimated_tokens, "estimated_cost_usd": estimated_cost,
-                    "cost_basis": "ước tính bảo thủ 0,25 USD/triệu token; giá embedding chưa được chốt"}
+                    "cost_basis": "estimated tokens at shared online embedding price"}
         if not allow_spend:
             raise PermissionError("embedding khái niệm cần allow_spend=True")
 
@@ -109,7 +110,7 @@ class IndexConcepts:
                 "input_count": len(inputs),
                 "input_tokens": estimated_tokens,
                 "cost_usd": estimated_cost,
-                "cost_basis": "estimated; 0.25 USD per million input tokens",
+                "cost_basis": "estimated tokens at shared online embedding price",
                 "elapsed_ms": elapsed_ms,
                 "context_hash": input_hash,
             })
@@ -120,11 +121,11 @@ class IndexConcepts:
         if index.get("model_id") != self.embedding.embedding_model_id:
             raise ValueError("mô hình embedding truy vấn không khớp chỉ mục khái niệm")
         estimated_tokens = max(1, (len(query) + 2) // 3)
-        estimated_cost = estimated_tokens * 0.25 / 1_000_000
+        estimated_cost = embedding_cost(self.embedding.embedding_model_id, estimated_tokens)
         if dry_run:
             return {"dry_run": True, "estimated_input_tokens": estimated_tokens,
                     "estimated_cost_usd": estimated_cost,
-                    "cost_basis": "ước tính bảo thủ 0,25 USD/triệu token; giá embedding chưa được chốt"}
+                    "cost_basis": "estimated tokens at shared online embedding price"}
         if not allow_spend:
             raise PermissionError("embedding truy vấn cần allow_spend=True")
         started = time.perf_counter()
@@ -141,7 +142,7 @@ class IndexConcepts:
                 "input_count": 1,
                 "input_tokens": estimated_tokens,
                 "cost_usd": estimated_cost,
-                "cost_basis": "estimated; 0.25 USD per million input tokens",
+                "cost_basis": "estimated tokens at shared online embedding price",
                 "elapsed_ms": round((time.perf_counter() - started) * 1000),
                 "context_hash": _hash(query),
             })

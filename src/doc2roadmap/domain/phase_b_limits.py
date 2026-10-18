@@ -28,6 +28,9 @@ class BSettings:
     lecture_max_examples: int = 1
     lecture_max_contrasts: int = 2
     lecture_min_source_coverage: float = 0.5
+    lecture_duplicate_jaccard_threshold: float = 0.6
+    lecture_validator_version: str = 'lecture-validator-2'
+    connector_sentence_max_chars: int = 60
     quote_max_chars: int = 200
     document_max_usd: float = 0.01
     assistant_max_rounds: int = 5

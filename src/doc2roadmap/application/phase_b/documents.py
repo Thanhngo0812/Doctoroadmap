@@ -8,7 +8,9 @@ from uuid import uuid4
 
 from doc2roadmap.application.phase_b.common import call_json, quote_is_verbatim, stable_json
 from doc2roadmap.application.phase_b.lectures import _assemble
+from doc2roadmap.application.phase_b.postcheck import check_text
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
+from doc2roadmap.domain.phase_b_pricing import estimate_cost
 
 
 DOCUMENT_SCHEMA: dict[str, Any] = {
@@ -121,7 +123,7 @@ def _cap_context(context: dict[str, Any], settings: BSettings) -> tuple[dict[str
 
 
 def _render(title: str, markdown: str, outside_blocks: list[str]) -> str:
-    parts = [f"# {title.strip()}", markdown.strip()]
+    parts = [markdown.strip()] if re.match(r'^\s*#\s+', markdown) else [f"# {title.strip()}", markdown.strip()]
     if outside_blocks:
         parts.append("## Ví dụ minh hoạ ngoài tài liệu\n" + "\n\n".join(f"> {block.strip()}" for block in outside_blocks))
     return "\n\n".join(part for part in parts if part)
@@ -214,12 +216,13 @@ class DocumentUseCase:
         prompt = stable_json(context) + "\nUse Markdown headings and cite each factual statement with [label]."
         ctx_hash = context_hash(context)
         if dry_run:
-            estimate = (len(_SYSTEM + prompt) // 3 * 0.25 / 1_000_000 +
-                        self.settings.document_max_output_tokens * 1.5 / 1_000_000 + retrieval_estimate)
+            estimate = estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
+                                     self.settings.document_max_output_tokens) + retrieval_estimate
             return {"contract_version": "document-1", "doc_id": doc_id,
                     "scope": context["scope"], "request": request, "status": "generating",
                     "dry_run": True, "context_hash": ctx_hash, "estimate_usd": estimate}
-        estimated_usd = (len(_SYSTEM + prompt) // 3) * 0.25 / 1_000_000 + self.settings.document_max_output_tokens * 1.5 / 1_000_000
+        estimated_usd = estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
+                                     self.settings.document_max_output_tokens)
         if estimated_usd > self.settings.document_max_usd:
             return {"contract_version": "document-1", "document_id": uuid4().hex,
                     "owner": owner, "doc_id": doc_id, "request": request,
@@ -256,7 +259,6 @@ class DocumentUseCase:
         title = str(payload.get("title") or "Tài liệu học tập")
         markdown = str(payload.get("markdown") or "")
         citations = []
-        valid_labels = set(source_map)
         for item in payload.get("citations", []):
             if not isinstance(item, Mapping):
                 continue
@@ -266,16 +268,18 @@ class DocumentUseCase:
                 citation = registry.citation(label, str(quote))
                 if citation:
                     citations.append(citation)
-        cited_labels = {str(citation.get("label")) for citation in citations}
-        markdown = re.sub(r"\[([A-Z]+\d+)\]", lambda match: match.group(0) if match.group(1) in cited_labels else "", markdown)
         outside = [str(block).strip() for block in payload.get("outside_document_blocks", []) if str(block).strip()]
         max_chars = self.settings.document_max_output_tokens * 3
         warnings = ["context_truncated"] if context_truncated else []
         if len(markdown) > max_chars:
             markdown = markdown[:max_chars].rsplit("\n", 1)[0]
             warnings.append("output_truncated")
+        checked = check_text(markdown, graph=graph, settings=self.settings,
+            citations_by_label={str(row['label']): row for row in citations}, outside_blocks=outside)
+        markdown, citations, outside = checked['text'], checked['citations'], checked['outside_blocks']
+        warnings.extend(dict.fromkeys(row['kind'] for row in checked['warnings']))
         document_id = uuid4().hex
-        status = "ready" if citations else "failed"
+        status = "ready" if checked['counts']['sourced_sentences'] else "failed"
         markdown = _render(title, markdown, outside)
         document = {
             "contract_version": "document-1", "document_id": document_id, "owner": owner,
@@ -285,6 +289,7 @@ class DocumentUseCase:
             "formula_refs": [], "status": status,
             "reason": "no_valid_citations" if not citations else None,
             "warnings": warnings,
+            "postcheck": checked['counts'],
             "usage": {"model_id": getattr(self.model, "model_id", self.settings.model_id),
                       "cost_usd": result.cost_usd, "elapsed_ms": result.elapsed_ms,
                       "input_tokens": result.usage.get("promptTokenCount", 0),

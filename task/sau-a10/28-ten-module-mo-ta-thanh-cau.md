@@ -3,7 +3,9 @@
 **Nguồn chân lý:** [ADR 0014](../../doc/adr/0014-ten-module-do-llm-dat.md); [spec Pha B](../../doc/pha-b-spec.md), mục 2 (tên và mô tả module);
 [báo cáo kiểm thử 2026-10-18](../../report/kiem-thu-pha-b-2026-10-18.md), mục 3.1.
 **Ai:** nhân viên · Claude kiểm và đọc lại toàn bộ · **Chi phí mô hình:** chạy lại sáu cuốn, khoảng 0,2–0,3 USD theo lượt nhóm 1, dry-run trước, chủ
-dự án duyệt · **Chặn bởi:** nhân viên commit mã Pha B còn dở · **Trạng thái:** ready-for-agent
+dự án duyệt · **Chặn bởi:** nhân viên commit mã Pha B còn dở · **Trạng thái:** đã triển khai và chạy sáu cuốn; nội dung chưa đạt, chờ Claude quyết định
+
+**Bàn giao 2026-10-18:** mã nền đã commit ở `bbcfcc6`; chủ dự án duyệt lượt mới trần 0,50 USD trong tổng 1 USD cho SA-27/28. Đã chạy 160 module, 0,12723425 USD, giữ nguyên nodes/dãy học/cạnh/thành viên module. Mô tả LLM list-only giảm từ 130/152 xuống 0/25, nhưng 135/160 module rơi về khuôn dự phòng (122 do từ vựng); không coi nội dung toàn bộ là đạt. Không tự nới luật hoặc gọi thêm lượt. Xem [báo cáo SA-28](../../report/pha-b-sa28-2026-10-18.md) và [bàn giao tổng hợp](../../report/pha-b-sa25-28-ban-giao-2026-10-18.md). Doc-6 dùng A10 v24 hiện hành sau commit `7fed604`, thay bản v17 ghi lúc lập vé. Các ô nghiệm thu của Claude vẫn để người soát quyết định.
 
 ## Vì sao
 

@@ -115,3 +115,21 @@ def test_new_cli_dispatches_without_calling_model_or_writing_on_dry_run(monkeypa
     assert main.main(['phase-b', 'names', '--doc-id', 'doc-1', '--dry-run']) == 0
     assert json.loads(capsys.readouterr().out)['calls_estimate'] == 4
     assert calls[0]['allow_spend'] is False
+
+
+def test_lecture_diagnostics_cli_summarizes_ledger_without_loading_graph_or_model(monkeypatch, capsys):
+    from types import SimpleNamespace
+    from doc2roadmap.presentation.cli import main, phase_b
+
+    class Runtime:
+        def __init__(self, **kwargs):
+            self.store = SimpleNamespace(usage_rows=lambda doc_id: [
+                {'purpose': 'lecture', 'doc_id': 'doc-1', 'cost_usd': 0.001},
+                {'purpose': 'lecture_validation', 'doc_id': 'doc-1', 'generation_id': 'g',
+                 'passed': False, 'validation_rules': ['K8'], 'dropped_by_rule': {'K6': 2}}])
+
+    monkeypatch.setattr(phase_b, 'PhaseBRuntime', Runtime)
+    assert main.main(['phase-b', 'lecture-diagnostics', '--doc-id', 'doc-1']) == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result['dropped_by_rule'] == {'K6': 2}
+    assert len(result['generations']) == 1

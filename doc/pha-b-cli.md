@@ -43,7 +43,20 @@ Xem tham số đầy đủ bằng `phase-b <lệnh> --help`:
 | `ask --module-id <id> "câu hỏi"` | Trợ lý có công cụ và lịch sử phiên |
 | `document --scope <id> "yêu cầu"` | Tài liệu theo yêu cầu; `--output` xuất Markdown có chú thích nguồn |
 | `usage` | Tổng USD ước tính từ token, p50/p90 và số lời gọi theo mục đích |
+| `lecture-diagnostics` | Tổng hợp luật làm hỏng từng lần sinh và số ý bị loại; đọc cùng `--store` đã dùng để tạo bài |
 
 Các lệnh sinh có `--dry-run`, `--owner`, `--store`, `--settings`, `--record-dir`, `--replay-dir`. Dry-run không gọi mô hình và không ghi kho. `--replay-dir` dùng phản hồi đã ghi và kiểm prompt/schema; cần dùng cùng phiên bản đầu vào và cấu hình. Sổ chi có dòng cho lời gọi thất bại; giá trị USD không thay thế hoá đơn của nhà cung cấp.
 
 Nhóm web gọi các use case trong `application/phase_b` và dùng các hợp đồng `lecture-1`, `quiz-1`, `answer-1`, `document-1`; lớp HTTP thử nghiệm nằm ở `presentation/preview`.
+
+## Sau sửa SA-25–28 (2026-10-18)
+
+Trợ lý và tài liệu dùng cùng bộ hậu kiểm theo câu. Nhãn ghép được kiểm từng nhãn; câu không còn nguồn bị bỏ, trừ câu nối ngắn tối đa 60 ký tự, không số, ký hiệu toán hoặc tên/alias khái niệm. Tài liệu trả thêm bộ đếm `postcheck`; `ready` chỉ khi còn câu có nguồn. Đổi phiên bản hậu kiểm làm đổi khóa lưu lượt trả lời của trợ lý để bản cũ không vượt qua bộ kiểm mới.
+
+Bảng giá Pha B ở `domain/phase_b_pricing.py`, nguồn và ngày kiểm ghi trong tệp. Đổi giá ở đó áp dụng cho dự toán, trần chi và ledger của tất cả use case. Token embedding hiện vẫn được ước lượng từ độ dài đầu vào khi adapter không trả số token thực; số USD đó mang nhãn ước tính.
+
+```powershell
+.\.venv\Scripts\python.exe -m doc2roadmap.presentation.cli.main phase-b lecture-diagnostics --doc-id doc-1 --store artifacts/phase_b/offline.json
+```
+
+Các dòng `purpose=lecture_validation` là chẩn đoán, có token và USD bằng 0; số lời gọi mô hình xem ở `purpose=lecture`. Ý lặp được kiểm trước khi phát, `usage` bài cộng mọi lần sinh kể cả lần sửa, `used_later` theo cạnh tiên quyết hướng ra. SA-26 giữ nguyên đường trích câu và cách xử lý cuối khi bài hỏng theo phạm vi vé đã được chủ dự án sửa.

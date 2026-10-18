@@ -51,6 +51,8 @@ Bốn luật:
 - **Điều kiện trước của 25–28:** nhân viên commit phần mã Pha B chưa commit (trợ lý, quiz, tài liệu, chỉ mục khái niệm, ảnh công thức, bộ lắp, adapter,
   CLI, trang xem thử, test).
 
+**Cập nhật 2026-10-18 (Codex triển khai):** điều kiện commit đã xong ở `bbcfcc6`. SA-25/26 đã sửa và phát lại 0 USD; SA-27 đã đo V1–V4 và chạy thật hai module (0,0782415 USD). SA-28 đã chạy 160 module trên sáu A10 (0,12723425 USD), nhưng 135 module dùng khuôn dự phòng nên nội dung toàn bộ chưa đạt. Chủ dự án duyệt SA-27/28 trần 0,50 USD mỗi lượt, tổng 1 USD; chi thực tế theo token 0,20547575 USD. Bộ kiểm ghép cuối có 169 test xanh. Xem [bàn giao SA-25–28](../../report/pha-b-sa25-28-ban-giao-2026-10-18.md); các phán xét nội dung của Claude vẫn chờ soát độc lập.
+
 | vé | việc | chặn bởi | tiền mô hình | trạng thái |
 |---|---|---|---|---|
 | [01](01-nen-pha-b-kho-so-chi-gioi-han.md) | Nền Pha B: kho lưu trữ, sổ chi, giới hạn dùng chung | — | 0 | đạt; giá viết cứng sửa ở 25 |
@@ -77,10 +79,10 @@ Bốn luật:
 | [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27** | khoảng 1,7 USD | ready-for-agent |
 | [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25** | lượt 1 trần khoảng 8 USD | ready-for-agent |
 | [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | đạt |
-| [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | ready-for-agent |
-| [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | ready-for-agent |
-| [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật vé 16 | ready-for-agent |
-| [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | khoảng 0,2–0,3 USD sáu cuốn | ready-for-agent |
+| [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | đã triển khai/phát lại; chờ Claude soát |
+| [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đã triển khai/phát lại; chờ Claude soát |
+| [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật 0,0782415 USD | đã triển khai/chạy hai module; chờ Claude soát |
+| [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | lượt thật 0,12723425 USD | đã triển khai/chạy sáu cuốn; nội dung chưa đạt, chờ Claude quyết định |
 
 "Lượt nhỏ" là lượt thử có tiền trong vé, mỗi lượt dưới 0,5 USD, cộng vào trần chung 16 USD và vẫn dry-run trước.
 

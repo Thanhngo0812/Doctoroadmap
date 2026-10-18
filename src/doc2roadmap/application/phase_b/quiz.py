@@ -13,7 +13,7 @@ from copy import deepcopy
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
-from doc2roadmap.application.prerequisite_prompt import PRICING_USD_PER_MILLION
+from doc2roadmap.domain.phase_b_pricing import estimate_cost
 
 
 QUIZ_SCHEMA = {
@@ -81,6 +81,37 @@ class QuizUseCase:
         self.sources = source_registry or (graph.new_source_registry() if hasattr(graph, "new_source_registry") else None)
         self.rng = rng or random.Random()
         self._emit_lock = threading.Lock()
+        self.diagnostics = []
+        self._diagnostics_lock = threading.Lock()
+
+    def _record_rejection(self, stage, reason, concept, raw=None, item=None):
+        raw = raw or {}
+        correct = raw.get("correct", {}) if isinstance(raw, dict) else {}
+        distractors = raw.get("distractors", []) if isinstance(raw, dict) else []
+        if item and not correct:
+            correct = next((option for option in item.get("options", []) if option.get("is_correct")), {})
+        if item and not distractors:
+            distractors = [option for option in item.get("options", []) if not option.get("is_correct")]
+        row = {
+            "stage": stage,
+            "reason": reason,
+            "concept_id": concept.get("node_id"),
+            "concept_name": self._name(concept),
+            "item_id": (item or {}).get("item_id") or raw.get("item_id"),
+            "candidate": {
+                "stem": str((item or raw).get("stem", ""))[:500],
+                "correct": str(correct.get("text", ""))[:120],
+                "correct_sources": list(correct.get("sources", []))[:4],
+                "distractors": [{
+                    "text": str(option.get("text", ""))[:120],
+                    "from": option.get("from"),
+                    "sources": list(option.get("sources", []))[:4],
+                    "quote": str(option.get("quote", ""))[:200],
+                } for option in distractors[:3] if isinstance(option, dict)],
+            },
+        }
+        with self._diagnostics_lock:
+            self.diagnostics.append(row)
 
     def make_quiz(self, doc_id=None, module_id=None, owner=None, *, scope=None, graph=None,
                   graph_version=None, origin="module_button", n=None,
@@ -110,6 +141,8 @@ class QuizUseCase:
         if dry_run:
             uncached = []
             estimated_input_tokens = estimated_output_tokens = estimated_calls = 0
+            generation_input_tokens = generation_output_tokens = 0
+            verifier_input_tokens = verifier_output_tokens = 0
             for concept in concepts:
                 context = self._context(concept.get("module_id") or module_id, concept, level=level)
                 key = self._bank_key(doc_id, concept.get("module_id") or module_id,
@@ -122,9 +155,17 @@ class QuizUseCase:
                 input_tokens, output_tokens = self._bank_estimate_tokens(context)
                 estimated_input_tokens += input_tokens
                 estimated_output_tokens += output_tokens
+                gen_input, gen_output, verify_input, verify_output = self._bank_estimate_token_breakdown(context)
+                generation_input_tokens += gen_input
+                generation_output_tokens += gen_output
+                verifier_input_tokens += verify_input
+                verifier_output_tokens += verify_output
                 estimated_calls += 4
-            estimate = (estimated_input_tokens * PRICING_USD_PER_MILLION["input"]
-                        + estimated_output_tokens * PRICING_USD_PER_MILLION["output"]) / 1_000_000
+            settings_model_id = self._setting("model_id", "gemini-3.1-flash-lite")
+            generator_id = getattr(self.model, "model_id", settings_model_id)
+            verifier_id = getattr(self.verifier_model, "model_id", settings_model_id)
+            estimate = (estimate_cost(generator_id, generation_input_tokens, generation_output_tokens)
+                        + estimate_cost(verifier_id, verifier_input_tokens, verifier_output_tokens))
             return {"contract_version": "quiz-1", "status": "dry_run", "doc_id": doc_id,
                     "module_id": module_id, "total_concepts": len(concepts),
                     "estimated_usd": round(estimate, 6), "estimated_calls": estimated_calls,
@@ -334,6 +375,7 @@ class QuizUseCase:
             "verifier_max_output_tokens": self._setting("quiz_verifier_max_output_tokens", 400),
             "variant_count": self._setting("quiz_bank_variants", 2),
             "contract_version": "quiz-1",
+            "local_rules_version": "quiz-local-rules-v2",
         }
         value = {"doc_id": doc_id, "module_id": module_id, "node_id": concept["node_id"],
                  "context": self._prompt_context(context), "generation_prompt": "quiz-gen-v3", "verifier_prompt": "quiz-verify-v4",
@@ -442,17 +484,34 @@ class QuizUseCase:
                                        allow_spend=True, settings=self.settings)
             self._add_call_usage(usage, generated_call)
             candidates = generated_call.payload.get("items", []) if isinstance(generated_call.payload, dict) else []
-            items = [self._normalize_item(concept, context, raw) for raw in candidates]
-            items = [item for item in items if item and self._rules_pass(item, context)]
+            items = []
+            for raw in candidates:
+                item, reason = self._normalize_item_with_reason(concept, context, raw)
+                if reason:
+                    self._record_rejection("normalize", reason, concept, raw)
+                    continue
+                passed, reason = self._rules_pass_with_reason(item, context)
+                if not passed:
+                    self._record_rejection("local_rules", reason, concept, raw, item)
+                    continue
+                items.append(item)
             for index, item in enumerate(items[:2]):
                 item["bloom"] = context["target_blooms"][index]
             if len(items) > 1:
                 first = items[0]
                 answer = next(o["text"] for o in first["options"] if o["is_correct"])
-                items = [first] + [item for item in items[1:]
-                                    if not self._duplicate(first, item)
-                                    and (first["bloom"] != item["bloom"]
-                                         or answer != next(o["text"] for o in item["options"] if o["is_correct"]))]
+                retained = [first]
+                for item in items[1:]:
+                    if self._duplicate(first, item):
+                        self._record_rejection("local_rules", "local.duplicate_variant", concept,
+                                               {"stem": item["stem"]}, item)
+                    elif (first["bloom"] == item["bloom"]
+                          and answer == next(o["text"] for o in item["options"] if o["is_correct"])):
+                        self._record_rejection("local_rules", "local.same_bloom_same_answer", concept,
+                                               {"stem": item["stem"]}, item)
+                    else:
+                        retained.append(item)
+                items = retained
             if not items:
                 continue
             labels, choices = [], {}
@@ -469,6 +528,7 @@ class QuizUseCase:
                                  allow_spend=True, settings=self.settings)
             self._add_call_usage(usage, verified)
             accepted = set()
+            rejected = set()
             for result in verified.payload.get("items", []) if isinstance(verified.payload, dict) else []:
                 item = next((it for it in items if it["item_id"] == result.get("item_id")), None)
                 options = choices.get(result.get("item_id"), [])
@@ -483,16 +543,29 @@ class QuizUseCase:
                     and all("sai theo nguồn" in verdict_by_option[str(i)].casefold()
                             for i in range(len(options)) if str(i) != correct_position)
                 )
+                reason = self._verifier_rejection_reason(
+                    item, context, options, result, complete_distractor_verdicts, verdict_values,
+                )
+                if reason:
+                    if item and item["item_id"] not in rejected:
+                        self._record_rejection("verifier", reason, concept, {}, item)
+                        rejected.add(item["item_id"])
+                    continue
                 if (item and selected and selected.get("is_correct") and result.get("valid") is True
-                        and self._quote_found(result.get("quote", ""), context, current_only=True)
-                        and complete_distractor_verdicts
-                        and not any("đúng theo nguồn" in v.casefold() or "nguồn không nói" in v.casefold()
-                                    for v in verdict_values)):
+                        and self._quote_found(result.get("quote", ""), context, current_only=True)):
                     item["checks"]["verifier"] = "pass"
                     accepted.add(item["item_id"])
+            for item in items:
+                if item["item_id"] not in accepted and item["item_id"] not in rejected:
+                    self._record_rejection("verifier", "verifier.missing_result", concept, {}, item)
+                    rejected.add(item["item_id"])
             if accepted:
                 generated["usage"] = usage
-                return [item for item in items if item["item_id"] in accepted][:2]
+                accepted_items = [item for item in items if item["item_id"] in accepted]
+                for item in accepted_items[2:]:
+                    self._record_rejection("local_rules", "local.variant_cap", concept,
+                                           {"stem": item["stem"]}, item)
+                return accepted_items[:2]
         generated["usage"] = usage
         return []
 
@@ -530,6 +603,10 @@ class QuizUseCase:
 
     def _bank_estimate_tokens(self, context):
         """Bound two variants plus one repair and blind-verifier retry."""
+        gen_input, gen_output, verify_input, verify_output = self._bank_estimate_token_breakdown(context)
+        return gen_input + verify_input, gen_output + verify_output
+
+    def _bank_estimate_token_breakdown(self, context):
         generation_cap = self._setting("quiz_generation_max_output_tokens", 1200)
         verifier_cap = self._setting("quiz_verifier_max_output_tokens", 400)
         schema_tokens = lambda schema: math.ceil(len(json.dumps(schema, ensure_ascii=False, sort_keys=True)) / 3)
@@ -542,8 +619,8 @@ class QuizUseCase:
                            + generation_cap + schema_tokens(VERIFIER_SCHEMA))
         # Two generation attempts; the repair may include the entire preceding capped reply.
         # Each verifier call may also receive a max-sized generated reply.
-        return (2 * generation_tokens + generation_cap + 2 * verifier_tokens,
-                2 * generation_cap + 2 * verifier_cap)
+        return (2 * generation_tokens + generation_cap, 2 * generation_cap,
+                2 * verifier_tokens, 2 * verifier_cap)
 
     @staticmethod
     def _add_call_usage(total, result):
@@ -553,31 +630,49 @@ class QuizUseCase:
         total["output_tokens"] += result.usage.get("output_tokens", result.usage.get("candidatesTokenCount", 0))
 
     def _normalize_item(self, concept, context, raw):
+        item, _ = self._normalize_item_with_reason(concept, context, raw)
+        return item
+
+    def _normalize_item_with_reason(self, concept, context, raw):
         try:
             if self._norm(raw["concept"]) not in {
                 self._norm(value) for value in [self._name(concept), *self._aliases(concept)]
             }:
-                return None
+                return None, "normalize.concept_mismatch"
             correct = raw["correct"]
             correct_sources = correct.get("sources", [])
             correct_source = next((label for label in correct_sources
                                    if self._quote_for_label(correct.get("quote", ""), label, context,
                                                             correct=True)), None)
             if correct_source is None:
-                return None
+                labels = {row["label"] for row in context.get("chunks", [])}
+                if not any(label in labels for label in correct_sources):
+                    return None, "normalize.correct_source_label"
+                return None, "normalize.correct_quote"
             correct_chunk = next(row["chunk_id"] for row in context["chunks"] if row["label"] == correct_source)
             options = [{"text": correct["text"].strip(), "is_correct": True, "why_wrong": ""}]
+            distractors = raw.get("distractors", [])
+            if not isinstance(distractors, list) or len(distractors) != 2:
+                return None, "normalize.option_count"
             options.extend({"text": d["text"].strip(), "is_correct": False,
                             "why_wrong": d.get("why_wrong", "")[:self._setting("quiz_why_wrong_max_chars", 150)],
                             "sources": d.get("sources", []), "quote": d.get("quote", ""), "from": d.get("from")}
-                           for d in raw["distractors"])
+                           for d in distractors)
             if len(options) != 3:
-                return None
-            if any(not option.get("sources") or not option.get("quote")
-                   or not any(self._quote_for_label(option["quote"], label, context)
-                              for label in option["sources"])
-                   for option in options[1:]):
-                return None
+                return None, "normalize.option_count"
+            for option in options[1:]:
+                if not option.get("sources"):
+                    return None, "normalize.distractor_source_label"
+                if not option.get("quote") or not any(
+                        self._quote_for_label(option["quote"], label, context)
+                        for label in option["sources"]):
+                    source_labels = ({row["label"] for row in context.get("chunks", [])}
+                                     | {row["label"] for row in context.get("distractor_candidates", [])}
+                                     | {row.get("label") for row in context.get("exercises", [])}
+                                     | {row.get("source_label") for row in context.get("prerequisites", [])})
+                    if not any(label in source_labels for label in option["sources"]):
+                        return None, "normalize.distractor_source_label"
+                    return None, "normalize.distractor_quote"
             evidence = [self._citation(context, correct_source, correct["quote"])]
             for option in options[1:]:
                 source = next(label for label in option["sources"]
@@ -587,14 +682,14 @@ class QuizUseCase:
                 declared_from = option.get("from")
                 if declared_from in {row["label"] for row in context.get("distractor_candidates", [])}:
                     if declared_from != source or source_candidate is None:
-                        return None
+                        return None, "normalize.from_source_mismatch"
                     if source_candidate.get("evidence_chunk_id") == correct_chunk:
-                        return None
+                        return None, "normalize.distractor_same_chunk"
                 elif declared_from == "moi":
                     if source not in {row["label"] for row in context["chunks"]}:
-                        return None
+                        return None, "normalize.from_source_mismatch"
                 else:
-                    return None
+                    return None, "normalize.from_source_mismatch"
                 option["sources"] = [source]
                 option["evidence"] = [self._citation(context, source, option["quote"])]
             stem = raw["stem"].strip()
@@ -603,59 +698,88 @@ class QuizUseCase:
                     "generator": "llm", "bloom": raw.get("bloom", "hieu"), "stem": stem, "options": options,
                     "explanation": raw.get("explanation", "")[:self._setting("quiz_explanation_max_chars", 300)], "evidence": evidence,
                     "formula_refs": raw.get("formula_refs", []),
-                    "checks": {"rules_passed": [], "verifier": "pending", "flags": []}}
+                    "checks": {"rules_passed": [], "verifier": "pending", "flags": []}}, None
         except (KeyError, TypeError, IndexError):
-            return None
+            return None, "normalize.malformed_candidate"
 
     def _rules_pass(self, item, context):
+        return self._rules_pass_with_reason(item, context)[0]
+
+    def _rules_pass_with_reason(self, item, context):
         options = item["options"]
         texts = [self._norm(o["text"]) for o in options]
         correct = next((o for o in options if o["is_correct"]), None)
         if not correct or len(set(texts)) != 3:
-            return False
+            return False, "local.option_count_or_duplicate"
         if any(a in b or b in a for i, a in enumerate(texts) for b in texts[i + 1:] if a and b):
-            return False
+            return False, "local.option_substring_overlap"
         aliases = {self._norm(x) for x in [self._name(context["concept"]), *self._aliases(context["concept"])]}
         if any(self._norm(o["text"]) in aliases for o in options if not o["is_correct"]):
-            return False
+            return False, "local.distractor_is_target_alias"
         answer_len = len(correct["text"])
         distractor_mean = sum(len(o["text"]) for o in options if not o["is_correct"]) / 2
         if answer_len > 1.3 * distractor_mean and answer_len == max(map(lambda o: len(o["text"]), options)):
-            return False
+            return False, "local.answer_too_long"
         stem = item["stem"].casefold()
         if any(term in stem for term in ("tất cả đáp án", "không có đáp án", " ngoại trừ", "không phải")):
-            return False
+            return False, "local.negative_stem"
         if any(term in " ".join(texts) for term in ("luôn luôn", "không bao giờ")):
-            return False
+            return False, "local.absolute_option"
         content_stops = {"một", "những", "các", "là", "của", "và", "trong", "được", "gọi", "nào", "gì",
                          "theo", "với", "khi", "cho", "từ", "đến", "có", "không", "về", "mỗi", "này", "đó"}
         stem_words = set(re.findall(r"[^\W_]+", stem)) - content_stops
         answer_words = set(re.findall(r"[^\W_]+", self._norm(correct["text"]))) - content_stops
         distractor_words = set().union(*(set(re.findall(r"[^\W_]+", self._norm(o["text"]))) - content_stops
                                          for o in options if not o["is_correct"]))
+        target_aliases = [self._name(context["concept"]), *self._aliases(context["concept"])]
+        if (any(alias.casefold() in stem for alias in target_aliases if alias)
+                and self._norm(correct["text"]) in aliases):
+            return False, "local.target_name_in_stem"
         if (stem_words & answer_words) - distractor_words:
-            return False
+            return False, "local.answer_cue"
         text = stem + " " + " ".join(texts)
         if "```" in text or "**" in text or "__" in text or re.search(r"^\s*(?:câu hỏi:|[SDK]\d+:|K\d+:)", text, re.I | re.M):
-            return False
+            return False, "local.markup_or_source_label"
         if re.search(r"\b(?:hình|bảng)\s+\d+\b|\bđồ thị\b|\bhình vẽ\b|\[formula\]|\[CT[^\]]+\]|\bCT\w+\b", text, re.I):
-            return False
+            return False, "local.visual_or_formula_reference"
         if any(re.search(r"\[formula\]|\[CT[^\]]+\]|\bCT\w+\b|[=∑∫√^_×÷±≤≥<>]", option["text"], re.I)
                for option in options):
-            return False
+            return False, "local.formula_option"
         if (len(item.get("explanation", "")) > self._setting("quiz_explanation_max_chars", 300)
                 or any(len(o.get("why_wrong", "")) > self._setting("quiz_why_wrong_max_chars", 150)
                        for o in options)):
-            return False
-        if self._name(context["concept"]).casefold() in stem:
-            return False
+            return False, "local.explanation_or_why_wrong_too_long"
         source = " ".join(c["text"] for c in context["chunks"])
         if not self._math_from_source(text, source):
-            return False
+            return False, "local.unsupported_math"
         minimum_vietnamese = min(0.25, self._vietnamese_ratio(source) * 0.5)
         language_texts = [item["stem"], item.get("explanation", ""),
                           *(option.get("why_wrong", "") for option in options if not option["is_correct"])]
-        return all(self._vietnamese_ratio(value) >= minimum_vietnamese for value in language_texts if value.strip())
+        if not all(self._vietnamese_ratio(value) >= minimum_vietnamese for value in language_texts if value.strip()):
+            return False, "local.language_ratio"
+        return True, None
+
+    def _verifier_rejection_reason(self, item, context, options, result, complete_verdicts, verdict_values):
+        if result is None:
+            return "verifier.missing_result"
+        if item is None:
+            return "verifier.unknown_item"
+        selected = next((option for index, option in enumerate(options)
+                         if str(index) == str(result.get("selected_option_id"))), None)
+        if selected is None or not selected.get("is_correct"):
+            return "verifier.wrong_choice"
+        if result.get("valid") is not True:
+            return "verifier.invalid_question"
+        if not self._quote_found(result.get("quote", ""), context, current_only=True):
+            return "verifier.quote_not_found"
+        normalized_verdicts = [str(value).casefold() for value in verdict_values]
+        if any("nguồn không nói" in value for value in normalized_verdicts):
+            return "verifier.distractor_inconclusive"
+        if any("đúng theo nguồn" in value for value in normalized_verdicts):
+            return "verifier.distractor_supported"
+        if not complete_verdicts:
+            return "verifier.distractor_verdict_missing_or_not_wrong"
+        return None
 
     def _duplicate(self, first, second):
         def grams(item):

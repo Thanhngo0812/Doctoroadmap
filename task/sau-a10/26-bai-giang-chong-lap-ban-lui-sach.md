@@ -3,7 +3,9 @@
 **Nguồn chân lý:** [spec Pha B](../../doc/pha-b-spec.md), mục bài giảng (K1–K8, stream); vé [12](12-bai-giang-llm-kiem-va-cache.md),
 [13](13-bai-giang-stream-tai-truoc.md); [báo cáo kiểm thử 2026-10-18](../../report/kiem-thu-pha-b-2026-10-18.md), mục 3.2, 4.
 **Ai:** nhân viên · Claude kiểm · **Chi phí mô hình:** 0 USD (phát lại phản hồi đã ghi của nhóm 2) · **Chặn bởi:** nhân viên commit mã Pha B còn
-dở · **Trạng thái:** ready-for-agent
+dở · **Trạng thái:** đã triển khai và phát lại 0 USD; chờ Claude soát độc lập
+
+**Bàn giao 2026-10-18:** mã nền đã commit ở `bbcfcc6`. Xem [báo cáo SA-26](../../report/pha-b-sa26-2026-10-18.md): 12 bài phát lại đạt 9 bài, 3 bài dùng hành vi hỏng hiện hữu; 18 lần sinh có chẩn đoán và usage. Không đổi prompt hoặc chính sách khi hỏng hẳn. Các ô phán xét nghiệm thu dành cho người soát.
 
 **Sửa 2026-10-18, theo chủ dự án:** "bài giảng fallback sẽ ko bao giờ đc hiện cho user nên ko cần đầu tư cho nó quá". Vì vậy:
 - bỏ phần làm sạch đường trích câu;

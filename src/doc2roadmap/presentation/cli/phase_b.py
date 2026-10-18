@@ -12,9 +12,9 @@ def configure(commands):
     phase = commands.add_parser('phase-b', help='bài giảng, quiz và trợ lý theo hợp đồng Pha B')
     actions = phase.add_subparsers(dest='b_action', required=True)
     for name in ('names', 'a12', 'lookup', 'search', 'graph-tool', 'concept-index', 'formulas', 'lecture',
-                 'quiz', 'submit', 'history', 'report-question', 'ask', 'document', 'usage', 'serve'):
+                 'quiz', 'submit', 'history', 'report-question', 'ask', 'document', 'usage', 'lecture-diagnostics', 'serve'):
         command = actions.add_parser(name)
-        command.add_argument('--doc-id', required=name not in {'usage', 'serve'})
+        command.add_argument('--doc-id', required=name not in {'usage', 'lecture-diagnostics', 'serve'})
         command.add_argument('--graph-version', type=int)
         command.add_argument('--allow-spend', action='store_true')
         command.add_argument('--dry-run', action='store_true')
@@ -78,6 +78,9 @@ def run(args):
         return {}
     if action == 'usage':
         return runtime.usage(args.doc_id)
+    if action == 'lecture-diagnostics':
+        from doc2roadmap.application.phase_b.lectures import summarize_lecture_diagnostics
+        return summarize_lecture_diagnostics(runtime.store.usage_rows(args.doc_id), doc_id=args.doc_id)
     if action == 'names':
         return runtime.naming(args.doc_id, graph_version=args.graph_version,
                               deterministic=args.deterministic, dry_run=args.dry_run)

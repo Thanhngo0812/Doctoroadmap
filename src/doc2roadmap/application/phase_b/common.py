@@ -9,11 +9,8 @@ from typing import Any, Mapping
 
 from doc2roadmap.application.ports.phase_b import JsonCallResult, PhaseBStore
 from doc2roadmap.domain.phase_b_limits import BSettings, usage_row
+from doc2roadmap.domain.phase_b_pricing import estimate_cost, token_cost
 from doc2roadmap.domain.quotes import quote_is_verbatim as _quote_is_verbatim
-
-
-_INPUT_USD_PER_MILLION = 0.25
-_OUTPUT_USD_PER_MILLION = 1.50
 
 
 def _model_id(model: Any, settings: BSettings) -> str:
@@ -36,20 +33,13 @@ def _usage(value: Any) -> dict[str, Any]:
     return dict(usage) if isinstance(usage, Mapping) else {}
 
 
-def _tokens(usage: Mapping[str, Any], key: str, fallback: str) -> int:
-    return int(usage.get(key, usage.get(fallback, 0)) or 0)
-
-
-def _cost(usage: Mapping[str, Any]) -> float:
-    incoming = _tokens(usage, "promptTokenCount", "input_tokens")
-    outgoing = _tokens(usage, "candidatesTokenCount", "output_tokens")
-    thoughts = _tokens(usage, "thoughtsTokenCount", "thought_tokens")
-    return incoming * _INPUT_USD_PER_MILLION / 1_000_000 + (outgoing + thoughts) * _OUTPUT_USD_PER_MILLION / 1_000_000
+def _cost(usage: Mapping[str, Any], model_id: str = BSettings().model_id) -> float:
+    return token_cost(model_id, usage)
 
 
 def _estimate_cost(prompt: str, schema: Mapping[str, Any], settings: BSettings) -> float:
     input_tokens = (len(prompt) + len(json.dumps(schema, ensure_ascii=False))) // 3
-    return input_tokens * _INPUT_USD_PER_MILLION / 1_000_000 + settings.lecture_max_output_tokens * _OUTPUT_USD_PER_MILLION / 1_000_000
+    return estimate_cost(settings.model_id, input_tokens, settings.lecture_max_output_tokens)
 
 
 def call_json(
@@ -80,7 +70,7 @@ def call_json(
             "document": settings.document_max_output_tokens,
         }.get(purpose, settings.lecture_max_output_tokens)
         input_tokens = (len(input_prompt) + len(stable_json(response_schema))) // 3
-        estimate = input_tokens * _INPUT_USD_PER_MILLION / 1_000_000 + max_output * _OUTPUT_USD_PER_MILLION / 1_000_000
+        estimate = estimate_cost(_model_id(model, settings), input_tokens, max_output)
         return JsonCallResult({}, {"estimated_input_tokens": input_tokens, "estimated_output_tokens": max_output}, 0, None, estimate, True)
     if not allow_spend:
         raise PermissionError("paid model call requires allow_spend=True")
@@ -103,7 +93,7 @@ def call_json(
         usage = _usage(reply)
         payload = _as_mapping(reply)
         elapsed_ms = round((perf_counter() - started) * 1000)
-        cost = 0.0 if replayed else _cost(usage)
+        cost = 0.0 if replayed else _cost(usage, _model_id(model, settings))
     except BaseException:
         # Provider sessions retain usage even when parsing/validation fails after
         # the response was billed. Count that attempt exactly once as a failure.
@@ -113,7 +103,7 @@ def call_json(
         store.append_usage({**usage_row(
             purpose=purpose, model_id=_model_id(model, settings), doc_id=doc_id,
             context_hash=context_hash, usage=usage, elapsed_ms=elapsed_ms,
-            learner_id=learner_id, cost_usd=0.0 if replayed else _cost(usage),
+            learner_id=learner_id, cost_usd=0.0 if replayed else _cost(usage, _model_id(model, settings)),
         ), 'failed': True, 'replayed': replayed})
         raise
     row = usage_row(
