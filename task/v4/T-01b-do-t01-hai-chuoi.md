@@ -6,7 +6,7 @@
 - [cổng 19l](../../report/v4-19l-cong-doi-mac-dinh-2026-10-17.md).
 
 **Ai:** Claude · **Chi phí mô hình:** ước 6–8 USD; dry-run từng bước, chủ dự án duyệt chi sau dry-run · **Chặn bởi:** T-01a bước 8 (xong 2026-10-17)
-· **Trạng thái:** xong 2026-10-18 — **đạt**, chi khoảng 4,35 USD; [báo cáo](../../report/v4-T01b-2026-10-18.md)
+· **Trạng thái:** xong 2026-10-18 — **đạt**, chi khoảng 4,52 USD; [báo cáo](../../report/v4-T01b-2026-10-18.md)
 
 ## Vì sao
 
