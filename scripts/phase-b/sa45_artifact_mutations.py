@@ -39,6 +39,19 @@ old = 'remove_headings.add(index)'
 assert source.count(old) == 1
 exec(source.replace(old, 'pass'), postcheck.__dict__)
 '''),
+    'four_prerequisite_reminders': (
+        'tests/unit/application/test_sa45_sessions_audit_regressions.py::test_assistant_never_reminds_more_than_three_unlearned_prerequisites',
+        '''
+import inspect, textwrap
+from doc2roadmap.application.phase_b import assistant
+source = textwrap.dedent(inspect.getsource(assistant.AssistantUseCase._ask))
+assert source.count("len(graph_cards['reminders']) == 3") == 1
+assert source.count("len(graph_cards['reminders']) >= 3") == 1
+source = source.replace("len(graph_cards['reminders']) == 3", "len(graph_cards['reminders']) == 4")
+source = source.replace("len(graph_cards['reminders']) >= 3", "len(graph_cards['reminders']) >= 4")
+exec(source, assistant.__dict__)
+assistant.AssistantUseCase._ask = assistant._ask
+'''),
 }
 
 

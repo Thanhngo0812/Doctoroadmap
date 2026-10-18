@@ -12,7 +12,7 @@ Lệnh đã chạy:
 .venv/Scripts/python.exe scripts/phase-b/sa45_document_response_audit.py
 ```
 
-JUnit xác nhận **91 passed, 0 failed** trên bộ test hiện hành. **4/4 mutation bị bắt** bằng assertion thất bại: cho tài liệu sáu module qua; lấy mẫu quiz bỏ tiến độ; trả đáp án trong đề công khai; giữ tiêu đề rỗng sau hậu kiểm. Chi tiết stdout của từng mutant ở `tmp/sa45-artifact-mutations.json`. Mutant chỉ sửa hàm trong bộ nhớ của tiến trình test con, không sửa nguồn trên đĩa.
+JUnit xác nhận **91 passed, 0 failed** trên bộ test hiện hành. **4/4 mutation phần tài liệu/quiz bị bắt** bằng assertion thất bại: cho tài liệu sáu module qua; lấy mẫu quiz bỏ tiến độ; trả đáp án trong đề công khai; giữ tiêu đề rỗng sau hậu kiểm. Script sau đó được bổ sung một mutant trần nhắc nền SA-36, cũng bị bắt (tổng 5/5). Chi tiết stdout của từng mutant ở `tmp/sa45-artifact-mutations.json`. Mutant chỉ sửa hàm trong bộ nhớ của tiến trình test con, không sửa nguồn trên đĩa.
 
 Sáu assertion mới của `tests/unit/application/test_phase_b_sa45_artifact_audit.py` đã thấy đỏ: năm assertion đầu ở `tmp/sa45-quiz-all-red.xml`, assertion Q3 chạy riêng. Các test giữ `xfail(strict=True)` với số vé sửa; chạy lại bằng `--runxfail` để thấy lỗi hiện hành, không tính chúng là test xanh.
 
