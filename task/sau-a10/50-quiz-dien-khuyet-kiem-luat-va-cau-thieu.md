@@ -2,7 +2,9 @@
 
 **Nguồn chân lý:** [spec Pha B](../../doc/pha-b-spec.md), mục 9, Q3/Q6/Q7; [SA-15](15-quiz-dien-khuyet-dau-cuoi.md), [SA-37](37-quiz-ca-lo-trinh-tai-lieu-nhieu-module.md); phát hiện SA-45.
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 46 (cùng `quiz.py`, tránh sửa chồng) · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 46 (cùng `quiz.py`, tránh sửa chồng) · **Trạng thái:** đã vá/kiểm thử 2026-10-19; chờ kiểm ghép
+
+**Bàn giao:** [SA-46/50](../../report/pha-b-sa46-50-2026-10-19.md). Câu điền khuyết kiểm phương án/alias bao chứa, hình/công thức thiếu và câu dẫn chưa đủ; có mã loại và khoá ngân hàng v3. Phát lại doc-4 v27 seed 37 giữ bốn câu ở bốn module; doc-1 bỏ hai câu dẫn hỏng và giữ câu thay thế đầy đủ, không gọi mô hình.
 
 ## Vì sao
 

@@ -1,8 +1,6 @@
 """SA-45 acceptance assertions; pending defects are named in repair tickets."""
 from types import MethodType
 
-import pytest
-
 from doc2roadmap.application.phase_b.quiz import QuizUseCase
 from doc2roadmap.domain.phase_b_limits import BSettings
 from doc2roadmap.infrastructure.artifacts.phase_b_store import InMemoryPhaseBStore
@@ -27,7 +25,6 @@ def _quiz_with_banks():
     return quiz
 
 
-@pytest.mark.xfail(strict=True, reason='SA-46: string roadmap bypasses sampling and cap')
 def test_assistant_roadmap_string_obeys_ten_question_cap():
     quiz = _quiz_with_banks()
     result = quiz.make_quiz('dev', owner='alice', scope='roadmap',
@@ -35,7 +32,6 @@ def test_assistant_roadmap_string_obeys_ten_question_cap():
     assert result['ready_count'] <= 10
 
 
-@pytest.mark.xfail(strict=True, reason='SA-46: string roadmap bypasses seeded sampling')
 def test_assistant_roadmap_string_matches_canonical_scope_sample():
     quiz = _quiz_with_banks()
     canonical = quiz.make_quiz('dev', owner='alice', scope={'kind': 'roadmap'}, seed='audit-45')
@@ -43,7 +39,6 @@ def test_assistant_roadmap_string_matches_canonical_scope_sample():
     assert set(tool_form['node_ids']) == set(canonical['node_ids'])
 
 
-@pytest.mark.xfail(strict=True, reason='SA-46: explicit n overrides configured roadmap cap')
 def test_roadmap_with_configured_cap_also_limits_explicit_n():
     quiz = _quiz_with_banks()
     quiz.settings = BSettings(quiz_roadmap_max_items=3)
@@ -52,7 +47,6 @@ def test_roadmap_with_configured_cap_also_limits_explicit_n():
     assert result['ready_count'] <= 3
 
 
-@pytest.mark.xfail(strict=True, reason='SA-50: cloze admits missing formula references despite Q6')
 def test_cloze_rejects_sentence_that_requires_a_missing_formula():
     graph = Graph()
     quote = 'Tam giác được xác định bởi biểu thức [formula] sau đây.'
@@ -63,7 +57,6 @@ def test_cloze_rejects_sentence_that_requires_a_missing_formula():
     assert not any('[formula]' in item['stem'] for item in result['items'])
 
 
-@pytest.mark.xfail(strict=True, reason='SA-50: cloze turns an incomplete definition lead-in into a question')
 def test_cloze_rejects_definition_lead_in_without_its_missing_conditions():
     graph = Graph()
     quote = 'Tam giác là một hình phẳng được xác định bởi ba điều kiện sau đây:'
@@ -74,7 +67,6 @@ def test_cloze_rejects_definition_lead_in_without_its_missing_conditions():
     assert not result['items']
 
 
-@pytest.mark.xfail(strict=True, reason='SA-50: cloze options bypass Q3 substring exclusion')
 def test_cloze_options_do_not_contain_each_other():
     graph = Graph()
     graph.nodes['b']['name'] = 'Tam giác đều'

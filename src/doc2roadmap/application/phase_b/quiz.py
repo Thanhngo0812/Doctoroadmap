@@ -67,9 +67,28 @@ VERIFIER_INSTRUCTIONS = (
     "Trả items[{item_id,selected_option_id,valid,quote,distractor_verdicts}]."
 )
 
+CLOZE_VISUAL_OR_FORMULA_REFERENCE = re.compile(
+    r"\[formula\]|\[CT[^\]]+\]|\bCT\w+\b|\b(?:hình|bảng)\s+(?:số\s+)?\d+\b|"
+    r"\b(?:hình|bảng)\s+(?:sau|dưới|trên)(?:\s+đây)?\b|\bhình vẽ\b|"
+    r"\bđồ thị\s+(?:sau|dưới|trên)(?:\s+đây)?\b",
+    re.I,
+)
+VISUAL_OR_FORMULA_REFERENCE = re.compile(
+    r"\b(?:hình|bảng)\s+\d+\b|\bđồ thị\b|\bhình vẽ\b|\[formula\]|\[CT[^\]]+\]|\bCT\w+\b",
+    re.I,
+)
+INCOMPLETE_CLOZE_LEAD_IN = re.compile(
+    r"\b(?:điều kiện|tính chất|quy tắc|các bước|công thức|tiêu chí|định nghĩa|yếu tố|nguyên tắc)\s+"
+    r"(?:sau đây|dưới đây|như sau)\s*[:.!?…]*\s*$|"
+    r"\b(?:là\s+)?(?:tập hợp|biểu thức|công thức)\s+sau đây\s*[:.!?…]*\s*$",
+    re.I,
+)
+
 
 class QuizUseCase:
     """Build, submit, and review self-check quizzes without tracking mastery."""
+
+    LOCAL_RULES_VERSION = "quiz-local-rules-v3"
 
     def __init__(self, graph, store, model=None, *, verifier_model=None, settings=None,
                  source_registry=None, rng=None, progress_use_case=None, spend_guard=None, clock=None):
@@ -128,7 +147,8 @@ class QuizUseCase:
             raise ValueError("origin không hợp lệ")
         if origin == 'button':
             session_id = None
-        roadmap_scope = isinstance(scope, dict) and scope.get("kind") == "roadmap"
+        roadmap_scope = (isinstance(scope, dict) and scope.get("kind") == "roadmap"
+                         or isinstance(scope, str) and self._norm(scope) == "roadmap")
         saved_scope = home_scope or (scope if isinstance(scope, dict) and scope.get("kind") in {"roadmap", "module"}
                                      else None)
         if scope is not None:
@@ -155,10 +175,12 @@ class QuizUseCase:
             raise ValueError("level Bloom không hợp lệ")
         requested = node_ids if node_ids is not None else concept_ids
         concepts = self._concepts(module_id, requested)
+        roadmap_cap = None
         if roadmap_scope:
-            cap = min(n or self._setting("quiz_roadmap_max_items", 10), 10)
+            roadmap_cap = min(n if n is not None else self._setting("quiz_roadmap_max_items", 10),
+                              self._setting("quiz_roadmap_max_items", 10), 10)
             selected_seed = str(seed if seed is not None else secrets.token_hex(8))
-            concepts = self._roadmap_sample(concepts, owner, doc_id, cap, selected_seed)
+            concepts = self._roadmap_sample(concepts, owner, doc_id, roadmap_cap, selected_seed)
         else:
             selected_seed = str(seed if seed is not None else "")
             concepts = concepts[:n] if n is not None else concepts
@@ -236,7 +258,8 @@ class QuizUseCase:
                         on_event({"event": "item_ready", "attempt_id": attempt_id, "item": public})
 
         completed.sort(key=lambda row: row[0])
-        fill_target = n if n is not None else 5 if module_id and len(concepts) in {3, 4} else 0
+        fill_target = (0 if roadmap_scope else
+                       n if n is not None else 5 if module_id and len(concepts) in {3, 4} else 0)
         if fill_target and len(completed) < fill_target:
             for order, public, full in list(completed):
                 concept = next(c for c in concepts if c["node_id"] == public["concept_id"])
@@ -417,6 +440,7 @@ class QuizUseCase:
                     if groups[module_id] and len(chosen) < limit:
                         chosen.append(groups[module_id].pop(0))
             return chosen
+
         selected = round_robin(learned)
         if len(selected) < limit:
             selected.extend(round_robin({row["node_id"] for row in concepts
@@ -454,7 +478,7 @@ class QuizUseCase:
             "verifier_max_output_tokens": self._setting("quiz_verifier_max_output_tokens", 400),
             "variant_count": self._setting("quiz_bank_variants", 2),
             "contract_version": "quiz-2",
-            "local_rules_version": "quiz-local-rules-v2",
+            "local_rules_version": self.LOCAL_RULES_VERSION,
         }
         value = {"doc_id": doc_id, "module_id": module_id, "node_id": concept["node_id"],
                  "context": self._prompt_context(context), "generation_prompt": "quiz-gen-v3", "verifier_prompt": "quiz-verify-v4",
@@ -792,7 +816,7 @@ class QuizUseCase:
         correct = next((o for o in options if o["is_correct"]), None)
         if not correct or len(set(texts)) != 3:
             return False, "local.option_count_or_duplicate"
-        if any(a in b or b in a for i, a in enumerate(texts) for b in texts[i + 1:] if a and b):
+        if self._option_substring_overlap(options):
             return False, "local.option_substring_overlap"
         aliases = {self._norm(x) for x in [self._name(context["concept"]), *self._aliases(context["concept"])]}
         if any(self._norm(o["text"]) in aliases for o in options if not o["is_correct"]):
@@ -821,7 +845,7 @@ class QuizUseCase:
         text = stem + " " + " ".join(texts)
         if "```" in text or "**" in text or "__" in text or re.search(r"^\s*(?:câu hỏi:|[SDK]\d+:|K\d+:)", text, re.I | re.M):
             return False, "local.markup_or_source_label"
-        if re.search(r"\b(?:hình|bảng)\s+\d+\b|\bđồ thị\b|\bhình vẽ\b|\[formula\]|\[CT[^\]]+\]|\bCT\w+\b", text, re.I):
+        if self._visual_or_formula_reference(text):
             return False, "local.visual_or_formula_reference"
         if any(re.search(r"\[formula\]|\[CT[^\]]+\]|\bCT\w+\b|[=∑∫√^_×÷±≤≥<>]", option["text"], re.I)
                for option in options):
@@ -882,6 +906,7 @@ class QuizUseCase:
                       and anchor_sentence and re.search(re.escape(name), anchor_sentence, re.I)
                       and self._quote_found(anchor_sentence, {"chunks": [chunk]}, current_only=True)), None)
         if not match:
+            self._record_rejection("cloze", "cloze.anchor_not_found", concept)
             return []
         chunk, text = match
         aliases = [name, *self._aliases(concept)]
@@ -908,10 +933,20 @@ class QuizUseCase:
             stem_quote = self._blank_concept_aliases(quote, aliases, name)
             if stem_quote == quote:
                 continue
-            if len(stem_quote) < 25:
+            if self._cloze_visual_or_formula_reference(quote):
+                self._record_rejection("cloze", "local.visual_or_formula_reference", concept,
+                                       {"stem": quote})
                 continue
-            choices = self._balanced_distractors(name, distractors)
+            if INCOMPLETE_CLOZE_LEAD_IN.search(quote):
+                self._record_rejection("cloze", "cloze.incomplete_lead_in", concept,
+                                       {"stem": quote})
+                continue
+            if len(stem_quote) < 25:
+                self._record_rejection("cloze", "cloze.stem_too_short", concept, {"stem": quote})
+                continue
+            choices = self._balanced_distractors(name, distractors, aliases)
             if not choices:
+                self._record_rejection("cloze", "cloze.no_safe_distractors", concept, {"stem": quote})
                 continue
             evidence = self._raw_citation(chunk, quote)
             item_id = "qi_" + hashlib.sha256((concept["node_id"] + quote).encode()).hexdigest()[:24]
@@ -919,6 +954,10 @@ class QuizUseCase:
             options.extend({"text": value, "is_correct": False,
                             "why_wrong": f"Tài liệu không xác định {value} trong câu trích này.", "evidence": []}
                            for value in choices)
+            if self._option_substring_overlap(options):
+                self._record_rejection("cloze", "local.option_substring_overlap", concept,
+                                       {"stem": quote}, {"options": options})
+                continue
             result.append({"item_id": item_id, "concept_id": concept["node_id"], "module_id": context["module"]["module_id"],
                            "generator": "cloze", "bloom": "nho",
                            "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n" + stem_quote,
@@ -957,9 +996,32 @@ class QuizUseCase:
         return "".join(result)
 
     @staticmethod
-    def _balanced_distractors(answer, candidates):
+    def _option_substring_overlap(options):
+        texts = [QuizUseCase._norm(option.get("text", "")) for option in options]
+        return any(a and b and (a in b or b in a)
+                   for index, a in enumerate(texts) for b in texts[index + 1:])
+
+    @staticmethod
+    def _visual_or_formula_reference(text):
+        return bool(VISUAL_OR_FORMULA_REFERENCE.search(str(text or "")))
+
+    @staticmethod
+    def _cloze_visual_or_formula_reference(text):
+        return bool(CLOZE_VISUAL_OR_FORMULA_REFERENCE.search(str(text or "")))
+
+    @staticmethod
+    def _balanced_distractors(answer, candidates, aliases=()):
+        excluded = {QuizUseCase._norm(value) for value in [answer, *aliases] if value}
+        candidates = list(dict.fromkeys(
+            candidate for candidate in candidates if candidate
+            and not any(value in QuizUseCase._norm(candidate) or QuizUseCase._norm(candidate) in value
+                        for value in excluded if value)
+        ))
         for index, first in enumerate(candidates):
             for second in candidates[index + 1:]:
+                first_norm, second_norm = QuizUseCase._norm(first), QuizUseCase._norm(second)
+                if first_norm in second_norm or second_norm in first_norm:
+                    continue
                 wrong_mean = (len(first) + len(second)) / 2
                 if not (len(answer) > 1.3 * wrong_mean and len(answer) == max(len(answer), len(first), len(second))):
                     return [first, second]
