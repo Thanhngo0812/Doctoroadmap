@@ -16,6 +16,7 @@ dung học của người khác.
 - **`UsageService.spend_summary`:** chi theo ngày × `purpose`, theo khoá học, 20 tài khoản chi nhiều nhất, số lời gọi, p50 và p90 giây, trong khoảng ngày
   chọn. Ghi rõ "ước theo token, không thay hoá đơn".
 - `system_caps_today`: trần nội dung dùng chung và trần khâu dựng hôm nay, đã dùng bao nhiêu.
+- **Tín dụng Cloudinary:** đọc mức dùng của tài khoản qua API quản trị của Cloudinary (dung lượng, băng thông, phép biến đổi), lưu tạm 1 giờ, hiện ở thẻ Chi.
 - Mọi thao tác admin ghi `audit_event`.
 
 **HTTP:** các điểm cuối nhóm "quản trị" ở spec mục 11, trừ báo lỗi nội dung (W-19).

@@ -5,9 +5,10 @@
   [0021](../../doc/adr/0021-phien-dang-nhap-phia-may-chu-trong-cookie.md);
 - [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), cùng ADR [0022](../../doc/adr/0022-postgresql-cho-du-lieu-web-artifact-o-kho-tep-hang-doi-bang-bang.md);
 - [spec thiết kế giao diện](../../doc/web-thiet-ke-giao-dien-spec.md) (font Be Vietnam Pro, logo và favicon WayFinder, màu, bố cục từng trang);
-- [spec Pha B2](../../doc/pha-b2-spec.md) cho mọi hợp đồng nội dung học.
+- [spec Pha B2](../../doc/pha-b2-spec.md) cho mọi hợp đồng nội dung học;
+- [ADR 0023](../../doc/adr/0023-cloudinary-cho-tep-goc-va-anh.md): tệp gốc và ảnh ở Cloudinary (gói miễn phí, riêng tư), artifact Pha A ở đĩa.
 
-**Stack:** React (Vite, TypeScript) + FastAPI + PostgreSQL 16. React phục vụ cùng nguồn với API.
+**Stack:** React (Vite, TypeScript) + FastAPI + PostgreSQL 16 + Cloudinary (tệp gốc và ảnh). React phục vụ cùng nguồn với API.
 
 **Quy trình:** Claude soạn vé; chủ dự án giao nhóm web và nhân viên; người soát (Claude, hay nhân viên cấp cao theo SA-45 khi Claude vắng) kiểm theo tiêu
 chí của vé. Vé sửa sau soát đánh số tiếp từ W-24.
@@ -32,6 +33,11 @@ chí của vé. Vé sửa sau soát đánh số tiếp từ W-24.
 - **Tiền:** chỉ `gemini-3.1-flash-lite`. Mọi lượt có tiền dry-run trước, chủ dự án duyệt. Ngoài W-15, mọi vé là 0 USD.
 - **Commit chỉ đường dẫn của vé** (`git commit -m … -- <tệp>`). Không sửa tệp của phiên pha A; cần đổi mã Pha A thì ghi yêu cầu vào báo cáo vé.
 - **Lưu dần:** làm tới đâu commit tới đó; báo cáo vé có dòng trạng thái ở đầu.
+- **Cloudinary:**
+  - test dùng `MediaStore` giả, không gọi Cloudinary;
+  - `CLOUDINARY_URL` chỉ ở `.env`, không commit, không dán vào báo cáo hay chat; thiếu thì hỏi chủ dự án;
+  - dev và triển khai tách bằng thư mục `wayfinder/dev`, `wayfinder/prod`;
+  - trình duyệt không bao giờ nhận link Cloudinary dùng lâu được (ADR 0023).
 - **Môi trường:** `.venv/Scripts/python.exe`; `pytest` cần `--basetemp` trỏ vào thư mục ghi được, kèm `-p no:cacheprovider`.
 
 ## Phụ thuộc vào vé Pha B2

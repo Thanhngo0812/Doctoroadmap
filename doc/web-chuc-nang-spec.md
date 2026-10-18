@@ -16,6 +16,7 @@ dịch vụ để FastAPI gọi. Hai spec viết sau sẽ dựa vào spec này:
 - [ADR 0020](adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md): khoá học là đơn vị chia sẻ; dữ liệu học khoá theo người × cuốn;
   bản dựng dùng lại theo băm tệp.
 - [ADR 0021](adr/0021-phien-dang-nhap-phia-may-chu-trong-cookie.md): đăng nhập bằng phiên phía máy chủ trong cookie, không dùng JWT.
+- [ADR 0023](adr/0023-cloudinary-cho-tep-goc-va-anh.md): tệp gốc và ảnh ở Cloudinary, riêng tư; máy chủ chuyển ảnh, trình duyệt không cầm link Cloudinary.
 
 **Câu hỏi mở:** các chỗ cần chủ dự án chốt đều có **mặc định đề xuất**, gom ở mục "Câu hỏi mở" cuối spec. Nhân viên làm theo mặc định cho tới khi chủ dự
 án đổi; mọi con số nằm trong `WebSettings` (mục 12) để đổi không phải sửa mã.
@@ -187,7 +188,7 @@ nút "Đọc trang p" mở tệp gốc. Mỗi thành viên có tiến độ, phi
 **Bốn tầng như lõi hiện tại**, thêm phần web:
 - **domain:** thực thể web (tài khoản, khoá học, thành viên, link mời, lời mời, bản dựng) và **bảng luật phân quyền** dạng hàm thuần;
 - **application:** các **dịch vụ web** (mục dưới) và port mới; gọi use case Pha B có sẵn và use case "dựng một cuốn" mới;
-- **infrastructure:** bản cài PostgreSQL của mọi port, kho tệp, gửi thư, băm mật khẩu;
+- **infrastructure:** bản cài PostgreSQL của mọi port, Cloudinary (tệp gốc, ảnh), kho tệp trên đĩa (artifact Pha A), gửi thư, băm mật khẩu;
 - **presentation:** ứng dụng FastAPI (mỏng: đọc yêu cầu, gọi dịch vụ, ghi phản hồi) và một tiến trình worker cho bản dựng.
 - **Giao diện React** ở thư mục riêng ở gốc repo, chỉ nói chuyện với API HTTP.
 
@@ -204,7 +205,7 @@ dựng `owner` hay `doc_id`; dịch vụ lấy chúng từ `Actor` và bản ghi
 | `BuildService` | `create_upload`, `get_upload`, `confirm_build`, `get_build`, `cancel_build`, `retry_build`; phía worker: `run_next_job` |
 | `CourseService` | `list_my_courses`, `get_course`, `update_course`, `delete_course`, `list_sample_courses`, `join_sample_course` |
 | `SharingService` | `create_share_link`, `list_share_links`, `revoke_share_link`, `preview_share_link`, `join_by_link`, `invite_by_email`, `list_course_invitations`, `cancel_invitation`, `list_my_invitations`, `accept_invitation`, `decline_invitation`, `list_members`, `remove_member`, `leave_course`, `members_progress` |
-| `LearningGateway` | bọc Pha B: `get_roadmap`, `get_lecture`, `stream_lecture`, `set_progress`, `get_progress`, `create_session`, `list_sessions`, `rename_session`, `delete_session`, `list_turns`, `ask_stream`, `make_quiz`, `submit_quiz`, `make_document`, `get_document`, `list_library`, `open_source_file`, `report_content` |
+| `LearningGateway` | bọc Pha B: `get_roadmap`, `get_lecture`, `stream_lecture`, `set_progress`, `get_progress`, `create_session`, `list_sessions`, `rename_session`, `delete_session`, `list_turns`, `ask_stream`, `make_quiz`, `submit_quiz`, `make_document`, `get_document`, `list_library`, `open_source_page`, `open_source_file`, `get_media`, `report_content` |
 | `UsageService` | `my_usage`; admin: `spend_summary`, `system_caps_today` |
 | `AdminService` | `list_users`, `update_user` (trạng thái, vai trò, lượt dựng), `list_builds`, `list_reports`, `set_sample_course` |
 
@@ -292,10 +293,14 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 
 **Kiểm tệp lúc nhận** (0 USD, trước khi lưu lâu dài):
 - định dạng theo byte đầu (magic bytes), không theo đuôi tệp: PDF hoặc DOCX;
-- ≤ `upload_max_mb` (50) MB; PDF ≤ `build_max_pages` (400) trang; PDF không bị mã hoá;
+- ≤ `upload_max_mb` (10) MB, bằng giới hạn cỡ tệp của gói Cloudinary miễn phí (chủ dự án chốt 2026-10-18; số đúng lấy ở trang gói của tài khoản); PDF ≤
+  `build_max_pages` (400) trang; PDF không bị mã hoá.
+  - Số đo ngày 2026-10-18: sáu cuốn phát triển ≤ 3,2 MB; 0/16 sách học của D-01 quá 10 MB (trung vị 1,9 MB); 11/20 sách mới quá 10 MB, phần lớn là bản
+    quét, vốn bị từ chối ở bước đọc. Trần 10 MB vì vậy chủ yếu chặn bản quét. Lỗi `file_too_large` khuyên tách tài liệu theo chương;
 - người tải phải tick xác nhận có quyền dùng và chia sẻ tài liệu (`rights_confirmed = true`);
 - còn lượt dựng trong tháng (xem dưới). Hết lượt thì từ chối ngay, trước khi nhận tệp lớn: giao diện gọi `GET /me/usage` trước khi tải.
-- Tệp lưu ở kho tệp dưới tên ngẫu nhiên, ngoài thư mục web; tên gốc chỉ là siêu dữ liệu.
+- Tệp lưu ở **Cloudinary**, chế độ riêng tư (`authenticated`), với `public_id` ngẫu nhiên trong thư mục của môi trường (mục 7); tên gốc chỉ là siêu dữ
+  liệu. Máy chủ tải lên từ phía mình, sau khi kiểm xong; trình duyệt không tải thẳng lên Cloudinary.
 
 **Dùng lại bản dựng (ADR 0020):** tính SHA-256 của tệp.
 - Đã có bản dựng **thành công** cùng băm và cùng `pipeline_version` thì tạo khoá học trỏ ngay vào `doc_id` đó: 0 USD, không trừ lượt.
@@ -412,9 +417,25 @@ tài liệu, lần làm quiz) vì vậy khoá theo **người × cuốn** (ADR 0
 **Nội dung dùng chung:** bài giảng và ngân hàng quiz cache theo nội dung (ADR 0011), nên mọi thành viên của mọi khoá cùng `doc_id` và cùng phiên bản đồ
 thị dùng chung. Nhãn theo người học vẫn gắn lúc đọc (ADR 0019).
 
-**Mở tệp gốc ("Đọc trang p"):** `open_source_file` trả tệp PDF gốc cho thành viên, kèm `Content-Type: application/pdf`, `Content-Disposition: inline`,
-`X-Content-Type-Options: nosniff`, `Cache-Control: private`. Web mở với `#page=p` lấy từ `failure.read_page.page` hay từ trích dẫn. Tệp DOCX thì nút báo
-"tài liệu không có trang" và ẩn số trang.
+**Tệp gốc và ảnh trên Cloudinary** ([ADR 0023](adr/0023-cloudinary-cho-tep-goc-va-anh.md); chủ dự án chốt 2026-10-18):
+- **Cloudinary giữ:** tệp gốc PDF, DOCX; ảnh hiện cho người học, gồm ảnh công thức, media đã xác nhận, ảnh trang. **Đĩa máy chủ giữ:** artifact Pha A
+  (đồ thị, chunk, vector).
+- **Mọi tài sản đều riêng tư** (`authenticated`). Thư mục theo môi trường: `wayfinder/<env>/uploads/…`, `wayfinder/<env>/media/<doc_id>/…`.
+- **Trình duyệt không bao giờ nhận link Cloudinary dùng lâu được.** Link có chữ ký của Cloudinary chống sửa link nhưng không tự hết hạn; link hết hạn theo
+  thời gian (token) là tính năng gói cao. Vì vậy:
+  - **ảnh trang và ảnh công thức, media:** máy chủ kiểm thành viên, lấy ảnh từ Cloudinary bằng link ký phía máy chủ, rồi chuyển cho trình duyệt với
+    `Cache-Control: private, max-age=300`;
+  - **mở cả tệp:** máy chủ kiểm thành viên rồi chuyển hướng (302) tới link tải riêng tư của Cloudinary có `expires_at` = bây giờ + `signed_url_ttl_seconds`
+    (300).
+- **"Đọc trang p"** (`open_source_page`): ảnh của đúng trang p, do Cloudinary cắt từ PDF (tham số trang, định dạng WebP, rộng `page_image_width` = 1.400
+  px). Kèm nút phụ "Mở cả tệp" (`open_source_file`).
+  - Trang p lấy từ `failure.read_page.page` hay từ trích dẫn; p ngoài khoảng 1…số trang thì `not_found`.
+  - Tệp DOCX không có trang: nút báo "tài liệu không có trang", chỉ còn "Mở cả tệp".
+- **Bài giảng trong cache chỉ chứa khoá tài sản** (`asset_key`), không chứa URL. Gateway đổi khoá thành đường của máy chủ (`/courses/{cid}/media/…`) lúc trả
+  bài, như cách gắn nhãn theo người học.
+- **Ảnh công thức và media** được tải lên Cloudinary ở cuối bước `learning_prep` của bản dựng, và ở lệnh tạo khoá mẫu.
+- **Tín dụng của gói miễn phí:** ảnh trang là ảnh phái sinh, tính tín dụng ở lần tạo đầu, rồi Cloudinary giữ lại. Máy chủ chỉ xin đúng một cỡ ảnh mỗi
+  trang, để không sinh nhiều bản phái sinh.
 
 **Báo lỗi nội dung:** `report_content(target_kind ∈ {lecture, answer, quiz_item, document}, target_id, reason ∈ {sai_noi_dung, sai_trich_dan, kho_hieu,
 khac}, note ≤ 500 ký tự)`. Câu quiz dùng lại `report_question` có sẵn. Mỗi báo lỗi lưu `lecture_key` hay mã đối tượng để nhóm phát triển tìm lại đúng
@@ -510,7 +531,7 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 | tải và dựng | `POST /uploads` (multipart: `file`, `rights_confirmed`), `GET /uploads/{id}`, `POST /uploads/{id}/build`, `GET /builds/{id}`, `POST /builds/{id}/cancel`, `POST /builds/{id}/retry` | giao diện hỏi `GET /builds/{id}` mỗi 3 giây |
 | khoá học | `GET /courses`, `GET /courses/{cid}`, `PATCH /courses/{cid}`, `DELETE /courses/{cid}`, `POST /courses/{cid}/join-sample` | |
 | chia sẻ | `POST/GET /courses/{cid}/share-links`, `DELETE /courses/{cid}/share-links/{lid}`, `GET /join/{token}` (khách được), `POST /join/{token}`, `POST/GET /courses/{cid}/invitations`, `DELETE /courses/{cid}/invitations/{iid}`, `POST /invitations/{iid}/accept`, `POST /invitations/{iid}/decline`, `GET /courses/{cid}/members`, `DELETE /courses/{cid}/members/{uid}`, `POST /courses/{cid}/leave`, `GET /courses/{cid}/members/progress` | |
-| học | `GET /courses/{cid}/roadmap`, `GET /courses/{cid}/concepts/{node_id}/lecture`, `GET /courses/{cid}/concepts/{node_id}/lecture/stream` (SSE), `GET /courses/{cid}/progress`, `PUT /courses/{cid}/progress/{node_id}`, `GET/POST /courses/{cid}/sessions`, `PATCH/DELETE /courses/{cid}/sessions/{sid}`, `GET /courses/{cid}/sessions/{sid}/turns`, `POST /courses/{cid}/sessions/{sid}/turns` (SSE), `POST /courses/{cid}/quizzes`, `POST /courses/{cid}/quizzes/{aid}/submit`, `POST /courses/{cid}/documents`, `GET /courses/{cid}/documents/{did}`, `GET /courses/{cid}/library?scope=roadmap\|module:<id>\|all`, `GET /courses/{cid}/source`, `POST /courses/{cid}/reports` | trả hợp đồng Pha B, thêm `course_id` |
+| học | `GET /courses/{cid}/roadmap`, `GET /courses/{cid}/concepts/{node_id}/lecture`, `GET /courses/{cid}/concepts/{node_id}/lecture/stream` (SSE), `GET /courses/{cid}/progress`, `PUT /courses/{cid}/progress/{node_id}`, `GET/POST /courses/{cid}/sessions`, `PATCH/DELETE /courses/{cid}/sessions/{sid}`, `GET /courses/{cid}/sessions/{sid}/turns`, `POST /courses/{cid}/sessions/{sid}/turns` (SSE), `POST /courses/{cid}/quizzes`, `POST /courses/{cid}/quizzes/{aid}/submit`, `POST /courses/{cid}/documents`, `GET /courses/{cid}/documents/{did}`, `GET /courses/{cid}/library?scope=roadmap\|module:<id>\|all`, `GET /courses/{cid}/source/pages/{p}` (ảnh trang, máy chủ chuyển), `GET /courses/{cid}/source` (302 tới link tải có hạn), `GET /courses/{cid}/media/{asset_key}` (máy chủ chuyển), `POST /courses/{cid}/reports` | trả hợp đồng Pha B, thêm `course_id` |
 | quản trị | `GET /admin/users`, `PATCH /admin/users/{uid}`, `GET /admin/builds`, `POST /admin/builds/{id}/retry`, `GET /admin/spend`, `GET /admin/reports`, `PATCH /admin/reports/{id}`, `PATCH /admin/courses/{cid}` (`is_sample`), `GET /admin/audit` | chỉ admin |
 | hệ thống | `GET /health` | không cần đăng nhập |
 
@@ -527,7 +548,7 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 | `login_max_failures` / `login_failure_window_minutes` | 5 / 15 |
 | `email_verify_ttl_hours` / `resend_verification_per_hour` | 24 / 3 |
 | `password_reset_ttl_minutes` | 60 |
-| `upload_max_mb` / `build_max_pages` | 50 / 400 |
+| `upload_max_mb` / `build_max_pages` | 10 (gói Cloudinary miễn phí) / 400 |
 | `scan_min_chars_per_page` / `scan_max_empty_page_ratio` | 200 / 0,5 |
 | `vi_min_diacritic_ratio` | chỉnh trên dữ liệu ở vé dựng |
 | `build_max_estimate_usd` | 3,0 |
@@ -540,7 +561,11 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 | `invite_batch_max` / `invite_ttl_days` / `invite_emails_per_day` | 50 / 7 / 200 |
 | `assistant_turns_per_minute` / `documents_per_hour` | 10 / 10 |
 | `mailer` | `console` (dev), `smtp` (triển khai) |
-| `file_store_root` | thư mục ngoài repo, cấu hình bằng biến môi trường |
+| `artifact_root` | thư mục artifact Pha A trên đĩa, ngoài repo, cấu hình bằng biến môi trường |
+| `cloudinary_url` | biến môi trường `CLOUDINARY_URL` (`cloudinary://<api_key>:<api_secret>@<cloud_name>`); chỉ ở `.env`, không bao giờ commit hay dán vào chat |
+| `cloudinary_folder` | `wayfinder/<env>` (`dev`, `prod`) |
+| `signed_url_ttl_seconds` | 300 |
+| `page_image_width` | 1.400 |
 
 Các trần Pha B (0,20 USD, 5 USD) vẫn ở `BSettings`.
 
@@ -549,8 +574,9 @@ Các trần Pha B (0,20 USD, 5 USD) vẫn ở `BSettings`.
 - **PostgreSQL** cho dữ liệu web và cho **kho Pha B**. Bản cài kho Pha B trên PostgreSQL qua **cùng bộ test hợp đồng** với bản JSON và bản bộ nhớ.
 - **`single_flight` liên tiến trình:** bản PostgreSQL khoá bằng advisory lock theo băm của khoá cache, để hai worker web cùng sinh một bài thì chỉ một
   lời gọi mô hình.
-- **Artifact Pha A** (đồ thị, chunk, vector) **giữ ở kho tệp** có phiên bản như hiện tại; cơ sở dữ liệu chỉ lưu `doc_id` và phiên bản.
-- **Tệp tải lên** ở kho tệp, cùng gốc cấu hình.
+- **Artifact Pha A** (đồ thị, chunk, vector) **giữ ở kho tệp trên đĩa** có phiên bản như hiện tại; cơ sở dữ liệu chỉ lưu `doc_id` và phiên bản.
+- **Tệp tải lên và ảnh** ở **Cloudinary** (mục 7, ADR 0023), sau một port `MediaStore`; test dùng bản giả trong bộ nhớ. Worker tải tệp gốc về thư mục tạm
+  bằng link ký phía máy chủ trước khi dựng, rồi xoá bản tạm.
 - **Hàng đợi bản dựng** là bảng trong PostgreSQL; worker nhận việc bằng khoá hàng `SKIP LOCKED`.
 - **Thực thể web:** tài khoản, phiên đăng nhập, token email, khoá học, thành viên, link mời, lời mời, tệp tải lên, bản dựng, báo lỗi nội dung, nhật ký thao
   tác, sổ chi (dùng chung với Pha B, thêm `purpose = build`).
@@ -603,7 +629,10 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
 21. Khoá mẫu chỉ tạo được từ sáu cuốn phát triển; một `doc_id` giả mang tên giống tập giữ lại bị từ chối (bí mật giả, không dùng tên thật).
 22. Mọi yêu cầu đổi dữ liệu thiếu `X-CSRF-Token` hay sai `Origin` bị `csrf_failed` (tầng HTTP, liệt kê mọi route không phải GET).
 23. Đề quiz trả cho trình duyệt không có đáp án (tầng HTTP).
-24. Test kiến trúc: domain và application không import FastAPI, SQLAlchemy, thư viện băm mật khẩu.
+24. Test kiến trúc: domain và application không import FastAPI, SQLAlchemy, thư viện băm mật khẩu, SDK Cloudinary.
+25. Không phản hồi JSON nào gửi trình duyệt chứa tên miền Cloudinary hay `public_id` (quét đệ quy mọi chuỗi), trừ chuyển hướng 302 của "Mở cả tệp" có
+    `expires_at`. Cache bài giảng không chứa URL nào.
+26. Ảnh trang, ảnh công thức, "Mở cả tệp" bởi người ngoài khoá thì `not_found`, và `MediaStore` giả ghi nhận 0 lần lấy từ Cloudinary.
 
 **Tiền lệ trong repo:**
 - test dịch vụ Pha B ở mức use case (trợ lý, bài giảng, quiz, phiên, tiến độ, thư viện);
@@ -629,6 +658,7 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
 - **Đọc bản quét bằng OCR.** Bản quét bị từ chối có lý do rõ.
 - **Ứng dụng di động.** Web phải dùng được trên màn hình điện thoại (spec thiết kế giao diện).
 - **Xuất dữ liệu cá nhân.**
+- **Tải thẳng từ trình duyệt lên Cloudinary** (unsigned upload), **link Cloudinary hết hạn bằng token** (tính năng gói cao), **gói Cloudinary trả phí**.
 - **Dựng lại và phát hành bản mới:** có trong thiết kế (mục 5), nhưng vé để sau.
 
 ## Câu hỏi mở cho chủ dự án (đều có mặc định, nhân viên làm theo mặc định)
@@ -640,8 +670,14 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
    tham gia. Phương án khác: thành viên tự bật cho xem.
 4. **Bắt buộc xác minh email để học không?** Mặc định không bắt buộc để học; bắt buộc để tải sách và mời người khác.
 5. **Khoá mẫu từ sáu cuốn phát triển** có được hiện cho mọi người dùng ở bản triển khai không (quyền dùng tài liệu)? Mặc định có ở bản demo của đồ án.
-6. **Thành viên có được mở tệp PDF gốc không?** Mặc định có, vì nút "Đọc trang p" của Pha B2 cần nó, và người tải đã xác nhận quyền chia sẻ.
+6. **Thành viên có được mở tệp PDF gốc không?** *Đã chốt 2026-10-18:* có. "Đọc trang p" mở ảnh của đúng trang; "Mở cả tệp" là nút phụ, qua link tải có
+   hạn (mục 7).
 7. **Email gửi bằng dịch vụ nào khi triển khai?** Mặc định SMTP cấu hình được (ví dụ Gmail SMTP với mật khẩu ứng dụng cho bản demo).
+8. **Cloudinary — việc chủ dự án làm trên tài khoản** (đã chốt dùng Cloudinary, gói miễn phí, tài sản riêng tư):
+   - đặt `CLOUDINARY_URL` vào `.env` trên máy dev và máy chủ; không gửi qua chat, không commit;
+   - bật "Allow delivery of PDF and ZIP files" ở Settings → Security, vì tài khoản miễn phí mặc định chặn giao tệp PDF;
+   - xem trang gói, báo **cỡ tệp tối đa** và **tín dụng mỗi tháng** đúng của tài khoản, để chỉnh `upload_max_mb`;
+   - quyết dùng chung một tài khoản cho dev và triển khai (tách bằng thư mục, mặc định), hay hai tài khoản.
 
 ## Ghi chú thêm
 

@@ -22,7 +22,8 @@ Người dùng phải rời hệ thống sạch được. Chủ khoá phải d�
 - còn là chủ của khoá có thành viên khác thì `owns_shared_courses`.
 
 **Lệnh admin `web gc-orphans --dry-run`:**
-- liệt kê tệp tải lên và artifact của `doc_id` không còn khoá học nào trỏ tới;
+- liệt kê tệp tải lên, `media_asset` và artifact của `doc_id` không còn khoá học nào trỏ tới;
+- khi xoá thật thì xoá cả trên Cloudinary qua `MediaStore`, rồi mới xoá hàng trong cơ sở dữ liệu;
 - chỉ xoá khi bỏ `--dry-run`;
 - không bao giờ chạm `doc_id` của sáu cuốn phát triển hay `doc_id` không bắt đầu bằng `u-`.
 
@@ -41,7 +42,8 @@ Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Xoá tài khoản thì kho Pha B không còn bản ghi nào có `owner` là người đó; tổng `cost_usd` của sổ chi không đổi; không dòng nào mang `learner_id` cũ.
 - [ ] Còn là chủ khoá có thành viên khác thì từ chối, và không xoá gì (giao dịch).
 - [ ] Xoá khoá học thì bản ghi Pha B của các thành viên còn nguyên.
-- [ ] `gc-orphans` không đụng `doc_id` của khoá học khác cùng tệp, không đụng sáu cuốn phát triển.
+- [ ] `gc-orphans` không đụng `doc_id` của khoá học khác cùng tệp, không đụng sáu cuốn phát triển; khi xoá thật thì `MediaStore` giả ghi nhận lệnh xoá
+  đúng các `public_id` mồ côi.
 - [ ] `cleanup` xoá phiên hết hạn, token cũ, `rate_limit_event` cũ, bản ghi hỏng hết hạn; không xoá dữ liệu học.
 - [ ] Ảnh chụp hai hộp xác nhận và lỗi `owns_shared_courses`.
 

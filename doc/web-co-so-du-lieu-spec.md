@@ -6,7 +6,8 @@
 trú và sao lưu.
 
 **Quyết định kiến trúc đi kèm:** [ADR 0022](adr/0022-postgresql-cho-du-lieu-web-artifact-o-kho-tep-hang-doi-bang-bang.md): PostgreSQL cho dữ liệu web và
-kho Pha B; artifact Pha A giữ ở kho tệp; hàng đợi bản dựng là một bảng.
+kho Pha B; artifact Pha A giữ ở kho tệp; hàng đợi bản dựng là một bảng. [ADR 0023](adr/0023-cloudinary-cho-tep-goc-va-anh.md): tệp gốc và ảnh ở
+Cloudinary, riêng tư.
 
 ---
 
@@ -26,7 +27,7 @@ kho Pha B; artifact Pha A giữ ở kho tệp; hàng đợi bản dựng là m�
 - **Port Pha B nới hai chỗ**, giữ tương thích ngược:
   - `usage_rows` có thêm bộ lọc theo người, thời điểm và mục đích;
   - thêm hàm ẩn danh hoá sổ chi của một người khi xoá tài khoản.
-- **Artifact Pha A** (đồ thị, chunk, vector) và tệp tải lên vẫn ở **kho tệp**. Cơ sở dữ liệu chỉ giữ tham chiếu.
+- **Artifact Pha A** (đồ thị, chunk, vector) vẫn ở **kho tệp trên đĩa**. **Tệp tải lên và ảnh** ở **Cloudinary** (ADR 0023). Cơ sở dữ liệu chỉ giữ tham chiếu.
 - **Di trú bằng Alembic,** mỗi vé một bản di trú. Cơ sở dữ liệu luôn dựng được từ rỗng.
 
 ---
@@ -60,6 +61,7 @@ erDiagram
     course ||--o{ invitation : "có"
     course ||--o{ content_report : "nhận"
     upload ||--o{ build : "được dựng"
+    build ||--o{ media_asset : "tải ảnh lên"
     build ||--o{ course : "sinh ra"
     account ||--o{ invitation : "được mời"
     account ||--o{ content_report : "báo"
@@ -133,7 +135,8 @@ Bảng Pha B (`phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledg
 | `kind` | text | `pdf` \| `docx` |
 | `size_bytes` | bigint | |
 | `page_count` | integer | null với DOCX |
-| `storage_key` | text | unique; tên ngẫu nhiên trong kho tệp |
+| `public_id` | text | unique; `public_id` ngẫu nhiên trên Cloudinary, trong `wayfinder/<env>/uploads/` |
+| `resource_type` | text | `image` (PDF, để cắt trang) \| `raw` (DOCX) |
 | `rights_confirmed_at` | timestamptz | not null |
 | `created_at` | timestamptz | |
 
@@ -231,6 +234,21 @@ cùng lúc.
 
 - Unique `(course_id, email_normalized) WHERE status = 'pending'`: mời lại cùng người thì làm mới lời mời cũ, không tạo hàng thứ hai.
 - Khi một tài khoản xác minh email, gắn `invitee_account_id` cho mọi lời mời `pending` cùng `email_normalized`.
+
+**`media_asset`** — ánh xạ khoá tài sản của Pha B sang Cloudinary (ADR 0023)
+
+| cột | kiểu | ràng buộc |
+|---|---|---|
+| `doc_id` | text | |
+| `asset_key` | text | khoá ổn định mà bài giảng và tài liệu dùng (ảnh công thức theo phiên bản parse và lần xuất hiện, media đã xác nhận) |
+| `public_id` | text | unique; trong `wayfinder/<env>/media/<doc_id>/` |
+| `kind` | text | `formula` \| `media` |
+| `width`, `height`, `bytes` | integer | |
+| `created_at` | timestamptz | |
+
+- Khoá chính `(doc_id, asset_key)`. Không có khoá ngoại sang `course`: tài sản đi theo `doc_id`, dùng chung mọi khoá cùng cuốn (ADR 0020).
+- Ảnh trang **không** có hàng ở đây: máy chủ suy ra từ `upload.public_id` cộng số trang.
+- Cache bài giảng chỉ chứa `asset_key`; không cột nào ở đây lọt ra phản hồi gửi trình duyệt.
 
 **`content_report`**
 
@@ -371,7 +389,8 @@ RETURNING *;
 4. `anonymize_learner_usage(user_id)`;
 5. xoá `account`: cascade xoá phiên đăng nhập, token, thành viên, lời mời nhận; `upload.account_id` và `build.requested_by` thành null;
 6. ghi `audit_event` với `actor_id` cũ, không có email;
-7. **sau commit:** đánh dấu tệp tải lên và artifact không còn khoá học nào trỏ tới để admin dọn bằng lệnh. Không tự xoá.
+7. **sau commit:** đánh dấu tệp tải lên, ảnh trên Cloudinary và artifact không còn khoá học nào trỏ tới, để admin dọn bằng lệnh (xoá cả trên Cloudinary).
+   Không tự xoá.
 
 **Xác thực mỗi yêu cầu:** một truy vấn nối `auth_session` với `account` theo `token_hash`. Không cache phiên trong bộ nhớ worker, để khoá tài khoản và đăng
 xuất có hiệu lực ngay.
@@ -392,7 +411,8 @@ Một lệnh chạy mỗi ngày (cron hay worker):
 - **Alembic:** mỗi vé thêm bảng thì thêm đúng một bản di trú, có tên theo vé. Test chạy toàn bộ di trú từ rỗng lên bản mới nhất.
 - **Không sửa bản di trú đã vào nhánh chính;** sửa bằng bản di trú mới.
 - **Dữ liệu mẫu:** lệnh CLI tạo admin đầu tiên và khoá mẫu từ sáu cuốn phát triển (danh sách cho phép trong mã). **Không nhập** `artifacts/phase_b/live.json`.
-- **Sao lưu** (vé triển khai): `pg_dump` mỗi đêm cộng bản sao kho tệp, giữ 7 bản; một lần thử khôi phục ghi vào sổ tay vận hành.
+- **Sao lưu** (vé triển khai): `pg_dump` mỗi đêm cộng bản sao thư mục artifact trên đĩa, giữ 7 bản; một lần thử khôi phục ghi vào sổ tay vận hành.
+  Cloudinary giữ bản chính của tệp gốc và ảnh; `pg_dump` không gồm chúng. Ảnh công thức và media dựng lại được từ tệp gốc và artifact.
 
 ### 9. Ước lượng cỡ dữ liệu
 
@@ -439,9 +459,9 @@ Mọi truy vấn nóng (phiên, trần ngày, danh sách lượt, thư viện) �
 
 ## Ngoài phạm vi
 
-- **Chuyển vector và đồ thị vào cơ sở dữ liệu** (pgvector). Artifact Pha A giữ ở kho tệp.
+- **Chuyển vector và đồ thị vào cơ sở dữ liệu** (pgvector), hay lên Cloudinary. Artifact Pha A giữ ở kho tệp trên đĩa.
 - **Bản sao đọc, chia mảnh, nhiều vùng.**
-- **Lưu trữ đối tượng kiểu S3 hay MinIO.** Kho tệp là thư mục cục bộ sau một port; đổi sang S3 sau là một bản cài port mới.
+- **Lưu trữ đối tượng kiểu S3 hay MinIO.** Tệp gốc và ảnh ở Cloudinary sau port `MediaStore`; đổi nhà cung cấp sau là một bản cài port mới.
 - **Mã hoá cột** ngoài băm token và mật khẩu. Mã hoá đĩa là việc của máy chủ triển khai.
 - **Nhập dữ liệu từ kho JSON hiện có.**
 

@@ -7,7 +7,7 @@
 - Bản ghi Pha B nằm trong **một bảng chung** `(kind, record_id, owner, doc_id, value jsonb)`, không tách bảng theo loại.
 - `single_flight` khoá giữa các tiến trình bằng advisory lock.
 
-**Artifact Pha A** (đồ thị, chunk, vector) và tệp tải lên **ở kho tệp** có phiên bản như hiện nay. Cơ sở dữ liệu chỉ giữ `doc_id`, phiên bản, và khoá lưu
+**Artifact Pha A** (đồ thị, chunk, vector) **ở kho tệp trên đĩa** có phiên bản như hiện nay. Tệp tải lên và ảnh ở Cloudinary ([ADR 0023](0023-cloudinary-cho-tep-goc-va-anh.md)). Cơ sở dữ liệu chỉ giữ `doc_id`, phiên bản, và khoá lưu
 trữ.
 
 **Hàng đợi bản dựng** là bảng `build`; worker nhận việc bằng `FOR UPDATE SKIP LOCKED`, có nhịp tim.
@@ -30,4 +30,4 @@ trữ.
 
 - Port `PhaseBStore` nới `usage_rows` (lọc theo người, thời điểm, mục đích) và thêm `anonymize_learner_usage`, giữ tương thích ngược.
 - Test lưu trữ cần một PostgreSQL thật (docker compose). Lệnh kiểm của vé coi thiếu PostgreSQL là hỏng.
-- Sao lưu gồm hai phần: `pg_dump` và bản sao kho tệp. Khôi phục phải khớp cả hai.
+- Sao lưu gồm hai phần: `pg_dump` và bản sao thư mục artifact. Khôi phục phải khớp cả hai. Tệp gốc và ảnh nằm ở Cloudinary (ADR 0023).

@@ -15,11 +15,11 @@ xong. W-15 nối bộ dựng thật.
 **`BuildService`:** `create_upload`, `get_upload`, `confirm_build`, `get_build`, `cancel_build`, `retry_build`, và phía worker `run_next_job`.
 
 **Nhận tệp:**
-- kiểm byte đầu PDF hay DOCX, ≤ 50 MB, PDF ≤ 400 trang, PDF không mã hoá;
+- kiểm byte đầu PDF hay DOCX, ≤ `upload_max_mb` (10, gói Cloudinary miễn phí), PDF ≤ 400 trang, PDF không mã hoá;
 - bắt buộc `rights_confirmed`;
 - còn lượt dựng trong tháng;
 - **đã xác minh email** (`email_unverified` nếu chưa);
-- tính SHA-256; lưu vào kho tệp dưới tên ngẫu nhiên.
+- tính SHA-256; tải lên Cloudinary qua `MediaStore` (`authenticated`, `public_id` ngẫu nhiên; PDF là `image` để cắt trang, DOCX là `raw`).
 
 **Dùng lại:**
 - đã có bản dựng `succeeded` cùng `doc_id` và `pipeline_version` thì tạo khoá học `ready` ngay: 0 USD, không trừ lượt;
@@ -32,6 +32,8 @@ xong. W-15 nối bộ dựng thật.
 
 **Worker** (`web worker`):
 - nhận việc bằng `FOR UPDATE SKIP LOCKED`; nhịp tim 30 giây;
+- tải tệp gốc từ Cloudinary về thư mục tạm trước khi dựng, xoá bản tạm khi xong hay lỗi;
+- cuối bước `learning_prep`: tải ảnh công thức và media đã xác nhận lên Cloudinary, ghi `media_asset`;
 - việc định kỳ nhận lại bản dựng mất nhịp tim quá 10 phút, tối đa 1 lần;
 - kiểm trần khâu dựng toàn hệ thống (10 USD/ngày) **trước** khi nhận việc;
 - huỷ ở ranh giới bước;
@@ -40,7 +42,7 @@ xong. W-15 nối bộ dựng thật.
 
 **HTTP:** `POST /uploads` (multipart), `GET /uploads/{id}`, `POST /uploads/{id}/build`, `GET /builds/{id}`, `POST /builds/{id}/cancel`, `POST /builds/{id}/retry`.
 
-**Di trú:** `upload`, `build`. Ràng buộc một bản dựng chạy dở cho mỗi `(doc_id, pipeline_version)`.
+**Di trú:** `upload`, `build`, `media_asset`. Ràng buộc một bản dựng chạy dở cho mỗi `(doc_id, pipeline_version)`.
 
 **Giao diện:**
 - **trang "Tải giáo trình":**
@@ -59,7 +61,9 @@ xong. W-15 nối bộ dựng thật.
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
-- [ ] Tệp đổi đuôi `.pdf` mà byte đầu không phải PDF thì `file_invalid`; 51 MB thì `file_too_large`; PDF mã hoá thì `file_encrypted`.
+- [ ] Tệp đổi đuôi `.pdf` mà byte đầu không phải PDF thì `file_invalid`; 11 MB thì `file_too_large`, và `MediaStore` giả không nhận gì; PDF mã hoá thì
+  `file_encrypted`.
+- [ ] Bản dựng xong thì thư mục tạm không còn tệp gốc; `media_asset` có đủ ảnh công thức của bản dựng giả.
 - [ ] Hai tài khoản tải cùng một tệp: bộ dựng giả chỉ chạy 1 lần; lần sau 0 USD, không trừ lượt; hai khoá trỏ cùng `doc_id`.
 - [ ] Hai lần tải cùng tệp đồng thời trên PostgreSQL: chỉ một bản dựng chạy.
 - [ ] Lượt thứ 4 trong tháng thì `quota_exceeded`, trước khi worker chạy bước nào; sang tháng mới theo đồng hồ giả thì được.

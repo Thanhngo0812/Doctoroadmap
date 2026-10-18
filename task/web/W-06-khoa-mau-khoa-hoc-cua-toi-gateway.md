@@ -21,6 +21,7 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 **Lệnh `web seed-samples`:**
 - Tạo khoá mẫu từ sáu cuốn phát triển, theo **danh sách cho phép viết trong mã**: doc-1, nhap-mon-ml, naive-bayes, doc-6, xstk-ch3-1, doc-4.
 - `published_graph_version` là bản A10 hoàn tất mới nhất của mỗi cuốn; chủ khoá là admin chạy lệnh.
+- Tải PDF gốc của cuốn lên Cloudinary qua `MediaStore` (5/6 cuốn có PDF, đều ≤ 3,2 MB; nhap-mon-ml không có PDF gốc). Ảnh công thức và media làm ở W-08.
 - Mọi `doc_id` khác bị từ chối. Test dùng một `doc_id` giả có dạng giống tập giữ lại; không dùng tên thật.
 
 **`LearningGateway`:**

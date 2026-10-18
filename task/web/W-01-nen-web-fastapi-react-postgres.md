@@ -28,10 +28,17 @@ khung một lần để các vé sau chỉ thêm lát dọc của mình.
   - Thiếu biến môi trường của `db-test` thì test PostgreSQL bỏ qua, kèm dòng báo rõ.
   - Lệnh kiểm của vé (`web check`, hay một tuỳ chọn pytest) thì coi thiếu là **hỏng**.
 
+**Port `MediaStore`** (ADR 0023): `upload(path, folder, resource_type) → public_id`, `download(public_id) → đường dẫn tạm`, `fetch_page_image(public_id, page,
+width) → bytes`, `fetch_image(public_id) → bytes`, `temporary_download_url(public_id, expires_at)`, `delete(public_id)`.
+- Bản Cloudinary dùng SDK chính thức, đọc `CLOUDINARY_URL`; mọi tài sản `authenticated`.
+- Lệnh `web media-smoke` (chạy tay, cần `CLOUDINARY_URL`): tải một PDF nhỏ tự tạo, lấy ảnh trang 1, xin link tải có hạn, xoá. In kết quả từng bước, không
+  in khoá. Ghi vào báo cáo vé kết quả trên tài khoản của chủ dự án, kèm cỡ tệp tối đa và cài đặt giao PDF của gói.
+
 **Đồ giả cho tầng dịch vụ** (dùng chung mọi vé sau):
 - đồng hồ giả: dùng lại `ClockPort` của Pha B2;
 - `Mailer` giả: giữ thư trong bộ nhớ để test đọc lại;
 - `BuildRunner` giả: chỉ khung, W-14 làm đầy đủ;
+- `MediaStore` giả: giữ tệp trong bộ nhớ, đếm số lần lấy, trả ảnh trang giả;
 - một "bộ ứng dụng thử" dựng mọi dịch vụ trên kho bộ nhớ, và Pha B trên mô hình giả theo kịch bản cộng embedding giả, như test Pha B hiện có.
 
 **Phía giao diện:**
@@ -56,6 +63,8 @@ khung một lần để các vé sau chỉ thêm lát dọc của mình.
 - [ ] Test OpenAPI lệch: sửa một route mà không xuất lại thì test hỏng.
 - [ ] Test kiến trúc mới thấy đỏ khi thêm thử một dòng `import fastapi` vào application, rồi gỡ.
 - [ ] Lệnh kiểm của vé hỏng khi tắt `db-test`; bỏ qua có báo khi chạy pytest thường.
+- [ ] `MediaStore` giả và bản Cloudinary qua cùng một bộ test hợp đồng; bản Cloudinary chỉ chạy khi có `CLOUDINARY_URL`. `web media-smoke` chạy xanh
+  trên tài khoản của chủ dự án; chủ dự án hay người được giao chạy, vì cần khoá.
 - [ ] Ảnh chụp trang chủ ở 390 px và 1280 px, chế độ sáng và tối.
 
 ## Ngoài vé

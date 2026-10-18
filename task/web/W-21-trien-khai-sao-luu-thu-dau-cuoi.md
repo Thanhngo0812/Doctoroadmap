@@ -15,11 +15,12 @@ danh mục.
 **Đóng gói:**
 - docker compose cho triển khai: `api`, `worker`, `db`, và một reverse proxy có HTTPS (ví dụ Caddy, tự lấy chứng chỉ);
 - React build phục vụ cùng nguồn;
-- bí mật (khoá Gemini, SMTP, mật khẩu cơ sở dữ liệu) chỉ qua biến môi trường hay tệp bí mật, không có trong image hay repo;
+- bí mật (khoá Gemini, SMTP, mật khẩu cơ sở dữ liệu, `CLOUDINARY_URL`) chỉ qua biến môi trường hay tệp bí mật, không có trong image hay repo;
+- thư mục Cloudinary `wayfinder/prod` tách khỏi `wayfinder/dev`;
 - `allowed_origins` là tên miền thật; cookie `Secure`.
 
 **Vận hành:**
-- `pg_dump` mỗi đêm cộng bản sao kho tệp, giữ 7 bản;
+- `pg_dump` mỗi đêm cộng bản sao thư mục artifact, giữ 7 bản; tệp gốc và ảnh nằm ở Cloudinary (ADR 0023), ghi rõ điều này trong sổ tay vận hành;
 - **một lần thử khôi phục** lên máy trống, ghi các bước vào sổ tay vận hành;
 - `web cleanup` chạy mỗi ngày;
 - log có `ref` của lỗi; không ghi câu hỏi, câu trả lời, nội dung tài liệu.
