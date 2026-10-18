@@ -1,7 +1,9 @@
 # SA-45 — Soát thay Claude: kiểm thử các vé Pha B và được tạo vé sửa
 
 **Ai:** nhân viên cấp cao, do chủ dự án giao ngày 2026-10-18 trong lúc Claude hết lượt dùng · **Chi phí mô hình:** lượt soát là 0 USD; lượt có tiền
-phải dry-run và chủ dự án duyệt · **Chặn bởi:** không · **Trạng thái:** ready-for-agent
+phải dry-run và chủ dự án duyệt · **Chặn bởi:** không · **Trạng thái:** đã hoàn tất đợt soát 29–44; có ngoại lệ quy trình cần giữ trong bàn giao
+
+**Bàn giao 2026-10-18:** [tổng hợp SA-45](../../report/soat-pha-b-tong-hop-2026-10-18.md). Đã ghi phán xét 16 vé, tạo vé sửa 46–51, chi mới 0 USD; bộ kiểm cuối 279 passed và 9 xfailed có test đỏ xác nhận lỗi. Vé 44 được chủ dự án duyệt đạt, miễn thử tay/ảnh. Có một lượt subagent chạy nhầm pytest toàn repo và bị ngắt ở 12%, không đủ nhật ký để chứng nhận toàn bộ phạm vi truy cập; ngoại lệ được ghi rõ, không coi tiêu chí an toàn đã xác minh trọn vẹn. Không sửa chức năng trong đợt soát.
 
 **Quyền của vé này:**
 - soát độc lập các vé Pha B mà nhân viên cấp dưới báo xong;
@@ -120,10 +122,10 @@ Tiêu chí của vé là chuẩn. Báo cáo của nhân viên là thông tin, kh
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Mỗi vé đã soát có phán xét trong bảng kế hoạch, kèm một báo cáo soát có bằng chứng: lệnh đã chạy, số đo, ca thật đã đọc.
-- [ ] Mỗi lỗi "chưa đạt" có một vé sửa đúng khuôn mục 4.
+- [x] Mỗi vé đã soát có phán xét trong bảng kế hoạch, kèm một báo cáo soát có bằng chứng: lệnh đã chạy, số đo, ca thật đã đọc.
+- [x] Mỗi lỗi "chưa đạt" có một vé sửa đúng khuôn mục 4.
 - [ ] Không vi phạm luật mục 2: không mở tập giữ lại, không chi tiền khi chưa được duyệt, chỉ commit đường dẫn của mình.
-- [ ] Cuối đợt có một báo cáo tổng hợp `report/soat-pha-b-tong-hop-<ngày>.md` để Claude nắm lại, gồm:
+- [x] Cuối đợt có một báo cáo tổng hợp `report/soat-pha-b-tong-hop-<ngày>.md` để Claude nắm lại, gồm:
   - vé đã soát và phán xét;
   - vé sửa đã tạo;
   - tiền đã chi;

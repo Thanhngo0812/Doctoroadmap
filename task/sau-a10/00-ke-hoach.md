@@ -99,7 +99,7 @@ Bốn luật:
 | [42](42-tran-chi-theo-ngay.md) | Trần chi theo ngày: người học và hệ thống | 32, 38, **48** | 0 | chưa đạt: hai call đồng thời vượt trần ngày → 48 [soát](../../report/soat-pha-b-31-36-42-2026-10-18.md) |
 | [43](43-luot-that-lecture-2.md) | Lượt thật `lecture-2` | 40, **51** | thật 0,06523425 USD / trần duyệt 0,50 USD | chưa đạt so sánh nhiệt độ: 2 fixture không khớp; đã đọc 12 bài → 51 [soát](../../report/soat-pha-b-30-38-43-2026-10-18.md) |
 | [44](44-trang-xem-thu-hai-trang.md) | Trang xem thử hai trang | 33, 35, 36, 37, 41, 42 | 0 khi phát lại | đạt theo chủ dự án duyệt 2026-10-18; miễn 7 thao tác/ảnh, chưa thử tay; 11 test HTTP đạt |
-| [45](45-soat-thay-claude-nhan-vien-cap-cao.md) | **Soát thay Claude** (nhân viên cấp cao, chủ dự án giao 2026-10-18): soát các vé Pha B, ghi phán xét, tạo vé sửa từ số 46 | — | 0 (soát); lượt có tiền cần duyệt | đang soát 29–43; 44 được chủ dự án duyệt đạt |
+| [45](45-soat-thay-claude-nhan-vien-cap-cao.md) | **Soát thay Claude** (nhân viên cấp cao, chủ dự án giao 2026-10-18): soát các vé Pha B, ghi phán xét, tạo vé sửa từ số 46 | — | 0 (soát); lượt có tiền cần duyệt | đã soát 29–44, tạo 46–51; có ngoại lệ phạm vi test được ghi rõ [tổng hợp](../../report/soat-pha-b-tong-hop-2026-10-18.md) |
 | [46](46-quiz-roadmap-chuan-hoa-pham-vi-va-tran.md) | Quiz lộ trình: chuỗi phạm vi từ trợ lý, lấy mẫu và trần cấu hình | — | 0 | ready-for-agent; lỗi SA-37 phát hiện ở SA-45 |
 | [47](47-tien-do-giu-lua-chon-khi-quiz-dong-thoi.md) | Tiến độ: giữ lựa chọn learner khi quiz hoàn tất đồng thời | — | 0 | ready-for-agent; sửa SA-34 |
 | [48](48-tran-ngay-giu-cho-dong-thoi.md) | Trần ngày: tính lượt đang chạy, giữ chỗ nguyên tử | — | 0 | ready-for-agent; sửa SA-42 |
