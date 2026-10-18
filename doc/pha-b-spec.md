@@ -215,10 +215,23 @@ chi và `--dry-run` như hiện nay.
                  {"text": "…", "node_ids": ["…"], "module_ids": ["…"]}]}
 ```
 
-**Năm luật kiểm bằng mã.** Hỏng luật nào cũng đi đường lùi, không hỏi lại:
-1. **Từ vựng có căn cứ.** Mọi âm tiết nội dung của tên và mô tả phải có trong từ vựng module đích: tên, alias, `display_name`, mô tả A5 của
-   khái niệm, tiêu đề các mục chứa chúng. Âm tiết chức năng nhận bằng tần suất trong chính cuốn sách, không bằng danh sách từ viết tay.
-2. **Không mượn từ module kề.** Âm tiết chỉ có ở module ±1 mà không có ở module đích là "mượn", và câu chứa nó bị loại.
+**Năm luật kiểm bằng mã.** Hỏng luật nào cũng đi đường lùi, không hỏi lại.
+
+**Sửa 2026-10-18, sau soát SA-28:**
+- Tên và mô tả được kiểm và rơi đường lùi **riêng nhau**. Tên đạt luật tên thì giữ dù mô tả hỏng.
+- Từ vựng của mô tả rộng hơn từ vựng của tên. Lý do: khi mô tả viết thành câu, 122/160 module rơi đường lùi vì luật 1, dù câu có nghĩa
+  ([soát](../report/kiem-thu-pha-b-sa25-28-2026-10-18.md), mục 4).
+
+Năm luật:
+1. **Từ vựng có căn cứ.**
+   - **Tên:** mọi âm tiết nội dung phải có trong từ vựng module đích. Từ vựng gồm tên, alias, `display_name`, mô tả A5 của khái niệm, và tiêu đề các mục
+     chứa chúng.
+   - **Mô tả:** từ vựng của tên, cộng âm tiết của các đoạn dạy khái niệm trong module, cộng âm tiết có ở ít nhất max(3, 2% số đoạn) của chính cuốn sách.
+     Tỉ lệ 2% là `naming_common_chunk_ratio` trong `BSettings`.
+   - Âm tiết chức năng nhận bằng tần suất trong chính cuốn sách, không bằng danh sách từ viết tay.
+2. **Không mượn từ module kề, kiểm bằng mã.**
+   - Âm tiết bị coi là "mượn" khi có trong tên hay alias khái niệm của module ±1, mà không có trong tên, alias, mô tả A5 hay đoạn dạy của module đích.
+   - Câu chứa âm tiết mượn bị loại.
 3. **Trích khái niệm hợp lệ.** `node_ids` của mỗi câu mô tả thuộc module đích, mỗi câu có ít nhất một. `module_ids` chỉ được là phụ thuộc
    module.
 4. **Hình thức tên.** Tên ≤ 60 ký tự. Tên không trùng tên module ±2 sau chuẩn hoá. Tên không là nhãn đánh số theo luật họ nhãn R9.
