@@ -8,7 +8,7 @@ from time import perf_counter
 from uuid import uuid4
 
 from doc2roadmap.application.phase_b.common import stable_json
-from doc2roadmap.application.phase_b.budget import DailyLimitExceeded, DailySpendGuard
+from doc2roadmap.application.phase_b.budget import DailyLimitExceeded, DailySpendGuard, spending_call
 from doc2roadmap.application.phase_b.postcheck import POSTCHECK_VERSION, check_text
 from doc2roadmap.application.phase_b.lectures import LectureUseCase
 from doc2roadmap.application.phase_b.progress import ProgressUseCase
@@ -367,59 +367,59 @@ class AssistantUseCase:
             if cost + estimate > self.settings.assistant_max_usd:
                 exhausted = True
                 break
+            replayed = bool(getattr(self.model, 'is_replay', False))
             try:
-                if not self.spend_guard.check('assistant', estimate, owner):
-                    daily_limited = True
-                    break
+                with spending_call(self.spend_guard, 'assistant', estimate, owner,
+                                   replayed=replayed, clock=self.clock) as admitted_at:
+                    final_round = round_index == self.settings.assistant_max_rounds - 1 or cost + estimate * 2 > self.settings.assistant_max_usd
+                    mode = 'NONE' if final_round else 'AUTO'
+                    model_calls += 1
+                    raw, calls, usage, sent, turn_id = '', [], {}, '', None
+                    call_ttft = None
+                    call_started = perf_counter()
+                    try:
+                        for event in session.stream(messages, mode=mode):
+                            if (call_ttft is None and not replayed
+                                    and (isinstance(event, ToolCall) or isinstance(event, Delta) and event.text)):
+                                call_ttft = round((perf_counter() - call_started) * 1000)
+                            if isinstance(event, Delta):
+                                raw += event.text
+                                if raw.rstrip().endswith(']') or '\n' in event.text:
+                                    checked, _, _, _ = self._checked_answer(graph, raw)
+                                    if checked.startswith(sent) and len(checked) > len(sent):
+                                        emit({'event': 'delta', 'text': checked[len(sent):]})
+                                        sent = checked
+                            elif isinstance(event, ToolCall):
+                                calls.append(event)
+                            elif isinstance(event, Done):
+                                usage = dict(event.usage)
+                                turn_id = getattr(event, 'turn_id', None)
+                                if event.ttft_ms is not None:
+                                    call_ttft = event.ttft_ms
+                    except Exception as error:
+                        transport_error = str(error)
+                        flags.append({'kind': 'model_error', 'message': 'Lỗi kết nối mô hình'})
+                    if not usage:
+                        usage = dict(getattr(session, 'last_usage', {}) or {})
+                    elapsed = round((perf_counter() - call_started) * 1000)
+                    if ttft is None and call_ttft is not None:
+                        ttft = round((call_started - started) * 1000) + call_ttft
+                    incoming = int(usage.get('promptTokenCount', usage.get('input_tokens', 0)))
+                    outgoing = int(usage.get('candidatesTokenCount', usage.get('output_tokens', 0)))
+                    thoughts = int(usage.get('thoughtsTokenCount', usage.get('thought_tokens', 0)))
+                    call_cost = 0.0 if replayed else token_cost(getattr(self.model, 'model_id', self.settings.model_id), usage)
+                    cost += call_cost
+                    input_tokens += incoming
+                    output_tokens += outgoing
+                    thought_tokens += thoughts
+                    self.store.append_usage({**usage_row(purpose='assistant', model_id=self.model.model_id, doc_id=doc_id,
+                                             context_hash=context_hash(messages), usage=usage, elapsed_ms=elapsed,
+                                             ttft_ms=call_ttft, learner_id=owner, cost_usd=call_cost), 'tool_round': round_index + 1,
+                                             'failed': transport_error is not None, 'replayed': replayed,
+                                             'created_at': admitted_at})
             except DailyLimitExceeded:
                 daily_limited = True
                 break
-            final_round = round_index == self.settings.assistant_max_rounds - 1 or cost + estimate * 2 > self.settings.assistant_max_usd
-            mode = 'NONE' if final_round else 'AUTO'
-            model_calls += 1
-            raw, calls, usage, sent, turn_id = '', [], {}, '', None
-            call_ttft = None
-            call_started = perf_counter()
-            try:
-                for event in session.stream(messages, mode=mode):
-                    if (call_ttft is None and not getattr(self.model, 'is_replay', False)
-                            and (isinstance(event, ToolCall) or isinstance(event, Delta) and event.text)):
-                        call_ttft = round((perf_counter() - call_started) * 1000)
-                    if isinstance(event, Delta):
-                        raw += event.text
-                        if raw.rstrip().endswith(']') or '\n' in event.text:
-                            checked, _, _, _ = self._checked_answer(graph, raw)
-                            if checked.startswith(sent) and len(checked) > len(sent):
-                                emit({'event': 'delta', 'text': checked[len(sent):]})
-                                sent = checked
-                    elif isinstance(event, ToolCall):
-                        calls.append(event)
-                    elif isinstance(event, Done):
-                        usage = dict(event.usage)
-                        turn_id = getattr(event, 'turn_id', None)
-                        if event.ttft_ms is not None:
-                            call_ttft = event.ttft_ms
-            except Exception as error:
-                transport_error = str(error)
-                flags.append({'kind': 'model_error', 'message': 'Lỗi kết nối mô hình'})
-            elapsed = round((perf_counter() - call_started) * 1000)
-            if ttft is None and call_ttft is not None:
-                ttft = round((call_started - started) * 1000) + call_ttft
-            incoming = int(usage.get('promptTokenCount', usage.get('input_tokens', 0)))
-            outgoing = int(usage.get('candidatesTokenCount', usage.get('output_tokens', 0)))
-            thoughts = int(usage.get('thoughtsTokenCount', usage.get('thought_tokens', 0)))
-            call_cost = token_cost(getattr(self.model, 'model_id', self.settings.model_id), usage)
-            if getattr(self.model, 'is_replay', False):
-                call_cost = 0.0
-            cost += call_cost
-            input_tokens += incoming
-            output_tokens += outgoing
-            thought_tokens += thoughts
-            self.store.append_usage({**usage_row(purpose='assistant', model_id=self.model.model_id, doc_id=doc_id,
-                                     context_hash=context_hash(messages), usage=usage, elapsed_ms=elapsed,
-                                     ttft_ms=call_ttft, learner_id=owner, cost_usd=call_cost), 'tool_round': round_index + 1,
-                                     'failed': transport_error is not None,
-                                     'created_at': self.clock.now().isoformat()})
             checked, parsed_citations, current_flags, parsed_outside = self._checked_answer(graph, raw)
             flags.extend(current_flags)
             if checked:

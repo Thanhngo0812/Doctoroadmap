@@ -16,7 +16,7 @@ from zoneinfo import ZoneInfo
 
 from doc2roadmap.application.phase_b.common import quote_is_verbatim, stable_json
 from doc2roadmap.application.phase_b.budget import DailyLimitExceeded
-from doc2roadmap.application.phase_b.budget import DailySpendGuard
+from doc2roadmap.application.phase_b.budget import DailySpendGuard, spending_call
 from doc2roadmap.application.phase_b.clock import SystemClock
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash, lecture_cache_key, usage_row
 from doc2roadmap.domain.phase_b_pricing import estimate_cost, token_cost
@@ -700,7 +700,13 @@ def _merge_emitted(sections: list[dict[str, Any]], emitted: dict[str, list[dict[
         if section is not None:
             ordered = []
             seen: set[str] = set()
+            seen_prerequisites: set[str] = set()
             for item in [*items, *section["items"]]:
+                if field == "bridges":
+                    prereq_id = str(item.get("prereq"))
+                    if prereq_id in seen_prerequisites:
+                        continue
+                    seen_prerequisites.add(prereq_id)
                 key = stable_json(item)
                 if key not in seen:
                     seen.add(key)
@@ -877,7 +883,6 @@ class LectureUseCase:
                 generation_index += 1
                 try:
                     timeout_seconds = active_request_timeout()
-                    self._check_spend(owner, len(_SYSTEM + prompt) // 3)
                     output, _, elapsed, finish_reason, repeated_idea_text = self._generate(
                         prompt, emitted, stream_callback, context, outside_count, doc_id, ctx_hash, diag,
                         click_started=call_started, transport_retries=transport_retries,
@@ -918,7 +923,6 @@ class LectureUseCase:
                 try:
                     repair_prompt = prompt + "\nLần trước mắc lỗi: " + str(first_error) + ". Trả JSON đã sửa, giữ nguyên các luật."
                     timeout_seconds = active_request_timeout()
-                    self._check_spend(owner, len(_SYSTEM + repair_prompt) // 3)
                     output, _, elapsed, finish_reason, repeated_idea_text = self._generate(
                         repair_prompt, emitted, stream_callback, context, outside_count, doc_id, ctx_hash, diag,
                         temperature=self.settings.lecture_retry_temperature, click_started=call_started,
@@ -1050,13 +1054,6 @@ class LectureUseCase:
                                "_background": True}, daemon=True).start()
         return result
 
-    def _check_spend(self, owner: str | None, input_tokens: int) -> None:
-        if self.spend_guard is not None:
-            estimate = estimate_cost(self.settings.model_id, input_tokens,
-                                     self.settings.lecture_max_output_tokens)
-            if not self.spend_guard.check("lecture", estimate):
-                raise DailyLimitExceeded("system daily spend limit reached")
-
     def _reason_code(self, error: BaseException) -> str:
         if isinstance(error, DailyLimitExceeded):
             return "tran_he_thong"
@@ -1130,184 +1127,212 @@ class LectureUseCase:
                   click_started: float | None = None,
                   transport_retries: int | None = None,
                   timeout_seconds: float | None = None) -> tuple[dict[str, Any], dict[str, Any], int, str | None, bool]:
-        started = perf_counter()
-        if hasattr(self.model, "start_session"):
-            session = self.model.start_session(_SYSTEM)
-            method = session.stream_json
-            kwargs = {"response_schema": LECTURE_SCHEMA}
+        replayed = bool(getattr(self.model, 'is_replay', False))
+        estimate = estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
+                                 self.settings.lecture_max_output_tokens)
+        with spending_call(self.spend_guard, 'lecture', estimate,
+                           replayed=replayed, clock=self.clock) as admitted_at:
+            started = perf_counter()
+            if hasattr(self.model, "start_session"):
+                session = self.model.start_session(_SYSTEM)
+                method = session.stream_json
+                kwargs = {"response_schema": LECTURE_SCHEMA}
+                try:
+                    parameters = signature(method).parameters
+                except (TypeError, ValueError):
+                    parameters = {}
+                if "temperature" in parameters:
+                    kwargs["temperature"] = self.settings.lecture_temperature if temperature is None else temperature
+                if "transport_retries" in parameters:
+                    kwargs["transport_retries"] = (self.settings.lecture_click_transport_retries
+                                                    if transport_retries is None else transport_retries)
+                if "timeout_seconds" in parameters:
+                    kwargs["timeout_seconds"] = (self.settings.lecture_click_timeout_seconds
+                                                   if timeout_seconds is None else timeout_seconds)
+                stream = method(prompt, **kwargs)
+            else:
+                session = None
+                stream = self.model.stream_json(_SYSTEM, prompt, LECTURE_SCHEMA)
+            buffer = ""
+            emitted_indices: set[tuple[str, int]] = set()
+            retained_indices: set[tuple[str, int]] = set()
+            cut_tail = False
+            dropped_indices: dict[str, set[int]] = {field: set() for field in emitted}
+            stream_dropped_by_rule: dict[str, int] = {}
+            stream_dropped_by_source_label: dict[str, int] = {}
+            first_chunk_ttft_ms: int | None = None
+            previous_texts = [item["text"] for items in emitted.values() for item in items]
+            definition_text = str(context.get("definition", {}).get("quote", ""))
+            gate_open = False
+            pending_events: list[tuple[str, dict[str, Any]]] = []
+            explanation_count = len(emitted.get("explanation", []))
+            dropped_k6 = False
+            forced_finish_reason: str | None = None
             try:
-                parameters = signature(method).parameters
-            except (TypeError, ValueError):
-                parameters = {}
-            if "temperature" in parameters:
-                kwargs["temperature"] = self.settings.lecture_temperature if temperature is None else temperature
-            if "transport_retries" in parameters:
-                kwargs["transport_retries"] = (self.settings.lecture_click_transport_retries
-                                                if transport_retries is None else transport_retries)
-            if "timeout_seconds" in parameters:
-                kwargs["timeout_seconds"] = (self.settings.lecture_click_timeout_seconds
-                                               if timeout_seconds is None else timeout_seconds)
-            stream = method(prompt, **kwargs)
-        else:
-            session = None
-            stream = self.model.stream_json(_SYSTEM, prompt, LECTURE_SCHEMA)
-        buffer = ""
-        emitted_indices: set[tuple[str, int]] = set()
-        retained_indices: set[tuple[str, int]] = set()
-        cut_tail = False
-        dropped_indices: dict[str, set[int]] = {field: set() for field in emitted}
-        stream_dropped_by_rule: dict[str, int] = {}
-        stream_dropped_by_source_label: dict[str, int] = {}
-        first_chunk_ttft_ms: int | None = None
-        previous_texts = [item["text"] for items in emitted.values() for item in items]
-        definition_text = str(context.get("definition", {}).get("quote", ""))
-        gate_open = False
-        pending_events: list[tuple[str, dict[str, Any]]] = []
-        explanation_count = len(emitted.get("explanation", []))
-        dropped_k6 = False
-        forced_finish_reason: str | None = None
-        try:
-            for delta in stream:
-                if first_chunk_ttft_ms is None and delta:
-                    first_chunk_ttft_ms = round((perf_counter() - started) * 1000)
-                buffer += delta
-                for field, index, item in _find_closed_array_items(buffer, ("bridges", "explanation", "example", "contrasts")):
-                    marker = (field, index)
-                    if marker in emitted_indices:
-                        continue
-                    emitted_indices.add(marker)
-                    if cut_tail:
-                        continue
-                    maximum = {"bridges": self.settings.lecture_max_prerequisites,
-                               "explanation": self.settings.lecture_max_explanations,
-                               "example": self.settings.lecture_max_examples,
-                               "contrasts": self.settings.lecture_max_contrasts}[field]
-                    if index >= maximum:
-                        continue
-                    if field == "bridges":
-                        checked = _validate_bridge(item, context, self.settings)
+                for delta in stream:
+                    if first_chunk_ttft_ms is None and delta:
+                        first_chunk_ttft_ms = round((perf_counter() - started) * 1000)
+                    buffer += delta
+                    for field, index, item in _find_closed_array_items(buffer, ("bridges", "explanation", "example", "contrasts")):
+                        marker = (field, index)
+                        if marker in emitted_indices:
+                            continue
+                        emitted_indices.add(marker)
+                        if cut_tail:
+                            continue
+                        maximum = {"bridges": self.settings.lecture_max_prerequisites,
+                                   "explanation": self.settings.lecture_max_explanations,
+                                   "example": self.settings.lecture_max_examples,
+                                   "contrasts": self.settings.lecture_max_contrasts}[field]
+                        if index >= maximum:
+                            continue
+                        if field == "bridges":
+                            checked = _validate_bridge(item, context, self.settings)
+                            if checked is None:
+                                stream_dropped_by_rule["K11"] = stream_dropped_by_rule.get("K11", 0) + 1
+                        else:
+                            checked = _valid_item(item, context, section=field, settings=self.settings,
+                                                  outside_seen=outside_count,
+                                                  dropped_by_rule=stream_dropped_by_rule,
+                                                  dropped_by_source_label=stream_dropped_by_source_label)
                         if checked is None:
-                            stream_dropped_by_rule["K11"] = stream_dropped_by_rule.get("K11", 0) + 1
-                    else:
-                        checked = _valid_item(item, context, section=field, settings=self.settings,
-                                              outside_seen=outside_count,
-                                              dropped_by_rule=stream_dropped_by_rule,
-                                              dropped_by_source_label=stream_dropped_by_source_label)
-                    if checked is None:
+                            continue
+                        if field == "bridges" and any(
+                                str(existing.get("prereq")) == str(checked.get("prereq"))
+                                for existing in emitted["bridges"]):
+                            continue
+                        if (_is_duplicate_idea(checked["text"], previous_texts, definition_text,
+                                               self.settings.lecture_duplicate_jaccard_threshold)
+                                or _has_repeated_ngram("\n".join([*previous_texts, checked["text"]]))):
+                            dropped_indices[field].add(index)
+                            dropped_k6 = True
+                            diagnostics["dropped_by_rule"]["K6"] = diagnostics["dropped_by_rule"].get("K6", 0) + 1
+                            if "K6" not in diagnostics["validation_rules"]:
+                                diagnostics["validation_rules"].append("K6")
+                            if gate_open:
+                                cut_tail = True
+                            continue
+                        if checked.get("outside_document", False):
+                            outside_count += 1
+                        if checked in emitted[field]:
+                            continue
+                        emitted[field].append(checked)
+                        retained_indices.add(marker)
+                        previous_texts.append(checked["text"])
+                        section_kind = {"bridges": "cau_noi", "explanation": "giai_thich",
+                                        "example": "vi_du", "contrasts": "phan_biet"}[field]
+                        pending_events.append((section_kind, checked))
+                        if field == "explanation":
+                            explanation_count += 1
+                        if not gate_open and explanation_count >= self.settings.lecture_min_explanations:
+                            gate_open = True
+                            diagnostics["gate_ms"] = round((perf_counter() - (started if click_started is None else click_started)) * 1000)
+                            if on_event:
+                                on_event({"event": "gate", "gate_open": True})
+                                for bridge in emitted["bridges"]:
+                                    if not any(kind == "cau_noi" and item == bridge
+                                               for kind, item in pending_events):
+                                        on_event({"event": "item", "section_kind": "cau_noi",
+                                                  "item": bridge, "gate_open": True})
+                                for pending_kind, pending_item in pending_events:
+                                    on_event({"event": "item", "section_kind": pending_kind,
+                                              "item": pending_item, "gate_open": True})
+                            pending_events.clear()
+                        elif gate_open and on_event:
+                            on_event({"event": "item", "section_kind": section_kind,
+                                      "item": checked, "gate_open": True})
+                try:
+                    output = json.loads(buffer)
+                except json.JSONDecodeError:
+                    if not gate_open:
+                        raise
+                    output = {"bridges": [], "explanation": [], "example": [], "contrasts": [],
+                              "gaps": [], "self_check": None}
+                    forced_finish_reason = "TRUNCATED"
+                accepted_bridge_prerequisites: set[str] = set()
+                filtered_bridges = []
+                for bridge in output.get("bridges", []):
+                    prereq_id = str(bridge.get("prereq")) if isinstance(bridge, dict) else None
+                    if prereq_id is not None and prereq_id in accepted_bridge_prerequisites:
                         continue
-                    if (_is_duplicate_idea(checked["text"], previous_texts, definition_text,
-                                           self.settings.lecture_duplicate_jaccard_threshold)
-                            or _has_repeated_ngram("\n".join([*previous_texts, checked["text"]]))):
-                        dropped_indices[field].add(index)
-                        dropped_k6 = True
-                        diagnostics["dropped_by_rule"]["K6"] = diagnostics["dropped_by_rule"].get("K6", 0) + 1
-                        if "K6" not in diagnostics["validation_rules"]:
-                            diagnostics["validation_rules"].append("K6")
-                        if gate_open:
-                            cut_tail = True
-                        continue
-                    if checked.get("outside_document", False):
-                        outside_count += 1
-                    if checked in emitted[field]:
-                        continue
-                    emitted[field].append(checked)
-                    retained_indices.add(marker)
-                    previous_texts.append(checked["text"])
-                    section_kind = {"bridges": "cau_noi", "explanation": "giai_thich",
-                                    "example": "vi_du", "contrasts": "phan_biet"}[field]
-                    pending_events.append((section_kind, checked))
-                    if field == "explanation":
-                        explanation_count += 1
-                    if not gate_open and explanation_count >= self.settings.lecture_min_explanations:
-                        gate_open = True
-                        diagnostics["gate_ms"] = round((perf_counter() - (started if click_started is None else click_started)) * 1000)
-                        if on_event:
-                            on_event({"event": "gate", "gate_open": True})
-                            for pending_kind, pending_item in pending_events:
-                                on_event({"event": "item", "section_kind": pending_kind,
-                                          "item": pending_item, "gate_open": True})
-                        pending_events.clear()
-                    elif gate_open and on_event:
-                        on_event({"event": "item", "section_kind": section_kind,
-                                  "item": checked, "gate_open": True})
-            try:
-                output = json.loads(buffer)
-            except json.JSONDecodeError:
-                if not gate_open:
-                    raise
-                output = {"bridges": [], "explanation": [], "example": [], "contrasts": [],
-                          "gaps": [], "self_check": None}
-                forced_finish_reason = "TRUNCATED"
-            repeated_idea_text = _has_repeated_ngram(_lecture_output_text(output))
-            if cut_tail:
-                for field in emitted:
-                    output[field] = [item for index, item in enumerate(output.get(field, []))
-                                     if (field, index) in retained_indices]
-                output['self_check'] = None
-            for field, indices in dropped_indices.items():
-                if indices and not cut_tail:
-                    output[field] = [item for index, item in enumerate(output.get(field, [])) if index not in indices]
-            if dropped_k6:
-                forced_finish_reason = "TRUNCATED"
-            usage = getattr(session, "last_usage", {}) if session is not None else getattr(stream, "usage", {})
-            if not usage and getattr(self.model, "last_usage", None):
-                usage = self.model.last_usage
-            finish_reason = forced_finish_reason or (getattr(session, "last_finish_reason", None) if session is not None else None)
-            elapsed = round((perf_counter() - started) * 1000)
-            adapter_ttft = getattr(session, "last_ttft_ms", None) if session is not None else None
-            ttft = (adapter_ttft if adapter_ttft is not None and adapter_ttft > 0 else
-                    None if getattr(self.model, "is_replay", False) else first_chunk_ttft_ms)
-            cost = token_cost(getattr(self.model, "model_id", self.settings.model_id), usage)
-            if getattr(self.model, 'is_replay', False):
-                cost = 0.0
-            ledger = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
-                doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
-                ttft_ms=ttft, cost_usd=cost)
-            ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
-            ledger["created_at"] = self.clock.now().isoformat()
-            ledger["gate_ms"] = diagnostics.get("gate_ms")
-            ledger["first_item_ms"] = diagnostics.get("gate_ms")
-            self.store.append_usage(ledger)
-            return output, dict(usage), elapsed, finish_reason, repeated_idea_text
-        except BaseException:
-            # A complete candidate may be rejected before a later truncated portion makes the
-            # enclosing JSON invalid. In that case `_validate` never sees it, so preserve the
-            # local stream counts; complete JSON instead gets its single count from `_validate`.
-            for rule, count in stream_dropped_by_rule.items():
-                diagnostics["dropped_by_rule"][rule] = diagnostics["dropped_by_rule"].get(rule, 0) + count
-            for label, count in stream_dropped_by_source_label.items():
-                diagnostics["dropped_by_source_label"][label] = diagnostics["dropped_by_source_label"].get(label, 0) + count
-            usage = getattr(session, "last_usage", {}) if session is not None else getattr(self.model, "last_usage", {})
-            elapsed = round((perf_counter() - started) * 1000)
-            cost = token_cost(getattr(self.model, "model_id", self.settings.model_id), usage)
-            if getattr(self.model, 'is_replay', False):
-                cost = 0.0
-            ledger = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
-                doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
-                ttft_ms=(getattr(session, "last_ttft_ms", None)
-                         if session is not None and getattr(session, "last_ttft_ms", None) else
-                         None if getattr(self.model, "is_replay", False) else first_chunk_ttft_ms),
-                cost_usd=cost)
-            ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
-            ledger["created_at"] = self.clock.now().isoformat()
-            self.store.append_usage(ledger)
-            raise
+                    filtered_bridges.append(bridge)
+                    if prereq_id is not None and _validate_bridge(bridge, context, self.settings) is not None:
+                        accepted_bridge_prerequisites.add(prereq_id)
+                output["bridges"] = filtered_bridges
+                repeated_idea_text = _has_repeated_ngram(_lecture_output_text(output))
+                if cut_tail:
+                    for field in emitted:
+                        output[field] = [item for index, item in enumerate(output.get(field, []))
+                                         if (field, index) in retained_indices]
+                    output['self_check'] = None
+                for field, indices in dropped_indices.items():
+                    if indices and not cut_tail:
+                        output[field] = [item for index, item in enumerate(output.get(field, [])) if index not in indices]
+                if dropped_k6:
+                    forced_finish_reason = "TRUNCATED"
+                usage = getattr(session, "last_usage", {}) if session is not None else getattr(stream, "usage", {})
+                if not usage and getattr(self.model, "last_usage", None):
+                    usage = self.model.last_usage
+                finish_reason = forced_finish_reason or (getattr(session, "last_finish_reason", None) if session is not None else None)
+                elapsed = round((perf_counter() - started) * 1000)
+                adapter_ttft = getattr(session, "last_ttft_ms", None) if session is not None else None
+                ttft = (adapter_ttft if adapter_ttft is not None and adapter_ttft > 0 else
+                        None if getattr(self.model, "is_replay", False) else first_chunk_ttft_ms)
+                cost = token_cost(getattr(self.model, "model_id", self.settings.model_id), usage)
+                if getattr(self.model, 'is_replay', False):
+                    cost = 0.0
+                ledger = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
+                    doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
+                    ttft_ms=ttft, cost_usd=cost)
+                ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
+                ledger["created_at"] = admitted_at
+                ledger["replayed"] = replayed
+                ledger["gate_ms"] = diagnostics.get("gate_ms")
+                ledger["first_item_ms"] = diagnostics.get("gate_ms")
+                self.store.append_usage(ledger)
+                return output, dict(usage), elapsed, finish_reason, repeated_idea_text
+            except BaseException:
+                # A complete candidate may be rejected before a later truncated portion makes the
+                # enclosing JSON invalid. In that case `_validate` never sees it, so preserve the
+                # local stream counts; complete JSON instead gets its single count from `_validate`.
+                for rule, count in stream_dropped_by_rule.items():
+                    diagnostics["dropped_by_rule"][rule] = diagnostics["dropped_by_rule"].get(rule, 0) + count
+                for label, count in stream_dropped_by_source_label.items():
+                    diagnostics["dropped_by_source_label"][label] = diagnostics["dropped_by_source_label"].get(label, 0) + count
+                usage = getattr(session, "last_usage", {}) if session is not None else getattr(self.model, "last_usage", {})
+                elapsed = round((perf_counter() - started) * 1000)
+                cost = token_cost(getattr(self.model, "model_id", self.settings.model_id), usage)
+                if getattr(self.model, 'is_replay', False):
+                    cost = 0.0
+                ledger = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
+                    doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
+                    ttft_ms=(getattr(session, "last_ttft_ms", None)
+                             if session is not None and getattr(session, "last_ttft_ms", None) else
+                             None if getattr(self.model, "is_replay", False) else first_chunk_ttft_ms),
+                    cost_usd=cost)
+                ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
+                ledger["created_at"] = admitted_at
+                ledger["replayed"] = replayed
+                self.store.append_usage(ledger)
+                raise
 
     def _validate(self, output: dict[str, Any], context: dict[str, Any],
                   diagnostics: dict[str, Any] | None = None) -> tuple[list[dict[str, Any]], int]:
         outside_count = 0
         sections = []
         valid_bridges: dict[str, dict[str, Any]] = {}
+        output_bridges = output.get("bridges", [])
         for candidate in context.get("bridge_candidates", []):
             prereq_id = str(candidate.get("prereq"))
-            bridge = next((row for row in output.get("bridges", [])
-                           if isinstance(row, dict) and str(row.get("prereq")) == prereq_id), None)
-            checked_bridge = _validate_bridge(bridge, context, self.settings, diagnostics) if bridge else None
-            if checked_bridge is not None and prereq_id not in valid_bridges:
-                valid_bridges[prereq_id] = checked_bridge
-            elif checked_bridge is not None:
-                if diagnostics is not None:
-                    diagnostics["dropped_by_rule"]["K11"] = diagnostics["dropped_by_rule"].get("K11", 0) + 1
+            if prereq_id in valid_bridges:
+                continue
+            for bridge in output_bridges:
+                if not isinstance(bridge, dict) or str(bridge.get("prereq")) != prereq_id:
+                    continue
+                checked_bridge = _validate_bridge(bridge, context, self.settings, diagnostics)
+                if checked_bridge is not None:
+                    valid_bridges[prereq_id] = checked_bridge
+                    break
             if prereq_id not in valid_bridges and diagnostics is not None:
                 counts = diagnostics["dropped_by_rule"]
                 counts["K10"] = counts.get("K10", 0) + 1
@@ -1364,8 +1389,12 @@ class LectureUseCase:
                                       if section.get("kind") == "tu_kiem_tra" and section.get("items")), None),
                   "usage": {"model_id": row["model_id"], "cost_usd": row["cost_usd"],
                             "elapsed_ms": elapsed, **usage}, "lecture_key": key}))
-        bridges = {item.get("prereq"): item for section in sections if section.get("kind") == "cau_noi"
-                   for item in section.get("items", [])}
+        bridges = {}
+        for section in sections:
+            if section.get("kind") != "cau_noi":
+                continue
+            for item in section.get("items", []):
+                bridges.setdefault(item.get("prereq"), item)
         for prereq in result.get("prerequisites", []):
             node_id = prereq.get("node_id") or prereq.get("recall", {}).get("node_id")
             if node_id in bridges:

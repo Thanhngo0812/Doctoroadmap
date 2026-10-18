@@ -8,7 +8,7 @@ from time import perf_counter
 from typing import Any, Mapping
 
 from doc2roadmap.application.ports.phase_b import JsonCallResult, PhaseBStore
-from doc2roadmap.application.phase_b.budget import DailyLimitExceeded, DailySpendGuard
+from doc2roadmap.application.phase_b.budget import DailyLimitExceeded, DailySpendGuard, spending_call
 from doc2roadmap.application.phase_b.clock import SystemClock
 from doc2roadmap.domain.phase_b_limits import BSettings, usage_row
 from doc2roadmap.domain.phase_b_pricing import estimate_cost, token_cost
@@ -84,59 +84,57 @@ def call_json(
     clock = clock or SystemClock()
     spend_guard = spend_guard or DailySpendGuard(store, settings=settings, clock=clock)
     replayed = bool(getattr(model, 'is_replay', False))
-    if spend_guard is not None and not replayed:
-        plan = call_json(model, prompt, response_schema=response_schema, system_prompt=system_prompt,
-                         store=store, purpose=purpose, doc_id=doc_id, context_hash=context_hash,
-                         dry_run=True, settings=settings, learner_id=learner_id)
-        if not spend_guard.check(purpose, plan.cost_usd, owner=learner_id):
-            raise DailyLimitExceeded(purpose)
-
-    started = perf_counter()
-    usage: dict[str, Any] = {}
-    session: Any | None = None
-    try:
-        if hasattr(model, "start_session"):
-            session = model.start_session(system_prompt)
-            reply = session.ask_json(prompt, response_schema=response_schema)
-        else:
-            ask = model.ask_json
-            parameters = inspect.signature(ask).parameters
-            if "system_prompt" in parameters:
-                reply = ask(prompt, response_schema=response_schema, system_prompt=system_prompt)
+    plan = call_json(model, prompt, response_schema=response_schema, system_prompt=system_prompt,
+                     store=store, purpose=purpose, doc_id=doc_id, context_hash=context_hash,
+                     dry_run=True, settings=settings, learner_id=learner_id)
+    with spending_call(spend_guard, purpose, plan.cost_usd, learner_id,
+                       replayed=replayed, clock=clock) as admitted_at:
+        started = perf_counter()
+        usage: dict[str, Any] = {}
+        session: Any | None = None
+        try:
+            if hasattr(model, "start_session"):
+                session = model.start_session(system_prompt)
+                reply = session.ask_json(prompt, response_schema=response_schema)
             else:
-                reply = ask(prompt, response_schema=response_schema)
-        usage = _usage(reply)
-        payload = _as_mapping(reply)
-        elapsed_ms = round((perf_counter() - started) * 1000)
-        cost = 0.0 if replayed else _cost(usage, _model_id(model, settings))
-    except BaseException:
-        # Provider sessions retain usage even when parsing/validation fails after
-        # the response was billed. Count that attempt exactly once as a failure.
-        if not usage and session is not None:
-            usage = _usage(session)
-        elapsed_ms = round((perf_counter() - started) * 1000)
-        store.append_usage({**usage_row(
-            purpose=purpose, model_id=_model_id(model, settings), doc_id=doc_id,
-            context_hash=context_hash, usage=usage, elapsed_ms=elapsed_ms,
-            learner_id=learner_id, cost_usd=0.0 if replayed else _cost(usage, _model_id(model, settings)),
+                ask = model.ask_json
+                parameters = inspect.signature(ask).parameters
+                if "system_prompt" in parameters:
+                    reply = ask(prompt, response_schema=response_schema, system_prompt=system_prompt)
+                else:
+                    reply = ask(prompt, response_schema=response_schema)
+            usage = _usage(reply)
+            payload = _as_mapping(reply)
+            elapsed_ms = round((perf_counter() - started) * 1000)
+            cost = 0.0 if replayed else _cost(usage, _model_id(model, settings))
+        except BaseException:
+            # Provider sessions retain usage even when parsing/validation fails after
+            # the response was billed. Count that attempt exactly once as a failure.
+            if not usage:
+                usage = _usage(session if session is not None else model)
+            elapsed_ms = round((perf_counter() - started) * 1000)
+            store.append_usage({**usage_row(
+                purpose=purpose, model_id=_model_id(model, settings), doc_id=doc_id,
+                context_hash=context_hash, usage=usage, elapsed_ms=elapsed_ms,
+                learner_id=learner_id, cost_usd=0.0 if replayed else _cost(usage, _model_id(model, settings)),
+                ttft_ms=getattr(session if session is not None else model, 'last_ttft_ms', None),
+            ), 'failed': True, 'replayed': replayed, 'created_at': admitted_at})
+            raise
+        row = usage_row(
+            purpose=purpose,
+            model_id=_model_id(model, settings),
+            doc_id=doc_id,
+            context_hash=context_hash,
+            usage=usage,
+            elapsed_ms=elapsed_ms,
+            learner_id=learner_id,
+            cost_usd=cost,
             ttft_ms=getattr(session if session is not None else model, 'last_ttft_ms', None),
-        ), 'failed': True, 'replayed': replayed, 'created_at': clock.now().isoformat()})
-        raise
-    row = usage_row(
-        purpose=purpose,
-        model_id=_model_id(model, settings),
-        doc_id=doc_id,
-        context_hash=context_hash,
-        usage=usage,
-        elapsed_ms=elapsed_ms,
-        learner_id=learner_id,
-        cost_usd=cost,
-        ttft_ms=getattr(session if session is not None else model, 'last_ttft_ms', None),
-    )
-    row['replayed'] = replayed
-    row['created_at'] = clock.now().isoformat()
-    store.append_usage(row)
-    return JsonCallResult(payload, usage, elapsed_ms, row['ttft_ms'], cost)
+        )
+        row['replayed'] = replayed
+        row['created_at'] = admitted_at
+        store.append_usage(row)
+        return JsonCallResult(payload, usage, elapsed_ms, row['ttft_ms'], cost)
 
 
 def stable_json(value: Any) -> str:

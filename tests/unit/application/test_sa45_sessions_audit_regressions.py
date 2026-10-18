@@ -1,8 +1,6 @@
 from datetime import datetime, timezone
 from threading import Event, Lock, Thread
 
-import pytest
-
 from doc2roadmap.application.phase_b.progress import ProgressUseCase
 from doc2roadmap.infrastructure.artifacts.phase_b_store import InMemoryPhaseBStore
 
@@ -71,7 +69,6 @@ def test_assistant_never_reminds_more_than_three_unlearned_prerequisites(monkeyp
     assert [row["node_id"] for row in answer["graph_cards"]["reminders"]] == ["a", "b", "c"]
 
 
-@pytest.mark.xfail(strict=True, reason="SA-42 daily spend checks do not reserve budget across concurrent calls")
 def test_concurrent_paid_calls_do_not_exceed_daily_cap():
     from dataclasses import replace
 

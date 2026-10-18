@@ -2,7 +2,9 @@
 
 **Nguồn chân lý:** [SA-40](40-goi-lai-tien-quyet-cau-noi-tiep-theo.md), [spec B2](../../doc/pha-b2-spec.md), mục 6/K10–K12 và nguyên tắc không rút ý đã gửi.
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (phản hồi đã ghi/mô hình giả) · **Chặn bởi:** không · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (phản hồi đã ghi/mô hình giả) · **Chặn bởi:** không · **Trạng thái:** đã vá và kiểm focused 2026-10-19; chờ bộ ghép và phát lại SA-51
+
+Bằng chứng: [triển khai SA-49](../../report/pha-b-sa49-2026-10-19.md).
 
 ## Vì sao
 

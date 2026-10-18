@@ -2,7 +2,9 @@
 
 **Nguồn chân lý:** [SA-42](42-tran-chi-theo-ngay.md), [spec B2](../../doc/pha-b2-spec.md), mục 8/bất biến 17–18.
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (mô hình giả/phát lại) · **Chặn bởi:** không · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (mô hình giả/phát lại) · **Chặn bởi:** không · **Trạng thái:** đã vá và kiểm focused 2026-10-19; chờ bộ ghép cuối
+
+Bằng chứng: [triển khai SA-48](../../report/pha-b-sa48-2026-10-19.md), [soát độc lập](../../report/soat-pha-b-sa48-2026-10-19.md).
 
 ## Vì sao
 
