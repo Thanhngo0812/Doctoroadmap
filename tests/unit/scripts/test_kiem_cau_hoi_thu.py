@@ -136,6 +136,15 @@ def test_quota_shortfall_fails_unless_partial_and_excess_always_fails(tmp_path, 
     assert "vượt 1" in capsys.readouterr().out
 
 
+def test_missing_question_file_is_reported_not_crashing(tmp_path, monkeypatch, capsys):
+    _goi(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["kiem", "--doc", DOC, "--thu-muc", str(tmp_path), "--mot-phan"])
+    assert _load().main() == 0
+    assert "chưa có" in capsys.readouterr().out
+    monkeypatch.setattr(sys, "argv", ["kiem", "--doc", DOC, "--thu-muc", str(tmp_path)])
+    assert _load().main() == 1
+
+
 def test_outside_term_found_in_book_and_verbatim_copy_only_warn(tmp_path, monkeypatch, capsys):
     rows = _mutate(2, da_tim=["xương rồng", "diệp lục"])
     rows[0] = {**rows[0], "cau_hoi": "Vì sao quá trình cây dùng năng lượng ánh sáng để tổng hợp chất hữu cơ từ khí cacbonic?"}

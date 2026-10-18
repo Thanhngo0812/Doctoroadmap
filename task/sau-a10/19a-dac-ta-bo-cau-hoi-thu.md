@@ -7,7 +7,15 @@
 - script xuất gói đầu vào: `scripts/pha-b/xuat_goi_cau_hoi_thu.py`, 0 USD.
 
 **Chi phí mô hình phía dự án:** 0 USD. Phí của dịch vụ agentic do chủ dự án chọn.
-**Trạng thái:** chủ dự án duyệt ngày 2026-10-18 (mục 13); Claude đang làm bước 1–2.
+**Trạng thái:** chủ dự án duyệt ngày 2026-10-18 (mục 13). Claude đã xong bước 1 và 2 cùng ngày, chờ bước 3: chủ dự án giao agentic.
+- **Thư mục giao agentic:** `Desktop\pha-b-cau-hoi-thu\giao-agentic\`. Gồm:
+  - `goi/` của sáu cuốn, có `cau_kiem.jsonl` trong mỗi cuốn;
+  - `HUONG-DAN.md`;
+  - `kiem_cau_hoi_thu.py`;
+  - các thư mục rỗng `cau/`, `kiem/`, `ghi-chu/`.
+
+  Script kiểm in "ĐẠT" ở chế độ `--mot-phan` cho cả sáu cuốn.
+- **Đáp án 12 câu kiểm:** `Desktop\pha-b-cau-hoi-thu-nguoi-giu\khoa-kiem.jsonl`. Không giao thư mục này.
 
 ## Vì sao
 

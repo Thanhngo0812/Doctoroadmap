@@ -181,14 +181,17 @@ def main():
     errors, warnings = [], []
     cau_path = root / "cau" / f"{args.doc}.jsonl"
     rows = []
-    with open(cau_path, encoding="utf-8") as f:
-        for no, line in enumerate(f, 1):
-            if not line.strip():
-                continue
-            try:
-                rows.append((no, json.loads(line)))
-            except json.JSONDecodeError as e:
-                errors.append(f"cau dòng {no}: JSON hỏng ({e.msg})")
+    if not cau_path.exists():
+        print(f"chưa có {cau_path.as_posix()}; tạo tệp này để ghi câu")
+    else:
+        with open(cau_path, encoding="utf-8") as f:
+            for no, line in enumerate(f, 1):
+                if not line.strip():
+                    continue
+                try:
+                    rows.append((no, json.loads(line)))
+                except json.JSONDecodeError as e:
+                    errors.append(f"cau dòng {no}: JSON hỏng ({e.msg})")
     seen_id, seen_text, counts = set(), {}, Counter()
     ngoai_gan, than_mat, ten_trong_cau_cuoi, nhieu = 0, 0, 0, 0
     quan_he = Counter()
