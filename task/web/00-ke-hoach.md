@@ -8,7 +8,13 @@
 - [spec Pha B2](../../doc/pha-b2-spec.md) cho mọi hợp đồng nội dung học;
 - [ADR 0023](../../doc/adr/0023-cloudinary-cho-tep-goc-va-anh.md): tệp gốc và ảnh ở Cloudinary (gói miễn phí, riêng tư), artifact Pha A ở đĩa.
 
-**Stack:** React (Vite, TypeScript) + FastAPI + PostgreSQL 16 + Cloudinary (tệp gốc và ảnh). React phục vụ cùng nguồn với API.
+**Stack:** React (Vite, TypeScript) + FastAPI + PostgreSQL 16 (Docker) + Cloudinary (tệp gốc và ảnh) + Gmail SMTP. React phục vụ cùng nguồn với API.
+
+**Nơi đặt mã** (chủ dự án chốt 2026-10-18): mọi mã web ở `src/web/` — `backend/wayfinder/` (gói Python), `backend/tests/`, `frontend/` (React),
+`docker-compose.yml`. Lõi `src/doc2roadmap/` chỉ đổi ở W-05 (nới port sổ chi) và W-13 (`build_document`). `doc2roadmap` không bao giờ import `wayfinder`.
+
+**Bản demo** (chủ dự án chốt 2026-10-18): ai cũng tải sách được, không cần xác minh email; khâu dựng không giới hạn (trần cài sẵn, mặc định tắt);
+khoá mẫu chỉ ở dev; chỉ mời qua email mới cần xác minh.
 
 **Quy trình:** Claude soạn vé; chủ dự án giao nhóm web và nhân viên; người soát (Claude, hay nhân viên cấp cao theo SA-45 khi Claude vắng) kiểm theo tiêu
 chí của vé. Vé sửa sau soát đánh số tiếp từ W-24.
@@ -66,7 +72,7 @@ còn đổi; nhóm web đã được báo.
 | [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 | ready-for-agent |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
-| [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent (chờ câu hỏi mở 3) |
+| [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
@@ -80,7 +86,6 @@ còn đổi; nhóm web đã được báo.
 - **Sau W-06:** phần học W-07 → W-08, W-09, W-10 (bám vé Pha B2); W-11 → W-12; W-14 → W-15.
 - **Cuối:** W-16, W-17, W-18, W-19, W-20, rồi W-21 và W-23.
 
-## Câu hỏi mở của chủ dự án
+## Quyết định của chủ dự án
 
-Bảy câu ở cuối spec chức năng, đều có mặc định. Nhân viên làm theo mặc định. W-18 chờ câu 3 trước khi bật cho người dùng thật; cài thì cứ cài, tắt được bằng
-cấu hình.
+Đã trả lời hết ngày 2026-10-18; xem mục "Quyết định của chủ dự án" cuối spec chức năng. Điều phối xem [bản bàn giao điều phối](../../report/handoff-dieu-phoi-2026-10-18.md).

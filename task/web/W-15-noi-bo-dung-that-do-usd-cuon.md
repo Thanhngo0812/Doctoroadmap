@@ -6,8 +6,8 @@
 
 ## Vì sao
 
-Các trần khâu dựng (3 lượt/tháng, 3 USD/cuốn, 10 USD/ngày) đặt theo số đo D-01 ở chuỗi cũ, mà chưa gồm pass chính A8. Chuỗi gộp hiện hành chưa có số
-USD/cuốn đo trên một cuốn mới hoàn toàn. Cần số thật để chốt trần, và cần chạy trọn đường web với bộ dựng thật một lần.
+Bản demo không giới hạn khâu dựng (chủ dự án chốt 2026-10-18), nhưng chuỗi gộp hiện hành chưa có số USD/cuốn đo trên một cuốn mới hoàn toàn. Cần số thật
+để chủ dự án biết một cuốn tốn bao nhiêu, và để biết bật trần ở mức nào nếu có lạm dụng. Cũng cần chạy trọn đường web với bộ dựng thật một lần.
 
 ## Cần làm
 
@@ -29,7 +29,8 @@ USD/cuốn đo trên một cuốn mới hoàn toàn. Cần số thật để ch�
 - [ ] Lượt 1 qua web xong với chi ≈ 0, khoá học `ready`, thư "bản dựng xong" trong `Mailer` console.
 - [ ] Lượt 2 có dry-run, có xác nhận duyệt của chủ dự án (trích tin nhắn hay ghi chú), rồi mới chạy.
 - [ ] Bảng số: USD/cuốn, phút/cuốn theo bước; sai số dự toán so với thật.
-- [ ] Đề xuất chỉnh `build_max_estimate_usd`, `system_daily_build_max_usd`, `build_monthly_max` theo số đo. Claude đọc rồi báo chủ dự án.
+- [ ] Đề xuất mức `build_max_estimate_usd`, `system_daily_build_max_usd`, `build_monthly_max` **để sẵn khi cần bật**, theo số đo. Claude đọc rồi báo chủ dự
+  án.
 - [ ] Không mở tập giữ lại.
 
 ## Ngoài vé

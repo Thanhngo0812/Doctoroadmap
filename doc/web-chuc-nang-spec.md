@@ -18,8 +18,8 @@ dịch vụ để FastAPI gọi. Hai spec viết sau sẽ dựa vào spec này:
 - [ADR 0021](adr/0021-phien-dang-nhap-phia-may-chu-trong-cookie.md): đăng nhập bằng phiên phía máy chủ trong cookie, không dùng JWT.
 - [ADR 0023](adr/0023-cloudinary-cho-tep-goc-va-anh.md): tệp gốc và ảnh ở Cloudinary, riêng tư; máy chủ chuyển ảnh, trình duyệt không cầm link Cloudinary.
 
-**Câu hỏi mở:** các chỗ cần chủ dự án chốt đều có **mặc định đề xuất**, gom ở mục "Câu hỏi mở" cuối spec. Nhân viên làm theo mặc định cho tới khi chủ dự
-án đổi; mọi con số nằm trong `WebSettings` (mục 12) để đổi không phải sửa mã.
+**Quyết định của chủ dự án** (2026-10-18, mục "Quyết định của chủ dự án" cuối spec): web là **bản demo**, ai cũng tải sách được, khâu dựng không giới
+hạn; khoá mẫu chỉ ở dev; gửi thư bằng Gmail SMTP; một tài khoản Cloudinary. Mọi con số nằm trong `WebSettings` (mục 12) để đổi không phải sửa mã.
 
 **Quy trình:** Claude viết spec và vé; chủ dự án giao nhân viên và nhóm web; người soát kiểm theo vé.
 
@@ -185,14 +185,37 @@ nút "Đọc trang p" mở tệp gốc. Mỗi thành viên có tiến độ, phi
 
 ### 1. Kiến trúc và lớp dịch vụ (đóng gói lõi)
 
-**Bốn tầng như lõi hiện tại**, thêm phần web:
+**Nơi đặt mã** (chủ dự án chốt 2026-10-18): mọi mã web ở **`src/web/`**, tách khỏi lõi `src/doc2roadmap/`.
+
+```
+src/
+  doc2roadmap/        lõi; web chỉ thêm build_document (W-13) và nới port sổ chi (W-05)
+  web/
+    backend/
+      wayfinder/      gói Python của web: domain/, application/, infrastructure/, api/, worker, migrations/
+      tests/
+    frontend/         React + Vite + TypeScript
+    docker-compose.yml  db (dev), db-test (test)
+    .env.example
+```
+
+- **Phụ thuộc một chiều:** `wayfinder` gọi `doc2roadmap`; `doc2roadmap` không bao giờ import `wayfinder`. Có test kiến trúc cho luật này.
+- **Tên gói Python là `wayfinder`,** không phải `web`: tên `web` quá chung và trùng thư viện `web.py`.
+- **Một `pyproject.toml`, một `.venv`:** gói phụ thuộc của web (FastAPI, Uvicorn, SQLAlchemy, psycopg, Alembic, argon2-cffi, Cloudinary,
+  python-multipart) nằm ở nhóm tuỳ chọn `web`, cài bằng `pip install -e .[web,dev]`. Lõi không phải cài chúng.
+- **PostgreSQL chạy bằng Docker** trên máy dev (`src/web/docker-compose.yml`). Lúc dev chỉ cơ sở dữ liệu chạy trong Docker; API, worker và Vite chạy
+  thẳng trên máy. Bản chạy đủ trong Docker là vé triển khai W-21.
+
+**Bên trong `wayfinder`, bốn tầng như lõi:**
 - **domain:** thực thể web (tài khoản, khoá học, thành viên, link mời, lời mời, bản dựng) và **bảng luật phân quyền** dạng hàm thuần;
 - **application:** các **dịch vụ web** (mục dưới) và port mới; gọi use case Pha B có sẵn và use case "dựng một cuốn" mới;
-- **infrastructure:** bản cài PostgreSQL của mọi port, Cloudinary (tệp gốc, ảnh), kho tệp trên đĩa (artifact Pha A), gửi thư, băm mật khẩu;
-- **presentation:** ứng dụng FastAPI (mỏng: đọc yêu cầu, gọi dịch vụ, ghi phản hồi) và một tiến trình worker cho bản dựng.
-- **Giao diện React** ở thư mục riêng ở gốc repo, chỉ nói chuyện với API HTTP.
+- **infrastructure:** bản cài PostgreSQL của mọi port, **kể cả kho Pha B** (bản cài port `PhaseBStore` của lõi, để lõi không dính SQLAlchemy),
+  Cloudinary (tệp gốc, ảnh), gửi thư, băm mật khẩu;
+- **api:** ứng dụng FastAPI (mỏng: đọc yêu cầu, gọi dịch vụ, ghi phản hồi) và một tiến trình worker cho bản dựng.
+- **Giao diện React** ở `src/web/frontend/`, chỉ nói chuyện với API HTTP.
 
-**Luật tầng** mở rộng từ test kiến trúc hiện có: domain và application không import FastAPI, SQLAlchemy, hay thư viện băm mật khẩu.
+**Luật tầng:** domain và application của `wayfinder` không import FastAPI, SQLAlchemy, SDK Cloudinary, hay thư viện băm mật khẩu; `doc2roadmap` không
+import `wayfinder`.
 
 **Mọi dịch vụ nhận một `Actor`** đã xác thực: `{user_id, role ∈ {user, admin}, email_verified, status}`, hoặc `None` với khách. Route không bao giờ tự
 dựng `owner` hay `doc_id`; dịch vụ lấy chúng từ `Actor` và bản ghi khoá học.
@@ -239,9 +262,9 @@ từ đầu ra của mô hình. Một tài liệu tải lên có câu "hãy đ�
 **Xác minh email:** token ngẫu nhiên 32 byte, chỉ lưu băm SHA-256, dùng một lần, hạn `email_verify_ttl_hours` (24). Gửi lại tối đa
 `resend_verification_per_hour` (3) lần mỗi giờ.
 
-**Chưa xác minh thì được và không được:**
-- được: đăng nhập, tham gia khoá bằng link hay khoá mẫu, học;
-- không được: tải sách lên, tạo link mời, mời theo email. Lỗi `email_unverified`.
+**Chưa xác minh thì được và không được** (chủ dự án chốt: bản demo, ai cũng tải sách được):
+- được: đăng nhập, học, tham gia khoá, **tải sách lên**, tạo link mời;
+- không được: **mời theo email**, vì việc này gửi thư bằng tài khoản Gmail của dự án tới người lạ. Lỗi `email_unverified`.
 
 **Đăng nhập:**
 - Sai email hay sai mật khẩu đều trả một lỗi chung `invalid_credentials`.
@@ -276,9 +299,10 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 |---|---|---|---|---|---|
 | xem trang giới thiệu của link mời còn hiệu lực | ✓ | ✓ | ✓ | ✓ | ✓ |
 | tham gia bằng link, tham gia khoá mẫu | – | ✓ | – | – | ✓ |
-| tải sách lên, dựng | – | – | ✓ | ✓ | ✓ |
+| tải sách lên, dựng | – | ✓ | ✓ | ✓ | ✓ |
 | học: bài giảng, trợ lý, phiên, quiz, tài liệu, thư viện, tiến độ, mở tệp gốc, báo lỗi | – | nếu là thành viên | ✓ | ✓ | chỉ khi là thành viên |
-| đổi tên, mô tả, xoá khoá; tạo, thu hồi link; mời; xoá thành viên; xem tiến độ tổng hợp; xem báo lỗi của khoá | – | – | – | ✓ | – |
+| đổi tên, mô tả, xoá khoá; tạo, thu hồi link; xoá thành viên; xem tiến độ tổng hợp; xem báo lỗi của khoá | – | – | – | ✓ | – |
+| mời theo email | – | – | – | ✓ (đã xác minh) | – |
 | rời khoá | – | thành viên | ✓ | – (chủ khoá xoá khoá) | – |
 | quản trị người dùng, bản dựng, chi, khoá mẫu, mọi báo lỗi | – | – | – | – | ✓ |
 
@@ -294,11 +318,12 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 **Kiểm tệp lúc nhận** (0 USD, trước khi lưu lâu dài):
 - định dạng theo byte đầu (magic bytes), không theo đuôi tệp: PDF hoặc DOCX;
 - ≤ `upload_max_mb` (10) MB, bằng giới hạn cỡ tệp của gói Cloudinary miễn phí (chủ dự án chốt 2026-10-18; số đúng lấy ở trang gói của tài khoản); PDF ≤
-  `build_max_pages` (400) trang; PDF không bị mã hoá.
+  `build_max_pages` trang (mặc định không giới hạn); PDF không bị mã hoá.
   - Số đo ngày 2026-10-18: sáu cuốn phát triển ≤ 3,2 MB; 0/16 sách học của D-01 quá 10 MB (trung vị 1,9 MB); 11/20 sách mới quá 10 MB, phần lớn là bản
     quét, vốn bị từ chối ở bước đọc. Trần 10 MB vì vậy chủ yếu chặn bản quét. Lỗi `file_too_large` khuyên tách tài liệu theo chương;
 - người tải phải tick xác nhận có quyền dùng và chia sẻ tài liệu (`rights_confirmed = true`);
-- còn lượt dựng trong tháng (xem dưới). Hết lượt thì từ chối ngay, trước khi nhận tệp lớn: giao diện gọi `GET /me/usage` trước khi tải.
+- nếu trần lượt dựng đang bật (mặc định tắt): còn lượt trong tháng. Hết lượt thì từ chối ngay, trước khi nhận tệp: giao diện gọi `GET /me/usage` trước
+  khi tải.
 - Tệp lưu ở **Cloudinary**, chế độ riêng tư (`authenticated`), với `public_id` ngẫu nhiên trong thư mục của môi trường (mục 7); tên gốc chỉ là siêu dữ
   liệu. Máy chủ tải lên từ phía mình, sau khi kiểm xong; trình duyệt không tải thẳng lên Cloudinary.
 
@@ -326,7 +351,8 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
    - **ngôn ngữ:** tỉ lệ ký tự có dấu tiếng Việt trên ký tự chữ < `vi_min_diacritic_ratio` thì `rejected` với `ngon_ngu_khong_ho_tro`. Ngưỡng chỉnh trên
      sáu cuốn phát triển cộng vài tệp tiếng Anh, ghi số đo vào báo cáo vé.
 2. **Dự toán:** chạy dry-run của các bước còn lại, ra `estimate`. Hiện cho người tải lên; `awaiting_confirmation`.
-   - Dự toán > `build_max_estimate_usd` (3,0) thì `rejected` với `qua_du_toan`, kèm lời khuyên tách tài liệu.
+   - Nếu trần dự toán đang bật (mặc định tắt): dự toán > `build_max_estimate_usd` thì `rejected` với `qua_du_toan`, kèm lời khuyên tách tài liệu.
+   - Dự toán vẫn luôn hiện cho người tải, kể cả khi không có trần.
 3. **Xác nhận:** người tải bấm "Dựng lộ trình" thì `queued`, trừ một lượt dựng. Không xác nhận trong `confirmation_ttl_hours` (72) thì hết hạn, không trừ
    lượt.
 4. **`running`:** worker chạy lần lượt `concepts` (A4), `graph` (roadmap tới A10 và tên module), `learning_prep` (A12, chỉ mục khái niệm, ảnh công
@@ -342,9 +368,11 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 **Worker chết giữa chừng:** mỗi bản dựng `running` có nhịp tim. Quá `build_heartbeat_timeout_minutes` (10) không có nhịp tim thì một worker khác nhận lại,
 tối đa 1 lần; lần sau thì `failed` với `loi_noi_bo`.
 
-**Trần chi khâu dựng:**
-- `build_monthly_max` (3) lượt mỗi tài khoản mỗi tháng lịch theo giờ Việt Nam; admin đổi riêng cho từng người;
-- `system_daily_build_max_usd` (10,0): tổng chi khâu dựng của cả hệ thống mỗi ngày. Chạm trần thì bản dựng mới chờ ở `queued` tới ngày sau; bản đang chạy
+**Trần chi khâu dựng — có trong mã, mặc định tắt.** Chủ dự án chốt 2026-10-18: "chỉ là web demo, không cần giới hạn". Ba trần dưới đây cài đủ và có
+test (test bật chúng bằng cấu hình), để bật lại bằng một biến môi trường nếu có lạm dụng:
+- `build_monthly_max` lượt mỗi tài khoản mỗi tháng lịch theo giờ Việt Nam; admin đổi riêng cho từng người;
+- `build_max_estimate_usd`: dự toán tối đa một cuốn;
+- `system_daily_build_max_usd`: tổng chi khâu dựng của cả hệ thống mỗi ngày. Chạm trần thì bản dựng mới chờ ở `queued` tới ngày sau; bản đang chạy
   dừng ở ranh giới bước với `het_tran_he_thong`, thử lại được.
 - Hai trần này **tách** khỏi trần người học (0,20 USD) và trần nội dung dùng chung (5 USD) của spec Pha B2.
 
@@ -374,7 +402,8 @@ tối đa 1 lần; lần sau thì `failed` với `loi_noi_bo`.
 **Phát hành phiên bản mới:** khoá học ghim `published_graph_version`. Đồ thị của `doc_id` lên bản mới (dựng lại) **không** tự đổi khoá học; chủ khoá bấm
 "Phát hành bản mới". Phạm vi phiên tự giải sang bản mới theo Jaccard (ADR 0017), tiến độ giữ nguyên vì khoá theo `node_id`. Chức năng dựng lại để vé sau.
 
-**Khoá mẫu:** admin đánh dấu `is_sample`. Mọi tài khoản thấy ở nhóm `samples` và tham gia bằng một nút, không cần link. Lệnh tạo khoá mẫu chỉ nhận **sáu cuốn
+**Khoá mẫu — chỉ ở dev** (chủ dự án chốt 2026-10-18). Lệnh tạo khoá mẫu từ chối chạy khi `env` không phải `dev`; bản demo không có khoá mẫu, nhóm
+`samples` rỗng thì giao diện ẩn nhóm. Ở dev, admin đánh dấu `is_sample`; mọi tài khoản thấy ở nhóm `samples` và tham gia bằng một nút, không cần link. Lệnh tạo khoá mẫu chỉ nhận **sáu cuốn
 phát triển** (doc-1, nhap-mon-ml, naive-bayes, doc-6, xstk-ch3-1, doc-4), theo danh sách cho phép trong mã; mọi `doc_id` khác bị từ chối.
 
 ### 6. Chia sẻ
@@ -406,7 +435,7 @@ module; **không** thấy chat, tài liệu, câu trả lời quiz.
 - `leave_course`: thành viên tự rời; vào lại bằng link mới thì gặp lại dữ liệu cũ.
 
 **Tiến độ tổng hợp cho chủ khoá** (`members_progress`): mỗi thành viên, mỗi module `{learned, total}` theo đồ thị đã phát hành, cộng `last_active_at`. Không
-có trường nào khác. Đây là chức năng **chờ chủ dự án chốt** (câu hỏi mở 3); mặc định bật.
+có trường nào khác. Chủ dự án chốt 2026-10-18: **bật**, kèm thông báo dữ liệu khi tham gia.
 
 ### 7. Học trong khoá học
 
@@ -452,8 +481,8 @@ bản. Chủ khoá xem báo lỗi của khoá mình; admin xem tất cả.
 |---|---|---|---|
 | người học mỗi ngày (Pha B2 mục 8) | 0,20 USD | trợ lý, tài liệu của người đó, **mọi khoá** | `daily_limit`, vẫn dùng mọi thứ 0 USD |
 | nội dung dùng chung mỗi ngày (Pha B2 mục 8) | 5,0 USD | bài giảng, sinh và kiểm quiz | bài giảng `tran_he_thong`; quiz dùng ngân hàng có sẵn |
-| lượt dựng mỗi tài khoản mỗi tháng (mới) | 3 lượt | bản dựng có chi (không tính bản dùng lại) | từ chối tải lên, `quota_exceeded` |
-| khâu dựng toàn hệ thống mỗi ngày (mới) | 10,0 USD | `purpose = build` | bản dựng chờ, hay dừng ở ranh giới bước |
+| lượt dựng mỗi tài khoản mỗi tháng (mới) | **tắt** (bản demo) | bản dựng có chi (không tính bản dùng lại) | từ chối tải lên, `quota_exceeded` |
+| khâu dựng toàn hệ thống mỗi ngày (mới) | **tắt** (bản demo) | `purpose = build` | bản dựng chờ, hay dừng ở ranh giới bước |
 
 "Ngày" và "tháng" tính theo `spend_day_timezone` (Asia/Ho_Chi_Minh), như Pha B2.
 
@@ -548,12 +577,14 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 | `login_max_failures` / `login_failure_window_minutes` | 5 / 15 |
 | `email_verify_ttl_hours` / `resend_verification_per_hour` | 24 / 3 |
 | `password_reset_ttl_minutes` | 60 |
-| `upload_max_mb` / `build_max_pages` | 10 (gói Cloudinary miễn phí) / 400 |
+| `upload_max_mb` / `build_max_pages` | 10 (gói Cloudinary miễn phí) / không giới hạn |
 | `scan_min_chars_per_page` / `scan_max_empty_page_ratio` | 200 / 0,5 |
 | `vi_min_diacritic_ratio` | chỉnh trên dữ liệu ở vé dựng |
-| `build_max_estimate_usd` | 3,0 |
-| `build_monthly_max` | 3 |
-| `system_daily_build_max_usd` | 10,0 |
+| `build_max_estimate_usd` | không giới hạn (gợi ý khi bật: 3,0) |
+| `build_monthly_max` | không giới hạn (gợi ý khi bật: 3) |
+| `system_daily_build_max_usd` | không giới hạn (gợi ý khi bật: 10,0) |
+| `env` | `dev` \| `prod`; khoá mẫu chỉ khi `dev` |
+| `smtp_*` | Gmail SMTP (`smtp.gmail.com`, cổng 587, STARTTLS) với mật khẩu ứng dụng; chỉ ở `.env` |
 | `confirmation_ttl_hours` | 72 |
 | `build_heartbeat_timeout_minutes` | 10 |
 | `share_link_default_days` | 7 |
@@ -613,12 +644,13 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
 7. Mật khẩu lưu dạng Argon2id; đăng nhập sai trả `invalid_credentials` giống nhau cho email có và không có; lần sai thứ 6 trong 15 phút trả `rate_limited`.
 8. Token đặt lại dùng hai lần thì lần hai bị từ chối; quá 60 phút theo đồng hồ giả thì bị từ chối; đặt lại xong thì mọi phiên cũ hết hiệu lực.
 9. Đổi mật khẩu huỷ phiên khác, giữ phiên hiện tại.
-10. Chưa xác minh email thì tải sách lên bị `email_unverified`; tham gia bằng link thì được.
-11. Lượt dựng thứ 4 trong tháng bị `quota_exceeded` trước khi worker chạy bước nào; sang tháng mới theo đồng hồ giả thì được.
+10. Chưa xác minh email thì mời theo email bị `email_unverified`; tải sách, tạo link, tham gia bằng link thì được.
+11. Cấu hình mặc định: tải và dựng nhiều cuốn liền không bị chặn. Bật `build_monthly_max = 3` trong test: lượt thứ 4 bị `quota_exceeded` trước khi worker
+    chạy bước nào; sang tháng mới theo đồng hồ giả thì được.
 12. Cùng một tệp tải hai lần (hai tài khoản): bản dựng thứ hai không gọi `BuildRunner`, 0 USD, không trừ lượt, và hai khoá trỏ cùng `doc_id`.
 13. Bản quét và tài liệu không phải tiếng Việt bị `rejected` sau bước đọc, 0 lời gọi mô hình. Test dùng hai tệp nhỏ tạo trong test: một PDF chỉ có ảnh,
     một PDF chữ tiếng Anh.
-14. Dự toán vượt `build_max_estimate_usd` thì `rejected`; trần khâu dựng toàn hệ thống chạm thì bản dựng mới không chạy.
+14. Khi bật trong test: dự toán vượt `build_max_estimate_usd` thì `rejected`; trần khâu dựng toàn hệ thống chạm thì bản dựng mới không chạy.
 15. Huỷ trong lúc `running` thì dừng ở ranh giới bước kế tiếp; worker giả ghi lại không có bước nào bắt đầu sau khi có cờ huỷ.
 16. Worker mất nhịp tim quá 10 phút theo đồng hồ giả thì bản dựng được nhận lại đúng 1 lần.
 17. Trần người học tính chung mọi khoá: chi ở khoá A làm khoá B chạm `daily_limit`.
@@ -626,7 +658,8 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
 19. Xoá thành viên thì lần gọi kế tiếp của người đó bị `not_found`; dữ liệu học của họ vẫn còn trong kho; tham gia lại thì thấy lại.
 20. Xoá tài khoản khi còn khoá có thành viên khác thì `owns_shared_courses`. Xoá được thì kho Pha B không còn bản ghi nào có `owner` là người đó, và sổ chi
     giữ số tiền nhưng thay `learner_id` bằng `deleted`.
-21. Khoá mẫu chỉ tạo được từ sáu cuốn phát triển; một `doc_id` giả mang tên giống tập giữ lại bị từ chối (bí mật giả, không dùng tên thật).
+21. Khoá mẫu chỉ tạo được từ sáu cuốn phát triển và chỉ khi `env = dev`; một `doc_id` giả mang tên giống tập giữ lại bị từ chối (bí mật giả, không dùng
+    tên thật).
 22. Mọi yêu cầu đổi dữ liệu thiếu `X-CSRF-Token` hay sai `Origin` bị `csrf_failed` (tầng HTTP, liệt kê mọi route không phải GET).
 23. Đề quiz trả cho trình duyệt không có đáp án (tầng HTTP).
 24. Test kiến trúc: domain và application không import FastAPI, SQLAlchemy, thư viện băm mật khẩu, SDK Cloudinary.
@@ -661,23 +694,28 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
 - **Tải thẳng từ trình duyệt lên Cloudinary** (unsigned upload), **link Cloudinary hết hạn bằng token** (tính năng gói cao), **gói Cloudinary trả phí**.
 - **Dựng lại và phát hành bản mới:** có trong thiết kế (mục 5), nhưng vé để sau.
 
-## Câu hỏi mở cho chủ dự án (đều có mặc định, nhân viên làm theo mặc định)
+## Quyết định của chủ dự án (2026-10-18)
 
-1. **Ai được tải sách lên?** Mặc định: mọi tài khoản đã xác minh, 3 lượt mỗi tháng. Phương án khác: chỉ tài khoản được admin cấp quyền "giảng viên".
-2. **Các trần khâu dựng:** 3 lượt mỗi tháng, dự toán tối đa 3 USD một cuốn, 10 USD mỗi ngày cho cả hệ thống, 400 trang. Mặc định theo số đo D-01 (khoảng
-   1,75 USD/cuốn ở chuỗi cũ, chưa gồm pass chính A8). Vé nối bộ dựng thật đo lại USD/cuốn trên chuỗi gộp, rồi Claude đề xuất chỉnh.
-3. **Chủ khoá có xem tiến độ tổng hợp của thành viên không?** Mặc định có, chỉ số khái niệm đã đánh dấu theo module và lần học gần nhất, kèm thông báo khi
-   tham gia. Phương án khác: thành viên tự bật cho xem.
-4. **Bắt buộc xác minh email để học không?** Mặc định không bắt buộc để học; bắt buộc để tải sách và mời người khác.
-5. **Khoá mẫu từ sáu cuốn phát triển** có được hiện cho mọi người dùng ở bản triển khai không (quyền dùng tài liệu)? Mặc định có ở bản demo của đồ án.
-6. **Thành viên có được mở tệp PDF gốc không?** *Đã chốt 2026-10-18:* có. "Đọc trang p" mở ảnh của đúng trang; "Mở cả tệp" là nút phụ, qua link tải có
-   hạn (mục 7).
-7. **Email gửi bằng dịch vụ nào khi triển khai?** Mặc định SMTP cấu hình được (ví dụ Gmail SMTP với mật khẩu ứng dụng cho bản demo).
-8. **Cloudinary — việc chủ dự án làm trên tài khoản** (đã chốt dùng Cloudinary, gói miễn phí, tài sản riêng tư):
-   - đặt `CLOUDINARY_URL` vào `.env` trên máy dev và máy chủ; không gửi qua chat, không commit;
-   - bật "Allow delivery of PDF and ZIP files" ở Settings → Security, vì tài khoản miễn phí mặc định chặn giao tệp PDF;
-   - xem trang gói, báo **cỡ tệp tối đa** và **tín dụng mỗi tháng** đúng của tài khoản, để chỉnh `upload_max_mb`;
-   - quyết dùng chung một tài khoản cho dev và triển khai (tách bằng thư mục, mặc định), hay hai tài khoản.
+Bảy câu hỏi mở của bản đầu đã được chủ dự án trả lời ngày 2026-10-18:
+
+1. **Ai được tải sách lên:** bất kỳ ai đã đăng nhập, không cần xác minh email. "Chỉ là web demo, không cần giới hạn."
+2. **Trần khâu dựng:** không giới hạn ở bản demo. Ba trần vẫn cài sẵn, mặc định tắt (mục 4). W-15 vẫn đo USD/cuốn thật, để biết bật ở mức nào khi cần.
+3. **Chủ khoá xem tiến độ tổng hợp của thành viên:** có, báo trước khi tham gia (mục 6).
+4. **Xác minh email để học:** không bắt buộc. Chỉ mời theo email mới cần xác minh.
+5. **Khoá mẫu từ sáu cuốn phát triển:** chỉ ở dev; bản demo không có khoá mẫu.
+6. **Thành viên mở tệp PDF gốc:** có. "Đọc trang p" mở ảnh của đúng trang; "Mở cả tệp" là nút phụ, qua link tải có hạn (mục 7).
+7. **Gửi thư:** Gmail SMTP với mật khẩu ứng dụng. Gmail giới hạn khoảng 500 thư mỗi ngày; đủ cho demo.
+8. **Cloudinary:** một tài khoản cho dev và demo, tách bằng thư mục `wayfinder/dev` và `wayfinder/prod`.
+
+**Việc chủ dự án làm trên tài khoản:**
+- Cloudinary:
+  - đặt `CLOUDINARY_URL` vào `.env` trên máy dev và máy chủ; không gửi qua chat, không commit;
+  - bật "Allow delivery of PDF and ZIP files" ở Settings → Security;
+  - xem trang gói, báo cỡ tệp tối đa và tín dụng mỗi tháng;
+- Gmail: tạo mật khẩu ứng dụng (cần bật xác minh hai bước), đặt vào `.env`.
+
+**Trần Pha B vẫn giữ** theo đợt tra hỏi Pha B2 (Q5, Q29a): 0,20 USD mỗi người học mỗi ngày cho trợ lý và tài liệu, 5 USD mỗi ngày cho nội dung dùng
+chung. Câu "không cần giới hạn" ngày 2026-10-18 nói về khâu dựng; muốn bỏ cả trần Pha B thì chủ dự án báo riêng.
 
 ## Ghi chú thêm
 

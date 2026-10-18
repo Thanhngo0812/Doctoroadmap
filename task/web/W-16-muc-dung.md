@@ -12,7 +12,7 @@ Người dùng cần biết còn hỏi được bao nhiêu hôm nay và còn m�
 
 **`UsageService.my_usage`** trả `usage-1` đúng spec mục 8:
 - tỉ lệ đã dùng của trần người học hôm nay, giờ đặt lại;
-- lượt dựng tháng này, giờ đặt lại;
+- lượt dựng tháng này, giờ đặt lại; trần tắt (bản demo) thì trả `max: null` và giao diện ghi "không giới hạn";
 - trần nội dung dùng chung hôm nay có đang chạm không.
 - **Người dùng thường không thấy USD.**
 - Đọc sổ chi bằng bộ lọc mới của W-05 (`usage_rows(learner_id, since, purposes)`), không đọc cả sổ.

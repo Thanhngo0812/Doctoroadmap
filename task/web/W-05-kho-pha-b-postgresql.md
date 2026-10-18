@@ -12,7 +12,8 @@
 
 ## Cần làm
 
-**Bản cài `PostgresPhaseBStore`** của port `PhaseBStore`, với bốn bảng `phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledger` như spec mục 4.
+**Bản cài `PostgresPhaseBStore`** của port `PhaseBStore` (port ở lõi), đặt ở `src/web/backend/wayfinder/infrastructure/` để lõi không dính SQLAlchemy;
+bộ test hợp đồng của lõi được gọi lại từ test của `wayfinder`. Bốn bảng `phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledger` như spec mục 4.
 - `put_record` tách `owner` và `doc_id` từ `value` ra cột; `get_record` và `list_records` trả **đúng** `dict` đã ghi.
 - `usage_rows` trả đúng `dict` đã ghi; các trường ngoài cột nằm trong `extra`.
 - **`single_flight` ba lớp,** như spec mục 5:
@@ -30,7 +31,9 @@
 
 **Liệt kê `kind` thật:** quét mã Pha B, ghi vào báo cáo vé danh sách `kind` đang có, và `kind` nào không có trường `owner`.
 
-**Nối dây:** composition chọn bản PostgreSQL khi có biến môi trường của cơ sở dữ liệu. CLI và test lõi vẫn mặc định bản JSON và bản bộ nhớ.
+**Nối dây:** composition của `wayfinder` dùng bản PostgreSQL. CLI và test lõi không đổi, vẫn dùng bản JSON và bản bộ nhớ.
+
+**Phần ở lõi** (`src/doc2roadmap/`): chỉ nới port và sửa hai bản cài JSON, bộ nhớ như mục "Nới port" ở trên. Không thêm phụ thuộc mới vào lõi.
 
 **Di trú:** bốn bảng Pha B, cùng chỉ mục ở spec mục 4.
 

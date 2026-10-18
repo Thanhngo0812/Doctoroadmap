@@ -246,12 +246,13 @@ Chế độ tối thay bóng bằng viền `color-border` và nền `surface-2`.
 │ │[Học tiếp]│ │[Học tiếp]│ │[Xem]     │                       │
 │ └──────────┘ └──────────┘ └──────────┘                       │
 │ Được chia sẻ với tôi   (lưới thẻ như trên, có tên chủ khoá)    │
-│ Khoá học mẫu           (thẻ, nút [Tham gia])                  │
+│ Khoá học mẫu (chỉ ở dev) (thẻ, nút [Tham gia])                │
 └──────────────────────────────────────────────────────────────┘
 ```
 
 - Lưới: 1 cột ở 390 px, 2 cột ở 768 px, 3 cột ở 1280 px.
-- **Rỗng hoàn toàn:** mặt pixel cộng câu "Chưa có khoá học. Thử một khoá mẫu, hoặc tải giáo trình của bạn." kèm hai nút.
+- **Rỗng hoàn toàn:** mặt pixel cộng câu "Chưa có khoá học. Tải giáo trình của bạn, hoặc mở link mời bạn nhận được." kèm nút "Tải giáo trình". Ở dev có
+  thêm nút "Thử khoá mẫu". Bản demo không có khoá mẫu nên nhóm này ẩn.
 
 **Trang lộ trình** (`/khoa-hoc/:cid`):
 
@@ -340,10 +341,10 @@ Chế độ tối thay bóng bằng viền `color-border` và nền `surface-2`.
 **Tải giáo trình** và **tiến trình dựng:**
 
 ```
-Tải giáo trình                        Còn 2/3 lượt dựng tháng này
+Tải giáo trình                 (chỉ khi bật trần: Còn 2/3 lượt dựng)
 ┌──────────────────────────────────────────────┐
 │     Kéo thả tệp PDF hoặc DOCX vào đây         │
-│     hoặc [Chọn tệp]   · tối đa 10 MB, 400 trang│
+│     hoặc [Chọn tệp]   · tối đa 10 MB           │
 └──────────────────────────────────────────────┘
 ☐ Tôi có quyền dùng và chia sẻ tài liệu này        [Tải lên]
 
@@ -352,7 +353,7 @@ Tiến trình
  ● Trích khái niệm      [gif 96]  khoảng 6 phút
  ○ Dựng đồ thị và lộ trình
  ○ Chuẩn bị bài học
- Dự toán: khoảng 12 phút · đã dùng 1 lượt     [Huỷ]
+ Dự toán: khoảng 12 phút                      [Huỷ]
 ```
 
 - Sau bước đọc: hộp **dự toán** với nút "Dựng lộ trình" và "Để sau". Người dùng thường thấy phút và số lượt, không thấy USD (spec chức năng mục 8).
@@ -367,7 +368,7 @@ gia, số khái niệm bạn đã đánh dấu học. Không thấy nội dung c
 - Báo lỗi nội dung;
 - Vùng nguy hiểm: xoá khoá (gõ lại tên).
 
-**Mức dùng** (`/muc-dung`): vòng tỉ lệ lớn "Hôm nay đã dùng 35%", giờ đặt lại; thẻ lượt dựng "1/3, đặt lại 1/11"; giải thích ngắn hết trần thì vẫn làm được
+**Mức dùng** (`/muc-dung`): vòng tỉ lệ lớn "Hôm nay đã dùng 35%", giờ đặt lại; thẻ lượt dựng "không giới hạn" (bản demo) hay "1/3, đặt lại 1/11" khi bật trần; giải thích ngắn hết trần thì vẫn làm được
 gì. Không có số USD.
 
 **Quản trị:** bố cục bảng ở máy tính, thanh thẻ trên; không cần đẹp ở điện thoại, nhưng không được vỡ (bảng cuộn ngang trong khung).

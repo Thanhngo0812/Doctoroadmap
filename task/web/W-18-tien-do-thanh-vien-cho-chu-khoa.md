@@ -2,8 +2,8 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 6 ("Tiến độ tổng hợp cho chủ khoá", thông báo dữ liệu khi tham gia), câu hỏi mở 3; spec thiết kế,
 bảng tiến độ lớp.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-07, W-11 · **Trạng thái:** ready-for-agent, nhưng **bật cho người dùng thật chờ
-chủ dự án chốt câu hỏi mở 3**; cài sau cờ `members_progress_enabled`, mặc định bật ở dev
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-07, W-11 · **Trạng thái:** ready-for-agent. Chủ dự án chốt 2026-10-18: bật, báo trước khi tham gia. Vẫn cài sau cờ
+`members_progress_enabled` (mặc định bật) để tắt được
 
 ## Vì sao
 

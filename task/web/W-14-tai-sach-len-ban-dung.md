@@ -17,8 +17,8 @@ xong. W-15 nối bộ dựng thật.
 **Nhận tệp:**
 - kiểm byte đầu PDF hay DOCX, ≤ `upload_max_mb` (10, gói Cloudinary miễn phí), PDF ≤ 400 trang, PDF không mã hoá;
 - bắt buộc `rights_confirmed`;
-- còn lượt dựng trong tháng;
-- **đã xác minh email** (`email_unverified` nếu chưa);
+- nếu trần lượt dựng đang bật (mặc định tắt ở bản demo): còn lượt trong tháng;
+- **không** cần xác minh email (bản demo);
 - tính SHA-256; tải lên Cloudinary qua `MediaStore` (`authenticated`, `public_id` ngẫu nhiên; PDF là `image` để cắt trang, DOCX là `raw`).
 
 **Dùng lại:**
@@ -28,14 +28,14 @@ xong. W-15 nối bộ dựng thật.
 **Luồng trạng thái** đúng spec mục 4: `reading` → (`rejected` | `awaiting_confirmation`) → `queued` → `running` → `succeeded` | `failed` | `cancelled`.
 - Xác nhận thì trừ lượt (`counts_quota = true`).
 - Không xác nhận trong 72 giờ thì hết hạn, không trừ lượt.
-- Dự toán > 3 USD thì `rejected` với `qua_du_toan`.
+- Nếu trần dự toán bật: dự toán vượt trần thì `rejected` với `qua_du_toan`. Mặc định tắt; dự toán vẫn luôn hiện.
 
 **Worker** (`web worker`):
 - nhận việc bằng `FOR UPDATE SKIP LOCKED`; nhịp tim 30 giây;
 - tải tệp gốc từ Cloudinary về thư mục tạm trước khi dựng, xoá bản tạm khi xong hay lỗi;
 - cuối bước `learning_prep`: tải ảnh công thức và media đã xác nhận lên Cloudinary, ghi `media_asset`;
 - việc định kỳ nhận lại bản dựng mất nhịp tim quá 10 phút, tối đa 1 lần;
-- kiểm trần khâu dựng toàn hệ thống (10 USD/ngày) **trước** khi nhận việc;
+- nếu trần khâu dựng toàn hệ thống bật: kiểm **trước** khi nhận việc;
 - huỷ ở ranh giới bước;
 - ghi chi mỗi bước vào sổ chi với `purpose = build`;
 - xong thì khoá học `ready` với bản A10 mới nhất, và gửi thư "bản dựng xong" hay "bản dựng lỗi".
@@ -66,13 +66,14 @@ Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Bản dựng xong thì thư mục tạm không còn tệp gốc; `media_asset` có đủ ảnh công thức của bản dựng giả.
 - [ ] Hai tài khoản tải cùng một tệp: bộ dựng giả chỉ chạy 1 lần; lần sau 0 USD, không trừ lượt; hai khoá trỏ cùng `doc_id`.
 - [ ] Hai lần tải cùng tệp đồng thời trên PostgreSQL: chỉ một bản dựng chạy.
-- [ ] Lượt thứ 4 trong tháng thì `quota_exceeded`, trước khi worker chạy bước nào; sang tháng mới theo đồng hồ giả thì được.
-- [ ] Dự toán giả 3,5 USD thì `rejected`, `qua_du_toan`.
-- [ ] Chạm trần khâu dựng toàn hệ thống thì bản dựng nằm ở `queued`, không chạy.
+- [ ] Cấu hình mặc định: một tài khoản tải và dựng 5 cuốn liền không bị chặn.
+- [ ] Bật `build_monthly_max = 3`: lượt thứ 4 trong tháng thì `quota_exceeded`, trước khi worker chạy bước nào; sang tháng mới theo đồng hồ giả thì được.
+- [ ] Bật `build_max_estimate_usd = 3`: dự toán giả 3,5 USD thì `rejected`, `qua_du_toan`.
+- [ ] Bật trần khâu dựng toàn hệ thống: chạm trần thì bản dựng nằm ở `queued`, không chạy.
 - [ ] Hai worker nhận việc cùng lúc: mỗi bản dựng một worker.
 - [ ] Mất nhịp tim quá 10 phút thì được nhận lại đúng 1 lần; lần sau `failed` với `loi_noi_bo`.
 - [ ] Huỷ khi `running`: không bước nào bắt đầu sau cờ huỷ.
-- [ ] Chưa xác minh email thì `email_unverified`.
+- [ ] Chưa xác minh email vẫn tải và dựng được.
 - [ ] Ảnh chụp: trang tải, dự toán, đang dựng, lỗi bản quét, xong; cỡ 390 px và 1280 px.
 
 ## Ngoài vé

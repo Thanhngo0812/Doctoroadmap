@@ -17,7 +17,7 @@ Chia sẻ khoá học cho cả lớp là chức năng chủ dự án yêu cầu.
   - token 32 byte, chỉ lưu băm; hiện đủ **một lần** lúc tạo;
   - danh sách link chỉ hiện 6 ký tự cuối;
   - hạn mặc định 7 ngày, hoặc "không hết hạn"; `max_uses` tuỳ chọn.
-- **Chưa xác minh email** thì không tạo được link (`email_unverified`), nhưng vẫn tham gia được.
+- **Chưa xác minh email** vẫn tạo link và tham gia được (bản demo, chủ dự án chốt 2026-10-18).
 - `preview_share_link` mở cho khách; link hỏng vì bất kỳ lý do gì đều trả `link_invalid`.
 - **`join_by_link`** chạy trong một giao dịch như spec cơ sở dữ liệu mục 6. Đã là thành viên thì không tăng `use_count`. Đủ 200 thành viên thì `course_full`.
 - **`remove_member`:** người bị xoá mất quyền ngay ở lần gọi kế tiếp; dữ liệu học của họ giữ nguyên.

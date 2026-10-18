@@ -25,6 +25,10 @@ danh mục.
 - `web cleanup` chạy mỗi ngày;
 - log có `ref` của lỗi; không ghi câu hỏi, câu trả lời, nội dung tài liệu.
 
+**Gửi thư:** Gmail SMTP với mật khẩu ứng dụng; kiểm thư thật tới một hộp thư của nhóm (xác minh, đặt lại mật khẩu, lời mời).
+
+**Khoá mẫu:** bản demo (`env = prod`) không có khoá mẫu. Bộ thử trình duyệt chạy trên một bản thử `env = dev` có khoá mẫu.
+
 **Bộ thử trình duyệt (Playwright)**, chạy trên bản triển khai thử với mô hình giả hay phát lại:
 1. đăng ký → xác minh (đọc thư từ `Mailer` console) → tham gia khoá mẫu → mở trang lộ trình → mở một bài giảng → hỏi trợ lý một câu;
 2. chủ khoá tạo link → tài khoản thứ hai tham gia bằng link → thấy cùng bài giảng, tiến độ riêng;

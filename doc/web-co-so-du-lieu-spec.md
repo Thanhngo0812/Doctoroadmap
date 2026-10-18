@@ -36,7 +36,9 @@ Cloudinary, riêng tư.
 
 ### 1. Công cụ và quy ước
 
-- **PostgreSQL 16**, driver psycopg 3, SQLAlchemy 2, di trú Alembic.
+- **PostgreSQL 16** chạy bằng Docker (`src/web/docker-compose.yml`: `db` cổng 5432 với volume có tên; `db-test` cổng 5433 với `tmpfs`), driver psycopg 3,
+  SQLAlchemy 2, di trú Alembic ở `src/web/backend/wayfinder/migrations/`.
+- **Mã lưu trữ ở `wayfinder`,** kể cả `PostgresPhaseBStore`. Lõi `doc2roadmap` không phụ thuộc SQLAlchemy hay psycopg.
   - Domain và application không thấy model SQLAlchemy. Bản cài port chuyển hàng thành thực thể domain hay `dict` như port quy định.
 - **Tên:** `snake_case`; tên bảng số ít (`account`, `course`).
 - **Khoá chính:** `uuid` do ứng dụng sinh (UUID v4) cho thực thể web; `bigint` tự tăng cho bảng chỉ ghi thêm (`usage_ledger`, `audit_event`).

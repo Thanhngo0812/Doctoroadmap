@@ -6,7 +6,7 @@
 
 ## Vì sao
 
-Tải sách lên và mời người khác tốn tiền và gửi thư cho người lạ, nên chỉ tài khoản có email thật mới được làm. Người quên mật khẩu cũng cần lấy lại tài
+Mời người khác qua email gửi thư cho người lạ bằng tài khoản Gmail của dự án, nên chỉ tài khoản có email thật mới được làm. Người quên mật khẩu cũng cần lấy lại tài
 khoản.
 
 ## Cần làm
@@ -27,15 +27,17 @@ khoản.
 - Đăng ký trùng email (từ W-02) nay gửi thư "bạn đã có tài khoản".
 - Nhật ký: `email_verified`, `password_reset_requested`, `password_reset_done`.
 
-**Phân quyền:** thêm hàng "chưa xác minh thì không được tải sách, không được mời" vào bảng luật. Lỗi `email_unverified`. Vé này chỉ thêm luật và test luật
-trên một hành động giả; hành động thật nối ở W-12 và W-14.
+**Phân quyền:** thêm hàng "chưa xác minh thì không được mời theo email" vào bảng luật (bản demo: tải sách và tạo link không cần xác minh). Lỗi
+`email_unverified`. Vé này chỉ thêm luật và test luật trên một hành động giả; hành động thật nối ở W-12.
+
+**SMTP:** Gmail (`smtp.gmail.com`, cổng 587, STARTTLS) với mật khẩu ứng dụng; tài khoản và mật khẩu chỉ ở `.env`. Thiếu thì hỏi chủ dự án.
 
 **HTTP:** `POST /auth/verify-email`, `POST /auth/resend-verification`, `POST /auth/password-reset/request`, `POST /auth/password-reset/confirm`.
 
 **Di trú:** `email_token`.
 
 **Giao diện:**
-- dải nhắc "Xác minh email để tải sách và mời bạn", có nút gửi lại;
+- dải nhắc "Xác minh email để mời bạn qua email", có nút gửi lại;
 - trang mở từ link trong thư: xác minh xong, link hết hạn, link đã dùng;
 - trang "Quên mật khẩu" và "Đặt mật khẩu mới".
 

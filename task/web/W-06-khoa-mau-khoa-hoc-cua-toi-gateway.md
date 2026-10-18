@@ -18,7 +18,7 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 - Mỗi mục có tóm tắt "xong x/y" của người hỏi, lấy qua gateway từ `get_progress`. Pha B chưa có tiến độ (SA-34) thì để trống và ghi vào báo cáo.
 - `resume`: module gần nhất của người hỏi, suy từ phiên gần nhất; không có thì module 1.
 
-**Lệnh `web seed-samples`:**
+**Lệnh `web seed-samples`** (chỉ chạy khi `env = dev`; bản demo không có khoá mẫu, chủ dự án chốt 2026-10-18):
 - Tạo khoá mẫu từ sáu cuốn phát triển, theo **danh sách cho phép viết trong mã**: doc-1, nhap-mon-ml, naive-bayes, doc-6, xstk-ch3-1, doc-4.
 - `published_graph_version` là bản A10 hoàn tất mới nhất của mỗi cuốn; chủ khoá là admin chạy lệnh.
 - Tải PDF gốc của cuốn lên Cloudinary qua `MediaStore` (5/6 cuốn có PDF, đều ≤ 3,2 MB; nhap-mon-ml không có PDF gốc). Ảnh công thức và media làm ở W-08.
@@ -47,7 +47,8 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Test liệt kê route: thêm thử một route `{cid}` không gọi kiểm thành viên thì test đỏ.
 - [ ] Gateway: thân yêu cầu có `owner` khác thì bị bỏ qua; bản ghi Pha B mới có `owner` là người đăng nhập.
-- [ ] `seed-samples` từ chối `doc_id` ngoài danh sách cho phép, kể cả `doc_id` giả có dạng giống tập giữ lại.
+- [ ] `seed-samples` từ chối `doc_id` ngoài danh sách cho phép, kể cả `doc_id` giả có dạng giống tập giữ lại; từ chối chạy khi `env = prod`.
+- [ ] `env = prod` không có khoá mẫu nào thì giao diện ẩn nhóm "Khoá học mẫu"; trạng thái rỗng mời tải giáo trình hay nhập link mời.
 - [ ] Không chèn được chủ thứ hai cho cùng một khoá; tạo khoá mà lỗi ở bước chèn chủ thì không còn hàng `course`.
 - [ ] Tham gia khoá mẫu hai lần không tạo hai hàng `membership`.
 - [ ] Ví dụ JSON thật của `GET /courses` và `GET /courses/{cid}/roadmap` cho doc-1; ảnh chụp trang "Khoá học của tôi" có và không có khoá học.
