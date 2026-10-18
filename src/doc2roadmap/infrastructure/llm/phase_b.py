@@ -121,6 +121,8 @@ class GeminiToolSession:
         self.last_finish_reason: str | None = None
 
     def ask_json(self, prompt: str, *, response_schema: dict[str, Any]) -> ExtractionReply:
+        started = perf_counter()
+        self.last_ttft_ms = None
         self.last_usage = {}
         self.last_raw_text = None
         self.last_finish_reason = None
@@ -136,7 +138,10 @@ class GeminiToolSession:
         }
         response = self.model._request("generateContent", body, stream=False)
         try:
-            payload = json.loads(response.read())
+            first = response.read(1)
+            if first:
+                self.last_ttft_ms = round((perf_counter() - started) * 1000)
+            payload = json.loads(first + response.read())
         finally:
             response.close()
         self.last_usage = dict(payload.get("usageMetadata", {}))
@@ -163,11 +168,11 @@ class GeminiToolSession:
                 "responseJsonSchema": response_schema,
             },
         }
-        response = self.model._request("streamGenerateContent", body, stream=True)
         started = perf_counter()
         self.last_ttft_ms = None
         self.last_usage = {}
         self.last_finish_reason = None
+        response = self.model._request("streamGenerateContent", body, stream=True)
         try:
             for event in self.model._decode_sse(response):
                 self.last_usage.update(event.get("usageMetadata", {}))
@@ -175,7 +180,7 @@ class GeminiToolSession:
                 if candidates:
                     self.last_finish_reason = candidates[0].get("finishReason", self.last_finish_reason)
                 for part in (candidates[0].get("content", {}).get("parts", []) if candidates else []):
-                    if isinstance(part.get("text"), str):
+                    if isinstance(part.get("text"), str) and part['text']:
                         if self.last_ttft_ms is None:
                             self.last_ttft_ms = round((perf_counter() - started) * 1000)
                         yield part["text"]
@@ -201,10 +206,11 @@ class GeminiToolSession:
         if self.tools:
             body["tools"] = [{"functionDeclarations": self.tools}]
             body["toolConfig"] = {"functionCallingConfig": {"mode": mode}}
+        started = perf_counter()
+        self.last_ttft_ms = None
         response = self.model._request("streamGenerateContent", body, stream=True)
         usage: dict[str, Any] = {}
         finish_reason = None
-        started = perf_counter()
         ttft_ms = None
         turn_id = uuid4().hex
         turn_parts: list[dict[str, Any]] = []
@@ -219,6 +225,9 @@ class GeminiToolSession:
                 for part in candidate.get("content", {}).get("parts", []):
                     turn_parts.append(dict(part))
                     if "functionCall" in part:
+                        if ttft_ms is None:
+                            ttft_ms = round((perf_counter() - started) * 1000)
+                            self.last_ttft_ms = ttft_ms
                         function = part["functionCall"]
                         call_id = str(function.get("id") or part.get("id") or f"call_{len(self._call_parts) + 1}")
                         self._call_parts[call_id] = dict(part)
@@ -232,6 +241,7 @@ class GeminiToolSession:
                     elif isinstance(part.get("text"), str) and part["text"]:
                         if ttft_ms is None:
                             ttft_ms = round((perf_counter() - started) * 1000)
+                            self.last_ttft_ms = ttft_ms
                         yield Delta(part["text"])
             self._turn_parts[turn_id] = turn_parts
             self.model.last_usage = usage
@@ -338,9 +348,10 @@ class RecordingToolSession:
                           "error": {"type": type(error).__name__,
                                     "pos": getattr(error, "pos", None)},
                           "raw_text": raw_text, "usage": usage,
-                          "finish_reason": getattr(self.delegate, "last_finish_reason", None)})
+                          "finish_reason": getattr(self.delegate, "last_finish_reason", None),
+                          "ttft_ms": self.last_ttft_ms})
             raise
-        self._record({"kind": "json", "prompt": prompt, "schema": response_schema,
+        self._record({"kind": "json", "prompt": prompt, "schema": response_schema, "ttft_ms": self.last_ttft_ms,
                       "reply": {"payload": reply.payload, "raw_text": reply.raw_text,
                                 "usage": reply.usage or {}}})
         return reply
@@ -417,6 +428,7 @@ class ReplayToolSession:
 
     def ask_json(self, prompt: str, *, response_schema: dict[str, Any]) -> ExtractionReply:
         call = self._take("json", {"prompt": prompt, "schema": response_schema})
+        self.last_ttft_ms = call.get('ttft_ms')
         if "error" in call:
             self.last_usage = dict(call.get("usage", {}))
             self.last_raw_text = call.get("raw_text")

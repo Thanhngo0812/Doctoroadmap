@@ -8,9 +8,10 @@ from uuid import uuid4
 
 from doc2roadmap.application.phase_b.common import call_json, quote_is_verbatim, stable_json
 from doc2roadmap.application.phase_b.lectures import _assemble
-from doc2roadmap.application.phase_b.postcheck import check_text
+from doc2roadmap.application.phase_b.postcheck import COMPOUND, best_matching_source_sentence, check_text
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
 from doc2roadmap.domain.phase_b_pricing import estimate_cost
+from doc2roadmap.domain.sentence_splitter import UnicodeSentenceSplitter
 
 
 DOCUMENT_SCHEMA: dict[str, Any] = {
@@ -123,10 +124,32 @@ def _cap_context(context: dict[str, Any], settings: BSettings) -> tuple[dict[str
 
 
 def _render(title: str, markdown: str, outside_blocks: list[str]) -> str:
-    parts = [markdown.strip()] if re.match(r'^\s*#\s+', markdown) else [f"# {title.strip()}", markdown.strip()]
+    body = markdown.strip()
+    if not body:
+        parts = []
+    elif re.match(r'^\s*#\s+', body):
+        parts = [body]
+    else:
+        parts = [f"# {title.strip()}", body]
     if outside_blocks:
         parts.append("## Ví dụ minh hoạ ngoài tài liệu\n" + "\n\n".join(f"> {block.strip()}" for block in outside_blocks))
     return "\n\n".join(part for part in parts if part)
+
+
+def _statements_for_label(markdown: str, label: str) -> list[str]:
+    statements = []
+    sentence_splitter = UnicodeSentenceSplitter()
+    for line in markdown.splitlines():
+        line = COMPOUND.sub(lambda match: "".join(
+            "[" + item.strip() + "]" for item in re.split(r"[,;]", match[1])), line)
+        if f"[{label}]" not in line:
+            continue
+        plain = re.sub(r"^\s*#{1,6}\s+", "", line)
+        plain = re.sub(r"\[[A-Z]+\d+\]", "", plain).strip()
+        statements.extend(plain[span.start:span.end].strip()
+                          for span in sentence_splitter.split(plain)
+                          if plain[span.start:span.end].strip())
+    return statements
 
 
 def export_markdown(document: Mapping[str, Any]) -> str:
@@ -259,15 +282,26 @@ class DocumentUseCase:
         title = str(payload.get("title") or "Tài liệu học tập")
         markdown = str(payload.get("markdown") or "")
         citations = []
+        cited_labels = set()
         for item in payload.get("citations", []):
             if not isinstance(item, Mapping):
                 continue
             label, quote = item.get("label"), item.get("quote")
+            if not isinstance(label, str) or label in cited_labels:
+                continue
             source = source_map.get(label)
-            if source and quote_is_verbatim(str(quote or ""), source["text"], max_chars=self.settings.quote_max_chars):
-                citation = registry.citation(label, str(quote))
+            if not source:
+                continue
+            source_text = registry.raw_text(label) or str(source.get("text", ""))
+            quote = str(quote or "")
+            if not quote_is_verbatim(quote, source_text, max_chars=self.settings.quote_max_chars):
+                statement = " ".join(_statements_for_label(markdown, label))
+                quote = best_matching_source_sentence(statement, source_text, self.settings.quote_max_chars)
+            if quote and quote_is_verbatim(quote, source_text, max_chars=self.settings.quote_max_chars):
+                citation = registry.citation(label, quote)
                 if citation:
                     citations.append(citation)
+                    cited_labels.add(label)
         outside = [str(block).strip() for block in payload.get("outside_document_blocks", []) if str(block).strip()]
         max_chars = self.settings.document_max_output_tokens * 3
         warnings = ["context_truncated"] if context_truncated else []
@@ -292,6 +326,7 @@ class DocumentUseCase:
             "postcheck": checked['counts'],
             "usage": {"model_id": getattr(self.model, "model_id", self.settings.model_id),
                       "cost_usd": result.cost_usd, "elapsed_ms": result.elapsed_ms,
+                      "ttft_ms": result.ttft_ms,
                       "input_tokens": result.usage.get("promptTokenCount", 0),
                       "output_tokens": result.usage.get("candidatesTokenCount", 0),
                       "thought_tokens": result.usage.get("thoughtsTokenCount", 0)},

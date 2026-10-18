@@ -100,8 +100,14 @@ def test_invalid_model_naming_falls_back_without_changing_learning_graph(bad):
         'book', upstream=upstream())
     module = result.payload['modules'][0]
     assert module['title'] == 'Ma trận'
-    assert module['title_source'] == 'fallback'
-    assert module['naming_flags']
+    if bad['title'] == 'Ma trận':
+        assert module['title_source'] == 'llm'
+        assert module['description_source'] == 'template'
+        assert 'description_references' in module['naming_flags']
+    else:
+        assert module['title_source'] == 'fallback'
+        assert module['description_source'] == 'llm'
+        assert module['naming_flags']
     assert len(model.calls) == 3
 
 

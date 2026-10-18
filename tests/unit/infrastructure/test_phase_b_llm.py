@@ -15,8 +15,8 @@ class _Response:
     def __iter__(self):
         return self._stream
 
-    def read(self):
-        return self._stream.read()
+    def read(self, size=-1):
+        return self._stream.read(size)
 
     def close(self):
         self._stream.close()

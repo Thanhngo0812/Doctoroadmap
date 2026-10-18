@@ -162,6 +162,10 @@ class NameModulesB:
                              nodes[nid].get('description', ''), *_aliases(nodes[nid])]]
             target_texts.extend(headings[sid][0] for sid in target_sections)
             vocabulary = set(word for text in target_texts for word in _words(text))
+            content_vocabulary = set(vocabulary)
+            for nid in ids:
+                for chunk_id in nodes[nid].get('teaching_chunk_ids', []):
+                    content_vocabulary.update(_words(chunk_by_id[chunk_id].text) if chunk_id in chunk_by_id else [])
             neighboring = [{'module_id': other['module_id'], 'title': clean_title(other.get('title', ''))[0],
                             'concepts': [_display(nodes[nid]) for nid in other['node_ids']],
                             'note': 'Không thuộc module đích'}
@@ -172,8 +176,8 @@ class NameModulesB:
                     'author_path': [headings[sid][0] for sid in common], 'exact_author_section': author_ok,
                     'candidates': [{'title': title, 'score': len(set(_words(title)) & vocabulary)}
                                    for title in list(dict.fromkeys([author, *target_names, fallback_candidate_title])) if title][:5],
-                    'neighbors': neighboring, 'function_words': sorted(function_words),
-                    'allowed_module_ids': list(dependencies), 'allowed_vocabulary': sorted(vocabulary | function_words),
+                    'neighbors': neighboring,
+                    'allowed_module_ids': list(dependencies), 'content_vocabulary': sorted(content_vocabulary),
                     'format_example': {'title': target_names[0], 'description': [{
                         'text': _first_sentence(nodes[ids[0]].get('description')) or target_names[0] + '.',
                         'node_ids': list(ids[:3])}]}}
@@ -183,10 +187,12 @@ class NameModulesB:
 
     def _prompt(self):
         return (f'Đặt tên tiếng Việt cho module đích, tối đa {self.settings.title_max_chars} ký tự; '
-                'không số đánh mục, không mượn từ module kề. Mọi từ trong title và description.text phải thuộc '
-                'allowed_vocabulary (không phân biệt hoa thường); không tự thêm từ đồng nghĩa hay lời dẫn. '
+                'không số đánh mục, không mượn từ module kề. Tên bám content_vocabulary; từ thông dụng cũng được phép. '
+                'Mô tả được dùng thêm âm tiết thông dụng của chính cuốn sách. Không tự thêm từ đồng nghĩa hay lời dẫn. '
                 'Giữ tiêu đề tác giả khi exact_author_section=true và tên tốt. '
-                'Viết mô tả 1–2 câu từ nội dung A5, nêu module dạy gì và dùng để làm gì; '
+                'Viết mô tả 1–2 câu từ nội dung A5, nêu điều được dạy và việc đó dùng để làm gì. '
+                'Bắt đầu câu thẳng bằng khái niệm, thao tác hoặc kỹ năng được dạy. '
+                'Không tự xưng “module này”, “chương này”, “bài này” hoặc “nội dung”. '
                 'Không trả danh sách tên khái niệm thay cho câu văn. Bám format_example về câu văn và node_ids. '
                 'Không có phụ thuộc thì không viết câu cần trước. '
                 'text chỉ là câu tiếng Việt cho người học, tuyệt đối không chứa node_id/module_id hoặc tên trường JSON. '
@@ -195,12 +201,12 @@ class NameModulesB:
                 'Không suy đoán tiên quyết từ neighbors. '
                 'Nếu ghép bằng ·, mỗi mảnh là tên khái niệm hoặc tiêu đề nguyên vẹn. Không trùng tên module ±2.')
 
-    def _validate(self, value, module, vocabulary, fragments, all_titles, index):
-        if not isinstance(value, dict):
-            return 'schema'
-        title = value.get('title')
-        sentences = value.get('description')
-        if not isinstance(title, str) or not title.strip() or not isinstance(sentences, list) or not 1 <= len(sentences) <= 2:
+    def _validate_title(self, value, module, vocabulary, fragments, all_titles, index):
+        if isinstance(value, dict):
+            title = value.get('title')
+        else:
+            title = value
+        if not isinstance(title, str) or not title.strip():
             return 'schema'
         title = title.strip()
         if len(title) > self.settings.title_max_chars or clean_title(title)[0] != title:
@@ -219,6 +225,13 @@ class NameModulesB:
             return 'duplicate'
         if '·' in title and any(fragment.strip() not in fragments for fragment in title.split('·')):
             return 'fragment'
+        if any(word not in vocabulary for word in _words(title)):
+            return 'vocabulary'
+        return None
+
+    def _validate_description(self, sentences, module, vocabulary):
+        if not isinstance(sentences, list) or not 1 <= len(sentences) <= 2:
+            return 'schema'
         for sentence in sentences:
             if (not isinstance(sentence, dict) or not isinstance(sentence.get('text'), str)
                     or not sentence.get('node_ids') or not isinstance(sentence['node_ids'], list)
@@ -227,9 +240,46 @@ class NameModulesB:
                 return 'references'
             if re.search(r'\b(?:module|node)_\w+', sentence['text'], re.I):
                 return 'identifier_in_text'
-        if any(word not in vocabulary for text in [title, *(s['text'] for s in sentences)] for word in _words(text)):
+        if any(word not in vocabulary for sentence in sentences for word in _words(sentence['text'])):
             return 'vocabulary'
         return None
+
+    def _description_lexicons(self, chunks, prepared, upstream):
+        chunk_text = {chunk.chunk_id: chunk.text for chunk in chunks.result.chunks}
+        document_frequency = Counter(word for text in chunk_text.values() for word in set(_words(text)))
+        threshold = max(3, self.settings.naming_common_chunk_ratio * len(chunk_text))
+        book_common = {word for word, count in document_frequency.items() if count >= threshold}
+        nodes = {node['node_id']: node for node in upstream.payload['nodes']}
+        modules = upstream.payload['modules']
+        description_vocabularies, borrowed_vocabularies = [], []
+        for index, (module, _, _, name_vocabulary, _) in enumerate(prepared):
+            own_sources = set()
+            teaching = set()
+            for node_id in module['node_ids']:
+                node = nodes[node_id]
+                source_text = [node.get('name', ''), _display(node), node.get('description', ''), *_aliases(node)]
+                own_sources.update(word for text in source_text for word in _words(text))
+                for chunk_id in node.get('teaching_chunk_ids', []):
+                    teaching.update(_words(chunk_text.get(chunk_id, '')))
+            own_sources.update(teaching)
+            neighboring = set()
+            for neighbor in modules[max(0, index - 1):index + 2]:
+                if neighbor is module:
+                    continue
+                for node_id in neighbor['node_ids']:
+                    node = nodes[node_id]
+                    neighboring.update(word for text in [_display(node), *_aliases(node)] for word in _words(text))
+            description_vocabularies.append(name_vocabulary | teaching | book_common)
+            borrowed_vocabularies.append(neighboring - own_sources)
+        return description_vocabularies, borrowed_vocabularies
+
+    def _validate(self, value, module, vocabulary, fragments, all_titles, index):
+        if not isinstance(value, dict):
+            return 'schema'
+        failure = self._validate_title(value, module, vocabulary, fragments, all_titles, index)
+        if failure:
+            return failure
+        return self._validate_description(value.get('description'), module, vocabulary)
 
     def plan(self, doc_id, *, upstream):
         return self._run(doc_id, upstream, planning=True)
@@ -239,6 +289,8 @@ class NameModulesB:
 
     def _run(self, doc_id, upstream, *, planning):
         chunks, prepared = self._prepare(doc_id, upstream)
+        self._description_vocabularies, self._borrowed_vocabularies = self._description_lexicons(
+            chunks, prepared, upstream)
         self._nodes = {node['node_id']: node for node in upstream.payload['nodes']}
         corpus = Counter(word for chunk in chunks.result.chunks for word in _words(chunk.text))
         self._function_words = {word for word, count in corpus.most_common(max(1, len(corpus) // 100)) if count >= 3}
@@ -277,13 +329,29 @@ class NameModulesB:
                     raise
                 except Exception:
                     return {**fallback, 'title_source': 'fallback', 'naming_flags': ['model_error']}
-            failure = self._validate(value, module, vocabulary, fragments, all_titles, index)
-            if failure:
-                return {**fallback, 'title_source': 'fallback', 'naming_flags': [failure]}
-            title = value['title'].strip()
-            title = title[:1].upper() + title[1:] if title else title
-            return {**fallback, 'title': title, 'description': value['description'],
-                    'title_source': 'llm', 'description_source': 'llm'}
+            title_failure = self._validate_title(value, module, vocabulary, fragments, all_titles, index)
+            description = value.get('description') if isinstance(value, dict) else None
+            description_failure = self._validate_description(
+                description, module, self._description_vocabularies[index])
+            if description_failure is None and any(
+                    word in self._borrowed_vocabularies[index]
+                    for sentence in description for word in _words(sentence['text'])):
+                description_failure = 'borrowed'
+            result = dict(fallback)
+            flags = []
+            if title_failure:
+                flags.append(title_failure)
+                result['title_source'] = 'fallback'
+            else:
+                title = value['title'].strip()
+                title = title[:1].upper() + title[1:] if title else title
+                result.update(title=title, title_source='llm')
+            if description_failure:
+                flags.append('description_' + description_failure)
+            else:
+                result.update(description=value['description'], description_source='llm')
+            result['naming_flags'] = flags
+            return result
 
         with ThreadPoolExecutor(max_workers=self.concurrency) as pool:
             modules = list(pool.map(generate, range(len(prepared))))
@@ -302,12 +370,11 @@ class NameModulesB:
                 module['title'] = module['title'].rstrip() + ' (tiếp)'
                 module['title_source'] = 'llm' if module.get('title_source') == 'llm' else module['title_source']
             else:
-                module.update(title=prepared[index][1]['title'], title_source='fallback', description_source='template',
-                              description=prepared[index][1]['description'])
+                module.update(title=prepared[index][1]['title'], title_source='fallback')
                 if 'duplicate' not in module['naming_flags']:
                     module['naming_flags'].append('duplicate')
             seen[_title_key(module['title'])] = index
-        config = {**upstream.manifest['config'], 'algorithm_id': 'phase-b-module-names-v4',
+        config = {**upstream.manifest['config'], 'algorithm_id': 'phase-b-module-names-v6',
                   'upstream_version': upstream.version, 'settings': asdict(self.settings), 'prompt_hash': digest(prompt),
                   'model_id': model_id, 'deterministic': not use_model}
         payload = {**upstream.payload, 'modules': modules, 'module_naming_contract': 'module-1'}

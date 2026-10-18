@@ -5,7 +5,9 @@
 - [nghiên cứu bài giảng](../../report/nghien-cuu-bai-giang-tien-quyet-goi-mo-xu-ly-hong-2026-10-18.md), phần "phát hiện trong mã";
 - [spec Pha B](../../doc/pha-b-spec.md), luật K1–K8.
 
-**Ai:** nhân viên · Claude kiểm · **Chi phí mô hình:** 0 USD (phát lại) · **Chặn bởi:** không · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên · Claude kiểm · **Chi phí mô hình:** 0 USD (phát lại) · **Chặn bởi:** không · **Trạng thái:** đã triển khai và phát lại; chờ Claude soát
+
+**Bàn giao 2026-10-18:** phát lại bài giảng tăng từ 9/12 lên 11/12 ready; sáu tài liệu từ 4 ready/2 failed thành 6 ready, sửa 17 quote, kiểm lại offset nguồn. Đã sửa K6, cache không-ready, TTFT, quote cap và hậu kiểm trình bày. Không gọi provider cho vé này, không đổi chính sách hiện bài hỏng. Xem [bài giảng/cache](../../report/pha-b-sa30-2026-10-18.md), [tài liệu/câu trích](../../report/pha-b-sa30-documents-quotes-2026-10-18.md) và [bàn giao tổng hợp](../../report/pha-b-sa29-30-ban-giao-2026-10-18.md). Các ô nghiệm thu dành cho Claude soát độc lập.
 
 ## Vì sao
 

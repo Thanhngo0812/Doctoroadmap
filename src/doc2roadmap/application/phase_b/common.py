@@ -104,6 +104,7 @@ def call_json(
             purpose=purpose, model_id=_model_id(model, settings), doc_id=doc_id,
             context_hash=context_hash, usage=usage, elapsed_ms=elapsed_ms,
             learner_id=learner_id, cost_usd=0.0 if replayed else _cost(usage, _model_id(model, settings)),
+            ttft_ms=getattr(session if session is not None else model, 'last_ttft_ms', None),
         ), 'failed': True, 'replayed': replayed})
         raise
     row = usage_row(
@@ -115,10 +116,11 @@ def call_json(
         elapsed_ms=elapsed_ms,
         learner_id=learner_id,
         cost_usd=cost,
+        ttft_ms=getattr(session if session is not None else model, 'last_ttft_ms', None),
     )
     row['replayed'] = replayed
     store.append_usage(row)
-    return JsonCallResult(payload, usage, elapsed_ms, None, cost)
+    return JsonCallResult(payload, usage, elapsed_ms, row['ttft_ms'], cost)
 
 
 def stable_json(value: Any) -> str:

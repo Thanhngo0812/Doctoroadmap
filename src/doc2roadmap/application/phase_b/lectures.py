@@ -145,7 +145,7 @@ def _assemble(graph: Any, node_id: str, settings: BSettings, source_registry: An
         extra_definitions.append({"label": label, "text": sources[label]["text"]})
 
     prereq_context = []
-    prerequisites = graph.why_here(node_id, source_registry=source_registry).get("prerequisites", [])[:settings.lecture_max_prerequisites]
+    prerequisites = graph.why_here(node_id, source_registry=source_registry, settings=settings).get("prerequisites", [])[:settings.lecture_max_prerequisites]
     for index, prereq in enumerate(prerequisites, 1):
         q_label = prereq.get("source_label")
         quote = str(prereq.get("quote") or "")
@@ -363,6 +363,22 @@ def _has_repeated_ngram(text: str) -> bool:
     words = re.findall(r"\w+", text.casefold())
     counts = Counter(tuple(words[index:index + 8]) for index in range(max(0, len(words) - 7)))
     return any(count >= 3 for count in counts.values())
+
+
+def _lecture_output_text(output: Any) -> str:
+    if not isinstance(output, dict):
+        return ""
+    texts = []
+    for field in ("prereq_notes", "explanation", "example", "contrasts"):
+        for item in output.get(field, []) if isinstance(output.get(field, []), list) else []:
+            if isinstance(item, dict) and isinstance(item.get("text"), str):
+                texts.append(item["text"])
+    self_check = output.get("self_check")
+    if isinstance(self_check, dict):
+        for field in ("question", "answer"):
+            if isinstance(self_check.get(field), str):
+                texts.append(self_check[field])
+    return "\n".join(texts)
 
 
 def _three_grams(text: str) -> set[str]:
@@ -669,8 +685,9 @@ class LectureUseCase:
             if on_event:
                 on_event({"event": "final", "lecture": result})
             return result
-        if self.store.get_cache(key) is not None:
-            result = self.store.get_cache(key)
+        cached = self.store.get_cache(key)
+        if isinstance(cached, dict) and cached.get("status") == "ready":
+            result = cached
             result = {**result, "graph_version": graph_version}
             if on_event:
                 on_event({"event": "final", "lecture": result})
@@ -691,12 +708,12 @@ class LectureUseCase:
                 diag = self._new_validation_row(doc_id, ctx_hash, generation_index)
                 generation_index += 1
                 try:
-                    output, _, elapsed, finish_reason = self._generate(
+                    output, _, elapsed, finish_reason, repeated_idea_text = self._generate(
                         prompt, emitted, on_event, context, outside_count, doc_id, ctx_hash, diag)
                     _validate_top_level(output, self.settings)
                     sections, outside_count = self._validate(output, context, diag)
                     sections = _merge_emitted(sections, emitted)
-                    if finish_reason in {"MAX_TOKENS", "LENGTH"} or _has_repeated_ngram(stable_json(output)):
+                    if finish_reason in {"MAX_TOKENS", "LENGTH"} or repeated_idea_text:
                         raise ValueError("K6: repeated text or truncated output")
                     if len(next((s["items"] for s in sections if s["kind"] == "giai_thich"), [])) < self.settings.lecture_min_explanations:
                         raise ValueError("K8: explanation items below minimum")
@@ -715,12 +732,12 @@ class LectureUseCase:
                 diag = self._new_validation_row(doc_id, ctx_hash, generation_index)
                 try:
                     repair_prompt = prompt + "\nLần trước mắc lỗi: " + str(first_error) + ". Trả JSON đã sửa, giữ nguyên các luật."
-                    output, _, elapsed, finish_reason = self._generate(
+                    output, _, elapsed, finish_reason, repeated_idea_text = self._generate(
                         repair_prompt, emitted, on_event, context, outside_count, doc_id, ctx_hash, diag)
                     _validate_top_level(output, self.settings)
                     sections, outside_count = self._validate(output, context, diag)
                     sections = _merge_emitted(sections, emitted)
-                    if finish_reason in {"MAX_TOKENS", "LENGTH"} or _has_repeated_ngram(stable_json(output)):
+                    if finish_reason in {"MAX_TOKENS", "LENGTH"} or repeated_idea_text:
                         raise ValueError("K6: repeated text or truncated output")
                     if len(next((s["items"] for s in sections if s["kind"] == "giai_thich"), [])) < self.settings.lecture_min_explanations:
                         raise ValueError("K8: explanation items below minimum")
@@ -737,7 +754,14 @@ class LectureUseCase:
                     return self._finish(skeleton, sections, "fallback", ["ban_trich_cau"], _aggregate_usage(rows),
                                         sum(int(row.get("elapsed_ms", 0) or 0) for row in rows), key, ctx_hash, doc_id)
 
-        result = self.store.single_flight(key, generate)
+        result = self.store.single_flight(
+            key, generate,
+            cache_if=lambda value: isinstance(value, dict) and value.get("status") == "ready",
+            negative_ttl_seconds=self.settings.negative_cache_seconds,
+        )
+        # Negative-cache entries are context-identical but may have been generated
+        # for an older pinned graph version; bind their public metadata per request.
+        result = {**result, "graph_version": graph_version}
         if on_event:
             on_event({"event": "final", "lecture": result})
         if preload_next:
@@ -774,7 +798,7 @@ class LectureUseCase:
 
     def _generate(self, prompt: str, emitted: dict[str, list[dict[str, Any]]], on_event: Any,
                   context: dict[str, Any], outside_count: int, doc_id: str, ctx_hash: str,
-                  diagnostics: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], int, str | None]:
+                  diagnostics: dict[str, Any]) -> tuple[dict[str, Any], dict[str, Any], int, str | None, bool]:
         started = perf_counter()
         if hasattr(self.model, "start_session"):
             session = self.model.start_session(_SYSTEM)
@@ -787,10 +811,13 @@ class LectureUseCase:
         dropped_indices: dict[str, set[int]] = {field: set() for field in emitted}
         stream_dropped_by_rule: dict[str, int] = {}
         stream_dropped_by_source_label: dict[str, int] = {}
+        first_chunk_ttft_ms: int | None = None
         previous_texts = [item["text"] for items in emitted.values() for item in items]
         definition_text = str(context.get("definition", {}).get("quote", ""))
         try:
             for delta in stream:
+                if first_chunk_ttft_ms is None and delta:
+                    first_chunk_ttft_ms = round((perf_counter() - started) * 1000)
                 buffer += delta
                 for field, index, item in _find_closed_array_items(buffer, ("prereq_notes", "explanation", "example", "contrasts")):
                     marker = (field, index)
@@ -827,6 +854,7 @@ class LectureUseCase:
                     if on_event:
                         on_event({"event": "item", "section_kind": section_kind, "item": checked})
             output = json.loads(buffer)
+            repeated_idea_text = _has_repeated_ngram(_lecture_output_text(output))
             for field, indices in dropped_indices.items():
                 if indices:
                     output[field] = [item for index, item in enumerate(output.get(field, [])) if index not in indices]
@@ -835,7 +863,9 @@ class LectureUseCase:
                 usage = self.model.last_usage
             finish_reason = getattr(session, "last_finish_reason", None) if session is not None else None
             elapsed = round((perf_counter() - started) * 1000)
-            ttft = getattr(session, "last_ttft_ms", None) if session is not None else None
+            adapter_ttft = getattr(session, "last_ttft_ms", None) if session is not None else None
+            ttft = (adapter_ttft if adapter_ttft is not None and adapter_ttft > 0 else
+                    None if getattr(self.model, "is_replay", False) else first_chunk_ttft_ms)
             cost = token_cost(getattr(self.model, "model_id", self.settings.model_id), usage)
             if getattr(self.model, 'is_replay', False):
                 cost = 0.0
@@ -844,7 +874,7 @@ class LectureUseCase:
                 ttft_ms=ttft, cost_usd=cost)
             ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
             self.store.append_usage(ledger)
-            return output, dict(usage), elapsed, finish_reason
+            return output, dict(usage), elapsed, finish_reason, repeated_idea_text
         except BaseException:
             # A complete candidate may be rejected before a later truncated portion makes the
             # enclosing JSON invalid. In that case `_validate` never sees it, so preserve the
@@ -860,7 +890,10 @@ class LectureUseCase:
                 cost = 0.0
             ledger = usage_row(purpose="lecture", model_id=getattr(self.model, "model_id", self.settings.model_id),
                 doc_id=doc_id, context_hash=ctx_hash, usage=usage, elapsed_ms=elapsed,
-                ttft_ms=getattr(session, "last_ttft_ms", None) if session is not None else None, cost_usd=cost)
+                ttft_ms=(getattr(session, "last_ttft_ms", None)
+                         if session is not None and getattr(session, "last_ttft_ms", None) else
+                         None if getattr(self.model, "is_replay", False) else first_chunk_ttft_ms),
+                cost_usd=cost)
             ledger.update(generation_id=diagnostics["generation_id"], generation_index=diagnostics["generation_index"])
             self.store.append_usage(ledger)
             raise

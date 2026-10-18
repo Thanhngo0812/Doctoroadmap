@@ -3,7 +3,9 @@
 **Nguồn chân lý:** [soát SA-25–28](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md), mục 4 (quyết định của Claude); [báo cáo SA-28](../../report/pha-b-sa28-2026-10-18.md);
 [spec Pha B](../../doc/pha-b-spec.md), mục 2.
 **Ai:** nhân viên · Claude kiểm và đọc lại toàn bộ · **Chi phí mô hình:** bước 1 là 0 USD (từ cache). Bước 3 ước 0,15–0,25 USD cho sáu cuốn, dry-run trước,
-chủ dự án duyệt · **Chặn bởi:** không · **Trạng thái:** ready-for-agent
+chủ dự án duyệt · **Chặn bởi:** không · **Trạng thái:** đã triển khai, phát lại và chạy thật sáu cuốn; chờ Claude đọc nội dung
+
+**Bàn giao 2026-10-18:** chủ dự án đã duyệt tiền trong phiên triển khai 29–30. Cache-only giữ 144 tên LLM, 0 lời gọi; luật mô tả mới phát lại giữ 79 mô tả, có giải thích đúng mốc 82 của phép soát cũ. Lượt Vertex mới hoàn tất 160 request, 0,142519 USD dưới cap 0,50 USD; giữ 136 tên và 82 mô tả LLM, còn 78 mô tả khuôn. Không tự coi số đo này là phán xét nội dung; xem [báo cáo SA-29](../../report/pha-b-sa29-2026-10-18.md) và [bàn giao 29–30](../../report/pha-b-sa29-30-ban-giao-2026-10-18.md). Các ô nghiệm thu của Claude vẫn dành cho người soát.
 
 ## Vì sao
 

@@ -89,6 +89,8 @@ def run(args):
     graph = runtime.graph(args.doc_id, args.graph_version)
     if action == 'graph-tool':
         method = getattr(graph, args.tool)
+        if args.tool == 'why_here':
+            return method(args.value, settings=runtime.b_settings)
         return (method(args.value, args.edge_type, args.direction) if args.tool == 'traverse' else method(args.value))
     if action == 'lookup':
         if args.dry_run:

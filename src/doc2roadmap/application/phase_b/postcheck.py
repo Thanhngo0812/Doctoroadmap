@@ -8,7 +8,7 @@ from doc2roadmap.domain.sentence_splitter import UnicodeSentenceSplitter
 REF = re.compile(r'\[([A-Z]+\d+)\]')
 COMPOUND = re.compile(r'\[((?:[A-Z]+\d+\s*[,;]\s*)+[A-Z]+\d+)\]')
 FORMULA = re.compile(r'[=∑∫√]|\\(?:frac|sum|int|begin)\b|\$\$')
-POSTCHECK_VERSION = 'sentence-postcheck-1'
+POSTCHECK_VERSION = 'sentence-postcheck-2'
 
 
 def _names(graph):
@@ -31,6 +31,26 @@ def _contains_name(text, names):
     return any(re.search(_name_pattern(name), text) for name in names)
 
 
+def best_matching_source_sentence(statement, source_text, max_chars):
+    splitter = UnicodeSentenceSplitter()
+    candidates = [source_text[span.start:span.end].strip()
+                  for span in splitter.split(source_text)] or [source_text.strip()]
+    words = set(re.findall(r'\w+', unicodedata.normalize('NFC', statement).casefold()))
+    candidates = [candidate for candidate in candidates if candidate]
+    if not candidates:
+        return ''
+    selected = max(candidates, key=lambda candidate: len(
+        words & set(re.findall(r'\w+', unicodedata.normalize('NFC', candidate).casefold()))))
+    if len(selected) <= max_chars:
+        return selected
+    prefix = selected[:max_chars]
+    boundaries = list(re.finditer(r'[.!?…](?=\s|$)', prefix))
+    if boundaries:
+        return prefix[:boundaries[-1].end()].rstrip()
+    boundary = prefix.rfind(' ')
+    return prefix[:boundary].rstrip() if boundary > 0 else ''
+
+
 def _outside_allowed(body, names):
     text = unicodedata.normalize('NFC', body).casefold()
     if FORMULA.search(body) or re.search(r'định nghĩa|công thức|(?:theo|trong)\s+(?:sách|tài liệu|giáo trình)', text):
@@ -48,7 +68,8 @@ def check_text(text, *, graph, settings, citations_by_label=None, outside_blocks
     splitter = UnicodeSentenceSplitter()
     citations, warnings, blocks = {}, [], list(outside_blocks)
     counts = {'unsourced_sentence': 0, 'labels_removed': 0,
-              'outside_blocks_removed': 0, 'sourced_sentences': 0}
+              'outside_blocks_removed': 0, 'sourced_sentences': 0,
+              'empty_heading_removed': 0}
 
     def extract(match):
         blocks.append(match[1].strip())
@@ -78,6 +99,8 @@ def check_text(text, *, graph, settings, citations_by_label=None, outside_blocks
             sentence = line[span.start:span.end].strip()
             if FORMULA.search(sentence):
                 warnings.append({'kind': 'generated_formula'})
+                continue
+            if not re.search(r'\w', sentence):
                 continue
             labels = REF.findall(sentence)
             known, removed = {}, []
@@ -122,6 +145,26 @@ def check_text(text, *, graph, settings, citations_by_label=None, outside_blocks
             accepted.append(sentence)
         if accepted:
             kept_lines.append(' '.join(accepted))
+    headings = {index: len(match.group(1)) for index, line in enumerate(kept_lines)
+                if (match := re.match(r'^\s*(#{1,6})\s+', line))}
+    remove_headings = set()
+    for index, level in headings.items():
+        end = next((other for other, other_level in headings.items()
+                    if other > index and other_level <= level), len(kept_lines))
+        body = any(line.strip() and i not in headings
+                   for i, line in enumerate(kept_lines[index + 1:end], index + 1))
+        if not body:
+            remove_headings.add(index)
+            counts['empty_heading_removed'] += 1
+            warnings.append({'kind': 'empty_heading_removed'})
+    if remove_headings:
+        removed_labels = {label for index in remove_headings for label in REF.findall(kept_lines[index])}
+        removed_claims = sum(bool(REF.findall(kept_lines[index])) for index in remove_headings)
+        counts['sourced_sentences'] = max(0, counts['sourced_sentences'] - removed_claims)
+        kept_lines = [line for index, line in enumerate(kept_lines) if index not in remove_headings]
+        retained_labels = {label for line in kept_lines for label in REF.findall(line)}
+        citations = {label: value for label, value in citations.items()
+                     if label not in removed_labels or label in retained_labels}
     outside = []
     for body in blocks:
         body = str(body).strip()

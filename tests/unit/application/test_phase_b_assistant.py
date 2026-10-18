@@ -64,6 +64,33 @@ def test_answer_one_call_has_grounded_citations_and_measured_usage():
     assert any(event['event'] == 'delta' for event in events)
 
 
+def test_each_assistant_round_records_its_own_first_content_delay(monkeypatch):
+    from doc2roadmap.application.phase_b import assistant
+    now = [0.0]
+    monkeypatch.setattr(assistant, 'perf_counter', lambda: now[0])
+
+    class Timed(Model):
+        def stream(self, messages, *, mode):
+            now[0] += .1 if not self.calls else .25
+            yield from super().stream(messages, mode=mode)
+
+    result, store, _ = run(Timed([
+        [ToolCall('lookup_concept', {'name': 'Ma trận'}, '1'), Done({})],
+        [Delta('Ma trận là bảng các số. [S1]'), Done({})]]))
+    assert [row['ttft_ms'] for row in store.usage_rows()] == [100, 250]
+    assert result['usage']['ttft_ms'] == 100
+
+
+@pytest.mark.parametrize('recorded_ttft', [None, 0, 137])
+def test_assistant_replay_retains_recorded_timing_without_measuring_replay_speed(monkeypatch, recorded_ttft):
+    from doc2roadmap.application.phase_b import assistant
+    monkeypatch.setattr(assistant, 'perf_counter', lambda: 0)
+    model = Model([[Delta('Ma trận là bảng các số. [S1]'), Done({}, ttft_ms=recorded_ttft)]])
+    model.is_replay = True
+    _, store, _ = run(model)
+    assert store.usage_rows()[0]['ttft_ms'] == recorded_ttft
+
+
 def test_tool_result_is_supplied_to_next_turn_and_recorded():
     model = Model([[ToolCall('lookup_concept', {'name': 'Ma trận'}, '1'), Done({})],
                    [Delta('Ma trận là bảng các số. [S1]'), Done({})]])
@@ -72,6 +99,25 @@ def test_tool_result_is_supplied_to_next_turn_and_recorded():
     tools = model.calls[1][0][-1]['tool_results']
     assert tools[0]['result']['matches'][0]['node_id'] == 'a'
     assert result['tool_calls'][0]['by'] == 'model'
+
+
+def test_assistant_uses_configured_quote_limit_in_context_and_why_here_tool():
+    import json
+    source = graph()
+    quote = 'Định thức dùng ma trận vuông. ' * 6
+    source.chunks['c2'].text = quote
+    source.payload['requires_edges'][0]['quote'] = quote.strip()
+    model = Model([[ToolCall('why_here', {'concept': 'b'}, '1'), Done({})],
+                   [Delta('KHONG_DU'), Done({})]])
+    use_case = AssistantUseCase(source, InMemoryPhaseBStore(), model,
+                               settings=replace(BSettings(), quote_max_chars=80))
+    use_case.ask('book', 1, 'session', 'm2', 'Định thức', owner='alice', allow_spend=True)
+    context = json.loads(model.calls[0][0][0]['text'])
+    tool_result = model.calls[1][0][-1]['tool_results'][0]['result']
+    for detail in (context['concepts'][0], tool_result):
+        citation = detail['prerequisites'][0]['citation']
+        assert len(citation['quote']) <= 80
+        assert quote[citation['char_start'] - 24:citation['char_end'] - 24] == citation['quote']
 
 
 def test_endless_tool_calls_force_none_on_fifth_round():

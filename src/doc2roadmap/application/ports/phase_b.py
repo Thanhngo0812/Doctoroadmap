@@ -24,7 +24,11 @@ class PhaseBStore(Protocol):
 
     def usage_rows(self, doc_id: str | None = None) -> list[dict[str, Any]]: ...
 
-    def single_flight(self, key: str, generate: Callable[[], T]) -> T: ...
+    def single_flight(
+        self, key: str, generate: Callable[[], T], *,
+        cache_if: Callable[[T], bool] | None = None,
+        negative_ttl_seconds: float | None = None,
+    ) -> T: ...
 
 
 class JsonCallModel(Protocol):

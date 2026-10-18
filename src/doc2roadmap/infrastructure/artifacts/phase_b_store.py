@@ -24,7 +24,7 @@ class _PhaseBStore:
             raise ValueError("negative_ttl_seconds must be non-negative")
         self._lock = RLock()
         self._negative_ttl = negative_ttl_seconds
-        self._negative: dict[str, tuple[float, BaseException]] = {}
+        self._negative: dict[str, tuple[float, Any, BaseException | None]] = {}
         self._flights: dict[str, _Flight] = {}
         self._cache: dict[str, Any] = {}
         self._records: dict[str, dict[str, dict[str, Any]]] = {}
@@ -64,15 +64,27 @@ class _PhaseBStore:
         with self._lock:
             return [deepcopy(row) for row in self._usage if doc_id is None or row.get("doc_id") == doc_id]
 
-    def single_flight(self, key: str, generate: Callable[[], T]) -> T:
+    def single_flight(
+        self, key: str, generate: Callable[[], T], *,
+        cache_if: Callable[[T], bool] | None = None,
+        negative_ttl_seconds: float | None = None,
+    ) -> T:
+        ttl = self._negative_ttl if negative_ttl_seconds is None else float(negative_ttl_seconds)
+        if ttl < 0:
+            raise ValueError("negative_ttl_seconds must be non-negative")
         with self._lock:
-            cached = self._cache.get(key)
-            if cached is not None:
-                return deepcopy(cached)
+            if key in self._cache:
+                cached = self._cache[key]
+                if cache_if is None or cache_if(cached):
+                    return deepcopy(cached)
+                self._cache.pop(key, None)
+                self._persist()
             failed = self._negative.get(key)
             if failed is not None:
                 if failed[0] > monotonic():
-                    raise failed[1]
+                    if failed[2] is not None:
+                        raise failed[2]
+                    return deepcopy(failed[1])
                 self._negative.pop(key, None)
             flight = self._flights.get(key)
             leader = flight is None
@@ -89,16 +101,20 @@ class _PhaseBStore:
 
         try:
             value = generate()
+            cache_value = cache_if is None or cache_if(value)
             with self._lock:
-                self._cache[key] = deepcopy(value)
-                self._negative.pop(key, None)
-                self._persist()
+                if cache_value:
+                    self._cache[key] = deepcopy(value)
+                    self._negative.pop(key, None)
+                    self._persist()
+                elif ttl:
+                    self._negative[key] = (monotonic() + ttl, deepcopy(value), None)
                 flight.value = deepcopy(value)
             return deepcopy(value)
         except BaseException as error:
             with self._lock:
-                if self._negative_ttl:
-                    self._negative[key] = (monotonic() + self._negative_ttl, error)
+                if ttl:
+                    self._negative[key] = (monotonic() + ttl, None, error)
                 flight.error = error
             raise
         finally:

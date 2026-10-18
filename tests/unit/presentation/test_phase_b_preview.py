@@ -133,3 +133,22 @@ def test_lecture_diagnostics_cli_summarizes_ledger_without_loading_graph_or_mode
     result = json.loads(capsys.readouterr().out)
     assert result['dropped_by_rule'] == {'K6': 2}
     assert len(result['generations']) == 1
+
+
+def test_why_here_cli_passes_shared_quote_settings(monkeypatch, capsys, tmp_path):
+    from types import SimpleNamespace
+    from doc2roadmap.presentation.cli import main, phase_b
+    settings_file = tmp_path / 'settings.json'
+    settings_file.write_text('{"quote_max_chars": 80}', encoding='utf-8')
+
+    class Runtime:
+        def __init__(self, *, b_settings, **kwargs):
+            self.b_settings = b_settings
+
+        def graph(self, doc_id, version):
+            return SimpleNamespace(why_here=lambda node_id, *, settings: {'limit': settings.quote_max_chars})
+
+    monkeypatch.setattr(phase_b, 'PhaseBRuntime', Runtime)
+    assert main.main(['phase-b', 'graph-tool', 'why_here', 'n', '--doc-id', 'doc-1',
+                      '--settings', str(settings_file)]) == 0
+    assert json.loads(capsys.readouterr().out)['limit'] == 80

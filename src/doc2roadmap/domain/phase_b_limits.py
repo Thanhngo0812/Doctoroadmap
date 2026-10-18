@@ -17,6 +17,7 @@ class BSettings:
     naming_temperature: float = 0.0
     title_max_chars: int = 60
     naming_max_output_tokens: int = 512
+    naming_common_chunk_ratio: float = 0.02
     lecture_max_output_tokens: int = 2048
     document_max_output_tokens: int = 3000
     assistant_max_output_tokens: int = 1024
@@ -29,7 +30,7 @@ class BSettings:
     lecture_max_contrasts: int = 2
     lecture_min_source_coverage: float = 0.5
     lecture_duplicate_jaccard_threshold: float = 0.6
-    lecture_validator_version: str = 'lecture-validator-2'
+    lecture_validator_version: str = 'lecture-validator-3'
     connector_sentence_max_chars: int = 60
     quote_max_chars: int = 200
     document_max_usd: float = 0.01

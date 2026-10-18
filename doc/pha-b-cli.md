@@ -60,3 +60,13 @@ Bảng giá Pha B ở `domain/phase_b_pricing.py`, nguồn và ngày kiểm ghi 
 ```
 
 Các dòng `purpose=lecture_validation` là chẩn đoán, có token và USD bằng 0; số lời gọi mô hình xem ở `purpose=lecture`. Ý lặp được kiểm trước khi phát, `usage` bài cộng mọi lần sinh kể cả lần sửa, `used_later` theo cạnh tiên quyết hướng ra. SA-26 giữ nguyên đường trích câu và cách xử lý cuối khi bài hỏng theo phạm vi vé đã được chủ dự án sửa.
+
+## Sau sửa SA-29–30 (2026-10-18)
+
+Khâu tên kiểm tên và mô tả riêng. `title_source=llm` có thể đi cùng `description_source=template`; các cờ mô tả dùng tiền tố `description_`. Từ vựng tên giữ nguyên, từ vựng mô tả thêm các đoạn dạy của module và âm tiết xuất hiện trong ít nhất `max(3, naming_common_chunk_ratio × số đoạn)` đoạn của cuốn, mặc định tỉ lệ 0,02. Mô tả có âm tiết chỉ thuộc khái niệm ở module kề bị loại bằng mã.
+
+Cache bài giảng chỉ lưu bền trạng thái `ready`. Bài không đạt chỉ được giữ trong RAM theo `negative_cache_seconds` (mặc định 60 giây), hết thời gian đó yêu cầu sau được sinh lại. Các yêu cầu cùng lúc vẫn chia sẻ một lần sinh. Validator bài giảng tăng lên phiên bản 3; K6 không còn dò lặp trên quote và tên trường JSON.
+
+`quote_max_chars` (mặc định 200) áp cho câu trích cạnh, ngữ cảnh bài giảng/trợ lý và `graph-tool why_here`, gồm khi dùng `--settings`. Câu bị rút gọn dừng ở ranh giới câu hoặc từ, vẫn trỏ đúng khoảng ký tự nguồn. Tài liệu sửa quote sai của nhãn có thật bằng câu nguyên văn được mã chọn trong nguồn đã nạp; bỏ tiêu đề rỗng và dòng chỉ dấu câu sau hậu kiểm.
+
+TTFT của stream tính từ trước request tới text/lời gọi công cụ đầu tiên. Với JSON không stream, cùng trường số đo là thời gian tới byte response đầu tiên. Recording giữ metadata thời gian cho replay; dữ liệu lịch sử thiếu số đo không được thay bằng tốc độ phát lại. Các runner cache/replay và lượt thử có giới hạn được lưu trong `scripts/phase-b/`; `sa29_acceptance.py` mặc định chỉ dry-run và từ chối ghi đè kết quả paid đã có.

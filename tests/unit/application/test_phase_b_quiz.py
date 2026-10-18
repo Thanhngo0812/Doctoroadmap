@@ -641,8 +641,12 @@ def test_quiz_schema_is_sent_as_json_schema_in_fake_http_request():
     captured = {}
 
     class Response:
-        def read(self):
-            return json.dumps({"candidates": [{"content": {"parts": [{"text": "{\"items\":[],\"gaps\":[]}"}]}}]}).encode()
+        def __init__(self):
+            import io
+            self.body = io.BytesIO(json.dumps({"candidates": [{"content": {"parts": [{"text": "{\"items\":[],\"gaps\":[]}"}]}}]}).encode())
+
+        def read(self, size=-1):
+            return self.body.read(size)
 
         def close(self):
             pass

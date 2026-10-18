@@ -5,6 +5,7 @@ import unicodedata
 from collections import defaultdict
 from typing import Any
 
+from .phase_b_limits import BSettings
 from .source_labels import SourceRegistry
 
 
@@ -126,11 +127,13 @@ class LearningGraph:
             "relation": self.relation(module_id, current_module_id),
         }
 
-    def why_here(self, node_id: str, current_module_id: str | None = None, *, source_registry=None) -> dict[str, Any]:
+    def why_here(self, node_id: str, current_module_id: str | None = None, *, source_registry=None,
+                 settings: BSettings | None = None) -> dict[str, Any]:
         node = self.nodes.get(node_id)
         if node is None:
             return {"node_id": node_id, "found": False, "prerequisites": []}
         sources = source_registry or self.sources
+        settings = settings or BSettings()
         direct_ids = node.get("display_prerequisites")
         if direct_ids is None:
             from .sequence import transitive_reduction
@@ -150,7 +153,7 @@ class LearningGraph:
         for edge in edges[:3]:
             parent = self.nodes.get(edge.get("source"), {})
             child = self.nodes.get(edge.get("target"), {})
-            cited = _edge_citation(edge, parent, child, self.chunks, sources)
+            cited = _edge_citation(edge, parent, child, self.chunks, sources, settings)
             label, citation, citation_kind = cited if cited else (None, None, None)
             if not citation:
                 continue
@@ -159,7 +162,7 @@ class LearningGraph:
             source_chunk = citation["chunk_id"]
             parent_anchor = parent.get("anchor") or {}
             anchor_chunk = parent_anchor.get("chunk_id")
-            anchor = sources.citation_for_chunk(anchor_chunk, "N", _bounded_quote(parent_anchor.get("sentence", ""))) \
+            anchor = sources.citation_for_chunk(anchor_chunk, "N", _bounded_quote(parent_anchor.get("sentence", ""), settings)) \
                 if anchor_chunk in self.chunks else None
             anchor_label, anchor_citation = anchor if anchor else (None, None)
             prerequisites.append({
@@ -276,7 +279,7 @@ def _get(item: Any, key: str, default=None):
     return item.get(key, default) if isinstance(item, dict) else getattr(item, key, default)
 
 
-def _edge_citation(edge, source_node, target_node, chunks, sources):
+def _edge_citation(edge, source_node, target_node, chunks, sources, settings=None):
     candidates = []
     quote = edge.get("quote")
     if quote:
@@ -289,7 +292,7 @@ def _edge_citation(edge, source_node, target_node, chunks, sources):
             candidates.append((source_ref["chunk_id"], source_ref["quote"]))
     for chunk_id, source_quote in candidates:
         if chunk_id in chunks:
-            bounded = _bounded_quote(source_quote)
+            bounded = _bounded_quote(source_quote, settings)
             citation = sources.citation_for_chunk(chunk_id, "Q", bounded)
             if citation:
                 return (*citation, "quoted_evidence")
@@ -301,19 +304,23 @@ def _edge_citation(edge, source_node, target_node, chunks, sources):
             continue
         excerpt = _edge_excerpt(str(_get(chunk, "text", "")), source_node, target_node)
         if excerpt:
-            citation = sources.citation_for_chunk(chunk_id, "S", _bounded_quote(excerpt))
+            citation = sources.citation_for_chunk(chunk_id, "S", _bounded_quote(excerpt, settings))
             if citation:
                 return (*citation, "legacy_excerpt")
     return None
 
 
-def _bounded_quote(value: str, limit: int = 120) -> str:
+def _bounded_quote(value: str, settings: BSettings | None = None) -> str:
     value = str(value).strip()
+    limit = (settings or BSettings()).quote_max_chars
     if len(value) <= limit:
         return value
     prefix = value[:limit]
+    sentence_ends = list(re.finditer(r"[.!?…](?=\s|$)", prefix))
+    if sentence_ends:
+        return prefix[:sentence_ends[-1].end()].rstrip()
     boundary = prefix.rfind(" ")
-    return prefix[:boundary] if boundary > limit // 2 else prefix
+    return prefix[:boundary].rstrip() if boundary > 0 else ""
 
 
 def _edge_excerpt(text: str, source_node: dict, target_node: dict) -> str | None:

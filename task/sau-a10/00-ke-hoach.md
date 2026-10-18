@@ -83,8 +83,10 @@ Bốn luật:
 | [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); K6 dò sai, cache bài hỏng → 30 |
 | [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật 0,0782415 USD | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); Claude đồng ý luật tên có điều kiện |
 | [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | lượt thật 0,12723425 USD | chưa đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md): 135/160 rơi đường lùi → 29 |
-| [29](29-ten-module-tach-kiem-ten-mo-ta-tu-vung-theo-sach.md) | Tên module: tách kiểm tên và mô tả, từ vựng mô tả lấy từ chính cuốn sách, luật mượn từ bằng mã | — | bước 1: 0; lượt thật khoảng 0,15–0,25 USD | ready-for-agent |
-| [30](30-sua-sau-soat-k6-cache-ttft-trich-dan.md) | Sửa sau soát: K6 dò sai, không cache bài hỏng, TTFT, câu trích cụt, tài liệu sau hậu kiểm | — | 0 (phát lại) | ready-for-agent |
+| [29](29-ten-module-tach-kiem-ten-mo-ta-tu-vung-theo-sach.md) | Tên module: tách kiểm tên và mô tả, từ vựng mô tả lấy từ chính cuốn sách, luật mượn từ bằng mã | — | cache/replay 0; lượt thật 0,142519 USD | đã triển khai/chạy sáu cuốn; chờ Claude đọc nội dung |
+| [30](30-sua-sau-soat-k6-cache-ttft-trich-dan.md) | Sửa sau soát: K6 dò sai, không cache bài hỏng, TTFT, câu trích cụt, tài liệu sau hậu kiểm | — | 0 (phát lại) | đã triển khai/phát lại; chờ Claude soát |
+
+**Cập nhật SA-29–30, 2026-10-18 (Codex):** đã triển khai cùng ba subagent Luna. Vé 29 phục hồi 144 tên từ cache với 0 USD, rồi chạy 160 request Vertex trong khoản chủ dự án đã duyệt, chi ghi nhận 0,142519 USD / cap 0,50 USD. Lượt mới có 136 tên và 82 mô tả LLM, 78 mô tả khuôn; chờ đọc nội dung. Vé 30 phát lại 11/12 bài giảng ready và 6/6 tài liệu ready, chi phí 0 USD. Bộ ghép cuối 206 test xanh. Xem [bàn giao 29–30](../../report/pha-b-sa29-30-ban-giao-2026-10-18.md).
 
 "Lượt nhỏ" là lượt thử có tiền trong vé, mỗi lượt dưới 0,5 USD, cộng vào trần chung 16 USD và vẫn dry-run trước.
 
