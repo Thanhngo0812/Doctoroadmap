@@ -1153,6 +1153,8 @@ class LectureUseCase:
             stream = self.model.stream_json(_SYSTEM, prompt, LECTURE_SCHEMA)
         buffer = ""
         emitted_indices: set[tuple[str, int]] = set()
+        retained_indices: set[tuple[str, int]] = set()
+        cut_tail = False
         dropped_indices: dict[str, set[int]] = {field: set() for field in emitted}
         stream_dropped_by_rule: dict[str, int] = {}
         stream_dropped_by_source_label: dict[str, int] = {}
@@ -1174,6 +1176,8 @@ class LectureUseCase:
                     if marker in emitted_indices:
                         continue
                     emitted_indices.add(marker)
+                    if cut_tail:
+                        continue
                     maximum = {"bridges": self.settings.lecture_max_prerequisites,
                                "explanation": self.settings.lecture_max_explanations,
                                "example": self.settings.lecture_max_examples,
@@ -1199,12 +1203,15 @@ class LectureUseCase:
                         diagnostics["dropped_by_rule"]["K6"] = diagnostics["dropped_by_rule"].get("K6", 0) + 1
                         if "K6" not in diagnostics["validation_rules"]:
                             diagnostics["validation_rules"].append("K6")
+                        if gate_open:
+                            cut_tail = True
                         continue
                     if checked.get("outside_document", False):
                         outside_count += 1
                     if checked in emitted[field]:
                         continue
                     emitted[field].append(checked)
+                    retained_indices.add(marker)
                     previous_texts.append(checked["text"])
                     section_kind = {"bridges": "cau_noi", "explanation": "giai_thich",
                                     "example": "vi_du", "contrasts": "phan_biet"}[field]
@@ -1232,8 +1239,13 @@ class LectureUseCase:
                           "gaps": [], "self_check": None}
                 forced_finish_reason = "TRUNCATED"
             repeated_idea_text = _has_repeated_ngram(_lecture_output_text(output))
+            if cut_tail:
+                for field in emitted:
+                    output[field] = [item for index, item in enumerate(output.get(field, []))
+                                     if (field, index) in retained_indices]
+                output['self_check'] = None
             for field, indices in dropped_indices.items():
-                if indices:
+                if indices and not cut_tail:
                     output[field] = [item for index, item in enumerate(output.get(field, [])) if index not in indices]
             if dropped_k6:
                 forced_finish_reason = "TRUNCATED"

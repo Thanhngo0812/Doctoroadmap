@@ -8,7 +8,7 @@ from doc2roadmap.application.phase_b.lectures import LectureUseCase
 from doc2roadmap.application.phase_b.progress import ProgressUseCase
 from doc2roadmap.domain.phase_b_limits import BSettings
 from doc2roadmap.infrastructure.artifacts.phase_b_store import InMemoryPhaseBStore
-from test_phase_b_lecture_b2 import _graph, _Model, _payload
+from test_phase_b_lecture_b2 import _graph, _Model, _payload, _idea, EXPLANATION
 
 
 def test_timeout_after_open_gate_keeps_emitted_items_and_ready_status():
@@ -117,3 +117,17 @@ def test_next_up_prefers_nearest_later_requires_and_excludes_other_edge_types():
     rows = _next_up(graph, 'a', 'm0', SourceRegistry([]), BSettings())
     assert [r['node_id'] for r in rows] == ['near', 'far']
     assert all('quote' not in r for r in rows)
+
+
+def test_k6_after_gate_discards_the_remaining_tail_even_if_later_items_are_valid():
+    payload = _payload()[0]
+    payload['explanation'].extend([
+        _idea((EXPLANATION + ' ') * 3),
+        _idea('Các đối tượng được xem xét theo đặc điểm chung trong bài học.'),
+    ])
+    events = []
+    result = LectureUseCase(_Model([payload]), InMemoryPhaseBStore()).make(
+        'd1', 'g1', _graph(), 'a', allow_spend=True, on_event=events.append)
+    assert result['status'] == 'ready' and 'cat_ngan' in result['warnings']
+    assert sum(e['event'] == 'item' for e in events) == 2
+    assert len(next(s['items'] for s in result['sections'] if s['kind'] == 'giai_thich')) == 2

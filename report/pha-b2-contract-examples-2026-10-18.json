@@ -16,7 +16,7 @@
   },
   "session-1": {
     "contract_version": "session-1",
-    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "session_id": "05ad78e40ce943c787d24751ed07ebcf",
     "owner": "web-example",
     "doc_id": "doc-1",
     "scope": {
@@ -36,20 +36,20 @@
     },
     "title": "Tạo tài liệu về module tiếp theo.",
     "title_source": "rule",
-    "created_at": "2026-10-18T11:43:38.797968+00:00",
-    "updated_at": "2026-10-18T11:43:39.265752+00:00",
+    "created_at": "2026-10-18T11:47:22.582171+00:00",
+    "updated_at": "2026-10-18T11:47:22.883609+00:00",
     "turn_count": 1,
     "last_question_preview": "Tạo tài liệu về module tiếp theo.",
     "artifact_refs": [
       {
         "kind": "document",
-        "artifact_id": "8e0000ef670d4e0bb5e065184e29a83a"
+        "artifact_id": "cc43da03bc16478eafb4593f7f32b873"
       }
     ],
     "state": {
       "owner": "web-example",
       "doc_id": "doc-1",
-      "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+      "session_id": "05ad78e40ce943c787d24751ed07ebcf",
       "turns": [],
       "reminded_node_ids": [],
       "linked_node_ids": [],
@@ -58,17 +58,17 @@
   },
   "turn-1": {
     "contract_version": "turn-1",
-    "turn_id": "sha256:d6b30ca0a054d62df415b9fb2b887d67e600473304b0c2ae887da01bbc910d6c",
-    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "turn_id": "sha256:55ba32b3ec550ce520977b08f1ac79f436ccf5f6377ce3c65cb2ebab279d0e8d",
+    "session_id": "05ad78e40ce943c787d24751ed07ebcf",
     "client_turn_id": "example-turn",
     "question": "Tạo tài liệu về module tiếp theo.",
     "answer": {
       "contract_version": "answer-2",
-      "answer_id": "fa463dfe-2f09-431c-866a-cbbd68ccf7ff",
+      "answer_id": "da00010e-38ed-425c-9e50-30d95fa7141e",
       "owner": "web-example",
       "doc_id": "doc-1",
       "graph_version": 57,
-      "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+      "session_id": "05ad78e40ce943c787d24751ed07ebcf",
       "client_turn_id": "example-turn",
       "status": "answered",
       "answer": "Đã tạo nội dung theo yêu cầu. Bạn có thể mở bằng liên kết đính kèm.",
@@ -86,18 +86,18 @@
           "result_summary": {
             "artifact": {
               "kind": "document",
-              "id": "8e0000ef670d4e0bb5e065184e29a83a"
+              "id": "cc43da03bc16478eafb4593f7f32b873"
             },
             "title": "Tài liệu ôn tập",
             "status": "ready"
           },
-          "ms": 126
+          "ms": 90
         }
       ],
       "created_artifacts": [
         {
           "kind": "document",
-          "id": "8e0000ef670d4e0bb5e065184e29a83a"
+          "id": "cc43da03bc16478eafb4593f7f32b873"
         }
       ],
       "outside_document_blocks": 0,
@@ -140,14 +140,14 @@
         "output_tokens": 0,
         "thought_tokens": 0,
         "usd": 0.0,
-        "ms": 425,
+        "ms": 270,
         "ttft_ms": null,
         "invalid_tool_calls": 0,
         "invalid_tool_call_rate": 0.0,
         "context_hash": "sha256:8b4a86b1a3f63aa71b5ca4ef0213faa2e6369d6bd84300f0d3ae22a22efb324e"
       }
     },
-    "created_at": "2026-10-18T11:43:39.265752+00:00",
+    "created_at": "2026-10-18T11:47:22.883609+00:00",
     "owner": "web-example",
     "doc_id": "doc-1"
   },
@@ -159,6 +159,35 @@
       "items": [
         {
           "kind": "document",
+          "id": "cc43da03bc16478eafb4593f7f32b873",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:47:22.766921+00:00",
+          "origin": "assistant",
+          "group": "here",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ]
+        },
+        {
+          "kind": "quiz_attempt",
+          "id": "qa_27b5648baa71c99cb46ad42a",
+          "title": "Quiz",
+          "created_at": "2026-10-18T11:43:39.373407+00:00",
+          "origin": "button",
+          "group": "elsewhere",
+          "module_labels": [
+            "Phần tử · Tập hợp",
+            "Tính chất của phép toán tập hợp",
+            "Quan hệ tương đương, quan hệ thứ tự",
+            "Đồ thị của ánh xạ",
+            "Nhóm, Vành và Trường",
+            "Khái niệm ma trận và các dạng đặc biệt",
+            "Ma trận tam giác"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "document",
           "id": "8e0000ef670d4e0bb5e065184e29a83a",
           "title": "Tài liệu ôn tập",
           "created_at": "2026-10-18T11:43:39.101964+00:00",
@@ -166,7 +195,8 @@
           "group": "here",
           "module_labels": [
             "Tính chất của phép toán tập hợp"
-          ]
+          ],
+          "session_deleted": true
         },
         {
           "kind": "quiz_attempt",
@@ -207,6 +237,36 @@
       "items": [
         {
           "kind": "document",
+          "id": "cc43da03bc16478eafb4593f7f32b873",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:47:22.766921+00:00",
+          "origin": "assistant",
+          "group": "elsewhere",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "quiz_attempt",
+          "id": "qa_27b5648baa71c99cb46ad42a",
+          "title": "Quiz",
+          "created_at": "2026-10-18T11:43:39.373407+00:00",
+          "origin": "button",
+          "group": "elsewhere",
+          "module_labels": [
+            "Phần tử · Tập hợp",
+            "Tính chất của phép toán tập hợp",
+            "Quan hệ tương đương, quan hệ thứ tự",
+            "Đồ thị của ánh xạ",
+            "Nhóm, Vành và Trường",
+            "Khái niệm ma trận và các dạng đặc biệt",
+            "Ma trận tam giác"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "document",
           "id": "8e0000ef670d4e0bb5e065184e29a83a",
           "title": "Tài liệu ôn tập",
           "created_at": "2026-10-18T11:43:39.101964+00:00",
@@ -215,7 +275,8 @@
           "module_labels": [
             "Tính chất của phép toán tập hợp"
           ],
-          "label": "tạo ở nơi khác"
+          "label": "tạo ở nơi khác",
+          "session_deleted": true
         },
         {
           "kind": "quiz_attempt",
@@ -255,6 +316,36 @@
       "doc_id": "doc-1",
       "scope_filter": "module:module_001",
       "items": [
+        {
+          "kind": "quiz_attempt",
+          "id": "qa_de0d8ba67e6914cd944cbeaf",
+          "title": "Quiz",
+          "created_at": "2026-10-18T11:47:22.959206+00:00",
+          "origin": "button",
+          "group": "elsewhere",
+          "module_labels": [
+            "Phần tử · Tập hợp",
+            "Tính chất của phép toán tập hợp",
+            "Quan hệ tương đương, quan hệ thứ tự",
+            "Đồ thị của ánh xạ",
+            "Nhóm, Vành và Trường",
+            "Khái niệm ma trận và các dạng đặc biệt",
+            "Ma trận tam giác"
+          ],
+          "label": "tạo ở nơi khác"
+        },
+        {
+          "kind": "document",
+          "id": "cc43da03bc16478eafb4593f7f32b873",
+          "title": "Tài liệu ôn tập",
+          "created_at": "2026-10-18T11:47:22.766921+00:00",
+          "origin": "assistant",
+          "group": "here",
+          "module_labels": [
+            "Tính chất của phép toán tập hợp"
+          ],
+          "session_deleted": true
+        },
         {
           "kind": "quiz_attempt",
           "id": "qa_27b5648baa71c99cb46ad42a",
@@ -325,7 +416,7 @@
       "node_2e6c3034736aa5bad67a5a66": {
         "state": "learned",
         "source": "learner",
-        "updated_at": "2026-10-18T11:43:39.291341+00:00"
+        "updated_at": "2026-10-18T11:47:22.904386+00:00"
       },
       "node_2375cfb4e0615c77c9dba5b4": {
         "state": "not_learned",
@@ -1555,15 +1646,15 @@
     },
     "diagnostics": {
       "generation_count": 1,
-      "skeleton_ms": 7,
-      "gate_ms": 12,
-      "final_ms": 22,
-      "gate_to_final_ms": 10
+      "skeleton_ms": 10,
+      "gate_ms": 16,
+      "final_ms": 35,
+      "gate_to_final_ms": 19
     },
     "doc_id": "xstk-ch3-1",
     "failure": null,
     "graph_version": 68,
-    "lecture_key": "sha256:2ff9eea32811922f3427e299a58aad5d9a77b9d2c2c2668948a2aaa167ba2ce0",
+    "lecture_key": "sha256:c0f6be129b7167db6adcbc3274e0485d218d13a6afc35d9723fdb1cee2c28b7d",
     "media": [],
     "next_up": [],
     "node_id": "node_9b61dda52e52f46dc6d9c6f7",
@@ -1746,7 +1837,7 @@
     "usage": {
       "candidatesTokenCount": 1035,
       "cost_usd": 0.0,
-      "elapsed_ms": 9,
+      "elapsed_ms": 12,
       "model_id": "gemini-3.1-flash-lite",
       "promptTokenCount": 3769,
       "thoughtsTokenCount": 0
@@ -1790,7 +1881,7 @@
       "retryable": false
     },
     "graph_version": 27,
-    "lecture_key": "sha256:e74d795388b2b2ebf49168098cbb514e00d8bd31f1283c9b82a1da8e8cf62663",
+    "lecture_key": "sha256:7e42dce96fd04bd57662f7e9a36563133dc021cd89a289a4cde15808605e45bc",
     "media": [],
     "next_up": [],
     "node_id": "node_7f67aa65d0ea85a63653c752",
@@ -1849,11 +1940,11 @@
   },
   "answer-2": {
     "contract_version": "answer-2",
-    "answer_id": "fa463dfe-2f09-431c-866a-cbbd68ccf7ff",
+    "answer_id": "da00010e-38ed-425c-9e50-30d95fa7141e",
     "owner": "web-example",
     "doc_id": "doc-1",
     "graph_version": 57,
-    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "session_id": "05ad78e40ce943c787d24751ed07ebcf",
     "client_turn_id": "example-turn",
     "status": "answered",
     "answer": "Đã tạo nội dung theo yêu cầu. Bạn có thể mở bằng liên kết đính kèm.",
@@ -1871,18 +1962,18 @@
         "result_summary": {
           "artifact": {
             "kind": "document",
-            "id": "8e0000ef670d4e0bb5e065184e29a83a"
+            "id": "cc43da03bc16478eafb4593f7f32b873"
           },
           "title": "Tài liệu ôn tập",
           "status": "ready"
         },
-        "ms": 126
+        "ms": 90
       }
     ],
     "created_artifacts": [
       {
         "kind": "document",
-        "id": "8e0000ef670d4e0bb5e065184e29a83a"
+        "id": "cc43da03bc16478eafb4593f7f32b873"
       }
     ],
     "outside_document_blocks": 0,
@@ -1925,7 +2016,7 @@
       "output_tokens": 0,
       "thought_tokens": 0,
       "usd": 0.0,
-      "ms": 425,
+      "ms": 270,
       "ttft_ms": null,
       "invalid_tool_calls": 0,
       "invalid_tool_call_rate": 0.0,
@@ -1934,7 +2025,7 @@
   },
   "quiz-2": {
     "contract_version": "quiz-2",
-    "attempt_id": "qa_27b5648baa71c99cb46ad42a",
+    "attempt_id": "qa_de0d8ba67e6914cd944cbeaf",
     "owner": "web-example",
     "doc_id": "doc-1",
     "module_id": null,
@@ -1945,8 +2036,8 @@
     },
     "session_id": null,
     "node_ids": [
-      "node_2375cfb4e0615c77c9dba5b4",
       "node_2e6c3034736aa5bad67a5a66",
+      "node_2375cfb4e0615c77c9dba5b4",
       "node_42c7ccebf1eaeba45b0493d4",
       "node_c7ef3d5d462cbefe56200a3c",
       "node_623aa07230e2585950a1b5dd",
@@ -1955,13 +2046,13 @@
       "node_6ab014792c3fbd838226d59f"
     ],
     "seed": "44",
-    "created_at": "2026-10-18T11:43:39.373407+00:00",
+    "created_at": "2026-10-18T11:47:22.959206+00:00",
     "status": "ready",
     "total_concepts": 10,
     "ready_count": 8,
     "concept_ids": [
-      "node_2375cfb4e0615c77c9dba5b4",
       "node_2e6c3034736aa5bad67a5a66",
+      "node_2375cfb4e0615c77c9dba5b4",
       "node_42c7ccebf1eaeba45b0493d4",
       "node_c7ef3d5d462cbefe56200a3c",
       "node_623aa07230e2585950a1b5dd",
@@ -1972,31 +2063,9 @@
     "items": [
       {
         "bloom": "nho",
-        "concept_id": "node_2375cfb4e0615c77c9dba5b4",
-        "generator": "cloze",
-        "item_id": "qi_a02946c7884dade137ee0d3c",
-        "module_id": "module_001",
-        "options": [
-          {
-            "option_id": "o3",
-            "text": "Tập hợp con"
-          },
-          {
-            "option_id": "o2",
-            "text": "Phần tử"
-          },
-          {
-            "option_id": "o1",
-            "text": "Tập hợp"
-          }
-        ],
-        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nNgười ta thường gọi tắt ___ là '___'."
-      },
-      {
-        "bloom": "nho",
         "concept_id": "node_2e6c3034736aa5bad67a5a66",
         "generator": "cloze",
-        "item_id": "qi_d0725a4b5f1b65da02529281",
+        "item_id": "qi_15b1c4998048d0b1096d15f5",
         "module_id": "module_001",
         "options": [
           {
@@ -2012,7 +2081,29 @@
             "text": "Phần tử"
           }
         ],
-        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nCác ___ của một tập hợp thường được kí hiệu bởi các chữ in thường: a, b, c, ."
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nTập hợp là một khái niệm 'nguyên thủy', không được định nghĩa, mà được hiểu một cách trực giác như sau: Một tập hợp là một sự quần tụ các đối tượng có cùng một thuộc tính nào đó; những đối tượng này gọi là các ___ của tập hợp đó."
+      },
+      {
+        "bloom": "nho",
+        "concept_id": "node_2375cfb4e0615c77c9dba5b4",
+        "generator": "cloze",
+        "item_id": "qi_a02946c7884dade137ee0d3c",
+        "module_id": "module_001",
+        "options": [
+          {
+            "option_id": "o2",
+            "text": "Phần tử"
+          },
+          {
+            "option_id": "o3",
+            "text": "Tập hợp con"
+          },
+          {
+            "option_id": "o1",
+            "text": "Tập hợp"
+          }
+        ],
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nNgười ta thường gọi tắt ___ là '___'."
       },
       {
         "bloom": "nho",
@@ -2022,16 +2113,16 @@
         "module_id": "module_002",
         "options": [
           {
-            "option_id": "o1",
-            "text": "Công thức De Morgan"
+            "option_id": "o2",
+            "text": "Phần bù"
           },
           {
             "option_id": "o3",
             "text": "Lượng từ tồn tại duy nhất"
           },
           {
-            "option_id": "o2",
-            "text": "Phần bù"
+            "option_id": "o1",
+            "text": "Công thức De Morgan"
           }
         ],
         "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___: X \\ ( A ∪ B ) = ( X \\ A ) ∩ ( X \\ B ) , X \\ ( A ∩ B ) = ( X \\ A ) ∪ ( X \\ B ) ."
@@ -2040,9 +2131,13 @@
         "bloom": "nho",
         "concept_id": "node_c7ef3d5d462cbefe56200a3c",
         "generator": "cloze",
-        "item_id": "qi_067b1fa409424d7e4980141e",
+        "item_id": "qi_0c2ca17f2d21725a699b7edb",
         "module_id": "module_003",
         "options": [
+          {
+            "option_id": "o1",
+            "text": "Tích trực tiếp"
+          },
           {
             "option_id": "o2",
             "text": "Quan hệ hai ngôi"
@@ -2050,25 +2145,17 @@
           {
             "option_id": "o3",
             "text": "Quan hệ tương đương"
-          },
-          {
-            "option_id": "o1",
-            "text": "Tích trực tiếp"
           }
         ],
-        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nTrường hợp đặc biệt khi X = Y , ta có ___ X × X của tập X với chính nó."
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___ (hay ___) của hai tập hợp X và Y là tập hợp sau đây:"
       },
       {
         "bloom": "nho",
         "concept_id": "node_623aa07230e2585950a1b5dd",
         "generator": "cloze",
-        "item_id": "qi_fb802b9431da96cc8ab74ec2",
+        "item_id": "qi_df6b8bb582e8c52a491cd0db",
         "module_id": "module_004",
         "options": [
-          {
-            "option_id": "o1",
-            "text": "Quan hệ"
-          },
           {
             "option_id": "o3",
             "text": "Ánh xạ"
@@ -2076,15 +2163,19 @@
           {
             "option_id": "o2",
             "text": "Quan hệ hai ngôi"
+          },
+          {
+            "option_id": "o1",
+            "text": "Quan hệ"
           }
         ],
-        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___ R được gọi là một ánh xạ từ X vào Y nếu nó có tính chất sau: với mọi x ∈ X có một và chỉ một y ∈ Y để cho ( x, y ) ∈ R ."
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nMỗi tập con R của tích trực tiếp X × Y được gọi là một ___ giữa X và Y ."
       },
       {
         "bloom": "nho",
         "concept_id": "node_2e314170771d12af52da066f",
         "generator": "cloze",
-        "item_id": "qi_aa83c820f1dcabdfac974d83",
+        "item_id": "qi_af67ce78036016b3a4471110",
         "module_id": "module_006",
         "options": [
           {
@@ -2092,15 +2183,15 @@
             "text": "Phần tử trung hòa"
           },
           {
-            "option_id": "o2",
-            "text": "Tập hợp"
-          },
-          {
             "option_id": "o1",
             "text": "Nhóm"
+          },
+          {
+            "option_id": "o2",
+            "text": "Tập hợp"
           }
         ],
-        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nPhần tử trung hòa của một ___ là duy nhất."
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nMột ___ là một tập hợp khác rỗng G được trang bị một phép toán hai ngôi ◦ thỏa mãn ba điều kiện sau đây:"
       },
       {
         "bloom": "nho",
@@ -2114,12 +2205,12 @@
             "text": "Ma trận thực"
           },
           {
-            "option_id": "o2",
-            "text": "Ma trận"
-          },
-          {
             "option_id": "o1",
             "text": "Ma trận cột"
+          },
+          {
+            "option_id": "o2",
+            "text": "Ma trận"
           }
         ],
         "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___ là ma trận chỉ có một cột."
@@ -2128,39 +2219,39 @@
         "bloom": "nho",
         "concept_id": "node_6ab014792c3fbd838226d59f",
         "generator": "cloze",
-        "item_id": "qi_a3dcafcf7801f69da6b44dbc",
+        "item_id": "qi_b22dfed2ca021555012534ed",
         "module_id": "module_008",
         "options": [
           {
-            "option_id": "o1",
-            "text": "Ma trận chéo"
+            "option_id": "o3",
+            "text": "Ma trận tam giác"
           },
           {
             "option_id": "o2",
             "text": "Đường chéo chính"
           },
           {
-            "option_id": "o3",
-            "text": "Ma trận tam giác"
+            "option_id": "o1",
+            "text": "Ma trận chéo"
           }
         ],
-        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\nMa trận đơn vị cấp n là ___ với tất cả các phần tử chéo đều bằng 1 ."
+        "stem": "Câu sau trích từ tài liệu nói về khái niệm nào?\n\n___ là ma trận vuông cấp n trong đó a ij = 0 nếu i = j :"
       }
     ],
     "usage": {
       "usd": 0.0,
-      "ms": 70,
+      "ms": 44,
       "input_tokens": 0,
       "output_tokens": 0
     },
     "failed_concepts": [
-      "node_c5aab845f976b4003a4e369e",
-      "node_3527ea9310ba5e0632752a79"
+      "node_3527ea9310ba5e0632752a79",
+      "node_c5aab845f976b4003a4e369e"
     ]
   },
   "document-2": {
     "contract_version": "document-2",
-    "document_id": "8e0000ef670d4e0bb5e065184e29a83a",
+    "document_id": "cc43da03bc16478eafb4593f7f32b873",
     "owner": "web-example",
     "doc_id": "doc-1",
     "graph_version": 57,
@@ -2222,7 +2313,7 @@
       "module_id_at_creation": "module_001",
       "graph_version_at_creation": 57
     },
-    "session_id": "de9d3c99e25943b9b9382d5ec5396006",
+    "session_id": "05ad78e40ce943c787d24751ed07ebcf",
     "origin": "assistant",
     "node_ids": [
       "node_ad8ca23f71b1ba791bf7554b",
@@ -2234,7 +2325,7 @@
       "node_4875720d652ab554d105b36f",
       "node_49d44cfe9955d226ef1de294"
     ],
-    "created_at": "2026-10-18T11:43:39.101964+00:00",
+    "created_at": "2026-10-18T11:47:22.766921+00:00",
     "usage": {
       "model_id": "demo-offline",
       "cost_usd": 0.0,
