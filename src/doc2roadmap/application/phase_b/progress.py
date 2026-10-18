@@ -31,20 +31,19 @@ class ProgressUseCase:
         self._validate(owner, doc_id, node_id)
         if not isinstance(learned, bool):
             raise ValueError("learned must be boolean")
-        return self._write(owner, doc_id, node_id, learned, "learner")
+        with self.store.atomic():
+            return self._write(owner, doc_id, node_id, learned, "learner")
 
     def mark_quiz_correct(self, owner, doc_id, node_ids):
         self._validate(owner, doc_id)
         for node_id in set(node_ids):
             self._validate(owner, doc_id, node_id)
             key = self._key(owner, doc_id, node_id)
-            def update():
+            with self.store.atomic():
                 existing = self.store.get_record("progress", key)
                 if existing and existing.get("source") == "learner":
-                    return existing
-                return self._write(owner, doc_id, node_id, True, "quiz")
-            # Serialize read/modify/write without caching a past progress value.
-            self.store.single_flight("progress:" + key, update, cache_if=lambda _: False, negative_ttl_seconds=0)
+                    continue
+                self._write(owner, doc_id, node_id, True, "quiz")
 
     def get_progress(self, owner, doc_id):
         self._validate(owner, doc_id)

@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from threading import Barrier, Event, Lock, Thread
+from threading import Event, Lock, Thread
 
 import pytest
 
@@ -28,7 +28,6 @@ class _Clock:
         return datetime(2026, 10, 18, tzinfo=timezone.utc)
 
 
-@pytest.mark.xfail(strict=True, reason="SA-34 quiz read-modify-write can overwrite concurrent learner choice")
 def test_learner_not_learned_choice_wins_if_quiz_completion_races():
     store = _ProgressRaceStore()
     graph = type("Graph", (), {"doc_id": "book", "learnable_nodes": {"n": {"node_id": "n"}},
@@ -80,7 +79,7 @@ def test_concurrent_paid_calls_do_not_exceed_daily_cap():
     from doc2roadmap.application.phase_b.common import call_json
     from doc2roadmap.domain.phase_b_limits import BSettings
 
-    check_barrier = Barrier(2)
+    first_entered, release_first = Event(), Event()
     settings = replace(BSettings(), learner_daily_max_usd=.20, document_max_output_tokens=80_000)
 
     class _Reply:
@@ -97,18 +96,14 @@ def test_concurrent_paid_calls_do_not_exceed_daily_cap():
         def ask_json(self, prompt, **_kwargs):
             with self.lock:
                 self.calls += 1
+                first = self.calls == 1
+            if first:
+                first_entered.set()
+                assert release_first.wait(timeout=2)
             return _Reply()
 
     store = InMemoryPhaseBStore()
     guard = DailySpendGuard(store, settings=settings)
-    check = guard.check
-
-    def synchronized_check(purpose, estimated_usd, owner=None):
-        allowed = check(purpose, estimated_usd, owner)
-        check_barrier.wait(timeout=2)
-        return allowed
-
-    guard.check = synchronized_check
     model = NoNetworkFakeModel()
     errors = []
 
@@ -121,8 +116,11 @@ def test_concurrent_paid_calls_do_not_exceed_daily_cap():
             errors.append(error)
 
     threads = [Thread(target=call, args=(index,)) for index in range(2)]
-    for thread in threads:
-        thread.start()
+    threads[0].start()
+    assert first_entered.wait(timeout=2)
+    threads[1].start()
+    threads[1].join(timeout=.25)
+    release_first.set()
     for thread in threads:
         thread.join(timeout=2)
 

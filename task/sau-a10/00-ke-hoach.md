@@ -101,7 +101,7 @@ Bốn luật:
 | [44](44-trang-xem-thu-hai-trang.md) | Trang xem thử hai trang | 33, 35, 36, 37, 41, 42 | 0 khi phát lại | đạt theo chủ dự án duyệt 2026-10-18; miễn 7 thao tác/ảnh, chưa thử tay; 11 test HTTP đạt |
 | [45](45-soat-thay-claude-nhan-vien-cap-cao.md) | **Soát thay Claude** (nhân viên cấp cao, chủ dự án giao 2026-10-18): soát các vé Pha B, ghi phán xét, tạo vé sửa từ số 46 | — | 0 (soát); lượt có tiền cần duyệt | đã soát 29–44, tạo 46–51; có ngoại lệ phạm vi test được ghi rõ [tổng hợp](../../report/soat-pha-b-tong-hop-2026-10-18.md) |
 | [46](46-quiz-roadmap-chuan-hoa-pham-vi-va-tran.md) | Quiz lộ trình: chuỗi phạm vi từ trợ lý, lấy mẫu và trần cấu hình | — | 0 | ready-for-agent; lỗi SA-37 phát hiện ở SA-45 |
-| [47](47-tien-do-giu-lua-chon-khi-quiz-dong-thoi.md) | Tiến độ: giữ lựa chọn learner khi quiz hoàn tất đồng thời | — | 0 | ready-for-agent; sửa SA-34 |
+| [47](47-tien-do-giu-lua-chon-khi-quiz-dong-thoi.md) | Tiến độ: giữ lựa chọn learner khi quiz hoàn tất đồng thời | — | 0 | đã vá/kiểm memory và JSON 2026-10-19; chờ ghép [bàn giao](../../report/pha-b-sa47-2026-10-19.md) |
 | [48](48-tran-ngay-giu-cho-dong-thoi.md) | Trần ngày: tính lượt đang chạy, giữ chỗ nguyên tử | — | 0 | ready-for-agent; sửa SA-42 |
 | [49](49-bai-giang-mot-cau-noi-moi-tien-quyet.md) | Bài giảng: một câu nối cho mỗi tiên quyết, stream/final nhất quán | — | 0 | ready-for-agent; sửa SA-40 |
 | [50](50-quiz-dien-khuyet-kiem-luat-va-cau-thieu.md) | Quiz điền khuyết: Q3/Q6 và câu dẫn thiếu điều kiện | 46 | 0 | ready-for-agent; lỗi đọc đầu ra thật SA-37/SA-15 |

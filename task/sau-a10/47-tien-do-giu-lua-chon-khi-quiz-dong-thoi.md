@@ -2,7 +2,9 @@
 
 **Nguồn chân lý:** [SA-34](34-tien-do-hoc.md), [spec B2](../../doc/pha-b2-spec.md), mục 5/bất biến 6, [ADR 0019](../../doc/adr/0019-tien-do-hoc-khong-chan-nhan-gan-luc-doc.md).
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã vá và kiểm thử 2026-10-19; chờ kiểm ghép 46–51
+
+**Bàn giao:** [SA-47](../../report/pha-b-sa47-2026-10-19.md). Hai đường learner/quiz dùng `store.atomic()`, hai bản cài kho giữ hợp đồng. Race đã đỏ trên memory/JSON trước sửa, xanh sau sửa; kiểm mở lại JSON và hai instance use case dùng cùng kho. Không gọi mô hình.
 
 ## Vì sao
 

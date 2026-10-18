@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Callable, Mapping
+from contextlib import AbstractContextManager
 from dataclasses import dataclass
 from datetime import date, datetime
 from typing import Any, Literal, Protocol, TypeVar
@@ -10,6 +11,8 @@ T = TypeVar("T")
 
 class PhaseBStore(Protocol):
     """Persistence used by learner-facing Phase B features."""
+
+    def atomic(self) -> AbstractContextManager[None]: ...
 
     def get_cache(self, key: str) -> Any | None: ...
 

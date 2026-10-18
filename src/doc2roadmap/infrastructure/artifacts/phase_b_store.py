@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from contextlib import contextmanager
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
@@ -30,6 +31,12 @@ class _PhaseBStore:
         self._cache: dict[str, Any] = {}
         self._records: dict[str, dict[str, dict[str, Any]]] = {}
         self._usage: list[dict[str, Any]] = []
+
+    @contextmanager
+    def atomic(self):
+        """Serialize a short read/modify/write operation across use case instances."""
+        with self._lock:
+            yield
 
     def get_cache(self, key: str) -> Any | None:
         with self._lock:
