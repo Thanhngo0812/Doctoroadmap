@@ -78,7 +78,7 @@ Bốn luật:
 | [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25** | lượt 1 trần khoảng 8 USD | ready-for-agent |
 | [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | đạt |
 | [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | ready-for-agent |
-| [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, bản lùi sạch, ghi lý do hỏng, `usage` đúng | commit mã | 0 (phát lại) | ready-for-agent |
+| [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | ready-for-agent |
 | [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật vé 16 | ready-for-agent |
 | [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | khoảng 0,2–0,3 USD sáu cuốn | ready-for-agent |
 
