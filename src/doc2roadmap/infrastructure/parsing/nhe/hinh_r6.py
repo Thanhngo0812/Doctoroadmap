@@ -107,5 +107,6 @@ def document_tree(nodes,warnings):
             kind='text'
         result.append(DocumentNode(node_type=kind,text=text,reading_order=len(result),page=n['page'],
                                    bbox=tuple(n['bbox']),level=n.get('level'),tree_depth=1,
-                                   image_id=n.get('image_id'),raw_text=raw_text,formula_id=formula_id))
+                                   image_id=n.get('image_id'),raw_text=raw_text,formula_id=formula_id,
+                                   bbox_origin='bottomleft' if kind=='formula' else None))
     return DocumentTree(nodes=result,structure_warnings=[str(w) for w in warnings])

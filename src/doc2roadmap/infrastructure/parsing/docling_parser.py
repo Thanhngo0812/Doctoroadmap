@@ -295,6 +295,14 @@ class DoclingParser:
         return None
 
     @staticmethod
+    def _bbox_origin(item: Any) -> str | None:
+        provenance = getattr(item, "prov", None) or []
+        bbox = getattr(provenance[0], "bbox", None) if provenance else None
+        origin = getattr(bbox, "coord_origin", None)
+        value = getattr(origin, "value", origin)
+        return str(value).lower() if value is not None else None
+
+    @staticmethod
     def _page(item: Any) -> int | None:
         provenance = getattr(item, "prov", None) or []
         return int(provenance[0].page_no) if provenance else None
@@ -726,6 +734,7 @@ class DoclingParser:
                     tree_depth=int(tree_level),
                     raw_text=raw_text or None,
                     formula_id=formula_id,
+                    bbox_origin=self._bbox_origin(item),
                 )
             )
 

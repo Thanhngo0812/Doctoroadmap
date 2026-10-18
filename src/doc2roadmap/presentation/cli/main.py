@@ -219,6 +219,8 @@ def _parser() -> argparse.ArgumentParser:
                          help="chỉ đọc cache/checkpoint và dự toán mọi stage; không gọi mô hình hoặc ghi artifact")
     for command in (ingest, roles, commands.choices["a3"], commands.choices["extract"], commands.choices["roadmap"]):
         command.add_argument("--allow-text-quality-reason", help="cho phép chữ cảnh báo với lý do xác nhận; không xoá cảnh báo")
+    from doc2roadmap.presentation.cli.phase_b import configure as configure_phase_b
+    configure_phase_b(commands)
     return parser
 
 
@@ -421,7 +423,10 @@ def main(argv: list[str] | None = None) -> int:
             stream.reconfigure(encoding="utf-8", errors="replace")
     args = _parser().parse_args(argv)
     try:
-        if args.command == "a4-gold-sheet":
+        if args.command == "phase-b":
+            from doc2roadmap.presentation.cli.phase_b import run as run_phase_b
+            _json(run_phase_b(args))
+        elif args.command == "a4-gold-sheet":
             store = build_artifact_store()
             output = args.output.resolve()
             if not output.is_relative_to(store.root.resolve()):

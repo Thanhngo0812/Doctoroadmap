@@ -19,6 +19,7 @@ class DocumentNode:
     tree_depth: int | None = None
     raw_text: str | None = None
     formula_id: str | None = None
+    bbox_origin: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
