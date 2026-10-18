@@ -2,6 +2,9 @@
 
 **Ngày:** 2026-10-15. **Nhãn:** `ready-for-agent`. **Trạng thái:** chờ chia vé (skill `ticket`); vé sẽ ở `task/sau-a10/`.
 
+> **Từ 2026-10-18,** [spec Pha B2](pha-b2-spec.md) thay một phần các mục 8–13: phạm vi phiên, phiên lưu đủ lượt, thư viện, tiến độ, và bài giảng
+> `lecture-2` (không còn bản lùi). Khi hai spec lệch nhau, spec Pha B2 thắng.
+
 **Căn cứ:** bốn báo cáo nghiên cứu ngày 2026-10-11 (commit `536f366`, sửa tên module ở commit kế tiếp). Mỗi báo cáo có văn liệu, số đo và
 giao thức chi tiết; spec này thắng khi hai bên lệch nhau.
 - [Tên và mô tả module](../report/nghien-cuu-ten-va-mo-ta-module-2026-10-11.md)

@@ -356,9 +356,12 @@ cây, **không** phải chứng nhận chất lượng bộ phân tầng nhẹ.
 Số mục sách nằm ở `section_code`, không nằm trong tên.
 
 **Bài giảng**:
-Nội dung học của **một khái niệm**, mở khi người học bấm vào khái niệm đó (ADR 0011). Phần do mã dựng hiện ngay; phần LLM viết hiện theo từng ý đã
-kiểm. Nút bấm và công cụ `get_lecture` của trợ lý trả cùng một bài.
-_Tránh dùng_: bài giảng của module, bài (theo nghĩa module)
+Nội dung học của **một khái niệm**, mở khi người học bấm vào khái niệm đó (ADR 0011). Nút bấm và công cụ `get_lecture` của trợ lý trả cùng một bài.
+- Phần do mã dựng hiện ngay.
+- Phần LLM viết chỉ hiện dần sau cổng 2 ý giải thích đạt (ADR 0018, hợp đồng `lecture-2`).
+- Bài hỏng hẳn vẫn giữ phần mã dựng, kèm lời nhắn; không bao giờ hiện bản lùi trích câu.
+
+_Tránh dùng_: bài giảng của module, bài (theo nghĩa module), bản lùi (theo nghĩa thứ hiện cho người học)
 
 **Ngữ cảnh đã lắp**:
 JSON chuẩn hoá của mọi khối gửi mô hình cho một lần sinh. Băm của nó (`context_hash`) nằm trong khoá cache; đổi phiên bản đồ thị mà ngữ cảnh không
@@ -394,7 +397,11 @@ không phải ranh giới.
 Phần mã lắp trước lời gọi đầu của trợ lý, gồm thẻ module đang mở, khái niệm liên kết được, và vài đoạn truy hồi có ưu tiên module.
 
 **Khối nhắc khái niệm nền**:
-Dòng do mã sinh ở cuối câu trả lời, nhắc tối đa 3 tiên quyết Hasse kèm câu trích. Không lặp lại trong một phiên, không có ở câu từ chối.
+Dòng do mã sinh ở cuối câu trả lời. Từ 2026-10-18:
+- chỉ có ở phạm vi module;
+- nhắc tối đa 3 tiên quyết Hasse **chưa đánh dấu đã học**, kèm câu trích;
+- không lặp lại trong một phiên;
+- không có ở câu từ chối.
 
 **Tài liệu theo yêu cầu**:
 Markdown có trích dẫn do công cụ `make_document` tạo theo yêu cầu tự do của một người học. Lưu theo người học, không cache chung.
@@ -410,7 +417,56 @@ ba giá trị:
 Ảnh cắt từ trang PDF theo `bbox` của nút công thức, làm sẵn ở bước tải tài liệu. Web thay nhãn `[CTk]` bằng ảnh này; LLM không tự viết công thức.
 
 **Sổ chi Pha B**:
-Dòng ghi cho mỗi lời gọi mô hình hay embedding ở Pha B: mục đích, token, USD, TTFT, tổng ms, `context_hash`.
+Dòng ghi cho mỗi lời gọi mô hình hay embedding ở Pha B: mục đích, token, USD, TTFT, tổng ms, `context_hash`, và `learner_id` với chi riêng của người
+học. Trần ngày tính từ sổ này:
+- 0,20 USD mỗi người cho trợ lý và tài liệu;
+- khoảng 5 USD cho nội dung dùng chung.
+
+### Pha B2 (spec Pha B2, 2026-10-18)
+
+**Phạm vi** (của phiên, tài liệu, lần làm quiz):
+Cả lộ trình, hoặc một module. Phạm vi chỉ quyết nơi lưu và nơi trợ lý ưu tiên tìm, không giới hạn chỗ tìm (ADR 0017).
+- Phạm vi module lưu `node_ids` lúc tạo, rồi được giải sang module hiện hành có Jaccard cao nhất.
+- Dưới 0,5 thì phạm vi **đã cũ** và chạy như phạm vi lộ trình.
+
+_Tránh dùng_: ranh giới module; mã module như danh tính
+
+**Phiên toàn lộ trình / phiên module**:
+Phiên chat có phạm vi tương ứng. Phiên lưu đủ mọi lượt; mô hình chỉ nhận 3 lượt cuối. Tiêu đề do luật đặt; người học sửa và xoá được.
+
+**Thư viện**:
+Danh sách tài liệu và lần làm quiz của một phạm vi.
+- Thư viện module gồm nội dung tạo ở đó (`here`), cộng nội dung tạo nơi khác có khái niệm thuộc module (`elsewhere`, nhãn "tạo ở nơi khác").
+- Module của một nội dung được suy lúc liệt kê.
+
+**Tiến độ** (đã học):
+Đánh dấu theo khái niệm, không chặn gì (ADR 0019). Người học bấm, hoặc hệ thống đánh dấu khi làm đúng quiz; lựa chọn của người học thắng.
+_Tránh dùng_: trình độ, mastery, mở khoá
+
+**Gợi lại tiên quyết** (`recall`):
+Phần mã dựng ở đầu bài giảng cho mỗi tiên quyết: tên, module, câu định nghĩa gập sẵn.
+
+**Câu nối** (`bridge`):
+Một câu trung tính do LLM viết, nói khái niệm đang học dùng tiên quyết ra sao, chỉ dựa câu trích cạnh `Q#`. Kiểm bằng K10–K12. Đồ thị không có câu trích
+cạnh thì không có câu nối.
+
+**Khối "Tiếp theo"** (`next_up`):
+1–2 khái niệm sau cần khái niệm này, theo cạnh `requires` đi ra, kèm module và câu trích. Mã dựng, 0 USD.
+_Tránh dùng_: `used_later`
+
+**Nhãn theo người học** (`learner_status`):
+Nhãn "đã học / chưa học, module m" cho tiên quyết và khối "Tiếp theo". Gắn lúc trả bài; không vào cache, khoá hay prompt.
+
+**Cổng (stream sau cổng)**:
+Mốc 2 ý giải thích đạt. Trước cổng, ý được giữ lại; sau cổng, ý hiện dần và bài không còn hỏng được.
+
+**Bản ghi hỏng**:
+Ghi nhớ một bài hỏng hẳn để lần bấm sau không gọi lại mô hình:
+- hỏng vì luật kiểm: 24 giờ;
+- hỏng vì mạng: 60 giây;
+- chạm trần hệ thống: tới hết ngày.
+
+Không phải bài trong cache.
 
 ## Lệnh bậc 1–3 của lượt tập giữ lại (T10a; chỉ chạy sau khi khoá T10)
 
