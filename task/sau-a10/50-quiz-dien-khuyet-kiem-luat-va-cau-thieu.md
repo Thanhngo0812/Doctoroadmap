@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [spec Pha B](../../doc/pha-b-spec.md), mục 9, Q3/Q6/Q7; [SA-15](15-quiz-dien-khuyet-dau-cuoi.md), [SA-37](37-quiz-ca-lo-trinh-tai-lieu-nhieu-module.md); phát hiện SA-45.
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 46 (cùng `quiz.py`, tránh sửa chồng) · **Trạng thái:** đã vá/kiểm thử 2026-10-19; chờ kiểm ghép
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** 46 (cùng `quiz.py`, tránh sửa chồng) · **Trạng thái:** đạt sau vá/kiểm ghép 2026-10-19; xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md)
 
 **Bàn giao:** [SA-46/50](../../report/pha-b-sa46-50-2026-10-19.md). Câu điền khuyết kiểm phương án/alias bao chứa, hình/công thức thiếu và câu dẫn chưa đủ; có mã loại và khoá ngân hàng v3. Phát lại doc-4 v27 seed 37 giữ bốn câu ở bốn module; doc-1 bỏ hai câu dẫn hỏng và giữ câu thay thế đầy đủ, không gọi mô hình.
 
@@ -14,7 +14,7 @@
 - Ví dụ hợp đồng quiz doc-1 v57 có câu Tích trực tiếp chỉ còn "___ (hay ___) của hai tập hợp X và Y là tập hợp sau đây:"; câu Nhóm dừng ở "thỏa mãn ba điều kiện sau đây:". Phần xác định đáp án bị bỏ khỏi câu hỏi. Không được tự dựng phần công thức/điều kiện thiếu.
 - `_cloze_bank` không chạy bộ lọc Q6: ca tổng hợp có câu neo "Tam giác được xác định bởi biểu thức [formula] sau đây." vẫn tạo câu hỏi chứa `[formula]`, không kèm ảnh.
 
-Ba assertion cuối trong `tests/unit/application/test_phase_b_sa45_artifact_audit.py` tái hiện các nhóm lỗi. Test được giữ `xfail(strict=True)` chờ vé này; dùng `--runxfail` để thấy đỏ.
+Ba assertion cuối trong `tests/unit/application/test_phase_b_sa45_artifact_audit.py` tái hiện các nhóm lỗi. Tại SA-45, test giữ `xfail(strict=True)` và đã chạy `--runxfail` để chứng minh đỏ. Sau vá SA-50 đã bỏ nhãn xfail; bộ ghép kiểm trực tiếp các assertion.
 
 ## Cần làm
 
@@ -25,10 +25,10 @@ Ba assertion cuối trong `tests/unit/application/test_phase_b_sa45_artifact_aud
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Ba test `test_cloze_rejects_sentence_that_requires_a_missing_formula`, `test_cloze_rejects_definition_lead_in_without_its_missing_conditions`, `test_cloze_options_do_not_contain_each_other` đỏ trước sửa và xanh sau sửa; bỏ nhãn xfail tương ứng.
-- [ ] Thêm ca đối chứng có câu định nghĩa đầy đủ vẫn tạo quiz, không lộ đáp án; câu thiếu bị bỏ và không làm hỏng cả bộ.
-- [ ] Phát lại 0 USD doc-4 v27 seed 37 và ví dụ doc-1; đọc từng câu, báo số câu/module còn hợp lệ. Không sửa PDF, neo hay mã Pha A để che lỗi đầu vào.
-- [ ] Test quiz, cache, hợp đồng và kiến trúc xanh; cache trước luật mới không được dùng lại.
+- [x] Ba test `test_cloze_rejects_sentence_that_requires_a_missing_formula`, `test_cloze_rejects_definition_lead_in_without_its_missing_conditions`, `test_cloze_options_do_not_contain_each_other` đỏ trước sửa và xanh sau sửa; bỏ nhãn xfail tương ứng.
+- [x] Thêm ca đối chứng có câu định nghĩa đầy đủ vẫn tạo quiz, không lộ đáp án; câu thiếu bị bỏ và không làm hỏng cả bộ.
+- [x] Phát lại 0 USD doc-4 v27 seed 37 và ví dụ doc-1; đọc từng câu, báo số câu/module còn hợp lệ. Không sửa PDF, neo hay mã Pha A để che lỗi đầu vào.
+- [x] Test quiz, cache, hợp đồng và kiến trúc xanh; cache trước luật mới không được dùng lại.
 
 ## Ngoài vé
 

@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [SA-37](37-quiz-ca-lo-trinh-tai-lieu-nhieu-module.md), [spec B2](../../doc/pha-b2-spec.md), mục 7; phát hiện ở SA-45.
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (ngân hàng giả/phát lại) · **Chặn bởi:** không · **Trạng thái:** đã vá/kiểm thử 2026-10-19; chờ kiểm ghép
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (ngân hàng giả/phát lại) · **Chặn bởi:** không · **Trạng thái:** đạt sau vá/kiểm ghép 2026-10-19; xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md)
 
 **Bàn giao:** [SA-46/50](../../report/pha-b-sa46-50-2026-10-19.md). Scope chuỗi/object cùng lấy mẫu, trần giữ theo cấu hình và `n`, mỗi khái niệm lấy mẫu chỉ một câu; không bù bằng biến thể của khái niệm khác. Giữ thuật toán round-robin cũ, 0 USD.
 
@@ -24,10 +24,10 @@ Ba assertion trong `tests/unit/application/test_phase_b_sa45_artifact_audit.py` 
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Chạy `python -m pytest ... --runxfail tests/unit/application/test_phase_b_sa45_artifact_audit.py -k "assistant_roadmap or configured_cap"`: ba test trên phải đỏ trước sửa, rồi xanh sau sửa và bỏ nhãn xfail. Ba test câu điền khuyết trong cùng file thuộc SA-50.
-- [ ] Bổ sung kiểm qua công cụ `make_quiz` của trợ lý: đầu vào `scope='roadmap'` và `n` không vượt trần, có ưu tiên tiến độ và seed lưu được.
-- [ ] Test bảo vệ phạm vi module/danh sách khái niệm vẫn xanh; đề công khai không lộ đáp án.
-- [ ] Phát lại 0 USD trên doc-4, ghi số câu/module phủ, seed và 0 lời gọi mạng; chạy test kiến trúc.
+- [x] Chạy `python -m pytest ... --runxfail tests/unit/application/test_phase_b_sa45_artifact_audit.py -k "assistant_roadmap or configured_cap"`: ba test trên phải đỏ trước sửa, rồi xanh sau sửa và bỏ nhãn xfail. Ba test câu điền khuyết trong cùng file thuộc SA-50.
+- [x] Bổ sung kiểm qua công cụ `make_quiz` của trợ lý: đầu vào `scope='roadmap'` và `n` không vượt trần, có ưu tiên tiến độ và seed lưu được.
+- [x] Test bảo vệ phạm vi module/danh sách khái niệm vẫn xanh; đề công khai không lộ đáp án.
+- [x] Phát lại 0 USD trên doc-4, ghi số câu/module phủ, seed và 0 lời gọi mạng; chạy test kiến trúc.
 
 ## Ngoài vé
 

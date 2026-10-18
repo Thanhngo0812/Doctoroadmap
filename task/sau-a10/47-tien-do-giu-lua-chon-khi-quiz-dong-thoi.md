@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [SA-34](34-tien-do-hoc.md), [spec B2](../../doc/pha-b2-spec.md), mục 5/bất biến 6, [ADR 0019](../../doc/adr/0019-tien-do-hoc-khong-chan-nhan-gan-luc-doc.md).
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã vá và kiểm thử 2026-10-19; chờ kiểm ghép 46–51
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đạt sau vá/kiểm ghép 2026-10-19; xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md)
 
 **Bàn giao:** [SA-47](../../report/pha-b-sa47-2026-10-19.md). Hai đường learner/quiz dùng `store.atomic()`, hai bản cài kho giữ hợp đồng. Race đã đỏ trên memory/JSON trước sửa, xanh sau sửa; kiểm mở lại JSON và hai instance use case dùng cùng kho. Không gọi mô hình.
 
@@ -24,10 +24,10 @@ Test `test_learner_not_learned_choice_wins_if_quiz_completion_races` trong `test
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Test race nêu trên đỏ trước sửa, xanh sau sửa, không treo khi bản sửa dùng khoá chung; bỏ nhãn xfail SA-47.
-- [ ] Kiểm cả hai thứ tự learner trước/sau quiz; kết quả cuối cùng là lựa chọn learner, không chỉ kiểm cờ trong luồng quiz.
-- [ ] Kiểm qua memory và JSON, hai instance use case dùng cùng kho; không mất bản ghi của node/owner khác.
-- [ ] Test quiz nộp đúng, remap module, nhãn bài giảng, nhắc nền và kiến trúc vẫn xanh. Chạy bằng đồ thị tổng hợp, 0 USD.
+- [x] Test race nêu trên đỏ trước sửa, xanh sau sửa, không treo khi bản sửa dùng khoá chung; bỏ nhãn xfail SA-47.
+- [x] Kiểm cả hai thứ tự learner trước/sau quiz; kết quả cuối cùng là lựa chọn learner, không chỉ kiểm cờ trong luồng quiz.
+- [x] Kiểm qua memory và JSON, hai instance use case dùng cùng kho; không mất bản ghi của node/owner khác.
+- [x] Test quiz nộp đúng, remap module, nhãn bài giảng, nhắc nền và kiến trúc vẫn xanh. Chạy bằng đồ thị tổng hợp, 0 USD.
 
 ## Ngoài vé
 

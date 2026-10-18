@@ -2,7 +2,9 @@
 
 **Nguồn chân lý:** [SA-43](43-luot-that-lecture-2.md), [spec B2](../../doc/pha-b2-spec.md), mục 6.1 và lượt thật; phát hiện trong SA-45.
 
-**Ai:** nhân viên chạy · nhân viên cấp cao đọc/kiểm · **Chi phí mô hình:** 0 USD bước phát lại; bước bổ sung có tiền phải dry-run và chủ dự án duyệt riêng · **Chặn bởi:** 49, 48 · **Trạng thái:** ready-for-agent (phát lại)
+**Ai:** nhân viên chạy · nhân viên cấp cao đọc/kiểm · **Chi phí mô hình:** 0 USD; không chạy bổ sung API · **Chặn bởi:** 49, 48 · **Trạng thái:** hoàn tất phân tích/phát lại 2026-10-19; 10 cặp khớp, 2 cặp lệch fixture, chưa đủ kết luận nhiệt độ
+
+**Bàn giao:** [SA-51](../../report/pha-b-sa51-2026-10-19.md), [tổng hợp 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Giữ S3/retry temp 0. Không có dry-run/duyệt mới vì không gọi thêm API; nếu cần đủ 12 cặp khớp thì phải chuẩn bị và duyệt lượt riêng theo mục dưới.
 
 ## Vì sao
 
@@ -20,11 +22,11 @@ Chỉ có bốn mẫu timing thật đầy đủ sau khi loại lỗi runtime, p
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Test với fixture giả có một cặp lệch prompt: runner báo unmatched riêng, không đếm là lỗi nội dung hoặc đưa vào mẫu so nhiệt độ; cùng lần đầu chỉ tính tiền một lần. Test đỏ trên cách tổng hợp sai trước khi xanh.
-- [ ] Test metric bỏ replay/duplicate và tách thời gian click của người học khỏi timestamp sinh; dùng bộ số biết trước để kiểm độc lập p50/p90.
-- [ ] Báo cáo 0 USD có bảng đủ 12 mẫu và tập cặp thực sự so được; mọi số đọc lại từ artifact, không chỉ chép báo cáo cũ.
-- [ ] Nếu chạy bổ sung: có dry-run + duyệt trước, ghi đầy đủ phản hồi/usage và giới hạn chi. Chưa được duyệt thì dừng phần có tiền và bàn giao rõ phần còn thiếu.
-- [ ] Người soát đọc cả 12 bài và câu nối/recall, ghi đề xuất S2/S3/retry theo số liệu; không coi `ready` là chứng nhận đúng ngữ nghĩa.
+- [x] Test với fixture giả có một cặp lệch prompt: runner báo unmatched riêng, không đếm là lỗi nội dung hoặc đưa vào mẫu so nhiệt độ; cùng lần đầu chỉ tính tiền một lần. Test đỏ trên cách tổng hợp sai trước khi xanh.
+- [x] Test metric bỏ replay/duplicate và tách thời gian click của người học khỏi timestamp sinh; dùng bộ số biết trước để kiểm độc lập p50/p90.
+- [x] Báo cáo 0 USD có bảng đủ 12 mẫu và tập cặp thực sự so được; mọi số đọc lại từ artifact, không chỉ chép báo cáo cũ.
+- [x] Nếu chạy bổ sung: có dry-run + duyệt trước, ghi đầy đủ phản hồi/usage và giới hạn chi. Chưa được duyệt thì dừng phần có tiền và bàn giao rõ phần còn thiếu. **Không chạy bổ sung; đã ghi rõ hai cặp lệch.**
+- [x] Người soát đọc cả 12 bài và câu nối/recall, ghi đề xuất S2/S3/retry theo số liệu; không coi `ready` là chứng nhận đúng ngữ nghĩa.
 
 ## Ngoài vé
 

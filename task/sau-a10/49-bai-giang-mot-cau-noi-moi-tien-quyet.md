@@ -2,7 +2,7 @@
 
 **Nguồn chân lý:** [SA-40](40-goi-lai-tien-quyet-cau-noi-tiep-theo.md), [spec B2](../../doc/pha-b2-spec.md), mục 6/K10–K12 và nguyên tắc không rút ý đã gửi.
 
-**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (phản hồi đã ghi/mô hình giả) · **Chặn bởi:** không · **Trạng thái:** đã vá và kiểm focused 2026-10-19; chờ bộ ghép và phát lại SA-51
+**Ai:** nhân viên · nhân viên cấp cao kiểm · **Chi phí mô hình:** 0 USD (phản hồi đã ghi/mô hình giả) · **Chặn bởi:** không · **Trạng thái:** đạt bản vá/kiểm ghép 2026-10-19; phát lại và giới hạn fixture xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md)
 
 Bằng chứng: [triển khai SA-49](../../report/pha-b-sa49-2026-10-19.md).
 
@@ -21,11 +21,11 @@ Bằng chứng: [triển khai SA-49](../../report/pha-b-sa49-2026-10-19.md).
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Regression nêu trên đỏ trước sửa, xanh sau sửa; bỏ nhãn xfail SA-49.
-- [ ] Thêm test `LectureUseCase` thật với mô hình stream giả trả hai câu khác chữ cùng `prereq`: một item câu nối được gửi và một câu trong final; câu nối của tiên quyết khác vẫn còn.
-- [ ] Kiểm candidate hỏng trước/câu đạt sau, candidate trùng qua lần sửa, cache đọc lại; không gửi item trước cổng, không thay ý đã phát.
-- [ ] Phát lại 0 USD cả 12 phản hồi đã lưu: báo số item bridge và số cặp `(bài, tiên quyết)` riêng, đọc lại hai bài đã lỗi. Ghi rõ nếu prompt mới làm fixture cũ không khớp; không sửa prompt hash của fixture để che lệch.
-- [ ] Test lecture, hợp đồng và kiến trúc xanh, không phát sinh HTTP.
+- [x] Regression nêu trên đỏ trước sửa, xanh sau sửa; bỏ nhãn xfail SA-49.
+- [x] Thêm test `LectureUseCase` thật với mô hình stream giả trả hai câu khác chữ cùng `prereq`: một item câu nối được gửi và một câu trong final; câu nối của tiên quyết khác vẫn còn.
+- [x] Kiểm candidate hỏng trước/câu đạt sau, candidate trùng qua lần sửa, cache đọc lại; không gửi item trước cổng, không thay ý đã phát.
+- [x] Phát lại 0 USD cả 12 phản hồi đã lưu: báo số item bridge và số cặp `(bài, tiên quyết)` riêng, đọc lại hai bài đã lỗi. Ghi rõ nếu prompt mới làm fixture cũ không khớp; không sửa prompt hash của fixture để che lệch.
+- [x] Test lecture, hợp đồng và kiến trúc xanh, không phát sinh HTTP.
 
 ## Ngoài vé
 
