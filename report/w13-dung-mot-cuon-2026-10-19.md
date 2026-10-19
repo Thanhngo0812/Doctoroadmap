@@ -6,6 +6,8 @@
 
 **Chi thật của đợt: 0 USD.** Kiểm thử dùng mô hình giả, cache hoặc cấm đường gọi nhà cung cấp. Chưa nghiệm thu chạy hết sách mới bằng mô hình thật. Lượt doc-6 bắt đầu từ bộ đọc nhẹ mới dừng đúng ở cache miss `label-roles` khi chưa cho phép chi; không được báo lượt đó là dựng thành công.
 
+**Bổ sung sau bàn giao:** đã kiểm lại bằng cả kho cache lịch sử, vẫn thiếu nhãn tương thích với chunk Nhe mới. Xem [phép kiểm cache và đề nghị chi riêng](w13-doc6-kiem-cache-va-de-nghi-chi-2026-10-19.md): có script tái lập 0 USD và mức đề nghị 0,25 USD để hoàn tất, đang chờ chủ dự án duyệt; không bỏ nhãn để ép qua.
+
 Kế hoạch: [plan](../tasks/plan.md), [todo](../tasks/todo.md). Snapshot bàn giao chỉ gồm mã/test/script/báo cáo W-13 và các đoạn tài liệu do phiên W-13 cập nhật; các thay đổi của phiên khác được giữ nguyên ngoài commit. Hash bàn giao lấy bằng `git log -1 --format=%H` sau khi commit; chưa push.
 
 ## Các quyết định đã chốt
