@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.597" timestamp="2026-10-19T21:19:08.948915+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_postgres_phase_b_store" name="test_composition_uses_postgres_and_configures_separate_lock_pool" time="2.043"><failure message="AttributeError: 'WebServices' object has no attribute 'phase_b_store'">src\web\backend\tests\test_postgres_phase_b_store.py:58: in test_composition_uses_postgres_and_configures_separate_lock_pool
+    assert isinstance(services.phase_b_store, PostgresPhaseBStore)
+                      ^^^^^^^^^^^^^^^^^^^^^^
+E   AttributeError: 'WebServices' object has no attribute 'phase_b_store'</failure></testcase></testsuite></testsuites>

@@ -30,6 +30,14 @@ Ngày 2026-10-19. Chủ dự án giao triển khai tiếp nhóm lõi; W-13 đã 
 
 Ghi báo cáo `report/w05-kho-pha-b-postgresql-2026-10-19.md`: kind thực và owner, migration hash, số test từng kho, hai process/đột biến, EXPLAIN, lỗi/giới hạn. Commit chỉ tệp W-05; không nhập dữ liệu live và không tự mở W-06/W-15.
 
+## Kết quả thực hiện 2026-10-19
+
+- Mã đã ghim ở `b3e9c5f`, `0602768`, `e163815`, `8600e27`; nền W-01 `c91551f`.
+- Hợp đồng chung: sáu test/backend. Bộ tập trung 73 đạt; backend 95 đạt, một Cloudinary live opt-in bỏ qua; unit lõi 1.829 đạt, không bỏ qua. Mỗi lượt có phạm vi riêng, không cộng chồng số test.
+- Tắt flight lock, atomic lock và bỏ READ COMMITTED đều tạo lỗi assertion độc lập. Khôi phục mã rồi xanh; EXPLAIN dùng `ix_usage_learner_day` tự nhiên.
+- Báo cáo và evidence ở `report/w05-kho-pha-b-postgresql-2026-10-19.md`, `report/w05-evidence/`. Chi mô hình thực 0 USD.
+- Chờ người soát và nhóm web ghép W-02 sau `w05_0002`, kiểm lại một head/DB rỗng trên nhánh hợp nhất; tiêu chí tích hợp còn mở trong vé.
+
 ---
 
 # Kế hoạch W-13 — dựng một cuốn ở lõi (lưu lịch sử)

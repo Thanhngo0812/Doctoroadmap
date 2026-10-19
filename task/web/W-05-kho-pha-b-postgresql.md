@@ -2,12 +2,14 @@
 
 **Nguồn chân lý:** [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), mục 4, 5, "Quyết định kiểm thử"; [ADR 0022](../../doc/adr/0022-postgresql-cho-du-lieu-web-artifact-o-kho-tep-hang-doi-bang-bang.md);
 [spec Pha B2](../../doc/pha-b2-spec.md), mục 8, 9.
-**Ai:** nhân viên lõi · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên lõi · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** implemented-awaiting-review
 
-**Đợt tiếp theo 2026-10-19:** lõi nhận sau checkpoint commit W-01, không chờ phần cache toàn chuỗi W-13.
+**Đợt tiếp theo 2026-10-19:** lõi nhận sau checkpoint commit W-01 `c91551f`. W-13 đã hoàn tất và chủ dự án đã báo điều phối.
 Migration W-05 đi trước W-02, dự kiến `w05_0002` nối `w01_0001`; bàn giao mốc migration cho web trước khi ghép W-02.
 Test W-01 về schema rỗng phải kiểm ở revision `w01_0001`, đồng thời thêm kiểm nâng HEAD đủ bảng, không bỏ assertion nền.
 Xem [kế hoạch ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
+
+**Bàn giao W-05:** nhánh `work/w05-postgres`; migration `w05_0002` tại `0602768`, adapter tại `e163815`, sửa isolation tại `8600e27`. [Báo cáo và bằng chứng nghiệm thu](../../report/w05-kho-pha-b-postgresql-2026-10-19.md). Chờ người soát và checkpoint ghép migration W-02; chưa mở W-06/W-15.
 
 ## Vì sao
 
@@ -47,18 +49,20 @@ Không đổi luật/trần giữ chỗ SA-48 hoặc thêm phụ thuộc mới v
 
 ## Tiêu chí nghiệm thu
 
-- [ ] **Bộ test hợp đồng hiện có của kho Pha B chạy trên cả ba bản cài,** không sửa kỳ vọng của bộ test. Báo số test của mỗi bản.
-- [ ] Hai **tiến trình** (không phải hai luồng) gọi `single_flight` cùng khoá với một hàm sinh chậm: hàm sinh chạy đúng 1 lần; tiến trình sau nhận kết quả
+- [x] **Bộ test hợp đồng hiện có của kho Pha B chạy trên cả ba bản cài,** không sửa kỳ vọng của bộ test. Báo số test của mỗi bản.
+- [x] Hai **tiến trình** (không phải hai luồng) gọi `single_flight` cùng khoá với một hàm sinh chậm: hàm sinh chạy đúng 1 lần; tiến trình sau nhận kết quả
   của tiến trình đầu. Thấy đỏ khi tắt lớp advisory lock.
-- [ ] Bản ghi hỏng do tiến trình A ghi chặn tiến trình B gọi lại trong thời hạn; hết hạn thì B sinh lại.
-- [ ] `usage_rows(learner_id, since, purposes)` cho cùng tập dòng với lọc trong Python trên cùng dữ liệu, ở cả ba bản cài.
-- [ ] Bản PostgreSQL: kế hoạch truy vấn (`EXPLAIN`) của truy vấn trần người học dùng chỉ mục, không quét cả bảng. Ghi kết quả vào báo cáo.
-- [ ] `anonymize_learner_usage` giữ nguyên tổng `cost_usd`, và không còn dòng nào mang `learner_id` cũ.
-- [ ] Ghi một dòng sổ chi có trường lạ rồi đọc lại: `dict` giống hệt.
-- [ ] Test đồng thời hiện có của trợ lý chạy được trên bản PostgreSQL.
-- [ ] Regression SA-47/SA-48 về tiến độ, giữ chỗ chi, lỗi/timeout và qua ngày vẫn đạt; test hai tiến trình trên PostgreSQL không cho vượt trần
+- [x] Bản ghi hỏng do tiến trình A ghi chặn tiến trình B gọi lại trong thời hạn; hết hạn thì B sinh lại.
+- [x] `usage_rows(learner_id, since, purposes)` cho cùng tập dòng với lọc trong Python trên cùng dữ liệu, ở cả ba bản cài.
+- [x] Bản PostgreSQL: kế hoạch truy vấn (`EXPLAIN`) của truy vấn trần người học dùng chỉ mục, không quét cả bảng. Ghi kết quả vào báo cáo.
+- [x] `anonymize_learner_usage` giữ nguyên tổng `cost_usd`, và không còn dòng nào mang `learner_id` cũ.
+- [x] Ghi một dòng sổ chi có trường lạ rồi đọc lại: `dict` giống hệt.
+- [x] Test đồng thời hiện có của trợ lý chạy được trên bản PostgreSQL.
+- [x] Regression SA-47/SA-48 về tiến độ, giữ chỗ chi, lỗi/timeout và qua ngày vẫn đạt; test hai tiến trình trên PostgreSQL không cho vượt trần
   khi cùng tranh phần ngân sách cuối. Tắt bảo vệ `atomic()` phải làm assertion này đỏ, không chỉ dựa vào hai luồng cùng tiến trình.
 - [ ] Sau ghép W-02/W-05, Alembic đúng một head; DB rỗng nâng HEAD thành công, test W-01 tại revision nền vẫn còn nguyên ý nghĩa.
+
+Phần W-05 của tiêu chí cuối đã đạt trên DB PostgreSQL rỗng, một head `w05_0002`; giữ ô mở đến khi có bản ghép W-02. Sáu test hợp đồng chung mỗi backend và kết quả các lượt chạy được lưu trong báo cáo, không cộng chồng các lượt chạy thành tổng test độc lập.
 
 ## Ngoài vé
 
