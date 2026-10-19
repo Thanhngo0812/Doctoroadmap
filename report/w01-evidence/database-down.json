@@ -1,0 +1,10 @@
+{
+  "http_status": 503,
+  "retry_http_status": 503,
+  "health": {
+    "status": "degraded",
+    "version": "0.1.0",
+    "db": "down"
+  },
+  "assertion": "database_failure_is_visible_and_retryable"
+}
