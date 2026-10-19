@@ -6,6 +6,10 @@
 
 ## Vì sao
 
+**Cập nhật phụ thuộc 2026-10-19:** W-13 đã được điều phối nghiệm thu sau khi kiểm doc-6 hoàn tất và tái lập cả hai kho ở 0 USD;
+xem [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md). Vé này vẫn chờ W-14. Phê duyệt hoàn tất W-13 không tự thay cho
+phạm vi duyệt chi của lượt W-15; không chạy thêm mô hình trong bước điều phối này.
+
 Bản demo không giới hạn khâu dựng (chủ dự án chốt 2026-10-18), nhưng chuỗi gộp hiện hành chưa có số USD/cuốn đo trên một cuốn mới hoàn toàn. Cần số thật
 để chủ dự án biết một cuốn tốn bao nhiêu, và để biết bật trần ở mức nào nếu có lạm dụng. Cũng cần chạy trọn đường web với bộ dựng thật một lần.
 

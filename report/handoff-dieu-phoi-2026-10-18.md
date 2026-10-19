@@ -92,6 +92,12 @@ W-24 đã bàn giao và sửa một phần nhưng chưa đạt toàn bộ: deskt
 bằng chứng đủ trang/Variables/bốn prototype Figma còn thiếu. Sau checkpoint W-01 mở W-02 cho web, W-05 cho lõi; thiết kế tiếp tục W-24.
 Migration theo tuyến W-01 → W-05 → W-02, không tự tạo hai head; chưa mở W-15/W-23.
 
+**Cập nhật sau bản sửa `7baa7d2`, 2026-10-19:** [kiểm lại W-13/W-24](dieu-phoi-kiem-lai-w13-w24-2026-10-19.md).
+W-13 **đạt nghiệm thu**, đã kiểm độc lập doc-6 ở cả hai kho đủ bốn bước, graph 37/8, không gọi mô hình; 83 test W-13/kiến trúc/token đạt.
+Nhân viên đã chạy hai lượt có tiền sau duyệt, tổng chi usage ghi nhận 0,2329025 USD, một lượt có cờ thiếu usage; đợt điều phối không phát sinh chi.
+W-24 đã sửa đạt GIF/vùng bấm/guard/chat cũ; còn Variables thực (plugin lệch sáu màu tối), đủ trang/prototype và khung auth 390 tràn 20 px.
+Không giao lại lỗi đã đóng. W-15 gỡ điểm chờ W-13, vẫn chờ W-14; kế hoạch W-02/W-05 tiếp tục, W-23 chưa mở.
+
 ## 3. Việc ngay, theo thứ tự
 
 Mỗi việc ghi ai làm, và xong thì người điều phối đánh dấu ở mục 10.
@@ -278,3 +284,5 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-19 | soạn W-24 sửa/bổ sung W-22 | Codex | đã soạn, chưa gửi phiên khác | người làm W-22 sửa và bổ sung node/Variables/ảnh/video; W-01 tiếp tục nền theo spec, W-23 chờ W-22 nghiệm thu; bằng chứng ở artifacts/coord-w22-2026-10-19 |
 | 2026-10-19 | kiểm lại bàn giao ba nhóm W-01/W-13/W-22-W-24 | Codex | nền local và lõi đã kiểm; thiết kế còn mở | 68 test W-13, 71 test web/token + 1 Cloudinary không bật, 23 React/build; browser W-01 đạt; W-13 4 mutation bị bắt; W-24 còn GIF/guard/vùng bấm và bằng chứng Figma |
 | 2026-10-19 | soạn đợt W-02/W-05 và tiếp tục W-24 | Codex | đã cập nhật kế hoạch/vé, chưa gửi phiên khác | chốt commit W-01 trước; migration một tuyến W-01→W-05→W-02; giữ phần dựng hết cuốn W-13 mở, chưa duyệt chi hay mở W-15/W-23 |
+| 2026-10-19 | kiểm lại W-13 sau doc-6 hoàn tất | Codex | đạt nghiệm thu W-13 | hai kho tái lập succeeded, đủ bốn bước, 0 lời gọi/0 USD; DB/artifact/PDF khớp; 83 test gộp đạt, mutation bỏ sửa cache bị bắt |
+| 2026-10-19 | kiểm lại W-24 bản 7baa7d2 | Codex | đóng lỗi runtime cũ, chưa đóng toàn vé | GIF tĩnh bốn preview, vùng bấm cũ đạt, ba mutation token bị bắt, chat an toàn với payload thử; còn Figma/trang/prototype và khung auth 390 |

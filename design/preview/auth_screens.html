@@ -40,14 +40,15 @@
       border: 1px solid var(--color-border);
       border-radius: var(--radius-lg);
       box-shadow: var(--shadow-2);
-      overflow: hidden;
+      overflow-x: auto;
       display: flex;
       flex-direction: column;
     }
 
     /* Mobile Viewport Frame (390px) */
     .viewport-mobile {
-      width: 390px;
+      width: 100%;
+      max-width: 390px;
       min-height: 844px;
       background: var(--color-bg);
       border: 8px solid #1E293B;
@@ -57,6 +58,7 @@
       display: flex;
       flex-direction: column;
       margin: 0 auto;
+      box-sizing: border-box;
     }
 
     /* Common Navbar */
@@ -224,11 +226,73 @@
       border: 1px solid var(--color-primary);
     }
 
+    .workbench-toolbar {
+      max-width: 1280px;
+      margin: 0 auto 30px auto;
+      background: var(--color-surface);
+      padding: 16px 24px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-1);
+    }
+
     @media (max-width: 768px) {
+      body {
+        padding: 16px 0;
+      }
+      .screen-container {
+        padding: 0 12px;
+        margin-bottom: 40px;
+      }
+      .screen-header {
+        padding: 0 4px;
+      }
+      .workbench-toolbar {
+        margin: 0 12px 24px 12px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 16px;
+      }
       .btn, .btn-sm, .btn-md, button {
         min-height: 44px !important;
         min-width: 44px !important;
         height: 44px !important;
+      }
+      .viewport-mobile {
+        width: 100%;
+        max-width: 390px;
+        border-width: 4px;
+        border-radius: 28px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      body {
+        padding: 12px 0;
+      }
+      .screen-container {
+        padding: 0 4px;
+      }
+      .screen-header {
+        padding: 0 4px;
+      }
+      .workbench-toolbar {
+        margin: 0 4px 20px 4px;
+        padding: 12px 14px;
+      }
+      .viewport-mobile {
+        width: 100%;
+        max-width: 100%;
+        border-width: 2px;
+        border-radius: 20px;
+      }
+      .auth-card {
+        margin: 20px 4px;
+        padding: 24px 14px;
       }
     }
   </style>
@@ -236,12 +300,12 @@
 <body>
 
   <!-- WORKBENCH TOOLBAR -->
-  <div style="max-width: 1280px; margin: 0 auto 30px auto; background: var(--color-surface); padding: 16px 24px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-1);">
+  <div class="workbench-toolbar">
     <div>
       <strong style="font-size: 16px;">WayFinder W-02 / W-24 Auth Design Workbench</strong>
       <div style="font-size: 13px; color: var(--color-text-muted);">Đặc tả giao diện Đăng ký, Đăng nhập, Giới hạn thử (rate limit) và Menu tài khoản cho nhóm Web (W-02).</div>
     </div>
-    <div style="display: flex; gap: 12px;">
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
       <button class="btn btn-secondary btn-sm" onclick="toggleDarkMode()">🌙 / ☀️ Chuyển Sáng / Tối</button>
     </div>
   </div>

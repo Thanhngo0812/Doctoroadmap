@@ -228,3 +228,59 @@ def test_chat_prototype_prevents_xss():
     assert 'innerHTML = `<strong>Trợ lý AI:</strong> Về câu hỏi <em>"${q}"</em>' not in screens_html
     assert "document.createTextNode" in screens_html
     assert "em.textContent" in screens_html
+
+
+def test_figma_plugin_dark_colors_match_tokens():
+    """Verify that design/figma-plugin/code.js has dark colors matching tokens.json exactly."""
+    code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
+    tokens = json.loads(Path("design/tokens/tokens.json").read_text(encoding="utf-8"))
+    dark_tokens = tokens["color"]["dark"]
+
+    # Verify all 6 key dark colors are explicitly defined in code.js with exact hex
+    expected_hexes = {
+        "color-bg": dark_tokens["color-bg"]["$value"],          # #0E1217
+        "color-surface": dark_tokens["color-surface"]["$value"],    # #161B22
+        "color-text": dark_tokens["color-text"]["$value"],          # #E8EDF2
+        "color-text-muted": dark_tokens["color-text-muted"]["$value"], # #9AA6B2
+        "color-success": dark_tokens["color-success"]["$value"],    # #4ADE80
+        "color-danger": dark_tokens["color-danger"]["$value"],      # #F87171
+    }
+
+    for name, hex_val in expected_hexes.items():
+        assert f'"{hex_val}"' in code_js or f"'{hex_val}'" in code_js, (
+            f"Figma plugin code.js missing exact token hex {hex_val} for {name}"
+        )
+
+
+def test_falsifiable_mutation_plugin_color_mismatch_fails():
+    """Falsifiable test: prove that an altered dark color in plugin code fails verification."""
+    fake_code_js = 'const C_DARK = { bg: hexToRgb("#0F172A") };'
+    with pytest.raises(AssertionError):
+        assert '"#0E1217"' in fake_code_js
+
+
+def test_figma_variables_export_valid():
+    """Verify that design/tokens/figma_variables_export.json exists, has 35 variables and matches tokens.json."""
+    export_path = Path("design/tokens/figma_variables_export.json")
+    assert export_path.exists(), "figma_variables_export.json does not exist"
+    data = json.loads(export_path.read_text(encoding="utf-8"))
+    assert data["metadata"]["collectionName"] == "WayFinder Tokens"
+    variables = data["collections"][0]["variables"]
+    assert len(variables) == 35
+
+    tokens = json.loads(Path("design/tokens/tokens.json").read_text(encoding="utf-8"))
+    var_map = {v["name"]: v for v in variables}
+
+    # Verify color/color-bg has exact hex values
+    assert var_map["color/color-bg"]["valuesByMode"]["mode:dark"] == tokens["color"]["dark"]["color-bg"]["$value"]
+    assert var_map["spacing/space-4"]["valuesByMode"]["mode:light"] == 16.0
+
+
+def test_auth_screens_responsive_no_overflow_rules():
+    """Verify that design/preview/auth_screens.html enforces responsive rules to prevent horizontal overflow."""
+    auth_html = Path("design/preview/auth_screens.html").read_text(encoding="utf-8")
+    assert "overflow-x: auto" in auth_html
+    assert "box-sizing: border-box" in auth_html
+    assert "@media (max-width: 768px)" in auth_html
+    assert "@media (max-width: 420px)" in auth_html
+

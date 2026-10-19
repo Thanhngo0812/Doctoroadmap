@@ -80,9 +80,9 @@ còn đổi; nhóm web đã được báo.
 | [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35, SA-37 | ready-for-agent |
 | [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06 | ready-for-agent |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
-| [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | commit e9ffce1, đã kiểm phần lõi: 68 test/4 mutation đạt; còn mở doc-6 toàn chuỗi; [soát](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
+| [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
 | [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06 | ready-for-agent; theo cập nhật 2026-10-19: không dự toán, nối callback BuildResult của W-13 |
-| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 | ready-for-agent |
+| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 | W-13 đã đạt; còn chờ W-14 và phạm vi phê duyệt chi của vé |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
@@ -91,14 +91,16 @@ còn đổi; nhóm web đã được báo.
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
 | [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | sau W-24 vẫn chưa đủ nghiệm thu Figma/trang/prototype; [soát lại](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | ready-for-agent |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa nút tối, vùng bấm mobile, giảm chuyển động, guard token; đủ bằng chứng W-22 | — | đã bàn giao, tiếp tục sửa desktop GIF/vùng bấm/guard và đủ bằng chứng; ưu tiên thiết kế W-02 |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa nút tối, vùng bấm mobile, giảm chuyển động, guard token; đủ bằng chứng W-22 | — | lỗi runtime cũ đã sửa đạt; còn Variables/prototype/trang thực và khung auth 390; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
 
 ## Thứ tự đề xuất
 
 - **Sau soát ba nhóm ngày 2026-10-19:** ghim commit W-01; web nhận W-02, lõi nhận W-05, thiết kế tiếp tục W-24 và ưu tiên bản vẽ tài khoản.
   [Kế hoạch, lời giao việc và bằng chứng](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
 - **Migration đợt này:** W-01 → W-05 → W-02 để giữ một head; domain/service/UI làm song song. Giữ test schema W-01 tại revision nền,
-  thêm kiểm nâng HEAD, không xoá test để xanh. W-13 dựng hết cuốn còn mở, không chặn W-05; W-23 vẫn chờ các phụ thuộc gốc.
+  thêm kiểm nâng HEAD, không xoá test để xanh. W-13 đã nghiệm thu sau bổ sung doc-6; W-23 vẫn chờ các phụ thuộc gốc.
+- **Sau kiểm bản sửa `7baa7d2`:** W-24 không còn bị giữ bởi GIF/vùng bấm/guard/chat cũ; chỉ tiếp tục phần Figma/đủ trang/prototype và khung auth
+  theo [kiểm lại W-13/W-24](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md). W-15 đã gỡ điểm chờ W-13, vẫn chưa mở trước W-14.
 - **Sau W-01:** W-02 rồi W-03, W-04; W-05 song song.
 - **Sau W-06:** phần học W-07 → W-08, W-09, W-10 (bám vé Pha B2); W-11 → W-12; W-14 → W-15.
 - **Cuối:** W-16, W-17, W-18, W-19, W-20, rồi W-21 và W-23.

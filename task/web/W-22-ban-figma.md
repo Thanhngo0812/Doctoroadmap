@@ -8,9 +8,9 @@ thương hiệu ở `design/`.
 thử đổi sai CSS mà 20 test vẫn xanh. Bằng chứng Figma/đủ trang và bốn prototype chưa xác minh được. Xem
 [báo cáo tiếp nhận](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md) và [vé sửa W-24](W-24-bo-sung-va-sua-ban-giao-w22.md).
 
-**Kiểm lại sau W-24, 2026-10-19:** đã sửa primary tối và khung mobile riêng; chưa đóng W-22. Desktop vẫn chạy GIF khi giảm chuyển động,
-guard chưa bắt lệch spacing/RGBA; thiếu node/Variables export/đủ trang và bốn prototype Figma. Trình duyệt soát nhận 403 khi mở Figma,
-không kết luận file không tồn tại. Tiếp tục W-24 theo [soát ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
+**Kiểm bản W-24 mới `7baa7d2`, 2026-10-19:** các lỗi runtime cũ đã sửa đạt, có bản auth cho W-02. W-22 còn mở phần đủ trang/trạng thái,
+Variables export thực và bốn prototype Figma; plugin mới vẫn có sáu màu tối khác token. Khung xem auth 390 còn tràn 20 px.
+Chỉ tiếp tục các mục này theo [soát sau bổ sung](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md), không giao lại lỗi cũ đã đóng.
 
 ## Vì sao
 

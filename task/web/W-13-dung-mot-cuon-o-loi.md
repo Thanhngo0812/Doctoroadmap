@@ -3,14 +3,14 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 ("Dựng một cuốn ở lõi", luồng, kiểm sớm); [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md);
 [chạy lại doc-6](../../report/pha-b-chay-lai-doc6-chuoi-gop-2026-10-18.md) (chuỗi lệnh đã chạy thật); [Pha B CLI](../../doc/pha-b-cli.md).
 **Ai:** nhân viên lõi · phối hợp phiên pha A · người soát kiểm · **Chi phí mô hình:** kiểm cache 0 USD; chạy thật đã được chủ dự án duyệt · **Chặn bởi:** không ·
-**Trạng thái:** đã hoàn tất triển khai và tự nghiệm thu, chờ soát độc lập · báo cáo [hoàn tất W-13](../../report/w13-hoan-tat-doc6-2026-10-19.md).
+**Trạng thái:** đạt nghiệm thu phạm vi W-13; điều phối đã kiểm độc lập · [soát sau bổ sung](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md), [bàn giao](../../report/w13-hoan-tat-doc6-2026-10-19.md).
 Doc-6 đã dựng xong từ kho rỗng và tái dùng cache thành công ở 0 USD; đã đo đủ sáu PDF gốc, không còn hai điểm chờ cache/nguồn PDF.
 
 **Bổ sung sau phê duyệt chi:** 1.878 unit test và 69 test tập trung đạt, 4/4 mutation bị bắt; SQLite có số chi từng lượt. Lượt dựng kho rỗng 0,1203762 USD có đủ usage; tổng chi quy đổi ghi nhận 0,2329025 USD, lượt chép cache lịch sử có cờ thiếu usage. Các ghi chú điều phối bên dưới là checkpoint trước lượt bổ sung này.
 
-**Điều phối kiểm lại 2026-10-19:** commit `e9ffce1`, 68 test đạt và 4/4 mutation bị bắt. Không coi cache miss dừng đúng là dựng thành công.
-Lõi có thể nhận W-05 sau checkpoint W-01; W-15 còn chờ W-14 và bằng chứng W-13 chưa đủ.
-Xem [soát ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
+**Điều phối kiểm sau bổ sung 2026-10-19:** đã chạy lại hai kho doc-6, đủ bốn bước, graph 37/8 giữ nguyên, 0 lời gọi mô hình và 0 USD;
+kiểm DB/artifact/hash PDF đạt. W-13/kiến trúc + token W-24 tổng 83 test đạt; bỏ bản sửa cache làm test hồi quy đỏ.
+Gỡ điểm chờ W-13; lõi tiếp tục W-05 sau checkpoint W-01, W-15 vẫn chờ W-14. Các checkpoint cũ ở báo cáo soát ba nhóm là lịch sử trước bổ sung.
 
 ## Vì sao
 

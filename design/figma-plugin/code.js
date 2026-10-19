@@ -5,26 +5,61 @@
  */
 
 (async () => {
-  // 1. Color Palette Tokens
+  // 1. Color Palette Tokens & Hex-accurate parser from tokens.json
+  function hexToRgb(hex) {
+    hex = hex.replace('#', '').trim();
+    if (hex.length === 3) {
+      hex = hex.split('').map(c => c + c).join('');
+    }
+    const num = parseInt(hex, 16);
+    return {
+      r: Number((((num >> 16) & 255) / 255).toFixed(4)),
+      g: Number((((num >> 8) & 255) / 255).toFixed(4)),
+      b: Number(((num & 255) / 255).toFixed(4))
+    };
+  }
+
   const C = {
-    bg: { r: 1, g: 1, b: 1 },
-    bgSubtle: { r: 0.965, g: 0.973, b: 0.980 },
-    surface: { r: 1, g: 1, b: 1 },
-    border: { r: 0.867, g: 0.886, b: 0.910 },
-    borderInput: { r: 0.537, g: 0.580, b: 0.627 },
-    text: { r: 0.071, g: 0.086, b: 0.106 },
-    textMuted: { r: 0.357, g: 0.400, b: 0.451 },
-    brand: { r: 0.161, g: 0.663, b: 1.0 },       // #29A9FF
-    brandTint: { r: 0.918, g: 0.965, b: 1.0 },   // #EAF6FF
-    primary: { r: 0.039, g: 0.416, b: 0.702 },   // #0A6AB3
-    accent: { r: 0.996, g: 0.729, b: 0.310 },    // #FEBA4F
-    accentTint: { r: 1.0, g: 0.957, b: 0.875 },  // #FFF4DF
-    accentText: { r: 0.541, g: 0.310, b: 0.059 },// #8A4F0F
-    success: { r: 0.078, g: 0.424, b: 0.231 },   // #146C3B
-    successTint: { r: 0.910, g: 0.965, b: 0.933 },
-    danger: { r: 0.690, g: 0.184, b: 0.184 },    // #B02F2F
-    dangerTint: { r: 0.992, g: 0.925, b: 0.925 },
+    bg: hexToRgb("#FFFFFF"),
+    bgSubtle: hexToRgb("#F6F8FA"),
+    surface: hexToRgb("#FFFFFF"),
+    border: hexToRgb("#DDE2E8"),
+    borderInput: hexToRgb("#8994A0"),
+    text: hexToRgb("#12161B"),
+    textMuted: hexToRgb("#5B6673"),
+    brand: hexToRgb("#29A9FF"),
+    brandTint: hexToRgb("#EAF6FF"),
+    primary: hexToRgb("#0A6AB3"),
+    primaryText: hexToRgb("#FFFFFF"),
+    primaryHover: hexToRgb("#0A5E9C"),
+    accent: hexToRgb("#FEBA4F"),
+    accentTint: hexToRgb("#FFF4DF"),
+    accentText: hexToRgb("#8A4F0F"),
+    success: hexToRgb("#146C3B"),
+    successTint: hexToRgb("#E8F6EE"),
+    danger: hexToRgb("#B02F2F"),
+    dangerTint: hexToRgb("#FDECEC"),
     white: { r: 1, g: 1, b: 1 },
+  };
+
+  const C_DARK = {
+    bg: hexToRgb("#0E1217"),
+    bgSubtle: hexToRgb("#161B22"),
+    surface: hexToRgb("#161B22"),
+    surface2: hexToRgb("#1E252E"),
+    border: hexToRgb("#2A323C"),
+    borderInput: hexToRgb("#6B7785"),
+    text: hexToRgb("#E8EDF2"),
+    textMuted: hexToRgb("#9AA6B2"),
+    primary: hexToRgb("#29A9FF"),
+    primaryText: hexToRgb("#0E1217"),
+    primaryHover: hexToRgb("#52B8FF"),
+    brand: hexToRgb("#29A9FF"),
+    accent: hexToRgb("#FEBA4F"),
+    accentText: hexToRgb("#FEBA4F"),
+    success: hexToRgb("#4ADE80"),
+    danger: hexToRgb("#F87171"),
+    white: { r: 1, g: 1, b: 1 }
   };
 
   // 2. Safe Font Loading (Be Vietnam Pro or Inter fallback)
@@ -70,16 +105,22 @@
       }
 
       const colorDefs = [
-        { name: "color/primary", light: { r: 0.039, g: 0.416, b: 0.702 }, dark: { r: 0.161, g: 0.663, b: 1.0 } },
-        { name: "color/primary-text", light: { r: 1, g: 1, b: 1 }, dark: { r: 0.055, g: 0.071, b: 0.090 } },
-        { name: "color/brand", light: { r: 0.161, g: 0.663, b: 1.0 }, dark: { r: 0.161, g: 0.663, b: 1.0 } },
-        { name: "color/bg", light: { r: 1, g: 1, b: 1 }, dark: { r: 0.059, g: 0.090, b: 0.165 } },
-        { name: "color/surface", light: { r: 1, g: 1, b: 1 }, dark: { r: 0.118, g: 0.161, b: 0.231 } },
-        { name: "color/text", light: { r: 0.071, g: 0.086, b: 0.106 }, dark: { r: 0.945, g: 0.961, b: 0.976 } },
-        { name: "color/text-muted", light: { r: 0.357, g: 0.400, b: 0.451 }, dark: { r: 0.580, g: 0.639, b: 0.722 } },
-        { name: "color/accent", light: { r: 0.996, g: 0.729, b: 0.310 }, dark: { r: 0.996, g: 0.729, b: 0.310 } },
-        { name: "color/success", light: { r: 0.078, g: 0.424, b: 0.231 }, dark: { r: 0.298, g: 0.686, b: 0.314 } },
-        { name: "color/danger", light: { r: 0.690, g: 0.184, b: 0.184 }, dark: { r: 0.937, g: 0.267, b: 0.267 } }
+        { name: "color/primary", light: hexToRgb("#0A6AB3"), dark: hexToRgb("#29A9FF") },
+        { name: "color/primary-text", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
+        { name: "color/primary-hover", light: hexToRgb("#0A5E9C"), dark: hexToRgb("#52B8FF") },
+        { name: "color/brand", light: hexToRgb("#29A9FF"), dark: hexToRgb("#29A9FF") },
+        { name: "color/bg", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
+        { name: "color/bg-subtle", light: hexToRgb("#F6F8FA"), dark: hexToRgb("#161B22") },
+        { name: "color/surface", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#161B22") },
+        { name: "color/surface-2", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#1E252E") },
+        { name: "color/border", light: hexToRgb("#DDE2E8"), dark: hexToRgb("#2A323C") },
+        { name: "color/border-input", light: hexToRgb("#8994A0"), dark: hexToRgb("#6B7785") },
+        { name: "color/text", light: hexToRgb("#12161B"), dark: hexToRgb("#E8EDF2") },
+        { name: "color/text-muted", light: hexToRgb("#5B6673"), dark: hexToRgb("#9AA6B2") },
+        { name: "color/accent", light: hexToRgb("#FEBA4F"), dark: hexToRgb("#FEBA4F") },
+        { name: "color/accent-text", light: hexToRgb("#8A4F0F"), dark: hexToRgb("#FEBA4F") },
+        { name: "color/success", light: hexToRgb("#146C3B"), dark: hexToRgb("#4ADE80") },
+        { name: "color/danger", light: hexToRgb("#B02F2F"), dark: hexToRgb("#F87171") }
       ];
 
       for (const c of colorDefs) {
@@ -141,21 +182,22 @@
   tokensFrame.name = "1. Nền tảng (Foundations & Color Tokens)";
   tokensFrame.x = 0;
   tokensFrame.y = 0;
-  tokensFrame.resize(900, 500);
+  tokensFrame.resize(900, 560);
   tokensFrame.fills = solidFill(C.surface);
   tokensFrame.cornerRadius = 16;
   tokensFrame.strokes = [{ type: "SOLID", color: C.border }];
   tokensFrame.strokeWeight = 1;
   tokensFrame.layoutMode = "VERTICAL";
-  tokensFrame.paddingTop = 32;
-  tokensFrame.paddingBottom = 32;
+  tokensFrame.paddingTop = 28;
+  tokensFrame.paddingBottom = 28;
   tokensFrame.paddingLeft = 32;
   tokensFrame.paddingRight = 32;
-  tokensFrame.itemSpacing = 20;
+  tokensFrame.itemSpacing = 14;
 
-  const tokenTitle = createText("WayFinder — Hệ màu & Tokens (W-22)", 24, FONT_BOLD, C.text);
+  const tokenTitle = createText("WayFinder — Hệ màu & Tokens (W-22 / W-24)", 22, FONT_BOLD, C.text);
   tokensFrame.appendChild(tokenTitle);
 
+  tokensFrame.appendChild(createText("Bảng màu Chế độ Sáng (Light Mode)", 14, FONT_SEMI, C.primary));
   const swatchesRow = figma.createFrame();
   swatchesRow.layoutMode = "HORIZONTAL";
   swatchesRow.itemSpacing = 16;
@@ -173,8 +215,8 @@
   for (const item of tokenList) {
     const box = figma.createFrame();
     box.layoutMode = "VERTICAL";
-    box.itemSpacing = 6;
-    box.resize(120, 130);
+    box.itemSpacing = 4;
+    box.resize(120, 115);
     box.cornerRadius = 10;
     box.fills = solidFill(C.bgSubtle);
     box.paddingTop = 10;
@@ -183,18 +225,61 @@
     box.paddingRight = 10;
 
     const colorCircle = figma.createFrame();
-    colorCircle.resize(40, 40);
-    colorCircle.cornerRadius = 20;
+    colorCircle.resize(36, 36);
+    colorCircle.cornerRadius = 18;
     colorCircle.fills = solidFill(item.c);
     box.appendChild(colorCircle);
 
-    box.appendChild(createText(item.name, 13, FONT_SEMI, C.text));
+    box.appendChild(createText(item.name, 12, FONT_SEMI, C.text));
     box.appendChild(createText(item.hex, 11, FONT_REG, C.textMuted));
     box.appendChild(createText(item.note, 10, FONT_REG, C.textMuted));
 
     swatchesRow.appendChild(box);
   }
   tokensFrame.appendChild(swatchesRow);
+
+  // Dark Swatches Row
+  tokensFrame.appendChild(createText("Bảng màu Chế độ Tối (Dark Mode — Chuẩn 100% tokens.json)", 14, FONT_SEMI, C.primary));
+  const darkSwatchesRow = figma.createFrame();
+  darkSwatchesRow.layoutMode = "HORIZONTAL";
+  darkSwatchesRow.itemSpacing = 16;
+  darkSwatchesRow.fills = [];
+
+  const darkTokenList = [
+    { name: "Primary Dark", hex: "#29A9FF", c: C_DARK.primary, note: "Nút tối (7.35:1)" },
+    { name: "Background", hex: "#0E1217", c: C_DARK.bg, note: "Nền chính tối" },
+    { name: "Surface", hex: "#161B22", c: C_DARK.surface, note: "Thẻ panel tối" },
+    { name: "Text Main", hex: "#E8EDF2", c: C_DARK.text, note: "Chữ chính (15.8:1)" },
+    { name: "Success", hex: "#4ADE80", c: C_DARK.success, note: "Đã học (9.2:1)" },
+    { name: "Danger", hex: "#F87171", c: C_DARK.danger, note: "Lỗi tối (6.5:1)" }
+  ];
+
+  for (const item of darkTokenList) {
+    const box = figma.createFrame();
+    box.layoutMode = "VERTICAL";
+    box.itemSpacing = 4;
+    box.resize(120, 115);
+    box.cornerRadius = 10;
+    box.fills = solidFill(C.bgSubtle);
+    box.paddingTop = 10;
+    box.paddingBottom = 10;
+    box.paddingLeft = 10;
+    box.paddingRight = 10;
+
+    const colorCircle = figma.createFrame();
+    colorCircle.resize(36, 36);
+    colorCircle.cornerRadius = 18;
+    colorCircle.fills = solidFill(item.c);
+    box.appendChild(colorCircle);
+
+    box.appendChild(createText(item.name, 12, FONT_SEMI, C.text));
+    box.appendChild(createText(item.hex, 11, FONT_REG, C.textMuted));
+    box.appendChild(createText(item.note, 10, FONT_REG, C.textMuted));
+
+    darkSwatchesRow.appendChild(box);
+  }
+  tokensFrame.appendChild(darkSwatchesRow);
+
   figma.currentPage.appendChild(tokensFrame);
   createdNodes.push(tokensFrame);
 
