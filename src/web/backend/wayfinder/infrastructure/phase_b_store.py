@@ -49,14 +49,16 @@ class PostgresPhaseBStore:
         if getattr(self._local, "connection", None) is not None:
             yield
             return
-        with self.engine.begin() as connection:
-            # ponytail: one DB lock for short updates; the port has no per-owner lock scope.
-            connection.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('phase-b:atomic',0))"))
-            self._local.connection = connection
-            try:
-                yield
-            finally:
-                del self._local.connection
+        with self.engine.connect() as connection:
+            connection = connection.execution_options(isolation_level="READ COMMITTED")
+            with connection.begin():
+                # ponytail: one DB lock for short updates; the port has no per-owner lock scope.
+                connection.execute(text("SELECT pg_advisory_xact_lock(hashtextextended('phase-b:atomic',0))"))
+                self._local.connection = connection
+                try:
+                    yield
+                finally:
+                    del self._local.connection
 
     def get_cache(self, key):
         with self._connection() as connection:

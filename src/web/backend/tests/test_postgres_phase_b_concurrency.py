@@ -180,6 +180,24 @@ def test_atomic_nested_transaction_and_rollback(postgres_phase_b_store):
     assert store.get_record("progress", "p") == {"status": "learned"}
 
 
+def test_atomic_uses_fresh_snapshots_even_when_engine_default_is_repeatable_read(postgres_phase_b_store):
+    engine = create_database_engine(postgres_phase_b_store.engine.url).execution_options(
+        isolation_level="REPEATABLE READ")
+    store = PostgresPhaseBStore(engine)
+    try:
+        store.put_record("probe", "snapshot", {"value": "before"})
+        with store.atomic():
+            assert store.get_record("probe", "snapshot") == {"value": "before"}
+            with engine.begin() as writer:
+                writer.execute(text("UPDATE phase_b_record SET value='{}'::jsonb "
+                                    "WHERE kind='probe' AND record_id='snapshot'"))
+            assert store.get_record("probe", "snapshot") == {}
+        with engine.connect() as connection:
+            assert connection.scalar(text("SHOW transaction_isolation")) == "repeatable read"
+    finally:
+        store.close()
+
+
 def test_lock_timeout_does_not_generate_or_poison_cache(postgres_phase_b_store):
     store = postgres_phase_b_store
     context = multiprocessing.get_context("spawn")
