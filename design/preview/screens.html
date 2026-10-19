@@ -448,24 +448,47 @@
       </nav>
 
       <div class="learning-layout">
-        <!-- Cột 1: Danh sách khái niệm (260px) -->
-        <div class="concept-sidebar">
-          <div style="font-weight:600; font-size:var(--text-small); margin-bottom:var(--space-3); color:var(--color-text-muted);">CÁC KHÁI NIỆM TRONG MODULE</div>
-          <div style="display:flex; flex-direction:column; gap:var(--space-2);">
-            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-surface); display:flex; justify-content:space-between;">
-              <span>1. Hàm mất mát</span>
-              <span style="color:var(--color-success);">✓</span>
+        <!-- Cột 1: Danh sách khái niệm & Thư viện / Tác vụ (260px) -->
+        <div class="concept-sidebar" style="display:flex; flex-direction:column; justify-content:space-between;">
+          <div>
+            <div style="font-weight:600; font-size:var(--text-small); margin-bottom:var(--space-3); color:var(--color-text-muted);">CÁC KHÁI NIỆM TRONG MODULE</div>
+            <div style="display:flex; flex-direction:column; gap:var(--space-2); margin-bottom:var(--space-6);">
+              <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-surface); display:flex; justify-content:space-between;">
+                <span>1. Hàm mất mát</span>
+                <span style="color:var(--color-success);">✓</span>
+              </div>
+              <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-surface); display:flex; justify-content:space-between;">
+                <span>2. Đạo hàm riêng</span>
+                <span style="color:var(--color-success);">✓</span>
+              </div>
+              <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-brand-tint); border-left:3px solid var(--color-primary); font-weight:600; color:var(--color-primary);">
+                <span>3. Tốc độ học (α)</span>
+              </div>
+              <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); color:var(--color-text-muted);">
+                <span>4. Batch Gradient Descent</span>
+              </div>
             </div>
-            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-surface); display:flex; justify-content:space-between;">
-              <span>2. Đạo hàm riêng</span>
-              <span style="color:var(--color-success);">✓</span>
+
+            <!-- Thư viện của module theo spec mục 6 -->
+            <div style="border-top:1px solid var(--color-border); padding-top:var(--space-4); margin-bottom:var(--space-4);">
+              <div style="font-weight:600; font-size:var(--text-caption); color:var(--color-text-muted); margin-bottom:var(--space-2); text-transform:uppercase;">Thư viện module</div>
+              <div style="display:flex; flex-direction:column; gap:6px; font-size:var(--text-small);">
+                <div style="display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--color-text);">
+                  <span>📄</span> <span>Tóm tắt Module 2</span>
+                  <span class="badge badge-accent" style="margin-left:auto; font-size:10px;">Tạo ở đây</span>
+                </div>
+                <div style="display:flex; align-items:center; gap:6px; cursor:pointer; color:var(--color-text-muted);">
+                  <span>📄</span> <span>Công thức Gradient</span>
+                  <span class="badge badge-muted" style="margin-left:auto; font-size:10px;">Ngoài sách</span>
+                </div>
+              </div>
             </div>
-            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-brand-tint); border-left:3px solid var(--color-primary); font-weight:600; color:var(--color-primary);">
-              <span>3. Tốc độ học (α)</span>
-            </div>
-            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); color:var(--color-text-muted);">
-              <span>4. Batch Gradient Descent</span>
-            </div>
+          </div>
+
+          <!-- Nút hành động theo spec mục 6: [Làm quiz] và [Tạo tài liệu] -->
+          <div style="display:flex; flex-direction:column; gap:var(--space-2); border-top:1px solid var(--color-border); padding-top:var(--space-4);">
+            <button class="btn btn-secondary btn-sm" style="width:100%; justify-content:flex-start; height:40px;"><span style="color:var(--color-primary);">✏️</span> Làm quiz module</button>
+            <button class="btn btn-secondary btn-sm" style="width:100%; justify-content:flex-start; height:40px;"><span style="color:var(--color-accent-text);">📑</span> Tạo tài liệu rút gọn</button>
           </div>
         </div>
 
