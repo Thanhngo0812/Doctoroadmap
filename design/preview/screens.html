@@ -71,9 +71,15 @@
       height: 32px;
       object-fit: contain;
     }
+    [data-theme="dark"] .brand-logo {
+      content: url('../Artboard 28.png');
+    }
     .brand-logo-mobile {
       height: 24px;
       object-fit: contain;
+    }
+    [data-theme="dark"] .brand-logo-mobile {
+      content: url('../Artboard 27.png');
     }
 
     /* Utilities */
@@ -664,10 +670,13 @@
     // 1. Dark Mode Toggle
     function toggleDarkMode() {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      const logos = document.querySelectorAll('.brand-logo');
       if (isDark) {
         document.documentElement.removeAttribute('data-theme');
+        logos.forEach(img => img.src = '../Artboard 24.png');
       } else {
         document.documentElement.setAttribute('data-theme', 'dark');
+        logos.forEach(img => img.src = '../Artboard 28.png');
       }
     }
 
@@ -753,6 +762,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get('theme') === 'dark') {
         document.documentElement.setAttribute('data-theme', 'dark');
+        document.querySelectorAll('.brand-logo').forEach(img => img.src = '../Artboard 28.png');
       }
       if (urlParams.get('reduced') === 'true') {
         toggleReducedMotion();
