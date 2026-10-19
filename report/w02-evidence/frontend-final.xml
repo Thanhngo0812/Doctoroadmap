@@ -1,281 +1,67 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="29" failures="1" errors="0" time="7.8658718">
-    <testsuite name="src/App.test.tsx" timestamp="2026-10-19T15:25:50.540Z" hostname="ADMIN" tests="12" failures="1" errors="0" skipped="0" time="7.6810001">
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; takes a learner from the sample document through lecture, quiz, and visible progress" time="1.5987629">
+<testsuites name="vitest tests" tests="29" failures="0" errors="0" time="7.8327293">
+    <testsuite name="src/App.test.tsx" timestamp="2026-10-19T15:28:20.447Z" hostname="ADMIN" tests="12" failures="0" errors="0" skipped="0" time="7.7018592">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; takes a learner from the sample document through lecture, quiz, and visible progress" time="1.5543754">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; reports a database-down 503 and recovers when the learner retries" time="0.128446">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; reports a database-down 503 and recovers when the learner retries" time="0.1325956">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; toggles the theme from the keyboard and routes unknown paths to the pixel 404 page" time="0.105246">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; toggles the theme from the keyboard and routes unknown paths to the pixel 404 page" time="0.124347">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; does not allow the sample flow to start before the consent control is checked" time="0.0961358">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; does not allow the sample flow to start before the consent control is checked" time="0.1106896">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; uses an instant footer scroll when reduced motion is enabled" time="0.0662589">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; uses an instant footer scroll when reduced motion is enabled" time="0.0934324">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; registers through the API, hydrates the new session, and lands on the account page" time="1.2405344">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; registers through the API, hydrates the new session, and lands on the account page" time="1.1045419">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; keeps duplicate registration generic when no session is created" time="1.227025">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; keeps duplicate registration generic when no session is created" time="1.1564338">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; shows generic login and rate-limit errors, and the account menu logs out with CSRF" time="0.7220694">
-            <failure message="Unable to find an element with the text: Linh Nguyễn, which matches selector &apos;summary&apos;. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
-
-Ignored nodes: comments, script, style
-&lt;body&gt;
-  &lt;div&gt;
-    &lt;header
-      class=&quot;site-header&quot;
-    &gt;
-      &lt;div
-        class=&quot;header-inner&quot;
-      &gt;
-        &lt;a
-          aria-label=&quot;WayFinder, về trang chủ&quot;
-          class=&quot;brand-link&quot;
-          data-discover=&quot;true&quot;
-          href=&quot;/&quot;
-        &gt;
-          &lt;img
-            alt=&quot;WayFinder&quot;
-            src=&quot;/assets/Artboard%2024.png&quot;
-          /&gt;
-        &lt;/a&gt;
-        &lt;div
-          class=&quot;header-actions&quot;
-        &gt;
-          &lt;button
-            aria-label=&quot;Bật chế độ tối&quot;
-            class=&quot;icon-button theme-toggle&quot;
-            type=&quot;button&quot;
-          &gt;
-            ◐
-          &lt;/button&gt;
-          &lt;details
-            class=&quot;account-menu&quot;
-          &gt;
-            &lt;summary&gt;
-              &lt;span
-                class=&quot;account-menu-name&quot;
-              &gt;
-                Linh Nguyễn
-              &lt;/span&gt;
-              &lt;span
-                aria-hidden=&quot;true&quot;
-              &gt;
-                ⌄
-              &lt;/span&gt;
-            &lt;/summary&gt;
-            &lt;div
-              class=&quot;account-menu-panel&quot;
-            &gt;
-              &lt;span&gt;
-                linh@example.vn
-              &lt;/span&gt;
-              &lt;button
-                type=&quot;button&quot;
-              &gt;
-                Đăng xuất
-              &lt;/button&gt;
-            &lt;/div&gt;
-          &lt;/details&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/header&gt;
-    &lt;main
-      class=&quot;account-page page-frame&quot;
-    &gt;
-      &lt;span
-        class=&quot;section-kicker&quot;
-      &gt;
-        TÀI KHOẢN WAYFINDER
-      &lt;/span&gt;
-      &lt;h1&gt;
-        Tài khoản của bạn
-      &lt;/h1&gt;
-      &lt;p&gt;
-        Xin chào, 
-        Linh Nguyễn
-        . Bạn đã đăng nhập.
-      &lt;/p&gt;
-      &lt;div
-        class=&quot;account-summary&quot;
-      &gt;
-        &lt;span&gt;
-          Email
-        &lt;/span&gt;
-        &lt;strong&gt;
-          linh@example.vn
-        &lt;/strong&gt;
-        &lt;span&gt;
-          Trạng thái email
-        &lt;/span&gt;
-        &lt;strong&gt;
-          Chưa xác minh
-        &lt;/strong&gt;
-      &lt;/div&gt;
-    &lt;/main&gt;
-    &lt;span
-      data-testid=&quot;current-location&quot;
-      hidden=&quot;&quot;
-    &gt;
-      /tai-khoan
-    &lt;/span&gt;
-  &lt;/div&gt;
-&lt;/body&gt;" type="TestingLibraryElementError">
-TestingLibraryElementError: Unable to find an element with the text: Linh Nguyễn, which matches selector &apos;summary&apos;. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
-
-Ignored nodes: comments, script, style
-&lt;body&gt;
-  &lt;div&gt;
-    &lt;header
-      class=&quot;site-header&quot;
-    &gt;
-      &lt;div
-        class=&quot;header-inner&quot;
-      &gt;
-        &lt;a
-          aria-label=&quot;WayFinder, về trang chủ&quot;
-          class=&quot;brand-link&quot;
-          data-discover=&quot;true&quot;
-          href=&quot;/&quot;
-        &gt;
-          &lt;img
-            alt=&quot;WayFinder&quot;
-            src=&quot;/assets/Artboard%2024.png&quot;
-          /&gt;
-        &lt;/a&gt;
-        &lt;div
-          class=&quot;header-actions&quot;
-        &gt;
-          &lt;button
-            aria-label=&quot;Bật chế độ tối&quot;
-            class=&quot;icon-button theme-toggle&quot;
-            type=&quot;button&quot;
-          &gt;
-            ◐
-          &lt;/button&gt;
-          &lt;details
-            class=&quot;account-menu&quot;
-          &gt;
-            &lt;summary&gt;
-              &lt;span
-                class=&quot;account-menu-name&quot;
-              &gt;
-                Linh Nguyễn
-              &lt;/span&gt;
-              &lt;span
-                aria-hidden=&quot;true&quot;
-              &gt;
-                ⌄
-              &lt;/span&gt;
-            &lt;/summary&gt;
-            &lt;div
-              class=&quot;account-menu-panel&quot;
-            &gt;
-              &lt;span&gt;
-                linh@example.vn
-              &lt;/span&gt;
-              &lt;button
-                type=&quot;button&quot;
-              &gt;
-                Đăng xuất
-              &lt;/button&gt;
-            &lt;/div&gt;
-          &lt;/details&gt;
-        &lt;/div&gt;
-      &lt;/div&gt;
-    &lt;/header&gt;
-    &lt;main
-      class=&quot;account-page page-frame&quot;
-    &gt;
-      &lt;span
-        class=&quot;section-kicker&quot;
-      &gt;
-        TÀI KHOẢN WAYFINDER
-      &lt;/span&gt;
-      &lt;h1&gt;
-        Tài khoản của bạn
-      &lt;/h1&gt;
-      &lt;p&gt;
-        Xin chào, 
-        Linh Nguyễn
-        . Bạn đã đăng nhập.
-      &lt;/p&gt;
-      &lt;div
-        class=&quot;account-summary&quot;
-      &gt;
-        &lt;span&gt;
-          Email
-        &lt;/span&gt;
-        &lt;strong&gt;
-          linh@example.vn
-        &lt;/strong&gt;
-        &lt;span&gt;
-          Trạng thái email
-        &lt;/span&gt;
-        &lt;strong&gt;
-          Chưa xác minh
-        &lt;/strong&gt;
-      &lt;/div&gt;
-    &lt;/main&gt;
-    &lt;span
-      data-testid=&quot;current-location&quot;
-      hidden=&quot;&quot;
-    &gt;
-      /tai-khoan
-    &lt;/span&gt;
-  &lt;/div&gt;
-&lt;/body&gt;
- ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
- ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
- ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
- ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
- ❯ src/App.test.tsx:208:29
-            </failure>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; shows generic login and rate-limit errors, and the account menu logs out with CSRF" time="0.8098282">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; redirects an unauthenticated account visit to login with a local return path" time="0.0246515">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; redirects an unauthenticated account visit to login with a local return path" time="0.0139232">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; checks password confirmation locally and exposes the password toggle state accessibly" time="1.1869594">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; checks password confirmation locally and exposes the password toggle state accessibly" time="1.2808572">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; maps API validation fields to a focused alert and inline accessible error" time="1.1865993">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; maps API validation fields to a focused alert and inline accessible error" time="1.2239292">
         </testcase>
-        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; offers recovery when session lookup fails on a public auth route" time="0.0951192">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; offers recovery when session lookup fails on a public auth route" time="0.094428">
         </testcase>
     </testsuite>
-    <testsuite name="src/TaskWait.test.tsx" timestamp="2026-10-19T15:25:50.549Z" hostname="ADMIN" tests="2" failures="0" errors="0" skipped="0" time="0.1491189">
-        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; waits at least 400ms, then exposes an animated WebP with a GIF fallback and status text" time="0.1332045">
+    <testsuite name="src/TaskWait.test.tsx" timestamp="2026-10-19T15:28:20.452Z" hostname="ADMIN" tests="2" failures="0" errors="0" skipped="0" time="0.1013933">
+        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; waits at least 400ms, then exposes an animated WebP with a GIF fallback and status text" time="0.0902755">
         </testcase>
-        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; uses only the static PNG when reduced motion is requested" time="0.0133713">
+        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; uses only the static PNG when reduced motion is requested" time="0.0094925">
         </testcase>
     </testsuite>
-    <testsuite name="src/api.test.ts" timestamp="2026-10-19T15:25:50.550Z" hostname="ADMIN" tests="15" failures="0" errors="0" skipped="0" time="0.0357528">
-        <testcase classname="src/api.test.ts" name="apiFetch &gt; sends cookies on reads and attaches the in-memory CSRF token on writes only" time="0.0091119">
+    <testsuite name="src/api.test.ts" timestamp="2026-10-19T15:28:20.453Z" hostname="ADMIN" tests="15" failures="0" errors="0" skipped="0" time="0.0294768">
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; sends cookies on reads and attaches the in-memory CSRF token on writes only" time="0.00607">
         </testcase>
-        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps unauthenticated to a stable Vietnamese message" time="0.0038159">
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps unauthenticated to a stable Vietnamese message" time="0.0035158">
         </testcase>
-        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps conflict to a stable Vietnamese message" time="0.0008202">
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps conflict to a stable Vietnamese message" time="0.0008525">
         </testcase>
-        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps validation to a stable Vietnamese message" time="0.0006791">
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps validation to a stable Vietnamese message" time="0.0006311">
         </testcase>
-        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps owns_shared_courses to a stable Vietnamese message" time="0.0007401">
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps owns_shared_courses to a stable Vietnamese message" time="0.0005342">
         </testcase>
-        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps structured server errors to Vietnamese without exposing raw server text" time="0.0011174">
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps structured server errors to Vietnamese without exposing raw server text" time="0.0010286">
         </testcase>
-        <testcase classname="src/api.test.ts" name="apiFetch &gt; keeps a valid degraded health payload when the API uses HTTP 503 for database downtime" time="0.0014725">
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; keeps a valid degraded health payload when the API uses HTTP 503 for database downtime" time="0.0009429">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; parses events across CRLF boundaries and a split multibyte Vietnamese character" time="0.0077717">
+        <testcase classname="src/api.test.ts" name="readSse &gt; parses events across CRLF boundaries and a split multibyte Vietnamese character" time="0.0063722">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; joins multiline data and ignores comments" time="0.0012286">
+        <testcase classname="src/api.test.ts" name="readSse &gt; joins multiline data and ignores comments" time="0.0012081">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; keeps multiline data together when a CRLF pair is split between chunks" time="0.0008838">
+        <testcase classname="src/api.test.ts" name="readSse &gt; keeps multiline data together when a CRLF pair is split between chunks" time="0.0008042">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; drops an event that is not terminated by a blank line at EOF" time="0.0005231">
+        <testcase classname="src/api.test.ts" name="readSse &gt; drops an event that is not terminated by a blank line at EOF" time="0.0005022">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; keeps the last event ID across messages" time="0.0006002">
+        <testcase classname="src/api.test.ts" name="readSse &gt; keeps the last event ID across messages" time="0.0005524">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; preserves structured API errors from a failed SSE response" time="0.0006828">
+        <testcase classname="src/api.test.ts" name="readSse &gt; preserves structured API errors from a failed SSE response" time="0.0006393">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; cancels the stream when an event callback throws" time="0.0018723">
+        <testcase classname="src/api.test.ts" name="readSse &gt; cancels the stream when an event callback throws" time="0.0021728">
         </testcase>
-        <testcase classname="src/api.test.ts" name="readSse &gt; cancels an already-aborted stream and releases its reader" time="0.0015517">
+        <testcase classname="src/api.test.ts" name="readSse &gt; cancels an already-aborted stream and releases its reader" time="0.0015499">
         </testcase>
     </testsuite>
 </testsuites>

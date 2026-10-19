@@ -205,7 +205,7 @@ describe('WayFinder demo', () => {
     await user.click(screen.getByRole('button', { name: 'Đăng nhập' }));
 
     expect(await screen.findByRole('heading', { name: 'Tài khoản của bạn' })).toBeInTheDocument();
-    await user.click(screen.getByText('Linh Nguyễn', { selector: 'summary' }));
+    await user.click(screen.getByText('Linh Nguyễn', { selector: '.account-menu-name' }).closest('summary')!);
     await user.click(document.querySelector('.account-menu-panel button')!);
     const logoutCall = fetchSpy.mock.calls.find(([url]) => String(url).endsWith('/auth/logout'));
     expect(new Headers(logoutCall?.[1]?.headers).get('X-CSRF-Token')).toBe('csrf-login');
