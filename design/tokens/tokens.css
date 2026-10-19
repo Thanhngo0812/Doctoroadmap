@@ -1,0 +1,141 @@
+/**
+ * WayFinder Design Tokens CSS
+ * Generated for W-22 Figma & React Web integration (W-01)
+ * Font: Be Vietnam Pro
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+:root {
+  /* Typography Families */
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Consolas, monospace;
+
+  /* Typography Scales (Desktop Default) */
+  --text-display: 36px;
+  --line-display: 44px;
+  --text-h1: 30px;
+  --line-h1: 38px;
+  --text-h2: 24px;
+  --line-h2: 32px;
+  --text-h3: 20px;
+  --line-h3: 28px;
+  --text-lead: 18px;
+  --line-lead: 30px;
+  --text-body: 16px;
+  --line-body: 26px;
+  --text-small: 14px;
+  --line-small: 22px;
+  --text-caption: 12px;
+  --line-caption: 18px;
+
+  /* Spacing Scale (4px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  /* Page Padding */
+  --page-padding: 32px;
+
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-pixel: 0px;
+
+  /* Shadows */
+  --shadow-1: 0 1px 2px rgb(18 22 27 / 0.06), 0 1px 3px rgb(18 22 27 / 0.08);
+  --shadow-2: 0 8px 24px rgb(18 22 27 / 0.12);
+
+  /* Motion */
+  --motion-fast: 120ms;
+  --motion-base: 200ms;
+  --motion-ease: ease-out;
+
+  /* Colors (Light Mode Default) */
+  --color-bg: #FFFFFF;
+  --color-bg-subtle: #F6F8FA;
+  --color-surface: #FFFFFF;
+  --color-border: #DDE2E8;
+  --color-border-input: #8994A0;
+  --color-text: #12161B;
+  --color-text-muted: #5B6673;
+  --color-brand: #29A9FF;
+  --color-brand-tint: #EAF6FF;
+  --color-primary: #0A6AB3;
+  --color-primary-text: #FFFFFF;
+  --color-primary-hover: #0A5E9C;
+  --color-accent: #FEBA4F;
+  --color-accent-tint: #FFF4DF;
+  --color-accent-text: #8A4F0F;
+  --color-success: #146C3B;
+  --color-success-tint: #E8F6EE;
+  --color-danger: #B02F2F;
+  --color-danger-tint: #FDECEC;
+}
+
+/* Mobile responsive typography adjustments */
+@media (max-width: 640px) {
+  :root {
+    --text-display: 28px;
+    --line-display: 36px;
+    --text-h1: 24px;
+    --line-h1: 32px;
+    --text-h2: 20px;
+    --line-h2: 28px;
+    --page-padding: 16px;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  :root {
+    --page-padding: 24px;
+  }
+}
+
+/* Dark Mode */
+[data-theme="dark"],
+.dark {
+  --color-bg: #0E1217;
+  --color-bg-subtle: #161B22;
+  --color-surface: #161B22;
+  --color-surface-2: #1E252E;
+  --color-border: #2A323C;
+  --color-border-input: #6B7785;
+  --color-text: #E8EDF2;
+  --color-text-muted: #9AA6B2;
+  --color-primary: #29A9FF;
+  --color-primary-text: #0E1217;
+  --color-primary-hover: #52B8FF;
+  --color-brand: #29A9FF;
+  --color-brand-tint: rgba(41, 169, 255, 0.14);
+  --color-accent: #FEBA4F;
+  --color-accent-tint: rgba(254, 186, 79, 0.14);
+  --color-accent-text: #FEBA4F;
+  --color-success: #4ADE80;
+  --color-success-tint: rgba(74, 222, 128, 0.14);
+  --color-danger: #F87171;
+  --color-danger-tint: rgba(248, 113, 113, 0.14);
+  --shadow-1: none;
+  --shadow-2: 0 8px 24px rgb(0 0 0 / 0.4);
+}
+
+/* Reduced Motion Override */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

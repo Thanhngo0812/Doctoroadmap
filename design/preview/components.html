@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WayFinder Design System — Components Showcase (W-22)</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg-subtle);
+      color: var(--color-text);
+      line-height: var(--line-body);
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--color-surface);
+      padding: var(--space-8);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--color-border);
+      box-shadow: var(--shadow-1);
+    }
+    h1 { font-size: var(--text-display); line-height: var(--line-display); font-weight: 700; margin-bottom: var(--space-2); }
+    h2 { font-size: var(--text-h2); line-height: var(--line-h2); font-weight: 600; margin-top: var(--space-8); margin-bottom: var(--space-4); border-bottom: 2px solid var(--color-border); padding-bottom: var(--space-2); }
+    h3 { font-size: var(--text-h3); line-height: var(--line-h3); font-weight: 600; margin-top: var(--space-4); margin-bottom: var(--space-2); }
+    p.sub { color: var(--color-text-muted); font-size: var(--text-body); margin-bottom: var(--space-6); }
+
+    .grid-row { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; margin-bottom: var(--space-4); }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--font-sans);
+      font-weight: 500;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: all var(--motion-fast) var(--motion-ease);
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+    .btn:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
+    .btn-md { height: 44px; padding: 0 var(--space-5); font-size: var(--text-body); }
+    .btn-sm { height: 36px; padding: 0 var(--space-4); font-size: var(--text-small); }
+
+    .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border-input); }
+    .btn-secondary:hover { background: var(--color-bg-subtle); }
+    .btn-text { background: transparent; color: var(--color-primary); }
+    .btn-text:hover { background: var(--color-brand-tint); }
+    .btn-danger { background: var(--color-danger); color: #FFFFFF; }
+    .btn-danger:hover { opacity: 0.9; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner-gif {
+        content: url('../Untitled_Artwork_static.png') !important;
+      }
+    }
+
+    /* Inputs */
+    .form-group { display: flex; flex-direction: column; gap: var(--space-1); max-width: 360px; margin-bottom: var(--space-4); }
+    .form-label { font-size: var(--text-small); font-weight: 500; color: var(--color-text); }
+    .form-input {
+      height: 44px;
+      padding: 0 var(--space-3);
+      font-family: var(--font-sans);
+      font-size: var(--text-body);
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      color: var(--color-text);
+      transition: border-color var(--motion-fast);
+    }
+    .form-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-brand-tint); }
+    .form-input.error { border-color: var(--color-danger); }
+    .form-error { font-size: var(--text-caption); color: var(--color-danger); }
+
+    /* Status Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: 500;
+    }
+    .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+    .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+    .badge-brand { background: var(--color-brand-tint); color: var(--color-primary); }
+    .badge-muted { background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+
+    /* Cards */
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-1);
+      position: relative;
+      width: 320px;
+    }
+    .card-pixel-corner::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 4px;
+      background: var(--color-brand);
+      border-top-left-radius: var(--radius-lg);
+    }
+
+    /* Lecture Blocks */
+    .lecture-prereq {
+      background: var(--color-bg-subtle);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      padding: var(--space-3) var(--space-4);
+      margin-bottom: var(--space-3);
+    }
+    .lecture-next {
+      background: var(--color-accent-tint);
+      border-left: 4px solid var(--color-accent);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: var(--space-4);
+      margin-top: var(--space-6);
+    }
+    .quote-box {
+      border-left: 3px solid var(--color-border-input);
+      padding-left: var(--space-3);
+      font-style: italic;
+      color: var(--color-text-muted);
+      margin: var(--space-2) 0;
+    }
+
+    /* Banners */
+    .banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-small);
+      margin-bottom: var(--space-3);
+    }
+    .banner-warning { background: var(--color-accent-tint); color: var(--color-accent-text); border: 1px solid var(--color-accent); }
+    .banner-danger { background: var(--color-danger-tint); color: var(--color-danger); border: 1px solid var(--color-danger); }
+    .banner-info { background: var(--color-brand-tint); color: var(--color-primary); border: 1px solid var(--color-brand); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>WayFinder — Thư viện thành phần (W-22)</h1>
+    <p class="sub">Được chuẩn hoá theo spec thiết kế giao diện (doc/web-thiet-ke-giao-dien-spec.md) và tiêu chí thị giác 3a.</p>
+
+    <!-- Nút bấm -->
+    <h2>1. Nút bấm (Buttons)</h2>
+    <div class="grid-row">
+      <button class="btn btn-primary btn-md">Nút chính (44px)</button>
+      <button class="btn btn-primary btn-sm">Nút chính (36px)</button>
+      <button class="btn btn-secondary btn-md">Nút phụ</button>
+      <button class="btn btn-text btn-md">Nút chữ</button>
+      <button class="btn btn-danger btn-md">Nút nguy hiểm</button>
+      <button class="btn btn-primary btn-md" disabled>Vô hiệu</button>
+    </div>
+
+    <!-- Ô nhập -->
+    <h2>2. Ô nhập (Inputs)</h2>
+    <div class="grid-row">
+      <div class="form-group">
+        <label class="form-label">Email học viên</label>
+        <input type="email" class="form-input" placeholder="ten@truong.edu.vn" value="hocvien@wayfinder.vn">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Mật khẩu</label>
+        <input type="password" class="form-input" value="••••••••">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Trạng thái lỗi</label>
+        <input type="text" class="form-input error" value="Tệp không hợp lệ">
+        <span class="form-error">Email hoặc mật khẩu chưa đúng.</span>
+      </div>
+    </div>
+
+    <!-- Nhãn trạng thái -->
+    <h2>3. Nhãn trạng thái (Status Badges)</h2>
+    <div class="grid-row">
+      <span class="badge badge-success">✓ Đã học</span>
+      <span class="badge badge-muted">Chưa học</span>
+      <span class="badge badge-accent">Module 3</span>
+      <span class="badge badge-brand">Tạo ở đây</span>
+      <span class="badge badge-muted">Ngoài sách</span>
+      <span class="badge badge-muted">Bài rút gọn</span>
+    </div>
+
+    <!-- Thẻ khoá học -->
+    <h2>4. Thẻ khoá học & Thẻ module (Cards)</h2>
+    <div class="grid-row">
+      <div class="card card-pixel-corner">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+          <h3 style="margin:0;">Nhập môn Machine Learning</h3>
+          <span class="badge badge-brand">Chủ khoá</span>
+        </div>
+        <p style="font-size:var(--text-small); color:var(--color-text-muted); margin-bottom:12px;">8 module · 40 khái niệm</p>
+        <div style="background:var(--color-bg-subtle); height:6px; border-radius:3px; margin-bottom:12px; overflow:hidden;">
+          <div style="width:30%; height:100%; background:var(--color-brand);"></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span style="font-size:var(--text-caption); color:var(--color-text-muted);">Xong 12/40</span>
+          <button class="btn btn-primary btn-sm">Học tiếp</button>
+        </div>
+      </div>
+
+      <div class="card card-pixel-corner">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+          <h3 style="margin:0;">Xác suất thống kê</h3>
+          <span class="badge badge-accent">Đang dựng</span>
+        </div>
+        <p style="font-size:var(--text-small); color:var(--color-text-muted); margin-bottom:12px;">Bước 2/4 · Trích khái niệm</p>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <picture>
+            <source srcset="../Untitled_Artwork_static.png" media="(prefers-reduced-motion: reduce)">
+            <img src="../Untitled_Artwork.gif" class="spinner-gif" width="48" height="48" alt="Spinner">
+          </picture>
+          <span style="font-size:var(--text-small); color:var(--color-text-muted);">Đang chuẩn bị lộ trình...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Khối bài giảng lecture-2 -->
+    <h2>5. Khối bài giảng `lecture-2`</h2>
+    <div style="max-width: 680px; background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--space-6);">
+      <!-- Tiên quyết gập mở -->
+      <div class="lecture-prereq">
+        <div style="display:flex; justify-content:space-between; align-items:center; cursor:pointer;">
+          <span style="font-weight:600; font-size:var(--text-small);">▸ Tiên quyết: Ma trận (Module 2)</span>
+          <span class="badge badge-success">✓ Bạn đã học</span>
+        </div>
+        <div class="quote-box">"Định thức dùng ma trận để tính các đặc trưng đại số..." (tr. 42)</div>
+        <p style="font-size:var(--text-small); color:var(--color-text);">Khái niệm này xây dựng trực tiếp trên ma trận vuông để tìm định thức.</p>
+      </div>
+
+      <!-- Thân định nghĩa -->
+      <h3 style="font-size:var(--text-h2);">Định nghĩa</h3>
+      <p style="font-size:var(--text-lead); line-height:var(--line-lead); margin-bottom:var(--space-4);">
+        "Định thức là một giá trị vô hướng đặc trưng cho một ma trận vuông, phản ánh hệ số phóng đại diện tích hoặc thể tích của phép biến đổi tuyến tính." <span style="font-size:var(--text-caption); color:var(--color-primary); cursor:pointer;">[tr. 45]</span>
+      </p>
+
+      <!-- Khối Tiếp theo -->
+      <div class="lecture-next">
+        <div style="font-weight:600; font-size:var(--text-small); color:var(--color-accent-text); margin-bottom:4px;">→ TIẾP THEO</div>
+        <p style="font-size:var(--text-body); color:var(--color-text);">Ma trận nghịch đảo (Module 3) sử dụng định thức để xác định tính khả nghịch.</p>
+      </div>
+    </div>
+
+    <!-- Dải thông báo -->
+    <h2>6. Dải thông báo (Banners)</h2>
+    <div class="banner banner-info">
+      <span>Bạn chưa xác minh email. Một số tính năng chia sẻ sẽ bị hạn chế.</span>
+      <button class="btn btn-text btn-sm" style="color:var(--color-primary);">Gửi lại thư</button>
+    </div>
+    <div class="banner banner-warning">
+      <span>Hôm nay bạn đã dùng hết lượt hỏi trợ lý. Lượt mới sẽ mở lúc 00:00.</span>
+      <span style="font-weight:500;">Đặt lại sau 12h</span>
+    </div>
+    <div class="banner banner-danger">
+      <span>Lỗi mạng: Không thể kết nối với máy chủ. Hãy kiểm tra đường truyền.</span>
+      <button class="btn btn-danger btn-sm">Thử lại</button>
+    </div>
+
+  </div>
+</body>
+</html>

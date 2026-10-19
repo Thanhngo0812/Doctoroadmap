@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WayFinder — Full Screens Mockups (W-22)</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: #E2E8F0;
+      color: var(--color-text);
+      line-height: var(--line-body);
+      padding: 40px 20px;
+    }
+    .screen-wrapper {
+      margin-bottom: 60px;
+    }
+    .screen-title {
+      font-size: var(--text-h2);
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .screen-meta {
+      font-size: var(--text-small);
+      color: #475569;
+      margin-bottom: 16px;
+    }
+
+    /* Screen Frame Desktop (Max 1280px, responsive at 768px and 390px) */
+    .viewport-desktop {
+      width: 100%;
+      max-width: 1280px;
+      min-height: 800px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      overflow-x: auto;
+      margin-bottom: 30px;
+    }
+
+    /* Screen Frame 390px Mobile */
+    .viewport-mobile {
+      width: 390px;
+      min-height: 844px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+      overflow: hidden;
+      margin-bottom: 30px;
+    }
+
+    /* Common Navbar */
+    .navbar {
+      height: 64px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-8);
+      background: var(--color-surface);
+    }
+    .navbar-mobile {
+      height: 56px;
+      padding: 0 var(--space-4);
+    }
+    .brand-logo {
+      height: 32px;
+      object-fit: contain;
+    }
+    .brand-logo-mobile {
+      height: 24px;
+      object-fit: contain;
+    }
+
+    /* Utilities */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--font-sans);
+      font-weight: 500;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid transparent;
+    }
+    .btn-md { height: 44px; padding: 0 var(--space-5); font-size: var(--text-body); }
+    .btn-sm { height: 36px; padding: 0 var(--space-4); font-size: var(--text-small); }
+    .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border-input); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner-gif {
+        content: url('../Untitled_Artwork_static.png') !important;
+      }
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: 500;
+    }
+    .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+    .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+    .badge-brand { background: var(--color-brand-tint); color: var(--color-primary); }
+    .badge-muted { background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+
+    /* Screen 1: Dashboard */
+    .dashboard-content {
+      padding: var(--space-8);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-top: var(--space-4);
+    }
+
+    @media (max-width: 1024px) {
+      .course-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+      .roadmap-layout, .learning-layout {
+        flex-direction: column !important;
+      }
+      .roadmap-chat {
+        width: 100% !important;
+        border-left: none !important;
+        border-top: 1px solid var(--color-border) !important;
+      }
+      .concept-sidebar {
+        width: 100% !important;
+        border-right: none !important;
+        border-bottom: 1px solid var(--color-border) !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .course-grid {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    .course-card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-1);
+      position: relative;
+    }
+    .card-pixel::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 4px; height: 4px;
+      background: var(--color-brand);
+      border-top-left-radius: var(--radius-lg);
+    }
+
+    /* Screen 2: Roadmap */
+    .roadmap-layout {
+      display: flex;
+      min-height: calc(800px - 64px);
+    }
+    .roadmap-main {
+      flex: 1;
+      padding: var(--space-8);
+      overflow-y: auto;
+    }
+    .roadmap-chat {
+      width: 380px;
+      border-left: 1px solid var(--color-border);
+      background: var(--color-surface);
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-header {
+      padding: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .bubble-user {
+      align-self: flex-end;
+      background: var(--color-brand-tint);
+      color: var(--color-text);
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-lg) var(--radius-lg) 0 var(--radius-lg);
+      max-width: 85%;
+      font-size: var(--text-body);
+    }
+    .bubble-assistant {
+      align-self: flex-start;
+      color: var(--color-text);
+      width: 100%;
+      font-size: var(--text-body);
+      line-height: var(--line-body);
+    }
+    .chat-input-area {
+      padding: var(--space-4);
+      border-top: 1px solid var(--color-border);
+    }
+
+    /* Screen 3: Learning Page 3-columns */
+    .learning-layout {
+      display: flex;
+      min-height: calc(800px - 64px);
+    }
+    .concept-sidebar {
+      width: 260px;
+      border-right: 1px solid var(--color-border);
+      background: var(--color-bg-subtle);
+      padding: var(--space-4);
+    }
+    .lecture-column {
+      flex: 1;
+      padding: var(--space-8);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <!-- Interactive Workbench Toolbar -->
+  <div style="max-width: 1280px; margin: 0 auto 30px auto; background: var(--color-surface); padding: 16px 24px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-1);">
+    <div>
+      <strong style="font-size: 16px;">WayFinder Interactive Design Workbench (W-24)</strong>
+      <div style="font-size: 13px; color: var(--color-text-muted);">Hỗ trợ kiểm thử trực quan: Bật/Tắt chế độ Tối, Giảm chuyển động, và tương tác luồng.</div>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn btn-secondary btn-sm" onclick="toggleDarkMode()">🌙 / ☀️ Chuyển Sáng / Tối</button>
+      <button class="btn btn-secondary btn-sm" onclick="toggleReducedMotion()">🛑 Bật / Tắt Giảm chuyển động</button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MÀN HÌNH 1: KHOÁ HỌC CỦA TÔI (/khoa-hoc) -->
+  <!-- ========================================== -->
+  <div class="screen-wrapper">
+    <div class="screen-title">1. Màn hình: Khoá học của tôi (/khoa-hoc) — Desktop 1280px</div>
+    <div class="screen-meta">Mục 6 Spec: Lưới 3 cột, logo ngang Artboard 24.png, thẻ khoá học, khoá đang dựng, dải lời mời.</div>
+    <div class="viewport-desktop">
+      <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:var(--space-4);">
+          <img src="../Artboard 24.png" class="brand-logo" alt="WayFinder">
+        </div>
+        <div style="display:flex; align-items:center; gap:var(--space-4);">
+          <button class="btn btn-primary btn-sm">+ Tải giáo trình</button>
+          <div style="width:28px; height:28px; border-radius:50%; border:2px solid var(--color-brand); display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700;">35%</div>
+          <span style="font-size:var(--text-small); font-weight:500;">Thành Ngô ▾</span>
+        </div>
+      </nav>
+
+      <div class="dashboard-content">
+        <!-- Dải lời mời -->
+        <div style="background:var(--color-bg-subtle); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-3) var(--space-4); display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-6);">
+          <div>
+            <span style="font-weight:600; font-size:var(--text-small);">Lời mời (1):</span>
+            <span style="font-size:var(--text-small); margin-left:8px;">Lan mời bạn tham gia khoá <strong>Xác suất thống kê</strong></span>
+          </div>
+          <div style="display:flex; gap:var(--space-2);">
+            <button class="btn btn-primary btn-sm">Chấp nhận</button>
+            <button class="btn btn-secondary btn-sm">Từ chối</button>
+          </div>
+        </div>
+
+        <h2 style="font-size:var(--text-h2); font-weight:700; margin-bottom:var(--space-4);">Khoá học của tôi</h2>
+        <div class="course-grid">
+          <!-- Thẻ 1 -->
+          <div class="course-card card-pixel">
+            <h3 style="font-size:var(--text-h3); margin-bottom:4px;">Nhập môn Machine Learning</h3>
+            <p style="font-size:var(--text-small); color:var(--color-text-muted); margin-bottom:12px;">8 module · 40 khái niệm</p>
+            <div style="background:var(--color-bg-subtle); height:6px; border-radius:3px; margin-bottom:12px; overflow:hidden;">
+              <div style="width:30%; height:100%; background:var(--color-brand);"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:var(--text-caption); color:var(--color-text-muted);">Xong 12/40</span>
+              <button class="btn btn-primary btn-sm">Học tiếp</button>
+            </div>
+          </div>
+
+          <!-- Thẻ 2: Đang dựng -->
+          <div class="course-card card-pixel">
+            <h3 style="font-size:var(--text-h3); margin-bottom:4px;">Giải tích 2 cho Kỹ thuật</h3>
+            <span class="badge badge-accent" style="margin-bottom:8px;">Đang dựng</span>
+            <p style="font-size:var(--text-small); color:var(--color-text-muted); margin-bottom:12px;">Bước 2/4 · Trích khái niệm</p>
+            <div style="display:flex; align-items:center; gap:12px; margin-top:8px;">
+              <img src="../Untitled_Artwork.gif" width="40" height="40" alt="Đang dựng">
+              <button class="btn btn-secondary btn-sm" style="margin-left:auto;">Xem tiến trình</button>
+            </div>
+          </div>
+
+          <!-- Thẻ 3: Mẫu -->
+          <div class="course-card card-pixel">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+              <h3 style="font-size:var(--text-h3); margin-bottom:4px;">Đại số tuyến tính</h3>
+              <span class="badge badge-brand">Khoá mẫu</span>
+            </div>
+            <p style="font-size:var(--text-small); color:var(--color-text-muted); margin-bottom:12px;">6 module · 32 khái niệm</p>
+            <div style="background:var(--color-bg-subtle); height:6px; border-radius:3px; margin-bottom:12px; overflow:hidden;">
+              <div style="width:0%; height:100%;"></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:var(--text-caption); color:var(--color-text-muted);">Chưa học</span>
+              <button class="btn btn-secondary btn-sm">Học thử</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MÀN HÌNH 2: TRANG LỘ TRÌNH (/khoa-hoc/:cid) -->
+  <!-- ========================================== -->
+  <div class="screen-wrapper">
+    <div class="screen-title">2. Màn hình: Trang lộ trình (/khoa-hoc/:cid) — Desktop 1280px</div>
+    <div class="screen-meta">Mục 6 Spec: Cột chính lộ trình + Khung chat 380px bên phải thu gọn được.</div>
+    <div class="viewport-desktop">
+      <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:var(--space-4);">
+          <img src="../Artboard 24.png" class="brand-logo" alt="WayFinder">
+          <span style="color:var(--color-text-muted);">/</span>
+          <span style="font-weight:600;">Nhập môn Machine Learning</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:var(--space-3);">
+          <button class="btn btn-secondary btn-sm">Chia sẻ</button>
+          <span style="font-size:var(--text-small); font-weight:500;">Thành Ngô ▾</span>
+        </div>
+      </nav>
+
+      <div class="roadmap-layout">
+        <div class="roadmap-main">
+          <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:var(--space-6);">
+            <div>
+              <h1 style="font-size:var(--text-h1); font-weight:700;">Lộ trình học tập</h1>
+              <p style="color:var(--color-text-muted); font-size:var(--text-body);">8 module · Xong 12/40 khái niệm</p>
+            </div>
+            <div style="display:flex; gap:var(--space-3);">
+              <button class="btn btn-secondary btn-sm">Làm quiz cả khoá</button>
+              <button class="btn btn-secondary btn-sm">Tạo tài liệu</button>
+            </div>
+          </div>
+
+          <!-- Module 1 -->
+          <div style="background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--space-5); margin-bottom:var(--space-4); box-shadow:var(--shadow-1);">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <span style="font-size:var(--text-h3); font-weight:600;">① Đại số tuyến tính căn bản</span>
+                <span class="badge badge-success" style="margin-left:8px;">✓ Hoàn thành (5/5)</span>
+              </div>
+              <button class="btn btn-secondary btn-sm">Ôn lại</button>
+            </div>
+          </div>
+
+          <!-- Module 2 -->
+          <div style="background:var(--color-surface); border:1px solid var(--color-primary); border-radius:var(--radius-lg); padding:var(--space-5); margin-bottom:var(--space-4); box-shadow:var(--shadow-1);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+              <div>
+                <span style="font-size:var(--text-h3); font-weight:600; color:var(--color-primary);">② Hồi quy tuyến tính & Gradient Descent</span>
+                <span class="badge badge-accent" style="margin-left:8px;">Đang học (3/8)</span>
+              </div>
+              <button class="btn btn-primary btn-sm">Học tiếp</button>
+            </div>
+            <!-- Khái niệm con -->
+            <div style="background:var(--color-bg-subtle); border-radius:var(--radius-md); padding:var(--space-3); font-size:var(--text-small);">
+              <div style="display:flex; gap:var(--space-2); flex-wrap:wrap;">
+                <span class="badge badge-success">✓ Hàm mất mát</span>
+                <span class="badge badge-success">✓ Đạo hàm riêng</span>
+                <span class="badge badge-brand">▶ Tốc độ học (Learning Rate)</span>
+                <span class="badge badge-muted">Batch Gradient Descent</span>
+                <span class="badge badge-muted">Stochastic Gradient Descent</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Khung chat bên phải (380px) -->
+        <div class="roadmap-chat">
+          <div class="chat-header">
+            <span>Trò chuyện (Lộ trình)</span>
+            <button class="btn btn-text btn-sm">+ Phiên mới</button>
+          </div>
+          <div class="chat-messages">
+            <div class="bubble-user">
+              Học hết cuốn này thì cần nắm vững những phần cốt lõi nào?
+            </div>
+            <div class="bubble-assistant">
+              Chào bạn! Lộ trình này gồm 3 trụ cột chính:
+              <br><br>
+              1. <strong>Đại số & Tối ưu:</strong> Nắm vững ma trận, gradient descent.<br>
+              2. <strong>Mô hình có giám sát:</strong> Tuyến tính, Logistic, SVM.<br>
+              3. <strong>Đánh giá mô hình:</strong> Overfitting, Cross-validation.
+              <br><br>
+              <div style="border:1px solid var(--color-primary); border-radius:var(--radius-md); padding:8px; font-size:var(--text-small); margin-top:8px;">
+                💡 <em>Gợi ý:</em> Bạn đang ở Module 2. Hãy hoàn thành <strong>Tốc độ học</strong> để hiểu thuật toán hội tụ.
+              </div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" placeholder="Hỏi trợ lý về lộ trình..." style="width:100%; height:40px; padding:0 12px; border:1px solid var(--color-border-input); border-radius:var(--radius-md); font-family:var(--font-sans);">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MÀN HÌNH 3: TRANG HỌC (/khoa-hoc/:cid/module/:mid) -->
+  <!-- ========================================== -->
+  <div class="screen-wrapper">
+    <div class="screen-title">3. Màn hình: Trang học & Bài giảng lecture-2 — Desktop 1280px</div>
+    <div class="screen-meta">Mục 6 Spec: 3 cột (Sidebar 260px, Bài giảng <=680px, Chat 380px). Khối tiên quyết gập/mở, thân bài giảng, khối Tiếp theo, nút "Đọc trang p".</div>
+    <div class="viewport-desktop">
+      <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:var(--space-4);">
+          <img src="../Artboard 24.png" class="brand-logo" alt="WayFinder">
+          <span style="color:var(--color-text-muted);">/</span>
+          <span>Module 2</span>
+          <span style="color:var(--color-text-muted);">/</span>
+          <span style="font-weight:600;">Tốc độ học (Learning Rate)</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:var(--space-3);">
+          <button class="btn btn-secondary btn-sm">Đọc trang 68</button>
+          <span style="font-size:var(--text-small); font-weight:500;">Thành Ngô ▾</span>
+        </div>
+      </nav>
+
+      <div class="learning-layout">
+        <!-- Cột 1: Danh sách khái niệm (260px) -->
+        <div class="concept-sidebar">
+          <div style="font-weight:600; font-size:var(--text-small); margin-bottom:var(--space-3); color:var(--color-text-muted);">CÁC KHÁI NIỆM TRONG MODULE</div>
+          <div style="display:flex; flex-direction:column; gap:var(--space-2);">
+            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-surface); display:flex; justify-content:space-between;">
+              <span>1. Hàm mất mát</span>
+              <span style="color:var(--color-success);">✓</span>
+            </div>
+            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-surface); display:flex; justify-content:space-between;">
+              <span>2. Đạo hàm riêng</span>
+              <span style="color:var(--color-success);">✓</span>
+            </div>
+            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); background:var(--color-brand-tint); border-left:3px solid var(--color-primary); font-weight:600; color:var(--color-primary);">
+              <span>3. Tốc độ học (α)</span>
+            </div>
+            <div style="padding:8px 12px; border-radius:var(--radius-md); font-size:var(--text-small); color:var(--color-text-muted);">
+              <span>4. Batch Gradient Descent</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cột 2: Bài giảng lecture-2 (<=680px) -->
+        <div class="lecture-column">
+          <span class="badge badge-accent" style="margin-bottom:8px;">Khái niệm 3/8 · Module 2</span>
+          <h1 style="font-size:var(--text-h1); font-weight:700; margin-bottom:var(--space-4);">Tốc độ học (Learning Rate)</h1>
+
+          <!-- Khối Cần biết trước (Accordion Bấm gập mở) -->
+          <div style="background:var(--color-bg-subtle); border:1px solid var(--color-border); border-radius:var(--radius-md); padding:var(--space-4); margin-bottom:var(--space-6);">
+            <div class="accordion-header" onclick="toggleAccordion(this)" style="display:flex; justify-content:space-between; align-items:center; cursor:pointer; user-select:none;">
+              <span style="font-weight:600; font-size:var(--text-small);"><span class="accordion-icon">▾</span> Cần biết trước: Gradient Descent</span>
+              <span class="badge badge-success">✓ Bạn đã học</span>
+            </div>
+            <div class="accordion-content" style="margin-top:8px;">
+              <p style="font-size:var(--text-small); color:var(--color-text-muted);">
+                "Gradient Descent điều chỉnh trọng số ngược chiều gradient với bước nhảy tỉ lệ với α." <span style="color:var(--color-primary);">[tr. 64]</span>
+              </p>
+            </div>
+          </div>
+
+          <!-- Định nghĩa -->
+          <h3 style="font-size:var(--text-h3); font-weight:600; margin-bottom:8px;">Định nghĩa</h3>
+          <p style="font-size:var(--text-lead); line-height:var(--line-lead); margin-bottom:var(--space-4);">
+            "Tốc độ học (thường ký hiệu là α) là siêu tham số quyết định độ lớn của bước cập nhật trọng số tại mỗi vòng lặp tối ưu hoá." <span style="font-size:var(--text-caption); color:var(--color-primary); cursor:pointer;">[tr. 68]</span>
+          </p>
+
+          <!-- Giải thích -->
+          <h3 style="font-size:var(--text-h3); font-weight:600; margin-bottom:8px;">Ý nghĩa thực tiễn</h3>
+          <p style="font-size:var(--text-body); line-height:var(--line-body); margin-bottom:var(--space-4);">
+            Nếu tốc độ học quá lớn, thuật toán có thể nhảy vượt qua điểm cực tiểu và không hội tụ. Ngược lại, nếu α quá nhỏ, quá trình huấn luyện sẽ diễn ra rất chậm và dễ bị mắc kẹt tại các điểm yên ngựa.
+          </p>
+
+          <!-- Khối Tiếp theo -->
+          <div style="background:var(--color-accent-tint); border-left:4px solid var(--color-accent); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:var(--space-4); margin-top:var(--space-6);">
+            <div style="font-weight:600; font-size:var(--text-small); color:var(--color-accent-text); margin-bottom:4px;">→ TIẾP THEO</div>
+            <p style="font-size:var(--text-body);">Batch Gradient Descent (Module 2) sẽ áp dụng tốc độ học này trên toàn bộ tập dữ liệu mẫu.</p>
+          </div>
+
+          <!-- Thanh hành động -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:var(--space-8); padding-top:var(--space-4); border-top:1px solid var(--color-border);">
+            <button class="btn btn-primary btn-md">✓ Đánh dấu đã học</button>
+            <button class="btn btn-secondary btn-sm" style="color:var(--color-text-muted);">Báo lỗi nội dung</button>
+          </div>
+        </div>
+
+        <!-- Cột 3: Khung chat module (380px) -->
+        <div class="roadmap-chat">
+          <div class="chat-header">
+            <span>Trợ lý học tập (Module 2)</span>
+            <button class="btn btn-text btn-sm">+ Mới</button>
+          </div>
+          <div class="chat-messages">
+            <div class="bubble-user">
+              Làm sao để chọn α phù hợp trong thực tế?
+            </div>
+            <div class="bubble-assistant">
+              Trong thực tế, bạn có thể:
+              <br><br>
+              • Thử nghiệm theo cấp số mũ: 0.1, 0.01, 0.001.<br>
+              • Sử dụng chiến lược Learning Rate Decay (giảm dần α theo epoch).<br>
+              • Sử dụng các bộ tối ưu thích ứng như Adam hoặc RMSprop.
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <input type="text" placeholder="Hỏi về tốc độ học..." style="width:100%; height:40px; padding:0 12px; border:1px solid var(--color-border-input); border-radius:var(--radius-md); font-family:var(--font-sans);">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MÀN HÌNH 4: LÀM QUIZ (/khoa-hoc/:cid/quiz/:aid) -->
+  <!-- ========================================== -->
+  <div class="screen-wrapper">
+    <div class="screen-title">4. Màn hình: Làm Quiz (/khoa-hoc/:cid/quiz/:aid) — Desktop 1280px</div>
+    <div class="screen-meta">Mục 6 Spec: Cột đơn <= 720px, các phương án chọn >= 44px, thanh cố định "Nộp bài", kết quả tô tint.</div>
+    <div class="viewport-desktop">
+      <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:var(--space-4);">
+          <img src="../Artboard 24.png" class="brand-logo" alt="WayFinder">
+          <span style="color:var(--color-text-muted);">/</span>
+          <span style="font-weight:600;">Quiz ôn tập Module 2</span>
+        </div>
+        <button class="btn btn-secondary btn-sm">Thoát</button>
+      </nav>
+
+      <div style="max-width:720px; margin:40px auto; padding:0 20px;">
+        <div style="display:flex; justify-content:space-between; margin-bottom:var(--space-4);">
+          <span style="font-weight:600; font-size:var(--text-small);">Câu 1 / 5</span>
+          <span style="font-size:var(--text-small); color:var(--color-text-muted);">Tự động đánh dấu "đã học" khi đạt</span>
+        </div>
+
+        <!-- Câu hỏi -->
+        <div style="background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--space-6); box-shadow:var(--shadow-1); margin-bottom:var(--space-6);">
+          <h2 style="font-size:var(--text-h3); margin-bottom:var(--space-5);">Điều gì xảy ra nếu chọn tốc độ học (Learning Rate) quá lớn trong Gradient Descent?</h2>
+
+          <div class="quiz-options-group" style="display:flex; flex-direction:column; gap:var(--space-3);">
+            <div class="quiz-option" style="height:48px; border:1px solid var(--color-border-input); border-radius:var(--radius-md); display:flex; align-items:center; padding:0 16px; cursor:pointer; user-select:none; transition:all 0.15s ease;">
+              A. Quá trình hội tụ diễn ra rất chậm và tốn tài nguyên.
+            </div>
+            <div class="quiz-option is-selected" style="height:48px; border:2px solid var(--color-primary); background:var(--color-brand-tint); border-radius:var(--radius-md); display:flex; align-items:center; padding:0 16px; font-weight:600; color:var(--color-primary); cursor:pointer; user-select:none; transition:all 0.15s ease;">
+              B. Thuật toán có thể bị phân kỳ (diverge) và nhảy vọt qua điểm cực tiểu.
+            </div>
+            <div class="quiz-option" style="height:48px; border:1px solid var(--color-border-input); border-radius:var(--radius-md); display:flex; align-items:center; padding:0 16px; cursor:pointer; user-select:none; transition:all 0.15s ease;">
+              C. Hàm mất mát sẽ luôn tiến về đúng 0 ngay sau vòng lặp đầu tiên.
+            </div>
+          </div>
+          <div id="quiz-feedback" style="display:none; margin-top:var(--space-4); padding:var(--space-3) var(--space-4); border-radius:var(--radius-md); font-size:var(--text-small);"></div>
+        </div>
+
+        <!-- Thanh nộp bài -->
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <span id="quiz-status-text" style="font-size:var(--text-small); color:var(--color-text-muted);">Đã chọn: 1/5 câu</span>
+          <button id="btn-submit-quiz" class="btn btn-primary btn-md" onclick="submitQuiz()">Nộp bài</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MÀN HÌNH 5: TẢI GIÁO TRÌNH & TIẾN TRÌNH DỰNG -->
+  <!-- ========================================== -->
+  <div class="screen-wrapper">
+    <div class="screen-title">5. Màn hình: Tải giáo trình (/tai-len) & Tiến trình dựng (/ban-dung/:id)</div>
+    <div class="screen-meta">Mục 6 Spec: Kéo thả PDF/DOCX, tick bản quyền, 4 bước tiến trình trực quan với GIF vòng chờ Untitled_Artwork.gif.</div>
+    <div class="viewport-desktop">
+      <nav class="navbar">
+        <img src="../Artboard 24.png" class="brand-logo" alt="WayFinder">
+        <span style="font-size:var(--text-small); font-weight:500;">Thành Ngô ▾</span>
+      </nav>
+
+      <div style="max-width:680px; margin:40px auto; padding:0 20px;">
+        <h1 style="font-size:var(--text-h1); font-weight:700; margin-bottom:var(--space-4);">Tải giáo trình & Dựng lộ trình</h1>
+
+        <!-- Vùng kéo thả -->
+        <div style="border:2px dashed var(--color-primary); border-radius:var(--radius-lg); padding:40px 20px; text-align:center; background:var(--color-bg-subtle); margin-bottom:var(--space-4);">
+          <div style="font-size:var(--text-h3); font-weight:600; margin-bottom:8px;">Kéo thả tệp PDF hoặc DOCX vào đây</div>
+          <p style="font-size:var(--text-small); color:var(--color-text-muted); margin-bottom:16px;">Hỗ trợ tài liệu tiếng Việt, tối đa 10 MB (≤ 400 trang)</p>
+          <button class="btn btn-secondary btn-sm">Chọn tệp từ máy</button>
+        </div>
+
+        <!-- Tiến trình 4 bước -->
+        <div style="background:var(--color-surface); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:var(--space-6); box-shadow:var(--shadow-1);">
+          <div style="font-weight:600; font-size:var(--text-body); margin-bottom:var(--space-4);">Tiến trình dựng lộ trình (Tệp: giao-trinh-ml-co-ban.pdf)</div>
+
+          <div style="display:flex; flex-direction:column; gap:var(--space-3); margin-bottom:var(--space-6);">
+            <div style="display:flex; align-items:center; gap:12px; color:var(--color-success); font-weight:500;">
+              <span>✓</span> <span>1. Đọc và tiền xử lý tài liệu</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; color:var(--color-primary); font-weight:600;">
+              <img src="../Untitled_Artwork.gif" width="24" height="24" alt="Đang chạy">
+              <span>2. Trích xuất và định nghĩa khái niệm (Đang chạy...)</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; color:var(--color-text-muted);">
+              <span>○</span> <span>3. Dựng đồ thị Hasse & Lộ trình học</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:12px; color:var(--color-text-muted);">
+              <span>○</span> <span>4. Chuẩn bị bài giảng và ngân hàng câu hỏi</span>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button class="btn btn-secondary btn-sm" style="color:var(--color-danger);">Huỷ tiến trình</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Dark Mode Toggle
+    function toggleDarkMode() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    // 2. Reduced Motion Toggle & Fallback Swap
+    let isReducedMotion = false;
+    function toggleReducedMotion() {
+      isReducedMotion = !isReducedMotion;
+      const imgs = document.querySelectorAll('img[src*="Untitled_Artwork"]');
+      imgs.forEach(img => {
+        if (isReducedMotion) {
+          img.dataset.gifSrc = img.src;
+          img.src = '../Untitled_Artwork_static.png';
+          img.alt = 'Vòng xoay tĩnh (Giảm chuyển động)';
+        } else {
+          img.src = img.dataset.gifSrc || '../Untitled_Artwork.gif';
+          img.alt = 'Đang chạy';
+        }
+      });
+      console.log('Reduced motion mode:', isReducedMotion ? 'ACTIVE' : 'INACTIVE');
+    }
+
+    // 3. Accordion Toggle
+    function toggleAccordion(headerEl) {
+      const contentEl = headerEl.nextElementSibling;
+      const iconEl = headerEl.querySelector('.accordion-icon');
+      const isHidden = contentEl.style.display === 'none';
+      contentEl.style.display = isHidden ? 'block' : 'none';
+      if (iconEl) {
+        iconEl.textContent = isHidden ? '▾' : '▸';
+      }
+    }
+
+    // 4. Interactive Quiz Option Selection & Submit
+    let selectedOptionIndex = 1; // Default Option B
+    document.addEventListener('DOMContentLoaded', () => {
+      const options = document.querySelectorAll('.quiz-option');
+      options.forEach((opt, idx) => {
+        opt.addEventListener('click', () => {
+          options.forEach(o => {
+            o.classList.remove('is-selected');
+            o.style.border = '1px solid var(--color-border-input)';
+            o.style.background = 'transparent';
+            o.style.fontWeight = 'normal';
+            o.style.color = 'var(--color-text)';
+          });
+          opt.classList.add('is-selected');
+          opt.style.border = '2px solid var(--color-primary)';
+          opt.style.background = 'var(--color-brand-tint)';
+          opt.style.fontWeight = '600';
+          opt.style.color = 'var(--color-primary)';
+          selectedOptionIndex = idx;
+          const statusText = document.getElementById('quiz-status-text');
+          if (statusText) statusText.textContent = `Đã chọn: Phương án ${String.fromCharCode(65 + idx)}`;
+        });
+      });
+
+      // 5. Chat Input Interaction
+      document.querySelectorAll('.chat-input-area input').forEach(input => {
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' && input.value.trim()) {
+            const container = input.closest('.roadmap-chat').querySelector('.chat-messages');
+            const q = input.value.trim();
+            input.value = '';
+
+            const userBubble = document.createElement('div');
+            userBubble.className = 'bubble-user';
+            userBubble.textContent = q;
+            container.appendChild(userBubble);
+            container.scrollTop = container.scrollHeight;
+
+            setTimeout(() => {
+              const botBubble = document.createElement('div');
+              botBubble.className = 'bubble-assistant';
+              botBubble.innerHTML = `<strong>Trợ lý AI:</strong> Về câu hỏi <em>"${q}"</em>, theo giáo trình trang 68: Tốc độ học $\\alpha$ được khởi tạo mặc định là 0.01 và có thể giảm dần (decay) khi hàm mất mát tiệm cận hội tụ.`;
+              container.appendChild(botBubble);
+              container.scrollTop = container.scrollHeight;
+            }, 400);
+          }
+        });
+      });
+
+      // Check URL parameters (e.g. ?theme=dark or ?reduced=true)
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      if (urlParams.get('reduced') === 'true') {
+        toggleReducedMotion();
+      }
+    });
+
+    function submitQuiz() {
+      const feedback = document.getElementById('quiz-feedback');
+      if (!feedback) return;
+      feedback.style.display = 'block';
+      if (selectedOptionIndex === 1) { // Option B is correct
+        feedback.style.background = 'var(--color-success-tint)';
+        feedback.style.border = '1px solid var(--color-success)';
+        feedback.style.color = 'var(--color-success)';
+        feedback.innerHTML = '<strong>✓ Chính xác!</strong> Thuật toán có thể phân kỳ nếu $\\alpha$ quá lớn vì bước nhảy vượt qua đáy cực tiểu. Bạn được cộng +20 XP.';
+      } else {
+        feedback.style.background = 'var(--color-danger-tint)';
+        feedback.style.border = '1px solid var(--color-danger)';
+        feedback.style.color = 'var(--color-danger)';
+        feedback.innerHTML = '<strong>✕ Chưa chính xác.</strong> Hãy xem lại bài giảng mục <em>"Ý nghĩa thực tiễn"</em> trang 68 để nắm cơ chế phân kỳ của Gradient Descent.';
+      }
+    }
+  </script>
+</body>
+</html>
