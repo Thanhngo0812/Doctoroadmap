@@ -7,6 +7,12 @@
 **Trạng thái:** soạn 2026-10-05, chủ dự án duyệt cùng ngày. Làm trước hoặc song song vé 14. Vé 14 có thành công thì docling vẫn còn cho sách
 có công thức và bảng, và lưới an toàn ở đây áp cho mọi bộ đọc.
 
+**Cập nhật nhân viên, 2026-10-06:** đã triển khai mặc định, fallback, cổng chất lượng trước chi tiền, cờ xác nhận có lý do,
+và cờ tái lập backend cũ. Đã đo 21 tài liệu × 2 bộ đọc, kiểm cache 44/44, dry-run d01-01 tái dùng parse sạch v2.
+Toàn bộ lượt kiểm thử: 880 xanh; 14 test trọng điểm chạy lại xanh sau chỉnh cuối (gồm chốt model của vé 12).
+Chi mô hình mới 0 USD. Báo cáo: [v4-13](../../report/v4-13-bo-doc-chu-va-cong-chat-luong-2026-10-06.md).
+Cổng phát hiện 7 sách D-01 cần xử lý/xác nhận chữ lỗi; điều đó chặn nghiệm thu đủ 16 sách của vé 12, không được tự bỏ cổng.
+
 ## Vì sao (Claude, 2026-10-05)
 
 - **docling-parse, bộ đọc chữ mặc định của `ingest`, đã đọc hỏng 2 giáo trình tiếng Việt:**

@@ -4,6 +4,11 @@
 [spec Pha B2](../../doc/pha-b2-spec.md), mục 8, 9.
 **Ai:** nhân viên lõi · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** ready-for-agent
 
+**Đợt tiếp theo 2026-10-19:** lõi nhận sau checkpoint commit W-01, không chờ phần cache toàn chuỗi W-13.
+Migration W-05 đi trước W-02, dự kiến `w05_0002` nối `w01_0001`; bàn giao mốc migration cho web trước khi ghép W-02.
+Test W-01 về schema rỗng phải kiểm ở revision `w01_0001`, đồng thời thêm kiểm nâng HEAD đủ bảng, không bỏ assertion nền.
+Xem [kế hoạch ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
+
 ## Vì sao
 
 - Kho JSON của Pha B chỉ an toàn trong một tiến trình. Web chạy nhiều worker.
@@ -26,14 +31,17 @@ bộ test hợp đồng của lõi được gọi lại từ test của `wayfind
 **Nới port**, giữ tương thích ngược; sửa cả bản JSON và bản bộ nhớ:
 - `usage_rows(doc_id=None, *, learner_id=None, since=None, purposes=None)`;
 - `anonymize_learner_usage(learner_id)`.
-- **Trần người học** (SA-42) đổi sang gọi bộ lọc mới. SA-42 chưa xong thì để ghi chú trong vé SA-42; SA-42 xong rồi thì đổi lời gọi và giữ test của SA-42
-  xanh.
+- **Trần người học** (SA-42, đã được vá tiếp ở SA-48) đổi sang gọi bộ lọc mới, giữ nguyên luật giữ chỗ và regression hiện hành.
+  Không chỉ kiểm số chi đã ghi: còn có bản ghi `spend_reservation` cho lời gọi đang chạy.
+- **`atomic()` liên tiến trình:** giữ hợp đồng lõi, hỗ trợ ngữ cảnh lồng mà `DailySpendGuard.reserve/check` đang dùng.
+  Check trần và tạo giữ chỗ, cập nhật tiến độ/quiz phải nguyên tử giữa các worker; khoá `single_flight` không tự thay các yêu cầu này.
 
 **Liệt kê `kind` thật:** quét mã Pha B, ghi vào báo cáo vé danh sách `kind` đang có, và `kind` nào không có trường `owner`.
 
 **Nối dây:** composition của `wayfinder` dùng bản PostgreSQL. CLI và test lõi không đổi, vẫn dùng bản JSON và bản bộ nhớ.
 
-**Phần ở lõi** (`src/doc2roadmap/`): chỉ nới port và sửa hai bản cài JSON, bộ nhớ như mục "Nới port" ở trên. Không thêm phụ thuộc mới vào lõi.
+**Phần ở lõi** (`src/doc2roadmap/`): nới port, sửa hai bản cài JSON/bộ nhớ và cập nhật lời gọi trần người học sang bộ lọc theo mục "Nới port".
+Không đổi luật/trần giữ chỗ SA-48 hoặc thêm phụ thuộc mới vào lõi.
 
 **Di trú:** bốn bảng Pha B, cùng chỉ mục ở spec mục 4.
 
@@ -48,6 +56,9 @@ bộ test hợp đồng của lõi được gọi lại từ test của `wayfind
 - [ ] `anonymize_learner_usage` giữ nguyên tổng `cost_usd`, và không còn dòng nào mang `learner_id` cũ.
 - [ ] Ghi một dòng sổ chi có trường lạ rồi đọc lại: `dict` giống hệt.
 - [ ] Test đồng thời hiện có của trợ lý chạy được trên bản PostgreSQL.
+- [ ] Regression SA-47/SA-48 về tiến độ, giữ chỗ chi, lỗi/timeout và qua ngày vẫn đạt; test hai tiến trình trên PostgreSQL không cho vượt trần
+  khi cùng tranh phần ngân sách cuối. Tắt bảo vệ `atomic()` phải làm assertion này đỏ, không chỉ dựa vào hai luồng cùng tiến trình.
+- [ ] Sau ghép W-02/W-05, Alembic đúng một head; DB rỗng nâng HEAD thành công, test W-01 tại revision nền vẫn còn nguyên ý nghĩa.
 
 ## Ngoài vé
 

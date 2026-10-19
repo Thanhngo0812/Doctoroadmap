@@ -28,6 +28,8 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 - Mỗi hàm tải khoá học, kiểm thành viên, rồi gọi Pha B với `owner = actor.user_id`, `doc_id = course.doc_id`, `graph_version =
   course.published_graph_version`.
 - Đồ thị của mỗi `(doc_id, graph_version)` nạp một lần và giữ trong bộ nhớ tiến trình.
+- Composition tạm truyền cấu hình Vertex AI cho runtime Pha B, cả mô hình sinh lẫn embedding (chủ dự án cập nhật 2026-10-19). Thông tin xác thực chỉ ở
+  backend theo spec chức năng mục 1; chuyển sang Developer API khi chủ dự án yêu cầu chuẩn bị demo. Các test gateway dùng đồ giả, không gọi API thật.
 - Ghi `membership.last_active_at` khi cũ hơn 5 phút.
 - Vé này cài khung cùng một hàm thật `get_roadmap` (danh sách module, tên, mô tả, khái niệm theo thứ tự). Các hàm học khác cài ở W-07…W-10.
 
@@ -47,6 +49,8 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Test liệt kê route: thêm thử một route `{cid}` không gọi kiểm thành viên thì test đỏ.
 - [ ] Gateway: thân yêu cầu có `owner` khác thì bị bỏ qua; bản ghi Pha B mới có `owner` là người đăng nhập.
+- [ ] Test nối dây runtime Pha B theo cấu hình tạm thời: bản giả sinh/embedding ghi nhận `transport=vertex`; cố ý truyền `developer_api` thì test đỏ.
+  Không dùng mạng; chưa tự chuyển transport trước chỉ thị chuẩn bị demo.
 - [ ] `seed-samples` từ chối `doc_id` ngoài danh sách cho phép, kể cả `doc_id` giả có dạng giống tập giữ lại; từ chối chạy khi `env = prod`.
 - [ ] `env = prod` không có khoá mẫu nào thì giao diện ẩn nhóm "Khoá học mẫu"; trạng thái rỗng mời tải giáo trình hay nhập link mời.
 - [ ] Không chèn được chủ thứ hai cho cùng một khoá; tạo khoá mà lỗi ở bước chèn chủ thì không còn hàng `course`.

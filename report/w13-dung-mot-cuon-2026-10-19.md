@@ -4,9 +4,9 @@
 
 Đã cài use case `BuildDocument`, port `BuildRunner`, composition nhận `Settings`, CLI `build`, bộ dựng giả và callback ghi kết quả vào DB. Ba subagent `gpt-6-luna` phụ trách điều phối, nối pipeline, CLI/bộ giả; agent chính đọc mã, sửa lỗi tích hợp, kiểm thử và ghi báo cáo này.
 
-**Chi thật của đợt: 0 USD.** Kiểm thử dùng mô hình giả, cache hoặc cấm đường gọi nhà cung cấp. Chưa nghiệm thu chạy hết sách mới bằng mô hình thật. Lượt doc-6 bắt đầu từ bộ đọc nhẹ mới dừng đúng ở cache miss `label-roles` khi chưa cho phép chi; không được báo lượt đó là dựng thành công.
+**Cập nhật sau duyệt chi:** đã dựng xong doc-6 cả từ cache lịch sử và từ kho hoàn toàn rỗng, sau đó chạy lại thành công ở 0 USD. Đã đo đủ sáu PDF gốc, gồm `nhap-mon-ml` 20 trang. Chi/usage từng lượt đã ghi SQLite. Xem [báo cáo hoàn tất](w13-hoan-tat-doc6-2026-10-19.md) để nhận kết quả, số chi và hash bổ sung; các bảng kiểm 0 USD bên dưới là lịch sử trước phê duyệt.
 
-**Bổ sung sau bàn giao:** đã kiểm lại bằng cả kho cache lịch sử, vẫn thiếu nhãn tương thích với chunk Nhe mới. Xem [phép kiểm cache và đề nghị chi riêng](w13-doc6-kiem-cache-va-de-nghi-chi-2026-10-19.md): có script tái lập 0 USD và mức đề nghị 0,25 USD để hoàn tất, đang chờ chủ dự án duyệt; không bỏ nhãn để ép qua.
+**Lịch sử đề nghị:** đã kiểm cả kho cache và ghi [đề nghị chi riêng](w13-doc6-kiem-cache-va-de-nghi-chi-2026-10-19.md). Chủ dự án sau đó duyệt hoàn thành, không còn chờ phê duyệt; không bỏ nhãn để ép qua.
 
 Kế hoạch: [plan](../tasks/plan.md), [todo](../tasks/todo.md). Snapshot bàn giao chỉ gồm mã/test/script/báo cáo W-13 và các đoạn tài liệu do phiên W-13 cập nhật; các thay đổi của phiên khác được giữ nguyên ngoài commit. Hash bàn giao lấy bằng `git log -1 --format=%H` sau khi commit; chưa push.
 
@@ -103,7 +103,7 @@ Phép đo `scripts/w13_calibrate.py`, kết quả `tmp/w13-calibration/measureme
 | doc-1 | PDF gốc, Nhe | 102 | 806,549 | 0% | 21,819% | 0 |
 | xstk-ch3-1 | PDF gốc, Nhe | 59 | 949,136 | 0% | 27,802% | 2 |
 | doc-4 | PDF gốc, Nhe | 214 | 2010,808 | 0% | 29,388% | 0 |
-| nhap-mon-ml | parse cache, thiếu PDF gốc | 1 | 204 | 0% | 24,020% | 0 |
+| nhap-mon-ml | PDF gốc đã khôi phục, Nhe | 20 | 1263,9 | 0% | 26,929% | 0 |
 | naive-bayes | PDF gốc, Nhe | 36 | 183,278 | 0% | 18,885% | 2 |
 | doc-6 | PDF gốc, Nhe | 25 | 179,8 | 0% | 24,071% | 0 |
 | English 1 (test tạo) | PDF chữ | 1 | 540 | 0% | 0% | 0 |
@@ -112,4 +112,4 @@ Phép đo `scripts/w13_calibrate.py`, kết quả `tmp/w13-calibration/measureme
 
 Chọn `scan_min_chars_per_page=150` để không loại slide doc-6; giữ `scan_max_empty_page_ratio=0.5`, `vi_min_diacritic_ratio=0.01`. Không hạ cổng chất lượng chữ để ép xstk/naive-bayes qua. Các số trên là hiệu chỉnh tập phát triển, không phải chứng minh độ chính xác bộ phân loại ngôn ngữ trên mọi tài liệu.
 
-**Giới hạn còn lại:** không có PDF gốc nhap-mon-ml nên chưa đủ sáu phép đo trên nguồn gốc; metadata cache một trang không đại diện toàn cuốn. Chạy đủ chuỗi doc-6 từ bộ đọc nhẹ cần bổ sung cache hoặc duyệt chi riêng. Việc nối PostgreSQL, UI thả tệp/xác nhận và worker thật còn thuộc W-14/nhóm web; chưa có trong checkout này.
+**Hai giới hạn W-13 đã xử lý:** tìm được PDF gốc nhap-mon-ml ở đường dẫn đã ghi trong tài liệu repo, SHA-256 khớp `d5a78c95b7603bffff77d6675c0286beaeb997f5633ac9e598bccb25305d3f71`, đo lại đủ 20 trang; doc-6 đã hoàn tất sau duyệt chi và tái lập thành công ở 0 USD. Việc nối PostgreSQL, UI thả tệp/xác nhận và worker web thuộc W-14/nhóm web.

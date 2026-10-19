@@ -52,6 +52,64 @@
     }
   }
 
+  // 2b. Native Figma Variables Setup (Tokens Collection)
+  if (figma.variables && typeof figma.variables.createVariableCollection === "function") {
+    try {
+      const collections = figma.variables.getLocalVariableCollections();
+      let collection = collections.find(c => c.name === "WayFinder Tokens");
+      if (!collection) {
+        collection = figma.variables.createVariableCollection("WayFinder Tokens");
+      }
+      const lightModeId = collection.modes[0].modeId;
+      collection.renameMode(lightModeId, "Light");
+      let darkModeId;
+      if (collection.modes.length > 1) {
+        darkModeId = collection.modes[1].modeId;
+      } else {
+        darkModeId = collection.addMode("Dark");
+      }
+
+      const colorDefs = [
+        { name: "color/primary", light: { r: 0.039, g: 0.416, b: 0.702 }, dark: { r: 0.161, g: 0.663, b: 1.0 } },
+        { name: "color/primary-text", light: { r: 1, g: 1, b: 1 }, dark: { r: 0.055, g: 0.071, b: 0.090 } },
+        { name: "color/brand", light: { r: 0.161, g: 0.663, b: 1.0 }, dark: { r: 0.161, g: 0.663, b: 1.0 } },
+        { name: "color/bg", light: { r: 1, g: 1, b: 1 }, dark: { r: 0.059, g: 0.090, b: 0.165 } },
+        { name: "color/surface", light: { r: 1, g: 1, b: 1 }, dark: { r: 0.118, g: 0.161, b: 0.231 } },
+        { name: "color/text", light: { r: 0.071, g: 0.086, b: 0.106 }, dark: { r: 0.945, g: 0.961, b: 0.976 } },
+        { name: "color/text-muted", light: { r: 0.357, g: 0.400, b: 0.451 }, dark: { r: 0.580, g: 0.639, b: 0.722 } },
+        { name: "color/accent", light: { r: 0.996, g: 0.729, b: 0.310 }, dark: { r: 0.996, g: 0.729, b: 0.310 } },
+        { name: "color/success", light: { r: 0.078, g: 0.424, b: 0.231 }, dark: { r: 0.298, g: 0.686, b: 0.314 } },
+        { name: "color/danger", light: { r: 0.690, g: 0.184, b: 0.184 }, dark: { r: 0.937, g: 0.267, b: 0.267 } }
+      ];
+
+      for (const c of colorDefs) {
+        const v = figma.variables.createVariable(c.name, collection, "COLOR");
+        v.setValueForMode(lightModeId, c.light);
+        v.setValueForMode(darkModeId, c.dark);
+      }
+
+      const spacingDefs = [
+        { name: "spacing/space-1", val: 4 },
+        { name: "spacing/space-2", val: 8 },
+        { name: "spacing/space-3", val: 12 },
+        { name: "spacing/space-4", val: 16 },
+        { name: "spacing/space-5", val: 20 },
+        { name: "spacing/space-6", val: 24 },
+        { name: "spacing/space-8", val: 32 },
+        { name: "spacing/space-10", val: 40 },
+        { name: "spacing/space-12", val: 48 },
+        { name: "spacing/space-16", val: 64 }
+      ];
+      for (const s of spacingDefs) {
+        const v = figma.variables.createVariable(s.name, collection, "FLOAT");
+        v.setValueForMode(lightModeId, s.val);
+        v.setValueForMode(darkModeId, s.val);
+      }
+    } catch (varErr) {
+      console.log("Figma Variables notice:", varErr);
+    }
+  }
+
   // Helper creators
   function createText(chars, fontSize = 16, font = FONT_REG, color = C.text) {
     const t = figma.createText();
@@ -411,6 +469,200 @@
 
   figma.currentPage.appendChild(desktopRoadmap);
   createdNodes.push(desktopRoadmap);
+
+  // ==========================================
+  // 4. FRAME: AUTH & ERROR STATES (W-02 / W-24)
+  // ==========================================
+  const authFrame = figma.createFrame();
+  authFrame.name = "4. Màn hình: Xác thực & Đăng nhập (W-02 Auth)";
+  authFrame.x = 1320;
+  authFrame.y = 540;
+  authFrame.resize(1050, 736);
+  authFrame.fills = solidFill(C.bgSubtle);
+  authFrame.cornerRadius = 16;
+  authFrame.strokes = [{ type: "SOLID", color: C.border }];
+  authFrame.strokeWeight = 1;
+  authFrame.layoutMode = "HORIZONTAL";
+  authFrame.paddingTop = 24;
+  authFrame.paddingBottom = 24;
+  authFrame.paddingLeft = 24;
+  authFrame.paddingRight = 24;
+  authFrame.itemSpacing = 24;
+
+  // Login Card
+  const loginCard = figma.createFrame();
+  loginCard.name = "Card Đăng nhập (/dang-nhap)";
+  loginCard.resize(450, 680);
+  loginCard.cornerRadius = 16;
+  loginCard.fills = solidFill(C.surface);
+  loginCard.strokes = [{ type: "SOLID", color: C.border }];
+  loginCard.strokeWeight = 1;
+  loginCard.layoutMode = "VERTICAL";
+  loginCard.paddingLeft = 24;
+  loginCard.paddingRight = 24;
+  loginCard.paddingTop = 24;
+  loginCard.itemSpacing = 14;
+
+  loginCard.appendChild(createText("WayFinder", 22, FONT_BOLD, C.primary));
+  loginCard.appendChild(createText("Đăng nhập tài khoản", 18, FONT_BOLD, C.text));
+  loginCard.appendChild(createText("Học giáo trình cùng lộ trình thông minh", 13, FONT_REG, C.textMuted));
+
+  // Error Alert Banner (invalid_credentials)
+  const alertCard = figma.createFrame();
+  alertCard.layoutMode = "HORIZONTAL";
+  alertCard.counterAxisAlignItems = "CENTER";
+  alertCard.resize(402, 44);
+  alertCard.cornerRadius = 8;
+  alertCard.fills = solidFill(C.dangerTint);
+  alertCard.strokes = [{ type: "SOLID", color: C.danger }];
+  alertCard.strokeWeight = 1;
+  alertCard.paddingLeft = 12;
+  alertCard.appendChild(createText("✕ Đăng nhập không thành công: Sai email hoặc mật khẩu", 12, FONT_SEMI, C.danger));
+  loginCard.appendChild(alertCard);
+
+  function makeInput(label, val) {
+    const f = figma.createFrame();
+    f.layoutMode = "VERTICAL";
+    f.itemSpacing = 4;
+    f.resize(402, 64);
+    f.fills = [];
+    f.appendChild(createText(label, 12, FONT_SEMI, C.text));
+    const inp = figma.createFrame();
+    inp.resize(402, 44);
+    inp.cornerRadius = 8;
+    inp.fills = solidFill(C.surface);
+    inp.strokes = [{ type: "SOLID", color: C.borderInput }];
+    inp.strokeWeight = 1;
+    inp.paddingLeft = 14;
+    inp.layoutMode = "HORIZONTAL";
+    inp.counterAxisAlignItems = "CENTER";
+    inp.appendChild(createText(val, 13, FONT_REG, C.text));
+    f.appendChild(inp);
+    return f;
+  }
+
+  loginCard.appendChild(makeInput("Email học viên", "hocvien@wayfinder.vn"));
+  loginCard.appendChild(makeInput("Mật khẩu", "••••••••••••"));
+
+  const loginBtn = makeButton("Đăng nhập (44px)", C.primary, C.white);
+  loginBtn.resize(402, 44);
+  loginCard.appendChild(loginBtn);
+  authFrame.appendChild(loginCard);
+
+  // Register Card & State Banners
+  const regCard = figma.createFrame();
+  regCard.name = "Card Đăng ký & Trạng thái lỗi W-02";
+  regCard.resize(520, 680);
+  regCard.cornerRadius = 16;
+  regCard.fills = solidFill(C.surface);
+  regCard.strokes = [{ type: "SOLID", color: C.border }];
+  regCard.strokeWeight = 1;
+  regCard.layoutMode = "VERTICAL";
+  regCard.paddingLeft = 24;
+  regCard.paddingRight = 24;
+  regCard.paddingTop = 24;
+  regCard.itemSpacing = 14;
+
+  regCard.appendChild(createText("Trạng thái lỗi & Đăng ký W-02", 18, FONT_BOLD, C.text));
+
+  // Rate limit banner
+  const rateLimitCard = figma.createFrame();
+  rateLimitCard.layoutMode = "HORIZONTAL";
+  rateLimitCard.counterAxisAlignItems = "CENTER";
+  rateLimitCard.resize(472, 44);
+  rateLimitCard.cornerRadius = 8;
+  rateLimitCard.fills = solidFill(C.accentTint);
+  rateLimitCard.strokes = [{ type: "SOLID", color: C.accent }];
+  rateLimitCard.strokeWeight = 1;
+  rateLimitCard.paddingLeft = 12;
+  rateLimitCard.appendChild(createText("⚠️ rate_limited: Bạn đã thử sai > 5 lần. Thử lại sau 15 phút.", 12, FONT_SEMI, C.accentText));
+  regCard.appendChild(rateLimitCard);
+
+  // Email unverified banner
+  const verifyCard = figma.createFrame();
+  verifyCard.layoutMode = "HORIZONTAL";
+  verifyCard.counterAxisAlignItems = "CENTER";
+  verifyCard.resize(472, 44);
+  verifyCard.cornerRadius = 8;
+  verifyCard.fills = solidFill(C.brandTint);
+  verifyCard.strokes = [{ type: "SOLID", color: C.primary }];
+  verifyCard.strokeWeight = 1;
+  verifyCard.paddingLeft = 12;
+  verifyCard.appendChild(createText("✉️ email_unverified: Cần xác minh email trước khi sử dụng.", 12, FONT_SEMI, C.primary));
+  regCard.appendChild(verifyCard);
+
+  regCard.appendChild(makeInput("Email đăng ký", "hocvien@truong.edu.vn"));
+  regCard.appendChild(makeInput("Mật khẩu (Argon2id, 8-128 ký tự)", "••••••••••••"));
+  regCard.appendChild(makeInput("Xác nhận mật khẩu", "••••••••••••"));
+
+  const regBtn = makeButton("Đăng ký tài khoản (44px)", C.primary, C.white);
+  regBtn.resize(472, 44);
+  regCard.appendChild(regBtn);
+  authFrame.appendChild(regCard);
+
+  figma.currentPage.appendChild(authFrame);
+  createdNodes.push(authFrame);
+
+  // ==========================================
+  // 5. FRAME: 4 PROTOTYPE FLOWS SPECIFICATION
+  // ==========================================
+  const protoFrame = figma.createFrame();
+  protoFrame.name = "5. Đặc tả 4 Luồng Prototype (W-22 / W-24)";
+  protoFrame.x = 0;
+  protoFrame.y = 1380;
+  protoFrame.resize(1280, 360);
+  protoFrame.fills = solidFill(C.surface);
+  protoFrame.cornerRadius = 16;
+  protoFrame.strokes = [{ type: "SOLID", color: C.border }];
+  protoFrame.strokeWeight = 1;
+  protoFrame.layoutMode = "VERTICAL";
+  protoFrame.paddingTop = 28;
+  protoFrame.paddingBottom = 28;
+  protoFrame.paddingLeft = 32;
+  protoFrame.paddingRight = 32;
+  protoFrame.itemSpacing = 16;
+
+  protoFrame.appendChild(createText("4 Luồng Prototype Bấm được (Figma & Web Workbench)", 22, FONT_BOLD, C.text));
+  protoFrame.appendChild(createText("Thời lượng tương tác: 120ms (nhanh), 200ms (chuẩn). Giảm chuyển động: ngắt hoạt ảnh, chuyển sang ảnh tĩnh.", 13, FONT_REG, C.textMuted));
+
+  const protoGrid = figma.createFrame();
+  protoGrid.layoutMode = "HORIZONTAL";
+  protoGrid.itemSpacing = 16;
+  protoGrid.fills = [];
+
+  const flows = [
+    { num: "Luồng 1", name: "Đăng nhập & Xác thực phiên", desc: "Màn hình /dang-nhap -> Form điền -> invalid_credentials -> Đăng nhập thành công -> /khoa-hoc", time: "120ms ease-out" },
+    { num: "Luồng 2", name: "Tải sách & Dựng lộ trình", desc: "Trang /tai-len -> Kéo thả PDF -> Tiến trình 4 bước -> Spinner tĩnh khi reduce motion -> Lộ trình", time: "200ms ease" },
+    { num: "Luồng 3", name: "Điều hướng & Học bài", desc: "Lộ trình /khoa-hoc/:cid -> Bấm Module 2 mở rộng -> Chọn khái niệm -> Mở lecture-2", time: "150ms ease-in-out" },
+    { num: "Luồng 4", name: "Làm Quiz & Nhận phản hồi", desc: "Trang /quiz/:aid -> Bấm chọn đáp án B -> Nộp bài -> Tô màu success-tint kèm trích dẫn sách", time: "120ms ease" }
+  ];
+
+  for (const fl of flows) {
+    const flCard = figma.createFrame();
+    flCard.layoutMode = "VERTICAL";
+    flCard.itemSpacing = 8;
+    flCard.resize(290, 220);
+    flCard.cornerRadius = 12;
+    flCard.fills = solidFill(C.bgSubtle);
+    flCard.strokes = [{ type: "SOLID", color: C.border }];
+    flCard.strokeWeight = 1;
+    flCard.paddingLeft = 16;
+    flCard.paddingRight = 16;
+    flCard.paddingTop = 16;
+    flCard.paddingBottom = 16;
+
+    flCard.appendChild(makeBadge(fl.num, C.brandTint, C.primary));
+    flCard.appendChild(createText(fl.name, 15, FONT_SEMI, C.text));
+    const descText = createText(fl.desc, 12, FONT_REG, C.textMuted);
+    descText.resize(258, 70);
+    flCard.appendChild(descText);
+    flCard.appendChild(createText(`⏱ ${fl.time}`, 11, FONT_SEMI, C.primary));
+    protoGrid.appendChild(flCard);
+  }
+  protoFrame.appendChild(protoGrid);
+
+  figma.currentPage.appendChild(protoFrame);
+  createdNodes.push(protoFrame);
 
   // Focus and Zoom
   figma.viewport.scrollAndZoomIntoView(createdNodes);

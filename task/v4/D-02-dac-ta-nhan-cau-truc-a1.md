@@ -110,7 +110,7 @@ Nhân viên xuất phiếu (vé 15, pha 1). Mỗi cuốn có:
 | `dong` | mọi mã dòng tạo nên tiêu đề; tiêu đề nhiều dòng thì ghi đủ |
 | `text` | chữ của tiêu đề, ghép từ các dòng; giữ nguyên lỗi trích chữ, vì so khớp dùng mã dòng |
 | `cap` | độ sâu trong cây logic của sách, 1 là cao nhất |
-| `cha` | `id` của tiêu đề cha; `null` khi `cap` là 1. Tiêu đề cha phải có `cap` nhỏ hơn đúng 1 |
+| `cha` | `id` của tiêu đề cha đang mở trong cùng nhánh logic; `null` khi `cap` là 1. Cha ở phía trước và có `cap` nhỏ hơn đúng 1. Nhánh mở đầu/hành chính không đóng nhánh nội dung đang mở (chủ dự án duyệt 2026-10-08) |
 | `vung` | chỉ ghi cho tiêu đề cấp 1, theo vai trò vùng của A2: `mo_dau` (lời nói đầu, giới thiệu, mục lục), `noi_dung`, `bai_tap`, `de_cuong`, `hanh_chinh` (bìa, bản quyền), `cuoi_sach` (tài liệu tham khảo, phụ lục, chỉ mục) |
 | `ghi_chu` | `"nghi"` khi phân vân; `"liền đoạn"` khi tiêu đề in chung dòng với câu văn |
 

@@ -2,9 +2,15 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 ("Dựng một cuốn ở lõi", luồng, kiểm sớm); [spec đổi mặc định chuỗi gộp](../../doc/doi-mac-dinh-chuoi-gop-spec.md);
 [chạy lại doc-6](../../report/pha-b-chay-lai-doc6-chuoi-gop-2026-10-18.md) (chuỗi lệnh đã chạy thật); [Pha B CLI](../../doc/pha-b-cli.md).
-**Ai:** nhân viên lõi · phối hợp phiên pha A · người soát kiểm · **Chi phí mô hình:** 0 USD (dry-run, phát lại, cache sẵn có) · **Chặn bởi:** không ·
-**Trạng thái:** implemented-awaiting-review · báo cáo [W-13 ngày 2026-10-19](../../report/w13-dung-mot-cuon-2026-10-19.md).
-Lượt dựng toàn chuỗi doc-6 từ bộ đọc nhẹ còn thiếu cache; chưa tự chi tiền để lấp cache.
+**Ai:** nhân viên lõi · phối hợp phiên pha A · người soát kiểm · **Chi phí mô hình:** kiểm cache 0 USD; chạy thật đã được chủ dự án duyệt · **Chặn bởi:** không ·
+**Trạng thái:** đã hoàn tất triển khai và tự nghiệm thu, chờ soát độc lập · báo cáo [hoàn tất W-13](../../report/w13-hoan-tat-doc6-2026-10-19.md).
+Doc-6 đã dựng xong từ kho rỗng và tái dùng cache thành công ở 0 USD; đã đo đủ sáu PDF gốc, không còn hai điểm chờ cache/nguồn PDF.
+
+**Bổ sung sau phê duyệt chi:** 1.878 unit test và 69 test tập trung đạt, 4/4 mutation bị bắt; SQLite có số chi từng lượt. Lượt dựng kho rỗng 0,1203762 USD có đủ usage; tổng chi quy đổi ghi nhận 0,2329025 USD, lượt chép cache lịch sử có cờ thiếu usage. Các ghi chú điều phối bên dưới là checkpoint trước lượt bổ sung này.
+
+**Điều phối kiểm lại 2026-10-19:** commit `e9ffce1`, 68 test đạt và 4/4 mutation bị bắt. Không coi cache miss dừng đúng là dựng thành công.
+Lõi có thể nhận W-05 sau checkpoint W-01; W-15 còn chờ W-14 và bằng chứng W-13 chưa đủ.
+Xem [soát ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
 
 ## Vì sao
 
@@ -89,24 +95,24 @@ Chi phí tính từ token nhà cung cấp thực trả và bảng giá hiện c�
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Chuỗi chạy đúng thứ tự trong bảng ở mục "Cần làm". Có test với use case giả từng bước:
+- [x] Chuỗi chạy đúng thứ tự trong bảng ở mục "Cần làm". Có test với use case giả từng bước:
   - đổi chỗ `label-roles` ra sau `a4` thì test đỏ;
   - bỏ `label-roles` thì test đỏ.
-- [ ] Cổng chất lượng chữ từ chối thì `rejected` với `chu_loi`, 0 lời gọi mô hình. Không có đường nào truyền `allow_text_quality_reason`.
-- [ ] Dựng chạy được trên **kho mới rỗng**, không có artifact của cuốn cũ nào. Thấy đỏ trên mã đang gọi `load_gold`.
-- [ ] Manifest canonical có `a4_gold_coverage: none`, `gold_sheet_id: null`. Test trỏ đường dẫn vàng sang một tệp không tồn tại mà vẫn xanh.
-- [ ] doc-6: băm cấu hình canonical của `build_document` bằng băm của lần chạy CLI trước, nên tái dùng (`reused`), 0 lời gọi mô hình.
-- [ ] `build --dry-run` trên doc-6 chạy đọc/kiểm đầu vào, trả trạng thái phụ thuộc, 0 USD, không ghi phiên bản đồ thị mới và không trả dự toán.
-- [ ] Kết quả thành công/lỗi/huỷ được ghi DB, có usage của lượt hiện tại và cờ chỉ rõ phần usage thiếu; không hiện dự toán/chi phí cho người học.
-- [ ] Chạy thật trên doc-6, **chỉ dùng cache sẵn có**: số lời gọi mô hình tính tiền là 0, hoặc báo số nhỏ trước khi chạy để chủ dự án duyệt.
-- [ ] PDF chỉ có ảnh bị dừng ở `ban_quet` sau `doc_reading`; tệp tiếng Anh bị dừng ở `ngon_ngu_khong_ho_tro`; 0 lời gọi mô hình. Thấy đỏ trước khi có kiểm
+- [x] Cổng chất lượng chữ từ chối thì `rejected` với `chu_loi`, 0 lời gọi mô hình. Không có đường nào truyền `allow_text_quality_reason`.
+- [x] Dựng chạy được trên **kho mới rỗng**, không có artifact của cuốn cũ nào. Thấy đỏ trên mã đang gọi `load_gold`.
+- [x] Manifest canonical có `a4_gold_coverage: none`, `gold_sheet_id: null`. Test trỏ đường dẫn vàng sang một tệp không tồn tại mà vẫn xanh.
+- [x] doc-6: băm cấu hình canonical của `build_document` bằng băm của lần chạy CLI trước, nên tái dùng (`reused`), 0 lời gọi mô hình.
+- [x] `build --dry-run` trên doc-6 chạy đọc/kiểm đầu vào, trả trạng thái phụ thuộc, 0 USD, không ghi phiên bản đồ thị mới và không trả dự toán.
+- [x] Kết quả thành công/lỗi/huỷ được ghi DB, có usage của lượt hiện tại và cờ chỉ rõ phần usage thiếu; không hiện dự toán/chi phí cho người học.
+- [x] Chạy thật trên doc-6, **chỉ dùng cache sẵn có**: số lời gọi mô hình tính tiền là 0, hoặc báo số nhỏ trước khi chạy để chủ dự án duyệt.
+- [x] PDF chỉ có ảnh bị dừng ở `ban_quet` sau `doc_reading`; tệp tiếng Anh bị dừng ở `ngon_ngu_khong_ho_tro`; 0 lời gọi mô hình. Thấy đỏ trước khi có kiểm
   sớm.
-- [ ] Cờ huỷ bật trong bước 2 thì không bước nào bắt đầu sau đó (test với use case giả từng bước).
-- [ ] Lỗi giả ở bước 3 rồi chạy lại: bước 1 và 2 không gọi lại mô hình.
-- [ ] Bản giả của `BuildRunner` qua cùng test hợp đồng của port như bản thật ở chế độ dry-run.
-- [ ] Test nối dây đường dựng từ web theo cấu hình tạm thời: sinh/embedding nhận `vertex`, bản sai truyền `developer_api` làm test đỏ. Kiểm bằng mô hình
+- [x] Cờ huỷ bật trong bước 2 thì không bước nào bắt đầu sau đó (test với use case giả từng bước).
+- [x] Lỗi giả ở bước 3 rồi chạy lại: bước 1 và 2 không gọi lại mô hình.
+- [x] Bản giả của `BuildRunner` qua cùng test hợp đồng của port như bản thật ở chế độ dry-run.
+- [x] Test nối dây đường dựng từ web theo cấu hình tạm thời: sinh/embedding nhận `vertex`, bản sai truyền `developer_api` làm test đỏ. Kiểm bằng mô hình
   và xác thực giả, không gọi mạng hay chi tiền; không tự chuyển trước chỉ thị chuẩn bị demo.
-- [ ] Không mở tập giữ lại; test không dùng tệp của `document-data/test/`.
+- [x] Không mở tập giữ lại; test không dùng tệp của `document-data/test/`.
 
 ## Ngoài vé
 

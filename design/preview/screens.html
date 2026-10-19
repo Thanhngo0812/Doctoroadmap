@@ -94,9 +94,12 @@
       cursor: pointer;
       text-decoration: none;
       border: 1px solid transparent;
+      min-height: 44px;
+      min-width: 44px;
+      box-sizing: border-box;
     }
-    .btn-md { height: 44px; padding: 0 var(--space-5); font-size: var(--text-body); }
-    .btn-sm { height: 36px; padding: 0 var(--space-4); font-size: var(--text-small); }
+    .btn-md { min-height: 44px; height: 44px; padding: 0 var(--space-5); font-size: var(--text-body); }
+    .btn-sm { min-height: 44px; height: 44px; padding: 0 var(--space-4); font-size: var(--text-small); }
     .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
     .btn-primary:hover { background: var(--color-primary-hover); }
     .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border-input); }
@@ -104,6 +107,14 @@
     @media (prefers-reduced-motion: reduce) {
       .spinner-gif {
         content: url('../Untitled_Artwork_static.png') !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .btn, .btn-sm, .btn-md, button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        height: 44px !important;
       }
     }
 
@@ -312,7 +323,10 @@
             <span class="badge badge-accent" style="margin-bottom:8px;">Đang dựng</span>
             <p style="font-size:var(--text-small); color:var(--color-text-muted); margin-bottom:12px;">Bước 2/4 · Trích khái niệm</p>
             <div style="display:flex; align-items:center; gap:12px; margin-top:8px;">
-              <img src="../Untitled_Artwork.gif" width="40" height="40" alt="Đang dựng">
+              <picture>
+                <source srcset="../Untitled_Artwork_static.png" media="(prefers-reduced-motion: reduce)">
+                <img src="../Untitled_Artwork.gif" class="spinner-gif" width="40" height="40" alt="Đang dựng">
+              </picture>
               <button class="btn btn-secondary btn-sm" style="margin-left:auto;">Xem tiến trình</button>
             </div>
           </div>
@@ -647,7 +661,10 @@
               <span>✓</span> <span>1. Đọc và tiền xử lý tài liệu</span>
             </div>
             <div style="display:flex; align-items:center; gap:12px; color:var(--color-primary); font-weight:600;">
-              <img src="../Untitled_Artwork.gif" width="24" height="24" alt="Đang chạy">
+              <picture>
+                <source srcset="../Untitled_Artwork_static.png" media="(prefers-reduced-motion: reduce)">
+                <img src="../Untitled_Artwork.gif" class="spinner-gif" width="24" height="24" alt="Đang chạy">
+              </picture>
               <span>2. Trích xuất và định nghĩa khái niệm (Đang chạy...)</span>
             </div>
             <div style="display:flex; align-items:center; gap:12px; color:var(--color-text-muted);">
@@ -750,7 +767,19 @@
             setTimeout(() => {
               const botBubble = document.createElement('div');
               botBubble.className = 'bubble-assistant';
-              botBubble.innerHTML = `<strong>Trợ lý AI:</strong> Về câu hỏi <em>"${q}"</em>, theo giáo trình trang 68: Tốc độ học $\\alpha$ được khởi tạo mặc định là 0.01 và có thể giảm dần (decay) khi hàm mất mát tiệm cận hội tụ.`;
+
+              const strong = document.createElement('strong');
+              strong.textContent = 'Trợ lý AI: ';
+              botBubble.appendChild(strong);
+
+              botBubble.appendChild(document.createTextNode('Về câu hỏi '));
+
+              const em = document.createElement('em');
+              em.textContent = `"${q}"`;
+              botBubble.appendChild(em);
+
+              botBubble.appendChild(document.createTextNode(', theo giáo trình trang 68: Tốc độ học α được khởi tạo mặc định là 0.01 và có thể giảm dần (decay) khi hàm mất mát tiệm cận hội tụ.'));
+
               container.appendChild(botBubble);
               container.scrollTop = container.scrollHeight;
             }, 400);

@@ -1,0 +1,548 @@
+{
+  "contract_version": "w13-acceptance-1",
+  "verified_at_commit": "b0bdb5bdf2703475f943885478cb965bd544d5ad",
+  "known_usage_cost_usd": 0.2329025,
+  "all_usage_complete": false,
+  "checks": {
+    "store": {
+      "graph_version": 37,
+      "module_count": 2,
+      "chunk_count": 26,
+      "concept_count": 11,
+      "canonical_version": 4,
+      "role_version": 6,
+      "canonical_no_gold": true,
+      "role_overlay_immutable": true,
+      "a3_coverage_complete": true,
+      "persisted_attempts": 3
+    },
+    "fresh-store": {
+      "graph_version": 8,
+      "module_count": 2,
+      "chunk_count": 26,
+      "concept_count": 14,
+      "canonical_version": 1,
+      "role_version": 2,
+      "canonical_no_gold": true,
+      "role_overlay_immutable": true,
+      "a3_coverage_complete": true,
+      "persisted_attempts": 3
+    }
+  },
+  "runs": [
+    {
+      "evidence": "artifacts\\w13-doc6-acceptance-2026-10-19\\20261019T101940780137Z-result.json",
+      "allow_spend": true,
+      "doc_id": "doc-6",
+      "status": "succeeded",
+      "pipeline_version": "bd3d571b0c4e410ebec3d21e6925a68fbb6096e7:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+      "graph_version": 37,
+      "completed_steps": [
+        "doc_reading",
+        "concepts",
+        "graph",
+        "learning_prep"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 5,
+          "parse_version": 3,
+          "chunk_count": 26,
+          "a4_gold_coverage": "none",
+          "page_count": 25,
+          "alphabetic_chars": 4495,
+          "average_alphabetic_chars_per_page": 179.8,
+          "empty_page_ratio": 0.0,
+          "vi_diacritic_ratio": 0.2407119021134594
+        },
+        "concepts": {
+          "label_roles": {
+            "chunks_version": 6,
+            "reused": false
+          },
+          "a3": {
+            "candidate_version": 2,
+            "retrieval_version": 2,
+            "a3_reused": false,
+            "a3_prime_reused": false
+          },
+          "canonical": {
+            "canonical_version": 4,
+            "reused": false,
+            "a4_gold_coverage": "none"
+          }
+        },
+        "graph": {
+          "graph_version": 37,
+          "reused": false
+        },
+        "learning_prep": {
+          "a12": {
+            "graph_version": 37,
+            "retrieval_version": 2,
+            "assignment_count": 26
+          },
+          "concept_index": {
+            "graph_version": 37,
+            "model_id": "gemini-embedding-001:768",
+            "reused": false,
+            "concept_count": 11
+          },
+          "formulas": {
+            "index_path": "artifacts\\w13-doc6-acceptance-2026-10-19\\store\\phase_b\\formula_images\\doc-6\\parse-v3\\index.json",
+            "parse_version": 3,
+            "cut_count": 0,
+            "skipped_count": 0
+          }
+        }
+      },
+      "spent_usd": 0.11252629999999997,
+      "model_calls": 404,
+      "input_tokens": 315000,
+      "output_tokens": 23047,
+      "usage_complete": false,
+      "elapsed_seconds": 341.8308074000015,
+      "error": null
+    },
+    {
+      "evidence": "artifacts\\w13-doc6-acceptance-2026-10-19\\20261019T102601470634Z-result.json",
+      "allow_spend": false,
+      "doc_id": "doc-6",
+      "status": "succeeded",
+      "pipeline_version": "66419a8eaf92ab328e780c9e4bb0ba8d05042d24:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+      "graph_version": 37,
+      "completed_steps": [
+        "doc_reading",
+        "concepts",
+        "graph",
+        "learning_prep"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 5,
+          "parse_version": 3,
+          "chunk_count": 26,
+          "a4_gold_coverage": "none",
+          "page_count": 25,
+          "alphabetic_chars": 4495,
+          "average_alphabetic_chars_per_page": 179.8,
+          "empty_page_ratio": 0.0,
+          "vi_diacritic_ratio": 0.2407119021134594
+        },
+        "concepts": {
+          "label_roles": {
+            "chunks_version": 6,
+            "reused": true
+          },
+          "a3": {
+            "candidate_version": 2,
+            "retrieval_version": 2,
+            "a3_reused": true,
+            "a3_prime_reused": true
+          },
+          "canonical": {
+            "canonical_version": 4,
+            "reused": true,
+            "a4_gold_coverage": "none"
+          }
+        },
+        "graph": {
+          "graph_version": 37,
+          "reused": true
+        },
+        "learning_prep": {
+          "a12": {
+            "graph_version": 37,
+            "retrieval_version": 2,
+            "assignment_count": 26
+          },
+          "concept_index": {
+            "graph_version": 37,
+            "model_id": "gemini-embedding-001:768",
+            "reused": true,
+            "concept_count": 11
+          },
+          "formulas": {
+            "index_path": "artifacts\\w13-doc6-acceptance-2026-10-19\\store\\phase_b\\formula_images\\doc-6\\parse-v3\\index.json",
+            "parse_version": 3,
+            "cut_count": 0,
+            "skipped_count": 0
+          }
+        }
+      },
+      "spent_usd": 0.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 4.556068099998811,
+      "error": null
+    },
+    {
+      "evidence": "artifacts\\w13-doc6-acceptance-2026-10-19\\20261019T102918000258Z-result.json",
+      "allow_spend": true,
+      "fresh_store": true,
+      "doc_id": "doc-6",
+      "status": "succeeded",
+      "pipeline_version": "66419a8eaf92ab328e780c9e4bb0ba8d05042d24:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+      "graph_version": 8,
+      "completed_steps": [
+        "doc_reading",
+        "concepts",
+        "graph",
+        "learning_prep"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 1,
+          "parse_version": 1,
+          "chunk_count": 26,
+          "a4_gold_coverage": "none",
+          "page_count": 25,
+          "alphabetic_chars": 4495,
+          "average_alphabetic_chars_per_page": 179.8,
+          "empty_page_ratio": 0.0,
+          "vi_diacritic_ratio": 0.2407119021134594
+        },
+        "concepts": {
+          "label_roles": {
+            "chunks_version": 2,
+            "reused": false
+          },
+          "a3": {
+            "candidate_version": 1,
+            "retrieval_version": 1,
+            "a3_reused": false,
+            "a3_prime_reused": false
+          },
+          "canonical": {
+            "canonical_version": 1,
+            "reused": false,
+            "a4_gold_coverage": "none"
+          }
+        },
+        "graph": {
+          "graph_version": 8,
+          "reused": false
+        },
+        "learning_prep": {
+          "a12": {
+            "graph_version": 8,
+            "retrieval_version": 1,
+            "assignment_count": 26
+          },
+          "concept_index": {
+            "graph_version": 8,
+            "model_id": "gemini-embedding-001:768",
+            "reused": false,
+            "concept_count": 14
+          },
+          "formulas": {
+            "index_path": "artifacts\\w13-doc6-acceptance-2026-10-19\\fresh-store\\phase_b\\formula_images\\doc-6\\parse-v1\\index.json",
+            "parse_version": 1,
+            "cut_count": 0,
+            "skipped_count": 0
+          }
+        }
+      },
+      "spent_usd": 0.12037619999999997,
+      "model_calls": 341,
+      "input_tokens": 330916,
+      "output_tokens": 25674,
+      "usage_complete": true,
+      "elapsed_seconds": 95.7026102000018,
+      "error": null
+    },
+    {
+      "evidence": "artifacts\\w13-doc6-acceptance-2026-10-19\\20261019T103114121011Z-result.json",
+      "allow_spend": false,
+      "fresh_store": true,
+      "doc_id": "doc-6",
+      "status": "succeeded",
+      "pipeline_version": "66419a8eaf92ab328e780c9e4bb0ba8d05042d24:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+      "graph_version": 8,
+      "completed_steps": [
+        "doc_reading",
+        "concepts",
+        "graph",
+        "learning_prep"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 1,
+          "parse_version": 1,
+          "chunk_count": 26,
+          "a4_gold_coverage": "none",
+          "page_count": 25,
+          "alphabetic_chars": 4495,
+          "average_alphabetic_chars_per_page": 179.8,
+          "empty_page_ratio": 0.0,
+          "vi_diacritic_ratio": 0.2407119021134594
+        },
+        "concepts": {
+          "label_roles": {
+            "chunks_version": 2,
+            "reused": true
+          },
+          "a3": {
+            "candidate_version": 1,
+            "retrieval_version": 1,
+            "a3_reused": true,
+            "a3_prime_reused": true
+          },
+          "canonical": {
+            "canonical_version": 1,
+            "reused": true,
+            "a4_gold_coverage": "none"
+          }
+        },
+        "graph": {
+          "graph_version": 8,
+          "reused": true
+        },
+        "learning_prep": {
+          "a12": {
+            "graph_version": 8,
+            "retrieval_version": 1,
+            "assignment_count": 26
+          },
+          "concept_index": {
+            "graph_version": 8,
+            "model_id": "gemini-embedding-001:768",
+            "reused": true,
+            "concept_count": 14
+          },
+          "formulas": {
+            "index_path": "artifacts\\w13-doc6-acceptance-2026-10-19\\fresh-store\\phase_b\\formula_images\\doc-6\\parse-v1\\index.json",
+            "parse_version": 1,
+            "cut_count": 0,
+            "skipped_count": 0
+          }
+        }
+      },
+      "spent_usd": 0.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 4.203469600000972,
+      "error": null
+    },
+    {
+      "evidence": "artifacts\\w13-doc6-acceptance-2026-10-19\\20261019T103121023250Z-result.json",
+      "allow_spend": false,
+      "fresh_store": false,
+      "doc_id": "doc-6",
+      "status": "succeeded",
+      "pipeline_version": "66419a8eaf92ab328e780c9e4bb0ba8d05042d24:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+      "graph_version": 37,
+      "completed_steps": [
+        "doc_reading",
+        "concepts",
+        "graph",
+        "learning_prep"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 5,
+          "parse_version": 3,
+          "chunk_count": 26,
+          "a4_gold_coverage": "none",
+          "page_count": 25,
+          "alphabetic_chars": 4495,
+          "average_alphabetic_chars_per_page": 179.8,
+          "empty_page_ratio": 0.0,
+          "vi_diacritic_ratio": 0.2407119021134594
+        },
+        "concepts": {
+          "label_roles": {
+            "chunks_version": 6,
+            "reused": true
+          },
+          "a3": {
+            "candidate_version": 2,
+            "retrieval_version": 2,
+            "a3_reused": true,
+            "a3_prime_reused": true
+          },
+          "canonical": {
+            "canonical_version": 4,
+            "reused": true,
+            "a4_gold_coverage": "none"
+          }
+        },
+        "graph": {
+          "graph_version": 37,
+          "reused": true
+        },
+        "learning_prep": {
+          "a12": {
+            "graph_version": 37,
+            "retrieval_version": 2,
+            "assignment_count": 26
+          },
+          "concept_index": {
+            "graph_version": 37,
+            "model_id": "gemini-embedding-001:768",
+            "reused": true,
+            "concept_count": 11
+          },
+          "formulas": {
+            "index_path": "artifacts\\w13-doc6-acceptance-2026-10-19\\store\\phase_b\\formula_images\\doc-6\\parse-v3\\index.json",
+            "parse_version": 3,
+            "cut_count": 0,
+            "skipped_count": 0
+          }
+        }
+      },
+      "spent_usd": 0.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 3.5152428000001237,
+      "error": null
+    },
+    {
+      "evidence": "artifacts\\w13-doc6-acceptance-2026-10-19\\20261019T103714485791Z-result.json",
+      "allow_spend": false,
+      "fresh_store": true,
+      "doc_id": "doc-6",
+      "status": "succeeded",
+      "pipeline_version": "b0bdb5bdf2703475f943885478cb965bd544d5ad:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+      "graph_version": 8,
+      "completed_steps": [
+        "doc_reading",
+        "concepts",
+        "graph",
+        "learning_prep"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 1,
+          "parse_version": 1,
+          "chunk_count": 26,
+          "a4_gold_coverage": "none",
+          "page_count": 25,
+          "alphabetic_chars": 4495,
+          "average_alphabetic_chars_per_page": 179.8,
+          "empty_page_ratio": 0.0,
+          "vi_diacritic_ratio": 0.2407119021134594
+        },
+        "concepts": {
+          "label_roles": {
+            "chunks_version": 2,
+            "reused": true
+          },
+          "a3": {
+            "candidate_version": 1,
+            "retrieval_version": 1,
+            "a3_reused": true,
+            "a3_prime_reused": true
+          },
+          "canonical": {
+            "canonical_version": 1,
+            "reused": true,
+            "a4_gold_coverage": "none"
+          }
+        },
+        "graph": {
+          "graph_version": 8,
+          "reused": true
+        },
+        "learning_prep": {
+          "a12": {
+            "graph_version": 8,
+            "retrieval_version": 1,
+            "assignment_count": 26
+          },
+          "concept_index": {
+            "graph_version": 8,
+            "model_id": "gemini-embedding-001:768",
+            "reused": true,
+            "concept_count": 14
+          },
+          "formulas": {
+            "index_path": "artifacts\\w13-doc6-acceptance-2026-10-19\\fresh-store\\phase_b\\formula_images\\doc-6\\parse-v1\\index.json",
+            "parse_version": 1,
+            "cut_count": 0,
+            "skipped_count": 0
+          }
+        }
+      },
+      "spent_usd": 0.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 6.032336899999791,
+      "error": null
+    }
+  ],
+  "calibration": [
+    {
+      "doc_id": "doc-1",
+      "basis": "original_pdf_nhe",
+      "page_count": 102,
+      "alphabetic_chars": 82268,
+      "average_alphabetic_chars_per_page": 806.549,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.218189,
+      "text_quality_warning_count": 0
+    },
+    {
+      "doc_id": "xstk-ch3-1",
+      "basis": "original_pdf_nhe",
+      "page_count": 59,
+      "alphabetic_chars": 55999,
+      "average_alphabetic_chars_per_page": 949.136,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.278023,
+      "text_quality_warning_count": 2
+    },
+    {
+      "doc_id": "doc-4",
+      "basis": "original_pdf_nhe",
+      "page_count": 214,
+      "alphabetic_chars": 430313,
+      "average_alphabetic_chars_per_page": 2010.808,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.293884,
+      "text_quality_warning_count": 0
+    },
+    {
+      "doc_id": "nhap-mon-ml",
+      "basis": "original_pdf_nhe",
+      "page_count": 20,
+      "alphabetic_chars": 25278,
+      "average_alphabetic_chars_per_page": 1263.9,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.269286,
+      "text_quality_warning_count": 0
+    },
+    {
+      "doc_id": "naive-bayes",
+      "basis": "original_pdf_nhe",
+      "page_count": 36,
+      "alphabetic_chars": 6598,
+      "average_alphabetic_chars_per_page": 183.278,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.188845,
+      "text_quality_warning_count": 2
+    },
+    {
+      "doc_id": "doc-6",
+      "basis": "original_pdf_nhe",
+      "page_count": 25,
+      "alphabetic_chars": 4495,
+      "average_alphabetic_chars_per_page": 179.8,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.240712,
+      "text_quality_warning_count": 0
+    }
+  ],
+  "development_pdf_hashes": {
+    "doc-6.pdf": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+    "nhap-mon-ml.pdf": "d5a78c95b7603bffff77d6675c0286beaeb997f5633ac9e598bccb25305d3f71"
+  }
+}

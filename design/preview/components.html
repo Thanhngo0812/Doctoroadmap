@@ -58,6 +58,14 @@
     .btn-danger:hover { opacity: 0.9; }
     .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
+    @media (max-width: 768px) {
+      .btn, .btn-sm, .btn-md, button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        height: 44px !important;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .spinner-gif {
         content: url('../Untitled_Artwork_static.png') !important;

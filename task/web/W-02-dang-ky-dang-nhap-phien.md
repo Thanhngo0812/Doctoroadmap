@@ -5,6 +5,11 @@
 đăng ký và đăng nhập.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** ready-for-agent
 
+**Đợt tiếp theo 2026-10-19:** W-01 đã đạt nền local, web chốt commit nền rồi bắt đầu W-02. Không cần chờ toàn bộ Figma;
+phối hợp thiết kế cung cấp trang tài khoản theo spec. Dự kiến migration W-02 `w02_0003` nối sau W-05 `w05_0002`,
+để giữ một tuyến Alembic; domain/service/API/UI làm song song được, chỉ chốt migration sau mốc W-05 đã bàn giao.
+Xem checkpoint và đầu ra tại [kế hoạch ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
+
 ## Vì sao
 
 Mọi chức năng sau cần biết ai đang gọi. Đây cũng là chỗ dễ sai an ninh nhất, nên phải có test cho từng luật.

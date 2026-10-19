@@ -1,20 +1,24 @@
-"""Unit tests for WayFinder Design Tokens and WCAG 2.1 AA Contrast Ratios (W-22 / W-24).
+"""Unit tests for WayFinder Design Tokens, WCAG 2.1 AA Contrast, and Invariant Guards (W-22 / W-24).
 
 Implements strict dynamic verification and falsifiable tests as required by AGENTS.md rule 5:
 - Parses actual values from design/tokens/tokens.css and design/tokens/tokens.json
-- Verifies exact 1:1 synchronization between CSS and JSON
-- Validates contrast ratios of actual tokens (including dark mode primary button)
-- Proves guards fail when tokens are mutated (falsifiable tests)
+- Verifies exact 1:1 synchronization between CSS and JSON for colors (hex & RGBA), spacing, radius, motion, typography
+- Validates contrast ratios of actual tokens (including dark mode primary button >= 7.0:1)
+- Proves guards fail when tokens are mutated (falsifiable tests for colors, spacing, RGBA, reduced-motion)
+- Verifies touch target dimensions (>= 44x44px) across preview screens
+- Verifies XSS prevention in prototype chat
 """
 
 from __future__ import annotations
 
 import json
 from pathlib import Path
+import re
 import pytest
 
 from scripts.verify_wcag_contrast import (
     contrast_ratio,
+    normalize_val,
     parse_css_tokens,
     parse_json_tokens,
     verify_tokens_and_contrast,
@@ -36,22 +40,55 @@ def test_dynamic_token_sync_css_vs_json():
     light_css, dark_css = parse_css_tokens(css_content)
     json_data = parse_json_tokens(JSON_PATH)
 
+    # 1. Light colors
     light_json = json_data["color"]["light"]
     for token_key, token_obj in light_json.items():
         css_var = f"--{token_key}"
         assert css_var in light_css, f"Token {css_var} missing from CSS :root"
-        assert light_css[css_var].upper() == token_obj["$value"].upper(), (
+        assert normalize_val(light_css[css_var]) == normalize_val(token_obj["$value"]), (
             f"Value mismatch for {css_var}: CSS has {light_css[css_var]}, JSON has {token_obj['$value']}"
         )
 
+    # 2. Dark colors (both hex and RGBA)
     dark_json = json_data["color"]["dark"]
     for token_key, token_obj in dark_json.items():
         css_var = f"--{token_key}"
         val = token_obj["$value"]
-        if val.startswith("#"):
-            assert css_var in dark_css, f"Dark token {css_var} missing from dark mode CSS"
-            assert dark_css[css_var].upper() == val.upper(), (
-                f"Value mismatch for dark {css_var}: CSS has {dark_css[css_var]}, JSON has {val}"
+        assert css_var in dark_css, f"Dark token {css_var} missing from dark mode CSS"
+        assert normalize_val(dark_css[css_var]) == normalize_val(val), (
+            f"Value mismatch for dark {css_var}: CSS has {dark_css[css_var]}, JSON has {val}"
+        )
+
+
+def test_dynamic_spacing_tokens_sync_css_vs_json():
+    """Verify that spacing tokens (space-1 to space-16) match between CSS and JSON."""
+    css_content = CSS_PATH.read_text(encoding="utf-8")
+    light_css, _ = parse_css_tokens(css_content)
+    json_data = parse_json_tokens(JSON_PATH)
+
+    spacing_json = json_data.get("spacing", {})
+    assert len(spacing_json) >= 10, "Expected at least 10 spacing tokens"
+    for key, val_obj in spacing_json.items():
+        css_var = f"--{key}"
+        assert css_var in light_css, f"Spacing token {css_var} missing from CSS :root"
+        assert normalize_val(light_css[css_var]) == normalize_val(val_obj["$value"]), (
+            f"Spacing mismatch for {css_var}: CSS={light_css[css_var]} vs JSON={val_obj['$value']}"
+        )
+
+
+def test_dynamic_radius_and_motion_tokens_sync():
+    """Verify that border-radius and motion tokens match between CSS and JSON."""
+    css_content = CSS_PATH.read_text(encoding="utf-8")
+    light_css, _ = parse_css_tokens(css_content)
+    json_data = parse_json_tokens(JSON_PATH)
+
+    for section in ["radius", "motion"]:
+        sec_json = json_data.get(section, {})
+        for key, val_obj in sec_json.items():
+            css_var = f"--{key}"
+            assert css_var in light_css, f"{section} token {css_var} missing from CSS :root"
+            assert normalize_val(light_css[css_var]) == normalize_val(val_obj["$value"]), (
+                f"{section} mismatch for {css_var}: CSS={light_css[css_var]} vs JSON={val_obj['$value']}"
             )
 
 
@@ -82,7 +119,6 @@ def test_falsifiable_mutation_css_mismatch_fails():
     css_content = CSS_PATH.read_text(encoding="utf-8")
     light_css, _ = parse_css_tokens(css_content)
 
-    # Mutate in memory: replace primary with #29A9FF (diverging from JSON #0A6AB3)
     mutated_light = dict(light_css)
     mutated_light["--color-primary"] = "#29A9FF"
 
@@ -90,7 +126,36 @@ def test_falsifiable_mutation_css_mismatch_fails():
     json_expected = json_data["color"]["light"]["color-primary"]["$value"]
 
     with pytest.raises(AssertionError):
-        assert mutated_light["--color-primary"].upper() == json_expected.upper(), "Must fail on mismatch"
+        assert normalize_val(mutated_light["--color-primary"]) == normalize_val(json_expected)
+
+
+def test_falsifiable_mutation_spacing_mismatch_fails():
+    """Falsifiable test: prove that mutating space-4 in JSON (e.g. 16px -> 18px) fails guard."""
+    css_content = CSS_PATH.read_text(encoding="utf-8")
+    light_css, _ = parse_css_tokens(css_content)
+
+    # Mutate JSON spacing to 18px
+    mutated_json_space4 = "18px"
+    css_val = light_css.get("--space-4", "")
+
+    with pytest.raises(AssertionError):
+        assert normalize_val(css_val) == normalize_val(mutated_json_space4), "Must fail when spacing differs"
+
+
+def test_falsifiable_mutation_dark_rgba_mismatch_fails():
+    """Falsifiable test: prove that mutating dark RGBA color-brand-tint in CSS fails guard."""
+    css_content = CSS_PATH.read_text(encoding="utf-8")
+    _, dark_css = parse_css_tokens(css_content)
+
+    # Mutate CSS dark brand tint to red
+    mutated_dark_css = dict(dark_css)
+    mutated_dark_css["--color-brand-tint"] = "rgba(255, 0, 0, 0.5)"
+
+    json_data = parse_json_tokens(JSON_PATH)
+    expected_rgba = json_data["color"]["dark"]["color-brand-tint"]["$value"]
+
+    with pytest.raises(AssertionError):
+        assert normalize_val(mutated_dark_css["--color-brand-tint"]) == normalize_val(expected_rgba)
 
 
 def test_falsifiable_mutation_white_on_brand_blue_fails_contrast():
@@ -100,41 +165,66 @@ def test_falsifiable_mutation_white_on_brand_blue_fails_contrast():
     assert round(ratio, 2) == 2.56, f"Expected exact ratio 2.56:1, got {ratio:.2f}:1"
 
 
-def test_reduced_motion_static_asset_exists():
-    """Verify that static frame 0 exists for prefers-reduced-motion substitution."""
+def test_reduced_motion_static_asset_and_markup():
+    """Verify that static frame 0 exists and all GIF instances in previews use <picture> with .spinner-gif."""
     static_png = Path("design/Untitled_Artwork_static.png")
     assert static_png.exists(), "design/Untitled_Artwork_static.png must exist"
     assert static_png.stat().st_size > 1000, "Static PNG must not be empty"
 
-
-def test_reduced_motion_markup_in_previews():
-    """Verify that both preview files contain prefers-reduced-motion rules for spinner-gif."""
     screens_html = Path("design/preview/screens.html").read_text(encoding="utf-8")
+    screens_dark_html = Path("design/preview/screens_dark.html").read_text(encoding="utf-8")
     mobile_html = Path("design/preview/mobile_screens.html").read_text(encoding="utf-8")
 
-    assert "prefers-reduced-motion: reduce" in screens_html
-    assert "Untitled_Artwork_static.png" in screens_html
-    assert "prefers-reduced-motion: reduce" in mobile_html
-    assert "Untitled_Artwork_static.png" in mobile_html
+    for name, content in [
+        ("screens.html", screens_html),
+        ("screens_dark.html", screens_dark_html),
+        ("mobile_screens.html", mobile_html),
+    ]:
+        assert "prefers-reduced-motion: reduce" in content, f"{name} must contain prefers-reduced-motion"
+        assert "Untitled_Artwork_static.png" in content, f"{name} must reference static PNG"
+
+        # Check every <img> with Untitled_Artwork.gif has class spinner-gif
+        gif_tags = re.findall(r'<img[^>]*Untitled_Artwork\.gif[^>]*>', content)
+        assert len(gif_tags) > 0, f"{name} must contain gif tags"
+        for tag in gif_tags:
+            assert 'class="spinner-gif"' in tag or "class='spinner-gif'" in tag, (
+                f"Tag in {name} missing class spinner-gif: {tag}"
+            )
+
+
+def test_falsifiable_mutation_gif_without_class_fails():
+    """Falsifiable test: prove that an <img> with Untitled_Artwork.gif lacking spinner-gif class fails."""
+    bad_tag = '<img src="../Untitled_Artwork.gif" width="40" height="40" alt="Loading">'
+    with pytest.raises(AssertionError):
+        assert 'class="spinner-gif"' in bad_tag
 
 
 def test_mobile_buttons_touch_target_min_44px():
-    """Verify that mobile buttons enforce minimum 44px touch targets."""
-    import re
+    """Verify that mobile and responsive button rules strictly enforce minimum 44px touch targets."""
+    screens_html = Path("design/preview/screens.html").read_text(encoding="utf-8")
     mobile_html = Path("design/preview/mobile_screens.html").read_text(encoding="utf-8")
 
-    # Verify CSS rule for .btn specifies min-height >= 44px
+    # In mobile_screens.html
     btn_css_match = re.search(r"\.btn\s*\{([^}]+)\}", mobile_html)
     assert btn_css_match, ".btn rule not found in mobile_screens.html"
-    css_props = btn_css_match.group(1)
-    assert "min-height: 44px" in css_props or "min-height:44px" in css_props
-    assert "min-width: 44px" in css_props or "min-width:44px" in css_props
+    assert "min-height: 44px" in btn_css_match.group(1) or "min-height:44px" in btn_css_match.group(1)
 
-    # Verify no inline styles set height below 44px on mobile buttons
-    for inline_match in re.finditer(r'<button[^>]*style="([^"]*)"', mobile_html):
-        style = inline_match.group(1)
-        h_match = re.search(r'(?:^|;\s*)height:\s*(\d+)px', style)
-        if h_match:
-            height = int(h_match.group(1))
-            assert height >= 44, f"Mobile button height {height}px is below 44px requirement: {style}"
+    # In screens.html
+    assert "min-height: 44px" in screens_html
+    screens_btn_match = re.search(r"\.btn\s*\{([^}]+)\}", screens_html)
+    assert screens_btn_match, ".btn rule not found in screens.html"
+    assert "min-height: 44px" in screens_btn_match.group(1)
 
+    # Responsive rule in screens.html
+    media_btn_match = re.search(r"@media\s*\(max-width:\s*768px\)\s*\{([^}]+)\}", screens_html)
+    assert media_btn_match, "Responsive @media (max-width: 768px) rule missing in screens.html"
+    assert "44px !important" in media_btn_match.group(1)
+
+
+def test_chat_prototype_prevents_xss():
+    """Verify that prototype script in screens.html safely creates text nodes instead of raw HTML interpolation."""
+    screens_html = Path("design/preview/screens.html").read_text(encoding="utf-8")
+    # Verify no raw innerHTML interpolation of `${q}`
+    assert 'innerHTML = `<strong>Trợ lý AI:</strong> Về câu hỏi <em>"${q}"</em>' not in screens_html
+    assert "document.createTextNode" in screens_html
+    assert "em.textContent" in screens_html

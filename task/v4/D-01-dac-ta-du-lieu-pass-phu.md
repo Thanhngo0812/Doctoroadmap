@@ -11,6 +11,15 @@ lượt trả tiền.
 đúng cặp của phiếu kiểm, đưa vào là lộ đáp án. Agentic chỉ nhận `phieu.jsonl`, [hướng dẫn gán](../../report/huong-dan-agentic-gan-nhan-d01.md)
 và `scripts/pass-phu-ml/kiem_nhan_d01.py`; không nhận `khoa.jsonl`.
 
+**Cập nhật gom sách — Codex, 2026-10-05:** theo yêu cầu mới của chủ dự án,
+đã tải 16 cuốn học (8 lĩnh vực × 2) và 2 cuốn giữ lại vào
+[`document-data/`](../../document-data/README.md), 3.195 trang / 54,03 MiB.
+Kiểm PDF/lớp chữ/hash đạt; sách giữ lại chỉ kiểm máy, không đọc nội dung.
+Chưa đóng toàn bộ điều kiện bước 1: 8 sách học chưa xác minh quyền nghiên cứu,
+2 năm xuất bản chưa xác minh; metadata và quyền của 2 sách giữ lại chờ người giữ
+tập kiểm bổ sung. Chưa chạy bước 2 hay gán nhãn. Xem manifest/checks và giới hạn
+nghiệm thu trong README, không hiểu trạng thái tải đủ là duyệt quyền dùng mô hình.
+
 ## Vì sao (Claude, 2026-10-05)
 
 Bộ kiểm cạnh cứng của vòng 1 học từ phán quyết của `gemini-3.1-flash-lite` trên bốn giáo trình tiếng Việt: đại số tuyến tính, nhập môn ML, xác

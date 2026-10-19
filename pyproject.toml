@@ -25,19 +25,38 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest==8.4.1"]
+dev = ["pytest==8.4.1", "httpx==0.28.1"]
+web = [
+  "fastapi==0.146.0",
+  "uvicorn==0.54.0",
+  "SQLAlchemy==2.1.5",
+  "psycopg[binary]==3.3.6",
+  "alembic==1.20.0",
+  "argon2-cffi==25.1.0",
+  "cloudinary==1.46.3",
+  "python-multipart==0.0.32",
+]
 
 [project.scripts]
 doc2roadmap = "doc2roadmap.presentation.cli.main:main"
+web = "wayfinder.cli:main"
+
+[tool.hatch.build]
+dev-mode-dirs = ["src", "src/web/backend"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/doc2roadmap"]
+packages = ["src/doc2roadmap", "src/web/backend/wayfinder"]
+sources = { "src/doc2roadmap" = "doc2roadmap", "src/web/backend/wayfinder" = "wayfinder" }
 
 [tool.hatch.build.targets.wheel.force-include]
 "vendor/a1-nhe" = "doc2roadmap/infrastructure/parsing/nhe_models"
 "vendor/a8-pass-phu-ml" = "doc2roadmap/infrastructure/secondary_models"
 
 [tool.pytest.ini_options]
-addopts = "-q"
-testpaths = ["tests"]
-markers = ["integration: exercises Docling on real document files"]
+addopts = "-q -ra"
+testpaths = ["tests", "src/web/backend/tests"]
+markers = [
+  "integration: exercises Docling on real document files",
+  "postgres: requires the isolated PostgreSQL db-test service",
+  "cloudinary: requires an explicitly configured Cloudinary account",
+]

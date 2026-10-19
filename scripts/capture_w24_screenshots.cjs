@@ -46,6 +46,27 @@ async function capture() {
       viewport: { width: 900, height: 900 },
       fullPage: true,
       theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/auth_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_auth_light.png'),
+      viewport: { width: 1400, height: 900 },
+      fullPage: true,
+      theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/auth_screens.html').replace(/\\/g, '/') + '?theme=dark',
+      output: path.join(artifactsDir, 'preview_auth_dark.png'),
+      viewport: { width: 1400, height: 900 },
+      fullPage: true,
+      theme: 'dark'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/auth_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_auth_mobile.png'),
+      viewport: { width: 500, height: 900 },
+      fullPage: true,
+      theme: 'light'
     }
   ];
 

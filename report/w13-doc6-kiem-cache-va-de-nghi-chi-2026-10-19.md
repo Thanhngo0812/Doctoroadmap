@@ -1,5 +1,7 @@
 # W-13 — rà cache doc-6 và đề nghị hoàn tất, 2026-10-19
 
+**Đã xử lý sau đề nghị:** chủ dự án duyệt “bao nhiêu cũng duyệt hoàn thành đi”. Đã dựng hết doc-6, gồm lượt từ kho rỗng và lượt cache 0 USD; PDF gốc nhap-mon-ml cũng đã được khôi phục và đo. [Báo cáo hoàn tất](w13-hoan-tat-doc6-2026-10-19.md) thay trạng thái đang chờ bên dưới; phần còn lại lưu lịch sử đề nghị trước khi được duyệt.
+
 ## Kết luận
 
 Phần mã W-13 ở commit `e9ffce1` chưa đóng bằng chứng dựng hết doc-6. Phiên lõi đã dừng quá sớm ở việc báo cache miss; lượt bổ sung này kiểm cả kho cache lịch sử và chuẩn bị đề nghị chi riêng. **Chi mới: 0 USD; chưa có phê duyệt chạy có tiền.** Không bỏ `label-roles`, không đổi bộ đọc, không hạ cổng chữ và không sửa metadata cache để ép tái dùng.

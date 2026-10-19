@@ -33,6 +33,13 @@ SOURCE_RANK = {"citation_hard": 0, "proposed_relation": 1, "same_section": 2, "c
 # Tài liệu phát triển có vàng người, dùng làm phiếu kiểm: (kho, phiên bản artifact danh tính, tệp vàng)
 CHECK_DOCS = {"doc-1": ("artifacts", None, "doc-1-10-12-vang.json"), "xstk-ch3-1": ("artifacts", 40, "xstk-ch3-1-10-13-vang.json"),
               "doc-4": ("artifacts", None, "doc-4-chuong-8-vang.json")}
+CHECK_FIELDS = {"doc-1": "Toán học", "xstk-ch3-1": "Toán học", "doc-4": "Khoa học xã hội"}
+
+
+def blind_rows(rows):
+    # All books receive the same opaque ID scheme; only the private key keeps the source ID.
+    return [{**row, "doc_id": "sach-" + hashlib.sha256(row["doc_id"].encode()).hexdigest()[:12]}
+            for row in rows]
 
 
 def latest_identity(store_root, doc, version=None):
@@ -139,7 +146,7 @@ def main():
     for doc, (root, version, gold_file) in CHECK_DOCS.items():
         artifact = latest_identity(ROOT / root, doc, version)
         edges, targets, closure = check_answers(doc, artifact, gold_file)
-        for sheet in sheets(doc, "kiem", artifact, chunks_for(doc, artifact)):
+        for sheet in sheets(doc, CHECK_FIELDS[doc], artifact, chunks_for(doc, artifact)):
             if sheet["y_id"] not in targets:
                 continue
             known = [c for c in sheet["ung_vien"] if (c["x_id"], sheet["y_id"]) in edges
@@ -160,7 +167,7 @@ def main():
         keys.append({"phieu_id": pid, "loai": "thuc", "doc_id": sheet["doc_id"], "y_id": sheet["y_id"]})
     for sheet, answers in chosen_checks:
         pid = opaque("kiem", sheet["doc_id"], sheet["y_id"])
-        rows.append({"phieu_id": pid, **{**sheet, "doc_id": "kiem-" + hashlib.sha256(sheet["doc_id"].encode()).hexdigest()[:6]}})
+        rows.append({"phieu_id": pid, **sheet})
         keys.append({"phieu_id": pid, "loai": "kiem", "doc_id": sheet["doc_id"], "y_id": sheet["y_id"], "dap_an": answers})
     for sheet in repeats:
         pid = opaque("lap", sheet["doc_id"], sheet["y_id"])
@@ -170,6 +177,7 @@ def main():
         keys.append({"phieu_id": pid, "loai": "lap", "doc_id": sheet["doc_id"], "y_id": sheet["y_id"],
                      "lap_cua": opaque("thuc", sheet["doc_id"], sheet["y_id"])})
     rng.shuffle(rows)
+    rows = blind_rows(rows)
     out = ROOT / options.get("ra", "tmp/d01-phieu")
     out.mkdir(parents=True, exist_ok=True)
     (out / "phieu.jsonl").write_text("".join(json.dumps(row, ensure_ascii=False) + "\n" for row in rows), encoding="utf-8")

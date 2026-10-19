@@ -21,6 +21,10 @@ dịch vụ để FastAPI gọi. Hai spec viết sau sẽ dựa vào spec này:
 **Quyết định của chủ dự án** (2026-10-18, mục "Quyết định của chủ dự án" cuối spec): web là **bản demo**, ai cũng tải sách được, khâu dựng không giới
 hạn; khoá mẫu chỉ ở dev; gửi thư bằng Gmail SMTP; một tài khoản Cloudinary. Mọi con số nằm trong `WebSettings` (mục 12) để đổi không phải sửa mã.
 
+**Bổ sung giao diện theo chủ dự án 2026-10-18:** nhóm thiết kế và React phải làm giao diện đẹp, chỉn chu, nhất quán và có hiệu ứng tương tác phù hợp;
+được phép dùng các skill trong bộ `taste-skill` do chủ dự án nạp. Yêu cầu thị giác, chuyển động và bằng chứng nghiệm thu theo
+[spec thiết kế, mục 3a](web-thiet-ke-giao-dien-spec.md#3a-chất-lượng-thị-giác-hiệu-ứng-và-taste-skill).
+
 **Quy trình:** Claude viết spec và vé; chủ dự án giao nhân viên và nhóm web; người soát kiểm theo vé.
 
 ---
@@ -205,6 +209,15 @@ src/
   python-multipart) nằm ở nhóm tuỳ chọn `web`, cài bằng `pip install -e .[web,dev]`. Lõi không phải cài chúng.
 - **PostgreSQL chạy bằng Docker** trên máy dev (`src/web/docker-compose.yml`). Lúc dev chỉ cơ sở dữ liệu chạy trong Docker; API, worker và Vite chạy
   thẳng trên máy. Bản chạy đủ trong Docker là vé triển khai W-21.
+
+**Đường gọi Gemini của web** (chủ dự án cập nhật 2026-10-19, thay quyết định Developer API ngày 2026-10-18): backend FastAPI và worker **tạm dùng
+Vertex AI**. Chỉ chuyển sang Gemini Developer API khi chủ dự án yêu cầu lúc chuẩn bị demo; không tự chuyển theo ngày hay khi lỗi.
+- Composition web nạp `Settings` lõi với `llm_transport = vertex`, dùng cho cả mô hình sinh và embedding, kể cả use case dựng sách gọi Pha A.
+- Cấu hình phía máy chủ: `DOC2ROADMAP_LLM_TRANSPORT=vertex`, `DOC2ROADMAP_VERTEX_PROJECT`, `DOC2ROADMAP_VERTEX_LOCATION` (mặc định `global`), cùng
+  thông tin xác thực ADC hợp lệ. Bí mật chỉ ở môi trường máy chủ/kho bí mật, không vào React, biến `VITE_*`, phản hồi API hay log.
+- Chế độ thật kiểm cấu hình trước lời gọi: dùng Vertex và có project/thông tin xác thực hợp lệ; không bắt buộc Gemini API key trong giai đoạn này.
+  Lỗi cấu hình/xác thực báo rõ, không tự chuyển sang Developer API. Test mô hình giả/phát lại vẫn 0 USD, không cần thông tin xác thực thật.
+- Giữ khả năng chọn transport qua cấu hình hiện có để chuyển khi chủ dự án chỉ thị; không khoá cứng Vertex trong lõi. Báo cáo/recording lịch sử giữ nguyên.
 
 **Bên trong `wayfinder`, bốn tầng như lõi:**
 - **domain:** thực thể web (tài khoản, khoá học, thành viên, link mời, lời mời, bản dựng) và **bảng luật phân quyền** dạng hàm thuần;
@@ -602,6 +615,10 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 
 Các trần Pha B (0,20 USD, 5 USD) vẫn ở `BSettings`.
 
+**Cấu hình Gemini dùng lại từ `Settings` lõi**, không thêm bộ khoá trùng trong `WebSettings`: tạm dùng `DOC2ROADMAP_LLM_TRANSPORT=vertex`,
+`DOC2ROADMAP_VERTEX_PROJECT`, `DOC2ROADMAP_VERTEX_LOCATION` và ADC phía máy chủ. API/worker dùng cùng cấu hình; chỉ chuyển sang `developer_api` và
+`DOC2ROADMAP_GEMINI_API_KEY` khi chủ dự án yêu cầu chuẩn bị demo, theo mục 1.
+
 ### 13. Lưu trữ (mức khái niệm; chi tiết ở spec cơ sở dữ liệu)
 
 - **PostgreSQL** cho dữ liệu web và cho **kho Pha B**. Bản cài kho Pha B trên PostgreSQL qua **cùng bộ test hợp đồng** với bản JSON và bản bộ nhớ.
@@ -669,6 +686,9 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
 25. Không phản hồi JSON nào gửi trình duyệt chứa tên miền Cloudinary hay `public_id` (quét đệ quy mọi chuỗi), trừ chuyển hướng 302 của "Mở cả tệp" có
     `expires_at`. Cache bài giảng không chứa URL nào.
 26. Ảnh trang, ảnh công thức, "Mở cả tệp" bởi người ngoài khoá thì `not_found`, và `MediaStore` giả ghi nhận 0 lần lấy từ Cloudinary.
+27. Composition API/worker theo cấu hình tạm thời truyền `vertex` tới mô hình sinh và embedding, kể cả đường dựng sách; không đòi Gemini API key.
+    Thiếu project/xác thực Vertex bị chặn trước lời gọi mô hình, không tự chuyển sang Developer API. Dùng bản giả xác thực và mô hình, không gọi mạng;
+    thấy đỏ khi truyền nhầm transport hoặc bỏ kiểm cấu hình. Việc chuyển sang Developer API chờ chỉ thị riêng của chủ dự án.
 
 **Tiền lệ trong repo:**
 - test dịch vụ Pha B ở mức use case (trợ lý, bài giảng, quiz, phiên, tiến độ, thư viện);
@@ -709,6 +729,8 @@ Bảy câu hỏi mở của bản đầu đã được chủ dự án trả lờ
 6. **Thành viên mở tệp PDF gốc:** có. "Đọc trang p" mở ảnh của đúng trang; "Mở cả tệp" là nút phụ, qua link tải có hạn (mục 7).
 7. **Gửi thư:** Gmail SMTP với mật khẩu ứng dụng. Gmail giới hạn khoảng 500 thư mỗi ngày; đủ cho demo.
 8. **Cloudinary:** một tài khoản cho dev và demo, tách bằng thư mục `wayfinder/dev` và `wayfinder/prod`.
+9. **Gemini cho backend web** (cập nhật trong chat điều phối 2026-10-19, thay quyết định ngày 2026-10-18): FastAPI và worker tạm dùng Vertex AI;
+   khi chuẩn bị demo chủ dự án sẽ chỉ thị chuyển sang Gemini Developer API. Chi tiết cấu hình và kiểm thử ở mục 1, 12.
 
 **Việc chủ dự án làm trên tài khoản:**
 - Cloudinary:

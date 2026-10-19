@@ -13,6 +13,8 @@
 - logo, favicon và GIF chờ do chủ dự án cung cấp;
 - stack React + FastAPI + PostgreSQL;
 - nhân viên vẽ Figma, Claude chỉ viết spec.
+- **Bổ sung theo chủ dự án 2026-10-18:** giao diện Figma và React phải đẹp, hoàn thiện về thị giác và có hiệu ứng tương tác phù hợp; được phép dùng các
+  skill trong bộ `taste-skill` do chủ dự án nạp vào. Yêu cầu và cách nghiệm thu ở mục 3a.
 
 ---
 
@@ -42,19 +44,20 @@
 
 Mọi tệp ở thư mục `design/` của repo.
 
-**Logo — 4 bố cục × 2 bản màu.** Tên tệp theo giả định của Claude, đọc từ ảnh chủ dự án dán ngày 2026-10-18; tệp thật tới lúc 19:30 cùng ngày. Nếu
-đánh số khác thì chỉ sửa bảng này.
+**Logo — 20 tệp PNG `Artboard 9.png` đến `Artboard 28.png`.** Chủ dự án xác nhận 2026-10-19; đã kiểm tra đủ tệp, hình và kênh alpha trong `design/`.
+Tên tệp này thay toàn bộ tên giả định `logo1`–`logo8` trước đây; không đổi tên hoặc ghi đè bản gốc.
 
-| tệp | bố cục | bản màu | dùng ở |
-|---|---|---|---|
-| `logo1` | xếp dọc: mặt ở trên, "Way / Finder" hai dòng | đen trên trắng | trang đăng nhập, đăng ký (máy tính bảng trở lên) |
-| `logo2` | chữ hai dòng bên trái, mặt lệch góc phải | đen trên trắng | trang giới thiệu, đầu thư email |
-| `logo3` | mặt trên bên trái, "WayFinder" một dòng | đen trên trắng | trang đăng nhập ở điện thoại |
-| `logo4` | ngang: mặt trái, chữ phải | đen trên trắng | **thanh trên mọi trang**, chế độ sáng |
-| `logo5` | như `logo1` | trắng trên xanh `#29A9FF` | trang giới thiệu, ảnh chia sẻ link |
-| `logo6` | như `logo2` | trắng trên xanh | slide, báo cáo |
-| `logo7` | như `logo3` | trắng trên xanh | màn hình chờ khi mở ứng dụng |
-| `logo8` | như `logo4` | trắng trên xanh | thanh trên ở chế độ tối (nếu có bản nền trong), chân trang |
+| bố cục | đen nền trắng | trắng nền xanh `#29A9FF` | trắng nền đen | đen nền trong | trắng nền trong |
+|---|---|---|---|---|---|
+| dọc: mặt trên, chữ hai dòng | `Artboard 9.png` | `Artboard 13.png` | `Artboard 17.png` | `Artboard 21.png` | `Artboard 25.png` |
+| chữ hai dòng bên trái, mặt lệch phải | `Artboard 11.png` | `Artboard 14.png` | `Artboard 18.png` | `Artboard 22.png` | `Artboard 26.png` |
+| mặt trên trái, chữ một dòng bên dưới | `Artboard 10.png` | `Artboard 15.png` | `Artboard 19.png` | `Artboard 23.png` | `Artboard 27.png` |
+| ngang: mặt trái, chữ phải | `Artboard 12.png` | `Artboard 16.png` | `Artboard 20.png` | `Artboard 24.png` | `Artboard 28.png` |
+
+**Chọn theo nơi dùng:** thanh trên dùng `Artboard 24.png` ở chế độ sáng, `Artboard 28.png` ở chế độ tối; đăng nhập/đăng ký có thể dùng bố cục dọc
+`Artboard 21.png`/`Artboard 25.png`, điện thoại dùng bố cục `Artboard 23.png`/`Artboard 27.png`. Bản có nền 9–20 phù hợp mảng thương hiệu, ảnh chia sẻ,
+slide/báo cáo; chọn đúng màu nền của nơi đặt. Người thiết kế ghi tệp đã chọn trong Figma để React dùng cùng bản. Logo đã đủ để làm W-01/W-22, không còn
+chờ bộ tám logo giả định.
 
 **Favicon** (`OTP1`–`OTP6`, 521×521 PNG):
 
@@ -68,16 +71,14 @@ Mọi tệp ở thư mục `design/` của repo.
 | `OTP2` | mặt đen, nền trong | in đen trắng, báo cáo |
 
 **Luật dùng logo:**
-- Không vẽ lại, không kéo méo, không đổi màu ngoài hai bản đen và trắng-trên-xanh, không thêm bóng đổ.
+- Không vẽ lại, không kéo méo, không tự đổi màu hoặc thêm bóng đổ; dùng đúng biến thể màu/nền của tệp Artboard ở bảng trên.
 - **Khoảng trống quanh logo** tối thiểu bằng chiều cao của hai "điểm ảnh" trong mặt pixel.
 - **Cỡ nhỏ nhất:** logo ngang cao 24 px trên thanh trên ở điện thoại, 32 px ở máy tính. Dưới cỡ đó thì chỉ dùng favicon.
 - **Phóng ảnh pixel** (favicon, mặt, GIF) bằng `image-rendering: pixelated`, theo bội số nguyên khi được, để cạnh không nhoè.
 - **Chữ trong logo là chữ vẽ riêng,** không phải Be Vietnam Pro. Không dựng lại logo bằng chữ HTML.
 
-**Cần chủ dự án cung cấp thêm** (người thiết kế hỏi ngay khi nhận vé):
-- bản **SVG**, hay PNG nền trong, của 8 logo; nhất là bản **trắng nền trong**, cho thanh trên ở chế độ tối;
-- xác nhận bảng đánh số ở trên;
-- **tệp gốc của GIF** (các khung, hay tệp Procreate hay Aseprite), để xuất lại ở cỡ nhỏ mà không nhoè.
+**Tài sản bổ sung nếu có:** bản SVG có thể bổ sung sau; PNG nền trong đen/trắng đã có ở Artboard 21–28, không chặn thiết kế/React. Tệp gốc của GIF
+(các khung, Procreate hoặc Aseprite) vẫn hữu ích để xuất lại vòng chờ ở cỡ nhỏ mà không nhoè; đây là tài sản riêng với logo.
 
 ### 2. Vòng chờ GIF
 
@@ -192,6 +193,31 @@ Chế độ tối thay bóng bằng viền `color-border` và nền `surface-2`.
 - dấu "đã học" là một dấu tích vẽ bằng ô vuông 2 px;
 - minh hoạ trạng thái rỗng dùng mặt pixel (`OTP4`) cộng một dòng chữ.
 
+### 3a. Chất lượng thị giác, hiệu ứng và `taste-skill`
+
+**Áp dụng cho người thiết kế và mọi vé có giao diện React.** Giao diện phải đẹp, chỉn chu và nhất quán với thương hiệu WayFinder. Đúng chức năng chưa đủ
+để nghiệm thu giao diện. Người thiết kế và người soát đối chiếu các điểm sau trên màn hình thực:
+
+- phân cấp tiêu đề, nội dung và hành động chính rõ; chữ tiếng Việt dễ đọc, cột đọc và độ dài dòng theo mục 3;
+- căn hàng, khoảng cách, màu, biểu tượng, bo góc và bóng nhất quán bằng token/thành phần dùng chung; màn hình có bố cục hoàn thiện, không còn khung tạm;
+- bố cục thích ứng ở 390, 768 và 1280 px: không chồng/cắt chữ hoặc tràn trang; bảng rộng cuộn trong khung theo thiết kế;
+- trạng thái mặc định, hover, focus, bấm, vô hiệu, đang tải, rỗng, lỗi và thành công có phản hồi rõ, cùng chất lượng thị giác ở sáng/tối.
+
+**Hiệu ứng có mục đích:** nút/ô nhập phản hồi trạng thái; menu, hộp thoại, bảng trượt và khối gập mở/đóng liền mạch; tiến độ và nội dung mới xuất hiện rõ
+ràng. Dùng `motion-fast` (120 ms), `motion-base` (200 ms), `ease-out` ở mục 3, ưu tiên CSS và `opacity`/`transform` khi phù hợp. Hiệu ứng không gây nhảy bố
+cục, mất focus, cản thao tác, tự cuộn vùng người dùng đang đọc hoặc trì hoãn phản hồi/SSE để trình diễn. Không thêm thời gian chờ giả hay hiệu ứng trang
+trí lặp liên tục ngoài vòng chờ có mục đích. Khi `prefers-reduced-motion`, tắt chuyển động không thiết yếu và dùng vòng chờ tĩnh; phản hồi trạng thái và
+viền focus vẫn đầy đủ.
+
+**Dùng skill:** người thiết kế và nhóm React được phép dùng các skill trong bộ `taste-skill` do chủ dự án nạp để hỗ trợ bố cục, thẩm mỹ, chi tiết thành
+phần và hiệu ứng. Khi dùng, đọc `SKILL.md` của skill thực tế có trong môi trường; ghi tên skill và quyết định thiết kế đã áp dụng vào báo cáo vé. Skill
+là hướng dẫn hỗ trợ; khi gợi ý khác spec hoặc thương hiệu đã chốt, giữ spec hoặc ghi đề xuất để chủ dự án quyết. Nếu bộ skill chưa được nạp, vẫn làm theo
+spec này và ghi rõ chưa dùng, không coi đó là điều kiện chặn vé.
+
+**Bằng chứng nghiệm thu:** ảnh 390/1280 px theo luật chung; kiểm bố cục thêm ở 768 px. Kèm video ngắn của các tương tác có hiệu ứng thuộc vé; W-22 ghi
+chú hiệu ứng và thời lượng trong prototype để React đối chiếu, W-23 so cả hình tĩnh lẫn chuyển động. Kiểm thị giác do người thiết kế/người soát thực hiện;
+test tự động xác minh token, hành vi và giảm chuyển động, không thay cho phán xét thẩm mỹ.
+
 ### 4. Sơ đồ trang và đường dẫn
 
 | đường | trang | ai |
@@ -216,7 +242,7 @@ Chế độ tối thay bóng bằng viền `color-border` và nền `surface-2`.
 ### 5. Khung chung
 
 **Thanh trên** (cao 56 px ở điện thoại, 64 px ở máy tính), nền `color-surface`, viền dưới `color-border`:
-- trái: logo ngang (`logo4`; chế độ tối dùng bản trắng nền trong khi có);
+- trái: logo ngang (`Artboard 24.png`; chế độ tối dùng `Artboard 28.png`, đều nền trong);
 - giữa (máy tính): tên khoá học đang mở, kèm đường dẫn "Khoá học / Module 3";
 - phải: nút "Tải giáo trình", biểu tượng mức dùng (vòng tỉ lệ nhỏ), menu tài khoản (Hồ sơ, Mức dùng, Quản trị nếu là admin, Chế độ tối, Đăng xuất).
 - Ở điện thoại, phần giữa ẩn; nút "Tải giáo trình" vào menu.
@@ -234,7 +260,7 @@ Chế độ tối thay bóng bằng viền `color-border` và nền `surface-2`.
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│ [logo4]                       [Tải giáo trình] (◔) [Tên ▾]   │
+│ [logo ngang]                  [Tải giáo trình] (◔) [Tên ▾]   │
 ├──────────────────────────────────────────────────────────────┤
 │ Lời mời (2)   [Khoá A — từ Lan] [Chấp nhận] [Từ chối]        │
 │                                                              │
@@ -418,6 +444,7 @@ Mỗi thành phần có trạng thái: mặc định, rê chuột, focus (viền
 | `file_too_large` | Tệp lớn hơn 10 MB. Hãy tách tài liệu theo chương rồi tải từng phần. |
 | `too_many_pages` | Tài liệu dài hơn 400 trang. Hãy tách theo chương. |
 | `file_invalid`, `file_encrypted` | Tệp không phải PDF hay DOCX đọc được, hoặc đang đặt mật khẩu. |
+| `chu_loi` (bản dựng) | Chữ trong tệp bị lỗi phông nên WayFinder chưa đọc đúng. Hãy xuất lại PDF từ tệp gốc (Word, LaTeX) hoặc dùng bản khác. |
 | `quota_exceeded` | Bạn đã dùng hết lượt dựng tháng này. Lượt mới có từ {resets_at}. |
 | `daily_limit` (trợ lý) | Hôm nay bạn đã dùng hết lượt hỏi. Bạn vẫn đọc bài giảng, làm quiz và xem thư viện được. Lượt mới từ {resets_at}. |
 | `internal_error` | Có lỗi phía máy chủ. Mã tra cứu: {ref}. |
@@ -439,8 +466,9 @@ Mỗi thành phần có trạng thái: mặc định, rê chuột, focus (viền
 Các trang trong tệp Figma:
 1. **Bìa:** tên, phiên bản, link spec này.
 2. **Nền tảng:** biến màu (sáng, tối), chữ, khoảng cách, bo góc, bóng, lưới; bảng cặp màu đã kiểm tương phản.
-3. **Thương hiệu:** 8 logo, 6 favicon, vòng chờ (khung 0 và ghi chú chuyển động), luật dùng.
+3. **Thương hiệu:** 20 logo Artboard 9–28 theo bảng mục 1, 6 favicon, vòng chờ (khung 0 và ghi chú chuyển động), luật dùng.
 4. **Thành phần:** mục 7, mỗi thành phần đủ biến thể và trạng thái.
+   Ghi chú hiệu ứng, thời lượng theo token và phương án giảm chuyển động theo mục 3a.
 5. **Màn hình — điện thoại (390):** mọi trang ở mục 4, đủ năm trạng thái ở mục 8.
 6. **Màn hình — máy tính (1280):** như trên.
 7. **Luồng nguyên mẫu:** bốn luồng ở vé W-22.
@@ -463,6 +491,8 @@ Mỗi dòng ở cả 390 px và 1280 px:
 - [ ] Quản trị: năm thẻ (chỉ 1280).
 - [ ] 404.
 - [ ] Mọi trang ở chế độ tối: ít nhất trang lộ trình, trang học, chat, quiz.
+- [ ] Soát chất lượng thị giác theo mục 3a; kiểm bố cục thêm ở 768 px và ghi các lỗi đã sửa.
+- [ ] Prototype có hiệu ứng tương tác theo mục 3a, ghi rõ thời lượng/phương án giảm chuyển động; có video ngắn để nhóm React đối chiếu.
 
 ---
 
@@ -472,18 +502,19 @@ Mỗi dòng ở cả 390 px và 1280 px:
   plugin xuất; ghi vào báo cáo W-22.
 - **Tương phản:** một test tính tương phản của các cặp token chữ/nền ở bảng mục 3, theo công thức WCAG; cặp nào dưới ngưỡng thì đỏ. Thấy đỏ trước bằng cách
   đổi thử `color-primary` sang `#29A9FF`.
-- **Giảm chuyển động:** test giao diện bật `prefers-reduced-motion` và kiểm vòng chờ là ảnh tĩnh.
-- **Ảnh chụp** của từng vé theo luật chung ở kế hoạch vé; W-23 đối chiếu với Figma.
+- **Giảm chuyển động:** test giao diện bật `prefers-reduced-motion`, kiểm vòng chờ là ảnh tĩnh và chuyển động không thiết yếu bị tắt; thao tác và phản hồi
+  trạng thái vẫn hoạt động. Thấy đỏ trước bằng cách cố ý bỏ xử lý giảm chuyển động.
+- **Ảnh chụp và video** của từng vé theo mục 3a và luật chung ở kế hoạch vé; W-23 đối chiếu thị giác và hiệu ứng với Figma.
 
 ## Ngoài phạm vi
 
 - Thiết kế lại logo; bộ minh hoạ mới ngoài mặt pixel và GIF.
 - Chế độ tương phản cao riêng.
 - Giao diện tiếng Anh.
-- Hoạt hình ngoài vòng chờ và hiện dần.
+- Hoạt hình trang trí hoặc trình diễn không phục vụ tương tác ở mục 3a.
 
 ## Ghi chú thêm
 
 - **Màu là đề xuất của Claude,** theo ủy quyền "màu bạn suy nghĩ". Chủ dự án đổi được ở bảng token; test tương phản bảo đảm không đổi sang cặp kém tương phản.
-- **Khi tệp logo tới,** người thiết kế kiểm: có bản nền trong không, nền của bản trắng có phải xanh `#29A9FF` không, và mã màu trong tệp có đúng `#29A9FF` không.
-  Favicon đã đo đúng `#29A9FF`.
+- **Logo đã nhận 2026-10-19:** Artboard 9–20 có nền đặc; Artboard 21–28 có alpha trong suốt. Nền xanh Artboard 13–16 đã đo là `#29A9FF`, cùng màu favicon.
+  Người thiết kế kiểm hình tại cỡ hiển thị và chọn đúng biến thể, không phải chờ PNG nền trong nữa.

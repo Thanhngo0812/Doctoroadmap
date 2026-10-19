@@ -2,7 +2,15 @@
 
 **Nguồn chân lý:** [spec thiết kế giao diện](../../doc/web-thiet-ke-giao-dien-spec.md) (toàn bộ); [spec chức năng](../../doc/web-chuc-nang-spec.md) (danh sách chức năng, mã lỗi); tệp
 thương hiệu ở `design/`.
-**Ai:** người thiết kế của nhóm · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** ready-for-agent
+**Ai:** người thiết kế của nhóm · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, chưa đủ nghiệm thu; bổ sung/sửa theo W-24.
+
+**Tiếp nhận 2026-10-19:** điều phối chạy lại 20 test và 17 cặp tương phản đạt, nhưng tái hiện lỗi nút tối, vùng bấm mobile, GIF khi giảm chuyển động;
+thử đổi sai CSS mà 20 test vẫn xanh. Bằng chứng Figma/đủ trang và bốn prototype chưa xác minh được. Xem
+[báo cáo tiếp nhận](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md) và [vé sửa W-24](W-24-bo-sung-va-sua-ban-giao-w22.md).
+
+**Kiểm lại sau W-24, 2026-10-19:** đã sửa primary tối và khung mobile riêng; chưa đóng W-22. Desktop vẫn chạy GIF khi giảm chuyển động,
+guard chưa bắt lệch spacing/RGBA; thiếu node/Variables export/đủ trang và bốn prototype Figma. Trình duyệt soát nhận 403 khi mở Figma,
+không kết luận file không tồn tại. Tiếp tục W-24 theo [soát ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
 
 ## Vì sao
 
@@ -26,16 +34,26 @@ tải, lỗi, hết trần, không có quyền.
 3. tải sách → dựng;
 4. làm quiz.
 
-**Thương hiệu:** dùng đúng tệp logo và favicon theo bảng tệp của spec. Không vẽ lại logo; không đổi màu logo ngoài hai bản đen và trắng-trên-xanh.
+**Thương hiệu** (chủ dự án cập nhật 2026-10-19): logo là 20 tệp `design/Artboard 9.png` đến `design/Artboard 28.png`; favicon vẫn là `OTP1`–`OTP6`.
+Dùng bảng bố cục/màu/nền trong spec mục 1; ghi tên Artboard đã chọn trên thành phần Figma để React đối chiếu. Artboard 21–24 là đen nền trong, 25–28 là
+trắng nền trong; thanh trên sáng/tối dùng Artboard 24/28. Đã có đủ logo để tiếp tục toàn bộ phần thương hiệu, không chờ `logo1`–`logo8`. Không vẽ lại,
+kéo méo hay tự đổi màu của biến thể gốc.
+
+**Chất lượng thị giác và hiệu ứng** (chủ dự án bổ sung 2026-10-18): bản Figma phải đẹp, chỉn chu, có phân cấp rõ, căn chỉnh/khoảng cách nhất quán và đủ
+trạng thái theo spec thiết kế mục 3a. Kiểm bố cục thêm ở 768 px. Prototype mô tả hiệu ứng hover/bấm, mở/đóng menu, hộp thoại, bảng trượt, khối gập và chuyển
+trạng thái thuộc các luồng của vé; ghi thời lượng theo token và phương án giảm chuyển động cho React. Được phép dùng các skill trong bộ `taste-skill`
+do chủ dự án nạp theo luật chung; ghi tên skill và quyết định đã áp dụng nếu có dùng.
 
 ## Tiêu chí nghiệm thu
 
 - [ ] Biến màu và chữ trong Figma trùng tên và giá trị với bảng token của spec. Người soát đối chiếu từng dòng.
+- [ ] Trang thương hiệu ghi đủ Artboard 9–28 và bộ thành phần chỉ rõ tên tệp dùng theo spec mục 1, gồm bản nền trong cho sáng/tối.
 - [ ] Đủ mọi trang và trạng thái trong danh sách kiểm của spec thiết kế, ở hai cỡ màn hình.
 - [ ] Tương phản chữ đạt WCAG AA (4,5:1 cho chữ thường, 3:1 cho chữ lớn và biểu tượng), kiểm bằng plugin; ghi các cặp màu đã kiểm.
 - [ ] Bốn luồng nguyên mẫu bấm được.
+- [ ] Người soát xác nhận checklist thị giác ở spec mục 3a; có ghi nhận kiểm bố cục 768 px, hiệu ứng/thời lượng trong prototype và video ngắn các tương tác.
 - [ ] Link Figma (quyền xem) và ảnh xuất của từng trang để vào báo cáo vé.
 
 ## Ngoài vé
 
-Hoạt hình ngoài vòng chờ GIF. Bộ minh hoạ mới.
+Hoạt hình trang trí không phục vụ tương tác theo spec mục 3a. Bộ minh hoạ mới.

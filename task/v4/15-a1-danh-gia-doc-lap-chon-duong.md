@@ -16,9 +16,19 @@
 - Pha 5 và nghiên cứu cây cha–con chuyển sang [vé 16](16-a1-bo-doc-nhe-mac-dinh-va-cay-cha-con.md).
 - Kiểm thử pha 0–3: [báo cáo](../../report/kiem-thu-ve-15-pha-0-3-2026-10-10.md).
 
-**Trạng thái:** soạn 2026-10-08. Thay phần "A1 mở rộng" đang mở của vé 14.
+**Cập nhật mới nhất — 2026-10-09:** pha 0–1 hoàn tất phần nhân viên; đã nhận 1.719 nhãn L1/48 trang L2 nhưng chưa duyệt ngữ nghĩa toàn bộ. Pha 2 đủ 54/54 fresh runs và đã hoàn tất bảy lượt M5 bù riêng; mỗi hệ/cuốn có ba lượt CPU trước chạy dưới 20%, không ghi đè kết quả cũ. Pha 3 đã chấm bốn vòng trên đủ sáu sách D-02 và 19 sách bạc, R3/R4 không tăng M3 nên dừng theo luật, đóng băng **R2-native-only** (M3 trung vị 0,7995 so với R25 0,7666). Không nhận mô hình D-02 mới hoặc S3. 60 test xanh, hash/smoke suy luận R2 và audit M4 đã kiểm. Router mới 19/19 sách cũ và test tổng hợp đạt; **còn người giữ tập khoá kiểm 43/43**, nhân viên không mở 24 PDF mới/đầu ra từng cuốn. Chưa ghi toàn pha 3 nghiệm thu, chưa làm pha 4–5, mặc định sản phẩm vẫn S0. [Baseline](../../report/v4-15-pha-2-ket-qua-2026-10-09.md), [chốt phát triển/suy giảm](../../report/v4-15-pha-3-chot-va-ban-giao-2026-10-09.md), [lệnh bàn giao](../../report/v4-15-ban-giao-nguoi-giu-tap-khoa-2026-10-09.md), [hash ứng viên](../../report/v4-15-pha-3-dong-bang-2026-10-09.json). Các dòng 2026-10-08 bên dưới là lịch sử.
+
+**Trạng thái (2026-10-08):** pha 0 đã đóng chuỗi R và ghi hash S1; pha 1 đủ phiếu sáu sách. Pha 1b nhận đủ 1.719 tiêu đề và 48 trang L2 (đã loại dòng trống khi đếm); chủ dự án đã duyệt ưu tiên cha logic, năm chương d01-02 được hiệu chỉnh riêng, không ghi đè nhãn agentic. Pha 2: kho cũ lưu 12 lần S1/S2 rồi dừng do wrapper S0 gọi sai constructor; đã sửa với test đỏ/xanh. Kho mới `tmp/a1-v415/phase2b-20261008` chạy lại 54 lần đo, S0 đã vào parse thật, có CPU/RAM; chưa hoàn tất. Pha 3 định tuyến đúng 19/19 PDF cũ, còn 20 PDF mới do người giữ tập khoá kiểm; chưa đổi sản phẩm hoặc làm pha 4–5. Chi tiết: [sửa cha và lượt đo](../../report/v4-15-sua-cha-va-chay-pha-2-2026-10-08.md), [tiếp nhận 1b](../../report/v4-15-tiep-nhan-nhan-1b-2026-10-08.md), [giao thức pha 3](../../report/v4-15-giao-thuc-pha-3-2026-10-08.md). Thay phần "A1 mở rộng" đang mở của vé 14.
+
+**Kiểm cuối 2026-10-09:** bảy lượt M5 bù đã hoàn tất, mỗi hệ/cuốn đủ ba lượt CPU trước chạy dưới 20% (không chứng minh rảnh suốt pipeline). Audit M4 loại biên sửa cách đọc `evaluation_excluded`, giữ số gốc riêng; test đột biến bắt được predicate sai. 60 test xanh; CLI suy luận R2 chạy PDF phát triển thật và tiêu đề/chunk khớp kết quả chọn. Không còn pipeline đo nào của đợt này. [Audit M4/M5](../../report/v4-15-m5-bo-sung-va-m4-loai-bien-2026-10-09.md). Còn cổng router 43/43 do người giữ tập khoá chạy trước nghiệm thu toàn pha 3.
+
+**Tạm dừng theo chủ dự án, cuối giờ làm 2026-10-08:** đã lưu 5/54 lượt pha 2 (9,26%); d01-15 S0 lần 1 chưa hoàn tất. Đã xác nhận không còn tiến trình đo và gỡ lock cũ, giữ mọi checkpoint/log. Chờ chủ dự án mở máy và yêu cầu chạy tiếp; không tự khởi động lại.
+
+**Tiếp tục theo chủ dự án, 2026-10-09:** đã xác nhận không có pipeline trùng, chạy lại đúng baseline từ năm checkpoint, bắt đầu d01-15 S0 lần 1. Giữ hash mã/nhãn cũ, không đổi runtime giữa phép đo. Đã đọc yêu cầu mới của pha 3 và chẩn đoán tiêu đề; đồng bộ giao thức, bổ sung manifest đủ 43 cuốn theo tên tệp (không mở PDF khoá). Router baseline cũ còn nhánh S0 cho bản quét; chỉ dùng làm mốc cũ, chưa nhận là S2 cuối theo yêu cầu từ chối bản quét.
 
 ## Vì sao (Claude, 2026-10-08)
+
+**Tiếp tục sau mất điện, 2026-10-09:** checkpoint giữ 37/54 lượt (68,52%). Đã kiểm không còn pipeline và gỡ riêng lock cũ PID 28516; d01-06 S0 lần 3 chưa có thư mục kết quả. Theo yêu cầu chủ dự án, chạy tiếp đúng lệnh/kho baseline, không đổi mã hoặc cấu hình; lượt bị ngắt chạy lại, 37 lượt hoàn chỉnh tái dùng. Chi API 0 USD.
 
 - **Chuỗi R đã chững.**
   - 25 vòng trong hai ngày, đo bằng độ khớp với docling trên 19 cuốn đã xem nhiều lần.

@@ -55,7 +55,7 @@ Phụ thuộc: 2–5. Tệp: báo cáo nghiệm thu, W-13/spec đúng phạm vi.
 - [x] Báo người dùng những giới hạn còn lại; không nhận nghiệm thu thay phần chưa thực hiện.
 
 ## Theo dõi trước khi đóng nghiệm thu chạy thật
-- [ ] Có PDF gốc nhap-mon-ml để thay phép đo parse cache bằng phép đo đủ cuốn trên bộ đọc nhẹ.
-- [ ] Hoàn tất toàn chuỗi doc-6 từ bộ đọc nhẹ khi có đủ cache, hoặc sau một lượt chi được chủ dự án duyệt. Lượt hiện tại dừng trước khi chi ở concepts, 0 USD.
+- [x] Khôi phục đúng PDF gốc nhap-mon-ml theo SHA-256 trong tài liệu repo; Nhe đo đủ 20 trang, 25.278 chữ cái.
+- [x] Chủ dự án đã duyệt chi; hoàn tất toàn chuỗi doc-6 cả kho chép cache lịch sử và kho hoàn toàn rỗng, rồi chạy lại 0 lời gọi/0 USD. Xem `report/w13-hoan-tat-doc6-2026-10-19.md`.
 
-Mã và kiểm thử 0 USD đã bàn giao; hai dòng trên là giới hạn nghiệm thu, không được tự đánh dấu đã đạt.
+Hai dòng trên đã có bằng chứng chạy thật và truy vấn DB độc lập; bàn giao người soát, không thay phán xét soát độc lập.

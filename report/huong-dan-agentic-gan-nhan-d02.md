@@ -74,7 +74,7 @@ Mỗi cuốn có một mã `<sach>`.
   - Không có "Phần" thì Chương, hay Tuần, là cấp 1.
 - "Lời nói đầu", "Mục lục", "Tài liệu tham khảo", "Phụ lục" luôn là cấp 1.
 - Mục không đánh số nằm ngay dưới chương ("Câu hỏi ôn tập chương 3") là con của chương đó, kể cả khi in to.
-- `cha` là tiêu đề gần nhất **phía trước** có cấp nhỏ hơn đúng 1. Cấp 1 thì `cha` là `null`.
+- `cha` là tiêu đề **đang mở trong cùng nhánh logic** phía trước có cấp nhỏ hơn đúng 1. Cấp 1 thì `cha` là `null`. Mục mở đầu/hành chính (`mo_dau`, `hanh_chinh`) là nhánh riêng, không đóng nhánh nội dung đang mở: nếu Phần xuất hiện trước Mục lục rồi tới Chương, Chương vẫn thuộc Phần, không thuộc Mục lục. Một Phần/Chương nội dung mới vẫn đóng nhánh nội dung cũ ở cùng cấp.
 - Sách bỏ qua một bậc đánh số (ví dụ chương rồi vào thẳng "a)") thì vẫn tính cấp liên tiếp: `a)` là cấp 2.
 
 ### 2.4 Vùng, chỉ ghi cho tiêu đề cấp 1
@@ -110,7 +110,7 @@ Mỗi tiêu đề một dòng JSON, theo thứ tự đọc:
 | `dong` | ít nhất một mã dòng có thật. Một mã dòng không thuộc hai tiêu đề |
 | `text` | chữ của tiêu đề, không rỗng |
 | `cap` | số nguyên từ 1 đến 6 |
-| `cha` | `null` khi `cap` là 1; nếu không, là `id` của tiêu đề gần nhất phía trước có `cap` nhỏ hơn đúng 1 |
+| `cha` | `null` khi `cap` là 1; nếu không, là `id` của tiêu đề đang mở trong cùng nhánh logic, phía trước và có `cap` nhỏ hơn đúng 1; xem ngoại lệ nhánh mở đầu/hành chính ở mục 2.3 |
 | `vung` | bắt buộc với cấp 1, chọn một giá trị ở mục 2.4; `null` với cấp khác |
 | `ghi_chu` | `""`, `"nghi"`, `"liền đoạn"` hoặc lời ngắn |
 

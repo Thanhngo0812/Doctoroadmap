@@ -1,4 +1,4 @@
-# W-14 — Tải sách lên, kiểm sớm, dự toán, hàng đợi, worker (bộ dựng giả)
+# W-14 — Tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker và usage thực (bộ dựng giả)
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 (toàn bộ), 8 (trần khâu dựng); [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md)
 (dùng lại theo băm); [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `upload`, `build`, mục 6 (nhận việc); spec thiết kế, trang tải sách
@@ -11,6 +11,9 @@ và tiến trình dựng.
 xong. W-15 nối bộ dựng thật.
 
 ## Cần làm
+
+**Đồng bộ quyết định chủ dự án 2026-10-19** từ spec chức năng mục 4 và W-13: thả/chọn tệp rồi xác nhận mới dựng; không tính/hiện dự toán hoặc chi phí
+cho người dùng. Ghi usage/chi phí từ kết quả chạy vào DB phía máy chủ, kể cả lỗi/huỷ. Báo cáo giao diện và API không được dùng lại luồng dự toán cũ.
 
 **`BuildService`:** `create_upload`, `get_upload`, `confirm_build`, `get_build`, `cancel_build`, `retry_build`, và phía worker `run_next_job`.
 
@@ -25,10 +28,11 @@ xong. W-15 nối bộ dựng thật.
 - đã có bản dựng `succeeded` cùng `doc_id` và `pipeline_version` thì tạo khoá học `ready` ngay: 0 USD, không trừ lượt;
 - đang có bản dựng chạy dở cùng `doc_id` thì khoá học mới chờ chung bản đó.
 
-**Luồng trạng thái** đúng spec mục 4: `reading` → (`rejected` | `awaiting_confirmation`) → `queued` → `running` → `succeeded` | `failed` | `cancelled`.
+**Luồng trạng thái** đúng spec mục 4: sau kiểm tệp là `awaiting_confirmation` → xác nhận → `queued` → worker `reading` → (`rejected` | `running`) →
+`succeeded` | `failed` | `cancelled`. Kiểm chữ/bản quét/ngôn ngữ thuộc `reading`, trước bước có tiền.
 - Xác nhận thì trừ lượt (`counts_quota = true`).
 - Không xác nhận trong 72 giờ thì hết hạn, không trừ lượt.
-- Nếu trần dự toán bật: dự toán vượt trần thì `rejected` với `qua_du_toan`. Mặc định tắt; dự toán vẫn luôn hiện.
+- Không có bước tính dự toán, `build_max_estimate_usd` hay lỗi `qua_du_toan` trong luồng này.
 
 **Worker** (`web worker`):
 - nhận việc bằng `FOR UPDATE SKIP LOCKED`; nhịp tim 30 giây;
@@ -38,6 +42,9 @@ xong. W-15 nối bộ dựng thật.
 - nếu trần khâu dựng toàn hệ thống bật: kiểm **trước** khi nhận việc;
 - huỷ ở ranh giới bước;
 - ghi chi mỗi bước vào sổ chi với `purpose = build`;
+- Nối `build_document_runner(settings, recorder=callback)`/bộ dựng giả với callback nhận `BuildResult`: ghi kết quả và usage thực vào PostgreSQL của
+  web cùng `build_id`/người yêu cầu ở mọi kết thúc. SQLite `builds.sqlite3` của CLI W-13 không thay DB web. Không cộng lại chi lịch sử của artifact/cache;
+  giữ cờ `usage_complete` khi thiếu token. Đối chiếu [báo cáo W-13](../../report/w13-dung-mot-cuon-2026-10-19.md) và port `application/ports/build.py`.
 - xong thì khoá học `ready` với bản A10 mới nhất, và gửi thư "bản dựng xong" hay "bản dựng lỗi".
 
 **HTTP:** `POST /uploads` (multipart), `GET /uploads/{id}`, `POST /uploads/{id}/build`, `GET /builds/{id}`, `POST /builds/{id}/cancel`, `POST /builds/{id}/retry`.
@@ -52,7 +59,7 @@ xong. W-15 nối bộ dựng thật.
 - **trang tiến trình:**
   - bốn bước có trạng thái;
   - vòng chờ GIF ở bước đang chạy;
-  - dự toán với nút "Dựng lộ trình" và "Huỷ";
+  - chọn tệp, xác nhận bằng nút "Dựng lộ trình" trước khi xếp hàng; nút "Huỷ" theo trạng thái, không hiện dự toán/chi phí;
   - lỗi có nút "Thử lại" khi `retryable`;
   - rời trang rồi quay lại vẫn thấy đúng trạng thái;
   - trang hỏi `GET /builds/{id}` mỗi 3 giây.
@@ -68,13 +75,16 @@ Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Hai lần tải cùng tệp đồng thời trên PostgreSQL: chỉ một bản dựng chạy.
 - [ ] Cấu hình mặc định: một tài khoản tải và dựng 5 cuốn liền không bị chặn.
 - [ ] Bật `build_monthly_max = 3`: lượt thứ 4 trong tháng thì `quota_exceeded`, trước khi worker chạy bước nào; sang tháng mới theo đồng hồ giả thì được.
-- [ ] Bật `build_max_estimate_usd = 3`: dự toán giả 3,5 USD thì `rejected`, `qua_du_toan`.
+- [ ] Trước xác nhận, bộ dựng chưa được gọi; xác nhận mới xếp hàng. API cho người dùng và giao diện không có trường dự toán/chi phí; test thấy đỏ trên
+  luồng cũ còn dự toán.
+- [ ] Kết quả thành công/lỗi/huỷ của bộ dựng giả được ghi PostgreSQL cùng đúng `build_id`/người yêu cầu. Kiểm lại bằng truy vấn độc lập: số chi/usage
+  khớp kết quả, giữ `usage_complete=false` khi thiếu số, cache không bị tính chi cũ lần nữa. Không lấy số 0 USD làm đủ bằng chứng, dùng usage giả khác 0.
 - [ ] Bật trần khâu dựng toàn hệ thống: chạm trần thì bản dựng nằm ở `queued`, không chạy.
 - [ ] Hai worker nhận việc cùng lúc: mỗi bản dựng một worker.
 - [ ] Mất nhịp tim quá 10 phút thì được nhận lại đúng 1 lần; lần sau `failed` với `loi_noi_bo`.
 - [ ] Huỷ khi `running`: không bước nào bắt đầu sau cờ huỷ.
 - [ ] Chưa xác minh email vẫn tải và dựng được.
-- [ ] Ảnh chụp: trang tải, dự toán, đang dựng, lỗi bản quét, xong; cỡ 390 px và 1280 px.
+- [ ] Ảnh chụp: trang tải/xác nhận, đang dựng, lỗi bản quét, xong; cỡ 390 px và 1280 px; không có dự toán/chi phí cho người dùng.
 
 ## Ngoài vé
 

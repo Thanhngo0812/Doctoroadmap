@@ -1,10 +1,16 @@
 """WCAG 2.1 Contrast Ratio and Token Consistency Verification for WayFinder (W-22 / W-24).
 
 Dynamically parses design/tokens/tokens.css and design/tokens/tokens.json to verify:
-1. Exact 1:1 synchronization between CSS custom properties and JSON tokens.
+1. Exact 1:1 synchronization between CSS custom properties and JSON tokens across:
+   - Light mode colors (hex)
+   - Dark mode colors (both hex and RGBA values)
+   - Spacing scale (space-1 to space-16)
+   - Border radius scale (radius-sm to radius-pixel)
+   - Motion tokens (motion-fast, motion-base)
+   - Typography font families
 2. Dynamic contrast ratio calculations of actual tokens used in CSS (Light and Dark mode).
-3. Explicit verification of .btn-primary contrast in Dark Mode (primary text on primary bg).
-4. Guard against unsafe mutations (e.g., white text on #29A9FF).
+3. Explicit verification of .btn-primary contrast in Dark Mode (primary text on primary bg >= 7.0:1).
+4. Guard against unsafe mutations (CSS mismatches, spacing mismatches, RGBA mismatches, contrast drops).
 """
 
 from __future__ import annotations
@@ -39,8 +45,13 @@ def contrast_ratio(color1: str, color2: str) -> float:
     return (lighter + 0.05) / (darker + 0.05)
 
 
+def normalize_val(val: str) -> str:
+    """Normalize strings for invariant comparison (strip spaces, lowercase)."""
+    return re.sub(r"\s+", "", val).lower()
+
+
 def parse_css_tokens(css_content: str) -> tuple[dict[str, str], dict[str, str]]:
-    """Parse light and dark custom properties from CSS content."""
+    """Parse light (:root) and dark ([data-theme="dark"]) custom properties from CSS content."""
     root_match = re.search(r":root\s*\{([^}]+)\}", css_content, re.DOTALL)
     root_block = root_match.group(1) if root_match else ""
 
@@ -77,37 +88,74 @@ def verify_tokens_and_contrast(css_path: Path, json_path: Path) -> tuple[bool, l
     light_css, dark_css = parse_css_tokens(css_content)
     json_data = parse_json_tokens(json_path)
 
-    json_light = json_data.get("color", {}).get("light", {})
-    json_dark = json_data.get("color", {}).get("dark", {})
-
     all_ok = True
 
-    # 1. Check CSS vs JSON sync for light colors
+    # 1. Light Colors Sync
+    json_light = json_data.get("color", {}).get("light", {})
     for key, val_obj in json_light.items():
         var_name = f"--{key}"
-        json_val = val_obj.get("$value", "").upper()
-        css_val = light_css.get(var_name, "").upper()
+        json_val = val_obj.get("$value", "")
+        css_val = light_css.get(var_name, "")
         if not css_val:
             logs.append(f"FAIL: Variable {var_name} missing from :root in CSS")
             all_ok = False
-        elif css_val != json_val:
+        elif normalize_val(css_val) != normalize_val(json_val):
             logs.append(f"FAIL: Value mismatch for {var_name}: CSS={css_val} vs JSON={json_val}")
             all_ok = False
 
-    # 2. Check CSS vs JSON sync for dark colors (for hex tokens)
+    # 2. Dark Colors Sync (covers both hex and RGBA values)
+    json_dark = json_data.get("color", {}).get("dark", {})
     for key, val_obj in json_dark.items():
         var_name = f"--{key}"
-        json_val = val_obj.get("$value", "").upper()
-        if json_val.startswith("#"):
-            css_val = dark_css.get(var_name, "").upper()
-            if not css_val:
-                logs.append(f"FAIL: Variable {var_name} missing from dark mode in CSS")
-                all_ok = False
-            elif css_val != json_val:
-                logs.append(f"FAIL: Value mismatch for dark {var_name}: CSS={css_val} vs JSON={json_val}")
-                all_ok = False
+        json_val = val_obj.get("$value", "")
+        css_val = dark_css.get(var_name, "")
+        if not css_val:
+            logs.append(f"FAIL: Variable {var_name} missing from dark mode in CSS")
+            all_ok = False
+        elif normalize_val(css_val) != normalize_val(json_val):
+            logs.append(f"FAIL: Value mismatch for dark {var_name}: CSS={css_val} vs JSON={json_val}")
+            all_ok = False
 
-    # 3. Dynamic contrast checks on ACTUAL parsed CSS values
+    # 3. Spacing Scale Sync (space-1 to space-16)
+    json_spacing = json_data.get("spacing", {})
+    for key, val_obj in json_spacing.items():
+        var_name = f"--{key}"
+        json_val = val_obj.get("$value", "")
+        css_val = light_css.get(var_name, "")
+        if not css_val:
+            logs.append(f"FAIL: Spacing variable {var_name} missing from CSS :root")
+            all_ok = False
+        elif normalize_val(css_val) != normalize_val(json_val):
+            logs.append(f"FAIL: Spacing mismatch for {var_name}: CSS={css_val} vs JSON={json_val}")
+            all_ok = False
+
+    # 4. Border Radius Sync
+    json_radius = json_data.get("radius", {})
+    for key, val_obj in json_radius.items():
+        var_name = f"--{key}"
+        json_val = val_obj.get("$value", "")
+        css_val = light_css.get(var_name, "")
+        if not css_val:
+            logs.append(f"FAIL: Radius variable {var_name} missing from CSS :root")
+            all_ok = False
+        elif normalize_val(css_val) != normalize_val(json_val):
+            logs.append(f"FAIL: Radius mismatch for {var_name}: CSS={css_val} vs JSON={json_val}")
+            all_ok = False
+
+    # 5. Motion Tokens Sync
+    json_motion = json_data.get("motion", {})
+    for key, val_obj in json_motion.items():
+        var_name = f"--{key}"
+        json_val = val_obj.get("$value", "")
+        css_val = light_css.get(var_name, "")
+        if not css_val:
+            logs.append(f"FAIL: Motion variable {var_name} missing from CSS :root")
+            all_ok = False
+        elif normalize_val(css_val) != normalize_val(json_val):
+            logs.append(f"FAIL: Motion mismatch for {var_name}: CSS={css_val} vs JSON={json_val}")
+            all_ok = False
+
+    # 6. Dynamic contrast checks on ACTUAL parsed CSS values
     checks = [
         # (Name, fg_key, bg_key, min_ratio, mode, desc)
         ("text_on_bg", "--color-text", "--color-bg", 4.5, "light", "Chữ chính trên nền trắng"),

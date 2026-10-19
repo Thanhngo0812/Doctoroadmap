@@ -16,6 +16,8 @@ danh mục.
 - docker compose cho triển khai: `api`, `worker`, `db`, và một reverse proxy có HTTPS (ví dụ Caddy, tự lấy chứng chỉ);
 - React build phục vụ cùng nguồn;
 - bí mật (khoá Gemini, SMTP, mật khẩu cơ sở dữ liệu, `CLOUDINARY_URL`) chỉ qua biến môi trường hay tệp bí mật, không có trong image hay repo;
+- `api` và `worker` hiện tạm nạp `DOC2ROADMAP_LLM_TRANSPORT=vertex`, project/location và ADC phía máy chủ (chủ dự án cập nhật 2026-10-19). Khi chuẩn bị
+  demo, chỉ chuyển sang Developer API/API key theo chỉ thị mới của chủ dự án và ghi lại cấu hình triển khai. Bí mật không vào React hay biến `VITE_*`;
 - thư mục Cloudinary `wayfinder/prod` tách khỏi `wayfinder/dev`;
 - `allowed_origins` là tên miền thật; cookie `Secure`.
 
@@ -32,7 +34,7 @@ danh mục.
 **Bộ thử trình duyệt (Playwright)**, chạy trên bản triển khai thử với mô hình giả hay phát lại:
 1. đăng ký → xác minh (đọc thư từ `Mailer` console) → tham gia khoá mẫu → mở trang lộ trình → mở một bài giảng → hỏi trợ lý một câu;
 2. chủ khoá tạo link → tài khoản thứ hai tham gia bằng link → thấy cùng bài giảng, tiến độ riêng;
-3. tải một tệp (bộ dựng giả) → dự toán → dựng → khoá học `ready`;
+3. tải một tệp (bộ dựng giả) → xác nhận → dựng → khoá học `ready`; không hiện dự toán/chi phí, kết quả thực của lượt chạy được ghi DB;
 4. làm quiz cả lộ trình → nộp → tiến độ đổi.
 
 **Soát an ninh theo danh mục:** chọn các mục cấp 1 của OWASP ASVS về xác thực, phiên, kiểm soát truy cập, kiểm đầu vào, tải tệp, cấu hình. Ghi từng mục đạt
@@ -45,6 +47,8 @@ hay không, kèm bằng chứng.
 - [ ] Thử khôi phục từ bản sao lưu lên máy trống: đăng nhập được, khoá học và tiến độ còn đủ.
 - [ ] Bảng danh mục an ninh, mỗi mục có bằng chứng; mục không đạt có vé sửa (từ W-24).
 - [ ] Quét image và repo không thấy bí mật.
+- [ ] Kiểm API/worker dùng cùng transport theo quyết định hiện hành (tạm `vertex`, chỉ đổi khi có chỉ thị chuẩn bị demo). Test cấu hình tạm dùng bản giả
+  xác thực: không cần Gemini API key, thiếu project/xác thực Vertex bị chặn trước lời gọi, không tự chuyển transport; 0 USD. React không chứa bí mật.
 
 ## Ngoài vé
 

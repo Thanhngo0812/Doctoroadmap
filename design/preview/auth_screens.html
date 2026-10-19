@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WayFinder — Màn hình Xác thực & Tài khoản (W-02 / W-24)</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: #E2E8F0;
+      color: var(--color-text);
+      line-height: var(--line-body);
+      padding: 40px 20px;
+    }
+    .screen-container {
+      max-width: 1280px;
+      margin: 0 auto 60px auto;
+    }
+    .screen-header {
+      margin-bottom: 16px;
+    }
+    .screen-title {
+      font-size: var(--text-h2);
+      font-weight: 700;
+      color: #1E293B;
+    }
+    .screen-desc {
+      font-size: var(--text-small);
+      color: #64748B;
+    }
+
+    /* Desktop Viewport Frame */
+    .viewport-desktop {
+      width: 100%;
+      max-width: 1280px;
+      min-height: 720px;
+      background: var(--color-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Mobile Viewport Frame (390px) */
+    .viewport-mobile {
+      width: 390px;
+      min-height: 844px;
+      background: var(--color-bg);
+      border: 8px solid #1E293B;
+      border-radius: 40px;
+      box-shadow: var(--shadow-2);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+    }
+
+    /* Common Navbar */
+    .navbar {
+      height: 64px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-8);
+      background: var(--color-surface);
+    }
+    .brand-logo {
+      height: 32px;
+      object-fit: contain;
+    }
+    [data-theme="dark"] .brand-logo {
+      content: url('../Artboard 28.png');
+    }
+    .brand-logo-mobile {
+      height: 24px;
+      object-fit: contain;
+    }
+    [data-theme="dark"] .brand-logo-mobile {
+      content: url('../Artboard 27.png');
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--font-sans);
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      text-decoration: none;
+      border: 1px solid transparent;
+      min-height: 44px;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 var(--space-5);
+      font-size: var(--text-body);
+      transition: all var(--motion-fast) var(--motion-ease);
+      box-sizing: border-box;
+    }
+    .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border-color: var(--color-border-input); }
+    .btn-secondary:hover { background: var(--color-bg-subtle); }
+    .btn-text { background: transparent; color: var(--color-primary); border: none; padding: 0 8px; font-size: var(--text-small); }
+
+    /* Inputs */
+    .form-group {
+      margin-bottom: var(--space-4);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-label {
+      font-size: var(--text-small);
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .form-input {
+      width: 100%;
+      height: 44px;
+      min-height: 44px;
+      padding: 0 14px;
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      color: var(--color-text);
+      font-family: var(--font-sans);
+      font-size: var(--text-body);
+      box-sizing: border-box;
+      outline: none;
+    }
+    .form-input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-brand-tint);
+    }
+    .form-input.is-invalid {
+      border-color: var(--color-danger);
+    }
+    .toggle-pwd-btn {
+      position: absolute;
+      right: 8px;
+      background: none;
+      border: none;
+      min-height: 44px;
+      min-width: 44px;
+      height: 44px;
+      width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      font-size: 16px;
+    }
+
+    /* Auth Card Layout */
+    .auth-card {
+      width: 100%;
+      max-width: 420px;
+      margin: 40px auto;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-2);
+      text-align: center;
+    }
+    .auth-logo {
+      height: 64px;
+      object-fit: contain;
+      margin-bottom: var(--space-4);
+    }
+    [data-theme="dark"] .auth-logo {
+      content: url('../Artboard 25.png');
+    }
+    .auth-title {
+      font-size: var(--text-h2);
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--color-text);
+    }
+    .auth-sub {
+      font-size: var(--text-small);
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-6);
+    }
+
+    /* Alert Banners */
+    .alert-banner {
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-small);
+      margin-bottom: var(--space-4);
+      text-align: left;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .alert-danger {
+      background: var(--color-danger-tint);
+      color: var(--color-danger);
+      border: 1px solid var(--color-danger);
+    }
+    .alert-accent {
+      background: var(--color-accent-tint);
+      color: var(--color-accent-text);
+      border: 1px solid var(--color-accent);
+    }
+    .alert-brand {
+      background: var(--color-brand-tint);
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+    }
+
+    @media (max-width: 768px) {
+      .btn, .btn-sm, .btn-md, button {
+        min-height: 44px !important;
+        min-width: 44px !important;
+        height: 44px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- WORKBENCH TOOLBAR -->
+  <div style="max-width: 1280px; margin: 0 auto 30px auto; background: var(--color-surface); padding: 16px 24px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; box-shadow: var(--shadow-1);">
+    <div>
+      <strong style="font-size: 16px;">WayFinder W-02 / W-24 Auth Design Workbench</strong>
+      <div style="font-size: 13px; color: var(--color-text-muted);">Đặc tả giao diện Đăng ký, Đăng nhập, Giới hạn thử (rate limit) và Menu tài khoản cho nhóm Web (W-02).</div>
+    </div>
+    <div style="display: flex; gap: 12px;">
+      <button class="btn btn-secondary btn-sm" onclick="toggleDarkMode()">🌙 / ☀️ Chuyển Sáng / Tối</button>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 1. TRANG ĐĂNG NHẬP (/dang-nhap) - DESKTOP -->
+  <!-- ========================================== -->
+  <div class="screen-container">
+    <div class="screen-header">
+      <div class="screen-title">1. Trang Đăng nhập (/dang-nhap) — Desktop 1280px & Các trạng thái lỗi W-02</div>
+      <div class="screen-desc">Spec mục 2, mục 11: Logo dọc Artboard 21.png (sáng) / 25.png (tối), mã lỗi invalid_credentials, rate_limited (15 phút), account_disabled.</div>
+    </div>
+    <div class="viewport-desktop">
+      <nav class="navbar">
+        <img src="../Artboard 24.png" class="brand-logo" alt="WayFinder">
+        <a href="#register" class="btn btn-secondary btn-sm">Đăng ký tài khoản</a>
+      </nav>
+
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px;">
+        <div class="auth-card">
+          <!-- Logo dọc theo spec mục 1 -->
+          <img src="../Artboard 21.png" class="auth-logo" alt="WayFinder Icon">
+          <h1 class="auth-title">Đăng nhập WayFinder</h1>
+          <p class="auth-sub">Khám phá lộ trình học tập trích xuất từ giáo trình của bạn</p>
+
+          <!-- Trạng thái 1: Lỗi thông tin sai (invalid_credentials) -->
+          <div class="alert-banner alert-danger">
+            <span>✕</span>
+            <div><strong>Đăng nhập không thành công:</strong> Email hoặc mật khẩu chưa đúng.</div>
+          </div>
+
+          <!-- Trạng thái 2: Giới hạn thử (rate_limited) -->
+          <div class="alert-banner alert-accent" style="display:none;" id="alert-rate-limit">
+            <span>⚠️</span>
+            <div>Bạn thử nhiều lần quá (quá 5 lần sai). Hãy thử lại sau <strong>15 phút</strong>.</div>
+          </div>
+
+          <form onsubmit="return false;" style="text-align:left;">
+            <div class="form-group">
+              <label class="form-label" for="login-email">Email học viên</label>
+              <input type="email" id="login-email" class="form-input" value="hocvien@wayfinder.vn" placeholder="nhap.email@truong.edu.vn">
+            </div>
+
+            <div class="form-group">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <label class="form-label" for="login-password">Mật khẩu</label>
+                <a href="#forgot" class="btn-text">Quên mật khẩu?</a>
+              </div>
+              <div class="input-wrapper">
+                <input type="password" id="login-password" class="form-input" value="SecurePassword123!">
+                <button type="button" class="toggle-pwd-btn" onclick="togglePassword('login-password')">👁️</button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:12px;">Đăng nhập</button>
+          </form>
+
+          <div style="margin-top:24px; font-size:var(--text-small); color:var(--color-text-muted);">
+            Chưa có tài khoản? <a href="#register" style="color:var(--color-primary); font-weight:600; text-decoration:none;">Đăng ký ngay</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 2. TRANG ĐĂNG KÝ (/dang-ky) - DESKTOP -->
+  <!-- ========================================== -->
+  <div class="screen-container" id="register">
+    <div class="screen-header">
+      <div class="screen-title">2. Trang Đăng ký (/dang-ky) — Desktop 1280px & Trạng thái xác minh email</div>
+      <div class="screen-desc">Mục 2 spec: Mật khẩu 8-128 ký tự, Argon2id, không lộ email đã có, thông báo xác minh email_unverified.</div>
+    </div>
+    <div class="viewport-desktop">
+      <nav class="navbar">
+        <img src="../Artboard 24.png" class="brand-logo" alt="WayFinder">
+        <a href="#login" class="btn btn-secondary btn-sm">Đã có tài khoản</a>
+      </nav>
+
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:20px;">
+        <div class="auth-card">
+          <img src="../Artboard 21.png" class="auth-logo" alt="WayFinder">
+          <h1 class="auth-title">Tạo tài khoản mới</h1>
+          <p class="auth-sub">Bắt đầu tải sách và dựng lộ trình học chỉ trong 1 phút</p>
+
+          <!-- Dải thông báo xác minh email (email_unverified) -->
+          <div class="alert-banner alert-brand">
+            <span>✉️</span>
+            <div>
+              <strong>Xác minh tài khoản:</strong> Bạn cần xác minh email trước khi sử dụng. 
+              <button class="btn-text" style="color:var(--color-primary); text-decoration:underline; cursor:pointer;">[Gửi lại thư xác minh]</button>
+            </div>
+          </div>
+
+          <form onsubmit="return false;" style="text-align:left;">
+            <div class="form-group">
+              <label class="form-label" for="reg-email">Email</label>
+              <input type="email" id="reg-email" class="form-input" placeholder="hocvien@truong.edu.vn">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-password">Mật khẩu (tối thiểu 8 ký tự)</label>
+              <div class="input-wrapper">
+                <input type="password" id="reg-password" class="form-input" placeholder="Nhập mật khẩu an toàn">
+                <button type="button" class="toggle-pwd-btn" onclick="togglePassword('reg-password')">👁️</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="reg-password-confirm">Xác nhận mật khẩu</label>
+              <div class="input-wrapper">
+                <input type="password" id="reg-password-confirm" class="form-input" placeholder="Nhập lại mật khẩu">
+                <button type="button" class="toggle-pwd-btn" onclick="togglePassword('reg-password-confirm')">👁️</button>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width:100%; margin-top:12px;">Đăng ký</button>
+          </form>
+
+          <div style="margin-top:24px; font-size:var(--text-small); color:var(--color-text-muted);">
+            Đã có tài khoản? <a href="#login" style="color:var(--color-primary); font-weight:600; text-decoration:none;">Đăng nhập</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================== -->
+  <!-- 3. GIAO DIỆN XÁC THỰC MOBILE (390px) -->
+  <!-- ========================================== -->
+  <div class="screen-container">
+    <div class="screen-header">
+      <div class="screen-title">3. Màn hình Đăng nhập trên Điện thoại (390px) — Vùng bấm 44px chuẩn mực</div>
+      <div class="screen-desc">Mục 9 Spec: Mọi nút bấm, ô nhập, icon toggle mật khẩu đều đạt kích thước tối thiểu 44×44 px.</div>
+    </div>
+
+    <div class="viewport-mobile">
+      <div style="height:56px; border-bottom:1px solid var(--color-border); display:flex; align-items:center; justify-content:space-between; padding:0 16px; background:var(--color-surface);">
+        <img src="../Artboard 23.png" class="brand-logo-mobile" style="height:24px;" alt="Logo Mobile">
+        <button class="btn btn-secondary" style="height:44px; min-height:44px; padding:0 12px; font-size:13px;">Đăng ký</button>
+      </div>
+
+      <div style="flex:1; padding:24px 20px; overflow-y:auto; display:flex; flex-direction:column; justify-content:center;">
+        <div style="text-align:center; margin-bottom:20px;">
+          <img src="../Artboard 21.png" class="auth-logo" style="height:52px; margin-bottom:12px;" alt="WayFinder">
+          <h2 style="font-size:22px; font-weight:700;">Đăng nhập</h2>
+          <p style="font-size:13px; color:var(--color-text-muted);">Học giáo trình cùng lộ trình thông minh</p>
+        </div>
+
+        <form onsubmit="return false;">
+          <div class="form-group">
+            <label class="form-label" style="font-size:13px;">Email</label>
+            <input type="email" class="form-input" value="hocvien@wayfinder.vn">
+          </div>
+
+          <div class="form-group">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <label class="form-label" style="font-size:13px;">Mật khẩu</label>
+              <a href="#forgot" class="btn-text" style="font-size:12px;">Quên mật khẩu?</a>
+            </div>
+            <div class="input-wrapper">
+              <input type="password" id="mobile-pwd" class="form-input" value="12345678">
+              <button type="button" class="toggle-pwd-btn" onclick="togglePassword('mobile-pwd')">👁️</button>
+            </div>
+          </div>
+
+          <button class="btn btn-primary" style="width:100%; height:44px; min-height:44px; margin-top:10px;">Đăng nhập</button>
+        </form>
+
+        <div style="text-align:center; margin-top:24px; font-size:13px; color:var(--color-text-muted);">
+          Chưa có tài khoản? <a href="#register" style="color:var(--color-primary); font-weight:600;">Đăng ký</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleDarkMode() {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (isDark) {
+        document.documentElement.removeAttribute('data-theme');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    }
+
+    function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      if (input) {
+        input.type = input.type === 'password' ? 'text' : 'password';
+      }
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+  </script>
+</body>
+</html>

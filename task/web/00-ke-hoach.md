@@ -31,12 +31,25 @@ chí của vé. Vé sửa sau soát đánh số tiếp từ W-24.
   "bỏ qua".
 - **Giao diện:**
   - theo spec thiết kế: token màu, chữ, khoảng cách, trạng thái rỗng, đang tải, lỗi;
+  - **logo đã có** (chủ dự án xác nhận 2026-10-19): `design/Artboard 9.png` đến `design/Artboard 28.png`, thay tên giả định `logo1`–`logo8`;
+    chọn biến thể theo spec thiết kế mục 1. Không còn điều kiện chờ tám logo cũ;
+  - **theo yêu cầu chủ dự án 2026-10-18:** Figma và React phải đẹp, chỉn chu, nhất quán; đúng chức năng chưa đủ nghiệm thu giao diện. Đối chiếu tiêu chí
+    thị giác và hiệu ứng ở spec thiết kế mục 3a cho mọi vé có giao diện;
+  - hiệu ứng hover/focus/bấm, menu, hộp thoại, bảng trượt, khối gập và chuyển trạng thái theo token chuyển động; không cản thao tác, nhảy bố cục hay thêm
+    thời gian chờ giả. Có phương án `prefers-reduced-motion`;
+  - **được phép dùng các skill trong bộ `taste-skill` do chủ dự án nạp** cho cả thiết kế và React. Đọc `SKILL.md` khi dùng, ghi tên skill/đề xuất đã áp
+    dụng trong báo cáo; spec và thương hiệu đã chốt là căn cứ. Chưa có skill thì tiếp tục theo spec, không tự coi là chặn vé;
   - chữ hiện cho người dùng là tiếng Việt;
-  - mỗi vé có giao diện thì kèm ảnh chụp màn hình ở cỡ điện thoại (390 px) và máy tính (1280 px) trong báo cáo vé.
+  - mỗi vé có giao diện thì kèm ảnh chụp màn hình ở cỡ điện thoại (390 px) và máy tính (1280 px) trong báo cáo vé; kiểm bố cục thêm ở 768 px và kèm video
+    ngắn của các tương tác có hiệu ứng thuộc vé. Người thiết kế/người soát xác nhận chất lượng thị giác; W-23 đối chiếu cả hiệu ứng.
 - **Ví dụ JSON thật** của mọi điểm cuối mới trong báo cáo vé, cho nhóm React.
 - **Không dùng tập giữ lại:** máy chủ web không nạp `d01-t01`, `d01-t02`, `document-data/test/`, `Desktop\d02-tap-khoa`. Dữ liệu dev là sáu cuốn phát triển.
   Không nhập `artifacts/phase_b/live.json` (có cache của tập giữ lại); không in phần `cache` của nó.
 - **Tiền:** chỉ `gemini-3.1-flash-lite`. Mọi lượt có tiền dry-run trước, chủ dự án duyệt. Ngoài W-15, mọi vé là 0 USD.
+- **Gemini backend web** (chủ dự án cập nhật 2026-10-19, thay quyết định 2026-10-18): FastAPI và worker **tạm dùng Vertex AI** cho sinh nội dung,
+  embedding và dựng sách. Dùng `DOC2ROADMAP_LLM_TRANSPORT=vertex`, project/location và ADC phía máy chủ, không bắt buộc Gemini API key; bí mật không vào
+  React/`VITE_*`. Chỉ chuyển sang Gemini Developer API khi chủ dự án yêu cầu chuẩn bị demo, không tự chuyển khi lỗi hay theo ngày. Test dùng đồ giả/phát
+  lại, không gọi mạng; xem spec chức năng mục 1, 12 và bất biến kiểm thử 27.
 - **Commit chỉ đường dẫn của vé** (`git commit -m … -- <tệp>`). Không sửa tệp của phiên pha A; cần đổi mã Pha A thì ghi yêu cầu vào báo cáo vé.
 - **Lưu dần:** làm tới đâu commit tới đó; báo cáo vé có dòng trạng thái ở đầu.
 - **Cloudinary:**
@@ -55,7 +68,7 @@ còn đổi; nhóm web đã được báo.
 
 | vé | việc | chặn bởi | trạng thái |
 |---|---|---|---|
-| [W-01](W-01-nen-web-fastapi-react-postgres.md) | nền: FastAPI, React, PostgreSQL, Alembic, đường nối test, token giao diện | — | ready-for-agent |
+| [W-01](W-01-nen-web-fastapi-react-postgres.md) | nền: FastAPI, React, PostgreSQL, Alembic, đường nối test, token giao diện | — | đạt nền local; React 23 test/build và browser đạt; chờ commit ghim để mở W-02/W-05; [soát](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
 | [W-02](W-02-dang-ky-dang-nhap-phien.md) | đăng ký, đăng nhập, đăng xuất, phiên cookie, CSRF, giới hạn thử | W-01 | ready-for-agent |
 | [W-03](W-03-xac-minh-email-quen-mat-khau.md) | xác minh email, quên mật khẩu, cổng gửi thư | W-02 | ready-for-agent |
 | [W-04](W-04-ho-so-doi-mat-khau-dang-xuat-moi-noi.md) | hồ sơ, đổi mật khẩu, đăng xuất mọi nơi | W-02 | ready-for-agent |
@@ -67,8 +80,8 @@ còn đổi; nhóm web đã được báo.
 | [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35, SA-37 | ready-for-agent |
 | [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06 | ready-for-agent |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
-| [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | ready-for-agent |
-| [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, kiểm sớm, dự toán, hàng đợi, worker, bộ dựng giả | W-03, W-06 | ready-for-agent |
+| [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | commit e9ffce1, đã kiểm phần lõi: 68 test/4 mutation đạt; còn mở doc-6 toàn chuỗi; [soát](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
+| [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06 | ready-for-agent; theo cập nhật 2026-10-19: không dự toán, nối callback BuildResult của W-13 |
 | [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 | ready-for-agent |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
@@ -76,12 +89,16 @@ còn đổi; nhóm web đã được báo.
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
-| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | ready-for-agent |
+| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | sau W-24 vẫn chưa đủ nghiệm thu Figma/trang/prototype; [soát lại](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | ready-for-agent |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa nút tối, vùng bấm mobile, giảm chuyển động, guard token; đủ bằng chứng W-22 | — | đã bàn giao, tiếp tục sửa desktop GIF/vùng bấm/guard và đủ bằng chứng; ưu tiên thiết kế W-02 |
 
 ## Thứ tự đề xuất
 
-- **Song song ngay:** W-01 (nhóm web), W-13 (nhân viên lõi), W-22 (người thiết kế).
+- **Sau soát ba nhóm ngày 2026-10-19:** ghim commit W-01; web nhận W-02, lõi nhận W-05, thiết kế tiếp tục W-24 và ưu tiên bản vẽ tài khoản.
+  [Kế hoạch, lời giao việc và bằng chứng](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
+- **Migration đợt này:** W-01 → W-05 → W-02 để giữ một head; domain/service/UI làm song song. Giữ test schema W-01 tại revision nền,
+  thêm kiểm nâng HEAD, không xoá test để xanh. W-13 dựng hết cuốn còn mở, không chặn W-05; W-23 vẫn chờ các phụ thuộc gốc.
 - **Sau W-01:** W-02 rồi W-03, W-04; W-05 song song.
 - **Sau W-06:** phần học W-07 → W-08, W-09, W-10 (bám vé Pha B2); W-11 → W-12; W-14 → W-15.
 - **Cuối:** W-16, W-17, W-18, W-19, W-20, rồi W-21 và W-23.

@@ -152,8 +152,10 @@ Bảng Pha B (`phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledg
 | `requested_by` | uuid | FK `account` on delete set null |
 | `status` | text | `reading` \| `rejected` \| `awaiting_confirmation` \| `queued` \| `running` \| `succeeded` \| `failed` \| `cancelled` |
 | `step` | text | `doc_reading` \| `concepts` \| `graph` \| `learning_prep` \| null |
-| `estimate_usd`, `spent_usd` | numeric(12,6) | `spent_usd` mặc định 0 |
-| `estimate_minutes`, `estimate_model_calls` | integer | |
+| `spent_usd` | numeric(12,6) | chi thực quy đổi từ token, mặc định 0; không có trường dự toán theo quyết định 2026-10-19 |
+| `model_calls`, `input_tokens`, `output_tokens` | integer | số thực của lượt chạy từ `BuildResult` |
+| `usage_complete` | boolean | cờ phân biệt kết quả thiếu số usage, không suy chi thực là 0 khi thiếu |
+| `elapsed_seconds` | double precision | thời gian thực chạy, không dự toán |
 | `pipeline_version` | text | not null; commit và phiên bản cấu hình của chuỗi |
 | `counts_quota` | boolean | true khi người dùng xác nhận một bản dựng có chi |
 | `cancel_requested` | boolean | mặc định false |
@@ -165,6 +167,8 @@ Bảng Pha B (`phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledg
 | `confirmation_expires_at`, `queued_at`, `started_at`, `finished_at`, `created_at` | timestamptz | |
 
 - **Chỉ mục hàng đợi:** `(queued_at) WHERE status = 'queued'`.
+- Worker W-14 nối callback `BuildResult` của W-13 để ghi usage/kết quả khi thành công/lỗi/huỷ; SQLite CLI không thay PostgreSQL web. Các số này dành cho
+  admin/đối soát, không trả chi phí/dự toán trong API cho người dùng. Không cộng lại chi lịch sử từ artifact/cache.
 - **Chỉ mục dùng lại:** `(doc_id, pipeline_version) WHERE status = 'succeeded'`.
 - **Ràng buộc chạy dở:** unique `(doc_id, pipeline_version) WHERE status IN ('reading','awaiting_confirmation','queued','running')`. Hai lần tải cùng tệp
   cùng lúc không tạo hai bản dựng chạy song song; lần sau gắn vào bản dựng đang có.
