@@ -12,6 +12,7 @@ class WebSettings(BaseSettings):
     version: str = "0.1.0"
     database_url: str | None = None
     test_database_url: str | None = None
+    phase_b_lock_pool_size: int = Field(default=8, gt=0)
     frontend_dist: Path = Path("src/web/frontend/dist")
     allowed_origins: list[str] = Field(default_factory=list)
     session_idle_days: int = Field(default=7, gt=0)
