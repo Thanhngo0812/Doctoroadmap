@@ -2,7 +2,9 @@
 import argparse
 import json
 import shutil
+import sqlite3
 from contextlib import ExitStack
+from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -11,18 +13,43 @@ from doc2roadmap.composition_build import build_document_runner
 from doc2roadmap.config import Settings
 
 
+def verify_completed_build(runner, result, allow_spend):
+    assert result.completed_steps == ["doc_reading", "concepts", "graph", "learning_prep"]
+    store = runner.pipeline.store
+    base = store.load_chunks("doc-6", result.step_details["doc_reading"]["chunks_version"])
+    labeled = store.load_chunks("doc-6", result.step_details["concepts"]["label_roles"]["chunks_version"])
+    assert labeled.manifest["semantic_roles"] is True
+    for before, after in zip(base.result.chunks, labeled.result.chunks, strict=True):
+        assert {k: v for k, v in asdict(before).items() if k != "role"} == {
+            k: v for k, v in asdict(after).items() if k != "role"}
+    canonical = store.load_canonical("doc-6", result.step_details["concepts"]["canonical"]["canonical_version"])
+    assert canonical.manifest["a4_gold_coverage"] == "none"
+    assert canonical.manifest["gold_sheet_id"] is None
+    graph = store.load_graph("doc-6", result.graph_version)
+    assert graph.payload["stage"] == "stages" and graph.payload["modules"]
+    assert store.load_latest_candidates("doc-6").payload["coverage_incomplete"] is False
+    assert Path(result.step_details["learning_prep"]["formulas"]["index_path"]).is_file()
+    with sqlite3.connect(runner.pipeline.settings.artifact_dir / "builds.sqlite3") as connection:
+        saved = json.loads(connection.execute("SELECT result_json FROM build_runs ORDER BY rowid DESC LIMIT 1").fetchone()[0])
+    assert saved == result.to_dict()
+    if not allow_spend:
+        assert result.model_calls == result.spent_usd == 0 and result.usage_complete
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--allow-spend", action="store_true")
+    parser.add_argument("--fresh-store", action="store_true")
     args = parser.parse_args()
     root = Path("artifacts/w13-doc6-acceptance-2026-10-19")
-    store = root / "store"
+    store = root / ("fresh-store" if args.fresh_store else "store")
     if not store.exists():
         store.mkdir(parents=True)
-        for kind in ("parse_tree", "chunks", "candidates", "retrieval", "canonical", "graph", "checkpoints/graph"):
-            source = Path("artifacts") / kind / "doc-6"
-            if source.exists():
-                shutil.copytree(source, store / kind / "doc-6")
+        if not args.fresh_store:
+            for kind in ("parse_tree", "chunks", "candidates", "retrieval", "canonical", "graph", "checkpoints/graph"):
+                source = Path("artifacts") / kind / "doc-6"
+                if source.exists():
+                    shutil.copytree(source, store / kind / "doc-6")
     attempt = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S%fZ")
     settings = Settings(artifact_dir=store, llm_transport="vertex")
     with ExitStack() as stack:
@@ -50,9 +77,11 @@ def main():
 
             setattr(runner.pipeline, name, traced)
         result = runner.execute(Path("doc-6.pdf"), "doc-6", progress=event)
-        payload = {"allow_spend": args.allow_spend, **result.to_dict()}
+        payload = {"allow_spend": args.allow_spend, "fresh_store": args.fresh_store, **result.to_dict()}
         (root / f"{attempt}-result.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
         print(json.dumps(payload, ensure_ascii=False, indent=2), flush=True)
+        if result.status == "succeeded":
+            verify_completed_build(runner, result, args.allow_spend)
         return 0 if result.status == "succeeded" else 1
 
 

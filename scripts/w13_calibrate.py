@@ -12,7 +12,7 @@ SOURCES = {
     "doc-1": "doc-1.pdf",
     "xstk-ch3-1": "xstk-ch3-1.pdf",
     "doc-4": "doc-4.pdf",
-    "nhap-mon-ml": None,  # Original PDF is absent locally; report the cached-parse limitation.
+    "nhap-mon-ml": None,  # Use cached parse only if nhap-mon-ml.pdf has not been restored.
     "naive-bayes": "5_Naive Bayes Classifier.pdf",
     "doc-6": "doc-6.pdf",
 }
@@ -45,7 +45,10 @@ def main():
     cache = Path("tmp/w13-calibration")
     cache.mkdir(parents=True, exist_ok=True)
     rows = []
-    for doc_id, filename in SOURCES.items():
+    sources = dict(SOURCES)
+    if Path("nhap-mon-ml.pdf").is_file():
+        sources["nhap-mon-ml"] = "nhap-mon-ml.pdf"
+    for doc_id, filename in sources.items():
         if filename is None:
             chunks = store.load_latest_chunks(doc_id)
             tree = store.load_parse(doc_id, chunks.manifest["parse_version"]).tree
