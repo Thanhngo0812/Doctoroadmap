@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.711" timestamp="2026-10-19T21:36:52.099660+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_postgres_phase_b_concurrency" name="test_atomic_uses_fresh_snapshots_even_when_engine_default_is_repeatable_read" time="1.787"><failure message="AssertionError: assert {'value': 'before'} == {}&#10;  &#10;  Left contains 1 more item:&#10;  {'value': 'before'}&#10;  Use -v to get more diff">src\web\backend\tests\test_postgres_phase_b_concurrency.py:194: in test_atomic_uses_fresh_snapshots_even_when_engine_default_is_repeatable_read
+    assert store.get_record("probe", "snapshot") == {}
+E   AssertionError: assert {'value': 'before'} == {}
+E
+E     Left contains 1 more item:
+E     {'value': 'before'}
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

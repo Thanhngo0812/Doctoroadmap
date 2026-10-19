@@ -1,0 +1,112 @@
+{
+  "baseline": "c91551f",
+  "code_commit": "8600e27ab630644ec07415f909cf67328caeb35e",
+  "real_model_calls": 0,
+  "real_model_usd": 0,
+  "runs": {
+    "acceptance": {
+      "tests": 73,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 73,
+      "seconds": 31.197,
+      "source": "tmp/w05-acceptance-final.xml",
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    "backend": {
+      "tests": 96,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 95,
+      "seconds": 43.425,
+      "source": "tmp/w05-backend-final2.xml",
+      "failed_tests": [],
+      "skipped_tests": [
+        "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled"
+      ]
+    },
+    "unit": {
+      "tests": 1829,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1829,
+      "seconds": 366.554,
+      "source": "tmp/w05-full-unit-final.xml",
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    "flight_mutation": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 6.617,
+      "source": "tmp/w05-flight-final-red.xml",
+      "failed_tests": [
+        "test_two_processes_generate_once"
+      ],
+      "skipped_tests": []
+    },
+    "atomic_mutation": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 5.992,
+      "source": "tmp/w05-atomic-final-red.xml",
+      "failed_tests": [
+        "test_two_processes_cannot_reserve_the_last_budget_twice"
+      ],
+      "skipped_tests": []
+    },
+    "isolation_mutation": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 2.711,
+      "source": "tmp/w05-isolation-final-red.xml",
+      "failed_tests": [
+        "test_atomic_uses_fresh_snapshots_even_when_engine_default_is_repeatable_read"
+      ],
+      "skipped_tests": []
+    },
+    "composition_red": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 2.597,
+      "source": "tmp/w05-composition-red.xml",
+      "failed_tests": [
+        "test_composition_uses_postgres_and_configures_separate_lock_pool"
+      ],
+      "skipped_tests": []
+    },
+    "schema_red": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 1.921,
+      "source": "tmp/w05-pg-schema-red.xml",
+      "failed_tests": [
+        "test_phase_b_migration_has_tables_and_indexes"
+      ],
+      "skipped_tests": []
+    }
+  },
+  "missing_postgres": {
+    "exit_code": 4,
+    "missing_configuration_detected": true
+  }
+}

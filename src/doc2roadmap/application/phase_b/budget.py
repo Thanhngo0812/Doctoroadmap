@@ -1,6 +1,6 @@
 """Daily spending checks include measured usage and calls still in flight."""
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import datetime, time
 from uuid import uuid4
 from zoneinfo import ZoneInfo
 
@@ -28,8 +28,11 @@ class DailySpendGuard:
         zone = ZoneInfo(self.settings.spend_day_timezone)
         today = (self.clock.today(self.settings.spend_day_timezone) if at is None
                  else at.astimezone(zone).date())
+        since = datetime.combine(today, time.min, tzinfo=zone)
         with self.store.atomic():
-            rows = [*self.store.usage_rows(), *self.store.list_records('spend_reservation')]
+            rows = [*self.store.usage_rows(learner_id=owner if personal else None,
+                                         since=since, purposes=purposes),
+                    *self.store.list_records('spend_reservation')]
         spent = 0.0
         for row in rows:
             if row.get("purpose") not in purposes or (personal and row.get("learner_id") != owner):

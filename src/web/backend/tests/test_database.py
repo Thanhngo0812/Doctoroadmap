@@ -23,14 +23,14 @@ def test_postgres_fixture_hides_password_in_failure_representation(postgres_data
 
 
 @pytest.mark.postgres
-def test_migration_from_empty_database_creates_only_alembic_version(postgres_database_url):
-    engine = create_database_engine(postgres_database_url)
+def test_migration_from_empty_database_creates_only_alembic_version(empty_postgres_database_url):
+    engine = create_database_engine(empty_postgres_database_url)
     try:
-        upgrade_database(postgres_database_url)
+        upgrade_database(empty_postgres_database_url, "w01_0001")
         assert inspect(engine).get_table_names() == ["alembic_version"]
         with engine.connect() as connection:
             assert connection.scalar(text("select version_num from alembic_version")) == "w01_0001"
-        health = DatabaseHealth(postgres_database_url)
+        health = DatabaseHealth(empty_postgres_database_url)
         try:
             assert health() == "ok"
         finally:

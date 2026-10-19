@@ -1,4 +1,22 @@
-# W-13 — các việc triển khai
+# W-05 — các việc triển khai
+
+- [x] Ghim nền W-01 `c91551f`; làm trên nhánh/worktree W-05 riêng.
+- [x] Port + JSON/memory lọc usage và ẩn danh; bộ lọc timezone và empty purposes có test đỏ/xanh.
+- [x] DailySpendGuard dùng truy vấn theo người/ngày/mục đích, vẫn tính reservations; kiểm hồi quy ban đầu 18 test đạt.
+- [x] Migration `w05_0002` có bốn bảng/chỉ mục, nối đúng `w01_0001`; bốn test nền/HEAD đạt, giữ assertion schema rỗng tại revision nền.
+- [x] PostgreSQL CRUD/usage lossless qua nguyên bộ hợp đồng; dữ liệu lạ và giá trị null/kiểu số giữ đúng.
+- [x] Single-flight hai process, negative liên process/TTL/timeout; mutation tắt advisory lock bị bắt.
+- [x] Atomic lồng + hai process giữ chỗ phần chi cuối; mutation tắt bảo vệ bị bắt; test snapshot độc lập bắt isolation cũ.
+- [x] Trợ lý đồng thời và regression tiến độ/quiz chạy PostgreSQL.
+- [x] Composition dùng PostgreSQL, pool khoá riêng cấu hình WebSettings; CLI lõi không đổi.
+- [x] EXPLAIN dùng chỉ mục, đủ kind/owner; bắt buộc PostgreSQL không được skip; backend 95 đạt (Cloudinary live có sẵn bỏ qua riêng).
+- [x] Toàn bộ unit lõi trên nền W-01 đạt 1.829 test, không bỏ qua; bốn lỗi thiếu fixture ở worktree đã tái kiểm xanh sau bổ sung dữ liệu phát triển.
+- [x] Báo cáo, migration bàn giao cho W-02, commit chỉ phạm vi W-05; chờ người soát độc lập.
+- [ ] Checkpoint tích hợp với nhóm web: ghép W-02 sau `w05_0002`, kiểm lại một Alembic head và DB rỗng trên nhánh hợp nhất. Không tự mở W-06/W-15.
+
+---
+
+# W-13 — các việc triển khai (đã hoàn tất, lưu lịch sử)
 
 ## Task 1: Chốt hợp đồng (agent chính)
 Mô tả: định nghĩa BuildRunner/BuildResult và giao diện pipeline nội bộ để ba Luna làm việc không sửa chồng tệp.

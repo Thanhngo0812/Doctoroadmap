@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from typing import Literal
 
 from doc2roadmap.config import Settings
+from doc2roadmap.application.ports.phase_b import PhaseBStore
+from doc2roadmap.domain.phase_b_limits import BSettings
 from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
 from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel
 from google.auth import default as google_auth_default
@@ -21,6 +23,7 @@ class WebServices:
     model: object | None = None
     embedding: object | None = None
     accounts: AccountService | None = None
+    phase_b_store: PhaseBStore | None = None
 
 
 def validate_vertex_auth(project: str, location: str) -> None:
@@ -38,6 +41,7 @@ def compose_services(
     auth_validator: Callable[[str, str], None] = validate_vertex_auth,
     model_factory: Callable[..., object] = GeminiToolModel,
     embedding_factory: Callable[..., object] = GeminiEmbedding,
+    phase_b_store: PhaseBStore | None = None,
 ) -> WebServices:
     core = core_settings or Settings(artifact_dir=settings.artifact_root)
     if core.llm_transport != "vertex":
@@ -48,11 +52,13 @@ def compose_services(
         raise ValueError("missing DOC2ROADMAP_VERTEX_LOCATION")
 
     auth_validator(core.vertex_project, core.vertex_location)
+    database_engine = None
     if health_check is None:
         if settings.database_url is None:
             raise ValueError("missing WAYFINDER_DATABASE_URL")
         from wayfinder.infrastructure.database import DatabaseHealth
         database_health = DatabaseHealth(settings.database_url)
+        database_engine = database_health.engine
         health_check = database_health
         close = database_health.close
     api_key = core.gemini_api_key.get_secret_value() if core.gemini_api_key else None
@@ -64,24 +70,33 @@ def compose_services(
                                   timeout=core.gemini_timeout_seconds, max_retries=core.gemini_max_retries,
                                   transport="vertex", vertex_project=core.vertex_project,
                                   vertex_location=core.vertex_location)
-    accounts = None
-    if settings.database_url:
+    created_engine = None
+    database_engine = database_engine or getattr(health_check, "engine", None)
+    if database_engine is None and settings.database_url is not None:
         from wayfinder.infrastructure.database import create_database_engine
-        engine = getattr(health_check, "engine", None)
-        if engine is None:
-            engine = create_database_engine(settings.database_url)
-            previous_close = close or (lambda: None)
+        created_engine = create_database_engine(settings.database_url)
+        database_engine = created_engine
+    created_store = None
+    if phase_b_store is None and database_engine is not None:
+        from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+        created_store = PostgresPhaseBStore(database_engine,
+            lock_pool_size=settings.phase_b_lock_pool_size,
+            lock_timeout_seconds=BSettings().lecture_click_timeout_seconds)
+        phase_b_store = created_store
+    accounts = compose_account_service(settings, database_engine) if database_engine is not None else None
 
-            def close_accounts():
-                try:
-                    previous_close()
-                finally:
-                    engine.dispose()
+    def close_services():
+        try:
+            if created_store is not None:
+                created_store.close()
+            elif created_engine is not None:
+                created_engine.dispose()
+        finally:
+            if close is not None:
+                close()
 
-            close = close_accounts
-        accounts = compose_account_service(settings, engine)
-    return WebServices(health_check=health_check, close=close or (lambda: None), model=model,
-                       embedding=embedding, accounts=accounts)
+    return WebServices(health_check=health_check, close=close_services, model=model,
+                       embedding=embedding, accounts=accounts, phase_b_store=phase_b_store)
 
 
 def compose_account_service(settings: WebSettings, engine) -> AccountService:
