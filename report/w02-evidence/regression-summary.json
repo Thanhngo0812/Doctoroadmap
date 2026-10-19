@@ -1,0 +1,34 @@
+{
+  "full": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "1",
+    "tests": "2063",
+    "time": "345.408",
+    "timestamp": "2026-10-19T22:07:01.596959+07:00",
+    "hostname": "ADMIN"
+  },
+  "passed": 2062,
+  "skipped": 1,
+  "failed": 0,
+  "backend_total": 151,
+  "backend_skipped": 1,
+  "frontend": {
+    "passed": 29,
+    "failed": 0
+  },
+  "migration_chain": [
+    "w01_0001",
+    "w05_0002",
+    "w02_0003"
+  ],
+  "prior_full_run": {
+    "passed": 2060,
+    "failed": 1,
+    "skipped": 1,
+    "failure": "test_assistant_sessions_share_learner_reservation_before_streaming[json]: WinError 5 during os.replace; no test/source changes to bypass it",
+    "focused_recheck": "18 passed"
+  },
+  "model_cost_usd": 0
+}

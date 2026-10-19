@@ -205,3 +205,53 @@ def test_production_cookie_is_secure_even_behind_http_upstream():
     assert result.status_code == 200
     secure = "; secure" in result.headers["set-cookie"].lower()
     assert secure is True
+
+
+@pytest.mark.postgres
+def test_real_postgres_http_stores_no_raw_credentials_and_revokes_disabled_account(postgres_database_url):
+    from uuid import uuid4
+    from sqlalchemy import text
+    from wayfinder.application.accounts import AccountService, AuthPolicy
+    from wayfinder.composition import WebServices
+    from wayfinder.infrastructure.auth_store import PostgresAuthStore
+    from wayfinder.infrastructure.database import create_database_engine
+    from wayfinder.infrastructure.passwords import Argon2PasswordHasher, load_common_passwords
+    from wayfinder.testing import FakeClock
+
+    engine = create_database_engine(postgres_database_url)
+    clock = FakeClock()
+    service = AccountService(PostgresAuthStore(engine), Argon2PasswordHasher(), clock,
+                             AuthPolicy(), load_common_passwords())
+    app = create_app(WebSettings(_env_file=None, frontend_dist=Path("missing"),
+                                allowed_origins=[ORIGIN]), WebServices(lambda: "ok", accounts=service))
+    client = TestClient(app)
+    email = "w02-integration-" + uuid4().hex + "@example.vn"
+    try:
+        assert register(client, email).status_code == 200
+        raw_token = client.cookies.get("d2r_session")
+        account = client.get("/api/v1/me").json()["account"]
+        with engine.connect() as connection:
+            encoded = connection.scalar(text("SELECT password_hash FROM account WHERE id=:id"), {"id": account["id"]})
+            assert encoded.startswith("$argon2id$")
+            for table in ("account", "auth_session", "rate_limit_event", "audit_event"):
+                serialized = " ".join(connection.scalars(text(f"SELECT row_to_json(t)::text FROM {table} t")))
+                password_absent = PASSWORD not in serialized
+                token_absent = raw_token not in serialized
+                assert password_absent is True
+                assert token_absent is True
+        with engine.begin() as connection:
+            connection.execute(text("UPDATE account SET status='disabled' WHERE id=:id"), {"id": account["id"]})
+        result = client.get("/api/v1/me")
+        assert result.status_code == 403
+        assert result.json()["error"]["code"] == "account_disabled"
+        with engine.connect() as connection:
+            assert connection.scalar(text("SELECT count(*) FROM auth_session WHERE account_id=:id"), {"id": account["id"]}) == 0
+        with engine.begin() as connection:
+            connection.execute(text("UPDATE account SET status='active' WHERE id=:id"), {"id": account["id"]})
+        assert client.get("/api/v1/me").status_code == 401
+        assert client.post("/api/v1/auth/login", headers={"Origin": ORIGIN},
+                           json={"email": email, "password": PASSWORD}).status_code == 200
+        clock.advance(7 * 86400)
+        assert client.get("/api/v1/me").status_code == 401
+    finally:
+        engine.dispose()

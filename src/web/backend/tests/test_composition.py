@@ -79,3 +79,120 @@ def test_auth_validation_failure_prevents_model_construction() -> None:
             embedding_factory=lambda *_a, **_k: calls.append("embedding"),
         )
     assert calls == ["auth"]
+
+
+def _compose(settings, **kwargs):
+    return compose_services(
+        settings,
+        core_settings=Settings(_env_file=None, llm_transport="vertex", vertex_project="project-test",
+                               vertex_location="us-central1"),
+        auth_validator=lambda *_: None,
+        model_factory=lambda *_a, **_k: object(),
+        embedding_factory=lambda *_a, **_k: object(),
+        **kwargs,
+    )
+
+
+def test_without_database_configuration_keeps_database_services_unconfigured() -> None:
+    closed = []
+    health = lambda: "ok"
+
+    services = _compose(WebSettings(_env_file=None), health_check=health,
+                        close=lambda: closed.append("external"))
+
+    assert services.health_check is health
+    assert services.accounts is None
+    assert services.phase_b_store is None
+    services.close()
+    assert closed == ["external"]
+
+
+def test_default_database_services_share_and_close_composition_owned_engine(monkeypatch) -> None:
+    from wayfinder.infrastructure import database, phase_b_store
+
+    events = []
+    engine = object()
+
+    class FakeHealth:
+        def __init__(self, url):
+            assert url == "postgresql+psycopg://test/db"
+            self.engine = engine
+
+        def __call__(self):
+            return "ok"
+
+        def close(self):
+            events.append("health.close")
+
+    class FakeStore:
+        def __init__(self, received_engine, **kwargs):
+            assert received_engine is engine
+            assert kwargs["lock_pool_size"] == WebSettings(_env_file=None).phase_b_lock_pool_size
+            events.append("store.create")
+
+        def close(self):
+            events.append("store.close")
+
+    account_service = object()
+    account_engines = []
+    monkeypatch.setattr(database, "DatabaseHealth", FakeHealth)
+    monkeypatch.setattr(phase_b_store, "PostgresPhaseBStore", FakeStore)
+    monkeypatch.setattr(
+        "wayfinder.composition.compose_account_service",
+        lambda _settings, received_engine: account_engines.append(received_engine) or account_service,
+    )
+
+    services = _compose(WebSettings(_env_file=None, database_url="postgresql+psycopg://test/db"))
+
+    assert services.accounts is account_service
+    assert services.phase_b_store is not None
+    assert account_engines == [engine]
+    assert events == ["store.create"]
+    services.close()
+    assert events == ["store.create", "store.close", "health.close"]
+
+
+def test_default_phase_b_store_closes_before_injected_health_callback(monkeypatch) -> None:
+    from wayfinder.infrastructure import phase_b_store
+
+    events = []
+    engine = object()
+
+    class FakeHealth:
+        def __init__(self):
+            self.engine = engine
+
+        def __call__(self):
+            return "ok"
+
+    class FakeStore:
+        def __init__(self, received_engine, **_kwargs):
+            assert received_engine is engine
+
+        def close(self):
+            events.append("store.close")
+
+    monkeypatch.setattr(phase_b_store, "PostgresPhaseBStore", FakeStore)
+    services = _compose(WebSettings(_env_file=None), health_check=FakeHealth(),
+                        close=lambda: events.append("caller.close"))
+
+    services.close()
+
+    assert events == ["store.close", "caller.close"]
+
+
+def test_caller_owned_phase_b_store_is_not_closed_by_composition(monkeypatch) -> None:
+    from wayfinder.infrastructure import phase_b_store
+
+    monkeypatch.setattr(
+        phase_b_store, "PostgresPhaseBStore",
+        lambda *_args, **_kwargs: pytest.fail("composition replaced the caller's store"),
+    )
+    events = []
+    supplied_store = object()
+    services = _compose(WebSettings(_env_file=None), health_check=lambda: "ok",
+                        phase_b_store=supplied_store, close=lambda: events.append("caller.close"))
+
+    assert services.phase_b_store is supplied_store
+    services.close()
+    assert events == ["caller.close"]

@@ -88,8 +88,13 @@ async function main() {
     const logoutResponse = page.waitForResponse(response => response.url().endsWith('/api/v1/auth/logout'));
     await page.locator('.account-menu summary').click();
     await page.getByRole('button', { name: 'Đăng xuất', exact: true }).click();
-    const logout = await (await logoutResponse).json();
-    await page.waitForURL(url + '/');
+    const logoutResult = await logoutResponse;
+    const logout = await logoutResult.json();
+    assert.equal(logoutResult.status(), 200);
+    await page.waitForURL(current => current.pathname === '/dang-nhap').catch(async error => {
+      console.error(JSON.stringify({ stage: "logout_redirect", url: page.url(), response: logout, alerts: await page.getByRole("alert").allTextContents() }));
+      throw error;
+    });
     await page.goto(url + '/tai-khoan', { waitUntil: 'networkidle' });
     assert.ok(page.url().includes('/dang-nhap'));
     await page.getByLabel('Email', { exact: true }).fill(email);
@@ -112,7 +117,7 @@ async function main() {
     await fs.writeFile(path.join(output, 'api-examples.json'), JSON.stringify(examples, null, 2));
     await page.locator('.account-menu summary').click();
     await page.getByRole('button', { name: 'Đăng xuất', exact: true }).click();
-    await page.waitForURL(url + '/');
+    await page.waitForURL(current => current.pathname === '/dang-nhap');
     await page.goto(url + '/dang-ky', { waitUntil: 'networkidle' });
     await page.getByLabel('Tên hiển thị').fill('Không thay thế tài khoản');
     await page.getByLabel('Email', { exact: true }).fill(email.toUpperCase());
@@ -136,7 +141,7 @@ async function main() {
     assert.equal((await throttled).status(), 429);
     await page.getByRole('alert').filter({ hasText: /Thử lại sau .*phút/ }).waitFor();
     await page.screenshot({ path: path.join(output, 'login-rate-limited-390.png'), fullPage: true });
-    audit.assertions.push('registration_auto_login', 'confirmation_inline_validation', 'cookie_survives_reload', 'csrf_logout', 'protected_route_redirect', 'generic_duplicate_no_session', 'login_invalid_credentials', 'rate_limited_with_minutes');
+    audit.assertions.push('registration_auto_login', 'confirmation_inline_validation', 'cookie_survives_reload', 'csrf_logout_to_login_stable', 'protected_route_redirect', 'generic_duplicate_no_session', 'login_invalid_credentials', 'rate_limited_with_minutes');
     await context.close();
     const reduced = await browser.newContext({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
     const motionPage = await reduced.newPage(); observe(motionPage);

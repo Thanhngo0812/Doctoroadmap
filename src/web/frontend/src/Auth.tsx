@@ -141,12 +141,11 @@ export function LandingRoute({ children }: { children: ReactNode }) {
 
 export function AccountPage({ theme, onToggleTheme }: { theme: 'light' | 'dark'; onToggleTheme: () => void }) {
   const auth = useAuth();
-  const navigate = useNavigate();
   const [logoutError, setLogoutError] = useState<string | null>(null);
   const currentTheme = theme;
   const signOut = async () => {
     setLogoutError(null);
-    try { await auth.logout(); navigate('/', { replace: true }); }
+    try { await auth.logout(); }
     catch (cause) { if (cause instanceof ApiError && cause.code === 'account_disabled') auth.clearSession(); setLogoutError(userError(cause)); }
   };
 
@@ -156,7 +155,7 @@ export function AccountPage({ theme, onToggleTheme }: { theme: 'light' | 'dark';
     <>
       <header className="site-header"><div className="header-inner">
         <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={currentTheme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
-        <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={currentTheme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{currentTheme === 'light' ? '◐' : '◑'}</button><details className="account-menu"><summary>{auth.account?.display_name}<span aria-hidden="true">⌄</span></summary><div className="account-menu-panel"><span>{auth.account?.email}</span><button type="button" onClick={() => void signOut()}>Đăng xuất</button>{logoutError && <small role="alert">{logoutError}</small>}</div></details></div>
+        <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={currentTheme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{currentTheme === 'light' ? '◐' : '◑'}</button><details className="account-menu"><summary><span className="account-menu-name">{auth.account?.display_name}</span><span aria-hidden="true">⌄</span></summary><div className="account-menu-panel"><span>{auth.account?.email}</span><button type="button" onClick={() => void signOut()}>Đăng xuất</button>{logoutError && <small role="alert">{logoutError}</small>}</div></details></div>
       </div></header>
       <main className="account-page page-frame"><span className="section-kicker">TÀI KHOẢN WAYFINDER</span><h1>Tài khoản của bạn</h1><p>Xin chào, {auth.account?.display_name}. Bạn đã đăng nhập.</p><div className="account-summary"><span>Email</span><strong>{auth.account?.email}</strong><span>Trạng thái email</span><strong>{auth.account?.email_verified ? 'Đã xác minh' : 'Chưa xác minh'}</strong></div></main>
     </>

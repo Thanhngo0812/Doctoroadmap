@@ -23,7 +23,7 @@ docker compose -f src/web/docker-compose.yml --env-file src/web/.env up -d --wai
 .venv/Scripts/web.exe --env-file src/web/.env db upgrade
 ```
 
-Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic.
+Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic. Chuỗi hiện tại là `w01_0001 → w05_0002 → w02_0003`, tạo kho Pha B và bốn bảng tài khoản/phiên/giới hạn thử/nhật ký.
 
 ## Chạy ứng dụng
 

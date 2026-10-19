@@ -167,3 +167,30 @@ def test_create_admin_sanitizes_database_failure_and_closes_engine(monkeypatch, 
     assert "dsn secret detail" not in captured.out + captured.err
     assert "secret" not in captured.out + captured.err
     assert engine_state["closed"]
+
+
+@pytest.mark.postgres
+def test_create_admin_bootstraps_real_postgres_without_vertex(monkeypatch, capsys, postgres_database_url):
+    from uuid import uuid4
+    from sqlalchemy import text
+    from wayfinder.infrastructure.database import create_database_engine
+
+    email = "bootstrap-" + uuid4().hex + "@example.vn"
+    password = "Mật khẩu bootstrap riêng tư!"
+    monkeypatch.setenv("WAYFINDER_DATABASE_URL", postgres_database_url.render_as_string(hide_password=False))
+    monkeypatch.setenv("DOC2ROADMAP_LLM_TRANSPORT", "developer_api")
+    monkeypatch.setattr(cli.getpass, "getpass", lambda _prompt: password)
+    assert cli.main(["create-admin", "--email", email]) == 0
+    output = capsys.readouterr()
+    hidden = password not in output.out + output.err
+    assert hidden is True
+    engine = create_database_engine(postgres_database_url)
+    try:
+        with engine.connect() as connection:
+            account = connection.execute(text("SELECT id, role, email_verified_at, password_hash FROM account WHERE email_normalized=:email"), {"email": email}).mappings().one()
+            assert account["role"] == "admin"
+            assert account["email_verified_at"] is not None
+            assert account["password_hash"].startswith("$argon2id$")
+            assert connection.scalar(text("SELECT count(*) FROM auth_session WHERE account_id=:id"), {"id": account["id"]}) == 0
+    finally:
+        engine.dispose()

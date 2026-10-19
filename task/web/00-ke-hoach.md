@@ -68,8 +68,8 @@ còn đổi; nhóm web đã được báo.
 
 | vé | việc | chặn bởi | trạng thái |
 |---|---|---|---|
-| [W-01](W-01-nen-web-fastapi-react-postgres.md) | nền: FastAPI, React, PostgreSQL, Alembic, đường nối test, token giao diện | — | đạt nền local; React 23 test/build và browser đạt; chờ commit ghim để mở W-02/W-05; [soát](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
-| [W-02](W-02-dang-ky-dang-nhap-phien.md) | đăng ký, đăng nhập, đăng xuất, phiên cookie, CSRF, giới hạn thử | W-01 | ready-for-agent |
+| [W-01](W-01-nen-web-fastapi-react-postgres.md) | nền: FastAPI, React, PostgreSQL, Alembic, đường nối test, token giao diện | — | đạt nền local; đã ghim c91551f; React 23 test/build và browser đạt; [soát](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
+| [W-02](W-02-dang-ky-dang-nhap-phien.md) | đăng ký, đăng nhập, đăng xuất, phiên cookie, CSRF, giới hạn thử | W-01 | done-local; tài khoản/phiên/CSRF đạt; [báo cáo](../../report/w02-tai-khoan-phien-2026-10-19.md) |
 | [W-03](W-03-xac-minh-email-quen-mat-khau.md) | xác minh email, quên mật khẩu, cổng gửi thư | W-02 | ready-for-agent |
 | [W-04](W-04-ho-so-doi-mat-khau-dang-xuat-moi-noi.md) | hồ sơ, đổi mật khẩu, đăng xuất mọi nơi | W-02 | ready-for-agent |
 | [W-05](W-05-kho-pha-b-postgresql.md) | kho Pha B trên PostgreSQL, `single_flight` liên tiến trình, nới port sổ chi | W-01 | ready-for-agent |

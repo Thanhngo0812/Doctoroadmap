@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useLocation } from 'react-router-dom';
 import App from './App';
 
 const healthOk = () => new Response(JSON.stringify({ status: 'ok', version: '0.1.0', db: 'ok' }), {
@@ -32,7 +32,11 @@ afterEach(() => {
 });
 
 function renderApp(path = '/') {
-  return render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>);
+  function CurrentLocation() {
+    const location = useLocation();
+    return <span hidden data-testid="current-location">{location.pathname}{location.search}</span>;
+  }
+  return render(<MemoryRouter initialEntries={[path]}><App /><CurrentLocation /></MemoryRouter>);
 }
 
 describe('WayFinder demo', () => {
@@ -206,6 +210,9 @@ describe('WayFinder demo', () => {
     const logoutCall = fetchSpy.mock.calls.find(([url]) => String(url).endsWith('/auth/logout'));
     expect(new Headers(logoutCall?.[1]?.headers).get('X-CSRF-Token')).toBe('csrf-login');
     expect(await screen.findByRole('heading', { name: 'Đăng nhập WayFinder' })).toBeInTheDocument();
+    await act(async () => { await new Promise((resolve) => setTimeout(resolve, 0)); });
+    expect(screen.getByTestId('current-location')).toHaveTextContent('/dang-nhap?next=%2Ftai-khoan');
+    expect(screen.queryByRole('heading', { name: 'Tài khoản của bạn' })).not.toBeInTheDocument();
   });
 
   it('redirects an unauthenticated account visit to login with a local return path', async () => {
