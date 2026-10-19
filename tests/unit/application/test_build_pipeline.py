@@ -326,3 +326,37 @@ def test_learning_prep_pins_parse_and_returns_only_compact_metadata(monkeypatch,
         "formulas": {"index_path": str(tmp_path / "formula-index.json"),
                      "parse_version": 12, "cut_count": 2, "skipped_count": 1},
     }
+
+
+def test_learning_prep_reuses_paid_concept_cache_without_spend(monkeypatch, tmp_path):
+    from types import SimpleNamespace
+    from doc2roadmap.application.spend_guard import SpendGuard
+    from doc2roadmap.composition_phase_b import PhaseBRuntime
+
+    calls = []
+
+    class Embedding:
+        embedding_model_id = "gemini-embedding-001:768"
+
+        def embed(self, requests):
+            calls.append(len(requests))
+            return [[1.0] + [0.0] * 767 for _ in requests]
+
+    monkeypatch.setattr(PhaseBRuntime, "a12", lambda self, doc_id, **kwargs: {
+        "graph_version": 8, "retrieval_version": 1, "assignments": {"chunk": {}}})
+    pipeline = object.__new__(DocumentPipeline)
+    pipeline.settings = Settings(_env_file=None, artifact_dir=tmp_path,
+                                 llm_transport="vertex", vertex_project="offline-acceptance")
+    pipeline.store = SimpleNamespace(load_graph=lambda *args: SimpleNamespace(payload={
+        "nodes": [{"node_id": "concept", "name": "Dữ liệu", "learnable": True}]}))
+    embedding = Embedding()
+    pipeline.allow_spend = True
+    pipeline.embedding_guard = SpendGuard(embedding, allowed=True)
+    first = pipeline.learning_prep(tmp_path / "book.docx", "book", 8)
+    assert first["concept_index"]["reused"] is False
+
+    pipeline.allow_spend = False
+    pipeline.embedding_guard = SpendGuard(embedding, allowed=False)
+    repeated = pipeline.learning_prep(tmp_path / "book.docx", "book", 8)
+    assert repeated["concept_index"]["reused"] is True
+    assert calls == [1]

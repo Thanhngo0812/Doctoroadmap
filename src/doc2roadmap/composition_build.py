@@ -218,6 +218,7 @@ class DocumentPipeline:
         from doc2roadmap.application.phase_b.concept_index import IndexConcepts
         from doc2roadmap.composition_phase_b import PhaseBRuntime
         phase = PhaseBRuntime(settings=self.settings, allow_spend=self.allow_spend,
+                              store_path=self.settings.artifact_dir / "phase_b" / "live.json",
                               mode="gemini" if self.allow_spend else "offline")
         a12 = phase.a12(doc_id, graph_version=graph_version)
         concept = IndexConcepts(self.store, self.embedding_guard, phase.store).execute(
