@@ -3,7 +3,7 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 2, 3, 10, 11; [ADR 0021](../../doc/adr/0021-phien-dang-nhap-phia-may-chu-trong-cookie.md);
 [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `account`, `auth_session`, `rate_limit_event`, `audit_event`; spec thiết kế, trang
 đăng ký và đăng nhập.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** ready-for-agent
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** in-progress
 
 **Đợt tiếp theo 2026-10-19:** W-01 đã đạt nền local, web chốt commit nền rồi bắt đầu W-02. Không cần chờ toàn bộ Figma;
 phối hợp thiết kế cung cấp trang tài khoản theo spec. Dự kiến migration W-02 `w02_0003` nối sau W-05 `w05_0002`,

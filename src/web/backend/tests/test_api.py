@@ -86,7 +86,7 @@ def test_http_errors_use_error_envelope() -> None:
 def test_method_not_allowed_keeps_405_and_safe_envelope() -> None:
     app = create_app(WebSettings(_env_file=None, frontend_dist=NO_FRONTEND), WebServices(health_check=lambda: "ok"))
 
-    response = TestClient(app).post("/api/v1/health", json={"secret": "do-not-echo"})
+    response = TestClient(app).options("/api/v1/health", headers={"x-test-secret": "do-not-echo"})
 
     assert response.status_code == 405
     assert response.json()["error"]["code"] == "validation"

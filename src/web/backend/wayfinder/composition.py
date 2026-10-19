@@ -7,6 +7,7 @@ from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
 from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel
 from google.auth import default as google_auth_default
 
+from wayfinder.application.accounts import AccountService, AuthPolicy
 from wayfinder.settings import WebSettings
 
 
@@ -19,6 +20,7 @@ class WebServices:
     close: Callable[[], None] = lambda: None
     model: object | None = None
     embedding: object | None = None
+    accounts: AccountService | None = None
 
 
 def validate_vertex_auth(project: str, location: str) -> None:
@@ -62,4 +64,32 @@ def compose_services(
                                   timeout=core.gemini_timeout_seconds, max_retries=core.gemini_max_retries,
                                   transport="vertex", vertex_project=core.vertex_project,
                                   vertex_location=core.vertex_location)
-    return WebServices(health_check=health_check, close=close or (lambda: None), model=model, embedding=embedding)
+    accounts = None
+    if settings.database_url:
+        from wayfinder.infrastructure.database import create_database_engine
+        engine = getattr(health_check, "engine", None)
+        if engine is None:
+            engine = create_database_engine(settings.database_url)
+            previous_close = close or (lambda: None)
+
+            def close_accounts():
+                try:
+                    previous_close()
+                finally:
+                    engine.dispose()
+
+            close = close_accounts
+        accounts = compose_account_service(settings, engine)
+    return WebServices(health_check=health_check, close=close or (lambda: None), model=model,
+                       embedding=embedding, accounts=accounts)
+
+
+def compose_account_service(settings: WebSettings, engine) -> AccountService:
+    from doc2roadmap.application.phase_b.clock import SystemClock
+    from wayfinder.infrastructure.auth_store import PostgresAuthStore
+    from wayfinder.infrastructure.passwords import Argon2PasswordHasher, load_common_passwords
+
+    policy = AuthPolicy(settings.session_idle_days, settings.session_absolute_days,
+                        settings.login_max_failures, settings.login_failure_window_minutes)
+    return AccountService(PostgresAuthStore(engine), Argon2PasswordHasher(), SystemClock(), policy,
+                          load_common_passwords())

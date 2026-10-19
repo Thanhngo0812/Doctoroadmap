@@ -1,6 +1,7 @@
 import subprocess
 import os
 import sys
+import getpass
 import pytest
 
 from wayfinder import cli
@@ -66,3 +67,103 @@ def test_cli_prints_vietnamese_with_legacy_windows_output_encoding():
     )
     assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
     assert "sẵn sàng" in result.stdout.decode("utf-8")
+
+
+def test_create_admin_reads_password_hidden_and_closes_database(monkeypatch, capsys):
+    from wayfinder import composition
+
+    monkeypatch.setenv("WAYFINDER_DATABASE_URL", "postgresql+psycopg://user:secret@localhost/wayfinder")
+    monkeypatch.setattr(getpass, "getpass", lambda prompt: "hidden password")
+    health_state = {"closed": False}
+
+    class Health:
+        engine = object()
+
+        def __init__(self, url):
+            assert "secret" in url
+
+        def close(self):
+            health_state["closed"] = True
+
+    calls = []
+
+    class Service:
+        def create_admin(self, email, password):
+            calls.append((email, password))
+            return object()
+
+    monkeypatch.setattr(cli, "DatabaseHealth", Health)
+    monkeypatch.setattr(composition, "compose_account_service", lambda settings, engine: Service(), raising=False)
+
+    assert cli.main(["create-admin", "--email", "admin@example.vn"]) == 0
+    captured = capsys.readouterr()
+    assert calls == [("admin@example.vn", "hidden password")]
+    assert "hidden password" not in captured.out + captured.err
+    assert health_state["closed"]
+
+
+def test_create_admin_does_not_accept_password_as_command_argument(capsys):
+    with pytest.raises(SystemExit) as error:
+        cli.main(["create-admin", "--email", "admin@example.vn", "--password", "must-not-appear"])
+
+    assert error.value.code == 2
+    assert "--password" in capsys.readouterr().err
+
+
+def test_create_admin_reports_auth_conflict_without_database_details(monkeypatch, capsys):
+    from wayfinder import composition
+    from wayfinder.application.accounts import AuthError
+
+    monkeypatch.setenv("WAYFINDER_DATABASE_URL", "postgresql+psycopg://user:secret@localhost/wayfinder")
+    monkeypatch.setattr(getpass, "getpass", lambda prompt: "hidden password")
+
+    class Health:
+        engine = object()
+
+        def __init__(self, url):
+            pass
+
+        def close(self):
+            pass
+
+    class Service:
+        def create_admin(self, email, password):
+            raise AuthError("conflict", "Tài khoản đã tồn tại.")
+
+    monkeypatch.setattr(cli, "DatabaseHealth", Health)
+    monkeypatch.setattr(composition, "compose_account_service", lambda settings, engine: Service(), raising=False)
+
+    assert cli.main(["create-admin", "--email", "admin@example.vn"]) == 1
+    captured = capsys.readouterr()
+    assert "Tài khoản đã tồn tại." in captured.err
+    assert "secret" not in captured.out + captured.err
+    assert "hidden password" not in captured.out + captured.err
+
+
+def test_create_admin_sanitizes_database_failure_and_closes_engine(monkeypatch, capsys):
+    from sqlalchemy.exc import SQLAlchemyError
+    from wayfinder import composition
+
+    monkeypatch.setenv("WAYFINDER_DATABASE_URL", "postgresql+psycopg://user:secret@localhost/wayfinder")
+    engine_state = {"closed": False}
+
+    class Health:
+        engine = object()
+
+        def __init__(self, url):
+            pass
+
+        def close(self):
+            engine_state["closed"] = True
+
+    def failed_composition(settings, engine):
+        raise SQLAlchemyError("dsn secret detail")
+
+    monkeypatch.setattr(cli, "DatabaseHealth", Health)
+    monkeypatch.setattr(composition, "compose_account_service", failed_composition, raising=False)
+
+    assert cli.main(["create-admin", "--email", "admin@example.vn"]) == 1
+    captured = capsys.readouterr()
+    assert "dsn secret detail" not in captured.out + captured.err
+    assert "secret" not in captured.out + captured.err
+    assert engine_state["closed"]

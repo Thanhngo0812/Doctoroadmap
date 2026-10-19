@@ -5,6 +5,7 @@ export type ApiErrorBody = {
     retry_after?: number | string | null;
     resets_at?: string | null;
     ref?: string | null;
+    fields?: Array<{ loc?: string[] | string; type?: string; message?: string }>;
   };
 };
 
@@ -32,15 +33,23 @@ const errorMessages: Record<string, string> = {
   csrf_failed: 'Phiên làm việc đã hết hạn. Hãy tải lại trang rồi thử lại.',
 };
 
+function retryLabel(value: number | string | null | undefined): string {
+  const seconds = Number(value);
+  if (!Number.isFinite(seconds)) return 'một lúc nữa';
+  if (seconds < 60) return `${Math.max(1, Math.ceil(seconds))} giây`;
+  return `${Math.ceil(seconds / 60)} phút`;
+}
+
 export class ApiError extends Error {
   readonly code: string;
   readonly retryAfter: number | string | null;
   readonly ref: string | null;
+  readonly fields: Array<{ loc?: string[] | string; type?: string; message?: string }>;
 
-  constructor(code: string, message?: string, retryAfter?: number | string | null, ref?: string | null, resetsAt?: string | null) {
+  constructor(code: string, message?: string, retryAfter?: number | string | null, ref?: string | null, resetsAt?: string | null, fields: Array<{ loc?: string[] | string; type?: string; message?: string }> = []) {
     const template = errorMessages[code] ?? message ?? 'Có lỗi xảy ra. Hãy thử lại.';
     const formatted = template
-      .replace('{retry_after}', String(retryAfter ?? 'một lúc nữa'))
+      .replace('{retry_after}', retryLabel(retryAfter))
       .replace('{resets_at}', resetsAt ?? 'thời gian tới')
       .replace('{ref}', ref ?? 'không có mã');
     super(formatted);
@@ -48,6 +57,7 @@ export class ApiError extends Error {
     this.code = code;
     this.retryAfter = retryAfter ?? null;
     this.ref = ref ?? null;
+    this.fields = fields;
   }
 }
 
@@ -83,6 +93,7 @@ export async function apiJson<T>(input: string, init?: RequestInit): Promise<T> 
       error?.retry_after,
       error?.ref,
       error?.resets_at,
+      error?.fields,
     );
   }
   return body as T;
@@ -118,7 +129,7 @@ export async function readSse(
   if (!response.ok) {
     const body = await response.json().catch(() => null) as ApiErrorBody | null;
     const error = body?.error;
-    throw new ApiError(error?.code ?? 'internal_error', error?.message, error?.retry_after, error?.ref, error?.resets_at);
+    throw new ApiError(error?.code ?? 'internal_error', error?.message, error?.retry_after, error?.ref, error?.resets_at, error?.fields);
   }
   if (!response.body) throw new Error('Phản hồi không có luồng dữ liệu.');
 

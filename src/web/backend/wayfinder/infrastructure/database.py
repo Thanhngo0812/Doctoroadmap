@@ -13,7 +13,7 @@ def create_database_engine(database_url: str | URL) -> Engine:
     if url.get_backend_name() != "postgresql":
         raise ValueError("WayFinder requires a PostgreSQL database URL")
     url = url.set(drivername="postgresql+psycopg")
-    return create_engine(url, pool_pre_ping=True, connect_args={"connect_timeout": 3})
+    return create_engine(url, pool_pre_ping=True, hide_parameters=True, connect_args={"connect_timeout": 3})
 
 
 class DatabaseHealth:
