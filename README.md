@@ -32,6 +32,17 @@ LibreOffice là phụ thuộc tuỳ chọn cho DOCX chứa hình vẽ DrawingML.
 Artifact mặc định nằm trong `artifacts/`; ảnh nằm tại `parse_tree/<doc_id>/vN/images/`. Đổi root bằng
 `DOC2ROADMAP_ARTIFACT_DIR`.
 
+### Dựng một cuốn (W-13)
+
+```powershell
+.\.venv\Scripts\python.exe -m doc2roadmap.presentation.cli.main build --file doc-6.pdf --doc-id new-book --dry-run
+```
+
+`--dry-run` đọc và kiểm tệp thật, báo các phụ thuộc hiện có, không gọi mô hình hoặc tạo graph. Bỏ cờ này để chạy qua cache; cache thiếu thì dừng trước khi chi.
+Chỉ thêm `--allow-spend` khi đã duyệt chi. Chuỗi đầy đủ gồm đọc/kiểm sớm → gán vai trò → A3/A3′ → A4/A5 không vàng → roadmap → chuẩn bị Pha B.
+Kết quả/usage cuối lượt được ghi vào `artifact_dir/builds.sqlite3`, kể cả khi lỗi hoặc huỷ; không tính dự toán.
+Worker có thể gọi `build_document_runner(settings, recorder=...)` để dùng DB web thay SQLite. Xem [báo cáo W-13](report/w13-dung-mot-cuon-2026-10-19.md).
+
 `ingest` mặc định `--a1 nhe`: R2 với hai mô hình `full` có SHA-256 tại `vendor/a1-nhe/`, chỉ nhận PDF gốc.
 Bản quét/OCR nằm ngoài phạm vi của cả hai đường. Trang bìa toàn ảnh không tự làm PDF gốc thành bản quét.
 DOCX, `--pdf-backend`, `--pdf-text-policy` và cờ pipeline dùng `--a1 docling`. Cảnh báo chữ chặn ingest;

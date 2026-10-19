@@ -346,17 +346,18 @@ Tải giáo trình                 (chỉ khi bật trần: Còn 2/3 lượt d�
 │     Kéo thả tệp PDF hoặc DOCX vào đây         │
 │     hoặc [Chọn tệp]   · tối đa 10 MB           │
 └──────────────────────────────────────────────┘
-☐ Tôi có quyền dùng và chia sẻ tài liệu này        [Tải lên]
+☐ Tôi có quyền dùng và chia sẻ tài liệu này        [Dựng lộ trình]
 
 Tiến trình
  ✓ Đọc tài liệu
- ● Trích khái niệm      [gif 96]  khoảng 6 phút
+ ● Trích khái niệm      [gif 96]
  ○ Dựng đồ thị và lộ trình
  ○ Chuẩn bị bài học
- Dự toán: khoảng 12 phút                      [Huỷ]
+                                             [Huỷ]
 ```
 
-- Sau bước đọc: hộp **dự toán** với nút "Dựng lộ trình" và "Để sau". Người dùng thường thấy phút và số lượt, không thấy USD (spec chức năng mục 8).
+- Chủ dự án chốt 2026-10-19: thả/chọn tệp, xem tên tệp và tick quyền sử dụng, rồi bấm "Dựng lộ trình" mới bắt đầu dựng.
+  Không hiện dự toán hoặc chi phí; số usage/chi phí cuối lượt được ghi DB phía máy chủ.
 - **Lỗi bản quét:** mặt pixel, câu "Tệp này là bản quét (ảnh chụp trang), WayFinder chưa đọc được. Hãy dùng bản PDF có chữ chọn được." Không trừ lượt.
 
 **Tham gia** (`/join/:token`): thẻ giữa trang: logo nhỏ, tên khoá, "do Lan chia sẻ", số module; **khối thông báo dữ liệu** ("Chủ khoá thấy tên bạn, ngày tham
@@ -449,7 +450,7 @@ Các trang trong tệp Figma:
 Mỗi dòng ở cả 390 px và 1280 px:
 - [ ] Giới thiệu; đăng nhập; đăng ký; quên mật khẩu; đặt lại; xác minh (thành công, hết hạn).
 - [ ] Khoá học của tôi: rỗng, có khoá, có lời mời, có khoá đang dựng.
-- [ ] Tải giáo trình; tiến trình (đang chạy, dự toán, lỗi bản quét, xong, huỷ).
+- [ ] Tải giáo trình; xác nhận tệp; tiến trình (đang chạy, lỗi bản quét/chữ lỗi, xong, huỷ).
 - [ ] Trang lộ trình: mặc định, module mở, khung chat mở, thư viện rỗng.
 - [ ] Trang học: bài đang chờ, đang hiện dần, xong có tiên quyết mở, hỏng hẳn; khung xem trang.
 - [ ] Chat: phiên mới, có lượt, thẻ module, tiến trình công cụ, phạm vi đã cũ, hết trần.

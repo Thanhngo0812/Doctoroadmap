@@ -59,7 +59,7 @@ Người dùng thấy các chức năng sau:
 
 **Tải giáo trình lên và dựng lộ trình:**
 - tải một tệp PDF hoặc DOCX tiếng Việt, xác nhận có quyền dùng tài liệu;
-- hệ thống đọc tài liệu (0 USD), báo sớm nếu là bản quét hay không phải tiếng Việt, rồi hiện **dự toán** thời gian và chi phí;
+- người dùng xác nhận mới xếp hàng; worker đọc tài liệu (0 USD), chặn sớm bản quét/chữ lỗi/không phải tiếng Việt, rồi dựng; không hiện dự toán hay chi phí;
 - người dùng bấm "Dựng lộ trình", theo dõi tiến trình theo bốn bước, huỷ được, thử lại được khi lỗi;
 - dựng xong thì thành một **khoá học** của người đó.
 - Tệp đã có người dựng rồi (cùng băm) thì xong ngay, 0 USD, không trừ lượt dựng.
@@ -113,7 +113,7 @@ nút "Đọc trang p" mở tệp gốc. Mỗi thành viên có tiến độ, phi
 18. Là người tải lên, tôi muốn biết ngay khi tệp quá lớn, quá nhiều trang, bị mã hoá, hay sai định dạng, để không phải chờ vô ích.
 19. Là người tải lên bản quét, tôi muốn được báo "tệp là bản quét, chưa hỗ trợ" sau bước đọc, không tốn tiền, để tìm bản có chữ.
 20. Là người tải lên tài liệu không phải tiếng Việt, tôi muốn được báo chưa hỗ trợ, để không tốn tiền.
-21. Là người tải lên, tôi muốn thấy dự toán thời gian và chi phí trước khi bấm dựng, để quyết có dựng không.
+21. Là người tải lên, tôi muốn kiểm lại tệp đã chọn và bấm xác nhận trước khi dựng; không cần xem dự toán thời gian hay chi phí.
 22. Là người tải lên, tôi muốn theo dõi tiến trình qua bốn bước "Đọc tài liệu", "Trích khái niệm", "Dựng đồ thị và lộ trình", "Chuẩn bị bài học", để
     biết còn bao lâu.
 23. Là người tải lên, tôi muốn rời trang trong lúc dựng rồi quay lại vẫn thấy tiến trình, và nhận email khi xong, để không phải ngồi chờ.
@@ -339,25 +339,29 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 {"contract_version": "build-1", "build_id": "…", "course_id": "…",
  "status": "reading | rejected | awaiting_confirmation | queued | running | succeeded | failed | cancelled",
  "step": "doc_reading | concepts | graph | learning_prep | null", "step_index": 2, "step_count": 4,
- "estimate": {"usd": 0.9, "minutes": 12, "model_calls": 140},
- "spent_usd": 0.31, "started_at": "…", "finished_at": null,
- "error": {"code": "ban_quet | ngon_ngu_khong_ho_tro | loi_mang | loi_noi_bo | het_tran_he_thong | qua_du_toan", "message": "…", "retryable": true}}
+ "started_at": "…", "finished_at": null,
+ "error": {"code": "ban_quet | ngon_ngu_khong_ho_tro | chu_loi | loi_mang | loi_noi_bo | het_tran_he_thong", "message": "…", "retryable": true}}
 ```
 
 **Luồng:**
-1. **`reading`:** worker chạy bước đọc (`ingest`, 0 USD), rồi hai kiểm sớm:
-   - **bản quét:** trung bình ký tự chữ mỗi trang < `scan_min_chars_per_page` (200), hay > `scan_max_empty_page_ratio` (50%) số trang không có chữ, thì
+1. **Chọn tệp:** người dùng kéo thả PDF/DOCX; sau kiểm định dạng/cỡ tệp thì `awaiting_confirmation`. Chưa dựng sách.
+2. **Xác nhận:** người tải bấm "Dựng lộ trình" thì `queued`, trừ một lượt dựng nếu trần lượt đang bật. Không xác nhận trong
+   `confirmation_ttl_hours` (72) thì hết hạn, không trừ lượt.
+3. **`reading`:** worker chạy bước đọc (`ingest`, 0 USD), rồi ba kiểm sớm:
+   - **chất lượng chữ:** cổng `require_text_quality` của lõi từ chối (chữ vỡ, mã hoá font lạ) thì `rejected` với `chu_loi`. Web không bao giờ truyền
+     `allow_text_quality_reason`; chỉ chủ dự án được quyết, như T-01a;
+   - **bản quét:** trung bình ký tự chữ mỗi trang < `scan_min_chars_per_page` (150 sau hiệu chỉnh W-13: doc-6 là 179,8), hay > `scan_max_empty_page_ratio` (50%) số trang không có chữ, thì
      `rejected` với `ban_quet`;
    - **ngôn ngữ:** tỉ lệ ký tự có dấu tiếng Việt trên ký tự chữ < `vi_min_diacritic_ratio` thì `rejected` với `ngon_ngu_khong_ho_tro`. Ngưỡng chỉnh trên
      sáu cuốn phát triển cộng vài tệp tiếng Anh, ghi số đo vào báo cáo vé.
-2. **Dự toán:** chạy dry-run của các bước còn lại, ra `estimate`. Hiện cho người tải lên; `awaiting_confirmation`.
-   - Nếu trần dự toán đang bật (mặc định tắt): dự toán > `build_max_estimate_usd` thì `rejected` với `qua_du_toan`, kèm lời khuyên tách tài liệu.
-   - Dự toán vẫn luôn hiện cho người tải, kể cả khi không có trần.
-3. **Xác nhận:** người tải bấm "Dựng lộ trình" thì `queued`, trừ một lượt dựng. Không xác nhận trong `confirmation_ttl_hours` (72) thì hết hạn, không trừ
-   lượt.
-4. **`running`:** worker chạy lần lượt `concepts` (A4), `graph` (roadmap tới A10 và tên module), `learning_prep` (A12, chỉ mục khái niệm, ảnh công
+4. **`running`:** worker chạy lần lượt `concepts` (`label-roles` → A3/A3′ → A4/A5), `graph` (roadmap tới A10 và tên module), `learning_prep` (A12, chỉ mục khái niệm, ảnh công
    thức). Mỗi bước ghi `step`, và ghi chi thật vào sổ chi với `purpose = build`, `user_id`, `doc_id`.
 5. **Xong:** `succeeded`; khoá học chuyển `ready` với `published_graph_version` = bản A10 hoàn tất mới nhất. Gửi email "bản dựng xong".
+
+**Chủ dự án cập nhật 2026-10-19:** không cần tính dự toán hoặc hiện chi phí/thời gian ước lượng cho người tải. Usage, chi phí quy đổi từ token thực trả
+và thời gian thực tế được ghi vào DB khi kết thúc lượt chạy (kể cả lỗi/huỷ); thiếu usage phải có cờ phân biệt. `--dry-run` là công cụ kiểm nội bộ 0 USD.
+Yêu cầu cũ về `build_max_estimate_usd`/`qua_du_toan` được bỏ khỏi luồng và tiêu chí nghiệm thu web. Thủ tục dry-run/duyệt tiền nội bộ của các lượt thử
+có tiền vẫn giữ nguyên; nhân viên chuẩn bị con số đề nghị riêng, không thêm lại chức năng dự toán trên app.
 
 **Huỷ:** đặt cờ huỷ; worker dừng ở ranh giới bước kế tiếp (không giết giữa lời gọi). Chi đã tiêu vẫn ghi sổ. Lượt dựng không hoàn lại.
 
@@ -368,13 +372,12 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 **Worker chết giữa chừng:** mỗi bản dựng `running` có nhịp tim. Quá `build_heartbeat_timeout_minutes` (10) không có nhịp tim thì một worker khác nhận lại,
 tối đa 1 lần; lần sau thì `failed` với `loi_noi_bo`.
 
-**Trần chi khâu dựng — có trong mã, mặc định tắt.** Chủ dự án chốt 2026-10-18: "chỉ là web demo, không cần giới hạn". Ba trần dưới đây cài đủ và có
+**Trần chi khâu dựng — có trong mã, mặc định tắt.** Chủ dự án chốt 2026-10-18: "chỉ là web demo, không cần giới hạn"; cập nhật 2026-10-19 bỏ dự toán. Hai trần dưới đây cài đủ và có
 test (test bật chúng bằng cấu hình), để bật lại bằng một biến môi trường nếu có lạm dụng:
 - `build_monthly_max` lượt mỗi tài khoản mỗi tháng lịch theo giờ Việt Nam; admin đổi riêng cho từng người;
-- `build_max_estimate_usd`: dự toán tối đa một cuốn;
 - `system_daily_build_max_usd`: tổng chi khâu dựng của cả hệ thống mỗi ngày. Chạm trần thì bản dựng mới chờ ở `queued` tới ngày sau; bản đang chạy
   dừng ở ranh giới bước với `het_tran_he_thong`, thử lại được.
-- Hai trần này **tách** khỏi trần người học (0,20 USD) và trần nội dung dùng chung (5 USD) của spec Pha B2.
+Hai trần này **tách** khỏi trần người học (0,20 USD) và trần nội dung dùng chung (5 USD) của spec Pha B2.
 
 **Dựng một cuốn ở lõi** là một use case mới, `build_document`, gói chuỗi lệnh hiện có thành từng bước có thể dry-run và chạy tiếp:
 - nhận đường dẫn tệp, `doc_id`, ngôn ngữ `vi`, và một hàm báo tiến trình;
@@ -505,7 +508,7 @@ giây. Nguồn là sổ chi; số này là **ước theo token**, không thay ho
 
 - **Người dùng:** tìm theo email; xem ngày tạo, lần đăng nhập gần nhất, số khoá sở hữu, lượt dựng tháng này; khoá hay mở tài khoản; đổi `build_monthly_max`
   riêng; nâng hay hạ vai trò admin (không tự hạ mình nếu là admin cuối cùng).
-- **Bản dựng:** danh sách mọi bản dựng, lọc theo trạng thái; chi thật, dự toán, lỗi, `pipeline_version`; thử lại hay huỷ thay chủ khoá.
+- **Bản dựng:** danh sách mọi bản dựng, lọc theo trạng thái; usage/chi phí thực quy đổi từ token, cờ thiếu usage, lỗi, `pipeline_version`; thử lại hay huỷ thay chủ khoá.
 - **Chi:** `spend_summary`, trần hệ thống hôm nay.
 - **Báo lỗi nội dung:** danh sách, lọc theo khoá học, đánh dấu đã xem.
 - **Khoá mẫu:** đánh dấu và bỏ đánh dấu.
@@ -578,9 +581,8 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 | `email_verify_ttl_hours` / `resend_verification_per_hour` | 24 / 3 |
 | `password_reset_ttl_minutes` | 60 |
 | `upload_max_mb` / `build_max_pages` | 10 (gói Cloudinary miễn phí) / không giới hạn |
-| `scan_min_chars_per_page` / `scan_max_empty_page_ratio` | 200 / 0,5 |
+| `scan_min_chars_per_page` / `scan_max_empty_page_ratio` | 150 / 0,5 (hiệu chỉnh W-13, 2026-10-19) |
 | `vi_min_diacritic_ratio` | chỉnh trên dữ liệu ở vé dựng |
-| `build_max_estimate_usd` | không giới hạn (gợi ý khi bật: 3,0) |
 | `build_monthly_max` | không giới hạn (gợi ý khi bật: 3) |
 | `system_daily_build_max_usd` | không giới hạn (gợi ý khi bật: 10,0) |
 | `env` | `dev` \| `prod`; khoá mẫu chỉ khi `dev` |
@@ -650,7 +652,8 @@ Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright)
 12. Cùng một tệp tải hai lần (hai tài khoản): bản dựng thứ hai không gọi `BuildRunner`, 0 USD, không trừ lượt, và hai khoá trỏ cùng `doc_id`.
 13. Bản quét và tài liệu không phải tiếng Việt bị `rejected` sau bước đọc, 0 lời gọi mô hình. Test dùng hai tệp nhỏ tạo trong test: một PDF chỉ có ảnh,
     một PDF chữ tiếng Anh.
-14. Khi bật trong test: dự toán vượt `build_max_estimate_usd` thì `rejected`; trần khâu dựng toàn hệ thống chạm thì bản dựng mới không chạy.
+14. Khi bật trần khâu dựng toàn hệ thống trong test: chạm trần thì bản dựng mới không chạy. Luồng tải/xác nhận và API người dùng không có dự toán/chi phí;
+    kết quả thực của lượt chạy vẫn được ghi DB cho admin, kể cả lỗi/huỷ và cờ thiếu usage.
 15. Huỷ trong lúc `running` thì dừng ở ranh giới bước kế tiếp; worker giả ghi lại không có bước nào bắt đầu sau khi có cờ huỷ.
 16. Worker mất nhịp tim quá 10 phút theo đồng hồ giả thì bản dựng được nhận lại đúng 1 lần.
 17. Trần người học tính chung mọi khoá: chi ở khoá A làm khoá B chạm `daily_limit`.

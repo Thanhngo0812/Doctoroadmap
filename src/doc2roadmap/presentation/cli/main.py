@@ -44,6 +44,11 @@ from doc2roadmap.application.use_cases.a8_gold import (
 def _parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="doc2roadmap")
     commands = parser.add_subparsers(dest="command", required=True)
+    build = commands.add_parser("build", help="build one document")
+    build.add_argument("--file", type=Path, required=True)
+    build.add_argument("--doc-id", required=True)
+    build.add_argument("--dry-run", action="store_true")
+    build.add_argument("--allow-spend", action="store_true")
     roles = commands.add_parser('label-roles', help='gán vai trò vùng sau A2; không đổi ID/text chunk')
     roles.add_argument('--doc-id', required=True)
     roles.add_argument('--chunks-version', type=int)
@@ -423,6 +428,9 @@ def main(argv: list[str] | None = None) -> int:
             stream.reconfigure(encoding="utf-8", errors="replace")
     args = _parser().parse_args(argv)
     try:
+        if args.command == "build":
+            from doc2roadmap.presentation.cli.build import run as run_build
+            return run_build(args)
         if args.command == "phase-b":
             from doc2roadmap.presentation.cli.phase_b import run as run_phase_b
             _json(run_phase_b(args))
