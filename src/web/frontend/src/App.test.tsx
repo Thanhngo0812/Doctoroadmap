@@ -29,6 +29,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
+  Reflect.deleteProperty(document, "startViewTransition");
 });
 
 function renderApp(path = '/') {
@@ -280,5 +281,112 @@ describe('WayFinder demo', () => {
     await user.click(screen.getByRole('button', { name: 'Thử lại' }));
     await waitFor(() => expect(screen.queryByRole('alert')).not.toBeInTheDocument());
     expect(screen.getByRole('heading', { name: 'Đăng nhập WayFinder' })).toBeInTheDocument();
+  });
+});
+
+
+describe('auth feedback and switching', () => {
+  it.each(['login', 'register'] as const)('clears errors and private form state when leaving %s', async (mode) => {
+    const user = userEvent.setup();
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
+      ? apiResponse({ error: { code: 'unauthenticated' } }, 401)
+      : apiResponse({ error: { code: 'validation', fields: [{ loc: ['body', 'password'] }] } }, 422)));
+    renderApp(mode === 'login' ? '/dang-nhap' : '/dang-ky');
+    if (mode === 'register') {
+      await user.type(screen.getByLabelText('Tên hiển thị'), 'Linh');
+      await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'safe-password-123');
+    }
+    await user.type(screen.getByLabelText('Email'), 'linh@example.vn');
+    await user.type(screen.getByLabelText('Mật khẩu'), 'safe-password-123');
+    await user.click(screen.getByRole('button', { name: 'Hiện mật khẩu' }));
+    await user.click(screen.getByRole('button', { name: mode === 'login' ? 'Đăng nhập' : 'Tạo tài khoản' }));
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(screen.getByLabelText('Mật khẩu')).toHaveAttribute('aria-invalid', 'true');
+    await user.click(screen.getAllByRole('link', { name: mode === 'login' ? 'Tạo tài khoản' : 'Đăng nhập' })[0]!);
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Mật khẩu')).toHaveValue('');
+    expect(screen.getByLabelText('Mật khẩu')).toHaveAttribute('type', 'password');
+    expect(screen.getByLabelText('Mật khẩu')).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.getByLabelText('Email')).toHaveValue('');
+    expect(screen.queryByText('Mật khẩu cần có từ 8 đến 128 ký tự.')).not.toBeInTheDocument();
+  });
+
+  it('does not carry a late login failure into the registration form', async () => {
+    const user = userEvent.setup();
+    let complete!: (response: Response) => void;
+    vi.stubGlobal('fetch', vi.fn((input: RequestInfo | URL) => String(input).endsWith('/me')
+      ? Promise.resolve(apiResponse({ error: { code: 'unauthenticated' } }, 401))
+      : new Promise<Response>((resolve) => { complete = resolve; })));
+    renderApp('/dang-nhap');
+    await user.type(screen.getByLabelText('Email'), 'linh@example.vn');
+    await user.type(screen.getByLabelText('Mật khẩu'), 'safe-password-123');
+    await user.click(screen.getByRole('button', { name: 'Đăng nhập' }));
+    await user.click(screen.getAllByRole('link', { name: 'Tạo tài khoản' })[0]!);
+    await act(async () => { complete(apiResponse({ error: { code: 'invalid_credentials' } }, 401)); });
+    expect(screen.getByRole('heading', { name: 'Tạo tài khoản WayFinder' })).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Tạo tài khoản' })).toBeEnabled();
+  });
+
+  it('keeps a success notification visible after login reaches the account page', async () => {
+    const user = userEvent.setup();
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
+      ? apiResponse({ error: { code: 'unauthenticated' } }, 401)
+      : apiResponse({ account, csrf_token: 'test-csrf' })));
+    renderApp('/dang-nhap');
+    await user.type(screen.getByLabelText('Email'), 'linh@example.vn');
+    await user.type(screen.getByLabelText('Mật khẩu'), 'safe-password-123');
+    await user.click(screen.getByRole('button', { name: 'Đăng nhập' }));
+    expect(await screen.findByRole('heading', { name: 'Tài khoản của bạn' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đăng nhập thành công.');
+  });
+
+  it('shows inline errors for short invalid fields without submitting to the API', async () => {
+    const user = userEvent.setup();
+    const fetchSpy = vi.fn(async (_input: RequestInfo | URL) => apiResponse({ error: { code: 'unauthenticated' } }, 401));
+    vi.stubGlobal('fetch', fetchSpy);
+    renderApp('/dang-ky');
+    await user.type(screen.getByLabelText('Email'), 'bad-email');
+    await user.type(screen.getByLabelText('Mật khẩu'), '123');
+    await user.type(screen.getByLabelText('Nhập lại mật khẩu'), '123');
+    await user.click(screen.getByRole('button', { name: 'Tạo tài khoản' }));
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(screen.getByLabelText('Tên hiển thị')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByLabelText('Mật khẩu')).toHaveAttribute('aria-invalid', 'true');
+    expect(screen.getByText('Email chưa hợp lệ.')).toHaveAttribute('id', 'email-error');
+    expect(fetchSpy.mock.calls.every(([input]) => String(input).endsWith('/me'))).toBe(true);
+    await user.clear(screen.getByLabelText('Email'));
+    await user.type(screen.getByLabelText('Email'), 'linh@example.vn');
+    expect(screen.getByLabelText('Email')).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.queryByText('Email chưa hợp lệ.')).not.toBeInTheDocument();
+    expect(screen.getByLabelText('Mật khẩu')).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it.each([{ loc: 'body.password' }, { loc: ['body', 'password'] }])('shows the actual password field message for $loc', async ({ loc }) => {
+    const user = userEvent.setup();
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
+      ? apiResponse({ error: { code: 'unauthenticated' } }, 401)
+      : apiResponse({ error: { code: 'validation', fields: [{ loc, message: 'Mật khẩu nằm trong danh sách phổ biến.' }] } }, 422)));
+    renderApp('/dang-ky');
+    await user.type(screen.getByLabelText('Tên hiển thị'), 'Linh');
+    await user.type(screen.getByLabelText('Email'), 'linh@example.vn');
+    await user.type(screen.getByLabelText('Mật khẩu'), 'safe-password-123');
+    await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'safe-password-123');
+    await user.click(screen.getByRole('button', { name: 'Tạo tài khoản' }));
+    expect(await screen.findByRole('alert')).toBeInTheDocument();
+    expect(screen.getByText('Mật khẩu nằm trong danh sách phổ biến.')).toHaveAttribute('id', 'password-error');
+    expect(screen.getByLabelText('Mật khẩu')).toHaveAttribute('aria-invalid', 'true');
+  });
+
+  it.each([false, true])('uses native auth switching only when reduced motion is %s', async (reduced) => {
+    const user = userEvent.setup();
+    Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn().mockReturnValue({ matches: reduced }) });
+    const transition = vi.fn((update: () => void) => { update(); return { finished: Promise.resolve() }; });
+    Object.defineProperty(document, 'startViewTransition', { configurable: true, value: transition });
+    renderApp('/dang-nhap');
+    await user.click(screen.getAllByRole('link', { name: 'Tạo tài khoản' })[0]!);
+    expect(screen.getByRole('heading', { name: 'Tạo tài khoản WayFinder' })).toBeInTheDocument();
+    expect(transition).toHaveBeenCalledTimes(reduced ? 0 : 1);
   });
 });

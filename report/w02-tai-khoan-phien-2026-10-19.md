@@ -81,3 +81,7 @@ npm.cmd --prefix src/web/frontend run build
 Nếu Windows Temp/cache cũ lỗi quyền, dùng basetemp mới và -p no:cacheprovider theo README. Browser script scripts/w02_browser_check.cjs dùng W02_BASE_URL trỏ server test; tạo tài khoản example.vn và thử throttle, nên chạy trên database thử. Vòng nghiệm thu trên đã dùng composition/ADC thật và migration đầy đủ trong database UUID riêng, rồi dừng server 8002/xoá database. Giữ API local 8000 đang chạy cho chủ dự án.
 
 Nguồn: [OWASP Password Storage](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html), [Argon2-cffi API](https://argon2-cffi.readthedocs.io/en/stable/api.html), [SecLists](https://github.com/danielmiessler/SecLists); commit/SHA-256 và MIT license đóng kèm wayfinder/data.
+
+## Bổ sung giao diện 2026-10-20
+
+Đã sửa phản hồi form và chuyển cảnh theo yêu cầu chủ dự án, React 38/38 đạt và 6 trường hợp trình duyệt đạt. Xem [báo cáo bổ sung](w02-phan-hoi-form-2026-10-20.md). Số kiểm thử ở phần nghiệm thu gốc bên trên giữ nguyên theo mốc W-02 ban đầu.

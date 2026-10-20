@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-import { AuthPage, AuthProvider, LandingRoute, RequireAccount, useAuth } from './Auth';
+import { AuthNotice, AuthPage, AuthProvider, LandingRoute, RequireAccount, useAuth } from './Auth';
 import { ApiError, fetchHealth, type HealthPayload } from './api';
 
 type Theme = 'light' | 'dark';
@@ -346,11 +346,11 @@ function Footer({ theme }: { theme: Theme }) {
 
 export default function App() {
   const [theme, toggleTheme] = useTheme();
-  return <AuthProvider><Routes>
+  return <AuthProvider><AuthNotice /><Routes>
     <Route path="/" element={<LandingRoute><HomePage theme={theme} onToggleTheme={toggleTheme} /></LandingRoute>} />
     <Route path="/demo" element={<DemoPage theme={theme} onToggleTheme={toggleTheme} />} />
-    <Route path="/dang-nhap" element={<AuthPage mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
-    <Route path="/dang-ky" element={<AuthPage mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/dang-nhap" element={<AuthPage key="login" mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/dang-ky" element={<AuthPage key="register" mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="*" element={<NotFound theme={theme} onToggleTheme={toggleTheme} />} />
   </Routes></AuthProvider>;
