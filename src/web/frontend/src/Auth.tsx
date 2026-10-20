@@ -26,6 +26,15 @@ type AuthState = {
 
 const AuthContext = createContext<AuthState | null>(null);
 
+function transitionAuth(update: () => void) {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !document.startViewTransition) {
+    update();
+    return;
+  }
+  const transition = document.startViewTransition(() => { flushSync(update); });
+  void transition.finished.catch(() => undefined);
+}
+
 function userError(cause: unknown): string {
   return cause instanceof ApiError ? cause.message : 'Không thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.';
 }
@@ -40,6 +49,7 @@ function validSession(response: MeResponse): boolean {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const navigate = useNavigate();
   const [status, setStatus] = useState<AuthState['status']>('loading');
   const [account, setAccount] = useState<Account | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -116,12 +126,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
       throw cause;
     }
-    setCsrfToken(null);
-    setAccount(null);
-    setError(null);
-    setStatus('guest');
-    setNotice('Đã đăng xuất.');
-  }, []);
+    transitionAuth(() => {
+      setCsrfToken(null);
+      setAccount(null);
+      setError(null);
+      setStatus('guest');
+      setNotice('Đã đăng xuất.');
+      navigate('/dang-nhap?next=%2Ftai-khoan', { replace: true });
+    });
+  }, [navigate]);
 
   const clearSession = useCallback(() => {
     setCsrfToken(null);
@@ -162,11 +175,14 @@ export function LandingRoute({ children }: { children: ReactNode }) {
 export function AccountPage({ theme, onToggleTheme }: { theme: 'light' | 'dark'; onToggleTheme: () => void }) {
   const auth = useAuth();
   const [logoutError, setLogoutError] = useState<string | null>(null);
+  const [signingOut, setSigningOut] = useState(false);
   const currentTheme = theme;
   const signOut = async () => {
+    if (signingOut) return;
+    setSigningOut(true);
     setLogoutError(null);
     try { await auth.logout(); }
-    catch (cause) { if (cause instanceof ApiError && cause.code === 'account_disabled') auth.clearSession(); setLogoutError(userError(cause)); }
+    catch (cause) { if (cause instanceof ApiError && cause.code === 'account_disabled') auth.clearSession(); setLogoutError(userError(cause)); setSigningOut(false); }
   };
 
   if (auth.status === 'guest' || auth.status === 'loading') return <main className="auth-loading" role="status"><h1>Đang kiểm tra phiên đăng nhập…</h1></main>;
@@ -175,7 +191,17 @@ export function AccountPage({ theme, onToggleTheme }: { theme: 'light' | 'dark';
     <>
       <header className="site-header"><div className="header-inner">
         <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={currentTheme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
-        <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={currentTheme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{currentTheme === 'light' ? '◐' : '◑'}</button><details className="account-menu"><summary><span className="account-menu-name">{auth.account?.display_name}</span><span aria-hidden="true">⌄</span></summary><div className="account-menu-panel"><span>{auth.account?.email}</span><button type="button" onClick={() => void signOut()}>Đăng xuất</button>{logoutError && <small role="alert">{logoutError}</small>}</div></details></div>
+        <div className="header-actions">
+          <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={currentTheme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{currentTheme === 'light' ? '◐' : '◑'}</button>
+          <details className="account-menu">
+            <summary><span className="account-menu-name">{auth.account?.display_name}</span><svg className="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg></summary>
+            <div className="account-menu-panel">
+              <div className="account-menu-identity"><span className="account-menu-label">Tài khoản</span><span className="account-menu-email" title={auth.account?.email}>{auth.account?.email}</span></div>
+              <button type="button" disabled={signingOut} onClick={() => void signOut()}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 4H5v16h4M17 8l4 4-4 4M9 12h12" /></svg>{signingOut ? 'Đang đăng xuất…' : 'Đăng xuất'}</button>
+              {logoutError && <small role="alert">{logoutError}</small>}
+            </div>
+          </details>
+        </div>
       </div></header>
       <main className="account-page page-frame"><span className="section-kicker">TÀI KHOẢN WAYFINDER</span><h1>Tài khoản của bạn</h1><p>Xin chào, {auth.account?.display_name}. Bạn đã đăng nhập.</p><div className="account-summary"><span>Email</span><strong>{auth.account?.email}</strong><span>Trạng thái email</span><strong>{auth.account?.email_verified ? 'Đã xác minh' : 'Chưa xác minh'}</strong></div></main>
     </>
@@ -214,8 +240,7 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
       || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !document.startViewTransition) return;
     event.preventDefault();
-    const transition = document.startViewTransition(() => { flushSync(() => navigate(switchTarget)); });
-    void transition.finished.catch(() => undefined);
+    transitionAuth(() => navigate(switchTarget));
   };
   const clearFieldError = (name: string) => {
     setFieldErrors((previous) => ({ ...previous, [name]: '' }));

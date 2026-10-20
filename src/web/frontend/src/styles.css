@@ -280,12 +280,17 @@ h1 em, h2 em { font-style: normal; color: var(--color-primary); }
 .account-menu summary { max-width: 240px; min-height: 44px; display: inline-flex; align-items: center; gap: 8px; padding: 0 10px; border: 1px solid var(--color-border); border-radius: var(--radius-md); cursor: pointer; font-size: 14px; font-weight: 600; list-style: none; }
 .account-menu-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .account-menu summary > [aria-hidden] { flex-shrink: 0; }
+.account-menu summary:hover, .account-menu[open] summary { background: var(--color-bg-subtle); }
+.account-menu[open] .account-menu-chevron { transform: rotate(180deg); }
 .account-menu summary::-webkit-details-marker { display: none; }
-.account-menu-panel { position: absolute; z-index: 25; top: calc(100% + 7px); right: 0; width: 220px; display: grid; gap: 4px; padding: 8px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-1); }
-.account-menu-panel > span, .account-menu-panel a, .account-menu-panel button { min-height: 40px; display: flex; align-items: center; padding: 0 10px; font-size: 13px; }
-.account-menu-panel > span { color: var(--color-text-muted); overflow-wrap: anywhere; }
-.account-menu-panel a:hover, .account-menu-panel button:hover { background: var(--color-bg-subtle); }
-.account-menu-panel button { width: 100%; border: 0; background: transparent; text-align: left; cursor: pointer; }
+.account-menu-panel { position: absolute; z-index: 25; top: calc(100% + 8px); right: 0; width: max-content; min-width: 240px; max-width: min(360px, calc(100vw - 32px)); display: grid; gap: 8px; padding: 8px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); box-shadow: var(--shadow-1); }
+.account-menu-identity { min-width: 0; display: grid; gap: 4px; padding: 8px 8px 16px; border-bottom: 1px solid var(--color-border); }
+.account-menu-label { color: var(--color-text-muted); font-size: var(--text-caption); line-height: var(--line-caption); }
+.account-menu-email { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: var(--text-small); line-height: var(--line-small); }
+.account-menu-panel button:hover { background: var(--color-bg-subtle); }
+.account-menu-panel button { width: 100%; min-height: 44px; display: flex; align-items: center; gap: 12px; padding: 0 8px; border: 0; border-radius: var(--radius-sm); background: transparent; color: var(--color-text); font-size: var(--text-small); text-align: left; cursor: pointer; }
+.account-menu-panel button:disabled { opacity: .6; cursor: wait; }
+.account-menu-panel button svg { flex-shrink: 0; color: var(--color-text-muted); }
 .account-menu-panel small { padding: 4px 10px; color: var(--color-danger); }
 .auth-layout { min-height: calc(100svh - 64px); display: grid; place-items: center; padding-block: 38px; }
 .auth-card { width: min(100%, 488px); padding: 30px 38px 26px; background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); }
@@ -338,7 +343,6 @@ h1 em, h2 em { font-style: normal; color: var(--color-primary); }
   .brand-link { min-width: 0; padding-right: 0; }
   .brand-link img { width: 118px; }
   .account-menu summary { max-width: 155px; overflow: hidden; text-overflow: ellipsis; }
-  .account-menu-panel > span, .account-menu-panel a, .account-menu-panel button { min-height: 44px; }
   .auth-alternate a, .auth-demo-note a { min-height: 44px; display: inline-flex; align-items: center; }
 }
 @media (max-width: 390px) {
@@ -354,21 +358,25 @@ h1 em, h2 em { font-style: normal; color: var(--color-primary); }
 .auth-field input[aria-invalid='true']:focus-visible { outline-color: var(--color-danger); }
 .password-control.is-invalid { border-color: var(--color-danger); }
 .password-control.is-invalid:focus-within { outline-color: var(--color-danger); }
-.auth-notice { position: fixed; z-index: 60; top: 76px; right: 24px; width: min(420px, calc(100% - 32px)); pointer-events: none; }
-.auth-notice-message { display: block; padding: 14px 18px; border: 1px solid var(--color-success); border-radius: var(--radius-md); color: var(--color-success); background: color-mix(in srgb, var(--color-success) 8%, var(--color-surface)); font-size: var(--text-small); line-height: var(--line-small); }
+.auth-notice { position: fixed; z-index: 60; top: 76px; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100% - 32px); pointer-events: none; }
+.auth-notice-message { display: block; padding: 12px 16px; border: 1px solid var(--color-success); border-radius: var(--radius-md); color: var(--color-success); background: color-mix(in srgb, var(--color-success) 8%, var(--color-surface)); font-size: var(--text-small); line-height: var(--line-small); text-align: center; overflow-wrap: anywhere; }
 @keyframes auth-message-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes auth-message-out { to { opacity: 0; } }
+@keyframes auth-page-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: no-preference) {
   .auth-card { view-transition-name: auth-card; }
-  ::view-transition-old(root) { display: none; }
-  ::view-transition-new(root) { animation: none; }
+  ::view-transition-group(root) { animation-duration: 200ms; }
+  ::view-transition-old(root) { animation: auth-message-out 160ms ease-in both; }
+  ::view-transition-new(root) { animation: auth-page-in 200ms ease-out both; }
   ::view-transition-group(auth-card), ::view-transition-old(auth-card), ::view-transition-new(auth-card) { animation-duration: 200ms; animation-timing-function: ease-in-out; }
   .auth-feedback-slot { transition: grid-template-rows 180ms ease-out, opacity 180ms ease-out, margin-bottom 180ms ease-out; }
   .auth-field .field-error { animation: auth-message-in 160ms ease-out; }
   .auth-field input, .password-control { transition: border-color 140ms ease-out; }
+  .account-menu-chevron { transition: transform 160ms ease-out; }
+  .account-menu[open] .account-menu-panel { animation: auth-message-in 140ms ease-out; }
   .auth-notice-message { animation: auth-message-in 180ms ease-out, auth-message-out 180ms ease-in 4820ms forwards; }
 }
 
 @media (max-width: 767px) {
-  .auth-notice { top: auto; bottom: 16px; left: 16px; right: 16px; width: auto; }
+  .auth-notice { top: auto; bottom: max(16px, env(safe-area-inset-bottom)); }
 }

@@ -20,3 +20,6 @@ Theo yêu cầu chủ dự án: thông báo xuất hiện mượt; chuyển đă
 - Đã build và phục vụ bản cuối tại http://127.0.0.1:8000; health 200, db ok. Backend không đổi trong đợt này.
 
 Nguồn cách triển khai: [React — reset state bằng key](https://react.dev/learn/preserving-and-resetting-state), [MDN — startViewTransition và fallback](https://developer.mozilla.org/en-US/docs/Web/API/Document/startViewTransition), [React — flushSync](https://react.dev/reference/react-dom/flushSync).
+
+
+Bổ sung theo phản hồi tiếp theo: [menu tài khoản, thông báo vừa chữ và chuyển trang đăng xuất](w02-menu-thong-bao-2026-10-20.md), 41 React test và 9 trường hợp trình duyệt đạt.

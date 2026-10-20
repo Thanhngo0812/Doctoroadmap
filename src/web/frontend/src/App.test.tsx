@@ -390,3 +390,55 @@ describe('auth feedback and switching', () => {
     expect(transition).toHaveBeenCalledTimes(reduced ? 0 : 1);
   });
 });
+
+
+describe('account logout feedback', () => {
+  it.each([false, true])('transitions only after logout succeeds, with reduced motion %s', async (reduced) => {
+    const user = userEvent.setup();
+    Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn().mockReturnValue({ matches: reduced }) });
+    const transition = vi.fn((update: () => void) => { update(); return { finished: Promise.resolve() }; });
+    Object.defineProperty(document, 'startViewTransition', { configurable: true, value: transition });
+    let finish!: (response: Response) => void;
+    const fetchSpy = vi.fn(async (input: RequestInfo | URL, _init?: RequestInit) => String(input).endsWith('/auth/logout')
+      ? new Promise<Response>(resolve => { finish = resolve; })
+      : apiResponse({ account, csrf_token: 'csrf-logout' }));
+    vi.stubGlobal('fetch', fetchSpy);
+    renderApp('/tai-khoan');
+    await screen.findByRole('heading', { name: 'Tài khoản của bạn' });
+    await user.click(screen.getByText('Linh Nguyễn', { selector: '.account-menu-name' }).closest('summary')!);
+    await user.click(screen.getByRole('button', { name: 'Đăng xuất' }));
+    expect(screen.getByRole('button', { name: 'Đang đăng xuất…' })).toBeDisabled();
+    expect(screen.getByRole('heading', { name: 'Tài khoản của bạn' })).toBeInTheDocument();
+    expect(transition).not.toHaveBeenCalled();
+    expect(screen.queryByText('Đã đăng xuất.')).not.toBeInTheDocument();
+    await act(async () => { finish(apiResponse({ message: 'Đã đăng xuất.' })); });
+    expect(await screen.findByRole('heading', { name: 'Đăng nhập WayFinder' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đã đăng xuất.');
+    expect(screen.getByTestId('current-location')).toHaveTextContent('/dang-nhap?next=%2Ftai-khoan');
+    expect(transition).toHaveBeenCalledTimes(reduced ? 0 : 1);
+    const call = fetchSpy.mock.calls.find(([url]) => String(url).endsWith('/auth/logout'));
+    expect(new Headers(call?.[1]?.headers).get('X-CSRF-Token')).toBe('csrf-logout');
+  });
+
+  it('keeps the account visible and allows retry when logout fails', async () => {
+    const user = userEvent.setup();
+    let attempt = 0;
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
+      if (!String(input).endsWith('/auth/logout')) return apiResponse({ account, csrf_token: 'csrf-logout' });
+      attempt++;
+      if (attempt === 1) throw new Error('offline');
+      return apiResponse({ message: 'Đã đăng xuất.' });
+    }));
+    renderApp('/tai-khoan');
+    await screen.findByRole('heading', { name: 'Tài khoản của bạn' });
+    await user.click(screen.getByText('Linh Nguyễn', { selector: '.account-menu-name' }).closest('summary')!);
+    await user.click(screen.getByRole('button', { name: 'Đăng xuất' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Không thể kết nối WayFinder.');
+    expect(screen.getByRole('heading', { name: 'Tài khoản của bạn' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Đăng xuất' })).toBeEnabled();
+    expect(screen.queryByText('Đã đăng xuất.')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Đăng xuất' }));
+    expect(await screen.findByRole('heading', { name: 'Đăng nhập WayFinder' })).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Đã đăng xuất.');
+  });
+});
