@@ -107,7 +107,7 @@ Doc-6 đã khớp 122/122 SHA-256 trong đợt phục hồi. Doc-1 mới dùng v
 | Thứ tự | Nhóm và việc | Đầu ra bắt buộc | Điểm kiểm để mở việc sau |
 |---|---|---|---|
 | 0 | Điều phối chốt W-03, ghép đúng mốc, cập nhật hồ sơ | main và origin/main cùng mốc; báo cáo/cổng/ảnh; schema `w03_0004` | W-03 đạt, không còn tranh sửa AccountService |
-| 1 | Lõi + web chốt hợp đồng W-06 | JSON `GET /courses`, roadmap; lỗi/route; giao diện mẫu/ẩn mẫu ở prod; phân vùng tệp và nhánh | Chốt route join-sample được phép tham gia và phạm vi test người ngoài trước khi cài, không miễn guard rộng |
+| 1 | Lõi + web chốt hợp đồng W-06 | JSON `GET /courses`, roadmap; lỗi/route; giao diện mẫu/ẩn mẫu ở prod; phân vùng tệp và nhánh | Test mọi route trên khoá riêng tư phải chặn người ngoài; test riêng tham gia mẫu dev cho người đăng nhập, không miễn route |
 | 2 | Lõi làm backend W-06; web làm React W-06 song song | `course`, `membership`, migration `w06_0005` nối `w03_0004`; gateway + PostgreSQL/spend guard; trang ba nhóm, tham gia, rỗng/tải/lỗi | DB rỗng lên HEAD; test owner theo actor; test thêm route bỏ guard phải đỏ; trình duyệt gọi API thật; cổng đầy đủ |
 | Song song | Thiết kế tiếp W-24, ưu tiên trang W-06 | Variables export thật, bảng node/trạng thái, bốn prototype Figma/video, guard tương tác; TTL auth đúng | Chỉ đóng W-24 khi đủ bằng chứng, không để thông báo helper thay kiểm bấm thật |
 | Sau W-06 | Web W-07, W-11; phân công lõi W-14 bộ dựng giả | đường học mẫu/lộ trình, chia sẻ; sau đó tải sách/hàng đợi/worker | Soát lại phụ thuộc Pha B2; W-14 chỉ mở khi W-03 và W-06 đạt; W-13 đã có |
@@ -116,7 +116,7 @@ Doc-6 đã khớp 122/122 SHA-256 trong đợt phục hồi. Doc-1 mới dùng v
 
 **W-06 chia điểm bàn giao nhỏ:** hợp đồng trước; một khoá mẫu tham gia được trên DB + UI; rồi đủ danh sách/gateway/guard; cuối cùng cổng tích hợp. Backend riêng hay React mock riêng không đủ đóng vé. Migration nối `w01_0001 → w05_0002 → w02_0003 → w03_0004 → w06_0005`; không sửa migration đã ghép.
 
-**Rủi ro hợp đồng W-06 cần chốt ngay:** vé nói tự liệt kê mọi route `{cid}` và từ chối người chưa là thành viên, đồng thời có `POST /courses/{cid}/join-sample`. Người tham gia lần đầu chưa là thành viên; không được triển khai hai điều mâu thuẫn rồi nới guard để xanh. Nhóm ghi đề xuất ngoại lệ hẹp chỉ cho khoá mẫu công khai và hành vi prod, để điều phối chốt hợp đồng trước vòng test; mọi route nội dung vẫn phải chặn người ngoài. Báo cáo này chưa tự sửa luật đặc tả.
+**Điểm hợp đồng W-06 đã làm rõ sau khi chủ dự án hỏi về member:** bảng quyền và mục khoá mẫu của spec đã cho tài khoản đăng nhập tham gia mẫu ở dev. Vì vậy test tự liệt kê mọi route `{cid}` phải nhắm **khoá riêng tư**; tất cả, kể cả `join-sample`, vẫn trả `not_found` cho người ngoài. Test riêng nhắm khoá mẫu dev phải cho người đăng nhập chưa có membership tham gia, từ chối khách chưa đăng nhập. Đã chuẩn hoá câu chữ spec/vé/lời giao theo quyền đã có, không thêm ngoại lệ bỏ route, không cần chủ dự án phê duyệt lại quyết định sản phẩm.
 
 Trước W-07…W-10, soát độc lập các bàn giao Pha B2 còn treo SA-46/47/49/50/51; không xem trạng thái nhân viên báo xong là đủ nghiệm thu. Không dùng ngân sách phục hồi doc-1 làm phê duyệt chi cho vé mới.
 

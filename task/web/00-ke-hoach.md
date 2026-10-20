@@ -104,7 +104,8 @@ còn đổi; nhóm web đã được báo.
 - **Khởi động lại sau sự cố artifact, mốc mới nhất 2026-10-20:** chủ dự án xác nhận nhóm web mới xong W-03, các nhóm đang dừng.
   W-03 đã đạt và ghép `63f09ad` tới `9de8e75`; 2.085 Python đạt/0 fail/1 Cloudinary live không bật, React 62/build, Chromium HTTP + PostgreSQL thật đạt, 0 USD.
   Sáu graph phát triển tải được, doc-1 v8/doc-6 v29; không cần dựng lại để mở W-06. Lõi và web ưu tiên cùng W-06, thiết kế tiếp W-24/hỗ trợ màn khoá học.
-  Chốt hợp đồng join-sample và test người ngoài trước khi cài; `w06_0005` nối `w03_0004`. W-04 đủ điều kiện nhưng không tách người khỏi W-06 nếu chỉ có một phiên web.
+  Test người ngoài tự liệt kê mọi route trên khoá riêng tư, kể cả join-sample; test riêng đăng nhập tham gia khoá mẫu dev, không miễn route.
+  `w06_0005` nối `w03_0004`. W-04 đủ điều kiện nhưng không tách người khỏi W-06 nếu chỉ có một phiên web.
   [Bằng chứng và kế hoạch](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md), [lời giao ba nhóm](../../report/lenh-giao-viec-sau-w03-2026-10-20.md).
   Các dòng đợt ghép/giao trước dưới đây giữ làm lịch sử; trạng thái mới ở bảng và dòng này thay các ghi nhận W-03 đang làm/chưa soát trước đó.
 - **Ghép bù 2026-10-20:** W-02/W-05 đã vào main bằng `a3f2f13` tới đúng `8558df4`; cổng đầy đủ 1.999 Python đạt, 1 Cloudinary live không bật,

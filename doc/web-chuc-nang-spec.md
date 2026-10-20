@@ -320,7 +320,9 @@ yêu cầu mỗi email mỗi giờ. Đặt lại thành công thì huỷ **mọi
 | quản trị người dùng, bản dựng, chi, khoá mẫu, mọi báo lỗi | – | – | – | – | ✓ |
 
 **Luật quan trọng:**
-- **Người không phải thành viên nhận `not_found`, không phải `forbidden`,** cho mọi đường của khoá học, để không lộ khoá học có tồn tại.
+- **Người không phải thành viên nhận `not_found`, không phải `forbidden`,** cho mọi đường nội dung/quản lý khoá học, để không lộ khoá học riêng tư có tồn tại.
+  Tham gia khoá mẫu là hành động cấp quyền đã nêu trong bảng trên: tài khoản đăng nhập được tham gia khoá mẫu ở dev, không cần có membership từ trước;
+  `join-sample` nhắm khoá riêng tư vẫn trả `not_found`. Không bỏ route này khỏi test tự liệt kê.
 - **Admin không có quyền học** trong khoá mình không tham gia, và **không có hàm nào** trả chat, tài liệu hay câu trả lời quiz của người khác. Admin chỉ
   thấy siêu dữ liệu và số liệu chi.
 - **Mỗi khoá có đúng một chủ.** Chủ khoá cũng là thành viên, có tiến độ và phiên riêng như mọi người. Đồng chủ khoá và chuyển chủ để sau.
@@ -652,7 +654,9 @@ Các trần Pha B (0,20 USD, 5 USD) vẫn ở `BSettings`.
 Thêm một **bộ thử đầu-cuối nhỏ trên trình duyệt** (Playwright) cho vài luồng chính, chạy ở vé triển khai, không thay cho ba tầng trên.
 
 **Bất biến phải có test**, mỗi cái thấy đỏ trước:
-1. Một test **tự liệt kê mọi route** có `{cid}`, gọi bằng một tài khoản không phải thành viên, và kỳ vọng `not_found`. Route mới thêm tự được kiểm.
+1. Một test **tự liệt kê mọi route** có `{cid}`, nhắm một **khoá riêng tư** bằng tài khoản không phải thành viên, và kỳ vọng `not_found`,
+   gồm cả `join-sample`. Route mới thêm tự được kiểm. Test riêng chứng minh người đăng nhập chưa tham gia được `join-sample` với khoá mẫu ở dev;
+   không cấp quyền này cho khách chưa đăng nhập hoặc khoá riêng tư. Đây là hai ngữ cảnh khác nhau, không phải miễn route khỏi bộ kiểm.
 2. `owner` và `doc_id` gửi tới Pha B luôn là của phiên đăng nhập và khoá học; thân yêu cầu có `owner` lạ thì bị bỏ qua. Kiểm bằng kho: bản ghi mới có
    `owner` đúng.
 3. Hai thành viên mở cùng một bài giảng: tổng cộng **1** lời gọi mô hình; `lecture_key` giống nhau; nhãn `learner_status` khác nhau theo tiến độ.

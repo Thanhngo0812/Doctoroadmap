@@ -13,8 +13,8 @@ Xem [nghiệm thu, phân việc và điểm kiểm](../../report/dieu-phoi-nghie
 W-06 là ưu tiên tiếp theo, chưa được xem là đã hoàn tất. Nhánh lõi `work/w06-courses-gateway` ở `tmp/w06-courses-gateway` cần nhận main mới;
 React làm nhánh/worktree riêng `work/w06-web` / `tmp/w06-web`, tích hợp thành một vé trước nghiệm thu.
 Sáu graph dev tải được (doc-1 v8, doc-6 v29), không dựng lại hay dùng v45/v57 cứng.
-Chốt trước cách kiểm `join-sample`: người tham gia lần đầu chưa là thành viên, trong khi test liệt kê mọi `{cid}` bên dưới chưa có ngoại lệ.
-Nhóm đề xuất hợp đồng hẹp cho điều phối chốt; không tự bỏ guard hoặc mở mọi route.
+Cách kiểm `join-sample` đã làm rõ theo spec: test tự liệt kê mọi `{cid}` nhắm khoá riêng tư, người ngoài vẫn nhận `not_found`, kể cả route tham gia.
+Test riêng cho người đăng nhập tham gia khoá mẫu ở dev khi chưa có membership; không miễn route khỏi bộ kiểm hay mở quyền nội dung cho người ngoài.
 Xem [kế hoạch và điểm nghiệm thu](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md),
 [lời giao lõi/web](../../report/lenh-giao-viec-sau-w03-2026-10-20.md). Dữ liệu test chép theo manifest/SHA-256, không dùng liên kết, không dọn worktree/snapshot.
 
@@ -54,8 +54,10 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 **HTTP:** `GET /courses`, `GET /courses/{cid}`, `PATCH /courses/{cid}`, `POST /courses/{cid}/join-sample`, `GET /courses/{cid}/roadmap`.
 
 **Test người ngoài khoá:**
-- Một test tự liệt kê **mọi** route có `{cid}` trong ứng dụng FastAPI, gọi bằng tài khoản không phải thành viên, và kỳ vọng `not_found`.
-- Route mới ở các vé sau tự vào test này. Route nào cố ý mở cho người ngoài (hiện không có) phải vào một danh sách miễn trừ ghi rõ lý do.
+- Một test tự liệt kê **mọi** route có `{cid}` trong ứng dụng FastAPI, nhắm một **khoá riêng tư** bằng tài khoản không phải thành viên, và kỳ vọng `not_found`,
+  kể cả `join-sample`. Route mới ở các vé sau tự vào test này; không miễn route tham gia.
+- Kiểm riêng ngữ cảnh khoá mẫu ở dev: người đã đăng nhập chưa có membership bấm tham gia được; khách chưa đăng nhập không được tham gia.
+  Điều này thực hiện quyền tham gia mẫu đã chốt trong spec, không mở quyền cho khoá riêng tư.
 
 **Di trú:** `course`, `membership`. Ràng buộc đúng một chủ mỗi khoá.
 
