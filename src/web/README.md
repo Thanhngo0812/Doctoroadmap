@@ -134,4 +134,6 @@ C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w05_run_tes
 C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w03_browser_runtime.py
 ```
 
+Cổng Python toàn bộ dùng fixture phát triển `doc-1.pdf`, `doc-6.pdf`; riêng hai cuốn này trong các kho `artifacts/parse_tree`, `chunks`, `candidates`, `canonical`, `retrieval`, `graph` và `artifacts/phase_b/formula_images`. Đối chiếu danh sách/SHA-256 tại `report/ghep-main-evidence-2026-10-20/development-fixtures.json`. Chép tệp độc lập từ bản bàn giao đã có, không tạo junction; không sửa manifest, mở tập giữ lại, gọi mô hình hay bỏ test để thay fixture thiếu. Các tệp dữ liệu được Git bỏ qua.
+
 Chạy từ gốc worktree. Script browser tạo DB UUID riêng trên db-test, dùng AuthStore/Argon2 thật với Mailer/Clock giả và server loopback tạm; lưu ảnh/video/JSON vào `report/w03-evidence/` rồi dọn DB. Các route lấy thư giả chỉ nằm trong script kiểm thử. Cần bộ Playwright và Chromium như hướng dẫn W-01; worktree có thể dùng bộ đã cài ở checkout gốc. Nếu có taste skill trong checkout gốc, script cũng chạy inspector ở 1280/768/390 px; không mở profile Chrome cá nhân.

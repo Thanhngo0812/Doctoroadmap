@@ -1,4 +1,5 @@
 from pathlib import Path
+from http.cookies import SimpleCookie
 import re
 from urllib.parse import urlsplit
 
@@ -115,6 +116,37 @@ def test_password_reset_clears_cookie_and_old_sessions(runtime):
     login = client.post("/api/v1/auth/login", headers={"Origin": ORIGIN}, json={
         "email": "w03@example.vn", "password": "new W03 passphrase"})
     assert login.status_code == 200
+
+
+def test_production_logout_deletes_secure_cookie_and_revokes_session():
+    bundle = build_test_application()
+    settings = WebSettings(_env_file=None, env="prod", frontend_dist=Path("missing"),
+                           allowed_origins=[ORIGIN])
+    client = TestClient(create_app(settings, bundle.services))
+
+    created = register(client, "secure-logout@example.vn")
+    assert created.status_code == 200
+    created_cookie = SimpleCookie()
+    created_cookie.load(created.headers["set-cookie"])
+    raw_session = created_cookie["d2r_session"].value
+    assert created_cookie["d2r_session"]["secure"]
+
+    cookie_header = f"d2r_session={raw_session}"
+    identity = client.get("/api/v1/me", headers={"Cookie": cookie_header})
+    assert identity.status_code == 200
+
+    logged_out = client.post("/api/v1/auth/logout", headers={
+        "Origin": ORIGIN,
+        "Cookie": cookie_header,
+        "X-CSRF-Token": identity.json()["csrf_token"],
+    })
+    assert logged_out.status_code == 200
+    deleted_cookie = SimpleCookie()
+    deleted_cookie.load(logged_out.headers["set-cookie"])
+    assert deleted_cookie["d2r_session"]["max-age"] == "0"
+    assert deleted_cookie["d2r_session"]["secure"]
+
+    assert client.get("/api/v1/me", headers={"Cookie": cookie_header}).status_code == 401
 
 
 def test_public_token_failure_has_stable_link_invalid_fields(runtime):

@@ -349,12 +349,11 @@ function RecoveryFrame({ theme, onToggleTheme, title, description, children }: {
   useEffect(() => { headingRef.current?.focus({ preventScroll: true }); }, [title]);
 
   return <>
-    <header className="site-header"><div className="header-inner">
+    <header className="site-header w03-header"><div className="header-inner">
       <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={theme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
       <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{theme === 'light' ? '◐' : '◑'}</button><Link className="auth-switch" to={auth.status === 'authenticated' ? '/tai-khoan' : '/dang-nhap'}>{auth.status === 'authenticated' ? 'Tài khoản' : 'Đăng nhập'}</Link></div>
     </div></header>
     <main className="auth-layout page-frame"><section className="auth-card w03-card" aria-labelledby="w03-title">
-      <span className="section-kicker">TÀI KHOẢN WAYFINDER</span>
       <h1 ref={headingRef} id="w03-title" tabIndex={-1}>{title}</h1>
       <p className="auth-intro w03-intro">{description}</p>
       {children}
@@ -450,13 +449,14 @@ export function VerifyEmailPage({ theme, onToggleTheme }: { theme: 'light' | 'da
 
   useLayoutEffect(() => {
     if (!location.search && !location.hash) return;
+    const nextToken = tokenFromLink(location.search, location.hash);
     linkGeneration.current += 1;
     setLinkRevision(linkGeneration.current);
-    setToken(tokenFromLink(location.search, location.hash));
+    setToken(nextToken);
     setBusy(false);
     setComplete(false);
     setTerminalLinkError(false);
-    setFeedback(null);
+    setFeedback(nextToken ? null : 'Liên kết xác minh không có mã. Hãy mở lại thư trong email.');
     auth.clearNotice();
     navigate(location.pathname, { replace: true });
   }, [auth.clearNotice, location.hash, location.pathname, location.search, navigate]);
@@ -509,13 +509,14 @@ export function ResetPasswordPage({ theme, onToggleTheme }: { theme: 'light' | '
 
   useLayoutEffect(() => {
     if (!location.search && !location.hash) return;
+    const nextToken = tokenFromLink(location.search, location.hash);
     linkGeneration.current += 1;
     setLinkRevision(linkGeneration.current);
-    setToken(tokenFromLink(location.search, location.hash));
+    setToken(nextToken);
     setPassword('');
     setConfirmation('');
     setFieldErrors({});
-    setFeedback(null);
+    setFeedback(nextToken ? null : 'Liên kết đặt lại mật khẩu không có mã. Hãy mở lại thư trong email.');
     setTerminalLinkError(false);
     setBusy(false);
     auth.clearNotice();

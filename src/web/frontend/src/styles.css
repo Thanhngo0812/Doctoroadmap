@@ -403,3 +403,6 @@ h1 em, h2 em { font-style: normal; color: var(--color-primary); }
   .verify-reminder { grid-template-columns: 1fr; padding: 16px; }
   .verify-reminder .button { width: 100%; }
 }
+@media (max-width: 390px) {
+  .w03-header .header-inner { width: calc(100% - 32px); }
+}

@@ -198,7 +198,7 @@ def auth_router() -> APIRouter:
     @router.post("/auth/logout", response_model=MessageResponse)
     def logout(request: Request, response: Response):
         _service(request).logout(request.cookies.get(COOKIE_NAME), ip=client_ip(request))
-        response.delete_cookie(COOKIE_NAME, path="/", secure=request.url.scheme == "https",
+        response.delete_cookie(COOKIE_NAME, path="/", secure=_secure_cookie(request),
                                httponly=True, samesite="lax")
         response.headers["cache-control"] = "no-store"
         return {"message": "Đã đăng xuất."}

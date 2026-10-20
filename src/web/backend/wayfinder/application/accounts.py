@@ -194,7 +194,7 @@ class AccountService:
         pending: AuthError | None = None
         account = None
         raw_token = None
-        with self.store.atomic([bucket]):
+        with self.store.atomic([bucket, f"account:{normalized}"]):
             now = self.clock.now()
             retry_after = self._rate_limit_retry_after(bucket, 3, window, now)
             if retry_after is not None:

@@ -36,6 +36,14 @@ afterEach(() => {
 });
 
 describe('W-03 email verification and recovery', () => {
+  it('keeps the recovery header scoped and omits the redundant account eyebrow', async () => {
+    renderApp('/quen-mat-khau');
+
+    expect(await screen.findByRole('heading', { name: 'Quên mật khẩu' })).toBeInTheDocument();
+    expect(document.querySelector('header.w03-header')).toBeInTheDocument();
+    expect(screen.queryByText('TÀI KHOẢN WAYFINDER')).not.toBeInTheDocument();
+  });
+
   it('shows the verification reminder and resends with the in-memory CSRF token', async () => {
     const user = userEvent.setup();
     const fetchSpy = vi.fn(async (input: RequestInfo | URL, _init?: RequestInit) => {
@@ -253,6 +261,17 @@ describe('W-03 email verification and recovery', () => {
   it('shows a missing-token state and does not send a request', async () => {
     renderApp('/dat-lai-mat-khau');
     expect(await screen.findByRole('alert')).toHaveTextContent(/không có|thiếu/i);
+    expect(screen.queryByLabelText('Mật khẩu mới')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['/xac-minh?utm=mail', 'Liên kết xác minh không có mã. Hãy mở lại thư trong email.'],
+    ['/dat-lai-mat-khau#token=', 'Liên kết đặt lại mật khẩu không có mã. Hãy mở lại thư trong email.'],
+  ])('keeps the missing-token alert for a tokenless link with URL parameters: %s', async (path, message) => {
+    renderApp(path);
+
+    expect(await screen.findByRole('alert')).toHaveTextContent(message);
+    expect(screen.queryByRole('button', { name: 'Xác minh email' })).not.toBeInTheDocument();
     expect(screen.queryByLabelText('Mật khẩu mới')).not.toBeInTheDocument();
   });
 });

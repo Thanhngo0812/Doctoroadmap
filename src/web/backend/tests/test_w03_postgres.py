@@ -296,7 +296,17 @@ def _run_postgres_reset_request_race(engine, url, *, drop_request_email_alias=Fa
                 reset_paused.set()
                 assert release_reset.wait(10)
 
+    reset_engine, request_engine = create_database_engine(url), create_database_engine(url)
+    request_pid = []
+    reset_committed = Event()
+    request_token_created_after_reset = []
+
     class RequestStore(PostgresAuthStore):
+        def create_email_token(self, token):
+            if token.purpose == "reset_password":
+                request_token_created_after_reset.append(reset_committed.is_set())
+            return super().create_email_token(token)
+
         @contextmanager
         def atomic(self, keys):
             keys = list(keys)
@@ -305,8 +315,10 @@ def _run_postgres_reset_request_race(engine, url, *, drop_request_email_alias=Fa
             with super().atomic(keys):
                 yield
 
-    reset_engine, request_engine = create_database_engine(url), create_database_engine(url)
-    request_pid = []
+    def after_reset_commit(_connection):
+        reset_committed.set()
+
+    event.listen(reset_engine, "commit", after_reset_commit)
 
     def before_lock(connection, cursor, statement, _parameters, _context, _executemany):
         if "pg_advisory_xact_lock" in statement:
@@ -329,10 +341,11 @@ def _run_postgres_reset_request_race(engine, url, *, drop_request_email_alias=Fa
             request_result = request_future.result(timeout=10)
         assert request_result == _RESET_REQUESTED_FOR_TEST
         new_token = mailed_token(mailer.messages[request_count])
-        return state, bootstrap, registered.session, new_token
+        return state, bootstrap, registered.session, new_token, request_token_created_after_reset
     finally:
         release_reset.set()
         event.remove(request_engine, "before_cursor_execute", before_lock)
+        event.remove(reset_engine, "commit", after_reset_commit)
         reset_engine.dispose()
         request_engine.dispose()
 
@@ -342,18 +355,18 @@ _RESET_REQUESTED_FOR_TEST = "Nếu email có tài khoản, bạn sẽ nhận đ�
 
 def test_postgres_reset_serializes_new_request_after_bulk_token_consumption(postgres_runtime):
     engine, url = postgres_runtime
-    state, service, old_session, new_token = _run_postgres_reset_request_race(engine, url)
+    state, service, old_session, new_token, created_after_reset = _run_postgres_reset_request_race(engine, url)
     assert state == "blocked_on_lock"
+    assert created_after_reset == [True]
     assert _session_is_revoked(service, old_session.token)
     service.reset_password(new_token, "third secure password")
 
 
 def test_postgres_reset_request_guard_detects_dropped_email_alias(postgres_runtime):
     engine, url = postgres_runtime
-    state, service, _, new_token = _run_postgres_reset_request_race(
+    state, service, _, new_token, created_after_reset = _run_postgres_reset_request_race(
         engine, url, drop_request_email_alias=True
     )
     assert state == "completed"
-    with pytest.raises(AuthError) as consumed:
-        service.reset_password(new_token, "third secure password")
-    assert consumed.value.fields[0]["type"] == "token_used"
+    assert created_after_reset == [False]
+    service.reset_password(new_token, "third secure password")
