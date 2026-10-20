@@ -587,9 +587,12 @@ def test_get_attempt_returns_owned_answer_free_snapshot():
         raise AssertionError("attempt snapshot was not owner-scoped")
 
 
-# v45 is the v3 input used for these five-question module_023 checks.
-def test_real_graph_dict_aliases_and_item_ready_stream_to_five():
-    graph = load_learning_graph(JsonArtifactStore(Path("artifacts")), "doc-1", graph_version=45)
+# Serialized synthetic artifacts keep this regression independent of development caches.
+QUIZ_GRAPH_FIXTURE = Path(__file__).resolve().parents[2] / "fixtures" / "phase_b_quiz_graph"
+
+
+def test_fixture_graph_dict_aliases_and_item_ready_stream_to_five():
+    graph = load_learning_graph(JsonArtifactStore(QUIZ_GRAPH_FIXTURE), "doc-1", graph_version=1)
     alias_node = next(node for node in graph.learnable_nodes.values()
                       if node.get("aliases") and isinstance(node["aliases"][0], dict))
     usecase = QuizUseCase(graph, InMemoryPhaseBStore())
@@ -605,7 +608,7 @@ def test_real_graph_dict_aliases_and_item_ready_stream_to_five():
 
 
 def test_assistant_make_quiz_tool_returns_only_attempt_reference_and_count():
-    graph = load_learning_graph(JsonArtifactStore(Path("artifacts")), "doc-1", graph_version=45)
+    graph = load_learning_graph(JsonArtifactStore(QUIZ_GRAPH_FIXTURE), "doc-1", graph_version=1)
     store = InMemoryPhaseBStore()
     quiz_usecase = QuizUseCase(graph, store)
 
