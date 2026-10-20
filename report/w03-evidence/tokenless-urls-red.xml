@@ -1,0 +1,651 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="17" failures="2" errors="0" time="7.5244934">
+    <testsuite name="src/W03.test.tsx" timestamp="2026-10-20T05:38:39.011Z" hostname="ADMIN" tests="17" failures="2" errors="0" skipped="0" time="7.5244934">
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the recovery header scoped and omits the redundant account eyebrow" time="0.1320134">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows the verification reminder and resends with the in-memory CSRF token" time="0.1098544">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; does not verify on GET and confirms a fragment token only after a button press" time="0.0635302">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; captures a second verification token opened in the same tab after success" time="0.2007895">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; ignores a late response from the previous verification token" time="0.1769613">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; sends a generic password-reset request without revealing whether the email exists" time="0.3978856">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps recovery navigation pointed at the account for an authenticated user" time="0.0311149">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; uses the fragment token, resets without auto-login, and shows the success notice on login" time="0.8259585">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_expired by the token error type" time="0.0393207">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_used by the token error type" time="0.0534669">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_invalid by the token error type" time="0.0613397">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; focuses the recovery heading and hides reset fields after a terminal token error" time="0.7842728">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; replaces a terminal reset link with a second link opened in the same tab" time="1.7421253">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the reset form available after a retryable network failure" time="0.8212056">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows a missing-token state and does not send a request" time="0.0311939">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /xac-minh?utm=mail" time="1.0376077">
+            <failure message="Unable to find role=&quot;alert&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Xác minh email
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /xac-minh
+      ?utm=mail
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Xác minh email
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /xac-minh
+      ?utm=mail
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find role=&quot;alert&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Xác minh email
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /xac-minh
+      ?utm=mail
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Xác minh email
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /xac-minh
+      ?utm=mail
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/W03.test.tsx:273:25
+            </failure>
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /dat-lai-mat-khau#token=" time="1.0132772">
+            <failure message="Unable to find role=&quot;alert&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Đặt mật khẩu mới
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/quen-mat-khau&quot;
+          &gt;
+            Yêu cầu liên kết mới
+          &lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /dat-lai-mat-khau
+      #token=
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Đặt mật khẩu mới
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/quen-mat-khau&quot;
+          &gt;
+            Yêu cầu liên kết mới
+          &lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /dat-lai-mat-khau
+      #token=
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find role=&quot;alert&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Đặt mật khẩu mới
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/quen-mat-khau&quot;
+          &gt;
+            Yêu cầu liên kết mới
+          &lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /dat-lai-mat-khau
+      #token=
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;header
+      class=&quot;site-header w03-header&quot;
+    &gt;
+      &lt;div
+        class=&quot;header-inner&quot;
+      &gt;
+        &lt;a
+          aria-label=&quot;WayFinder, về trang chủ&quot;
+          class=&quot;brand-link&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/&quot;
+        &gt;
+          &lt;img
+            alt=&quot;WayFinder&quot;
+            src=&quot;/assets/Artboard%2028.png&quot;
+          /&gt;
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;header-actions&quot;
+        &gt;
+          &lt;button
+            aria-label=&quot;Bật chế độ sáng&quot;
+            class=&quot;icon-button theme-toggle&quot;
+            type=&quot;button&quot;
+          &gt;
+            ◑
+          &lt;/button&gt;
+          &lt;a
+            class=&quot;auth-switch&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/dang-nhap&quot;
+          &gt;
+            Đăng nhập
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/div&gt;
+    &lt;/header&gt;
+    &lt;main
+      class=&quot;auth-layout page-frame&quot;
+    &gt;
+      &lt;section
+        aria-labelledby=&quot;w03-title&quot;
+        class=&quot;auth-card w03-card&quot;
+      &gt;
+        &lt;h1
+          id=&quot;w03-title&quot;
+          tabindex=&quot;-1&quot;
+        &gt;
+          Đặt mật khẩu mới
+        &lt;/h1&gt;
+        &lt;p
+          class=&quot;auth-intro w03-intro&quot;
+        &gt;
+          Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.
+        &lt;/p&gt;
+        &lt;p
+          class=&quot;auth-alternate&quot;
+        &gt;
+          &lt;a
+            data-discover=&quot;true&quot;
+            href=&quot;/quen-mat-khau&quot;
+          &gt;
+            Yêu cầu liên kết mới
+          &lt;/a&gt;
+        &lt;/p&gt;
+      &lt;/section&gt;
+    &lt;/main&gt;
+    &lt;span
+      data-testid=&quot;current-location&quot;
+      hidden=&quot;&quot;
+    &gt;
+      /dat-lai-mat-khau
+      #token=
+    &lt;/span&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/W03.test.tsx:273:25
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
