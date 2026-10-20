@@ -3,6 +3,8 @@ from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 import hashlib
 import re
+from contextlib import contextmanager
+from threading import Event, Lock
 from urllib.parse import urlsplit
 
 import pytest
@@ -73,6 +75,27 @@ def test_register_sends_one_hashed_token_and_verification_is_one_use():
         service.verify_email(token)
     assert error.value.code == "link_invalid"
     assert error.value.fields[0]["type"] == "token_used"
+
+
+def test_duplicate_registration_sends_existing_account_notice_without_takeover():
+    service, store, _, mailer = make_service()
+    original = register(service, password="original secret pass").session
+    original_account = store.accounts[original.account.id]
+    original_credential = store.credentials_by_email[original_account.email_normalized]
+    original_sessions = dict(store.sessions)
+    original_tokens = dict(store.email_tokens)
+    mailer.messages.clear()
+
+    duplicate = service.register(" LEARNER@example.vn ", "attacker secret pass", "Attacker",
+                                 ip="192.0.2.9", user_agent="duplicate-test")
+
+    assert duplicate.session is None
+    assert len(mailer.messages) == 1
+    assert "đã tồn tại" in mailer.messages[0]["subject"].lower() or "tài khoản" in mailer.messages[0]["body"].lower()
+    assert store.accounts[original.account.id] == original_account
+    assert store.credentials_by_email[original_account.email_normalized] == original_credential
+    assert store.sessions == original_sessions
+    assert store.email_tokens == original_tokens
 
 
 def test_verification_expiration_and_changed_email_are_rejected():
@@ -198,3 +221,102 @@ def test_mailer_failure_does_not_rollback_registration_or_generic_reset_result()
     result = service.request_password_reset("learner@example.vn")
     assert result == "Nếu email có tài khoản, bạn sẽ nhận được thư đặt lại mật khẩu."
     assert len(store.email_tokens) == 2
+
+
+def test_invalid_expired_and_used_reset_tokens_are_rejected_before_password_hash():
+    class CountingHasher(Hasher):
+        def __init__(self):
+            self.hash_calls = []
+
+        def hash(self, password):
+            self.hash_calls.append(password)
+            return super().hash(password)
+
+    store, clock, mailer, hasher = FakeAuthStore(), Clock(), FakeMailer(), CountingHasher()
+    service = AccountService(store, hasher, clock, AuthPolicy(), frozenset(), mailer=mailer)
+    register(service)
+    service.request_password_reset("learner@example.vn")
+    token = mailed_token(mailer.messages[-1])
+    calls = len(hasher.hash_calls)
+
+    for bad_token, advance in (("not-a-token", 0), (token, 60)):
+        if advance:
+            clock.advance(minutes=advance)
+        with pytest.raises(AuthError):
+            service.reset_password(bad_token, "replacement passphrase")
+        assert len(hasher.hash_calls) == calls
+
+    clock.value = datetime(2026, 10, 20, tzinfo=timezone.utc)
+    service.request_password_reset("learner@example.vn")
+    used = mailed_token(mailer.messages[-1])
+    service.reset_password(used, "replacement passphrase")
+    calls = len(hasher.hash_calls)
+    with pytest.raises(AuthError):
+        service.reset_password(used, "another replacement")
+    assert len(hasher.hash_calls) == calls
+
+
+def test_login_started_before_reset_cannot_leave_a_live_old_password_session():
+    login_in_verify = Event()
+    allow_login = Event()
+    reset_lock_attempted = Event()
+
+    class BlockingHasher(Hasher):
+        def verify(self, encoded, password):
+            login_in_verify.set()
+            assert allow_login.wait(5)
+            return super().verify(encoded, password)
+
+    class ObservedStore(FakeAuthStore):
+        def __init__(self):
+            super().__init__()
+            self._key_locks_guard = Lock()
+            self._key_locks = {}
+            self.login_keys = set()
+            self.reset_keys = set()
+
+        @contextmanager
+        def atomic(self, keys):
+            locks = []
+            with self._key_locks_guard:
+                for key in sorted(set(keys)):
+                    locks.append(self._key_locks.setdefault(key, Lock()))
+            is_reset = any(key.startswith("email-token:") for key in keys)
+            if is_reset:
+                self.reset_keys = set(keys)
+                reset_lock_attempted.set()
+            elif any(key.startswith("login:email:") for key in keys):
+                self.login_keys = set(keys)
+            for lock in locks:
+                lock.acquire()
+            try:
+                yield
+            finally:
+                for lock in reversed(locks):
+                    lock.release()
+
+    store, clock, mailer = ObservedStore(), Clock(), FakeMailer()
+    hasher = BlockingHasher()
+    service = AccountService(store, hasher, clock, AuthPolicy(), frozenset(), mailer=mailer)
+    old_session = register(service).session
+    service.request_password_reset("learner@example.vn")
+    reset_token = mailed_token(mailer.messages[-1])
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        login_future = pool.submit(service.login, "learner@example.vn", "old secure pass",
+                                   ip=None, user_agent=None)
+        assert login_in_verify.wait(5)
+        reset_future = pool.submit(service.reset_password, reset_token, "new secure pass")
+        assert reset_lock_attempted.wait(5)
+        allow_login.set()
+        login_grant = login_future.result(timeout=5)
+        reset_future.result(timeout=5)
+
+    assert "account:learner@example.vn" in store.login_keys & store.reset_keys
+
+    with pytest.raises(AuthError) as login_revoked:
+        service.me(login_grant.token)
+    assert login_revoked.value.code == "unauthenticated"
+    with pytest.raises(AuthError) as original_revoked:
+        service.me(old_session.token)
+    assert original_revoked.value.code == "unauthenticated"

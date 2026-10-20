@@ -3,9 +3,10 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..');
-process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(root, '.tmp/w01-browsers');
-const { chromium } = require(path.join(root, '.tmp/w01-browser-tools/node_modules/playwright'));
-const { AxeBuilder } = require(path.join(root, '.tmp/w01-browser-tools/node_modules/@axe-core/playwright'));
+const toolsRoot = require('node:fs').existsSync(path.join(root, '.tmp/w01-browser-tools')) ? root : path.resolve(root, '../..');
+process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(toolsRoot, '.tmp/w01-browsers');
+const { chromium } = require(path.join(toolsRoot, '.tmp/w01-browser-tools/node_modules/playwright'));
+const { AxeBuilder } = require(path.join(toolsRoot, '.tmp/w01-browser-tools/node_modules/@axe-core/playwright'));
 const base = process.env.W03_BASE_URL || 'http://127.0.0.1:8003';
 const output = path.join(root, 'report/w03-evidence');
 const originalPassword = 'Riêng tư cho nghiệm thu W03!';
@@ -25,7 +26,7 @@ async function mailLink(page, email, kind) {
 async function main() {
   await fs.mkdir(output, { recursive: true });
   const browser = await chromium.launch();
-  const audit = { realHttp: true, realPostgres: true, fakeMailer: true, screens: [], assertions: [], pageErrors: [], requests: [] };
+  const audit = { realHttp: true, realPostgres: true, fakeMailer: true, screens: [], errorStates: [], assertions: [], pageErrors: [], requests: [] };
   const observe = page => {
     page.on('pageerror', error => audit.pageErrors.push(error.message));
     page.on('response', response => {
@@ -94,6 +95,14 @@ async function main() {
       }
       await page.locator('.auth-card button[type=submit], .auth-card button').filter({ hasText: route.includes('mat-khau') ? 'Đặt mật khẩu mới' : 'Xác minh email' }).first().click();
       await page.getByRole('alert').filter({ hasText: word }).waitFor();
+      const alert = page.getByRole('alert');
+      await alert.evaluate(async element => {
+        await Promise.all(element.getAnimations({ subtree: true }).map(animation => animation.finished.catch(() => undefined)));
+      });
+      assert.equal(await page.getByRole('status').filter({ hasText: 'Email đã được xác minh.' }).count(), 0, 'new recovery links must clear old verification notice');
+      const errorA11y = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+      assert.deepEqual(errorA11y.violations.map(v => v.id), []);
+      audit.errorStates.push({ fixture, accessibilityViolations: 0, staleSuccessNotice: false });
       await page.screenshot({ path: path.join(output, fixture + '-390.png'), fullPage: true });
       assert.equal(await page.getByRole('alert').evaluate(el => getComputedStyle(el).outlineStyle), 'none');
       audit.assertions.push(fixture + ' is rejected by real API and shown correctly');

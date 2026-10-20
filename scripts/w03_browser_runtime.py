@@ -92,6 +92,10 @@ def main() -> int:
         def test_fixtures():
             return fixtures
 
+        # Put the test-only routes before the SPA catch-all; they are never installed in production.
+        test_routes = [route for route in app.router.routes if getattr(route, "path", "").startswith("/__test__/")]
+        app.router.routes[:] = test_routes + [route for route in app.router.routes if route not in test_routes]
+
         # These routes exist only on the disposable loopback server in this script.
         server = uvicorn.Server(uvicorn.Config(app, host="127.0.0.1", port=8003,
                                                log_level="warning", access_log=False))
@@ -104,6 +108,21 @@ def main() -> int:
             raise RuntimeError("Isolated W-03 server did not start")
         environment = dict(os.environ, W03_BASE_URL=settings.public_base_url)
         result = subprocess.run(["node", str(ROOT / "scripts/w03_browser_check.cjs")], cwd=ROOT, env=environment)
+        inspector = ROOT.parents[1] / ".agents/skills/design-taste-frontend/scripts/inspect.mjs"
+        inspect_code = 0
+        if result.returncode == 0 and inspector.is_file():
+            profile_root = (ROOT / "tmp/w03-taste-profiles").resolve()
+            if not profile_root.is_relative_to(ROOT.resolve()):
+                raise RuntimeError("Unexpected taste inspector profile directory")
+            profile_root.mkdir(parents=True, exist_ok=True)
+            inspector_env = dict(environment, TASTE_SKILL_TMP=str(profile_root))
+            with (output / "taste-inspect.log").open("w", encoding="utf-8") as log:
+                inspected = subprocess.run(["node", str(inspector), "--app", settings.public_base_url + "/quen-mat-khau",
+                                            "--widths", "1280,768,390", "--out", str(output / "taste-inspect")],
+                                           cwd=ROOT, env=inspector_env, stdout=log, stderr=subprocess.STDOUT)
+            inspect_code = inspected.returncode
+            summary["tasteInspectorExitCode"] = inspect_code
+
         with engine.connect() as connection:
             summary["migrationHead"] = connection.scalar(text("SELECT version_num FROM alembic_version"))
             summary["verifiedAccounts"] = connection.scalar(text("SELECT count(*) FROM account WHERE email_verified_at IS NOT NULL"))
@@ -116,7 +135,7 @@ def main() -> int:
             with engine.connect() as connection:
                 assert connection.scalar(text("SELECT email_verified_at IS NOT NULL FROM account WHERE email_normalized='w03-browser@example.vn'")) is True
         summary["browserExitCode"] = result.returncode
-        return result.returncode
+        return result.returncode or inspect_code
     finally:
         if server is not None:
             server.should_exit = True

@@ -23,7 +23,7 @@ docker compose -f src/web/docker-compose.yml --env-file src/web/.env up -d --wai
 .venv/Scripts/web.exe --env-file src/web/.env db upgrade
 ```
 
-Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic. Chuỗi hiện tại là `w01_0001 → w05_0002 → w02_0003`, tạo kho Pha B và bốn bảng tài khoản/phiên/giới hạn thử/nhật ký.
+Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic. Chuỗi hiện tại là `w01_0001 → w05_0002 → w02_0003 → w03_0004`, tạo kho Pha B, tài khoản/phiên/giới hạn thử/nhật ký và token email.
 
 ## Chạy ứng dụng
 
@@ -78,7 +78,7 @@ Remove-Item Env:WAYFINDER_RUN_CLOUDINARY_TESTS
 
 ## Gmail
 
-Điền `WAYFINDER_SMTP_USERNAME`, `WAYFINDER_SMTP_PASSWORD` (Gmail App Password), `WAYFINDER_SMTP_FROM` trong dotenv phía máy chủ; dùng TLS qua `smtp.gmail.com:587` với `WAYFINDER_SMTP_STARTTLS=true`. Kết nối TLS và xác thực trên máy đã được kiểm thành công, không gửi thư. W-01 cung cấp Mailer giả cho test; nối gửi thư xác minh/đặt lại mật khẩu thuộc W-03; W-02 không gửi thư.
+Điền `WAYFINDER_SMTP_USERNAME`, `WAYFINDER_SMTP_PASSWORD` (Gmail App Password), `WAYFINDER_SMTP_FROM` trong dotenv phía máy chủ; dùng TLS qua `smtp.gmail.com:587` với `WAYFINDER_SMTP_STARTTLS=true`. Kết nối TLS và xác thực trên máy đã được kiểm thành công, không gửi thư. W-03 đã nối gửi thư xác minh, đặt lại mật khẩu và báo tài khoản đã tồn tại. Đặt `WAYFINDER_MAILER=smtp` để dùng Gmail, `WAYFINDER_PUBLIC_BASE_URL` là nguồn của ứng dụng (local mặc định `http://127.0.0.1:8000`; production cần HTTPS). Adapter SMTP gửi nền qua queue giới hạn, không giữ giao dịch DB trong lúc gửi. Test tự động dùng Mailer giả, không gửi thư thật.
 
 ## Bằng chứng trình duyệt
 
@@ -103,7 +103,7 @@ Nguồn triển khai: [Hatch editable paths](https://hatch.pypa.io/latest/config
 - Đăng ký mới tự đăng nhập; email trùng nhận cùng thông báo JSON và không thay đổi tài khoản cũ. Khác biệt cookie và `/me` vẫn cho phép suy ra email đã tồn tại: giới hạn này đã được chủ dự án chấp nhận theo W-02.
 - Mật khẩu 8–128 ký tự, giữ khoảng trắng, chặn danh sách phổ biến đóng kèm. Argon2id 19 MiB / 2 vòng / parallelism 1.
 - Cookie HttpOnly, SameSite=Lax, Secure khi HTTPS; chế độ prod luôn Secure kể cả khi upstream proxy là HTTP. Phiên hết sau 7 ngày không dùng hoặc 30 ngày tuyệt đối.
-- Mọi thao tác thay đổi dữ liệu cần Origin hợp lệ; ngoài đăng ký/đăng nhập còn cần CSRF của phiên. allowed_origins rỗng chỉ cho cùng nguồn trên localhost/IP loopback. Khi dùng tên miền hoặc proxy, đặt WAYFINDER_ALLOWED_ORIGINS thành mảng JSON các nguồn HTTPS chính xác; cấu hình proxy tin cậy để giữ scheme/host đúng.
+- Mọi thao tác thay đổi dữ liệu cần Origin hợp lệ; ngoài đăng ký/đăng nhập và ba POST công khai của W-03 (xác minh, yêu cầu/hoàn tất đặt lại mật khẩu) còn cần CSRF của phiên. Gửi lại xác minh vẫn cần phiên và CSRF. allowed_origins rỗng chỉ cho cùng nguồn trên localhost/IP loopback. Khi dùng tên miền hoặc proxy, đặt WAYFINDER_ALLOWED_ORIGINS thành mảng JSON các nguồn HTTPS chính xác; cấu hình proxy tin cậy để giữ scheme/host đúng.
 - Tạo quản trị viên bằng lệnh dưới đây; mật khẩu được hỏi ẩn qua stdin, không có tham số password. Tài khoản bootstrap được coi đã xác minh email và không tự cấp phiên.
 
 ```powershell
@@ -119,3 +119,19 @@ Remove-Item Env:W02_BASE_URL
 ```
 
 Script tạo tài khoản kiểm thử có email example.vn và chạy thử giới hạn đăng nhập; nên chạy trên cơ sở dữ liệu thử, không dùng dữ liệu tài khoản thật. Ảnh và kết quả ở report/w02-evidence; thông tin mật khẩu/cookie/CSRF không được lưu vào bằng chứng.
+
+## Xác minh và khôi phục tài khoản W-03
+
+- Các trang `/xac-minh`, `/quen-mat-khau`, `/dat-lai-mat-khau` dùng API thật. Mở liên kết chỉ hiển thị trang; người học bấm nút để xác nhận. Link mới mang token trong fragment, rồi UI xoá token khỏi URL.
+- Token ngẫu nhiên 32 byte, DB chỉ giữ băm SHA-256; dùng một lần. Xác minh hết hạn sau 24 giờ, reset sau 60 phút. Gửi lại xác minh/yêu cầu reset tối đa 3 lần mỗi giờ; phản hồi reset giống nhau cho email có hoặc không có tài khoản.
+- Reset thành công thu hồi mọi phiên và các link reset còn lại, chuyển về đăng nhập bằng mật khẩu mới. Chưa xác minh vẫn học/demo bình thường; luật chặn mời qua email được chuẩn bị cho W-12.
+- `console` chỉ dành cho dev, ghi thư ở logger `wayfinder.infrastructure.mail` mức INFO. Production bắt buộc SMTP/STARTTLS. Queue thư nằm trong bộ nhớ; restart có thể mất thư đang đợi, người học dùng gửi lại.
+
+Kiểm toàn bộ Python trong worktree bằng runner để không import nhầm editable ở checkout khác:
+
+```powershell
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w05_run_tests.py -o addopts= -q --basetemp=tmp/w03-check --junitxml=tmp/w03-check.xml
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w03_browser_runtime.py
+```
+
+Chạy từ gốc worktree. Script browser tạo DB UUID riêng trên db-test, dùng AuthStore/Argon2 thật với Mailer/Clock giả và server loopback tạm; lưu ảnh/video/JSON vào `report/w03-evidence/` rồi dọn DB. Các route lấy thư giả chỉ nằm trong script kiểm thử. Cần bộ Playwright và Chromium như hướng dẫn W-01; worktree có thể dùng bộ đã cài ở checkout gốc. Nếu có taste skill trong checkout gốc, script cũng chạy inspector ở 1280/768/390 px; không mở profile Chrome cá nhân.

@@ -1,0 +1,371 @@
+{
+  "realHttp": true,
+  "realPostgres": true,
+  "fakeMailer": true,
+  "screens": [
+    {
+      "name": "verify",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "verify-390-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "forgot",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "forgot-390-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "reset",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "reset-390-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "verify",
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "verify-390-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "forgot",
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "forgot-390-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "reset",
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "reset-390-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "verify",
+      "width": 768,
+      "theme": "light",
+      "screenshot": "verify-768-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "forgot",
+      "width": 768,
+      "theme": "light",
+      "screenshot": "forgot-768-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "reset",
+      "width": 768,
+      "theme": "light",
+      "screenshot": "reset-768-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "verify",
+      "width": 768,
+      "theme": "dark",
+      "screenshot": "verify-768-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "forgot",
+      "width": 768,
+      "theme": "dark",
+      "screenshot": "forgot-768-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "reset",
+      "width": 768,
+      "theme": "dark",
+      "screenshot": "reset-768-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "verify",
+      "width": 1280,
+      "theme": "light",
+      "screenshot": "verify-1280-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "forgot",
+      "width": 1280,
+      "theme": "light",
+      "screenshot": "forgot-1280-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "reset",
+      "width": 1280,
+      "theme": "light",
+      "screenshot": "reset-1280-light.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "verify",
+      "width": 1280,
+      "theme": "dark",
+      "screenshot": "verify-1280-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "forgot",
+      "width": 1280,
+      "theme": "dark",
+      "screenshot": "forgot-1280-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    },
+    {
+      "name": "reset",
+      "width": 1280,
+      "theme": "dark",
+      "screenshot": "reset-1280-dark.png",
+      "overflow": false,
+      "accessibilityViolations": 0
+    }
+  ],
+  "errorStates": [
+    {
+      "fixture": "expiredVerify",
+      "accessibilityViolations": 0,
+      "staleSuccessNotice": false
+    },
+    {
+      "fixture": "usedVerify",
+      "accessibilityViolations": 0,
+      "staleSuccessNotice": false
+    },
+    {
+      "fixture": "expiredReset",
+      "accessibilityViolations": 0,
+      "staleSuccessNotice": false
+    },
+    {
+      "fixture": "usedReset",
+      "accessibilityViolations": 0,
+      "staleSuccessNotice": false
+    }
+  ],
+  "assertions": [
+    "register -> fake mail -> real verify updates account; GET does not consume token",
+    "expiredVerify is rejected by real API and shown correctly",
+    "usedVerify is rejected by real API and shown correctly",
+    "expiredReset is rejected by real API and shown correctly",
+    "usedReset is rejected by real API and shown correctly",
+    "known/unknown reset response matches and unknown email receives no mail",
+    "reset rejects mismatched confirmation locally, revokes both real sessions, old password fails and new password works",
+    "reduced motion has no running feedback animation"
+  ],
+  "pageErrors": [],
+  "requests": [
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/verify-email",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/verify-email",
+      "status": 410
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/verify-email",
+      "status": 410
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/confirm",
+      "status": 410
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/confirm",
+      "status": 410
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/request",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/request",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/password-reset/confirm",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    }
+  ]
+}

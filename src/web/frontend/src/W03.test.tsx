@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, useLocation } from 'react-router-dom';
+import { Link, MemoryRouter, useLocation } from 'react-router-dom';
 import App from './App';
 
 const account = { id: 'acc-3', email: 'linh@example.vn', display_name: 'Linh Nguyễn', role: 'user', email_verified: false };
@@ -10,12 +10,12 @@ const response = (body: unknown, status = 200) => new Response(JSON.stringify(bo
   headers: { 'content-type': 'application/json' },
 });
 
-function renderApp(path: string) {
+function renderApp(path: string, navigation: Array<{ to: string; label: string }> = []) {
   function CurrentLocation() {
     const location = useLocation();
     return <span hidden data-testid="current-location">{location.pathname}{location.search}{location.hash}</span>;
   }
-  return render(<MemoryRouter initialEntries={[path]}><App /><CurrentLocation /></MemoryRouter>);
+  return render(<MemoryRouter initialEntries={[path]}><App /><CurrentLocation />{navigation.map((item) => <Link key={item.to} to={item.to}>{item.label}</Link>)}</MemoryRouter>);
 }
 
 beforeEach(() => {
@@ -73,6 +73,50 @@ describe('W-03 email verification and recovery', () => {
     expect(screen.getByRole('heading', { name: 'Xác minh email' })).toBeInTheDocument();
   });
 
+  it('captures a second verification token opened in the same tab after success', async () => {
+    const user = userEvent.setup();
+    const tokens: string[] = [];
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).endsWith('/me')) return response({ error: { code: 'unauthenticated' } }, 401);
+      const body = JSON.parse(String(init?.body)) as { token: string };
+      tokens.push(body.token);
+      return tokens.length === 1
+        ? response({ message: 'Email đã được xác minh.' })
+        : response({ error: { code: 'link_invalid', fields: [{ loc: 'token', type: 'token_expired', message: 'expired' }] } }, 410);
+    }));
+    renderApp('/xac-minh#token=verify-first', [{ to: '/xac-minh#token=verify-second', label: 'Mở liên kết xác minh mới' }]);
+
+    await user.click(await screen.findByRole('button', { name: 'Xác minh email' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Email đã được xác minh.');
+    await user.click(screen.getByRole('link', { name: 'Mở liên kết xác minh mới' }));
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    await user.click(await screen.findByRole('button', { name: 'Xác minh email' }));
+
+    expect(await screen.findByRole('alert')).toHaveTextContent('Liên kết đã hết hạn.');
+    expect(tokens).toEqual(['verify-first', 'verify-second']);
+  });
+
+  it('ignores a late response from the previous verification token', async () => {
+    const user = userEvent.setup();
+    let resolveFirst: (response: Response) => void = () => undefined;
+    const firstRequest = new Promise<Response>((resolve) => { resolveFirst = resolve; });
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).endsWith('/me')) return response({ error: { code: 'unauthenticated' } }, 401);
+      const body = JSON.parse(String(init?.body)) as { token: string };
+      return body.token === 'verify-first' ? firstRequest : response({ message: 'Email đã được xác minh.' });
+    }));
+    renderApp('/xac-minh#token=verify-first', [{ to: '/xac-minh#token=verify-second', label: 'Mở liên kết xác minh mới' }]);
+
+    await user.click(await screen.findByRole('button', { name: 'Xác minh email' }));
+    await user.click(screen.getByRole('link', { name: 'Mở liên kết xác minh mới' }));
+    await user.click(await screen.findByRole('button', { name: 'Xác minh email' }));
+    expect(await screen.findByRole('status')).toHaveTextContent('Email đã được xác minh.');
+
+    await act(async () => { resolveFirst(response({ error: { code: 'link_invalid', fields: [{ loc: 'token', type: 'token_expired', message: 'expired' }] } }, 410)); });
+    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: 'Đăng nhập' }).some((link) => link.classList.contains('w03-action'))).toBe(true);
+  });
+
   it('sends a generic password-reset request without revealing whether the email exists', async () => {
     const user = userEvent.setup();
     const fetchSpy = vi.fn(async (input: RequestInfo | URL, _init?: RequestInit) => String(input).endsWith('/me')
@@ -89,6 +133,15 @@ describe('W-03 email verification and recovery', () => {
     const request = fetchSpy.mock.calls.find(([input]) => String(input).endsWith('/auth/password-reset/request'));
     expect(request?.[1]).toMatchObject({ method: 'POST', body: JSON.stringify({ email: 'linh@example.vn' }) });
     expect(new Headers(request?.[1]?.headers).has('X-CSRF-Token')).toBe(false);
+  });
+
+  it('keeps recovery navigation pointed at the account for an authenticated user', async () => {
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
+      ? response({ account, csrf_token: 'csrf-w03' })
+      : response({ message: 'ok' })));
+    renderApp('/quen-mat-khau');
+
+    expect(await screen.findByRole('link', { name: 'Tài khoản' })).toHaveAttribute('href', '/tai-khoan');
   });
 
   it('uses the fragment token, resets without auto-login, and shows the success notice on login', async () => {
@@ -150,6 +203,34 @@ describe('W-03 email verification and recovery', () => {
     expect(await screen.findByRole('alert')).toHaveTextContent('Liên kết đã hết hạn. Hãy yêu cầu một liên kết mới.');
     expect(screen.queryByLabelText('Mật khẩu mới')).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Yêu cầu liên kết mới' })).toHaveAttribute('href', '/quen-mat-khau');
+  });
+
+  it('replaces a terminal reset link with a second link opened in the same tab', async () => {
+    const user = userEvent.setup();
+    const tokens: string[] = [];
+    vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+      if (String(input).endsWith('/me')) return response({ error: { code: 'unauthenticated' } }, 401);
+      const body = JSON.parse(String(init?.body)) as { token: string };
+      tokens.push(body.token);
+      return tokens.length === 1
+        ? response({ error: { code: 'link_invalid', fields: [{ loc: 'token', type: 'token_expired', message: 'expired' }] } }, 410)
+        : response({ message: 'Đã đặt lại mật khẩu. Hãy đăng nhập bằng mật khẩu mới.' });
+    }));
+    renderApp('/dat-lai-mat-khau#token=reset-first', [{ to: '/dat-lai-mat-khau#token=reset-second', label: 'Mở liên kết đặt lại mới' }]);
+
+    await user.type(await screen.findByLabelText('Mật khẩu mới'), 'new-safe-password-123');
+    await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'new-safe-password-123');
+    await user.click(screen.getByRole('button', { name: 'Đặt mật khẩu mới' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Liên kết đã hết hạn.');
+    expect(screen.queryByLabelText('Mật khẩu mới')).not.toBeInTheDocument();
+
+    await user.click(screen.getByRole('link', { name: 'Mở liên kết đặt lại mới' }));
+    await user.type(await screen.findByLabelText('Mật khẩu mới'), 'other-safe-password-456');
+    await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'other-safe-password-456');
+    await user.click(screen.getByRole('button', { name: 'Đặt mật khẩu mới' }));
+
+    expect(await screen.findByRole('heading', { name: 'Đăng nhập WayFinder' })).toBeInTheDocument();
+    expect(tokens).toEqual(['reset-first', 'reset-second']);
   });
 
   it('keeps the reset form available after a retryable network failure', async () => {

@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent, type MouseEvent, type ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError, apiJson, setCsrfToken } from './api';
@@ -18,6 +18,7 @@ type AuthState = {
   notice: string | null;
   error: string | null;
   notify: (message: string) => void;
+  clearNotice: () => void;
   refresh: () => Promise<Account | null>;
   login: (email: string, password: string) => Promise<void>;
   register: (email: string, password: string, displayName: string) => Promise<{ message: string; account: Account | null }>;
@@ -56,6 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
   const [notice, setNotice] = useState<string | null>(null);
   const notify = useCallback((message: string) => setNotice(message), []);
+  const clearNotice = useCallback(() => setNotice(null), []);
 
   useEffect(() => {
     if (!notice) return;
@@ -145,7 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setStatus('guest');
   }, []);
 
-  const value = useMemo(() => ({ status, account, notice, error, notify, refresh, login, register, logout, clearSession }), [status, account, notice, error, notify, refresh, login, register, logout, clearSession]);
+  const value = useMemo(() => ({ status, account, notice, error, notify, clearNotice, refresh, login, register, logout, clearSession }), [status, account, notice, error, notify, clearNotice, refresh, login, register, logout, clearSession]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
@@ -342,13 +344,14 @@ function RecoveryFrame({ theme, onToggleTheme, title, description, children }: {
   description: string;
   children: ReactNode;
 }) {
+  const auth = useAuth();
   const headingRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => { headingRef.current?.focus({ preventScroll: true }); }, [title]);
 
   return <>
     <header className="site-header"><div className="header-inner">
       <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={theme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
-      <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{theme === 'light' ? '◐' : '◑'}</button><Link className="auth-switch" to="/dang-nhap">Đăng nhập</Link></div>
+      <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{theme === 'light' ? '◐' : '◑'}</button><Link className="auth-switch" to={auth.status === 'authenticated' ? '/tai-khoan' : '/dang-nhap'}>{auth.status === 'authenticated' ? 'Tài khoản' : 'Đăng nhập'}</Link></div>
     </div></header>
     <main className="auth-layout page-frame"><section className="auth-card w03-card" aria-labelledby="w03-title">
       <span className="section-kicker">TÀI KHOẢN WAYFINDER</span>
@@ -436,37 +439,52 @@ export function VerifyEmailPage({ theme, onToggleTheme }: { theme: 'light' | 'da
   const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [token] = useState(() => tokenFromLink(location.search, location.hash));
+  const [token, setToken] = useState(() => tokenFromLink(location.search, location.hash));
   const [busy, setBusy] = useState(false);
   const [complete, setComplete] = useState(false);
   const [terminalLinkError, setTerminalLinkError] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(token ? null : 'Liên kết xác minh không có mã. Hãy mở lại thư trong email.');
   const feedbackRef = useRef<HTMLDivElement>(null);
+  const linkGeneration = useRef(0);
+  const [linkRevision, setLinkRevision] = useState(0);
 
-  useEffect(() => {
-    if (location.search || location.hash) navigate(location.pathname, { replace: true });
-  }, [location.hash, location.pathname, location.search, navigate]);
+  useLayoutEffect(() => {
+    if (!location.search && !location.hash) return;
+    linkGeneration.current += 1;
+    setLinkRevision(linkGeneration.current);
+    setToken(tokenFromLink(location.search, location.hash));
+    setBusy(false);
+    setComplete(false);
+    setTerminalLinkError(false);
+    setFeedback(null);
+    auth.clearNotice();
+    navigate(location.pathname, { replace: true });
+  }, [auth.clearNotice, location.hash, location.pathname, location.search, navigate]);
   useEffect(() => { if (feedback) feedbackRef.current?.focus({ preventScroll: true }); }, [feedback]);
 
   const verify = async () => {
     if (!token || busy) return;
+    const generation = linkGeneration.current;
     setBusy(true);
     setFeedback(null);
     try {
       const result = await apiJson<{ message: string }>('/api/v1/auth/verify-email', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token }),
       });
+      if (generation !== linkGeneration.current) return;
       if (auth.status === 'authenticated') await auth.refresh().catch(() => null);
+      if (generation !== linkGeneration.current) return;
       setComplete(true);
       auth.notify(result.message);
     } catch (cause) {
+      if (generation !== linkGeneration.current) return;
       setTerminalLinkError(isTerminalLinkError(cause));
       setFeedback(linkTokenError(cause) ?? userError(cause));
     }
-    finally { setBusy(false); }
+    finally { if (generation === linkGeneration.current) setBusy(false); }
   };
 
-  return <RecoveryFrame theme={theme} onToggleTheme={onToggleTheme} title="Xác minh email" description={complete ? 'Địa chỉ email của bạn đã được xác minh.' : 'Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.'}>
+  return <RecoveryFrame key={linkRevision} theme={theme} onToggleTheme={onToggleTheme} title="Xác minh email" description={complete ? 'Địa chỉ email của bạn đã được xác minh.' : 'Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.'}>
     {feedback && <div ref={feedbackRef} tabIndex={-1} className="w03-feedback error" role="alert">{feedback}</div>}
     {complete ? <Link className="button button-primary button-large w03-action" to={auth.status === 'authenticated' ? '/tai-khoan' : '/dang-nhap'}>{auth.status === 'authenticated' ? 'Về tài khoản' : 'Đăng nhập'}</Link>
       : token && !terminalLinkError ? <button className="button button-primary button-large w03-action" type="button" disabled={busy} onClick={() => void verify()}>{busy ? 'Đang xác minh…' : 'Xác minh email'}</button> : null}
@@ -478,7 +496,7 @@ export function ResetPasswordPage({ theme, onToggleTheme }: { theme: 'light' | '
   const auth = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const [token] = useState(() => tokenFromLink(location.search, location.hash));
+  const [token, setToken] = useState(() => tokenFromLink(location.search, location.hash));
   const [password, setPassword] = useState('');
   const [confirmation, setConfirmation] = useState('');
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
@@ -486,10 +504,23 @@ export function ResetPasswordPage({ theme, onToggleTheme }: { theme: 'light' | '
   const [terminalLinkError, setTerminalLinkError] = useState(false);
   const [busy, setBusy] = useState(false);
   const feedbackRef = useRef<HTMLDivElement>(null);
+  const linkGeneration = useRef(0);
+  const [linkRevision, setLinkRevision] = useState(0);
 
-  useEffect(() => {
-    if (location.search || location.hash) navigate(location.pathname, { replace: true });
-  }, [location.hash, location.pathname, location.search, navigate]);
+  useLayoutEffect(() => {
+    if (!location.search && !location.hash) return;
+    linkGeneration.current += 1;
+    setLinkRevision(linkGeneration.current);
+    setToken(tokenFromLink(location.search, location.hash));
+    setPassword('');
+    setConfirmation('');
+    setFieldErrors({});
+    setFeedback(null);
+    setTerminalLinkError(false);
+    setBusy(false);
+    auth.clearNotice();
+    navigate(location.pathname, { replace: true });
+  }, [auth.clearNotice, location.hash, location.pathname, location.search, navigate]);
   useEffect(() => { if (feedback) feedbackRef.current?.focus({ preventScroll: true }); }, [feedback]);
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
@@ -506,15 +537,18 @@ export function ResetPasswordPage({ theme, onToggleTheme }: { theme: 'light' | '
       setFeedback(Object.values(errors)[0]!);
       return;
     }
+    const generation = linkGeneration.current;
     setBusy(true);
     try {
       const result = await apiJson<{ message: string }>('/api/v1/auth/password-reset/confirm', {
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ token, password }),
       });
+      if (generation !== linkGeneration.current) return;
       auth.clearSession();
       auth.notify(result.message);
       navigate('/dang-nhap', { replace: true });
     } catch (cause) {
+      if (generation !== linkGeneration.current) return;
       setTerminalLinkError(isTerminalLinkError(cause));
       const tokenError = linkTokenError(cause);
       if (tokenError) setFeedback(tokenError);
@@ -523,10 +557,10 @@ export function ResetPasswordPage({ theme, onToggleTheme }: { theme: 'light' | '
         if (Object.keys(errorsFromApi).length) setFieldErrors(errorsFromApi);
         setFeedback(userError(cause));
       }
-    } finally { setBusy(false); }
+    } finally { if (generation === linkGeneration.current) setBusy(false); }
   };
 
-  return <RecoveryFrame theme={theme} onToggleTheme={onToggleTheme} title="Đặt mật khẩu mới" description="Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.">
+  return <RecoveryFrame key={linkRevision} theme={theme} onToggleTheme={onToggleTheme} title="Đặt mật khẩu mới" description="Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.">
     {feedback && <div ref={feedbackRef} tabIndex={-1} className="w03-feedback error" role="alert">{feedback}</div>}
     {token && !terminalLinkError ? <form className="w03-form" onSubmit={submit} noValidate>
       <div className="auth-field"><label htmlFor="reset-password">Mật khẩu mới</label><input id="reset-password" type="password" name="password" autoComplete="new-password" minLength={8} maxLength={128} value={password} aria-invalid={Boolean(fieldErrors.password)} aria-describedby={fieldErrors.password ? 'reset-password-error' : 'reset-password-help'} onChange={(event) => { setPassword(event.target.value); setFieldErrors((previous) => ({ ...previous, password: '' })); setFeedback(null); }} required />{fieldErrors.password ? <small id="reset-password-error" className="field-error">{fieldErrors.password}</small> : <small id="reset-password-help">Từ 8 đến 128 ký tự.</small>}</div>

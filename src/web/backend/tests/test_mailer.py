@@ -77,6 +77,17 @@ def test_account_email_templates_reject_unknown_kind():
                              base_url="https://example.vn")
 
 
+def test_verification_email_matches_email_invite_workflow():
+    from wayfinder.application.email_templates import render_account_email
+
+    content = render_account_email("verify_email", display_name="An",
+                                   action_url="https://wayfinder.example.vn/xac-minh-email?token=fake",
+                                   base_url="https://wayfinder.example.vn")
+
+    assert "để có thể mời bạn học qua email" in content.text
+    assert "để có thể mời bạn học qua email" in content.html
+
+
 def test_account_email_templates_reject_action_link_on_another_origin():
     from wayfinder.application.email_templates import render_account_email
 

@@ -95,6 +95,13 @@ def test_all_unsafe_routes_fail_closed_including_new_future_route(runtime):
     register(client)
     csrf = client.get("/api/v1/me").json()["csrf_token"]
     tested = set()
+    public_token_bodies = {
+        "/api/v1/auth/verify-email": {"token": "not-a-token"},
+        "/api/v1/auth/password-reset/request": {"email": "unknown@example.vn"},
+        "/api/v1/auth/password-reset/confirm": {
+            "token": "not-a-token", "password": "a valid replacement password",
+        },
+    }
     def routes_in(router):
         for route in router.routes:
             included = getattr(route, "original_router", None)
@@ -108,15 +115,22 @@ def test_all_unsafe_routes_fail_closed_including_new_future_route(runtime):
             path = route.path
             tested.add((method, path))
             preauth = path in {"/api/v1/auth/login", "/api/v1/auth/register"}
+            public_token = method == "POST" and path in public_token_bodies
             for headers in ({}, {"Origin": "https://evil.example", "X-CSRF-Token": csrf}):
                 response = client.request(method, path, headers=headers, content="invalid-json")
                 assert response.status_code == 403, (method, path, response.text)
                 assert response.json()["error"]["code"] == "csrf_failed"
-            if not preauth:
+            if public_token:
+                response = client.request(method, path, headers={"Origin": ORIGIN},
+                                          json=public_token_bodies[path])
+                assert response.status_code != 403, (method, path, response.text)
+                assert response.json().get("error", {}).get("code") != "csrf_failed"
+            elif not preauth:
                 response = client.request(method, path, headers={"Origin": ORIGIN}, content="invalid-json")
                 assert response.status_code == 403
                 assert response.json()["error"]["code"] == "csrf_failed"
     assert ("POST", "/api/v1/auth/logout") in tested
+    assert {path for method, path in tested if method == "POST" and path in public_token_bodies} == set(public_token_bodies)
     assert len([pair for pair in tested if pair[1] == "/api/v1/future"]) == 4
     assert mutations == []
     assert client.post("/api/v1/future", headers={"Origin": ORIGIN, "X-CSRF-Token": csrf}).status_code == 200

@@ -32,7 +32,7 @@ def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
     if kind == "verify_email":
         subject = "Xác minh email WayFinder"
         heading = "Xác minh địa chỉ email"
-        message = "Vui lòng xác minh địa chỉ email để hoàn tất đăng ký WayFinder."
+        message = "Vui lòng xác minh địa chỉ email để có thể mời bạn học qua email."
         button = "Xác minh email"
         valid_for = valid_for or "24 giờ"
         text = f"{greeting}\n\n{message}\n\nMở liên kết này để xác minh: {action_url}\n\nLiên kết có hiệu lực trong {valid_for}."
