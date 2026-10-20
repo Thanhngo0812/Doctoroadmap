@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from contextlib import AbstractContextManager
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from wayfinder.domain.auth import Account, AuthSession
 
@@ -19,6 +19,21 @@ class AuditEvent:
     target_id: str | None = None
     ip: str | None = None
     meta: dict[str, object] = field(default_factory=dict)
+
+
+EmailPurpose = Literal["verify_email", "reset_password"]
+
+
+@dataclass(frozen=True, slots=True)
+class EmailToken:
+    id: str
+    account_id: str
+    purpose: EmailPurpose
+    token_hash: bytes
+    email_normalized: str
+    expires_at: datetime
+    used_at: datetime | None
+    created_at: datetime
 
 
 class PasswordHasher(Protocol):
@@ -50,6 +65,18 @@ class AuthStore(Protocol):
     def delete_session(self, session_id: str) -> None: ...
 
     def delete_account_sessions(self, account_id: str) -> None: ...
+
+    def create_email_token(self, token: EmailToken) -> None: ...
+
+    def get_email_token(self, token_hash: bytes) -> EmailToken | None: ...
+
+    def consume_email_token(self, token_id: str, at: datetime) -> bool: ...
+
+    def consume_account_email_tokens(self, account_id: str, purpose: EmailPurpose, at: datetime) -> None: ...
+
+    def verify_account_email(self, account_id: str, at: datetime) -> Account | None: ...
+
+    def update_password(self, account_id: str, password_hash: str, at: datetime) -> None: ...
 
     def failure_times(self, bucket: str, since: datetime) -> list[datetime]: ...
 

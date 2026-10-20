@@ -16,9 +16,10 @@ async function noticeGeometry(page, text) {
     const box = element.getBoundingClientRect();
     const range = document.createRange(); range.selectNodeContents(element);
     const text = range.getBoundingClientRect();
-    return { centerOffset: Math.abs(box.x + box.width / 2 - innerWidth / 2), extraWidth: box.width - text.width, width: box.width };
+    return { textCenterOffset: Math.abs(box.x + box.width / 2 - text.x - text.width / 2), rightGap: innerWidth - box.right, expectedRightGap: innerWidth < 768 ? 16 : 24, extraWidth: box.width - text.width, width: box.width };
   });
-  assert.ok(geometry.centerOffset < 1, 'notice must be centered: ' + JSON.stringify(geometry));
+  assert.ok(geometry.textCenterOffset < 1, 'text must be centered inside notice: ' + JSON.stringify(geometry));
+  assert.equal(geometry.rightGap, geometry.expectedRightGap, 'notice must stay on the right');
   assert.ok(geometry.extraWidth >= 24 && geometry.extraWidth <= 40, 'notice must fit its text: ' + JSON.stringify(geometry));
   return geometry;
 }

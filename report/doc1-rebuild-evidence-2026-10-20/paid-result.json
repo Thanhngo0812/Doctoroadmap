@@ -1,0 +1,81 @@
+{
+  "doc_id": "doc-1",
+  "status": "succeeded",
+  "pipeline_version": "2bee226662f12adfa82b90a0a6f8b0a15269806f:a5cab511ad674b454ea2f4ed2d70d896d3f36b2a6598947ecdf467b385a3a0a6",
+  "graph_version": 8,
+  "completed_steps": [
+    "doc_reading",
+    "concepts",
+    "graph",
+    "learning_prep"
+  ],
+  "step_details": {
+    "doc_reading": {
+      "chunks_version": 8,
+      "parse_version": 6,
+      "chunk_count": 302,
+      "a4_gold_coverage": "none",
+      "page_count": 102,
+      "alphabetic_chars": 82268,
+      "average_alphabetic_chars_per_page": 806.5490196078431,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.21818933242573055
+    },
+    "concepts": {
+      "label_roles": {
+        "chunks_version": 9,
+        "reused": true
+      },
+      "a3": {
+        "candidate_version": 4,
+        "retrieval_version": 4,
+        "a3_reused": true,
+        "a3_prime_reused": true
+      },
+      "canonical": {
+        "canonical_version": 5,
+        "reused": true,
+        "a4_gold_coverage": "none"
+      }
+    },
+    "graph": {
+      "graph_version": 8,
+      "reused": false
+    },
+    "learning_prep": {
+      "a12": {
+        "graph_version": 8,
+        "retrieval_version": 4,
+        "assignment_count": 302
+      },
+      "concept_index": {
+        "graph_version": 8,
+        "model_id": "gemini-embedding-001:768",
+        "reused": false,
+        "concept_count": 223
+      },
+      "formulas": {
+        "index_path": "artifacts\\phase_b\\formula_images\\doc-1\\parse-v6\\index.json",
+        "parse_version": 6,
+        "cut_count": 2602,
+        "skipped_count": 0
+      }
+    }
+  },
+  "spent_usd": 0.18926325,
+  "model_calls": 324,
+  "input_tokens": 588839,
+  "output_tokens": 29318,
+  "usage_complete": false,
+  "elapsed_seconds": 374.49973749999936,
+  "error": null,
+  "budget_guard": {
+    "limit_usd": 3.0,
+    "actual_usd": 1.542275,
+    "in_flight_usd": 3.111660235033398e-17,
+    "unknown_upper_usd": 0.0,
+    "http_calls": 3423
+  },
+  "attempt": 2,
+  "cumulative_spent_usd": 1.542275
+}

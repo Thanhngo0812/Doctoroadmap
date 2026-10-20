@@ -802,7 +802,7 @@
   cardForgot.paddingBottom = 16;
   cardForgot.appendChild(makeBadge("W-03: Màn 2", C.brandTint, C.primary));
   cardForgot.appendChild(createText("Quên mật khẩu", 16, FONT_SEMI, C.text));
-  cardForgot.appendChild(createText("Nhập email để nhận liên kết đặt lại mật khẩu có hiệu lực 15 phút:", 12, FONT_REG, C.textMuted));
+  cardForgot.appendChild(createText("Nhập email để nhận liên kết đặt lại mật khẩu có hiệu lực 60 phút:", 12, FONT_REG, C.textMuted));
   cardForgot.appendChild(makeInput("Email tài khoản", "bacsi.nguyen@benhvien.vn"));
   const btnSendReset = makeButton("Gửi liên kết đặt lại (44px)", C.primary, C.white);
   btnSendReset.resize(256, 44);
@@ -853,7 +853,7 @@
   bannerExp.paddingLeft = 10;
   bannerExp.paddingRight = 10;
   bannerExp.paddingTop = 8;
-  bannerExp.appendChild(createText("⚠️ Liên kết xác minh hoặc đặt lại mật khẩu này đã hết hạn (> 15 phút) hoặc đã được sử dụng trước đó.", 11, FONT_REG, C.danger));
+  bannerExp.appendChild(createText("⚠️ Liên kết đã hết hạn hoặc đã được sử dụng. Xác minh email có hiệu lực 24 giờ; đặt lại mật khẩu có hiệu lực 60 phút.", 11, FONT_REG, C.danger));
   cardExpired.appendChild(bannerExp);
   const btnReqNew = makeButton("Yêu cầu gửi liên kết mới", C.primary, C.white);
   btnReqNew.resize(256, 44);

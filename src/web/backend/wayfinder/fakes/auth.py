@@ -4,7 +4,7 @@ from datetime import datetime
 from threading import RLock
 
 from wayfinder.application.accounts import Credentials
-from wayfinder.application.auth_ports import AuditEvent
+from wayfinder.application.auth_ports import AuditEvent, EmailPurpose, EmailToken
 from wayfinder.domain.auth import Account, AuthSession
 
 
@@ -18,6 +18,8 @@ class FakeAuthStore:
         self.sessions_by_id: dict[str, AuthSession] = {}
         self.failure_events: list[tuple[str, datetime]] = []
         self.audit_events: list[AuditEvent] = []
+        self.email_tokens: dict[bytes, EmailToken] = {}
+        self.email_tokens_by_id: dict[str, EmailToken] = {}
         self._lock = RLock()
 
     @contextmanager
@@ -70,6 +72,44 @@ class FakeAuthStore:
         for session in list(self.sessions_by_id.values()):
             if session.account_id == account_id:
                 self.delete_session(session.id)
+
+    def create_email_token(self, token: EmailToken) -> None:
+        self.email_tokens[token.token_hash] = token
+        self.email_tokens_by_id[token.id] = token
+
+    def get_email_token(self, token_hash: bytes) -> EmailToken | None:
+        return self.email_tokens.get(token_hash)
+
+    def consume_email_token(self, token_id: str, at: datetime) -> bool:
+        token = self.email_tokens_by_id.get(token_id)
+        if token is None or token.used_at is not None:
+            return False
+        updated = replace(token, used_at=at)
+        self.email_tokens_by_id[token_id] = updated
+        self.email_tokens[token.token_hash] = updated
+        return True
+
+    def consume_account_email_tokens(self, account_id: str, purpose: EmailPurpose, at: datetime) -> None:
+        for token in tuple(self.email_tokens_by_id.values()):
+            if token.account_id == account_id and token.purpose == purpose and token.used_at is None:
+                self.consume_email_token(token.id, at)
+
+    def verify_account_email(self, account_id: str, at: datetime) -> Account | None:
+        account = self.accounts.get(account_id)
+        if account is None:
+            return None
+        updated = replace(account, email_verified_at=account.email_verified_at or at, updated_at=at)
+        self.accounts[account_id] = updated
+        self.credentials_by_email[updated.email_normalized] = replace(
+            self.credentials_by_email[updated.email_normalized], account=updated
+        )
+        return updated
+
+    def update_password(self, account_id: str, password_hash: str, at: datetime) -> None:
+        account = self.accounts[account_id]
+        updated = replace(account, updated_at=at)
+        self.accounts[account_id] = updated
+        self.credentials_by_email[updated.email_normalized] = Credentials(updated, password_hash)
 
     def failure_times(self, bucket: str, since: datetime) -> list[datetime]:
         return sorted(at for event_bucket, at in self.failure_events if event_bucket == bucket and at > since)

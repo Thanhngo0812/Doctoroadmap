@@ -76,10 +76,10 @@ còn đổi; nhóm web đã được báo.
 |---|---|---|---|
 | [W-01](W-01-nen-web-fastapi-react-postgres.md) | nền: FastAPI, React, PostgreSQL, Alembic, đường nối test, token giao diện | — | đạt nền local; đã ghim c91551f; React 23 test/build và browser đạt; [soát](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
 | [W-02](W-02-dang-ky-dang-nhap-phien.md) | đăng ký, đăng nhập, đăng xuất, phiên cookie, CSRF, giới hạn thử | W-01 | đạt · đã ghép `a3f2f13`, mốc `8558df4`; [cổng và bàn giao](../../report/dieu-phoi-ghep-main-2026-10-20.md) |
-| [W-03](W-03-xac-minh-email-quen-mat-khau.md) | xác minh email, quên mật khẩu, cổng gửi thư | W-02 | đang làm, snapshot `fdd0620`; đã chuyển `tmp/w03-email-recovery`, chờ mở lại phiên, chưa nghiệm thu toàn vé |
-| [W-04](W-04-ho-so-doi-mat-khau-dang-xuat-moi-noi.md) | hồ sơ, đổi mật khẩu, đăng xuất mọi nơi | W-02 | đủ điều kiện; chia sau nếu còn người, tránh tranh AccountService với W-03 |
+| [W-03](W-03-xac-minh-email-quen-mat-khau.md) | xác minh email, quên mật khẩu, cổng gửi thư | W-02 | đạt · đã ghép `63f09ad`, mốc `9de8e75`; 2.085 Python/62 React/build, browser thật; [nghiệm thu](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md) |
+| [W-04](W-04-ho-so-doi-mat-khau-dang-xuat-moi-noi.md) | hồ sơ, đổi mật khẩu, đăng xuất mọi nơi | W-02 | đủ điều kiện; xếp sau tích hợp W-06 nếu chỉ có một phiên web |
 | [W-05](W-05-kho-pha-b-postgresql.md) | kho Pha B trên PostgreSQL, `single_flight` liên tiến trình, nới port sổ chi | W-01 | đạt · đã ghép `a3f2f13`, gồm checkpoint W-02; [cổng và bàn giao](../../report/dieu-phoi-ghep-main-2026-10-20.md) |
-| [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đủ điều kiện giao; lõi làm backend/gateway, web React/tích hợp; chỉ đạt khi đủ lát dọc |
+| [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | ưu tiên khởi động lại sau W-03; chưa có bản W-06 được nghiệm thu; lõi backend/gateway, web React/tích hợp; chỉ đạt khi đủ lát dọc |
 | [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | ready-for-agent |
 | [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07, SA-39, SA-40, SA-41 | ready-for-agent |
 | [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07, SA-32, SA-33, SA-42 | ready-for-agent |
@@ -97,10 +97,17 @@ còn đổi; nhóm web đã được báo.
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
 | [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn nguồn export Figma và đủ trang/prototype có kiểm chứng; [soát 2026-10-20](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md) |
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | ready-for-agent |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa nút tối, vùng bấm mobile, giảm chuyển động, guard token; đủ bằng chứng W-22 | — | phần vá kỹ thuật đạt, gồm sáu màu plugin/auth 390; còn nguồn export và trang/prototype/guard luồng; [soát mới](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md) |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa nút tối, vùng bấm mobile, giảm chuyển động, guard token; đủ bằng chứng W-22 | — | phần local được soát cùng W-03, đã sửa TTL và bắt mutation accordion; còn Variables Figma/trang/prototype và guard chưa đủ; [soát mới](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md) |
 
 ## Thứ tự đề xuất
 
+- **Khởi động lại sau sự cố artifact, mốc mới nhất 2026-10-20:** chủ dự án xác nhận nhóm web mới xong W-03, các nhóm đang dừng.
+  W-03 đã đạt và ghép `63f09ad` tới `9de8e75`; 2.085 Python đạt/0 fail/1 Cloudinary live không bật, React 62/build, Chromium HTTP + PostgreSQL thật đạt, 0 USD.
+  Sáu graph phát triển tải được, doc-1 v8/doc-6 v29; không cần dựng lại để mở W-06. Lõi và web ưu tiên cùng W-06, thiết kế tiếp W-24/hỗ trợ màn khoá học.
+  Test người ngoài tự liệt kê mọi route trên khoá riêng tư, kể cả join-sample; test riêng đăng nhập tham gia khoá mẫu dev, không miễn route.
+  `w06_0005` nối `w03_0004`. W-04 đủ điều kiện nhưng không tách người khỏi W-06 nếu chỉ có một phiên web.
+  [Bằng chứng và kế hoạch](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md), [lời giao ba nhóm](../../report/lenh-giao-viec-sau-w03-2026-10-20.md).
+  Các dòng đợt ghép/giao trước dưới đây giữ làm lịch sử; trạng thái mới ở bảng và dòng này thay các ghi nhận W-03 đang làm/chưa soát trước đó.
 - **Ghép bù 2026-10-20:** W-02/W-05 đã vào main bằng `a3f2f13` tới đúng `8558df4`; cổng đầy đủ 1.999 Python đạt, 1 Cloudinary live không bật,
   React 41/build đạt. Thư mục chung chuyển về main; W-03 làm trong `tmp/w03-email-recovery`, W-24 ở `tmp/w24-figma-evidence`.
   `781415b`, `79cb9c9` và helper `6cd6be7` chưa được soát; không thuộc bản ghép này. W-03 cần phán xét W-24 cho phần mang theo trước khi được ghép.
@@ -109,10 +116,10 @@ còn đổi; nhóm web đã được báo.
   không thay mã qua cổng; trước lần ghép vé tiếp theo vẫn phải nhận main mới nhất và chạy lại cổng của vé đó.
 - **Sau nghiệm thu 2026-10-20:** W-02/W-05 đạt; web ưu tiên W-03 và bố trí React/tích hợp W-06; lõi nhận backend/gateway W-06.
   W-04 đủ điều kiện nhưng chỉ chia khi có người, phân vùng AccountService với W-03. [Bằng chứng và giao việc](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
-- **Migration:** hiện đã kiểm một head `w01_0001 → w05_0002 → w02_0003`. Dành tuyến tiếp `w03_0004 → w06_0005`:
-  web bàn giao migration email_token trước, lõi nối course/membership sau. Service/test/UI song song; giữ kiểm baseline W-01 và DB rỗng lên HEAD.
+- **Migration hiện tại:** đã kiểm một head `w01_0001 → w05_0002 → w02_0003 → w03_0004`. W-03 đã bàn giao email_token;
+  lõi nối course/membership bằng `w06_0005`. Service/test/UI song song; giữ kiểm baseline W-01 và DB rỗng lên HEAD.
 - **Thiết kế:** W-24 chỉ còn nguồn Variables export thực và đủ trang/prototype có guard đúng; phần vá runtime, sáu màu plugin và auth 390 đã đóng.
-  Đồng thời ưu tiên màn W-03. W-24 chưa đủ không chặn W-03/W-06 theo spec hiện hành.
+  Nay ưu tiên hỗ trợ màn W-06; TTL auth phải giữ xác minh 24 giờ/reset 60 phút. W-24 chưa đủ không chặn W-06 theo spec hiện hành.
 - **Sau W-06:** mở W-07 và W-11; W-03 cùng W-06 đạt thì mở W-14 với bộ dựng giả. W-14 đạt mới mở W-15; W-13 đã đạt, không kiểm lại doc-6 khi chưa có thay đổi.
 - **Phần học:** W-07 → W-08, W-09, W-10 theo phụ thuộc Pha B2. Claude còn yêu cầu soát độc lập SA-46/47/49/50/51;
   không lấy bàn giao nhân viên thay phán xét đạt. W-23 vẫn chờ W-22 và W-08/W-09/W-10.

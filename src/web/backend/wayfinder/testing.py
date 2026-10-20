@@ -107,6 +107,7 @@ class TestApplication:
     services: WebServices
     phase_b: PhaseBTestRuntime
     media_store: MemoryMediaStore
+    mailer: object | None = None
 
 
 def _sample_graph() -> LearningGraph:
@@ -150,9 +151,11 @@ def build_test_application() -> TestApplication:
                                 lecture, quiz, assistant, documents)
     from wayfinder.application.accounts import AccountService, AuthPolicy
     from wayfinder.fakes.auth import FakeAuthStore
+    from wayfinder.fakes.mail import FakeMailer
     from wayfinder.infrastructure.passwords import Argon2PasswordHasher, load_common_passwords
 
+    mailer = FakeMailer()
     accounts = AccountService(FakeAuthStore(), Argon2PasswordHasher(), clock, AuthPolicy(),
-                              load_common_passwords())
+                              load_common_passwords(), mailer=mailer)
     services = WebServices(health_check=lambda: "ok", model=model, embedding=embedding, accounts=accounts)
-    return TestApplication(services, phase_b, MemoryMediaStore())
+    return TestApplication(services, phase_b, MemoryMediaStore(), mailer)

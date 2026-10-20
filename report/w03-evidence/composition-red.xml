@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="12" skipped="0" tests="12" time="3.155" timestamp="2026-10-20T08:33:15.984561+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w03_composition" name="test_mail_link_base_rejects_unsafe_urls[javascript:alert(1)]" time="0.350"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'javascript:alert(1)'
+
+    @pytest.mark.parametrize("url", ["javascript:alert(1)", "https://user:secret@example.vn", "https://learn.example.vn?next=evil", "https://learn.example.vn/#token", "https://learn.example.vn/subpath", "https://learn.example.vn\r\nX-Test: bad"])
+    def test_mail_link_base_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:12: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_mail_link_base_rejects_unsafe_urls[https://user:secret@example.vn]" time="0.007"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://user:secret@example.vn'
+
+    @pytest.mark.parametrize("url", ["javascript:alert(1)", "https://user:secret@example.vn", "https://learn.example.vn?next=evil", "https://learn.example.vn/#token", "https://learn.example.vn/subpath", "https://learn.example.vn\r\nX-Test: bad"])
+    def test_mail_link_base_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:12: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_mail_link_base_rejects_unsafe_urls[https://learn.example.vn?next=evil]" time="0.006"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://learn.example.vn?next=evil'
+
+    @pytest.mark.parametrize("url", ["javascript:alert(1)", "https://user:secret@example.vn", "https://learn.example.vn?next=evil", "https://learn.example.vn/#token", "https://learn.example.vn/subpath", "https://learn.example.vn\r\nX-Test: bad"])
+    def test_mail_link_base_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:12: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_mail_link_base_rejects_unsafe_urls[https://learn.example.vn/#token]" time="0.008"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://learn.example.vn/#token'
+
+    @pytest.mark.parametrize("url", ["javascript:alert(1)", "https://user:secret@example.vn", "https://learn.example.vn?next=evil", "https://learn.example.vn/#token", "https://learn.example.vn/subpath", "https://learn.example.vn\r\nX-Test: bad"])
+    def test_mail_link_base_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:12: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_mail_link_base_rejects_unsafe_urls[https://learn.example.vn/subpath]" time="0.007"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://learn.example.vn/subpath'
+
+    @pytest.mark.parametrize("url", ["javascript:alert(1)", "https://user:secret@example.vn", "https://learn.example.vn?next=evil", "https://learn.example.vn/#token", "https://learn.example.vn/subpath", "https://learn.example.vn\r\nX-Test: bad"])
+    def test_mail_link_base_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:12: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_mail_link_base_rejects_unsafe_urls[https://learn.example.vn\r\nX-Test: bad]" time="0.007"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://learn.example.vn\r\nX-Test: bad'
+
+    @pytest.mark.parametrize("url", ["javascript:alert(1)", "https://user:secret@example.vn", "https://learn.example.vn?next=evil", "https://learn.example.vn/#token", "https://learn.example.vn/subpath", "https://learn.example.vn\r\nX-Test: bad"])
+    def test_mail_link_base_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:12: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_mail_link_base_is_normalized" time="0.008"><failure message="AttributeError: 'WebSettings' object has no attribute 'public_base_url'">def test_mail_link_base_is_normalized():
+        settings = WebSettings(_env_file=None, public_base_url="https://learn.example.vn/")
+&gt;       assert settings.public_base_url == "https://learn.example.vn"
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w03_composition.py:18: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = WebSettings(version='0.1.0', database_url=None, test_database_url=None, phase_b_lock_pool_size=8, frontend_dist=Window...artifacts'), cloudinary_url=None, cloudinary_folder='wayfinder/dev', signed_url_ttl_seconds=300, page_image_width=1400)
+item = 'public_base_url'
+
+    def __getattr__(self, item: str) -&gt; Any:
+        private_attributes = object.__getattribute__(self, '__private_attributes__')
+        if item in private_attributes:
+            attribute = private_attributes[item]
+            if hasattr(attribute, '__get__'):
+                return attribute.__get__(self, type(self))  # type: ignore
+    
+            try:
+                # Note: self.__pydantic_private__ cannot be None if self.__private_attributes__ has items
+                return self.__pydantic_private__[item]  # type: ignore
+            except KeyError as exc:
+                raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}') from exc
+        else:
+            # `__pydantic_extra__` can fail to be set if the model is not yet fully initialized.
+            # See `BaseModel.__repr_args__` for more details
+            try:
+                pydantic_extra = object.__getattribute__(self, '__pydantic_extra__')
+            except AttributeError:
+                pydantic_extra = None
+    
+            if pydantic_extra and item in pydantic_extra:
+                return pydantic_extra[item]
+            else:
+                if hasattr(self.__class__, item):
+                    return super().__getattribute__(item)  # Raises AttributeError if appropriate
+                else:
+                    # this is the current error
+&gt;                   raise AttributeError(f'{type(self).__name__!r} object has no attribute {item!r}')
+E                   AttributeError: 'WebSettings' object has no attribute 'public_base_url'
+
+.venv\Lib\site-packages\pydantic\main.py:1042: AttributeError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_smtp_composition_validates_credentials_without_connecting" time="0.007"><failure message="AttributeError: module 'wayfinder.composition' has no attribute 'compose_mailer'">def test_smtp_composition_validates_credentials_without_connecting():
+        settings = WebSettings(_env_file=None, mailer="smtp")
+        with pytest.raises(ValueError, match="SMTP"):
+&gt;           composition.compose_mailer(settings)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'wayfinder.composition' has no attribute 'compose_mailer'
+
+src\web\backend\tests\test_w03_composition.py:24: AttributeError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_production_cannot_log_token_emails_to_console" time="0.008"><failure message="AttributeError: module 'wayfinder.composition' has no attribute 'compose_mailer'">def test_production_cannot_log_token_emails_to_console():
+        settings = WebSettings(_env_file=None, env="prod", mailer="console")
+        with pytest.raises(ValueError, match="console"):
+&gt;           composition.compose_mailer(settings)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: module 'wayfinder.composition' has no attribute 'compose_mailer'
+
+src\web\backend\tests\test_w03_composition.py:30: AttributeError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_smtp_composition_passes_config_and_defers_network" time="0.003"><failure message="ImportError: cannot import name 'mail' from 'wayfinder.infrastructure' (C:\Users\ngoco\Desktop\Doctoroadmap\src\web\backend\wayfinder\infrastructure\__init__.py)">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000154024AB2C0&gt;
+
+    def test_smtp_composition_passes_config_and_defers_network(monkeypatch):
+&gt;       from wayfinder.infrastructure import mail
+E       ImportError: cannot import name 'mail' from 'wayfinder.infrastructure' (C:\Users\ngoco\Desktop\Doctoroadmap\src\web\backend\wayfinder\infrastructure\__init__.py)
+
+src\web\backend\tests\test_w03_composition.py:34: ImportError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_smtp_response_does_not_wait_for_delivery_and_queue_is_bounded" time="0.003"><failure message="ModuleNotFoundError: No module named 'wayfinder.infrastructure.mail_dispatch'">def test_smtp_response_does_not_wait_for_delivery_and_queue_is_bounded():
+&gt;       from wayfinder.infrastructure.mail_dispatch import BackgroundMailer
+E       ModuleNotFoundError: No module named 'wayfinder.infrastructure.mail_dispatch'
+
+src\web\backend\tests\test_w03_composition.py:65: ModuleNotFoundError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_background_smtp_failure_never_logs_message_or_exception_secrets" time="0.003"><failure message="ModuleNotFoundError: No module named 'wayfinder.infrastructure.mail_dispatch'">caplog = &lt;_pytest.logging.LogCaptureFixture object at 0x00000154024D46E0&gt;
+
+    def test_background_smtp_failure_never_logs_message_or_exception_secrets(caplog):
+&gt;       from wayfinder.infrastructure.mail_dispatch import BackgroundMailer
+E       ModuleNotFoundError: No module named 'wayfinder.infrastructure.mail_dispatch'
+
+src\web\backend\tests\test_w03_composition.py:95: ModuleNotFoundError</failure></testcase></testsuite></testsuites>

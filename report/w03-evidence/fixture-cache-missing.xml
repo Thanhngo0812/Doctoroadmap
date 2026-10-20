@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="9" time="16.230" timestamp="2026-10-20T12:33:02.341290+07:00" hostname="ADMIN"><testcase classname="tests.integration.test_w13_build" name="test_english_pdf_stops_before_models_and_records_rejection[Students learn systems and data.]" time="4.216" /><testcase classname="tests.integration.test_w13_build" name="test_english_pdf_stops_before_models_and_records_rejection[This chapter explains probability.]" time="0.402" /><testcase classname="tests.integration.test_w13_build" name="test_image_only_pdf_is_rejected_without_models" time="0.382" /><testcase classname="tests.integration.test_w13_build" name="test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls" time="3.120" /><testcase classname="tests.integration.test_w13_build" name="test_doc6_missing_role_cache_stops_before_spend" time="2.190" /><testcase classname="tests.integration.test_w13_build" name="test_real_and_fake_share_the_dry_run_contract" time="2.774" /><testcase classname="tests.integration.test_w13_build" name="test_direct_canonical_reuses_doc6_without_gold_or_other_books" time="0.265"><failure message="FileNotFoundError: chưa có artifact canonical cho tài liệu 'doc-6'">offline_settings = (Settings(max_tokens=512, max_table_tokens=2048, hard_cap_tokens=6000, target_tokens=256, sentence_overlap=1, artifact...arallel=True, roadmap_single_session_limit=20, a8_definition_before=4, a8_definition_after=2, roadmap_stage_cap=8), [])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002B7F6145F70&gt;
+
+    def test_direct_canonical_reuses_doc6_without_gold_or_other_books(offline_settings, monkeypatch):
+        from doc2roadmap.application.use_cases import a4_gold
+        from doc2roadmap.composition_build import DocumentPipeline
+
+        settings, calls = offline_settings
+        original = Path(__file__).resolve().parents[2] / "artifacts"
+        for kind in ("parse_tree", "chunks", "candidates", "canonical"):
+            shutil.copytree(original / kind / "doc-6", settings.artifact_dir / kind / "doc-6")
+
+        def forbidden_gold(*args, **kwargs):
+            raise AssertionError("new-book path cannot load gold")
+
+        monkeypatch.setattr(a4_gold, "load_gold", forbidden_gold)
+        pipeline = DocumentPipeline(settings, allow_spend=False)
+&gt;       before = pipeline.store.load_latest_canonical("doc-6")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\integration\test_w13_build.py:148:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\doc2roadmap\infrastructure\artifacts\json_store.py:308: in load_latest_canonical
+    return self._load_latest_stage("canonical", doc_id)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;doc2roadmap.infrastructure.artifacts.json_store.JsonArtifactStore object at 0x000002B7F6144680&gt;
+artifact = 'canonical', doc_id = 'doc-6'
+
+    def _load_latest_stage(self, artifact: str, doc_id: str) -&gt; StoredStageArtifact:
+        versions = self._versions(artifact, doc_id)
+        if not versions:
+&gt;           raise FileNotFoundError(
+                f"chưa có artifact {artifact} cho tài liệu '{doc_id}'"
+            )
+E           FileNotFoundError: chưa có artifact canonical cho tài liệu 'doc-6'
+
+src\doc2roadmap\infrastructure\artifacts\json_store.py:361: FileNotFoundError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_migration" name="test_w03_is_single_head_after_w02" time="0.011" /><testcase classname="src.web.backend.tests.test_w03_migration" name="test_upgrade_w02_to_w03_preserves_existing_accounts" time="0.904" /></testsuite></testsuites>

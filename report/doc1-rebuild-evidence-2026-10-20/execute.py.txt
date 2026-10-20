@@ -1,0 +1,134 @@
+"""Approved recovery harness; no product-code changes or global Phase B reads."""
+import builtins
+import functools
+import io
+import json
+import os
+import subprocess
+import sys
+from contextlib import ExitStack
+from datetime import datetime, timezone
+from pathlib import Path
+from time import perf_counter
+from unittest.mock import patch
+from urllib.request import urlopen
+from urllib.error import HTTPError
+
+from budget_guard import BudgetGuard
+
+ROOT = Path.cwd()
+OUT = ROOT / 'tmp/coord-doc1-rebuild-20261020'
+sys.path.insert(0, str(ROOT / 'src'))
+os.environ['DOC2ROADMAP_LLM_TRANSPORT'] = 'vertex'
+from doc2roadmap.config import Settings
+from doc2roadmap.composition_build import build_document_runner
+from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
+
+assert subprocess.check_output(['git', 'branch', '--show-current'], text=True).strip() == 'main'
+approval = json.loads((OUT / 'approval.json').read_text(encoding='utf-8'))
+assert approval['budget_usd'] == 3.0
+assert (ROOT / 'document-data/development-recovery-2026-10-20/manifest-before-build.json').is_file()
+resuming = '--resume' in sys.argv
+prior = []
+if (OUT / 'paid-requests.jsonl').exists():
+    assert resuming, 'Explicit resume required; never reset approved budget'
+    prior = [json.loads(line) for line in (OUT / 'paid-requests.jsonl').read_text().splitlines()]
+    assert all(row['actual_usd'] is not None for row in prior), 'Unknown previous usage blocks resume'
+    previous_result = json.loads((OUT / 'paid-result.json').read_text(encoding='utf-8'))
+    previous_attempt = previous_result.get('attempt', 1)
+    (OUT / f'attempt-{previous_attempt}-result.json').write_text(json.dumps(previous_result, ensure_ascii=False, indent=2), encoding='utf-8')
+    attempt = previous_attempt + 1
+else:
+    attempt = 1
+settings = Settings(llm_transport='vertex', **({'llm_max_in_flight': 4, 'llm_rpm_budget': 60,
+                    'gemini_max_retries': 3} if resuming else {}))
+assert settings.vertex_project and settings.vertex_location == 'global'
+assert settings.extraction_model_id == settings.roadmap_model_id == 'gemini-3.1-flash-lite'
+assert settings.embedding_model_id == 'gemini-embedding-001'
+def diagnosed_provider(*args, **kwargs):
+    try:
+        return urlopen(*args, **kwargs)
+    except HTTPError as error:
+        try:
+            body = json.loads(error.read()).get('error', {})
+            diagnostic = {'status': body.get('status'), 'message': body.get('message', '')[:1200],
+                          'code': error.code, 'retry_after': error.headers.get('Retry-After')}
+        except Exception:
+            diagnostic = {'code': error.code, 'body_unavailable': True}
+        with (OUT / 'provider-errors.jsonl').open('a', encoding='utf-8') as stream:
+            stream.write(json.dumps({'attempt': attempt, 'utc': datetime.now(timezone.utc).isoformat(), **diagnostic}) + '\n')
+        raise
+
+guard = BudgetGuard(3.0, diagnosed_provider, OUT / 'paid-requests.jsonl')
+guard.actual = sum(row['actual_usd'] for row in prior)
+guard.calls = len(prior)
+original_open, original_io_open = builtins.open, io.open
+original_store = JsonPhaseBStore
+scoped_store = ROOT / 'artifacts/phase_b/doc-1-rebuild-20261020.json'
+protected = ['artifacts/phase_b/live.json', 'document-data/test/', 'tmp/t01a-clean-ff797eb/',
+             '/d01-t01/', '/d01-t02/']
+
+def safe_open(original):
+    def guarded(file, *args, **kwargs):
+        if not isinstance(file, int):
+            name = str(file).replace('\\', '/').lower()
+            if any(part in name for part in protected):
+                raise PermissionError('Protected path: ' + name)
+        return original(file, *args, **kwargs)
+    return guarded
+
+def phase_store(path, *args, **kwargs):
+    if str(path).replace('\\', '/').endswith('phase_b/live.json'):
+        path = scoped_store
+    return original_store(path, *args, **kwargs)
+
+def event(kind, **details):
+    row = {'utc': datetime.now(timezone.utc).isoformat(), 'event': kind,
+           'budget': guard.snapshot(), **details}
+    with (OUT / 'paid-progress.jsonl').open('a', encoding='utf-8') as stream:
+        stream.write(json.dumps(row, ensure_ascii=False) + '\n')
+    print(json.dumps(row, ensure_ascii=False), flush=True)
+
+def trace(pipeline, name):
+    original = getattr(pipeline, name)
+    @functools.wraps(original)
+    def measured(*args, **kwargs):
+        guard.stage = name
+        started = perf_counter()
+        event('stage_started', stage=name)
+        try:
+            value = original(*args, **kwargs)
+            detail = value if name != 'read' else {k: v for k, v in value.items() if k != 'page_texts'}
+            event('stage_completed', stage=name, seconds=perf_counter()-started, details=detail,
+                  pipeline_usage=pipeline.usage())
+            return value
+        except Exception as error:
+            event('stage_failed', stage=name, seconds=perf_counter()-started,
+                  error_type=type(error).__name__, error=str(error))
+            raise
+    setattr(pipeline, name, measured)
+
+with ExitStack() as stack:
+    for name in ['doc2roadmap.infrastructure.llm.gemini.urlopen',
+                 'doc2roadmap.infrastructure.embedding.gemini.urlopen',
+                 'doc2roadmap.infrastructure.llm.phase_b.urlopen']:
+        stack.enter_context(patch(name, guard))
+    stack.enter_context(patch('builtins.open', safe_open(original_open)))
+    stack.enter_context(patch('io.open', safe_open(original_io_open)))
+    stack.enter_context(patch('doc2roadmap.infrastructure.artifacts.phase_b_store.JsonPhaseBStore', phase_store))
+    stack.enter_context(patch('doc2roadmap.composition_phase_b.JsonPhaseBStore', phase_store))
+    runner = build_document_runner(settings, allow_spend=True)
+    for name in ['read', 'label_roles', 'a3', 'canonical', 'roadmap', 'learning_prep']:
+        trace(runner.pipeline, name)
+    event('approved_run_started', approval=approval, phase_b_store=str(scoped_store))
+    result = runner.execute(ROOT / 'doc-1.pdf', 'doc-1', language='vi',
+                            progress=lambda step, detail: event('build_progress', step=step, details=detail))
+    value = result.to_dict()
+    value['budget_guard'] = guard.snapshot()
+    value['attempt'] = attempt
+    value['cumulative_spent_usd'] = guard.actual
+    (OUT / 'paid-result.json').write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding='utf-8')
+    (OUT / f'attempt-{attempt}-result.json').write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding='utf-8')
+    event('run_finished', result=value)
+    if result.status != 'succeeded':
+        raise SystemExit(1)

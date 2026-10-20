@@ -2,7 +2,7 @@ from typing import Protocol
 
 
 class Mailer(Protocol):
-    def send(self, to: str, subject: str, body: str) -> None: ...
+    def send(self, to: str, subject: str, body: str, *, html_body: str | None = None) -> None: ...
 
 
 class BuildRunner(Protocol):

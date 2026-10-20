@@ -1,0 +1,94 @@
+{
+  "graph_version": 8,
+  "modules": 35,
+  "module_title_sources": {
+    "llm": 33,
+    "fallback": 2
+  },
+  "module_description_sources": {
+    "template": 32,
+    "llm": 3
+  },
+  "learnable_nodes": 223,
+  "all_nodes": 277,
+  "edge_counts": {
+    "bypassed_edges": 0,
+    "main_edges": 210,
+    "open_edges": 256,
+    "removed_cycle_edges": 0,
+    "requires_edges": 475,
+    "secondary_edges": 273,
+    "soft_backward_edges": 17,
+    "topic_edges": 330
+  },
+  "chunks": 302,
+  "retrieval_fingerprint": "b284f48e6d79aabfbfa21fd664cde8f94a33f755a1a418aa83dc8cedd590b07f",
+  "roles_preserve_chunk_identity": true,
+  "concept_index_items": 223,
+  "formula_images": {
+    "index_path": "artifacts\\phase_b\\formula_images\\doc-1\\parse-v6\\index.json",
+    "parse_version": 6,
+    "cut_count": 2602,
+    "skipped_count": 0
+  },
+  "formula_images_independent_check": {
+    "occurrences": 2602,
+    "skipped": 0,
+    "unique_png_files": 2234,
+    "all_hashes_and_png_pixels_verified": true
+  },
+  "doc6_exact_hashes": 122,
+  "doc6_total_hashes": 122,
+  "actual_usd": 1.542275,
+  "usage_unknown_responses": 0,
+  "pipeline_usage_complete": false,
+  "http_statuses": {
+    "None": 3348,
+    "429": 75
+  },
+  "by_stage": {
+    "label_roles": {
+      "http_calls": 18,
+      "successful_calls": 17,
+      "http_errors": 1,
+      "actual_usd": 0.0132035
+    },
+    "a3": {
+      "http_calls": 1400,
+      "successful_calls": 1380,
+      "http_errors": 20,
+      "actual_usd": 0.580221149999999
+    },
+    "canonical": {
+      "http_calls": 1010,
+      "successful_calls": 977,
+      "http_errors": 33,
+      "actual_usd": 0.47959864999999996
+    },
+    "roadmap": {
+      "http_calls": 772,
+      "successful_calls": 751,
+      "http_errors": 21,
+      "actual_usd": 0.46636645000000015
+    },
+    "learning_prep": {
+      "http_calls": 223,
+      "successful_calls": 223,
+      "http_errors": 0,
+      "actual_usd": 0.0028852499999999994
+    }
+  },
+  "db_result_matches": true,
+  "old_v57": {
+    "modules": 33,
+    "learnable_nodes": 205,
+    "edges": null
+  },
+  "old_phase_b_cache_comparison": {
+    "verified_old_scoped_stores": 0,
+    "module_cards_checked": 0,
+    "module_names_checked": 0,
+    "compatible_count": null,
+    "reason": "No verified isolated old doc-1 Phase B store; shared live store was not opened."
+  }
+}

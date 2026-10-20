@@ -72,6 +72,30 @@ def auth_metadata(schema: str | None = None) -> MetaData:
         metadata.tables[f"{schema + '.' if schema else ''}auth_session"].c.expires_at,
     )
     Table(
+        "email_token",
+        metadata,
+        Column("id", UUID(as_uuid=False), primary_key=True),
+        Column(
+            "account_id",
+            UUID(as_uuid=False),
+            ForeignKey(f"{schema + '.' if schema else ''}account.id", ondelete="CASCADE"),
+            nullable=False,
+        ),
+        Column("purpose", Text, nullable=False),
+        Column("token_hash", LargeBinary(32), nullable=False, unique=True),
+        Column("email_normalized", Text, nullable=False),
+        Column("expires_at", DateTime(timezone=True), nullable=False),
+        Column("used_at", DateTime(timezone=True)),
+        Column("created_at", DateTime(timezone=True), nullable=False),
+        CheckConstraint("purpose IN ('verify_email', 'reset_password')", name="ck_email_token_purpose"),
+        CheckConstraint("octet_length(token_hash) = 32", name="ck_email_token_hash_length"),
+        schema=schema,
+    )
+    email_tokens = metadata.tables[f"{schema + '.' if schema else ''}email_token"]
+    Index("ix_email_token_account_purpose_created", email_tokens.c.account_id,
+          email_tokens.c.purpose, email_tokens.c.created_at)
+    Index("ix_email_token_expires_at", email_tokens.c.expires_at)
+    Table(
         "rate_limit_event",
         metadata,
         Column("bucket", Text, nullable=False),

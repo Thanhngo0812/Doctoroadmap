@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="5" time="4.594" timestamp="2026-10-20T08:35:51.396623+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w03_privacy" name="test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers[/xac-minh?token=private]" time="0.646"><failure message="AssertionError: assert 'same-origin' == 'no-referrer'&#10;  &#10;  - no-referrer&#10;  + same-origin">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/.tmp/w03-privacy-red/test_recovery_pages_and_api_do0')
+path = '/xac-minh?token=private'
+
+    @pytest.mark.parametrize("path", ["/xac-minh?token=private", "/quen-mat-khau", "/dat-lai-mat-khau?token=private", "/api/v1/auth/password-reset/confirm", "/api/v1/auth/verify-email"])
+    def test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers(tmp_path, path):
+        (tmp_path / "index.html").write_text("&lt;html lang='vi'&gt;&lt;title&gt;WayFinder&lt;/title&gt;&lt;/html&gt;", encoding="utf-8")
+        client = TestClient(create_app(WebSettings(_env_file=None, frontend_dist=tmp_path), WebServices(lambda: "ok")))
+        response = client.get(path)
+&gt;       assert response.headers["referrer-policy"] == "no-referrer"
+E       AssertionError: assert 'same-origin' == 'no-referrer'
+E         
+E         - no-referrer
+E         + same-origin
+
+src\web\backend\tests\test_w03_privacy.py:14: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_privacy" name="test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers[/quen-mat-khau]" time="0.054"><failure message="AssertionError: assert 'same-origin' == 'no-referrer'&#10;  &#10;  - no-referrer&#10;  + same-origin">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/.tmp/w03-privacy-red/test_recovery_pages_and_api_do1')
+path = '/quen-mat-khau'
+
+    @pytest.mark.parametrize("path", ["/xac-minh?token=private", "/quen-mat-khau", "/dat-lai-mat-khau?token=private", "/api/v1/auth/password-reset/confirm", "/api/v1/auth/verify-email"])
+    def test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers(tmp_path, path):
+        (tmp_path / "index.html").write_text("&lt;html lang='vi'&gt;&lt;title&gt;WayFinder&lt;/title&gt;&lt;/html&gt;", encoding="utf-8")
+        client = TestClient(create_app(WebSettings(_env_file=None, frontend_dist=tmp_path), WebServices(lambda: "ok")))
+        response = client.get(path)
+&gt;       assert response.headers["referrer-policy"] == "no-referrer"
+E       AssertionError: assert 'same-origin' == 'no-referrer'
+E         
+E         - no-referrer
+E         + same-origin
+
+src\web\backend\tests\test_w03_privacy.py:14: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_privacy" name="test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers[/dat-lai-mat-khau?token=private]" time="0.051"><failure message="AssertionError: assert 'same-origin' == 'no-referrer'&#10;  &#10;  - no-referrer&#10;  + same-origin">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/.tmp/w03-privacy-red/test_recovery_pages_and_api_do2')
+path = '/dat-lai-mat-khau?token=private'
+
+    @pytest.mark.parametrize("path", ["/xac-minh?token=private", "/quen-mat-khau", "/dat-lai-mat-khau?token=private", "/api/v1/auth/password-reset/confirm", "/api/v1/auth/verify-email"])
+    def test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers(tmp_path, path):
+        (tmp_path / "index.html").write_text("&lt;html lang='vi'&gt;&lt;title&gt;WayFinder&lt;/title&gt;&lt;/html&gt;", encoding="utf-8")
+        client = TestClient(create_app(WebSettings(_env_file=None, frontend_dist=tmp_path), WebServices(lambda: "ok")))
+        response = client.get(path)
+&gt;       assert response.headers["referrer-policy"] == "no-referrer"
+E       AssertionError: assert 'same-origin' == 'no-referrer'
+E         
+E         - no-referrer
+E         + same-origin
+
+src\web\backend\tests\test_w03_privacy.py:14: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_privacy" name="test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers[/api/v1/auth/password-reset/confirm]" time="0.043"><failure message="AssertionError: assert 'same-origin' == 'no-referrer'&#10;  &#10;  - no-referrer&#10;  + same-origin">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/.tmp/w03-privacy-red/test_recovery_pages_and_api_do3')
+path = '/api/v1/auth/password-reset/confirm'
+
+    @pytest.mark.parametrize("path", ["/xac-minh?token=private", "/quen-mat-khau", "/dat-lai-mat-khau?token=private", "/api/v1/auth/password-reset/confirm", "/api/v1/auth/verify-email"])
+    def test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers(tmp_path, path):
+        (tmp_path / "index.html").write_text("&lt;html lang='vi'&gt;&lt;title&gt;WayFinder&lt;/title&gt;&lt;/html&gt;", encoding="utf-8")
+        client = TestClient(create_app(WebSettings(_env_file=None, frontend_dist=tmp_path), WebServices(lambda: "ok")))
+        response = client.get(path)
+&gt;       assert response.headers["referrer-policy"] == "no-referrer"
+E       AssertionError: assert 'same-origin' == 'no-referrer'
+E         
+E         - no-referrer
+E         + same-origin
+
+src\web\backend\tests\test_w03_privacy.py:14: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_privacy" name="test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers[/api/v1/auth/verify-email]" time="0.087"><failure message="AssertionError: assert 'same-origin' == 'no-referrer'&#10;  &#10;  - no-referrer&#10;  + same-origin">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/.tmp/w03-privacy-red/test_recovery_pages_and_api_do4')
+path = '/api/v1/auth/verify-email'
+
+    @pytest.mark.parametrize("path", ["/xac-minh?token=private", "/quen-mat-khau", "/dat-lai-mat-khau?token=private", "/api/v1/auth/password-reset/confirm", "/api/v1/auth/verify-email"])
+    def test_recovery_pages_and_api_do_not_cache_or_forward_token_referrers(tmp_path, path):
+        (tmp_path / "index.html").write_text("&lt;html lang='vi'&gt;&lt;title&gt;WayFinder&lt;/title&gt;&lt;/html&gt;", encoding="utf-8")
+        client = TestClient(create_app(WebSettings(_env_file=None, frontend_dist=tmp_path), WebServices(lambda: "ok")))
+        response = client.get(path)
+&gt;       assert response.headers["referrer-policy"] == "no-referrer"
+E       AssertionError: assert 'same-origin' == 'no-referrer'
+E         
+E         - no-referrer
+E         + same-origin
+
+src\web\backend\tests\test_w03_privacy.py:14: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,30 @@
+"""Independent recovery check for formula references and image bytes."""
+import json
+import hashlib
+import io
+from PIL import Image
+
+
+def verify_formula_images(index_path, expected_occurrences):
+    index = json.loads(index_path.read_text(encoding='utf-8'))
+    refs = index['formula_refs']
+    assert {row['occurrence_id'] for row in refs} == expected_occurrences
+    assert len(refs) == len(expected_occurrences)
+    cut = sum(row['status'] == 'cut' for row in refs)
+    skipped = len(refs) - cut
+    assert cut == index['cut_count'] and skipped == index['skipped_count'] == 0
+    checked = set()
+    for row in refs:
+        path = index_path.parent / row['image_ref']
+        assert path.resolve().is_relative_to((index_path.parent / 'images').resolve())
+        assert not path.is_symlink() and not getattr(path, 'is_junction', lambda: False)()
+        assert path.name == row['media_id'] + '.png'
+        if path not in checked:
+            raw = path.read_bytes()
+            assert hashlib.sha256(raw).hexdigest() == row['media_id']
+            with Image.open(io.BytesIO(raw)) as image:
+                assert image.format == 'PNG' and image.width > 0 and image.height > 0
+                image.load()
+            checked.add(path)
+    return {'occurrences': len(refs), 'skipped': skipped, 'unique_png_files': len(checked),
+            'all_hashes_and_png_pixels_verified': True}

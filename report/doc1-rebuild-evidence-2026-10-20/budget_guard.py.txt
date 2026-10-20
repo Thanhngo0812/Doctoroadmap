@@ -1,0 +1,95 @@
+"""Per-run Vertex request reservation, confined to the recovery harness."""
+import io
+import json
+from threading import Condition
+from urllib.error import HTTPError
+
+
+class BudgetExceeded(RuntimeError):
+    pass
+
+
+class UsageUnknown(RuntimeError):
+    pass
+
+
+class BudgetGuard:
+    def __init__(self, limit, provider, log=None):
+        self.limit, self.provider, self.log = limit, provider, log
+        self.condition = Condition()
+        self.actual = self.held = self.unknown = 0.0
+        self.calls = 0
+        self.stage = 'preflight'
+
+    def bound(self, request):
+        payload = json.loads(request.data)
+        # Text-only build: bytes overestimate input tokens. Output reserve includes
+        # a second output allowance for reasoning and 1024 tokens for framing.
+        tokens = len(request.data) + 1024
+        if 'embedding' in request.full_url.lower():
+            return tokens * .15 / 1e6
+        maximum = payload['generationConfig']['maxOutputTokens']
+        if any(key in str(payload) for key in ['inlineData', 'fileData', 'cachedContent']):
+            raise RuntimeError('Cannot reserve opaque or media input without a token bound')
+        return (tokens * .25 + maximum * 2 * 1.50) / 1e6
+
+    def _reserve(self, value):
+        with self.condition:
+            while True:
+                if self.unknown:
+                    raise UsageUnknown('Previous request has no confirmed usage; stop paid dispatch')
+                if self.actual + self.held + value <= self.limit:
+                    self.held += value
+                    return
+                if not self.held:
+                    raise BudgetExceeded('Next request exceeds the approved remaining budget')
+                self.condition.wait()
+
+    def snapshot(self):
+        with self.condition:
+            return {'limit_usd': self.limit, 'actual_usd': self.actual,
+                    'in_flight_usd': self.held, 'unknown_upper_usd': self.unknown,
+                    'http_calls': self.calls}
+
+    def __call__(self, request, *args, **kwargs):
+        reservation = self.bound(request)
+        self._reserve(reservation)
+        started_stage = self.stage
+        actual = None
+        error_status = None
+        try:
+            with self.condition:
+                self.calls += 1
+            with self.provider(request, *args, **kwargs) as response:
+                raw = response.read()
+            payload = json.loads(raw)
+            if 'embedding' in request.full_url.lower():
+                usage = payload['predictions'][0]['embeddings'].get('statistics', {})
+                if 'token_count' in usage:
+                    incoming, outgoing = int(usage['token_count']), 0
+                    actual = incoming * .15 / 1e6
+            else:
+                usage = payload.get('usageMetadata', {})
+                if 'promptTokenCount' in usage and 'candidatesTokenCount' in usage:
+                    incoming = int(usage['promptTokenCount'])
+                    outgoing = int(usage['candidatesTokenCount']) + int(usage.get('thoughtsTokenCount', 0))
+                    actual = (incoming * .25 + outgoing * 1.50) / 1e6
+            return io.BytesIO(raw)
+        except HTTPError as error:
+            error_status = error.code
+            actual = 0.0  # Provider only bills successful responses.
+            raise
+        finally:
+            with self.condition:
+                self.held = max(0.0, self.held - reservation)
+                if actual is None:
+                    self.unknown += reservation
+                else:
+                    self.actual += actual
+                row = {'stage': started_stage, 'kind': 'embedding' if 'embedding' in request.full_url.lower() else 'generation',
+                       'actual_usd': actual, 'reserved_usd': reservation, 'http_error': error_status,
+                       'budget': self.snapshot()}
+                if self.log:
+                    with self.log.open('a', encoding='utf-8') as handle:
+                        handle.write(json.dumps(row) + '\n')
+                self.condition.notify_all()

@@ -1,0 +1,74 @@
+"""Freeze only approved development inputs, with byte copies and SHA-256."""
+import hashlib
+import json
+import shutil
+from datetime import datetime, timezone
+from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
+
+ROOT = Path.cwd()
+OUT = ROOT / 'tmp/coord-doc1-rebuild-20261020'
+DEST = ROOT / 'document-data/development-rebuilt-2026-10-20'
+assert not DEST.exists(), 'Snapshot must be new and immutable'
+
+def regular(path):
+    for candidate in [path, *path.parents]:
+        assert not candidate.is_symlink() and not getattr(candidate, 'is_junction', lambda: False)(), str(candidate)
+        if candidate == ROOT:
+            break
+
+def files_under(path):
+    if not path.exists():
+        return []
+    regular(path)
+    found = []
+    for item in path.iterdir():
+        regular(item)
+        if item.is_dir():
+            found.extend(files_under(item))
+        elif item.is_file():
+            assert item.suffix != '.tmp', 'Build must be idle before snapshot'
+            found.append(item)
+    return found
+
+regular(ROOT / 'artifacts')
+paths = []
+for doc in ['doc-1', 'doc-6']:
+    for kind in ['parse_tree', 'chunks', 'candidates', 'canonical', 'retrieval', 'graph']:
+        paths.extend(files_under(ROOT / 'artifacts' / kind / doc))
+    paths.extend(files_under(ROOT / 'artifacts/checkpoints/graph' / doc))
+    paths.extend(files_under(ROOT / 'artifacts/phase_b/formula_images' / doc))
+    paths.append(ROOT / (doc + '.pdf'))
+paths.append(ROOT / 'artifacts/phase_b/doc-1-rebuild-20261020.json')
+records = []
+for path in sorted(set(paths)):
+    regular(path)
+    relative = path.relative_to(ROOT)
+    target = DEST / relative
+    target.parent.mkdir(parents=True, exist_ok=True)
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    shutil.copyfile(path, target)
+    assert hashlib.sha256(target.read_bytes()).hexdigest() == digest
+    records.append({'path': relative.as_posix(), 'sha256': digest, 'bytes': path.stat().st_size})
+manifest = {'captured_utc': datetime.now(timezone.utc).isoformat(), 'allowed_docs': ['doc-1', 'doc-6'],
+            'snapshot': str(DEST), 'files': records, 'bytes': sum(row['bytes'] for row in records),
+            'junctions_used': False, 'protected_from_cleanup': True}
+serialized = json.dumps(manifest, ensure_ascii=False, indent=2)
+(DEST / 'development-fixtures.json').write_text(serialized, encoding='utf-8')
+(OUT / 'development-fixtures.json').write_text(serialized, encoding='utf-8')
+archive = DEST.with_suffix('.zip')
+assert not archive.exists()
+with ZipFile(archive, 'w', ZIP_DEFLATED) as zipped:
+    for row in records:
+        zipped.write(DEST / row['path'], row['path'])
+    zipped.write(DEST / 'development-fixtures.json', 'development-fixtures.json')
+with ZipFile(archive) as zipped:
+    assert zipped.testzip() is None
+    for row in records:
+        assert hashlib.sha256(zipped.read(row['path'])).hexdigest() == row['sha256']
+metadata = {'snapshot': str(DEST), 'files': len(records), 'bytes': manifest['bytes'],
+            'archive': str(archive), 'archive_bytes': archive.stat().st_size,
+            'archive_sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
+            'all_copies_and_archive_entries_sha256_verified': True}
+(OUT / 'snapshot-result.json').write_text(json.dumps(metadata, indent=2), encoding='utf-8')
+print(json.dumps(metadata, indent=2))

@@ -6,7 +6,15 @@
 
 **Nhánh riêng từ 2026-10-20:** `work/w24-figma-evidence`, worktree `tmp/w24-figma-evidence`, theo
 [quy trình nhánh](../../doc/quy-trinh-nhanh-va-ghep-main.md). Nhánh này giữ `781415b` và helper Figma `6cd6be7` được cherry-pick thành `f9540f5`;
-chưa có phán xét độc lập cho các phần mới. Không sửa/commit ở thư mục chung. Không ghi W-24 đạt chỉ vì cổng W-02/W-05 xanh.
+chưa có phán xét độc lập toàn bộ nhánh W-24. Phán xét phần local mang theo W-03 được bổ sung bên dưới. Không sửa/commit ở thư mục chung.
+Không ghi W-24 đạt chỉ vì cổng W-02/W-05 xanh.
+
+**Soát phần mang theo W-03, 2026-10-20:** đã xét local tại `9de8e75`, ghép cùng W-03 bằng `63f09ad`; không đóng toàn bộ nhánh W-24/Figma.
+Sửa năm câu TTL trong plugin/auth preview: xác minh **24 giờ**, reset **60 phút**. Metadata token nay ghi nguồn local đúng;
+audit HTML đúng 4/4 và phá handler accordion bị bắt (3/4, exit 1). Còn Variables xuất thật, đủ trang/node/video/prototype Figma;
+guard clipboard/citation/reduced-motion và thông báo nối reaction của helper chưa đủ bằng chứng để đóng các mục này.
+Nhận main mới trước khi tiếp tục, giữ sửa TTL và ưu tiên hỗ trợ màn khoá học W-06. Xem
+[phán xét và kế hoạch](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md).
 
 **Kiểm lại bản `ba73cfc`, 2026-10-20:** 18 test token đạt trong bộ kiểm backend/token; sáu màu tối plugin đã khớp và auth 390 hết tràn.
 GIF tĩnh cả bốn preview, vùng bấm cũ, guard primary/spacing/RGBA và chat mẫu vẫn đạt kiểm runtime/mutation.
@@ -16,8 +24,9 @@ Xem [nghiệm thu mới](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-2
 
 - **Nguồn Variables export:** tệp đang giao được script tạo lại giống từng byte từ JSON local; chưa chứng minh Variables trong file Figma.
   Giao bản xuất thật có nguồn gốc, đúng tên/giá trị; sửa metadata và báo cáo để phân biệt dữ liệu nhập local với dữ liệu xuất thực.
-- **Đủ trang/trạng thái và bốn prototype gốc:** giao node/ảnh, link bấm được và video. Audit hiện đánh dấu đạt cho gập/scroll mà không assert kết quả;
-  cố ý gỡ handler vẫn báo 4/4. Sửa guard để đỏ khi tương tác hỏng; hiện mật khẩu/gập/scroll không thay bốn luồng của W-22.
+- **Đủ trang/trạng thái và bốn prototype gốc:** giao node/ảnh, link bấm được và video. Audit local mới đã bắt phép phá accordion,
+  nhưng còn thiếu chứng cứ clipboard/citation/scroll/GIF đứng khung và bốn luồng trong Figma. Hoàn thiện guard đúng từng hành vi;
+  thông báo helper nối reaction thành công không thay kiểm bấm thật.
 
 Giữ cùng vé; báo cáo phân biệt phần đã kiểm đạt và phần chưa có bằng chứng, không ghi hoàn tất 100% khi các mục trên còn mở.
 

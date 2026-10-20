@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="30" time="4.227" timestamp="2026-10-20T13:53:10.890156+07:00" hostname="ADMIN"><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_public_quiz_hides_all_answers_and_events_then_returns_feedback" time="0.168" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_dry_run_has_no_model_calls_or_store_writes" time="0.002" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_dry_run_quiz_cost_uses_context_and_four_calls_with_configured_caps" time="0.004" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_cloze_does_not_blank_hiệu_inside_the_ký_hiệu_compound" time="0.003" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_quiz_sources_are_short_context_labels_and_context_hash_is_order_independent" time="0.001" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_question_reports_hide_after_distinct_owners_only" time="0.018" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_small_modules_fill_five_with_variants_when_available" time="0.007" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_blind_verifier_rejecting_its_answer_uses_cloze_and_logs_both_model_calls" time="0.035" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_generator_repairs_chunk_ids_to_short_labels_then_blind_verifier_accepts" time="0.006" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_no_eligible_distractors_uses_moi_source_and_passes_blind_verifier" time="0.006" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_context_excludes_same_chunk_and_substring_overlapping_distractors" time="0.001" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_distractor_from_must_match_its_cited_source_family" time="0.002" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_blind_verifier_is_told_to_route_options_to_distractor_anchor_evidence" time="0.001" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_cloze_requires_named_anchor_sentence_in_same_source_chunk" time="0.001" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_fallback_context_only_uses_chunks_mapped_to_the_same_module" time="0.001" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_q2_q3_q4_source_alias_and_anchor_guards_reject_bad_items" time="0.003" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_q5_q6_q7_and_q8_guards_have_reproducible_rejections" time="0.002" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_get_attempt_returns_owned_answer_free_snapshot" time="0.003" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_real_graph_dict_aliases_and_item_ready_stream_to_five" time="0.002"><failure message="FileNotFoundError: chưa có artifact graph v45 cho tài liệu 'doc-1'">def test_real_graph_dict_aliases_and_item_ready_stream_to_five():
+&gt;       graph = load_learning_graph(JsonArtifactStore(Path("artifacts")), "doc-1", graph_version=45)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\application\test_phase_b_quiz.py:592:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\doc2roadmap\application\phase_b\retrieval.py:115: in load_learning_graph
+    graph = store.load_graph(doc_id, graph_version)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\doc2roadmap\infrastructure\artifacts\json_store.py:490: in load_graph
+    return self._load_stage("graph", doc_id, version)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;doc2roadmap.infrastructure.artifacts.json_store.JsonArtifactStore object at 0x0000018A34434F50&gt;
+artifact = 'graph', doc_id = 'doc-1', version = 45
+
+    def _load_stage(
+        self, artifact: str, doc_id: str, version: int
+    ) -&gt; StoredStageArtifact:
+        path = self.root / artifact / doc_id / f"v{version}"
+        if not path.is_dir():
+&gt;           raise FileNotFoundError(
+                f"chưa có artifact {artifact} v{version} cho tài liệu '{doc_id}'"
+            )
+E           FileNotFoundError: chưa có artifact graph v45 cho tài liệu 'doc-1'
+
+src\doc2roadmap\infrastructure\artifacts\json_store.py:353: FileNotFoundError</failure></testcase><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_assistant_make_quiz_tool_returns_only_attempt_reference_and_count" time="0.002"><failure message="FileNotFoundError: chưa có artifact graph v45 cho tài liệu 'doc-1'">def test_assistant_make_quiz_tool_returns_only_attempt_reference_and_count():
+&gt;       graph = load_learning_graph(JsonArtifactStore(Path("artifacts")), "doc-1", graph_version=45)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\unit\application\test_phase_b_quiz.py:608:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\doc2roadmap\application\phase_b\retrieval.py:115: in load_learning_graph
+    graph = store.load_graph(doc_id, graph_version)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\doc2roadmap\infrastructure\artifacts\json_store.py:490: in load_graph
+    return self._load_stage("graph", doc_id, version)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;doc2roadmap.infrastructure.artifacts.json_store.JsonArtifactStore object at 0x0000018A344A7E90&gt;
+artifact = 'graph', doc_id = 'doc-1', version = 45
+
+    def _load_stage(
+        self, artifact: str, doc_id: str, version: int
+    ) -&gt; StoredStageArtifact:
+        path = self.root / artifact / doc_id / f"v{version}"
+        if not path.is_dir():
+&gt;           raise FileNotFoundError(
+                f"chưa có artifact {artifact} v{version} cho tài liệu '{doc_id}'"
+            )
+E           FileNotFoundError: chưa có artifact graph v45 cho tài liệu 'doc-1'
+
+src\doc2roadmap\infrastructure\artifacts\json_store.py:353: FileNotFoundError</failure></testcase><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_quiz_schema_is_sent_as_json_schema_in_fake_http_request" time="0.001" /><testcase classname="tests.unit.application.test_phase_b_quiz" name="test_runtime_gives_verifier_its_400_token_budget" time="0.008" /><testcase classname="src.web.backend.tests.test_settings" name="test_web_settings_defaults_and_unlimited_caps" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_production_defaults_to_smtp_and_production_folder" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[session_idle_days]" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[upload_max_mb]" time="0.007" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[signed_url_ttl_seconds]" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[page_image_width]" time="0.004" /><testcase classname="src.web.backend.tests.test_settings" name="test_optional_limits_allow_none" time="0.004" /><testcase classname="src.web.backend.tests.test_settings" name="test_optional_numeric_limits_parse_null_environment_values" time="0.005" /></testsuite></testsuites>

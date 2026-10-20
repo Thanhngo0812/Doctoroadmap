@@ -9,6 +9,15 @@ Mã mới ở `src/web/`; không mở thêm quyền sửa `src/doc2roadmap/` ngo
 Migration dành tên `w06_0005`, nối `w03_0004` do web bàn giao trước; service/test/UI làm song song, ghép schema theo một tuyến.
 Xem [nghiệm thu, phân việc và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
 
+**Khởi động lại sau sự cố, 2026-10-20:** W-03 đạt tại `9de8e75`, đã ghép `63f09ad`; schema head là `w03_0004`.
+W-06 là ưu tiên tiếp theo, chưa được xem là đã hoàn tất. Nhánh lõi `work/w06-courses-gateway` ở `tmp/w06-courses-gateway` cần nhận main mới;
+React làm nhánh/worktree riêng `work/w06-web` / `tmp/w06-web`, tích hợp thành một vé trước nghiệm thu.
+Sáu graph dev tải được (doc-1 v8, doc-6 v29), không dựng lại hay dùng v45/v57 cứng.
+Cách kiểm `join-sample` đã làm rõ theo spec: test tự liệt kê mọi `{cid}` nhắm khoá riêng tư, người ngoài vẫn nhận `not_found`, kể cả route tham gia.
+Test riêng cho người đăng nhập tham gia khoá mẫu ở dev khi chưa có membership; không miễn route khỏi bộ kiểm hay mở quyền nội dung cho người ngoài.
+Xem [kế hoạch và điểm nghiệm thu](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md),
+[lời giao lõi/web](../../report/lenh-giao-viec-sau-w03-2026-10-20.md). Dữ liệu test chép theo manifest/SHA-256, không dùng liên kết, không dọn worktree/snapshot.
+
 ## Vì sao
 
 Phần học (W-07…W-10) và chia sẻ (W-11) cần khoá học có thật để chạy. Khoá mẫu từ sáu cuốn phát triển cho khoá học ngay, không chờ khâu dựng (W-14,
@@ -45,8 +54,10 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 **HTTP:** `GET /courses`, `GET /courses/{cid}`, `PATCH /courses/{cid}`, `POST /courses/{cid}/join-sample`, `GET /courses/{cid}/roadmap`.
 
 **Test người ngoài khoá:**
-- Một test tự liệt kê **mọi** route có `{cid}` trong ứng dụng FastAPI, gọi bằng tài khoản không phải thành viên, và kỳ vọng `not_found`.
-- Route mới ở các vé sau tự vào test này. Route nào cố ý mở cho người ngoài (hiện không có) phải vào một danh sách miễn trừ ghi rõ lý do.
+- Một test tự liệt kê **mọi** route có `{cid}` trong ứng dụng FastAPI, nhắm một **khoá riêng tư** bằng tài khoản không phải thành viên, và kỳ vọng `not_found`,
+  kể cả `join-sample`. Route mới ở các vé sau tự vào test này; không miễn route tham gia.
+- Kiểm riêng ngữ cảnh khoá mẫu ở dev: người đã đăng nhập chưa có membership bấm tham gia được; khách chưa đăng nhập không được tham gia.
+  Điều này thực hiện quyền tham gia mẫu đã chốt trong spec, không mở quyền cho khoá riêng tư.
 
 **Di trú:** `course`, `membership`. Ràng buộc đúng một chủ mỗi khoá.
 

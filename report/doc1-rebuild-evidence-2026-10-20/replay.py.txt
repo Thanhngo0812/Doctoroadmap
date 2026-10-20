@@ -1,0 +1,57 @@
+"""Cache replay from shared main; every paid transport is forbidden."""
+import builtins
+import io
+import json
+import os
+import sys
+from contextlib import ExitStack
+from pathlib import Path
+from unittest.mock import patch
+
+ROOT = Path.cwd()
+OUT = ROOT / 'tmp/coord-doc1-rebuild-20261020'
+sys.path.insert(0, str(ROOT / 'src'))
+os.environ['DOC2ROADMAP_LLM_TRANSPORT'] = 'vertex'
+from doc2roadmap.config import Settings
+from doc2roadmap.composition_build import build_document_runner
+from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
+
+scoped = ROOT / 'artifacts/phase_b/doc-1-rebuild-20261020.json'
+native_open, native_io_open = builtins.open, io.open
+attempts = []
+protected = ['artifacts/phase_b/live.json', 'document-data/test/', 'tmp/t01a-clean-ff797eb/',
+             '/d01-t01/', '/d01-t02/']
+
+def forbidden(*args, **kwargs):
+    attempts.append(True)
+    raise AssertionError('Paid transport forbidden during cache replay')
+
+def safe_open(original):
+    def guarded(file, *args, **kwargs):
+        if not isinstance(file, int) and any(s in str(file).replace('\\', '/').lower() for s in protected):
+            raise PermissionError('Protected data path')
+        return original(file, *args, **kwargs)
+    return guarded
+
+def phase_store(path, *args, **kwargs):
+    if str(path).replace('\\', '/').endswith('phase_b/live.json'):
+        path = scoped
+    return JsonPhaseBStore(path, *args, **kwargs)
+
+with ExitStack() as stack:
+    for name in ['doc2roadmap.infrastructure.llm.gemini.urlopen',
+                 'doc2roadmap.infrastructure.embedding.gemini.urlopen',
+                 'doc2roadmap.infrastructure.llm.phase_b.urlopen',
+                 'doc2roadmap.infrastructure.google_auth.VertexCredentials.headers']:
+        stack.enter_context(patch(name, forbidden))
+    stack.enter_context(patch('builtins.open', safe_open(native_open)))
+    stack.enter_context(patch('io.open', safe_open(native_io_open)))
+    stack.enter_context(patch('doc2roadmap.infrastructure.artifacts.phase_b_store.JsonPhaseBStore', phase_store))
+    stack.enter_context(patch('doc2roadmap.composition_phase_b.JsonPhaseBStore', phase_store))
+    result = build_document_runner(Settings(llm_transport='vertex'), allow_spend=False).execute(
+        ROOT / 'doc-1.pdf', 'doc-1', language='vi')
+    value = result.to_dict() | {'forbidden_transport_attempts': len(attempts)}
+    (OUT / 'replay-result.json').write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding='utf-8')
+    print(json.dumps(value, ensure_ascii=False, indent=2))
+    assert result.status == 'succeeded', result.error
+    assert result.model_calls == result.spent_usd == len(attempts) == 0
