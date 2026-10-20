@@ -1,6 +1,6 @@
 # W-03 — Kết quả triển khai và kiểm local, 2026-10-20
 
-**Trạng thái: mã và các kiểm web local đã hoàn tất; CHƯA nghiệm thu toàn vé, CHƯA đủ cổng ghép main.** Còn chờ fixture lõi doc-1 graph v45 và người soát độc lập. Báo cáo trực tiếp chủ dự án theo yêu cầu.
+**Cập nhật sau khi doc-1 được dựng lại: W-03 đạt kiểm và soát nội bộ trên local; cổng toàn repo đã xanh (2.075 đạt, 1 Cloudinary live bỏ qua).** Xem [báo cáo nghiệm thu mới](web-w03-nghiem-thu-2026-10-20.md). Chưa ghép main; báo cáo trực tiếp chủ dự án theo yêu cầu. Các lượt thiếu fixture dưới đây được giữ làm lịch sử.
 
 ## Mốc mã và phạm vi
 
@@ -24,7 +24,7 @@
 
 - Bỏ liên kết Đăng nhập/Tài khoản ở header của trang xác minh và đặt lại mật khẩu; giữ logo, nút sáng/tối và hành động tiếp tục trong nội dung trang.
 - Bốn regression cho hai trang ở trạng thái có/không có phiên đều đỏ trên giao diện cũ, xanh sau sửa. Lượt lọc sai khiến test bị bỏ qua được giữ riêng và không tính là RED. [RED](w03-evidence/header-navigation-red.xml), [GREEN đầy đủ 62 test](w03-evidence/header-navigation-green.xml).
-- Build đạt. Kiểm trình duyệt bổ sung hai trang ở 390/1280 px: 4/4 đạt, không tràn ngang, không page error, nút đổi giao diện hoạt động. [Audit và ảnh](w03-evidence/header-navigation/audit.json). Bộ 18 cấu hình phía dưới được chạy trước bản sửa header này.
+- Build đạt. Kiểm trình duyệt bổ sung hai trang ở 390/1280 px: 4/4 đạt, không tràn ngang, không page error, nút đổi giao diện hoạt động. [Audit và ảnh](w03-evidence/header-navigation/audit.json). Bộ 18 cấu hình phía dưới đã được chạy lại sau bản sửa header và sau khi nhận main chứa fixture doc-1 mới.
 
 ## Kết quả kiểm
 
@@ -66,7 +66,7 @@ Các assertion dưới đây trong test_w03_accounts.py, trừ dòng PostgreSQL:
 | DB chỉ giữ hash | test_postgres_persists_only_token_hash_and_reset_revokes_every_session trong test_w03_postgres.py |
 | Ảnh banner/ba trang, thư HTML | w03-evidence/, w03-email-templates/ và script browser/preview có assertion |
 
-## Cổng toàn repo còn mở
+## Cổng toàn repo trước khi dựng lại doc-1 (lịch sử)
 
 Lượt cong-w03-final-1 ngắt theo yêu cầu nghỉ trưa khoảng 13%, chưa có JUnit; log dở được giữ. Chẩn đoán sau đó chỉ ra fixture W-13 thiếu; không coi lỗi setup/fixture là RED của nghiệp vụ.
 

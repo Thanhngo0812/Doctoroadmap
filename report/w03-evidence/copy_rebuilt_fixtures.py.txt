@@ -1,0 +1,60 @@
+import hashlib
+import json
+import shutil
+import stat
+from pathlib import Path, PurePosixPath
+
+root = Path(__file__).absolute().parents[1]
+shared = root.parents[1]
+source = shared / 'document-data/development-rebuilt-2026-10-20'
+manifest_path = root / 'report/doc1-rebuild-evidence-2026-10-20/development-fixtures.json'
+manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+def safe_path(base, relative):
+    part = PurePosixPath(relative)
+    assert not part.is_absolute() and '..' not in part.parts and ':' not in relative
+    assert part.parts[0] in ('artifacts', 'doc-1.pdf', 'doc-6.pdf')
+    if part.parts[0] == 'artifacts':
+        assert ('doc-1' in part.parts or 'doc-6' in part.parts
+                or relative == 'artifacts/phase_b/doc-1-rebuild-20261020.json'), relative
+    path = base.joinpath(*part.parts)
+    assert path.is_relative_to(base)
+    for ancestor in (path, *path.parents):
+        if ancestor.exists() or ancestor.is_symlink():
+            metadata = ancestor.lstat()
+            assert not stat.S_ISLNK(metadata.st_mode)
+            assert not getattr(metadata, 'st_file_attributes', 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+        if ancestor == base:
+            break
+    return path
+
+entries = []
+conflicts = []
+for entry in manifest['files']:
+    original = safe_path(source, entry['path'])
+    target = safe_path(root, entry['path'])
+    assert original.is_file() and digest(original) == entry['sha256'], entry['path']
+    if target.exists() and digest(target) != entry['sha256']:
+        conflicts.append(entry['path'])
+    entries.append((entry, original, target))
+assert not conflicts, json.dumps({'destination_conflicts': conflicts}, indent=2)
+
+copied = 0
+for entry, original, target in entries:
+    if not target.exists():
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(original, target)
+        copied += 1
+    assert digest(target) == entry['sha256'], entry['path']
+
+result = {'snapshot': str(source), 'manifest': str(manifest_path.relative_to(root)),
+          'manifest_sha256': digest(manifest_path), 'verified_files': len(entries),
+          'copied_files': copied, 'already_matching': len(entries) - copied,
+          'bytes': sum(entry['bytes'] for entry, _, _ in entries),
+          'destination_conflicts': 0, 'hash_mismatches': 0, 'junctions_used': False}
+(root / 'report/w03-evidence/rebuilt-fixtures-copy.json').write_text(
+    json.dumps(result, indent=2) + '\n', encoding='utf-8')
+print(json.dumps(result, indent=2))

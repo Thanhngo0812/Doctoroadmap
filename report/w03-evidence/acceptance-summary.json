@@ -1,0 +1,48 @@
+{
+  "reviewed_commit": "e940633ae6a6bfa34088c484fcf9ea2fceeddce4",
+  "python": {
+    "total": 2076,
+    "passed": 2075,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "web_backend_subset": {
+    "total": 224,
+    "passed": 223,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "skipped_tests": [
+    {
+      "class": "src.web.backend.tests.test_media_store",
+      "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+      "reason": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+    }
+  ],
+  "react": {
+    "total": 62,
+    "passed": 62,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "browser_screen_count": 18,
+  "taste_failures": 0,
+  "taste_warnings": 1,
+  "browser_runtime": {
+    "realPostgres": true,
+    "realArgon2": true,
+    "mailer": "fake",
+    "modelCalls": 0,
+    "modelCostUsd": 0,
+    "tasteInspectorExitCode": 0,
+    "migrationHead": "w03_0004",
+    "verifiedAccounts": 2,
+    "consumedTokens": 4,
+    "onlySha256TokenHashes": true,
+    "browserExitCode": 0,
+    "temporaryDatabaseRemoved": true
+  }
+}
