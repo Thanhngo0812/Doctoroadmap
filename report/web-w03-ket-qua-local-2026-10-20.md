@@ -4,7 +4,7 @@
 
 ## Mốc mã và phạm vi
 
-- Nhánh work/w03-email-recovery, worktree tmp/w03-email-recovery; mã sửa cuối: **89eefdb**. Các mốc trước: schema **33c70ac**, snapshot **fdd0620**, điểm nghỉ **3955af8**.
+- Nhánh work/w03-email-recovery, worktree tmp/w03-email-recovery; mã nghiệp vụ: **89eefdb**; bản sửa header cuối được lưu cùng bản cập nhật báo cáo này. Các mốc trước: schema **33c70ac**, snapshot **fdd0620**, điểm nghỉ **3955af8**.
 - Chỉ W-03 của web; không làm W-06. Không sửa vé, kế hoạch/handoff, mã lõi hay migration đã ở main. Migration của vé w03_0004 có down_revision=w02_0003.
 - Main mới 88a6905 chỉ cập nhật quy trình và hồ sơ sự cố cache, không đổi mã sản phẩm.
 - Nhánh còn mang các commit chưa soát từ trước: 781415b/79cb9c9/6cd6be7. Phần W-24 phải được phán xét riêng trước khi ghép; không tự coi các commit này đã đạt.
@@ -20,12 +20,18 @@
 - UI banner, verify/forgot/reset: pending, thành công, hết hạn, đã dùng, thiếu mã. GET không tự tiêu thụ token; link thư mới dùng fragment rồi được xoá khỏi URL. Link mới trong cùng tab xoá trạng thái/toast cũ; response cũ không ghi đè link mới.
 - Toast bên phải, khung vừa chữ, text giữa; lỗi trường đỏ + dòng nhỏ bên dưới, alert không viền focus xanh. Có giảm chuyển động và vùng bấm 44 px. Luật chưa xác minh không mời qua email được kiểm trong bảng quyền; hành động thật thuộc W-12.
 
+## Bản sửa giao diện cuối theo yêu cầu chủ dự án
+
+- Bỏ liên kết Đăng nhập/Tài khoản ở header của trang xác minh và đặt lại mật khẩu; giữ logo, nút sáng/tối và hành động tiếp tục trong nội dung trang.
+- Bốn regression cho hai trang ở trạng thái có/không có phiên đều đỏ trên giao diện cũ, xanh sau sửa. Lượt lọc sai khiến test bị bỏ qua được giữ riêng và không tính là RED. [RED](w03-evidence/header-navigation-red.xml), [GREEN đầy đủ 62 test](w03-evidence/header-navigation-green.xml).
+- Build đạt. Kiểm trình duyệt bổ sung hai trang ở 390/1280 px: 4/4 đạt, không tràn ngang, không page error, nút đổi giao diện hoạt động. [Audit và ảnh](w03-evidence/header-navigation/audit.json). Bộ 18 cấu hình phía dưới được chạy trước bản sửa header này.
+
 ## Kết quả kiểm
 
 | Cổng | Kết quả và bằng chứng |
 |---|---|
 | Toàn bộ backend web, PostgreSQL bắt buộc | **223 đạt, 1 bỏ qua** Cloudinary live chưa bật; [XML](w03-evidence/backend-final.xml) |
-| React | **58 đạt**, không bỏ qua; [XML](w03-evidence/frontend-tests.xml) |
+| React | **62 đạt**, không bỏ qua; [XML](w03-evidence/frontend-tests.xml) |
 | Build | TypeScript + Vite đạt; JS gzip khoảng 96,5 kB |
 | Browser HTTP/AuthStore/Argon2/PostgreSQL thật | **18 cấu hình màn, 8 nhóm assertion luồng**, 0 page error; [audit](w03-evidence/browser-audit.json), [runtime](w03-evidence/isolated-runtime.json), [video](w03-evidence/w03-auth-flow.webm) |
 | Trạng thái link lỗi | 4 trạng thái expired/used kiểm axe sau animation; không toast cũ, không outline xanh |

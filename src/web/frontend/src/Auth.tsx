@@ -337,11 +337,12 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
   );
 }
 
-function RecoveryFrame({ theme, onToggleTheme, title, description, children }: {
+function RecoveryFrame({ theme, onToggleTheme, title, description, children, showAccountLink = true }: {
   theme: 'light' | 'dark';
   onToggleTheme: () => void;
   title: string;
   description: string;
+  showAccountLink?: boolean;
   children: ReactNode;
 }) {
   const auth = useAuth();
@@ -351,7 +352,7 @@ function RecoveryFrame({ theme, onToggleTheme, title, description, children }: {
   return <>
     <header className="site-header w03-header"><div className="header-inner">
       <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={theme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
-      <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{theme === 'light' ? '◐' : '◑'}</button><Link className="auth-switch" to={auth.status === 'authenticated' ? '/tai-khoan' : '/dang-nhap'}>{auth.status === 'authenticated' ? 'Tài khoản' : 'Đăng nhập'}</Link></div>
+      <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{theme === 'light' ? '◐' : '◑'}</button>{showAccountLink && <Link className="auth-switch" to={auth.status === 'authenticated' ? '/tai-khoan' : '/dang-nhap'}>{auth.status === 'authenticated' ? 'Tài khoản' : 'Đăng nhập'}</Link>}</div>
     </div></header>
     <main className="auth-layout page-frame"><section className="auth-card w03-card" aria-labelledby="w03-title">
       <h1 ref={headingRef} id="w03-title" tabIndex={-1}>{title}</h1>
@@ -484,7 +485,7 @@ export function VerifyEmailPage({ theme, onToggleTheme }: { theme: 'light' | 'da
     finally { if (generation === linkGeneration.current) setBusy(false); }
   };
 
-  return <RecoveryFrame key={linkRevision} theme={theme} onToggleTheme={onToggleTheme} title="Xác minh email" description={complete ? 'Địa chỉ email của bạn đã được xác minh.' : 'Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.'}>
+  return <RecoveryFrame key={linkRevision} showAccountLink={false} theme={theme} onToggleTheme={onToggleTheme} title="Xác minh email" description={complete ? 'Địa chỉ email của bạn đã được xác minh.' : 'Mở trang này từ liên kết trong thư, rồi xác nhận để hoàn tất.'}>
     {feedback && <div ref={feedbackRef} tabIndex={-1} className="w03-feedback error" role="alert">{feedback}</div>}
     {complete ? <Link className="button button-primary button-large w03-action" to={auth.status === 'authenticated' ? '/tai-khoan' : '/dang-nhap'}>{auth.status === 'authenticated' ? 'Về tài khoản' : 'Đăng nhập'}</Link>
       : token && !terminalLinkError ? <button className="button button-primary button-large w03-action" type="button" disabled={busy} onClick={() => void verify()}>{busy ? 'Đang xác minh…' : 'Xác minh email'}</button> : null}
@@ -561,7 +562,7 @@ export function ResetPasswordPage({ theme, onToggleTheme }: { theme: 'light' | '
     } finally { if (generation === linkGeneration.current) setBusy(false); }
   };
 
-  return <RecoveryFrame key={linkRevision} theme={theme} onToggleTheme={onToggleTheme} title="Đặt mật khẩu mới" description="Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.">
+  return <RecoveryFrame key={linkRevision} showAccountLink={false} theme={theme} onToggleTheme={onToggleTheme} title="Đặt mật khẩu mới" description="Chọn mật khẩu mới để tiếp tục sử dụng tài khoản WayFinder.">
     {feedback && <div ref={feedbackRef} tabIndex={-1} className="w03-feedback error" role="alert">{feedback}</div>}
     {token && !terminalLinkError ? <form className="w03-form" onSubmit={submit} noValidate>
       <div className="auth-field"><label htmlFor="reset-password">Mật khẩu mới</label><input id="reset-password" type="password" name="password" autoComplete="new-password" minLength={8} maxLength={128} value={password} aria-invalid={Boolean(fieldErrors.password)} aria-describedby={fieldErrors.password ? 'reset-password-error' : 'reset-password-help'} onChange={(event) => { setPassword(event.target.value); setFieldErrors((previous) => ({ ...previous, password: '' })); setFeedback(null); }} required />{fieldErrors.password ? <small id="reset-password-error" className="field-error">{fieldErrors.password}</small> : <small id="reset-password-help">Từ 8 đến 128 ký tự.</small>}</div>

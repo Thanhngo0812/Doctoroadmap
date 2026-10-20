@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, cleanup, render, screen } from '@testing-library/react';
+import { act, cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Link, MemoryRouter, useLocation } from 'react-router-dom';
 import App from './App';
@@ -42,6 +42,26 @@ describe('W-03 email verification and recovery', () => {
     expect(await screen.findByRole('heading', { name: 'Quên mật khẩu' })).toBeInTheDocument();
     expect(document.querySelector('header.w03-header')).toBeInTheDocument();
     expect(screen.queryByText('TÀI KHOẢN WAYFINDER')).not.toBeInTheDocument();
+  });
+
+  it.each([
+    ['/xac-minh#token=verify-header', 'Xác minh email', false],
+    ['/dat-lai-mat-khau#token=reset-header', 'Đặt mật khẩu mới', false],
+    ['/xac-minh#token=verify-header', 'Xác minh email', true],
+    ['/dat-lai-mat-khau#token=reset-header', 'Đặt mật khẩu mới', true],
+  ])('omits header navigation on %s (%s, authenticated=%s)', async (path, title, signedIn) => {
+    const me = Promise.resolve(signedIn
+      ? response({ account, csrf_token: 'csrf-w03' })
+      : response({ error: { code: 'unauthenticated' } }, 401));
+    vi.stubGlobal('fetch', vi.fn(() => me));
+    renderApp(path);
+    await act(async () => { await me; });
+
+    expect(screen.getByRole('heading', { name: title })).toBeInTheDocument();
+    const header = within(screen.getByRole('banner'));
+    expect(header.getAllByRole('link')).toHaveLength(1);
+    expect(header.getByRole('link', { name: 'WayFinder, về trang chủ' })).toHaveAttribute('href', '/');
+    expect(header.getByRole('button', { name: /Bật chế độ/ })).toBeInTheDocument();
   });
 
   it('shows the verification reminder and resends with the in-memory CSRF token', async () => {
