@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WayFinder — W-03 Email Verification & Password Reset Screens Preview</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    :root {
+      --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg-subtle);
+      color: var(--color-text);
+      min-height: 100vh;
+      padding: 32px 20px;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 0;
+      }
+    }
+
+    .workbench-header {
+      max-width: 1200px;
+      margin: 0 auto 24px;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .workbench-title h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+    .workbench-title p {
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+    .btn-toggle {
+      height: 44px;
+      padding: 0 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    .screens-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+      padding: 0 16px;
+    }
+    @media (max-width: 768px) {
+      .screens-grid {
+        grid-template-columns: 1fr;
+        padding: 0 12px;
+      }
+    }
+
+    .screen-card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+    }
+    .screen-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 12px;
+      background-color: var(--color-brand-tint);
+      color: var(--color-primary);
+    }
+    .screen-card h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .screen-card p.desc {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    /* Forms & UI */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .form-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border-input);
+      background-color: var(--color-surface);
+      color: var(--color-text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .form-input:focus {
+      outline: 2px solid var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 44px;
+      min-height: 44px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-primary);
+      color: var(--color-primary-text);
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 120ms ease;
+    }
+    .btn-submit:hover {
+      background-color: var(--color-primary-hover);
+    }
+    .btn-secondary {
+      width: 100%;
+      height: 44px;
+      min-height: 44px;
+      border-radius: var(--radius-md);
+      background-color: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn-secondary:hover {
+      background-color: var(--color-bg-subtle);
+    }
+
+    .banner {
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .banner-warning {
+      background-color: var(--color-accent-tint);
+      color: var(--color-accent-text);
+      border: 1px solid var(--color-accent);
+    }
+    .banner-danger {
+      background-color: var(--color-danger-tint);
+      color: var(--color-danger);
+      border: 1px solid var(--color-danger);
+    }
+    .banner-success {
+      background-color: var(--color-success-tint);
+      color: var(--color-success);
+      border: 1px solid var(--color-success);
+    }
+    .banner-info {
+      background-color: var(--color-brand-tint);
+      color: var(--color-primary);
+      border: 1px solid var(--color-primary);
+    }
+
+    .helper-text {
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <div class="workbench-header">
+    <div class="workbench-title">
+      <h1>WayFinder &mdash; Bộ màn hình W-03: Xác thực Email & Đặt lại Mật khẩu</h1>
+      <p>Bàn giao chuẩn thiết kế phục vụ nhóm Web (W-03) &bull; Viewport thích ứng 390px & 1280px &bull; WCAG 2.1 AA</p>
+    </div>
+    <button class="btn-toggle" id="btn-theme-toggle">🌙 Chế độ tối</button>
+  </div>
+
+  <main class="screens-grid">
+
+    <!-- Screen 1: Chờ xác minh email -->
+    <article class="screen-card" id="screen-verify-pending">
+      <span class="screen-tag">Màn hình 1 &bull; W-03</span>
+      <h2>Chờ xác minh email</h2>
+      <p class="desc">Xuất hiện ngay sau khi đăng ký hoặc khi người dùng chưa kích hoạt tài khoản đăng nhập.</p>
+
+      <div class="banner banner-info">
+        <span>✉️</span>
+        <div>
+          Chúng tôi đã gửi email chứa mã xác minh đến <strong>bacsi.nguyen@benhvien.vn</strong>. Vui lòng kiểm tra hộp thư.
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Chưa nhận được email?</label>
+        <p class="helper-text" style="margin-bottom: 12px;">
+          Kiểm tra hòm thư rác (Spam) hoặc yêu cầu gửi lại sau 60 giây để đảm bảo an toàn hệ thống.
+        </p>
+        <button type="button" class="btn-secondary" id="btn-resend-verify" style="margin-top:0;">
+          Gửi lại email xác minh (60s)
+        </button>
+      </div>
+
+      <button type="button" class="btn-submit">
+        Đã xác minh, tiếp tục &rarr;
+      </button>
+    </article>
+
+    <!-- Screen 2: Xác minh email thành công -->
+    <article class="screen-card" id="screen-verify-success">
+      <span class="screen-tag">Màn hình 2 &bull; W-03</span>
+      <h2>Xác minh thành công</h2>
+      <p class="desc">Người dùng bấm vào liên kết trong email và được chuyển về hệ thống.</p>
+
+      <div class="banner banner-success">
+        <span>✅</span>
+        <div>
+          Địa chỉ email <strong>bacsi.nguyen@benhvien.vn</strong> đã được xác minh thành công! Tài khoản của bạn đã kích hoạt đầy đủ quyền.
+        </div>
+      </div>
+
+      <p class="desc" style="margin-bottom: 16px;">
+        Giờ đây bạn có thể truy cập khoá học, tải giáo trình y khoa và tham gia làm bài tập lâm sàng.
+      </p>
+
+      <button type="button" class="btn-submit">
+        Vào trang Khoá học của tôi &rarr;
+      </button>
+    </article>
+
+    <!-- Screen 3: Yêu cầu Quên mật khẩu -->
+    <article class="screen-card" id="screen-forgot-password">
+      <span class="screen-tag">Màn hình 3 &bull; W-03</span>
+      <h2>Quên mật khẩu</h2>
+      <p class="desc">Cho phép học viên yêu cầu đường link đặt lại mật khẩu bảo mật qua email.</p>
+
+      <form onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="forgot-email">Email tài khoản</label>
+          <input type="email" id="forgot-email" class="form-input" placeholder="nhap.email@truong.edu.vn" value="bacsi.nguyen@benhvien.vn">
+          <p class="helper-text">Hệ thống sẽ gửi liên kết có hiệu lực trong vòng 15 phút.</p>
+        </div>
+
+        <button type="button" class="btn-submit">
+          Gửi liên kết đặt lại mật khẩu
+        </button>
+        <button type="button" class="btn-secondary">
+          &larr; Quay lại Đăng nhập
+        </button>
+      </form>
+    </article>
+
+    <!-- Screen 4: Đặt lại mật khẩu mới -->
+    <article class="screen-card" id="screen-reset-password">
+      <span class="screen-tag">Màn hình 4 &bull; W-03</span>
+      <h2>Đặt lại mật khẩu mới</h2>
+      <p class="desc">Màn hình tiếp nhận token bí mật từ email và thiết lập mật khẩu Argon2id mới.</p>
+
+      <form onsubmit="return false;">
+        <div class="form-group">
+          <label class="form-label" for="new-pass">Mật khẩu mới</label>
+          <input type="password" id="new-pass" class="form-input" placeholder="Tối thiểu 8 ký tự, có chữ & số">
+          <p class="helper-text">Khuyến nghị kết hợp chữ hoa, chữ thường và ký tự đặc biệt.</p>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="confirm-pass">Xác nhận mật khẩu mới</label>
+          <input type="password" id="confirm-pass" class="form-input" placeholder="Nhập lại mật khẩu mới">
+        </div>
+
+        <button type="button" class="btn-submit">
+          Lưu mật khẩu mới & Đăng nhập
+        </button>
+      </form>
+    </article>
+
+    <!-- Screen 5: Token lỗi / Hết hạn -->
+    <article class="screen-card" id="screen-token-invalid">
+      <span class="screen-tag">Màn hình 5 &bull; W-03</span>
+      <h2>Token không hợp lệ hoặc đã hết hạn</h2>
+      <p class="desc">Trạng thái xử lý lỗi token một lần (single-use) hoặc quá thời hạn 15 phút.</p>
+
+      <div class="banner banner-danger">
+        <span>⚠️</span>
+        <div>
+          Liên kết xác minh hoặc đặt lại mật khẩu này không còn hiệu lực (đã hết hạn sau 15 phút hoặc đã được sử dụng trước đó).
+        </div>
+      </div>
+
+      <p class="desc" style="margin-bottom: 20px;">
+        Vì lý do an toàn, các liên kết xác thực chỉ được dùng một lần duy nhất. Vui lòng yêu cầu liên kết mới.
+      </p>
+
+      <button type="button" class="btn-submit">
+        Yêu cầu gửi liên kết mới &rarr;
+      </button>
+      <button type="button" class="btn-secondary">
+        Về trang Đăng nhập
+      </button>
+    </article>
+
+  </main>
+
+  <script>
+    const btnToggle = document.getElementById('btn-theme-toggle');
+    btnToggle.addEventListener('click', () => {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      btnToggle.textContent = isDark ? '🌙 Chế độ tối' : '☀️ Chế độ sáng';
+    });
+  </script>
+</body>
+</html>
