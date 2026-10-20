@@ -98,6 +98,34 @@ async function capture() {
       viewport: { width: 1280, height: 1000 },
       fullPage: false,
       theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/w06_course_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_w06_courses.png'),
+      viewport: { width: 1280, height: 900 },
+      fullPage: true,
+      theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/w06_course_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_w06_mobile.png'),
+      viewport: { width: 390, height: 844 },
+      fullPage: true,
+      theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/w04_profile_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_w04_profile.png'),
+      viewport: { width: 1280, height: 900 },
+      fullPage: true,
+      theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/w04_profile_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_w04_mobile.png'),
+      viewport: { width: 390, height: 844 },
+      fullPage: true,
+      theme: 'light'
     }
   ];
 
