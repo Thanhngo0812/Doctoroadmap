@@ -18,12 +18,13 @@
 
 ## Đối chiếu giả thuyết junction
 
-Đã đọc lại các lệnh thực thi của chính phiên điều phối, quy đổi giờ UTC sang Asia/Saigon:
+Đã đọc lại các lệnh thực thi của phiên điều phối và phiên lõi, quy đổi giờ UTC sang Asia/Saigon:
 
 1. Lệnh nạp đủ 927 tệp vào `tmp/ghep-main` dùng **`shutil.copyfile(src, dst)`**; không có thao tác tạo junction trong lệnh nạp này.
 2. Lệnh gỡ `tmp/ghep-main` chạy khoảng **09:28:52–09:29:13**, sau khi lưu XML/log/manifest. Vì vậy không phải lệnh gỡ diễn ra lúc 09:35.
 3. Lệnh gỡ `tmp/w05-postgres` chạy khoảng **09:35:01–09:35:20**. Trước khôi phục, `LastWriteTime` của các thư mục doc-6 graph/retrieval/formula_images là **09:35:03** và chúng rỗng.
-4. Mốc này phù hợp với hướng điều tra lần gỡ W-05, nhưng **chưa chứng minh cơ chế mất dữ liệu hoặc junction trong worktree đã gỡ**. Không khẳng định giả thuyết là kết luận.
+4. **Bổ sung đã kiểm trực tiếp từ log phiên lõi:** ngày 2026-10-19 khoảng **21:33**, trong `tmp/w05-postgres` có lệnh `New-Item -ItemType Junction` cho sáu nhóm `parse_tree/chunks/candidates/canonical/retrieval/graph` của doc-1/doc-6 và `phase_b/formula_images/doc-6`, trỏ tới kho tương ứng ở thư mục chung. Lệnh kết thúc với mã 0. Đây là bằng chứng thiết lập junction ở **W-05**, khác với cách chép tệp vào `ghep-main`.
+5. Các đích junction này trùng những nhóm dữ liệu bị thiếu, và mốc thư mục rỗng nằm trong khoảng gỡ W-05. Chuỗi bằng chứng ủng hộ mạnh việc dọn W-05 đã tác động qua junction. **Chưa tái hiện độc lập cơ chế xoá**, nên không trình bày một phép tái hiện chưa chạy là đã được chứng minh. Lệnh gốc được lưu trong JSON bằng chứng.
 
 Điều phối xác nhận đã thực hiện cả hai lần dọn. Việc chỉ kiểm worktree sạch theo Git mà chưa kiểm liên kết/reparse point và chưa giữ snapshot độc lập đầy đủ là thiếu sót của điều phối. Manifest chỉ giữ đường dẫn/hash, không thay thế bản sao dữ liệu.
 

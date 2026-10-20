@@ -7723,5 +7723,18 @@
     "formula_images_doc6_last_write_local": "2026-10-20T09:35:03+07:00",
     "were_empty": true
   },
-  "junction_dir_AL_before": "artifacts <JUNCTION> [\\??\\C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\artifacts]"
+  "junction_dir_AL_before": "artifacts <JUNCTION> [\\??\\C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\artifacts]",
+  "w05_junction_creation_evidence": [
+    {
+      "tool_log_completed_utc": "2026-10-19T14:33:13.367Z",
+      "cwd": "file:///C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w05-postgres",
+      "command": [
+        "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        "-Command",
+        "$sourceRoot='C:\\Users\\ngoco\\Desktop\\Doctoroadmap'; foreach ($kind in @('parse_tree','chunks','candidates','canonical','retrieval','graph')) { foreach ($docId in @('doc-1','doc-6')) { $source=Join-Path $sourceRoot \"artifacts/$kind/$docId\"; $target=Join-Path (Get-Location) \"artifacts/$kind/$docId\"; if ((Test-Path -LiteralPath $source) -and !(Test-Path -LiteralPath $target)) { New-Item -ItemType Directory -Path (Split-Path $target) -Force | Out-Null; New-Item -ItemType Junction -Path $target -Target $source | Out-Null } } }; $formulaSource=Join-Path $sourceRoot 'artifacts/phase_b/formula_images/doc-6'; New-Item -ItemType Directory -Path artifacts/phase_b/formula_images -Force | Out-Null; if (!(Test-Path artifacts/phase_b/formula_images/doc-6)) { New-Item -ItemType Junction -Path artifacts/phase_b/formula_images/doc-6 -Target $formulaSource | Out-Null }; Copy-Item -LiteralPath (Join-Path $sourceRoot 'doc-1.pdf') -Destination doc-1.pdf; $env:PYTHONPATH=\"$((Get-Location).Path)\\src;$((Get-Location).Path)\\src\\web\\backend\"; & C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8 -m pytest tests/unit/application/test_phase_b_quiz.py::test_real_graph_dict_aliases_and_item_ready_stream_to_five tests/unit/application/test_phase_b_quiz.py::test_assistant_make_quiz_tool_returns_only_attempt_reference_and_count tests/unit/infrastructure/test_fake_build_runner.py::test_fake_graph_version_is_latest_loadable_complete_graph tests/unit/presentation/test_phase_b_preview.py::test_preview_renders_only_allowlisted_pdf_pages_and_checks_bounds -p no:cacheprovider --basetemp=tmp/w05-asset-recheck --junitxml=tmp/w05-asset-recheck.xml --tb=short"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "cause_assessment": "W-05 junction setup is evidenced by its execution log. The missing-data footprint and timestamps strongly support the W-05 removal as the cause; no independent deletion reproduction was run."
 }
