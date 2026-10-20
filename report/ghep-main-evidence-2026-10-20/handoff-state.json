@@ -1,0 +1,42 @@
+{
+  "main_at_first_push": "83f3ffd591795c4717deba152944cd836bb88437",
+  "merge_commit": "a3f2f13f184e874f1ef4ac0e3e6cbc7aebb7e980",
+  "cleanup": [
+    {
+      "target": "tmp/w05-postgres + work/w05-postgres",
+      "action": "removed",
+      "reason": "clean and merged"
+    },
+    {
+      "target": "work/w02-accounts",
+      "action": "removed",
+      "reason": "entire history preserved by W-03"
+    },
+    {
+      "target": "tmp/w05-core + work/w05-core",
+      "action": "kept",
+      "reason": "dirty"
+    },
+    {
+      "target": "review/w13-complete-2026-10-19",
+      "action": "kept",
+      "reason": "exact cleanup comparison differs in tasks/todo.md; reports match"
+    }
+  ],
+  "worktrees": {
+    "w03-email-recovery": {
+      "path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w03-email-recovery",
+      "branch": "work/w03-email-recovery",
+      "head": "7e8530b14e4dfe4df6ecb947782e8741995325ed",
+      "working_tree_clean": true
+    },
+    "w24-figma-evidence": {
+      "path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w24-figma-evidence",
+      "branch": "work/w24-figma-evidence",
+      "head": "cd8e83d2ad5fe2c755cbd70895634ee18bcf21b4",
+      "working_tree_clean": true
+    }
+  },
+  "captured_utc": "2026-10-20T02:37:24.386690+00:00",
+  "snapshot_scope": "After first successful push and worktree preparation, before final journal-only commit."
+}

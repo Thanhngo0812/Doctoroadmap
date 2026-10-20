@@ -6,6 +6,7 @@
 
 **Chuyển worktree 2026-10-20:** nhánh `work/w03-email-recovery`, thư mục `tmp/w03-email-recovery`; nhận main mới theo
 [quy trình nhánh](../../doc/quy-trinh-nhanh-va-ghep-main.md). Không làm hay đổi nhánh trong thư mục chung.
+Đã nhận main `83f3ffd`, cài React, tạo `tmp/` và chuẩn bị `src/web/.env` được bỏ qua; chủ dự án mở lại phiên tại worktree này trước khi tiếp tục.
 Checkpoint `33c70ac` và snapshot `fdd0620` chưa được nghiệm thu W-03. Các commit mang theo `781415b`/`79cb9c9`/`6cd6be7` cũng chưa được soát;
 phần thiết kế cần phán xét W-24 trước khi W-03 được ghép. Xem [biên bản chuyển và cổng main](../../report/dieu-phoi-ghep-main-2026-10-20.md).
 
