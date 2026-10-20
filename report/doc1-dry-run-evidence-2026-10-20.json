@@ -1,0 +1,322 @@
+{
+  "started_utc": "2026-10-20T06:31:13.816467+00:00",
+  "commit": "88a6905f1fbac890469f694772318286f6053256",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap",
+  "settings": {
+    "artifact_dir": "artifacts",
+    "llm_transport": "vertex",
+    "vertex_location": "global",
+    "secondary_mode": "ml",
+    "extraction_model_id": "gemini-3.1-flash-lite",
+    "embedding_model_id": "gemini-embedding-001",
+    "embedding_dimensions": 768,
+    "roadmap_model_id": "gemini-3.1-flash-lite"
+  },
+  "steps": [
+    {
+      "step": "ingest-cache",
+      "command": "doc2roadmap ingest doc-1.pdf --doc-id doc-1 --dry-run",
+      "exit_code": 0,
+      "result": {
+        "doc_id": "doc-1",
+        "parse": "cần parse mới",
+        "parse_version": null,
+        "parser_config": {
+          "adapter": "a1-nhe:r2-full",
+          "adapter_version": 1,
+          "image_scale": 1.0,
+          "pipeline": {
+            "a1": "nhe",
+            "models": {
+              "heading.joblib": "90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70",
+              "join.joblib": "92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb"
+            },
+            "version": "r2-full-v1"
+          }
+        },
+        "parser_config_hash": "c458cafaa276925d8b498b2e67494614657b6f443d064463d32a40f04e8b8c64",
+        "parser_runtime": null,
+        "text_quality_selection": {
+          "attempts": [
+            {
+              "backend": "a1-nhe:r2-full",
+              "quality": null,
+              "quality_status": "chưa đo",
+              "reused": false
+            }
+          ],
+          "mode": "pinned",
+          "planned_backend": "a1-nhe:r2-full",
+          "reason": "unmeasured",
+          "selected_backend": null
+        }
+      },
+      "elapsed_seconds": 1.496
+    },
+    {
+      "step": "build",
+      "command": "doc2roadmap build --file doc-1.pdf --doc-id doc-1 --dry-run",
+      "exit_code": 0,
+      "result": {
+        "completed_steps": [
+          "doc_reading"
+        ],
+        "doc_id": "doc-1",
+        "elapsed_seconds": 14.380299699999796,
+        "error": null,
+        "graph_version": null,
+        "input_tokens": 0,
+        "model_calls": 0,
+        "output_tokens": 0,
+        "pipeline_version": "88a6905f1fbac890469f694772318286f6053256:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+        "spent_usd": 0.0,
+        "status": "dry_run",
+        "step_details": {
+          "doc_reading": {
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 82268,
+            "average_alphabetic_chars_per_page": 806.5490196078431,
+            "chunk_count": 302,
+            "chunks_version": 8,
+            "empty_page_ratio": 0.0,
+            "page_count": 102,
+            "parse_version": 6,
+            "vi_diacritic_ratio": 0.21818933242573055
+          },
+          "dry_run": {
+            "cache_validated": false,
+            "candidate_version": 3,
+            "canonical_version": 4,
+            "chunks_version": 8,
+            "graph_version": null,
+            "retrieval_version": 3
+          }
+        },
+        "usage_complete": true
+      },
+      "elapsed_seconds": 14.7307
+    },
+    {
+      "step": "label-roles",
+      "command": "LabelChunkRoles.plan(doc-1)",
+      "exit_code": 0,
+      "result": {
+        "status": "run",
+        "remaining_items": 16,
+        "unit": "batch",
+        "calls_estimate": 16,
+        "usd_estimate": 0.018842,
+        "checkpoint_id": null,
+        "note": "Ước input 3 ký tự/token; output trung bình checkpoint hoặc 512 token/lời gọi; chưa tính retry/repair. 162 headings in 16 batches of at most 40; invalid labels retry once.",
+        "label": "sẽ chạy"
+      },
+      "elapsed_seconds": 0.088
+    },
+    {
+      "step": "a4",
+      "command": "build_canonical(dry_run=True).plan(doc-1, declared_language='vi')",
+      "exit_code": 0,
+      "result": {
+        "embedding": {
+          "status": "run",
+          "remaining_items": 244,
+          "unit": "name",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Embedding tên; số batch và token phụ thuộc adapter.",
+          "label": "sẽ chạy"
+        },
+        "merge": {
+          "status": "unknown",
+          "remaining_items": null,
+          "unit": "stage",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Phụ thuộc kết quả phần trước; chưa biết.",
+          "label": "chưa biết"
+        },
+        "repair": {
+          "status": "unknown",
+          "remaining_items": null,
+          "unit": "stage",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Phụ thuộc kết quả phần trước; chưa biết.",
+          "label": "chưa biết"
+        },
+        "merge_verify": {
+          "status": "unknown",
+          "remaining_items": null,
+          "unit": "stage",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Phụ thuộc kết quả phần trước; chưa biết.",
+          "label": "chưa biết"
+        },
+        "describe": {
+          "status": "unknown",
+          "remaining_items": null,
+          "unit": "stage",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Phụ thuộc kết quả phần trước; chưa biết.",
+          "label": "chưa biết"
+        },
+        "check": {
+          "status": "unknown",
+          "remaining_items": null,
+          "unit": "stage",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Phụ thuộc kết quả phần trước; chưa biết.",
+          "label": "chưa biết"
+        },
+        "anchor": {
+          "status": "unknown",
+          "remaining_items": null,
+          "unit": "stage",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Phụ thuộc kết quả phần trước; chưa biết. anchor_chunks_version=7",
+          "label": "chưa biết"
+        },
+        "anchor_prior_verify": {
+          "status": "unknown",
+          "remaining_items": null,
+          "unit": "stage",
+          "calls_estimate": null,
+          "usd_estimate": null,
+          "checkpoint_id": null,
+          "note": "Phụ thuộc kết quả phần trước; chưa biết.",
+          "label": "chưa biết"
+        }
+      },
+      "elapsed_seconds": 0.6936
+    },
+    {
+      "step": "roadmap",
+      "command": "doc2roadmap roadmap --doc-id doc-1 --dry-run",
+      "exit_code": 2,
+      "elapsed_seconds": 0.1308
+    },
+    {
+      "step": "a12",
+      "command": "doc2roadmap phase-b a12 --doc-id doc-1 --dry-run --store C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-doc1-rebuild-20261020\\phase-b-doc1-dry-run.json",
+      "exit_code": 2,
+      "elapsed_seconds": 0.0516
+    },
+    {
+      "step": "concept-index",
+      "command": "doc2roadmap phase-b concept-index --doc-id doc-1 --dry-run --store C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-doc1-rebuild-20261020\\phase-b-doc1-dry-run.json",
+      "exit_code": 2,
+      "elapsed_seconds": 0.2315
+    },
+    {
+      "step": "formulas",
+      "command": "doc2roadmap phase-b formulas --doc-id doc-1 --dry-run --store C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-doc1-rebuild-20261020\\phase-b-doc1-dry-run.json --pdf doc-1.pdf",
+      "exit_code": 2,
+      "elapsed_seconds": 0.0527
+    }
+  ],
+  "phase_b_redirects": [
+    "artifacts/phase_b/live.json"
+  ],
+  "a3_cache_inspection": {
+    "chunks_version": 8,
+    "chunk_count": 302,
+    "section_count": 197,
+    "context_count_before_new_roles": 168,
+    "context_images": 0,
+    "role_target_config_hash": "58d79c80b082c3674d9e0843acf2924fbb9cd8f23de796ca54ff74d2a915a406",
+    "a3_target_config_hash": "65f6fa8a34b049712ee7a7d04d6ff8b6f36ab5bf0153fa1534b1e2f1fe70bc33",
+    "a3_cached_version": null,
+    "a3_checkpoint_exists": false,
+    "a3_prime_cached_version": null,
+    "note": "Read-only config lookup; final A3 work may change after new semantic roles."
+  },
+  "network_attempts": 0,
+  "actual_cost_usd": 0,
+  "finished_utc": "2026-10-20T06:31:32.090101+00:00",
+  "input_counts": {
+    "chunk_count": 302,
+    "embedding_chars": 151655,
+    "embedding_input_tokens_estimate": 50641,
+    "formula_nodes": 2602,
+    "parse_nodes": 5685,
+    "reference_canonical_version": 4,
+    "reference_canonical_nodes": 231,
+    "reference_learnable_nodes": 225,
+    "reference_edges": 245
+  },
+  "checkpoint_count": 18,
+  "checkpoint_groups": {
+    "anchor": 5,
+    "concept": 1,
+    "identity": 8,
+    "implicit": 1,
+    "relation": 1,
+    "teaching": 2
+  },
+  "reference_concept_index": {
+    "canonical_version": 4,
+    "input_count": 225,
+    "estimated_input_tokens": 13217,
+    "estimated_usd": 0.00198255
+  },
+  "reference_a3": {
+    "sections": 80,
+    "llm_calls": 258,
+    "usd": 0.28750175,
+    "current_context_ratio": 2.1,
+    "scaled_calls": 541.8,
+    "scaled_usd": 0.603753675
+  },
+  "reference_a4": {
+    "canonical_version": 4,
+    "llm_calls": 267,
+    "usd": 0.20522325,
+    "current_gop_anchor_and_verify_not_included": true
+  },
+  "embedding_chunk_usd": 0.007596149999999999,
+  "approval_status": "pending_explicit_owner_message",
+  "proposed_budget_usd": 3.0,
+  "source_code_changed": false,
+  "baseline_v57": {
+    "source_report": "report/dieu-phoi-tiep-nhan-2026-10-18.md",
+    "source_json": "tmp/dieu-phoi-doi-chieu-20261018.json",
+    "source_json_sha256": "17ca80a1c4a6af1b21004cf9832adf639fb0287928334275dcc93ed4f387d7b0",
+    "doc_id": "doc-1",
+    "graph_version": 57,
+    "modules": 33,
+    "learnable_nodes": 205,
+    "title_llm": 29,
+    "description_llm": 1,
+    "description_template": 32,
+    "edge_count": null,
+    "module_node_ids_available": false
+  },
+  "doc6_post_recovery_checks": {
+    "counts": {
+      "tests": 12,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0
+    },
+    "xml": "report/cache-recovery-doc6-tests-2026-10-20.xml"
+  },
+  "independent_build_ledger_check": {
+    "doc_id": "doc-1",
+    "status": "dry_run",
+    "model_calls": 0,
+    "spent_usd": 0.0
+  },
+  "original_manifest_matching_after_dry_run": 787,
+  "doc6_matching_after_dry_run": 122
+}

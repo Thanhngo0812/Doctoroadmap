@@ -42,3 +42,7 @@
 Nhóm web/lõi có thể dùng các tệp đã khôi phục ở thư mục chung hoặc snapshot trên, chép đúng đường dẫn có trong manifest vào worktree riêng và kiểm hash. Không tạo junction tới kho artifact chung. Không coi toàn bộ 927 tệp đã có; cổng đầy đủ vẫn chờ graph doc-1 v45 và các đầu vào còn thiếu. Các kiểm thử độc lập đủ fixture tiếp tục chạy qua `scripts/w05_run_tests.py`.
 
 Trước mọi lần dọn worktree tiếp theo phải kiểm reparse point/junction và giữ bản sao độc lập của dữ liệu bỏ qua bởi Git. Không dùng kết quả `git status` sạch làm bằng chứng rằng không còn dữ liệu cần giữ.
+
+## Chỉ thị tiếp theo của chủ dự án
+
+Đã dừng tìm bản sao; chuyển sang [dry-run và đề nghị dựng lại doc-1](doc1-du-tru-dung-lai-2026-10-20.md), chờ tin nhắn duyệt trước mọi lời gọi trả phí. Doc-6 đã kiểm tập trung lại **12/12 đạt** sau khôi phục; [XML](cache-recovery-doc6-tests-2026-10-20.xml). Dựng mới không làm 140 tệp lịch sử tự trở thành khớp manifest cũ; giữ riêng hai kết quả khôi phục và dựng lại.
