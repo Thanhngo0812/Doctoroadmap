@@ -69,6 +69,20 @@ def test_account_email_templates_escape_untrusted_values_and_use_base_url(kind):
     assert "https://wayfinder.example.vn/dang-nhap" in content.html
 
 
+@pytest.mark.parametrize("kind", ["verify_email", "reset_password", "existing_account"])
+def test_account_email_templates_use_configured_logo_and_escape_query(kind):
+    from wayfinder.application.email_templates import render_account_email
+
+    content = render_account_email(kind, display_name="An",
+                                   action_url="http://127.0.0.1:8000/xac-minh#token=fake",
+                                   base_url="http://127.0.0.1:8000",
+                                   logo_url="https://res.cloudinary.com/demo/logo.png?a=1&b=2")
+
+    assert 'src="https://res.cloudinary.com/demo/logo.png?a=1&amp;b=2"' in content.html
+    assert 'src="http://127.0.0.1:8000/' not in content.html
+    assert "http://127.0.0.1:8000/dang-nhap" in content.html
+
+
 def test_account_email_templates_reject_unknown_kind():
     from wayfinder.application.email_templates import render_account_email
 

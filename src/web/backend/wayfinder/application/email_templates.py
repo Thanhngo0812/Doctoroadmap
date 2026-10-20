@@ -16,7 +16,7 @@ class MailContent:
 
 
 def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
-                         base_url: str, valid_for: str | None = None) -> MailContent:
+                         base_url: str, valid_for: str | None = None, logo_url: str | None = None) -> MailContent:
     if kind not in {"verify_email", "reset_password", "existing_account"}:
         raise ValueError("Unsupported account email kind")
     base = base_url.rstrip("/")
@@ -53,7 +53,7 @@ def render_account_email(kind: EmailKind, *, display_name: str, action_url: str,
     message_html = escape(message)
     action_html = escape(action_url, quote=True)
     login_html = escape(login_url, quote=True)
-    logo_url = escape(f"{base}/assets/Artboard%2024.png", quote=True)
+    logo_url = escape(logo_url or f"{base}/assets/Artboard%2024.png", quote=True)
     expiry_html = (f'<p style="font-size:13px;line-height:1.5;color:#5B6673;">'
                    f'Liên kết có hiệu lực trong {escape(valid_for)}.</p>') if valid_for else ""
     html = f"""<!doctype html>

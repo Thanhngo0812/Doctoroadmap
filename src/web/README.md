@@ -126,6 +126,7 @@ Script tạo tài khoản kiểm thử có email example.vn và chạy thử gi�
 - Token ngẫu nhiên 32 byte, DB chỉ giữ băm SHA-256; dùng một lần. Xác minh hết hạn sau 24 giờ, reset sau 60 phút. Gửi lại xác minh/yêu cầu reset tối đa 3 lần mỗi giờ; phản hồi reset giống nhau cho email có hoặc không có tài khoản.
 - Reset thành công thu hồi mọi phiên và các link reset còn lại, chuyển về đăng nhập bằng mật khẩu mới. Chưa xác minh vẫn học/demo bình thường; luật chặn mời qua email được chuẩn bị cho W-12.
 - `console` chỉ dành cho dev, ghi thư ở logger `wayfinder.infrastructure.mail` mức INFO. Production bắt buộc SMTP/STARTTLS. Queue thư nằm trong bộ nhớ; restart có thể mất thư đang đợi, người học dùng gửi lại.
+- `WAYFINDER_EMAIL_LOGO_URL` là ảnh HTTPS công khai cho logo trong cả ba mẫu thư (ví dụ Cloudinary); không dùng địa chỉ localhost cho ảnh gửi tới Gmail. Để trống thì dùng logo ở `WAYFINDER_PUBLIC_BASE_URL`. Đổi cấu hình cần khởi động lại máy chủ; URL của nút xác minh/reset vẫn dùng `WAYFINDER_PUBLIC_BASE_URL`.
 
 Kiểm toàn bộ Python trong worktree bằng runner để không import nhầm editable ở checkout khác:
 

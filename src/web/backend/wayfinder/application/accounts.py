@@ -27,6 +27,7 @@ class AuthPolicy:
     resend_verification_per_hour: int = 3
     password_reset_ttl_minutes: int = 60
     public_base_url: str = "http://127.0.0.1:8000"
+    email_logo_url: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -401,7 +402,7 @@ class AccountService:
         from wayfinder.application.email_templates import render_account_email
 
         content = render_account_email(kind, display_name=account.display_name, action_url=action_url,
-                                       base_url=base_url, valid_for=valid_for)
+                                       base_url=base_url, valid_for=valid_for, logo_url=self.policy.email_logo_url)
         try:
             self.mailer.send(account.email, content.subject, content.text, html_body=content.html)
         except Exception:

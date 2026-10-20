@@ -114,7 +114,8 @@ def compose_account_service(settings: WebSettings, engine, *, mailer=None) -> Ac
                         email_verify_ttl_hours=settings.email_verify_ttl_hours,
                         resend_verification_per_hour=settings.resend_verification_per_hour,
                         password_reset_ttl_minutes=settings.password_reset_ttl_minutes,
-                        public_base_url=settings.public_base_url)
+                        public_base_url=settings.public_base_url,
+                        email_logo_url=settings.email_logo_url)
     return AccountService(PostgresAuthStore(engine), Argon2PasswordHasher(), SystemClock(), policy,
                           load_common_passwords(), mailer=mailer if mailer is not None else compose_mailer(settings))
 

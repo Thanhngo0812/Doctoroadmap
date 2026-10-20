@@ -18,6 +18,40 @@ def test_mail_link_base_is_normalized():
     assert settings.public_base_url == "https://learn.example.vn"
 
 
+@pytest.mark.parametrize("url", [
+    "javascript:alert(1)", "http://images.example.vn/logo.png", "/logo.png",
+    "https://user:secret@images.example.vn/logo.png", "https://images.example.vn/logo.png\r\n",
+    "https://images.example.vn:invalid/logo.png",
+])
+def test_email_logo_rejects_unsafe_urls(url):
+    with pytest.raises(ValidationError):
+        WebSettings(_env_file=None, email_logo_url=url)
+
+
+def test_logo_env_reaches_all_account_emails(monkeypatch, postgres_database_url):
+    from uuid import uuid4
+    from wayfinder.fakes.mail import FakeMailer
+    from wayfinder.infrastructure.database import create_database_engine
+
+    logo = "https://res.cloudinary.com/dfcb3zzw9/image/upload/v1792483249/Artboard_13_ousztc.png"
+    monkeypatch.setenv("WAYFINDER_EMAIL_LOGO_URL", logo)
+    settings = WebSettings(_env_file=None, public_base_url="http://127.0.0.1:8000")
+    engine, mailer = create_database_engine(postgres_database_url), FakeMailer()
+    try:
+        accounts = composition.compose_account_service(settings, engine, mailer=mailer)
+        email = f"logo-{uuid4().hex}@example.vn"
+        accounts.register(email, "Logo check secure pass!", "Người học", ip=None, user_agent=None)
+        accounts.request_password_reset(email)
+        accounts.register(email, "Another secure pass!", "Người học", ip=None, user_agent=None)
+        assert len(mailer.messages) == 3
+        for message in mailer.messages:
+            assert f'src="{logo}"' in message["html_body"]
+            assert 'src="http://127.0.0.1:8000/' not in message["html_body"]
+            assert "http://127.0.0.1:8000/" in message["body"]
+    finally:
+        engine.dispose()
+
+
 def test_smtp_composition_validates_credentials_without_connecting():
     settings = WebSettings(_env_file=None, mailer="smtp")
     with pytest.raises(ValueError, match="SMTP"):

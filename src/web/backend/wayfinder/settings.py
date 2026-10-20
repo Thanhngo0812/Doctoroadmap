@@ -17,6 +17,7 @@ class WebSettings(BaseSettings):
     frontend_dist: Path = Path("src/web/frontend/dist")
     allowed_origins: list[str] = Field(default_factory=list)
     public_base_url: str = "http://127.0.0.1:8000"
+    email_logo_url: str | None = None
     session_idle_days: int = Field(default=7, gt=0)
     session_absolute_days: int = Field(default=30, gt=0)
     login_max_failures: int = Field(default=5, gt=0)
@@ -67,6 +68,19 @@ class WebSettings(BaseSettings):
             raise ValueError("public_base_url must be an HTTP(S) origin without credentials or a path")
         _ = parts.port  # Reject malformed or out-of-range ports.
         return value.rstrip("/")
+
+    @field_validator("email_logo_url")
+    @classmethod
+    def validate_email_logo_url(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        parts = urlsplit(value)
+        if (any(character.isspace() for character in value)
+                or parts.scheme != "https" or not parts.hostname
+                or parts.username is not None or parts.password is not None):
+            raise ValueError("email_logo_url must be an HTTPS URL without credentials or whitespace")
+        _ = parts.port
+        return value
 
     @model_validator(mode="before")
     @classmethod
