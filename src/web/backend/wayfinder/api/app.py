@@ -132,7 +132,12 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
             "font-src 'self' https://fonts.gstatic.com data:"
         )
         response.headers["x-content-type-options"] = "nosniff"
-        response.headers["referrer-policy"] = "same-origin"
+        recovery_page = request.url.path in {"/xac-minh", "/quen-mat-khau", "/dat-lai-mat-khau"}
+        recovery_api = request.url.path.startswith("/api/v1/auth/password-reset/") or request.url.path in {
+            "/api/v1/auth/verify-email", "/api/v1/auth/resend-verification"}
+        response.headers["referrer-policy"] = "no-referrer" if recovery_page or recovery_api else "same-origin"
+        if recovery_page or recovery_api:
+            response.headers["cache-control"] = "no-store"
         return response
 
     return app

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-import { AuthNotice, AuthPage, AuthProvider, LandingRoute, RequireAccount, useAuth } from './Auth';
+import { AuthNotice, AuthPage, AuthProvider, ForgotPasswordPage, LandingRoute, RequireAccount, ResetPasswordPage, VerifyEmailPage, useAuth } from './Auth';
 import { ApiError, fetchHealth, type HealthPayload } from './api';
 
 type Theme = 'light' | 'dark';
@@ -352,6 +352,9 @@ export default function App() {
     <Route path="/dang-nhap" element={<AuthPage key="login" mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dang-ky" element={<AuthPage key="register" mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/xac-minh" element={<VerifyEmailPage theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/quen-mat-khau" element={<ForgotPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/dat-lai-mat-khau" element={<ResetPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="*" element={<NotFound theme={theme} onToggleTheme={toggleTheme} />} />
   </Routes></AuthProvider>;
 }

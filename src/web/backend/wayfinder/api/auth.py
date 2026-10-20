@@ -15,6 +15,10 @@ from wayfinder.domain.auth import Actor
 COOKIE_NAME = "d2r_session"
 REGISTER_MESSAGE = "Yêu cầu đăng ký đã được tiếp nhận. Bạn có thể đăng nhập để tiếp tục."
 PREAUTH_ROUTES = frozenset({"/api/v1/auth/register", "/api/v1/auth/login"})
+PUBLIC_TOKEN_ROUTES = frozenset({
+    "/api/v1/auth/verify-email", "/api/v1/auth/password-reset/request",
+    "/api/v1/auth/password-reset/confirm",
+})
 
 
 class RegisterRequest(BaseModel):
@@ -28,6 +32,26 @@ class LoginRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     email: str = Field(max_length=254)
     password: SecretStr = Field(max_length=128)
+
+
+class VerifyEmailRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    token: str = Field(min_length=1, max_length=256)
+
+
+class ResendVerificationRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+
+class PasswordResetRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    email: str = Field(max_length=254)
+
+
+class PasswordResetConfirmRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    token: str = Field(min_length=1, max_length=256)
+    password: SecretStr = Field(min_length=8, max_length=128)
 
 
 class AccountResponse(BaseModel):
@@ -108,7 +132,7 @@ async def enforce_csrf(request: Request) -> None:
         allowed = [f"{request.url.scheme}://{request.url.netloc}"] if local else []
     if not origin or origin == "null" or origin not in allowed:
         raise WebError("csrf_failed", "Yêu cầu không hợp lệ. Vui lòng tải lại trang và thử lại.")
-    if request.url.path in PREAUTH_ROUTES and request.method == "POST":
+    if request.url.path in PREAUTH_ROUTES | PUBLIC_TOKEN_ROUTES and request.method == "POST":
         return
     token = request.headers.get("x-csrf-token")
     if not token or not request.cookies.get(COOKIE_NAME):
@@ -138,6 +162,33 @@ def auth_router() -> APIRouter:
         _set_session_cookie(response, request, grant.token)
         response.headers["cache-control"] = "no-store"
         return _identity_response(grant)
+
+    @router.post("/auth/verify-email", response_model=MessageResponse)
+    def verify_email(data: VerifyEmailRequest, request: Request, response: Response):
+        _service(request).verify_email(data.token, ip=client_ip(request))
+        response.headers["cache-control"] = "no-store"
+        return {"message": "Email đã được xác minh."}
+
+    @router.post("/auth/resend-verification", response_model=MessageResponse)
+    def resend_verification(request: Request, response: Response):
+        account_id = get_identity(request).account.id
+        message = _service(request).resend_verification(account_id, ip=client_ip(request))
+        response.headers["cache-control"] = "no-store"
+        return {"message": message}
+
+    @router.post("/auth/password-reset/request", response_model=MessageResponse)
+    def request_password_reset(data: PasswordResetRequest, request: Request, response: Response):
+        message = _service(request).request_password_reset(data.email, ip=client_ip(request))
+        response.headers["cache-control"] = "no-store"
+        return {"message": message}
+
+    @router.post("/auth/password-reset/confirm", response_model=MessageResponse)
+    def confirm_password_reset(data: PasswordResetConfirmRequest, request: Request, response: Response):
+        _service(request).reset_password(data.token, data.password.get_secret_value(), ip=client_ip(request))
+        response.delete_cookie(COOKIE_NAME, path="/", secure=_secure_cookie(request),
+                               httponly=True, samesite="lax")
+        response.headers["cache-control"] = "no-store"
+        return {"message": "Đã đặt lại mật khẩu. Hãy đăng nhập bằng mật khẩu mới."}
 
     @router.get("/me", response_model=IdentityResponse)
     def me(request: Request, response: Response):

@@ -1,7 +1,8 @@
 from pathlib import Path
+from urllib.parse import urlsplit
 from typing import Literal
 
-from pydantic import AliasChoices, Field, SecretStr, model_validator
+from pydantic import AliasChoices, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -15,6 +16,7 @@ class WebSettings(BaseSettings):
     phase_b_lock_pool_size: int = Field(default=8, gt=0)
     frontend_dist: Path = Path("src/web/frontend/dist")
     allowed_origins: list[str] = Field(default_factory=list)
+    public_base_url: str = "http://127.0.0.1:8000"
     session_idle_days: int = Field(default=7, gt=0)
     session_absolute_days: int = Field(default=30, gt=0)
     login_max_failures: int = Field(default=5, gt=0)
@@ -53,6 +55,18 @@ class WebSettings(BaseSettings):
     cloudinary_folder: str | None = None
     signed_url_ttl_seconds: int = Field(default=300, gt=0)
     page_image_width: int = Field(default=1400, gt=0)
+
+    @field_validator("public_base_url")
+    @classmethod
+    def validate_public_base_url(cls, value: str) -> str:
+        parts = urlsplit(value)
+        if (any(character.isspace() for character in value)
+                or parts.scheme not in {"http", "https"} or not parts.hostname
+                or parts.username is not None or parts.password is not None
+                or parts.query or parts.fragment or parts.path not in {"", "/"}):
+            raise ValueError("public_base_url must be an HTTP(S) origin without credentials or a path")
+        _ = parts.port  # Reject malformed or out-of-range ports.
+        return value.rstrip("/")
 
     @model_validator(mode="before")
     @classmethod
