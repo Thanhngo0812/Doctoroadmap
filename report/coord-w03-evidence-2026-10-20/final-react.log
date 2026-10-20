@@ -1,0 +1,16 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w03-acceptance/src/web/frontend
+
+
+ Test Files  4 passed (4)
+      Tests  62 passed (62)
+   Start at  15:39:36
+   Duration  29.87s (tests 73%, environment 18%, setup 5%, import 3%, transform 1%)
+
+    Isolate  4 workers spawned · ~1.56s startup each (spawn + environment, per file)
+             at least ~4.68s faster with isolate: false — reuses workers across files instead of one per file
+

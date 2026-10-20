@@ -2,15 +2,21 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 2 (xác minh, quên mật khẩu, gửi thư), mục 3 (quyền khi chưa xác minh);
 [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `email_token`; spec thiết kế, trang xác minh và đặt lại mật khẩu, mẫu thư.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** đang làm, snapshot `fdd0620`, chưa nghiệm thu toàn vé
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** đạt nghiệm thu `9de8e75` ngày 2026-10-20 · đã ghép `63f09ad`
 
 **Chuyển worktree 2026-10-20:** nhánh `work/w03-email-recovery`, thư mục `tmp/w03-email-recovery`; nhận main mới theo
 [quy trình nhánh](../../doc/quy-trinh-nhanh-va-ghep-main.md). Không làm hay đổi nhánh trong thư mục chung.
 Đã nhận main `83f3ffd`, cài React, tạo `tmp/` và chuẩn bị `src/web/.env` được bỏ qua; chủ dự án mở lại phiên tại worktree này trước khi tiếp tục.
-Checkpoint `33c70ac` và snapshot `fdd0620` chưa được nghiệm thu W-03. Các commit mang theo `781415b`/`79cb9c9`/`6cd6be7` cũng chưa được soát;
-phần thiết kế cần phán xét W-24 trước khi W-03 được ghép. Xem [biên bản chuyển và cổng main](../../report/dieu-phoi-ghep-main-2026-10-20.md).
+Checkpoint `33c70ac` và snapshot `fdd0620` là lịch sử bàn giao, đã được thay bằng mốc soát mới dưới đây.
+Xem [biên bản chuyển và cổng main](../../report/dieu-phoi-ghep-main-2026-10-20.md).
 
-**Đợt giao 2026-10-20:** W-02 đã nghiệm thu; đây là ưu tiên tiếp theo của web. Thiết kế phối hợp trang/trạng thái xác minh và đặt lại mật khẩu.
+**Nghiệm thu 2026-10-20:** nhóm web giao `e1f6297`; điều phối sửa năm câu TTL trong hai bản thiết kế local thành xác minh 24 giờ/reset 60 phút,
+ghim `9de8e75`. Cổng đúng mốc: **2.085 Python đạt, 0 fail, 1 Cloudinary live không bật; React 62/build đạt**.
+Chromium + PostgreSQL/Argon2 thật, Mailer giả: 18 cấu hình và 8 assertion luồng đạt, không có lỗi JavaScript/tràn ngang/vi phạm axe được phát hiện.
+Các commit mang theo `781415b`/`79cb9c9`/`6cd6be7` đã được xét và chấp thuận phạm vi local; W-24/Figma đầy đủ vẫn mở.
+Xem [biên bản nghiệm thu và kế hoạch tiếp](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md).
+
+**Đợt giao trước nghiệm thu 2026-10-20:** W-02 đã nghiệm thu; W-03 là ưu tiên lúc giao và nay đã đạt. Thiết kế phối hợp trang/trạng thái xác minh và đặt lại mật khẩu.
 Migration dành tên `w03_0004`, nối head đã kiểm `w02_0003`; bàn giao mốc schema cho W-06 trước khi ghép migration khoá học.
 Các route công khai request/confirm/verify phải nêu rõ chính sách Origin/CSRF và test cả đường từ chối; không tháo guard toàn cục.
 Resend dùng phiên vẫn cần CSRF. Test thư bằng Mailer giả; không tự gửi thư thật. Xem
@@ -56,14 +62,14 @@ khoản.
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
-- [ ] Đăng ký xong thì `Mailer` giả có đúng một thư xác minh; mở link thì `email_verified_at` có giá trị; mở lần hai thì bị từ chối.
-- [ ] Token xác minh quá 24 giờ theo đồng hồ giả bị từ chối.
-- [ ] Gửi lại xác minh lần thứ 4 trong một giờ bị `rate_limited`.
-- [ ] Yêu cầu đặt lại với email không có tài khoản: cùng phản hồi, và không có thư nào.
-- [ ] Token đặt lại dùng lần hai hay quá 60 phút bị từ chối. Đặt lại xong thì mọi phiên cũ bị `unauthenticated`.
-- [ ] Đổi email (giả lập trong test) thì token xác minh cũ không còn hiệu lực.
-- [ ] Bảng `email_token` không có token thô.
-- [ ] Ảnh chụp dải nhắc và ba trang; một thư mẫu xuất ra HTML.
+- [x] Đăng ký xong thì `Mailer` giả có đúng một thư xác minh; mở link rồi xác nhận thì `email_verified_at` có giá trị; dùng lần hai bị từ chối. GET không tiêu thụ token.
+- [x] Token xác minh quá 24 giờ theo đồng hồ giả bị từ chối.
+- [x] Gửi lại xác minh lần thứ 4 trong một giờ bị `rate_limited`.
+- [x] Yêu cầu đặt lại với email không có tài khoản: cùng phản hồi, và không có thư nào.
+- [x] Token đặt lại dùng lần hai hay quá 60 phút bị từ chối. Đặt lại xong thì mọi phiên cũ bị `unauthenticated`.
+- [x] Đổi email (giả lập trong test) thì token xác minh cũ không còn hiệu lực.
+- [x] Bảng `email_token` không có token thô.
+- [x] Ảnh chụp dải nhắc và ba trang; một thư mẫu xuất ra HTML.
 
 ## Ngoài vé
 
