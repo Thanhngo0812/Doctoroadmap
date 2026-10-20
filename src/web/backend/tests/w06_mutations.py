@@ -61,6 +61,13 @@ def main():
          '    for ancestor in (path, *path.parents):\n'
          '        if not ancestor.exists() and not ancestor.is_symlink():\n            continue',
          "test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point"),
+        ("seed-prod", "application/seed_samples.py", '    def execute(self, actor, doc_ids=None):',
+         '    def execute(self, actor, doc_ids=None):\n'
+         '        if self.courses.settings.env == "prod":\n'
+         '            self.courses.settings.env = "dev"\n'
+         '            try:\n                return self.execute(actor, doc_ids)\n'
+         '            finally:\n                self.courses.settings.env = "prod"',
+         "test_seed_only_allows_six_development_documents_in_dev_and_uploads_once"),
     ]:
         results.append(run_mutation(*mutation))
     (ROOT / "report/w06-evidence/mutations.json").write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")

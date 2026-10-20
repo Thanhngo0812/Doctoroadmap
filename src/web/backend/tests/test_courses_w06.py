@@ -277,25 +277,30 @@ def test_seed_only_allows_six_development_documents_in_dev_and_uploads_once(cour
     from wayfinder.api.errors import WebError
     media = MemoryMediaStore()
     seeder = SampleSeeder(courses.service, courses.gateway, media, source_root=tmp_path, folder="fake/dev")
-    loaded_before = list(courses.loaded)
-    with pytest.raises(WebError):
-        seeder.execute(courses.owner, ["heldout-looking-fake-01"])
-    assert courses.loaded == loaded_before and media.files == {}
-    courses.settings.env = "prod"
-    with pytest.raises(WebError):
-        seeder.execute(courses.owner, ["doc-6"])
-    courses.settings.env = "dev"
     for doc_id, spec in SAMPLE_DOCS.items():
         (tmp_path / spec["pdf"]).write_bytes(b"%PDF-1.7 fake seed input")
-    with courses.engine.begin() as connection:
-        connection.execute(text("DELETE FROM course WHERE id=:cid"), {"cid": courses.sample.id})
     def graph_loader(doc_id, version):
+        courses.loaded.append((doc_id, version))
         from copy import deepcopy
         graph = deepcopy(courses.graph)
         graph.doc_id = doc_id
         graph.graph_version = 8 if doc_id == "doc-1" else 29 if doc_id == "doc-6" else 1
         return graph
     courses.gateway.graph_loader = graph_loader
+    loaded_before = list(courses.loaded)
+    with pytest.raises(WebError) as outside:
+        seeder.execute(courses.owner, ["heldout-looking-fake-01"])
+    assert outside.value.code == "not_found"
+    assert courses.loaded == loaded_before and media.files == {}
+    courses.settings.env = "prod"
+    with pytest.raises(WebError) as production:
+        seeder.execute(courses.owner, ["doc-6"])
+    assert production.value.code == "not_found"
+    assert media.files == {} and courses.store.find_sample("doc-6") is None
+    assert courses.loaded == loaded_before
+    courses.settings.env = "dev"
+    with courses.engine.begin() as connection:
+        connection.execute(text("DELETE FROM course WHERE id=:cid"), {"cid": courses.sample.id})
     first = seeder.execute(courses.owner, list(SAMPLE_DOCS))
     second = seeder.execute(courses.owner, list(SAMPLE_DOCS))
     assert len(first) == len(second) == 6
