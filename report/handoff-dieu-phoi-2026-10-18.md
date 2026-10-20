@@ -110,7 +110,9 @@ Giữ các yêu cầu soát độc lập SA-46/47/49/50/51 và đề xuất focu
 
 **Ghép bù theo quy trình mới 2026-10-20:** [biên bản tích hợp](dieu-phoi-ghep-main-2026-10-20.md), theo quyết định `a4800a8`.
 W-02/W-05 đã ghép main bằng `a3f2f13`, đúng mốc đã soát `8558df4`. Cổng cuối: 1.999 Python đạt, 1 Cloudinary live không bật,
-React 41/build đạt; giữ đủ bằng chứng các lượt đỏ do môi trường trước đó. Thư mục chung đã về main, W-03 lưu snapshot `fdd0620` để chuyển worktree riêng.
+React 41/build đạt; giữ đủ bằng chứng các lượt đỏ do môi trường trước đó. Đã đẩy main cùng hồ sơ tới `83f3ffd`; thư mục chung đã về main.
+W-03 lưu snapshot `fdd0620`, đã chuyển `tmp/w03-email-recovery`, nhận main và cài React; phiên web đã được báo chờ chủ dự án mở lại đúng thư mục.
+Thiết kế đã có `tmp/w24-figma-evidence` nhận main, chủ dự án chuyển lời giao. Giữ worktree W-05-core còn sửa dở; nhánh biên bản W-13 giữ lại do phép so sánh `tasks/todo.md` khác sau W-05.
 Không kéo `781415b`/`79cb9c9`/`6cd6be7` hay mã W-03 vào bản ghép. W-13 không cần merge nhánh biên bản vì nội dung báo cáo đã có trên main.
 
 ## 3. Việc ngay, theo thứ tự
@@ -331,4 +333,5 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-20 | nghiệm thu độc lập W-02/W-05 và migration ghép | Codex | đạt phạm vi vé local | 168 backend/token đạt, 1 Cloudinary live không bật; 33 hồi quy lõi; React sau sửa UI 41/build; browser DB riêng, không gọi mô hình/gửi thư; xem báo cáo ngày 20 |
 | 2026-10-20 | kiểm W-24 ba73cfc | Codex | kỹ thuật đạt, bằng chứng còn thiếu | đóng sáu màu plugin/auth 390; export tái lập từ JSON local; gỡ handler mà audit vẫn 4/4, chưa đủ bốn luồng gốc/Figma/trang |
 | 2026-10-20 | soạn đợt W-03/W-06, tiếp tục phần còn lại W-24 | Codex | cập nhật kế hoạch/vé, chưa gửi phiên khác | web W-03 và React W-06, lõi backend W-06, thiết kế W-24/màn W-03; dành migration w03_0004→w06_0005; W-15/W-23 giữ phụ thuộc |
-| 2026-10-20 | ghép bù W-02/W-05 theo quy trình a4800a8 | Codex | đã ghép local a3f2f13, cổng xanh, chờ đẩy | mốc 8558df4; 1.999 Python đạt, 1 Cloudinary live không bật; React 41/build; thư mục chung về main; W-03 đã lưu fdd0620, không kéo các commit chưa soát |
+| 2026-10-20 | ghép bù W-02/W-05 theo quy trình a4800a8 | Codex | đã ghép a3f2f13 và đẩy GitHub tới 83f3ffd | mốc 8558df4; 1.999 Python đạt, 1 Cloudinary live không bật; React 41/build; thư mục chung về main; không kéo các commit chưa soát |
+| 2026-10-20 | chuyển W-03/W-24 sang worktree riêng, dọn sau ghép | Codex | đã chuẩn bị và thông báo | W-03 snapshot fdd0620, nhận main 83f3ffd, npm ci/.env; thiết kế giữ 781415b/helper ở nhánh riêng; gỡ W-05-postgres sạch và nhánh W-02 đã được W-03 giữ lịch sử; giữ W-05-core bẩn và nhánh W-13 do điều kiện so sánh chưa thoả |

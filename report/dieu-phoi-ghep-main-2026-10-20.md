@@ -1,6 +1,7 @@
 # Điều phối ghép bù vào main — 2026-10-20
 
-**Trạng thái:** cổng đầy đủ đạt; đã ghép local `a3f2f13` tới mốc được phép `8558df4` và chuyển thư mục chung về main. Đang lưu hồ sơ/chuyển worktree, chưa đẩy GitHub.
+**Trạng thái:** đã ghép `a3f2f13` tới mốc được phép `8558df4`, cổng đầy đủ đạt và **đã đẩy GitHub** cùng hồ sơ điều phối tới `83f3ffd`.
+Thư mục chung ở main; W-03/W-24 đã có worktree riêng. Không kéo mã W-03 hoặc các commit chưa soát vào main.
 **Căn cứ:** chủ dự án chuyển thông báo của Claude trong chat; [quy trình nhánh và ghép main](../doc/quy-trinh-nhanh-va-ghep-main.md), commit `a4800a8`, mục 4.
 
 ## Mốc được phép ghép
@@ -60,16 +61,23 @@ Không gọi mô hình hay gửi thư thật; không đưa dữ liệu giữ l�
 Đã thêm liên kết quy trình vào luật chung web và handoff, gồm lệnh test đúng worktree và trách nhiệm merge của điều phối.
 Đã gỡ worktree kiểm sau khi lưu bằng chứng và `git switch main` thành công; giữ nguyên toàn bộ thay đổi điều phối, không stash/force.
 Hồ sơ được commit thẳng main theo quy trình.
-Sau cổng xanh: chuyển W-03 sang `tmp/w03-email-recovery`, nhận main mới, cài React rồi báo phiên web tiếp tục ở worktree đó.
+Đã chuyển W-03 sang `tmp/w03-email-recovery`, nhận main `83f3ffd` bằng `7e8530b`, cài React bằng `npm ci`,
+tạo `tmp/` và chép riêng `src/web/.env` đã được gitignore. Đã gửi đường dẫn trực tiếp tới phiên web; phiên cũ được yêu cầu chờ chủ dự án mở lại
+trong worktree này, không tiếp tục sửa ở workspace chung. Snapshot W-03 và các phần chưa nghiệm thu được giữ nguyên.
 Thiết kế dùng nhánh/worktree riêng `work/w24-figma-evidence` / `tmp/w24-figma-evidence`; chủ dự án đã nhận lời nhắn để chuyển cho nhóm.
 Đã tạo nhánh từ `781415b` và cherry-pick riêng helper `6cd6be7` thành `f9540f5`, không mang mã W-03/commit UI `79cb9c9` vào nhánh thiết kế.
-Nhánh thiết kế chưa được nghiệm thu hay ghép main; sẽ nhận main đã hoàn tất đợt tích hợp trước khi giao tiếp.
+Nhánh thiết kế đã nhận main `83f3ffd` bằng `cd8e83d`, không xung đột; chưa được nghiệm thu hay ghép main.
+Chủ dự án mở phiên thiết kế tại `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w24-figma-evidence` để tiếp tục phần còn lại.
 `781415b` phải được soát W-24 trước khi W-03 được ghép; không coi bàn giao của nhân viên là phán xét đạt.
+
+Trạng thái tại thời điểm bàn giao sau lần đẩy đầu: [nhánh, worktree và dọn dẹp](ghep-main-evidence-2026-10-20/handoff-state.json).
+Nhật ký cuối đợt được commit/đẩy tiếp bằng thay đổi tài liệu; không thay mã đã qua cổng.
 
 ## Lưu ý dọn dẹp
 
 - `tmp/w05-core` còn thay đổi chưa commit và thư mục web chưa theo dõi: giữ nguyên, không xoá hay ép dọn.
-- `tmp/w05-postgres` đang sạch; chỉ dọn sau khi cổng đạt và bản ghép đã được lưu/đẩy.
+- Đã gỡ `tmp/w05-postgres` sạch và xoá nhánh `work/w05-postgres` bằng `-d` sau khi main được đẩy.
+- Đã xoá nhánh `work/w02-accounts` sau khi xác nhận toàn bộ lịch sử, gồm phần chưa soát, vẫn nằm trong nhánh W-03.
 - Sau bản ghép, bốn báo cáo W-13 vẫn giống nhánh biên bản, nhưng `tasks/todo.md` trên main có thêm checklist W-05.
   Điều kiện so sánh chính xác ở mục 4.6 của quy trình chưa thoả; chưa xoá cưỡng bức nhánh biên bản này.
 - Không đụng worktree Pha A và hai worktree `ve-04-bo-vang`, `ve-05-bo-cham`.

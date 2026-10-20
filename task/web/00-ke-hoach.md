@@ -76,7 +76,7 @@ còn đổi; nhóm web đã được báo.
 |---|---|---|---|
 | [W-01](W-01-nen-web-fastapi-react-postgres.md) | nền: FastAPI, React, PostgreSQL, Alembic, đường nối test, token giao diện | — | đạt nền local; đã ghim c91551f; React 23 test/build và browser đạt; [soát](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md) |
 | [W-02](W-02-dang-ky-dang-nhap-phien.md) | đăng ký, đăng nhập, đăng xuất, phiên cookie, CSRF, giới hạn thử | W-01 | đạt · đã ghép `a3f2f13`, mốc `8558df4`; [cổng và bàn giao](../../report/dieu-phoi-ghep-main-2026-10-20.md) |
-| [W-03](W-03-xac-minh-email-quen-mat-khau.md) | xác minh email, quên mật khẩu, cổng gửi thư | W-02 | đang làm, snapshot `fdd0620`; chuyển sang `tmp/w03-email-recovery`, chưa nghiệm thu toàn vé |
+| [W-03](W-03-xac-minh-email-quen-mat-khau.md) | xác minh email, quên mật khẩu, cổng gửi thư | W-02 | đang làm, snapshot `fdd0620`; đã chuyển `tmp/w03-email-recovery`, chờ mở lại phiên, chưa nghiệm thu toàn vé |
 | [W-04](W-04-ho-so-doi-mat-khau-dang-xuat-moi-noi.md) | hồ sơ, đổi mật khẩu, đăng xuất mọi nơi | W-02 | đủ điều kiện; chia sau nếu còn người, tránh tranh AccountService với W-03 |
 | [W-05](W-05-kho-pha-b-postgresql.md) | kho Pha B trên PostgreSQL, `single_flight` liên tiến trình, nới port sổ chi | W-01 | đạt · đã ghép `a3f2f13`, gồm checkpoint W-02; [cổng và bàn giao](../../report/dieu-phoi-ghep-main-2026-10-20.md) |
 | [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đủ điều kiện giao; lõi làm backend/gateway, web React/tích hợp; chỉ đạt khi đủ lát dọc |
@@ -105,6 +105,8 @@ còn đổi; nhóm web đã được báo.
   React 41/build đạt. Thư mục chung chuyển về main; W-03 làm trong `tmp/w03-email-recovery`, W-24 ở `tmp/w24-figma-evidence`.
   `781415b`, `79cb9c9` và helper `6cd6be7` chưa được soát; không thuộc bản ghép này. W-03 cần phán xét W-24 cho phần mang theo trước khi được ghép.
   [Biên bản tích hợp](../../report/dieu-phoi-ghep-main-2026-10-20.md).
+- **Đã đẩy GitHub:** main cùng hồ sơ điều phối tới `83f3ffd`; W-03/W-24 đã nhận mốc này trong worktree riêng. Các thay đổi tài liệu nhật ký sau đó
+  không thay mã qua cổng; trước lần ghép vé tiếp theo vẫn phải nhận main mới nhất và chạy lại cổng của vé đó.
 - **Sau nghiệm thu 2026-10-20:** W-02/W-05 đạt; web ưu tiên W-03 và bố trí React/tích hợp W-06; lõi nhận backend/gateway W-06.
   W-04 đủ điều kiện nhưng chỉ chia khi có người, phân vùng AccountService với W-03. [Bằng chứng và giao việc](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
 - **Migration:** hiện đã kiểm một head `w01_0001 → w05_0002 → w02_0003`. Dành tuyến tiếp `w03_0004 → w06_0005`:
