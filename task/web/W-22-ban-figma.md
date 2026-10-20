@@ -8,9 +8,10 @@ thương hiệu ở `design/`.
 thử đổi sai CSS mà 20 test vẫn xanh. Bằng chứng Figma/đủ trang và bốn prototype chưa xác minh được. Xem
 [báo cáo tiếp nhận](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md) và [vé sửa W-24](W-24-bo-sung-va-sua-ban-giao-w22.md).
 
-**Kiểm bản W-24 mới `7baa7d2`, 2026-10-19:** các lỗi runtime cũ đã sửa đạt, có bản auth cho W-02. W-22 còn mở phần đủ trang/trạng thái,
-Variables export thực và bốn prototype Figma; plugin mới vẫn có sáu màu tối khác token. Khung xem auth 390 còn tràn 20 px.
-Chỉ tiếp tục các mục này theo [soát sau bổ sung](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md), không giao lại lỗi cũ đã đóng.
+**Kiểm W-24 `ba73cfc`, 2026-10-20:** các lỗi runtime cũ, sáu màu plugin và auth tràn ngang đã sửa đạt.
+W-22 còn mở hai nhóm: nguồn Variables export thực; đủ node/ảnh trang-trạng thái và bốn prototype Figma có kiểm chứng.
+Export hiện sinh từ JSON local, audit prototype vẫn xanh khi cố ý bỏ tương tác. Chỉ tiếp tục các mục này theo
+[nghiệm thu mới](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md), không giao lại lỗi đã đóng.
 
 ## Vì sao
 

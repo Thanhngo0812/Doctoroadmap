@@ -19,7 +19,7 @@ agent khác. Người điều phối:
 - tự viết mã sản phẩm;
 - mở tập giữ lại (mục 7).
 
-**Đọc theo thứ tự:** mục 1 → 3 → 4, rồi các mục khác khi cần.
+**Đọc theo thứ tự:** mục 1 → cập nhật mới nhất ở mục 2 → 3 → 4, rồi các mục khác khi cần.
 
 ---
 
@@ -98,9 +98,30 @@ Nhân viên đã chạy hai lượt có tiền sau duyệt, tổng chi usage ghi
 W-24 đã sửa đạt GIF/vùng bấm/guard/chat cũ; còn Variables thực (plugin lệch sáu màu tối), đủ trang/prototype và khung auth 390 tràn 20 px.
 Không giao lại lỗi đã đóng. W-15 gỡ điểm chờ W-13, vẫn chờ W-14; kế hoạch W-02/W-05 tiếp tục, W-23 chưa mở.
 
+**Cập nhật nghiệm thu 2026-10-20:** [soát W-02/W-05/W-24 và kế hoạch tiếp](dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
+W-02/W-05 **đạt nghiệm thu độc lập local**, gồm tuyến `w01_0001 → w05_0002 → w02_0003`, một head và kiểm DB rỗng/baseline.
+Điều phối tự chạy 168 backend/token đạt, 1 Cloudinary live không bật, 33 hồi quy lõi đạt; React sau sửa UI mới 41/41 và build đạt.
+Mutation bỏ hạn idle, flight lock và atomic lock đều đỏ đúng assertion; browser/ảnh/video ở báo cáo, không gọi mô hình hay gửi thư thật.
+W-24 đóng sáu màu plugin và auth tràn 390 cùng các lỗi runtime cũ; **còn hai nhóm**: nguồn export Figma, đủ trang/prototype có kiểm chứng.
+Export hiện sinh từ JSON local, audit vẫn báo 4/4 khi cố ý gỡ handler. Không giao lại lỗi kỹ thuật đã đóng.
+Đợt tới web ưu tiên W-03, lõi backend/gateway W-06 với web React/tích hợp, thiết kế hoàn thiện W-24 và màn W-03.
+Đặt tuyến migration tiếp `w03_0004 → w06_0005`; W-04 chia sau nếu còn người; W-15 vẫn chờ W-14, W-23 chưa mở.
+Giữ các yêu cầu soát độc lập SA-46/47/49/50/51 và đề xuất focus_node_id chờ duyệt ở mục 8; Vertex giữ nguyên.
+
+**Ghép bù theo quy trình mới 2026-10-20:** [biên bản tích hợp](dieu-phoi-ghep-main-2026-10-20.md), theo quyết định `a4800a8`.
+W-02/W-05 đã ghép main bằng `a3f2f13`, đúng mốc đã soát `8558df4`. Cổng cuối: 1.999 Python đạt, 1 Cloudinary live không bật,
+React 41/build đạt; giữ đủ bằng chứng các lượt đỏ do môi trường trước đó. Thư mục chung đã về main, W-03 lưu snapshot `fdd0620` để chuyển worktree riêng.
+Không kéo `781415b`/`79cb9c9`/`6cd6be7` hay mã W-03 vào bản ghép. W-13 không cần merge nhánh biên bản vì nội dung báo cáo đã có trên main.
+
 ## 3. Việc ngay, theo thứ tự
 
 Mỗi việc ghi ai làm, và xong thì người điều phối đánh dấu ở mục 10.
+
+**Ưu tiên hiện hành 2026-10-20:** chủ dự án chuyển [W-03](../task/web/W-03-xac-minh-email-quen-mat-khau.md) cho web,
+[W-06](../task/web/W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) cho lõi backend và web React,
+[W-24 phần còn lại](../task/web/W-24-bo-sung-va-sua-ban-giao-w22.md) cho thiết kế, kèm màn W-03.
+Tiếp tục làn soát Pha B theo ghi chú Claude ở mục 8. Các mốc W-01/W-13/W-02/W-05 đã đạt, không giao lại.
+Danh sách dưới giữ bối cảnh công việc từ lúc tiếp nhận; trạng thái mới ở mục 2 và nhật ký cuối tài liệu được ưu tiên.
 
 1. **[Đã xong, Codex kiểm chứng] Mã SA-31…44 đã có commit để soát.**
    - Ghim `a7f57d0` và bản sửa `3871c85`; bộ kiểm Pha B/B2 của đợt tiếp nhận đạt 280 test. Đây không phải toàn bộ test của repo.
@@ -121,10 +142,10 @@ Mỗi việc ghi ai làm, và xong thì người điều phối đánh dấu ở
    - Gmail: bật xác minh hai bước, tạo mật khẩu ứng dụng, đặt vào `.env`;
    - Docker Desktop (nền WSL2) trên máy của nhóm web;
    - logo đã có đủ Artboard 9–28, gồm PNG nền trong; SVG có thể bổ sung nếu có. Tệp gốc GIF là phần riêng, gửi nếu có để xuất lại vòng chờ.
-6. **[Chủ dự án giao] Ba vé web chạy song song:**
-   - **W-01** cho nhóm web, được bắt đầu ngay;
-   - **W-13** nhân viên lõi đã triển khai; bước tiếp là commit đúng phạm vi, chuyển người soát và xử lý phần doc-6 thiếu cache, không tự chi tiền;
-    - **W-22** đã có bàn giao; người thiết kế tiếp tục sửa/bổ sung theo W-24 trước khi nghiệm thu. Thương hiệu dùng Artboard 9–28 theo spec mục 1.
+6. **[Chủ dự án giao, cập nhật 2026-10-20] Ba nhóm chạy tiếp:**
+   - **Web:** W-03, đồng thời bố trí người React/tích hợp W-06; W-04 chia sau nếu còn người;
+   - **Lõi:** backend/gateway W-06 ở `src/web/`, kiểm use case/spend guard thực sự dùng PostgreSQL; W-13/W-05 đã đạt;
+   - **Thiết kế:** chỉ hai nhóm bằng chứng W-24 còn lại và ưu tiên màn xác minh/đặt lại mật khẩu W-03. Thương hiệu giữ Artboard 9–28.
 
 ## 4. Cách giao một vé
 
@@ -141,6 +162,10 @@ Mỗi việc ghi ai làm, và xong thì người điều phối đánh dấu ở
 > dòng "Nguồn chân lý".
 >
 > Luật bắt buộc:
+> - Làm trong worktree `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\<tên>`, nhánh `work/<tên>`, theo
+>   [quy trình nhánh và ghép main](../doc/quy-trinh-nhanh-va-ghep-main.md). Không làm ở thư mục chung, không đổi nhánh của nó.
+> - Chạy test qua `scripts/w05_run_tests.py` từ gốc worktree, bằng Python của `.venv` thư mục chung; không chạy pytest trần.
+> - Không tự ghép vào main. Không sửa tệp vé, bảng kế hoạch hay bàn giao; điều cần ghi thì ghi trong báo cáo vé.
 > - Lưu dần: làm tới đâu commit tới đó. Báo cáo vé có dòng trạng thái ở đầu.
 > - Chỉ commit đường dẫn của vé, bằng `git commit -m … -- <tệp>`.
 > - Không mở tập giữ lại: `d01-t01`, `d01-t02`, `document-data/test/`, `Desktop\d02-tap-khoa`; không in phần `cache` của `artifacts/phase_b/live.json`.
@@ -173,16 +198,16 @@ Bốn làn chạy song song; trong mỗi làn, làm theo thứ tự.
 | làn | thứ tự | ghi chú |
 |---|---|---|
 | **soát Pha B** (người soát) | SA-29 → SA-30 → SA-31…44 → nội dung SA-43 → các vé sửa SA-46+ → lượt thật SA-08, 10, 13 (chủ dự án duyệt) → SA-20…23 | SA-20…23 chỉ chạy khi mọi vé sửa đạt |
-| **lõi** (nhân viên lõi) | commit B2 (đã xong) → các vé sửa SA-46+ nếu có → W-13 → W-05 (phần nới port, sau khi vé sửa kho Pha B xong) → W-15 | W-15 cần W-14 xong trước |
-| **web** (nhóm web) | W-01 → W-02 → (W-03 ∥ W-04) → W-06 (cần W-05) → W-07 → (W-08 ∥ W-09 ∥ W-10) → (W-11 → W-12) ∥ W-14 → W-16 → W-17 ∥ W-18 ∥ W-19 → W-20 → W-21 → W-23 | phần học W-07…W-10 cần SA-32…42 **đạt** |
-| **thiết kế** (người thiết kế) | W-22 (sau khi có logo) → duyệt ảnh chụp của từng vé web → W-23 cùng nhóm web | |
+| **lõi** (nhân viên lõi) | W-13/W-05 đã đạt → backend/gateway W-06 cùng web → W-15 sau W-14; xử lý vé sửa SA-46+ theo soát | W-06 là vé chung, chỉ đạt khi đủ React/tích hợp; không tự sửa lõi ngoài phạm vi đã cho |
+| **web** (nhóm web) | W-01/W-02 đã đạt → W-03, React/tích hợp W-06; W-04 khi có người → W-07 → (W-08 ∥ W-09 ∥ W-10) → (W-11 → W-12) ∥ W-14 → W-16 → W-17 ∥ W-18 ∥ W-19 → W-20 → W-21 → W-23 | phần học W-07…W-10 cần Pha B2 **đạt**; W-14 sau W-03/W-06 |
+| **thiết kế** (người thiết kế) | hoàn thiện hai nhóm bằng chứng W-24/W-22, màn W-03 → duyệt ảnh chụp từng vé web → W-23 cùng web | logo Artboard 9–28 đã đủ; không giao lại lỗi runtime đã đóng |
 
 Lịch theo làn là hướng dẫn phân người, không thêm cạnh chặn mới. Khi chọn vé, kiểm bảng phụ thuộc trong kế hoạch web: W-11 có thể bắt đầu sau W-06;
 W-18 sau W-07/W-11; W-20 sau W-11/W-14. Không bắt các vé này chờ toàn bộ phần học nếu không có xung đột tệp thực tế.
 
 **Điểm chờ dễ kẹt:**
-- W-06 cần W-05. Nhân viên lõi làm W-05 chậm thì nhóm web bị chặn ở W-06. Nên giao W-05 sớm.
-- W-05 làm cả phần lõi (nới port) lẫn phần web (bản PostgreSQL). Hai người làm thì phần lõi xong trước.
+- W-02/W-05 đã đạt, W-06 không còn chặn ở hai vé này. Web bàn giao migration `w03_0004` trước khi lõi ghép `w06_0005`; service/test/UI không phải chờ toàn bộ W-03.
+- W-03/W-04 cùng sửa AccountService; chỉ làm song song khi đã phân vùng sửa. W-06 phải kiểm use case/spend guard cùng dùng kho PostgreSQL, không chỉ thay thuộc tính composition.
 - W-08, W-09, W-10 cần các vé B2 được soát **đạt**. Người soát nên ưu tiên SA-32, 33, 35, 37, 39, 40, 41, 42.
 
 ## 6. Khi nào gọi chủ dự án ngay
@@ -213,11 +238,14 @@ Nhắn chủ dự án ngay, không chờ, khi có một trong các việc sau:
 - dry-run trước, chủ dự án duyệt;
 - soát bằng cách phát lại phản hồi đã ghi, 0 USD.
 
-**Git:** chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
+**Git:** theo [quy trình nhánh và ghép main](../doc/quy-trinh-nhanh-va-ghep-main.md). Thư mục chung luôn ở main; mỗi vé một nhánh trong worktree `tmp/<tên>`.
+Chỉ người điều phối ghép, bằng `--no-ff`, sau khi vé được soát đạt và cổng test đầy đủ xanh. Đẩy main lên GitHub sau mỗi lần ghép.
+Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 **Môi trường:**
-- `.venv/Scripts/python.exe`, vì `python` trần chỉ là stub;
-- `pytest` cần `--basetemp` trỏ vào một thư mục ghi được, kèm `-p no:cacheprovider`.
+- Python từ `.venv` ở thư mục chung, vì `python` trần chỉ là stub; dùng đường dẫn đầy đủ khi đứng trong worktree;
+- chạy test từ gốc worktree qua `scripts/w05_run_tests.py`, không chạy pytest trần vì editable install có thể nạp nhầm mã;
+- runner bắt buộc PostgreSQL và thêm `-p no:cacheprovider`; dùng `--basetemp` mới trong `tmp/`.
 
 **Lưu dần:** mọi người và mọi agent ghi tệp theo từng phần, có dòng trạng thái. Agent nền chạy từng cái một.
 
@@ -300,3 +328,7 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-19 | soạn đợt W-02/W-05 và tiếp tục W-24 | Codex | đã cập nhật kế hoạch/vé, chưa gửi phiên khác | chốt commit W-01 trước; migration một tuyến W-01→W-05→W-02; giữ phần dựng hết cuốn W-13 mở, chưa duyệt chi hay mở W-15/W-23 |
 | 2026-10-19 | kiểm lại W-13 sau doc-6 hoàn tất | Codex | đạt nghiệm thu W-13 | hai kho tái lập succeeded, đủ bốn bước, 0 lời gọi/0 USD; DB/artifact/PDF khớp; 83 test gộp đạt, mutation bỏ sửa cache bị bắt |
 | 2026-10-19 | kiểm lại W-24 bản 7baa7d2 | Codex | đóng lỗi runtime cũ, chưa đóng toàn vé | GIF tĩnh bốn preview, vùng bấm cũ đạt, ba mutation token bị bắt, chat an toàn với payload thử; còn Figma/trang/prototype và khung auth 390 |
+| 2026-10-20 | nghiệm thu độc lập W-02/W-05 và migration ghép | Codex | đạt phạm vi vé local | 168 backend/token đạt, 1 Cloudinary live không bật; 33 hồi quy lõi; React sau sửa UI 41/build; browser DB riêng, không gọi mô hình/gửi thư; xem báo cáo ngày 20 |
+| 2026-10-20 | kiểm W-24 ba73cfc | Codex | kỹ thuật đạt, bằng chứng còn thiếu | đóng sáu màu plugin/auth 390; export tái lập từ JSON local; gỡ handler mà audit vẫn 4/4, chưa đủ bốn luồng gốc/Figma/trang |
+| 2026-10-20 | soạn đợt W-03/W-06, tiếp tục phần còn lại W-24 | Codex | cập nhật kế hoạch/vé, chưa gửi phiên khác | web W-03 và React W-06, lõi backend W-06, thiết kế W-24/màn W-03; dành migration w03_0004→w06_0005; W-15/W-23 giữ phụ thuộc |
+| 2026-10-20 | ghép bù W-02/W-05 theo quy trình a4800a8 | Codex | đã ghép local a3f2f13, cổng xanh, chờ đẩy | mốc 8558df4; 1.999 Python đạt, 1 Cloudinary live không bật; React 41/build; thư mục chung về main; W-03 đã lưu fdd0620, không kéo các commit chưa soát |

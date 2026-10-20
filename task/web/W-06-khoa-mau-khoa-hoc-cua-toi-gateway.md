@@ -2,7 +2,12 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 1 (`LearningGateway`), 3, 5, 7; [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md);
 [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `course`, `membership`; spec thiết kế, trang "Khoá học của tôi".
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02, W-05 · **Trạng thái:** ready-for-agent
+**Ai:** nhân viên lõi phụ trách backend/gateway; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02, W-05 · **Trạng thái:** đủ điều kiện giao sau nghiệm thu 2026-10-20
+
+**Đợt giao 2026-10-20:** W-02/W-05 đã nghiệm thu, không còn chặn. Cùng một vé đầu-cuối; backend xong riêng chưa tính cả vé đạt.
+Mã mới ở `src/web/`; không mở thêm quyền sửa `src/doc2roadmap/` ngoài phạm vi W-05/W-13 đã được phép.
+Migration dành tên `w06_0005`, nối `w03_0004` do web bàn giao trước; service/test/UI làm song song, ghép schema theo một tuyến.
+Xem [nghiệm thu, phân việc và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
 
 ## Vì sao
 
@@ -21,13 +26,17 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 **Lệnh `web seed-samples`** (chỉ chạy khi `env = dev`; bản demo không có khoá mẫu, chủ dự án chốt 2026-10-18):
 - Tạo khoá mẫu từ sáu cuốn phát triển, theo **danh sách cho phép viết trong mã**: doc-1, nhap-mon-ml, naive-bayes, doc-6, xstk-ch3-1, doc-4.
 - `published_graph_version` là bản A10 hoàn tất mới nhất của mỗi cuốn; chủ khoá là admin chạy lệnh.
-- Tải PDF gốc của cuốn lên Cloudinary qua `MediaStore` (5/6 cuốn có PDF, đều ≤ 3,2 MB; nhap-mon-ml không có PDF gốc). Ảnh công thức và media làm ở W-08.
+- Tải PDF gốc của cuốn lên Cloudinary qua `MediaStore`; PDF nhap-mon-ml đã được khôi phục và kiểm trong [nghiệm thu W-13](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md), không còn ghi thiếu PDF này.
+  Test dùng MediaStore giả; ảnh công thức và media làm ở W-08.
 - Mọi `doc_id` khác bị từ chối. Test dùng một `doc_id` giả có dạng giống tập giữ lại; không dùng tên thật.
 
 **`LearningGateway`:**
 - Mỗi hàm tải khoá học, kiểm thành viên, rồi gọi Pha B với `owner = actor.user_id`, `doc_id = course.doc_id`, `graph_version =
   course.published_graph_version`.
 - Đồ thị của mỗi `(doc_id, graph_version)` nạp một lần và giữ trong bộ nhớ tiến trình.
+- Nối các use case qua port để chúng và spend guard dùng cùng `PostgresPhaseBStore` đã nghiệm thu W-05.
+  `PhaseBRuntime` của CLI hiện tự tạo kho JSON; chỉ gán lại trường store ngoài composition không thay các phụ thuộc con đã giữ kho cũ.
+  Kiểm đọc/ghi PostgreSQL thật từ kết nối độc lập, không chỉ assert kiểu của thuộc tính.
 - Composition tạm truyền cấu hình Vertex AI cho runtime Pha B, cả mô hình sinh lẫn embedding (chủ dự án cập nhật 2026-10-19). Thông tin xác thực chỉ ở
   backend theo spec chức năng mục 1; chuyển sang Developer API khi chủ dự án yêu cầu chuẩn bị demo. Các test gateway dùng đồ giả, không gọi API thật.
 - Ghi `membership.last_active_at` khi cũ hơn 5 phút.
@@ -49,6 +58,7 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Test liệt kê route: thêm thử một route `{cid}` không gọi kiểm thành viên thì test đỏ.
 - [ ] Gateway: thân yêu cầu có `owner` khác thì bị bỏ qua; bản ghi Pha B mới có `owner` là người đăng nhập.
+- [ ] Use case và spend guard dùng kho PostgreSQL thật; kết nối độc lập quan sát đúng bản ghi/usage, không rơi về JSON hay kho bộ nhớ.
 - [ ] Test nối dây runtime Pha B theo cấu hình tạm thời: bản giả sinh/embedding ghi nhận `transport=vertex`; cố ý truyền `developer_api` thì test đỏ.
   Không dùng mạng; chưa tự chuyển transport trước chỉ thị chuẩn bị demo.
 - [ ] `seed-samples` từ chối `doc_id` ngoài danh sách cho phép, kể cả `doc_id` giả có dạng giống tập giữ lại; từ chối chạy khi `env = prod`.

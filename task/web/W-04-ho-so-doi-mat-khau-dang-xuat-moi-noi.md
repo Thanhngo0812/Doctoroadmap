@@ -3,6 +3,9 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 2 (đổi mật khẩu, đăng xuất mọi nơi), user story 11–13; spec thiết kế, trang hồ sơ.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** ready-for-agent
 
+**2026-10-20:** W-02 đã nghiệm thu, W-04 đủ điều kiện nhận. Web ưu tiên W-03 và React W-06; chỉ chia W-04 khi có người và đã phân vùng sửa
+`AccountService` với W-03. Không tạo migration rỗng nếu không đổi schema. Xem [kế hoạch tiếp](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
+
 ## Vì sao
 
 Người dùng cần tự quản lý tài khoản, và chặn được người dùng trộm khi lỡ đăng nhập ở máy lạ.
