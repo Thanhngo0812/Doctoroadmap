@@ -13,6 +13,8 @@ Xem [nghiệm thu, phân việc và điểm kiểm](../../report/dieu-phoi-nghie
 W-06 là ưu tiên tiếp theo, chưa được xem là đã hoàn tất. Nhánh lõi `work/w06-courses-gateway` ở `tmp/w06-courses-gateway` cần nhận main mới;
 React làm nhánh/worktree riêng `work/w06-web` / `tmp/w06-web`, tích hợp thành một vé trước nghiệm thu.
 Sáu graph dev tải được (doc-1 v8, doc-6 v29), không dựng lại hay dùng v45/v57 cứng.
+Đã bổ sung snapshot/manifest riêng cho bốn cuốn còn lại, đủ dữ liệu kiểm seed sáu cuốn: xem
+[bàn giao dữ liệu W-06](../../report/w06-ban-giao-bon-cuon-2026-10-20.md) và danh mục hai gói trong báo cáo. Đây chưa phải nghiệm thu seed/ứng dụng W-06.
 Cách kiểm `join-sample` đã làm rõ theo spec: test tự liệt kê mọi `{cid}` nhắm khoá riêng tư, người ngoài vẫn nhận `not_found`, kể cả route tham gia.
 Test riêng cho người đăng nhập tham gia khoá mẫu ở dev khi chưa có membership; không miễn route khỏi bộ kiểm hay mở quyền nội dung cho người ngoài.
 Xem [kế hoạch và điểm nghiệm thu](../../report/dieu-phoi-nghiem-thu-w03-va-ke-hoach-2026-10-20.md),

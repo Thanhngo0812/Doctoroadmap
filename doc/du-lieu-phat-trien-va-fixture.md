@@ -3,7 +3,7 @@
 Quyết định theo phê duyệt của chủ dự án ngày 2026-10-20: “duyệt tất cả làm end to end khôi phục đi”.
 
 - Kiểm hồi quy đơn vị dùng fixture tổng hợp nhỏ trong repo. Quiz dùng `tests/fixtures/phase_b_quiz_graph`, không phụ thuộc graph v45 trong kho chung.
-- Kiểm tích hợp cần dữ liệu sách thật dùng bản sao phát triển cố định dưới `document-data/`, kèm manifest SHA-256 được lưu trong report. Chỉ cho phép doc-1 và doc-6 trong bản nghiệm thu khôi phục này.
+- Kiểm tích hợp cần dữ liệu sách thật dùng bản sao phát triển cố định dưới `document-data/`, kèm manifest SHA-256 được lưu trong report. Đợt khôi phục ban đầu chỉ gồm doc-1/doc-6; theo yêu cầu chủ dự án, ngày 2026-10-20 đã bổ sung gói W-06 riêng cho nhap-mon-ml, naive-bayes, xstk-ch3-1 và doc-4.
 - Kho dùng chung `artifacts/` là kết quả làm việc, không phải bản sao lưu. Không tạo junction, symlink hoặc hardlink từ worktree tới dữ liệu chung. Không sao chép cả thư mục artifacts hoặc kho Pha B live; chỉ chép tệp ghi trong manifest.
 - Giữ nguyên bản trước dựng `document-data/development-recovery-2026-10-20`; bản sau dựng và manifest được ghi trong báo cáo khôi phục. Không đưa PDF, cache mô hình hoặc dữ liệu sách vào Git.
 
@@ -21,6 +21,15 @@ npm.cmd --prefix src/web/frontend run build
 ```
 
 Không dọn worktree cũ trong đợt khôi phục này. Trước bất kỳ đợt dọn nào sau này, kiểm tra reparse point tại gốc và các thư mục dữ liệu; không xoá đệ quy khi còn liên kết. Worktree `tmp/t01a-clean-ff797eb` tiếp tục được giữ nguyên.
+
+## Hai gói đủ sáu cuốn cho W-06
+
+- Doc-1/doc-6: `document-data/development-rebuilt-2026-10-20`; manifest `report/doc1-rebuild-evidence-2026-10-20/development-fixtures.json`, giữ nguyên 3.081 tệp.
+- Bốn cuốn bổ sung: `document-data/development-w06-four-books-2026-10-20`; manifest `report/w06-fixtures-evidence-2026-10-20/development-fixtures.json`, 64 tệp. Naive Bayes giữ tên PDF `5_Naive Bayes Classifier.pdf`.
+- Danh mục hai gói: `report/w06-fixtures-evidence-2026-10-20/bundles.json`; tổng 3.145 tệp đã kiểm SHA-256. Graph ghim: doc-1 v8, doc-6 v29, nhap-mon-ml v50, naive-bayes v49, xstk-ch3-1 v68, doc-4 v27.
+- Gói mới chỉ đóng băng dữ liệu cần cho seed/roadmap W-06; không nhập kho Pha B live chung và chưa thay nghiệm thu media/bài giảng/chat/quiz.
+
+Xem [bàn giao bốn cuốn và bằng chứng](../report/w06-ban-giao-bon-cuon-2026-10-20.md). Chỉ sao chép theo manifest; gặp tệp khác hash hoặc phiên bản đích ngoài gói thì dừng báo điều phối, không tự xoá/ghi đè. Giữ snapshot và ZIP cố định nguyên vẹn.
 
 ## Đổi phiên bản graph
 
