@@ -50,6 +50,12 @@
 - **Lần đầu vào worktree:** chạy `npm.cmd --prefix src/web/frontend ci`. Worktree không có `.env`. Test lấy cấu hình qua runner. Cần chạy máy chủ dev
   thì chép `src/web/.env` từ thư mục chung sang; `.env` đã bị bỏ qua nên không bao giờ vào commit.
 - **Không ai đổi nhánh của thư mục chung.** Thấy nó không ở main thì báo người điều phối, không tự `git switch`.
+- **Không bao giờ nối `artifacts` của thư mục chung vào worktree** bằng junction, symlink hay `mklink`. Gỡ một worktree có liên kết như vậy sẽ xoá
+  luôn dữ liệu gốc. Sự cố 2026-10-20: toàn bộ artifact của doc-1 và doc-6 trong kho dùng chung thành rỗng đúng lúc gỡ một worktree. Dữ liệu phát
+  triển chỉ được **chép** vào worktree, chép đúng cuốn cần dùng, và ghi danh sách SHA-256 của các tệp đã chép.
+- **Trước khi gỡ bất kỳ worktree nào**, chạy `cmd /c "dir /AL /S /B <đường dẫn worktree>"`. Lệnh in ra gì là còn liên kết. Gỡ từng liên kết bằng
+  `cmd /c rmdir <đường dẫn liên kết>`: lệnh này chỉ gỡ liên kết, không đụng thư mục đích. Sau đó chạy lại lệnh `dir` và phải không in gì, rồi mới gỡ
+  worktree. Không bao giờ xoá đệ quy một thư mục còn liên kết.
 
 ### 3.3 Test trong worktree
 
