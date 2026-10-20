@@ -1,0 +1,184 @@
+"""Freeze four approved W-06 development books; copy bytes, never links."""
+import hashlib
+import json
+import shutil
+import socket
+import stat
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+from zipfile import ZIP_DEFLATED, ZipFile
+
+ROOT = Path.cwd().absolute()
+OUT = ROOT / "tmp/coord-w06-fixtures-20261020"
+DEST = ROOT / "document-data/development-w06-four-books-2026-10-20"
+CHECK = OUT / "verified-copy"
+ARCHIVE = DEST.with_suffix(".zip")
+BOOKS = {
+    "nhap-mon-ml": (50, "nhap-mon-ml.pdf", 15, 75),
+    "naive-bayes": (49, "5_Naive Bayes Classifier.pdf", 5, 33),
+    "xstk-ch3-1": (68, "xstk-ch3-1.pdf", 14, 82),
+    "doc-4": (27, "doc-4.pdf", 91, 495),
+}
+
+
+def regular(path):
+    path = path.absolute()
+    if not path.is_relative_to(ROOT):
+        raise ValueError("Path escapes workspace")
+    for item in [path, *path.parents]:
+        if item.exists() or item.is_symlink():
+            info = item.lstat()
+            if stat.S_ISLNK(info.st_mode) or getattr(info, "st_file_attributes", 0) & 1024:
+                raise ValueError("Reparse point refused: " + str(item))
+            if stat.S_ISREG(info.st_mode) and info.st_nlink != 1:
+                raise ValueError("Hardlink refused: " + str(item))
+        if item == ROOT:
+            break
+
+
+def files_under(path):
+    regular(path)
+    if not path.is_dir():
+        raise FileNotFoundError(path)
+    files = []
+    for item in sorted(path.iterdir()):
+        regular(item)
+        if item.is_dir():
+            files.extend(files_under(item))
+        elif item.is_file():
+            if item.suffix == ".tmp":
+                raise ValueError("Artifact is being written: " + str(item))
+            files.append(item)
+    return files
+
+
+def sha256(path):
+    regular(path)
+    with path.open("rb") as handle:
+        return hashlib.file_digest(handle, "sha256").hexdigest()
+
+
+def target_path(root, name):
+    relative = Path(name)
+    if relative.is_absolute() or ".." in relative.parts:
+        raise ValueError("Unsafe manifest path")
+    result = root / relative
+    regular(result)
+    return result
+
+
+network_attempts = []
+
+
+def network_blocked(*args, **kwargs):
+    network_attempts.append("blocked")
+    raise RuntimeError("Network forbidden during snapshot")
+
+
+socket.create_connection = network_blocked
+socket.socket.connect = network_blocked
+sys.path.insert(0, str(ROOT / "src"))
+from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
+from doc2roadmap.application.phase_b.retrieval import load_learning_graph, assert_retrieval_compatible
+import pypdfium2
+
+regular(ROOT)
+for directory in [OUT, DEST, CHECK, ARCHIVE]:
+    regular(directory)
+assert OUT.is_dir()
+assert not DEST.exists() and not CHECK.exists() and not ARCHIVE.exists(), "Use new snapshot paths"
+
+source = JsonArtifactStore(ROOT / "artifacts")
+paths = set()
+books = []
+for doc, (version, pdf_name, modules, learnable) in BOOKS.items():
+    # Inspect only the allowlisted document and its pinned dependencies.
+    regular(ROOT / "artifacts/graph" / doc / f"v{version}" / "manifest.json")
+    graph = load_learning_graph(source, doc, version)
+    stored = source.load_graph(doc, version)
+    assert len(graph.modules) == modules and len(graph.learnable_nodes) == learnable
+    assert load_learning_graph(source, doc).graph_version == version
+    cv = stored.manifest.get("config", {}).get("chunks_version") or stored.manifest.get("chunks_version")
+    chunks = source.load_chunks(doc, int(cv)) if cv else source.load_latest_chunks(doc)
+    parsed = source.load_parse(doc, int(chunks.manifest["parse_version"]))
+    retrieval = source.load_latest_retrieval(doc)
+    assert_retrieval_compatible(retrieval.payload, graph.chunks.values())
+    pdf = ROOT / pdf_name
+    digest = sha256(pdf)
+    assert parsed.manifest["source_hash"] == digest, "PDF differs from pinned parse"
+    for folder in [stored.path, chunks.path, parsed.path, retrieval.path]:
+        paths.update(files_under(folder))
+    paths.add(pdf)
+    with pypdfium2.PdfDocument(str(pdf)) as pdf_document:
+        pdf_pages = len(pdf_document)
+    books.append({"doc_id": doc, "graph_version": version, "chunks_version": chunks.version,
+                  "parse_version": parsed.version, "retrieval_version": retrieval.version,
+                  "modules": modules, "learnable_nodes": learnable, "chunks": len(graph.chunks),
+                  "pdf": pdf_name, "pdf_pages": pdf_pages, "pdf_sha256": digest,
+                  "pdf_matches_parse": True, "retrieval_inputs_match": True})
+
+records = [{"path": path.relative_to(ROOT).as_posix(), "sha256": sha256(path), "bytes": path.stat().st_size}
+           for path in sorted(paths)]
+DEST.mkdir()
+CHECK.mkdir()
+for row in records:
+    original = ROOT / row["path"]
+    assert sha256(original) == row["sha256"]
+    for destination in [DEST, CHECK]:
+        target = target_path(destination, row["path"])
+        target.parent.mkdir(parents=True, exist_ok=True)
+        regular(target.parent)
+        shutil.copyfile(original, target)
+        assert sha256(target) == row["sha256"]
+        assert (target.stat().st_dev, target.stat().st_ino) != (original.stat().st_dev, original.stat().st_ino)
+
+for data_root in [DEST, CHECK]:
+    store = JsonArtifactStore(data_root / "artifacts")
+    for row in books:
+        graph = load_learning_graph(store, row["doc_id"])
+        assert (graph.graph_version, len(graph.modules), len(graph.learnable_nodes)) == (
+            row["graph_version"], row["modules"], row["learnable_nodes"])
+        retrieval = store.load_latest_retrieval(row["doc_id"])
+        assert_retrieval_compatible(retrieval.payload, graph.chunks.values())
+
+# Falsifiable checks only alter the disposable verification copy.
+mutant = CHECK / records[0]["path"]
+mutant.write_bytes(mutant.read_bytes() + b"\n")
+assert sha256(mutant) != records[0]["sha256"], "Tampering must fail hash check"
+shutil.copyfile(DEST / records[0]["path"], mutant)
+assert sha256(mutant) == records[0]["sha256"]
+try:
+    target_path(CHECK, "../must-not-exist")
+except ValueError:
+    traversal_rejected = True
+else:
+    raise AssertionError("Traversal guard failed")
+for row in records:
+    assert sha256(ROOT / row["path"]) == sha256(DEST / row["path"]) == sha256(CHECK / row["path"]) == row["sha256"]
+
+manifest = {"captured_utc": datetime.now(timezone.utc).isoformat(), "allowed_docs": list(BOOKS),
+            "snapshot": str(DEST), "scope": "W-06 PDFs, pinned A10 graphs, chunks, parse and compatible retrieval; no shared Phase B cache or formula export",
+            "books": books, "files": records, "bytes": sum(row["bytes"] for row in records),
+            "junctions_used": False, "symlinks_used": False, "hardlinks_used": False,
+            "protected_from_cleanup": True}
+serialized = json.dumps(manifest, ensure_ascii=False, indent=2)
+(DEST / "development-fixtures.json").write_text(serialized, encoding="utf-8")
+(OUT / "development-fixtures.json").write_text(serialized, encoding="utf-8")
+with ZipFile(ARCHIVE, "w", ZIP_DEFLATED) as zipped:
+    for row in records:
+        zipped.write(DEST / row["path"], row["path"])
+    zipped.write(DEST / "development-fixtures.json", "development-fixtures.json")
+with ZipFile(ARCHIVE) as zipped:
+    assert zipped.testzip() is None
+    for row in records:
+        assert hashlib.sha256(zipped.read(row["path"])).hexdigest() == row["sha256"]
+assert not network_attempts
+result = {"snapshot": str(DEST), "manifest_sha256": sha256(DEST / "development-fixtures.json"),
+          "files": len(records), "bytes": manifest["bytes"], "books": books,
+          "archive": str(ARCHIVE), "archive_bytes": ARCHIVE.stat().st_size, "archive_sha256": sha256(ARCHIVE),
+          "all_source_snapshot_copy_zip_sha256_match": True, "verification_copy": str(CHECK),
+          "tamper_detected": True, "traversal_rejected": traversal_rejected,
+          "model_calls": 0, "network_attempts": len(network_attempts), "cost_usd": 0}
+(OUT / "snapshot-result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
+print(json.dumps(result, indent=2))
