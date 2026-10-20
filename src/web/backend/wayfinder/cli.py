@@ -28,6 +28,10 @@ def main(argv=None) -> int:
     commands.add_parser("media-smoke")
     create_admin = commands.add_parser("create-admin")
     create_admin.add_argument("--email", required=True)
+    seed = commands.add_parser("seed-samples")
+    seed.add_argument("--admin-email", required=True)
+    seed.add_argument("--doc-id", action="append", dest="doc_ids")
+    seed.add_argument("--source-root", type=Path)
     database = commands.add_parser("db").add_subparsers(dest="db_command", required=True)
     database.add_parser("upgrade")
     openapi = commands.add_parser("openapi").add_subparsers(dest="openapi_command", required=True)
@@ -39,6 +43,50 @@ def main(argv=None) -> int:
             parser.error("Server dotenv file does not exist")
         load_dotenv(args.env_file, override=False)
     settings = WebSettings(_env_file=None)
+
+    if args.command == "seed-samples":
+        from wayfinder.api.errors import WebError
+        from wayfinder.application.seed_samples import SampleSeeder, SAMPLE_DOCS
+        from wayfinder.composition import compose_course_services
+        from wayfinder.domain.auth import Actor
+        from wayfinder.infrastructure.auth_store import PostgresAuthStore
+        from wayfinder.infrastructure.media import CloudinaryMediaStore
+        from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+        from sqlalchemy.exc import SQLAlchemyError
+
+        if settings.env != "dev" or not settings.database_url or any(doc not in SAMPLE_DOCS for doc in (args.doc_ids or [])):
+            print("Chỉ tạo khoá mẫu từ sáu cuốn phát triển ở dev; cần cấu hình PostgreSQL.", file=sys.stderr)
+            return 2
+        health = phase_b = None
+        try:
+            health = DatabaseHealth(settings.database_url)
+            credentials = PostgresAuthStore(health.engine).get_credentials(args.admin_email.strip().lower())
+            if credentials is None or credentials.account.role != "admin" or credentials.account.status != "active":
+                raise WebError("forbidden", "Cần tài khoản quản trị đang hoạt động")
+            account = credentials.account
+            actor = Actor(account.id, account.role, account.email_verified_at is not None, account.status)
+            if args.source_root is not None:
+                settings.artifact_root = args.source_root / "artifacts"
+            phase_b = PostgresPhaseBStore(health.engine)
+            courses, gateway = compose_course_services(settings, health.engine, phase_b)
+            seeder = SampleSeeder(courses, gateway, CloudinaryMediaStore(),
+                source_root=args.source_root or settings.artifact_root.parent,
+                folder=settings.cloudinary_folder + "/samples")
+            rows = seeder.execute(actor, args.doc_ids)
+            for course in rows:
+                print(f"{course.doc_id}: {course.id} graph v{course.published_graph_version}")
+            return 0
+        except WebError as error:
+            print(error.message, file=sys.stderr)
+            return 1
+        except (SQLAlchemyError, ValueError, RuntimeError, FileNotFoundError):
+            print("Không thể tạo khoá mẫu; hãy kiểm tra đầu vào, PostgreSQL và MediaStore.", file=sys.stderr)
+            return 1
+        finally:
+            if phase_b is not None:
+                phase_b.close()
+            if health is not None:
+                health.close()
 
     if args.command == "create-admin":
         if not settings.database_url:
