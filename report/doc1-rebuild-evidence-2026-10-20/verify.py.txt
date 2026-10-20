@@ -1,0 +1,95 @@
+"""Independent observable artifact checks; output metadata only."""
+import hashlib
+import json
+import math
+import sqlite3
+import sys
+from collections import Counter, defaultdict
+from pathlib import Path
+
+ROOT = Path.cwd()
+sys.path.insert(0, str(ROOT / 'src'))
+from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
+from doc2roadmap.application.phase_b.retrieval import load_learning_graph, assert_retrieval_compatible
+from doc2roadmap.application.phase_b.concept_index import concept_inputs, _hash
+from doc2roadmap.application.phase_b.formula_images import formula_occurrence_key
+from formula_guard import verify_formula_images
+
+OUT = ROOT / 'tmp/coord-doc1-rebuild-20261020'
+result = json.loads((OUT / 'paid-result.json').read_text(encoding='utf-8'))
+assert result['status'] == 'succeeded', result.get('error')
+assert result['completed_steps'] == ['doc_reading', 'concepts', 'graph', 'learning_prep']
+store = JsonArtifactStore(ROOT / 'artifacts')
+graph = load_learning_graph(store, 'doc-1', result['graph_version'])
+assert graph.modules and graph.learnable_nodes
+assert all(nid in graph.learnable_nodes for m in graph.modules.values() for nid in m['node_ids'])
+versions = result['step_details']['concepts']
+before = store.load_chunks('doc-1', result['step_details']['doc_reading']['chunks_version'])
+after = store.load_chunks('doc-1', versions['label_roles']['chunks_version'])
+identity = lambda chunk: {k: v for k, v in chunk.to_dict().items() if k != 'role'}
+assert [identity(c) for c in before.result.chunks] == [identity(c) for c in after.result.chunks]
+assert after.manifest.get('semantic_roles')
+retrieval = store.load_latest_retrieval('doc-1')
+fingerprint = assert_retrieval_compatible(retrieval.payload, graph.chunks.values())
+assert all(len(row['vector']) == 768 and any(row['vector']) for row in retrieval.payload['documents'])
+canonical = store.load_canonical('doc-1', versions['canonical']['canonical_version'])
+assert canonical.manifest['a4_gold_coverage'] == 'none'
+assert canonical.manifest['gold_sheet_id'] is None
+candidates = store.load_candidates('doc-1', versions['a3']['candidate_version'])
+assert candidates.payload['coverage_incomplete'] is False
+assert candidates.payload['failed_sections'] == []
+phase = json.loads((ROOT / 'artifacts/phase_b/doc-1-rebuild-20261020.json').read_text(encoding='utf-8'))
+inputs = concept_inputs(graph.payload['nodes'])
+indices = [v for k, v in phase.get('cache', {}).items() if k.startswith('concept-index:doc-1:')]
+matching = next(row for row in indices if row.get('input_hash') == _hash(inputs))
+assert {row['node_id'] for row in matching['items']} == {row['node_id'] for row in inputs}
+assert len(matching['items']) == len(inputs)
+assert all(len(row['vector']) == 768 and any(row['vector']) for row in matching['items'])
+assert result['step_details']['learning_prep']['a12']['assignment_count'] == len(graph.chunks)
+formula_path = Path(result['step_details']['learning_prep']['formulas']['index_path'])
+if not formula_path.is_absolute():
+    formula_path = ROOT / formula_path
+assert formula_path.is_file()
+parsed = store.load_parse('doc-1', result['step_details']['learning_prep']['formulas']['parse_version'])
+expected_formulas = {formula_occurrence_key(node) for node in parsed.tree.nodes if node.node_type == 'formula'}
+formula_check = verify_formula_images(formula_path, expected_formulas)
+rows = [json.loads(line) for line in (OUT / 'paid-requests.jsonl').read_text().splitlines()]
+assert all(row['actual_usd'] is not None for row in rows)
+actual = sum(row['actual_usd'] for row in rows)
+attempts = [json.loads(path.read_text(encoding='utf-8')) for path in OUT.glob('attempt-*-result.json')]
+assert actual <= 3.0 and math.isclose(actual, sum(row['spent_usd'] for row in attempts), abs_tol=1e-8)
+with sqlite3.connect(ROOT / 'artifacts/builds.sqlite3') as connection:
+    saved = connection.execute('SELECT result_json FROM build_runs WHERE doc_id=? AND pipeline_version=? AND status=? ORDER BY rowid DESC LIMIT 1',
+        ('doc-1', result['pipeline_version'], 'succeeded')).fetchone()
+assert saved is not None
+db_result = json.loads(saved[0])
+assert db_result == {k: v for k, v in result.items() if k not in {'budget_guard', 'attempt', 'cumulative_spent_usd'}}
+original = json.loads((ROOT / 'report/ghep-main-evidence-2026-10-20/development-fixtures.json').read_text(encoding='utf-8'))
+doc6 = [row for row in original['files'] if '/doc-6/' in row['path'] or row['path'] == 'doc-6.pdf']
+matches = sum(hashlib.sha256((ROOT / row['path']).read_bytes()).hexdigest() == row['sha256'] for row in doc6)
+assert matches == len(doc6) == 122
+summary = defaultdict(lambda: {'http_calls': 0, 'successful_calls': 0, 'http_errors': 0, 'actual_usd': 0.0})
+for row in rows:
+    item = summary[row['stage']]
+    item['http_calls'] += 1
+    item['successful_calls'] += row['http_error'] is None
+    item['http_errors'] += row['http_error'] is not None
+    item['actual_usd'] += row['actual_usd']
+report = {'graph_version': graph.graph_version, 'modules': len(graph.modules),
+          'module_title_sources': dict(Counter(m.get('title_source', 'unknown') for m in graph.modules.values())),
+          'module_description_sources': dict(Counter(m.get('description_source', 'unknown') for m in graph.modules.values())),
+          'learnable_nodes': len(graph.learnable_nodes), 'all_nodes': len(graph.nodes),
+          'edge_counts': {key: len(value) for key, value in graph.payload.items() if key.endswith('edges') and isinstance(value, list)},
+          'chunks': len(graph.chunks), 'retrieval_fingerprint': fingerprint,
+          'roles_preserve_chunk_identity': True, 'concept_index_items': len(inputs),
+          'formula_images': result['step_details']['learning_prep']['formulas'],
+          'formula_images_independent_check': formula_check,
+          'doc6_exact_hashes': matches, 'doc6_total_hashes': len(doc6),
+          'actual_usd': actual, 'usage_unknown_responses': 0,
+          'pipeline_usage_complete': result['usage_complete'], 'http_statuses': dict(Counter(str(row['http_error']) for row in rows)),
+          'by_stage': dict(summary), 'db_result_matches': True,
+          'old_v57': {'modules': 33, 'learnable_nodes': 205, 'edges': None},
+          'old_phase_b_cache_comparison': {'verified_old_scoped_stores': 0, 'module_cards_checked': 0,
+             'module_names_checked': 0, 'compatible_count': None, 'reason': 'No verified isolated old doc-1 Phase B store; shared live store was not opened.'}}
+(OUT / 'verification.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+print(json.dumps(report, ensure_ascii=False, indent=2))

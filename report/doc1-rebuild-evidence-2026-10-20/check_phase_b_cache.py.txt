@@ -1,0 +1,111 @@
+"""Exercise the rebuilt document's Phase B paths; no old/shared stores or API."""
+import builtins
+from copy import deepcopy
+import io
+import json
+from pathlib import Path
+import shutil
+import sys
+from types import SimpleNamespace
+from contextlib import ExitStack
+from unittest.mock import patch
+from uuid import uuid4
+
+ROOT = Path.cwd().resolve()
+sys.path.insert(0, str(ROOT / 'src'))
+from doc2roadmap.config import Settings
+from doc2roadmap.composition_phase_b import PhaseBRuntime
+from doc2roadmap.application.phase_b.naming import NameModulesB
+from doc2roadmap.application.phase_b.quiz import QuizUseCase
+from doc2roadmap.presentation.cli.main import main
+from contextlib import redirect_stdout
+
+source = ROOT / 'artifacts/phase_b/doc-1-rebuild-20261020.json'
+target = ROOT / 'tmp' / ('phase-b-cache-check-' + uuid4().hex + '.json')
+assert not target.exists()
+shutil.copyfile(source, target)
+network_attempts = []
+native_open, native_io_open = builtins.open, io.open
+
+def forbid(*args, **kwargs):
+    network_attempts.append(True)
+    raise AssertionError('API forbidden')
+
+def guarded_open(original):
+    def open_file(file, *args, **kwargs):
+        name = str(file).replace('\\', '/').lower()
+        if any(s in name for s in ['phase_b/live.json', 'phase_b/offline.json', 'document-data/test/', 't01a-clean-ff797eb']):
+            raise AssertionError('Unscoped or protected store access')
+        return original(file, *args, **kwargs)
+    return open_file
+
+class NoCalls:
+    model_id = 'gemini-3.1-flash-lite'
+    def ask_json(self, *args, **kwargs):
+        raise AssertionError('Naming plan called model')
+
+with ExitStack() as stack:
+    for name in ['doc2roadmap.infrastructure.llm.gemini.urlopen',
+                 'doc2roadmap.infrastructure.embedding.gemini.urlopen',
+                 'doc2roadmap.infrastructure.llm.phase_b.urlopen',
+                 'doc2roadmap.infrastructure.google_auth.VertexCredentials.headers']:
+        stack.enter_context(patch(name, forbid))
+    stack.enter_context(patch('builtins.open', guarded_open(native_open)))
+    stack.enter_context(patch('io.open', guarded_open(native_io_open)))
+    runtime = PhaseBRuntime(settings=Settings(artifact_dir=ROOT / 'artifacts', llm_transport='vertex'),
+                            store_path=target, mode='offline', allow_spend=False)
+    graph = runtime.graph('doc-1', 8)
+    upstream = runtime.artifacts.load_graph('doc-1', 7)
+    naming = NameModulesB(runtime.artifacts, NoCalls(), phase_b_store=runtime.store, allow_spend=False)
+    plan = naming.plan('doc-1', upstream=upstream)
+    assert plan.calls_estimate == 0
+    old_id = upstream.payload['modules'][0]['node_ids'][0]
+    def remap(value):
+        if isinstance(value, str): return old_id + '-stale-probe' if value == old_id else value
+        if isinstance(value, list): return [remap(v) for v in value]
+        if isinstance(value, dict): return {k: remap(v) for k, v in value.items()}
+        return value
+    stale = SimpleNamespace(payload=remap(deepcopy(upstream.payload)), manifest=upstream.manifest, version=upstream.version)
+    stale_plan = naming.plan('doc-1', upstream=stale)
+    assert stale_plan.calls_estimate > 0, 'Changed node identity incorrectly reused names cache'
+    module = max(graph.modules.values(), key=lambda row: len(row['node_ids']))
+    mid = module['module_id']
+    quiz = runtime.quiz(graph).make_quiz('doc-1', mid, 'recovery-check', n=5, allow_spend=False,
+                                         seed=1, graph_version=8)
+    assert 0 <= quiz['ready_count'] <= 5 and quiz['graph_version'] == 8
+    assert all(item['concept_id'] in graph.learnable_nodes for item in quiz['items'])
+    assert 'is_correct' not in repr(quiz)
+    assignment = runtime.a12('doc-1', graph_version=8)
+    assert len(assignment['assignments']) == 302
+    assert all(row.get('module_id') is None or row['module_id'] in graph.modules for row in assignment['assignments'].values())
+    cards = [graph.get_module_info(mid) for mid in graph.modules]
+    assert all(card['found'] and all(nid in graph.learnable_nodes for nid in card['node_ids']) for card in cards)
+    assert all(card['node_ids'] == graph.modules[card['module_id']]['node_ids'][:8]
+               and card['title'] == (graph.modules[card['module_id']].get('display_name') or graph.modules[card['module_id']].get('title'))
+               for card in cards)
+    output = io.StringIO()
+    with redirect_stdout(output):
+        code = main(['phase-b', 'graph-tool', 'get_module_info', mid, '--doc-id', 'doc-1',
+                     '--graph-version', '8', '--store', str(target), '--mode', 'offline'])
+    cli_card = json.loads(output.getvalue())
+    assert code == 0 and cli_card == graph.get_module_info(mid)
+    names_output = io.StringIO()
+    with redirect_stdout(names_output):
+        names_code = main(['phase-b', 'names', '--doc-id', 'doc-1', '--dry-run', '--store', str(target)])
+    names_plan = json.loads(names_output.getvalue())
+    assert names_code == 0 and names_plan['calls_estimate'] == 0 and names_plan['source_graph_version'] == 7
+    assert not network_attempts
+    report = {'graph_version': 8, 'module_cards_checked': len(cards), 'module_cards_with_missing_nodes': 0,
+              'current_module_naming_contexts_cached': len(graph.modules), 'current_naming_calls_needed': plan.calls_estimate,
+              'changed_node_identity_causes_cache_miss': stale_plan.calls_estimate > 0,
+              'changed_node_identity_calls_needed': stale_plan.calls_estimate,
+              'real_graph_quiz_ready_count': quiz['ready_count'], 'real_graph_quiz_requested': 5,
+              'real_graph_quiz_mode': 'offline_cloze', 'real_graph_quiz_failed_concepts': len(quiz['failed_concepts']),
+              'quiz_answers_hidden': True, 'quiz_nodes_match_new_graph': True,
+              'a12_assignments': len(assignment['assignments']), 'unscoped_store_reads': 0,
+              'cli_graph_version_and_scoped_store_verified': True,
+              'cli_names_cache_calls_needed': names_plan['calls_estimate'],
+              'network_attempts': len(network_attempts), 'store': str(target),
+              'old_v45_v57_cache_compared': False}
+    (ROOT / 'tmp/phase-b-cache-check-result.json').write_text(json.dumps(report, indent=2), encoding='utf-8')
+    print(json.dumps(report, indent=2))

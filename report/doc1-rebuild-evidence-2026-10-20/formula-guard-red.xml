@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="12" time="2.502" timestamp="2026-10-20T14:25:45.614589+07:00" hostname="ADMIN"><testcase classname="tmp.coord-doc1-rebuild-20261020.test_formula_guard" name="test_duplicate_occurrences_share_one_valid_image" time="0.278" /><testcase classname="tmp.coord-doc1-rebuild-20261020.test_formula_guard" name="test_corrupt_bytes_fail_even_when_pipeline_counts_claim_success" time="0.009"><failure message="Failed: DID NOT RAISE &lt;class 'AssertionError'&gt;">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/formula-guard-red/test_corrupt_bytes_fail_even_w0')
+
+    def test_corrupt_bytes_fail_even_when_pipeline_counts_claim_success(tmp_path):
+        index, image = fixture(tmp_path)
+        image.write_bytes(b'broken png')
+&gt;       with pytest.raises(AssertionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'AssertionError'&gt;
+
+tmp\coord-doc1-rebuild-20261020\test_formula_guard.py:35: Failed</failure></testcase><testcase classname="tmp.coord-doc1-rebuild-20261020.test_formula_guard" name="test_missing_image_fails_even_when_pipeline_counts_claim_success" time="0.008"><failure message="Failed: DID NOT RAISE &lt;class 'FileNotFoundError'&gt;">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/formula-guard-red/test_missing_image_fails_even_0')
+
+    def test_missing_image_fails_even_when_pipeline_counts_claim_success(tmp_path):
+        index, image = fixture(tmp_path)
+        image.unlink()
+&gt;       with pytest.raises(FileNotFoundError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'FileNotFoundError'&gt;
+
+tmp\coord-doc1-rebuild-20261020\test_formula_guard.py:42: Failed</failure></testcase><testcase classname="tmp.coord-doc1-rebuild-20261020.test_formula_guard" name="test_stale_occurrence_index_fails_against_parse_nodes" time="0.008"><failure message="Failed: DID NOT RAISE &lt;class 'AssertionError'&gt;">tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/formula-guard-red/test_stale_occurrence_index_fa0')
+
+    def test_stale_occurrence_index_fails_against_parse_nodes(tmp_path):
+        index, _ = fixture(tmp_path)
+&gt;       with pytest.raises(AssertionError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'AssertionError'&gt;
+
+tmp\coord-doc1-rebuild-20261020\test_formula_guard.py:48: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_settings" name="test_web_settings_defaults_and_unlimited_caps" time="0.006" /><testcase classname="src.web.backend.tests.test_settings" name="test_production_defaults_to_smtp_and_production_folder" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[session_idle_days]" time="0.004" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[upload_max_mb]" time="0.004" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[signed_url_ttl_seconds]" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_positive_fields_reject_zero[page_image_width]" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_optional_limits_allow_none" time="0.005" /><testcase classname="src.web.backend.tests.test_settings" name="test_optional_numeric_limits_parse_null_environment_values" time="0.005" /></testsuite></testsuites>

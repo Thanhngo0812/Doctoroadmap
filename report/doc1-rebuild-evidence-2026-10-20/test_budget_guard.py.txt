@@ -1,0 +1,75 @@
+import io
+import json
+import threading
+import time
+from concurrent.futures import ThreadPoolExecutor
+from urllib.request import Request
+
+import pytest
+from budget_guard import BudgetGuard, BudgetExceeded, UsageUnknown
+
+
+def request():
+    return Request('https://example.invalid/generateContent', data=json.dumps({
+        'contents': [{'parts': [{'text': 'abc'}]}],
+        'generationConfig': {'maxOutputTokens': 20}}).encode())
+
+
+def reply():
+    return io.BytesIO(json.dumps({'usageMetadata': {
+        'promptTokenCount': 1000, 'candidatesTokenCount': 10}}).encode())
+
+
+def test_budget_rejects_second_dispatch_before_provider_is_called():
+    calls = []
+    def provider(*args, **kwargs):
+        calls.append(1)
+        return reply()
+    guard = BudgetGuard(0.0006, provider)
+    guard(request())
+    with pytest.raises(BudgetExceeded):
+        guard(request())
+    assert len(calls) == 1
+    assert guard.snapshot()['actual_usd'] == pytest.approx(0.000265)
+
+
+def test_parallel_calls_wait_for_reserved_capacity_without_false_failure():
+    lock = threading.Lock()
+    active = peak = 0
+    def provider(*args, **kwargs):
+        nonlocal active, peak
+        with lock:
+            active += 1
+            peak = max(peak, active)
+        time.sleep(.01)
+        with lock:
+            active -= 1
+        return reply()
+    guard = BudgetGuard(.0025, provider)
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        list(pool.map(lambda _: guard(request()).read(), range(8)))
+    assert peak < 8
+    assert guard.snapshot()['actual_usd'] == pytest.approx(8 * .000265)
+    assert guard.snapshot()['in_flight_usd'] == 0
+
+
+def test_missing_usage_prevents_any_later_dispatch_and_is_not_zero_cost():
+    calls = []
+    def provider(*args, **kwargs):
+        calls.append(1)
+        return io.BytesIO(b'{}')
+    guard = BudgetGuard(1, provider)
+    guard(request())
+    with pytest.raises(UsageUnknown):
+        guard(request())
+    assert len(calls) == 1
+    assert guard.snapshot()['unknown_upper_usd'] > 0
+
+
+def test_budget_assertion_fails_when_reservation_guard_is_removed(monkeypatch):
+    guard = BudgetGuard(.0006, lambda *a, **k: reply())
+    monkeypatch.setattr(guard, '_reserve', lambda value: None)
+    guard(request())
+    guard(request())
+    with pytest.raises(AssertionError):
+        assert guard.snapshot()['actual_usd'] + guard.bound(request()) <= .0006
