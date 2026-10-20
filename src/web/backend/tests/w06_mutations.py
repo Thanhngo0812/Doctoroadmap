@@ -51,8 +51,16 @@ def main():
          'DailySpendGuard(__import__("doc2roadmap.infrastructure.artifacts.phase_b_store", '
          'fromlist=["InMemoryPhaseBStore"]).InMemoryPhaseBStore(),',
          "test_composition_binds_vertex_models_and_all_child_stores_to_postgres"),
+        ("session-store", "infrastructure/learning_runtime.py", 'SessionUseCase(self.store,',
+         'SessionUseCase(__import__("doc2roadmap.infrastructure.artifacts.phase_b_store", '
+         'fromlist=["InMemoryPhaseBStore"]).InMemoryPhaseBStore(),',
+         "test_composition_binds_vertex_models_and_all_child_stores_to_postgres"),
         ("transport", "composition.py", 'transport="vertex",', 'transport="developer_api",',
          "test_composition_binds_vertex_models_and_all_child_stores_to_postgres"),
+        ("fixture-link", "../tests/copy_w06_fixtures.py", '    for ancestor in (path, *path.parents):',
+         '    for ancestor in (path, *path.parents):\n'
+         '        if not ancestor.exists() and not ancestor.is_symlink():\n            continue',
+         "test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point"),
     ]:
         results.append(run_mutation(*mutation))
     (ROOT / "report/w06-evidence/mutations.json").write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8")

@@ -13,6 +13,7 @@ from wayfinder.api.auth import get_actor
 from wayfinder.composition import WebServices, compose_account_service
 from wayfinder.domain.auth import Actor
 from wayfinder.fakes.media import MemoryMediaStore
+from wayfinder.fakes.mail import FakeMailer
 from wayfinder.infrastructure.database import create_database_engine
 from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
 from wayfinder.testing import FakeClock, _sample_graph
@@ -42,7 +43,7 @@ def courses(postgres_database_url, monkeypatch):
     settings = WebSettings(
         _env_file=None, frontend_dist=Path("missing"), allowed_origins=[ORIGIN])
     clock = FakeClock()
-    accounts = compose_account_service(settings, engine)
+    accounts = compose_account_service(settings, engine, mailer=FakeMailer())
     phase_b = PostgresPhaseBStore(engine)
     store = PostgresCourseStore(engine)
     graph = _sample_graph()
@@ -362,11 +363,18 @@ def test_seed_cli_uses_admin_identity_and_media_port(courses, monkeypatch, tmp_p
     assert "doc-6" in capsys.readouterr().out
 
 
-def test_real_doc1_and_doc6_seed_join_and_roadmap_over_http(courses):
+def test_real_six_book_seed_join_and_roadmap_over_tcp_http(courses, monkeypatch):
     import json
+    from contextlib import contextmanager
+    from threading import Thread
+    from time import monotonic, sleep
+    import socket
+    import httpx
+    import uvicorn
     from doc2roadmap.application.phase_b.retrieval import load_learning_graph
     from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
-    from wayfinder.application.seed_samples import SampleSeeder
+    from wayfinder.application.seed_samples import SAMPLE_DOCS
+    from wayfinder import cli
 
     # Inputs are copied and hash-verified by copy_w06_fixtures.py before this
     # mandatory integration test; missing development input must fail, not skip.
@@ -376,35 +384,93 @@ def test_real_doc1_and_doc6_seed_join_and_roadmap_over_http(courses):
     with courses.engine.begin() as connection:
         connection.execute(text("DELETE FROM course WHERE id=:cid"), {"cid": courses.sample.id})
     media = MemoryMediaStore()
-    seeded = SampleSeeder(courses.service, courses.gateway, media, source_root=root, folder="fake/dev").execute(
-        courses.owner, ["doc-1", "doc-6"])
-    assert [(row.doc_id, row.published_graph_version) for row in seeded] == [("doc-1", 8), ("doc-6", 29)]
-    assert len(media.files) == 2
-    actor, client, headers = courses.user()
-    before = client.get("/api/v1/courses")
-    assert before.status_code == 200
-    course = seeded[0]
-    joined = client.post(f"/api/v1/courses/{course.id}/join-sample", headers=headers, json={"owner": "forged"})
-    detail = client.get(f"/api/v1/courses/{course.id}")
-    roadmap = client.get(f"/api/v1/courses/{course.id}/roadmap")
-    after = client.get("/api/v1/courses")
-    private = client.get(f"/api/v1/courses/{courses.course.id}")
-    assert joined.status_code == detail.status_code == roadmap.status_code == after.status_code == 200
+    monkeypatch.setenv("WAYFINDER_DATABASE_URL", courses.engine.url.render_as_string(hide_password=False))
+    monkeypatch.setenv("WAYFINDER_ENV", "dev")
+    monkeypatch.setattr("wayfinder.infrastructure.media.CloudinaryMediaStore", lambda: media)
+    with courses.engine.connect() as connection:
+        email = connection.scalar(text("SELECT email FROM account WHERE id=:uid"), {"uid": courses.owner.user_id})
+    assert cli.main(["seed-samples", "--admin-email", email, "--source-root", str(root)]) == 0
+    seeded = [courses.store.find_sample(doc_id) for doc_id in SAMPLE_DOCS]
+    expected = {"doc-1": (8, 35, 223), "doc-6": (29, 2, 11), "nhap-mon-ml": (50, 15, 75),
+                "naive-bayes": (49, 5, 33), "xstk-ch3-1": (68, 14, 82), "doc-4": (27, 91, 495)}
+    assert {row.doc_id: row.published_graph_version for row in seeded} == {key: value[0] for key, value in expected.items()}
+    assert len(media.files) == 6
+    assert cli.main(["seed-samples", "--admin-email", email, "--source-root", str(root)]) == 0
+    assert [courses.store.find_sample(doc_id).id for doc_id in SAMPLE_DOCS] == [row.id for row in seeded]
+    assert len(media.files) == 6
+
+    @contextmanager
+    def live_client():
+        listener = socket.socket()
+        listener.bind(("127.0.0.1", 0))
+        origin = f"http://127.0.0.1:{listener.getsockname()[1]}"
+        courses.settings.allowed_origins.append(origin)
+        server = uvicorn.Server(uvicorn.Config(courses.app, log_config=None, access_log=False))
+        thread = Thread(target=server.run, kwargs={"sockets": [listener]}, daemon=True)
+        thread.start()
+        try:
+            deadline = monotonic() + 10
+            while not server.started and thread.is_alive() and monotonic() < deadline:
+                sleep(.01)
+            assert server.started
+            with httpx.Client(base_url=origin, trust_env=False, timeout=20) as client:
+                yield client, origin
+        finally:
+            server.should_exit = True
+            thread.join(10)
+            listener.close()
+            assert not thread.is_alive(), "local HTTP server did not stop"
+
+    snapshots = []
+    with live_client() as (client, origin):
+        assert client.post("/api/v1/auth/register", headers={"Origin": origin}, json={
+            "email": uuid4().hex + "@example.vn", "password": "W06 TCP private passphrase!",
+            "display_name": "Người học HTTP"}).status_code == 200
+        identity = client.get("/api/v1/me").json()
+        uid = identity["account"]["id"]
+        headers = {"Origin": origin, "X-CSRF-Token": identity["csrf_token"]}
+        before = client.get("/api/v1/courses")
+        assert before.status_code == 200 and len(before.json()["samples"]) == 6
+        for item in seeded:
+            joined_item = client.post(f"/api/v1/courses/{item.id}/join-sample", headers=headers, json={"owner": "forged"})
+            repeated = client.post(f"/api/v1/courses/{item.id}/join-sample", headers=headers, json={})
+            roadmap_item = client.get(f"/api/v1/courses/{item.id}/roadmap")
+            assert joined_item.status_code == repeated.status_code == roadmap_item.status_code == 200
+            version, modules, nodes = expected[item.doc_id]
+            assert roadmap_item.json()["graph_version"] == version
+            assert len(roadmap_item.json()["modules"]) == modules
+            assert joined_item.json()["progress"] == {"learned": 0, "total": nodes}
+            snapshots.append({"doc_id": item.doc_id, "course_id": item.id, "graph_version": version,
+                "module_count": modules, "learnable_nodes": nodes, "join": joined_item.json(),
+                "roadmap": roadmap_item.json(), "repeat_join_status": repeated.status_code})
+        course = seeded[0]
+        joined = snapshots[0]["join"]
+        detail = client.get(f"/api/v1/courses/{course.id}")
+        roadmap = client.get(f"/api/v1/courses/{course.id}/roadmap")
+        after = client.get("/api/v1/courses")
+        private = client.get(f"/api/v1/courses/{courses.course.id}")
+        assert after.status_code == 200 and len(after.json()["joined"]) == 6 and after.json()["samples"] == []
+    assert detail.status_code == roadmap.status_code == after.status_code == 200
     assert len(roadmap.json()["modules"]) == 35
-    assert joined.json()["progress"] == {"learned": 0, "total": 223}
+    assert joined["progress"] == {"learned": 0, "total": 223}
     assert private.status_code == 404 and private.json()["error"]["code"] == "not_found"
     with courses.engine.connect() as independent:
         assert independent.scalar(text("SELECT via FROM membership WHERE course_id=:cid AND account_id=:uid"),
-                                  {"cid": course.id, "uid": actor.user_id}) == "sample"
+                                  {"cid": course.id, "uid": uid}) == "sample"
+        assert independent.scalar(text("SELECT count(*) FROM course WHERE is_sample")) == 6
+        assert independent.scalar(text("SELECT count(*) FROM membership m JOIN course c ON c.id=m.course_id WHERE c.is_sample")) == 12
     evidence = root / "report/w06-evidence"
     evidence.mkdir(exist_ok=True)
     (evidence / "http-doc1.json").write_text(json.dumps({
         "label": "REAL_HTTP_POSTGRES_FAKE_MODEL_MAILER_MEDIA", "model_calls": 0,
-        "source": "manifest-verified development-rebuilt-2026-10-20 copy",
-        "get_courses_before_join": before.json(), "join_sample": joined.json(),
+        "transport": "TCP HTTP via uvicorn on loopback", "source": "two manifest-verified development snapshot copies",
+        "get_courses_before_join": before.json(), "join_sample": joined,
         "get_course": detail.json(), "get_roadmap": roadmap.json(),
         "get_courses_after_join": after.json(), "private_course_error": private.json(),
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (evidence / "http-six-books.json").write_text(json.dumps({"label": "REAL_TCP_HTTP_POSTGRES_FAKE_PROVIDERS",
+        "samples": 6, "owner_memberships": 6, "learner_memberships": 6, "model_calls": 0,
+        "media_uploads_to_memory_only": len(media.files), "records": snapshots}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def test_deferred_owner_check_protects_source_when_owner_membership_is_moved(courses):
@@ -478,3 +544,23 @@ def test_w06_migration_is_single_head_after_w03_and_empty_database_upgrades(cour
     assert {"course", "membership"} <= set(inspect(courses.engine).get_table_names())
     with courses.engine.connect() as connection:
         assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "w06_0005"
+
+
+def test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point(tmp_path, monkeypatch):
+    import stat
+    from copy_w06_fixtures import safe_path
+    with pytest.raises(ValueError, match="escapes"):
+        safe_path(tmp_path, "../outside")
+    missing = tmp_path / "not-created"
+    original = Path.lstat
+    # Simulate metadata only: this test never creates a link of any kind.
+    metadata = SimpleNamespace(st_mode=stat.S_IFREG, st_nlink=2, st_file_attributes=0)
+    def lstat(path, *args, **kwargs):
+        return metadata if path == missing else original(path, *args, **kwargs)
+    monkeypatch.setattr(Path, "lstat", lstat)
+    with pytest.raises(ValueError, match="hardlinked"):
+        safe_path(tmp_path, missing.name)
+    metadata.st_nlink = 1
+    metadata.st_file_attributes = stat.FILE_ATTRIBUTE_REPARSE_POINT
+    with pytest.raises(ValueError, match="linked path"):
+        safe_path(tmp_path, missing.name)
