@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="13" time="8.618" timestamp="2026-10-20T16:42:01.907498+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="1.175" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_route_inventory_catches_a_new_unguarded_route" time="0.433" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates" time="0.751" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_guest_and_prod_cannot_join_or_discover_samples" time="0.334" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_owner_constraint_and_course_creation_rollback" time="0.298" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_update_requires_owner_and_cannot_change_identity" time="0.426" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_membership_activity_updates_only_after_five_minutes" time="0.217" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection" time="0.884" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_database_cannot_commit_course_without_matching_owner_membership" time="0.251" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_join_concurrency_respects_course_capacity" time="0.462" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_only_allows_six_development_documents_in_dev_and_uploads_once" time="0.415" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_composition_binds_vertex_models_and_all_child_stores_to_postgres" time="0.226"><failure message="TypeError: compose_services() got an unexpected keyword argument 'graph_loader'">courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_435078d9550041cb8efef...41cb8efeff8694ff9d11), graph=&lt;doc2roadmap.domain.learning_graph.LearningGraph object at 0x0000018064B20860&gt;, loaded=[])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018064593800&gt;
+
+    def test_composition_binds_vertex_models_and_all_child_stores_to_postgres(courses, monkeypatch):
+        from doc2roadmap.config import Settings
+        from wayfinder.composition import compose_services
+        observed = {}
+        def provider(kind):
+            def create(*args, **kwargs):
+                observed[kind] = kwargs
+                return SimpleNamespace(transport=kwargs["transport"])
+            return create
+        # The web composition must never construct even a temporary CLI JSON store.
+        monkeypatch.setattr("doc2roadmap.infrastructure.artifacts.phase_b_store.JsonPhaseBStore",
+                            lambda *_a, **_k: pytest.fail("web constructed a CLI JSON store"))
+&gt;       services = compose_services(
+            WebSettings(_env_file=None, database_url=courses.engine.url.render_as_string(hide_password=False)),
+            core_settings=Settings(_env_file=None, llm_transport="vertex", vertex_project="fake-project"),
+            auth_validator=lambda *_: None, model_factory=provider("model"), embedding_factory=provider("embedding"),
+            graph_loader=courses.graph_loader, clock=courses.clock)
+E       TypeError: compose_services() got an unexpected keyword argument 'graph_loader'
+
+src\web\backend\tests\test_courses_w06.py:318: TypeError</failure></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_cli_uses_admin_identity_and_media_port" time="0.712"><failure message="SystemExit: 2">self = ArgumentParser(prog='web', usage=None, description='WayFinder web development commands', formatter_class=&lt;class 'argparse.HelpFormatter'&gt;, conflict_handler='error', add_help=True)
+args = ['seed-samples', '--admin-email', '6af06c71e77a4475be51fcd6d2bafa28@example.vn', '--source-root', 'C:\\Users\\ngoco\\D...octoroadmap\\tmp\\w06-courses-gateway\\tmp\\w06-composition-cli-red\\test_seed_cli_uses_admin_ident0', '--doc-id', ...]
+namespace = Namespace(env_file=None, command=None), intermixed = False
+
+    def _parse_known_args2(self, args, namespace, intermixed):
+        if args is None:
+            # args default to the system args
+            args = _sys.argv[1:]
+        else:
+            # make sure that args are mutable
+            args = list(args)
+
+        # default Namespace built from parser defaults
+        if namespace is None:
+            namespace = Namespace()
+
+        # add any action defaults that aren't present
+        for action in self._actions:
+            if action.dest is not SUPPRESS:
+                if not hasattr(namespace, action.dest):
+                    if action.default is not SUPPRESS:
+                        setattr(namespace, action.dest, action.default)
+
+        # add any parser defaults that aren't present
+        for dest in self._defaults:
+            if not hasattr(namespace, dest):
+                setattr(namespace, dest, self._defaults[dest])
+
+        # parse the arguments and exit if there are any errors
+        if self.exit_on_error:
+            try:
+&gt;               namespace, args = self._parse_known_args(args, namespace, intermixed)
+                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:1943:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:2165: in _parse_known_args
+    positionals_end_index = consume_positionals(start_index)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:2141: in consume_positionals
+    take_action(action, args)
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:2003: in take_action
+    argument_values = self._get_values(action, argument_strings)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:2523: in _get_values
+    self._check_value(action, value[0])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ArgumentParser(prog='web', usage=None, description='WayFinder web development commands', formatter_class=&lt;class 'argparse.HelpFormatter'&gt;, conflict_handler='error', add_help=True)
+action = _SubParsersAction(option_strings=[], dest='command', nargs='A...', const=None, default=None, type=None, choices={'serv...ss=&lt;class 'argparse.HelpFormatter'&gt;, conflict_handler='error', add_help=True)}, required=True, help=None, metavar=None)
+value = 'seed-samples'
+
+    def _check_value(self, action, value):
+        # converted value must be one of the choices (if specified)
+        choices = action.choices
+        if choices is not None:
+            if isinstance(choices, str):
+                choices = iter(choices)
+            if value not in choices:
+                args = {'value': str(value),
+                        'choices': ', '.join(map(str, action.choices))}
+                msg = _('invalid choice: %(value)r (choose from %(choices)s)')
+&gt;               raise ArgumentError(action, msg % args)
+E               argparse.ArgumentError: argument command: invalid choice: 'seed-samples' (choose from serve, worker, check, media-smoke, create-admin, db, openapi)
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:2573: ArgumentError
+
+During handling of the above exception, another exception occurred:
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_435078d9550041cb8efef...41cb8efeff8694ff9d11), graph=&lt;doc2roadmap.domain.learning_graph.LearningGraph object at 0x0000018064C8C5F0&gt;, loaded=[])
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018064B00740&gt;
+tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-courses-gateway/tmp/w06-composition-cli-red/test_seed_cli_uses_admin_ident0')
+capsys = &lt;_pytest.capture.CaptureFixture object at 0x0000018064C198B0&gt;
+
+    def test_seed_cli_uses_admin_identity_and_media_port(courses, monkeypatch, tmp_path, capsys):
+        from wayfinder import cli
+        media = MemoryMediaStore()
+        (tmp_path / "doc-6.pdf").write_bytes(b"%PDF-1.7 fake cli")
+        monkeypatch.setenv("WAYFINDER_DATABASE_URL", courses.engine.url.render_as_string(hide_password=False))
+        monkeypatch.setenv("WAYFINDER_ENV", "dev")
+        monkeypatch.setattr("wayfinder.infrastructure.media.CloudinaryMediaStore", lambda: media)
+        monkeypatch.setattr("doc2roadmap.application.phase_b.retrieval.load_learning_graph", lambda *_a, **_k: courses.graph)
+        with courses.engine.connect() as connection:
+            email = connection.scalar(text("SELECT email FROM account WHERE id=:uid"), {"uid": courses.owner.user_id})
+&gt;       assert cli.main(["seed-samples", "--admin-email", email, "--source-root", str(tmp_path), "--doc-id", "doc-6"]) == 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_courses_w06.py:352:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\wayfinder\cli.py:36: in main
+    args = parser.parse_args(argv)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:1904: in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:1914: in parse_known_args
+    return self._parse_known_args2(args, namespace, intermixed=False)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:1945: in _parse_known_args2
+    self.error(str(err))
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:2650: in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = ArgumentParser(prog='web', usage=None, description='WayFinder web development commands', formatter_class=&lt;class 'argparse.HelpFormatter'&gt;, conflict_handler='error', add_help=True)
+status = 2
+message = "web: error: argument command: invalid choice: 'seed-samples' (choose from serve, worker, check, media-smoke, create-admin, db, openapi)\n"
+
+    def exit(self, status=0, message=None):
+        if message:
+            self._print_message(message, _sys.stderr)
+&gt;       _sys.exit(status)
+E       SystemExit: 2
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\argparse.py:2637: SystemExit</failure></testcase></testsuite></testsuites>

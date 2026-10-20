@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.410" timestamp="2026-10-20T17:03:38.135239+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection" time="0.918"><failure message="AssertionError: assert ('e08d05b2-4d1...-e4b74651a16c' == 'a1e23712-7cb...-280cd9de0b78'&#10;  &#10;  - a1e23712-7cb3-4ce0-bca5-280cd9de0b78&#10;  + e08d05b2-4d1e-482c-b58b-e4b74651a16c)">src\web\backend\tests\test_courses_w06.py:229: in test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection
+    assert session.owner == actor.user_id and session.doc_id == "doc-1"
+E   AssertionError: assert ('e08d05b2-4d1...-e4b74651a16c' == 'a1e23712-7cb...-280cd9de0b78'
+E
+E     - a1e23712-7cb3-4ce0-bca5-280cd9de0b78
+E     + e08d05b2-4d1e-482c-b58b-e4b74651a16c)</failure></testcase></testsuite></testsuites>

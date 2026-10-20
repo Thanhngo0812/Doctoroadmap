@@ -1,0 +1,15 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-courses-gateway/src/web/frontend
+
+
+ Test Files  4 passed (4)
+      Tests  62 passed (62)
+   Start at  17:00:52
+   Duration  28.30s (tests 77%, environment 16%, setup 4%, import 2%)
+
+    Isolate  4 workers spawned · ~1.31s startup each (spawn + environment, per file)
+             at least ~3.92s faster with isolate: false — reuses workers across files instead of one per file

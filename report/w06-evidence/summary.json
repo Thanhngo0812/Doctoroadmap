@@ -1,0 +1,167 @@
+{
+  "branch": "work/w06-courses-gateway",
+  "baseline_main": "29e4350dc04a818b9695987b0bd2d9e9ba33626b",
+  "tested_commit": "4f676d92218d0e770bb90a98452b4d7d21d0b35c",
+  "application_commit": "c694149aa93ad3e45831ed3fa5507a5027ecad16",
+  "product_unchanged_since_application_commit": true,
+  "runs": {
+    "w06-full-gate.xml": {
+      "tests": 2105,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 2104,
+      "seconds": 406.451,
+      "failed_tests": [],
+      "skipped_tests": [
+        "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled"
+      ]
+    },
+    "w06-final-gate2.xml": {
+      "tests": 2106,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 2105,
+      "seconds": 346.413,
+      "failed_tests": [],
+      "skipped_tests": [
+        "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled"
+      ]
+    },
+    "w06-backend-green.xml": {
+      "tests": 253,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "passed": 252,
+      "seconds": 49.851,
+      "failed_tests": [],
+      "skipped_tests": [
+        "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled"
+      ]
+    },
+    "w06-six-http.xml": {
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 1,
+      "seconds": 6.422,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    "w06-strong-seed-green.xml": {
+      "tests": 20,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 20,
+      "seconds": 13.643,
+      "failed_tests": [],
+      "skipped_tests": []
+    },
+    "w06-owner-move-red.xml": {
+      "tests": 1,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 0,
+      "seconds": 2.186,
+      "failed_tests": [
+        "test_deferred_owner_check_protects_source_when_owner_membership_is_moved"
+      ],
+      "skipped_tests": []
+    }
+  },
+  "backend_in_final": {
+    "passed": 253,
+    "skipped": 1
+  },
+  "w06_tests_in_final": 20,
+  "frontend": {
+    "passed_tests": 62,
+    "passed_files": 4,
+    "test_exit_code": 0,
+    "build_exit_code": 0,
+    "scope": "W-03 baseline; W-06 React is not implemented in this backend branch"
+  },
+  "mutation_results": [
+    {
+      "label": "route",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    },
+    {
+      "label": "gateway",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    },
+    {
+      "label": "owner",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    },
+    {
+      "label": "store",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    },
+    {
+      "label": "session-store",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    },
+    {
+      "label": "transport",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    },
+    {
+      "label": "fixture-link",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    },
+    {
+      "label": "seed-prod",
+      "exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_restored": true
+    }
+  ],
+  "interrupted_run": {
+    "commit": "c5fb2012603fd545262d1e075d8c8762e1fb7498",
+    "log": "w06-final-gate.log",
+    "accepted": false,
+    "reason": "Stopped to strengthen production seed rejection with otherwise valid inputs"
+  },
+  "verified_fixture_files": 3144,
+  "learner_stores_imported": false,
+  "fixture_links_used": false,
+  "samples_in_real_tcp_http_test": 6,
+  "owner_memberships": 6,
+  "learner_memberships": 6,
+  "model_calls": 0,
+  "real_model_cost_usd": 0,
+  "migration": "w03_0004 -> w06_0005",
+  "pending": [
+    "Independent review",
+    "W-06 React and browser integration",
+    "W-14 build/upload foreign key integration"
+  ]
+}

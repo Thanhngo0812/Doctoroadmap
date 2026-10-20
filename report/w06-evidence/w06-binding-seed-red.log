@@ -1,0 +1,110 @@
+.......F..F                                                              [100%]
+================================== FAILURES ===================================
+_ test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection _
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_7ca635a354b446bd8fc9a...78cfe1da), graph=<doc2roadmap.domain.learning_graph.LearningGraph object at 0x00000220C7D610A0>, loaded=[('doc-1', 8)])
+
+    def test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection(courses):
+        actor, client, headers = courses.user()
+        client.post(f"/api/v1/courses/{courses.sample.id}/join-sample", headers=headers, json={})
+
+        # Acceptance-only route for the gateway's bound learner context; no session
+        # endpoint is published by W-06 (the HTTP session flow belongs to W-09).
+        @courses.app.post("/api/v1/courses/{cid}/binding-probe")
+        def binding_probe(cid: str, payload: dict, actor=Depends(get_actor)):
+            learner = courses.gateway.learner(actor, cid, **payload)
+            session = learner.sessions.create_session(learner.owner, learner.doc_id, {"kind": "roadmap"})
+            learner.progress.set_progress(learner.owner, learner.doc_id, "a", True)
+            token = learner.spend_guard.reserve("assistant", .02, learner.owner)
+            learner.spend_guard.store.append_usage({"purpose": "assistant", "learner_id": learner.owner,
+                                                  "doc_id": learner.doc_id, "cost_usd": .01})
+            return {"session_id": session["session_id"], "reservation": token}
+
+        response = client.post(f"/api/v1/courses/{courses.sample.id}/binding-probe", headers=headers,
+                               json={"owner": courses.owner.user_id, "doc_id": "other-book", "graph_version": 999})
+>       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"5093db9a52ff4d17805908fd00c8df8c"}}
+E       assert 500 == 200
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_courses_w06.py:221: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:129 Unhandled request error ref=5093db9a52ff4d17805908fd00c8df8c
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-courses-gateway\src\web\backend\wayfinder\api\app.py", line 122, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1328, in handle
+    await super().handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 284, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-courses-gateway\src\web\backend\tests\test_courses_w06.py", line 211, in binding_probe
+    learner = courses.gateway.learner(actor, cid, **payload)
+              ^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'LearningGateway' object has no attribute 'learner'
+___ test_seed_only_allows_six_development_documents_in_dev_and_uploads_once ___
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_7ca635a354b446bd8fc9a...46bd8fc9a8f478cfe1da), graph=<doc2roadmap.domain.learning_graph.LearningGraph object at 0x00000220C81D8320>, loaded=[])
+tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-courses-gateway/tmp/w06-binding-seed-red/test_seed_only_allows_six_deve0')
+
+    def test_seed_only_allows_six_development_documents_in_dev_and_uploads_once(courses, tmp_path):
+>       from wayfinder.application.seed_samples import SampleSeeder, SAMPLE_DOCS
+E       ModuleNotFoundError: No module named 'wayfinder.application.seed_samples'
+
+src\web\backend\tests\test_courses_w06.py:274: ModuleNotFoundError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-courses-gateway\tmp\w06-binding-seed-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_courses_w06.py::test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection
+FAILED src/web/backend/tests/test_courses_w06.py::test_seed_only_allows_six_development_documents_in_dev_and_uploads_once

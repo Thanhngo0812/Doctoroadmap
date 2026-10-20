@@ -1,0 +1,94 @@
+EEEEEEE                                                                  [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_every_cid_route_hides_private_course_from_outsiders_including_admin _
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1AFC1D60>
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+>       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError
+____ ERROR at setup of test_route_inventory_catches_a_new_unguarded_route _____
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1AFFEF90>
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+>       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError
+_ ERROR at setup of test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates _
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B019FA0>
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+>       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError
+____ ERROR at setup of test_guest_and_prod_cannot_join_or_discover_samples ____
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B01B3B0>
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+>       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError
+____ ERROR at setup of test_owner_constraint_and_course_creation_rollback _____
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B01BE60>
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+>       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError
+___ ERROR at setup of test_update_requires_owner_and_cannot_change_identity ___
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B3E8800>
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+>       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError
+_ ERROR at setup of test_membership_activity_updates_only_after_five_minutes __
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B3E9130>
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+>       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-courses-gateway\tmp\w06-course-red.xml -
+=========================== short test summary info ===========================
+ERROR src/web/backend/tests/test_courses_w06.py::test_every_cid_route_hides_private_course_from_outsiders_including_admin
+ERROR src/web/backend/tests/test_courses_w06.py::test_route_inventory_catches_a_new_unguarded_route
+ERROR src/web/backend/tests/test_courses_w06.py::test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates
+ERROR src/web/backend/tests/test_courses_w06.py::test_guest_and_prod_cannot_join_or_discover_samples
+ERROR src/web/backend/tests/test_courses_w06.py::test_owner_constraint_and_course_creation_rollback
+ERROR src/web/backend/tests/test_courses_w06.py::test_update_requires_owner_and_cannot_change_identity
+ERROR src/web/backend/tests/test_courses_w06.py::test_membership_activity_updates_only_after_five_minutes
