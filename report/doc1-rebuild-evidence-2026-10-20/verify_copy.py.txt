@@ -1,0 +1,25 @@
+"""Load the rebuilt graph from copied data and the fresh worktree's source."""
+import json
+import sys
+from pathlib import Path
+
+root = Path.cwd().resolve()
+sys.path.insert(0, str(root / 'src'))
+import doc2roadmap
+from doc2roadmap.infrastructure.artifacts import JsonArtifactStore
+from doc2roadmap.application.phase_b.retrieval import load_learning_graph, assert_retrieval_compatible
+
+assert Path(doc2roadmap.__file__).resolve().is_relative_to(root / 'src')
+store = JsonArtifactStore(root / 'artifacts')
+graph = load_learning_graph(store, 'doc-1', 8)
+assert len(graph.modules) == 35 and len(graph.learnable_nodes) == 223
+assert all(node in graph.learnable_nodes for module in graph.modules.values() for node in module['node_ids'])
+retrieval = store.load_latest_retrieval('doc-1')
+assert_retrieval_compatible(retrieval.payload, graph.chunks.values())
+assert len(graph.chunks) == 302
+doc6 = load_learning_graph(store, 'doc-6')
+assert doc6.modules and doc6.learnable_nodes
+print(json.dumps({'source_root': str(root / 'src'), 'doc1_graph_version': graph.graph_version,
+                  'modules': len(graph.modules), 'learnable_nodes': len(graph.learnable_nodes),
+                  'chunks': len(graph.chunks), 'retrieval_inputs_match': True,
+                  'doc6_graph_version': doc6.graph_version, 'paid_api_calls': 0}, indent=2))

@@ -1,0 +1,60 @@
+{
+  "doc_id": "doc-1",
+  "status": "failed",
+  "pipeline_version": "2bee226662f12adfa82b90a0a6f8b0a15269806f:36d9ba91b9e9f7da79f008e2cc946472c394f755a17389cf8db4399fe96893f3",
+  "graph_version": null,
+  "completed_steps": [
+    "doc_reading",
+    "concepts"
+  ],
+  "step_details": {
+    "doc_reading": {
+      "chunks_version": 8,
+      "parse_version": 6,
+      "chunk_count": 302,
+      "a4_gold_coverage": "none",
+      "page_count": 102,
+      "alphabetic_chars": 82268,
+      "average_alphabetic_chars_per_page": 806.5490196078431,
+      "empty_page_ratio": 0.0,
+      "vi_diacritic_ratio": 0.21818933242573055
+    },
+    "concepts": {
+      "label_roles": {
+        "chunks_version": 9,
+        "reused": false
+      },
+      "a3": {
+        "candidate_version": 4,
+        "retrieval_version": 4,
+        "a3_reused": false,
+        "a3_prime_reused": false
+      },
+      "canonical": {
+        "canonical_version": 5,
+        "reused": false,
+        "a4_gold_coverage": "none"
+      }
+    }
+  },
+  "spent_usd": 1.3530117500000023,
+  "model_calls": 3099,
+  "input_tokens": 3592717,
+  "output_tokens": 311135,
+  "usage_complete": false,
+  "elapsed_seconds": 1108.1948010000006,
+  "error": {
+    "code": "loi_mang",
+    "error_type": "ModelTransportError",
+    "message": "Gemini API lỗi tạm thời sau 9 lần thử",
+    "stage": "graph",
+    "retryable": true
+  },
+  "budget_guard": {
+    "limit_usd": 3.0,
+    "actual_usd": 1.3530117499999996,
+    "in_flight_usd": 6.591949208711867e-16,
+    "unknown_upper_usd": 0.0,
+    "http_calls": 3099
+  }
+}

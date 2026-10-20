@@ -1,0 +1,49 @@
+import hashlib
+import io
+import json
+
+import pytest
+from PIL import Image
+
+from formula_guard import verify_formula_images
+
+
+def fixture(tmp_path):
+    buffer = io.BytesIO()
+    Image.new('RGB', (3, 2), 'white').save(buffer, format='PNG')
+    raw = buffer.getvalue()
+    media = hashlib.sha256(raw).hexdigest()
+    image = tmp_path / 'images' / (media + '.png')
+    image.parent.mkdir()
+    image.write_bytes(raw)
+    refs = [{'occurrence_id': key, 'status': 'cut', 'media_id': media,
+             'image_ref': 'images/' + media + '.png'} for key in ['a', 'b']]
+    index = tmp_path / 'index.json'
+    index.write_text(json.dumps({'formula_refs': refs, 'cut_count': 2, 'skipped_count': 0}))
+    return index, image
+
+
+def test_duplicate_occurrences_share_one_valid_image(tmp_path):
+    index, _ = fixture(tmp_path)
+    result = verify_formula_images(index, {'a', 'b'})
+    assert result['occurrences'] == 2 and result['skipped'] == 0
+
+
+def test_corrupt_bytes_fail_even_when_pipeline_counts_claim_success(tmp_path):
+    index, image = fixture(tmp_path)
+    image.write_bytes(b'broken png')
+    with pytest.raises(AssertionError):
+        verify_formula_images(index, {'a', 'b'})
+
+
+def test_missing_image_fails_even_when_pipeline_counts_claim_success(tmp_path):
+    index, image = fixture(tmp_path)
+    image.unlink()
+    with pytest.raises(FileNotFoundError):
+        verify_formula_images(index, {'a', 'b'})
+
+
+def test_stale_occurrence_index_fails_against_parse_nodes(tmp_path):
+    index, _ = fixture(tmp_path)
+    with pytest.raises(AssertionError):
+        verify_formula_images(index, {'a', 'different'})
