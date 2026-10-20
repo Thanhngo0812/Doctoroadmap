@@ -2,7 +2,18 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 2 (xác minh, quên mật khẩu, gửi thư), mục 3 (quyền khi chưa xác minh);
 [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `email_token`; spec thiết kế, trang xác minh và đặt lại mật khẩu, mẫu thư.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** ready-for-agent
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** đang làm, snapshot `fdd0620`, chưa nghiệm thu toàn vé
+
+**Chuyển worktree 2026-10-20:** nhánh `work/w03-email-recovery`, thư mục `tmp/w03-email-recovery`; nhận main mới theo
+[quy trình nhánh](../../doc/quy-trinh-nhanh-va-ghep-main.md). Không làm hay đổi nhánh trong thư mục chung.
+Checkpoint `33c70ac` và snapshot `fdd0620` chưa được nghiệm thu W-03. Các commit mang theo `781415b`/`79cb9c9`/`6cd6be7` cũng chưa được soát;
+phần thiết kế cần phán xét W-24 trước khi W-03 được ghép. Xem [biên bản chuyển và cổng main](../../report/dieu-phoi-ghep-main-2026-10-20.md).
+
+**Đợt giao 2026-10-20:** W-02 đã nghiệm thu; đây là ưu tiên tiếp theo của web. Thiết kế phối hợp trang/trạng thái xác minh và đặt lại mật khẩu.
+Migration dành tên `w03_0004`, nối head đã kiểm `w02_0003`; bàn giao mốc schema cho W-06 trước khi ghép migration khoá học.
+Các route công khai request/confirm/verify phải nêu rõ chính sách Origin/CSRF và test cả đường từ chối; không tháo guard toàn cục.
+Resend dùng phiên vẫn cần CSRF. Test thư bằng Mailer giả; không tự gửi thư thật. Xem
+[kế hoạch và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
 
 ## Vì sao
 

@@ -3,7 +3,14 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 2, 3, 10, 11; [ADR 0021](../../doc/adr/0021-phien-dang-nhap-phia-may-chu-trong-cookie.md);
 [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `account`, `auth_session`, `rate_limit_event`, `audit_event`; spec thiết kế, trang
 đăng ký và đăng nhập.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** done-local
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** đạt nghiệm thu độc lập local 2026-10-20
+
+**Ghép main 2026-10-20:** `a3f2f13`, tới đúng mốc đã soát `8558df4`; cổng đầy đủ 1.999 Python đạt, 1 Cloudinary live không bật,
+React 41/41 và build đạt. `79cb9c9` nằm lại W-03 chờ soát. Xem [biên bản tích hợp](../../report/dieu-phoi-ghep-main-2026-10-20.md).
+
+**Nghiệm thu 2026-10-20:** tài khoản/phiên/CSRF và tuyến migration đã ghép đạt kiểm độc lập; backend đầy đủ cùng token 168 đạt, 1 Cloudinary live không bật.
+React kiểm lại sau sửa menu/đăng xuất đạt 41/41 và build đạt. Bằng chứng, phạm vi phiên bản và browser ở
+[báo cáo điều phối](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md). Mở W-03/W-04 và gỡ chặn W-06 cùng W-05; W-15/W-23 vẫn chờ phụ thuộc riêng.
 
 **Đợt tiếp theo 2026-10-19:** W-01 đã đạt nền local, web chốt commit nền rồi bắt đầu W-02. Không cần chờ toàn bộ Figma;
 phối hợp thiết kế cung cấp trang tài khoản theo spec. Dự kiến migration W-02 `w02_0003` nối sau W-05 `w05_0002`,
@@ -60,4 +67,4 @@ Xác minh email, quên mật khẩu (W-03). Đổi mật khẩu, đăng xuất m
 
 ## Bàn giao local 2026-10-19
 
-Nhánh `work/w02-accounts` đã tích hợp bàn giao W-05 `8b920d6`. Migration `w02_0003` nối `w05_0002`, một head, được kiểm từ database rỗng và đã áp dụng local. Toàn bộ 2.062 test đạt, 1 Cloudinary live bỏ qua theo cờ bật riêng; backend 150 đạt; React 29/29 và build đạt; 12 màn trình duyệt + 9 assertion luồng đạt. Chi phí mô hình 0 USD. Xem [báo cáo W-02](../../report/w02-tai-khoan-phien-2026-10-19.md). Chưa mở W-06/W-15/W-23.
+Nhánh `work/w02-accounts` đã tích hợp bàn giao W-05 `8b920d6`. Migration `w02_0003` nối `w05_0002`, một head, được kiểm từ database rỗng và đã áp dụng local. Nhân viên báo toàn bộ 2.062 test đạt, 1 Cloudinary live bỏ qua theo cờ bật riêng; backend 150 đạt; React 29/29 và build đạt; 12 màn trình duyệt + 9 assertion luồng đạt. Chi phí mô hình 0 USD. Xem [báo cáo W-02](../../report/w02-tai-khoan-phien-2026-10-19.md). Trạng thái hiện hành theo mục nghiệm thu 2026-10-20 ở đầu vé.

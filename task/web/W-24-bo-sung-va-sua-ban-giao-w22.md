@@ -4,15 +4,20 @@
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
 **Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, kiểm lại chưa đạt toàn bộ; tiếp tục cùng vé.
 
-**Kiểm lại bản `7baa7d2`, 2026-10-19:** 14 test token đạt; GIF tĩnh tự động ở cả bốn preview, vùng bấm cũ ở 390 đạt,
-cả ba phép đổi primary/spacing/RGBA đã bị bắt; chat mẫu không còn tạo node từ payload HTML. Đã có bản auth cho W-02.
-Xem [kết quả kiểm mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md); không giao lại những lỗi này.
+**Nhánh riêng từ 2026-10-20:** `work/w24-figma-evidence`, worktree `tmp/w24-figma-evidence`, theo
+[quy trình nhánh](../../doc/quy-trinh-nhanh-va-ghep-main.md). Nhánh này giữ `781415b` và helper Figma `6cd6be7` được cherry-pick thành `f9540f5`;
+chưa có phán xét độc lập cho các phần mới. Không sửa/commit ở thư mục chung. Không ghi W-24 đạt chỉ vì cổng W-02/W-05 xanh.
+
+**Kiểm lại bản `ba73cfc`, 2026-10-20:** 18 test token đạt trong bộ kiểm backend/token; sáu màu tối plugin đã khớp và auth 390 hết tràn.
+GIF tĩnh cả bốn preview, vùng bấm cũ, guard primary/spacing/RGBA và chat mẫu vẫn đạt kiểm runtime/mutation.
+Xem [nghiệm thu mới](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md); không giao lại những lỗi đã đóng.
 
 **Chỉ còn các nhóm việc sau để hoàn tất tiêu chí gốc:**
 
-- plugin còn sáu màu tối khác token; giao Variables export thực từ Figma có nguồn gốc và đúng tên/giá trị, không chỉ mã tạo Variables;
-- đủ node/ảnh từng trang/trạng thái, bốn link prototype bấm được và video; khung chữ mô tả luồng không thay liên kết tương tác;
-- khung xem auth mới tràn ngang 20 px ở viewport 390; sửa khung hoặc giao ảnh/frame 390 đúng kích thước.
+- **Nguồn Variables export:** tệp đang giao được script tạo lại giống từng byte từ JSON local; chưa chứng minh Variables trong file Figma.
+  Giao bản xuất thật có nguồn gốc, đúng tên/giá trị; sửa metadata và báo cáo để phân biệt dữ liệu nhập local với dữ liệu xuất thực.
+- **Đủ trang/trạng thái và bốn prototype gốc:** giao node/ảnh, link bấm được và video. Audit hiện đánh dấu đạt cho gập/scroll mà không assert kết quả;
+  cố ý gỡ handler vẫn báo 4/4. Sửa guard để đỏ khi tương tác hỏng; hiện mật khẩu/gập/scroll không thay bốn luồng của W-22.
 
 Giữ cùng vé; báo cáo phân biệt phần đã kiểm đạt và phần chưa có bằng chứng, không ghi hoàn tất 100% khi các mục trên còn mở.
 
@@ -37,20 +42,22 @@ Nếu phần còn thiếu đã có trên Figma, bổ sung bằng chứng thay v�
    Không dùng canvas desktop bị cắt làm bằng chứng thích ứng điện thoại; nếu giữ HTML để minh chứng thì ghi rõ phạm vi của nó.
 6. **Bốn prototype trong Figma:** nộp link chạy được, node bắt đầu và video ngắn của từng luồng W-22.
    Thể hiện menu/hộp thoại/chat/khối gập, phản hồi nút và trạng thái thuộc các luồng; ghi 120/200 ms, easing và phương án giảm chuyển động.
+   Audit phải assert đầu ra quan sát được của từng bước và thấy đỏ khi cố ý bỏ handler/chuyển bước; không gán sẵn `passed: true`.
 7. Cập nhật báo cáo W-22 theo kết quả thực, gỡ các khẳng định hoàn tất/đồng bộ/kiểm hoàn hảo chưa có bằng chứng.
    Ghi skill đã dùng và quyết định áp dụng. Commit đúng phạm vi vé; báo cáo có hash commit và lệnh kiểm.
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Các cặp chữ/nền thực trong sáng/tối đạt ngưỡng spec; có ảnh và số đo, gồm nút primary tối.
-- [ ] Vùng bấm điện thoại đạt ≥ 44×44 px; chữ bài giảng và vòng chờ đúng token/spec.
-- [ ] Bật giảm chuyển động thì vòng chờ dùng ảnh tĩnh; kiểm nhiều thời điểm không còn khung GIF đổi.
+- [x] Các cặp chữ/nền thực trong sáng/tối đạt ngưỡng spec; có ảnh và số đo, gồm nút primary tối.
+- [x] Vùng bấm điện thoại đạt ≥ 44×44 px; chữ bài giảng và vòng chờ đúng token/spec.
+- [x] Bật giảm chuyển động thì vòng chờ dùng ảnh tĩnh; kiểm nhiều thời điểm không còn khung GIF đổi ở cả bốn preview.
 - [ ] JSON xuất từ Figma có nguồn gốc; đối chiếu đầy đủ tên/giá trị với CSS và token trong spec.
-- [ ] Phép sửa sai thấy đỏ: đổi riêng primary CSS sang `#29A9FF` phải bị bắt do tương phản/khác JSON;
+- [x] Phép sửa sai thấy đỏ: đổi riêng primary CSS sang `#29A9FF` phải bị bắt do tương phản/khác JSON;
   đổi một giá trị JSON cho lệch CSS cũng phải bị bắt. Không bỏ/giảm ngưỡng test để xanh.
-- [ ] Phép sửa sai giảm chuyển động thấy đỏ khi bỏ chuyển sang ảnh tĩnh; bản đúng xanh.
+- [x] Phép sửa sai giảm chuyển động thấy đỏ khi bỏ chuyển sang ảnh tĩnh; bản đúng xanh. Điều phối kiểm cả bốn preview ngày 2026-10-20.
 - [ ] Bảng trang/trạng thái không còn thiếu so với checklist W-22; có ảnh 390/1280, màn tối và ghi nhận bố cục 768.
 - [ ] Người soát mở được file Figma, đối chiếu Variables/thành phần và bấm đủ bốn prototype; có video hiệu ứng.
+- [ ] Audit bốn luồng gốc assert kết quả; cố ý gỡ tương tác/chuyển bước thì test đỏ đúng assertion.
 - [ ] Báo cáo bổ sung có bằng chứng trước/sau, kết quả kiểm và commit riêng; người soát xác nhận lại tiêu chí W-22.
 
 ## Bàn giao

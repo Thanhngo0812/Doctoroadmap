@@ -37,7 +37,8 @@ Bốn luật:
   - số đo chất lượng của vé.
 
   Claude đọc rồi quyết. Chỉ trần chi và `--dry-run` là bắt buộc.
-- **Commit chỉ đường dẫn của vé.** Phiên khác và nhân viên khác có thể đang stage dở.
+- **Commit chỉ đường dẫn của vé.** Phiên khác và nhân viên khác có thể đang stage dở. Nhánh, worktree và ghép vào main theo
+  [quy trình nhánh và ghép main](../../doc/quy-trinh-nhanh-va-ghep-main.md).
 - **Kiểm kiến trúc:** application không import infrastructure; domain chỉ dùng thư viện chuẩn.
 
 ## Vé
