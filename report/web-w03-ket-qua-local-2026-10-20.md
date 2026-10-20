@@ -2,6 +2,8 @@
 
 **Cập nhật sau khi doc-1 được dựng lại: W-03 đạt kiểm và soát nội bộ trên local; cổng toàn repo đã xanh (2.075 đạt, 1 Cloudinary live bỏ qua).** Xem [báo cáo nghiệm thu mới](web-w03-nghiem-thu-2026-10-20.md). Chưa ghép main; báo cáo trực tiếp chủ dự án theo yêu cầu. Các lượt thiếu fixture dưới đây được giữ làm lịch sử.
 
+**Cập nhật logo/Gmail:** chủ dự án đã kiểm thư thật thành công. Đã thêm URL logo Cloudinary vào env, nối vào cả ba mẫu thư và khởi động lại local; cổng toàn repo sau sửa đạt 2.085/1 skip, xem [phụ lục](web-w03-logo-email-2026-10-20.md).
+
 ## Mốc mã và phạm vi
 
 - Nhánh work/w03-email-recovery, worktree tmp/w03-email-recovery; mã nghiệp vụ: **89eefdb**; bản sửa header cuối được lưu cùng bản cập nhật báo cáo này. Các mốc trước: schema **33c70ac**, snapshot **fdd0620**, điểm nghỉ **3955af8**.

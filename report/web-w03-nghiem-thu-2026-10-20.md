@@ -2,6 +2,8 @@
 
 **Kết luận của nhóm web: đạt phạm vi W-03 trên local.** Cổng toàn repo đã chạy xong và xanh; ba lượt soát nội bộ không có lỗi bắt buộc sửa. Không còn bị chặn bởi cache doc-1. Chưa ghép hoặc đẩy main; người điều phối giữ quyền soát và ghép theo quy trình.
 
+**Bổ sung sau nghiệm thu:** chủ dự án đã xác nhận Gmail thật hoạt động. Logo email được chuyển sang URL Cloudinary qua env tại mã `1a658ca`; cổng toàn repo chạy lại **2.085 đạt, 1 Cloudinary live bỏ qua**, exit code 0. Xem [phụ lục logo và xác nhận Gmail](web-w03-logo-email-2026-10-20.md); các số liệu bên dưới ghim lượt nghiệm thu trước bản sửa này.
+
 ## Mã và dữ liệu được kiểm
 
 - Nhánh `work/w03-email-recovery`, worktree `tmp/w03-email-recovery`.
