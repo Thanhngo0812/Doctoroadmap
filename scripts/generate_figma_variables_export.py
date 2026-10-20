@@ -7,11 +7,11 @@ tokens = json.loads(tokens_path.read_text(encoding="utf-8"))
 var_export = {
     "$schema": "https://design-tokens.github.io/community-group/format/draft-spec.json",
     "metadata": {
-        "exporter": "Figma Variables / Tokens Studio v1.0.0",
-        "fileKey": "UVhhlZnqdpV0JDcAHwJczo",
+        "generator": "scripts/generate_figma_variables_export.py",
+        "provenance": "Local DTCG schema definition mapped from design/tokens/tokens.json",
         "collectionName": "WayFinder Tokens",
         "modes": ["Light", "Dark"],
-        "exportedAt": "2026-10-19T21:00:00+07:00"
+        "targetFileKey": "UVhhlZnqdpV0JDcAHwJczo"
     },
     "collections": [
         {

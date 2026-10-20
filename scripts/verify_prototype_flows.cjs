@@ -11,101 +11,266 @@ async function runPrototypes() {
 
   const browser = await chromium.launch();
   const results = [];
+  let allPassed = true;
 
-  // ==========================================
-  // FLOW 1: Auth & Account State (/dang-nhap, /dang-ky)
-  // ==========================================
-  console.log('Testing Flow 1: Auth & Account State...');
-  const authContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
-  const authPage = await authContext.newPage();
-  await authPage.goto('file:///' + path.join(root, 'design/preview/auth_screens.html').replace(/\\/g, '/'));
-  await authPage.evaluate(() => document.fonts.ready);
+  try {
+    const context = await browser.newContext({
+      viewport: { width: 1280, height: 900 }
+    });
+    const page = await context.newPage();
+    const targetUrl = 'file:///' + path.join(root, 'design/preview/prototype_flows.html').replace(/\\/g, '/');
+    await page.goto(targetUrl);
+    await page.evaluate(() => document.fonts.ready);
 
-  // Test toggle eye
-  await authPage.click('#login-password + .toggle-pwd-btn');
-  const pwdType = await authPage.getAttribute('#login-password', 'type');
-  console.log('Flow 1 - Password revealed:', pwdType === 'text');
+    // ==========================================
+    // FLOW 1: Đăng ký -> Khoá học mẫu -> Bài giảng lecture-2
+    // ==========================================
+    console.log('Testing Flow 1: Onboarding (Register -> Courses -> Lecture)...');
+    try {
+      // Step 1: Ensure Register screen is visible
+      const isRegVisible = await page.isVisible('#flow1-screen-register');
+      if (!isRegVisible) throw new Error('Flow 1 - Step 1: Register form is not visible initially');
 
-  const flow1Output = path.join(artifactsDir, 'prototype_flow1_auth.png');
-  await authPage.screenshot({ path: flow1Output, fullPage: false });
-  results.push({ flow: 'Flow 1: Auth Interaction', passed: pwdType === 'text', evidence: 'prototype_flow1_auth.png' });
-  await authContext.close();
+      // Click register button
+      await page.click('#flow1-btn-register');
 
-  // ==========================================
-  // FLOW 2: Course Navigation & Learning Lecture
-  // ==========================================
-  console.log('Testing Flow 2: Course Navigation & Learning Lecture...');
-  const mainContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
-  const mainPage = await mainContext.newPage();
-  await mainPage.goto('file:///' + path.join(root, 'design/preview/screens.html').replace(/\\/g, '/'));
-  await mainPage.evaluate(() => document.fonts.ready);
+      // Step 2: Assert Register form is now HIDDEN and Course list is VISIBLE
+      const isRegHidden = !(await page.isVisible('#flow1-screen-register'));
+      const isCoursesVisible = await page.isVisible('#flow1-screen-courses');
+      if (!isRegHidden || !isCoursesVisible) {
+        throw new Error(`Flow 1 - Step 2: Transition failed (regHidden: ${isRegHidden}, coursesVisible: ${isCoursesVisible})`);
+      }
 
-  // Click accordion in lecture-2
-  await mainPage.locator('.accordion-header').first().click();
-  await mainPage.waitForTimeout(200);
+      // Click to open sample course
+      await page.click('#flow1-btn-open-course');
 
-  const flow2Output = path.join(artifactsDir, 'prototype_flow2_learning.png');
-  await mainPage.screenshot({ path: flow2Output, fullPage: false });
-  results.push({ flow: 'Flow 2: Learning & Accordion', passed: true, evidence: 'prototype_flow2_learning.png' });
+      // Step 3: Assert Course list is HIDDEN and Lecture is VISIBLE
+      const isCoursesHidden = !(await page.isVisible('#flow1-screen-courses'));
+      const isLectureVisible = await page.isVisible('#flow1-screen-lecture');
+      const lectureTitle = await page.textContent('#flow1-lecture-title');
+      if (!isCoursesHidden || !isLectureVisible || !lectureTitle.includes('lecture-2')) {
+        throw new Error('Flow 1 - Step 3: Transition to lecture-2 failed');
+      }
 
-  // ==========================================
-  // FLOW 3: Upload & 4-Step Progress (Reduced Motion Fallback)
-  // ==========================================
-  console.log('Testing Flow 3: Upload & 4-Step Progress...');
-  // Scroll to Upload screen (Screen 5)
-  await mainPage.evaluate(() => {
-    const screens = document.querySelectorAll('.screen-wrapper');
-    if (screens.length >= 5) {
-      screens[4].scrollIntoView();
+      // Step 4: Strict Accordion Falsifiable Assertion
+      const accordionBodyBefore = await page.isVisible('#flow1-accordion-body');
+      if (accordionBodyBefore) throw new Error('Flow 1 - Step 4: Accordion should be closed initially');
+
+      await page.click('#flow1-accordion-toggle');
+      await page.waitForTimeout(100);
+
+      const accordionBodyAfter = await page.isVisible('#flow1-accordion-body');
+      if (!accordionBodyAfter) {
+        throw new Error('Flow 1 - Step 4: Accordion failed to open on click (Mutation caught!)');
+      }
+
+      const flow1Screenshot = path.join(artifactsDir, 'prototype_flow1_auth.png');
+      await page.screenshot({ path: flow1Screenshot, fullPage: false });
+      results.push({
+        flow: 'Flow 1: Register -> Courses -> Lecture',
+        stepsChecked: 4,
+        passed: true,
+        evidence: 'prototype_flow1_auth.png'
+      });
+      console.log('  -> Flow 1 PASSED (All 4 transitions strictly verified)');
+    } catch (err) {
+      console.error('  -> Flow 1 FAILED:', err.message);
+      results.push({ flow: 'Flow 1: Register -> Courses -> Lecture', passed: false, error: err.message });
+      allPassed = false;
     }
-  });
-  await mainPage.waitForTimeout(300);
-  const flow3Output = path.join(artifactsDir, 'prototype_flow3_upload.png');
-  await mainPage.screenshot({ path: flow3Output, fullPage: false });
-  results.push({ flow: 'Flow 3: Upload & 4-Step Progress', passed: true, evidence: 'prototype_flow3_upload.png' });
 
-  // ==========================================
-  // FLOW 4: Quiz Interaction & Instant Feedback
-  // ==========================================
-  console.log('Testing Flow 4: Quiz Interaction & Feedback...');
-  // Scroll to Quiz screen (Screen 4)
-  await mainPage.evaluate(() => {
-    const screens = document.querySelectorAll('.screen-wrapper');
-    if (screens.length >= 4) {
-      screens[3].scrollIntoView();
+    // ==========================================
+    // FLOW 2: Chia sẻ -> Tham gia khoá học
+    // ==========================================
+    console.log('Testing Flow 2: Share & Join Course...');
+    try {
+      // Switch to Flow 2 tab
+      await page.click('#tab-flow2');
+      await page.waitForTimeout(100);
+
+      // Verify share screen active
+      const isShareVisible = await page.isVisible('#flow2-screen-share');
+      if (!isShareVisible) throw new Error('Flow 2 - Step 1: Share screen not visible');
+
+      // Click copy button and assert feedback appears
+      await page.click('#flow2-btn-copy');
+      const isFeedbackVisible = await page.isVisible('#flow2-copy-feedback');
+      if (!isFeedbackVisible) throw new Error('Flow 2 - Step 2: Copy feedback not displayed');
+
+      // Click simulate join
+      await page.click('#flow2-btn-simulate-join');
+
+      // Assert join screen visible and share screen hidden
+      const isShareHidden = !(await page.isVisible('#flow2-screen-share'));
+      const isJoinVisible = await page.isVisible('#flow2-screen-join');
+      if (!isShareHidden || !isJoinVisible) {
+        throw new Error('Flow 2 - Step 3: Transition to join screen failed');
+      }
+
+      // Click confirm join
+      await page.click('#flow2-btn-confirm-join');
+      const isJoinSuccess = await page.isVisible('#flow2-join-success');
+      const isBtnDisabled = await page.getAttribute('#flow2-btn-confirm-join', 'disabled');
+      if (!isJoinSuccess || isBtnDisabled === null) {
+        throw new Error('Flow 2 - Step 4: Confirm join state assertion failed');
+      }
+
+      const flow2Screenshot = path.join(artifactsDir, 'prototype_flow2_learning.png');
+      await page.screenshot({ path: flow2Screenshot, fullPage: false });
+      results.push({
+        flow: 'Flow 2: Share -> Join Course',
+        stepsChecked: 4,
+        passed: true,
+        evidence: 'prototype_flow2_learning.png'
+      });
+      console.log('  -> Flow 2 PASSED (Share & Join confirmed)');
+    } catch (err) {
+      console.error('  -> Flow 2 FAILED:', err.message);
+      results.push({ flow: 'Flow 2: Share -> Join Course', passed: false, error: err.message });
+      allPassed = false;
     }
-  });
-  await mainPage.waitForTimeout(300);
 
-  // Select Option B
-  const optB = mainPage.locator('.quiz-option').nth(1);
-  await optB.click();
-  // Submit quiz
-  await mainPage.locator('#btn-submit-quiz').click();
-  await mainPage.waitForTimeout(200);
+    // ==========================================
+    // FLOW 3: Tải sách -> Cấu hình -> Dựng lộ trình 4 bước
+    // ==========================================
+    console.log('Testing Flow 3: Upload Book -> Config -> 4-Step Build...');
+    try {
+      // Switch to Flow 3 tab
+      await page.click('#tab-flow3');
+      await page.waitForTimeout(100);
 
-  const alertVisible = await mainPage.isVisible('#quiz-feedback');
-  console.log('Flow 4 - Quiz feedback alert displayed:', alertVisible);
+      // Verify upload dropzone active
+      const isUploadVisible = await page.isVisible('#flow3-screen-upload');
+      if (!isUploadVisible) throw new Error('Flow 3 - Step 1: Upload screen not visible');
 
-  const flow4Output = path.join(artifactsDir, 'prototype_flow4_quiz.png');
-  await mainPage.screenshot({ path: flow4Output, fullPage: false });
-  results.push({ flow: 'Flow 4: Quiz Feedback', passed: alertVisible, evidence: 'prototype_flow4_quiz.png' });
+      // Click select file
+      await page.click('#flow3-btn-select-file');
 
-  await mainContext.close();
-  await browser.close();
+      // Assert confirm screen visible
+      const isUploadHidden = !(await page.isVisible('#flow3-screen-upload'));
+      const isConfirmVisible = await page.isVisible('#flow3-screen-confirm');
+      if (!isUploadHidden || !isConfirmVisible) {
+        throw new Error('Flow 3 - Step 2: Transition to confirm screen failed');
+      }
+
+      // Click start build
+      await page.click('#flow3-btn-start-build');
+
+      // Assert progress screen active
+      const isProgressVisible = await page.isVisible('#flow3-screen-progress');
+      if (!isProgressVisible) throw new Error('Flow 3 - Step 3: Progress screen not visible');
+
+      // Wait for progression completion
+      await page.waitForSelector('#flow3-build-complete-banner', { state: 'visible', timeout: 3000 });
+      const isBannerVisible = await page.isVisible('#flow3-build-complete-banner');
+      const isFinishBtnVisible = await page.isVisible('#flow3-btn-finish-progress');
+      if (!isBannerVisible || !isFinishBtnVisible) {
+        throw new Error('Flow 3 - Step 4: 4-Step build progress completion assertion failed');
+      }
+
+      // Test reduced-motion toggle interaction
+      await page.click('#btn-toggle-reduced-motion');
+      const spinnerSrc = await page.getAttribute('#flow3-spinner-img', 'src');
+      if (!spinnerSrc.includes('spinner_frame0_static.png')) {
+        throw new Error(`Flow 3 - Step 5: Reduced motion static fallback not engaged (got: ${spinnerSrc})`);
+      }
+
+      const flow3Screenshot = path.join(artifactsDir, 'prototype_flow3_upload.png');
+      await page.screenshot({ path: flow3Screenshot, fullPage: false });
+      results.push({
+        flow: 'Flow 3: Upload -> Config -> 4-Step Build',
+        stepsChecked: 5,
+        passed: true,
+        evidence: 'prototype_flow3_upload.png'
+      });
+      console.log('  -> Flow 3 PASSED (Build pipeline & reduced-motion verified)');
+    } catch (err) {
+      console.error('  -> Flow 3 FAILED:', err.message);
+      results.push({ flow: 'Flow 3: Upload -> Config -> 4-Step Build', passed: false, error: err.message });
+      allPassed = false;
+    }
+
+    // ==========================================
+    // FLOW 4: Quiz -> Nộp bài -> Phản hồi kết quả
+    // ==========================================
+    console.log('Testing Flow 4: Quiz -> Submit -> Result & Citation...');
+    try {
+      // Switch to Flow 4 tab
+      await page.click('#tab-flow4');
+      await page.waitForTimeout(100);
+
+      // Verify submit button disabled initially
+      const submitDisabledBefore = await page.getAttribute('#flow4-btn-submit', 'disabled');
+      if (submitDisabledBefore === null) {
+        throw new Error('Flow 4 - Step 1: Submit button must be disabled before option selection');
+      }
+
+      // Click Option B
+      await page.click('.quiz-opt[data-opt="B"]');
+
+      // Assert Option B is selected and aria-checked=true
+      const optBClass = await page.getAttribute('.quiz-opt[data-opt="B"]', 'class');
+      const optBChecked = await page.getAttribute('.quiz-opt[data-opt="B"]', 'aria-checked');
+      if (!optBClass.includes('selected') || optBChecked !== 'true') {
+        throw new Error('Flow 4 - Step 2: Option B selection state assertion failed');
+      }
+
+      // Assert submit button is now enabled
+      const submitDisabledAfter = await page.getAttribute('#flow4-btn-submit', 'disabled');
+      if (submitDisabledAfter !== null) {
+        throw new Error('Flow 4 - Step 3: Submit button should be enabled after selection');
+      }
+
+      // Submit Quiz
+      await page.click('#flow4-btn-submit');
+      await page.waitForTimeout(100);
+
+      // Assert result panel is visible with score and citation
+      const isResultVisible = await page.isVisible('#flow4-result-panel');
+      const resultText = await page.textContent('#flow4-result-status');
+      if (!isResultVisible || !resultText.includes('10/10')) {
+        throw new Error('Flow 4 - Step 4: Result panel display assertion failed');
+      }
+
+      const flow4Screenshot = path.join(artifactsDir, 'prototype_flow4_quiz.png');
+      await page.screenshot({ path: flow4Screenshot, fullPage: false });
+      results.push({
+        flow: 'Flow 4: Quiz -> Submit -> Result & Citation',
+        stepsChecked: 4,
+        passed: true,
+        evidence: 'prototype_flow4_quiz.png'
+      });
+      console.log('  -> Flow 4 PASSED (Quiz evaluation & citation verified)');
+    } catch (err) {
+      console.error('  -> Flow 4 FAILED:', err.message);
+      results.push({ flow: 'Flow 4: Quiz -> Submit -> Result & Citation', passed: false, error: err.message });
+      allPassed = false;
+    }
+
+    await context.close();
+  } finally {
+    await browser.close();
+  }
 
   const auditPath = path.join(artifactsDir, 'prototype_flows_audit.json');
   await fs.writeFile(auditPath, JSON.stringify({
     timestamp: new Date().toISOString(),
     totalFlows: results.length,
-    passed: results.filter(r => r.passed).length,
-    results: results
+    passedCount: results.filter(r => r.passed).length,
+    allPassed,
+    flows: results
   }, null, 2), 'utf-8');
 
-  console.log('All 4 Prototype Flows verified and logged to', auditPath);
+  console.log(`\nPrototype Verification Summary: ${results.filter(r => r.passed).length}/${results.length} flows passed.`);
+  if (!allPassed) {
+    console.error('❌ Prototype Verification Failed with strict assertions.');
+    process.exit(1);
+  } else {
+    console.log('✅ All 4 Prototype flows passed with strict, falsifiable DOM assertions.');
+  }
 }
 
 runPrototypes().catch(err => {
-  console.error(err);
+  console.error('Fatal test error:', err);
   process.exit(1);
 });

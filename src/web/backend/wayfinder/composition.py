@@ -87,24 +87,55 @@ def compose_services(
 
     def close_services():
         try:
-            if created_store is not None:
-                created_store.close()
-            elif created_engine is not None:
-                created_engine.dispose()
+            close_mailer = getattr(getattr(accounts, "mailer", None), "close", None)
+            if close_mailer is not None:
+                close_mailer()
         finally:
-            if close is not None:
-                close()
+            try:
+                if created_store is not None:
+                    created_store.close()
+                elif created_engine is not None:
+                    created_engine.dispose()
+            finally:
+                if close is not None:
+                    close()
 
     return WebServices(health_check=health_check, close=close_services, model=model,
                        embedding=embedding, accounts=accounts, phase_b_store=phase_b_store)
 
 
-def compose_account_service(settings: WebSettings, engine) -> AccountService:
+def compose_account_service(settings: WebSettings, engine, *, mailer=None) -> AccountService:
     from doc2roadmap.application.phase_b.clock import SystemClock
     from wayfinder.infrastructure.auth_store import PostgresAuthStore
     from wayfinder.infrastructure.passwords import Argon2PasswordHasher, load_common_passwords
 
     policy = AuthPolicy(settings.session_idle_days, settings.session_absolute_days,
-                        settings.login_max_failures, settings.login_failure_window_minutes)
+                        settings.login_max_failures, settings.login_failure_window_minutes,
+                        email_verify_ttl_hours=settings.email_verify_ttl_hours,
+                        resend_verification_per_hour=settings.resend_verification_per_hour,
+                        password_reset_ttl_minutes=settings.password_reset_ttl_minutes,
+                        public_base_url=settings.public_base_url,
+                        email_logo_url=settings.email_logo_url)
     return AccountService(PostgresAuthStore(engine), Argon2PasswordHasher(), SystemClock(), policy,
-                          load_common_passwords())
+                          load_common_passwords(), mailer=mailer if mailer is not None else compose_mailer(settings))
+
+
+def compose_mailer(settings: WebSettings):
+    from wayfinder.infrastructure.mail import ConsoleMailer, SmtpMailer
+    from wayfinder.infrastructure.mail_dispatch import BackgroundMailer
+
+    if settings.mailer == "console":
+        if settings.env == "prod":
+            raise ValueError("console mailer is only available in development")
+        return ConsoleMailer()
+    if not all([settings.smtp_username, settings.smtp_password, settings.smtp_from]):
+        raise ValueError("SMTP username, password and from address are required")
+    if not settings.smtp_starttls:
+        raise ValueError("SMTP requires STARTTLS")
+    if settings.env == "prod" and not settings.public_base_url.startswith("https://"):
+        raise ValueError("WAYFINDER_PUBLIC_BASE_URL requires HTTPS in production")
+    return BackgroundMailer(SmtpMailer(
+        host=settings.smtp_host, port=settings.smtp_port, username=settings.smtp_username,
+        password=settings.smtp_password.get_secret_value(), from_address=settings.smtp_from,
+        starttls=settings.smtp_starttls,
+    ))

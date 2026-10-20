@@ -284,3 +284,57 @@ def test_auth_screens_responsive_no_overflow_rules():
     assert "@media (max-width: 768px)" in auth_html
     assert "@media (max-width: 420px)" in auth_html
 
+
+def test_prototype_flows_interactive_workbench():
+    """Verify that design/preview/prototype_flows.html covers all 4 original user journeys with 44px buttons."""
+    proto_html = Path("design/preview/prototype_flows.html").read_text(encoding="utf-8")
+    # All 4 flows present
+    assert 'id="flow1-container"' in proto_html
+    assert 'id="flow2-container"' in proto_html
+    assert 'id="flow3-container"' in proto_html
+    assert 'id="flow4-container"' in proto_html
+
+    # Essential interactive elements
+    assert "flow1-btn-register" in proto_html
+    assert "flow1-btn-open-course" in proto_html
+    assert "flow1-accordion-toggle" in proto_html
+    assert "flow2-btn-copy" in proto_html
+    assert "flow2-btn-simulate-join" in proto_html
+    assert "flow3-btn-select-file" in proto_html
+    assert "flow3-btn-start-build" in proto_html
+    assert "flow4-btn-submit" in proto_html
+
+    # Touch target 44px enforcement
+    assert "min-height: 44px" in proto_html
+    assert "height: 44px" in proto_html
+
+    # Reduced motion support
+    assert "prefers-reduced-motion: reduce" in proto_html
+    assert "spinner_frame0_static.png" in proto_html
+
+
+def test_w03_auth_screens_specification():
+    """Verify that design/preview/w03_auth_screens.html implements the 5 screens required by W-03 coordinator note."""
+    w03_html = Path("design/preview/w03_auth_screens.html").read_text(encoding="utf-8")
+    assert 'id="screen-verify-pending"' in w03_html
+    assert 'id="screen-verify-success"' in w03_html
+    assert 'id="screen-forgot-password"' in w03_html
+    assert 'id="screen-reset-password"' in w03_html
+    assert 'id="screen-token-invalid"' in w03_html
+
+    # Verify 44px tap targets and responsive overflow guards
+    assert "min-height: 44px" in w03_html
+    assert "height: 44px" in w03_html
+    assert "@media (max-width: 768px)" in w03_html
+
+
+def test_figma_plugin_has_w03_and_prototype_reactions():
+    """Verify that design/figma-plugin/code.js includes W-03 screens and native prototype reactions."""
+    code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
+    assert "Màn hình W-03" in code_js
+    assert "setReactionsAsync" in code_js
+    assert "linkReaction" in code_js
+    assert "NAVIGATE" in code_js
+    assert "ON_CLICK" in code_js
+
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.316" timestamp="2026-10-20T12:31:44.627199+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w03_postgres" name="test_postgres_reset_serializes_new_request_after_bulk_token_consumption" time="1.639"><failure message="AssertionError: assert 'completed' == 'blocked_on_lock'&#10;  &#10;  - blocked_on_lock&#10;  + completed">postgres_runtime = (Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0e13fadccd684c75a83a6fc215b422bf), postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0e13fadccd684c75a83a6fc215b422bf)
+
+    def test_postgres_reset_serializes_new_request_after_bulk_token_consumption(postgres_runtime):
+        engine, url = postgres_runtime
+        state, service, old_session, new_token, created_after_reset = _run_postgres_reset_request_race(engine, url)
+&gt;       assert state == "blocked_on_lock"
+E       AssertionError: assert 'completed' == 'blocked_on_lock'
+E
+E         - blocked_on_lock
+E         + completed
+
+src\web\backend\tests\test_w03_postgres.py:359: AssertionError</failure></testcase></testsuite></testsuites>

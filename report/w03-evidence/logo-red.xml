@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="10" skipped="0" tests="10" time="1.658" timestamp="2026-10-20T15:03:34.597703+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_mailer" name="test_account_email_templates_use_configured_logo_and_escape_query[verify_email]" time="0.137"><failure message="TypeError: render_account_email() got an unexpected keyword argument 'logo_url'">kind = 'verify_email'
+
+    @pytest.mark.parametrize("kind", ["verify_email", "reset_password", "existing_account"])
+    def test_account_email_templates_use_configured_logo_and_escape_query(kind):
+        from wayfinder.application.email_templates import render_account_email
+
+&gt;       content = render_account_email(kind, display_name="An",
+                                       action_url="http://127.0.0.1:8000/xac-minh#token=fake",
+                                       base_url="http://127.0.0.1:8000",
+                                       logo_url="https://res.cloudinary.com/demo/logo.png?a=1&amp;b=2")
+E       TypeError: render_account_email() got an unexpected keyword argument 'logo_url'
+
+src\web\backend\tests\test_mailer.py:76: TypeError</failure></testcase><testcase classname="src.web.backend.tests.test_mailer" name="test_account_email_templates_use_configured_logo_and_escape_query[reset_password]" time="0.001"><failure message="TypeError: render_account_email() got an unexpected keyword argument 'logo_url'">kind = 'reset_password'
+
+    @pytest.mark.parametrize("kind", ["verify_email", "reset_password", "existing_account"])
+    def test_account_email_templates_use_configured_logo_and_escape_query(kind):
+        from wayfinder.application.email_templates import render_account_email
+
+&gt;       content = render_account_email(kind, display_name="An",
+                                       action_url="http://127.0.0.1:8000/xac-minh#token=fake",
+                                       base_url="http://127.0.0.1:8000",
+                                       logo_url="https://res.cloudinary.com/demo/logo.png?a=1&amp;b=2")
+E       TypeError: render_account_email() got an unexpected keyword argument 'logo_url'
+
+src\web\backend\tests\test_mailer.py:76: TypeError</failure></testcase><testcase classname="src.web.backend.tests.test_mailer" name="test_account_email_templates_use_configured_logo_and_escape_query[existing_account]" time="0.001"><failure message="TypeError: render_account_email() got an unexpected keyword argument 'logo_url'">kind = 'existing_account'
+
+    @pytest.mark.parametrize("kind", ["verify_email", "reset_password", "existing_account"])
+    def test_account_email_templates_use_configured_logo_and_escape_query(kind):
+        from wayfinder.application.email_templates import render_account_email
+
+&gt;       content = render_account_email(kind, display_name="An",
+                                       action_url="http://127.0.0.1:8000/xac-minh#token=fake",
+                                       base_url="http://127.0.0.1:8000",
+                                       logo_url="https://res.cloudinary.com/demo/logo.png?a=1&amp;b=2")
+E       TypeError: render_account_email() got an unexpected keyword argument 'logo_url'
+
+src\web\backend\tests\test_mailer.py:76: TypeError</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_email_logo_rejects_unsafe_urls[javascript:alert(1)]" time="0.003"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'javascript:alert(1)'
+
+    @pytest.mark.parametrize("url", [
+        "javascript:alert(1)", "http://images.example.vn/logo.png", "/logo.png",
+        "https://user:secret@images.example.vn/logo.png", "https://images.example.vn/logo.png\r\n",
+        "https://images.example.vn:invalid/logo.png",
+    ])
+    def test_email_logo_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:27: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_email_logo_rejects_unsafe_urls[http://images.example.vn/logo.png]" time="0.002"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'http://images.example.vn/logo.png'
+
+    @pytest.mark.parametrize("url", [
+        "javascript:alert(1)", "http://images.example.vn/logo.png", "/logo.png",
+        "https://user:secret@images.example.vn/logo.png", "https://images.example.vn/logo.png\r\n",
+        "https://images.example.vn:invalid/logo.png",
+    ])
+    def test_email_logo_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:27: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_email_logo_rejects_unsafe_urls[/logo.png]" time="0.002"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = '/logo.png'
+
+    @pytest.mark.parametrize("url", [
+        "javascript:alert(1)", "http://images.example.vn/logo.png", "/logo.png",
+        "https://user:secret@images.example.vn/logo.png", "https://images.example.vn/logo.png\r\n",
+        "https://images.example.vn:invalid/logo.png",
+    ])
+    def test_email_logo_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:27: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_email_logo_rejects_unsafe_urls[https://user:secret@images.example.vn/logo.png]" time="0.003"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://user:secret@images.example.vn/logo.png'
+
+    @pytest.mark.parametrize("url", [
+        "javascript:alert(1)", "http://images.example.vn/logo.png", "/logo.png",
+        "https://user:secret@images.example.vn/logo.png", "https://images.example.vn/logo.png\r\n",
+        "https://images.example.vn:invalid/logo.png",
+    ])
+    def test_email_logo_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:27: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_email_logo_rejects_unsafe_urls[https://images.example.vn/logo.png\r\n]" time="0.002"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://images.example.vn/logo.png\r\n'
+
+    @pytest.mark.parametrize("url", [
+        "javascript:alert(1)", "http://images.example.vn/logo.png", "/logo.png",
+        "https://user:secret@images.example.vn/logo.png", "https://images.example.vn/logo.png\r\n",
+        "https://images.example.vn:invalid/logo.png",
+    ])
+    def test_email_logo_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:27: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_email_logo_rejects_unsafe_urls[https://images.example.vn:invalid/logo.png]" time="0.002"><failure message="Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;">url = 'https://images.example.vn:invalid/logo.png'
+
+    @pytest.mark.parametrize("url", [
+        "javascript:alert(1)", "http://images.example.vn/logo.png", "/logo.png",
+        "https://user:secret@images.example.vn/logo.png", "https://images.example.vn/logo.png\r\n",
+        "https://images.example.vn:invalid/logo.png",
+    ])
+    def test_email_logo_rejects_unsafe_urls(url):
+&gt;       with pytest.raises(ValidationError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'pydantic_core._pydantic_core.ValidationError'&gt;
+
+src\web\backend\tests\test_w03_composition.py:27: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w03_composition" name="test_logo_env_reaches_all_account_emails" time="0.561"><failure message="assert 'src=&quot;https://res.cloudinary.com/dfcb3zzw9/image/upload/v1792483249/Artboard_13_ousztc.png&quot;' in '&lt;!doctype html&gt;\n&lt;html lang=&quot;vi&quot;&gt;\n&lt;body style=&quot;margin:0;background:#F6F8FA;color:#12161B;font-family:Arial,sans-seri...  &lt;p style=&quot;font-size:12px;color:#5B6673;margin:16px 0 0;&quot;&gt;WayFinder&lt;/p&gt;\n    &lt;/td&gt;&lt;/tr&gt;\n  &lt;/table&gt;\n&lt;/body&gt;\n&lt;/html&gt;'">monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000018348C14C20&gt;
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_1e9481796ef443bc9c2064fe25f338c3
+
+    def test_logo_env_reaches_all_account_emails(monkeypatch, postgres_database_url):
+        from uuid import uuid4
+        from wayfinder.fakes.mail import FakeMailer
+        from wayfinder.infrastructure.database import create_database_engine
+
+        logo = "https://res.cloudinary.com/dfcb3zzw9/image/upload/v1792483249/Artboard_13_ousztc.png"
+        monkeypatch.setenv("WAYFINDER_EMAIL_LOGO_URL", logo)
+        settings = WebSettings(_env_file=None, public_base_url="http://127.0.0.1:8000")
+        engine, mailer = create_database_engine(postgres_database_url), FakeMailer()
+        try:
+            accounts = composition.compose_account_service(settings, engine, mailer=mailer)
+            email = f"logo-{uuid4().hex}@example.vn"
+            accounts.register(email, "Logo check secure pass!", "Người học", ip=None, user_agent=None)
+            accounts.request_password_reset(email)
+            accounts.register(email, "Another secure pass!", "Người học", ip=None, user_agent=None)
+            assert len(mailer.messages) == 3
+            for message in mailer.messages:
+&gt;               assert f'src="{logo}"' in message["html_body"]
+E               assert 'src="https://res.cloudinary.com/dfcb3zzw9/image/upload/v1792483249/Artboard_13_ousztc.png"' in '&lt;!doctype html&gt;\n&lt;html lang="vi"&gt;\n&lt;body style="margin:0;background:#F6F8FA;color:#12161B;font-family:Arial,sans-seri...  &lt;p style="font-size:12px;color:#5B6673;margin:16px 0 0;"&gt;WayFinder&lt;/p&gt;\n    &lt;/td&gt;&lt;/tr&gt;\n  &lt;/table&gt;\n&lt;/body&gt;\n&lt;/html&gt;'
+
+src\web\backend\tests\test_w03_composition.py:48: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WayFinder — 4 Prototype Flows Interactive Workbench (W-22 / W-24)</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    :root {
+      --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg-subtle);
+      color: var(--color-text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Global Workbench Bar */
+    .workbench-header {
+      background-color: var(--color-surface);
+      border-bottom: 1px solid var(--color-border);
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-logo {
+      font-weight: 700;
+      font-size: 18px;
+      color: var(--color-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .flow-tabs {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .tab-btn {
+      padding: 8px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background-color: var(--color-surface);
+      color: var(--color-text-muted);
+      font-weight: 600;
+      font-size: 13px;
+      cursor: pointer;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+      white-space: nowrap;
+      transition: all 120ms ease;
+    }
+    .tab-btn:hover {
+      background-color: var(--color-bg-subtle);
+      color: var(--color-text);
+    }
+    .tab-btn.active {
+      background-color: var(--color-brand-tint);
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .btn-toggle {
+      padding: 8px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      cursor: pointer;
+      min-height: 44px;
+      font-size: 13px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Container */
+    .main-stage {
+      flex: 1;
+      padding: 24px;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    /* Flow Card & Screens */
+    .flow-container {
+      display: none;
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    }
+    .flow-container.active {
+      display: block;
+    }
+
+    .flow-meta {
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .flow-meta h2 {
+      font-size: 20px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .flow-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background-color: var(--color-brand-tint);
+      color: var(--color-primary);
+    }
+    .flow-step-indicator {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      font-weight: 500;
+    }
+
+    /* Generic UI Components inside screens */
+    .screen-pane {
+      display: none;
+      animation: fadeIn 150ms ease-out;
+    }
+    .screen-pane.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--color-text);
+    }
+    .form-input {
+      width: 100%;
+      height: 44px;
+      padding: 0 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border-input);
+      background-color: var(--color-surface);
+      color: var(--color-text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+    .form-input:focus {
+      outline: 2px solid var(--color-primary);
+      border-color: var(--color-primary);
+    }
+    .btn-action {
+      height: 44px;
+      min-width: 44px;
+      padding: 0 20px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-primary);
+      color: var(--color-primary-text);
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 120ms ease;
+    }
+    .btn-action:hover {
+      background-color: var(--color-primary-hover);
+    }
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+    .btn-outline:hover {
+      background-color: var(--color-bg-subtle);
+    }
+
+    .banner {
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .banner-info {
+      background-color: var(--color-brand-tint);
+      color: var(--color-primary);
+      border: 1px solid var(--color-brand);
+    }
+    .banner-success {
+      background-color: var(--color-success-tint);
+      color: var(--color-success);
+      border: 1px solid var(--color-success);
+    }
+    .banner-warning {
+      background-color: var(--color-accent-tint);
+      color: var(--color-accent-text);
+      border: 1px solid var(--color-accent);
+    }
+
+    /* Flow 1: Courses & Lecture */
+    .course-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 18px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: all 120ms ease;
+    }
+    .course-card:hover {
+      border-color: var(--color-primary);
+      background-color: var(--color-bg-subtle);
+    }
+    .lecture-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--color-border);
+      margin-bottom: 20px;
+    }
+    .lecture-content {
+      line-height: 1.6;
+      font-size: 15px;
+    }
+    .accordion-box {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      margin: 16px 0;
+      overflow: hidden;
+    }
+    .accordion-header {
+      padding: 12px 16px;
+      background-color: var(--color-bg-subtle);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      min-height: 44px;
+    }
+    .accordion-body {
+      padding: 16px;
+      display: none;
+      font-size: 14px;
+      background-color: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+    }
+    .accordion-body.open {
+      display: block;
+    }
+
+    /* Flow 2: Share & Join */
+    .share-link-box {
+      display: flex;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    /* Flow 3: Upload & Progress */
+    .dropzone {
+      border: 2px dashed var(--color-border-input);
+      border-radius: var(--radius-lg);
+      padding: 40px 20px;
+      text-align: center;
+      cursor: pointer;
+      margin-bottom: 20px;
+      background-color: var(--color-bg-subtle);
+      transition: border-color 120ms ease;
+    }
+    .dropzone:hover {
+      border-color: var(--color-primary);
+    }
+    .progress-step-list {
+      list-style: none;
+      margin: 20px 0;
+    }
+    .progress-step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .step-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      background-color: var(--color-border);
+      color: var(--color-text-muted);
+    }
+    .step-icon.done {
+      background-color: var(--color-success);
+      color: #fff;
+    }
+    .step-icon.active {
+      background-color: var(--color-primary);
+      color: #fff;
+    }
+    .spinner-box {
+      margin: 24px 0;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .spinner-gif {
+      width: 64px;
+      height: 64px;
+    }
+
+    /* Flow 4: Quiz */
+    .quiz-question {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .quiz-opt {
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background-color: var(--color-surface);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 44px;
+      font-size: 14px;
+      transition: all 120ms ease;
+    }
+    .quiz-opt:hover {
+      border-color: var(--color-primary);
+      background-color: var(--color-bg-subtle);
+    }
+    .quiz-opt.selected {
+      border-color: var(--color-primary);
+      background-color: var(--color-brand-tint);
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* Reduced Motion media queries */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+      }
+      .spinner-gif {
+        content: url('../assets/spinner_frame0_static.png');
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <header class="workbench-header">
+    <div class="brand-group">
+      <a href="#" class="brand-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 6L16 14H8L12 6Z" fill="currentColor"/>
+        </svg>
+        <span>WayFinder Prototype</span>
+      </a>
+    </div>
+
+    <nav class="flow-tabs" aria-label="Prototype Flows">
+      <button class="tab-btn active" data-flow="flow1" id="tab-flow1">
+        1. Đăng ký &rarr; Khoá học &rarr; Bài giảng
+      </button>
+      <button class="tab-btn" data-flow="flow2" id="tab-flow2">
+        2. Chia sẻ &rarr; Tham gia
+      </button>
+      <button class="tab-btn" data-flow="flow3" id="tab-flow3">
+        3. Tải sách &rarr; Dựng lộ trình
+      </button>
+      <button class="tab-btn" data-flow="flow4" id="tab-flow4">
+        4. Quiz &rarr; Nộp bài &rarr; Kết quả
+      </button>
+    </nav>
+
+    <div class="controls-group">
+      <button class="btn-toggle" id="btn-toggle-dark" aria-label="Chuyển chế độ sáng/tối">
+        🌙 Chế độ tối
+      </button>
+      <button class="btn-toggle" id="btn-toggle-reduced-motion" aria-label="Bật/Tắt giảm chuyển động">
+        ⚡ Motion: Bật
+      </button>
+    </div>
+  </header>
+
+  <main class="main-stage">
+
+    <!-- ========================================== -->
+    <!-- FLOW 1: ĐĂNG KÝ -> KHOÁ HỌC -> BÀI GIẢNG   -->
+    <!-- ========================================== -->
+    <section class="flow-container active" id="flow1-container">
+      <div class="flow-meta">
+        <div>
+          <h2><span class="flow-badge">Luồng 1</span> Đăng ký tài khoản & Khám phá bài giảng mẫu</h2>
+          <p style="font-size:13px; color:var(--color-text-muted); margin-top:4px;">
+            Hành trình Onboarding: Điền thông tin &rarr; Chuyển sang Khoá học của tôi &rarr; Mở bài giảng lecture-2.
+          </p>
+        </div>
+        <div class="flow-step-indicator" id="flow1-indicator">Bước 1 / 3: Đăng ký</div>
+      </div>
+
+      <!-- Step 1: Register Form -->
+      <div class="screen-pane active" id="flow1-screen-register">
+        <h3 style="margin-bottom: 16px;">Tạo tài khoản học viên WayFinder</h3>
+        <form id="form-flow1-register" onsubmit="return false;" style="max-width: 440px;">
+          <div class="form-group">
+            <label class="form-label" for="flow1-email">Email trường / công tác</label>
+            <input type="email" id="flow1-email" class="form-input" value="student@doctoroadmap.edu.vn" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="flow1-password">Mật khẩu (Argon2id)</label>
+            <input type="password" id="flow1-password" class="form-input" value="SecurePassword2026@" required>
+          </div>
+          <button type="button" class="btn-action" id="flow1-btn-register">
+            Đăng ký và Khám phá &rarr;
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 2: Course List -->
+      <div class="screen-pane" id="flow1-screen-courses">
+        <div class="banner banner-success">
+          ✅ Đăng ký thành công! Phiên học viên đã được kích hoạt tự động.
+        </div>
+        <h3 style="margin-bottom: 16px;">Khoá học của tôi</h3>
+        <div class="course-card" id="flow1-card-course1">
+          <div>
+            <h4 style="font-size: 16px; margin-bottom: 4px;">Khoá học mẫu: Bác sĩ Nội trú & Giải phẫu ứng dụng</h4>
+            <p style="font-size: 13px; color: var(--color-text-muted);">
+              Mã: DOC-SAMPLE-01 &bull; 6 module &bull; 24 bài giảng tương tác
+            </p>
+          </div>
+          <button type="button" class="btn-action btn-outline" id="flow1-btn-open-course">
+            Vào học bài &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 3: Interactive Lecture -->
+      <div class="screen-pane" id="flow1-screen-lecture">
+        <div class="lecture-header">
+          <div>
+            <span class="flow-badge" style="margin-bottom: 6px; display:inline-block;">Module 1 &bull; Bài 2</span>
+            <h3 id="flow1-lecture-title">lecture-2: Giải phẫu động mạch vành và điện tâm đồ cơ bản</h3>
+          </div>
+          <button type="button" class="btn-action btn-outline" id="flow1-btn-back-courses">
+            &larr; Về khoá học
+          </button>
+        </div>
+        <div class="lecture-content">
+          <p>Động mạch vành trái xuất phát từ xoang vành trái của động mạch chủ, chia thành hai nhánh chính: nhánh gian thất trước (LAD) và nhánh mũ (LCx)...</p>
+          
+          <div class="accordion-box">
+            <div class="accordion-header" id="flow1-accordion-toggle" role="button" tabindex="0">
+              <span>📚 Điều kiện tiên quyết & Mục tiêu bài giảng</span>
+              <span id="flow1-accordion-arrow">&darr;</span>
+            </div>
+            <div class="accordion-body" id="flow1-accordion-body">
+              <p>Học viên cần nắm vững cấu trúc tâm thất trái, hệ thống dẫn truyền His-Purkinje và các chuyển đạo trước tim (V1-V6) từ Bài giảng 1.</p>
+            </div>
+          </div>
+          <div class="banner banner-info" id="flow1-status-complete">
+            🎉 Bạn đã hoàn thành luồng Onboarding từ Đăng ký &rarr; Khoá học &rarr; Bài giảng tương tác.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- FLOW 2: CHIA SẺ -> THAM GIA KHOÁ HỌC       -->
+    <!-- ========================================== -->
+    <section class="flow-container" id="flow2-container">
+      <div class="flow-meta">
+        <div>
+          <h2><span class="flow-badge">Luồng 2</span> Chia sẻ & Tham gia khoá học (Public / Secret Key)</h2>
+          <p style="font-size:13px; color:var(--color-text-muted); margin-top:4px;">
+            Mời đồng nghiệp & Sinh viên tham gia thông qua link liên kết hoặc Secret Token.
+          </p>
+        </div>
+        <div class="flow-step-indicator" id="flow2-indicator">Bước 1 / 2: Lấy link chia sẻ</div>
+      </div>
+
+      <!-- Step 1: Course Info & Share Modal Trigger -->
+      <div class="screen-pane active" id="flow2-screen-share">
+        <h3 style="margin-bottom: 12px;">Khoá học: Dược lý lâm sàng & Kháng sinh học</h3>
+        <p style="font-size:14px; color:var(--color-text-muted); margin-bottom: 16px;">
+          Giảng viên: PGS. TS. Nguyễn Văn A &bull; Quyền truy cập: Thành viên được mời
+        </p>
+
+        <div style="border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 20px; background-color: var(--color-bg-subtle);">
+          <h4 style="margin-bottom: 8px;">Mã mời tham gia khoá học</h4>
+          <p style="font-size: 13px; color: var(--color-text-muted);">
+            Sao chép liên kết hoặc gửi trực tiếp cho học viên để cùng truy cập lộ trình:
+          </p>
+          <div class="share-link-box">
+            <input type="text" id="flow2-share-url" class="form-input" value="https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026" readonly>
+            <button type="button" class="btn-action" id="flow2-btn-copy">Sao chép</button>
+          </div>
+          <div id="flow2-copy-feedback" style="display:none; font-size:13px; color:var(--color-success); font-weight:600; margin-bottom:12px;">
+            Đã sao chép link tham gia vào bộ nhớ tạm!
+          </div>
+          <button type="button" class="btn-action" id="flow2-btn-simulate-join">
+            Mở trang Tham gia từ link &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2: Join Screen Confirmation -->
+      <div class="screen-pane" id="flow2-screen-join">
+        <div class="banner banner-info">
+          🔗 Bạn đang truy cập từ liên kết chia sẻ của giảng viên.
+        </div>
+        <h3 style="margin-bottom: 12px;">Xác nhận tham gia khoá học</h3>
+        <div style="border:1px solid var(--color-border); border-radius:var(--radius-md); padding:20px; max-width:540px;">
+          <p style="font-size: 14px; margin-bottom: 14px;">
+            Bạn chuẩn bị tham gia vào lộ trình: <strong>Dược lý lâm sàng & Kháng sinh học</strong>.
+          </p>
+          <div class="form-group">
+            <label class="form-label" for="flow2-join-code">Mã bảo mật (Secret Code)</label>
+            <input type="text" id="flow2-join-code" class="form-input" value="WF-PHARM-2026" readonly>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <button type="button" class="btn-action" id="flow2-btn-confirm-join">
+              Xác nhận tham gia &rarr;
+            </button>
+            <button type="button" class="btn-action btn-outline" id="flow2-btn-back-share">
+              Quay lại
+            </button>
+          </div>
+          <div id="flow2-join-success" style="display:none; margin-top:16px;" class="banner banner-success">
+            🎉 Chúc mừng! Bạn đã trở thành thành viên chính thức của khoá học.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- FLOW 3: TẢI SÁCH -> TIẾN TRÌNH DỰNG        -->
+    <!-- ========================================== -->
+    <section class="flow-container" id="flow3-container">
+      <div class="flow-meta">
+        <div>
+          <h2><span class="flow-badge">Luồng 3</span> Tải tài liệu y khoa & Tự động tạo lộ trình</h2>
+          <p style="font-size:13px; color:var(--color-text-muted); margin-top:4px;">
+            Kéo thả giáo trình PDF &rarr; Cấu hình mục tiêu học tập &rarr; Tiến trình AI 4 bước &rarr; Lộ trình hoàn chỉnh.
+          </p>
+        </div>
+        <div class="flow-step-indicator" id="flow3-indicator">Bước 1 / 3: Tải tài liệu</div>
+      </div>
+
+      <!-- Step 1: Upload Dropzone -->
+      <div class="screen-pane active" id="flow3-screen-upload">
+        <div class="dropzone" id="flow3-dropzone" tabindex="0" role="button">
+          <div style="font-size:36px; margin-bottom:8px;">📄</div>
+          <h4 style="margin-bottom:6px;">Kéo thả giáo trình PDF hoặc bấm để chọn tệp</h4>
+          <p style="font-size:13px; color:var(--color-text-muted);">
+            Hỗ trợ PDF sách y khoa, giáo trình đại học, slide bài giảng (tối đa 150 MB).
+          </p>
+          <div style="margin-top:16px;">
+            <button type="button" class="btn-action" id="flow3-btn-select-file">
+              Chọn tệp: Harrison_Internal_Medicine.pdf (84 MB)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Confirm Configuration -->
+      <div class="screen-pane" id="flow3-screen-confirm">
+        <h3 style="margin-bottom:12px;">Cấu hình mục tiêu học tập</h3>
+        <div style="border:1px solid var(--color-border); border-radius:var(--radius-md); padding:20px; max-width:600px;">
+          <div class="form-group">
+            <label class="form-label">Tên tài liệu nhận diện</label>
+            <input type="text" class="form-input" value="Harrison's Principles of Internal Medicine - 21st Edition" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="flow3-target">Mục tiêu học tập</label>
+            <select id="flow3-target" class="form-input">
+              <option value="exam">Ôn thi Bác sĩ Nội trú / Sau đại học</option>
+              <option value="clinical">Thực hành lâm sàng tại bệnh viện</option>
+              <option value="general">Học lại hệ thống khái niệm nền tảng</option>
+            </select>
+          </div>
+          <div style="display:flex; gap:12px;">
+            <button type="button" class="btn-action" id="flow3-btn-start-build">
+              Bắt đầu tạo lộ trình &rarr;
+            </button>
+            <button type="button" class="btn-action btn-outline" id="flow3-btn-back-upload">
+              Chọn lại tệp
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: 4-Step Build Progress -->
+      <div class="screen-pane" id="flow3-screen-progress">
+        <h3 style="margin-bottom: 12px;">Đang phân tích và khởi tạo lộ trình học tập</h3>
+        
+        <div class="spinner-box">
+          <picture>
+            <source srcset="../assets/spinner_frame0_static.png" media="(prefers-reduced-motion: reduce)">
+            <img class="spinner-gif" src="../assets/spinner_96.gif" alt="Vòng chờ xử lý tài liệu" id="flow3-spinner-img">
+          </picture>
+          <div>
+            <div id="flow3-current-task" style="font-weight:600; font-size:15px; color:var(--color-primary);">
+              Đang phân đoạn cấu trúc tài liệu...
+            </div>
+            <div style="font-size:13px; color:var(--color-text-muted); margin-top:2px;">
+              Tiến trình chạy tự động 4 bước theo pipeline doc2roadmap.
+            </div>
+          </div>
+        </div>
+
+        <ul class="progress-step-list" id="flow3-step-list">
+          <li class="progress-step-item" id="flow3-pstep-1">
+            <span class="step-icon done">✓</span>
+            <span>1. Trích xuất văn bản và mục lục chi tiết</span>
+          </li>
+          <li class="progress-step-item" id="flow3-pstep-2">
+            <span class="step-icon active" id="flow3-icon-step2">⏳</span>
+            <span>2. Nhận diện các khái niệm y khoa và quan hệ tiên quyết</span>
+          </li>
+          <li class="progress-step-item" id="flow3-pstep-3">
+            <span class="step-icon">3</span>
+            <span>3. Xây dựng đồ thị học tập DAG và phân bổ module</span>
+          </li>
+          <li class="progress-step-item" id="flow3-pstep-4">
+            <span class="step-icon">4</span>
+            <span>4. Khởi tạo ngân hàng câu hỏi Quiz và thẻ ghi nhớ</span>
+          </li>
+        </ul>
+
+        <button type="button" class="btn-action" id="flow3-btn-finish-progress" style="display:none;">
+          Xem lộ trình hoàn tất &rarr;
+        </button>
+        <div id="flow3-build-complete-banner" style="display:none; margin-top:16px;" class="banner banner-success">
+          🎉 Tạo lộ trình thành công! Đã sẵn sàng 18 khái niệm và 42 câu hỏi thực hành.
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- FLOW 4: QUIZ -> NỘP BÀI -> KẾT QUẢ        -->
+    <!-- ========================================== -->
+    <section class="flow-container" id="flow4-container">
+      <div class="flow-meta">
+        <div>
+          <h2><span class="flow-badge">Luồng 4</span> Luyện tập Quiz & Nhận phản hồi kèm trích dẫn</h2>
+          <p style="font-size:13px; color:var(--color-text-muted); margin-top:4px;">
+            Làm bài trắc nghiệm củng cố &rarr; Nộp bài tức thì &rarr; Nhận điểm số, giải thích chi tiết và trang đối chiếu.
+          </p>
+        </div>
+        <div class="flow-step-indicator" id="flow4-indicator">Câu 1 / 1: Trắc nghiệm chuyên khoa</div>
+      </div>
+
+      <div class="screen-pane active" id="flow4-screen-quiz">
+        <div class="quiz-question" id="flow4-question-title">
+          Câu hỏi 1: Nhánh động mạch nào sau đây cấp máu chủ yếu cho thành trước tâm thất trái và 2/3 trước của vách liên thất?
+        </div>
+
+        <div class="quiz-options" id="flow4-options-group">
+          <div class="quiz-opt" data-opt="A" tabindex="0" role="radio" aria-checked="false">
+            <span style="font-weight:700;">A.</span> Nhánh mũ của động mạch vành trái (LCx)
+          </div>
+          <div class="quiz-opt" data-opt="B" tabindex="0" role="radio" aria-checked="false">
+            <span style="font-weight:700;">B.</span> Nhánh gian thất trước (LAD - Left Anterior Descending)
+          </div>
+          <div class="quiz-opt" data-opt="C" tabindex="0" role="radio" aria-checked="false">
+            <span style="font-weight:700;">C.</span> Động mạch vành phải (RCA)
+          </div>
+          <div class="quiz-opt" data-opt="D" tabindex="0" role="radio" aria-checked="false">
+            <span style="font-weight:700;">D.</span> Nhánh bờ sắc (Marginal branch)
+          </div>
+        </div>
+
+        <button type="button" class="btn-action" id="flow4-btn-submit" disabled>
+          Nộp bài và chấm điểm
+        </button>
+
+        <!-- Feedback Result Panel -->
+        <div id="flow4-result-panel" style="display:none; margin-top:20px;">
+          <div class="banner banner-success" id="flow4-result-status" style="font-size:15px; font-weight:600;">
+            ✅ Chính xác! Bạn nhận được 10/10 điểm.
+          </div>
+          <div style="border:1px solid var(--color-border); border-radius:var(--radius-md); padding:16px; background-color:var(--color-surface);">
+            <h4 style="margin-bottom:8px;">💡 Giải thích chuyên môn & Trích dẫn giáo trình</h4>
+            <p style="font-size:14px; line-height:1.6; margin-bottom:10px;">
+              Nhánh gian thất trước (LAD) chạy trong rãnh gian thất trước, cấp máu cho phần lớn cơ tim thất trái, mỏm tim và 2/3 trước vách liên thất. Tắc nhánh LAD thường gây nhồi máu cơ tim trước rộng và có tỷ lệ tử vong cao nhất.
+            </p>
+            <div style="font-size:12px; color:var(--color-text-muted); font-weight:600;">
+              📖 Trích dẫn: Harrison's Internal Medicine, 21st Edition &bull; Chương 270: Thiếu máu cục bộ cơ tim &bull; Trang 1892.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // State management
+    const state = {
+      theme: 'light',
+      reducedMotion: false,
+      flow1: { step: 1, accordionOpen: false },
+      flow2: { step: 1, joined: false },
+      flow3: { step: 1, progressDone: false },
+      flow4: { selectedOpt: null, submitted: false }
+    };
+
+    // Tabs switching
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const flowId = btn.getAttribute('data-flow');
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.flow-container').forEach(c => c.classList.remove('active'));
+        document.getElementById(`${flowId}-container`).classList.add('active');
+      });
+    });
+
+    // Dark mode toggle
+    const btnDark = document.getElementById('btn-toggle-dark');
+    btnDark.addEventListener('click', () => {
+      state.theme = state.theme === 'light' ? 'dark' : 'light';
+      document.body.setAttribute('data-theme', state.theme);
+      btnDark.textContent = state.theme === 'dark' ? '☀️ Chế độ sáng' : '🌙 Chế độ tối';
+    });
+
+    // Reduced motion toggle
+    const btnMotion = document.getElementById('btn-toggle-reduced-motion');
+    btnMotion.addEventListener('click', () => {
+      state.reducedMotion = !state.reducedMotion;
+      const img = document.getElementById('flow3-spinner-img');
+      if (state.reducedMotion) {
+        document.body.classList.add('reduced-motion-override');
+        img.src = '../assets/spinner_frame0_static.png';
+        btnMotion.textContent = '⚡ Motion: Tắt (Static)';
+      } else {
+        document.body.classList.remove('reduced-motion-override');
+        img.src = '../assets/spinner_96.gif';
+        btnMotion.textContent = '⚡ Motion: Bật';
+      }
+    });
+
+    // ==========================================
+    // FLOW 1 LOGIC
+    // ==========================================
+    const flow1BtnReg = document.getElementById('flow1-btn-register');
+    const flow1ScreenReg = document.getElementById('flow1-screen-register');
+    const flow1ScreenCourses = document.getElementById('flow1-screen-courses');
+    const flow1ScreenLecture = document.getElementById('flow1-screen-lecture');
+    const flow1Indicator = document.getElementById('flow1-indicator');
+
+    flow1BtnReg.addEventListener('click', () => {
+      state.flow1.step = 2;
+      flow1ScreenReg.classList.remove('active');
+      flow1ScreenCourses.classList.add('active');
+      flow1Indicator.textContent = 'Bước 2 / 3: Danh sách khoá học';
+    });
+
+    const flow1BtnOpenCourse = document.getElementById('flow1-btn-open-course');
+    flow1BtnOpenCourse.addEventListener('click', () => {
+      state.flow1.step = 3;
+      flow1ScreenCourses.classList.remove('active');
+      flow1ScreenLecture.classList.add('active');
+      flow1Indicator.textContent = 'Bước 3 / 3: Bài giảng tương tác';
+    });
+
+    const flow1BtnBackCourses = document.getElementById('flow1-btn-back-courses');
+    flow1BtnBackCourses.addEventListener('click', () => {
+      state.flow1.step = 2;
+      flow1ScreenLecture.classList.remove('active');
+      flow1ScreenCourses.classList.add('active');
+      flow1Indicator.textContent = 'Bước 2 / 3: Danh sách khoá học';
+    });
+
+    const flow1AccordionToggle = document.getElementById('flow1-accordion-toggle');
+    const flow1AccordionBody = document.getElementById('flow1-accordion-body');
+    const flow1AccordionArrow = document.getElementById('flow1-accordion-arrow');
+
+    flow1AccordionToggle.addEventListener('click', () => {
+      state.flow1.accordionOpen = !state.flow1.accordionOpen;
+      if (state.flow1.accordionOpen) {
+        flow1AccordionBody.classList.add('open');
+        flow1AccordionArrow.innerHTML = '&uarr;';
+      } else {
+        flow1AccordionBody.classList.remove('open');
+        flow1AccordionArrow.innerHTML = '&darr;';
+      }
+    });
+
+    // ==========================================
+    // FLOW 2 LOGIC
+    // ==========================================
+    const flow2BtnCopy = document.getElementById('flow2-btn-copy');
+    const flow2CopyFeedback = document.getElementById('flow2-copy-feedback');
+    const flow2BtnSimulateJoin = document.getElementById('flow2-btn-simulate-join');
+    const flow2ScreenShare = document.getElementById('flow2-screen-share');
+    const flow2ScreenJoin = document.getElementById('flow2-screen-join');
+    const flow2Indicator = document.getElementById('flow2-indicator');
+    const flow2BtnConfirmJoin = document.getElementById('flow2-btn-confirm-join');
+    const flow2BtnBackShare = document.getElementById('flow2-btn-back-share');
+    const flow2JoinSuccess = document.getElementById('flow2-join-success');
+
+    flow2BtnCopy.addEventListener('click', () => {
+      flow2CopyFeedback.style.display = 'block';
+    });
+
+    flow2BtnSimulateJoin.addEventListener('click', () => {
+      state.flow2.step = 2;
+      flow2ScreenShare.classList.remove('active');
+      flow2ScreenJoin.classList.add('active');
+      flow2Indicator.textContent = 'Bước 2 / 2: Xác nhận tham gia';
+    });
+
+    flow2BtnBackShare.addEventListener('click', () => {
+      state.flow2.step = 1;
+      flow2ScreenJoin.classList.remove('active');
+      flow2ScreenShare.classList.add('active');
+      flow2Indicator.textContent = 'Bước 1 / 2: Lấy link chia sẻ';
+    });
+
+    flow2BtnConfirmJoin.addEventListener('click', () => {
+      state.flow2.joined = true;
+      flow2JoinSuccess.style.display = 'block';
+      flow2BtnConfirmJoin.setAttribute('disabled', 'true');
+    });
+
+    // ==========================================
+    // FLOW 3 LOGIC
+    // ==========================================
+    const flow3BtnSelectFile = document.getElementById('flow3-btn-select-file');
+    const flow3ScreenUpload = document.getElementById('flow3-screen-upload');
+    const flow3ScreenConfirm = document.getElementById('flow3-screen-confirm');
+    const flow3ScreenProgress = document.getElementById('flow3-screen-progress');
+    const flow3Indicator = document.getElementById('flow3-indicator');
+    const flow3BtnStartBuild = document.getElementById('flow3-btn-start-build');
+    const flow3BtnBackUpload = document.getElementById('flow3-btn-back-upload');
+    const flow3BtnFinishProgress = document.getElementById('flow3-btn-finish-progress');
+    const flow3BuildCompleteBanner = document.getElementById('flow3-build-complete-banner');
+
+    flow3BtnSelectFile.addEventListener('click', () => {
+      state.flow3.step = 2;
+      flow3ScreenUpload.classList.remove('active');
+      flow3ScreenConfirm.classList.add('active');
+      flow3Indicator.textContent = 'Bước 2 / 3: Xác nhận cấu hình';
+    });
+
+    flow3BtnBackUpload.addEventListener('click', () => {
+      state.flow3.step = 1;
+      flow3ScreenConfirm.classList.remove('active');
+      flow3ScreenUpload.classList.add('active');
+      flow3Indicator.textContent = 'Bước 1 / 3: Tải tài liệu';
+    });
+
+    flow3BtnStartBuild.addEventListener('click', () => {
+      state.flow3.step = 3;
+      flow3ScreenConfirm.classList.remove('active');
+      flow3ScreenProgress.classList.add('active');
+      flow3Indicator.textContent = 'Bước 3 / 3: Tiến trình AI dựng lộ trình';
+
+      // Simulate step progression
+      setTimeout(() => {
+        const step2 = document.getElementById('flow3-pstep-2');
+        step2.querySelector('.step-icon').className = 'step-icon done';
+        step2.querySelector('.step-icon').textContent = '✓';
+
+        const step3 = document.getElementById('flow3-pstep-3');
+        step3.querySelector('.step-icon').className = 'step-icon done';
+        step3.querySelector('.step-icon').textContent = '✓';
+
+        const step4 = document.getElementById('flow3-pstep-4');
+        step4.querySelector('.step-icon').className = 'step-icon done';
+        step4.querySelector('.step-icon').textContent = '✓';
+
+        document.getElementById('flow3-current-task').textContent = 'Đã hoàn tất phân tích toàn diện!';
+        flow3BtnFinishProgress.style.display = 'inline-flex';
+        flow3BuildCompleteBanner.style.display = 'flex';
+      }, 300);
+    });
+
+    // ==========================================
+    // FLOW 4 LOGIC
+    // ==========================================
+    const quizOptions = document.querySelectorAll('.quiz-opt');
+    const flow4BtnSubmit = document.getElementById('flow4-btn-submit');
+    const flow4ResultPanel = document.getElementById('flow4-result-panel');
+
+    quizOptions.forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (state.flow4.submitted) return;
+        quizOptions.forEach(o => {
+          o.classList.remove('selected');
+          o.setAttribute('aria-checked', 'false');
+        });
+        opt.classList.add('selected');
+        opt.setAttribute('aria-checked', 'true');
+        state.flow4.selectedOpt = opt.getAttribute('data-opt');
+        flow4BtnSubmit.removeAttribute('disabled');
+      });
+    });
+
+    flow4BtnSubmit.addEventListener('click', () => {
+      if (!state.flow4.selectedOpt) return;
+      state.flow4.submitted = true;
+      flow4ResultPanel.style.display = 'block';
+      flow4BtnSubmit.setAttribute('disabled', 'true');
+    });
+  </script>
+</body>
+</html>

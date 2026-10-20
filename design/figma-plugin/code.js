@@ -688,69 +688,404 @@
   figma.currentPage.appendChild(authFrame);
   createdNodes.push(authFrame);
 
-  // ==========================================
-  // 5. FRAME: 4 PROTOTYPE FLOWS SPECIFICATION
-  // ==========================================
-  const protoFrame = figma.createFrame();
-  protoFrame.name = "5. Đặc tả 4 Luồng Prototype (W-22 / W-24)";
-  protoFrame.x = 0;
-  protoFrame.y = 1380;
-  protoFrame.resize(1280, 360);
-  protoFrame.fills = solidFill(C.surface);
-  protoFrame.cornerRadius = 16;
-  protoFrame.strokes = [{ type: "SOLID", color: C.border }];
-  protoFrame.strokeWeight = 1;
-  protoFrame.layoutMode = "VERTICAL";
-  protoFrame.paddingTop = 28;
-  protoFrame.paddingBottom = 28;
-  protoFrame.paddingLeft = 32;
-  protoFrame.paddingRight = 32;
-  protoFrame.itemSpacing = 16;
-
-  protoFrame.appendChild(createText("4 Luồng Prototype Bấm được (Figma & Web Workbench)", 22, FONT_BOLD, C.text));
-  protoFrame.appendChild(createText("Thời lượng tương tác: 120ms (nhanh), 200ms (chuẩn). Giảm chuyển động: ngắt hoạt ảnh, chuyển sang ảnh tĩnh.", 13, FONT_REG, C.textMuted));
-
-  const protoGrid = figma.createFrame();
-  protoGrid.layoutMode = "HORIZONTAL";
-  protoGrid.itemSpacing = 16;
-  protoGrid.fills = [];
-
-  const flows = [
-    { num: "Luồng 1", name: "Đăng nhập & Xác thực phiên", desc: "Màn hình /dang-nhap -> Form điền -> invalid_credentials -> Đăng nhập thành công -> /khoa-hoc", time: "120ms ease-out" },
-    { num: "Luồng 2", name: "Tải sách & Dựng lộ trình", desc: "Trang /tai-len -> Kéo thả PDF -> Tiến trình 4 bước -> Spinner tĩnh khi reduce motion -> Lộ trình", time: "200ms ease" },
-    { num: "Luồng 3", name: "Điều hướng & Học bài", desc: "Lộ trình /khoa-hoc/:cid -> Bấm Module 2 mở rộng -> Chọn khái niệm -> Mở lecture-2", time: "150ms ease-in-out" },
-    { num: "Luồng 4", name: "Làm Quiz & Nhận phản hồi", desc: "Trang /quiz/:aid -> Bấm chọn đáp án B -> Nộp bài -> Tô màu success-tint kèm trích dẫn sách", time: "120ms ease" }
-  ];
-
-  for (const fl of flows) {
-    const flCard = figma.createFrame();
-    flCard.layoutMode = "VERTICAL";
-    flCard.itemSpacing = 8;
-    flCard.resize(290, 220);
-    flCard.cornerRadius = 12;
-    flCard.fills = solidFill(C.bgSubtle);
-    flCard.strokes = [{ type: "SOLID", color: C.border }];
-    flCard.strokeWeight = 1;
-    flCard.paddingLeft = 16;
-    flCard.paddingRight = 16;
-    flCard.paddingTop = 16;
-    flCard.paddingBottom = 16;
-
-    flCard.appendChild(makeBadge(fl.num, C.brandTint, C.primary));
-    flCard.appendChild(createText(fl.name, 15, FONT_SEMI, C.text));
-    const descText = createText(fl.desc, 12, FONT_REG, C.textMuted);
-    descText.resize(258, 70);
-    flCard.appendChild(descText);
-    flCard.appendChild(createText(`⏱ ${fl.time}`, 11, FONT_SEMI, C.primary));
-    protoGrid.appendChild(flCard);
+  // Helper to link Figma Prototype Reactions (ON_CLICK -> NAVIGATE)
+  async function linkReaction(sourceNode, targetFrame) {
+    if (!sourceNode || !targetFrame) return;
+    try {
+      if (typeof sourceNode.setReactionsAsync === "function") {
+        await sourceNode.setReactionsAsync([
+          {
+            trigger: { type: "ON_CLICK" },
+            actions: [
+              {
+                type: "NODE",
+                destinationId: targetFrame.id,
+                navigation: "NAVIGATE",
+                transition: {
+                  type: "DISSOLVE",
+                  easing: { type: "EASE_OUT" },
+                  duration: 0.15
+                }
+              }
+            ]
+          }
+        ]);
+      } else if ("reactions" in sourceNode) {
+        sourceNode.reactions = [
+          {
+            trigger: { type: "ON_CLICK" },
+            action: {
+              type: "NODE",
+              destinationId: targetFrame.id,
+              navigation: "NAVIGATE"
+            }
+          }
+        ];
+      }
+    } catch (reactionErr) {
+      console.log("Reaction setup note:", reactionErr);
+    }
   }
-  protoFrame.appendChild(protoGrid);
 
-  figma.currentPage.appendChild(protoFrame);
-  createdNodes.push(protoFrame);
+  // ==========================================
+  // 5. FRAME: MÀN HÌNH W-03 (XÁC THỰC EMAIL & ĐẶT LẠI MẬT KHẨU)
+  // ==========================================
+  const w03Frame = figma.createFrame();
+  w03Frame.name = "5. Màn hình W-03: Xác thực Email & Đặt lại Mật khẩu";
+  w03Frame.x = 0;
+  w03Frame.y = 1380;
+  w03Frame.resize(1280, 520);
+  w03Frame.fills = solidFill(C.surface);
+  w03Frame.cornerRadius = 16;
+  w03Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w03Frame.strokeWeight = 1;
+  w03Frame.layoutMode = "VERTICAL";
+  w03Frame.paddingTop = 28;
+  w03Frame.paddingBottom = 28;
+  w03Frame.paddingLeft = 32;
+  w03Frame.paddingRight = 32;
+  w03Frame.itemSpacing = 16;
+
+  w03Frame.appendChild(createText("Bộ màn hình W-03: Xác thực Email, Quên & Đặt lại mật khẩu (Token một lần)", 22, FONT_BOLD, C.text));
+  w03Frame.appendChild(createText("Bàn giao chuẩn phục vụ nhóm Web (W-03) &bull; Viewport thích ứng &bull; Nút 44px &bull; WCAG 2.1 AA", 13, FONT_REG, C.textMuted));
+
+  const w03CardsRow = figma.createFrame();
+  w03CardsRow.layoutMode = "HORIZONTAL";
+  w03CardsRow.itemSpacing = 16;
+  w03CardsRow.fills = [];
+
+  // Card 1: Chờ xác minh email
+  const cardVerify = figma.createFrame();
+  cardVerify.layoutMode = "VERTICAL";
+  cardVerify.itemSpacing = 10;
+  cardVerify.resize(288, 380);
+  cardVerify.cornerRadius = 12;
+  cardVerify.fills = solidFill(C.bgSubtle);
+  cardVerify.strokes = [{ type: "SOLID", color: C.border }];
+  cardVerify.strokeWeight = 1;
+  cardVerify.paddingLeft = 16;
+  cardVerify.paddingRight = 16;
+  cardVerify.paddingTop = 16;
+  cardVerify.paddingBottom = 16;
+  cardVerify.appendChild(makeBadge("W-03: Màn 1", C.brandTint, C.primary));
+  cardVerify.appendChild(createText("Chờ xác minh email", 16, FONT_SEMI, C.text));
+  const bannerV = figma.createFrame();
+  bannerV.resize(256, 60);
+  bannerV.cornerRadius = 8;
+  bannerV.fills = solidFill(C.brandTint);
+  bannerV.paddingLeft = 10;
+  bannerV.paddingRight = 10;
+  bannerV.paddingTop = 8;
+  bannerV.appendChild(createText("✉️ Đã gửi email xác minh đến bacsi.nguyen@benhvien.vn. Vui lòng kiểm tra hộp thư.", 11, FONT_REG, C.primary));
+  cardVerify.appendChild(bannerV);
+  const btnResend = makeButton("Gửi lại email (60s)", C.bgSubtle, C.text);
+  btnResend.resize(256, 44);
+  btnResend.strokes = [{ type: "SOLID", color: C.border }];
+  cardVerify.appendChild(btnResend);
+  const btnCont = makeButton("Đã xác minh, tiếp tục", C.primary, C.white);
+  btnCont.resize(256, 44);
+  cardVerify.appendChild(btnCont);
+  w03CardsRow.appendChild(cardVerify);
+
+  // Card 2: Quên mật khẩu
+  const cardForgot = figma.createFrame();
+  cardForgot.layoutMode = "VERTICAL";
+  cardForgot.itemSpacing = 10;
+  cardForgot.resize(288, 380);
+  cardForgot.cornerRadius = 12;
+  cardForgot.fills = solidFill(C.bgSubtle);
+  cardForgot.strokes = [{ type: "SOLID", color: C.border }];
+  cardForgot.strokeWeight = 1;
+  cardForgot.paddingLeft = 16;
+  cardForgot.paddingRight = 16;
+  cardForgot.paddingTop = 16;
+  cardForgot.paddingBottom = 16;
+  cardForgot.appendChild(makeBadge("W-03: Màn 2", C.brandTint, C.primary));
+  cardForgot.appendChild(createText("Quên mật khẩu", 16, FONT_SEMI, C.text));
+  cardForgot.appendChild(createText("Nhập email để nhận liên kết đặt lại mật khẩu có hiệu lực 60 phút:", 12, FONT_REG, C.textMuted));
+  cardForgot.appendChild(makeInput("Email tài khoản", "bacsi.nguyen@benhvien.vn"));
+  const btnSendReset = makeButton("Gửi liên kết đặt lại (44px)", C.primary, C.white);
+  btnSendReset.resize(256, 44);
+  cardForgot.appendChild(btnSendReset);
+  w03CardsRow.appendChild(cardForgot);
+
+  // Card 3: Đặt lại mật khẩu mới
+  const cardReset = figma.createFrame();
+  cardReset.layoutMode = "VERTICAL";
+  cardReset.itemSpacing = 10;
+  cardReset.resize(288, 380);
+  cardReset.cornerRadius = 12;
+  cardReset.fills = solidFill(C.bgSubtle);
+  cardReset.strokes = [{ type: "SOLID", color: C.border }];
+  cardReset.strokeWeight = 1;
+  cardReset.paddingLeft = 16;
+  cardReset.paddingRight = 16;
+  cardReset.paddingTop = 16;
+  cardReset.paddingBottom = 16;
+  cardReset.appendChild(makeBadge("W-03: Màn 3", C.brandTint, C.primary));
+  cardReset.appendChild(createText("Đặt lại mật khẩu mới", 16, FONT_SEMI, C.text));
+  cardReset.appendChild(makeInput("Mật khẩu mới", "••••••••••••"));
+  cardReset.appendChild(makeInput("Xác nhận mật khẩu", "••••••••••••"));
+  const btnUpdatePass = makeButton("Lưu mật khẩu & Đăng nhập", C.primary, C.white);
+  btnUpdatePass.resize(256, 44);
+  cardReset.appendChild(btnUpdatePass);
+  w03CardsRow.appendChild(cardReset);
+
+  // Card 4: Token hết hạn / đã dùng
+  const cardExpired = figma.createFrame();
+  cardExpired.layoutMode = "VERTICAL";
+  cardExpired.itemSpacing = 10;
+  cardExpired.resize(288, 380);
+  cardExpired.cornerRadius = 12;
+  cardExpired.fills = solidFill(C.bgSubtle);
+  cardExpired.strokes = [{ type: "SOLID", color: C.border }];
+  cardExpired.strokeWeight = 1;
+  cardExpired.paddingLeft = 16;
+  cardExpired.paddingRight = 16;
+  cardExpired.paddingTop = 16;
+  cardExpired.paddingBottom = 16;
+  cardExpired.appendChild(makeBadge("W-03: Màn 4", C.dangerTint, C.danger));
+  cardExpired.appendChild(createText("Token không hợp lệ", 16, FONT_SEMI, C.danger));
+  const bannerExp = figma.createFrame();
+  bannerExp.resize(256, 80);
+  bannerExp.cornerRadius = 8;
+  bannerExp.fills = solidFill(C.dangerTint);
+  bannerExp.paddingLeft = 10;
+  bannerExp.paddingRight = 10;
+  bannerExp.paddingTop = 8;
+  bannerExp.appendChild(createText("⚠️ Liên kết đã hết hạn hoặc đã được sử dụng. Xác minh email có hiệu lực 24 giờ; đặt lại mật khẩu có hiệu lực 60 phút.", 11, FONT_REG, C.danger));
+  cardExpired.appendChild(bannerExp);
+  const btnReqNew = makeButton("Yêu cầu gửi liên kết mới", C.primary, C.white);
+  btnReqNew.resize(256, 44);
+  cardExpired.appendChild(btnReqNew);
+  w03CardsRow.appendChild(cardExpired);
+
+  w03Frame.appendChild(w03CardsRow);
+  figma.currentPage.appendChild(w03Frame);
+  createdNodes.push(w03Frame);
+
+  // ==========================================
+  // 6. FRAME: 4 BỘ PROTOTYPE LIÊN KẾT BẤM ĐƯỢC (FIGMA PROTOTYPE REACTIONS)
+  // ==========================================
+  const protoMasterFrame = figma.createFrame();
+  protoMasterFrame.name = "6. 4 Luồng Prototype Bấm được (Figma Reactions Linked)";
+  protoMasterFrame.x = 0;
+  protoMasterFrame.y = 1960;
+  protoMasterFrame.resize(1280, 860);
+  protoMasterFrame.fills = solidFill(C.surface);
+  protoMasterFrame.cornerRadius = 16;
+  protoMasterFrame.strokes = [{ type: "SOLID", color: C.border }];
+  protoMasterFrame.strokeWeight = 1;
+  protoMasterFrame.layoutMode = "VERTICAL";
+  protoMasterFrame.paddingTop = 28;
+  protoMasterFrame.paddingBottom = 28;
+  protoMasterFrame.paddingLeft = 32;
+  protoMasterFrame.paddingRight = 32;
+  protoMasterFrame.itemSpacing = 20;
+
+  protoMasterFrame.appendChild(createText("4 Luồng Prototype Bấm được (Figma Reactions & Web Workbench)", 22, FONT_BOLD, C.text));
+  protoMasterFrame.appendChild(createText("Đã gắn kết nối tương tác native ON_CLICK -> NAVIGATE trong Figma. Bấm 'Present' (Play) để trải nghiệm.", 13, FONT_REG, C.textMuted));
+
+  const protoRows = figma.createFrame();
+  protoRows.layoutMode = "VERTICAL";
+  protoRows.itemSpacing = 16;
+  protoRows.fills = [];
+
+  // --- LUỒNG 1: ONBOARDING (Register -> Courses -> Lecture) ---
+  const flow1Container = figma.createFrame();
+  flow1Container.name = "Luồng 1: Đăng ký -> Khoá học -> Bài giảng";
+  flow1Container.layoutMode = "HORIZONTAL";
+  flow1Container.itemSpacing = 14;
+  flow1Container.fills = [];
+
+  // Frame 1A: Register
+  const f1A = figma.createFrame();
+  f1A.name = "F1A: Đăng ký học viên";
+  f1A.resize(288, 160);
+  f1A.cornerRadius = 10;
+  f1A.fills = solidFill(C.bgSubtle);
+  f1A.strokes = [{ type: "SOLID", color: C.border }];
+  f1A.paddingLeft = 14; f1A.paddingRight = 14; f1A.paddingTop = 14; f1A.paddingBottom = 14;
+  f1A.layoutMode = "VERTICAL"; f1A.itemSpacing = 8;
+  f1A.appendChild(makeBadge("Luồng 1 &bull; Bước 1", C.brandTint, C.primary));
+  f1A.appendChild(createText("Đăng ký tài khoản", 14, FONT_SEMI, C.text));
+  const f1ABtn = makeButton("Đăng ký & Vào khoá học ➔", C.primary, C.white);
+  f1ABtn.resize(260, 44);
+  f1A.appendChild(f1ABtn);
+  flow1Container.appendChild(f1A);
+
+  // Frame 1B: Courses
+  const f1B = figma.createFrame();
+  f1B.name = "F1B: Khoá học của tôi";
+  f1B.resize(288, 160);
+  f1B.cornerRadius = 10;
+  f1B.fills = solidFill(C.bgSubtle);
+  f1B.strokes = [{ type: "SOLID", color: C.border }];
+  f1B.paddingLeft = 14; f1B.paddingRight = 14; f1B.paddingTop = 14; f1B.paddingBottom = 14;
+  f1B.layoutMode = "VERTICAL"; f1B.itemSpacing = 8;
+  f1B.appendChild(makeBadge("Luồng 1 &bull; Bước 2", C.successTint, C.success));
+  f1B.appendChild(createText("Khoá học: Bác sĩ Nội trú", 14, FONT_SEMI, C.text));
+  const f1BBtn = makeButton("Mở bài lecture-2 ➔", C.primary, C.white);
+  f1BBtn.resize(260, 44);
+  f1B.appendChild(f1BBtn);
+  flow1Container.appendChild(f1B);
+
+  // Frame 1C: Lecture
+  const f1C = figma.createFrame();
+  f1C.name = "F1C: Bài giảng lecture-2";
+  f1C.resize(288, 160);
+  f1C.cornerRadius = 10;
+  f1C.fills = solidFill(C.bgSubtle);
+  f1C.strokes = [{ type: "SOLID", color: C.primary }];
+  f1C.strokeWeight = 2;
+  f1C.paddingLeft = 14; f1C.paddingRight = 14; f1C.paddingTop = 14; f1C.paddingBottom = 14;
+  f1C.layoutMode = "VERTICAL"; f1C.itemSpacing = 8;
+  f1C.appendChild(makeBadge("Luồng 1 &bull; Bước 3", C.brandTint, C.primary));
+  f1C.appendChild(createText("lecture-2: Giải phẫu động mạch", 14, FONT_SEMI, C.text));
+  f1C.appendChild(createText("✓ Accordion mở &bull; Nội dung sẵn sàng", 12, FONT_REG, C.success));
+  flow1Container.appendChild(f1C);
+
+  // Connect Flow 1 prototype reactions
+  await linkReaction(f1ABtn, f1B);
+  await linkReaction(f1BBtn, f1C);
+  protoRows.appendChild(flow1Container);
+
+  // --- LUỒNG 2: CHIA SẺ & THAM GIA ---
+  const flow2Container = figma.createFrame();
+  flow2Container.name = "Luồng 2: Chia sẻ -> Tham gia khoá học";
+  flow2Container.layoutMode = "HORIZONTAL";
+  flow2Container.itemSpacing = 14;
+  flow2Container.fills = [];
+
+  const f2A = figma.createFrame();
+  f2A.name = "F2A: Khoá học & Mã chia sẻ";
+  f2A.resize(288, 160); f2A.cornerRadius = 10; f2A.fills = solidFill(C.bgSubtle);
+  f2A.strokes = [{ type: "SOLID", color: C.border }];
+  f2A.paddingLeft = 14; f2A.paddingRight = 14; f2A.paddingTop = 14; f2A.paddingBottom = 14;
+  f2A.layoutMode = "VERTICAL"; f2A.itemSpacing = 8;
+  f2A.appendChild(makeBadge("Luồng 2 &bull; Bước 1", C.brandTint, C.primary));
+  f2A.appendChild(createText("Chia sẻ: WF-PHARM-2026", 14, FONT_SEMI, C.text));
+  const f2ABtn = makeButton("Mở liên kết tham gia ➔", C.primary, C.white);
+  f2ABtn.resize(260, 44);
+  f2A.appendChild(f2ABtn);
+  flow2Container.appendChild(f2A);
+
+  const f2B = figma.createFrame();
+  f2B.name = "F2B: Xác nhận tham gia";
+  f2B.resize(288, 160); f2B.cornerRadius = 10; f2B.fills = solidFill(C.bgSubtle);
+  f2B.strokes = [{ type: "SOLID", color: C.border }];
+  f2B.paddingLeft = 14; f2B.paddingRight = 14; f2B.paddingTop = 14; f2B.paddingBottom = 14;
+  f2B.layoutMode = "VERTICAL"; f2B.itemSpacing = 8;
+  f2B.appendChild(makeBadge("Luồng 2 &bull; Bước 2", C.accentTint, C.accentText));
+  f2B.appendChild(createText("Xác nhận vào Dược lý", 14, FONT_SEMI, C.text));
+  const f2BBtn = makeButton("Xác nhận tham gia ➔", C.primary, C.white);
+  f2BBtn.resize(260, 44);
+  f2B.appendChild(f2BBtn);
+  flow2Container.appendChild(f2B);
+
+  const f2C = figma.createFrame();
+  f2C.name = "F2C: Tham gia thành công";
+  f2C.resize(288, 160); f2C.cornerRadius = 10; f2C.fills = solidFill(C.bgSubtle);
+  f2C.strokes = [{ type: "SOLID", color: C.success }]; f2C.strokeWeight = 2;
+  f2C.paddingLeft = 14; f2C.paddingRight = 14; f2C.paddingTop = 14; f2C.paddingBottom = 14;
+  f2C.layoutMode = "VERTICAL"; f2C.itemSpacing = 8;
+  f2C.appendChild(makeBadge("Luồng 2 &bull; Bước 3", C.successTint, C.success));
+  f2C.appendChild(createText("Đã là thành viên chính thức", 14, FONT_SEMI, C.text));
+  f2C.appendChild(createText("✓ Quyền truy cập đã kích hoạt", 12, FONT_REG, C.success));
+  flow2Container.appendChild(f2C);
+
+  await linkReaction(f2ABtn, f2B);
+  await linkReaction(f2BBtn, f2C);
+  protoRows.appendChild(flow2Container);
+
+  // --- LUỒNG 3: TẢI SÁCH -> DỰNG LỘ TRÌNH ---
+  const flow3Container = figma.createFrame();
+  flow3Container.name = "Luồng 3: Tải sách -> Dựng lộ trình";
+  flow3Container.layoutMode = "HORIZONTAL";
+  flow3Container.itemSpacing = 14;
+  flow3Container.fills = [];
+
+  const f3A = figma.createFrame();
+  f3A.name = "F3A: Tải sách PDF";
+  f3A.resize(288, 160); f3A.cornerRadius = 10; f3A.fills = solidFill(C.bgSubtle);
+  f3A.strokes = [{ type: "SOLID", color: C.border }];
+  f3A.paddingLeft = 14; f3A.paddingRight = 14; f3A.paddingTop = 14; f3A.paddingBottom = 14;
+  f3A.layoutMode = "VERTICAL"; f3A.itemSpacing = 8;
+  f3A.appendChild(makeBadge("Luồng 3 &bull; Bước 1", C.brandTint, C.primary));
+  f3A.appendChild(createText("Kéo thả Harrison.pdf", 14, FONT_SEMI, C.text));
+  const f3ABtn = makeButton("Chọn tệp & Cấu hình ➔", C.primary, C.white);
+  f3ABtn.resize(260, 44);
+  f3A.appendChild(f3ABtn);
+  flow3Container.appendChild(f3A);
+
+  const f3B = figma.createFrame();
+  f3B.name = "F3B: Cấu hình mục tiêu";
+  f3B.resize(288, 160); f3B.cornerRadius = 10; f3B.fills = solidFill(C.bgSubtle);
+  f3B.strokes = [{ type: "SOLID", color: C.border }];
+  f3B.paddingLeft = 14; f3B.paddingRight = 14; f3B.paddingTop = 14; f3B.paddingBottom = 14;
+  f3B.layoutMode = "VERTICAL"; f3B.itemSpacing = 8;
+  f3B.appendChild(makeBadge("Luồng 3 &bull; Bước 2", C.accentTint, C.accentText));
+  f3B.appendChild(createText("Mục tiêu: Bác sĩ Nội trú", 14, FONT_SEMI, C.text));
+  const f3BBtn = makeButton("Bắt đầu dựng lộ trình ➔", C.primary, C.white);
+  f3BBtn.resize(260, 44);
+  f3B.appendChild(f3BBtn);
+  flow3Container.appendChild(f3B);
+
+  const f3C = figma.createFrame();
+  f3C.name = "F3C: Lộ trình hoàn tất";
+  f3C.resize(288, 160); f3C.cornerRadius = 10; f3C.fills = solidFill(C.bgSubtle);
+  f3C.strokes = [{ type: "SOLID", color: C.success }]; f3C.strokeWeight = 2;
+  f3C.paddingLeft = 14; f3C.paddingRight = 14; f3C.paddingTop = 14; f3C.paddingBottom = 14;
+  f3C.layoutMode = "VERTICAL"; f3C.itemSpacing = 8;
+  f3C.appendChild(makeBadge("Luồng 3 &bull; Bước 3", C.successTint, C.success));
+  f3C.appendChild(createText("Lộ trình 18 khái niệm", 14, FONT_SEMI, C.text));
+  f3C.appendChild(createText("✓ Tiến trình 4 bước đã hoàn tất", 12, FONT_REG, C.success));
+  flow3Container.appendChild(f3C);
+
+  await linkReaction(f3ABtn, f3B);
+  await linkReaction(f3BBtn, f3C);
+  protoRows.appendChild(flow3Container);
+
+  // --- LUỒNG 4: QUIZ -> NỘP BÀI -> KẾT QUẢ ---
+  const flow4Container = figma.createFrame();
+  flow4Container.name = "Luồng 4: Quiz -> Nộp bài -> Kết quả & Trích dẫn";
+  flow4Container.layoutMode = "HORIZONTAL";
+  flow4Container.itemSpacing = 14;
+  flow4Container.fills = [];
+
+  const f4A = figma.createFrame();
+  f4A.name = "F4A: Làm câu hỏi Quiz";
+  f4A.resize(288, 160); f4A.cornerRadius = 10; f4A.fills = solidFill(C.bgSubtle);
+  f4A.strokes = [{ type: "SOLID", color: C.border }];
+  f4A.paddingLeft = 14; f4A.paddingRight = 14; f4A.paddingTop = 14; f4A.paddingBottom = 14;
+  f4A.layoutMode = "VERTICAL"; f4A.itemSpacing = 8;
+  f4A.appendChild(makeBadge("Luồng 4 &bull; Bước 1", C.brandTint, C.primary));
+  f4A.appendChild(createText("Chọn đáp án B: Nhánh LAD", 14, FONT_SEMI, C.text));
+  const f4ABtn = makeButton("Nộp bài & Chấm điểm ➔", C.primary, C.white);
+  f4ABtn.resize(260, 44);
+  f4A.appendChild(f4ABtn);
+  flow4Container.appendChild(f4A);
+
+  const f4B = figma.createFrame();
+  f4B.name = "F4B: Kết quả & Trích dẫn sách";
+  f4B.resize(288, 160); f4B.cornerRadius = 10; f4B.fills = solidFill(C.bgSubtle);
+  f4B.strokes = [{ type: "SOLID", color: C.success }]; f4B.strokeWeight = 2;
+  f4B.paddingLeft = 14; f4B.paddingRight = 14; f4B.paddingTop = 14; f4B.paddingBottom = 14;
+  f4B.layoutMode = "VERTICAL"; f4B.itemSpacing = 8;
+  f4B.appendChild(makeBadge("Luồng 4 &bull; Bước 2", C.successTint, C.success));
+  f4B.appendChild(createText("Chính xác: 10/10 điểm", 14, FONT_SEMI, C.success));
+  f4B.appendChild(createText("📖 Trích dẫn: Harrison 21st, Tr. 1892", 11, FONT_REG, C.textMuted));
+  flow4Container.appendChild(f4B);
+
+  await linkReaction(f4ABtn, f4B);
+  protoRows.appendChild(flow4Container);
+
+  protoMasterFrame.appendChild(protoRows);
+  figma.currentPage.appendChild(protoMasterFrame);
+  createdNodes.push(protoMasterFrame);
 
   // Focus and Zoom
   figma.viewport.scrollAndZoomIntoView(createdNodes);
-  figma.notify("🎉 WayFinder: Đã tự động vẽ toàn bộ Design System & Screens lên canvas!");
+  figma.notify("🎉 WayFinder: Đã vẽ toàn bộ Design System, Màn hình W-03 & 4 Luồng Prototype liên kết!");
   figma.closePlugin();
 })();

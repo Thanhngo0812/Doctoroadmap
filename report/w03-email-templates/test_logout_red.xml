@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.243" timestamp="2026-10-20T12:29:40.747321+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w03_auth_http" name="test_production_logout_deletes_secure_cookie_and_revokes_session" time="0.604"><failure message="AssertionError: assert ''">def test_production_logout_deletes_secure_cookie_and_revokes_session():
+        bundle = build_test_application()
+        settings = WebSettings(_env_file=None, env="prod", frontend_dist=Path("missing"),
+                               allowed_origins=[ORIGIN])
+        client = TestClient(create_app(settings, bundle.services))
+
+        created = register(client, "secure-logout@example.vn")
+        assert created.status_code == 200
+        created_cookie = SimpleCookie()
+        created_cookie.load(created.headers["set-cookie"])
+        raw_session = created_cookie["d2r_session"].value
+        assert created_cookie["d2r_session"]["secure"]
+
+        cookie_header = f"d2r_session={raw_session}"
+        identity = client.get("/api/v1/me", headers={"Cookie": cookie_header})
+        assert identity.status_code == 200
+
+        logged_out = client.post("/api/v1/auth/logout", headers={
+            "Origin": ORIGIN,
+            "Cookie": cookie_header,
+            "X-CSRF-Token": identity.json()["csrf_token"],
+        })
+        assert logged_out.status_code == 200
+        deleted_cookie = SimpleCookie()
+        deleted_cookie.load(logged_out.headers["set-cookie"])
+        assert deleted_cookie["d2r_session"]["max-age"] == "0"
+&gt;       assert deleted_cookie["d2r_session"]["secure"]
+E       AssertionError: assert ''
+
+src\web\backend\tests\test_w03_auth_http.py:147: AssertionError</failure></testcase></testsuite></testsuites>
