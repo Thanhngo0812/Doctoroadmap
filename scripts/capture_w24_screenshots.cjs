@@ -2,8 +2,18 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(root, '.tmp/w01-browsers');
-const { chromium } = require(path.join(root, '.tmp/w01-browser-tools/node_modules/playwright'));
+const fsSync = require('node:fs');
+let browserToolsDir = path.join(root, '.tmp/w01-browser-tools');
+let browsersPath = path.join(root, '.tmp/w01-browsers');
+if (!fsSync.existsSync(browserToolsDir)) {
+  const mainRepo = path.resolve(root, '..', '..');
+  if (fsSync.existsSync(path.join(mainRepo, '.tmp/w01-browser-tools'))) {
+    browserToolsDir = path.join(mainRepo, '.tmp/w01-browser-tools');
+    browsersPath = path.join(mainRepo, '.tmp/w01-browsers');
+  }
+}
+process.env.PLAYWRIGHT_BROWSERS_PATH = browsersPath;
+const { chromium } = require(path.join(browserToolsDir, 'node_modules/playwright'));
 
 async function capture() {
   const artifactsDir = path.join(root, 'artifacts');
@@ -66,6 +76,27 @@ async function capture() {
       output: path.join(artifactsDir, 'preview_auth_mobile.png'),
       viewport: { width: 500, height: 900 },
       fullPage: true,
+      theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/w03_auth_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_w03_screens.png'),
+      viewport: { width: 1280, height: 900 },
+      fullPage: true,
+      theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/w03_auth_screens.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_w03_mobile.png'),
+      viewport: { width: 390, height: 844 },
+      fullPage: true,
+      theme: 'light'
+    },
+    {
+      url: 'file:///' + path.join(root, 'design/preview/prototype_flows.html').replace(/\\/g, '/'),
+      output: path.join(artifactsDir, 'preview_prototype_flows_workbench.png'),
+      viewport: { width: 1280, height: 1000 },
+      fullPage: false,
       theme: 'light'
     }
   ];
