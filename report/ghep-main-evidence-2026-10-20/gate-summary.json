@@ -1,0 +1,128 @@
+{
+  "merge_commit": "a3f2f13f184e874f1ef4ac0e3e6cbc7aebb7e980",
+  "approved_tip": "8558df4",
+  "python_runs": {
+    "a": {
+      "counts": {
+        "tests": 2000,
+        "failures": 2,
+        "errors": 522,
+        "skipped": 0,
+        "passed": 1476
+      },
+      "execution": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-o",
+          "addopts=",
+          "-q",
+          "--basetemp=tmp/cong-w02-w05-20261020a",
+          "--junitxml=tmp/cong-w02-w05-20261020a.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\ghep-main",
+        "commit": "a3f2f13f184e874f1ef4ac0e3e6cbc7aebb7e980",
+        "started_utc": "2026-10-20T01:59:26.723593+00:00",
+        "finished_utc": "2026-10-20T02:05:12.393774+00:00",
+        "exit_code": 1
+      }
+    },
+    "b": {
+      "counts": {
+        "tests": 2000,
+        "failures": 8,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1991
+      },
+      "execution": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-o",
+          "addopts=",
+          "-q",
+          "--basetemp=tmp/cong-w02-w05-20261020b",
+          "--junitxml=tmp/cong-w02-w05-20261020b.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\ghep-main",
+        "commit": "a3f2f13f184e874f1ef4ac0e3e6cbc7aebb7e980",
+        "started_utc": "2026-10-20T02:07:22.029511+00:00",
+        "finished_utc": "2026-10-20T02:16:06.271286+00:00",
+        "exit_code": 1
+      }
+    },
+    "c": {
+      "counts": {
+        "tests": 2000,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1,
+        "passed": 1999
+      },
+      "execution": {
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-o",
+          "addopts=",
+          "-q",
+          "--basetemp=tmp/cong-w02-w05-20261020c",
+          "--junitxml=tmp/cong-w02-w05-20261020c.xml"
+        ],
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\ghep-main",
+        "commit": "a3f2f13f184e874f1ef4ac0e3e6cbc7aebb7e980",
+        "started_utc": "2026-10-20T02:18:31.245364+00:00",
+        "finished_utc": "2026-10-20T02:27:54.328346+00:00",
+        "exit_code": 0,
+        "PYTHONUNBUFFERED": "1"
+      }
+    }
+  },
+  "react": {
+    "passed": 41,
+    "build_exit_code": 0,
+    "metadata": {
+      "commit": "a3f2f13f184e874f1ef4ac0e3e6cbc7aebb7e980",
+      "checks": [
+        {
+          "name": "react-tests",
+          "command": [
+            "npm.cmd",
+            "--prefix",
+            "src/web/frontend",
+            "test",
+            "--",
+            "--pool=threads",
+            "--maxWorkers=1",
+            "--reporter=default",
+            "--reporter=junit",
+            "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-merge-20261020\\react.xml"
+          ],
+          "exit_code": 0
+        },
+        {
+          "name": "react-build",
+          "command": [
+            "npm.cmd",
+            "--prefix",
+            "src/web/frontend",
+            "run",
+            "build"
+          ],
+          "exit_code": 0
+        }
+      ]
+    }
+  },
+  "unreviewed_commits_excluded": {
+    "781415b": true,
+    "79cb9c9": true,
+    "6cd6be7": true,
+    "33c70ac": true,
+    "fdd0620": true
+  },
+  "source_equal_to_approved_tip": true,
+  "model_calls": 0,
+  "mail_sent": false
+}

@@ -2,14 +2,20 @@
 
 **Nguồn chân lý:** [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), mục 4, 5, "Quyết định kiểm thử"; [ADR 0022](../../doc/adr/0022-postgresql-cho-du-lieu-web-artifact-o-kho-tep-hang-doi-bang-bang.md);
 [spec Pha B2](../../doc/pha-b2-spec.md), mục 8, 9.
-**Ai:** nhân viên lõi · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** implemented-awaiting-review
+**Ai:** nhân viên lõi · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-01 · **Trạng thái:** đạt nghiệm thu độc lập 2026-10-20, gồm tích hợp W-02
+
+**Đã ghép main:** `a3f2f13`, chung đợt W-02; cổng đầy đủ 1.999 Python đạt, 1 Cloudinary live không bật, React 41/build đạt.
+Xem [biên bản tích hợp 2026-10-20](../../report/dieu-phoi-ghep-main-2026-10-20.md).
 
 **Đợt tiếp theo 2026-10-19:** lõi nhận sau checkpoint commit W-01 `c91551f`. W-13 đã hoàn tất và chủ dự án đã báo điều phối.
 Migration W-05 đi trước W-02, dự kiến `w05_0002` nối `w01_0001`; bàn giao mốc migration cho web trước khi ghép W-02.
 Test W-01 về schema rỗng phải kiểm ở revision `w01_0001`, đồng thời thêm kiểm nâng HEAD đủ bảng, không bỏ assertion nền.
 Xem [kế hoạch ba nhóm](../../report/dieu-phoi-soat-ba-nhom-2026-10-19.md).
 
-**Bàn giao W-05:** nhánh `work/w05-postgres`; migration `w05_0002` tại `0602768`, adapter tại `e163815`, sửa isolation tại `8600e27`. [Báo cáo và bằng chứng nghiệm thu](../../report/w05-kho-pha-b-postgresql-2026-10-19.md). Chờ người soát và checkpoint ghép migration W-02; chưa mở W-06/W-15.
+**Bàn giao W-05:** nhánh `work/w05-postgres`; migration `w05_0002` tại `0602768`, adapter tại `e163815`, sửa isolation tại `8600e27`. [Báo cáo nhân viên](../../report/w05-kho-pha-b-postgresql-2026-10-19.md).
+**Soát độc lập 2026-10-20:** 168 test backend/token đạt, 1 Cloudinary live không bật; 33 hồi quy lõi đạt; hai mutation bỏ flight/atomic lock đều đỏ đúng assertion trên hai tiến trình.
+Đã ghép W-02, một head `w02_0003`, DB rỗng nâng đầy đủ và kiểm baseline W-01 vẫn đạt. Gỡ chặn W-06; W-15 còn chờ W-14.
+Xem [nghiệm thu và kế hoạch tiếp](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
 
 ## Vì sao
 
@@ -60,9 +66,10 @@ Không đổi luật/trần giữ chỗ SA-48 hoặc thêm phụ thuộc mới v
 - [x] Test đồng thời hiện có của trợ lý chạy được trên bản PostgreSQL.
 - [x] Regression SA-47/SA-48 về tiến độ, giữ chỗ chi, lỗi/timeout và qua ngày vẫn đạt; test hai tiến trình trên PostgreSQL không cho vượt trần
   khi cùng tranh phần ngân sách cuối. Tắt bảo vệ `atomic()` phải làm assertion này đỏ, không chỉ dựa vào hai luồng cùng tiến trình.
-- [ ] Sau ghép W-02/W-05, Alembic đúng một head; DB rỗng nâng HEAD thành công, test W-01 tại revision nền vẫn còn nguyên ý nghĩa.
+- [x] Sau ghép W-02/W-05, Alembic đúng một head; DB rỗng nâng HEAD thành công, test W-01 tại revision nền vẫn còn nguyên ý nghĩa.
 
-Phần W-05 của tiêu chí cuối đã đạt trên DB PostgreSQL rỗng, một head `w05_0002`; giữ ô mở đến khi có bản ghép W-02. Sáu test hợp đồng chung mỗi backend và kết quả các lượt chạy được lưu trong báo cáo, không cộng chồng các lượt chạy thành tổng test độc lập.
+Tiêu chí tích hợp cuối đã đạt ngày 2026-10-20: `w01_0001 → w05_0002 → w02_0003`, một head, cả bốn bảng Pha B và bốn bảng tài khoản trên DB rỗng.
+Sáu test hợp đồng chung mỗi backend và kết quả các lượt chạy được lưu trong báo cáo, không cộng chồng các lượt chạy thành tổng test độc lập.
 
 ## Ngoài vé
 
