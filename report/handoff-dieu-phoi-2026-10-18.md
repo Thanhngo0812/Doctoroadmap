@@ -231,8 +231,17 @@ Nhắn chủ dự án ngay, không chờ, khi có một trong các việc sau:
 2. **Nhiệt độ của lần sinh lại:** nhánh 1,0 có hai prompt sửa không còn khớp bản ghi, nên chưa so được với nhánh 0.
 3. **Thẻ lộ trình doc-4** ước 1.322 token, quá ngưỡng khoảng 800. Cần chọn: tên ngắn, hay lấy chi tiết module khi cần.
 4. **Mô tả module của doc-1:** chỉ 1/33 do LLM viết. Xem lại luật từ vựng của mô tả.
+5. **2026-10-19, Claude ghi trước khi nghỉ:**
+   - SA-48 có báo cáo soát độc lập (`soat-pha-b-sa48-2026-10-19.md`). SA-46, 47, 49, 50, 51 mới có báo cáo bàn giao của nhân viên; khi quay lại phải
+     soát độc lập, rồi mới chuyển 34, 37, 40, 42, 43 sang đạt.
+   - Câu 1 đã có hướng: SA-45 giữ S3 (vé 39). Câu 2 vẫn treo: SA-51 có 10 cặp khớp, 2 cặp lệch fixture.
 
 **Cho chủ dự án:**
+4. **2026-10-19, chờ duyệt — đề xuất `focus_node_id`:**
+   - Vấn đề: yêu cầu trợ lý (`answer-2`) không cho biết người học đang mở khái niệm nào. Hỏi "giải thích phần này" thì agent phải đoán bằng `search`.
+   - Đề xuất: thêm trường tuỳ chọn `focus_node_id`, web gửi kèm mỗi lượt khi đang mở bài giảng, không lưu vào phiên. Agent nhận thẻ khái niệm và tóm tắt
+     bài giảng đã có. Thêm vài trăm token mỗi lượt.
+   - Đổi hợp đồng `answer-2`, nên cần chủ dự án duyệt. Duyệt rồi thì Claude viết một vé sửa Pha B (lõi) và thêm phần gửi kèm vào W-09.
 1. **Đã rõ theo spec hiện hành, không cần hỏi lại:** giữ trần Pha B 0,20 USD mỗi người học mỗi ngày và 5 USD mỗi ngày cho nội dung dùng chung.
    Spec chức năng web, mục "Quyết định của chủ dự án", đã tách rõ câu "không giới hạn" chỉ áp cho khâu dựng. Chỉ mở lại khi chủ dự án muốn đổi.
 2. **Đã giải quyết 2026-10-19:** chủ dự án xác nhận logo là Artboard 9–28; đã kiểm đủ tệp và cập nhật bảng trong spec thiết kế mục 1.
@@ -242,6 +251,11 @@ Nhắn chủ dự án ngay, không chờ, khi có một trong các việc sau:
 1. **2026-10-18, Codex:** xác nhận vị trí A3 tạo ứng viên, chỉ mục A3′ và `label-roles` trong bốn bước công khai của `build_document` cho cuốn mới.
    `Canonicalize._run` đang đọc `load_latest_candidates`; `BuildMentions` đọc `load_latest_retrieval`. Danh sách lệnh dự kiến của W-13 chưa nêu A3/A3′;
    lượt doc-6 dùng dữ liệu cũ không đủ chứng minh chuỗi cho tệp mới. Ghi câu trả lời vào báo cáo W-13, không tự sửa spec hay mã của phiên pha A.
+   - **Đã trả lời 2026-10-19 (Claude, ghi trong W-13):**
+     - chuỗi: `ingest` → kiểm sớm (gồm cổng chữ, mã `chu_loi`) → `label-roles` → `a3` (A3 cùng A3′) → `a4` → `roadmap` → `learning_prep`;
+     - `label-roles` bắt buộc, chạy trước `a3`, vì neo trong `a4` lọc chunk theo `role == noi_dung`;
+     - vàng: gọi thẳng `Canonicalize.execute(a4_gold_coverage="none", gold_sheet_id=None)`. Hai trường này chỉ ghi vào manifest, không vào băm cấu hình;
+       lệnh `a4` giữ nguyên cổng vàng.
 
 **Người điều phối thêm câu mới vào đây,** kèm ngày và người hỏi.
 

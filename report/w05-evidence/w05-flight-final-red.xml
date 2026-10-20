@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.617" timestamp="2026-10-19T21:36:59.886917+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_postgres_phase_b_concurrency" name="test_two_processes_generate_once" time="5.854"><failure message="AssertionError: duplicate generation across processes&#10;assert 2 == 1&#10; +  where 2 = &lt;Synchronized wrapper for c_long(2)&gt;.value">src\web\backend\tests\test_postgres_phase_b_concurrency.py:88: in test_two_processes_generate_once
+    assert count.value == 1, "duplicate generation across processes"
+E   AssertionError: duplicate generation across processes
+E   assert 2 == 1
+E    +  where 2 = &lt;Synchronized wrapper for c_long(2)&gt;.value</failure></testcase></testsuite></testsuites>

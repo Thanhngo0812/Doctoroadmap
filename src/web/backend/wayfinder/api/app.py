@@ -13,6 +13,8 @@ from fastapi.responses import FileResponse, JSONResponse
 from starlette.exceptions import HTTPException
 
 from wayfinder import __version__
+from wayfinder.api.auth import auth_router, enforce_csrf
+from wayfinder.application.accounts import AuthError
 from wayfinder.api.errors import ERROR_STATUS, ErrorCode, WebError
 from wayfinder.composition import WebServices
 from wayfinder.settings import WebSettings
@@ -45,6 +47,18 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
 
     app = FastAPI(title="WayFinder API", version=settings.version or __version__, lifespan=lifespan,
                   docs_url=None, redoc_url=None)
+
+    app.state.services = services
+    app.state.settings = settings
+    app.include_router(auth_router())
+
+    @app.exception_handler(AuthError)
+    async def account_error(_: Request, exc: AuthError) -> JSONResponse:
+        headers = {"cache-control": "no-store"}
+        if exc.retry_after is not None:
+            headers["retry-after"] = str(exc.retry_after)
+        return JSONResponse(_error(exc.code, exc.message, retry_after=exc.retry_after, fields=exc.fields),
+                            status_code=ERROR_STATUS[exc.code], headers=headers)
 
     @app.exception_handler(HTTPException)
     async def http_error(_: Request, exc: HTTPException) -> JSONResponse:
@@ -102,7 +116,12 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
     @app.middleware("http")
     async def security_and_internal_errors(request: Request, call_next):
         try:
+            await enforce_csrf(request)
             response = await call_next(request)
+        except AuthError as exc:
+            response = await account_error(request, exc)
+        except WebError as exc:
+            response = await web_error(request, exc)
         except Exception as exc:
             ref = uuid4().hex
             logger.exception("Unhandled request error ref=%s", ref, exc_info=exc)

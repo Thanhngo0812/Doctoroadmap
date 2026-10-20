@@ -1,4 +1,4 @@
-# WayFinder — nền web W-01
+# WayFinder — nền web và tài khoản
 
 Chạy các lệnh dưới đây từ gốc repo với Python 3.12, Node.js 24.11.1 / npm 11.6.2 (phiên bản đã kiểm) và Docker Desktop (Linux engine/WSL2).
 
@@ -23,7 +23,7 @@ docker compose -f src/web/docker-compose.yml --env-file src/web/.env up -d --wai
 .venv/Scripts/web.exe --env-file src/web/.env db upgrade
 ```
 
-Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic.
+Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic. Chuỗi hiện tại là `w01_0001 → w05_0002 → w02_0003`, tạo kho Pha B và bốn bảng tài khoản/phiên/giới hạn thử/nhật ký.
 
 ## Chạy ứng dụng
 
@@ -78,7 +78,7 @@ Remove-Item Env:WAYFINDER_RUN_CLOUDINARY_TESTS
 
 ## Gmail
 
-Điền `WAYFINDER_SMTP_USERNAME`, `WAYFINDER_SMTP_PASSWORD` (Gmail App Password), `WAYFINDER_SMTP_FROM` trong dotenv phía máy chủ; dùng TLS qua `smtp.gmail.com:587` với `WAYFINDER_SMTP_STARTTLS=true`. Kết nối TLS và xác thực trên máy đã được kiểm thành công, không gửi thư. W-01 cung cấp Mailer giả cho test; nối gửi thư tài khoản thật thuộc W-02.
+Điền `WAYFINDER_SMTP_USERNAME`, `WAYFINDER_SMTP_PASSWORD` (Gmail App Password), `WAYFINDER_SMTP_FROM` trong dotenv phía máy chủ; dùng TLS qua `smtp.gmail.com:587` với `WAYFINDER_SMTP_STARTTLS=true`. Kết nối TLS và xác thực trên máy đã được kiểm thành công, không gửi thư. W-01 cung cấp Mailer giả cho test; nối gửi thư xác minh/đặt lại mật khẩu thuộc W-03; W-02 không gửi thư.
 
 ## Bằng chứng trình duyệt
 
@@ -96,3 +96,26 @@ Cần FastAPI chạy với frontend đã dựng và `db` đang tốt. Script ch�
 Để kiểm nhánh mất kết nối, dừng riêng `db`, chạy `node scripts/w01_database_failure_check.cjs`, rồi luôn bật lại `db` bằng Compose. Script kiểm HTTP 503 và quan sát yêu cầu health mới sau khi bấm Thử lại.
 
 Nguồn triển khai: [Hatch editable paths](https://hatch.pypa.io/latest/config/build/#dev-mode), [Alembic programmatic config](https://alembic.sqlalchemy.org/en/latest/api/config.html), [SQLAlchemy engine](https://docs.sqlalchemy.org/en/20/core/engines.html), [PostgreSQL 16.15](https://www.postgresql.org/docs/16/release-16-15.html), [Cloudinary access control](https://cloudinary.com/documentation/control_access_to_media), [Playwright video](https://playwright.dev/docs/videos).
+
+## Tài khoản W-02
+
+- Trang `/dang-ky`, `/dang-nhap`, `/tai-khoan` dùng API và phiên PostgreSQL thật. `/demo` vẫn là hành trình mẫu.
+- Đăng ký mới tự đăng nhập; email trùng nhận cùng thông báo JSON và không thay đổi tài khoản cũ. Khác biệt cookie và `/me` vẫn cho phép suy ra email đã tồn tại: giới hạn này đã được chủ dự án chấp nhận theo W-02.
+- Mật khẩu 8–128 ký tự, giữ khoảng trắng, chặn danh sách phổ biến đóng kèm. Argon2id 19 MiB / 2 vòng / parallelism 1.
+- Cookie HttpOnly, SameSite=Lax, Secure khi HTTPS; chế độ prod luôn Secure kể cả khi upstream proxy là HTTP. Phiên hết sau 7 ngày không dùng hoặc 30 ngày tuyệt đối.
+- Mọi thao tác thay đổi dữ liệu cần Origin hợp lệ; ngoài đăng ký/đăng nhập còn cần CSRF của phiên. allowed_origins rỗng chỉ cho cùng nguồn trên localhost/IP loopback. Khi dùng tên miền hoặc proxy, đặt WAYFINDER_ALLOWED_ORIGINS thành mảng JSON các nguồn HTTPS chính xác; cấu hình proxy tin cậy để giữ scheme/host đúng.
+- Tạo quản trị viên bằng lệnh dưới đây; mật khẩu được hỏi ẩn qua stdin, không có tham số password. Tài khoản bootstrap được coi đã xác minh email và không tự cấp phiên.
+
+```powershell
+.venv/Scripts/web.exe --env-file src/web/.env create-admin --email admin@example.vn
+```
+
+Kiểm trình duyệt sau khi dựng UI và chạy server:
+
+```powershell
+$env:W02_BASE_URL='http://127.0.0.1:8000'
+node scripts/w02_browser_check.cjs
+Remove-Item Env:W02_BASE_URL
+```
+
+Script tạo tài khoản kiểm thử có email example.vn và chạy thử giới hạn đăng nhập; nên chạy trên cơ sở dữ liệu thử, không dùng dữ liệu tài khoản thật. Ảnh và kết quả ở report/w02-evidence; thông tin mật khẩu/cookie/CSRF không được lưu vào bằng chứng.

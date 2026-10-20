@@ -1,0 +1,41 @@
+{
+  "note": "Actual responses from disposable PostgreSQL acceptance runtime; session CSRF values redacted. No passwords or cookies saved.",
+  "register": {
+    "status": 200,
+    "body": {
+      "message": "Yêu cầu đăng ký đã được tiếp nhận. Bạn có thể đăng nhập để tiếp tục."
+    }
+  },
+  "login": {
+    "status": 200,
+    "body": {
+      "account": {
+        "id": "5e351b83-341b-46d3-845d-725f44b5d5bc",
+        "email": "w02-browser-1792422581255@example.vn",
+        "display_name": "Người học nghiệm thu",
+        "role": "user",
+        "email_verified": false
+      },
+      "csrf_token": "[REDACTED: session-specific CSRF]"
+    }
+  },
+  "me": {
+    "status": 200,
+    "body": {
+      "account": {
+        "id": "5e351b83-341b-46d3-845d-725f44b5d5bc",
+        "email": "w02-browser-1792422581255@example.vn",
+        "display_name": "Người học nghiệm thu",
+        "role": "user",
+        "email_verified": false
+      },
+      "csrf_token": "[REDACTED: session-specific CSRF]"
+    }
+  },
+  "logout": {
+    "status": 200,
+    "body": {
+      "message": "Đã đăng xuất."
+    }
+  }
+}

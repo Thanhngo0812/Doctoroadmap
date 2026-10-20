@@ -754,3 +754,9 @@ chung. Câu "không cần giới hạn" ngày 2026-10-18 nói về khâu dựng;
   - **thiết kế cơ sở dữ liệu:** bảng, khoá ngoại, chỉ mục, ràng buộc, di trú, sao lưu.
 - **Ranh giới phiên:** use case `build_document` gọi mã Pha A có sẵn. Cần đổi gì trong mã Pha A (ví dụ A4 chạy không cần tệp vàng) thì vé ghi yêu cầu cho
   phiên pha A, không sửa tệp của phiên đó.
+
+### Quyết định chủ dự án bổ sung 2026-10-19 — W-02
+
+Chủ dự án chọn giữ tự đăng nhập cho tài khoản vừa đăng ký. Email trùng sau chuẩn hoá trả cùng HTTP 200 và cùng thân thông báo chung, không cấp phiên mới, không sửa tài khoản cũ. Khác biệt Set-Cookie và kết quả `/me` vẫn cho phép suy ra email đã tồn tại; đây là giới hạn riêng tư được chấp nhận, vì vậy yêu cầu “không lộ email đã có” ở W-02 chỉ nghiệm thu tính đồng nhất status/thân phản hồi và không chiếm tài khoản. W-03 bổ sung thư theo phạm vi riêng.
+
+Bằng chứng và quyết định phiên bị khoá: [báo cáo W-02](../report/w02-tai-khoan-phien-2026-10-19.md).

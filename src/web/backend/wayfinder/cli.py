@@ -1,5 +1,6 @@
 """Local W-01 commands; secrets stay in the server environment."""
 import argparse
+import getpass
 import os
 from pathlib import Path
 import subprocess
@@ -25,6 +26,8 @@ def main(argv=None) -> int:
     commands.add_parser("worker")
     commands.add_parser("check")
     commands.add_parser("media-smoke")
+    create_admin = commands.add_parser("create-admin")
+    create_admin.add_argument("--email", required=True)
     database = commands.add_parser("db").add_subparsers(dest="db_command", required=True)
     database.add_parser("upgrade")
     openapi = commands.add_parser("openapi").add_subparsers(dest="openapi_command", required=True)
@@ -36,6 +39,32 @@ def main(argv=None) -> int:
             parser.error("Server dotenv file does not exist")
         load_dotenv(args.env_file, override=False)
     settings = WebSettings(_env_file=None)
+
+    if args.command == "create-admin":
+        if not settings.database_url:
+            print("Thiếu WAYFINDER_DATABASE_URL.", file=sys.stderr)
+            return 2
+        from sqlalchemy.exc import SQLAlchemyError
+        from wayfinder.application.accounts import AuthError
+        from wayfinder.composition import compose_account_service
+
+        health = None
+        try:
+            health = DatabaseHealth(settings.database_url)
+            account_service = compose_account_service(settings, health.engine)
+            password = getpass.getpass("Mật khẩu quản trị: ")
+            account_service.create_admin(args.email, password)
+        except AuthError as error:
+            print(error.message, file=sys.stderr)
+            return 1
+        except (SQLAlchemyError, ValueError):
+            print("Không thể tạo tài khoản quản trị; hãy kiểm tra cơ sở dữ liệu và cấu hình.", file=sys.stderr)
+            return 1
+        finally:
+            if health is not None:
+                health.close()
+        print("Tài khoản quản trị đã được tạo.")
+        return 0
 
     if args.command == "worker":
         print("Khung worker sẵn sàng. Vé W-14 bổ sung nhận và xử lý bản dựng.")

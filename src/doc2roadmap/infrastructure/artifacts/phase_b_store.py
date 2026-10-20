@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+from collections.abc import Collection
 from contextlib import contextmanager
 from copy import deepcopy
 from datetime import datetime, timezone
@@ -79,9 +80,35 @@ class _PhaseBStore:
             self._usage.append(value)
             self._persist()
 
-    def usage_rows(self, doc_id: str | None = None) -> list[dict[str, Any]]:
+    def usage_rows(self, doc_id: str | None = None, *, learner_id: str | None = None,
+                   since: datetime | None = None,
+                   purposes: Collection[str] | None = None) -> list[dict[str, Any]]:
+        if since is not None and since.utcoffset() is None:
+            raise ValueError("usage since must include timezone")
         with self._lock:
-            return [deepcopy(row) for row in self._usage if doc_id is None or row.get("doc_id") == doc_id]
+            result = []
+            for row in self._usage:
+                if ((doc_id is not None and row.get("doc_id") != doc_id)
+                    or (learner_id is not None and row.get("learner_id") != learner_id)
+                    or (purposes is not None and row.get("purpose") not in purposes)):
+                    continue
+                if since is not None:
+                    if not row.get("created_at"):
+                        continue
+                    stamp = datetime.fromisoformat(row["created_at"].replace("Z", "+00:00"))
+                    if stamp.utcoffset() is None:
+                        raise ValueError("usage created_at must include timezone")
+                    if stamp < since:
+                        continue
+                result.append(deepcopy(row))
+            return result
+
+    def anonymize_learner_usage(self, learner_id: str) -> None:
+        with self._lock:
+            for row in self._usage:
+                if row.get("learner_id") == learner_id:
+                    row["learner_id"] = "deleted"
+            self._persist()
 
     def single_flight(
         self, key: str, generate: Callable[[], T], *,

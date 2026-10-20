@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
-import { fetchHealth, type HealthPayload } from './api';
+import { AuthNotice, AuthPage, AuthProvider, LandingRoute, RequireAccount, useAuth } from './Auth';
+import { ApiError, fetchHealth, type HealthPayload } from './api';
 
 type Theme = 'light' | 'dark';
 
@@ -20,6 +21,14 @@ function useTheme(): [Theme, () => void] {
 }
 
 function Header({ theme, onToggleTheme, demo = false }: { theme: Theme; onToggleTheme: () => void; demo?: boolean }) {
+  const auth = useAuth();
+  const navigate = useNavigate();
+  const [logoutError, setLogoutError] = useState<string | null>(null);
+  const signOut = async () => {
+    setLogoutError(null);
+    try { await auth.logout(); navigate('/', { replace: true }); }
+    catch (cause) { if (cause instanceof ApiError && cause.code === 'account_disabled') auth.clearSession(); setLogoutError(cause instanceof ApiError ? cause.message : 'Không thể kết nối WayFinder. Hãy thử lại.'); }
+  };
   return (
     <header className="site-header">
       <div className="header-inner">
@@ -32,6 +41,7 @@ function Header({ theme, onToggleTheme, demo = false }: { theme: Theme; onToggle
         </nav>
         <div className="header-actions">
           {demo && <span className="demo-pill"><span className="pixel-dot" /> Bản minh hoạ</span>}
+          {auth.status === 'authenticated' ? <details className="account-menu"><summary>{auth.account?.display_name}<span aria-hidden="true">⌄</span></summary><div className="account-menu-panel"><Link to="/tai-khoan">Tài khoản</Link><button type="button" onClick={() => void signOut()}>Đăng xuất</button>{logoutError && <small role="alert">{logoutError}</small>}</div></details> : <Link className="header-auth-link" to="/dang-nhap">Đăng nhập</Link>}
           <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>
             <span aria-hidden="true">{theme === 'light' ? '◐' : '◑'}</span>
           </button>
@@ -336,5 +346,12 @@ function Footer({ theme }: { theme: Theme }) {
 
 export default function App() {
   const [theme, toggleTheme] = useTheme();
-  return <Routes><Route path="/" element={<HomePage theme={theme} onToggleTheme={toggleTheme} />} /><Route path="/demo" element={<DemoPage theme={theme} onToggleTheme={toggleTheme} />} /><Route path="*" element={<NotFound theme={theme} onToggleTheme={toggleTheme} />} /></Routes>;
+  return <AuthProvider><AuthNotice /><Routes>
+    <Route path="/" element={<LandingRoute><HomePage theme={theme} onToggleTheme={toggleTheme} /></LandingRoute>} />
+    <Route path="/demo" element={<DemoPage theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/dang-nhap" element={<AuthPage key="login" mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/dang-ky" element={<AuthPage key="register" mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="*" element={<NotFound theme={theme} onToggleTheme={toggleTheme} />} />
+  </Routes></AuthProvider>;
 }

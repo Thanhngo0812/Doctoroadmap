@@ -1,4 +1,46 @@
-# Kế hoạch W-13 — dựng một cuốn ở lõi
+# Kế hoạch W-05 — kho Pha B PostgreSQL
+
+Ngày 2026-10-19. Chủ dự án giao triển khai tiếp nhóm lõi; W-13 đã có bằng chứng hoàn tất riêng. Làm trên worktree `tmp/w05-postgres`, nhánh `work/w05-postgres`; không đổi kho `artifacts/phase_b/live.json`, không gọi mô hình.
+
+## Phạm vi và giả định
+
+- Mã SQLAlchemy/psycopg chỉ ở `wayfinder`. Lõi nới port, JSON/memory và cách truy vấn usage của `DailySpendGuard`; giữ nguyên luật SA-47/48.
+- Đã nhận và ghim nền W-01 `c91551f`; nhánh `work/w05-postgres` tạo trực tiếp từ mốc này. Không commit thay phần W-01.
+- Migration `w05_0002` nối `w01_0001`; W-02 nối tiếp `w05_0002`. Không tạo nhánh migration thứ hai hoặc sửa migration đã ghép.
+- Bốn bảng đúng spec. `usage_ledger.extra` giữ bản dict gốc để trả đúng kiểu/độ chính xác và các khoá có/không có; cột tách riêng dùng cho truy vấn có chỉ mục.
+- `single_flight`: `_Flight` trong tiến trình, session advisory lock trên pool riêng, đọc lại cache/negative sau khoá; exception chỉ phục hồi qua danh sách đăng ký.
+- `atomic()`: giao dịch READ COMMITTED với một advisory transaction lock của kho Pha B; ngữ cảnh lồng dùng cùng connection. Chọn khoá chung để bảo vệ cả giữ chỗ chi và cập nhật tiến độ/quiz theo port không có tham số khoá; chỉ giữ quanh thao tác DB ngắn.
+- `since` phải có múi giờ; các bộ lọc kết hợp bằng AND, `purposes=set()` trả rỗng; ẩn danh thay learner_id thành `deleted`, giữ tiền.
+
+## Các lát triển khai và kiểm chứng
+
+1. Nới port và JSON/memory, kiểm bộ lọc/ẩn danh/round-trip, cập nhật trần ngày dùng `since` và `purposes` nhưng vẫn cộng giữ chỗ → test đỏ trước sửa, xanh và SA-47/48 giữ nguyên.
+2. Thêm migration và adapter CRUD/usage PostgreSQL → cùng test hợp đồng hiện có chạy cả ba bản; kiểm bảng ở HEAD và baseline rỗng tại `w01_0001`.
+3. Khóa liên tiến trình và negative TTL → hai process thật chỉ sinh một lần; negative được thấy bên process khác; hết hạn sinh lại; timeout không sinh trùng; tắt advisory lock làm test đỏ.
+4. Nguyên tử giữ chỗ và cập nhật tiến độ/quiz → hai process tranh phần chi cuối chỉ một được nhận; ngữ cảnh lồng không deadlock; tắt atomic làm test đỏ; kiểm trợ lý đồng thời trên PostgreSQL.
+5. Nối composition, EXPLAIN, ghim migration và bàn giao → một Alembic head, DB rỗng lên HEAD, EXPLAIN dùng chỉ mục với dữ liệu đủ lớn; các regression và lệnh bắt buộc thiếu PostgreSQL vẫn đỏ.
+
+## Nguồn kỹ thuật đã đối chiếu
+
+- PostgreSQL 16 advisory locks: https://www.postgresql.org/docs/16/explicit-locking.html#ADVISORY-LOCKS
+- `lock_timeout`: https://www.postgresql.org/docs/16/runtime-config-client.html#GUC-LOCK-TIMEOUT
+- SQLAlchemy pool riêng và vòng đời connection: https://docs.sqlalchemy.org/en/20/core/pooling.html
+
+## Bàn giao
+
+Ghi báo cáo `report/w05-kho-pha-b-postgresql-2026-10-19.md`: kind thực và owner, migration hash, số test từng kho, hai process/đột biến, EXPLAIN, lỗi/giới hạn. Commit chỉ tệp W-05; không nhập dữ liệu live và không tự mở W-06/W-15.
+
+## Kết quả thực hiện 2026-10-19
+
+- Mã đã ghim ở `b3e9c5f`, `0602768`, `e163815`, `8600e27`; nền W-01 `c91551f`.
+- Hợp đồng chung: sáu test/backend. Bộ tập trung 73 đạt; backend 95 đạt, một Cloudinary live opt-in bỏ qua; unit lõi 1.829 đạt, không bỏ qua. Mỗi lượt có phạm vi riêng, không cộng chồng số test.
+- Tắt flight lock, atomic lock và bỏ READ COMMITTED đều tạo lỗi assertion độc lập. Khôi phục mã rồi xanh; EXPLAIN dùng `ix_usage_learner_day` tự nhiên.
+- Báo cáo và evidence ở `report/w05-kho-pha-b-postgresql-2026-10-19.md`, `report/w05-evidence/`. Chi mô hình thực 0 USD.
+- Chờ người soát và nhóm web ghép W-02 sau `w05_0002`, kiểm lại một head/DB rỗng trên nhánh hợp nhất; tiêu chí tích hợp còn mở trong vé.
+
+---
+
+# Kế hoạch W-13 — dựng một cuốn ở lõi (lưu lịch sử)
 
 Ngày: 2026-10-19. Người dùng giao lập kế hoạch, sau đó cho đúng ba subagent Luna triển khai; agent chính tích hợp và nghiệm thu.
 

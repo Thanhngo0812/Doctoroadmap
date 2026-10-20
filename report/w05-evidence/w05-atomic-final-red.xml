@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.992" timestamp="2026-10-19T21:37:12.194393+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_postgres_phase_b_concurrency" name="test_two_processes_cannot_reserve_the_last_budget_twice" time="5.292"><failure message="AssertionError: overspent last budget across processes&#10;assert 2 == 1&#10; +  where 2 = sum(&lt;generator object test_two_processes_cannot_reserve_the_last_budget_twice.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001F5C8B97370&gt;)">src\web\backend\tests\test_postgres_phase_b_concurrency.py:164: in test_two_processes_cannot_reserve_the_last_budget_twice
+    assert sum(row["admitted"] for row in results) == 1, "overspent last budget across processes"
+E   AssertionError: overspent last budget across processes
+E   assert 2 == 1
+E    +  where 2 = sum(&lt;generator object test_two_processes_cannot_reserve_the_last_budget_twice.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001F5C8B97370&gt;)</failure></testcase></testsuite></testsuites>

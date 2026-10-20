@@ -113,7 +113,7 @@ describe('readSse', () => {
     }), { status: 429 });
     await expect(readSse(response, () => undefined)).rejects.toMatchObject({
       code: 'rate_limited', retryAfter: 30, ref: 'req-123',
-      message: 'Bạn thử nhiều lần quá. Thử lại sau 30.',
+      message: 'Bạn thử nhiều lần quá. Thử lại sau 30 giây.',
     });
   });
 

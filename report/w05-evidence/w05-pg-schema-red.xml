@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.921" timestamp="2026-10-19T21:07:47.101050+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_postgres_phase_b_store" name="test_phase_b_migration_has_tables_and_indexes" time="1.472"><failure message="AssertionError: assert {'phase_b_cac...usage_ledger'} &lt;= {'alembic_version'}&#10;  &#10;  Extra items in the left set:&#10;  'phase_b_negative'&#10;  'phase_b_cache'&#10;  'usage_ledger'&#10;  'phase_b_record'">src\web\backend\tests\test_postgres_phase_b_store.py:23: in test_phase_b_migration_has_tables_and_indexes
+    assert {"phase_b_cache", "phase_b_negative", "phase_b_record", "usage_ledger"} &lt;= set(schema.get_table_names())
+E   AssertionError: assert {'phase_b_cac...usage_ledger'} &lt;= {'alembic_version'}
+E
+E     Extra items in the left set:
+E     'phase_b_negative'
+E     'phase_b_cache'
+E     'usage_ledger'
+E     'phase_b_record'</failure></testcase></testsuite></testsuites>

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Collection, Mapping
 from contextlib import AbstractContextManager
 from dataclasses import dataclass
 from datetime import date, datetime
@@ -28,7 +28,11 @@ class PhaseBStore(Protocol):
 
     def append_usage(self, row: Mapping[str, Any]) -> None: ...
 
-    def usage_rows(self, doc_id: str | None = None) -> list[dict[str, Any]]: ...
+    def usage_rows(self, doc_id: str | None = None, *, learner_id: str | None = None,
+                   since: datetime | None = None,
+                   purposes: Collection[str] | None = None) -> list[dict[str, Any]]: ...
+
+    def anonymize_learner_usage(self, learner_id: str) -> None: ...
 
     def single_flight(
         self, key: str, generate: Callable[[], T], *,

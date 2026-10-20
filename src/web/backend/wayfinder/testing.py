@@ -148,5 +148,11 @@ def build_test_application() -> TestApplication:
     documents = DocumentUseCase(model, store, settings=settings, clock=clock)
     phase_b = PhaseBTestRuntime(store, clock, graph, model, embedding, progress, sessions, library,
                                 lecture, quiz, assistant, documents)
-    services = WebServices(health_check=lambda: "ok", model=model, embedding=embedding)
+    from wayfinder.application.accounts import AccountService, AuthPolicy
+    from wayfinder.fakes.auth import FakeAuthStore
+    from wayfinder.infrastructure.passwords import Argon2PasswordHasher, load_common_passwords
+
+    accounts = AccountService(FakeAuthStore(), Argon2PasswordHasher(), clock, AuthPolicy(),
+                              load_common_passwords())
+    services = WebServices(health_check=lambda: "ok", model=model, embedding=embedding, accounts=accounts)
     return TestApplication(services, phase_b, MemoryMediaStore())
