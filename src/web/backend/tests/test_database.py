@@ -40,7 +40,7 @@ def test_migration_from_empty_database_creates_only_alembic_version(empty_postgr
 
 
 @pytest.mark.postgres
-def test_w02_head_migrates_from_empty_and_follows_w05(postgres_database_url):
+def test_w02_migrates_from_empty_and_follows_w05(empty_postgres_database_url):
     from alembic.config import Config
     from alembic.script import ScriptDirectory
     from pathlib import Path
@@ -48,23 +48,23 @@ def test_w02_head_migrates_from_empty_and_follows_w05(postgres_database_url):
     config = Config()
     config.set_main_option("script_location", str(Path(__file__).parents[1] / "wayfinder" / "migrations"))
     scripts = ScriptDirectory.from_config(config)
-    assert scripts.get_heads() == ["w02_0003"]
     assert scripts.get_revision("w02_0003").down_revision == "w05_0002"
-    engine = create_database_engine(postgres_database_url)
+    upgrade_database(empty_postgres_database_url, "w02_0003")
+    engine = create_database_engine(empty_postgres_database_url)
     try:
         assert set(inspect(engine).get_table_names()) == {
             "alembic_version", "phase_b_cache", "phase_b_negative", "phase_b_record", "usage_ledger",
             "account", "auth_session", "rate_limit_event", "audit_event"}
         with engine.connect() as connection:
             assert connection.scalar(text("select version_num from alembic_version")) == "w02_0003"
-        upgrade_database(postgres_database_url)
+        upgrade_database(empty_postgres_database_url, "w02_0003")
         assert len(inspect(engine).get_table_names()) == 9
     finally:
         engine.dispose()
 
 
 @pytest.mark.postgres
-def test_w02_migration_schema_matches_runtime_metadata(postgres_database_url):
+def test_auth_migration_schema_matches_runtime_metadata(postgres_database_url):
     from wayfinder.infrastructure.auth_schema import auth_metadata
     engine = create_database_engine(postgres_database_url)
     try:
