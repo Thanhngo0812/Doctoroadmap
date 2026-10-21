@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="11" time="7.795" timestamp="2026-10-20T16:40:20.799926+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="1.613" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_route_inventory_catches_a_new_unguarded_route" time="0.414" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates" time="0.812" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_guest_and_prod_cannot_join_or_discover_samples" time="0.533" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_owner_constraint_and_course_creation_rollback" time="0.414" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_update_requires_owner_and_cannot_change_identity" time="0.573" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_membership_activity_updates_only_after_five_minutes" time="0.259" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection" time="0.357"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;5093db9a52ff4d17805908fd00c8df8c&quot;}}&#10;assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_7ca635a354b446bd8fc9a...78cfe1da), graph=&lt;doc2roadmap.domain.learning_graph.LearningGraph object at 0x00000220C7D610A0&gt;, loaded=[('doc-1', 8)])
+
+    def test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection(courses):
+        actor, client, headers = courses.user()
+        client.post(f"/api/v1/courses/{courses.sample.id}/join-sample", headers=headers, json={})
+
+        # Acceptance-only route for the gateway's bound learner context; no session
+        # endpoint is published by W-06 (the HTTP session flow belongs to W-09).
+        @courses.app.post("/api/v1/courses/{cid}/binding-probe")
+        def binding_probe(cid: str, payload: dict, actor=Depends(get_actor)):
+            learner = courses.gateway.learner(actor, cid, **payload)
+            session = learner.sessions.create_session(learner.owner, learner.doc_id, {"kind": "roadmap"})
+            learner.progress.set_progress(learner.owner, learner.doc_id, "a", True)
+            token = learner.spend_guard.reserve("assistant", .02, learner.owner)
+            learner.spend_guard.store.append_usage({"purpose": "assistant", "learner_id": learner.owner,
+                                                  "doc_id": learner.doc_id, "cost_usd": .01})
+            return {"session_id": session["session_id"], "reservation": token}
+
+        response = client.post(f"/api/v1/courses/{courses.sample.id}/binding-probe", headers=headers,
+                               json={"owner": courses.owner.user_id, "doc_id": "other-book", "graph_version": 999})
+&gt;       assert response.status_code == 200, response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"5093db9a52ff4d17805908fd00c8df8c"}}
+E       assert 500 == 200
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_courses_w06.py:221: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_database_cannot_commit_course_without_matching_owner_membership" time="0.233" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_join_concurrency_respects_course_capacity" time="0.388" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_only_allows_six_development_documents_in_dev_and_uploads_once" time="0.228"><failure message="ModuleNotFoundError: No module named 'wayfinder.application.seed_samples'">courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_7ca635a354b446bd8fc9a...46bd8fc9a8f478cfe1da), graph=&lt;doc2roadmap.domain.learning_graph.LearningGraph object at 0x00000220C81D8320&gt;, loaded=[])
+tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-courses-gateway/tmp/w06-binding-seed-red/test_seed_only_allows_six_deve0')
+
+    def test_seed_only_allows_six_development_documents_in_dev_and_uploads_once(courses, tmp_path):
+&gt;       from wayfinder.application.seed_samples import SampleSeeder, SAMPLE_DOCS
+E       ModuleNotFoundError: No module named 'wayfinder.application.seed_samples'
+
+src\web\backend\tests\test_courses_w06.py:274: ModuleNotFoundError</failure></testcase></testsuite></testsuites>

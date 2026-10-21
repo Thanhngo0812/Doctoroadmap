@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.390" timestamp="2026-10-20T17:03:53.373032+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_composition_binds_vertex_models_and_all_child_stores_to_postgres" time="1.001"><failure message="AssertionError: assert 'developer_api' == 'vertex'&#10;  &#10;  - vertex&#10;  + developer_api">src\web\backend\tests\test_courses_w06.py:331: in test_composition_binds_vertex_models_and_all_child_stores_to_postgres
+    assert observed["model"]["transport"] == observed["embedding"]["transport"] == "vertex"
+E   AssertionError: assert 'developer_api' == 'vertex'
+E
+E     - vertex
+E     + developer_api</failure></testcase></testsuite></testsuites>

@@ -273,6 +273,203 @@
         }
       }
     },
+    "/api/v1/courses": {
+      "get": {
+        "tags": [
+          "courses"
+        ],
+        "summary": "Courses",
+        "operationId": "courses_api_v1_courses_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseList"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}": {
+      "get": {
+        "tags": [
+          "courses"
+        ],
+        "summary": "Detail",
+        "operationId": "detail_api_v1_courses__cid__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseCard"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "courses"
+        ],
+        "summary": "Update",
+        "operationId": "update_api_v1_courses__cid__patch",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CourseChanges"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseCard"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/join-sample": {
+      "post": {
+        "tags": [
+          "courses"
+        ],
+        "summary": "Join",
+        "operationId": "join_api_v1_courses__cid__join_sample_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseCard"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/roadmap": {
+      "get": {
+        "tags": [
+          "courses"
+        ],
+        "summary": "Roadmap",
+        "operationId": "roadmap_api_v1_courses__cid__roadmap_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Roadmap"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "tags": [
@@ -343,6 +540,192 @@
           "email_verified"
         ],
         "title": "AccountResponse"
+      },
+      "Concept": {
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "title": "Node Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "node_id",
+          "name"
+        ],
+        "title": "Concept"
+      },
+      "CourseCard": {
+        "properties": {
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "is_sample": {
+            "type": "boolean",
+            "title": "Is Sample"
+          },
+          "published_graph_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Published Graph Version"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/OwnerSummary"
+          },
+          "module_count": {
+            "type": "integer",
+            "title": "Module Count"
+          },
+          "member_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Member Count"
+          },
+          "progress": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ProgressSummary"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "resume": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Resume"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "course_id",
+          "doc_id",
+          "title",
+          "description",
+          "status",
+          "is_sample",
+          "published_graph_version",
+          "role",
+          "owner",
+          "module_count",
+          "member_count",
+          "progress",
+          "resume"
+        ],
+        "title": "CourseCard"
+      },
+      "CourseChanges": {
+        "properties": {
+          "title": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "title": "CourseChanges"
+      },
+      "CourseList": {
+        "properties": {
+          "owned": {
+            "items": {
+              "$ref": "#/components/schemas/CourseCard"
+            },
+            "type": "array",
+            "title": "Owned"
+          },
+          "joined": {
+            "items": {
+              "$ref": "#/components/schemas/CourseCard"
+            },
+            "type": "array",
+            "title": "Joined"
+          },
+          "samples": {
+            "items": {
+              "$ref": "#/components/schemas/CourseCard"
+            },
+            "type": "array",
+            "title": "Samples"
+          }
+        },
+        "type": "object",
+        "required": [
+          "owned",
+          "joined",
+          "samples"
+        ],
+        "title": "CourseList"
       },
       "HTTPValidationError": {
         "properties": {
@@ -441,6 +824,24 @@
         ],
         "title": "MessageResponse"
       },
+      "OwnerSummary": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "display_name"
+        ],
+        "title": "OwnerSummary"
+      },
       "PasswordResetConfirmRequest": {
         "properties": {
           "token": {
@@ -481,6 +882,24 @@
         ],
         "title": "PasswordResetRequest"
       },
+      "ProgressSummary": {
+        "properties": {
+          "learned": {
+            "type": "integer",
+            "title": "Learned"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "learned",
+          "total"
+        ],
+        "title": "ProgressSummary"
+      },
       "RegisterRequest": {
         "properties": {
           "email": {
@@ -511,6 +930,97 @@
           "display_name"
         ],
         "title": "RegisterRequest"
+      },
+      "Resume": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_id"
+        ],
+        "title": "Resume"
+      },
+      "Roadmap": {
+        "properties": {
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "graph_version": {
+            "type": "integer",
+            "title": "Graph Version"
+          },
+          "modules": {
+            "items": {
+              "$ref": "#/components/schemas/RoadmapModule"
+            },
+            "type": "array",
+            "title": "Modules"
+          }
+        },
+        "type": "object",
+        "required": [
+          "course_id",
+          "doc_id",
+          "graph_version",
+          "modules"
+        ],
+        "title": "Roadmap"
+      },
+      "RoadmapModule": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "index": {
+            "type": "integer",
+            "title": "Index"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              }
+            ],
+            "title": "Description"
+          },
+          "concepts": {
+            "items": {
+              "$ref": "#/components/schemas/Concept"
+            },
+            "type": "array",
+            "title": "Concepts"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_id",
+          "index",
+          "title",
+          "description",
+          "concepts"
+        ],
+        "title": "RoadmapModule"
       },
       "ValidationError": {
         "properties": {
