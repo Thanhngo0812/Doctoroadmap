@@ -27,9 +27,9 @@ it('shows real-shaped owned joined and samples without inventing sample progress
   vi.stubGlobal('fetch', mockFetch({ owned: [owned], joined: [joined], samples: [{ ...sample, course_id: 'sample-2', title: 'Nhập môn học máy' }] }));
   renderPage();
   const section = await screen.findByRole('region', { name: 'Được chia sẻ với tôi' });
-  expect(within(section).getByText('Xong 0/223 khái niệm')).toBeInTheDocument();
+  expect(within(section).getByText('Xong 0/223 bài học')).toBeInTheDocument();
   expect(within(section).getByRole('link', { name: 'Học tiếp' })).toHaveAttribute('href', '/khoa-hoc/sample-1/module/module-9');
-  expect(screen.getByText('Xong 7/20 khái niệm')).toBeInTheDocument();
+  expect(screen.getByText('Xong 7/20 bài học')).toBeInTheDocument();
   expect(screen.getByText(/4 thành viên/)).toBeInTheDocument();
   const samples = within(screen.getByRole('region', { name: 'Khoá học mẫu' }));
   expect(samples.queryByRole('progressbar')).not.toBeInTheDocument();
@@ -63,9 +63,9 @@ it('joins through POST with session CSRF and moves the returned card to joined e
 it('hides samples in an empty production-shaped response and offers the specified next steps', async () => {
   vi.stubGlobal('fetch', mockFetch({ owned: [], joined: [], samples: [] }));
   renderPage();
-  expect(await screen.findByText('Chưa có khoá học. Tải giáo trình của bạn, hoặc mở link mời bạn nhận được.')).toBeInTheDocument();
+  expect(await screen.findByText('Chưa có khoá học. Tải tài liệu của bạn, hoặc mở link mời bạn nhận được.')).toBeInTheDocument();
   expect(screen.queryByRole('region', { name: 'Khoá học mẫu' })).not.toBeInTheDocument();
-  expect(screen.getAllByRole('link', { name: 'Tải giáo trình' }).every(link => link.getAttribute('href') === '/tai-len')).toBe(true);
+  expect(screen.getAllByRole('link', { name: 'Tải tài liệu' }).every(link => link.getAttribute('href') === '/tai-len')).toBe(true);
 });
 
 it('keeps the page frame while loading and retries a failed request', async () => {
@@ -118,8 +118,8 @@ it('shows not found for an outsider without rendering private course metadata', 
 
 it('shows building and failed courses without offering a pretend resume or progress', async () => {
   vi.stubGlobal('fetch', mockFetch({ owned: [
-    { ...sample, course_id: 'building', title: 'Giáo trình đang dựng', role: 'owner', status: 'building' },
-    { ...sample, course_id: 'failed', title: 'Giáo trình cần thử lại', role: 'owner', status: 'failed' },
+    { ...sample, course_id: 'building', title: 'Tài liệu đang dựng', role: 'owner', status: 'building' },
+    { ...sample, course_id: 'failed', title: 'Tài liệu cần thử lại', role: 'owner', status: 'failed' },
   ], joined: [], samples: [] }));
   renderPage();
   expect(await screen.findByText('Đang dựng')).toBeInTheDocument();
