@@ -4,6 +4,7 @@ import { AuthNotice, AuthPage, AuthProvider, ForgotPasswordPage, LandingRoute, R
 import { ApiError, fetchHealth, type HealthPayload } from './api';
 import { CoursesPage } from './Courses';
 import { RoadmapPage } from './Roadmap';
+import { JoinPage, MembersPage } from './Sharing';
 
 type Theme = 'light' | 'dark';
 
@@ -357,6 +358,8 @@ export default function App() {
     <Route path="/khoa-hoc" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CoursesPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/khoa-hoc/:cid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><RoadmapPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/khoa-hoc/:cid/module/:mid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><RoadmapPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/khoa-hoc/:cid/thanh-vien" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><MembersPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/join/:token" element={<JoinPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/xac-minh" element={<VerifyEmailPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/quen-mat-khau" element={<ForgotPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dat-lai-mat-khau" element={<ResetPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />
