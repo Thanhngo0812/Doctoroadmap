@@ -74,7 +74,7 @@ Bốn luật:
 | [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | chưa đạt → 27 |
 | [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
 | [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | chưa đạt → 25 |
-| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; chờ giao agentic |
+| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; đã giao agentic (chủ dự án báo 2026-10-21), chờ trả gói để kiểm |
 | [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | ready-for-agent |
 | [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **49**, **51** | trần 5 USD | chờ sửa câu nối và hoàn thiện bằng chứng SA-43 |
 | [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27**, **46**, **50** | khoảng 1,7 USD | chờ sửa quiz lộ trình/điền khuyết, SA-45 |

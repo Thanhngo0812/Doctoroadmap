@@ -54,7 +54,8 @@ agent khác. Người điều phối:
   - **SA-44:** còn 7 thao tác thử tay và ảnh chụp, vì công cụ trình duyệt của nhân viên bị chặn;
   - **ví dụ JSON thật cho nhóm web** ở `report/pha-b2-contract-examples-2026-10-18.json`.
 - **Đồ thị hiện hành** (bản tên mới nhất): doc-1 v57, nhap-mon-ml v50, naive-bayes v49, doc-6 v29, xstk-ch3-1 v68, doc-4 v27.
-- **SA-19a** (bộ câu hỏi thử): gói đã xuất ở `Desktop\pha-b-cau-hoi-thu\giao-agentic\`. **Chưa giao agentic.**
+- **SA-19a** (bộ câu hỏi thử): gói đã xuất ở `Desktop\pha-b-cau-hoi-thu\giao-agentic\`. **Đã giao agentic** (chủ dự án báo 2026-10-21).
+  Khi nhận gói về, chạy `scripts/pha-b/kiem_cau_hoi_thu.py` và Claude đối chiếu câu kiểm, rồi SA-23 mới được dùng gói này.
 - **SA-20…23** (đánh giá): chạy sau khi soát xong các vé sửa và B2.
 - **SA-45** (người soát cấp cao): vé sẵn, **chưa giao**.
 
@@ -135,7 +136,7 @@ Danh sách dưới giữ bối cảnh công việc từ lúc tiếp nhận; tr�
    - Máy chủ xem thử ngoại tuyến: `http://127.0.0.1:18765/`, kho `tmp/b2-preview-manual.json`.
    - Danh sách 7 thao tác ở `report/pha-b2-sa37-44-2026-10-18.md` và ở vé SA-44.
    - Chụp ảnh từng thao tác, gửi người soát.
-4. **[Chủ dự án] Giao gói 19a cho agentic** (họ mô hình khác Gemini).
+4. **[Chủ dự án] Giao gói 19a cho agentic** (họ mô hình khác Gemini). **Xong** (chủ dự án báo 2026-10-21).
    - Thư mục giao: `Desktop\pha-b-cau-hoi-thu\giao-agentic\`.
    - **Không** giao `Desktop\pha-b-cau-hoi-thu-nguoi-giu\`.
    - Agentic trả về thì người soát chạy `scripts/pha-b/kiem_cau_hoi_thu.py`, rồi chấm 12 câu kiểm bằng đáp án ở thư mục người giữ.
@@ -309,7 +310,7 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-18 | commit mã SA-31…44 | nhân viên lõi | xong, Codex đã đối chiếu | `a7f57d0`, bản sửa `3871c85`; chưa thay thế soát SA-45 |
 | | giao SA-45 | chủ dự án | chờ | |
 | | 7 thao tác thử tay SA-44 | chủ dự án | chờ | |
-| | giao 19a cho agentic | chủ dự án | chờ | |
+| | giao 19a cho agentic | chủ dự án | xong | chủ dự án báo 2026-10-21; chờ agentic trả gói |
 | | tài khoản Cloudinary, Gmail, Docker; logo | chủ dự án | chờ | |
 | | giao W-01, W-13, W-22 | chủ dự án | chờ | |
 | 2026-10-18 | chính thức tiếp nhận điều phối | Codex | đã nhận | chủ dự án yêu cầu trực tiếp trong chat; giữ phạm vi vai trò ở mục 1 |
