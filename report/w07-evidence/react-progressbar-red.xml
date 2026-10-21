@@ -1,0 +1,1468 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="1" errors="0" time="0.8111037">
+    <testsuite name="src/Roadmap.test.tsx" timestamp="2026-10-21T05:25:18.412Z" hostname="ADMIN" tests="8" failures="1" errors="0" skipped="7" time="0.8111037">
+        <testcase classname="src/Roadmap.test.tsx" name="shows API-ordered modules, honest course and module totals, and the expanded concept checklist" time="0.8073569">
+            <failure message="Unable to find an accessible element with the role &quot;progressbar&quot; and name &quot;Tiến độ module Biến cố&quot;
+
+Here are the accessible roles:
+
+  link:
+
+  Name &quot;Đến nội dung chính&quot;:
+  &lt;a
+    class=&quot;skip-link&quot;
+    href=&quot;#courses-main&quot;
+  /&gt;
+
+  Name &quot;WayFinder, về khoá học&quot;:
+  &lt;a
+    aria-label=&quot;WayFinder, về khoá học&quot;
+    class=&quot;brand-link&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;button button-primary courses-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Tài khoản&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-khoan&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;courses-menu-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Khoá học của tôi&quot;:
+  &lt;a
+    class=&quot;back-link roadmap-back&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc&quot;
+  /&gt;
+
+  Name &quot;Mở module: Biến cố&quot;:
+  &lt;a
+    aria-label=&quot;Mở module: Biến cố&quot;
+    class=&quot;roadmap-module__open&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc/course-1/module/module-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;courses-header&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;roadmap-heading&quot;
+  /&gt;
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;WayFinder&quot;:
+  &lt;img
+    alt=&quot;WayFinder&quot;
+    src=&quot;/assets/Artboard%2024.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Bật chế độ tối&quot;:
+  &lt;button
+    aria-label=&quot;Bật chế độ tối&quot;
+    class=&quot;icon-button theme-toggle&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Đăng xuất&quot;:
+  &lt;button
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Biến cố 1/2 bài học&quot;:
+  &lt;button
+    aria-controls=&quot;roadmap-module-module-1&quot;
+    aria-expanded=&quot;true&quot;
+    class=&quot;roadmap-module__toggle&quot;
+    id=&quot;roadmap-module-button-module-1&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Xác suất 0/2 bài học&quot;:
+  &lt;button
+    aria-controls=&quot;roadmap-module-module-2&quot;
+    aria-expanded=&quot;false&quot;
+    class=&quot;roadmap-module__toggle&quot;
+    id=&quot;roadmap-module-button-module-2&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  --------------------------------------------------
+  group:
+
+  Name &quot;&quot;:
+  &lt;details
+    class=&quot;account-menu&quot;
+  /&gt;
+
+  --------------------------------------------------
+  main:
+
+  Name &quot;&quot;:
+  &lt;main
+    class=&quot;courses-page page-frame&quot;
+    id=&quot;courses-main&quot;
+    tabindex=&quot;-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Xác suất cơ bản&quot;:
+  &lt;h1 /&gt;
+
+  Name &quot;Tiến độ của bạn&quot;:
+  &lt;h2 /&gt;
+
+  Name &quot;Biến cố 1/2 bài học&quot;:
+  &lt;h2
+    class=&quot;roadmap-module__heading&quot;
+  /&gt;
+
+  Name &quot;Xác suất 0/2 bài học&quot;:
+  &lt;h2
+    class=&quot;roadmap-module__heading&quot;
+  /&gt;
+
+  Name &quot;Trò chuyện&quot;:
+  &lt;h2
+    id=&quot;roadmap-chat-title&quot;
+  /&gt;
+
+  Name &quot;Tài liệu và bài ôn&quot;:
+  &lt;h2
+    id=&quot;roadmap-library-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;roadmap-shared-note&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;roadmap-module__description&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Tiến độ cả khoá&quot;:
+  &lt;section
+    aria-label=&quot;Tiến độ cả khoá&quot;
+    class=&quot;roadmap-overview&quot;
+  /&gt;
+
+  Name &quot;Biến cố 1/2 bài học&quot;:
+  &lt;div
+    aria-labelledby=&quot;roadmap-module-button-module-1&quot;
+    class=&quot;roadmap-module__body&quot;
+    id=&quot;roadmap-module-module-1&quot;
+    role=&quot;region&quot;
+  /&gt;
+
+  Name &quot;Trò chuyện&quot;:
+  &lt;section
+    aria-labelledby=&quot;roadmap-chat-title&quot;
+    class=&quot;roadmap-reserved__section&quot;
+  /&gt;
+
+  Name &quot;Tài liệu và bài ôn&quot;:
+  &lt;section
+    aria-labelledby=&quot;roadmap-library-title&quot;
+    class=&quot;roadmap-reserved__section&quot;
+  /&gt;
+
+  --------------------------------------------------
+  strong:
+
+  Name &quot;&quot;:
+  &lt;strong /&gt;
+
+  --------------------------------------------------
+  progressbar:
+
+  Name &quot;Tiến độ Xác suất cơ bản&quot;:
+  &lt;progress
+    aria-label=&quot;Tiến độ Xác suất cơ bản&quot;
+    max=&quot;4&quot;
+    value=&quot;1&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;progress
+    max=&quot;2&quot;
+    value=&quot;1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  list:
+
+  Name &quot;Các module theo thứ tự&quot;:
+  &lt;ol
+    aria-label=&quot;Các module theo thứ tự&quot;
+    class=&quot;roadmap-modules&quot;
+  /&gt;
+
+  Name &quot;Bài học trong module Biến cố&quot;:
+  &lt;ul
+    aria-label=&quot;Bài học trong module Biến cố&quot;
+    class=&quot;roadmap-concepts&quot;
+  /&gt;
+
+  --------------------------------------------------
+  listitem:
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-module&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-concept is-learned&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-concept&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-module&quot;
+  /&gt;
+
+  --------------------------------------------------
+  checkbox:
+
+  Name &quot;Đã học: Không gian mẫu&quot;:
+  &lt;input
+    aria-label=&quot;Đã học: Không gian mẫu&quot;
+    checked=&quot;&quot;
+    type=&quot;checkbox&quot;
+  /&gt;
+
+  Name &quot;Đã học: Biến cố&quot;:
+  &lt;input
+    aria-label=&quot;Đã học: Biến cố&quot;
+    type=&quot;checkbox&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;output
+    data-testid=&quot;location&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary&gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Nguyễn An
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;a
+          class=&quot;back-link roadmap-back&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/khoa-hoc&quot;
+        &gt;
+          Khoá học của tôi
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;roadmap-content&quot;
+        &gt;
+          &lt;header
+            class=&quot;roadmap-heading&quot;
+          &gt;
+            &lt;h1&gt;
+              Xác suất cơ bản
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Từ biến cố đến xác suất.
+            &lt;/p&gt;
+            &lt;p
+              class=&quot;roadmap-shared-note&quot;
+            &gt;
+              Tiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Tiến độ cả khoá&quot;
+            class=&quot;roadmap-overview&quot;
+          &gt;
+            &lt;div
+              class=&quot;roadmap-overview__label&quot;
+            &gt;
+              &lt;h2&gt;
+                Tiến độ của bạn
+              &lt;/h2&gt;
+              &lt;strong&gt;
+                1
+                /
+                4
+                 bài học
+              &lt;/strong&gt;
+            &lt;/div&gt;
+            &lt;progress
+              aria-label=&quot;Tiến độ Xác suất cơ bản&quot;
+              max=&quot;4&quot;
+              value=&quot;1&quot;
+            /&gt;
+          &lt;/section&gt;
+          &lt;ol
+            aria-label=&quot;Các module theo thứ tự&quot;
+            class=&quot;roadmap-modules&quot;
+          &gt;
+            &lt;li
+              class=&quot;roadmap-module&quot;
+            &gt;
+              &lt;section
+                class=&quot;roadmap-module__section&quot;
+              &gt;
+                &lt;h2
+                  class=&quot;roadmap-module__heading&quot;
+                &gt;
+                  &lt;button
+                    aria-controls=&quot;roadmap-module-module-1&quot;
+                    aria-expanded=&quot;true&quot;
+                    class=&quot;roadmap-module__toggle&quot;
+                    id=&quot;roadmap-module-button-module-1&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    &lt;span
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__index&quot;
+                    &gt;
+                      1
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__title&quot;
+                    &gt;
+                      Biến cố
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__count&quot;
+                    &gt;
+                      1
+                      /
+                      2
+                       bài học
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__chevron&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;20&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.7&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;20&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;m6 9 6 6 6-6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/button&gt;
+                &lt;/h2&gt;
+                &lt;div
+                  aria-labelledby=&quot;roadmap-module-button-module-1&quot;
+                  class=&quot;roadmap-module__body&quot;
+                  id=&quot;roadmap-module-module-1&quot;
+                  role=&quot;region&quot;
+                &gt;
+                  &lt;p
+                    class=&quot;roadmap-module__description&quot;
+                  &gt;
+                    Nhận biết biến cố và kết quả.
+                  &lt;/p&gt;
+                  &lt;div
+                    aria-label=&quot;Tiến độ module Biến cố&quot;
+                    class=&quot;roadmap-module__progress&quot;
+                  &gt;
+                    &lt;progress
+                      max=&quot;2&quot;
+                      value=&quot;1&quot;
+                    /&gt;
+                    &lt;span&gt;
+                      1
+                      /
+                      2
+                       bài học
+                    &lt;/span&gt;
+                  &lt;/div&gt;
+                  &lt;ul
+                    aria-label=&quot;Bài học trong module Biến cố&quot;
+                    class=&quot;roadmap-concepts&quot;
+                  &gt;
+                    &lt;li
+                      class=&quot;roadmap-concept is-learned&quot;
+                    &gt;
+                      &lt;label
+                        class=&quot;roadmap-concept__label&quot;
+                      &gt;
+                        &lt;input
+                          aria-label=&quot;Đã học: Không gian mẫu&quot;
+                          checked=&quot;&quot;
+                          type=&quot;checkbox&quot;
+                        /&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__name&quot;
+                        &gt;
+                          Không gian mẫu
+                        &lt;/span&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__state&quot;
+                        &gt;
+                          Đã học
+                        &lt;/span&gt;
+                      &lt;/label&gt;
+                    &lt;/li&gt;
+                    &lt;li
+                      class=&quot;roadmap-concept&quot;
+                    &gt;
+                      &lt;label
+                        class=&quot;roadmap-concept__label&quot;
+                      &gt;
+                        &lt;input
+                          aria-label=&quot;Đã học: Biến cố&quot;
+                          type=&quot;checkbox&quot;
+                        /&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__name&quot;
+                        &gt;
+                          Biến cố
+                        &lt;/span&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__state&quot;
+                        &gt;
+                          Chưa học
+                        &lt;/span&gt;
+                      &lt;/label&gt;
+                    &lt;/li&gt;
+                  &lt;/ul&gt;
+                  &lt;a
+                    aria-label=&quot;Mở module: Biến cố&quot;
+                    class=&quot;roadmap-module__open&quot;
+                    data-discover=&quot;true&quot;
+                    href=&quot;/khoa-hoc/course-1/module/module-1&quot;
+                  &gt;
+                    Mở module
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;18&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.8&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;18&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;M5 12h14m-6-6 6 6-6 6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/a&gt;
+                &lt;/div&gt;
+              &lt;/section&gt;
+            &lt;/li&gt;
+            &lt;li
+              class=&quot;roadmap-module&quot;
+            &gt;
+              &lt;section
+                class=&quot;roadmap-module__section&quot;
+              &gt;
+                &lt;h2
+                  class=&quot;roadmap-module__heading&quot;
+                &gt;
+                  &lt;button
+                    aria-controls=&quot;roadmap-module-module-2&quot;
+                    aria-expanded=&quot;false&quot;
+                    class=&quot;roadmap-module__toggle&quot;
+                    id=&quot;roadmap-module-button-module-2&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    &lt;span
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__index&quot;
+                    &gt;
+                      2
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__title&quot;
+                    &gt;
+                      Xác suất
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__count&quot;
+                    &gt;
+                      0
+                      /
+                      2
+                       bài học
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__chevron&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;20&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.7&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;20&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;m6 9 6 6 6-6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/button&gt;
+                &lt;/h2&gt;
+              &lt;/section&gt;
+            &lt;/li&gt;
+          &lt;/ol&gt;
+          &lt;div
+            class=&quot;roadmap-reserved&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;roadmap-chat-title&quot;
+              class=&quot;roadmap-reserved__section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;roadmap-chat-title&quot;
+              &gt;
+                Trò chuyện
+              &lt;/h2&gt;
+              &lt;p&gt;
+                Chưa có cuộc trò chuyện.
+              &lt;/p&gt;
+              &lt;small&gt;
+                Tính năng này sẽ được bổ sung.
+              &lt;/small&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;roadmap-library-title&quot;
+              class=&quot;roadmap-reserved__section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;roadmap-library-title&quot;
+              &gt;
+                Tài liệu và bài ôn
+              &lt;/h2&gt;
+              &lt;p&gt;
+                Chưa có nội dung.
+              &lt;/p&gt;
+              &lt;small&gt;
+                Tính năng này sẽ được bổ sung.
+              &lt;/small&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+    &lt;output
+      data-testid=&quot;location&quot;
+    &gt;
+      /khoa-hoc/course-1
+    &lt;/output&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an accessible element with the role &quot;progressbar&quot; and name &quot;Tiến độ module Biến cố&quot;
+
+Here are the accessible roles:
+
+  link:
+
+  Name &quot;Đến nội dung chính&quot;:
+  &lt;a
+    class=&quot;skip-link&quot;
+    href=&quot;#courses-main&quot;
+  /&gt;
+
+  Name &quot;WayFinder, về khoá học&quot;:
+  &lt;a
+    aria-label=&quot;WayFinder, về khoá học&quot;
+    class=&quot;brand-link&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;button button-primary courses-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Tài khoản&quot;:
+  &lt;a
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-khoan&quot;
+  /&gt;
+
+  Name &quot;Tải tài liệu&quot;:
+  &lt;a
+    class=&quot;courses-menu-upload&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/tai-len&quot;
+  /&gt;
+
+  Name &quot;Khoá học của tôi&quot;:
+  &lt;a
+    class=&quot;back-link roadmap-back&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc&quot;
+  /&gt;
+
+  Name &quot;Mở module: Biến cố&quot;:
+  &lt;a
+    aria-label=&quot;Mở module: Biến cố&quot;
+    class=&quot;roadmap-module__open&quot;
+    data-discover=&quot;true&quot;
+    href=&quot;/khoa-hoc/course-1/module/module-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  banner:
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;courses-header&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;header
+    class=&quot;roadmap-heading&quot;
+  /&gt;
+
+  --------------------------------------------------
+  img:
+
+  Name &quot;WayFinder&quot;:
+  &lt;img
+    alt=&quot;WayFinder&quot;
+    src=&quot;/assets/Artboard%2024.png&quot;
+  /&gt;
+
+  --------------------------------------------------
+  button:
+
+  Name &quot;Bật chế độ tối&quot;:
+  &lt;button
+    aria-label=&quot;Bật chế độ tối&quot;
+    class=&quot;icon-button theme-toggle&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Đăng xuất&quot;:
+  &lt;button
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Biến cố 1/2 bài học&quot;:
+  &lt;button
+    aria-controls=&quot;roadmap-module-module-1&quot;
+    aria-expanded=&quot;true&quot;
+    class=&quot;roadmap-module__toggle&quot;
+    id=&quot;roadmap-module-button-module-1&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  Name &quot;Xác suất 0/2 bài học&quot;:
+  &lt;button
+    aria-controls=&quot;roadmap-module-module-2&quot;
+    aria-expanded=&quot;false&quot;
+    class=&quot;roadmap-module__toggle&quot;
+    id=&quot;roadmap-module-button-module-2&quot;
+    type=&quot;button&quot;
+  /&gt;
+
+  --------------------------------------------------
+  group:
+
+  Name &quot;&quot;:
+  &lt;details
+    class=&quot;account-menu&quot;
+  /&gt;
+
+  --------------------------------------------------
+  main:
+
+  Name &quot;&quot;:
+  &lt;main
+    class=&quot;courses-page page-frame&quot;
+    id=&quot;courses-main&quot;
+    tabindex=&quot;-1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  heading:
+
+  Name &quot;Xác suất cơ bản&quot;:
+  &lt;h1 /&gt;
+
+  Name &quot;Tiến độ của bạn&quot;:
+  &lt;h2 /&gt;
+
+  Name &quot;Biến cố 1/2 bài học&quot;:
+  &lt;h2
+    class=&quot;roadmap-module__heading&quot;
+  /&gt;
+
+  Name &quot;Xác suất 0/2 bài học&quot;:
+  &lt;h2
+    class=&quot;roadmap-module__heading&quot;
+  /&gt;
+
+  Name &quot;Trò chuyện&quot;:
+  &lt;h2
+    id=&quot;roadmap-chat-title&quot;
+  /&gt;
+
+  Name &quot;Tài liệu và bài ôn&quot;:
+  &lt;h2
+    id=&quot;roadmap-library-title&quot;
+  /&gt;
+
+  --------------------------------------------------
+  paragraph:
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;roadmap-shared-note&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p
+    class=&quot;roadmap-module__description&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  Name &quot;&quot;:
+  &lt;p /&gt;
+
+  --------------------------------------------------
+  region:
+
+  Name &quot;Tiến độ cả khoá&quot;:
+  &lt;section
+    aria-label=&quot;Tiến độ cả khoá&quot;
+    class=&quot;roadmap-overview&quot;
+  /&gt;
+
+  Name &quot;Biến cố 1/2 bài học&quot;:
+  &lt;div
+    aria-labelledby=&quot;roadmap-module-button-module-1&quot;
+    class=&quot;roadmap-module__body&quot;
+    id=&quot;roadmap-module-module-1&quot;
+    role=&quot;region&quot;
+  /&gt;
+
+  Name &quot;Trò chuyện&quot;:
+  &lt;section
+    aria-labelledby=&quot;roadmap-chat-title&quot;
+    class=&quot;roadmap-reserved__section&quot;
+  /&gt;
+
+  Name &quot;Tài liệu và bài ôn&quot;:
+  &lt;section
+    aria-labelledby=&quot;roadmap-library-title&quot;
+    class=&quot;roadmap-reserved__section&quot;
+  /&gt;
+
+  --------------------------------------------------
+  strong:
+
+  Name &quot;&quot;:
+  &lt;strong /&gt;
+
+  --------------------------------------------------
+  progressbar:
+
+  Name &quot;Tiến độ Xác suất cơ bản&quot;:
+  &lt;progress
+    aria-label=&quot;Tiến độ Xác suất cơ bản&quot;
+    max=&quot;4&quot;
+    value=&quot;1&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;progress
+    max=&quot;2&quot;
+    value=&quot;1&quot;
+  /&gt;
+
+  --------------------------------------------------
+  list:
+
+  Name &quot;Các module theo thứ tự&quot;:
+  &lt;ol
+    aria-label=&quot;Các module theo thứ tự&quot;
+    class=&quot;roadmap-modules&quot;
+  /&gt;
+
+  Name &quot;Bài học trong module Biến cố&quot;:
+  &lt;ul
+    aria-label=&quot;Bài học trong module Biến cố&quot;
+    class=&quot;roadmap-concepts&quot;
+  /&gt;
+
+  --------------------------------------------------
+  listitem:
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-module&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-concept is-learned&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-concept&quot;
+  /&gt;
+
+  Name &quot;&quot;:
+  &lt;li
+    class=&quot;roadmap-module&quot;
+  /&gt;
+
+  --------------------------------------------------
+  checkbox:
+
+  Name &quot;Đã học: Không gian mẫu&quot;:
+  &lt;input
+    aria-label=&quot;Đã học: Không gian mẫu&quot;
+    checked=&quot;&quot;
+    type=&quot;checkbox&quot;
+  /&gt;
+
+  Name &quot;Đã học: Biến cố&quot;:
+  &lt;input
+    aria-label=&quot;Đã học: Biến cố&quot;
+    type=&quot;checkbox&quot;
+  /&gt;
+
+  --------------------------------------------------
+  status:
+
+  Name &quot;&quot;:
+  &lt;output
+    data-testid=&quot;location&quot;
+  /&gt;
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary&gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Nguyễn An
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;a
+          class=&quot;back-link roadmap-back&quot;
+          data-discover=&quot;true&quot;
+          href=&quot;/khoa-hoc&quot;
+        &gt;
+          Khoá học của tôi
+        &lt;/a&gt;
+        &lt;div
+          class=&quot;roadmap-content&quot;
+        &gt;
+          &lt;header
+            class=&quot;roadmap-heading&quot;
+          &gt;
+            &lt;h1&gt;
+              Xác suất cơ bản
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Từ biến cố đến xác suất.
+            &lt;/p&gt;
+            &lt;p
+              class=&quot;roadmap-shared-note&quot;
+            &gt;
+              Tiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Tiến độ cả khoá&quot;
+            class=&quot;roadmap-overview&quot;
+          &gt;
+            &lt;div
+              class=&quot;roadmap-overview__label&quot;
+            &gt;
+              &lt;h2&gt;
+                Tiến độ của bạn
+              &lt;/h2&gt;
+              &lt;strong&gt;
+                1
+                /
+                4
+                 bài học
+              &lt;/strong&gt;
+            &lt;/div&gt;
+            &lt;progress
+              aria-label=&quot;Tiến độ Xác suất cơ bản&quot;
+              max=&quot;4&quot;
+              value=&quot;1&quot;
+            /&gt;
+          &lt;/section&gt;
+          &lt;ol
+            aria-label=&quot;Các module theo thứ tự&quot;
+            class=&quot;roadmap-modules&quot;
+          &gt;
+            &lt;li
+              class=&quot;roadmap-module&quot;
+            &gt;
+              &lt;section
+                class=&quot;roadmap-module__section&quot;
+              &gt;
+                &lt;h2
+                  class=&quot;roadmap-module__heading&quot;
+                &gt;
+                  &lt;button
+                    aria-controls=&quot;roadmap-module-module-1&quot;
+                    aria-expanded=&quot;true&quot;
+                    class=&quot;roadmap-module__toggle&quot;
+                    id=&quot;roadmap-module-button-module-1&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    &lt;span
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__index&quot;
+                    &gt;
+                      1
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__title&quot;
+                    &gt;
+                      Biến cố
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__count&quot;
+                    &gt;
+                      1
+                      /
+                      2
+                       bài học
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__chevron&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;20&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.7&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;20&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;m6 9 6 6 6-6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/button&gt;
+                &lt;/h2&gt;
+                &lt;div
+                  aria-labelledby=&quot;roadmap-module-button-module-1&quot;
+                  class=&quot;roadmap-module__body&quot;
+                  id=&quot;roadmap-module-module-1&quot;
+                  role=&quot;region&quot;
+                &gt;
+                  &lt;p
+                    class=&quot;roadmap-module__description&quot;
+                  &gt;
+                    Nhận biết biến cố và kết quả.
+                  &lt;/p&gt;
+                  &lt;div
+                    aria-label=&quot;Tiến độ module Biến cố&quot;
+                    class=&quot;roadmap-module__progress&quot;
+                  &gt;
+                    &lt;progress
+                      max=&quot;2&quot;
+                      value=&quot;1&quot;
+                    /&gt;
+                    &lt;span&gt;
+                      1
+                      /
+                      2
+                       bài học
+                    &lt;/span&gt;
+                  &lt;/div&gt;
+                  &lt;ul
+                    aria-label=&quot;Bài học trong module Biến cố&quot;
+                    class=&quot;roadmap-concepts&quot;
+                  &gt;
+                    &lt;li
+                      class=&quot;roadmap-concept is-learned&quot;
+                    &gt;
+                      &lt;label
+                        class=&quot;roadmap-concept__label&quot;
+                      &gt;
+                        &lt;input
+                          aria-label=&quot;Đã học: Không gian mẫu&quot;
+                          checked=&quot;&quot;
+                          type=&quot;checkbox&quot;
+                        /&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__name&quot;
+                        &gt;
+                          Không gian mẫu
+                        &lt;/span&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__state&quot;
+                        &gt;
+                          Đã học
+                        &lt;/span&gt;
+                      &lt;/label&gt;
+                    &lt;/li&gt;
+                    &lt;li
+                      class=&quot;roadmap-concept&quot;
+                    &gt;
+                      &lt;label
+                        class=&quot;roadmap-concept__label&quot;
+                      &gt;
+                        &lt;input
+                          aria-label=&quot;Đã học: Biến cố&quot;
+                          type=&quot;checkbox&quot;
+                        /&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__name&quot;
+                        &gt;
+                          Biến cố
+                        &lt;/span&gt;
+                        &lt;span
+                          class=&quot;roadmap-concept__state&quot;
+                        &gt;
+                          Chưa học
+                        &lt;/span&gt;
+                      &lt;/label&gt;
+                    &lt;/li&gt;
+                  &lt;/ul&gt;
+                  &lt;a
+                    aria-label=&quot;Mở module: Biến cố&quot;
+                    class=&quot;roadmap-module__open&quot;
+                    data-discover=&quot;true&quot;
+                    href=&quot;/khoa-hoc/course-1/module/module-1&quot;
+                  &gt;
+                    Mở module
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;18&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.8&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;18&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;M5 12h14m-6-6 6 6-6 6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/a&gt;
+                &lt;/div&gt;
+              &lt;/section&gt;
+            &lt;/li&gt;
+            &lt;li
+              class=&quot;roadmap-module&quot;
+            &gt;
+              &lt;section
+                class=&quot;roadmap-module__section&quot;
+              &gt;
+                &lt;h2
+                  class=&quot;roadmap-module__heading&quot;
+                &gt;
+                  &lt;button
+                    aria-controls=&quot;roadmap-module-module-2&quot;
+                    aria-expanded=&quot;false&quot;
+                    class=&quot;roadmap-module__toggle&quot;
+                    id=&quot;roadmap-module-button-module-2&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    &lt;span
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__index&quot;
+                    &gt;
+                      2
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__title&quot;
+                    &gt;
+                      Xác suất
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;roadmap-module__count&quot;
+                    &gt;
+                      0
+                      /
+                      2
+                       bài học
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      class=&quot;roadmap-module__chevron&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;20&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.7&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;20&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;m6 9 6 6 6-6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/button&gt;
+                &lt;/h2&gt;
+              &lt;/section&gt;
+            &lt;/li&gt;
+          &lt;/ol&gt;
+          &lt;div
+            class=&quot;roadmap-reserved&quot;
+          &gt;
+            &lt;section
+              aria-labelledby=&quot;roadmap-chat-title&quot;
+              class=&quot;roadmap-reserved__section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;roadmap-chat-title&quot;
+              &gt;
+                Trò chuyện
+              &lt;/h2&gt;
+              &lt;p&gt;
+                Chưa có cuộc trò chuyện.
+              &lt;/p&gt;
+              &lt;small&gt;
+                Tính năng này sẽ được bổ sung.
+              &lt;/small&gt;
+            &lt;/section&gt;
+            &lt;section
+              aria-labelledby=&quot;roadmap-library-title&quot;
+              class=&quot;roadmap-reserved__section&quot;
+            &gt;
+              &lt;h2
+                id=&quot;roadmap-library-title&quot;
+              &gt;
+                Tài liệu và bài ôn
+              &lt;/h2&gt;
+              &lt;p&gt;
+                Chưa có nội dung.
+              &lt;/p&gt;
+              &lt;small&gt;
+                Tính năng này sẽ được bổ sung.
+              &lt;/small&gt;
+            &lt;/section&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+    &lt;output
+      data-testid=&quot;location&quot;
+    &gt;
+      /khoa-hoc/course-1
+    &lt;/output&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Roadmap.test.tsx:56:17
+            </failure>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="marks a fully learned module with a success indicator" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows a quiet empty state when the API roadmap has no modules" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="clears an expired session after a progress write returns 401" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="optimistically updates one concept and restores only that checkbox when its request fails" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="rolls back when a successful write response omits the requested node" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="merges concurrent node responses by their own node so stale full snapshots cannot undo another check" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows the selected module and the shared learner mark on the module route" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.507" timestamp="2026-10-21T12:04:48.912050+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_progress_is_isolated_between_members_using_independent_postgres_runtimes" time="3.030"><failure message="AttributeError: 'LearningGateway' object has no attribute 'set_progress'">w07 = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_70ef4a7e53ed423c980869aa5abf6...ken': '[REDACTED-DISPOSABLE-TEST-TOKEN]'}), app=&lt;fastapi.applications.FastAPI object at 0x000001C055A7C320&gt;)
+
+    def test_progress_is_isolated_between_members_using_independent_postgres_runtimes(w07):
+&gt;       w07.gateway.set_progress(w07.a.actor, w07.course.id, "a", True)
+        ^^^^^^^^^^^^^^^^^^^^^^^^
+E       AttributeError: 'LearningGateway' object has no attribute 'set_progress'
+
+src\web\backend\tests\test_learning_progress_w07.py:92: AttributeError</failure></testcase></testsuite></testsuites>

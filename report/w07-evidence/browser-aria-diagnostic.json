@@ -1,0 +1,361 @@
+{
+  "realHttp": true,
+  "realPostgres": true,
+  "realArgon2": true,
+  "graph": {
+    "docId": "doc-1",
+    "version": 8
+  },
+  "media": "memory-only",
+  "mailer": "fake",
+  "modelCalls": 0,
+  "modelCostUsd": 0,
+  "screens": [],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "stage": "learner-a.register"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 200,
+      "stage": "learner-a.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "learner-a.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "learner-a.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "learner-a.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "learner-a.register"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/join-sample",
+      "status": 200,
+      "stage": "learner-a.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "learner-a.roadmap"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e",
+      "status": 200,
+      "stage": "learner-a.roadmap"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/progress",
+      "status": 200,
+      "stage": "learner-a.roadmap"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/roadmap",
+      "status": 200,
+      "stage": "learner-a.roadmap"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/progress/node_92b86f8bac3397ea9de112b0",
+      "status": 200,
+      "stage": "learner-a.roadmap"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/progress/node_9f23f5df7eb27a4bc46857c8",
+      "status": 200,
+      "stage": "learner-a.roadmap"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/progress/node_9f23f5df7eb27a4bc46857c8",
+      "status": 200,
+      "stage": "learner-a.roadmap"
+    },
+    {
+      "method": "PUT",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/progress/node_8ba0c7ae283e5ab10d90e663",
+      "status": 500,
+      "stage": "rollback.injected-put"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "stage": "learner-b.register"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 200,
+      "stage": "learner-b.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "learner-b.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "learner-b.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "learner-b.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "learner-b.register"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/join-sample",
+      "status": 200,
+      "stage": "learner-b.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "learner-b.isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e",
+      "status": 200,
+      "stage": "learner-b.isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/roadmap",
+      "status": 200,
+      "stage": "learner-b.isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/progress",
+      "status": 200,
+      "stage": "learner-b.isolation"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "real.visual"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e",
+      "status": 200,
+      "stage": "real.visual"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/roadmap",
+      "status": 200,
+      "stage": "real.visual"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/58046bbb-edab-43ac-87c7-137c46d23c3e/progress",
+      "status": 200,
+      "stage": "real.visual"
+    }
+  ],
+  "assertions": [
+    "learner A registered through the UI and joined the real doc-1 sample course",
+    "Be Vietnam Pro loaded from its documented font origins",
+    "real GET roadmap/progress returned doc-1 v8 with ordered nodes and matching module summaries",
+    "real UI marked and unmarked concepts; keyboard Space activated the native checkbox",
+    "rollback fault is explicitly an intercepted browser-only PUT, with optimistic state observed before rejection",
+    "rollback restored UI and real GET progress confirmed the injected failure made no server write",
+    "real HTTP rejected an unpublished node and a non-boolean learned value",
+    "module route shows the real selected module and returns to the roadmap",
+    "a second UI-registered member joined the same real course but saw independent progress; private course progress stayed hidden"
+  ],
+  "rawConsoleErrors": [
+    {
+      "stage": "learner-a.register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    },
+    {
+      "stage": "rollback.injected-put",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate intercepted PUT rollback fault"
+    },
+    {
+      "stage": "learner-b.register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by production CSP"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-wSD+lEHxZb6JDYoqyDKOxySJGOdafKs02zyGoGob4kc='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by production CSP"
+    }
+  ],
+  "consoleErrors": [],
+  "expectedConsoleErrors": [
+    {
+      "stage": "learner-a.register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    },
+    {
+      "stage": "rollback.injected-put",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate intercepted PUT rollback fault"
+    },
+    {
+      "stage": "learner-b.register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by production CSP"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-wSD+lEHxZb6JDYoqyDKOxySJGOdafKs02zyGoGob4kc='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by production CSP"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [],
+  "externalRequests": [],
+  "fontRequests": [
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com"
+  ],
+  "rawFontFailures": [
+    {
+      "stage": "axe:390:light",
+      "method": "GET",
+      "path": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    }
+  ],
+  "expectedProbeRequests": [
+    {
+      "stage": "axe:390:light",
+      "method": "GET",
+      "path": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    }
+  ],
+  "fontFailures": [],
+  "accessibility": [],
+  "iconContrast": [],
+  "visualOnlyStates": [],
+  "video": "w07-roadmap-progress.webm"
+}
