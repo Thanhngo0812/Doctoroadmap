@@ -907,7 +907,7 @@
   protoMasterFrame.itemSpacing = 20;
 
   protoMasterFrame.appendChild(createText("4 Luồng Prototype Bấm được (Figma Reactions & Web Workbench)", 22, FONT_BOLD, C.text));
-  protoMasterFrame.appendChild(createText("Đã gắn kết nối tương tác native ON_CLICK -> NAVIGATE trong Figma. Bấm 'Present' (Play) để trải nghiệm.", 13, FONT_REG, C.textMuted));
+  protoMasterFrame.appendChild(createText("Kiểm tra báo cáo reactions sau khi chạy plugin; nối thủ công các mục chưa thành công trước khi bấm Present.", 13, FONT_REG, C.textMuted));
 
   const protoRows = figma.createFrame();
   protoRows.layoutMode = "VERTICAL";
@@ -1285,7 +1285,7 @@
   profCard.appendChild(makeBadge("W-04: Thông tin", C.brandTint, C.primary));
   profCard.appendChild(createText("Hồ sơ cá nhân", 18, FONT_BOLD, C.text));
   profCard.appendChild(createText("Email: user@example.com", 14, FONT_SEMI, C.text));
-  profCard.appendChild(createText("Trạng thái email: ✓ Đã xác minh (24h)", 13, FONT_REG, C.success));
+  profCard.appendChild(createText("Trạng thái email: ✓ Đã xác minh", 13, FONT_REG, C.success));
   profCard.appendChild(createText("Vai trò: Học viên chuẩn (Member)", 13, FONT_REG, C.textMuted));
   profCard.appendChild(createText("Ngày tham gia: 2026-10-15", 13, FONT_REG, C.textMuted));
   w04CardsRow.appendChild(profCard);
