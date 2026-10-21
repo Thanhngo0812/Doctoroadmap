@@ -300,6 +300,10 @@ Claude đọc theo thứ tự:
 
 Chủ dự án tóm thêm tình hình bằng lời.
 
+**Kế hoạch chủ dự án chốt 2026-10-21:** khi hồi lượt dùng, Claude làm trọn phần sau A10 trước: hoàn thành và nghiệm thu đủ 51 vé SA, cùng mọi vé
+thêm nếu có. Chỉ khi Pha B đã nghiệm thu xong Claude mới về điều phối web. Trong lúc đó Codex vẫn điều phối và ghép phần web. Việc Pha B nào chạm mã
+web (ví dụ phần web gửi kèm `focus_node_id` ở W-09) thì hai bên thống nhất qua mục 8.
+
 ## 10. Nhật ký điều phối
 
 Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới cùng.
