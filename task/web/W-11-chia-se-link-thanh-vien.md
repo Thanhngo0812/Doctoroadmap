@@ -6,7 +6,7 @@ thành viên.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-06 · **Trạng thái:** ready-for-agent
 
 **Đợt sau W-06, 2026-10-21:** đủ điều kiện sau mốc ghép W-06; nếu chỉ có một phiên web, làm sau W-07, không triển khai cùng lúc hai giao diện chưa tích hợp.
-Migration share_link nối head main mới theo thứ tự điều phối, phối hợp tuyến schema W-14; không cùng giả định làm successor của `w06_0005`.
+**Tuyến migration đã chốt 2026-10-21:** W-14 ghép trước, W-11 nối sau: `w06_0005 → w14_0006 → w11_0007`. W-11 tiếp tục service/API/UI trong lúc chờ; nhận migration W-14 rồi tạo `w11_0007` với `down_revision='w14_0006'`, không tạo head thứ hai hoặc sửa migration W-06/W-14. Trước cổng cuối phải nhận main đã ghép mốc W-14 được soát đạt.
 Giữ test tự liệt kê mọi route `{cid}` trên khoá riêng tư, không miễn rộng; preview/join theo token có luật rõ riêng.
 Xem [kế hoạch](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
 

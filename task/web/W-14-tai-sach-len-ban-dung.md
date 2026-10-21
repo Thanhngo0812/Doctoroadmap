@@ -9,7 +9,7 @@ và tiến trình dựng.
 Đây vẫn là một vé đầu-cuối; backend riêng xong chưa đóng vé. Xem
 [kế hoạch và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
 W-06 đã có `course`/`membership`, `module_count`, PDF mẫu `source_public_id`; W-14 bổ sung FK `course.build_id → build.id` khi tạo build,
-nối nguồn upload và metadata graph, kiểm dùng lại cùng tài liệu. Không sửa migration W-06; nhận head mới và chốt tuyến với W-11 trước ghép.
+nối nguồn upload và metadata graph, kiểm dùng lại cùng tài liệu. Không sửa migration W-06. **Tuyến đã chốt 2026-10-21:** giữ `w14_0006` nối `w06_0005`, W-14 ghép trước rồi W-11 nối bằng `w11_0007`. Chỉ ghép sau khi mốc cụ thể được soát đạt và cổng xanh; có thể nghiệm thu mốc backend/schema riêng nếu hoàn chỉnh, chưa đóng vé W-14 đầu-cuối khi React còn thiếu.
 Giữ bộ dựng/MediaStore/Mailer giả, test usage giả khác 0 để kiểm sổ chi thực; không gọi mô hình hay dùng ngân sách phục hồi cũ.
 
 ## Vì sao
