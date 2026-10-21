@@ -1,5 +1,7 @@
 # Điều phối — nghiệm thu W-06 và kế hoạch tiếp theo
 
+**Kế hoạch mới hơn:** [soát W-07/W-14/W-24 và đợt tiếp](dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md): W-07 đã ghép `f20d198`, backend W-14 cần W-25, thiết kế tiếp W-24. Kết quả W-06 bên dưới giữ nguyên phạm vi lịch sử.
+
 **Ngày:** 2026-10-21 · **Người soát:** Codex · **Trạng thái:** **đạt nghiệm thu W-06**, đã ghép **`dc41ee8`** và đẩy GitHub; mốc soát/cổng cuối `8b6e500`.
 
 ## 1. Mốc bàn giao và phạm vi

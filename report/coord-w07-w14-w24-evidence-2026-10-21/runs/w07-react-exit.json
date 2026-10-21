@@ -1,0 +1,20 @@
+{
+  "command": [
+    "cmd.exe",
+    "/c",
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-review-20261021/evidence/w07-react.xml"
+  ],
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w07-final",
+  "commit": "2a14723611a6de9a4fd1bd18d1e2504231462861",
+  "native_exit_code": 0,
+  "elapsed_seconds": 48.77
+}

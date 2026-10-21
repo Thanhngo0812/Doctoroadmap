@@ -1,0 +1,162 @@
+[
+  {
+    "label": "route-inventory",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_courses_w06.py::test_every_cid_route_hides_private_course_from_outsiders_including_admin",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-route-inventory-4d9c7fe8",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-route-inventory-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "94ba8acc1dfe9dc3bbfae75403bfc64c5eeb9ec2b587037b4d05023902b46f06",
+    "source_restored": true
+  },
+  {
+    "label": "membership",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_courses_w06.py::test_every_cid_route_hides_private_course_from_outsiders_including_admin",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-membership-c93c7987",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-membership-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "8ea2655312013c81bcb31f4444ca1dd2f7e68bc959f814b252e5f3cc04709efc",
+    "source_restored": true
+  },
+  {
+    "label": "actor-owner",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_learning_progress_w07.py::test_progress_is_isolated_between_members_using_independent_postgres_runtimes",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-actor-owner-33c3d025",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-actor-owner-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "8ea2655312013c81bcb31f4444ca1dd2f7e68bc959f814b252e5f3cc04709efc",
+    "source_restored": true
+  },
+  {
+    "label": "progress-reader",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_learning_progress_w07.py::test_progress_is_isolated_between_members_using_independent_postgres_runtimes",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-progress-reader-440b07d0",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-progress-reader-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "8ea2655312013c81bcb31f4444ca1dd2f7e68bc959f814b252e5f3cc04709efc",
+    "source_restored": true
+  },
+  {
+    "label": "published-node",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_learning_progress_w07.py::test_progress_http_validates_node_and_boolean_and_hides_private_course",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-published-node-8477de4b",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-published-node-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "94ba8acc1dfe9dc3bbfae75403bfc64c5eeb9ec2b587037b4d05023902b46f06",
+    "source_restored": true
+  },
+  {
+    "label": "learner-precedence",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_learning_progress_w07.py::test_unmark_then_correct_quiz_keeps_learner_choice_through_gateway",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-learner-precedence-0d25414a",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-learner-precedence-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "794dce5660b4bae32e2ce54890ea90a505810b7bfecc0ecb09203f73f260ca5e",
+    "source_restored": true
+  },
+  {
+    "label": "strict-boolean",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_learning_progress_w07.py::test_progress_http_validates_node_and_boolean_and_hides_private_course",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-strict-boolean-d25ab362",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-strict-boolean-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "94ba8acc1dfe9dc3bbfae75403bfc64c5eeb9ec2b587037b4d05023902b46f06",
+    "source_restored": true
+  },
+  {
+    "label": "quiz-atomic",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_learning_progress_w07.py::test_quiz_read_then_concurrent_learner_unmark_is_serialized_by_postgres",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--assert=plain",
+      "--basetemp=tmp/w07-mutation-quiz-atomic-978ca20f",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-mutations\\mutation-quiz-atomic-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "794dce5660b4bae32e2ce54890ea90a505810b7bfecc0ecb09203f73f260ca5e",
+    "source_restored": true
+  }
+]
