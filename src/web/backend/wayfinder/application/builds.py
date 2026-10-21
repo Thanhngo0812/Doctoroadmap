@@ -109,9 +109,9 @@ class BuildService:
             if public: self.media.delete(public)
             raise
 
-    def require_upload(self,actor,upload_id=None,*,build_id=None):
+    def require_upload(self,actor,upload_id=None,*,build_id=None,course_id=None):
         self.authorize(actor)
-        upload=(self.store.upload_for_build(actor.user_id,build_id) if build_id else self.store.upload_for(actor.user_id,upload_id))
+        upload=(self.store.upload_for_build(actor.user_id,build_id,course_id) if build_id else self.store.upload_for(actor.user_id,upload_id))
         if upload is None: raise WebError('not_found','Không tìm thấy nội dung yêu cầu')
         return upload
 
@@ -122,8 +122,8 @@ class BuildService:
                 'kind':upload['kind'],'size_bytes':upload['size_bytes'],'page_count':upload['page_count'],
                 'build':self._view(actor,upload,self.store.get_job(upload['build_id']))}
 
-    def get_build(self,actor,bid):
-        upload=self.require_upload(actor,build_id=bid)
+    def get_build(self,actor,bid,*,course_id=None):
+        upload=self.require_upload(actor,build_id=bid,course_id=course_id)
         self.store.expire(self.clock.now())
         return self._view(actor,upload,self.store.get_job(bid))
 
@@ -167,10 +167,10 @@ class BuildService:
                     self.store.execute('UPDATE course SET title=:title,updated_at=:now WHERE id=:cid',
                         {'title':title.strip(),'now':now,'cid':upload['course_id']})
                 self.store.execute('UPDATE upload SET confirmed_at=:now WHERE id=:id',{'now':now,'id':upload_id})
-        return self.get_build(actor,job['id'])
+        return self._view(actor,upload,self.store.get_job(job['id']))
 
-    def cancel_build(self,actor,bid):
-        self.require_upload(actor,build_id=bid)
+    def cancel_build(self,actor,bid,*,course_id=None):
+        upload=self.require_upload(actor,build_id=bid,course_id=course_id)
         now=self.clock.now()
         with self.store.atomic():
             job=self.store.one('SELECT * FROM build WHERE id=:id FOR UPDATE',{'id':bid})
@@ -180,16 +180,16 @@ class BuildService:
                 self.store.execute("UPDATE course SET status='failed',updated_at=:now WHERE build_id=:id",{'id':bid,'now':now})
             elif job['status'] in {'reading','running'}:
                 self.store.execute('UPDATE build SET cancel_requested=true WHERE id=:id',{'id':bid})
-        return self.get_build(actor,bid)
+        return self._view(actor,upload,self.store.get_job(bid))
 
-    def retry_build(self,actor,bid):
-        self.require_upload(actor,build_id=bid)
+    def retry_build(self,actor,bid,*,course_id=None):
+        upload=self.require_upload(actor,build_id=bid,course_id=course_id)
         with self.store.atomic():
             job=self.store.get_job(bid)
             self.store.document_lock(job['doc_id'],job['pipeline_version'])
             job=self.store.one('SELECT * FROM build WHERE id=:id FOR UPDATE',{'id':bid})
             if job['requested_by']!=actor.user_id: raise WebError('forbidden','Chỉ người yêu cầu dựng được thử lại')
-            if job['status']=='queued': return self._view(actor,self.store.upload_for_build(actor.user_id,bid),job)
+            if job['status']=='queued': return self._view(actor,upload,job)
             if job['status']!='failed' or not job['retryable']: raise WebError('conflict','Không thể thử lại bản dựng này')
             other=self.store.reusable(job['doc_id'],job['pipeline_version'])
             if other and other['id']!=bid: raise WebError('conflict','Đã có bản dựng khác cho tài liệu này')
@@ -197,4 +197,4 @@ class BuildService:
                 "finished_at=NULL,error_code=NULL,error_message=NULL,retryable=false WHERE id=:id",{'id':bid,'now':self.clock.now()})
             # Each retry receives a fresh lease UUID; previous usage receipts remain immutable.
             self.store.execute("UPDATE course SET status='building',updated_at=:now WHERE build_id=:id",{'id':bid,'now':self.clock.now()})
-        return self.get_build(actor,bid)
+        return self._view(actor,upload,self.store.get_job(bid))

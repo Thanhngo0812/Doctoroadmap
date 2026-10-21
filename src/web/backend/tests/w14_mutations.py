@@ -26,6 +26,7 @@ CASES=[
  ('late-usage','infrastructure/build_store.py','if not active and result is None: return False','if not active: return False','heartbeat_reclaim'),
  ('boundary-cancel','application/build_worker.py',"if self.store.get_job(bid)['cancel_requested']:",'if False:','cancel_requested_between'),
  ('skip-locked','infrastructure/build_store.py','FOR UPDATE SKIP LOCKED LIMIT 1','FOR UPDATE LIMIT 1','queue_skips_a_locked_job'),
+ ('course-context','application/builds.py',"return self._view(actor,upload,self.store.get_job(job['id']))","return self.get_build(actor,job['id'])",'same_actor_separate'),
 ]
 # Change the initial state, so a worker can claim before the explicit confirmation.
 CASES[0]=('confirmation','application/builds.py',"VALUES(:id,:doc,:upload,:uid,'awaiting_confirmation',:pipeline,:expires,:now)",

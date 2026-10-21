@@ -659,3 +659,18 @@ def test_default_fake_media_survives_independent_api_and_worker_composition(buil
         assert api.get_build(b.actor,item['build']['build_id'])['status']=='succeeded'
         assert consumer.mailer.messages[-1]['subject']=='Bản dựng xong'
     finally: engine.dispose()
+
+
+def test_same_actor_separate_courses_keep_the_confirmation_and_polling_context(builds):
+    b=builds
+    data=pdf()
+    first,second=upload(b,content=data),upload(b,content=data)
+    b.service.confirm_build(b.actor,first['upload_id'],title='Lớp buổi sáng')
+    response=b.client.post(f"/api/v1/uploads/{second['upload_id']}/build",headers=b.headers,json={'title':'Lớp buổi tối'})
+    assert response.status_code==200,response.text
+    assert response.json()['course_id']==second['build']['course_id']
+    bid=response.json()['build_id']
+    polled=b.client.get(f"/api/v1/builds/{bid}",params={'course_id':second['build']['course_id']})
+    assert polled.status_code==200 and polled.json()['course_id']==second['build']['course_id']
+    assert b.client.get(f"/api/v1/builds/{bid}",params={'course_id':str(uuid4())}).status_code==404
+    assert b.service.usage(b.actor)['builds_used']==1

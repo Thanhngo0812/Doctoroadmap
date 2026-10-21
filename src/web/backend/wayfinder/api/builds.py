@@ -73,17 +73,17 @@ def build_router():
         return request.app.state.services.builds.confirm_build(actor,id,title=data.title)
 
     @router.get('/builds/{id}',response_model=BuildView)
-    def get_build(id:str,request:Request,response:Response,actor:Actor=Depends(get_actor)):
+    def get_build(id:str,request:Request,response:Response,actor:Actor=Depends(get_actor),course_id:str|None=None):
         response.headers['cache-control']='no-store'
-        return request.app.state.services.builds.get_build(actor,id)
+        return request.app.state.services.builds.get_build(actor,id,course_id=course_id)
 
     @router.post('/builds/{id}/cancel',response_model=BuildView)
-    def cancel(id:str,request:Request,actor:Actor=Depends(get_actor)):
-        return request.app.state.services.builds.cancel_build(actor,id)
+    def cancel(id:str,request:Request,actor:Actor=Depends(get_actor),course_id:str|None=None):
+        return request.app.state.services.builds.cancel_build(actor,id,course_id=course_id)
 
     @router.post('/builds/{id}/retry',response_model=BuildView)
-    def retry(id:str,request:Request,actor:Actor=Depends(get_actor)):
-        return request.app.state.services.builds.retry_build(actor,id)
+    def retry(id:str,request:Request,actor:Actor=Depends(get_actor),course_id:str|None=None):
+        return request.app.state.services.builds.retry_build(actor,id,course_id=course_id)
 
     @router.get('/me/usage',response_model=BuildQuota)
     def quota(request:Request,response:Response,actor:Actor=Depends(get_actor)):

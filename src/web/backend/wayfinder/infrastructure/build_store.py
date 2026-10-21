@@ -64,11 +64,15 @@ class PostgresBuildStore(PostgresCourseStore):
         return self.one('SELECT u.*,c.build_id FROM upload u JOIN course c ON c.id=u.course_id '
                         'WHERE u.id=:id AND u.account_id=:uid',{'id':upload_id,'uid':uid})
 
-    def upload_for_build(self, uid, bid):
+    def upload_for_build(self, uid, bid, course_id=None):
         try: bid=str(UUID(bid))
         except (ValueError,TypeError): return None
+        if course_id is not None:
+            try: course_id=str(UUID(course_id))
+            except (ValueError,TypeError): return None
         return self.one('SELECT u.*,c.build_id FROM upload u JOIN course c ON c.id=u.course_id '
-            'WHERE c.build_id=:id AND u.account_id=:uid ORDER BY u.created_at,u.id LIMIT 1',{'id':bid,'uid':uid})
+            'WHERE c.build_id=:id AND u.account_id=:uid AND (cast(:cid AS uuid) IS NULL OR u.course_id=cast(:cid AS uuid)) '
+            'ORDER BY u.created_at,u.id LIMIT 1',{'id':bid,'uid':uid,'cid':course_id})
 
     def expire(self,now):
         with self.atomic():
