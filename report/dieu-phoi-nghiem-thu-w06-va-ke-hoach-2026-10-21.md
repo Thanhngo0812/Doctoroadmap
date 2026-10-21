@@ -103,6 +103,8 @@ Head hiện kiểm là `w01_0001 → w05_0002 → w02_0003 → w03_0004 → w06_
 
 Mục tiêu gần nhất: **học được một tài liệu mẫu qua lộ trình và tiến độ thật**, sau đó mở chia sẻ/tải tài liệu. W-06 mới là danh sách/quyền/gateway; trang module hiện là bản tóm tắt để kiểm resume, chưa phải bài giảng/chat/quiz hoàn chỉnh.
 
+Prompt để chủ dự án chuyển từng nhóm: [lệnh giao việc sau W-06](lenh-giao-viec-sau-w06-2026-10-21.md).
+
 | Nhóm | Ưu tiên sau W-06 | Bàn giao và điều kiện đạt |
 |---|---|---|
 | Web | **W-07**: lộ trình và tiến độ đầu-cuối; sau đó W-11 chia sẻ bằng link | Gateway progress/PUT theo actor, node thuộc graph đã ghim; UI module mở/gập, đánh dấu/bỏ dấu, rollback khi API lỗi; JSON thật, ảnh/video và browser PG |
