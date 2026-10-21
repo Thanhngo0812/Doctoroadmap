@@ -335,6 +335,9 @@ async function main() {
         assert.ok(iconContrast.every(icon => icon.ratio >= 3), `${width}px ${theme} SVG icons must meet 3:1 contrast`);
         audit.iconContrast.push({ width, theme, checks: iconContrast });
         if (width === 390) {
+          assert.equal(await page.locator('.courses-account-label').isVisible(), true);
+          assert.equal(await page.locator('.account-menu-name').isVisible(), false);
+          assert.equal(await page.locator('.account-menu summary').getAttribute('aria-label'), 'Tài khoản của Người học W07 A');
           const undersized = await page.locator('.courses-page button, .courses-page a, .courses-page label:has(input[type="checkbox"])')
             .evaluateAll(elements => elements.filter(element => element.getClientRects().length)
               .map(element => ({ name: element.getAttribute('aria-label') || element.textContent.trim(),

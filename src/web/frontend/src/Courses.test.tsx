@@ -27,6 +27,7 @@ it('shows real-shaped owned joined and samples without inventing sample progress
   vi.stubGlobal('fetch', mockFetch({ owned: [owned], joined: [joined], samples: [{ ...sample, course_id: 'sample-2', title: 'Nhập môn học máy' }] }));
   renderPage();
   const section = await screen.findByRole('region', { name: 'Được chia sẻ với tôi' });
+  expect(screen.getByLabelText('Tài khoản của Nguyễn An')).toBeInTheDocument();
   expect(within(section).getByText('Xong 0/223 bài học')).toBeInTheDocument();
   expect(within(section).getByRole('link', { name: 'Học tiếp' })).toHaveAttribute('href', '/khoa-hoc/sample-1/module/module-9');
   expect(screen.getByText('Xong 7/20 bài học')).toBeInTheDocument();
