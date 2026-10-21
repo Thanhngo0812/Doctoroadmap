@@ -755,9 +755,12 @@
             <p style="font-size:14px; line-height:1.6; margin-bottom:10px;">
               Nhánh gian thất trước (LAD) chạy trong rãnh gian thất trước, cấp máu cho phần lớn cơ tim thất trái, mỏm tim và 2/3 trước vách liên thất. Tắc nhánh LAD thường gây nhồi máu cơ tim trước rộng và có tỷ lệ tử vong cao nhất.
             </p>
-            <div style="font-size:12px; color:var(--color-text-muted); font-weight:600;">
+            <div id="flow4-citation-box" style="font-size:12px; color:var(--color-text-muted); font-weight:600; padding: 8px; border-radius: var(--radius-sm); background: var(--color-bg-subtle);">
               📖 Trích dẫn: Harrison's Internal Medicine, 21st Edition &bull; Chương 270: Thiếu máu cục bộ cơ tim &bull; Trang 1892.
             </div>
+            <button type="button" class="btn-action" id="flow4-btn-view-citation" style="margin-top: 8px; height: 36px; min-height: 36px; font-size: 13px;" onclick="document.getElementById('flow4-citation-box').scrollIntoView({ behavior: 'smooth' });">
+              🔍 Xem trích dẫn giáo trình
+            </button>
           </div>
         </div>
       </div>
@@ -872,7 +875,13 @@
     const flow2JoinSuccess = document.getElementById('flow2-join-success');
 
     flow2BtnCopy.addEventListener('click', () => {
+      const shareInput = document.getElementById('flow2-share-url');
+      const shareUrl = shareInput ? shareInput.value : 'https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026';
       flow2CopyFeedback.style.display = 'block';
+      flow2BtnCopy.setAttribute('data-copied-text', shareUrl);
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        navigator.clipboard.writeText(shareUrl).catch(() => {});
+      }
     });
 
     flow2BtnSimulateJoin.addEventListener('click', () => {

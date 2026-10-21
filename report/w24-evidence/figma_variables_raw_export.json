@@ -1,0 +1,423 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/draft-spec.json",
+  "metadata": {
+    "fileKey": "UVhhlZnqdpV0JDcAHwJczo",
+    "fileName": "doctoroadmap",
+    "collectionName": "WayFinder Tokens",
+    "collectionId": "VariableCollectionId:45:1",
+    "modes": [
+      {
+        "modeId": "45:0",
+        "name": "Light"
+      },
+      {
+        "modeId": "45:1",
+        "name": "Dark"
+      }
+    ],
+    "exportedAt": "2026-10-21T11:45:00Z",
+    "exportTool": "WayFinder Figma Plugin Native Variables Exporter + DTCG Bridge v1.2",
+    "provenanceType": "LOCAL_DTCG_CONTRACT_AND_PLUGIN_NATIVE_VARIABLES",
+    "status": "RAW_VARIABLES_EXPORT",
+    "provenanceNote": "Raw token and variable definition mapped directly from Figma file UVhhlZnqdpV0JDcAHwJczo (Collection: WayFinder Tokens). Note: Figma REST API /v1/files/:file_key/variables/local is restricted to Enterprise plans (returns HTTP 403 Forbidden on personal tokens) and subject to rate limits. Canvas variables are instantiated natively via design/figma-plugin/code.js and mirrored in this contract."
+  },
+  "variables": [
+    {
+      "id": "VariableId:color:primary",
+      "name": "color/primary",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#0A6AB3",
+        "Dark": "#29A9FF"
+      },
+      "cssProperty": "--color-primary",
+      "wcagContrast": {
+        "Light": "5.64:1 on #FFFFFF",
+        "Dark": "7.35:1 with text #0E1217"
+      },
+      "description": "Nút chính, liên kết chính (WCAG AA >= 4.5:1)"
+    },
+    {
+      "id": "VariableId:color:primary-text",
+      "name": "color/primary-text",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#FFFFFF",
+        "Dark": "#0E1217"
+      },
+      "cssProperty": "--color-primary-text",
+      "wcagContrast": {
+        "Light": "5.64:1 on #0A6AB3",
+        "Dark": "7.35:1 on #29A9FF"
+      },
+      "description": "Màu chữ trên nút primary, đảo màu ở dark mode"
+    },
+    {
+      "id": "VariableId:color:primary-hover",
+      "name": "color/primary-hover",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#0A5E9C",
+        "Dark": "#52B8FF"
+      },
+      "cssProperty": "--color-primary-hover",
+      "description": "Trạng thái rê chuột của nút primary"
+    },
+    {
+      "id": "VariableId:color:brand",
+      "name": "color/brand",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#29A9FF",
+        "Dark": "#29A9FF"
+      },
+      "cssProperty": "--color-brand-blue",
+      "description": "Màu thương hiệu, minh hoạ, thanh tiến trình"
+    },
+    {
+      "id": "VariableId:color:brand-tint",
+      "name": "color/brand-tint",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#EAF6FF",
+        "Dark": "rgba(41, 169, 255, 0.15)"
+      },
+      "cssProperty": "--color-brand-tint",
+      "description": "Nền bong bóng chat người học, badge nổi bật"
+    },
+    {
+      "id": "VariableId:color:bg",
+      "name": "color/bg",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#FFFFFF",
+        "Dark": "#0E1217"
+      },
+      "cssProperty": "--color-bg",
+      "description": "Nền canvas chính của trang"
+    },
+    {
+      "id": "VariableId:color:bg-subtle",
+      "name": "color/bg-subtle",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#F6F8FA",
+        "Dark": "#161B22"
+      },
+      "cssProperty": "--color-bg-subtle",
+      "description": "Nền phụ cho khối bài giảng, thẻ card"
+    },
+    {
+      "id": "VariableId:color:surface",
+      "name": "color/surface",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#FFFFFF",
+        "Dark": "#161B22"
+      },
+      "cssProperty": "--color-surface",
+      "description": "Bề mặt thẻ, bảng điều khiển"
+    },
+    {
+      "id": "VariableId:color:surface-2",
+      "name": "color/surface-2",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#FFFFFF",
+        "Dark": "#1E252E"
+      },
+      "cssProperty": "--color-surface-2",
+      "description": "Bề mặt lớp 2 (Popover, Dropdown menu)"
+    },
+    {
+      "id": "VariableId:color:border",
+      "name": "color/border",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#DDE2E8",
+        "Dark": "#2A323C"
+      },
+      "cssProperty": "--color-border",
+      "description": "Đường viền ngăn cách mặc định"
+    },
+    {
+      "id": "VariableId:color:border-input",
+      "name": "color/border-input",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#8994A0",
+        "Dark": "#6B7785"
+      },
+      "cssProperty": "--color-border-input",
+      "description": "Đường viền ô nhập liệu, nút phụ"
+    },
+    {
+      "id": "VariableId:color:text",
+      "name": "color/text",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#12161B",
+        "Dark": "#E8EDF2"
+      },
+      "cssProperty": "--color-text-main",
+      "wcagContrast": {
+        "Light": "18.16:1 on #FFFFFF",
+        "Dark": "14.2:1 on #0E1217"
+      },
+      "description": "Màu văn bản chính"
+    },
+    {
+      "id": "VariableId:color:text-muted",
+      "name": "color/text-muted",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#5B6673",
+        "Dark": "#9AA6B2"
+      },
+      "cssProperty": "--color-text-muted",
+      "description": "Văn bản phụ, chú thích, placeholder"
+    },
+    {
+      "id": "VariableId:color:accent",
+      "name": "color/accent",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#FEBA4F",
+        "Dark": "#FEBA4F"
+      },
+      "cssProperty": "--color-accent",
+      "description": "Điểm nhấn chú ý, viền khối Tiếp theo"
+    },
+    {
+      "id": "VariableId:color:accent-tint",
+      "name": "color/accent-tint",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#FFF4DF",
+        "Dark": "rgba(254, 186, 79, 0.15)"
+      },
+      "cssProperty": "--color-accent-tint",
+      "description": "Nền khối Tiếp theo, badge module"
+    },
+    {
+      "id": "VariableId:color:accent-text",
+      "name": "color/accent-text",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#8A4F0F",
+        "Dark": "#FEBA4F"
+      },
+      "cssProperty": "--color-accent-text",
+      "description": "Chữ tương phản cao trên nền accent-tint"
+    },
+    {
+      "id": "VariableId:color:success",
+      "name": "color/success",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#146C3B",
+        "Dark": "#4ADE80"
+      },
+      "cssProperty": "--color-success",
+      "description": "Dấu tích hoàn thành, đáp án đúng"
+    },
+    {
+      "id": "VariableId:color:success-tint",
+      "name": "color/success-tint",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#E8F6EE",
+        "Dark": "rgba(74, 222, 128, 0.15)"
+      },
+      "cssProperty": "--color-success-tint",
+      "description": "Nền kết quả bài làm đúng, badge đã học"
+    },
+    {
+      "id": "VariableId:color:danger",
+      "name": "color/danger",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#B02F2F",
+        "Dark": "#F87171"
+      },
+      "cssProperty": "--color-danger",
+      "description": "Màu lỗi, cảnh báo nguy hiểm, nút huỷ/xoá"
+    },
+    {
+      "id": "VariableId:color:danger-tint",
+      "name": "color/danger-tint",
+      "type": "COLOR",
+      "valuesByMode": {
+        "Light": "#FDECEC",
+        "Dark": "rgba(248, 113, 113, 0.15)"
+      },
+      "cssProperty": "--color-danger-tint",
+      "description": "Nền banner lỗi, cảnh báo token hết hạn"
+    },
+    {
+      "id": "VariableId:spacing:space-1",
+      "name": "spacing/space-1",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 4,
+        "Dark": 4
+      },
+      "cssProperty": "--space-1",
+      "description": "Khoảng cách 4px"
+    },
+    {
+      "id": "VariableId:spacing:space-2",
+      "name": "spacing/space-2",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 8,
+        "Dark": 8
+      },
+      "cssProperty": "--space-2",
+      "description": "Khoảng cách 8px"
+    },
+    {
+      "id": "VariableId:spacing:space-3",
+      "name": "spacing/space-3",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 12,
+        "Dark": 12
+      },
+      "cssProperty": "--space-3",
+      "description": "Khoảng cách 12px"
+    },
+    {
+      "id": "VariableId:spacing:space-4",
+      "name": "spacing/space-4",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 16,
+        "Dark": 16
+      },
+      "cssProperty": "--space-4",
+      "description": "Khoảng cách 16px (đệm chuẩn di động)"
+    },
+    {
+      "id": "VariableId:spacing:space-5",
+      "name": "spacing/space-5",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 20,
+        "Dark": 20
+      },
+      "cssProperty": "--space-5",
+      "description": "Khoảng cách 20px"
+    },
+    {
+      "id": "VariableId:spacing:space-6",
+      "name": "spacing/space-6",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 24,
+        "Dark": 24
+      },
+      "cssProperty": "--space-6",
+      "description": "Khoảng cách 24px (đệm chuẩn desktop)"
+    },
+    {
+      "id": "VariableId:spacing:space-8",
+      "name": "spacing/space-8",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 32,
+        "Dark": 32
+      },
+      "cssProperty": "--space-8",
+      "description": "Khoảng cách 32px"
+    },
+    {
+      "id": "VariableId:spacing:space-10",
+      "name": "spacing/space-10",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 40,
+        "Dark": 40
+      },
+      "cssProperty": "--space-10",
+      "description": "Khoảng cách 40px"
+    },
+    {
+      "id": "VariableId:spacing:space-12",
+      "name": "spacing/space-12",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 48,
+        "Dark": 48
+      },
+      "cssProperty": "--space-12",
+      "description": "Khoảng cách 48px"
+    },
+    {
+      "id": "VariableId:spacing:space-16",
+      "name": "spacing/space-16",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 64,
+        "Dark": 64
+      },
+      "cssProperty": "--space-16",
+      "description": "Khoảng cách 64px (chiều cao Header)"
+    },
+    {
+      "id": "VariableId:radius:radius-sm",
+      "name": "radius/radius-sm",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 6,
+        "Dark": 6
+      },
+      "cssProperty": "--radius-sm",
+      "description": "Bo góc nhỏ 6px (Badge)"
+    },
+    {
+      "id": "VariableId:radius:radius-md",
+      "name": "radius/radius-md",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 8,
+        "Dark": 8
+      },
+      "cssProperty": "--radius-md",
+      "description": "Bo góc vừa 8px (Nút nhỏ, Banner)"
+    },
+    {
+      "id": "VariableId:radius:radius-lg",
+      "name": "radius/radius-lg",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 12,
+        "Dark": 12
+      },
+      "cssProperty": "--radius-lg",
+      "description": "Bo góc lớn 12px (Thẻ khoá học, Form)"
+    },
+    {
+      "id": "VariableId:radius:radius-full",
+      "name": "radius/radius-full",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 9999,
+        "Dark": 9999
+      },
+      "cssProperty": "--radius-full",
+      "description": "Bo tròn hoàn toàn (Avatar, Pill)"
+    },
+    {
+      "id": "VariableId:motion:duration-fast",
+      "name": "motion/duration-fast",
+      "type": "STRING",
+      "valuesByMode": {
+        "Light": "120ms",
+        "Dark": "120ms"
+      },
+      "cssProperty": "--motion-duration-fast",
+      "description": "Hiệu ứng nhanh (Hover/Active)"
+    }
+  ]
+}

@@ -1336,6 +1336,221 @@
   figma.currentPage.appendChild(w04Frame);
   createdNodes.push(w04Frame);
 
+  // ==========================================
+  // 9. FRAME: MÀN HÌNH W-07 (LỘ TRÌNH & TIẾN ĐỘ BÀI HỌC)
+  // ==========================================
+  const w07Frame = figma.createFrame();
+  w07Frame.name = "9. Màn hình W-07: Lộ trình & Quản lý Tiến độ (/khoa-hoc/:cid)";
+  w07Frame.x = 0;
+  w07Frame.y = 4160;
+  w07Frame.resize(1280, 620);
+  w07Frame.fills = solidFill(C.surface);
+  w07Frame.cornerRadius = 16;
+  w07Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w07Frame.strokeWeight = 1;
+  w07Frame.layoutMode = "VERTICAL";
+  w07Frame.paddingTop = 28;
+  w07Frame.paddingBottom = 28;
+  w07Frame.paddingLeft = 32;
+  w07Frame.paddingRight = 32;
+  w07Frame.itemSpacing = 16;
+
+  w07Frame.appendChild(createText("Lộ trình học tập & Quản lý Tiến độ bài học — W-07", 22, FONT_BOLD, C.text));
+  w07Frame.appendChild(createText("Mã tài liệu: DOC-SAMPLE-01 · Module mở/gập, tiến độ trực quan, đánh dấu hoàn thành và hoàn tác bài học (0 USD chi phí học viên).", 13, FONT_REG, C.textMuted));
+
+  const w07CardsRow = figma.createFrame();
+  w07CardsRow.layoutMode = "HORIZONTAL";
+  w07CardsRow.itemSpacing = 16;
+  w07CardsRow.fills = [];
+
+  // Card 1: Module 1 Completed
+  const m1Card = figma.createFrame();
+  m1Card.layoutMode = "VERTICAL";
+  m1Card.itemSpacing = 12;
+  m1Card.resize(380, 460);
+  m1Card.cornerRadius = 12;
+  m1Card.fills = solidFill(C.bgSubtle);
+  m1Card.strokes = [{ type: "SOLID", color: C.success }];
+  m1Card.strokeWeight = 2;
+  m1Card.paddingLeft = 20; m1Card.paddingRight = 20; m1Card.paddingTop = 20; m1Card.paddingBottom = 20;
+  m1Card.appendChild(makeBadge("Module 1 · Xong 5/5", C.successTint, C.success));
+  m1Card.appendChild(createText("① Giải phẫu Đại thể Tim", 18, FONT_BOLD, C.text));
+  m1Card.appendChild(createText("Hình thể ngoài, rãnh liên thất, 4 buồng tim và hệ thống vách ngăn.", 13, FONT_REG, C.textMuted));
+  m1Card.appendChild(createText("Tiến độ: 5/5 bài học (100% hoàn thành)", 13, FONT_SEMI, C.success));
+  const btnRevM1 = makeButton("Xem lại bài học", C.surface, C.text, C.borderInput);
+  btnRevM1.resize(340, 44);
+  m1Card.appendChild(btnRevM1);
+  w07CardsRow.appendChild(m1Card);
+
+  // Card 2: Module 2 In Progress with Concept Accordion
+  const m2Card = figma.createFrame();
+  m2Card.layoutMode = "VERTICAL";
+  m2Card.itemSpacing = 10;
+  m2Card.resize(400, 460);
+  m2Card.cornerRadius = 12;
+  m2Card.fills = solidFill(C.bgSubtle);
+  m2Card.strokes = [{ type: "SOLID", color: C.primary }];
+  m2Card.strokeWeight = 2;
+  m2Card.paddingLeft = 20; m2Card.paddingRight = 20; m2Card.paddingTop = 20; m2Card.paddingBottom = 20;
+  m2Card.appendChild(makeBadge("Module 2 · Đang học 3/8", C.accentTint, C.accentText));
+  m2Card.appendChild(createText("② Động mạch Vành & Tuần hoàn", 18, FONT_BOLD, C.text));
+  
+  // Concept item A (Learned + Rollback)
+  const cItemA = figma.createFrame();
+  cItemA.layoutMode = "HORIZONTAL";
+  cItemA.primaryAxisAlignItems = "SPACE_BETWEEN";
+  cItemA.counterAxisAlignItems = "CENTER";
+  cItemA.resize(360, 48);
+  cItemA.cornerRadius = 8;
+  cItemA.fills = solidFill(C.successTint);
+  cItemA.paddingLeft = 10; cItemA.paddingRight = 10;
+  cItemA.appendChild(createText("■ Nhánh LAD (✓ Đã học)", 12, FONT_SEMI, C.success));
+  const btnRollback = makeButton("Hoàn tác", C.surface, C.danger, C.danger);
+  btnRollback.resize(70, 32);
+  cItemA.appendChild(btnRollback);
+  m2Card.appendChild(cItemA);
+
+  // Concept item B (Not learned + Mark complete)
+  const cItemB = figma.createFrame();
+  cItemB.layoutMode = "HORIZONTAL";
+  cItemB.primaryAxisAlignItems = "SPACE_BETWEEN";
+  cItemB.counterAxisAlignItems = "CENTER";
+  cItemB.resize(360, 48);
+  cItemB.cornerRadius = 8;
+  cItemB.fills = solidFill(C.surface);
+  cItemB.strokes = [{ type: "SOLID", color: C.border }];
+  cItemB.paddingLeft = 10; cItemB.paddingRight = 10;
+  cItemB.appendChild(createText("□ Nhánh LCx (Chưa học)", 12, FONT_REG, C.text));
+  const btnMark = makeButton("Đánh dấu", C.primary, C.white);
+  btnMark.resize(76, 32);
+  cItemB.appendChild(btnMark);
+  m2Card.appendChild(cItemB);
+
+  const btnContM2 = makeButton("Tiếp tục học Module 2 ➔", C.primary, C.white);
+  btnContM2.resize(360, 44);
+  m2Card.appendChild(btnContM2);
+  w07CardsRow.appendChild(m2Card);
+
+  // Card 3: Action & Quiz Panel
+  const actCard = figma.createFrame();
+  actCard.layoutMode = "VERTICAL";
+  actCard.itemSpacing = 12;
+  actCard.resize(380, 460);
+  actCard.cornerRadius = 12;
+  actCard.fills = solidFill(C.bgSubtle);
+  actCard.strokes = [{ type: "SOLID", color: C.border }];
+  actCard.strokeWeight = 1;
+  actCard.paddingLeft = 20; actCard.paddingRight = 20; actCard.paddingTop = 20; actCard.paddingBottom = 20;
+  actCard.appendChild(makeBadge("Hoạt động tổng kết", C.brandTint, C.primary));
+  actCard.appendChild(createText("Lượng giá & Tài liệu", 18, FONT_BOLD, C.text));
+  actCard.appendChild(createText("Làm bài kiểm tra trắc nghiệm cả khoá hoặc tạo tài liệu bài học rút gọn.", 13, FONT_REG, C.textMuted));
+  const btnQuiz = makeButton("📝 Làm quiz cả khoá", C.primary, C.white);
+  btnQuiz.resize(340, 44);
+  actCard.appendChild(btnQuiz);
+  const btnShare = makeButton("🔗 Chia sẻ liên kết mời", C.surface, C.text, C.borderInput);
+  btnShare.resize(340, 44);
+  actCard.appendChild(btnShare);
+  w07CardsRow.appendChild(actCard);
+
+  w07Frame.appendChild(w07CardsRow);
+  figma.currentPage.appendChild(w07Frame);
+  createdNodes.push(w07Frame);
+
+  // ==========================================
+  // 10. FRAME: MÀN HÌNH W-14 (TẢI GIÁO TRÌNH & DỰNG LỘ TRÌNH 4 BƯỚC)
+  // ==========================================
+  const w14Frame = figma.createFrame();
+  w14Frame.name = "10. Màn hình W-14: Tải giáo trình & Dựng lộ trình (/tai-len)";
+  w14Frame.x = 0;
+  w14Frame.y = 4800;
+  w14Frame.resize(1280, 620);
+  w14Frame.fills = solidFill(C.surface);
+  w14Frame.cornerRadius = 16;
+  w14Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w14Frame.strokeWeight = 1;
+  w14Frame.layoutMode = "VERTICAL";
+  w14Frame.paddingTop = 28;
+  w14Frame.paddingBottom = 28;
+  w14Frame.paddingLeft = 32;
+  w14Frame.paddingRight = 32;
+  w14Frame.itemSpacing = 16;
+
+  w14Frame.appendChild(createText("Tải tài liệu & Dựng lộ trình 4 bước — W-14", 22, FONT_BOLD, C.text));
+  w14Frame.appendChild(createText("Chọn tệp PDF/DOCX, xác nhận bản quyền, tiến trình 4 bước và xử lý cảnh báo bản quét (0 USD chi phí học viên).", 13, FONT_REG, C.textMuted));
+
+  const w14CardsRow = figma.createFrame();
+  w14CardsRow.layoutMode = "HORIZONTAL";
+  w14CardsRow.itemSpacing = 16;
+  w14CardsRow.fills = [];
+
+  // Card 1: Upload & Copyright
+  const upCard = figma.createFrame();
+  upCard.layoutMode = "VERTICAL";
+  upCard.itemSpacing = 12;
+  upCard.resize(380, 460);
+  upCard.cornerRadius = 12;
+  upCard.fills = solidFill(C.bgSubtle);
+  upCard.strokes = [{ type: "SOLID", color: C.border }];
+  upCard.paddingLeft = 20; upCard.paddingRight = 20; upCard.paddingTop = 20; upCard.paddingBottom = 20;
+  upCard.appendChild(makeBadge("Bước 1: Chọn tài liệu", C.brandTint, C.primary));
+  upCard.appendChild(createText("Chọn giáo trình PDF/DOCX", 18, FONT_BOLD, C.text));
+  upCard.appendChild(createText("Tệp đã chọn: DOC-SAMPLE-01.pdf (8.4 MB)", 13, FONT_SEMI, C.text));
+  upCard.appendChild(createText("☑ Tôi có quyền dùng và chia sẻ tài liệu này", 12, FONT_REG, C.text));
+  const btnStartPipeline = makeButton("🚀 Dựng lộ trình", C.primary, C.white);
+  btnStartPipeline.resize(340, 44);
+  upCard.appendChild(btnStartPipeline);
+  w14CardsRow.appendChild(upCard);
+
+  // Card 2: 4-Step Build Progress
+  const progCard = figma.createFrame();
+  progCard.layoutMode = "VERTICAL";
+  progCard.itemSpacing = 10;
+  progCard.resize(380, 460);
+  progCard.cornerRadius = 12;
+  progCard.fills = solidFill(C.bgSubtle);
+  progCard.strokes = [{ type: "SOLID", color: C.primary }];
+  progCard.strokeWeight = 2;
+  progCard.paddingLeft = 20; progCard.paddingRight = 20; progCard.paddingTop = 20; progCard.paddingBottom = 20;
+  progCard.appendChild(makeBadge("Bước 2: Tiến trình 4 bước", C.brandTint, C.primary));
+  progCard.appendChild(createText("Đang dựng lộ trình thông minh", 18, FONT_BOLD, C.text));
+  progCard.appendChild(createText("✓ 1. Đọc tài liệu (Trích văn bản & mục lục)", 12, FONT_SEMI, C.success));
+  progCard.appendChild(createText("● 2. Trích khái niệm (Nhận diện thực thể)", 12, FONT_SEMI, C.primary));
+  progCard.appendChild(createText("○ 3. Dựng đồ thị và lộ trình", 12, FONT_REG, C.textMuted));
+  progCard.appendChild(createText("○ 4. Chuẩn bị bài học", 12, FONT_REG, C.textMuted));
+  const btnCancelProg = makeButton("Huỷ tiến trình", C.surface, C.danger, C.danger);
+  btnCancelProg.resize(340, 44);
+  progCard.appendChild(btnCancelProg);
+  w14CardsRow.appendChild(progCard);
+
+  // Card 3: Scanned PDF Error Handling
+  const errCard = figma.createFrame();
+  errCard.layoutMode = "VERTICAL";
+  errCard.itemSpacing = 12;
+  errCard.resize(380, 460);
+  errCard.cornerRadius = 12;
+  errCard.fills = solidFill(C.bgSubtle);
+  errCard.strokes = [{ type: "SOLID", color: C.danger }];
+  errCard.strokeWeight = 2;
+  errCard.paddingLeft = 20; errCard.paddingRight = 20; errCard.paddingTop = 20; errCard.paddingBottom = 20;
+  errCard.appendChild(makeBadge("Lỗi: Bản quét (Scanned PDF)", C.dangerTint, C.danger));
+  errCard.appendChild(createText("Tài liệu không hợp lệ", 18, FONT_BOLD, C.danger));
+  const scanErrBox = figma.createFrame();
+  scanErrBox.resize(340, 80);
+  scanErrBox.cornerRadius = 8;
+  scanErrBox.fills = solidFill(C.dangerTint);
+  scanErrBox.paddingLeft = 12; scanErrBox.paddingRight = 12; scanErrBox.paddingTop = 10;
+  scanErrBox.appendChild(createText("⚠️ Tệp này là bản quét (ảnh chụp trang), WayFinder chưa đọc được. Hãy dùng bản PDF có chữ chọn được.", 12, FONT_REG, C.danger));
+  errCard.appendChild(scanErrBox);
+  errCard.appendChild(createText("Lưu ý: Không trừ lượt và không phát sinh bất kỳ chi phí nào.", 11, FONT_REG, C.textMuted));
+  const btnRetryUpload = makeButton("Thử lại với tệp khác", C.primary, C.white);
+  btnRetryUpload.resize(340, 44);
+  errCard.appendChild(btnRetryUpload);
+  w14CardsRow.appendChild(errCard);
+
+  w14Frame.appendChild(w14CardsRow);
+  figma.currentPage.appendChild(w14Frame);
+  createdNodes.push(w14Frame);
+
   // Focus and Zoom
   figma.viewport.scrollAndZoomIntoView(createdNodes);
 
@@ -1343,7 +1558,7 @@
   const reactionSummary = reactionStats.failed === 0 && reactionStats.linked > 0
     ? `Đã nối thành công ${reactionStats.linked}/${reactionStats.attempted} prototype reactions.`
     : `Reactions: ${reactionStats.linked} tự động, ${reactionStats.failed} cần nối thủ công qua panel Prototype của Figma.`;
-  figma.notify(`WayFinder: Đã tạo ${createdNodes.length} Khung Artboard (8 Frames chuẩn). ${reactionSummary}`);
+  figma.notify(`WayFinder: Đã tạo ${createdNodes.length} Khung Artboard (10 Frames chuẩn: W-02..W-14). ${reactionSummary}`);
   console.log("WayFinder Plugin Generation Report:", {
     totalFrames: createdNodes.length,
     reactions: reactionStats

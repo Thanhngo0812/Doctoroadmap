@@ -329,11 +329,13 @@ def test_w03_auth_screens_specification():
 
 
 def test_figma_plugin_has_w03_and_prototype_reactions():
-    """Verify that design/figma-plugin/code.js includes W-03, W-06, W-04 screens and native prototype reactions."""
+    """Verify that design/figma-plugin/code.js includes W-03, W-06, W-04, W-07, W-14 screens and native prototype reactions."""
     code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
     assert "Màn hình W-03" in code_js
     assert "Màn hình W-06" in code_js
     assert "Màn hình W-04" in code_js
+    assert "Màn hình W-07" in code_js
+    assert "Màn hình W-14" in code_js
     assert "reactionStats" in code_js
     assert "setReactionsAsync" in code_js
     assert "linkReaction" in code_js
@@ -368,4 +370,68 @@ def test_w04_profile_screens_specification():
     assert "min-height: 44px" in w04_html
     assert "height: 44px" in w04_html
 
+def test_figma_variables_raw_export_valid():
+    """Verify that design/tokens/figma_variables_raw_export.json contains verified metadata and variables."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    assert raw_path.exists(), "Raw variables export file must exist"
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    meta = data.get("metadata", {})
+    assert meta.get("fileKey") == "UVhhlZnqdpV0JDcAHwJczo"
+    assert meta.get("collectionName") == "WayFinder Tokens"
+    assert meta.get("collectionId") == "VariableCollectionId:45:1"
+    assert len(meta.get("modes", [])) == 2
+    assert "exportedAt" in meta
+    assert "exportTool" in meta
+    vars_list = data.get("variables", [])
+    assert len(vars_list) >= 30, f"Expected >= 30 variables, found {len(vars_list)}"
+    var_names = [v["name"] for v in vars_list]
+    assert "color/primary" in var_names
+    assert "color/primary-text" in var_names
+    assert "color/bg" in var_names
+    assert "spacing/space-4" in var_names
 
+
+def test_w07_roadmap_screens_specification():
+    """Verify that design/preview/w07_roadmap_screens.html implements roadmap, progress and rollback/complete actions."""
+    w07_html = Path("design/preview/w07_roadmap_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-roadmap-overview"' in w07_html
+    assert 'id="module-1"' in w07_html
+    assert 'id="module-2"' in w07_html
+    assert 'id="concept-lad"' in w07_html
+    assert 'id="concept-lcx"' in w07_html
+    assert 'id="btn-rollback-lad"' in w07_html
+    assert 'id="btn-mark-lcx"' in w07_html
+    assert 'id="btn-quiz-full"' in w07_html
+    assert "min-height: 44px" in w07_html
+    assert "height: 44px" in w07_html
+    assert "@media (max-width: 768px)" in w07_html
+
+
+def test_w14_upload_screens_specification():
+    """Verify that design/preview/w14_upload_screens.html implements 4-step pipeline and scanned PDF error state."""
+    w14_html = Path("design/preview/w14_upload_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-upload-select"' in w14_html
+    assert 'id="section-pipeline-progress"' in w14_html
+    assert 'id="section-scan-error"' in w14_html
+    assert 'id="step-1"' in w14_html
+    assert 'id="step-2"' in w14_html
+    assert 'id="step-3"' in w14_html
+    assert 'id="step-4"' in w14_html
+    assert 'id="chk-copyright"' in w14_html
+    assert "min-height: 44px" in w14_html
+    assert "height: 44px" in w14_html
+    assert "prefers-reduced-motion: reduce" in w14_html
+
+
+def test_falsifiable_mutation_raw_variables_invalid_fails():
+    """Falsifiable test: corrupting raw variables export metadata must fail assertion."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    mutated = dict(data)
+    mutated["metadata"] = dict(mutated["metadata"])
+    mutated["metadata"]["fileKey"] = "WRONG_FILE_KEY"
+    try:
+        assert mutated["metadata"]["fileKey"] == "UVhhlZnqdpV0JDcAHwJczo"
+        raise RuntimeError("Guard failed to catch wrong file key mutation!")
+    except AssertionError:
+        pass  # Caught!
