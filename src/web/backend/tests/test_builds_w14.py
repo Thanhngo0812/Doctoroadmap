@@ -637,3 +637,25 @@ def test_queue_skips_a_locked_job_and_claims_the_next_without_waiting(builds):
     thread.join(timeout=3)
     assert not waited,'Queue consumer waited on a job locked by another connection'
     assert len(results)==1 and results[0]['id']!=str(locked)
+
+
+def test_default_fake_media_survives_independent_api_and_worker_composition(builds):
+    from wayfinder.composition import compose_build_service
+    from wayfinder.worker import make_worker,run_worker
+    b=builds
+    root=Path(__file__).parents[4]
+    # Keep credentials in server memory; never include them in the evidence DTO.
+    settings=b.settings.model_copy(update={'database_url':b.postgres_database_url.render_as_string(hide_password=False)})
+    api=compose_build_service(settings,b.engine,clock=b.clock)
+    item=api.create_upload(b.actor,'doc-6.pdf',(root/'doc-6.pdf').read_bytes(),rights_confirmed=True)
+    api.confirm_build(b.actor,item['upload_id'],title='Đặt tên trước index, hai runtime')
+    consumer,engine=make_worker(settings,source_doc='doc-6',fixture_root=root,
+        manifest=root/'report/doc1-rebuild-evidence-2026-10-20/development-fixtures.json',
+        manifest_sha256='5fc819f723f7263fe3d443ec780009a75aae66f2c35db8fe0bc3e3c50464eb84')
+    try:
+        assert consumer.service.store.engine is not b.engine
+        assert consumer.service.media is not api.media
+        assert run_worker(consumer,once=True)==0
+        assert api.get_build(b.actor,item['build']['build_id'])['status']=='succeeded'
+        assert consumer.mailer.messages[-1]['subject']=='Bản dựng xong'
+    finally: engine.dispose()

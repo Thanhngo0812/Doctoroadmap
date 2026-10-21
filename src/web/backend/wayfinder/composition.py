@@ -121,8 +121,9 @@ def compose_services(
 def compose_build_service(settings, engine, *, media=None, clock=None):
     from wayfinder.application.builds import BuildService
     from wayfinder.infrastructure.build_store import PostgresBuildStore
-    from wayfinder.infrastructure.media import LazyMediaStore
-    return BuildService(PostgresBuildStore(engine), settings=settings, media=media if media is not None else LazyMediaStore(), clock=clock)
+    from wayfinder.fakes.local_media import LocalFakeMediaStore
+    return BuildService(PostgresBuildStore(engine), settings=settings,
+        media=media if media is not None else LocalFakeMediaStore(settings.artifact_root.parent / 'fake-media'), clock=clock)
 
 
 def compose_course_services(settings, engine, phase_b_store, *, model=None, embedding=None,

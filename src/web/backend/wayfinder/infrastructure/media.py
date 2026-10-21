@@ -13,17 +13,6 @@ from wayfinder.application.media import MediaStore
 _TIMEOUT_SECONDS = 30
 
 
-class LazyMediaStore:
-    """Do not require cloud credentials until a media operation is requested."""
-    def __init__(self):
-        self._store = None
-
-    def __getattr__(self, name):
-        if self._store is None:
-            self._store = CloudinaryMediaStore()
-        return getattr(self._store, name)
-
-
 class CloudinaryMediaStore:
     def __init__(self) -> None:
         if not os.environ.get("CLOUDINARY_URL"):

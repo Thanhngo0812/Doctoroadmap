@@ -23,7 +23,8 @@ def make_worker(settings,*,source_doc,fixture_root,manifest,manifest_sha256,medi
     from doc2roadmap.application.phase_b.retrieval import load_learning_graph
     from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
     from wayfinder.application.build_worker import BuildWorker
-    from wayfinder.composition import compose_build_service, compose_mailer
+    from wayfinder.composition import compose_build_service
+    from wayfinder.fakes.mail import FakeMailer
     from wayfinder.infrastructure.database import create_database_engine
     from wayfinder.infrastructure.fake_build import ManifestFakeBuildRunner
 
@@ -39,7 +40,7 @@ def make_worker(settings,*,source_doc,fixture_root,manifest,manifest_sha256,medi
             manifest=manifest,manifest_sha256=manifest_sha256,recorder=recorder,pipeline_version=service.pipeline_version)
     worker=BuildWorker(service,runner_factory=factory,
         graph_loader=lambda doc,version:load_learning_graph(JsonArtifactStore(settings.artifact_root),doc,version),
-        mailer=mailer if mailer is not None else compose_mailer(settings),
+        mailer=mailer if mailer is not None else FakeMailer(),
         worker_id=f'{os.getpid()}-{uuid4().hex}')
     return worker,engine
 
