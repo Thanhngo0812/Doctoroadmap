@@ -2,8 +2,18 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 
 const root = path.resolve(__dirname, '..');
-process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(root, '.tmp/w01-browsers');
-const { chromium } = require(path.join(root, '.tmp/w01-browser-tools/node_modules/playwright'));
+const fsSync = require('node:fs');
+let browserToolsDir = path.join(root, '.tmp/w01-browser-tools');
+let browsersPath = path.join(root, '.tmp/w01-browsers');
+if (!fsSync.existsSync(browserToolsDir)) {
+  const mainRepo = path.resolve(root, '..', '..');
+  if (fsSync.existsSync(path.join(mainRepo, '.tmp/w01-browser-tools'))) {
+    browserToolsDir = path.join(mainRepo, '.tmp/w01-browser-tools');
+    browsersPath = path.join(mainRepo, '.tmp/w01-browsers');
+  }
+}
+process.env.PLAYWRIGHT_BROWSERS_PATH = browsersPath;
+const { chromium } = require(path.join(browserToolsDir, 'node_modules/playwright'));
 
 async function runPrototypes() {
   const artifactsDir = path.join(root, 'artifacts');
