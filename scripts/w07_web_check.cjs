@@ -534,8 +534,8 @@ async function assertUiProgressMatches(page, progress, moment) {
   const learned = Object.values(progress.nodes).filter(node => node.state === 'learned').length;
   const expected = `${learned}/${Object.keys(progress.nodes).length} bài học`;
   await page.waitForFunction(value =>
-    document.querySelector('[aria-label="Tiến độ cả kho"] strong')?.textContent?.trim() === value, expected);
-  const actual = (await page.locator('[aria-label="Tiến độ cả kho"] strong').textContent()).trim();
+    document.querySelector('[aria-label="Tiến độ cả khoá"] strong')?.textContent?.trim() === value, expected);
+  const actual = (await page.locator('[aria-label="Tiến độ cả khoá"] strong').textContent()).trim();
   assert.equal(actual, expected, `UI course summary must match latest GET progress ${moment}`);
 }
 
