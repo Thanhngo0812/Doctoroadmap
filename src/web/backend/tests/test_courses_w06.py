@@ -544,11 +544,12 @@ def test_w06_migration_is_single_head_after_w03_and_empty_database_upgrades(cour
     config = Config()
     config.set_main_option("script_location", str(Path(__file__).parents[1] / "wayfinder/migrations"))
     scripts = ScriptDirectory.from_config(config)
-    assert scripts.get_heads() == ["w06_0005"]
+    assert len(scripts.get_heads()) == 1
+    assert scripts.get_heads()[0] in {revision.revision for revision in scripts.walk_revisions(base="w06_0005")}
     assert scripts.get_revision("w06_0005").down_revision == "w03_0004"
     assert {"course", "membership"} <= set(inspect(courses.engine).get_table_names())
     with courses.engine.connect() as connection:
-        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "w06_0005"
+        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == scripts.get_heads()[0]
 
 
 def test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point(tmp_path, monkeypatch):

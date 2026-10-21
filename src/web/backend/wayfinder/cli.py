@@ -23,7 +23,12 @@ def main(argv=None) -> int:
     serve = commands.add_parser("serve")
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8000)
-    commands.add_parser("worker")
+    worker = commands.add_parser("worker")
+    worker.add_argument("--fake-source", required=True)
+    worker.add_argument("--fixture-root", type=Path, required=True)
+    worker.add_argument("--manifest", type=Path, required=True)
+    worker.add_argument("--manifest-sha256", required=True)
+    worker.add_argument("--once", action="store_true")
     commands.add_parser("check")
     commands.add_parser("media-smoke")
     create_admin = commands.add_parser("create-admin")
@@ -115,8 +120,13 @@ def main(argv=None) -> int:
         return 0
 
     if args.command == "worker":
-        print("Khung worker sẵn sàng. Vé W-14 bổ sung nhận và xử lý bản dựng.")
-        return 0
+        from wayfinder.worker import main as worker_main
+        try:
+            return worker_main(settings, source_doc=args.fake_source, fixture_root=args.fixture_root,
+                manifest=args.manifest, manifest_sha256=args.manifest_sha256, once=args.once)
+        except (ValueError, FileNotFoundError):
+            print("Worker giả cần dev, PostgreSQL và bản sao phát triển đúng manifest.", file=sys.stderr)
+            return 2
     if args.command == "check":
         if not settings.test_database_url:
             print("PostgreSQL: thiếu WAYFINDER_TEST_DATABASE_URL; web check cần db-test.", file=sys.stderr)
