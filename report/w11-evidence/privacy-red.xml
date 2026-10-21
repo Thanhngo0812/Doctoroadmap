@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="2.187" timestamp="2026-10-21T16:23:41.083760+07:00" hostname="ADMIN"><testcase classname="" name="src.web.backend.tests.test_share_link_privacy_w11" time="0.000"><error message="collection failure">ImportError while importing test module 'C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\src\web\backend\tests\test_share_link_privacy_w11.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\tests\test_share_link_privacy_w11.py:3: in &lt;module&gt;
+    from wayfinder.api.token_privacy import ShareLinkAccessFilter, install_share_link_log_filter
+E   ModuleNotFoundError: No module named 'wayfinder.api.token_privacy'</error></testcase></testsuite></testsuites>

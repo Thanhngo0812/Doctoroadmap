@@ -1,5 +1,13 @@
 # WayFinder — chạy backend và frontend
 
+## Tiến trình W-11 — tạm dừng sau service/API/UI
+
+Mã W-11 nằm tại `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links`, nhánh `work/w11-share-links`, tách từ W-07. Đã có service/API và React cho chia sẻ link, tham gia, thành viên và rời khoá. **Chưa dùng bản này để demo W-11 đầu-cuối:** bảng `share_link` chưa có migration. Test phát triển dùng bảng tạm trong PostgreSQL UUID riêng, không thay đổi DB đang dùng của bạn.
+
+Theo yêu cầu chủ dự án, dừng sau phần này; W-14 ghép trước, W-11 nối sau. Khi tiếp tục: nhận main có W-07/W-14, thêm migration `w11_0007 → w14_0006`, rồi kiểm tích hợp đầy đủ trước khi cập nhật hướng dẫn mở W-11. Không chạy `create_all`, seed hoặc sửa DB phát triển để bỏ qua bước này. Xem [tiến trình và điểm tiếp tục W-11](../../report/w11-chia-se-link-thanh-vien-2026-10-21.md).
+
+Các bước mở PostgreSQL/backend/frontend bên dưới vẫn dành cho **bản W-07 đã kiểm**, giữ nguyên worktree của bản đó để đối chiếu. W-11 dùng cùng cấu hình `WAYFINDER_PUBLIC_BASE_URL` để tạo link và `WAYFINDER_SHARE_LINK_DEFAULT_DAYS` (mặc định 7); không cần thông tin dịch vụ ngoài mới. Chưa mở service W-11 trong đợt tạm dừng này.
+
 ## Mở nhanh bản W-07 trên máy hiện tại
 
 Bản W-07 nằm ở nhánh `work/w07-roadmap-progress`, thư mục `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w07-roadmap-progress`. Chạy từ thư mục này để mở đúng bản mới. Bật **Docker Desktop** và chờ engine sẵn sàng trước.
