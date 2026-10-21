@@ -84,7 +84,7 @@ còn đổi; nhóm web đã được báo.
 | [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07, SA-39, SA-40, SA-41 | ready-for-agent |
 | [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07, SA-32, SA-33, SA-42 | ready-for-agent |
 | [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35, SA-37 | ready-for-agent |
-| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06 | đủ điều kiện; sau W-07 nếu một phiên web; chốt tuyến migration với W-14 |
+| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06 | đủ điều kiện; sau W-07 nếu một phiên web; migration w11_0007 nối w14_0006, ghép sau mốc W-14 đã soát đạt |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
 | [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
 | [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06 | đủ điều kiện; lõi chuẩn bị backend/worker, web tích hợp sau ưu tiên W-07; thêm FK build_id/nguồn upload; không dự toán, nối callback W-13 |
@@ -104,7 +104,7 @@ còn đổi; nhóm web đã được báo.
 - **Sau nghiệm thu W-06, 2026-10-21:** W-06 đã ghép `dc41ee8`, mốc `8b6e500`; cổng đúng mốc 2.107 Python đạt/0 fail/1 Cloudinary live không bật,
   React 77/build, browser PG 9 assertion/6 màn và 8/8 mutation bị bắt, 0 USD. Web ưu tiên W-07 rồi W-11; lõi chuẩn bị backend/worker W-14 bằng bộ dựng giả;
   thiết kế tiếp W-24 phần Figma, ưu tiên W-07/W-14. Phần local W-24 được tích hợp không đồng nghĩa đóng toàn vé.
-  W-07 không tạo migration rỗng; W-11/W-14 chốt một tuyến head theo thứ tự ghép. W-14 bổ sung FK build_id và nguồn upload theo phần W-06 bàn giao.
+  W-07 không tạo migration rỗng; tuyến đã chốt `w06_0005 → w14_0006 → w11_0007`: W-14 ghép trước, W-11 nối sau. W-14 bổ sung FK build_id và nguồn upload theo phần W-06 bàn giao.
   Đã soát SA-47 memory/JSON phục vụ mở W-07; các race/cách ly PostgreSQL vẫn phải kiểm trong W-07. Giữ soát B2 còn lại trước các vé học tương ứng.
   [Bằng chứng và kế hoạch](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md). Các đợt giao trước dưới đây giữ làm lịch sử.
 - **Khởi động lại sau sự cố artifact, mốc mới nhất 2026-10-20:** chủ dự án xác nhận nhóm web mới xong W-03, các nhóm đang dừng.
