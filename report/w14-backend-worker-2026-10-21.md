@@ -58,9 +58,9 @@ chạy do actor khác yêu cầu; UI dùng can_cancel/can_retry.
 
 ### Schema và tuyến migration
 
-Đề xuất tuyến hiện tại: w06_0005 → **w14_0006**. Chưa có migration W-11 trong
-main/nhánh hiện thấy; người soát chốt successor theo thứ tự ghép W-11/W-14,
-không tạo hai head. Ghi ở đây cho chủ dự án chuyển, không nhắn phiên khác.
+**Tuyến đã được chốt tại main `2f4998c`: w06_0005 → w14_0006 → w11_0007.**
+W-14 giữ migration đang có, W-11 nhận migration này rồi nối phía sau; không tạo
+hai head. Đã nhận cập nhật tài liệu, không tự sửa nhánh W-11 hay nhắn phiên khác.
 
 Tạo upload/build/media_asset; course.build_id có FK build, upload.course_id
 liên kết nguồn PDF/DOCX riêng của course; khoá mẫu vẫn source_public_id và null
@@ -194,14 +194,17 @@ tích luỹ từng bước. Muốn có sổ chi từng bước và cổng trần
 lượt thật, cần callback usage checkpoint từ pipeline. Tái hiện: BuildResult chỉ
 có tổng, callback progress chỉ có status/metadata; web chỉ biết tổng khi recorder
 được gọi. Backend hiện nhận được phần mở rộng usage và đã kiểm bằng đồ giả,
-ghi phần chưa phân bổ rõ ràng thay vì suy số. Người soát chốt tuyến migration
-W-11/W-14 theo thứ tự ghép; chưa tự mở head W-11 hay gửi tin sang phiên khác.
+ghi phần chưa phân bổ rõ ràng thay vì suy số. Tuyến W-14 trước W-11 đã chốt tại
+`2f4998c`; chưa tự mở head W-11 hay gửi tin sang phiên khác.
 
 ## Kết quả chốt và bằng chứng
 
 Mốc kiểm cuối **`21a58354ff11a039382066d06f4594e76ba0df2f`**; đã `git merge main`
-trước kiểm, main nền **`eb6af0855b8a7f7c42cca8399fe74e189f9aadfe`**, không có cập
-nhật mới khi chốt. Các commit sau mốc này chỉ đóng gói báo cáo/bằng chứng.
+trước kiểm, main nền **`eb6af0855b8a7f7c42cca8399fe74e189f9aadfe`**. Sau cổng,
+main có thêm `2f4998c6d2cafa52d881f514e879fcbf06417c96`, chỉ đổi sáu tệp tài liệu/vé;
+đã nhận bằng merge `9e3cfb9`. Đối chiếu `src/`, `tests/`, `scripts/`, `pyproject.toml`
+với mốc kiểm không có diff. Không ghi là đã chạy lại cổng sau cập nhật tài liệu.
+Các commit sau mốc kiểm chỉ đóng gói hồ sơ hoặc nhận tài liệu main, không đổi mã/test.
 
 | Cổng | Kết quả | Hồ sơ |
 |---|---|---|
@@ -281,4 +284,6 @@ Chưa khởi động worker chạy nền trên DB dev của chủ dự án.
 Đã tự soát quyền/CSRF, SQL bind, atomic owner, FK, queue lock, lease/receipt,
 idempotency, quota Việt Nam, trần ngày, huỷ/race, nguồn/tệp tạm và transport.
 Đây là **bàn giao backend/worker giả**, chưa phải nghiệm thu độc lập hay đóng
-W-14 đầu-cuối. Không tự ghép/push main; không sửa vé/kế hoạch/handoff.
+W-14 đầu-cuối. Theo cập nhật `2f4998c`, người soát chờ chủ dự án báo mới bắt đầu
+nghiệm thu; chốt tuyến không phải cho phép ghép ngay. Không tự ghép/push main;
+không tự sửa vé/kế hoạch/handoff (chỉ nhận thay đổi tài liệu của main).

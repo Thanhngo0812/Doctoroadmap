@@ -300,7 +300,7 @@
   "migration": "w06_0005 -> w14_0006",
   "pending": [
     "W-14 React/browser integration",
-    "Independent acceptance and migration order with W-11",
+    "Independent acceptance when requested by project owner",
     "W-15 real runner/providers and per-step usage checkpoint port"
   ],
   "interrupted_gate": {
@@ -311,5 +311,8 @@
   "rejected_mutation_preflight": {
     "accepted": false,
     "reason": "Course context mutant could pass with equal fixture timestamps; test now advances fake clock deterministically"
-  }
+  },
+  "received_main_after_gate": "2f4998c6d2cafa52d881f514e879fcbf06417c96",
+  "received_main_kind": "documents only; application/tests/scripts/pyproject unchanged",
+  "migration_sequence_confirmed": "w06_0005 -> w14_0006 -> w11_0007"
 }
