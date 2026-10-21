@@ -53,6 +53,7 @@ it('shows API-ordered modules, honest course and module totals, and the expanded
   vi.stubGlobal('fetch', baseFetch());
   renderPage();
   expect(await screen.findByRole('heading', { name: 'Xác suất cơ bản' })).toBeInTheDocument();
+  expect(screen.getByRole('progressbar', { name: 'Tiến độ module Biến cố' })).toBeInTheDocument();
   expect(screen.getByText('Tiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.')).toBeInTheDocument();
   expect(screen.getByText('1/4 bài học')).toBeInTheDocument();
   const first = screen.getByRole('button', { name: /Biến cố/ });

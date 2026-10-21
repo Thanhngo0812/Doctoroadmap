@@ -103,8 +103,8 @@ function RoadmapModules({ roadmap, nodes, pending, errors, onToggle, activeModul
           </h2>
           {open && <div className="roadmap-module__body" id={panelId} role="region" aria-labelledby={`roadmap-module-button-${module.module_id}`}>
             <p className="roadmap-module__description">{description.join(' ')}</p>
-            <div className="roadmap-module__progress" aria-label={`Tiến độ module ${module.title}`}>
-              <progress value={counts.total ? counts.learned : 0} max={counts.total || 1} />
+            <div className="roadmap-module__progress">
+              <progress aria-label={`Tiến độ module ${module.title}`} value={counts.total ? counts.learned : 0} max={counts.total || 1} />
               <span>{counts.learned}/{counts.total} bài học</span>
             </div>
             <ConceptChecklist module={module} nodes={nodes} pending={pending} errors={errors} onToggle={onToggle} />
