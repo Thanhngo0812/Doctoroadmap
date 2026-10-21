@@ -24,8 +24,11 @@ class MemoryMediaStore:
         self.formats[public_id] = path.suffix.lstrip(".").lower() or "bin"
         return public_id
 
-    def download(self, public_id: str) -> Path:
+    def download(self, public_id: str, *, destination: Path | None = None) -> Path:
         content = self._get(public_id)
+        if destination is not None:
+            destination.write_bytes(content)
+            return destination
         with NamedTemporaryFile(suffix="." + self.formats[public_id], delete=False) as temporary:
             temporary.write(content)
         return Path(temporary.name)

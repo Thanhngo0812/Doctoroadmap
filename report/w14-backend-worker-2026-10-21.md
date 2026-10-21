@@ -12,7 +12,7 @@ migration, không sửa composition; chưa tự nhập nhánh W-07. Giữ các w
 |---|---|---|
 | POST /uploads | multipart `file`, `rights_confirmed=true` | upload-1 + build-1; chưa chạy |
 | GET /uploads/{id} | người tải | upload-1, build hiện tại |
-| POST /uploads/{id}/build | `{}` xác nhận rõ ràng | build-1; idempotent theo upload |
+| POST /uploads/{id}/build | `{"title":"Tên khoá do người dùng đặt"}` xác nhận rõ ràng | build-1; idempotent theo upload |
 | GET /builds/{id} | chủ một upload liên kết bản dựng | build-1 theo course của actor |
 | POST /builds/{id}/cancel | `{}` | build-1; chỉ người yêu cầu chạy được huỷ việc dùng chung |
 | POST /builds/{id}/retry | `{}` | build-1; chỉ lỗi retryable, không trừ lượt lại |
@@ -62,8 +62,10 @@ hai lần. Không sửa migration W-06.
 
 ### Điểm cần chốt / giới hạn port
 
-- Tên course mặc định từ tên tài liệu theo spec. Đề xuất ô sửa tên ở xác nhận
-  chưa được coi là duyệt; hiện xác nhận body rỗng, đổi tên qua PATCH course sẵn có.
+- **Chủ dự án đã chốt trong phiên:** được đặt tên khoá trước khi index. Tên điền
+  sẵn từ tên tài liệu; POST xác nhận nhận title (1–120 ký tự sau trim), ghi tên
+  trước khi queued trong cùng transaction. Không truyền title vẫn giữ tên mặc định.
+  Xác nhận lặp không đổi tên lần đầu; muốn sửa tiếp dùng PATCH course sẵn có.
 - Vé ghi PDF 400 trang, spec chức năng và WebSettings ghi build_max_pages mặc
   định không giới hạn. Theo nguồn chân lý spec: giữ mặc định None, kiểm trần khi bật.
 - BuildResult W-13 có tổng usage của lần chạy; progress không bắt buộc usage từng
