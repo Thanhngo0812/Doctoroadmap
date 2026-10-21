@@ -514,8 +514,8 @@ async function captureMockStates(context, courseId, progress, roadmap, audit, ob
         if (state === 'loading') {
           assert.equal(typeof releaseLoading, 'function');
           releaseLoading();
-          await navigation;
         }
+        await navigation;
         await page.unroute(progressRoute);
         if (state === 'empty') await page.unroute(roadmapRoute);
       }
