@@ -1,0 +1,44 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Roadmap.test.tsx -t merges concurrent node responses by their own node so stale full snapshots cannot undo another check --reporter=default --reporter=junit --outputFile=C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w07-roadmap-progress\report\w07-evidence\ui-stale-snapshot-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w07-roadmap-progress/src/web/frontend
+
+ ❯ src/Roadmap.test.tsx (8 tests | 1 failed | 7 skipped) 308ms
+   ↓ shows API-ordered modules, honest course and module totals, and the expanded concept checklist
+   ↓ marks a fully learned module with a success indicator
+   ↓ shows a quiet empty state when the API roadmap has no modules
+   ↓ clears an expired session after a progress write returns 401
+   ↓ optimistically updates one concept and restores only that checkbox when its request fails
+   ↓ rolls back when a successful write response omits the requested node
+   × merges concurrent node responses by their own node so stale full snapshots cannot undo another check 306ms
+   ↓ shows the selected module and the shared learner mark on the module route
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Roadmap.test.tsx > merges concurrent node responses by their own node so stale full snapshots cannot undo another check
+Error: expect(element).toBeChecked()
+
+Received element is not checked:
+  <input
+  aria-label="Đã học: Biến cố"
+  type="checkbox"
+/>
+ ❯ src/Roadmap.test.tsx:191:69
+    189|   await act(async () => { resolveNode1(json(progress(['node-1']))); });
+    190|   expect(screen.getByRole('checkbox', { name: 'Đã học: Không gian mẫu'…
+    191|   expect(screen.getByRole('checkbox', { name: 'Đã học: Biến cố' })).to…
+       |                                                                     ^
+    192|   expect(screen.getByText('2/4 bài học')).toBeInTheDocument();
+    193| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  12:18:51
+   Duration  1.90s (environment 48%, tests 18%, setup 14%, import 12%, transform 7%, worker 1%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w07-roadmap-progress/report/w07-evidence/ui-stale-snapshot-red.xml

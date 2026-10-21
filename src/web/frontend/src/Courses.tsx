@@ -1,14 +1,14 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from './Auth';
 import { ApiError } from './api';
-import { coursePath, getCourse, getRoadmap, joinSample, listCourses, resumePath, type Course, type CourseList, type CourseModule } from './courses-api';
+import { coursePath, joinSample, listCourses, resumePath, type Course, type CourseList } from './courses-api';
 import './courses.css';
 
-type ThemeProps = { theme: 'light' | 'dark'; onToggleTheme: () => void };
+export type ThemeProps = { theme: 'light' | 'dark'; onToggleTheme: () => void };
 const message = (cause: unknown) => cause instanceof ApiError ? cause.message : 'Không thể kết nối WayFinder. Hãy kiểm tra mạng rồi thử lại.';
 
-function CourseShell({ theme, onToggleTheme, children }: ThemeProps & { children: ReactNode }) {
+export function CourseShell({ theme, onToggleTheme, children }: ThemeProps & { children: ReactNode }) {
   const auth = useAuth();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -24,7 +24,7 @@ function CourseShell({ theme, onToggleTheme, children }: ThemeProps & { children
       <div className="header-actions">
         <Link className="button button-primary courses-upload" to="/tai-len">Tải tài liệu</Link>
         <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" /></svg></button>
-        <details className="account-menu"><summary><span className="account-menu-name">{auth.account?.display_name}</span><svg className="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg></summary>
+        <details className="account-menu"><summary aria-label={`Tài khoản của ${auth.account?.display_name}`}><span className="account-menu-name">{auth.account?.display_name}</span><span className="courses-account-label">Tài khoản</span><svg className="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg></summary>
           <div className="account-menu-panel"><Link to="/tai-khoan">Tài khoản</Link><Link className="courses-menu-upload" to="/tai-len">Tải tài liệu</Link><button type="button" disabled={busy} onClick={() => void logout()}>{busy ? 'Đang đăng xuất…' : 'Đăng xuất'}</button>{error && <small role="alert">{error}</small>}</div>
         </details>
       </div>
@@ -117,33 +117,3 @@ export function CoursesPage(props: ThemeProps) {
 }
 
 // W-06 only opens the membership-checked course and resume summary; W-07 owns the full roadmap/lesson screen.
-export function CourseEntry(props: ThemeProps) {
-  const { cid = '', mid } = useParams();
-  const auth = useAuth();
-  const [entry, setEntry] = useState<{ course: Course; module?: CourseModule } | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [reload, setReload] = useState(0);
-  useEffect(() => {
-    const controller = new AbortController();
-    setEntry(null); setError(null);
-    void (async () => {
-      const course = await getCourse(cid, controller.signal);
-      const roadmap = course.status === 'ready' ? await getRoadmap(cid, controller.signal) : null;
-      const module = roadmap?.modules.find(item => item.module_id === (mid ?? course.resume?.module_id));
-      if (mid && !module) throw new ApiError('not_found');
-      if (!controller.signal.aborted) setEntry({ course, module });
-    })().catch(cause => {
-      if (controller.signal.aborted) return;
-      if (cause instanceof ApiError && cause.code === 'unauthenticated') auth.clearSession();
-      else setError(message(cause));
-    });
-    return () => controller.abort();
-  }, [cid, mid, reload, auth.clearSession]);
-  return <CourseShell {...props}><Link className="back-link" to="/khoa-hoc">← Khoá học của tôi</Link>
-    {error ? <div className="courses-error"><h1>Chưa mở được khoá học</h1><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>
-      : !entry ? <Loading /> : <section className="course-entry"><h1>{entry.course.title}</h1><p>{entry.course.description}</p><p className="course-entry-summary">{entry.course.module_count} module · Từ {entry.course.owner.display_name}</p>
-        {entry.module && <div className="course-entry-next"><p>Chặng tiếp theo của bạn</p><h2>{entry.module.title}</h2>{(typeof entry.module.description === 'string' ? [entry.module.description] : entry.module.description.map(part => part.text)).map((text, index) => <p key={index}>{text}</p>)}</div>}
-        {entry.course.status !== 'ready' && <p role="status">{entry.course.status === 'building' ? 'Tài liệu đang được xử lý. Bạn có thể quay lại sau.' : 'Chưa dựng được khoá học này.'}</p>}
-      </section>}
-  </CourseShell>;
-}

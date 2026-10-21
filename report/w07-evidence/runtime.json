@@ -1,0 +1,47 @@
+{
+  "baseUrl": "http://127.0.0.1:8007",
+  "database": "disposable-postgresql",
+  "realArgon2": true,
+  "phaseBStore": "postgresql",
+  "media": "memory-only",
+  "mailer": "fake",
+  "modelCalls": 0,
+  "modelCostUsd": 0,
+  "fixture": {
+    "docId": "doc-1",
+    "expectedGraphVersion": 8,
+    "sourceSha256Verified": true
+  },
+  "fixtureState": {
+    "courseId": "9342d7ba-689e-4311-9f6f-1dfc9e95541c",
+    "privateCourseId": "d6ff9fdd-aeb1-47cb-b67f-56a4ca6ccdfc",
+    "docId": "doc-1",
+    "graphVersion": 8,
+    "moduleCount": 35,
+    "learnableNodeCount": 223,
+    "mediaUploads": 1,
+    "fixtureAdminId": "22ae3220-178c-42c8-b7c0-29b281e8f6c4"
+  },
+  "migrationHead": "w06_0005",
+  "browserExitCode": 0,
+  "learnerAccounts": 2,
+  "progressRowsForLearners": 2,
+  "learnerAProgress": [
+    {
+      "nodeId": "node_92b86f8bac3397ea9de112b0",
+      "state": "learned",
+      "source": "learner"
+    },
+    {
+      "nodeId": "node_9f23f5df7eb27a4bc46857c8",
+      "state": "not_learned",
+      "source": "learner"
+    }
+  ],
+  "learnerBProgressRows": 0,
+  "learnerIsolationVerifiedByIndependentPostgresConnection": true,
+  "failedWritePersisted": false,
+  "phaseBRecords": 2,
+  "acceptanceAssertionsPassed": true,
+  "temporaryDatabaseRemoved": true
+}

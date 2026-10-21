@@ -31,6 +31,7 @@
 .courses-page .course-card__actions > a, .courses-page .courses-empty-actions > a,
 .courses-page > .back-link, .courses-page .courses-alert a { min-height: 44px; }
 .courses-header .theme-toggle { width: 44px; height: 44px; }
+.courses-header .courses-account-label { display: none; }
 .courses-header .account-menu-panel .courses-menu-upload { display: none; }
 .courses-shell .account-menu-panel a {
   display: inline-flex; align-items: center; width: 100%; min-height: 44px; padding-inline: var(--space-2);
@@ -299,6 +300,8 @@
   }
   .courses-header .header-actions { gap: var(--space-2); }
   .courses-header .account-menu summary { max-width: 120px; }
+  .courses-header .account-menu-name { display: none; }
+  .courses-header .courses-account-label { display: inline; }
   .courses-shell .courses-page { padding-block: var(--space-6) var(--space-12); }
   .courses-heading {
     align-items: stretch;
