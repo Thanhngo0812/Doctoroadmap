@@ -23,8 +23,8 @@ function CourseShell({ theme, onToggleTheme, children }: ThemeProps & { children
       <Link className="brand-link" to="/khoa-hoc" aria-label="WayFinder, về khoá học"><img src={theme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
       <div className="header-actions">
         <Link className="button button-primary courses-upload" to="/tai-len">Tải giáo trình</Link>
-        <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{theme === 'light' ? '◐' : '◑'}</button>
-        <details className="account-menu"><summary><span className="account-menu-name">{auth.account?.display_name}</span><span aria-hidden="true">⌄</span></summary>
+        <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" /></svg></button>
+        <details className="account-menu"><summary><span className="account-menu-name">{auth.account?.display_name}</span><svg className="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg></summary>
           <div className="account-menu-panel"><Link to="/tai-khoan">Tài khoản</Link><Link className="courses-menu-upload" to="/tai-len">Tải giáo trình</Link><button type="button" disabled={busy} onClick={() => void logout()}>{busy ? 'Đang đăng xuất…' : 'Đăng xuất'}</button>{error && <small role="alert">{error}</small>}</div>
         </details>
       </div>
@@ -48,7 +48,7 @@ function CourseCard({ course, sample, pending, error, focusAction, onJoin }: { c
     <p className="course-card__owner">{course.role === 'owner' ? 'Bạn là chủ khoá' : `Từ ${course.owner.display_name}`}{course.member_count !== null && <> · {course.member_count} thành viên</>}</p>
     {!sample && <div className="course-card__progress">{course.progress ? <><span>Xong {course.progress.learned}/{course.progress.total} khái niệm</span>{course.progress.total > 0 && <progress aria-label={`Tiến độ ${course.title}`} value={course.progress.learned} max={course.progress.total} />}</> : <span>Chưa có tiến độ</span>}</div>}
     <div className="course-card__actions">{sample ? <button className="button button-secondary" type="button" disabled={pending || !ready} onClick={onJoin}>{pending ? 'Đang tham gia…' : 'Tham gia'}</button>
-      : <Link ref={actionRef} className="button button-secondary" to={ready ? resumePath(course) : coursePath(course.course_id)}>{ready ? 'Học tiếp' : 'Xem khoá học'}<span aria-hidden="true"> →</span></Link>}</div>
+      : <Link ref={actionRef} className="button button-secondary" to={ready ? resumePath(course) : coursePath(course.course_id)}>{ready ? 'Học tiếp' : 'Xem khoá học'}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></Link>}</div>
     {error && <small className="courses-join-error" role="alert">{error}</small>}
   </article>;
 }
