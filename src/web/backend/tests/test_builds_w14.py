@@ -664,7 +664,9 @@ def test_default_fake_media_survives_independent_api_and_worker_composition(buil
 def test_same_actor_separate_courses_keep_the_confirmation_and_polling_context(builds):
     b=builds
     data=pdf()
-    first,second=upload(b,content=data),upload(b,content=data)
+    first=upload(b,content=data)
+    b.clock.advance(1)
+    second=upload(b,content=data)
     b.service.confirm_build(b.actor,first['upload_id'],title='Lớp buổi sáng')
     response=b.client.post(f"/api/v1/uploads/{second['upload_id']}/build",headers=b.headers,json={'title':'Lớp buổi tối'})
     assert response.status_code==200,response.text
