@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.126" timestamp="2026-10-21T11:18:09.984756+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_only_allows_six_development_documents_in_dev_and_uploads_once" time="1.084"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;">src\web\backend\tests\test_courses_w06.py:296: in test_seed_only_allows_six_development_documents_in_dev_and_uploads_once
+    with pytest.raises(WebError) as production:
+         ^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;</failure></testcase></testsuite></testsuites>

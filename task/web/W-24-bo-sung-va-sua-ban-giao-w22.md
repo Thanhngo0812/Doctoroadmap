@@ -4,6 +4,12 @@
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
 **Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, kiểm lại chưa đạt toàn bộ; tiếp tục cùng vé.
 
+**Soát cùng W-06, 2026-10-21:** phần local `63dd8bd` được nhận và sửa tại `8b6e500`, ghép `dc41ee8`. Đã kiểm 23 test token,
+12 cấu hình preview W-06/W-04 không tràn/vùng bấm ≥44×44 và giảm chuyển động sau ổn định. Plugin nay không gán hạn 24 giờ cho trạng thái email đã xác minh,
+không ghi nối reactions thành công vô điều kiện; báo cáo được sửa resend 3 lần/giờ và giới hạn claim Cloud/clipboard/citation.
+**W-24 vẫn mở:** cần raw Variables export/provenance, đủ node/ảnh/video/bấm Figma; audit local 4/4 không thay các mục đó.
+Ưu tiên hỗ trợ màn W-07 và W-14. Xem [phán xét và kế hoạch mới](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
+
 **Nhánh riêng từ 2026-10-20:** `work/w24-figma-evidence`, worktree `tmp/w24-figma-evidence`, theo
 [quy trình nhánh](../../doc/quy-trinh-nhanh-va-ghep-main.md). Nhánh này giữ `781415b` và helper Figma `6cd6be7` được cherry-pick thành `f9540f5`;
 chưa có phán xét độc lập toàn bộ nhánh W-24. Phán xét phần local mang theo W-03 được bổ sung bên dưới. Không sửa/commit ở thư mục chung.

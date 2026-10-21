@@ -1,0 +1,41 @@
+const fs = require('node:fs/promises');
+const path = require('node:path');
+const root = process.cwd();
+const shared = path.resolve(root, '../..');
+process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(shared, '.tmp/w01-browsers');
+const { chromium } = require(path.join(shared, '.tmp/w01-browser-tools/node_modules/playwright'));
+(async () => {
+  const browser = await chromium.launch();
+  const results = [];
+  try {
+    for (const file of ['w06_course_screens.html', 'w04_profile_screens.html']) {
+      const page = await browser.newPage();
+      const errors = [];
+      page.on('pageerror', e => errors.push(e.message));
+      await page.goto('file:///' + path.join(root, 'design/preview', file).replaceAll('\\', '/'));
+      for (const width of [390, 768, 1280]) {
+        await page.setViewportSize({width, height: 900});
+        for (const theme of ['light', 'dark']) {
+          await page.locator('body').evaluate((body, theme) => body.setAttribute('data-theme', theme), theme);
+          await page.emulateMedia({reducedMotion: 'reduce'});
+          await page.waitForTimeout(350);
+          const metrics = await page.evaluate(() => ({
+            overflow: document.documentElement.scrollWidth > innerWidth,
+            smallControls: [...document.querySelectorAll('button,a,input')].filter(e => e.getClientRects().length)
+              .map(e => ({text:e.textContent.trim().slice(0,60),width:e.getBoundingClientRect().width,height:e.getBoundingClientRect().height}))
+              .filter(e => e.width < 44 || e.height < 44),
+            runningAnimations: document.getAnimations().filter(a => a.playState === 'running').length,
+          }));
+          const name = `design-${file.split('_')[0]}-${width}-${theme}.png`;
+          await page.screenshot({path:path.join(root,'tmp',name),fullPage:true});
+          results.push({file,width,theme,...metrics,pageErrors:[...errors],screenshot:name,scope:'static HTML preview only'});
+        }
+      }
+      await page.close();
+    }
+  } finally { await browser.close(); }
+  await fs.writeFile(path.join(root,'tmp/coord-design-audit.json'),JSON.stringify(results,null,2));
+  console.log(JSON.stringify({screens:results.length,overflow:results.filter(r=>r.overflow).length,
+    smallControlScreens:results.filter(r=>r.smallControls.length).length,animationScreens:results.filter(r=>r.runningAnimations).length,
+    pageErrors:results.reduce((n,r)=>n+r.pageErrors.length,0)}));
+})().catch(e=>{console.error(e);process.exitCode=1});

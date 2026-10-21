@@ -1,0 +1,28 @@
+[
+  {
+    "gate": "react",
+    "commit": "8b6e500adfb12845a9186ff120912e1a5a34f0d2",
+    "returncode": 0,
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1"
+    ]
+  },
+  {
+    "gate": "build",
+    "commit": "8b6e500adfb12845a9186ff120912e1a5a34f0d2",
+    "returncode": 0,
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "run",
+      "build"
+    ]
+  }
+]

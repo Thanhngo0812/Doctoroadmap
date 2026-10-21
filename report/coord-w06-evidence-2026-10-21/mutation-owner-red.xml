@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.745" timestamp="2026-10-21T11:17:30.796277+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection" time="2.132"><failure message="AssertionError: assert ('89744d2a-60a...-06517cb73870' == 'c705026c-900...-b2110c7a8427'&#10;  &#10;  - c705026c-9000-4e3a-8f24-b2110c7a8427&#10;  + 89744d2a-60a9-4aca-a848-06517cb73870)">src\web\backend\tests\test_courses_w06.py:229: in test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection
+    assert session.owner == actor.user_id and session.doc_id == "doc-1"
+E   AssertionError: assert ('89744d2a-60a...-06517cb73870' == 'c705026c-900...-b2110c7a8427'
+E     
+E     - c705026c-9000-4e3a-8f24-b2110c7a8427
+E     + 89744d2a-60a9-4aca-a848-06517cb73870)</failure></testcase></testsuite></testsuites>

@@ -186,11 +186,18 @@ Bảng Pha B (`phase_b_cache`, `phase_b_negative`, `phase_b_record`, `usage_ledg
 | `description` | text | ≤ 1.000 ký tự |
 | `status` | text | `building` \| `ready` \| `failed` |
 | `published_graph_version` | integer | null khi chưa `ready` |
+| `module_count` | integer | metadata số module của graph đã ghim, ≥ 0; backend tính khi tạo/phát hành, không nhận từ người dùng |
+| `source_public_id` | text | nullable; định danh PDF mẫu ở MediaStore, chỉ phía server; nguồn upload/build được nối ở W-14 |
 | `is_sample` | boolean | mặc định false; chỉ mục `WHERE is_sample` |
 | `created_at`, `updated_at` | timestamptz | |
 
 `on delete restrict` ở `owner_id` là chốt chặn cuối cho luật "xoá tài khoản khi còn khoá có thành viên khác thì từ chối". Thủ tục xoá tài khoản (mục 6) xoá
 khoá học của người đó trước.
+
+**Lát schema W-06 → W-14:** `w06_0005` tạo `build_id` UUID nullable khi bảng `build` chưa tồn tại; API W-06 không cho client gán trường này.
+W-14 phải thêm FK `course.build_id → build.id` trong migration tạo bảng build, đối chiếu nguồn upload/PDF và bổ sung test FK;
+không sửa migration W-06 đã ghép. `source_public_id` phục vụ PDF mẫu không có build/upload; không trả public_id/URL Cloudinary lâu dài qua API card.
+`module_count` phải cập nhật cùng `published_graph_version` khi chức năng phát hành bản mới được triển khai.
 
 **`membership`**
 

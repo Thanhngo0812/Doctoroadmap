@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection _
+src\web\backend\tests\test_courses_w06.py:229: in test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection
+    assert session.owner == actor.user_id and session.doc_id == "doc-1"
+E   AssertionError: assert ('89744d2a-60a...-06517cb73870' == 'c705026c-900...-b2110c7a8427'
+E     
+E     - c705026c-9000-4e3a-8f24-b2110c7a8427
+E     + 89744d2a-60a9-4aca-a848-06517cb73870)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-w06-acceptance\report\w06-evidence\owner-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_courses_w06.py::test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection
+1 failed, 1 warning in 5.74s

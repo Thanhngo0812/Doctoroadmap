@@ -3,7 +3,14 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 (toàn bộ), 8 (trần khâu dựng); [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md)
 (dùng lại theo băm); [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `upload`, `build`, mục 6 (nhận việc); spec thiết kế, trang tải sách
 và tiến trình dựng.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06 · **Trạng thái:** ready-for-agent
+**Ai:** lõi phụ trách backend/worker; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06 · **Trạng thái:** ready-for-agent
+
+**Kế hoạch sau W-06, 2026-10-21:** khi W-06 được ghi ghép, lõi chuẩn bị backend/worker và hợp đồng để web tích hợp sau ưu tiên W-07.
+Đây vẫn là một vé đầu-cuối; backend riêng xong chưa đóng vé. Xem
+[kế hoạch và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
+W-06 đã có `course`/`membership`, `module_count`, PDF mẫu `source_public_id`; W-14 bổ sung FK `course.build_id → build.id` khi tạo build,
+nối nguồn upload và metadata graph, kiểm dùng lại cùng tài liệu. Không sửa migration W-06; nhận head mới và chốt tuyến với W-11 trước ghép.
+Giữ bộ dựng/MediaStore/Mailer giả, test usage giả khác 0 để kiểm sổ chi thực; không gọi mô hình hay dùng ngân sách phục hồi cũ.
 
 ## Vì sao
 

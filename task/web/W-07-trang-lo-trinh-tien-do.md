@@ -4,6 +4,13 @@
 spec thiết kế, trang lộ trình.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-06, SA-34 · **Trạng thái:** ready-for-agent
 
+**Đợt sau W-06, 2026-10-21:** ưu tiên tiếp theo của web sau khi W-06 được ghi ghép trong
+[nghiệm thu và kế hoạch](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md). Đã soát độc lập phần sửa SA-47 memory/JSON,
+đủ dùng hợp đồng tiến độ hiện có; đây chưa phải nghiệm thu W-07/toàn SA-34. Bắt buộc kiểm race/cách ly bằng PostgreSQL qua các connection/runtime độc lập,
+membership và actor từ phiên; không dùng kết quả memory/JSON để bỏ phần này.
+Giữ nhãn người dùng “tài liệu”/“bài học”; API/node/graph vẫn theo hợp đồng. Dùng graph doc-1 v8, không ghim lại v45/v57, không nhập cache CLI/live vào web.
+Không tạo migration rỗng nếu không thêm bảng. Bàn giao JSON thật, ảnh 390/1280 sáng/tối, kiểm 768/video và test đánh dấu thất bại rollback UI.
+
 ## Vì sao
 
 Trang lộ trình là trang đầu tiên người học thấy trong một khoá: các module theo thứ tự, mỗi module có tên, mô tả, khái niệm và "xong x/y".

@@ -1,0 +1,1083 @@
+{
+  "realHttp": true,
+  "realPostgres": true,
+  "realArgon2": true,
+  "media": "memory-only",
+  "mailer": "fake",
+  "modelCalls": 0,
+  "modelCostUsd": 0,
+  "screens": [
+    {
+      "width": 390,
+      "theme": "light",
+      "screenshot": "courses-390-light.png",
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "courses-390-dark.png",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "screenshot": "courses-768-light.png",
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "screenshot": "courses-768-dark.png",
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "screenshot": "courses-1280-light.png",
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "screenshot": "courses-1280-dark.png",
+      "overflow": false
+    }
+  ],
+  "apiResponses": [
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401,
+      "stage": "auth.register"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 200,
+      "stage": "auth.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "auth.register"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/courses/3ab74592-73ed-4f3c-9c70-38484b0c522b/join-sample",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/courses/4ce390c2-a98c-4b1e-af19-a07c8981f65b/join-sample",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/3ab74592-73ed-4f3c-9c70-38484b0c522b",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses/3ab74592-73ed-4f3c-9c70-38484b0c522b/roadmap",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.empty"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "visual.mock.loading"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 500,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 500,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 500,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 500,
+      "stage": "visual.mock.error"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200,
+      "stage": "real.core-flow"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200,
+      "stage": "real.core-flow"
+    }
+  ],
+  "assertions": [
+    "real UI registration created an authenticated PostgreSQL account",
+    "Be Vietnam Pro loaded successfully from the documented font origins",
+    "real GET /courses returned six seeded samples; both joins and duplicate join persisted idempotently",
+    "real doc-1 detail and roadmap returned the published graph version and modules",
+    "Học tiếp navigated to the joined course and its real resume module",
+    "an authenticated non-member got not_found for private detail, roadmap, and injected-owner join",
+    "real course page passed axe, responsive overflow, and 44x44 target checks at required viewports/themes",
+    "reduced-motion browser preference leaves no running course-page animations",
+    "keyboard activation joined another real sample and Tab focused a visible control"
+  ],
+  "pageErrors": [],
+  "rawConsoleErrors": [
+    {
+      "stage": "auth.register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:390:dark",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:390:dark",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:dark",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:dark",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:dark",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:dark",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    }
+  ],
+  "consoleErrors": [],
+  "expectedConsoleErrors": [
+    {
+      "stage": "auth.register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:390:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:390:dark",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:390:dark",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:dark",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:768:dark",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:light",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:light",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:dark",
+      "text": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "axe:1280:dark",
+      "text": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-rMTfmcwdglj32aGW/+H+zbVW8YLkUkQ05rT9LJUecn8='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "expected": "Axe injected probe blocked by the production CSP"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    },
+    {
+      "stage": "visual.mock.error",
+      "text": "Failed to load resource: the server responded with a status of 500 (Internal Server Error)",
+      "expected": "deliberate mocked GET /api/v1/courses error state"
+    }
+  ],
+  "failedRequests": [],
+  "externalRequests": [],
+  "fontRequests": [
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.googleapis.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com",
+    "https://fonts.gstatic.com"
+  ],
+  "rawFontFailures": [
+    {
+      "stage": "axe:390:light",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:390:dark",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:768:light",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:768:dark",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:1280:light",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:1280:dark",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    }
+  ],
+  "expectedProbeRequests": [
+    {
+      "stage": "axe:390:light",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:390:dark",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:768:light",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:768:dark",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:1280:light",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    },
+    {
+      "stage": "axe:1280:dark",
+      "method": "GET",
+      "url": "/css2",
+      "resourceType": "xhr",
+      "error": "csp"
+    }
+  ],
+  "fontFailures": [],
+  "accessibility": [
+    {
+      "width": 390,
+      "theme": "light",
+      "violationCount": 0,
+      "violations": [],
+      "incompleteCount": 0,
+      "incomplete": [],
+      "nonTextIconContrast": [
+        {
+          "target": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"8\"></circle><path d=\"M12 4a8 8 0 ",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg class=\"account-menu-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"m7 10 5 5 5-5\"></path",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "incompleteCount": 0,
+      "incomplete": [],
+      "nonTextIconContrast": [
+        {
+          "target": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"8\"></circle><path d=\"M12 4a8 8 0 ",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg class=\"account-menu-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"m7 10 5 5 5-5\"></path",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "violationCount": 0,
+      "violations": [],
+      "incompleteCount": 0,
+      "incomplete": [],
+      "nonTextIconContrast": [
+        {
+          "target": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"8\"></circle><path d=\"M12 4a8 8 0 ",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg class=\"account-menu-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"m7 10 5 5 5-5\"></path",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "incompleteCount": 0,
+      "incomplete": [],
+      "nonTextIconContrast": [
+        {
+          "target": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"8\"></circle><path d=\"M12 4a8 8 0 ",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg class=\"account-menu-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"m7 10 5 5 5-5\"></path",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "violationCount": 0,
+      "violations": [],
+      "incompleteCount": 0,
+      "incomplete": [],
+      "nonTextIconContrast": [
+        {
+          "target": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"8\"></circle><path d=\"M12 4a8 8 0 ",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg class=\"account-menu-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"m7 10 5 5 5-5\"></path",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(18, 22, 27)",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 18.161
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "violationCount": 0,
+      "violations": [],
+      "incompleteCount": 0,
+      "incomplete": [],
+      "nonTextIconContrast": [
+        {
+          "target": "<svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"12\" cy=\"12\" r=\"8\"></circle><path d=\"M12 4a8 8 0 ",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg class=\"account-menu-chevron\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"m7 10 5 5 5-5\"></path",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        },
+        {
+          "target": "<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"></path></svg>",
+          "foreground": "rgb(232, 237, 242)",
+          "background": "rgb(22, 27, 34)",
+          "ratio": 14.685
+        }
+      ]
+    }
+  ],
+  "video": "w06-join-resume.webm",
+  "axeProbeCaveat": "Axe injects CSS probes; exact CSP console messages during axe:* stages are preserved and counted as expected tool diagnostics. CSP remains unchanged; application-stage CSP errors still fail.",
+  "visualOnlyStates": [
+    {
+      "state": "empty",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "mock-only-empty-390-light.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "empty",
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "mock-only-empty-390-dark.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "empty",
+      "width": 1280,
+      "theme": "light",
+      "screenshot": "mock-only-empty-1280-light.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "empty",
+      "width": 1280,
+      "theme": "dark",
+      "screenshot": "mock-only-empty-1280-dark.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "loading",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "mock-only-loading-390-light.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "loading",
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "mock-only-loading-390-dark.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "loading",
+      "width": 1280,
+      "theme": "light",
+      "screenshot": "mock-only-loading-1280-light.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "loading",
+      "width": 1280,
+      "theme": "dark",
+      "screenshot": "mock-only-loading-1280-dark.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "error",
+      "width": 390,
+      "theme": "light",
+      "screenshot": "mock-only-error-390-light.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "error",
+      "width": 390,
+      "theme": "dark",
+      "screenshot": "mock-only-error-390-dark.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "error",
+      "width": 1280,
+      "theme": "light",
+      "screenshot": "mock-only-error-1280-light.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    },
+    {
+      "state": "error",
+      "width": 1280,
+      "theme": "dark",
+      "screenshot": "mock-only-error-1280-dark.png",
+      "source": "intercepted GET /api/v1/courses",
+      "acceptance": false
+    }
+  ],
+  "designInspectionReadiness": {
+    "stylesheetCount": 1,
+    "fontLoaded": true,
+    "pageWidth": 1200,
+    "pageMaxWidth": "none",
+    "scrollWidth": 1280,
+    "viewportWidth": 1280
+  },
+  "designInspection": {
+    "source": "static snapshot of real authenticated course list; scripts removed; design review only",
+    "acceptance": false,
+    "snapshot": "tmp\\w06-course-inspect.html",
+    "output": "report\\w06-web-evidence\\taste-inspect",
+    "exitCode": 0,
+    "signal": null,
+    "log": "report\\w06-web-evidence\\taste-inspector.log"
+  }
+}

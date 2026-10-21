@@ -2,7 +2,13 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 1 (`LearningGateway`), 3, 5, 7; [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md);
 [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `course`, `membership`; spec thiết kế, trang "Khoá học của tôi".
-**Ai:** nhân viên lõi phụ trách backend/gateway; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02, W-05 · **Trạng thái:** đủ điều kiện giao sau nghiệm thu 2026-10-20
+**Ai:** nhân viên lõi phụ trách backend/gateway; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02, W-05 · **Trạng thái:** đạt · đã ghép `dc41ee8` ngày 2026-10-21, mốc soát `8b6e500`, đã đẩy GitHub
+
+**Nghiệm thu 2026-10-21:** soát cả backend `bde3e0b`, React `d9b5e1a` và phần thiết kế local `63dd8bd` trong worktree mới;
+điều phối sửa claim/TTL thiết kế ở `8b6e500`, không đổi mã backend/React. Cổng đúng mốc: **2.107 Python đạt, 0 fail, 1 Cloudinary live không bật;
+React 77/build đạt**. Chromium HTTP/PostgreSQL/Argon2 thật: 9 assertion, 6 cấu hình sáng/tối ở 390/768/1280, 0 JS/overflow/axe được phát hiện;
+8/8 phép phá guard bị bắt, 0 USD. Head schema `w06_0005`; W-24/Figma đầy đủ vẫn mở.
+Xem [nghiệm thu và kế hoạch tiếp](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
 
 **Đợt giao 2026-10-20:** W-02/W-05 đã nghiệm thu, không còn chặn. Cùng một vé đầu-cuối; backend xong riêng chưa tính cả vé đạt.
 Mã mới ở `src/web/`; không mở thêm quyền sửa `src/doc2roadmap/` ngoài phạm vi W-05/W-13 đã được phép.
@@ -10,7 +16,7 @@ Migration dành tên `w06_0005`, nối `w03_0004` do web bàn giao trước; ser
 Xem [nghiệm thu, phân việc và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md).
 
 **Khởi động lại sau sự cố, 2026-10-20:** W-03 đạt tại `9de8e75`, đã ghép `63f09ad`; schema head là `w03_0004`.
-W-06 là ưu tiên tiếp theo, chưa được xem là đã hoàn tất. Nhánh lõi `work/w06-courses-gateway` ở `tmp/w06-courses-gateway` cần nhận main mới;
+Lúc khởi động lại W-06 chưa hoàn tất; trạng thái mới nhất nay ghi ở đầu vé. Nhánh lõi `work/w06-courses-gateway` ở `tmp/w06-courses-gateway` cần nhận main mới;
 React làm nhánh/worktree riêng `work/w06-web` / `tmp/w06-web`, tích hợp thành một vé trước nghiệm thu.
 Sáu graph dev tải được (doc-1 v8, doc-6 v29), không dựng lại hay dùng v45/v57 cứng.
 Đã bổ sung snapshot/manifest riêng cho bốn cuốn còn lại, đủ dữ liệu kiểm seed sáu cuốn: xem
@@ -69,16 +75,16 @@ W-15). Vé này cũng đặt **một chỗ duy nhất gọi Pha B**, cùng test 
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
-- [ ] Test liệt kê route: thêm thử một route `{cid}` không gọi kiểm thành viên thì test đỏ.
-- [ ] Gateway: thân yêu cầu có `owner` khác thì bị bỏ qua; bản ghi Pha B mới có `owner` là người đăng nhập.
-- [ ] Use case và spend guard dùng kho PostgreSQL thật; kết nối độc lập quan sát đúng bản ghi/usage, không rơi về JSON hay kho bộ nhớ.
-- [ ] Test nối dây runtime Pha B theo cấu hình tạm thời: bản giả sinh/embedding ghi nhận `transport=vertex`; cố ý truyền `developer_api` thì test đỏ.
+- [x] Test liệt kê route: thêm thử một route `{cid}` không gọi kiểm thành viên thì test đỏ.
+- [x] Gateway: thân yêu cầu có `owner` khác thì bị bỏ qua; bản ghi Pha B mới có `owner` là người đăng nhập.
+- [x] Use case và spend guard dùng kho PostgreSQL thật; kết nối độc lập quan sát đúng bản ghi/usage, không rơi về JSON hay kho bộ nhớ.
+- [x] Test nối dây runtime Pha B theo cấu hình tạm thời: bản giả sinh/embedding ghi nhận `transport=vertex`; cố ý truyền `developer_api` thì test đỏ.
   Không dùng mạng; chưa tự chuyển transport trước chỉ thị chuẩn bị demo.
-- [ ] `seed-samples` từ chối `doc_id` ngoài danh sách cho phép, kể cả `doc_id` giả có dạng giống tập giữ lại; từ chối chạy khi `env = prod`.
-- [ ] `env = prod` không có khoá mẫu nào thì giao diện ẩn nhóm "Khoá học mẫu"; trạng thái rỗng mời tải giáo trình hay nhập link mời.
-- [ ] Không chèn được chủ thứ hai cho cùng một khoá; tạo khoá mà lỗi ở bước chèn chủ thì không còn hàng `course`.
-- [ ] Tham gia khoá mẫu hai lần không tạo hai hàng `membership`.
-- [ ] Ví dụ JSON thật của `GET /courses` và `GET /courses/{cid}/roadmap` cho doc-1; ảnh chụp trang "Khoá học của tôi" có và không có khoá học.
+- [x] `seed-samples` từ chối `doc_id` ngoài danh sách cho phép, kể cả `doc_id` giả có dạng giống tập giữ lại; từ chối chạy khi `env = prod`.
+- [x] `env = prod` không có khoá mẫu nào thì giao diện ẩn nhóm "Khoá học mẫu"; trạng thái rỗng mời tải giáo trình hay mở link mời đã nhận.
+- [x] Không chèn được chủ thứ hai cho cùng một khoá; tạo khoá mà lỗi ở bước chèn chủ thì không còn hàng `course`.
+- [x] Tham gia khoá mẫu hai lần không tạo hai hàng `membership`.
+- [x] Ví dụ JSON thật của `GET /courses` và `GET /courses/{cid}/roadmap` cho doc-1; ảnh chụp trang "Khoá học của tôi" có và không có khoá học (ảnh rỗng/tải/lỗi mock được ghi rõ chỉ thị giác).
 
 ## Ngoài vé
 

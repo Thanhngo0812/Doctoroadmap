@@ -5,6 +5,11 @@
 thành viên.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-06 · **Trạng thái:** ready-for-agent
 
+**Đợt sau W-06, 2026-10-21:** đủ điều kiện sau mốc ghép W-06; nếu chỉ có một phiên web, làm sau W-07, không triển khai cùng lúc hai giao diện chưa tích hợp.
+Migration share_link nối head main mới theo thứ tự điều phối, phối hợp tuyến schema W-14; không cùng giả định làm successor của `w06_0005`.
+Giữ test tự liệt kê mọi route `{cid}` trên khoá riêng tư, không miễn rộng; preview/join theo token có luật rõ riêng.
+Xem [kế hoạch](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
+
 ## Vì sao
 
 Chia sẻ khoá học cho cả lớp là chức năng chủ dự án yêu cầu. Nó cũng làm cache bài giảng có lợi thật: thêm người học không thêm tiền bài giảng.

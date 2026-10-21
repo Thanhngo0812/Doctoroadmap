@@ -1,0 +1,17 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_seed_only_allows_six_development_documents_in_dev_and_uploads_once ___
+src\web\backend\tests\test_courses_w06.py:296: in test_seed_only_allows_six_development_documents_in_dev_and_uploads_once
+    with pytest.raises(WebError) as production:
+         ^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'wayfinder.api.errors.WebError'>
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-w06-acceptance\report\w06-evidence\seed-prod-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_courses_w06.py::test_seed_only_allows_six_development_documents_in_dev_and_uploads_once
+1 failed, 1 warning in 3.13s

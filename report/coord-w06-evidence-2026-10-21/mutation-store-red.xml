@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.059" timestamp="2026-10-21T11:17:41.951411+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_composition_binds_vertex_models_and_all_child_stores_to_postgres" time="3.040"><failure message="AssertionError: spend guard wrote to a different store&#10;assert None is not None">src\web\backend\tests\test_courses_w06.py:344: in test_composition_binds_vertex_models_and_all_child_stores_to_postgres
+    assert held is not None, "spend guard wrote to a different store"
+E   AssertionError: spend guard wrote to a different store
+E   assert None is not None</failure></testcase></testsuite></testsuites>
