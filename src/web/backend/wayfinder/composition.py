@@ -26,6 +26,7 @@ class WebServices:
     phase_b_store: PhaseBStore | None = None
     courses: object | None = None
     learning: object | None = None
+    sharing: object | None = None
 
 
 def validate_vertex_auth(project: str, location: str) -> None:
@@ -88,10 +89,11 @@ def compose_services(
             lock_timeout_seconds=BSettings().lecture_click_timeout_seconds)
         phase_b_store = created_store
     accounts = compose_account_service(settings, database_engine) if database_engine is not None else None
-    courses = learning = None
+    courses = learning = sharing = None
     if database_engine is not None:
         courses, learning = compose_course_services(settings, database_engine, phase_b_store,
             model=model, embedding=embedding, graph_loader=graph_loader, clock=clock)
+        sharing = compose_sharing_service(settings, database_engine, graph_loader=courses.gateway.graph_loader, clock=clock)
 
     def close_services():
         try:
@@ -110,7 +112,7 @@ def compose_services(
 
     return WebServices(health_check=health_check, close=close_services, model=model,
                        embedding=embedding, accounts=accounts, phase_b_store=phase_b_store,
-                       courses=courses, learning=learning)
+                        courses=courses, learning=learning, sharing=sharing)
 
 
 def compose_course_services(settings, engine, phase_b_store, *, model=None, embedding=None,
@@ -130,6 +132,13 @@ def compose_course_services(settings, engine, phase_b_store, *, model=None, embe
     gateway = LearningGateway(courses, runtime, graph_loader)
     courses.gateway = gateway
     return courses, gateway
+
+
+def compose_sharing_service(settings: WebSettings, engine, *, graph_loader=None, clock=None):
+    from wayfinder.application.sharing import SharingService
+    from wayfinder.infrastructure.sharing_store import PostgresSharingStore
+
+    return SharingService(PostgresSharingStore(engine), settings, clock, graph_loader=graph_loader)
 
 
 def compose_account_service(settings: WebSettings, engine, *, mailer=None) -> AccountService:
