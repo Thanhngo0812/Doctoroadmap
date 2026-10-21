@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="8.316" timestamp="2026-10-21T12:04:04.356551+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_progress_is_isolated_between_members_using_independent_postgres_runtimes" time="3.034"><error message="failed on setup with &quot;AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;validation&quot;,&quot;message&quot;:&quot;Thông tin đăng ký không hợp lệ.&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null,&quot;fields&quot;:[{&quot;loc&quot;:&quot;email&quot;,&quot;message&quot;:&quot;Địa chỉ email không hợp lệ.&quot;}]}}&#10;assert 422 == 200&#10; +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_eebdd8b1f7be4b85b406b130112c2dc9
+
+    @pytest.fixture
+    def w07(postgres_database_url):
+        from wayfinder.application.courses import CourseService
+        from wayfinder.application.learning_gateway import LearningGateway
+        from wayfinder.infrastructure.course_store import PostgresCourseStore
+        from wayfinder.infrastructure.learning_runtime import WebLearningRuntime
+
+        engine = create_database_engine(postgres_database_url)
+        with engine.begin() as connection:
+            connection.execute(text(
+                "TRUNCATE course,membership,phase_b_record,usage_ledger,phase_b_cache,phase_b_negative,account "
+                "CASCADE"
+            ))
+        settings = WebSettings(_env_file=None, frontend_dist=Path("missing"), allowed_origins=[ORIGIN])
+        clock = FakeClock()
+        accounts = compose_account_service(settings, engine, mailer=FakeMailer())
+        phase_b = PostgresPhaseBStore(engine)
+        graph = _sample_graph()
+        graph.doc_id, graph.graph_version = "doc-1", 8
+        graph.nodes["b"] = {**graph.nodes["a"], "node_id": "b", "module_id": "m1", "display_name": "B"}
+        graph.learnable_nodes["b"] = graph.nodes["b"]
+        graph.modules["m1"]["node_ids"].append("b")
+        graph.nodes["hidden"] = {**graph.nodes["a"], "node_id": "hidden", "learnable": False}
+
+        store = PostgresCourseStore(engine)
+        runtime = WebLearningRuntime(phase_b, clock=clock)
+        courses = CourseService(store, settings=settings, clock=clock)
+        gateway = LearningGateway(courses, runtime, lambda doc_id, version: graph)
+        courses.gateway = gateway
+        app = create_app(settings, WebServices(
+            health_check=lambda: "ok", accounts=accounts, phase_b_store=phase_b,
+            courses=courses, learning=gateway,
+        ))
+
+        def make_user(label):
+            client = TestClient(app)
+            email = f"{label}-{uuid4().hex}@example.vn"
+            result = client.post("/api/v1/auth/register", headers={"Origin": ORIGIN}, json={
+                "email": email, "password": "W07 isolated private passphrase!", "display_name": label,
+            })
+            assert result.status_code == 200, result.text
+            identity = client.get("/api/v1/me").json()
+            account = accounts.me(client.cookies.get("d2r_session")).account
+            actor = Actor(account.id, account.role, account.email_verified_at is not None, account.status)
+            return SimpleNamespace(client=client, actor=actor,
+                                   headers={"Origin": ORIGIN, "X-CSRF-Token": identity["csrf_token"]})
+
+&gt;       a, b = make_user("Learner A"), make_user("Learner B")
+               ^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_learning_progress_w07.py:71:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+label = 'Learner A'
+
+    def make_user(label):
+        client = TestClient(app)
+        email = f"{label}-{uuid4().hex}@example.vn"
+        result = client.post("/api/v1/auth/register", headers={"Origin": ORIGIN}, json={
+            "email": email, "password": "W07 isolated private passphrase!", "display_name": label,
+        })
+&gt;       assert result.status_code == 200, result.text
+E       AssertionError: {"error":{"code":"validation","message":"Thông tin đăng ký không hợp lệ.","retry_after":null,"ref":null,"fields":[{"loc":"email","message":"Địa chỉ email không hợp lệ."}]}}
+E       assert 422 == 200
+E        +  where 422 = &lt;Response [422 Unprocessable Entity]&gt;.status_code
+
+src\web\backend\tests\test_learning_progress_w07.py:64: AssertionError</error></testcase></testsuite></testsuites>

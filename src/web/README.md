@@ -1,15 +1,15 @@
 # WayFinder — chạy backend và frontend
 
-## Mở nhanh bản W-06 trên máy hiện tại
+## Mở nhanh bản W-07 trên máy hiện tại
 
-Bản W-06 nằm ở nhánh `work/w06-web`, thư mục `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web`. Chạy từ thư mục này để mở đúng bản mới. Bật **Docker Desktop** và chờ engine sẵn sàng trước.
+Bản W-07 nằm ở nhánh `work/w07-roadmap-progress`, thư mục `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w07-roadmap-progress`. Chạy từ thư mục này để mở đúng bản mới. Bật **Docker Desktop** và chờ engine sẵn sàng trước.
 
 ### Cửa sổ PowerShell 1 — PostgreSQL và backend
 
 ```powershell
-cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w07-roadmap-progress
 
-# Dùng Python và cấu hình đã có ở repo gốc; import mã của W-06.
+# Dùng Python và cấu hình đã có ở repo gốc; import mã của W-07.
 $wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
 $wfEnv = (Resolve-Path ../../src/web/.env).Path
 $env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
@@ -25,14 +25,14 @@ $env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
 & $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
 ```
 
-Giữ cửa sổ này mở. Backend ở **http://127.0.0.1:8000**; health ở **http://127.0.0.1:8000/api/v1/health**. Migration W-06 có head `w06_0005`.
+Giữ cửa sổ này mở. Backend ở **http://127.0.0.1:8000**; health ở **http://127.0.0.1:8000/api/v1/health**. W-07 tái dùng bảng Pha B, không thêm migration; head vẫn là `w06_0005`.
 
-`WAYFINDER_ARTIFACT_ROOT` ở trên dùng bản sao snapshot phát triển của worktree đã đối chiếu SHA-256. Nếu mở worktree mới chưa có dữ liệu, làm theo [báo cáo W-06](../../report/w06-react-tich-hop-2026-10-21.md) để chép theo manifest; không trỏ vào cache người học CLI. Cấu hình dữ liệu dùng thật vẫn đặt ngoài repo như phần chuẩn bị bên dưới.
+`WAYFINDER_ARTIFACT_ROOT` ở trên dùng bản sao snapshot phát triển của worktree đã đối chiếu SHA-256. Nếu mở worktree mới chưa có dữ liệu, làm theo [báo cáo W-07](../../report/w07-lo-trinh-tien-do-2026-10-21.md) để chép theo manifest; không trỏ vào cache người học CLI. Cấu hình dữ liệu dùng thật vẫn đặt ngoài repo như phần chuẩn bị bên dưới.
 
 ### Cửa sổ PowerShell 2 — frontend React
 
 ```powershell
-cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w07-roadmap-progress
 
 # Chỉ cần khi chưa cài dependency hoặc package-lock.json thay đổi.
 npm.cmd --prefix src/web/frontend ci
@@ -54,13 +54,13 @@ $env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:8000'
 & $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
 ```
 
-Mở **http://127.0.0.1:8000**. FastAPI phục vụ cả API và React đã build. Sau mỗi lần đổi giao diện cần build lại rồi tải lại trang. W-06 không cần worker; upload tài liệu thật thuộc W-14.
+Mở **http://127.0.0.1:8000**. FastAPI phục vụ cả API và React đã build. Sau mỗi lần đổi giao diện cần build lại rồi tải lại trang. W-07 không cần worker; upload tài liệu thật thuộc W-14.
 
 ### Dừng và mở lại
 
 - Nhấn `Ctrl+C` ở từng cửa sổ backend/frontend để dừng. Lần sau chạy lại phần thiết lập biến của cửa sổ backend và các lệnh mở service; không cần `npm ci` mỗi lần.
 - Có thể để PostgreSQL chạy. Nếu muốn dừng: `docker compose -f src/web/docker-compose.yml --env-file $wfEnv stop db` trong cửa sổ backend. Dữ liệu vẫn giữ trong volume. Không dùng `down -v` khi muốn giữ tài khoản/khoá học.
-- Chỉ mở một backend cổng8000. Nếu báo cổng bận, dừng tiến trình cũ trong terminal đã mở nó. Không chạy đồng thời backend W-03 và W-06 cùng cổng.
+- Chỉ mở một backend cổng8000. Nếu báo cổng bận, dừng tiến trình cũ trong terminal đã mở nó. Không chạy đồng thời backend W-03 và W-07 cùng cổng.
 
 ### Khi không mở được
 

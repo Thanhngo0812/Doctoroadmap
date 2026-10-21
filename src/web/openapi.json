@@ -470,6 +470,109 @@
         }
       }
     },
+    "/api/v1/courses/{cid}/progress": {
+      "get": {
+        "tags": [
+          "courses"
+        ],
+        "summary": "Progress",
+        "operationId": "progress_api_v1_courses__cid__progress_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseProgress"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/progress/{node_id}": {
+      "put": {
+        "tags": [
+          "courses"
+        ],
+        "summary": "Set Progress",
+        "operationId": "set_progress_api_v1_courses__cid__progress__node_id__put",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetProgressRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CourseProgress"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/health": {
       "get": {
         "tags": [
@@ -727,6 +830,46 @@
         ],
         "title": "CourseList"
       },
+      "CourseProgress": {
+        "properties": {
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "contract_version": {
+            "type": "string",
+            "const": "progress-1",
+            "title": "Contract Version"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "nodes": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/ProgressNode"
+            },
+            "type": "object",
+            "title": "Nodes"
+          },
+          "modules": {
+            "items": {
+              "$ref": "#/components/schemas/ProgressModule"
+            },
+            "type": "array",
+            "title": "Modules"
+          }
+        },
+        "type": "object",
+        "required": [
+          "course_id",
+          "contract_version",
+          "doc_id",
+          "nodes",
+          "modules"
+        ],
+        "title": "CourseProgress"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -882,6 +1025,74 @@
         ],
         "title": "PasswordResetRequest"
       },
+      "ProgressModule": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "learned": {
+            "type": "integer",
+            "title": "Learned"
+          },
+          "total": {
+            "type": "integer",
+            "title": "Total"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_id",
+          "learned",
+          "total"
+        ],
+        "title": "ProgressModule"
+      },
+      "ProgressNode": {
+        "properties": {
+          "state": {
+            "type": "string",
+            "enum": [
+              "learned",
+              "not_learned"
+            ],
+            "title": "State"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "learner",
+                  "quiz"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "updated_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Updated At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "state",
+          "source",
+          "updated_at"
+        ],
+        "title": "ProgressNode"
+      },
       "ProgressSummary": {
         "properties": {
           "learned": {
@@ -958,6 +1169,9 @@
             "type": "integer",
             "title": "Graph Version"
           },
+          "progress": {
+            "$ref": "#/components/schemas/ProgressSummary"
+          },
           "modules": {
             "items": {
               "$ref": "#/components/schemas/RoadmapModule"
@@ -971,6 +1185,7 @@
           "course_id",
           "doc_id",
           "graph_version",
+          "progress",
           "modules"
         ],
         "title": "Roadmap"
@@ -1010,6 +1225,9 @@
             },
             "type": "array",
             "title": "Concepts"
+          },
+          "progress": {
+            "$ref": "#/components/schemas/ProgressSummary"
           }
         },
         "type": "object",
@@ -1018,9 +1236,24 @@
           "index",
           "title",
           "description",
-          "concepts"
+          "concepts",
+          "progress"
         ],
         "title": "RoadmapModule"
+      },
+      "SetProgressRequest": {
+        "properties": {
+          "learned": {
+            "type": "boolean",
+            "title": "Learned"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "learned"
+        ],
+        "title": "SetProgressRequest"
       },
       "ValidationError": {
         "properties": {

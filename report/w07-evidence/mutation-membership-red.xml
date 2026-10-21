@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.046" timestamp="2026-10-21T12:09:13.694225+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="1.359"><failure message="AssertionError: ('GET', '/api/v1/courses/227fb1fc-0d3b-44b5-a4f6-315b89523d88/roadmap', '{&quot;course_id&quot;:&quot;227fb1fc-0d3b-44b5-a4f6-315b895...,&quot;title&quot;:&quot;Cơ sở&quot;,&quot;description&quot;:&quot;&quot;,&quot;concepts&quot;:[{&quot;node_id&quot;:&quot;a&quot;,&quot;name&quot;:&quot;Tập hợp&quot;}],&quot;progress&quot;:{&quot;learned&quot;:0,&quot;total&quot;:1}}]}')&#10;assert 200 == 404&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">src\web\backend\tests\test_courses_w06.py:117: in test_every_cid_route_hides_private_course_from_outsiders_including_admin
+    assert len(assert_private_course_routes_protected(courses.app, client, headers, courses.course.id)) &gt;= 4
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\tests\test_courses_w06.py:107: in assert_private_course_routes_protected
+    assert response.status_code == 404, (method, path, response.text)
+E   AssertionError: ('GET', '/api/v1/courses/227fb1fc-0d3b-44b5-a4f6-315b89523d88/roadmap', '{"course_id":"227fb1fc-0d3b-44b5-a4f6-315b895...,"title":"Cơ sở","description":"","concepts":[{"node_id":"a","name":"Tập hợp"}],"progress":{"learned":0,"total":1}}]}')
+E   assert 200 == 404
+E    +  where 200 = &lt;Response [200 OK]&gt;.status_code</failure></testcase></testsuite></testsuites>

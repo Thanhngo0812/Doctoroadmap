@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.301" timestamp="2026-10-21T12:11:00.417882+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_quiz_read_then_concurrent_learner_unmark_is_serialized_by_postgres" time="2.161"><failure message="AssertionError">src\web\backend\tests\test_learning_progress_w07.py:182: in test_quiz_read_then_concurrent_learner_unmark_is_serialized_by_postgres
+    assert result["state"] == "not_learned" and result["source"] == "learner"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase></testsuite></testsuites>

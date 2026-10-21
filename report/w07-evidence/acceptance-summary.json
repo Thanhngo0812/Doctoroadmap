@@ -1,0 +1,345 @@
+{
+  "source_commit": "8f7fd4e21e87a20102ecdf576e1c6e35a4912ed7",
+  "main_received": "eb6af0855b8a7f7c42cca8399fe74e189f9aadfe",
+  "python": {
+    "total": 2115,
+    "passed": 2114,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "react": {
+    "total": 85,
+    "passed": 85,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "native_exit_codes": {
+    "python": 0,
+    "react": 0,
+    "build": 0,
+    "browser": 0
+  },
+  "backend_mutations": [
+    {
+      "label": "route-inventory",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_courses_w06.py::test_every_cid_route_hides_private_course_from_outsiders_including_admin",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--basetemp=tmp/w07-mutation-route-inventory-baad2c07",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-route-inventory-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "94ba8acc1dfe9dc3bbfae75403bfc64c5eeb9ec2b587037b4d05023902b46f06",
+      "source_restored": true
+    },
+    {
+      "label": "membership",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_courses_w06.py::test_every_cid_route_hides_private_course_from_outsiders_including_admin",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--basetemp=tmp/w07-mutation-membership-8d5715c8",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-membership-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "8ea2655312013c81bcb31f4444ca1dd2f7e68bc959f814b252e5f3cc04709efc",
+      "source_restored": true
+    },
+    {
+      "label": "actor-owner",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_learning_progress_w07.py::test_progress_is_isolated_between_members_using_independent_postgres_runtimes",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--basetemp=tmp/w07-mutation-actor-owner-f2cc093c",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-actor-owner-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "8ea2655312013c81bcb31f4444ca1dd2f7e68bc959f814b252e5f3cc04709efc",
+      "source_restored": true
+    },
+    {
+      "label": "learner-precedence",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_learning_progress_w07.py::test_unmark_then_correct_quiz_keeps_learner_choice_through_gateway",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--basetemp=tmp/w07-mutation-learner-precedence-91c24c1e",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-learner-precedence-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "794dce5660b4bae32e2ce54890ea90a505810b7bfecc0ecb09203f73f260ca5e",
+      "source_restored": true
+    },
+    {
+      "label": "strict-boolean",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_learning_progress_w07.py::test_progress_http_validates_node_and_boolean_and_hides_private_course",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--basetemp=tmp/w07-mutation-strict-boolean-58955f40",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-strict-boolean-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "94ba8acc1dfe9dc3bbfae75403bfc64c5eeb9ec2b587037b4d05023902b46f06",
+      "source_restored": true
+    },
+    {
+      "label": "quiz-atomic",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_learning_progress_w07.py::test_quiz_read_then_concurrent_learner_unmark_is_serialized_by_postgres",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--assert=plain",
+        "--basetemp=tmp/w07-mutation-quiz-atomic-05d834c2",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-quiz-atomic-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "794dce5660b4bae32e2ce54890ea90a505810b7bfecc0ecb09203f73f260ca5e",
+      "source_restored": true
+    },
+    {
+      "label": "progress-reader",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_learning_progress_w07.py::test_progress_is_isolated_between_members_using_independent_postgres_runtimes",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--assert=plain",
+        "--basetemp=tmp/w07-mutation-progress-reader-088ed982",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-progress-reader-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "8ea2655312013c81bcb31f4444ca1dd2f7e68bc959f814b252e5f3cc04709efc",
+      "source_restored": true
+    },
+    {
+      "label": "published-node",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "src/web/backend/tests/test_learning_progress_w07.py::test_progress_http_validates_node_and_boolean_and_hides_private_course",
+        "-o",
+        "addopts=",
+        "-q",
+        "--tb=short",
+        "--assert=plain",
+        "--basetemp=tmp/w07-mutation-published-node-2a9348d5",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\mutation-published-node-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "94ba8acc1dfe9dc3bbfae75403bfc64c5eeb9ec2b587037b4d05023902b46f06",
+      "source_restored": true
+    }
+  ],
+  "ui_mutations": [
+    {
+      "label": "rollback",
+      "command": [
+        "cmd.exe",
+        "/c",
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "src/Roadmap.test.tsx",
+        "-t",
+        "optimistically updates one concept and restores only that checkbox when its request fails",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\ui-rollback-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "2323e4908332572ceffba4c4cd1215cd1839f7d8c3159061050c0495d3de84a8",
+      "source_restored": true
+    },
+    {
+      "label": "stale-snapshot",
+      "command": [
+        "cmd.exe",
+        "/c",
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "src/Roadmap.test.tsx",
+        "-t",
+        "merges concurrent node responses by their own node so stale full snapshots cannot undo another check",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\report\\w07-evidence\\ui-stale-snapshot-red.xml"
+      ],
+      "native_exit_code": 1,
+      "assertion_failures": 1,
+      "setup_errors": 0,
+      "source_sha256": "2323e4908332572ceffba4c4cd1215cd1839f7d8c3159061050c0495d3de84a8",
+      "source_restored": true
+    }
+  ],
+  "browser_assertions": [
+    "learner A registered through the UI and joined the real doc-1 sample course",
+    "Be Vietnam Pro loaded from its documented font origins",
+    "real GET roadmap/progress returned doc-1 v8 with ordered nodes and matching module summaries",
+    "real UI marked and unmarked concepts; keyboard Space activated the native checkbox",
+    "rollback fault is explicitly an intercepted browser-only PUT, with optimistic state observed before rejection",
+    "rollback restored UI and real GET progress confirmed the injected failure made no server write",
+    "real HTTP rejected an unpublished node and a non-boolean learned value",
+    "module route shows the real selected module and returns to the roadmap",
+    "a second UI-registered member joined the same real course but saw independent progress; private course progress stayed hidden",
+    "real roadmap passed Axe, responsive overflow, and 44x44 target checks at 390/768/1280 in both themes",
+    "reduced-motion leaves no running animations and Tab shows a visible focus outline"
+  ],
+  "real_screens": 6,
+  "mock_visual_screens": 12,
+  "raw_console_errors": 19,
+  "expected_console_errors": 19,
+  "unexpected_console_errors": 0,
+  "accessibility": [
+    {
+      "width": 390,
+      "theme": "light",
+      "violations": 0,
+      "incomplete": 0
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "violations": 0,
+      "incomplete": 0
+    },
+    {
+      "width": 768,
+      "theme": "light",
+      "violations": 0,
+      "incomplete": 0
+    },
+    {
+      "width": 768,
+      "theme": "dark",
+      "violations": 0,
+      "incomplete": 0
+    },
+    {
+      "width": 1280,
+      "theme": "light",
+      "violations": 0,
+      "incomplete": 0
+    },
+    {
+      "width": 1280,
+      "theme": "dark",
+      "violations": 0,
+      "incomplete": 0
+    }
+  ],
+  "taste_findings": [
+    {
+      "level": "WARN",
+      "id": "unused-canvas",
+      "width": 1280,
+      "message": "The content stops 189px short of the right edge while it starts 40px from the sidebar.",
+      "fix": "Let the grid fill the canvas (columns in fr units), or centre a capped canvas with equal margins. A dead strip on one side reads as unfinished."
+    }
+  ],
+  "runtime": {
+    "baseUrl": "http://127.0.0.1:8007",
+    "database": "disposable-postgresql",
+    "realArgon2": true,
+    "phaseBStore": "postgresql",
+    "media": "memory-only",
+    "mailer": "fake",
+    "modelCalls": 0,
+    "modelCostUsd": 0,
+    "fixture": {
+      "docId": "doc-1",
+      "expectedGraphVersion": 8,
+      "sourceSha256Verified": true
+    },
+    "fixtureState": {
+      "courseId": "9342d7ba-689e-4311-9f6f-1dfc9e95541c",
+      "privateCourseId": "d6ff9fdd-aeb1-47cb-b67f-56a4ca6ccdfc",
+      "docId": "doc-1",
+      "graphVersion": 8,
+      "moduleCount": 35,
+      "learnableNodeCount": 223,
+      "mediaUploads": 1,
+      "fixtureAdminId": "22ae3220-178c-42c8-b7c0-29b281e8f6c4"
+    },
+    "migrationHead": "w06_0005",
+    "browserExitCode": 0,
+    "learnerAccounts": 2,
+    "progressRowsForLearners": 2,
+    "learnerAProgress": [
+      {
+        "nodeId": "node_92b86f8bac3397ea9de112b0",
+        "state": "learned",
+        "source": "learner"
+      },
+      {
+        "nodeId": "node_9f23f5df7eb27a4bc46857c8",
+        "state": "not_learned",
+        "source": "learner"
+      }
+    ],
+    "learnerBProgressRows": 0,
+    "learnerIsolationVerifiedByIndependentPostgresConnection": true,
+    "failedWritePersisted": false,
+    "phaseBRecords": 2,
+    "acceptanceAssertionsPassed": true,
+    "temporaryDatabaseRemoved": true
+  }
+}
