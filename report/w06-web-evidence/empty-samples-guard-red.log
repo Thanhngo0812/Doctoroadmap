@@ -1,0 +1,70 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run src/Courses.test.tsx -t hides --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web\report\w06-web-evidence\empty-samples-guard-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-web/src/web/frontend
+
+ ❯ src/Courses.test.tsx (15 tests | 1 failed | 14 skipped) 334ms
+   ↓ shows real-shaped owned joined and samples without inventing sample progress
+   ↓ joins through POST with session CSRF and moves the returned card to joined exactly once
+   × hides samples in an empty production-shaped response and offers the specified next steps 330ms
+   ↓ keeps the page frame while loading and retries a failed request
+   ↓ shows join errors beside the sample and never creates a pretend membership
+   ↓ redirects guests and preserves their course path
+   ↓ loads a membership-gated course entry and selected resume module from actual route shapes
+   ↓ shows not found for an outsider without rendering private course metadata
+   ↓ shows building and failed courses without offering a pretend resume or progress
+   ↓ uses courses as the signed-in home on /
+   ↓ uses courses as the signed-in home on /dang-nhap
+   ↓ uses courses as the signed-in home on /dang-ky
+   ↓ uses courses as the signed-in home on /dang-nhap?next=https%3A%2F%2Fevil.example
+   ↓ uses courses as the signed-in home on /dang-nhap?next=%2F%2Fevil.example
+   ↓ resumes the requested private route after authenticating
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Courses.test.tsx > hides samples in an empty production-shaped response and offers the specified next steps
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <section
+  aria-labelledby="courses-samples"
+  class="courses-section"
+  id="sample-courses"
+>
+  <div
+    class="courses-section-heading"
+  >
+    <h2
+      id="courses-samples"
+    >
+      Khoá học mẫu
+    </h2>
+    <span>
+      0
+       khoá học
+    </span>
+  </div>
+  <p
+    class="courses-section-empty"
+  >
+    Khoá học bạn tham gia sẽ ở đây.
+  </p>
+</section> instead
+ ❯ src/Courses.test.tsx:67:70
+     65|   renderPage();
+     66|   expect(await screen.findByText('Chưa có khoá học. Tải giáo trình của…
+     67|   expect(screen.queryByRole('region', { name: 'Khoá học mẫu' })).not.t…
+       |                                                                      ^
+     68|   expect(screen.getAllByRole('link', { name: 'Tải giáo trình' }).every…
+     69| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 14 skipped (15)
+   Start at  10:46:59
+   Duration  3.84s (environment 52%, setup 17%, import 14%, tests 10%, transform 7%, worker 2%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-web/report/w06-web-evidence/empty-samples-guard-red.xml

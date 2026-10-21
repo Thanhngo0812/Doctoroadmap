@@ -1,0 +1,111 @@
+{
+  "source_commit": "627578e",
+  "python": {
+    "total": 2106,
+    "passed": 2105,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 1
+  },
+  "react": {
+    "total": 77,
+    "passed": 77,
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0
+  },
+  "browser_assertions": [
+    "real UI registration created an authenticated PostgreSQL account",
+    "Be Vietnam Pro loaded successfully from the documented font origins",
+    "real GET /courses returned six seeded samples; both joins and duplicate join persisted idempotently",
+    "real doc-1 detail and roadmap returned the published graph version and modules",
+    "Học tiếp navigated to the joined course and its real resume module",
+    "an authenticated non-member got not_found for private detail, roadmap, and injected-owner join",
+    "real course page passed axe, responsive overflow, and 44x44 target checks at required viewports/themes",
+    "reduced-motion browser preference leaves no running course-page animations",
+    "keyboard activation joined another real sample and Tab focused a visible control"
+  ],
+  "real_api_screens": 6,
+  "mock_visual_screens": 12,
+  "raw_console_errors": 17,
+  "expected_console_errors": 17,
+  "unexpected_console_errors": 0,
+  "page_errors": 0,
+  "accessibility_violations": 0,
+  "accessibility_incomplete": 0,
+  "taste_findings": [
+    {
+      "level": "WARN",
+      "id": "below-fold",
+      "width": 1280,
+      "message": "Only 2 of 6 blocks start on the first 1280px screen.",
+      "fix": "Every block the brief names shows its header and first rows on the first desktop screen: size the headline block to its question, cap long lists with \"View all\", and put time-sensitive blocks before long tables."
+    }
+  ],
+  "runtime": {
+    "baseUrl": "http://127.0.0.1:8006",
+    "database": "disposable-postgresql",
+    "realArgon2": true,
+    "phaseBStore": "postgresql",
+    "media": "memory-only",
+    "mailer": "fake",
+    "modelCalls": 0,
+    "modelCostUsd": 0,
+    "fixtureState": {
+      "privateCourseId": "16cb326e-dac4-4980-96ed-d2def6ae5faa",
+      "seedOwnerId": "75f69af9-f02b-4eba-9a54-83794eeeacff",
+      "samples": [
+        {
+          "courseId": "d91fc16e-d890-46a9-92e3-7cdf5454bf44",
+          "docId": "doc-1",
+          "graphVersion": 8
+        },
+        {
+          "courseId": "1ebafa7d-ca05-47be-9f3f-02e042cb0ca2",
+          "docId": "nhap-mon-ml",
+          "graphVersion": 50
+        },
+        {
+          "courseId": "9175fd9a-5254-43df-a1d8-c6f185adfaf7",
+          "docId": "naive-bayes",
+          "graphVersion": 49
+        },
+        {
+          "courseId": "1aed859e-f6b3-400a-a01b-da44ba2b5b9e",
+          "docId": "doc-6",
+          "graphVersion": 29
+        },
+        {
+          "courseId": "50bc2fa7-05dc-4d6e-a519-2c7572bc9ab2",
+          "docId": "xstk-ch3-1",
+          "graphVersion": 68
+        },
+        {
+          "courseId": "a1058477-82d5-4411-9520-7ea2654ac1bd",
+          "docId": "doc-4",
+          "graphVersion": 27
+        }
+      ],
+      "memoryMediaUploads": 6
+    },
+    "migrationHead": "w06_0005",
+    "browserExitCode": 0,
+    "sampleCourseCount": 6,
+    "sampleOwnerMemberships": 6,
+    "sampleLearnerMemberships": 2,
+    "privateCourseMemberships": 1,
+    "learnerAccountId": "aef21087-38b6-44f2-87e1-8dd83ee7163c",
+    "learnerCourseIds": [
+      "1aed859e-f6b3-400a-a01b-da44ba2b5b9e",
+      "d91fc16e-d890-46a9-92e3-7cdf5454bf44"
+    ],
+    "duplicateJoinStatus": 200,
+    "duplicateJoinIsIdempotent": true,
+    "phaseBRecords": 0,
+    "acceptanceAssertionsPassed": true,
+    "temporaryDatabaseRemoved": true
+  },
+  "python_exit_code": 0,
+  "react_exit_code": 0,
+  "build_exit_code": 0
+}

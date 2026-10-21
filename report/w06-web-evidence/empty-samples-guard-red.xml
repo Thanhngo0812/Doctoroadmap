@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="1" errors="0" time="0.3344755">
+    <testsuite name="src/Courses.test.tsx" timestamp="2026-10-21T03:47:03.417Z" hostname="ADMIN" tests="15" failures="1" errors="0" skipped="14" time="0.3344755">
+        <testcase classname="src/Courses.test.tsx" name="shows real-shaped owned joined and samples without inventing sample progress" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="joins through POST with session CSRF and moves the returned card to joined exactly once" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="hides samples in an empty production-shaped response and offers the specified next steps" time="0.3304823">
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;section
+  aria-labelledby=&quot;courses-samples&quot;
+  class=&quot;courses-section&quot;
+  id=&quot;sample-courses&quot;
+&gt;
+  &lt;div
+    class=&quot;courses-section-heading&quot;
+  &gt;
+    &lt;h2
+      id=&quot;courses-samples&quot;
+    &gt;
+      Khoá học mẫu
+    &lt;/h2&gt;
+    &lt;span&gt;
+      0
+       khoá học
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;p
+    class=&quot;courses-section-empty&quot;
+  &gt;
+    Khoá học bạn tham gia sẽ ở đây.
+  &lt;/p&gt;
+&lt;/section&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;section
+  aria-labelledby=&quot;courses-samples&quot;
+  class=&quot;courses-section&quot;
+  id=&quot;sample-courses&quot;
+&gt;
+  &lt;div
+    class=&quot;courses-section-heading&quot;
+  &gt;
+    &lt;h2
+      id=&quot;courses-samples&quot;
+    &gt;
+      Khoá học mẫu
+    &lt;/h2&gt;
+    &lt;span&gt;
+      0
+       khoá học
+    &lt;/span&gt;
+  &lt;/div&gt;
+  &lt;p
+    class=&quot;courses-section-empty&quot;
+  &gt;
+    Khoá học bạn tham gia sẽ ở đây.
+  &lt;/p&gt;
+&lt;/section&gt; instead
+ ❯ src/Courses.test.tsx:67:70
+            </failure>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="keeps the page frame while loading and retries a failed request" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows join errors beside the sample and never creates a pretend membership" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="redirects guests and preserves their course path" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="loads a membership-gated course entry and selected resume module from actual route shapes" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows not found for an outsider without rendering private course metadata" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows building and failed courses without offering a pretend resume or progress" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-ky" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=https%3A%2F%2Fevil.example" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=%2F%2Fevil.example" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="resumes the requested private route after authenticating" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,286 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run src/Courses.test.tsx --pool=threads --maxWorkers=1
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-web/src/web/frontend
+
+ ❯ src/Courses.test.tsx (14 tests | 1 failed) 1669ms
+   × joins through POST with session CSRF and moves the returned card to joined exactly once 269ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Courses.test.tsx > joins through POST with session CSRF and moves the returned card to joined exactly once
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  <a
+  class="button button-secondary"
+  data-discover="true"
+  href="/khoa-hoc/sample-1/module/module-9"
+>
+  Học tiếp
+  <span
+    aria-hidden="true"
+  >
+     →
+  </span>
+</a>
+Received element with focus:
+  <body>
+  <div>
+    <div
+      aria-atomic="true"
+      aria-live="polite"
+      class="auth-notice"
+      role="status"
+    >
+      <span
+        class="auth-notice-message"
+      >
+        Đã tham gia Đại số tuyến tính.
+      </span>
+    </div>
+    <div
+      class="courses-shell"
+    >
+      <a
+        class="skip-link"
+        href="#courses-main"
+      >
+        Đến nội dung chính
+      </a>
+      <header
+        class="courses-header"
+      >
+        <div
+          class="header-inner"
+        >
+          <a
+            aria-label="WayFinder, về khoá học"
+            class="brand-link"
+            data-discover="true"
+            href="/khoa-hoc"
+          >
+            <img
+              alt="WayFinder"
+              src="/assets/Artboard%2028.png"
+            />
+          </a>
+          <div
+            class="header-actions"
+          >
+            <a
+              class="button button-primary courses-upload"
+              data-discover="true"
+              href="/tai-len"
+            >
+              Tải giáo trình
+            </a>
+            <button
+              aria-label="Bật chế độ sáng"
+              class="icon-button theme-toggle"
+              type="button"
+            >
+              ◑
+            </button>
+            <details
+              class="account-menu"
+            >
+              <summary>
+                <span
+                  class="account-menu-name"
+                >
+                  Nguyễn An
+                </span>
+                <span
+                  aria-hidden="true"
+                >
+                  ⌄
+                </span>
+              </summary>
+              <div
+                class="account-menu-panel"
+              >
+                <a
+                  data-discover="true"
+                  href="/tai-khoan"
+                >
+                  Tài khoản
+                </a>
+                <a
+                  class="courses-menu-upload"
+                  data-discover="true"
+                  href="/tai-len"
+                >
+                  Tải giáo trình
+                </a>
+                <button
+                  type="button"
+                >
+                  Đăng xuất
+                </button>
+              </div>
+            </details>
+          </div>
+        </div>
+      </header>
+      <main
+        class="courses-page page-frame"
+        id="courses-main"
+      >
+        <div
+          class="courses-heading"
+        >
+          <div
+            class="courses-heading-copy"
+          >
+            <h1>
+              Khoá học của tôi
+            </h1>
+            <p>
+              Chọn một giáo trình, tiếp tục chặng đang học.
+            </p>
+          </div>
+          <a
+            class="courses-account"
+            data-discover="true"
+            href="/tai-khoan"
+          >
+            Tài khoản của bạn
+          </a>
+        </div>
+        <section
+          aria-labelledby="courses-owned"
+          class="courses-section"
+        >
+          <div
+            class="courses-section-heading"
+          >
+            <h2
+              id="courses-owned"
+            >
+              Do tôi tạo
+            </h2>
+            <span>
+              0
+               khoá học
+            </span>
+          </div>
+          <p
+            class="courses-section-empty"
+          >
+            Giáo trình bạn tải lên sẽ ở đây.
+          </p>
+        </section>
+        <section
+          aria-labelledby="courses-joined"
+          class="courses-section"
+        >
+          <div
+            class="courses-section-heading"
+          >
+            <h2
+              id="courses-joined"
+            >
+              Được chia sẻ với tôi
+            </h2>
+            <span>
+              1
+               khoá học
+            </span>
+          </div>
+          <div
+            class="courses-grid"
+          >
+            <article
+              aria-label="Đại số tuyến tính"
+              class="course-card"
+            >
+              <div
+                class="course-card__meta"
+              >
+                <span>
+                  35
+                   module
+                </span>
+              </div>
+              <h3
+                class="course-card__title"
+              >
+                <a
+                  data-discover="true"
+                  href="/khoa-hoc/sample-1"
+                >
+                  Đại số tuyến tính
+                </a>
+              </h3>
+              <p
+                class="course-card__description"
+              >
+                Từ không gian vector đến ánh xạ tuyến tính.
+              </p>
+              <p
+                class="course-card__owner"
+              >
+                Từ Cô Mai
+              </p>
+              <div
+                class="course-card__progress"
+              >
+                <span>
+                  Xong·
+                  0
+                  /
+                  223
+                   khái niệm
+                </span>
+                <progress
+                  aria-label="Tiến độ Đại số tuyến tính"
+                  max="223"
+                  value="0"
+                />
+              </div>
+              <div
+                class="course-card__actions"
+              >
+                <a
+                  class="button button-secondary"
+                  data-discover="true"
+                  href="/khoa-hoc/sample-1/module/module-9"
+                >
+                  Học tiếp
+                  <span
+                    aria-hidden="true"
+                  >
+                     →
+                  </span>
+                </a>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+    <span
+      data-testid="location"
+    >
+      /khoa-hoc
+    </span>
+  </div>
+</body>
+ ❯ src/Courses.test.tsx:51:58
+     49|   await act(async () => { resolveJoin(json(joined)); });
+     50|   expect(await screen.findByRole('link', { name: 'Học tiếp' })).toBeIn…
+     51|   expect(screen.getByRole('link', { name: 'Học tiếp' })).toHaveFocus();
+       |                                                          ^
+     52|   expect(screen.queryByRole('region', { name: 'Khoá học mẫu' })).not.t…
+     53|   const calls = fetcher.mock.calls as unknown as Array<[string, Reques…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 13 passed (14)
+   Start at  10:24:56
+   Duration  4.45s (tests 40%, environment 35%, setup 10%, import 10%, transform 4%)

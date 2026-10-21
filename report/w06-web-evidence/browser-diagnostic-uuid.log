@@ -1,0 +1,11 @@
+{"screens":6,"assertions":9,"apiResponses":42,"rawConsoleErrors":17,"expectedConsoleErrors":17,"genuineConsoleErrors":0,"pageErrors":0,"failedRequests":0,"externalRequests":0}
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web\scripts\w06_web_runtime.py", line 288, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web\scripts\w06_web_runtime.py", line 160, in main
+    summary.update(_database_evidence(
+                   ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web\scripts\w06_web_runtime.py", line 263, in _database_evidence
+    raise AssertionError("private course does not have exactly its seed administrator as owner")
+AssertionError: private course does not have exactly its seed administrator as owner

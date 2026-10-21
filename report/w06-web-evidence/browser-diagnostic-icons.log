@@ -1,0 +1,52 @@
+AssertionError [ERR_ASSERTION]: 390px light static-copy color contrast must be fully checked
++ actual - expected
+
++ [
++   {
++     id: 'color-contrast',
++     nodes: [
++       {
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content contains only non-text characters',
++         html: '<button class="icon-button theme-toggle" type="button" aria-label="Bật chế độ tối">◐</button>',
++         target: [
++           '.icon-button'
++         ]
++       },
++       {
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content contains only non-text characters',
++         html: '<span aria-hidden="true">⌄</span>',
++         target: [
++           'summary > span[aria-hidden="true"]'
++         ]
++       },
++       {
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content contains only non-text characters',
++         html: '<span aria-hidden="true"> →</span>',
++         target: [
++           'article[aria-label="Đại số tuyến tính"] > .course-card__actions > .button-secondary.button[data-discover="true"] > span[aria-hidden="true"]'
++         ]
++       },
++       {
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content contains only non-text characters',
++         html: '<span aria-hidden="true"> →</span>',
++         target: [
++           'article[aria-label="Khoá mẫu doc-6"] > .course-card__actions > .button-secondary.button[data-discover="true"] > span[aria-hidden="true"]'
++         ]
++       }
++     ]
++   }
++ ]
+- []
+
+    at main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web\scripts\w06_web_check.cjs:283:18) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [Array],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
