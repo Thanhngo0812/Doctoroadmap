@@ -3,6 +3,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from uuid import uuid4
 import subprocess
 import sys
 import xml.etree.ElementTree as ET
@@ -19,9 +20,12 @@ CASES=[
  ('complete','infrastructure/build_store.py',"complete=counters.get('usage_complete',True) and attempt['usage_complete']","complete=True",'result_and_nonzero'),
  ('cancel','application/build_worker.py',"current['cancel_requested']","False",'result_and_nonzero'),
  ('capacity','infrastructure/build_store.py','return total>=Decimal(str(maximum))','return False','system_cap'),
- ('lease','infrastructure/build_store.py',"if job['lease_id']!=lease or job['status'] not in ('reading','running'): return False",'if False: return False','heartbeat_reclaim'),
+ ('lease','infrastructure/build_store.py','if result and active:','if result:','heartbeat_reclaim'),
  ('publication-usage','application/build_worker.py',"state['result'] or BuildResult",'BuildResult','publication_error'),
  ('confirmed-media','application/build_worker.py',"if asset.get('confirmed') is not True: continue",'if False: continue','confirmed_media_only'),
+ ('late-usage','infrastructure/build_store.py','if not active and result is None: return False','if not active: return False','heartbeat_reclaim'),
+ ('boundary-cancel','application/build_worker.py',"if self.store.get_job(bid)['cancel_requested']:",'if False:','cancel_requested_between'),
+ ('skip-locked','infrastructure/build_store.py','FOR UPDATE SKIP LOCKED LIMIT 1','FOR UPDATE LIMIT 1','queue_skips_a_locked_job'),
 ]
 # Change the initial state, so a worker can claim before the explicit confirmation.
 CASES[0]=('confirmation','application/builds.py',"VALUES(:id,:doc,:upload,:uid,'awaiting_confirmation',:pipeline,:expires,:now)",
@@ -32,6 +36,7 @@ def main():
     output=ROOT/'report/w14-evidence'
     output.mkdir(parents=True,exist_ok=True)
     records=[]
+    run_id=uuid4().hex[:8]
     for label,relative,old,new,selection in CASES:
         path=PACKAGE/relative
         original=path.read_bytes()
@@ -39,7 +44,7 @@ def main():
         assert old in source,(label,'mutation target missing')
         xml=output/(label+'-red.xml')
         command=[sys.executable,str(ROOT/'scripts/w05_run_tests.py'),TEST,'-k',selection,
-                 '-o','addopts=','-q','--tb=short','--basetemp=tmp/w14-mut-'+label,'--junitxml='+str(xml)]
+                 '-o','addopts=','-q','--tb=short','--basetemp=tmp/w14-mut-'+run_id+'-'+label,'--junitxml='+str(xml)]
         try:
             path.write_bytes(source.replace(old,new).encode('utf-8'))
             process=subprocess.run(command,cwd=ROOT,env={**os.environ,'PYTHONDONTWRITEBYTECODE':'1'},

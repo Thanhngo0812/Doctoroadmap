@@ -58,7 +58,10 @@ class BuildWorker:
                 raise ValueError('Runner returned a nonterminal result')
             state['result']=result
             metadata=None
-            if state['cap']:
+            if self.store.get_job(bid)['cancel_requested']:
+                result.status='cancelled'
+                result.error=None
+            elif state['cap']:
                 result.status='failed'
                 result.error={'code':'het_tran_he_thong','message':'Đã chạm trần dựng hôm nay','retryable':True}
             if result.status=='succeeded':

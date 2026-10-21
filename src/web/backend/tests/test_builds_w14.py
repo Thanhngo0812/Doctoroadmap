@@ -3,6 +3,7 @@ from io import BytesIO
 from pathlib import Path
 from types import SimpleNamespace
 from uuid import uuid4
+import json
 
 import pytest
 from fastapi.testclient import TestClient
@@ -120,6 +121,12 @@ def sql(b,query,params=None):
     finally: independent.dispose()
 
 
+def evidence(name,payload):
+    root=Path(__file__).parents[4]/'report/w14-evidence'
+    root.mkdir(parents=True,exist_ok=True)
+    (root/name).write_text(json.dumps(payload,ensure_ascii=False,indent=2,default=str)+'\n',encoding='utf-8')
+
+
 def test_name_is_saved_at_confirmation_before_any_indexing(builds):
     b=builds
     item=upload(b)
@@ -155,6 +162,8 @@ def test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes(builds,t
     assert sum(row['cost_usd'] for row in rows)==expected
     assert all(str(row['learner_id'])==b.actor.user_id and row['extra']['build_id']==bid for row in rows)
     assert sql(b,'SELECT count(*) AS n FROM build_attempt WHERE result IS NOT NULL')[0]['n']==1
+    evidence('sql-'+terminal+'.json',{'kind':'independent PostgreSQL connection; synthetic usage, no provider spend',
+        'build':counters,'ledger':rows,'actual_provider_calls':0})
     assert all(not path.exists() for path in consumer.runners[0].sources)
     if terminal=='cancelled': assert consumer.runners[0].started==['doc_reading','concepts']
     if terminal=='failed': assert '/internal/path' not in str(b.service.get_build(b.actor,bid))
@@ -198,6 +207,9 @@ def test_simultaneous_upload_and_two_workers_never_duplicate(builds):
         claims=list(pool.map(lambda name:b.store.claim(name,b.clock.now(),b.settings),['a','b']))
     assert sum(c is not None for c in claims)==1
     assert sql(b,'SELECT count(*) AS n FROM build_attempt')[0]['n']==1
+    evidence('sql-queue-claims.json',{'kind':'independent PostgreSQL after concurrent uploads and claims',
+        'claims':claims,'builds':sql(b,'SELECT id,doc_id,status,claim_count,claimed_by FROM build'),
+        'courses':sql(b,'SELECT id,owner_id,doc_id,build_id FROM course')})
 
 
 def test_expiration_rights_guests_and_cross_account_ownership(builds):
@@ -248,6 +260,9 @@ def test_system_cap_blocks_claim_and_stops_next_step_without_hiding_usage(builds
     b.service.confirm_build(b.actor,second['upload_id'])
     assert consumer.run_next_job() is None
     assert b.service.get_upload(b.actor,second['upload_id'])['build']['status']=='queued'
+    evidence('sql-capacity.json',{'kind':'independent PostgreSQL; fake cap and usage',
+        'builds':sql(b,'SELECT id,status,spent_usd,error_code FROM build'),
+        'ledger':sql(b,"SELECT purpose,cost_usd,extra FROM usage_ledger")})
     b.clock.advance(86400)
     assert consumer.run_next_job() is not None
 
@@ -265,14 +280,16 @@ def test_heartbeat_reclaim_only_once_and_stale_callback_is_fenced(builds):
     assert b.store.reclaim(b.clock.now(),b.settings)==1
     second=b.store.claim('second',b.clock.now(),b.settings)
     assert second['claim_count']==2
-    fake=BuildResult(first['doc_id'],'succeeded',first['pipeline_version'],graph_version=8,spent_usd=900)
+    fake=BuildResult(first['doc_id'],'succeeded',first['pipeline_version'],graph_version=8,spent_usd=.009)
     assert not b.store.record_usage(first['id'],first['lease_id'],fake.to_dict(),b.clock.now(),result=fake)
+    assert b.store.get_job(first['id'])['status']=='reading'
+    assert sql(b,'SELECT sum(cost_usd) AS total FROM usage_ledger')[0]['total']==__import__('decimal').Decimal('.009')
     b.clock.advance(601)
     assert b.store.reclaim(b.clock.now(),b.settings)==1
     job=b.store.get_job(first['id'])
     assert job['status']=='failed' and job['error_code']=='loi_noi_bo' and not job['usage_complete']
     assert b.store.claim('third',b.clock.now(),b.settings) is None
-    assert sql(b,"SELECT count(*) AS n FROM usage_ledger")[0]['n']==0
+    assert sql(b,"SELECT count(*) AS n FROM usage_ledger")[0]['n']==1
 
 
 def test_retry_uses_new_receipt_without_recounting_monthly_quota(builds):
@@ -485,3 +502,138 @@ def test_publication_error_keeps_final_usage_even_without_progress_counters(buil
     result=consumer.run_next_job()
     assert result['status']=='failed' and result['model_calls']==2
     assert float(sql(b,'SELECT sum(cost_usd) AS total FROM usage_ledger')[0]['total'])==.12
+
+
+def test_http_contract_and_building_course_card_are_real_application_outputs(builds):
+    from wayfinder.application.courses import CourseService
+    from wayfinder.infrastructure.course_store import PostgresCourseStore
+    b=builds
+    courses=CourseService(PostgresCourseStore(b.engine),settings=b.settings,clock=b.clock)
+    courses.build_service=b.service
+    b.services.courses=courses
+    response=b.client.post('/api/v1/uploads',headers=b.headers,data={'rights_confirmed':'true'},
+        files={'file':('Dai so.pdf',pdf(),'application/pdf')})
+    assert response.status_code==200,response.text
+    uploaded=response.json()
+    confirmed=b.client.post(f"/api/v1/uploads/{uploaded['upload_id']}/build",headers=b.headers,json={'title':'Tên trước index'})
+    assert confirmed.status_code==200,confirmed.text
+    listed=b.client.get('/api/v1/courses')
+    assert listed.status_code==200,listed.text
+    card=listed.json()['owned'][0]
+    assert card['build']['status']=='queued' and card['title']=='Tên trước index'
+    stages=[]
+    def hook(step,result):
+        snapshot=b.client.get('/api/v1/builds/'+uploaded['build']['build_id'])
+        assert snapshot.status_code==200,snapshot.text
+        stages.append(snapshot.json())
+    assert worker(b,hook=hook).run_next_job()['status']=='succeeded'
+    completed=b.client.get('/api/v1/builds/'+uploaded['build']['build_id'])
+    assert completed.status_code==200 and completed.json()['status']=='succeeded'
+    assert [s['step'] for s in stages]==['doc_reading','concepts','graph','learning_prep']
+    payload={'kind':'real FastAPI TestClient + disposable PostgreSQL; fake runner/media/mailer; not TCP or browser',
+        'upload':uploaded,'confirmation':confirmed.json(),'building_course_list':listed.json(),
+        'progress':stages,'completed':completed.json(),'quota':b.client.get('/api/v1/me/usage').json()}
+    assert not any(key in json.dumps(payload) for key in ('spent_usd','estimate','public_id','input_tokens','output_tokens'))
+    evidence('http-contract.json',payload)
+
+
+@pytest.mark.parametrize('code',['ban_quet','chu_loi','ngon_ngu_khong_ho_tro'])
+def test_reading_rejections_finish_before_paid_steps(builds,code):
+    b=builds
+    item=upload(b)
+    b.service.confirm_build(b.actor,item['upload_id'])
+    consumer=worker(b,error={'code':code,'stage':'doc_reading'})
+    result=consumer.run_next_job()
+    assert result['status']=='rejected' and result['error_code']==code and result['spent_usd']==0
+    assert consumer.runners[0].started==['doc_reading']
+    assert all(not path.exists() for path in consumer.runners[0].sources)
+    assert any(message['subject']=='Bản dựng lỗi' for message in b.mailer.messages)
+
+
+def test_retry_keeps_original_quota_month_and_account_override(builds):
+    from datetime import datetime,timezone
+    b=builds
+    b.clock.instant=datetime(2026,1,31,16,59,tzinfo=timezone.utc)
+    with b.engine.begin() as connection:
+        connection.execute(text('UPDATE account SET build_monthly_max=1 WHERE id=:id'),{'id':b.actor.user_id})
+    item=upload(b)
+    b.service.confirm_build(b.actor,item['upload_id'])
+    assert worker(b,error={'code':'loi_mang'}).run_next_job()['status']=='failed'
+    b.clock.advance(120)
+    assert b.service.usage(b.actor)['builds_used']==0
+    b.service.retry_build(b.actor,item['build']['build_id'])
+    assert worker(b).run_next_job()['status']=='succeeded'
+    assert b.service.usage(b.actor)['builds_used']==0
+    assert b.service.usage(b.actor)['build_monthly_max']==1
+
+
+def test_worker_cli_dispatches_real_once_loop_with_injected_fake_services(builds,monkeypatch):
+    from wayfinder import cli
+    from wayfinder.worker import run_worker
+    b=builds
+    item=upload(b)
+    b.service.confirm_build(b.actor,item['upload_id'])
+    consumer=worker(b)
+    def command(settings,**options):
+        assert options['source_doc']=='doc-6' and options['once']
+        return run_worker(consumer,once=True)
+    monkeypatch.setattr('wayfinder.worker.main',command)
+    assert cli.main(['worker','--fake-source','doc-6','--fixture-root','.',
+        '--manifest','unused-in-this-injected-test','--manifest-sha256','injected','--once'])==0
+    assert b.store.get_job(item['build']['build_id'])['status']=='succeeded'
+
+
+def test_cancel_requested_between_step_check_and_callback_remains_cancelled(builds):
+    from wayfinder.application.build_worker import BuildWorker
+    from doc2roadmap.application.ports.build import BuildResult
+    b=builds
+    item=upload(b)
+    bid=item['build']['build_id']
+    b.service.confirm_build(b.actor,item['upload_id'])
+    class RaceRunner:
+        def __init__(self,recorder): self.recorder=recorder
+        def execute(self,path,doc,**kwargs):
+            b.service.cancel_build(b.actor,bid)
+            try: kwargs['progress']('concepts',{'status':'started'})
+            except InterruptedError:
+                result=BuildResult(doc,'failed','web-fake-v1',spent_usd=.01,model_calls=1,
+                    input_tokens=10,output_tokens=2,error={'code':'loi_noi_bo'})
+                self.recorder(result)
+                return result
+            raise AssertionError('Cancelled step unexpectedly started')
+    consumer=BuildWorker(b.service,runner_factory=RaceRunner,graph_loader=None,mailer=b.mailer,worker_id='boundary-race')
+    result=consumer.run_next_job()
+    assert result['status']=='cancelled' and float(result['spent_usd'])==.01
+
+
+def test_missing_token_counter_keeps_known_spend_and_incomplete_marker(builds):
+    from doc2roadmap.application.ports.build import BuildResult
+    b=builds
+    item=upload(b)
+    b.service.confirm_build(b.actor,item['upload_id'])
+    job=b.store.claim('missing-counter',b.clock.now(),b.settings)
+    result=BuildResult(job['doc_id'],'failed',job['pipeline_version'],spent_usd=.007,
+        model_calls=1,input_tokens=None,output_tokens=20,error={'code':'loi_mang'})
+    b.store.record_usage(job['id'],job['lease_id'],result.to_dict(),b.clock.now(),result=result)
+    persisted=sql(b,'SELECT * FROM build')[0]
+    assert not persisted['usage_complete'] and float(persisted['spent_usd'])==.007
+    ledger=sql(b,'SELECT * FROM usage_ledger')[0]
+    assert not ledger['extra']['usage_complete'] and ledger['output_tokens']==20
+
+
+def test_queue_skips_a_locked_job_and_claims_the_next_without_waiting(builds):
+    from threading import Thread
+    b=builds
+    for pages in (1,2):
+        item=upload(b,content=pdf(pages))
+        b.service.confirm_build(b.actor,item['upload_id'])
+    results=[]
+    with b.engine.begin() as connection:
+        locked=connection.scalar(text("SELECT id FROM build WHERE status='queued' ORDER BY queued_at,id FOR UPDATE LIMIT 1"))
+        thread=Thread(target=lambda:results.append(b.store.claim('skip-locked',b.clock.now(),b.settings)))
+        thread.start()
+        thread.join(timeout=3)
+        waited=thread.is_alive()
+    thread.join(timeout=3)
+    assert not waited,'Queue consumer waited on a job locked by another connection'
+    assert len(results)==1 and results[0]['id']!=str(locked)

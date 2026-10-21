@@ -1,6 +1,6 @@
 """PostgreSQL serializes confirmation, deduplication and worker leases."""
 from datetime import timedelta
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 import json
 from uuid import UUID, uuid4
 from zoneinfo import ZoneInfo
@@ -125,16 +125,18 @@ class PostgresBuildStore(PostgresCourseStore):
         """Progress counters are cumulative per attempt; final BuildResult is a delta per execution."""
         with self.atomic():
             job=self.one('SELECT * FROM build WHERE id=:id FOR UPDATE',{'id':bid})
-            if job['lease_id']!=lease or job['status'] not in ('reading','running'): return False
+            active=job['lease_id']==lease and job['status'] in ('reading','running')
             attempt=self.one('SELECT * FROM build_attempt WHERE build_id=:id AND lease_id=:lease FOR UPDATE',{'id':bid,'lease':lease})
-            if attempt['result'] is not None: return False
+            if attempt is None or attempt['result'] is not None: return False
+            if not active and result is None: return False
             fields=('spent_usd','model_calls','input_tokens','output_tokens')
             complete=counters.get('usage_complete',True) and attempt['usage_complete']
             values={}
             for key in fields:
                 value=counters.get(key)
                 try: valid=not isinstance(value,bool) and value is not None and Decimal(str(value)).is_finite() and value>=0
-                except (ValueError,TypeError): valid=False
+                except (ValueError,TypeError,InvalidOperation): valid=False
+                if valid and key!='spent_usd' and int(value)!=value: valid=False
                 if not valid or (valid and Decimal(str(value))<attempt[key]):
                     complete=False
                     value=attempt[key]
@@ -148,7 +150,7 @@ class PostgresBuildStore(PostgresCourseStore):
                         extra={'created_at':now.isoformat(),'purpose':'build','doc_id':job['doc_id'],
                                'learner_id':job['requested_by'],'cost_usd':float(delta['spent_usd']),
                                'input_tokens':int(delta['input_tokens']),'output_tokens':int(delta['output_tokens']),
-                               'build_id':bid,'user_id':job['requested_by'],'claim_count':job['claim_count'],'lease_id':lease,
+                               'build_id':bid,'user_id':job['requested_by'],'claim_count':attempt['claim_count'],'lease_id':lease,
                                'step':step,'model_calls':int(delta['model_calls']),'usage_complete':bool(complete),
                                'attribution_complete':step is not None}))
             params=values|{'id':bid,'lease':lease,'complete':bool(complete),
@@ -160,8 +162,11 @@ class PostgresBuildStore(PostgresCourseStore):
                 'input_tokens=input_tokens+:input_tokens,output_tokens=output_tokens+:output_tokens,usage_complete=usage_complete AND :complete WHERE id=:id',
                 delta|{'id':bid,'complete':bool(complete)})
             if result:
+                self.execute('UPDATE build SET elapsed_seconds=elapsed_seconds+:elapsed WHERE id=:id',
+                             {'id':bid,'elapsed':result.elapsed_seconds})
+            if result and active:
                 error=result.error or {}
-                self.execute('UPDATE build SET status=:status,finished_at=:now,heartbeat_at=:now,elapsed_seconds=elapsed_seconds+:elapsed,'
+                self.execute('UPDATE build SET status=:status,finished_at=:now,heartbeat_at=:now,'
                     'error_code=:code,error_message=:message,retryable=:retryable,graph_version=:version,module_count=:modules WHERE id=:id',
                     {'id':bid,'status':result.status,'now':now,'elapsed':result.elapsed_seconds,'code':error.get('code'),
                      'message':error.get('message'),'retryable':error.get('retryable',False),'version':result.graph_version,
@@ -169,7 +174,7 @@ class PostgresBuildStore(PostgresCourseStore):
                 self.execute('UPDATE course SET status=:status,published_graph_version=:version,module_count=:modules,updated_at=:now WHERE build_id=:id',
                     {'id':bid,'now':now,'status':'ready' if result.status=='succeeded' else 'failed',
                      'version':result.graph_version if result.status=='succeeded' else None,'modules':(metadata or {}).get('module_count',0)})
-            return True
+            return active
 
     def put_asset(self,doc,key,public_id,kind,size,now):
         self.execute('INSERT INTO media_asset(doc_id,asset_key,public_id,kind,bytes,created_at) '
