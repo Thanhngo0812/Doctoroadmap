@@ -3,6 +3,10 @@
 Pipeline B0 tất định parse PDF/DOCX thành cây/chunk có version. A3 trích thực thể có bằng chứng và media;
 A3′ lập chỉ mục vector + BM25 để truy hồi lai.
 
+## Mở web WayFinder
+
+Xem [hướng dẫn mở PostgreSQL, backend và frontend](src/web/README.md). Có lệnh PowerShell cho worktree W-06 trên máy hiện tại, địa chỉ truy cập, cách chạy bản build và dừng service.
+
 ## Cài và kiểm tra
 
 ```powershell

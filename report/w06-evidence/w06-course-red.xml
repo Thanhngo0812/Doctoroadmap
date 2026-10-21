@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="7" failures="0" skipped="0" tests="7" time="5.442" timestamp="2026-10-20T16:36:56.526840+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="1.522"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'wayfinder.application.courses'&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1AFC1D60&gt;
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+&gt;       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_route_inventory_catches_a_new_unguarded_route" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'wayfinder.application.courses'&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1AFFEF90&gt;
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+&gt;       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'wayfinder.application.courses'&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B019FA0&gt;
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+&gt;       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_guest_and_prod_cannot_join_or_discover_samples" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'wayfinder.application.courses'&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B01B3B0&gt;
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+&gt;       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_owner_constraint_and_course_creation_rollback" time="0.002"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'wayfinder.application.courses'&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B01BE60&gt;
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+&gt;       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_update_requires_owner_and_cannot_change_identity" time="0.001"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'wayfinder.application.courses'&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B3E8800&gt;
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+&gt;       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_membership_activity_updates_only_after_five_minutes" time="0.034"><error message="failed on setup with &quot;ModuleNotFoundError: No module named 'wayfinder.application.courses'&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_03113e66cdc44c1d9651924c92a668d0
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001EA1B3E9130&gt;
+
+    @pytest.fixture
+    def courses(postgres_database_url, monkeypatch):
+&gt;       from wayfinder.application.courses import CourseService
+E       ModuleNotFoundError: No module named 'wayfinder.application.courses'
+
+src\web\backend\tests\test_courses_w06.py:28: ModuleNotFoundError</error></testcase></testsuite></testsuites>

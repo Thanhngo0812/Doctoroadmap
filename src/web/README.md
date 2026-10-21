@@ -1,4 +1,81 @@
-# WayFinder — nền web và tài khoản
+# WayFinder — chạy backend và frontend
+
+## Mở nhanh bản W-06 trên máy hiện tại
+
+Bản W-06 nằm ở nhánh `work/w06-web`, thư mục `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web`. Chạy từ thư mục này để mở đúng bản mới. Bật **Docker Desktop** và chờ engine sẵn sàng trước.
+
+### Cửa sổ PowerShell 1 — PostgreSQL và backend
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web
+
+# Dùng Python và cấu hình đã có ở repo gốc; import mã của W-06.
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+
+# Cho phép cả trang build ở 8000 và Vite ở 5173 dùng phiên/CSRF.
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+```
+
+Giữ cửa sổ này mở. Backend ở **http://127.0.0.1:8000**; health ở **http://127.0.0.1:8000/api/v1/health**. Migration W-06 có head `w06_0005`.
+
+`WAYFINDER_ARTIFACT_ROOT` ở trên dùng bản sao snapshot phát triển của worktree đã đối chiếu SHA-256. Nếu mở worktree mới chưa có dữ liệu, làm theo [báo cáo W-06](../../report/w06-react-tich-hop-2026-10-21.md) để chép theo manifest; không trỏ vào cache người học CLI. Cấu hình dữ liệu dùng thật vẫn đặt ngoài repo như phần chuẩn bị bên dưới.
+
+### Cửa sổ PowerShell 2 — frontend React
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-web
+
+# Chỉ cần khi chưa cài dependency hoặc package-lock.json thay đổi.
+npm.cmd --prefix src/web/frontend ci
+
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+```
+
+Mở **http://127.0.0.1:5173**; đăng nhập để vào **http://127.0.0.1:5173/khoa-hoc**. React tự cập nhật khi sửa mã. `/api` được Vite chuyển tới backend cổng8000; dùng thống nhất `127.0.0.1`, không đổi xen kẽ sang `localhost`. `--strictPort` giúp báo rõ cổng bận, không tự đổi sang cổng ngoài cấu hình CSRF.
+
+Liên kết xác minh/reset trong email dùng `WAYFINDER_PUBLIC_BASE_URL`, nên chế độ trên đặt về5173. Gmail/Cloudinary giữ cấu hình hiện có trong `.env`; việc mở service không tự seed mẫu, gửi thư hay upload media. Thư chỉ được gửi khi có thao tác tài khoản tương ứng và Mailer được cấu hình SMTP.
+
+### Chạy bản build để xem demo ở một địa chỉ
+
+Nếu chỉ muốn xem sản phẩm, không cần Vite. Dừng hai tiến trình bằng `Ctrl+C`, rồi trong cửa sổ backend đã thiết lập các biến ở trên:
+
+```powershell
+npm.cmd --prefix src/web/frontend run build
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:8000'
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+```
+
+Mở **http://127.0.0.1:8000**. FastAPI phục vụ cả API và React đã build. Sau mỗi lần đổi giao diện cần build lại rồi tải lại trang. W-06 không cần worker; upload tài liệu thật thuộc W-14.
+
+### Dừng và mở lại
+
+- Nhấn `Ctrl+C` ở từng cửa sổ backend/frontend để dừng. Lần sau chạy lại phần thiết lập biến của cửa sổ backend và các lệnh mở service; không cần `npm ci` mỗi lần.
+- Có thể để PostgreSQL chạy. Nếu muốn dừng: `docker compose -f src/web/docker-compose.yml --env-file $wfEnv stop db` trong cửa sổ backend. Dữ liệu vẫn giữ trong volume. Không dùng `down -v` khi muốn giữ tài khoản/khoá học.
+- Chỉ mở một backend cổng8000. Nếu báo cổng bận, dừng tiến trình cũ trong terminal đã mở nó. Không chạy đồng thời backend W-03 và W-06 cùng cổng.
+
+### Khi không mở được
+
+| Hiện tượng | Cách xử lý |
+|---|---|
+| Docker báo không kết nối engine | Bật Docker Desktop, đợi sẵn sàng rồi chạy lại lệnh `up` |
+| API lỗi503 hoặc không kết nối PostgreSQL | Xem `docker compose -f src/web/docker-compose.yml --env-file $wfEnv ps db`; kiểm `.env` và chạy `db upgrade` nếu chưa chạy |
+| Backend báo cấu hình Vertex/ADC không hợp lệ | Kiểm các biến `DOC2ROADMAP_*` và ADC đã cấu hình trên máy như phần chuẩn bị bên dưới |
+| Đăng nhập/join báo CSRF | Mở đúng `127.0.0.1:5173`, kiểm hai origin trong cửa sổ backend rồi khởi động lại backend và tải lại trang |
+| Mở8000 nhưng giao diện cũ/chưa có | Chạy `npm.cmd --prefix src/web/frontend run build` trong đúng worktree; kiểm `WAYFINDER_FRONTEND_DIST` |
+| Khoá học của tôi rỗng | Đây là danh sách từ DB đang dùng; bộ kiểm tự động dùng DB tạm và đã xoá sau kiểm, không seed vào DB của bạn |
+
+## Quy ước hướng dẫn chạy cho các vé tiếp theo
+
+Mỗi lần bàn giao web phải cập nhật README này: worktree/nhánh, cấu hình cần thêm, lệnh mở PostgreSQL/backend/frontend/worker nếu có, URL truy cập, lệnh dừng và giới hạn chưa triển khai. Các phần bên dưới là tham khảo cài mới và cấu hình chung.
 
 Chạy các lệnh dưới đây từ gốc repo với Python 3.12, Node.js 24.11.1 / npm 11.6.2 (phiên bản đã kiểm) và Docker Desktop (Linux engine/WSL2).
 
@@ -23,7 +100,7 @@ docker compose -f src/web/docker-compose.yml --env-file src/web/.env up -d --wai
 .venv/Scripts/web.exe --env-file src/web/.env db upgrade
 ```
 
-Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic. Chuỗi hiện tại là `w01_0001 → w05_0002 → w02_0003 → w03_0004`, tạo kho Pha B, tài khoản/phiên/giới hạn thử/nhật ký và token email.
+Dev dùng volume Docker có tên, test dùng `tmpfs`; không gắn dữ liệu PostgreSQL vào ổ C. Hai cổng chỉ lắng nghe loopback: 5432/5433. Bản di trú W-01 chỉ tạo bảng phiên bản Alembic. Chuỗi hiện tại là `w01_0001 → w05_0002 → w02_0003 → w03_0004 → w06_0005`, tạo kho Pha B, tài khoản/phiên/giới hạn thử/nhật ký, token email và course/membership W-06.
 
 ## Chạy ứng dụng
 

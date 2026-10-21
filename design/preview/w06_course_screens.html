@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WayFinder — W-06 Khoá học của tôi & Các trạng thái (Design Spec)</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    :root {
+      --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg-subtle);
+      color: var(--color-text);
+      min-height: 100vh;
+      padding: 32px 20px;
+    }
+    @media (max-width: 768px) {
+      body {
+        padding: 16px 0;
+      }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .header-title h1 {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--color-text);
+    }
+    .header-title p {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-top: 4px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .btn-toggle {
+      height: 44px;
+      padding: 0 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border);
+      background: var(--color-surface);
+      color: var(--color-text);
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    /* Section & Cards Grid */
+    .state-section {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .state-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .state-badge {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+      background-color: var(--color-brand-tint);
+      color: var(--color-primary);
+    }
+
+    .course-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .course-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .course-card {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      background-color: var(--color-surface);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 120ms ease;
+    }
+    .course-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: 0 4px 12px rgba(10, 106, 179, 0.08);
+    }
+    .course-card.sample {
+      border-left: 4px solid var(--color-accent);
+      background-color: var(--color-bg-subtle);
+    }
+
+    .course-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .course-code {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-muted);
+      font-family: var(--font-mono);
+    }
+    .course-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--color-text);
+      line-height: 1.4;
+    }
+    .course-desc {
+      font-size: 13px;
+      color: var(--color-text-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    /* Progress bar */
+    .progress-box {
+      margin-bottom: 16px;
+    }
+    .progress-info {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--color-text-muted);
+    }
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background-color: var(--color-border);
+      border-radius: var(--radius-pill);
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      background-color: var(--color-primary);
+      border-radius: var(--radius-pill);
+      transition: width 200ms ease;
+    }
+    .progress-fill.complete {
+      background-color: var(--color-success);
+    }
+
+    .btn-action {
+      height: 44px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: var(--radius-md);
+      background-color: var(--color-primary);
+      color: var(--color-primary-text);
+      font-weight: 600;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: background-color 120ms ease;
+    }
+    .btn-action:hover {
+      background-color: var(--color-primary-hover);
+    }
+    .btn-outline {
+      background-color: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+    }
+    .btn-outline:hover {
+      background-color: var(--color-bg-subtle);
+    }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+    }
+    .empty-icon {
+      font-size: 48px;
+      margin-bottom: 14px;
+    }
+    .empty-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .empty-desc {
+      font-size: 14px;
+      color: var(--color-text-muted);
+      max-width: 480px;
+      margin: 0 auto 20px;
+      line-height: 1.5;
+    }
+    .empty-actions {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Skeleton Loading State */
+    .skeleton-box {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      background-color: var(--color-surface);
+    }
+    .skeleton-line {
+      height: 16px;
+      border-radius: 4px;
+      background: linear-gradient(90deg, var(--color-border) 25%, var(--color-bg-subtle) 50%, var(--color-border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      margin-bottom: 12px;
+    }
+    .skeleton-title {
+      height: 22px;
+      width: 70%;
+    }
+    .skeleton-btn {
+      height: 44px;
+      width: 100%;
+      margin-top: 16px;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton-line {
+        animation: none !important;
+        background: var(--color-border) !important;
+      }
+    }
+
+    /* Error state */
+    .error-banner {
+      border: 1px solid var(--color-danger);
+      background-color: var(--color-danger-tint);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      text-align: center;
+    }
+    .error-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-danger);
+      margin-bottom: 8px;
+    }
+    .error-desc {
+      font-size: 13px;
+      color: var(--color-text);
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+  <div class="container">
+    <div class="header-bar">
+      <div class="header-title">
+        <h1>Khoá học của tôi &bull; Đặc tả giao diện W-06</h1>
+        <p>Thư viện màn hình bàn giao chuẩn phục vụ nhóm Web và Lõi tích hợp React/Gateway</p>
+      </div>
+      <div class="controls">
+        <button class="btn-toggle" id="btn-theme-toggle">🌙 Chế độ tối</button>
+      </div>
+    </div>
+
+    <!-- STATE 1: DANH SÁCH KHOÁ HỌC (ACTIVE / COMPLETED / SAMPLE) -->
+    <section class="state-section" id="section-courses-active">
+      <div class="state-header">
+        <div>
+          <h2 style="font-size: 18px; font-weight: 700;">1. Trạng thái Danh sách Khoá học (Bình thường & Khoá mẫu)</h2>
+          <p style="font-size: 13px; color: var(--color-text-muted);">Học viên có khoá học đang tiến hành, khoá đã hoàn thành và khoá học mẫu</p>
+        </div>
+        <span class="state-badge">Trạng thái chuẩn</span>
+      </div>
+
+      <div class="course-grid">
+        <!-- Card 1: Sample Course -->
+        <article class="course-card sample" id="card-sample-course">
+          <div>
+            <div class="course-meta">
+              <span class="course-code">DOC-SAMPLE-01</span>
+              <span style="font-size: 11px; font-weight:700; background: var(--color-accent-tint); color: var(--color-accent-text); padding: 3px 8px; border-radius: 4px;">
+                Khoá mẫu sẵn sàng
+              </span>
+            </div>
+            <h3 class="course-title">Bác sĩ Nội trú: Giải phẫu ứng dụng & Điện tâm đồ</h3>
+            <p class="course-desc">Khoá học mẫu độc quyền được biên soạn từ 6 giáo trình y khoa cốt lõi. Sẵn sàng học ngay không cần tải sách.</p>
+          </div>
+          <div>
+            <div class="progress-box">
+              <div class="progress-info">
+                <span>Tiến độ học</span>
+                <span>2/24 bài (8%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 8%;"></div>
+              </div>
+            </div>
+            <div style="display:flex; gap:10px;">
+              <a href="#/hoc/lecture-2" class="btn-action" style="flex:1;">
+                Học tiếp &rarr;
+              </a>
+              <button type="button" class="btn-action btn-outline" style="width:44px; padding:0;" title="Tạo bản sao học cá nhân">
+                📋
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2: In-Progress User Course -->
+        <article class="course-card" id="card-user-course-progress">
+          <div>
+            <div class="course-meta">
+              <span class="course-code">WF-PHARM-2026</span>
+              <span style="font-size: 11px; font-weight:700; background: var(--color-brand-tint); color: var(--color-primary); padding: 3px 8px; border-radius: 4px;">
+                Đang học
+              </span>
+            </div>
+            <h3 class="course-title">Dược lý lâm sàng & Phác đồ kháng sinh thế hệ mới</h3>
+            <p class="course-desc">Giáo trình Dược lý học lâm sàng - ĐH Y Dược. Tập trung vào cơ chế kháng thuốc và tương tác thuốc.</p>
+          </div>
+          <div>
+            <div class="progress-box">
+              <div class="progress-info">
+                <span>Tiến độ học</span>
+                <span>12/18 bài (67%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 67%;"></div>
+              </div>
+            </div>
+            <a href="#/khoa-hoc/pharm" class="btn-action">
+              Vào lộ trình &rarr;
+            </a>
+          </div>
+        </article>
+
+        <!-- Card 3: Completed Course -->
+        <article class="course-card" id="card-user-course-completed">
+          <div>
+            <div class="course-meta">
+              <span class="course-code">WF-SURG-2025</span>
+              <span style="font-size: 11px; font-weight:700; background: var(--color-success-tint); color: var(--color-success); padding: 3px 8px; border-radius: 4px;">
+                ✓ Đã hoàn thành
+              </span>
+            </div>
+            <h3 class="course-title">Ngoại khoa cơ sở & Kỹ thuật khâu nối nội soi</h3>
+            <p class="course-desc">Toàn bộ 16 chuyên đề thực hành và 45 câu hỏi đánh giá lâm sàng đã được hoàn thành xuất sắc.</p>
+          </div>
+          <div>
+            <div class="progress-box">
+              <div class="progress-info">
+                <span>Tiến độ</span>
+                <span style="color: var(--color-success);">16/16 bài (100%)</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill complete" style="width: 100%;"></div>
+              </div>
+            </div>
+            <a href="#/khoa-hoc/surg/review" class="btn-action btn-outline">
+              Ôn tập & Làm quiz &rarr;
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- STATE 2: TRẠNG THÁI RỖNG (EMPTY STATE) -->
+    <section class="state-section" id="section-courses-empty">
+      <div class="state-header">
+        <div>
+          <h2 style="font-size: 18px; font-weight: 700;">2. Trạng thái Rỗng (Empty State)</h2>
+          <p style="font-size: 13px; color: var(--color-text-muted);">Hiển thị khi học viên mới tạo tài khoản và chưa đăng ký hoặc tham gia khoá học nào</p>
+        </div>
+        <span class="state-badge">Trạng thái rỗng</span>
+      </div>
+
+      <div class="empty-state">
+        <div class="empty-icon">📚</div>
+        <h3 class="empty-title">Bạn chưa có khoá học nào</h3>
+        <p class="empty-desc">
+          Bắt đầu hành trình học tập bằng cách khám phá khoá học mẫu Bác sĩ Nội trú hoặc tải lên giáo trình y khoa PDF của bạn để AI tự động dựng lộ trình.
+        </p>
+        <div class="empty-actions">
+          <button type="button" class="btn-action" id="btn-empty-sample">
+            ✨ Khám phá khoá mẫu DOC-SAMPLE-01
+          </button>
+          <button type="button" class="btn-action btn-outline" id="btn-empty-upload">
+            📄 Tải sách PDF lên (Harrison)
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATE 3: TRẠNG THÁI ĐANG TẢI (LOADING SKELETON) -->
+    <section class="state-section" id="section-courses-loading">
+      <div class="state-header">
+        <div>
+          <h2 style="font-size: 18px; font-weight: 700;">3. Trạng thái Đang tải (Loading Skeleton State)</h2>
+          <p style="font-size: 13px; color: var(--color-text-muted);">Hiệu ứng shimmer mượt mà 1.5s, tự động ngắt hoạt ảnh khi bật prefers-reduced-motion</p>
+        </div>
+        <span class="state-badge">Đang tải</span>
+      </div>
+
+      <div class="course-grid">
+        <div class="skeleton-box">
+          <div class="skeleton-line" style="width: 30%;"></div>
+          <div class="skeleton-line skeleton-title"></div>
+          <div class="skeleton-line" style="width: 90%;"></div>
+          <div class="skeleton-line" style="width: 80%;"></div>
+          <div class="skeleton-line" style="width: 50%; height: 8px; margin-top: 20px;"></div>
+          <div class="skeleton-line skeleton-btn"></div>
+        </div>
+        <div class="skeleton-box">
+          <div class="skeleton-line" style="width: 25%;"></div>
+          <div class="skeleton-line skeleton-title"></div>
+          <div class="skeleton-line" style="width: 85%;"></div>
+          <div class="skeleton-line" style="width: 75%;"></div>
+          <div class="skeleton-line" style="width: 50%; height: 8px; margin-top: 20px;"></div>
+          <div class="skeleton-line skeleton-btn"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STATE 4: TRẠNG THÁI LỖI (ERROR STATE) -->
+    <section class="state-section" id="section-courses-error">
+      <div class="state-header">
+        <div>
+          <h2 style="font-size: 18px; font-weight: 700;">4. Trạng thái Lỗi tải dữ liệu (Error State)</h2>
+          <p style="font-size: 13px; color: var(--color-text-muted);">Báo lỗi an toàn khi mất kết nối mạng hoặc server không phản hồi kèm nút Thử lại</p>
+        </div>
+        <span class="state-badge" style="background: var(--color-danger-tint); color: var(--color-danger);">Báo lỗi</span>
+      </div>
+
+      <div class="error-banner">
+        <div style="font-size: 32px; margin-bottom: 10px;">⚠️</div>
+        <h3 class="error-title">Không thể tải danh sách khoá học</h3>
+        <p class="error-desc">
+          Đã xảy ra lỗi khi kết nối với máy chủ dữ liệu học tập. Vui lòng kiểm tra lại kết nối mạng và thử lại.
+        </p>
+        <button type="button" class="btn-action" style="background-color: var(--color-danger);" id="btn-retry-courses">
+          🔄 Thử tải lại danh sách
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    const btnToggle = document.getElementById('btn-theme-toggle');
+    btnToggle.addEventListener('click', () => {
+      const isDark = document.body.getAttribute('data-theme') === 'dark';
+      document.body.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      btnToggle.textContent = isDark ? '🌙 Chế độ tối' : '☀️ Chế độ sáng';
+    });
+  </script>
+</body>
+</html>

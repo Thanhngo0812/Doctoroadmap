@@ -688,9 +688,19 @@
   figma.currentPage.appendChild(authFrame);
   createdNodes.push(authFrame);
 
+  // Reaction status tracking
+  const reactionStats = {
+    attempted: 0,
+    linked: 0,
+    failed: 0,
+    details: []
+  };
+
   // Helper to link Figma Prototype Reactions (ON_CLICK -> NAVIGATE)
-  async function linkReaction(sourceNode, targetFrame) {
-    if (!sourceNode || !targetFrame) return;
+  async function linkReaction(sourceNode, targetFrame, description = "") {
+    if (!sourceNode || !targetFrame) return false;
+    reactionStats.attempted++;
+    const desc = description || (sourceNode.name || "Source") + " -> " + (targetFrame.name || "Target");
     try {
       if (typeof sourceNode.setReactionsAsync === "function") {
         await sourceNode.setReactionsAsync([
@@ -710,6 +720,9 @@
             ]
           }
         ]);
+        reactionStats.linked++;
+        reactionStats.details.push({ flow: desc, status: "LINKED_ASYNC" });
+        return true;
       } else if ("reactions" in sourceNode) {
         sourceNode.reactions = [
           {
@@ -721,9 +734,19 @@
             }
           }
         ];
+        reactionStats.linked++;
+        reactionStats.details.push({ flow: desc, status: "LINKED_SYNC" });
+        return true;
+      } else {
+        reactionStats.failed++;
+        reactionStats.details.push({ flow: desc, status: "MANUAL_REQUIRED", reason: "API reaction không khả dụng trên node hoặc phiên bản Figma" });
+        return false;
       }
     } catch (reactionErr) {
+      reactionStats.failed++;
+      reactionStats.details.push({ flow: desc, status: "FAILED", error: String(reactionErr) });
       console.log("Reaction setup note:", reactionErr);
+      return false;
     }
   }
 
@@ -884,7 +907,7 @@
   protoMasterFrame.itemSpacing = 20;
 
   protoMasterFrame.appendChild(createText("4 Luồng Prototype Bấm được (Figma Reactions & Web Workbench)", 22, FONT_BOLD, C.text));
-  protoMasterFrame.appendChild(createText("Đã gắn kết nối tương tác native ON_CLICK -> NAVIGATE trong Figma. Bấm 'Present' (Play) để trải nghiệm.", 13, FONT_REG, C.textMuted));
+  protoMasterFrame.appendChild(createText("Kiểm tra báo cáo reactions sau khi chạy plugin; nối thủ công các mục chưa thành công trước khi bấm Present.", 13, FONT_REG, C.textMuted));
 
   const protoRows = figma.createFrame();
   protoRows.layoutMode = "VERTICAL";
@@ -1084,8 +1107,246 @@
   figma.currentPage.appendChild(protoMasterFrame);
   createdNodes.push(protoMasterFrame);
 
+  // ==========================================
+  // 7. FRAME: MÀN HÌNH W-06 (KHOÁ HỌC CỦA TÔI /khoa-hoc)
+  // ==========================================
+  const w06Frame = figma.createFrame();
+  w06Frame.name = "7. Màn hình W-06: Khoá học của tôi (/khoa-hoc)";
+  w06Frame.x = 0;
+  w06Frame.y = 2880;
+  w06Frame.resize(1280, 600);
+  w06Frame.fills = solidFill(C.surface);
+  w06Frame.cornerRadius = 16;
+  w06Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w06Frame.strokeWeight = 1;
+  w06Frame.layoutMode = "VERTICAL";
+  w06Frame.paddingTop = 28;
+  w06Frame.paddingBottom = 28;
+  w06Frame.paddingLeft = 32;
+  w06Frame.paddingRight = 32;
+  w06Frame.itemSpacing = 20;
+
+  w06Frame.appendChild(createText("Khoá học của tôi (/khoa-hoc) — 4 Trạng thái (W-06)", 22, FONT_BOLD, C.text));
+  w06Frame.appendChild(createText("Bao gồm: Thẻ khoá học đang học (DOC-SAMPLE-01), Trạng thái rỗng, Shimmer Skeleton khi tải, và Banner cảnh báo lỗi.", 13, FONT_REG, C.textMuted));
+
+  const w06CardsRow = figma.createFrame();
+  w06CardsRow.layoutMode = "HORIZONTAL";
+  w06CardsRow.itemSpacing = 16;
+  w06CardsRow.fills = [];
+
+  // State 1: Active Course Card (DOC-SAMPLE-01)
+  const cardActive = figma.createFrame();
+  cardActive.layoutMode = "VERTICAL";
+  cardActive.itemSpacing = 12;
+  cardActive.resize(288, 440);
+  cardActive.cornerRadius = 12;
+  cardActive.fills = solidFill(C.bgSubtle);
+  cardActive.strokes = [{ type: "SOLID", color: C.primary }];
+  cardActive.strokeWeight = 2;
+  cardActive.paddingLeft = 16;
+  cardActive.paddingRight = 16;
+  cardActive.paddingTop = 16;
+  cardActive.paddingBottom = 16;
+  cardActive.appendChild(makeBadge("W-06: Đang học", C.brandTint, C.primary));
+  cardActive.appendChild(createText("Giải phẫu Tim mạch", 16, FONT_SEMI, C.text));
+  cardActive.appendChild(createText("Mã: DOC-SAMPLE-01", 12, FONT_REG, C.textMuted));
+  cardActive.appendChild(createText("Tiến độ: 12/18 khái niệm (67%)", 13, FONT_SEMI, C.primary));
+
+  const progBar = figma.createFrame();
+  progBar.resize(256, 8);
+  progBar.cornerRadius = 4;
+  progBar.fills = solidFill(C.border);
+  const progFill = figma.createFrame();
+  progFill.resize(170, 8);
+  progFill.cornerRadius = 4;
+  progFill.fills = solidFill(C.brand);
+  progBar.appendChild(progFill);
+  cardActive.appendChild(progBar);
+
+  const btnContStudy = makeButton("Tiếp tục học ➔", C.primary, C.white);
+  btnContStudy.resize(256, 44);
+  cardActive.appendChild(btnContStudy);
+  w06CardsRow.appendChild(cardActive);
+
+  // State 2: Empty State
+  const cardEmpty = figma.createFrame();
+  cardEmpty.layoutMode = "VERTICAL";
+  cardEmpty.itemSpacing = 12;
+  cardEmpty.resize(288, 440);
+  cardEmpty.cornerRadius = 12;
+  cardEmpty.fills = solidFill(C.bgSubtle);
+  cardEmpty.strokes = [{ type: "SOLID", color: C.border }];
+  cardEmpty.strokeWeight = 1;
+  cardEmpty.paddingLeft = 16;
+  cardEmpty.paddingRight = 16;
+  cardEmpty.paddingTop = 16;
+  cardEmpty.paddingBottom = 16;
+  cardEmpty.appendChild(makeBadge("W-06: Rỗng", C.bgSubtle, C.textMuted));
+  cardEmpty.appendChild(createText("Chưa có khoá học", 16, FONT_SEMI, C.text));
+  cardEmpty.appendChild(createText("Bạn chưa bắt đầu khoá học nào. Hãy tải giáo trình để WayFinder dựng lộ trình học tập thông minh.", 12, FONT_REG, C.textMuted));
+  const btnUploadDoc = makeButton("+ Tải giáo trình mới", C.surface, C.primary, C.primary);
+  btnUploadDoc.resize(256, 44);
+  cardEmpty.appendChild(btnUploadDoc);
+  w06CardsRow.appendChild(cardEmpty);
+
+  // State 3: Loading Shimmer
+  const cardLoading = figma.createFrame();
+  cardLoading.layoutMode = "VERTICAL";
+  cardLoading.itemSpacing = 12;
+  cardLoading.resize(288, 440);
+  cardLoading.cornerRadius = 12;
+  cardLoading.fills = solidFill(C.bgSubtle);
+  cardLoading.strokes = [{ type: "SOLID", color: C.border }];
+  cardLoading.strokeWeight = 1;
+  cardLoading.paddingLeft = 16;
+  cardLoading.paddingRight = 16;
+  cardLoading.paddingTop = 16;
+  cardLoading.paddingBottom = 16;
+  cardLoading.appendChild(makeBadge("W-06: Đang tải", C.brandTint, C.brand));
+  cardLoading.appendChild(createText("Đang tải dữ liệu...", 16, FONT_SEMI, C.textMuted));
+
+  const shim1 = figma.createFrame(); shim1.resize(256, 24); shim1.cornerRadius = 6; shim1.fills = solidFill(C.border);
+  const shim2 = figma.createFrame(); shim2.resize(180, 16); shim2.cornerRadius = 4; shim2.fills = solidFill(C.border);
+  const shim3 = figma.createFrame(); shim3.resize(256, 44); shim3.cornerRadius = 8; shim3.fills = solidFill(C.border);
+  cardLoading.appendChild(shim1);
+  cardLoading.appendChild(shim2);
+  cardLoading.appendChild(createText("Skeleton shimmer tuân thủ prefers-reduced-motion: ngắt chuyển động khi bật.", 11, FONT_REG, C.textMuted));
+  cardLoading.appendChild(shim3);
+  w06CardsRow.appendChild(cardLoading);
+
+  // State 4: Error State
+  const cardError = figma.createFrame();
+  cardError.layoutMode = "VERTICAL";
+  cardError.itemSpacing = 12;
+  cardError.resize(288, 440);
+  cardError.cornerRadius = 12;
+  cardError.fills = solidFill(C.bgSubtle);
+  cardError.strokes = [{ type: "SOLID", color: C.danger }];
+  cardError.strokeWeight = 1;
+  cardError.paddingLeft = 16;
+  cardError.paddingRight = 16;
+  cardError.paddingTop = 16;
+  cardError.paddingBottom = 16;
+  cardError.appendChild(makeBadge("W-06: Lỗi tải", C.dangerTint, C.danger));
+  cardError.appendChild(createText("Không thể tải danh sách", 16, FONT_SEMI, C.danger));
+  const errBox = figma.createFrame();
+  errBox.resize(256, 70);
+  errBox.cornerRadius = 8;
+  errBox.fills = solidFill(C.dangerTint);
+  errBox.paddingLeft = 10; errBox.paddingRight = 10; errBox.paddingTop = 8;
+  errBox.appendChild(createText("Mã lỗi: ERR_NETWORK. Không thể kết nối đến máy chủ Gateway.", 11, FONT_REG, C.danger));
+  cardError.appendChild(errBox);
+  const btnRetry = makeButton("Thử lại ↻", C.danger, C.white);
+  btnRetry.resize(256, 44);
+  cardError.appendChild(btnRetry);
+  w06CardsRow.appendChild(cardError);
+
+  w06Frame.appendChild(w06CardsRow);
+  figma.currentPage.appendChild(w06Frame);
+  createdNodes.push(w06Frame);
+
+  // ==========================================
+  // 8. FRAME: MÀN HÌNH W-04 (QUẢN LÝ HỒ SƠ & PHIÊN /ho-so)
+  // ==========================================
+  const w04Frame = figma.createFrame();
+  w04Frame.name = "8. Màn hình W-04: Quản lý Hồ sơ & Phiên (/ho-so)";
+  w04Frame.x = 0;
+  w04Frame.y = 3520;
+  w04Frame.resize(1280, 620);
+  w04Frame.fills = solidFill(C.surface);
+  w04Frame.cornerRadius = 16;
+  w04Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w04Frame.strokeWeight = 1;
+  w04Frame.layoutMode = "VERTICAL";
+  w04Frame.paddingTop = 28;
+  w04Frame.paddingBottom = 28;
+  w04Frame.paddingLeft = 32;
+  w04Frame.paddingRight = 32;
+  w04Frame.itemSpacing = 20;
+
+  w04Frame.appendChild(createText("Hồ sơ học viên & Bảo mật phiên (/ho-so) — W-04", 22, FONT_BOLD, C.text));
+  w04Frame.appendChild(createText("Thông tin cá nhân, Đổi mật khẩu Argon2id và Quản lý/Thu hồi phiên đăng nhập chủ động.", 13, FONT_REG, C.textMuted));
+
+  const w04CardsRow = figma.createFrame();
+  w04CardsRow.layoutMode = "HORIZONTAL";
+  w04CardsRow.itemSpacing = 20;
+  w04CardsRow.fills = [];
+
+  // Card 1: User Profile Info
+  const profCard = figma.createFrame();
+  profCard.layoutMode = "VERTICAL";
+  profCard.itemSpacing = 12;
+  profCard.resize(380, 460);
+  profCard.cornerRadius = 12;
+  profCard.fills = solidFill(C.bgSubtle);
+  profCard.strokes = [{ type: "SOLID", color: C.border }];
+  profCard.strokeWeight = 1;
+  profCard.paddingLeft = 20; profCard.paddingRight = 20; profCard.paddingTop = 20; profCard.paddingBottom = 20;
+  profCard.appendChild(makeBadge("W-04: Thông tin", C.brandTint, C.primary));
+  profCard.appendChild(createText("Hồ sơ cá nhân", 18, FONT_BOLD, C.text));
+  profCard.appendChild(createText("Email: user@example.com", 14, FONT_SEMI, C.text));
+  profCard.appendChild(createText("Trạng thái email: ✓ Đã xác minh", 13, FONT_REG, C.success));
+  profCard.appendChild(createText("Vai trò: Học viên chuẩn (Member)", 13, FONT_REG, C.textMuted));
+  profCard.appendChild(createText("Ngày tham gia: 2026-10-15", 13, FONT_REG, C.textMuted));
+  w04CardsRow.appendChild(profCard);
+
+  // Card 2: Change Password (Argon2id)
+  const passCard = figma.createFrame();
+  passCard.layoutMode = "VERTICAL";
+  passCard.itemSpacing = 10;
+  passCard.resize(380, 460);
+  passCard.cornerRadius = 12;
+  passCard.fills = solidFill(C.bgSubtle);
+  passCard.strokes = [{ type: "SOLID", color: C.border }];
+  passCard.strokeWeight = 1;
+  passCard.paddingLeft = 20; passCard.paddingRight = 20; passCard.paddingTop = 20; passCard.paddingBottom = 20;
+  passCard.appendChild(makeBadge("W-04: Bảo mật", C.accentTint, C.accentText));
+  passCard.appendChild(createText("Đổi mật khẩu (Argon2id)", 18, FONT_BOLD, C.text));
+  passCard.appendChild(makeInput("Mật khẩu hiện tại", "••••••••••••"));
+  passCard.appendChild(makeInput("Mật khẩu mới (≥8 ký tự)", "••••••••••••"));
+  passCard.appendChild(makeInput("Nhập lại mật khẩu mới", "••••••••••••"));
+  const btnUpdatePassW04 = makeButton("Cập nhật mật khẩu", C.primary, C.white);
+  btnUpdatePassW04.resize(340, 44);
+  passCard.appendChild(btnUpdatePassW04);
+  w04CardsRow.appendChild(passCard);
+
+  // Card 3: Session Management
+  const sessCard = figma.createFrame();
+  sessCard.layoutMode = "VERTICAL";
+  sessCard.itemSpacing = 12;
+  sessCard.resize(380, 460);
+  sessCard.cornerRadius = 12;
+  sessCard.fills = solidFill(C.bgSubtle);
+  sessCard.strokes = [{ type: "SOLID", color: C.border }];
+  sessCard.strokeWeight = 1;
+  sessCard.paddingLeft = 20; sessCard.paddingRight = 20; sessCard.paddingTop = 20; sessCard.paddingBottom = 20;
+  sessCard.appendChild(makeBadge("W-04: Phiên hoạt động", C.brandTint, C.primary));
+  sessCard.appendChild(createText("Quản lý phiên đăng nhập", 18, FONT_BOLD, C.text));
+  sessCard.appendChild(createText("Thiết bị hiện tại: Chrome Windows · 127.0.0.1", 13, FONT_SEMI, C.text));
+  const btnLogoutCur = makeButton("Đăng xuất thiết bị này (#btn-logout-current)", C.surface, C.text, C.borderInput);
+  btnLogoutCur.resize(340, 44);
+  sessCard.appendChild(btnLogoutCur);
+  sessCard.appendChild(createText("Các phiên khác: 1 thiết bị di động (Safari iPhone)", 13, FONT_REG, C.textMuted));
+  const btnLogoutAll = makeButton("Đăng xuất tất cả thiết bị khác (#btn-logout-all)", C.danger, C.white);
+  btnLogoutAll.resize(340, 44);
+  sessCard.appendChild(btnLogoutAll);
+  w04CardsRow.appendChild(sessCard);
+
+  w04Frame.appendChild(w04CardsRow);
+  figma.currentPage.appendChild(w04Frame);
+  createdNodes.push(w04Frame);
+
   // Focus and Zoom
   figma.viewport.scrollAndZoomIntoView(createdNodes);
-  figma.notify("🎉 WayFinder: Đã vẽ toàn bộ Design System, Màn hình W-03 & 4 Luồng Prototype liên kết!");
+
+  // Transparent Reaction Reporting
+  const reactionSummary = reactionStats.failed === 0 && reactionStats.linked > 0
+    ? `Đã nối thành công ${reactionStats.linked}/${reactionStats.attempted} prototype reactions.`
+    : `Reactions: ${reactionStats.linked} tự động, ${reactionStats.failed} cần nối thủ công qua panel Prototype của Figma.`;
+  figma.notify(`WayFinder: Đã tạo ${createdNodes.length} Khung Artboard (8 Frames chuẩn). ${reactionSummary}`);
+  console.log("WayFinder Plugin Generation Report:", {
+    totalFrames: createdNodes.length,
+    reactions: reactionStats
+  });
   figma.closePlugin();
 })();

@@ -131,7 +131,7 @@ describe('WayFinder demo', () => {
     scrollTo.mockRestore();
   });
 
-  it('registers through the API, hydrates the new session, and lands on the account page', async () => {
+  it('registers through the API, hydrates the new session, and lands on courses', async () => {
     const user = userEvent.setup();
     let registered = false;
     let registerInit: RequestInit | undefined;
@@ -139,6 +139,7 @@ describe('WayFinder demo', () => {
       const path = String(input);
       if (path.endsWith('/me')) return registered ? apiResponse({ account, csrf_token: 'csrf-new' }) : apiResponse({ error: { code: 'unauthenticated' } }, 401);
       if (path.endsWith('/auth/register')) { registerInit = init; registered = true; return apiResponse({ message: 'Yêu cầu đăng ký đã được tiếp nhận. Bạn có thể đăng nhập để tiếp tục.' }); }
+      if (path.endsWith('/courses')) return apiResponse({ owned: [], joined: [], samples: [] });
       return apiResponse({ account, csrf_token: 'csrf-new' });
     });
     vi.stubGlobal('fetch', fetchSpy);
@@ -150,7 +151,7 @@ describe('WayFinder demo', () => {
     await user.type(screen.getByLabelText('Nhập lại mật khẩu'), 'safe-password-123');
     await user.click(screen.getByRole('button', { name: 'Tạo tài khoản' }));
 
-    expect(await screen.findByRole('heading', { name: 'Tài khoản của bạn' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Khoá học của tôi' })).toBeInTheDocument();
     expect(screen.getByText('Linh Nguyễn')).toBeInTheDocument();
     expect(registerInit).toMatchObject({ method: 'POST', credentials: 'include' });
     expect(JSON.parse(String(registerInit?.body)))
@@ -205,14 +206,14 @@ describe('WayFinder demo', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Thử lại sau 15 phút.');
     await user.click(screen.getByRole('button', { name: 'Đăng nhập' }));
 
-    expect(await screen.findByRole('heading', { name: 'Tài khoản của bạn' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Khoá học của tôi' })).toBeInTheDocument();
     await user.click(screen.getByText('Linh Nguyễn', { selector: '.account-menu-name' }).closest('summary')!);
     await user.click(document.querySelector('.account-menu-panel button')!);
     const logoutCall = fetchSpy.mock.calls.find(([url]) => String(url).endsWith('/auth/logout'));
     expect(new Headers(logoutCall?.[1]?.headers).get('X-CSRF-Token')).toBe('csrf-login');
     expect(await screen.findByRole('heading', { name: 'Đăng nhập WayFinder' })).toBeInTheDocument();
     await act(async () => { await new Promise((resolve) => setTimeout(resolve, 0)); });
-    expect(screen.getByTestId('current-location')).toHaveTextContent('/dang-nhap?next=%2Ftai-khoan');
+    expect(screen.getByTestId('current-location')).toHaveTextContent('/dang-nhap?next=%2Fkhoa-hoc');
     expect(screen.queryByRole('heading', { name: 'Tài khoản của bạn' })).not.toBeInTheDocument();
   });
 
@@ -328,17 +329,18 @@ describe('auth feedback and switching', () => {
     expect(screen.getByRole('button', { name: 'Tạo tài khoản' })).toBeEnabled();
   });
 
-  it('keeps a success notification visible after login reaches the account page', async () => {
+  it('keeps a success notification visible after login reaches courses', async () => {
     const user = userEvent.setup();
     vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
       ? apiResponse({ error: { code: 'unauthenticated' } }, 401)
+      : String(input).endsWith('/courses') ? apiResponse({ owned: [], joined: [], samples: [] })
       : apiResponse({ account, csrf_token: 'test-csrf' })));
     renderApp('/dang-nhap');
     await user.type(screen.getByLabelText('Email'), 'linh@example.vn');
     await user.type(screen.getByLabelText('Mật khẩu'), 'safe-password-123');
     await user.click(screen.getByRole('button', { name: 'Đăng nhập' }));
-    expect(await screen.findByRole('heading', { name: 'Tài khoản của bạn' })).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveTextContent('Đăng nhập thành công.');
+    expect(await screen.findByRole('heading', { name: 'Khoá học của tôi' })).toBeInTheDocument();
+    expect(screen.getByText('Đăng nhập thành công.').closest('[role="status"]')).toBeInTheDocument();
   });
 
   it('shows inline errors for short invalid fields without submitting to the API', async () => {

@@ -14,6 +14,7 @@ from starlette.exceptions import HTTPException
 
 from wayfinder import __version__
 from wayfinder.api.auth import auth_router, enforce_csrf
+from wayfinder.api.courses import course_router
 from wayfinder.application.accounts import AuthError
 from wayfinder.api.errors import ERROR_STATUS, ErrorCode, WebError
 from wayfinder.composition import WebServices
@@ -51,6 +52,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
     app.state.services = services
     app.state.settings = settings
     app.include_router(auth_router())
+    app.include_router(course_router())
 
     @app.exception_handler(AuthError)
     async def account_error(_: Request, exc: AuthError) -> JSONResponse:

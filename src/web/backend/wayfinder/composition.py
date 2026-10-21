@@ -24,6 +24,8 @@ class WebServices:
     embedding: object | None = None
     accounts: AccountService | None = None
     phase_b_store: PhaseBStore | None = None
+    courses: object | None = None
+    learning: object | None = None
 
 
 def validate_vertex_auth(project: str, location: str) -> None:
@@ -42,6 +44,8 @@ def compose_services(
     model_factory: Callable[..., object] = GeminiToolModel,
     embedding_factory: Callable[..., object] = GeminiEmbedding,
     phase_b_store: PhaseBStore | None = None,
+    graph_loader: Callable | None = None,
+    clock=None,
 ) -> WebServices:
     core = core_settings or Settings(artifact_dir=settings.artifact_root)
     if core.llm_transport != "vertex":
@@ -84,6 +88,10 @@ def compose_services(
             lock_timeout_seconds=BSettings().lecture_click_timeout_seconds)
         phase_b_store = created_store
     accounts = compose_account_service(settings, database_engine) if database_engine is not None else None
+    courses = learning = None
+    if database_engine is not None:
+        courses, learning = compose_course_services(settings, database_engine, phase_b_store,
+            model=model, embedding=embedding, graph_loader=graph_loader, clock=clock)
 
     def close_services():
         try:
@@ -101,7 +109,27 @@ def compose_services(
                     close()
 
     return WebServices(health_check=health_check, close=close_services, model=model,
-                       embedding=embedding, accounts=accounts, phase_b_store=phase_b_store)
+                       embedding=embedding, accounts=accounts, phase_b_store=phase_b_store,
+                       courses=courses, learning=learning)
+
+
+def compose_course_services(settings, engine, phase_b_store, *, model=None, embedding=None,
+                            clock=None, graph_loader=None):
+    from doc2roadmap.application.phase_b.retrieval import load_learning_graph
+    from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+    from wayfinder.application.courses import CourseService
+    from wayfinder.application.learning_gateway import LearningGateway
+    from wayfinder.infrastructure.course_store import PostgresCourseStore
+    from wayfinder.infrastructure.learning_runtime import WebLearningRuntime
+
+    if graph_loader is None:
+        def graph_loader(doc_id, version):
+            return load_learning_graph(JsonArtifactStore(settings.artifact_root), doc_id, version)
+    runtime = WebLearningRuntime(phase_b_store, model=model, embedding=embedding, clock=clock)
+    courses = CourseService(PostgresCourseStore(engine), settings=settings, clock=clock)
+    gateway = LearningGateway(courses, runtime, graph_loader)
+    courses.gateway = gateway
+    return courses, gateway
 
 
 def compose_account_service(settings: WebSettings, engine, *, mailer=None) -> AccountService:

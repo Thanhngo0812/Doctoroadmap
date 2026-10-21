@@ -1,0 +1,2587 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run src/Courses.test.tsx --pool=threads --maxWorkers=1
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w06-web/src/web/frontend
+
+ ❯ src/Courses.test.tsx (8 tests | 8 failed) 8346ms
+   × shows real-shaped owned joined and samples without inventing sample progress 1139ms
+   × joins through POST with session CSRF and moves the returned card to joined exactly once 1029ms
+   × hides samples in an empty production-shaped response and offers the specified next steps 1032ms
+   × keeps the page frame while loading and retries a failed request 1026ms
+   × shows join errors beside the sample and never creates a pretend membership 1028ms
+   × redirects guests and preserves their course path 1023ms
+   × loads a membership-gated course entry and selected resume module from actual route shapes 1035ms
+   × shows not found for an outsider without rendering private course metadata 1028ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Courses.test.tsx > shows real-shaped owned joined and samples without inventing sample progress
+TestingLibraryElementError: Unable to find role="region" and name "Được chia sẻ với tôi"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:29:32
+     27|   vi.stubGlobal('fetch', mockFetch({ owned: [owned], joined: [joined],…
+     28|   renderPage();
+     29|   const section = await screen.findByRole('region', { name: 'Được chia…
+       |                                ^
+     30|   expect(within(section).getByText('Xong 0/223 khái niệm')).toBeInTheD…
+     31|   expect(within(section).getByRole('link', { name: 'Học tiếp' })).toHa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  src/Courses.test.tsx > joins through POST with session CSRF and moves the returned card to joined exactly once
+TestingLibraryElementError: Unable to find role="button" and name "Tham gia"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:47:33
+     45|   renderPage();
+     46|   const user = userEvent.setup();
+     47|   await user.click(await screen.findByRole('button', { name: 'Tham gia…
+       |                                 ^
+     48|   expect(screen.getByRole('button', { name: 'Đang tham gia…' })).toBeD…
+     49|   await act(async () => { resolveJoin(json(joined)); });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  src/Courses.test.tsx > hides samples in an empty production-shaped response and offers the specified next steps
+TestingLibraryElementError: Unable to find an element with the text: Chưa có khoá học. Tải giáo trình của bạn, hoặc mở link mời bạn nhận được.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:65:23
+     63|   vi.stubGlobal('fetch', mockFetch({ owned: [], joined: [], samples: […
+     64|   renderPage();
+     65|   expect(await screen.findByText('Chưa có khoá học. Tải giáo trình của…
+       |                       ^
+     66|   expect(screen.queryByRole('region', { name: 'Khoá học mẫu' })).not.t…
+     67|   expect(screen.getAllByRole('link', { name: 'Tải giáo trình' }).every…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  src/Courses.test.tsx > keeps the page frame while loading and retries a failed request
+TestingLibraryElementError: Unable to find role="status" and name "Đang tải khoá học"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:79:23
+     77|   }));
+     78|   renderPage();
+     79|   expect(await screen.findByRole('status', { name: 'Đang tải khoá học'…
+       |                       ^
+     80|   await act(async () => { resolveList(json({ error: { code: 'internal_…
+     81|   expect(await screen.findByRole('alert')).toHaveTextContent('Có lỗi p…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  src/Courses.test.tsx > shows join errors beside the sample and never creates a pretend membership
+TestingLibraryElementError: Unable to find role="button" and name "Tham gia"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:90:46
+     88|     : String(input).endsWith('/join-sample') ? json({ error: { code: '…
+     89|   renderPage();
+     90|   await userEvent.setup().click(await screen.findByRole('button', { na…
+       |                                              ^
+     91|   expect(await screen.findByRole('alert')).toHaveTextContent('Khoá học…
+     92|   expect(screen.getByRole('button', { name: 'Tham gia' })).toBeEnabled…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  src/Courses.test.tsx > redirects guests and preserves their course path
+TestingLibraryElementError: Unable to find role="heading" and name "Đăng nhập WayFinder"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"header-auth-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/dang-nhap"[39m
+          [36m>[39m
+            [0mĐăng nhập[0m
+          [36m</a>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"header-auth-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/dang-nhap"[39m
+          [36m>[39m
+            [0mĐăng nhập[0m
+          [36m</a>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:99:23
+     97|   vi.stubGlobal('fetch', vi.fn(async () => json({ error: { code: 'unau…
+     98|   renderPage();
+     99|   expect(await screen.findByRole('heading', { name: 'Đăng nhập WayFind…
+       |                       ^
+    100|   expect(screen.getByTestId('location')).toHaveTextContent('/dang-nhap…
+    101| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  src/Courses.test.tsx > loads a membership-gated course entry and selected resume module from actual route shapes
+TestingLibraryElementError: Unable to find role="heading" and name "Ánh xạ tuyến tính"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/sample-1/module/module-9[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/sample-1/module/module-9[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:107:23
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  src/Courses.test.tsx > shows not found for an outsider without rendering private course metadata
+TestingLibraryElementError: Unable to find role="alert"
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/private-course[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<header[39m
+      [33mclass[39m=[32m"site-header"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"header-inner"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33maria-label[39m=[32m"WayFinder, về trang chủ"[39m
+          [33mclass[39m=[32m"brand-link"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<nav[39m
+          [33maria-label[39m=[32m"Điều hướng chính"[39m
+          [33mclass[39m=[32m"header-nav"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#cach-hoat-dong"[39m
+          [36m>[39m
+            [0mCách hoạt động[0m
+          [36m</a>[39m
+          [36m<a[39m
+            [33mhref[39m=[32m"#lo-trinh-mau"[39m
+          [36m>[39m
+            [0mLộ trình mẫu[0m
+          [36m</a>[39m
+        [36m</nav>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-actions"[39m
+        [36m>[39m
+          [36m<details[39m
+            [33mclass[39m=[32m"account-menu"[39m
+          [36m>[39m
+            [36m<summary>[39m
+              [0mNguyễn An[0m
+              [36m<span[39m
+                [33maria-hidden[39m=[32m"true"[39m
+              [36m>[39m
+                [0m⌄[0m
+              [36m</span>[39m
+            [36m</summary>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"account-menu-panel"[39m
+            [36m>[39m
+              [36m<a[39m
+                [33mdata-discover[39m=[32m"true"[39m
+                [33mhref[39m=[32m"/tai-khoan"[39m
+              [36m>[39m
+                [0mTài khoản[0m
+              [36m</a>[39m
+              [36m<button[39m
+                [33mtype[39m=[32m"button"[39m
+              [36m>[39m
+                [0mĐăng xuất[0m
+              [36m</button>[39m
+            [36m</div>[39m
+          [36m</details>[39m
+          [36m<button[39m
+            [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+            [33mclass[39m=[32m"icon-button theme-toggle"[39m
+            [33mtype[39m=[32m"button"[39m
+          [36m>[39m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m◑[0m
+            [36m</span>[39m
+          [36m</button>[39m
+          [36m<a[39m
+            [33mclass[39m=[32m"button button-small button-primary header-cta"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/demo"[39m
+          [36m>[39m
+            [0mThử lộ trình mẫu [0m
+            [36m<span[39m
+              [33maria-hidden[39m=[32m"true"[39m
+            [36m>[39m
+              [0m↗[0m
+            [36m</span>[39m
+          [36m</a>[39m
+        [36m</div>[39m
+      [36m</div>[39m
+    [36m</header>[39m
+    [36m<main[39m
+      [33mclass[39m=[32m"not-found page-frame"[39m
+    [36m>[39m
+      [36m<img[39m
+        [33malt[39m=[32m""[39m
+        [33msrc[39m=[32m"/assets/OTP4.png"[39m
+      [36m/>[39m
+      [36m<span[39m
+        [33mclass[39m=[32m"section-kicker"[39m
+      [36m>[39m
+        [0m404 · LẠC MỘT NHỊP[0m
+      [36m</span>[39m
+      [36m<h1>[39m
+        [0mKhông tìm thấy trang.[0m
+      [36m</h1>[39m
+      [36m<p>[39m
+        [0mĐường dẫn này chưa có trong WayFinder. Bạn có thể quay về lộ trình đang mở.[0m
+      [36m</p>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"button button-primary button-large"[39m
+        [33mdata-discover[39m=[32m"true"[39m
+        [33mhref[39m=[32m"/"[39m
+      [36m>[39m
+        [0mVề trang chủ [0m
+        [36m<span[39m
+          [33maria-hidden[39m=[32m"true"[39m
+        [36m>[39m
+          [0m→[0m
+        [36m</span>[39m
+      [36m</a>[39m
+    [36m</main>[39m
+    [36m<footer[39m
+      [33mclass[39m=[32m"site-footer"[39m
+    [36m>[39m
+      [36m<div[39m
+        [33mclass[39m=[32m"footer-inner page-frame"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"footer-brand"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/"[39m
+        [36m>[39m
+          [36m<img[39m
+            [33malt[39m=[32m"WayFinder"[39m
+            [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+          [36m/>[39m
+        [36m</a>[39m
+        [36m<span>[39m
+          [0mĐI ĐÚNG ĐƯỜNG. HỌC THEO NHỊP CỦA BẠN.[0m
+        [36m</span>[39m
+        [36m<a[39m
+          [33mhref[39m=[32m"#top"[39m
+        [36m>[39m
+          [0mLên đầu trang ↑[0m
+        [36m</a>[39m
+      [36m</div>[39m
+    [36m</footer>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/private-course[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:114:23
+    112|   vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => Str…
+    113|   renderPage('/khoa-hoc/private-course');
+    114|   expect(await screen.findByRole('alert')).toHaveTextContent('Không tì…
+       |                       ^
+    115|   expect(screen.queryByText('Đại số tuyến tính')).not.toBeInTheDocumen…
+    116| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed (8)
+   Start at  10:14:41
+   Duration  50.10s (environment 53%, setup 19%, tests 17%, import 10%, transform 1%)

@@ -1,0 +1,177 @@
+........................................................................ [ 29%]
+......................F.............................s................... [ 58%]
+........................................................................ [ 87%]
+FF..............................                                         [100%]
+================================== FAILURES ===================================
+___________ test_real_doc1_and_doc6_seed_join_and_roadmap_over_http ___________
+
+courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_ce3217b59d904a8cbbd8e...4a8cbbd8e0234c7cc814), graph=<doc2roadmap.domain.learning_graph.LearningGraph object at 0x000002417A09A4E0>, loaded=[])
+
+    def test_real_doc1_and_doc6_seed_join_and_roadmap_over_http(courses):
+        import json
+        from doc2roadmap.application.phase_b.retrieval import load_learning_graph
+        from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+        from wayfinder.application.seed_samples import SampleSeeder
+
+        # Inputs are copied and hash-verified by copy_w06_fixtures.py before this
+        # mandatory integration test; missing development input must fail, not skip.
+        root = Path(__file__).absolute().parents[4]
+        artifacts = JsonArtifactStore(root / "artifacts")
+        courses.gateway.graph_loader = lambda doc_id, version: load_learning_graph(artifacts, doc_id, version)
+        with courses.engine.begin() as connection:
+            connection.execute(text("DELETE FROM course WHERE id=:cid"), {"cid": courses.sample.id})
+        media = MemoryMediaStore()
+        seeded = SampleSeeder(courses.service, courses.gateway, media, source_root=root, folder="fake/dev").execute(
+            courses.owner, ["doc-1", "doc-6"])
+        assert [(row.doc_id, row.published_graph_version) for row in seeded] == [("doc-1", 8), ("doc-6", 29)]
+        assert len(media.files) == 2
+        actor, client, headers = courses.user()
+        before = client.get("/api/v1/courses")
+        assert before.status_code == 200
+        course = seeded[0]
+        joined = client.post(f"/api/v1/courses/{course.id}/join-sample", headers=headers, json={"owner": "forged"})
+        detail = client.get(f"/api/v1/courses/{course.id}")
+        roadmap = client.get(f"/api/v1/courses/{course.id}/roadmap")
+        after = client.get("/api/v1/courses")
+        private = client.get(f"/api/v1/courses/{courses.course.id}")
+>       assert joined.status_code == detail.status_code == roadmap.status_code == after.status_code == 200
+E       assert 200 == 500
+E        +  where 200 = <Response [200 OK]>.status_code
+E        +  and   500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_courses_w06.py:389: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:129 Unhandled request error ref=b6dad083ca364eac9aff838c290aaaa8
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-courses-gateway\src\web\backend\wayfinder\api\app.py", line 122, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 767, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 343, in serialize_response
+    raise ResponseValidationError(
+fastapi.exceptions.ResponseValidationError: 35 validation errors:
+  {'type': 'string_type', 'loc': ('response', 'modules', 0, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_92b86f8bac3397ea9de112b0', 'node_9f23f5df7eb27a4bc46857c8', 'node_8ba0c7ae283e5ab10d90e663', 'node_e56d6f7eb63bd2be9ca9ea2b', 'node_76739fdbaa3d2580d40f8e5f', 'node_3e0a18c4fde4c83adbec29d9'], 'text': 'Học: Tập hợp, Phần tử, Kí hiệu thuộc, Kí hiệu không thuộc, Xác định tập hợp bằng liệt kê, Xác định tập hợp bằng tính chất đặc trưng.'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 1, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_ee87cf0432df3c80bb35c613', 'node_2be31ab3b5d80196d5fed965', 'node_0066697ab2e235ef7ca58454'], 'text': 'Học: Tập hợp số nguyên, Tập con, Sự bằng nhau của hai tập hợp.'}, {'module_ids': ['module_001'], 'node_ids': ['node_ee87cf0432df3c80bb35c613'], 'text': 'Cần trước: Chương 1 Tập hợp và ánh xạ (module 1).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 2, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_2aafb677a58fff22f2d4db1d', 'node_bab7a4ed9249560c3e2a7830', 'node_f41cce0481f8de895af0595e', 'node_e43cb89b7f4e6989fd9087f6', 'node_d0eab970f7b0b034aba767d0', 'node_b5be83f6b1f7864226691409'], 'text': 'Học: Tập rỗng, Hiệu, Phần bù, Hợp, Giao, Giao hoán.'}, {'module_ids': ['module_002'], 'node_ids': ['node_2aafb677a58fff22f2d4db1d'], 'text': 'Cần trước: • Ví dụ 1 (module 2).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 3, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_a644d5918c10f483488d1af4', 'node_229bf367ed54298cb58b1aed', 'node_492e60c17f75615b83f8161f', 'node_62a1cdc0971339b47351e19e', 'node_4236508a9f7b89aea3e76db7', 'node_d5e6a13531ddaf909305f11f'], 'text': 'Học: Kết hợp, Phân phối, Luật DeMorgan, Lượng từ phổ biến, Lượng từ tồn tại, Lượng từ tồn tại duy nhất.'}, {'module_ids': ['module_003'], 'node_ids': ['node_a644d5918c10f483488d1af4'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 3).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 4, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_b8783eae6e0eaf924b4f5d1c', 'node_cfd85027d3e7942cd327a2f9', 'node_8bb96fa219df2c82f1cee18a', 'node_4b29fbb6f97482b2c92614f6', 'node_466e185d2358288d70200580', 'node_321cc5eff05e9e3e1580d2af'], 'text': 'Học: Tích trực tiếp, Quan hệ hai ngôi, Quan hệ tương đương, Quan hệ thứ tự, Tập được sắp, Quan hệ thứ tự toàn phần.'}, {'module_ids': ['module_002'], 'node_ids': ['node_b8783eae6e0eaf924b4f5d1c'], 'text': 'Cần trước: • Ví dụ 1 (module 2).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 5, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_7c5a5446064184e92c8cd827', 'node_ad40edbad302b45deb9e707f', 'node_a3a0650872f5eb74c0828baa', 'node_371a7e411690e3bb629b184b', 'node_847422ba1bf65660148e6a22', 'node_bbf4f84d4ccebad7f9dec9b3', 'node_7f44c8d366ba6142a6c18788'], 'text': 'Học: Ánh xạ, Quan hệ, Đồ thị của ánh xạ, Tập đích, Tập nguồn, Tập giá trị, Ảnh.'}, {'module_ids': ['module_005'], 'node_ids': ['node_7c5a5446064184e92c8cd827'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 5).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 6, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_9d4b8f9744600c7456f53e7c', 'node_1a7e2dc0a14d1053edbfbc95', 'node_ecdd8b711d12a095d3ac1fa2', 'node_3d1003e249a4ba589a3f023c', 'node_5f04ac63f309a428e175bba1', 'node_ecd80a1ca51d8c8d1f6a2384'], 'text': 'Học: Toàn ánh, Nghịch ảnh, Đơn ánh, Song ánh, Ánh xạ ngược, Luật hợp thành.'}, {'module_ids': ['module_006'], 'node_ids': ['node_9d4b8f9744600c7456f53e7c'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 6).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 7, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_073a5cea3a2d6e34c19c8d02', 'node_4bf546aa01fc06b924007157', 'node_a347a28bcb6765b33bf64ce0', 'node_23c9bacec3b310ef983fbc0f', 'node_7320c4bea861e4744eb69fb4', 'node_b22a30cd9a70be5f47ddea50'], 'text': 'Học: Tích, Nhóm, Phần tử trung hòa, Luật giản ước, Nhóm abel, Phần tử đối.'}, {'module_ids': ['module_004', 'module_007'], 'node_ids': ['node_073a5cea3a2d6e34c19c8d02'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 4), Tập hợp và ánh xạ (module 7).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 8, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_4982b222156d003a3aa4b7d5', 'node_739148ecfb8a49345ed0d200', 'node_462fb3b95b50e9b57a2d18fd', 'node_70f8259317c7c0890bedddca'], 'text': 'Học: Vành, Vành giao hoán, Vành có đơn vị, Trường.'}, {'module_ids': ['module_008'], 'node_ids': ['node_4982b222156d003a3aa4b7d5'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 8).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 9, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_d7c0969b387602f1985b9c79', 'node_9241c2b1a396b55cf7fae733', 'node_712287272d65b46b45203f44', 'node_68c808f418210e75b9c82ac6'], 'text': 'Học: Ma trận, Mm×n, Ma trận thực, Ma trận không.'}, {'module_ids': ['module_001'], 'node_ids': ['node_d7c0969b387602f1985b9c79'], 'text': 'Cần trước: Chương 1 Tập hợp và ánh xạ (module 1).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 10, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_c3c7c564b2ea47766fa2dca2', 'node_db77aa629d244f73d5fb350b', 'node_c0ff2380d75dd5444bbf7df6', 'node_357e8860261948f2963b0457', 'node_b3d23cd624abff4f066e5b3a', 'node_a223460455a387c786dbe324', 'node_ef6aece4c013b7d8f9b73813'], 'text': 'Học: Ma trận hàng, Ma trận vuông cấp n, Phần tử chéo, Ma trận cột, Đường chéo chính, Ma trận tam giác trên, Ma trận tam giác dưới.'}, {'module_ids': ['module_010'], 'node_ids': ['node_c3c7c564b2ea47766fa2dca2'], 'text': 'Cần trước: Chương 2 Ma trận - Định thức - Hệ phương trình tuyến tính (module 10).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 11, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_e055428d105e5fca2ff16bbf', 'node_0fb62d5192ff96d69c8359da', 'node_7f823bc640be6f2df0e5693d', 'node_6e4106acebdbecbab47313c0', 'node_6f2a18e03b47b885dc46f900', 'node_9833b2fd64ce6f69f823a73a'], 'text': 'Học: Ma trận tam giác, Ma trận chéo, Ma trận đơn vị, Hai ma trận bằng nhau, Cộng hai ma trận, Tổng.'}, {'module_ids': ['module_011'], 'node_ids': ['node_e055428d105e5fca2ff16bbf'], 'text': 'Cần trước: • Ví dụ 2 (module 11).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 12, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_72cf799968a61d09b2e8d3d3', 'node_fa79e490eed98c63e1ef7412', 'node_5218dd75c41a5d621d779e78', 'node_997c65d525423ec747e7f136', 'node_b1509f10fa84a7700d1d0c30'], 'text': 'Học: Nhân ma trận với một số, Tính chất của ma trận, Tích của ma trận, Lũy thừa bậc k của ma trận A, Ma trận chuyển vị.'}, {'module_ids': ['module_004', 'module_011'], 'node_ids': ['node_72cf799968a61d09b2e8d3d3'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 4), • Ví dụ 2 (module 11).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 13, 'description'), 'msg': 'Input should be a valid string', 'input': [{'module_ids': ['module_013'], 'node_ids': ['node_89ee000baad3f060937a8601', 'node_b5c53f943116dfe92c4c325f', 'node_72752b9d3482242bdf37d1e9', 'node_f76ec9752c60677a4b726580'], 'text': 'Biến đổi sơ cấp trên ma trận bao gồm các thao tác như đổi chỗ hàng hoặc cột, cộng hàng hoặc cột vào hàng hoặc cột khác, và nhân hàng hoặc cột với số khác không. Các phép biến đổi này giúp đưa ma trận về dạng tam giác để tính định thức hoặc giải hệ phương trình.'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 14, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_da4cda05c56918f4d2d2196a', 'node_160e95adda034fb6ed89aaeb', 'node_350bf33f6ea20cd627300e8d', 'node_c501473948d0e7ea59629cd6', 'node_bab0b54942061635c5c232fa', 'node_199af56de41e06363fe1f5d7', 'node_07dbfb7022c5dcb2235a0a1f', 'node_b6e1d39bc428349fd6048988'], 'text': 'Học: det(A) = det(At), Công thức khai triển định thức theo hàng i, Công thức khai triển định thức theo cột j, Đổi chỗ hai hàng, Đổi chỗ hai hàng hay hai cột, Định thức của ma trận tam giác, Tổng hai định thức, Nhân định thức với một số.'}, {'module_ids': ['module_012', 'module_014'], 'node_ids': ['node_da4cda05c56918f4d2d2196a'], 'text': 'Cần trước: • Ví dụ 2 (module 12), • Ví dụ 10. · • Ví dụ 11. Với ma trận (module 14).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 15, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_45307f8552813d177254cdd5', 'node_ae15fa48ac331b5fbd1b2efd', 'node_56667e05b73f13db25aaad79', 'node_e701a38d44b9cdfb6633d19d', 'node_f11ac3caf4b00e911502e80a', 'node_70fb0d40cdb79d7415af25e4', 'node_374971e3b991a87fc392e520', 'node_8815fc853d2e7203bad95c4c'], 'text': 'Học: Định thức của tích hai ma trận, Hàng (hay cột) bằng không, Hai hàng (hay hai cột) tỷ lệ, Định thức bằng 0, Phép biến đổi hàng, Ma trận nghịch đảo, Ma trận khả đảo, Ma trận phụ hợp.'}, {'module_ids': ['module_008', 'module_014'], 'node_ids': ['node_45307f8552813d177254cdd5'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 8), • Ví dụ 10. · • Ví dụ 11. Với ma trận (module 14).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 16, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_8fd29b2df7bbd2b2745b0814', 'node_55cffcdf5344e99151457680', 'node_3962d9872837a1328b03ddec', 'node_ab1f88ed6fb37eaeab9b0ae3', 'node_ad4b1b92d34d91a70c398d65', 'node_fdffdf5335b46671fd622d46'], 'text': 'Học: Phụ đại số, Phương trình ma trận, Phương pháp Gauss-Jordan, Định thức con, Hạng của ma trận, Ma trận bậc thang.'}, {'module_ids': ['module_012', 'module_016'], 'node_ids': ['node_8fd29b2df7bbd2b2745b0814'], 'text': 'Cần trước: • Ví dụ 2 (module 12), • Ví dụ 14 (module 16).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 17, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_939e69fdba23bc74f60777a5', 'node_eef2fa895157ee4f28061c74', 'node_710e1820d188d31715f04b8a', 'node_01c584cad73aa7216e5822b9', 'node_3a3902cae577bada8adcec6c', 'node_07435518ede24404dff6c72f', 'node_a9e45840e828ca5d50df44f3'], 'text': 'Học: Hệ phương trình tuyến tính, Ẩn, Hệ số, Vế phải, Ma trận hệ số, Dạng ma trận, Ma trận ẩn.'}, {'module_ids': ['module_010'], 'node_ids': ['node_939e69fdba23bc74f60777a5'], 'text': 'Cần trước: Chương 2 Ma trận - Định thức - Hệ phương trình tuyến tính (module 10).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 18, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_c1d2764def0f1bdb3b5da409', 'node_9b07edd11cf18ae81a086c1a', 'node_a742983f643e8d0fb576c853', 'node_5cd36c9e8e680311b090440b', 'node_cb6b2faf891afc1a33eb2c9e', 'node_bca8f157b7e43688c2c3abd7', 'node_a2fb423ac72c57610189e849'], 'text': 'Học: Ma trận vế phải, Ma trận không suy biến, Giải hệ phương trình bằng ma trận nghịch đảo, Định lý Cramer, Hệ tam giác, Thế ngược, Ma trận bổ sung.'}, {'module_ids': ['module_017', 'module_018'], 'node_ids': ['node_c1d2764def0f1bdb3b5da409'], 'text': 'Cần trước: • Ví dụ 19. Tìm ma trận nghịch đảo của: · Phần (ii) chứng minh tương tự (module 17), • Ví dụ 24. Tìm hạng của ma trận (module 18).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 19, 'description'), 'msg': 'Input should be a valid string', 'input': [{'module_ids': ['module_019'], 'node_ids': ['node_345361c86ae01c4e861ff4b9', 'node_76f09426abcab7199d3ad2fd', 'node_d09787883f9304bccae78f04', 'node_a89634d09996c188188d0c24'], 'text': 'Biện luận hệ phương trình giúp xác định sự tồn tại và số lượng nghiệm của hệ dựa trên các tham số. Phương pháp Gauss và định lý Kronecker-Capelli được sử dụng để giải và tìm nghiệm của hệ phương trình tuyến tính.'}, {'node_ids': ['node_b7e7be14d8c2b9447652863d', 'node_e5f25dff9991a4213d4a9f2e'], 'text': 'Ẩn chính và ẩn phụ được xác định trong quá trình giải để biểu diễn tập nghiệm của hệ phương trình khi hệ có vô số nghiệm.'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 20, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_8bd38258f6d89a7f0385abee', 'node_3d669c2a88872f2e89fd3445', 'node_217b309bcce935ba7e7b4107', 'node_3e630781a34a15a5f9054618', 'node_4ec938c9d83e8a597fad69c2', 'node_32dd26c223ed69c4d7eac49b', 'node_c117a25af2afcdd5e8ad60ed'], 'text': 'Học: Hệ phương trình tuyến tính tổng quát, Hệ phương trình có nghiệm duy nhất, Hệ phương trình có vô số nghiệm, Hệ phương trình tuyến tính thuần nhất, Hệ thuần nhất, Nghiệm tầm thường, Nghiệm không tầm thường.'}, {'module_ids': ['module_020'], 'node_ids': ['node_8bd38258f6d89a7f0385abee'], 'text': 'Cần trước: • Ví dụ 24. Tìm hạng của ma trận (module 20).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 21, 'description'), 'msg': 'Input should be a valid string', 'input': [{'module_ids': ['module_008'], 'node_ids': ['node_5da88848839a1f679c8b7d0c', 'node_6761efa0f5d4ffdcf72e8696', 'node_56fde96a9ddc9fa11b52ac79'], 'text': 'Không gian véc tơ là tập hợp được trang bị phép cộng véc tơ và phép nhân véc tơ với vô hướng thỏa mãn các tiên đề nhất định. Các phép toán này giúp xác định cấu trúc đại số trên tập hợp véc tơ.'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 22, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_137bcfcc2adb66e182d15a22', 'node_cdfedb4f13f9d106fbd3df3e', 'node_bbf236a887bb9d2f651e202a', 'node_d40cbbbb9f8ee6dea1c5a194', 'node_cb89265e410a6599abb0dcce', 'node_a908b0aba960acb789f3454f', 'node_6be21f08104c35c0cf4a126c', 'node_2af179e50580110caa085a54'], 'text': 'Học: Tổ hợp tuyến tính, Biểu diễn tuyến tính, Phụ thuộc tuyến tính, Tính chất phụ thuộc tuyến tính của hệ n véc tơ, Hệ véc tơ chứa véc tơ không, Hệ sinh, Cơ sở, Độc lập tuyến tính cực đại.'}, {'module_ids': ['module_022'], 'node_ids': ['node_137bcfcc2adb66e182d15a22'], 'text': 'Cần trước: Chương 3 Không gian véc tơ (module 22).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 23, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_e08d6f9ecea8ef054570f26c', 'node_8c49cc7a38afeb0d7dcc9f70', 'node_da0ef96fd74c72b811baf8b2', 'node_57fc090cee24c06cb52ac893', 'node_836201aed18145b7f7e75e0e', 'node_d2b2a4bc14c8a1d2a195cf53', 'node_47e52809ff00461ab84c8efd', 'node_e2b83e07baedf51fb7453381'], 'text': 'Học: Không gian véc tơ hữu hạn sinh, Số chiều, Không gian véc tơ vô hạn chiều, Không gian hữu hạn chiều, Cơ sở chính tắc, Tọa độ, Ma trận tọa độ, Bài toán đổi cơ sở.'}, {'module_ids': ['module_010', 'module_023'], 'node_ids': ['node_e08d6f9ecea8ef054570f26c'], 'text': 'Cần trước: Chương 2 Ma trận - Định thức - Hệ phương trình tuyến tính (module 10), Chương 3 Không gian véc tơ (module 23).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 24, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_d0cca6cb29d0fd3b645450b5', 'node_4712e7476e8424c3289e5a0a', 'node_8009c39e5aafd58a38cee616', 'node_2d866e2b28755249dfc792a8', 'node_32dc1daab985016466bf44eb', 'node_6b972247b54f5f415c3b5ad7', 'node_3f33dc7530b98c4538af2a4e', 'node_305e66e2dc3de3dedddfe8d1'], 'text': 'Học: Ma trận chuyển cơ sở, Không gian con, Tổng của các không gian, Tổng trực tiếp, không gian con của không gian véc tơ, Hệ độc lập tuyến tính cực đại, Hạng của hệ véc tơ, Ma trận của hệ véc tơ.'}, {'module_ids': ['module_019', 'module_023'], 'node_ids': ['node_d0cca6cb29d0fd3b645450b5'], 'text': 'Cần trước: • Ví dụ 24. Tìm hạng của ma trận (module 19), Chương 3 Không gian véc tơ (module 23).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 25, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_8c5578facc579e075b8b584a', 'node_bc8aca131fa5827985aaca2c', 'node_456f0ca9090480645fd80f7f', 'node_555ce7bd1fcbf1e4a43e6a29', 'node_868d0fe93b7f82d495c445c6', 'node_74092f2b38e1245ca9add809', 'node_3283d0610e44ff9b0411a21e'], 'text': 'Học: Bao tuyến tính, Span, Không gian con sinh bởi hệ véc tơ, Số chiều của không gian span(S), Số chiều của không gian con, Không gian nghiệm, Tích vô hướng.'}, {'module_ids': ['module_024', 'module_025'], 'node_ids': ['node_8c5578facc579e075b8b584a'], 'text': 'Cần trước: Chương 3 Không gian véc tơ (module 24), Chương 3 Không gian véc tơ (module 25).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 26, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_05c51d8762de5da8bf834feb', 'node_11ffcf9439ad77cb77e4d1a6', 'node_a39dfd333229056abe2e42ca', 'node_3445e932668aeb1e77793c73', 'node_3e5f93818db694c65b3aa278', 'node_be17dd75adfd480a0a08c3c3', 'node_32040fae1d345b4dc3c67429'], 'text': 'Học: Không gian có tích vô hướng, Không gian Euclid, Tính đối xứng, Bất đẳng thức Cauchy-Schwarz, Trực giao, Góc xen giữa, Khoảng cách.'}, {'module_ids': ['module_026'], 'node_ids': ['node_05c51d8762de5da8bf834feb'], 'text': 'Cần trước: Chương 3 Không gian véc tơ (module 26).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 27, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_0d9322c7f3c2b56bc95568ad', 'node_f23758a84aa4e60df80ad7e1', 'node_5cf37345c8f67972d555b55a', 'node_25447fe09eefa5b7ef828f6a', 'node_8516a0a6b41810450902ade0', 'node_b4683a85deb093632cb12342', 'node_53056fa4ba503fadf59cf71e'], 'text': 'Học: Hệ trực giao, Hệ trực chuẩn, Cơ sở trực chuẩn, Trực chuẩn hóa Gram-Schmidt, Hệ trực chuẩn trong V, Hình chiếu trực giao, Thành phần của α trực giao với W.'}, {'module_ids': ['module_027'], 'node_ids': ['node_0d9322c7f3c2b56bc95568ad'], 'text': 'Cần trước: Chương 3 Không gian véc tơ (module 27).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 28, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_6c226190a8501c6e2a347ca7', 'node_b9392c81530befd98a95be54', 'node_057e71c90ee82cc73ecffda6', 'node_307bae512f6d48b4a540e0da', 'node_7fb4e9cf22797fa190e302bf'], 'text': 'Học: Ánh xạ tuyến tính, Toán tử tuyến tính, Đẳng cấu, Toàn cấu, Đơn cấu.'}, {'module_ids': ['module_007'], 'node_ids': ['node_6c226190a8501c6e2a347ca7'], 'text': 'Cần trước: Tập hợp và ánh xạ (module 7).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 29, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_c314bda3b8d50c9d8f39766a', 'node_513da6518871e0391d329bbd', 'node_1cc8a316134e5e1cd167207d', 'node_9bab4b4c93f089e45c2f4e9b', 'node_5a789946e39a45457a95bcf2'], 'text': 'Học: L(V, W), Định lý 1 (Cách xác định ánh xạ tuyến tính), Imf, Nhân, dim Kerf + dim Imf = dimV.'}, {'module_ids': ['module_024', 'module_025', 'module_029'], 'node_ids': ['node_c314bda3b8d50c9d8f39766a'], 'text': 'Cần trước: Chương 3 Không gian véc tơ (module 24), Chương 3 Không gian véc tơ (module 25), Chương 4 Ánh xạ tuyến tính (module 29).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 30, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_f349a85eb6eff62565106445', 'node_8d1c35642fc012e77a6aa1b6', 'node_58e037b043a19c01fc16ffcc'], 'text': 'Học: Hạng của ánh xạ tuyến tính, Mệnh đề về ảnh của ánh xạ tuyến tính, Thuật toán tìm ảnh của ánh xạ tuyến tính.'}, {'module_ids': ['module_030'], 'node_ids': ['node_f349a85eb6eff62565106445'], 'text': 'Cần trước: Chương 4 Ánh xạ tuyến tính (module 30).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 31, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_80b344f610d969dbf0961b8a', 'node_387f9f0fff5268dd46d307aa', 'node_ab999c83f45ee7b1aee40034', 'node_92706b91dd3c03ff2371c931'], 'text': 'Học: Ma trận của ánh xạ tuyến tính, Ma trận chính tắc, Biểu thức tọa độ, Đẳng cấu tuyến tính.'}, {'module_ids': ['module_024', 'module_029'], 'node_ids': ['node_80b344f610d969dbf0961b8a'], 'text': 'Cần trước: Chương 3 Không gian véc tơ (module 24), Chương 4 Ánh xạ tuyến tính (module 29).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 32, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_53e36addd767390c48afc176', 'node_856d339b36eb18ad78410499', 'node_9a2e527aea1d611815599670', 'node_2bc7337832a0c2dd47d5dd70', 'node_8ef8f5e6110d0b845ea2dc4b', 'node_e37fb9e7784d14a4813768c8', 'node_50f77efc8fa6718530f23552', 'node_39e55f42ffaab9b514dc5d32'], 'text': 'Học: Trị riêng, Véctơ riêng, Phương trình đặc trưng, Đa thức đặc trưng, Không gian riêng, Trị riêng và véc tơ riêng, Véctơ riêng đã chuẩn hóa, Số bội đại số.'}, {'module_ids': ['module_026'], 'node_ids': ['node_53e36addd767390c48afc176'], 'text': 'Cần trước: Chương 3 Không gian véc tơ (module 26).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 33, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_713be27c7e6e59dd3f12a679', 'node_33d085a93a23582b0d2dfb41', 'node_3bf238bac0d9981cbd77dd8e', 'node_3d90a79a261ca053fe4b15eb', 'node_e0495493c8bdeda6dfbf99eb', 'node_fb7d74f3f39e67b026730680', 'node_844d8418a7f0c72813d5ec26', 'node_67f6ab93362c7678451a1ae1'], 'text': 'Học: Số bội hình học, Dạng toàn phương, Ma trận của dạng toàn phương, Ma trận của phép đổi biến, Đổi biến dạng toàn phương, Phép đổi biến không suy biến, Dạng chính tắc, Thuật toán Lagrange.'}, {'module_ids': ['module_033'], 'node_ids': ['node_713be27c7e6e59dd3f12a679'], 'text': 'Cần trước: Chương 5 Trị riêng - Véctơ riêng - Dạng toàn phương (module 33).'}]}
+  {'type': 'string_type', 'loc': ('response', 'modules', 34, 'description'), 'msg': 'Input should be a valid string', 'input': [{'node_ids': ['node_b7b01183e38ac5612c7cb51b', 'node_1d48549e0913a1fadb588b86', 'node_23ceb1a3d02994efb8c7d2d0', 'node_cc0622e47bd48e995b75c31f', 'node_4b203489ab0fb72cfa756c9e', 'node_64d37a12afc98e9539be2253', 'node_2a2fc4010458f23fdf2170e0', 'node_3a45ba4471facd71e725e74f'], 'text': 'Học: Định luật quán tính, Chỉ số dương quán tính, Chỉ số âm quán tính, Cặp chỉ số quán tính, Xác định dương, Dạng toàn phương xác định âm, Định thức con chính cấp i, Ma trận đồng dạng.'}, {'module_ids': ['module_034'], 'node_ids': ['node_b7b01183e38ac5612c7cb51b'], 'text': 'Cần trước: Chương 5 Trị riêng - Véctơ riêng - Dạng toàn phương (module 34).'}]}
+
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-courses-gateway\src\web\backend\wayfinder\api\courses.py", line 90, in roadmap
+    GET /api/v1/courses/{cid}/roadmap
+______________________ test_w03_is_single_head_after_w02 ______________________
+
+    def test_w03_is_single_head_after_w02():
+        config = Config()
+        config.set_main_option("script_location", str(Path(__file__).parents[1] / "wayfinder/migrations"))
+        scripts = ScriptDirectory.from_config(config)
+>       assert scripts.get_heads() == ["w03_0004"]
+E       AssertionError: assert ['w06_0005'] == ['w03_0004']
+E
+E         At index 0 diff: 'w06_0005' != 'w03_0004'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w03_migration.py:16: AssertionError
+_____________ test_upgrade_w02_to_w03_preserves_existing_accounts _____________
+
+empty_postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_base_test_3ce82503cfd0422eb080da8c7a6c50e9
+
+    @pytest.mark.postgres
+    def test_upgrade_w02_to_w03_preserves_existing_accounts(empty_postgres_database_url):
+        upgrade_database(empty_postgres_database_url, "w02_0003")
+        engine = create_database_engine(empty_postgres_database_url)
+        account_id = str(uuid4())
+        try:
+            with engine.begin() as connection:
+                connection.execute(text("""INSERT INTO account
+                    (id,email,email_normalized,password_hash,display_name,created_at,updated_at)
+                    VALUES (:id,'migration@example.vn','migration@example.vn','existing-hash','Người học',now(),now())"""),
+                    {"id": account_id})
+            upgrade_database(empty_postgres_database_url)
+            assert "email_token" in inspect(engine).get_table_names()
+            with engine.connect() as connection:
+>               assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "w03_0004"
+E               AssertionError: assert 'w06_0005' == 'w03_0004'
+E
+E                 - w03_0004
+E                 ?   ^    ^
+E                 + w06_0005
+E                 ?   ^    ^
+
+src\web\backend\tests\test_w03_migration.py:35: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w06-courses-gateway\tmp\w06-backend-first.xml -
+=========================== short test summary info ===========================
+SKIPPED [1] src\web\backend\tests\test_media_store.py:133: set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests
+FAILED src/web/backend/tests/test_courses_w06.py::test_real_doc1_and_doc6_seed_join_and_roadmap_over_http
+FAILED src/web/backend/tests/test_w03_migration.py::test_w03_is_single_head_after_w02
+FAILED src/web/backend/tests/test_w03_migration.py::test_upgrade_w02_to_w03_preserves_existing_accounts

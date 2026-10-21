@@ -13,7 +13,8 @@ def test_w03_is_single_head_after_w02():
     config = Config()
     config.set_main_option("script_location", str(Path(__file__).parents[1] / "wayfinder/migrations"))
     scripts = ScriptDirectory.from_config(config)
-    assert scripts.get_heads() == ["w03_0004"]
+    assert len(scripts.get_heads()) == 1
+    assert scripts.get_heads()[0] in {revision.revision for revision in scripts.walk_revisions(base="w03_0004")}
     assert scripts.get_revision("w03_0004").down_revision == "w02_0003"
     assert scripts.get_revision("w02_0003").down_revision == "w05_0002"
 
@@ -29,7 +30,7 @@ def test_upgrade_w02_to_w03_preserves_existing_accounts(empty_postgres_database_
                 (id,email,email_normalized,password_hash,display_name,created_at,updated_at)
                 VALUES (:id,'migration@example.vn','migration@example.vn','existing-hash','Người học',now(),now())"""),
                 {"id": account_id})
-        upgrade_database(empty_postgres_database_url)
+        upgrade_database(empty_postgres_database_url, "w03_0004")
         assert "email_token" in inspect(engine).get_table_names()
         with engine.connect() as connection:
             assert connection.scalar(text("SELECT version_num FROM alembic_version")) == "w03_0004"

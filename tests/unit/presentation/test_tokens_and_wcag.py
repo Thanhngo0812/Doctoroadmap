@@ -329,12 +329,43 @@ def test_w03_auth_screens_specification():
 
 
 def test_figma_plugin_has_w03_and_prototype_reactions():
-    """Verify that design/figma-plugin/code.js includes W-03 screens and native prototype reactions."""
+    """Verify that design/figma-plugin/code.js includes W-03, W-06, W-04 screens and native prototype reactions."""
     code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
     assert "Màn hình W-03" in code_js
+    assert "Màn hình W-06" in code_js
+    assert "Màn hình W-04" in code_js
+    assert "reactionStats" in code_js
     assert "setReactionsAsync" in code_js
     assert "linkReaction" in code_js
     assert "NAVIGATE" in code_js
     assert "ON_CLICK" in code_js
+
+
+def test_w06_course_screens_specification():
+    """Verify that design/preview/w06_course_screens.html implements all 4 states for W-06 React integration."""
+    w06_html = Path("design/preview/w06_course_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-courses-active"' in w06_html
+    assert 'id="section-courses-empty"' in w06_html
+    assert 'id="section-courses-loading"' in w06_html
+    assert 'id="section-courses-error"' in w06_html
+    assert 'id="card-sample-course"' in w06_html
+    assert "DOC-SAMPLE-01" in w06_html
+    assert "WF-PHARM-2026" in w06_html
+    assert "min-height: 44px" in w06_html
+    assert "height: 44px" in w06_html
+    assert "@media (max-width: 768px)" in w06_html
+    assert "prefers-reduced-motion: reduce" in w06_html
+
+
+def test_w04_profile_screens_specification():
+    """Verify that design/preview/w04_profile_screens.html implements profile, password change and session revocation."""
+    w04_html = Path("design/preview/w04_profile_screens.html").read_text(encoding="utf-8")
+    assert 'id="card-profile-info"' in w04_html
+    assert 'id="card-change-password"' in w04_html
+    assert 'id="card-sessions-security"' in w04_html
+    assert 'id="btn-logout-current"' in w04_html
+    assert 'id="btn-logout-all"' in w04_html
+    assert "min-height: 44px" in w04_html
+    assert "height: 44px" in w04_html
 
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.186" timestamp="2026-10-20T16:45:20.132788+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_deferred_owner_check_protects_source_when_owner_membership_is_moved" time="0.736"><failure message="Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;">courses = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_4fc7dfc89c074e0cb4fa6...4e0cb4fa6b13c441bd1b), graph=&lt;doc2roadmap.domain.learning_graph.LearningGraph object at 0x0000020551B67A40&gt;, loaded=[])
+
+    def test_deferred_owner_check_protects_source_when_owner_membership_is_moved(courses):
+        new_id = str(uuid4())
+&gt;       with pytest.raises(IntegrityError):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'sqlalchemy.exc.IntegrityError'&gt;
+
+src\web\backend\tests\test_courses_w06.py:412: Failed</failure></testcase></testsuite></testsuites>

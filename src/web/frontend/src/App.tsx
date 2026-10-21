@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'r
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { AuthNotice, AuthPage, AuthProvider, ForgotPasswordPage, LandingRoute, RequireAccount, ResetPasswordPage, VerifyEmailPage, useAuth } from './Auth';
 import { ApiError, fetchHealth, type HealthPayload } from './api';
+import { CourseEntry, CoursesPage } from './Courses';
 
 type Theme = 'light' | 'dark';
 
@@ -119,7 +120,7 @@ function HomePage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
         <section className="hero page-frame">
           <div className="hero-copy">
             <span className="eyebrow"><span className="pixel-dot" /> HỌC THEO CÁCH CỦA BẠN</span>
-            <h1>Giáo trình thành<br /><em>đường học rõ ràng.</em></h1>
+            <h1>Tài liệu thành<br /><em>đường học rõ ràng.</em></h1>
             <p className="hero-lead">WayFinder chia tài liệu môn học thành từng chặng ngắn: hiểu ý chính, học bài giảng và tự kiểm tra tiến độ.</p>
             <div className="hero-actions">
               <button className="button button-primary button-large" type="button" onClick={() => navigate('/demo')}>Khám phá lộ trình mẫu <span aria-hidden="true">→</span></button>
@@ -149,7 +150,7 @@ function HomePage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
           </div>
           <div className="steps-line">
             <article className="step-card step-one">
-              <div className="step-visual paper-visual"><span className="paper-label">GIÁO TRÌNH</span><div className="paper-lines"><i /><i /><i /><b /><i /><i /></div><span className="page-corner">24</span></div>
+              <div className="step-visual paper-visual"><span className="paper-label">TÀI LIỆU</span><div className="paper-lines"><i /><i /><i /><b /><i /><i /></div><span className="page-corner">24</span></div>
               <div className="step-meta"><span className="step-num">01</span><h3>Chọn tài liệu</h3></div>
               <p>Bắt đầu với nội dung môn học bạn đang cần ôn.</p>
             </article>
@@ -169,13 +170,13 @@ function HomePage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
         <section className="sample-section page-frame" id="lo-trinh-mau">
           <div className="sample-copy">
             <span className="section-kicker">THỬ TRƯỚC MỘT CHẶNG</span>
-            <h2>Hiểu xác suất.<br /><em>Từng khái niệm một.</em></h2>
-            <p>Đi qua một giáo trình mẫu để thấy cách WayFinder kết nối ý chính, bài giảng, câu hỏi luyện tập và tiến độ học.</p>
+            <h2>Hiểu xác suất.<br /><em>Từng bài học một.</em></h2>
+            <p>Đi qua một tài liệu mẫu để thấy cách WayFinder kết nối ý chính, bài giảng, câu hỏi luyện tập và tiến độ học.</p>
             <button className="button button-primary button-large" type="button" onClick={() => navigate('/demo')}>Bắt đầu bản minh hoạ <span aria-hidden="true">→</span></button>
             <p className="sample-disclaimer">Đây là nội dung minh hoạ tương tác. Tệp của bạn chưa được tải lên hoặc xử lý.</p>
           </div>
           <div className="sample-board">
-            <div className="sample-board-header"><span>GIÁO TRÌNH MẪU</span><span className="sample-status"><i /> SẴN SÀNG</span></div>
+            <div className="sample-board-header"><span>TÀI LIỆU MẪU</span><span className="sample-status"><i /> SẴN SÀNG</span></div>
             <div className="sample-board-body"><div className="sample-book"><span>01</span><b>Xác suất<br />thống kê</b><small>NHẬP MÔN</small><i>∑</i></div><div className="sample-route-text"><div className="sample-route-item"><span>✓</span><div><b>Nền tảng</b><small>Biến cố · Quy tắc cộng</small></div></div><div className="sample-route-item active"><span>2</span><div><b>Quy tắc đếm</b><small>Đang học · 12 phút</small></div></div><div className="sample-route-item"><span>3</span><div><b>Biến ngẫu nhiên</b><small>Bài tiếp theo</small></div></div></div></div>
             <div className="sample-board-foot"><span>◷ Khoảng 25 phút</span><span>6 chặng · 2 bài luyện</span><span aria-hidden="true">↗</span></div>
           </div>
@@ -199,7 +200,7 @@ const steps: { id: DemoStep; label: string }[] = [
 
 function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () => void }) {
   const [step, setStep] = useState<DemoStep>('upload');
-  const [fileName, setFileName] = useState('Giáo trình Nhập môn xác suất.pdf');
+  const [fileName, setFileName] = useState('Tài liệu Nhập môn xác suất.pdf');
   const [accepted, setAccepted] = useState(false);
   const [learned, setLearned] = useState(false);
   const [answer, setAnswer] = useState<number | null>(null);
@@ -238,10 +239,10 @@ function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
         <div className="demo-topbar">
           <button className="back-link" type="button" onClick={() => navigate('/')}><span aria-hidden="true">←</span> Về WayFinder</button>
           <div className="demo-top-label"><span className="pixel-dot" /> LỘ TRÌNH TƯƠNG TÁC</div>
-          <span className="demo-sample-tag">GIÁO TRÌNH MẪU</span>
+          <span className="demo-sample-tag">TÀI LIỆU MẪU</span>
         </div>
         <div className="demo-intro">
-          <div><span className="section-kicker">MINH HOẠ · KHÔNG TẢI TỆP LÊN</span><h1>Thử một hành trình học.</h1><p>Đi từ một giáo trình mẫu đến bài giảng, câu hỏi luyện tập và dấu mốc tiến độ.</p></div>
+          <div><span className="section-kicker">MINH HOẠ · KHÔNG TẢI TỆP LÊN</span><h1>Thử một hành trình học.</h1><p>Đi từ một tài liệu mẫu đến bài giảng, câu hỏi luyện tập và dấu mốc tiến độ.</p></div>
           <button className="text-button restart-button" type="button" onClick={() => { setStep('upload'); setLearned(false); setAnswer(null); setChat(null); setAccepted(false); }}>Bắt đầu lại <span aria-hidden="true">↺</span></button>
         </div>
         <nav className="journey-progress" aria-label="Các bước minh hoạ">
@@ -249,7 +250,7 @@ function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
           {steps.map((item, index) => <button key={item.id} className={`journey-step ${index < currentIndex ? 'is-done' : ''} ${index === currentIndex ? 'is-current' : ''}`} type="button" aria-current={index === currentIndex ? 'step' : undefined} onClick={() => { if (item.id === 'upload' || index <= currentIndex) setStep(item.id); }} disabled={index > currentIndex && item.id !== 'upload'}><span>{index < currentIndex ? '✓' : index + 1}</span><b>{item.label}</b></button>)}
         </nav>
         {step === 'upload' && <section className="demo-panel upload-panel" aria-labelledby="upload-title">
-          <div className="panel-side-note"><span className="panel-index">01 / 06</span><span className="panel-side-title">Bắt đầu<br />từ giáo trình.</span><span className="side-line" /></div>
+          <div className="panel-side-note"><span className="panel-index">01 / 06</span><span className="panel-side-title">Bắt đầu<br />từ tài liệu.</span><span className="side-line" /></div>
           <div className="panel-main">
             <div className="panel-heading"><span className="section-kicker">CHẶNG ĐẦU TIÊN</span><h2 tabIndex={-1} id="upload-title">Chọn tài liệu để bắt đầu.</h2><p>Trong bản minh hoạ này, tài liệu mẫu ở sẵn trên trang. Tệp bạn chọn chỉ hiển thị tên và chưa được gửi đi đâu.</p></div>
             <label className="file-drop" htmlFor="sample-file">
@@ -258,7 +259,7 @@ function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
               <span className="file-drop-copy"><b>{fileName || 'Chọn tệp PDF hoặc DOCX'}</b><small>{fileName ? 'Tệp mẫu để minh hoạ · chưa tải lên máy chủ' : 'Chọn một tệp trên thiết bị · chỉ để xem tên tệp'}</small></span>
               <span className="file-action">Chọn tệp</span>
             </label>
-            <div className="sample-choice"><span className="sample-choice-icon">PDF</span><div><b>Giáo trình Nhập môn xác suất</b><small>PDF mẫu · 86 trang · 2,4 MB</small></div><span className="sample-check">✓</span></div>
+            <div className="sample-choice"><span className="sample-choice-icon">PDF</span><div><b>Tài liệu Nhập môn xác suất</b><small>PDF mẫu · 86 trang · 2,4 MB</small></div><span className="sample-check">✓</span></div>
             <label className="consent-row"><input type="checkbox" checked={accepted} onChange={(event) => setAccepted(event.target.checked)} /><span>Tôi có quyền sử dụng và chia sẻ tài liệu minh hoạ này.</span></label>
             <div className="demo-notice"><span aria-hidden="true">ⓘ</span><span><b>Bản demo không xử lý tệp thật.</b> Bước tiếp theo dùng nội dung mẫu dựng sẵn trong trình duyệt.</span></div>
             <button className="button button-primary button-large" type="button" disabled={!accepted} onClick={startProcessing}>Dựng lộ trình mẫu <span aria-hidden="true">→</span></button>
@@ -271,7 +272,7 @@ function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
             <span className="section-kicker">MINH HOẠ TIẾN TRÌNH</span><h2 tabIndex={-1} id="processing-title">Từ trang sách đến các chặng học.</h2><p>Các bước dưới đây mô phỏng cách lộ trình được hình thành. Không có tệp nào được xử lý.</p>
             <div className="processing-art"><div className="process-doc"><span>PDF</span><i /><i /><i /><b /><i /><i /></div><div className="process-connector"><span /><span /><span /></div><div className="process-road"><span className="lit">01</span><span className="lit">02</span><span className="lit">03</span></div></div>
             <div className="processing-list">
-              {['Đọc cấu trúc giáo trình mẫu', 'Nhóm các khái niệm liên quan', 'Xếp thứ tự các chặng học'].map((label) => <div key={label} className="done"><span>✓</span>{label}<small>MINH HOẠ</small></div>)}
+              {['Đọc cấu trúc tài liệu mẫu', 'Nhóm các bài học liên quan', 'Xếp thứ tự các chặng học'].map((label) => <div key={label} className="done"><span>✓</span>{label}<small>MINH HOẠ</small></div>)}
             </div>
             <p className="processing-caption">Đây là các bước minh hoạ, không có tệp nào đang được xử lý.</p>
             <button className="button button-primary button-large" type="button" onClick={() => setStep('roadmap')}>Xem lộ trình mẫu <span aria-hidden="true">→</span></button>
@@ -281,11 +282,11 @@ function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
         {step === 'roadmap' && <section className="demo-panel roadmap-panel" id="lo-trinh" aria-labelledby="roadmap-title">
           <div className="panel-side-note"><span className="panel-index">03 / 06</span><span className="panel-side-title">Đây là<br />đường đi.</span><span className="side-line" /></div>
           <div className="panel-main">
-            <div className="panel-heading"><span className="section-kicker">LỘ TRÌNH MẪU · GIÁO TRÌNH XÁC SUẤT</span><h2 tabIndex={-1} id="roadmap-title">Bắt đầu từ nền tảng.</h2><p>Sáu chặng kết nối nhau. Bản minh hoạ mở sẵn bài đầu tiên; các chặng còn lại là bản xem trước.</p></div>
+            <div className="panel-heading"><span className="section-kicker">LỘ TRÌNH MẪU · TÀI LIỆU XÁC SUẤT</span><h2 tabIndex={-1} id="roadmap-title">Bắt đầu từ nền tảng.</h2><p>Sáu chặng kết nối nhau. Bản minh hoạ mở sẵn bài đầu tiên; các chặng còn lại là bản xem trước.</p></div>
             <div className="roadmap-summary"><div className="summary-icon">∑</div><div><b>Nhập môn xác suất</b><span>Từ biến cố cơ bản đến biến ngẫu nhiên</span></div><div className="summary-stats"><b>6 chặng</b><span>khoảng 58 phút</span></div></div>
             <div className="roadmap-list">
               {['Biến cố và xác suất', 'Quy tắc đếm', 'Biến ngẫu nhiên', 'Kỳ vọng và phương sai', 'Phân phối xác suất', 'Ôn tập và ứng dụng'].map((item, index) => {
-                const content = <><span className={`roadmap-node ${index === 0 && learned ? 'completed' : ''}`}>{index === 0 && learned ? '✓' : String(index + 1).padStart(2, '0')}</span><span className="roadmap-row-copy"><b>{item}</b><small>{index === 0 ? 'Bài giảng mẫu có thể mở' : index < 2 ? 'Khái niệm nền tảng' : index < 4 ? 'Kết nối và vận dụng' : 'Củng cố kiến thức'}</small></span><span className="roadmap-time">{8 + (index % 3) * 3} phút</span>{index === 0 ? <span className="row-arrow">→</span> : <span className="row-preview">Xem trước</span>}</>;
+                const content = <><span className={`roadmap-node ${index === 0 && learned ? 'completed' : ''}`}>{index === 0 && learned ? '✓' : String(index + 1).padStart(2, '0')}</span><span className="roadmap-row-copy"><b>{item}</b><small>{index === 0 ? 'Bài giảng mẫu có thể mở' : index < 2 ? 'Bài học nền tảng' : index < 4 ? 'Kết nối và vận dụng' : 'Củng cố kiến thức'}</small></span><span className="roadmap-time">{8 + (index % 3) * 3} phút</span>{index === 0 ? <span className="row-arrow">→</span> : <span className="row-preview">Xem trước</span>}</>;
                 return index === 0
                   ? <button key={item} type="button" className="roadmap-row" onClick={() => setStep('lecture')}>{content}</button>
                   : <div key={item} className="roadmap-row roadmap-row-preview">{content}</div>;
@@ -301,10 +302,10 @@ function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
             <div className="lecture-breadcrumb">NHẬP MÔN XÁC SUẤT <span>/</span> CHẶNG 01</div>
             <h2 tabIndex={-1} id="lecture-title">Biến cố và<br /><em>xác suất.</em></h2>
             <p className="lecture-lead">Xác suất cho biết một kết quả có khả năng xảy ra đến mức nào, dựa trên những gì ta biết trước.</p>
-            <div className="definition-block"><span>Ý CHÍNH</span><p>Nếu các kết quả là đồng khả năng, xác suất của biến cố <i>A</i> bằng số kết quả thuận lợi chia cho tổng số kết quả có thể.</p><div className="formula">P(A) = <span>n(A)<i>n(Ω)</i></span></div><small>Minh hoạ theo giáo trình mẫu · tr. 12</small></div>
+            <div className="definition-block"><span>Ý CHÍNH</span><p>Nếu các kết quả là đồng khả năng, xác suất của biến cố <i>A</i> bằng số kết quả thuận lợi chia cho tổng số kết quả có thể.</p><div className="formula">P(A) = <span>n(A)<i>n(Ω)</i></span></div><small>Minh hoạ theo tài liệu mẫu · tr. 12</small></div>
             <div className="lecture-example"><span className="example-label">THỬ TƯỞNG TƯỢNG</span><p>Tung một đồng xu cân đối. Biến cố “ra mặt ngửa” có một kết quả thuận lợi trong hai khả năng.</p><div className="coin-line"><span>NGỬA</span><b>1</b><i>/</i><b>2</b><span className="coin-half" aria-hidden="true">½</span></div></div>
             <div className={`next-block ${learned ? 'marked' : ''}`}><span>{learned ? '✓ ĐÃ ĐÁNH DẤU HỌC' : 'TIẾP THEO'}</span><b>{learned ? 'Chặng đã ghi nhận trong tiến độ mẫu.' : 'Quy tắc đếm · khoảng 12 phút'}</b><button type="button" onClick={() => { setLearned(true); setStep('practice'); }}>{learned ? 'Luyện tập →' : 'Đánh dấu đã học →'}</button></div>
-            <div className="assistant-panel"><div className="assistant-heading"><span className="assistant-avatar">W</span><div><b>Hỏi trợ lý mẫu</b><small>Trả lời minh hoạ theo nội dung giáo trình</small></div><span className="assistant-demo">DEMO</span></div><div className="assistant-answer" aria-live="polite"><span className="answer-symbol">✳</span><p>{chat ? `Câu hỏi của bạn: “${chat}” Trong ví dụ này, xác suất bằng số kết quả thuận lợi chia cho tổng số khả năng. Với đồng xu, đó là 1/2.` : 'Vì sao xác suất ra mặt ngửa là 1/2? Vì đồng xu có hai mặt và mỗi mặt có khả năng xuất hiện như nhau.'}<small>Trích dẫn mẫu · trang 12</small></p></div><form className="assistant-form" onSubmit={sendQuestion}><input aria-label="Câu hỏi cho trợ lý mẫu" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Hỏi về ý này…" /><button type="submit" aria-label="Gửi câu hỏi">↑</button></form></div>
+            <div className="assistant-panel"><div className="assistant-heading"><span className="assistant-avatar">W</span><div><b>Hỏi trợ lý mẫu</b><small>Trả lời minh hoạ theo nội dung tài liệu</small></div><span className="assistant-demo">DEMO</span></div><div className="assistant-answer" aria-live="polite"><span className="answer-symbol">✳</span><p>{chat ? `Câu hỏi của bạn: “${chat}” Trong ví dụ này, xác suất bằng số kết quả thuận lợi chia cho tổng số khả năng. Với đồng xu, đó là 1/2.` : 'Vì sao xác suất ra mặt ngửa là 1/2? Vì đồng xu có hai mặt và mỗi mặt có khả năng xuất hiện như nhau.'}<small>Trích dẫn mẫu · trang 12</small></p></div><form className="assistant-form" onSubmit={sendQuestion}><input aria-label="Câu hỏi cho trợ lý mẫu" value={question} onChange={(event) => setQuestion(event.target.value)} placeholder="Hỏi về ý này…" /><button type="submit" aria-label="Gửi câu hỏi">↑</button></form></div>
           </div>
         </section>}
 
@@ -322,7 +323,7 @@ function DemoPage({ theme, onToggleTheme }: { theme: Theme; onToggleTheme: () =>
           <div className="panel-side-note"><span className="panel-index">06 / 06</span><span className="panel-side-title">Mỗi bước<br />đều được ghi.</span><span className="side-line" /></div>
           <div className="panel-main">
             <span className="section-kicker">TIẾN ĐỘ HỌC MẪU</span><h2 tabIndex={-1} id="progress-title">Bạn đã đi được một chặng.</h2><p>Trong WayFinder, dấu mốc học giúp bạn quay lại đúng nơi mình đang dở.</p>
-            <div className="progress-card"><div className="progress-card-head"><div><span>GIÁO TRÌNH</span><b>Nhập môn xác suất</b></div><div className="large-progress"><strong>1</strong><span>/ 6<br /><small>chặng</small></span></div></div><div className="progress-bar"><i className="progress-17" /></div><div className="progress-caption"><span>17% lộ trình</span><span>1 bài đã học</span></div>
+            <div className="progress-card"><div className="progress-card-head"><div><span>TÀI LIỆU</span><b>Nhập môn xác suất</b></div><div className="large-progress"><strong>1</strong><span>/ 6<br /><small>chặng</small></span></div></div><div className="progress-bar"><i className="progress-17" /></div><div className="progress-caption"><span>17% lộ trình</span><span>1 bài đã học</span></div>
               <div className="progress-milestones"><div className="milestone done"><span>✓</span><div><b>Biến cố và xác suất</b><small>Đã học · vừa xong</small></div></div><div className="milestone next"><span>02</span><div><b>Quy tắc đếm</b><small>Chặng xem trước · 12 phút</small></div></div><div className="milestone"><span>03</span><div><b>Biến ngẫu nhiên</b><small>Chặng tiếp nối</small></div></div></div>
             </div>
             <div className="progress-actions"><button className="button button-primary button-large" type="button" onClick={() => setStep('lecture')}>Xem lại bài giảng mẫu <span aria-hidden="true">→</span></button><button className="button button-secondary button-large" type="button" onClick={() => setStep('roadmap')}>Xem lại lộ trình</button></div>
@@ -352,6 +353,9 @@ export default function App() {
     <Route path="/dang-nhap" element={<AuthPage key="login" mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dang-ky" element={<AuthPage key="register" mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/khoa-hoc" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CoursesPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/khoa-hoc/:cid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CourseEntry theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/khoa-hoc/:cid/module/:mid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CourseEntry theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/xac-minh" element={<VerifyEmailPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/quen-mat-khau" element={<ForgotPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dat-lai-mat-khau" element={<ResetPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />
