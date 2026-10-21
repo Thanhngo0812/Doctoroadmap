@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'r
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { AuthNotice, AuthPage, AuthProvider, ForgotPasswordPage, LandingRoute, RequireAccount, ResetPasswordPage, VerifyEmailPage, useAuth } from './Auth';
 import { ApiError, fetchHealth, type HealthPayload } from './api';
+import { CourseEntry, CoursesPage } from './Courses';
 
 type Theme = 'light' | 'dark';
 
@@ -352,6 +353,9 @@ export default function App() {
     <Route path="/dang-nhap" element={<AuthPage key="login" mode="login" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dang-ky" element={<AuthPage key="register" mode="register" theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/khoa-hoc" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CoursesPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/khoa-hoc/:cid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CourseEntry theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/khoa-hoc/:cid/module/:mid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CourseEntry theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/xac-minh" element={<VerifyEmailPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/quen-mat-khau" element={<ForgotPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/dat-lai-mat-khau" element={<ResetPasswordPage theme={theme} onToggleTheme={toggleTheme} />} />

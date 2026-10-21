@@ -162,18 +162,18 @@ export function useAuth(): AuthState {
   return value;
 }
 
-export function RequireAccount({ theme, onToggleTheme }: { theme: 'light' | 'dark'; onToggleTheme: () => void }) {
+export function RequireAccount({ theme, onToggleTheme, children }: { theme: 'light' | 'dark'; onToggleTheme: () => void; children?: ReactNode }) {
   const auth = useAuth();
   const location = useLocation();
   if (auth.status === 'loading') return <main className="auth-loading" role="status"><h1>Đang kiểm tra phiên đăng nhập…</h1></main>;
   if (auth.status === 'error') return <main className="auth-loading"><h1>Chưa thể kiểm tra phiên</h1><p role="alert">{auth.error}</p><button className="button button-secondary" type="button" onClick={() => void auth.refresh().catch(() => undefined)}>Thử lại</button></main>;
   if (auth.status === 'guest') return <Navigate to={`/dang-nhap?next=${encodeURIComponent(location.pathname)}`} replace />;
-  return <AccountPage theme={theme} onToggleTheme={onToggleTheme} />;
+  return children ?? <AccountPage theme={theme} onToggleTheme={onToggleTheme} />;
 }
 
 export function LandingRoute({ children }: { children: ReactNode }) {
   const auth = useAuth();
-  return auth.status === 'authenticated' ? <Navigate to="/tai-khoan" replace /> : <>{children}</>;
+  return auth.status === 'authenticated' ? <Navigate to="/khoa-hoc" replace /> : <>{children}</>;
 }
 
 export function AccountPage({ theme, onToggleTheme }: { theme: 'light' | 'dark'; onToggleTheme: () => void }) {
@@ -228,6 +228,9 @@ export function AccountPage({ theme, onToggleTheme }: { theme: 'light' | 'dark';
 export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'register'; theme: 'light' | 'dark'; onToggleTheme: () => void }) {
   const auth = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const requestedNext = new URLSearchParams(location.search).get('next');
+  const next = requestedNext?.startsWith('/') && !requestedNext.startsWith('//') && !/[\\\s]/.test(requestedNext) ? requestedNext : '/khoa-hoc';
   const [displayName, setDisplayName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -250,7 +253,7 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     if (auth.status === 'error') setFeedback({ kind: 'error', message: auth.error ?? 'Không thể kiểm tra phiên đăng nhập.' });
   }, [auth.status, auth.error]);
 
-  if (auth.status === 'authenticated') return <Navigate to="/tai-khoan" replace />;
+  if (auth.status === 'authenticated') return <Navigate to={next} replace />;
   const isRegister = mode === 'register';
   const switchTarget = isRegister ? '/dang-nhap' : '/dang-ky';
   const switchForm = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -283,11 +286,11 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     try {
       if (isRegister) {
         const result = await auth.register(email.trim(), password, displayName.trim());
-        if (result.account) navigate('/tai-khoan', { replace: true });
+        if (result.account) navigate(next, { replace: true });
         else setFeedback({ kind: 'success', message: result.message });
       } else {
         await auth.login(email.trim(), password);
-        navigate('/tai-khoan', { replace: true });
+        navigate(next, { replace: true });
       }
     } catch (cause) {
       if (cause instanceof ApiError && cause.code === 'account_disabled') auth.clearSession();
