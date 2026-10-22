@@ -18,6 +18,11 @@ from wayfinder.infrastructure.database import create_database_engine
 pytestmark = pytest.mark.postgres
 
 
+@pytest.fixture(autouse=True)
+def clear_registration_mail(builds):
+    builds.mailer.messages.clear()
+
+
 @contextmanager
 def independent_service(b):
     engine = create_database_engine(b.postgres_database_url)
