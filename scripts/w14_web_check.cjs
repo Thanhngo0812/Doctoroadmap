@@ -516,6 +516,11 @@ async function setTheme(page, theme) {
     await page.getByRole('button', { name: current === 'dark' ? 'Bật chế độ sáng' : 'Bật chế độ tối' }).click();
   }
   assert.equal(await page.locator('html').getAttribute('data-theme'), theme);
+  // The theme attribute changes before the 120/200ms control transitions finish.
+  // Capture the settled theme rather than an intermediate button background.
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  await page.waitForFunction(() => !document.getAnimations().some(animation =>
+    animation instanceof CSSTransition && animation.playState === 'running'));
 }
 
 async function setViewportThemeScreens(page, audit, prefix, widths) {
