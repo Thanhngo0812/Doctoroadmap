@@ -1,0 +1,30 @@
+{
+  "commit": "7f0cf5806769f8004b43645f73b416dc37012fb0",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "src/web/backend/tests/test_real_build_w15.py",
+    "-k",
+    "different_database_engine",
+    "-o",
+    "addopts=",
+    "-q",
+    "--tb=short",
+    "--basetemp=tmp/w15-engine-red",
+    "--junitxml=report/w15-evidence/runs/engine-red.xml"
+  ],
+  "exit_code": 1,
+  "seconds": 9.31,
+  "source_sha256": {
+    "src/web/backend/wayfinder/application/builds.py": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7",
+    "src/web/backend/wayfinder/application/build_worker.py": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+    "src/web/backend/wayfinder/infrastructure/build_store.py": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "src/web/backend/tests/test_real_build_w15.py": "725dfdf0add919a0dc75c52d28568045147139a641cbb88908addd8c454fba12",
+    "src/web/backend/wayfinder/settings.py": "366f67e78bc2d11c6131cd5f513ea70075b1e78bb6e5908814590282a2bc2345",
+    "src/web/backend/wayfinder/worker.py": "ffcb0743b0b88cc695d3dfaaaff9e109a6955d7a505e44b512ab096b47e8ba73",
+    "src/web/backend/wayfinder/cli.py": "6b874d67f7dbd067d2cb42682063e98cab5c5588a8c59df28b3868559ad6b2d4",
+    "src/web/backend/wayfinder/composition.py": "e3da77bf8f40aa1b223938f98c118278d877004287725c0860ef713760b1cc63",
+    "src/web/backend/wayfinder/infrastructure/real_build.py": "fbb199565605166ee2c045168f1af03842b7ef83fa4212819bdad3193f86f18b"
+  }
+}

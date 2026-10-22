@@ -1,0 +1,26 @@
+{
+  "commit": "7f0cf5806769f8004b43645f73b416dc37012fb0",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "src/web/backend/tests/test_real_build_w15.py",
+    "src/web/backend/tests/test_web_cli.py",
+    "src/web/backend/tests/test_build_cancellation_w25.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "--tb=short",
+    "--basetemp=tmp/w15-green-2",
+    "--junitxml=report/w15-evidence/runs/adapter-green2.xml"
+  ],
+  "exit_code": 0,
+  "seconds": 48.14,
+  "source_sha256": {
+    "src/web/backend/wayfinder/application/builds.py": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7",
+    "src/web/backend/wayfinder/application/build_worker.py": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+    "src/web/backend/wayfinder/infrastructure/build_store.py": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "src/web/backend/tests/test_real_build_w15.py": "643af3143e4a59d61806f8d6ef749483e94d76852bde422386a5797d3a5a9280",
+    "src/web/backend/wayfinder/infrastructure/real_build.py": "fbb199565605166ee2c045168f1af03842b7ef83fa4212819bdad3193f86f18b"
+  }
+}

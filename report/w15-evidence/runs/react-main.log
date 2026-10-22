@@ -1,0 +1,49 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/report/w15-evidence/runs/react-main.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/src/web/frontend
+
+ ✓ src/App.test.tsx (24 tests) 17231ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 2690ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 1551ms
+     ✓ keeps duplicate registration generic when no session is created 1301ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 926ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 1339ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 1205ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 821ms
+     ✓ clears errors and private form state when leaving register 1338ms
+     ✓ does not carry a late login failure into the registration form 725ms
+     ✓ keeps a success notification visible after login reaches courses 649ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 841ms
+     ✓ shows the actual password field message for body.password 1117ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 1154ms
+ ✓ src/W03.test.tsx (21 tests) 7587ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ keeps the recovery header scoped and omits the redundant account eyebrow 409ms
+     ✓ sends a generic password-reset request without revealing whether the email exists 535ms
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 897ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 866ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 2271ms
+     ✓ keeps the reset form available after a retryable network failure 916ms
+ ✓ src/Builds.test.tsx (10 tests) 1928ms
+   ✓ requires rights confirmation before upload and queues only after explicit title confirmation 1136ms
+ ✓ src/Courses.test.tsx (17 tests) 1313ms
+   ✓ shows real-shaped owned joined and samples without inventing sample progress 306ms
+ ✓ src/Roadmap.test.tsx (8 tests) 1123ms
+   ✓ shows API-ordered modules, honest course and module totals, and the expanded concept checklist 353ms
+ ✓ src/TaskWait.test.tsx (2 tests) 135ms
+ ✓ src/api.test.ts (22 tests) 55ms
+
+ Test Files  7 passed (7)
+      Tests  104 passed (104)
+   Start at  20:15:32
+   Duration  51.11s (tests 60%, environment 27%, setup 7%, import 5%, transform 1%)
+
+    Isolate  7 workers spawned · ~2.20s startup each (spawn + environment, per file)
+             at least ~13.20s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/report/w15-evidence/runs/react-main.xml
