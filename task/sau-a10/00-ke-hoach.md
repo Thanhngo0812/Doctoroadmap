@@ -75,7 +75,7 @@ Bốn luật:
 | [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
 | [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | đạt qua SA-25 và SA-30 (tài liệu sau hậu kiểm) |
 | [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; đã giao agentic (chủ dự án báo 2026-10-21), chờ trả gói để kiểm |
-| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22 (162 module) |
+| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | **chờ người chấm**: phiếu đã xuất (`a18713c`, [báo cáo](../../report/danh-gia-sa20-2026-10-22.md)), chi thật 0,22 USD. Gói gửi người chấm ở `Desktop\danh-gia-pha-b\sa20-giao-nguoi-cham\`; khoá và dữ liệu chạy ở `artifacts/phase_b/eval/sa20/`. Độ đo tự động: L1 rơi đường lùi 13,6% (> 10%) và mượn từ 1,85% (> 1%), cần đọc từng ca khi phân tích |
 | [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **53** | trần 5 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22, gồm số giây của SA-13 |
 | [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27**, **52** | khoảng 1,7 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22 |
 | [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30**, **52**, **56** | lượt 1 trần khoảng 8 USD | chờ gói 19a agentic và SA-56; vé đã cập nhật theo graph ghim 2026-10-22 |
