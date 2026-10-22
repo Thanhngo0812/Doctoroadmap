@@ -1,0 +1,18 @@
+{
+  "commit": "0a2afa89b13010100b721909ed749f0585b73031",
+  "openapi_routes": {
+    "/api/v1/courses/{cid}/progress": "get",
+    "/api/v1/courses/{cid}/progress/{node_id}": "put",
+    "/api/v1/uploads": "post",
+    "/api/v1/uploads/{id}": "get",
+    "/api/v1/uploads/{id}/build": "post",
+    "/api/v1/builds/{id}": "get",
+    "/api/v1/builds/{id}/cancel": "post",
+    "/api/v1/builds/{id}/retry": "post"
+  },
+  "heads": [
+    "w14_0006"
+  ],
+  "w14_parent": "w06_0005",
+  "database_assertion": "test_migration_has_one_successor_and_source_build_foreign_keys in mandatory PostgreSQL gate"
+}

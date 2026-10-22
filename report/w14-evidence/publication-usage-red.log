@@ -1,0 +1,33 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_publication_error_keeps_final_usage_even_without_progress_counters ___
+src\web\backend\tests\test_builds_w14.py:503: in test_publication_error_keeps_final_usage_even_without_progress_counters
+    assert result['status']=='failed' and result['model_calls']==2
+E   AssertionError: assert ('failed' == 'failed'
+E
+E       failed and 0 == 2)
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=5aadc4d2-db14-4987-ac8a-dbf400139c2f
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\tests\test_builds_w14.py", line 498, in execute
+    self.recorder(result)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\wayfinder\application\build_worker.py", line 68, in record
+    graph=self.graph_loader(job['doc_id'],result.graph_version)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\tests\test_builds_w14.py", line 500, in missing_graph
+    def missing_graph(*args): raise ValueError('Invalid graph metadata')
+                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: Invalid graph metadata
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\report\w14-evidence\publication-usage-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_publication_error_keeps_final_usage_even_without_progress_counters
+1 failed, 34 deselected, 1 warning in 2.57s

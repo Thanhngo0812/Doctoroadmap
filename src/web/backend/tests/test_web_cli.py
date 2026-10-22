@@ -54,19 +54,22 @@ def test_check_invokes_pytest_with_mandatory_postgres(monkeypatch):
     assert captured_environment["WAYFINDER_TEST_DATABASE_URL"] == "postgresql+psycopg://unused:unused@localhost/test"
 
 
-def test_worker_is_explicit_about_w14_scaffold(capsys):
-    assert cli.main(["worker"]) == 0
-    assert "W-14" in capsys.readouterr().out
+def test_worker_requires_explicit_fake_inputs(capsys):
+    with pytest.raises(SystemExit) as error:
+        cli.main(["worker"])
+    assert error.value.code == 2
+    assert "--fake-source" in capsys.readouterr().err
 
 
 def test_cli_prints_vietnamese_with_legacy_windows_output_encoding():
     environment = {**os.environ, "PYTHONIOENCODING": "cp1252"}
     result = subprocess.run(
-        [sys.executable, "-m", "wayfinder.cli", "worker"],
+        [sys.executable, "-m", "wayfinder.cli", "worker", "--fake-source", "doc-6",
+         "--fixture-root", "missing", "--manifest", "missing", "--manifest-sha256", "invalid"],
         env=environment, capture_output=True,
     )
-    assert result.returncode == 0, result.stderr.decode("utf-8", errors="replace")
-    assert "sẵn sàng" in result.stdout.decode("utf-8")
+    assert result.returncode == 2, result.stderr.decode("utf-8", errors="replace")
+    assert "Worker giả" in result.stderr.decode("utf-8")
 
 
 def test_create_admin_reads_password_hidden_and_closes_database(monkeypatch, capsys):

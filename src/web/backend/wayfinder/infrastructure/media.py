@@ -41,7 +41,7 @@ class CloudinaryMediaStore:
         )
         return result["public_id"]
 
-    def download(self, public_id: str) -> Path:
+    def download(self, public_id: str, *, destination: Path | None = None) -> Path:
         expires_at = datetime.fromtimestamp(time.time() + 300).astimezone()
         asset_format = self._asset_format(public_id)
         url = self._private_download_url(public_id, expires_at, asset_format)
@@ -49,7 +49,9 @@ class CloudinaryMediaStore:
         path: Path | None = None
         try:
             with urllib.request.urlopen(url, timeout=_TIMEOUT_SECONDS) as response:
-                with tempfile.NamedTemporaryFile(suffix=suffix, delete=False) as output:
+                output_file = (destination.open('wb') if destination is not None
+                               else tempfile.NamedTemporaryFile(suffix=suffix, delete=False))
+                with output_file as output:
                     path = Path(output.name)
                     while chunk := response.read(64 * 1024):
                         output.write(chunk)
