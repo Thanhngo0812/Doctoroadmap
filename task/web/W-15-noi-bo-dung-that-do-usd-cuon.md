@@ -6,6 +6,8 @@
 
 ## Vì sao
 
+**Cập nhật 2026-10-22:** backend/schema W-14+W-25 đã đạt và ghép `a572459`; React W-14 mới xong local, chưa cổng/ nghiệm thu đầu-cuối nên W-15 vẫn chưa mở chạy thật. Lõi có thể chuẩn bị ghi chú hợp đồng usage checkpoint/dry-run; mọi lượt có tiền vẫn cần duyệt mới. Xem [kế hoạch mới](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md).
+
 **Sau soát 2026-10-21:** backend W-14 chưa đạt, cần sửa [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) và còn React/tích hợp. W-15 chưa mở lượt chạy thật; sau khi W-14 đầu-cuối đạt vẫn cần dry-run/tin nhắn duyệt tiền mới. Phần callback usage checkpoint từng bước còn phải chốt khi nối runner thật; không suy tổng thành chi từng bước. Xem [kế hoạch mới](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md).
 
 **Cập nhật phụ thuộc 2026-10-19:** W-13 đã được điều phối nghiệm thu sau khi kiểm doc-6 hoàn tất và tái lập cả hai kho ở 0 USD;
