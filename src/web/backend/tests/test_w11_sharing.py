@@ -307,13 +307,13 @@ def sharing_pg(postgres_database_url):
     from wayfinder.application.courses import CourseService
     from wayfinder.infrastructure.course_store import PostgresCourseStore
     from wayfinder.infrastructure.database import create_database_engine
-    from wayfinder.infrastructure.sharing_schema import sharing_metadata
     from wayfinder.infrastructure.sharing_store import PostgresSharingStore
     from wayfinder.settings import WebSettings
 
     engine = create_database_engine(postgres_database_url)
-    metadata = sharing_metadata()
-    metadata.create_all(engine, tables=[metadata.tables["share_link"]])
+    with engine.connect() as connection:
+        assert connection.scalar(text("SELECT version_num FROM alembic_version")) == 'w11_0007'
+        assert connection.scalar(text("SELECT to_regclass('public.share_link')")) == 'share_link'
     settings = WebSettings(_env_file=None, frontend_dist=Path("missing"), public_base_url="https://learn.example.vn")
     clock = Clock()
 
@@ -418,6 +418,9 @@ def test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_m
     service.revoke_share_link(sharing_pg.owner, sharing_pg.course.id, link_id)
     assert service.list_members(sharing_pg.owner, sharing_pg.course.id)["member_count"] == 2
     service.remove_member(sharing_pg.owner, sharing_pg.course.id, learner.user_id)
+    with pytest.raises(WebError) as removed:
+        service.list_members(learner, sharing_pg.course.id)
+    assert removed.value.code == 'not_found'
     with sharing_pg.engine.connect() as connection:
         retained = connection.scalar(text("SELECT count(*) FROM phase_b_record WHERE owner=:owner AND doc_id='doc-w11'"),
                                      {"owner": learner.user_id})
@@ -428,4 +431,50 @@ def test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_m
         restored = connection.scalar(text("SELECT count(*) FROM phase_b_record WHERE owner=:owner AND doc_id='doc-w11'"),
                                      {"owner": learner.user_id})
     assert restored == retained
+
+
+@pytest.mark.postgres
+def test_postgres_migration_has_no_raw_token_and_enforces_digest_length(sharing_pg):
+    from sqlalchemy import inspect
+    from sqlalchemy.exc import IntegrityError
+    b = sharing_pg
+    columns = {column['name'] for column in inspect(b.engine).get_columns('share_link')}
+    assert 'token' not in columns and 'url' not in columns
+    assert {'token_hash', 'token_tail'} <= columns
+    with pytest.raises(IntegrityError):
+        with b.engine.begin() as c:
+            c.execute(text('INSERT INTO share_link(id,course_id,token_hash,token_tail,created_at) '
+                'VALUES (:id,:cid,:hash,:tail,:at)'),
+                dict(id=str(uuid4()),cid=b.course.id,hash=b'short',tail='123456',at=b.clock.now()))
+
+
+@pytest.mark.postgres
+def test_postgres_capacity_race_across_two_links_stops_at_200(sharing_pg):
+    b = sharing_pg
+    # 198 learners plus the owner leave exactly one free place.
+    with b.engine.begin() as c:
+        for _ in range(198):
+            uid=str(uuid4())
+            c.execute(text("INSERT INTO account(id,email,email_normalized,password_hash,display_name,created_at,updated_at) "
+                "VALUES (:id,:email,:email,'test','Fixture',:at,:at)"),
+                dict(id=uid,email=uid+'@example.invalid',at=b.clock.now()))
+            c.execute(text("INSERT INTO membership(course_id,account_id,role,via,joined_at) "
+                "VALUES (:cid,:uid,'learner','link',:at)"),dict(cid=b.course.id,uid=uid,at=b.clock.now()))
+    service=SharingService(b.store,b.settings,b.clock)
+    tokens=[service.create_share_link(b.owner,b.course.id)['link']['token'] for _ in range(2)]
+    users=[b.user('Contender') for _ in range(2)]
+    barrier=Barrier(2)
+    def join(pair):
+        actor,token=pair
+        local=SharingService(type(b.store)(b.engine),b.settings,b.clock)
+        barrier.wait(timeout=5)
+        try: return local.join_by_link(actor,token)
+        except WebError as e: return e.code
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        results=list(pool.map(join,zip(users,tokens)))
+    assert results.count('course_full')==1
+    assert sum(isinstance(x,dict) for x in results)==1
+    with b.engine.connect() as c:
+        assert c.scalar(text('SELECT count(*) FROM membership WHERE course_id=:cid'),{'cid':b.course.id})==200
+        assert c.scalar(text('SELECT sum(use_count) FROM share_link WHERE course_id=:cid'),{'cid':b.course.id})==1
 

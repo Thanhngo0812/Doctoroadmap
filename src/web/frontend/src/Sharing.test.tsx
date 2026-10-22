@@ -44,6 +44,16 @@ beforeEach(() => {
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
+it('keeps the invalid join screen labelled by its own heading', async () => {
+  vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
+    ? json({ error: { code: 'unauthenticated' } }, 401)
+    : json({ error: { code: 'link_invalid' } }, 410)));
+  renderPage('/join/broken');
+  const heading = await screen.findByRole('heading', { name: 'Link chia sẻ' });
+  const section = heading.closest('section');
+  expect(heading.id).toBe(section?.getAttribute('aria-labelledby'));
+});
+
 it('creates a one-time share URL, copies only on a successful clipboard write, and clears it on close', async () => {
   const writeText = vi.fn().mockResolvedValue(undefined);
   const calls: Array<[string, RequestInit]> = [];

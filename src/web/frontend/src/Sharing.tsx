@@ -215,7 +215,7 @@ export function JoinPage(props: ThemeProps) {
   return <CourseShell {...props}>
     <section className="join-page" aria-labelledby="join-title">
       {!preview && !error && <p role="status">Đang tải link mời…</p>}
-      {error && <div className="courses-error"><h1>Link chia sẻ</h1><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
+      {error && <div className="courses-error"><h1 id="join-title">Link chia sẻ</h1><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
       {preview && <>
         <p className="join-eyebrow">Link mời khoá học</p>
         <h1 id="join-title">{preview.title}</h1>

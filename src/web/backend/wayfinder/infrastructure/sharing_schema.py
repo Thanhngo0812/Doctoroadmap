@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 
 def sharing_metadata() -> MetaData:
     metadata = MetaData()
-    # These lightweight table declarations let the FK targets resolve in temporary test metadata.
+    # FK declarations for SQL construction; Alembic owns schema creation.
     Table("account", metadata, Column("id", UUID(as_uuid=False), primary_key=True))
     Table("course", metadata, Column("id", UUID(as_uuid=False), primary_key=True))
     links = Table(
