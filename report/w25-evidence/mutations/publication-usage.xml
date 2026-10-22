@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.417" timestamp="2026-10-22T09:37:41.852531+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_publication_error_keeps_final_usage_even_without_progress_counters" time="2.565"><failure message="AssertionError: assert ('failed' == 'failed'&#10;  &#10;    failed and 0 == 2)">src\web\backend\tests\test_builds_w14.py:503: in test_publication_error_keeps_final_usage_even_without_progress_counters
+    assert result['status']=='failed' and result['model_calls']==2
+E   AssertionError: assert ('failed' == 'failed'
+E
+E       failed and 0 == 2)</failure></testcase></testsuite></testsuites>

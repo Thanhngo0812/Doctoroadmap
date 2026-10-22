@@ -1,0 +1,23 @@
+{
+  "commit": "76199c44e394e4d6402eb9173fe714c62452e1b2",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w25-build-cancellation",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "src/web/backend/tests/test_build_cancellation_w25.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "--tb=short",
+    "--basetemp=tmp/w25-red-3",
+    "--junitxml=report/w25-evidence/runs/red.xml"
+  ],
+  "exit_code": 1,
+  "seconds": 33.06,
+  "source_sha256": {
+    "src/web/backend/wayfinder/application/builds.py": "c017a1dc55d1ac1b1be4e486d2efef0cd72cb678228b1a690c232a0d58e85ef4",
+    "src/web/backend/wayfinder/application/build_worker.py": "f86bda4a91c2872bb97c5497d1facbc9c5c2a1d3744e0e7f593ced9065969cb8",
+    "src/web/backend/wayfinder/infrastructure/build_store.py": "0b5b1ddc4907750b9051da4ba3e57eea25e647f6504f3dacd4dbec99422dfe2a",
+    "src/web/backend/tests/test_build_cancellation_w25.py": "bebe495ba463f01e4b8e3d2ecb37b8ee0af274939d080f3d6045445c367ebf94"
+  }
+}
