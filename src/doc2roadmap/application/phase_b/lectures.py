@@ -1251,23 +1251,31 @@ class LectureUseCase:
                     forced_finish_reason = "TRUNCATED"
                 accepted_bridge_prerequisites: set[str] = set()
                 filtered_bridges = []
-                for bridge in output.get("bridges", []):
+                bridge_raw_indices = []
+                for raw_index, bridge in enumerate(output.get("bridges", [])):
                     prereq_id = str(bridge.get("prereq")) if isinstance(bridge, dict) else None
                     if prereq_id is not None and prereq_id in accepted_bridge_prerequisites:
                         continue
                     filtered_bridges.append(bridge)
+                    bridge_raw_indices.append(raw_index)
                     if prereq_id is not None and _validate_bridge(bridge, context, self.settings) is not None:
                         accepted_bridge_prerequisites.add(prereq_id)
                 output["bridges"] = filtered_bridges
                 repeated_idea_text = _has_repeated_ngram(_lecture_output_text(output))
+
+                def stream_indexed(field):
+                    # retained/dropped indices are positions in the streamed array, before duplicate bridges were removed.
+                    items = output.get(field, [])
+                    return zip(bridge_raw_indices, items) if field == "bridges" else enumerate(items)
+
                 if cut_tail:
                     for field in emitted:
-                        output[field] = [item for index, item in enumerate(output.get(field, []))
+                        output[field] = [item for index, item in stream_indexed(field)
                                          if (field, index) in retained_indices]
                     output['self_check'] = None
                 for field, indices in dropped_indices.items():
                     if indices and not cut_tail:
-                        output[field] = [item for index, item in enumerate(output.get(field, [])) if index not in indices]
+                        output[field] = [item for index, item in stream_indexed(field) if index not in indices]
                 if dropped_k6:
                     forced_finish_reason = "TRUNCATED"
                 usage = getattr(session, "last_usage", {}) if session is not None else getattr(stream, "usage", {})

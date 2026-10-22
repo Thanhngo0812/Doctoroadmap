@@ -2,8 +2,10 @@
 
 **Nguồn chân lý:** [báo cáo bài giảng](../../report/nghien-cuu-bai-giang-theo-khai-niem-2026-10-11.md), mục 6; [spec Pha B](../../doc/pha-b-spec.md),
 "Ghi chú thêm".
-**Ai:** nhân viên chạy và xuất bảng · hai thành viên nhóm chấm · Claude phân tích · **Chi phí mô hình:** trần 5 USD, dry-run trước, chủ dự án
-duyệt · **Chặn bởi:** 04, 12 · **Trạng thái:** ready-for-agent
+**Ai:** agent Sonnet chạy và xuất bảng · hai thành viên nhóm chấm · Claude phân tích · **Chi phí mô hình:** trần 5 USD, dry-run trước, chủ dự án
+duyệt · **Chặn bởi:** 04, 12, 26, 30, 53 (đều đã đạt) · **Trạng thái:** sẵn sàng
+
+**Dữ liệu (cập nhật 2026-10-22):** graph ghim và kho Pha B theo [bảng kế hoạch, đợt đánh giá 20–23](00-ke-hoach.md). Bài giảng là `lecture-2`, validator `lecture-validator-7`.
 
 ## Vì sao
 
@@ -39,7 +41,9 @@ Cần trả lời bốn câu hỏi bằng số và bằng người chấm:
 - tỉ lệ nội dung ngoài sách;
 - chỉnh ngưỡng K4 từ dữ liệu;
 - kiểm "ý có được đoạn đỡ" trên một mẫu, bằng NLI hay LLM giám khảo, đảo thứ tự để giảm thiên lệch;
-- USD và giây chờ ở p50 và p90.
+- USD và giây chờ ở p50 và p90;
+- **thay lượt thật của SA-13:** giây tới `skeleton`, tới ý đầu và tới `final`, ở p50 và p90, đo trên cấu hình LLM nhiệt độ 0. Lượt này phải đo ở chế độ
+  stream, kho rỗng, không có cache.
 
 **Luật quyết định**, viết trước khi đo:
 - tỉ lệ lặp quá 2%, hoặc nhánh nhiệt độ mặc định thắng chấm mù, thì đề xuất đổi nhiệt độ;
