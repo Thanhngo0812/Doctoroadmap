@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="12" time="28.723" timestamp="2026-10-22T09:32:30.893461+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_confirmation_queue_write_wins" time="3.771"><failure message="Failed: confirmation must reject cancellation committed before its queue write">src\web\backend\tests\test_build_cancellation_w25.py:80: in test_cancel_commit_before_confirmation_queue_write_wins
+    pytest.fail('confirmation must reject cancellation committed before its queue write')
+E   Failed: confirmation must reject cancellation committed before its queue write</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_confirmation_commit_before_cancel_keeps_used_quota" time="1.517" /><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph]" time="1.800"><failure message="AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('aadcd512-3bae-4929-a0c8-88c69eba4c10'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('aadcd512-3bae-4929-a0c8-88c69eba4c10'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula]" time="1.842"><failure message="AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media]" time="1.891"><failure message="AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal]" time="1.842"><failure message="AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('fbfd9998-c3c9-4360-8ddd-fcbf64dd5763'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('fbfd9998-c3c9-4360-8ddd-fcbf64dd5763'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph]" time="1.681"><failure message="AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('69c910c9-c4b9-44c1-8f48-6a5ef67c6f80'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('69c910c9-c4b9-44c1-8f48-6a5ef67c6f80'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula]" time="1.695"><failure message="AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media]" time="1.816"><failure message="AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal]" time="1.695"><failure message="AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_terminal_commit_before_cancel_keeps_success_and_sends_one_mail" time="1.901"><failure message="AssertionError: assert (2 == 1)&#10; +  where 2 = len([{'body': 'Xin chào Người học,\n\nVui lòng xác minh địa chỉ email để có thể mời bạn học qua email.\n\nMở liên kết này ...cc6-f165cf8d7909', 'html_body': None, 'subject': 'Bản dựng xong', 'to': '00be5dd04f47479eb40cd8dab7616b68@example.vn'}])">src\web\backend\tests\test_build_cancellation_w25.py:249: in test_terminal_commit_before_cancel_keeps_success_and_sends_one_mail
+    assert len(proof['mail']) == 1 and proof['mail'][0]['subject'] == 'Bản dựng xong'
+E   AssertionError: assert (2 == 1)
+E    +  where 2 = len([{'body': 'Xin chào Người học,\n\nVui lòng xác minh địa chỉ email để có thể mời bạn học qua email.\n\nMở liên kết này ...cc6-f165cf8d7909', 'html_body': None, 'subject': 'Bản dựng xong', 'to': '00be5dd04f47479eb40cd8dab7616b68@example.vn'}])</failure></testcase><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_cancelled_new_lease_cannot_be_published_by_late_old_receipt" time="1.720"><failure message="AssertionError: assert ('succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded)">src\web\backend\tests\test_build_cancellation_w25.py:273: in test_cancelled_new_lease_cannot_be_published_by_late_old_receipt
+    assert proof['build']['status'] == 'cancelled' and not proof['build']['usage_complete']
+E   AssertionError: assert ('succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded)</failure></testcase></testsuite></testsuites>

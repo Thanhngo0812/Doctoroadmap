@@ -21,6 +21,14 @@ hai test cho kết quả sai khi máy nặng tải:
 
    Cả hai chờ luồng bằng mốc thời gian 0,5–2 giây trên kho JSON. Chúng làm cổng SA-53 lần đầu đỏ giả (`KeyError: 'a'`, lỗi trong `Thread` bị nuốt), và
    làm hai mutation không liên quan trông như bị bắt. Chạy riêng thì đạt 20/20 lần.
+4. **Các khe thiếu test của SA-52 và SA-53**, do người soát độc lập tìm thấy
+   ([soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md)). Mỗi khe dưới đây là một mutation sống sót:
+   - `_term_in` trong `application/phase_b/quiz.py` bỏ ranh giới từ;
+   - nhiễu chỉ lộ trong câu qua alias: `distractor_terms.get(value, [value])` đổi thành `[value]`, hoặc bỏ ghi `distractor_terms` ở nhánh nhiễu dự
+     phòng lấy từ module;
+   - bỏ ký tự `^` khỏi `CLOZE_NOTATION`;
+   - SA-53, `application/phase_b/lectures.py`: chưa có test khoá kịch bản câu nối đầu của tiên quyết a bị K6 loại lúc stream, còn câu nối sau của a được
+     phát. Đầu ra hiện đúng nhờ `_merge_emitted`, nhưng không có test giữ.
 
 ## Cần làm
 
@@ -31,7 +39,13 @@ hai test cho kết quả sai khi máy nặng tải:
 - **Ổn định hai test chập chờn:** thay các mốc `join(timeout=...)` hay `wait(timeout=...)` dùng để đoán thứ tự bằng sự kiện đồng bộ rõ ràng. Lỗi xảy ra
   bên trong luồng phải được bắt và nêu ra trong assertion, không để thành `KeyError` mù. Giữ nguyên điều test kiểm: giữ chỗ ngân sách dùng chung, một
   lượt bị chặn khi hết trần.
-- **Không sửa mã sản phẩm.** Nếu thấy test chập chờn là do lỗi thật của mã, dừng lại và ghi vào mục "Câu hỏi" của báo cáo.
+- **Test cho các khe của SA-52:**
+  - nhiễu "Tam" không bị coi là có trong câu chứa "Tam giác";
+  - nhiễu chỉ xuất hiện trong câu qua alias của nó thì bị loại, ở cả nhánh nhiễu thường lẫn nhánh dự phòng;
+  - nhiễu chứa `^` bị bỏ.
+- **Test cho khe của SA-53:** kịch bản stream câu nối `[a₁ bị K6 loại, a₂ hợp lệ]`. `a₂` đã phát phải có trong final, trong cache và trong
+  `prerequisites[].bridge`; không có sự kiện nào rút lại `a₂`.
+- **Không sửa mã sản phẩm.** Nếu thấy test chập chờn hay một khe thiếu test là do lỗi thật của mã, dừng lại và ghi vào mục "Câu hỏi" của báo cáo.
 
 ## Tiêu chí nghiệm thu
 
@@ -39,6 +53,8 @@ hai test cho kết quả sai khi máy nặng tải:
   test tên đỏ. Ghi kết quả mutation vào báo cáo.
 - [ ] Hai test đã ổn định chạy 30 lần liên tiếp, trong lúc một tiến trình khác chạy song song làm máy nặng tải: 0 lần đỏ. Ghi cách tạo tải.
 - [ ] Hai test đó vẫn bắt được mutation gốc của SA-48: `DailySpendGuard.reserve` và `release` thành no-op thì đỏ.
+- [ ] Mỗi mutation sống sót trong mục 4 giờ làm ít nhất một test mới đỏ. Ghi bảng mutation vào báo cáo. Test của SA-53 phải đỏ khi bỏ
+  `_merge_emitted` ở nhánh final; nếu không đỏ được thì giải thích vì sao.
 - [ ] Test Pha B và kiến trúc xanh; cổng toàn repo qua runner xanh.
 
 ## Ngoài vé

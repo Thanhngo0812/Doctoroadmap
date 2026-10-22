@@ -1,0 +1,10 @@
+W14 browser: worker pause at reading
+W14 browser: worker pause at concepts
+W14 browser: success worker completion
+W14 browser: cancel worker pause
+W14 browser: cancel worker completion
+W14 browser: retryable fake worker result
+Error: Timed out waiting for retry success worker completion; last worker state is included in failure diagnostics; worker={"running":true,"pausedStage":null,"runs":4,"lastException":null,"lastJobStatus":null,"mode":"success"}
+    at waitFor (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-w14-final-20261022\scripts\w14_web_check.cjs:531:9)
+    at async waitForWorker (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-w14-final-20261022\scripts\w14_web_check.cjs:154:5)
+    at async main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-w14-final-20261022\scripts\w14_web_check.cjs:384:5)

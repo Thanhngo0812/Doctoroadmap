@@ -1,0 +1,88 @@
+{
+  "sourceHead": "78fb774df4e4960cff80e3257d98af79f08aad17",
+  "workerNeverModified": true,
+  "scratchHtmlRestored": true,
+  "command": "node scripts/verify_prototype_flows.cjs",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-w24-review-78fb774",
+  "instrumentation": "Only external HTTP(S) is fulfilled locally with empty200 CSS via Playwright contexts; no external calls, all assertions unchanged",
+  "results": [
+    {
+      "label": "baseline",
+      "nativeExitCode": 0,
+      "audit": {
+        "timestamp": "2026-10-22T11:22:24.330Z",
+        "totalFlows": 4,
+        "passedCount": 4,
+        "allPassed": true,
+        "flows": [
+          {
+            "flow": "Flow 1: Register -> Courses -> Lecture",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow1_auth.png",
+            "notes": "Strict two-way open/close accordion toggle verified."
+          },
+          {
+            "flow": "Flow 2: Share -> Join Course",
+            "stepsChecked": 4,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow2_learning.png",
+            "notes": "Clipboard content strictly verified: \"https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026\""
+          },
+          {
+            "flow": "Flow 3: Upload -> Config -> 4-Step Build",
+            "stepsChecked": 6,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow3_upload.png",
+            "notes": "Both OS prefers-reduced-motion and manual toggle verified: zero failed requests, rendered width > 0, buffer frozen over time."
+          },
+          {
+            "flow": "Flow 4: Quiz -> Submit -> Result & Citation",
+            "stepsChecked": 6,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow4_quiz.png",
+            "notes": "Citation content proven: Harrison 21st Ed, Trang 1892, with verified view interaction."
+          }
+        ]
+      }
+    },
+    {
+      "label": "os-css-path-broken",
+      "nativeExitCode": 1,
+      "audit": {
+        "timestamp": "2026-10-22T11:22:31.929Z",
+        "totalFlows": 4,
+        "passedCount": 3,
+        "allPassed": false,
+        "flows": [
+          {
+            "flow": "Flow 1: Register -> Courses -> Lecture",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow1_auth.png",
+            "notes": "Strict two-way open/close accordion toggle verified."
+          },
+          {
+            "flow": "Flow 2: Share -> Join Course",
+            "stepsChecked": 4,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow2_learning.png",
+            "notes": "Clipboard content strictly verified: \"https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026\""
+          },
+          {
+            "flow": "Flow 3: Upload -> Config -> 4-Step Build",
+            "passed": false,
+            "error": "Flow 3 - Step 5b: OS reduced-motion triggered failed asset requests: file:///C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w24-review-78fb774/design/assets/spinner_frame0_static.png"
+          },
+          {
+            "flow": "Flow 4: Quiz -> Submit -> Result & Citation",
+            "stepsChecked": 6,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow4_quiz.png",
+            "notes": "Citation content proven: Harrison 21st Ed, Trang 1892, with verified view interaction."
+          }
+        ]
+      }
+    }
+  ]
+}

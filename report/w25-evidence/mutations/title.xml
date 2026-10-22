@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.515" timestamp="2026-10-22T09:36:10.923684+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_name_is_saved_at_confirmation_before_any_indexing" time="2.094"><failure message="AssertionError: assert 'book' == 'Đại số do tôi đặt'&#10;  &#10;  - Đại số do tôi đặt&#10;  + book">src\web\backend\tests\test_builds_w14.py:136: in test_name_is_saved_at_confirmation_before_any_indexing
+    assert sql(b,'SELECT title FROM course WHERE id=:id',{'id':item['build']['course_id']})[0]['title']=='Đại số do tôi đặt'
+E   AssertionError: assert 'book' == 'Đại số do tôi đặt'
+E
+E     - Đại số do tôi đặt
+E     + book</failure></testcase></testsuite></testsuites>

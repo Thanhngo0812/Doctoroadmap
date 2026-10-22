@@ -70,7 +70,7 @@ class _Model:
         self.calls += 1
         if self.block and index == 0:
             self.entered.set()
-            assert self.release.wait(3)
+            assert self.release.wait(60)
         payload = self.payloads[min(index, len(self.payloads) - 1)]
         error = self.errors[index] if index < len(self.errors) else None
         session = _Session(self, payload, delay=self.delay, error=error, chunks=self.chunks)

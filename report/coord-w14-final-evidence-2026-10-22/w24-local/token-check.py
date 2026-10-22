@@ -1,0 +1,14 @@
+﻿from pathlib import Path
+import ast,json,re,os,importlib.util,subprocess
+project=Path.cwd();source=project/'tmp/w24-figma-evidence';scratch=project/'tmp/coord-w24-review-78fb774';raw_path=scratch/'design/tokens/figma_variables_raw_export.json';original=raw_path.read_bytes();raw=json.loads(original.decode('utf-8'))
+spec=importlib.util.spec_from_file_location('token_source',source/'scripts/verify_wcag_contrast.py');helper=importlib.util.module_from_spec(spec);spec.loader.exec_module(helper);light,dark=helper.parse_css_tokens((source/'design/tokens/tokens.css').read_text(encoding='utf-8'));effective={'Light':light,'Dark':dict(light,**dark)};comparisons=[]
+for v in raw['variables']:
+ for mode in ['Light','Dark']:
+  value=v['valuesByMode'][mode];expected=str(value)+'px' if v['type']=='FLOAT' else str(value);actual=effective[mode].get(v['cssProperty']);comparisons.append({'name':v['name'],'mode':mode,'cssProperty':v['cssProperty'],'rawValue':value,'cssValue':actual,'matches':actual is not None and helper.normalize_val(actual)==helper.normalize_val(expected)})
+mutations=[('brand-tint-dark','color/brand-tint','Dark','rgba(41, 169, 255, 0.99)'),('spacing4-dark','spacing/space-4','Dark',999),('radius-lg-dark','radius/radius-lg','Dark',999),('motion-base-light','motion/motion-base','Light','999ms')];results=[]
+try:
+ for label,name,mode,value in mutations:
+  data=json.loads(original.decode('utf-8'));next(v for v in data['variables'] if v['name']==name)['valuesByMode'][mode]=value;raw_path.write_text(json.dumps(data),encoding='utf-8')
+  command=[str(project/'.venv/Scripts/python.exe'),'-m','pytest','tests/unit/presentation/test_tokens_and_wcag.py::test_figma_variables_raw_export_valid','-q','-o','addopts=','-p','no:cacheprovider','--junitxml='+label+'-mutation.xml'];proc=subprocess.run(command,cwd=scratch,capture_output=True,text=True,encoding='utf-8',errors='replace',timeout=60);(scratch/(label+'-mutation.log')).write_text(proc.stdout+'\n'+proc.stderr,encoding='utf-8');results.append({'label':label,'nativeExitCode':proc.returncode,'command':command,'mutation':{'name':name,'mode':mode,'value':value}});print(label,proc.returncode,flush=True)
+finally:raw_path.write_bytes(original)
+report_raw=(source/'report/w24-evidence/figma_variables_raw_export.json').read_bytes();result={'sourceHead':'78fb774df4e4960cff80e3257d98af79f08aad17','workerNeverModified':True,'scratchRawRestored':raw_path.read_bytes()==original,'comparisons':comparisons,'comparisonCount':len(comparisons),'mismatchCount':sum(not c['matches'] for c in comparisons),'mutationRuns':results,'evidenceRawMatchesDesignByteForByte':report_raw==(source/'design/tokens/figma_variables_raw_export.json').read_bytes()};(scratch/'token-css-observations.json').write_text(json.dumps(result,indent=2,ensure_ascii=False),encoding='utf-8');print('parity',len(comparisons)-result['mismatchCount'],len(comparisons))

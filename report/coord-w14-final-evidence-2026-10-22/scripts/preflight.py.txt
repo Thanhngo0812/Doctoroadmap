@@ -1,0 +1,61 @@
+"""Check source restoration, fixture hashes, scope and accidental credential exposure."""
+import hashlib
+import json
+from pathlib import Path
+import re
+import subprocess
+from dotenv import dotenv_values
+
+ROOT = Path(__file__).absolute().parents[2]
+WORK = ROOT / 'tmp/coord-w14-final-20261022'
+OUT = Path(__file__).absolute().parent
+
+
+def git(*args, cwd=WORK):
+    return subprocess.check_output(['git', *args], cwd=cwd, text=True).strip()
+
+
+subprocess.run(['git', 'diff', '--exit-code', '--quiet', '--', 'src', 'scripts', 'tests', 'design'], cwd=WORK, check=True)
+subprocess.run(['git', 'diff', '--exit-code', '--quiet', '4e5cd15', 'HEAD', '--', 'src', 'scripts', 'design'], cwd=WORK, check=True)
+test_delta = git('diff', '--name-only', '4e5cd15', 'HEAD', '--', 'tests').splitlines()
+assert set(test_delta) == {
+    'tests/unit/application/test_phase_b_budget_sa48.py',
+    'tests/unit/application/test_phase_b_lecture_b2.py',
+    'tests/unit/application/test_phase_b_sa54_test_gaps.py',
+}
+ledger_dir = WORK / 'report/w14-react-evidence/final-main-2026-10-22'
+ledgers = {name: json.loads((ledger_dir / name / 'results.json').read_text()) for name in ['ui-mutations', 'dto-mutations']}
+for rows in ledgers.values():
+    for row in rows:
+        assert row['native_exit_code'] == 1 and row['assertion_failures'] > 0 and row['errors'] == 0
+        assert row['original_sha256'] == row['restored_sha256']
+paths = git('ls-tree', '-r', '--name-only', 'HEAD', 'report/w14-react-evidence').splitlines()
+assert not any('/basetemp' in path for path in paths)
+fixture = json.loads((WORK / 'report/w06-evidence/fixture-copy.json').read_text())
+assert fixture['verified_files'] == 3144 and not fixture['links_used']
+assert not fixture['learner_stores_copied']
+secrets = {}
+for env in [ROOT / '.env', ROOT / 'src/web/.env']:
+    if env.is_file():
+        for key, value in dotenv_values(env).items():
+            if value and len(value) >= 16 and re.search('SECRET|PASSWORD|TOKEN|API_KEY|CLOUDINARY_URL', key):
+                secrets[key] = value.encode()
+changed = git('diff', '--name-only', '--diff-filter=ACMR', '207c6c0...HEAD').splitlines()
+exposed = []
+for relative in changed:
+    data = (WORK / relative).read_bytes()
+    for key, value in secrets.items():
+        if value in data:
+            exposed.append({'path': relative, 'key_name': key})
+assert not exposed, exposed
+result = {'integration_commit': git('rev-parse', 'HEAD'), 'main_at_preflight': git('rev-parse', 'main'),
+          'runtime_source_equals_reviewed_worker': True, 'source_restored_without_diff': True,
+          'approved_upstream_test_delta': test_delta, 'upstream_test_merge': '7d195db',
+          'browser_source_commit': '9f3c0634720b6a5c83324c35a94fe22e3efc6422',
+          'browser_runtime_source_equals_final_integration': True,
+          'ui_mutations_caught': len(ledgers['ui-mutations']), 'dto_mutations_caught': len(ledgers['dto-mutations']),
+          'source_restoration_sha256_verified': True, 'tracked_basetemp_files': 0,
+          'fixture_files_verified': 3144, 'links_used': False,
+          'changed_files_scanned': len(changed), 'credential_matches': len(exposed)}
+(OUT / 'preflight.json').write_text(json.dumps(result, indent=2) + '\n', encoding='utf-8')
+print(json.dumps(result))

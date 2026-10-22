@@ -1,0 +1,16 @@
+"""Run six W-25 guards; redirect only generated mutation evidence."""
+from pathlib import Path
+import sys
+
+root=Path.cwd()
+sys.path.insert(0,str(root/'src/web/backend/tests'))
+source=root/'src/web/backend/tests/w25_mutations.py'
+code=source.read_text(encoding='utf-8')
+old="output = ROOT / 'report/w25-evidence/mutations'"
+output=Path(__file__).absolute().parent/'evidence/backend/mutations'
+assert code.count(old)==1
+code=code.replace(old,'output = __import__("pathlib").Path('+repr(str(output))+')')
+namespace={'__file__':str(source),'__name__':'coordinator_guard_check'}
+exec(compile(code,str(source),'exec'),namespace)
+sys.argv=[str(source),'confirm-cancel','terminal-cancel','media-cancel','receipt-once','cancel-mail','terminal-row-lock']
+namespace['main']()

@@ -1,0 +1,28 @@
+"""Independently verify harness database and listener have been removed."""
+import json
+from pathlib import Path
+import re
+import socket
+from dotenv import dotenv_values
+from sqlalchemy import create_engine, text
+
+ROOT = Path(__file__).absolute().parents[2]
+RUN = Path(__file__).absolute().parent
+summary = json.loads((ROOT / 'tmp/coord-w14-final-20261022/report/w14-react-evidence/final-main-2026-10-22-run3/runtime.json').read_text())
+database_name = summary['databaseName']
+assert re.fullmatch(r'wayfinder_w14_react_[0-9a-f]{32}', database_name)
+values = dotenv_values(ROOT / 'src/web/.env')
+engine = create_engine(values['WAYFINDER_TEST_DATABASE_URL'])
+try:
+    with engine.connect() as connection:
+        remaining = connection.scalar(text('SELECT count(*) FROM pg_database WHERE datname=:name'), {'name': database_name})
+finally:
+    engine.dispose()
+with socket.socket() as probe:
+    listening = probe.connect_ex(('127.0.0.1', 8014)) == 0
+assert remaining == 0 and not listening
+assert summary['browserExitCode'] == 0 and summary['temporaryDatabaseRemoved']
+result = {'databaseName': database_name, 'matching_pg_databases': remaining, 'listener_8014_running': listening,
+          'browser_exit': 0, 'temporary_database_removed_independently_verified': True, 'provider_cost_usd': 0}
+(RUN / 'cleanup-check.json').write_text(json.dumps(result, indent=2) + '\n')
+print(json.dumps(result))

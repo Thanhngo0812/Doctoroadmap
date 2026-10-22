@@ -75,10 +75,10 @@ Bốn luật:
 | [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
 | [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | đạt qua SA-25 và SA-30 (tài liệu sau hậu kiểm) |
 | [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; đã giao agentic (chủ dự án báo 2026-10-21), chờ trả gói để kiểm |
-| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | ready-for-agent |
-| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **53** | trần 5 USD | chờ SA-53; bằng chứng SA-43 đã xong ở SA-51 |
-| [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27**, **52** | khoảng 1,7 USD | chờ SA-52 (quiz lộ trình đạt ở SA-46) |
-| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30**, **52** | lượt 1 trần khoảng 8 USD | chờ SA-52 và gói 19a agentic trả về; tiến độ, trần ngày đã đạt |
+| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22 (162 module) |
+| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **53** | trần 5 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22, gồm số giây của SA-13 |
+| [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27**, **52** | khoảng 1,7 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22 |
+| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30**, **52**, **56** | lượt 1 trần khoảng 8 USD | chờ gói 19a agentic và SA-56; vé đã cập nhật theo graph ghim 2026-10-22 |
 | [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | đạt |
 | [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | đạt, Claude soát 2026-10-18 [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); trình bày tài liệu → 30 |
 | [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); K6 dò sai, cache bài hỏng → 30 |
@@ -92,11 +92,11 @@ Bốn luật:
 | [34](34-tien-do-hoc.md) | Tiến độ học theo khái niệm | 31, **47** | 0 | đạt sau SA-47, Claude [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
 | [35](35-thu-vien-theo-pham-vi.md) | Thư viện theo phạm vi; tạo bằng nút | 32 | 0 | đạt, SA-45 [soát](../../report/soat-pha-b-31-36-42-2026-10-18.md) |
 | [36](36-nhac-nen-theo-tien-do.md) | Trợ lý nhắc khái niệm nền theo tiến độ | 33, 34, **47** | 0 | đạt; nền tiến độ đã sửa ở SA-47 [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
-| [37](37-quiz-ca-lo-trinh-tai-lieu-nhieu-module.md) | Quiz cả lộ trình và tài liệu nhiều module | 34, 35, **46**, **50** | 0 | phạm vi đạt sau SA-46; câu điền khuyết chờ **52** [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md); tài liệu đạt |
+| [37](37-quiz-ca-lo-trinh-tai-lieu-nhieu-module.md) | Quiz cả lộ trình và tài liệu nhiều module | 34, 35, **46**, **50** | 0 | đạt: phạm vi sau SA-46, câu điền khuyết sau SA-52 (`66cd439`), tài liệu đạt [soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md) |
 | [38](38-lecture-2-hong-han-cache-thoi-gian.md) | `lecture-2`: bài hỏng hẳn, bản ghi hỏng, cache, thời gian | 30 | 0 | đạt, SA-45 [soát](../../report/soat-pha-b-30-38-43-2026-10-18.md) |
 | [39](39-stream-sau-cong.md) | Bài giảng stream sau cổng | 38 | 0 | đạt có ghi chú, SA-45; giữ S3, số đo nhỏ chuyển SA-51 [soát](../../report/soat-pha-b-30-38-43-2026-10-18.md) |
-| [40](40-goi-lai-tien-quyet-cau-noi-tiep-theo.md) | Gợi lại tiên quyết, câu nối, khối "Tiếp theo" | 39, **49** | 0 | chưa đạt: câu nối lệch chỉ số ở bản final → **53** [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
-| [41](41-nhan-theo-nguoi-hoc.md) | Nhãn theo người học trong bài giảng | 34, 40, **47**, **49** | 0 | đạt phần nhãn và tiến độ (SA-47); chờ câu nối **53** [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
+| [40](40-goi-lai-tien-quyet-cau-noi-tiep-theo.md) | Gợi lại tiên quyết, câu nối, khối "Tiếp theo" | 39, **49** | 0 | đạt qua SA-53 (`62dad5b`) [soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md) |
+| [41](41-nhan-theo-nguoi-hoc.md) | Nhãn theo người học trong bài giảng | 34, 40, **47**, **49** | 0 | đạt: nhãn và tiến độ (SA-47), câu nối qua SA-53 (`62dad5b`) [soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md) |
 | [42](42-tran-chi-theo-ngay.md) | Trần chi theo ngày: người học và hệ thống | 32, 38, **48** | 0 | đạt sau SA-48 ([soát SA-48](../../report/soat-pha-b-sa48-2026-10-19.md), lỗi ranh giới ngày đã sửa trong vé) |
 | [43](43-luot-that-lecture-2.md) | Lượt thật `lecture-2` | 40, **51** | thật 0,06523425 USD / trần duyệt 0,50 USD | đạt có ghi chú sau SA-51: so nhiệt độ không kết luận được, giữ S3 và nhiệt độ sửa 0 [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
 | [44](44-trang-xem-thu-hai-trang.md) | Trang xem thử hai trang | 33, 35, 36, 37, 41, 42 | 0 khi phát lại | đạt theo chủ dự án duyệt 2026-10-18; miễn 7 thao tác/ảnh, chưa thử tay; 11 test HTTP đạt |
@@ -104,13 +104,15 @@ Bốn luật:
 | [46](46-quiz-roadmap-chuan-hoa-pham-vi-va-tran.md) | Quiz lộ trình: chuỗi phạm vi từ trợ lý, lấy mẫu và trần cấu hình | — | 0 | đạt, Claude soát độc lập [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
 | [47](47-tien-do-giu-lua-chon-khi-quiz-dong-thoi.md) | Tiến độ: giữ lựa chọn learner khi quiz hoàn tất đồng thời | — | 0 | đạt, Claude soát độc lập; đường PostgreSQL có test W-07 [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
 | [48](48-tran-ngay-giu-cho-dong-thoi.md) | Trần ngày: tính lượt đang chạy, giữ chỗ nguyên tử | — | 0 | đạt, [soát độc lập](../../report/soat-pha-b-sa48-2026-10-19.md); lỗi ranh giới ngày đã sửa trong vé |
-| [49](49-bai-giang-mot-cau-noi-moi-tien-quyet.md) | Bài giảng: một câu nối cho mỗi tiên quyết, stream/final nhất quán | — | 0 | chưa đạt → **53**: câu nối bị K6 loại lọt vào final do lệch chỉ số [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
-| [50](50-quiz-dien-khuyet-kiem-luat-va-cau-thieu.md) | Quiz điền khuyết: Q3/Q6 và câu dẫn thiếu điều kiện | 46 | 0 | chưa đạt → **52**: Q6, câu dẫn thiếu, nhiễu nằm trong câu, test cache [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
+| [49](49-bai-giang-mot-cau-noi-moi-tien-quyet.md) | Bài giảng: một câu nối cho mỗi tiên quyết, stream/final nhất quán | — | 0 | đạt qua SA-53 (`62dad5b`) [soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md) |
+| [50](50-quiz-dien-khuyet-kiem-luat-va-cau-thieu.md) | Quiz điền khuyết: Q3/Q6 và câu dẫn thiếu điều kiện | 46 | 0 | đạt qua SA-52 (`66cd439`) [soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md) |
 | [51](51-do-lai-so-sanh-retry-lecture-2.md) | Hoàn thiện so nhiệt độ/thời gian SA-43, matched subset và phần thiếu | 49, 48 | 0 phát lại; không gọi thêm API | đạt, Claude kiểm lại số độc lập; giữ S3 và nhiệt độ sửa 0 [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
-| [52](52-cau-dien-khuyet-nhieu-va-cau-dan.md) | Câu điền khuyết: nhiễu không nằm trong câu, không khoét giữa thuật ngữ khác, nhiễu không là ký hiệu, bỏ câu dẫn kết bằng dấu hai chấm | — | 0 | sẵn sàng; Claude cài |
-| [53](53-cau-noi-final-giu-chi-so-va-test-cache.md) | Bài giảng: lọc câu nối ở bản final giữ đúng chỉ số; test lớp lọc trước K6 và test cache theo hằng số thật | — | 0 | sẵn sàng; Claude cài |
-| [54](54-test-k5-tu-vung-ten-va-test-chap-chon.md) | Test cho K5 và luật từ vựng của tên module; ổn định hai test kho JSON chập chờn | — | 0 | sẵn sàng; agent Sonnet cài, Claude nghiệm thu |
-| [55](55-luot-that-tro-ly-gop-08-10.md) | Lượt thật trợ lý gộp cho SA-08 và SA-10: 32 lượt hỏi trên bốn cuốn, ghi phản hồi để phát lại; số đo của SA-13 lấy từ lượt sinh bài giảng SA-21 | — | dưới 0,35 USD, trần 0,50 USD | sẵn sàng; dry-run rồi chờ chủ dự án duyệt |
+| [52](52-cau-dien-khuyet-nhieu-va-cau-dan.md) | Câu điền khuyết: nhiễu không nằm trong câu, không khoét giữa thuật ngữ khác, nhiễu không là ký hiệu, bỏ câu dẫn kết bằng dấu hai chấm | — | 0 | đạt có ghi chú · đã ghép `66cd439` (cổng 2.170 đạt, 1 bỏ qua) [soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md); khe thiếu test → **54** |
+| [53](53-cau-noi-final-giu-chi-so-va-test-cache.md) | Bài giảng: lọc câu nối ở bản final giữ đúng chỉ số; test lớp lọc trước K6 và test cache theo hằng số thật | — | 0 | đạt có ghi chú · đã ghép `62dad5b` (cổng 2.174 đạt, 1 bỏ qua) [soát 52–53](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md); khe thiếu test → **54** |
+| [54](54-test-k5-tu-vung-ten-va-test-chap-chon.md) | Test cho K5 và luật từ vựng của tên module; ổn định hai test kho JSON chập chờn | — | 0 | đạt có ghi chú · đã ghép `7d195db` (cổng 2.183 đạt, 1 bỏ qua; React 85/85): mọi mutation bị bắt; chập chờn còn lại dưới tải nặng do `os.replace` của kho JSON → **57** |
+| [55](55-luot-that-tro-ly-gop-08-10.md) | Lượt thật trợ lý gộp cho SA-08, SA-10 và SA-56: 36 lượt hỏi trên bốn cuốn, ghi phản hồi để phát lại; số đo của SA-13 lấy từ lượt sinh bài giảng SA-21 | 56 | dưới 0,40 USD, trần 0,50 USD | sẵn sàng sau 56; dry-run rồi chờ chủ dự án duyệt |
+| [56](56-tro-ly-focus-node-id.md) | Trợ lý biết khái niệm đang mở: trường tuỳ chọn `focus_node_id` trong `answer-2` (chủ dự án duyệt 2026-10-22); phần web gửi kèm ở W-09 | — | 0 | sẵn sàng; agent Sonnet cài, Claude nghiệm thu |
+| [57](57-kho-json-pha-b-thu-lai-os-replace.md) | Kho JSON Pha B: thử lại `os.replace` khi Windows báo `PermissionError` (nguồn chập chờn của SA-54 và `lecture_sa30`) | 54 | 0 | sẵn sàng (SA-54 đã ghép); agent Sonnet cài |
 
 **Vá sau SA-45, 2026-10-19:** các lỗi 46–50 đã ghép và kiểm, SA-51 sửa phương pháp tổng hợp và phát lại đủ 12 mẫu, không dùng phê duyệt chi cũ cho lượt mới. Xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Các phán xét SA-45 ở dòng 34–43 phía trên là lịch sử trước vá; lỗi tương ứng đã xử lý ở 46–50, giới hạn bằng chứng so nhiệt độ vẫn được giữ tại 51.
 
@@ -141,6 +143,32 @@ Ban đầu, vé 01–05 và 19 không có blocker và chạy song song được.
   - **nhánh bài giảng:** 38 → 39 → 40 → 41 và 43.
 - Hai nhánh gặp nhau ở 42 và 44.
 - Đánh giá 20–23 chạy sau, trên bản `lecture-2`. Vé 21 thêm tiêu chí câu nối và phần gợi lại.
+
+**Đợt đánh giá 20–23 (cập nhật 2026-10-22, Claude).** Các vé 20–23 viết từ 2026-10-15, trên graph cũ. Từ nay áp luật chung sau:
+- **Graph ghim:**
+
+  | cuốn | doc-1 | nhap-mon-ml | naive-bayes | doc-6 | xstk-ch3-1 | doc-4 | tổng |
+  |---|---|---|---|---|---|---|---|
+  | graph | v8 | v50 | v49 | v29 | v68 | v27 | |
+  | module | 35 | 15 | 5 | 2 | 14 | 91 | 162 |
+  | khái niệm | 223 | 75 | 33 | 11 | 82 | 495 | 919 |
+
+  Đếm ngày 2026-10-22. Mỗi báo cáo đánh giá ghi lại graph ghim và `upstream_chain` của từng cuốn. Số nào trong vé tính trên graph cũ, ví dụ "142
+  module" hay "51 module loại E", phải đếm lại trên graph ghim.
+- **Kho Pha B:** mỗi lượt chạy dùng một kho JSON riêng trong `tmp/` của worktree. doc-1 dùng **bản chép** của
+  `artifacts/phase_b/doc-1-rebuild-20261020.json`. Không chạy trên `artifacts/phase_b/live.json`, vì kho này có cache của tập giữ lại. Cần lấy tên module
+  đã có thì đọc qua use case theo khoá của sáu cuốn phát triển; không liệt kê, không in, không chép phần `cache` của `live.json`.
+- **Người làm:** agent Sonnet dựng bộ chạy, dry-run, chạy thật sau khi chủ dự án duyệt, và xuất bảng chấm mù cùng tệp khoá để riêng. Claude nghiệm thu
+  và phân tích. Người chấm là thành viên nhóm do chủ dự án sắp xếp.
+- **Thứ tự:**
+  - 20, 21, 22 chạy được ngay;
+  - 23 chờ gói 19a do agentic trả về, và chờ SA-56 (`focus_node_id` đổi đầu vào của trợ lý), để đánh giá đúng bản cuối.
+- **Tiền:** theo vé, 20 dưới 1 USD, 21 trần 5 USD, 22 khoảng 1,7 USD, 23 lượt 1 trần khoảng 8 USD; tổng khoảng 15,7 USD. **Chủ dự án duyệt
+  2026-10-22** ("tiền duyệt"). Mỗi vé vẫn dry-run trước; dự toán trong trần của vé thì chạy luôn, vượt trần thì dừng và hỏi. Lượt 2 của 23
+  vẫn xin duyệt riêng như vé ghi.
+- **Người chấm:** chủ dự án báo đã có (2026-10-22). Hướng dẫn chấm ở [`doc/huong-dan-cham/`](../../doc/huong-dan-cham/00-chung.md), một tệp
+  luật chung và một tệp mỗi đợt (19a, 20, 21, 22, 23), khoảng 29 giờ mỗi người. Bộ xuất phiếu của mỗi vé phải theo đúng các cột trong hướng dẫn.
+- **SA-13:** số giây tới `skeleton`, tới ý đầu và tới `final` (p50, p90) lấy từ lượt sinh bài giảng của 21.
 
 Không kịp lịch thì báo để dời. Không cắt luật kiểm để kịp.
 

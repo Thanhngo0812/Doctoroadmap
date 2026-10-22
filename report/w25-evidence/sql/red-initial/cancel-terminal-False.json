@@ -1,0 +1,233 @@
+{
+  "kind": "independent PostgreSQL SQL; synthetic usage; zero provider calls",
+  "build": {
+    "id": "f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc",
+    "doc_id": "u-c5f672043d33f4b314b9",
+    "upload_id": "e7fc36ba-e121-4897-afbd-f6082cb23579",
+    "requested_by": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+    "status": "succeeded",
+    "step": "learning_prep",
+    "pipeline_version": "web-fake-v1",
+    "counts_quota": true,
+    "cancel_requested": true,
+    "claim_count": 1,
+    "claimed_by": "worker-ba09802285764d6ebedcdaae01d6d7f6",
+    "lease_id": "3d32850c-3897-4011-ae96-291a4da1cef1",
+    "heartbeat_at": "2026-01-01 00:00:00+00:00",
+    "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+    "queued_at": "2026-01-01 00:00:00+00:00",
+    "started_at": "2026-01-01 00:00:00+00:00",
+    "finished_at": "2026-01-01 00:00:00+00:00",
+    "created_at": "2026-01-01 00:00:00+00:00",
+    "error_code": null,
+    "error_message": null,
+    "retryable": false,
+    "spent_usd": "0.003000",
+    "model_calls": 3,
+    "input_tokens": 300,
+    "output_tokens": 60,
+    "usage_complete": false,
+    "elapsed_seconds": 3.5,
+    "graph_version": 8,
+    "module_count": 1
+  },
+  "courses": [
+    {
+      "status": "ready",
+      "title": "book",
+      "published_graph_version": 8,
+      "module_count": 1
+    }
+  ],
+  "uploads": [
+    {
+      "confirmed_at": "2026-01-01 00:00:00+00:00"
+    }
+  ],
+  "attempts": [
+    {
+      "build_id": "f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc",
+      "lease_id": "3d32850c-3897-4011-ae96-291a4da1cef1",
+      "claim_count": 1,
+      "spent_usd": "0.003000",
+      "model_calls": 3,
+      "input_tokens": 300,
+      "output_tokens": 60,
+      "usage_complete": false,
+      "result": {
+        "error": null,
+        "doc_id": "u-c5f672043d33f4b314b9",
+        "status": "succeeded",
+        "spent_usd": 0.003,
+        "model_calls": 3,
+        "input_tokens": 300,
+        "step_details": {},
+        "graph_version": 8,
+        "output_tokens": 60,
+        "usage_complete": false,
+        "completed_steps": [
+          "doc_reading",
+          "concepts",
+          "graph",
+          "learning_prep"
+        ],
+        "elapsed_seconds": 3.5,
+        "pipeline_version": "web-fake-v1"
+      }
+    }
+  ],
+  "ledger": [
+    {
+      "id": 29,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-c5f672043d33f4b314b9",
+      "context_hash": null,
+      "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "concepts",
+        "doc_id": "u-c5f672043d33f4b314b9",
+        "purpose": "build",
+        "user_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "build_id": "f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc",
+        "cost_usd": 0.001,
+        "lease_id": "3d32850c-3897-4011-ae96-291a4da1cef1",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": false,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 30,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-c5f672043d33f4b314b9",
+      "context_hash": null,
+      "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "graph",
+        "doc_id": "u-c5f672043d33f4b314b9",
+        "purpose": "build",
+        "user_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "build_id": "f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc",
+        "cost_usd": 0.001,
+        "lease_id": "3d32850c-3897-4011-ae96-291a4da1cef1",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": false,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 31,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-c5f672043d33f4b314b9",
+      "context_hash": null,
+      "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "learning_prep",
+        "doc_id": "u-c5f672043d33f4b314b9",
+        "purpose": "build",
+        "user_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "build_id": "f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc",
+        "cost_usd": 0.001,
+        "lease_id": "3d32850c-3897-4011-ae96-291a4da1cef1",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": false,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 32,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-c5f672043d33f4b314b9",
+      "context_hash": null,
+      "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+      "cost_usd": "0.000000",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": null,
+        "doc_id": "u-c5f672043d33f4b314b9",
+        "purpose": "build",
+        "user_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "build_id": "f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc",
+        "cost_usd": 0.0,
+        "lease_id": "3d32850c-3897-4011-ae96-291a4da1cef1",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "d3b92ce2-78e9-4c4c-a863-6bfd12d75c61",
+        "claim_count": 1,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": false,
+        "attribution_complete": false
+      }
+    }
+  ],
+  "assets": [],
+  "quota": {
+    "builds_used": 1,
+    "build_monthly_max": null,
+    "builds_remaining": null
+  },
+  "mail": [
+    {
+      "to": "24fe037d90f04564932d4bdec3cd4f87@example.vn",
+      "subject": "Xác minh email WayFinder",
+      "body": "Xin chào Người học,\n\nVui lòng xác minh địa chỉ email để có thể mời bạn học qua email.\n\nMở liên kết này để xác minh: http://127.0.0.1:8000/xac-minh#token=1o0T3agKMlse3LEbwKuWiTmd2GNcN00dl-tBr_I_8Eg\n\nLiên kết có hiệu lực trong 24 giờ.",
+      "html_body": "<!doctype html>\n<html lang=\"vi\">\n<body style=\"margin:0;background:#F6F8FA;color:#12161B;font-family:Arial,sans-serif;\">\n  <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"background:#F6F8FA;padding:32px 12px;\">\n    <tr><td align=\"center\">\n      <table role=\"presentation\" width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" style=\"max-width:560px;background:#FFFFFF;border-radius:12px;padding:32px;\">\n        <tr><td align=\"center\" style=\"padding-bottom:24px;\"><img src=\"http://127.0.0.1:8000/assets/Artboard%2024.png\" alt=\"WayFinder\" width=\"220\" style=\"display:block;width:220px;height:auto;border:0;\"></td></tr>\n        <tr><td><h1 style=\"font-size:24px;line-height:1.3;margin:0 0 16px;\">Xác minh địa chỉ email</h1>\n          <p style=\"font-size:16px;line-height:1.6;margin:0 0 8px;\">Xin chào Người học,</p>\n          <p style=\"font-size:16px;line-height:1.6;margin:0 0 24px;\">Vui lòng xác minh địa chỉ email để có thể mời bạn học qua email.</p>\n          <p style=\"margin:0 0 24px;\"><a href=\"http://127.0.0.1:8000/xac-minh#token=1o0T3agKMlse3LEbwKuWiTmd2GNcN00dl-tBr_I_8Eg\" style=\"display:inline-block;background:#0A6AB3;color:#FFFFFF;text-decoration:none;padding:12px 20px;border-radius:8px;\">Xác minh email</a></p>\n          <p style=\"font-size:13px;line-height:1.5;color:#5B6673;word-break:break-word;\">Nếu nút không hoạt động, hãy mở liên kết: <a href=\"http://127.0.0.1:8000/xac-minh#token=1o0T3agKMlse3LEbwKuWiTmd2GNcN00dl-tBr_I_8Eg\" style=\"color:#0A6AB3;\">http://127.0.0.1:8000/xac-minh#token=1o0T3agKMlse3LEbwKuWiTmd2GNcN00dl-tBr_I_8Eg</a></p>\n          <p style=\"font-size:13px;line-height:1.5;color:#5B6673;\">Liên kết có hiệu lực trong 24 giờ.</p>\n          <p style=\"font-size:13px;line-height:1.5;color:#5B6673;\">Bạn cũng có thể <a href=\"http://127.0.0.1:8000/dang-nhap\" style=\"color:#0A6AB3;\">đăng nhập</a> hoặc <a href=\"http://127.0.0.1:8000/quen-mat-khau\" style=\"color:#0A6AB3;\">đặt lại mật khẩu</a>.</p>\n        </td></tr>\n      </table>\n      <p style=\"font-size:12px;color:#5B6673;margin:16px 0 0;\">WayFinder</p>\n    </td></tr>\n  </table>\n</body>\n</html>"
+    },
+    {
+      "to": "24fe037d90f04564932d4bdec3cd4f87@example.vn",
+      "subject": "Bản dựng xong",
+      "body": "Xem khoá học: http://127.0.0.1:8000/khoa-hoc/2ffc5ddd-5991-4821-aa14-87287ab2310d",
+      "html_body": null
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____________________ test_figma_variables_raw_export_valid ____________________
+
+    def test_figma_variables_raw_export_valid():
+        """Verify that design/tokens/figma_variables_raw_export.json contains verified metadata and matches all 74 CSS values."""
+        raw_path = Path("design/tokens/figma_variables_raw_export.json")
+        css_path = Path("design/tokens/tokens.css")
+        assert raw_path.exists(), "Raw variables export file must exist"
+        assert css_path.exists(), "Tokens CSS file must exist"
+
+        data = json.loads(raw_path.read_text(encoding="utf-8"))
+        meta = data.get("metadata", {})
+        assert meta.get("fileKey") == "UVhhlZnqdpV0JDcAHwJczo"
+        assert meta.get("collectionName") == "WayFinder Tokens"
+        assert meta.get("collectionId") == "VariableCollectionId:45:1"
+        assert len(meta.get("modes", [])) == 2
+        assert "exportedAt" in meta
+        assert "exportTool" in meta
+        assert meta.get("provenanceType") == "LOCAL_DTCG_CONTRACT_AND_PLUGIN_MAPPING"
+        assert meta.get("status") == "LOCAL_VERIFIED_TOKEN_CONTRACT"
+
+        # Run full 74-value CSS comparison
+>       verify_variables_against_css(data, css_path)
+
+tests\unit\presentation\test_tokens_and_wcag.py:442:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+data = {'$schema': 'https://design-tokens.github.io/community-group/format/draft-spec.json', 'metadata': {'collectionId': 'Va...'--color-bg', 'description': 'N\u1ec1n canvas ch\xednh c\u1ee7a trang', 'id': 'VariableId:color:bg', 'name': 'color/bg', ...}, ...]}
+css_path = WindowsPath('design/tokens/tokens.css')
+
+    def verify_variables_against_css(data, css_path: Path):
+        """Strictly assert that all 37 variables in both Light and Dark mode match CSS (74 checks)."""
+        light_props, dark_props = parse_css_for_raw_variables(css_path)
+        vars_list = data.get("variables", [])
+        assert len(vars_list) == 37, f"Expected exactly 37 variables, found {len(vars_list)}"
+
+        for v in vars_list:
+            name = v["name"]
+            css_prop = v["cssProperty"]
+            val_light = v["valuesByMode"]["Light"]
+            val_dark = v["valuesByMode"]["Dark"]
+
+            # Check Light mode mapping
+            exp_light = f"{val_light}px" if isinstance(val_light, (int, float)) and ("space" in name or "radius" in name) else str(val_light)
+            act_light = light_props.get(css_prop)
+>           assert act_light == exp_light, f"Light mode mismatch for {name} ({css_prop}): CSS='{act_light}' vs raw='{exp_light}'"
+E           AssertionError: Light mode mismatch for motion/motion-base (--motion-base): CSS='200ms' vs raw='999ms'
+E           assert '200ms' == '999ms'
+E
+E             - 999ms
+E             + 200ms
+
+tests\unit\presentation\test_tokens_and_wcag.py:415: AssertionError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-w24-review-78fb774\motion-base-light-mutation.xml -
+=========================== short test summary info ===========================
+FAILED tests\unit\presentation\test_tokens_and_wcag.py::test_figma_variables_raw_export_valid
+1 failed in 1.74s

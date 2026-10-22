@@ -1,0 +1,24 @@
+{
+  "baseUrl": "http://127.0.0.1:8014",
+  "databaseName": "wayfinder_w14_react_f1cfc6439c074f69b6408e4ddec3369b",
+  "database": "uuid-disposable-postgresql",
+  "migrationHead": "w14_0006",
+  "media": "MemoryMediaStore",
+  "mailer": "FakeMailer",
+  "runner": "ManifestFakeBuildRunner plus deterministic scripted retry/reject",
+  "modelCalls": 0,
+  "modelCostUsd": 0,
+  "fixture": {
+    "sourceDoc": "doc-1",
+    "manifestSha256Verified": true
+  },
+  "fixtureNames": {
+    "success": "w14-success.pdf",
+    "reuse": "w14-reuse.pdf",
+    "cancel": "w14-cancel.docx",
+    "retry": "w14-retry.pdf",
+    "reject": "w14-reject.pdf"
+  },
+  "browserExitCode": 1,
+  "temporaryDatabaseRemoved": true
+}

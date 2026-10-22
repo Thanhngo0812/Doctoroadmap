@@ -1,0 +1,15 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w14-build-worker/src/web/frontend
+
+
+ Test Files  5 passed (5)
+      Tests  77 passed (77)
+   Start at  16:15:23
+   Duration  35.14s (tests 72%, environment 19%, setup 5%, import 3%, transform 1%)
+
+    Isolate  5 workers spawned · ~1.53s startup each (spawn + environment, per file)
+             at least ~6.14s faster with isolate: false — reuses workers across files instead of one per file

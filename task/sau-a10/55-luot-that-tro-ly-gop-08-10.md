@@ -1,4 +1,4 @@
-# SA-55 — Lượt thật trợ lý gộp cho SA-08 và SA-10: 30 lượt hỏi trên bốn cuốn, có ghi phản hồi để phát lại
+# SA-55 — Lượt thật trợ lý gộp cho SA-08, SA-10 và SA-56: 36 lượt hỏi trên bốn cuốn, có ghi phản hồi để phát lại
 
 **Nguồn chân lý:**
 - [SA-08](08-tro-ly-agent-lat-cat-dau.md) và [SA-10](10-tro-ly-du-cong-cu-nhac-nen-hoi-thoai.md), mục "Tiêu chí nghiệm thu", phần lượt thật;
@@ -7,7 +7,7 @@
 - khuôn bộ chạy có tiền: `scripts/phase-b/sa43_dryrun.py`, `scripts/phase-b/sa43_acceptance.py`.
 
 **Ai:** agent Sonnet dựng bộ chạy và dry-run · chủ dự án duyệt tiền · agent chạy thật · Claude nghiệm thu ·
-**Chi phí mô hình:** dự kiến dưới 0,35 USD, trần cứng 0,50 USD, chỉ `gemini-3.1-flash-lite`; dry-run trước · **Chặn bởi:** không · **Trạng thái:** sẵn sàng
+**Chi phí mô hình:** dự kiến dưới 0,40 USD, trần cứng 0,50 USD, chỉ `gemini-3.1-flash-lite`; dry-run trước · **Chặn bởi:** [SA-56](56-tro-ly-focus-node-id.md) · **Trạng thái:** sẵn sàng sau SA-56
 
 ## Vì sao
 
@@ -71,8 +71,21 @@ không liên kết.
 | 26 | nhap-mon-ml | m `module_005` | hình | Phần cây quyết định có hình minh họa nào không? |
 | 27 | nhap-mon-ml | lộ trình | đường học | Đường học từ dữ liệu tới mô hình đã được huấn luyện gồm những bước nào? |
 
-Tổng: phần SA-08 có 10 lượt. Phần SA-10 có 17 dòng; ba chuỗi nhiều lượt (12, 17, 24) thêm 5 lượt, thành 22 lượt. Tổng cộng **32 lượt hỏi**; dry-run
-tính trên cả 32 lượt. Với khoảng 0,01 USD mỗi lượt, dự kiến khoảng 0,32 USD.
+**Phần SA-56** (tiêu điểm `focus_node_id`, gửi kèm như khi người học đang mở bài giảng; bài giảng không có trong kho mới của lượt chạy, nên khối
+`focus` không có ý bài giảng):
+
+| # | cuốn | phiên | tiêu điểm | câu hỏi |
+|---|---|---|---|---|
+| 28 | doc-1 | m `module_007` | Song ánh | Giải thích phần này dễ hiểu hơn được không? |
+| 29 | doc-1 | m `module_007` | Song ánh | Phần này khác đơn ánh thế nào? |
+| 30 | nhap-mon-ml | m `module_009` | Kém khớp | Cho một ví dụ về cái này. |
+| 31 | naive-bayes | m `module_003` | Laplace Smoothing | Tại sao cần cái này? |
+
+Tổng: phần SA-08 có 10 lượt. Phần SA-10 có 17 dòng; ba chuỗi nhiều lượt (12, 17, 24) thêm 5 lượt, thành 22 lượt. Phần SA-56 có 4 lượt. Tổng cộng
+**36 lượt hỏi**; dry-run tính trên cả 36 lượt. Với khoảng 0,01 USD mỗi lượt, dự kiến khoảng 0,36 USD.
+
+Lượt 28–31 lấy `node_id` của tiêu điểm theo tên trong graph ghim. Với mỗi lượt, báo thêm: `linked_node_ids` có đúng tiêu điểm không (lượt 29 phải là
+đơn ánh), số lời gọi `search` và `lookup_concept`, và câu trả lời có trích nhãn của câu định nghĩa không.
 
 ## Cần làm
 
@@ -94,7 +107,7 @@ tính trên cả 32 lượt. Với khoảng 0,01 USD mỗi lượt, dự kiến 
 - [ ] Dry-run có số lượt, số lời gọi tối đa, USD tối đa, không gọi mạng. Kết quả gửi chủ dự án; chỉ chạy thật sau khi chủ dự án duyệt bằng tin nhắn, và trích
   tin nhắn đó vào báo cáo.
 - [ ] Lượt thật nằm dưới trần 0,50 USD. Chi thật lấy từ token trả về, không lấy dự toán.
-- [ ] Báo đủ các số SA-08 và SA-10 yêu cầu. Tỉ lệ gọi công cụ sai của một công cụ nào đó quá 10% thì ghi nổi bật để báo chủ dự án; không tự đổi mô hình.
+- [ ] Báo đủ các số SA-08 và SA-10 yêu cầu, cộng các số của lượt 28–31. Tỉ lệ gọi công cụ sai của một công cụ nào đó quá 10% thì ghi nổi bật để báo chủ dự án; không tự đổi mô hình.
 - [ ] Phát lại 0 USD khớp lượt thật; có test phát lại; test Pha B, kiến trúc và cổng toàn repo xanh.
 
 ## Ngoài vé

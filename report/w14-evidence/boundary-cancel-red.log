@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_cancel_requested_between_step_check_and_callback_remains_cancelled ___
+src\web\backend\tests\test_builds_w14.py:606: in test_cancel_requested_between_step_check_and_callback_remains_cancelled
+    assert result['status']=='cancelled' and float(result['spent_usd'])==.01
+E   AssertionError: assert ('failed' == 'cancelled'
+E
+E     - cancelled
+E     + failed)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\report\w14-evidence\boundary-cancel-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_cancel_requested_between_step_check_and_callback_remains_cancelled
+1 failed, 34 deselected, 1 warning in 2.40s
