@@ -110,7 +110,8 @@ Bốn luật:
 | [52](52-cau-dien-khuyet-nhieu-va-cau-dan.md) | Câu điền khuyết: nhiễu không nằm trong câu, không khoét giữa thuật ngữ khác, nhiễu không là ký hiệu, bỏ câu dẫn kết bằng dấu hai chấm | — | 0 | sẵn sàng; Claude cài |
 | [53](53-cau-noi-final-giu-chi-so-va-test-cache.md) | Bài giảng: lọc câu nối ở bản final giữ đúng chỉ số; test lớp lọc trước K6 và test cache theo hằng số thật | — | 0 | sẵn sàng; Claude cài |
 | [54](54-test-k5-tu-vung-ten-va-test-chap-chon.md) | Test cho K5 và luật từ vựng của tên module; ổn định hai test kho JSON chập chờn | — | 0 | sẵn sàng; agent Sonnet cài, Claude nghiệm thu |
-| [55](55-luot-that-tro-ly-gop-08-10.md) | Lượt thật trợ lý gộp cho SA-08 và SA-10: 32 lượt hỏi trên bốn cuốn, ghi phản hồi để phát lại; số đo của SA-13 lấy từ lượt sinh bài giảng SA-21 | — | dưới 0,35 USD, trần 0,50 USD | sẵn sàng; dry-run rồi chờ chủ dự án duyệt |
+| [55](55-luot-that-tro-ly-gop-08-10.md) | Lượt thật trợ lý gộp cho SA-08, SA-10 và SA-56: 36 lượt hỏi trên bốn cuốn, ghi phản hồi để phát lại; số đo của SA-13 lấy từ lượt sinh bài giảng SA-21 | 56 | dưới 0,40 USD, trần 0,50 USD | sẵn sàng sau 56; dry-run rồi chờ chủ dự án duyệt |
+| [56](56-tro-ly-focus-node-id.md) | Trợ lý biết khái niệm đang mở: trường tuỳ chọn `focus_node_id` trong `answer-2` (chủ dự án duyệt 2026-10-22); phần web gửi kèm ở W-09 | — | 0 | sẵn sàng; agent Sonnet cài, Claude nghiệm thu |
 
 **Vá sau SA-45, 2026-10-19:** các lỗi 46–50 đã ghép và kiểm, SA-51 sửa phương pháp tổng hợp và phát lại đủ 12 mẫu, không dùng phê duyệt chi cũ cho lượt mới. Xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Các phán xét SA-45 ở dòng 34–43 phía trên là lịch sử trước vá; lỗi tương ứng đã xử lý ở 46–50, giới hạn bằng chứng so nhiệt độ vẫn được giữ tại 51.
 

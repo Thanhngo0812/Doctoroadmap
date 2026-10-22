@@ -273,6 +273,13 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
    - Đề xuất: thêm trường tuỳ chọn `focus_node_id`, web gửi kèm mỗi lượt khi đang mở bài giảng, không lưu vào phiên. Agent nhận thẻ khái niệm và tóm tắt
      bài giảng đã có. Thêm vài trăm token mỗi lượt.
    - Đổi hợp đồng `answer-2`, nên cần chủ dự án duyệt. Duyệt rồi thì Claude viết một vé sửa Pha B (lõi) và thêm phần gửi kèm vào W-09.
+   - **Chủ dự án đã duyệt 2026-10-22.** Phần lõi là vé `task/sau-a10/56-tro-ly-focus-node-id.md`; spec B2 mục 3 đã thêm trường.
+     **Cho người điều phối:** đề nghị thêm vào W-09, phần chặn bởi SA-56:
+     - `POST …/turns` nhận `focus_node_id` tuỳ chọn. Trang học gửi khái niệm đang mở bài giảng; trang lộ trình không gửi;
+     - gateway truyền nguyên giá trị vào use case trợ lý, không tự kiểm. Lõi bỏ giá trị lạ, kèm `focus_ignored`;
+     - test HTTP: gửi `focus_node_id` thì `answer-2` cuối trả lại đúng giá trị; gửi giá trị lạ thì trả `null` kèm cảnh báo.
+
+     Nếu W-09 đã chạy xa, người điều phối có thể tách phần này thành vé web riêng. Ghi quyết định vào mục 10.
 1. **Đã rõ theo spec hiện hành, không cần hỏi lại:** giữ trần Pha B 0,20 USD mỗi người học mỗi ngày và 5 USD mỗi ngày cho nội dung dùng chung.
    Spec chức năng web, mục "Quyết định của chủ dự án", đã tách rõ câu "không giới hạn" chỉ áp cho khâu dựng. Chỉ mở lại khi chủ dự án muốn đổi.
 2. **Đã giải quyết 2026-10-19:** chủ dự án xác nhận logo là Artboard 9–28; đã kiểm đủ tệp và cập nhật bảng trong spec thiết kế mục 1.
