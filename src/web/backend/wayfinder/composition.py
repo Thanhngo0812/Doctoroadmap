@@ -110,7 +110,7 @@ def compose_services(
                 if close is not None:
                     close()
 
-    builds = compose_build_service(settings, database_engine, media=build_media, clock=clock) if database_engine is not None else None
+    builds = compose_build_service(settings, database_engine, media=build_media, clock=clock, core_settings=core) if database_engine is not None else None
     if courses is not None:
         courses.build_service = builds
     return WebServices(health_check=health_check, close=close_services, model=model,
@@ -118,11 +118,15 @@ def compose_services(
                        courses=courses, learning=learning, builds=builds)
 
 
-def compose_build_service(settings, engine, *, media=None, clock=None):
+def compose_build_service(settings, engine, *, media=None, clock=None, core_settings=None):
     from wayfinder.application.builds import BuildService
     from wayfinder.infrastructure.build_store import PostgresBuildStore
     from wayfinder.fakes.local_media import LocalFakeMediaStore
-    return BuildService(PostgresBuildStore(engine), settings=settings,
+    version = 'web-fake-v1'
+    if settings.build_runner == 'real':
+        from wayfinder.infrastructure.real_build import real_pipeline_version
+        version = real_pipeline_version(settings, core_settings)
+    return BuildService(PostgresBuildStore(engine), settings=settings, pipeline_version=version,
         media=media if media is not None else LocalFakeMediaStore(settings.artifact_root.parent / 'fake-media'), clock=clock)
 
 
