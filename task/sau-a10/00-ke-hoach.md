@@ -57,23 +57,23 @@ Bốn luật:
 | vé | việc | chặn bởi | tiền mô hình | trạng thái |
 |---|---|---|---|---|
 | [01](01-nen-pha-b-kho-so-chi-gioi-han.md) | Nền Pha B: kho lưu trữ, sổ chi, giới hạn dùng chung | — | 0 | đạt; giá viết cứng sửa ở 25 |
-| [02](02-do-thi-hoc-nhan-nguon-cong-cu-tra-cuu.md) | Đồ thị học: mô hình đọc, nhãn nguồn, công cụ tra đồ thị | — | 0 | chưa đạt: test cạnh mở `requires` (sửa ở 25); thiếu số tên bị chặn vì "tên phổ biến" |
+| [02](02-do-thi-hoc-nhan-nguon-cong-cu-tra-cuu.md) | Đồ thị học: mô hình đọc, nhãn nguồn, công cụ tra đồ thị | — | 0 | đạt: M2 có test từ SA-25 (`test_traverse_never_leaks_distinct_open_requires_edge`); số tên phổ biến (ngưỡng 0,25) đo 2026-10-22: doc-1 3/223, nhap-mon-ml 5/75, naive-bayes 0/33, doc-6 3/11, xstk-ch3-1 4/82, doc-4 7/495 [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
 | [03](03-a12-lop-gan-module-truy-hoi-uu-tien.md) | A12: lớp gán module, truy hồi ưu tiên module, `search_document` | — | 0 (embedding truy vấn khi thử) | đạt; thiếu giây/truy vấn doc-4 |
 | [04](04-anh-cong-thuc.md) | Ảnh công thức | — | 0 | đạt |
-| [05](05-ten-module-luat-tat-dinh-duong-lui.md) | Tên module: luật tất định, đường lùi, mô tả khuôn | — | 0 | chưa đạt → 28 |
-| [06](06-ten-mo-ta-module-do-llm-dat.md) | Tên và mô tả module do LLM đặt | 05 | dưới 0,1 USD sáu cuốn | chưa đạt → 28 |
+| [05](05-ten-module-luat-tat-dinh-duong-lui.md) | Tên module: luật tất định, đường lùi, mô tả khuôn | — | 0 | đạt qua SA-28 → SA-29: khuôn lùi không lộ mã; chất lượng tên đánh giá ở SA-20 |
+| [06](06-ten-mo-ta-module-do-llm-dat.md) | Tên và mô tả module do LLM đặt | 05 | dưới 0,1 USD sáu cuốn | đạt qua SA-28 → SA-29 (đạt có ghi chú); chất lượng tên và mô tả đánh giá ở SA-20 |
 | [07](07-chi-muc-khai-niem.md) | Chỉ mục khái niệm | 01, 02 | dưới 0,01 USD | đạt |
 | [08](08-tro-ly-agent-lat-cat-dau.md) | Trợ lý agent, lát cắt đầu: port gọi công cụ, vòng lặp có trần | 01, 02, 03 | lượt nhỏ | test đạt; chờ lượt thật sau 25 |
-| [09](09-tro-ly-trich-dan-tu-choi-ngoai-tai-lieu.md) | Trợ lý: trích dẫn, từ chối, nội dung ngoài tài liệu | 08 | 0 (phát lại) | chưa đạt → 25 |
-| [10](10-tro-ly-du-cong-cu-nhac-nen-hoi-thoai.md) | Trợ lý: đủ công cụ, nhắc khái niệm nền, hội thoại nhiều lượt | 09 | lượt nhỏ | chưa đạt → 25; chờ lượt thật |
-| [11](11-bai-giang-khong-llm.md) | Bài giảng không LLM: khung do mã dựng và trích câu | 02 | 0 | chưa đạt → 26 |
-| [12](12-bai-giang-llm-kiem-va-cache.md) | Bài giảng LLM có kiểm và cache | 01, 11 | lượt nhỏ | chưa đạt → 26 |
+| [09](09-tro-ly-trich-dan-tu-choi-ngoai-tai-lieu.md) | Trợ lý: trích dẫn, từ chối, nội dung ngoài tài liệu | 08 | 0 (phát lại) | đạt qua SA-25: hậu kiểm theo câu, nhãn bịa và câu không nguồn có test (mutation M5′, M5b′ bị bắt) [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
+| [10](10-tro-ly-du-cong-cu-nhac-nen-hoi-thoai.md) | Trợ lý: đủ công cụ, nhắc khái niệm nền, hội thoại nhiều lượt | 09 | lượt nhỏ | M2 đã có test từ SA-25; còn lượt thật khoảng 20 câu |
+| [11](11-bai-giang-khong-llm.md) | Bài giảng không LLM: khung do mã dựng và trích câu | 02 | 0 | đạt qua SA-26 và SA-30 (câu trích cụt) |
+| [12](12-bai-giang-llm-kiem-va-cache.md) | Bài giảng LLM có kiểm và cache | 01, 11 | lượt nhỏ | đạt qua SA-26 và SA-30 (K6, không cache bài hỏng); bản lùi bỏ theo chủ dự án 2026-10-18; K5 chưa có test → **54** [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
 | [13](13-bai-giang-stream-tai-truoc.md) | Bài giảng stream và tải trước | 12 | lượt nhỏ | chờ lượt thật sau 26 |
 | [14](14-cong-cu-get-lecture.md) | Công cụ `get_lecture` | 08, 12 | 0 | đạt |
 | [15](15-quiz-dien-khuyet-dau-cuoi.md) | Quiz điền khuyết đầu-cuối | 01, 02 | 0 | đạt |
-| [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | chưa đạt → 27 |
+| [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | đạt qua SA-27; chất lượng câu đánh giá ở SA-22 |
 | [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
-| [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | chưa đạt → 25 |
+| [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | đạt qua SA-25 và SA-30 (tài liệu sau hậu kiểm) |
 | [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; đã giao agentic (chủ dự án báo 2026-10-21), chờ trả gói để kiểm |
 | [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | ready-for-agent |
 | [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **53** | trần 5 USD | chờ SA-53; bằng chứng SA-43 đã xong ở SA-51 |
@@ -83,7 +83,7 @@ Bốn luật:
 | [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | đạt, Claude soát 2026-10-18 [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); trình bày tài liệu → 30 |
 | [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); K6 dò sai, cache bài hỏng → 30 |
 | [27](27-quiz-llm-do-luat-loai-va-nghiem-thu-lai.md) | Quiz LLM: ghi luật loại câu, sửa theo số đo, lượt thật vé 16 | commit mã | 0 phần đo; lượt thật 0,0782415 USD | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); Claude đồng ý luật tên có điều kiện |
-| [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | lượt thật 0,12723425 USD | chưa đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md): 135/160 rơi đường lùi → 29 |
+| [28](28-ten-module-mo-ta-thanh-cau.md) | Tên module: mô tả thành câu, khuôn lùi không lộ mã, chặn tên chung | commit mã | lượt thật 0,12723425 USD | thay bằng SA-29 (đạt có ghi chú) |
 | [29](29-ten-module-tach-kiem-ten-mo-ta-tu-vung-theo-sach.md) | Tên module: tách kiểm tên và mô tả, từ vựng mô tả lấy từ chính cuốn sách, luật mượn từ bằng mã | — | cache/replay 0; lượt thật 0,142519 USD | đạt có ghi chú, SA-45 soát 2026-10-18 [báo cáo](../../report/soat-pha-b-29-2026-10-18.md); chất lượng tên rộng chuyển vé 20 |
 | [30](30-sua-sau-soat-k6-cache-ttft-trich-dan.md) | Sửa sau soát: K6 dò sai, không cache bài hỏng, TTFT, câu trích cụt, tài liệu sau hậu kiểm | — | 0 (phát lại) | đạt có ghi chú, SA-45 [bài giảng](../../report/soat-pha-b-30-38-43-2026-10-18.md), [tài liệu](../../report/soat-pha-b-30-tai-lieu-37-2026-10-18.md); phát lại B1 không khớp prompt B2 |
 | [31](31-nen-b2-pham-vi-ham-giai.md) | Nền B2: phạm vi `scope-1`, hàm giải phạm vi, port kho, đồng hồ, cấu hình | 30 | 0 | đạt có ghi chú, SA-45 [soát](../../report/soat-pha-b-31-36-42-2026-10-18.md) |
@@ -109,6 +109,7 @@ Bốn luật:
 | [51](51-do-lai-so-sanh-retry-lecture-2.md) | Hoàn thiện so nhiệt độ/thời gian SA-43, matched subset và phần thiếu | 49, 48 | 0 phát lại; không gọi thêm API | đạt, Claude kiểm lại số độc lập; giữ S3 và nhiệt độ sửa 0 [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
 | [52](52-cau-dien-khuyet-nhieu-va-cau-dan.md) | Câu điền khuyết: nhiễu không nằm trong câu, không khoét giữa thuật ngữ khác, nhiễu không là ký hiệu, bỏ câu dẫn kết bằng dấu hai chấm | — | 0 | sẵn sàng; Claude cài |
 | [53](53-cau-noi-final-giu-chi-so-va-test-cache.md) | Bài giảng: lọc câu nối ở bản final giữ đúng chỉ số; test lớp lọc trước K6 và test cache theo hằng số thật | — | 0 | sẵn sàng; Claude cài |
+| [54](54-test-k5-tu-vung-ten-va-test-chap-chon.md) | Test cho K5 và luật từ vựng của tên module; ổn định hai test kho JSON chập chờn | — | 0 | sẵn sàng; agent Sonnet cài, Claude nghiệm thu |
 
 **Vá sau SA-45, 2026-10-19:** các lỗi 46–50 đã ghép và kiểm, SA-51 sửa phương pháp tổng hợp và phát lại đủ 12 mẫu, không dùng phê duyệt chi cũ cho lượt mới. Xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Các phán xét SA-45 ở dòng 34–43 phía trên là lịch sử trước vá; lỗi tương ứng đã xử lý ở 46–50, giới hạn bằng chứng so nhiệt độ vẫn được giữ tại 51.
 
