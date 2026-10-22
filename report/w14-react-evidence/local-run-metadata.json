@@ -1,0 +1,68 @@
+{
+  "product_commit": "7078660",
+  "backend_additions_commit": "261523e",
+  "runs": [
+    {
+      "passed": 2165,
+      "name": "local-full-python",
+      "native_exit_code": 0,
+      "junit": "local-full-py1.xml",
+      "skipped": 1,
+      "log": "local-full-py1.log"
+    },
+    {
+      "passed": 103,
+      "name": "final-local-react",
+      "native_exit_code": 0,
+      "junit": "final-local-react.xml",
+      "skipped": 0,
+      "log": "final-local-react.log"
+    },
+    {
+      "name": "final-local-build",
+      "native_exit_code": 0,
+      "log": "final-local-build.log"
+    },
+    {
+      "name": "ui-mutations",
+      "ledger": "ui-mutations/results.json",
+      "native_exit_code": 0,
+      "mutations_caught": 3
+    },
+    {
+      "name": "handoff-react",
+      "passed": 104,
+      "skipped": 0,
+      "native_exit_code": 0,
+      "junit": "handoff-react.xml",
+      "log": "handoff-react.log",
+      "exit_file": "handoff-react-exit.txt"
+    },
+    {
+      "name": "handoff-build",
+      "native_exit_code": 0,
+      "log": "handoff-build.log"
+    },
+    {
+      "name": "real-browser-local",
+      "native_exit_code": 0,
+      "screenshots": 47,
+      "http_responses": 173,
+      "json_payloads": 154,
+      "assertion_groups": 13,
+      "unexpected_console_errors": 0,
+      "page_errors": 0,
+      "failed_requests": 0,
+      "axe_violations": 0,
+      "temporary_database_removed": true,
+      "log": "browser-final.log",
+      "audit": "browser-audit.json"
+    }
+  ],
+  "dependency_commit": "0a2afa8",
+  "final_main_gate": false,
+  "source_commit": "953240b",
+  "browser_harness_commit": "d162dbe",
+  "handoff_product_commit": "953240b",
+  "scope_note": "Local dependency branch only. Full Python preceded UI changes; full browser used product 7078660 and harness d162dbe. Cosmetic copy commit 953240b has separate full React/build checks, not a repeated browser/full Python run."
+}

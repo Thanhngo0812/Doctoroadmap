@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.438" timestamp="2026-10-22T09:45:58.744153+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_build_cards_expose_only_the_viewers_upload_for_the_course" time="2.670"><failure message="AssertionError">builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_ec319e7a0c704d33b7a8e...oken': 'k-wa3wI07p1ehjuvhzQp1X9GPjS7vzkH-D9i-18-I90'}, app=&lt;fastapi.applications.FastAPI object at 0x0000027C85645FA0&gt;)
+
+    def test_build_cards_expose_only_the_viewers_upload_for_the_course(builds):
+        from wayfinder.application.courses import CourseService
+        from wayfinder.domain.courses import Membership
+        from wayfinder.infrastructure.course_store import PostgresCourseStore
+        b=builds
+        courses=CourseService(PostgresCourseStore(b.engine),settings=b.settings,clock=b.clock)
+        courses.build_service=b.service
+        b.services.courses=courses
+        first=upload(b)
+        second=upload(b)
+&gt;       assert first['build']['build_id']==second['build']['build_id']
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+src\web\backend\tests\test_builds_w14.py:691: AssertionError</failure></testcase></testsuite></testsuites>

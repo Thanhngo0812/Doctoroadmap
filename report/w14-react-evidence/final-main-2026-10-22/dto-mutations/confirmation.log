@@ -1,0 +1,47 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_reused_queued_upload_has_its_own_confirmation_and_title _________
+
+builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_307c420282bc493493eb5...oken': 'lduL84FwdxS1BtH1MNyfAic0_epRXUAwoVIF89QvQAg'}, app=<fastapi.applications.FastAPI object at 0x00000268A966A780>)
+
+    def test_reused_queued_upload_has_its_own_confirmation_and_title(builds):
+        b=builds
+        data=pdf()
+        def post_upload():
+            return b.client.post('/api/v1/uploads',headers=b.headers,
+                data={'rights_confirmed':'true'},files={'file':('same.pdf',data,'application/pdf')})
+        first=post_upload()
+        assert first.status_code==200,first.text
+        first=first.json()
+        queued=b.client.post(f"/api/v1/uploads/{first['upload_id']}/build",headers=b.headers,json={})
+        assert queued.status_code==200,queued.text
+        second=post_upload()
+        assert second.status_code==200,second.text
+        second=second.json()
+        assert first['build']['build_id']==second['build']['build_id']
+        assert second['build']['status']=='queued'
+        assert second['confirmed_at'] is None
+
+        confirmed=b.client.post(f"/api/v1/uploads/{second['upload_id']}/build",headers=b.headers,
+            json={'title':'Tiêu đề của khoá thứ hai'})
+        assert confirmed.status_code==200,confirmed.text
+        assert confirmed.json()['course_id']==second['build']['course_id']
+        persisted=sql(b,'SELECT title FROM course WHERE id=:id',{'id':second['build']['course_id']})[0]
+        assert persisted['title']=='Tiêu đề của khoá thứ hai'
+        upload_state=b.client.get(f"/api/v1/uploads/{second['upload_id']}",headers=b.headers)
+        assert upload_state.status_code==200
+        confirmed_at=upload_state.json()['confirmed_at']
+>       assert confirmed_at is not None
+E       assert None is not None
+
+src\web\backend\tests\test_builds_w14.py:747: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react\report\w14-react-evidence\final-main-2026-10-22\dto-mutations\confirmation.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_reused_queued_upload_has_its_own_confirmation_and_title
+1 failed, 1 warning in 3.18s

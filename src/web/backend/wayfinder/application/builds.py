@@ -120,6 +120,7 @@ class BuildService:
         self.store.expire(self.clock.now())
         return {'contract_version':'upload-1','upload_id':upload['id'],'original_name':upload['original_name'],
                 'kind':upload['kind'],'size_bytes':upload['size_bytes'],'page_count':upload['page_count'],
+                'confirmed_at':upload['confirmed_at'],
                 'build':self._view(actor,upload,self.store.get_job(upload['build_id']))}
 
     def get_build(self,actor,bid,*,course_id=None):
@@ -129,11 +130,14 @@ class BuildService:
 
     def course_build(self,actor,course):
         # Called only after CourseService has checked membership for this card.
-        return self._view(actor,{'course_id':course.id},self.store.get_job(course.build_id))
+        upload=(self.store.upload_for_build(actor.user_id,course.build_id,course.id)
+                if course.owner_id==actor.user_id else None)
+        return self._view(actor,upload or {'course_id':course.id},self.store.get_job(course.build_id))
 
     def _view(self,actor,upload,job):
         owner=job['requested_by']==actor.user_id
         return {'contract_version':'build-1','build_id':job['id'],'course_id':upload['course_id'],
+            'upload_id':upload.get('id'),
             'status':job['status'],'step':job['step'],'step_index':BUILD_STEPS.index(job['step'])+1 if job['step'] else 0,
             'step_count':4,'started_at':job['started_at'],'finished_at':job['finished_at'],
             'confirmation_expires_at':job['confirmation_expires_at'],'cancel_requested':job['cancel_requested'],

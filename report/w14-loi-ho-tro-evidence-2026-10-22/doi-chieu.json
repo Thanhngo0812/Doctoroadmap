@@ -1,0 +1,154 @@
+{
+  "kind": "read-only source and archived evidence inspection; no tests or providers run",
+  "base_commit": "b86bde2abc865a0e11d460ead7c66adb5e46a2f7",
+  "backend_merge_commit": "a5724597117094600152fb9a705354ebba10bde0",
+  "backend_on_main": true,
+  "web_commit": "6494f51eb6b1033150d041197745b4d88a8a69da",
+  "web_has_received_backend_merge": false,
+  "source_inspected": [
+    {
+      "path": "src/web/backend/wayfinder/application/builds.py",
+      "sha256": "eded892658e8b210eceffe7dfdbb55b3b980a921d49064f8909515fb1e63e12d",
+      "bytes": 13351
+    },
+    {
+      "path": "src/web/backend/wayfinder/application/build_worker.py",
+      "sha256": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+      "bytes": 8837
+    },
+    {
+      "path": "src/web/backend/wayfinder/infrastructure/build_store.py",
+      "sha256": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+      "bytes": 12929
+    },
+    {
+      "path": "src/doc2roadmap/application/ports/build.py",
+      "sha256": "197b4245723ff40c1d726226d434e0c6a664494799658404b4e4a5cc324ca09d",
+      "bytes": 2376
+    },
+    {
+      "path": "src/doc2roadmap/application/use_cases/build_document.py",
+      "sha256": "64cc35d719fd49da2a5b3e3369ba324ab15b4f476a646795467ce68a685dd671",
+      "bytes": 8335
+    },
+    {
+      "path": "src/doc2roadmap/application/build_usage.py",
+      "sha256": "75fcb8fa0ded72486a268adc859d5f340d79a616fb73408380953fff6838faa1",
+      "bytes": 3964
+    },
+    {
+      "path": "src/doc2roadmap/composition_build.py",
+      "sha256": "da92fffa3a7b8c0dba4b4b12bd361eca4166537c5fc664c2525a4bb4b16fadfc",
+      "bytes": 17822
+    },
+    {
+      "path": "src/web/backend/wayfinder/worker.py",
+      "sha256": "8887eeeb4b9241bcee15b4f86c6332619f665ea8d68d0c17091d509e475698bb",
+      "bytes": 2657
+    },
+    {
+      "path": "src/web/backend/wayfinder/composition.py",
+      "sha256": "435d79ef7d41f42efb432a7d5188b513badb401dcc03a9ec5b7cf4396eae27c6",
+      "bytes": 9400
+    },
+    {
+      "path": "src/web/backend/tests/test_build_cancellation_w25.py",
+      "sha256": "ff317a0c620b3b122cfe62f32d713a70b51715d56c16f728bf4bd12c31cab932",
+      "bytes": 17685
+    }
+  ],
+  "web_source_and_archives_inspected": [
+    {
+      "path": "src/web/backend/wayfinder/api/builds.py",
+      "sha256": "89f2ceaa78f546ae174f1be0b66e9fc07fa0032ec2d3bdc097fcc1a0282fbfe8",
+      "bytes": 3504
+    },
+    {
+      "path": "src/web/backend/wayfinder/application/builds.py",
+      "sha256": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7",
+      "bytes": 13608
+    },
+    {
+      "path": "src/web/backend/tests/test_builds_w14.py",
+      "sha256": "cd7ebf394f7a6f69724657b5ef113b2bd5dcdbcaf77193b6f765c3a1f4697ac8",
+      "bytes": 40261
+    },
+    {
+      "path": "report/w14-react-evidence/backend-contract-review.md",
+      "sha256": "be0ca0465b03f4b70322bedc073359434ddd4c62dd337668981894fdda588f6f",
+      "bytes": 4522
+    },
+    {
+      "path": "report/w14-react-evidence/build-contract2.xml",
+      "sha256": "3a48be4b95eb51b17eca460ea9e406ef367873851f93897eab598d23e6aca56f",
+      "bytes": 3246
+    },
+    {
+      "path": "report/w14-react-evidence/runtime.json",
+      "sha256": "17659a226c0b7d0c32be218c2a0b2ae77522cfccf5849f70a8380ab99c091e79",
+      "bytes": 1212
+    },
+    {
+      "path": "report/w14-react-evidence/cleanup-check.json",
+      "sha256": "9a196f45ea81b3763e42a93d5f1f1a1370301c8e20a1f0f4c37ccc778ab1cdab",
+      "bytes": 125
+    }
+  ],
+  "archived_web_contract_junit": {
+    "tests": 18,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "archived_web_runtime": {
+    "baseUrl": "http://127.0.0.1:8014",
+    "databaseName": "wayfinder_w14_react_6a907cfe5aae42f188e238bbd53934ec",
+    "database": "uuid-disposable-postgresql",
+    "migrationHead": "w14_0006",
+    "media": "MemoryMediaStore",
+    "mailer": "FakeMailer",
+    "runner": "ManifestFakeBuildRunner plus deterministic scripted retry/reject",
+    "modelCalls": 0,
+    "modelCostUsd": 0,
+    "fixture": {
+      "sourceDoc": "doc-1",
+      "manifestSha256Verified": true
+    },
+    "fixtureNames": {
+      "success": "w14-success.pdf",
+      "reuse": "w14-reuse.pdf",
+      "cancel": "w14-cancel.docx",
+      "retry": "w14-retry.pdf",
+      "reject": "w14-reject.pdf"
+    },
+    "browserExitCode": 0,
+    "temporaryDatabaseRemoved": true,
+    "accountRole": "user",
+    "ownedCourseCount": 5,
+    "courseStatuses": [
+      "failed",
+      "failed",
+      "ready",
+      "ready",
+      "ready"
+    ],
+    "buildStatuses": [
+      "cancelled",
+      "rejected",
+      "succeeded",
+      "succeeded"
+    ],
+    "allBuildRowsPersisted": true,
+    "sameFileReuseVerifiedByIndependentPostgres": true,
+    "syntheticBuildUsageRows": 5,
+    "syntheticBuildUsageUsd": 0.002,
+    "verifiedByIndependentPostgresConnection": true,
+    "localIntegrationEvidence": true
+  },
+  "new_provider_calls": 0,
+  "new_provider_spend_usd": 0,
+  "new_test_runs": 0,
+  "new_migrations": 0,
+  "w14_end_to_end": "pending_web_final_integration_and_independent_acceptance",
+  "w15": "documentation_preparation_only"
+}
