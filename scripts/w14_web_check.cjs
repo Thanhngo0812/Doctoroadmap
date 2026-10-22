@@ -13,7 +13,7 @@ const { AxeBuilder } = require(path.join(toolsRoot, '.tmp/w01-browser-tools/node
 
 const base = process.env.W14_BASE_URL || 'http://127.0.0.1:8014';
 const runtimeFile = process.env.W14_RUNTIME_JSON || path.join(root, 'report/w14-react-evidence/runtime.json');
-const output = path.join(root, 'report/w14-react-evidence');
+const output = path.dirname(runtimeFile);
 const password = 'W14 browser-only test passphrase 2026!';
 const timeoutMs = 30000;
 
@@ -166,6 +166,21 @@ async function main() {
     assert.equal(response.status(), 200, `GET ${route}`);
     return response.json();
   };
+  const checkAccessibility = async stateName => {
+    const previousStage = stage;
+    for (const theme of ['light', 'dark']) {
+      stage = `axe:${stateName}:${theme}`;
+      await page.setViewportSize({ width: 1280, height: 900 });
+      await setTheme(page, theme);
+      const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
+      audit.accessibility.push({ state: stateName, route: new URL(page.url()).pathname,
+        width: 1280, theme, violations: axe.violations.map(item => item.id),
+        incomplete: axe.incomplete.map(item => item.id) });
+      assert.deepEqual(axe.violations.map(item => item.id), [], stage);
+      assert.deepEqual(axe.incomplete.map(item => item.id), [], stage);
+    }
+    stage = previousStage;
+  };
 
   let video;
   try {
@@ -201,6 +216,7 @@ async function main() {
     audit.fontLoaded = fontLoaded;
     await assertFilePickerKeyboardFocus(page, audit);
     await setViewportThemeScreens(page, audit, 'upload', [390, 768, 1280]);
+    await checkAccessibility('upload');
     await page.setViewportSize({ width: 1280, height: 900 });
     await setTheme(page, 'light');
 
@@ -221,6 +237,7 @@ async function main() {
     await page.getByLabel('Tên khoá học').fill('Đại số tuyến tính — tên do tôi chọn');
     audit.screens.push(await screenshot(page, 'awaiting-confirmation-1280-light.png'));
     await setViewportThemeScreens(page, audit, 'confirmation', [390, 768, 1280]);
+    await checkAccessibility('confirmation');
     const confirmResponsePromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/uploads/${success.uploadId}/build`);
     await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
@@ -248,6 +265,7 @@ async function main() {
     await page.getByRole('heading', { exact: true, name: 'Đang xác định bài học' }).waitFor();
     audit.screens.push(await screenshot(page, 'running-768-light.png', { width: 768, theme: 'light' }));
     await setViewportThemeScreens(page, audit, 'running', [390, 768, 1280]);
+    await checkAccessibility('running');
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { exact: true, name: 'Đang xác định bài học' }).waitFor();
@@ -268,6 +286,7 @@ async function main() {
     assert.equal(await page.getByRole('link', { name: 'Mở khoá học', exact: true }).count(), 1);
     audit.screens.push(await screenshot(page, 'success-1280-dark.png', { width: 1280, theme: 'dark' }));
     await setViewportThemeScreens(page, audit, 'success', [390, 768, 1280]);
+    await checkAccessibility('succeeded');
     audit.assertions.push('real BuildWorker persisted reading and running checkpoints across reload, then completed the manifest-backed build');
     audit.builds.push({ buildId: success.buildId, courseId: success.courseId, status: 'succeeded', title: 'Đại số tuyến tính — tên do tôi chọn' });
 
@@ -334,6 +353,8 @@ async function main() {
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { exact: true, name: 'Đã huỷ' }).waitFor();
     await setViewportThemeScreens(page, audit, 'cancelled', [390, 768, 1280]);
+    await checkAccessibility('cancelled');
+    assert.match(await page.locator('body').innerText(), /Bản dựng đã dừng\. Bạn có thể quay về danh sách khoá học\./);
     audit.assertions.push('cancellation during a paused reading step stopped the real worker at its next boundary and persisted cancelled');
     audit.builds.push({ buildId: cancel.buildId, courseId: cancel.courseId, status: 'cancelled' });
 
@@ -350,6 +371,7 @@ async function main() {
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('button', { name: 'Thử lại', exact: true }).waitFor();
     await setViewportThemeScreens(page, audit, 'retryable', [390, 768, 1280]);
+    await checkAccessibility('retryable');
     const retriedPromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/builds/${retry.buildId}/retry`);
     await page.getByRole('button', { name: 'Thử lại', exact: true }).click();
@@ -377,6 +399,7 @@ async function main() {
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { exact: true, name: 'Không thể đọc tài liệu' }).waitFor();
     await setViewportThemeScreens(page, audit, 'rejected', [390, 768, 1280]);
+    await checkAccessibility('rejected');
     audit.assertions.push('the non-retryable synthetic scan result was shown as rejected with a safe user-facing error');
     audit.builds.push({ buildId: reject.buildId, courseId: reject.courseId, status: 'rejected', errorCode: 'ban_quet' });
 
@@ -387,11 +410,7 @@ async function main() {
     assert.equal(state.reuseSameBuild, true);
     await writeJson('browser-state.json', state);
 
-    stage = 'axe:build-rejected';
-    const axe = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-    audit.accessibility.push({ route: '/ban-dung/:id', violations: axe.violations.map(item => item.id), incomplete: axe.incomplete.map(item => item.id) });
-    assert.deepEqual(axe.violations.map(item => item.id), []);
-    assert.deepEqual(axe.incomplete.map(item => item.id), []);
+    assert.equal(audit.accessibility.length, 14, 'seven states in both themes at 1280px');
     const probeWarnings = audit.expectedConsoleErrors.filter(item => item.stage.startsWith('axe:')
       && item.expected === 'Axe injected probe blocked by application CSP'
       && item.text.startsWith("Connecting to 'https://fonts.googleapis.com/")).length;
