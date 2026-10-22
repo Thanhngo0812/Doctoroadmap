@@ -3,7 +3,11 @@
 **Nguồn chân lý:** [spec Pha B2](../../doc/pha-b2-spec.md), mục 6 (`lecture-2`, stream sau cổng, bài hỏng hẳn, nhãn theo người học), mục 10; [spec chức năng](../../doc/web-chuc-nang-spec.md),
 mục 1 (SSE), 7 (mở tệp gốc); [ADR 0018](../../doc/adr/0018-bai-giang-khong-hien-ban-lui-stream-sau-cong.md); spec thiết kế, trang học và vòng chờ.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-39, SA-40, SA-41 · **Trạng thái:**
-ready-for-agent
+đủ phụ thuộc lõi để triển khai; xếp sau W-11 nếu chỉ có một phiên web.
+
+**Đối chiếu Pha B 2026-10-22, cập nhật:** Claude đã nghiệm thu SA-53 và ghép `62dad5b`, đóng điểm chờ câu nối final của SA-40/41.
+Nhận main có mốc này, giữ hợp đồng `lecture-2`/SSE và kiểm với PostgreSQL/đồ giả. W-09 có phụ thuộc riêng SA-56; không tự sửa use case trợ lý
+trong W-08. Xem [soát Pha B của Claude](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md).
 
 ## Vì sao
 

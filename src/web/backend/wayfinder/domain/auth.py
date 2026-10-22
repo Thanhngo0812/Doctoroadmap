@@ -64,7 +64,7 @@ def decide(actor: Actor | None, action: str, course: object | None, membership: 
         return Decision(True)
     if action == "seed_samples":
         return Decision(actor.role == "admin", None if actor.role == "admin" else "forbidden")
-    if action == "create_course":
+    if action in {"create_course", "build"}:
         return Decision(True)
     if action in {"read_course", "learn", "update_course", "join_sample", "manage_sharing", "list_members", "leave_course"}:
         if course is None:

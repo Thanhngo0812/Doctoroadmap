@@ -1,7 +1,8 @@
 ﻿import { useEffect, useRef, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { useAuth } from './Auth';
 import { ApiError } from './api';
+import { buildPath, buildStatusLabel } from './builds-api';
 import { CourseShell, type ThemeProps } from './Courses';
 import { ShareDialog } from './Sharing';
 import { coursePath, getCourse, getProgress, getRoadmap, modulePath, setProgress, type Course, type CourseModule, type CourseProgress, type ProgressNode, type Roadmap } from './courses-api';
@@ -191,6 +192,9 @@ export function RoadmapPage(props: ThemeProps) {
   const module = data?.roadmap?.modules.find(item => item.module_id === mid);
   const missingModule = Boolean(data?.roadmap && mid && !module);
   const summary = data?.roadmap && data?.progress ? countsForCourse(data.roadmap, nodes) : null;
+  if (!error && data?.course.role === 'owner' && data.course.status !== 'ready' && data.course.build) {
+    return <Navigate replace to={buildPath(data.course.build.build_id, data.course.course_id, data.course.build.upload_id)} />;
+  }
   return <CourseShell {...props}>
     <Link className="back-link roadmap-back" to={mid && data ? coursePath(data.course.course_id) : '/khoa-hoc'}>
       {mid ? 'Quay lại lộ trình' : 'Khoá học của tôi'}
@@ -200,7 +204,8 @@ export function RoadmapPage(props: ThemeProps) {
     {!error && data && data.course.status !== 'ready' && <section className="roadmap-status">
       <h1>{data?.course.title}</h1>
       <p>{data?.course.description}</p>
-      <p role="status">{data?.course.status === 'building' ? 'Tài liệu đang được xử lý. Bạn có thể quay lại sau.' : 'Chưa dựng được lộ trình này.'}</p>
+      <p role="status">{data.course.build ? buildStatusLabel(data.course.build) : data.course.status === 'building' ? 'Tài liệu đang được xử lý. Bạn có thể quay lại sau.' : 'Chưa dựng được lộ trình này.'}</p>
+      <button className="button button-secondary" type="button" onClick={retryPage}>Cập nhật trạng thái</button>
     </section>}
     {!error && data?.course.status === 'ready' && data.roadmap && data.progress && <div className={`roadmap-content${mid ? ' roadmap-content--module' : ''}`}>
       {missingModule ? <div className="courses-error"><h1>Chưa mở được module</h1><p role="alert">Không tìm thấy trang này, hoặc bạn chưa tham gia khoá học.</p><Link className="button button-secondary" to={coursePath(cid)}>Quay lại lộ trình</Link></div>

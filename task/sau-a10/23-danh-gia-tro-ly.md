@@ -2,8 +2,12 @@
 
 **Nguồn chân lý:** [ADR 0012](../../doc/adr/0012-tro-ly-la-agent-goi-cong-cu.md); [báo cáo trợ lý](../../report/nghien-cuu-tro-ly-hoi-dap-do-thi-2026-10-11.md),
 mục 2.8, 5; đề cương đồ án, mục 5.3.
-**Ai:** nhân viên chạy · nhóm duyệt bộ câu hỏi và chấm · Claude phân tích · **Chi phí mô hình:** lượt 1 trần khoảng 8 USD, dự toán lại bằng
-dry-run vì kiến trúc agent tốn hơn bản báo cáo ước; lượt 2 xin duyệt riêng · **Chặn bởi:** 07, 10, 19 · **Trạng thái:** ready-for-agent
+**Ai:** agent Sonnet chạy · nhóm duyệt bộ câu hỏi và chấm · Claude phân tích · **Chi phí mô hình:** lượt 1 trần khoảng 8 USD, dự toán lại bằng
+dry-run vì kiến trúc agent tốn hơn bản báo cáo ước; lượt 2 xin duyệt riêng · **Chặn bởi:** 07, 10, 19, 52, **56**, và gói 19a do agentic trả về ·
+**Trạng thái:** chờ
+
+**Dữ liệu (cập nhật 2026-10-22):** graph ghim và kho Pha B theo [bảng kế hoạch, đợt đánh giá 20–23](00-ke-hoach.md). Bộ câu hỏi 19a sinh trên graph nào thì phải ghi lại; câu nào trỏ tới
+khái niệm không còn trong graph ghim thì báo riêng, không tự sửa.
 
 ## Vì sao
 
@@ -42,7 +46,19 @@ Mỗi câu ghi lại câu trả lời, các lời gọi công cụ, USD và giâ
 
 **Luật quyết định viết trước khi đo,** gồm luật nhận biết RAGAS tự đề cao: đối chiếu với điểm người chấm.
 
+**Cách chấm (chốt 2026-10-22):** 60 câu hỏi lấy từ phần `test` của 19a, phân tầng theo loại, gồm câu ngoài tài liệu và hội thoại nhiều lượt.
+- Phần 1 chấm cặp giữa agent đầy đủ và RAG thuần. Ẩn khối nhắc nền và thẻ module, vì chỉ agent có hai khối này.
+- Phần 2 chấm từng câu và khối nhắc nền trên câu trả lời của agent đầy đủ, ở tệp riêng giao sau khi nộp phần 1.
+
 ## Tiêu chí nghiệm thu
+
+- [ ] **Phiếu chấm theo hướng dẫn** [`doc/huong-dan-cham/23-tro-ly.md`](../../doc/huong-dan-cham/23-tro-ly.md) và [luật chung](../../doc/huong-dan-cham/00-chung.md):
+  - mỗi người chấm (`C1`, `C2`) có tệp Excel riêng, đúng các cột và giá trị trong hướng dẫn, có danh sách chọn;
+  - tệp HTML đọc được khi không có mạng, ảnh công thức nhúng sẵn;
+  - thứ tự mục và nhãn A/B/C/D trộn riêng cho từng người, hạt giống cố định ghi trong báo cáo;
+  - một bộ chấm thử nằm ngoài mẫu;
+  - tệp khoá cấu hình để riêng, không nằm trong thư mục giao người chấm;
+  - kiểm bằng script rằng tệp giao người chấm không chứa tên cấu hình, mã nhánh hay đường dẫn kho.
 
 - [ ] Dry-run dự toán lại lượt 1 và chủ dự án duyệt. Chạy trong trần.
 - [ ] Bảng số theo cấu hình: bốn độ đo RAGAS, từ chối đúng, USD và giây chờ ở p50 và p90.

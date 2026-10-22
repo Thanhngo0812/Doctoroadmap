@@ -80,31 +80,44 @@ còn đổi; nhóm web đã được báo.
 | [W-04](W-04-ho-so-doi-mat-khau-dang-xuat-moi-noi.md) | hồ sơ, đổi mật khẩu, đăng xuất mọi nơi | W-02 | đủ điều kiện; có preview, chưa có nghiệp vụ W-04; xếp sau đường W-07 nếu chỉ có một phiên web |
 | [W-05](W-05-kho-pha-b-postgresql.md) | kho Pha B trên PostgreSQL, `single_flight` liên tiến trình, nới port sổ chi | W-01 | đạt · đã ghép `a3f2f13`, gồm checkpoint W-02; [cổng và bàn giao](../../report/dieu-phoi-ghep-main-2026-10-20.md) |
 | [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đạt · đã ghép `dc41ee8`, mốc `8b6e500`; 2.107 Python/77 React/build, browser PG; [nghiệm thu](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md) |
-| [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | ưu tiên tiếp theo của web; đã soát SA-47 memory/JSON, triển khai theo hợp đồng hiện có và kiểm race/cách ly PostgreSQL ở W-07 |
-| [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07, SA-39, SA-40, SA-41 | ready-for-agent |
-| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07, SA-32, SA-33, SA-42 | ready-for-agent |
-| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35, SA-37 | ready-for-agent |
-| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06 | đủ điều kiện; sau W-07 nếu một phiên web; chốt tuyến migration với W-14 |
+| [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | đạt · đã ghép f20d198, mốc 2a14723; 2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình; [soát](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md) |
+| [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07, SA-39, SA-40, SA-41; SA-53 đã ghép | đủ phụ thuộc sau `62dad5b`; xếp sau W-11 nếu chỉ một phiên web |
+| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07, SA-32, SA-33, SA-42, SA-56 | đã bổ sung HTTP/gateway/React `focus_node_id` theo đề nghị Claude; chuẩn bị được, cổng tích hợp chờ SA-56 được Claude nghiệm thu/ghép |
+| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35, SA-37; SA-52 đã ghép | đủ phụ thuộc sau `66cd439`; triển khai sau trang học, không dùng số phát lại cũ làm nghiệm thu web |
+| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | web tiếp ngay từ `a53f0d3`, chưa nghiệm thu W-11; nhận main mới, nối `w11_0007` sau `w14_0006` |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
 | [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
-| [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06 | đủ điều kiện; lõi chuẩn bị backend/worker, web tích hợp sau ưu tiên W-07; thêm FK build_id/nguồn upload; không dự toán, nối callback W-13 |
-| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 | W-13 đã đạt; còn chờ W-14 và phạm vi phê duyệt chi của vé |
+| [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06; W-25 đã đạt | đạt có ghi chú · đã ghép/đẩy `7fe63df`, mốc `61b5d80`:2185Python/104React/build, browser13nhóm/47ảnh/14Axe,0USD; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
+| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 đã đạt | lõi làm adapter/composition/test0USD; tài liệu `1acaf4e` đã nhận cùng `7fe63df`; port tệp pha A cần phối hợp, lượt có tiền vẫn chờ dry-run/duyệt mới |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
-| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn nguồn export Figma và đủ trang/prototype có kiểm chứng; [soát 2026-10-20](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md) |
+| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn mở: đã đọc Cloud thật 0 Variables/0 native components, prototype chưa có reactions; local không thay Cloud; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | ready-for-agent |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa nút tối, vùng bấm mobile, giảm chuyển động, guard token; đủ bằng chứng W-22 | — | phần local W-06/W-04 đã ghép `dc41ee8`, sửa claim/TTL và kiểm 12 preview; vẫn thiếu Variables/bằng chứng Figma/prototype đầy đủ; [soát mới](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md) |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao W-22 | — | `78fb774` local OS/token đạt:32 test/74giá trị,4mutation; chưa nhận cả gói do báo cáo/checklist sai; Cloud còn0variables/0reactions, tiếp cùng vé/chưa ghép |
+| [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
 
 ## Thứ tự đề xuất
+
+- **Kiểm lại 2026-10-22:** backend/schema W-14+W-25 đạt tại `4dbfe8e`, đã ghép/đẩy **`a572459`**, 2.163 Python/85 React nền/build, sáu guard bị bắt, 0 USD.
+  **Web nhận main ngay**, không còn chờ backend: bỏ32 tệp basetemp khỏi Git/giữ local, giữ DTO upload_id/confirmed_at và chạy cổng W-14 cuối; W-14 đầu-cuối chưa đóng.
+  Lõi bàn giao/hỗ trợ tích hợp, chưa chạy thật W-15. Thiết kế tiếp W-24: còn OS reduced-motion ảnh hỏng, token/guard chưa đủ và checklist/Cloud.
+  W-08 còn chờ SA-53 qua SA-40/41, W-10 chờ SA-52; các nhánh SA do Claude nghiệm thu/ghép. Giữ W-11 riêng, hoàn tất sau W-14 nếu một phiên web; migration nối w14_0006.
+  [Báo cáo và bằng chứng](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md), [lời giao ba nhóm](../../report/lenh-giao-viec-sau-w25-2026-10-22.md). Chưa gửi phiên nhân viên.
+
+- **Sau soát W-07/W-14/W-24, 2026-10-21:** W-07 đạt tại `2a14723`, đã ghép/đẩy `f20d198` (2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình, 10 mutation bị bắt).
+  W-14 backend chưa đạt do hai race huỷ tái hiện bằng PG; lõi ưu tiên **W-25**, web **React/tích hợp W-14** theo hợp đồng, giữ W-11 đang làm riêng.
+  W-24 `c1df32a` chưa đạt, thiết kế sửa sáu nhóm Required, không lấy raw/preview mới làm chuẩn đã nghiệm thu.
+  Giữ tuyến `w06_0005 → w14_0006 → w11_0007`; W-25 đạt mới ghép backend/schema W-14, rồi W-11 nối sau. React W-14 đạt mới đóng toàn W-14/mở W-15.
+  [Phán xét/điểm kiểm](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md), [lời giao ba nhóm](../../report/lenh-giao-viec-sau-w07-2026-10-21.md). Chưa gửi phiên nhân viên, 0 USD.
 
 - **Sau nghiệm thu W-06, 2026-10-21:** W-06 đã ghép `dc41ee8`, mốc `8b6e500`; cổng đúng mốc 2.107 Python đạt/0 fail/1 Cloudinary live không bật,
   React 77/build, browser PG 9 assertion/6 màn và 8/8 mutation bị bắt, 0 USD. Web ưu tiên W-07 rồi W-11; lõi chuẩn bị backend/worker W-14 bằng bộ dựng giả;
   thiết kế tiếp W-24 phần Figma, ưu tiên W-07/W-14. Phần local W-24 được tích hợp không đồng nghĩa đóng toàn vé.
-  W-07 không tạo migration rỗng; W-11/W-14 chốt một tuyến head theo thứ tự ghép. W-14 bổ sung FK build_id và nguồn upload theo phần W-06 bàn giao.
+  W-07 không tạo migration rỗng; tuyến đã chốt `w06_0005 → w14_0006 → w11_0007`: W-14 ghép trước, W-11 nối sau. W-14 bổ sung FK build_id và nguồn upload theo phần W-06 bàn giao.
   Đã soát SA-47 memory/JSON phục vụ mở W-07; các race/cách ly PostgreSQL vẫn phải kiểm trong W-07. Giữ soát B2 còn lại trước các vé học tương ứng.
   [Bằng chứng và kế hoạch](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md). Các đợt giao trước dưới đây giữ làm lịch sử.
 - **Khởi động lại sau sự cố artifact, mốc mới nhất 2026-10-20:** chủ dự án xác nhận nhóm web mới xong W-03, các nhóm đang dừng.

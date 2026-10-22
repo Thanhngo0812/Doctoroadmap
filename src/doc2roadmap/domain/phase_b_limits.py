@@ -30,7 +30,7 @@ class BSettings:
     lecture_max_contrasts: int = 2
     lecture_min_source_coverage: float = 0.5
     lecture_duplicate_jaccard_threshold: float = 0.6
-    lecture_validator_version: str = 'lecture-validator-6'
+    lecture_validator_version: str = 'lecture-validator-7'
     connector_sentence_max_chars: int = 60
     quote_max_chars: int = 200
     document_max_usd: float = 0.01
@@ -38,6 +38,7 @@ class BSettings:
     assistant_max_usd: float = 0.01
     assistant_history_turns: int = 3
     assistant_history_tokens: int = 1000
+    assistant_focus_tokens: int = 400
     tool_results_tokens: int = 2500
     quiz_generation_max_output_tokens: int = 1200
     quiz_verifier_max_output_tokens: int = 400
@@ -92,7 +93,8 @@ def lecture_cache_key(
         "model_id": settings.model_id,
         "temperature": settings.lecture_temperature,
         "max_output_tokens": settings.lecture_max_output_tokens,
-        "settings": asdict(settings),
+        # assistant_focus_tokens never reaches a lecture prompt; leaving it out keeps cached lectures valid.
+        "settings": {k: v for k, v in asdict(settings).items() if k != "assistant_focus_tokens"},
         "contract_version": settings.contract_version,
     })
     return key, assembled_hash

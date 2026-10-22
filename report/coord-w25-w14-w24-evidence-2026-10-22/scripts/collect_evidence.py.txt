@@ -1,0 +1,76 @@
+"""Archive only named coordinator observations; canonical LF, hashes preserved."""
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+ROOT=Path(__file__).absolute().parents[2]
+WORK=ROOT/'tmp/coord-w25-acceptance-20261022'
+RUN=Path(__file__).absolute().parent/'evidence/backend'
+OUT=ROOT/'report/coord-w25-w14-w24-evidence-2026-10-22'
+sys.path.insert(0,str(WORK/'src/web/backend/tests'))
+from copy_w06_fixtures import safe_path
+
+
+def digest(data): return hashlib.sha256(data).hexdigest()
+def xml_counts(data):
+    tree=ET.fromstring(data)
+    return [len(list(tree.iter(tag))) for tag in ['testcase','failure','error','skipped']]
+
+
+def main():
+    for name in ['full-gate','react','build','w25-guards','fixture-copy']:
+        assert json.loads((RUN/(name+'-exit.json')).read_text())['native_exit_code']==0,name
+    OUT.mkdir(parents=True,exist_ok=True)
+    (OUT/'.gitattributes').write_bytes(b'* -text\n')
+    normalization=[]
+    def copy(source,relative):
+        safe_path(ROOT,source.relative_to(ROOT).as_posix())
+        target=safe_path(OUT,relative)
+        original=source.read_bytes()
+        processed=original
+        if source.suffix in {'.json','.xml','.log','.md','.txt','.py','.cjs'}:
+            processed=processed.replace(b'\r\n',b'\n')
+            if source.suffix in {'.xml','.log'}:
+                processed=b'\n'.join(line.rstrip(b' \t') for line in processed.splitlines()).rstrip(b'\n')+b'\n'
+            if source.suffix=='.xml': assert xml_counts(original)==xml_counts(processed)
+            if source.suffix=='.json': assert json.loads(original)==json.loads(processed)
+        target.parent.mkdir(parents=True,exist_ok=True)
+        target.write_bytes(processed)
+        if processed!=original:
+            normalization.append({'path':relative,'original_sha256':digest(original),
+                'normalized_sha256':digest(processed),'change':'CRLF to LF; log/XML trailing whitespace only; originals retained in scratch'})
+    for p in RUN.rglob('*'):
+        if p.is_file(): copy(p,'backend/'+p.relative_to(RUN).as_posix())
+    for p in (WORK/'report/w25-evidence/sql/coord-final-20261022').glob('*.json'):
+        copy(p,'backend/sql/'+p.name)
+    copy(WORK/'report/w06-evidence/fixture-copy.json','fixture-copy.json')
+    design=ROOT/'tmp/coord-w24-review-20261022'
+    for p in design.iterdir():
+        if p.is_file(): copy(p,'w24/'+p.name)
+    for name in ['run_w25_guards.py','collect_evidence.py']:
+        copy(Path(__file__).with_name(name),'scripts/'+name+'.txt')
+    copy(ROOT/'tmp/coord-review-20261021/run_check.py','scripts/run-check.py.txt')
+    paths=subprocess.check_output(['git','ls-tree','-r','--name-only','6494f51','report/w14-react-evidence'],cwd=ROOT,text=True).splitlines()
+    temporary=[p for p in paths if '/basetemp-' in p]
+    hygiene={'reviewed_commit':'6494f51eb6b1033150d041197745b4d88a8a69da',
+        'tracked_temporary_file_count':len(temporary),'paths':temporary,
+        'worker_files_changed':False,'final_gate_after_approved_main':False,
+        'required':'Remove these test outputs from the index, retain local bytes and add ignore; then receive approved backend main and run final gates'}
+    (OUT/'web-handoff-hygiene.json').write_bytes((json.dumps(hygiene,indent=2)+'\n').encode())
+    summary={name:xml_counts((RUN/name).read_bytes()) for name in ['full-gate.xml','react.xml']}
+    summary.update({'count_order':['testcase','failure','error','skipped'],'provider_calls':0,'provider_cost_usd':0,
+        'w14_react_scope':'read-only code/evidence review, not independent final acceptance',
+        'w24_scope':'local Chromium and copied-source experiments, no Cloud acceptance'})
+    (OUT/'summary.json').write_bytes((json.dumps(summary,indent=2)+'\n').encode())
+    (OUT/'normalization.json').write_bytes((json.dumps(normalization,indent=2)+'\n').encode())
+    rows=[{'path':p.relative_to(OUT).as_posix(),'bytes':p.stat().st_size,'sha256':digest(p.read_bytes())}
+          for p in sorted(OUT.rglob('*')) if p.is_file() and p!=OUT/'manifest.json']
+    (OUT/'manifest.json').write_bytes((json.dumps({'hash_scope':'preserved canonical evidence bytes','files':rows},indent=2)+'\n').encode())
+    print(json.dumps({'files':len(rows),'bytes':sum(r['bytes'] for r in rows),'summary':summary}),flush=True)
+
+
+if __name__=='__main__':main()

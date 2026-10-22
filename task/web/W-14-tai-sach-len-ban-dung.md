@@ -3,13 +3,24 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 (toàn bộ), 8 (trần khâu dựng); [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md)
 (dùng lại theo băm); [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `upload`, `build`, mục 6 (nhận việc); spec thiết kế, trang tải sách
 và tiến trình dựng.
-**Ai:** lõi phụ trách backend/worker; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06 · **Trạng thái:** ready-for-agent
+**Ai:** lõi phụ trách backend/worker; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06; W-25 đã đạt · **Trạng thái:** đạt có ghi chú đầu-cuối với bộ dựng giả tại `61b5d80`; đã ghép `7fe63df`, đẩy GitHub.
+
+**Nghiệm thu đầu-cuối 2026-10-22:** nhận web `4e5cd15` và hỗ trợ lõi `1acaf4e` trên main có SA-52/53/54, mốc kiểm cuối `61b5d80`:
+**2185Python đạt/1Cloudinary live không bật,104React/build**,5mutation bị assertion bắt/nguồn phục hồi đúng SHA; browser thật13nhóm/47ảnh/14Axe0violation,
+SQL độc lập5course/4build/reuse1attempt/usage giả0,002USD; chi ngoài0USD. Một lượt browser timeout240giây trước đó được giữ trong archive,
+lượt sau cùng mã/ngưỡng đạt; nguyên nhân timeout chưa được chứng minh. Nhận mốc bộ dựng giả, không coi W-15 hoặc runner/provider thật đã đạt.
+Xem [biên bản/bằng chứng](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md),
+[lệnh giao tiếp](../../report/lenh-giao-viec-sau-w14-2026-10-22.md). Các mục cập nhật cũ dưới đây là lịch sử trước nghiệm thu.
+
+**Kiểm lại 2026-10-22:** backend W-14/W-25 đạt tại `4dbfe8e`, đã ghép/đẩy **`a572459`**: 2.163 Python/85 React nền/build và sáu guard W-25 bị bắt, 0 USD. Web `6494f51` không còn chờ backend; nhận main, bỏ32 tệp pytest tạm khỏi index/giữ local, giữ hai DTO upload_id/confirmed_at đã bổ sung rồi chạy lại toàn cổng/browser đúng đỉnh cuối. **Chưa đóng toàn W-14**; xem [phán xét](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md), [lời giao](../../report/lenh-giao-viec-sau-w25-2026-10-22.md).
+
+**Soát 2026-10-21:** 35 test W-14 cũ chạy lại đạt, nhưng hai ca PG độc lập tái hiện confirm ghi đè cancel thành queued và cancel khi publication vẫn ghi succeeded/course ready/gửi thư thành công. Chưa ghép backend/schema; sửa theo [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md), giữ usage thực/lease fence và tuyến migration đã chốt. Web có thể chuẩn bị React theo hợp đồng, nhận mốc backend đã sửa/soát đạt trước cổng cuối; chưa đóng W-14 đầu-cuối. Xem [phán xét/bằng chứng](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md).
 
 **Kế hoạch sau W-06, 2026-10-21:** khi W-06 được ghi ghép, lõi chuẩn bị backend/worker và hợp đồng để web tích hợp sau ưu tiên W-07.
 Đây vẫn là một vé đầu-cuối; backend riêng xong chưa đóng vé. Xem
 [kế hoạch và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
 W-06 đã có `course`/`membership`, `module_count`, PDF mẫu `source_public_id`; W-14 bổ sung FK `course.build_id → build.id` khi tạo build,
-nối nguồn upload và metadata graph, kiểm dùng lại cùng tài liệu. Không sửa migration W-06; nhận head mới và chốt tuyến với W-11 trước ghép.
+nối nguồn upload và metadata graph, kiểm dùng lại cùng tài liệu. Không sửa migration W-06. **Tuyến đã chốt 2026-10-21:** giữ `w14_0006` nối `w06_0005`, W-14 ghép trước rồi W-11 nối bằng `w11_0007`. Chỉ ghép sau khi mốc cụ thể được soát đạt và cổng xanh; có thể nghiệm thu mốc backend/schema riêng nếu hoàn chỉnh, chưa đóng vé W-14 đầu-cuối khi React còn thiếu.
 Giữ bộ dựng/MediaStore/Mailer giả, test usage giả khác 0 để kiểm sổ chi thực; không gọi mô hình hay dùng ngân sách phục hồi cũ.
 
 ## Vì sao
@@ -25,7 +36,7 @@ cho người dùng. Ghi usage/chi phí từ kết quả chạy vào DB phía má
 **`BuildService`:** `create_upload`, `get_upload`, `confirm_build`, `get_build`, `cancel_build`, `retry_build`, và phía worker `run_next_job`.
 
 **Nhận tệp:**
-- kiểm byte đầu PDF hay DOCX, ≤ `upload_max_mb` (10, gói Cloudinary miễn phí), PDF ≤ 400 trang, PDF không mã hoá;
+- kiểm byte đầu PDF hay DOCX, ≤ `upload_max_mb` (10, gói Cloudinary miễn phí), PDF ≤ `build_max_pages` khi bật (mặc định không giới hạn theo spec chức năng), PDF không mã hoá;
 - bắt buộc `rights_confirmed`;
 - nếu trần lượt dựng đang bật (mặc định tắt ở bản demo): còn lượt trong tháng;
 - **không** cần xác minh email (bản demo);
@@ -75,23 +86,23 @@ cho người dùng. Ghi usage/chi phí từ kết quả chạy vào DB phía má
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
-- [ ] Tệp đổi đuôi `.pdf` mà byte đầu không phải PDF thì `file_invalid`; 11 MB thì `file_too_large`, và `MediaStore` giả không nhận gì; PDF mã hoá thì
+- [x] Tệp đổi đuôi `.pdf` mà byte đầu không phải PDF thì `file_invalid`; 11 MB thì `file_too_large`, và `MediaStore` giả không nhận gì; PDF mã hoá thì
   `file_encrypted`.
-- [ ] Bản dựng xong thì thư mục tạm không còn tệp gốc; `media_asset` có đủ ảnh công thức của bản dựng giả.
-- [ ] Hai tài khoản tải cùng một tệp: bộ dựng giả chỉ chạy 1 lần; lần sau 0 USD, không trừ lượt; hai khoá trỏ cùng `doc_id`.
-- [ ] Hai lần tải cùng tệp đồng thời trên PostgreSQL: chỉ một bản dựng chạy.
-- [ ] Cấu hình mặc định: một tài khoản tải và dựng 5 cuốn liền không bị chặn.
-- [ ] Bật `build_monthly_max = 3`: lượt thứ 4 trong tháng thì `quota_exceeded`, trước khi worker chạy bước nào; sang tháng mới theo đồng hồ giả thì được.
-- [ ] Trước xác nhận, bộ dựng chưa được gọi; xác nhận mới xếp hàng. API cho người dùng và giao diện không có trường dự toán/chi phí; test thấy đỏ trên
+- [x] Bản dựng xong thì thư mục tạm không còn tệp gốc; `media_asset` có đủ ảnh công thức của bản dựng giả.
+- [x] Hai tài khoản tải cùng một tệp: bộ dựng giả chỉ chạy 1 lần; lần sau 0 USD, không trừ lượt; hai khoá trỏ cùng `doc_id`.
+- [x] Hai lần tải cùng tệp đồng thời trên PostgreSQL: chỉ một bản dựng chạy.
+- [x] Cấu hình mặc định: một tài khoản tải và dựng 5 cuốn liền không bị chặn.
+- [x] Bật `build_monthly_max = 3`: lượt thứ 4 trong tháng thì `quota_exceeded`, trước khi worker chạy bước nào; sang tháng mới theo đồng hồ giả thì được.
+- [x] Trước xác nhận, bộ dựng chưa được gọi; xác nhận mới xếp hàng. API cho người dùng và giao diện không có trường dự toán/chi phí; test thấy đỏ trên
   luồng cũ còn dự toán.
-- [ ] Kết quả thành công/lỗi/huỷ của bộ dựng giả được ghi PostgreSQL cùng đúng `build_id`/người yêu cầu. Kiểm lại bằng truy vấn độc lập: số chi/usage
+- [x] Kết quả thành công/lỗi/huỷ của bộ dựng giả được ghi PostgreSQL cùng đúng `build_id`/người yêu cầu. Kiểm lại bằng truy vấn độc lập: số chi/usage
   khớp kết quả, giữ `usage_complete=false` khi thiếu số, cache không bị tính chi cũ lần nữa. Không lấy số 0 USD làm đủ bằng chứng, dùng usage giả khác 0.
-- [ ] Bật trần khâu dựng toàn hệ thống: chạm trần thì bản dựng nằm ở `queued`, không chạy.
-- [ ] Hai worker nhận việc cùng lúc: mỗi bản dựng một worker.
-- [ ] Mất nhịp tim quá 10 phút thì được nhận lại đúng 1 lần; lần sau `failed` với `loi_noi_bo`.
-- [ ] Huỷ khi `running`: không bước nào bắt đầu sau cờ huỷ.
-- [ ] Chưa xác minh email vẫn tải và dựng được.
-- [ ] Ảnh chụp: trang tải/xác nhận, đang dựng, lỗi bản quét, xong; cỡ 390 px và 1280 px; không có dự toán/chi phí cho người dùng.
+- [x] Bật trần khâu dựng toàn hệ thống: chạm trần thì bản dựng nằm ở `queued`, không chạy.
+- [x] Hai worker nhận việc cùng lúc: mỗi bản dựng một worker.
+- [x] Mất nhịp tim quá 10 phút thì được nhận lại đúng 1 lần; lần sau `failed` với `loi_noi_bo`.
+- [x] Huỷ khi `running`: không bước nào bắt đầu sau cờ huỷ.
+- [x] Chưa xác minh email vẫn tải và dựng được.
+- [x] Ảnh chụp: trang tải/xác nhận, đang dựng, lỗi bản quét, xong; cỡ 390 px và 1280 px; không có dự toán/chi phí cho người dùng.
 
 ## Ngoài vé
 

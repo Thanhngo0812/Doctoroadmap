@@ -1,0 +1,41 @@
+{
+  "sourceHead": "78fb774df4e4960cff80e3257d98af79f08aad17",
+  "reportAnchors": [
+    {
+      "line": 126,
+      "text": "| | Tiến trình: nút huỷ tiến trình | 390, 1280 | [x] Đã có | `design/preview/w14_upload_screens.html` (`#btn-cancel-pipeline`) | Chờ duyệt |"
+    },
+    {
+      "line": 144,
+      "text": "| | Tham gia: link hỏng / hết hạn | 390, 1280 | [x] Đã có | `design/preview/w03_auth_screens.html` (`#screen-token-invalid`) | Chờ duyệt |"
+    },
+    {
+      "line": 158,
+      "text": "## 4. Báo cáo Thực tế về Variables Cloud & Hỗ trợ Cần thiết"
+    },
+    {
+      "line": 161,
+      "text": "1. **Trạng thái Dữ liệu Hiện hành:** File `design/tokens/figma_variables_raw_export.json` và bản sao trong `report/w24-evidence/` là bản biểu diễn hợp đồng chuẩn (Local Token Contract) được sinh và đồng bộ trực tiếp với mã canvas của Plugin Figma `design/figma-plugin/code.js` và `tokens.css`."
+    },
+    {
+      "line": 162,
+      "text": "2. **Nguyên nhân Chưa có Bản Export REST API Cloud Native:**"
+    },
+    {
+      "line": 165,
+      "text": "   - Để trích xuất được biên nhận Cloud native (HTTP status 200, response headers, metadata Cloud), nhóm cần được cung cấp:"
+    },
+    {
+      "line": 166,
+      "text": "     - **File Key:** `UVhhlZnqdpV0JDcAHwJczo` (đã có)."
+    },
+    {
+      "line": 169,
+      "text": "   - Nhóm không tuyên bố đã đồng bộ Cloud 100% khi chưa có biên nhận HTTP thực tế này."
+    }
+  ],
+  "authTokenInvalidHtml": "id=\"screen-token-invalid\">\n      <span class=\"screen-tag\">Màn hình 5 &bull; W-03</span>\n      <h2>Token không hợp lệ hoặc đã hết hạn</h2>\n      <p class=\"desc\">Trạng thái liên kết dùng một lần: xác minh email có hiệu lực 24 giờ, đặt lại mật khẩu có hiệu lực 60 phút.</p>\n\n      <div class=\"banner banner-danger\">\n        <span>⚠️</span>\n        <div>\n          Liên kết không còn hiệu lực do đã hết hạn hoặc đã được sử dụng. Xác minh email có hiệu lực 24 giờ; đặt lại mật khẩu có hiệu lực 60 phút.\n        </div>\n      </div>\n\n      <p class=\"desc\" style=\"margin-bottom: 20px;\">\n        Vì lý do an toàn, các liên kết xác thực chỉ được dùng một lần duy nhất. Vui lòng yêu cầu liên kết mới.\n      </p>\n\n      <button type=\"button\" class=\"btn-submit\">\n        Yêu cầu gửi liên kết mới &rarr;\n      </button>\n      <button type=\"button\" class=\"btn-secondary\">\n        Về trang Đăng nhập\n      </button>\n",
+  "cancelPipelineIdOccurrences": 1,
+  "hasCancellationHandler": false,
+  "cloudReceiptFiles": []
+}

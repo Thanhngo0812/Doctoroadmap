@@ -1,0 +1,29 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+______________ test_confirm_does_not_resurrect_a_cancelled_build ______________
+src\web\backend\tests\test_coord_w14_cancellation_races.py:52: in test_confirm_does_not_resurrect_a_cancelled_build
+    assert rows[0]['status'] == 'cancelled', {'build':rows, 'courses':courses}
+E   AssertionError: {'build': [{'cancel_requested': True, 'counts_quota': True, 'status': 'queued'}], 'courses': [{'status': 'failed'}]}
+E   assert 'queued' == 'cancelled'
+E
+E     - cancelled
+E     + queued
+____________ test_cancel_during_publication_cannot_commit_success _____________
+src\web\backend\tests\test_coord_w14_cancellation_races.py:88: in test_cancel_during_publication_cannot_commit_success
+    assert job['status'] == 'cancelled', {'build':job, 'courses':courses, 'mail':b.mailer.messages}
+E   AssertionError: {'build': {'cancel_requested': True, 'spent_usd': Decimal('0.003000'), 'status': 'succeeded'}, 'courses': [{'published...a0-80b14484c525', 'html_body': None, 'subject': 'Bản dựng xong', 'to': '64eff49f486d4ffa954411ca49015c56@example.vn'}]}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-review-20261021\evidence\w14-repro2.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_coord_w14_cancellation_races.py::test_confirm_does_not_resurrect_a_cancelled_build
+FAILED src/web/backend/tests/test_coord_w14_cancellation_races.py::test_cancel_during_publication_cannot_commit_success
+2 failed, 1 warning in 7.33s

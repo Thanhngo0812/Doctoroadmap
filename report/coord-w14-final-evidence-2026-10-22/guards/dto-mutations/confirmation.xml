@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.466" timestamp="2026-10-22T18:45:28.115297+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_reused_queued_upload_has_its_own_confirmation_and_title" time="2.345"><failure message="assert None is not None">builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_fb95fb781ed14dc1a0e94...oken': '0McwF8Xii0STlaQQHdPcs_GbUsv2Nzcv1flxLfmrOtc'}, app=&lt;fastapi.applications.FastAPI object at 0x000001E57BD8F4D0&gt;)
+
+    def test_reused_queued_upload_has_its_own_confirmation_and_title(builds):
+        b=builds
+        data=pdf()
+        def post_upload():
+            return b.client.post('/api/v1/uploads',headers=b.headers,
+                data={'rights_confirmed':'true'},files={'file':('same.pdf',data,'application/pdf')})
+        first=post_upload()
+        assert first.status_code==200,first.text
+        first=first.json()
+        queued=b.client.post(f"/api/v1/uploads/{first['upload_id']}/build",headers=b.headers,json={})
+        assert queued.status_code==200,queued.text
+        second=post_upload()
+        assert second.status_code==200,second.text
+        second=second.json()
+        assert first['build']['build_id']==second['build']['build_id']
+        assert second['build']['status']=='queued'
+        assert second['confirmed_at'] is None
+
+        confirmed=b.client.post(f"/api/v1/uploads/{second['upload_id']}/build",headers=b.headers,
+            json={'title':'Tiêu đề của khoá thứ hai'})
+        assert confirmed.status_code==200,confirmed.text
+        assert confirmed.json()['course_id']==second['build']['course_id']
+        persisted=sql(b,'SELECT title FROM course WHERE id=:id',{'id':second['build']['course_id']})[0]
+        assert persisted['title']=='Tiêu đề của khoá thứ hai'
+        upload_state=b.client.get(f"/api/v1/uploads/{second['upload_id']}",headers=b.headers)
+        assert upload_state.status_code==200
+        confirmed_at=upload_state.json()['confirmed_at']
+&gt;       assert confirmed_at is not None
+E       assert None is not None
+
+src\web\backend\tests\test_builds_w14.py:747: AssertionError</failure></testcase></testsuite></testsuites>

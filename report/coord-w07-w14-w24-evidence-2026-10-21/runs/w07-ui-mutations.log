@@ -1,0 +1,52 @@
+[
+  {
+    "label": "rollback",
+    "command": [
+      "cmd.exe",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Roadmap.test.tsx",
+      "-t",
+      "optimistically updates one concept and restores only that checkbox when its request fails",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-ui-mutations\\ui-rollback-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "a3567a6453308f0eecf6b255248f357708258a7bb5b72a0032dbfba63c284357",
+    "source_restored": true
+  },
+  {
+    "label": "stale-snapshot",
+    "command": [
+      "cmd.exe",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Roadmap.test.tsx",
+      "-t",
+      "merges concurrent node responses by their own node so stale full snapshots cannot undo another check",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-review-20261021\\evidence\\w07-ui-mutations\\ui-stale-snapshot-red.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "source_sha256": "a3567a6453308f0eecf6b255248f357708258a7bb5b72a0032dbfba63c284357",
+    "source_restored": true
+  }
+]

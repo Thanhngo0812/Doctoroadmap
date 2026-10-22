@@ -1,0 +1,126 @@
+"""Archive named independent acceptance results; never copy test basetemp data."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+ROOT = Path(__file__).absolute().parents[2]
+WORK = ROOT / 'tmp/coord-w14-final-20261022'
+RUN = Path(__file__).absolute().parent
+OUT = ROOT / 'report/coord-w14-final-evidence-2026-10-22'
+BROWSER = WORK / 'report/w14-react-evidence/final-main-2026-10-22-run3'
+sys.path.insert(0, str(WORK / 'src/web/backend/tests'))
+from copy_w06_fixtures import safe_path
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def counts(data):
+    tree = ET.fromstring(data)
+    return {key: len(list(tree.iter(tag))) for key, tag in
+            [('tests', 'testcase'), ('failures', 'failure'), ('errors', 'error'), ('skipped', 'skipped')]}
+
+
+def main():
+    labels = ['fixture-copy', 'npm-ci', 'full-python', 'ui-mutations', 'dto-mutations', 'react', 'build', 'browser-main2',
+              'full-python-main3', 'react-main3', 'build-main3', 'react-main2', 'build-main2']
+    exits = {name: json.loads((RUN / (name + '-exit.json')).read_text(encoding='utf-8')) for name in labels}
+    assert all(row['native_exit_code'] == 0 for row in exits.values())
+    integrated_commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=WORK, text=True).strip()
+    assert all(exits[name]['commit'] == integrated_commit for name in ['full-python-main3', 'react-main3', 'build-main3'])
+    subprocess.run(['git', 'diff', '--quiet', exits['browser-main2']['commit'], integrated_commit,
+                    '--', 'src', 'scripts', 'tests', 'design'], cwd=WORK, check=True)
+    OUT.mkdir(parents=True, exist_ok=True)
+    (OUT / '.gitattributes').write_bytes(b'* -text\n')
+    normalized = []
+
+    def copy(source, relative):
+        safe_path(ROOT, source.relative_to(ROOT).as_posix())
+        destination = safe_path(OUT, relative)
+        before = source.read_bytes()
+        after = before
+        if source.suffix in {'.json', '.xml', '.log', '.md', '.txt', '.py', '.cjs'}:
+            after = before.replace(b'\r\n', b'\n')
+            after = b'\n'.join(line.rstrip(b' \t') for line in after.splitlines()).rstrip(b'\n') + b'\n'
+            if source.suffix == '.json':
+                assert json.loads(before) == json.loads(after)
+            if source.suffix == '.xml':
+                assert counts(before) == counts(after)
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        destination.write_bytes(after)
+        if before != after:
+            normalized.append({'path': relative, 'original_sha256': digest(before), 'canonical_sha256': digest(after),
+                               'change': 'CRLF to LF; trailing spaces and EOF blank lines only; originals retained in scratch'})
+
+    for label in labels:
+        for suffix in ['.log', '-exit.json']:
+            copy(RUN / (label + suffix), 'gate/' + label + suffix)
+    for name in ['full-python.xml', 'react.xml', 'full-python-main3.xml', 'react-main3.xml', 'react-main2.xml']:
+        copy(RUN / name, 'gate/' + name)
+    copy(RUN / 'preflight.json', 'gate/preflight.json')
+    copy(RUN / 'preflight-before-sa54.json', 'gate/preflight-before-sa54.json')
+    copy(RUN / 'cleanup-check.json', 'browser/cleanup-check.json')
+    copy(RUN / 'fixture-scale.json', 'fixture-scale.json')
+    for name in ['full-python-main2.log', 'full-python-main2-exit.json', 'full-python-main2-superseded.json']:
+        copy(RUN / name, 'gate-interrupted/' + name)
+    copy(RUN / 'browser.log', 'browser-red-before-sa54/command.log')
+    copy(RUN / 'browser-exit.json', 'browser-red-before-sa54/command-exit.json')
+    for source in (RUN / 'browser-red-before-sa54').iterdir():
+        if source.is_file():
+            copy(source, 'browser-red-before-sa54/' + source.name)
+    copy(RUN / 'preflight.py', 'scripts/preflight.py.txt')
+    copy(RUN / 'check_cleanup.py', 'scripts/check-cleanup.py.txt')
+    copy(RUN / 'archive_browser_red.py', 'scripts/archive-browser-red.py.txt')
+    for source in RUN.glob('figma-cloud*'):
+        copy(source, 'w24-cloud/' + source.name)
+    copy(WORK / 'report/w06-evidence/fixture-copy.json', 'fixture-copy.json')
+    for kind in ['ui-mutations', 'dto-mutations']:
+        for source in (WORK / 'report/w14-react-evidence/final-main-2026-10-22' / kind).iterdir():
+            if source.is_file():
+                copy(source, 'guards/' + kind + '/' + source.name)
+    audit = json.loads((BROWSER / 'browser-audit.json').read_text(encoding='utf-8'))
+    runtime = json.loads((BROWSER / 'runtime.json').read_text(encoding='utf-8'))
+    for name in ['browser-audit.json', 'http-responses.json', 'browser-state.json', 'runtime.json', audit['video']]:
+        copy(safe_path(BROWSER, name), 'browser/' + name)
+    for screen in audit['screens']:
+        copy(safe_path(BROWSER, screen['filename']), 'browser/' + screen['filename'])
+    for source in (ROOT / 'tmp/coord-w24-review-78fb774').iterdir():
+        if source.is_file():
+            copy(source, 'w24-local/' + source.name)
+    copy(Path(__file__), 'scripts/collect-evidence.py.txt')
+    copy(ROOT / 'tmp/coord-review-20261021/run_check.py', 'scripts/run-check.py.txt')
+    source_paths = subprocess.check_output(['git', 'ls-tree', '-r', '--name-only', '4e5cd15', 'report/w14-react-evidence'],
+                                           cwd=ROOT, text=True).splitlines()
+    assert not any('/basetemp' in name for name in source_paths)
+    summary = {'integrated_commit': integrated_commit,
+               'worker_commit': '4e5cd15a3d72ad7fafe8b33fa6677ede4c273022',
+               'core_notes_commit': '1acaf4e51373b938fc5a9e36577d8a9870882d0f',
+               'design_commit': '78fb774df4e4960cff80e3257d98af79f08aad17',
+               'python': counts((RUN / 'full-python-main3.xml').read_bytes()),
+               'react': counts((RUN / 'react-main3.xml').read_bytes()),
+               'previous_python': counts((RUN / 'full-python.xml').read_bytes()),
+               'browser_source_commit': exits['browser-main2']['commit'],
+               'browser_runtime_equals_final_source': True,
+               'previous_browser_native_exit_code': 1,
+               'previous_browser_failure': 'retry success worker completion timeout240s; root cause not established; all original evidence retained',
+               'browser': {'assertion_groups': len(audit['assertions']), 'screens': len(audit['screens']),
+                           'axe_audits': len(audit['accessibility']), 'api_responses': len(audit['apiResponses']),
+                           'api_payloads': len(audit['apiPayloads']), 'runtime': runtime},
+               'new_provider_calls': 0, 'new_provider_usd': 0,
+               'design_scope': 'local fixes independently verified; complete package not accepted or merged',
+               'web_tracked_basetemp_files': 0, 'exits': exits}
+    (OUT / 'summary.json').write_bytes((json.dumps(summary, ensure_ascii=False, indent=2) + '\n').encode())
+    (OUT / 'normalization.json').write_bytes((json.dumps(normalized, indent=2) + '\n').encode())
+    rows = [{'path': p.relative_to(OUT).as_posix(), 'bytes': p.stat().st_size, 'sha256': digest(p.read_bytes())}
+            for p in sorted(OUT.rglob('*')) if p.is_file() and p.name != 'manifest.json']
+    (OUT / 'manifest.json').write_bytes((json.dumps({'scope': 'canonical preserved evidence bytes', 'files': rows}, indent=2) + '\n').encode())
+    print(json.dumps({'files': len(rows), 'bytes': sum(row['bytes'] for row in rows),
+                      'python': summary['python'], 'react': summary['react']}))
+
+
+if __name__ == '__main__':
+    main()

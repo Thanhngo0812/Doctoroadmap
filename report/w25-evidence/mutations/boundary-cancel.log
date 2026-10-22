@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_cancel_requested_between_step_check_and_callback_remains_cancelled ___
+src\web\backend\tests\test_builds_w14.py:606: in test_cancel_requested_between_step_check_and_callback_remains_cancelled
+    assert result['status']=='cancelled' and float(result['spent_usd'])==.01
+E   AssertionError: assert ('cancelled' == 'cancelled'
+E
+E       cancelled and 0.0 == 0.01)
+E    +  where 0.0 = float(Decimal('0.000000'))
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=b54b982e-b729-430e-a449-3259d7de9576
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w25-build-cancellation\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w25-build-cancellation\src\web\backend\tests\test_builds_w14.py", line 603, in execute
+    raise AssertionError('Cancelled step unexpectedly started')
+AssertionError: Cancelled step unexpectedly started
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w25-build-cancellation\report\w25-evidence\mutations\boundary-cancel.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_cancel_requested_between_step_check_and_callback_remains_cancelled
+1 failed, 34 deselected, 1 warning in 5.37s

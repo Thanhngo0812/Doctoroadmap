@@ -1,0 +1,45 @@
+{
+  "baseUrl": "http://127.0.0.1:8014",
+  "databaseName": "wayfinder_w14_react_a3fbb59719cd4a7f95dfe026c918d972",
+  "database": "uuid-disposable-postgresql",
+  "migrationHead": "w14_0006",
+  "media": "MemoryMediaStore",
+  "mailer": "FakeMailer",
+  "runner": "ManifestFakeBuildRunner plus deterministic scripted retry/reject",
+  "modelCalls": 0,
+  "modelCostUsd": 0,
+  "fixture": {
+    "sourceDoc": "doc-1",
+    "manifestSha256Verified": true
+  },
+  "fixtureNames": {
+    "success": "w14-success.pdf",
+    "reuse": "w14-reuse.pdf",
+    "cancel": "w14-cancel.docx",
+    "retry": "w14-retry.pdf",
+    "reject": "w14-reject.pdf"
+  },
+  "browserExitCode": 0,
+  "temporaryDatabaseRemoved": true,
+  "accountRole": "user",
+  "ownedCourseCount": 5,
+  "courseStatuses": [
+    "failed",
+    "failed",
+    "ready",
+    "ready",
+    "ready"
+  ],
+  "buildStatuses": [
+    "cancelled",
+    "rejected",
+    "succeeded",
+    "succeeded"
+  ],
+  "allBuildRowsPersisted": true,
+  "sameFileReuseVerifiedByIndependentPostgres": true,
+  "syntheticBuildUsageRows": 5,
+  "syntheticBuildUsageUsd": 0.002,
+  "verifiedByIndependentPostgresConnection": true,
+  "localIntegrationEvidence": true
+}

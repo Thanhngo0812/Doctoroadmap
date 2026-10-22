@@ -1,0 +1,42 @@
+{
+  "sourceHead": "f1ca86dccdf5f7b8e224d325314324050fe415f1",
+  "mutation": "Replace bytes of static PNG with actual animated GIF bytes, keeping static src filename unchanged",
+  "command": "node scripts/verify_prototype_flows.cjs",
+  "nativeExitCode": 1,
+  "audit": {
+    "timestamp": "2026-10-22T06:08:32.393Z",
+    "totalFlows": 4,
+    "passedCount": 3,
+    "allPassed": false,
+    "flows": [
+      {
+        "flow": "Flow 1: Register -> Courses -> Lecture",
+        "stepsChecked": 5,
+        "passed": true,
+        "evidence": "report/w24-evidence/prototype_flow1_auth.png",
+        "notes": "Strict two-way open/close accordion toggle verified."
+      },
+      {
+        "flow": "Flow 2: Share -> Join Course",
+        "stepsChecked": 4,
+        "passed": true,
+        "evidence": "report/w24-evidence/prototype_flow2_learning.png",
+        "notes": "Clipboard content strictly verified: \"https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026\""
+      },
+      {
+        "flow": "Flow 3: Upload -> Config -> 4-Step Build",
+        "passed": false,
+        "error": "Flow 3 - Step 5: Spinner frame changed over time while reduced-motion is active! Must remain frozen."
+      },
+      {
+        "flow": "Flow 4: Quiz -> Submit -> Result & Citation",
+        "stepsChecked": 6,
+        "passed": true,
+        "evidence": "report/w24-evidence/prototype_flow4_quiz.png",
+        "notes": "Citation content proven: Harrison 21st Ed, Trang 1892, with verified view interaction."
+      }
+    ]
+  },
+  "workerNeverModified": true,
+  "scratchImageRestored": true
+}

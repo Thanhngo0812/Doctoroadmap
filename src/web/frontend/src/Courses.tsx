@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from './Auth';
 import { ApiError } from './api';
+import { buildStatusLabel } from './builds-api';
 import { coursePath, joinSample, listCourses, resumePath, type Course, type CourseList } from './courses-api';
 import './courses.css';
 
@@ -43,13 +44,13 @@ function CourseCard({ course, sample, pending, error, focusAction, onJoin }: { c
   const actionRef = useRef<HTMLAnchorElement>(null);
   useEffect(() => { if (focusAction) actionRef.current?.focus({ preventScroll: true }); }, [focusAction]);
   return <article className={`course-card${sample ? ' course-card--sample' : ''}${!ready ? ` course-card--${course.status}` : ''}`} aria-label={course.title}>
-    <div className="course-card__meta"><span>{course.module_count} module</span>{!ready && <span className="course-card__status">{course.status === 'building' ? 'Đang dựng' : 'Dựng chưa thành công'}</span>}</div>
-    <h3 className="course-card__title">{sample ? course.title : <Link to={coursePath(course.course_id)}>{course.title}</Link>}</h3>
+    <div className="course-card__meta"><span>{course.module_count} module</span>{!ready && <span className="course-card__status">{course.build ? buildStatusLabel(course.build) : course.status === 'building' ? 'Đang dựng' : 'Dựng chưa thành công'}</span>}</div>
+    <h3 className="course-card__title">{sample ? course.title : <Link to={ready ? coursePath(course.course_id) : resumePath(course)}>{course.title}</Link>}</h3>
     {course.description && <p className="course-card__description">{course.description}</p>}
     <p className="course-card__owner">{course.role === 'owner' ? 'Bạn là chủ khoá' : `Từ ${course.owner.display_name}`}{course.member_count !== null && <> · {course.member_count} thành viên</>}</p>
     {!sample && <div className="course-card__progress">{course.progress ? <><span>Xong {course.progress.learned}/{course.progress.total} bài học</span>{course.progress.total > 0 && <progress aria-label={`Tiến độ ${course.title}`} value={course.progress.learned} max={course.progress.total} />}</> : <span>Chưa có tiến độ</span>}</div>}
     <div className="course-card__actions">{sample ? <button className="button button-secondary" type="button" disabled={pending || !ready} onClick={onJoin}>{pending ? 'Đang tham gia…' : 'Tham gia'}</button>
-      : <Link ref={actionRef} className="button button-secondary" to={ready ? resumePath(course) : coursePath(course.course_id)}>{ready ? 'Học tiếp' : 'Xem khoá học'}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></Link>}</div>
+      : <Link ref={actionRef} className="button button-secondary" to={resumePath(course)}>{ready ? 'Học tiếp' : course.build && course.role === 'owner' ? 'Xem tiến trình' : 'Xem khoá học'}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" /></svg></Link>}</div>
     {error && <small className="courses-join-error" role="alert">{error}</small>}
   </article>;
 }
@@ -65,13 +66,20 @@ export function CoursesPage(props: ThemeProps) {
   const joinRequests = useRef(new Map<string, AbortController>());
   useEffect(() => {
     const controller = new AbortController();
+    let poll: ReturnType<typeof setTimeout> | undefined;
     setError(null);
-    void listCourses(controller.signal).then(value => { if (!controller.signal.aborted) setData(value); }).catch(cause => {
+    void listCourses(controller.signal).then(value => {
+      if (controller.signal.aborted) return;
+      setData(value);
+      if ([...value.owned, ...value.joined].some(course => course.build && ['queued', 'reading', 'running'].includes(course.build.status))) {
+        poll = setTimeout(() => setReload(current => current + 1), 3000);
+      }
+    }).catch(cause => {
       if (controller.signal.aborted) return;
       if (cause instanceof ApiError && cause.code === 'unauthenticated') auth.clearSession();
       else setError(message(cause));
     });
-    return () => controller.abort();
+    return () => { controller.abort(); clearTimeout(poll); };
   }, [reload, auth.clearSession]);
   useEffect(() => { const requests = joinRequests.current; return () => { requests.forEach(request => request.abort()); requests.clear(); }; }, []);
   const join = async (course: Course) => {

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.576" timestamp="2026-10-21T16:14:21.223722+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_same_actor_separate_courses_keep_the_confirmation_and_polling_context" time="1.025"><failure message="AssertionError: assert '48b80aba-fb2...-a8ff2503e431' == '756c704d-087...-4f9fdd3a848d'&#10;  &#10;  - 756c704d-0878-47d1-a775-4f9fdd3a848d&#10;  + 48b80aba-fb2e-471e-a7d5-a8ff2503e431">src\web\backend\tests\test_builds_w14.py:673: in test_same_actor_separate_courses_keep_the_confirmation_and_polling_context
+    assert response.json()['course_id']==second['build']['course_id']
+E   AssertionError: assert '48b80aba-fb2...-a8ff2503e431' == '756c704d-087...-4f9fdd3a848d'
+E
+E     - 756c704d-0878-47d1-a775-4f9fdd3a848d
+E     + 48b80aba-fb2e-471e-a7d5-a8ff2503e431</failure></testcase></testsuite></testsuites>

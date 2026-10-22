@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.394" timestamp="2026-10-21T16:49:24.221755+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="2.349"><failure message="AssertionError: ('GET', '/api/v1/courses/7fb26d3e-ebfe-4cfe-96ae-f5ff8245d8db/unguarded-w07-mutation', '{&quot;leaked&quot;:&quot;7fb26d3e-ebfe-4cfe-96ae-f5ff8245d8db&quot;}')">src\web\backend\tests\test_courses_w06.py:117: in test_every_cid_route_hides_private_course_from_outsiders_including_admin
+    assert len(assert_private_course_routes_protected(courses.app, client, headers, courses.course.id)) &gt;= 4
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\tests\test_courses_w06.py:107: in assert_private_course_routes_protected
+    assert response.status_code == 404, (method, path, response.text)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: ('GET', '/api/v1/courses/7fb26d3e-ebfe-4cfe-96ae-f5ff8245d8db/unguarded-w07-mutation', '{"leaked":"7fb26d3e-ebfe-4cfe-96ae-f5ff8245d8db"}')</failure></testcase></testsuite></testsuites>

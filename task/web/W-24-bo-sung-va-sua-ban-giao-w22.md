@@ -4,6 +4,32 @@
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
 **Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, kiểm lại chưa đạt toàn bộ; tiếp tục cùng vé.
 
+**Kiểm lại `78fb774`, 2026-10-22 — local sửa đúng, chưa nhận cả gói:** 32 test đạt, raw/CSS74/74 khớp, bốn mutation raw bị bắt;
+prototype local4/4 và phá đường ảnh OS reduced-motion bị bắt. Đóng hai lỗi mã OS/token của lần soát trước, không giao lại.
+Còn Required trong báo cáo: link tham gia hỏng đang trỏ màn token email/reset; nút huỷ bị dùng thay trạng thái cancelled; dark-mode thiếu đối chiếu
+bài học/chat/quiz; claim đồng bộ JSON37 biến với plugin26 biến chưa đúng. Giao commit sửa tài liệu để nhận mốc local có phạm vi chính xác.
+
+**Cloud đã kiểm độc lập bằng Figma connector:** file `UVhhlZnqdpV0JDcAHwJczo`, collection `VariableCollectionId:45:2`, một mode Light `45:0`,
+**0 Variables**, không có component/component-set native. Frame prototype thật `45:222`:69 hậu duệ,0 node có reactions, trang không có flow starting
+point; bốn ID từng khai `401:1200`, `405:2100`, `410:3500`, `415:4200` không tồn tại. Ảnh Cloud còn cắt nội dung và hiện `&bull;`.
+Không còn coi chỉ thiếu REST token là nguyên nhân; hoàn thiện dữ liệu/bindings/luồng thật và xuất receipt/video. W-22/W-24/W-23 vẫn mở.
+Xem [nghiệm thu đợt này](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md),
+[lời giao tiếp](../../report/lenh-giao-viec-sau-w14-2026-10-22.md).
+
+**Kiểm lại `f1ca86d`, 2026-10-22 — vẫn mở:** độc lập xác nhận12 cấu hình sửa chữ tối/bar, tiến độ8→9→8/18 và spinner96px; clipboard, scroll và khung ảnh thật đều bắt phép phá. Chỉ còn3 nhóm Required: CSS OS reduced-motion còn trỏ ảnh hỏng dù nút bật tay đúng; so37×2 mode còn7 lệch, đổi dark tint0.99 cả28 test vẫn xanh; checklist chưa phủ đủ trạng thái và có2 link chứng cứ sai. Cloud vẫn thiếu Variables export được xác minh/video bốn prototype/trang-trạng thái đầy đủ. Chưa ghép nguyên bản mới vào main. Xem [review và bằng chứng](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md), [lời giao phần còn lại](../../report/lenh-giao-viec-sau-w25-2026-10-22.md). Không giao lại các lỗi vừa được chứng minh đã sửa.
+
+**Soát bản mới `c1df32a`, 2026-10-21 — chưa đạt:** kiểm Chromium 12 cấu hình thấy sáu cấu hình tối chữ đen, progress trong suốt do tên token không có. Raw/light có7 điểm lệch CSS, guard vẫn xanh khi đổi primary; chưa có provenance Cloud. Bỏ clipboard.writeText hoặc scrollIntoView thì verifier vẫn4/4; ảnh GIF/tĩnh prototype hỏng naturalWidth0 vẫn qua phép so khung. Vòng W-14 chỉ32px thay96; W-07 tổng12/18 khác module8/18. Checklist từng trạng thái/node/video Figma còn thiếu. Xem [review và ảnh](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md), [lời giao cụ thể](../../report/lenh-giao-viec-sau-w07-2026-10-21.md).
+
+Các điểm kiểm mới trước bàn giao lại:
+
+- [ ] Hai preview W-07/W-14 mới dùng đúng token, sáng/tối đọc được và tổng tiến độ cùng nguồn dữ liệu; không lấy các mục đã đạt trên main làm bằng chứng cho preview mới.
+- [ ] Raw export có nguồn thật và so đủ tên/kiểu/giá trị với CSS; đổi giá trị riêng phải đỏ.
+- [ ] Clipboard thật/viewport-scroll thật được assert; gỡ thao tác tương ứng phải đỏ.
+- [ ] Ảnh vòng chờ decode/naturalWidth>0 trước so khung; đúng96px, reduce tĩnh và cho GIF chạy lại phải đỏ.
+- [ ] Đủ từng dòng trang/trạng thái của spec11, đúng cỡ/sáng tối, node/Variables receipt và video bấm bốn prototype Figma; phần chưa kiểm ghi thiếu.
+
+Giữ phần local đã ghép/đạt ở các đợt trước; các dấu đạt bên dưới phản ánh phạm vi trước đó. Tiếp cùng W-24, chưa đóng W-22/W-24 hoặc nhập bản mới làm chuẩn React.
+
 **Soát cùng W-06, 2026-10-21:** phần local `63dd8bd` được nhận và sửa tại `8b6e500`, ghép `dc41ee8`. Đã kiểm 23 test token,
 12 cấu hình preview W-06/W-04 không tràn/vùng bấm ≥44×44 và giảm chuyển động sau ổn định. Plugin nay không gán hạn 24 giờ cho trạng thái email đã xác minh,
 không ghi nối reactions thành công vô điều kiện; báo cáo được sửa resend 3 lần/giờ và giới hạn claim Cloud/clipboard/citation.
@@ -26,7 +52,7 @@ Nhận main mới trước khi tiếp tục, giữ sửa TTL và ưu tiên hỗ 
 GIF tĩnh cả bốn preview, vùng bấm cũ, guard primary/spacing/RGBA và chat mẫu vẫn đạt kiểm runtime/mutation.
 Xem [nghiệm thu mới](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-20.md); không giao lại những lỗi đã đóng.
 
-**Chỉ còn các nhóm việc sau để hoàn tất tiêu chí gốc:**
+**Các nhóm việc còn lại trước bản bàn giao `c1df32a` (lần soát mới bổ sung các điểm kiểm ở đầu vé):**
 
 - **Nguồn Variables export:** tệp đang giao được script tạo lại giống từng byte từ JSON local; chưa chứng minh Variables trong file Figma.
   Giao bản xuất thật có nguồn gốc, đúng tên/giá trị; sửa metadata và báo cáo để phân biệt dữ liệu nhập local với dữ liệu xuất thực.

@@ -1,0 +1,265 @@
+{
+  "integrated_commit": "61b5d80e73dbf8a36ddcee33126033da17123a4e",
+  "worker_commit": "4e5cd15a3d72ad7fafe8b33fa6677ede4c273022",
+  "core_notes_commit": "1acaf4e51373b938fc5a9e36577d8a9870882d0f",
+  "design_commit": "78fb774df4e4960cff80e3257d98af79f08aad17",
+  "python": {
+    "tests": 2186,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "react": {
+    "tests": 104,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "previous_python": {
+    "tests": 2177,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "browser_source_commit": "9f3c0634720b6a5c83324c35a94fe22e3efc6422",
+  "browser_runtime_equals_final_source": true,
+  "previous_browser_native_exit_code": 1,
+  "previous_browser_failure": "retry success worker completion timeout240s; root cause not established; all original evidence retained",
+  "browser": {
+    "assertion_groups": 13,
+    "screens": 47,
+    "axe_audits": 14,
+    "api_responses": 233,
+    "api_payloads": 214,
+    "runtime": {
+      "baseUrl": "http://127.0.0.1:8014",
+      "databaseName": "wayfinder_w14_react_7802bf98707c42b3ae4c826a967570bb",
+      "database": "uuid-disposable-postgresql",
+      "migrationHead": "w14_0006",
+      "media": "MemoryMediaStore",
+      "mailer": "FakeMailer",
+      "runner": "ManifestFakeBuildRunner plus deterministic scripted retry/reject",
+      "modelCalls": 0,
+      "modelCostUsd": 0,
+      "fixture": {
+        "sourceDoc": "doc-1",
+        "manifestSha256Verified": true
+      },
+      "fixtureNames": {
+        "success": "w14-success.pdf",
+        "reuse": "w14-reuse.pdf",
+        "cancel": "w14-cancel.docx",
+        "retry": "w14-retry.pdf",
+        "reject": "w14-reject.pdf"
+      },
+      "browserExitCode": 0,
+      "temporaryDatabaseRemoved": true,
+      "accountRole": "user",
+      "ownedCourseCount": 5,
+      "courseStatuses": [
+        "failed",
+        "failed",
+        "ready",
+        "ready",
+        "ready"
+      ],
+      "buildStatuses": [
+        "cancelled",
+        "rejected",
+        "succeeded",
+        "succeeded"
+      ],
+      "allBuildRowsPersisted": true,
+      "sameFileReuseVerifiedByIndependentPostgres": true,
+      "separateConfirmedUploadsVerifiedByIndependentPostgres": true,
+      "reusedBuildWorkerAttempts": 1,
+      "syntheticBuildUsageRows": 5,
+      "syntheticBuildUsageUsd": 0.002,
+      "verifiedByIndependentPostgresConnection": true,
+      "localIntegrationEvidence": true
+    }
+  },
+  "new_provider_calls": 0,
+  "new_provider_usd": 0,
+  "design_scope": "local fixes independently verified; complete package not accepted or merged",
+  "web_tracked_basetemp_files": 0,
+  "exits": {
+    "fixture-copy": {
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "src/web/backend/tests/copy_w06_fixtures.py"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "1da44f0ffbf525ebb39f3a193fd8346e6495ca3a",
+      "native_exit_code": 0,
+      "elapsed_seconds": 95.22
+    },
+    "npm-ci": {
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "ci"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "1da44f0ffbf525ebb39f3a193fd8346e6495ca3a",
+      "native_exit_code": 0,
+      "elapsed_seconds": 21.26
+    },
+    "full-python": {
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/coord-w14-final-python-1",
+        "--junitxml=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-review-20261022/full-python.xml"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "1da44f0ffbf525ebb39f3a193fd8346e6495ca3a",
+      "native_exit_code": 0,
+      "elapsed_seconds": 1166.0
+    },
+    "ui-mutations": {
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w14_react_mutations.py"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "1da44f0ffbf525ebb39f3a193fd8346e6495ca3a",
+      "native_exit_code": 0,
+      "elapsed_seconds": 56.06
+    },
+    "dto-mutations": {
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w14_dto_mutations.py"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "1da44f0ffbf525ebb39f3a193fd8346e6495ca3a",
+      "native_exit_code": 0,
+      "elapsed_seconds": 24.48
+    },
+    "react": {
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-review-20261022/react.xml"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "1da44f0ffbf525ebb39f3a193fd8346e6495ca3a",
+      "native_exit_code": 0,
+      "elapsed_seconds": 49.22
+    },
+    "build": {
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "1da44f0ffbf525ebb39f3a193fd8346e6495ca3a",
+      "native_exit_code": 0,
+      "elapsed_seconds": 7.95
+    },
+    "browser-main2": {
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "scripts/w14_web_runtime.py"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "9f3c0634720b6a5c83324c35a94fe22e3efc6422",
+      "native_exit_code": 0,
+      "elapsed_seconds": 554.91
+    },
+    "full-python-main3": {
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/coord-w14-final-python-3",
+        "--junitxml=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-review-20261022/full-python-main3.xml"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "61b5d80e73dbf8a36ddcee33126033da17123a4e",
+      "native_exit_code": 0,
+      "elapsed_seconds": 487.03
+    },
+    "react-main3": {
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-review-20261022/react-main3.xml"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "61b5d80e73dbf8a36ddcee33126033da17123a4e",
+      "native_exit_code": 0,
+      "elapsed_seconds": 61.03
+    },
+    "build-main3": {
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "61b5d80e73dbf8a36ddcee33126033da17123a4e",
+      "native_exit_code": 0,
+      "elapsed_seconds": 5.0
+    },
+    "react-main2": {
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-review-20261022/react-main2.xml"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "9f3c0634720b6a5c83324c35a94fe22e3efc6422",
+      "native_exit_code": 0,
+      "elapsed_seconds": 92.3
+    },
+    "build-main2": {
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022",
+      "commit": "9f3c0634720b6a5c83324c35a94fe22e3efc6422",
+      "native_exit_code": 0,
+      "elapsed_seconds": 7.22
+    }
+  }
+}

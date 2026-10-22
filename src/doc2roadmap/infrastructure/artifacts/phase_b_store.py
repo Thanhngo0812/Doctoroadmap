@@ -8,7 +8,7 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
 from threading import Event, RLock
-from time import monotonic
+from time import monotonic, sleep
 from typing import Any, Callable, Mapping, TypeVar
 
 T = TypeVar("T")
@@ -205,4 +205,11 @@ class JsonPhaseBStore(_PhaseBStore):
             json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n",
             encoding="utf-8",
         )
-        os.replace(temporary, self.path)
+        for attempt in range(5):
+            try:
+                os.replace(temporary, self.path)
+                break
+            except PermissionError:
+                if attempt == 4:
+                    raise
+                sleep(0.1 * (attempt + 1))

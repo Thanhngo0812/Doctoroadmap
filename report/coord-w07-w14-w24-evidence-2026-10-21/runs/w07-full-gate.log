@@ -1,0 +1,53 @@
+........................................................................ [  3%]
+........................................................................ [  6%]
+........................................................................ [ 10%]
+........................................................................ [ 13%]
+........................................................................ [ 17%]
+........................................................................ [ 20%]
+........................................................................ [ 23%]
+........................................................................ [ 27%]
+........................................................................ [ 30%]
+........................................................................ [ 34%]
+........................................................................ [ 37%]
+........................................................................ [ 40%]
+........................................................................ [ 44%]
+........................................................................ [ 47%]
+........................................................................ [ 51%]
+........................................................................ [ 54%]
+........................................................................ [ 57%]
+........................................................................ [ 61%]
+........................................................................ [ 64%]
+........................................................................ [ 68%]
+........................................................................ [ 71%]
+........................................................................ [ 74%]
+........................................................................ [ 78%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 88%]
+........................................................................ [ 91%]
+...............................................s........................ [ 95%]
+........................................................................ [ 98%]
+...........................                                              [100%]
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-pypdfium2]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-pypdfium2]
+tests/integration/test_ingest_real.py::test_real_ingest_reuses_parse_and_keeps_unchanged_chunk_ids
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\docling\models\stages\ocr\rapid_ocr_model.py:430: DeprecationWarning: deprecated
+    if self.options.rec_font_path is not None:
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-review-20261021\evidence\w07-full-gate.xml -
+2114 passed, 1 skipped, 8 warnings in 494.21s (0:08:14)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
