@@ -3,7 +3,9 @@ from __future__ import annotations
 import hashlib
 import json
 import math
+import threading
 import time
+from collections import OrderedDict
 
 from doc2roadmap.application.use_cases.ingest_document import validate_doc_id
 from doc2roadmap.application.use_cases.index_document import retriever_from_payload
@@ -154,13 +156,63 @@ def _is_complete_learning_graph(graph) -> bool:
             and payload.get("main_complete") is not False)
 
 
+class SearchContext:
+    """A loaded graph and retrieval index plus values derived from them, computed at most once."""
+
+    def __init__(self, graph, index) -> None:
+        self.graph, self.index, self._derived = graph, index, {}
+
+    def derived(self, name: str, factory):
+        if name not in self._derived:
+            self._derived[name] = factory()
+        return self._derived[name]
+
+
+class SearchContextCache:
+    """Process-wide LRU of SearchContext keyed by (store, doc_id, graph_version, retrieval version).
+
+    Graph and retrieval artifacts are immutable per version, so a key never goes stale; a new retrieval
+    version changes the key. Stores that cannot name their root or latest retrieval version are not cached.
+    """
+
+    def __init__(self, max_entries: int = 8) -> None:
+        self.max_entries, self._entries, self._lock = max_entries, OrderedDict(), threading.Lock()
+        self.loads = 0
+
+    def get(self, store, doc_id: str, graph_version: int | None) -> SearchContext:
+        version_of = getattr(store, "latest_retrieval_version", None)
+        root = getattr(store, "root", None)
+        index_version = version_of(doc_id) if version_of and root is not None and graph_version is not None else None
+        if index_version is None:
+            return self._load(store, doc_id, graph_version)
+        key = (str(root), doc_id, graph_version, index_version)
+        with self._lock:
+            if key in self._entries:
+                self._entries.move_to_end(key)
+                return self._entries[key]
+        context = self._load(store, doc_id, graph_version)
+        with self._lock:
+            self._entries[key] = context
+            while len(self._entries) > self.max_entries:
+                self._entries.popitem(last=False)
+        return context
+
+    def _load(self, store, doc_id: str, graph_version: int | None) -> SearchContext:
+        self.loads += 1
+        return SearchContext(load_learning_graph(store, doc_id, graph_version), store.load_latest_retrieval(doc_id))
+
+
+SEARCH_CONTEXTS = SearchContextCache()
+
+
 class SearchDocumentB:
     """Phase B search wrapper: pinned graph/index, module hints, no progress filtering."""
 
-    def __init__(self, artifact_store, embedding, phase_b_store) -> None:
+    def __init__(self, artifact_store, embedding, phase_b_store, contexts: SearchContextCache | None = None) -> None:
         self.artifacts = artifact_store
         self.embedding = embedding
         self.phase_b = phase_b_store
+        self.contexts = SEARCH_CONTEXTS if contexts is None else contexts
 
     def search(self, query: str, *, doc_id: str, graph_version: int | None = None,
                current_module_id: str | None = None, scope: str = "all", k: int = 5,
@@ -182,12 +234,13 @@ class SearchDocumentB:
             raise ValueError("k phải nằm trong [1, 6]")
         if scope not in {"uu_tien_module", "ca_tai_lieu"} and not scope.startswith("module:"):
             raise ValueError("scope phải là uu_tien_module, ca_tai_lieu hoặc module:<index>")
-        graph = load_learning_graph(self.artifacts, doc_id, graph_version)
-        index = self.artifacts.load_latest_retrieval(doc_id)
+        context = self.contexts.get(self.artifacts, doc_id, graph_version)
+        graph, index = context.graph, context.index
         expected_model = index.manifest.get("embedding_model_id")
         if expected_model != self.embedding.embedding_model_id:
             raise ValueError("mô hình embedding truy vấn không khớp mô hình đã lập chỉ mục")
-        fingerprint = assert_retrieval_compatible(index.payload, graph.chunks.values())
+        fingerprint = context.derived(
+            "fingerprint", lambda: assert_retrieval_compatible(index.payload, graph.chunks.values()))
         estimated_tokens = max(1, math.ceil(len(query) / 3))
         estimated_cost = embedding_cost(self.embedding.embedding_model_id, estimated_tokens)
         if dry_run:
@@ -201,19 +254,21 @@ class SearchDocumentB:
         vectors = self.embedding.embed([EmbeddingRequest(query, "RETRIEVAL_QUERY")])
         if len(vectors) != 1:
             raise ValueError("cổng embedding trả sai số lượng vector truy vấn")
+        cached = bool(getattr(self.embedding, "last_cached", 0))
         if self.phase_b:
             self.phase_b.append_usage({
                 "purpose": "embedding", "operation": "search_query",
                 "model_id": self.embedding.embedding_model_id, "doc_id": doc_id,
-                "input_tokens": estimated_tokens, "cost_usd": estimated_cost,
-                "cost_basis": "estimated at configured input token rate",
+                "input_tokens": 0 if cached else estimated_tokens, "cost_usd": 0.0 if cached else estimated_cost,
+                "cost_basis": "query vector reused; no embedding call" if cached
+                else "estimated at configured input token rate",
                 "elapsed_ms": round((time.perf_counter() - started) * 1000),
                 "context_hash": _hash({"query": query, "graph_version": graph.graph_version}),
             })
-        retriever = retriever_from_payload(index.payload)
+        retriever = context.derived("retriever", lambda: retriever_from_payload(index.payload))
         hits = retriever.search(query, vectors[0], top_k=20)
-        overlay = build_module_assignments(graph.payload, graph.chunks.values())
-        assignments = overlay["assignments"]
+        assignments = context.derived(
+            "assignments", lambda: build_module_assignments(graph.payload, graph.chunks.values()))["assignments"]
         module_order = {module_id: int(module.get("index", position))
                         for position, (module_id, module) in enumerate(graph.modules.items())}
         if scope.startswith("module:"):

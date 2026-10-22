@@ -134,15 +134,17 @@ class IndexConcepts:
             raise ValueError("cổng embedding trả sai số lượng vector truy vấn")
         if len(vectors[0]) != 768:
             raise ValueError("truy vấn khái niệm yêu cầu vector 768 chiều")
+        cached = bool(getattr(self.embedding, "last_cached", 0))
         if self.phase_b_store:
             self.phase_b_store.append_usage({
                 "model_id": self.embedding.embedding_model_id,
                 "purpose": "embedding",
                 "operation": "concept_query",
                 "input_count": 1,
-                "input_tokens": estimated_tokens,
-                "cost_usd": estimated_cost,
-                "cost_basis": "estimated tokens at shared online embedding price",
+                "input_tokens": 0 if cached else estimated_tokens,
+                "cost_usd": 0.0 if cached else estimated_cost,
+                "cost_basis": "query vector reused; no embedding call" if cached
+                else "estimated tokens at shared online embedding price",
                 "elapsed_ms": round((time.perf_counter() - started) * 1000),
                 "context_hash": _hash(query),
             })

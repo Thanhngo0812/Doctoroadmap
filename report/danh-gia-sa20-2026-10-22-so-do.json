@@ -1,0 +1,359 @@
+{
+ "counts": {
+  "E": 55,
+  "L": 18,
+  "R": 11,
+  "S": 78
+ },
+ "hidden_title": {
+  "examples": [
+   {
+    "cos": 0.804,
+    "hidden_run": "Phái Hêghen trẻ và Lao động bị tha hóa",
+    "l1": "Quá trình hình thành và phát triển triết học Mác",
+    "reference": "Quá trình hình thành và phát triển triết học Mác"
+   },
+   {
+    "cos": 0.81,
+    "hidden_run": "Tư liệu sản xuất tinh thần",
+    "l1": "Tính giai cấp của ý thức xã hội",
+    "reference": "Tính giai cấp của ý thức xã hội"
+   },
+   {
+    "cos": 0.815,
+    "hidden_run": "Phương thức sản xuất tư bản chủ nghĩa",
+    "l1": "Những điều kiện lịch sử của sự ra đời triết học Mác",
+    "reference": "Những điều kiện lịch sử của sự ra đời triết học Mác"
+   },
+   {
+    "cos": 0.817,
+    "hidden_run": "Khai triển định thức theo hàng hoặc cột",
+    "l1": "Công thức khai triển định thức",
+    "reference": "Tính chất"
+   },
+   {
+    "cos": 0.819,
+    "hidden_run": "Điều kiện định thức bằng không",
+    "l1": "• Ví dụ 14",
+    "reference": "• Ví dụ 14"
+   },
+   {
+    "cos": 0.82,
+    "hidden_run": "Quá trình phản ánh và mô hình hóa đối tượng",
+    "l1": "Bản chất của ý thức",
+    "reference": "Bản chất của ý thức"
+   }
+  ],
+  "fallback_or_error": 9,
+  "generated_by_llm": 46,
+  "hidden_run": {
+   "chrf_mean": 0.3655,
+   "cosine_mean": 0.8943,
+   "cosine_median": 0.894,
+   "exact_rate": 0.0217,
+   "n": 46
+  },
+  "l1_unhidden_all_E": {
+   "chrf_mean": 0.8636,
+   "cosine_mean": 0.9726,
+   "cosine_median": 1.0,
+   "exact_rate": 0.7455,
+   "n": 55
+  },
+  "l1_unhidden_same_modules": {
+   "chrf_mean": 0.837,
+   "cosine_mean": 0.9672,
+   "cosine_median": 1.0,
+   "exact_rate": 0.6957,
+   "n": 46
+  },
+  "per_book_hidden_cosine": {
+   "doc-1": 0.8737,
+   "doc-4": 0.8968,
+   "nhap-mon-ml": 0.8838,
+   "xstk-ch3-1": 0.9171
+  },
+  "type_E_modules": 55
+ },
+ "hidden_title_filtered": {
+  "filter": "naming.py author_ok + report 6.4 conditions 4 and 5",
+  "hidden_run": {
+   "chrf_mean": 0.3627,
+   "cosine_mean": 0.8962,
+   "cosine_median": 0.8996,
+   "exact_rate": 0.0244,
+   "n": 41
+  },
+  "l1_unhidden_all_passing": {
+   "chrf_mean": 0.9041,
+   "cosine_mean": 0.981,
+   "cosine_median": 1.0,
+   "exact_rate": 0.8163,
+   "n": 49
+  },
+  "l1_unhidden_same_modules": {
+   "chrf_mean": 0.8854,
+   "cosine_mean": 0.9773,
+   "cosine_median": 1.0,
+   "exact_rate": 0.7805,
+   "n": 41
+  },
+  "passing_and_generated_by_llm": 41,
+  "passing_filter": 49,
+  "rejected_by": {
+   "6.4 dieu 4": 3,
+   "naming.py author_ok": 3
+  },
+  "type_E_modules": 55
+ },
+ "versions": {
+  "A10": {
+   "adjacent_similarity": {
+    "ge_0.90": 0.784,
+    "mean": 0.9507,
+    "median": 0.9493,
+    "n": 162,
+    "per_book_mean": {
+     "doc-1": 0.9804,
+     "doc-4": 0.9552,
+     "doc-6": 0.8925,
+     "naive-bayes": 0.9211,
+     "nhap-mon-ml": 0.879,
+     "xstk-ch3-1": 0.9429
+    }
+   },
+   "borrowed_rate": 0.0802,
+   "code_or_form_share": 0.8642,
+   "dot_share": 0.216,
+   "fallback_rate": null,
+   "grounded_rate": 0.8765,
+   "identical_pairs_pm1_modules": 72,
+   "identical_pm2_modules": 72,
+   "intrusion_accuracy": 0.6543,
+   "intrusion_chance": 0.3457,
+   "intrusion_n": 162,
+   "median_chars": 33.0,
+   "n": 162,
+   "per_book_borrowed": {
+    "doc-1": 0.1143,
+    "doc-4": 0.0659,
+    "doc-6": 0.0,
+    "naive-bayes": 0.0,
+    "nhap-mon-ml": 0.1333,
+    "xstk-ch3-1": 0.0714
+   },
+   "per_book_grounded": {
+    "doc-1": 1.0,
+    "doc-4": 0.9341,
+    "doc-6": 0.0,
+    "naive-bayes": 0.6,
+    "nhap-mon-ml": 0.5333,
+    "xstk-ch3-1": 0.7857
+   },
+   "per_type": {
+    "E": {
+     "intrusion": 0.8727,
+     "n": 55
+    },
+    "L": {
+     "intrusion": 0.5,
+     "n": 18
+    },
+    "R": {
+     "intrusion": 0.6364,
+     "n": 11
+    },
+    "S": {
+     "intrusion": 0.5385,
+     "n": 78
+    }
+   }
+  },
+  "DET": {
+   "adjacent_similarity": {
+    "ge_0.90": 0.4074,
+    "mean": 0.8915,
+    "median": 0.8937,
+    "n": 162,
+    "per_book_mean": {
+     "doc-1": 0.892,
+     "doc-4": 0.8943,
+     "doc-6": 0.8618,
+     "naive-bayes": 0.9078,
+     "nhap-mon-ml": 0.8637,
+     "xstk-ch3-1": 0.9
+    }
+   },
+   "borrowed_rate": 0.0123,
+   "code_or_form_share": 0.0,
+   "dot_share": 0.6852,
+   "fallback_rate": 1.0,
+   "grounded_rate": 1.0,
+   "identical_pairs_pm1_modules": 2,
+   "identical_pm2_modules": 2,
+   "intrusion_accuracy": 0.9568,
+   "intrusion_chance": 0.3457,
+   "intrusion_n": 162,
+   "median_chars": 30.0,
+   "n": 162,
+   "per_book_borrowed": {
+    "doc-1": 0.0,
+    "doc-4": 0.011,
+    "doc-6": 0.0,
+    "naive-bayes": 0.0,
+    "nhap-mon-ml": 0.0,
+    "xstk-ch3-1": 0.0714
+   },
+   "per_book_grounded": {
+    "doc-1": 1.0,
+    "doc-4": 1.0,
+    "doc-6": 1.0,
+    "naive-bayes": 1.0,
+    "nhap-mon-ml": 1.0,
+    "xstk-ch3-1": 1.0
+   },
+   "per_type": {
+    "E": {
+     "intrusion": 0.8909,
+     "n": 55
+    },
+    "L": {
+     "intrusion": 0.9444,
+     "n": 18
+    },
+    "R": {
+     "intrusion": 1.0,
+     "n": 11
+    },
+    "S": {
+     "intrusion": 1.0,
+     "n": 78
+    }
+   }
+  },
+  "L1": {
+   "adjacent_similarity": {
+    "ge_0.90": 0.3951,
+    "mean": 0.8891,
+    "median": 0.8887,
+    "n": 162,
+    "per_book_mean": {
+     "doc-1": 0.8889,
+     "doc-4": 0.8935,
+     "doc-6": 0.8107,
+     "naive-bayes": 0.892,
+     "nhap-mon-ml": 0.8499,
+     "xstk-ch3-1": 0.9131
+    }
+   },
+   "borrowed_rate": 0.0185,
+   "code_or_form_share": 0.0,
+   "dot_share": 0.1049,
+   "fallback_rate": 0.1358,
+   "grounded_rate": 0.9815,
+   "identical_pairs_pm1_modules": 0,
+   "identical_pm2_modules": 0,
+   "intrusion_accuracy": 0.8765,
+   "intrusion_chance": 0.3457,
+   "intrusion_n": 162,
+   "median_chars": 30.5,
+   "n": 162,
+   "per_book_borrowed": {
+    "doc-1": 0.0286,
+    "doc-4": 0.011,
+    "doc-6": 0.0,
+    "naive-bayes": 0.0,
+    "nhap-mon-ml": 0.0,
+    "xstk-ch3-1": 0.0714
+   },
+   "per_book_grounded": {
+    "doc-1": 1.0,
+    "doc-4": 0.978,
+    "doc-6": 1.0,
+    "naive-bayes": 1.0,
+    "nhap-mon-ml": 1.0,
+    "xstk-ch3-1": 0.9286
+   },
+   "per_type": {
+    "E": {
+     "intrusion": 0.9273,
+     "n": 55
+    },
+    "L": {
+     "intrusion": 0.6667,
+     "n": 18
+    },
+    "R": {
+     "intrusion": 0.9091,
+     "n": 11
+    },
+    "S": {
+     "intrusion": 0.8846,
+     "n": 78
+    }
+   }
+  },
+  "L2": {
+   "adjacent_similarity": {
+    "ge_0.90": 0.4198,
+    "mean": 0.8919,
+    "median": 0.8916,
+    "n": 162,
+    "per_book_mean": {
+     "doc-1": 0.8974,
+     "doc-4": 0.8962,
+     "doc-6": 0.8168,
+     "naive-bayes": 0.8551,
+     "nhap-mon-ml": 0.8601,
+     "xstk-ch3-1": 0.9085
+    }
+   },
+   "borrowed_rate": 0.0247,
+   "code_or_form_share": 0.0,
+   "dot_share": 0.0802,
+   "fallback_rate": 0.1049,
+   "grounded_rate": 0.9877,
+   "identical_pairs_pm1_modules": 0,
+   "identical_pm2_modules": 0,
+   "intrusion_accuracy": 0.8889,
+   "intrusion_chance": 0.3457,
+   "intrusion_n": 162,
+   "median_chars": 30.0,
+   "n": 162,
+   "per_book_borrowed": {
+    "doc-1": 0.0286,
+    "doc-4": 0.011,
+    "doc-6": 0.0,
+    "naive-bayes": 0.0,
+    "nhap-mon-ml": 0.0667,
+    "xstk-ch3-1": 0.0714
+   },
+   "per_book_grounded": {
+    "doc-1": 1.0,
+    "doc-4": 0.989,
+    "doc-6": 1.0,
+    "naive-bayes": 1.0,
+    "nhap-mon-ml": 1.0,
+    "xstk-ch3-1": 0.9286
+   },
+   "per_type": {
+    "E": {
+     "intrusion": 0.9455,
+     "n": 55
+    },
+    "L": {
+     "intrusion": 0.6667,
+     "n": 18
+    },
+    "R": {
+     "intrusion": 0.9091,
+     "n": 11
+    },
+    "S": {
+     "intrusion": 0.8974,
+     "n": 78
+    }
+   }
+  }
+ }
+}

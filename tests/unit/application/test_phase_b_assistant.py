@@ -280,7 +280,7 @@ def test_roadmap_session_searches_all_and_returns_roadmap_and_module_cards():
         concept_lookup=lambda query: {"matches": [{"node_id": "a"}]}).ask(
         'book', 1, 'roadmap', 'Ma trận', owner='alice', allow_spend=True)
     context = json.loads(model.calls[0][0][0]['text'])
-    assert seen[0]['current_module_id'] is None and seen[0]['scope'] == 'all'
+    assert seen[0]['current_module_id'] is None and seen[0]['scope'] == 'ca_tai_lieu'
     assert context['scope']['kind'] == 'roadmap'
     assert context['scope']['modules'] == [[1, 'Ma trận', 1], [2, 'Định thức', 1]]
     assert len(result['graph_card']['roadmap']) == 2

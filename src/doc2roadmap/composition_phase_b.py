@@ -22,6 +22,7 @@ from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
 from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
 from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
 from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
+from doc2roadmap.infrastructure.embedding.query_cache import CachedQueryEmbedding
 from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel, RecordingToolModel, ReplayToolModel
 from doc2roadmap.infrastructure.llm.phase_b_demo import DemoModel
 
@@ -48,6 +49,8 @@ class PhaseBRuntime:
         self.record_dir = record_dir or (root / 'recordings' / uuid4().hex if allow_spend else None)
         self.replay_dir = replay_dir
         self._models = {}
+        self._query_embedding = None
+        self._concept_indexes = {}
 
     def model(self, purpose):
         if purpose in self._models:
@@ -120,13 +123,19 @@ class PhaseBRuntime:
             self.store.put_record('module_assignment', context_hash([doc_id, graph.graph_version, index.version]), result)
         return {**result, 'dry_run': dry_run}
 
-    def search(self, graph, query, *, scope='ưu tiên module', k=6, current_module_id=None):
-        if self.allow_spend:
-            embedding = GeminiEmbedding(
+    def query_embedding(self):
+        """One embedding adapter per runtime; a question already embedded is not sent again."""
+        if self._query_embedding is None:
+            self._query_embedding = CachedQueryEmbedding(GeminiEmbedding(
                 self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else None,
                 model=self.b_settings.embedding_model_id, output_dimensionality=768,
                 transport=self.settings.llm_transport, vertex_project=self.settings.vertex_project,
-                vertex_location=self.settings.vertex_location)
+                vertex_location=self.settings.vertex_location))
+        return self._query_embedding
+
+    def search(self, graph, query, *, scope='uu_tien_module', k=6, current_module_id=None):
+        if self.allow_spend:
+            embedding = self.query_embedding()
             return SearchDocumentB(self.artifacts, embedding, self.store).search(
                 query, doc_id=graph.doc_id, graph_version=graph.graph_version, current_module_id=current_module_id,
                 scope=scope, k=k, allow_spend=True)
@@ -186,11 +195,7 @@ class PhaseBRuntime:
                  session_id=None, origin='button'):
         retriever = None
         if self.allow_spend and self.mode == 'gemini':
-            embedding = GeminiEmbedding(
-                self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else None,
-                model=self.b_settings.embedding_model_id, output_dimensionality=768,
-                transport=self.settings.llm_transport, vertex_project=self.settings.vertex_project,
-                vertex_location=self.settings.vertex_location)
+            embedding = self.query_embedding()
             retriever = SearchDocumentB(self.artifacts, embedding, self.store)
         return DocumentUseCase(self.model('document'), self.store, settings=self.b_settings, retriever=retriever,
                                clock=self.clock, spend_guard=self.spend_guard).create(
@@ -220,13 +225,12 @@ class PhaseBRuntime:
         if named['matches'] or self.mode == 'offline' or not self.allow_spend:
             return named
         from doc2roadmap.application.phase_b.concept_index import IndexConcepts
-        embedding = GeminiEmbedding(
-            self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else None,
-            model=self.b_settings.embedding_model_id, output_dimensionality=768,
-            transport=self.settings.llm_transport, vertex_project=self.settings.vertex_project,
-            vertex_location=self.settings.vertex_location)
+        embedding = self.query_embedding()
         use_case = IndexConcepts(self.artifacts, embedding, self.store)
-        index = use_case.execute(graph.doc_id, graph.graph_version, allow_spend=True)
+        key = (graph.doc_id, graph.graph_version, embedding.embedding_model_id)
+        index = self._concept_indexes.get(key)
+        if index is None:
+            index = self._concept_indexes[key] = use_case.execute(graph.doc_id, graph.graph_version, allow_spend=True)
         return {'matches': use_case.lookup(index, query, allow_spend=True)}
 
     def usage(self, doc_id=None):
