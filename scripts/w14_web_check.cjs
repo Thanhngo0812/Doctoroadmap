@@ -318,6 +318,8 @@ async function main() {
       sameBuild: true,
       originalCourseId: success.courseId,
       reusedCourseId: reuse.courseId,
+      originalUploadId: success.uploadId,
+      reusedUploadId: reuse.uploadId,
       buildId: success.buildId,
       originalTitle: 'Đại số tuyến tính — tên do tôi chọn',
       reusedTitle: 'Khoá học dùng lại, tiêu đề đã xác nhận',

@@ -467,6 +467,29 @@ def _database_evidence(engine, output: Path) -> dict:
                 or original["title"] != reuse.get("originalTitle")
                 or reused["title"] != reuse.get("reusedTitle")):
             raise AssertionError("independent PostgreSQL rows do not confirm two titled courses share one build")
+        uploads = connection.execute(text(
+            "SELECT id,account_id,course_id,confirmed_at FROM upload "
+            "WHERE course_id IN (:first,:second)"),
+            {"first": original["id"], "second": reused["id"]}).mappings().all()
+        uploads_by_course = {str(row['course_id']): row for row in uploads}
+        for course_id, upload_id in ((reuse['originalCourseId'], reuse['originalUploadId']),
+                                     (reuse['reusedCourseId'], reuse['reusedUploadId'])):
+            row = uploads_by_course.get(course_id)
+            if (row is None or str(row['id']) != upload_id or str(row['account_id']) != account_id
+                    or row['confirmed_at'] is None):
+                raise AssertionError('PostgreSQL upload ownership/context/confirmation mismatch')
+        if reuse['originalUploadId'] == reuse['reusedUploadId']:
+            raise AssertionError('Reused course must have an independent upload')
+        reuse_attempts = connection.scalar(text(
+            'SELECT count(*) FROM build_attempt WHERE build_id=:id'), {'id': reuse['buildId']})
+        if reuse_attempts != 1:
+            raise AssertionError('Reusing a successful build must not create another worker attempt')
+        if sorted(row['status'] for row in course_rows) != ['failed','failed','ready','ready','ready']:
+            raise AssertionError('Unexpected final PostgreSQL course states')
+        if sorted(row['status'] for row in build_rows) != ['cancelled','rejected','succeeded','succeeded']:
+            raise AssertionError('Unexpected final PostgreSQL build states')
+        if any(str(row['requested_by']) != account_id for row in build_rows):
+            raise AssertionError('Build requester differs from authenticated actor')
         usage = connection.execute(text(
             "SELECT count(*) AS rows, coalesce(sum(cost_usd),0) AS cost_usd "
             "FROM usage_ledger WHERE purpose='build' "
@@ -481,6 +504,8 @@ def _database_evidence(engine, output: Path) -> dict:
             "buildStatuses": sorted(row["status"] for row in build_rows),
             "allBuildRowsPersisted": True,
             "sameFileReuseVerifiedByIndependentPostgres": True,
+            "separateConfirmedUploadsVerifiedByIndependentPostgres": True,
+            "reusedBuildWorkerAttempts": reuse_attempts,
             "syntheticBuildUsageRows": usage["rows"],
             "syntheticBuildUsageUsd": float(usage["cost_usd"]),
             "verifiedByIndependentPostgresConnection": True,
