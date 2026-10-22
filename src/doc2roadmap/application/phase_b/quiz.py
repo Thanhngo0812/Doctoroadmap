@@ -83,12 +83,14 @@ INCOMPLETE_CLOZE_LEAD_IN = re.compile(
     r"\b(?:là\s+)?(?:tập hợp|biểu thức|công thức)\s+sau đây\s*[:.!?…]*\s*$",
     re.I,
 )
+# Q6: options are never formulas or notation.
+CLOZE_NOTATION = re.compile(r"[×=∪∩∈∉∑∫√≤≥≠±→⊂⊃⊆^]")
 
 
 class QuizUseCase:
     """Build, submit, and review self-check quizzes without tracking mastery."""
 
-    LOCAL_RULES_VERSION = "quiz-local-rules-v3"
+    LOCAL_RULES_VERSION = "quiz-local-rules-v4"
 
     def __init__(self, graph, store, model=None, *, verifier_model=None, settings=None,
                  source_registry=None, rng=None, progress_use_case=None, spend_guard=None, clock=None):
@@ -909,9 +911,13 @@ class QuizUseCase:
             self._record_rejection("cloze", "cloze.anchor_not_found", concept)
             return []
         chunk, text = match
+        if CLOZE_NOTATION.search(name):
+            self._record_rejection("cloze", "cloze.notation_option", concept)
+            return []
         aliases = [name, *self._aliases(concept)]
         target_aliases = {self._norm(a) for a in aliases}
         distractors = []
+        distractor_terms = {}
         for candidate in self._distractor_concepts(concept):
             candidate_aliases = [self._name(candidate), *self._aliases(candidate)]
             if {self._norm(a) for a in candidate_aliases} & target_aliases:
@@ -919,6 +925,7 @@ class QuizUseCase:
             candidate_name = self._name(candidate)
             if candidate_name and self._norm(candidate_name) not in {self._norm(a) for a in distractors}:
                 distractors.append(candidate_name)
+                distractor_terms[candidate_name] = candidate_aliases
         if len(distractors) < 2:
             for candidate in self.graph.nodes.values():
                 candidate_name = self._name(candidate)
@@ -927,6 +934,9 @@ class QuizUseCase:
                         and self._norm(candidate_name) not in target_aliases
                         and self._norm(candidate_name) not in {self._norm(a) for a in distractors}):
                     distractors.append(candidate_name)
+                    distractor_terms[candidate_name] = [candidate_name, *self._aliases(candidate)]
+        distractors = [value for value in distractors if not CLOZE_NOTATION.search(value)]
+        longer_terms = self._longer_concept_terms(concept, target_aliases)
         sentences = [part.strip() for part in re.split(r"(?<=[.!?])\s+|\n+", text) if part.strip()]
         result = []
         for quote in sentences:
@@ -937,16 +947,25 @@ class QuizUseCase:
                 self._record_rejection("cloze", "local.visual_or_formula_reference", concept,
                                        {"stem": quote})
                 continue
-            if INCOMPLETE_CLOZE_LEAD_IN.search(quote):
+            # A sentence ending in a colon leads into a list or formula that the stem does not show.
+            if INCOMPLETE_CLOZE_LEAD_IN.search(quote) or quote.endswith(":"):
                 self._record_rejection("cloze", "cloze.incomplete_lead_in", concept,
                                        {"stem": quote})
+                continue
+            if any(self._term_in(quote, term) for term in longer_terms):
+                self._record_rejection("cloze", "cloze.blank_inside_longer_term", concept, {"stem": quote})
                 continue
             if len(stem_quote) < 25:
                 self._record_rejection("cloze", "cloze.stem_too_short", concept, {"stem": quote})
                 continue
-            choices = self._balanced_distractors(name, distractors, aliases)
+            # A distractor already named in the sentence is ruled out by reading the stem.
+            unseen = [value for value in distractors
+                      if not any(self._term_in(quote, term) for term in distractor_terms.get(value, [value]))]
+            choices = self._balanced_distractors(name, unseen, aliases)
             if not choices:
-                self._record_rejection("cloze", "cloze.no_safe_distractors", concept, {"stem": quote})
+                reason = ("cloze.distractor_in_stem" if self._balanced_distractors(name, distractors, aliases)
+                          else "cloze.no_safe_distractors")
+                self._record_rejection("cloze", reason, concept, {"stem": quote})
                 continue
             evidence = self._raw_citation(chunk, quote)
             item_id = "qi_" + hashlib.sha256((concept["node_id"] + quote).encode()).hexdigest()[:24]
@@ -994,6 +1013,23 @@ class QuizUseCase:
             offset = end
         result.append(text[offset:])
         return "".join(result)
+
+    @staticmethod
+    def _term_in(text, term):
+        return bool(term) and re.search(rf"(?<!\w){re.escape(term)}(?!\w)", text, re.I) is not None
+
+    def _longer_concept_terms(self, concept, target_aliases):
+        """Names of other concepts that contain an alias of the answer, e.g. "kết hợp" for "hợp"."""
+        terms = []
+        for node_id, node in self.graph.nodes.items():
+            if node_id == concept["node_id"]:
+                continue
+            for value in [self._name(node), *self._aliases(node)]:
+                normalized = self._norm(value)
+                if normalized and normalized not in target_aliases and any(
+                        alias and self._term_in(normalized, alias) for alias in target_aliases):
+                    terms.append(value)
+        return terms
 
     @staticmethod
     def _option_substring_overlap(options):
