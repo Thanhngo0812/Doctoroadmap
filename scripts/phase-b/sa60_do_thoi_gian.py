@@ -1,4 +1,4 @@
-"""SA-60: đo thời gian thật từng khâu của trợ lý (12 lượt SA-55 trên doc-1 và nhap-mon-ml). Có tiền, trần cứng 0,05 USD.
+"""SA-60: đo thời gian thật từng khâu của trợ lý (12 lượt SA-55 trên doc-1 và nhap-mon-ml). Có tiền, trần cứng 0,08 USD.
 
 Chỉ bọc trong bộ chạy (không sửa src/): adapter embedding, urlopen của embedding và của mô hình, `_persist` của kho,
 `PhaseBRuntime.search`/`lookup`, `IndexConcepts.execute`.
@@ -54,7 +54,7 @@ ROWS = (11, 13, 15, 16, 14, 18, 19, 20, 21, 23, 25, 27)
 RUNS = {'vertex': ('vertex', 'json'), 'devapi': ('developer_api', 'json'), 'memory': ('vertex', 'memory')}
 MODEL_ID = 'gemini-3.1-flash-lite'
 EMBEDDING_MODEL = 'gemini-embedding-001'
-CAP_USD = 0.05
+CAP_USD = 0.08
 HTTP_CAPS = {'llm': 40, 'embedding': 500}            # mỗi lần chạy; chặn cứng
 TURN_MARGIN_USD = 0.0035
 APPROVAL = '"tôi duyệt tiền hết" (chủ dự án, 2026-10-22)'
@@ -93,6 +93,7 @@ class BudgetGate:
         self.embedding_usd = lambda: 0.0
         self.reserved = 0.0
         self.tripped = None
+        self.strip_schema = False        # Developer API: bỏ additionalProperties khỏi schema công cụ (xem báo cáo)
         self._lock = threading.Lock()
 
     @property
@@ -127,6 +128,21 @@ def upper_llm(request):
     return estimate_cost(MODEL_ID, len(request.data) // 2, output)
 
 
+def strip_additional_properties(data):
+    """Developer API từ chối `additionalProperties` trong tools[].function_declarations[].parameters (HTTP 400);
+    Vertex nhận. Bộ chạy bỏ khoá này để đo được đường Developer API; mã sản phẩm không đổi."""
+    def clean(value):
+        if isinstance(value, dict):
+            return {k: clean(v) for k, v in value.items() if k != 'additionalProperties'}
+        if isinstance(value, list):
+            return [clean(v) for v in value]
+        return value
+    body = json.loads(data)
+    if 'tools' in body:
+        body['tools'] = clean(body['tools'])
+    return json.dumps(body, ensure_ascii=False, separators=(',', ':')).encode('utf-8')
+
+
 def upper_embedding(request):
     if not isinstance(request.data, (bytes, bytearray)):
         raise RuntimeError('cannot inspect embedding request; refusing network call')
@@ -146,6 +162,8 @@ def install(gate):
 
     def llm_open(request, timeout=None):
         gate.admit('llm', upper_llm(request))
+        if gate.strip_schema:
+            request.data = strip_additional_properties(request.data)
         started = now_ms()
         record = {'start_ms': started, 'rid': id(request)}
         try:
@@ -154,6 +172,8 @@ def install(gate):
             return response
         except Exception as error:
             record['status'] = status_of(error)
+            if isinstance(error, HTTPError):         # thân lỗi của máy chủ (không chứa khoá)
+                record['body'] = error.read().decode('utf-8', 'replace')[:500]
             raise
         finally:
             record['headers_ms'] = now_ms() - started
@@ -347,7 +367,8 @@ def analyse(wall_ms, first_model_ms):
         'lookup_ms': round(sum(s['dur_ms'] for s in TURN['lookup'])), 'lookup_calls': len(TURN['lookup']),
         'index_build_ms': round(sum(s['dur_ms'] for s in TURN['index_build'])),
         'llm_http': [{'start_ms': round(h['start_ms']), 'headers_ms': round(h['headers_ms']),
-                      'status': h.get('status')} for h in TURN['http_llm']],
+                      'status': h.get('status'), **({'body': h['body']} if 'body' in h else {})}
+                     for h in TURN['http_llm']],
     }
 
 
@@ -446,14 +467,16 @@ def dry_run():
 
 # ---------------------------------------------------------------------------- paid run
 
-def paid_run(label):
+def paid_run(label, only=None):
     transport, backend = RUNS[label]
     plan, rows = load_plan()
+    if only:
+        rows = [r for r in rows if r['n'] in only]
     settings = make_settings(transport)
     if transport == 'developer_api' and not has_dev_key(settings):
         print('Không có khoá Developer API trong .env: bỏ lần chạy devapi.')
         return None
-    out_path = WORK / f'run-{label}.json'
+    out_path = WORK / (f'run-{label}-diag.json' if only else f'run-{label}.json')
     if out_path.exists():
         raise FileExistsError(f'{out_path} đã có; không chi hai lần cho cùng một lần chạy')
     if Path(doc2roadmap.__file__).resolve().parents[1] != ROOT / 'src':
@@ -468,6 +491,7 @@ def paid_run(label):
         books[doc_id] = open_book(doc_id, plan['pins'][doc_id], settings, backend, directory)
     gate.embedding_usd = lambda: sum(r.get('cost_usd', 0) for rt, _, _ in books.values()
                                      for r in rt.store.usage_rows() if r.get('purpose') == 'embedding')
+    gate.strip_schema = transport == 'developer_api'
     restore = install(gate)
     result = {'ticket': 'SA-60', 'run': label, 'transport': transport, 'store': backend, 'approval': APPROVAL,
               'status': 'running', 'started_at': time.strftime('%Y-%m-%dT%H:%M:%S%z'), 'turns': [], 'skipped': []}
@@ -501,7 +525,7 @@ def paid_run(label):
         result['store_bytes'] = {d: (p.stat().st_size if p.exists() else 0) for d, (_, _, p) in books.items()}
         result['finished_at'] = time.strftime('%Y-%m-%dT%H:%M:%S%z')
         save_json(out_path, result)
-        ledger['runs'][label] = result['total_usd']
+        ledger['runs'][label + ('-diag' if only else '')] = result['total_usd']
         ledger['spent_usd'] = round(sum(ledger['runs'].values()), 6)
         save_json(LEDGER, ledger)
     print(json.dumps({k: result[k] for k in ('status', 'total_usd', 'llm_http_attempts', 'embedding_http_attempts')}))
@@ -568,11 +592,12 @@ if __name__ == '__main__':
     parser.add_argument('--dry-run', action='store_true')
     parser.add_argument('--run', choices=sorted(RUNS))
     parser.add_argument('--tables', action='store_true')
+    parser.add_argument('--only', type=int, nargs='+', help='chạy thử vài dòng; ghi run-<nhãn>-diag.json')
     args = parser.parse_args()
     if args.dry_run:
         dry_run()
     elif args.run:
-        paid_run(args.run)
+        paid_run(args.run, args.only)
     elif args.tables:
         tables()
     else:
