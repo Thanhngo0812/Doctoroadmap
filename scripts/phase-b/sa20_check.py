@@ -88,6 +88,9 @@ def check_file(path, problems):
         if any(rows[0][i] in (None, '') for i in (1, 2, 3, 4)) or any(r[i] is not None for r in rows[1:] for i in (1, 2, 3, 4)):
             problems.append(f'{name}: grey info cells misplaced')
             break
+    pattern = r'T\d\d' if name.startswith('thu-') else r'M\d{3}'
+    if any(not re.fullmatch(pattern, str(code)) for code in groups):
+        problems.append(f'{name}: module codes do not match the expected form')
     stats['modules'], stats['rows'] = len(groups), sum(len(v) for v in groups.values())
     for sheet, columns in PICKLISTS.items():
         found = {}

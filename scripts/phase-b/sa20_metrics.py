@@ -230,7 +230,8 @@ def lexicons(base):
         corpus = C(w for c in chunks.result.chunks for w in _words(c.text))
         function_words = {w for w, n in corpus.most_common(max(1, len(corpus) // 100)) if n >= 3}
         for index, (row, borrow) in enumerate(zip(prepared, borrowed)):
-            out[(doc_id, index)] = {'allowed': set(row[2]['content_vocabulary']) | function_words, 'borrowed': borrow}
+            out[(doc_id, index)] = {'allowed': set(row[2]['content_vocabulary']) | function_words, 'borrowed': borrow,
+                                'author_ok': row[2]['exact_author_section']}
     return out
 
 
@@ -329,6 +330,28 @@ def compute_metrics():
                     'chrf_mean': round(mean(s['chrf'] for _, s in rows_), 4) if rows_ else None,
                     'cosine_mean': round(mean(s['cos'] for _, s in rows_), 4) if rows_ else None,
                     'cosine_median': round(median(s['cos'] for _, s in rows_), 4) if rows_ else None}
+        # Title-quality filter for the reference: naming.py's own author_ok (E, not a generic label seen under two or more
+        # parents, not purely numeric) plus conditions 4 and 5 of report section 6.4 (title differs from the A10 names
+        # of modules within +-2 once the numbering is stripped; not a lead-in ending in ':' and not code-only).
+        def passes(doc_id, index, reference):
+            if not lex[(doc_id, index)]['author_ok']:
+                return 'naming.py author_ok'
+            near = [norm(clean_title(names['A10'][(doc_id, index + d)])[0]) for d in (-2, -1, 1, 2) if (doc_id, index + d) in modules]
+            if norm(reference) in near:
+                return '6.4 dieu 4'
+            if reference.rstrip().endswith(':') or not _words(reference):
+                return '6.4 dieu 5'
+            return None
+        verdict = {(r[0], r[1]): passes(r[0], r[1], r[2]) for r in e_rows}
+        kept_g = [(r, s_) for r, s_ in generated_rows if verdict[(r[0], r[1])] is None]
+        kept_u = [(r, s_) for r, s_ in unhidden_rows if verdict[(r[0], r[1])] is None]
+        result['hidden_title_filtered'] = {
+            'filter': 'naming.py author_ok + report 6.4 conditions 4 and 5',
+            'type_E_modules': len(e_rows), 'passing_filter': sum(v is None for v in verdict.values()),
+            'rejected_by': dict(Counter(v for v in verdict.values() if v)),
+            'passing_and_generated_by_llm': len(kept_g),
+            'hidden_run': agg(kept_g), 'l1_unhidden_same_modules': agg([(r, s_) for r, s_ in kept_u if r[3]]),
+            'l1_unhidden_all_passing': agg(kept_u)}
         result['hidden_title'] = {
             'type_E_modules': len(e_rows), 'generated_by_llm': len(generated_rows),
             'fallback_or_error': len(e_rows) - len(generated_rows),

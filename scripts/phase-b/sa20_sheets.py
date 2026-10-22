@@ -27,7 +27,7 @@ KEY_PATH = KEY_DIR / 'khoa-cau-hinh-sa20.json'
 GRADERS = ('C1', 'C2')
 VERSIONS = ('L1', 'L2', 'A10', 'DET')
 # Fixed seeds, written into the report and the key file.
-SEEDS = {'sample_part2': 20261022, 'trial_pick': 20261023,
+SEEDS = {'sample_part2': 20261022, 'trial_pick': 20261023, 'trial_codes': 20261024,
          'C1': {'order': 1011, 'labels': 1012, 'part2_order': 1013, 'trial': 1014},
          'C2': {'order': 2021, 'labels': 2022, 'part2_order': 2023, 'trial': 2024}}
 PART2_SIZE = 60
@@ -193,7 +193,8 @@ def part1_sheet(wb, modules_in_order, rng_labels, key_part1):
     row = 2
     all_modules = key_part1['all']
     for module in modules_in_order:
-        position = all_modules.index(module)
+        position = next(i for i, other in enumerate(all_modules)
+                        if (other['doc_id'], other['index']) == (module['doc_id'], module['index']))
         rows, versions = label_groups(module, rng_labels)
         key_part1['labels'][module['code']] = versions
         for n, (label, text) in enumerate(rows):
@@ -324,7 +325,12 @@ def main():
     base, modules = load()
     part2, quota, eligible_count = choose_part2(modules)
     part2_codes = {m['code'] for m in part2}
-    trial = choose_trial(modules, part2_codes)
+    trial_real = choose_trial(modules, part2_codes)
+    # trial modules get their own codes T01..T08 in random order; the T -> M table goes to the key file only
+    shuffled = list(trial_real)
+    random.Random(SEEDS['trial_codes']).shuffle(shuffled)
+    trial_code_map = {f'T{n:02d}': m['code'] for n, m in enumerate(shuffled, 1)}
+    trial = [dict(m, code=t) for t, real in trial_code_map.items() for m in modules if m['code'] == real]
     trial_part2 = [m for m in trial if m['code'] in part2_codes or (m['l1']['description_source'] == 'llm' and sentences(m['l1']['description']))][:5]
     unique_counts = Counter(len(set(m['names'].values())) for m in modules)
     rankable = [m for m in modules if len(set(m['names'].values())) >= 2]
@@ -334,7 +340,7 @@ def main():
            'modules': {m['code']: {'doc_id': m['doc_id'], 'index': m['index'], 'module_id': m['module_id'],
                                    'type': m['type'], 'names': m['names']} for m in modules},
            'part2_selected': [m['code'] for m in part2], 'part2_quota_selected_of_eligible': quota,
-           'trial_modules': [m['code'] for m in trial], 'trial_part2_modules': [m['code'] for m in trial_part2],
+           'trial_modules': [m['code'] for m in trial], 'trial_code_to_real_code': trial_code_map, 'trial_part2_modules': [m['code'] for m in trial_part2],
            'not_ranked_all_names_identical': [m['code'] for m in modules if len(set(m['names'].values())) < 2]}
     for grader in GRADERS:
         build_workbook(grader, False, modules, rankable, part2, key).save(DELIVERY / f'cham-sa20-{grader}.xlsx')
