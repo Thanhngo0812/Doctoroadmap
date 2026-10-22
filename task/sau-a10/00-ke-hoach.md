@@ -162,8 +162,11 @@ Ban đầu, vé 01–05 và 19 không có blocker và chạy song song được.
 - **Thứ tự:**
   - 20, 21, 22 chạy được ngay;
   - 23 chờ gói 19a do agentic trả về, và chờ SA-56 (`focus_node_id` đổi đầu vào của trợ lý), để đánh giá đúng bản cuối.
-- **Tiền:** theo vé, 20 dưới 1 USD, 21 trần 5 USD, 22 khoảng 1,7 USD, 23 lượt 1 trần khoảng 8 USD; tổng khoảng 15,7 USD. Mỗi vé dry-run riêng, chủ dự án
-  duyệt từng vé.
+- **Tiền:** theo vé, 20 dưới 1 USD, 21 trần 5 USD, 22 khoảng 1,7 USD, 23 lượt 1 trần khoảng 8 USD; tổng khoảng 15,7 USD. **Chủ dự án duyệt
+  2026-10-22** ("tiền duyệt"). Mỗi vé vẫn dry-run trước; dự toán trong trần của vé thì chạy luôn, vượt trần thì dừng và hỏi. Lượt 2 của 23
+  vẫn xin duyệt riêng như vé ghi.
+- **Người chấm:** chủ dự án báo đã có (2026-10-22). Hướng dẫn chấm ở [`doc/huong-dan-cham/`](../../doc/huong-dan-cham/00-chung.md), một tệp
+  luật chung và một tệp mỗi đợt (19a, 20, 21, 22, 23), khoảng 29 giờ mỗi người. Bộ xuất phiếu của mỗi vé phải theo đúng các cột trong hướng dẫn.
 - **SA-13:** số giây tới `skeleton`, tới ý đầu và tới `final` (p50, p90) lấy từ lượt sinh bài giảng của 21.
 
 Không kịp lịch thì báo để dời. Không cắt luật kiểm để kịp.
