@@ -40,9 +40,12 @@ def _string():
     return {'type': 'string'}
 
 
+SEARCH_SCOPES = ['uu_tien_module', 'ca_tai_lieu']
+
 TOOLS = [
-    _declaration('search_document', 'Tìm bằng chứng trong tài liệu, ưu tiên module đang mở.',
-                 {'query': _string(), 'scope': _string(), 'k': {'type': 'integer', 'minimum': 1, 'maximum': 6}}, ['query']),
+    _declaration('search_document', 'Tìm bằng chứng trong tài liệu. scope là uu_tien_module (mặc định, ưu tiên module '
+                 'đang mở) hoặc ca_tai_lieu (cả tài liệu).',
+                 {'query': _string(), 'scope': {'type': 'string', 'enum': SEARCH_SCOPES}, 'k': {'type': 'integer', 'minimum': 1, 'maximum': 6}}, ['query']),
     _declaration('lookup_concept', 'Tìm tên, alias hoặc mô tả khái niệm.', {'name': _string()}, ['name']),
     _declaration('why_here', 'Tiên quyết trực tiếp kèm bằng chứng.', {'concept': _string()}, ['concept']),
     _declaration('get_module_info', 'Thông tin module.', {'module': _string()}, ['module']),
@@ -126,7 +129,7 @@ class AssistantUseCase:
                                for row in card["modules"]]
         return card
 
-    def _search(self, graph, query, module, *, scope='ưu tiên module', k=4):
+    def _search(self, graph, query, module, *, scope='uu_tien_module', k=4):
         if self.search is None:
             return self._local_search(graph, query, module, k)
         result = self.search(query, scope=scope, k=k, current_module_id=module)
@@ -209,7 +212,7 @@ class AssistantUseCase:
         name = call.name
         if name == 'search_document':
             return {'hits': self._sources(graph, self._search(graph, args['query'], module,
-                           scope=args.get('scope', 'ưu tiên module'), k=args.get('k', 6)))}
+                           scope=args.get('scope', 'uu_tien_module'), k=args.get('k', 6)))}
         if name == 'lookup_concept':
             result = graph.lookup_concept(args['name'])
             return self.concept_lookup(args['name']) if not result['matches'] and self.concept_lookup else result
@@ -377,7 +380,7 @@ class AssistantUseCase:
         started = perf_counter()
         emit({'event': 'progress', 'text': 'Đang tìm bằng chứng trong tài liệu…'})
         rows = self._search(graph, question, current_module_id,
-                            scope='all' if current_module_id is None else 'ưu tiên module', k=4)
+                            scope='ca_tai_lieu' if current_module_id is None else 'uu_tien_module', k=4)
         sources = self._sources(graph, rows)
         if not linked and self.concept_lookup:
             lookup = self.concept_lookup(question)
