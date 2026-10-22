@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="7.330" timestamp="2026-10-21T16:50:03.718553+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_coord_w14_cancellation_races" name="test_confirm_does_not_resurrect_a_cancelled_build" time="2.554"><failure message="AssertionError: {'build': [{'cancel_requested': True, 'counts_quota': True, 'status': 'queued'}], 'courses': [{'status': 'failed'}]}&#10;assert 'queued' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + queued">src\web\backend\tests\test_coord_w14_cancellation_races.py:52: in test_confirm_does_not_resurrect_a_cancelled_build
+    assert rows[0]['status'] == 'cancelled', {'build':rows, 'courses':courses}
+E   AssertionError: {'build': [{'cancel_requested': True, 'counts_quota': True, 'status': 'queued'}], 'courses': [{'status': 'failed'}]}
+E   assert 'queued' == 'cancelled'
+E
+E     - cancelled
+E     + queued</failure></testcase><testcase classname="src.web.backend.tests.test_coord_w14_cancellation_races" name="test_cancel_during_publication_cannot_commit_success" time="1.598"><failure message="AssertionError: {'build': {'cancel_requested': True, 'spent_usd': Decimal('0.003000'), 'status': 'succeeded'}, 'courses': [{'published...a0-80b14484c525', 'html_body': None, 'subject': 'Bản dựng xong', 'to': '64eff49f486d4ffa954411ca49015c56@example.vn'}]}&#10;assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_coord_w14_cancellation_races.py:88: in test_cancel_during_publication_cannot_commit_success
+    assert job['status'] == 'cancelled', {'build':job, 'courses':courses, 'mail':b.mailer.messages}
+E   AssertionError: {'build': {'cancel_requested': True, 'spent_usd': Decimal('0.003000'), 'status': 'succeeded'}, 'courses': [{'published...a0-80b14484c525', 'html_body': None, 'subject': 'Bản dựng xong', 'to': '64eff49f486d4ffa954411ca49015c56@example.vn'}]}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase></testsuite></testsuites>

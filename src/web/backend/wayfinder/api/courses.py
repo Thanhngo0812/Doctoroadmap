@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Request, Response
-from pydantic import BaseModel, Field
-from typing import Any
+from pydantic import BaseModel, ConfigDict, Field
+from typing import Any, Literal
 
 from wayfinder.api.auth import get_actor
 from wayfinder.api.builds import BuildView
@@ -60,12 +60,39 @@ class RoadmapModule(BaseModel):
     title: str
     description: str | list[dict[str, Any]]
     concepts: list[Concept]
+    progress: ProgressSummary
+
+
+class ProgressNode(BaseModel):
+    state: Literal["learned", "not_learned"]
+    source: Literal["learner", "quiz"] | None
+    updated_at: str | None
+
+
+class ProgressModule(BaseModel):
+    module_id: str
+    learned: int
+    total: int
+
+
+class CourseProgress(BaseModel):
+    course_id: str
+    contract_version: Literal["progress-1"]
+    doc_id: str
+    nodes: dict[str, ProgressNode]
+    modules: list[ProgressModule]
+
+
+class SetProgressRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    learned: bool = Field(strict=True)
 
 
 class Roadmap(BaseModel):
     course_id: str
     doc_id: str
     graph_version: int
+    progress: ProgressSummary
     modules: list[RoadmapModule]
 
 
@@ -94,5 +121,16 @@ def course_router():
     def roadmap(cid: str, request: Request, response: Response, actor: Actor = Depends(get_actor)):
         response.headers["cache-control"] = "no-store"
         return request.app.state.services.learning.get_roadmap(actor, cid)
+
+    @router.get("/{cid}/progress", response_model=CourseProgress)
+    def progress(cid: str, request: Request, response: Response, actor: Actor = Depends(get_actor)):
+        response.headers["cache-control"] = "no-store"
+        return request.app.state.services.learning.get_progress(actor, cid)
+
+    @router.put("/{cid}/progress/{node_id}", response_model=CourseProgress)
+    def set_progress(cid: str, node_id: str, data: SetProgressRequest, request: Request,
+                     response: Response, actor: Actor = Depends(get_actor)):
+        response.headers["cache-control"] = "no-store"
+        return request.app.state.services.learning.set_progress(actor, cid, node_id, data.learned)
 
     return router

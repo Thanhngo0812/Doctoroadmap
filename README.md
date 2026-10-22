@@ -5,7 +5,7 @@ A3′ lập chỉ mục vector + BM25 để truy hồi lai.
 
 ## Mở web WayFinder
 
-Xem [hướng dẫn mở PostgreSQL, backend và frontend](src/web/README.md). Có lệnh PowerShell cho worktree W-06 trên máy hiện tại, địa chỉ truy cập, cách chạy bản build và dừng service.
+Xem [hướng dẫn mở PostgreSQL, backend và frontend](src/web/README.md). Có lệnh PowerShell cho worktree W-07 trên máy hiện tại, địa chỉ truy cập, cách chạy bản build và dừng service.
 
 ## Cài và kiểm tra
 

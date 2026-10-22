@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="3" failures="0" skipped="0" tests="27" time="27.368" timestamp="2026-10-21T12:11:44.577257+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_progress_is_isolated_between_members_using_independent_postgres_runtimes" time="2.153" /><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_unmark_then_correct_quiz_keeps_learner_choice_through_gateway" time="0.624" /><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_quiz_read_then_concurrent_learner_unmark_is_serialized_by_postgres" time="0.475" /><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_learner_unmark_transaction_then_concurrent_quiz_respects_learner_source" time="0.785" /><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_progress_http_validates_node_and_boolean_and_hides_private_course" time="1.440" /><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_concurrent_member_writes_on_independent_connections_keep_actor_scopes" time="0.743" /><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_roadmap_summaries_match_progress_and_preserve_published_node_order" time="0.632" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="1.032" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_route_inventory_catches_a_new_unguarded_route" time="0.858" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates" time="0.837" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_guest_and_prod_cannot_join_or_discover_samples" time="0.465" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_owner_constraint_and_course_creation_rollback" time="0.433" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_update_requires_owner_and_cannot_change_identity" time="0.677" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_membership_activity_updates_only_after_five_minutes" time="0.603" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection" time="1.026" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_database_cannot_commit_course_without_matching_owner_membership" time="0.293" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_join_concurrency_respects_course_capacity" time="0.622" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_only_allows_six_development_documents_in_dev_and_uploads_once" time="0.522"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\tmp\\w07-final-py'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w07-roadmap-progress/tmp/w07-final-py')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\tmp\\w07-final-py'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_composition_binds_vertex_models_and_all_child_stores_to_postgres" time="0.556" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_cli_uses_admin_identity_and_media_port" time="0.304"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\tmp\\w07-final-py'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w07-roadmap-progress/tmp/w07-final-py')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\tmp\\w07-final-py'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_real_six_book_seed_join_and_roadmap_over_tcp_http" time="6.643" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_deferred_owner_check_protects_source_when_owner_membership_is_moved" time="0.287" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_cached_graph_never_bypasses_revoked_membership" time="0.549" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_course_progress_and_resume_are_per_actor_and_resume_resolves_module_scope" time="0.666" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_graph_is_pinned_to_course_version_and_cached_by_doc_version" time="0.387" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_w06_migration_is_single_head_after_w03_and_empty_database_upgrades" time="1.017" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point" time="0.026"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\tmp\\w07-final-py'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w07-roadmap-progress/tmp/w07-final-py')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w07-roadmap-progress\\tmp\\w07-final-py'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase></testsuite></testsuites>

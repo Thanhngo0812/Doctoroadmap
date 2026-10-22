@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.603" timestamp="2026-10-21T16:49:53.235584+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_progress_is_isolated_between_members_using_independent_postgres_runtimes" time="2.263"><failure message="AssertionError">src\web\backend\tests\test_learning_progress_w07.py:94: in test_progress_is_isolated_between_members_using_independent_postgres_runtimes
+    assert w07.other_gateway.get_progress(w07.b.actor, w07.course.id)["nodes"]["a"]["state"] == "not_learned"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase></testsuite></testsuites>

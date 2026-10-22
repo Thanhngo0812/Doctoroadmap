@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.789" timestamp="2026-10-21T16:50:15.738175+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_unmark_then_correct_quiz_keeps_learner_choice_through_gateway" time="2.597"><failure message="AssertionError">src\web\backend\tests\test_learning_progress_w07.py:117: in test_unmark_then_correct_quiz_keeps_learner_choice_through_gateway
+    assert progress["nodes"]["a"]["state"] == "not_learned"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,84 @@
+"""Copy the coordinator's named observations, hash them and preserve worker evidence."""
+import hashlib
+import json
+from pathlib import Path
+import re
+import shutil
+import sys
+import xml.etree.ElementTree as ET
+
+ROOT = Path(__file__).absolute().parents[2]
+W07 = ROOT/'tmp/coord-w07-final'
+W14 = ROOT/'tmp/coord-w07-w14-acceptance'
+RUN = ROOT/'tmp/coord-review-20261021/evidence'
+OUT = ROOT/'report/coord-w07-w14-w24-evidence-2026-10-21'
+sys.path.insert(0, str(W07/'src/web/backend/tests'))
+from copy_w06_fixtures import safe_path
+
+
+def copy(source, relative):
+    original = safe_path(ROOT, source.relative_to(ROOT).as_posix())
+    target = safe_path(OUT, relative)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(original, target)
+    assert hashlib.sha256(target.read_bytes()).digest() == hashlib.sha256(original.read_bytes()).digest()
+
+
+def junit(name):
+    tree = ET.parse(RUN/name)
+    cases = tree.findall('.//testcase')
+    return {'tests':len(cases), 'failures':len(tree.findall('.//failure')),
+            'errors':len(tree.findall('.//error')), 'skipped':len(tree.findall('.//skipped'))}
+
+
+def main():
+    OUT.mkdir(parents=True, exist_ok=True)
+    required = ['w07-full-gate-exit.json', 'w07-react-exit.json', 'w07-build-exit.json', 'w07-browser-exit.json']
+    for name in required:
+        assert json.loads((RUN/name).read_text())['native_exit_code'] == 0, name
+    for source in RUN.rglob('*'):
+        if source.is_file(): copy(source, 'runs/'+source.relative_to(RUN).as_posix())
+    browser = W07/'report/w07-evidence'
+    names = ['browser-audit.json', 'runtime.json', 'learner-state.json', 'roadmap-doc-1.json',
+             'progress-before.json', 'progress-after-rollback.json', 'progress-learner-b.json',
+             'w07-roadmap-progress.webm', 'taste-inspector.log']
+    names += [p.name for p in browser.glob('roadmap-*.png')]
+    names += [p.name for p in browser.glob('mock-only-*.png')]
+    names += ['taste-inspect/'+p.name for p in (browser/'taste-inspect').iterdir() if p.is_file()]
+    for name in names: copy(browser/name, 'w07-browser/'+name)
+    copy(W07/'report/w06-evidence/fixture-copy.json', 'w07-fixture-copy.json')
+    copy(W14/'report/w06-evidence/fixture-copy.json', 'w14-fixture-copy.json')
+    copy(W14/'src/web/backend/tests/test_coord_w14_cancellation_races.py', 'w14-cancellation-repros.py.txt')
+    for source in (ROOT/'tmp/coord-w24-review').iterdir():
+        if source.is_file(): copy(source, 'w24/'+source.name)
+    copy(Path(__file__), 'collect-evidence.py.txt')
+    copy(Path(__file__).with_name('run_check.py'), 'run-check.py.txt')
+    summary = {name:junit(name) for name in ['w07-full-gate.xml','w07-react.xml','w14-baseline.xml','w14-repro.xml','w14-repro2.xml']}
+    summary['safety'] = {'provider_calls':0, 'provider_cost_usd':0, 'links_used':False,
+                         'heldout_read':False, 'worker_sources_changed':False}
+    summary['scopes'] = {'w07':'independent full gate and real browser',
+        'w14':'35 original tests and 2 new failing PostgreSQL repros on integration 85ecce0; no main merge',
+        'w24':'independent read-only reviewer Chromium observations and broken-behavior counterexamples; no Cloud proof'}
+    (OUT/'summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf-8')
+    # Test logs can include disposable CSRF/session tokens in assertion reprs.
+    redactions=[]
+    pattern=re.compile(r"((?:csrf_token|session_token|X-CSRF-Token)['\"]?\s*:\s*['\"])([A-Za-z0-9_\-]{20,})(['\"])")
+    for source in OUT.rglob('*'):
+        if not source.is_file() or source.suffix not in {'.json','.log','.xml','.txt','.md'}: continue
+        data=source.read_bytes()
+        content=data.decode('utf-8')
+        replacement,count=pattern.subn(r'\1[DISPOSABLE_TEST_TOKEN_REDACTED]\3',content)
+        if count:
+            redactions.append({'path':source.relative_to(OUT).as_posix(),'count':count,
+                               'original_sha256':hashlib.sha256(data).hexdigest()})
+            source.write_text(replacement,encoding='utf-8')
+    (OUT/'redactions.json').write_text(json.dumps(redactions,indent=2)+'\n',encoding='utf-8')
+    files=[{'path':p.relative_to(OUT).as_posix(), 'bytes':p.stat().st_size,
+            'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p in sorted(OUT.rglob('*'))
+           if p.is_file() and p.name!='manifest.json']
+    (OUT/'manifest.json').write_text(json.dumps({'files':files},indent=2)+'\n',encoding='utf-8')
+    print(json.dumps({'summary':summary,'files':len(files),'bytes':sum(x['bytes'] for x in files),
+                      'redacted_files':len(redactions)}),flush=True)
+
+
+if __name__=='__main__': main()

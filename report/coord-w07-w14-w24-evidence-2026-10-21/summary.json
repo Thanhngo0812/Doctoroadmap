@@ -1,0 +1,44 @@
+{
+  "w07-full-gate.xml": {
+    "tests": 2115,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "w07-react.xml": {
+    "tests": 85,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "w14-baseline.xml": {
+    "tests": 35,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "w14-repro.xml": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 2,
+    "skipped": 0
+  },
+  "w14-repro2.xml": {
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "safety": {
+    "provider_calls": 0,
+    "provider_cost_usd": 0,
+    "links_used": false,
+    "heldout_read": false,
+    "worker_sources_changed": false
+  },
+  "scopes": {
+    "w07": "independent full gate and real browser",
+    "w14": "35 original tests and 2 new failing PostgreSQL repros on integration 85ecce0; no main merge",
+    "w24": "independent read-only reviewer Chromium observations and broken-behavior counterexamples; no Cloud proof"
+  }
+}

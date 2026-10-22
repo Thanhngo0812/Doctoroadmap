@@ -99,8 +99,11 @@ def assert_private_course_routes_protected(app, client, headers, cid):
         import re
         path = re.sub(r"\{[^}]+\}", "unknown-resource", path)
         for method in route.methods - {"HEAD", "OPTIONS"}:
+            body = ({"learned": True} if method == "PUT" and "{node_id}" in route.path
+                    else {"title": "Attack", "owner": "someone-else"}
+                    if method not in {"GET", "DELETE"} else None)
             response = client.request(method, path, headers=headers,
-                                      json={"title": "Attack", "owner": "someone-else"} if method not in {"GET", "DELETE"} else None)
+                                      json=body)
             assert response.status_code == 404, (method, path, response.text)
             assert response.json()["error"]["code"] == "not_found"
             seen.add((method, route.path))

@@ -1,0 +1,1681 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 --reporter=dot src/Roadmap.test.tsx src/Courses.test.tsx
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w07-roadmap-progress/src/web/frontend
+
+······x··········xx
+npm.cmd :
+At line:2 char:1
++ npm.cmd test -- --pool=threads --maxWorkers=1 --reporter=dot src/Road ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Courses.test.tsx > loads a membership-gated course entry and selected resume module from actual route shapes
+TestingLibraryElementError: Found multiple elements with the role "heading" and name "Ánh xạ tuyến tính"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h2>[39m
+  [0mÁnh xạ tuyến tính[0m
+[36m</h2>[39m
+
+Ignored nodes: comments, script, style
+[36m<h2>[39m
+  [0mÁnh xạ tuyến tính[0m
+[36m</h2>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or
+`findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mNguyễn An[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc/sample-1"[39m
+        [36m>[39m
+          [0mQuay lại lộ trình[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"roadmap-content"[39m
+        [36m>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"roadmap-heading"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mĐại số tuyến tính[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTừ không gian vector đến ánh xạ tuyến tính.[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"roadmap-shared-note"[39m
+            [36m>[39m
+              [0mTiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Tiến độ cả khoá"[39m
+            [33mclass[39m=[32m"roadmap-overview"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-overview__label"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mÁnh xạ tuyến tính[0m
+              [36m</h2>[39m
+              [36m<strong>[39m
+                [0m0[0m
+                [0m/[0m
+                [0m0[0m
+                [0m bài học[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<progress[39m
+              [33maria-label[39m=[32m"Tiến độ module Ánh xạ tuyến tính"[39m
+              [33mmax[39m=[32m"1"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</section>[39m
+          [36m<section[39m
+            [33mclass[39m=[32m"roadmap-module-detail"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-module-detail__heading"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mÁnh xạ tuyến tính[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0mTìm hiểu các phép biến đổi.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<ul[39m
+              [33maria-label[39m=[32m"Bài học trong module Ánh xạ tuyến tính"[39m
+              [33mclass[39m=[32m"roadmap-concepts"[39m
+            [36m/>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/sample-1/module/module-9[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2028.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ sáng"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mNguyễn An[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc/sample-1"[39m
+        [36m>[39m
+          [0mQuay lại lộ trình[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"roadmap-content"[39m
+        [36m>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"roadmap-heading"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mĐại số tuyến tính[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTừ không gian vector đến ánh xạ tuyến tính.[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"roadmap-shared-note"[39m
+            [36m>[39m
+              [0mTiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Tiến độ cả khoá"[39m
+            [33mclass[39m=[32m"roadmap-overview"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-overview__label"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mÁnh xạ tuyến tính[0m
+              [36m</h2>[39m
+              [36m<strong>[39m
+                [0m0[0m
+                [0m/[0m
+                [0m0[0m
+                [0m bài học[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<progress[39m
+              [33maria-label[39m=[32m"Tiến độ module Ánh xạ tuyến tính"[39m
+              [33mmax[39m=[32m"1"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</section>[39m
+          [36m<section[39m
+            [33mclass[39m=[32m"roadmap-module-detail"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-module-detail__heading"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mÁnh xạ tuyến tính[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0mTìm hiểu các phép biến đổi.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<ul[39m
+              [33maria-label[39m=[32m"Bài học trong module Ánh xạ tuyến tính"[39m
+              [33mclass[39m=[32m"roadmap-concepts"[39m
+            [36m/>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+    [36m<span[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/sample-1/module/module-9[0m
+    [36m</span>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Courses.test.tsx:109:23
+
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/Roadmap.test.tsx > merges concurrent node responses by their own node so stale full snapshots cannot undo
+another check
+TestingLibraryElementError: Unable to find an accessible element with the role "checkbox" and name "Đã học: Biến cố"
+
+Here are the accessible roles:
+
+  link:
+
+  Name "Đến nội dung chính":
+  [36m<a[39m
+    [33mclass[39m=[32m"skip-link"[39m
+    [33mhref[39m=[32m"#courses-main"[39m
+  [36m/>[39m
+
+  Name "WayFinder, về khoá học":
+  [36m<a[39m
+    [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+    [33mclass[39m=[32m"brand-link"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/khoa-hoc"[39m
+  [36m/>[39m
+
+  Name "Tải tài liệu":
+  [36m<a[39m
+    [33mclass[39m=[32m"button button-primary courses-upload"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tai-len"[39m
+  [36m/>[39m
+
+  Name "Tài khoản":
+  [36m<a[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tai-khoan"[39m
+  [36m/>[39m
+
+  Name "Tải tài liệu":
+  [36m<a[39m
+    [33mclass[39m=[32m"courses-menu-upload"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/tai-len"[39m
+  [36m/>[39m
+
+  Name "Khoá học của tôi":
+  [36m<a[39m
+    [33mclass[39m=[32m"back-link roadmap-back"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/khoa-hoc"[39m
+  [36m/>[39m
+
+  Name "Mở module: Xác suất":
+  [36m<a[39m
+    [33maria-label[39m=[32m"Mở module: Xác suất"[39m
+    [33mclass[39m=[32m"roadmap-module__open"[39m
+    [33mdata-discover[39m=[32m"true"[39m
+    [33mhref[39m=[32m"/khoa-hoc/course-1/module/module-2"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  banner:
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"courses-header"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<header[39m
+    [33mclass[39m=[32m"roadmap-heading"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  img:
+
+  Name "WayFinder":
+  [36m<img[39m
+    [33malt[39m=[32m"WayFinder"[39m
+    [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  button:
+
+  Name "Bật chế độ tối":
+  [36m<button[39m
+    [33maria-label[39m=[32m"Bật chế độ tối"[39m
+    [33mclass[39m=[32m"icon-button theme-toggle"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Đăng xuất":
+  [36m<button[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Biến cố 2/2 bài học":
+  [36m<button[39m
+    [33maria-controls[39m=[32m"roadmap-module-module-1"[39m
+    [33maria-expanded[39m=[32m"false"[39m
+    [33mclass[39m=[32m"roadmap-module__toggle"[39m
+    [33mid[39m=[32m"roadmap-module-button-module-1"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  Name "Xác suất 1/2 bài học":
+  [36m<button[39m
+    [33maria-controls[39m=[32m"roadmap-module-module-2"[39m
+    [33maria-expanded[39m=[32m"true"[39m
+    [33mclass[39m=[32m"roadmap-module__toggle"[39m
+    [33mid[39m=[32m"roadmap-module-button-module-2"[39m
+    [33mtype[39m=[32m"button"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  group:
+
+  Name "":
+  [36m<details[39m
+    [33mclass[39m=[32m"account-menu"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  main:
+
+  Name "":
+  [36m<main[39m
+    [33mclass[39m=[32m"courses-page page-frame"[39m
+    [33mid[39m=[32m"courses-main"[39m
+    [33mtabindex[39m=[32m"-1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  heading:
+
+  Name "Xác suất cơ bản":
+  [36m<h1 />[39m
+
+  Name "Tiến độ của bạn":
+  [36m<h2 />[39m
+
+  Name "Biến cố 2/2 bài học":
+  [36m<h2[39m
+    [33mclass[39m=[32m"roadmap-module__heading"[39m
+  [36m/>[39m
+
+  Name "Xác suất 1/2 bài học":
+  [36m<h2[39m
+    [33mclass[39m=[32m"roadmap-module__heading"[39m
+  [36m/>[39m
+
+  Name "Trò chuyện":
+  [36m<h2[39m
+    [33mid[39m=[32m"roadmap-chat-title"[39m
+  [36m/>[39m
+
+  Name "Tài liệu và bài ôn":
+  [36m<h2[39m
+    [33mid[39m=[32m"roadmap-library-title"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  paragraph:
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"roadmap-shared-note"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p[39m
+    [33mclass[39m=[32m"roadmap-module__description"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<p />[39m
+
+  Name "":
+  [36m<p />[39m
+
+  --------------------------------------------------
+  region:
+
+  Name "Tiến độ cả khoá":
+  [36m<section[39m
+    [33maria-label[39m=[32m"Tiến độ cả khoá"[39m
+    [33mclass[39m=[32m"roadmap-overview"[39m
+  [36m/>[39m
+
+  Name "Xác suất 1/2 bài học":
+  [36m<div[39m
+    [33maria-labelledby[39m=[32m"roadmap-module-button-module-2"[39m
+    [33mclass[39m=[32m"roadmap-module__body"[39m
+    [33mid[39m=[32m"roadmap-module-module-2"[39m
+    [33mrole[39m=[32m"region"[39m
+  [36m/>[39m
+
+  Name "Trò chuyện":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"roadmap-chat-title"[39m
+    [33mclass[39m=[32m"roadmap-reserved__section"[39m
+  [36m/>[39m
+
+  Name "Tài liệu và bài ôn":
+  [36m<section[39m
+    [33maria-labelledby[39m=[32m"roadmap-library-title"[39m
+    [33mclass[39m=[32m"roadmap-reserved__section"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  strong:
+
+  Name "":
+  [36m<strong />[39m
+
+  --------------------------------------------------
+  progressbar:
+
+  Name "Tiến độ Xác suất cơ bản":
+  [36m<progress[39m
+    [33maria-label[39m=[32m"Tiến độ Xác suất cơ bản"[39m
+    [33mmax[39m=[32m"4"[39m
+    [33mvalue[39m=[32m"3"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<progress[39m
+    [33mmax[39m=[32m"2"[39m
+    [33mvalue[39m=[32m"1"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  list:
+
+  Name "Các module theo thứ tự":
+  [36m<ol[39m
+    [33maria-label[39m=[32m"Các module theo thứ tự"[39m
+    [33mclass[39m=[32m"roadmap-modules"[39m
+  [36m/>[39m
+
+  Name "Bài học trong module Xác suất":
+  [36m<ul[39m
+    [33maria-label[39m=[32m"Bài học trong module Xác suất"[39m
+    [33mclass[39m=[32m"roadmap-concepts"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  listitem:
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"roadmap-module"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"roadmap-module"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"roadmap-concept is-learned"[39m
+  [36m/>[39m
+
+  Name "":
+  [36m<li[39m
+    [33mclass[39m=[32m"roadmap-concept"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  checkbox:
+
+  Name "Đã học: Xác suất cổ điển":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Đã học: Xác suất cổ điển"[39m
+    [33mdisabled[39m=[32m""[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  Name "Đã học: Biến cố đối":
+  [36m<input[39m
+    [33maria-label[39m=[32m"Đã học: Biến cố đối"[39m
+    [33mtype[39m=[32m"checkbox"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+  status:
+
+  Name "":
+  [36m<output[39m
+    [33mdata-testid[39m=[32m"location"[39m
+  [36m/>[39m
+
+  --------------------------------------------------
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mNguyễn An[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc"[39m
+        [36m>[39m
+          [0mKhoá học của tôi[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"roadmap-content"[39m
+        [36m>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"roadmap-heading"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mXác suất cơ bản[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTừ biến cố đến xác suất.[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"roadmap-shared-note"[39m
+            [36m>[39m
+              [0mTiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Tiến độ cả khoá"[39m
+            [33mclass[39m=[32m"roadmap-overview"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-overview__label"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mTiến độ của bạn[0m
+              [36m</h2>[39m
+              [36m<strong>[39m
+                [0m3[0m
+                [0m/[0m
+                [0m4[0m
+                [0m bài học[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<progress[39m
+              [33maria-label[39m=[32m"Tiến độ Xác suất cơ bản"[39m
+              [33mmax[39m=[32m"4"[39m
+              [33mvalue[39m=[32m"3"[39m
+            [36m/>[39m
+          [36m</section>[39m
+          [36m<ol[39m
+            [33maria-label[39m=[32m"Các module theo thứ tự"[39m
+            [33mclass[39m=[32m"roadmap-modules"[39m
+          [36m>[39m
+            [36m<li[39m
+              [33mclass[39m=[32m"roadmap-module"[39m
+            [36m>[39m
+              [36m<section[39m
+                [33mclass[39m=[32m"roadmap-module__section"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"roadmap-module__heading"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33maria-controls[39m=[32m"roadmap-module-module-1"[39m
+                    [33maria-expanded[39m=[32m"false"[39m
+                    [33mclass[39m=[32m"roadmap-module__toggle"[39m
+                    [33mid[39m=[32m"roadmap-module-button-module-1"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"roadmap-module__index"[39m
+                    [36m>[39m
+                      [0m1[0m
+                    [36m</span>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"roadmap-module__title"[39m
+                    [36m>[39m
+                      [0mBiến cố[0m
+                    [36m</span>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"roadmap-module__count"[39m
+                    [36m>[39m
+                      [0m2[0m
+                      [0m/[0m
+                      [0m2[0m
+                      [0m bài học[0m
+                    [36m</span>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"roadmap-module__chevron"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"20"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-width[39m=[32m"1.7"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"20"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"m6 9 6 6 6-6"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</h2>[39m
+              [36m</section>[39m
+            [36m</li>[39m
+            [36m<li[39m
+              [33mclass[39m=[32m"roadmap-module"[39m
+            [36m>[39m
+              [36m<section[39m
+                [33mclass[39m=[32m"roadmap-module__section"[39m
+              [36m>[39m
+                [36m<h2[39m
+                  [33mclass[39m=[32m"roadmap-module__heading"[39m
+                [36m>[39m
+                  [36m<button[39m
+                    [33maria-controls[39m=[32m"roadmap-module-module-2"[39m
+                    [33maria-expanded[39m=[32m"true"[39m
+                    [33mclass[39m=[32m"roadmap-module__toggle"[39m
+                    [33mid[39m=[32m"roadmap-module-button-module-2"[39m
+                    [33mtype[39m=[32m"button"[39m
+                  [36m>[39m
+                    [36m<span[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"roadmap-module__index"[39m
+                    [36m>[39m
+                      [0m2[0m
+                    [36m</span>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"roadmap-module__title"[39m
+                    [36m>[39m
+                      [0mXác suất[0m
+                    [36m</span>[39m
+                    [36m<span[39m
+                      [33mclass[39m=[32m"roadmap-module__count"[39m
+                    [36m>[39m
+                      [0m1[0m
+                      [0m/[0m
+                      [0m2[0m
+                      [0m bài học[0m
+                    [36m</span>[39m
+                    [36m<svg[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                      [33mclass[39m=[32m"roadmap-module__chevron"[39m
+                      [33mfill[39m=[32m"none"[39m
+                      [33mheight[39m=[32m"20"[39m
+                      [33mstroke[39m=[32m"currentColor"[39m
+                      [33mstroke-width[39m=[32m"1.7"[39m
+                      [33mviewBox[39m=[32m"0 0 24 24"[39m
+                      [33mwidth[39m=[32m"20"[39m
+                    [36m>[39m
+                      [36m<path[39m
+                        [33md[39m=[32m"m6 9 6 6 6-6"[39m
+                      [36m/>[39m
+                    [36m</svg>[39m
+                  [36m</button>[39m
+                [36m</h2>[39m
+                [36m<div[39m
+                  [33maria-labelledby[39m=[32m"roadmap-module-button-module-2"[39m
+                  [33mclass[39m=[32m"roadmap-module__body"[39m
+                  [33mid[39m=[32m"roadmap-module-module-2"[39m
+                  [33mrole[39m=[32m"region"[39m
+                [36m>[39m
+                  [36m<p[39m
+                    [33mclass[39m=[32m"roadmap-module__description"[39m
+                  [36m>[39m
+                    [0mĐếm kết quả thuận lợi.[0m
+                  [36m</p>[39m
+                  [36m<div[39m
+                    [33maria-label[39m=[32m"Tiến độ module Xác suất"[39m
+                    [33mclass[39m=[32m"roadmap-module__progress"[39m
+                  [36m>[39m
+                    [36m<progress[39m
+                      [33mmax[39m=[32m"2"[39m
+                      [33mvalue[39m=[32m"1"[39m
+                    [36m/>[39m
+                    [36m<span>[39m
+                      [0m1[0m
+                      [0m/[0m
+                      [0m2[0m
+                      [0m bài học[0m
+                    [36m</span>[39m
+                  [36m</div>[39m
+                  [36m<ul[39m
+                    [33maria-label[39m=[32m"Bài học trong module Xác suất"[39m
+                    [33mclass[39m=[32m"roadmap-concepts"[39m
+                  [36m>[39m
+                    [36m<li[39m
+                      [33mclass[39m=[32m"roadmap-concept is-learned"[39m
+                    [36m>[39m
+                      [36m<label[39m
+                        [33mclass[39m=[32m"roadmap-concept__label"[39m
+                      [36m>[39m
+                        [36m<input[39m
+                          [33maria-label[39m=[32m"Đã học: Xác suất cổ điển"[39m
+                          [33mdisabled[39m=[32m""[39m
+                          [33mtype[39m=[32m"checkbox"[39m
+                        [36m/>[39m
+                        [36m<span[39m
+                          [33mclass[39m=[32m"roadmap-concept__name"[39m
+                        [36m>[39m
+                          [0mXác suất cổ điển[0m
+                        [36m</span>[39m
+                        [36m<span[39m
+                          [33mclass[39m=[32m"roadmap-concept__state"[39m
+                        [36m>[39m
+                          [0mĐang lưu…[0m
+                        [36m</span>[39m
+                      [36m</label>[39m
+                    [36m</li>[39m
+                    [36m<li[39m
+                      [33mclass[39m=[32m"roadmap-concept"[39m
+                    [36m>[39m
+                      [36m<label[39m
+                        [33mclass[39m=[32m"roadmap-concept__label"[39m
+                      [36m>[39m
+                        [36m<input[39m
+                          [33maria-label[39m=[32m"Đã học: Biến cố đối"[39m
+                          [33mtype[39m=[32m"checkbox"[39m
+                        [36m/>[39m
+                        [36m<span[39m
+                          [33mclass[39m=[32m"roadmap-concept__name"[39m
+                        [36m>[39m
+                          [0mBiến cố đối[0m
+                        [36m</span>[39m
+                        [36m<span[39m
+                          [33mclass[39m=[32m"roadmap-concept__state"[39m
+                        [36m>[39m
+                          [0mChưa học[0m
+                        [36m</span>[39m
+                      [36m</label>[39m
+                    [36m</li>[39m
+                  [36m</ul>[39m
+                  [36m<a[39m
+                    [33maria-label[39m=[32m"Mở module: Xác suất"[39m
+                    [33mclass[39m=[32m"roadmap-module__open"[39m
+                    [33mdata-discover[39m=[32m"true"[39m
+                    [33mhref[39m=[32m"/khoa-hoc/course-1/module/module-2"[39m
+                  [36m>[39m
+                    [0mMở module [0m
+                    [36m<span[39m
+                      [33maria-hidden[39m=[32m"true"[39m
+                    [36m>[39m
+                      [0m→[0m
+                    [36m</span>[39m
+                  [36m</a>[39m
+                [36m</div>[39m
+              [36m</section>[39m
+            [36m</li>[39m
+          [36m</ol>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"roadmap-reserved"[39m
+          [36m>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"roadmap-chat-title"[39m
+              [33mclass[39m=[32m"roadmap-reserved__section"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"roadmap-chat-title"[39m
+              [36m>[39m
+                [0mTrò chuyện[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0mChưa có cuộc trò chuyện.[0m
+              [36m</p>[39m
+              [36m<small>[39m
+                [0mTính năng này sẽ được bổ sung.[0m
+              [36m</small>[39m
+            [36m</section>[39m
+            [36m<section[39m
+              [33maria-labelledby[39m=[32m"roadmap-library-title"[39m
+              [33mclass[39m=[32m"roadmap-reserved__section"[39m
+            [36m>[39m
+              [36m<h2[39m
+                [33mid[39m=[32m"roadmap-library-title"[39m
+              [36m>[39m
+                [0mTài liệu và bài ôn[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0mChưa có nội dung.[0m
+              [36m</p>[39m
+              [36m<small>[39m
+                [0mTính năng này sẽ được bổ sung.[0m
+              [36m</small>[39m
+            [36m</section>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+    [36m<output[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/course-1[0m
+    [36m</output>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Roadmap.test.tsx:117:17
+    115|   await user.click(screen.getByRole('button', { name: /Xác suất/ }));
+    116|   await user.click(screen.getByRole('checkbox', { name: 'Đã học: Xác s…
+    117|   expect(screen.getByRole('checkbox', { name: 'Đã học: Biến cố' })).to…
+       |                 ^
+    118|   expect(screen.getByRole('checkbox', { name: 'Đã học: Xác suất cổ điể…
+    119|   await act(async () => { resolveNode3(json(progress(['node-1', 'node-…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/Roadmap.test.tsx > shows the selected module and the shared learner mark on the module route
+TestingLibraryElementError: Found multiple elements with the role "heading" and name "Xác suất"
+
+Here are the matching elements:
+
+Ignored nodes: comments, script, style
+[36m<h2>[39m
+  [0mXác suất[0m
+[36m</h2>[39m
+
+Ignored nodes: comments, script, style
+[36m<h2>[39m
+  [0mXác suất[0m
+[36m</h2>[39m
+
+(If this is intentional, then use the `*AllBy*` variant of the query (like `queryAllByText`, `getAllByText`, or
+`findAllByText`)).
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mNguyễn An[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc/course-1"[39m
+        [36m>[39m
+          [0mQuay lại lộ trình[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"roadmap-content"[39m
+        [36m>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"roadmap-heading"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mXác suất cơ bản[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTừ biến cố đến xác suất.[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"roadmap-shared-note"[39m
+            [36m>[39m
+              [0mTiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.[0m
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Tiến độ cả khoá"[39m
+            [33mclass[39m=[32m"roadmap-overview"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-overview__label"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mXác suất[0m
+              [36m</h2>[39m
+              [36m<strong>[39m
+                [0m0[0m
+                [0m/[0m
+                [0m2[0m
+                [0m bài học[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<progress[39m
+              [33maria-label[39m=[32m"Tiến độ module Xác suất"[39m
+              [33mmax[39m=[32m"2"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</section>[39m
+          [36m<section[39m
+            [33mclass[39m=[32m"roadmap-module-detail"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-module-detail__heading"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mXác suất[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0mĐếm kết quả thuận lợi.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<ul[39m
+              [33maria-label[39m=[32m"Bài học trong module Xác suất"[39m
+              [33mclass[39m=[32m"roadmap-concepts"[39m
+            [36m>[39m
+              [36m<li[39m
+                [33mclass[39m=[32m"roadmap-concept"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"roadmap-concept__label"[39m
+                [36m>[39m
+                  [36m<input[39m
+                    [33maria-label[39m=[32m"Đã học: Xác suất cổ điển"[39m
+                    [33mtype[39m=[32m"checkbox"[39m
+                  [36m/>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__name"[39m
+                  [36m>[39m
+                    [0mXác suất cổ điển[0m
+                  [36m</span>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__state"[39m
+                  [36m>[39m
+                    [0mChưa học[0m
+                  [36m</span>[39m
+                [36m</label>[39m
+              [36m</li>[39m
+              [36m<li[39m
+                [33mclass[39m=[32m"roadmap-concept"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"roadmap-concept__label"[39m
+                [36m>[39m
+                  [36m<input[39m
+                    [33maria-label[39m=[32m"Đã học: Biến cố đối"[39m
+                    [33mtype[39m=[32m"checkbox"[39m
+                  [36m/>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__name"[39m
+                  [36m>[39m
+                    [0mBiến cố đối[0m
+                  [36m</span>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__state"[39m
+                  [36m>[39m
+                    [0mChưa học[0m
+                  [36m</span>[39m
+                [36m</label>[39m
+              [36m</li>[39m
+            [36m</ul>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+    [36m<output[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/course-1/module/module-2[0m
+    [36m</output>[39m
+  [36m</div>[39m
+[36m</body>[39m
+
+Ignored nodes: comments, script, style
+[36m<body>[39m
+  [36m<div>[39m
+    [36m<div[39m
+      [33mclass[39m=[32m"courses-shell"[39m
+    [36m>[39m
+      [36m<a[39m
+        [33mclass[39m=[32m"skip-link"[39m
+        [33mhref[39m=[32m"#courses-main"[39m
+      [36m>[39m
+        [0mĐến nội dung chính[0m
+      [36m</a>[39m
+      [36m<header[39m
+        [33mclass[39m=[32m"courses-header"[39m
+      [36m>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"header-inner"[39m
+        [36m>[39m
+          [36m<a[39m
+            [33maria-label[39m=[32m"WayFinder, về khoá học"[39m
+            [33mclass[39m=[32m"brand-link"[39m
+            [33mdata-discover[39m=[32m"true"[39m
+            [33mhref[39m=[32m"/khoa-hoc"[39m
+          [36m>[39m
+            [36m<img[39m
+              [33malt[39m=[32m"WayFinder"[39m
+              [33msrc[39m=[32m"/assets/Artboard%2024.png"[39m
+            [36m/>[39m
+          [36m</a>[39m
+          [36m<div[39m
+            [33mclass[39m=[32m"header-actions"[39m
+          [36m>[39m
+            [36m<a[39m
+              [33mclass[39m=[32m"button button-primary courses-upload"[39m
+              [33mdata-discover[39m=[32m"true"[39m
+              [33mhref[39m=[32m"/tai-len"[39m
+            [36m>[39m
+              [0mTải tài liệu[0m
+            [36m</a>[39m
+            [36m<button[39m
+              [33maria-label[39m=[32m"Bật chế độ tối"[39m
+              [33mclass[39m=[32m"icon-button theme-toggle"[39m
+              [33mtype[39m=[32m"button"[39m
+            [36m>[39m
+              [36m<svg[39m
+                [33maria-hidden[39m=[32m"true"[39m
+                [33mfill[39m=[32m"none"[39m
+                [33mheight[39m=[32m"20"[39m
+                [33mstroke[39m=[32m"currentColor"[39m
+                [33mstroke-width[39m=[32m"1.5"[39m
+                [33mviewBox[39m=[32m"0 0 24 24"[39m
+                [33mwidth[39m=[32m"20"[39m
+              [36m>[39m
+                [36m<circle[39m
+                  [33mcx[39m=[32m"12"[39m
+                  [33mcy[39m=[32m"12"[39m
+                  [33mr[39m=[32m"8"[39m
+                [36m/>[39m
+                [36m<path[39m
+                  [33md[39m=[32m"M12 4a8 8 0 0 0 0 16Z"[39m
+                  [33mfill[39m=[32m"currentColor"[39m
+                  [33mstroke[39m=[32m"none"[39m
+                [36m/>[39m
+              [36m</svg>[39m
+            [36m</button>[39m
+            [36m<details[39m
+              [33mclass[39m=[32m"account-menu"[39m
+            [36m>[39m
+              [36m<summary>[39m
+                [36m<span[39m
+                  [33mclass[39m=[32m"account-menu-name"[39m
+                [36m>[39m
+                  [0mNguyễn An[0m
+                [36m</span>[39m
+                [36m<svg[39m
+                  [33maria-hidden[39m=[32m"true"[39m
+                  [33mclass[39m=[32m"account-menu-chevron"[39m
+                  [33mfill[39m=[32m"none"[39m
+                  [33mheight[39m=[32m"16"[39m
+                  [33mstroke[39m=[32m"currentColor"[39m
+                  [33mstroke-width[39m=[32m"1.75"[39m
+                  [33mviewBox[39m=[32m"0 0 24 24"[39m
+                  [33mwidth[39m=[32m"16"[39m
+                [36m>[39m
+                  [36m<path[39m
+                    [33md[39m=[32m"m7 10 5 5 5-5"[39m
+                  [36m/>[39m
+                [36m</svg>[39m
+              [36m</summary>[39m
+              [36m<div[39m
+                [33mclass[39m=[32m"account-menu-panel"[39m
+              [36m>[39m
+                [36m<a[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-khoan"[39m
+                [36m>[39m
+                  [0mTài khoản[0m
+                [36m</a>[39m
+                [36m<a[39m
+                  [33mclass[39m=[32m"courses-menu-upload"[39m
+                  [33mdata-discover[39m=[32m"true"[39m
+                  [33mhref[39m=[32m"/tai-len"[39m
+                [36m>[39m
+                  [0mTải tài liệu[0m
+                [36m</a>[39m
+                [36m<button[39m
+                  [33mtype[39m=[32m"button"[39m
+                [36m>[39m
+                  [0mĐăng xuất[0m
+                [36m</button>[39m
+              [36m</div>[39m
+            [36m</details>[39m
+          [36m</div>[39m
+        [36m</div>[39m
+      [36m</header>[39m
+      [36m<main[39m
+        [33mclass[39m=[32m"courses-page page-frame"[39m
+        [33mid[39m=[32m"courses-main"[39m
+        [33mtabindex[39m=[32m"-1"[39m
+      [36m>[39m
+        [36m<a[39m
+          [33mclass[39m=[32m"back-link roadmap-back"[39m
+          [33mdata-discover[39m=[32m"true"[39m
+          [33mhref[39m=[32m"/khoa-hoc/course-1"[39m
+        [36m>[39m
+          [0mQuay lại lộ trình[0m
+        [36m</a>[39m
+        [36m<div[39m
+          [33mclass[39m=[32m"roadmap-content"[39m
+        [36m>[39m
+          [36m<header[39m
+            [33mclass[39m=[32m"roadmap-heading"[39m
+          [36m>[39m
+            [36m<h1>[39m
+              [0mXác suất cơ bản[0m
+            [36m</h1>[39m
+            [36m<p>[39m
+              [0mTừ biến cố đến xác suất.[0m
+            [36m</p>[39m
+            [36m<p[39m
+              [33mclass[39m=[32m"roadmap-shared-note"[39m
+            [36m>[39m
+              [0mTiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.[0m
+
+ Test Files  2 failed (2)
+      Tests  3 failed | 16 passed (19)
+   Start at  12:09:39
+            [36m</p>[39m
+          [36m</header>[39m
+          [36m<section[39m
+            [33maria-label[39m=[32m"Tiến độ cả khoá"[39m
+            [33mclass[39m=[32m"roadmap-overview"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-overview__label"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mXác suất[0m
+              [36m</h2>[39m
+              [36m<strong>[39m
+                [0m0[0m
+                [0m/[0m
+                [0m2[0m
+                [0m bài học[0m
+              [36m</strong>[39m
+            [36m</div>[39m
+            [36m<progress[39m
+              [33maria-label[39m=[32m"Tiến độ module Xác suất"[39m
+              [33mmax[39m=[32m"2"[39m
+              [33mvalue[39m=[32m"0"[39m
+            [36m/>[39m
+          [36m</section>[39m
+          [36m<section[39m
+            [33mclass[39m=[32m"roadmap-module-detail"[39m
+          [36m>[39m
+            [36m<div[39m
+              [33mclass[39m=[32m"roadmap-module-detail__heading"[39m
+            [36m>[39m
+              [36m<h2>[39m
+                [0mXác suất[0m
+              [36m</h2>[39m
+              [36m<p>[39m
+                [0mĐếm kết quả thuận lợi.[0m
+              [36m</p>[39m
+            [36m</div>[39m
+            [36m<ul[39m
+              [33maria-label[39m=[32m"Bài học trong module Xác suất"[39m
+              [33mclass[39m=[32m"roadmap-concepts"[39m
+            [36m>[39m
+              [36m<li[39m
+                [33mclass[39m=[32m"roadmap-concept"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"roadmap-concept__label"[39m
+                [36m>[39m
+                  [36m<input[39m
+                    [33maria-label[39m=[32m"Đã học: Xác suất cổ điển"[39m
+                    [33mtype[39m=[32m"checkbox"[39m
+                  [36m/>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__name"[39m
+                  [36m>[39m
+                    [0mXác suất cổ điển[0m
+                  [36m</span>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__state"[39m
+                  [36m>[39m
+   Duration  7.40s (tests 53%, environment 28%, setup 8%, import 8%, transform 3%)
+
+    Isolate  2 workers spawned · ~1.16s startup each (spawn + environment, per file)
+             at least ~1.16s faster with isolate: false — reuses workers across files instead of one per file
+
+                    [0mChưa học[0m
+                  [36m</span>[39m
+                [36m</label>[39m
+              [36m</li>[39m
+              [36m<li[39m
+                [33mclass[39m=[32m"roadmap-concept"[39m
+              [36m>[39m
+                [36m<label[39m
+                  [33mclass[39m=[32m"roadmap-concept__label"[39m
+                [36m>[39m
+                  [36m<input[39m
+                    [33maria-label[39m=[32m"Đã học: Biến cố đối"[39m
+                    [33mtype[39m=[32m"checkbox"[39m
+                  [36m/>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__name"[39m
+                  [36m>[39m
+                    [0mBiến cố đối[0m
+                  [36m</span>[39m
+                  [36m<span[39m
+                    [33mclass[39m=[32m"roadmap-concept__state"[39m
+                  [36m>[39m
+                    [0mChưa học[0m
+                  [36m</span>[39m
+                [36m</label>[39m
+              [36m</li>[39m
+            [36m</ul>[39m
+          [36m</section>[39m
+        [36m</div>[39m
+      [36m</main>[39m
+    [36m</div>[39m
+    [36m<output[39m
+      [33mdata-testid[39m=[32m"location"[39m
+    [36m>[39m
+      [0m/khoa-hoc/course-1/module/module-2[0m
+    [36m</output>[39m
+  [36m</div>[39m
+[36m</body>[39m
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Roadmap.test.tsx:129:23
+    127|   vi.stubGlobal('fetch', baseFetch());
+    128|   renderPage('/khoa-hoc/course-1/module/module-2');
+    129|   expect(await screen.findByRole('heading', { name: 'Xác suất' })).toB…
+       |                       ^
+    130|   expect(screen.getByRole('checkbox', { name: 'Đã học: Xác suất cổ điể…
+    131|   expect(screen.getByRole('link', { name: 'Quay lại lộ trình' })).toHa…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯

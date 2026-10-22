@@ -1,5 +1,7 @@
 # Lệnh giao việc sau nghiệm thu W-06 — 2026-10-21
 
+**Đợt giao mới nhất đã thay thế kế hoạch dưới đây:** [lệnh giao sau soát W-07/W-14/W-24](lenh-giao-viec-sau-w07-2026-10-21.md). W-07 đã ghép `f20d198`; W-14 cần W-25 sửa hai race trước nghiệm thu, thiết kế tiếp W-24. Các prompt dưới đây giữ làm lịch sử, không giao lại W-07.
+
 **Trạng thái:** đã soạn để chủ dự án sao chép gửi từng nhóm; điều phối chưa gửi sang phiên nhân viên.
 
 W-06 đã nghiệm thu tại `8b6e500`, ghép main bằng `dc41ee8`, đã đẩy GitHub. Cổng độc lập: **2.107 Python đạt, 0 fail, 1 Cloudinary live không bật; React 77/build đạt; browser PostgreSQL 9 assertion/6 cấu hình; 8/8 mutation bị bắt; 0 USD**. Hồ sơ điều phối tới `5847700`; các nhóm nhận **main mới nhất**, không dừng ở nhánh W-06 cũ.

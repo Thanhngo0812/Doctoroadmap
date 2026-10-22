@@ -1,0 +1,39 @@
+"""Normalize only trailing whitespace in copied logs/XML; retain original hashes."""
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import xml.etree.ElementTree as ET
+
+ROOT = Path(__file__).absolute().parents[2]
+OUT = ROOT/'report/coord-w07-w14-w24-evidence-2026-10-21'
+
+
+def counts(data):
+    tree=ET.fromstring(data)
+    return tuple(len(list(tree.iter(kind))) for kind in ['testcase','failure','error','skipped'])
+
+
+records=[]
+for source in OUT.rglob('*'):
+    if not source.is_file() or source.suffix not in {'.log','.xml'}: continue
+    original=source.read_bytes()
+    text=original.decode('utf-8')
+    normalized='\n'.join(line.rstrip(' \t\r') for line in text.splitlines())+'\n'
+    processed=normalized.encode('utf-8')
+    if original==processed: continue
+    if source.suffix=='.xml': assert counts(original)==counts(processed)
+    source.write_bytes(processed)
+    records.append({'path':source.relative_to(OUT).as_posix(),
+        'original_sha256':hashlib.sha256(original).hexdigest(),
+        'normalized_sha256':hashlib.sha256(processed).hexdigest(),
+        'change':'UTF-8 LF and trailing whitespace only; originals retained in coordinator scratch paths'})
+(OUT/'normalization.json').write_text(json.dumps(records,indent=2)+'\n',encoding='utf-8')
+shutil.copyfile(Path(__file__),OUT/'finalize-evidence.py.txt')
+rows=[]
+for source in sorted(OUT.rglob('*')):
+    if not source.is_file() or source==OUT/'manifest.json': continue
+    rows.append({'path':source.relative_to(OUT).as_posix(),'bytes':source.stat().st_size,
+                 'sha256':hashlib.sha256(source.read_bytes()).hexdigest()})
+(OUT/'manifest.json').write_text(json.dumps({'files':rows},indent=2)+'\n',encoding='utf-8')
+print(json.dumps({'files':len(rows),'bytes':sum(r['bytes'] for r in rows),'normalized_files':len(records)}))

@@ -6,6 +6,8 @@
 
 ## Vì sao
 
+**Sau soát 2026-10-21:** backend W-14 chưa đạt, cần sửa [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) và còn React/tích hợp. W-15 chưa mở lượt chạy thật; sau khi W-14 đầu-cuối đạt vẫn cần dry-run/tin nhắn duyệt tiền mới. Phần callback usage checkpoint từng bước còn phải chốt khi nối runner thật; không suy tổng thành chi từng bước. Xem [kế hoạch mới](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md).
+
 **Cập nhật phụ thuộc 2026-10-19:** W-13 đã được điều phối nghiệm thu sau khi kiểm doc-6 hoàn tất và tái lập cả hai kho ở 0 USD;
 xem [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md). Vé này vẫn chờ W-14. Phê duyệt hoàn tất W-13 không tự thay cho
 phạm vi duyệt chi của lượt W-15; không chạy thêm mô hình trong bước điều phối này.

@@ -1,0 +1,28 @@
+# Independent W-24 review — 2026-10-21
+
+Reviewed worker commit `c1df32a80f37a3e3788562f44ad6ddcf5daa48c9`, against main `2f4998c`. Worker source and committed evidence were never modified. All experiment writes are ordinary files under ignored `tmp/coord-w24-review` or `tmp/coord-w24-readonly-review-20261021`; no links, cleanup, Cloud writes, model calls, SMTP, paid services or held-out data.
+
+**Verdict: request changes; retain W-24 open.** No security-critical finding. New local previews have reproducible correctness issues, and the Cloud acceptance requirements remain unproven.
+
+## Required
+
+1. **Use actual token names in both new previews.** `design/preview/w07_roadmap_screens.html:13,107` and `w14_upload_screens.html:13` reference undefined `--color-text-main` / `--color-brand-blue`. Browser checks of both pages at 390/768/1280 in light/dark show body text `rgb(0,0,0)` in all six dark configurations and a transparent W-07 progress fill in all six W-07 configurations. Use existing `--color-text` and `--color-brand`; do not add alternate names to conceal a divergent contract.
+
+2. **Raw export is neither demonstrated Cloud provenance nor a matching token contract.** `design/tokens/figma_variables_raw_export.json:19` names an exporter with no export implementation/receipt; metadata itself identifies a local contract. There is no independent Cloud Variables read in this review, and no callable Figma tools were exposed. Compared against actual light CSS: seven mismatches/missing properties. `radius-md` is 8 vs CSS10, `radius-lg`12 vs CSS14; brand/text/motion names differ, radius-full absent, light surface-2 absent. The file contains20 colors/10spacing/4radius/1motion, whereas the report says16/10/4/5. Plugin only creates16colors+10spacing. `tests/unit/presentation/test_tokens_and_wcag.py:373` checks names/metadata/count only: the identical guard still passes when raw primary light is changed to `#FF0000`. Add real value comparison and truthful provenance; do not accept a metadata label as evidence of export.
+
+3. **Clipboard and scroll guards accept broken behavior.** `scripts/verify_prototype_flows.cjs:129` reads the `data-copied-text` value assigned by the same handler, not the clipboard. `:300` uses `isVisible`, which does not require intersection with the viewport. In ordinary scratch copies, the original verifier returns native exit0 /4of4 for baseline, for removal of the actual `navigator.clipboard.writeText` call, and for removal of the citation `scrollIntoView` call. Additionally, a citation placed at top5000 remains `isVisible=true`. Read the actual clipboard or an independent browser observable and assert viewport intersection/scroll displacement from a known offscreen initial position.
+
+4. **Frozen-GIF proof currently compares a broken image.** `design/preview/prototype_flows.html:669,670,808` points to missing `design/assets/spinner_96.gif` and `spinner_frame0_static.png`. Browser checks show `naturalWidth=0` before and after reduced-motion toggle, yet the original verifier passes4of4. Require image decode/naturalWidth before frame comparison, use existing actual assets, then demonstrate the guard catches an animated replacement. W-14 new preview also renders its in-card spinner at32px (`w14_upload_screens.html:110`), contrary to spec96px and report's claimed96px.
+
+5. **Checklist and Cloud claims exceed delivered evidence.** `report/w24-bo-sung-w22-2026-10-21.md:179` substitutes a14-group summary for the actual spec11 checklist, and points member/class progress/admin/404/document states to `components.html`, which has badges/cards rather than those screens. The19-image capture script uses1400desktop, auth mobile500 and the mobile-board viewport900; most captures light only, no per-page768/dark matrix for new pages. There are no prototype video files in the evidence directory, no independent four-flow Figma interaction recording, and no confirmed Variables export. Preserve local scope and list missing states explicitly. New local twelve-config checks do not prove Cloud parity or all original checklist states.
+
+6. **Make W-07 progress figures agree.** `w07_roadmap_screens.html:174` says12/18=67%, while visible module totals are5/5 +3/8 +0/5 =8/18. Mark/rollback handlers change a row but never update totals or the bar. Use one sample data source for totals and states, or label the cards as unrelated state specimens instead of a coherent course page.
+
+## Evidence and commands
+
+- `browser-observations.json`: actual Chromium12 configurations plus broken-image and citation visibility observations. No overflow or sub44px visible button in this matrix; that does not waive wrong dark colors, progress fill or spinner size. External HTTP(S) requests were blocked for this observation.
+- `browser-check.cjs`: rerun from repository root using `node tmp/coord-w24-review/browser-check.cjs`; native exit0.
+- `token-css-observations.json`: all35 raw/light CSS comparisons, seven discrepancies and primary-value guard counterexample. The original named guard was compiled from its AST unchanged, run against ordinary scratch JSON, baseline and changed primary both passed.
+- `mutation-results.json`, `baseline.log`, `clipboard-write-removed.log`, `citation-scroll-removed.log`: original verifier in copied scratch project with only the named mutation per run. Exact command `node scripts/verify_prototype_flows.cjs`, cwd `tmp/coord-w24-readonly-review-20261021`; all native exit0/4of4. Scratch HTML restored to original after runs; worker HTML never modified.
+
+Optional follow-up: use semantic buttons/expanded state for the W-07 accordion and respect shared motion tokens instead of `width300ms ease`. These are secondary to the required evidence and rendering fixes above.
