@@ -527,3 +527,8 @@ class JsonArtifactStore:
 
     def load_latest_retrieval(self, doc_id: str) -> StoredStageArtifact:
         return self._load_latest_stage("retrieval", doc_id)
+
+    def latest_retrieval_version(self, doc_id: str) -> int | None:
+        """Newest retrieval version, read from the directory listing without loading the index."""
+        versions = self._versions("retrieval", doc_id)
+        return versions[-1][0] if versions else None
