@@ -1846,6 +1846,18 @@
             ],
             "title": "Page Count"
           },
+          "confirmed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed At"
+          },
           "build": {
             "$ref": "#/components/schemas/BuildView"
           }

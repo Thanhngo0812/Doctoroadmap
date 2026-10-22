@@ -43,6 +43,7 @@ class UploadView(BaseModel):
     kind: str
     size_bytes: int
     page_count: int | None
+    confirmed_at: datetime | None = None
     build: BuildView
 
 

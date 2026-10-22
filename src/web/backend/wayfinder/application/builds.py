@@ -120,6 +120,7 @@ class BuildService:
         self.store.expire(self.clock.now())
         return {'contract_version':'upload-1','upload_id':upload['id'],'original_name':upload['original_name'],
                 'kind':upload['kind'],'size_bytes':upload['size_bytes'],'page_count':upload['page_count'],
+                'confirmed_at':upload['confirmed_at'],
                 'build':self._view(actor,upload,self.store.get_job(upload['build_id']))}
 
     def get_build(self,actor,bid,*,course_id=None):
