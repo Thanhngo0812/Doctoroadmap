@@ -131,6 +131,50 @@ it('shows building and failed courses without offering a pretend resume or progr
   expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
 });
 
+it('keeps each course context and the real worker step on shared-build cards', async () => {
+  const build = { contract_version: 'build-1', build_id: 'shared-build', course_id: 'course-a', upload_id: 'upload-a',
+    status: 'running', step: 'graph', step_index: 3, step_count: 4, started_at: null, finished_at: null,
+    confirmation_expires_at: '2026-10-25T00:00:00Z', cancel_requested: false, can_cancel: true, can_retry: false, error: null };
+  vi.stubGlobal('fetch', mockFetch({ owned: [
+    { ...sample, course_id: 'course-a', title: 'Lớp buổi sáng', role: 'owner', status: 'building', build },
+    { ...sample, course_id: 'course-b', title: 'Lớp buổi tối', role: 'owner', status: 'building', build: { ...build, course_id: 'course-b', upload_id: 'upload-b' } },
+  ], joined: [{ ...sample, course_id: 'course-member', title: 'Khoá đang dựng được chia sẻ', role: 'learner', status: 'building', build: { ...build, course_id: 'course-member', upload_id: null } }], samples: [] }));
+  renderPage();
+  const first = await screen.findByRole('article', { name: 'Lớp buổi sáng' });
+  const second = screen.getByRole('article', { name: 'Lớp buổi tối' });
+  expect(within(first).getByText('Dựng đồ thị và lộ trình')).toBeInTheDocument();
+  expect(within(first).getByRole('link', { name: 'Xem tiến trình' })).toHaveAttribute('href', '/ban-dung/shared-build?course_id=course-a&upload_id=upload-a');
+  expect(within(second).getByRole('link', { name: 'Xem tiến trình' })).toHaveAttribute('href', '/ban-dung/shared-build?course_id=course-b&upload_id=upload-b');
+  const member = screen.getByRole('article', { name: 'Khoá đang dựng được chia sẻ' });
+  expect(within(member).getByRole('link', { name: 'Xem khoá học' })).toHaveAttribute('href', '/khoa-hoc/course-member');
+  expect(within(member).queryByRole('link', { name: 'Xem tiến trình' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('progressbar')).not.toBeInTheDocument();
+});
+
+it('refreshes active build cards after three seconds and stops after the course becomes ready', async () => {
+  vi.useFakeTimers();
+  let loads = 0;
+  vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
+    if (String(input).endsWith('/me')) return json({ account, csrf_token: 'w14-csrf' });
+    loads += 1;
+    return json({ owned: [{ ...sample, course_id: 'polling-course', role: 'owner', status: loads === 1 ? 'building' : 'ready',
+      build: { build_id: 'polling-build', course_id: 'polling-course', status: loads === 1 ? 'running' : 'succeeded', step: 'graph' } }], joined: [], samples: [] });
+  }));
+  try {
+    renderPage();
+    await act(async () => { for (let index = 0; index < 16; index += 1) await Promise.resolve(); });
+    expect(screen.getByText('Dựng đồ thị và lộ trình')).toBeInTheDocument();
+    expect(loads).toBe(1);
+    await act(async () => { await vi.advanceTimersByTimeAsync(2999); });
+    expect(loads).toBe(1);
+    await act(async () => { await vi.advanceTimersByTimeAsync(1); });
+    expect(loads).toBe(2);
+    expect(screen.getByRole('link', { name: 'Học tiếp' })).toBeInTheDocument();
+    await act(async () => { await vi.advanceTimersByTimeAsync(6000); });
+    expect(loads).toBe(2);
+  } finally { cleanup(); vi.useRealTimers(); }
+});
+
 it.each(['/', '/dang-nhap', '/dang-ky', '/dang-nhap?next=https%3A%2F%2Fevil.example', '/dang-nhap?next=%2F%2Fevil.example'])('uses courses as the signed-in home on %s', async path => {
   vi.stubGlobal('fetch', mockFetch({ owned: [], joined: [], samples: [] }));
   renderPage(path);

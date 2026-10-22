@@ -1,5 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { apiFetch, apiJson, fetchHealth, readSse, setCsrfToken } from './api';
+import { ApiError, apiFetch, apiJson, fetchHealth, readSse, setCsrfToken } from './api';
+
+it.each(['ban_quet', 'ngon_ngu_khong_ho_tro', 'loi_mang', 'het_tran_he_thong', 'loi_noi_bo', 'confirmation_expired', 'too_many_pages'])('uses safe product copy for build error %s', code => {
+  const message = new ApiError(code, 'private/path/cloudinary-public-id').message;
+  expect(message).not.toContain('private/path');
+  expect(message).not.toContain('400');
+});
 
 describe('apiFetch', () => {
   it('sends cookies on reads and attaches the in-memory CSRF token on writes only', async () => {
