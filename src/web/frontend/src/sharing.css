@@ -85,7 +85,7 @@
 .members-heading p { margin: 0; color: var(--color-text-muted); }
 .members-heading strong { margin-left: auto; font-size: var(--text-small); font-variant-numeric: tabular-nums; }
 .members-list { margin: 0; padding: 0; list-style: none; }
-.members-list > li { display: grid; grid-template-columns: minmax(160px, 1.3fr) minmax(120px, 1fr) minmax(150px, 1fr) auto; align-items: center; gap: var(--space-4); min-height: 72px; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
+.members-list > li { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr) minmax(0, 1fr) 156px; align-items: center; gap: var(--space-4); min-height: 72px; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-border); }
 .members-list__identity,
 .members-list__date { display: grid; gap: var(--space-1); }
 .members-list__identity span,

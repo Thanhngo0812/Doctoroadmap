@@ -85,6 +85,11 @@ async function main() {
         await theme(page, mode, state === 'share');
         await page.waitForTimeout(250);
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, state);
+        if (state === 'owner-members' && width >= 768) {
+          const columns = await page.locator('.members-list > li').evaluateAll(rows => rows.map(row =>
+            [...row.querySelectorAll('.members-list__date')].map(cell => Math.round(cell.getBoundingClientRect().x))));
+          assert.deepEqual(columns[0],columns[1],'owner and learner date columns must align');
+        }
         const targets = await page.locator('button,a.button,select,input:not([type=hidden])').evaluateAll(nodes => nodes
           .filter(n => n.getClientRects().length && !n.closest('[inert]') && (!document.querySelector('dialog[open]') || n.closest('dialog[open]')))
           .map(n => ({ name: n.getAttribute('aria-label') || n.textContent.trim(), w: n.getBoundingClientRect().width, h: n.getBoundingClientRect().height })));

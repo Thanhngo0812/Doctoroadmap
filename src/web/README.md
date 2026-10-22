@@ -1,12 +1,37 @@
 # WayFinder — chạy backend và frontend
 
-## Tiến trình W-11 — tạm dừng sau service/API/UI
+## Mở bản W-11 — chia sẻ bằng link và thành viên
 
-Mã W-11 nằm tại `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links`, nhánh `work/w11-share-links`, tách từ W-07. Đã có service/API và React cho chia sẻ link, tham gia, thành viên và rời khoá. **Chưa dùng bản này để demo W-11 đầu-cuối:** bảng `share_link` chưa có migration. Test phát triển dùng bảng tạm trong PostgreSQL UUID riêng, không thay đổi DB đang dùng của bạn.
+Mã W-11 ở `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links`, nhánh `work/w11-share-links`, đã nhận main `dee87cc` có W-14 được nghiệm thu. Migration `w11_0007` nối `w14_0006`. Cổng tự động dùng PostgreSQL UUID riêng và dịch vụ giả; không chạy trên DB phát triển của bạn. Bản này chờ điều phối nghiệm thu W-11, không tự ghép main.
 
-Theo yêu cầu chủ dự án, dừng sau phần này; W-14 ghép trước, W-11 nối sau. Khi tiếp tục: nhận main có W-07/W-14, thêm migration `w11_0007 → w14_0006`, rồi kiểm tích hợp đầy đủ trước khi cập nhật hướng dẫn mở W-11. Không chạy `create_all`, seed hoặc sửa DB phát triển để bỏ qua bước này. Xem [tiến trình và điểm tiếp tục W-11](../../report/w11-chia-se-link-thanh-vien-2026-10-21.md).
+**PowerShell 1 — PostgreSQL và backend:** dùng `.env` dev riêng đã cấu hình, bật Docker Desktop rồi chạy:
 
-Các bước mở PostgreSQL/backend/frontend bên dưới vẫn dành cho **bản W-07 đã kiểm**, giữ nguyên worktree của bản đó để đối chiếu. W-11 dùng cùng cấu hình `WAYFINDER_PUBLIC_BASE_URL` để tạo link và `WAYFINDER_SHARE_LINK_DEFAULT_DAYS` (mặc định 7); không cần thông tin dịch vụ ngoài mới. Chưa mở service W-11 trong đợt tạm dừng này.
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+$env:WAYFINDER_MAILER = 'console'
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+```
+
+**PowerShell 2 — frontend:**
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links
+npm.cmd --prefix src/web/frontend ci
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+```
+
+Mở `http://127.0.0.1:5173/khoa-hoc`. Chủ khoá vào lộ trình → **Chia sẻ**, đặt hạn/số lượt rồi tạo và sao chép link một lần. Link dùng đúng `WAYFINDER_PUBLIC_BASE_URL`; khách đăng nhập/đăng ký xong quay lại link đó. Trang **Thành viên** có nút xoá hoặc rời khoá theo quyền. Không cần worker cho thao tác chia sẻ; worker giả bên dưới chỉ dành cho dựng tài liệu W-14. Dừng từng terminal bằng `Ctrl+C`, giữ volume DB.
+
+Để dùng bản build ở8000: chạy `npm.cmd --prefix src/web/frontend run build`, đặt `WAYFINDER_PUBLIC_BASE_URL=http://127.0.0.1:8000` rồi mở lại backend. Không trộn `localhost` và `127.0.0.1`. Xem [báo cáo W-11](../../report/w11-chia-se-link-thanh-vien-2026-10-22.md). Các phần W-14/W-07 dưới đây giữ hướng dẫn của mốc trước để đối chiếu.
 
 ## W-14 React — vị trí và giới hạn
 
