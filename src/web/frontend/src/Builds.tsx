@@ -69,10 +69,11 @@ export function UploadPage(props: ThemeProps) {
       {quota?.build_monthly_max !== null && quota && <p className="builds-quota">Bạn còn {quota.builds_remaining ?? 0} / {quota.build_monthly_max} lượt dựng trong tháng này.</p>}
       {quotaError && <div className="builds-inline-error" role="alert">{quotaError} <button className="text-button" type="button" onClick={() => setQuotaReload(value => value + 1)}>Thử lại</button></div>}
       <form className="builds-upload-form" onSubmit={event => void submit(event)}>
-        <label className="builds-file-label" htmlFor="build-file">Tệp PDF hoặc DOCX</label>
-        <div className="builds-file-picker">
-          <input id="build-file" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={event => chooseFile(event.currentTarget.files?.[0])} aria-describedby="build-file-help" />
-          <p id="build-file-help">Tối đa 10 MB. Tệp sẽ được kiểm tra trước khi bắt đầu dựng.</p>
+        <p className="builds-file-label" id="build-file-label">Tệp PDF hoặc DOCX</p>
+        <div className="builds-file-picker" onDragOver={event => event.preventDefault()} onDrop={event => { event.preventDefault(); chooseFile(event.dataTransfer.files[0]); }}>
+          <input id="build-file" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" onChange={event => chooseFile(event.currentTarget.files?.[0])} aria-labelledby="build-file-label" aria-describedby="build-file-help" />
+          <label className="builds-file-choice" htmlFor="build-file"><span className="builds-file-button">Chọn tệp</span><span className="builds-file-name">{file?.name ?? 'Chưa chọn tệp'}</span></label>
+          <p id="build-file-help">Hoặc kéo thả một tệp vào đây. Tối đa 10 MB. Tệp sẽ được kiểm tra trước khi bắt đầu dựng.</p>
           {file && <p className="builds-file-selected">{file.name} <span>{(file.size / (1024 * 1024)).toFixed(1)} MB</span></p>}
         </div>
         <label className="builds-rights"><input type="checkbox" checked={rightsConfirmed} onChange={event => setRightsConfirmed(event.currentTarget.checked)} /> <span>Tôi có quyền sử dụng và chia sẻ tài liệu này.</span></label>

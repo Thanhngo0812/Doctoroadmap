@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
-import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import App from './App';
@@ -93,6 +93,26 @@ it('aborts an in-flight upload when leaving the upload screen', async () => {
   page.unmount();
   expect(signal?.aborted).toBe(true);
   await act(async () => finishUpload?.(json(upload)));
+});
+
+it('selects one dropped file without uploading before rights confirmation', async () => {
+  const fetcher = vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url.endsWith('/me')) return me();
+    if (url.endsWith('/me/usage')) return json({ builds_used: 0, build_monthly_max: null, builds_remaining: null });
+    throw new Error(`Unexpected request ${url}`);
+  });
+  vi.stubGlobal('fetch', fetcher);
+  renderPage('/tai-len');
+  await screen.findByLabelText('Tệp PDF hoặc DOCX');
+  const file = new File(['%PDF-1.7 sample'], 'Dai so.pdf', { type: 'application/pdf' });
+  const dropTarget = screen.getByText(/kéo thả một tệp/i).parentElement!;
+  fireEvent.dragOver(dropTarget, { dataTransfer: { files: [file] } });
+  fireEvent.drop(dropTarget, { dataTransfer: { files: [file] } });
+  await waitFor(() => expect(screen.getAllByText('Dai so.pdf')).toHaveLength(2));
+  expect(screen.getByText('Chọn tệp')).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Tải tài liệu lên' })).toBeDisabled();
+  expect(fetcher.mock.calls.some(([url]) => String(url).endsWith('/uploads'))).toBe(false);
 });
 
 it('recovers an awaiting build from its scoped route and does not start it on load', async () => {
