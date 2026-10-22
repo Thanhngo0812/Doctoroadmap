@@ -2,9 +2,11 @@
 
 **Nguồn chân lý:** [spec Pha B2](../../doc/pha-b2-spec.md), mục 4 (`library-1`), 7 (`quiz-2`, `document-2`), 10; [spec chức năng](../../doc/web-chuc-nang-spec.md),
 mục 7, 11 (đề quiz không có đáp án); spec thiết kế, trang quiz, tài liệu, thư viện.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-35, SA-37; sửa SA-52 · **Trạng thái:** phần quiz chờ SA-52 đạt/ghép.
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-35, SA-37; SA-52 đã ghép · **Trạng thái:** đủ phụ thuộc lõi; xếp sau W-08 nếu chỉ có một phiên web.
 
-**Đối chiếu Pha B 2026-10-22:** phần quiz chưa đủ phụ thuộc: Claude soát SA-50 chưa đạt, mở SA-52 sửa Q3/Q6/câu dẫn/nhiễu/cache, SA-35/37 còn chờ. Chờ Claude nghiệm thu/ghép SA-52 trước khi chốt quiz W-10; không lấy kết quả local hoặc cổng backend W-25 thay phán xét này. Xem [kế hoạch mới](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md).
+**Đối chiếu Pha B 2026-10-22, cập nhật:** Claude đã nghiệm thu SA-52 và ghép `66cd439`, đóng điểm chờ sửa quiz của SA-35/37.
+Nhận main có mốc này để cài/kiểm `quiz-2`, tài liệu và thư viện với đồ giả/phát lại; phần web vẫn cần kiểm HTTP không lộ đáp án, owner và nộp bài
+nguyên tử. Xem [soát Pha B của Claude](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md).
 
 ## Vì sao
 

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.812" timestamp="2026-10-22T18:45:16.993792+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_build_cards_expose_only_the_viewers_upload_for_the_course" time="2.216"><failure message="AssertionError: assert '52d734bd-d15...-7d70b9767c12' == '9b4344f7-baf...-333725a5ef9f'&#10;  &#10;  - 9b4344f7-baf0-4a82-a9bc-333725a5ef9f&#10;  + 52d734bd-d153-437a-9405-7d70b9767c12">builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_ff0d71eaf50e4279b210d...oken': 'bugyIQwi_WjdCZDUWt7sIhHNQTpB0Lfgovhb86VSQR4'}, app=&lt;fastapi.applications.FastAPI object at 0x000002C28BF5F6E0&gt;)
+
+    def test_build_cards_expose_only_the_viewers_upload_for_the_course(builds):
+        from wayfinder.application.courses import CourseService
+        from wayfinder.domain.courses import Membership
+        from wayfinder.infrastructure.course_store import PostgresCourseStore
+        b=builds
+        courses=CourseService(PostgresCourseStore(b.engine),settings=b.settings,clock=b.clock)
+        courses.build_service=b.service
+        b.services.courses=courses
+        data=pdf()
+        first=upload(b,content=data)
+        second=upload(b,content=data)
+        assert first['build']['build_id']==second['build']['build_id']
+
+        cards=b.client.get('/api/v1/courses').json()['owned']
+        first_card=next(card for card in cards if card['course_id']==first['build']['course_id'])
+        second_card=next(card for card in cards if card['course_id']==second['build']['course_id'])
+        assert first_card['build']['upload_id']==first['upload_id']
+&gt;       assert second_card['build']['upload_id']==second['upload_id']
+E       AssertionError: assert '52d734bd-d15...-7d70b9767c12' == '9b4344f7-baf...-333725a5ef9f'
+E
+E         - 9b4344f7-baf0-4a82-a9bc-333725a5ef9f
+E         + 52d734bd-d153-437a-9405-7d70b9767c12
+
+src\web\backend\tests\test_builds_w14.py:698: AssertionError</failure></testcase></testsuite></testsuites>

@@ -2,9 +2,16 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4, 8, câu hỏi mở 2; vé [W-13](W-13-dung-mot-cuon-o-loi.md), [W-14](W-14-tai-sach-len-ban-dung.md).
 **Ai:** nhân viên lõi chạy · người soát và Claude đọc số · **Chi phí mô hình:** một cuốn mới, ước dưới 3 USD theo D-01; dry-run trước, **chủ dự án duyệt**
-· **Chặn bởi:** W-13, W-14 · **Trạng thái:** ready-for-agent
+· **Chặn bởi:** W-13, W-14 đã đạt · **Trạng thái:** mở giai đoạn adapter/composition/kiểm0USD; chưa cấp quyền chạy có tiền.
 
 ## Vì sao
+
+**Cập nhật cuối đợt 2026-10-22:** W-14 đầu-cuối bộ dựng giả đã đạt có ghi chú và ghép/đẩy `7fe63df`, mốc kiểm `61b5d80`:
+2185Python/104React/build, browser/SQL đạt. Tài liệu lõi `1acaf4e` được nhận cùng mốc ghép. Lõi bắt đầu phần adapter/composition/test fake0USD,
+đọc [ghi chú đầu vào](../../report/w15-ghi-chu-dau-vao-sau-w25-2026-10-22.md); phần port trong `BuildDocument`/`composition_build.py` phối hợp
+Claude/phiên pha A qua mục8 bàn giao trước khi sửa. Kiểm PostgreSQL xuyên suốt, Vertex, usage checkpoint và identity/cache; không rơi về JSON/SQLite.
+Dry-run và tin nhắn duyệt tiền cho một cuốn/lượt/trần riêng vẫn bắt buộc; chưa chạy provider thật hoặc coi ngân sách SA-55/phục hồi là quyền chi W-15.
+Xem [kế hoạch/lời giao](../../report/lenh-giao-viec-sau-w14-2026-10-22.md). Các cập nhật trước dưới đây giữ làm lịch sử.
 
 **Cập nhật 2026-10-22:** backend/schema W-14+W-25 đã đạt và ghép `a572459`; React W-14 mới xong local, chưa cổng/ nghiệm thu đầu-cuối nên W-15 vẫn chưa mở chạy thật. Lõi có thể chuẩn bị ghi chú hợp đồng usage checkpoint/dry-run; mọi lượt có tiền vẫn cần duyệt mới. Xem [kế hoạch mới](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md).
 

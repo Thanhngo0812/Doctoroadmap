@@ -1,0 +1,68 @@
+[
+  {
+    "name": "auto-confirm",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Builds.test.tsx",
+      "-t",
+      "requires rights confirmation",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022/report/w14-react-evidence/final-main-2026-10-22/ui-mutations/auto-confirm.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "7419588470d5abc0f523f917612d7bcf51d86bbafe39f3e2a68300599bb6acd1",
+    "restored_sha256": "7419588470d5abc0f523f917612d7bcf51d86bbafe39f3e2a68300599bb6acd1"
+  },
+  {
+    "name": "missing-course-query",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Builds.test.tsx",
+      "-t",
+      "polls active builds every three seconds",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022/report/w14-react-evidence/final-main-2026-10-22/ui-mutations/missing-course-query.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "46b7e497e27906aff24258dcfd08aa6797c9b87bcabcfb1ea482d87b685493e1",
+    "restored_sha256": "46b7e497e27906aff24258dcfd08aa6797c9b87bcabcfb1ea482d87b685493e1"
+  },
+  {
+    "name": "no-card-poll",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Courses.test.tsx",
+      "-t",
+      "refreshes active build cards after three seconds",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w14-final-20261022/report/w14-react-evidence/final-main-2026-10-22/ui-mutations/no-card-poll.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "4c3503364865f26d707443ba4737dd08f7b34793c7dd68230fb690b19e7680a4",
+    "restored_sha256": "4c3503364865f26d707443ba4737dd08f7b34793c7dd68230fb690b19e7680a4"
+  }
+]
