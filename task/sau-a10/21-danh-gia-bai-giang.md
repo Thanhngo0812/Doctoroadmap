@@ -51,7 +51,19 @@ Cần trả lời bốn câu hỏi bằng số và bằng người chấm:
 
 Hai luật này là đề xuất cho chủ dự án, không phải cổng tự động.
 
+**Cách chấm (chốt 2026-10-22):** mỗi khái niệm là một nhóm 4–5 bản (LLM nhiệt độ 0, LLM nhiệt độ mặc định, mốc trích câu, ablation không đồ thị,
+và bản ảnh công thức nếu chạy). Người chấm chấm tuyệt đối từng bản, rồi xếp hạng trong nhóm; kết quả từng cặp suy từ thứ hạng. Trung thực theo ý
+(phần 2) chỉ chấm trên bản thiết kế chính, ở tệp riêng giao sau khi nộp phần 1. Mẫu 50 khái niệm theo vé.
+
 ## Tiêu chí nghiệm thu
+
+- [ ] **Phiếu chấm theo hướng dẫn** [`doc/huong-dan-cham/21-bai-giang.md`](../../doc/huong-dan-cham/21-bai-giang.md) và [luật chung](../../doc/huong-dan-cham/00-chung.md):
+  - mỗi người chấm (`C1`, `C2`) có tệp Excel riêng, đúng các cột và giá trị trong hướng dẫn, có danh sách chọn;
+  - tệp HTML đọc được khi không có mạng, ảnh công thức nhúng sẵn;
+  - thứ tự mục và nhãn A/B/C/D trộn riêng cho từng người, hạt giống cố định ghi trong báo cáo;
+  - một bộ chấm thử nằm ngoài mẫu;
+  - tệp khoá cấu hình để riêng, không nằm trong thư mục giao người chấm;
+  - kiểm bằng script rằng tệp giao người chấm không chứa tên cấu hình, mã nhánh hay đường dẫn kho.
 
 - [ ] Dry-run và chạy thật trong trần. Báo USD.
 - [ ] Bảng chấm mù và tệp khoá cấu hình để riêng.

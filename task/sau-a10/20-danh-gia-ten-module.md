@@ -40,7 +40,19 @@ Tên module là thứ người học thấy đầu tiên. Luật quyết định
 
 **Phân tích:** độ đồng thuận bằng κ của Cohen và Gwet AC1, kiểm định dấu, rồi áp luật quyết định 7.6.
 
+**Cách chấm (chốt 2026-10-22):** người chấm xếp hạng cả bốn tên của một module trong cùng một nhóm dòng, thay cho ba phiếu cặp rời. Ba phiếu cặp rời
+để lộ tên lặp lại của L1 và tốn ba lần đọc. Kết quả từng cặp suy từ thứ hạng; hạng bằng nhau tính là ngang. Mô tả chấm trên mẫu 60 module theo
+báo cáo mục 7.4.
+
 ## Tiêu chí nghiệm thu
+
+- [ ] **Phiếu chấm theo hướng dẫn** [`doc/huong-dan-cham/20-ten-module.md`](../../doc/huong-dan-cham/20-ten-module.md) và [luật chung](../../doc/huong-dan-cham/00-chung.md):
+  - mỗi người chấm (`C1`, `C2`) có tệp Excel riêng, đúng các cột và giá trị trong hướng dẫn, có danh sách chọn;
+  - đợt này không có tệp HTML: sheet Khái niệm bị khoá thay cho tệp đọc;
+  - thứ tự mục và nhãn A/B/C/D trộn riêng cho từng người, hạt giống cố định ghi trong báo cáo;
+  - một bộ chấm thử nằm ngoài mẫu;
+  - tệp khoá cấu hình để riêng, không nằm trong thư mục giao người chấm;
+  - kiểm bằng script rằng tệp giao người chấm không chứa tên cấu hình, mã nhánh hay đường dẫn kho.
 
 - [ ] Dry-run rồi chạy L2, sau khi chủ dự án duyệt. Báo USD.
 - [ ] Bảng số tự động cho cả bốn bản tên.
