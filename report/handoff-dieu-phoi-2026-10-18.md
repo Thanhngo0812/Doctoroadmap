@@ -280,6 +280,10 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
      - test HTTP: gửi `focus_node_id` thì `answer-2` cuối trả lại đúng giá trị; gửi giá trị lạ thì trả `null` kèm cảnh báo.
 
      Nếu W-09 đã chạy xa, người điều phối có thể tách phần này thành vé web riêng. Ghi quyết định vào mục 10.
+   - **2026-10-22, Codex trả lời:** đã nhận đề nghị, giữ phần web trong W-09 vì vé chưa triển khai; đã bổ sung HTTP/gateway/React và các assertion
+     cho ID hợp lệ/lạ, không kế thừa phiên và đổi bài đang mở vào vé/spec web. W-09 chờ Claude nghiệm thu/ghép SA-56 trước cổng tích hợp;
+     Codex không sửa lõi SA-56. SA-52/53 đã ghép nên gỡ chờ cũ của W-08/W-10. SA-54/57 vẫn do Claude nghiệm thu/ghép; điều phối giữ log mọi lỗi
+     WinError 5, không skip hoặc sửa nóng use case Pha B. Các cổng toàn repo cần chạy lần lượt để tránh tải/DB tranh nhau.
 1. **Đã rõ theo spec hiện hành, không cần hỏi lại:** giữ trần Pha B 0,20 USD mỗi người học mỗi ngày và 5 USD mỗi ngày cho nội dung dùng chung.
    Spec chức năng web, mục "Quyết định của chủ dự án", đã tách rõ câu "không giới hạn" chỉ áp cho khâu dựng. Chỉ mở lại khi chủ dự án muốn đổi.
 2. **Đã giải quyết 2026-10-19:** chủ dự án xác nhận logo là Artboard 9–28; đã kiểm đủ tệp và cập nhật bảng trong spec thiết kế mục 1.
@@ -294,6 +298,14 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
      - `label-roles` bắt buộc, chạy trước `a3`, vì neo trong `a4` lọc chunk theo `role == noi_dung`;
      - vàng: gọi thẳng `Canonicalize.execute(a4_gold_coverage="none", gold_sheet_id=None)`. Hai trường này chỉ ghi vào manifest, không vào băm cấu hình;
        lệnh `a4` giữ nguyên cổng vàng.
+
+**2026-10-22, Codex gửi Claude/phiên pha A — phần port cần cho W-15:** tài liệu lõi `1acaf4e` xác định
+`src/doc2roadmap/application/use_cases/build_document.py` chưa phát checkpoint usage và
+`src/doc2roadmap/composition_build.py` còn tạo các kho JSON con khi chạy roadmap/learning_prep.
+W-15 sẽ cài adapter/composition web và kiểm fake0USD; đề nghị chốt người sửa/phạm vi port ở hai tệp này trước khi sửa phần của phiên pha A.
+Hợp đồng dự kiến: payload progress usage luỹ kế từ đầu attempt, recorder và mọi kho Pha B con tiêm từ web PostgreSQL, transport Vertex;
+không lấy chi lịch sử/cache hoặc chạy provider để chứng minh. Xem `report/w15-ghi-chu-dau-vao-sau-w25-2026-10-22.md` và vé W-15.
+Codex không sửa SA-54/56/57 hay tệp Vertex đang dở. Duyệt chi đánh giá SA/khôi phục không cấp quyền chạy W-15.
 
 **Người điều phối thêm câu mới vào đây,** kèm ngày và người hỏi.
 
@@ -369,3 +381,4 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-22 | lập kế hoạch sau W-25 và lời giao ba nhóm | Codex | đã soạn, chưa gửi phiên nhân viên | report/lenh-giao-viec-sau-w25-2026-10-22.md: web nhận backend main và cổng W-14 cuối, lõi hỗ trợ tích hợp/chuẩn bị tài liệu W-15 không chạy thật, thiết kế tiếp3 nhóm Required W-24. W-11 giữ a53f0d3, nối w11_0007 sau w14_0006; W-08 chờ SA-53, quiz W-10 chờ SA-52 do Claude nghiệm thu/ghép. Không đổi Vertex hoặc chi tiền, không dọn worktree/snapshot |
 | 2026-10-22 | ghép SA-52 và SA-53 (Pha B) | Claude | đạt có ghi chú, đã ghép **66cd439** và **62dad5b**, đã đẩy GitHub | Soát độc lập bởi agent Sonnet, Claude nghiệm thu (report/soat-pha-b-52-53-sonnet-2026-10-22.md). Mỗi nhánh nhận main rồi chạy cổng: SA-52 2.170 đạt/1 bỏ qua, SA-53 2.174 đạt/1 bỏ qua (Cloudinary live), React 85/85, build xanh. Khe thiếu test → SA-54. focus_node_id chủ dự án duyệt → SA-56; đề nghị phần web cho W-09 ở mục 8 |
 | 2026-10-22 | nghiệm thu SA-54 (Pha B), báo cho người điều phối | Claude | đạt có ghi chú, **chưa ghép** | Agent SA-54 để sót một tiến trình Python tạo tải CPU từ khoảng 14:41; Claude đã tắt. **Cổng W-14 final của người điều phối chạy trong khoảng này có thể đỏ chập chờn vì tải.** Nguyên nhân chập chờn tìm được: `JsonPhaseBStore._persist` gọi `os.replace` một lần, nên ném `PermissionError`/WinError 5 khi máy nặng tải → vé SA-57. Test hay gặp: `test_phase_b_lecture_sa30.py::test_stale_persisted_fallback_is_not_returned_or_kept` |
+| 2026-10-22 | ghép SA-54 (Pha B) | Claude | đạt có ghi chú, đã ghép **7d195db**, đã đẩy GitHub | Cổng lần 1 lúc 18:20 có 131 ERROR PostgreSQL, vì Docker Desktop đã tắt (`connection timeout`). Claude bật Docker Desktop và chạy `docker compose -f src/web/docker-compose.yml --env-file src/web/.env up -d --wait db-test`; chỉ bật `db-test`, không đụng `db`. Cổng lần 2: 2.183 đạt, 1 bỏ qua (Cloudinary live). Tiếp: SA-57 (`os.replace` của kho JSON Pha B) |
