@@ -160,8 +160,11 @@ class BuildService:
                 raise WebError('conflict','Bản dựng không thể xác nhận ở trạng thái này')
             if job['status']=='awaiting_confirmation':
                 if quota['builds_remaining']==0: raise WebError('quota_exceeded','Đã hết lượt dựng trong tháng')
-                self.store.execute("UPDATE build SET status='queued',queued_at=:now,requested_by=:uid,upload_id=:upload,counts_quota=true WHERE id=:id",
+                # PostgreSQL rechecks this predicate after a concurrent cancellation commits.
+                queued=self.store.execute("UPDATE build SET status='queued',queued_at=:now,requested_by=:uid,upload_id=:upload,counts_quota=true "
+                    "WHERE id=:id AND status='awaiting_confirmation' AND NOT cancel_requested RETURNING id",
                     {'id':job['id'],'uid':actor.user_id,'upload':upload_id,'now':now})
+                if not queued: raise WebError('conflict','Bản dựng không thể xác nhận ở trạng thái này')
             if upload['confirmed_at'] is None:
                 if title is not None:
                     self.store.execute('UPDATE course SET title=:title,updated_at=:now WHERE id=:cid',

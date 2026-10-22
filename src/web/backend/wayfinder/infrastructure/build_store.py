@@ -133,6 +133,13 @@ class PostgresBuildStore(PostgresCourseStore):
             attempt=self.one('SELECT * FROM build_attempt WHERE build_id=:id AND lease_id=:lease FOR UPDATE',{'id':bid,'lease':lease})
             if attempt is None or attempt['result'] is not None: return False
             if not active and result is None: return False
+            # Cancellation and terminal publication share the locked build row. Mutate
+            # the callback result too, so the worker cannot send a stale success email.
+            if result and active and job['cancel_requested']:
+                result.status='cancelled'
+                result.error=None
+                result.graph_version=None
+                metadata=None
             fields=('spent_usd','model_calls','input_tokens','output_tokens')
             complete=counters.get('usage_complete',True) and attempt['usage_complete']
             values={}

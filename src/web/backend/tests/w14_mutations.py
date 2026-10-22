@@ -24,7 +24,7 @@ CASES=[
  ('publication-usage','application/build_worker.py',"state['result'] or BuildResult",'BuildResult','publication_error'),
  ('confirmed-media','application/build_worker.py',"if asset.get('confirmed') is not True: continue",'if False: continue','confirmed_media_only'),
  ('late-usage','infrastructure/build_store.py','if not active and result is None: return False','if not active: return False','heartbeat_reclaim'),
- ('boundary-cancel','application/build_worker.py',"if self.store.get_job(bid)['cancel_requested']:",'if False:','cancel_requested_between'),
+ ('boundary-cancel','application/build_worker.py',"if data.get('status')=='started' and cancelled():",'if False:','cancel_requested_between'),
  ('skip-locked','infrastructure/build_store.py','FOR UPDATE SKIP LOCKED LIMIT 1','FOR UPDATE LIMIT 1','queue_skips_a_locked_job'),
  ('course-context','application/builds.py',"return self._view(actor,upload,self.store.get_job(job['id']))","return self.get_build(actor,job['id'])",'same_actor_separate'),
 ]

@@ -134,11 +134,13 @@ class BuildWorker:
         if self.store.one('SELECT asset_key FROM media_asset WHERE doc_id=:doc AND asset_key=:key',{'doc':job['doc_id'],'key':key}): return
         current=self.store.get_job(job['id'])
         if current['lease_id']!=lease: raise InterruptedError('Worker lease revoked')
+        if current['cancel_requested']: raise InterruptedError('Build cancelled before media upload')
         public=self.service.media.upload(path,self.settings.cloudinary_folder+'/media/'+job['doc_id'],'image')
         try:
             with self.store.atomic():
                 current=self.store.one('SELECT * FROM build WHERE id=:id FOR UPDATE',{'id':job['id']})
                 if current['lease_id']!=lease: raise InterruptedError('Worker lease revoked')
+                if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
                 self.store.put_asset(job['doc_id'],key,public,kind,path.stat().st_size,self.clock.now())
         except Exception:
             self.service.media.delete(public)
