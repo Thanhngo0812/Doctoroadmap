@@ -8,7 +8,7 @@ import xml.etree.ElementTree as ET
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "report/w14-react-evidence/ui-mutations"
+OUTPUT = ROOT / "report/w14-react-evidence/final-main-2026-10-22/ui-mutations"
 CASES = (
     ("auto-confirm", "Builds.tsx", "Builds.test.tsx", "requires rights confirmation",
      "const uploaded = await uploadDocument(file, controller.signal);",
