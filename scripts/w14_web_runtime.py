@@ -200,7 +200,7 @@ def main() -> int:
     admin_engine = create_database_engine(configured).execution_options(isolation_level="AUTOCOMMIT")
     database_name = DATABASE_PREFIX + uuid4().hex
     database_url = base_url.set(database=database_name)
-    output = ROOT / "report/w14-react-evidence/final-main-2026-10-22"
+    output = ROOT / "report/w14-react-evidence/final-main-2026-10-22-run2"
     output.mkdir(parents=True, exist_ok=True)
     fixture_names = _write_browser_fixtures(output / "fixtures")
     summary = {
