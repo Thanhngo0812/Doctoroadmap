@@ -54,6 +54,32 @@ it('keeps the invalid join screen labelled by its own heading', async () => {
   expect(heading.id).toBe(section?.getAttribute('aria-labelledby'));
 });
 
+it('keeps a denied members screen labelled by its own heading', async () => {
+  vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
+    ? json({ account: ownerAccount, csrf_token: 'csrf-w11' })
+    : json({ error: { code: 'not_found' } }, 404)));
+  renderPage('/khoa-hoc/course-1/thanh-vien');
+  const heading = await screen.findByRole('heading', { name: 'Thành viên' });
+  expect(heading.id).toBe(heading.closest('section')?.getAttribute('aria-labelledby'));
+});
+
+it.each([
+  ['/join/pending', '.join-page'],
+  ['/khoa-hoc/course-1/thanh-vien', '.members-page'],
+])('does not reference an absent heading while loading %s', async (route, selector) => {
+  vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me')
+    ? json({ account: ownerAccount, csrf_token: 'csrf-w11' })
+    : new Promise<Response>(() => {})));
+  const { container } = renderPage(route);
+  await waitFor(() => {
+    const section = container.querySelector(selector);
+    expect(section).not.toBeNull();
+    for (const id of section?.getAttribute('aria-labelledby')?.split(/\s+/) ?? []) {
+      expect(document.getElementById(id)).not.toBeNull();
+    }
+  });
+});
+
 it('creates a one-time share URL, copies only on a successful clipboard write, and clears it on close', async () => {
   const writeText = vi.fn().mockResolvedValue(undefined);
   const calls: Array<[string, RequestInit]> = [];

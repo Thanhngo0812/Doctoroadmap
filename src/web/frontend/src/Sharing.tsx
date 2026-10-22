@@ -213,7 +213,7 @@ export function JoinPage(props: ThemeProps) {
   };
 
   return <CourseShell {...props}>
-    <section className="join-page" aria-labelledby="join-title">
+    <section className="join-page" aria-labelledby={preview || error ? 'join-title' : undefined}>
       {!preview && !error && <p role="status">Đang tải link mời…</p>}
       {error && <div className="courses-error"><h1 id="join-title">Link chia sẻ</h1><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
       {preview && <>
@@ -313,10 +313,10 @@ export function MembersPage(props: ThemeProps) {
   };
 
   return <CourseShell {...props}>
-    <section className="members-page" aria-labelledby="members-title">
+    <section className="members-page" aria-labelledby={members || error ? 'members-title' : undefined}>
       <Link className="back-link" to={coursePath(cid)}>Quay lại lộ trình</Link>
       {!members && !error && <p role="status">Đang tải thành viên…</p>}
-      {error && !members && <div className="courses-error"><h1>Thành viên</h1><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
+      {error && !members && <div className="courses-error"><h1 id="members-title">Thành viên</h1><p role="alert">{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
       {members && <>
         <header className="members-heading"><h1 id="members-title">Thành viên</h1><p>{courseTitle}</p><strong>{members.member_count} thành viên</strong></header>
         {error && <p className="sharing-feedback is-error" role="alert">{error}</p>}
