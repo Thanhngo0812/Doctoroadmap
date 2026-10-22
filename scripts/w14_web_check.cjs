@@ -144,6 +144,18 @@ async function main() {
     assert.equal(response.status(), 200, 'test-only worker state');
     return response.json();
   };
+  const waitForWorker = async (label, pausedStage = null) => {
+    let last;
+    await waitFor(async () => {
+      last = await workerState();
+      assert.equal(last.lastException, null, `fake worker failed during ${label}: ${JSON.stringify(last)}`);
+      return pausedStage ? last.pausedStage === pausedStage : !last.running;
+    }, `${label}; last worker state is included in failure diagnostics`, 240000).catch(error => {
+      error.message += `; worker=${JSON.stringify(last)}`;
+      throw error;
+    });
+    console.log(`W14 browser: ${label}`);
+  };
   const apiJson = async route => {
     const response = await page.request.get(`${base}${route}`);
     assert.equal(response.status(), 200, `GET ${route}`);
@@ -215,18 +227,14 @@ async function main() {
     audit.assertions.push('upload stayed awaiting_confirmation without worker activity; confirmation persisted the user-edited title and queued work');
 
     await control('start', { mode: 'success', pause_stages: ['doc_reading', 'concepts'] });
-    await waitFor(async () => {
-      const worker = await workerState();
-      assert.equal(worker.lastException, null, `fake worker stopped with ${JSON.stringify(worker)}`);
-      return worker.pausedStage === 'doc_reading';
-    }, 'worker pause at reading', 240000);
+    await waitForWorker('worker pause at reading', 'doc_reading');
     await waitForBuild(page, success.buildId, success.courseId, 'reading');
     stage = 'build.reading';
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { exact: true, name: 'Đang đọc và kiểm tra tài liệu' }).waitFor();
     audit.screens.push(await screenshot(page, 'reading-reloaded-390-dark.png', { width: 390, theme: 'dark' }));
     await control('advance');
-    await waitFor(async () => (await workerState()).pausedStage === 'concepts', 'worker pause at concepts', 240000);
+    await waitForWorker('worker pause at concepts', 'concepts');
     const running = await waitForBuild(page, success.buildId, success.courseId, 'running');
     assert.equal(running.step, 'concepts');
     stage = 'build.running';
@@ -244,7 +252,7 @@ async function main() {
     await runDesignInspection(page, audit);
     await page.emulateMedia({ reducedMotion: 'no-preference' });
     await control('advance');
-    await waitFor(async () => !(await workerState()).running, 'success worker completion');
+    await waitForWorker('success worker completion');
     const succeeded = await waitForBuild(page, success.buildId, success.courseId, 'succeeded');
     assert.equal(succeeded.course_id, success.courseId);
     stage = 'build.succeeded';
@@ -304,7 +312,7 @@ async function main() {
     state.buildIds.push(cancel.buildId);
     await confirmThroughUi(page, cancel, 'Bản DOCX cần dừng');
     await control('start', { mode: 'success', pause_stages: ['doc_reading'] });
-    await waitFor(async () => (await workerState()).pausedStage === 'doc_reading', 'cancel worker pause');
+    await waitForWorker('cancel worker pause', 'doc_reading');
     await waitForBuild(page, cancel.buildId, cancel.courseId, 'reading');
     const cancelledActionPromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/builds/${cancel.buildId}/cancel`);
@@ -312,7 +320,7 @@ async function main() {
     const cancelledAction = await cancelledActionPromise;
     assert.equal(cancelledAction.status(), 200);
     await control('advance');
-    await waitFor(async () => !(await workerState()).running, 'cancel worker completion');
+    await waitForWorker('cancel worker completion');
     await waitForBuild(page, cancel.buildId, cancel.courseId, 'cancelled');
     stage = 'build.cancelled';
     await page.reload({ waitUntil: 'networkidle' });
@@ -326,7 +334,7 @@ async function main() {
     state.buildIds.push(retry.buildId);
     await confirmThroughUi(page, retry, 'Bản PDF có thể thử lại');
     await control('start', { mode: 'retryable', pause_stages: [] });
-    await waitFor(async () => !(await workerState()).running, 'retryable fake worker result');
+    await waitForWorker('retryable fake worker result');
     const failed = await waitForBuild(page, retry.buildId, retry.courseId, 'failed');
     assert.equal(failed.error?.retryable, true);
     stage = 'build.retryable';
@@ -339,7 +347,7 @@ async function main() {
     assert.equal(retried.status(), 200);
     assert.equal((await retried.json()).status, 'queued');
     await control('start', { mode: 'success', pause_stages: [] });
-    await waitFor(async () => !(await workerState()).running, 'retry success worker completion');
+    await waitForWorker('retry success worker completion');
     await waitForBuild(page, retry.buildId, retry.courseId, 'succeeded');
     stage = 'build.retried';
     await page.reload({ waitUntil: 'networkidle' });
@@ -353,7 +361,7 @@ async function main() {
     state.buildIds.push(reject.buildId);
     await confirmThroughUi(page, reject, 'Bản PDF không đọc được');
     await control('start', { mode: 'rejected', pause_stages: [] });
-    await waitFor(async () => !(await workerState()).running, 'rejected worker completion');
+    await waitForWorker('rejected worker completion');
     const rejected = await waitForBuild(page, reject.buildId, reject.courseId, 'rejected');
     assert.equal(rejected.error?.code, 'ban_quet');
     await page.reload({ waitUntil: 'networkidle' });
