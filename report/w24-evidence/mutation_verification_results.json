@@ -25,12 +25,21 @@
     ]
   },
   {
-    "mutation": "Keep animated GIF during reduced motion (no static freeze)",
+    "mutation": "Keep animated GIF during manual reduced motion",
     "expected": "RED (exit 1 in Flow 3)",
     "exitCode": 1,
     "status": "RED_CONFIRMED",
     "errorCaptured": [
-      "-> Flow 3 FAILED: Flow 3 - Step 5: Reduced motion static fallback not engaged (got: ../Untitled_Artwork.gif)"
+      "-> Flow 3 FAILED: Flow 3 - Step 5a: Manual reduced motion static fallback not engaged (got: ../Untitled_Artwork.gif)"
+    ]
+  },
+  {
+    "mutation": "Break CSS prefers-reduced-motion media query URL (broken asset)",
+    "expected": "RED (exit 1 in Flow 3 OS check)",
+    "exitCode": 1,
+    "status": "RED_CONFIRMED",
+    "errorCaptured": [
+      "-> Flow 3 FAILED: Flow 3 - Step 5b: OS reduced-motion triggered failed asset requests: file:///C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w24-figma-evidence/design/assets/broken_nonexistent_spinner.png"
     ]
   }
 ]

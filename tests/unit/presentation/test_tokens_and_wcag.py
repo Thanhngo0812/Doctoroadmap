@@ -310,7 +310,7 @@ def test_prototype_flows_interactive_workbench():
 
     # Reduced motion support
     assert "prefers-reduced-motion: reduce" in proto_html
-    assert "spinner_frame0_static.png" in proto_html
+    assert "Untitled_Artwork_static.png" in proto_html
 
 
 def test_w03_auth_screens_specification():
@@ -370,10 +370,63 @@ def test_w04_profile_screens_specification():
     assert "min-height: 44px" in w04_html
     assert "height: 44px" in w04_html
 
+def parse_css_for_raw_variables(css_path: Path):
+    """Parse tokens.css and return dictionaries of Light and Dark custom properties."""
+    css_content = css_path.read_text(encoding="utf-8")
+    
+    # Extract :root properties
+    root_match = re.search(r':root\s*\{([^}]+)\}', css_content, re.DOTALL)
+    light_props = {}
+    if root_match:
+        for line in root_match.group(1).splitlines():
+            line = line.strip()
+            if line.startswith('--') and ':' in line:
+                k, v = line.split(':', 1)
+                light_props[k.strip()] = v.split(';')[0].strip()
+
+    # Extract dark mode properties
+    dark_match = re.search(r'\[data-theme="dark"\],\s*\.dark\s*\{([^}]+)\}', css_content, re.DOTALL)
+    dark_props = dict(light_props)  # Inherit root properties
+    if dark_match:
+        for line in dark_match.group(1).splitlines():
+            line = line.strip()
+            if line.startswith('--') and ':' in line:
+                k, v = line.split(':', 1)
+                dark_props[k.strip()] = v.split(';')[0].strip()
+                
+    return light_props, dark_props
+
+
+def verify_variables_against_css(data, css_path: Path):
+    """Strictly assert that all 37 variables in both Light and Dark mode match CSS (74 checks)."""
+    light_props, dark_props = parse_css_for_raw_variables(css_path)
+    vars_list = data.get("variables", [])
+    assert len(vars_list) == 37, f"Expected exactly 37 variables, found {len(vars_list)}"
+    
+    for v in vars_list:
+        name = v["name"]
+        css_prop = v["cssProperty"]
+        val_light = v["valuesByMode"]["Light"]
+        val_dark = v["valuesByMode"]["Dark"]
+        
+        # Check Light mode mapping
+        exp_light = f"{val_light}px" if isinstance(val_light, (int, float)) and ("space" in name or "radius" in name) else str(val_light)
+        act_light = light_props.get(css_prop)
+        assert act_light == exp_light, f"Light mode mismatch for {name} ({css_prop}): CSS='{act_light}' vs raw='{exp_light}'"
+        
+        # Check Dark mode mapping
+        exp_dark = f"{val_dark}px" if isinstance(val_dark, (int, float)) and ("space" in name or "radius" in name) else str(val_dark)
+        act_dark = dark_props.get(css_prop)
+        assert act_dark == exp_dark, f"Dark mode mismatch for {name} ({css_prop}): CSS='{act_dark}' vs raw='{exp_dark}'"
+
+
 def test_figma_variables_raw_export_valid():
-    """Verify that design/tokens/figma_variables_raw_export.json contains verified metadata, variables, and matching values."""
+    """Verify that design/tokens/figma_variables_raw_export.json contains verified metadata and matches all 74 CSS values."""
     raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
     assert raw_path.exists(), "Raw variables export file must exist"
+    assert css_path.exists(), "Tokens CSS file must exist"
+    
     data = json.loads(raw_path.read_text(encoding="utf-8"))
     meta = data.get("metadata", {})
     assert meta.get("fileKey") == "UVhhlZnqdpV0JDcAHwJczo"
@@ -385,28 +438,9 @@ def test_figma_variables_raw_export_valid():
     assert meta.get("provenanceType") == "LOCAL_DTCG_CONTRACT_AND_PLUGIN_MAPPING"
     assert meta.get("status") == "LOCAL_VERIFIED_TOKEN_CONTRACT"
     
-    vars_list = data.get("variables", [])
-    assert len(vars_list) >= 30, f"Expected >= 30 variables, found {len(vars_list)}"
-    vars_by_name = {v["name"]: v for v in vars_list}
-    
-    # Exact value-level contract matching tokens.css (catches mutation)
-    assert vars_by_name["color/primary"]["valuesByMode"]["Light"] == "#0A6AB3"
-    assert vars_by_name["color/primary"]["valuesByMode"]["Dark"] == "#29A9FF"
-    assert vars_by_name["color/primary"]["cssProperty"] == "--color-primary"
-    
-    assert vars_by_name["color/brand"]["valuesByMode"]["Light"] == "#29A9FF"
-    assert vars_by_name["color/brand"]["cssProperty"] == "--color-brand"
-    
-    assert vars_by_name["color/text"]["valuesByMode"]["Light"] == "#12161B"
-    assert vars_by_name["color/text"]["valuesByMode"]["Dark"] == "#E8EDF2"
-    assert vars_by_name["color/text"]["cssProperty"] == "--color-text"
-    
-    assert vars_by_name["radius/radius-md"]["valuesByMode"]["Light"] == 10
-    assert vars_by_name["radius/radius-lg"]["valuesByMode"]["Light"] == 14
-    assert vars_by_name["radius/radius-xl"]["valuesByMode"]["Light"] == 20
-    
-    assert vars_by_name["motion/motion-fast"]["valuesByMode"]["Light"] == "120ms"
-    assert vars_by_name["motion/motion-fast"]["cssProperty"] == "--motion-fast"
+    # Run full 74-value CSS comparison
+    verify_variables_against_css(data, css_path)
+
 
 
 def test_w07_roadmap_screens_specification():
@@ -478,4 +512,84 @@ def test_falsifiable_raw_variables_primary_mutation_fails():
         raise RuntimeError("Guard failed to catch primary color mutation to #FF0000!")
     except AssertionError:
         pass  # Caught!
+
+def test_falsifiable_dark_brand_tint_mutation_fails():
+    """Falsifiable test: mutating dark brand tint from 0.14 to 0.99 must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    # Mutate dark brand-tint to 0.99
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "color/brand-tint":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Dark"] = "rgba(41, 169, 255, 0.99)"
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch dark brand tint mutation to 0.99!")
+    except AssertionError as e:
+        assert "brand-tint" in str(e)  # Successfully caught!
+
+
+def test_falsifiable_spacing_mutation_fails():
+    """Falsifiable test: mutating spacing space-4 from 16 to 18 must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "spacing/space-4":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Light"] = 18
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch spacing space-4 mutation to 18!")
+    except AssertionError as e:
+        assert "space-4" in str(e)
+
+
+def test_falsifiable_radius_mutation_fails():
+    """Falsifiable test: mutating radius-md from 10 to 12 must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "radius/radius-md":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Dark"] = 12
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch radius-md mutation to 12!")
+    except AssertionError as e:
+        assert "radius-md" in str(e)
+
+
+def test_falsifiable_motion_mutation_fails():
+    """Falsifiable test: mutating motion-fast from 120ms to 150ms must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "motion/motion-fast":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Light"] = "150ms"
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch motion-fast mutation to 150ms!")
+    except AssertionError as e:
+        assert "motion-fast" in str(e)
 

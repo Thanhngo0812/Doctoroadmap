@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-22T02:43:01.289Z",
+  "timestamp": "2026-10-22T06:25:49.328Z",
   "totalFlows": 4,
   "passedCount": 4,
   "allPassed": true,
@@ -20,10 +20,10 @@
     },
     {
       "flow": "Flow 3: Upload -> Config -> 4-Step Build",
-      "stepsChecked": 5,
+      "stepsChecked": 6,
       "passed": true,
       "evidence": "report/w24-evidence/prototype_flow3_upload.png",
-      "notes": "GIF frozen state over time proven: buffer at t=0 matches t=350ms with 0 byte delta."
+      "notes": "Both OS prefers-reduced-motion and manual toggle verified: zero failed requests, rendered width > 0, buffer frozen over time."
     },
     {
       "flow": "Flow 4: Quiz -> Submit -> Result & Citation",

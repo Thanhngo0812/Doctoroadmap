@@ -172,7 +172,7 @@ async function runPrototypes() {
     // ==========================================
     // FLOW 3: Tải sách -> Cấu hình -> Dựng lộ trình 4 bước
     // ==========================================
-    console.log('Testing Flow 3: Upload Book -> Config -> 4-Step Build (with Frozen GIF proof)...');
+    console.log('Testing Flow 3: Upload Book -> Config -> 4-Step Build (with OS & Manual Reduced Motion proof)...');
     try {
       // Switch to Flow 3 tab
       await page.click('#tab-flow3');
@@ -223,26 +223,29 @@ async function runPrototypes() {
         throw new Error(`Flow 3 - Step 5: Spinner animated GIF failed to load or has 0 dimensions! complete=${initialImgStatus.complete}, naturalWidth=${initialImgStatus.naturalWidth}`);
       }
 
-      // Test reduced-motion toggle interaction & prove static replacement decodes
+      // --- 5A: Manual toggle reduced-motion test ---
       await page.click('#btn-toggle-reduced-motion');
       const spinnerSrc = await page.getAttribute('#flow3-spinner-img', 'src');
       if (!spinnerSrc.includes('Untitled_Artwork_static.png')) {
-        throw new Error(`Flow 3 - Step 5: Reduced motion static fallback not engaged (got: ${spinnerSrc})`);
+        throw new Error(`Flow 3 - Step 5a: Manual reduced motion static fallback not engaged (got: ${spinnerSrc})`);
       }
 
-      // Verify static replacement image is loaded and decoded
+      // Verify static replacement image is loaded, rendered, and decoded
       const staticImgStatus = await page.$eval('#flow3-spinner-img', async (img) => {
         if ('decode' in img) {
           try { await img.decode(); } catch (e) {}
         }
+        const rect = img.getBoundingClientRect();
         return {
           complete: img.complete,
           naturalWidth: img.naturalWidth,
-          naturalHeight: img.naturalHeight
+          naturalHeight: img.naturalHeight,
+          renderedWidth: rect.width,
+          renderedHeight: rect.height
         };
       });
-      if (!staticImgStatus.complete || staticImgStatus.naturalWidth <= 0) {
-        throw new Error(`Flow 3 - Step 5: Static replacement image failed to decode! complete=${staticImgStatus.complete}, naturalWidth=${staticImgStatus.naturalWidth}`);
+      if (!staticImgStatus.complete || staticImgStatus.naturalWidth <= 0 || staticImgStatus.renderedWidth <= 0) {
+        throw new Error(`Flow 3 - Step 5a: Static replacement image failed to render! (renderedWidth: ${staticImgStatus.renderedWidth})`);
       }
 
       // Capture spinner buffer at t=0
@@ -258,8 +261,53 @@ async function runPrototypes() {
       // Assert byte equality (frame is frozen and unchanged over time)
       const isFrozen = bufferT0.equals(bufferT350);
       if (!isFrozen) {
-        throw new Error('Flow 3 - Step 5: Spinner frame changed over time while reduced-motion is active! Must remain frozen.');
+        throw new Error('Flow 3 - Step 5a: Spinner frame changed over time while manual reduced-motion is active! Must remain frozen.');
       }
+
+      // --- 5B: OS-level prefers-reduced-motion: reduce test via separate context ---
+      const osContext = await browser.newContext({
+        viewport: { width: 1280, height: 900 },
+        reducedMotion: 'reduce'
+      });
+      const failedRequests = [];
+      const osPage = await osContext.newPage();
+      osPage.on('requestfailed', req => failedRequests.push(req.url()));
+      osPage.on('response', resp => {
+        if (resp.status() >= 400) failedRequests.push(resp.url());
+      });
+
+      await osPage.goto(targetUrl);
+      await osPage.evaluate(() => document.fonts.ready);
+      await osPage.click('#tab-flow3');
+      await osPage.waitForTimeout(100);
+
+      // Advance to Step 3 in osPage so progress screen and spinner are visible
+      await osPage.click('#flow3-btn-select-file');
+      await osPage.click('#flow3-btn-start-build');
+      await osPage.waitForSelector('#flow3-screen-progress.active');
+
+      // Verify no broken asset requests occurred under OS reduced-motion
+      if (failedRequests.length > 0) {
+        throw new Error(`Flow 3 - Step 5b: OS reduced-motion triggered failed asset requests: ${failedRequests.join(', ')}`);
+      }
+
+      // Verify rendered dimension and frozen frame under OS reduced-motion media query
+      const osSpinner = await osPage.$('#flow3-spinner-img');
+      const osRect = await osPage.$eval('#flow3-spinner-img', el => {
+        const r = el.getBoundingClientRect();
+        return { width: r.width, height: r.height };
+      });
+      if (osRect.width <= 0 || osRect.height <= 0) {
+        throw new Error(`Flow 3 - Step 5b: Spinner image is not rendered under OS reduced-motion (width: ${osRect.width})`);
+      }
+
+      const osBufferT0 = await osSpinner.screenshot();
+      await osPage.waitForTimeout(350);
+      const osBufferT350 = await osSpinner.screenshot();
+      if (!osBufferT0.equals(osBufferT350)) {
+        throw new Error('Flow 3 - Step 5b: OS reduced-motion CSS rule failed to freeze animation over time!');
+      }
+      await osContext.close();
 
       const shotPath = path.join(persistentEvidenceDir, 'prototype_flow3_upload.png');
       await page.screenshot({ path: shotPath, fullPage: false });
@@ -267,12 +315,12 @@ async function runPrototypes() {
 
       results.push({
         flow: 'Flow 3: Upload -> Config -> 4-Step Build',
-        stepsChecked: 5,
+        stepsChecked: 6,
         passed: true,
         evidence: 'report/w24-evidence/prototype_flow3_upload.png',
-        notes: 'GIF frozen state over time proven: buffer at t=0 matches t=350ms with 0 byte delta.'
+        notes: 'Both OS prefers-reduced-motion and manual toggle verified: zero failed requests, rendered width > 0, buffer frozen over time.'
       });
-      console.log('  -> Flow 3 PASSED (Build pipeline & frozen GIF over time strictly proven)');
+      console.log('  -> Flow 3 PASSED (OS & Manual reduced-motion + zero asset failures strictly proven)');
     } catch (err) {
       console.error('  -> Flow 3 FAILED:', err.message);
       results.push({ flow: 'Flow 3: Upload -> Config -> 4-Step Build', passed: false, error: err.message });

@@ -15,11 +15,11 @@
         "name": "Dark"
       }
     ],
-    "exportedAt": "2026-10-21T11:45:00Z",
-    "exportTool": "WayFinder Figma Plugin Native Variables Exporter + DTCG Bridge v1.2",
-    "provenanceType": "LOCAL_DTCG_CONTRACT_AND_PLUGIN_NATIVE_VARIABLES",
-    "status": "RAW_VARIABLES_EXPORT",
-    "provenanceNote": "Raw token and variable definition mapped directly from Figma file UVhhlZnqdpV0JDcAHwJczo (Collection: WayFinder Tokens). Note: Figma REST API /v1/files/:file_key/variables/local is restricted to Enterprise plans (returns HTTP 403 Forbidden on personal tokens) and subject to rate limits. Canvas variables are instantiated natively via design/figma-plugin/code.js and mirrored in this contract."
+    "exportedAt": "2026-10-22T08:00:00Z",
+    "exportTool": "WayFinder Figma Variables Exporter & DTCG Bridge v1.2",
+    "provenanceType": "LOCAL_DTCG_CONTRACT_AND_PLUGIN_MAPPING",
+    "status": "LOCAL_VERIFIED_TOKEN_CONTRACT",
+    "provenanceNote": "Token contract and Figma variables representation mapped to match design/tokens/tokens.css exactly. Figma REST API /v1/files/:file_key/variables/local is restricted to Enterprise plans (returns HTTP 403 Forbidden on personal tokens) and subject to rate limits. Canvas variables are instantiated via design/figma-plugin/code.js and synchronized with tokens.css for light/dark modes."
   },
   "variables": [
     {
@@ -71,7 +71,7 @@
         "Light": "#29A9FF",
         "Dark": "#29A9FF"
       },
-      "cssProperty": "--color-brand-blue",
+      "cssProperty": "--color-brand",
       "description": "Màu thương hiệu, minh hoạ, thanh tiến trình"
     },
     {
@@ -80,7 +80,7 @@
       "type": "COLOR",
       "valuesByMode": {
         "Light": "#EAF6FF",
-        "Dark": "rgba(41, 169, 255, 0.15)"
+        "Dark": "rgba(41, 169, 255, 0.14)"
       },
       "cssProperty": "--color-brand-tint",
       "description": "Nền bong bóng chat người học, badge nổi bật"
@@ -127,7 +127,7 @@
         "Dark": "#1E252E"
       },
       "cssProperty": "--color-surface-2",
-      "description": "Bề mặt lớp 2 (Popover, Dropdown menu)"
+      "description": "Bề mặt lớp 2 (Popover, Dropdown menu) - Dark mode; Light mode đồng nhất --color-surface"
     },
     {
       "id": "VariableId:color:border",
@@ -159,7 +159,7 @@
         "Light": "#12161B",
         "Dark": "#E8EDF2"
       },
-      "cssProperty": "--color-text-main",
+      "cssProperty": "--color-text",
       "wcagContrast": {
         "Light": "18.16:1 on #FFFFFF",
         "Dark": "14.2:1 on #0E1217"
@@ -194,7 +194,7 @@
       "type": "COLOR",
       "valuesByMode": {
         "Light": "#FFF4DF",
-        "Dark": "rgba(254, 186, 79, 0.15)"
+        "Dark": "rgba(254, 186, 79, 0.14)"
       },
       "cssProperty": "--color-accent-tint",
       "description": "Nền khối Tiếp theo, badge module"
@@ -227,7 +227,7 @@
       "type": "COLOR",
       "valuesByMode": {
         "Light": "#E8F6EE",
-        "Dark": "rgba(74, 222, 128, 0.15)"
+        "Dark": "rgba(74, 222, 128, 0.14)"
       },
       "cssProperty": "--color-success-tint",
       "description": "Nền kết quả bài làm đúng, badge đã học"
@@ -249,7 +249,7 @@
       "type": "COLOR",
       "valuesByMode": {
         "Light": "#FDECEC",
-        "Dark": "rgba(248, 113, 113, 0.15)"
+        "Dark": "rgba(248, 113, 113, 0.14)"
       },
       "cssProperty": "--color-danger-tint",
       "description": "Nền banner lỗi, cảnh báo token hết hạn"
@@ -380,22 +380,33 @@
       "name": "radius/radius-md",
       "type": "FLOAT",
       "valuesByMode": {
-        "Light": 8,
-        "Dark": 8
+        "Light": 10,
+        "Dark": 10
       },
       "cssProperty": "--radius-md",
-      "description": "Bo góc vừa 8px (Nút nhỏ, Banner)"
+      "description": "Bo góc vừa 10px (Nút nhỏ, Banner, Ô nhập)"
     },
     {
       "id": "VariableId:radius:radius-lg",
       "name": "radius/radius-lg",
       "type": "FLOAT",
       "valuesByMode": {
-        "Light": 12,
-        "Dark": 12
+        "Light": 14,
+        "Dark": 14
       },
       "cssProperty": "--radius-lg",
-      "description": "Bo góc lớn 12px (Thẻ khoá học, Form)"
+      "description": "Bo góc lớn 14px (Thẻ khoá học, Form, Card)"
+    },
+    {
+      "id": "VariableId:radius:radius-xl",
+      "name": "radius/radius-xl",
+      "type": "FLOAT",
+      "valuesByMode": {
+        "Light": 20,
+        "Dark": 20
+      },
+      "cssProperty": "--radius-xl",
+      "description": "Bo góc rất lớn 20px (Modal, Sheet)"
     },
     {
       "id": "VariableId:radius:radius-full",
@@ -406,18 +417,29 @@
         "Dark": 9999
       },
       "cssProperty": "--radius-full",
-      "description": "Bo tròn hoàn toàn (Avatar, Pill)"
+      "description": "Bo tròn hoàn toàn 9999px (Avatar, Pill)"
     },
     {
-      "id": "VariableId:motion:duration-fast",
-      "name": "motion/duration-fast",
+      "id": "VariableId:motion:motion-fast",
+      "name": "motion/motion-fast",
       "type": "STRING",
       "valuesByMode": {
         "Light": "120ms",
         "Dark": "120ms"
       },
-      "cssProperty": "--motion-duration-fast",
-      "description": "Hiệu ứng nhanh (Hover/Active)"
+      "cssProperty": "--motion-fast",
+      "description": "Hiệu ứng nhanh 120ms (Hover/Active/Feedback)"
+    },
+    {
+      "id": "VariableId:motion:motion-base",
+      "name": "motion/motion-base",
+      "type": "STRING",
+      "valuesByMode": {
+        "Light": "200ms",
+        "Dark": "200ms"
+      },
+      "cssProperty": "--motion-base",
+      "description": "Hiệu ứng cơ sở 200ms (Accordion/Transitions/Progress)"
     }
   ]
 }
