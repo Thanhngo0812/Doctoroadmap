@@ -1,0 +1,47 @@
+F..FF..F                                                                 [100%]
+================================== FAILURES ===================================
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('46478798-89a9-435d-bb33-1ea251bedf54'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('00b1ac9a-70b7-4712-adc4-3c12bac94b3e'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('c39c6eee-8e3d-4cd8-93dc-d95d6f9de645'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('d74bf0d8-6d68-4227-a480-ed2dfa3d07ea'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-review-20261022\evidence\backend\mutations\terminal-cancel.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal]
+4 failed, 4 passed, 5 deselected, 1 warning in 12.15s

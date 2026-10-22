@@ -1,5 +1,7 @@
 # Lệnh giao việc sau đợt soát W-07/W-14/W-24 — 2026-10-21
 
+**Đã có đợt tiếp 2026-10-22:** [lệnh giao sau W-25](lenh-giao-viec-sau-w25-2026-10-22.md). Backend/schema W-14+W-25 đã đạt và ghép `a572459`; web nhận main để chạy cổng cuối, thiết kế chỉ tiếp3 nhóm Required W-24. Các lệnh bên dưới giữ làm lịch sử, không giao lại hai race đã đóng.
+
 **Trạng thái:** đã soạn để chủ dự án sao chép gửi từng nhóm; chưa gửi sang các phiên nhân viên. W-07 đạt tại `2a14723`, ghép `f20d198` và đã đẩy GitHub: 2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình, 10 mutation bị bắt; 0 USD. Các nhóm nhận main mới nhất, không dừng ở nhánh W-07 cũ. W-14/W-24 chưa đạt theo phán xét đợt này.
 
 Căn cứ: [báo cáo soát và kế hoạch](dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md), [bảng vé](../task/web/00-ke-hoach.md), [quy trình nhánh](../doc/quy-trinh-nhanh-va-ghep-main.md), [runbook fixture](../doc/du-lieu-phat-trien-va-fixture.md).

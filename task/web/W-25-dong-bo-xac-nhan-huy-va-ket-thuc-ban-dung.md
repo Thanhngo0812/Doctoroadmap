@@ -1,7 +1,9 @@
 # W-25 — Đồng bộ xác nhận, huỷ và kết thúc bản dựng
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 (xác nhận/huỷ, ghi usage ở mọi kết thúc); [W-14](W-14-tai-sach-len-ban-dung.md); [quy trình nhánh](../../doc/quy-trinh-nhanh-va-ghep-main.md).
-**Ai:** nhóm lõi/backend W-14 · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** mã backend W-14 tại `5b24ece`, không chờ W-14 được nghiệm thu · **Trạng thái:** cần sửa, chưa bắt đầu nghiệm thu lại.
+**Ai:** nhóm lõi/backend W-14 · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** mã backend W-14 tại `5b24ece`, không chờ W-14 được nghiệm thu · **Trạng thái:** đạt · đã ghép/đẩy `a572459`, mốc `4dbfe8e`.
+
+**Nghiệm thu lại 2026-10-22:** nhận `c00c028` và main `cd22e9b`, mốc soát/cổng `4dbfe8e`. **2.163 Python đạt/0 fail/1 Cloudinary live không bật; 85 React nền/build; sáu guard W-25 bị assertion bắt**, source phục hồi. Test PostgreSQL kiểm hai thứ tự commit, graph/media/terminal, usage/receipt/lease/mail. Backend/schema W-14 đủ ghép, không đóng React hoặc toàn W-14. Xem [phán xét mới](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md).
 
 ## Vì sao
 
@@ -23,11 +25,11 @@ Bằng chứng và mã tái hiện: [báo cáo soát](../../report/dieu-phoi-ngh
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Hai lỗi trên thấy đỏ ở assertion trên mã cũ; bản sửa xanh, không lỗi setup hoặc dùng timeout thay bằng chứng trạng thái cuối.
-- [ ] Cả hai thứ tự xác nhận/huỷ và huỷ trong graph/media publication đều được kiểm PostgreSQL độc lập; không có `queued + cancel_requested` bị treo, không báo thành công sau huỷ đã được nhận trước terminal commit.
-- [ ] Usage giả khác 0 giữ nguyên và ghi đúng một lần sau huỷ; course không `ready`, không thư thành công. Callback lease cũ không đổi trạng thái lease mới.
-- [ ] Giữ các ca W-14 cũ và mutation có ý nghĩa; cổng toàn repo/PostgreSQL, React/build trên đúng mốc có main mới đều đạt. Alembic đúng một head `w14_0006`.
-- [ ] Báo cáo `report/w25-dong-bo-huy-ban-dung-<ngay>.md` có commit, RED/GREEN, SQL độc lập và phần React W-14 còn chờ; người soát xác nhận trước ghép.
+- [x] Hai lỗi trên thấy đỏ ở assertion trên mã cũ; bản sửa xanh, không lỗi setup hoặc dùng timeout thay bằng chứng trạng thái cuối.
+- [x] Cả hai thứ tự xác nhận/huỷ và huỷ trong graph/media publication đều được kiểm PostgreSQL độc lập; không có `queued + cancel_requested` bị treo, không báo thành công sau huỷ đã được nhận trước terminal commit.
+- [x] Usage giả khác 0 giữ nguyên và ghi đúng một lần sau huỷ; course không `ready`, không thư thành công. Callback lease cũ không đổi trạng thái lease mới.
+- [x] Giữ các ca W-14 cũ và mutation có ý nghĩa; cổng toàn repo/PostgreSQL, React/build trên đúng mốc có main mới đều đạt. Alembic đúng một head `w14_0006`.
+- [x] Báo cáo `report/w25-dong-bo-huy-ban-dung-<ngay>.md` có commit, RED/GREEN, SQL độc lập và phần React W-14 còn chờ; người soát xác nhận trước ghép.
 
 ## Ngoài vé
 

@@ -11,6 +11,7 @@ class CourseService:
         self.store, self.settings = store, settings
         self.clock = clock or SystemClock()
         self.gateway = None
+        self.build_service = None
 
     def authorize(self, actor, action, course=None, member=None):
         decision = decide(actor, action, course, member)
@@ -91,4 +92,5 @@ class CourseService:
             "owner": {"user_id": course.owner_id, "display_name": self.store.owner_name(course.owner_id)},
             "module_count": course.module_count,
             "member_count": self.store.member_count(course.id) if member and member.role == "owner" else None,
-            **summary}
+            **summary,
+            "build": self.build_service.course_build(actor, course) if self.build_service and course.build_id else None}

@@ -1,0 +1,25 @@
+{
+  "sourceHead": "f1ca86dccdf5f7b8e224d325314324050fe415f1",
+  "runs": [
+    {
+      "command": "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -m pytest tests/unit/presentation/test_tokens_and_wcag.py -q -o addopts= -p no:cacheprovider --junitxml=unit-token-results.xml",
+      "cwd": "tmp/coord-w24-review-20261022",
+      "nativeExitCode": 0,
+      "passed": 28
+    },
+    {
+      "command": "node tmp/coord-w24-review-20261022/browser-check.cjs",
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap",
+      "nativeExitCode": 0,
+      "configs": 12,
+      "screenshots": 2
+    },
+    {
+      "command": ".venv/Scripts/python.exe tmp/coord-w24-review-20261022/token-check.py",
+      "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap",
+      "nativeExitCode": 0,
+      "modeComparisons": 74,
+      "mismatches": 7
+    }
+  ]
+}

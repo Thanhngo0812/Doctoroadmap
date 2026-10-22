@@ -6,6 +6,11 @@
 ## 1. Quyết định của chủ dự án (2026-10-20)
 
 1. **Người ghép vào main là người điều phối đương nhiệm:** Codex trong lúc Claude vắng, Claude khi tiếp nhận lại. Người làm vé không tự ghép.
+   **Cập nhật 2026-10-22, chủ dự án chốt:** chia theo làn. **Claude ghép các nhánh Pha B** (vé SA) sau khi nghiệm thu; **người điều phối ghép phần web**.
+   Hai người cùng ghép vào main, nên:
+   - ghép ở thư mục chung, mỗi lần một lệnh. Gặp `index.lock` thì chờ, không xoá tệp khoá;
+   - trước khi ghép, kiểm `git log -1 main`. Main có commit mới kể từ lúc chạy cổng thì quay lại mục 3.5 điều 2: nhánh nhận main, chạy lại cổng;
+   - ghép xong đẩy ngay, để người kia nhận được main mới.
 2. **Đẩy `main` lên GitHub sau mỗi lần ghép** (`origin`, repo riêng tư).
 3. **Thư mục chung `C:\Users\ngoco\Desktop\Doctoroadmap` luôn đứng ở `main`.** Mỗi vé làm trong một worktree riêng `tmp/<tên>`. Chủ dự án mở phiên
    nhân viên ngay trong thư mục worktree đó.
