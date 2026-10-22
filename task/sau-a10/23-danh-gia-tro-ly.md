@@ -2,8 +2,12 @@
 
 **Nguồn chân lý:** [ADR 0012](../../doc/adr/0012-tro-ly-la-agent-goi-cong-cu.md); [báo cáo trợ lý](../../report/nghien-cuu-tro-ly-hoi-dap-do-thi-2026-10-11.md),
 mục 2.8, 5; đề cương đồ án, mục 5.3.
-**Ai:** nhân viên chạy · nhóm duyệt bộ câu hỏi và chấm · Claude phân tích · **Chi phí mô hình:** lượt 1 trần khoảng 8 USD, dự toán lại bằng
-dry-run vì kiến trúc agent tốn hơn bản báo cáo ước; lượt 2 xin duyệt riêng · **Chặn bởi:** 07, 10, 19 · **Trạng thái:** ready-for-agent
+**Ai:** agent Sonnet chạy · nhóm duyệt bộ câu hỏi và chấm · Claude phân tích · **Chi phí mô hình:** lượt 1 trần khoảng 8 USD, dự toán lại bằng
+dry-run vì kiến trúc agent tốn hơn bản báo cáo ước; lượt 2 xin duyệt riêng · **Chặn bởi:** 07, 10, 19, 52, **56**, và gói 19a do agentic trả về ·
+**Trạng thái:** chờ
+
+**Dữ liệu (cập nhật 2026-10-22):** graph ghim và kho Pha B theo [bảng kế hoạch, đợt đánh giá 20–23](00-ke-hoach.md). Bộ câu hỏi 19a sinh trên graph nào thì phải ghi lại; câu nào trỏ tới
+khái niệm không còn trong graph ghim thì báo riêng, không tự sửa.
 
 ## Vì sao
 

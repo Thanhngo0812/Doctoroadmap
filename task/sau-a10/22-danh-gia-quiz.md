@@ -2,8 +2,10 @@
 
 **Nguồn chân lý:** [báo cáo quiz](../../report/nghien-cuu-quiz-tu-kiem-tra-2026-10-11.md), mục 2.7, 5; [spec Pha B](../../doc/pha-b-spec.md), "Ghi chú
 thêm".
-**Ai:** nhân viên chạy và xuất bảng · hai thành viên nhóm chấm; giảng viên chấm 20 câu nếu được · Claude phân tích · **Chi phí mô hình:** khoảng
-1,7 USD, dry-run trước, chủ dự án duyệt · **Chặn bởi:** 16 · **Trạng thái:** ready-for-agent
+**Ai:** agent Sonnet chạy và xuất bảng · hai thành viên nhóm chấm; giảng viên chấm 20 câu nếu được · Claude phân tích · **Chi phí mô hình:** khoảng
+1,7 USD, dry-run trước, chủ dự án duyệt · **Chặn bởi:** 16, 27, 52 (đều đã đạt) · **Trạng thái:** sẵn sàng
+
+**Dữ liệu (cập nhật 2026-10-22):** graph ghim và kho Pha B theo [bảng kế hoạch, đợt đánh giá 20–23](00-ke-hoach.md). Câu điền khuyết theo luật `quiz-local-rules-v4` (SA-52).
 
 ## Vì sao
 

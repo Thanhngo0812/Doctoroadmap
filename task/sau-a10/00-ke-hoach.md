@@ -75,10 +75,10 @@ Bốn luật:
 | [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
 | [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | đạt qua SA-25 và SA-30 (tài liệu sau hậu kiểm) |
 | [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; đã giao agentic (chủ dự án báo 2026-10-21), chờ trả gói để kiểm |
-| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | ready-for-agent |
-| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **53** | trần 5 USD | sẵn sàng (SA-53 đã ghép `62dad5b`); trước khi chạy phải cập nhật vé theo graph hiện hành (doc-1 v8) |
-| [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27**, **52** | khoảng 1,7 USD | sẵn sàng (SA-52 đã ghép `66cd439`); trước khi chạy phải cập nhật vé theo graph hiện hành (doc-1 v8) |
-| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30**, **52** | lượt 1 trần khoảng 8 USD | chờ gói 19a agentic trả về; SA-52 đã ghép; tiến độ, trần ngày đã đạt |
+| [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22 (162 module) |
+| [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **53** | trần 5 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22, gồm số giây của SA-13 |
+| [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27**, **52** | khoảng 1,7 USD | sẵn sàng; vé đã cập nhật theo graph ghim 2026-10-22 |
+| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30**, **52**, **56** | lượt 1 trần khoảng 8 USD | chờ gói 19a agentic và SA-56; vé đã cập nhật theo graph ghim 2026-10-22 |
 | [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | đạt |
 | [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | đạt, Claude soát 2026-10-18 [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); trình bày tài liệu → 30 |
 | [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); K6 dò sai, cache bài hỏng → 30 |
@@ -142,6 +142,29 @@ Ban đầu, vé 01–05 và 19 không có blocker và chạy song song được.
   - **nhánh bài giảng:** 38 → 39 → 40 → 41 và 43.
 - Hai nhánh gặp nhau ở 42 và 44.
 - Đánh giá 20–23 chạy sau, trên bản `lecture-2`. Vé 21 thêm tiêu chí câu nối và phần gợi lại.
+
+**Đợt đánh giá 20–23 (cập nhật 2026-10-22, Claude).** Các vé 20–23 viết từ 2026-10-15, trên graph cũ. Từ nay áp luật chung sau:
+- **Graph ghim:**
+
+  | cuốn | doc-1 | nhap-mon-ml | naive-bayes | doc-6 | xstk-ch3-1 | doc-4 | tổng |
+  |---|---|---|---|---|---|---|---|
+  | graph | v8 | v50 | v49 | v29 | v68 | v27 | |
+  | module | 35 | 15 | 5 | 2 | 14 | 91 | 162 |
+  | khái niệm | 223 | 75 | 33 | 11 | 82 | 495 | 919 |
+
+  Đếm ngày 2026-10-22. Mỗi báo cáo đánh giá ghi lại graph ghim và `upstream_chain` của từng cuốn. Số nào trong vé tính trên graph cũ, ví dụ "142
+  module" hay "51 module loại E", phải đếm lại trên graph ghim.
+- **Kho Pha B:** mỗi lượt chạy dùng một kho JSON riêng trong `tmp/` của worktree. doc-1 dùng **bản chép** của
+  `artifacts/phase_b/doc-1-rebuild-20261020.json`. Không chạy trên `artifacts/phase_b/live.json`, vì kho này có cache của tập giữ lại. Cần lấy tên module
+  đã có thì đọc qua use case theo khoá của sáu cuốn phát triển; không liệt kê, không in, không chép phần `cache` của `live.json`.
+- **Người làm:** agent Sonnet dựng bộ chạy, dry-run, chạy thật sau khi chủ dự án duyệt, và xuất bảng chấm mù cùng tệp khoá để riêng. Claude nghiệm thu
+  và phân tích. Người chấm là thành viên nhóm do chủ dự án sắp xếp.
+- **Thứ tự:**
+  - 20, 21, 22 chạy được ngay;
+  - 23 chờ gói 19a do agentic trả về, và chờ SA-56 (`focus_node_id` đổi đầu vào của trợ lý), để đánh giá đúng bản cuối.
+- **Tiền:** theo vé, 20 dưới 1 USD, 21 trần 5 USD, 22 khoảng 1,7 USD, 23 lượt 1 trần khoảng 8 USD; tổng khoảng 15,7 USD. Mỗi vé dry-run riêng, chủ dự án
+  duyệt từng vé.
+- **SA-13:** số giây tới `skeleton`, tới ý đầu và tới `final` (p50, p90) lấy từ lượt sinh bài giảng của 21.
 
 Không kịp lịch thì báo để dời. Không cắt luật kiểm để kịp.
 
