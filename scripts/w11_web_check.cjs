@@ -87,7 +87,7 @@ async function main() {
           .map(n => ({ name: n.getAttribute('aria-label') || n.textContent.trim(), w: n.getBoundingClientRect().width, h: n.getBoundingClientRect().height })));
         assert.deepEqual(targets.filter(n => n.w < 44 || n.h < 44), [], `${state}/${width}/${mode} targets`);
         const file = `${state}-${width}-${mode}.png`;
-        await page.screenshot({ path: path.join(output, file), fullPage: true });
+        await page.screenshot({ path: path.join(output, file), fullPage: state !== 'share' });
         audit.screens.push({ file, state, width, theme: mode });
       }
     }
@@ -125,8 +125,11 @@ async function main() {
     await owner.getByRole('button', { name: 'Sao chép link', exact: true }).click();
     assert.equal(await owner.evaluate(() => navigator.clipboard.readText()), primary.url);
     await matrix(owner, 'share');
+    await owner.keyboard.press('Tab');
+    assert.equal(await owner.evaluate(() => Boolean(document.activeElement.closest('dialog[open]'))),true);
     await owner.keyboard.press('Escape');
     assert.equal(await owner.locator('dialog[open]').count(), 0);
+    assert.equal(await owner.getByRole('button',{name:'Chia sẻ',exact:true}).evaluate(el=>el===document.activeElement),true);
     const refreshedLinks = owner.waitForResponse(r => r.request().method() === 'GET' && r.url().endsWith('/share-links'));
     await owner.getByRole('button', { name: 'Chia sẻ', exact: true }).click();
     await (await refreshedLinks).finished();
@@ -137,6 +140,7 @@ async function main() {
     await learner.goto(primary.url, { waitUntil: 'networkidle' });
     await learner.getByRole('heading', { name: 'Đại số tuyến tính', exact: true }).waitFor();
     await matrix(learner, 'guest');
+    assert.equal(new URL(await learner.locator('.join-auth-actions').getByRole('link', { name: 'Đăng ký', exact: true }).getAttribute('href'),base).searchParams.get('next'),`/join/${primary.token}`);
     await learner.locator('.join-auth-actions').getByRole('link', { name: 'Đăng nhập', exact: true }).click();
     assert.equal(new URL(learner.url()).searchParams.get('next'), `/join/${primary.token}`);
     // Create learner through real HTTP, then test actual login return route.
@@ -193,7 +197,12 @@ async function main() {
     assert.equal((await api(learner,'POST',`/join/${replacement.token}`)).status,200);
     const restored=(await api(learner,'GET',`/courses/${cid}/progress`)).body;
     assert.equal(restored.nodes[runtime.nodeId].state,'learned');
-    await learner.reload({waitUntil:'networkidle'});
+    await learner.goto(replacement.url,{waitUntil:'networkidle'});
+    await learner.getByRole('button',{name:'Tham gia',exact:true}).click();
+    await learner.waitForURL(`${base}/khoa-hoc/${cid}`);
+    await learner.getByText('Bạn đã tham gia khoá học này.',{exact:true}).waitFor();
+    assert.equal((await api(owner,'GET',`/courses/${cid}/share-links`)).body.items.find(x=>x.id===replacement.id).use_count,1);
+    await learner.goto(`${base}/khoa-hoc/${cid}/thanh-vien`,{waitUntil:'networkidle'});
     await learner.getByRole('button',{name:'Rời khoá học',exact:true}).click();
     await learner.getByRole('button',{name:'Xác nhận rời khoá',exact:true}).click();
     await learner.waitForURL(`${base}/khoa-hoc`);
@@ -217,6 +226,8 @@ async function main() {
     await matrix(learner,'invalid');
     await learner.emulateMedia({reducedMotion:'reduce'});
     assert.equal(await learner.evaluate(()=>matchMedia('(prefers-reduced-motion: reduce)').matches),true);
+    await learner.waitForTimeout(250);
+    assert.equal(await learner.evaluate(()=>document.getAnimations().filter(a=>a.playState==='running').length),0);
     await learner.keyboard.press('Tab');
     const focus=await learner.evaluate(()=>({visible:!!document.activeElement.getClientRects().length,outline:getComputedStyle(document.activeElement).outlineStyle}));
     assert.equal(focus.visible,true);assert.notEqual(focus.outline,'none');

@@ -24,6 +24,11 @@ CASES = (
      'self._connection.set(connection)', 'self._connection.set(None)'),
     ('immediate-access', 'application/sharing.py', 'test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_members',
      'self.store.remove_membership(cid, user_id)', 'pass  # mutation: removal omitted'),
+    ('private-data-retention', 'application/sharing.py', 'test_postgres_rejoin_retains_exact_private_session_and_progress[remove]',
+     'self.store.remove_membership(cid, user_id)',
+     'self.store.remove_membership(cid, user_id)\n            '
+     'with self.store._use_connection(write=True) as connection:\n                '
+     'connection.execute(__import__("sqlalchemy").text("DELETE FROM phase_b_record WHERE owner=:owner"), {"owner":user_id})'),
 )
 
 

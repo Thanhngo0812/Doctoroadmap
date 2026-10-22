@@ -449,6 +449,34 @@ def test_postgres_migration_has_no_raw_token_and_enforces_digest_length(sharing_
 
 
 @pytest.mark.postgres
+@pytest.mark.parametrize('action', ['remove', 'leave'])
+def test_postgres_rejoin_retains_exact_private_session_and_progress(sharing_pg, action):
+    from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+    b=sharing_pg
+    learner=b.user('Returning learner')
+    service=SharingService(b.store,b.settings,b.clock)
+    token=service.create_share_link(b.owner,b.course.id)['link']['token']
+    service.join_by_link(learner,token)
+    phase=PostgresPhaseBStore(b.engine)
+    records={
+        'session': {'owner':learner.user_id,'doc_id':'doc-w11','session_id':str(uuid4()),'title':'Private study session'},
+        'progress': {'owner':learner.user_id,'doc_id':'doc-w11','node_id':'n1','state':'learned'},
+    }
+    try:
+        for kind,value in records.items(): phase.put_record(kind,learner.user_id+':'+kind,value)
+        if action=='remove': service.remove_member(b.owner,b.course.id,learner.user_id)
+        else: service.leave_course(learner,b.course.id)
+        with pytest.raises(WebError) as denied: service.list_members(learner,b.course.id)
+        assert denied.value.code=='not_found'
+        service.join_by_link(learner,token)
+        for kind,value in records.items():
+            assert phase.get_record(kind,learner.user_id+':'+kind)==value
+        with b.engine.connect() as c:
+            assert c.scalar(text('SELECT use_count FROM share_link WHERE course_id=:cid'),{'cid':b.course.id})==2
+    finally: phase.close()
+
+
+@pytest.mark.postgres
 def test_postgres_capacity_race_across_two_links_stops_at_200(sharing_pg):
     b = sharing_pg
     # 198 learners plus the owner leave exactly one free place.
