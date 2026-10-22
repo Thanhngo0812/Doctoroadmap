@@ -7,8 +7,8 @@ SA-59 cắt phần đo được ở 0 USD, nhưng phần chờ giả lập chỉ
 - việc ghi lại cả kho JSON 6,5 MB, khoảng 235 ms mỗi lần ghi, nhân với số lần ghi mỗi lượt;
 - lời gọi công cụ do mô hình chọn.
 
-**Ai:** agent Sonnet · Claude nghiệm thu · **Chi phí mô hình:** dự kiến dưới 0,05 USD, chỉ `gemini-3.1-flash-lite` và mô hình embedding đang dùng; dry-run trước,
-**chờ chủ dự án duyệt** · **Chặn bởi:** không · **Trạng thái:** chờ duyệt tiền
+**Ai:** agent Sonnet · Claude nghiệm thu · **Chi phí mô hình:** dự kiến dưới 0,05 USD, chỉ `gemini-3.1-flash-lite` và mô hình embedding đang dùng; dry-run trước;
+**chủ dự án đã duyệt 2026-10-22** ("tôi duyệt tiền hết") · **Chặn bởi:** SA-20 chạy xong, vì chung quota API · **Trạng thái:** sẵn sàng
 
 ## Cần làm
 
