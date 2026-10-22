@@ -35,7 +35,7 @@ async function main() {
     mailer: runtime.mailer,
     modelCalls: runtime.modelCalls,
     modelCostUsd: runtime.modelCostUsd,
-    assertions: [], screens: [], accessibility: [], apiResponses: [],
+    assertions: [], screens: [], accessibility: [], apiResponses: [], apiPayloads: [],
     consoleErrors: [], rawConsoleErrors: [], expectedConsoleErrors: [], pageErrors: [],
     failedRequests: [], fontFailures: [], fontRequests: [], unexpectedExternalRequests: [],
     expectedProbeRequests: [], builds: [], video: 'w14-upload-build.webm',
@@ -82,7 +82,7 @@ async function main() {
       resourceType: request.resourceType(), error: request.failure()?.errorText ?? 'failed' };
     const axeFontProbe = stage.startsWith('axe:') && url.origin === 'https://fonts.googleapis.com'
       && url.pathname === '/css2' && ['fetch', 'xhr'].includes(request.resourceType())
-      && entry.error === 'net::ERR_BLOCKED_BY_CSP';
+      && ['net::ERR_BLOCKED_BY_CSP', 'csp'].includes(entry.error);
     if (axeFontProbe) {
       audit.expectedProbeRequests.push(entry);
     } else if (['https://fonts.googleapis.com', 'https://fonts.gstatic.com'].includes(url.origin)) {
@@ -105,8 +105,13 @@ async function main() {
     audit.apiResponses.push({ stage, method: response.request().method(), path: url.pathname,
       status: response.status() });
     if (response.status() < 200 || response.status() >= 300) return;
-    if (!['/api/v1/uploads', '/api/v1/builds/', '/api/v1/courses/'].some(prefix => url.pathname.startsWith(prefix))) return;
-    try { assertPrivateBuildDto(await response.json(), `${response.request().method()} ${url.pathname}`); }
+    if (!['/api/v1/uploads', '/api/v1/builds/', '/api/v1/courses', '/api/v1/me/usage'].some(prefix => url.pathname.startsWith(prefix))) return;
+    try {
+      const body = await response.json();
+      assertPrivateBuildDto(body, `${response.request().method()} ${url.pathname}`);
+      audit.apiPayloads.push({ stage, method: response.request().method(), path: url.pathname,
+        query: url.search, status: response.status(), body });
+    }
     catch (error) {
       const entry = { stage, path: url.pathname, message: error.message };
       audit.pageErrors.push(entry);
@@ -215,6 +220,7 @@ async function main() {
     assert.doesNotMatch(await page.locator('body').innerText(), /dự toán|chi phí|\bUSD\b|ước tính/i);
     await page.getByLabel('Tên khoá học').fill('Đại số tuyến tính — tên do tôi chọn');
     audit.screens.push(await screenshot(page, 'awaiting-confirmation-1280-light.png'));
+    await setViewportThemeScreens(page, audit, 'confirmation', [390, 768, 1280]);
     const confirmResponsePromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/uploads/${success.uploadId}/build`);
     await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
@@ -241,6 +247,7 @@ async function main() {
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { exact: true, name: 'Đang xác định bài học' }).waitFor();
     audit.screens.push(await screenshot(page, 'running-768-light.png', { width: 768, theme: 'light' }));
+    await setViewportThemeScreens(page, audit, 'running', [390, 768, 1280]);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { exact: true, name: 'Đang xác định bài học' }).waitFor();
@@ -260,6 +267,7 @@ async function main() {
     await page.getByRole('heading', { exact: true, name: 'Lộ trình đã sẵn sàng' }).waitFor();
     assert.equal(await page.getByRole('link', { name: 'Mở khoá học', exact: true }).count(), 1);
     audit.screens.push(await screenshot(page, 'success-1280-dark.png', { width: 1280, theme: 'dark' }));
+    await setViewportThemeScreens(page, audit, 'success', [390, 768, 1280]);
     audit.assertions.push('real BuildWorker persisted reading and running checkpoints across reload, then completed the manifest-backed build');
     audit.builds.push({ buildId: success.buildId, courseId: success.courseId, status: 'succeeded', title: 'Đại số tuyến tính — tên do tôi chọn' });
 
@@ -325,6 +333,7 @@ async function main() {
     stage = 'build.cancelled';
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('heading', { exact: true, name: 'Đã huỷ' }).waitFor();
+    await setViewportThemeScreens(page, audit, 'cancelled', [390, 768, 1280]);
     audit.assertions.push('cancellation during a paused reading step stopped the real worker at its next boundary and persisted cancelled');
     audit.builds.push({ buildId: cancel.buildId, courseId: cancel.courseId, status: 'cancelled' });
 
@@ -340,6 +349,7 @@ async function main() {
     stage = 'build.retryable';
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('button', { name: 'Thử lại', exact: true }).waitFor();
+    await setViewportThemeScreens(page, audit, 'retryable', [390, 768, 1280]);
     const retriedPromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/builds/${retry.buildId}/retry`);
     await page.getByRole('button', { name: 'Thử lại', exact: true }).click();
@@ -422,6 +432,11 @@ async function main() {
       catch (error) { audit.videoSaveError = error.message; }
     }
     await fs.writeFile(path.join(output, 'browser-audit.json'), JSON.stringify(audit, null, 2) + '\n', 'utf8').catch(() => {});
+    await fs.writeFile(path.join(output, 'http-responses.json'), JSON.stringify({
+      source: 'real FastAPI HTTP responses in the disposable PostgreSQL browser runtime; fake providers',
+      excludes: 'auth responses, cookies, headers and runtime control credentials',
+      responses: audit.apiPayloads,
+    }, null, 2) + '\n', 'utf8');
     await browser.close();
   }
   console.log(JSON.stringify({ assertions: audit.assertions.length, screenshots: audit.screens.length,
