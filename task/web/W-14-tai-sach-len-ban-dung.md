@@ -3,7 +3,9 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 (toàn bộ), 8 (trần khâu dựng); [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md)
 (dùng lại theo băm); [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `upload`, `build`, mục 6 (nhận việc); spec thiết kế, trang tải sách
 và tiến trình dựng.
-**Ai:** lõi phụ trách backend/worker; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06; mốc backend cần sửa W-25 · **Trạng thái:** backend `5b24ece` chưa đạt; React còn chờ.
+**Ai:** lõi phụ trách backend/worker; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06; W-25 đã đạt · **Trạng thái:** backend/schema đạt, đã ghép `a572459`; React đã bàn giao local, chờ cổng tích hợp cuối.
+
+**Kiểm lại 2026-10-22:** backend W-14/W-25 đạt tại `4dbfe8e`, đã ghép/đẩy **`a572459`**: 2.163 Python/85 React nền/build và sáu guard W-25 bị bắt, 0 USD. Web `6494f51` không còn chờ backend; nhận main, bỏ32 tệp pytest tạm khỏi index/giữ local, giữ hai DTO upload_id/confirmed_at đã bổ sung rồi chạy lại toàn cổng/browser đúng đỉnh cuối. **Chưa đóng toàn W-14**; xem [phán xét](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md), [lời giao](../../report/lenh-giao-viec-sau-w25-2026-10-22.md).
 
 **Soát 2026-10-21:** 35 test W-14 cũ chạy lại đạt, nhưng hai ca PG độc lập tái hiện confirm ghi đè cancel thành queued và cancel khi publication vẫn ghi succeeded/course ready/gửi thư thành công. Chưa ghép backend/schema; sửa theo [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md), giữ usage thực/lease fence và tuyến migration đã chốt. Web có thể chuẩn bị React theo hợp đồng, nhận mốc backend đã sửa/soát đạt trước cổng cuối; chưa đóng W-14 đầu-cuối. Xem [phán xét/bằng chứng](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md).
 

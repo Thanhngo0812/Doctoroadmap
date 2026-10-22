@@ -1,0 +1,131 @@
+EEEEEEEEEEEE                                                             [100%]
+=================================== ERRORS ====================================
+__ ERROR at setup of test_cancel_commit_before_confirmation_queue_write_wins __
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+__ ERROR at setup of test_confirmation_commit_before_cancel_keeps_used_quota __
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal] _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_terminal_commit_before_cancel_keeps_success_and_sends_one_mail _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+_ ERROR at setup of test_cancelled_new_lease_cannot_be_published_by_late_old_receipt _
+connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w25-build-cancellation\report\w25-evidence\runs\red.xml -
+=========================== short test summary info ===========================
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_confirmation_queue_write_wins
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_confirmation_commit_before_cancel_keeps_used_quota
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal]
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_terminal_commit_before_cancel_keeps_success_and_sends_one_mail
+ERROR src/web/backend/tests/test_build_cancellation_w25.py::test_cancelled_new_lease_cannot_be_published_by_late_old_receipt
+1 warning, 12 errors in 9.97s

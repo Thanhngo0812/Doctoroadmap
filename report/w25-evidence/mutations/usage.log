@@ -1,0 +1,29 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_ test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes[succeeded] _
+src\web\backend\tests\test_builds_w14.py:162: in test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes
+    assert sum(row['cost_usd'] for row in rows)==expected
+E   AssertionError: assert Decimal('0.000000') == Decimal('0.003')
+E    +  where Decimal('0.000000') = sum(<generator object test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes.<locals>.<genexpr> at 0x00000251072820C0>)
+_ test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes[failed] _
+src\web\backend\tests\test_builds_w14.py:162: in test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes
+    assert sum(row['cost_usd'] for row in rows)==expected
+E   AssertionError: assert Decimal('0.000000') == Decimal('0.001')
+E    +  where Decimal('0.000000') = sum(<generator object test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes.<locals>.<genexpr> at 0x00000251091ACE10>)
+_ test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes[cancelled] _
+src\web\backend\tests\test_builds_w14.py:162: in test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes
+    assert sum(row['cost_usd'] for row in rows)==expected
+E   AssertionError: assert Decimal('0.000000') == Decimal('0.001')
+E    +  where Decimal('0.000000') = sum(<generator object test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes.<locals>.<genexpr> at 0x00000251090DD490>)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w25-build-cancellation\report\w25-evidence\mutations\usage.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes[succeeded]
+FAILED src/web/backend/tests/test_builds_w14.py::test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes[failed]
+FAILED src/web/backend/tests/test_builds_w14.py::test_result_and_nonzero_usage_commit_once_for_all_terminal_outcomes[cancelled]
+3 failed, 32 deselected, 1 warning in 7.95s

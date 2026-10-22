@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.372" timestamp="2026-10-22T09:38:18.214366+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_cancel_requested_between_step_check_and_callback_remains_cancelled" time="2.025"><failure message="AssertionError: assert ('cancelled' == 'cancelled'&#10;  &#10;    cancelled and 0.0 == 0.01)&#10; +  where 0.0 = float(Decimal('0.000000'))">src\web\backend\tests\test_builds_w14.py:606: in test_cancel_requested_between_step_check_and_callback_remains_cancelled
+    assert result['status']=='cancelled' and float(result['spent_usd'])==.01
+E   AssertionError: assert ('cancelled' == 'cancelled'
+E
+E       cancelled and 0.0 == 0.01)
+E    +  where 0.0 = float(Decimal('0.000000'))</failure></testcase></testsuite></testsuites>

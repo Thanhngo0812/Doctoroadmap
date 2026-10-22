@@ -4,6 +4,8 @@
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
 **Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, kiểm lại chưa đạt toàn bộ; tiếp tục cùng vé.
 
+**Kiểm lại `f1ca86d`, 2026-10-22 — vẫn mở:** độc lập xác nhận12 cấu hình sửa chữ tối/bar, tiến độ8→9→8/18 và spinner96px; clipboard, scroll và khung ảnh thật đều bắt phép phá. Chỉ còn3 nhóm Required: CSS OS reduced-motion còn trỏ ảnh hỏng dù nút bật tay đúng; so37×2 mode còn7 lệch, đổi dark tint0.99 cả28 test vẫn xanh; checklist chưa phủ đủ trạng thái và có2 link chứng cứ sai. Cloud vẫn thiếu Variables export được xác minh/video bốn prototype/trang-trạng thái đầy đủ. Chưa ghép nguyên bản mới vào main. Xem [review và bằng chứng](../../report/dieu-phoi-kiem-lai-w25-w14-react-w24-va-ke-hoach-2026-10-22.md), [lời giao phần còn lại](../../report/lenh-giao-viec-sau-w25-2026-10-22.md). Không giao lại các lỗi vừa được chứng minh đã sửa.
+
 **Soát bản mới `c1df32a`, 2026-10-21 — chưa đạt:** kiểm Chromium 12 cấu hình thấy sáu cấu hình tối chữ đen, progress trong suốt do tên token không có. Raw/light có7 điểm lệch CSS, guard vẫn xanh khi đổi primary; chưa có provenance Cloud. Bỏ clipboard.writeText hoặc scrollIntoView thì verifier vẫn4/4; ảnh GIF/tĩnh prototype hỏng naturalWidth0 vẫn qua phép so khung. Vòng W-14 chỉ32px thay96; W-07 tổng12/18 khác module8/18. Checklist từng trạng thái/node/video Figma còn thiếu. Xem [review và ảnh](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md), [lời giao cụ thể](../../report/lenh-giao-viec-sau-w07-2026-10-21.md).
 
 Các điểm kiểm mới trước bàn giao lại:

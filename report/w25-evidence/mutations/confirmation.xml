@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.747" timestamp="2026-10-22T09:35:59.308123+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_upload_requires_explicit_confirmation_and_never_exposes_money" time="2.006"><failure message="AssertionError: assert 'queued' == 'awaiting_confirmation'&#10;  &#10;  - awaiting_confirmation&#10;  + queued">src\web\backend\tests\test_builds_w14.py:76: in test_upload_requires_explicit_confirmation_and_never_exposes_money
+    assert data['build']['status']=='awaiting_confirmation'
+E   AssertionError: assert 'queued' == 'awaiting_confirmation'
+E
+E     - awaiting_confirmation
+E     + queued</failure></testcase></testsuite></testsuites>
