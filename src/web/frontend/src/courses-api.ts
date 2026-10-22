@@ -1,4 +1,5 @@
 import { ApiError, apiJson } from './api';
+import { buildPath, type BuildView } from './builds-api';
 
 export type Course = {
   course_id: string; doc_id: string; title: string; description: string;
@@ -8,6 +9,7 @@ export type Course = {
   module_count: number; member_count: number | null;
   progress: { learned: number; total: number } | null;
   resume: { module_id: string } | null;
+  build?: BuildView | null;
 };
 export type CourseList = { owned: Course[]; joined: Course[]; samples: Course[] };
 export type CourseModule = {
@@ -45,5 +47,6 @@ export const joinSample = (id: string, signal: AbortSignal) => apiJson<Course>(`
 });
 export const coursePath = (id: string) => `/khoa-hoc/${encodeURIComponent(id)}`;
 export const modulePath = (id: string, moduleId: string) => `${coursePath(id)}/module/${encodeURIComponent(moduleId)}`;
-export const resumePath = (course: Course) => course.resume
-  ? `${coursePath(course.course_id)}/module/${encodeURIComponent(course.resume.module_id)}` : coursePath(course.course_id);
+export const resumePath = (course: Course) => course.role === 'owner' && course.status !== 'ready' && course.build
+  ? buildPath(course.build.build_id, course.course_id, course.build.upload_id)
+  : course.resume ? `${coursePath(course.course_id)}/module/${encodeURIComponent(course.resume.module_id)}` : coursePath(course.course_id);

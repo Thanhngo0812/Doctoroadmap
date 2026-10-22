@@ -676,3 +676,81 @@ def test_same_actor_separate_courses_keep_the_confirmation_and_polling_context(b
     assert polled.status_code==200 and polled.json()['course_id']==second['build']['course_id']
     assert b.client.get(f"/api/v1/builds/{bid}",params={'course_id':str(uuid4())}).status_code==404
     assert b.service.usage(b.actor)['builds_used']==1
+
+
+def test_build_cards_expose_only_the_viewers_upload_for_the_course(builds):
+    from wayfinder.application.courses import CourseService
+    from wayfinder.domain.courses import Membership
+    from wayfinder.infrastructure.course_store import PostgresCourseStore
+    b=builds
+    courses=CourseService(PostgresCourseStore(b.engine),settings=b.settings,clock=b.clock)
+    courses.build_service=b.service
+    b.services.courses=courses
+    data=pdf()
+    first=upload(b,content=data)
+    second=upload(b,content=data)
+    assert first['build']['build_id']==second['build']['build_id']
+
+    cards=b.client.get('/api/v1/courses').json()['owned']
+    first_card=next(card for card in cards if card['course_id']==first['build']['course_id'])
+    second_card=next(card for card in cards if card['course_id']==second['build']['course_id'])
+    assert first_card['build']['upload_id']==first['upload_id']
+    assert second_card['build']['upload_id']==second['upload_id']
+    assert first_card['build']['upload_id']!=second_card['build']['upload_id']
+    for item in (first,second):
+        response=b.client.get(f"/api/v1/builds/{item['build']['build_id']}",
+            params={'course_id':item['build']['course_id']})
+        assert response.status_code==200,response.text
+        assert response.json()['upload_id']==item['upload_id']
+
+    learner,client,headers=b.user()
+    hidden=client.get(f"/api/v1/builds/{first['build']['build_id']}",
+        params={'course_id':first['build']['course_id']})
+    assert hidden.status_code==404
+    with b.store.atomic():
+        b.store.add_membership(Membership(first['build']['course_id'],learner.user_id,'learner','sample',b.clock.now(),b.clock.now()))
+    joined=client.get('/api/v1/courses').json()['joined']
+    joined_card=next(card for card in joined if card['course_id']==first['build']['course_id'])
+    assert joined_card['build']['upload_id'] is None
+    hidden=client.get(f"/api/v1/builds/{first['build']['build_id']}",
+        params={'course_id':first['build']['course_id']})
+    assert hidden.status_code==404
+
+
+def test_reused_queued_upload_has_its_own_confirmation_and_title(builds):
+    b=builds
+    data=pdf()
+    def post_upload():
+        return b.client.post('/api/v1/uploads',headers=b.headers,
+            data={'rights_confirmed':'true'},files={'file':('same.pdf',data,'application/pdf')})
+    first=post_upload()
+    assert first.status_code==200,first.text
+    first=first.json()
+    queued=b.client.post(f"/api/v1/uploads/{first['upload_id']}/build",headers=b.headers,json={})
+    assert queued.status_code==200,queued.text
+    second=post_upload()
+    assert second.status_code==200,second.text
+    second=second.json()
+    assert first['build']['build_id']==second['build']['build_id']
+    assert second['build']['status']=='queued'
+    assert second['confirmed_at'] is None
+
+    confirmed=b.client.post(f"/api/v1/uploads/{second['upload_id']}/build",headers=b.headers,
+        json={'title':'Tiêu đề của khoá thứ hai'})
+    assert confirmed.status_code==200,confirmed.text
+    assert confirmed.json()['course_id']==second['build']['course_id']
+    persisted=sql(b,'SELECT title FROM course WHERE id=:id',{'id':second['build']['course_id']})[0]
+    assert persisted['title']=='Tiêu đề của khoá thứ hai'
+    upload_state=b.client.get(f"/api/v1/uploads/{second['upload_id']}",headers=b.headers)
+    assert upload_state.status_code==200
+    confirmed_at=upload_state.json()['confirmed_at']
+    assert confirmed_at is not None
+
+    repeated=b.client.post(f"/api/v1/uploads/{second['upload_id']}/build",headers=b.headers,
+        json={'title':'Không được ghi đè'})
+    assert repeated.status_code==200
+    assert repeated.json()['course_id']==second['build']['course_id']
+    assert sql(b,'SELECT title FROM course WHERE id=:id',{'id':second['build']['course_id']})[0]['title']=='Tiêu đề của khoá thứ hai'
+    assert b.client.get(f"/api/v1/uploads/{second['upload_id']}",headers=b.headers).json()['confirmed_at']==confirmed_at
+    assert b.service.usage(b.actor)['builds_used']==1
+    assert sql(b,'SELECT count(*) AS n FROM build_attempt')[0]['n']==0

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "auto-confirm",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Builds.test.tsx",
+      "-t",
+      "requires rights confirmation",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w14-react/report/w14-react-evidence/ui-mutations/auto-confirm.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "5151746987d7b3b70a872d1a78e6d5d3899069ec1b85328f96448b23a841f508",
+    "restored_sha256": "5151746987d7b3b70a872d1a78e6d5d3899069ec1b85328f96448b23a841f508"
+  },
+  {
+    "name": "missing-course-query",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Builds.test.tsx",
+      "-t",
+      "polls active builds every three seconds",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w14-react/report/w14-react-evidence/ui-mutations/missing-course-query.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "cd932c53521ce3da74fb58939ae24423174d7279fcd104cd8de168adbfc231c1",
+    "restored_sha256": "cd932c53521ce3da74fb58939ae24423174d7279fcd104cd8de168adbfc231c1"
+  },
+  {
+    "name": "no-card-poll",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Courses.test.tsx",
+      "-t",
+      "refreshes active build cards after three seconds",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w14-react/report/w14-react-evidence/ui-mutations/no-card-poll.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "4c3503364865f26d707443ba4737dd08f7b34793c7dd68230fb690b19e7680a4",
+    "restored_sha256": "4c3503364865f26d707443ba4737dd08f7b34793c7dd68230fb690b19e7680a4"
+  }
+]

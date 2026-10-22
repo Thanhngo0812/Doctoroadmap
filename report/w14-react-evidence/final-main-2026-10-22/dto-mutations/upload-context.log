@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_build_cards_expose_only_the_viewers_upload_for_the_course ________
+
+builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_addf1d55cde34490a7b59...oken': '3WCFnM6VXDBI-ZR1uRidWIYQ_O82ACcIn45Gf-TiA9Q'}, app=<fastapi.applications.FastAPI object at 0x000002A349100860>)
+
+    def test_build_cards_expose_only_the_viewers_upload_for_the_course(builds):
+        from wayfinder.application.courses import CourseService
+        from wayfinder.domain.courses import Membership
+        from wayfinder.infrastructure.course_store import PostgresCourseStore
+        b=builds
+        courses=CourseService(PostgresCourseStore(b.engine),settings=b.settings,clock=b.clock)
+        courses.build_service=b.service
+        b.services.courses=courses
+        data=pdf()
+        first=upload(b,content=data)
+        second=upload(b,content=data)
+        assert first['build']['build_id']==second['build']['build_id']
+
+        cards=b.client.get('/api/v1/courses').json()['owned']
+        first_card=next(card for card in cards if card['course_id']==first['build']['course_id'])
+        second_card=next(card for card in cards if card['course_id']==second['build']['course_id'])
+        assert first_card['build']['upload_id']==first['upload_id']
+>       assert second_card['build']['upload_id']==second['upload_id']
+E       AssertionError: assert 'c7a91a74-b50...-6088c408b8b8' == '33ed9ea3-b41...-52f397680665'
+E
+E         - 33ed9ea3-b418-4ab1-a502-52f397680665
+E         + c7a91a74-b502-42e8-b19b-6088c408b8b8
+
+src\web\backend\tests\test_builds_w14.py:698: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react\report\w14-react-evidence\final-main-2026-10-22\dto-mutations\upload-context.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_build_cards_expose_only_the_viewers_upload_for_the_course
+1 failed, 1 warning in 4.01s

@@ -22,6 +22,7 @@ class BuildView(BaseModel):
     contract_version: str
     build_id: str
     course_id: str
+    upload_id: str | None = None
     status: str
     step: str | None
     step_index: int
@@ -42,6 +43,7 @@ class UploadView(BaseModel):
     kind: str
     size_bytes: int
     page_count: int | None
+    confirmed_at: datetime | None = None
     build: BuildView
 
 
