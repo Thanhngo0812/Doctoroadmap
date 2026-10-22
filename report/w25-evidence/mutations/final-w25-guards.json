@@ -1,0 +1,122 @@
+[
+  {
+    "label": "confirm-cancel",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "before_confirmation_queue",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w25-mut-94f3a03e-confirm-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w25-build-cancellation\\report\\w25-evidence\\mutations\\confirm-cancel.xml"
+    ],
+    "original_sha256": "eded892658e8b210eceffe7dfdbb55b3b980a921d49064f8909515fb1e63e12d",
+    "source_restored": true
+  },
+  {
+    "label": "terminal-cancel",
+    "exit_code": 1,
+    "failures": 4,
+    "assertion_failures": 4,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w25-mut-94f3a03e-terminal-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w25-build-cancellation\\report\\w25-evidence\\mutations\\terminal-cancel.xml"
+    ],
+    "original_sha256": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "source_restored": true
+  },
+  {
+    "label": "media-cancel",
+    "exit_code": 1,
+    "failures": 4,
+    "assertion_failures": 4,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w25-mut-94f3a03e-media-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w25-build-cancellation\\report\\w25-evidence\\mutations\\media-cancel.xml"
+    ],
+    "original_sha256": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+    "source_restored": true
+  },
+  {
+    "label": "receipt-once",
+    "exit_code": 1,
+    "failures": 8,
+    "assertion_failures": 8,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w25-mut-94f3a03e-receipt-once",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w25-build-cancellation\\report\\w25-evidence\\mutations\\receipt-once.xml"
+    ],
+    "original_sha256": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "source_restored": true
+  },
+  {
+    "label": "cancel-mail",
+    "exit_code": 1,
+    "failures": 8,
+    "assertion_failures": 8,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w25-mut-94f3a03e-cancel-mail",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w25-build-cancellation\\report\\w25-evidence\\mutations\\cancel-mail.xml"
+    ],
+    "original_sha256": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+    "source_restored": true
+  },
+  {
+    "label": "terminal-row-lock",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "follow_observed_commit_order",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w25-mut-94f3a03e-terminal-row-lock",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w25-build-cancellation\\report\\w25-evidence\\mutations\\terminal-row-lock.xml"
+    ],
+    "original_sha256": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "source_restored": true
+  }
+]

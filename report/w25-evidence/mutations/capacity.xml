@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.261" timestamp="2026-10-22T09:37:17.909033+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_system_cap_blocks_claim_and_stops_next_step_without_hiding_usage" time="2.549"><failure message="AssertionError: assert ('succeeded' == 'failed'&#10;  &#10;  - failed&#10;  + succeeded)">src\web\backend\tests\test_builds_w14.py:257: in test_system_cap_blocks_claim_and_stops_next_step_without_hiding_usage
+    assert result['status']=='failed' and result['error_code']=='het_tran_he_thong'
+E   AssertionError: assert ('succeeded' == 'failed'
+E
+E     - failed
+E     + succeeded)</failure></testcase></testsuite></testsuites>

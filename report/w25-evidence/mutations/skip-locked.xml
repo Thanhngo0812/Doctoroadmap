@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.454" timestamp="2026-10-22T09:38:29.170725+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_queue_skips_a_locked_job_and_claims_the_next_without_waiting" time="5.146"><failure message="AssertionError: Queue consumer waited on a job locked by another connection&#10;assert not True">src\web\backend\tests\test_builds_w14.py:638: in test_queue_skips_a_locked_job_and_claims_the_next_without_waiting
+    assert not waited,'Queue consumer waited on a job locked by another connection'
+E   AssertionError: Queue consumer waited on a job locked by another connection
+E   assert not True</failure></testcase></testsuite></testsuites>

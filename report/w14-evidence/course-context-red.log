@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_same_actor_separate_courses_keep_the_confirmation_and_polling_context __
+src\web\backend\tests\test_builds_w14.py:673: in test_same_actor_separate_courses_keep_the_confirmation_and_polling_context
+    assert response.json()['course_id']==second['build']['course_id']
+E   AssertionError: assert '48b80aba-fb2...-a8ff2503e431' == '756c704d-087...-4f9fdd3a848d'
+E
+E     - 756c704d-0878-47d1-a775-4f9fdd3a848d
+E     + 48b80aba-fb2e-471e-a7d5-a8ff2503e431
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\report\w14-evidence\course-context-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_same_actor_separate_courses_keep_the_confirmation_and_polling_context
+1 failed, 34 deselected, 1 warning in 2.58s
