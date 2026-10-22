@@ -63,12 +63,12 @@ Bốn luật:
 | [05](05-ten-module-luat-tat-dinh-duong-lui.md) | Tên module: luật tất định, đường lùi, mô tả khuôn | — | 0 | đạt qua SA-28 → SA-29: khuôn lùi không lộ mã; chất lượng tên đánh giá ở SA-20 |
 | [06](06-ten-mo-ta-module-do-llm-dat.md) | Tên và mô tả module do LLM đặt | 05 | dưới 0,1 USD sáu cuốn | đạt qua SA-28 → SA-29 (đạt có ghi chú); chất lượng tên và mô tả đánh giá ở SA-20 |
 | [07](07-chi-muc-khai-niem.md) | Chỉ mục khái niệm | 01, 02 | dưới 0,01 USD | đạt |
-| [08](08-tro-ly-agent-lat-cat-dau.md) | Trợ lý agent, lát cắt đầu: port gọi công cụ, vòng lặp có trần | 01, 02, 03 | lượt nhỏ | test đạt; chờ lượt thật sau 25 |
+| [08](08-tro-ly-agent-lat-cat-dau.md) | Trợ lý agent, lát cắt đầu: port gọi công cụ, vòng lặp có trần | 01, 02, 03 | lượt nhỏ | test đạt; lượt thật gộp ở **55** |
 | [09](09-tro-ly-trich-dan-tu-choi-ngoai-tai-lieu.md) | Trợ lý: trích dẫn, từ chối, nội dung ngoài tài liệu | 08 | 0 (phát lại) | đạt qua SA-25: hậu kiểm theo câu, nhãn bịa và câu không nguồn có test (mutation M5′, M5b′ bị bắt) [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
-| [10](10-tro-ly-du-cong-cu-nhac-nen-hoi-thoai.md) | Trợ lý: đủ công cụ, nhắc khái niệm nền, hội thoại nhiều lượt | 09 | lượt nhỏ | M2 đã có test từ SA-25; còn lượt thật khoảng 20 câu |
+| [10](10-tro-ly-du-cong-cu-nhac-nen-hoi-thoai.md) | Trợ lý: đủ công cụ, nhắc khái niệm nền, hội thoại nhiều lượt | 09 | lượt nhỏ | M2 đã có test từ SA-25; lượt thật gộp ở **55** |
 | [11](11-bai-giang-khong-llm.md) | Bài giảng không LLM: khung do mã dựng và trích câu | 02 | 0 | đạt qua SA-26 và SA-30 (câu trích cụt) |
 | [12](12-bai-giang-llm-kiem-va-cache.md) | Bài giảng LLM có kiểm và cache | 01, 11 | lượt nhỏ | đạt qua SA-26 và SA-30 (K6, không cache bài hỏng); bản lùi bỏ theo chủ dự án 2026-10-18; K5 chưa có test → **54** [soát 2026-10-22](../../report/soat-pha-b-46-47-49-50-51-2026-10-22.md) |
-| [13](13-bai-giang-stream-tai-truoc.md) | Bài giảng stream và tải trước | 12 | lượt nhỏ | chờ lượt thật sau 26 |
+| [13](13-bai-giang-stream-tai-truoc.md) | Bài giảng stream và tải trước | 12 | lượt nhỏ | test đạt; số giây lấy từ lượt sinh bài giảng của SA-21, không chạy riêng |
 | [14](14-cong-cu-get-lecture.md) | Công cụ `get_lecture` | 08, 12 | 0 | đạt |
 | [15](15-quiz-dien-khuyet-dau-cuoi.md) | Quiz điền khuyết đầu-cuối | 01, 02 | 0 | đạt |
 | [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | đạt qua SA-27; chất lượng câu đánh giá ở SA-22 |
@@ -110,6 +110,7 @@ Bốn luật:
 | [52](52-cau-dien-khuyet-nhieu-va-cau-dan.md) | Câu điền khuyết: nhiễu không nằm trong câu, không khoét giữa thuật ngữ khác, nhiễu không là ký hiệu, bỏ câu dẫn kết bằng dấu hai chấm | — | 0 | sẵn sàng; Claude cài |
 | [53](53-cau-noi-final-giu-chi-so-va-test-cache.md) | Bài giảng: lọc câu nối ở bản final giữ đúng chỉ số; test lớp lọc trước K6 và test cache theo hằng số thật | — | 0 | sẵn sàng; Claude cài |
 | [54](54-test-k5-tu-vung-ten-va-test-chap-chon.md) | Test cho K5 và luật từ vựng của tên module; ổn định hai test kho JSON chập chờn | — | 0 | sẵn sàng; agent Sonnet cài, Claude nghiệm thu |
+| [55](55-luot-that-tro-ly-gop-08-10.md) | Lượt thật trợ lý gộp cho SA-08 và SA-10: 32 lượt hỏi trên bốn cuốn, ghi phản hồi để phát lại; số đo của SA-13 lấy từ lượt sinh bài giảng SA-21 | — | dưới 0,35 USD, trần 0,50 USD | sẵn sàng; dry-run rồi chờ chủ dự án duyệt |
 
 **Vá sau SA-45, 2026-10-19:** các lỗi 46–50 đã ghép và kiểm, SA-51 sửa phương pháp tổng hợp và phát lại đủ 12 mẫu, không dùng phê duyệt chi cũ cho lượt mới. Xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Các phán xét SA-45 ở dòng 34–43 phía trên là lịch sử trước vá; lỗi tương ứng đã xử lý ở 46–50, giới hạn bằng chứng so nhiệt độ vẫn được giữ tại 51.
 
