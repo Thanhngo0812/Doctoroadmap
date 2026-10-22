@@ -68,18 +68,21 @@ async function main() {
     audit.http.push({ stage, method, path: scrub(route), status: response.status(), body: safe });
     return { status: response.status(), body };
   }
-  async function theme(page, value) {
-    if (await page.locator('html').getAttribute('data-theme') !== value)
-      await page.getByRole('button', { name: value === 'dark' ? 'Bật chế độ tối' : 'Bật chế độ sáng' }).click();
+  async function theme(page, value, modal = false) {
+    if (await page.locator('html').getAttribute('data-theme') !== value) {
+      const toggle = page.getByRole('button', { name: value === 'dark' ? 'Bật chế độ tối' : 'Bật chế độ sáng', includeHidden: modal });
+      // The modal makes the shell inert. Dispatch its real React toggle for the
+      // appearance matrix, so tokens AND the logo stay in the same theme.
+      if (modal) await toggle.dispatchEvent('click'); else await toggle.click();
+    }
     await page.waitForTimeout(250);
+    assert.equal(await page.locator('html').getAttribute('data-theme'),value);
   }
   async function matrix(page, state) {
     for (const width of [390, 768, 1280]) {
       await page.setViewportSize({ width, height: 900 });
       for (const mode of ['light', 'dark']) {
-        // Native modal keeps shell inert; set theme before opening it in the flow.
-        if (state !== 'share') await theme(page, mode);
-        else await page.evaluate(mode => { document.documentElement.dataset.theme = mode; }, mode);
+        await theme(page, mode, state === 'share');
         await page.waitForTimeout(250);
         assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false, state);
         const targets = await page.locator('button,a.button,select,input:not([type=hidden])').evaluateAll(nodes => nodes
@@ -92,8 +95,7 @@ async function main() {
       }
     }
     for (const mode of ['light', 'dark']) {
-      if (state === 'share') await page.evaluate(mode => { document.documentElement.dataset.theme = mode; }, mode);
-      else await theme(page, mode);
+      await theme(page, mode, state === 'share');
       stage = `axe:${state}:${mode}`;
       await page.waitForTimeout(250);
       const result = await new AxeBuilder({ page }).withTags(['wcag2a','wcag2aa','wcag21aa']).analyze();
@@ -180,11 +182,14 @@ async function main() {
     const snapshotPath = path.join(root,'.tmp/w11-members-inspect.html');
     await fs.mkdir(path.dirname(snapshotPath),{recursive:true});
     await fs.writeFile(snapshotPath,snapshot.replace(/<head([^>]*)>/i,`<head$1><base href="${base}/">`));
+    await fs.mkdir(path.join(root,'.tmp/w11-taste-profiles'),{recursive:true});
     const inspected = spawnSync(process.execPath,[path.join(shared,'.agents/skills/design-taste-frontend/scripts/inspect.mjs'),
       snapshotPath,'--out',path.join(output,'taste-inspect'),'--widths','1280,768,390','--app','--json'],
       {cwd:root,encoding:'utf8',timeout:180000,env:{...process.env,TASTE_SKILL_TMP:path.join(root,'.tmp/w11-taste-profiles')}});
     await fs.writeFile(path.join(output,'taste-inspector.log'),scrub(`${inspected.stdout||''}${inspected.stderr||''}`));
-    assert.ok([0,1].includes(inspected.status),'taste inspector must produce a review report');
+    assert.ok([0,1].includes(inspected.status),'taste inspector must finish its review');
+    const designReport = JSON.parse(await fs.readFile(path.join(output,'taste-inspect/report.json'),'utf8'));
+    assert.equal(designReport.viewports.length,3,'taste inspector must measure all three widths');
     audit.designInspection={exitCode:inspected.status,scope:'design-only real members DOM/CSS; does not replace HTTP acceptance'};
     await api(owner,'DELETE',`/courses/${cid}/share-links/${primary.id}`);
     assert.equal((await api(learner,'GET',`/courses/${cid}`)).status,200);
