@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 from threading import Event
+from time import monotonic, sleep
 
 import pytest
 
@@ -34,7 +35,7 @@ def independent_service(b):
         engine.dispose()
 
 
-def snapshot(b, bid, name):
+def snapshot(b, bid, name, **observations):
     payload = {
         'kind': 'independent PostgreSQL SQL; synthetic usage; zero provider calls',
         'build': sql(b, 'SELECT * FROM build WHERE id=:id', {'id': bid})[0],
@@ -45,6 +46,7 @@ def snapshot(b, bid, name):
         'assets': sql(b, 'SELECT * FROM media_asset WHERE doc_id=(SELECT doc_id FROM build WHERE id=:id)', {'id': bid}),
         'quota': b.service.usage(b.actor),
         'mail': b.mailer.messages,
+        'observations': observations,
     }
     output = Path(__file__).parents[4] / 'report/w25-evidence/sql' / os.environ.get('W25_EVIDENCE_RUN', 'latest')
     output.mkdir(parents=True, exist_ok=True)
@@ -280,3 +282,76 @@ def test_cancelled_new_lease_cannot_be_published_by_late_old_receipt(builds):
     assert len(proof['attempts']) == 2 and len(proof['ledger']) == 2
     assert proof['courses'][0]['status'] == 'failed' and proof['courses'][0]['published_graph_version'] is None
     assert not proof['mail']
+
+
+def test_terminal_row_read_and_cancel_follow_observed_commit_order(builds, monkeypatch):
+    """If the terminal read loses its lock, cancel commits first and success must lose."""
+    b = builds
+    item = upload(b)
+    bid = item['build']['build_id']
+    b.service.confirm_build(b.actor, item['upload_id'])
+    read, resume, cancel_committed, cancel_entered = Event(), Event(), Event(), Event()
+    in_terminal = False
+    original_record, original_execute = b.store.record_usage, b.store.execute
+
+    def record(*args, **kwargs):
+        nonlocal in_terminal
+        in_terminal = kwargs.get('result') is not None
+        try:
+            return original_record(*args, **kwargs)
+        finally:
+            in_terminal = False
+
+    def after_row_read(statement, params=None):
+        rows = original_execute(statement, params)
+        if in_terminal and statement.startswith('SELECT * FROM build WHERE id=:id'):
+            read.set()
+            assert resume.wait(15), 'terminal row read was not released'
+        return rows
+
+    monkeypatch.setattr(b.store, 'record_usage', record)
+    monkeypatch.setattr(b.store, 'execute', after_row_read)
+    blocked = False
+    with independent_service(b) as cancel, ThreadPoolExecutor(max_workers=2) as pool:
+        pid = []
+        original_cancel = cancel.store.execute
+
+        def cancel_lock(statement, params=None):
+            if statement.startswith('SELECT * FROM build WHERE id=:id'):
+                pid.append(original_cancel('SELECT pg_backend_pid() AS pid')[0]['pid'])
+                cancel_entered.set()
+            return original_cancel(statement, params)
+
+        monkeypatch.setattr(cancel.store, 'execute', cancel_lock)
+
+        def cancellation():
+            response = cancel.cancel_build(b.actor, bid)
+            cancel_committed.set()
+            return response
+
+        pending = pool.submit(worker(b).run_next_job)
+        try:
+            assert read.wait(15), 'worker never read its terminal row'
+            cancelling = pool.submit(cancellation)
+            assert cancel_entered.wait(15), 'cancel never attempted its state transition'
+            deadline = monotonic() + 10
+            while not cancel_committed.is_set() and monotonic() < deadline:
+                blocked = bool(sql(b, 'SELECT pg_blocking_pids(:pid) AS blockers', {'pid': pid[0]})[0]['blockers'])
+                if blocked:
+                    break
+                sleep(.01)
+            assert blocked or cancel_committed.is_set(), 'neither a lock wait nor a committed cancellation was observed'
+        finally:
+            resume.set()
+        response = cancelling.result(timeout=15)
+        pending.result(timeout=15)
+    proof = snapshot(b, bid, 'terminal-row-lock-order', blocking_observed=blocked,
+                     cancellation_accepted=response['cancel_requested'])
+    if response['cancel_requested']:
+        assert proof['build']['status'] == 'cancelled'
+        assert proof['courses'][0]['status'] == 'failed' and not proof['mail']
+    else:
+        assert blocked, 'success is valid only when cancellation waited for terminal commit'
+        assert proof['build']['status'] == 'succeeded'
+        assert proof['courses'][0]['status'] == 'ready' and len(proof['mail']) == 1
+    assert proof['build']['spent_usd'] == sum(row['cost_usd'] for row in proof['ledger']) == Decimal('.003')

@@ -24,6 +24,9 @@ CASES = [(label, path, old, new, selection, TEST) for label, path, old, new, sel
     ('cancel-mail', 'application/build_worker.py',
      "if accepted and result.status in {'succeeded','failed','rejected'}:",
      'if accepted:', 'preserves_receipt', NEW_TEST),
+    ('terminal-row-lock', 'infrastructure/build_store.py',
+     "job=self.one('SELECT * FROM build WHERE id=:id FOR UPDATE',{'id':bid})",
+     "job=self.one('SELECT * FROM build WHERE id=:id',{'id':bid})", 'follow_observed_commit_order', NEW_TEST),
 ]
 
 
@@ -33,6 +36,8 @@ def main():
     records = []
     run_id = uuid4().hex[:8]
     for label, relative, old, new, selection, test in CASES:
+        if sys.argv[1:] and label not in sys.argv[1:]:
+            continue
         path = PACKAGE / relative
         original = path.read_bytes()
         source = original.decode('utf-8')
@@ -59,7 +64,8 @@ def main():
             assert path.read_bytes() == original
         record['source_restored'] = True
         records.append(record)
-        (output / 'mutations.json').write_text(json.dumps(records, indent=2) + '\n', encoding='utf-8')
+        ledger = output / ('mutations-' + '-'.join(sys.argv[1:]) + '.json' if sys.argv[1:] else 'mutations.json')
+        ledger.write_text(json.dumps(records, indent=2) + '\n', encoding='utf-8')
         print(label + ': caught and restored', flush=True)
 
 
