@@ -22,6 +22,22 @@ def test_ask_cli_requires_saved_session_and_has_no_module_argument():
         parse('ask', '--doc-id', 'doc-1', '--session-id', 's', '--module-id', 'm', 'Câu hỏi')
 
 
+def test_ask_cli_forwards_focus_node_id_and_defaults_to_none(monkeypatch):
+    calls = []
+    graph = SimpleNamespace(doc_id='doc-1', graph_version=2)
+    class Assistant:
+        def ask(self, *args, **kwargs):
+            calls.append((args, kwargs))
+            return {}
+    runtime = SimpleNamespace(graph=lambda *_: graph, assistant=lambda _: Assistant())
+    monkeypatch.setattr(phase_b, 'PhaseBRuntime', lambda **_: runtime)
+    base = ('ask', '--doc-id', 'doc-1', '--session-id', 's', '--dry-run')
+    phase_b.run(parse(*base, '--focus-node-id', 'n7', 'Giải thích phần này'))
+    assert calls[-1][1]['focus_node_id'] == 'n7'
+    phase_b.run(parse(*base, 'Giải thích phần này'))
+    assert calls[-1][1]['focus_node_id'] is None
+
+
 def test_session_progress_scope_and_library_cli_call_public_use_cases(monkeypatch):
     calls = []
     graph = SimpleNamespace(doc_id='doc-1', graph_version=2,

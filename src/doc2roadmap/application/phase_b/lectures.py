@@ -782,6 +782,7 @@ class LectureUseCase:
         preload_next: bool = False,
         _background: bool = False,
         owner: str | None = None,
+        cache_only: bool = False,
     ) -> dict[str, Any]:
         call_started = perf_counter()
         context, skeleton, _ = _assemble(graph, node_id, self.settings)
@@ -817,6 +818,12 @@ class LectureUseCase:
             if on_event:
                 on_event({"event": "final", "lecture": result})
             return result
+        if cache_only:
+            # Read-only: never generates, never writes a cache or failure record, never spends.
+            cached = self.store.get_cache(key)
+            if isinstance(cached, dict) and cached.get("status") == "ready":
+                return self._attach_progress({**cached, "graph_version": graph_version}, owner, doc_id, graph)
+            return {**skeleton, "status": "not_cached"}
         if dry_run:
             result = {**skeleton, "status": "generating", "dry_run": True,
                       "dry_run_limits": {"bridge_max_chars": self.settings.bridge_max_chars,

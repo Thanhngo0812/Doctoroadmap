@@ -270,7 +270,8 @@ class Handler(BaseHTTPRequestHandler):
             elif route == '/api/ask':
                 runtime.assistant(graph).ask(graph.doc_id, graph.graph_version, args['session_id'],
                     args['question'], owner='local', client_turn_id=args.get('client_turn_id'),
-                    reminders_enabled=args.get('reminders_enabled', True), on_event=emit, allow_spend=runtime.allow_spend)
+                    reminders_enabled=args.get('reminders_enabled', True), on_event=emit, allow_spend=runtime.allow_spend,
+                    focus_node_id=args.get('focus_node_id'))
             else:
                 scope = args['scope']
                 home_scope = args.get('home_scope')
