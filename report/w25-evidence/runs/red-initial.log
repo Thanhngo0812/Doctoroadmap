@@ -1,0 +1,102 @@
+F.FFFFFFFFFF                                                             [100%]
+================================== FAILURES ===================================
+___________ test_cancel_commit_before_confirmation_queue_write_wins ___________
+src\web\backend\tests\test_build_cancellation_w25.py:80: in test_cancel_commit_before_confirmation_queue_write_wins
+    pytest.fail('confirmation must reject cancellation committed before its queue write')
+E   Failed: confirmation must reject cancellation committed before its queue write
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('aadcd512-3bae-4929-a0c8-88c69eba4c10'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('fbfd9998-c3c9-4360-8ddd-fcbf64dd5763'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('69c910c9-c4b9-44c1-8f48-6a5ef67c6f80'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [{'asset_key': '0.png', 'bytes': 15, 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.Zone.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:191: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('f6a26c0a-04b2-4aa2-a2d0-c8d715e5c7dc'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_____ test_terminal_commit_before_cancel_keeps_success_and_sends_one_mail _____
+src\web\backend\tests\test_build_cancellation_w25.py:249: in test_terminal_commit_before_cancel_keeps_success_and_sends_one_mail
+    assert len(proof['mail']) == 1 and proof['mail'][0]['subject'] == 'Bản dựng xong'
+E   AssertionError: assert (2 == 1)
+E    +  where 2 = len([{'body': 'Xin chào Người học,\n\nVui lòng xác minh địa chỉ email để có thể mời bạn học qua email.\n\nMở liên kết này ...cc6-f165cf8d7909', 'html_body': None, 'subject': 'Bản dựng xong', 'to': '00be5dd04f47479eb40cd8dab7616b68@example.vn'}])
+______ test_cancelled_new_lease_cannot_be_published_by_late_old_receipt _______
+src\web\backend\tests\test_build_cancellation_w25.py:273: in test_cancelled_new_lease_cannot_be_published_by_late_old_receipt
+    assert proof['build']['status'] == 'cancelled' and not proof['build']['usage_complete']
+E   AssertionError: assert ('succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w25-build-cancellation\report\w25-evidence\runs\red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_confirmation_queue_write_wins
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_terminal_commit_before_cancel_keeps_success_and_sends_one_mail
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancelled_new_lease_cannot_be_published_by_late_old_receipt
+11 failed, 1 passed, 1 warning in 28.72s

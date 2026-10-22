@@ -1,0 +1,43 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_confirmed_media_only_and_source_checksum_failure_never_runs_builder ___
+src\web\backend\tests\test_builds_w14.py:435: in test_confirmed_media_only_and_source_checksum_failure_never_runs_builder
+    assert worker(b,hook=hook).run_next_job()['status']=='succeeded'
+E   AssertionError: assert 'failed' == 'succeeded'
+E
+E     - succeeded
+E     + failed
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=c1f83145-a695-4ccb-b82e-78fe1358108d
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\wayfinder\application\build_worker.py", line 77, in record
+    self.publish_asset(job,lease,asset['asset_key'],path,'media')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\wayfinder\application\build_worker.py", line 137, in publish_asset
+    public=self.service.media.upload(path,self.settings.cloudinary_folder+'/media/'+job['doc_id'],'image')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\src\web\backend\wayfinder\fakes\media.py", line 22, in upload
+    self.files[public_id] = Path(path).read_bytes()
+                            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py", line 1019, in read_bytes
+    with self.open(mode='rb') as f:
+         ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py", line 1013, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\tmp\\w14-mut-16f3bfd4-confirmed-media\\test_confirmed_media_only_and_0\\artifacts\\media\\u-68ae573dc42356276ba1\\not-present.png'
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-build-worker\report\w14-evidence\confirmed-media-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_builds_w14.py::test_confirmed_media_only_and_source_checksum_failure_never_runs_builder
+1 failed, 34 deselected, 1 warning in 3.02s

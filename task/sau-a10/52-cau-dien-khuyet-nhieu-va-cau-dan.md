@@ -28,8 +28,9 @@ Phát lại mọi module của sáu cuốn ở chế độ không gọi mô hìn
   bỏ mà không còn đủ hai nhiễu hợp lệ thì bỏ câu, mã `cloze.distractor_in_stem`.
 - **Không khoét trống trong thuật ngữ dài hơn.** Chỗ khớp alias của đáp án nằm trong tên hay alias dài hơn của một khái niệm khác trong graph thì bỏ câu,
   mã `cloze.blank_inside_longer_term`. Giữ ngoại lệ "Hiệu" trong "kí hiệu", vì "kí hiệu" không phải tên khái niệm trong graph.
-- **Q6 cho phương án.** Bỏ nhiễu có ký hiệu toán: một trong `× = ∪ ∩ ∈ ∉ ∑ ∫ √ ≤ ≥ ≠ ± → ⊂ ⊃ ⊆ ^`, hoặc chữ cái liền chữ số. Đáp án là ký hiệu thì bỏ khái
-  niệm khỏi nhánh điền khuyết. Mã `cloze.notation_option`.
+- **Q6 cho phương án.** Bỏ nhiễu có ký hiệu toán: một trong `× = ∪ ∩ ∈ ∉ ∑ ∫ √ ≤ ≥ ≠ ± → ⊂ ⊃ ⊆ ^`. Đáp án là ký hiệu thì bỏ khái niệm khỏi nhánh điền
+  khuyết. Mã `cloze.notation_option`. Luật "chữ cái liền chữ số" có trong bản vé đầu đã bỏ khi cài (2026-10-22): luật đó bắt nhầm tên khái niệm hợp lệ
+  như "Chính quy hóa L2".
 - **Câu trích kết bằng dấu hai chấm:** bỏ, dùng mã có sẵn `cloze.incomplete_lead_in`. Câu như vậy dẫn vào danh sách hay công thức không hiện. Chấp nhận
   mất một số câu vẫn trả lời được; báo số câu mất.
 - **Đổi `LOCAL_RULES_VERSION` thành `quiz-local-rules-v4`** để ngân hàng cũ không trở lại từ cache. Khoá cache dùng chung cho câu LLM, nên ngân hàng LLM

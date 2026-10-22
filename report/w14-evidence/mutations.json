@@ -1,0 +1,268 @@
+[
+  {
+    "label": "confirmation",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "upload_requires_explicit",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-confirmation",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\confirmation-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "title",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "name_is_saved",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-title",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\title-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "owner",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "expiration_rights",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-owner",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\owner-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "usage",
+    "exit_code": 1,
+    "failures": 3,
+    "setup_errors": 0,
+    "assertion_failures": 3,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "result_and_nonzero",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-usage",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\usage-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "complete",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "result_and_nonzero",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-complete",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\complete-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "cancel",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "result_and_nonzero",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\cancel-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "capacity",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "system_cap",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-capacity",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\capacity-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "lease",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "heartbeat_reclaim",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-lease",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\lease-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "publication-usage",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "publication_error",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-publication-usage",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\publication-usage-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "confirmed-media",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "confirmed_media_only",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-confirmed-media",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\confirmed-media-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "late-usage",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "heartbeat_reclaim",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-late-usage",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\late-usage-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "boundary-cancel",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "cancel_requested_between",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-boundary-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\boundary-cancel-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "skip-locked",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "queue_skips_a_locked_job",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-skip-locked",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\skip-locked-red.xml"
+    ],
+    "source_restored": true
+  },
+  {
+    "label": "course-context",
+    "exit_code": 1,
+    "failures": 1,
+    "setup_errors": 0,
+    "assertion_failures": 1,
+    "command": [
+      "src/web/backend/tests/test_builds_w14.py",
+      "-k",
+      "same_actor_separate",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w14-mut-16f3bfd4-course-context",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-build-worker\\report\\w14-evidence\\course-context-red.xml"
+    ],
+    "source_restored": true
+  }
+]

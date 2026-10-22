@@ -3,6 +3,7 @@ from pydantic import BaseModel, ConfigDict, Field
 from typing import Any, Literal
 
 from wayfinder.api.auth import get_actor
+from wayfinder.api.builds import BuildView
 from wayfinder.domain.auth import Actor
 
 
@@ -39,6 +40,7 @@ class CourseCard(BaseModel):
     member_count: int | None
     progress: ProgressSummary | None
     resume: Resume | None
+    build: BuildView | None = None
 
 
 class CourseList(BaseModel):

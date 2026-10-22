@@ -226,6 +226,14 @@ Mọi use case kiểm `owner`.
 
 - **Yêu cầu:** `doc_id`, `graph_version`, `session_id`, `question`, `client_turn_id`. Bỏ `current_module_id`, vì module đang mở được lấy từ phạm vi của
   phiên qua hàm giải.
+- **Tiêu điểm `focus_node_id`** (tuỳ chọn, chủ dự án duyệt 2026-10-22, vé SA-56):
+  - web gửi kèm mỗi lượt khi người học đang mở bài giảng của một khái niệm; không lưu vào phiên;
+  - mô hình nhận khối `focus`: tên, module, câu định nghĩa dưới dạng nguồn `[S#]`, và các ý bài giảng nếu đã có trong cache (chỉ đọc, 0 USD). Khối này
+    tối đa `assistant_focus_tokens` (400);
+  - câu hỏi không nêu tên khái niệm thì khái niệm liên kết là tiêu điểm;
+  - giá trị không phải khái niệm học được của đồ thị thì bị bỏ, kèm cảnh báo `focus_ignored`;
+  - không có tiêu điểm thì đầu vào mô hình không đổi;
+  - đầu ra thêm `focus_node_id`. Trường thêm vào và tuỳ chọn, nên vẫn là `answer-2`.
 - **Phạm vi module:** giữ nguyên hành vi hiện tại: thẻ module, truy hồi ưu tiên module.
 - **Phạm vi lộ trình hoặc stale:**
   - không ưu tiên module;
