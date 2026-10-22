@@ -70,7 +70,7 @@
    "tool_calls": [],
    "tools": [
     {
-     "description": "Tìm bằng chứng trong tài liệu, ưu tiên module đang mở.",
+     "description": "Tìm bằng chứng trong tài liệu. scope là uu_tien_module (mặc định, ưu tiên module đang mở) hoặc ca_tai_lieu (cả tài liệu).",
      "name": "search_document",
      "parameters": {
       "additionalProperties": false,
@@ -84,6 +84,10 @@
         "type": "string"
        },
        "scope": {
+        "enum": [
+         "uu_tien_module",
+         "ca_tai_lieu"
+        ],
         "type": "string"
        }
       },
@@ -296,7 +300,7 @@
    "tool_calls": [],
    "tools": [
     {
-     "description": "Tìm bằng chứng trong tài liệu, ưu tiên module đang mở.",
+     "description": "Tìm bằng chứng trong tài liệu. scope là uu_tien_module (mặc định, ưu tiên module đang mở) hoặc ca_tai_lieu (cả tài liệu).",
      "name": "search_document",
      "parameters": {
       "additionalProperties": false,
@@ -310,6 +314,10 @@
         "type": "string"
        },
        "scope": {
+        "enum": [
+         "uu_tien_module",
+         "ca_tai_lieu"
+        ],
         "type": "string"
        }
       },
@@ -498,7 +506,7 @@
    "tool_calls": [],
    "tools": [
     {
-     "description": "Tìm bằng chứng trong tài liệu, ưu tiên module đang mở.",
+     "description": "Tìm bằng chứng trong tài liệu. scope là uu_tien_module (mặc định, ưu tiên module đang mở) hoặc ca_tai_lieu (cả tài liệu).",
      "name": "search_document",
      "parameters": {
       "additionalProperties": false,
@@ -512,6 +520,10 @@
         "type": "string"
        },
        "scope": {
+        "enum": [
+         "uu_tien_module",
+         "ca_tai_lieu"
+        ],
         "type": "string"
        }
       },
@@ -755,7 +767,7 @@
    ],
    "tools": [
     {
-     "description": "Tìm bằng chứng trong tài liệu, ưu tiên module đang mở.",
+     "description": "Tìm bằng chứng trong tài liệu. scope là uu_tien_module (mặc định, ưu tiên module đang mở) hoặc ca_tai_lieu (cả tài liệu).",
      "name": "search_document",
      "parameters": {
       "additionalProperties": false,
@@ -769,6 +781,10 @@
         "type": "string"
        },
        "scope": {
+        "enum": [
+         "uu_tien_module",
+         "ca_tai_lieu"
+        ],
         "type": "string"
        }
       },
@@ -930,7 +946,7 @@
    "tool_calls": [],
    "tools": [
     {
-     "description": "Tìm bằng chứng trong tài liệu, ưu tiên module đang mở.",
+     "description": "Tìm bằng chứng trong tài liệu. scope là uu_tien_module (mặc định, ưu tiên module đang mở) hoặc ca_tai_lieu (cả tài liệu).",
      "name": "search_document",
      "parameters": {
       "additionalProperties": false,
@@ -944,6 +960,10 @@
         "type": "string"
        },
        "scope": {
+        "enum": [
+         "uu_tien_module",
+         "ca_tai_lieu"
+        ],
         "type": "string"
        }
       },

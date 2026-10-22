@@ -120,7 +120,7 @@ class PhaseBRuntime:
             self.store.put_record('module_assignment', context_hash([doc_id, graph.graph_version, index.version]), result)
         return {**result, 'dry_run': dry_run}
 
-    def search(self, graph, query, *, scope='ưu tiên module', k=6, current_module_id=None):
+    def search(self, graph, query, *, scope='uu_tien_module', k=6, current_module_id=None):
         if self.allow_spend:
             embedding = GeminiEmbedding(
                 self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else None,

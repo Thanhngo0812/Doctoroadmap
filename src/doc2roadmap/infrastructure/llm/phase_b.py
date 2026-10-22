@@ -4,6 +4,7 @@ import json
 import os
 import re
 import threading
+from copy import deepcopy
 from inspect import signature
 from collections.abc import Iterator, Mapping, Sequence
 from pathlib import Path
@@ -394,11 +395,13 @@ class RecordingToolSession:
                       "ttft_ms": self.last_ttft_ms, "finish_reason": self.last_finish_reason})
 
     def stream(self, messages: list[dict[str, Any]], *, mode: Literal["AUTO", "NONE"] = "AUTO") -> Iterator[Delta | ToolCall | Done]:
+        # The caller extends `messages` after this call; record what was sent now.
+        snapshot = deepcopy(messages)
         events = []
         for event in self.delegate.stream(messages, mode=mode):
             events.append(_event_dict(event))
             yield event
-        self._record({"kind": "conversation", "messages": messages, "mode": mode, "events": events})
+        self._record({"kind": "conversation", "messages": snapshot, "mode": mode, "events": events})
 
     def fixture(self) -> dict[str, Any]:
         return {"system_prompt": self.system_prompt, "tools": self.tools, "calls": self.calls}
