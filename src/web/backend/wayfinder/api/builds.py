@@ -22,6 +22,7 @@ class BuildView(BaseModel):
     contract_version: str
     build_id: str
     course_id: str
+    upload_id: str | None = None
     status: str
     step: str | None
     step_index: int
