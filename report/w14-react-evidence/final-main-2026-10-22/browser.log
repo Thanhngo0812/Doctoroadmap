@@ -1,0 +1,18 @@
+W14 browser: worker pause at reading
+W14 browser: worker pause at concepts
+W14 browser: success worker completion
+W14 browser: cancel worker pause
+W14 browser: cancel worker completion
+W14 browser: retryable fake worker result
+python.exe : Error: Timed out waiting for retry success worker completion; last worker state is included in failure
+diagnostics;
+worker={"running":true,"pausedStage":null,"runs":4,"lastException":null,"lastJobStatus":null,"mode":"success"}
+At line:2 char:1
++ & C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Error: Timed ou...ode":"success"}:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    at waitFor (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react\scripts\w14_web_check.cjs:531:9)
+    at async waitForWorker (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react\scripts\w14_web_check.cjs:154:5)
+    at async main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react\scripts\w14_web_check.cjs:384:5)

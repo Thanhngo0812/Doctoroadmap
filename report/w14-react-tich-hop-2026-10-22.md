@@ -1,5 +1,47 @@
 # W-14 — React và tích hợp bộ dựng giả — 2026-10-22
 
+## Đợt cuối sau nhận backend đã duyệt — đã chạy cổng, chờ điều phối nghiệm thu
+
+- Backend/schema được điều phối duyệt tại `4dbfe8e`, ghép main `a572459`. Đã merge main `66cd439` thành `756502f`; main nhận tiếp SA-53 khi lượt kiểm đang chạy nên merge lại main mới nhất lúc đó `5e524d3` thành `5197e10`. Không rebase, không đổi nhánh thư mục chung; W-11 giữ riêng `a53f0d3`.
+- Main có thêm commit tài liệu `8b85d19` trong lúc kiểm; merge lần ba thành `4dd74ce`. `git diff 6b4a8cd 4dd74ce -- src scripts tests design` rỗng. Vẫn chạy lại cổng để bàn giao đúng đỉnh sau nhận main mới nhất.
+- **Chủ dự án đã chốt main nền `8b85d19` cho đợt này**, sau khi được hỏi rõ mục3.5 của quy trình. Commit tài liệu đến sau `207c6c0` nằm ngoài mốc đã chốt; không tiếp tục lặp cổng vì tài liệu đổi. Backend đã duyệt vẫn là `a572459`.
+- Đỉnh mã cho lượt cuối: **`da61cdc200ba02f3e445d63684998a368cf01fb9`**, có cả câu hướng dẫn sau `953240b`. Hai DTO đã soát vẫn nguyên; không thêm migration hoặc đổi khoá/trạng thái W-25. So với `6b4a8cd`, harness chỉ đổi thư mục đích bằng chứng sang `run3`. README/báo cáo cập nhật sau kiểm không đổi mã chạy.
+- Tại `b050ac7`, bỏ đúng32 tệp synthetic image khỏi index bằng `git rm --cached`; còn đủ32 tệp local. Ignore `/basetemp*/`, đồng thời ignore các input fixture tái sinh ở thư mục con. Đỉnh mới không có basetemp trong `git ls-tree`; [preflight và hash guard](w14-react-evidence/final-main-2026-10-22-run2/preflight.json).
+- Đã phá lại3 guard UI và2 guard DTO, tuần tự trước full gate/server: **5/5 native exit1 qua assertion, 0 setup error**, nguồn phục hồi đúng SHA-256. DTO mutation dùng nhầm `job.upload_id` cho course dùng lại và trả `confirmed_at=None` sau xác nhận; không chỉ phá tên trường. [UI ledger](w14-react-evidence/final-main-2026-10-22/ui-mutations/results.json), [DTO ledger](w14-react-evidence/final-main-2026-10-22/dto-mutations/results.json). Hash còn khớp ở đỉnh cuối.
+- Lượt đầu trên `fe50c5c`/main `66cd439`: Python **2.172 đạt, 1 Cloudinary live bỏ qua**, React104/build đạt. Browser **native exit1** tại chờ worker thử lại hoàn tất240giây, `lastException=null`; DB đã dọn. Chưa chạy SQL cuối hoặc toàn bộ trạng thái nên **không dùng lượt này làm bằng chứng đạt**. Nghi tranh chấp I/O do chạy cùng full Python; chưa coi đó là nguyên nhân đã chứng minh. Giữ [log browser đỏ](w14-react-evidence/final-main-2026-10-22/browser.log), [audit từng trạng thái đã kiểm](w14-react-evidence/final-main-2026-10-22/browser-audit.json), [cleanup](w14-react-evidence/final-main-2026-10-22/runtime.json), [JUnit Python lượt đầu](w14-react-evidence/final-main-2026-10-22/python.xml).
+- Lượt2 tại `6b4a8cd`/main `5e524d3`, basetemp `tmp/w14-final-main-py-20261022-2`: Python **2.176 đạt, 1 bỏ qua**, React **104 đạt**, build native exit0. Browser chạy riêng sau Python và **đạt native exit0**:47 ảnh,225 phản hồi/206 payload JSON,14 audit Axe,0 violation/incomplete/console error/page error/failed request. SQL độc lập xác nhận5 course/4 build, upload/tên riêng, reuse chỉ1 worker attempt và5 dòng usage giả tổng0,002USD; DB được dọn. Giữ [bằng chứng lượt2](w14-react-evidence/final-main-2026-10-22-run2/); chỉ kết luận không tái hiện timeout khi chạy riêng, chưa khẳng định nguyên nhân I/O.
+- Lượt3 dùng basetemp mới `tmp/w14-final-main-py-20261022-3`; browser chạy sau full Python, giữ timeout240giây/assertion. **Tất cả native exit0** trên `da61cdc`, không sửa mã chạy sau đó. [Tóm tắt nguồn/cwd/argv/kết quả](w14-react-evidence/final-main-2026-10-22-run3/final-gate-summary.json).
+
+| Cổng cuối tại `da61cdc` | Kết quả | Bằng chứng |
+|---|---|---|
+| Python toàn repo + PostgreSQL bắt buộc | **2.176 đạt, 1 Cloudinary live bỏ qua**, 0 fail/error, native0; pytest528,51giây | [log](w14-react-evidence/final-main-2026-10-22-run3/python.log), [JUnit](w14-react-evidence/final-main-2026-10-22-run3/python.xml), [exit](w14-react-evidence/final-main-2026-10-22-run3/python-exit.txt) |
+| React | **104 đạt**, 0 skip/fail/error, native0 | [log](w14-react-evidence/final-main-2026-10-22-run3/react.log), [JUnit](w14-react-evidence/final-main-2026-10-22-run3/react.xml), [exit](w14-react-evidence/final-main-2026-10-22-run3/react-exit.txt) |
+| TypeScript/Vite | Đạt, native0 | [log](w14-react-evidence/final-main-2026-10-22-run3/build.log), [exit](w14-react-evidence/final-main-2026-10-22-run3/build-exit.txt) |
+| Browser HTTP/worker/PG thật, provider giả | **13 nhóm assertion,47 ảnh,235 phản hồi API/216 payload JSON**, native0 | [log](w14-react-evidence/final-main-2026-10-22-run3/browser.log), [audit](w14-react-evidence/final-main-2026-10-22-run3/browser-audit.json), [JSON thật](w14-react-evidence/final-main-2026-10-22-run3/http-responses.json), [video](w14-react-evidence/final-main-2026-10-22-run3/w14-upload-build.webm), [exit](w14-react-evidence/final-main-2026-10-22-run3/browser-exit.txt) |
+| Axe/console/network | **14 audit,0 violation/0 incomplete; 0 lỗi console ngoài dự kiến,0 page error,0 failed request/font failure** | [audit có route/state/theme/width](w14-react-evidence/final-main-2026-10-22-run3/browser-audit.json) |
+| SQL độc lập + cleanup | 5 course đúng chủ,4 build có trạng thái cuối đúng; hai upload đã xác nhận riêng, hai tên riêng; reuse chỉ1 worker attempt;5 dòng usage giả tổng0,002USD; DB/worker/browser/server8014 đã dừng | [kết quả SQL](w14-react-evidence/final-main-2026-10-22-run3/runtime.json), [kiểm đọc lại DB/cổng](w14-react-evidence/final-main-2026-10-22-run3/cleanup-check.json) |
+
+29 thông báo console dự kiến được đối chiếu riêng:1 GET `/me`401 lúc chưa đăng nhập và28 probe CSP từ14 lần Axe. Mỗi cảnh báo font CSP phải khớp đúng request bị chặn; không tắt CSP hoặc lọc lỗi sản phẩm. Phạm vi thật/giả: FastAPI, session/CSRF, PostgreSQL, BuildService/BuildWorker/PostgresPhaseBStore thật; ManifestFakeBuildRunner/ScriptedBuildRunner, MemoryMediaStore và FakeMailer giả. Không intercept/mock API để thay trạng thái UI. **Chi dịch vụ ngoài0USD**;0,002USD trong ledger là dữ liệu giả kiểm ghi sổ.
+
+Đã kiểm lại nhãn/tên trước POST, poll/reload giữ build+course ID, upload/tên riêng khi dùng lại, huỷ/thử lại/rejected/succeeded, quota không giới hạn được ẩn, không hiện tiền/token/dự toán. Ảnh cancelled mới và browser assertion đã kiểm câu hướng dẫn sau `953240b`; bộ cũ trước vá câu chữ chỉ là lịch sử. Giảm chuyển động được bật bằng browser media setting mô phỏng OS, kiểm `matchMedia`, ảnh tĩnh thay GIF và không còn animation đang chạy; có kiểm native file input qua Tab/focus và vùng bấm44px.
+
+Taste app-screen giữ hướng `framed-sheet`, Be Vietnam Pro, token/logo/ảnh chờ của main. Inspector chạy lại từ snapshot DOM/CSS thật:0 FAIL,1 WARN `hero-void` tại1280, không thay bằng dữ liệu/trang trí giả. Đã xem trực tiếp ảnh cuối upload390light, confirmation1280dark, running390dark, cancelled390dark, rejected1280light, success768dark; mọi ảnh ma trận còn lại có kiểm tràn ngang/vùng bấm tự động. Không nhận đã đánh giá thị giác thủ công từng47 ảnh.
+
+Lệnh cuối từ gốc worktree (stdout/stderr và `$LASTEXITCODE` được lưu theo bảng trên):
+
+```powershell
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w05_run_tests.py -o addopts= -q --basetemp=tmp/w14-final-main-py-20261022-3 --junitxml=report/w14-react-evidence/final-main-2026-10-22-run3/python.xml
+npm.cmd --prefix src/web/frontend test -- --pool=threads --maxWorkers=1 --reporter=junit --outputFile=../../../report/w14-react-evidence/final-main-2026-10-22-run3/react.xml
+npm.cmd --prefix src/web/frontend run build
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8 scripts/w14_web_runtime.py
+```
+
+[Hygiene32 tệp và SHA-256](w14-react-evidence/final-main-2026-10-22-run3/handoff-hygiene.json), [hash input không track](w14-react-evidence/final-main-2026-10-22-run3/browser-inputs.json), [chuẩn hoá UTF-8/LF/khoảng trắng kèm hash trước/sau](w14-react-evidence/final-main-2026-10-22-run3/normalization.json), [manifest bằng chứng lượt3](w14-react-evidence/final-main-2026-10-22-run3/manifest.json). Giữ đầy đủ log lượt đỏ và hai lượt trước; không sửa assertion, skip hoặc timeout để xanh. Snapshot/worktree/ZIP giữ nguyên, không đụng `tmp/t01a-clean-ff797eb`. README đã có lệnh mở service.
+
+**Bàn giao để điều phối nghiệm thu lại; người làm không tự đóng W-14, không ghép/push main.** W-11 giữ nguyên `a53f0d3`, chỉ tiếp tục sau W-14 được điều phối chấp nhận, migration `w11_0007` nối `w14_0006`. SA-34/SA khác và runner thật W-15 không được nhận là đã đạt từ lượt kiểm này.
+
+**Phạm vi Axe:** bộ cũ chỉ có trang rejected. Harness mới kiểm7 trạng thái × sáng/tối tại1280px: upload, confirmation, running, succeeded, cancelled, retryable, rejected; chỉ nhận kết quả khi đủ14 audit. Ảnh ma trận390/768/1280 kiểm tràn ngang/vùng bấm, không được gọi toàn bộ47 ảnh là đã chạy Axe. Các mục bên dưới là **lịch sử local trước khi nhận backend đã duyệt**, không thay đợt cuối này.
+
 ## Gốc nhánh và phạm vi
 
 - Nhánh `work/w14-react`, worktree một cấp `tmp/w14-react`, tách đúng commit W-25 `0a2afa8` (gốc W-14 `5b24ece`, có main `46703b4`). Đây là **phụ thuộc đang chờ soát**, không coi backend/schema đã đạt hoặc đã ghép main. Trước cổng tích hợp cuối phải nhận main có backend W-14/W-25 được điều phối chấp nhận.

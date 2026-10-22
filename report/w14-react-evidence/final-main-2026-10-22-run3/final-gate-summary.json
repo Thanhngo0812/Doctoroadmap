@@ -1,0 +1,134 @@
+{
+  "source_commit": "da61cdc200ba02f3e445d63684998a368cf01fb9",
+  "main_base": "8b85d19da0318200829524170f75f6e94a7dec97",
+  "main_base_confirmed_by_project_owner": true,
+  "excluded_later_docs_commit": "207c6c0",
+  "accepted_backend_merge": "a5724597117094600152fb9a705354ebba10bde0",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-react",
+  "commands": {
+    "python": [
+      "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "--basetemp=tmp/w14-final-main-py-20261022-3",
+      "--junitxml=report/w14-react-evidence/final-main-2026-10-22-run3/python.xml"
+    ],
+    "react": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=../../../report/w14-react-evidence/final-main-2026-10-22-run3/react.xml"
+    ],
+    "build": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "run",
+      "build"
+    ],
+    "browser": [
+      "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+      "-X",
+      "utf8",
+      "scripts/w14_web_runtime.py"
+    ]
+  },
+  "native_exit_codes": {
+    "python": 0,
+    "react": 0,
+    "build": 0,
+    "browser": 0
+  },
+  "python": {
+    "tests": 2177,
+    "passed": 2176,
+    "skipped": 1,
+    "failures": 0,
+    "errors": 0
+  },
+  "react": {
+    "tests": 104,
+    "passed": 104,
+    "skipped": 0,
+    "failures": 0,
+    "errors": 0
+  },
+  "browser": {
+    "screens": 47,
+    "assertion_groups": 13,
+    "http_responses": 235,
+    "json_payloads": 216,
+    "axe_audits": 14,
+    "axe_scope": "7 states x light/dark at 1280px only",
+    "expected_console_messages": 29,
+    "unexpected_console_errors": 0,
+    "page_errors": 0,
+    "failed_requests": 0,
+    "font_failures": 0
+  },
+  "runtime": {
+    "baseUrl": "http://127.0.0.1:8014",
+    "databaseName": "wayfinder_w14_react_798492a4584042059936b6c2fe7a5428",
+    "database": "uuid-disposable-postgresql",
+    "migrationHead": "w14_0006",
+    "media": "MemoryMediaStore",
+    "mailer": "FakeMailer",
+    "runner": "ManifestFakeBuildRunner plus deterministic scripted retry/reject",
+    "modelCalls": 0,
+    "modelCostUsd": 0,
+    "fixture": {
+      "sourceDoc": "doc-1",
+      "manifestSha256Verified": true
+    },
+    "fixtureNames": {
+      "success": "w14-success.pdf",
+      "reuse": "w14-reuse.pdf",
+      "cancel": "w14-cancel.docx",
+      "retry": "w14-retry.pdf",
+      "reject": "w14-reject.pdf"
+    },
+    "browserExitCode": 0,
+    "temporaryDatabaseRemoved": true,
+    "accountRole": "user",
+    "ownedCourseCount": 5,
+    "courseStatuses": [
+      "failed",
+      "failed",
+      "ready",
+      "ready",
+      "ready"
+    ],
+    "buildStatuses": [
+      "cancelled",
+      "rejected",
+      "succeeded",
+      "succeeded"
+    ],
+    "allBuildRowsPersisted": true,
+    "sameFileReuseVerifiedByIndependentPostgres": true,
+    "separateConfirmedUploadsVerifiedByIndependentPostgres": true,
+    "reusedBuildWorkerAttempts": 1,
+    "syntheticBuildUsageRows": 5,
+    "syntheticBuildUsageUsd": 0.002,
+    "verifiedByIndependentPostgresConnection": true,
+    "localIntegrationEvidence": true
+  },
+  "external_provider_cost_usd": 0,
+  "acceptance_by_coordinator_pending": true,
+  "w11_preserved_commit": "a53f0d3",
+  "guard_evidence": {
+    "ui_mutations_caught": 3,
+    "dto_mutations_caught": 2,
+    "each_wrong_version_native_exit_code": 1,
+    "wrappers_native_exit_code": 0,
+    "restored_source_matches_final_sha256": true
+  },
+  "later_main_docs_note": "Owner explicitly fixed 8b85d19 for this gate after 207c6c0 arrived; no further main merge for this run."
+}

@@ -2,11 +2,11 @@
 
 ## W-14 React — vị trí và giới hạn
 
-Nhánh `work/w14-react`, worktree `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react`, dựa trên backend W-14/W-25 `0a2afa8`. Backend này đang chờ điều phối soát/ghép; các bước dưới đây dành cho DB dev riêng đã cấu hình, không phải hướng dẫn cập nhật main. Bản này nhận PDF/DOCX nhưng dùng **bộ dựng giả**: kết quả học lấy từ snapshot doc-1 đã kiểm hash, không phải nội dung tài liệu vừa tải. Bản dựng thật thuộc W-15. W-11 vẫn ở worktree riêng, không nằm trong W-14.
+Nhánh `work/w14-react`, worktree `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react`, đã nhận main `8b85d19` chứa backend W-14/W-25 được duyệt tại `a572459`, cùng SA-52/SA-53. Các bước dưới đây dành cho DB dev riêng đã cấu hình. Bản này nhận PDF/DOCX nhưng dùng **bộ dựng giả**: kết quả học lấy từ snapshot doc-1 đã kiểm hash, không phải nội dung tài liệu vừa tải. Bản dựng thật thuộc W-15. W-11 vẫn ở worktree riêng, không nằm trong W-14.
 
 ### PowerShell 1 — mở PostgreSQL và backend
 
-Bật Docker Desktop, rồi chạy từ đúng worktree. Dùng cấu hình PostgreSQL dev riêng trong `.env` hiện có; chưa chạy các lệnh migration vào DB chứa dữ liệu cần giữ khi backend chưa được duyệt.
+Bật Docker Desktop, rồi chạy từ đúng worktree. Dùng cấu hình PostgreSQL dev riêng trong `.env` hiện có. Đợt kiểm tự động dùng DB UUID riêng; các lệnh dev dưới đây không thuộc cổng kiểm tự động.
 
 ```powershell
 cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react

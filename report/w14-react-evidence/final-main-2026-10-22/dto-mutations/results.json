@@ -1,0 +1,38 @@
+[
+  {
+    "name": "upload-context",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_builds_w14.py::test_build_cards_expose_only_the_viewers_upload_for_the_course",
+      "--basetemp=tmp/w14-dto-upload-context-54a6d534786a4da2b13638277b7c873e",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-react\\report\\w14-react-evidence\\final-main-2026-10-22\\dto-mutations\\upload-context.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7",
+    "restored_sha256": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7"
+  },
+  {
+    "name": "confirmation",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_builds_w14.py::test_reused_queued_upload_has_its_own_confirmation_and_title",
+      "--basetemp=tmp/w14-dto-confirmation-ba6bf38787ed44f3ad75e5707e5295bd",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w14-react\\report\\w14-react-evidence\\final-main-2026-10-22\\dto-mutations\\confirmation.xml"
+    ],
+    "native_exit_code": 1,
+    "assertion_failures": 1,
+    "errors": 0,
+    "original_sha256": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7",
+    "restored_sha256": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7"
+  }
+]
