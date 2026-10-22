@@ -146,7 +146,8 @@ it('polls active builds every three seconds and only exposes controls allowed by
   vi.stubGlobal('fetch', fetcher);
   renderPage('/ban-dung/build-1?course_id=course-1');
   await act(async () => { for (let index = 0; index < 12; index += 1) await Promise.resolve(); });
-  expect(screen.getByRole('heading', { name: 'Đang dựng Đại số' })).toBeInTheDocument();
+  expect(screen.getByRole('heading', { level: 1, name: 'Đang dựng lộ trình' })).toBeInTheDocument();
+  expect(screen.getByText('Đại số')).toBeInTheDocument();
   expect(screen.getByText('Dựng đồ thị và lộ trình')).toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Huỷ dựng' })).not.toBeInTheDocument();
   expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
@@ -193,7 +194,8 @@ it('offers retry only for a retryable failure and sends the course scope', async
   });
   vi.stubGlobal('fetch', fetcher);
   renderPage('/ban-dung/build-1?course_id=course-1&upload_id=upload-1');
-  expect(await screen.findByRole('heading', { level: 1, name: /Dựng chưa thành công/ })).toBeInTheDocument();
+  expect(await screen.findByRole('heading', { level: 1, name: 'Trạng thái bản dựng' })).toBeInTheDocument();
+  expect(screen.getByText('Đại số')).toBeInTheDocument();
   expect(await screen.findByRole('button', { name: 'Thử lại' })).toBeInTheDocument();
   expect(screen.queryByText('private')).not.toBeInTheDocument();
   await userEvent.setup().click(screen.getByRole('button', { name: 'Thử lại' }));

@@ -195,12 +195,13 @@ export function BuildPage(props: ThemeProps) {
     ? 'Đã hết thời hạn xác nhận. Hãy tải tài liệu lên lại để tiếp tục.'
     : build?.error ? new ApiError(build.error.code).message : 'Bản dựng chưa hoàn tất. Hãy thử lại nếu nút bên dưới đang khả dụng.';
 
-  const heading = loading ? 'Đang tải trạng thái' : !build ? 'Trạng thái bản dựng' : canConfirm ? 'Xác nhận dựng lộ trình' : build.status === 'succeeded' ? 'Lộ trình đã sẵn sàng' : activeStatuses.has(build.status) ? `${build.status === 'queued' ? 'Đang chờ dựng' : 'Đang dựng'}${title ? ` ${title}` : ''}` : `${buildStatusLabel(build)}${title ? ` · ${title}` : ''}`;
+  const heading = loading ? 'Đang tải trạng thái' : !build ? 'Trạng thái bản dựng' : canConfirm ? 'Xác nhận dựng lộ trình' : build.status === 'succeeded' ? 'Lộ trình đã sẵn sàng' : build.status === 'queued' ? 'Đang chờ dựng' : activeStatuses.has(build.status) ? 'Đang dựng lộ trình' : 'Trạng thái bản dựng';
 
   return <CourseShell {...props}>
     <div className="builds-page builds-progress">
       <div className="builds-page-heading"><div><p className="builds-kicker">{upload?.original_name ?? 'Bản dựng'}</p>
         <h1>{heading}</h1>
+        {title && <p className="builds-course-title">{title}</p>}
       </div><Link className="builds-back-link" to="/khoa-hoc">Khoá học của tôi</Link></div>
       {loading && <p className="builds-loading" role="status">Đang tải trạng thái bản dựng…</p>}
       {error && <div className="builds-error" role="alert"><p>{error}</p><button className="button button-secondary" type="button" onClick={() => setReload(value => value + 1)}>Thử lại</button></div>}
