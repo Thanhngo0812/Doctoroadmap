@@ -1,0 +1,1120 @@
+{
+  "source": "real browser against FastAPI and disposable PostgreSQL; worker pipeline is deterministic fake",
+  "localIntegrationEvidence": false,
+  "media": "MemoryMediaStore",
+  "mailer": "FakeMailer",
+  "modelCalls": 0,
+  "modelCostUsd": 0,
+  "assertions": [
+    "registered a real account and received an authenticated session",
+    "file selection uses a visible 44px+ label target and the native input has a keyboard-visible focus indicator",
+    "upload stayed awaiting_confirmation without worker activity; confirmation persisted the user-edited title and queued work",
+    "reduced-motion replaced the animated waiting asset with its static image during a live build"
+  ],
+  "screens": [
+    {
+      "filename": "upload-390-light.png",
+      "width": 390,
+      "theme": "light"
+    },
+    {
+      "filename": "upload-390-dark.png",
+      "width": 390,
+      "theme": "dark"
+    },
+    {
+      "filename": "upload-768-light.png",
+      "width": 768,
+      "theme": "light"
+    },
+    {
+      "filename": "upload-768-dark.png",
+      "width": 768,
+      "theme": "dark"
+    },
+    {
+      "filename": "upload-1280-light.png",
+      "width": 1280,
+      "theme": "light"
+    },
+    {
+      "filename": "upload-1280-dark.png",
+      "width": 1280,
+      "theme": "dark"
+    },
+    {
+      "filename": "awaiting-confirmation-1280-light.png",
+      "width": 1280,
+      "theme": "light"
+    },
+    {
+      "filename": "reading-reloaded-390-dark.png",
+      "width": 390,
+      "theme": "dark"
+    },
+    {
+      "filename": "running-768-light.png",
+      "width": 768,
+      "theme": "light"
+    }
+  ],
+  "accessibility": [],
+  "apiResponses": [
+    {
+      "stage": "register",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 401
+    },
+    {
+      "stage": "register",
+      "method": "POST",
+      "path": "/api/v1/auth/register",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "path": "/api/v1/courses",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/me/usage",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/me/usage",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "POST",
+      "path": "/api/v1/uploads",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/courses/59908f5f-1c3d-47ac-ab8e-61a5cc7ba40e",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/uploads/b46287a9-504e-4601-a107-240eb0d86e8c",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "POST",
+      "path": "/api/v1/uploads/b46287a9-504e-4601-a107-240eb0d86e8c/build",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/uploads/b46287a9-504e-4601-a107-240eb0d86e8c",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "path": "/api/v1/courses/59908f5f-1c3d-47ac-ab8e-61a5cc7ba40e",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "path": "/api/v1/uploads/b46287a9-504e-4601-a107-240eb0d86e8c",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/courses/59908f5f-1c3d-47ac-ab8e-61a5cc7ba40e",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/uploads/b46287a9-504e-4601-a107-240eb0d86e8c",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/me",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/courses/59908f5f-1c3d-47ac-ab8e-61a5cc7ba40e",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/uploads/b46287a9-504e-4601-a107-240eb0d86e8c",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "path": "/api/v1/builds/5663dae2-1178-4c42-b0ec-849ff7a50d39",
+      "status": 200
+    }
+  ],
+  "consoleErrors": [],
+  "rawConsoleErrors": [
+    {
+      "stage": "register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    }
+  ],
+  "expectedConsoleErrors": [
+    {
+      "stage": "register",
+      "text": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "expected": "unauthenticated GET /api/v1/me during registration bootstrap"
+    }
+  ],
+  "pageErrors": [],
+  "failedRequests": [],
+  "fontFailures": [],
+  "fontRequests": [
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "stage": "register",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "stage": "upload.page",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "stage": "build.reading",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.googleapis.com",
+      "path": "/css2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw4BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw5BXoKZA.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Hw3BXo.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIW81Rb0.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG86Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG87Rb0bcw.woff2",
+      "status": 200
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2"
+    },
+    {
+      "stage": "build.running",
+      "method": "GET",
+      "origin": "https://fonts.gstatic.com",
+      "path": "/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIG81Rb0.woff2",
+      "status": 200
+    }
+  ],
+  "unexpectedExternalRequests": [],
+  "expectedProbeRequests": [],
+  "builds": [],
+  "video": "w14-upload-build.webm",
+  "fontLoaded": true,
+  "designInspectionReadiness": {
+    "stylesheetCount": 1,
+    "fontLoaded": true,
+    "pageWidth": 720,
+    "pageMaxWidth": "none",
+    "scrollWidth": 768,
+    "viewportWidth": 768
+  },
+  "designInspection": {
+    "source": "static DOM and built CSS snapshot from the live authenticated RUNNING page; design-only, not HTTP acceptance evidence",
+    "acceptance": false,
+    "snapshot": ".tmp\\w14-progress-inspect.html",
+    "output": "report\\w14-react-evidence\\taste-inspect",
+    "exitCode": 1,
+    "signal": null,
+    "log": "report\\w14-react-evidence\\taste-inspector.log"
+  }
+}

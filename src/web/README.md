@@ -1,5 +1,62 @@
 # WayFinder — chạy backend và frontend
 
+## W-14 React — vị trí và giới hạn
+
+Nhánh `work/w14-react`, worktree `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react`, dựa trên backend W-14/W-25 `0a2afa8`. Backend này đang chờ điều phối soát/ghép; các bước dưới đây dành cho DB dev riêng đã cấu hình, không phải hướng dẫn cập nhật main. Bản này nhận PDF/DOCX nhưng dùng **bộ dựng giả**: kết quả học lấy từ snapshot doc-1 đã kiểm hash, không phải nội dung tài liệu vừa tải. Bản dựng thật thuộc W-15. W-11 vẫn ở worktree riêng, không nằm trong W-14.
+
+### PowerShell 1 — mở PostgreSQL và backend
+
+Bật Docker Desktop, rồi chạy từ đúng worktree. Dùng cấu hình PostgreSQL dev riêng trong `.env` hiện có; chưa chạy các lệnh migration vào DB chứa dữ liệu cần giữ khi backend chưa được duyệt.
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+$env:WAYFINDER_MAILER = 'console'
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+```
+
+Backend ở `http://127.0.0.1:8000`; health ở `/api/v1/health`. CLI giữ cấu hình Vertex/ADC hiện có khi mở backend, không tự gọi mô hình. Media dựng W-14 dùng kho giả local; `MAILER=console` chỉ áp dụng terminal demo này để không gửi thư SMTP. Đợt kiểm tự động dùng DB UUID và provider giả hoàn toàn, không chạy những lệnh dev trên DB của chủ dự án.
+
+### PowerShell 2 — mở frontend
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react
+npm.cmd --prefix src/web/frontend ci
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+```
+
+Mở `http://127.0.0.1:5173/tai-len`. Chọn tệp và xác nhận quyền dùng; sau khi kiểm tệp, sửa tên khoá rồi bấm **Dựng lộ trình**. Trang tiến trình giữ mã bản dựng và khoá học trong URL; có thể tải lại hoặc mở lại từ **Khoá học của tôi**. Không đổi xen kẽ `localhost`/`127.0.0.1` vì phiên/CSRF.
+
+### PowerShell 3 — worker giả
+
+Snapshot đã có trong worktree của lần bàn giao. Nếu chưa có, dùng helper copy theo manifest dưới đây; helper kiểm SHA-256 và dừng nếu đích khác hash. Không liên kết thư mục snapshot/artifact.
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+& $wfPython -X utf8 src/web/backend/tests/copy_w06_fixtures.py
+& $wfPython -m wayfinder.cli --env-file $wfEnv worker --fake-source doc-1 --fixture-root . --manifest report/doc1-rebuild-evidence-2026-10-20/development-fixtures.json --manifest-sha256 5fc819f723f7263fe3d443ec780009a75aae66f2c35db8fe0bc3e3c50464eb84
+```
+
+Worker chỉ nhận việc đã xác nhận, kiểm hàng đợi mỗi 3 giây khi rảnh. Nếu chưa mở worker thì bản dựng giữ `queued`. Huỷ/thử lại theo khả năng API cho phép; không hứa hoàn lượt. Để chạy một việc rồi thoát, thêm `--once`. Worker dùng mailer/media giả, không upload Cloudinary hoặc gọi runner thật.
+
+### Bản build và cách dừng
+
+Trong worktree chạy `npm.cmd --prefix src/web/frontend run build`, dừng backend cũ bằng `Ctrl+C`, đổi `WAYFINDER_PUBLIC_BASE_URL` về `http://127.0.0.1:8000` rồi mở lại backend để xem React build ở8000. Giữ worker chạy nếu muốn xử lý việc đã xác nhận.
+
+Dừng từng terminal bằng `Ctrl+C`; không cần xoá volume. Có thể dừng DB bằng `docker compose -f src/web/docker-compose.yml --env-file $wfEnv stop db`. Lần sau mở lại đúng ba terminal, không cần `npm ci` nếu dependency chưa đổi. Nếu cổng8000/5173 bận, dừng phiên cũ trước. [Báo cáo tích hợp W-14](../../report/w14-react-tich-hop-2026-10-22.md) ghi commit, bằng chứng và phần còn chờ điều phối.
+
 ## Mở nhanh bản W-07 trên máy hiện tại
 
 Bản W-07 nằm ở nhánh `work/w07-roadmap-progress`, thư mục `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w07-roadmap-progress`. Chạy từ thư mục này để mở đúng bản mới. Bật **Docker Desktop** và chờ engine sẵn sàng trước.

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.025" timestamp="2026-10-22T09:52:37.170782+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_reused_queued_upload_has_its_own_confirmation_and_title" time="2.235"><failure message="KeyError: 'confirmed_at'">builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b725df1030c54be686f7f...oken': 'vVaIM9OOO84qhh6rnzLkL2lwXILcsnGa2xjlctgYRw8'}, app=&lt;fastapi.applications.FastAPI object at 0x000001F333786BA0&gt;)
+
+    def test_reused_queued_upload_has_its_own_confirmation_and_title(builds):
+        b=builds
+        data=pdf()
+        def post_upload():
+            return b.client.post('/api/v1/uploads',headers=b.headers,
+                data={'rights_confirmed':'true'},files={'file':('same.pdf',data,'application/pdf')})
+        first=post_upload()
+        assert first.status_code==200,first.text
+        first=first.json()
+        queued=b.client.post(f"/api/v1/uploads/{first['upload_id']}/build",headers=b.headers,json={})
+        assert queued.status_code==200,queued.text
+        second=post_upload()
+        assert second.status_code==200,second.text
+        second=second.json()
+        assert first['build']['build_id']==second['build']['build_id']
+        assert second['build']['status']=='queued'
+&gt;       assert second['confirmed_at'] is None
+               ^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'confirmed_at'
+
+src\web\backend\tests\test_builds_w14.py:736: KeyError</failure></testcase></testsuite></testsuites>

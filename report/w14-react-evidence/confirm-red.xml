@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.754" timestamp="2026-10-22T09:52:16.531979+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_builds_w14" name="test_reused_queued_upload_has_its_own_confirmation_and_title" time="2.198"><failure message="AssertionError">builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_5885d4b3aa6e4c5488d5f...oken': 'CmalgiX3jbd7tRUjfP7D_PZly0nw2APgb6e66C1V2uQ'}, app=&lt;fastapi.applications.FastAPI object at 0x0000012F8D6B1130&gt;)
+
+    def test_reused_queued_upload_has_its_own_confirmation_and_title(builds):
+        b=builds
+        data=pdf()
+        def post_upload():
+            return b.client.post('/api/v1/uploads',headers=b.headers,
+                data={'rights_confirmed':'true'},files={'file':('same.pdf',data,'application/pdf')})
+        first,second=post_upload(),post_upload()
+        assert first.status_code==second.status_code==200
+        first,second=first.json(),second.json()
+        assert first['build']['build_id']==second['build']['build_id']
+&gt;       assert second['build']['status']=='queued'
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       AssertionError
+
+src\web\backend\tests\test_builds_w14.py:730: AssertionError</failure></testcase></testsuite></testsuites>
