@@ -6,6 +6,7 @@ from pathlib import Path
 import pytest
 
 from doc2roadmap.application.phase_b import assistant as assistant_module
+from doc2roadmap.application.phase_b.assistant import AssistantUseCase
 from doc2roadmap.application.phase_b.lectures import LectureUseCase
 from doc2roadmap.application.ports.phase_b import ToolCall
 from doc2roadmap.domain.phase_b_limits import BSettings
@@ -176,6 +177,21 @@ def test_valid_or_missing_focus_adds_no_focus_ignored_warning():
     assert ask(use_case, 'giải thích phần này', focus_node_id='f')['warnings'] == []
 
 
+def test_valid_focus_makes_the_assistant_skip_the_embedding_concept_lookup():
+    calls = []
+    store, g = InMemoryPhaseBStore(), make_graph()
+    support.session(store, g)
+    model = support.Model([answer_turn(FOCUS_ANSWER)])
+    use_case = AssistantUseCase(g, store, model, concept_lookup=lambda text: calls.append(text) or {
+        'matches': [{'node_id': 'e'}]})
+    result = ask(use_case, 'giải thích phần này', focus_node_id='f')
+    assert calls == [] and result['linked_node_ids'] == ['f']
+    # without a focus the same question still falls back to the lookup, so the callback is wired
+    model.turns = iter([answer_turn(FOCUS_ANSWER)])
+    without = ask(use_case, 'giải thích phần này')
+    assert calls == ['giải thích phần này'] and without['linked_node_ids'] == ['e']
+
+
 # ---------------------------------------------------------------- not stored
 
 def test_focus_is_not_stored_in_session_or_state_and_the_next_turn_has_none():
@@ -258,6 +274,27 @@ def test_a_smaller_cap_drops_all_ideas_but_keeps_the_identifying_fields():
     assert 'lecture_ideas' not in focus and focus['node_id'] == 'f'
 
 
+@pytest.mark.parametrize('status', ['failed', 'not_cached', 'generating'])
+def test_assistant_ignores_sections_of_a_lecture_that_is_not_ready(status):
+    def reader(**kwargs):
+        return {'status': status, 'sections': [{'items': [{'text': 'Không được dùng.'}]}]}
+    use_case, model, _, _ = build([answer_turn(FOCUS_ANSWER)], lecture=reader)
+    ask(use_case, 'giải thích phần này', focus_node_id='f')
+    assert 'lecture_ideas' not in sent_context(model)['focus']
+
+
+def test_lecture_cache_only_read_is_pure_for_ready_failed_and_missing_entries():
+    lecture, model, store, key = lecture_setup()
+    graph = make_graph()
+    missing = lecture.make('book', 1, graph, 'f', cache_only=True)
+    assert missing['status'] == 'not_cached' and store.get_cache(key) is None
+    store.put_cache(key, {'status': 'failed', 'node_id': 'f', 'sections': []})
+    assert lecture.make('book', 1, graph, 'f', cache_only=True)['status'] == 'not_cached'
+    store.put_cache(key, {'status': 'ready', 'node_id': 'f', 'sections': []})
+    assert lecture.make('book', 1, graph, 'f', cache_only=True)['status'] == 'ready'
+    assert model.touched == 0 and store.usage_rows() == [] and store.list_records('lecture_failure') == []
+
+
 # ---------------------------------------------------------------- dry run
 
 def test_dry_run_counts_the_focus_block_in_hash_and_token_estimate(monkeypatch):
@@ -271,3 +308,7 @@ def test_dry_run_counts_the_focus_block_in_hash_and_token_estimate(monkeypatch):
     assert plain['context_hash'] != focused['context_hash']
     assert seen[1] > seen[0]
     assert focused['focus_node_id'] == 'f' and model.calls == []
+    # naming the concept links it either way, so only the focus block can change the hash
+    named = ask(use_case, 'Song ánh là gì?', dry_run=True)
+    named_focus = ask(use_case, 'Song ánh là gì?', dry_run=True, focus_node_id='f')
+    assert named['context_hash'] != named_focus['context_hash']
