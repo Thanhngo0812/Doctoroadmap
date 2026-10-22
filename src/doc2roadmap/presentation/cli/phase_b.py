@@ -59,6 +59,7 @@ def configure(commands):
         if name == 'ask':
             command.add_argument('--session-id', required=True)
             command.add_argument('--client-turn-id')
+            command.add_argument('--focus-node-id')
         if name == 'document':
             command.add_argument('request')
             command.add_argument('--scope', required=True)
@@ -174,7 +175,7 @@ def run(args):
     if action == 'ask':
         return runtime.assistant(graph).ask(args.doc_id, graph.graph_version, args.session_id,
             args.question, owner=args.owner, client_turn_id=args.client_turn_id, dry_run=args.dry_run,
-            allow_spend=args.allow_spend and not args.dry_run)
+            allow_spend=args.allow_spend and not args.dry_run, focus_node_id=args.focus_node_id)
     if action == 'document':
         scope = _scope(args.scope, graph) if args.scope.startswith(('{', '[', '@')) else args.scope
         document = runtime.document(graph, args.request, scope, owner=args.owner, dry_run=args.dry_run)

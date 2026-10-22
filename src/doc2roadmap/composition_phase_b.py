@@ -167,13 +167,14 @@ class PhaseBRuntime:
         from doc2roadmap.application.phase_b.library import LibraryUseCase
         return LibraryUseCase(self.store, graph, settings=self.b_settings)
 
-    def lecture(self, graph, node_id, *, dry_run=False, on_event=None, preload_next=False, deterministic=False, owner=None):
+    def lecture(self, graph, node_id, *, dry_run=False, on_event=None, preload_next=False, deterministic=False, owner=None,
+                cache_only=False):
         model = None if deterministic or (self.mode == 'offline' and not self.replay_dir) else self.model('lecture')
         return LectureUseCase(model, self.store, settings=self.b_settings, clock=self.clock,
                               progress=self.progress(graph), spend_guard=self.spend_guard).make(
             graph.doc_id, graph.graph_version, graph, node_id, dry_run=dry_run,
             allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir), on_event=on_event,
-            preload_next=preload_next, owner=owner)
+            preload_next=preload_next, owner=owner, cache_only=cache_only)
 
     def quiz(self, graph):
         model = self.model('quiz_gen') if self.mode == 'gemini' else None
@@ -199,7 +200,7 @@ class PhaseBRuntime:
 
     def assistant(self, graph):
         def get_lecture(concept, **kwargs):
-            return self.lecture(graph, concept, owner=kwargs.get('owner'))
+            return self.lecture(graph, concept, owner=kwargs.get('owner'), cache_only=kwargs.get('cache_only', False))
 
         def make_quiz(scope, n=None, level=None, *, owner, **kwargs):
             return self.quiz(graph).make_quiz(graph.doc_id, None, owner, n=n, scope=scope,
