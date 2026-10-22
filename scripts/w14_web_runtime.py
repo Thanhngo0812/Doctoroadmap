@@ -58,6 +58,7 @@ class WorkerControl:
         self.pause_stages: set[str] = set()
         self.mode: str | None = None
         self.thread: Thread | None = None
+        self.stopping = Event()
         self.runs = 0
         self.last_exception: str | None = None
         self.last_job_status: str | None = None
@@ -70,6 +71,7 @@ class WorkerControl:
         with self.lock:
             if self.thread is not None and self.thread.is_alive():
                 raise HTTPException(409, "test worker is already running")
+            self.stopping.clear()
             self.mode = mode
             self.pause_stages = set(pause_stages)
             self.paused_stage = None
@@ -127,13 +129,14 @@ class WorkerControl:
 
     def stop(self) -> None:
         with self.lock:
+            self.stopping.set()
             self.pause_stages.clear()
             gate = self.release_gate
             thread = self.thread
         if gate is not None:
             gate.set()
         if thread is not None:
-            thread.join(timeout=15)
+            thread.join(timeout=260)
             if thread.is_alive():
                 raise RuntimeError("W-14 fake worker did not stop")
 
@@ -143,6 +146,9 @@ class ControlledManifestRunner:
         self.runner, self.control = runner, control
 
     def execute(self, file_path, doc_id, *, language="vi", progress=None, cancelled=None, dry_run=False):
+        def stop_requested():
+            return self.control.stopping.is_set() or (cancelled is not None and cancelled())
+
         def report(step, data):
             if progress:
                 progress(step, data)
@@ -150,7 +156,7 @@ class ControlledManifestRunner:
                 self.control.pause(step)
 
         return self.runner.execute(file_path, doc_id, language=language, progress=report,
-                                   cancelled=cancelled, dry_run=dry_run)
+                                   cancelled=stop_requested, dry_run=dry_run)
 
 
 class ControlledScriptedRunner:
@@ -164,6 +170,9 @@ class ControlledScriptedRunner:
         self.control = control
 
     def execute(self, file_path, doc_id, *, language="vi", progress=None, cancelled=None, dry_run=False):
+        def stop_requested():
+            return self.control.stopping.is_set() or (cancelled is not None and cancelled())
+
         def report(step, data):
             if progress:
                 progress(step, data)
@@ -171,7 +180,7 @@ class ControlledScriptedRunner:
                 self.control.pause(step)
 
         return self.runner.execute(file_path, doc_id, language=language, progress=report,
-                                   cancelled=cancelled, dry_run=dry_run)
+                                   cancelled=stop_requested, dry_run=dry_run)
 
 
 def main() -> int:
@@ -196,6 +205,7 @@ def main() -> int:
     fixture_names = _write_browser_fixtures(output / "fixtures")
     summary = {
         "baseUrl": BASE_URL,
+        "databaseName": database_name,
         "database": "uuid-disposable-postgresql",
         "migrationHead": None,
         "media": "MemoryMediaStore",
@@ -295,6 +305,16 @@ def main() -> int:
             require_control(x_w14_control)
             return control.state()
 
+        # The SPA fallback is registered by create_app before these harness-only routes.
+        # Put the authenticated, random-token-gated controls ahead of that fallback so
+        # they resolve as JSON instead of returning index.html.
+        test_routes = [route for route in app.router.routes
+                       if getattr(route, "path", "").startswith("/__test__/worker/")]
+        app.router.routes[:] = [route for route in app.router.routes if route not in test_routes]
+        spa_index = next((index for index, route in enumerate(app.router.routes)
+                          if getattr(route, "path", None) == "/{path:path}"), len(app.router.routes))
+        app.router.routes[spa_index:spa_index] = test_routes
+
         summary["migrationHead"] = _migration_head(engine)
         if summary["migrationHead"] != "w14_0006":
             raise RuntimeError(f"Unexpected W-14 migration head: {summary['migrationHead']}")
@@ -327,38 +347,54 @@ def main() -> int:
             summary["localIntegrationEvidence"] = True
         return result.returncode
     finally:
+        original_error = sys.exc_info()[1]
+        cleanup_errors: list[str] = []
+
+        def attempt_cleanup(action) -> None:
+            try:
+                action()
+            except Exception as exc:
+                cleanup_errors.append(type(exc).__name__)
+
         if control is not None:
-            control.stop()
+            attempt_cleanup(control.stop)
         if server is not None:
             server.should_exit = True
         if server_thread is not None:
             server_thread.join(20)
             if server_thread.is_alive():
-                raise RuntimeError("W-14 browser server did not stop")
+                cleanup_errors.append("ServerShutdownTimeout")
         if listener is not None:
-            listener.close()
+            attempt_cleanup(listener.close)
         for service in (builds if "builds" in locals() else None,
                         courses if "courses" in locals() else None,
                         accounts if "accounts" in locals() else None):
             close = getattr(service, "close", None)
             if close:
-                close()
+                attempt_cleanup(close)
         if phase_b is not None:
-            phase_b.close()
+            attempt_cleanup(phase_b.close)
         if engine is not None:
-            engine.dispose()
+            attempt_cleanup(engine.dispose)
         if audit_engine is not None:
-            audit_engine.dispose()
+            attempt_cleanup(audit_engine.dispose)
         if artifact_temp is not None:
-            artifact_temp.cleanup()
+            attempt_cleanup(artifact_temp.cleanup)
         if created:
             if not re.fullmatch(r"wayfinder_w14_react_[0-9a-f]{32}", database_name):
-                raise RuntimeError("Refusing to drop an unexpected W-14 test database")
-            with admin_engine.connect() as connection:
-                connection.execute(text(f'DROP DATABASE "{database_name}" WITH (FORCE)'))
-            summary["temporaryDatabaseRemoved"] = True
-        admin_engine.dispose()
-        _write_summary(output, summary)
+                cleanup_errors.append("UnexpectedDatabaseName")
+            else:
+                def drop_database() -> None:
+                    with admin_engine.connect() as connection:
+                        connection.execute(text(f'DROP DATABASE "{database_name}" WITH (FORCE)'))
+                    summary["temporaryDatabaseRemoved"] = True
+                attempt_cleanup(drop_database)
+        attempt_cleanup(admin_engine.dispose)
+        if cleanup_errors:
+            summary["cleanupErrorTypes"] = cleanup_errors
+        attempt_cleanup(lambda: _write_summary(output, summary))
+        if cleanup_errors and original_error is None:
+            raise RuntimeError(f"W-14 runtime cleanup failed: {', '.join(cleanup_errors)}")
 
 
 def _forbid_live_providers() -> None:

@@ -159,7 +159,7 @@ async function main() {
     const confirmation = page.getByLabel('Nhập lại mật khẩu', { exact: true });
     if (await confirmation.count()) await confirmation.fill(password);
     await page.getByRole('button', { name: 'Tạo tài khoản', exact: true }).click();
-    await page.getByRole('heading', { name: 'Khoá học của tôi' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Khoá học của tôi' }).waitFor();
     const meResponse = await page.request.get(`${base}/api/v1/me`);
     assert.equal(meResponse.status(), 200);
     const me = await meResponse.json();
@@ -175,13 +175,14 @@ async function main() {
     assert.equal(successDigest, reuseDigest, 'reuse fixtures must be byte-identical');
     stage = 'upload.page';
     await page.goto(`${base}/tai-len`, { waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Tải tài liệu lên' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Tải tài liệu lên' }).waitFor();
     const fontLoaded = await page.evaluate(async () => {
       await document.fonts.ready;
       return [...document.fonts].some(font => font.family === 'Be Vietnam Pro' && font.status === 'loaded');
     });
     assert.equal(fontLoaded, true, 'the interface must load its declared Be Vietnam Pro font');
     audit.fontLoaded = fontLoaded;
+    await assertFilePickerKeyboardFocus(page, audit);
     await setViewportThemeScreens(page, audit, 'upload', [390, 768, 1280]);
     await page.setViewportSize({ width: 1280, height: 900 });
     await setTheme(page, 'light');
@@ -193,7 +194,8 @@ async function main() {
     assert.equal(awaiting.status, 'awaiting_confirmation');
     assert.equal((await workerState()).runs, 0, 'worker must not run before explicit confirmation');
     const persistedBeforeConfirm = await apiJson(`/api/v1/courses/${success.courseId}`);
-    assert.match(JSON.stringify(persistedBeforeConfirm), /W14 - xác suất học tập/);
+    assert.equal(persistedBeforeConfirm.title, 'w14-success',
+      'custom course title is not persisted until the explicit confirmation action');
     const quotaResponse = await page.request.get(`${base}/api/v1/me/usage`);
     assert.equal(quotaResponse.status(), 200);
     const quotaPayload = await quotaResponse.json();
@@ -201,9 +203,10 @@ async function main() {
     assert.doesNotMatch(await page.locator('body').innerText(), /dự toán|chi phí|\bUSD\b|ước tính/i);
     await page.getByLabel('Tên khoá học').fill('Đại số tuyến tính — tên do tôi chọn');
     audit.screens.push(await screenshot(page, 'awaiting-confirmation-1280-light.png'));
-    await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
-    const confirmResponse = await page.waitForResponse(response => response.request().method() === 'POST'
+    const confirmResponsePromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/uploads/${success.uploadId}/build`);
+    await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
+    const confirmResponse = await confirmResponsePromise;
     assert.equal(confirmResponse.status(), 200);
     const queued = await confirmResponse.json();
     assert.equal(queued.status, 'queued');
@@ -212,23 +215,27 @@ async function main() {
     audit.assertions.push('upload stayed awaiting_confirmation without worker activity; confirmation persisted the user-edited title and queued work');
 
     await control('start', { mode: 'success', pause_stages: ['doc_reading', 'concepts'] });
-    await waitFor(async () => (await workerState()).pausedStage === 'doc_reading', 'worker pause at reading');
+    await waitFor(async () => {
+      const worker = await workerState();
+      assert.equal(worker.lastException, null, `fake worker stopped with ${JSON.stringify(worker)}`);
+      return worker.pausedStage === 'doc_reading';
+    }, 'worker pause at reading', 240000);
     await waitForBuild(page, success.buildId, success.courseId, 'reading');
     stage = 'build.reading';
     await page.reload({ waitUntil: 'networkidle' });
-    await page.getByText('Đang đọc và kiểm tra tài liệu').waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Đang đọc và kiểm tra tài liệu' }).waitFor();
     audit.screens.push(await screenshot(page, 'reading-reloaded-390-dark.png', { width: 390, theme: 'dark' }));
     await control('advance');
-    await waitFor(async () => (await workerState()).pausedStage === 'concepts', 'worker pause at concepts');
+    await waitFor(async () => (await workerState()).pausedStage === 'concepts', 'worker pause at concepts', 240000);
     const running = await waitForBuild(page, success.buildId, success.courseId, 'running');
     assert.equal(running.step, 'concepts');
     stage = 'build.running';
     await page.reload({ waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Đang xác định bài học' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Đang xác định bài học' }).waitFor();
     audit.screens.push(await screenshot(page, 'running-768-light.png', { width: 768, theme: 'light' }));
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.reload({ waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Đang xác định bài học' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Đang xác định bài học' }).waitFor();
     await page.locator('.task-wait img[src$="wayfinder-wait.png"]').waitFor();
     assert.equal(await page.locator('.task-wait picture').count(), 0,
       'reduced motion must select the static waiting illustration');
@@ -242,7 +249,7 @@ async function main() {
     assert.equal(succeeded.course_id, success.courseId);
     stage = 'build.succeeded';
     await page.reload({ waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Lộ trình đã sẵn sàng' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Lộ trình đã sẵn sàng' }).waitFor();
     assert.equal(await page.getByRole('link', { name: 'Mở khoá học', exact: true }).count(), 1);
     audit.screens.push(await screenshot(page, 'success-1280-dark.png', { width: 1280, theme: 'dark' }));
     audit.assertions.push('real BuildWorker persisted reading and running checkpoints across reload, then completed the manifest-backed build');
@@ -253,15 +260,16 @@ async function main() {
     assert.equal(reuse.buildId, success.buildId, 'same source bytes and pipeline reuse the succeeded build');
     assert.notEqual(reuse.courseId, success.courseId, 'reuse still creates a separate course');
     assert.equal((await workerState()).runs, 1, 'reuse upload must not start a duplicate worker before confirming its course title');
-    await page.getByRole('heading', { name: 'Xác nhận dựng lộ trình' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Xác nhận dựng lộ trình' }).waitFor();
     await page.getByLabel('Tên khoá học').fill('Khoá học dùng lại, tiêu đề đã xác nhận');
     await page.setViewportSize({ width: 390, height: 900 });
     await setTheme(page, 'light');
     await page.screenshot({ path: path.join(output, 'reuse-awaiting-confirmation-390-light.png'), fullPage: true });
     audit.screens.push({ filename: 'reuse-awaiting-confirmation-390-light.png', width: 390, theme: 'light' });
-    await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
-    const reuseConfirm = await page.waitForResponse(response => response.request().method() === 'POST'
+    const reuseConfirmPromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/uploads/${reuse.uploadId}/build`);
+    await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
+    const reuseConfirm = await reuseConfirmPromise;
     assert.equal(reuseConfirm.status(), 200);
     assert.equal((await reuseConfirm.json()).status, 'succeeded');
     const reusedCourse = await apiJson(`/api/v1/courses/${reuse.courseId}`);
@@ -282,7 +290,7 @@ async function main() {
     audit.assertions.push('a second upload of identical bytes reused the succeeded build while keeping a distinct course and title context');
     audit.builds.push({ buildId: reuse.buildId, courseId: reuse.courseId, status: 'succeeded', reused: true });
     await page.goto(`${base}/khoa-hoc`, { waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Khoá học của tôi' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Khoá học của tôi' }).waitFor();
     const firstCard = page.locator('.course-card[aria-label="Đại số tuyến tính — tên do tôi chọn"]');
     const secondCard = page.locator('.course-card[aria-label="Khoá học dùng lại, tiêu đề đã xác nhận"]');
     assert.equal(await firstCard.count(), 1);
@@ -298,16 +306,17 @@ async function main() {
     await control('start', { mode: 'success', pause_stages: ['doc_reading'] });
     await waitFor(async () => (await workerState()).pausedStage === 'doc_reading', 'cancel worker pause');
     await waitForBuild(page, cancel.buildId, cancel.courseId, 'reading');
-    await page.getByRole('button', { name: 'Huỷ dựng', exact: true }).click();
-    const cancelledAction = await page.waitForResponse(response => response.request().method() === 'POST'
+    const cancelledActionPromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/builds/${cancel.buildId}/cancel`);
+    await page.getByRole('button', { name: 'Huỷ dựng', exact: true }).click();
+    const cancelledAction = await cancelledActionPromise;
     assert.equal(cancelledAction.status(), 200);
     await control('advance');
     await waitFor(async () => !(await workerState()).running, 'cancel worker completion');
     await waitForBuild(page, cancel.buildId, cancel.courseId, 'cancelled');
     stage = 'build.cancelled';
     await page.reload({ waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Đã huỷ' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Đã huỷ' }).waitFor();
     audit.assertions.push('cancellation during a paused reading step stopped the real worker at its next boundary and persisted cancelled');
     audit.builds.push({ buildId: cancel.buildId, courseId: cancel.courseId, status: 'cancelled' });
 
@@ -323,9 +332,10 @@ async function main() {
     stage = 'build.retryable';
     await page.reload({ waitUntil: 'networkidle' });
     await page.getByRole('button', { name: 'Thử lại', exact: true }).waitFor();
-    await page.getByRole('button', { name: 'Thử lại', exact: true }).click();
-    const retried = await page.waitForResponse(response => response.request().method() === 'POST'
+    const retriedPromise = page.waitForResponse(response => response.request().method() === 'POST'
       && new URL(response.url()).pathname === `/api/v1/builds/${retry.buildId}/retry`);
+    await page.getByRole('button', { name: 'Thử lại', exact: true }).click();
+    const retried = await retriedPromise;
     assert.equal(retried.status(), 200);
     assert.equal((await retried.json()).status, 'queued');
     await control('start', { mode: 'success', pause_stages: [] });
@@ -333,7 +343,7 @@ async function main() {
     await waitForBuild(page, retry.buildId, retry.courseId, 'succeeded');
     stage = 'build.retried';
     await page.reload({ waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Lộ trình đã sẵn sàng' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Lộ trình đã sẵn sàng' }).waitFor();
     audit.assertions.push('retryable synthetic failure exposed Retry, queued a new attempt, and succeeded through the real worker');
     audit.builds.push({ buildId: retry.buildId, courseId: retry.courseId, status: 'succeeded-after-retry' });
 
@@ -347,7 +357,7 @@ async function main() {
     const rejected = await waitForBuild(page, reject.buildId, reject.courseId, 'rejected');
     assert.equal(rejected.error?.code, 'ban_quet');
     await page.reload({ waitUntil: 'networkidle' });
-    await page.getByRole('heading', { name: 'Không thể đọc tài liệu' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Không thể đọc tài liệu' }).waitFor();
     await setViewportThemeScreens(page, audit, 'rejected', [390, 768, 1280]);
     audit.assertions.push('the non-retryable synthetic scan result was shown as rejected with a safe user-facing error');
     audit.builds.push({ buildId: reject.buildId, courseId: reject.courseId, status: 'rejected', errorCode: 'ban_quet' });
@@ -391,6 +401,8 @@ async function main() {
     assert.deepEqual(audit.failedRequests, []);
     assert.deepEqual(audit.fontFailures, []);
     assert.deepEqual(audit.unexpectedExternalRequests, []);
+    assert.equal(audit.designInspection.exitCode, 0,
+      `taste inspection must finish without findings; see ${audit.designInspection.log}`);
     audit.rawConsoleErrorCount = audit.rawConsoleErrors.length;
     audit.localIntegrationEvidence = true;
     audit.assertions.push('browser made no unexpected external requests; all API calls used same-origin FastAPI');
@@ -429,13 +441,13 @@ async function uploadThroughUi(page, file, title = null) {
   assert.equal(uploaded.build.course_id, courseId);
   assertPrivateBuildDto(uploaded, 'upload response');
   if (uploaded.build.status === 'awaiting_confirmation') {
-    await page.getByRole('heading', { name: 'Xác nhận dựng lộ trình' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Xác nhận dựng lộ trình' }).waitFor();
     if (title !== null) await page.getByLabel('Tên khoá học').fill(title);
   } else if (uploaded.confirmed_at == null) {
-    await page.getByRole('heading', { name: 'Xác nhận dựng lộ trình' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Xác nhận dựng lộ trình' }).waitFor();
     if (title !== null) await page.getByLabel('Tên khoá học').fill(title);
   } else {
-    await page.getByRole('heading', { name: 'Lộ trình đã sẵn sàng' }).waitFor();
+    await page.getByRole('heading', { exact: true, name: 'Lộ trình đã sẵn sàng' }).waitFor();
   }
   return { uploadId, buildId, courseId, status: uploaded.build.status };
 }
@@ -444,11 +456,12 @@ async function confirmThroughUi(page, item, title) {
   if (!page.url().includes(`/ban-dung/${item.buildId}`)) {
     await page.goto(`${base}/ban-dung/${item.buildId}?course_id=${item.courseId}&upload_id=${item.uploadId}`, { waitUntil: 'networkidle' });
   }
-  await page.getByRole('heading', { name: 'Xác nhận dựng lộ trình' }).waitFor();
+  await page.getByRole('heading', { exact: true, name: 'Xác nhận dựng lộ trình' }).waitFor();
   await page.getByLabel('Tên khoá học').fill(title);
-  await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
-  const response = await page.waitForResponse(candidate => candidate.request().method() === 'POST'
+  const responsePromise = page.waitForResponse(candidate => candidate.request().method() === 'POST'
     && new URL(candidate.url()).pathname === `/api/v1/uploads/${item.uploadId}/build`);
+  await page.getByRole('button', { name: 'Dựng lộ trình', exact: true }).click();
+  const response = await responsePromise;
   assert.equal(response.status(), 200);
   assert.equal((await response.json()).status, 'queued');
 }
@@ -465,8 +478,8 @@ async function waitForBuild(page, buildId, courseId, status) {
   return last;
 }
 
-async function waitFor(predicate, label) {
-  const deadline = Date.now() + timeoutMs;
+async function waitFor(predicate, label, waitMs = timeoutMs) {
+  const deadline = Date.now() + waitMs;
   while (Date.now() < deadline) {
     if (await predicate()) return;
     await new Promise(resolve => setTimeout(resolve, 100));
@@ -522,6 +535,7 @@ async function runDesignInspection(page, audit) {
   const inspectScript = path.join(toolsRoot, '.agents/skills/design-taste-frontend/scripts/inspect.mjs');
   const snapshotPath = path.join(root, '.tmp/w14-progress-inspect.html');
   const inspectionOutput = path.join(output, 'taste-inspect');
+  const inspectionReportPath = path.join(inspectionOutput, 'report.json');
   const logPath = path.join(output, 'taste-inspector.log');
   await fs.mkdir(path.dirname(snapshotPath), { recursive: true });
   await fs.mkdir(path.join(root, '.tmp/w14-taste-profiles'), { recursive: true });
@@ -548,6 +562,7 @@ async function runDesignInspection(page, audit) {
     env: { ...process.env, TASTE_SKILL_TMP: path.join(root, '.tmp/w14-taste-profiles') },
   });
   await fs.writeFile(logPath, `${result.stdout || ''}${result.stderr || ''}${result.error ? `\n${result.error.name}: ${result.error.message}` : ''}`, 'utf8');
+  const inspectionReport = JSON.parse(await fs.readFile(inspectionReportPath, 'utf8'));
   audit.designInspection = {
     source: 'static DOM and built CSS snapshot from the live authenticated RUNNING page; design-only, not HTTP acceptance evidence',
     acceptance: false,
@@ -555,9 +570,11 @@ async function runDesignInspection(page, audit) {
     output: path.relative(root, inspectionOutput),
     exitCode: result.status,
     signal: result.signal,
+    findings: (inspectionReport.findings || []).map(({ level, id, width, message }) => ({ level, id, width, message })),
     log: path.relative(root, logPath),
   };
-  assert.equal(result.status, 0, `design inspector exited ${result.status ?? result.error?.name ?? 'unknown'}; see ${path.relative(root, logPath)}`);
+  assert.ok(result.status === 0 || result.status === 1,
+    `design inspector did not produce a review report; see ${path.relative(root, logPath)}`);
   audit.assertions.push('taste inspector reviewed an authenticated live RUNNING page snapshot at 1280, 768, and 390px (design-only)');
 }
 
@@ -592,10 +609,28 @@ function assertPrivateBuildDto(value, label) {
 
 async function inspectTargetSizes(page) {
   return page.locator('.courses-header a, .courses-header button, .account-menu summary, '
-    + '.builds-page a, .builds-page button, .builds-page input[type="file"], .builds-rights')
+    + '.builds-page a, .builds-page button, .builds-file-choice, .builds-rights')
     .evaluateAll(elements => elements.filter(element => element.getClientRects().length)
       .map(element => ({ name: element.getAttribute('aria-label') || element.textContent.trim(),
         width: element.getBoundingClientRect().width, height: element.getBoundingClientRect().height })));
+}
+
+async function assertFilePickerKeyboardFocus(page, audit) {
+  const input = page.locator('#build-file');
+  await page.evaluate(() => document.activeElement?.blur());
+  let focused = false;
+  for (let attempt = 0; attempt < 24; attempt += 1) {
+    await page.keyboard.press('Tab');
+    if (await input.evaluate(element => document.activeElement === element)) {
+      focused = true;
+      break;
+    }
+  }
+  assert.equal(focused, true, 'the visually hidden native file input remains keyboard reachable');
+  const outlineWidth = await page.locator('.builds-file-button').evaluate(element =>
+    Number.parseFloat(getComputedStyle(element).outlineWidth));
+  assert.ok(outlineWidth >= 2, 'the custom file-picker target shows a visible focus indicator');
+  audit.assertions.push('file selection uses a visible 44px+ label target and the native input has a keyboard-visible focus indicator');
 }
 
 async function writeJson(filename, value) {
