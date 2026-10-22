@@ -1,0 +1,135 @@
+{
+  "sourceHead": "c1df32a80f37a3e3788562f44ad6ddcf5daa48c9",
+  "workerSourceNeverModified": true,
+  "scratchSourceRestored": true,
+  "command": "node scripts/verify_prototype_flows.cjs",
+  "workingDirectory": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-w24-readonly-review-20261021",
+  "results": [
+    {
+      "label": "baseline",
+      "nativeExitCode": 0,
+      "log": "tmp\\coord-w24-review\\baseline.log",
+      "audit": {
+        "timestamp": "2026-10-21T09:47:04.843Z",
+        "totalFlows": 4,
+        "passedCount": 4,
+        "allPassed": true,
+        "flows": [
+          {
+            "flow": "Flow 1: Register -> Courses -> Lecture",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow1_auth.png",
+            "notes": "Strict two-way open/close accordion toggle verified."
+          },
+          {
+            "flow": "Flow 2: Share -> Join Course",
+            "stepsChecked": 4,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow2_learning.png",
+            "notes": "Clipboard content strictly verified: \"https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026\""
+          },
+          {
+            "flow": "Flow 3: Upload -> Config -> 4-Step Build",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow3_upload.png",
+            "notes": "GIF frozen state over time proven: buffer at t=0 matches t=350ms with 0 byte delta."
+          },
+          {
+            "flow": "Flow 4: Quiz -> Submit -> Result & Citation",
+            "stepsChecked": 6,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow4_quiz.png",
+            "notes": "Citation content proven: Harrison 21st Ed, Trang 1892, with verified view interaction."
+          }
+        ]
+      },
+      "mutationChangesSource": false
+    },
+    {
+      "label": "clipboard-write-removed",
+      "nativeExitCode": 0,
+      "log": "tmp\\coord-w24-review\\clipboard-write-removed.log",
+      "audit": {
+        "timestamp": "2026-10-21T09:47:12.152Z",
+        "totalFlows": 4,
+        "passedCount": 4,
+        "allPassed": true,
+        "flows": [
+          {
+            "flow": "Flow 1: Register -> Courses -> Lecture",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow1_auth.png",
+            "notes": "Strict two-way open/close accordion toggle verified."
+          },
+          {
+            "flow": "Flow 2: Share -> Join Course",
+            "stepsChecked": 4,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow2_learning.png",
+            "notes": "Clipboard content strictly verified: \"https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026\""
+          },
+          {
+            "flow": "Flow 3: Upload -> Config -> 4-Step Build",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow3_upload.png",
+            "notes": "GIF frozen state over time proven: buffer at t=0 matches t=350ms with 0 byte delta."
+          },
+          {
+            "flow": "Flow 4: Quiz -> Submit -> Result & Citation",
+            "stepsChecked": 6,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow4_quiz.png",
+            "notes": "Citation content proven: Harrison 21st Ed, Trang 1892, with verified view interaction."
+          }
+        ]
+      },
+      "mutationChangesSource": true
+    },
+    {
+      "label": "citation-scroll-removed",
+      "nativeExitCode": 0,
+      "log": "tmp\\coord-w24-review\\citation-scroll-removed.log",
+      "audit": {
+        "timestamp": "2026-10-21T09:47:18.921Z",
+        "totalFlows": 4,
+        "passedCount": 4,
+        "allPassed": true,
+        "flows": [
+          {
+            "flow": "Flow 1: Register -> Courses -> Lecture",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow1_auth.png",
+            "notes": "Strict two-way open/close accordion toggle verified."
+          },
+          {
+            "flow": "Flow 2: Share -> Join Course",
+            "stepsChecked": 4,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow2_learning.png",
+            "notes": "Clipboard content strictly verified: \"https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026\""
+          },
+          {
+            "flow": "Flow 3: Upload -> Config -> 4-Step Build",
+            "stepsChecked": 5,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow3_upload.png",
+            "notes": "GIF frozen state over time proven: buffer at t=0 matches t=350ms with 0 byte delta."
+          },
+          {
+            "flow": "Flow 4: Quiz -> Submit -> Result & Citation",
+            "stepsChecked": 6,
+            "passed": true,
+            "evidence": "report/w24-evidence/prototype_flow4_quiz.png",
+            "notes": "Citation content proven: Harrison 21st Ed, Trang 1892, with verified view interaction."
+          }
+        ]
+      },
+      "mutationChangesSource": true
+    }
+  ]
+}

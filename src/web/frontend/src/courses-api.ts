@@ -14,8 +14,19 @@ export type CourseModule = {
   module_id: string; index: number; title: string;
   description: string | Array<{ text: string; node_ids?: string[]; module_ids?: string[] }>;
   concepts: Array<{ node_id: string; name: string }>;
+  progress?: ProgressSummary;
 };
-export type Roadmap = { course_id: string; doc_id: string; graph_version: number; modules: CourseModule[] };
+export type ProgressSummary = { learned: number; total: number };
+export type ProgressNode = { state: 'learned' | 'not_learned'; source: 'learner' | 'quiz' | null; updated_at: string | null };
+export type CourseProgress = {
+  course_id: string; contract_version: 'progress-1'; doc_id: string;
+  nodes: Record<string, ProgressNode>;
+  modules: Array<{ module_id: string; learned: number; total: number }>;
+};
+export type Roadmap = {
+  course_id: string; doc_id: string; graph_version: number;
+  progress?: ProgressSummary; modules: CourseModule[];
+};
 
 export async function listCourses(signal: AbortSignal): Promise<CourseList> {
   const data = await apiJson<CourseList>('/api/v1/courses', { signal });
@@ -24,9 +35,15 @@ export async function listCourses(signal: AbortSignal): Promise<CourseList> {
 }
 export const getCourse = (id: string, signal: AbortSignal) => apiJson<Course>(`/api/v1/courses/${encodeURIComponent(id)}`, { signal });
 export const getRoadmap = (id: string, signal: AbortSignal) => apiJson<Roadmap>(`/api/v1/courses/${encodeURIComponent(id)}/roadmap`, { signal });
+export const getProgress = (id: string, signal: AbortSignal) => apiJson<CourseProgress>(`/api/v1/courses/${encodeURIComponent(id)}/progress`, { signal });
+export const setProgress = (id: string, nodeId: string, learned: boolean, signal: AbortSignal) => apiJson<CourseProgress>(
+  `/api/v1/courses/${encodeURIComponent(id)}/progress/${encodeURIComponent(nodeId)}`,
+  { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ learned }), signal },
+);
 export const joinSample = (id: string, signal: AbortSignal) => apiJson<Course>(`/api/v1/courses/${encodeURIComponent(id)}/join-sample`, {
   method: 'POST', headers: { 'Content-Type': 'application/json' }, body: '{}', signal,
 });
 export const coursePath = (id: string) => `/khoa-hoc/${encodeURIComponent(id)}`;
+export const modulePath = (id: string, moduleId: string) => `${coursePath(id)}/module/${encodeURIComponent(moduleId)}`;
 export const resumePath = (course: Course) => course.resume
   ? `${coursePath(course.course_id)}/module/${encodeURIComponent(course.resume.module_id)}` : coursePath(course.course_id);

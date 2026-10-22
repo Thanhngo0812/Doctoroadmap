@@ -1,0 +1,13 @@
+{
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "-X",
+    "utf8",
+    "-c",
+    "import importlib.util; from pathlib import Path; p=Path('scripts/w07_ui_mutations.py'); s=importlib.util.spec_from_file_location('checks',p); m=importlib.util.module_from_spec(s); s.loader.exec_module(m); m.OUTPUT=Path('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-review-20261021/evidence/w07-ui-mutations'); m.OUTPUT.mkdir(exist_ok=True); m.main()"
+  ],
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w07-final",
+  "commit": "2a14723611a6de9a4fd1bd18d1e2504231462861",
+  "native_exit_code": 0,
+  "elapsed_seconds": 11.56
+}

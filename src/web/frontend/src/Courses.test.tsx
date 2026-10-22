@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+﻿import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { act, cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, useLocation } from 'react-router-dom';
@@ -27,6 +27,7 @@ it('shows real-shaped owned joined and samples without inventing sample progress
   vi.stubGlobal('fetch', mockFetch({ owned: [owned], joined: [joined], samples: [{ ...sample, course_id: 'sample-2', title: 'Nhập môn học máy' }] }));
   renderPage();
   const section = await screen.findByRole('region', { name: 'Được chia sẻ với tôi' });
+  expect(screen.getByLabelText('Tài khoản của Nguyễn An')).toBeInTheDocument();
   expect(within(section).getByText('Xong 0/223 bài học')).toBeInTheDocument();
   expect(within(section).getByRole('link', { name: 'Học tiếp' })).toHaveAttribute('href', '/khoa-hoc/sample-1/module/module-9');
   expect(screen.getByText('Xong 7/20 bài học')).toBeInTheDocument();
@@ -103,7 +104,8 @@ it('redirects guests and preserves their course path', async () => {
 
 it('loads a membership-gated course entry and selected resume module from actual route shapes', async () => {
   vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => String(input).endsWith('/me') ? json({ account, csrf_token: 'w06-csrf' })
-    : String(input).endsWith('/roadmap') ? json({ course_id: sample.course_id, doc_id: 'doc-1', graph_version: 8, modules: [{ module_id: 'module-9', index: 8, title: 'Ánh xạ tuyến tính', description: [{ text: 'Tìm hiểu các phép biến đổi.' }], concepts: [] }] }) : json(joined)));
+    : String(input).endsWith('/roadmap') ? json({ course_id: sample.course_id, doc_id: 'doc-1', graph_version: 8, progress: { learned: 0, total: 0 }, modules: [{ module_id: 'module-9', index: 8, title: 'Ánh xạ tuyến tính', description: [{ text: 'Tìm hiểu các phép biến đổi.' }], progress: { learned: 0, total: 0 }, concepts: [] }] })
+      : String(input).endsWith('/progress') ? json({ course_id: sample.course_id, contract_version: 'progress-1', doc_id: 'doc-1', nodes: {}, modules: [{ module_id: 'module-9', learned: 0, total: 0 }] }) : json(joined)));
   renderPage('/khoa-hoc/sample-1/module/module-9');
   expect(await screen.findByRole('heading', { name: 'Ánh xạ tuyến tính' })).toBeInTheDocument();
   expect(screen.getByText('Tìm hiểu các phép biến đổi.')).toBeInTheDocument();

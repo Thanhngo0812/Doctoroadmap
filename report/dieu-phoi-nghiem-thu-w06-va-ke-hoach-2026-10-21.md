@@ -1,5 +1,7 @@
 # Điều phối — nghiệm thu W-06 và kế hoạch tiếp theo
 
+**Kế hoạch mới hơn:** [soát W-07/W-14/W-24 và đợt tiếp](dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md): W-07 đã ghép `f20d198`, backend W-14 cần W-25, thiết kế tiếp W-24. Kết quả W-06 bên dưới giữ nguyên phạm vi lịch sử.
+
 **Ngày:** 2026-10-21 · **Người soát:** Codex · **Trạng thái:** **đạt nghiệm thu W-06**, đã ghép **`dc41ee8`** và đẩy GitHub; mốc soát/cổng cuối `8b6e500`.
 
 ## 1. Mốc bàn giao và phạm vi
@@ -115,7 +117,7 @@ W-07 và W-14 có thể chuẩn bị song song trong worktree riêng; W-14 backe
 
 **Điểm kiểm trước W-07:** đã soát độc lập và approve phạm vi SA-47 memory/JSON: learner-write và quiz read–check–write cùng `store.atomic()`, hai instance dùng chung một store object, hai thứ tự và race đều kiểm trạng thái cuối; JSON mở lại và dữ liệu owner/doc/node khác được kiểm. Không suy rộng bảo đảm JSON sang nhiều process/store object. Đủ mở W-07 theo hợp đồng hiện có; W-07 vẫn phải kiểm PostgreSQL qua các connection/runtime độc lập: A đánh dấu không đổi B, learner bỏ dấu không bị quiz đúng ghi đè, node ngoài graph trả 404. Đây chưa phải nghiệm thu chức năng W-07 hoặc toàn SA-34; cổng W-06 xanh không tự đóng SA-46/49/50/51.
 
-**Migration tiếp theo:** W-07 không thêm bảng thì không tạo migration rỗng. W-11 và W-14 mỗi vé một migration, nhận head main mới trước khi ghép; điều phối chốt tuyến theo thứ tự tích hợp, không cho hai nhánh cùng giả định làm successor của `w06_0005`. W-14 có thể làm service/worker/test trước phần ghép schema nếu W-11 đang chiếm tuyến.
+**Migration tiếp theo — đã chốt 2026-10-21:** W-07 không thêm bảng thì không tạo migration rỗng. Giữ migration W-14 đã có, ghép W-14 trước rồi W-11 nối sau: `w06_0005 → w14_0006 → w11_0007`. W-11 tiếp tục service/API/UI trong lúc chờ, nhận migration W-14 rồi tạo `w11_0007` với `down_revision='w14_0006'`; trước cổng cuối nhận main đã ghép mốc W-14 được soát đạt. Không tạo hai head hoặc sửa migration đã ghép. Có thể soát mốc backend/schema W-14 hoàn chỉnh trước React, chưa đóng vé W-14 đầu-cuối. Chủ dự án yêu cầu chờ thông báo tiếp mới bắt đầu nghiệm thu; quyết định tuyến không thay điều kiện soát đạt/cổng xanh trước ghép.
 
 **Các mốc sau:** W-07 → W-08/W-09/W-10 theo từng phụ thuộc B2; W-11 → W-12; W-14 đạt mới mở W-15 chạy dựng thật, dry-run và duyệt tiền mới. W-23 chờ W-22 và các màn học; W-21 vẫn là đợt triển khai/sao lưu/end-to-end cuối. Giới hạn quiz cloze offline từng ghi 1/5 ở mẫu phục hồi vẫn cần xử lý trước nghiệm thu quiz, không che bằng cổng W-06.
 

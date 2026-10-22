@@ -4,6 +4,8 @@
 thương hiệu ở `design/`.
 **Ai:** người thiết kế của nhóm · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, chưa đủ nghiệm thu; bổ sung/sửa theo W-24.
 
+**Soát tiếp 2026-10-21:** W-24 `c1df32a` chưa đạt (runtime/token/guard và bằng chứng Cloud/checklist); W-22 tiếp tục mở, chưa đủ đầu vào đóng W-23. Giữ phần local từng đạt trên main. Xem [phán xét mới](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md).
+
 **Tiếp nhận 2026-10-19:** điều phối chạy lại 20 test và 17 cặp tương phản đạt, nhưng tái hiện lỗi nút tối, vùng bấm mobile, GIF khi giảm chuyển động;
 thử đổi sai CSS mà 20 test vẫn xanh. Bằng chứng Figma/đủ trang và bốn prototype chưa xác minh được. Xem
 [báo cáo tiếp nhận](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md) và [vé sửa W-24](W-24-bo-sung-va-sua-ban-giao-w22.md).

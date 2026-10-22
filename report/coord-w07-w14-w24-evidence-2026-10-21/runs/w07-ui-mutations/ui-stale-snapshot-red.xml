@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="1" errors="0" time="0.4449622">
+    <testsuite name="src/Roadmap.test.tsx" timestamp="2026-10-21T09:50:22.070Z" hostname="ADMIN" tests="8" failures="1" errors="0" skipped="7" time="0.4449622">
+        <testcase classname="src/Roadmap.test.tsx" name="shows API-ordered modules, honest course and module totals, and the expanded concept checklist" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="marks a fully learned module with a success indicator" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows a quiet empty state when the API roadmap has no modules" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="clears an expired session after a progress write returns 401" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="optimistically updates one concept and restores only that checkbox when its request fails" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="rolls back when a successful write response omits the requested node" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="merges concurrent node responses by their own node so stale full snapshots cannot undo another check" time="0.4416114">
+            <failure message="expect(element).toBeChecked()
+
+Received element is not checked:
+  &lt;input
+  aria-label=&quot;Đã học: Biến cố&quot;
+  type=&quot;checkbox&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeChecked()
+
+Received element is not checked:
+  &lt;input
+  aria-label=&quot;Đã học: Biến cố&quot;
+  type=&quot;checkbox&quot;
+/&gt;
+ ❯ src/Roadmap.test.tsx:192:69
+            </failure>
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows the selected module and the shared learner mark on the module route" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

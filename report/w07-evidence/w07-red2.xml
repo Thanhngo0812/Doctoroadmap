@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="5.939" timestamp="2026-10-21T12:04:24.960710+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_progress_is_isolated_between_members_using_independent_postgres_runtimes" time="2.183"><error message="failed on setup with &quot;sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) new row for relation &quot;membership&quot; violates check constraint &quot;ck_membership_via&quot;&#10;DETAIL:  Failing row contains (1cd6f31c-c953-4739-b0c3-fb2154d89784, 514faa38-2707-487e-a2b3-ab9a6db5b13f, learner, invite, 2026-01-01 00:00:00+00, 2026-01-01 00:00:00+00).&#10;[SQL: INSERT INTO membership (course_id,account_id,role,via,joined_at,last_active_at) VALUES (%(course_id)s,%(account_id)s,%(role)s,%(via)s,%(joined_at)s,%(last_active_at)s) ON CONFLICT DO NOTHING]&#10;[SQL parameters hidden due to hide_parameters=True]&#10;(Background on this error at: https://sqlalche.me/e/21/gkpj)&quot;">self = &lt;sqlalchemy.engine.base.Connection object at 0x000001D1DC312300&gt;
+dialect = &lt;sqlalchemy.dialects.postgresql.psycopg.PGDialect_psycopg object at 0x000001D1DBD994C0&gt;
+context = &lt;sqlalchemy.dialects.postgresql.psycopg.PGExecutionContext_psycopg object at 0x000001D1DC337440&gt;
+statement = &lt;sqlalchemy.dialects.postgresql.psycopg.PGCompiler_psycopg object at 0x000001D1DC337DA0&gt;
+parameters = [{'account_id': '514faa38-2707-487e-a2b3-ab9a6db5b13f', 'course_id': '1cd6f31c-c953-4739-b0c3-fb2154d89784', 'joined_a...info=datetime.timezone.utc), 'last_active_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=datetime.timezone.utc), ...}]
+
+    def _exec_single_context(
+        self,
+        dialect: Dialect,
+        context: ExecutionContext,
+        statement: Union[str, Compiled],
+        parameters: Optional[_AnyMultiExecuteParams],
+    ) -&gt; CursorResult[Unpack[TupleAny]]:
+        """continue the _execute_context() method for a single DBAPI
+        cursor.execute() or cursor.executemany() call.
+
+        """
+        if dialect.bind_typing is BindTyping.SETINPUTSIZES:
+            generic_setinputsizes = context._prepare_set_input_sizes()
+
+            if generic_setinputsizes:
+                try:
+                    dialect.do_set_input_sizes(
+                        context.cursor, generic_setinputsizes, context
+                    )
+                except BaseException as e:
+                    self._handle_dbapi_exception(
+                        e, str(statement), parameters, None, context
+                    )
+
+        cursor, str_statement, parameters = (
+            context.cursor,
+            context.statement,
+            context.parameters,
+        )
+
+        effective_parameters: Optional[_AnyExecuteParams]
+
+        if not context.executemany:
+            effective_parameters = parameters[0]
+        else:
+            effective_parameters = parameters
+
+        evt_handled: bool = False
+        try:
+            if self._has_events or self.engine._has_events:
+                for fn in self.dispatch.before_cursor_execute:
+                    str_statement, effective_parameters = fn(
+                        self,
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                        context.executemany,
+                    )
+
+            if self._echo:
+                self._log_info(str_statement)
+
+                stats = context._get_cache_stats()
+
+                if not self.engine.hide_parameters:
+                    self._log_info(
+                        "[%s] %r",
+                        stats,
+                        sql_util._repr_params(
+                            effective_parameters,
+                            batches=10,
+                            ismulti=context.executemany,
+                        ),
+                    )
+                else:
+                    self._log_info(
+                        "[%s] [SQL parameters hidden due to "
+                        "hide_parameters=True]",
+                        stats,
+                    )
+            if context.execute_style is ExecuteStyle.EXECUTEMANY:
+                effective_parameters = cast(
+                    "_CoreMultiExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_executemany:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_executemany(
+                        cursor,
+                        str_statement,
+                        effective_parameters,
+                        context,
+                    )
+            elif not effective_parameters and context.no_parameters:
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute_no_params:
+                        if fn(cursor, str_statement, context):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+                    self.dialect.do_execute_no_params(
+                        cursor, str_statement, context
+                    )
+            else:
+                effective_parameters = cast(
+                    "_CoreSingleExecuteParams", effective_parameters
+                )
+                if self.dialect._has_events:
+                    for fn in self.dialect.dispatch.do_execute:
+                        if fn(
+                            cursor,
+                            str_statement,
+                            effective_parameters,
+                            context,
+                        ):
+                            evt_handled = True
+                            break
+                if not evt_handled:
+&gt;                   self.dialect.do_execute(
+                        cursor, str_statement, effective_parameters, context
+                    )
+
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1953:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=5433 user=wayfinder database=wayfinder_test_17cb5ba589fd44ec8fb3652910b45e0a) at 0x1d1dc2d1b50&gt;
+query = 'INSERT INTO membership (course_id,account_id,role,via,joined_at,last_active_at) VALUES (%(course_id)s,%(account_id)s,%(role)s,%(via)s,%(joined_at)s,%(last_active_at)s) ON CONFLICT DO NOTHING'
+params = {'account_id': '514faa38-2707-487e-a2b3-ab9a6db5b13f', 'course_id': '1cd6f31c-c953-4739-b0c3-fb2154d89784', 'joined_at...zinfo=datetime.timezone.utc), 'last_active_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=datetime.timezone.utc), ...}
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -&gt; Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           psycopg.errors.CheckViolation: new row for relation "membership" violates check constraint "ck_membership_via"
+E           DETAIL:  Failing row contains (1cd6f31c-c953-4739-b0c3-fb2154d89784, 514faa38-2707-487e-a2b3-ab9a6db5b13f, learner, invite, 2026-01-01 00:00:00+00, 2026-01-01 00:00:00+00).
+
+..\..\.venv\Lib\site-packages\psycopg\cursor.py:117: CheckViolation
+
+The above exception was the direct cause of the following exception:
+
+postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_17cb5ba589fd44ec8fb3652910b45e0a
+
+    @pytest.fixture
+    def w07(postgres_database_url):
+        from wayfinder.application.courses import CourseService
+        from wayfinder.application.learning_gateway import LearningGateway
+        from wayfinder.infrastructure.course_store import PostgresCourseStore
+        from wayfinder.infrastructure.learning_runtime import WebLearningRuntime
+
+        engine = create_database_engine(postgres_database_url)
+        with engine.begin() as connection:
+            connection.execute(text(
+                "TRUNCATE course,membership,phase_b_record,usage_ledger,phase_b_cache,phase_b_negative,account "
+                "CASCADE"
+            ))
+        settings = WebSettings(_env_file=None, frontend_dist=Path("missing"), allowed_origins=[ORIGIN])
+        clock = FakeClock()
+        accounts = compose_account_service(settings, engine, mailer=FakeMailer())
+        phase_b = PostgresPhaseBStore(engine)
+        graph = _sample_graph()
+        graph.doc_id, graph.graph_version = "doc-1", 8
+        graph.nodes["b"] = {**graph.nodes["a"], "node_id": "b", "module_id": "m1", "display_name": "B"}
+        graph.learnable_nodes["b"] = graph.nodes["b"]
+        graph.modules["m1"]["node_ids"].append("b")
+        graph.nodes["hidden"] = {**graph.nodes["a"], "node_id": "hidden", "learnable": False}
+
+        store = PostgresCourseStore(engine)
+        runtime = WebLearningRuntime(phase_b, clock=clock)
+        courses = CourseService(store, settings=settings, clock=clock)
+        gateway = LearningGateway(courses, runtime, lambda doc_id, version: graph)
+        courses.gateway = gateway
+        app = create_app(settings, WebServices(
+            health_check=lambda: "ok", accounts=accounts, phase_b_store=phase_b,
+            courses=courses, learning=gateway,
+        ))
+
+        def make_user(label):
+            client = TestClient(app)
+            email = f"{label.lower().replace(' ', '-')}-{uuid4().hex}@example.vn"
+            result = client.post("/api/v1/auth/register", headers={"Origin": ORIGIN}, json={
+                "email": email, "password": "W07 isolated private passphrase!", "display_name": label,
+            })
+            assert result.status_code == 200, result.text
+            identity = client.get("/api/v1/me").json()
+            account = accounts.me(client.cookies.get("d2r_session")).account
+            actor = Actor(account.id, account.role, account.email_verified_at is not None, account.status)
+            return SimpleNamespace(client=client, actor=actor,
+                                   headers={"Origin": ORIGIN, "X-CSRF-Token": identity["csrf_token"]})
+
+        a, b = make_user("Learner A"), make_user("Learner B")
+        course = courses.create_course(a.actor, doc_id="doc-1", title="Progress course",
+                                       graph_version=8, module_count=1)
+        with store.atomic():
+&gt;           store.add_membership(Membership(course.id, b.actor.user_id, "learner", "invite",
+                                            clock.now(), clock.now()))
+
+src\web\backend\tests\test_learning_progress_w07.py:75:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\web\backend\wayfinder\infrastructure\course_store.py:64: in add_membership
+    connection.execute(text("INSERT INTO membership (" + ",".join(values) + ") VALUES (" +
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1458: in execute
+    return meth(
+..\..\.venv\Lib\site-packages\sqlalchemy\sql\elements.py:533: in _execute_on_connection
+    return connection._execute_clauseelement(
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1678: in _execute_clauseelement
+    ret = self._execute_context(
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1832: in _execute_context
+    return self._exec_single_context(
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1972: in _exec_single_context
+    self._handle_dbapi_exception(
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\base.py:2342: in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\base.py:1953: in _exec_single_context
+    self.dialect.do_execute(
+..\..\.venv\Lib\site-packages\sqlalchemy\engine\default.py:1192: in do_execute
+    cursor.execute(statement, parameters)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;psycopg.Cursor [closed] [IDLE] (host=127.0.0.1 port=5433 user=wayfinder database=wayfinder_test_17cb5ba589fd44ec8fb3652910b45e0a) at 0x1d1dc2d1b50&gt;
+query = 'INSERT INTO membership (course_id,account_id,role,via,joined_at,last_active_at) VALUES (%(course_id)s,%(account_id)s,%(role)s,%(via)s,%(joined_at)s,%(last_active_at)s) ON CONFLICT DO NOTHING'
+params = {'account_id': '514faa38-2707-487e-a2b3-ab9a6db5b13f', 'course_id': '1cd6f31c-c953-4739-b0c3-fb2154d89784', 'joined_at...zinfo=datetime.timezone.utc), 'last_active_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=datetime.timezone.utc), ...}
+
+    def execute(
+        self,
+        query: Query,
+        params: Params | None = None,
+        *,
+        prepare: bool | None = None,
+        binary: bool | None = None,
+    ) -&gt; Self:
+        """
+        Execute a query or command to the database.
+        """
+        try:
+            with self._conn.lock:
+                self._conn.wait(
+                    self._execute_gen(query, params, prepare=prepare, binary=binary)
+                )
+        except e._NO_TRACEBACK as ex:
+&gt;           raise ex.with_traceback(None)
+E           sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) new row for relation "membership" violates check constraint "ck_membership_via"
+E           DETAIL:  Failing row contains (1cd6f31c-c953-4739-b0c3-fb2154d89784, 514faa38-2707-487e-a2b3-ab9a6db5b13f, learner, invite, 2026-01-01 00:00:00+00, 2026-01-01 00:00:00+00).
+E           [SQL: INSERT INTO membership (course_id,account_id,role,via,joined_at,last_active_at) VALUES (%(course_id)s,%(account_id)s,%(role)s,%(via)s,%(joined_at)s,%(last_active_at)s) ON CONFLICT DO NOTHING]
+E           [SQL parameters hidden due to hide_parameters=True]
+E           (Background on this error at: https://sqlalche.me/e/21/gkpj)
+
+..\..\.venv\Lib\site-packages\psycopg\cursor.py:117: IntegrityError</error></testcase></testsuite></testsuites>

@@ -47,14 +47,50 @@ class LearningGateway:
 
     def get_roadmap(self, actor, cid):
         course, graph = self._context(actor, cid)
+        progress = self.runtime.progress(graph).get_progress(actor.user_id, course.doc_id)
+        modules_progress = self._module_progress(graph, progress["nodes"])
+        module_progress = {row["module_id"]: {"learned": row["learned"], "total": row["total"]}
+                           for row in modules_progress}
         modules = []
         for module in sorted(graph.modules.values(), key=lambda row: row.get("index", 0)):
             modules.append({"module_id": module["module_id"], "index": module.get("index", 0),
                 "title": module.get("display_name") or module.get("title") or "",
                 "description": module.get("description") or "",
                 "concepts": [{"node_id": nid, "name": graph.nodes[nid].get("display_name") or graph.nodes[nid].get("name", "")}
-                             for nid in module.get("node_ids", []) if nid in graph.nodes]})
-        return {"course_id": cid, "doc_id": course.doc_id, "graph_version": course.published_graph_version, "modules": modules}
+                             for nid in module.get("node_ids", []) if nid in graph.learnable_nodes],
+                "progress": module_progress.get(module["module_id"], {"learned": 0, "total": 0})})
+        return {"course_id": cid, "doc_id": course.doc_id, "graph_version": course.published_graph_version,
+                "progress": {"learned": sum(node["state"] == "learned" for node in progress["nodes"].values()),
+                             "total": len(progress["nodes"])},
+                "modules": modules}
+
+    def get_progress(self, actor, cid):
+        course, graph = self._context(actor, cid)
+        result = self.runtime.progress(graph).get_progress(actor.user_id, course.doc_id)
+        result["modules"] = self._module_progress(graph, result["nodes"])
+        return {"course_id": cid, **result}
+
+    def set_progress(self, actor, cid, node_id, learned):
+        course, graph = self._context(actor, cid)
+        if node_id not in graph.learnable_nodes:
+            raise WebError("not_found", "Không tìm thấy nội dung yêu cầu")
+        try:
+            self.runtime.progress(graph).set_progress(actor.user_id, course.doc_id, node_id, learned)
+        except ValueError as exc:
+            if str(exc) == "learned must be boolean":
+                raise WebError("validation", "Trạng thái tiến độ không hợp lệ") from None
+            raise
+        return self.get_progress(actor, cid)
+
+    @staticmethod
+    def _module_progress(graph, nodes):
+        summaries = []
+        for module_id, module in graph.modules.items():
+            node_ids = set(module.get("node_ids", ())) & nodes.keys()
+            summaries.append({"module_id": module_id,
+                "learned": sum(nodes[node_id]["state"] == "learned" for node_id in node_ids),
+                "total": len(node_ids)})
+        return summaries
 
     def course_summary(self, actor, cid):
         course, graph = self._context(actor, cid)

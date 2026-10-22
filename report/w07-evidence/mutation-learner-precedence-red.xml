@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.454" timestamp="2026-10-21T12:09:28.348325+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_learning_progress_w07" name="test_unmark_then_correct_quiz_keeps_learner_choice_through_gateway" time="1.664"><failure message="AssertionError: assert 'learned' == 'not_learned'&#10;  &#10;  - not_learned&#10;  ? ----&#10;  + learned">src\web\backend\tests\test_learning_progress_w07.py:117: in test_unmark_then_correct_quiz_keeps_learner_choice_through_gateway
+    assert progress["nodes"]["a"]["state"] == "not_learned"
+E   AssertionError: assert 'learned' == 'not_learned'
+E
+E     - not_learned
+E     ? ----
+E     + learned</failure></testcase></testsuite></testsuites>

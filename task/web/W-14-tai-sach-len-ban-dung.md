@@ -3,13 +3,15 @@
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4 (toàn bộ), 8 (trần khâu dựng); [ADR 0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md)
 (dùng lại theo băm); [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md), bảng `upload`, `build`, mục 6 (nhận việc); spec thiết kế, trang tải sách
 và tiến trình dựng.
-**Ai:** lõi phụ trách backend/worker; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06 · **Trạng thái:** ready-for-agent
+**Ai:** lõi phụ trách backend/worker; nhóm web phụ trách React và tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD (bộ dựng giả) · **Chặn bởi:** W-03, W-06; mốc backend cần sửa W-25 · **Trạng thái:** backend `5b24ece` chưa đạt; React còn chờ.
+
+**Soát 2026-10-21:** 35 test W-14 cũ chạy lại đạt, nhưng hai ca PG độc lập tái hiện confirm ghi đè cancel thành queued và cancel khi publication vẫn ghi succeeded/course ready/gửi thư thành công. Chưa ghép backend/schema; sửa theo [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md), giữ usage thực/lease fence và tuyến migration đã chốt. Web có thể chuẩn bị React theo hợp đồng, nhận mốc backend đã sửa/soát đạt trước cổng cuối; chưa đóng W-14 đầu-cuối. Xem [phán xét/bằng chứng](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md).
 
 **Kế hoạch sau W-06, 2026-10-21:** khi W-06 được ghi ghép, lõi chuẩn bị backend/worker và hợp đồng để web tích hợp sau ưu tiên W-07.
 Đây vẫn là một vé đầu-cuối; backend riêng xong chưa đóng vé. Xem
 [kế hoạch và điểm kiểm](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md).
 W-06 đã có `course`/`membership`, `module_count`, PDF mẫu `source_public_id`; W-14 bổ sung FK `course.build_id → build.id` khi tạo build,
-nối nguồn upload và metadata graph, kiểm dùng lại cùng tài liệu. Không sửa migration W-06; nhận head mới và chốt tuyến với W-11 trước ghép.
+nối nguồn upload và metadata graph, kiểm dùng lại cùng tài liệu. Không sửa migration W-06. **Tuyến đã chốt 2026-10-21:** giữ `w14_0006` nối `w06_0005`, W-14 ghép trước rồi W-11 nối bằng `w11_0007`. Chỉ ghép sau khi mốc cụ thể được soát đạt và cổng xanh; có thể nghiệm thu mốc backend/schema riêng nếu hoàn chỉnh, chưa đóng vé W-14 đầu-cuối khi React còn thiếu.
 Giữ bộ dựng/MediaStore/Mailer giả, test usage giả khác 0 để kiểm sổ chi thực; không gọi mô hình hay dùng ngân sách phục hồi cũ.
 
 ## Vì sao
@@ -25,7 +27,7 @@ cho người dùng. Ghi usage/chi phí từ kết quả chạy vào DB phía má
 **`BuildService`:** `create_upload`, `get_upload`, `confirm_build`, `get_build`, `cancel_build`, `retry_build`, và phía worker `run_next_job`.
 
 **Nhận tệp:**
-- kiểm byte đầu PDF hay DOCX, ≤ `upload_max_mb` (10, gói Cloudinary miễn phí), PDF ≤ 400 trang, PDF không mã hoá;
+- kiểm byte đầu PDF hay DOCX, ≤ `upload_max_mb` (10, gói Cloudinary miễn phí), PDF ≤ `build_max_pages` khi bật (mặc định không giới hạn theo spec chức năng), PDF không mã hoá;
 - bắt buộc `rights_confirmed`;
 - nếu trần lượt dựng đang bật (mặc định tắt ở bản demo): còn lượt trong tháng;
 - **không** cần xác minh email (bản demo);

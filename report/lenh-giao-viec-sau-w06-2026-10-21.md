@@ -1,10 +1,14 @@
 # Lệnh giao việc sau nghiệm thu W-06 — 2026-10-21
 
+**Đợt giao mới nhất đã thay thế kế hoạch dưới đây:** [lệnh giao sau soát W-07/W-14/W-24](lenh-giao-viec-sau-w07-2026-10-21.md). W-07 đã ghép `f20d198`; W-14 cần W-25 sửa hai race trước nghiệm thu, thiết kế tiếp W-24. Các prompt dưới đây giữ làm lịch sử, không giao lại W-07.
+
 **Trạng thái:** đã soạn để chủ dự án sao chép gửi từng nhóm; điều phối chưa gửi sang phiên nhân viên.
 
 W-06 đã nghiệm thu tại `8b6e500`, ghép main bằng `dc41ee8`, đã đẩy GitHub. Cổng độc lập: **2.107 Python đạt, 0 fail, 1 Cloudinary live không bật; React 77/build đạt; browser PostgreSQL 9 assertion/6 cấu hình; 8/8 mutation bị bắt; 0 USD**. Hồ sơ điều phối tới `5847700`; các nhóm nhận **main mới nhất**, không dừng ở nhánh W-06 cũ.
 
 Căn cứ giao việc: [nghiệm thu và kế hoạch](dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md), [bảng vé](../task/web/00-ke-hoach.md), [quy trình nhánh](../doc/quy-trinh-nhanh-va-ghep-main.md), [runbook dữ liệu](../doc/du-lieu-phat-trien-va-fixture.md).
+
+**Chốt tuyến migration 2026-10-21:** W-14 ghép trước, W-11 nối sau: `w06_0005 → w14_0006 → w11_0007`. Giữ migration W-14 đã có; W-11 tiếp tục service/API/UI, nhận migration W-14 rồi tạo `w11_0007` với `down_revision='w14_0006'`. Trước cổng cuối W-11 nhận main đã ghép mốc W-14 được soát đạt; không tạo hai head. Nếu React W-14 chưa xong, có thể soát mốc backend/schema hoàn chỉnh để ghép trước, chưa đóng vé đầu-cuối. **Theo chỉ thị tiếp của chủ dự án, chờ chủ dự án báo mới bắt đầu nghiệm thu; quyết định tuyến này không phải phán xét đạt hay cho phép ghép ngay.**
 
 ## 1. Gửi nhóm web — W-07 lộ trình và tiến độ
 
@@ -26,7 +30,7 @@ Nhận **phần backend/worker W-14** theo `task/web/W-14-tai-sach-len-ban-dung.
 1. Giữ worktree W-06. Tạo nhánh `work/w14-build-worker`, worktree một cấp `C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w14-build-worker` từ main mới nhất. Không sửa ở thư mục chung hoặc nhánh web W-07.
 2. Bàn giao **hợp đồng trước**: upload, xác nhận dựng, trạng thái/tiến trình, huỷ/thử lại, lỗi và ví dụ JSON; mô tả rõ actor, ownership, idempotency và phần React sẽ nối. Luồng: chọn tài liệu → kiểm tệp/quyền sử dụng → xác nhận → queued → worker reading/running → kết thúc. Không có bước dự toán/hiện chi phí cho người dùng.
 3. Làm `BuildService`/worker theo vé với **BuildRunner giả, MediaStore giả, Mailer giả**. Nối hợp đồng callback W-13 và ghi PostgreSQL usage/chi thực ở thành công/lỗi/huỷ; dùng usage giả khác 0 để chứng minh ghi đúng, giữ `usage_complete=false` khi thiếu số. Không cộng chi lịch sử từ artifact/cache, không dùng SQLite CLI thay DB web.
-4. Đã có course/membership ở `w06_0005`. Migration W-14 tạo upload/build/media_asset và **thêm FK `course.build_id → build.id`**, nối nguồn upload/PDF mẫu `source_public_id`, metadata module/graph đúng phiên bản. Không sửa migration W-06. W-11 có thể mở sau W-07: báo điều phối để chốt một tuyến successor theo thứ tự ghép, không tự coi cả hai nhánh đều nối trực tiếp `w06_0005`.
+4. Đã có course/membership ở `w06_0005`. Migration W-14 tạo upload/build/media_asset và **thêm FK `course.build_id → build.id`**, nối nguồn upload/PDF mẫu `source_public_id`, metadata module/graph đúng phiên bản. Không sửa migration W-06. Giữ `w14_0006` nối `w06_0005`; W-14 được soát đạt và ghép trước, W-11 nối `w11_0007` sau `w14_0006`.
 5. Chứng minh PostgreSQL thật: hai yêu cầu cùng tài liệu dùng chung một bản dựng; hai worker không cùng nhận một việc; kiểm xác nhận trước chạy, hết hạn, quota khi bật, heartbeat/reclaim hữu hạn, huỷ ở ranh giới bước và dọn đúng tệp tạm do worker sở hữu. Phép thử bản dựng giả chép theo allowlist/manifest, không tạo liên kết tới kho chung.
 6. Chỉ sửa mã web `src/web/`; không mở quyền sửa `src/doc2roadmap/` ngoài phạm vi W-05/W-13. Nếu phát hiện thiếu port/lỗi lõi, ghi tái hiện và đề xuất cho điều phối. Backend vẫn tạm Vertex; **không chạy mô hình/SMTP/Cloudinary thật**, không lấy ngân sách phục hồi làm duyệt tiền W-15.
 7. Web ưu tiên W-07 trước; có thể bàn giao backend W-14 để đợi React, nhưng chưa đóng W-14 đầu-cuối. Báo rõ phần tích hợp còn thiếu. Yêu cầu tên khoá trước index hiện là điểm cần đối chiếu khi chốt hợp đồng bước xác nhận; ghi đề xuất mặc định từ tên tài liệu, không coi đề xuất UI là quyết định đã duyệt.

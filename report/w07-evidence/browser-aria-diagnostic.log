@@ -1,0 +1,60 @@
+AssertionError [ERR_ASSERTION]: 390px light axe incomplete checks
++ actual - expected
+
++ [
++   {
++     description: "Ensure ARIA attributes are not prohibited for an element's role",
++     help: 'Elements must only use permitted ARIA attributes',
++     helpUrl: 'https://dequeuniversity.com/rules/axe/4.14/aria-prohibited-attr?application=playwright',
++     id: 'aria-prohibited-attr',
++     impact: 'serious',
++     nodes: [
++       {
++         all: [],
++         any: [],
++         failureSummary: 'Fix all of the following:\n' +
++           '  aria-label attribute is not well supported on "div" elements with no valid role attribute.',
++         html: '<div class="roadmap-module__progress" aria-label="Tiến độ module Khái niệm tập hợp và phần tử"><progress value="1" max="6"></progress><span>1/6 bài học</span></div>',
++         impact: 'serious',
++         none: [
++           {
++             data: {
++               messageKey: 'noRoleSingular',
++               nodeName: 'div',
++               prohibited: [
++                 'aria-label'
++               ],
++               role: null
++             },
++             id: 'aria-prohibited-attr',
++             impact: 'serious',
++             message: 'aria-label attribute is not well supported on "div" elements with no valid role attribute.',
++             relatedNodes: []
++           }
++         ],
++         target: [
++           '.roadmap-module__progress'
++         ]
++       }
++     ],
++     tags: [
++       'cat.aria',
++       'wcag2a',
++       'wcag412',
++       'EN-301-549',
++       'EN-9.4.1.2',
++       'RGAAv4',
++       'RGAA-7.1.1'
++     ]
++   }
++ ]
+- []
+
+    at main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w07-roadmap-progress\scripts\w07_web_check.cjs:332:16) {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: [Array],
+  expected: [],
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}

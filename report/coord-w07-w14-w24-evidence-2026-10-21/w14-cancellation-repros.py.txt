@@ -1,0 +1,94 @@
+"""Coordinator repros: separate PostgreSQL services, no production code changes."""
+from concurrent.futures import ThreadPoolExecutor
+from decimal import Decimal
+from threading import Event
+
+import pytest
+
+from test_builds_w14 import builds, upload, worker, sql
+from wayfinder.api.errors import WebError
+from wayfinder.application.builds import BuildService
+from wayfinder.infrastructure.build_store import PostgresBuildStore
+from wayfinder.infrastructure.database import create_database_engine
+
+pytestmark = pytest.mark.postgres
+
+
+def test_confirm_does_not_resurrect_a_cancelled_build(builds, monkeypatch):
+    b = builds
+    item = upload(b)
+    bid = item['build']['build_id']
+    independent = create_database_engine(b.postgres_database_url)
+    cancel = BuildService(PostgresBuildStore(independent), settings=b.settings,
+                          media=b.media, clock=b.clock)
+    read_state, resume = Event(), Event()
+    original = b.store.get_job
+    calls = 0
+
+    def pause_after_state_read(job_id):
+        nonlocal calls
+        job = original(job_id)
+        calls += 1
+        if calls == 2:
+            read_state.set()
+            assert resume.wait(10), 'coordinator did not release confirmation'
+        return job
+
+    monkeypatch.setattr(b.store, 'get_job', pause_after_state_read)
+    try:
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            pending = pool.submit(b.service.confirm_build, b.actor, item['upload_id'])
+            try:
+                assert read_state.wait(10), 'confirmation never reached state read'
+                assert cancel.cancel_build(b.actor, bid)['status'] == 'cancelled'
+            finally:
+                resume.set()
+            try:
+                pending.result(timeout=10)
+            except WebError as error:
+                assert error.code == 'conflict'
+        rows = sql(b, 'SELECT status,cancel_requested,counts_quota FROM build WHERE id=:id', {'id':bid})
+        courses = sql(b, 'SELECT status FROM course WHERE build_id=:id', {'id':bid})
+        assert rows[0]['status'] == 'cancelled', {'build':rows, 'courses':courses}
+        assert not rows[0]['counts_quota'], rows
+        assert courses[0]['status'] == 'failed', courses
+    finally:
+        independent.dispose()
+
+
+def test_cancel_during_publication_cannot_commit_success(builds):
+    b = builds
+    item = upload(b)
+    bid = item['build']['build_id']
+    b.service.confirm_build(b.actor, item['upload_id'])
+    consumer = worker(b)
+    original = consumer.graph_loader
+    entered, resume = Event(), Event()
+    independent = create_database_engine(b.postgres_database_url)
+    cancel = BuildService(PostgresBuildStore(independent), settings=b.settings,
+                          media=b.media, clock=b.clock)
+
+    def hold_publication(doc, version):
+        entered.set()
+        assert resume.wait(10), 'coordinator did not release graph publication'
+        return original(doc, version)
+
+    consumer.graph_loader = hold_publication
+    try:
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            pending = pool.submit(consumer.run_next_job)
+            try:
+                assert entered.wait(10), 'worker never entered graph publication'
+                assert cancel.cancel_build(b.actor,bid)['cancel_requested']
+            finally:
+                resume.set()
+            pending.result(timeout=10)
+        job = sql(b, 'SELECT status,cancel_requested,spent_usd FROM build WHERE id=:id', {'id':bid})[0]
+        courses = sql(b, 'SELECT status,published_graph_version FROM course WHERE build_id=:id', {'id':bid})
+        assert job['status'] == 'cancelled', {'build':job, 'courses':courses, 'mail':b.mailer.messages}
+        assert courses[0]['status'] == 'failed' and courses[0]['published_graph_version'] is None, courses
+        assert job['spent_usd'] == Decimal('.003'), job
+        assert sum(row['cost_usd'] for row in sql(b, 'SELECT cost_usd FROM usage_ledger')) == Decimal('.003')
+        assert not any(message['subject'] == 'Bản dựng xong' for message in b.mailer.messages)
+    finally:
+        independent.dispose()

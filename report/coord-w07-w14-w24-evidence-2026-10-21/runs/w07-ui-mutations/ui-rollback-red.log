@@ -1,0 +1,44 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Roadmap.test.tsx -t optimistically updates one concept and restores only that checkbox when its request fails --reporter=default --reporter=junit --outputFile=C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-review-20261021\evidence\w07-ui-mutations\ui-rollback-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w07-final/src/web/frontend
+
+ ❯ src/Roadmap.test.tsx (8 tests | 1 failed | 7 skipped) 388ms
+   ↓ shows API-ordered modules, honest course and module totals, and the expanded concept checklist
+   ↓ marks a fully learned module with a success indicator
+   ↓ shows a quiet empty state when the API roadmap has no modules
+   ↓ clears an expired session after a progress write returns 401
+   × optimistically updates one concept and restores only that checkbox when its request fails 385ms
+   ↓ rolls back when a successful write response omits the requested node
+   ↓ merges concurrent node responses by their own node so stale full snapshots cannot undo another check
+   ↓ shows the selected module and the shared learner mark on the module route
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Roadmap.test.tsx > optimistically updates one concept and restores only that checkbox when its request fails
+Error: expect(element).not.toBeChecked()
+
+Received element is checked:
+  <input
+  aria-label="Đã học: Biến cố"
+  type="checkbox"
+/>
+ ❯ src/Roadmap.test.tsx:135:24
+    133|   await act(async () => { rejectWrite(json({ error: { code: 'internal_…
+    134|   expect(await screen.findByRole('alert')).toHaveTextContent('Có lỗi p…
+    135|   expect(checkbox).not.toBeChecked();
+       |                        ^
+    136|   const calls = fetcher.mock.calls as unknown as Array<[string, Reques…
+    137|   const [url, request] = calls.find(([url]) => url.endsWith('/progress…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  1 failed | 7 skipped (8)
+   Start at  16:50:12
+   Duration  3.89s (environment 46%, setup 17%, transform 14%, import 13%, tests 11%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-review-20261021/evidence/w07-ui-mutations/ui-rollback-red.xml

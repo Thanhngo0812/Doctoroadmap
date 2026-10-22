@@ -54,7 +54,8 @@ agent khác. Người điều phối:
   - **SA-44:** còn 7 thao tác thử tay và ảnh chụp, vì công cụ trình duyệt của nhân viên bị chặn;
   - **ví dụ JSON thật cho nhóm web** ở `report/pha-b2-contract-examples-2026-10-18.json`.
 - **Đồ thị hiện hành** (bản tên mới nhất): doc-1 v57, nhap-mon-ml v50, naive-bayes v49, doc-6 v29, xstk-ch3-1 v68, doc-4 v27.
-- **SA-19a** (bộ câu hỏi thử): gói đã xuất ở `Desktop\pha-b-cau-hoi-thu\giao-agentic\`. **Chưa giao agentic.**
+- **SA-19a** (bộ câu hỏi thử): gói đã xuất ở `Desktop\pha-b-cau-hoi-thu\giao-agentic\`. **Đã giao agentic** (chủ dự án báo 2026-10-21).
+  Khi nhận gói về, chạy `scripts/pha-b/kiem_cau_hoi_thu.py` và Claude đối chiếu câu kiểm, rồi SA-23 mới được dùng gói này.
 - **SA-20…23** (đánh giá): chạy sau khi soát xong các vé sửa và B2.
 - **SA-45** (người soát cấp cao): vé sẵn, **chưa giao**.
 
@@ -135,7 +136,7 @@ Danh sách dưới giữ bối cảnh công việc từ lúc tiếp nhận; tr�
    - Máy chủ xem thử ngoại tuyến: `http://127.0.0.1:18765/`, kho `tmp/b2-preview-manual.json`.
    - Danh sách 7 thao tác ở `report/pha-b2-sa37-44-2026-10-18.md` và ở vé SA-44.
    - Chụp ảnh từng thao tác, gửi người soát.
-4. **[Chủ dự án] Giao gói 19a cho agentic** (họ mô hình khác Gemini).
+4. **[Chủ dự án] Giao gói 19a cho agentic** (họ mô hình khác Gemini). **Xong** (chủ dự án báo 2026-10-21).
    - Thư mục giao: `Desktop\pha-b-cau-hoi-thu\giao-agentic\`.
    - **Không** giao `Desktop\pha-b-cau-hoi-thu-nguoi-giu\`.
    - Agentic trả về thì người soát chạy `scripts/pha-b/kiem_cau_hoi_thu.py`, rồi chấm 12 câu kiểm bằng đáp án ở thư mục người giữ.
@@ -299,6 +300,10 @@ Claude đọc theo thứ tự:
 
 Chủ dự án tóm thêm tình hình bằng lời.
 
+**Kế hoạch chủ dự án chốt 2026-10-21:** khi hồi lượt dùng, Claude làm trọn phần sau A10 trước: hoàn thành và nghiệm thu đủ 51 vé SA, cùng mọi vé
+thêm nếu có. Chỉ khi Pha B đã nghiệm thu xong Claude mới về điều phối web. Trong lúc đó Codex vẫn điều phối và ghép phần web. Việc Pha B nào chạm mã
+web (ví dụ phần web gửi kèm `focus_node_id` ở W-09) thì hai bên thống nhất qua mục 8.
+
 ## 10. Nhật ký điều phối
 
 Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới cùng.
@@ -309,7 +314,7 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-18 | commit mã SA-31…44 | nhân viên lõi | xong, Codex đã đối chiếu | `a7f57d0`, bản sửa `3871c85`; chưa thay thế soát SA-45 |
 | | giao SA-45 | chủ dự án | chờ | |
 | | 7 thao tác thử tay SA-44 | chủ dự án | chờ | |
-| | giao 19a cho agentic | chủ dự án | chờ | |
+| | giao 19a cho agentic | chủ dự án | xong | chủ dự án báo 2026-10-21; chờ agentic trả gói |
 | | tài khoản Cloudinary, Gmail, Docker; logo | chủ dự án | chờ | |
 | | giao W-01, W-13, W-22 | chủ dự án | chờ | |
 | 2026-10-18 | chính thức tiếp nhận điều phối | Codex | đã nhận | chủ dự án yêu cầu trực tiếp trong chat; giữ phạm vi vai trò ở mục 1 |
@@ -348,3 +353,7 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-21 | soát và nghiệm thu W-06 cả ba nhóm | Codex | đạt, đã ghép **dc41ee8** và đẩy GitHub | Nhận lõi bde3e0b/web d9b5e1a/thiết kế63dd8bd; mốc tích hợp soát **8b6e500**, chỉ sửa Required câu chữ/claim thiết kế. Worktree mới chép 3.144 tệp theo hash, không cache CLI/liên kết; **2.107 Python đạt, 0 fail, 1 Cloudinary live không bật; React 77/build; browser PG 9 assertion/6 cấu hình, 8/8 mutation bị bắt**, đúng một head w06_0005. 0 gọi mô hình/**0 USD**; FakeMailer/MemoryMediaStore, DB UUID riêng đã đóng/xoá, không seed DB phát triển. Xem report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md |
 | 2026-10-21 | phán xét thiết kế và lập đợt sau W-06 | Codex | local đã ghép, W-24 Cloud vẫn mở; kế hoạch đã cập nhật, chưa gửi phiên khác | Sửa nhầm trạng thái xác minh 24h, resend60s và claim nối reactions/Cloud/audit quá bằng chứng; 12 preview local đạt hình học sau ổn định. SA-47 memory/JSON được soát độc lập, 8 test trong cổng đạt; đủ mở W-07 theo hợp đồng, W-07 vẫn cần kiểm race/cách ly PG. Web ưu tiên W-07 rồi W-11; lõi backend/worker W-14 bộ dựng giả; thiết kế W-24/Figma + W-07/W-14. W-14 thêm FK build_id/nguồn upload; migration nhận head theo thứ tự ghép. W-15 cần dry-run/duyệt tiền mới; không dọn worktree/snapshot |
 | 2026-10-21 | bổ sung tệp lệnh giao việc sau W-06 theo yêu cầu chủ dự án | Codex | đã soạn, chưa gửi các phiên nhân viên | report/lenh-giao-viec-sau-w06-2026-10-21.md gồm prompt web W-07, lõi backend/worker W-14, thiết kế tiếp W-24/hỗ trợ W-07-W-14; kèm worktree, đầu ra, điểm kiểm và luật dữ liệu/0 USD/migration; không đổi phạm vi mã sản phẩm |
+| 2026-10-21 | chốt tuyến migration W-14/W-11 theo câu hỏi nhóm web | Codex | W-14 ghép trước, W-11 nối sau; chờ chủ dự án báo mới nghiệm thu | Giữ w14_0006 nối w06_0005 đã có; W-11 tiếp tục service/API/UI, nhận migration W-14 rồi tạo w11_0007 với down_revision=w14_0006. Trước cổng cuối W-11 nhận main đã ghép mốc W-14 soát đạt; không tạo hai head. Có thể soát mốc backend/schema W-14 hoàn chỉnh trước React, chưa đóng vé đầu-cuối. Chỉ cập nhật hồ sơ, chưa nghiệm thu hoặc ghép mã W-14/W-11, chưa gửi phiên nhân viên |
+| 2026-10-21 | nghiệm thu W-07 theo lệnh mới của chủ dự án | Codex | đạt, ghép **f20d198** và đã đẩy GitHub | Mốc đúng main mới **2a14723**, web bàn giao cd1ecb8; **2.114 Python đạt, 0 fail/error, 1 Cloudinary live không bật; 85 React/build; 8 backend +2 UI mutation bị bắt; browser PostgreSQL: 11 kiểm tra/6 cấu hình**, SQL độc lập A có2 progress/B có0, rollback không ghi; một head w06_0005. Chép3.144 tệp theo SHA-256, không links/live/tập giữ lại, giữ worktree/snapshot. 0 mô hình/**0 USD**. Xem report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md |
+| 2026-10-21 | soát mốc backend W-14 và bàn giao mới W-24 | Codex | **cả hai chưa đạt**, chưa ghép | W-14 5b24ece: 35 test cũ đạt; trên tích hợp thử85ecce0, hai repro PG mới đỏ đúng assertion: confirm ghi đè cancel thành queued, cancel khi publication vẫn success/course ready/mail. Mở **W-25** cho lõi; React còn chờ. W-24 c1df32a: 12 cấu hình local,6dark chữđen,7 raw/light lệch CSS, clipboard/scroll bị gỡ vẫn4/4, GIF/static hỏng naturalWidth0 vẫn xanh, sai tổng tiến độ/kích thước và thiếu Cloud/checklist/video. Giữ phần local đã ghép trước; tiếp cùng W-24, không đóng W-22/W-23 |
+| 2026-10-21 | lập đợt sau W-07 và chuẩn bị lời giao ba nhóm | Codex | đã soạn, chưa gửi phiên nhân viên | report/lenh-giao-viec-sau-w07-2026-10-21.md: lõi ưu tiênW-25 sửa trên nềnW-14; web React/tích hợpW-14 và giữ W-11 riêng; thiết kế sửa6nhóm W-24. W-25 đạt mới ghép backend/schemaW-14 rồi W-11 nối w11_0007 sau w14_0006; W-14 đầu-cuối đạt mới xét W-15/dry-run/duyệt tiền mới. Không đổi Vertex, không dọn dữ liệu/worktree; 0USD |
