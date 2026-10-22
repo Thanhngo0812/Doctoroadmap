@@ -97,11 +97,31 @@
       }
       const lightModeId = collection.modes[0].modeId;
       collection.renameMode(lightModeId, "Light");
-      let darkModeId;
-      if (collection.modes.length > 1) {
-        darkModeId = collection.modes[1].modeId;
-      } else {
-        darkModeId = collection.addMode("Dark");
+
+      let darkModeId = null;
+      try {
+        if (collection.modes.length > 1) {
+          darkModeId = collection.modes[1].modeId;
+        } else {
+          darkModeId = collection.addMode("Dark");
+        }
+      } catch (modeErr) {
+        console.log("Note: Single mode plan or addMode restriction:", modeErr);
+      }
+
+      let darkCollection = null;
+      let darkColModeId = null;
+      if (!darkModeId) {
+        try {
+          darkCollection = collections.find(c => c.name === "WayFinder Tokens (Dark)");
+          if (!darkCollection) {
+            darkCollection = figma.variables.createVariableCollection("WayFinder Tokens (Dark)");
+          }
+          darkColModeId = darkCollection.modes[0].modeId;
+          darkCollection.renameMode(darkColModeId, "Dark");
+        } catch (colErr) {
+          console.log("Note: Dark collection fallback note:", colErr);
+        }
       }
 
       const colorDefs = [
@@ -109,6 +129,7 @@
         { name: "color/primary-text", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
         { name: "color/primary-hover", light: hexToRgb("#0A5E9C"), dark: hexToRgb("#52B8FF") },
         { name: "color/brand", light: hexToRgb("#29A9FF"), dark: hexToRgb("#29A9FF") },
+        { name: "color/brand-tint", light: hexToRgb("#EAF6FF"), dark: hexToRgb("#29A9FF") },
         { name: "color/bg", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
         { name: "color/bg-subtle", light: hexToRgb("#F6F8FA"), dark: hexToRgb("#161B22") },
         { name: "color/surface", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#161B22") },
@@ -118,15 +139,25 @@
         { name: "color/text", light: hexToRgb("#12161B"), dark: hexToRgb("#E8EDF2") },
         { name: "color/text-muted", light: hexToRgb("#5B6673"), dark: hexToRgb("#9AA6B2") },
         { name: "color/accent", light: hexToRgb("#FEBA4F"), dark: hexToRgb("#FEBA4F") },
+        { name: "color/accent-tint", light: hexToRgb("#FFF4DF"), dark: hexToRgb("#FEBA4F") },
         { name: "color/accent-text", light: hexToRgb("#8A4F0F"), dark: hexToRgb("#FEBA4F") },
         { name: "color/success", light: hexToRgb("#146C3B"), dark: hexToRgb("#4ADE80") },
-        { name: "color/danger", light: hexToRgb("#B02F2F"), dark: hexToRgb("#F87171") }
+        { name: "color/success-tint", light: hexToRgb("#E8F6EE"), dark: hexToRgb("#4ADE80") },
+        { name: "color/danger", light: hexToRgb("#B02F2F"), dark: hexToRgb("#F87171") },
+        { name: "color/danger-tint", light: hexToRgb("#FDECEC"), dark: hexToRgb("#F87171") }
       ];
 
       for (const c of colorDefs) {
-        const v = figma.variables.createVariable(c.name, collection, "COLOR");
-        v.setValueForMode(lightModeId, c.light);
-        v.setValueForMode(darkModeId, c.dark);
+        try {
+          const v = figma.variables.createVariable(c.name, collection, "COLOR");
+          v.setValueForMode(lightModeId, c.light);
+          if (darkModeId) {
+            v.setValueForMode(darkModeId, c.dark);
+          } else if (darkCollection && darkColModeId) {
+            const vDark = figma.variables.createVariable(c.name, darkCollection, "COLOR");
+            vDark.setValueForMode(darkColModeId, c.dark);
+          }
+        } catch (e) {}
       }
 
       const spacingDefs = [
@@ -142,9 +173,53 @@
         { name: "spacing/space-16", val: 64 }
       ];
       for (const s of spacingDefs) {
-        const v = figma.variables.createVariable(s.name, collection, "FLOAT");
-        v.setValueForMode(lightModeId, s.val);
-        v.setValueForMode(darkModeId, s.val);
+        try {
+          const v = figma.variables.createVariable(s.name, collection, "FLOAT");
+          v.setValueForMode(lightModeId, s.val);
+          if (darkModeId) {
+            v.setValueForMode(darkModeId, s.val);
+          } else if (darkCollection && darkColModeId) {
+            const vDark = figma.variables.createVariable(s.name, darkCollection, "FLOAT");
+            vDark.setValueForMode(darkColModeId, s.val);
+          }
+        } catch (e) {}
+      }
+
+      const radiusDefs = [
+        { name: "radius/radius-sm", val: 6 },
+        { name: "radius/radius-md", val: 10 },
+        { name: "radius/radius-lg", val: 16 },
+        { name: "radius/radius-full", val: 9999 }
+      ];
+      for (const r of radiusDefs) {
+        try {
+          const v = figma.variables.createVariable(r.name, collection, "FLOAT");
+          v.setValueForMode(lightModeId, r.val);
+          if (darkModeId) {
+            v.setValueForMode(darkModeId, r.val);
+          } else if (darkCollection && darkColModeId) {
+            const vDark = figma.variables.createVariable(r.name, darkCollection, "FLOAT");
+            vDark.setValueForMode(darkColModeId, r.val);
+          }
+        } catch (e) {}
+      }
+
+      const motionDefs = [
+        { name: "motion/motion-fast", val: 120 },
+        { name: "motion/motion-normal", val: 200 },
+        { name: "motion/motion-slow", val: 300 }
+      ];
+      for (const m of motionDefs) {
+        try {
+          const v = figma.variables.createVariable(m.name, collection, "FLOAT");
+          v.setValueForMode(lightModeId, m.val);
+          if (darkModeId) {
+            v.setValueForMode(darkModeId, m.val);
+          } else if (darkCollection && darkColModeId) {
+            const vDark = figma.variables.createVariable(m.name, darkCollection, "FLOAT");
+            vDark.setValueForMode(darkColModeId, m.val);
+          }
+        } catch (e) {}
       }
     } catch (varErr) {
       console.log("Figma Variables notice:", varErr);
@@ -303,6 +378,35 @@
   compFrame.itemSpacing = 20;
 
   compFrame.appendChild(createText("Thư viện thành phần giao diện (UI Library)", 24, FONT_BOLD, C.text));
+
+  // Native Figma Components
+  if (typeof figma.createComponent === "function") {
+    try {
+      const compBtnPrimary = figma.createComponent();
+      compBtnPrimary.name = "Component / Button Primary";
+      compBtnPrimary.layoutMode = "HORIZONTAL";
+      compBtnPrimary.primaryAxisAlignItems = "CENTER";
+      compBtnPrimary.counterAxisAlignItems = "CENTER";
+      compBtnPrimary.paddingLeft = 16; compBtnPrimary.paddingRight = 16;
+      compBtnPrimary.paddingTop = 10; compBtnPrimary.paddingBottom = 10;
+      compBtnPrimary.cornerRadius = 10;
+      compBtnPrimary.fills = solidFill(C.primary);
+      compBtnPrimary.appendChild(createText("Nút chính (Primary)", 14, FONT_SEMI, C.white));
+      compFrame.appendChild(compBtnPrimary);
+
+      const compBadgeSuccess = figma.createComponent();
+      compBadgeSuccess.name = "Component / Badge Success";
+      compBadgeSuccess.layoutMode = "HORIZONTAL";
+      compBadgeSuccess.paddingLeft = 8; compBadgeSuccess.paddingRight = 8;
+      compBadgeSuccess.paddingTop = 4; compBadgeSuccess.paddingBottom = 4;
+      compBadgeSuccess.cornerRadius = 6;
+      compBadgeSuccess.fills = solidFill(C.successTint);
+      compBadgeSuccess.appendChild(createText("✓ Hoàn thành", 12, FONT_SEMI, C.success));
+      compFrame.appendChild(compBadgeSuccess);
+    } catch (compErr) {
+      console.log("Component creation notice:", compErr);
+    }
+  }
 
   // Buttons Row
   const btnRow = figma.createFrame();
@@ -770,7 +874,7 @@
   w03Frame.itemSpacing = 16;
 
   w03Frame.appendChild(createText("Bộ màn hình W-03: Xác thực Email, Quên & Đặt lại mật khẩu (Token một lần)", 22, FONT_BOLD, C.text));
-  w03Frame.appendChild(createText("Bàn giao chuẩn phục vụ nhóm Web (W-03) &bull; Viewport thích ứng &bull; Nút 44px &bull; WCAG 2.1 AA", 13, FONT_REG, C.textMuted));
+  w03Frame.appendChild(createText("Bàn giao chuẩn phục vụ nhóm Web (W-03) • Viewport thích ứng • Nút 44px • WCAG 2.1 AA", 13, FONT_REG, C.textMuted));
 
   const w03CardsRow = figma.createFrame();
   w03CardsRow.layoutMode = "HORIZONTAL";
@@ -930,7 +1034,7 @@
   f1A.strokes = [{ type: "SOLID", color: C.border }];
   f1A.paddingLeft = 14; f1A.paddingRight = 14; f1A.paddingTop = 14; f1A.paddingBottom = 14;
   f1A.layoutMode = "VERTICAL"; f1A.itemSpacing = 8;
-  f1A.appendChild(makeBadge("Luồng 1 &bull; Bước 1", C.brandTint, C.primary));
+  f1A.appendChild(makeBadge("Luồng 1 • Bước 1", C.brandTint, C.primary));
   f1A.appendChild(createText("Đăng ký tài khoản", 14, FONT_SEMI, C.text));
   const f1ABtn = makeButton("Đăng ký & Vào khoá học ➔", C.primary, C.white);
   f1ABtn.resize(260, 44);
@@ -946,7 +1050,7 @@
   f1B.strokes = [{ type: "SOLID", color: C.border }];
   f1B.paddingLeft = 14; f1B.paddingRight = 14; f1B.paddingTop = 14; f1B.paddingBottom = 14;
   f1B.layoutMode = "VERTICAL"; f1B.itemSpacing = 8;
-  f1B.appendChild(makeBadge("Luồng 1 &bull; Bước 2", C.successTint, C.success));
+  f1B.appendChild(makeBadge("Luồng 1 • Bước 2", C.successTint, C.success));
   f1B.appendChild(createText("Khoá học: Bác sĩ Nội trú", 14, FONT_SEMI, C.text));
   const f1BBtn = makeButton("Mở bài lecture-2 ➔", C.primary, C.white);
   f1BBtn.resize(260, 44);
@@ -963,9 +1067,9 @@
   f1C.strokeWeight = 2;
   f1C.paddingLeft = 14; f1C.paddingRight = 14; f1C.paddingTop = 14; f1C.paddingBottom = 14;
   f1C.layoutMode = "VERTICAL"; f1C.itemSpacing = 8;
-  f1C.appendChild(makeBadge("Luồng 1 &bull; Bước 3", C.brandTint, C.primary));
+  f1C.appendChild(makeBadge("Luồng 1 • Bước 3", C.brandTint, C.primary));
   f1C.appendChild(createText("lecture-2: Giải phẫu động mạch", 14, FONT_SEMI, C.text));
-  f1C.appendChild(createText("✓ Accordion mở &bull; Nội dung sẵn sàng", 12, FONT_REG, C.success));
+  f1C.appendChild(createText("✓ Accordion mở • Nội dung sẵn sàng", 12, FONT_REG, C.success));
   flow1Container.appendChild(f1C);
 
   // Connect Flow 1 prototype reactions
@@ -986,7 +1090,7 @@
   f2A.strokes = [{ type: "SOLID", color: C.border }];
   f2A.paddingLeft = 14; f2A.paddingRight = 14; f2A.paddingTop = 14; f2A.paddingBottom = 14;
   f2A.layoutMode = "VERTICAL"; f2A.itemSpacing = 8;
-  f2A.appendChild(makeBadge("Luồng 2 &bull; Bước 1", C.brandTint, C.primary));
+  f2A.appendChild(makeBadge("Luồng 2 • Bước 1", C.brandTint, C.primary));
   f2A.appendChild(createText("Chia sẻ: WF-PHARM-2026", 14, FONT_SEMI, C.text));
   const f2ABtn = makeButton("Mở liên kết tham gia ➔", C.primary, C.white);
   f2ABtn.resize(260, 44);
@@ -999,7 +1103,7 @@
   f2B.strokes = [{ type: "SOLID", color: C.border }];
   f2B.paddingLeft = 14; f2B.paddingRight = 14; f2B.paddingTop = 14; f2B.paddingBottom = 14;
   f2B.layoutMode = "VERTICAL"; f2B.itemSpacing = 8;
-  f2B.appendChild(makeBadge("Luồng 2 &bull; Bước 2", C.accentTint, C.accentText));
+  f2B.appendChild(makeBadge("Luồng 2 • Bước 2", C.accentTint, C.accentText));
   f2B.appendChild(createText("Xác nhận vào Dược lý", 14, FONT_SEMI, C.text));
   const f2BBtn = makeButton("Xác nhận tham gia ➔", C.primary, C.white);
   f2BBtn.resize(260, 44);
@@ -1012,7 +1116,7 @@
   f2C.strokes = [{ type: "SOLID", color: C.success }]; f2C.strokeWeight = 2;
   f2C.paddingLeft = 14; f2C.paddingRight = 14; f2C.paddingTop = 14; f2C.paddingBottom = 14;
   f2C.layoutMode = "VERTICAL"; f2C.itemSpacing = 8;
-  f2C.appendChild(makeBadge("Luồng 2 &bull; Bước 3", C.successTint, C.success));
+  f2C.appendChild(makeBadge("Luồng 2 • Bước 3", C.successTint, C.success));
   f2C.appendChild(createText("Đã là thành viên chính thức", 14, FONT_SEMI, C.text));
   f2C.appendChild(createText("✓ Quyền truy cập đã kích hoạt", 12, FONT_REG, C.success));
   flow2Container.appendChild(f2C);
@@ -1034,7 +1138,7 @@
   f3A.strokes = [{ type: "SOLID", color: C.border }];
   f3A.paddingLeft = 14; f3A.paddingRight = 14; f3A.paddingTop = 14; f3A.paddingBottom = 14;
   f3A.layoutMode = "VERTICAL"; f3A.itemSpacing = 8;
-  f3A.appendChild(makeBadge("Luồng 3 &bull; Bước 1", C.brandTint, C.primary));
+  f3A.appendChild(makeBadge("Luồng 3 • Bước 1", C.brandTint, C.primary));
   f3A.appendChild(createText("Kéo thả Harrison.pdf", 14, FONT_SEMI, C.text));
   const f3ABtn = makeButton("Chọn tệp & Cấu hình ➔", C.primary, C.white);
   f3ABtn.resize(260, 44);
@@ -1047,7 +1151,7 @@
   f3B.strokes = [{ type: "SOLID", color: C.border }];
   f3B.paddingLeft = 14; f3B.paddingRight = 14; f3B.paddingTop = 14; f3B.paddingBottom = 14;
   f3B.layoutMode = "VERTICAL"; f3B.itemSpacing = 8;
-  f3B.appendChild(makeBadge("Luồng 3 &bull; Bước 2", C.accentTint, C.accentText));
+  f3B.appendChild(makeBadge("Luồng 3 • Bước 2", C.accentTint, C.accentText));
   f3B.appendChild(createText("Mục tiêu: Bác sĩ Nội trú", 14, FONT_SEMI, C.text));
   const f3BBtn = makeButton("Bắt đầu dựng lộ trình ➔", C.primary, C.white);
   f3BBtn.resize(260, 44);
@@ -1060,7 +1164,7 @@
   f3C.strokes = [{ type: "SOLID", color: C.success }]; f3C.strokeWeight = 2;
   f3C.paddingLeft = 14; f3C.paddingRight = 14; f3C.paddingTop = 14; f3C.paddingBottom = 14;
   f3C.layoutMode = "VERTICAL"; f3C.itemSpacing = 8;
-  f3C.appendChild(makeBadge("Luồng 3 &bull; Bước 3", C.successTint, C.success));
+  f3C.appendChild(makeBadge("Luồng 3 • Bước 3", C.successTint, C.success));
   f3C.appendChild(createText("Lộ trình 18 khái niệm", 14, FONT_SEMI, C.text));
   f3C.appendChild(createText("✓ Tiến trình 4 bước đã hoàn tất", 12, FONT_REG, C.success));
   flow3Container.appendChild(f3C);
@@ -1082,7 +1186,7 @@
   f4A.strokes = [{ type: "SOLID", color: C.border }];
   f4A.paddingLeft = 14; f4A.paddingRight = 14; f4A.paddingTop = 14; f4A.paddingBottom = 14;
   f4A.layoutMode = "VERTICAL"; f4A.itemSpacing = 8;
-  f4A.appendChild(makeBadge("Luồng 4 &bull; Bước 1", C.brandTint, C.primary));
+  f4A.appendChild(makeBadge("Luồng 4 • Bước 1", C.brandTint, C.primary));
   f4A.appendChild(createText("Chọn đáp án B: Nhánh LAD", 14, FONT_SEMI, C.text));
   const f4ABtn = makeButton("Nộp bài & Chấm điểm ➔", C.primary, C.white);
   f4ABtn.resize(260, 44);
@@ -1095,7 +1199,7 @@
   f4B.strokes = [{ type: "SOLID", color: C.success }]; f4B.strokeWeight = 2;
   f4B.paddingLeft = 14; f4B.paddingRight = 14; f4B.paddingTop = 14; f4B.paddingBottom = 14;
   f4B.layoutMode = "VERTICAL"; f4B.itemSpacing = 8;
-  f4B.appendChild(makeBadge("Luồng 4 &bull; Bước 2", C.successTint, C.success));
+  f4B.appendChild(makeBadge("Luồng 4 • Bước 2", C.successTint, C.success));
   f4B.appendChild(createText("Chính xác: 10/10 điểm", 14, FONT_SEMI, C.success));
   f4B.appendChild(createText("📖 Trích dẫn: Harrison 21st, Tr. 1892", 11, FONT_REG, C.textMuted));
   flow4Container.appendChild(f4B);
@@ -1106,6 +1210,18 @@
   protoMasterFrame.appendChild(protoRows);
   figma.currentPage.appendChild(protoMasterFrame);
   createdNodes.push(protoMasterFrame);
+
+  // Native Figma Flow Starting Points (4 Core Flows)
+  try {
+    figma.currentPage.flowStartingPoints = [
+      { nodeId: f1A.id, name: "Luồng 1: Đăng ký -> Khoá học -> Bài giảng" },
+      { nodeId: f2A.id, name: "Luồng 2: Chia sẻ -> Tham gia khoá học" },
+      { nodeId: f3A.id, name: "Luồng 3: Tải giáo trình -> Dựng 4 bước" },
+      { nodeId: f4A.id, name: "Luồng 4: Quiz -> Chấm điểm -> Trích dẫn" }
+    ];
+  } catch (flowErr) {
+    console.log("Flow starting points notice:", flowErr);
+  }
 
   // ==========================================
   // 7. FRAME: MÀN HÌNH W-06 (KHOÁ HỌC CỦA TÔI /khoa-hoc)
@@ -1550,6 +1666,93 @@
   w14Frame.appendChild(w14CardsRow);
   figma.currentPage.appendChild(w14Frame);
   createdNodes.push(w14Frame);
+
+  // ==========================================
+  // 11. FRAME: MÀN HÌNH W-11 (QUẢN LÝ KHOÁ HỌC & CHIA SẺ LIÊN KẾT)
+  // ==========================================
+  const w11Frame = figma.createFrame();
+  w11Frame.name = "11. Màn hình W-11: Quản lý Khoá học & Chia sẻ Liên kết (/join)";
+  w11Frame.x = 0;
+  w11Frame.y = 5450;
+  w11Frame.resize(1280, 540);
+  w11Frame.fills = solidFill(C.surface);
+  w11Frame.cornerRadius = 16;
+  w11Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w11Frame.strokeWeight = 1;
+  w11Frame.layoutMode = "VERTICAL";
+  w11Frame.paddingTop = 28; w11Frame.paddingBottom = 28;
+  w11Frame.paddingLeft = 32; w11Frame.paddingRight = 32;
+  w11Frame.itemSpacing = 20;
+
+  w11Frame.appendChild(createText("Quản lý Khoá học & Chia sẻ Liên kết (W-11 /join/:token)", 22, FONT_BOLD, C.text));
+  w11Frame.appendChild(createText("Bao gồm: Cấu hình tạo link (thời hạn, số lượt), Bảng danh sách link & thu hồi, Màn hình tham gia minh bạch dữ liệu.", 13, FONT_REG, C.textMuted));
+
+  const w11CardsRow = figma.createFrame();
+  w11CardsRow.layoutMode = "HORIZONTAL";
+  w11CardsRow.itemSpacing = 16;
+  w11CardsRow.fills = [];
+
+  // Card 1: Course Share Settings
+  const w11ShareCard = figma.createFrame();
+  w11ShareCard.layoutMode = "VERTICAL";
+  w11ShareCard.itemSpacing = 12;
+  w11ShareCard.resize(380, 420);
+  w11ShareCard.cornerRadius = 12;
+  w11ShareCard.fills = solidFill(C.bgSubtle);
+  w11ShareCard.strokes = [{ type: "SOLID", color: C.border }];
+  w11ShareCard.paddingLeft = 16; w11ShareCard.paddingRight = 16; w11ShareCard.paddingTop = 16; w11ShareCard.paddingBottom = 16;
+  w11ShareCard.appendChild(makeBadge("W-11: Quản lý chia sẻ", C.brandTint, C.primary));
+  w11ShareCard.appendChild(createText("Tạo liên kết tham gia mới", 16, FONT_SEMI, C.text));
+  w11ShareCard.appendChild(createText("Thời hạn: 7 ngày • Tối đa 50 học viên", 12, FONT_REG, C.textMuted));
+  const btnCreateLink = makeButton("+ Tạo liên kết mới", C.primary, C.white);
+  btnCreateLink.resize(348, 44);
+  w11ShareCard.appendChild(btnCreateLink);
+  w11CardsRow.appendChild(w11ShareCard);
+
+  // Card 2: Link List & Revocation
+  const w11ListCard = figma.createFrame();
+  w11ListCard.layoutMode = "VERTICAL";
+  w11ListCard.itemSpacing = 10;
+  w11ListCard.resize(380, 420);
+  w11ListCard.cornerRadius = 12;
+  w11ListCard.fills = solidFill(C.bgSubtle);
+  w11ListCard.strokes = [{ type: "SOLID", color: C.border }];
+  w11ListCard.paddingLeft = 16; w11ListCard.paddingRight = 16; w11ListCard.paddingTop = 16; w11ListCard.paddingBottom = 16;
+  w11ListCard.appendChild(makeBadge("Danh sách liên kết", C.successTint, C.success));
+  w11ListCard.appendChild(createText("/join/WF-PHARM-2026", 16, FONT_SEMI, C.primary));
+  w11ListCard.appendChild(createText("Đã dùng: 14/50 lượt • Còn 5 ngày", 12, FONT_REG, C.textMuted));
+  const btnRevokeLink = makeButton("Thu hồi liên kết", C.surface, C.danger, C.danger);
+  btnRevokeLink.resize(348, 44);
+  w11ListCard.appendChild(btnRevokeLink);
+  w11CardsRow.appendChild(w11ListCard);
+
+  // Card 3: Join Screen (/join/:token) with Privacy Notice
+  const w11JoinCard = figma.createFrame();
+  w11JoinCard.layoutMode = "VERTICAL";
+  w11JoinCard.itemSpacing = 10;
+  w11JoinCard.resize(380, 420);
+  w11JoinCard.cornerRadius = 12;
+  w11JoinCard.fills = solidFill(C.bgSubtle);
+  w11JoinCard.strokes = [{ type: "SOLID", color: C.primary }];
+  w11JoinCard.strokeWeight = 2;
+  w11JoinCard.paddingLeft = 16; w11JoinCard.paddingRight = 16; w11JoinCard.paddingTop = 16; w11JoinCard.paddingBottom = 16;
+  w11JoinCard.appendChild(makeBadge("Màn hình /join/:token", C.brandTint, C.primary));
+  w11JoinCard.appendChild(createText("Xác nhận vào Dược lý lâm sàng", 16, FONT_BOLD, C.text));
+  const privacyBox = figma.createFrame();
+  privacyBox.resize(348, 68);
+  privacyBox.cornerRadius = 8;
+  privacyBox.fills = solidFill(C.brandTint);
+  privacyBox.paddingLeft = 10; privacyBox.paddingRight = 10; privacyBox.paddingTop = 8;
+  privacyBox.appendChild(createText("🔒 Chủ khoá thấy tên, ngày vào, số bài học. Không thấy chat hay bài làm.", 11, FONT_REG, C.primary));
+  w11JoinCard.appendChild(privacyBox);
+  const btnJoinConfirm = makeButton("Tham gia khoá học ➔", C.primary, C.white);
+  btnJoinConfirm.resize(348, 44);
+  w11JoinCard.appendChild(btnJoinConfirm);
+  w11CardsRow.appendChild(w11JoinCard);
+
+  w11Frame.appendChild(w11CardsRow);
+  figma.currentPage.appendChild(w11Frame);
+  createdNodes.push(w11Frame);
 
   // Focus and Zoom
   figma.viewport.scrollAndZoomIntoView(createdNodes);

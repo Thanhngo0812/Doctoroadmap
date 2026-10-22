@@ -69,6 +69,42 @@ async function capture() {
     }
   }
 
+  // W-11 Matrix: Course Management, Share Links & Join Token (6 captures)
+  for (const [vpName, vp] of Object.entries(viewports)) {
+    for (const theme of ['light', 'dark']) {
+      tasks.push({
+        name: `w11_management_${vp.width}_${theme}.png`,
+        url: 'file:///' + path.join(root, 'design/preview/w11_course_management_screens.html').replace(/\\/g, '/'),
+        viewport: vp,
+        theme,
+        fullPage: true,
+        setup: async (page) => {
+          if (theme === 'dark') {
+            await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+          }
+        }
+      });
+    }
+  }
+
+  // W-08 Matrix: Lecture Streaming, Prerequisites Accordion & Source Viewer (6 captures)
+  for (const [vpName, vp] of Object.entries(viewports)) {
+    for (const theme of ['light', 'dark']) {
+      tasks.push({
+        name: `w08_lecture_${vp.width}_${theme}.png`,
+        url: 'file:///' + path.join(root, 'design/preview/w08_lecture_screens.html').replace(/\\/g, '/'),
+        viewport: vp,
+        theme,
+        fullPage: true,
+        setup: async (page) => {
+          if (theme === 'dark') {
+            await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+          }
+        }
+      });
+    }
+  }
+
   // Key Baseline Pages (Desktop 1280, Mobile 390)
   tasks.push(
     // Auth screens

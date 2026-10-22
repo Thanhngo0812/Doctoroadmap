@@ -225,12 +225,49 @@
           ⚠️ Tệp này là bản quét (ảnh chụp trang), WayFinder chưa đọc được. Hãy dùng bản PDF có chữ chọn được hoặc tải lên tệp DOCX.
         </p>
         <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-top: 4px;">
-          Gợi ý: Xuất lại tệp PDF từ phần mềm gốc (Word, LaTeX, Google Docs) để bảo đảm tài liệu có lớp chữ số hoá.
+          Gợi ý: Xuất lại tệp PDF từ phần mềm gốc (Word, LaTeX, Google Docs) để bảo đảm tài liệu có lớp chữ số hoá. Không trừ lượt dựng.
         </p>
       </div>
       <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
         <button class="btn btn-primary" id="btn-retry-upload">Thử lại với tệp khác</button>
         <button class="btn btn-secondary" id="btn-back-courses">Quay lại danh sách khoá học</button>
+      </div>
+    </section>
+
+    <!-- State 4: Error - Font Encoding (Chữ lỗi) -->
+    <section class="card" id="section-font-error">
+      <h2 style="font-size: var(--text-h3); color: var(--color-danger);">4. Trạng thái lỗi: Chữ bị lỗi phông (Font Encoding Error)</h2>
+      <div class="error-banner">
+        <p style="font-weight: var(--font-semibold); font-size: var(--text-body); color: var(--color-danger);">
+          ⚠️ Chữ trong tệp bị lỗi phông nên WayFinder chưa đọc đúng. Hãy xuất lại PDF từ tệp gốc (Word, LaTeX) hoặc dùng bản khác.
+        </p>
+        <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-top: 4px;">
+          Lưu ý: Hệ thống không trừ lượt dựng khi tệp gặp lỗi mã hoá phông chữ.
+        </p>
+      </div>
+      <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+        <button class="btn btn-primary" id="btn-retry-font-error">Chọn tệp khác</button>
+        <button class="btn btn-secondary" id="btn-back-font-error">Quay lại khoá học</button>
+      </div>
+    </section>
+
+    <!-- State 5: Pipeline Cancelled (Tiến trình đã huỷ) -->
+    <section class="card" id="section-pipeline-cancelled">
+      <h2 style="font-size: var(--text-h3); color: var(--color-text-muted);">5. Trạng thái: Tiến trình dựng đã bị huỷ (Cancelled State)</h2>
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-top: var(--space-3);">
+        <div style="display: flex; align-items: center; gap: var(--space-3);">
+          <span style="font-size: 28px;">⏹️</span>
+          <div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">Tiến trình đã được dừng lại an toàn</h3>
+            <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-top: 2px;">
+              Quá trình xử lý tệp <code>Giao_trinh_Noi_khoa_2026.pdf</code> đã huỷ theo yêu cầu của bạn. Toàn bộ tài nguyên dựng tạm thời đã được giải phóng và <strong>không trừ lượt dựng</strong> của tài khoản.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+        <button class="btn btn-primary" id="btn-cancelled-upload-new">Tải lên tệp mới</button>
+        <button class="btn btn-secondary" id="btn-cancelled-back-courses">Về khoá học của tôi</button>
       </div>
     </section>
   </main>
