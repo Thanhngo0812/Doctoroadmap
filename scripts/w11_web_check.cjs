@@ -127,7 +127,10 @@ async function main() {
     await matrix(owner, 'share');
     await owner.keyboard.press('Escape');
     assert.equal(await owner.locator('dialog[open]').count(), 0);
+    const refreshedLinks = owner.waitForResponse(r => r.request().method() === 'GET' && r.url().endsWith('/share-links'));
     await owner.getByRole('button', { name: 'Chia sẻ', exact: true }).click();
+    await (await refreshedLinks).finished();
+    await owner.getByText('Đang tải link…', { exact: true }).waitFor({ state: 'hidden' });
     assert.equal(await owner.locator('.sharing-once').count(), 0);
     await owner.keyboard.press('Escape');
     audit.assertions.push('owner creates/copies a one-time token; close clears it; list contains only tail');
