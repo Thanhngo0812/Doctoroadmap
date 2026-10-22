@@ -115,7 +115,7 @@ Bốn luật:
 | [57](57-kho-json-pha-b-thu-lai-os-replace.md) | Kho JSON Pha B: thử lại `os.replace` khi Windows báo `PermissionError` (nguồn chập chờn của SA-54 và `lecture_sa30`) | 54 | 0 | đạt · ghép `43e8dda`, revert `59e72a8` để giữ cửa W-14, ghép lại `04c3efa` (cổng chung 2.218 đạt) |
 | [58](58-tro-ly-scope-tim-kiem-va-ghi-am-nhieu-vong.md) | Trợ lý: `scope` không khớp bộ tìm kiếm thật (phiên module hỏng ngay lượt đầu); ghi âm phản hồi nhiều vòng bị sai | — | 0 | đạt · đã ghép `e2cfbac` (cổng 2.235 đạt, 1 bỏ qua): 7 test đỏ trước rồi xanh; bản ghi mốc SA-55/56 chỉ đổi mô tả công cụ |
 | [59](59-tro-ly-cho-truoc-loi-goi-dau.md) | Trợ lý: đo và cắt thời gian chờ trước lời gọi mô hình đầu tiên (TTFT p50 15,8 s, mô hình chỉ 0,95 s) | 58 | 0 | đạt · đã ghép `d2ea0f3` (cổng 2.249 đạt): chờ giả lập p50 863 → 398 ms, tìm kiếm không đổi; phần chờ thật còn lại → **60** |
-| [60](60-do-thoi-gian-that-tung-khau-tro-ly.md) | Đo thời gian thật từng khâu của trợ lý (Vertex, Developer API, kho bộ nhớ) | — | dưới 0,05 USD | sẵn sàng; **chủ dự án duyệt tiền 2026-10-22** ("tôi duyệt tiền hết"); chạy sau SA-20 để không chia quota |
+| [60](60-do-thoi-gian-that-tung-khau-tro-ly.md) | Đo thời gian thật từng khâu của trợ lý (Vertex, Developer API, kho bộ nhớ) | — | trần 0,08 USD | sẵn sàng; **chủ dự án duyệt tiền 2026-10-22** ("tôi duyệt tiền hết"); chạy sau SA-20 để không chia quota |
 
 **Vá sau SA-45, 2026-10-19:** các lỗi 46–50 đã ghép và kiểm, SA-51 sửa phương pháp tổng hợp và phát lại đủ 12 mẫu, không dùng phê duyệt chi cũ cho lượt mới. Xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Các phán xét SA-45 ở dòng 34–43 phía trên là lịch sử trước vá; lỗi tương ứng đã xử lý ở 46–50, giới hạn bằng chứng so nhiệt độ vẫn được giữ tại 51.
 
