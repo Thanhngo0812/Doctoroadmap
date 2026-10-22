@@ -1,0 +1,165 @@
+{
+  "process": "UTF-8 LF and trailing-whitespace normalization; disposable mutation-token redaction only; JSON semantics and JUnit statuses preserved",
+  "rawRegressionArchivesUnchanged": true,
+  "partialEarlierPass": {
+    "stoppedAt": "mutations/token-disclosure.xml",
+    "reason": "strict failure-message attribute comparison rejected intentional token redaction before writing this XML",
+    "beforeHashesForEarlierNormalizedFiles": "not persisted by the failed attempt; do not infer original byte hashes from final hashes",
+    "effect": "earlier text may already be normalized; test statuses and native exits were not changed"
+  },
+  "files": [
+    {
+      "path": "mutations/token-disclosure.xml",
+      "beforeSha256": "404f9bfe714f9bcd86334b939812dff440491ee960d170ef7b5f000dfc59f177",
+      "afterSha256": "d0553c6c2ea4d3d81a8626c5ecb2e0ad08375d26b3952008aefe358f144cec3d",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 2,
+      "junitCaseStatusesPreserved": true
+    },
+    {
+      "path": "mutations/use-limit.log",
+      "beforeSha256": "5cea9b1ec80103d5382c6aef87cc336a5cdb747a98f1e1a1e421345120d2f5e5",
+      "afterSha256": "ecccab0214773f38f7d707885e99b4a5e6edb7a4d49ee47875a155036986d830",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "mutations/use-limit.xml",
+      "beforeSha256": "a895b610fae4abf1e498b2004011e6619b90b49c3f8b403b76f8486cfe4c6d69",
+      "afterSha256": "561b29770badd2dcded4a28adcc6ef8c625861764438379d7a309abd08bf4099",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": true
+    },
+    {
+      "path": "react-dev.log",
+      "beforeSha256": "add0a3a3f0669b9e5e1a71761a46af23f9110cd875e2f4d893fba4f110b59157",
+      "afterSha256": "430780cef164eecc2ed0db97d5f07748e098bd6e7b5ad620972bd18f24f41b9a",
+      "sourceEncoding": "utf-16",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "README.md",
+      "beforeSha256": "112eae7c9732b081467a6afab9d429a32d476eaf50a33c4980f500d56dbecd26",
+      "afterSha256": "330a900eb11c11f329be024197b53b0647308f25d9005a52eb9bc16b01e107f8",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "regions-green-exit.txt",
+      "beforeSha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "afterSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "regions-green.log",
+      "beforeSha256": "a4b91edb6125c042be8cc1f0d810bf671f65de16a1a098d7c2109e202fd940f6",
+      "afterSha256": "eec969cb5c8e7b23eeba12651c088d09babb372446263ada2a53793f9510d4ce",
+      "sourceEncoding": "utf-16",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "regions-red-exit.txt",
+      "beforeSha256": "f1b2f662800122bed0ff255693df89c4487fbdcf453d3524a42d4ec20c3d9c04",
+      "afterSha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "regions-red.log",
+      "beforeSha256": "d772ec941cd949cd24fed6a0d07dffe785eb4504e4a6444fdf3f06503a34dcd7",
+      "afterSha256": "ccf3ad339dc0cf041ad78e51ba8548df3bfec86861029920204981ca3539336d",
+      "sourceEncoding": "utf-16",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "release-build-exit.txt",
+      "beforeSha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "afterSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "release-build.log",
+      "beforeSha256": "dcdccefbca35069fae9a1ed8d67f9426fcd307278d9fa86f70718f8f49e9e9c4",
+      "afterSha256": "cfe2076427f4f43ca817ad5ef25e386f069cf6c79917b53577fba3963498a02c",
+      "sourceEncoding": "utf-16",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "release-react-exit.txt",
+      "beforeSha256": "13bf7b3039c63bf5a50491fa3cfd8eb4e699d1ba1436315aef9cbe5711530354",
+      "afterSha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "release-react.log",
+      "beforeSha256": "31f8adeca8d0ba00e84c9043a83c7f98e3ac659a53704b847801c42355da6ec2",
+      "afterSha256": "b170e88ebd4c5235a4cc3c693e83e0496a964aa565f190f5393abb4fa2edf3c6",
+      "sourceEncoding": "utf-16",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "review.md",
+      "beforeSha256": "942e22cb4c3e8036fce1eac1c9e0e305e7f74e35dcc08d60d562c080219967b8",
+      "afterSha256": "38d330f609430967d817a07b9b75773cc791cc7a609c95a851680eab8d7fcbde",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "session-green.log",
+      "beforeSha256": "9d8a51798b75a85c816f3da3bd4e9db1850a849c851caa9b5aec8c36ac5fb8fa",
+      "afterSha256": "ef3932b6e070c6272c663114490bbfca053a16761c43584467f61d31311a1510",
+      "sourceEncoding": "utf-16",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    },
+    {
+      "path": "session-green.xml",
+      "beforeSha256": "058790c62b0faafb57f0c32cab302ee72a57c06989e5f01bb18f09775ca0f136",
+      "afterSha256": "f14c64097a007aae0848480b6f9d6ef6b41ae01cc36e908eadc35c25e6b4e455",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": true
+    },
+    {
+      "path": "source-manifest.json",
+      "beforeSha256": "b90b07aa41f69050e588014249707b0a39c6bfcd0b75dd4897c7998f3412bcb4",
+      "afterSha256": "096bee1bdb190670ad25eff93daeff919537cf30e234ad86e1cdd271831a3e73",
+      "sourceEncoding": "utf-8-sig",
+      "targetEncoding": "UTF-8 LF",
+      "testTokenMatchesRedacted": 0,
+      "junitCaseStatusesPreserved": null
+    }
+  ]
+}

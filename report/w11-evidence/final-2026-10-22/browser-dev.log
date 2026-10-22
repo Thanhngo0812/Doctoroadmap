@@ -1,0 +1,11 @@
+python.exe : page.addStyleTag: Applying inline style violates the following Content Security Policy directive
+'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash
+('sha256-Pq4dJDpNGHxvfqQaS+hsLTH3/9HXVgvJSerk0zRxitc='), or a nonce ('nonce-...') is required to enable inline
+execution. The action has been blocked.
+At line:2 char:1
++ & C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (page.addStyleTa...s been blocked.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+    at main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\scripts\w11_web_check.cjs:116:17)

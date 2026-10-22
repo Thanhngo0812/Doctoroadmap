@@ -1,0 +1,11 @@
+python.exe : locator.selectOption: Timeout 30000ms exceeded.
+At line:3 char:1
++ & C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (locator.selectO...000ms exceeded.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+Call log:
+[2m  - waiting for getByLabel('Thời hạn', { exact: true })[22m
+
+    at main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\scripts\w11_web_check.cjs:118:57)

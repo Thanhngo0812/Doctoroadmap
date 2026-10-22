@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_revoked_or_expired_link_is_invalid_even_for_an_existing_member _____
+
+    def test_revoked_or_expired_link_is_invalid_even_for_an_existing_member():
+        owner_id, learner_id = str(uuid4()), str(uuid4())
+        store, clock = MemoryStore(owner_id, learner_id), Clock()
+        service = SharingService(store, settings=type("Settings", (), {
+            "share_link_default_days": 7, "course_max_members": 200,
+            "public_base_url": "https://learn.example.vn"})(), clock=clock)
+        revoked = service.create_share_link(owner_actor(owner_id), store.course_id)["link"]["token"]
+        revoked_id = next(iter(store.links))
+        service.revoke_share_link(owner_actor(owner_id), store.course_id, revoked_id)
+        expired = service.create_share_link(owner_actor(owner_id), store.course_id, expires_in_days=1)["link"]["token"]
+        clock.value += timedelta(days=1)
+        for token in (revoked, expired):
+>           with pytest.raises(WebError) as error:
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'wayfinder.api.errors.WebError'>
+
+src\web\backend\tests\test_w11_sharing.py:148: Failed
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\report\w11-evidence\final-2026-10-22\mutations\expiry.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w11_sharing.py::test_revoked_or_expired_link_is_invalid_even_for_an_existing_member
+1 failed, 1 warning in 3.57s

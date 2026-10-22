@@ -1,0 +1,38 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_share_link_token_is_one_time_and_never_returned_by_list _________
+
+    def test_share_link_token_is_one_time_and_never_returned_by_list():
+        owner_id = str(uuid4())
+        store, clock = MemoryStore(owner_id), Clock()
+        service = SharingService(store, settings=type("Settings", (), {
+            "share_link_default_days": 7, "course_max_members": 200,
+            "public_base_url": "https://learn.example.vn"})(), clock=clock)
+
+        result = service.create_share_link(owner_actor(owner_id), store.course_id)
+
+        token = result["link"]["token"]
+        assert len(__import__("base64").urlsafe_b64decode(token + "=")) == 32
+        assert result["link"]["url"] == f"https://learn.example.vn/join/{token}"
+        assert result["link"]["expires_at"] == (clock.now() + timedelta(days=7)).isoformat()
+        assert store.links[result["link"]["id"]].token_hash != token.encode()
+        listed = service.list_share_links(owner_actor(owner_id), store.course_id)
+>       assert token not in repr(listed)
+E       assert 'cnU86N8X3o8...rz_Hm562YqCU' not in "{'items': [... 'active'}]}"
+E
+E         'cnU86N8X3o8saTelPT...hKccv7irz_Hm562YqCU' is contained here:
+E         ?           ^^
+E           n_tail': '[REDACTED_43_CHAR_TEST_TOKEN]', 'created_at': '2026-10-21T00:00:00+00:00', 'expires_at': '2026-10-28T00:00:00+00:00', 'max_uses': None, 'use_count': 0, 'revoked_at': None, 'status': 'active'}]}
+E         ?           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w11_sharing.py:104: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\report\w11-evidence\final-2026-10-22\mutations\token-disclosure.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w11_sharing.py::test_share_link_token_is_one_time_and_never_returned_by_list
+1 failed, 1 warning in 1.80s
