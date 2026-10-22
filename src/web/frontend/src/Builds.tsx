@@ -193,7 +193,7 @@ export function BuildPage(props: ThemeProps) {
     && (upload?.confirmed_at === undefined ? build?.status === 'awaiting_confirmation' : upload.confirmed_at === null);
   const failureText = build?.error?.code === 'confirmation_expired'
     ? 'Đã hết thời hạn xác nhận. Hãy tải tài liệu lên lại để tiếp tục.'
-    : build?.error ? new ApiError(build.error.code).message : 'Bản dựng chưa hoàn tất. Hãy thử lại nếu nút bên dưới đang khả dụng.';
+    : build?.error ? new ApiError(build.error.code).message : 'Bản dựng đã dừng. Bạn có thể quay về danh sách khoá học.';
 
   const heading = loading ? 'Đang tải trạng thái' : !build ? 'Trạng thái bản dựng' : canConfirm ? 'Xác nhận dựng lộ trình' : build.status === 'succeeded' ? 'Lộ trình đã sẵn sàng' : build.status === 'queued' ? 'Đang chờ dựng' : activeStatuses.has(build.status) ? 'Đang dựng lộ trình' : 'Trạng thái bản dựng';
 

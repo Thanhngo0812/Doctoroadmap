@@ -238,3 +238,18 @@ it('cancels only when the server allows it and includes the course ID', async ()
   expect(screen.queryByRole('button', { name: 'Huỷ dựng' })).not.toBeInTheDocument();
 });
 
+it('explains a completed cancellation without suggesting an unavailable retry button', async () => {
+  vi.stubGlobal('fetch', vi.fn(async (input: RequestInfo | URL) => {
+    const url = String(input);
+    if (url.endsWith('/me')) return me();
+    if (url.endsWith('/courses/course-1')) return json(course);
+    if (url.endsWith('/uploads/upload-1')) return json({ ...upload, confirmed_at: '2026-10-22T00:00:00Z' });
+    if (url.includes('/builds/build-1?course_id=course-1')) return json(build({ status: 'cancelled', can_cancel: false, can_retry: false }));
+    throw new Error(`Unexpected request ${url}`);
+  }));
+  renderPage('/ban-dung/build-1?course_id=course-1&upload_id=upload-1');
+  expect(await screen.findByRole('heading', { name: 'Đã huỷ' })).toBeInTheDocument();
+  expect(screen.getByText('Bản dựng đã dừng. Bạn có thể quay về danh sách khoá học.')).toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Thử lại' })).not.toBeInTheDocument();
+});
+
