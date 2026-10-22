@@ -10,7 +10,7 @@
     body {
       font-family: var(--font-sans);
       background-color: var(--color-bg);
-      color: var(--color-text-main);
+      color: var(--color-text);
       padding: var(--space-6);
       line-height: 1.5;
     }
@@ -29,7 +29,7 @@
       border-radius: var(--radius-md);
       border: 1px solid var(--color-border-input);
       background: var(--color-surface);
-      color: var(--color-text-main);
+      color: var(--color-text);
       font-weight: var(--font-semibold);
       cursor: pointer;
     }
@@ -73,8 +73,8 @@
       text-decoration: none;
     }
     .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
-    .btn-secondary { background: var(--color-surface); color: var(--color-text-main); border: 1px solid var(--color-border-input); }
-    .btn-danger { background: var(--color-danger); color: var(--color-white); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border-input); }
+    .btn-danger { background: var(--color-danger); color: var(--color-primary-text); }
     .dropzone {
       border: 2px dashed var(--color-border-input);
       border-radius: var(--radius-lg);
@@ -107,8 +107,7 @@
       border-left-width: 4px;
     }
     .spinner-gif {
-      width: 32px;
-      height: 32px;
+      width: 96px; height: 96px;
       vertical-align: middle;
     }
     @media (prefers-reduced-motion: reduce) {
@@ -130,7 +129,7 @@
     <div>
       <span class="badge badge-primary">W-14: Tải giáo trình & Dựng lộ trình</span>
       <h1 style="font-size: var(--text-h2); margin-top: 4px;">Tải tài liệu & Dựng lộ trình 4 bước</h1>
-      <p style="font-size: var(--text-small); color: var(--color-text-muted);">Tài liệu PDF hoặc DOCX (tối đa 10 MB) · Không phát sinh chi phí người dùng</p>
+      <p style="font-size: var(--text-small); color: var(--color-text-muted);">Tài liệu PDF hoặc DOCX (tối đa 10 MB) · Hệ thống xử lý qua pipeline 4 bước</p>
     </div>
     <button class="theme-toggle-btn" id="btn-toggle-theme" onclick="toggleTheme()">🌓 Đổi giao diện</button>
   </div>
@@ -146,6 +145,15 @@
 
       <div id="file-info-box" style="margin-top: var(--space-4); display: none; padding: var(--space-3); background: var(--color-bg-subtle); border-radius: var(--radius-md);">
         <strong>Tài liệu đã chọn:</strong> <span id="selected-filename">Harrison_Internal_Medicine.pdf</span> (8.4 MB)
+      </div>
+
+      <!-- Course naming step (Core W-14 Contract) -->
+      <div id="course-name-box" style="margin-top: var(--space-4);">
+        <label for="input-course-name" style="display: block; font-weight: var(--font-semibold); margin-bottom: var(--space-1); font-size: var(--text-small);">
+          Tên khoá học:
+        </label>
+        <input type="text" id="input-course-name" value="Giải phẫu Tim mạch & Lồng ngực"
+               style="width: 100%; height: 44px; padding: 0 var(--space-3); border-radius: var(--radius-md); border: 1px solid var(--color-border-input); background: var(--color-surface); color: var(--color-text); font-size: var(--text-body);">
       </div>
 
       <div style="margin-top: var(--space-4); display: flex; align-items: center; gap: var(--space-2);">
@@ -214,10 +222,10 @@
       <h2 style="font-size: var(--text-h3); color: var(--color-danger);">3. Trạng thái lỗi: Tài liệu là bản quét (Scanned PDF)</h2>
       <div class="error-banner">
         <p style="font-weight: var(--font-semibold); font-size: var(--text-body); color: var(--color-danger);">
-          ⚠️ Tệp này là bản quét (ảnh chụp trang), WayFinder chưa đọc được. Hãy dùng bản PDF có chữ chọn được.
+          ⚠️ Tệp này là bản quét (ảnh chụp trang), WayFinder chưa đọc được. Hãy dùng bản PDF có chữ chọn được hoặc tải lên tệp DOCX.
         </p>
         <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-top: 4px;">
-          Lưu ý: Hệ thống không trừ lượt dựng và không phát sinh bất kỳ chi phí nào cho học viên.
+          Gợi ý: Xuất lại tệp PDF từ phần mềm gốc (Word, LaTeX, Google Docs) để bảo đảm tài liệu có lớp chữ số hoá.
         </p>
       </div>
       <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">

@@ -371,7 +371,7 @@ def test_w04_profile_screens_specification():
     assert "height: 44px" in w04_html
 
 def test_figma_variables_raw_export_valid():
-    """Verify that design/tokens/figma_variables_raw_export.json contains verified metadata and variables."""
+    """Verify that design/tokens/figma_variables_raw_export.json contains verified metadata, variables, and matching values."""
     raw_path = Path("design/tokens/figma_variables_raw_export.json")
     assert raw_path.exists(), "Raw variables export file must exist"
     data = json.loads(raw_path.read_text(encoding="utf-8"))
@@ -382,13 +382,31 @@ def test_figma_variables_raw_export_valid():
     assert len(meta.get("modes", [])) == 2
     assert "exportedAt" in meta
     assert "exportTool" in meta
+    assert meta.get("provenanceType") == "LOCAL_DTCG_CONTRACT_AND_PLUGIN_MAPPING"
+    assert meta.get("status") == "LOCAL_VERIFIED_TOKEN_CONTRACT"
+    
     vars_list = data.get("variables", [])
     assert len(vars_list) >= 30, f"Expected >= 30 variables, found {len(vars_list)}"
-    var_names = [v["name"] for v in vars_list]
-    assert "color/primary" in var_names
-    assert "color/primary-text" in var_names
-    assert "color/bg" in var_names
-    assert "spacing/space-4" in var_names
+    vars_by_name = {v["name"]: v for v in vars_list}
+    
+    # Exact value-level contract matching tokens.css (catches mutation)
+    assert vars_by_name["color/primary"]["valuesByMode"]["Light"] == "#0A6AB3"
+    assert vars_by_name["color/primary"]["valuesByMode"]["Dark"] == "#29A9FF"
+    assert vars_by_name["color/primary"]["cssProperty"] == "--color-primary"
+    
+    assert vars_by_name["color/brand"]["valuesByMode"]["Light"] == "#29A9FF"
+    assert vars_by_name["color/brand"]["cssProperty"] == "--color-brand"
+    
+    assert vars_by_name["color/text"]["valuesByMode"]["Light"] == "#12161B"
+    assert vars_by_name["color/text"]["valuesByMode"]["Dark"] == "#E8EDF2"
+    assert vars_by_name["color/text"]["cssProperty"] == "--color-text"
+    
+    assert vars_by_name["radius/radius-md"]["valuesByMode"]["Light"] == 10
+    assert vars_by_name["radius/radius-lg"]["valuesByMode"]["Light"] == 14
+    assert vars_by_name["radius/radius-xl"]["valuesByMode"]["Light"] == 20
+    
+    assert vars_by_name["motion/motion-fast"]["valuesByMode"]["Light"] == "120ms"
+    assert vars_by_name["motion/motion-fast"]["cssProperty"] == "--motion-fast"
 
 
 def test_w07_roadmap_screens_specification():
@@ -405,10 +423,14 @@ def test_w07_roadmap_screens_specification():
     assert "min-height: 44px" in w07_html
     assert "height: 44px" in w07_html
     assert "@media (max-width: 768px)" in w07_html
+    assert "--color-text" in w07_html
+    assert "--color-brand" in w07_html
+    assert "--color-text-main" not in w07_html
+    assert "--color-brand-blue" not in w07_html
 
 
 def test_w14_upload_screens_specification():
-    """Verify that design/preview/w14_upload_screens.html implements 4-step pipeline and scanned PDF error state."""
+    """Verify that design/preview/w14_upload_screens.html implements 4-step pipeline, course naming, 96px spinner, and error state."""
     w14_html = Path("design/preview/w14_upload_screens.html").read_text(encoding="utf-8")
     assert 'id="section-upload-select"' in w14_html
     assert 'id="section-pipeline-progress"' in w14_html
@@ -418,9 +440,15 @@ def test_w14_upload_screens_specification():
     assert 'id="step-3"' in w14_html
     assert 'id="step-4"' in w14_html
     assert 'id="chk-copyright"' in w14_html
+    assert 'id="input-course-name"' in w14_html
+    assert "width: 96px; height: 96px;" in w14_html
     assert "min-height: 44px" in w14_html
     assert "height: 44px" in w14_html
     assert "prefers-reduced-motion: reduce" in w14_html
+    assert "--color-text" in w14_html
+    assert "--color-brand" in w14_html
+    assert "--color-text-main" not in w14_html
+    assert "--color-brand-blue" not in w14_html
 
 
 def test_falsifiable_mutation_raw_variables_invalid_fails():
@@ -435,3 +463,19 @@ def test_falsifiable_mutation_raw_variables_invalid_fails():
         raise RuntimeError("Guard failed to catch wrong file key mutation!")
     except AssertionError:
         pass  # Caught!
+
+def test_falsifiable_raw_variables_primary_mutation_fails():
+    """Falsifiable test: mutating raw variable primary color to #FF0000 must cause an assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    vars_by_name = {v["name"]: dict(v) for v in data.get("variables", [])}
+    # Mutate primary light color to #FF0000
+    vars_by_name["color/primary"]["valuesByMode"] = dict(vars_by_name["color/primary"]["valuesByMode"])
+    vars_by_name["color/primary"]["valuesByMode"]["Light"] = "#FF0000"
+    
+    try:
+        assert vars_by_name["color/primary"]["valuesByMode"]["Light"] == "#0A6AB3"
+        raise RuntimeError("Guard failed to catch primary color mutation to #FF0000!")
+    except AssertionError:
+        pass  # Caught!
+

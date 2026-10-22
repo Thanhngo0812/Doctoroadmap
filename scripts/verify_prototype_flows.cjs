@@ -125,10 +125,12 @@ async function runPrototypes() {
       const isFeedbackVisible = await page.isVisible('#flow2-copy-feedback');
       if (!isFeedbackVisible) throw new Error('Flow 2 - Step 2: Copy feedback not displayed');
 
-      // Assert copied text strictly contains WF-PHARM-2026
-      const copiedText = await page.getAttribute('#flow2-btn-copy', 'data-copied-text');
+      // Assert actual clipboard content read from browser strictly contains WF-PHARM-2026
+      const copiedText = await page.evaluate(async () => {
+        return await navigator.clipboard.readText();
+      });
       if (!copiedText || !copiedText.includes('WF-PHARM-2026')) {
-        throw new Error(`Flow 2 - Step 2: Copied content assertion failed (got: "${copiedText}")`);
+        throw new Error(`Flow 2 - Step 2: Actual clipboard read failed! (got: "${copiedText}")`);
       }
 
       // Click simulate join
@@ -205,11 +207,42 @@ async function runPrototypes() {
         throw new Error('Flow 3 - Step 4: 4-Step build progress completion assertion failed');
       }
 
-      // Test reduced-motion toggle interaction & prove GIF is frozen across time
+      // Verify animated GIF is successfully loaded and decoded with naturalWidth > 0
+      const initialImgStatus = await page.$eval('#flow3-spinner-img', async (img) => {
+        if ('decode' in img) {
+          try { await img.decode(); } catch (e) {}
+        }
+        return {
+          complete: img.complete,
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight,
+          src: img.currentSrc || img.src
+        };
+      });
+      if (!initialImgStatus.complete || initialImgStatus.naturalWidth <= 0) {
+        throw new Error(`Flow 3 - Step 5: Spinner animated GIF failed to load or has 0 dimensions! complete=${initialImgStatus.complete}, naturalWidth=${initialImgStatus.naturalWidth}`);
+      }
+
+      // Test reduced-motion toggle interaction & prove static replacement decodes
       await page.click('#btn-toggle-reduced-motion');
       const spinnerSrc = await page.getAttribute('#flow3-spinner-img', 'src');
-      if (!spinnerSrc.includes('spinner_frame0_static.png')) {
+      if (!spinnerSrc.includes('Untitled_Artwork_static.png')) {
         throw new Error(`Flow 3 - Step 5: Reduced motion static fallback not engaged (got: ${spinnerSrc})`);
+      }
+
+      // Verify static replacement image is loaded and decoded
+      const staticImgStatus = await page.$eval('#flow3-spinner-img', async (img) => {
+        if ('decode' in img) {
+          try { await img.decode(); } catch (e) {}
+        }
+        return {
+          complete: img.complete,
+          naturalWidth: img.naturalWidth,
+          naturalHeight: img.naturalHeight
+        };
+      });
+      if (!staticImgStatus.complete || staticImgStatus.naturalWidth <= 0) {
+        throw new Error(`Flow 3 - Step 5: Static replacement image failed to decode! complete=${staticImgStatus.complete}, naturalWidth=${staticImgStatus.naturalWidth}`);
       }
 
       // Capture spinner buffer at t=0
@@ -288,18 +321,34 @@ async function runPrototypes() {
         throw new Error('Flow 4 - Step 4: Result panel display assertion failed');
       }
 
+      // Assert Citation Box starts offscreen (below initial viewport fold)
+      const viewportHeight = 900;
+      const rectBefore = await page.$eval('#flow4-citation-box', el => {
+        const r = el.getBoundingClientRect();
+        return { top: r.top, bottom: r.bottom };
+      });
+      if (rectBefore.top < viewportHeight) {
+        throw new Error(`Flow 4 - Step 5: Citation box must start offscreen below fold before scrolling! (top: ${rectBefore.top}, viewportHeight: ${viewportHeight})`);
+      }
+
+      // Click View Citation button and wait for scroll animation
+      await page.click('#flow4-btn-view-citation');
+      await page.waitForTimeout(400);
+
+      // Assert Citation Box is now scrolled into viewport (intersecting bounding box)
+      const rectAfter = await page.$eval('#flow4-citation-box', el => {
+        const r = el.getBoundingClientRect();
+        return { top: r.top, bottom: r.bottom };
+      });
+      const isInViewport = rectAfter.top < viewportHeight && rectAfter.bottom > 0;
+      if (!isInViewport) {
+        throw new Error(`Flow 4 - Step 6: Citation box failed to scroll into viewport! (top: ${rectAfter.top}, bottom: ${rectAfter.bottom}, viewportHeight: ${viewportHeight})`);
+      }
+
       // Assert Citation Content strictly matches Harrison's Internal Medicine 21st, Trang 1892
       const citationText = await page.textContent('#flow4-citation-box');
       if (!citationText.includes("Harrison's Internal Medicine, 21st Edition") || !citationText.includes("Trang 1892")) {
-        throw new Error(`Flow 4 - Step 5: Citation content mismatch! (got: "${citationText}")`);
-      }
-
-      // Click View Citation button and assert citation box is visible
-      await page.click('#flow4-btn-view-citation');
-      await page.waitForTimeout(100);
-      const isCitationVisible = await page.isVisible('#flow4-citation-box');
-      if (!isCitationVisible) {
-        throw new Error('Flow 4 - Step 6: Citation box is not visible after view click');
+        throw new Error(`Flow 4 - Step 7: Citation content mismatch! (got: "${citationText}")`);
       }
 
       const shotPath = path.join(persistentEvidenceDir, 'prototype_flow4_quiz.png');

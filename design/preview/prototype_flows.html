@@ -666,8 +666,8 @@
         
         <div class="spinner-box">
           <picture>
-            <source srcset="../assets/spinner_frame0_static.png" media="(prefers-reduced-motion: reduce)">
-            <img class="spinner-gif" src="../assets/spinner_96.gif" alt="Vòng chờ xử lý tài liệu" id="flow3-spinner-img">
+            <source srcset="../Untitled_Artwork_static.png" media="(prefers-reduced-motion: reduce)">
+            <img class="spinner-gif" src="../Untitled_Artwork.gif" alt="Vòng chờ xử lý tài liệu" id="flow3-spinner-img">
           </picture>
           <div>
             <div id="flow3-current-task" style="font-weight:600; font-size:15px; color:var(--color-primary);">
@@ -755,12 +755,25 @@
             <p style="font-size:14px; line-height:1.6; margin-bottom:10px;">
               Nhánh gian thất trước (LAD) chạy trong rãnh gian thất trước, cấp máu cho phần lớn cơ tim thất trái, mỏm tim và 2/3 trước vách liên thất. Tắc nhánh LAD thường gây nhồi máu cơ tim trước rộng và có tỷ lệ tử vong cao nhất.
             </p>
-            <div id="flow4-citation-box" style="font-size:12px; color:var(--color-text-muted); font-weight:600; padding: 8px; border-radius: var(--radius-sm); background: var(--color-bg-subtle);">
-              📖 Trích dẫn: Harrison's Internal Medicine, 21st Edition &bull; Chương 270: Thiếu máu cục bộ cơ tim &bull; Trang 1892.
-            </div>
-            <button type="button" class="btn-action" id="flow4-btn-view-citation" style="margin-top: 8px; height: 36px; min-height: 36px; font-size: 13px;" onclick="document.getElementById('flow4-citation-box').scrollIntoView({ behavior: 'smooth' });">
+            <button type="button" class="btn-action" id="flow4-btn-view-citation" style="margin-top: 8px; margin-bottom: 16px; height: 36px; min-height: 36px; font-size: 13px;" onclick="document.getElementById('flow4-citation-box').scrollIntoView({ behavior: 'smooth', block: 'center' });">
               🔍 Xem trích dẫn giáo trình
             </button>
+            
+            <!-- Offscreen spacer pushing Citation Box below initial viewport fold -->
+            <div id="flow4-clinical-deepdive" style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed var(--color-border);">
+              <h5 style="margin-bottom: 8px; font-size: 14px; color: var(--color-text);">Chi tiết phân tích huyết động và giải phẫu lâm sàng:</h5>
+              <p style="font-size: 13px; color: var(--color-text-muted); line-height: 1.6; margin-bottom: 12px;">
+                Động mạch vành trái xuất phát từ xoang vành trái của động mạch chủ, chia thành nhánh gian thất trước (LAD) và nhánh mũ (LCx). Nhánh LAD cấp máu cho vách liên thất và thành trước thất trái...
+              </p>
+              <div style="height: 650px; background: var(--color-bg-subtle); border-radius: var(--radius-md); padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; color: var(--color-text-muted);">
+                <span>[Sơ đồ giải phẫu cây mạch vành & Bảng tóm tắt phân vùng tưới máu cơ tim]</span>
+                <span style="font-size: 12px; margin-top: 8px;">Cuộn xuống để xem chi tiết trích dẫn nguồn giáo trình gốc bên dưới</span>
+              </div>
+            </div>
+
+            <div id="flow4-citation-box" style="font-size:12px; color:var(--color-text-muted); font-weight:600; padding: 12px; border-radius: var(--radius-sm); background: var(--color-bg-subtle); border: 1px solid var(--color-border);">
+              📖 Trích dẫn: Harrison's Internal Medicine, 21st Edition &bull; Chương 270: Thiếu máu cục bộ cơ tim &bull; Trang 1892.
+            </div>
           </div>
         </div>
       </div>
@@ -805,11 +818,11 @@
       const img = document.getElementById('flow3-spinner-img');
       if (state.reducedMotion) {
         document.body.classList.add('reduced-motion-override');
-        img.src = '../assets/spinner_frame0_static.png';
+        img.src = '../Untitled_Artwork_static.png';
         btnMotion.textContent = '⚡ Motion: Tắt (Static)';
       } else {
         document.body.classList.remove('reduced-motion-override');
-        img.src = '../assets/spinner_96.gif';
+        img.src = '../Untitled_Artwork.gif';
         btnMotion.textContent = '⚡ Motion: Bật';
       }
     });

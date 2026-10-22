@@ -23,165 +23,139 @@ async function capture() {
 
   const browser = await chromium.launch();
 
-  const captures = [
-    {
-      url: 'file:///' + path.join(root, 'design/preview/components.html').replace(/\\/g, '/'),
-      filename: 'preview_components.png',
-      viewport: { width: 1400, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/screens.html').replace(/\\/g, '/'),
-      filename: 'preview_screens.png',
-      viewport: { width: 1400, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/screens_dark.html').replace(/\\/g, '/'),
-      filename: 'preview_screens_dark.png',
-      viewport: { width: 1400, height: 900 },
-      fullPage: true,
-      theme: 'dark'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/screens.html').replace(/\\/g, '/'),
-      filename: 'preview_screens_768.png',
-      viewport: { width: 768, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/mobile_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_mobile_screens.png',
-      viewport: { width: 900, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/auth_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_auth_light.png',
-      viewport: { width: 1400, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/auth_screens.html').replace(/\\/g, '/') + '?theme=dark',
-      filename: 'preview_auth_dark.png',
-      viewport: { width: 1400, height: 900 },
-      fullPage: true,
-      theme: 'dark'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/auth_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_auth_mobile.png',
-      viewport: { width: 500, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w03_auth_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w03_screens.png',
-      viewport: { width: 1280, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w03_auth_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w03_mobile.png',
-      viewport: { width: 390, height: 844 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/prototype_flows.html').replace(/\\/g, '/'),
-      filename: 'preview_prototype_flows_workbench.png',
-      viewport: { width: 1280, height: 1000 },
-      fullPage: false,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w06_course_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w06_courses.png',
-      viewport: { width: 1280, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w06_course_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w06_mobile.png',
-      viewport: { width: 390, height: 844 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w04_profile_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w04_profile.png',
-      viewport: { width: 1280, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w04_profile_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w04_mobile.png',
-      viewport: { width: 390, height: 844 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w07_roadmap_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w07_roadmap.png',
-      viewport: { width: 1280, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w07_roadmap_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w07_mobile.png',
-      viewport: { width: 390, height: 844 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w14_upload_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w14_upload.png',
-      viewport: { width: 1280, height: 900 },
-      fullPage: true,
-      theme: 'light'
-    },
-    {
-      url: 'file:///' + path.join(root, 'design/preview/w14_upload_screens.html').replace(/\\/g, '/'),
-      filename: 'preview_w14_mobile.png',
-      viewport: { width: 390, height: 844 },
-      fullPage: true,
-      theme: 'light'
-    }
-  ];
+  // Full 12-configuration matrix for W-07 and W-14 (390, 768, 1280 x light, dark)
+  // Plus core screens at 1280 & 390
+  const viewports = {
+    desktop: { width: 1280, height: 900 },
+    tablet: { width: 768, height: 1024 },
+    mobile: { width: 390, height: 844 }
+  };
 
-  for (const item of captures) {
+  const tasks = [];
+
+  // W-07 Matrix (6 captures)
+  for (const [vpName, vp] of Object.entries(viewports)) {
+    for (const theme of ['light', 'dark']) {
+      tasks.push({
+        name: `w07_roadmap_${vp.width}_${theme}.png`,
+        url: 'file:///' + path.join(root, 'design/preview/w07_roadmap_screens.html').replace(/\\/g, '/'),
+        viewport: vp,
+        theme,
+        fullPage: true,
+        setup: async (page) => {
+          if (theme === 'dark') {
+            await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+          }
+        }
+      });
+    }
+  }
+
+  // W-14 Matrix (6 captures)
+  for (const [vpName, vp] of Object.entries(viewports)) {
+    for (const theme of ['light', 'dark']) {
+      tasks.push({
+        name: `w14_upload_${vp.width}_${theme}.png`,
+        url: 'file:///' + path.join(root, 'design/preview/w14_upload_screens.html').replace(/\\/g, '/'),
+        viewport: vp,
+        theme,
+        fullPage: true,
+        setup: async (page) => {
+          if (theme === 'dark') {
+            await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+          }
+        }
+      });
+    }
+  }
+
+  // Key Baseline Pages (Desktop 1280, Mobile 390)
+  tasks.push(
+    // Auth screens
+    {
+      name: 'auth_screens_1280_light.png',
+      url: 'file:///' + path.join(root, 'design/preview/w03_auth_screens.html').replace(/\\/g, '/'),
+      viewport: viewports.desktop,
+      theme: 'light',
+      fullPage: true
+    },
+    {
+      name: 'auth_screens_390_mobile.png',
+      url: 'file:///' + path.join(root, 'design/preview/w03_auth_screens.html').replace(/\\/g, '/'),
+      viewport: viewports.mobile,
+      theme: 'light',
+      fullPage: true
+    },
+    // Courses list W-06
+    {
+      name: 'course_screens_1280_light.png',
+      url: 'file:///' + path.join(root, 'design/preview/w06_course_screens.html').replace(/\\/g, '/'),
+      viewport: viewports.desktop,
+      theme: 'light',
+      fullPage: true
+    },
+    {
+      name: 'course_screens_390_mobile.png',
+      url: 'file:///' + path.join(root, 'design/preview/w06_course_screens.html').replace(/\\/g, '/'),
+      viewport: viewports.mobile,
+      theme: 'light',
+      fullPage: true
+    },
+    // Profile screens W-04
+    {
+      name: 'profile_screens_1280_light.png',
+      url: 'file:///' + path.join(root, 'design/preview/w04_profile_screens.html').replace(/\\/g, '/'),
+      viewport: viewports.desktop,
+      theme: 'light',
+      fullPage: true
+    },
+    {
+      name: 'profile_screens_390_mobile.png',
+      url: 'file:///' + path.join(root, 'design/preview/w04_profile_screens.html').replace(/\\/g, '/'),
+      viewport: viewports.mobile,
+      theme: 'light',
+      fullPage: true
+    },
+    // Prototype flows workbench
+    {
+      name: 'prototype_flows_workbench.png',
+      url: 'file:///' + path.join(root, 'design/preview/prototype_flows.html').replace(/\\/g, '/'),
+      viewport: viewports.desktop,
+      theme: 'light',
+      fullPage: false
+    }
+  );
+
+  console.log(`Starting capture of ${tasks.length} targeted screenshots across spec viewports & themes...`);
+
+  for (const t of tasks) {
     const context = await browser.newContext({
-      viewport: item.viewport,
-      colorScheme: item.theme
+      viewport: t.viewport,
+      colorScheme: t.theme,
+      permissions: ['clipboard-read', 'clipboard-write']
     });
     const page = await context.newPage();
-    await page.goto(item.url, { waitUntil: 'load' });
+    await page.goto(t.url, { waitUntil: 'load' });
     await page.evaluate(() => document.fonts.ready);
-    
-    const persistentPath = path.join(persistentEvidenceDir, item.filename);
-    const artifactPath = path.join(artifactsDir, item.filename);
-    
-    await page.screenshot({ path: persistentPath, fullPage: item.fullPage });
+    if (t.setup) {
+      await t.setup(page);
+    }
+    await page.waitForTimeout(100);
+
+    const persistentPath = path.join(persistentEvidenceDir, t.name);
+    const artifactPath = path.join(artifactsDir, t.name);
+
+    await page.screenshot({ path: persistentPath, fullPage: t.fullPage });
     await fs.copyFile(persistentPath, artifactPath);
-    console.log(`Saved screenshot: ${item.filename} (both persistent & artifact)`);
+    console.log(`  ✓ Captured: ${t.name} (${t.viewport.width}px, ${t.theme})`);
     await context.close();
   }
 
   await browser.close();
-  console.log('All 19 screenshots captured successfully into persistent and artifact dirs.');
+  console.log(`\nAll ${tasks.length} screenshots saved to report/w24-evidence/ and artifacts/ successfully.`);
 }
 
 capture().catch(err => {
-  console.error(err);
+  console.error('Fatal capture error:', err);
   process.exit(1);
 });

@@ -1,0 +1,36 @@
+[
+  {
+    "mutation": "Baseline (Unmutated code)",
+    "expected": "GREEN (exit 0)",
+    "exitCode": 0,
+    "status": "PASS",
+    "summary": "4/4 flows passed"
+  },
+  {
+    "mutation": "Remove navigator.clipboard.writeText (noop clipboard)",
+    "expected": "RED (exit 1 in Flow 2)",
+    "exitCode": 1,
+    "status": "RED_CONFIRMED",
+    "errorCaptured": [
+      "-> Flow 2 FAILED: Flow 2 - Step 2: Actual clipboard read failed! (got: \"\")"
+    ]
+  },
+  {
+    "mutation": "Remove scrollIntoView",
+    "expected": "RED (exit 1 in Flow 4)",
+    "exitCode": 1,
+    "status": "RED_CONFIRMED",
+    "errorCaptured": [
+      "-> Flow 4 FAILED: Flow 4 - Step 6: Citation box failed to scroll into viewport! (top: 1596.375, bottom: 1638.375, viewportHeight: 900)"
+    ]
+  },
+  {
+    "mutation": "Keep animated GIF during reduced motion (no static freeze)",
+    "expected": "RED (exit 1 in Flow 3)",
+    "exitCode": 1,
+    "status": "RED_CONFIRMED",
+    "errorCaptured": [
+      "-> Flow 3 FAILED: Flow 3 - Step 5: Reduced motion static fallback not engaged (got: ../Untitled_Artwork.gif)"
+    ]
+  }
+]
