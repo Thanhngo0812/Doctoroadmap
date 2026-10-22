@@ -12,6 +12,10 @@ from doc2roadmap.domain.phase_b_limits import BSettings
 from doc2roadmap.infrastructure.artifacts.phase_b_store import InMemoryPhaseBStore, JsonPhaseBStore
 
 
+# Upper bound only: every wait below ends on an event, so a loaded machine just waits longer.
+WAIT = 60
+
+
 class Clock:
     def __init__(self):
         self.at = datetime(2026, 10, 18, 16, 59, tzinfo=timezone.utc)
@@ -134,22 +138,29 @@ def test_two_lecture_nodes_share_the_system_reservation_and_cached_result_stays_
             session.last_usage = {'candidatesTokenCount': 80_000}
             return session
 
-    graph, results = _graph(with_later=True), {}
+    graph, results, errors = _graph(with_later=True), {}, {}
     model = Model([_payload()[0]])
     model.block = True
     def generate(node):
-        results[node] = LectureUseCase(model, store, settings=settings).make(
-            'd1', 'g1', graph, node, allow_spend=True)
+        try:
+            results[node] = LectureUseCase(model, store, settings=settings).make(
+                'd1', 'g1', graph, node, allow_spend=True)
+        except BaseException as exc:  # a Thread would swallow it and leave a blind KeyError below
+            errors[node] = repr(exc)
 
     first, second = Thread(target=generate, args=('a',)), Thread(target=generate, args=('b',))
     first.start()
-    assert model.entered.wait(timeout=2)
+    assert model.entered.wait(timeout=WAIT), 'first lecture never reached the model'
     second.start()
-    second.join(timeout=.5)
+    # The second lecture is refused by the reservation without waiting for the model, so its end is the
+    # synchronisation point: no guessed delay, and the first call is still blocked inside the model.
+    second.join(timeout=WAIT)
+    assert not second.is_alive(), 'second lecture did not finish while the first held the reservation'
+    assert model.calls == 1 and 'a' not in results
     model.release.set()
-    first.join(timeout=2)
-    second.join(timeout=2)
-    assert not first.is_alive() and not second.is_alive()
+    first.join(timeout=WAIT)
+    assert not first.is_alive()
+    assert not errors, errors
     assert results['a']['status'] == 'ready'
     assert results['b']['failure']['reason_code'] == 'tran_he_thong'
     assert model.calls == 1
@@ -189,24 +200,30 @@ def test_assistant_sessions_share_learner_reservation_before_streaming(store):
                 first = self.calls == 1
             if first:
                 entered.set()
-                assert release.wait(timeout=2)
+                assert release.wait(timeout=WAIT)
             yield Delta('Target d is defined. [S1]')
             yield Done({'candidatesTokenCount': 80_000})
 
-    model, results = Model(), {}
+    model, results, errors = Model(), {}, {}
     def ask(index):
-        results[index] = AssistantUseCase(graph, store, model, settings=settings).ask(
-            'book', 1, ids[index], 'Target d', owner='alice', allow_spend=True)
+        try:
+            results[index] = AssistantUseCase(graph, store, model, settings=settings).ask(
+                'book', 1, ids[index], 'Target d', owner='alice', allow_spend=True)
+        except BaseException as exc:  # a Thread would swallow it and leave a blind KeyError below
+            errors[index] = repr(exc)
 
     first, second = Thread(target=ask, args=(0,)), Thread(target=ask, args=(1,))
     first.start()
-    assert entered.wait(timeout=2)
+    assert entered.wait(timeout=WAIT), 'first session never reached the model'
     second.start()
-    second.join(timeout=.5)
+    # The second session is refused by the reservation before streaming, so its end is the sync point.
+    second.join(timeout=WAIT)
+    assert not second.is_alive(), 'second session did not finish while the first held the reservation'
+    assert model.calls == 1 and 0 not in results
     release.set()
-    first.join(timeout=2)
-    second.join(timeout=2)
-    assert not first.is_alive() and not second.is_alive()
+    first.join(timeout=WAIT)
+    assert not first.is_alive()
+    assert not errors, errors
     assert results[0]['status'] == 'answered'
     assert results[1]['status'] == 'daily_limit'
     assert model.calls == 1
