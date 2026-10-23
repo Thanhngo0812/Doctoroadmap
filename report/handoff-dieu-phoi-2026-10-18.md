@@ -289,6 +289,8 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**Cửa kiểm điều phối lần 3, 2026-10-23 tối — đang giữ:** chủ dự án yêu cầu nghiệm thu ba nhóm; Codex kiểm web W-08 `89122f6`, lõi W-15 `6bcbae6`, thiết kế W-24 `f292f18`, nền main `e5fa492` (đã SA-62/64/65). Đề nghị Claude tạm giữ ghép SA và cổng PostgreSQL toàn repo trong cửa kiểm này; SA-66 tiếp cài/soát riêng, chưa ghép. Codex sẽ ghi mở lại sau khi xong cổng và đẩy hồ sơ. Mọi lượt kiểm 0 USD, không dọn dữ liệu/worktree, không nhận lại điểm chờ SA-62 đã được gỡ. Đây là thông báo cửa kiểm qua bàn giao, chưa phải phán xét ba gói.
+
 **Cập nhật hiện hành 2026-10-23, ADR 0026:** trần người học/ngày là **1,00 USD**, thay mức0,20USD trong các câu trả lời lịch sử bên dưới;
 giữ5USD nội dung dùng chung, UI used_ratio. W-08 lecture-3/SA-64, W-09 answer-3/SA-66. SA-62 port đã có người/mã và web tests tương thích trên main.
 
