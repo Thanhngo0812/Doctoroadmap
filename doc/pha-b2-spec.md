@@ -17,6 +17,8 @@
   phần mã dựng cộng câu nối có trích dẫn.
 - [ADR 0019](adr/0019-tien-do-hoc-khong-chan-nhan-gan-luc-doc.md): tiến độ học theo khái niệm, không chặn; nhãn theo người học gắn lúc đọc, không
   cache.
+- [ADR 0024](adr/0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md) (2026-10-23): bài giảng LLM luôn hiện; luật kiểm chỉ ghi log cho admin; ý hiện ngay,
+  không còn cổng. Thay phần "bài hỏng vì luật kiểm" và "stream sau cổng" của ADR 0018.
 
 **Quyết định của chủ dự án:** đợt tra hỏi ngày 2026-10-18, vòng 1 (Q1–Q18) và vòng 2 (Q19–Q30). Chủ dự án theo mọi khuyến nghị, trừ Q17: không chạy
 lại nhap-mon-ml và naive-bayes bằng chuỗi gộp. Về hợp đồng: "cứ đổi thoải mái nhóm web chưa triển khai đâu".
@@ -88,9 +90,12 @@ lại nhap-mon-ml và naive-bayes bằng chuỗi gộp. Về hợp đồng: "c�
   - một câu nối do LLM viết, chỉ dựa câu trích của cạnh;
   - nhãn "đã học / chưa học" gắn riêng cho từng người học.
 - **Cuối bài** có khối "Tiếp theo" do mã dựng.
-- **Hiện dần:** các ý chỉ bắt đầu hiện khi bài đã có đủ 2 ý giải thích đạt. Từ lúc đó bài không còn hỏng được nữa.
-- **Bài hỏng hẳn:**
-  - vẫn giữ phần mã dựng, kèm lời nhắn, nút "Đọc trang p trong sách", "Hỏi trợ lý", và "Thử lại" (chỉ khi lỗi mạng);
+- **Luật kiểm chỉ ghi log** (chốt 2026-10-23, ADR 0024): bài LLM viết luôn hiện cho người học, kể cả khi trượt luật kiểm. Ý trượt vẫn hiện, không
+  nhãn; lý do trượt ghi log cho admin. Đánh giá vẫn đo tỉ lệ trượt.
+- **Hiện dần:** mỗi ý hiện ngay khi viết xong. Từ ý đầu tiên, bài không còn hỏng được nữa.
+- **Không có bài** (chưa có ý nào: lỗi mạng, quá giờ, hết trần, đầu ra không đọc được):
+  - vẫn giữ phần mã dựng, kèm lời nhắn nêu lý do và nhắc thử lại sau;
+  - luôn có nút "Thử lại", cùng "Đọc trang p trong sách" và "Hỏi trợ lý";
   - không có câu nào do máy tự chọn từ sách;
   - không cache.
 
@@ -147,23 +152,24 @@ lại nhap-mon-ml và naive-bayes bằng chuỗi gộp. Về hợp đồng: "c�
 32. Là người học, tôi muốn mỗi tiên quyết có nhãn "bạn đã học, module m" hay "chưa học, module m" theo tiến độ của tôi, để biết nên quay lại đâu.
 33. Là người học, tôi muốn câu nối không bao giờ nói "như bạn đã học" khi tôi chưa học, vì bài giảng dùng chung cho mọi người.
 34. Là người học, tôi muốn cuối bài có khối "Tiếp theo" nêu 1–2 khái niệm sau dùng tới khái niệm này, kèm module và câu trích, để biết học nó để làm gì.
-35. Là người học, tôi muốn bài giảng chỉ bắt đầu hiện dần khi đã chắc tạo được, để không thấy vài ý hiện ra rồi bài báo hỏng.
+35. Là người học, tôi muốn mỗi ý của bài giảng hiện ngay khi viết xong, và khi đã có ý thì bài không đổi thành báo lỗi.
 36. Là người học, tôi muốn khung bài (vị trí, định nghĩa nguyên văn kèm trang, tiên quyết, hình) hiện ngay khi bấm, để có cái đọc trong lúc chờ.
-37. Là người học, tôi muốn khi bài hỏng hẳn vẫn thấy khung bài, kèm lời nhắn rõ ràng và các nút "Đọc trang p trong sách", "Hỏi trợ lý", để học tiếp được.
-38. Là người học, tôi muốn nút "Thử lại" chỉ hiện khi lỗi là tạm thời, để không bấm vô ích.
+37. Là người học, tôi muốn bài giảng luôn hiện khi mô hình đã viết được, kể cả khi bài chưa qua hết luật kiểm, để việc học không bị chặn.
+38. Là người học, tôi muốn khi không có bài thì thấy khung bài, lý do, lời nhắc thử lại sau, nút "Thử lại", và các nút "Đọc trang p trong sách",
+    "Hỏi trợ lý".
 39. Là người học, tôi muốn một lần bấm không bắt tôi chờ quá 30 giây.
 40. Là người học, tôi muốn không bao giờ thấy đoạn "bài giảng" do máy tự nhặt câu từ sách, vì chất lượng của nó thấp.
 41. Là người học ở nhap-mon-ml hay naive-bayes, tôi muốn vẫn thấy tên, vị trí và câu định nghĩa của tiên quyết, dù đồ thị cũ không có câu trích để viết
     câu nối.
 
 **Vận hành và nghiên cứu**
-42. Là chủ dự án, tôi muốn bài hỏng vì luật kiểm được ghi nhớ 24 giờ, để không trả tiền sinh lại cùng một ngữ cảnh gần như chắc hỏng lại.
-43. Là chủ dự án, tôi muốn bài hỏng vì lỗi mạng chỉ được ghi nhớ 60 giây, để người học thử lại được.
-44. Là chủ dự án, tôi muốn đổi prompt hay luật kiểm thì mọi bài hỏng cũ tự được sinh lại, không phải xoá tay.
+42. Là admin, tôi muốn mọi ý và mọi bài trượt luật kiểm được ghi log kèm luật và vị trí ý, để biết bài nào cần xem lại mà người học không bị chặn.
+43. Là chủ dự án, tôi muốn lỗi mạng, quá giờ hay đầu ra không đọc được chỉ được ghi nhớ 60 giây, để người học bấm "Thử lại" được.
+44. Là chủ dự án, tôi muốn đổi prompt hay luật kiểm thì mọi bài cũ trong cache, kể cả bài trượt kiểm, tự được sinh lại, không phải xoá tay.
 45. Là chủ dự án, tôi muốn trần chi mỗi người mỗi ngày và trần hệ thống mỗi ngày đặt ở cấu hình chung, để chỉnh mà không sửa mã.
 46. Là chủ dự án, tôi muốn sổ chi ghi đủ người học và mục đích cho mọi lời gọi có tiền, để trần ngày tính đúng.
 47. Là người nghiên cứu, tôi muốn đo tỉ lệ bài có câu nối cho mọi tiên quyết có câu trích, và tỉ lệ câu nối bị loại theo từng luật.
-48. Là người nghiên cứu, tôi muốn đo thời gian tới khung bài, tới ý đầu (sau cổng) và tới khi xong bài ở p50 và p90.
+48. Là người nghiên cứu, tôi muốn đo thời gian tới khung bài, tới ý đầu và tới khi xong bài ở p50 và p90.
 49. Là người nghiên cứu, tôi muốn so lần sinh lại ở nhiệt độ 0 với nhiệt độ 1,0, để quyết bằng số.
 50. Là thành viên nhóm web, tôi muốn hợp đồng JSON cho phiên, lượt, thư viện, tiến độ và bài giảng, có ví dụ thật, để dựng hai trang mà không phải đoán.
 51. Là chủ dự án, tôi muốn trang xem thử cục bộ có đủ hai trang, để thử trên trình duyệt trước khi web xong.
@@ -286,7 +292,7 @@ Mỗi mục thư viện gồm `{kind: document | quiz_attempt, id, title, create
 
 **Khoá theo `node_id`,** nên tiến độ vẫn đúng khi đồ thị lên phiên bản mới.
 
-### 6. Bài giảng `lecture-2` (theo ADR 0018; thay một phần mục 8 của spec Pha B)
+### 6. Bài giảng `lecture-2` (theo ADR 0018 và ADR 0024; thay một phần mục 8 của spec Pha B)
 
 **Phần mã dựng** (sự kiện `skeleton`, 0 USD):
 - vị trí; câu định nghĩa nguyên văn kèm trang và ảnh công thức; media đã xác nhận.
@@ -319,44 +325,51 @@ Mỗi mục thư viện gồm `{kind: document | quiz_attempt, id, title, create
 
 **K6 chỉ dò trên chữ của ý,** đúng như SA-30.
 
-**6.1 Stream sau cổng (S3).**
-- **Trước cổng:** ý đạt luật cục bộ được giữ trong bộ đệm, chưa gửi.
-- **Cổng mở** khi có đủ `lecture_min_explanations` (2) ý giải thích đạt. Khi đó gửi các ý trong bộ đệm theo thứ tự lược đồ, rồi stream các ý sau ngay khi
-  chúng đạt.
-- **Sau cổng, bài không còn hỏng được.**
-  - Hết token, JSON vỡ ở đuôi, hay K6 sau cổng: giữ các ý đã đạt, bỏ phần còn lại. Trả `ready` kèm cảnh báo `cat_ngan`.
+**6.1 Luật kiểm chỉ ghi log, ý hiện ngay (chốt 2026-10-23, ADR 0024).**
+- **Thay quyết định 2026-10-18 về luật kiểm.** K2, K3, K5, K6, K7, K8, K9 không còn bỏ ý, không làm bài hỏng, không gây sinh lại. Ý trượt hiện cho người học
+  như ý đạt, không nhãn. Kết quả kiểm chỉ vào log cho admin (mục 6.6) và vào số đo đánh giá.
+- **Vẫn bỏ, vì không có gì để hiện hay hiện ra là thừa;** bỏ cũng ghi log:
+  - ý sai lược đồ hay chữ rỗng (K1 ở mức ý);
+  - ý gần trùng một ý trước (luật trùng ý của K6).
+- **Ý trượt K2 hay K3 giữ các trích dẫn hợp lệ còn lại.** Nhãn nguồn lạ thì không có link; câu trích không nguyên văn thì link tới đoạn nguồn mà không tô câu.
+- **Câu nối giữ luật cũ:** trượt K11 hay K12 thì bỏ câu nối, tiên quyết chỉ hiện `recall`, và ghi log. Lý do: câu nối hỏng không làm bài hỏng, và K12 chặn
+  câu "như bạn đã học" trong bài dùng chung.
+- **Không còn cổng.** Mỗi ý gửi sự kiện `item` ngay khi đóng xong; câu nối cũng vậy. `recall` đã có ở `skeleton`.
+- **Sau ý đầu tiên, bài không còn hỏng được.** Hết token, JSON vỡ ở đuôi, lỗi mạng hay quá giờ: giữ các ý đã gửi, trả `ready` kèm cảnh báo `cat_ngan`.
 - **Bất biến:** không ý nào đã gửi bị rút lại.
-- **Câu nối là ý LLM,** nên cũng chỉ gửi sau cổng. `recall` đã có ở `skeleton`.
-- **Đo thêm:** khoảng cách từ cổng tới khi xong bài. Nếu p50 dưới 1 giây thì báo Claude để cân nhắc S2.
 
 **6.2 Sinh lại và thời gian.**
-- **Hỏng trước cổng** thì sinh lại 1 lần, ở nhiệt độ `lecture_retry_temperature`. Mặc định 0; lượt đo so 0 với 1,0.
+- **Chỉ sinh lại khi chưa có ý nào dùng được** (đầu ra trống, hay JSON vỡ từ đầu): 1 lần, ở nhiệt độ `lecture_retry_temperature`. Trượt luật kiểm không
+  gây sinh lại.
 - **Trần cả lần bấm:** `lecture_click_timeout_seconds` (30).
 - **Thử lại ở tầng gọi mạng:** 1 lần trên đường người học đang chờ; 2 lần khi tải trước chạy nền.
 
-**6.3 Bài hỏng hẳn.**
-- `status = failed`, giữ mọi phần mã dựng, cộng đối tượng `failure`:
+**6.3 Không có bài.**
+- Chỉ xảy ra khi chưa gửi được ý nào. `status = failed`, giữ mọi phần mã dựng, cộng đối tượng `failure`:
 
   ```json
-  {"reason_code": "kiem_noi_dung | loi_mang | het_thoi_gian | tran_he_thong | khong_co_mo_hinh",
-   "retryable": false, "read_page": {"page": 10, "chunk_id": "…"}, "ask_assistant": true}
+  {"reason_code": "loi_mang | het_thoi_gian | tran_he_thong | khong_dung_duoc | khong_co_mo_hinh",
+   "message": "…", "retryable": true, "read_page": {"page": 10, "chunk_id": "…"}, "ask_assistant": true}
   ```
 
-- **`retryable`** là true với `loi_mang`, `het_thoi_gian`, và `tran_he_thong` (thử lại vào ngày sau).
+- **`message`** nêu lý do bằng lời người học hiểu, rồi nhắc thử lại sau. Ví dụ: "Chưa kết nối được máy tạo bài giảng. Bạn thử lại sau nhé." Hết trần hệ
+  thống thì nhắc thử lại vào ngày mai.
+- **`retryable` luôn là true;** web luôn hiện nút "Thử lại".
+- **`khong_dung_duoc`:** mô hình trả về nhưng không đọc được ý nào, kể cả sau lần sinh lại. **`kiem_noi_dung` bị bỏ,** vì trượt luật kiểm không còn làm bài
+  hỏng.
 - **`read_page`** lấy từ câu định nghĩa, hoặc chunk dạy đầu tiên. Web mở PDF gốc đúng trang. Máy chủ phải giữ PDF gốc; sáu cuốn phát triển có PDF ở 5/6
   cuốn.
-- **Trạng thái `fallback` bị bỏ.** Không đường nào trả câu do TextRank chọn cho người học.
+- **Trạng thái `fallback` vẫn bị bỏ.** Không đường nào trả câu do TextRank chọn cho người học.
 - **Hàm trích câu chỉ còn ở hai chỗ:**
   - mốc so sánh của vé đánh giá 21;
   - chế độ ngoại tuyến của trang xem thử. Ở chế độ này, bài vẫn trả `failed`, `reason_code = khong_co_mo_hinh`, không trả câu trích.
 
 **6.4 Cache.**
-- Chỉ bài `ready` vào cache chung.
-- **Bản ghi hỏng:**
-  - `kiem_noi_dung` được ghi nhớ `lecture_failure_ttl_seconds` (86.400);
-  - `loi_mang` và `het_thoi_gian` được ghi nhớ `negative_cache_seconds` (60);
+- Bài `ready` vào cache chung, **kể cả bài trượt luật kiểm.**
+- **Bản ghi lỗi** (bài `failed`):
+  - `loi_mang`, `het_thoi_gian` và `khong_dung_duoc` được ghi nhớ `negative_cache_seconds` (60);
   - `tran_he_thong` được ghi nhớ tới hết ngày.
-- Khoá bài gồm phiên bản luật kiểm và prompt, nên đổi một trong hai thì bản ghi hỏng cũ tự hết hiệu lực.
+- Khoá bài gồm phiên bản luật kiểm và prompt, nên đổi một trong hai thì bài cũ và bản ghi lỗi cũ tự hết hiệu lực.
 
 **6.5 Nhãn theo người học (theo ADR 0019).**
 - Use case bài giảng trả nội dung lấy từ cache. Một bước gắn nhãn chạy lúc trả bài, thêm `learner_status` cho mỗi `prerequisites[]` và `next_up[]` từ
@@ -366,6 +379,15 @@ Mỗi mục thư viện gồm `{kind: document | quiz_attempt, id, title, create
   - `unknown`, khi không có `owner`.
 - Nhãn này **không** vào cache, không vào `lecture_key`, và không bao giờ đi vào prompt.
 - Bước gắn nhãn chạy cả ở đường nút bấm lẫn công cụ `get_lecture`.
+
+**6.6 Log kiểm cho admin (mới 2026-10-23, ADR 0024).**
+- Mỗi lần sinh vẫn ghi một dòng `lecture_validation`, cộng thêm: bài có đạt theo luật cũ không (`passed`), số ý trượt theo từng luật, và danh sách ý trượt
+  `{section, index, rules}`.
+- Bài trong cache mang khối `validation` cùng nội dung đó. Khối này **không** có trong phản hồi cho người học, kể cả công cụ `get_lecture` của trợ lý;
+  chỉ admin đọc.
+- Web hiện log này ở trang admin; phần này do người điều phối làm.
+- **Đánh giá vẫn đo.** "Tỉ lệ bài trượt kiểm" thay "tỉ lệ bài hỏng hẳn" của SA-21. Vì người học nay thấy cả bài trượt kiểm, sau khi cài cần một lượt nhỏ
+  chấm nội dung các bài trượt kiểm.
 
 **Chi phí ước:** câu nối thêm khoảng 0,0003 USD mỗi bài. Một bài tốn khoảng 0,0016–0,0030 USD.
 
@@ -431,9 +453,11 @@ Phần mang quyết định của `lecture-2`:
  "failure": null, "warnings": ["cat_ngan"], "usage": {}}
 ```
 
+`failure` theo mục 6.3. Khối `validation` (mục 6.6) chỉ có ở kho và log cho admin, không có trong đối tượng này.
+
 **Sự kiện stream của bài giảng:**
 - `skeleton`;
-- `item`, chỉ sau cổng, kèm `section_kind` ∈ {`cau_noi`, `giai_thich`, `vi_du`, `phan_biet`, `tu_kiem_tra`};
+- `item`, gửi ngay khi ý đóng xong, kèm `section_kind` ∈ {`cau_noi`, `giai_thich`, `vi_du`, `phan_biet`, `tu_kiem_tra`};
 - kết thúc bằng `final` hoặc `failure`.
 
 **Đối tượng khác:**
@@ -462,7 +486,7 @@ Phần mang quyết định của `lecture-2`:
 | `bridge_max_chars` | 160 |
 | `bridge_forbidden_phrases` | "như bạn đã học", "bạn đã biết", "ở bài trước", "như đã học" |
 | `next_up_max` | 2 |
-| `lecture_failure_ttl_seconds` | 86.400 |
+| `lecture_failure_ttl_seconds` | bỏ từ 2026-10-23: không còn bài hỏng vì luật kiểm |
 | `lecture_click_timeout_seconds` | 30 |
 | `lecture_click_transport_retries` | 1 |
 | `lecture_preload_transport_retries` | 2 |
@@ -494,11 +518,13 @@ Mọi giá trị mà prompt nhắc tới lấy từ đây, như vé 01.
 6. Lựa chọn của người học thắng: bỏ dấu một khái niệm rồi làm đúng quiz của nó thì nó vẫn `not_learned`.
 7. Nhắc nền ở phạm vi module chỉ nhắc tiên quyết chưa học. Ở phạm vi lộ trình thì không nhắc.
 8. `learner_status` không bao giờ có trong cache hay `lecture_key`. Hai người học có tiến độ khác nhau nhận cùng `lecture_key`, nhưng nhãn khác nhau.
-9. Trước cổng không có sự kiện `item` nào. Sau cổng, JSON vỡ ở đuôi vẫn trả `ready` kèm `cat_ngan`, và không rút ý nào đã gửi.
+9. Ý đầu tiên đóng xong là có sự kiện `item`, không chờ ý thứ hai. Sau ý đầu, JSON vỡ ở đuôi, lỗi mạng hay quá giờ vẫn trả `ready` kèm `cat_ngan`, và
+   không rút ý nào đã gửi.
 10. Không đường nào trả `status = fallback`, hay câu do TextRank chọn, cho người học.
-11. Bài `failed` vì luật kiểm được ghi nhớ 24 giờ: bấm lại thì 0 lời gọi. Hết hạn, hoặc đổi phiên bản luật, thì sinh lại. Bài `failed` vì mạng chỉ ghi nhớ
-    60 giây.
-12. Bài `failed` không bao giờ vào cache như bài `ready`.
+11. Ý trượt K2, K3, K5 hay K7 vẫn có trong bài trả về; bài chỉ còn 0–1 ý giải thích vẫn `ready`; không có lời gọi sinh lại vì luật kiểm. Dòng
+    `lecture_validation` ghi đủ luật và vị trí từng ý trượt.
+12. Bài `failed` (chưa có ý nào) không bao giờ vào cache như bài `ready`, luôn có `retryable = true` và `message`, và lỗi mạng chỉ được ghi nhớ 60 giây.
+    Khối `validation` không có trong phản hồi cho người học.
 13. Câu nối thiếu, hoặc vi phạm K11 hay K12, thì tiên quyết chỉ hiện `recall`, và không có lời gọi sinh lại vì câu nối.
 14. Câu nối chứa "như bạn đã học" bị bỏ.
 15. Tiên quyết `legacy_excerpt` không được gửi để viết câu nối.
