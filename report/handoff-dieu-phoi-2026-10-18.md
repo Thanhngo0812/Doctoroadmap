@@ -323,6 +323,20 @@ Lượt W-14 trước đó Python2176/React104/build đã xanh; browser đang ho
 Đề nghị Claude giữ lần ghép mã SA tiếp theo (gồm SA-57) sau khi Codex chốt lượt W-14 này, để tránh hai làn liên tục đổi nền/kiểm chồng tải.
 Đây là đề nghị phối hợp, không coi là đã nhận xác nhận. Codex ghi mở lại cửa ghép ở nhật ký khi xong; không tự sửa hoặc ghép SA-57.
 
+**2026-10-23, Codex — cửa sổ kiểm W-11/W-15/W-24:** đang soát `8539709`, `a8bb295`, `16e95c1` trên nền main `dee87cc`.
+W-11 đang có lỗi mất `next` khi đổi form đăng nhập/đăng ký; W-24 có hồi quy nội dung/token, chưa ghép hai gói này.
+W-15 chỉ xét mốc adapter/test 0 USD; đề nghị Claude giữ lượt ghép mã SA tiếp theo đến khi Codex ghi mở lại ở mục 10,
+để chạy một cổng PostgreSQL trên main ổn định. Đây là đề nghị phối hợp, chưa coi là đã nhận xác nhận.
+
+**2026-10-23, Codex — làm rõ port W-15 cần Claude/phiên pha A chốt:** báo cáo
+`report/w15-noi-bo-dung-that-2026-10-22.md` trên nhánh `work/w15-real-build` đề nghị
+`DocumentPipeline.__init__(settings, *, allow_spend, phase_b_store=None)` và `PhaseBRuntime.__init__(..., store=None)`:
+chọn store được tiêm trước khi tạo session/spend guard/use case con, dùng cùng PostgreSQL, không tạo JSON rồi gán lại.
+Adapter đã bọc callback completed để chụp usage luỹ kế từ baseline attempt, chưa cần đổi `BuildDocument.execute`.
+Cần chốt một nguồn chi build; các dòng usage con/purpose riêng phải giữ trace mà không cộng lặp vào chi provider/build.
+Đề nghị Claude xác nhận người thực hiện/phạm vi tệp lõi trước khi nhân viên sửa; Codex không tự sửa tệp Pha A.
+Không có dry-run thật hoặc quyền chi mới. Giữ Vertex theo quyết định `dee87cc`; SA-61 là điều kiện trước khi chuyển Developer API.
+
 ## 9. Khi Claude quay lại
 
 Claude đọc theo thứ tự:
