@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="11" skipped="0" tests="11" time="16.926" timestamp="2026-10-22T19:51:51.566556+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_dev_default_stays_fake_and_real_setting_is_explicit" time="5.486"><failure message="AssertionError: dev needs an explicit fake default&#10;assert None == 'fake'&#10; +  where None = getattr(WebSettings(version='0.1.0', database_url=None, test_database_url='postgresql+psycopg://wayfinder:dfe5fe965d07f63a6746...artifacts'), cloudinary_url=None, cloudinary_folder='wayfinder/dev', signed_url_ttl_seconds=300, page_image_width=1400), 'build_runner', None)">src\web\backend\tests\test_real_build_w15.py:109: in test_dev_default_stays_fake_and_real_setting_is_explicit
+    assert getattr(settings, 'build_runner', None) == 'fake', 'dev needs an explicit fake default'
+E   AssertionError: dev needs an explicit fake default
+E   assert None == 'fake'
+E    +  where None = getattr(WebSettings(version='0.1.0', database_url=None, test_database_url='postgresql+psycopg://wayfinder:dfe5fe965d07f63a6746...artifacts'), cloudinary_url=None, cloudinary_folder='wayfinder/dev', signed_url_ttl_seconds=300, page_image_width=1400), 'build_runner', None)</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_default_requires_core_port_before_claim_or_provider" time="0.623"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:115: in test_real_default_requires_core_port_before_claim_or_provider
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_transport_validation_precedes_pipeline_construction[developer_api-p]" time="0.715"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:130: in test_real_transport_validation_precedes_pipeline_construction
+    module().RealBuildRuntime(b.settings, b.engine, core_settings=settings,
+    ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_transport_validation_precedes_pipeline_construction[vertex-None]" time="0.413"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:130: in test_real_transport_validation_precedes_pipeline_construction
+    module().RealBuildRuntime(b.settings, b.engine, core_settings=settings,
+    ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-True]" time="0.367"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:141: in test_real_adapter_cumulative_usage_and_pg_recorder
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-False]" time="0.338"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:141: in test_real_adapter_cumulative_usage_and_pg_recorder
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-True]" time="0.299"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:141: in test_real_adapter_cumulative_usage_and_pg_recorder
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-False]" time="0.466"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:141: in test_real_adapter_cumulative_usage_and_pg_recorder
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True]" time="0.341"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:141: in test_real_adapter_cumulative_usage_and_pg_recorder
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False]" time="0.326"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:141: in test_real_adapter_cumulative_usage_and_pg_recorder
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_rejects_dry_run_before_factory_or_recorder" time="0.319"><failure message="AssertionError: W-15 web adapter is missing&#10;assert None&#10; +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')&#10; +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec&#10; +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util">src\web\backend\tests\test_real_build_w15.py:200: in test_real_adapter_rejects_dry_run_before_factory_or_recorder
+    adapter = module()
+              ^^^^^^^^
+src\web\backend\tests\test_real_build_w15.py:20: in module
+    assert importlib.util.find_spec(name), 'W-15 web adapter is missing'
+E   AssertionError: W-15 web adapter is missing
+E   assert None
+E    +  where None = &lt;function find_spec at 0x000001630AA867A0&gt;('wayfinder.infrastructure.real_build')
+E    +    where &lt;function find_spec at 0x000001630AA867A0&gt; = &lt;module 'importlib.util' (frozen)&gt;.find_spec
+E    +      where &lt;module 'importlib.util' (frozen)&gt; = importlib.util</failure></testcase></testsuite></testsuites>
