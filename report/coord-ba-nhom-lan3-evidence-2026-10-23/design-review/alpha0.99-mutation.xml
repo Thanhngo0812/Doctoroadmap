@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.051" timestamp="2026-10-23T22:29:01.999137+07:00" hostname="ADMIN"><testcase classname="tmp.coord-w24-review-f292f18.tests.unit.presentation.test_tokens_and_wcag" name="test_figma_plugin_has_all_37_variables_and_error_handling" time="0.360"><failure message="AssertionError: Dark tint alpha must be exactly 0.14, found: 0.99&#10;assert '0.99' == '0.14'&#10;  &#10;  - 0.14&#10;  + 0.99">def test_figma_plugin_has_all_37_variables_and_error_handling():
+        """Verify that code.js defines all 37 variables, exact 0.14 alpha, error reporting, and no silent catch."""
+        code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
+        raw_path = Path("design/tokens/figma_variables_raw_export.json")
+        raw_data = json.loads(raw_path.read_text(encoding="utf-8"))
+
+        # 1. All 37 variable names present in code.js
+        for v in raw_data["variables"]:
+            v_name = v["name"]
+            assert f'"{v_name}"' in code_js or f"'{v_name}'" in code_js, (
+                f"Figma plugin code.js missing variable name: {v_name}"
+            )
+
+        # 2. Strict token values check in code.js
+        assert '"radius/radius-lg", val: 14' in code_js or "'radius/radius-lg', val: 14" in code_js, (
+            "code.js must define radius-lg as 14, matching tokens.css"
+        )
+        assert '"radius/radius-xl", val: 20' in code_js or "'radius/radius-xl', val: 20" in code_js, (
+            "code.js must define radius-xl as 20, matching tokens.css"
+        )
+        assert '"motion/motion-base"' in code_js, "code.js missing motion-base"
+        assert '"200ms"' in code_js, "code.js missing 200ms value"
+
+        # 3. Exact 0.14 alpha check across all 4 dark tints
+        alphas = re.findall(r'rgbaToFigma\([^)]+,\s*([0-9.]+)\)', code_js)
+        assert len(alphas) == 4, f"Expected exactly 4 rgbaToFigma calls, found {len(alphas)}"
+        for a in alphas:
+&gt;           assert a == "0.14", f"Dark tint alpha must be exactly 0.14, found: {a}"
+E           AssertionError: Dark tint alpha must be exactly 0.14, found: 0.99
+E           assert '0.99' == '0.14'
+E
+E             - 0.14
+E             + 0.99
+
+tests\unit\presentation\test_tokens_and_wcag.py:625: AssertionError</failure></testcase></testsuite></testsuites>

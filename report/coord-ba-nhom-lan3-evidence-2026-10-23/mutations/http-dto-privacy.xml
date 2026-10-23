@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.719" timestamp="2026-10-23T22:31:39.746808+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lecture3_integration_w08" name="test_w08_http_dto_discards_admin_keys_even_if_a_gateway_returns_them" time="2.869"><failure message="assert ('validation' not in '{&quot;status&quot;:&quot;...ONLY&quot;:true}}'&#10;  &#10;  'validation' is contained here:&#10;    refs&quot;:[],&quot;validation&quot;:{&quot;W08_ADMIN_ONLY&quot;:true},&quot;public_id&quot;:&quot;W08_PRIVATE_PROVIDER_ID&quot;},&quot;prerequisites&quot;:[{&quot;recall&quot;:{&quot;node_id&quot;:&quot;b&quot;,&quot;name&quot;:&quot;B&quot;,&quot;module_index&quot;:1,&quot;module_title&quot;:&quot;Cơ sở&quot;,&quot;order_note&quot;:&quot;khong_ro&quot;,&quot;module_id&quot;:&quot;m1&quot;,&quot;module_number&quot;:1,&quot;definition&quot;:{&quot;quote&quot;:&quot;Tập hợp là một nhóm đối tượng được xác định rõ ràng.&quot;,&quot;citation&quot;:{&quot;label&quot;:&quot;N1&quot;,&quot;chunk_id&quot;:&quot;c1&quot;,&quot;page&quot;:1,&quot;section_path&quot;:[&quot;Toán&quot;],&quot;quote&quot;:&quot;Tập hợp là một nhóm đối tượng được xác định rõ ràng.&quot;,&quot;char_start&quot;:0,&quot;char_end&quot;:52},&quot;formula_refs&quot;:[]}},&quot;learner_status&quot;:&quot;not_learned&quot;}],&quot;next_up&quot;:[],&quot;sources&quot;:[{...&#10;  &#10;  ...Full output truncated (2 lines hidden), use '-vv' to show)">core_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_ee6eb072f60244f0a68b0eb36a083...tureModel object at 0x0000022E369855E0&gt;, url='/api/v1/courses/f30a2ad1-1870-40d2-a247-c52cd9e95057/concepts/a/lecture')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022E363550A0&gt;
+
+    def test_w08_http_dto_discards_admin_keys_even_if_a_gateway_returns_them(core_web, monkeypatch):
+        w = core_web
+        raw = w.gateway.get_lecture(w.a.actor, w.course.id, 'a')
+        raw['validation'] = {'W08_ADMIN_ONLY': True}
+        raw['definition']['validation'] = {'W08_ADMIN_ONLY': True}
+        raw['definition']['public_id'] = 'W08_PRIVATE_PROVIDER_ID'
+        monkeypatch.setattr(w.gateway, 'get_lecture', lambda *args: raw)
+        response = w.a.client.get(w.url)
+        assert response.status_code == 200
+&gt;       assert 'validation' not in response.text and 'public_id' not in response.text
+E       assert ('validation' not in '{"status":"...ONLY":true}}'
+E
+E         'validation' is contained here:
+E           refs":[],"validation":{"W08_ADMIN_ONLY":true},"public_id":"W08_PRIVATE_PROVIDER_ID"},"prerequisites":[{"recall":{"node_id":"b","name":"B","module_index":1,"module_title":"Cơ sở","order_note":"khong_ro","module_id":"m1","module_number":1,"definition":{"quote":"Tập hợp là một nhóm đối tượng được xác định rõ ràng.","citation":{"label":"N1","chunk_id":"c1","page":1,"section_path":["Toán"],"quote":"Tập hợp là một nhóm đối tượng được xác định rõ ràng.","char_start":0,"char_end":52},"formula_refs":[]}},"learner_status":"not_learned"}],"next_up":[],"sources":[{...
+E
+E         ...Full output truncated (2 lines hidden), use '-vv' to show)
+
+src\web\backend\tests\test_lecture3_integration_w08.py:193: AssertionError</failure></testcase></testsuite></testsuites>

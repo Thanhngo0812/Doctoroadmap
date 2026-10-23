@@ -4,7 +4,17 @@
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
 **Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, kiểm lại chưa đạt toàn bộ; tiếp tục cùng vé.
 
-**Soát lần 2 ngày 2026-10-23, `7a522e5`/`d72993e`:** giữ hai gói ngoài main. Đã đóng qua kiểm độc lập: suffix/copybox,
+**Soát lần 3 tối 2026-10-23, `f292f18`: chưa nhận cả gói, chưa ghép.** Đóng mã báo lỗi Variables/alpha và chat usage/raw tools;
+chat rỗng, pending invitation và các section anchor đã có. 49 test qua runner, VM 9 kịch bản đầu ra/lỗi thực, browser 12 cấu hình xác minh.
+Giữ/đưa guard VM vào suite: mutation bỏ accounting create vẫn lọt test text/toy; không giao sửa lại mã báo lỗi vốn đã đúng.
+Còn Required: (1) preview W-08 LaTeX thô, 0 `.katex`, spinner 20 px thay nhân vật 96 px, fatal không retry; đồng bộ lecture-3 và claim;
+(2) báo cáo dòng 138/152 có `#text-tool-action`/`#btn-delete-course` không tồn tại, sửa checklist/phạm vi; W-09 KaTeX phải ghi đúng minh chứng;
+(3) Cloud đọc mới vẫn 0 Variables/native components/bindings/reactions/starting points, chưa đủ bốn video Present.
+Không lấy HTML/plugin source thay Cloud hoặc nhận 49 test xanh thay mọi tiêu chí. W-22/W-24/W-23 còn mở.
+[Biên bản/ảnh/Cloud](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md),
+[lời giao riêng](../../report/lenh-giao-viec-ba-nhom-lan3-2026-10-23.md).
+
+**Soát lần 2 ngày 2026-10-23, `7a522e5`/`d72993e` (lịch sử):** giữ hai gói ngoài main. Đã đóng qua kiểm độc lập: suffix/copybox,
 wording dữ liệu/quota/huỷ, bỏ OCR, output plugin normal/fallback khớp 74/74 giá trị, mobile 44 px/chữ tràn cũ.
 45 test head/40 checkpoint đạt, 18 cấu hình browser đạt hình học; còn ba Required:
 (1) lỗi tạo Variables vẫn bị nuốt, thử lỗi primary còn 72/74 không log; mutation alpha thật 0.99 vẫn lọt guard;

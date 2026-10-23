@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="10.149" timestamp="2026-10-23T22:31:24.252820+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lecture3_integration_w08" name="test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner" time="4.407"><failure message="AssertionError: assert 'failed' == 'generating'&#10;  &#10;  - generating&#10;  + failed">core_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_05d91550f8b845979ddb40fb113f6...tureModel object at 0x0000024ECB5D1040&gt;, url='/api/v1/courses/b20cf817-a468-4b4a-ae16-d286cb44e389/concepts/a/lecture')
+
+    def test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner(core_web):
+        w = core_web
+        w.gateway.set_progress(w.a.actor, w.course.id, 'b', True)
+        assert w.gateway.runtime.settings.learner_daily_max_usd == 1.0
+&gt;       assert w.a.client.get(w.url).json()['status'] == 'generating'
+E       AssertionError: assert 'failed' == 'generating'
+E
+E         - generating
+E         + failed
+
+src\web\backend\tests\test_lecture3_integration_w08.py:41: AssertionError</failure></testcase></testsuite></testsuites>
