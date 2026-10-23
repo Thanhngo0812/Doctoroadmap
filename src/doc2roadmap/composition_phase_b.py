@@ -7,7 +7,7 @@ from uuid import uuid4
 
 from doc2roadmap.application.phase_b.assistant import AssistantUseCase
 from doc2roadmap.application.phase_b.documents import DocumentUseCase
-from doc2roadmap.application.phase_b.lectures import LectureUseCase
+from doc2roadmap.application.phase_b.lecture3 import Lecture3UseCase
 from doc2roadmap.application.phase_b.naming import NameModulesB
 from doc2roadmap.application.phase_b.quiz import QuizUseCase
 from doc2roadmap.application.phase_b.retrieval import (
@@ -20,6 +20,7 @@ from doc2roadmap.application.use_cases.index_document import retriever_from_payl
 from doc2roadmap.config import Settings
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
 from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+from doc2roadmap.infrastructure.artifacts.page_images import ArtifactPageImages
 from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
 from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
 from doc2roadmap.infrastructure.embedding.query_cache import CachedQueryEmbedding
@@ -51,6 +52,7 @@ class PhaseBRuntime:
         self._models = {}
         self._query_embedding = None
         self._concept_indexes = {}
+        self.page_images = ArtifactPageImages(self.settings.artifact_dir)
 
     def model(self, purpose):
         if purpose in self._models:
@@ -179,8 +181,8 @@ class PhaseBRuntime:
     def lecture(self, graph, node_id, *, dry_run=False, on_event=None, preload_next=False, deterministic=False, owner=None,
                 cache_only=False):
         model = None if deterministic or (self.mode == 'offline' and not self.replay_dir) else self.model('lecture')
-        return LectureUseCase(model, self.store, settings=self.b_settings, clock=self.clock,
-                              progress=self.progress(graph), spend_guard=self.spend_guard).make(
+        return Lecture3UseCase(model, self.store, page_images=self.page_images, settings=self.b_settings, clock=self.clock,
+                               progress=self.progress(graph), spend_guard=self.spend_guard).make(
             graph.doc_id, graph.graph_version, graph, node_id, dry_run=dry_run,
             allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir), on_event=on_event,
             preload_next=preload_next, owner=owner, cache_only=cache_only)

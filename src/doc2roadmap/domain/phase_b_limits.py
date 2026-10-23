@@ -12,13 +12,13 @@ class BSettings:
 
     model_id: str = "gemini-3.1-flash-lite"
     embedding_model_id: str = "gemini-embedding-001"
-    lecture_temperature: float = 0.0
+    lecture_temperature: float = 1.0
     document_temperature: float = 1.0
     naming_temperature: float = 0.0
     title_max_chars: int = 60
     naming_max_output_tokens: int = 512
     naming_common_chunk_ratio: float = 0.02
-    lecture_max_output_tokens: int = 2048
+    lecture_max_output_tokens: int = 4096
     document_max_output_tokens: int = 3000
     assistant_max_output_tokens: int = 1024
     lecture_context_tokens: int = 2500
@@ -66,6 +66,11 @@ class BSettings:
     lecture_click_transport_retries: int = 1
     lecture_preload_transport_retries: int = 2
     lecture_retry_temperature: float = 0.0
+    lecture_contract_version: str = "lecture-3"
+    lecture_prompt_version: str = "lecture-prompt-3"
+    lecture_context_version: str = "lecture-context-3"
+    lecture_context_chars: int = 9000
+    lecture_max_page_images: int = 4
 
 
 def context_hash(value: Any) -> str:
