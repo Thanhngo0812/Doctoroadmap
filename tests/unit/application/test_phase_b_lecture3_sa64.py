@@ -315,7 +315,7 @@ def test_validation_is_in_the_cache_and_the_usage_row_but_not_in_any_learner_pat
         assert "validation" not in keys_anywhere(lecture)
 
 
-def test_assistant_get_lecture_tool_returns_body_and_sources_without_validation():
+def test_assistant_get_lecture_tool_returns_body_without_its_own_labels_and_without_validation():
     from test_phase_b_assistant_content import Model, ask
     from doc2roadmap.application.ports.phase_b import Delta, Done, ToolCall
     store = InMemoryPhaseBStore()
@@ -328,11 +328,14 @@ def test_assistant_get_lecture_tool_returns_body_and_sources_without_validation(
 
     assistant_graph = make_graph()
     assistant_graph.doc_id = "book"
-    model = Model([[ToolCall("get_lecture", {"concept": "a"}, "1"), Done({})], [Delta("KHONG_DU\nKhông đủ."), Done({})]])
+    model = Model([[ToolCall("get_lecture", {"concept": "a"}, "1"), Done({})], [Delta("Mình đã mở bài giảng."), Done({})]])
     summary = ask(assistant_graph, model, lecture=lecture)["tool_calls"][0]["result_summary"]
-    assert summary["status"] == "ready" and summary["body_md"] == use_case.make(
-        "d1", "g1", graph, "a", cache_only=True)["body_md"]
-    assert summary["sources"][0]["label"] == "S1" and summary["sources"][0]["chunk_id"] == "c2"
+    from doc2roadmap.application.phase_b.assistant_context import strip_lecture_labels
+    full = use_case.make("d1", "g1", graph, "a", cache_only=True)["body_md"]
+    # SA-66: the lecture's own [S1].. labels are removed and its source list is not handed over, so they cannot
+    # be read as the assistant's [S1].. labels
+    assert summary["status"] == "ready" and summary["body_md"] == strip_lecture_labels(full)
+    assert "sources" not in summary and not re.search(r"\[S\d+\]", summary["body_md"])
     assert "validation" not in keys_anywhere(summary)
 
 
@@ -451,7 +454,7 @@ def test_no_model_is_a_failure_that_is_not_remembered():
 
 def test_assistant_focus_takes_lecture_3_paragraphs_without_labels_headings_or_generation():
     import sa56_support as support
-    from test_phase_b_assistant_sa56 import FOCUS_ANSWER, CountingLectureModel, ask, sent_context
+    from test_phase_b_assistant_sa56 import FOCUS_ANSWER, CountingLectureModel, ask, sent_text
     store, counting = InMemoryPhaseBStore(), CountingLectureModel()
     lecture = Lecture3UseCase(counting, store, settings=BSettings(), clock=FakeClock())
     key = lecture.make("book", 1, support.make_graph(), "f", dry_run=True)["lecture_key"]
@@ -464,6 +467,8 @@ def test_assistant_focus_takes_lecture_3_paragraphs_without_labels_headings_or_g
 
     use_case, model, _, _ = support.build([support.answer_turn(FOCUS_ANSWER)], lecture=get_lecture, store=store)
     ask(use_case, "giải thích phần này", focus_node_id="f")
-    ideas = sent_context(model)["focus"]["lecture_ideas"]["items"]
-    assert ideas == ["Song ánh vừa đơn ánh vừa toàn ánh.", "Mỗi phần tử đích có đúng một nghịch ảnh."]
-    assert counting.touched == 0 and "validation" not in json.dumps(sent_context(model))
+    text = sent_text(model)
+    # SA-66: the cached body_md goes into the context whole (headings kept), its [S1] label removed
+    assert "Song ánh vừa đơn ánh vừa toàn ánh.\n\n### Ví dụ\n\nMỗi phần tử đích có đúng một nghịch ảnh." in text
+    assert "ánh [S1]" not in text
+    assert counting.touched == 0 and "validation" not in text

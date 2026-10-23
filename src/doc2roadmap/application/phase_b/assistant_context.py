@@ -56,7 +56,8 @@ def _concept_line(graph: Any, concept: Mapping[str, Any], learned: Mapping[str, 
     steps = [f"module {(row.get('index', 0) or 0) + 1}: {row.get('title')}" for row in concept["path"]["modules"]]
     if steps:
         omitted = concept["path"].get("omitted_module_count") or 0
-        line += " — lộ trình: " + "; ".join(steps) + (f"; và {omitted} module nữa" if omitted else "")
+        tail = f"; và {omitted} module nữa, đích là {_module_ref(graph, concept['path'].get('target_module_id'))}" if omitted else ""
+        line += " — lộ trình: " + "; ".join(steps) + tail
     return line
 
 

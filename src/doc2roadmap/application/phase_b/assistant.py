@@ -26,6 +26,8 @@ from doc2roadmap.domain.scope import resolve_scope
 
 REF = re.compile(r'\[((?:CT|S|N|Q|R|H|B|K|D)\d+)\]')
 IDEA_REF = re.compile(r'\s*' + REF.pattern)
+# Not used by the assistant any more; scripts/phase-b/sa55_assistant_run.py (answer-2 evaluation) still imports it until SA-23.
+REFUSAL = 'Tài liệu hiện có chưa cung cấp đủ bằng chứng để trả lời câu hỏi này.'
 IMAGE_TOKEN_ESTIMATE = 1300
 DAILY_LIMIT_TEXT = 'Đã hết hạn mức chi hôm nay. Bạn vẫn có thể dùng bài giảng và nội dung đã có.'
 ARTIFACT_TEXT = 'Đã tạo nội dung theo yêu cầu. Bạn có thể mở bằng liên kết đính kèm.'
