@@ -38,6 +38,7 @@ KEY_DIR = WORKTREE / 'tmp/sa22-khoa'
 KEY_PATH = KEY_DIR / 'khoa-cau-hinh-sa22.json'
 GRADERS = ('C1', 'C2')
 REJECTED_CAP = 60
+SECONDARY_SIZE = 30
 TRIAL_LLM, TRIAL_REJECTED, TRIAL_TOTAL = 8, 4, 20
 LETTERS = 'ABCD'
 GREY = PatternFill('solid', fgColor='D9D9D9')
@@ -45,11 +46,11 @@ YELLOW = PatternFill('solid', fgColor='FFF2CC')
 HEAD = Font(bold=True)
 WRAP = Alignment(wrap_text=True, vertical='top')
 EDGE = Border(top=Side(style='medium'))
-HEADERS = ['ma_cau', 'cuon', 'khai_niem', 'dap_an_cua_ban', 'dap_an_dung', 'mot_dap_an', 'nhieu_sai', 'dung_khai_niem',
+HEADERS = ['ma_cau', 'cuon', 'dap_an_cua_ban', 'dap_an_dung', 'mot_dap_an', 'nhieu_sai', 'dung_khai_niem',
            'bloom_nguoi', 'loi_viet_cau', 'tieng_viet', 'ket_luan', 'ghi_chu']
-GREY_COLUMNS = 3
-PICKLISTS = {'D': 'A,B,C,D', 'E': 'co,khong', 'F': 'co,khong', 'G': 'co,khong', 'H': 'co,khong',
-             'I': 'nho,hieu,van_dung,phan_tich_tro_len', 'K': '1,2,3', 'L': 'dung_ngay,sua_nhe,bo'}
+GREY_COLUMNS = 2
+PICKLISTS = {'C': 'A,B,C', 'D': 'co,khong', 'E': 'co,khong', 'F': 'co,khong', 'G': 'co,khong',
+             'H': 'nho,hieu,van_dung,phan_tich_tro_len', 'J': '1,2,3', 'K': 'dung_ngay,sua_nhe,bo'}
 ERROR_CODES = [
     ('L01', 'mơ hồ'), ('L02', 'câu nhiễu khó tin'), ('L03', '"không có đáp án nào đúng"'), ('L04', 'phương án dài nhất là đáp án'),
     ('L05', 'thông tin thừa'), ('L06', 'thực chất là đúng/sai'), ('L07', 'gợi ý hội tụ'), ('L08', 'gợi ý logic'),
@@ -123,7 +124,7 @@ def build_main(plan, graphs):
     results = load_results(plan, graphs, OUT / 'results', None)
     cloze = json.loads((OUT / 'cloze.json').read_text(encoding='utf-8'))
     questions, stats = [], Counter()
-    rejected_pool = []
+    rejected_pool, secondary_pool = [], {}
     for doc_id, book in plan['books'].items():
         graph = graphs[doc_id]
         for node_id in book['concepts_in_chosen_modules']:
@@ -137,6 +138,8 @@ def build_main(plan, graphs):
                 if rejection['stage'] == 'verifier' and item and item['item_id'] not in seen:
                     seen.add(item['item_id'])
                     rejected_pool.append((doc_id, item, rejection['reason']))
+            if node_id not in book['targets'] and row['accepted']:
+                secondary_pool.setdefault(doc_id, []).append((node_id, row['accepted'][0]))
             if node_id in book['targets']:
                 if row['accepted']:
                     questions.append(make_question(graph, row['accepted'][0], doc_id=doc_id, origin='llm',
@@ -156,6 +159,22 @@ def build_main(plan, graphs):
         questions.append(make_question(graphs[doc_id], item, doc_id=doc_id, origin='llm', verifier='reject', reason=reason,
                                        tag=f"rej:{item['item_id']}"))
     stats['rejected_in_sheet'] = len(chosen)
+    # Secondary sample: accepted LLM questions of non-target concepts, seeded, round-robin over the books (not paired with cloze).
+    rng = random.Random(SEEDS['secondary'])
+    for rows in secondary_pool.values():
+        rows.sort()
+        rng.shuffle(rows)
+    picked = []
+    while len(picked) < SECONDARY_SIZE and any(secondary_pool.values()):
+        for doc_id in sorted(secondary_pool):
+            if secondary_pool[doc_id] and len(picked) < SECONDARY_SIZE:
+                picked.append((doc_id, *secondary_pool[doc_id].pop()))
+    for doc_id, node_id, item in picked:
+        q = make_question(graphs[doc_id], item, doc_id=doc_id, origin='llm', verifier='pass', reason=None, tag=f'sec:{node_id}')
+        q['mau_phu'] = True
+        questions.append(q)
+    stats['secondary_available'] = sum(len(v) for v in secondary_pool.values()) + len(picked)
+    stats['secondary_in_sheet'] = len(picked)
     return questions, dict(stats)
 
 
@@ -222,7 +241,7 @@ img.cong-thuc { max-width: 100%; height: auto; display: block; margin: .3rem 0; 
 def render_question(q, number):
     letters = ''.join(LETTERS[i] for i in range(len(q['options'])))
     head = (f'<div class="head"><span>Câu <b>{html.escape(q["code"])}</b></span><span>Cuốn: <b>{html.escape(q["doc_id"])}</b></span>'
-            f'<span>Module: {html.escape(q["module_title"])}</span><span>Khái niệm câu kiểm: <b>{html.escape(q["concept"])}</b></span></div>')
+            f'<span>Module: {html.escape(q["module_title"])}</span></div>')
     options = ''.join(f'<li><b>{LETTERS[i]}.</b> {html.escape(text)}</li>' for i, text in enumerate(q['options']))
     evidence = ''
     for ev in q['evidence']:
@@ -231,7 +250,8 @@ def render_question(q, number):
                          for img in ev['images'])
         evidence += f'<p>Căn cứ ({page}):</p><blockquote>{html.escape(ev["quote"])}</blockquote>{images}'
     answer = (f'<details><summary>Đáp án và nguồn</summary><p>Phương án đánh dấu đúng: <b>{LETTERS[q["correct"]]}.</b> '
-              f'{html.escape(q["options"][q["correct"]])}</p>{evidence}</details>')
+              f'{html.escape(q["options"][q["correct"]])}</p>'
+              f'<p>Khái niệm câu này kiểm: <b>{html.escape(q["concept"])}</b></p>{evidence}</details>')
     return (f'<section class="card" id="{html.escape(q["code"])}">{head}<div class="stem">{html.escape(q["stem"])}</div>'
             f'<ul class="opts">{options}</ul>{answer}</section>')
 
@@ -267,7 +287,7 @@ def guide_sheet(wb, grader, trial):
         ('Luật tóm tắt', 'Chấm độc lập, chấm mù, chấm theo sách, không dùng công cụ AI. Chỉ ghi vào cột vàng. Không đổi thứ tự dòng.'),
         ('Bước 1', 'Tự làm câu, ghi phương án bạn chọn vào dap_an_cua_ban TRƯỚC khi mở khối "Đáp án và nguồn". Không chắc thì vẫn chọn, '
                    'ghi khong_chac vào ghi_chu.'),
-        ('Bước 2', 'Mở khối "Đáp án và nguồn", đọc câu trích, mở PDF nếu cần.'),
+        ('Bước 2', 'Mở khối "Đáp án và nguồn", đọc câu trích và khái niệm câu này kiểm, mở PDF nếu cần. Chấm dung_khai_niem sau khi đã mở khối.'),
         ('Bước 3', 'Chấm các cột vàng. Danh sách chọn có sẵn; loi_viet_cau gõ mã lỗi cách nhau bằng dấu phẩy (ví dụ L04,L12), '
                    'không có lỗi thì để trống; ghi_chu gõ tự do.'),
         ('Mức nhận thức', 'nho: nhận ra hay nhắc lại điều sách viết. hieu: diễn đạt lại, phân biệt, giải thích bằng lời khác sách. '
@@ -305,7 +325,7 @@ def grade_sheet(wb, ordered):
     ws = wb.create_sheet('Chấm')
     style_header(ws)
     for row, q in enumerate(ordered, 2):
-        for col, value in enumerate([q['code'], q['doc_id'], q['concept']], 1):
+        for col, value in enumerate([q['code'], q['doc_id']], 1):
             cell = ws.cell(row=row, column=col, value=value)
             cell.fill = GREY
             cell.alignment = WRAP
@@ -320,7 +340,7 @@ def grade_sheet(wb, ordered):
                             errorTitle='Giá trị không hợp lệ', error='Chọn một giá trị trong danh sách.')
         ws.add_data_validation(dv)
         dv.add(f'{column}2:{column}{last}')
-    for column, width in zip('ABCDEFGHIJKLM', (10, 12, 40, 14, 11, 11, 10, 14, 16, 18, 10, 14, 36)):
+    for column, width in zip('ABCDEFGHIJKL', (10, 12, 14, 11, 11, 10, 14, 16, 18, 10, 14, 36)):
         ws.column_dimensions[column].width = width
     ws.protection.sheet = True
     ws.protection.formatColumns = False
@@ -369,6 +389,8 @@ def main():
     trial_questions = build_trial(graphs)
     assign_codes(main_questions, 'Q', SEEDS['rng'] + 1, 4)
     assign_codes(trial_questions, 'T', SEEDS['trial_codes'], 2)
+    if any(len(q['options']) > 3 for q in main_questions + trial_questions):
+        raise SystemExit('a question has 4 options: the dap_an_cua_ban picklist must then keep D')
     if len({q['code'] for q in main_questions}) != len(main_questions):
         raise SystemExit('question codes collide')
     DELIVERY.mkdir(parents=True, exist_ok=True)
@@ -379,6 +401,7 @@ def main():
         for q in questions:
             key[target][q['code']] = {k: q[k] for k in ('origin', 'verifier', 'reason', 'bloom_system', 'doc_id', 'module_id',
                                                        'module_title', 'node_id', 'concept', 'item_id', 'tag')}
+            key[target][q['code']]['mau_phu'] = bool(q.get('mau_phu'))
             key[target][q['code']]['system_answer'] = LETTERS[q['correct']]
             key[target][q['code']]['system_answer_text'] = q['options'][q['correct']]
     for grader in GRADERS:
@@ -391,7 +414,7 @@ def main():
                 encoding='utf-8')
             build_workbook(grader, trial, ordered).save(DELIVERY / (f'cham-sa22-{grader}.xlsx' if not trial else f'thu-sa22-{grader}.xlsx'))
     KEY_PATH.write_text(json.dumps(key, ensure_ascii=False, indent=1, sort_keys=True) + '\n', encoding='utf-8')
-    by = Counter((q['origin'], q['verifier']) for q in main_questions)
+    by = Counter((q['origin'], q['verifier'] + ('/mau_phu' if q.get('mau_phu') else '')) for q in main_questions)
     summary = {'main_questions': len(main_questions), 'by_branch_and_verifier': {f'{o}/{v}': n for (o, v), n in sorted(by.items())},
                'trial_questions': len(trial_questions), 'build_stats': stats,
                'with_formula_image': sum(any(e['images'] for e in q['evidence']) for q in main_questions)}

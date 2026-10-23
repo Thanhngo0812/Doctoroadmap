@@ -51,16 +51,25 @@ MUTATIONS = {
     'branch word in a workbook note': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: wb['Ghi chú chung'].__setitem__('B2', 'dien_khuyet')),
     'system level word in a workbook note': lambda d: edit_xlsx(d / 'cham-sa22-C2.xlsx', lambda wb: wb['Ghi chú chung'].__setitem__('B2', 'Bloom hệ thống')),
     'path word in a workbook note': lambda d: edit_xlsx(d / 'thu-sa22-C1.xlsx', lambda wb: wb['Ghi chú chung'].__setitem__('B2', 'C:\\Users\\x')),
-    'yellow cell already filled': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: wb['Chấm'].__setitem__('D2', 'A')),
-    'picklist value changed': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: set_picklist(wb, 'E', '"co,khong,llm"')),
-    'ket_luan picklist loses a value': lambda d: edit_xlsx(d / 'thu-sa22-C2.xlsx', lambda wb: set_picklist(wb, 'L', '"dung_ngay,bo"')),
+    'yellow cell already filled': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: wb['Chấm'].__setitem__('C2', 'A')),
+    'picklist value changed': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: set_picklist(wb, 'D', '"co,khong,llm"')),
+    'ket_luan picklist loses a value': lambda d: edit_xlsx(d / 'thu-sa22-C2.xlsx', lambda wb: set_picklist(wb, 'K', '"dung_ngay,bo"')),
     'grey cell unlocked': lambda d: edit_xlsx(d / 'cham-sa22-C2.xlsx', lambda wb: unlock(wb['Chấm']['A2'])),
     'yellow cell locked': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: lock(wb['Chấm']['H2'])),
-    'header renamed': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: wb['Chấm'].__setitem__('G1', 'nhieu_dung')),
+    'header renamed': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: wb['Chấm'].__setitem__('F1', 'nhieu_dung')),
     'question code malformed': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: wb['Chấm'].__setitem__('A2', 'X1')),
     'both graders same order': lambda d: shutil.copyfile(d / 'cham-sa22-C1.xlsx', d / 'cham-sa22-C2.xlsx'),
+    'concept name back in the card head (html)': lambda d: edit_html(d / 'phieu-sa22-C1.html', concept_to_head),
+    'concept label back in the card head, trial (html)': lambda d: edit_html(
+        d / 'thu-sa22-C2.html', lambda t: t.replace('</div><div class="stem">', '<span>Khái niệm câu kiểm: x</span></div><div class="stem">', 1)),
+    'picklist offers D': lambda d: edit_xlsx(d / 'cham-sa22-C1.xlsx', lambda wb: set_picklist(wb, 'C', '"A,B,C,D"')),
     'extra key file': lambda d: (d / 'khoa-cau-hinh-sa22.json').write_text('{}', encoding='utf-8'),
 }
+
+
+def concept_to_head(text):
+    name = re.search(r'Khái niệm câu này kiểm: <b>(.*?)</b>', text).group(1)
+    return text.replace('</div><div class="stem">', f'<span>{name}</span></div><div class="stem">', 1)
 
 
 def set_picklist(wb, column, formula):

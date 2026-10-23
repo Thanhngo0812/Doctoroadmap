@@ -29,12 +29,12 @@ FORBIDDEN = {
     'llm': r'\bllm\b', 'generator': r'generator', 'rules-version': r'quiz-local-rules', 'key-file': r'khoa-cau-hinh',
 }
 SHEETS = ['Hướng dẫn', 'Chấm', 'Ghi chú chung']
-HEADERS = ['ma_cau', 'cuon', 'khai_niem', 'dap_an_cua_ban', 'dap_an_dung', 'mot_dap_an', 'nhieu_sai', 'dung_khai_niem',
+HEADERS = ['ma_cau', 'cuon', 'dap_an_cua_ban', 'dap_an_dung', 'mot_dap_an', 'nhieu_sai', 'dung_khai_niem',
            'bloom_nguoi', 'loi_viet_cau', 'tieng_viet', 'ket_luan', 'ghi_chu']
-PICKLISTS = {'D': '"A,B,C,D"', 'E': '"co,khong"', 'F': '"co,khong"', 'G': '"co,khong"', 'H': '"co,khong"',
-             'I': '"nho,hieu,van_dung,phan_tich_tro_len"', 'K': '"1,2,3"', 'L': '"dung_ngay,sua_nhe,bo"'}
+PICKLISTS = {'C': '"A,B,C"', 'D': '"co,khong"', 'E': '"co,khong"', 'F': '"co,khong"', 'G': '"co,khong"',
+             'H': '"nho,hieu,van_dung,phan_tich_tro_len"', 'J': '"1,2,3"', 'K': '"dung_ngay,sua_nhe,bo"'}
 DOCS = {'doc-1', 'doc-4', 'doc-6', 'nhap-mon-ml', 'naive-bayes', 'xstk-ch3-1'}
-GREY_COUNT = 3
+GREY_COUNT = 2
 
 
 def scan(text, hits):
@@ -61,6 +61,22 @@ def check_html(path, problems):
         problems.append(f'{path.name}: a card lacks the answer block heading')
     if len(set(cards)) != len(cards):
         problems.append(f'{path.name}: repeated question code')
+    leaks = 0
+    for card in re.findall(r'<section class="card".*?</section>', text, re.S):
+        blocks = re.findall(r'<details>.*?</details>', card, re.S)
+        outside = card
+        for block in blocks:
+            outside = outside.replace(block, '')
+        found = re.search(r'Khái niệm câu này kiểm: <b>(.*?)</b>', ''.join(blocks))
+        if not found:
+            problems.append(f'{path.name}: a card does not name the concept inside the answer block')
+            break
+        head = re.search(r'<div class="head">.*?</div>', outside, re.S)
+        head = re.sub(r'<span>Module:.*?</span>', '', head.group(0) if head else '')
+        if 'Khái niệm câu' in outside or found.group(1) in head:
+            leaks += 1
+    if leaks:
+        problems.append(f'{path.name}: concept name or label outside the folded answer block in {leaks} cards')
     return cards
 
 
@@ -87,14 +103,14 @@ def check_workbook(path, trial, problems):
         problems.append(f'{path.name}: Chấm headers differ')
     fills = [ws.cell(row=1, column=c).fill.fgColor.rgb for c in range(1, len(HEADERS) + 1)]
     if any(f[-6:] != 'D9D9D9' for f in fills[:GREY_COUNT]) or any(f[-6:] != 'FFF2CC' for f in fills[GREY_COUNT:]):
-        problems.append(f'{path.name}: header colours differ (grey for the three info columns, yellow for the rest)')
+        problems.append(f'{path.name}: header colours differ (grey for the two info columns, yellow for the rest)')
     pattern = r'T\d\d' if trial else r'Q\d{4}'
     codes = []
     for row in ws.iter_rows(min_row=2):
         if row[0].value is None:
             continue
         codes.append(row[0].value)
-        if not re.fullmatch(pattern, str(row[0].value)) or row[1].value not in DOCS or not row[2].value:
+        if not re.fullmatch(pattern, str(row[0].value)) or row[1].value not in DOCS:
             problems.append(f'{path.name}: an info cell is wrong or empty')
             break
         if any(c.value is not None for c in row[GREY_COUNT:]):

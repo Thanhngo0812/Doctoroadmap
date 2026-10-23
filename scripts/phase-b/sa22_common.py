@@ -28,7 +28,7 @@ EXPECTED = {'doc-1': (35, 223), 'nhap-mon-ml': (15, 75), 'naive-bayes': (5, 33),
             'xstk-ch3-1': (14, 82), 'doc-4': (91, 495)}
 # Concepts per book, report section 5.2 (doc-6 has only 11 learnable concepts, so "at most what exists").
 STRATA = {'doc-1': 30, 'doc-4': 30, 'xstk-ch3-1': 20, 'nhap-mon-ml': 20, 'naive-bayes': 10, 'doc-6': 10}
-SEEDS = {'sample': 20261023, 'rng': 20261024, 'trial': 20261025, 'trial_codes': 20261026, 'rejected_cap': 20261027,
+SEEDS = {'sample': 20261023, 'rng': 20261024, 'trial': 20261025, 'trial_codes': 20261026, 'rejected_cap': 20261027, 'secondary': 20261028,
          'C1': {'order': 3011}, 'C2': {'order': 4021}}
 OWNER = 'sa22'
 
