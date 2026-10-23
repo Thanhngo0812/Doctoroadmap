@@ -33,7 +33,9 @@ DEVELOPMENT_DOCS = ('doc-1', 'nhap-mon-ml', 'naive-bayes', 'doc-6', 'xstk-ch3-1'
 
 class PhaseBRuntime:
     def __init__(self, *, settings=None, b_settings=None, allow_spend=False, store_path=None, mode=None,
-                 record_dir=None, replay_dir=None, clock=None):
+                 record_dir=None, replay_dir=None, clock=None, store=None):
+        if store is not None and store_path is not None:
+            raise ValueError('Chọn một trong store và store_path')
         self.settings = settings or Settings()
         self.b_settings = b_settings or BSettings()
         self.allow_spend = allow_spend
@@ -42,7 +44,8 @@ class PhaseBRuntime:
         self.mode = mode or ('gemini' if allow_spend else 'offline')
         if self.mode not in {'gemini', 'offline'}:
             raise ValueError('mode phải là gemini hoặc offline')
-        self.store = JsonPhaseBStore(store_path or root / ('live.json' if self.mode == 'gemini' else 'offline.json'))
+        self.store = store if store is not None else JsonPhaseBStore(
+            store_path or root / ('live.json' if self.mode == 'gemini' else 'offline.json'))
         self.clock = clock or SystemClock()
         self.spend_guard = DailySpendGuard(self.store, settings=self.b_settings, clock=self.clock)
         if record_dir and replay_dir:
