@@ -156,17 +156,67 @@
         { name: "color/danger-tint", light: hexToRgb("#FDECEC"), dark: rgbaToFigma(248, 113, 113, 0.14) }
       ];
 
-      for (const c of colorDefs) {
+      // Detailed Variable generation tracker (NO SILENT CATCH - captures attempted/created/failed)
+      const variableReport = {
+        attempted: 0,
+        created: 0,
+        failed: 0,
+        errors: [],
+        details: []
+      };
+
+      function registerVariable(name, type, lightVal, darkVal) {
+        variableReport.attempted += 2; // 2 modes (Light and Dark)
+        let v = null;
+
         try {
-          const v = figma.variables.createVariable(c.name, collection, "COLOR");
-          v.setValueForMode(lightModeId, c.light);
+          v = figma.variables.createVariable(name, collection, type);
+        } catch (createErr) {
+          variableReport.failed += 2;
+          const errItem = { name, type, mode: "both", stage: "createVariable", error: String(createErr) };
+          variableReport.errors.push(errItem);
+          variableReport.details.push({ name, type, mode: "Light", status: "FAILED", error: String(createErr) });
+          variableReport.details.push({ name, type, mode: "Dark", status: "FAILED", error: String(createErr) });
+          console.error(`[WayFinder Plugin Error] createVariable failed for ${name} (${type}):`, createErr);
+          return;
+        }
+
+        // Set Light mode value
+        try {
+          v.setValueForMode(lightModeId, lightVal);
+          variableReport.created += 1;
+          variableReport.details.push({ name, type, mode: "Light", status: "CREATED", value: lightVal });
+        } catch (setLightErr) {
+          variableReport.failed += 1;
+          variableReport.errors.push({ name, type, mode: "Light", stage: "setValueForMode", error: String(setLightErr) });
+          variableReport.details.push({ name, type, mode: "Light", status: "FAILED", error: String(setLightErr) });
+          console.error(`[WayFinder Plugin Error] setValueForMode (Light) failed for ${name}:`, setLightErr);
+        }
+
+        // Set Dark mode value
+        try {
           if (darkModeId) {
-            v.setValueForMode(darkModeId, c.dark);
+            v.setValueForMode(darkModeId, darkVal);
+            variableReport.created += 1;
+            variableReport.details.push({ name, type, mode: "Dark", status: "CREATED", value: darkVal });
           } else if (darkCollection && darkColModeId) {
-            const vDark = figma.variables.createVariable(c.name, darkCollection, "COLOR");
-            vDark.setValueForMode(darkColModeId, c.dark);
+            const vDark = figma.variables.createVariable(name, darkCollection, type);
+            vDark.setValueForMode(darkColModeId, darkVal);
+            variableReport.created += 1;
+            variableReport.details.push({ name, type, mode: "Dark", status: "CREATED_FALLBACK_COLLECTION", value: darkVal });
+          } else {
+            throw new Error("No dark mode available in collection or fallback collection");
           }
-        } catch (e) {}
+        } catch (setDarkErr) {
+          variableReport.failed += 1;
+          variableReport.errors.push({ name, type, mode: "Dark", stage: "setValueForMode", error: String(setDarkErr) });
+          variableReport.details.push({ name, type, mode: "Dark", status: "FAILED", error: String(setDarkErr) });
+          console.error(`[WayFinder Plugin Error] setValueForMode (Dark) failed for ${name}:`, setDarkErr);
+        }
+      }
+
+      for (const c of colorDefs) {
+        registerVariable(c.name, "COLOR", c.light, c.dark);
       }
 
       const spacingDefs = [
@@ -182,16 +232,7 @@
         { name: "spacing/space-16", val: 64 }
       ];
       for (const s of spacingDefs) {
-        try {
-          const v = figma.variables.createVariable(s.name, collection, "FLOAT");
-          v.setValueForMode(lightModeId, s.val);
-          if (darkModeId) {
-            v.setValueForMode(darkModeId, s.val);
-          } else if (darkCollection && darkColModeId) {
-            const vDark = figma.variables.createVariable(s.name, darkCollection, "FLOAT");
-            vDark.setValueForMode(darkColModeId, s.val);
-          }
-        } catch (e) {}
+        registerVariable(s.name, "FLOAT", s.val, s.val);
       }
 
       const radiusDefs = [
@@ -202,16 +243,7 @@
         { name: "radius/radius-full", val: 9999 }
       ];
       for (const r of radiusDefs) {
-        try {
-          const v = figma.variables.createVariable(r.name, collection, "FLOAT");
-          v.setValueForMode(lightModeId, r.val);
-          if (darkModeId) {
-            v.setValueForMode(darkModeId, r.val);
-          } else if (darkCollection && darkColModeId) {
-            const vDark = figma.variables.createVariable(r.name, darkCollection, "FLOAT");
-            vDark.setValueForMode(darkColModeId, r.val);
-          }
-        } catch (e) {}
+        registerVariable(r.name, "FLOAT", r.val, r.val);
       }
 
       const motionDefs = [
@@ -219,19 +251,20 @@
         { name: "motion/motion-base", val: "200ms" }
       ];
       for (const m of motionDefs) {
-        try {
-          const v = figma.variables.createVariable(m.name, collection, "STRING");
-          v.setValueForMode(lightModeId, m.val);
-          if (darkModeId) {
-            v.setValueForMode(darkModeId, m.val);
-          } else if (darkCollection && darkColModeId) {
-            const vDark = figma.variables.createVariable(m.name, darkCollection, "STRING");
-            vDark.setValueForMode(darkColModeId, m.val);
-          }
-        } catch (e) {}
+        registerVariable(m.name, "STRING", m.val, m.val);
+      }
+
+      // Assert completeness & notify runner
+      if (variableReport.failed > 0 || variableReport.created < 74) {
+        const errorMsg = `WayFinder Variables: LỖI thiếu ${74 - variableReport.created}/74 giá trị! Thất bại: ${variableReport.failed}. Xem console log để biết chi tiết.`;
+        console.error(errorMsg, variableReport.errors);
+        figma.notify(errorMsg, { error: true, timeout: 9000 });
+      } else {
+        console.log(`WayFinder Variables: Đã tạo đầy đủ ${variableReport.created}/${variableReport.attempted} giá trị biến (37 biến × 2 mode Light/Dark).`);
       }
     } catch (varErr) {
-      console.log("Figma Variables notice:", varErr);
+      console.error("[WayFinder Plugin] Fatal collection creation error:", varErr);
+      figma.notify(`WayFinder Tokens: Lỗi cấu trúc collection: ${varErr.message || varErr}`, { error: true, timeout: 9000 });
     }
   }
 
@@ -1909,7 +1942,7 @@
   w09CardsRow.itemSpacing = 16;
   w09CardsRow.fills = [];
 
-  // Card 1: Active Chat with Module & Turns
+  // Card 1: Active Chat with Module & Usage ratio (usage-1 contract, rate limit 10/min)
   const w09ActiveCard = figma.createFrame();
   w09ActiveCard.layoutMode = "VERTICAL";
   w09ActiveCard.itemSpacing = 10;
@@ -1918,16 +1951,17 @@
   w09ActiveCard.fills = solidFill(C.bgSubtle);
   w09ActiveCard.strokes = [{ type: "SOLID", color: C.border }];
   w09ActiveCard.paddingLeft = 16; w09ActiveCard.paddingRight = 16; w09ActiveCard.paddingTop = 16; w09ActiveCard.paddingBottom = 16;
-  w09ActiveCard.appendChild(makeBadge("Phiên chat • Còn 24 lượt", C.successTint, C.success));
+  w09ActiveCard.appendChild(makeBadge("Phiên chat • Đã dùng 35% trần ngày", C.brandTint, C.primary));
   w09ActiveCard.appendChild(createText("📌 Module 1: Động mạch vành", 15, FONT_SEMI, C.primary));
   const chatBubble = figma.createFrame();
   chatBubble.resize(348, 160);
   chatBubble.cornerRadius = 8;
   chatBubble.fills = solidFill(C.surface);
   chatBubble.paddingLeft = 12; chatBubble.paddingRight = 12; chatBubble.paddingTop = 10;
-  chatBubble.appendChild(createText("LAD cấp máu cho 2/3 trước vách liên thất theo Harrison 21st (Trang 1892).", 12, FONT_REG, C.text));
+  chatBubble.appendChild(createText("Nhánh LAD phát ra các nhánh xiên cấp máu cho 2/3 trước vách liên thất [S1].", 12, FONT_REG, C.text));
+  chatBubble.appendChild(createText("📖 [S1] Mở Trang 1892 (Chương 273, Harrison 21st)", 11, FONT_SEMI, C.primary));
   w09ActiveCard.appendChild(chatBubble);
-  const btnSendMsg = makeButton("Gửi câu hỏi mới", C.primary, C.white);
+  const btnSendMsg = makeButton("Gửi câu hỏi (Tối đa 10 lượt/phút)", C.primary, C.white);
   btnSendMsg.resize(348, 44);
   w09ActiveCard.appendChild(btnSendMsg);
   w09CardsRow.appendChild(w09ActiveCard);
@@ -1949,7 +1983,7 @@
   w09ScopeCard.appendChild(btnNewScope);
   w09CardsRow.appendChild(w09ScopeCard);
 
-  // Card 3: Daily Limit Reached
+  // Card 3: Daily Limit Reached (ADR 0026 / usage-1: no USD shown to learners, resets_at 00:00)
   const w09LimitCard = figma.createFrame();
   w09LimitCard.layoutMode = "VERTICAL";
   w09LimitCard.itemSpacing = 10;
@@ -1958,9 +1992,9 @@
   w09LimitCard.fills = solidFill(C.bgSubtle);
   w09LimitCard.strokes = [{ type: "SOLID", color: C.border }];
   w09LimitCard.paddingLeft = 16; w09LimitCard.paddingRight = 16; w09LimitCard.paddingTop = 16; w09LimitCard.paddingBottom = 16;
-  w09LimitCard.appendChild(makeBadge("Hết hạn mức (Daily Limit)", C.dangerTint, C.danger));
-  w09LimitCard.appendChild(createText("0 / 30 lượt còn lại hôm nay", 15, FONT_BOLD, C.text));
-  w09LimitCard.appendChild(createText("Bạn vẫn đọc bài giảng, làm quiz và xem tài liệu được. Lượt mới từ 00:00 ngày mai.", 12, FONT_REG, C.textMuted));
+  w09LimitCard.appendChild(makeBadge("Hết trần ngày (daily_limit)", C.dangerTint, C.danger));
+  w09LimitCard.appendChild(createText("Hôm nay bạn đã dùng hết lượt hỏi", 15, FONT_BOLD, C.text));
+  w09LimitCard.appendChild(createText("Bạn vẫn đọc bài giảng, làm quiz và xem tài liệu được. Lượt mới tự động đặt lại từ 00:00 ngày mai.", 12, FONT_REG, C.textMuted));
   const btnBackRoadmap = makeButton("Quay lại Lộ trình học ➔", C.primary, C.white);
   btnBackRoadmap.resize(348, 44);
   w09LimitCard.appendChild(btnBackRoadmap);

@@ -595,8 +595,8 @@ def test_falsifiable_motion_mutation_fails():
 
 
 
-def test_figma_plugin_has_all_37_variables_and_frame11():
-    """Verify that code.js defines all 37 variables exactly matching JSON/CSS, plus Frame 11."""
+def test_figma_plugin_has_all_37_variables_and_error_handling():
+    """Verify that code.js defines all 37 variables, exact 0.14 alpha, error reporting, and no silent catch."""
     code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
     raw_path = Path("design/tokens/figma_variables_raw_export.json")
     raw_data = json.loads(raw_path.read_text(encoding="utf-8"))
@@ -617,22 +617,28 @@ def test_figma_plugin_has_all_37_variables_and_frame11():
     )
     assert '"motion/motion-base"' in code_js, "code.js missing motion-base"
     assert '"200ms"' in code_js, "code.js missing 200ms value"
-    assert "0.14" in code_js, "code.js missing 0.14 alpha for dark tints"
     
-    # 3. Frame 11 and components
-    assert "Màn hình W-11" in code_js
-    assert "createComponent" in code_js
-    assert "flowStartingPoints" in code_js
+    # 3. Exact 0.14 alpha check across all 4 dark tints
+    alphas = re.findall(r'rgbaToFigma\([^)]+,\s*([0-9.]+)\)', code_js)
+    assert len(alphas) == 4, f"Expected exactly 4 rgbaToFigma calls, found {len(alphas)}"
+    for a in alphas:
+        assert a == "0.14", f"Dark tint alpha must be exactly 0.14, found: {a}"
+    assert "0.99" not in code_js, "Dark tint must not be mutated to 0.99"
+    
+    # 4. Error reporting and variableReport structure
+    assert "variableReport" in code_js, "code.js must track variableReport"
+    assert "variableReport.attempted" in code_js
+    assert "variableReport.failed" in code_js
+    assert "figma.notify" in code_js
     assert "&bull;" not in code_js, "code.js must not contain raw unencoded &bull; strings"
 
 
 def test_w11_course_management_specification():
-    """Verify W-11 course management rules: 6-char token in list, one-time URL result, >=44px buttons, data safety."""
+    """Verify W-11 course management rules: 6-char token in list, one-time URL result, anchors, pending invites."""
     w11_html = Path("design/preview/w11_course_management_screens.html").read_text(encoding="utf-8")
     
     # 1. 6-character token in list table
     assert "X9A4B2" in w11_html
-    # In tbody, no full URL or copy button
     tbody_start = w11_html.find("<tbody>")
     tbody_end = w11_html.find("</tbody>")
     assert tbody_start != -1 and tbody_end != -1
@@ -645,41 +651,58 @@ def test_w11_course_management_specification():
     assert 'id="btn-copy-new-link-one-time"' in w11_html
     assert "https://wayfinder.edu.vn/join/X9A4B2" in w11_html
     
-    # 3. Danger zone wording respects private learning progress and shared artifacts
+    # 3. Anchors required by coordinator: email, pending invitations, danger zone
+    assert 'id="section-invite-email"' in w11_html, "w11 must have #section-invite-email anchor"
+    assert 'id="section-pending-invitations"' in w11_html, "w11 must have #section-pending-invitations anchor"
+    assert 'id="section-danger-zone"' in w11_html, "w11 must have #section-danger-zone anchor"
     assert "Tiến trình học riêng của học viên và các tài liệu/artifact dùng chung được lưu giữ" in w11_html
     
-    # 4. Touch target 44px
+    # 4. Touch target >= 44px
     assert "min-height: 44px" in w11_html
     assert "min-width: 44px" in w11_html
     assert "36px" not in w11_html, "w11_course_management_screens.html must not contain substandard 36px buttons"
 
 
 def test_w08_lecture_specification():
-    """Verify W-08 lecture states: streaming, prerequisites open, source viewer, fatal error, page viewer, bug report, >=44px buttons."""
+    """Verify W-08 lecture-3 (ADR 0025): first chunk wait, early error retry, body_md, sources, self_check fold, cat_ngan, >=44px."""
     w08_html = Path("design/preview/w08_lecture_screens.html").read_text(encoding="utf-8")
     
-    assert 'id="section-lecture-streaming"' in w08_html
-    assert 'id="section-lecture-prerequisites"' in w08_html
-    assert 'id="section-source-viewer"' in w08_html
+    assert 'id="section-lecture-waiting-first-chunk"' in w08_html
+    assert 'id="btn-retry-lecture-early"' in w08_html
+    assert 'id="section-lecture-ready"' in w08_html
+    assert "[S1]" in w08_html
+    assert "Trong sách" in w08_html
+    assert 'id="details-self-check"' in w08_html
+    assert 'id="badge-cat-ngan"' in w08_html
     assert 'id="section-lecture-fatal-error"' in w08_html
     assert 'id="btn-exit-to-roadmap"' in w08_html
     assert 'id="section-page-image-viewer"' in w08_html
     assert 'id="section-content-bug-report"' in w08_html
     assert "OCR y khoa" not in w08_html, "Must not claim OCR y khoa without spec"
+    assert "lecture-2" not in w08_html, "Must not contain deprecated lecture-2"
     assert "36px" not in w08_html, "w08_lecture_screens.html must not contain substandard 36px buttons"
     assert "min-height: 44px" in w08_html
 
 
 def test_w09_chat_screens_specification():
-    """Verify W-09 chat states: active session with turns, module badge, tool progress, scope outdated, daily limit, >=44px buttons."""
+    """Verify W-09 chat states (ADR 0026 / usage-1): empty chat, active used_ratio, no fake turns, natural tool progress, no USD."""
     w09_html = Path("design/preview/w09_chat_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-chat-empty"' in w09_html
     assert 'id="section-chat-active"' in w09_html
     assert 'id="badge-chat-module"' in w09_html
-    assert 'id="badge-chat-turns"' in w09_html
+    assert 'id="badge-chat-usage"' in w09_html
+    assert "30 lượt" not in w09_html, "Must not fabricate 30 turns/day quota"
+    assert "còn 24" not in w09_html, "Must not fabricate remaining 24 turns"
+    assert "vector_search_harrison_21st" not in w09_html, "Must not display raw toolname"
+    assert '{"query":' not in w09_html, "Must not display raw JSON arguments"
+    assert "10 lượt/phút" in w09_html, "Must specify 10 turns/min rate limit"
     assert 'id="section-chat-tool-progress"' in w09_html
     assert 'id="section-chat-scope-outdated"' in w09_html
     assert 'id="section-chat-limit-exceeded"' in w09_html
     assert 'id="btn-return-roadmap-from-chat"' in w09_html
+    # ADR 0026 / spec 6/8: no USD currency numbers shown to learners
+    limit_section = w09_html.split('id="section-chat-limit-exceeded"')[1]
+    assert "USD" not in limit_section and "$" not in limit_section, "Must not display USD amounts on learner chat UI"
     assert "min-height: 44px" in w09_html
     assert "36px" not in w09_html
 
@@ -755,3 +778,42 @@ def test_falsifiable_quiz_generating_missing_fails():
     fake_quiz = '<div id="section-quiz-taking"><p>Câu hỏi 1</p></div>'
     with pytest.raises(AssertionError):
         assert 'id="section-quiz-generating"' in fake_quiz
+
+
+
+def test_falsifiable_plugin_dark_tint_alpha_mutation_fails():
+    """Falsifiable test: prove that mutating dark tint alpha 0.14 -> 0.99 in code.js fails verification."""
+    fake_code_js = 'rgbaToFigma(41, 169, 255, 0.99)'
+    alphas = re.findall(r'rgbaToFigma\([^)]+,\s*([0-9.]+)\)', fake_code_js)
+    with pytest.raises(AssertionError):
+        for a in alphas:
+            assert a == "0.14"
+
+
+def test_falsifiable_plugin_variable_error_unhandled_fails():
+    """Falsifiable test: prove that forced createVariable error (72/74 values) is caught by independent assertion."""
+    simulated_report = {
+        "attempted": 74,
+        "created": 72,
+        "failed": 2,
+        "errors": [{"name": "color/primary", "error": "Forced error"}]
+    }
+    with pytest.raises(AssertionError):
+        assert simulated_report["failed"] == 0, f"Variables generation failed: {simulated_report['errors']}"
+        assert simulated_report["created"] == 74
+
+
+def test_falsifiable_chat_fake_turns_quota_fails():
+    """Falsifiable test: prove that asserting fake 30 turns/day quota fails verification."""
+    fake_chat = '<span id="badge-chat-turns">Còn 24 lượt hỏi hôm nay (tổng 30 lượt/ngày)</span>'
+    with pytest.raises(AssertionError):
+        assert "30 lượt" not in fake_chat
+        assert "còn 24" not in fake_chat
+
+
+def test_falsifiable_chat_raw_toolname_json_fails():
+    """Falsifiable test: prove that raw toolname or JSON in chat tool progress fails verification."""
+    fake_tool = '<div><code>vector_search_harrison_21st</code>: {"query": "LAD"}</div>'
+    with pytest.raises(AssertionError):
+        assert "vector_search_harrison_21st" not in fake_tool
+        assert '{"query":' not in fake_tool

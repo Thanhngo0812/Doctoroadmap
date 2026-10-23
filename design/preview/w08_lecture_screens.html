@@ -3,16 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Màn hình Trang học & Bài giảng Y khoa (W-08) — WayFinder</title>
+  <title>Trang học & Bài giảng Y khoa (W-08 / lecture-3 ADR 0025) — WayFinder Design Preview</title>
   <link rel="stylesheet" href="../tokens/tokens.css">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
     body {
       font-family: var(--font-sans);
-      background-color: var(--color-bg);
+      background: var(--color-bg);
       color: var(--color-text);
+      line-height: 1.6;
       padding: var(--space-6);
-      line-height: 1.5;
+      transition: background-color var(--motion-fast), color var(--motion-fast);
     }
     .header-bar {
       display: flex;
@@ -23,18 +28,22 @@
       border-bottom: 1px solid var(--color-border);
     }
     .theme-toggle-btn {
-      min-height: 44px;
-      height: 44px;
-      padding: 0 var(--space-4);
-      border-radius: var(--radius-md);
-      border: 1px solid var(--color-border-input);
       background: var(--color-surface);
       color: var(--color-text);
-      font-weight: var(--font-semibold);
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-4);
       cursor: pointer;
+      font-size: var(--text-small);
+      font-weight: var(--font-semibold);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
     .container {
-      max-width: 960px;
+      max-width: 900px;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
@@ -59,6 +68,8 @@
     .badge-success { background: var(--color-success-tint); color: var(--color-success); }
     .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
     .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+    .badge-warning { background: var(--color-accent-tint); color: var(--color-accent-text); border: 1px solid var(--color-border); }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -94,25 +105,40 @@
       .skeleton-line { animation: none; opacity: 0.7; }
     }
 
-    /* Accordion styles */
-    .accordion-header {
-      display: flex;
-      justify-content: space-between;
+    /* Source link citation badge */
+    .source-tag {
+      display: inline-flex;
       align-items: center;
-      padding: var(--space-3) var(--space-4);
+      background: var(--color-brand-tint);
+      color: var(--color-primary);
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: var(--font-bold);
+      text-decoration: none;
+      margin-left: 4px;
+      border: 1px solid var(--color-brand-tint);
+      cursor: pointer;
+    }
+    .source-tag:hover {
+      background: var(--color-primary);
+      color: var(--color-primary-text);
+    }
+
+    /* Self-check details fold */
+    details.self-check-box {
       background: var(--color-bg-subtle);
       border: 1px solid var(--color-border);
       border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin-top: var(--space-4);
+    }
+    details.self-check-box summary {
       cursor: pointer;
       font-weight: var(--font-semibold);
-      min-height: 44px;
-    }
-    .accordion-body {
-      padding: var(--space-4);
-      border: 1px solid var(--color-border);
-      border-top: none;
-      border-radius: 0 0 var(--radius-md) var(--radius-md);
-      background: var(--color-surface);
+      color: var(--color-primary);
+      outline: none;
+      user-select: none;
     }
 
     @media (max-width: 640px) {
@@ -120,10 +146,8 @@
       .header-bar { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
       .theme-toggle-btn { width: 100%; }
       .card { padding: var(--space-4); }
-      .prereq-item { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-3) !important; }
-      .prereq-item .btn { width: 100%; }
-      .source-header-wrap { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
-      .source-header-wrap .btn { width: 100%; }
+      .action-row-wrap { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-3) !important; }
+      .action-row-wrap .btn { width: 100%; }
     }
   </style>
 </head>
@@ -134,7 +158,7 @@
         Trang học & Bài giảng Y khoa (W-08)
       </h1>
       <p style="font-size: var(--text-small); color: var(--color-text-muted);">
-        Thể hiện bài học đang chờ/streaming, accordion tiên quyết mở sẵn, khung xem tài liệu gốc theo Spec Mục 11.
+        Chuẩn hoá toàn diện theo ADR 0025 / SA-64 (hợp đồng lecture-3: văn xuôi Markdown/LaTeX, khối Trong sách, tự kiểm tra gập, lỗi đuôi cắt ngắn).
       </p>
     </div>
     <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Đổi giao diện Sáng/Tối">
@@ -143,101 +167,132 @@
   </div>
 
   <main class="container">
-    <!-- TRẠNG THÁI 1: BÀI HỌC ĐANG CHỜ / ĐANG STREAM (STREAMING SKELETON) -->
-    <section class="card" id="section-lecture-streaming">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+    <!-- TRẠNG THÁI 1A: CHỜ CHỮ ĐẦU (WAITING FOR FIRST CHUNK) -->
+    <section class="card" id="section-lecture-waiting-first-chunk">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
         <div>
-          <span class="badge badge-accent">⚡ Đang xử lý nội dung</span>
+          <span class="badge badge-accent">⚡ Chờ chữ đầu (First Chunk)</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            1. Bài học đang chờ / đang hiện dần (Streaming & Skeleton State)
+            1a. Trạng thái: Chờ chữ đầu từ mô hình (Stream Skeleton)
           </h2>
         </div>
-        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Module 1 • Bài 3/18</span>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Khái niệm: Động mạch vành</span>
       </div>
 
-      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-4);">
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
         <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
-          <div style="width: 24px; height: 24px; border: 3px solid var(--color-brand); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <div style="width: 20px; height: 20px; border: 2px solid var(--color-brand); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
           <strong style="color: var(--color-primary); font-size: var(--text-body);">
-            WayFinder đang chuẩn bị cấu trúc giải phẫu và liên hệ lâm sàng...
+            Giảng viên WayFinder đang chuẩn bị bài giảng từ Harrison 21st...
           </strong>
         </div>
-        
-        <!-- Skeleton loaders -->
-        <div class="skeleton-line" style="width: 85%;"></div>
+        <div class="skeleton-line" style="width: 80%;"></div>
         <div class="skeleton-line" style="width: 95%;"></div>
-        <div class="skeleton-line" style="width: 70%;"></div>
-        <div class="skeleton-line" style="width: 90%;"></div>
+        <div class="skeleton-line" style="width: 65%;"></div>
       </div>
     </section>
 
-    <!-- TRẠNG THÁI 2: ACCORDION TIÊN QUYẾT MỞ (PREREQUISITES ACCORDION) -->
-    <section class="card" id="section-lecture-prerequisites">
+    <!-- TRẠNG THÁI 1B: LỖI CHƯA CÓ CHỮ (HIỆN MESSAGE + NÚT THỬ LẠI LUÔN) -->
+    <section class="card" id="section-lecture-early-error">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-danger">Lỗi kết nối</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            1b. Trạng thái: Lỗi trước khi có chữ (Hiện thông báo + Thử lại ngay)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-danger);">Mã: upstream_unavailable</span>
+      </div>
+
+      <div style="background: var(--color-danger-tint); border: 1px solid var(--color-danger); border-radius: var(--radius-md); padding: var(--space-4);">
+        <p style="font-size: var(--text-body); color: var(--color-text); margin-bottom: var(--space-3);">
+          Không thể kết nối với dịch vụ tạo bài giảng. Đường truyền tạm thời gián đoạn.
+        </p>
+        <button class="btn btn-primary" id="btn-retry-lecture-early" style="min-height: 44px; min-width: 44px;">
+          🔄 Thử lại ngay
+        </button>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 2: BÀI GIẢNG LECTURE-3 HOÀN CHỈNH (VĂN XUÔI MARKDOWN/LATEX + KHỐI TRONG SÁCH + TỰ KIỂM TRA GẬP) -->
+    <section class="card" id="section-lecture-ready">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
         <div>
-          <span class="badge badge-success">✓ Đã hoàn thành bài</span>
+          <span class="badge badge-success">✓ Bài giảng chuẩn lecture-3</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            2. Bài học xong — Khối Tiên quyết mở sẵn (Prerequisites Open)
+            2. Bài giảng văn xuôi tự nhiên (ADR 0025: body_md, sources, self_check gập)
           </h2>
         </div>
-        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Giải phẫu động mạch vành</span>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Module 1 • Dài 520 từ</span>
       </div>
 
-      <!-- Accordion Header (Mở sẵn) -->
-      <div class="accordion-header" id="accordion-prereq-toggle" onclick="toggleAccordion()">
-        <span style="color: var(--color-text); display: flex; align-items: center; gap: var(--space-2);">
-          📚 Khái niệm tiên quyết & Kiến thức nền tảng (2 khái niệm)
-        </span>
-        <span id="accordion-icon" style="color: var(--color-primary); font-weight: bold;">▲ Thu gọn</span>
-      </div>
-
-      <!-- Accordion Body -->
-      <div class="accordion-body" id="accordion-prereq-body">
-        <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-bottom: var(--space-3);">
-          Để nắm vững cơ chế thiếu máu cơ tim trong bài này, bạn nên xem lại 2 khái niệm sau:
+      <!-- body_md văn xuôi tự nhiên -->
+      <article style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); line-height: 1.7; font-size: var(--text-body);">
+        <p style="margin-bottom: var(--space-3);">
+          Để nuôi dưỡng một khối cơ tim liên tục co bóp khoảng 70 lần mỗi phút suốt đời, cơ thể cần một hệ thống tưới máu đặc biệt giàu oxy và nhạy bén với nhu cầu chuyển hoá. Hệ thống đó chính là mạng lưới <strong>động mạch vành (coronary circulation)</strong>.
         </p>
-        <div style="display: flex; flex-direction: column; gap: var(--space-2);">
-          <div class="prereq-item" style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
-            <div>
-              <strong style="color: var(--color-text); font-size: var(--text-small);">1. Sinh lý tuần hoàn mạch vành</strong>
-              <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Lưu lượng máu tâm trương và áp lực tưới máu mạch vành</p>
-            </div>
-            <a href="#" class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-4); font-size: var(--text-small);">Ôn tập ➔</a>
-          </div>
-          <div class="prereq-item" style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
-            <div>
-              <strong style="color: var(--color-text); font-size: var(--text-small);">2. Cấu trúc mô học lớp nội mạc mạch máu</strong>
-              <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Tổn thương nội mạc và cơ chế hình thành mảng xơ vữa</p>
-            </div>
-            <a href="#" class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-4); font-size: var(--text-small);">Ôn tập ➔</a>
-          </div>
+
+        <p style="margin-bottom: var(--space-3);">
+          Về mặt trực giác, động mạch vành xuất phát ngay tại gốc động mạch chủ (xoang Valsalva) và chia thành hai nhánh chính: động mạch vành trái (LMCA) và động mạch vành phải (RCA) <a href="#source-s1" class="source-tag" title="Mở trang 1892 giáo trình">[S1]</a>. Nhánh liên thất trước (LAD) chạy trong rãnh liên thất trước, cấp máu cho 2/3 trước của vách liên thất và thành trước thất trái:
+        </p>
+
+        <div style="background: var(--color-bg-subtle); border-left: 3px solid var(--color-primary); padding: var(--space-3); margin: var(--space-3) 0; font-family: serif; font-size: var(--text-body);">
+          Áp lực tưới máu cơ tim: $P_{\text{coronary}} = P_{\text{diastolic}} - P_{\text{LVEDP}}$ <br>
+          Lưu lượng dòng máu đạt đỉnh chủ yếu trong <em>thì tâm trương</em>, khác biệt hoàn toàn với mọi cơ quan khác trong cơ thể.
         </div>
-      </div>
+
+        <p style="margin-bottom: var(--space-3);">
+          <strong>Điểm dễ nhầm lẫn:</strong> Nhiều sinh viên cho rằng thiếu máu cơ tim xảy ra ở thì tâm thu do tim co bóp mạnh nhất. Tuy nhiên, chính sức ép cơ tim trong thì tâm thu lại bóp nghẹt các mạch máu nhỏ dưới nội tâm mạc; do đó 80% lượng máu tưới mạch vành diễn ra ở thì tâm trương <a href="#source-s2" class="source-tag" title="Mở trang 1893 giáo trình">[S2]</a>.
+        </p>
+
+        <!-- Khối "Trong sách" (Sources list - theo ADR 0025) -->
+        <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-top: var(--space-4);">
+          <strong style="color: var(--color-primary); font-size: var(--text-small); display: block; margin-bottom: var(--space-2);">
+            📚 Trong sách (Tài liệu nguồn được trích dẫn):
+          </strong>
+          <ul style="padding-left: var(--space-4); font-size: var(--text-small); color: var(--color-text-muted); display: flex; flex-direction: column; gap: var(--space-1);">
+            <li id="source-s1">
+              <strong>[S1]</strong> <a href="#" onclick="alert('Mở trang 1892'); return false;" style="color: var(--color-primary); text-decoration: underline;">Harrison's Principles of Internal Medicine, 21st Edition • Chương 273 • Trang 1892 (Mục Giải phẫu mạch vành)</a>
+            </li>
+            <li id="source-s2">
+              <strong>[S2]</strong> <a href="#" onclick="alert('Mở trang 1893'); return false;" style="color: var(--color-primary); text-decoration: underline;">Harrison's Principles of Internal Medicine, 21st Edition • Chương 273 • Trang 1893 (Mục Sinh lý tưới máu tâm trương)</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Khối Tự kiểm tra (self_check đáp án gập sẵn) -->
+        <details class="self-check-box" id="details-self-check">
+          <summary>💡 Câu hỏi tự kiểm tra: Vì sao nhịp tim quá nhanh lại dễ gây thiếu máu cơ tim?</summary>
+          <div style="padding-top: var(--space-3); color: var(--color-text); font-size: var(--text-small); border-top: 1px dashed var(--color-border); margin-top: var(--space-2);">
+            <strong>Đáp án giải thích:</strong> Khi nhịp tim tăng cao, thời gian thì tâm trương bị rút ngắn đáng kể so với thì tâm thu. Vì dòng máu vành tưới cơ tim chủ yếu diễn ra ở thì tâm trương, sự rút ngắn này làm giảm tưới máu cơ tim, đặc biệt là vùng dưới nội tâm mạc.
+          </div>
+        </details>
+      </article>
     </section>
 
-    <!-- TRẠNG THÁI 3: KHUNG XEM TÀI LIỆU GỐC & TRÍCH DẪN (SOURCE VIEWER) -->
-    <section class="card" id="section-source-viewer">
-      <div class="source-header-wrap" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
+    <!-- TRẠNG THÁI 3: LỖI ĐUÔI GIỮ CHỮ VÀ GẮN NHÃN cat_ngan (PARTIAL FAILURE FALLBACK) -->
+    <section class="card" id="section-lecture-tail-error">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
         <div>
-          <span class="badge badge-primary">Nguồn gốc tin cậy</span>
+          <span class="badge badge-warning" id="badge-cat-ngan">⚠️ cat_ngan (Bài rút gọn)</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            3. Khung đối chiếu tài liệu nguồn (Harrison 21st, Trang 1892)
+            3. Trạng thái: Lỗi đuôi — Giữ nguyên phần đã stream kèm nhãn `cat_ngan`
           </h2>
         </div>
-        <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-4);">Mở toàn màn hình</button>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Đã lưu cache phần hoàn tất</span>
       </div>
 
-      <div style="border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); background: var(--color-bg-subtle);">
-        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-4);">
-          <div style="font-size: var(--text-caption); color: var(--color-primary); font-weight: var(--font-bold); margin-bottom: var(--space-1);">
-            📖 Harrison's Principles of Internal Medicine, 21st Edition • Chương 273 • Trang 1892
-          </div>
-          <blockquote style="border-left: 3px solid var(--color-brand); padding-left: var(--space-3); font-style: italic; color: var(--color-text); font-size: var(--text-small); margin: var(--space-2) 0;">
-            "The left anterior descending (LAD) coronary artery courses anteriorly in the anterior interventricular groove, giving off diagonal branches to the anterolateral free wall and septal perforators that supply the anterior two-thirds of the interventricular septum..."
-          </blockquote>
-          <p style="font-size: var(--text-caption); color: var(--color-text-muted);">
-            Trích đoạn đối chiếu từ giáo trình nguồn đã tải lên. Vị trí trang: [1892 / 4120].
-          </p>
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+        <p style="font-size: var(--text-body); color: var(--color-text); margin-bottom: var(--space-3);">
+          Động mạch vành xuất phát từ xoang Valsalva gồm LAD và LCx... (Phần đã nhận an toàn trước khi mạng bị ngắt).
+        </p>
+        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-bg-subtle); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm);">
+          <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+            Bài được lưu tạm dưới dạng <strong>bài rút gọn</strong>. Bạn có thể tải lại để lấy bản đầy đủ.
+          </span>
+          <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-3); font-size: var(--text-small);">
+            🔄 Tải lại bản đủ
+          </button>
         </div>
       </div>
     </section>
@@ -251,7 +306,7 @@
             4. Trạng thái: Bài học hỏng hẳn (Fatal Error) kèm lối ra an toàn
           </h2>
         </div>
-        <span style="font-size: var(--text-caption); color: var(--color-danger); font-weight: var(--font-semibold);">Mã tra cứu: ERR-LEC-7429</span>
+        <span style="font-size: var(--text-caption); color: var(--color-danger); font-weight: var(--font-semibold);">Mã: ERR-LEC-7429</span>
       </div>
 
       <div style="text-align: center; padding: var(--space-6) var(--space-4); background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
@@ -262,7 +317,7 @@
         <p style="font-size: var(--text-small); color: var(--color-text-muted); max-width: 540px; margin: 0 auto var(--space-5); line-height: 1.5;">
           Hệ thống gặp sự cố không thể phục hồi khi phân tích cấu trúc giải phẫu từ tài liệu nguồn. Bạn có thể quay lại lộ trình học để tiếp tục các bài khác hoặc gửi báo lỗi nội dung để đội ngũ kỹ thuật xử lý.
         </p>
-        <div style="display: flex; justify-content: center; gap: var(--space-3); flex-wrap: wrap;">
+        <div class="action-row-wrap" style="display: flex; justify-content: center; gap: var(--space-3); flex-wrap: wrap;">
           <a href="/khoa-hoc/demo/lo-trinh" class="btn btn-primary" id="btn-exit-to-roadmap" style="min-height: 44px; min-width: 44px;">
             ← Quay về Lộ trình học
           </a>
@@ -279,10 +334,10 @@
         <div>
           <span class="badge badge-primary">Khung xem tài liệu gốc</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            5. Khung xem ảnh trang giáo trình (Page Viewer có điều khiển)
+            5. Khung xem ảnh trang giáo trình (Page Viewer có điều khiển placeholder)
           </h2>
         </div>
-        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Harrison 21st Edition</span>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Phạm vi: Bố cục điều khiển thu/phóng (placeholder)</span>
       </div>
 
       <!-- Toolbar điều khiển viewer -->
@@ -315,7 +370,7 @@
           </div>
           <div style="background: var(--color-bg-subtle); height: 160px; border-radius: var(--radius-sm); border: 1px dashed var(--color-border); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
             <div style="text-align: center; color: var(--color-text-muted); font-size: var(--text-caption);">
-              [Ảnh quét độ phân giải cao — Sơ đồ phân nhánh động mạch vành trái (LAD & LCx)]
+              [Ảnh scan trang sách giáo trình gốc — Sơ đồ phân nhánh động mạch vành trái (LAD & LCx)]
             </div>
           </div>
           <p style="font-size: 11px; color: var(--color-text); line-height: 1.6;">
@@ -363,7 +418,7 @@
             <textarea id="bug-desc" rows="3" style="width: 100%; border: 1px solid var(--color-border-input); border-radius: var(--radius-sm); padding: var(--space-2); font-family: inherit; font-size: var(--text-body); background: var(--color-surface); color: var(--color-text);" placeholder="Mô tả cụ thể dòng/khái niệm gặp sự cố..."></textarea>
           </div>
 
-          <div style="display: flex; justify-content: flex-end; gap: var(--space-3); flex-wrap: wrap;">
+          <div class="action-row-wrap" style="display: flex; justify-content: flex-end; gap: var(--space-3); flex-wrap: wrap;">
             <button type="button" class="btn btn-secondary" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-4);">Huỷ bỏ</button>
             <button type="submit" class="btn btn-primary" id="btn-submit-content-bug" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-4);">Gửi báo lỗi</button>
           </div>
@@ -377,17 +432,6 @@
       const html = document.documentElement;
       const cur = html.getAttribute('data-theme');
       html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
-    }
-    function toggleAccordion() {
-      const body = document.getElementById('accordion-prereq-body');
-      const icon = document.getElementById('accordion-icon');
-      if (body.style.display === 'none') {
-        body.style.display = 'block';
-        icon.textContent = '▲ Thu gọn';
-      } else {
-        body.style.display = 'none';
-        icon.textContent = '▼ Mở rộng';
-      }
     }
   </script>
 </body>
