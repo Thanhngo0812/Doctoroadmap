@@ -2,9 +2,28 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4, 8, câu hỏi mở 2; vé [W-13](W-13-dung-mot-cuon-o-loi.md), [W-14](W-14-tai-sach-len-ban-dung.md).
 **Ai:** nhân viên lõi chạy · người soát và Claude đọc số · **Chi phí mô hình:** một cuốn mới, ước dưới 3 USD theo D-01; dry-run trước, **chủ dự án duyệt**
-· **Chặn bởi:** W-13, W-14 đã đạt · **Trạng thái:** mở giai đoạn adapter/composition/kiểm0USD; chưa cấp quyền chạy có tiền.
+· **Chặn bởi:** W-13, W-14 đã đạt; còn port PostgreSQL của Pha A · **Trạng thái:** đạt mốc adapter/kiểm 0 USD tại `eea5472`; toàn vé còn mở, chưa cấp quyền chạy có tiền.
+
+**Nghiệm thu mốc 2026-10-23:** nhận `a8bb295` trên main `605f6a3`, mốc tích hợp `eea5472`; độc lập **2.266 Python đạt/0 fail/1 Cloudinary live không bật,
+104 React/build**, thử phá guard port bị assertion bắt và SHA nguồn phục hồi. Chỉ nhận adapter dùng core BuildDocument thật/pipeline giả/PG thật;
+pipeline mặc định còn thiếu port nên từ chối trước claim/provider, chưa chạy toàn chuỗi thật, cache doc-6 qua web hoặc dry-run thật.
+Đề nghị port `DocumentPipeline(..., phase_b_store=None)`/`PhaseBRuntime(..., store=None)` và một nguồn chi build đã ghi mục 8 bàn giao;
+chờ Claude/phiên Pha A chốt người sửa/phạm vi. Không tạo JSON rồi gán lại store, không coi số giả thành tiền provider.
+Giữ Vertex, `allow_spend=False`; tiếp kiểm identity/cache trên bản sao trong lúc chờ. Sau port mới dry-run/đề nghị trần/duyệt đúng lượt.
+Đã ghép/đẩy riêng mốc này bằng `d12b67c`, không đóng toàn vé. Xem [báo cáo](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md),
+[lời giao](../../report/lenh-giao-viec-sau-w11-2026-10-23.md).
 
 ## Vì sao
+
+**Cập nhật 2026-10-23 chiều:** Claude đã nhận port bằng SA-62, mã `266dbdc` đã có nhưng chưa ghép main; không còn chờ phiên Pha A quyết người sửa.
+Lõi W-15 bàn giao `6627c00`, mã `dba19e5`: hai ca âm dùng factory giả thiếu port và chống cộng trùng trace `counted_in="build"` trong PostgreSQL.
+Mốc này đã ghép/đẩy cùng W-11 bằng `e85427a`, full gate trên `b625752` có 2.296 Python/143 React/build xanh; toàn W-15 vẫn mở.
+Đợt soát lần 2 ghi tại [báo cáo](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md),
+[lời giao mới](../../report/lenh-giao-viec-ba-nhom-lan2-2026-10-23.md). Sau phần web được ghép, Claude nhận main và cổng/ghép SA-62 theo làn của mình.
+Không tự ghép nhánh SA-62 hoặc sửa hai tệp composition. Sau port mới kiểm default factory/pipeline thật/PG, identity/cache và dry-run có guard.
+Artifact Pha A vẫn ở kho tệp; chỉ tiêm kho Pha B/sổ chi web, không chuyển graph/chunks/manifest/index vào DB.
+DailySpendGuard Pha B không tính module_title/embedding của build; guard build riêng và tổng meter là nguồn chi duy nhất.
+Mọi lượt có tiền vẫn cần dry-run và chủ dự án duyệt đúng cuốn/lượt/trần; không suy permission từ các vé SA hoặc khôi phục trước.
 
 **Cập nhật cuối đợt 2026-10-22:** W-14 đầu-cuối bộ dựng giả đã đạt có ghi chú và ghép/đẩy `7fe63df`, mốc kiểm `61b5d80`:
 2185Python/104React/build, browser/SQL đạt. Tài liệu lõi `1acaf4e` được nhận cùng mốc ghép. Lõi bắt đầu phần adapter/composition/test fake0USD,

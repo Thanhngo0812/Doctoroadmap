@@ -1,0 +1,40 @@
+{
+  "sourceCommit": "33f9c2521ba0379d89c3fe942ea754f9f06b49a6",
+  "junit": "latest-python.xml",
+  "namedAssertions": {
+    "test_share_link_token_is_one_time_and_never_returned_by_list": [
+      "test_share_link_token_is_one_time_and_never_returned_by_list"
+    ],
+    "test_postgres_one_use_join_race_counts_exactly_one_member_and_use": [
+      "test_postgres_one_use_join_race_counts_exactly_one_member_and_use"
+    ],
+    "test_postgres_create_and_join_rollback_when_audit_write_fails": [
+      "test_postgres_create_and_join_rollback_when_audit_write_fails"
+    ],
+    "test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_members": [
+      "test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_members"
+    ],
+    "test_postgres_migration_has_no_raw_token_and_enforces_digest_length": [
+      "test_postgres_migration_has_no_raw_token_and_enforces_digest_length"
+    ],
+    "test_postgres_rejoin_retains_exact_private_session_and_progress": [
+      "test_postgres_rejoin_retains_exact_private_session_and_progress[remove]",
+      "test_postgres_rejoin_retains_exact_private_session_and_progress[leave]"
+    ],
+    "test_postgres_capacity_race_across_two_links_stops_at_200": [
+      "test_postgres_capacity_race_across_two_links_stops_at_200"
+    ],
+    "test_every_cid_route_hides_private_course_from_outsiders_including_admin": [
+      "test_every_cid_route_hides_private_course_from_outsiders_including_admin"
+    ],
+    "test_same_actor_separate_courses_keep_the_confirmation_and_polling_context": [
+      "test_same_actor_separate_courses_keep_the_confirmation_and_polling_context"
+    ],
+    "test_build_cards_expose_only_the_viewers_upload_for_the_course": [
+      "test_build_cards_expose_only_the_viewers_upload_for_the_course"
+    ],
+    "test_reused_queued_upload_has_its_own_confirmation_and_title": [
+      "test_reused_queued_upload_has_its_own_confirmation_and_title"
+    ]
+  }
+}

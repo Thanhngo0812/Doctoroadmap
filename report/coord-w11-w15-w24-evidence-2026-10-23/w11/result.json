@@ -1,0 +1,46 @@
+{
+  "base_commit": "85397092ed10bffe2db3bda96d2db6a6d2759c48",
+  "branch": "review/w11-auth-repro-20261023",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-w11-auth-repro-20261023",
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/c",
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "src/W11AuthReturn.repro.test.tsx",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-w11-auth-repro-evidence-20261023\\auth-return-red.xml"
+  ],
+  "native_exit_code": 1,
+  "test_sha256": "9dcd0c59f7b2a39c3d7896d29cc4f635f63c61c3091c5aa54cb19f65e75f3b6d",
+  "runtime_code_changed": false,
+  "postgres_calls": 0,
+  "provider_calls": 0,
+  "tests": 10,
+  "failures": 8,
+  "errors": 0,
+  "skipped": 0,
+  "passed": 2,
+  "failed_cases": [
+    "retains invite after login -> register through header (viewTransition=false)",
+    "retains invite after login -> register through header (viewTransition=true)",
+    "retains invite after login -> register through footer (viewTransition=false)",
+    "retains invite after login -> register through footer (viewTransition=true)",
+    "retains invite after register -> login through header (viewTransition=false)",
+    "retains invite after register -> login through header (viewTransition=true)",
+    "retains invite after register -> login through footer (viewTransition=false)",
+    "retains invite after register -> login through footer (viewTransition=true)"
+  ],
+  "review_test_commit": "3f3e923b178082742f3d0135919dccd356dd8bc2",
+  "review_commit_scope": [
+    "src/web/frontend/src/W11AuthReturn.repro.test.tsx"
+  ],
+  "review_commit_not_pushed": true
+}

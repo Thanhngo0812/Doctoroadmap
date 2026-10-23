@@ -4,6 +4,27 @@
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
 **Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, kiểm lại chưa đạt toàn bộ; tiếp tục cùng vé.
 
+**Soát lần 2 ngày 2026-10-23, `7a522e5`/`d72993e`:** giữ hai gói ngoài main. Đã đóng qua kiểm độc lập: suffix/copybox,
+wording dữ liệu/quota/huỷ, bỏ OCR, output plugin normal/fallback khớp 74/74 giá trị, mobile 44 px/chữ tràn cũ.
+45 test head/40 checkpoint đạt, 18 cấu hình browser đạt hình học; còn ba Required:
+(1) lỗi tạo Variables vẫn bị nuốt, thử lỗi primary còn 72/74 không log; mutation alpha thật 0.99 vẫn lọt guard;
+(2) chat bịa trần 30 lượt/ngày và lộ tên công cụ/arguments, phải dùng usage-1 và lời tiến trình dễ hiểu;
+(3) checklist pending mail/chat rỗng/anchor/viewer và claim số test chưa khớp bằng chứng. Không giao lại các sửa đã chứng minh đạt.
+Không có Cloud receipt/export/video mới; số Cloud rỗng trước đây là lịch sử, chưa đọc lại ở đợt này.
+Nhận cập nhật mới nhất ADR 0025/SA-64 thay SA-63: lecture-3 body_md Markdown/LaTeX/sources/self_check, delta hiện ngay, validation chỉ admin;
+failed trước chữ đầu có message/retry luôn, lỗi đuôi giữ chữ/cat_ngan. Không dùng quyết định mới để bác công việc đã làm theo lời giao cũ.
+Xem [báo cáo lần 2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md),
+[lời giao](../../report/lenh-giao-viec-ba-nhom-lan2-2026-10-23.md). W-22/W-24/W-23 tiếp tục mở.
+
+**Soát `16e95c1`, 2026-10-23 — chưa nhận gói mới:** sửa báo cáo cũ ở `fe8ccf3` là đúng; không giao lại lỗi OS/token đã đóng tại `78fb774`.
+Còn năm Required mới: (1) danh sách link chỉ được hiện đuôi sáu ký tự, URL đầy đủ/copy chỉ một lần khi tạo; (2) bỏ lời hứa xoá dữ liệu học khi xoá khoá,
+không trừ lượt/giải phóng hết tài nguyên khi huỷ; (3) plugin phải khớp đủ tên/giá trị/alpha của 37×2 token, không nuốt lỗi tạo Variables;
+(4) sửa năm nút mobile 36 px/chữ tràn, tối thiểu 44×44; (5) checklist phải tách trạng thái còn thiếu, không dùng trích đoạn nguồn thay lỗi bài giảng/viewer,
+không nhận có báo lỗi nội dung chỉ vì có xoá khoá và không thêm lời hứa OCR ngoài spec.
+Kiểm độc lập 18 cấu hình local, 0 tràn trang, 0 lỗi JS không thay việc sửa các Required. Đọc lại Cloud thật ngày 23: 0 Variables, 0 native components, 0 reactions, 0 starting points.
+W-22/W-24 còn mở; W-23 chưa đủ phụ thuộc. Xem [báo cáo](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md),
+[lời giao và bằng chứng cần nộp](../../report/lenh-giao-viec-sau-w11-2026-10-23.md).
+
 **Kiểm lại `78fb774`, 2026-10-22 — local sửa đúng, chưa nhận cả gói:** 32 test đạt, raw/CSS74/74 khớp, bốn mutation raw bị bắt;
 prototype local4/4 và phá đường ảnh OS reduced-motion bị bắt. Đóng hai lỗi mã OS/token của lần soát trước, không giao lại.
 Còn Required trong báo cáo: link tham gia hỏng đang trỏ màn token email/reset; nút huỷ bị dùng thay trạng thái cancelled; dark-mode thiếu đối chiếu

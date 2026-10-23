@@ -1,0 +1,51 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run src/W11AuthReturn.repro.test.tsx src/W11AuthReturn.worker-recheck.test.tsx --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r2-20261023-w11-review\auth-return-independent-green.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w11-auth-repro-20261023/src/web/frontend
+
+ ✓ src/W11AuthReturn.worker-recheck.test.tsx (22 tests) 51979ms
+   ✓ control: direct login returns to the exact invitation after authentication 3427ms
+   ✓ control: direct register returns to the exact invitation after authentication 3983ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false) 3783ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true) 3665ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false) 3460ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true) 2556ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false) 2506ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true) 2153ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false) 2096ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true) 2238ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false) 2009ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true) 1992ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false) 2023ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true) 2022ms
+   ✓ retains invite after login -> register through header (viewTransition=false) 2124ms
+   ✓ retains invite after login -> register through header (viewTransition=true) 2261ms
+   ✓ retains invite after login -> register through footer (viewTransition=false) 2442ms
+   ✓ retains invite after login -> register through footer (viewTransition=true) 2260ms
+   ✓ retains invite after register -> login through header (viewTransition=false) 1222ms
+   ✓ retains invite after register -> login through header (viewTransition=true) 1334ms
+   ✓ retains invite after register -> login through footer (viewTransition=false) 1259ms
+   ✓ retains invite after register -> login through footer (viewTransition=true) 1156ms
+ ✓ src/W11AuthReturn.repro.test.tsx (10 tests) 16729ms
+   ✓ control: direct login returns to the exact invitation after authentication 1610ms
+   ✓ control: direct register returns to the exact invitation after authentication 2058ms
+   ✓ retains invite after login -> register through header (viewTransition=false) 2041ms
+   ✓ retains invite after login -> register through header (viewTransition=true) 2048ms
+   ✓ retains invite after login -> register through footer (viewTransition=false) 2026ms
+   ✓ retains invite after login -> register through footer (viewTransition=true) 2097ms
+   ✓ retains invite after register -> login through header (viewTransition=false) 1211ms
+   ✓ retains invite after register -> login through header (viewTransition=true) 1222ms
+   ✓ retains invite after register -> login through footer (viewTransition=false) 1204ms
+   ✓ retains invite after register -> login through footer (viewTransition=true) 1210ms
+
+ Test Files  2 passed (2)
+      Tests  32 passed (32)
+   Start at  15:49:56
+   Duration  112.37s (tests 62%, environment 20%, import 8%, setup 8%, transform 2%)
+
+    Isolate  2 workers spawned · ~11.74s startup each (spawn + environment, per file)
+             at least ~11.74s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r2-20261023-w11-review/auth-return-independent-green.xml

@@ -10,6 +10,13 @@ nguyên tử. Xem [soát Pha B của Claude](../../report/soat-pha-b-52-53-sonne
 
 ## Vì sao
 
+**Cập nhật hợp đồng bài giảng, 2026-10-23:** ADR 0025/spec bài giảng 3 thay cấu trúc lecture-2; SA-64 thay SA-63.
+W-10 không tự thay `quiz-2`/`document-2`; nếu dùng bài giảng/tool thì nhận `body_md`, `sources`, `self_check` và delta Markdown/LaTeX,
+giữ chữ đã hiện, không lọc lại bằng luật cũ, không lộ `validation`, không kỳ vọng sections/bridge/kiem_noi_dung/24 giờ.
+Phần dùng hợp đồng mới kiểm sau khi SA-64 được Claude ghép; ảnh trang SA-65 ở kho artifact, không đổi kiến trúc DB.
+Kế hoạch Pha B mới `f346e71` còn dự kiến nâng tài liệu SA-67 và quiz SA-68 sau bài giảng/trợ lý.
+Trước khi mở W-10, nhận đặc tả/vé và mốc lõi thực tế của hai phần đó; đủ nền SA-52 không đồng nghĩa đã đạt chuẩn production mới chưa được cài.
+
 Người học tự kiểm tra bằng quiz, xin tài liệu theo yêu cầu, và tìm lại mọi thứ đã tạo ở thư viện của lộ trình hay của module.
 
 ## Cần làm

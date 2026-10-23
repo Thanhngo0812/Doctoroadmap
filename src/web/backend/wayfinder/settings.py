@@ -41,6 +41,7 @@ class WebSettings(BaseSettings):
     smtp_starttls: bool = True
     confirmation_ttl_hours: int = Field(default=72, gt=0)
     build_heartbeat_timeout_minutes: int = Field(default=10, gt=0)
+    build_runner: Literal["fake", "real"] = "fake"
     share_link_default_days: int = Field(default=7, gt=0)
     course_max_members: int = Field(default=200, gt=0)
     invite_batch_max: int = Field(default=50, gt=0)

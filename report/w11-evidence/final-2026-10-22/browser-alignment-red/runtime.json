@@ -1,0 +1,39 @@
+{
+  "base": "http://127.0.0.1:8011",
+  "database": "UUID PostgreSQL",
+  "databaseName": "wayfinder_w11_59e6b892eca2492ea8831c0a3b89f71c",
+  "modelCalls": 0,
+  "externalCostUsd": 0,
+  "mailer": "FakeMailer",
+  "media": "unused; no media calls",
+  "temporaryDatabaseRemoved": true,
+  "courseId": "c55aa9d0-a1f8-45c6-8c37-eb72ca0456ff",
+  "ownerId": "22ead0cb-eb04-4e5b-bc19-ca7b0173970b",
+  "nodeId": "node_92b86f8bac3397ea9de112b0",
+  "migrationHead": "w11_0007",
+  "browserExitCode": 0,
+  "independentSql": {
+    "memberCount": 1,
+    "primaryUseCount": 1,
+    "retainedPhaseBRows": 1,
+    "tokenColumns": [
+      "id",
+      "course_id",
+      "token_hash",
+      "token_tail",
+      "created_by",
+      "expires_at",
+      "max_uses",
+      "use_count",
+      "revoked_at",
+      "created_at"
+    ],
+    "auditActions": [
+      "member_joined",
+      "member_left",
+      "member_removed",
+      "share_link_created",
+      "share_link_revoked"
+    ]
+  }
+}

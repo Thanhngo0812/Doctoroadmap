@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="7.527" timestamp="2026-10-22T19:55:28.456858+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_children_persist_sessions_names_cache_and_reservations_in_pg" time="3.224" /><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_worker_composition_uses_pg_version_and_never_claims_without_port" time="0.466"><failure message="ValueError: Real builds require Vertex transport, project and location">src\web\backend\tests\test_real_build_w15.py:277: in test_real_worker_composition_uses_pg_version_and_never_claims_without_port
+    make_worker(settings)
+src\web\backend\wayfinder\worker.py:32: in make_worker
+    return make_real_worker(settings,media=media,mailer=mailer)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\worker.py:63: in make_real_worker
+    runtime=RealBuildRuntime(settings,engine,core_settings=core_settings,pipeline_factory=pipeline_factory)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\real_build.py:36: in __init__
+    self.settings = real_settings(settings, core_settings)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\real_build.py:18: in real_settings
+    raise ValueError('Real builds require Vertex transport, project and location')
+E   ValueError: Real builds require Vertex transport, project and location</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cancel_during_publication_with_independent_connection" time="1.549" /></testsuite></testsuites>

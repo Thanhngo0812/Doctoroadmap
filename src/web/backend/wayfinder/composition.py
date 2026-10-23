@@ -26,6 +26,7 @@ class WebServices:
     phase_b_store: PhaseBStore | None = None
     courses: object | None = None
     learning: object | None = None
+    sharing: object | None = None
     builds: object | None = None
 
 
@@ -90,10 +91,11 @@ def compose_services(
             lock_timeout_seconds=BSettings().lecture_click_timeout_seconds)
         phase_b_store = created_store
     accounts = compose_account_service(settings, database_engine) if database_engine is not None else None
-    courses = learning = None
+    courses = learning = sharing = None
     if database_engine is not None:
         courses, learning = compose_course_services(settings, database_engine, phase_b_store,
             model=model, embedding=embedding, graph_loader=graph_loader, clock=clock)
+        sharing = compose_sharing_service(settings, database_engine, graph_loader=courses.gateway.graph_loader, clock=clock)
 
     def close_services():
         try:
@@ -110,19 +112,23 @@ def compose_services(
                 if close is not None:
                     close()
 
-    builds = compose_build_service(settings, database_engine, media=build_media, clock=clock) if database_engine is not None else None
+    builds = compose_build_service(settings, database_engine, media=build_media, clock=clock, core_settings=core) if database_engine is not None else None
     if courses is not None:
         courses.build_service = builds
     return WebServices(health_check=health_check, close=close_services, model=model,
                        embedding=embedding, accounts=accounts, phase_b_store=phase_b_store,
-                       courses=courses, learning=learning, builds=builds)
+                       courses=courses, learning=learning, sharing=sharing, builds=builds)
 
 
-def compose_build_service(settings, engine, *, media=None, clock=None):
+def compose_build_service(settings, engine, *, media=None, clock=None, core_settings=None):
     from wayfinder.application.builds import BuildService
     from wayfinder.infrastructure.build_store import PostgresBuildStore
     from wayfinder.fakes.local_media import LocalFakeMediaStore
-    return BuildService(PostgresBuildStore(engine), settings=settings,
+    version = 'web-fake-v1'
+    if settings.build_runner == 'real':
+        from wayfinder.infrastructure.real_build import real_pipeline_version
+        version = real_pipeline_version(settings, core_settings)
+    return BuildService(PostgresBuildStore(engine), settings=settings, pipeline_version=version,
         media=media if media is not None else LocalFakeMediaStore(settings.artifact_root.parent / 'fake-media'), clock=clock)
 
 
@@ -143,6 +149,13 @@ def compose_course_services(settings, engine, phase_b_store, *, model=None, embe
     gateway = LearningGateway(courses, runtime, graph_loader)
     courses.gateway = gateway
     return courses, gateway
+
+
+def compose_sharing_service(settings: WebSettings, engine, *, graph_loader=None, clock=None):
+    from wayfinder.application.sharing import SharingService
+    from wayfinder.infrastructure.sharing_store import PostgresSharingStore
+
+    return SharingService(PostgresSharingStore(engine), settings, clock, graph_loader=graph_loader)
 
 
 def compose_account_service(settings: WebSettings, engine, *, mailer=None) -> AccountService:

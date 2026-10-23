@@ -1,0 +1,1388 @@
+{
+  "kind": "read-only Git blob verification; no tests or providers",
+  "worker_commit": "a8bb295df7a01e9c6c9aa79f49561e9692189c23",
+  "integrated_commit": "eea547291d1276a92f39a9f2d5f1c2fdd887e827",
+  "manifest_entries": 265,
+  "manifest_sha256_matches": 265,
+  "manifest_bytes_matches": 265,
+  "manifest_mismatches": [],
+  "compared_files": 8,
+  "exact_file_matches": 8,
+  "files": [
+    {
+      "path": "src/web/backend/wayfinder/infrastructure/real_build.py",
+      "worker_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+      "integrated_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+      "exact_match": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/cli.py",
+      "worker_sha256": "72d312ea0069d9869cbb4ba16d33db67d38c479d4b525200dbc7b7b18fe78c89",
+      "integrated_sha256": "72d312ea0069d9869cbb4ba16d33db67d38c479d4b525200dbc7b7b18fe78c89",
+      "exact_match": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/composition.py",
+      "worker_sha256": "ce34a8d2542cdbec928f129c3078012565e2dbcbef47b7918f6f08a4ff57d339",
+      "integrated_sha256": "ce34a8d2542cdbec928f129c3078012565e2dbcbef47b7918f6f08a4ff57d339",
+      "exact_match": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/settings.py",
+      "worker_sha256": "bcfc03a82b513a046567837e96b22e7f99b77b6e219dd77f6d82d133b263aa2c",
+      "integrated_sha256": "bcfc03a82b513a046567837e96b22e7f99b77b6e219dd77f6d82d133b263aa2c",
+      "exact_match": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/worker.py",
+      "worker_sha256": "21fb1c8f9d7f416d18e8e724740f9f0138fb74fd2cb45663871ea252944ec50d",
+      "integrated_sha256": "21fb1c8f9d7f416d18e8e724740f9f0138fb74fd2cb45663871ea252944ec50d",
+      "exact_match": true
+    },
+    {
+      "path": "src/web/backend/tests/test_real_build_w15.py",
+      "worker_sha256": "823f928d0d9c1977ac04982711444548926f125cde8efab6e85045020eee6d37",
+      "integrated_sha256": "823f928d0d9c1977ac04982711444548926f125cde8efab6e85045020eee6d37",
+      "exact_match": true
+    },
+    {
+      "path": "src/web/backend/tests/w15_capture.py",
+      "worker_sha256": "c1bf809cb289d987c751334d7ef547d7d0692d659400e7dde02312e440aac7e5",
+      "integrated_sha256": "c1bf809cb289d987c751334d7ef547d7d0692d659400e7dde02312e440aac7e5",
+      "exact_match": true
+    },
+    {
+      "path": "src/web/backend/tests/w15_mutations.py",
+      "worker_sha256": "e421464c4526bcedabf5692914a649cd7c851eac2931a8bee50b3ddb14cbe068",
+      "integrated_sha256": "e421464c4526bcedabf5692914a649cd7c851eac2931a8bee50b3ddb14cbe068",
+      "exact_match": true
+    }
+  ],
+  "checks": [
+    {
+      "path": "report/w15-evidence/.gitattributes",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/candidate.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/fixture-copy.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/api-version.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/api-version.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/cancel-mail.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/cancel-mail.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/confirm-cancel.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/confirm-cancel.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/media-cancel.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/media-cancel.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/mutations.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/no-queued-dry-run.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/no-queued-dry-run.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/real-transport.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/real-transport.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/receipt-once.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/receipt-once.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/required-core-port.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/required-core-port.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/same-postgres.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/same-postgres.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/step-clock.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/step-clock.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/terminal-cancel.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/terminal-cancel.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/terminal-row-lock.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/terminal-row-lock.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/usage-baseline.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/usage-baseline.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/usage-precision.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/mutations/usage-precision.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/normalization.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w06-evidence/http-doc1.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w06-evidence/http-six-books.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w14-evidence/http-contract.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w14-evidence/sql-cancelled.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w14-evidence/sql-capacity.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w14-evidence/sql-failed.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w14-evidence/sql-queue-claims.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/final-gate/report/w14-evidence/sql-succeeded.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w06-evidence/http-doc1.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w06-evidence/http-six-books.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w14-evidence/http-contract.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w14-evidence/sql-cancelled.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w14-evidence/sql-capacity.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w14-evidence/sql-failed.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w14-evidence/sql-queue-claims.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/regression-exports/first-gate/report/w14-evidence/sql-succeeded.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-green-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-green.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-green.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-green2-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-green2.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-green2.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-red-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-red.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/adapter-red.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/children-check-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/children-check.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/children-check.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/engine-red-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/engine-red.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/engine-red.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/frontend-build-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/frontend-build-main-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/frontend-build-main.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/frontend-build.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/full-gate-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/full-gate.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/full-gate.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/full-main-gate-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/full-main-gate.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/full-main-gate.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/integration-green-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/integration-green.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/integration-green.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/mutations-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/mutations.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/old-lease-green-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/old-lease-green.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/old-lease-green.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/react-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/react-main-exit.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/react-main.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/react-main.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/react.log",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/runs/react.xml",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/cancel-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/cancel-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/children-check/children.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/children-check/publication-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/failure-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/failure-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/cancel-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/cancel-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/children.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/doc6-identity.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/failure-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/failure-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/old-lease.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/publication-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/success-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-gate/success-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/cancel-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/cancel-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/children.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/doc6-identity.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/failure-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/failure-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/old-lease.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/publication-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/success-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/full-main-gate/success-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/cancel-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/cancel-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/children.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/doc6-identity.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/failure-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/failure-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/publication-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/success-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/integration-green/success-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/mutation-usage-precision/cancel-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/mutation-usage-precision/failure-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/mutation-usage-precision/failure-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/mutation-usage-precision/success-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/old-lease-green/old-lease.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/success-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/sql/success-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/summary.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-before-confirm.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/confirm-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/duplicate-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/stale-lease-after-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/terminal-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/adapter-green2/terminal-row-lock-order.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-before-confirm.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/confirm-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/duplicate-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/stale-lease-after-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/terminal-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-gate/terminal-row-lock-order.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-before-confirm.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/confirm-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/duplicate-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/stale-lease-after-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/terminal-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/full-main-gate/terminal-row-lock-order.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-before-confirm.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/confirm-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/duplicate-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/stale-lease-after-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/terminal-before-cancel.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/integration-green/terminal-row-lock-order.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-cancel-mail/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-confirm-cancel/cancel-before-confirm.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/duplicate-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/duplicate-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/duplicate-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-media-cancel/duplicate-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-receipt-once/duplicate-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-graph-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-graph-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-terminal-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/cancel-terminal-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/duplicate-formula-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/duplicate-formula-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/duplicate-media-False.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-cancel/duplicate-media-True.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "report/w15-evidence/w25-regressions/w15-mutation-terminal-row-lock/terminal-row-lock-order.json",
+      "sha256_matches": true,
+      "bytes_matches": true
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_postgres_create_and_join_rollback_when_audit_write_fails ________
+
+sharing_pg = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_ffaadbf65fd84ee19ca9d478d6660... 0x000001C1FD316660>, store=<wayfinder.infrastructure.sharing_store.PostgresSharingStore object at 0x000001C1FD2EE5D0>)
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001C1FCF4D5E0>
+
+    @pytest.mark.postgres
+    def test_postgres_create_and_join_rollback_when_audit_write_fails(sharing_pg, monkeypatch):
+        from wayfinder.application.sharing import SharingService
+
+        service = SharingService(sharing_pg.store, sharing_pg.settings, sharing_pg.clock,
+                                 graph_loader=lambda *_: SimpleNamespace(learnable_nodes={}))
+        original_append = sharing_pg.store.append_audit
+
+        def fail_audit(_event):
+            raise RuntimeError("audit unavailable")
+
+        monkeypatch.setattr(sharing_pg.store, "append_audit", fail_audit)
+        with pytest.raises(RuntimeError, match="audit unavailable"):
+            service.create_share_link(sharing_pg.owner, sharing_pg.course.id, max_uses=1)
+        with sharing_pg.engine.connect() as connection:
+>           assert connection.scalar(text("SELECT count(*) FROM share_link WHERE course_id=:cid"),
+                                     {"cid": sharing_pg.course.id}) == 0
+E           AssertionError: assert 1 == 0
+E            +  where 1 = scalar(<sqlalchemy.sql.elements.TextClause object at 0x000001C1FCC09AF0>, {'cid': 'ab0c8fcd-0b48-4b53-81ce-2c176edd08dd'})
+E            +    where scalar = <sqlalchemy.engine.base.Connection object at 0x000001C1FCC09AC0>.scalar
+E            +    and   <sqlalchemy.sql.elements.TextClause object at 0x000001C1FCC09AF0> = text('SELECT count(*) FROM share_link WHERE course_id=:cid')
+
+src\web\backend\tests\test_w11_sharing.py:386: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\report\w11-evidence\auth-return-2026-10-23\mutations\atomic-join.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w11_sharing.py::test_postgres_create_and_join_rollback_when_audit_write_fails
+1 failed, 1 warning in 6.76s

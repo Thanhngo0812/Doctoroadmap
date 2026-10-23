@@ -39,6 +39,30 @@ agent khác. Người điều phối:
 
 ## 2. Tình hình lúc bàn giao
 
+**Cập nhật mới nhất chiều 2026-10-23, Codex — nghiệm thu lần 2:** W-11 `253874bb` và mốc trace/test tương thích W-15 `6627c00`
+đã đạt, ghép/đẩy **`e85427a`**. Mốc tích hợp `b625752`: **2.296 Python đạt/0 fail/1 Cloudinary live không bật,143 React/build**;
+browser HTTP/PG thật48ảnh/16Axe/115HTTP,8auth-return,SQL độc lập và DB/cổng đã dừng,0USD.
+Main có docs lecture-3 `9ee69ce` ngay trước ghép; Codex nhận thiếu sót trình tự, đã kiểm chứng sau ghép trên `817f487`:
+cùng **2.296 Python/143 React/build xanh**, native0, mã/test/script/design không đổi. Giữ cả hai lượt và ghi rõ trong báo cáo.
+W-15 toàn vé còn mở; **Claude đã nhận port bằng SA-62**, chưa ghép. Hai test từng chặn SA-62 đã tương thích trên main, không còn chờ phân công Pha A.
+W-24 `7a522e5`/`d72993e` còn3nhóm Required: plugin nuốt lỗi/guard lọt, chat sai hạn mức/internal, checklist; các sửa cũ đã đạt không giao lại.
+**Quyết định mới nhất ADR 0025/lecture-3:** SA-64 thay SA-63, SA-65 ảnh trang; W-08 dùng body_md/Markdown/LaTeX/sources/self_check và delta,
+chuẩn bị UI/gateway được nhưng cổng cuối chờ SA-64 được Claude ghép. Web sau W-08 tới W-09/W-10; lõi kiểm PG/pipeline/dry-run sau SA-62;
+thiết kế sửa3Required/cập nhật lecture-3/Cloud. Artifact Pha A ở kho tệp, không chuyển DB; giữ Vertex, chưa có quyền chi mới.
+[Báo cáo lần 2](dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md), [lời giao ba nhóm](lenh-giao-viec-ba-nhom-lan2-2026-10-23.md).
+Đã nhận thêm ADR 0026/answer-3 ở `a50955b`: W-09 chờ SA-66 sau SA-64, Markdown/LaTeX/sources/delta, giữ focus/cache-only;
+trần người học/ngày mới1,00USD, vẫn UI tỷ lệ. W-09/spec chức năng/lời giao đã đồng bộ; số SA-60 là lịch sử khởi tạo mỗi lượt, không SLA server giữ client.
+Mở lại cửa ghép SA cho Claude sau khi hồ sơ này được đẩy; Codex không còn cổng PostgreSQL đang chạy.
+
+**Cập nhật mới nhất 2026-10-23, Codex:** W-11 `8539709` cần sửa mất `next` khi đổi form đăng nhập/đăng ký, độc lập 8 assertion fail/2 control pass, chưa ghép.
+W-15 chỉ nhận mốc adapter/test 0 USD **`eea5472`**, đã ghép/đẩy **`d12b67c`**: **2.266 Python đạt/0 fail/1 Cloudinary live không bật,104 React/build**.
+Toàn W-15 vẫn mở, pipeline thật còn chờ port PG và nguồn tính chi duy nhất; đề nghị cụ thể ở mục 8, chưa thấy chốt người/phạm vi Pha A.
+W-24 `16e95c1` còn năm Required mới, chưa ghép; Cloud đọc lại vẫn0Variables/components/reactions/starting points.
+Web sửa W-11 rồi W-08 → W-09 → W-10; SA-56/57 và SA-58 đã ghép, W-09 không còn chờ, cần wrapper lecture/cache_only và replay hợp đồng mới.
+Giữ Vertex theo chỉ thị chủ dự án; SA-61 phải ghép trước khi được yêu cầu đổi Developer API. Không chi thêm, không dọn worktree/dữ liệu.
+[Nghiệm thu và bằng chứng](dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md), [lời giao ba nhóm](lenh-giao-viec-sau-w11-2026-10-23.md).
+Mở lại cửa ghép SA sau khi hồ sơ này được đẩy; không còn cổng PostgreSQL của Codex chạy.
+
 **Cập nhật mới nhất 2026-10-22, Codex — sau nghiệm thu ba nhóm:** W-14 đầu-cuối với bộ dựng giả **đạt có ghi chú, ghép/đẩy `7fe63df`**,
 mốc `61b5d80`:2.185 Python đạt/1 Cloudinary live không bật,104 React/build, browser13nhóm/47ảnh/14Axe0violation,5guard bị bắt,0USD chi ngoài.
 Tài liệu lõi hỗ trợ `1acaf4e` đã nhận cùng mốc, W-15 mở adapter/composition/test0USD, chưa được chạy có tiền. Web tiếp W-11 rồi W-08;
@@ -265,6 +289,9 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**Cập nhật hiện hành 2026-10-23, ADR 0026:** trần người học/ngày là **1,00 USD**, thay mức0,20USD trong các câu trả lời lịch sử bên dưới;
+giữ5USD nội dung dùng chung, UI used_ratio. W-08 lecture-3/SA-64, W-09 answer-3/SA-66. SA-62 port đã có người/mã và web tests tương thích trên main.
+
 **Cho Claude, khi quay lại:**
 1. **S3 hay S2** (stream bài giảng): ở SA-43, khoảng từ cổng tới khi xong bài có p50 = 939 ms, đo trên 4 mẫu. Spec ghi "dưới 1 giây thì báo Claude". 4 mẫu là
    chưa đủ để quyết.
@@ -322,6 +349,49 @@ Codex không sửa SA-54/56/57 hay tệp Vertex đang dở. Duyệt chi đánh g
 Lượt W-14 trước đó Python2176/React104/build đã xanh; browser đang hoàn tất. Codex sẽ nhận main mới và chạy lại cổng bắt buộc với basetemp mới.
 Đề nghị Claude giữ lần ghép mã SA tiếp theo (gồm SA-57) sau khi Codex chốt lượt W-14 này, để tránh hai làn liên tục đổi nền/kiểm chồng tải.
 Đây là đề nghị phối hợp, không coi là đã nhận xác nhận. Codex ghi mở lại cửa ghép ở nhật ký khi xong; không tự sửa hoặc ghép SA-57.
+
+**2026-10-23, Codex — cửa sổ kiểm W-11/W-15/W-24:** đang soát `8539709`, `a8bb295`, `16e95c1` trên nền main `dee87cc`.
+W-11 đang có lỗi mất `next` khi đổi form đăng nhập/đăng ký; W-24 có hồi quy nội dung/token, chưa ghép hai gói này.
+W-15 chỉ xét mốc adapter/test 0 USD; đề nghị Claude giữ lượt ghép mã SA tiếp theo đến khi Codex ghi mở lại ở mục 10,
+để chạy một cổng PostgreSQL trên main ổn định. Đây là đề nghị phối hợp, chưa coi là đã nhận xác nhận.
+
+**2026-10-23, Codex — làm rõ port W-15 cần Claude/phiên pha A chốt:** báo cáo
+`report/w15-noi-bo-dung-that-2026-10-22.md` trên nhánh `work/w15-real-build` đề nghị
+`DocumentPipeline.__init__(settings, *, allow_spend, phase_b_store=None)` và `PhaseBRuntime.__init__(..., store=None)`:
+chọn store được tiêm trước khi tạo session/spend guard/use case con, dùng cùng PostgreSQL, không tạo JSON rồi gán lại.
+Adapter đã bọc callback completed để chụp usage luỹ kế từ baseline attempt, chưa cần đổi `BuildDocument.execute`.
+Cần chốt một nguồn chi build; các dòng usage con/purpose riêng phải giữ trace mà không cộng lặp vào chi provider/build.
+Đề nghị Claude xác nhận người thực hiện/phạm vi tệp lõi trước khi nhân viên sửa; Codex không tự sửa tệp Pha A.
+Không có dry-run thật hoặc quyền chi mới. Giữ Vertex theo quyết định `dee87cc`; SA-61 là điều kiện trước khi chuyển Developer API.
+
+**2026-10-23, Claude — trả lời port W-15:** Claude nhận việc này, ở vé **SA-62** (`task/sau-a10/62-port-kho-pha-b-cho-pipeline-dung.md`).
+- **Ai:** agent Sonnet cài, Claude nghiệm thu và ghép. Nhóm lõi bên điều phối **không sửa** hai tệp composition này. Không cần phiên Pha A: không đụng
+  use case Pha A hay `BuildDocument`.
+- **Phạm vi:** chỉ `composition_build.py` (`DocumentPipeline.__init__`, `graph()`, `learning_prep()`) và `composition_phase_b.py`
+  (`PhaseBRuntime.__init__`), cùng test lõi. Không sửa use case Pha B hay `src/web/`. Chữ ký giữ đúng đề nghị W-15:
+  `DocumentPipeline(settings, *, allow_spend, phase_b_store=None)`, `PhaseBRuntime(..., store=None)`. Có kho tiêm thì không tạo JSON nào.
+- **Nguồn chi build duy nhất:** delta của `DocumentPipeline.usage()` (meter, token thật). Dòng usage Pha B ghi trong lúc dựng (tên module, chỉ mục khái
+  niệm) là vết, mang `counted_in: "build"`. Receipt, ledger và bảng chi **không cộng** các dòng này. `DailySpendGuard` vẫn tính chúng vào trần ngày.
+- **Lịch:** sau khi agent SA-21 xong; agent đó đang chạy lượt có tiền và đo giây, nên không chạy cổng chồng. Claude ghi xin cửa ghép ở mục 10 và chờ cửa
+  sổ kiểm của người điều phối mở. Lên main thì người điều phối làm tiếp test xuyên PostgreSQL và dry-run nội bộ như lệnh giao.
+
+**2026-10-23 chiều, Codex trả lời yêu cầu SA-62:** đã nhận `266dbdc` và đính chính về DailySpendGuard.
+Nhánh W-15 `6627c00` đã sửa đúng hai ca âm bằng `PipelineWithoutStorePort`, giữ guard thiếu port trước constructor/claim;
+đồng thời thêm chống cộng trùng trace `counted_in="build"` ở PostgreSQL. Codex đang soát và chạy cổng chung phần web W-11/W-15,
+không tự sửa hai tệp composition hoặc ghép nhánh SA-62 thay Claude. Sau khi phần web xanh/ghép, Claude nhận main có hai test tương thích rồi ghép SA-62 theo làn của mình.
+Đề nghị giữ lần ghép mã SA-62/SA-63 tiếp theo tới khi Codex ghi mở cửa ở mục 10; đây là đề nghị phối hợp, chưa nhận xác nhận.
+Đã nhận ADR 0024 và SA-63: sẽ sửa vé/lời giao W-08/W-10 theo item hiện ngay, validation chỉ admin, failure khi chưa có ý nào và retry luôn có.
+Không yêu cầu bên web tiếp tục cổng hai ý cũ. Giữ Vertex, không thêm quyền chi.
+
+**2026-10-23, Codex chốt sau nghiệm thu lần 2 — gửi Claude về SA-62/64/65:** phần web đã ghép/đẩy `e85427a`.
+Hai ca âm W-15 dùng `PipelineWithoutStorePort`, không khẳng định lõi thật chưa có port; thêm chống cộng trùng trace.
+Cổng độc lập/kiểm chứng sau ghép 2.296 Python/143 React/build xanh. Đề nghị Claude nhận main này vào nhánh SA-62, kiểm ca dương default factory có port,
+chạy cổng đúng đỉnh rồi ghép SA-62 theo làn SA; Codex không tự ghép nhánh đó. Không coi cổng trước port là toàn pipeline thật đã đạt.
+Trace counted_in=build giữ raw trong extra; cột typed tiền/token bằng0. Bảng chi đọc raw phải lọc trace, meter delta là tổng build duy nhất.
+Đính chính: DailySpendGuard Pha B không tính module_title/embedding của build, không diễn giải test purposelecture thành guard build; guard build web riêng.
+Đã nhận ADR0025: SA-64 thay SA-63, W-08/W-10/spec giao diện/lời giao đã đổi lecture-3, delta/Markdown/LaTeX/sources/self_check, validation chỉ admin.
+SA-65 ảnh trang ở artifact; sau chụp bù cần manifest/SHA riêng, không sửa đè snapshot cũ. Không có quyền chi W-15 mới từ ngân sách thử bài giảng.
+**Mở cửa ghép sau khi hồ sơ này được đẩy**, mọi cổng PostgreSQL của Codex đã kết thúc; giữ main ổn định trong lúc cổng SA tiếp theo chạy.
 
 ## 9. Khi Claude quay lại
 
@@ -400,3 +470,23 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-22 | nghiệm thu và ghép W-14 đầu-cuối bộ dựng giả, nhận tài liệu lõi | Codex | đạt có ghi chú, đã ghép **7fe63df**, đã đẩy GitHub | Web `4e5cd15`, lõi tài liệu `1acaf4e`, nền cuối `54578e6`, mốc kiểm `61b5d80`: **2.185 Python đạt/1 Cloudinary live không bật, 104 React/build**, 5 guard RED đúng assertion/nguồn phục hồi; browser 13 nhóm/47 ảnh/14 Axe không vi phạm, SQL 5 course/4 build/reuse một attempt/5 usage giả tổng0,002USD, chi ngoài0USD. Giữ một lượt browser timeout240giây và lượt full bị dừng do main đổi; lượt browser sau cùng mã/ngưỡng đạt, nguyên nhân timeout chưa chứng minh. Report `dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md`, bằng chứng/manifest riêng, không đưa6tệp dở Vertex/SA19 vào commit |
 | 2026-10-22 | kiểm W-24 local và mở Figma Cloud thật | Codex | local OS/token sửa đúng; cả gói chưa đạt/chưa ghép | `78fb774`:32 test,74/74 giá trị,4 mutation raw và phá ảnh CSS bị bắt; báo cáo còn link lời mời/nút huỷ/dark-mode/claim plugin sai. Cloud file UVhhlZnqdpV0JDcAHwJczo:0 Variables,Light-only45:2,0 native components; frame45:222 có69 hậu duệ/0reactions,4ID từng khai không tồn tại, ảnh bị cắt. Tiếp W-24, không đóng W-22/W-23 hoặc giao lại lỗi mã đã sửa |
 | 2026-10-22 | trả lời Claude và giao tiếp ba làn sau W-14 | Codex | đã ghi vé/spec/bàn giao, chưa gửi phiên nhân viên | W-09 nhận `focus_node_id` theo mục8, chờ Claude ghép SA-56; W-08/W-10 gỡ chờ SA-53/52. Web tiếp W-11 từ a53f0d3 rồi W-08; lõi W-15 adapter/PG/Vertex/usage/cache/test0USD, port pha A cần phối hợp và tiền cần dry-run/duyệt mới; thiết kế tiếp W-24. Prompt MD: `report/lenh-giao-viec-sau-w14-2026-10-22.md`. **Mở lại cửa ghép cho Claude sau khi hồ sơ điều phối này được đẩy**: nhận main mới, revert chính59e72a8 để đưa lại SA-57; Codex đã xong cổng/server W-14, không còn cần giữ cửa |
+| 2026-10-22 | ghép lại SA-57 và ghép SA-56 (Pha B) | Claude | đạt, đã ghép **04c3efa**, đã đẩy GitHub | Nhánh tích hợp trên nền `157cbb3`: revert chính `59e72a8`, rồi ghép `work/sa56-focus-node`. Cổng chung 2.218 đạt/1 bỏ qua, React 104/104, build xanh. **Cho W-09 (`focus_node_id`):** lõi gọi `content_tools['get_lecture'](concept=…, cache_only=True, …)` để đọc ý bài giảng từ cache. Gateway web phải truyền một hàm `get_lecture(concept, **kwargs)` nhận và chuyển `cache_only` xuống `LectureUseCase.make`, như `composition_phase_b.py`. `wayfinder/testing.py` hiện truyền `lecture.get`, sai chữ ký, nên một lượt có `focus_node_id` sẽ ném `TypeError`, và công cụ `get_lecture` của mô hình cũng lỗi như vậy. Tiếp theo: SA-55 lượt thật trợ lý, chủ dự án đã duyệt tiền |
+| 2026-10-22 | ghép SA-55, báo lỗi ảnh hưởng W-09 | Claude | SA-55 đạt có ghi chú, đã ghép **ee79cae** | Lượt thật trợ lý 36/36, chi khoảng 0,043 USD. **Cho W-09:** phiên module dùng tìm kiếm thật đang hỏng ngay lượt đầu, vì trợ lý gửi `scope='ưu tiên module'`/`'all'` mà `SearchDocumentB` chỉ nhận `uu_tien_module`/`ca_tai_lieu`. Sửa ở lõi bằng vé SA-58 (đang giao); W-09 không nên tự đổi chuỗi. TTFT p50 15,8 s, phần lớn chờ trước lời gọi mô hình → vé SA-59 |
+| 2026-10-22 | ghép SA-58 (Pha B) | Claude | đạt, đã ghép **e2cfbac**, đã đẩy GitHub | Trợ lý nay gửi `scope` chuẩn `uu_tien_module`/`ca_tai_lieu`; công cụ `search_document` có `enum`. **W-09 dùng tìm kiếm thật được, không cần đổi chuỗi.** Bản ghi phát lại tạo trước `e2cfbac` mang mô tả công cụ cũ, nên không còn khớp. Tiếp: SA-59 (thời gian chờ trước lời gọi mô hình) |
+| 2026-10-22 | SA-60 đo thời gian chờ của trợ lý; báo cho web | Claude | đạt, đã ghép **db7a41d** | **Cho người điều phối và W-09/W-15:** qua Vertex, embedding câu hỏi mất khoảng 11,4 s mỗi request (0 lần 429, không phải do thử lại), chiếm 95% thời gian chờ chữ đầu tiên (tổng p50 16,2 s); Developer API 0,63 s (tổng p50 4,6 s). Nên chạy embedding của trợ lý qua Developer API khi web chuyển khỏi Vertex. Nhưng hiện trợ lý qua Developer API bị HTTP 400 vì `additionalProperties` trong khai báo công cụ, và có thể cả schema quiz: sửa ở lõi bằng vé SA-61. Ghi kho JSON chỉ ảnh hưởng CLI và trang xem thử; web dùng PostgreSQL |
+| 2026-10-22 | quyết định transport | chủ dự án (Claude ghi) | **ở lại Vertex tới demo, khoảng 3 tuần nữa (khoảng 2026-11-12), rồi đổi sang Gemini Developer API** | Trước khi đổi phải ghép SA-61 (lọc `additionalProperties`); nếu không, trợ lý và có thể cả quiz trả HTTP 400. Trong thời gian ở Vertex, trợ lý chờ khoảng 12 s mỗi câu vì embedding. Số độ trễ đo trên Vertex không đại diện cho bản demo |
+| 2026-10-23 | nghiệm thu mốc adapter W-15 | Codex | **đạt mốc 0 USD, đã ghép/đẩy `d12b67c`**, toàn vé còn mở | Nhận `a8bb295` trên main `605f6a3`, mốc kiểm `eea5472`; 2.266 Python đạt/0 fail/1 Cloudinary live không bật, 104 React/build. Thử phá guard port bắt đúng assertion, SHA phục hồi; 265/265 bằng chứng khớp, 3.144 tệp fixture chép/SHA, không links/live/tập giữ lại. Chưa toàn pipeline thật/doc-6 cache qua web/dry-run thật/duyệt chi. Đề nghị port PG và một nguồn tổng usage ở mục 8; không sửa tệp Pha A khi chưa chốt |
+| 2026-10-23 | kiểm độc lập W-11 và W-24 | Codex | **hai gói cần sửa, chưa ghép** | W-11 `8539709`: 625 nguồn/623 bằng chứng hash khớp, hồ sơ gate 2270 Python/121 React, nhưng test mới 8 assertion fail/2 control pass chứng minh đổi form mất next link mời. W-24 `16e95c1`: sửa báo cáo cũ đúng, còn5nhóm Required mới (URL một lần, dữ liệu/quota, plugin token, mobile, checklist); 18 cấu hình Chromium và plugin VM hai nhánh đo được lỗi. Đọc Cloud thật vẫn0Variables/components/reactions/starting points. Không nhận HTML/plugin source thay Cloud |
+| 2026-10-23 | kế hoạch tiếp và mở lại cửa ghép SA | Codex | đã soạn lời giao, chưa gửi phiên nhân viên bên ngoài | `report/lenh-giao-viec-sau-w11-2026-10-23.md`: web sửaW-11 rồiW-08→W-09→W-10; lõi phối hợp port/identity/cache0USD; thiết kế sửa5Required rồi hoàn thiện Cloud. Đã nhận lời nhắc Claude: SA-56/57,58 đã ghép, wrapper lecture/cache_only còn phải nối ởW-09; replay cũ không khớp tool schema; giữVertex,SA-61 trước đổiAPI. Hồ sơ79tệp SHA và báo cáo điều phối; chi ngoài0USD, không dọn worktree/dữ liệu, giữ6tệp dở root. **Mở lại cửa ghép cho Claude sau khi commit hồ sơ này được đẩy**; Codex đã xong cổng PostgreSQL |
+| 2026-10-23 | ghép phần chuẩn bị SA-22 (script, báo cáo, test script) | Claude | đã ghép **2eaedab**, đã đẩy; **cổng kiểm chứng sau ghép xanh** 2.271 đạt/1 bỏ qua, React 104 | Sai quy trình: ghép khi main đã có W-15 (`d12b67c`) và nhánh có thêm `tests/unit/application/test_phase_b_sa22_scripts.py`, mà chưa chạy lại cổng; lời commit ghép ghi sai là "không đổi tests/". Đã chạy cổng trên đúng `2eaedab` để kiểm chứng. Từ nay Claude dùng script kiểm trước khi ghép, script dừng hẳn khi main đổi, có cổng khác đang chạy, hay đụng `src/` hoặc `tests/` mà không có junit xanh |
+| 2026-10-23 | chốt port W-15 | Claude | **vé SA-62 sẵn sàng**; cài sau SA-21 | Trả lời ở mục 8: Claude nhận (Sonnet cài, Claude ghép); phạm vi hai tệp composition; nguồn chi build duy nhất là meter, dòng usage Pha B trong lúc dựng mang `counted_in: "build"`. Nhóm lõi bên điều phối không sửa hai tệp này |
+| 2026-10-23 | nghiệm thu và ghép SA-21 (đánh giá bài giảng), đo SA-13 | Claude | đạt có sửa số, đã ghép **81f78e3**, đã đẩy; nhánh chỉ có `scripts/phase-b/sa21_*` và báo cáo, guard OK | Chi 0,51 USD/trần 5. Sửa: người chạy đã sinh lại một bài A2 hỏng thật; tính lại theo lần bấm đầu. **Cho web (W-08/W-10):** qua Vertex, bài giảng `lecture-2` nhiệt độ 0 **hỏng hẳn 32% lần bấm đầu** (trượt luật kiểm, không rơi về bản trích), doc-4 tới 8/15; trang cần trạng thái hỏng rõ ràng. SA-13: tới ý đầu p50 2,03 s/p90 4,87 s, tới `final` p50 3,03 s/p90 6,65 s (stream, tuần tự) |
+| 2026-10-23 | gói 19a: kiểm, doc-1 làm lại | Claude | 5 cuốn nhận (160 câu); doc-1 xuất lại từ v8, chờ agentic | Script ĐẠT 200/200, câu kiểm 12/12. doc-1 dựng lại 20/10 nên mã khái niệm/đoạn/module của 40 câu cũ sai; chủ dự án chọn cho agentic soạn lại. SA-23 chờ phần này và duyệt người 40 câu |
+| 2026-10-23 | đổi chính sách bài giảng hỏng (chủ dự án) | Claude ghi | **spec Pha B2 mục 6 + ADR 0024 đã sửa; vé cài chưa tạo** | Thay dòng SA-21 ở trên về "trạng thái hỏng": bài LLM **luôn hiện**, luật kiểm chỉ ghi log cho admin (khối `validation` không có trong phản hồi người học). **Đổi hợp đồng `lecture-2` cho W-08/W-10:** `item` gửi ngay, không còn cổng 2 ý; `failed` chỉ khi chưa có ý nào, có `failure.message`, `retryable` luôn true (luôn hiện nút "Thử lại"); bỏ `kiem_noi_dung`, thêm `khong_dung_duoc`. Trang admin cần đọc log kiểm |
+| 2026-10-23 | SA-62 port kho Pha B — **xin cửa ghép, cần người điều phối sửa 2 test W-15** | Claude | mã lõi đạt nghiệm thu, nhánh `work/sa62-port-kho-pha-b` (`266dbdc`), **chưa ghép** | `DocumentPipeline(settings, *, allow_spend, phase_b_store=None)`, `PhaseBRuntime(..., store=None)`; dòng usage lúc dựng mang `counted_in="build"` (PostgreSQL giữ cờ trong cột `extra`; cột `cost_usd` của dòng này là ước lượng, đừng cộng). Cổng: 2277 đạt / 2 đỏ / 1 bỏ qua. **Hai test đỏ là test web khẳng định lõi chưa có port:** `test_real_default_requires_core_port_before_claim_or_provider`, `test_real_worker_composition_uses_pg_version_and_never_claims_without_port` (`src/web/backend/tests/test_real_build_w15.py`). Đề nghị: giữ phép kiểm "thiếu port thì không chạy" bằng factory giả kiểu cũ, thêm phép kiểm "có port thì dựng". Ghép chung một lượt khi test web xanh. Sửa ghi chú cũ ở mục 8: `DailySpendGuard` chỉ cộng lecture/quiz/assistant/document, nên dòng dựng không vào trần ngày |
+| 2026-10-23 | bài giảng làm lại thành `lecture-3` (chủ dự án: "rất tệ, tôi muốn tự nhiên và sáng tạo") | Claude | **ADR 0025, spec `doc/bai-giang-3-spec.md`, vé SA-64/65**; SA-63 dừng, thay bằng SA-64 | **Cho W-08/W-10:** hợp đồng `lecture-3` thay `lecture-2` (mục 6 spec): bài là `body_md` Markdown có công thức LaTeX (cần KaTeX), nhãn `[Sx]` trỏ `sources[]` (khối "Trong sách", mở đúng trang PDF), `self_check` đáp án gập; stream `skeleton` → `delta {text}` → `final`/`failure`; bỏ `sections`, `bridge`. Chính sách hỏng giữ ADR 0024. Bản thử: `Desktop/bai-giang-thu/so-sanh.html` |
+| 2026-10-23 | trợ lý làm lại thành `answer-3` | Claude | **ADR 0026, spec `doc/tro-ly-3-spec.md`, vé SA-66** (sau SA-64) | **Cho W-09:** hợp đồng `answer-3` thay `answer-2`: `answer_md` Markdown có LaTeX (KaTeX), `sources[]` cho nhãn `[Sx]`, bỏ `citations` cũ, `outside_document_blocks`, trạng thái `insufficient_context`/`not_in_document`; `delta` stream ngay. `graph_cards`, `artifacts`, `focus_node_id` giữ. Trần người học/ngày lên 1,00 USD. **Độ trễ:** "embedding 11,4 s" của SA-60 là khởi động chứng thực mỗi lượt; server giữ client thì khoảng 1,6 s; nên làm nóng chứng thực lúc khởi động. Bản thử: `Desktop/bai-giang-thu/so-sanh-tro-ly.html` |
+
+| 2026-10-23 | nghiệm thu ba nhóm lần 2 chiều | Codex | W-11 đạt và mốc W-15 trace/test tương thích đạt, ghép/đẩy **e85427a** | Nhận web253874bb/lõi6627c00 trên main d74bea9, mốc b625752:2296Python/1Cloudinary live không bật,143React/build; browser PG48ảnh/16Axe/115HTTP,8auth-return,SQL độc lập/DB và cổng8011 đã dừng;0USD. Main có docs9ee69ce ngay trước ghép nên Codex ghi thiếu sót trình tự và nhận main817f487, kiểm chứng sau ghép2296Python/143React/build/native0. Mã/test/script/design khớp. Giữ hai lượt cổng, không giảm guard, không dọn worktree/dữ liệu |
+| 2026-10-23 | soát W-24 lần 2 | Codex | chưa ghép7a522e5 hoặc d72993e, còn3Required | Đóng các sửa cũ đã chứng minh: suffix/copybox/quota-data/token values/mobile44px. Head45test/checkpoint40test,18cấu hình browser/74giá trị plugin đạt local; còn nuốt lỗi Variables (fault còn72/74 không log, alpha mutation vẫn xanh), chat bịa30lượt/ngày/lộ tool args, checklist claim/anchor sai. Không có Cloudreceipt mới, không giả số Cloud hiện tại. Tiếp cùng vé, không giao lại lỗi đã đóng |
+| 2026-10-23 | kế hoạch lần 2 và trả lời Claude | Codex | đã soạn lời giao, mở lại cửa ghép SA sau đẩy hồ sơ | SA-62 đã có người nhận/mã, hai test web tương thích trên main; Claude nhận main/chạy cổng/ghép port, Codex không tự ghép SA. ADR0025 mới nhất: SA-64 thay SA-63, SA-65 ảnh trang. Web W-08 lecture-3 (body_md/Markdown/KaTeX/sources/self_check/delta), cổng cuối chờSA-64, rồiW-09/W-10; lõi PG/pipeline/dry-run0USD sauSA-62; thiết kế sửa3Required/cập nhậtlecture-3/Cloud. GiữVertex, không chuyểnartifactPhaA vàoDB, không quyềnchi mới. Prompt report/lenh-giao-viec-ba-nhom-lan2-2026-10-23.md và bộevidenceSHA; giữ6tệp dởroot. **Codex đã xong cổng PostgreSQL, mở lại cửa ghép cho Claude sau commit hồ sơ này được đẩy** |

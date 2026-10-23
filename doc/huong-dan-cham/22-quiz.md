@@ -21,9 +21,12 @@ Trong phiếu có trộn cả những câu mà lần kiểm đã loại. Bạn k
 ## 2. Bạn nhận được gì
 
 - `phieu-sa22-<mã>.html`. Mỗi câu gồm:
-  - mã câu, cuốn, module, khái niệm mà câu kiểm;
-  - câu dẫn và các phương án A, B, C, D;
-  - khối **"Đáp án và nguồn"**, **gập sẵn**: phương án hệ thống đánh dấu đúng, câu trích sách làm căn cứ kèm trang, ảnh công thức nếu có.
+  - mã câu, cuốn, module;
+  - câu dẫn và các phương án A, B, C;
+  - khối **"Đáp án và nguồn"**, **gập sẵn**: khái niệm mà câu kiểm, phương án hệ thống đánh dấu đúng, câu trích sách làm căn cứ kèm trang, ảnh
+    công thức nếu có.
+
+  Tên khái niệm chỉ nằm trong khối gập. Với câu điền khuyết, tên khái niệm chính là đáp án; hiện ra trước thì bước tự làm câu mất ý nghĩa.
 - `cham-sa22-<mã>.xlsx`, sheet **Chấm**, mỗi dòng một câu.
 
 ## 3. Cách chấm một câu
@@ -40,7 +43,7 @@ thì vẫn chọn, rồi ghi `khong_chac` vào `ghi_chu`. Bạn chọn sai là t
 | `dap_an_dung` | `co` / `khong` | phương án hệ thống đánh dấu đúng thật sự đúng theo câu trích |
 | `mot_dap_an` | `co` / `khong` | **chỉ một** phương án đúng theo tài liệu. Một phương án nhiễu cũng đúng, hay đúng một phần mà vẫn chấp nhận được, thì `khong` |
 | `nhieu_sai` | `co` / `khong` | mọi phương án nhiễu đều sai theo tài liệu |
-| `dung_khai_niem` | `co` / `khong` | câu kiểm đúng khái niệm ghi trên câu, không phải một khái niệm khác |
+| `dung_khai_niem` | `co` / `khong` | câu kiểm đúng khái niệm ghi trong khối "Đáp án và nguồn", không phải một khái niệm khác |
 | `bloom_nguoi` | `nho` / `hieu` / `van_dung` / `phan_tich_tro_len` | mức nhận thức câu đòi hỏi, theo bạn (mục 4) |
 | `loi_viet_cau` | mã lỗi, cách nhau bằng dấu phẩy, hoặc trống | các lỗi viết câu trong bảng ở mục 5. Ví dụ `L04,L12`. Không có lỗi thì để trống |
 | `tieng_viet` | 1–3 | 3: tự nhiên; 2: hiểu được nhưng vụng; 1: sai ngữ pháp, khó hiểu |

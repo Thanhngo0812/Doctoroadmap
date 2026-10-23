@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="10.283" timestamp="2026-10-23T15:52:07.535374+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_build_trace_keeps_raw_usage_but_is_not_billed_twice[build]" time="4.346"><failure message="AssertionError: assert Decimal('0.003000') == 0">builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_437a9b184f9946acb13ff...oken': 'dpbIdK5B50aIUpf8EV-jeAGfCCRta_BbvpBaqF1HZ4Q'}, app=&lt;fastapi.applications.FastAPI object at 0x000001783C99CC80&gt;)
+counted_in = 'build'
+
+    @pytest.mark.parametrize('counted_in', ['build', None, 'other'])
+    def test_build_trace_keeps_raw_usage_but_is_not_billed_twice(builds, counted_in):
+        from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+        from wayfinder.infrastructure.database import create_database_engine
+        from doc2roadmap.application.phase_b.budget import DailySpendGuard, DailyLimitExceeded
+        from doc2roadmap.domain.phase_b_limits import BSettings
+        b = builds
+        store = PostgresPhaseBStore(b.engine)
+        independent = PostgresPhaseBStore(create_database_engine(b.postgres_database_url))
+        # The shared-purpose row makes the guard's actual admission decision observable.
+        row = dict(purpose='lecture', doc_id='w15-trace', cost_usd=.003,
+                   input_tokens=300, output_tokens=60, created_at=b.clock.now().isoformat())
+        if counted_in is not None:
+            row['counted_in'] = counted_in
+        try:
+            store.append_usage(row)
+            assert independent.usage_rows(doc_id='w15-trace') == [row]
+            totals = sql(b, 'SELECT sum(cost_usd) AS usd, sum(input_tokens) AS input, sum(output_tokens) AS output FROM usage_ledger')[0]
+            trace = counted_in == 'build'
+&gt;           assert totals['usd'] == (0 if trace else Decimal('.003'))
+E           AssertionError: assert Decimal('0.003000') == 0
+
+src\web\backend\tests\test_real_build_w15.py:442: AssertionError</failure></testcase></testsuite></testsuites>

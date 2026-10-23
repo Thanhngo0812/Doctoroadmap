@@ -24,10 +24,10 @@ def main(argv=None) -> int:
     serve.add_argument("--host", default="127.0.0.1")
     serve.add_argument("--port", type=int, default=8000)
     worker = commands.add_parser("worker")
-    worker.add_argument("--fake-source", required=True)
-    worker.add_argument("--fixture-root", type=Path, required=True)
-    worker.add_argument("--manifest", type=Path, required=True)
-    worker.add_argument("--manifest-sha256", required=True)
+    worker.add_argument("--fake-source")
+    worker.add_argument("--fixture-root", type=Path)
+    worker.add_argument("--manifest", type=Path)
+    worker.add_argument("--manifest-sha256")
     worker.add_argument("--once", action="store_true")
     commands.add_parser("check")
     commands.add_parser("media-smoke")
@@ -121,11 +121,15 @@ def main(argv=None) -> int:
 
     if args.command == "worker":
         from wayfinder.worker import main as worker_main
+        if settings.build_runner == 'fake' and not all((args.fake_source, args.fixture_root, args.manifest, args.manifest_sha256)):
+            parser.error('Worker giả cần --fake-source, --fixture-root, --manifest và --manifest-sha256')
         try:
             return worker_main(settings, source_doc=args.fake_source, fixture_root=args.fixture_root,
                 manifest=args.manifest, manifest_sha256=args.manifest_sha256, once=args.once)
         except (ValueError, FileNotFoundError):
-            print("Worker giả cần dev, PostgreSQL và bản sao phát triển đúng manifest.", file=sys.stderr)
+            message = ("Worker giả cần dev, PostgreSQL và bản sao phát triển đúng manifest." if settings.build_runner == 'fake'
+                       else "Worker real cần PostgreSQL, Vertex và port lõi phase_b_store.")
+            print(message, file=sys.stderr)
             return 2
     if args.command == "check":
         if not settings.test_database_url:

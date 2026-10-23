@@ -1,0 +1,60 @@
+{
+  "kind": "independent PostgreSQL after concurrent uploads and claims",
+  "claims": [
+    {
+      "id": "2649e204-67ee-4448-9d0b-b88dafac375c",
+      "doc_id": "u-592f78631e2187d2cfa8",
+      "upload_id": "ad62f1dd-7576-4da6-8c53-209c61ad471c",
+      "requested_by": "9bbc7b68-5bbc-4e60-b10a-54b1cdffe573",
+      "status": "reading",
+      "step": "doc_reading",
+      "pipeline_version": "web-fake-v1",
+      "counts_quota": true,
+      "cancel_requested": false,
+      "claim_count": 1,
+      "claimed_by": "a",
+      "lease_id": "8166c970-b09b-4db4-86e4-590e32c3b5d4",
+      "heartbeat_at": "2026-01-01 00:00:00+00:00",
+      "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+      "queued_at": "2026-01-01 00:00:00+00:00",
+      "started_at": "2026-01-01 00:00:00+00:00",
+      "finished_at": null,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "error_code": null,
+      "error_message": null,
+      "retryable": false,
+      "spent_usd": "0.000000",
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 0.0,
+      "graph_version": null,
+      "module_count": 0
+    },
+    null
+  ],
+  "builds": [
+    {
+      "id": "2649e204-67ee-4448-9d0b-b88dafac375c",
+      "doc_id": "u-592f78631e2187d2cfa8",
+      "status": "reading",
+      "claim_count": 1,
+      "claimed_by": "a"
+    }
+  ],
+  "courses": [
+    {
+      "id": "cc3cfd63-ad35-40e9-ba9e-a97e112bbda3",
+      "owner_id": "9bbc7b68-5bbc-4e60-b10a-54b1cdffe573",
+      "doc_id": "u-592f78631e2187d2cfa8",
+      "build_id": "2649e204-67ee-4448-9d0b-b88dafac375c"
+    },
+    {
+      "id": "ee053c14-62fe-442b-a6cd-4daa7016c588",
+      "owner_id": "bd642043-b7b3-446c-96b5-7bcfdfbc87a5",
+      "doc_id": "u-592f78631e2187d2cfa8",
+      "build_id": "2649e204-67ee-4448-9d0b-b88dafac375c"
+    }
+  ]
+}

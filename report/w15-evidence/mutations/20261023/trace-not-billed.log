@@ -1,0 +1,34 @@
+F..F                                                                     [100%]
+================================== FAILURES ===================================
+_______ test_build_trace_keeps_raw_usage_but_is_not_billed_twice[build] _______
+src\web\backend\tests\test_real_build_w15.py:442: in test_build_trace_keeps_raw_usage_but_is_not_billed_twice
+    assert totals['usd'] == (0 if trace else Decimal('.003'))
+E   AssertionError: assert Decimal('0.003000') == 0
+_____ test_real_adapter_meter_is_the_only_build_charge_with_child_traces ______
+src\web\backend\tests\test_real_build_w15.py:488: in test_real_adapter_meter_is_the_only_build_charge_with_child_traces
+    assert totals == {'usd': Decimal('.003'), 'input': 300, 'output': 60}
+E   AssertionError: assert {'input': 500...l('0.005000')} == {'input': 300...imal('0.003')}
+E
+E     Differing items:
+E     {'input': 500} != {'input': 300}
+E     {'usd': Decimal('0.005000')} != {'usd': Decimal('0.003')}
+E     {'output': 100} != {'output': 60}
+E     Use -v to get more diff
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+src/web/backend/tests/test_real_build_w15.py::test_real_adapter_meter_is_the_only_build_charge_with_child_traces
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+src/web/backend/tests/test_real_build_w15.py::test_real_adapter_meter_is_the_only_build_charge_with_child_traces
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\20261023\trace-not-billed.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_real_build_w15.py::test_build_trace_keeps_raw_usage_but_is_not_billed_twice[build]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_meter_is_the_only_build_charge_with_child_traces
+2 failed, 2 passed, 17 deselected, 3 warnings in 3.79s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

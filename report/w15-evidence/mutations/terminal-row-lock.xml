@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.212" timestamp="2026-10-22T20:02:13.412634+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_cancellation_w25" name="test_terminal_row_read_and_cancel_follow_observed_commit_order" time="1.827"><failure message="AssertionError: assert 'succeeded' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + succeeded">src\web\backend\tests\test_build_cancellation_w25.py:351: in test_terminal_row_read_and_cancel_follow_observed_commit_order
+    assert proof['build']['status'] == 'cancelled'
+E   AssertionError: assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded</failure></testcase></testsuite></testsuites>

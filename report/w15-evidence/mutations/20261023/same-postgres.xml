@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.420" timestamp="2026-10-23T14:41:01.680009+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_runtime_rejects_a_different_database_engine" time="1.171"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">src\web\backend\tests\test_real_build_w15.py:337: in test_real_runtime_rejects_a_different_database_engine
+    with pytest.raises(ValueError, match='same PostgreSQL'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'ValueError'&gt;</failure></testcase></testsuite></testsuites>

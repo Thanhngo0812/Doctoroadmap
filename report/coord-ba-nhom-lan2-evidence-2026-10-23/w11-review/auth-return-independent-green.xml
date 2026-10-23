@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="32" failures="0" errors="0" time="68.7083674">
+    <testsuite name="src/W11AuthReturn.repro.test.tsx" timestamp="2026-10-23T08:51:49.399Z" hostname="ADMIN" tests="10" failures="0" errors="0" skipped="0" time="16.7293033">
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct login returns to the exact invitation after authentication" time="1.6095506">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct register returns to the exact invitation after authentication" time="2.0583694">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=false)" time="2.0409348">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=true)" time="2.047555">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=false)" time="2.0258444">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=true)" time="2.0966461">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=false)" time="1.2105823">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=true)" time="1.2220691">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=false)" time="1.204244">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=true)" time="1.2098571">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/W11AuthReturn.worker-recheck.test.tsx" timestamp="2026-10-23T08:51:49.406Z" hostname="ADMIN" tests="22" failures="0" errors="0" skipped="0" time="51.9790641">
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="control: direct login returns to the exact invitation after authentication" time="3.426955">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="control: direct register returns to the exact invitation after authentication" time="3.982905">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false)" time="3.7830161">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true)" time="3.665209">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false)" time="3.4598964">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true)" time="2.5556987">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false)" time="2.5057464">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true)" time="2.1529283">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false)" time="2.0958661">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true)" time="2.238277">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false)" time="2.0091132">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true)" time="1.9922085">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false)" time="2.0231693">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true)" time="2.0217973">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=false)" time="2.1241366">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=true)" time="2.2610479">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=false)" time="2.4423886">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=true)" time="2.26031">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=false)" time="1.2215551">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=true)" time="1.3339051">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=false)" time="1.2586829">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.worker-recheck.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=true)" time="1.1560287">
+        </testcase>
+    </testsuite>
+</testsuites>

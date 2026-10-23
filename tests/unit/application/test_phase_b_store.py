@@ -152,3 +152,35 @@ def test_budget_queries_filtered_usage_and_keeps_reservations():
     assert store.last_filters == {
         "learner_id": "alice", "since": datetime(2026, 10, 17, 17, tzinfo=timezone.utc),
         "purposes": {"assistant", "document"}}
+
+
+def test_json_persist_retries_os_replace_on_permission_error(tmp_path, monkeypatch):
+    path = tmp_path / "phase-b.json"
+    real_replace = store_module.os.replace
+    calls = []
+
+    def flaky(src, dst):
+        calls.append(1)
+        if len(calls) <= 2:
+            raise PermissionError(13, "busy")
+        real_replace(src, dst)
+
+    monkeypatch.setattr(store_module.os, "replace", flaky)
+    monkeypatch.setattr(store_module, "sleep", lambda _seconds: None)
+    JsonPhaseBStore(path).put_cache("k", {"ready": True})
+    assert len(calls) == 3
+    assert JsonPhaseBStore(path).get_cache("k") == {"ready": True}
+
+
+def test_json_persist_raises_permission_error_when_os_replace_always_fails(tmp_path, monkeypatch):
+    calls = []
+
+    def always(src, dst):
+        calls.append(1)
+        raise PermissionError(13, "busy")
+
+    monkeypatch.setattr(store_module.os, "replace", always)
+    monkeypatch.setattr(store_module, "sleep", lambda _seconds: None)
+    with pytest.raises(PermissionError):
+        JsonPhaseBStore(tmp_path / "phase-b.json").put_cache("k", {"ready": True})
+    assert len(calls) == 5

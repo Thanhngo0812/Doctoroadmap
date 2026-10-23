@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.769" timestamp="2026-10-22T21:05:02.157165+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_all_invalid_preview_reasons_have_the_same_error_envelope_fields" time="0.262"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;">def test_all_invalid_preview_reasons_have_the_same_error_envelope_fields():
+        owner_id, learner_id = str(uuid4()), str(uuid4())
+        store, clock = MemoryStore(owner_id), Clock()
+        service = SharingService(store, settings=type("Settings", (), {
+            "share_link_default_days": 7, "course_max_members": 200,
+            "public_base_url": "https://learn.example.vn"})(), clock=clock)
+        exhausted = service.create_share_link(owner_actor(owner_id), store.course_id, max_uses=1)["link"]["token"]
+        service.join_by_link(learner_actor(learner_id), exhausted)
+        expired = service.create_share_link(owner_actor(owner_id), store.course_id, expires_in_days=1)["link"]["token"]
+        revoked = service.create_share_link(owner_actor(owner_id), store.course_id)["link"]["token"]
+        revoked_id = next(link.id for link in store.links.values() if link.token_tail == revoked[-6:])
+        service.revoke_share_link(owner_actor(owner_id), store.course_id, revoked_id)
+        clock.value += timedelta(days=1)
+        invalid_tokens = [exhausted, expired, revoked, "x" * 43]
+        envelopes = []
+        for token in invalid_tokens:
+&gt;           with pytest.raises(WebError) as error:
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;
+
+src\web\backend\tests\test_w11_sharing.py:169: Failed</failure></testcase></testsuite></testsuites>

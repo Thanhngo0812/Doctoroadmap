@@ -1,13 +1,27 @@
 # W-08 — Trang học: bài giảng stream, "Đọc trang p"
 
-**Nguồn chân lý:** [spec Pha B2](../../doc/pha-b2-spec.md), mục 6 (`lecture-2`, stream sau cổng, bài hỏng hẳn, nhãn theo người học), mục 10; [spec chức năng](../../doc/web-chuc-nang-spec.md),
-mục 1 (SSE), 7 (mở tệp gốc); [ADR 0018](../../doc/adr/0018-bai-giang-khong-hien-ban-lui-stream-sau-cong.md); spec thiết kế, trang học và vòng chờ.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-39, SA-40, SA-41 · **Trạng thái:**
-đủ phụ thuộc lõi để triển khai; xếp sau W-11 nếu chỉ có một phiên web.
+**Nguồn chân lý:** [spec bài giảng 3](../../doc/bai-giang-3-spec.md), mục 6 (`lecture-3`) và 9; [ADR 0025](../../doc/adr/0025-bai-giang-3-van-xuoi-tu-nhien.md),
+[ADR 0024](../../doc/adr/0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md); nhãn người học ở [spec Pha B2](../../doc/pha-b2-spec.md), mục 6.5;
+[spec chức năng](../../doc/web-chuc-nang-spec.md), mục 1 (SSE), 7 (mở tệp gốc); spec thiết kế, trang học và vòng chờ.
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07; SA-64 thay SA-63, ảnh trang SA-65 · **Trạng thái:**
+sau W-11 chuẩn bị/triển khai theo lecture-3; cổng tích hợp cuối chờ SA-64 được Claude nghiệm thu/ghép.
 
-**Đối chiếu Pha B 2026-10-22, cập nhật:** Claude đã nghiệm thu SA-53 và ghép `62dad5b`, đóng điểm chờ câu nối final của SA-40/41.
-Nhận main có mốc này, giữ hợp đồng `lecture-2`/SSE và kiểm với PostgreSQL/đồ giả. W-09 có phụ thuộc riêng SA-56; không tự sửa use case trợ lý
-trong W-08. Xem [soát Pha B của Claude](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md).
+**Quyết định mới nhất 2026-10-23, `9ee69ce`:** ADR 0025 thay cấu trúc lecture-2 bằng lecture-3; SA-63 dừng, thay bằng SA-64.
+Nội dung là `body_md` Markdown/LaTeX, `self_check` đáp án gập và `sources[]`; bỏ `sections`/`bridge`.
+Stream `skeleton` → `delta {text}` → `final {lecture}` hoặc `failure`. KaTeX hiển thị công thức; nhãn `[Sx]` hợp lệ mở đúng trang nguồn,
+khối Trong sách dùng `sources`, nhãn lạ giữ nguyên chữ. Log validation chỉ admin. Đây là hợp đồng triển khai mới, không tiếp tục cài item/lecture-2.
+SA-65 chụp ảnh trang công thức vào artifact, do Claude cài/ghép; web không tự sửa lõi hoặc chuyển artifact vào DB.
+
+**Lịch sử cập nhật trước ADR 0025:** chủ dự án chốt ADR 0024, khi đó SA-63 đang cài. Ý LLM hiện ngay khi đóng xong, không chờ đủ hai ý;
+trượt luật kiểm không làm bài lỗi hoặc gắn nhãn cho người học. `validation` chỉ nằm trong cache/log admin, không lọt qua JSON/SSE/tool.
+`failed` chỉ khi chưa gửi ý nào; hiển thị `failure.message` và luôn có nút Thử lại. Sau ý đầu, lỗi đuôi giữ các ý đã gửi, `ready` + `cat_ngan`.
+Không cài theo yêu cầu cũ “stream sau cổng”. Chính sách giữ nội dung/lỗi vẫn có hiệu lực; cấu trúc và sự kiện nay theo lecture-3 ở trên.
+
+**Lịch sử đối chiếu Pha B 2026-10-22, trước ADR 0025:** Claude nghiệm thu SA-53 và ghép `62dad5b`, đóng điểm chờ câu nối final của SA-40/41.
+Hợp đồng lecture-2 khi đó nay đã được thay bằng lecture-3 ở đầu vé; kiểm với PostgreSQL/đồ giả. Cập nhật ngày 23: SA-56/58 của W-09 đã vào main;
+wrapper lecture/cache_only và HTTP trợ lý thuộc W-09, không tự sửa use case trợ lý trong W-08.
+Ưu tiên sửa Required W-11 rồi bắt đầu W-08; xem [lời giao mới](../../report/lenh-giao-viec-sau-w11-2026-10-23.md)
+và [soát Pha B của Claude](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md).
 
 ## Vì sao
 
@@ -22,8 +36,8 @@ Bấm vào một khái niệm là thao tác chính của người học. Bài gi
   bước `learning_prep`.
 
 **HTTP:**
-- `GET /courses/{cid}/concepts/{node_id}/lecture` trả `lecture-2` đầy đủ, khi bài đã có trong cache;
-- `GET /courses/{cid}/concepts/{node_id}/lecture/stream` là **SSE**, với đúng các sự kiện `skeleton`, `item` (chỉ sau cổng), `final`, `failure`;
+- `GET /courses/{cid}/concepts/{node_id}/lecture` trả `lecture-3` đầy đủ khi bài đã có trong cache;
+- `GET /courses/{cid}/concepts/{node_id}/lecture/stream` là **SSE**: `skeleton`, các `delta {text}` hiện ngay, `final {lecture}` hoặc `failure`;
 - `GET /courses/{cid}/source/pages/{p}`: máy chủ lấy ảnh trang p từ Cloudinary (một cỡ, WebP) rồi chuyển cho trình duyệt, `Cache-Control: private,
   max-age=300`;
 - `GET /courses/{cid}/source`: chuyển hướng 302 tới link tải riêng tư có hạn 300 giây ("Mở cả tệp");
@@ -35,29 +49,33 @@ Bấm vào một khái niệm là thao tác chính của người học. Bài gi
 - vùng bài giảng:
   - **`skeleton`:** vị trí, câu định nghĩa nguyên văn kèm trang, ảnh công thức, media;
   - **tiên quyết gập sẵn:** tên, module, nhãn "đã học / chưa học"; mở ra thấy câu định nghĩa;
-  - câu nối hiện khi tới;
-  - các ý giải thích, ví dụ, phân biệt, tự kiểm tra hiện dần;
+  - `body_md` văn xuôi Markdown hiện dần theo delta, công thức LaTeX bằng KaTeX; không giữ khối bridge/sections của lecture-2;
+  - `self_check.question_md`, đáp án `answer_md` gập sẵn; self_check null thì không bịa câu hỏi;
+  - khối Trong sách từ `sources[]`; nhãn `[Sx]` hợp lệ mở đúng trang, nhãn lạ hiện nguyên chữ, không tạo URL tuỳ ý;
   - **khối "Tiếp theo"** ở cuối, bấm được để mở khái niệm đó;
-- **trước cổng:** hiện vòng chờ GIF WayFinder theo spec thiết kế, kèm câu "Đang soạn bài…". Không hiện ý nào;
-- **bài hỏng hẳn:** giữ phần mã dựng, cộng lời nhắn theo `reason_code`, và ba nút:
+- **đang chờ chữ đầu:** hiện phần mã dựng ngay, vòng chờ GIF WayFinder và câu "Đang soạn bài…"; nhận delta đầu thì hiện ngay, không đợi cả bài;
+- **chưa có bài:** khi chưa có chữ dùng được; giữ phần mã dựng, hiện `failure.message` tiếng Việt nêu lý do/thời điểm thử lại, và ba nút:
   - "Đọc trang p trong sách" mở khung xem ảnh trang p (`/source/pages/p`), có nút trang trước, trang sau và "Mở cả tệp"; DOCX hay không có tệp thì nút
     báo không có trang;
   - "Hỏi trợ lý" mở khung chat của module (W-09), điền sẵn câu hỏi về khái niệm;
-  - "Thử lại" chỉ hiện khi `retryable`.
+  - "Thử lại" luôn hiện (`retryable=true` theo hợp đồng mới).
 - Cảnh báo `cat_ngan` hiện một dòng nhỏ "Bài được rút gọn".
 
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
-- [ ] Tầng HTTP: luồng SSE của một kịch bản mô hình giả có `skeleton` đầu tiên, không có `item` trước cổng, và kết thúc bằng `final` hay `failure`.
+- [ ] Tầng HTTP/React: kịch bản mô hình giả có `skeleton` trước, delta đầu đến/hiện trước khi mô hình trả xong; kết thúc final/failure đúng lecture-3/SA-64.
+- [ ] `body_md`, LaTeX inline/block, sources/nhãn hợp lệ và nhãn lạ, self_check/đáp án gập hoặc null đều hiện đúng. Nội dung Markdown không thực thi HTML/script hoặc URL nguy hiểm.
+- [ ] Ý trượt luật kiểm vẫn hiện; không nhãn kiểm hay khối `validation` trong JSON/SSE cho người học. Cache/log admin có validation không được trả nguyên ra web.
+- [ ] Lỗi sau delta đầu không rút chữ hoặc đổi thành failed: giữ nội dung đã gửi, kết thúc `ready` + `cat_ngan`; không thêm lời gọi sinh lại do log kiểm.
+- [ ] Chưa có ý: mọi reason hợp lệ có `failure.message` không rỗng và nút Thử lại; không dùng `kiem_noi_dung`. Lỗi được nhớ 60 giây, hết trần tới hết ngày theo lõi; không hardcode 24 giờ ở React.
 - [ ] Hai thành viên mở cùng một khái niệm: tổng cộng 1 lời gọi mô hình; `lecture_key` giống nhau; `learner_status` khác nhau theo tiến độ của mỗi người.
-- [ ] Không đường nào trả `status = fallback` hay câu do TextRank chọn. Một test chạy kịch bản hỏng hẳn và kiểm phản hồi không có trường `sections` nào
-  ngoài phần mã dựng.
+- [ ] Không đường nào trả fallback/TextRank; chưa có bài thì chỉ phần mã dựng/message/lối ra, không bịa body. Lecture-3 không chứa sections/bridge cũ.
 - [ ] Ảnh trang, ảnh công thức, "Mở cả tệp" bởi người ngoài khoá thì `not_found`, và `MediaStore` giả ghi 0 lần lấy. Bởi thành viên thì có đủ header.
 - [ ] Quét đệ quy mọi phản hồi JSON của bài giảng: không có tên miền Cloudinary hay `public_id`. Cache bài giảng không chứa URL.
 - [ ] Trang p ngoài khoảng 1…số trang thì `not_found`.
 - [ ] Ngắt kết nối SSE giữa chừng thì lần sinh vẫn xong và vào cache: lần mở sau là 0 lời gọi.
-- [ ] Ảnh chụp: bài đang chờ (vòng chờ), bài đã xong có tiên quyết mở, bài hỏng hẳn với ba nút; cỡ 390 px và 1280 px.
+- [ ] Ảnh chụp: chờ chữ đầu, Markdown đang hiện dần/công thức, xong có tiên quyết mở/Trong sách/tự kiểm tra, chưa có bài với message/ba nút; 390/768/1280 px sáng/tối/reduced-motion.
 
 ## Ngoài vé
 
