@@ -4,7 +4,10 @@
 [ADR 0024](../../doc/adr/0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md); nhãn người học ở [spec Pha B2](../../doc/pha-b2-spec.md), mục 6.5;
 [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 1 (SSE), 7 (mở tệp gốc); spec thiết kế, trang học và vòng chờ.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07; SA-64 thay SA-63, ảnh trang SA-65 · **Trạng thái:**
-sau W-11 chuẩn bị/triển khai theo lecture-3; cổng tích hợp cuối chờ SA-64 được Claude nghiệm thu/ghép.
+sau W-11 triển khai lecture-3; SA-64 đã được Claude nghiệm thu/ghép `1d91b0b`, gỡ điểm chờ cũ.
+
+**Cập nhật sau ghép SA-62:** core lecture-3 đã ở main (`1d91b0b`), port PG cũng đã vào main (`9ac2a85`), cổng kết hợp trên `14110c0` có2.355Python/143React/build xanh.
+Web nhận main mới rồi cài/kiểm W-08 theo hợp đồng hiện hành. SA-65 ảnh trang vẫn là phần làn Claude; không tự sửa lõi hoặc suy ảnh chụp bù đã có khi chưa được bàn giao.
 
 **Quyết định mới nhất 2026-10-23, `9ee69ce`:** ADR 0025 thay cấu trúc lecture-2 bằng lecture-3; SA-63 dừng, thay bằng SA-64.
 Nội dung là `body_md` Markdown/LaTeX, `self_check` đáp án gập và `sources[]`; bỏ `sections`/`bridge`.

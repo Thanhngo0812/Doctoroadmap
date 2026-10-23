@@ -1,0 +1,81 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-sa62-port-tests-20261023/react.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/sa62-port-kho-pha-b/src/web/frontend
+
+ ✓ src/App.test.tsx (24 tests) 17939ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 2910ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 1301ms
+     ✓ keeps duplicate registration generic when no session is created 1284ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 873ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 1401ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 1475ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 1019ms
+     ✓ clears errors and private form state when leaving register 1203ms
+     ✓ does not carry a late login failure into the registration form 729ms
+     ✓ keeps a success notification visible after login reaches courses 695ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 857ms
+     ✓ shows the actual password field message for body.password 1182ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 1201ms
+ ✓ src/Sharing.test.tsx (16 tests) 4501ms
+   ✓ keeps the invalid join screen labelled by its own heading 422ms
+   ✓ creates a one-time share URL, copies only on a successful clipboard write, and clears it on close 735ms
+   ✓ does not reveal a one-time URL when creation finishes after the dialog closes 608ms
+   ✓ clears a one-time URL when the open dialog switches to a different course 500ms
+   ✓ does not apply a deferred member removal to the next course 557ms
+ ✓ src/W03.test.tsx (21 tests) 7498ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ ignores a late response from the previous verification token 351ms
+     ✓ sends a generic password-reset request without revealing whether the email exists 604ms
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 991ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 1161ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 1977ms
+     ✓ keeps the reset form available after a retryable network failure 843ms
+ ✓ src/Builds.test.tsx (10 tests) 2922ms
+   ✓ requires rights confirmation before upload and queues only after explicit title confirmation 1291ms
+ ✓ src/Courses.test.tsx (17 tests) 2122ms
+   ✓ shows real-shaped owned joined and samples without inventing sample progress 571ms
+   ✓ joins through POST with session CSRF and moves the returned card to joined exactly once 390ms
+ ✓ src/Roadmap.test.tsx (8 tests) 1785ms
+   ✓ shows API-ordered modules, honest course and module totals, and the expanded concept checklist 663ms
+   ✓ merges concurrent node responses by their own node so stale full snapshots cannot undo another check 344ms
+ ✓ src/W11AuthReturn.repro.test.tsx (22 tests) 42017ms
+   ✓ control: direct login returns to the exact invitation after authentication 1838ms
+   ✓ control: direct register returns to the exact invitation after authentication 2148ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false) 2125ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true) 1996ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false) 2041ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true) 2074ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false) 2450ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true) 2051ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false) 2010ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true) 2011ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false) 2006ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true) 2006ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false) 2001ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true) 2050ms
+   ✓ retains invite after login -> register through header (viewTransition=false) 2102ms
+   ✓ retains invite after login -> register through header (viewTransition=true) 2132ms
+   ✓ retains invite after login -> register through footer (viewTransition=false) 2051ms
+   ✓ retains invite after login -> register through footer (viewTransition=true) 2061ms
+   ✓ retains invite after register -> login through header (viewTransition=false) 1229ms
+   ✓ retains invite after register -> login through header (viewTransition=true) 1204ms
+   ✓ retains invite after register -> login through footer (viewTransition=false) 1182ms
+   ✓ retains invite after register -> login through footer (viewTransition=true) 1243ms
+ ✓ src/TaskWait.test.tsx (2 tests) 180ms
+ ✓ src/api.test.ts (22 tests) 77ms
+ ✓ src/CourseShellGuest.test.tsx (1 test) 236ms
+
+ Test Files  10 passed (10)
+      Tests  143 passed (143)
+   Start at  17:07:24
+   Duration  141.12s (tests 58%, environment 27%, setup 8%, import 6%, transform 1%)
+
+    Isolate  10 workers spawned · ~4.19s startup each (spawn + environment, per file)
+             at least ~37.69s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-sa62-port-tests-20261023/react.xml
