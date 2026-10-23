@@ -15,6 +15,16 @@ Giữ Vertex, `allow_spend=False`; tiếp kiểm identity/cache trên bản sao 
 
 ## Vì sao
 
+**Cập nhật 2026-10-23 chiều:** Claude đã nhận port bằng SA-62, mã `266dbdc` đã có nhưng chưa ghép main; không còn chờ phiên Pha A quyết người sửa.
+Lõi W-15 bàn giao `6627c00`, mã `dba19e5`: hai ca âm dùng factory giả thiếu port và chống cộng trùng trace `counted_in="build"` trong PostgreSQL.
+Mốc này đã ghép/đẩy cùng W-11 bằng `e85427a`, full gate trên `b625752` có 2.296 Python/143 React/build xanh; toàn W-15 vẫn mở.
+Đợt soát lần 2 ghi tại [báo cáo](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md),
+[lời giao mới](../../report/lenh-giao-viec-ba-nhom-lan2-2026-10-23.md). Sau phần web được ghép, Claude nhận main và cổng/ghép SA-62 theo làn của mình.
+Không tự ghép nhánh SA-62 hoặc sửa hai tệp composition. Sau port mới kiểm default factory/pipeline thật/PG, identity/cache và dry-run có guard.
+Artifact Pha A vẫn ở kho tệp; chỉ tiêm kho Pha B/sổ chi web, không chuyển graph/chunks/manifest/index vào DB.
+DailySpendGuard Pha B không tính module_title/embedding của build; guard build riêng và tổng meter là nguồn chi duy nhất.
+Mọi lượt có tiền vẫn cần dry-run và chủ dự án duyệt đúng cuốn/lượt/trần; không suy permission từ các vé SA hoặc khôi phục trước.
+
 **Cập nhật cuối đợt 2026-10-22:** W-14 đầu-cuối bộ dựng giả đã đạt có ghi chú và ghép/đẩy `7fe63df`, mốc kiểm `61b5d80`:
 2185Python/104React/build, browser/SQL đạt. Tài liệu lõi `1acaf4e` được nhận cùng mốc ghép. Lõi bắt đầu phần adapter/composition/test fake0USD,
 đọc [ghi chú đầu vào](../../report/w15-ghi-chu-dau-vao-sau-w25-2026-10-22.md); phần port trong `BuildDocument`/`composition_build.py` phối hợp

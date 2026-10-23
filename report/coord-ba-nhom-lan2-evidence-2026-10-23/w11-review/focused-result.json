@@ -1,0 +1,30 @@
+{
+  "command": [
+    "cmd.exe",
+    "/d",
+    "/c",
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "src/W11AuthReturn.repro.test.tsx",
+    "src/W11AuthReturn.worker-recheck.test.tsx",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r2-20261023-w11-review\\auth-return-independent-green.xml"
+  ],
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-w11-auth-repro-20261023",
+  "worker_input_commit": "253874bbd83e4224477542928b4a3ef9344db93a",
+  "native_exit": 0,
+  "tests": 32,
+  "passed": 32,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "postgres_calls": 0,
+  "provider_calls": 0,
+  "scope": "Original independent ten-case reproduction plus worker expanded twenty-two-case test, mocked HTTP/auth only"
+}

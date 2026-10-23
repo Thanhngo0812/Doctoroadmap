@@ -1,0 +1,59 @@
+{
+  "commit": "b625752d929efd1a94f0975586a9c80296966aa7",
+  "python": {
+    "tests": 2297,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1
+  },
+  "react": {
+    "tests": 143,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "full_w15_complete": false,
+  "w24_accepted": false,
+  "external_spend_usd": 0,
+  "links_used": false,
+  "browser_runtime": {
+    "base": "http://127.0.0.1:8011",
+    "database": "UUID PostgreSQL",
+    "databaseName": "wayfinder_w11_bdda4ea229f6479ea80fd7923ef816c9",
+    "modelCalls": 0,
+    "externalCostUsd": 0,
+    "mailer": "FakeMailer",
+    "media": "unused; no media calls",
+    "temporaryDatabaseRemoved": true,
+    "courseId": "830fd58f-9e9b-4bd7-a836-3944383cb429",
+    "ownerId": "c83d2e58-72eb-4b02-a39d-da9aa0a21d0b",
+    "nodeId": "node_92b86f8bac3397ea9de112b0",
+    "migrationHead": "w11_0007",
+    "browserExitCode": 0,
+    "independentSql": {
+      "memberCount": 1,
+      "primaryUseCount": 1,
+      "authReturnUseCount": 8,
+      "retainedPhaseBRows": 1,
+      "tokenColumns": [
+        "id",
+        "course_id",
+        "token_hash",
+        "token_tail",
+        "created_by",
+        "expires_at",
+        "max_uses",
+        "use_count",
+        "revoked_at",
+        "created_at"
+      ],
+      "auditActions": [
+        "member_joined",
+        "member_left",
+        "member_removed",
+        "share_link_created",
+        "share_link_revoked"
+      ]
+    }
+  }
+}

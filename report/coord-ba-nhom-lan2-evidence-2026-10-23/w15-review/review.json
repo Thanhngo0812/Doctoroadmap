@@ -1,0 +1,1296 @@
+{
+  "commit": "6627c00b5b86436fba5d54a1659ca6d90d6559a6",
+  "manifest_entries": 229,
+  "sha_matches": 229,
+  "bytes_matches": 229,
+  "mismatches": [],
+  "mutations": [
+    {
+      "label": "confirm-cancel",
+      "exit_code": 1,
+      "xml_failures": 1,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 1,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "terminal-cancel",
+      "exit_code": 1,
+      "xml_failures": 4,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 4,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "media-cancel",
+      "exit_code": 1,
+      "xml_failures": 4,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 4,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "receipt-once",
+      "exit_code": 1,
+      "xml_failures": 8,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 8,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "cancel-mail",
+      "exit_code": 1,
+      "xml_failures": 8,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 8,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "terminal-row-lock",
+      "exit_code": 1,
+      "xml_failures": 1,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 1,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "real-transport",
+      "exit_code": 1,
+      "xml_failures": 2,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 2,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "required-core-port",
+      "exit_code": 1,
+      "xml_failures": 1,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 1,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "same-postgres",
+      "exit_code": 1,
+      "xml_failures": 1,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 1,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "usage-baseline",
+      "exit_code": 1,
+      "xml_failures": 6,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 6,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "usage-precision",
+      "exit_code": 1,
+      "xml_failures": 2,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 2,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "step-clock",
+      "exit_code": 1,
+      "xml_failures": 6,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 6,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "no-queued-dry-run",
+      "exit_code": 1,
+      "xml_failures": 1,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 1,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "api-version",
+      "exit_code": 1,
+      "xml_failures": 6,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 6,
+      "source_restored": true,
+      "passed_review": true
+    },
+    {
+      "label": "trace-not-billed",
+      "exit_code": 1,
+      "xml_failures": 2,
+      "xml_errors": 0,
+      "recorded_assertion_failures": 2,
+      "source_restored": true,
+      "passed_review": true
+    }
+  ],
+  "mutation_count": 15,
+  "mutation_passed_review": 15,
+  "source_diff_dba19e5_to_head": [],
+  "source_unchanged": true,
+  "checks": [
+    {
+      "path": "cache-metadata-20261023.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/api-version.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/api-version.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/cancel-mail.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/cancel-mail.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/confirm-cancel.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/confirm-cancel.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/media-cancel.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/media-cancel.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/mutations.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/no-queued-dry-run.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/no-queued-dry-run.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/real-transport.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/real-transport.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/receipt-once.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/receipt-once.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/required-core-port.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/required-core-port.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/same-postgres.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/same-postgres.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/step-clock.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/step-clock.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/terminal-cancel.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/terminal-cancel.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/terminal-row-lock.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/terminal-row-lock.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/trace-not-billed.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/trace-not-billed.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/usage-baseline.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/usage-baseline.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/usage-precision.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "mutations/20261023/usage-precision.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w06-evidence/http-doc1.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w06-evidence/http-six-books.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w14-evidence/http-contract.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w14-evidence/sql-cancelled.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w14-evidence/sql-capacity.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w14-evidence/sql-failed.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w14-evidence/sql-queue-claims.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "regression-exports/20261023/report/w14-evidence/sql-succeeded.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/cache-metadata-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/cache-metadata-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/compatibility-green-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/compatibility-green-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/compatibility-green-20261023.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/frontend-build-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/frontend-build-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/full-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/full-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/full-20261023.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/mutations-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/mutations-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/react-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/react-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/react-20261023.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-green-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-green-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-green-20261023.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-green2-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-green2-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-green2-20261023.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-red-20261023-exit.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-red-20261023.log",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "runs/trace-red-20261023.xml",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/cancel-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/cancel-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/children.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/doc6-identity.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/failure-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/failure-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/old-lease.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/publication-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/single-build-charge.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/success-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/success-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/trace-None.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/trace-build.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/compatibility-green-20261023/trace-other.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/cancel-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/cancel-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/children.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/doc6-identity.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/failure-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/failure-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/old-lease.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/publication-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/single-build-charge.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/success-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/success-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/trace-None.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/trace-build.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/full-20261023/trace-other.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/mutation-20261023-trace-not-billed/trace-None.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/mutation-20261023-trace-not-billed/trace-other.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/mutation-20261023-usage-precision/cancel-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/mutation-20261023-usage-precision/failure-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/mutation-20261023-usage-precision/failure-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/mutation-20261023-usage-precision/success-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/cancel-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/cancel-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/children.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/doc6-identity.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/failure-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/failure-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/old-lease.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/publication-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/single-build-charge.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/success-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/success-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/trace-None.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/trace-build.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-green2-20261023/trace-other.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-red-20261023/trace-None.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "sql/trace-red-20261023/trace-other.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "summary-20261023.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-before-confirm.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/cancel-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/confirm-before-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/duplicate-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/stale-lease-after-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/terminal-before-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/compatibility-green-20261023/terminal-row-lock-order.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-before-confirm.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/cancel-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/confirm-before-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/duplicate-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/stale-lease-after-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/terminal-before-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/full-20261023/terminal-row-lock-order.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-before-confirm.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/cancel-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/confirm-before-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/duplicate-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/stale-lease-after-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/terminal-before-cancel.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/trace-green2-20261023/terminal-row-lock-order.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-cancel-mail/cancel-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-confirm-cancel/cancel-before-confirm.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/cancel-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/duplicate-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/duplicate-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/duplicate-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-media-cancel/duplicate-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/cancel-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-receipt-once/duplicate-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-graph-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-graph-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-terminal-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/cancel-terminal-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/duplicate-formula-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/duplicate-formula-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/duplicate-media-False.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-cancel/duplicate-media-True.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "w25-regressions/w15-mutation-20261023-terminal-row-lock/terminal-row-lock-order.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    },
+    {
+      "path": "normalization-20261023.json",
+      "sha_matches": true,
+      "bytes_matches": true
+    }
+  ],
+  "limit": "raw_sha256 describes archived pre-normalization bytes; verified tracked sha256 and bytes against Git blobs. Restore verified from recorded flags, not by executing mutations."
+}

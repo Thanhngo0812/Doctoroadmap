@@ -1,0 +1,397 @@
+{
+  "worker_commit": "253874bbd83e4224477542928b4a3ef9344db93a",
+  "mode": "read-only manifests, JUnit and saved browser audit; no test/browser/PG runtime here",
+  "manifests": {
+    "source-manifest.json": {
+      "files": 639,
+      "mismatches": []
+    },
+    "latest-source-manifest.json": {
+      "files": 639,
+      "mismatches": []
+    },
+    "sha256-manifest.json": {
+      "files": 318,
+      "mismatches": []
+    }
+  },
+  "junit": {
+    "auth-return-red.xml": {
+      "tests": 10,
+      "passed": 2,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0
+    },
+    "auth-return-green.xml": {
+      "tests": 22,
+      "passed": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "final-python.xml": {
+      "tests": 2293,
+      "passed": 2292,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "latest-python.xml": {
+      "tests": 2293,
+      "passed": 2292,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1
+    },
+    "final-react.xml": {
+      "tests": 143,
+      "passed": 143,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "latest-react.xml": {
+      "tests": 143,
+      "passed": 143,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "unsafe-next-final-mutation.xml": {
+      "tests": 22,
+      "passed": 0,
+      "failures": 12,
+      "errors": 0,
+      "skipped": 10
+    }
+  },
+  "exits": {
+    "auth-return-green-exit.txt": "0",
+    "auth-return-red-exit.txt": "1",
+    "browser-dev-exit.txt": "1",
+    "browser-dev2-exit.txt": "1",
+    "browser-dev3-exit.txt": "0",
+    "browser-final-exit.txt": "0",
+    "final-build-exit.txt": "0",
+    "final-python-exit.txt": "0",
+    "final-react-exit.txt": "0",
+    "fixture-verification-exit.txt": "0",
+    "latest-build-exit.txt": "0",
+    "latest-python-exit.txt": "0",
+    "latest-react-exit.txt": "0",
+    "mutations-wrapper-exit.txt": "0"
+  },
+  "mutations": [
+    {
+      "name": "token-disclosure",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    },
+    {
+      "name": "revocation",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    },
+    {
+      "name": "expiry",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    },
+    {
+      "name": "use-limit",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    },
+    {
+      "name": "count",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    },
+    {
+      "name": "atomic-join",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    },
+    {
+      "name": "immediate-access",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    },
+    {
+      "name": "private-data-retention",
+      "native_exit": 1,
+      "counts": {
+        "tests": 1,
+        "passed": 0,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "restored": true
+    }
+  ],
+  "unsafe_mutation_source_restored": true,
+  "browser": {
+    "screens": 48,
+    "axe": 16,
+    "http": 113,
+    "auth_returns": [
+      {
+        "from": "login",
+        "to": "register",
+        "place": "header",
+        "reducedMotion": false,
+        "nativeTransitionCalls": 1,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      },
+      {
+        "from": "login",
+        "to": "register",
+        "place": "header",
+        "reducedMotion": true,
+        "nativeTransitionCalls": 0,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      },
+      {
+        "from": "login",
+        "to": "register",
+        "place": "footer",
+        "reducedMotion": false,
+        "nativeTransitionCalls": 1,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      },
+      {
+        "from": "login",
+        "to": "register",
+        "place": "footer",
+        "reducedMotion": true,
+        "nativeTransitionCalls": 0,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      },
+      {
+        "from": "register",
+        "to": "login",
+        "place": "header",
+        "reducedMotion": false,
+        "nativeTransitionCalls": 1,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      },
+      {
+        "from": "register",
+        "to": "login",
+        "place": "header",
+        "reducedMotion": true,
+        "nativeTransitionCalls": 0,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      },
+      {
+        "from": "register",
+        "to": "login",
+        "place": "footer",
+        "reducedMotion": false,
+        "nativeTransitionCalls": 1,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      },
+      {
+        "from": "register",
+        "to": "login",
+        "place": "footer",
+        "reducedMotion": true,
+        "nativeTransitionCalls": 0,
+        "returnedToExactInvite": true,
+        "joinedCourseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda"
+      }
+    ],
+    "violations": 0,
+    "incomplete": 0,
+    "console_errors": 0,
+    "page_errors": 0,
+    "failed_requests": 0,
+    "axe_scope": [
+      {
+        "state": "share",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "share",
+        "theme": "dark",
+        "width": 1280
+      },
+      {
+        "state": "auth-register",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "auth-register",
+        "theme": "dark",
+        "width": 1280
+      },
+      {
+        "state": "auth-login",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "auth-login",
+        "theme": "dark",
+        "width": 1280
+      },
+      {
+        "state": "guest",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "guest",
+        "theme": "dark",
+        "width": 1280
+      },
+      {
+        "state": "authenticated",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "authenticated",
+        "theme": "dark",
+        "width": 1280
+      },
+      {
+        "state": "learner-members",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "learner-members",
+        "theme": "dark",
+        "width": 1280
+      },
+      {
+        "state": "owner-members",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "owner-members",
+        "theme": "dark",
+        "width": 1280
+      },
+      {
+        "state": "invalid",
+        "theme": "light",
+        "width": 1280
+      },
+      {
+        "state": "invalid",
+        "theme": "dark",
+        "width": 1280
+      }
+    ]
+  },
+  "browser_runtime": {
+    "base": "http://127.0.0.1:8011",
+    "database": "UUID PostgreSQL",
+    "databaseName": "wayfinder_w11_2e9d5a124e254b18b7af56b7726d07f5",
+    "modelCalls": 0,
+    "externalCostUsd": 0,
+    "mailer": "FakeMailer",
+    "media": "unused; no media calls",
+    "temporaryDatabaseRemoved": true,
+    "courseId": "6fe66421-fde6-4d6a-9bf4-61c54886ccda",
+    "ownerId": "4d02fd85-dead-4ddc-890f-86c6634e2c75",
+    "nodeId": "node_92b86f8bac3397ea9de112b0",
+    "migrationHead": "w11_0007",
+    "browserExitCode": 0,
+    "independentSql": {
+      "memberCount": 1,
+      "primaryUseCount": 1,
+      "authReturnUseCount": 8,
+      "retainedPhaseBRows": 1,
+      "tokenColumns": [
+        "id",
+        "course_id",
+        "token_hash",
+        "token_tail",
+        "created_by",
+        "expires_at",
+        "max_uses",
+        "use_count",
+        "revoked_at",
+        "created_at"
+      ],
+      "auditActions": [
+        "member_joined",
+        "member_left",
+        "member_removed",
+        "share_link_created",
+        "share_link_revoked"
+      ]
+    }
+  },
+  "delta_after_tested_source": [],
+  "delta_between_tested_sources": [],
+  "ancestors": {
+    "865974a": true,
+    "1d193735": true,
+    "33f9c25": true
+  }
+}
