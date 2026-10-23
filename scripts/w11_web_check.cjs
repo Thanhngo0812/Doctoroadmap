@@ -11,13 +11,14 @@ const output = path.dirname(process.env.W11_RUNTIME);
 const password = 'W11 browser acceptance passphrase!';
 const scrub = s => String(s).replace(/\/join\/[^\s?"'<>]+/g, '/join/[REDACTED]')
   .replace(/[A-Za-z0-9_-]{43}/g, '[REDACTED]');
-const audit = { screens: [], accessibility: [], http: [], errors: [], expectedConsole: [], pageErrors: [], failedRequests: [], assertions: [] };
+const audit = { screens: [], accessibility: [], http: [], errors: [], expectedConsole: [], pageErrors: [], failedRequests: [], assertions: [], authReturns: [] };
 let stage = 'bootstrap';
 
 async function main() {
   const runtime = JSON.parse(await fs.readFile(process.env.W11_RUNTIME, 'utf8'));
   const base = runtime.base, cid = runtime.courseId;
   const browser = await chromium.launch();
+  audit.browserVersion = browser.version();
   const contexts = [];
   const pending = [];
   async function makePage(name) {
@@ -90,7 +91,7 @@ async function main() {
             [...row.querySelectorAll('.members-list__date')].map(cell => Math.round(cell.getBoundingClientRect().x))));
           assert.deepEqual(columns[0],columns[1],'owner and learner date columns must align');
         }
-        const targets = await page.locator('button,a.button,select,input:not([type=hidden])').evaluateAll(nodes => nodes
+        const targets = await page.locator('button,a.button,.auth-switch,.auth-alternate a,select,input:not([type=hidden])').evaluateAll(nodes => nodes
           .filter(n => n.getClientRects().length && !n.closest('[inert]') && (!document.querySelector('dialog[open]') || n.closest('dialog[open]')))
           .map(n => ({ name: n.getAttribute('aria-label') || n.textContent.trim(), w: n.getBoundingClientRect().width, h: n.getBoundingClientRect().height })));
         assert.deepEqual(targets.filter(n => n.w < 44 || n.h < 44), [], `${state}/${width}/${mode} targets`);
@@ -144,6 +145,60 @@ async function main() {
     assert.equal(await owner.locator('.sharing-once').count(), 0);
     await owner.keyboard.press('Escape');
     audit.assertions.push('owner creates/copies a one-time token; close clears it; list contains only tail');
+    const authLink=(await api(owner,'POST',`/courses/${cid}/share-links`,{expires_in_days:null})).body.link;
+    state.authReturnLinkId=authLink.id;
+    state.authReturnLearnerIds=[];
+    const returning=await makePage('auth-return');
+    await returning.addInitScript(() => {
+      window.__w11Transitions=0;
+      const native=document.startViewTransition?.bind(document);
+      if(native) document.startViewTransition=(...args)=>{ window.__w11Transitions++; return native(...args); };
+    });
+    for(const from of ['login','register']) for(const place of ['header','footer']) for(const motion of ['no-preference','reduce']) {
+      stage=`auth-return:${from}:${place}:${motion}`;
+      await returning.context().clearCookies();
+      await returning.emulateMedia({reducedMotion:motion});
+      const to=from==='login'?'register':'login';
+      const email=`return-${from}-${place}-${motion}@example.invalid`;
+      if(to==='login') {
+        const registered=await returning.request.post(`${base}/api/v1/auth/register`,{headers:{Origin:base},
+          data:{email,password,display_name:'Người học thử'}});
+        assert.equal(registered.status(),200);
+        await api(returning,'POST','/auth/logout');
+      }
+      await returning.goto(authLink.url,{waitUntil:'networkidle'});
+      await returning.locator('.join-auth-actions').getByRole('link',{name:from==='login'?'Đăng nhập':'Đăng ký',exact:true}).click();
+      const before=await returning.evaluate(()=>window.__w11Transitions);
+      const scope=returning.locator(place==='header'?'.site-header':'.auth-alternate').first();
+      await scope.getByRole('link',{name:to==='register'?'Tạo tài khoản':'Đăng nhập',exact:true}).click();
+      await returning.getByRole('heading',{name:to==='register'?'Tạo tài khoản WayFinder':'Đăng nhập WayFinder',exact:true}).waitFor();
+      assert.equal(new URL(returning.url()).searchParams.get('next'),`/join/${authLink.token}`);
+      const observed=await returning.evaluate(()=>({reduced:matchMedia('(prefers-reduced-motion: reduce)').matches,
+        transitions:window.__w11Transitions,nativeAvailable:typeof document.startViewTransition==='function'}));
+      assert.equal(observed.reduced,motion==='reduce');
+      assert.equal(observed.nativeAvailable,true,'normal path must use the browser native transition API');
+      assert.equal(observed.transitions-before,motion==='reduce'?0:1);
+      if(place==='header' && motion==='no-preference') await matrix(returning,`auth-${to}`);
+      if(to==='register') await returning.getByLabel('Tên hiển thị',{exact:true}).fill('Người học thử');
+      await returning.getByLabel('Email',{exact:true}).fill(email);
+      await returning.getByLabel('Mật khẩu',{exact:true}).fill(password);
+      if(to==='register') await returning.getByLabel('Nhập lại mật khẩu',{exact:true}).fill(password);
+      await returning.getByRole('button',{name:to==='register'?'Tạo tài khoản':'Đăng nhập',exact:true}).click();
+      await returning.waitForURL(authLink.url);
+      await returning.getByRole('heading',{name:'Thông tin khi tham gia',exact:true}).waitFor();
+      const identity=await (await returning.request.get(`${base}/api/v1/me`)).json();
+      state.authReturnLearnerIds.push(identity.account.id);
+      await returning.getByRole('button',{name:'Tham gia',exact:true}).click();
+      await returning.waitForURL(`${base}/khoa-hoc/${cid}`);
+      assert.equal((await api(returning,'GET',`/courses/${cid}`)).status,200);
+      await returning.waitForLoadState('networkidle');
+      assert.equal((await api(returning,'POST',`/courses/${cid}/leave`)).status,200);
+      audit.authReturns.push({from,to,place,reducedMotion:observed.reduced,
+        nativeTransitionCalls:observed.transitions-before,returnedToExactInvite:true,joinedCourseId:cid});
+      await returning.goto('about:blank');
+    }
+    assert.equal((await api(owner,'GET',`/courses/${cid}/share-links`)).body.items.find(x=>x.id===authLink.id).use_count,8);
+    audit.assertions.push('eight header/footer switches preserve the exact invite; native transition and OS reduced motion both authenticate and join');
     await learner.goto(primary.url, { waitUntil: 'networkidle' });
     await learner.getByRole('heading', { name: 'Đại số tuyến tính', exact: true }).waitFor();
     await matrix(learner, 'guest');

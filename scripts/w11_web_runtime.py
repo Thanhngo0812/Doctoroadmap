@@ -30,7 +30,7 @@ from w14_web_runtime import _forbid_live_providers
 
 RUN=os.environ.get('W11_EVIDENCE_RUN','browser-final')
 assert re.fullmatch(r'browser-[a-z0-9-]+',RUN)
-OUT=ROOT/'report/w11-evidence/final-2026-10-22'/RUN
+OUT=ROOT/'report/w11-evidence/auth-return-2026-10-23'/RUN
 BASE='http://127.0.0.1:8011'
 
 
@@ -90,13 +90,15 @@ def main():
             with audit.connect() as c:
                 members=c.scalar(text('SELECT count(*) FROM membership WHERE course_id=:cid'),{'cid':course.id})
                 use=c.scalar(text('SELECT use_count FROM share_link WHERE id=:id'),{'id':state['primaryLinkId']})
+                switched_use=c.scalar(text('SELECT use_count FROM share_link WHERE id=:id'),{'id':state['authReturnLinkId']})
                 columns=list(c.scalars(text("SELECT column_name FROM information_schema.columns WHERE table_name='share_link'")))
                 learned=c.scalar(text("SELECT count(*) FROM phase_b_record WHERE owner=:uid AND doc_id='doc-1'"),{'uid':state['learnerId']})
                 events=list(c.scalars(text("SELECT action FROM audit_event WHERE action IN ('share_link_created','share_link_revoked','member_joined','member_removed','member_left')")))
             assert members==1 and use==1 and learned>0
+            assert switched_use==8 and len(set(state['authReturnLearnerIds']))==8
             assert 'token' not in columns and 'token_hash' in columns
             assert set(events)=={'share_link_created','share_link_revoked','member_joined','member_removed','member_left'}
-            summary['independentSql']=dict(memberCount=members,primaryUseCount=use,retainedPhaseBRows=learned,tokenColumns=columns,auditActions=sorted(set(events)))
+            summary['independentSql']=dict(memberCount=members,primaryUseCount=use,authReturnUseCount=switched_use,retainedPhaseBRows=learned,tokenColumns=columns,auditActions=sorted(set(events)))
         return run.returncode
     finally:
         if server: server.should_exit=True

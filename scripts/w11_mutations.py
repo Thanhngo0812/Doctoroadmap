@@ -8,7 +8,7 @@ from uuid import uuid4
 import xml.etree.ElementTree as ET
 
 ROOT = Path(__file__).resolve().parents[1]
-OUT = ROOT/'report/w11-evidence/final-2026-10-22/mutations'
+OUT = ROOT/'report/w11-evidence/auth-return-2026-10-23/mutations'
 CASES = (
     ('token-disclosure', 'application/sharing.py', 'test_share_link_token_is_one_time_and_never_returned_by_list',
      'token[-6:]', 'token'),

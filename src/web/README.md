@@ -2,7 +2,7 @@
 
 ## Mở bản W-11 — chia sẻ bằng link và thành viên
 
-Mã W-11 ở `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links`, nhánh `work/w11-share-links`, đã nhận main `dee87cc` có W-14 được nghiệm thu. Migration `w11_0007` nối `w14_0006`. Cổng tự động dùng PostgreSQL UUID riêng và dịch vụ giả; không chạy trên DB phát triển của bạn. Bản này chờ điều phối nghiệm thu W-11, không tự ghép main.
+Mã W-11 ở `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links`, nhánh `work/w11-share-links`, đã nhận main `865974a`. Bản vá ngày 2026-10-23 giữ link mời khi đổi giữa đăng nhập/đăng ký qua header, footer và view transition. Migration `w11_0007` nối `w14_0006`. Cổng tự động dùng PostgreSQL UUID riêng và dịch vụ giả; không chạy trên DB phát triển của bạn. Bản này chờ điều phối nghiệm thu W-11, không tự ghép main.
 
 **PowerShell 1 — PostgreSQL và backend:** dùng `.env` dev riêng đã cấu hình, bật Docker Desktop rồi chạy:
 
@@ -31,7 +31,7 @@ npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
 
 Mở `http://127.0.0.1:5173/khoa-hoc`. Chủ khoá vào lộ trình → **Chia sẻ**, đặt hạn/số lượt rồi tạo và sao chép link một lần. Link dùng đúng `WAYFINDER_PUBLIC_BASE_URL`; khách đăng nhập/đăng ký xong quay lại link đó. Trang **Thành viên** có nút xoá hoặc rời khoá theo quyền. Không cần worker cho thao tác chia sẻ; worker giả bên dưới chỉ dành cho dựng tài liệu W-14. Dừng từng terminal bằng `Ctrl+C`, giữ volume DB.
 
-Để dùng bản build ở8000: chạy `npm.cmd --prefix src/web/frontend run build`, đặt `WAYFINDER_PUBLIC_BASE_URL=http://127.0.0.1:8000` rồi mở lại backend. Không trộn `localhost` và `127.0.0.1`. Xem [báo cáo W-11](../../report/w11-chia-se-link-thanh-vien-2026-10-22.md). Các phần W-14/W-07 dưới đây giữ hướng dẫn của mốc trước để đối chiếu.
+Để dùng bản build ở8000: chạy `npm.cmd --prefix src/web/frontend run build`, đặt `WAYFINDER_PUBLIC_BASE_URL=http://127.0.0.1:8000` rồi mở lại backend. Không trộn `localhost` và `127.0.0.1`. Xem [báo cáo bản vá W-11](../../report/w11-chia-se-link-thanh-vien-2026-10-23.md) và [bằng chứng đợt trước](../../report/w11-chia-se-link-thanh-vien-2026-10-22.md). Các phần W-14/W-07 dưới đây giữ hướng dẫn của mốc trước để đối chiếu.
 
 ## W-14 React — vị trí và giới hạn
 
