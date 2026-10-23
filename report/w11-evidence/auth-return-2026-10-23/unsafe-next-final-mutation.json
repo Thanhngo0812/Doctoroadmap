@@ -1,0 +1,21 @@
+{
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "src/W11AuthReturn.repro.test.tsx",
+    "-t",
+    "unsafe next",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=junit",
+    "--outputFile=../../../report/w11-evidence/auth-return-2026-10-23/unsafe-next-final-mutation.xml"
+  ],
+  "nativeExit": 1,
+  "failures": 12,
+  "errors": 0,
+  "beforeSha256": "ec848f1b5da21586b0eb21bc7abc2d670474541b4430860700b8e76e1b1ec8e5",
+  "restoredSha256": "ec848f1b5da21586b0eb21bc7abc2d670474541b4430860700b8e76e1b1ec8e5"
+}

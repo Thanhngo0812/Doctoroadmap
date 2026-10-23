@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.971" timestamp="2026-10-22T21:04:45.731916+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_revoked_or_expired_link_is_invalid_even_for_an_existing_member" time="0.154"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;">def test_revoked_or_expired_link_is_invalid_even_for_an_existing_member():
+        owner_id, learner_id = str(uuid4()), str(uuid4())
+        store, clock = MemoryStore(owner_id, learner_id), Clock()
+        service = SharingService(store, settings=type("Settings", (), {
+            "share_link_default_days": 7, "course_max_members": 200,
+            "public_base_url": "https://learn.example.vn"})(), clock=clock)
+        revoked = service.create_share_link(owner_actor(owner_id), store.course_id)["link"]["token"]
+        revoked_id = next(iter(store.links))
+        service.revoke_share_link(owner_actor(owner_id), store.course_id, revoked_id)
+        expired = service.create_share_link(owner_actor(owner_id), store.course_id, expires_in_days=1)["link"]["token"]
+        clock.value += timedelta(days=1)
+        for token in (revoked, expired):
+&gt;           with pytest.raises(WebError) as error:
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE &lt;class 'wayfinder.api.errors.WebError'&gt;
+
+src\web\backend\tests\test_w11_sharing.py:148: Failed</failure></testcase></testsuite></testsuites>

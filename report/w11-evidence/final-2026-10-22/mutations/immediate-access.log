@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_members _
+
+sharing_pg = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_2172f55ab18c4270b0ddbf6616bc5... 0x00000202F7916340>, store=<wayfinder.infrastructure.sharing_store.PostgresSharingStore object at 0x00000202F757EB40>)
+
+    @pytest.mark.postgres
+    def test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_members(sharing_pg):
+        from sqlalchemy import text
+        from wayfinder.application.sharing import SharingService
+
+        service = SharingService(sharing_pg.store, sharing_pg.settings, sharing_pg.clock,
+                                 graph_loader=lambda *_: SimpleNamespace(learnable_nodes={}))
+        learner = sharing_pg.user("Người học")
+        token = service.create_share_link(sharing_pg.owner, sharing_pg.course.id)["link"]["token"]
+        service.join_by_link(learner, token)
+        with sharing_pg.engine.begin() as connection:
+            connection.execute(text("INSERT INTO phase_b_record (kind,record_id,owner,doc_id,value,updated_at) "
+                "VALUES ('progress',:record,:owner,'doc-w11',CAST(:value AS jsonb),:at)"), {
+                    "record": "w11:" + learner.user_id, "owner": learner.user_id,
+                    "value": '{"node_id":"n1","state":"learned"}', "at": sharing_pg.clock.now()})
+        link_id = service.list_share_links(sharing_pg.owner, sharing_pg.course.id)["items"][0]["id"]
+        service.revoke_share_link(sharing_pg.owner, sharing_pg.course.id, link_id)
+        assert service.list_members(sharing_pg.owner, sharing_pg.course.id)["member_count"] == 2
+        service.remove_member(sharing_pg.owner, sharing_pg.course.id, learner.user_id)
+>       with pytest.raises(WebError) as removed:
+             ^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE <class 'wayfinder.api.errors.WebError'>
+
+src\web\backend\tests\test_w11_sharing.py:421: Failed
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\report\w11-evidence\final-2026-10-22\mutations\immediate-access.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w11_sharing.py::test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_members
+1 failed, 1 warning in 5.20s

@@ -1,0 +1,14 @@
+{
+  "sourceCommit": "2c5166bfcf30ee8cd1a784f8da6891278b260522",
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=junit",
+    "--outputFile=../../../report/w11-evidence/auth-return-2026-10-23/final-react.xml"
+  ]
+}

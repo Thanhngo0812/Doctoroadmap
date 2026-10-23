@@ -255,7 +255,8 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
 
   if (auth.status === 'authenticated') return <Navigate to={next} replace />;
   const isRegister = mode === 'register';
-  const switchTarget = isRegister ? '/dang-nhap' : '/dang-ky';
+  const switchPath = isRegister ? '/dang-nhap' : '/dang-ky';
+  const switchTarget = requestedNext ? `${switchPath}?next=${encodeURIComponent(next)}` : switchPath;
   const switchForm = (event: MouseEvent<HTMLAnchorElement>) => {
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey
       || window.matchMedia('(prefers-reduced-motion: reduce)').matches || !document.startViewTransition) return;
@@ -316,7 +317,7 @@ export function AuthPage({ mode, theme, onToggleTheme }: { mode: 'login' | 'regi
     <>
       <header className="site-header"><div className="header-inner">
         <Link className="brand-link" to="/" aria-label="WayFinder, về trang chủ"><img src={theme === 'dark' ? '/assets/Artboard%2028.png' : '/assets/Artboard%2024.png'} alt="WayFinder" /></Link>
-        <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}>{theme === 'light' ? '◐' : '◑'}</button><Link className="auth-switch" to={switchTarget} onClick={switchForm}>{isRegister ? 'Đăng nhập' : 'Tạo tài khoản'}</Link></div>
+        <div className="header-actions"><button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" /></svg></button><Link className="auth-switch" to={switchTarget} onClick={switchForm}>{isRegister ? 'Đăng nhập' : 'Tạo tài khoản'}</Link></div>
       </div></header>
       <main className="auth-layout page-frame">
         <section className="auth-card" aria-labelledby="auth-title">

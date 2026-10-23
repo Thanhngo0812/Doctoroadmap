@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0.1800135">
+    <testsuite name="src/CourseShellGuest.test.tsx" timestamp="2026-10-21T09:33:43.186Z" hostname="ADMIN" tests="1" failures="1" errors="0" skipped="0" time="0.1800135">
+        <testcase classname="src/CourseShellGuest.test.tsx" name="shows a guest login action that preserves the invite instead of an empty account menu" time="0.178346">
+            <failure message="expected &lt;details class=&quot;account-menu&quot;&gt;…(2)&lt;/details&gt; to be null" type="AssertionError">
+AssertionError: expected &lt;details class=&quot;account-menu&quot;&gt;…(2)&lt;/details&gt; to be null
+
+- Expected:
+null
+
++ Received:
+&lt;details
+  class=&quot;account-menu&quot;
+&gt;
+  &lt;summary
+    aria-label=&quot;Tài khoản của undefined&quot;
+  &gt;
+    &lt;span
+      class=&quot;account-menu-name&quot;
+    /&gt;
+    &lt;span
+      class=&quot;courses-account-label&quot;
+    &gt;
+      Tài khoản
+    &lt;/span&gt;
+    &lt;svg
+      aria-hidden=&quot;true&quot;
+      class=&quot;account-menu-chevron&quot;
+      fill=&quot;none&quot;
+      height=&quot;16&quot;
+      stroke=&quot;currentColor&quot;
+      stroke-width=&quot;1.75&quot;
+      viewBox=&quot;0 0 24 24&quot;
+      width=&quot;16&quot;
+    &gt;
+      &lt;path
+        d=&quot;m7 10 5 5 5-5&quot;
+      /&gt;
+    &lt;/svg&gt;
+  &lt;/summary&gt;
+  &lt;div
+    class=&quot;account-menu-panel&quot;
+  &gt;
+    &lt;a
+      data-discover=&quot;true&quot;
+      href=&quot;/tai-khoan&quot;
+    &gt;
+      Tài khoản
+    &lt;/a&gt;
+    &lt;a
+      class=&quot;courses-menu-upload&quot;
+      data-discover=&quot;true&quot;
+      href=&quot;/tai-len&quot;
+    &gt;
+      Tải tài liệu
+    &lt;/a&gt;
+    &lt;button
+      type=&quot;button&quot;
+    &gt;
+      Đăng xuất
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/details&gt;
+
+ ❯ src/CourseShellGuest.test.tsx:12:49
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

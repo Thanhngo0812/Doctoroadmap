@@ -573,6 +573,366 @@
         }
       }
     },
+    "/api/v1/courses/{cid}/share-links": {
+      "post": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "Create Link",
+        "operationId": "create_link_api_v1_courses__cid__share_links_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateShareLinkRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreatedShareLinkEnvelope"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "List Links",
+        "operationId": "list_links_api_v1_courses__cid__share_links_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ShareLinkList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/share-links/{lid}": {
+      "delete": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "Revoke Link",
+        "operationId": "revoke_link_api_v1_courses__cid__share_links__lid__delete",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "lid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Lid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/join/{token}": {
+      "get": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "Preview",
+        "operationId": "preview_api_v1_join__token__get",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JoinPreview"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "Join",
+        "operationId": "join_api_v1_join__token__post",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Token"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JoinResult"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/members": {
+      "get": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "Members",
+        "operationId": "members_api_v1_courses__cid__members_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MemberList"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/members/{uid}": {
+      "delete": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "Remove Member",
+        "operationId": "remove_member_api_v1_courses__cid__members__uid__delete",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "uid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Uid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/leave": {
+      "post": {
+        "tags": [
+          "sharing"
+        ],
+        "summary": "Leave",
+        "operationId": "leave_api_v1_courses__cid__leave_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/uploads": {
       "post": {
         "tags": [
@@ -1428,6 +1788,135 @@
         ],
         "title": "CourseProgress"
       },
+      "CreateShareLinkRequest": {
+        "properties": {
+          "expires_in_days": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires In Days"
+          },
+          "max_uses": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 2147483647.0,
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Uses"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "title": "CreateShareLinkRequest"
+      },
+      "CreatedShareLink": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "token_tail": {
+            "type": "string",
+            "title": "Token Tail"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "max_uses": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Uses"
+          },
+          "use_count": {
+            "type": "integer",
+            "title": "Use Count"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revoked At"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "expired",
+              "exhausted",
+              "revoked"
+            ],
+            "title": "Status"
+          },
+          "token": {
+            "type": "string",
+            "title": "Token"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "token_tail",
+          "created_at",
+          "expires_at",
+          "max_uses",
+          "use_count",
+          "revoked_at",
+          "status",
+          "token",
+          "url"
+        ],
+        "title": "CreatedShareLink"
+      },
+      "CreatedShareLinkEnvelope": {
+        "properties": {
+          "link": {
+            "$ref": "#/components/schemas/CreatedShareLink"
+          }
+        },
+        "type": "object",
+        "required": [
+          "link"
+        ],
+        "title": "CreatedShareLinkEnvelope"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1489,6 +1978,74 @@
         ],
         "title": "IdentityResponse"
       },
+      "JoinPreview": {
+        "properties": {
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "owner": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Owner"
+          },
+          "module_count": {
+            "type": "integer",
+            "title": "Module Count"
+          },
+          "concept_count": {
+            "type": "integer",
+            "title": "Concept Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "course_id",
+          "title",
+          "owner",
+          "module_count",
+          "concept_count"
+        ],
+        "title": "JoinPreview"
+      },
+      "JoinResult": {
+        "properties": {
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "learner"
+            ],
+            "title": "Role"
+          },
+          "joined_at": {
+            "type": "string",
+            "title": "Joined At"
+          },
+          "already_member": {
+            "type": "boolean",
+            "title": "Already Member"
+          }
+        },
+        "type": "object",
+        "required": [
+          "course_id",
+          "role",
+          "joined_at",
+          "already_member"
+        ],
+        "title": "JoinResult"
+      },
       "LoginRequest": {
         "properties": {
           "email": {
@@ -1512,6 +2069,86 @@
         ],
         "title": "LoginRequest"
       },
+      "MemberInfo": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          },
+          "joined_at": {
+            "type": "string",
+            "title": "Joined At"
+          },
+          "last_active_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Last Active At"
+          },
+          "via": {
+            "type": "string",
+            "title": "Via"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "display_name",
+          "joined_at",
+          "last_active_at",
+          "via"
+        ],
+        "title": "MemberInfo"
+      },
+      "MemberList": {
+        "properties": {
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner",
+              "learner"
+            ],
+            "title": "Role"
+          },
+          "owner": {
+            "$ref": "#/components/schemas/OwnerInfo"
+          },
+          "member_count": {
+            "type": "integer",
+            "title": "Member Count"
+          },
+          "members": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MemberInfo"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Members"
+          }
+        },
+        "type": "object",
+        "required": [
+          "role",
+          "owner",
+          "member_count"
+        ],
+        "title": "MemberList"
+      },
       "MessageResponse": {
         "properties": {
           "message": {
@@ -1524,6 +2161,24 @@
           "message"
         ],
         "title": "MessageResponse"
+      },
+      "OwnerInfo": {
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "title": "User Id"
+          },
+          "display_name": {
+            "type": "string",
+            "title": "Display Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "user_id",
+          "display_name"
+        ],
+        "title": "OwnerInfo"
       },
       "OwnerSummary": {
         "properties": {
@@ -1812,6 +2467,97 @@
           "learned"
         ],
         "title": "SetProgressRequest"
+      },
+      "ShareLink": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "token_tail": {
+            "type": "string",
+            "title": "Token Tail"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "expires_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Expires At"
+          },
+          "max_uses": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Uses"
+          },
+          "use_count": {
+            "type": "integer",
+            "title": "Use Count"
+          },
+          "revoked_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Revoked At"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "expired",
+              "exhausted",
+              "revoked"
+            ],
+            "title": "Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "token_tail",
+          "created_at",
+          "expires_at",
+          "max_uses",
+          "use_count",
+          "revoked_at",
+          "status"
+        ],
+        "title": "ShareLink"
+      },
+      "ShareLinkList": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/ShareLink"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "items"
+        ],
+        "title": "ShareLinkList"
       },
       "UploadView": {
         "properties": {

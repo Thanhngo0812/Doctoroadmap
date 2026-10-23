@@ -1,0 +1,187 @@
+{
+  "approvedMainBase": "865974ae14e03bdc5e37283aa496972f8c3c622d",
+  "approvedSourceCommit": "2c5166bfcf30ee8cd1a784f8da6891278b260522",
+  "extraGateAndFinalBrowserSource": "33f9c2521ba0379d89c3fe942ea754f9f06b49a6",
+  "all639SourceHashesUnchanged": true,
+  "baselineDecision": "baseline-approval.json",
+  "runs": [
+    {
+      "sourceCommit": "2c5166bfcf30ee8cd1a784f8da6891278b260522",
+      "mainBase": "865974ae14e03bdc5e37283aa496972f8c3c622d",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/w11-auth-return-final-20261023-1",
+        "--junitxml=report/w11-evidence/auth-return-2026-10-23/final-python.xml"
+      ],
+      "kind": "python",
+      "nativeExit": 0,
+      "stdout": "final-python.log",
+      "junit": "final-python.xml",
+      "counts": {
+        "tests": 2293,
+        "passed": 2292,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      }
+    },
+    {
+      "sourceCommit": "2c5166bfcf30ee8cd1a784f8da6891278b260522",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=../../../report/w11-evidence/auth-return-2026-10-23/final-react.xml"
+      ],
+      "kind": "react",
+      "nativeExit": 0,
+      "stdout": "final-react.log",
+      "junit": "final-react.xml",
+      "counts": {
+        "tests": 143,
+        "passed": 143,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "sourceCommit": "2c5166bfcf30ee8cd1a784f8da6891278b260522",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "kind": "build",
+      "nativeExit": 0,
+      "stdout": "final-build.log"
+    },
+    {
+      "sourceCommit": "33f9c2521ba0379d89c3fe942ea754f9f06b49a6",
+      "mainBase": "1d193735a9ba1bde3c7316d5372fcd0be0e0f12a",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/w11-auth-return-final-20261023-2",
+        "--junitxml=report/w11-evidence/auth-return-2026-10-23/latest-python.xml"
+      ],
+      "kind": "python",
+      "nativeExit": 0,
+      "stdout": "latest-python.log",
+      "junit": "latest-python.xml",
+      "counts": {
+        "tests": 2293,
+        "passed": 2292,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      }
+    },
+    {
+      "sourceCommit": "33f9c2521ba0379d89c3fe942ea754f9f06b49a6",
+      "mainBase": "1d193735a9ba1bde3c7316d5372fcd0be0e0f12a",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=../../../report/w11-evidence/auth-return-2026-10-23/latest-react.xml"
+      ],
+      "kind": "react",
+      "nativeExit": 0,
+      "stdout": "latest-react.log",
+      "junit": "latest-react.xml",
+      "counts": {
+        "tests": 143,
+        "passed": 143,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "sourceCommit": "33f9c2521ba0379d89c3fe942ea754f9f06b49a6",
+      "mainBase": "1d193735a9ba1bde3c7316d5372fcd0be0e0f12a",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "kind": "build",
+      "nativeExit": 0,
+      "stdout": "latest-build.log"
+    }
+  ],
+  "browser": {
+    "commandMetadata": "final-browser-command.json",
+    "nativeExit": 0,
+    "httpExchanges": 113,
+    "authReturnCases": 8,
+    "screenshots": 48,
+    "axeAudits": 16,
+    "axeScope": "8 states in both themes at 1280; screenshots and layout/touch checks also cover 390 and 768",
+    "violations": 0,
+    "incomplete": 0,
+    "unexpectedConsoleErrors": 0,
+    "pageErrors": 0,
+    "failedRequests": 0,
+    "realNativeTransitionCases": 4,
+    "browserReducedMotionCases": 4,
+    "independentSql": "browser-final/runtime.json",
+    "runtimeCleanup": "cleanup-check.json"
+  },
+  "counterexamples": {
+    "beforeFix": {
+      "tests": 10,
+      "passed": 2,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0
+    },
+    "afterFix": {
+      "tests": 22,
+      "passed": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "removedSanitizer": {
+      "tests": 22,
+      "passed": 0,
+      "failures": 12,
+      "errors": 0,
+      "skipped": 10
+    },
+    "originalBackendMutationCount": 8,
+    "allBackendMutationsCaught": true,
+    "mutationSourceRestoredBeforeGates": true
+  },
+  "onlyFinalPythonSkip": "Live Cloudinary test requires explicit opt-in; no new skip marker.",
+  "providerCostUsd": 0,
+  "modelCalls": 0,
+  "mailer": "FakeMailer",
+  "media": "unused; no Cloudinary calls",
+  "acceptance": "Coordinator review and merge pending; W08 not started."
+}

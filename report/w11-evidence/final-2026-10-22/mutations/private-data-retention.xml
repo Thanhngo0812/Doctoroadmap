@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.906" timestamp="2026-10-22T21:05:36.696643+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_postgres_rejoin_retains_exact_private_session_and_progress[remove]" time="1.157"><failure message="AssertionError: assert None == {'doc_id': 'doc-w11', 'owner': 'be1b479d-b950-414a-9bff-9ab6bca6a79e', 'session_id': '7d6f7f73-c47c-4fdf-8e0f-69ea83a77d05', 'title': 'Private study session'}&#10; +  where None = get_record('session', (('be1b479d-b950-414a-9bff-9ab6bca6a79e' + ':') + 'session'))&#10; +    where get_record = &lt;wayfinder.infrastructure.phase_b_store.PostgresPhaseBStore object at 0x0000021D02303200&gt;.get_record&#10; +    and   'be1b479d-b950-414a-9bff-9ab6bca6a79e' = Actor(user_id='be1b479d-b950-414a-9bff-9ab6bca6a79e', role='user', email_verified=False, status='active').user_id">sharing_pg = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_245ced89ec3941088b14b4b2d00f1... 0x0000021D0286A520&gt;, store=&lt;wayfinder.infrastructure.sharing_store.PostgresSharingStore object at 0x0000021D02839700&gt;)
+action = 'remove'
+
+    @pytest.mark.postgres
+    @pytest.mark.parametrize('action', ['remove', 'leave'])
+    def test_postgres_rejoin_retains_exact_private_session_and_progress(sharing_pg, action):
+        from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+        b=sharing_pg
+        learner=b.user('Returning learner')
+        service=SharingService(b.store,b.settings,b.clock)
+        token=service.create_share_link(b.owner,b.course.id)['link']['token']
+        service.join_by_link(learner,token)
+        phase=PostgresPhaseBStore(b.engine)
+        records={
+            'session': {'owner':learner.user_id,'doc_id':'doc-w11','session_id':str(uuid4()),'title':'Private study session'},
+            'progress': {'owner':learner.user_id,'doc_id':'doc-w11','node_id':'n1','state':'learned'},
+        }
+        try:
+            for kind,value in records.items(): phase.put_record(kind,learner.user_id+':'+kind,value)
+            if action=='remove': service.remove_member(b.owner,b.course.id,learner.user_id)
+            else: service.leave_course(learner,b.course.id)
+            with pytest.raises(WebError) as denied: service.list_members(learner,b.course.id)
+            assert denied.value.code=='not_found'
+            service.join_by_link(learner,token)
+            for kind,value in records.items():
+&gt;               assert phase.get_record(kind,learner.user_id+':'+kind)==value
+E               AssertionError: assert None == {'doc_id': 'doc-w11', 'owner': 'be1b479d-b950-414a-9bff-9ab6bca6a79e', 'session_id': '7d6f7f73-c47c-4fdf-8e0f-69ea83a77d05', 'title': 'Private study session'}
+E                +  where None = get_record('session', (('be1b479d-b950-414a-9bff-9ab6bca6a79e' + ':') + 'session'))
+E                +    where get_record = &lt;wayfinder.infrastructure.phase_b_store.PostgresPhaseBStore object at 0x0000021D02303200&gt;.get_record
+E                +    and   'be1b479d-b950-414a-9bff-9ab6bca6a79e' = Actor(user_id='be1b479d-b950-414a-9bff-9ab6bca6a79e', role='user', email_verified=False, status='active').user_id
+
+src\web\backend\tests\test_w11_sharing.py:473: AssertionError</failure></testcase></testsuite></testsuites>
