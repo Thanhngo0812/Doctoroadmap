@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="7.805" timestamp="2026-10-23T21:07:23.334583+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lectures_w08" name="test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres" time="3.808"><failure message="assert 200 == 404&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">lecture_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e2b99ecbe4924e5c9521d6708a4b2...dLecture3 object at 0x0000025772DF0BC0&gt;, url='/api/v1/courses/2a34892c-9008-4c5e-aa40-40b8821d1cb1/concepts/a/lecture')
+tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w08-lecture/tmp/w08-mut-sse-membership-9a24134ae91f47a18b7f829a177cefc0/test_w08_private_source_page_h0')
+
+    def test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres(lecture_web, tmp_path):
+        from wayfinder.fakes.media import MemoryMediaStore
+        from wayfinder.infrastructure.learning_media import LearningMedia
+        w = lecture_web
+        settings = w.courses.settings
+        settings.artifact_root = tmp_path
+        media = MemoryMediaStore()
+        pdf = tmp_path / 'source.pdf'
+        pdf.write_bytes(b'%PDF-test')
+        public = media.upload(pdf, 'private-source', 'image')
+        with w.engine.begin() as c:
+            c.execute(text('UPDATE course SET source_public_id=:public WHERE id=:cid'), {'public': public, 'cid': w.course.id})
+        w.graph.tree = SimpleNamespace(parse_stats={'page_count': 2})
+        w.graph.parse_version = 1
+        w.graph.formula_images = {'f@p1': {'image_ref': 'images/formula.png'}}
+        image = tmp_path / 'phase_b/formula_images/doc-1/parse-v1/images/formula.png'
+        image.parent.mkdir(parents=True)
+        image.write_bytes(b'fake-formula')
+        w.gateway.media = LearningMedia(w.engine, settings, store=media)
+        base = f'/api/v1/courses/{w.course.id}'
+        for bad in ['0', '3', '-1', 'not-a-page']:
+            assert w.a.client.get(base + '/source/pages/' + bad).status_code == 404
+        assert media.fetch_count == 0
+        page = w.a.client.get(base + '/source/pages/2')
+        assert page.status_code == 200 and page.headers['content-type'] == 'image/webp'
+        assert page.headers['cache-control'] == 'private, max-age=300'
+        assert page.headers['x-page-count'] == '2' and page.content.startswith(b'RIFF')
+        location = w.a.client.get(base + '/source', follow_redirects=False)
+        assert location.status_code == 302
+        assert 'expires_at=' in location.headers['location']
+        for _ in range(2):
+            response = w.a.client.get(base + '/media/parse-v1/images/formula.png')
+            assert response.status_code == 200
+            assert response.headers['cache-control'] == 'private, max-age=300'
+        with w.independent_engine.connect() as c:
+            assert c.scalar(text('SELECT count(*) FROM media_asset WHERE doc_id=\'doc-1\'')) == 1
+        assert len(media.files) == 2  # source plus one shared formula upload
+        before = media.fetch_count
+        assert w.a.client.get(base + '/media/another-version.png').status_code == 404
+        with w.engine.begin() as c:
+            c.execute(text('DELETE FROM membership WHERE course_id=:cid AND account_id=:uid'),
+                      {'cid': w.course.id, 'uid': w.b.actor.user_id})
+        for path in ['/source/pages/1', '/source', '/media/parse-v1/images/formula.png', '/concepts/a/lecture', '/concepts/a/lecture/stream']:
+            result = w.b.client.get(base + path, follow_redirects=False)
+&gt;           assert result.status_code == 404
+E           assert 200 == 404
+E            +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_lectures_w08.py:150: AssertionError</failure></testcase></testsuite></testsuites>

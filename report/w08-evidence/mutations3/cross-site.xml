@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.217" timestamp="2026-10-23T21:10:27.600408+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lecture3_integration_w08" name="test_w08_cross_site_navigation_cannot_start_a_paid_generation" time="2.960"><failure message="assert 200 == 403&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">core_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_ca5e8595cf364838b473fdc214a61...tureModel object at 0x0000026BD2096E70&gt;, url='/api/v1/courses/85b88dac-c4a7-43fa-b4d5-3e5baedd55dc/concepts/a/lecture')
+
+    def test_w08_cross_site_navigation_cannot_start_a_paid_generation(core_web):
+        w = core_web
+        response = w.a.client.get(w.url + '/stream', headers={'Sec-Fetch-Site': 'cross-site', 'Origin': 'https://evil.example'})
+&gt;       assert response.status_code == 403
+E       assert 200 == 403
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_lecture3_integration_w08.py:168: AssertionError</failure></testcase></testsuite></testsuites>

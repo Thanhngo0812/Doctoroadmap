@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="19" failures="1" errors="0" time="5.5481721">
+    <testsuite name="src/Learning.test.tsx" timestamp="2026-10-23T10:40:24.204Z" hostname="ADMIN" tests="9" failures="0" errors="0" skipped="0" time="2.4227731">
+        <testcase classname="src/Learning.test.tsx" name="shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe" time="0.9933647">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps sent text when the stream ends badly and shows the shortened notice" time="0.0795901">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure loi_mang even if an old retryable flag is false" time="0.1582928">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false" time="0.2399021">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure tran_he_thong even if an old retryable flag is false" time="0.3460839">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false" time="0.2131959">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false" time="0.1285809">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="rolls back an optimistic learner mark after a failed save" time="0.1920868">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps a module list on the module route and links to a specific lesson without generating one" time="0.0688577">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/LectureMarkdown.test.tsx" timestamp="2026-10-23T10:40:24.216Z" hostname="ADMIN" tests="2" failures="0" errors="0" skipped="0" time="0.334124">
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; renders inline/block LaTeX and makes only registered source labels actionable" time="0.2838443">
+        </testcase>
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; does not execute raw HTML, load external images, or allow dangerous links/LaTeX HTML" time="0.0467799">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Roadmap.test.tsx" timestamp="2026-10-23T10:40:24.220Z" hostname="ADMIN" tests="8" failures="1" errors="0" skipped="0" time="2.791275">
+        <testcase classname="src/Roadmap.test.tsx" name="shows API-ordered modules, honest course and module totals, and the expanded concept checklist" time="0.6610302">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="marks a fully learned module with a success indicator" time="0.1266224">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows a quiet empty state when the API roadmap has no modules" time="0.0667058">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="clears an expired session after a progress write returns 401" time="0.2604115">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="optimistically updates one concept and restores only that checkbox when its request fails" time="0.1853432">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="rolls back when a successful write response omits the requested node" time="0.1543566">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="merges concurrent node responses by their own node so stale full snapshots cannot undo another check" time="0.2822997">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows the selected module and the shared learner mark on the module route" time="1.04875">
+            <failure message="Unable to find role=&quot;heading&quot; and name &quot;Xác suất&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;main
+      class=&quot;page-frame&quot;
+      role=&quot;status&quot;
+    &gt;
+      Đang mở trang học…
+    &lt;/main&gt;
+    &lt;output
+      data-testid=&quot;location&quot;
+    &gt;
+      /khoa-hoc/course-1/module/module-2
+    &lt;/output&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;main
+      class=&quot;page-frame&quot;
+      role=&quot;status&quot;
+    &gt;
+      Đang mở trang học…
+    &lt;/main&gt;
+    &lt;output
+      data-testid=&quot;location&quot;
+    &gt;
+      /khoa-hoc/course-1/module/module-2
+    &lt;/output&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find role=&quot;heading&quot; and name &quot;Xác suất&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;main
+      class=&quot;page-frame&quot;
+      role=&quot;status&quot;
+    &gt;
+      Đang mở trang học…
+    &lt;/main&gt;
+    &lt;output
+      data-testid=&quot;location&quot;
+    &gt;
+      /khoa-hoc/course-1/module/module-2
+    &lt;/output&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;main
+      class=&quot;page-frame&quot;
+      role=&quot;status&quot;
+    &gt;
+      Đang mở trang học…
+    &lt;/main&gt;
+    &lt;output
+      data-testid=&quot;location&quot;
+    &gt;
+      /khoa-hoc/course-1/module/module-2
+    &lt;/output&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Roadmap.test.tsx:199:23
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

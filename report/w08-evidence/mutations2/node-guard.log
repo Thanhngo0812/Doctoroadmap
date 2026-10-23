@@ -1,0 +1,41 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+_________ test_w08_node_must_be_in_published_learnable_graph[missing] _________
+
+lecture_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_5556d0e251714be9b741acd07747d...dLecture3 object at 0x000001600D4FAD20>, url='/api/v1/courses/65ddf237-79e5-41f6-b367-20084295eed2/concepts/a/lecture')
+node_id = 'missing'
+
+    @pytest.mark.parametrize('node_id', ['missing', 'hidden'])
+    def test_w08_node_must_be_in_published_learnable_graph(lecture_web, node_id):
+        w = lecture_web
+        response = w.a.client.get(w.url.replace('/a/', f'/{node_id}/') + '/stream')
+>       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_lectures_w08.py:101: AssertionError
+_________ test_w08_node_must_be_in_published_learnable_graph[hidden] __________
+
+lecture_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_5556d0e251714be9b741acd07747d...dLecture3 object at 0x000001602CAC92E0>, url='/api/v1/courses/0dca00af-d7f9-4955-9eb0-6d0af1c54f2f/concepts/a/lecture')
+node_id = 'hidden'
+
+    @pytest.mark.parametrize('node_id', ['missing', 'hidden'])
+    def test_w08_node_must_be_in_published_learnable_graph(lecture_web, node_id):
+        w = lecture_web
+        response = w.a.client.get(w.url.replace('/a/', f'/{node_id}/') + '/stream')
+>       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_lectures_w08.py:101: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\report\w08-evidence\mutations2\node-guard.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_lectures_w08.py::test_w08_node_must_be_in_published_learnable_graph[missing]
+FAILED src/web/backend/tests/test_lectures_w08.py::test_w08_node_must_be_in_published_learnable_graph[hidden]
+2 failed, 1 warning in 8.75s

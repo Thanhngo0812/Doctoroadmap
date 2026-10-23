@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="1" errors="0" time="0.357748">
+    <testsuite name="src/LectureMarkdown.test.tsx" timestamp="2026-10-23T14:47:52.043Z" hostname="ADMIN" tests="2" failures="1" errors="0" skipped="0" time="0.357748">
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; renders inline/block LaTeX and makes only registered source labels actionable" time="0.3206178">
+        </testcase>
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; does not execute raw HTML, load external images, or allow dangerous links/LaTeX HTML" time="0.0342588">
+            <failure message="expected &lt;span class=&quot;enclosing injected&quot;&gt;…(2)&lt;/span&gt; to be null" type="AssertionError">
+AssertionError: expected &lt;span class=&quot;enclosing injected&quot;&gt;…(2)&lt;/span&gt; to be null
+
+- Expected:
+null
+
++ Received:
+&lt;span
+  class=&quot;enclosing injected&quot;
+&gt;
+  &lt;span
+    class=&quot;mord mathnormal&quot;
+  &gt;
+    ba
+  &lt;/span&gt;
+  &lt;span
+    class=&quot;mord mathnormal&quot;
+  &gt;
+    d
+  &lt;/span&gt;
+&lt;/span&gt;
+
+ ❯ src/LectureMarkdown.test.tsx:24:61
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

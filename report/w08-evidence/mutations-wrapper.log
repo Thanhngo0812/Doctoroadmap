@@ -1,0 +1,16 @@
+cache-only: caught; restored
+learner-status: caught; restored
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe : Traceback (most recent call last):
+At line:10 char:1
++ C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_mutations.py", line 86, in <module>
+    if __name__ == '__main__': main()
+                               ^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_mutations.py", line 59, in main
+    assert content.count(old) == 1, (name, content.count(old))
+           ^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('node-guard', 0)

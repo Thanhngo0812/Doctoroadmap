@@ -1,0 +1,121 @@
+{
+  "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+  "mainBase": "e5fa4924cc7e3d6eda924d6668c8c15b453cea91",
+  "commands": {
+    "python": {
+      "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+      "mainBase": "e5fa4924cc7e3d6eda924d6668c8c15b453cea91",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/w08-final-20261023-5",
+        "--junitxml=report/w08-evidence/final5-python.xml"
+      ],
+      "startedAt": "2026-10-23T14:58:37.712720+00:00",
+      "nativeExit": 0,
+      "wallSeconds": 576.844,
+      "finishedAt": "2026-10-23T15:08:14.549760+00:00"
+    },
+    "react": {
+      "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+      "mainBase": "e5fa4924cc7e3d6eda924d6668c8c15b453cea91",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=../../../report/w08-evidence/final5-react.xml"
+      ],
+      "startedAt": "2026-10-23T14:58:37.712720+00:00",
+      "nativeExit": 0,
+      "wallSeconds": 112.36,
+      "finishedAt": "2026-10-23T15:00:30.060183+00:00"
+    },
+    "build": {
+      "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+      "mainBase": "e5fa4924cc7e3d6eda924d6668c8c15b453cea91",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "startedAt": "2026-10-23T15:00:30.063343+00:00",
+      "nativeExit": 0,
+      "wallSeconds": 3.906,
+      "finishedAt": "2026-10-23T15:00:33.967190+00:00"
+    },
+    "browser": {
+      "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+      "mainBase": "e5fa4924cc7e3d6eda924d6668c8c15b453cea91",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "scripts/w08_web_runtime.py"
+      ],
+      "startedAt": "2026-10-23T15:00:33.969204+00:00",
+      "nativeExit": 0,
+      "wallSeconds": 300.609,
+      "finishedAt": "2026-10-23T15:05:34.577226+00:00"
+    }
+  },
+  "python": {
+    "tests": 2386,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 2385
+  },
+  "react": {
+    "tests": 158,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 158
+  },
+  "browser": {
+    "configurations": 12,
+    "screens": 101,
+    "httpExchanges": 308,
+    "axeAudits": 17,
+    "axeScope": "1280px module, ready, source, failure in both themes and both motion settings; one rollback audit",
+    "axeViolations": 0,
+    "unreviewedIncomplete": 0,
+    "manualMathNodes": 8,
+    "sameColourCounterexampleRejected": true,
+    "unexpectedBrowserErrors": 0,
+    "runtime": "browser-final5/runtime.json",
+    "audit": "browser-final5/audit.json"
+  },
+  "providerCalls": 0,
+  "externalCostUsd": 0,
+  "fakeModelCalls": 29,
+  "independentSql": {
+    "cachedLessons": 1,
+    "adminValidationInCache": true,
+    "usageRows": 29,
+    "fakeLedgerUsd": 0.0,
+    "fakeInputTokens": 2900,
+    "memberCountAfterRemoval": 1,
+    "progressOwners": [
+      "61b16dfe-3f0a-4429-9573-ec71a9107883"
+    ]
+  },
+  "history": {
+    "finalPython": "2372 passed, OpenAPI snapshot failure, one existing live Cloudinary skip; native 1",
+    "final2Python": "Intentionally stopped with obsolete OpenAPI export, native 4294967295; not a pass",
+    "final3Python": "2373 passed, one existing live Cloudinary skip, native 0",
+    "final4Python": "2373 passed, one existing live Cloudinary skip, native 0; before SA65 received",
+    "final4React": "158 passed, native 0; before SA65 received"
+  },
+  "acceptance": "Pending independent coordinator review; no main merge or push by the web worker"
+}

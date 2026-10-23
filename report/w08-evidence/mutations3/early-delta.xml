@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="17.105" timestamp="2026-10-23T21:10:05.133722+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lecture3_integration_w08" name="test_w08_first_delta_precedes_model_finish_and_cache_is_completed_after_http_disconnect" time="13.569"><failure message="AssertionError: The first delta must arrive while the fake model is paused, before its final output">core_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_074ef4e1a394498a8e45b85c47427...tureModel object at 0x0000020442C363C0&gt;, url='/api/v1/courses/edb8f745-e798-4e2b-90f8-924e3acf4f07/concepts/a/lecture')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000020442435070&gt;
+
+    def test_w08_first_delta_precedes_model_finish_and_cache_is_completed_after_http_disconnect(core_web, monkeypatch):
+        import socket
+        w = core_web
+        w.model.pause_after_first = True
+        connections = []
+        def tracked_connection():
+            event = Event(); connections.append(event)
+            return event
+        monkeypatch.setattr('wayfinder.api.learning.Event', tracked_connection)
+        listener = socket.socket()
+        listener.bind(('127.0.0.1', 0)); listener.listen(128)
+        port = listener.getsockname()[1]
+        server = uvicorn.Server(uvicorn.Config(w.app, log_config=None, access_log=False, log_level='warning'))
+        thread = Thread(target=server.run, kwargs={'sockets': [listener]}, daemon=True)
+        thread.start()
+        try:
+            deadline = monotonic() + 5
+            while not server.started and monotonic() &lt; deadline: sleep(.01)
+            assert server.started
+            with httpx.Client(base_url=f'http://127.0.0.1:{port}', cookies=dict(w.a.client.cookies), timeout=10) as client:
+                with client.stream('GET', w.url + '/stream') as response:
+                    assert response.status_code == 200
+                    iterator = response.iter_lines()
+                    skeleton = None
+                    delta = None
+                    try:
+                        for line in iterator:
+                            if line == 'event: skeleton': skeleton = json.loads(next(iterator)[6:])['lecture']
+                            if line == 'event: delta':
+                                delta = json.loads(next(iterator)[6:])['text']
+                                break
+                    except httpx.ReadTimeout:
+&gt;                       raise AssertionError('The first delta must arrive while the fake model is paused, before its final output') from None
+E                       AssertionError: The first delta must arrive while the fake model is paused, before its final output
+
+src\web\backend\tests\test_lecture3_integration_w08.py:95: AssertionError</failure></testcase></testsuite></testsuites>

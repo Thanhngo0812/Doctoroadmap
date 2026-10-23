@@ -1,0 +1,27 @@
+cache-only: caught; restored
+learner-status: caught; restored
+node-guard: caught; restored
+page-range: caught; restored
+http-dto-privacy: caught; restored
+sse-membership: caught; restored
+early-delta: caught; restored
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe : Traceback (most recent call last):
+At line:3 char:1
++ C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_mutations.py", line 88, in <module>
+    if __name__ == '__main__': main()
+                               ^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_mutations.py", line 77, in main
+    assert run.returncode == 1 and failures and not errors, row
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: {'name': 'cross-site', 'source': 'src/web/backend/wayfinder/api/learning.py', 'command':
+['C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe', 'scripts/w05_run_tests.py', '-o', 'addopts=',
+'-q', 'src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_cross_site_navigation_cannot_start_a_paid_gener
+ation', '--basetemp=tmp/w08-mut-cross-site-7f9d1dde8c2b40db8bd99bad80f1165d', '--junitxml=C:\\Users\\ngoco\\Desktop\\Do
+ctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\cross-site.xml'], 'beforeSha256':
+'5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8', 'nativeExit': 0, 'failures': 0, 'errors': 0,
+'restoredSha256': '5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8'}
