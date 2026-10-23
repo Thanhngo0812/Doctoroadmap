@@ -112,3 +112,17 @@ it('keeps a module list on the module route and links to a specific lesson witho
   expect(screen.getByRole('link', { name: /Bài 1 Biến cố/ })).toHaveAttribute('href', '/khoa-hoc/c/module/m/khai-niem/a');
   expect(fetchMock.mock.calls.some(([url]) => String(url).includes('/lecture'))).toBe(false);
 });
+
+it('explains that DOCX has no numbered pages and still offers opening the original file', async () => {
+  const docx: Lecture = { ...skeleton, status: 'failed', source_document: { kind: 'docx', page_count: null },
+    failure: { reason_code: 'loi_mang', message: 'Chưa thể soạn bài. Bạn có thể thử lại.', retryable: true, read_page: { page: 37 } } };
+  const original = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation((input, init) => String(input).endsWith('/lecture') ? Promise.resolve(json(docx)) : original(input, init));
+  page();
+  expect(await screen.findByRole('heading', { name: 'Chưa có bài giảng' })).toBeInTheDocument();
+  expect(screen.getAllByRole('button', { name: 'Tài liệu không có trang' }).length).toBeGreaterThan(0);
+  for (const button of screen.getAllByRole('button', { name: 'Tài liệu không có trang' })) expect(button).toBeDisabled();
+  expect(screen.queryByRole('button', { name: 'Đọc trang 37 trong tài liệu' })).not.toBeInTheDocument();
+  expect(screen.getByRole('link', { name: 'Mở cả tệp' })).toHaveAttribute('href', '/api/v1/courses/c/source');
+  expect(screen.getByRole('button', { name: 'Thử lại' })).toBeEnabled();
+});

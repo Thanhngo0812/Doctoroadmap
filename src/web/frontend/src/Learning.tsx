@@ -74,7 +74,7 @@ function Lesson({ courseId, nodeId, title, learned, pending, progressError, onTo
   const openSource = useCallback((page: number) => { if (pages && page >= 1 && page <= pages) setSourcePage(page); }, [pages]);
   const sourceButton = (page?: number | null, label?: string) => <button type="button" className="lecture-source-link"
     disabled={!pages || !page || page < 1 || page > pages} onClick={() => page && openSource(page)}>
-    {label ?? (page ? `Đọc trang ${page} trong tài liệu` : 'Tài liệu không có trang')}
+    {label ?? (pages && page ? `Đọc trang ${page} trong tài liệu` : 'Tài liệu không có trang')}
   </button>;
   const definition = lecture?.definition;
   const readPage = failure?.read_page?.page ?? definition?.page ?? definition?.citation?.page;
