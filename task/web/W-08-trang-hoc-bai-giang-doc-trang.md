@@ -6,8 +6,10 @@ mục 1 (SSE), 7 (mở tệp gốc); [ADR 0018](../../doc/adr/0018-bai-giang-kho
 đủ phụ thuộc lõi để triển khai; xếp sau W-11 nếu chỉ có một phiên web.
 
 **Đối chiếu Pha B 2026-10-22, cập nhật:** Claude đã nghiệm thu SA-53 và ghép `62dad5b`, đóng điểm chờ câu nối final của SA-40/41.
-Nhận main có mốc này, giữ hợp đồng `lecture-2`/SSE và kiểm với PostgreSQL/đồ giả. W-09 có phụ thuộc riêng SA-56; không tự sửa use case trợ lý
-trong W-08. Xem [soát Pha B của Claude](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md).
+Nhận main có mốc này, giữ hợp đồng `lecture-2`/SSE và kiểm với PostgreSQL/đồ giả. Cập nhật ngày 23: SA-56/58 của W-09 đã vào main;
+wrapper lecture/cache_only và HTTP trợ lý thuộc W-09, không tự sửa use case trợ lý trong W-08.
+Ưu tiên sửa Required W-11 rồi bắt đầu W-08; xem [lời giao mới](../../report/lenh-giao-viec-sau-w11-2026-10-23.md)
+và [soát Pha B của Claude](../../report/soat-pha-b-52-53-sonnet-2026-10-22.md).
 
 ## Vì sao
 

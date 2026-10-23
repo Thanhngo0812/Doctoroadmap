@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="8" errors="0" time="17.2897622">
+    <testsuite name="src/W11AuthReturn.repro.test.tsx" timestamp="2026-10-23T03:52:52.542Z" hostname="ADMIN" tests="10" failures="8" errors="0" skipped="0" time="17.2897622">
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct login returns to the exact invitation after authentication" time="1.6535711">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct register returns to the exact invitation after authentication" time="2.1258325">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=false)" time="2.1667095">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=true)" time="2.1279599">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=false)" time="2.1065218">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=true)" time="2.1098974">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=false)" time="1.2681442">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=true)" time="1.2413975">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=false)" time="1.2278283">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=true)" time="1.2579346">
+            <failure message="expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/khoa-hoc&apos; to be &apos;/join/disposable-w11-repro-token&apos; // Object.is equality
+
+Expected: &quot;/join/disposable-w11-repro-token&quot;
+Received: &quot;/khoa-hoc&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

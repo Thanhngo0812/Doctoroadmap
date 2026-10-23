@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="9.853" timestamp="2026-10-23T10:53:02.316547+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_default_requires_core_port_before_claim_or_provider" time="2.868"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-w15-acceptance-20261023\\tmp\\coord-w15-port-mutation-20261023'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w15-acceptance-20261023/tmp/coord-w15-port-mutation-20261023')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-w15-acceptance-20261023\\tmp\\coord-w15-port-mutation-20261023'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase></testsuite></testsuites>

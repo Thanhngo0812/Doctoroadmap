@@ -1,0 +1,134 @@
+{
+  "sourceHead": "16e95c146b8d0a07ad53208b3b084aa8628660f1",
+  "unchangedPreviouslyAccepted": [
+    {
+      "path": "design/tokens/tokens.css",
+      "same": false,
+      "sha256": "d1efab8bae8f72344bb9e4b29697bc150b53bf098543e4b96e50b7357761b590",
+      "sameAfterCrLfNormalization": true
+    },
+    {
+      "path": "design/tokens/tokens.json",
+      "same": false,
+      "sha256": "f325524304be28a362c628b4f921cc4c9db4e5539f0aecf5b3905e2213bbbbbc",
+      "sameAfterCrLfNormalization": true
+    },
+    {
+      "path": "design/tokens/figma_variables_raw_export.json",
+      "same": false,
+      "sha256": "8601a8370acb7798e8c8e5fa16a79bd3f76bf40cab1095fe074dbf9052cc896e",
+      "sameAfterCrLfNormalization": true
+    },
+    {
+      "path": "design/preview/prototype_flows.html",
+      "same": false,
+      "sha256": "e9b8ac47dfdb2c4b6156711881be6c585922e58946ce01cd406cc4c6dc8bff28",
+      "sameAfterCrLfNormalization": true
+    },
+    {
+      "path": "scripts/verify_prototype_flows.cjs",
+      "same": false,
+      "sha256": "e37d8a4063b39c6454619aa12b7303fa06e5bc3d9c8e33775adef8943a7314a2",
+      "sameAfterCrLfNormalization": true
+    },
+    {
+      "path": "tests/unit/presentation/test_tokens_and_wcag.py",
+      "same": false,
+      "sha256": "a97956e90857b8fcbd442e1d00d2fef6a39cd38ba888150a42cd4530d1a85b30",
+      "sameAfterCrLfNormalization": true
+    }
+  ],
+  "previousEvidence": "tmp/coord-w24-review-78fb774",
+  "didNotRerunUnchangedTests": true,
+  "reportAnchors": [
+    {
+      "line": 46,
+      "text": "   - Màn hình Trạng thái tiến trình đã huỷ (`#section-pipeline-cancelled`) bảo đảm không trừ lượt."
+    },
+    {
+      "line": 50,
+      "text": "   - Bổ sung native components (`figma.createComponent`)."
+    },
+    {
+      "line": 149,
+      "text": "| | Tiến trình: trạng thái đã huỷ (cancelled) | 390, 1280 | [x] Đã có | `design/preview/w14_upload_screens.html` (`#section-pipeline-cancelled`) | Chờ duyệt |"
+    },
+    {
+      "line": 200,
+      "text": "     - **Native components / component-sets:** **0** (chưa có component native)."
+    },
+    {
+      "line": 201,
+      "text": "     - **Variables Collection:** `VariableCollectionId:45:2` (tên: \"WayFinder Tokens\"), chỉ có 1 mode Light `45:0`, **0 variables / variableIds** (chưa có biến nào được lưu trong collection; chưa có Dark mode collection)."
+    },
+    {
+      "line": 203,
+      "text": "   - **Rút lại toàn bộ viện dẫn sai:** Nhóm rút lại việc viện dẫn \"thiếu FIGMA_ACCESS_TOKEN\" hay \"cần gói Enterprise\" để giải thích cho trạng thái canvas. Trạng thái canvas thực tế là chưa có biến và chưa có component native được bind."
+    },
+    {
+      "line": 220,
+      "text": "   - Xây dựng native components và component sets."
+    }
+  ],
+  "workerEvidenceFiles": [
+    "auth_screens_1280_light.png",
+    "auth_screens_390_mobile.png",
+    "course_screens_1280_light.png",
+    "course_screens_390_mobile.png",
+    "figma_variables_raw_export.json",
+    "mutation_verification_results.json",
+    "preview_auth_dark.png",
+    "preview_auth_light.png",
+    "preview_auth_mobile.png",
+    "preview_components.png",
+    "preview_mobile_screens.png",
+    "preview_prototype_flows_workbench.png",
+    "preview_screens.png",
+    "preview_screens_768.png",
+    "preview_screens_dark.png",
+    "preview_w03_mobile.png",
+    "preview_w03_screens.png",
+    "preview_w04_mobile.png",
+    "preview_w04_profile.png",
+    "preview_w06_courses.png",
+    "preview_w06_mobile.png",
+    "preview_w07_mobile.png",
+    "preview_w07_roadmap.png",
+    "preview_w14_mobile.png",
+    "preview_w14_upload.png",
+    "profile_screens_1280_light.png",
+    "profile_screens_390_mobile.png",
+    "prototype_flow1_auth.png",
+    "prototype_flow2_learning.png",
+    "prototype_flow3_upload.png",
+    "prototype_flow4_quiz.png",
+    "prototype_flows_audit.json",
+    "prototype_flows_workbench.png",
+    "w07_roadmap_1280_dark.png",
+    "w07_roadmap_1280_light.png",
+    "w07_roadmap_390_dark.png",
+    "w07_roadmap_390_light.png",
+    "w07_roadmap_768_dark.png",
+    "w07_roadmap_768_light.png",
+    "w08_lecture_1280_dark.png",
+    "w08_lecture_1280_light.png",
+    "w08_lecture_390_dark.png",
+    "w08_lecture_390_light.png",
+    "w08_lecture_768_dark.png",
+    "w08_lecture_768_light.png",
+    "w11_management_1280_dark.png",
+    "w11_management_1280_light.png",
+    "w11_management_390_dark.png",
+    "w11_management_390_light.png",
+    "w11_management_768_dark.png",
+    "w11_management_768_light.png",
+    "w14_upload_1280_dark.png",
+    "w14_upload_1280_light.png",
+    "w14_upload_390_dark.png",
+    "w14_upload_390_light.png",
+    "w14_upload_768_dark.png",
+    "w14_upload_768_light.png"
+  ],
+  "prototypeVideos": [],
+  "newWorkerCloudReceiptFiles": []
+}

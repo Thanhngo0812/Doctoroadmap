@@ -1,0 +1,115 @@
+FFFFFFFF                                                                 [100%]
+================================== FAILURES ===================================
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/de35186a-901e-45c7-877e-d957dbf51baf', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': '8076220977064a42a041a2f8f7c049bd@example.vn'}]
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/118351df-9138-4d3a-a415-158067936920', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': '2cd287e1c69f481cafd949aadf718f00@example.vn'}]
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=4539a291-5209-4990-8eb9-58be773ab6c9
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 72, in record
+    self.publish_formula_images(job,lease)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 131, in publish_formula_images
+    self.publish_asset(job,lease,key,path,'formula')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/a2d46d47-ba2a-4629-a09d-fb40b56b5cb7', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': 'e2933fd2beef4499b0cefd5ff702b11b@example.vn'}]
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=ae78add4-2d51-4215-a62a-a49fe5cbb62d
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 77, in record
+    self.publish_asset(job,lease,asset['asset_key'],path,'media')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/b92c6702-61ae-45cc-b7f8-069287b8a017', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': '001326a8f8114ffa96595bb402ab447f@example.vn'}]
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/cac8dae4-bfd5-46b7-8471-ed0066bfffe9', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': '9a2704c9ca0c4350aa8b6b4233ac3698@example.vn'}]
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/10efcce6-a45a-46ed-b6a5-86ceaca78a83', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': 'ca753771d82d426eb2f6028f504ac568@example.vn'}]
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=05370b10-9a89-49f9-bdba-e86e420970a5
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 72, in record
+    self.publish_formula_images(job,lease)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 131, in publish_formula_images
+    self.publish_asset(job,lease,key,path,'formula')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/0d38213c-6d4e-47be-86f1-ec40eff114bf', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': '60e4f1c3292c4724a9fb2f316d4afe41@example.vn'}]
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=c5776135-cffa-4d0f-98ae-1e4e7c0138f7
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 77, in record
+    self.publish_asset(job,lease,asset['asset_key'],path,'media')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:202: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert not proof['mail']
+E   AssertionError: assert not [{'body': 'Xem khoá học: http://127.0.0.1:8000/khoa-hoc/0617512a-a6bd-4019-a3a9-78c7c4881742', 'html_body': None, 'subject': 'Bản dựng lỗi', 'to': '32b18d8d5750426c92630d0f89702ae0@example.vn'}]
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\cancel-mail.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal]
+8 failed, 5 deselected, 1 warning in 14.52s

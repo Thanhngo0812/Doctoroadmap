@@ -1,0 +1,51 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run src/W11AuthReturn.repro.test.tsx --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-w11-auth-repro-evidence-20261023\auth-return-red.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w11-auth-repro-20261023/src/web/frontend
+
+ ❯ src/W11AuthReturn.repro.test.tsx (10 tests | 8 failed) 17290ms
+   ✓ control: direct login returns to the exact invitation after authentication 1654ms
+   ✓ control: direct register returns to the exact invitation after authentication 2126ms
+   × retains invite after login -> register through header (viewTransition=false) 2167ms
+   × retains invite after login -> register through header (viewTransition=true) 2128ms
+   × retains invite after login -> register through footer (viewTransition=false) 2107ms
+   × retains invite after login -> register through footer (viewTransition=true) 2110ms
+   × retains invite after register -> login through header (viewTransition=false) 1268ms
+   × retains invite after register -> login through header (viewTransition=true) 1241ms
+   × retains invite after register -> login through footer (viewTransition=false) 1228ms
+   × retains invite after register -> login through footer (viewTransition=true) 1258ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after login -> register through header (viewTransition=false)
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after login -> register through header (viewTransition=true)
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after login -> register through footer (viewTransition=false)
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after login -> register through footer (viewTransition=true)
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after register -> login through header (viewTransition=false)
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after register -> login through header (viewTransition=true)
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after register -> login through footer (viewTransition=false)
+ FAIL  src/W11AuthReturn.repro.test.tsx > retains invite after register -> login through footer (viewTransition=true)
+AssertionError: expected '/khoa-hoc' to be '/join/disposable-w11-repro-token' // Object.is equality
+
+Expected: "/join/disposable-w11-repro-token"
+Received: "/khoa-hoc"
+
+ ❯ src/W11AuthReturn.repro.test.tsx:104:60
+    102|   expect(fetcher.mock.calls.filter(([url, init]) => String(url) === `/…
+    103|   // The unchanged application currently lands on /khoa-hoc here, losi…
+    104|   expect(screen.getByTestId('repro-location').textContent).toBe(invite…
+       |                                                            ^
+    105| });
+    106|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  8 failed | 2 passed (10)
+   Start at  10:52:29
+   Duration  23.12s (tests 76%, environment 8%, setup 7%, transform 5%, import 3%, worker 1%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-w11-auth-repro-evidence-20261023/auth-return-red.xml

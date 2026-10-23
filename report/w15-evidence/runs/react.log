@@ -1,0 +1,48 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/report/w15-evidence/runs/react.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/src/web/frontend
+
+ ✓ src/App.test.tsx (24 tests) 15748ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 1664ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 1195ms
+     ✓ keeps duplicate registration generic when no session is created 1209ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 974ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 1376ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 1287ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 863ms
+     ✓ clears errors and private form state when leaving register 1214ms
+     ✓ does not carry a late login failure into the registration form 688ms
+     ✓ keeps a success notification visible after login reaches courses 728ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 913ms
+     ✓ shows the actual password field message for body.password 1163ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 1132ms
+ ✓ src/W03.test.tsx (21 tests) 6573ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ sends a generic password-reset request without revealing whether the email exists 457ms
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 870ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 788ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 1949ms
+     ✓ keeps the reset form available after a retryable network failure 920ms
+ ✓ src/Builds.test.tsx (10 tests) 2198ms
+   ✓ requires rights confirmation before upload and queues only after explicit title confirmation 1013ms
+ ✓ src/Courses.test.tsx (17 tests) 1657ms
+   ✓ shows real-shaped owned joined and samples without inventing sample progress 366ms
+ ✓ src/Roadmap.test.tsx (8 tests) 1522ms
+   ✓ shows API-ordered modules, honest course and module totals, and the expanded concept checklist 566ms
+ ✓ src/api.test.ts (22 tests) 56ms
+ ✓ src/TaskWait.test.tsx (2 tests) 204ms
+
+ Test Files  7 passed (7)
+      Tests  104 passed (104)
+   Start at  20:04:39
+   Duration  47.97s (tests 61%, environment 26%, setup 6%, import 5%, transform 2%)
+
+    Isolate  7 workers spawned · ~2.00s startup each (spawn + environment, per file)
+             at least ~12.01s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/report/w15-evidence/runs/react.xml
