@@ -1,6 +1,7 @@
 # Bài giảng không hiện bản lùi, stream sau cổng, gợi lại tiên quyết bằng câu nối có trích dẫn
 
 **Status:** accepted — 2026-10-18. Thay phần "mọi đường hỏng đều về mốc trích câu" của spec Pha B mục 8, và phần tương ứng trong hệ quả của ADR 0011.
+**Bị thay một phần — 2026-10-23:** phần "bài hỏng hẳn vì luật kiểm" và "stream sau cổng" bị [ADR 0024](0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md) thay: bài LLM luôn hiện, luật kiểm chỉ ghi log, ý hiện ngay. Phần không hiện bản trích câu và câu nối giữ nguyên.
 
 **Bản lùi trích câu không bao giờ hiện cho người học.**
 - Khi bài hỏng hẳn, người học vẫn thấy phần do mã dựng: vị trí, câu định nghĩa nguyên văn kèm trang, tiên quyết, hình đã xác nhận, khối "Tiếp theo".

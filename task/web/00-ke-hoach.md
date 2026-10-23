@@ -81,26 +81,34 @@ còn đổi; nhóm web đã được báo.
 | [W-05](W-05-kho-pha-b-postgresql.md) | kho Pha B trên PostgreSQL, `single_flight` liên tiến trình, nới port sổ chi | W-01 | đạt · đã ghép `a3f2f13`, gồm checkpoint W-02; [cổng và bàn giao](../../report/dieu-phoi-ghep-main-2026-10-20.md) |
 | [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đạt · đã ghép `dc41ee8`, mốc `8b6e500`; 2.107 Python/77 React/build, browser PG; [nghiệm thu](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md) |
 | [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | đạt · đã ghép f20d198, mốc 2a14723; 2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình; [soát](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md) |
-| [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07, SA-39, SA-40, SA-41; SA-53 đã ghép | đủ phụ thuộc sau `62dad5b`; xếp sau W-11 nếu chỉ một phiên web |
-| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07, SA-32, SA-33, SA-42; SA-56/58 đã ghép | đủ phụ thuộc sau `04c3efa`/`e2cfbac`; làm sau W-08, nối wrapper lecture/cache_only và dùng replay hợp đồng hiện tại; giữ Vertex |
+| [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07; SA-64 thay SA-63, ảnh trang SA-65 | sau W-11 làm lecture-3 theo ADR 0025: body_md/LaTeX/sources/self_check, delta hiện ngay; chuẩn bị UI/gateway được, cổng cuối chờ Claude ghép SA-64 |
+| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07; SA-56/58 đạt, SA-66 sau SA-64 cho answer-3 | làm sau W-08, answer_md/Markdown/LaTeX/sources/delta, focus cache-only lecture-3; cổng cuối chờ SA-66, giữ Vertex |
 | [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35, SA-37; SA-52 đã ghép | đủ phụ thuộc sau `66cd439`; triển khai sau trang học, không dùng số phát lại cũ làm nghiệm thu web |
-| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | cần sửa `8539709`: đổi form xác thực mất next của link mời, độc lập 8 assertion fail/2 control pass; chưa ghép; [soát](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md) |
+| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | đạt · ghép/đẩy `e85427a`, mốc `b625752`: 2.296 Python/143 React/build, browser 8 auth-return/48 ảnh/16 Axe; [soát lần2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md) |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
 | [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
 | [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06; W-25 đã đạt | đạt có ghi chú · đã ghép/đẩy `7fe63df`, mốc `61b5d80`:2185Python/104React/build, browser13nhóm/47ảnh/14Axe,0USD; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
-| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 đã đạt; chờ port PG của Pha A | đạt mốc adapter/kiểm 0 USD tại `eea5472`, đã ghép/đẩy `d12b67c`: 2.266 Python/104 React/build; toàn vé còn mở, chưa pipeline thật/dry-run thật/quyền chi; [soát](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md) |
+| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13/14 đạt; Claude nhận SA-62 port, chưa ghép | đạt thêm mốc trace/test tương thích `6627c00`, ghép/đẩy `e85427a`, kiểm `b625752` chung W-11; toàn vé còn mở, chờ SA-62 vào main rồi kiểm pipeline thật/dry-run/duyệt chi; [soát lần2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md) |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
-| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn mở: đọc lại Cloud ngày23 vẫn 0 Variables/0 native components/0 reactions/0 starting points; local không thay Cloud; [soát](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md) |
+| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn mở: lần đọc Cloud buổi sáng ngày23 có 0 Variables/components/reactions/starting points; chiều chưa có receipt mới/không đọc lại, local không thay Cloud |
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | chưa mở; chờ đủ bản Figma được nhận và các màn học/chat/quiz |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao W-22 | — | `fe8ccf3` sửa báo cáo cũ đúng; chưa nhận `16e95c1` do5nhóm Required mới về token/link/dữ liệu-quota/mobile/checklist; 18 cấu hình browser; tiếp cùng vé/chưa ghép |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao W-22 | — | chưa nhận `7a522e5`/`d72993e`: còn3nhóm Required về plugin lỗi/guard, chat hạn mức/internal, checklist; các sửa cũ đã đóng,45/40test/18browser/74giá trị đạt local; [soát lần2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md) |
 | [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
 
 ## Thứ tự đề xuất
+
+- **Nghiệm thu lần 2 chiều 2026-10-23:** W-11 và mốc trace/test tương thích W-15 đạt, ghép/đẩy `e85427a`, mốc kiểm `b625752`.
+  2.296 Python đạt/1 Cloudinary live không bật, 143 React/build; browser PG 48 ảnh/16 Axe/115 HTTP, 8 ca auth-return, DB/cổng đã dừng.
+  Main có tài liệu `9ee69ce` ngay trước ghép; đã kiểm chứng sau ghép trên `817f487`, cùng 2.296 Python/143 React/build xanh; báo cáo giữ rõ thiếu sót trình tự và hai lượt cổng.
+  W-24 còn3nhóm Required (plugin lỗi/guard, chat hạn mức/internal, checklist); các sửa cũ đã chứng minh đạt không giao lại, chưa ghép hai checkpoint mới.
+  **Web W-08 theo lecture-3/ADR 0025, cổng cuối chờ SA-64 (thay SA-63), rồi W-09/W-10.** Lõi nhận SA-62 sau Claude ghép, kiểm PG/pipeline và dry-run0USD;
+  thiết kế sửa3Required và cập nhật lecture-3, hoàn thiện Cloud. SA-65 ảnh trang ở artifact do Claude làm, không đổi DB; giữ Vertex.
+  [Báo cáo lần 2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md), [lời giao ba nhóm](../../report/lenh-giao-viec-ba-nhom-lan2-2026-10-23.md).
 
 - **Sau soát ba nhóm, 2026-10-23:** W-11 `8539709` cần sửa mất `next` khi đổi form xác thực, tái hiện độc lập 8 assertion fail/2 control pass, chưa ghép.
   W-15 nhận riêng mốc adapter/kiểm 0 USD `eea5472`, ghép/đẩy **`d12b67c`**: 2.266 Python đạt/1 Cloudinary live không bật, 104 React/build; toàn vé vẫn chờ port PG, dry-run và duyệt tiền riêng.

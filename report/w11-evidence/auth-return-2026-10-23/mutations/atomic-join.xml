@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.762" timestamp="2026-10-23T11:51:44.054382+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_postgres_create_and_join_rollback_when_audit_write_fails" time="2.137"><failure message="AssertionError: assert 1 == 0&#10; +  where 1 = scalar(&lt;sqlalchemy.sql.elements.TextClause object at 0x000001C1FCC09AF0&gt;, {'cid': 'ab0c8fcd-0b48-4b53-81ce-2c176edd08dd'})&#10; +    where scalar = &lt;sqlalchemy.engine.base.Connection object at 0x000001C1FCC09AC0&gt;.scalar&#10; +    and   &lt;sqlalchemy.sql.elements.TextClause object at 0x000001C1FCC09AF0&gt; = text('SELECT count(*) FROM share_link WHERE course_id=:cid')">sharing_pg = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_ffaadbf65fd84ee19ca9d478d6660... 0x000001C1FD316660&gt;, store=&lt;wayfinder.infrastructure.sharing_store.PostgresSharingStore object at 0x000001C1FD2EE5D0&gt;)
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001C1FCF4D5E0&gt;
+
+    @pytest.mark.postgres
+    def test_postgres_create_and_join_rollback_when_audit_write_fails(sharing_pg, monkeypatch):
+        from wayfinder.application.sharing import SharingService
+
+        service = SharingService(sharing_pg.store, sharing_pg.settings, sharing_pg.clock,
+                                 graph_loader=lambda *_: SimpleNamespace(learnable_nodes={}))
+        original_append = sharing_pg.store.append_audit
+
+        def fail_audit(_event):
+            raise RuntimeError("audit unavailable")
+
+        monkeypatch.setattr(sharing_pg.store, "append_audit", fail_audit)
+        with pytest.raises(RuntimeError, match="audit unavailable"):
+            service.create_share_link(sharing_pg.owner, sharing_pg.course.id, max_uses=1)
+        with sharing_pg.engine.connect() as connection:
+&gt;           assert connection.scalar(text("SELECT count(*) FROM share_link WHERE course_id=:cid"),
+                                     {"cid": sharing_pg.course.id}) == 0
+E           AssertionError: assert 1 == 0
+E            +  where 1 = scalar(&lt;sqlalchemy.sql.elements.TextClause object at 0x000001C1FCC09AF0&gt;, {'cid': 'ab0c8fcd-0b48-4b53-81ce-2c176edd08dd'})
+E            +    where scalar = &lt;sqlalchemy.engine.base.Connection object at 0x000001C1FCC09AC0&gt;.scalar
+E            +    and   &lt;sqlalchemy.sql.elements.TextClause object at 0x000001C1FCC09AF0&gt; = text('SELECT count(*) FROM share_link WHERE course_id=:cid')
+
+src\web\backend\tests\test_w11_sharing.py:386: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from './Auth';
 import { ApiError } from './api';
 import { buildStatusLabel } from './builds-api';
@@ -11,6 +11,7 @@ const message = (cause: unknown) => cause instanceof ApiError ? cause.message : 
 
 export function CourseShell({ theme, onToggleTheme, children }: ThemeProps & { children: ReactNode }) {
   const auth = useAuth();
+  const location = useLocation();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const logout = async () => {
@@ -25,9 +26,9 @@ export function CourseShell({ theme, onToggleTheme, children }: ThemeProps & { c
       <div className="header-actions">
         <Link className="button button-primary courses-upload" to="/tai-len">Tải tài liệu</Link>
         <button className="icon-button theme-toggle" type="button" onClick={onToggleTheme} aria-label={theme === 'light' ? 'Bật chế độ tối' : 'Bật chế độ sáng'}><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5"><circle cx="12" cy="12" r="8" /><path d="M12 4a8 8 0 0 0 0 16Z" fill="currentColor" stroke="none" /></svg></button>
-        <details className="account-menu"><summary aria-label={`Tài khoản của ${auth.account?.display_name}`}><span className="account-menu-name">{auth.account?.display_name}</span><span className="courses-account-label">Tài khoản</span><svg className="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg></summary>
+        {auth.account ? <details className="account-menu"><summary aria-label={`Tài khoản của ${auth.account.display_name}`}><span className="account-menu-name">{auth.account.display_name}</span><span className="courses-account-label">Tài khoản</span><svg className="account-menu-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true"><path d="m7 10 5 5 5-5" /></svg></summary>
           <div className="account-menu-panel"><Link to="/tai-khoan">Tài khoản</Link><Link className="courses-menu-upload" to="/tai-len">Tải tài liệu</Link><button type="button" disabled={busy} onClick={() => void logout()}>{busy ? 'Đang đăng xuất…' : 'Đăng xuất'}</button>{error && <small role="alert">{error}</small>}</div>
-        </details>
+        </details> : auth.status === 'guest' && <Link className="button button-secondary" aria-label="Đăng nhập để tham gia" replace to={`/dang-nhap?next=${encodeURIComponent(location.pathname)}`}>Đăng nhập</Link>}
       </div>
     </div></header>
     <main className="courses-page page-frame" id="courses-main" tabIndex={-1}>{children}</main>

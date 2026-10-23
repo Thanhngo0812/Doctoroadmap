@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="1" failures="0" skipped="0" tests="1" time="3.435" timestamp="2026-10-22T20:38:49.628124+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_postgres_one_use_join_race_counts_exactly_one_member_and_use" time="1.022"><error message="failed on setup with &quot;AssertionError: assert 'w14_0006' == 'w11_0007'&#10;  &#10;  - w11_0007&#10;  ?   ^    ^&#10;  + w14_0006&#10;  ?   ^    ^&quot;">postgres_database_url = postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_cf51ddbfeef84d3c9e5a5313ee0d1e34
+
+    @pytest.fixture
+    def sharing_pg(postgres_database_url):
+        from sqlalchemy import text
+        from wayfinder.application.courses import CourseService
+        from wayfinder.infrastructure.course_store import PostgresCourseStore
+        from wayfinder.infrastructure.database import create_database_engine
+        from wayfinder.infrastructure.sharing_store import PostgresSharingStore
+        from wayfinder.settings import WebSettings
+
+        engine = create_database_engine(postgres_database_url)
+        with engine.connect() as connection:
+&gt;           assert connection.scalar(text("SELECT version_num FROM alembic_version")) == 'w11_0007'
+E           AssertionError: assert 'w14_0006' == 'w11_0007'
+E
+E             - w11_0007
+E             ?   ^    ^
+E             + w14_0006
+E             ?   ^    ^
+
+src\web\backend\tests\test_w11_sharing.py:315: AssertionError</error></testcase></testsuite></testsuites>

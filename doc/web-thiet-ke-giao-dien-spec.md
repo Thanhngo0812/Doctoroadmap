@@ -3,7 +3,8 @@
 **Ngày:** 2026-10-18. **Nhãn:** `ready-for-agent`. **Dùng cho:** vé [W-22](../task/web/W-22-ban-figma.md) (Figma), giao diện của mọi vé `task/web/`, và
 [W-23](../task/web/W-23-doi-chieu-figma-va-giao-dien.md) (đối chiếu).
 
-**Dựa trên:** [spec chức năng](web-chuc-nang-spec.md) (trang, chức năng, mã lỗi), [spec Pha B2](pha-b2-spec.md) (hai trang học, bài giảng `lecture-2`),
+**Dựa trên:** [spec chức năng](web-chuc-nang-spec.md) (trang, chức năng, mã lỗi), [spec Pha B2](pha-b2-spec.md) (hai trang học/nhãn người học),
+[spec bài giảng 3](bai-giang-3-spec.md) và [ADR 0025](adr/0025-bai-giang-3-van-xuoi-tu-nhien.md) (lecture-3, thay lecture-2),
 [ADR 0023](adr/0023-cloudinary-cho-tep-goc-va-anh.md) (ảnh trang).
 
 **Chủ dự án đã chốt (2026-10-18):**
@@ -98,7 +99,7 @@ chờ bộ tám logo giả định.
 
 **Dùng ở đâu:**
 - **chờ việc dài, có ý nghĩa:**
-  - bài giảng trước cổng: "Đang soạn bài…";
+  - bài giảng đang chờ ý đầu: "Đang soạn bài…" (ADR 0024: nhận ý nào hiện ngay ý đó, không còn cổng hai ý);
   - bản dựng: bước đang chạy;
   - đang tạo tài liệu;
   - đang sinh quiz, khi chưa có câu nào;
@@ -330,19 +331,27 @@ test tự động xác minh token, hành vi và giảm chuyển động, không 
 - **Máy tính bảng:** hai cột; khung chat thành bảng trượt từ phải.
 - **Điện thoại:** danh sách khái niệm là màn đầu; bấm một khái niệm thì sang màn bài giảng có nút quay lại; chat là nút nổi.
 - **Khối "Cần biết trước"** gập sẵn mỗi tiên quyết. Nhãn "✓ đã học" (`success`) hay "chưa học" (`text-muted`), kèm "module m". Mở ra thấy câu định nghĩa và
-  trích dẫn. Câu nối (chữ thường, `text-body`) hiện dưới tên khi tới.
+  trích dẫn (recall). Lecture-3 nối tiên quyết trong văn xuôi, không có bridge/câu nối LLM riêng dưới tên.
 - **Khối "Tiếp theo"** nền `accent-tint`, viền trái 4 px `color-accent`.
 - **Trích dẫn** là số nhỏ bấm được, mở khung xem ảnh trang.
 - **Ý mới hiện dần:** mờ vào trong 200 ms; không nhảy bố cục (chừa chỗ theo khung xương).
 
 **Bài giảng — bốn trạng thái:**
 
+**Cập nhật ADR 0025/lecture-3, 2026-10-23:** nội dung chính là `body_md` Markdown với công thức LaTeX (KaTeX), nhận `delta {text}` và hiện chữ ngay.
+Thay khối sections/bridge cũ bằng văn xuôi; khối Trong sách từ `sources[]`, nhãn `[Sx]` mở đúng trang, self_check có đáp án gập sẵn.
+SA-64 thay SA-63; các mô tả “ý”/item dưới đây hiểu theo mẩu chữ của hợp đồng mới. Giữ bố cục, tiên quyết recall và next-up.
+Nguồn: [spec bài giảng 3](bai-giang-3-spec.md), mục 6 và 9; [ADR 0025](adr/0025-bai-giang-3-van-xuoi-tu-nhien.md).
+
 | trạng thái | thấy gì |
 |---|---|
-| đang chờ (trước cổng) | phần mã dựng (định nghĩa, tiên quyết, ảnh) hiện ngay; dưới đó vòng chờ 96 px + "Đang soạn bài…" |
+| đang chờ ý đầu | phần mã dựng (định nghĩa, tiên quyết, ảnh) hiện ngay; dưới đó vòng chờ 96 px + "Đang soạn bài…"; ý đầu hiện ngay khi tới theo ADR 0024 |
 | đang hiện dần | các ý xuất hiện lần lượt; vòng chờ nhỏ ở cuối cho tới `final` |
 | xong | đủ bài; nút "Đã học", "Báo lỗi" |
-| hỏng hẳn | phần mã dựng + hộp nền `bg-subtle`: lời nhắn theo `reason_code`, nút "Đọc trang p trong sách" (chính), "Hỏi trợ lý", "Thử lại" (chỉ khi `retryable`) |
+| chưa có bài (chưa gửi ý nào) | phần mã dựng + hộp nền `bg-subtle`: `failure.message` nêu lý do/thử lại sau, nút "Đọc trang p trong sách" (chính), "Hỏi trợ lý", luôn có "Thử lại" (`retryable=true`) |
+
+Theo [ADR 0024](adr/0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md), lỗi sau ý đầu giữ các ý đã hiện và kết thúc `ready` + `cat_ngan`.
+Ý trượt luật kiểm không có nhãn riêng; kết quả `validation` chỉ cho admin, không hiện ở bài giảng/chat người học.
 
 **Khung xem trang** ("Đọc trang p"): hộp thoại lớn (điện thoại: toàn màn hình) hiện ảnh trang; nút ‹ trang trước, trang sau ›; số trang; nút "Mở cả tệp".
 Ảnh rộng vừa khung, phóng được bằng hai ngón tay.
@@ -417,7 +426,7 @@ Mỗi thành phần có trạng thái: mặc định, rê chuột, focus (viền
 | Thông báo nổi | thành công, lỗi |
 | Hộp thoại | xác nhận, nguy hiểm (gõ lại tên), khung xem trang |
 | Khung chat | danh sách phiên, lượt người học, lượt trợ lý, thẻ module, tiến trình công cụ, hết trần |
-| Khối bài giảng | định nghĩa, tiên quyết (gập, mở), ý, ví dụ, phân biệt, tự kiểm tra, "Tiếp theo", hỏng hẳn |
+| Khối bài giảng | định nghĩa, tiên quyết recall (gập, mở), body_md Markdown/LaTeX, Trong sách/sources, self_check đáp án gập, Tiếp theo, chưa có bài/message/retry |
 | Câu quiz | chưa chọn, đã chọn, đúng, sai, đang sinh |
 | Vòng chờ | GIF 160, GIF 96, tĩnh (giảm chuyển động), vòng nhỏ trong nút |
 | Khung xương | dòng chữ, thẻ, danh sách |
@@ -480,7 +489,7 @@ Mỗi dòng ở cả 390 px và 1280 px:
 - [ ] Khoá học của tôi: rỗng, có khoá, có lời mời, có khoá đang dựng.
 - [ ] Tải giáo trình; xác nhận tệp; tiến trình (đang chạy, lỗi bản quét/chữ lỗi, xong, huỷ).
 - [ ] Trang lộ trình: mặc định, module mở, khung chat mở, thư viện rỗng.
-- [ ] Trang học: bài đang chờ, đang hiện dần, xong có tiên quyết mở, hỏng hẳn; khung xem trang.
+- [ ] Trang học lecture-3: chờ chữ đầu, delta/Markdown/LaTeX hiện dần, xong có tiên quyết mở/Trong sách/tự kiểm tra, chưa có bài với message/retry; khung xem trang.
 - [ ] Chat: phiên mới, có lượt, thẻ module, tiến trình công cụ, phạm vi đã cũ, hết trần.
 - [ ] Quiz: đang sinh, đang làm, kết quả.
 - [ ] Tài liệu: tạo (chọn module), đang tạo, xem.

@@ -1,0 +1,18 @@
+python.exe : AssertionError [ERR_ASSERTION]: owner and learner date columns must align
+At line:3 char:1
++ & C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (AssertionError ...umns must align:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
++ actual - expected
+
+  [
++   305,
++   524
+-   243,
+-   415
+  ]
+
+    at matrix (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\scripts\w11_web_check.cjs:91:18)
+    at async main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\scripts\w11_web_check.cjs:180:5)

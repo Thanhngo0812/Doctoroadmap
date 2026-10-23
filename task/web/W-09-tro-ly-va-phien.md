@@ -1,10 +1,18 @@
 # W-09 — Trợ lý và phiên chat
 
-**Nguồn chân lý:** [spec Pha B2](../../doc/pha-b2-spec.md), mục 1–3, 8, 10 (`session-1`, `turn-1`, `answer-2`); [spec chức năng](../../doc/web-chuc-nang-spec.md),
+**Nguồn chân lý:** [spec trợ lý 3](../../doc/tro-ly-3-spec.md), [ADR 0026](../../doc/adr/0026-tro-ly-3-gia-su-tu-nhien.md) (`answer-3`);
+[spec Pha B2](../../doc/pha-b2-spec.md), mục 1–2, 8, 10 (`session-1`, `turn-1`, phần còn hiệu lực); [spec chức năng](../../doc/web-chuc-nang-spec.md),
 mục 1 (công cụ buộc phía máy chủ, SSE), 7 (giới hạn tần suất), 8; [ADR 0017](../../doc/adr/0017-pham-vi-phien-la-noi-luu-neo-vao-khai-niem.md); spec thiết
 kế, khung chat.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-32, SA-33, SA-42, SA-56 · **Trạng thái:**
-đủ phụ thuộc lõi sau SA-56/SA-58; triển khai sau W-08 theo năng lực nhóm web.
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-56/58 đã ghép; hợp đồng mới SA-66 sau SA-64 · **Trạng thái:**
+sau W-08 chuẩn bị theo answer-3; cổng cuối chờ Claude nghiệm thu/ghép SA-66.
+
+**Cập nhật mới nhất `a50955b`, 2026-10-23:** answer-3 dùng `answer_md` Markdown/LaTeX và `sources[]`; bỏ citations/outside_document_blocks cũ,
+không còn insufficient_context/not_in_document. Stream progress/tool_call/delta/graph_card/artifact/final/failure; delta hiện ngay,
+validation chỉ admin. Giữ graph_cards/artifacts/focus_node_id, phạm vi/quyền và client_turn_id.
+Tiêu điểm đọc body_md lecture-3 từ cache, không sinh bài khi cache miss. Trần người học/ngày mới 1,00 USD theo ADR 0026,
+UI vẫn dùng used_ratio/limited/resets_at, không bịa lượt/ngày. Độ trễ SA-60 là phép đo lịch sử; không coi 11,4s là độ trễ cố hữu của server giữ client.
+Kiểm Markdown/LaTeX an toàn, nguồn đúng trang/nhãn lạ giữ chữ, validation không lọt, chữ không bị rút sau khi đã hiện, focus/cache-only 0 call.
 
 **Đối chiếu 2026-10-23:** SA-56/SA-57 đã ghép `04c3efa`; SA-58 đã ghép `e2cfbac`. Gỡ chờ SA-56 ở cập nhật cũ bên dưới.
 Gateway/composition phải cấp `get_lecture(concept, **kwargs)` và chuyển `cache_only` xuống `LectureUseCase.make`, như `composition_phase_b.py`;
@@ -40,9 +48,9 @@ cũ, và thấy trả lời hiện dần.
 - `GET/POST /courses/{cid}/sessions` (lọc `roadmap_page`, `module:<id>`, `all`);
 - `PATCH/DELETE /courses/{cid}/sessions/{sid}`;
 - `GET /courses/{cid}/sessions/{sid}/turns`;
-- `POST /courses/{cid}/sessions/{sid}/turns` trả **SSE**: sự kiện tiến trình gọi công cụ, chữ trả lời, rồi đối tượng `answer-2` cuối cùng.
+- `POST /courses/{cid}/sessions/{sid}/turns` trả **SSE** theo answer-3: progress/tool_call/delta/graph_card/artifact, rồi final hoặc failure.
 - `client_turn_id` do trình duyệt sinh. Gửi lại cùng mã (mạng chập chờn) thì không tạo lượt thứ hai.
-- Body POST lượt nhận `focus_node_id` tuỳ chọn; trả nguyên `focus_node_id` đã dùng và `warnings` trong sự kiện cuối `answer-2`.
+- Body POST lượt nhận `focus_node_id` tuỳ chọn; giữ nguyên focus đã dùng và cảnh báo hợp lệ theo lõi trong kết quả cuối answer-3; không tự bịa trường.
   Giữ kiểm membership, owner, graph/version phía máy chủ; tiêu điểm không mở quyền đọc ngoài khoá/phiên.
 
 **Giao diện:**
@@ -63,7 +71,7 @@ Mỗi test thấy đỏ trước trên bản sai:
   `owner` lạ.
 - [ ] Phạm vi module với `node_ids` do trình duyệt gửi khác đồ thị: máy chủ dùng `node_ids` của đồ thị đã phát hành.
 - [ ] Gửi lại cùng `client_turn_id` thì chỉ một lượt được lưu, và chỉ một lần gọi mô hình.
-- [ ] HTTP/SSE với tiêu điểm hợp lệ: mock/use case nhận nguyên ID; `answer-2` cuối trả đúng ID. Bỏ truyền ID hoặc thay bằng module ID thì test đỏ.
+- [ ] HTTP/SSE với tiêu điểm hợp lệ: mock/use case nhận nguyên ID; answer-3 cuối trả đúng ID. Bỏ truyền ID hoặc thay bằng module ID thì test đỏ.
 - [ ] HTTP/SSE với ID lạ: không lỗi chỉ vì ID lạ, cuối trả `null` và `focus_ignored`; không tự sinh bài giảng hay tạo usage ngoài lượt trợ lý.
 - [ ] Cùng phiên, lượt sau không gửi tiêu điểm thì không kế thừa lượt trước; bản ghi session/assistant_state không có trường tiêu điểm.
 - [ ] React: mở bài X rồi Y gửi đúng X/Y; mở bài tiên quyết gửi ID tiên quyết; hỏi từ trang lộ trình không gửi `focus_node_id`.

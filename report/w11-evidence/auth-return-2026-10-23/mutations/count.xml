@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.838" timestamp="2026-10-23T11:51:35.169831+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_postgres_one_use_join_race_counts_exactly_one_member_and_use" time="1.488"><failure message="assert 2 == 1&#10; +  where 2 = sum(&lt;generator object test_postgres_one_use_join_race_counts_exactly_one_member_and_use.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000015304DD8F20&gt;)">sharing_pg = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_53501e61498f46e2b85e07fe9c7c4... 0x0000015304D72840&gt;, store=&lt;wayfinder.infrastructure.sharing_store.PostgresSharingStore object at 0x0000015304D79190&gt;)
+
+    @pytest.mark.postgres
+    def test_postgres_one_use_join_race_counts_exactly_one_member_and_use(sharing_pg):
+        from wayfinder.application.sharing import SharingService
+
+        service = SharingService(sharing_pg.store, sharing_pg.settings, sharing_pg.clock,
+                                 graph_loader=lambda *_: SimpleNamespace(learnable_nodes={}))
+        token = service.create_share_link(sharing_pg.owner, sharing_pg.course.id, max_uses=1)["link"]["token"]
+        users = [sharing_pg.user("Người học 1"), sharing_pg.user("Người học 2")]
+        gate = Barrier(2)
+
+        def join(actor):
+            local_service = SharingService(type(sharing_pg.store)(sharing_pg.engine), sharing_pg.settings, sharing_pg.clock)
+            gate.wait(timeout=5)
+            try:
+                return local_service.join_by_link(actor, token)
+            except WebError as error:
+                return error.code
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(join, users))
+
+&gt;       assert sum(isinstance(item, dict) and not item["already_member"] for item in results) == 1
+E       assert 2 == 1
+E        +  where 2 = sum(&lt;generator object test_postgres_one_use_join_race_counts_exactly_one_member_and_use.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000015304DD8F20&gt;)
+
+src\web\backend\tests\test_w11_sharing.py:359: AssertionError</failure></testcase></testsuite></testsuites>

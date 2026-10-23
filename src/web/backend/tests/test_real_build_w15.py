@@ -108,13 +108,19 @@ class FakePipeline:
         return deepcopy(self.values)
 
 
+class PipelineWithoutStorePort:
+    def __init__(self, settings, *, allow_spend):
+        raise AssertionError('An unported pipeline must not be constructed')
+
+
 def test_dev_default_stays_fake_and_real_setting_is_explicit(builds):
     settings = WebSettings(_env_file=None)
     assert getattr(settings, 'build_runner', None) == 'fake', 'dev needs an explicit fake default'
     assert WebSettings(_env_file=None, build_runner='real').build_runner == 'real'
 
 
-def test_real_default_requires_core_port_before_claim_or_provider(builds):
+def test_real_default_requires_core_port_before_claim_or_provider(builds, monkeypatch):
+    monkeypatch.setattr('doc2roadmap.composition_build.DocumentPipeline', PipelineWithoutStorePort)
     b = builds
     adapter = module()
     settings = b.settings.model_copy(update={'build_runner': 'real'})
@@ -275,6 +281,7 @@ def test_real_worker_composition_uses_pg_version_and_never_claims_without_port(b
     monkeypatch.setenv('DOC2ROADMAP_VERTEX_PROJECT', 'fake-project')
     settings = b.settings.model_copy(update={'build_runner': 'real', 'database_url': b.postgres_database_url.render_as_string(hide_password=False)})
     # make_worker dispatches real without requiring fake-source or manifest.
+    monkeypatch.setattr('doc2roadmap.composition_build.DocumentPipeline', PipelineWithoutStorePort)
     with pytest.raises(adapter.CoreBuildPortUnavailable):
         make_worker(settings)
     consumer, engine = make_real_worker(settings, core_settings=core(b), pipeline_factory=FakePipeline)
@@ -409,5 +416,81 @@ def test_real_adapter_late_old_lease_records_known_usage_without_publication(bui
         assert proof['course']['published_graph_version'] is None and proof['course']['status'] == 'failed'
         assert sum(row['cost_usd'] for row in proof['ledger']) == Decimal('.004')
         evidence('old-lease', proof)
+    finally:
+        runtime.close()
+
+
+@pytest.mark.parametrize('counted_in', ['build', None, 'other'])
+def test_build_trace_keeps_raw_usage_but_is_not_billed_twice(builds, counted_in):
+    from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+    from wayfinder.infrastructure.database import create_database_engine
+    from doc2roadmap.application.phase_b.budget import DailySpendGuard, DailyLimitExceeded
+    from doc2roadmap.domain.phase_b_limits import BSettings
+    b = builds
+    store = PostgresPhaseBStore(b.engine)
+    independent = PostgresPhaseBStore(create_database_engine(b.postgres_database_url))
+    # The shared-purpose row makes the guard's actual admission decision observable.
+    row = dict(purpose='lecture', doc_id='w15-trace', cost_usd=.003,
+               input_tokens=300, output_tokens=60, created_at=b.clock.now().isoformat())
+    if counted_in is not None:
+        row['counted_in'] = counted_in
+    try:
+        store.append_usage(row)
+        assert independent.usage_rows(doc_id='w15-trace') == [row]
+        totals = sql(b, 'SELECT sum(cost_usd) AS usd, sum(input_tokens) AS input, sum(output_tokens) AS output FROM usage_ledger')[0]
+        trace = counted_in == 'build'
+        assert totals['usd'] == (0 if trace else Decimal('.003'))
+        assert totals['input'] == (0 if trace else 300)
+        assert totals['output'] == (0 if trace else 60)
+        guard = DailySpendGuard(independent, settings=BSettings(system_daily_max_usd=.002), clock=b.clock)
+        with pytest.raises(DailyLimitExceeded):
+            guard.reserve('lecture', .0001)
+        assert not sql(b, "SELECT * FROM phase_b_record WHERE kind='spend_reservation'")
+        evidence('trace-' + str(counted_in), {'raw': independent.usage_rows(), 'billable': totals,
+                 'shared_guard_admission': 'refused', 'provider_calls': 0})
+    finally:
+        independent.close()
+        store.close()
+
+
+def test_real_adapter_meter_is_the_only_build_charge_with_child_traces(builds):
+    from wayfinder.application.build_worker import BuildWorker
+    from wayfinder.composition import compose_build_service
+    from wayfinder.testing import _sample_graph
+    b = builds
+    class TracedPipeline(FakePipeline):
+        def roadmap(self, doc):
+            result = super().roadmap(doc)
+            self.phase_b_store.append_usage(dict(purpose='module_title', doc_id=doc,
+                counted_in='build', cost_usd=.001, input_tokens=100, output_tokens=20))
+            return result
+        def learning_prep(self, path, doc, graph_version):
+            result = super().learning_prep(path, doc, graph_version)
+            self.phase_b_store.append_usage(dict(purpose='embedding', doc_id=doc,
+                counted_in='build', cost_usd=.001, input_tokens=100, output_tokens=20))
+            return result
+    settings = b.settings.model_copy(update={'build_runner': 'real'})
+    runtime = module().RealBuildRuntime(settings, b.engine, core_settings=core(b), pipeline_factory=TracedPipeline)
+    service = compose_build_service(settings, b.engine, media=b.media, clock=b.clock, core_settings=core(b))
+    item = service.create_upload(b.actor, 'book.pdf', __import__('test_builds_w14').pdf(), rights_confirmed=True)
+    service.confirm_build(b.actor, item['upload_id'])
+    def graph(doc, version):
+        result = _sample_graph()
+        result.doc_id, result.graph_version = doc, version
+        return result
+    try:
+        consumer = BuildWorker(service, runner_factory=runtime.runner, graph_loader=graph,
+                               mailer=b.mailer, worker_id='w15-trace-accounting')
+        job = consumer.run_next_job()
+        totals = sql(b, 'SELECT sum(cost_usd) AS usd, sum(input_tokens) AS input, sum(output_tokens) AS output FROM usage_ledger')[0]
+        traces = sql(b, "SELECT * FROM usage_ledger WHERE extra->>'counted_in'='build'")
+        assert job['status'] == 'succeeded' and job['spent_usd'] == Decimal('.003')
+        assert totals == {'usd': Decimal('.003'), 'input': 300, 'output': 60}
+        assert len(traces) == 2 and sum(row['extra']['cost_usd'] for row in traces) == .002
+        assert all(row['cost_usd'] == 0 for row in traces)
+        receipt = sql(b, 'SELECT result FROM build_attempt')[0]['result']
+        assert receipt['model_calls'] == 3 and receipt['usage_complete']
+        evidence('single-build-charge', {'build': job, 'totals': totals, 'traces': traces,
+                 'receipt': receipt, 'provider_calls': 0, 'synthetic_usage': True})
     finally:
         runtime.close()

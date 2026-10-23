@@ -102,6 +102,7 @@ class PostgresPhaseBStore:
                                                             tables.record.c.record_id == record_id))
 
     def append_usage(self, row):
+        """Keep raw build traces for guards; bill their meter receipt only once."""
         if row.get("purpose") in {"assistant", "document"} and not row.get("learner_id"):
             raise ValueError("assistant/document usage requires learner_id")
         value = deepcopy(dict(row))
@@ -111,6 +112,8 @@ class PostgresPhaseBStore:
         stamp = value.get("created_at")
         columns["created_at"] = datetime.fromisoformat(stamp.replace("Z", "+00:00")) if stamp else None
         columns["cost_usd"] = value.get("cost_usd") or 0
+        if value.get("counted_in") == "build":
+            columns.update(cost_usd=0, input_tokens=0, output_tokens=0)
         # Keep the original dict: numeric(12,6) and typed nullable columns cannot
         # preserve every float, timestamp spelling and absent-vs-null distinction.
         columns["extra"] = value

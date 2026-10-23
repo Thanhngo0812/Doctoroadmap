@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="22" failures="12" errors="0" time="0.3277929">
+    <testsuite name="src/W11AuthReturn.repro.test.tsx" timestamp="2026-10-23T04:51:08.787Z" hostname="ADMIN" tests="22" failures="12" errors="0" skipped="10" time="0.3277929">
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct login returns to the exact invitation after authentication" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct register returns to the exact invitation after authentication" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false)" time="0.1465786">
+            <failure message="expected &apos;https://evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;https://evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;https://evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true)" time="0.0198455">
+            <failure message="expected &apos;https://evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;https://evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;https://evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false)" time="0.0159133">
+            <failure message="expected &apos;//evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;//evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;//evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true)" time="0.0143215">
+            <failure message="expected &apos;//evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;//evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;//evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false)" time="0.0133083">
+            <failure message="expected &apos;/\evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/\evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;/\evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true)" time="0.0136762">
+            <failure message="expected &apos;/\evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/\evil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;/\evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false)" time="0.0191949">
+            <failure message="expected &apos;/ unsafe&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/ unsafe&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;/ unsafe&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true)" time="0.0183204">
+            <failure message="expected &apos;/ unsafe&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/ unsafe&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;/ unsafe&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false)" time="0.0168514">
+            <failure message="expected &apos;/\tevil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/\tevil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;/	evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true)" time="0.0157447">
+            <failure message="expected &apos;/\tevil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;/\tevil.example/&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;/	evil.example/&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false)" time="0.0147648">
+            <failure message="expected &apos;javascript:alert(1)&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;javascript:alert(1)&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;javascript:alert(1)&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true)" time="0.0167546">
+            <failure message="expected &apos;javascript:alert(1)&apos; to be &apos;/khoa-hoc&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected &apos;javascript:alert(1)&apos; to be &apos;/khoa-hoc&apos; // Object.is equality
+
+Expected: &quot;/khoa-hoc&quot;
+Received: &quot;javascript:alert(1)&quot;
+
+ ❯ src/W11AuthReturn.repro.test.tsx:95:106
+            </failure>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=false)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=true)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=false)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=true)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=false)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=true)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=false)" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=true)" time="0">
+            <skipped/>
+        </testcase>
+    </testsuite>
+</testsuites>

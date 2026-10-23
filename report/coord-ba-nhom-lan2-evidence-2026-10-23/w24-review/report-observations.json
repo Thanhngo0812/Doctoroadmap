@@ -1,0 +1,37 @@
+{
+  "sourceHead": "7a522e5b5a703c83b0bce761483067040991d365",
+  "missingChecklistAnchors": [
+    {
+      "line": 168,
+      "file": "design/preview/w11_course_management_screens.html",
+      "anchor": "section-invite-email"
+    },
+    {
+      "line": 170,
+      "file": "design/preview/w11_course_management_screens.html",
+      "anchor": "btn-delete-course"
+    }
+  ],
+  "reportAnchors": [
+    {
+      "line": 7,
+      "text": "- **Tình trạng nghiệm thu:** **Đã hoàn thành và xác minh đạt toàn bộ 5 yêu cầu bắt buộc (Required), bổ sung thiết kế W-08 (Fatal error, Viewer ảnh trang, Báo lỗi), W-09 (Khung Chat đầy đủ 4 trạng thái), W-10 (Quiz đầy đủ 3 trạng thái)** (45 unit tests pytest, 74/74 giá trị tokens, 11 mutation tests văng assertion lỗi đúng chuẩn, 43 ảnh chụp màn hình kiểm định, 4/4 prototype HTML local đạt kiểm tra tự động OS reduced-motion/clipboard/scroll/0 request hỏng). **W-22, W-24 và W-23 tiếp tục giữ MỞ** để hoàn thiện dữ liệu canvas/Cloud thực tế trên Figma file `UVhhlZnqdpV0JDcAHwJczo` và xuất video Present. Quyền nghiệm thu và quyết định thuộc về Điều phối viên."
+    },
+    {
+      "line": 58,
+      "text": "Toàn bộ **40/40 tests passed** trong `tests/unit/presentation/test_tokens_and_wcag.py`. Khi chạy mutation tests, toàn bộ 8 guard phản nghiệm đều văng `AssertionError` chuẩn xác (RED) và phục hồi khi hoàn tác (GREEN):"
+    },
+    {
+      "line": 197,
+      "text": "   - Script diagnostic khi chạy có cơ chế bắt lỗi tạo mode/variable và báo cáo số lượng đối tượng tạo được. Tuy nhiên, nhóm ghi nhận rõ ràng: việc script diagnostic exit 0 ở môi trường kiểm thử local **chưa đồng nghĩa với việc canvas Cloud đã có parity**, chừng nào chưa đồng bộ và đọc ngược receipt thực tế từ Cloud."
+    },
+    {
+      "line": 241,
+      "text": "   - `tests/unit/presentation/test_tokens_and_wcag.py`: 40/40 tests pass, tích hợp kiểm tra 5 yêu cầu bắt buộc và 8 mutation tests falsifiable (bắt đỏ chính xác khi đột biến)."
+    }
+  ],
+  "newCloudReceiptFiles": [],
+  "workerPrototypeVideos": [],
+  "checkpointD729VariablesSetupSameAsHead": true,
+  "checkpointD729": "d72993ed0a698e36398bd6339c2f8a0a63d92515"
+}

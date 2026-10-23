@@ -1,0 +1,59 @@
+{
+  "sourceCommit": "b9b5e6817390f8189813707095a04eeac16df95a",
+  "mainBase": "dee87ccde928100c7e6168a348040d77d197ebfb",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links",
+  "capturedAt": "2026-10-22T16:45:53.905116+00:00",
+  "python": {
+    "command": "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w05_run_tests.py -o addopts= -q --basetemp=tmp/w11-final-full-20261022-5 --junitxml=report/w11-evidence/final-2026-10-22/acceptance-python.xml",
+    "nativeExit": 0,
+    "tests": 2271,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 2270,
+    "skips": [
+      {
+        "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+        "reason": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+      }
+    ]
+  },
+  "react": {
+    "command": "npm.cmd --prefix src/web/frontend test -- --pool=threads --maxWorkers=1 --reporter=junit --outputFile=../../../report/w11-evidence/final-2026-10-22/acceptance-react.xml",
+    "nativeExit": 0,
+    "tests": 121,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 121
+  },
+  "build": {
+    "command": "npm.cmd --prefix src/web/frontend run build",
+    "nativeExit": 0
+  },
+  "browser": {
+    "command": "W11_EVIDENCE_RUN=browser-final C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8 scripts/w11_web_runtime.py",
+    "nativeExit": 0,
+    "screens": 36,
+    "axeAudits": 12,
+    "httpRecords": 47,
+    "unexpectedConsoleErrors": 0,
+    "expectedConsoleRecords": 31,
+    "pageErrors": 0,
+    "unexpectedFailedRequests": 0,
+    "axeScope": "6 screens, light/dark at 1280; other widths checked for layout/touch targets",
+    "runtime": "browser-final/runtime.json"
+  },
+  "namedRegressionAssertionsPassed": [
+    "test_every_cid_route_hides_private_course_from_outsiders_including_admin",
+    "test_build_cards_expose_only_the_viewers_upload_for_the_course",
+    "test_reused_queued_upload_has_its_own_confirmation_and_title",
+    "test_same_actor_separate_courses_keep_the_confirmation_and_polling_context",
+    "test_postgres_rejoin_retains_exact_private_session_and_progress[remove]",
+    "test_postgres_rejoin_retains_exact_private_session_and_progress[leave]"
+  ],
+  "mutationsCaught": 8,
+  "providerCostUsd": 0,
+  "sourceHashesVerifiedAfterAllGates": true,
+  "handoffPolicy": "following evidence-only commit must not change source/test/harness"
+}

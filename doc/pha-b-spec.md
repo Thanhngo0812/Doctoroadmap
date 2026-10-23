@@ -418,6 +418,8 @@ Thêm hai quy định:
 | K8 | `explanation` còn ≥ 2 ý sau khi bỏ | sinh lại 1 lần kèm danh sách lỗi; vẫn hỏng thì dùng mốc trích câu và đánh dấu |
 | K9 | đáp án câu tự kiểm tra qua K2 và K3 | bỏ câu tự kiểm tra |
 
+**Từ 2026-10-23, cột "khi hỏng" của K2–K9 và mục "Stream và kiểm" dưới đây bị thay** bởi [ADR 0024](adr/0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md) và spec Pha B2 mục 6: luật kiểm chỉ ghi log, ý trượt vẫn hiện, ý hiện ngay khi đóng xong.
+
 **Stream và kiểm:**
 - Luật cục bộ (K2, K3, K5, K7) chạy ngay khi một ý đóng xong. Chỉ ý đạt mới đẩy ra sự kiện `item`.
 - Hết stream thì chạy luật toàn bài, rồi gửi sự kiện `final`.

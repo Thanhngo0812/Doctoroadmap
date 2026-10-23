@@ -21,6 +21,9 @@ def main():
     paths += [ROOT / 'src/web/backend/wayfinder' / relative for relative in
               ('settings.py', 'worker.py', 'cli.py', 'composition.py')]
     paths += list((ROOT / 'src/web/backend/wayfinder').glob('infrastructure/real_build.py'))
+    paths += [ROOT / 'src/web/backend/wayfinder/infrastructure/phase_b_store.py']
+    paths += [ROOT / 'src/web/backend/tests' / name for name in
+              ('w15_capture.py', 'w15_mutations.py', 'w15_cache_metadata.py')]
     hashes = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
     start = monotonic()
     process = subprocess.run(command, cwd=ROOT, capture_output=True, encoding='utf-8', errors='replace',

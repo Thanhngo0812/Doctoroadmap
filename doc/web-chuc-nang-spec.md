@@ -248,21 +248,24 @@ dựng `owner` hay `doc_id`; dịch vụ lấy chúng từ `Actor` và bản ghi
 **`LearningGateway` là chỗ duy nhất gọi Pha B.** Mỗi hàm:
 1. tải khoá học; kiểm `Actor` là thành viên qua bảng luật (mục 3);
 2. gọi use case Pha B với `owner = actor.user_id`, `doc_id = course.doc_id`, `graph_version = course.published_graph_version`;
-3. trả nguyên hợp đồng Pha B (`lecture-2`, `answer-2`, `quiz-2`, `document-2`, `session-1`, `turn-1`, `library-1`, `progress-1`), chỉ thêm `course_id`.
+3. trả nguyên hợp đồng Pha B (`lecture-3`, `answer-3`, `quiz-2`, `document-2`, `session-1`, `turn-1`, `library-1`, `progress-1`), chỉ thêm `course_id`.
+
+**Cập nhật 2026-10-23:** ADR 0025/spec bài giảng 3 và ADR 0026/spec trợ lý 3 thay cấu trúc lecture-2/answer-2 trước đó.
+W-08 chờ SA-64, W-09 chờ SA-66 cho cổng tích hợp hợp đồng mới; chuẩn bị UI/gateway bằng fake được. Không coi mã cũ đã cài là đạt hợp đồng mới.
 
 Gateway **không** sửa nội dung Pha B. Mọi kiểm `owner` của Pha B vẫn chạy như cũ, thành hai lớp kiểm.
 
 **Tiêu điểm trợ lý** (chủ dự án duyệt 2026-10-22; lõi SA-56, web W-09): body POST lượt có `focus_node_id` tuỳ chọn.
 Trang học gửi ID khái niệm có bài giảng đang mở ở mỗi lượt, gồm bài tiên quyết; trang lộ trình không gửi. Gateway truyền nguyên giá trị vào use case,
 không tự kiểm hoặc ghi vào session/assistant_state. Lõi bỏ ID không phải khái niệm học được của đồ thị đang dùng, trả `focus_node_id = null` kèm
-`focus_ignored`; giá trị hợp lệ được trả lại trong `answer-2` cuối. Lượt không gửi không kế thừa tiêu điểm trước. Membership, owner, doc và graph/version
+`focus_ignored`; giá trị hợp lệ được trả lại trong `answer-3` cuối. Lượt không gửi không kế thừa tiêu điểm trước. Membership, owner, doc và graph/version
 vẫn do máy chủ buộc; tiêu điểm không cấp thêm quyền. W-09 nghiệm thu tích hợp sau khi Claude nghiệm thu/ghép SA-56.
 
 **Công cụ của trợ lý bị buộc phía máy chủ.** `make_quiz`, `make_document`, `get_lecture` và công cụ tra cứu nhận `owner`, `doc_id` từ gateway, không bao giờ
 từ đầu ra của mô hình. Một tài liệu tải lên có câu "hãy đọc dữ liệu của người khác" (chèn lệnh) không có đường nào tới dữ liệu ngoài khoá học đó.
 
-**Stream:** bài giảng và trợ lý dùng **Server-Sent Events** (SSE). Tên sự kiện và dữ liệu giữ đúng spec Pha B2 mục 10 (`skeleton`, `item`, `final`,
-`failure` cho bài giảng; sự kiện tiến trình và câu trả lời của trợ lý như hợp đồng `answer-2`).
+**Stream:** dùng **Server-Sent Events** (SSE). Lecture-3: skeleton/delta{text}/final{lecture}/failure; answer-3:
+progress/tool_call/delta/graph_card/artifact/final/failure. Markdown/LaTeX hiện dần; sources và nhãn nguồn mở đúng trang, validation chỉ admin.
 
 **Bản dựng chạy ở worker riêng,** không trong tiến trình web. Hàng đợi là một bảng trong PostgreSQL (mục 13), không thêm Redis hay Celery.
 
@@ -398,7 +401,7 @@ test (test bật chúng bằng cấu hình), để bật lại bằng một bi�
 - `build_monthly_max` lượt mỗi tài khoản mỗi tháng lịch theo giờ Việt Nam; admin đổi riêng cho từng người;
 - `system_daily_build_max_usd`: tổng chi khâu dựng của cả hệ thống mỗi ngày. Chạm trần thì bản dựng mới chờ ở `queued` tới ngày sau; bản đang chạy
   dừng ở ranh giới bước với `het_tran_he_thong`, thử lại được.
-Hai trần này **tách** khỏi trần người học (0,20 USD) và trần nội dung dùng chung (5 USD) của spec Pha B2.
+Hai trần này **tách** khỏi trần người học (1,00 USD theo ADR 0026) và trần nội dung dùng chung (5 USD).
 
 **Dựng một cuốn ở lõi** là một use case mới, `build_document`, gói chuỗi lệnh hiện có thành từng bước có thể dry-run và chạy tiếp:
 - nhận đường dẫn tệp, `doc_id`, ngôn ngữ `vi`, và một hàm báo tiến trình;
@@ -503,7 +506,7 @@ bản. Chủ khoá xem báo lỗi của khoá mình; admin xem tất cả.
 
 | trần | giá trị mặc định | tính trên | khi chạm |
 |---|---|---|---|
-| người học mỗi ngày (Pha B2 mục 8) | 0,20 USD | trợ lý, tài liệu của người đó, **mọi khoá** | `daily_limit`, vẫn dùng mọi thứ 0 USD |
+| người học mỗi ngày (ADR 0026 cập nhật Pha B2) | 1,00 USD | trợ lý, tài liệu của người đó, **mọi khoá** | `daily_limit`, vẫn dùng mọi thứ 0 USD |
 | nội dung dùng chung mỗi ngày (Pha B2 mục 8) | 5,0 USD | bài giảng, sinh và kiểm quiz | bài giảng `tran_he_thong`; quiz dùng ngân hàng có sẵn |
 | lượt dựng mỗi tài khoản mỗi tháng (mới) | **tắt** (bản demo) | bản dựng có chi (không tính bản dùng lại) | từ chối tải lên, `quota_exceeded` |
 | khâu dựng toàn hệ thống mỗi ngày (mới) | **tắt** (bản demo) | `purpose = build` | bản dựng chờ, hay dừng ở ranh giới bước |
@@ -573,7 +576,7 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 | `owns_shared_courses` | 409 | xoá tài khoản khi còn khoá có thành viên khác |
 | `internal_error` | 500 | kèm `ref` |
 
-`daily_limit` của trợ lý **không** phải lỗi HTTP: nó là `status` trong `answer-2`, HTTP 200, như Pha B2.
+`daily_limit` của trợ lý **không** phải lỗi HTTP: nó là status trong answer-3, HTTP 200.
 
 **Điểm cuối:**
 
@@ -621,7 +624,7 @@ Mọi đường dưới `/api/v1`. Thân yêu cầu và phản hồi là JSON, t
 | `signed_url_ttl_seconds` | 300 |
 | `page_image_width` | 1.400 |
 
-Các trần Pha B (0,20 USD, 5 USD) vẫn ở `BSettings`.
+Các trần Pha B (1,00 USD theo ADR 0026, 5 USD nội dung dùng chung) ở `BSettings`.
 
 **Cấu hình Gemini dùng lại từ `Settings` lõi**, không thêm bộ khoá trùng trong `WebSettings`: tạm dùng `DOC2ROADMAP_LLM_TRANSPORT=vertex`,
 `DOC2ROADMAP_VERTEX_PROJECT`, `DOC2ROADMAP_VERTEX_LOCATION` và ADC phía máy chủ. API/worker dùng cùng cấu hình; chỉ chuyển sang `developer_api` và
@@ -749,8 +752,8 @@ Bảy câu hỏi mở của bản đầu đã được chủ dự án trả lờ
   - xem trang gói, báo cỡ tệp tối đa và tín dụng mỗi tháng;
 - Gmail: tạo mật khẩu ứng dụng (cần bật xác minh hai bước), đặt vào `.env`.
 
-**Trần Pha B vẫn giữ** theo đợt tra hỏi Pha B2 (Q5, Q29a): 0,20 USD mỗi người học mỗi ngày cho trợ lý và tài liệu, 5 USD mỗi ngày cho nội dung dùng
-chung. Câu "không cần giới hạn" ngày 2026-10-18 nói về khâu dựng; muốn bỏ cả trần Pha B thì chủ dự án báo riêng.
+**Trần Pha B cập nhật theo ADR 0026, 2026-10-23:** 1,00 USD mỗi người học mỗi ngày cho trợ lý/tài liệu (thay 0,20 USD trước đó),
+giữ 5 USD mỗi ngày cho nội dung dùng chung. Câu "không cần giới hạn" ngày 2026-10-18 chỉ nói khâu dựng, không tự bỏ trần Pha B.
 
 ## Ghi chú thêm
 

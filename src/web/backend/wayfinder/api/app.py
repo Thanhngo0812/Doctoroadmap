@@ -15,6 +15,8 @@ from starlette.exceptions import HTTPException
 from wayfinder import __version__
 from wayfinder.api.auth import auth_router, enforce_csrf
 from wayfinder.api.courses import course_router
+from wayfinder.api.sharing import sharing_router
+from wayfinder.api.token_privacy import install_share_link_log_filter
 from wayfinder.api.builds import build_router
 from wayfinder.application.accounts import AuthError
 from wayfinder.api.errors import ERROR_STATUS, ErrorCode, WebError
@@ -43,6 +45,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
     @asynccontextmanager
     async def lifespan(_: FastAPI):
         try:
+            install_share_link_log_filter()
             yield
         finally:
             services.close()
@@ -54,6 +57,8 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
     app.state.settings = settings
     app.include_router(auth_router())
     app.include_router(course_router())
+    app.include_router(sharing_router())
+    install_share_link_log_filter()
     app.include_router(build_router())
 
     @app.exception_handler(AuthError)
@@ -140,7 +145,12 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
         recovery_api = request.url.path.startswith("/api/v1/auth/password-reset/") or request.url.path in {
             "/api/v1/auth/verify-email", "/api/v1/auth/resend-verification"}
         response.headers["referrer-policy"] = "no-referrer" if recovery_page or recovery_api else "same-origin"
-        if recovery_page or recovery_api:
+        sharing_privacy = (request.url.path.startswith("/join/")
+                           or request.url.path.startswith("/api/v1/join/")
+                           or "/share-links" in request.url.path
+                           or request.url.path in {"/dang-nhap", "/dang-ky"})
+        if recovery_page or recovery_api or sharing_privacy:
+            response.headers["referrer-policy"] = "no-referrer"
             response.headers["cache-control"] = "no-store"
         return response
 
