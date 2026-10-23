@@ -30,11 +30,14 @@ CASES = [case for case in W25_CASES if case[0] in W25_LABELS] + [
     ('no-queued-dry-run', 'infrastructure/real_build.py', 'if dry_run:', 'if False:', 'rejects_dry_run', TEST),
     ('api-version', 'composition.py', "version = real_pipeline_version(settings, core_settings)",
      "version = 'web-fake-v1'", 'cumulative_usage', TEST),
+    ('trace-not-billed', 'infrastructure/phase_b_store.py',
+     'if value.get("counted_in") == "build":', 'if False:', 'trace_keeps_raw_usage or only_build_charge', TEST),
 ]
 
 
 def main():
-    output = ROOT / 'report/w15-evidence/mutations'
+    batch = sys.argv[1] if len(sys.argv) > 1 else ''
+    output = ROOT / 'report/w15-evidence/mutations' / batch
     output.mkdir(parents=True, exist_ok=True)
     records = []
     run_id = uuid4().hex[:8]
@@ -51,7 +54,8 @@ def main():
             path.write_bytes(source.replace(old, new).encode('utf-8'))
             process = subprocess.run(command, cwd=ROOT, capture_output=True, encoding='utf-8', errors='replace',
                                      env={**os.environ, 'PYTHONDONTWRITEBYTECODE': '1',
-                                          'W25_EVIDENCE_RUN': 'w15-mutation-' + label, 'W15_EVIDENCE_RUN': 'mutation-' + label})
+                                          'W25_EVIDENCE_RUN': 'w15-mutation-' + (batch + '-' if batch else '') + label,
+                                          'W15_EVIDENCE_RUN': 'mutation-' + (batch + '-' if batch else '') + label})
             (output / (label + '.log')).write_bytes((process.stdout + process.stderr).encode('utf-8'))
             tree = ET.parse(xml)
             failures, errors = tree.findall('.//testcase/failure'), tree.findall('.//testcase/error')
