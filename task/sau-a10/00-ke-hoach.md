@@ -122,7 +122,8 @@ Bốn luật:
 | [64](64-bai-giang-3-van-xuoi.md) | Bài giảng `lecture-3`: văn xuôi tự nhiên, tư liệu rộng, thấy ảnh trang (ADR 0025, [spec](../../doc/bai-giang-3-spec.md)) | — | 0 khi cài; lượt thật do Claude | sẵn sàng; giao Sonnet ngay. Bản thử 13 khái niệm 0,11 USD |
 | [65](65-anh-trang-luc-dung-sach.md) | Ảnh các trang có công thức lúc dựng sách + lệnh chụp bù | **62** | 0 | chờ SA-62 ghép; sau SA-64 |
 | [66](66-tro-ly-3-gia-su-tu-nhien.md) | Trợ lý `answer-3`: gia sư tự nhiên, ngữ cảnh lấy trước, công cụ khi cần, kiểm chỉ ghi log (ADR 0026, [spec](../../doc/tro-ly-3-spec.md)) | **64** | 0 khi cài; lượt thật do Claude | chờ SA-64 ghép. Bản thử 12 câu: cũ 3/12 rỗng, 3–29 s; mới 12/12, 1,9–6,7 s |
-| 67 (chưa vé) | Tài liệu do người học yêu cầu: bỏ hậu kiểm xoá câu (`documents.py` dùng chung `check_text`) | 66 | — | ghi nhận 2026-10-23, làm sau trợ lý |
+| 67 (chưa vé) | Tài liệu do người học yêu cầu: bỏ hậu kiểm xoá câu (`documents.py` dùng chung `check_text`) | 66 | — | chủ dự án chấp nhận 2026-10-23: cả 4 khâu (bài giảng, trợ lý, tài liệu, quiz) nâng lên chuẩn app lớn; làm sau khi bài giảng và trợ lý xong. Thử trước, đọc, rồi spec |
+| 68 (chưa vé) | Quiz: rà như bài giảng (SA-22: kiểm loại 58% câu LLM, `quiz_verify` cắt ở 400 token) | 66 | — | như 67 |
 
 **Vá sau SA-45, 2026-10-19:** các lỗi 46–50 đã ghép và kiểm, SA-51 sửa phương pháp tổng hợp và phát lại đủ 12 mẫu, không dùng phê duyệt chi cũ cho lượt mới. Xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Các phán xét SA-45 ở dòng 34–43 phía trên là lịch sử trước vá; lỗi tương ứng đã xử lý ở 46–50, giới hạn bằng chứng so nhiệt độ vẫn được giữ tại 51.
 
