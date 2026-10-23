@@ -166,3 +166,19 @@ def test_cli_page_images_refuses_a_mismatched_pdf_and_writes_nothing(tmp_path, m
     make_pdf(pdf, "BT /F1 12 Tf 30 150 Td (Chapter 1 about gradient descent and its many uses) Tj ET")
     out = phase_b.run(args)
     assert out["page_count"] == 1 and ArtifactPageImages(tmp_path / "art").get("book", 3, 1)
+
+
+def test_pdfium_renders_the_requested_page_not_its_neighbour(tmp_path):
+    import pypdfium2 as pdfium
+    from io import BytesIO
+    from PIL import Image
+
+    pdf = pdfium.PdfDocument.new()
+    for width, height in ((200, 100), (100, 300), (50, 50)):
+        pdf.new_page(width, height).close()
+    path = tmp_path / "sizes.pdf"
+    pdf.save(path)
+    pdf.close()
+    images = PdfiumPageRenderer().render_pages(path, [2, 1], scale=1.5, quality=80)
+    assert Image.open(BytesIO(images[1])).size == (300, 150)
+    assert Image.open(BytesIO(images[2])).size == (150, 450)
