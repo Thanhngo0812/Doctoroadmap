@@ -136,6 +136,7 @@ def compose_course_services(settings, engine, phase_b_store, *, model=None, embe
                             clock=None, graph_loader=None, media=None):
     from doc2roadmap.application.phase_b.retrieval import load_learning_graph
     from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+    from doc2roadmap.infrastructure.artifacts.page_images import ArtifactPageImages
     from wayfinder.application.courses import CourseService
     from wayfinder.application.learning_gateway import LearningGateway
     from wayfinder.infrastructure.course_store import PostgresCourseStore
@@ -144,14 +145,9 @@ def compose_course_services(settings, engine, phase_b_store, *, model=None, embe
 
     if graph_loader is None:
         def graph_loader(doc_id, version):
-            artifacts = JsonArtifactStore(settings.artifact_root)
-            graph = load_learning_graph(artifacts, doc_id, version)
-            record = artifacts.load_graph(doc_id, graph.graph_version)
-            chunks_version = record.manifest.get('config', {}).get('chunks_version') or record.manifest.get('chunks_version')
-            if chunks_version:
-                graph.parse_version = artifacts.load_chunks(doc_id, int(chunks_version)).manifest.get('parse_version')
-            return graph
-    runtime = WebLearningRuntime(phase_b_store, model=model, embedding=embedding, clock=clock)
+            return load_learning_graph(JsonArtifactStore(settings.artifact_root), doc_id, version)
+    runtime = WebLearningRuntime(phase_b_store, model=model, embedding=embedding, clock=clock,
+                                page_images=ArtifactPageImages(settings.artifact_root))
     courses = CourseService(PostgresCourseStore(engine), settings=settings, clock=clock)
     gateway = LearningGateway(courses, runtime, graph_loader,
                               media=LearningMedia(engine, settings, store=media, clock=clock))

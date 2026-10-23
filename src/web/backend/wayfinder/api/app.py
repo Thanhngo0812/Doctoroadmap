@@ -140,7 +140,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
         response.headers["content-security-policy"] = (
             "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; img-src 'self' data: blob:; "
             "style-src 'self' https://fonts.googleapis.com; style-src-elem 'self' https://fonts.googleapis.com; "
-            "style-src-attr 'unsafe-inline'; "
+            "style-src-attr 'unsafe-inline'; "  # KaTeX layout attributes; inline scripts/stylesheets stay blocked.
             "font-src 'self' https://fonts.gstatic.com data:"
         )
         response.headers["x-content-type-options"] = "nosniff"

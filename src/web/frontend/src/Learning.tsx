@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAuth } from './Auth';
 import { ApiError } from './api';
@@ -71,7 +71,7 @@ function Lesson({ courseId, nodeId, title, learned, pending, progressError, onTo
   }, [courseId, nodeId, attempt, onAccessError]);
   useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [nodeId]);
   const pages = lecture?.source_document?.kind === 'pdf' ? lecture.source_document.page_count : null;
-  const openSource = (page: number) => { if (pages && page >= 1 && page <= pages) setSourcePage(page); };
+  const openSource = useCallback((page: number) => { if (pages && page >= 1 && page <= pages) setSourcePage(page); }, [pages]);
   const sourceButton = (page?: number | null, label?: string) => <button type="button" className="lecture-source-link"
     disabled={!pages || !page || page < 1 || page > pages} onClick={() => page && openSource(page)}>
     {label ?? (page ? `Đọc trang ${page} trong tài liệu` : 'Tài liệu không có trang')}
@@ -99,7 +99,7 @@ function Lesson({ courseId, nodeId, title, learned, pending, progressError, onTo
       <blockquote>{definition.quote}</blockquote>{sourceButton(definition.page ?? definition.citation?.page)}
       {definition.formula_refs?.map((ref, index) => ref.url && <figure key={ref.asset_key ?? index}><img src={ref.url} alt={`Công thức ${ref.label ?? index + 1} trong tài liệu`} loading="lazy" /></figure>)}
     </section>}
-    {body && <div className="lecture-body"><LectureMarkdown text={body} sources={lecture?.sources} onSource={openSource} /></div>}
+    {body && <div className="lecture-body"><LectureMarkdown text={body} sources={lecture?.sources} onSource={pages ? openSource : undefined} /></div>}
     {streaming && !body && !failure && <TaskWait message="Đang soạn bài…" />}
     {streaming && body && <p className="lecture-streaming" role="status">Đang viết tiếp…</p>}
     {lecture?.warnings.includes('cat_ngan') && <p className="lecture-shortened" role="status">Bài được rút gọn</p>}
@@ -111,8 +111,8 @@ function Lesson({ courseId, nodeId, title, learned, pending, progressError, onTo
       </div>
     </section>}
     {lecture?.self_check && !streaming && <section className="lecture-self-check" aria-labelledby="self-check-title">
-      <h2 id="self-check-title">Tự kiểm tra</h2><LectureMarkdown text={lecture.self_check.question_md} sources={lecture.sources} onSource={openSource} />
-      <details><summary>Xem đáp án</summary><LectureMarkdown text={lecture.self_check.answer_md} sources={lecture.sources} onSource={openSource} /></details>
+      <h2 id="self-check-title">Tự kiểm tra</h2><LectureMarkdown text={lecture.self_check.question_md} sources={lecture.sources} onSource={pages ? openSource : undefined} />
+      <details><summary>Xem đáp án</summary><LectureMarkdown text={lecture.self_check.answer_md} sources={lecture.sources} onSource={pages ? openSource : undefined} /></details>
     </section>}
     {lecture?.sources.length ? <section className="lecture-sources" aria-labelledby="lecture-sources-title">
       <h2 id="lecture-sources-title">Trong sách</h2><ul>{lecture.sources.map(source => <li key={source.label}>
@@ -124,7 +124,8 @@ function Lesson({ courseId, nodeId, title, learned, pending, progressError, onTo
     {lecture?.media.map(media => <figure key={media.asset_key}><img src={media.url} alt={media.caption || 'Hình trong tài liệu'} loading="lazy" />{media.caption && <figcaption>{media.caption}</figcaption>}</figure>)}
     {lecture?.next_up.length ? <section className="lecture-next" aria-labelledby="lecture-next-title"><h2 id="lecture-next-title">Tiếp theo</h2>
       {lecture.next_up.map(next => <Link key={next.node_id} to={lecturePath(courseId, next.module_id ?? lecture.position.module_id, next.node_id)}>
-        <span>{next.name}<small>Module {next.module_number ?? '—'} · {next.learner_status === 'learned' ? 'Đã học' : 'Chưa học'}</small></span><span aria-hidden="true">→</span>
+        <span>{next.name}<small>Module {next.module_number ?? '—'} · {next.learner_status === 'learned' ? 'Đã học' : 'Chưa học'}</small></span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
       </Link>)}
     </section> : null}
     <footer className="lecture-progress"><label><input type="checkbox" checked={learned} disabled={pending} onChange={onToggle} />Đánh dấu bài học đã học</label>
@@ -189,7 +190,7 @@ export function LearningPage(props: ThemeProps) {
         : <>
           <div className="learning-context"><Link to={coursePath(cid)}>{data.course.title}</Link><span>Module {data.roadmap.modules.findIndex(item => item.module_id === mid) + 1} · {module.concepts.filter(item => data.progress.nodes[item.node_id]?.state === 'learned').length}/{module.concepts.length} bài học đã học</span></div>
           <div className={`learning-workspace${selected ? ' has-lesson' : ''}`}>
-            <nav className="learning-sidebar" aria-label="Bài học trong module"><p className="learning-sidebar__title">{module.title}</p><ol>{module.concepts.map((concept, index) => <li key={concept.node_id} className={selected?.node_id === concept.node_id ? 'is-current' : ''}>
+            <nav className="learning-sidebar" aria-label="Bài học trong module" tabIndex={0}><p className="learning-sidebar__title">{module.title}</p><ol>{module.concepts.map((concept, index) => <li key={concept.node_id} className={selected?.node_id === concept.node_id ? 'is-current' : ''}>
               <div><label className="learning-check"><input type="checkbox" aria-label={`Đã học: ${concept.name}`} checked={data.progress.nodes[concept.node_id]?.state === 'learned'} disabled={pending.has(concept.node_id)} onChange={() => void toggle(concept.node_id)} /></label>
                 <Link to={lecturePath(cid, mid, concept.node_id)} aria-current={selected?.node_id === concept.node_id ? 'page' : undefined}><small>Bài {index + 1}</small>{concept.name}</Link></div>
               {errors[concept.node_id] && <p role="alert">{errors[concept.node_id]}</p>}
@@ -198,7 +199,8 @@ export function LearningPage(props: ThemeProps) {
               {selected ? <><Link className="learning-list-back" to={modulePath(cid, mid)}>← Danh sách bài học</Link><Lesson key={selected.node_id} courseId={cid} nodeId={selected.node_id} title={selected.name}
                 learned={data.progress.nodes[selected.node_id]?.state === 'learned'} pending={pending.has(selected.node_id)} progressError={errors[selected.node_id]}
                 onToggle={() => void toggle(selected.node_id)} onAccessError={accessError} /></>
-                : <section className="learning-module-intro"><h1>{module.title}</h1><p>Chọn một bài học để bắt đầu. Bạn có thể đọc tài liệu gốc và quay lại bất cứ lúc nào.</p>
+                : <section className="learning-module-intro"><h1>{module.title}</h1><p>{(typeof module.description === 'string'
+                  ? module.description : module.description.map(part => part.text).join(' ')) || 'Chọn một bài học để bắt đầu. Bạn có thể đọc tài liệu gốc và quay lại bất cứ lúc nào.'}</p>
                   {module.concepts[0] && <Link className="button button-primary" to={lecturePath(cid, mid, module.concepts[0].node_id)}>Mở bài học đầu tiên</Link>}
                   {!module.concepts.length && <p>Module này chưa có bài học.</p>}
                 </section>}

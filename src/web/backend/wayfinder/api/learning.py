@@ -8,6 +8,8 @@ from fastapi.responses import RedirectResponse, StreamingResponse
 from starlette.concurrency import run_in_threadpool
 
 from wayfinder.api.auth import get_actor
+from wayfinder.api.errors import WebError
+from wayfinder.api.lecture_models import LectureView
 from wayfinder.domain.auth import Actor
 
 
@@ -17,7 +19,7 @@ logger = logging.getLogger(__name__)
 def learning_router():
     router = APIRouter(prefix='/api/v1/courses', tags=['learning'])
 
-    @router.get('/{cid}/concepts/{node_id}/lecture')
+    @router.get('/{cid}/concepts/{node_id}/lecture', response_model=LectureView)
     def lecture(cid: str, node_id: str, request: Request, response: Response, actor: Actor = Depends(get_actor)):
         response.headers['cache-control'] = 'no-store'
         return request.app.state.services.learning.get_lecture(actor, cid, node_id)
@@ -27,6 +29,10 @@ def learning_router():
         gateway = request.app.state.services.learning
         # Authorize before committing HTTP 200/SSE headers, including for malformed node IDs.
         await run_in_threadpool(gateway.lecture_context, actor, cid, node_id)
+        origin = request.headers.get('origin')
+        if (request.headers.get('sec-fetch-site') == 'cross-site'
+                or origin and origin not in request.app.state.settings.allowed_origins):
+            raise WebError('csrf_failed', 'Yêu cầu không hợp lệ')
         loop = asyncio.get_running_loop()
         queue = asyncio.Queue()
         disconnected = Event()
@@ -68,6 +74,8 @@ def learning_router():
                     if event is None:
                         break
                     payload = {key: value for key, value in event.items() if key != 'event'}
+                    if payload.get('lecture'):
+                        payload['lecture'] = LectureView.model_validate(payload['lecture']).model_dump(mode='json')
                     yield f'event: {event["event"]}\ndata: {json.dumps(payload, ensure_ascii=False)}\n\n'
             finally:
                 disconnected.set()

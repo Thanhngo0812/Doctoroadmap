@@ -1,4 +1,5 @@
 import Markdown from 'react-markdown';
+import { memo } from 'react';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
@@ -7,7 +8,7 @@ export type LectureSource = { label: string; chunk_id: string; page: number | nu
 
 type MdNode = { type: string; value?: string; url?: string; children?: MdNode[] };
 
-export default function LectureMarkdown({ text, sources = [], onSource }: {
+function LectureMarkdown({ text, sources = [], onSource }: {
   text: string; sources?: LectureSource[]; onSource?: (page: number) => void;
 }) {
   const registered = new Map(sources.filter(source => /^S[1-9]\d*$/.test(source.label)
@@ -40,8 +41,11 @@ export default function LectureMarkdown({ text, sources = [], onSource }: {
       a: ({ href, children }) => {
         const source = href?.startsWith('#wf-source-') ? registered.get(href.slice(11)) : undefined;
         if (source) return <button className="lecture-citation" type="button"
-          aria-label={`Nguồn ${source.label}, trang ${source.page}`} onClick={() => onSource?.(source.page!)}>{children}</button>;
+          aria-label={`Nguồn ${source.label}, trang ${source.page}`} disabled={!onSource}
+          onClick={() => onSource?.(source.page!)}>{children}</button>;
         return href ? <a href={href} target="_blank" rel="noopener noreferrer">{children}</a> : <span>{children}</span>;
       },
     }}>{text}</Markdown></div>;
 }
+
+export default memo(LectureMarkdown);
