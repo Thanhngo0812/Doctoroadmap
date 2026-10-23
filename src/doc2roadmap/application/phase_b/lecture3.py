@@ -226,7 +226,9 @@ class Lecture3UseCase:
         stored = self.store.single_flight(
             key, lambda: self._generate(skeleton, system, user, images, len(pages), chunks, key, material, doc_id,
                                         allow_spend, started, retries, emit),
-            cache_if=lambda value: isinstance(value, dict) and value.get("status") == "ready", negative_ttl_seconds=0)
+            # A cut lesson is shown once but not shared, so the next click writes it whole.
+            cache_if=lambda value: (isinstance(value, dict) and value.get("status") == "ready"
+                                    and "cat_ngan" not in value.get("warnings", [])), negative_ttl_seconds=0)
         result = self._public(stored, graph_version, owner, doc_id)
         if result["status"] == "failed":
             self._remember_failure(key, doc_id, result)

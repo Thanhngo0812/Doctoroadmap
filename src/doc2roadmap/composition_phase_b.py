@@ -52,7 +52,6 @@ class PhaseBRuntime:
         self._models = {}
         self._query_embedding = None
         self._concept_indexes = {}
-        self._parse_versions = {}
         self.page_images = ArtifactPageImages(self.settings.artifact_dir)
 
     def model(self, purpose):
@@ -89,19 +88,7 @@ class PhaseBRuntime:
         graph = load_learning_graph(self.artifacts, doc_id, graph_version)
         if not graph.modules:
             raise ValueError('Phiên bản đồ thị chưa có module A10; chọn --graph-version đã hoàn tất')
-        graph.parse_version = self._parse_version(graph)
         return graph
-
-    def _parse_version(self, graph):
-        """Parse version the chunks came from; page pictures are stored under it."""
-        key = (graph.doc_id, graph.graph_version)
-        if key not in self._parse_versions:
-            manifest = self.artifacts.load_graph(graph.doc_id, graph.graph_version).manifest
-            chunks_version = manifest.get('config', {}).get('chunks_version') or manifest.get('chunks_version')
-            chunks = (self.artifacts.load_chunks(graph.doc_id, int(chunks_version)) if chunks_version
-                      else self.artifacts.load_latest_chunks(graph.doc_id))
-            self._parse_versions[key] = chunks.manifest.get('parse_version')
-        return self._parse_versions[key]
 
     def naming(self, doc_id, *, graph_version=None, deterministic=False, dry_run=False):
         graph = self.graph(doc_id, graph_version)

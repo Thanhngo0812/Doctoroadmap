@@ -20,9 +20,14 @@ pytestmark = pytest.mark.skipif(not (ARTIFACTS / "graph" / "doc-1").exists(), re
 
 @pytest.fixture(scope="module")
 def graph():
-    loaded = load_learning_graph(JsonArtifactStore(ARTIFACTS), "doc-1", 8)
-    loaded.parse_version = 1
-    return loaded
+    return load_learning_graph(JsonArtifactStore(ARTIFACTS), "doc-1", 8)
+
+
+def test_loaded_graph_carries_the_parse_version_its_chunks_came_from(graph):
+    store = JsonArtifactStore(ARTIFACTS)
+    chunks_version = store.load_graph("doc-1", 8).manifest["config"]["chunks_version"]
+    expected = store.load_chunks("doc-1", int(chunks_version)).manifest["parse_version"]
+    assert graph.parse_version == int(expected)
 
 
 def concept(graph, name):

@@ -221,6 +221,15 @@ def test_error_midway_keeps_the_text_already_sent_as_a_cut_ready_lesson():
     assert events[-1]["event"] == "final" and model.calls and len(model.calls) == 1
 
 
+def test_cut_lesson_is_shown_but_not_shared_so_the_next_click_writes_it_whole():
+    sent = "Tập hợp là cách gom các đối tượng. Theo sách [S1] đó là nhóm xác định."
+    model = FakeModel([sent, RuntimeError("Gemini request failed")], list_pieces(GOOD_LESSON))
+    first, _, store, _, use_case = run(model)
+    assert first["status"] == "ready" and "cat_ngan" in first["warnings"] and first["body_md"] == sent
+    second = use_case.make("d1", "g1", make_graph(), "a", allow_spend=True)
+    assert len(model.calls) == 2 and "cat_ngan" not in second["warnings"] and second["body_md"] != sent
+
+
 def test_deadline_in_the_middle_of_the_stream_keeps_the_text_too():
     pause = threading.Event()
 
