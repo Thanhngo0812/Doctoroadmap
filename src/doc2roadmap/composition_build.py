@@ -45,9 +45,31 @@ def _pipeline_version(settings):
     return f"{commit}:{config_hash}"
 
 
+class BuildTracePhaseBStore:
+    """Phase B store seen by one build: usage rows it writes are traces, not spend.
+
+    Every `append_usage` row gets `counted_in = "build"`; all other methods go straight to the wrapped store.
+    The build's spend is the delta of `DocumentPipeline.usage()` (provider tokens through the meters).
+    Rule: every sum of provider spend (receipts, ledgers, reports, admin spend tables) must not add rows whose
+    `counted_in = "build"`. `DailySpendGuard` is the one reader that still counts them, as a safety cap.
+    """
+
+    def __init__(self, store):
+        self._store = store
+
+    def append_usage(self, row):
+        self._store.append_usage({**row, "counted_in": "build"})
+
+    def __getattr__(self, name):
+        return getattr(self._store, name)
+
+
 class DocumentPipeline:
-    def __init__(self, settings, *, allow_spend):
+    _injected_phase_b_store = None
+
+    def __init__(self, settings, *, allow_spend, phase_b_store=None):
         self.settings, self.allow_spend = settings, allow_spend
+        self._injected_phase_b_store = phase_b_store
         self.store = JsonArtifactStore(settings.artifact_dir)
         self.usage_meter = BuildUsage()
         self.limiter = AdaptiveModelLimiter(settings.llm_max_in_flight, settings.llm_tpm_budget,
@@ -71,6 +93,12 @@ class DocumentPipeline:
             timeout_seconds=settings.gemini_timeout_seconds, max_retries=settings.gemini_max_retries,
             transport=settings.llm_transport, vertex_project=settings.vertex_project,
             vertex_location=settings.vertex_location, limiter=self.limiter, **kwargs)
+
+    def _phase_b_store(self):
+        store = self._injected_phase_b_store
+        if store is None:
+            store = JsonPhaseBStore(self.settings.artifact_dir / "phase_b" / "live.json")
+        return BuildTracePhaseBStore(store)
 
     def read(self, file_path, doc_id):
         path = Path(file_path)
@@ -184,7 +212,6 @@ class DocumentPipeline:
         from doc2roadmap.application.use_cases.name_concept_labels import NameConceptLabels
         from doc2roadmap.application.phase_b.naming import NameModulesB
         from doc2roadmap.application.stage_measurements import measure_stage
-        from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
         from doc2roadmap.infrastructure.secondary_model import LightGBMSecondaryScorer
         from doc2roadmap.infrastructure.secondary_tokenizer import VietnameseWordTokenizer
         s = self.settings
@@ -196,7 +223,7 @@ class DocumentPipeline:
                      if s.secondary_mode == "ml" else BuildSecondaryEdges(self.store, model(s.extraction_max_output_tokens),
                      concurrency=concurrency, window_pairs=s.secondary_window_pairs, generation=generation))
         titles = NameModulesB(self.store, model(512), concurrency=concurrency,
-            phase_b_store=JsonPhaseBStore(s.artifact_dir / "phase_b" / "live.json"), allow_spend=self.allow_spend)
+            phase_b_store=self._phase_b_store(), allow_spend=self.allow_spend)
         titles.execute = measure_stage(titles.execute)
         runner = BuildLearningGraph(
             BuildClusters(self.store, self.embedding_guard, semantic_neighbors=s.topic_neighbors,
@@ -218,7 +245,7 @@ class DocumentPipeline:
         from doc2roadmap.application.phase_b.concept_index import IndexConcepts
         from doc2roadmap.composition_phase_b import PhaseBRuntime
         phase = PhaseBRuntime(settings=self.settings, allow_spend=self.allow_spend,
-                              store_path=self.settings.artifact_dir / "phase_b" / "live.json",
+                              store=self._phase_b_store(),
                               mode="gemini" if self.allow_spend else "offline")
         a12 = phase.a12(doc_id, graph_version=graph_version)
         concept = IndexConcepts(self.store, self.embedding_guard, phase.store).execute(
