@@ -94,7 +94,7 @@ def compose_services(
     courses = learning = sharing = None
     if database_engine is not None:
         courses, learning = compose_course_services(settings, database_engine, phase_b_store,
-            model=model, embedding=embedding, graph_loader=graph_loader, clock=clock)
+            model=model, embedding=embedding, graph_loader=graph_loader, clock=clock, media=build_media)
         sharing = compose_sharing_service(settings, database_engine, graph_loader=courses.gateway.graph_loader, clock=clock)
 
     def close_services():
@@ -133,20 +133,28 @@ def compose_build_service(settings, engine, *, media=None, clock=None, core_sett
 
 
 def compose_course_services(settings, engine, phase_b_store, *, model=None, embedding=None,
-                            clock=None, graph_loader=None):
+                            clock=None, graph_loader=None, media=None):
     from doc2roadmap.application.phase_b.retrieval import load_learning_graph
     from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
     from wayfinder.application.courses import CourseService
     from wayfinder.application.learning_gateway import LearningGateway
     from wayfinder.infrastructure.course_store import PostgresCourseStore
     from wayfinder.infrastructure.learning_runtime import WebLearningRuntime
+    from wayfinder.infrastructure.learning_media import LearningMedia
 
     if graph_loader is None:
         def graph_loader(doc_id, version):
-            return load_learning_graph(JsonArtifactStore(settings.artifact_root), doc_id, version)
+            artifacts = JsonArtifactStore(settings.artifact_root)
+            graph = load_learning_graph(artifacts, doc_id, version)
+            record = artifacts.load_graph(doc_id, graph.graph_version)
+            chunks_version = record.manifest.get('config', {}).get('chunks_version') or record.manifest.get('chunks_version')
+            if chunks_version:
+                graph.parse_version = artifacts.load_chunks(doc_id, int(chunks_version)).manifest.get('parse_version')
+            return graph
     runtime = WebLearningRuntime(phase_b_store, model=model, embedding=embedding, clock=clock)
     courses = CourseService(PostgresCourseStore(engine), settings=settings, clock=clock)
-    gateway = LearningGateway(courses, runtime, graph_loader)
+    gateway = LearningGateway(courses, runtime, graph_loader,
+                              media=LearningMedia(engine, settings, store=media, clock=clock))
     courses.gateway = gateway
     return courses, gateway
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { AuthNotice, AuthPage, AuthProvider, ForgotPasswordPage, LandingRoute, RequireAccount, ResetPasswordPage, VerifyEmailPage, useAuth } from './Auth';
 import { ApiError, fetchHealth, type HealthPayload } from './api';
@@ -8,6 +8,13 @@ import { JoinPage, MembersPage } from './Sharing';
 import { BuildPage, UploadPage } from './Builds';
 
 type Theme = 'light' | 'dark';
+
+const LearningPage = lazy(() => import('./Learning').then(module => ({ default: module.LearningPage })));
+function LearningRoute(props: { theme: Theme; onToggleTheme: () => void }) {
+  return <RequireAccount {...props}><Suspense fallback={<main className="page-frame" role="status">Đang mở trang học…</main>}>
+    <LearningPage {...props} />
+  </Suspense></RequireAccount>;
+}
 
 function useTheme(): [Theme, () => void] {
   const [theme, setTheme] = useState<Theme>(() => {
@@ -358,7 +365,8 @@ export default function App() {
     <Route path="/tai-khoan" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/khoa-hoc" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><CoursesPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/khoa-hoc/:cid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><RoadmapPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
-    <Route path="/khoa-hoc/:cid/module/:mid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><RoadmapPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/khoa-hoc/:cid/module/:mid" element={<LearningRoute theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/khoa-hoc/:cid/module/:mid/khai-niem/:nid" element={<LearningRoute theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/khoa-hoc/:cid/thanh-vien" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><MembersPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/join/:token" element={<JoinPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/tai-len" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><UploadPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />

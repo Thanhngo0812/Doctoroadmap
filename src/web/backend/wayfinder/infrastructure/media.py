@@ -4,6 +4,7 @@ import os
 import tempfile
 import time
 import urllib.request
+from urllib.parse import urlsplit
 from datetime import datetime
 from pathlib import Path
 from uuid import uuid4
@@ -14,8 +15,8 @@ _TIMEOUT_SECONDS = 30
 
 
 class CloudinaryMediaStore:
-    def __init__(self) -> None:
-        if not os.environ.get("CLOUDINARY_URL"):
+    def __init__(self, cloudinary_url: str | None = None) -> None:
+        if not cloudinary_url and not os.environ.get("CLOUDINARY_URL"):
             raise RuntimeError("CLOUDINARY_URL is required for Cloudinary media storage")
         import cloudinary
         import cloudinary.api  # noqa: F401
@@ -25,6 +26,11 @@ class CloudinaryMediaStore:
         # Reload the SDK config so a newly set CLOUDINARY_URL is honored.
         cloudinary.reset_config()
         cloudinary.config(secure=True, timeout=_TIMEOUT_SECONDS)
+        if cloudinary_url:
+            parsed = urlsplit(cloudinary_url)
+            if parsed.scheme != 'cloudinary' or not all((parsed.hostname, parsed.username, parsed.password)):
+                raise ValueError('Invalid Cloudinary configuration')
+            cloudinary.config(cloud_name=parsed.hostname, api_key=parsed.username, api_secret=parsed.password)
         self._cloudinary = cloudinary
 
     def upload(self, path: Path, folder: str, resource_type: str) -> str:

@@ -18,3 +18,9 @@ class WebLearningRuntime:
 
     def sessions(self, graph):
         return SessionUseCase(self.store, graph, settings=self.settings, clock=self.clock)
+
+    def lecture(self, graph):
+        # SA64 owns this implementation; importing lazily permits W08 contract work before its merge.
+        from doc2roadmap.application.phase_b.lecture3 import Lecture3UseCase
+        return Lecture3UseCase(self.model, self.store, settings=self.settings, clock=self.clock,
+                              progress=self.progress(graph), spend_guard=self.spend_guard)
