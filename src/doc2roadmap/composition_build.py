@@ -259,6 +259,7 @@ class DocumentPipeline:
                             "reused": concept.get("reused", False),
                             "concept_count": concept.get("concept_count", len(concept.get("items", [])))}
         formulas = {"skipped": "not a PDF"}
+        page_images = {"skipped": "not a PDF"}
         if Path(file_path).suffix.lower() == ".pdf":
             from doc2roadmap.application.phase_b.formula_images import CutFormulaImages, persist_formula_images
             from doc2roadmap.infrastructure.media.formula_images import PdfiumFormulaRenderer
@@ -271,7 +272,14 @@ class DocumentPipeline:
                         "parse_version": chunks.manifest["parse_version"],
                         "cut_count": full_formulas["cut_count"],
                         "skipped_count": full_formulas["skipped_count"]}
-        return {"a12": a12_metadata, "concept_index": concept_metadata, "formulas": formulas}
+            from doc2roadmap.application.phase_b.page_images import CapturePageImages
+            from doc2roadmap.infrastructure.media.page_images import PdfiumPageRenderer
+            captured = CapturePageImages(PdfiumPageRenderer()).execute(
+                file_path, parsed.tree, chunks.result.chunks, root=self.settings.artifact_dir,
+                doc_id=doc_id, parse_version=chunks.manifest["parse_version"])
+            page_images = {"parse_version": chunks.manifest["parse_version"], "page_count": captured["page_count"]}
+        return {"a12": a12_metadata, "concept_index": concept_metadata, "formulas": formulas,
+                "page_images": page_images}
 
     def inspect(self, doc_id):
         # Inspect only existing artifacts; never plans with cost estimates or writes new artifacts.
