@@ -1,0 +1,64 @@
+....FFFFFF....FF.....                                                    [100%]
+================================== FAILURES ===================================
+______ test_real_adapter_cumulative_usage_and_pg_recorder[success-True] _______
+src\web\backend\tests\test_real_build_w15.py:169: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['usage_complete'] == complete
+E   assert False == True
+______ test_real_adapter_cumulative_usage_and_pg_recorder[success-False] ______
+src\web\backend\tests\test_real_build_w15.py:184: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert sql(b, "SELECT count(*) AS n FROM phase_b_cache WHERE key LIKE 'w15:roles:%'")[0]['n'] == 1
+E   assert 2 == 1
+______ test_real_adapter_cumulative_usage_and_pg_recorder[failure-True] _______
+src\web\backend\tests\test_real_build_w15.py:184: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert sql(b, "SELECT count(*) AS n FROM phase_b_cache WHERE key LIKE 'w15:roles:%'")[0]['n'] == 1
+E   assert 3 == 1
+______ test_real_adapter_cumulative_usage_and_pg_recorder[failure-False] ______
+src\web\backend\tests\test_real_build_w15.py:184: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert sql(b, "SELECT count(*) AS n FROM phase_b_cache WHERE key LIKE 'w15:roles:%'")[0]['n'] == 1
+E   assert 4 == 1
+_______ test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True] _______
+src\web\backend\tests\test_real_build_w15.py:169: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['usage_complete'] == complete
+E   assert False == True
+______ test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False] _______
+src\web\backend\tests\test_real_build_w15.py:184: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert sql(b, "SELECT count(*) AS n FROM phase_b_cache WHERE key LIKE 'w15:roles:%'")[0]['n'] == 1
+E   assert 6 == 1
+__________________ test_worker_requires_explicit_fake_inputs __________________
+src\web\backend\tests\test_web_cli.py:58: in test_worker_requires_explicit_fake_inputs
+    with pytest.raises(SystemExit) as error:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'SystemExit'>
+---------------------------- Captured stderr call -----------------------------
+Worker cần PostgreSQL; fake cần manifest dev; real cần Vertex và port lõi phase_b_store.
+_______ test_cli_prints_vietnamese_with_legacy_windows_output_encoding ________
+src\web\backend\tests\test_web_cli.py:72: in test_cli_prints_vietnamese_with_legacy_windows_output_encoding
+    assert "Worker giả" in result.stderr.decode("utf-8")
+E   AssertionError: assert 'Worker giả' in 'Worker cần PostgreSQL; fake cần manifest dev; real cần Vertex và port lõi phase_b_store.\r\n'
+E    +  where 'Worker cần PostgreSQL; fake cần manifest dev; real cần Vertex và port lõi phase_b_store.\r\n' = <built-in method decode of bytes object at 0x0000024DD2E51710>('utf-8')
+E    +    where <built-in method decode of bytes object at 0x0000024DD2E51710> = b'Worker c\xe1\xba\xa7n PostgreSQL; fake c\xe1\xba\xa7n manifest dev; real c\xe1\xba\xa7n Vertex v\xc3\xa0 port l\xc3\xb5i phase_b_store.\r\n'.decode
+E    +      where b'Worker c\xe1\xba\xa7n PostgreSQL; fake c\xe1\xba\xa7n manifest dev; real c\xe1\xba\xa7n Vertex v\xc3\xa0 port l\xc3\xb5i phase_b_store.\r\n' = CompletedProcess(args=['C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe', '-m', 'wayfinder.cli', '...PostgreSQL; fake c\xe1\xba\xa7n manifest dev; real c\xe1\xba\xa7n Vertex v\xc3\xa0 port l\xc3\xb5i phase_b_store.\r\n').stderr
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+src/web/backend/tests/test_real_build_w15.py::test_real_default_requires_core_port_before_claim_or_provider
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+src/web/backend/tests/test_real_build_w15.py::test_real_default_requires_core_port_before_claim_or_provider
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\adapter-green.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[success-True]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[success-False]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[failure-True]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[failure-False]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False]
+FAILED src/web/backend/tests/test_web_cli.py::test_worker_requires_explicit_fake_inputs
+FAILED src/web/backend/tests/test_web_cli.py::test_cli_prints_vietnamese_with_legacy_windows_output_encoding
+8 failed, 13 passed, 3 warnings in 23.88s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

@@ -1,0 +1,282 @@
+[
+  {
+    "label": "confirm-cancel",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "before_confirmation_queue",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-confirm-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\confirm-cancel.xml"
+    ],
+    "original_sha256": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7",
+    "source_restored": true
+  },
+  {
+    "label": "terminal-cancel",
+    "exit_code": 1,
+    "failures": 4,
+    "assertion_failures": 4,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-terminal-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\terminal-cancel.xml"
+    ],
+    "original_sha256": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "source_restored": true
+  },
+  {
+    "label": "media-cancel",
+    "exit_code": 1,
+    "failures": 4,
+    "assertion_failures": 4,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-media-cancel",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\media-cancel.xml"
+    ],
+    "original_sha256": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+    "source_restored": true
+  },
+  {
+    "label": "receipt-once",
+    "exit_code": 1,
+    "failures": 8,
+    "assertion_failures": 8,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-receipt-once",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\receipt-once.xml"
+    ],
+    "original_sha256": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "source_restored": true
+  },
+  {
+    "label": "cancel-mail",
+    "exit_code": 1,
+    "failures": 8,
+    "assertion_failures": 8,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "preserves_receipt",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-cancel-mail",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\cancel-mail.xml"
+    ],
+    "original_sha256": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+    "source_restored": true
+  },
+  {
+    "label": "terminal-row-lock",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_build_cancellation_w25.py",
+      "-k",
+      "follow_observed_commit_order",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-terminal-row-lock",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\terminal-row-lock.xml"
+    ],
+    "original_sha256": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "source_restored": true
+  },
+  {
+    "label": "real-transport",
+    "exit_code": 1,
+    "failures": 2,
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "transport_validation",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-real-transport",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\real-transport.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "required-core-port",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "default_requires_core_port",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-required-core-port",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\required-core-port.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "same-postgres",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "different_database_engine",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-same-postgres",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\same-postgres.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "usage-baseline",
+    "exit_code": 1,
+    "failures": 6,
+    "assertion_failures": 6,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "cumulative_usage",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-usage-baseline",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\usage-baseline.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "usage-precision",
+    "exit_code": 1,
+    "failures": 2,
+    "assertion_failures": 2,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "cumulative_usage",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-usage-precision",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\usage-precision.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "step-clock",
+    "exit_code": 1,
+    "failures": 6,
+    "assertion_failures": 6,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "cumulative_usage",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-step-clock",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\step-clock.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "no-queued-dry-run",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "rejects_dry_run",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-no-queued-dry-run",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\no-queued-dry-run.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "api-version",
+    "exit_code": 1,
+    "failures": 6,
+    "assertion_failures": 6,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_real_build_w15.py",
+      "-k",
+      "cumulative_usage",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-a31bbf8f-api-version",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\api-version.xml"
+    ],
+    "original_sha256": "e3da77bf8f40aa1b223938f98c118278d877004287725c0860ef713760b1cc63",
+    "source_restored": true
+  }
+]
