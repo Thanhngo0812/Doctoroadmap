@@ -80,10 +80,10 @@ def test_stream_endpoints_use_real_use_cases_and_never_return_quiz_answers(serve
     lecture = events(request(base + '/api/lecture', {**args, 'node_id': 'n0'}))
     assert lecture[0]['event'] == 'skeleton'
     assert lecture[-1]['event'] == 'failure'
-    assert lecture[-1]['lecture']['contract_version'] == 'lecture-2'
+    assert lecture[-1]['lecture']['contract_version'] == 'lecture-3'
     assert lecture[-1]['lecture']['status'] == 'failed'
     assert lecture[-1]['lecture']['failure']['reason_code'] == 'khong_co_mo_hinh'
-    assert not any(event['event'] == 'item' for event in lecture)
+    assert not any(event['event'] in {'item', 'delta'} for event in lecture)
     quiz = events(request(base + '/api/quiz', {**args, 'scope': {'kind': 'roadmap'}}))
     assert quiz[-1]['event'] == 'final'
     public = quiz[-1]['quiz']
