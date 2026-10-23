@@ -74,11 +74,11 @@ Bốn luật:
 | [16](16-quiz-llm-theo-khai-niem.md) | Quiz LLM theo khái niệm | 15 | lượt nhỏ | đạt qua SA-27; chất lượng câu đánh giá ở SA-22 |
 | [17](17-cong-cu-make-quiz.md) | Công cụ `make_quiz` | 08, 16 | 0 (dùng ngân hàng) | đạt |
 | [18](18-tai-lieu-theo-yeu-cau.md) | Tài liệu theo yêu cầu (`make_document`) | 09, 12 | lượt nhỏ | đạt qua SA-25 và SA-30 (tài liệu sau hậu kiểm) |
-| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; đã giao agentic (chủ dự án báo 2026-10-21), chờ trả gói để kiểm |
+| [19](19-dac-ta-bo-cau-hoi-thu.md) | Đặc tả bộ câu hỏi thử cho trợ lý (**Claude**) | — | 0 | chủ dự án duyệt 19a; gói và câu kiểm đã xuất 2026-10-18; gói đã về (câu 18/10, câu kiểm 21/10). Claude kiểm 2026-10-23: script ĐẠT cả 6 cuốn, 200/200 câu, 0 cảnh báo; câu kiểm 12/12 (chặt 10/12), giữ mẫu duyệt 40. 5 cuốn khớp 100% graph ghim; **doc-1 lệch** vì dựng lại 20/10 (mã khái niệm 0/72, mã đoạn 0/47, `module_dang_mo` cùng mã khác module) |
 | [20](20-danh-gia-ten-module.md) | Đánh giá tên module | 06, **28**, **29** | dưới 1 USD | **chờ người chấm**: phiếu đã xuất (`a18713c`, [báo cáo](../../report/danh-gia-sa20-2026-10-22.md)), chi thật 0,22 USD. Gói gửi người chấm ở `Desktop\danh-gia-pha-b\sa20-giao-nguoi-cham\`; khoá và dữ liệu chạy ở `artifacts/phase_b/eval/sa20/`. Độ đo tự động: L1 rơi đường lùi 13,6% (> 10%) và mượn từ 1,85% (> 1%), cần đọc từng ca khi phân tích |
 | [21](21-danh-gia-bai-giang.md) | Đánh giá bài giảng | 04, 12, **26**, **30**, **53** | trần 5 USD | **đang chạy** (2026-10-23): agent Sonnet dựng phiếu và đo SA-13, worktree `tmp/sa21-eval-lectures`, nhánh `work/sa21-eval-lectures` |
 | [22](22-danh-gia-quiz.md) | Đánh giá quiz | 16, **27**, **52** | khoảng 1,7 USD | **chờ người chấm**: phiếu 254 câu (113 điền khuyết, 92 LLM qua kiểm, 49 LLM bị kiểm loại), ghép `2eaedab`, [báo cáo](../../report/danh-gia-sa22-2026-10-23.md), chi 1,20 USD. Gói ở `Desktop/danh-gia-pha-b/sa22-giao-nguoi-cham/`; khoá ở `artifacts/phase_b/eval/sa22/`. Ghi nhận: Q5 loại 58% câu LLM; độ phủ LLM 43,8%; lời gọi kiểm có lúc bị cắt ở trần 400 token |
-| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30**, **52**, **56** | lượt 1 trần khoảng 8 USD | chờ gói 19a agentic và SA-56; vé đã cập nhật theo graph ghim 2026-10-22 |
+| [23](23-danh-gia-tro-ly.md) | Đánh giá trợ lý: 4 cấu hình, RAGAS | 07, 10, 19, **25**, **30**, **52**, **56** | lượt 1 trần khoảng 8 USD | SA-56 đã ghép; gói 19a đã về và đạt kiểm. Chờ: xử lý 42 câu doc-1 lệch graph ghim, duyệt người 40 câu, chia dev/test; vé đã cập nhật theo graph ghim 2026-10-22 |
 | [24](24-trang-xem-thu-pha-b.md) | Trang xem thử Pha B trên máy cục bộ (chủ dự án yêu cầu 2026-10-15) | 06, 10, 13, 16 | 0 khi phát lại; có tiền khi bật `--allow-spend` | đạt |
 | [25](25-hau-kiem-trich-dan-theo-cau.md) | Hậu kiểm trích dẫn theo câu cho trợ lý và tài liệu; bảng giá chung | commit mã | 0 (phát lại) | đạt, Claude soát 2026-10-18 [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); trình bày tài liệu → 30 |
 | [26](26-bai-giang-chong-lap-ban-lui-sach.md) | Bài giảng: chống lặp ý, ghi lý do hỏng, `usage` đúng, `used_later` đúng chiều (bỏ phần bản lùi theo chủ dự án 2026-10-18) | commit mã | 0 (phát lại) | đạt [soát](../../report/kiem-thu-pha-b-sa25-28-2026-10-18.md); K6 dò sai, cache bài hỏng → 30 |
@@ -167,7 +167,8 @@ Ban đầu, vé 01–05 và 19 không có blocker và chạy song song được.
   và phân tích. Người chấm là thành viên nhóm do chủ dự án sắp xếp.
 - **Thứ tự:**
   - 20, 21, 22 chạy được ngay;
-  - 23 chờ gói 19a do agentic trả về, và chờ SA-56 (`focus_node_id` đổi đầu vào của trợ lý), để đánh giá đúng bản cuối.
+  - 23 chờ gói 19a do agentic trả về, và chờ SA-56 (`focus_node_id` đổi đầu vào của trợ lý), để đánh giá đúng bản cuối. Cập nhật 2026-10-23: cả hai
+    đã xong; còn xử lý doc-1 lệch graph ghim và duyệt người 40 câu (xem dòng 19).
 - **Tiền:** theo vé, 20 dưới 1 USD, 21 trần 5 USD, 22 khoảng 1,7 USD, 23 lượt 1 trần khoảng 8 USD; tổng khoảng 15,7 USD. **Chủ dự án duyệt
   2026-10-22** ("tiền duyệt"). Mỗi vé vẫn dry-run trước; dự toán trong trần của vé thì chạy luôn, vượt trần thì dừng và hỏi. Lượt 2 của 23
   vẫn xin duyệt riêng như vé ghi.
