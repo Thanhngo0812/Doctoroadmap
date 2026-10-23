@@ -1,0 +1,18 @@
+{
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "src/web/backend/tests/test_real_build_w15.py",
+    "-k",
+    "default_requires_core_port or worker_composition or default_factory_injects_web_postgres",
+    "-o",
+    "addopts=",
+    "-q",
+    "--basetemp=tmp/sa62-web-port-green",
+    "--junitxml=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-sa62-port-tests-20261023/focused-green.xml"
+  ],
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/sa62-port-kho-pha-b",
+  "commit": "97266c1c1f62aee40b6931a2146d163cee01f5f5",
+  "native_exit_code": 0,
+  "elapsed_seconds": 9.17
+}

@@ -141,6 +141,46 @@ def test_real_transport_validation_precedes_pipeline_construction(builds, transp
                                  pipeline_factory=FakePipeline)
 
 
+def test_real_default_factory_injects_web_postgres_before_provider(builds, monkeypatch):
+    from doc2roadmap.composition_build import DocumentPipeline
+    from doc2roadmap.application.ports.build import BuildRejected
+    from wayfinder.infrastructure.database import create_database_engine
+    from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+    from wayfinder.worker import make_real_worker
+    b = builds
+    settings = b.settings.model_copy(update={'build_runner': 'real',
+        'database_url': b.postgres_database_url.render_as_string(hide_password=False)})
+    consumer, engine = make_real_worker(settings, core_settings=core(b))
+    runtime = consumer.build_runtime
+    reader = PostgresPhaseBStore(create_database_engine(b.postgres_database_url))
+    receipts, injections = [], []
+
+    def stop_after_store_write(pipeline, file_path, doc_id):
+        assert not pipeline.allow_spend
+        injected = pipeline._injected_phase_b_store
+        assert isinstance(injected, PostgresPhaseBStore)
+        injections.append(injected)
+        pipeline._phase_b_store().put_cache('sa62:web:' + doc_id, {'written_by': 'default-pipeline'})
+        raise BuildRejected('chu_loi', 'Synthetic stop before any provider or later build step')
+
+    monkeypatch.setattr(DocumentPipeline, 'read', stop_after_store_write)
+    try:
+        assert runtime.pipeline_factory is DocumentPipeline
+        assert consumer.service.pipeline_version == runtime.pipeline_version
+        assert consumer.run_next_job() is None
+        result = runtime.runner(receipts.append).execute(Path('unused.pdf'), 'sa62-web-port')
+        assert result.status == 'rejected' and result.error['code'] == 'chu_loi'
+        assert injections == [runtime.phase_b_store]
+        assert reader.get_cache('sa62:web:sa62-web-port') == {'written_by': 'default-pipeline'}
+        assert receipts == [result] and result.model_calls == 0 and result.spent_usd == 0
+        assert not sql(b, 'SELECT * FROM build_attempt')
+        assert not sql(b, 'SELECT * FROM usage_ledger')
+    finally:
+        reader.close()
+        runtime.close()
+        engine.dispose()
+
+
 @pytest.mark.parametrize('complete', [True, False])
 @pytest.mark.parametrize('outcome', ['success', 'failure', 'cancel'])
 def test_real_adapter_cumulative_usage_and_pg_recorder(builds, monkeypatch, complete, outcome):

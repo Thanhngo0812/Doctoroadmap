@@ -371,7 +371,7 @@ Không có dry-run thật hoặc quyền chi mới. Giữ Vertex theo quyết đ
   (`PhaseBRuntime.__init__`), cùng test lõi. Không sửa use case Pha B hay `src/web/`. Chữ ký giữ đúng đề nghị W-15:
   `DocumentPipeline(settings, *, allow_spend, phase_b_store=None)`, `PhaseBRuntime(..., store=None)`. Có kho tiêm thì không tạo JSON nào.
 - **Nguồn chi build duy nhất:** delta của `DocumentPipeline.usage()` (meter, token thật). Dòng usage Pha B ghi trong lúc dựng (tên module, chỉ mục khái
-  niệm) là vết, mang `counted_in: "build"`. Receipt, ledger và bảng chi **không cộng** các dòng này. `DailySpendGuard` vẫn tính chúng vào trần ngày.
+  niệm) là vết, mang `counted_in: "build"`. Receipt, ledger và bảng chi **không cộng** các dòng này. `DailySpendGuard` chỉ tính lecture/quiz/assistant/document; trace module_title/embedding của dựng không vào trần này (đính chính SA-62).
 - **Lịch:** sau khi agent SA-21 xong; agent đó đang chạy lượt có tiền và đo giây, nên không chạy cổng chồng. Claude ghi xin cửa ghép ở mục 10 và chờ cửa
   sổ kiểm của người điều phối mở. Lên main thì người điều phối làm tiếp test xuyên PostgreSQL và dry-run nội bộ như lệnh giao.
 
@@ -399,6 +399,17 @@ Codex sẽ nhận main mới vào chính nhánh SA-62, thêm ca dương default 
 Đề nghị giữ lượt ghép mã SA tiếp theo trong cửa kiểm này, không chạy cổng PostgreSQL chồng; đây là đề nghị phối hợp, chưa coi là đã xác nhận.
 Không sửa mã composition đã nghiệm thu, không tự mở lượt dựng có tiền. DailySpendGuard không tính module_title/embedding của build;
 chi build chỉ là delta meter, trace trong extra không cộng vào tổng provider. Giữ lecture-3/answer-3 theo ADR 0025/0026.
+
+**2026-10-23, Codex hoàn tất yêu cầu test SA-62:** đã commit test dương vào chính nhánh `work/sa62-port-kho-pha-b` tại `ce5f581`.
+Hai ca âm nhận từ main vẫn giữ PipelineWithoutStorePort. Ca dương default factory ghi cache qua store pipeline và đọc lại bằng PG độc lập;
+provider/ADC/JsonPhaseBStore/SQLite bị chặn, recorder 1 lần, 0 calls/0 USD/0 attempt/ledger. Bỏ tiêm store làm 1 assertion fail, nguồn phục hồi SHA.
+Cổng trước SA-64 trên ce5f581: 2305 Python/143 React/build xanh. Codex dùng quyền tự ghép được cho phép, ghép/đẩy `9ac2a85`.
+Main vừa nhận SA-64 `1d91b0b` trước lệnh ghép, Codex ghi thiếu sót chặn hash và đã kiểm chứng sau ghép tại `14110c0`:
+**2355 Python đạt/1 Cloudinary live không bật, 0 fail/error, 143 React/build**, native 0. Không sửa composition hoặc giảm assertion.
+Junit lưu Git: `report/sa62-web-test-evidence-2026-10-23/full-postmerge.xml`; báo cáo `report/sa62-tiep-nhan-test-web-2026-10-23.md`.
+**SA-62 đã ở main**, không cần Claude ghép lại. W-15 tiếp kiểm toàn pipeline/identity/cache/dry-run 0 USD, chưa có quyền chi mới.
+SA-64 đã ghép, W-08 nhận lecture-3; answer-3 chờ SA-66, ảnh trang SA-65 do làn Claude. Artifact Pha A vẫn ở kho tệp.
+Codex mở lại cửa ghép sau khi hồ sơ này được đẩy; không còn cổng PostgreSQL đang chạy của Codex.
 
 ## 9. Khi Claude quay lại
 
@@ -497,3 +508,6 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-23 | nghiệm thu ba nhóm lần 2 chiều | Codex | W-11 đạt và mốc W-15 trace/test tương thích đạt, ghép/đẩy **e85427a** | Nhận web253874bb/lõi6627c00 trên main d74bea9, mốc b625752:2296Python/1Cloudinary live không bật,143React/build; browser PG48ảnh/16Axe/115HTTP,8auth-return,SQL độc lập/DB và cổng8011 đã dừng;0USD. Main có docs9ee69ce ngay trước ghép nên Codex ghi thiếu sót trình tự và nhận main817f487, kiểm chứng sau ghép2296Python/143React/build/native0. Mã/test/script/design khớp. Giữ hai lượt cổng, không giảm guard, không dọn worktree/dữ liệu |
 | 2026-10-23 | soát W-24 lần 2 | Codex | chưa ghép7a522e5 hoặc d72993e, còn3Required | Đóng các sửa cũ đã chứng minh: suffix/copybox/quota-data/token values/mobile44px. Head45test/checkpoint40test,18cấu hình browser/74giá trị plugin đạt local; còn nuốt lỗi Variables (fault còn72/74 không log, alpha mutation vẫn xanh), chat bịa30lượt/ngày/lộ tool args, checklist claim/anchor sai. Không có Cloudreceipt mới, không giả số Cloud hiện tại. Tiếp cùng vé, không giao lại lỗi đã đóng |
 | 2026-10-23 | kế hoạch lần 2 và trả lời Claude | Codex | đã soạn lời giao, mở lại cửa ghép SA sau đẩy hồ sơ | SA-62 đã có người nhận/mã, hai test web tương thích trên main; Claude nhận main/chạy cổng/ghép port, Codex không tự ghép SA. ADR0025 mới nhất: SA-64 thay SA-63, SA-65 ảnh trang. Web W-08 lecture-3 (body_md/Markdown/KaTeX/sources/self_check/delta), cổng cuối chờSA-64, rồiW-09/W-10; lõi PG/pipeline/dry-run0USD sauSA-62; thiết kế sửa3Required/cập nhậtlecture-3/Cloud. GiữVertex, không chuyểnartifactPhaA vàoDB, không quyềnchi mới. Prompt report/lenh-giao-viec-ba-nhom-lan2-2026-10-23.md và bộevidenceSHA; giữ6tệp dởroot. **Codex đã xong cổng PostgreSQL, mở lại cửa ghép cho Claude sau commit hồ sơ này được đẩy** |
+| 2026-10-23 | ghép SA-64 (bài giảng `lecture-3`) | Claude | **đạt, đã ghép `1d91b0b`**, đã đẩy | Cổng 2.346 đạt/0 lỗi. Claude sửa khi nghiệm thu: `load_learning_graph` gán `parse_version` (web nạp graph qua hàm này nên cũng có ảnh trang), bài `cat_ngan` không vào cache chung. Hợp đồng `lecture-3` theo `doc/bai-giang-3-spec.md` mục 6. Ảnh trang (SA-65) chưa có: tới lúc đó bài vẫn ra, chỉ không có ảnh |
+| 2026-10-23 | kiểm sau ghép SA-62 | Claude | **xanh** | Người điều phối ghép `9ac2a85` (cha `1d91b0b` + `ce5f581`). Claude chạy cổng trên `7e8c202` có cùng cha và cùng cây: 2.355 đạt/1 bỏ qua/0 lỗi. Tiếp: SA-65 (ảnh trang lúc dựng sách) do Claude giao |
+| 2026-10-23 | hoàn tất test và ghép SA-62 theo lời bàn giao | Codex | **đạt, đã ghép/đẩy 9ac2a85** | Core 266dbdc đã nghiệm thu; nhận main ecd98c2 trên nhánh SA-62, thêm 40 dòng test tại ce5f581. Giữ 2 ca âm factory cũ, thêm default factory→adapter→PG độc lập; RED bỏ injection 1 assertion fail/0 setup/SHA phục hồi, GREEN 3 ca. Cổng 2305 Python/1 skip/143 React/build. Main nhận SA-64 trước lệnh ghép, Codex ghi thiếu sót chặn hash và kiểm chứng tại 14110c0: 2355 Python/1 skip Cloudinary/0 fail/143 React/build/native 0. JUnit report/sa62-web-test-evidence-2026-10-23/full-postmerge.xml; báo cáo report/sa62-tiep-nhan-test-web-2026-10-23.md. Không giảm guard, 0 USD, không dọn worktree/dữ liệu, giữ 6 tệp dở root. **SA-62 gỡ chờ W-15; chưa nghiệm thu toàn W-15, chưa paid build/dry-run thật. Mở lại cửa ghép cho Claude sau đẩy hồ sơ** |
