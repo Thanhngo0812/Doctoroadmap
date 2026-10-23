@@ -135,6 +135,8 @@ server giữ client khoảng 1,6 s trong bản thử của Claude, không phải
 Giữ Vertex tới khi chủ dự án yêu cầu đổi cho demo, không tự đổi theo ngày; SA-61 phải ghép trước lần chuyển Developer API.
 W-12/W-04 có thể xếp sau nếu có thêm người; không tách phiên web duy nhất khỏi đường học W-08→W-09→W-10.
 W-23/W-21 chưa đủ điều kiện nghiệm thu tổng.
+Kế hoạch Pha B `f346e71` dự kiến tiếp SA-67 tài liệu/SA-68 quiz sau bài giảng/trợ lý; trước khi mở W-10 phải đối chiếu đặc tả/mốc mới khi có.
+Đây là kế hoạch tiếp, chưa phải mã hay hợp đồng đã được nghiệm thu; không tự đổi quiz/document trong đợt này.
 
 [Lời giao ba nhóm lần 2](lenh-giao-viec-ba-nhom-lan2-2026-10-23.md) đã soạn để chủ dự án chuyển; chưa nhắn phiên nhân viên bên ngoài.
 

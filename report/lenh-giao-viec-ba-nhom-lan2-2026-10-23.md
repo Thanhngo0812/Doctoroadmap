@@ -27,6 +27,7 @@
 > giữ graph_cards/artifacts/focus, đọc body_md lecture-3 cache-only không sinh bài. Cổng cuối W-09 chờ Claude ghép SA-66.
 > Trần người học/ngày mới 1,00 USD theo quyết định; UI dùng used_ratio/limited/resets_at, không số lượt/ngày. Giữ quyền, phiên, client_turn_id và enum SA-58.
 > Giữ Vertex; không tự chuyển API hoặc xin chi cho test web.
+> Trước W-10 đọc kế hoạch Pha B `f346e71`: SA-67 tài liệu/SA-68 quiz là đợt nâng tiếp theo; nhận spec/mốc thật khi có, không tự chốt hợp đồng tương lai.
 
 ## Nhóm lõi — W-15 sau SA-62, chưa chạy có tiền
 
