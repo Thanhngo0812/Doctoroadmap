@@ -1,5 +1,35 @@
 # W-15 — adapter/composition và kiểm 0 USD — 2026-10-22
 
+## Tiếp nhận sau mốc `6627c00` — main `f96fc00`, 2026-10-23
+
+Đã giữ worktree/nhánh W-15 và nhận main **`f96fc0056e3c5e7316a5ce368fd5680b5aaba6e9`** bằng fast-forward. Mốc web `6627c00` đã được người điều phối nghiệm thu/ghép qua **`e85427a`**; không làm lại adapter/trace accounting. Handoff mục 8 trên main đã ghi đề nghị Claude nhận nền web vào SA-62 và kiểm cổng đúng đỉnh.
+
+**SA-62 `266dbdc` chưa là tổ tiên của main tại lần kiểm này.** Không nhận nhánh SA-62 chưa ghép, không sửa hai tệp composition, không còn coi việc chọn người port là điểm chờ. Điểm chờ hiện tại là Claude nghiệm thu/ghép đúng port. Trong lúc đọc hiện trạng có cổng SA-64 đang chạy; không khởi động chồng cổng PostgreSQL. Đợt này chỉ thêm báo cáo/bằng chứng, không đổi mã sản phẩm, schema hay test đã nghiệm thu.
+
+### Kiểm có thể hoàn tất trước port
+
+Lệnh đã chạy, native exit **0**: `python -X utf8 report/w15-evidence/pre-port-20261023/audit.py`, tại worktree W-15 bằng Python của `.venv` chung. Script tự đặt đường nạp về chính `src/` và backend của worktree; đây là audit metadata/preflight, **không phải pytest hoặc dry-run BuildDocument**. [Kết quả](w15-evidence/pre-port-20261023/result.json).
+
+| Quan sát có nguồn | Kết quả và phạm vi |
+|---|---|
+| Manifest doc-1/doc-6 được ghim | SHA `5fc819f723f7263fe3d443ec780009a75aae66f2c35db8fe0bc3e3c50464eb84`; 127 tệp doc-6 đối chiếu SHA trước/sau, không links, không thay dữ liệu |
+| Graph nguồn | `doc-6` v29, 2 module/27 chunk; chunks v4, parse v2, retrieval v1 |
+| Fingerprint retrieval với chunk nguồn | Khớp: `d3eb66232372c65f42c6f691d968b09109c38a9791c20a07ea921874cc6faaba`. Đổi text của một document chỉ trong bộ nhớ bị `assert_retrieval_compatible` từ chối |
+| Parser của parse nguồn | `docling:2.114.0+pypdfium2`, adapter version 8; không suy thành parse của bộ đọc nhẹ mặc định hiện hành |
+| Hash nguồn so với parse manifest | Khớp `82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7` |
+| Identity web | `u-82cb494d407c4755d29d`; **0/6** thư mục parse/chunks/candidates/canonical/graph/retrieval trong bản sao có ID đó. Đây là miss đường dẫn/identity trong phạm vi bản sao, không phải kết luận mọi cache miss |
+| Cache sinh/embedding, chi/gọi/phút để dựng qua web | **Chưa biết**; không đọc learner cache/live.json. Không đổi ID/version, không cam kết doc-6 miễn phí |
+| Preflight factory mặc định | Main chưa có tham số `phase_b_store`; `RealBuildRuntime` từ chối trước truy cập engine/provider. Chặn constructor JSON/SQLite, ADC/provider/SMTP/Cloudinary trong preflight |
+| Attempt/collector/queue | Không chạy execute; 0 collector receipt, 0 queue claim, 0 provider call/0 USD. Không đưa dry_run vào queue hoặc đổi course ready |
+
+### Phần tiếp theo sau SA-62 được ghép, để người điều phối nhận qua handoff
+
+Mốc chuẩn bị đã xong: adapter và trace/test âm `6627c00` đã ghép, nhận nền web mới, kiểm lại dữ liệu/fingerprint nguồn/preflight an toàn. Handoff main đã có yêu cầu nhận nền web; chỉ ghi báo cáo cho chủ dự án, không gửi tin sang phiên khác hoặc tự sửa handoff của điều phối.
+
+Ngay khi SA-62 ở main: ca dương phải tạo default `RealBuildRuntime`/`make_worker` không có factory giả thay thế, trước provider; giữ `PipelineWithoutStorePort` cho ca âm. Sau đó chạy DocumentPipeline thật với model/embedding fake và PG độc lập, kiểm tên/cache/A12/session/spend guard/usage/receipt/huỷ/lease/identity. Không dùng ca `lecture` làm bằng chứng guard build; không sửa `budget.py`. Artifact Pha A vẫn là tệp. SA-65 nếu cung cấp dữ liệu mới phải nhận manifest/SHA mới và chép riêng, không ghi đè gói này.
+
+**Chưa chạy dry-run thật** vì điều kiện nhận port chưa thoả. Sau kiểm fake/PG mới chạy dry-run nội bộ ở kho bản sao riêng, collector, `allow_spend=False`, guard mạng; giữ chuỗi đọc nhẹ → kiểm chữ → label-roles → A3/A3′ → A4 vi/coverage none → roadmap → learning_prep. Bảng cuốn mới/SHA/52 trang phía dưới vẫn là ứng viên; các số gọi/USD/phút/embedding wait/trần chưa biết giữ nguyên. Không mở chi hoặc xin đóng toàn W-15 trong lượt này.
+
 ## Cập nhật 2026-10-23 — tiếp nhận nghiệm thu và hợp đồng SA-62
 
 Mốc adapter/test cũ **đã được điều phối nghiệm thu và ghép**: `eea5472` → `d12b67c`, 2.266 Python/104 React/build xanh. Không giao lại phần đã đạt. Worktree/nhánh W-15 giữ nguyên, đã nhận main **`50a8035ed040f3114239cd214aa9bca9669e5918`**. Các mục sau phần cập nhật này lưu nguyên hồ sơ lượt 2026-10-22.
