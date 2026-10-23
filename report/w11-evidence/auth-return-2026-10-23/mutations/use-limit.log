@@ -1,0 +1,35 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_all_invalid_preview_reasons_have_the_same_error_envelope_fields _____
+
+    def test_all_invalid_preview_reasons_have_the_same_error_envelope_fields():
+        owner_id, learner_id = str(uuid4()), str(uuid4())
+        store, clock = MemoryStore(owner_id), Clock()
+        service = SharingService(store, settings=type("Settings", (), {
+            "share_link_default_days": 7, "course_max_members": 200,
+            "public_base_url": "https://learn.example.vn"})(), clock=clock)
+        exhausted = service.create_share_link(owner_actor(owner_id), store.course_id, max_uses=1)["link"]["token"]
+        service.join_by_link(learner_actor(learner_id), exhausted)
+        expired = service.create_share_link(owner_actor(owner_id), store.course_id, expires_in_days=1)["link"]["token"]
+        revoked = service.create_share_link(owner_actor(owner_id), store.course_id)["link"]["token"]
+        revoked_id = next(link.id for link in store.links.values() if link.token_tail == revoked[-6:])
+        service.revoke_share_link(owner_actor(owner_id), store.course_id, revoked_id)
+        clock.value += timedelta(days=1)
+        invalid_tokens = [exhausted, expired, revoked, "x" * 43]
+        envelopes = []
+        for token in invalid_tokens:
+>           with pytest.raises(WebError) as error:
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+E           Failed: DID NOT RAISE <class 'wayfinder.api.errors.WebError'>
+
+src\web\backend\tests\test_w11_sharing.py:169: Failed
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\report\w11-evidence\auth-return-2026-10-23\mutations\use-limit.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w11_sharing.py::test_all_invalid_preview_reasons_have_the_same_error_envelope_fields
+1 failed, 1 warning in 2.84s

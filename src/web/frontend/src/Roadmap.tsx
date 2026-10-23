@@ -4,6 +4,7 @@ import { useAuth } from './Auth';
 import { ApiError } from './api';
 import { buildPath, buildStatusLabel } from './builds-api';
 import { CourseShell, type ThemeProps } from './Courses';
+import { ShareDialog } from './Sharing';
 import { coursePath, getCourse, getProgress, getRoadmap, modulePath, setProgress, type Course, type CourseModule, type CourseProgress, type ProgressNode, type Roadmap } from './courses-api';
 import './roadmap.css';
 
@@ -140,6 +141,7 @@ export function RoadmapPage(props: ThemeProps) {
   const [nodeState, setNodeState] = useState<{ snapshot: CourseProgress | null; nodes: Record<string, ProgressNode> }>({ snapshot: null, nodes: {} });
   const [pending, setPending] = useState<Set<string>>(new Set());
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [shareOpen, setShareOpen] = useState(false);
   const requests = useRef(new Map<string, AbortController>());
   const nodes = data?.progress ? (nodeState.snapshot === data.progress ? nodeState.nodes : data.progress.nodes) : {};
   const nodesRef = useRef(nodes);
@@ -212,6 +214,10 @@ export function RoadmapPage(props: ThemeProps) {
             <h1>{data.course.title}</h1>
             {data.course.description && <p>{data.course.description}</p>}
             <p className="roadmap-shared-note">Tiến độ của bạn được dùng chung giữa các khoá cùng tài liệu.</p>
+            <nav className="roadmap-course-actions" aria-label="Quản lý khoá học">
+              {data.course.role === 'owner' && <button className="button button-secondary" type="button" onClick={() => setShareOpen(true)}>Chia sẻ</button>}
+              <Link className="button button-secondary" to={`${coursePath(cid)}/thanh-vien`}>Thành viên</Link>
+            </nav>
           </header>
           {summary && <section className="roadmap-overview" aria-label={mid ? 'Tiến độ module' : 'Tiến độ cả khoá'}>
             <div className="roadmap-overview__label"><h2>{mid ? 'Tiến độ module' : 'Tiến độ của bạn'}</h2><strong>{mid && module ? countsForModule(module, nodes).learned : summary.learned}/{mid && module ? countsForModule(module, nodes).total : summary.total} bài học</strong></div>
@@ -232,5 +238,6 @@ export function RoadmapPage(props: ThemeProps) {
           </>}
         </>}
     </div>}
+    {data?.course.role === 'owner' && <ShareDialog courseId={cid} open={shareOpen} onClose={() => setShareOpen(false)} />}
   </CourseShell>;
 }

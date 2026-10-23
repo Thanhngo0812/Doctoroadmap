@@ -1,5 +1,38 @@
 # WayFinder — chạy backend và frontend
 
+## Mở bản W-11 — chia sẻ bằng link và thành viên
+
+Mã W-11 ở `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links`, nhánh `work/w11-share-links`, đã nhận main `865974a`. Bản vá ngày 2026-10-23 giữ link mời khi đổi giữa đăng nhập/đăng ký qua header, footer và view transition. Migration `w11_0007` nối `w14_0006`. Cổng tự động dùng PostgreSQL UUID riêng và dịch vụ giả; không chạy trên DB phát triển của bạn. Bản này chờ điều phối nghiệm thu W-11, không tự ghép main.
+
+**PowerShell 1 — PostgreSQL và backend:** dùng `.env` dev riêng đã cấu hình, bật Docker Desktop rồi chạy:
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+$env:WAYFINDER_MAILER = 'console'
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+```
+
+**PowerShell 2 — frontend:**
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links
+npm.cmd --prefix src/web/frontend ci
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+```
+
+Mở `http://127.0.0.1:5173/khoa-hoc`. Chủ khoá vào lộ trình → **Chia sẻ**, đặt hạn/số lượt rồi tạo và sao chép link một lần. Link dùng đúng `WAYFINDER_PUBLIC_BASE_URL`; khách đăng nhập/đăng ký xong quay lại link đó. Trang **Thành viên** có nút xoá hoặc rời khoá theo quyền. Không cần worker cho thao tác chia sẻ; worker giả bên dưới chỉ dành cho dựng tài liệu W-14. Dừng từng terminal bằng `Ctrl+C`, giữ volume DB.
+
+Để dùng bản build ở8000: chạy `npm.cmd --prefix src/web/frontend run build`, đặt `WAYFINDER_PUBLIC_BASE_URL=http://127.0.0.1:8000` rồi mở lại backend. Không trộn `localhost` và `127.0.0.1`. Xem [báo cáo bản vá W-11](../../report/w11-chia-se-link-thanh-vien-2026-10-23.md) và [bằng chứng đợt trước](../../report/w11-chia-se-link-thanh-vien-2026-10-22.md). Các phần W-14/W-07 dưới đây giữ hướng dẫn của mốc trước để đối chiếu.
+
 ## W-14 React — vị trí và giới hạn
 
 Nhánh `work/w14-react`, worktree `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w14-react`, đã nhận main `8b85d19` chứa backend W-14/W-25 được duyệt tại `a572459`, cùng SA-52/SA-53. Các bước dưới đây dành cho DB dev riêng đã cấu hình. Bản này nhận PDF/DOCX nhưng dùng **bộ dựng giả**: kết quả học lấy từ snapshot doc-1 đã kiểm hash, không phải nội dung tài liệu vừa tải. Bản dựng thật thuộc W-15. W-11 vẫn ở worktree riêng, không nằm trong W-14.

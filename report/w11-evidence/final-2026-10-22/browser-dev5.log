@@ -1,0 +1,19 @@
+python.exe : AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+At line:5 char:1
++ & C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (AssertionError ...tly deep-equal::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
++ actual - expected
+
++ [
++   {
++     error: 'net::ERR_ABORTED',
++     path: '/api/v1/courses/d53fe555-73f1-47ef-89e6-e083f73e953a/share-links',
++     stage: 'share'
++   }
++ ]
+- []
+
+    at main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\scripts\w11_web_check.cjs:205:84)

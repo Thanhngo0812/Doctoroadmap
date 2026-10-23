@@ -1,0 +1,17 @@
+
+=================================== ERRORS ====================================
+____ ERROR collecting src/web/backend/tests/test_share_link_privacy_w11.py ____
+ImportError while importing test module 'C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\src\web\backend\tests\test_share_link_privacy_w11.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\tests\test_share_link_privacy_w11.py:3: in <module>
+    from wayfinder.api.token_privacy import ShareLinkAccessFilter, install_share_link_log_filter
+E   ModuleNotFoundError: No module named 'wayfinder.api.token_privacy'
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\report\w11-evidence\privacy-red.xml -
+=========================== short test summary info ===========================
+ERROR src/web/backend/tests/test_share_link_privacy_w11.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 2.19s

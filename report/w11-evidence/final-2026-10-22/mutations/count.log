@@ -1,0 +1,42 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+______ test_postgres_one_use_join_race_counts_exactly_one_member_and_use ______
+
+sharing_pg = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_86bea76658b944649e2957a9f3af1... 0x000001D9067EA7A0>, store=<wayfinder.infrastructure.sharing_store.PostgresSharingStore object at 0x000001D90645C740>)
+
+    @pytest.mark.postgres
+    def test_postgres_one_use_join_race_counts_exactly_one_member_and_use(sharing_pg):
+        from wayfinder.application.sharing import SharingService
+
+        service = SharingService(sharing_pg.store, sharing_pg.settings, sharing_pg.clock,
+                                 graph_loader=lambda *_: SimpleNamespace(learnable_nodes={}))
+        token = service.create_share_link(sharing_pg.owner, sharing_pg.course.id, max_uses=1)["link"]["token"]
+        users = [sharing_pg.user("Người học 1"), sharing_pg.user("Người học 2")]
+        gate = Barrier(2)
+
+        def join(actor):
+            local_service = SharingService(type(sharing_pg.store)(sharing_pg.engine), sharing_pg.settings, sharing_pg.clock)
+            gate.wait(timeout=5)
+            try:
+                return local_service.join_by_link(actor, token)
+            except WebError as error:
+                return error.code
+
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            results = list(pool.map(join, users))
+
+>       assert sum(isinstance(item, dict) and not item["already_member"] for item in results) == 1
+E       assert 2 == 1
+E        +  where 2 = sum(<generator object test_postgres_one_use_join_race_counts_exactly_one_member_and_use.<locals>.<genexpr> at 0x000001D906858D60>)
+
+src\web\backend\tests\test_w11_sharing.py:359: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links\report\w11-evidence\final-2026-10-22\mutations\count.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w11_sharing.py::test_postgres_one_use_join_race_counts_exactly_one_member_and_use
+1 failed, 1 warning in 3.64s

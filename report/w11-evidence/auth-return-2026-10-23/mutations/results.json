@@ -1,0 +1,146 @@
+[
+  {
+    "name": "token-disclosure",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_share_link_token_is_one_time_and_never_returned_by_list",
+      "--basetemp=tmp/w11-mut-token-disclosure-98e502bd5f744fb4b1dfcf6f70e63a6b",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\token-disclosure.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6",
+    "restored_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6"
+  },
+  {
+    "name": "revocation",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_revoked_or_expired_link_is_invalid_even_for_an_existing_member",
+      "--basetemp=tmp/w11-mut-revocation-41d50cf8bdad41f28cfbd566028f481d",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\revocation.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6",
+    "restored_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6"
+  },
+  {
+    "name": "expiry",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_revoked_or_expired_link_is_invalid_even_for_an_existing_member",
+      "--basetemp=tmp/w11-mut-expiry-4df67cdd9aa848bbb05503c8a2aaaff9",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\expiry.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6",
+    "restored_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6"
+  },
+  {
+    "name": "use-limit",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_all_invalid_preview_reasons_have_the_same_error_envelope_fields",
+      "--basetemp=tmp/w11-mut-use-limit-df8b7897c294424db48ee6174a3f4d41",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\use-limit.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6",
+    "restored_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6"
+  },
+  {
+    "name": "count",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_postgres_one_use_join_race_counts_exactly_one_member_and_use",
+      "--basetemp=tmp/w11-mut-count-25940dab91a84b879d2e4129e7756a60",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\count.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6",
+    "restored_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6"
+  },
+  {
+    "name": "atomic-join",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_postgres_create_and_join_rollback_when_audit_write_fails",
+      "--basetemp=tmp/w11-mut-atomic-join-a4475a9bd67440f0ba8a744badfd5b6d",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\atomic-join.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "45c5fc732dda8926689a35a9ccfbd075560537a779007c99ac4c00b310154caa",
+    "restored_sha256": "45c5fc732dda8926689a35a9ccfbd075560537a779007c99ac4c00b310154caa"
+  },
+  {
+    "name": "immediate-access",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_postgres_remove_and_rejoin_preserve_phase_b_progress_and_revoke_keeps_members",
+      "--basetemp=tmp/w11-mut-immediate-access-93877d2a36f84379bfdc2c98ac4c2c8b",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\immediate-access.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6",
+    "restored_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6"
+  },
+  {
+    "name": "private-data-retention",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_w11_sharing.py::test_postgres_rejoin_retains_exact_private_session_and_progress[remove]",
+      "--basetemp=tmp/w11-mut-private-data-retention-bba5567cd84e420b9436820632780e67",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w11-share-links\\report\\w11-evidence\\auth-return-2026-10-23\\mutations\\private-data-retention.xml"
+    ],
+    "native_exit_code": 1,
+    "failures": 1,
+    "errors": 0,
+    "original_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6",
+    "restored_sha256": "ef6b761c787fb95b371195e07d4f672422ed1eedc59fd94f3fd87ea8411083a6"
+  }
+]

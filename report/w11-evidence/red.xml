@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.449" timestamp="2026-10-21T16:22:47.185856+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_share_link_token_is_one_time_and_never_returned_by_list" time="0.161"><failure message="NotImplementedError">def test_share_link_token_is_one_time_and_never_returned_by_list():
+        owner_id = str(uuid4())
+        store, clock = MemoryStore(owner_id), Clock()
+        service = SharingService(store, settings=type("Settings", (), {
+            "share_link_default_days": 7, "course_max_members": 200,
+            "public_base_url": "https://learn.example.vn"})(), clock=clock)
+    
+&gt;       result = service.create_share_link(owner_actor(owner_id), store.course_id)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w11_sharing.py:79: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+self = &lt;wayfinder.application.sharing.SharingService object at 0x0000029F847E43E0&gt;
+actor = Actor(user_id='209781ee-d4ad-4d94-8f13-1bf2cb913dfa', role='user', email_verified=False, status='active')
+cid = '617c2a81-45be-435f-bff0-50ee7fff8dd8'
+
+    def create_share_link(self, actor, cid, *, expires_in_days=None, max_uses=None, ip=None):
+&gt;       raise NotImplementedError
+E       NotImplementedError
+
+src\web\backend\wayfinder\application\sharing.py:6: NotImplementedError</failure></testcase></testsuite></testsuites>

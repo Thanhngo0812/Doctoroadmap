@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="1.796" timestamp="2026-10-22T21:04:41.147183+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w11_sharing" name="test_share_link_token_is_one_time_and_never_returned_by_list" time="0.148"><failure message="assert 'cnU86N8X3o8...rz_Hm562YqCU' not in &quot;{'items': [... 'active'}]}&quot;&#10;  &#10;  'cnU86N8X3o8saTelPT...hKccv7irz_Hm562YqCU' is contained here:&#10;  ?           ^^&#10;    n_tail': '[REDACTED_43_CHAR_TEST_TOKEN]', 'created_at': '2026-10-21T00:00:00+00:00', 'expires_at': '2026-10-28T00:00:00+00:00', 'max_uses': None, 'use_count': 0, 'revoked_at': None, 'status': 'active'}]}&#10;  ?           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^">def test_share_link_token_is_one_time_and_never_returned_by_list():
+        owner_id = str(uuid4())
+        store, clock = MemoryStore(owner_id), Clock()
+        service = SharingService(store, settings=type("Settings", (), {
+            "share_link_default_days": 7, "course_max_members": 200,
+            "public_base_url": "https://learn.example.vn"})(), clock=clock)
+
+        result = service.create_share_link(owner_actor(owner_id), store.course_id)
+
+        token = result["link"]["token"]
+        assert len(__import__("base64").urlsafe_b64decode(token + "=")) == 32
+        assert result["link"]["url"] == f"https://learn.example.vn/join/{token}"
+        assert result["link"]["expires_at"] == (clock.now() + timedelta(days=7)).isoformat()
+        assert store.links[result["link"]["id"]].token_hash != token.encode()
+        listed = service.list_share_links(owner_actor(owner_id), store.course_id)
+&gt;       assert token not in repr(listed)
+E       assert 'cnU86N8X3o8...rz_Hm562YqCU' not in "{'items': [... 'active'}]}"
+E
+E         'cnU86N8X3o8saTelPT...hKccv7irz_Hm562YqCU' is contained here:
+E         ?           ^^
+E           n_tail': '[REDACTED_43_CHAR_TEST_TOKEN]', 'created_at': '2026-10-21T00:00:00+00:00', 'expires_at': '2026-10-28T00:00:00+00:00', 'max_uses': None, 'use_count': 0, 'revoked_at': None, 'status': 'active'}]}
+E         ?           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_w11_sharing.py:104: AssertionError</failure></testcase></testsuite></testsuites>

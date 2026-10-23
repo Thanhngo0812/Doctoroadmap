@@ -28,8 +28,10 @@ ORIGIN = "http://testserver"
 def courses(postgres_database_url, monkeypatch):
     from wayfinder.application.courses import CourseService
     from wayfinder.application.learning_gateway import LearningGateway
+    from wayfinder.application.sharing import SharingService
     from wayfinder.infrastructure.course_store import PostgresCourseStore
     from wayfinder.infrastructure.learning_runtime import WebLearningRuntime
+    from wayfinder.infrastructure.sharing_store import PostgresSharingStore
 
     def forbidden(*args, **kwargs):
         raise AssertionError("W-06 must not use providers, ADC or live media")
@@ -58,8 +60,9 @@ def courses(postgres_database_url, monkeypatch):
     service = CourseService(store, settings=settings, clock=clock)
     gateway = LearningGateway(service, runtime, graph_loader)
     service.gateway = gateway
+    sharing = SharingService(PostgresSharingStore(engine), settings, clock, graph_loader=graph_loader)
     services = WebServices(health_check=lambda: "ok", accounts=accounts, phase_b_store=phase_b,
-                           courses=service, learning=gateway)
+                           courses=service, learning=gateway, sharing=sharing)
     app = create_app(settings, services)
 
     def user(role="user"):
@@ -99,7 +102,8 @@ def assert_private_course_routes_protected(app, client, headers, cid):
         import re
         path = re.sub(r"\{[^}]+\}", "unknown-resource", path)
         for method in route.methods - {"HEAD", "OPTIONS"}:
-            body = ({"learned": True} if method == "PUT" and "{node_id}" in route.path
+            body = ({} if method == "POST" and route.path.endswith("/share-links")
+                    else {"learned": True} if method == "PUT" and "{node_id}" in route.path
                     else {"title": "Attack", "owner": "someone-else"}
                     if method not in {"GET", "DELETE"} else None)
             response = client.request(method, path, headers=headers,
