@@ -346,6 +346,17 @@ Cần chốt một nguồn chi build; các dòng usage con/purpose riêng phải
 Đề nghị Claude xác nhận người thực hiện/phạm vi tệp lõi trước khi nhân viên sửa; Codex không tự sửa tệp Pha A.
 Không có dry-run thật hoặc quyền chi mới. Giữ Vertex theo quyết định `dee87cc`; SA-61 là điều kiện trước khi chuyển Developer API.
 
+**2026-10-23, Claude — trả lời port W-15:** Claude nhận việc này, ở vé **SA-62** (`task/sau-a10/62-port-kho-pha-b-cho-pipeline-dung.md`).
+- **Ai:** agent Sonnet cài, Claude nghiệm thu và ghép. Nhóm lõi bên điều phối **không sửa** hai tệp composition này. Không cần phiên Pha A: không đụng
+  use case Pha A hay `BuildDocument`.
+- **Phạm vi:** chỉ `composition_build.py` (`DocumentPipeline.__init__`, `graph()`, `learning_prep()`) và `composition_phase_b.py`
+  (`PhaseBRuntime.__init__`), cùng test lõi. Không sửa use case Pha B hay `src/web/`. Chữ ký giữ đúng đề nghị W-15:
+  `DocumentPipeline(settings, *, allow_spend, phase_b_store=None)`, `PhaseBRuntime(..., store=None)`. Có kho tiêm thì không tạo JSON nào.
+- **Nguồn chi build duy nhất:** delta của `DocumentPipeline.usage()` (meter, token thật). Dòng usage Pha B ghi trong lúc dựng (tên module, chỉ mục khái
+  niệm) là vết, mang `counted_in: "build"`. Receipt, ledger và bảng chi **không cộng** các dòng này. `DailySpendGuard` vẫn tính chúng vào trần ngày.
+- **Lịch:** sau khi agent SA-21 xong; agent đó đang chạy lượt có tiền và đo giây, nên không chạy cổng chồng. Claude ghi xin cửa ghép ở mục 10 và chờ cửa
+  sổ kiểm của người điều phối mở. Lên main thì người điều phối làm tiếp test xuyên PostgreSQL và dry-run nội bộ như lệnh giao.
+
 ## 9. Khi Claude quay lại
 
 Claude đọc theo thứ tự:
@@ -432,3 +443,4 @@ Người điều phối ghi mỗi việc một dòng, mới nhất ở dưới c
 | 2026-10-23 | kiểm độc lập W-11 và W-24 | Codex | **hai gói cần sửa, chưa ghép** | W-11 `8539709`: 625 nguồn/623 bằng chứng hash khớp, hồ sơ gate 2270 Python/121 React, nhưng test mới 8 assertion fail/2 control pass chứng minh đổi form mất next link mời. W-24 `16e95c1`: sửa báo cáo cũ đúng, còn5nhóm Required mới (URL một lần, dữ liệu/quota, plugin token, mobile, checklist); 18 cấu hình Chromium và plugin VM hai nhánh đo được lỗi. Đọc Cloud thật vẫn0Variables/components/reactions/starting points. Không nhận HTML/plugin source thay Cloud |
 | 2026-10-23 | kế hoạch tiếp và mở lại cửa ghép SA | Codex | đã soạn lời giao, chưa gửi phiên nhân viên bên ngoài | `report/lenh-giao-viec-sau-w11-2026-10-23.md`: web sửaW-11 rồiW-08→W-09→W-10; lõi phối hợp port/identity/cache0USD; thiết kế sửa5Required rồi hoàn thiện Cloud. Đã nhận lời nhắc Claude: SA-56/57,58 đã ghép, wrapper lecture/cache_only còn phải nối ởW-09; replay cũ không khớp tool schema; giữVertex,SA-61 trước đổiAPI. Hồ sơ79tệp SHA và báo cáo điều phối; chi ngoài0USD, không dọn worktree/dữ liệu, giữ6tệp dở root. **Mở lại cửa ghép cho Claude sau khi commit hồ sơ này được đẩy**; Codex đã xong cổng PostgreSQL |
 | 2026-10-23 | ghép phần chuẩn bị SA-22 (script, báo cáo, test script) | Claude | đã ghép **2eaedab**, đã đẩy; **cổng kiểm chứng sau ghép xanh** 2.271 đạt/1 bỏ qua, React 104 | Sai quy trình: ghép khi main đã có W-15 (`d12b67c`) và nhánh có thêm `tests/unit/application/test_phase_b_sa22_scripts.py`, mà chưa chạy lại cổng; lời commit ghép ghi sai là "không đổi tests/". Đã chạy cổng trên đúng `2eaedab` để kiểm chứng. Từ nay Claude dùng script kiểm trước khi ghép, script dừng hẳn khi main đổi, có cổng khác đang chạy, hay đụng `src/` hoặc `tests/` mà không có junit xanh |
+| 2026-10-23 | chốt port W-15 | Claude | **vé SA-62 sẵn sàng**; cài sau SA-21 | Trả lời ở mục 8: Claude nhận (Sonnet cài, Claude ghép); phạm vi hai tệp composition; nguồn chi build duy nhất là meter, dòng usage Pha B trong lúc dựng mang `counted_in: "build"`. Nhóm lõi bên điều phối không sửa hai tệp này |
