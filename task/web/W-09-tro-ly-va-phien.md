@@ -4,7 +4,17 @@
 mục 1 (công cụ buộc phía máy chủ, SSE), 7 (giới hạn tần suất), 8; [ADR 0017](../../doc/adr/0017-pham-vi-phien-la-noi-luu-neo-vao-khai-niem.md); spec thiết
 kế, khung chat.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-32, SA-33, SA-42, SA-56 · **Trạng thái:**
-chuẩn bị được; cổng tích hợp trợ lý chờ Claude nghiệm thu/ghép SA-56.
+đủ phụ thuộc lõi sau SA-56/SA-58; triển khai sau W-08 theo năng lực nhóm web.
+
+**Đối chiếu 2026-10-23:** SA-56/SA-57 đã ghép `04c3efa`; SA-58 đã ghép `e2cfbac`. Gỡ chờ SA-56 ở cập nhật cũ bên dưới.
+Gateway/composition phải cấp `get_lecture(concept, **kwargs)` và chuyển `cache_only` xuống `LectureUseCase.make`, như `composition_phase_b.py`;
+`wayfinder/testing.py` hiện truyền `lecture.get` sai chữ ký, phải sửa trong phạm vi nối W-09 và kiểm cả focus/cache hit/cache miss lẫn tool call bình thường.
+Không để cache miss của `cache_only=True` sinh bài mới. Search dùng enum chuẩn `uu_tien_module`/`ca_tai_lieu` của SA-58, không dịch chuỗi ở web.
+Replay trước `e2cfbac` mang mô tả công cụ cũ: dùng fixture/fake đúng hợp đồng hiện tại ở 0 USD, không tự gọi model để làm lại replay.
+Giữ Vertex tới khi chủ dự án yêu cầu đổi cho demo; SA-61 phải vào main trước khi chuyển Developer API.
+SA-60 đo embedding Vertex khoảng 11,4 s/request, tổng p50 16,2 s: số đo của lượt Claude, không phải SLA mới hoặc lỗi kho JSON của web.
+Giao diện phải hiện trạng thái chờ/công cụ và cho huỷ theo spec, không thêm chờ giả hoặc lộ thông tin triển khai cho người học.
+Xem [kế hoạch](../../report/lenh-giao-viec-sau-w11-2026-10-23.md) và nhật ký mục 10 bàn giao.
 
 **Phối hợp 2026-10-22:** nhận đề nghị của Claude ở mục 8 bàn giao và quyết định của chủ dự án về `focus_node_id`.
 Giữ phần HTTP/gateway/React trong W-09 vì vé chưa triển khai; không tách vé mới. Lõi của hợp đồng thuộc

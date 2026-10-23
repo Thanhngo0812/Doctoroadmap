@@ -2,7 +2,16 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4, 8, câu hỏi mở 2; vé [W-13](W-13-dung-mot-cuon-o-loi.md), [W-14](W-14-tai-sach-len-ban-dung.md).
 **Ai:** nhân viên lõi chạy · người soát và Claude đọc số · **Chi phí mô hình:** một cuốn mới, ước dưới 3 USD theo D-01; dry-run trước, **chủ dự án duyệt**
-· **Chặn bởi:** W-13, W-14 đã đạt · **Trạng thái:** mở giai đoạn adapter/composition/kiểm0USD; chưa cấp quyền chạy có tiền.
+· **Chặn bởi:** W-13, W-14 đã đạt; còn port PostgreSQL của Pha A · **Trạng thái:** đạt mốc adapter/kiểm 0 USD tại `eea5472`; toàn vé còn mở, chưa cấp quyền chạy có tiền.
+
+**Nghiệm thu mốc 2026-10-23:** nhận `a8bb295` trên main `605f6a3`, mốc tích hợp `eea5472`; độc lập **2.266 Python đạt/0 fail/1 Cloudinary live không bật,
+104 React/build**, thử phá guard port bị assertion bắt và SHA nguồn phục hồi. Chỉ nhận adapter dùng core BuildDocument thật/pipeline giả/PG thật;
+pipeline mặc định còn thiếu port nên từ chối trước claim/provider, chưa chạy toàn chuỗi thật, cache doc-6 qua web hoặc dry-run thật.
+Đề nghị port `DocumentPipeline(..., phase_b_store=None)`/`PhaseBRuntime(..., store=None)` và một nguồn chi build đã ghi mục 8 bàn giao;
+chờ Claude/phiên Pha A chốt người sửa/phạm vi. Không tạo JSON rồi gán lại store, không coi số giả thành tiền provider.
+Giữ Vertex, `allow_spend=False`; tiếp kiểm identity/cache trên bản sao trong lúc chờ. Sau port mới dry-run/đề nghị trần/duyệt đúng lượt.
+Đã ghép/đẩy riêng mốc này bằng `d12b67c`, không đóng toàn vé. Xem [báo cáo](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md),
+[lời giao](../../report/lenh-giao-viec-sau-w11-2026-10-23.md).
 
 ## Vì sao
 

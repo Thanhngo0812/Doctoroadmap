@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="10.859" timestamp="2026-10-23T10:54:13.834573+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_default_requires_core_port_before_claim_or_provider" time="6.192"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.real_build.CoreBuildPortUnavailable'&gt;">builds = namespace(postgres_database_url=postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_fe01be5be50947bfa8037...oken': 'qyRyNgeQpdDCZtqs_zhbENAqMjMMYCuLclL15sGPjxs'}, app=&lt;fastapi.applications.FastAPI object at 0x000002187579A960&gt;)
+
+    def test_real_default_requires_core_port_before_claim_or_provider(builds):
+        b = builds
+        adapter = module()
+        settings = b.settings.model_copy(update={'build_runner': 'real'})
+        item = upload(b)
+        b.service.confirm_build(b.actor, item['upload_id'])
+&gt;       with pytest.raises(adapter.CoreBuildPortUnavailable, match='phase_b_store'):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.real_build.CoreBuildPortUnavailable'&gt;
+
+src\web\backend\tests\test_real_build_w15.py:123: Failed</failure></testcase></testsuite></testsuites>

@@ -82,25 +82,33 @@ còn đổi; nhóm web đã được báo.
 | [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đạt · đã ghép `dc41ee8`, mốc `8b6e500`; 2.107 Python/77 React/build, browser PG; [nghiệm thu](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md) |
 | [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | đạt · đã ghép f20d198, mốc 2a14723; 2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình; [soát](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md) |
 | [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07, SA-39, SA-40, SA-41; SA-53 đã ghép | đủ phụ thuộc sau `62dad5b`; xếp sau W-11 nếu chỉ một phiên web |
-| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07, SA-32, SA-33, SA-42, SA-56 | đã bổ sung HTTP/gateway/React `focus_node_id` theo đề nghị Claude; chuẩn bị được, cổng tích hợp chờ SA-56 được Claude nghiệm thu/ghép |
+| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07, SA-32, SA-33, SA-42; SA-56/58 đã ghép | đủ phụ thuộc sau `04c3efa`/`e2cfbac`; làm sau W-08, nối wrapper lecture/cache_only và dùng replay hợp đồng hiện tại; giữ Vertex |
 | [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35, SA-37; SA-52 đã ghép | đủ phụ thuộc sau `66cd439`; triển khai sau trang học, không dùng số phát lại cũ làm nghiệm thu web |
-| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | web tiếp ngay từ `a53f0d3`, chưa nghiệm thu W-11; nhận main mới, nối `w11_0007` sau `w14_0006` |
+| [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | cần sửa `8539709`: đổi form xác thực mất next của link mời, độc lập 8 assertion fail/2 control pass; chưa ghép; [soát](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md) |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
 | [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
 | [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06; W-25 đã đạt | đạt có ghi chú · đã ghép/đẩy `7fe63df`, mốc `61b5d80`:2185Python/104React/build, browser13nhóm/47ảnh/14Axe,0USD; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
-| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 đã đạt | lõi làm adapter/composition/test0USD; tài liệu `1acaf4e` đã nhận cùng `7fe63df`; port tệp pha A cần phối hợp, lượt có tiền vẫn chờ dry-run/duyệt mới |
+| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13, W-14 đã đạt; chờ port PG của Pha A | đạt mốc adapter/kiểm 0 USD tại `eea5472`, đã ghép/đẩy `d12b67c`: 2.266 Python/104 React/build; toàn vé còn mở, chưa pipeline thật/dry-run thật/quyền chi; [soát](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md) |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
-| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn mở: đã đọc Cloud thật 0 Variables/0 native components, prototype chưa có reactions; local không thay Cloud; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
-| [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | ready-for-agent |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao W-22 | — | `78fb774` local OS/token đạt:32 test/74giá trị,4mutation; chưa nhận cả gói do báo cáo/checklist sai; Cloud còn0variables/0reactions, tiếp cùng vé/chưa ghép |
+| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn mở: đọc lại Cloud ngày23 vẫn 0 Variables/0 native components/0 reactions/0 starting points; local không thay Cloud; [soát](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md) |
+| [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | chưa mở; chờ đủ bản Figma được nhận và các màn học/chat/quiz |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao W-22 | — | `fe8ccf3` sửa báo cáo cũ đúng; chưa nhận `16e95c1` do5nhóm Required mới về token/link/dữ liệu-quota/mobile/checklist; 18 cấu hình browser; tiếp cùng vé/chưa ghép |
 | [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
 
 ## Thứ tự đề xuất
+
+- **Sau soát ba nhóm, 2026-10-23:** W-11 `8539709` cần sửa mất `next` khi đổi form xác thực, tái hiện độc lập 8 assertion fail/2 control pass, chưa ghép.
+  W-15 nhận riêng mốc adapter/kiểm 0 USD `eea5472`, ghép/đẩy **`d12b67c`**: 2.266 Python đạt/1 Cloudinary live không bật, 104 React/build; toàn vé vẫn chờ port PG, dry-run và duyệt tiền riêng.
+  W-24 `16e95c1` còn năm Required mới về URL/quota-dữ liệu/plugin/mobile/checklist; 18 cấu hình browser không thay việc sửa lỗi. Cloud đọc lại vẫn 0 Variables/components/reactions/starting points.
+  **Web sửa W-11 → W-08 → W-09 → W-10; lõi phối hợp port và kiểm identity/cache 0 USD; thiết kế sửa Required trước rồi chứng minh Cloud thật.**
+  SA-56/57 và SA-58 đã ghép, gỡ chờ cũ của W-09; nối wrapper lecture/cache_only và không dùng replay tool schema cũ.
+  Giữ Vertex tới chỉ thị demo của chủ dự án; SA-61 phải ghép trước lần đổi Developer API. Không dọn worktree/dữ liệu, không chi thêm.
+  [Nghiệm thu/bằng chứng](../../report/dieu-phoi-nghiem-thu-w11-w15-w24-va-ke-hoach-2026-10-23.md), [lời giao ba nhóm](../../report/lenh-giao-viec-sau-w11-2026-10-23.md). Chưa gửi phiên nhân viên bên ngoài.
 
 - **Kiểm lại 2026-10-22:** backend/schema W-14+W-25 đạt tại `4dbfe8e`, đã ghép/đẩy **`a572459`**, 2.163 Python/85 React nền/build, sáu guard bị bắt, 0 USD.
   **Web nhận main ngay**, không còn chờ backend: bỏ32 tệp basetemp khỏi Git/giữ local, giữ DTO upload_id/confirmed_at và chạy cổng W-14 cuối; W-14 đầu-cuối chưa đóng.
