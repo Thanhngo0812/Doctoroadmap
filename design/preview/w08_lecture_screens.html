@@ -105,6 +105,7 @@
       border-radius: var(--radius-md);
       cursor: pointer;
       font-weight: var(--font-semibold);
+      min-height: 44px;
     }
     .accordion-body {
       padding: var(--space-4);
@@ -112,6 +113,17 @@
       border-top: none;
       border-radius: 0 0 var(--radius-md) var(--radius-md);
       background: var(--color-surface);
+    }
+
+    @media (max-width: 640px) {
+      body { padding: var(--space-3); }
+      .header-bar { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+      .theme-toggle-btn { width: 100%; }
+      .card { padding: var(--space-4); }
+      .prereq-item { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-3) !important; }
+      .prereq-item .btn { width: 100%; }
+      .source-header-wrap { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-2) !important; }
+      .source-header-wrap .btn { width: 100%; }
     }
   </style>
 </head>
@@ -133,7 +145,7 @@
   <main class="container">
     <!-- TRẠNG THÁI 1: BÀI HỌC ĐANG CHỜ / ĐANG STREAM (STREAMING SKELETON) -->
     <section class="card" id="section-lecture-streaming">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
         <div>
           <span class="badge badge-accent">⚡ Đang xử lý nội dung</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
@@ -161,7 +173,7 @@
 
     <!-- TRẠNG THÁI 2: ACCORDION TIÊN QUYẾT MỞ (PREREQUISITES ACCORDION) -->
     <section class="card" id="section-lecture-prerequisites">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
         <div>
           <span class="badge badge-success">✓ Đã hoàn thành bài</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
@@ -185,19 +197,19 @@
           Để nắm vững cơ chế thiếu máu cơ tim trong bài này, bạn nên xem lại 2 khái niệm sau:
         </p>
         <div style="display: flex; flex-direction: column; gap: var(--space-2);">
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
+          <div class="prereq-item" style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
             <div>
               <strong style="color: var(--color-text); font-size: var(--text-small);">1. Sinh lý tuần hoàn mạch vành</strong>
               <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Lưu lượng máu tâm trương và áp lực tưới máu mạch vành</p>
             </div>
-            <a href="#" class="btn btn-secondary" style="height: 36px; min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-caption);">Ôn tập ➔</a>
+            <a href="#" class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-4); font-size: var(--text-small);">Ôn tập ➔</a>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
+          <div class="prereq-item" style="display: flex; justify-content: space-between; align-items: center; padding: var(--space-3); background: var(--color-bg-subtle); border-radius: var(--radius-sm); border-left: 3px solid var(--color-primary);">
             <div>
               <strong style="color: var(--color-text); font-size: var(--text-small);">2. Cấu trúc mô học lớp nội mạc mạch máu</strong>
               <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Tổn thương nội mạc và cơ chế hình thành mảng xơ vữa</p>
             </div>
-            <a href="#" class="btn btn-secondary" style="height: 36px; min-height: 36px; padding: 0 var(--space-3); font-size: var(--text-caption);">Ôn tập ➔</a>
+            <a href="#" class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-4); font-size: var(--text-small);">Ôn tập ➔</a>
           </div>
         </div>
       </div>
@@ -205,14 +217,14 @@
 
     <!-- TRẠNG THÁI 3: KHUNG XEM TÀI LIỆU GỐC & TRÍCH DẪN (SOURCE VIEWER) -->
     <section class="card" id="section-source-viewer">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
+      <div class="source-header-wrap" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3);">
         <div>
           <span class="badge badge-primary">Nguồn gốc tin cậy</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
             3. Khung đối chiếu tài liệu nguồn (Harrison 21st, Trang 1892)
           </h2>
         </div>
-        <button class="btn btn-secondary" style="height: 36px; min-height: 36px;">Mở toàn màn hình</button>
+        <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-4);">Mở toàn màn hình</button>
       </div>
 
       <div style="border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); background: var(--color-bg-subtle);">
@@ -224,7 +236,7 @@
             "The left anterior descending (LAD) coronary artery courses anteriorly in the anterior interventricular groove, giving off diagonal branches to the anterolateral free wall and septal perforators that supply the anterior two-thirds of the interventricular septum..."
           </blockquote>
           <p style="font-size: var(--text-caption); color: var(--color-text-muted);">
-            Trích xuất tự động qua công cụ OCR y khoa WayFinder. Vị trí trang: [1892 / 4120].
+            Trích đoạn đối chiếu từ giáo trình nguồn đã tải lên. Vị trí trang: [1892 / 4120].
           </p>
         </div>
       </div>

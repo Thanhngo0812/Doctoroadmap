@@ -6,6 +6,15 @@
 
 (async () => {
   // 1. Color Palette Tokens & Hex-accurate parser from tokens.json
+    function rgbaToFigma(r, g, b, a) {
+    return {
+      r: Number((r / 255).toFixed(4)),
+      g: Number((g / 255).toFixed(4)),
+      b: Number((b / 255).toFixed(4)),
+      a: Number(a.toFixed(4))
+    };
+  }
+
   function hexToRgb(hex) {
     hex = hex.replace('#', '').trim();
     if (hex.length === 3) {
@@ -129,7 +138,7 @@
         { name: "color/primary-text", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
         { name: "color/primary-hover", light: hexToRgb("#0A5E9C"), dark: hexToRgb("#52B8FF") },
         { name: "color/brand", light: hexToRgb("#29A9FF"), dark: hexToRgb("#29A9FF") },
-        { name: "color/brand-tint", light: hexToRgb("#EAF6FF"), dark: hexToRgb("#29A9FF") },
+        { name: "color/brand-tint", light: hexToRgb("#EAF6FF"), dark: rgbaToFigma(41, 169, 255, 0.14) },
         { name: "color/bg", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
         { name: "color/bg-subtle", light: hexToRgb("#F6F8FA"), dark: hexToRgb("#161B22") },
         { name: "color/surface", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#161B22") },
@@ -139,12 +148,12 @@
         { name: "color/text", light: hexToRgb("#12161B"), dark: hexToRgb("#E8EDF2") },
         { name: "color/text-muted", light: hexToRgb("#5B6673"), dark: hexToRgb("#9AA6B2") },
         { name: "color/accent", light: hexToRgb("#FEBA4F"), dark: hexToRgb("#FEBA4F") },
-        { name: "color/accent-tint", light: hexToRgb("#FFF4DF"), dark: hexToRgb("#FEBA4F") },
+        { name: "color/accent-tint", light: hexToRgb("#FFF4DF"), dark: rgbaToFigma(254, 186, 79, 0.14) },
         { name: "color/accent-text", light: hexToRgb("#8A4F0F"), dark: hexToRgb("#FEBA4F") },
         { name: "color/success", light: hexToRgb("#146C3B"), dark: hexToRgb("#4ADE80") },
-        { name: "color/success-tint", light: hexToRgb("#E8F6EE"), dark: hexToRgb("#4ADE80") },
+        { name: "color/success-tint", light: hexToRgb("#E8F6EE"), dark: rgbaToFigma(74, 222, 128, 0.14) },
         { name: "color/danger", light: hexToRgb("#B02F2F"), dark: hexToRgb("#F87171") },
-        { name: "color/danger-tint", light: hexToRgb("#FDECEC"), dark: hexToRgb("#F87171") }
+        { name: "color/danger-tint", light: hexToRgb("#FDECEC"), dark: rgbaToFigma(248, 113, 113, 0.14) }
       ];
 
       for (const c of colorDefs) {
@@ -188,7 +197,8 @@
       const radiusDefs = [
         { name: "radius/radius-sm", val: 6 },
         { name: "radius/radius-md", val: 10 },
-        { name: "radius/radius-lg", val: 16 },
+        { name: "radius/radius-lg", val: 14 },
+        { name: "radius/radius-xl", val: 20 },
         { name: "radius/radius-full", val: 9999 }
       ];
       for (const r of radiusDefs) {
@@ -205,18 +215,17 @@
       }
 
       const motionDefs = [
-        { name: "motion/motion-fast", val: 120 },
-        { name: "motion/motion-normal", val: 200 },
-        { name: "motion/motion-slow", val: 300 }
+        { name: "motion/motion-fast", val: "120ms" },
+        { name: "motion/motion-base", val: "200ms" }
       ];
       for (const m of motionDefs) {
         try {
-          const v = figma.variables.createVariable(m.name, collection, "FLOAT");
+          const v = figma.variables.createVariable(m.name, collection, "STRING");
           v.setValueForMode(lightModeId, m.val);
           if (darkModeId) {
             v.setValueForMode(darkModeId, m.val);
           } else if (darkCollection && darkColModeId) {
-            const vDark = figma.variables.createVariable(m.name, darkCollection, "FLOAT");
+            const vDark = figma.variables.createVariable(m.name, darkCollection, "STRING");
             vDark.setValueForMode(darkColModeId, m.val);
           }
         } catch (e) {}
@@ -1692,11 +1701,11 @@
   w11CardsRow.itemSpacing = 16;
   w11CardsRow.fills = [];
 
-  // Card 1: Course Share Settings
+  // Card 1: Course Share Settings & One-time Result Box
   const w11ShareCard = figma.createFrame();
   w11ShareCard.layoutMode = "VERTICAL";
-  w11ShareCard.itemSpacing = 12;
-  w11ShareCard.resize(380, 420);
+  w11ShareCard.itemSpacing = 10;
+  w11ShareCard.resize(380, 440);
   w11ShareCard.cornerRadius = 12;
   w11ShareCard.fills = solidFill(C.bgSubtle);
   w11ShareCard.strokes = [{ type: "SOLID", color: C.border }];
@@ -1704,23 +1713,33 @@
   w11ShareCard.appendChild(makeBadge("W-11: Quản lý chia sẻ", C.brandTint, C.primary));
   w11ShareCard.appendChild(createText("Tạo liên kết tham gia mới", 16, FONT_SEMI, C.text));
   w11ShareCard.appendChild(createText("Thời hạn: 7 ngày • Tối đa 50 học viên", 12, FONT_REG, C.textMuted));
-  const btnCreateLink = makeButton("+ Tạo liên kết mới", C.primary, C.white);
-  btnCreateLink.resize(348, 44);
-  w11ShareCard.appendChild(btnCreateLink);
+  const oneTimeBox = figma.createFrame();
+  oneTimeBox.layoutMode = "VERTICAL";
+  oneTimeBox.resize(348, 90);
+  oneTimeBox.cornerRadius = 8;
+  oneTimeBox.fills = solidFill(C.brandTint);
+  oneTimeBox.paddingLeft = 10; oneTimeBox.paddingRight = 10; oneTimeBox.paddingTop = 8; oneTimeBox.paddingBottom = 8;
+  oneTimeBox.itemSpacing = 6;
+  oneTimeBox.appendChild(createText("✓ URL tạo một lần: https://wayfinder.edu.vn/join/X9A4B2", 11, FONT_SEMI, C.primary));
+  const btnCopyOneTime = makeButton("Sao chép liên kết (một lần)", C.primary, C.white);
+  btnCopyOneTime.resize(328, 44);
+  oneTimeBox.appendChild(btnCopyOneTime);
+  w11ShareCard.appendChild(oneTimeBox);
   w11CardsRow.appendChild(w11ShareCard);
 
-  // Card 2: Link List & Revocation
+  // Card 2: Link List (ONLY 6-char code X9A4B2, NO copy button in list)
   const w11ListCard = figma.createFrame();
   w11ListCard.layoutMode = "VERTICAL";
   w11ListCard.itemSpacing = 10;
-  w11ListCard.resize(380, 420);
+  w11ListCard.resize(380, 440);
   w11ListCard.cornerRadius = 12;
   w11ListCard.fills = solidFill(C.bgSubtle);
   w11ListCard.strokes = [{ type: "SOLID", color: C.border }];
   w11ListCard.paddingLeft = 16; w11ListCard.paddingRight = 16; w11ListCard.paddingTop = 16; w11ListCard.paddingBottom = 16;
-  w11ListCard.appendChild(makeBadge("Danh sách liên kết", C.successTint, C.success));
-  w11ListCard.appendChild(createText("/join/WF-PHARM-2026", 16, FONT_SEMI, C.primary));
+  w11ListCard.appendChild(makeBadge("Danh sách liên kết (Mã 6 ký tự)", C.successTint, C.success));
+  w11ListCard.appendChild(createText("Mã: X9A4B2", 18, FONT_BOLD, C.primary));
   w11ListCard.appendChild(createText("Đã dùng: 14/50 lượt • Còn 5 ngày", 12, FONT_REG, C.textMuted));
+  w11ListCard.appendChild(createText("Ghi chú: Không copy lại từ list, chỉ lưu mã định danh.", 11, FONT_REG, C.textMuted));
   const btnRevokeLink = makeButton("Thu hồi liên kết", C.surface, C.danger, C.danger);
   btnRevokeLink.resize(348, 44);
   w11ListCard.appendChild(btnRevokeLink);

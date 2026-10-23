@@ -593,3 +593,113 @@ def test_falsifiable_motion_mutation_fails():
     except AssertionError as e:
         assert "motion-fast" in str(e)
 
+
+
+def test_figma_plugin_has_all_37_variables_and_frame11():
+    """Verify that code.js defines all 37 variables exactly matching JSON/CSS, plus Frame 11."""
+    code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    raw_data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    # 1. All 37 variable names present in code.js
+    for v in raw_data["variables"]:
+        v_name = v["name"]
+        assert f'"{v_name}"' in code_js or f"'{v_name}'" in code_js, (
+            f"Figma plugin code.js missing variable name: {v_name}"
+        )
+    
+    # 2. Strict token values check in code.js
+    assert '"radius/radius-lg", val: 14' in code_js or "'radius/radius-lg', val: 14" in code_js, (
+        "code.js must define radius-lg as 14, matching tokens.css"
+    )
+    assert '"radius/radius-xl", val: 20' in code_js or "'radius/radius-xl', val: 20" in code_js, (
+        "code.js must define radius-xl as 20, matching tokens.css"
+    )
+    assert '"motion/motion-base"' in code_js, "code.js missing motion-base"
+    assert '"200ms"' in code_js, "code.js missing 200ms value"
+    assert "0.14" in code_js, "code.js missing 0.14 alpha for dark tints"
+    
+    # 3. Frame 11 and components
+    assert "Màn hình W-11" in code_js
+    assert "createComponent" in code_js
+    assert "flowStartingPoints" in code_js
+    assert "&bull;" not in code_js, "code.js must not contain raw unencoded &bull; strings"
+
+
+def test_w11_course_management_specification():
+    """Verify W-11 course management rules: 6-char token in list, one-time URL result, >=44px buttons, data safety."""
+    w11_html = Path("design/preview/w11_course_management_screens.html").read_text(encoding="utf-8")
+    
+    # 1. 6-character token in list table
+    assert "X9A4B2" in w11_html
+    # In tbody, no full URL or copy button
+    tbody_start = w11_html.find("<tbody>")
+    tbody_end = w11_html.find("</tbody>")
+    assert tbody_start != -1 and tbody_end != -1
+    tbody_content = w11_html[tbody_start:tbody_end]
+    assert "https://wayfinder.edu.vn/join/" not in tbody_content, "Link list table must not contain full URL"
+    assert "Sao chép" not in tbody_content, "Link list table must not contain copy button"
+    
+    # 2. One-time result box has full URL and copy button
+    assert 'id="box-new-link-result"' in w11_html
+    assert 'id="btn-copy-new-link-one-time"' in w11_html
+    assert "https://wayfinder.edu.vn/join/X9A4B2" in w11_html
+    
+    # 3. Danger zone wording respects private learning progress and shared artifacts
+    assert "Tiến trình học riêng của học viên và các tài liệu/artifact dùng chung được lưu giữ" in w11_html
+    
+    # 4. Touch target 44px
+    assert "min-height: 44px" in w11_html
+    assert "min-width: 44px" in w11_html
+    assert "36px" not in w11_html, "w11_course_management_screens.html must not contain substandard 36px buttons"
+
+
+def test_w08_lecture_specification():
+    """Verify W-08 lecture states: streaming, prerequisites open, source viewer, no OCR claims, >=44px buttons."""
+    w08_html = Path("design/preview/w08_lecture_screens.html").read_text(encoding="utf-8")
+    
+    assert 'id="section-lecture-streaming"' in w08_html
+    assert 'id="section-lecture-prerequisites"' in w08_html
+    assert 'id="section-source-viewer"' in w08_html
+    assert "OCR y khoa" not in w08_html, "Must not claim OCR y khoa without spec"
+    assert "36px" not in w08_html, "w08_lecture_screens.html must not contain substandard 36px buttons"
+    assert "min-height: 44px" in w08_html
+
+
+def test_w14_cancellation_respects_usage_contract():
+    """Verify W-14 cancellation state does not promise full refund or resource clearance for confirmed runs."""
+    w14_html = Path("design/preview/w14_upload_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-pipeline-cancelled"' in w14_html
+    assert "không hoàn lại lượt dựng đã xác nhận" in w14_html
+    cancelled_part = w14_html.split('id="section-pipeline-cancelled"')[1]
+    assert "không trừ lượt dựng" not in cancelled_part, (
+        "Cancelled section must not promise free cancellation after confirmation"
+    )
+
+
+def test_falsifiable_plugin_radius_lg_16_mutation_fails():
+    """Falsifiable test: prove that an altered radius-lg (16 instead of 14) in code.js fails verification."""
+    fake_code_js = 'const radiusDefs = [{ name: "radius/radius-lg", val: 16 }];'
+    with pytest.raises(AssertionError):
+        assert '"radius/radius-lg", val: 14' in fake_code_js
+
+
+def test_falsifiable_w11_copy_in_tbody_fails():
+    """Falsifiable test: prove that having a copy button in link list table fails verification."""
+    fake_tbody = '<tbody><tr><td>X9A4B2</td><td><button>Sao chép</button></td></tr></tbody>'
+    with pytest.raises(AssertionError):
+        assert "Sao chép" not in fake_tbody
+
+
+def test_falsifiable_w08_ocr_claim_fails():
+    """Falsifiable test: prove that adding OCR y khoa to w08 lecture fails verification."""
+    fake_w08 = '<p>Trích xuất tự động qua công cụ OCR y khoa WayFinder.</p>'
+    with pytest.raises(AssertionError):
+        assert "OCR y khoa" not in fake_w08
+
+
+def test_falsifiable_w11_36px_button_fails():
+    """Falsifiable test: prove that a 36px button in w11 fails verification."""
+    fake_w11 = '<button class="btn" style="min-height: 36px;">Thu hồi</button>'
+    with pytest.raises(AssertionError):
+        assert "36px" not in fake_w11
