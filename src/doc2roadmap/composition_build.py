@@ -51,7 +51,8 @@ class BuildTracePhaseBStore:
     Every `append_usage` row gets `counted_in = "build"`; all other methods go straight to the wrapped store.
     The build's spend is the delta of `DocumentPipeline.usage()` (provider tokens through the meters).
     Rule: every sum of provider spend (receipts, ledgers, reports, admin spend tables) must not add rows whose
-    `counted_in = "build"`. `DailySpendGuard` is the one reader that still counts them, as a safety cap.
+    `counted_in = "build"`. `DailySpendGuard` is unaffected: it only counts lecture, quiz, assistant and document rows, so build
+    rows never reach the daily caps.
     """
 
     def __init__(self, store):
