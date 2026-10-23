@@ -16,6 +16,11 @@ dung học của người khác.
 - **`UsageService.spend_summary`:** chi theo ngày × `purpose`, theo khoá học, 20 tài khoản chi nhiều nhất, số lời gọi, p50 và p90 giây, trong khoảng ngày
   chọn. Ghi rõ "ước theo token, không thay hoá đơn".
 - `system_caps_today`: trần nội dung dùng chung và trần khâu dựng hôm nay, đã dùng bao nhiêu.
+- **Sau W-15/SA-62:** tổng tiền/token/lời gọi không cộng lại trace `counted_in="build"`; cột typed trace bằng 0, raw `extra` giữ đối soát.
+  Nếu đọc raw `usage_rows()` để làm bảng chi phải lọc cờ này. Kiểm receipt meter được cộng đúng một lần bằng số fake khác 0 và SQL độc lập.
+- **ADR 0024/0025, SA-64 thay SA-63:** trang Nhật ký cho admin xem `lecture_validation` theo spec bài giảng 3
+  (độ dài, tự kiểm tra, nhãn nguồn/điểm trùng/nhãn lạ, formula còn sót, lặp, finish_reason, thiếu ảnh/số ảnh), có lọc định danh bài/thời gian.
+  Không trả khối `validation` qua API/SSE/tool cho người học; không dùng quyền xem log này mở quyền đọc chat hay dữ liệu học riêng.
 - **Tín dụng Cloudinary:** đọc mức dùng của tài khoản qua API quản trị của Cloudinary (dung lượng, băng thông, phép biến đổi), lưu tạm 1 giờ, hiện ở thẻ Chi.
 - Mọi thao tác admin ghi `audit_event`.
 
@@ -33,6 +38,8 @@ Mỗi test thấy đỏ trước trên bản sai:
 - [ ] Khoá tài khoản thì mọi phiên của người đó hết hiệu lực ngay.
 - [ ] Admin cuối cùng không tự hạ quyền được.
 - [ ] Tổng `spend_summary` khớp tổng sổ chi trong khoảng ngày, tính theo giờ Việt Nam.
+- [ ] Có receipt build và trace cùng số chi khác 0: bảng chi/đếm lời gọi tính receipt một lần, không cộng trace; raw trace vẫn đọc lại được để đối soát.
+- [ ] Người thường bị chặn log `lecture_validation`; admin xem được số đo kiểm/định danh, không lộ chat hoặc dữ liệu học riêng qua log này.
 - [ ] Ảnh chụp năm thẻ ở 1280 px. Khu quản trị không bắt buộc đẹp ở 390 px, nhưng không vỡ bố cục.
 
 ## Ngoài vé
