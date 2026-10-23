@@ -20,7 +20,10 @@ class BSettings:
     naming_common_chunk_ratio: float = 0.02
     lecture_max_output_tokens: int = 4096
     document_max_output_tokens: int = 3000
-    assistant_max_output_tokens: int = 1024
+    assistant_contract_version: str = "answer-3"
+    assistant_prompt_version: str = "assistant-prompt-3"
+    assistant_temperature: float = 1.0
+    assistant_max_output_tokens: int = 2048
     lecture_context_tokens: int = 2500
     document_context_tokens: int = 8000
     lecture_max_prerequisites: int = 3
@@ -34,11 +37,12 @@ class BSettings:
     connector_sentence_max_chars: int = 60
     quote_max_chars: int = 200
     document_max_usd: float = 0.01
-    assistant_max_rounds: int = 5
-    assistant_max_usd: float = 0.01
-    assistant_history_turns: int = 3
-    assistant_history_tokens: int = 1000
-    assistant_focus_tokens: int = 400
+    assistant_max_rounds: int = 3
+    assistant_max_usd: float = 0.05
+    assistant_history_turns: int = 6
+    assistant_history_tokens: int = 3000
+    assistant_focus_chars: int = 1500
+    assistant_max_page_images: int = 3
     tool_results_tokens: int = 2500
     quiz_generation_max_output_tokens: int = 1200
     quiz_verifier_max_output_tokens: int = 400
@@ -53,7 +57,7 @@ class BSettings:
     scope_remap_min_jaccard: float = 0.5
     session_title_max_chars: int = 60
     roadmap_recent_module_sessions: int = 5
-    learner_daily_max_usd: float = 0.20
+    learner_daily_max_usd: float = 1.00
     system_daily_max_usd: float = 5.0
     spend_day_timezone: str = "Asia/Ho_Chi_Minh"
     quiz_roadmap_max_items: int = 10
@@ -98,8 +102,9 @@ def lecture_cache_key(
         "model_id": settings.model_id,
         "temperature": settings.lecture_temperature,
         "max_output_tokens": settings.lecture_max_output_tokens,
-        # assistant_focus_tokens never reaches a lecture prompt; leaving it out keeps cached lectures valid.
-        "settings": {k: v for k, v in asdict(settings).items() if k != "assistant_focus_tokens"},
+        # Assistant limits and the per-learner cap never reach a lecture prompt; leaving them out keeps cached lectures valid.
+        "settings": {k: v for k, v in asdict(settings).items()
+                     if not k.startswith("assistant_") and k != "learner_daily_max_usd"},
         "contract_version": settings.contract_version,
     })
     return key, assembled_hash
