@@ -1773,6 +1773,292 @@
   figma.currentPage.appendChild(w11Frame);
   createdNodes.push(w11Frame);
 
+  // ==========================================
+  // 12. FRAME: W-08 LECTURE, VIEWER & BUG REPORT
+  // ==========================================
+  const w08Frame = figma.createFrame();
+  w08Frame.name = "12. Màn hình W-08: Bài học Y khoa, Viewer & Báo lỗi";
+  w08Frame.x = 0;
+  w08Frame.y = 6050;
+  w08Frame.resize(1280, 560);
+  w08Frame.fills = solidFill(C.surface);
+  w08Frame.cornerRadius = 16;
+  w08Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w08Frame.strokeWeight = 1;
+  w08Frame.layoutMode = "VERTICAL";
+  w08Frame.paddingTop = 28; w08Frame.paddingBottom = 28;
+  w08Frame.paddingLeft = 32; w08Frame.paddingRight = 32;
+  w08Frame.itemSpacing = 20;
+
+  w08Frame.appendChild(createText("Trang học & Bài giảng Y khoa (W-08)", 22, FONT_BOLD, C.text));
+  w08Frame.appendChild(createText("Bao gồm: Bài đang chờ/streaming skeleton, Accordion tiên quyết, Bài học hỏng hẳn có lối ra, Viewer ảnh trang & Báo lỗi.", 13, FONT_REG, C.textMuted));
+
+  const w08CardsRow = figma.createFrame();
+  w08CardsRow.layoutMode = "HORIZONTAL";
+  w08CardsRow.itemSpacing = 16;
+  w08CardsRow.fills = [];
+
+  // Card 1: Fatal Error with Exit
+  const w08FatalCard = figma.createFrame();
+  w08FatalCard.layoutMode = "VERTICAL";
+  w08FatalCard.itemSpacing = 10;
+  w08FatalCard.resize(380, 440);
+  w08FatalCard.cornerRadius = 12;
+  w08FatalCard.fills = solidFill(C.bgSubtle);
+  w08FatalCard.strokes = [{ type: "SOLID", color: C.danger }];
+  w08FatalCard.strokeWeight = 1.5;
+  w08FatalCard.paddingLeft = 16; w08FatalCard.paddingRight = 16; w08FatalCard.paddingTop = 16; w08FatalCard.paddingBottom = 16;
+  w08FatalCard.appendChild(makeBadge("Bài học hỏng hẳn (Fatal Error)", C.dangerTint, C.danger));
+  w08FatalCard.appendChild(createText("[ · _ · ] Lỗi xử lý bài học", 16, FONT_BOLD, C.danger));
+  w08FatalCard.appendChild(createText("Hệ thống gặp sự cố không thể phục hồi cấu trúc bài học. Bạn có thể quay lại lộ trình học an toàn.", 12, FONT_REG, C.textMuted));
+  const btnExitRoadmap = makeButton("← Quay về Lộ trình học", C.primary, C.white);
+  btnExitRoadmap.resize(348, 44);
+  w08FatalCard.appendChild(btnExitRoadmap);
+  const btnReportBug = makeButton("⚠️ Báo lỗi nội dung bài này", C.surface, C.danger, C.danger);
+  btnReportBug.resize(348, 44);
+  w08FatalCard.appendChild(btnReportBug);
+  w08CardsRow.appendChild(w08FatalCard);
+
+  // Card 2: Page Image Viewer with Controls
+  const w08ViewerCard = figma.createFrame();
+  w08ViewerCard.layoutMode = "VERTICAL";
+  w08ViewerCard.itemSpacing = 10;
+  w08ViewerCard.resize(380, 440);
+  w08ViewerCard.cornerRadius = 12;
+  w08ViewerCard.fills = solidFill(C.bgSubtle);
+  w08ViewerCard.strokes = [{ type: "SOLID", color: C.border }];
+  w08ViewerCard.paddingLeft = 16; w08ViewerCard.paddingRight = 16; w08ViewerCard.paddingTop = 16; w08ViewerCard.paddingBottom = 16;
+  w08ViewerCard.appendChild(makeBadge("Viewer ảnh trang có điều khiển", C.brandTint, C.primary));
+  w08ViewerCard.appendChild(createText("Harrison 21st • Trang 1892 / 4120", 15, FONT_SEMI, C.text));
+  const viewerControlsRow = figma.createFrame();
+  viewerControlsRow.layoutMode = "HORIZONTAL";
+  viewerControlsRow.itemSpacing = 8;
+  viewerControlsRow.fills = [];
+  const btnZoom = makeButton("🔍 100%", C.surface, C.text, C.border);
+  btnZoom.resize(100, 44);
+  const btnPrevP = makeButton("◀ Trước", C.surface, C.text, C.border);
+  btnPrevP.resize(116, 44);
+  const btnNextP = makeButton("Sau ▶", C.surface, C.text, C.border);
+  btnNextP.resize(116, 44);
+  viewerControlsRow.appendChild(btnZoom);
+  viewerControlsRow.appendChild(btnPrevP);
+  viewerControlsRow.appendChild(btnNextP);
+  w08ViewerCard.appendChild(viewerControlsRow);
+  const imgBox = figma.createFrame();
+  imgBox.resize(348, 200);
+  imgBox.cornerRadius = 8;
+  imgBox.fills = solidFill(C.surface);
+  imgBox.strokes = [{ type: "SOLID", color: C.border }];
+  imgBox.paddingLeft = 12; imgBox.paddingRight = 12; imgBox.paddingTop = 12;
+  imgBox.appendChild(createText("📖 Sơ đồ phân nhánh động mạch vành trái (LAD & LCx)", 11, FONT_SEMI, C.primary));
+  imgBox.appendChild(createText("Trích đoạn đối chiếu từ giáo trình nguồn đã tải lên.", 11, FONT_REG, C.textMuted));
+  w08ViewerCard.appendChild(imgBox);
+  w08CardsRow.appendChild(w08ViewerCard);
+
+  // Card 3: Content Bug Report Form
+  const w08ReportCard = figma.createFrame();
+  w08ReportCard.layoutMode = "VERTICAL";
+  w08ReportCard.itemSpacing = 10;
+  w08ReportCard.resize(380, 440);
+  w08ReportCard.cornerRadius = 12;
+  w08ReportCard.fills = solidFill(C.bgSubtle);
+  w08ReportCard.strokes = [{ type: "SOLID", color: C.border }];
+  w08ReportCard.paddingLeft = 16; w08ReportCard.paddingRight = 16; w08ReportCard.paddingTop = 16; w08ReportCard.paddingBottom = 16;
+  w08ReportCard.appendChild(makeBadge("Báo lỗi nội dung bài học", C.accentTint, C.accentText));
+  w08ReportCard.appendChild(createText("Gửi phản hồi chất lượng chuyên môn", 15, FONT_SEMI, C.text));
+  w08ReportCard.appendChild(createText("• Sai kiến thức y khoa • Lỗi trình bày • Sai trích dẫn", 11, FONT_REG, C.textMuted));
+  const descBox = figma.createFrame();
+  descBox.resize(348, 140);
+  descBox.cornerRadius = 8;
+  descBox.fills = solidFill(C.surface);
+  descBox.strokes = [{ type: "SOLID", color: C.border }];
+  descBox.paddingLeft = 12; descBox.paddingRight = 12; descBox.paddingTop = 10;
+  descBox.appendChild(createText("Mô tả chi tiết lỗi phát hiện và đề xuất hiệu đính...", 11, FONT_REG, C.textMuted));
+  w08ReportCard.appendChild(descBox);
+  const btnSubmitBug = makeButton("Gửi báo cáo lỗi nội dung", C.primary, C.white);
+  btnSubmitBug.resize(348, 44);
+  w08ReportCard.appendChild(btnSubmitBug);
+  w08CardsRow.appendChild(w08ReportCard);
+
+  w08Frame.appendChild(w08CardsRow);
+  figma.currentPage.appendChild(w08Frame);
+  createdNodes.push(w08Frame);
+
+  // ==========================================
+  // 13. FRAME: W-09 CHAT TRỢ LÝ HỌC TẬP
+  // ==========================================
+  const w09Frame = figma.createFrame();
+  w09Frame.name = "13. Màn hình W-09: Khung Chat Trợ lý Học tập";
+  w09Frame.x = 0;
+  w09Frame.y = 6670;
+  w09Frame.resize(1280, 540);
+  w09Frame.fills = solidFill(C.surface);
+  w09Frame.cornerRadius = 16;
+  w09Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w09Frame.strokeWeight = 1;
+  w09Frame.layoutMode = "VERTICAL";
+  w09Frame.paddingTop = 28; w09Frame.paddingBottom = 28;
+  w09Frame.paddingLeft = 32; w09Frame.paddingRight = 32;
+  w09Frame.itemSpacing = 20;
+
+  w09Frame.appendChild(createText("Khung Chat Trợ lý Học tập (W-09)", 22, FONT_BOLD, C.text));
+  w09Frame.appendChild(createText("Bao gồm: Phiên hoạt động có lượt & thẻ module, Tiến trình công cụ, Phạm vi đã cũ, Hết trần trong ngày.", 13, FONT_REG, C.textMuted));
+
+  const w09CardsRow = figma.createFrame();
+  w09CardsRow.layoutMode = "HORIZONTAL";
+  w09CardsRow.itemSpacing = 16;
+  w09CardsRow.fills = [];
+
+  // Card 1: Active Chat with Module & Turns
+  const w09ActiveCard = figma.createFrame();
+  w09ActiveCard.layoutMode = "VERTICAL";
+  w09ActiveCard.itemSpacing = 10;
+  w09ActiveCard.resize(380, 420);
+  w09ActiveCard.cornerRadius = 12;
+  w09ActiveCard.fills = solidFill(C.bgSubtle);
+  w09ActiveCard.strokes = [{ type: "SOLID", color: C.border }];
+  w09ActiveCard.paddingLeft = 16; w09ActiveCard.paddingRight = 16; w09ActiveCard.paddingTop = 16; w09ActiveCard.paddingBottom = 16;
+  w09ActiveCard.appendChild(makeBadge("Phiên chat • Còn 24 lượt", C.successTint, C.success));
+  w09ActiveCard.appendChild(createText("📌 Module 1: Động mạch vành", 15, FONT_SEMI, C.primary));
+  const chatBubble = figma.createFrame();
+  chatBubble.resize(348, 160);
+  chatBubble.cornerRadius = 8;
+  chatBubble.fills = solidFill(C.surface);
+  chatBubble.paddingLeft = 12; chatBubble.paddingRight = 12; chatBubble.paddingTop = 10;
+  chatBubble.appendChild(createText("LAD cấp máu cho 2/3 trước vách liên thất theo Harrison 21st (Trang 1892).", 12, FONT_REG, C.text));
+  w09ActiveCard.appendChild(chatBubble);
+  const btnSendMsg = makeButton("Gửi câu hỏi mới", C.primary, C.white);
+  btnSendMsg.resize(348, 44);
+  w09ActiveCard.appendChild(btnSendMsg);
+  w09CardsRow.appendChild(w09ActiveCard);
+
+  // Card 2: Scope Outdated Warning
+  const w09ScopeCard = figma.createFrame();
+  w09ScopeCard.layoutMode = "VERTICAL";
+  w09ScopeCard.itemSpacing = 10;
+  w09ScopeCard.resize(380, 420);
+  w09ScopeCard.cornerRadius = 12;
+  w09ScopeCard.fills = solidFill(C.bgSubtle);
+  w09ScopeCard.strokes = [{ type: "SOLID", color: C.danger }];
+  w09ScopeCard.paddingLeft = 16; w09ScopeCard.paddingRight = 16; w09ScopeCard.paddingTop = 16; w09ScopeCard.paddingBottom = 16;
+  w09ScopeCard.appendChild(makeBadge("Phạm vi đã cũ (Scope Outdated)", C.dangerTint, C.danger));
+  w09ScopeCard.appendChild(createText("Đang xem Module 3, chat thuộc Module 1", 14, FONT_SEMI, C.danger));
+  w09ScopeCard.appendChild(createText("Ngữ cảnh câu trả lời có thể không còn phù hợp. Bạn nên mở phiên mới.", 12, FONT_REG, C.textMuted));
+  const btnNewScope = makeButton("+ Mở phiên chat mới cho Module 3", C.surface, C.primary, C.primary);
+  btnNewScope.resize(348, 44);
+  w09ScopeCard.appendChild(btnNewScope);
+  w09CardsRow.appendChild(w09ScopeCard);
+
+  // Card 3: Daily Limit Reached
+  const w09LimitCard = figma.createFrame();
+  w09LimitCard.layoutMode = "VERTICAL";
+  w09LimitCard.itemSpacing = 10;
+  w09LimitCard.resize(380, 420);
+  w09LimitCard.cornerRadius = 12;
+  w09LimitCard.fills = solidFill(C.bgSubtle);
+  w09LimitCard.strokes = [{ type: "SOLID", color: C.border }];
+  w09LimitCard.paddingLeft = 16; w09LimitCard.paddingRight = 16; w09LimitCard.paddingTop = 16; w09LimitCard.paddingBottom = 16;
+  w09LimitCard.appendChild(makeBadge("Hết hạn mức (Daily Limit)", C.dangerTint, C.danger));
+  w09LimitCard.appendChild(createText("0 / 30 lượt còn lại hôm nay", 15, FONT_BOLD, C.text));
+  w09LimitCard.appendChild(createText("Bạn vẫn đọc bài giảng, làm quiz và xem tài liệu được. Lượt mới từ 00:00 ngày mai.", 12, FONT_REG, C.textMuted));
+  const btnBackRoadmap = makeButton("Quay lại Lộ trình học ➔", C.primary, C.white);
+  btnBackRoadmap.resize(348, 44);
+  w09LimitCard.appendChild(btnBackRoadmap);
+  w09CardsRow.appendChild(w09LimitCard);
+
+  w09Frame.appendChild(w09CardsRow);
+  figma.currentPage.appendChild(w09Frame);
+  createdNodes.push(w09Frame);
+
+  // ==========================================
+  // 14. FRAME: W-10 QUIZ KIỂM TRA Y KHOA
+  // ==========================================
+  const w10Frame = figma.createFrame();
+  w10Frame.name = "14. Màn hình W-10: Khung Quiz Kiểm tra Y khoa";
+  w10Frame.x = 0;
+  w10Frame.y = 7270;
+  w10Frame.resize(1280, 540);
+  w10Frame.fills = solidFill(C.surface);
+  w10Frame.cornerRadius = 16;
+  w10Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w10Frame.strokeWeight = 1;
+  w10Frame.layoutMode = "VERTICAL";
+  w10Frame.paddingTop = 28; w10Frame.paddingBottom = 28;
+  w10Frame.paddingLeft = 32; w10Frame.paddingRight = 32;
+  w10Frame.itemSpacing = 20;
+
+  w10Frame.appendChild(createText("Khung Quiz Kiểm tra Y khoa (W-10)", 22, FONT_BOLD, C.text));
+  w10Frame.appendChild(createText("Bao gồm: Đang sinh câu hỏi (loading skeleton), Đang làm bài (chọn đáp án), Kết quả 10/10 kèm đối chiếu trích dẫn nguồn.", 13, FONT_REG, C.textMuted));
+
+  const w10CardsRow = figma.createFrame();
+  w10CardsRow.layoutMode = "HORIZONTAL";
+  w10CardsRow.itemSpacing = 16;
+  w10CardsRow.fills = [];
+
+  // Card 1: Question taking
+  const w10QCard = figma.createFrame();
+  w10QCard.layoutMode = "VERTICAL";
+  w10QCard.itemSpacing = 10;
+  w10QCard.resize(380, 420);
+  w10QCard.cornerRadius = 12;
+  w10QCard.fills = solidFill(C.bgSubtle);
+  w10QCard.strokes = [{ type: "SOLID", color: C.border }];
+  w10QCard.paddingLeft = 16; w10QCard.paddingRight = 16; w10QCard.paddingTop = 16; w10QCard.paddingBottom = 16;
+  w10QCard.appendChild(makeBadge("Câu hỏi 3/5 • Đang làm", C.brandTint, C.primary));
+  w10QCard.appendChild(createText("Động mạch cấp máu nút AV ở 90% dân số?", 14, FONT_SEMI, C.text));
+  w10QCard.appendChild(createText("✓ B. Động mạch vành phải (RCA) [ĐÃ CHỌN]", 12, FONT_BOLD, C.primary));
+  const btnSubmitQ = makeButton("Nộp bài kiểm tra ▶", C.primary, C.white);
+  btnSubmitQ.resize(348, 44);
+  w10QCard.appendChild(btnSubmitQ);
+  w10CardsRow.appendChild(w10QCard);
+
+  // Card 2: 10/10 Result & Citation
+  const w10ResCard = figma.createFrame();
+  w10ResCard.layoutMode = "VERTICAL";
+  w10ResCard.itemSpacing = 10;
+  w10ResCard.resize(380, 420);
+  w10ResCard.cornerRadius = 12;
+  w10ResCard.fills = solidFill(C.bgSubtle);
+  w10ResCard.strokes = [{ type: "SOLID", color: C.success }];
+  w10ResCard.strokeWeight = 1.5;
+  w10ResCard.paddingLeft = 16; w10ResCard.paddingRight = 16; w10ResCard.paddingTop = 16; w10ResCard.paddingBottom = 16;
+  w10ResCard.appendChild(makeBadge("Kết quả: 10/10 điểm", C.successTint, C.success));
+  w10ResCard.appendChild(createText("Xuất sắc! Đúng 5/5 câu hỏi", 16, FONT_BOLD, C.text));
+  const citeBox = figma.createFrame();
+  citeBox.resize(348, 120);
+  citeBox.cornerRadius = 8;
+  citeBox.fills = solidFill(C.surface);
+  citeBox.paddingLeft = 12; citeBox.paddingRight = 12; citeBox.paddingTop = 10;
+  citeBox.appendChild(createText("📖 Đối chiếu Harrison 21st (Trang 1892): RCA cấp máu nút AV ở 90% người.", 11, FONT_REG, C.textMuted));
+  w10ResCard.appendChild(citeBox);
+  const btnNextLec = makeButton("Bài học tiếp theo ➔", C.primary, C.white);
+  btnNextLec.resize(348, 44);
+  w10ResCard.appendChild(btnNextLec);
+  w10CardsRow.appendChild(w10ResCard);
+
+  // Card 3: Generating Skeleton
+  const w10GenCard = figma.createFrame();
+  w10GenCard.layoutMode = "VERTICAL";
+  w10GenCard.itemSpacing = 10;
+  w10GenCard.resize(380, 420);
+  w10GenCard.cornerRadius = 12;
+  w10GenCard.fills = solidFill(C.bgSubtle);
+  w10GenCard.strokes = [{ type: "SOLID", color: C.border }];
+  w10GenCard.paddingLeft = 16; w10GenCard.paddingRight = 16; w10GenCard.paddingTop = 16; w10GenCard.paddingBottom = 16;
+  w10GenCard.appendChild(makeBadge("Đang sinh câu hỏi (Generating)", C.accentTint, C.accentText));
+  w10GenCard.appendChild(createText("Đang biên soạn 5 câu hỏi từ Harrison 21st...", 13, FONT_SEMI, C.text));
+  const skel1 = figma.createFrame(); skel1.resize(348, 20); skel1.cornerRadius = 4; skel1.fills = solidFill(C.border);
+  const skel2 = figma.createFrame(); skel2.resize(348, 44); skel2.cornerRadius = 8; skel2.fills = solidFill(C.surface);
+  const skel3 = figma.createFrame(); skel3.resize(348, 44); skel3.cornerRadius = 8; skel3.fills = solidFill(C.surface);
+  w10GenCard.appendChild(skel1);
+  w10GenCard.appendChild(skel2);
+  w10GenCard.appendChild(skel3);
+  w10CardsRow.appendChild(w10GenCard);
+
+  w10Frame.appendChild(w10CardsRow);
+  figma.currentPage.appendChild(w10Frame);
+  createdNodes.push(w10Frame);
+
   // Focus and Zoom
   figma.viewport.scrollAndZoomIntoView(createdNodes);
 

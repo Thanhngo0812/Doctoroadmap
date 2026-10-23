@@ -105,6 +105,42 @@ async function capture() {
     }
   }
 
+  // W-09 Matrix: Assistant Chat Active, Tool Call, Scope Outdated, Daily Limit (6 captures)
+  for (const [vpName, vp] of Object.entries(viewports)) {
+    for (const theme of ['light', 'dark']) {
+      tasks.push({
+        name: `w09_chat_${vp.width}_${theme}.png`,
+        url: 'file:///' + path.join(root, 'design/preview/w09_chat_screens.html').replace(/\\/g, '/'),
+        viewport: vp,
+        theme,
+        fullPage: true,
+        setup: async (page) => {
+          if (theme === 'dark') {
+            await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+          }
+        }
+      });
+    }
+  }
+
+  // W-10 Matrix: Medical Quiz Generating, Question Taking, Result & Citation (6 captures)
+  for (const [vpName, vp] of Object.entries(viewports)) {
+    for (const theme of ['light', 'dark']) {
+      tasks.push({
+        name: `w10_quiz_${vp.width}_${theme}.png`,
+        url: 'file:///' + path.join(root, 'design/preview/w10_quiz_screens.html').replace(/\\/g, '/'),
+        viewport: vp,
+        theme,
+        fullPage: true,
+        setup: async (page) => {
+          if (theme === 'dark') {
+            await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+          }
+        }
+      });
+    }
+  }
+
   // Key Baseline Pages (Desktop 1280, Mobile 390)
   tasks.push(
     // Auth screens

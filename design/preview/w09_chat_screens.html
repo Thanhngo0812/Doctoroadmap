@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khung Chat Trợ lý Học tập (W-09) — WayFinder Design Preview</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.5;
+      padding: var(--space-6);
+      transition: background-color var(--motion-fast), color var(--motion-fast);
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .theme-toggle-btn {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-4);
+      cursor: pointer;
+      font-size: var(--text-small);
+      font-weight: var(--font-semibold);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: 4px var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: var(--font-semibold);
+    }
+    .badge-primary { background: var(--color-brand-tint); color: var(--color-primary); }
+    .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+    .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
+    .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+    .badge-module { background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-body);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: background-color var(--motion-fast);
+    }
+    .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border-input); }
+    .btn-danger { background: var(--color-danger); color: var(--color-primary-text); }
+
+    /* Chat layout styling */
+    .chat-box {
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-bg-subtle);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 420px;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: var(--space-4);
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+    .message-bubble {
+      max-width: 80%;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-body);
+      line-height: 1.5;
+    }
+    .message-user {
+      align-self: flex-end;
+      background: var(--color-primary);
+      color: var(--color-primary-text);
+      border-bottom-right-radius: 2px;
+    }
+    .message-assistant {
+      align-self: flex-start;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      color: var(--color-text);
+      border-bottom-left-radius: 2px;
+    }
+    .chat-input-bar {
+      display: flex;
+      gap: var(--space-2);
+      padding: var(--space-3);
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+    }
+    .chat-input {
+      flex: 1;
+      min-height: 44px;
+      height: 44px;
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      padding: 0 var(--space-3);
+      background: var(--color-surface);
+      color: var(--color-text);
+      font-size: var(--text-body);
+    }
+
+    @media (max-width: 640px) {
+      body { padding: var(--space-3); }
+      .header-bar { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+      .theme-toggle-btn { width: 100%; }
+      .card { padding: var(--space-4); }
+      .chat-box { height: 380px; }
+      .chat-input-bar { flex-direction: column; }
+      .chat-input-bar .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <div>
+      <h1 style="font-size: var(--text-h2); font-weight: var(--font-bold); color: var(--color-text);">
+        Khung Chat Trợ lý Học tập (W-09)
+      </h1>
+      <p style="font-size: var(--text-small); color: var(--color-text-muted);">
+        Thể hiện 5 trạng thái theo Spec Mục 11: Phiên mới, có lượt & thẻ module, tiến trình công cụ, phạm vi đã cũ, hết trần trong ngày.
+      </p>
+    </div>
+    <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Đổi giao diện Sáng/Tối">
+      🌓 Chế độ Sáng/Tối
+    </button>
+  </div>
+
+  <main class="container">
+    <!-- TRẠNG THÁI 1 & 2: PHIÊN MỚI, CÓ LƯỢT HỎI & THẺ MODULE (ACTIVE CHAT) -->
+    <section class="card" id="section-chat-active">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-primary">Phiên hoạt động</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            1. Phiên mới: Có lượt hỏi & gắn thẻ Module
+          </h2>
+        </div>
+        <div style="display: flex; gap: var(--space-2); align-items: center;">
+          <span class="badge badge-module" id="badge-chat-module">📌 Module 1: Động mạch vành</span>
+          <span class="badge badge-success" id="badge-chat-turns">Còn 24 lượt hỏi hôm nay</span>
+        </div>
+      </div>
+
+      <div class="chat-box">
+        <div class="chat-messages">
+          <div class="message-bubble message-assistant">
+            Xin chào! Tôi là Trợ lý WayFinder. Bạn đang xem <strong>Module 1: Giải phẫu động mạch vành</strong>. Bạn muốn làm rõ cấu trúc hay cơ chế nào trong bài này?
+          </div>
+          <div class="message-bubble message-user">
+            Nhánh LAD cấp máu cho những phần nào của vách liên thất?
+          </div>
+          <div class="message-bubble message-assistant">
+            Theo giáo trình <em>Harrison's Principles of Internal Medicine (Trang 1892)</em>: Nhánh động mạch liên thất trước (LAD) phát ra các nhánh xiên (septal perforators) cấp máu cho <strong>2/3 trước của vách liên thất</strong> và bó His-Purkinje.
+          </div>
+        </div>
+        <div class="chat-input-bar">
+          <input type="text" class="chat-input" placeholder="Hỏi về nội dung Module 1..." aria-label="Nội dung câu hỏi">
+          <button class="btn btn-primary" id="btn-chat-send">Gửi câu hỏi</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 3: TIẾN TRÌNH CÔNG CỤ (TOOL EXECUTION PROGRESS) -->
+    <section class="card" id="section-chat-tool-progress">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-accent">⚡ Đang xử lý</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            2. Tiến trình gọi công cụ tra cứu (Tool Execution)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Tự động tra cứu tài liệu gốc</span>
+      </div>
+
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
+          <div style="width: 20px; height: 20px; border: 2px solid var(--color-brand); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <strong style="color: var(--color-primary); font-size: var(--text-body);">
+            Đang tra cứu mục từ trong giáo trình nguồn (Harrison 21st Edition)...
+          </strong>
+        </div>
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-sm); padding: var(--space-3); font-family: monospace; font-size: var(--text-caption); color: var(--color-text-muted);">
+          🔍 Công cụ: <code>vector_search_harrison_21st</code><br>
+          📄 Tham số: <code>{"query": "LAD septal perforators supply", "chapter": 273, "top_k": 3}</code><br>
+          ⏳ Trạng thái: Đang đối chiếu ngữ nghĩa trang 1892–1895...
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 4: PHẠM VI ĐÃ CŨ (SCOPE OUTDATED WARNING) -->
+    <section class="card" id="section-chat-scope-outdated">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-danger">Cảnh báo ngữ cảnh</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            3. Phạm vi thảo luận đã cũ (Scope Outdated)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Bạn đã chuyển sang Module khác</span>
+      </div>
+
+      <div style="border-left: 4px solid var(--color-danger); background: var(--color-bg-subtle); padding: var(--space-4); border-radius: 0 var(--radius-md) var(--radius-md) 0; margin-bottom: var(--space-4);">
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-danger); margin-bottom: var(--space-1);">
+          ⚠️ Đoạn chat này thuộc phạm vi Module 1, trong khi bạn đang xem Module 3
+        </h3>
+        <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-bottom: var(--space-3);">
+          Câu trả lời bên dưới có thể không còn phù hợp với bài học hiện tại của bạn. Bạn nên mở một phiên trò chuyện mới cho Module 3 để nhận câu trả lời chính xác nhất.
+        </p>
+        <button class="btn btn-secondary" id="btn-start-new-session" style="min-height: 44px; min-width: 44px;">
+          + Mở phiên chat mới cho Module 3
+        </button>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 5: HẾT TRẦN LƯỢT HỎI TRONG NGÀY (DAILY LIMIT EXCEEDED) -->
+    <section class="card" id="section-chat-limit-exceeded">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-danger">Hết hạn mức</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            4. Trạng thái hết trần trong ngày (`daily_limit`)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-danger); font-weight: var(--font-semibold);">0 / 30 lượt còn lại</span>
+      </div>
+
+      <div style="text-align: center; padding: var(--space-5); background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+        <div style="font-family: monospace; font-size: 32px; color: var(--color-danger); margin-bottom: var(--space-2);">⏳</div>
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text); margin-bottom: var(--space-2);">
+          Hôm nay bạn đã dùng hết lượt hỏi trợ lý
+        </h3>
+        <p style="font-size: var(--text-small); color: var(--color-text-muted); max-width: 500px; margin: 0 auto var(--space-4); line-height: 1.5;">
+          Bạn vẫn đọc bài giảng, làm quiz và xem tài liệu được bình thường. Lượt hỏi mới sẽ được tự động đặt lại từ <strong>00:00 ngày mai (24/10/2026)</strong>.
+        </p>
+        <a href="/khoa-hoc/demo/lo-trinh" class="btn btn-primary" id="btn-return-roadmap-from-chat" style="min-height: 44px; min-width: 44px;">
+          Quay lại học tiếp Lộ trình
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const cur = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khung Quiz Kiểm tra Y khoa (W-10) — WayFinder Design Preview</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.5;
+      padding: var(--space-6);
+      transition: background-color var(--motion-fast), color var(--motion-fast);
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .theme-toggle-btn {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-4);
+      cursor: pointer;
+      font-size: var(--text-small);
+      font-weight: var(--font-semibold);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: 4px var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: var(--font-semibold);
+    }
+    .badge-primary { background: var(--color-brand-tint); color: var(--color-primary); }
+    .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+    .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
+    .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-body);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: background-color var(--motion-fast);
+    }
+    .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border-input); }
+    .btn-danger { background: var(--color-danger); color: var(--color-primary-text); }
+
+    /* Quiz Option Styles */
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      padding: var(--space-3) var(--space-4);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-surface);
+      cursor: pointer;
+      min-height: 44px;
+      transition: border-color var(--motion-fast), background-color var(--motion-fast);
+    }
+    .quiz-option:hover {
+      border-color: var(--color-primary);
+      background: var(--color-bg-subtle);
+    }
+    .quiz-option.selected {
+      border-color: var(--color-primary);
+      background: var(--color-brand-tint);
+    }
+    .quiz-option.correct {
+      border-color: var(--color-success);
+      background: var(--color-success-tint);
+    }
+    .quiz-option.wrong {
+      border-color: var(--color-danger);
+      background: var(--color-danger-tint);
+    }
+
+    /* Skeleton Loading Pulse */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .skeleton-line {
+      height: 16px;
+      background: var(--color-border);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-2);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton-line { animation: none; opacity: 0.7; }
+    }
+
+    @media (max-width: 640px) {
+      body { padding: var(--space-3); }
+      .header-bar { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+      .theme-toggle-btn { width: 100%; }
+      .card { padding: var(--space-4); }
+      .quiz-action-bar { flex-direction: column; }
+      .quiz-action-bar .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <div>
+      <h1 style="font-size: var(--text-h2); font-weight: var(--font-bold); color: var(--color-text);">
+        Khung Quiz Kiểm tra Y khoa (W-10)
+      </h1>
+      <p style="font-size: var(--text-small); color: var(--color-text-muted);">
+        Thể hiện 3 trạng thái theo Spec Mục 11: Đang sinh câu hỏi, đang làm bài (chưa chọn / đã chọn), kết quả bài làm kèm trích dẫn đối chiếu.
+      </p>
+    </div>
+    <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Đổi giao diện Sáng/Tối">
+      🌓 Chế độ Sáng/Tối
+    </button>
+  </div>
+
+  <main class="container">
+    <!-- TRẠNG THÁI 1: ĐANG SINH CÂU HỎI (GENERATING SKELETON / SPINNER) -->
+    <section class="card" id="section-quiz-generating">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-accent">⚡ Đang xử lý</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            1. Trạng thái: Đang sinh câu hỏi kiểm tra (Generating State)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Module 1 • Bài 3</span>
+      </div>
+
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5);">
+        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-4);">
+          <div style="width: 24px; height: 24px; border: 3px solid var(--color-brand); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+          <strong style="color: var(--color-primary); font-size: var(--text-body);">
+            WayFinder đang biên soạn bộ 5 câu hỏi trắc nghiệm từ Harrison 21st...
+          </strong>
+        </div>
+
+        <!-- Skeleton loaders -->
+        <div class="skeleton-line" style="width: 75%;"></div>
+        <div class="skeleton-line" style="width: 90%;"></div>
+        <div class="skeleton-line" style="width: 60%; margin-bottom: var(--space-4);"></div>
+
+        <div style="display: flex; flex-direction: column; gap: var(--space-2);">
+          <div class="skeleton-line" style="height: 44px; width: 100%;"></div>
+          <div class="skeleton-line" style="height: 44px; width: 100%;"></div>
+          <div class="skeleton-line" style="height: 44px; width: 100%;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 2: ĐANG LÀM BÀI (ACTIVE QUIZ QUESTION) -->
+    <section class="card" id="section-quiz-taking">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-primary">Câu hỏi 3/5</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            2. Trạng thái: Đang làm bài (Question & Option Selection)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Thời gian: Không giới hạn</span>
+      </div>
+
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5);">
+        <p style="font-size: var(--text-h3); font-weight: var(--font-semibold); color: var(--color-text); margin-bottom: var(--space-4);">
+          Động mạch vành nào chịu trách nhiệm cấp máu chính cho nút nhĩ thất (AV node) ở 90% dân số (kiểu ưu thế phải)?
+        </p>
+
+        <div class="quiz-options">
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="A" style="accent-color: var(--color-primary);">
+            <span style="color: var(--color-text); font-size: var(--text-body);">A. Động mạch liên thất trước (LAD)</span>
+          </label>
+          <label class="quiz-option selected" id="opt-q3-selected">
+            <input type="radio" name="q3" value="B" checked style="accent-color: var(--color-primary);">
+            <strong style="color: var(--color-primary); font-size: var(--text-body);">B. Động mạch vành phải (RCA) [ĐÃ CHỌN]</strong>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="C" style="accent-color: var(--color-primary);">
+            <span style="color: var(--color-text); font-size: var(--text-body);">C. Động mạch mũ (LCx)</span>
+          </label>
+          <label class="quiz-option">
+            <input type="radio" name="q3" value="D" style="accent-color: var(--color-primary);">
+            <span style="color: var(--color-text); font-size: var(--text-body);">D. Động mạch bờ góc (Marginal artery)</span>
+          </label>
+        </div>
+
+        <div class="quiz-action-bar" style="display: flex; justify-content: space-between; margin-top: var(--space-5); gap: var(--space-3);">
+          <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">◀ Câu trước</button>
+          <button class="btn btn-primary" id="btn-submit-quiz-answer" style="min-height: 44px; min-width: 44px;">Nộp bài kiểm tra ▶</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 3: KẾT QUẢ BÀI LÀM & TRÍCH DẪN ĐỐI CHIẾU (RESULT & CITATION VIEW) -->
+    <section class="card" id="section-quiz-result">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-success">✓ Hoàn thành</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            3. Kết quả bài làm: 10/10 điểm & Đối chiếu nguồn y khoa
+          </h2>
+        </div>
+        <span class="badge badge-primary">Xếp loại: Xuất sắc</span>
+      </div>
+
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); margin-bottom: var(--space-4);">
+        <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-4);">
+          <div style="font-size: 32px;">🏆</div>
+          <div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Chúc mừng bạn đã trả lời đúng 5/5 câu hỏi (10/10 điểm)!
+            </h3>
+            <p style="font-size: var(--text-small); color: var(--color-text-muted);">
+              Khái niệm "Giải phẫu động mạch vành" đã được cập nhật trạng thái <strong>Đã học</strong> trên Lộ trình của bạn.
+            </p>
+          </div>
+        </div>
+
+        <!-- Trích dẫn nguồn y khoa cuộn được -->
+        <div id="quiz-citation-box" style="background: var(--color-surface); border: 1px solid var(--color-border); border-left: 4px solid var(--color-brand); border-radius: var(--radius-sm); padding: var(--space-4);">
+          <strong style="color: var(--color-primary); font-size: var(--text-small); display: block; margin-bottom: var(--space-1);">
+            📖 Đối chiếu trích dẫn nguồn (Harrison 21st, Trang 1892):
+          </strong>
+          <p style="font-size: var(--text-small); color: var(--color-text); font-style: italic; line-height: 1.5;">
+            "In approximately 90% of individuals, the AV nodal artery originates from the distal right coronary artery (right-dominant circulation). In the remaining 10%, it arises from the distal circumflex branch of the left coronary artery."
+          </p>
+        </div>
+      </div>
+
+      <div class="quiz-action-bar" style="display: flex; justify-content: flex-end; gap: var(--space-3);">
+        <a href="/khoa-hoc/demo/lo-trinh" class="btn btn-primary" id="btn-next-roadmap-lesson" style="min-height: 44px; min-width: 44px;">
+          Bài học tiếp theo ➔
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const cur = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>

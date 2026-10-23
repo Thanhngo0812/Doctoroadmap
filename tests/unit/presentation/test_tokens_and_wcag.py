@@ -655,15 +655,45 @@ def test_w11_course_management_specification():
 
 
 def test_w08_lecture_specification():
-    """Verify W-08 lecture states: streaming, prerequisites open, source viewer, no OCR claims, >=44px buttons."""
+    """Verify W-08 lecture states: streaming, prerequisites open, source viewer, fatal error, page viewer, bug report, >=44px buttons."""
     w08_html = Path("design/preview/w08_lecture_screens.html").read_text(encoding="utf-8")
     
     assert 'id="section-lecture-streaming"' in w08_html
     assert 'id="section-lecture-prerequisites"' in w08_html
     assert 'id="section-source-viewer"' in w08_html
+    assert 'id="section-lecture-fatal-error"' in w08_html
+    assert 'id="btn-exit-to-roadmap"' in w08_html
+    assert 'id="section-page-image-viewer"' in w08_html
+    assert 'id="section-content-bug-report"' in w08_html
     assert "OCR y khoa" not in w08_html, "Must not claim OCR y khoa without spec"
     assert "36px" not in w08_html, "w08_lecture_screens.html must not contain substandard 36px buttons"
     assert "min-height: 44px" in w08_html
+
+
+def test_w09_chat_screens_specification():
+    """Verify W-09 chat states: active session with turns, module badge, tool progress, scope outdated, daily limit, >=44px buttons."""
+    w09_html = Path("design/preview/w09_chat_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-chat-active"' in w09_html
+    assert 'id="badge-chat-module"' in w09_html
+    assert 'id="badge-chat-turns"' in w09_html
+    assert 'id="section-chat-tool-progress"' in w09_html
+    assert 'id="section-chat-scope-outdated"' in w09_html
+    assert 'id="section-chat-limit-exceeded"' in w09_html
+    assert 'id="btn-return-roadmap-from-chat"' in w09_html
+    assert "min-height: 44px" in w09_html
+    assert "36px" not in w09_html
+
+
+def test_w10_quiz_screens_specification():
+    """Verify W-10 quiz states: generating skeleton, taking question with option selection, 10/10 result and citation, >=44px buttons."""
+    w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-quiz-generating"' in w10_html
+    assert 'id="section-quiz-taking"' in w10_html
+    assert 'id="opt-q3-selected"' in w10_html
+    assert 'id="section-quiz-result"' in w10_html
+    assert 'id="quiz-citation-box"' in w10_html
+    assert "min-height: 44px" in w10_html
+    assert "36px" not in w10_html
 
 
 def test_w14_cancellation_respects_usage_contract():
@@ -703,3 +733,25 @@ def test_falsifiable_w11_36px_button_fails():
     fake_w11 = '<button class="btn" style="min-height: 36px;">Thu hồi</button>'
     with pytest.raises(AssertionError):
         assert "36px" not in fake_w11
+
+
+
+def test_falsifiable_fatal_error_exit_missing_fails():
+    """Falsifiable test: prove that omitting exit to roadmap in fatal lecture fails verification."""
+    fake_lecture = '<div id="section-lecture-fatal-error"><h3>Lỗi bài học</h3></div>'
+    with pytest.raises(AssertionError):
+        assert 'id="btn-exit-to-roadmap"' in fake_lecture
+
+
+def test_falsifiable_chat_daily_limit_missing_fails():
+    """Falsifiable test: prove that omitting daily limit state in chat fails verification."""
+    fake_chat = '<div id="section-chat-active"><p>Chat đang chạy</p></div>'
+    with pytest.raises(AssertionError):
+        assert 'id="section-chat-limit-exceeded"' in fake_chat
+
+
+def test_falsifiable_quiz_generating_missing_fails():
+    """Falsifiable test: prove that omitting generating question state in quiz fails verification."""
+    fake_quiz = '<div id="section-quiz-taking"><p>Câu hỏi 1</p></div>'
+    with pytest.raises(AssertionError):
+        assert 'id="section-quiz-generating"' in fake_quiz
