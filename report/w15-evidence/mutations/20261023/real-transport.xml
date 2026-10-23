@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="2.652" timestamp="2026-10-23T14:40:51.755425+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_transport_validation_precedes_pipeline_construction[developer_api-p]" time="1.074"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">src\web\backend\tests\test_real_build_w15.py:139: in test_real_transport_validation_precedes_pipeline_construction
+    with pytest.raises(ValueError, match='Vertex'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'ValueError'&gt;</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_transport_validation_precedes_pipeline_construction[vertex-None]" time="0.226"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">src\web\backend\tests\test_real_build_w15.py:139: in test_real_transport_validation_precedes_pipeline_construction
+    with pytest.raises(ValueError, match='Vertex'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'ValueError'&gt;</failure></testcase></testsuite></testsuites>

@@ -1,5 +1,46 @@
 # W-15 — adapter/composition và kiểm 0 USD — 2026-10-22
 
+## Cập nhật 2026-10-23 — tiếp nhận nghiệm thu và hợp đồng SA-62
+
+Mốc adapter/test cũ **đã được điều phối nghiệm thu và ghép**: `eea5472` → `d12b67c`, 2.266 Python/104 React/build xanh. Không giao lại phần đã đạt. Worktree/nhánh W-15 giữ nguyên, đã nhận main **`50a8035ed040f3114239cd214aa9bca9669e5918`**. Các mục sau phần cập nhật này lưu nguyên hồ sơ lượt 2026-10-22.
+
+### Port đã có người nhận, chưa ghép main
+
+Claude chốt SA-62 tại mục 8 handoff: hai tệp composition do làn Claude sở hữu, nhân viên W-15 không sửa. Chữ ký vẫn `DocumentPipeline(settings, *, allow_spend, phase_b_store=None)` và `PhaseBRuntime(..., store=None)`. Delta meter là nguồn chi build duy nhất; usage con mang `counted_in="build"` chỉ là trace. Callback snapshot của adapter không cần đổi `BuildDocument`.
+
+Đã đọc báo cáo SA-62 ở nhánh `work/sa62-port-kho-pha-b`, mốc `071fce7`, **chỉ đọc, không nhận mã chưa nghiệm thu**. Cổng của nhánh đó có hai test W-15 đỏ vì khẳng định port thật chưa tồn tại. Đã sửa hai ca âm bằng factory `PipelineWithoutStorePort`: vẫn phải từ chối trước constructor/claim/provider, không phụ thuộc việc core đã thêm port hợp lệ. Ca dương bằng pipeline tiêm vẫn chạy; chưa coi đó là kiểm toàn pipeline thật. Khi SA-62 lên main phải kiểm tiếp bằng factory mặc định và engine PG độc lập.
+
+### Phần web bổ sung: trace không cộng chi lần hai
+
+`PostgresPhaseBStore.append_usage` giữ **nguyên dict gốc** trong `extra`; `usage_rows()` vẫn trả raw cho đối soát/spend guard. Với đúng `counted_in="build"`, các cột cộng sổ `cost_usd`, `input_tokens`, `output_tokens` bằng 0. Receipt `purpose=build` ghi tổng meter một lần như cũ. Dòng không cờ/cờ khác giữ cách ghi cũ. Không migration, không sửa số lịch sử.
+
+SQL tính chi/token đọc các cột typed; nếu đọc raw `extra` hoặc `usage_rows()` để báo cáo chi/calls thì phải lọc `counted_in != "build"`. Không lấy tổng raw gồm trace làm chi provider. Test dùng chi giả khác 0 và connection PG độc lập: trace vẫn đọc đúng từng giá trị; tổng ledger chỉ còn tổng meter, receipt không nhân đôi. Với purpose mà DailySpendGuard hỗ trợ, trace raw vẫn gây từ chối thật khi vượt trần, không chỉ kiểm flag.
+
+**Giới hạn đã xác minh từ mã và báo cáo SA-62:** `DailySpendGuard.check` chỉ tính `assistant/document/lecture/quiz_gen/quiz_verify`; không tính `module_title/embedding` dù có hay không có cờ. Không tuyên bố những purpose này đã được guard đó chặn. Khâu build có guard `purpose=build` riêng trong web. Không tự sửa `budget.py`; cần người soát đối chiếu giới hạn này với câu giao về trần ngày trước lượt thật.
+
+| Lượt bổ sung | Kết quả | Bằng chứng |
+|---|---|---|
+| RED trên kho PG cũ | **2 assertion fail, 2 control pass**, exit 1, không lỗi setup; tổng sai `.005` thay `.003` | [JUnit](w15-evidence/runs/trace-red-20261023.xml), [log](w15-evidence/runs/trace-red-20261023.log) |
+| GREEN trace/adapter/W-25/kho PG | **67 pass** | [JUnit](w15-evidence/runs/trace-green2-20261023.xml) |
+| GREEN sau sửa ca âm tương thích port | **67 pass**, native exit 0 | [JUnit](w15-evidence/runs/compatibility-green-20261023.xml) |
+| Mutation trên `dba19e5` | **15/15 bị bắt bằng assertion**, 0 setup error; phục hồi nguồn cùng byte | [Kết quả](w15-evidence/mutations/20261023/mutations.json), [native exit](w15-evidence/runs/mutations-20261023-exit.json) |
+| React/build trên `dba19e5` | **104 pass**, build native exit 0 | [JUnit](w15-evidence/runs/react-20261023.xml), [build](w15-evidence/runs/frontend-build-20261023.log) |
+| Python/PostgreSQL toàn repo trên `dba19e5` | **2.275 pass, 1 Cloudinary live không bật**, 0 fail/error, native exit 0 | [JUnit](w15-evidence/runs/full-20261023.xml), [log](w15-evidence/runs/full-20261023.log), [commit/argv/SHA/native exit](w15-evidence/runs/full-20261023-exit.json) |
+
+Mã bổ sung được commit tại **`dba19e508631cb2d81f6c69b0a8709d13835ef9b`**, chỉ có năm tệp trong `src/web/`. [SQL cộng chi](w15-evidence/sql/compatibility-green-20261023/single-build-charge.json) cho tổng `.003 USD`, 300 input/60 output, 3 calls ở receipt; hai trace raw `.001 USD` mỗi dòng có chi typed 0. [SQL guard](w15-evidence/sql/compatibility-green-20261023/trace-build.json) giữ raw `.003 USD` và từ chối reservation ở trần `.002 USD`. Đây đều là số fake, provider 0 USD; không phải số đo cuốn mới.
+
+Pytest 495,08 giây, wrapper 508,27 giây là thời gian cổng, không phải phút/cuốn. [SQL cổng cuối](w15-evidence/sql/full-20261023/) và [W-25 SQL](w15-evidence/w25-regressions/full-20261023/) đọc từ PostgreSQL độc lập. Giữ nguyên 265 tệp bằng chứng cũ đã được soát; phần mới có [tổng hợp riêng](w15-evidence/summary-20261023.json), [manifest SHA-256](w15-evidence/manifest-20261023.json) và [chuẩn hoá UTF-8/LF](w15-evidence/normalization-20261023.json). Các export lịch sử W-06/W-14 do test ghi đè đã chép vào `regression-exports/20261023` rồi khôi phục. Mã không đổi sau mốc cổng; commit hồ sơ tiếp theo chỉ chứa báo cáo/bằng chứng. Bản bổ sung này chờ người điều phối soát, nhân viên không tự ghép main.
+
+Lượt `trace-green-20261023` native exit 4 do gọi sai tên hai tệp test, không có test chạy. Giữ log/XML, không tính là GREEN; lệnh đúng ở `trace-green2-20261023`.
+
+### Identity/cache và ứng viên: chỉ đọc metadata được phép
+
+Đã rà **92 manifest** trong bản sao sáu cuốn, kiểm lại SHA-256 từng manifest trước đọc. Hash PDF doc-6 xuất hiện dưới đúng alias `doc-6`; hash ứng viên `rau-thuy-canh.pdf` không xuất hiện trong metadata bản sao này. Cả hai ID `u-82cb494d407c4755d29d`/`u-1f019766e74a747d293c` chưa có thư mục artifact trực tiếp ở sáu loại parse/chunk/candidate/canonical/graph/retrieval trong bản sao. Đây là **miss về định danh/đường dẫn trong phạm vi được phép**, không chứng minh toàn bộ cache mô hình miss hoặc cuốn mới cold toàn cục.
+
+Alias ngoài bộ sáu cuốn, cache sinh/embedding, số gọi/USD/phút/trần vẫn **chưa biết**. Không mở learner cache/live.json/tập giữ lại hoặc in nội dung cache. [Kết quả metadata](w15-evidence/cache-metadata-20261023.json); lệnh đã chạy: `PYTHONPATH=<worktree>/src/web/backend python -X utf8 src/web/backend/tests/w15_cache_metadata.py`. Script chỉ đọc metadata manifest đã xác minh, không phải dry-run pipeline.
+
+**Chưa chạy dry-run thật, chưa chạy doc-6 thật qua web, chưa có tiền hoặc lượt mới được duyệt.** Bảng đề nghị cuốn 52 trang/SHA-256 và các số chưa biết bên dưới vẫn giữ hiệu lực. Toàn W-15 chưa hoàn tất. Việc tiếp sau SA-62 lên main: kiểm xuyên pipeline thật/PG và nguồn chi duy nhất, rồi dry-run trong bản sao riêng/collector web/network guard; không đưa dry-run vào queue/course ready.
+
 ## Phạm vi, kế hoạch và nền
 
 Nhánh `work/w15-real-build`, worktree một cấp `tmp/w15-real-build`, từ main `157cbb3`. W-14 đã được nghiệm thu tại `61b5d80`, ghép `7fe63df`. Giữ mọi worktree W-14/W-25; không tự ghép main, không sửa task/kế hoạch/handoff, không sửa ké SA-54/56/57.
