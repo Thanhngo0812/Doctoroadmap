@@ -14,7 +14,7 @@ from doc2roadmap.domain.phase_b_limits import BSettings
 from doc2roadmap.infrastructure.artifacts.phase_b_store import InMemoryPhaseBStore
 
 from sa64_support import (
-    GOOD_LESSON, FakeClock, FakeModel, FakePages, list_pieces, make_graph, wait_for,
+    GOOD_LESSON, FakeClock, FakeModel, FakePages, list_pieces, make_graph,
 )
 
 SPEC = (Path(__file__).resolve().parents[3] / "doc" / "bai-giang-3-spec.md").read_text(encoding="utf-8")
@@ -442,7 +442,7 @@ def test_no_model_is_a_failure_that_is_not_remembered():
 
 def test_assistant_focus_takes_lecture_3_paragraphs_without_labels_headings_or_generation():
     import sa56_support as support
-    from test_phase_b_assistant_sa56 import FOCUS_ANSWER, CountingLectureModel, assistant_with, ask, sent_context
+    from test_phase_b_assistant_sa56 import FOCUS_ANSWER, CountingLectureModel, ask, sent_context
     store, counting = InMemoryPhaseBStore(), CountingLectureModel()
     lecture = Lecture3UseCase(counting, store, settings=BSettings(), clock=FakeClock())
     key = lecture.make("book", 1, support.make_graph(), "f", dry_run=True)["lecture_key"]
