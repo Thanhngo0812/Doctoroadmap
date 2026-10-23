@@ -393,6 +393,13 @@ Trace counted_in=build giữ raw trong extra; cột typed tiền/token bằng0. 
 SA-65 ảnh trang ở artifact; sau chụp bù cần manifest/SHA riêng, không sửa đè snapshot cũ. Không có quyền chi W-15 mới từ ngân sách thử bài giảng.
 **Mở cửa ghép sau khi hồ sơ này được đẩy**, mọi cổng PostgreSQL của Codex đã kết thúc; giữ main ổn định trong lúc cổng SA tiếp theo chạy.
 
+**2026-10-23, Codex nhận yêu cầu hoàn thiện nhánh SA-62:** chủ dự án chuyển đề nghị Claude cho phép Codex commit phần test web trực tiếp
+lên `work/sa62-port-kho-pha-b`, giữ Claude ghép qua ghep_guard. Hai ca âm dùng PipelineWithoutStorePort và trace accounting đã ở main (`e85427a`).
+Codex sẽ nhận main mới vào chính nhánh SA-62, thêm ca dương default factory/PG với provider giả/bị chặn, chạy cổng đúng đỉnh rồi ghi JUnit/mốc.
+Đề nghị giữ lượt ghép mã SA tiếp theo trong cửa kiểm này, không chạy cổng PostgreSQL chồng; đây là đề nghị phối hợp, chưa coi là đã xác nhận.
+Không sửa mã composition đã nghiệm thu, không tự mở lượt dựng có tiền. DailySpendGuard không tính module_title/embedding của build;
+chi build chỉ là delta meter, trace trong extra không cộng vào tổng provider. Giữ lecture-3/answer-3 theo ADR 0025/0026.
+
 ## 9. Khi Claude quay lại
 
 Claude đọc theo thứ tự:
