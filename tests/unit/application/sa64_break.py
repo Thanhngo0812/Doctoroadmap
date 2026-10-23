@@ -22,6 +22,7 @@ HTML = "src/doc2roadmap/presentation/preview/phase_b.html"
 SERVER = "src/doc2roadmap/presentation/preview/server.py"
 CLIENT = "src/doc2roadmap/infrastructure/llm/phase_b.py"
 ADAPTER = "src/doc2roadmap/infrastructure/artifacts/page_images.py"
+ASSISTANT = "src/doc2roadmap/application/phase_b/assistant.py"
 PREVIEW_TEST = "tests/unit/presentation/test_phase_b_preview_lecture3_sa64.py"
 CLIENT_TEST = "tests/unit/infrastructure/test_phase_b_lecture3_client_sa64.py"
 
@@ -80,6 +81,7 @@ MUTANTS = {
                         '                "maxOutputTokens": self.model.max_output_tokens, "responseMimeType": "application/json",\n            },\n        }\n        started = perf_counter()\n        self.last_ttft_ms = None\n        self.last_usage = {}\n        self.last_finish_reason = None\n        response = self.model._request(\n            "streamGenerateContent", body, stream=True,\n            retries=2 if transport_retries is None else transport_retries, timeout_seconds=timeout_seconds)')], [CLIENT_TEST]),
     "adapter_khong_kiem_sha": ("đọc ảnh không kiểm sha256", [(ADAPTER, 'return data if hashlib.sha256(data).hexdigest() == row.get("sha256") else None', "return data")], [CLIENT_TEST]),
     "adapter_thoat_thu_muc": ("đọc ảnh ngoài thư mục chỉ mục", [(ADAPTER, "if folder not in path.parents or index.get", "if index.get")], [CLIENT_TEST]),
+    "tro_ly_khong_doc_body_md": ("trợ lý không đọc body_md của lecture-3", [(ASSISTANT, "if lecture.get('status') == 'ready' and lecture.get('body_md'):", "if False:")]),
     "chat_ngan_duoc_gui_het_thoi_gian": ("quá giờ giữa chừng thì không chờ", [(L3, "                    if perf_counter() >= deadline:\n                        attempt.timed_out = True\n                        break\n", "")]),
 }
 

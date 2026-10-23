@@ -11,10 +11,11 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "application"))
 
+from doc2roadmap.presentation import preview
 from test_phase_b_preview import events, request, runtime, server  # noqa: F401  (fixtures)
 from sa64_support import FakeModel, wait_for
 
-HTML = Path(__file__).resolve().parents[3] / "src" / "doc2roadmap" / "presentation" / "preview" / "phase_b.html"
+HTML = Path(preview.__file__).with_name("phase_b.html")   # the imported package, not a path next to the tests
 NODE = shutil.which("node")
 
 

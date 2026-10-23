@@ -113,6 +113,8 @@ def test_page_images_reads_a_stored_page_and_returns_none_for_anything_else(tmp_
 
 def test_page_images_refuses_a_changed_file_and_paths_that_leave_the_folder(tmp_path):
     assert _store(tmp_path / "a", sha="0" * 64).get("doc-1", 3, 37) is None
-    assert _store(tmp_path / "b", file="../../../../outside.jpg").get("doc-1", 3, 37) is None
+    escaping = _store(tmp_path / "b", file="../../../../outside.jpg")
+    (tmp_path / "b" / "outside.jpg").write_bytes(b"jpeg-bytes")      # exists, and its hash is right
+    assert escaping.get("doc-1", 3, 37) is None
     (tmp_path / "c").mkdir()
     assert ArtifactPageImages(tmp_path / "c").get("../doc-1", 3, 37) is None
