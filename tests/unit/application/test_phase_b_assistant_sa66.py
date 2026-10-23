@@ -178,7 +178,8 @@ def test_answer_keeps_every_word_while_the_checks_only_reach_the_log():
 
 
 # 3 ------------------------------------------------------------ never empty when the model wrote something
-@pytest.mark.parametrize('written', ['KHONG_DU\nTôi không chắc về điều này.', 'KHONG_DU', 'Tài liệu chưa đủ bằng chứng.'])
+@pytest.mark.parametrize('written', ['KHONG_DU\nTôi không chắc về điều này.', 'KHONG_DU', 'Tài liệu chưa đủ bằng chứng.',
+                                     '\n  Lời giải có khoảng trắng đầu và cuối.  \n'])
 def test_khong_du_and_refusal_looking_text_is_returned_as_written(written):
     use_case, _, _ = build([turn(written)])
     result = ask(use_case)

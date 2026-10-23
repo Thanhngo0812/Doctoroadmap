@@ -90,7 +90,7 @@ def test_every_client_of_a_runtime_shares_one_credentials_object_and_the_token_i
     assert len(fetched) == 1  # no client fetched a second token
 
 
-def test_a_failed_warmup_does_not_break_the_runtime_and_the_first_real_call_retries(tmp_path, monkeypatch):
+def test_a_failed_warmup_does_not_break_the_runtime_and_the_first_real_call_retries(tmp_path, monkeypatch, caplog):
     attempts = []
 
     def default(scopes=None):
@@ -102,6 +102,7 @@ def test_a_failed_warmup_does_not_break_the_runtime_and_the_first_real_call_retr
     runtime = vertex_runtime(tmp_path)
     runtime.auth_warmup.join(timeout=10)
     assert len(attempts) == 1
+    assert 'Vertex auth warm-up failed: RuntimeError' in caplog.text  # logged, not raised
     assert client_of(runtime.model('assistant')) is runtime.vertex_credentials
     assert client_of(runtime.model('assistant')).headers()['Authorization'] == 'Bearer token' and len(attempts) == 2
 

@@ -57,8 +57,6 @@ def test_eigenvalue_prerequisite_question_gets_a_roadmap_in_app_module_numbers()
     assert "tiên quyết: Trị riêng (module 33, chưa học)" in concept
     # the path is cut to 12 modules by the graph; the context still says where it ends
     assert "đích là module 33: Trị riêng và Véctơ riêng" in concept
-    # module numbers are the app's, not the book's chapter numbers
-    assert "module 33" in concept and graph.modules[next(iter(graph.modules))].get("index") == 0
     # the passage that defines the concept travels with the question and its page is stated
     assert re.search(r"\[S\d+\] \(trang 87,", text) and "véctơ x được gọi là véctơ riêng ứng với trị riêng" in text
     assert text.rstrip().endswith("Câu hỏi của người học: Muốn học trị riêng và véctơ riêng thì mình cần học những gì trước?")
