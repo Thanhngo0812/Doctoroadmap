@@ -16,7 +16,7 @@ from datetime import datetime, timezone
 from doc2roadmap.application.phase_b.common import call_json
 from doc2roadmap.application.phase_b.lecture3 import IMAGE_TOKEN_ESTIMATE
 from doc2roadmap.application.phase_b.quiz_context3 import (
-    GENERATION_SCHEMA, GENERATION_TEMPERATURE, SOLVER_SCHEMA, SOLVER_TEMPERATURE, SYSTEM_SOLVER, Material,
+    GENERATION_SCHEMA, GENERATION_TEMPERATURE, SOLVER_SCHEMA, SOLVER_TEMPERATURE, SYSTEM_SOLVER,
     build_item, build_material, generation_system, solver_message, verdicts,
 )
 from doc2roadmap.domain.phase_b_limits import BSettings
@@ -431,7 +431,10 @@ class QuizUseCase:
                 bank = []
             bank = [item for item in bank if not self._hidden(item["item_id"])]
         # The cloze question is cheap and never stored: a bank stored here would hide the model's questions later.
-        return bank or self._cloze_bank(concept, self._context(module_id, concept)), generated.get("usage", {})
+        if not bank:
+            bank = [item for item in self._cloze_bank(concept, self._context(module_id, concept))
+                    if not self._hidden(item["item_id"])]
+        return bank, generated.get("usage", {})
 
     def _bank_key(self, doc_id, module_id, concept, level, *, material=None):
         material = material or self._material(concept)
