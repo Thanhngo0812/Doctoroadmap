@@ -279,6 +279,11 @@ def test_cap_reached_serves_the_stored_bank_then_cloze_without_maths():
     assert by_concept == {"n1": "llm", "n2": "cloze"}          # n1 from the stored bank, n2 cloze
     assert quiz["failed_concepts"] == ["nf"]                   # its only sentences hold a formula: no cloze question
     assert len(generator.calls) == calls
+    # a use case with no model, or one not allowed to spend, still serves the stored bank
+    no_model = QuizUseCase(make_book(), store, settings=BSettings(), clock=FakeClock(), rng=Reverse())
+    assert no_model.make_quiz("d", "m", "carol", node_ids=["n1"], allow_spend=True)["items"][0]["generator"] == "llm"
+    assert use.make_quiz("d", "m", "dave", node_ids=["n1"], allow_spend=False)["items"][0]["generator"] == "llm"
+    assert len(generator.calls) == calls
 
 
 def test_cloze_drops_a_sentence_with_maths_or_a_formula_mark():

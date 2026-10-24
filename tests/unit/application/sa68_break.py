@@ -59,7 +59,7 @@ MUTANTS = {
         (CTX, "    correct = raw.get(\"correct_index\")\n",
          "    if max(map(len, texts)) > 1.3 * sum(map(len, texts)) / 4:\n        return None, \"local.answer_too_long\"\n    correct = raw.get(\"correct_index\")\n")]),
     "ly_do_nguoi_giai_lot_ra": ("lý do của người giải lọt ra người học", [(Q, "                kept.append(item)\n", "                kept.append({**item, \"reason\": detail})\n")]),
-    "khong_ghi_ban_ghi_tu_choi": ("không ghi quiz_rejection", [(Q, 'self.store.put_record("quiz_rejection"', "(lambda *a, **k: None)(")]),
+    "khong_ghi_ban_ghi_tu_choi": ("không ghi quiz_rejection", [(Q, 'self.store.put_record("quiz_rejection"', '(lambda *a, **k: None)("quiz_rejection"')]),
     "bo_kiem_so_phuong_an": ("không kiểm số phương án", [(CTX, "or len(options) != OPTION_COUNT", "or len(options) < 3")]),
     "bo_kiem_trung_phuong_an": ("không kiểm phương án trùng", [(CTX, "if len({_norm(text) for text in texts}) != OPTION_COUNT:", "if False:")]),
     "bo_kiem_correct_index": ("không kiểm correct_index", [(CTX, "if type(correct) is not int or not 0 <= correct < OPTION_COUNT:", "if False:")]),
@@ -91,7 +91,7 @@ MUTANTS = {
     "khong_noi_cong_anh": ("runtime không nối cổng ảnh trang", [(COMP, "page_images=self.page_images)\n\n    def document", ")\n\n    def document")]),
     "usage_khong_dem_giu_loai": ("dòng usage quiz_verify không có số giữ/loại", [(COM, "row.update(usage_extra(payload))", "pass")]),
     "call_json_bo_suy_nghi": ("call_json không chuyển thinking_level", [(COM, '**({"thinking_level": thinking_level} if thinking_level else {})', "")]),
-    "call_json_bo_anh": ("call_json không chuyển ảnh", [(COM, '**({"images": images} if images else {})', "")]),
+    "call_json_bo_anh": ("call_json không chuyển ảnh", [(COM, '**({"images": images} if images else {})', "**{}")]),
     "client_luon_thinking_config": ("client luôn gửi thinkingConfig", [(CL, 'turns thinking on."""\n        started = perf_counter()', 'turns thinking on."""\n        thinking_level = thinking_level or "medium"\n        started = perf_counter()')]),
     "client_bo_thinking_config": ("client bỏ thinkingConfig", [(CL, 'turns thinking on."""\n        started = perf_counter()', 'turns thinking on."""\n        thinking_level = None\n        started = perf_counter()')]),
     "client_bo_anh": ("client bỏ ảnh", [(CL, 'turns thinking on."""\n        started = perf_counter()', 'turns thinking on."""\n        images = ()\n        started = perf_counter()')]),
@@ -118,6 +118,9 @@ def run_one(name, spec):
         done = subprocess.run([sys.executable, "-X", "utf8", "-m", "pytest", *TESTS, "-p", "no:cacheprovider", "-o", "addopts=",
                                "-q", "--tb=no", "-rf", "--basetemp", str(work / "bt")], cwd=ROOT, env=env,
                               capture_output=True, text=True, encoding="utf-8")
+    errors = re.findall(r"^ERROR (\S+)", done.stdout, re.M)
+    if errors:
+        raise SystemExit(f"{name}: the mutant does not import ({errors[0]}); fix the edit")
     return re.findall(r"^FAILED \S+::(\S+)", done.stdout, re.M)
 
 
