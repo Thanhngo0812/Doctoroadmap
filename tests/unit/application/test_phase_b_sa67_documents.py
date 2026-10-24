@@ -547,3 +547,15 @@ def test_assistant_origin_keeps_session_and_home_scope_and_button_drops_the_sess
     b = run(origin="button", session_id="s1")[0]
     assert (a["origin"], a["session_id"], a["home_scope"]) == ("assistant", "s1", home)
     assert (b["origin"], b["session_id"]) == ("button", None)
+
+
+def test_when_the_limit_bites_every_concept_definition_comes_before_any_searched_passage():
+    # Claude's acceptance (2026-10-24): six long searched passages would fill the limit alone; the definitions of all six
+    # concepts must still be sent, and only then as many searched passages as fit.
+    settings = replace(BSettings(), document_context_chars=3_000, document_per_concept_chars=10)
+    graph = doc_graph(modules=3, per=2, filler=1, filler_chars=1_400)
+    long_hits = [f"c{1000 + 100 * k}" for k in range(6)]
+    result, _, _, model, _, _ = run(graph=graph, settings=settings, search=Search(ids=long_hits))
+    shown = " ".join(text for _, _, text in passages(model.calls[0].prompt))
+    assert all(f"DEF-{name}" in shown for name in NAMES[:6])
+    assert 1 <= sum(f"{name} ví dụ số 0" in shown for name in NAMES[:6]) < 6
