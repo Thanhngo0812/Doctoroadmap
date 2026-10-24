@@ -49,7 +49,10 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
     sessionStorage.setItem(storage + ':selected', selected);
     void apiJson<{ turns: ChatTurn[] }>(turnsPath(cid, selected), { signal: c.signal }).then(data => {
       if (c.signal.aborted) return;
-      setTurns(data.turns);
+      setTurns(current => {
+        const received = new Set(data.turns.map(turn => turn.client_turn_id));
+        return [...data.turns, ...current.filter(turn => !received.has(turn.client_turn_id))];
+      });
       const raw = sessionStorage.getItem(pendingKey(selected));
       if (!raw) return;
       const intent = JSON.parse(raw) as Intent;

@@ -170,3 +170,15 @@ it.each(['not_found', 'unauthenticated'])('clears displayed history when the nex
   await waitFor(() => expect(screen.queryByText('Nội dung riêng đã đọc.')).not.toBeInTheDocument());
   expect(screen.getByRole('alert')).toHaveTextContent(code === 'not_found' ? 'Không tìm thấy' : 'Phiên làm việc đã hết hạn');
 });
+
+it('keeps a completed new turn when an older history request arrives afterwards', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  let releaseHistory!: (response: Response) => void;
+  vi.mocked(fetch).mockImplementation((input, init) => String(input).endsWith('/turns') && (!init?.method || init.method === 'GET')
+    ? new Promise(resolve => { releaseHistory = resolve; }) : original(input, init));
+  render(page()); await openAndAsk();
+  await act(async () => { frame('final', { answer: { ...answer, client_turn_id: requests[0].body.client_turn_id, answer_md: 'Lượt mới đã hoàn tất.' } }); controller.close(); });
+  expect(await screen.findByText('Lượt mới đã hoàn tất.')).toBeVisible();
+  await act(async () => releaseHistory(json({ turns: [] })));
+  expect(screen.getByText('Lượt mới đã hoàn tất.')).toBeVisible();
+});
