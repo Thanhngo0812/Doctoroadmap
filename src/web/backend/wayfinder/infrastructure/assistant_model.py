@@ -4,15 +4,14 @@ from doc2roadmap.application.ports.phase_b import ToolCall
 
 
 class ActorBoundAssistantModel:
-    def __init__(self, model, on_tool_start=None):
-        self.model, self.on_tool_start = model, on_tool_start
+    def __init__(self, model):
+        self.model = model
 
     def __getattr__(self, name):
         return getattr(self.model, name)
 
     def start_session(self, *args, **kwargs):
         session = self.model.start_session(*args, **kwargs)
-        on_tool_start = self.on_tool_start
         class BoundSession:
             def __getattr__(self, name):
                 return getattr(session, name)
@@ -23,7 +22,5 @@ class ActorBoundAssistantModel:
                         # Scope and all ordinary arguments remain unchanged for SA69/core validation.
                         event = replace(event, args={k: v for k, v in event.args.items()
                             if k not in {'owner', 'doc_id', 'graph_version'}})
-                        if on_tool_start:
-                            on_tool_start(event.name)
                     yield event
         return BoundSession()

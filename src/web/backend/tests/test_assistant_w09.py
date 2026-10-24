@@ -187,6 +187,10 @@ def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_sco
     assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
         (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
     assert len(final['artifacts']) == 2
+    timeline = [(row['event'], row.get('name') if row['event'] == 'tool_call' else row.get('artifact', {}).get('kind'), row.get('state')) for row in rows]
+    assert timeline.index(('tool_call', 'make_quiz', 'running')) < timeline.index(('artifact', 'quiz', None))
+    assert timeline.index(('artifact', 'quiz', None)) < timeline.index(('tool_call', 'make_document', 'running'))
+    assert timeline.index(('tool_call', 'make_document', 'running')) < timeline.index(('artifact', 'document', None))
     expected = ['n4'] if scope == 'module 4' else ['n1']
     for item in final['artifacts']:
         raw = w.independent_store.get_record('quiz_attempt' if item['kind'] == 'quiz' else 'documents', item['id'])

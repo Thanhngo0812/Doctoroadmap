@@ -42,6 +42,8 @@ class ScriptedModel:
     model_id: str = "scripted-phase-b"
     json_calls: list[tuple[str, dict[str, Any]]] = field(default_factory=list)
     tool_calls: list[tuple[list[dict[str, Any]], str]] = field(default_factory=list)
+    text_replies: list[list[str]] = field(default_factory=list)
+    text_calls: list[tuple[str, dict[str, Any]]] = field(default_factory=list)
     last_usage: dict[str, int] = field(default_factory=lambda: {"promptTokenCount": 0, "candidatesTokenCount": 0})
 
     def _next_json(self) -> dict[str, Any]:
@@ -61,6 +63,12 @@ class ScriptedModel:
         model = self
 
         class Session:
+            def stream_text(self, prompt, **kwargs):
+                model.text_calls.append((prompt, kwargs))
+                if not model.text_replies:
+                    raise AssertionError('scripted model has no text reply for this call')
+                yield from model.text_replies.pop(0)
+
             def stream(self, messages, *, mode='AUTO'):
                 return model.stream(messages, mode=mode)
 

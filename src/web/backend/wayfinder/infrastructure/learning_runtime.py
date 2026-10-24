@@ -48,17 +48,26 @@ class WebLearningRuntime:
     def assistant(self, graph, *, on_tool_start=None):
         from doc2roadmap.application.phase_b.assistant import AssistantUseCase
         from wayfinder.infrastructure.assistant_model import ActorBoundAssistantModel
+        def starting(name):
+            if on_tool_start:
+                on_tool_start(name)
         def get_lecture(concept, **kwargs):
+            starting('get_lecture')
             return self.lecture(graph).make(graph.doc_id, graph.graph_version, graph, concept,
                 owner=kwargs.get('owner'), cache_only=True)
         def make_quiz(scope, n=None, level=None, *, owner, **kwargs):
+            starting('make_quiz')
             return self.quiz(graph).make_quiz(graph.doc_id, None, owner, scope=scope, n=n, level=level,
                 origin='assistant', allow_spend=True, home_scope=kwargs.get('home_scope'), session_id=kwargs.get('session_id'))
         def make_document(request, scope, *, owner, **kwargs):
+            starting('make_document')
             return self.document(graph).create(graph.doc_id, graph.graph_version, graph, request, scope,
                 owner=owner, origin='assistant', allow_spend=True,
                 home_scope=kwargs.get('home_scope'), session_id=kwargs.get('session_id'))
-        return AssistantUseCase(graph, self.store, ActorBoundAssistantModel(self.model_for('assistant'), on_tool_start), settings=self.settings,
-            search=(lambda query, **kw: self.search(graph, query, **kw)) if self.artifacts is not None else None,
+        def search(query, **kwargs):
+            starting('search_document')
+            return self.search(graph, query, **kwargs)
+        return AssistantUseCase(graph, self.store, ActorBoundAssistantModel(self.model_for('assistant')), settings=self.settings,
+            search=search if self.artifacts is not None else None,
             lecture=get_lecture, quiz=make_quiz, document=make_document, clock=self.clock,
             progress=self.progress(graph), spend_guard=self.spend_guard, page_images=self.page_images)
