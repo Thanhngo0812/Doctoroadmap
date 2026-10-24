@@ -272,11 +272,13 @@ async function main() {
     await learner.getByRole('button', { name: /Tài liệu đã tạo/ }).last().waitFor();
     await capture('artifacts', true);
     await learner.getByRole('button', { name: /Tài liệu đã tạo/ }).last().click();
-    await learner.getByText('Tài liệu ôn tập đã lưu.', { exact: false }).last().waitFor(); await capture('artifact-preview', true);
-    await learner.getByRole('button', { name: 'Đóng nội dung' }).last().click();
+    await learner.getByText('Tài liệu ôn tập đã lưu.', { exact: false }).last().waitFor();
+    await learner.locator('.learning-chat-preview').scrollIntoViewIfNeeded(); await capture('artifact-preview', true);
+    await learner.locator('.learning-chat-preview').getByRole('button', { name: 'Đóng nội dung' }).click();
     await learner.getByRole('button', { name: /Quiz đã tạo/ }).last().click();
-    await learner.locator('.learning-chat-preview h4').first().waitFor(); await capture('quiz-preview', true);
-    await learner.getByRole('button', { name: 'Đóng nội dung' }).last().click();
+    await learner.locator('.learning-chat-preview h4').first().waitFor();
+    await learner.locator('.learning-chat-preview').scrollIntoViewIfNeeded(); await capture('quiz-preview', true);
+    await learner.locator('.learning-chat-preview').getByRole('button', { name: 'Đóng nội dung' }).click();
     const counts = await control({ action: 'probe' }); assert.ok(counts.documents > 0);
     stage = 'delete'; await learner.getByRole('button', { name: 'Xoá phiên', exact: true }).click();
     await capture('delete-confirmation'); await learner.getByRole('button', { name: 'Xác nhận xoá' }).click();
