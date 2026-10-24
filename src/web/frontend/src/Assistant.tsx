@@ -85,7 +85,7 @@ export function AssistantDock({ courseId, moduleId, focusNodeId, sourcePageCount
     <div className="learning-chat-messages" ref={messages} role="log" aria-label="Hội thoại" aria-live="polite" tabIndex={0}>
       {chat.loading && <p role="status">Đang mở phiên…</p>}
       {!chat.loading && !chat.turns.length && !chat.live && <div className="learning-chat-empty"><h3>Cùng hiểu bài đang học</h3><p>Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.</p></div>}
-      {chat.turns.map(turn => <section className="learning-chat-turn" key={turn.turn_id}>
+      {chat.turns.map(turn => <section className="learning-chat-turn" key={turn.client_turn_id || turn.turn_id}>
         <p className="learning-chat-question"><span className="sr-only">Bạn hỏi: </span>{turn.question}</p>
         <AssistantAnswer courseId={courseId} sessionId={chat.selected} text={turn.answer.answer_md} answer={turn.answer}
           onSource={count ? page => setSourcePage(page) : undefined} />

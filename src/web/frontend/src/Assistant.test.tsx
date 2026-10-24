@@ -182,3 +182,19 @@ it('keeps a completed new turn when an older history request arrives afterwards'
   await act(async () => releaseHistory(json({ turns: [] })));
   expect(screen.getByText('Lượt mới đã hoàn tất.')).toBeVisible();
 });
+
+it('keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  let releaseHistory!: (response: Response) => void;
+  vi.mocked(fetch).mockImplementation((input, init) => String(input).endsWith('/turns') && (!init?.method || init.method === 'GET')
+    ? new Promise(resolve => { releaseHistory = resolve; }) : original(input, init));
+  render(page()); await openAndAsk();
+  const completed = { ...answer, client_turn_id: requests[0].body.client_turn_id,
+    artifacts: [{ kind: 'document', id: 'd1', title: 'Tài liệu thật' }] };
+  await act(async () => { frame('final', { answer: completed }); controller.close(); });
+  await userEvent.click(screen.getByRole('button', { name: /Tài liệu đã tạo Tài liệu thật/ }));
+  expect(await screen.findByText('Nội dung tài liệu đã lưu.')).toBeVisible();
+  await act(async () => releaseHistory(json({ turns: [{ turn_id: 'stored-id', client_turn_id: requests[0].body.client_turn_id,
+    question: 'Phần này là gì?', created_at: session.created_at, answer: completed }] })));
+  expect(screen.getByText('Nội dung tài liệu đã lưu.')).toBeVisible();
+});
