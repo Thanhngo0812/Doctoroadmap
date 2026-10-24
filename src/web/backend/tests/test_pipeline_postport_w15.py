@@ -134,7 +134,7 @@ def fake_providers(guarded_pg, monkeypatch):
 
 @pytest.mark.parametrize('outcome,incomplete', [('success', False), ('success', True),
                           ('cancel', False), ('error', False), ('lease', False)])
-def test_postport_whole_pipeline_with_fake_providers_and_independent_pg(builds, fake_providers, outcome, incomplete):
+def test_postport_whole_pipeline_with_fake_providers_and_independent_pg(builds, fake_providers, outcome, incomplete, monkeypatch):
     from doc2roadmap.composition_build import DocumentPipeline
     from doc2roadmap.config import Settings
     from doc2roadmap.application.phase_b.retrieval import load_learning_graph
@@ -146,10 +146,17 @@ def test_postport_whole_pipeline_with_fake_providers_and_independent_pg(builds, 
     from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
     from wayfinder.infrastructure.learning_runtime import WebLearningRuntime
     from doc2roadmap.application.phase_b.budget import DailyLimitExceeded
-    from doc2roadmap.domain.phase_b_limits import BSettings
     from doc2roadmap.application.ports.build import BuildResult
     b = builds
     Model.incomplete = incomplete
+    import doc2roadmap.composition_phase_b as phase_b
+    child_runtimes = []
+    original_runtime = phase_b.PhaseBRuntime
+    class ObservedRuntime(original_runtime):
+        def __init__(self, **kwargs):
+            super().__init__(**kwargs)
+            child_runtimes.append(self)
+    monkeypatch.setattr(phase_b, 'PhaseBRuntime', ObservedRuntime)
     settings = b.settings.model_copy(update={'build_runner': 'real'})
     core = Settings(_env_file=None, artifact_dir=settings.artifact_root, llm_transport='vertex',
                     vertex_project='fake-only', secondary_mode='llm')
@@ -225,15 +232,18 @@ def test_postport_whole_pipeline_with_fake_providers_and_independent_pg(builds, 
                     job['doc_id'], receipt['graph_version'], allow_spend=False)['reused']
                 assert calls_before == (len(Model.calls), Embedding.calls)
                 graph = load_learning_graph(pipelines[0].store, job['doc_id'], receipt['graph_version'])
-                learning = WebLearningRuntime(runtime.phase_b_store, clock=b.clock,
-                    settings=BSettings(system_daily_max_usd=.002))
+                learning = WebLearningRuntime(runtime.phase_b_store, clock=b.clock)
                 session = learning.sessions(graph).create_session(b.actor.user_id, graph.doc_id, {'kind': 'roadmap'})
                 assert reader.get_record('session', session['session_id'])['owner'] == b.actor.user_id
-                runtime.phase_b_store.append_usage(dict(purpose='lecture', cost_usd=.003,
-                    created_at=b.clock.now().isoformat()))
+                assert len(child_runtimes) == 1
+                child = child_runtimes[0]
+                child.store.append_usage(dict(purpose='lecture', cost_usd=child.b_settings.system_daily_max_usd + .001,
+                    created_at=child.clock.now().isoformat()))
+                assert any(row['purpose'] == 'lecture' for row in reader.usage_rows())
                 # Admission is a learner/shared-content guard check; it is not the build cap.
                 with pytest.raises(DailyLimitExceeded):
-                    learning.spend_guard.reserve('lecture', .0001)
+                    child.spend_guard.reserve('lecture', .0001)
+                assert not reader.list_records('spend_reservation')
             else:
                 assert all(message['subject'] != 'Bản dựng xong' for message in b.mailer.messages)
                 if outcome != 'error':
