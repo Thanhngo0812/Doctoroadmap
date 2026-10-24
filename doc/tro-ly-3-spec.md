@@ -161,6 +161,14 @@ giá tổng.
 
 `assistant_prompt_version` lên `assistant-prompt-4`.
 
+### 9. Công thức như bài giảng bản 2 (SA-70)
+
+- Đoạn tư liệu gửi trợ lý dùng cùng cách thay `[formula]` bằng `[formula: <raw_text>]` của [spec bài giảng](bai-giang-3-spec.md) mục 11.2. Dùng chung một hàm
+  với bài giảng.
+- Luật công thức trong lời nhắc mục 2 đổi theo: "Chữ "[formula: …]" là chỗ công thức bị mất khi trích PDF; phần sau dấu hai chấm là chữ trích thô, có thể lộn
+  thứ tự và mất ký hiệu. Có ảnh trang thì đọc công thức từ ảnh; không có thì dựng lại từ chữ trích thô, chỉ khi chắc chắn." Phiên bản `assistant-prompt-5`.
+- `pages_with_formula` trong `validation` đếm trước khi cắt theo `assistant_max_page_images`, như bài giảng mục 11.4.
+
 ## Quyết định kiểm thử
 
 - **Đường nối chính** ở mức use case. Mô hình giả stream theo kịch bản (có và không gọi công cụ), tìm kiếm giả, cổng ảnh giả, kho trong bộ nhớ.

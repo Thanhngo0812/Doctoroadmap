@@ -62,9 +62,10 @@ So khớp tên theo NFC, không phân biệt hoa thường, tên dài ít nhất
 - Không có ảnh thì chạy chỉ với chữ, và log `thieu_anh_trang`.
 - Mỗi ảnh đi kèm một dòng chữ "Ảnh trang p của sách:".
 
-### 4. Lời nhắc (`lecture-prompt-3`)
+### 4. Lời nhắc (`lecture-prompt-4`)
 
-Lời nhắc hệ thống, nguyên văn bản đã thử ngày 2026-10-23 (V4). `{formula_rule}` là luật 1 khi có ảnh, luật 2 khi không có ảnh.
+Lời nhắc hệ thống, nguyên văn. Bản đã thử ngày 2026-10-23 (V4), cộng ba chỗ sửa của V5 ngày 2026-10-24 (mục 11). `{formula_rule}` là luật 1
+khi có ảnh, luật 2 khi không có ảnh.
 
 ```text
 Bạn là một giảng viên đại học giỏi và tận tâm. Bạn viết bài giảng bằng tiếng Việt cho sinh viên đang tự học từ một cuốn sách. Mục tiêu: đọc xong, sinh viên hiểu thật sự khái niệm, không chỉ thuộc định nghĩa.
@@ -73,13 +74,14 @@ Cách viết:
 - Văn xuôi tự nhiên, mạch lạc, như đang giảng trên lớp: gần gũi nhưng chính xác. Không liệt kê khô khan, không lặp lại cùng một ý bằng lời khác.
 - Mở đầu bằng một hai câu cho thấy khái niệm này giải quyết vấn đề gì, hay vì sao cần nó. Nếu có khái niệm tiên quyết, nối sang nó tự nhiên; không viết "như bạn đã học".
 - Giải thích trực giác trước, rồi nêu chính xác định nghĩa hay phát biểu theo sách.
-- Có ít nhất một ví dụ cụ thể, giải từng bước. Ưu tiên ví dụ trong sách. Được thêm một ví dụ hay hình ảnh so sánh đời thường do bạn nghĩ ra nếu nó giúp hiểu, miễn là đúng.
+- Có ít nhất một ví dụ cụ thể, giải từng bước. Ưu tiên ví dụ trong sách. Được thêm một ví dụ hay hình ảnh so sánh đời thường do bạn nghĩ ra nếu nó giúp hiểu, miễn là đúng: soát lại từng con số, từng bước suy luận của ví dụ tự nghĩ trước khi viết.
 - Nêu một hai chỗ người học hay nhầm, hoặc phân biệt với khái niệm gần.
-- Kết bằng một câu cho biết khái niệm này sẽ được dùng vào đâu tiếp theo, dựa trên danh sách "Khái niệm tiếp theo" nếu có.
+- Kết bằng một câu nối sang khái niệm tiếp theo trong danh sách "Khái niệm tiếp theo" nếu có: nói khái niệm này cần cho nó ở chỗ nào. Đừng tự định nghĩa hay mô tả khái niệm tiếp theo khi tư liệu không nói về nó.
 - Cuối bài: một câu hỏi tự kiểm tra ngắn, kèm đáp án.
 
 Trung thực với sách:
 - Sách là chuẩn. Không viết điều mâu thuẫn với sách. Dùng đúng ký hiệu và thuật ngữ của sách.
+- Giữ đúng chiều và phạm vi của phát biểu trong sách: sách nói "nếu A thì B" thì đừng viết thành "nếu B thì A"; điều sách gán cho đối tượng hay vai trò nào thì giữ đúng đối tượng, vai trò đó.
 - Viết công thức bằng LaTeX trong $...$ hoặc $$...$$.
 - {formula_rule}
 - Đoạn nào dựa vào sách thì gắn nhãn nguồn như [S2] ở cuối đoạn. Phần trực giác hay ví dụ tự nghĩ thì không cần nhãn.
@@ -88,8 +90,9 @@ Trung thực với sách:
 Định dạng: Markdown, có thể dùng vài tiêu đề nhỏ (###) nếu giúp dễ đọc. Dài khoảng 300–550 từ, tuỳ khái niệm khó hay dễ. Không chào hỏi, không nói về bản thân, không nhắc tới "tư liệu" hay "đoạn trích".
 ```
 
-- Luật 1, khi có ảnh: `Chữ "[formula]" là chỗ công thức bị mất khi trích PDF. Ảnh các trang sách được đính kèm: đọc công thức đúng từ ảnh.`
-- Luật 2, khi không có ảnh: `Chữ "[formula]" là chỗ công thức bị mất khi trích PDF. Đừng đoán công thức bạn không chắc; khi đó diễn đạt bằng lời.`
+- Luật 1, khi có ảnh: `Chữ "[formula: …]" là chỗ công thức bị mất khi trích PDF; phần sau dấu hai chấm là chữ trích thô của công thức, có thể lộn thứ tự và mất ký hiệu. Ảnh các trang sách được đính kèm: đọc công thức đúng từ ảnh. Công thức ở trang không có ảnh thì dựng lại từ chữ trích thô, chỉ khi chắc chắn; không chắc thì diễn đạt bằng lời.`
+- Luật 2, khi không có ảnh: `Chữ "[formula: …]" là chỗ công thức bị mất khi trích PDF; phần sau dấu hai chấm là chữ trích thô của công thức, có thể lộn thứ tự và mất ký hiệu. Dựng lại công thức từ chữ trích thô, chỉ khi chắc chắn; không chắc thì diễn đạt bằng lời.`
+- Công thức không có chữ trích thô thì vẫn là `[formula]` như cũ.
 - **Thêm một dòng định dạng câu tự kiểm tra,** để máy tách được: cuối bài có mục `### Tự kiểm tra`, gồm một dòng `**Câu hỏi:** …` và một dòng
   `**Đáp án:** …`.
 - **Tin nhắn người dùng theo khuôn của bản thử:** dòng "Khái niệm: … (còn gọi: …)", module, "Khái niệm tiên quyết:", "Khái niệm tiếp theo dùng tới khái niệm
@@ -154,12 +157,44 @@ Lưu cùng bài trong cache và trong dòng usage `lecture_validation`:
 | khoá | mặc định |
 |---|---|
 | `lecture_contract_version` | `lecture-3` |
-| `lecture_prompt_version` | `lecture-prompt-3` |
-| `lecture_context_version` | `lecture-context-3` |
+| `lecture_prompt_version` | `lecture-prompt-4` (từ `-3`, SA-70) |
+| `lecture_context_version` | `lecture-context-4` (từ `-3`, SA-70) |
 | `lecture_context_chars` | 9.000 |
-| `lecture_max_page_images` | 4 |
+| `lecture_max_page_images` | 8 (từ 4, SA-70) |
+| `lecture_thinking_level` | không (tắt), SA-70 |
 | `lecture_temperature` | 1,0 (từ 0) |
 | `lecture_max_output_tokens` | 4.096 (từ 2.048) |
+
+### 11. Bản 2 (SA-70, 2026-10-24)
+
+Lượt thật `lecture-3` 30 bài (2026-10-23, 0,065 USD) đạt 30/30. Sonnet rà lượt đầu, Claude đối chiếu sách. Phần bám sách đúng, công thức khớp ảnh trang. Lỗi nằm ở
+phần mô hình tự viết thêm: ví dụ tự nghĩ không nhất quán; câu kết mô tả sai khái niệm tiếp theo; gán sai vai trò; đảo chiều mệnh đề ("r = 0 thì độc lập").
+Sáu thay đổi:
+
+1. **Lời nhắc V5** (mục 4, ba chỗ sửa): soát ví dụ tự nghĩ; câu kết không tự định nghĩa khái niệm tiếp theo; giữ chiều và vai trò của phát biểu.
+   - Chạy lại đúng 30 khái niệm: năm lỗi đã xác nhận đều hết.
+   - So sánh mù V4/V5/V5 có suy nghĩ (Sonnet chấm, 30 khái niệm): không cặp nào khác biệt có ý nghĩa (V5 hơn V4 14/30, p = 0,86; có suy nghĩ hơn V4 19/30,
+     p = 0,20; 14/30 "gần ngang").
+   - Giữ V5 vì nó nhắm đúng loại lỗi đã thấy và không có dấu hiệu gây hại. Kết quả ở scratchpad `lecture3-so-sanh/`.
+2. **Chữ trích thô của công thức** (`lecture-context-4`). Mỗi `[formula]` trong đoạn tư liệu gửi cho mô hình được thay bằng `[formula: <raw_text>]`.
+   - `raw_text` là chữ lớp văn bản PDF của nút công thức, lấy qua `formula_refs` của đoạn theo đúng thứ tự, khoảng trắng gộp lại. Pha A đã gửi chữ này cho
+     mô hình trích khái niệm từ trước.
+   - Ba cuốn có công thức: số `[formula]` khớp số `formula_refs` ở mọi đoạn (doc-1 234, xstk 84, naive-bayes 17 đoạn).
+   - Chỉ đổi chữ gửi mô hình. `sources`, `chunk_id`, cách chọn trang ảnh giữ nguyên, theo chữ gốc của đoạn.
+3. **Trần ảnh trang 4 → 8.** Với trần 4: 6/19 bài của ba cuốn có công thức nằm trên hơn 4 trang; 63/302 chỗ `[formula]` (21%) không có ảnh mà cũng không có
+   chữ. Thử 9 bài khó nhất:
+   - thêm chữ thô và trần 8 thì ví dụ "kích thước mẫu" ra đúng N = 42 của sách; trần 8 không chữ thô ra 105 (sai);
+   - không bản nào chép chữ thô lộn xộn vào bài;
+   - chữ đầu không chậm hơn; chi thêm khoảng 0,0005 USD mỗi bài.
+4. **Sửa log ảnh.** `pages_with_formula` đếm mọi trang có công thức của tư liệu **trước khi cắt** theo trần. `thieu_anh_trang` = số ảnh đã gửi < số trang đó.
+   Trước đây số trang bị cắt còn 4 trước khi đếm, nên cờ không bao giờ bật khi vượt trần. `formula_left` bắt cả `[formula` (có hay không có chữ thô).
+5. **Stream không lộ câu tự kiểm tra.**
+   - Khi một dòng khớp tiêu đề tự kiểm tra (cùng biểu thức mà `split_self_check` dùng: `##`–`####`, thụt đầu, dấu hai chấm, không phân biệt hoa thường),
+     ngừng phát `delta` từ dòng đó. Phần còn lại chỉ có trong `final`.
+   - Dòng đang viết dở mà bắt đầu bằng `#` (sau khoảng trắng) thì giữ lại tới khi đủ dòng, rồi mới quyết phát hay ngừng. Các dòng khác phát ngay như cũ.
+   - Lý do: biên bản nghiệm thu web lần 3 (R-W08-2), bốn dạng tiêu đề hợp lệ làm đáp án hiện trước `final`. Chặn ở lõi để mọi người dùng cùng một luật.
+6. **Tham số `lecture_thinking_level`**, mặc định tắt. Đặt mức (`low`, …) thì gửi `thinkingConfig` cho lời gọi bài giảng và mức này vào khoá cache. Lý do:
+   bản có suy nghĩ xếp nhất 13/30 trong so sánh mù nhưng chưa có ý nghĩa thống kê, chậm hơn 0,8 giây ở trung vị, đắt hơn 40%. Để đợt đánh giá tổng đo lại.
 
 ## Quyết định kiểm thử
 
@@ -178,6 +213,14 @@ Lưu cùng bài trong cache và trong dòng usage `lecture_validation`:
   8. Đầu ra rỗng thì sinh lại đúng một lần, rồi `failed` kèm `khong_dung_duoc`, `message`, `retryable = true`.
   9. Bấm lần hai thì 0 lời gọi. Đổi phiên bản lời nhắc thì sinh lại.
   10. Không đường nào trả câu TextRank cho người học.
+  11. *(SA-70)* Tin nhắn gửi mô hình có `[formula: <raw_text>]` đúng thứ tự cho từng `[formula]` có chữ thô; đoạn không có `formula_refs` giữ `[formula]`;
+      `sources` không đổi.
+  12. *(SA-70)* Tư liệu có công thức trên 10 trang: gửi đúng 8 ảnh đầu theo thứ tự đọc; `validation.pages_with_formula` = 10 và `thieu_anh_trang` bật.
+  13. *(SA-70)* Mô hình giả stream bài có câu tự kiểm tra dưới từng dạng tiêu đề (`### Tự kiểm tra`, `## Tự kiểm tra`, `#### Tự kiểm tra`,
+      `### Tự kiểm tra:`, `  ### Tự kiểm tra`), kể cả khi tiêu đề bị cắt qua hai mẩu chữ: nối các `delta` lại không có "Câu hỏi:" hay "Đáp án:", và bằng
+      `body_md` của `final` (bỏ khoảng trắng cuối). Tiêu đề khác (`### Ví dụ`) vẫn được phát.
+  14. *(SA-70)* Lời nhắc đúng nguyên văn mục 4 (V5); luật công thức theo mục 4.
+  15. *(SA-70)* `lecture_thinking_level` tắt thì thân yêu cầu không có `thinkingConfig`; đặt `low` thì có và khoá cache đổi.
 
 ## Ngoài phạm vi
 
