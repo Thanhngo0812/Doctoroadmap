@@ -92,8 +92,8 @@ def test_context_without_any_chunk_naming_the_concept_is_no_source():
 # ---------------------------------------------------------------- 2. page pictures
 
 def test_pictures_of_exactly_the_formula_pages_are_sent_at_most_eight_in_reading_order():
-    pages = FakePages({p: JPEG + bytes([p]) for p in range(10, 20)})
-    result, _, _, model, _ = run(graph=make_graph(formula_pages=tuple(range(11, 19))), pages=pages)
+    pages = FakePages({p: JPEG + bytes([p]) for p in range(10, 31)})
+    result, _, _, model, _ = run(graph=make_graph(formula_pages=tuple(range(11, 20))), pages=pages)
     sent = [page for page, _ in model.calls[0].images]
     assert sent == [30, 11, 12, 13, 14, 15, 16, 17]
     assert [call[2] for call in pages.calls] == sent
@@ -207,7 +207,8 @@ def test_events_are_skeleton_then_deltas_then_final_and_deltas_add_up_to_the_les
     result, events, *_ = run()
     kinds = [e["event"] for e in events]
     assert kinds[0] == "skeleton" and kinds[-1] == "final" and set(kinds[1:-1]) == {"delta"}
-    assert "".join(e["text"] for e in events if e["event"] == "delta") == GOOD_LESSON
+    # SA-70: the stream stops at the self-check heading; only `final` carries that section
+    assert "".join(e["text"] for e in events if e["event"] == "delta") == GOOD_LESSON[:GOOD_LESSON.index("### Tự kiểm tra")]
     assert events[0]["lecture"]["status"] == "generating" and events[0]["lecture"]["body_md"] == ""
 
 
@@ -356,7 +357,7 @@ def test_second_try_after_an_empty_first_one_gives_the_lesson():
     model = FakeModel([""], list_pieces(GOOD_LESSON))
     result, events, *_ = run(model)
     assert len(model.calls) == 2 and result["status"] == "ready"
-    assert "".join(e["text"] for e in events if e["event"] == "delta") == GOOD_LESSON
+    assert "".join(e["text"] for e in events if e["event"] == "delta") == GOOD_LESSON[:GOOD_LESSON.index("### Tự kiểm tra")]
 
 
 # ---------------------------------------------------------------- 9. cache
