@@ -40,6 +40,7 @@ class GeminiEmbedding:
         vertex_project: str | None = None,
         vertex_location: str = "global",
         limiter: AdaptiveModelLimiter | None = None,
+        vertex_credentials: VertexCredentials | None = None,
     ) -> None:
         if transport not in {"developer_api", "vertex"}:
             raise ValueError("Gemini embedding transport không hợp lệ")
@@ -51,7 +52,9 @@ class GeminiEmbedding:
             raise ValueError("cấu hình embedding phải lớn hơn 0")
         self._api_key = api_key.strip() if api_key else None
         self.transport = transport
-        self._vertex = VertexCredentials(vertex_project, vertex_location) if transport == "vertex" else None
+        # A runtime passes one shared credentials object so every client reuses the same token.
+        self._vertex = (vertex_credentials or VertexCredentials(vertex_project, vertex_location)
+                        ) if transport == "vertex" else None
         self._model = model
         self._output_dimensionality = output_dimensionality
         self._timeout = timeout

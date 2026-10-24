@@ -1,3 +1,4 @@
+import re
 from copy import deepcopy
 from dataclasses import replace
 from types import SimpleNamespace as NS
@@ -71,8 +72,8 @@ def test_answer_one_call_has_grounded_citations_and_measured_usage():
                     'candidatesTokenCount': 20, 'thoughtsTokenCount': 7})]])
     result, store, _ = run(model, on_event=events.append)
     assert result['status'] == 'answered'
-    assert result['citations'][0]['chunk_id'] == 'c1'
-    assert 'Ma trận' in result['answer']
+    assert result['sources'][0]['chunk_id'] == 'c1'
+    assert 'Ma trận' in result['answer_md']
     assert len(model.calls) == len(store.usage_rows()) == 1
     assert store.usage_rows()[0]['thought_tokens'] == 7
     assert any(event['event'] == 'delta' for event in events)
@@ -115,8 +116,7 @@ def test_tool_result_is_supplied_to_next_turn_and_recorded():
     assert result['tool_calls'][0]['by'] == 'model'
 
 
-def test_assistant_uses_configured_quote_limit_in_context_and_why_here_tool():
-    import json
+def test_assistant_uses_configured_quote_limit_in_the_why_here_tool():
     source = graph()
     quote = 'Định thức dùng ma trận vuông. ' * 6
     source.chunks['c2'].text = quote
@@ -128,44 +128,45 @@ def test_assistant_uses_configured_quote_limit_in_context_and_why_here_tool():
     use_case = AssistantUseCase(source, store, model,
                                settings=replace(BSettings(), quote_max_chars=80))
     use_case.ask('book', 1, 'session', 'Định thức', owner='alice', allow_spend=True)
-    context = json.loads(model.calls[0][0][0]['text'])
     tool_result = model.calls[1][0][-1]['tool_results'][0]['result']
-    for detail in (context['concepts'][0], tool_result):
-        citation = detail['prerequisites'][0]['citation']
-        assert len(citation['quote']) <= 80
-        assert quote[citation['char_start'] - 24:citation['char_end'] - 24] == citation['quote']
+    citation = tool_result['prerequisites'][0]['citation']
+    assert len(citation['quote']) <= 80
+    assert quote[citation['char_start'] - 24:citation['char_end'] - 24] == citation['quote']
+    # the pre-fetched context names the prerequisite (and where it is) but carries no quote of it
+    first = model.calls[0][0][0]['text']
+    assert 'tiên quyết: Ma trận (module 1, chưa học)' in first
 
 
-def test_endless_tool_calls_force_none_on_fifth_round():
+def test_endless_tool_calls_force_none_on_third_round():
     model = Model([[ToolCall('lookup_concept', {'name': 'Ma trận'}, str(i)), Done({})] for i in range(5)])
     result, store, _ = run(model)
-    assert result['status'] == 'budget_exhausted'
-    assert len(model.calls) == 5
+    assert result['status'] == 'failed' and result['failure']['retryable'] is True
+    assert len(model.calls) == 3
     assert model.calls[-1][1] == 'NONE'
-    assert len(store.usage_rows()) == 5
+    assert len(store.usage_rows()) == 3
 
 
-def test_five_turn_prompt_keeps_only_three_recent_turns_within_history_cap():
-    import json
+def test_seven_turn_prompt_keeps_only_six_recent_turns_within_history_cap():
     from doc2roadmap.application.phase_b.common import stable_json
     settings = replace(BSettings(), assistant_history_tokens=1000)
-    model = Model([[Delta('Ma trận là bảng các số. [S1]'), Done({})] for _ in range(5)])
+    model = Model([[Delta('Ma trận là bảng các số. [S1]'), Done({})] for _ in range(7)])
     store = InMemoryPhaseBStore()
     g = graph()
     seed_session(store, g, 'session', 'alice', 'm1')
     use_case = AssistantUseCase(g, store, model, settings=settings)
 
-    for number in range(5):
-        use_case.ask('book', 1, 'session', f'question-{number} ' + 'x' * 1200,
+    for number in range(7):
+        use_case.ask('book', 1, 'session', f'question-{number} ' + 'x' * 500,
                      owner='alice', allow_spend=True)
 
-    context = json.loads(model.calls[4][0][0]['text'])
-    history = context['history']
-    assert context['scope']['kind'] == 'module'
-    assert len(history) == 3
-    assert all(f'question-{number}' in row['question'] for number, row in zip((1, 2, 3), history))
+    text = model.calls[6][0][0]['text']
+    block = text.split('Hội thoại trước:')[1].split('Câu hỏi của người học:')[0]
+    history = [{'question': q, 'answer': a} for q, a in re.findall(r'Người học: (.*)\nTrợ lý: (.*)\n', block)]
+    assert 'Người học đang mở module 1: Ma trận' in text
+    assert len(history) == 6
+    assert all(f'question-{number}' in row['question'] for number, row in zip((0, 1, 2, 3, 4, 5), history))
     assert len(stable_json(history)) // 3 <= settings.assistant_history_tokens
-    assert len(use_case.sessions.list_turns('alice', 'session')) == 5
+    assert len(use_case.sessions.list_turns('alice', 'session')) == 7
 
 
 def test_tool_errors_are_structured_and_counted():
@@ -194,7 +195,8 @@ def test_document_scope_limit_survives_tool_result_and_final_answer():
     tool_result = model.calls[1][0][-1]['tool_results'][0]['result']
     assert generated and tool_result['error']['code'] == 'scope_too_large'
     assert 'tối đa 5 module' in tool_result['error']['message']
-    assert 'tối đa 5 module' in result['answer']
+    # the model is told, and what it writes is the answer; the code no longer replaces it
+    assert result['status'] == 'answered' and result['answer_md'] == 'Tôi sẽ giúp bạn thu hẹp phạm vi.'
 
 
 def test_document_daily_limit_is_preserved_as_a_code_written_message():
@@ -208,17 +210,18 @@ def test_document_daily_limit_is_preserved_as_a_code_written_message():
             'book', 1, 'session', 'Tạo ghi chú', owner='alice', allow_spend=True)
     tool_result = model.calls[1][0][-1]['tool_results'][0]['result']
     assert tool_result['error']['code'] == 'daily_limit'
-    assert 'hết hạn mức chi hôm nay' in result['answer']
+    assert result['status'] == 'daily_limit'
+    assert result['answer_md'].startswith('Tạo tài liệu hoàn tất.') and 'hết hạn mức chi hôm nay' in result['answer_md']
 
 
 @pytest.mark.parametrize('answer', ['Ma trận là vũ trụ. [S999]', 'Ma trận là vũ trụ.',
                                     'KHONG_DU\nTôi không có đủ dữ liệu.'])
-def test_ungrounded_answers_become_refusals_and_never_stream_raw_claims(answer):
+def test_ungrounded_looking_answers_are_returned_and_streamed_as_written(answer):
     events = []
-    result, _, _ = run(Model([[Delta(answer), Done({})]]), on_event=events.append)
-    assert result['status'] in {'not_in_document', 'insufficient_context'}
-    assert 'vũ trụ' not in result['answer']
-    assert not any('vũ trụ' in event.get('text', '') for event in events)
+    result, store, _ = run(Model([[Delta(answer), Done({})]]), on_event=events.append)
+    assert result['status'] == 'answered' and result['answer_md'] == answer
+    assert ''.join(event['text'] for event in events if event['event'] == 'delta') == answer
+    assert store.get_record('assistant_validation', result['answer_id'])['words'] > 0
 
 
 def test_budget_reserves_a_final_response_instead_of_starting_another_tool_round():
@@ -226,7 +229,7 @@ def test_budget_reserves_a_final_response_instead_of_starting_another_tool_round
     model = Model([[Delta('Ma trận là bảng các số. [S1]'), Done({})]])
     result, _, _ = run(model, settings=settings)
     assert model.calls == [] or model.calls[0][1] == 'NONE'
-    assert result['status'] == 'budget_exhausted'
+    assert result['status'] == 'failed' and result['failure']['reason_code'] == 'het_ngan_sach_cau'
 
 
 def test_session_followup_idempotency_and_owner_isolation():
@@ -263,7 +266,6 @@ def test_dry_run_never_calls_search_model_or_writes_store():
 
 
 def test_roadmap_session_searches_all_and_returns_roadmap_and_module_cards():
-    import json
     g, store = graph(), InMemoryPhaseBStore()
     store.put_record('session', 'roadmap', {'contract_version': 'session-1', 'session_id': 'roadmap',
         'owner': 'alice', 'doc_id': 'book', 'scope': {'kind': 'roadmap'}, 'title': 'Phiên học mới',
@@ -279,14 +281,13 @@ def test_roadmap_session_searches_all_and_returns_roadmap_and_module_cards():
     result = AssistantUseCase(g, store, model, search=search,
         concept_lookup=lambda query: {"matches": [{"node_id": "a"}]}).ask(
         'book', 1, 'roadmap', 'Ma trận', owner='alice', allow_spend=True)
-    context = json.loads(model.calls[0][0][0]['text'])
+    text = model.calls[0][0][0]['text']
     assert seen[0]['current_module_id'] is None and seen[0]['scope'] == 'ca_tai_lieu'
-    assert context['scope']['kind'] == 'roadmap'
-    assert context['scope']['modules'] == [[1, 'Ma trận', 1], [2, 'Định thức', 1]]
-    assert len(result['graph_card']['roadmap']) == 2
-    assert not result['graph_card']['reminders']
+    assert text.startswith('Người học đang xem cả lộ trình của cuốn sách.')
+    assert [row['title'] for row in result['graph_cards']['roadmap']] == ['Ma trận', 'Định thức']
+    assert not result['graph_cards']['reminders']
     assert result['linked_node_ids'] == ['a'] and result['status'] == 'answered'
-    assert result['graph_card']['module_cards'][0]['module_id'] == 'm1'
+    assert result['graph_cards']['module_cards'][0]['module_id'] == 'm1'
 
 
 def test_assistant_requires_existing_owned_session_and_rejects_legacy_module_field():
@@ -303,11 +304,11 @@ def test_daily_limit_returns_code_written_answer_without_calling_model():
     g, store = graph(), InMemoryPhaseBStore()
     seed_session(store, g, 's', 'alice', 'm1')
     store.append_usage({'purpose': 'assistant', 'model_id': 'fake', 'doc_id': 'book',
-        'learner_id': 'alice', 'cost_usd': 0.20, 'created_at': datetime.now(timezone.utc).isoformat()})
+        'learner_id': 'alice', 'cost_usd': 1.00, 'created_at': datetime.now(timezone.utc).isoformat()})
     model = Model([])
     result = AssistantUseCase(g, store, model).ask('book', 1, 's', 'Ma trận là gì?', owner='alice',
                                                    allow_spend=True)
     assert result['status'] == 'daily_limit'
-    assert 'hôm nay' in result['answer']
+    assert 'hôm nay' in result['answer_md']
     assert not model.calls and len(store.usage_rows()) == 1
     assert len(store.list_records('turn', owner='alice')) == 1

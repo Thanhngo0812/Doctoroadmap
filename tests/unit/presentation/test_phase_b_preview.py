@@ -100,7 +100,8 @@ def test_stream_endpoints_use_real_use_cases_and_never_return_quiz_answers(serve
     answer = events(request(base + '/api/ask', {**args, 'session_id': session['session_id'],
         'question': 'Ma trận là gì?'}))
     assert answer[-1]['answer']['status'] == 'answered'
-    assert answer[-1]['answer']['citations'][0]['chunk_id'] == 'c'
+    assert answer[-1]['answer']['sources'][0]['chunk_id'] == 'c'
+    assert 'answer_md' in answer[-1]['answer'] and 'validation' not in answer[-1]['answer']
 
 
 def test_preview_ask_passes_focus_node_id_and_reads_the_lecture_cache_without_writing_to_it(server):
@@ -113,7 +114,9 @@ def test_preview_ask_passes_focus_node_id_and_reads_the_lecture_cache_without_wr
     assert focused['focus_node_id'] == 'n1' and focused['linked_node_ids'] == ['n1']
     ignored = events(request(base + '/api/ask', {**args, 'session_id': session['session_id'],
         'question': 'giải thích phần này', 'focus_node_id': 'không-có'}))[-1]['answer']
-    assert ignored['focus_node_id'] is None and {'kind': 'focus_ignored'} in ignored['warnings']
+    assert ignored['focus_node_id'] is None
+    log = service.runtime.store.get_record('assistant_validation', ignored['answer_id'])
+    assert log['focus_ignored'] is True and 'warnings' not in ignored
     store = service.runtime.store
     assert store.list_records('lecture_failure') == []
     assert {row['purpose'] for row in store.usage_rows()} <= {'assistant'}
