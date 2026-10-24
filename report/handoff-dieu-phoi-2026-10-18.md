@@ -312,6 +312,8 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**Cửa nghiệm thu ba nhóm lần 4, 2026-10-24 — đang giữ:** Codex nhận yêu cầu kiểm W-08 `c8c687b`, W-15 `9b3bd82`, W-24 `eb29f29`; main vừa nhận SA-67 tại `6cfc535` (cùng SA-70). Đề nghị Claude tạm giữ ghép SA và cổng PostgreSQL toàn repo tới khi Codex ghi mở lại sau kiểm/đẩy hồ sơ. Làn SA vẫn có thể cài/soát riêng. Chỉ kiểm 0 USD, không cấp quyền chạy hai lượt paid W-15; giữ phạm vi thiết kế web không cần Cloud Figma. Không dọn/link dữ liệu hay worktree.
+
 **2026-10-24, Codex nhận cập nhật Claude/chủ dự án:** SA-66 và SA-69 đều đã ghép; W-09 nhận answer-3 từ main sau W-08,
 điểm chờ SA-69 được gỡ trong lúc chỉnh tài liệu. Web kiểm UI/tích hợp bằng fake và lấy thẻ quiz/tài liệu từ sự kiện artifact, không cho bấm link tự bịa trong chữ.
 SA-70 tiếp stream tự kiểm tra; nhóm web giữ hồi quy hiện tại tới lúc nhận mốc mới.

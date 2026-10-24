@@ -19,7 +19,7 @@ class BSettings:
     naming_max_output_tokens: int = 512
     naming_common_chunk_ratio: float = 0.02
     lecture_max_output_tokens: int = 4096
-    document_max_output_tokens: int = 3000
+    document_max_output_tokens: int = 8192
     assistant_contract_version: str = "answer-3"
     assistant_prompt_version: str = "assistant-prompt-5"
     assistant_temperature: float = 1.0
@@ -36,7 +36,7 @@ class BSettings:
     lecture_validator_version: str = 'lecture-validator-7'
     connector_sentence_max_chars: int = 60
     quote_max_chars: int = 200
-    document_max_usd: float = 0.01
+    document_max_usd: float = 0.03
     assistant_max_rounds: int = 3
     assistant_max_usd: float = 0.05
     assistant_history_turns: int = 6
@@ -62,6 +62,13 @@ class BSettings:
     spend_day_timezone: str = "Asia/Ho_Chi_Minh"
     quiz_roadmap_max_items: int = 10
     document_max_modules: int = 5
+    document_contract_version: str = "document-3"
+    document_prompt_version: str = "document-prompt-3"
+    document_context_version: str = "document-context-3"
+    document_context_chars: int = 20_000
+    document_per_concept_chars: int = 1_600
+    document_max_page_images: int = 8
+    document_timeout_seconds: float = 120.0
     bridge_max_chars: int = 160
     bridge_forbidden_phrases: tuple[str, ...] = ("như bạn đã học", "bạn đã biết", "ở bài trước", "như đã học")
     next_up_max: int = 2

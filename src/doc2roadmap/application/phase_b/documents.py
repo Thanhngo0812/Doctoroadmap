@@ -1,18 +1,23 @@
 from __future__ import annotations
 
-import json
 import re
-from collections.abc import Mapping
-from datetime import datetime, timezone
+from collections.abc import Callable, Mapping
+from time import perf_counter
 from typing import Any
 from uuid import uuid4
 
-from doc2roadmap.application.phase_b.common import DailyLimitExceeded, call_json, quote_is_verbatim, stable_json
-from doc2roadmap.application.phase_b.lectures import _assemble
-from doc2roadmap.application.phase_b.postcheck import COMPOUND, best_matching_source_sentence, check_text
-from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
-from doc2roadmap.domain.phase_b_pricing import estimate_cost
-from doc2roadmap.domain.sentence_splitter import UnicodeSentenceSplitter
+from doc2roadmap.application.phase_b.budget import DailyLimitExceeded, DailySpendGuard, spending_call
+from doc2roadmap.application.phase_b.clock import SystemClock
+from doc2roadmap.application.phase_b.common import stable_json
+from doc2roadmap.application.phase_b.document_context3 import (
+    DEFAULT_REQUEST, build_validation, gather, split_group_labels, system_prompt, title_of,
+)
+from doc2roadmap.application.phase_b.lecture3 import IMAGE_TOKEN_ESTIMATE, _Attempt
+from doc2roadmap.application.phase_b.lecture_context3 import source_rows
+from doc2roadmap.application.phase_b.lectures import _aggregate_usage
+from doc2roadmap.application.ports.page_images import PageImages
+from doc2roadmap.domain.phase_b_limits import BSettings, context_hash, usage_row
+from doc2roadmap.domain.phase_b_pricing import estimate_cost, token_cost
 
 
 DOCUMENT_SCHEMA: dict[str, Any] = {
@@ -27,8 +32,6 @@ DOCUMENT_SCHEMA: dict[str, Any] = {
     },
     "required": ["title", "markdown", "citations", "outside_document_blocks"],
 }
-
-_SYSTEM = """Soạn tài liệu Markdown bằng tiếng Việt theo yêu cầu. Mỗi khẳng định về sách phải có nhãn nguồn trong văn bản và một cặp label/quote đúng nguyên văn trong citations. Không viết công thức, chỉ tham chiếu [CTk]. Nội dung ngoài sách chỉ được ở outside_document_blocks và không được gắn nhãn nguồn. Tuân theo các giới hạn được nêu trong yêu cầu."""
 
 
 def _scope_nodes(graph: Any, scope: Any, *, min_jaccard: float = 0.5) -> tuple[list[str], list[str]]:
@@ -77,24 +80,6 @@ def _scope_nodes(graph: Any, scope: Any, *, min_jaccard: float = 0.5) -> tuple[l
             node_ids.extend(graph.modules.get(module_id, {}).get("node_ids", []))
         return list(dict.fromkeys(str(item) for item in node_ids)), [str(item) for item in module_ids]
     raise ValueError("scope must be a concept, node list, or module scope")
-
-
-def _retrieval(graph: Any, request: str, excluded: set[str], registry: Any, limit: int = 5) -> list[dict[str, Any]]:
-    terms = {term.casefold() for term in re.findall(r"\w+", request) if len(term) > 2}
-    scored = []
-    for chunk_id, chunk in graph.chunks.items():
-        if chunk_id in excluded:
-            continue
-        text = str(chunk.text)
-        score = sum(text.casefold().count(term) for term in terms)
-        if score:
-            scored.append((score, int(chunk.order_index), chunk_id, text))
-    scored.sort(key=lambda row: (-row[0], row[1], row[2]))
-    rows = []
-    for _, _, chunk_id, text in scored[:limit]:
-        label = registry.label(chunk_id, "S")
-        rows.append({"label": label, "text": text, "chunk_id": chunk_id})
-    return rows
 
 
 def _cap_context(context: dict[str, Any], settings: BSettings) -> tuple[dict[str, Any], bool]:
@@ -151,75 +136,61 @@ def _cap_context(context: dict[str, Any], settings: BSettings) -> tuple[dict[str
     return context, truncated
 
 
-def _render(title: str, markdown: str, outside_blocks: list[str]) -> str:
-    body = markdown.strip()
-    if not body:
-        parts = []
-    elif re.match(r'^\s*#\s+', body):
-        parts = [body]
-    else:
-        parts = [f"# {title.strip()}", body]
-    if outside_blocks:
-        parts.append("## Ví dụ minh hoạ ngoài tài liệu\n" + "\n\n".join(f"> {block.strip()}" for block in outside_blocks))
-    return "\n\n".join(part for part in parts if part)
-
-
-def _statements_for_label(markdown: str, label: str) -> list[str]:
-    statements = []
-    sentence_splitter = UnicodeSentenceSplitter()
-    for line in markdown.splitlines():
-        line = COMPOUND.sub(lambda match: "".join(
-            "[" + item.strip() + "]" for item in re.split(r"[,;]", match[1])), line)
-        if f"[{label}]" not in line:
-            continue
-        plain = re.sub(r"^\s*#{1,6}\s+", "", line)
-        plain = re.sub(r"\[[A-Z]+\d+\]", "", plain).strip()
-        statements.extend(plain[span.start:span.end].strip()
-                          for span in sentence_splitter.split(plain)
-                          if plain[span.start:span.end].strip())
-    return statements
-
-
 def export_markdown(document: Mapping[str, Any]) -> str:
-    markdown = str(document.get("markdown", ""))
-    citations = document.get("citations", [])
-    sources: dict[str, dict[str, Any]] = {}
-    for citation in citations:
-        if isinstance(citation, Mapping) and citation.get("label"):
-            sources[str(citation["label"])] = dict(citation)
-    for label in sorted(sources, key=lambda value: (-len(value), value)):
-        markdown = re.sub(rf"\[{re.escape(label)}\]", f"[^{label}]", markdown)
+    """Markdown with each cited `[Sx]` turned into a footnote naming its page, section and passage."""
+    markdown = split_group_labels(str(document.get("markdown", "")))
+    sources = {str(row["label"]): row for row in document.get("sources", []) if isinstance(row, Mapping)}
+    used = [label for label in dict.fromkeys(re.findall(r"\[(S\d+)\]", markdown)) if label in sources]
+    markdown = re.sub(r"\[(S\d+)\]", lambda m: f"[^{m[1]}]" if m[1] in sources else m[0], markdown)
     notes = []
-    for label, citation in sorted(sources.items()):
-        section = " › ".join(citation.get("section_path") or [])
-        location = f"tr. {citation.get('page')}" if citation.get("page") is not None else "không rõ trang"
+    for label in sorted(used, key=lambda value: int(value[1:])):
+        row = sources[label]
+        section = " › ".join(row.get("section_path") or [])
+        location = f"tr. {row.get('page')}" if row.get("page") is not None else "không rõ trang"
         if section:
             location += f", {section}"
-        notes.append(f"[^{label}]: {location} (đoạn {citation.get('chunk_id')})")
-    return markdown + ("\n\n" + "\n".join(notes) if notes else "") + "\n"
+        notes.append(f"[^{label}]: {location} (đoạn {row.get('chunk_id')})")
+    return markdown.rstrip("\n") + ("\n\n" + "\n".join(notes) if notes else "") + "\n"
+
+
+_MESSAGES = {
+    "scope_too_large": "Bạn chọn quá nhiều module cho một tài liệu. Hãy chọn tối đa {limit} module hoặc thu hẹp phạm vi.",
+    "daily_limit": "Hôm nay bạn đã dùng hết hạn mức tạo tài liệu. Bạn thử lại vào ngày mai.",
+    "estimated_cost_over_limit": "Yêu cầu này quá lớn để tạo một tài liệu. Hãy thu hẹp phạm vi hoặc yêu cầu.",
+    "loi_mang": "Chưa kết nối được tới mô hình để viết tài liệu. Bạn thử lại sau ít phút.",
+    "het_thoi_gian": "Mô hình trả lời quá lâu nên tài liệu chưa viết xong. Bạn thử lại sau ít phút.",
+    "khong_dung_duoc": "Mô hình chưa viết được tài liệu dùng được. Bạn thử lại.",
+    "khong_co_mo_hinh": "Chưa có mô hình để viết tài liệu ở chế độ này.",
+}
+_RETRYABLE = {"scope_too_large": False, "estimated_cost_over_limit": False}
 
 
 class DocumentUseCase:
     def __init__(self, model: Any, store: Any, *, settings: BSettings | None = None,
-                 retriever: Any | None = None, spend_guard: Any | None = None,
+                 search: Any | None = None, page_images: PageImages | None = None, spend_guard: Any | None = None,
                  clock: Any | None = None) -> None:
         self.model = model
         self.store = store
         self.settings = settings or BSettings()
-        self.retriever = retriever
-        self.spend_guard = spend_guard
-        self.clock = clock
+        self.search = search
+        self.page_images = page_images
+        self.clock = clock or SystemClock()
+        self.spend_guard = spend_guard or DailySpendGuard(store, settings=self.settings, clock=self.clock)
 
     def create(
         self, doc_id: str, graph_version: str, graph: Any, request: str, scope: Any, *, owner: str,
         dry_run: bool = False, allow_spend: bool = False, home_scope: Any | None = None,
         session_id: str | None = None, origin: str = "button",
+        on_event: Callable[[dict[str, Any]], None] | None = None,
     ) -> dict[str, Any]:
+        started = perf_counter()
+        emit = on_event or (lambda event: None)
+        settings = self.settings
         if not owner:
             raise PermissionError('owner is required')
         if graph.doc_id and doc_id != graph.doc_id:
             raise ValueError('doc_id does not match graph')
-        node_ids, module_ids = _scope_nodes(graph, scope, min_jaccard=self.settings.scope_remap_min_jaccard)
+        node_ids, module_ids = _scope_nodes(graph, scope, min_jaccard=settings.scope_remap_min_jaccard)
         module_ids = list(dict.fromkeys(
             graph.nodes[node_id].get("module_id") for node_id in node_ids
             if node_id in graph.nodes and graph.nodes[node_id].get("module_id") in graph.modules))
@@ -237,185 +208,151 @@ class DocumentUseCase:
                               "graph_version_at_creation": getattr(graph, "graph_version", graph_version)}
             else:
                 home_scope = {"kind": "roadmap"}
-        created_at = self.clock.now().isoformat() if self.clock else datetime.now(timezone.utc).isoformat()
-        if len(set(module_ids)) > self.settings.document_max_modules:
-            return {"contract_version": "document-2", "document_id": uuid4().hex,
-                    "owner": owner, "doc_id": doc_id, "graph_version": graph_version,
-                    "request": request, "scope": {"node_ids": node_ids, "module_ids": module_ids},
-                    "title": "", "markdown": "", "citations": [], "outside_document_blocks": 0,
-                    "formula_refs": [], "status": "failed", "reason": "scope_too_large", "usage": {},
-                    "home_scope": home_scope, "session_id": session_id, "origin": origin,
-                    "node_ids": node_ids, "created_at": created_at}
+        request = str(request or "").strip() or DEFAULT_REQUEST
+        document_id = uuid4().hex
+        base = {
+            "contract_version": settings.document_contract_version, "document_id": document_id, "owner": owner,
+            "doc_id": doc_id, "graph_version": graph_version, "request": request,
+            "scope": {"node_ids": node_ids, "module_ids": module_ids}, "title": "", "markdown": "", "sources": [],
+            "status": "failed", "failure": None, "warnings": [], "usage": {}, "home_scope": home_scope,
+            "session_id": session_id, "origin": origin, "node_ids": node_ids,
+            "created_at": self.clock.now().isoformat(),
+        }
+
+        def failed(reason: str, attempts: list[_Attempt] | None = None, *, keep: bool = True) -> dict[str, Any]:
+            result = {**base, "failure": {
+                "reason_code": reason, "message": _MESSAGES[reason].format(limit=settings.document_max_modules),
+                "retryable": _RETRYABLE.get(reason, True)}, "usage": self._usage(attempts) if attempts else {}}
+            if keep:
+                self.store.put_record("documents", document_id, result)
+            emit({"event": "failure", "document": result})
+            return result
+
+        # Gates first: nothing below this line costs money until the model is called.
+        if len(set(module_ids)) > settings.document_max_modules:
+            return failed("scope_too_large", keep=False)
         if not node_ids or any(node_id not in graph.nodes for node_id in node_ids):
             raise ValueError("scope contains no known concepts")
-        concepts = []
-        source_map: dict[str, Any] = {}
-        excluded_chunks: set[str] = set()
-        registry = graph.new_source_registry() if hasattr(graph, "new_source_registry") else graph.sources
-        for node_id in node_ids:
-            assembled, _, _ = _assemble(graph, node_id, self.settings, registry)
-            if len(node_ids) > 1:
-                assembled["open_edges"] = []
-                assembled["extra_definitions"] = []
-                assembled["exercise"] = []
-                assembled["used_later"] = []
-            concepts.append({key: assembled.get(key) for key in (
-                "concept", "definition", "teaching", "extra_definitions", "prerequisites", "open_edges", "exercise"
-            )})
-            source_map.update(assembled.get("sources", {}))
-            excluded_chunks.update(row.get("chunk_id") for row in assembled.get("sources", {}).values())
         if not dry_run and not allow_spend:
             raise PermissionError("paid document generation requires allow_spend=True")
-        retrieval_estimate = 0.0
-        if self.retriever is not None:
-            search = self.retriever.search(
-                request, doc_id=doc_id, graph_version=graph_version,
-                current_module_id=graph.nodes[node_ids[0]].get("module_id") if len(node_ids) == 1 else None,
-                scope="all", k=5, dry_run=dry_run, allow_spend=allow_spend,
-            )
-            if dry_run:
-                retrieval_estimate = float(search.get("estimated_cost_usd", 0)) if isinstance(search, Mapping) else 0.0
-                retrieved = _retrieval(graph, request, excluded_chunks, registry)
-            else:
-                retrieved = []
-                for row in search:
-                    chunk_id = row.get("chunk_id")
-                    if chunk_id not in graph.chunks or chunk_id in excluded_chunks:
-                        continue
-                    label = registry.label(chunk_id, "S")
-                    retrieved.append({"label": label, "text": row.get("text", ""), "chunk_id": chunk_id})
-        else:
-            retrieved = _retrieval(graph, request, excluded_chunks, registry)
-        for row in retrieved:
-            label = row["label"]
-            record = registry.resolve(label)
-            source_map[label] = {"label": label, "chunk_id": row["chunk_id"],
-                                 "page": record.get("page"), "section_path": record.get("section_path"),
-                                 "text": row["text"]}
-        context = {"request": request, "scope": {"node_ids": node_ids, "module_ids": module_ids},
-                   "concepts": concepts, "sources": source_map, "retrieved": retrieved,
-                   "limits": {"context_tokens": self.settings.document_context_tokens,
-                              "output_tokens": self.settings.document_max_output_tokens,
-                              "max_usd": self.settings.document_max_usd}}
-        context, context_truncated = _cap_context(context, self.settings)
-        prompt = stable_json(context) + "\nUse Markdown headings and cite each factual statement with [label]."
-        ctx_hash = context_hash(context)
+        material = gather(graph, node_ids, request, settings, self.search)
+        images = self._load_images(doc_id, graph, material.pages)
+        system = system_prompt(bool(images))
+        estimate = estimate_cost(settings.model_id,
+                                 (len(system) + len(material.user)) // 3 + IMAGE_TOKEN_ESTIMATE * len(images),
+                                 settings.document_max_output_tokens)
         if dry_run:
-            estimate = estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
-                                     self.settings.document_max_output_tokens) + retrieval_estimate
-            return {"contract_version": "document-2", "doc_id": doc_id,
-                    "scope": context["scope"], "request": request, "status": "generating",
-                    "dry_run": True, "context_hash": ctx_hash, "estimate_usd": estimate}
-        estimated_usd = estimate_cost(self.settings.model_id, len(_SYSTEM + prompt) // 3,
-                                     self.settings.document_max_output_tokens)
-        if estimated_usd > self.settings.document_max_usd:
-            return {"contract_version": "document-2", "document_id": uuid4().hex,
-                    "owner": owner, "doc_id": doc_id, "request": request,
-                    "scope": context["scope"], "title": "", "markdown": "",
-                    "citations": [], "outside_document_blocks": 0, "formula_refs": [],
-                    "status": "failed", "reason": "estimated_cost_over_limit", "usage": {},
-                    "home_scope": home_scope, "session_id": session_id, "origin": origin,
-                    "node_ids": node_ids, "created_at": created_at}
-        try:
-            result = call_json(
-                self.model, prompt, response_schema=DOCUMENT_SCHEMA, system_prompt=_SYSTEM, store=self.store,
-                purpose="document", doc_id=doc_id, context_hash=ctx_hash, allow_spend=True,
-                settings=self.settings, learner_id=owner, spend_guard=self.spend_guard,
-                clock=self.clock,
-            )
-        except DailyLimitExceeded:
-            failed = {
-                "contract_version": "document-2", "document_id": uuid4().hex, "owner": owner,
-                "doc_id": doc_id, "graph_version": graph_version, "request": request,
-                "scope": context["scope"], "title": "", "markdown": "", "citations": [],
-                "outside_document_blocks": 0, "formula_refs": [], "status": "failed",
-                "reason": "daily_limit", "warnings": [], "usage": {},
-                "home_scope": home_scope, "session_id": session_id, "origin": origin,
-                "node_ids": node_ids, "created_at": created_at,
-            }
-            self.store.put_record("documents", failed["document_id"], failed)
-            return failed
-        except Exception as error:
-            usage_row = next((row for row in reversed(self.store.usage_rows(doc_id))
-                              if row.get("purpose") == "document" and row.get("context_hash") == ctx_hash), {})
-            document_id = uuid4().hex
-            failed = {
-                "contract_version": "document-2", "document_id": document_id, "owner": owner,
-                "doc_id": doc_id, "graph_version": graph_version, "request": request,
-                "scope": context["scope"], "title": "", "markdown": "", "citations": [],
-                "outside_document_blocks": 0, "formula_refs": [], "status": "failed",
-                "reason": "invalid_model_response" if isinstance(error, json.JSONDecodeError) else "model_error",
-                "warnings": [],
-                "usage": {"model_id": getattr(self.model, "model_id", self.settings.model_id),
-                          "cost_usd": usage_row.get("cost_usd", 0),
-                          "elapsed_ms": usage_row.get("elapsed_ms", 0),
-                          "input_tokens": usage_row.get("input_tokens", 0),
-                          "output_tokens": usage_row.get("output_tokens", 0),
-                          "thought_tokens": usage_row.get("thought_tokens", 0)},
-                "home_scope": home_scope, "session_id": session_id, "origin": origin,
-                "node_ids": node_ids, "created_at": created_at,
-                "home_scope": home_scope, "session_id": session_id, "origin": origin,
-                "node_ids": node_ids, "created_at": created_at,
-            }
-            self.store.put_record("documents", document_id, failed)
-            return failed
-        payload = result.payload
-        title = str(payload.get("title") or "Tài liệu học tập")
-        markdown = str(payload.get("markdown") or "")
-        citations = []
-        cited_labels = set()
-        for item in payload.get("citations", []):
-            if not isinstance(item, Mapping):
-                continue
-            label, quote = item.get("label"), item.get("quote")
-            if not isinstance(label, str) or label in cited_labels:
-                continue
-            source = source_map.get(label)
-            if not source:
-                continue
-            source_text = registry.raw_text(label) or str(source.get("text", ""))
-            quote = str(quote or "")
-            if not quote_is_verbatim(quote, source_text, max_chars=self.settings.quote_max_chars):
-                statement = " ".join(_statements_for_label(markdown, label))
-                quote = best_matching_source_sentence(statement, source_text, self.settings.quote_max_chars)
-            if quote and quote_is_verbatim(quote, source_text, max_chars=self.settings.quote_max_chars):
-                citation = registry.citation(label, quote)
-                if citation:
-                    citations.append(citation)
-                    cited_labels.add(label)
-        outside = [str(block).strip() for block in payload.get("outside_document_blocks", []) if str(block).strip()]
-        max_chars = self.settings.document_max_output_tokens * 3
-        warnings = ["context_truncated"] if context_truncated else []
-        if len(markdown) > max_chars:
-            markdown = markdown[:max_chars].rsplit("\n", 1)[0]
-            warnings.append("output_truncated")
-        checked = check_text(markdown, graph=graph, settings=self.settings,
-            citations_by_label={str(row['label']): row for row in citations}, outside_blocks=outside)
-        markdown, citations, outside = checked['text'], checked['citations'], checked['outside_blocks']
-        warnings.extend(dict.fromkeys(row['kind'] for row in checked['warnings']))
-        document_id = uuid4().hex
-        status = "ready" if checked['counts']['sourced_sentences'] else "failed"
-        markdown = _render(title, markdown, outside)
-        document = {
-            "contract_version": "document-2", "document_id": document_id, "owner": owner,
-            "doc_id": doc_id, "graph_version": graph_version, "request": request,
-            "scope": context["scope"], "title": title, "markdown": markdown,
-            "citations": citations, "outside_document_blocks": len(outside),
-            "formula_refs": [], "status": status,
-            "reason": "no_valid_citations" if not citations else None,
-            "warnings": warnings,
-            "postcheck": checked['counts'],
-            "home_scope": home_scope, "session_id": session_id, "origin": origin,
-            "node_ids": node_ids, "created_at": created_at,
-            "usage": {"model_id": getattr(self.model, "model_id", self.settings.model_id),
-                      "cost_usd": result.cost_usd, "elapsed_ms": result.elapsed_ms,
-                      "ttft_ms": result.ttft_ms,
-                      "input_tokens": result.usage.get("promptTokenCount", 0),
-                      "output_tokens": result.usage.get("candidatesTokenCount", 0),
-                      "thought_tokens": result.usage.get("thoughtsTokenCount", 0)},
-        }
+            return {"contract_version": settings.document_contract_version, "doc_id": doc_id, "scope": base["scope"],
+                    "request": request, "status": "generating", "dry_run": True,
+                    "context_hash": context_hash({"user": material.user, "pages": [page for page, _ in images]}),
+                    "estimate_usd": estimate}
+        if estimate > settings.document_max_usd:
+            return failed("estimated_cost_over_limit", keep=False)
+        if self.model is None:
+            return failed("khong_co_mo_hinh", keep=False)
+
+        sources = source_rows(material.chunks)
+        material_hash = context_hash({"user": material.user, "images": [page for page, _ in images]})
+        emit({"event": "skeleton", "document_id": document_id, "title": None})
+        deadline = started + settings.document_timeout_seconds
+        attempts: list[_Attempt] = []
+        for index in range(2):
+            try:
+                attempts.append(self._attempt(system, material.user, images, doc_id, owner, material_hash, index,
+                                              deadline, estimate, emit))
+            except DailyLimitExceeded:
+                return failed("daily_limit", attempts)
+            last = attempts[-1]
+            if last.usable or last.error is not None or last.timed_out:
+                break
+        last = attempts[-1]
+        if not last.usable:
+            reason = ("het_thoi_gian" if last.timed_out or isinstance(last.error, TimeoutError)
+                      else "loi_mang" if last.error is not None else "khong_dung_duoc")
+            return failed(reason, attempts)
+        cut = last.error is not None or last.timed_out or last.finish_reason in {"MAX_TOKENS", "LENGTH"}
+        usage = self._usage(attempts)
+        validation = build_validation(
+            last.text, [row["label"] for row in sources], finish_reason=last.finish_reason, images_sent=len(images),
+            pages_wanted=material.pages_wanted, search_error=material.search_error,
+            seconds_to_first_text=None if last.ttft_ms is None else round(last.ttft_ms / 1000, 3),
+            seconds_total=round(perf_counter() - started, 3), cost_usd=usage["cost_usd"])
+        self.store.put_record("document_validation", document_id, {
+            **validation, "document_id": document_id, "doc_id": doc_id, "owner": owner,
+            "prompt_version": settings.document_prompt_version, "context_version": settings.document_context_version})
+        self.store.append_usage({
+            "purpose": "document_validation", "model_id": usage["model_id"], "doc_id": doc_id, "learner_id": owner,
+            "context_hash": material_hash, "input_tokens": 0, "output_tokens": 0, "thought_tokens": 0, "cost_usd": 0.0,
+            "ttft_ms": None, "elapsed_ms": 0, "generation_index": len(attempts) - 1, "validation": validation,
+            "created_at": self.clock.now().isoformat()})
+        document = {**base, "title": title_of(last.text), "markdown": last.text, "sources": sources, "status": "ready",
+                    "warnings": ["cat_ngan"] if cut else [], "usage": usage}
         self.store.put_record("documents", document_id, document)
+        emit({"event": "final", "document": document})
         return document
+
+    def _load_images(self, doc_id: str, graph: Any, pages: list[int]) -> list[tuple[int, bytes]]:
+        parse_version = getattr(graph, "parse_version", None)
+        if not pages or self.page_images is None or parse_version is None:
+            return []
+        found = ((page, self.page_images.get(doc_id, int(parse_version), page)) for page in pages)
+        return [(page, data) for page, data in found if data]
+
+    def _usage(self, attempts: list[_Attempt]) -> dict[str, Any]:
+        total = _aggregate_usage([{**attempt.usage, "cost_usd": attempt.cost_usd} for attempt in attempts])
+        first = next((attempt.ttft_ms for attempt in attempts if attempt.ttft_ms is not None), None)
+        return {"model_id": getattr(self.model, "model_id", self.settings.model_id),
+                "elapsed_ms": sum(attempt.elapsed_ms for attempt in attempts), "ttft_ms": first,
+                "input_tokens": total["promptTokenCount"], "output_tokens": total["candidatesTokenCount"],
+                "thought_tokens": total["thoughtsTokenCount"], "cost_usd": total["cost_usd"]}
+
+    def _attempt(self, system: str, user: str, images: list[tuple[int, bytes]], doc_id: str, owner: str, material: str,
+                 index: int, deadline: float, estimate: float, emit: Callable[[dict[str, Any]], None]) -> _Attempt:
+        model_id = getattr(self.model, "model_id", self.settings.model_id)
+        replayed = bool(getattr(self.model, "is_replay", False))
+        attempt = _Attempt()
+        with spending_call(self.spend_guard, "document", estimate, owner, replayed=replayed, clock=self.clock) as admitted_at:
+            began = perf_counter()
+            session = stream = None
+            try:
+                session = self.model.start_session(system)
+                stream = iter(session.stream_text(
+                    user, images=images, temperature=self.settings.document_temperature,
+                    transport_retries=self.settings.lecture_click_transport_retries,
+                    timeout_seconds=max(0.1, deadline - perf_counter())))
+            except Exception as error:  # noqa: BLE001
+                attempt.error = error
+            try:
+                while stream is not None:
+                    try:
+                        piece = next(stream)
+                    except StopIteration:
+                        break
+                    except Exception as error:  # noqa: BLE001
+                        attempt.error = error
+                        break
+                    if piece:
+                        if not attempt.text:
+                            attempt.ttft_ms = round((perf_counter() - began) * 1000)
+                        attempt.text += piece
+                        emit({"event": "delta", "text": piece})
+                    if perf_counter() >= deadline:
+                        attempt.timed_out = True
+                        break
+            finally:
+                close = getattr(stream, "close", None)
+                if close:
+                    close()
+                attempt.usage = dict(getattr(session, "last_usage", None) or {})
+                attempt.finish_reason = getattr(session, "last_finish_reason", None)
+                attempt.elapsed_ms = round((perf_counter() - began) * 1000)
+                attempt.cost_usd = 0.0 if replayed else token_cost(model_id, attempt.usage)
+                ledger = usage_row(purpose="document", model_id=model_id, doc_id=doc_id, context_hash=material,
+                                   usage=attempt.usage, elapsed_ms=attempt.elapsed_ms, ttft_ms=attempt.ttft_ms,
+                                   learner_id=owner, cost_usd=attempt.cost_usd)
+                ledger.update(generation_index=index, created_at=admitted_at, replayed=replayed)
+                self.store.append_usage(ledger)
+        return attempt
 
     def get(self, document_id: str, *, owner: str) -> dict[str, Any] | None:
         record = self.store.get_record("documents", document_id)

@@ -1,5 +1,7 @@
 from types import SimpleNamespace as NS
 
+from sa64_support import FakeClock, FakeModel, list_pieces
+
 from doc2roadmap.application.phase_b.documents import DocumentUseCase
 from doc2roadmap.application.phase_b.postcheck import check_text
 from doc2roadmap.domain.learning_graph import LearningGraph
@@ -10,7 +12,7 @@ from doc2roadmap.infrastructure.artifacts.phase_b_store import InMemoryPhaseBSto
 
 def _graph(text):
     chunk = NS(chunk_id="c1", text=text, page=3, char_start=40,
-               char_end=40 + len(text), section_path=["Phần I"], order_index=1)
+               char_end=40 + len(text), section_path=["Phần I"], order_index=1, role="noi_dung")
     payload = {
         "doc_id": "book",
         "nodes": [{"node_id": "n1", "name": "Khái niệm", "learnable": True,
@@ -39,73 +41,41 @@ def test_document_removes_heading_without_retained_body_and_punctuation_only_lin
     assert result["counts"]["empty_heading_removed"] == 1
 
 
-def test_failed_document_does_not_render_a_title_without_any_retained_body():
+def test_failed_document_has_no_title_and_no_text_when_the_model_wrote_nothing():
+    # SA-67 (was: a failed document rendered no title when every sentence was deleted). document-3 fails only on no text.
     graph = _graph("Khái niệm được trình bày trong đoạn này.")
-
-    class Model:
-        def ask_json(self, prompt, *, response_schema):
-            return NS(payload={"title": "Khái niệm", "markdown": "## Hạn chế\n\nKhông có nguồn [S999].",
-                               "citations": [], "outside_document_blocks": []}, usage={})
-
-    result = DocumentUseCase(Model(), InMemoryPhaseBStore()).create(
+    result = DocumentUseCase(FakeModel([]), InMemoryPhaseBStore(), clock=FakeClock()).create(
         "book", 1, graph, "Giải thích khái niệm", "n1", owner="learner", allow_spend=True)
 
     assert result["status"] == "failed"
-    assert not result["markdown"].strip()
+    assert not result["markdown"].strip() and not result["title"]
 
 
-def test_document_repairs_nonverbatim_model_quote_from_valid_label():
-    source = "Khái niệm A được xác định bằng các thuộc tính và quan hệ. Khái niệm B có ví dụ khác."
-    graph = _graph(source)
-    chosen_quote = "Khái niệm A được xác định bằng các thuộc tính và quan hệ."
-
-    class Model:
-        last_ttft_ms = 37
-
-        def ask_json(self, prompt, *, response_schema):
-            return NS(payload={
-                "title": "Khái niệm",
-                "markdown": "Khái niệm A được xác định qua nhiều điều [S1].",
-                "citations": [{"label": "S1", "quote": "Mô hình trích sai câu này."},
-                              {"label": "S999", "quote": "Một trích dẫn bịa."}],
-                "outside_document_blocks": [],
-            }, usage={})
-
-    result = DocumentUseCase(Model(), InMemoryPhaseBStore()).create(
+def test_document_keeps_a_nonverbatim_quote_claim_and_a_fake_label_as_written():
+    # SA-67 (was: the quote of a valid label was repaired and the fake label dropped). No quotes exist any more:
+    # the text is kept, the fake label is only logged for the admin.
+    graph = _graph("Khái niệm A được xác định bằng các thuộc tính và quan hệ. Khái niệm B có ví dụ khác.")
+    written = "Khái niệm A được xác định qua nhiều điều [S1]. Một trích dẫn bịa [S999]."
+    store = InMemoryPhaseBStore()
+    result = DocumentUseCase(FakeModel(list_pieces(written)), store, clock=FakeClock()).create(
         "book", 1, graph, "Giải thích khái niệm A", "n1", owner="learner", allow_spend=True)
 
-    assert result["status"] == "ready"
-    assert len(result["citations"]) == 1
-    assert result["citations"][0]["quote"] == chosen_quote
-    assert result["citations"][0]["label"] != "S999"
-    assert result["usage"]["ttft_ms"] == 37
-    source_row = graph.sources.resolve("S1")
-    start = result["citations"][0]["char_start"] - source_row["char_start"]
-    end = result["citations"][0]["char_end"] - source_row["char_start"]
-    assert source[start:end] == chosen_quote
+    assert result["status"] == "ready" and result["markdown"] == written
+    assert [row["label"] for row in result["sources"]] == ["S1"]
+    assert result["usage"]["ttft_ms"] is not None
+    assert store.get_record("document_validation", result["document_id"])["unknown_labels"] == ["S999"]
 
 
-def test_document_repairs_compound_label_from_matching_statement_and_rejects_fake_label():
-    source = "Khái niệm A có liên hệ trực tiếp với X. Khái niệm A được xác định bằng các thuộc tính B và C."
-    graph = _graph(source)
-    chosen_quote = "Khái niệm A được xác định bằng các thuộc tính B và C."
-
-    class Model:
-        def ask_json(self, prompt, *, response_schema):
-            return NS(payload={
-                "title": "Khái niệm",
-                "markdown": "Các thuộc tính B và C xác định khái niệm A. [S1, S999]",
-                "citations": [{"label": "S1", "quote": "Đây không phải quote nguyên văn."},
-                              {"label": "S999", "quote": "Nhãn không tồn tại."}],
-                "outside_document_blocks": [],
-            }, usage={})
-
-    result = DocumentUseCase(Model(), InMemoryPhaseBStore()).create(
+def test_document_compound_label_is_read_as_its_parts_and_the_fake_part_is_logged():
+    graph = _graph("Khái niệm A có liên hệ trực tiếp với X. Khái niệm A được xác định bằng các thuộc tính B và C.")
+    written = "Các thuộc tính B và C xác định khái niệm A. [S1, S999]"
+    store = InMemoryPhaseBStore()
+    result = DocumentUseCase(FakeModel(list_pieces(written)), store, clock=FakeClock()).create(
         "book", 1, graph, "Giải thích khái niệm A", "n1", owner="learner", allow_spend=True)
 
-    assert result["status"] == "ready"
-    assert [row["label"] for row in result["citations"]] == ["S1"]
-    assert result["citations"][0]["quote"] == chosen_quote
+    assert result["status"] == "ready" and result["markdown"] == written
+    log = store.get_record("document_validation", result["document_id"])
+    assert log["labels_used"] == ["S1", "S999"] and log["unknown_labels"] == ["S999"]
 
 
 def _why_quote(quote, limit=None):
