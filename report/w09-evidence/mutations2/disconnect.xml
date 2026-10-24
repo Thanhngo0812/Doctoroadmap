@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="13.069" timestamp="2026-10-24T22:29:50.388810+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_http_disconnect_completes_and_retry_reuses_the_saved_turn" time="9.274"><failure message="assert (0 == 1)&#10; +  where 0 = len([])">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0994d2e752724b0b91d1084b13113...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/cccbefcd-a9ab-418b-92cc-26701a91bc90/sessions')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001D8CBAE25A0&gt;
+
+    def test_w09_http_disconnect_completes_and_retry_reuses_the_saved_turn(chat, monkeypatch):
+        import socket
+        from threading import Event, Thread
+        from time import monotonic, sleep
+        import httpx
+        import uvicorn
+        from wayfinder.fakes.assistant import ScriptedAssistantModel
+        w = chat; model = ScriptedAssistantModel(pause=True); w.gateway.runtime.model = model
+        sid = create(w)['session_id']; key = uuid4().hex
+        observed = []
+        def connection_event():
+            e = Event(); observed.append(e); return e
+        monkeypatch.setattr('wayfinder.api.assistant.Event', connection_event)
+        listener = socket.socket(); listener.bind(('127.0.0.1', 0)); listener.listen(128)
+        server = uvicorn.Server(uvicorn.Config(w.app, log_config=None, access_log=False, log_level='warning'))
+        thread = Thread(target=server.run, kwargs={'sockets': [listener]}, daemon=True); thread.start()
+        body = {'question': 'Phần này là gì?', 'client_turn_id': key, 'focus_node_id': 'a'}
+        try:
+            deadline = monotonic() + 5
+            while not server.started and monotonic() &lt; deadline: sleep(.01)
+            assert server.started
+            with httpx.Client(base_url=f'http://127.0.0.1:{listener.getsockname()[1]}', cookies=dict(w.a.client.cookies), timeout=10) as client:
+                with client.stream('POST', f'{w.url}/{sid}/turns', headers=w.a.headers, json=body) as response:
+                    assert response.status_code == 200
+                    for line in response.iter_lines():
+                        if line == 'event: delta': break
+                    else: pytest.fail('First assistant delta did not arrive before provider completion')
+                    assert model.waiting.wait(2) and not model.calls[0].finished
+                assert len(observed) == 1 and observed[0].wait(3)
+                assert not model.calls[0].finished
+                model.release.set()
+                deadline = monotonic() + 5
+                while monotonic() &lt; deadline and not w.independent_store.list_records('turn', owner=w.a.actor.user_id): sleep(.02)
+                saved = w.independent_store.list_records('turn', owner=w.a.actor.user_id)
+&gt;               assert len(saved) == 1 and saved[0]['client_turn_id'] == key
+E               assert (0 == 1)
+E                +  where 0 = len([])
+
+src\web\backend\tests\test_assistant_w09.py:275: AssertionError</failure></testcase></testsuite></testsuites>

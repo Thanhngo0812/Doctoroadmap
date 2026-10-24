@@ -1,0 +1,134 @@
+[
+  {
+    "name": "session-owner",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceSha256": "6de2bfc4ae1c3881fe6e90efdc8822b36eac3029c6b3881653673427183cfadf",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_assistant_w09.py::test_w09_sessions_bind_actor_document_and_scope_from_published_graph",
+      "--basetemp=tmp/w09-mut-session-owner",
+      "--junitxml=report\\w09-evidence\\mutations\\session-owner.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w09_sessions_bind_actor_document_and_scope_from_published_graph"
+    ],
+    "errors": 0
+  },
+  {
+    "name": "scope-server",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceSha256": "6de2bfc4ae1c3881fe6e90efdc8822b36eac3029c6b3881653673427183cfadf",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_assistant_w09.py::test_w09_sessions_bind_actor_document_and_scope_from_published_graph",
+      "--basetemp=tmp/w09-mut-scope-server",
+      "--junitxml=report\\w09-evidence\\mutations\\scope-server.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w09_sessions_bind_actor_document_and_scope_from_published_graph"
+    ],
+    "errors": 0
+  },
+  {
+    "name": "focus",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceSha256": "6de2bfc4ae1c3881fe6e90efdc8822b36eac3029c6b3881653673427183cfadf",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_assistant_w09.py::test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates",
+      "--basetemp=tmp/w09-mut-focus",
+      "--junitxml=report\\w09-evidence\\mutations\\focus.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates"
+    ],
+    "errors": 0
+  },
+  {
+    "name": "tool-actor",
+    "path": "src/web/backend/wayfinder/infrastructure/assistant_model.py",
+    "sourceSha256": "fc817b2fb3b57b6e1289bf79179fd795435230c1b703ae945ab435ad2ce99f5a",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_assistant_w09.py::test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope",
+      "--basetemp=tmp/w09-mut-tool-actor",
+      "--junitxml=report\\w09-evidence\\mutations\\tool-actor.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4]",
+      "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[scope1]",
+      "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[Kh\\xf4ng ph\\xe2n gi\\u1ea3i \\u0111\\u01b0\\u1ee3c]"
+    ],
+    "errors": 0
+  },
+  {
+    "name": "rate",
+    "path": "src/web/backend/wayfinder/infrastructure/assistant_requests.py",
+    "sourceSha256": "206c1fd5e41afcd51eb6fde55b8e4b8a65feddebcfd21d7d6ccfb7d33bff0560",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_assistant_w09.py::test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries",
+      "--basetemp=tmp/w09-mut-rate",
+      "--junitxml=report\\w09-evidence\\mutations\\rate.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries"
+    ],
+    "errors": 0
+  },
+  {
+    "name": "session-mutex",
+    "path": "src/web/backend/wayfinder/infrastructure/assistant_requests.py",
+    "sourceSha256": "206c1fd5e41afcd51eb6fde55b8e4b8a65feddebcfd21d7d6ccfb7d33bff0560",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_assistant_w09.py::test_w09_two_concurrent_distinct_intents_are_serialized_not_coalesced",
+      "--basetemp=tmp/w09-mut-session-mutex",
+      "--junitxml=report\\w09-evidence\\mutations\\session-mutex.xml"
+    ],
+    "nativeExitCode": 0,
+    "failedAssertions": [],
+    "errors": 0
+  }
+]

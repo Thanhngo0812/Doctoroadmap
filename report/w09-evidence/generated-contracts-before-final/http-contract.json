@@ -1,0 +1,188 @@
+{
+  "kind": "real FastAPI TestClient + disposable PostgreSQL; fake runner/media/mailer; not TCP or browser",
+  "upload": {
+    "contract_version": "upload-1",
+    "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+    "original_name": "Dai so.pdf",
+    "kind": "pdf",
+    "size_bytes": 547,
+    "page_count": 1,
+    "confirmed_at": null,
+    "build": {
+      "contract_version": "build-1",
+      "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+      "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+      "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+      "status": "awaiting_confirmation",
+      "step": null,
+      "step_index": 0,
+      "step_count": 4,
+      "started_at": null,
+      "finished_at": null,
+      "confirmation_expires_at": "2026-01-04T00:00:00Z",
+      "cancel_requested": false,
+      "can_cancel": true,
+      "can_retry": false,
+      "error": null
+    }
+  },
+  "confirmation": {
+    "contract_version": "build-1",
+    "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+    "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+    "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+    "status": "queued",
+    "step": null,
+    "step_index": 0,
+    "step_count": 4,
+    "started_at": null,
+    "finished_at": null,
+    "confirmation_expires_at": "2026-01-04T00:00:00Z",
+    "cancel_requested": false,
+    "can_cancel": true,
+    "can_retry": false,
+    "error": null
+  },
+  "building_course_list": {
+    "owned": [
+      {
+        "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+        "doc_id": "u-9a771836d10070839f87",
+        "title": "Tên trước index",
+        "description": "",
+        "status": "building",
+        "is_sample": false,
+        "published_graph_version": null,
+        "role": "owner",
+        "owner": {
+          "user_id": "fa31fd03-c526-4e25-bab9-7b54c17afe6a",
+          "display_name": "Người học"
+        },
+        "module_count": 0,
+        "member_count": 1,
+        "progress": null,
+        "resume": null,
+        "build": {
+          "contract_version": "build-1",
+          "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+          "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+          "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+          "status": "queued",
+          "step": null,
+          "step_index": 0,
+          "step_count": 4,
+          "started_at": null,
+          "finished_at": null,
+          "confirmation_expires_at": "2026-01-04T00:00:00Z",
+          "cancel_requested": false,
+          "can_cancel": true,
+          "can_retry": false,
+          "error": null
+        }
+      }
+    ],
+    "joined": [],
+    "samples": []
+  },
+  "progress": [
+    {
+      "contract_version": "build-1",
+      "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+      "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+      "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+      "status": "reading",
+      "step": "doc_reading",
+      "step_index": 1,
+      "step_count": 4,
+      "started_at": "2026-01-01T00:00:00Z",
+      "finished_at": null,
+      "confirmation_expires_at": "2026-01-04T00:00:00Z",
+      "cancel_requested": false,
+      "can_cancel": true,
+      "can_retry": false,
+      "error": null
+    },
+    {
+      "contract_version": "build-1",
+      "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+      "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+      "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+      "status": "running",
+      "step": "concepts",
+      "step_index": 2,
+      "step_count": 4,
+      "started_at": "2026-01-01T00:00:00Z",
+      "finished_at": null,
+      "confirmation_expires_at": "2026-01-04T00:00:00Z",
+      "cancel_requested": false,
+      "can_cancel": true,
+      "can_retry": false,
+      "error": null
+    },
+    {
+      "contract_version": "build-1",
+      "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+      "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+      "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+      "status": "running",
+      "step": "graph",
+      "step_index": 3,
+      "step_count": 4,
+      "started_at": "2026-01-01T00:00:00Z",
+      "finished_at": null,
+      "confirmation_expires_at": "2026-01-04T00:00:00Z",
+      "cancel_requested": false,
+      "can_cancel": true,
+      "can_retry": false,
+      "error": null
+    },
+    {
+      "contract_version": "build-1",
+      "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+      "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+      "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+      "status": "running",
+      "step": "learning_prep",
+      "step_index": 4,
+      "step_count": 4,
+      "started_at": "2026-01-01T00:00:00Z",
+      "finished_at": null,
+      "confirmation_expires_at": "2026-01-04T00:00:00Z",
+      "cancel_requested": false,
+      "can_cancel": true,
+      "can_retry": false,
+      "error": null
+    }
+  ],
+  "completed": {
+    "contract_version": "build-1",
+    "build_id": "14975334-dd32-49c5-af1f-05930031556a",
+    "course_id": "95a21423-fdf2-4548-9de4-dfa0d9568e4b",
+    "upload_id": "e8995fcf-93fc-46c8-8d73-5da11d1c068d",
+    "status": "succeeded",
+    "step": "learning_prep",
+    "step_index": 4,
+    "step_count": 4,
+    "started_at": "2026-01-01T00:00:00Z",
+    "finished_at": "2026-01-01T00:00:00Z",
+    "confirmation_expires_at": "2026-01-04T00:00:00Z",
+    "cancel_requested": false,
+    "can_cancel": false,
+    "can_retry": false,
+    "error": null
+  },
+  "quota": {
+    "builds_used": 1,
+    "build_monthly_max": null,
+    "builds_remaining": null,
+    "contract_version": "usage-1",
+    "learner_today": {
+      "used_ratio": 0.0,
+      "limited": false,
+      "resets_at": "2026-01-02T00:00:00+07:00"
+    },
+    "shared_content_today": {
+      "limited": false
+    }
+  }
+}

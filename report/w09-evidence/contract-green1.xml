@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="6" time="19.130" timestamp="2026-10-24T21:22:36.145315+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sessions_bind_actor_document_and_scope_from_published_graph" time="5.004" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_answer3_history_and_idempotency_keep_private_fields_on_server" time="1.300"><failure message="assert False&#10; +  where False = any(&lt;generator object test_w09_answer3_history_and_idempotency_keep_private_fields_on_server.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000028DBB114A00&gt;)">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a7806a81c64840b3a08180cb5028a...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/7d60b2f4-e72f-4e81-a5a0-259f505530f2/sessions')
+
+    def test_w09_answer3_history_and_idempotency_keep_private_fields_on_server(chat):
+        w = chat; sid = create(w)['session_id']; key = uuid4().hex
+        first = events(ask(w, sid, key=key))
+&gt;       assert any(row['event'] == 'delta' and 'x^2' in row['text'] for row in first)
+E       assert False
+E        +  where False = any(&lt;generator object test_w09_answer3_history_and_idempotency_keep_private_fields_on_server.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000028DBB114A00&gt;)
+
+src\web\backend\tests\test_assistant_w09.py:69: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures" time="1.994" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries" time="4.688"><failure message="AssertionError: assert 0 == 10&#10; +  where 0 = len([])&#10; +    where [] = ScriptedModel(json_replies=[], tool_turns=[[Delta(text='Đã trả lời.'), Done(usage={}, finish_reason=None, turn_id=None...del_id='scripted-phase-b', json_calls=[], tool_calls=[], last_usage={'promptTokenCount': 0, 'candidatesTokenCount': 0}).tool_calls&#10; +      where ScriptedModel(json_replies=[], tool_turns=[[Delta(text='Đã trả lời.'), Done(usage={}, finish_reason=None, turn_id=None...del_id='scripted-phase-b', json_calls=[], tool_calls=[], last_usage={'promptTokenCount': 0, 'candidatesTokenCount': 0}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a7806a81c64840b3a08180cb5028a...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/db3e20a2-42ea-42eb-8b68-b76510de81ab/sessions').model">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a7806a81c64840b3a08180cb5028a...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/db3e20a2-42ea-42eb-8b68-b76510de81ab/sessions')
+
+    def test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries(chat):
+        w = chat; sid = create(w)['session_id']
+        w.model.tool_turns = [[Delta('Đã trả lời.'), Done({})] for _ in range(10)]
+        keys = [uuid4().hex for _ in range(10)]
+        for key in keys:
+            assert ask(w, sid, key=key).status_code == 200
+        assert ask(w, sid, key=keys[0]).status_code == 200
+        response = ask(w, sid)
+        assert response.status_code == 429 and response.json()['error']['retry_after'] &gt; 0
+&gt;       assert len(w.model.tool_calls) == 10
+E       AssertionError: assert 0 == 10
+E        +  where 0 = len([])
+E        +    where [] = ScriptedModel(json_replies=[], tool_turns=[[Delta(text='Đã trả lời.'), Done(usage={}, finish_reason=None, turn_id=None...del_id='scripted-phase-b', json_calls=[], tool_calls=[], last_usage={'promptTokenCount': 0, 'candidatesTokenCount': 0}).tool_calls
+E        +      where ScriptedModel(json_replies=[], tool_turns=[[Delta(text='Đã trả lời.'), Done(usage={}, finish_reason=None, turn_id=None...del_id='scripted-phase-b', json_calls=[], tool_calls=[], last_usage={'promptTokenCount': 0, 'candidatesTokenCount': 0}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a7806a81c64840b3a08180cb5028a...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/db3e20a2-42ea-42eb-8b68-b76510de81ab/sessions').model
+
+src\web\backend\tests\test_assistant_w09.py:116: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts" time="0.940" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_revoked_membership_denies_next_session_and_stream_request" time="0.984" /></testsuite></testsuites>

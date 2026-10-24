@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="12.237" timestamp="2026-10-24T22:24:34.191713+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries" time="8.795"><failure message="assert (200 == 429)&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_9524bd159cc544a98522f0e0d3416...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/62779df3-6c8a-4a34-8320-670eb52fdbed/sessions')
+
+    def test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries(chat):
+        w = chat; sid = create(w)['session_id']
+        w.model.tool_turns = [[Delta('Đã trả lời.'), Done({})] for _ in range(10)]
+        keys = [uuid4().hex for _ in range(10)]
+        for key in keys:
+            assert ask(w, sid, key=key).status_code == 200
+        assert ask(w, sid, key=keys[0]).status_code == 200
+        response = ask(w, sid)
+&gt;       assert response.status_code == 429 and response.json()['error']['retry_after'] &gt; 0
+E       assert (200 == 429)
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:119: AssertionError</failure></testcase></testsuite></testsuites>

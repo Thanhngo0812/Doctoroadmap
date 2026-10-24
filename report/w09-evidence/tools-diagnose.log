@@ -1,0 +1,52 @@
+F
+================================== FAILURES ===================================
+_ test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4] _
+
+chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_c6141bc592a7456f99b932c5a3b45...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/c080c135-8180-418d-b355-6f1f3af407d9/sessions')
+scope = 'module 4'
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+>       assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
+            (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
+E       AssertionError: [('make_quiz', {'error': {'code': 'content_generation_failed', 'message': 'Không tạo được nội dung có nguồn trong phạm...fact': {'id': '9936849d5cd64837a127601c26ebd1c2', 'kind': 'document'}, 'status': 'ready', 'title': 'Tài liệu ôn tập'})]
+E       assert {'document'} == {'document', 'quiz'}
+E
+E         Extra items in the right set:
+E         'quiz'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_assistant_w09.py:170: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-evidence\tools-diagnose.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_w09.py::test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4]
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 9 deselected, 1 warning in 3.04s
