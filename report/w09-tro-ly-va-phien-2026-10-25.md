@@ -90,6 +90,8 @@ Các log browser trên Windows có cảnh báo WinError 10054 lúc đóng kết 
 
 Ảnh/video các lượt browser lịch sử giữ tại local, không đưa toàn bộ ảnh trùng vào Git; `historical-browser-index.json` lưu đường dẫn/hash. Chỉ bộ browser cuối được giao làm ảnh/video chính. JSON hợp đồng do test W-06/W-14 sinh lại được chép và kiểm hash vào thư mục riêng của W-09 trước khi phục hồi tệp của vé khác.
 
+Cổng main còn tự sinh hai thư mục untracked `report/w15-evidence/sql/latest/` và `report/w25-evidence/sql/latest/`. Giữ nguyên bản local, không commit vào phạm vi vé khác; bản chép độc lập/hash nằm tại `w09-evidence/generated-other-sql/manifest.json`. Mã nguồn và tệp đã theo dõi của làn khác đã được giữ sạch; hai thư mục untracked này được để lại có chủ đích.
+
 Một số log/XML RED do pytest sinh có dấu cách cuối dòng. Bản đưa vào Git chỉ bỏ khoảng trắng cuối dòng; byte gốc giữ trong `raw-log-whitespace-backups2.zip`, đối chiếu SHA-256 tại `whitespace-normalization.json`. Tên/trạng thái/thuộc tính ca JUnit và native exit được giữ nguyên, không sửa kết quả hoặc assertion.
 
 ## Giới hạn và bước tiếp

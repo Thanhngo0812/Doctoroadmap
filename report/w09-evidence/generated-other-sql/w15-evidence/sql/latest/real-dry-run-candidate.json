@@ -1,0 +1,114 @@
+{
+  "book": "candidate",
+  "source_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+  "source_pages": 52,
+  "input_copy": "tmp\\cong-w09-final4\\test_real_internal_dry_run_has1\\dry-run-copy\\tmp\\w15-candidate\\input.pdf",
+  "artifact_copy": "tmp\\cong-w09-final4\\test_real_internal_dry_run_has1\\dry-run-copy\\artifacts",
+  "copied_input_manifest": [
+    {
+      "path": "tmp/w15-candidate/input.pdf",
+      "sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627"
+    }
+  ],
+  "web_doc_id": "u-1f019766e74a747d293c",
+  "result": {
+    "doc_id": "u-1f019766e74a747d293c",
+    "status": "dry_run",
+    "pipeline_version": "web-real:56acc16914eb2a20f1cb60eafa139cd04d74a4bc:09aabdebaa50461d075c2bbacfcd187d6433812287246d495d4acc942fc5f734",
+    "graph_version": null,
+    "completed_steps": [
+      "doc_reading"
+    ],
+    "step_details": {
+      "doc_reading": {
+        "chunks_version": 1,
+        "parse_version": 1,
+        "chunk_count": 125,
+        "a4_gold_coverage": "none",
+        "page_count": 52,
+        "alphabetic_chars": 52325,
+        "average_alphabetic_chars_per_page": 1006.25,
+        "empty_page_ratio": 0.019230769230769232,
+        "vi_diacritic_ratio": 0.270157668418538
+      },
+      "dry_run": {
+        "cache_validated": false,
+        "chunks_version": 1,
+        "candidate_version": null,
+        "canonical_version": null,
+        "graph_version": null,
+        "retrieval_version": null
+      }
+    },
+    "spent_usd": 0.0,
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "usage_complete": true,
+    "elapsed_seconds": 10.339237099997263,
+    "error": null
+  },
+  "collector_receipts": 1,
+  "events": [
+    {
+      "step": "doc_reading",
+      "status": "started"
+    },
+    {
+      "step": "doc_reading",
+      "status": "completed"
+    },
+    {
+      "step": "concepts",
+      "status": "planned"
+    },
+    {
+      "step": "graph",
+      "status": "planned"
+    },
+    {
+      "step": "learning_prep",
+      "status": "planned"
+    }
+  ],
+  "wall_seconds_by_completed_step": {
+    "doc_reading": 10.320953300000838
+  },
+  "label_roles_plan": {
+    "status": "run",
+    "remaining_items": 6,
+    "unit": "batch",
+    "calls_estimate": 6,
+    "usd_estimate": 0.00997,
+    "checkpoint_id": null,
+    "note": "Ước input 3 ký tự/token; output trung bình checkpoint hoặc 512 token/lời gọi; chưa tính retry/repair. 103 headings in 6 batches of at most 40; invalid labels retry once.",
+    "label": "sẽ chạy"
+  },
+  "reader_config": {
+    "adapter": "a1-nhe:r2-full",
+    "adapter_version": 1,
+    "image_scale": 1.0,
+    "pipeline": {
+      "a1": "nhe",
+      "models": {
+        "heading.joblib": "90f244a59bdee8e4648d057cfd47600f38f470340ff55a13da2539f50c792c70",
+        "join.joblib": "92c84460b5f4f7023c036a5e7d984903fdff4d8c4c387ae5f443c72f3d07c4cb"
+      },
+      "version": "r2-full-v1"
+    }
+  },
+  "embedding_wait_seconds": null,
+  "embedding_wait_measured": false,
+  "model_calls_for_future_steps": "unknown",
+  "future_usd_minutes_cap": "unknown",
+  "provider_calls": 0,
+  "real_read_and_inspect": true,
+  "queued": false,
+  "sql_counts": {
+    "build": 0,
+    "build_attempt": 0,
+    "course": 0,
+    "usage_ledger": 0,
+    "phase_b_cache": 0
+  }
+}
