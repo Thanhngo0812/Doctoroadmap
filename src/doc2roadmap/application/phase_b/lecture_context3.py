@@ -88,14 +88,49 @@ def gather_chunks(graph: Any, node: Mapping[str, Any], definition_chunk_id: str 
     return [chunks[index] for index in sorted(picked)]
 
 
-def formula_pages(chunks: list[Any], limit: int) -> list[int]:
-    """Pages of the passages that lost a formula to PDF extraction, in reading order, at most `limit`."""
+def formula_pages(chunks: list[Any], limit: int | None = None) -> list[int]:
+    """Pages of the passages that lost a formula to PDF extraction, in reading order, at most `limit` (all if None)."""
     pages: list[int] = []
     for chunk in chunks:
         page = _get(chunk, "page")
         if FORMULA_MARK in str(_get(chunk, "text", "")) and page and page not in pages:
             pages.append(int(page))
-    return pages[:limit]
+    return pages if limit is None else pages[:limit]
+
+
+def formula_raw_texts(graph: Any) -> dict[str, str]:
+    """formula_id -> the PDF text layer of that formula, whitespace collapsed; formulas without text are left out."""
+    tree = getattr(graph, "tree", None)
+    cached = getattr(graph, "_formula_raw_texts", None)
+    if cached and cached[0] is tree:
+        return cached[1]
+    rows = {}
+    for node in getattr(tree, "nodes", None) or []:
+        formula_id, raw = getattr(node, "formula_id", None), " ".join(str(getattr(node, "raw_text", None) or "").split())
+        if formula_id and raw:
+            rows[formula_id] = raw
+    try:
+        graph._formula_raw_texts = (tree, rows)
+    except AttributeError:
+        pass
+    return rows
+
+
+def formula_text(chunk: Any, raw_texts: Mapping[str, str], text: str | None = None) -> str:
+    """Chunk text with each `[formula]` turned into `[formula: <raw text>]`, in the order of the chunk's `formula_refs`.
+
+    A mark with no ref, or whose formula has no raw text, stays `[formula]`. Only the text sent to the model changes.
+    """
+    text = str(_get(chunk, "text", "")) if text is None else text
+    refs = list(_get(chunk, "formula_refs") or [])
+    if not refs or not raw_texts:
+        return text
+    pieces = text.split(FORMULA_MARK)
+    out = [pieces[0]]
+    for number, piece in enumerate(pieces[1:]):
+        raw = raw_texts.get(_get(refs[number], "formula_id")) if number < len(refs) else None
+        out += [f"[formula: {raw}]" if raw else FORMULA_MARK, piece]
+    return "".join(out)
 
 
 def source_rows(chunks: list[Any]) -> list[dict[str, Any]]:
@@ -109,7 +144,8 @@ def source_texts(chunks: list[Any]) -> dict[str, str]:
 
 
 def user_message(node: Mapping[str, Any], module: Mapping[str, Any], chunks: list[Any],
-                 prerequisites: list[Mapping[str, Any]], next_up: list[str]) -> str:
+                 prerequisites: list[Mapping[str, Any]], next_up: list[str],
+                 raw_texts: Mapping[str, str] | None = None) -> str:
     aliases = [alias.get("name") if isinstance(alias, Mapping) else str(alias) for alias in node.get("aliases") or []]
     aliases = [alias for alias in aliases if alias]
     index = module.get("index")
@@ -126,7 +162,8 @@ def user_message(node: Mapping[str, Any], module: Mapping[str, Any], chunks: lis
     lines.append("Tư liệu từ sách:")
     for number, chunk in enumerate(chunks, 1):
         section = " > ".join(_get(chunk, "section_path") or [])
-        lines += [f"[S{number}] (trang {_get(chunk, 'page')}, mục {section})", str(_get(chunk, "text", "")).strip(), ""]
+        lines += [f"[S{number}] (trang {_get(chunk, 'page')}, mục {section})",
+                  formula_text(chunk, raw_texts or {}).strip(), ""]
     return "\n".join(lines)
 
 
