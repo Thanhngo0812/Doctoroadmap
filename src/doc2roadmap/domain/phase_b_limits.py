@@ -116,9 +116,9 @@ def lecture_cache_key(
         "model_id": settings.model_id,
         "temperature": settings.lecture_temperature,
         "max_output_tokens": settings.lecture_max_output_tokens,
-        # Assistant limits and the per-learner cap never reach a lecture prompt; leaving them out keeps cached lectures valid.
+        # Assistant and quiz limits and the per-learner cap never reach a lecture prompt; leaving them out keeps cached lectures valid.
         "settings": {k: v for k, v in asdict(settings).items()
-                     if not k.startswith("assistant_") and k != "learner_daily_max_usd"},
+                     if not k.startswith(("assistant_", "quiz_")) and k != "learner_daily_max_usd"},
         "contract_version": settings.contract_version,
     })
     return key, assembled_hash

@@ -425,3 +425,10 @@ def test_runtime_wires_the_page_pictures_and_the_new_output_caps():
     assert (limits.quiz_contract_version, limits.quiz_generation_prompt_version, limits.quiz_verifier_prompt_version,
             limits.quiz_verifier_thinking_level, limits.quiz_items_per_concept, limits.quiz_parallel_concepts) == (
         "quiz-3", "quiz-gen-5", "quiz-verify-5", "medium", 3, 4)
+
+
+def test_lecture_keys_do_not_move_when_only_quiz_limits_change():
+    import sa56_support as support
+    changed = replace(BSettings(), quiz_parallel_concepts=1, quiz_verifier_thinking_level="high",
+                      quiz_generation_prompt_version="quiz-gen-9", quiz_items_per_concept=5)
+    assert support.lecture_keys(changed) == support.lecture_keys()
