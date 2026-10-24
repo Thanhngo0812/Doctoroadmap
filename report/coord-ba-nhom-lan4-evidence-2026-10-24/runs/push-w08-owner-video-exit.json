@@ -1,0 +1,20 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "http.version=HTTP/1.1",
+    "-c",
+    "http.postBuffer=524288000",
+    "-c",
+    "http.lowSpeedLimit=1000",
+    "-c",
+    "http.lowSpeedTime=30",
+    "push",
+    "origin",
+    "2d5f316a8b7fc9164238dffd02d18d810c9f772a:refs/tags/coord-transfer/w08-owner-20261024"
+  ],
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap",
+  "commit": "bad8e45f392ee8a463efbb944669b27d6c20f390",
+  "native_exit_code": 0,
+  "elapsed_seconds": 17.41
+}

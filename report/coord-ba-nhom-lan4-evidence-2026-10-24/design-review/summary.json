@@ -1,0 +1,141 @@
+{
+  "reviewer": "review_design_r4",
+  "source_branch": "work/w24-figma-evidence",
+  "source_commit": "eb29f291709245a9ccf3d121415f6202fdeaae7f",
+  "last_accepted_web_design_commit": "f292f18",
+  "scope": "Static and focused structural/VM review of new web design fixes; ordinary SHA-matched copies only",
+  "cloud_figma_required": false,
+  "reopen_previously_accepted_scope": false,
+  "verdict": "request_changes_new_math_markup_only",
+  "required_findings": [
+    {
+      "id": "D-R4-01",
+      "severity": "Required",
+      "path": "design/preview/w09_chat_screens.html",
+      "line": 254,
+      "title": "New KaTeX-shaped formula has no math/subscript layout CSS",
+      "evidence": "test_w09_formula_has_subscript_layout_styles FAIL; neither inline styles nor linked tokens.css defines KaTeX/subscript layout",
+      "browser_status": "Confirmed in root browser: base and subscript at same y=998.5625, 14px font, verticalAlign baseline; screenshot visibly has no subscripts"
+    },
+    {
+      "id": "D-R4-02",
+      "severity": "Required",
+      "paths": [
+        "design/preview/w08_lecture_screens.html:272",
+        "design/preview/w08_lecture_screens.html:275",
+        "design/preview/w09_chat_screens.html:254"
+      ],
+      "title": "All newly added mathematical content is aria-hidden without MathML or equivalent accessible content",
+      "evidence": "test_w08_formulas_have_accessible_content FAIL; test_w09_formulas_have_accessible_content FAIL",
+      "browser_status": "Confirmed in root accessibility snapshots: W09 and W08 display snapshots empty; first W08 snapshot contains only following prose, no mathematical content"
+    },
+    {
+      "id": "D-R4-03",
+      "severity": "Required",
+      "path": "design/preview/w08_lecture_screens.html",
+      "line": 272,
+      "title": "Unclosed inline .katex span contains subsequent display formula and prose",
+      "evidence": "test_w08_formula_nodes_are_not_accidentally_nested FAIL on parsed actual markup",
+      "browser_status": "Confirmed in root DOM: nested count 1, first formula contains display formula and prose; screenshot shows prose inheriting serif formula typography"
+    }
+  ],
+  "optional_findings": [
+    {
+      "id": "D-R4-DOC-01",
+      "severity": "Optional",
+      "path": "report/w24-kiem-lai-2026-10-22.md",
+      "line": 14,
+      "title": "Historical open-for-Cloud status conflicts with user decision accepting web design without Cloud",
+      "action": "Add updated acceptance note; do not demand Cloud work or reopen accepted web scope"
+    },
+    {
+      "id": "D-R4-DOC-02",
+      "severity": "Optional",
+      "path": "design/preview/w08_lecture_screens.html",
+      "line": 327,
+      "title": "Tail-error wording says safely saved although cat_ngan is intentionally excluded from shared cache",
+      "action": "Clarify that received content stays visible on screen; avoid durable/cache promise",
+      "source": "src/doc2roadmap/application/phase_b/lecture3.py:229-231"
+    }
+  ],
+  "verification": {
+    "source_files_copied_with_sha256": 26,
+    "focused_pytest": {
+      "passed": 52,
+      "failed": 0,
+      "seconds": 0.96,
+      "native_exit_code": 0
+    },
+    "is_repo_postgresql_gate": false,
+    "reviewer_structural": {
+      "passed": 4,
+      "failed": 4,
+      "native_exit_code": 1
+    },
+    "vm_baseline": {
+      "variable_records": 37,
+      "independently_counted_mode_values": 74,
+      "reported_created": 74,
+      "reported_failed": 0
+    },
+    "vm_forced_create_failure": {
+      "variable_records": 36,
+      "independently_counted_mode_values": 72,
+      "reported_created": 72,
+      "reported_failed": 2
+    },
+    "accounting_mutant": {
+      "independently_counted_mode_values": 74,
+      "reported_created": 0,
+      "existing_baseline_output_test_native_exit_code": 1
+    },
+    "artwork": {
+      "gif_decoded_frames": 61,
+      "png_decoded_frames": 1,
+      "html_display_dimensions": [
+        96,
+        96
+      ]
+    },
+    "retry_and_tail_structural_check": "PASS",
+    "fixed_report_anchors": "PASS",
+    "worker_source_hashes_unchanged": true,
+    "scratch_copies_restored": true,
+    "worker_worktree_clean": true,
+    "browser_executed_by_this_reviewer": false,
+    "provider_or_adc_used": false,
+    "full_repo_suite_run": false,
+    "browser_evidence_reviewed_from_root": {
+      "rows": 24,
+      "configs_per_page": 12,
+      "widths": [
+        390,
+        768,
+        1280
+      ],
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "reduced_motion": [
+        "no-preference",
+        "reduce"
+      ],
+      "diagnostic_only": true,
+      "any_overflow": false,
+      "ref": "browser-evidence-reused.json"
+    }
+  },
+  "preflight_note": "Initial pytest -c NUL failed collection due Windows rootdir resolution; retained separate native records and logs. Final focused run used physical scratch ini and explicit isolated rootdir.",
+  "evidence": [
+    "review.md",
+    "native-records.json",
+    "copy-manifest.json",
+    "post-run-hash-verification.json",
+    "pytest-focused-baseline.xml",
+    "structural-observations.json",
+    "vm-independent-observations.json",
+    "artwork-decode.json",
+    "browser-evidence-reused.json"
+  ]
+}

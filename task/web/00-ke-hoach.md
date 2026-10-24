@@ -1,5 +1,9 @@
 # Web WayFinder — kế hoạch vé
 
+**Đồng bộ local theo quyết định chủ dự án 2026-10-24:** tạm thời chưa cần push main; ghi commit mới nhất trên máy và chờ chủ dự án yêu cầu tiếp. Điều kiện soát/test trước ghép vẫn giữ nguyên.
+
+**Mới nhất — nghiệm thu lần4 2026-10-24:** W-08 và mốc kiểm/dry-run0USD W-15 đã ghép local `bad8e45`; toàn W-15 còn mở. Thiết kế giữ đạt có ghi chú mốc web, chỉ vá3lỗi công thức preview mới, không Cloud. Web sang W-09; lõi sửa operator/điều kiện profile trước xin chi; thiết kế hỗ trợ React/W-23. SA-67/68 đã ghép, W-10 có đủ document-3/quiz-3. [Biên bản](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md), [lời giao ba nhóm](../../report/lenh-giao-viec-ba-nhom-lan4-2026-10-24.md). Giữ Vertex, chi mới0USD.
+
 **Nguồn chân lý:**
 - [spec chức năng web](../../doc/web-chuc-nang-spec.md), cùng ADR [0020](../../doc/adr/0020-khoa-hoc-la-don-vi-chia-se-du-lieu-hoc-theo-nguoi-va-cuon.md) và
   [0021](../../doc/adr/0021-phien-dang-nhap-phia-may-chu-trong-cookie.md);
@@ -87,14 +91,14 @@ còn đổi; nhóm web đã được báo.
 | [W-05](W-05-kho-pha-b-postgresql.md) | kho Pha B trên PostgreSQL, `single_flight` liên tiến trình, nới port sổ chi | W-01 | đạt · đã ghép `a3f2f13`, gồm checkpoint W-02; [cổng và bàn giao](../../report/dieu-phoi-ghep-main-2026-10-20.md) |
 | [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đạt · đã ghép `dc41ee8`, mốc `8b6e500`; 2.107 Python/77 React/build, browser PG; [nghiệm thu](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md) |
 | [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | đạt · đã ghép f20d198, mốc 2a14723; 2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình; [soát](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md) |
-| [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07; SA-62/64/65 đã ghép | chưa nhận `89122f6`: cổng 2.385 Python / 158 React / build xanh, nhưng 6 ca phản chứng đỏ từ hai lỗi nhãn tiến độ/đáp án stream; sửa trước ghép, [soát lần 3](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md) |
-| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07; SA-66 ba4350f và SA-69 973fa99 đã ghép | gỡ chặn SA-69; sau W-08 nhận main cài/kiểm answer-3, thẻ từ sự kiện artifact; link tự bịa quiz: trong chữ không cho bấm; giữ Vertex |
-| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07; spec document-3/quiz-3 và vé SA-67/68 đã có | sau W-08/W-09; đọc spec mới, cổng cuối nhận mốc SA-67/68 được Claude nghiệm thu/ghép; không lấy hợp đồng cũ hoặc replay cũ thay nghiệm thu web |
+| [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07; SA-62/64/65/70 đã ghép | đạt · ghép local `bad8e45`, cổng `c4d281b`: 2.602Python/0fail/1skip/1xfail,181React/build; browser12cấu hình/109ảnh/17Axe; đóng2Required, [lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md) |
+| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-08 và SA-66/69/70 đã ghép | ưu tiên tiếp ngay; answer-3 HTTP/gateway/React, focus/cache-only/session/artifact, fake0USD; không chờ lõi hoặc Cloud |
+| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07; SA-67 document-3 6cfc535, SA-68 quiz-3 21cfab3 đã ghép | đủ hai mốc lõi mới; sau W-09 kiểm HTTP/React/privacy/submit/library bằng PG/fake0USD theo spec mới |
 | [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | đạt · ghép/đẩy `e85427a`, mốc `b625752`: 2.296 Python/143 React/build, browser 8 auth-return/48 ảnh/16 Axe; [soát lần2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md) |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
 | [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
 | [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06; W-25 đã đạt | đạt có ghi chú · đã ghép/đẩy `7fe63df`, mốc `61b5d80`:2185Python/104React/build, browser13nhóm/47ảnh/14Axe,0USD; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
-| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13/14/SA-62 đã đạt | nhận hồ sơ pre-port `6bcbae6` có giới hạn, chưa chạy sau port/dry-run; nhận main có SA-62/64/65 làm tiếp ngay; không lặp ca dương `ce5f581`, chưa có quyền chi; [soát lần 3](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md) |
+| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13/14/SA-62 đã đạt | nhận mốc pipeline/dry-run0USD bf761fe, ghép `bad8e45`; toàn vé còn mở, sửa operator Windows và xác minh đơn vị giá online trước xin duyệt paid; chưa cấp quyền chi |
 | [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
@@ -103,7 +107,7 @@ còn đổi; nhóm web đã được báo.
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
 | [W-22](W-22-ban-figma.md) | bàn giao thiết kế web HTML/CSS/token | — | đạt có ghi chú mốc web đã kiểm, theo chủ dự án 24/10; bỏ Cloud Figma, tiếp hỗ trợ React và các màn theo vé tương ứng |
 | [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu React với spec/token/mẫu HTML | W-22 đã nhận mốc web; W-08/W-09/W-10 | không chờ Cloud; được soát từng trang đã chạy, nghiệm thu trọn bộ chờ các màn học/chat/quiz |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | đạt có ghi chú phạm vi web đã kiểm theo chủ dự án 24/10; f292f18 chưa ghép, mẫu cũ sai ghi rõ hoặc sửa khi dùng lại; lỗi React tiếp ở vé web, [quyết định](../../report/dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md) |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | giữ đạt có ghi chú mốc web, không Cloud; eb29f29 chưa ghép, trả riêng3lỗi công thức HTML mới rồi hỗ trợ W-09/W-23, không giao lại token/layout đã nhận |
 | [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
 
 ## Thứ tự đề xuất

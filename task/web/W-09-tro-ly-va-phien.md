@@ -1,5 +1,7 @@
 # W-09 — Trợ lý và phiên chat
 
+**Mở sau nghiệm thu lần4, 2026-10-24:** W-08 đã đạt/ghép `bad8e45`; SA-66/69/70 đã ở main, không còn điểm chờ lõi. Nhận main cài HTTP/gateway/React answer-3 bằng PG/fake0USD, focus từng lượt/cache-only, session ownership/client_turn_id, nguồn và sự kiện artifact an toàn; tham khảo HTML/CSS/token và cùng thiết kế soát React, không chờ Cloud. [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md) và [lời giao lần4](../../report/lenh-giao-viec-ba-nhom-lan4-2026-10-24.md).
+
 **Nguồn chân lý:** [spec trợ lý 3](../../doc/tro-ly-3-spec.md), [ADR 0026](../../doc/adr/0026-tro-ly-3-gia-su-tu-nhien.md) (`answer-3`);
 [spec Pha B2](../../doc/pha-b2-spec.md), mục 1–2, 8, 10 (`session-1`, `turn-1`, phần còn hiệu lực); [spec chức năng](../../doc/web-chuc-nang-spec.md),
 mục 1 (công cụ buộc phía máy chủ, SSE), 7 (giới hạn tần suất), 8; [ADR 0017](../../doc/adr/0017-pham-vi-phien-la-noi-luu-neo-vao-khai-niem.md); spec thiết

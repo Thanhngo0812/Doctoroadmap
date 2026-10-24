@@ -1,0 +1,20 @@
+{
+  "counterexample": "prepare writes str(Path.relative_to), execute rejects its native Windows separators",
+  "provider_calls": 0,
+  "database_connections": 0,
+  "source_changes": 0,
+  "results": [
+    {
+      "plan": "doc6-plan-at-ffd070d.json",
+      "saved_run_dir": "tmp\\w15-operator-doc-6-8aac10784169",
+      "actual_exception": "Path escapes its root",
+      "posix_control_passed": true
+    },
+    {
+      "plan": "candidate-plan-at-ffd070d.json",
+      "saved_run_dir": "tmp\\w15-operator-candidate-954c6b6ca4e0",
+      "actual_exception": "Path escapes its root",
+      "posix_control_passed": true
+    }
+  ]
+}

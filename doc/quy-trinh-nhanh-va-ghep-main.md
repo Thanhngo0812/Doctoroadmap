@@ -1,5 +1,11 @@
 # Quy trình nhánh và ghép vào main
 
+**Ngoại lệ tạm thời do chủ dự án quyết định 2026-10-24 — đồng bộ bằng commit local:**
+
+> tạm thời k cần push lên main, commit đồng bộ mới nhất ở đây là đc, viết vô điều phối giao tiep đây là quyết định của tôi
+
+Tạm thời dừng bước push main lên GitHub; commit phần đã nghiệm thu và hồ sơ mới nhất trên máy. Chỉ tiếp tục push khi chủ dự án yêu cầu. Ngoại lệ này ưu tiên hơn mục1.2, mục3.6 và mọi lời nhắc tự đẩy sau mỗi lần ghép bên dưới. Các điều kiện soát mã, nhận main local mới nhất, đúng commit, cổng test xanh, không force/rebase và bảo vệ dữ liệu vẫn giữ nguyên. Người điều phối ghi trạng thái local/remote thật trong bàn giao, không ghi đã đẩy khi chưa đẩy.
+
 **Áp dụng từ** 2026-10-20 cho mọi làn: web, lõi, Pha B, thiết kế, phiên pha A, điều phối.
 **Nguồn:** người điều phối báo repo chưa có quy định ghép vào main. Claude kiểm hiện trạng (mục 2) và chủ dự án chốt ba điểm (mục 1).
 

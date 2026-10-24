@@ -1,5 +1,7 @@
 # W-10 — Quiz, tài liệu, thư viện
 
+**Cập nhật nghiệm thu lần4, 2026-10-24:** SA-67 document-3 đã ghép `6cfc535`, SA-68 quiz-3 đã ghép `21cfab3`. W-10 đã có cả hai mốc lõi mới, xếp sau W-09; đọc spec document-3/quiz-3 và kiểm HTTP/React/ẩn đáp án/xáo phương án/nộp bài/quyền/thư viện bằng PG/fake0USD. Không dùng hợp đồng cũ thay bản mới; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md). Các điểm chờ SA-67/68 phía dưới là lịch sử.
+
 **Cập nhật 2026-10-24:** đã có spec [document-3](../../doc/tai-lieu-3-spec.md), [quiz-3](../../doc/quiz-3-spec.md) và vé SA-67/68.
 Sau W-08/W-09, đọc hợp đồng mới; tích hợp cuối nhận mốc được Claude nghiệm thu/ghép. Các hướng dẫn quiz-2/document-2 bên dưới là lịch sử,
 không tự dùng làm chuẩn cho bản nâng mới. UI tham khảo HTML/CSS/token do thiết kế bàn giao, không chờ Cloud Figma.
