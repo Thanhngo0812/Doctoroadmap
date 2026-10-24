@@ -1,0 +1,16 @@
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\tmp\w08_sa70_wire_counterexample.cjs:5
+const deltaText = stream.body.split(/\r?\n\r?\n/).filter(frame => /^event: delta\r?\n/.test(frame))
+                              ^
+
+TypeError: Cannot read properties of undefined (reading 'split')
+    at Object.<anonymous> (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\tmp\w08_sa70_wire_counterexample.cjs:5:31)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47
+
+Node.js v24.11.1

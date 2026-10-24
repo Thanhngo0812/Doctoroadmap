@@ -1,0 +1,40 @@
+node:assert:152
+  throw new AssertionError(obj);
+  ^
+
+AssertionError [ERR_ASSERTION]: SA70 must keep the whole self-check out of HTTP deltas
++ actual - expected
+
++ 'Ph?n ch?nh hi?n ngay.\n' +
++   '\n' +
++   '## T? ki?m tra\n' +
++   '\n' +
++   '**C?u h?i:** C?u h?i ki?m ri?ng.\n' +
++   '\n' +
++   '**??p ?n:** ??p ?n ri?ng ph?i g?p.'
+- 'Phần chính hiện ngay.'
+
+    at Object.<anonymous> (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\tmp\w08_sa70_wire_counterexample2.cjs:5:14)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+    at TracingChannel.traceSync (node:diagnostics_channel:328:14)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:245:24)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  generatedMessage: false,
+  code: 'ERR_ASSERTION',
+  actual: 'Ph?n ch?nh hi?n ngay.\n' +
+    '\n' +
+    '## T? ki?m tra\n' +
+    '\n' +
+    '**C?u h?i:** C?u h?i ki?m ri?ng.\n' +
+    '\n' +
+    '**??p ?n:** ??p ?n ri?ng ph?i g?p.',
+  expected: 'Phần chính hiện ngay.',
+  operator: 'strictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.11.1
