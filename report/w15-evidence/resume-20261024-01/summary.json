@@ -1,0 +1,112 @@
+{
+  "head_tested": "e48ee1bc59238c4b3f929176811b8e5d83c5a412",
+  "main_at_summary": "604cab0a660fad511545416af6e2f4a638f7e7f6",
+  "gates": {
+    "resume-scope-20261024-01": {
+      "commit": "e48ee1bc59238c4b3f929176811b8e5d83c5a412",
+      "exit_code": 1,
+      "seconds": 88.92,
+      "junit": {
+        "tests": 45,
+        "passed": 42,
+        "failures": [
+          "tests.unit.application.test_phase_b_assistant_sa66::test_system_prompt_is_the_text_block_of_the_spec_word_for_word",
+          "tests.unit.application.test_phase_b_lecture3_sa64::test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[True]",
+          "tests.unit.application.test_phase_b_lecture3_sa64::test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[False]"
+        ],
+        "errors": 0,
+        "skipped": []
+      }
+    },
+    "resume-full-20261024-01": {
+      "commit": "e48ee1bc59238c4b3f929176811b8e5d83c5a412",
+      "exit_code": 1,
+      "seconds": 554.08,
+      "junit": {
+        "tests": 2449,
+        "passed": 2443,
+        "failures": [
+          "tests.unit.application.test_phase_b_assistant_sa66::test_system_prompt_is_the_text_block_of_the_spec_word_for_word",
+          "tests.unit.application.test_phase_b_assistant_sa69::test_prompt_version_is_4_and_its_last_two_lines_are_the_spec_ones",
+          "tests.unit.application.test_phase_b_lecture3_sa64::test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[True]",
+          "tests.unit.application.test_phase_b_lecture3_sa64::test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[False]"
+        ],
+        "errors": 0,
+        "skipped": [
+          {
+            "test": "tests.unit.application.test_phase_b_sa55_runner::test_replay_reproduces_the_live_turns_at_zero_usd",
+            "type": "pytest.xfail",
+            "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+          },
+          {
+            "test": "src.web.backend.tests.test_media_store::test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+            "type": "pytest.skip",
+            "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+          }
+        ]
+      }
+    }
+  },
+  "dry_runs": {
+    "doc-6": {
+      "source_sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+      "source_pages": 25,
+      "web_doc_id": "u-82cb494d407c4755d29d",
+      "wall_seconds_by_completed_step": {
+        "doc_reading": 2.3091312999995353
+      },
+      "label_roles_plan": {
+        "status": "run",
+        "remaining_items": 2,
+        "unit": "batch",
+        "calls_estimate": 2,
+        "usd_estimate": 0.002936,
+        "checkpoint_id": null,
+        "note": "Ước input 3 ký tự/token; output trung bình checkpoint hoặc 512 token/lời gọi; chưa tính retry/repair. 78 headings in 2 batches of at most 40; invalid labels retry once.",
+        "label": "sẽ chạy"
+      },
+      "sql_counts": {
+        "build": 0,
+        "build_attempt": 0,
+        "course": 0,
+        "usage_ledger": 0,
+        "phase_b_cache": 0
+      },
+      "provider_calls": 0
+    },
+    "candidate": {
+      "source_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+      "source_pages": 52,
+      "web_doc_id": "u-1f019766e74a747d293c",
+      "wall_seconds_by_completed_step": {
+        "doc_reading": 7.741132600000128
+      },
+      "label_roles_plan": {
+        "status": "run",
+        "remaining_items": 6,
+        "unit": "batch",
+        "calls_estimate": 6,
+        "usd_estimate": 0.00997,
+        "checkpoint_id": null,
+        "note": "Ước input 3 ký tự/token; output trung bình checkpoint hoặc 512 token/lời gọi; chưa tính retry/repair. 103 headings in 6 batches of at most 40; invalid labels retry once.",
+        "label": "sẽ chạy"
+      },
+      "sql_counts": {
+        "build": 0,
+        "build_attempt": 0,
+        "course": 0,
+        "usage_ledger": 0,
+        "phase_b_cache": 0
+      },
+      "provider_calls": 0
+    }
+  },
+  "paid_run_executed": false,
+  "provider_spend_usd": 0,
+  "full_gate_green": false,
+  "w15_complete": false,
+  "total_calls_usd_minutes_cap": "unknown",
+  "embedding_wait_seconds": null,
+  "production_source_changes": [],
+  "new_migrations": []
+}
