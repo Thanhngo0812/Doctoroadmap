@@ -175,3 +175,20 @@ def test_phase_a_real_schema_is_the_same_on_both_transports(sent):
                                           transport=transport, vertex_project="p")
         extractor.start_session("s").ask_json("p", response_schema=MAIN_SCHEMA)
     assert sent[0] == sent[1]
+
+
+@pytest.mark.parametrize("name", [n for n in SCHEMAS if n != "nested"])
+def test_developer_api_leaves_every_other_keyword_of_a_real_schema_alone(sent, name):
+    _calls(_model("developer_api"), SCHEMAS[name])
+    assert all(body["generationConfig"]["responseJsonSchema"] == SCHEMAS[name] for body in sent[:3])
+
+
+def test_developer_api_tools_equal_the_originals_minus_only_the_banned_key(sent):
+    list(_model("developer_api").start_session("s", TOOLS).stream([{"role": "user", "text": "hi"}]))
+    expected = []
+    for tool in TOOLS:
+        declaration = _normalize_function_schema(tool)
+        field = "parametersJsonSchema" if "parametersJsonSchema" in declaration else "parameters"
+        declaration[field] = {key: value for key, value in declaration[field].items() if key != BANNED}
+        expected.append(declaration)
+    assert sent[0]["tools"][0]["functionDeclarations"] == expected
