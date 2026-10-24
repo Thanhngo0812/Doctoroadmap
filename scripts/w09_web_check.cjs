@@ -295,7 +295,7 @@ async function main() {
       'Rename, old scope, delete keeps generated document', 'Failure has retry; day limit ratio and disabled input; removal denied next request',
       '390/768/1280 both themes and real reduced-motion media; per-screen layout/44px and scoped Axe');
     assert.deepEqual(audit.pageErrors, []);
-    await Promise.all(pending); console.log(JSON.stringify({ screens: audit.screens.length, axe: audit.accessibility.length, http: audit.http.length }));
+    console.log(JSON.stringify({ screens: audit.screens.length, axe: audit.accessibility.length, http: audit.http.length }));
   } finally {
     for (const { context, page, name } of contexts) { const video = page.video(); await context.close(); if (video) await video.saveAs(path.join(out, `${name}.webm`)); }
     await Promise.allSettled(pending); await fs.writeFile(path.join(out, 'audit.json'), JSON.stringify(audit, null, 2) + '\n'); await browser.close();
