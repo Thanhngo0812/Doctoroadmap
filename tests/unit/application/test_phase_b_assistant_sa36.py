@@ -85,9 +85,9 @@ def test_roadmap_refusal_and_disabled_reminders_produce_no_reminder():
     assert ask(g, store)["graph_cards"]["reminders"] == []
 
     g, store = prepare()
-    refused = ask(g, store, question="Unknown unrelated question")
-    assert refused["status"] in {"not_in_document", "insufficient_context"}
-    assert refused["graph_cards"]["reminders"] == []
+    unrelated = ask(g, store, question="Unknown unrelated question")
+    assert unrelated["status"] == "answered"  # the model's words are kept even though no concept matched
+    assert unrelated["graph_cards"]["reminders"] == []
 
     g, store = prepare()
     disabled = ask(g, store, reminders_enabled=False)

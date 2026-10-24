@@ -2,7 +2,19 @@
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4, 8, câu hỏi mở 2; vé [W-13](W-13-dung-mot-cuon-o-loi.md), [W-14](W-14-tai-sach-len-ban-dung.md).
 **Ai:** nhân viên lõi chạy · người soát và Claude đọc số · **Chi phí mô hình:** một cuốn mới, ước dưới 3 USD theo D-01; dry-run trước, **chủ dự án duyệt**
-· **Chặn bởi:** W-13, W-14 đã đạt; còn port PostgreSQL của Pha A · **Trạng thái:** đạt mốc adapter/kiểm 0 USD tại `eea5472`; toàn vé còn mở, chưa cấp quyền chạy có tiền.
+· **Chặn bởi:** W-13/W-14/SA-62 đã đạt; còn kiểm pipeline thật/cache/dry-run · **Trạng thái:** port đã ghép/đẩy `9ac2a85`; toàn W-15 còn mở, chưa cấp quyền chạy có tiền.
+
+**Nghiệm thu lần 3, 2026-10-23 tối:** nhận hồ sơ pre-port `6bcbae6` có giới hạn: 5 tệp docs/evidence, thêm 30 dòng báo cáo,
+3/3 entry SHA/kích thước đúng. Audit chạy ở `f96fc00`, kiểm 127 hash doc-6/fingerprint/identity nhưng chưa kiểm sau port/toàn pipeline/dry-run.
+SA-62/64/65 đã ở main; nhận main mới làm tiếp ngay, không giữ điểm chờ cũ. Ca dương default factory/PG `ce5f581` đã có, không giao lại;
+phải kiểm xuyên toàn pipeline với provider giả/PG → identity/cache → dry-run có guard 0 USD → đề nghị chi riêng có số đo.
+Không đồng nhất audit metadata hoặc miss ID với cache toàn cục; chưa cấp quyền chạy cuốn mới có tiền.
+[Biên bản/lời giao](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md).
+
+**Mốc SA-62 2026-10-23:** SA-62 đã vào main, không còn chờ phân công Pha A hoặc chờ ghép port. Test web `ce5f581`, kiểm chứng cùng SA-64 trên `14110c0`:
+2.355 Python đạt/0 fail/1 Cloudinary live không bật,143 React/build. [Báo cáo/JUnit](../../report/sa62-tiep-nhan-test-web-2026-10-23.md).
+Tiếp ca toàn pipeline thật với provider giả/PG, identity/cache và dry-run nội bộ có guard. Chưa chạy cuốn mới có tiền hoặc nhận toàn W-15 hoàn tất.
+Các mục phía dưới giữ lịch sử của các mốc trước port; artifact Pha A vẫn ở kho tệp, không chuyển DB.
 
 **Nghiệm thu mốc 2026-10-23:** nhận `a8bb295` trên main `605f6a3`, mốc tích hợp `eea5472`; độc lập **2.266 Python đạt/0 fail/1 Cloudinary live không bật,
 104 React/build**, thử phá guard port bị assertion bắt và SHA nguồn phục hồi. Chỉ nhận adapter dùng core BuildDocument thật/pipeline giả/PG thật;

@@ -31,7 +31,16 @@ def graph():
 
 
 def checked(graph, text):
-    return AssistantUseCase(graph, InMemoryPhaseBStore(), None)._checked_answer(graph, text)
+    """The shared sentence checker (still used by documents), shaped as the removed assistant helper returned it."""
+    from doc2roadmap.application.phase_b.postcheck import check_text
+    from doc2roadmap.domain.phase_b_limits import BSettings
+    result = check_text(text, graph=graph, settings=BSettings())
+    if not result['counts']['sourced_sentences']:
+        return '', [], result['warnings'], 0
+    answer = result['text']
+    if result['outside_blocks']:
+        answer += '\n\n' + '\n\n'.join(':::outside_document\n' + body + '\n:::' for body in result['outside_blocks'])
+    return answer, result['citations'], result['warnings'], len(result['outside_blocks'])
 
 
 def seed_assistant_session(store, graph, session_id, owner):
@@ -176,7 +185,8 @@ def test_shared_price_change_reaches_assistant_and_document_plans_and_ledgers(gr
     assert all(row['cost_usd'] == pytest.approx(expected) for row in store.usage_rows())
 
 
-def test_old_client_turn_cache_cannot_bypass_new_sentence_validator(graph):
+def test_old_client_turn_cache_cannot_bypass_the_new_answer_contract(graph):
+    from doc2roadmap.application.phase_b.postcheck import POSTCHECK_VERSION
     from doc2roadmap.application.ports.phase_b import Delta, Done
     from doc2roadmap.domain.phase_b_limits import context_hash
 
@@ -193,12 +203,13 @@ def test_old_client_turn_cache_cannot_bypass_new_sentence_validator(graph):
             yield Done({})
 
     store, model = InMemoryPhaseBStore(), Model()
-    store.put_record('answer', context_hash(['test', 'book', 's', 't']),
-        {'answer': 'Một hệ quản trị có đúng 7 thành phần.', 'status': 'answered'})
+    for stale_key in (['test', 'book', 's', 't'], ['test', 'book', 's', 't', POSTCHECK_VERSION]):
+        store.put_record('answer', context_hash(stale_key),
+            {'answer': 'Một hệ quản trị có đúng 7 thành phần.', 'status': 'answered'})
     seed_assistant_session(store, graph, 's', 'test')
     use_case = AssistantUseCase(graph, store, model)
     answer = use_case.ask('book', 1, 's', 'CSDL là gì?', owner='test', client_turn_id='t', allow_spend=True)
-    assert '7 thành phần' not in answer['answer']
+    assert '7 thành phần' not in answer['answer_md'] and answer['contract_version'] == 'answer-3'
     assert model.calls == 1
     assert use_case.ask('book', 1, 's', 'CSDL là gì?', owner='test', client_turn_id='t', allow_spend=True) == answer
     assert model.calls == 1

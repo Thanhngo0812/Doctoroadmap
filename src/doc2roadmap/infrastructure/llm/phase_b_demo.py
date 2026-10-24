@@ -11,6 +11,20 @@ def _json(text):
     return json.JSONDecoder().raw_decode(text[start:])[0] if start >= 0 else {}
 
 
+_PASSAGE = re.compile(r'^\[(S\d+)\] \(trang [^\n]*\)\n(.*?)(?=^\[S\d+\] \(trang |^Hội thoại trước:|^Câu hỏi của người học:|\Z)',
+                      re.M | re.S)
+
+
+def _context(text):
+    """The assistant sends the model prose (answer-3); older callers still send a JSON context."""
+    if text.lstrip().startswith('{'):
+        return _json(text)
+    body = text.split('Tư liệu từ sách:', 1)[-1]
+    question = text.rsplit('Câu hỏi của người học:', 1)[-1].strip()
+    return {'question': question, 'scope': {'kind': 'roadmap'},  # the prose names no module id: tools run on the roadmap
+            'sources': [{'label': label, 'text': passage.strip()} for label, passage in _PASSAGE.findall(body)]}
+
+
 class DemoModel:
     is_replay = True
     model_id = 'demo-offline'
@@ -54,7 +68,7 @@ class DemoSession:
             yield text[index:index + 31]
 
     def stream(self, messages, *, mode='AUTO'):
-        context = _json(messages[0].get('text', '{}'))
+        context = _context(messages[0].get('text', '{}'))
         question = context.get('question', '')
         tools = {item['name'] for item in self.tools}
         if messages[-1]['role'] == 'user' and mode == 'AUTO':
@@ -87,5 +101,5 @@ class DemoSession:
             text = re.split(r'(?<=[.!?])\s+|\n+', source['text'])[0][:500]
             yield Delta(text + f" [{source['label']}]")
         else:
-            yield Delta('KHONG_DU\nTài liệu không có đủ bằng chứng cho câu hỏi này.')
+            yield Delta('Tài liệu không có đoạn nào khớp với câu hỏi này.')
         yield Done({})

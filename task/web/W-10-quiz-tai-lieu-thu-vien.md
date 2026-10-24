@@ -1,5 +1,9 @@
 # W-10 — Quiz, tài liệu, thư viện
 
+**Cập nhật 2026-10-24:** đã có spec [document-3](../../doc/tai-lieu-3-spec.md), [quiz-3](../../doc/quiz-3-spec.md) và vé SA-67/68.
+Sau W-08/W-09, đọc hợp đồng mới; tích hợp cuối nhận mốc được Claude nghiệm thu/ghép. Các hướng dẫn quiz-2/document-2 bên dưới là lịch sử,
+không tự dùng làm chuẩn cho bản nâng mới. UI tham khảo HTML/CSS/token do thiết kế bàn giao, không chờ Cloud Figma.
+
 **Nguồn chân lý:** [spec Pha B2](../../doc/pha-b2-spec.md), mục 4 (`library-1`), 7 (`quiz-2`, `document-2`), 10; [spec chức năng](../../doc/web-chuc-nang-spec.md),
 mục 7, 11 (đề quiz không có đáp án); spec thiết kế, trang quiz, tài liệu, thư viện.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-35, SA-37; SA-52 đã ghép · **Trạng thái:** đủ phụ thuộc lõi; xếp sau W-08 nếu chỉ có một phiên web.

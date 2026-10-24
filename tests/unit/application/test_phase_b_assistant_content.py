@@ -69,7 +69,7 @@ def test_ambiguous_lecture_tool_is_an_error_and_does_not_call_lecture_callback()
 
     model = Model([
         [ToolCall('get_lecture', {'concept': 'Ma trận'}, '1'), Done({})],
-        [Delta('KHONG_DU\nKhông đủ dữ liệu.'), Done({})],
+        [Delta('Mình chưa xác định được khái niệm nào.'), Done({})],
     ])
     result = ask(make_graph(duplicate=True), model, lecture=lecture)
     tool_result = result['tool_calls'][0]['result_summary']
@@ -88,11 +88,17 @@ def test_successful_artifact_only_quiz_is_answered_without_source_claim():
     ])
     result = ask(make_graph(), model, quiz=quiz)
     assert result['status'] == 'answered'
-    assert result['citations'] == []
-    assert result['created_artifacts'] == [{'kind': 'quiz', 'id': 'attempt-1'}]
-    assert result['answer'] == 'Đã tạo nội dung theo yêu cầu. Bạn có thể mở bằng liên kết đính kèm.'
+    assert result['artifacts'] == [{'kind': 'quiz', 'id': 'attempt-1'}]
+    assert result['answer_md'] == 'Đã tạo quiz.'  # the model's own words are kept
     assert result['tool_calls'][0]['result_summary'] == {
         'artifact': {'kind': 'quiz', 'id': 'attempt-1'}, 'count': 5}
+
+
+def test_quiz_made_but_model_wrote_nothing_gets_a_code_written_note():
+    model = Model([[ToolCall('make_quiz', {'scope': 'Ma trận'}, '1'), Done({})], [Done({})]])
+    result = ask(make_graph(), model, quiz=lambda **kwargs: {'attempt_id': 'attempt-1', 'ready_count': 5, 'items': []})
+    assert result['status'] == 'answered'
+    assert result['answer_md'] == 'Đã tạo nội dung theo yêu cầu. Bạn có thể mở bằng liên kết đính kèm.'
 
 
 def test_lecture_label_import_does_not_mutate_cache_and_rewrites_text_with_taken_s1():
@@ -107,7 +113,7 @@ def test_lecture_label_import_does_not_mutate_cache_and_rewrites_text_with_taken
 
     model = Model([
         [ToolCall('get_lecture', {'concept': 'a'}, '1'), Done({})],
-        [Delta('KHONG_DU\nKhông đủ dữ liệu.'), Done({})],
+        [Delta('Mình đã mở bài giảng cho bạn.'), Done({})],
     ])
     result = ask(graph, model, lecture=lecture)
     item = result['tool_calls'][0]['result_summary']['items'][0]
@@ -116,14 +122,14 @@ def test_lecture_label_import_does_not_mutate_cache_and_rewrites_text_with_taken
     assert cached == cached_before
 
 
-def test_assistant_never_accepts_generated_formulas_and_keeps_only_one_outside_block():
-    model = Model([[Delta('Ma trận là bảng các số. [S1]\nx = 1 [S1]\n'
-                          ':::outside_document\nVí dụ về hộp đồ chơi.\n:::\n'
-                          ':::outside_document\nVí dụ thứ hai.\n:::'), Done({})]])
+def test_assistant_keeps_generated_formulas_and_outside_examples_exactly_as_written():
+    written = ('Ma trận là bảng các số. [S1]\nx = 1 [S1]\n'
+               ':::outside_document\nVí dụ về hộp đồ chơi.\n:::\n'
+               ':::outside_document\nVí dụ thứ hai.\n:::')
+    model = Model([[Delta(written), Done({})]])
     result = ask(make_graph(), model)
-    assert 'x = 1' not in result['answer']
-    assert 'Ví dụ về hộp' in result['answer'] and 'Ví dụ thứ hai' not in result['answer']
-    assert result['outside_document_blocks'] == 1
+    assert result['answer_md'] == written
+    assert 'outside_document_blocks' not in result
 
 
 def test_formula_tool_reference_is_reversible_and_preserves_cached_lecture():
@@ -135,6 +141,6 @@ def test_formula_tool_reference_is_reversible_and_preserves_cached_lecture():
                    [Delta('Xem ảnh gốc [CT1].'), Done({})]])
     result = ask(make_graph(), model, lecture=lambda **kwargs: cached)
     assert result['status'] == 'answered'
-    assert result['formula_refs'][0]['occurrence_id'] == 'f@p2:r1'
+    assert result['tool_calls'][0]['result_summary']['formula_refs'][0]['occurrence_id'] == 'f@p2:r1'
     assert result['tool_calls'][0]['result_summary']['formula_refs'][0]['media_id'] == 'image'
     assert cached['definition']['formula_refs'][0]['label'] == 'CT1'

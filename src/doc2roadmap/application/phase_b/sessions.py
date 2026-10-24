@@ -108,8 +108,8 @@ class SessionUseCase:
                     linked_node_ids=None, artifact_refs=None, state=None):
         session = self._owned(owner, session_id)
         if (not isinstance(question, str) or not question.strip() or not isinstance(answer, dict)
-                or answer.get("contract_version") != "answer-2"):
-            raise ValueError("a question and answer-2 object are required")
+                or answer.get("contract_version") not in {"answer-2", "answer-3"}):
+            raise ValueError("a question and answer-2 or answer-3 object are required")
         if client_turn_id:
             key = context_hash([session_id, client_turn_id])
             existing = self.store.get_record("turn", key)

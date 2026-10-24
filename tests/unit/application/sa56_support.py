@@ -99,10 +99,8 @@ def record(question, *, turns, scope_kind='m3', prior=None, dry_run=False, **kwa
     return {'prompt': model.prompt, 'tools': model.tools,
             'calls': [{'messages': messages, 'mode': mode} for messages, mode in model.calls],
             'linked_node_ids': result['linked_node_ids'], 'graph_cards': result['graph_cards'],
-            'status': result['status'], 'answer': result['answer'], 'citations': result['citations'],
-            'warnings': result['warnings'], 'tool_calls': [row['name'] for row in result['tool_calls']],
-            'nearby_sources': result['nearby_sources'], 'media': result['media'],
-            'context_hash': result['usage']['context_hash']}
+            'status': result['status'], 'answer_md': result['answer_md'], 'sources': result['sources'],
+            'tool_calls': [row['name'] for row in result['tool_calls']]}
 
 
 def scenarios(extra=None):
@@ -122,7 +120,7 @@ def scenarios(extra=None):
     }
 
 
-def lecture_keys():
+def lecture_keys(settings=None):
     g = make_graph()
-    return {node_id: LectureUseCase(None, InMemoryPhaseBStore()).make(
+    return {node_id: LectureUseCase(None, InMemoryPhaseBStore(), settings=settings).make(
         'book', 1, g, node_id, dry_run=True)['lecture_key'] for node_id in ('a', 'e', 'f', 'b')}

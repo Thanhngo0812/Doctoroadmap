@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import base64
+import hashlib
 import json
 import os
 import re
@@ -37,6 +39,7 @@ class GeminiToolModel:
         temperature: float = 0.0,
         max_output_tokens: int = 2048,
         timeout_seconds: float = 60,
+        vertex_credentials: VertexCredentials | None = None,
     ) -> None:
         if transport == "developer_api" and not (api_key and api_key.strip()):
             raise ValueError("missing Gemini API key")
@@ -47,7 +50,9 @@ class GeminiToolModel:
         self.api_key = api_key
         self.model_id = model_id
         self.transport = transport
-        self.vertex = VertexCredentials(vertex_project or "", vertex_location) if transport == "vertex" else None
+        # A runtime passes one shared credentials object so every client reuses the same token.
+        self.vertex = (vertex_credentials or VertexCredentials(vertex_project or "", vertex_location)
+                       ) if transport == "vertex" else None
         self.temperature = temperature
         self.max_output_tokens = max_output_tokens
         self.timeout_seconds = timeout_seconds
@@ -200,6 +205,44 @@ class GeminiToolSession:
             self.model.last_usage = dict(self.last_usage)
             response.close()
 
+    def stream_text(self, prompt: str, *, images: Sequence[tuple[int, bytes]] = (),
+                    temperature: float | None = None, transport_retries: int | None = None,
+                    timeout_seconds: float | None = None) -> Iterator[str]:
+        """Plain-text stream (no JSON schema). Each image is a (page, JPEG bytes) pair sent after the prompt."""
+        parts: list[dict[str, Any]] = [{"text": prompt}]
+        for page, data in images:
+            parts += [{"text": f"Ảnh trang {page} của sách:"},
+                      {"inlineData": {"mimeType": "image/jpeg", "data": base64.b64encode(data).decode("ascii")}}]
+        body = {
+            "systemInstruction": {"parts": [{"text": self.system_prompt}]},
+            "contents": [{"role": "user", "parts": parts}],
+            "generationConfig": {
+                "temperature": self.model.temperature if temperature is None else temperature,
+                "maxOutputTokens": self.model.max_output_tokens,
+            },
+        }
+        started = perf_counter()
+        self.last_ttft_ms = None
+        self.last_usage = {}
+        self.last_finish_reason = None
+        response = self.model._request(
+            "streamGenerateContent", body, stream=True,
+            retries=2 if transport_retries is None else transport_retries, timeout_seconds=timeout_seconds)
+        try:
+            for event in self.model._decode_sse(response):
+                self.last_usage.update(event.get("usageMetadata", {}))
+                candidates = event.get("candidates", [])
+                if candidates:
+                    self.last_finish_reason = candidates[0].get("finishReason", self.last_finish_reason)
+                for part in (candidates[0].get("content", {}).get("parts", []) if candidates else []):
+                    if isinstance(part.get("text"), str) and part["text"] and not part.get("thought"):
+                        if self.last_ttft_ms is None:
+                            self.last_ttft_ms = round((perf_counter() - started) * 1000)
+                        yield part["text"]
+        finally:
+            self.model.last_usage = dict(self.last_usage)
+            response.close()
+
     def stream(
         self,
         messages: list[dict[str, Any]],
@@ -266,7 +309,11 @@ class GeminiToolSession:
         for message in messages:
             role = message.get("role")
             if role == "user":
-                contents.append({"role": "user", "parts": [{"text": str(message.get("text", ""))}]})
+                parts = [{"text": str(message.get("text", ""))}]
+                for page, data in message.get("images", ()):
+                    parts += [{"text": f"Ảnh trang {page} của sách:"},
+                              {"inlineData": {"mimeType": "image/jpeg", "data": base64.b64encode(data).decode("ascii")}}]
+                contents.append({"role": "user", "parts": parts})
             elif role == "model":
                 parts = []
                 turn_id = message.get("turn_id")
@@ -394,9 +441,30 @@ class RecordingToolSession:
                       "options": options, "chunks": chunks, "usage": self.last_usage,
                       "ttft_ms": self.last_ttft_ms, "finish_reason": self.last_finish_reason})
 
+    def stream_text(self, prompt: str, *, images: Sequence[tuple[int, bytes]] = (),
+                    temperature: float | None = None, transport_retries: int | None = None,
+                    timeout_seconds: float | None = None) -> Iterator[str]:
+        chunks = []
+        options = {"temperature": temperature, "transport_retries": transport_retries,
+                   "timeout_seconds": timeout_seconds}
+        pictures = _picture_ids(images)
+        try:
+            for chunk in self.delegate.stream_text(prompt, images=images, **{
+                    key: value for key, value in options.items() if value is not None}):
+                chunks.append(chunk)
+                yield chunk
+        except BaseException as error:
+            self._record({"kind": "text_stream", "prompt": prompt, "images": pictures, "options": options,
+                          "chunks": chunks, "usage": self.last_usage, "ttft_ms": self.last_ttft_ms,
+                          "finish_reason": self.last_finish_reason, "error": {"type": type(error).__name__}})
+            raise
+        self._record({"kind": "text_stream", "prompt": prompt, "images": pictures, "options": options,
+                      "chunks": chunks, "usage": self.last_usage, "ttft_ms": self.last_ttft_ms,
+                      "finish_reason": self.last_finish_reason})
+
     def stream(self, messages: list[dict[str, Any]], *, mode: Literal["AUTO", "NONE"] = "AUTO") -> Iterator[Delta | ToolCall | Done]:
         # The caller extends `messages` after this call; record what was sent now.
-        snapshot = deepcopy(messages)
+        snapshot = _wire_messages(messages)
         events = []
         for event in self.delegate.stream(messages, mode=mode):
             events.append(_event_dict(event))
@@ -492,14 +560,42 @@ class ReplayToolSession:
         if "error" in call:
             raise RuntimeError(f"recorded JSON stream failed: {call['error'].get('type', 'error')}")
 
+    def stream_text(self, prompt: str, *, images: Sequence[tuple[int, bytes]] = (),
+                    temperature: float | None = None, transport_retries: int | None = None,
+                    timeout_seconds: float | None = None) -> Iterator[str]:
+        options = {"temperature": temperature, "transport_retries": transport_retries}
+        call = self._take("text_stream", {"prompt": prompt, "images": _picture_ids(images)})
+        recorded = call.get("options") or {}
+        if any(recorded.get(key) != value for key, value in options.items()):
+            raise ValueError("tool replay stream options do not match")
+        self.last_usage = call.get("usage", {})
+        self.last_ttft_ms = call.get("ttft_ms")
+        self.last_finish_reason = call.get("finish_reason")
+        yield from call["chunks"]
+        if "error" in call:
+            raise RuntimeError(f"recorded text stream failed: {call['error'].get('type', 'error')}")
+
     def stream(self, messages: list[dict[str, Any]], *, mode: Literal["AUTO", "NONE"] = "AUTO") -> Iterator[Delta | ToolCall | Done]:
-        call = self._take("conversation", {"messages": messages, "mode": mode})
+        call = self._take("conversation", {"messages": _wire_messages(messages), "mode": mode})
         for event in call["events"]:
             parsed = _event_from_dict(event)
             if isinstance(parsed, Done):
                 self.last_usage = dict(parsed.usage)
                 self.last_ttft_ms = parsed.ttft_ms
             yield parsed
+
+
+def _picture_ids(images: Sequence[tuple[int, bytes]]) -> list[list[Any]]:
+    return [[page, hashlib.sha256(data).hexdigest()] for page, data in images]
+
+
+def _wire_messages(messages: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """Messages as recorded: page pictures become (page, sha256) pairs so fixtures stay JSON and small."""
+    wire = deepcopy([{key: value for key, value in message.items() if key != "images"} for message in messages])
+    for row, message in zip(wire, messages):
+        if message.get("images"):
+            row["images"] = _picture_ids(message["images"])
+    return wire
 
 
 def _event_dict(event: Delta | ToolCall | Done) -> dict[str, Any]:

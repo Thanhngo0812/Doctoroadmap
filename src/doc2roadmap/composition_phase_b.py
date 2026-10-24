@@ -1,13 +1,15 @@
 """Composition of the learner-facing use cases; providers stay outside application."""
+import logging
 from functools import partial
 from dataclasses import asdict
 from pathlib import Path
 from statistics import median
+from threading import Thread
 from uuid import uuid4
 
 from doc2roadmap.application.phase_b.assistant import AssistantUseCase
 from doc2roadmap.application.phase_b.documents import DocumentUseCase
-from doc2roadmap.application.phase_b.lectures import LectureUseCase
+from doc2roadmap.application.phase_b.lecture3 import Lecture3UseCase
 from doc2roadmap.application.phase_b.naming import NameModulesB
 from doc2roadmap.application.phase_b.quiz import QuizUseCase
 from doc2roadmap.application.phase_b.retrieval import (
@@ -20,19 +22,24 @@ from doc2roadmap.application.use_cases.index_document import retriever_from_payl
 from doc2roadmap.config import Settings
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
 from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+from doc2roadmap.infrastructure.artifacts.page_images import ArtifactPageImages
 from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
 from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
 from doc2roadmap.infrastructure.embedding.query_cache import CachedQueryEmbedding
+from doc2roadmap.infrastructure.google_auth import VertexCredentials
 from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel, RecordingToolModel, ReplayToolModel
 from doc2roadmap.infrastructure.llm.phase_b_demo import DemoModel
 
 
+_log = logging.getLogger(__name__)
 DEVELOPMENT_DOCS = ('doc-1', 'nhap-mon-ml', 'naive-bayes', 'doc-6', 'xstk-ch3-1', 'doc-4')
 
 
 class PhaseBRuntime:
     def __init__(self, *, settings=None, b_settings=None, allow_spend=False, store_path=None, mode=None,
-                 record_dir=None, replay_dir=None, clock=None):
+                 record_dir=None, replay_dir=None, clock=None, store=None):
+        if store is not None and store_path is not None:
+            raise ValueError('Chọn một trong store và store_path')
         self.settings = settings or Settings()
         self.b_settings = b_settings or BSettings()
         self.allow_spend = allow_spend
@@ -41,7 +48,8 @@ class PhaseBRuntime:
         self.mode = mode or ('gemini' if allow_spend else 'offline')
         if self.mode not in {'gemini', 'offline'}:
             raise ValueError('mode phải là gemini hoặc offline')
-        self.store = JsonPhaseBStore(store_path or root / ('live.json' if self.mode == 'gemini' else 'offline.json'))
+        self.store = store if store is not None else JsonPhaseBStore(
+            store_path or root / ('live.json' if self.mode == 'gemini' else 'offline.json'))
         self.clock = clock or SystemClock()
         self.spend_guard = DailySpendGuard(self.store, settings=self.b_settings, clock=self.clock)
         if record_dir and replay_dir:
@@ -51,6 +59,21 @@ class PhaseBRuntime:
         self._models = {}
         self._query_embedding = None
         self._concept_indexes = {}
+        self.page_images = ArtifactPageImages(self.settings.artifact_dir)
+        # One credentials object serves every model and embedding client; its token is fetched once, in the background.
+        self.vertex_credentials = None
+        self.auth_warmup = None
+        if (self.mode == 'gemini' and not replay_dir and self.settings.llm_transport == 'vertex'
+                and self.settings.vertex_project):
+            self.vertex_credentials = VertexCredentials(self.settings.vertex_project, self.settings.vertex_location)
+            self.auth_warmup = Thread(target=self._warm_credentials, name='vertex-auth-warmup', daemon=True)
+            self.auth_warmup.start()
+
+    def _warm_credentials(self):
+        try:
+            self.vertex_credentials.headers()
+        except Exception as error:  # noqa: BLE001 - a failed warm-up only costs the first call its wait
+            _log.warning('Vertex auth warm-up failed: %s', type(error).__name__)
 
     def model(self, purpose):
         if purpose in self._models:
@@ -70,13 +93,14 @@ class PhaseBRuntime:
                    'quiz_verify': self.b_settings.quiz_verifier_max_output_tokens}
         temperature = {'module_title': self.b_settings.naming_temperature,
                        'lecture': self.b_settings.lecture_temperature,
-                       'document': self.b_settings.document_temperature}.get(purpose, 1.0 if purpose == 'assistant' else 0.0)
+                       'assistant': self.b_settings.assistant_temperature,
+                       'document': self.b_settings.document_temperature}.get(purpose, 0.0)
         model = GeminiToolModel(
             self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else 'dry-run-no-key',
             self.b_settings.model_id, transport=self.settings.llm_transport,
             vertex_project=self.settings.vertex_project, vertex_location=self.settings.vertex_location,
             temperature=temperature, max_output_tokens=outputs[purpose],
-            timeout_seconds=self.settings.gemini_timeout_seconds)
+            timeout_seconds=self.settings.gemini_timeout_seconds, vertex_credentials=self.vertex_credentials)
         if self.record_dir:
             model = RecordingToolModel(model, Path(self.record_dir) / (purpose + '.json'), prompt_hash=prompt_hash)
         self._models[purpose] = model
@@ -130,7 +154,7 @@ class PhaseBRuntime:
                 self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else None,
                 model=self.b_settings.embedding_model_id, output_dimensionality=768,
                 transport=self.settings.llm_transport, vertex_project=self.settings.vertex_project,
-                vertex_location=self.settings.vertex_location))
+                vertex_location=self.settings.vertex_location, vertex_credentials=self.vertex_credentials))
         return self._query_embedding
 
     def search(self, graph, query, *, scope='uu_tien_module', k=6, current_module_id=None):
@@ -179,8 +203,8 @@ class PhaseBRuntime:
     def lecture(self, graph, node_id, *, dry_run=False, on_event=None, preload_next=False, deterministic=False, owner=None,
                 cache_only=False):
         model = None if deterministic or (self.mode == 'offline' and not self.replay_dir) else self.model('lecture')
-        return LectureUseCase(model, self.store, settings=self.b_settings, clock=self.clock,
-                              progress=self.progress(graph), spend_guard=self.spend_guard).make(
+        return Lecture3UseCase(model, self.store, page_images=self.page_images, settings=self.b_settings, clock=self.clock,
+                               progress=self.progress(graph), spend_guard=self.spend_guard).make(
             graph.doc_id, graph.graph_version, graph, node_id, dry_run=dry_run,
             allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir), on_event=on_event,
             preload_next=preload_next, owner=owner, cache_only=cache_only)
@@ -218,7 +242,7 @@ class PhaseBRuntime:
         return AssistantUseCase(graph, self.store, self.model('assistant'), settings=self.b_settings,
                                 search=partial(self.search, graph), concept_lookup=partial(self.lookup, graph), lecture=get_lecture,
                                 quiz=make_quiz, document=make_document, clock=self.clock,
-                                progress=self.progress(graph), spend_guard=self.spend_guard)
+                                progress=self.progress(graph), spend_guard=self.spend_guard, page_images=self.page_images)
 
     def lookup(self, graph, query):
         named = graph.lookup_concept(query)

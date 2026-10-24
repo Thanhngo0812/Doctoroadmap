@@ -143,7 +143,9 @@ def test_budget_queries_filtered_usage_and_keeps_reservations():
             return super().usage_rows(doc_id, **filters)
 
     store = Observed()
-    guard = DailySpendGuard(store)
+    from dataclasses import replace
+    from doc2roadmap.domain.phase_b_limits import BSettings
+    guard = DailySpendGuard(store, settings=replace(BSettings(), learner_daily_max_usd=.20))
     at = datetime(2026, 10, 18, 10, tzinfo=timezone.utc)
     store.put_record("spend_reservation", "in-flight", {
         "purpose": "assistant", "learner_id": "alice", "cost_usd": 0.15,
