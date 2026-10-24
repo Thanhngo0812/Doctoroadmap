@@ -44,8 +44,14 @@ class BSettings:
     assistant_focus_chars: int = 1500
     assistant_max_page_images: int = 3
     tool_results_tokens: int = 2500
-    quiz_generation_max_output_tokens: int = 1200
-    quiz_verifier_max_output_tokens: int = 400
+    quiz_contract_version: str = "quiz-3"
+    quiz_generation_prompt_version: str = "quiz-gen-5"
+    quiz_verifier_prompt_version: str = "quiz-verify-5"
+    quiz_generation_max_output_tokens: int = 4096
+    quiz_verifier_max_output_tokens: int = 8192
+    quiz_verifier_thinking_level: str = "medium"
+    quiz_items_per_concept: int = 3
+    quiz_parallel_concepts: int = 4
     quiz_explanation_max_chars: int = 300
     quiz_why_wrong_max_chars: int = 150
     quiz_bank_variants: int = 2

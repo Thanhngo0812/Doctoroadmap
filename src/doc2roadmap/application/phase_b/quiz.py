@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import hashlib
 import json
-import math
 import random
 import re
 import secrets
@@ -10,71 +9,24 @@ import threading
 import time
 import unicodedata
 from copy import deepcopy
+from dataclasses import replace
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 
+from doc2roadmap.application.phase_b.common import call_json
+from doc2roadmap.application.phase_b.lecture3 import IMAGE_TOKEN_ESTIMATE
+from doc2roadmap.application.phase_b.quiz_context3 import (
+    GENERATION_SCHEMA, GENERATION_TEMPERATURE, SOLVER_SCHEMA, SOLVER_TEMPERATURE, SYSTEM_SOLVER, Material,
+    build_item, build_material, generation_system, solver_message, verdicts,
+)
+from doc2roadmap.domain.phase_b_limits import BSettings
 from doc2roadmap.domain.phase_b_pricing import estimate_cost
 
-
-QUIZ_SCHEMA = {
-    "type": "object",
-    "properties": {"items": {"type": "array", "items": {
-        "type": "object", "properties": {
-            "concept": {"type": "string"}, "bloom": {"type": "string"},
-            "stem": {"type": "string"},
-            "correct": {"type": "object", "properties": {
-                "text": {"type": "string"}, "sources": {"type": "array", "items": {"type": "string"}},
-                "quote": {"type": "string"}}, "required": ["text", "sources", "quote"],
-                "additionalProperties": False},
-            "distractors": {"type": "array", "items": {"type": "object", "properties": {
-                "text": {"type": "string"}, "from": {"type": "string"}, "why_wrong": {"type": "string"},
-                "sources": {"type": "array", "items": {"type": "string"}}, "quote": {"type": "string"}},
-                "required": ["text", "from", "why_wrong", "sources", "quote"]},
-                "minItems": 2, "maxItems": 2},
-            "explanation": {"type": "string"},
-            "formula_refs": {"type": "array", "items": {"type": "string"}},
-        }, "required": ["concept", "bloom", "stem", "correct", "distractors", "explanation", "formula_refs"],
-        "additionalProperties": False}},
-        "gaps": {"type": "array", "items": {"type": "string"}}},
-    "required": ["items", "gaps"], "additionalProperties": False,
-}
-
-VERIFIER_SCHEMA = {
-    "type": "object",
-    "properties": {"items": {"type": "array", "items": {
-        "type": "object", "properties": {
-            "item_id": {"type": "string"}, "selected_option_id": {"type": "string"},
-            "valid": {"type": "boolean"}, "quote": {"type": "string"},
-            "distractor_verdicts": {"type": "array", "items": {"type": "object", "properties": {
-                "option_id": {"type": "string"},
-                "verdict": {"type": "string", "enum": ["sai theo nguồn", "đúng theo nguồn", "nguồn không nói"]}},
-                "required": ["option_id", "verdict"], "additionalProperties": False}},
-        }, "required": ["item_id", "selected_option_id", "valid", "quote", "distractor_verdicts"],
-        "additionalProperties": False}},
-    }, "required": ["items"], "additionalProperties": False,
-}
-
-VERIFIER_INSTRUCTIONS = (
-    "Giải mù câu hỏi bằng cả hai nhóm chứng cứ: chunks là định nghĩa cho khái niệm đích; "
-    "distractor_sources là các anchor định nghĩa cho những khái niệm nhiễu. Không chỉ tìm tên option "
-    "trong chunks. Đối chiếu tên/alias của từng option với name/aliases trong distractor_sources; "
-    "nếu khớp một candidate, hãy đọc anchor của candidate đó và so sánh với câu hỏi cùng chunks. "
-    "Chỉ kết luận một option sai theo nguồn khi chứng cứ định nghĩa cho thấy rõ nó là khái niệm khác "
-    "hoặc không thể thỏa mãn câu hỏi; việc tên không xuất hiện trong chunks không đủ để loại option. "
-    "Nếu chứng cứ không phân biệt được thì ghi 'nguồn không nói'; nếu chứng cứ hỗ trợ option thì ghi "
-    "'đúng theo nguồn'. Chọn đúng một option; nhiều đáp án đúng thì invalid. "
-    "Phân loại từng nhiễu là sai theo nguồn, đúng theo nguồn, hoặc nguồn không nói. "
-    "Trả items[{item_id,selected_option_id,valid,quote,distractor_verdicts}]."
-)
 
 CLOZE_VISUAL_OR_FORMULA_REFERENCE = re.compile(
     r"\[formula\]|\[CT[^\]]+\]|\bCT\w+\b|\b(?:hình|bảng)\s+(?:số\s+)?\d+\b|"
     r"\b(?:hình|bảng)\s+(?:sau|dưới|trên)(?:\s+đây)?\b|\bhình vẽ\b|"
     r"\bđồ thị\s+(?:sau|dưới|trên)(?:\s+đây)?\b",
-    re.I,
-)
-VISUAL_OR_FORMULA_REFERENCE = re.compile(
-    r"\b(?:hình|bảng)\s+\d+\b|\bđồ thị\b|\bhình vẽ\b|\[formula\]|\[CT[^\]]+\]|\bCT\w+\b",
     re.I,
 )
 INCOMPLETE_CLOZE_LEAD_IN = re.compile(
@@ -85,15 +37,18 @@ INCOMPLETE_CLOZE_LEAD_IN = re.compile(
 )
 # Q6: options are never formulas or notation.
 CLOZE_NOTATION = re.compile(r"[×=∪∩∈∉∑∫√≤≥≠±→⊂⊃⊆^]")
+# A cloze sentence with maths in it cannot be read without the formula: any of these symbols, or a digit next to a letter.
+CLOZE_MATH = re.compile(r"[=<>+*/^_\|{}\[\]×÷±∑∏∫√∞≤≥≠≈∈∉⊂⊃⊆∪∩→⇒α-ωΑ-Ω]|\d[^\W\d_]|[^\W\d_]\d")
 
 
 class QuizUseCase:
     """Build, submit, and review self-check quizzes without tracking mastery."""
 
-    LOCAL_RULES_VERSION = "quiz-local-rules-v4"
+    LOCAL_RULES_VERSION = "quiz-local-rules-v5"
 
     def __init__(self, graph, store, model=None, *, verifier_model=None, settings=None,
-                 source_registry=None, rng=None, progress_use_case=None, spend_guard=None, clock=None):
+                 source_registry=None, rng=None, progress_use_case=None, spend_guard=None, clock=None,
+                 page_images=None):
         self.graph = graph
         self.store = store
         self.model = model
@@ -104,7 +59,9 @@ class QuizUseCase:
         self.progress_use_case = progress_use_case
         self.spend_guard = spend_guard
         self.clock = clock
+        self.page_images = page_images
         self._emit_lock = threading.Lock()
+        self._rng_lock = threading.Lock()
         self.diagnostics = []
         self._diagnostics_lock = threading.Lock()
 
@@ -192,35 +149,33 @@ class QuizUseCase:
             generation_input_tokens = generation_output_tokens = 0
             verifier_input_tokens = verifier_output_tokens = 0
             for concept in concepts:
-                context = self._context(concept.get("module_id") or module_id, concept, level=level)
-                key = self._bank_key(doc_id, concept.get("module_id") or module_id,
-                                     concept, level, context=context)
+                material = self._material(concept)
+                key = self._bank_key(doc_id, concept.get("module_id") or module_id, concept, level, material=material)
                 if self.store.get_cache(key) is not None:
                     continue
                 uncached.append(concept)
-                if self.model is None or self.verifier_model is None:
+                if self.model is None or self.verifier_model is None or not material.chunks:
                     continue
-                input_tokens, output_tokens = self._bank_estimate_tokens(context)
-                estimated_input_tokens += input_tokens
-                estimated_output_tokens += output_tokens
-                gen_input, gen_output, verify_input, verify_output = self._bank_estimate_token_breakdown(context)
+                gen_input, gen_output, verify_input, verify_output = self._bank_estimate_token_breakdown(material)
                 generation_input_tokens += gen_input
                 generation_output_tokens += gen_output
                 verifier_input_tokens += verify_input
                 verifier_output_tokens += verify_output
+                estimated_input_tokens += gen_input + verify_input
+                estimated_output_tokens += gen_output + verify_output
                 estimated_calls += 4
             settings_model_id = self._setting("model_id", "gemini-3.1-flash-lite")
             generator_id = getattr(self.model, "model_id", settings_model_id)
             verifier_id = getattr(self.verifier_model, "model_id", settings_model_id)
             estimate = (estimate_cost(generator_id, generation_input_tokens, generation_output_tokens)
                         + estimate_cost(verifier_id, verifier_input_tokens, verifier_output_tokens))
-            return {"contract_version": "quiz-2", "status": "dry_run", "doc_id": doc_id,
+            return {"contract_version": self._setting("quiz_contract_version", "quiz-3"), "status": "dry_run", "doc_id": doc_id,
                     "module_id": module_id, "total_concepts": len(concepts),
                     "estimated_usd": round(estimate, 6), "estimated_calls": estimated_calls,
                     "estimated_input_tokens": estimated_input_tokens,
                     "estimated_output_tokens": estimated_output_tokens,
                     "uncached_concepts": len(uncached),
-                    "cost_basis": "upper bound: 4 calls per uncached concept, output caps from BSettings"}
+                    "cost_basis": "upper bound: 4 calls per uncached concept (two laps), output caps from BSettings"}
 
         attempt_id = "qa_" + secrets.token_hex(12)
         started = time.perf_counter()
@@ -233,7 +188,7 @@ class QuizUseCase:
             bank, cost = self._bank(doc_id, concept_module, concept, allow_spend, level, owner=owner)
             return concept, bank, cost
 
-        with ThreadPoolExecutor(max_workers=max(1, min(8, len(concepts)))) as pool:
+        with ThreadPoolExecutor(max_workers=max(1, min(self._settings().quiz_parallel_concepts, len(concepts)))) as pool:
             futures = [pool.submit(generate, concept) for concept in concepts]
             for future in as_completed(futures):
                 concept, bank, cost = future.result()
@@ -293,7 +248,7 @@ class QuizUseCase:
                                "module_id_at_creation": module_id,
                                "graph_version_at_creation": getattr(self.graph, "graph_version", graph_version)}
         attempt = {
-            "contract_version": "quiz-2", "attempt_id": attempt_id, "owner": owner,
+            "contract_version": self._setting("quiz_contract_version", "quiz-3"), "attempt_id": attempt_id, "owner": owner,
             "doc_id": doc_id, "module_id": module_id, "graph_version": graph_version, "origin": origin,
             "home_scope": saved_scope, "session_id": session_id, "node_ids": node_ids,
             "seed": selected_seed or None,
@@ -341,7 +296,7 @@ class QuizUseCase:
             correct_node_ids = [result["concept_id"] for result in results if result["is_correct"]]
             if correct_node_ids:
                 self.progress_use_case.mark_quiz_correct(owner, attempt["doc_id"], correct_node_ids)
-        return {"contract_version": "quiz-2", "attempt_id": attempt_id, "origin": attempt["origin"],
+        return {"contract_version": self._setting("quiz_contract_version", "quiz-3"), "attempt_id": attempt_id, "origin": attempt["origin"],
                 "correct_count": score, "question_count": len(results), "results": results,
                 "review": review, "submitted_at": submitted["submitted_at"]}
 
@@ -362,7 +317,7 @@ class QuizUseCase:
                              "created_at": row["created_at"],
                              "correct_count": submission.get("correct_count") if submission else None,
                              "question_count": submission.get("question_count", len(row["items"])) if submission else len(row["items"])})
-        return {"contract_version": "quiz-2", "owner": owner, "attempts": attempts}
+        return {"contract_version": self._setting("quiz_contract_version", "quiz-3"), "owner": owner, "attempts": attempts}
 
     def report_question(self, owner, attempt_id, item_id):
         attempt = self._owned_attempt(attempt_id, owner)
@@ -377,7 +332,7 @@ class QuizUseCase:
         hidden = len({r["owner"] for r in record["reports"]}) >= threshold
         if hidden:
             self.store.put_record("quiz_hidden_question", item_id, {"item_id": item_id, "hidden": True})
-        return {"contract_version": "quiz-2", "item_id": item_id,
+        return {"contract_version": self._setting("quiz_contract_version", "quiz-3"), "item_id": item_id,
                 "report_count": len({r["owner"] for r in record["reports"]}), "hidden": hidden}
 
     def _resolve_scope(self, scope):
@@ -449,55 +404,57 @@ class QuizUseCase:
                                          if row["node_id"] not in learned})[:limit - len(selected)])
         return selected
 
+    def _material(self, concept):
+        return build_material(self.graph, concept, self._settings())
+
+    def _settings(self):
+        """The limits as `BSettings`; a dict (as some callers pass) overrides the defaults, None gives the defaults."""
+        if isinstance(self.settings, BSettings):
+            return self.settings
+        overrides = self.settings if isinstance(self.settings, dict) else {}
+        return replace(BSettings(), **{key: value for key, value in overrides.items() if key in BSettings.__dataclass_fields__})
+
     def _bank(self, doc_id, module_id, concept, allow_spend, level, *, owner=None):
-        context = self._context(module_id, concept, level=level)
-        key = self._bank_key(doc_id, module_id, concept, level, context=context)
+        material = self._material(concept)
+        key = self._bank_key(doc_id, module_id, concept, level, material=material)
+        generated = {}
         cached = self.store.get_cache(key)
         if cached is not None:
-            return [item for item in cached if not self._hidden(item["item_id"])], {}
-        if self.model is None or not allow_spend:
-            bank = self._cloze_bank(concept, context)
+            bank = [item for item in cached if not self._hidden(item["item_id"])]
+        elif self.model is None or not allow_spend or not material.chunks:
+            bank = []
         else:
             try:
-                generated = {}
                 bank = self.store.single_flight(
-                    key, lambda: self._generate_bank(concept, context, generated, doc_id, owner=owner))
-            except Exception:
+                    key, lambda: self._generate_bank(concept, material, generated, doc_id, owner=owner))
+            except Exception:  # noqa: BLE001 - no model answer (network, cap, quota) leaves the learner the cloze question
                 bank = []
-            if not bank:
-                bank = self._cloze_bank(concept, context)
-        bank = [item for item in bank if not self._hidden(item["item_id"])]
-        if bank:
-            self.store.put_cache(key, bank)
-        return bank, generated.get("usage", {}) if self.model is not None and allow_spend else {}
+            bank = [item for item in bank if not self._hidden(item["item_id"])]
+        # The cloze question is cheap and never stored: a bank stored here would hide the model's questions later.
+        return bank or self._cloze_bank(concept, self._context(module_id, concept)), generated.get("usage", {})
 
-    def _bank_key(self, doc_id, module_id, concept, level, *, context=None):
-        context = context or self._context(module_id, concept)
-        config = {
-            "model_id": getattr(self.model, "model_id", self._setting("model_id", "gemini-3.1-flash-lite")),
-            "temperature": self._setting("quiz_temperature", 0.0),
-            "generation_max_output_tokens": self._setting("quiz_generation_max_output_tokens", 1200),
-            "verifier_max_output_tokens": self._setting("quiz_verifier_max_output_tokens", 400),
-            "variant_count": self._setting("quiz_bank_variants", 2),
-            "contract_version": "quiz-2",
-            "local_rules_version": self.LOCAL_RULES_VERSION,
+    def _bank_key(self, doc_id, module_id, concept, level, *, material=None):
+        material = material or self._material(concept)
+        settings = self._settings()
+        value = {
+            "doc_id": doc_id, "module_id": module_id, "node_id": concept["node_id"], "level": level,
+            "material": material.fingerprint(),
+            "generation_prompt": settings.quiz_generation_prompt_version,
+            "verifier_prompt": settings.quiz_verifier_prompt_version,
+            "thinking_level": settings.quiz_verifier_thinking_level,
+            "generator_model": getattr(self.model, "model_id", settings.model_id),
+            "verifier_model": getattr(self.verifier_model, "model_id", settings.model_id),
+            "config": {"generation_max_output_tokens": settings.quiz_generation_max_output_tokens,
+                       "verifier_max_output_tokens": settings.quiz_verifier_max_output_tokens,
+                       "items_per_concept": settings.quiz_items_per_concept,
+                       "contract_version": settings.quiz_contract_version,
+                       "local_rules_version": self.LOCAL_RULES_VERSION},
         }
-        value = {"doc_id": doc_id, "module_id": module_id, "node_id": concept["node_id"],
-                 "context": self._prompt_context(context), "generation_prompt": "quiz-gen-v3", "verifier_prompt": "quiz-verify-v4",
-                 "schema": "quiz-item-v1", "config": config, "level": level}
         return hashlib.sha256(json.dumps(value, ensure_ascii=False, sort_keys=True, default=str).encode()).hexdigest()
 
-    def _context(self, module_id, concept, *, level=None):
+    def _context(self, module_id, concept):
+        """The concept's passages for the cloze question."""
         chunks = self._chunks_for(concept)
-        node_type = str(concept.get("node_type", concept.get("kind", "concept"))).casefold()
-        target_blooms = [level, level] if level else ["nho", "hieu"]
-        if level is None and node_type in {"algorithm", "method", "metric"}:
-            has_solved_example = any(
-                "bai_tap" in str(self._get(chunk, "role", "")).casefold()
-                and "loi_giai" in str(self._get(chunk, "text", "")).casefold()
-                for chunk in chunks
-            )
-            target_blooms = ["hieu", "van_dung" if has_solved_example else "hieu"]
         source_registry = (self.graph.new_source_registry()
                            if hasattr(self.graph, "new_source_registry") else self.sources)
         source_chunks = []
@@ -508,226 +465,111 @@ class QuizUseCase:
                                   "page": self._get(chunk, "page"), "char_start": self._get(chunk, "char_start", 0),
                                   "char_end": self._get(chunk, "char_end", 0),
                                   "section_path": self._get(chunk, "section_path", [])})
-        current_chunk_ids = {row["chunk_id"] for row in source_chunks}
-        target_aliases = {self._norm(value) for value in [self._name(concept), *self._aliases(concept)]}
-        eligible_distractors = []
-        seen_distractor_chunks = set()
-        for node in self._distractor_concepts(concept):
-            anchor = node.get("anchor") or {}
-            anchor_chunk = anchor.get("chunk_id")
-            name_aliases = {self._norm(value) for value in [self._name(node), *self._aliases(node)]}
-            if (not anchor_chunk or anchor_chunk not in self.graph.chunks or anchor_chunk in current_chunk_ids
-                    or anchor_chunk in seen_distractor_chunks
-                    or not anchor.get("sentence") or not name_aliases
-                    or any(not value for value in name_aliases)
-                    or any(a in b or b in a for a in target_aliases for b in name_aliases)):
-                continue
-            seen_distractor_chunks.add(anchor_chunk)
-            eligible_distractors.append(node)
-            if len(eligible_distractors) == 4:
-                break
-        distractor_candidates = []
-        for index, node in enumerate(eligible_distractors, 1):
-            anchor = node.get("anchor") or {}
-            anchor_chunk = anchor.get("chunk_id")
-            label = (source_registry.label(anchor_chunk, "D")
-                     if source_registry and anchor_chunk in self.graph.chunks else f"D{index}")
-            distractor_candidates.append({
-                "label": label, "node_id": node.get("node_id"),
-                "name": self._name(node), "aliases": node.get("aliases", []),
-                "node_type": node.get("node_type"),
-                "anchor": anchor.get("sentence", ""),
-                "evidence_chunk_id": anchor.get("chunk_id"),
-            })
-        prerequisites = []
-        if hasattr(self.graph, "traverse"):
-            edges = self.graph.traverse(concept["node_id"], "requires", direction="in").get("edges", [])[:3]
-            for edge in edges:
-                row = dict(edge)
-                chunk_id = next(iter(row.get("chunk_ids", [])), None)
-                if source_registry and chunk_id in self.graph.chunks and row.get("quote"):
-                    citation = source_registry.citation_for_chunk(chunk_id, "Q", row["quote"])
-                    if citation:
-                        row["source_label"], row["citation"] = citation
-                prerequisites.append(row)
-        exercises = []
-        home = chunks[0] if chunks else None
-        home_path = self._get(home, "section_path", []) if home else []
-        for chunk in self.graph.chunks.values():
-            if str(self._get(chunk, "role", "")).casefold() != "bai_tap":
-                continue
-            if home_path and self._get(chunk, "section_path", [])[:1] != home_path[:1]:
-                continue
-            if str(self._get(chunk, "text", "")).count("[formula]") >= 3:
-                continue
-            chunk_id = self._get(chunk, "chunk_id", "")
-            label = source_registry.label(chunk_id, "B") if source_registry else f"B{len(exercises) + 1}"
-            exercises.append({"label": label, "chunk_id": chunk_id, "text": self._get(chunk, "text", "")})
-            if len(exercises) == 2:
-                break
         module = self.graph.modules.get(module_id) if module_id else {"module_id": None, "title": "Conceptos"}
-        return {"doc_id": self.graph.payload.get("doc_id", ""), "module": module,
-                "concept": concept, "target_blooms": target_blooms, "chunks": source_chunks,
-                "prerequisites": prerequisites, "distractor_candidates": distractor_candidates,
-                "exercises": exercises, "_source_registry": source_registry,
-                "limits": {"generation_output_tokens": self._setting("quiz_generation_max_output_tokens", 1200),
-                           "verifier_output_tokens": self._setting("quiz_verifier_max_output_tokens", 400),
-                           "explanation_chars": self._setting("quiz_explanation_max_chars", 300),
-                           "why_wrong_chars": self._setting("quiz_why_wrong_max_chars", 150),
-                           "bank_variants": self._setting("quiz_bank_variants", 2)}}
+        return {"module": module, "chunks": source_chunks}
 
-    def _generate_bank(self, concept, context, generated, doc_id, *, owner=None):
-        from doc2roadmap.application.phase_b.common import call_json
+    def _load_images(self, doc_id, material):
+        parse_version = getattr(self.graph, "parse_version", None)
+        if not material.pages or self.page_images is None or parse_version is None:
+            return []
+        found = ((page, self.page_images.get(doc_id, int(parse_version), page)) for page in material.pages)
+        return [(page, data) for page, data in found if data]
 
-        base = self._generation_prompt(context)
-        usage = {"usd": 0.0, "ms": 0, "input_tokens": 0, "output_tokens": 0}
-        for repair in range(2):
-            prompt = base if repair == 0 else base + "\nSinh lại các câu không qua luật. Câu lỗi trước: " + json.dumps(items, ensure_ascii=False)
-            generated_call = call_json(self.model, prompt, response_schema=QUIZ_SCHEMA, store=self.store,
-                                       purpose="quiz_gen", doc_id=doc_id,
-                                       context_hash=hashlib.sha256(prompt.encode()).hexdigest(),
-                                       allow_spend=True, settings=self.settings,
-                                       spend_guard=self.spend_guard, clock=self.clock)
-            self._add_call_usage(usage, generated_call)
-            candidates = generated_call.payload.get("items", []) if isinstance(generated_call.payload, dict) else []
-            items = []
-            for raw in candidates:
-                item, reason = self._normalize_item_with_reason(concept, context, raw)
-                if reason:
-                    self._record_rejection("normalize", reason, concept, raw)
-                    continue
-                passed, reason = self._rules_pass_with_reason(item, context)
-                if not passed:
-                    self._record_rejection("local_rules", reason, concept, raw, item)
-                    continue
-                items.append(item)
-            for index, item in enumerate(items[:2]):
-                item["bloom"] = context["target_blooms"][index]
-            if len(items) > 1:
-                first = items[0]
-                answer = next(o["text"] for o in first["options"] if o["is_correct"])
-                retained = [first]
-                for item in items[1:]:
-                    if self._duplicate(first, item):
-                        self._record_rejection("local_rules", "local.duplicate_variant", concept,
-                                               {"stem": item["stem"]}, item)
-                    elif (first["bloom"] == item["bloom"]
-                          and answer == next(o["text"] for o in item["options"] if o["is_correct"])):
-                        self._record_rejection("local_rules", "local.same_bloom_same_answer", concept,
-                                               {"stem": item["stem"]}, item)
+    def _generate_bank(self, concept, material, generated, doc_id, *, owner=None):
+        """Ask for questions, keep those a blind solver answers the same way; once more if fewer than two were kept."""
+        settings = self._settings()
+        usage = generated["usage"] = {"usd": 0.0, "ms": 0, "input_tokens": 0, "output_tokens": 0}
+        images = self._load_images(doc_id, material)
+        picture_tokens = IMAGE_TOKEN_ESTIMATE * len(images)
+        bank = []
+        for lap in (1, 2):
+            try:
+                result = call_json(
+                    self.model, material.user, response_schema=GENERATION_SCHEMA,
+                    system_prompt=generation_system(bool(images)), store=self.store, purpose="quiz_gen", doc_id=doc_id,
+                    context_hash=hashlib.sha256(material.user.encode()).hexdigest(), allow_spend=True, settings=settings,
+                    spend_guard=self.spend_guard, clock=self.clock, images=images, temperature=GENERATION_TEMPERATURE,
+                    extra_input_tokens=picture_tokens)
+                self._add_call_usage(usage, result)
+                candidates, known = [], {kept["item_id"] for kept in bank}
+                for raw in (result.payload.get("items") or [])[:settings.quiz_items_per_concept]:
+                    item, reason = build_item(concept, material, raw)
+                    if reason:
+                        self._reject(concept, lap, "local", reason, raw=raw)
+                    elif item["item_id"] in known:
+                        self._reject(concept, lap, "local", "local.repeated_question", item=item)
                     else:
-                        retained.append(item)
-                items = retained
-            if not items:
-                continue
-            labels, choices = [], {}
-            for item in items:
-                options = list(item["options"])
-                self.rng.shuffle(options)
-                choices[item["item_id"]] = options
-                labels.append({"item_id": item["item_id"], "stem": item["stem"],
-                               "options": [{"option_id": str(i), "text": o["text"]} for i, o in enumerate(options)]})
-            verifier_prompt = self._verifier_prompt(context, labels)
-            verified = call_json(self.verifier_model, verifier_prompt, response_schema=VERIFIER_SCHEMA, store=self.store,
-                                 purpose="quiz_verify", doc_id=doc_id,
-                                 context_hash=hashlib.sha256(verifier_prompt.encode()).hexdigest(),
-                                 allow_spend=True, settings=self.settings,
-                                 spend_guard=self.spend_guard, clock=self.clock)
-            self._add_call_usage(usage, verified)
-            accepted = set()
-            rejected = set()
-            for result in verified.payload.get("items", []) if isinstance(verified.payload, dict) else []:
-                item = next((it for it in items if it["item_id"] == result.get("item_id")), None)
-                options = choices.get(result.get("item_id"), [])
-                selected = next((o for i, o in enumerate(options) if str(i) == result.get("selected_option_id")), None)
-                verdicts = result.get("distractor_verdicts", [])
-                verdict_values = [v.get("verdict", "") for v in verdicts if isinstance(v, dict)]
-                verdict_values.extend(v for v in verdicts if isinstance(v, str))
-                verdict_by_option = {v.get("option_id"): v.get("verdict", "") for v in verdicts if isinstance(v, dict)}
-                correct_position = next((str(i) for i, option in enumerate(options) if option.get("is_correct")), None)
-                complete_distractor_verdicts = (
-                    set(verdict_by_option) >= {str(i) for i in range(len(options)) if str(i) != correct_position}
-                    and all("sai theo nguồn" in verdict_by_option[str(i)].casefold()
-                            for i in range(len(options)) if str(i) != correct_position)
-                )
-                reason = self._verifier_rejection_reason(
-                    item, context, options, result, complete_distractor_verdicts, verdict_values,
-                )
-                if reason:
-                    if item and item["item_id"] not in rejected:
-                        self._record_rejection("verifier", reason, concept, {}, item)
-                        rejected.add(item["item_id"])
-                    continue
-                if (item and selected and selected.get("is_correct") and result.get("valid") is True
-                        and self._quote_found(result.get("quote", ""), context, current_only=True)):
-                    item["checks"]["verifier"] = "pass"
-                    accepted.add(item["item_id"])
-            for item in items:
-                if item["item_id"] not in accepted and item["item_id"] not in rejected:
-                    self._record_rejection("verifier", "verifier.missing_result", concept, {}, item)
-                    rejected.add(item["item_id"])
-            if accepted:
-                generated["usage"] = usage
-                accepted_items = [item for item in items if item["item_id"] in accepted]
-                for item in accepted_items[2:]:
-                    self._record_rejection("local_rules", "local.variant_cap", concept,
-                                           {"stem": item["stem"]}, item)
-                return accepted_items[:2]
-        generated["usage"] = usage
-        return []
+                        candidates.append(item)
+                if candidates:
+                    bank += self._blind_solve(concept, material, candidates, images, picture_tokens, usage, doc_id, lap)
+            except Exception:  # noqa: BLE001 - what an earlier lap kept is still worth storing
+                if not bank:
+                    raise
+                break
+            if len(bank) >= 2:
+                break
+        return bank[:settings.quiz_items_per_concept]
 
-    @staticmethod
-    def _generation_prompt(context):
-        context = QuizUseCase._prompt_context(context)
-        limits = context["limits"]
-        return ("Tạo tối đa 2 câu trắc nghiệm tiếng Việt cho một khái niệm, mỗi câu phải có đúng 3 phương án: "
-                "một correct và đúng hai distractors. Chỉ dùng căn cứ trong chunks. "
-                "Trong correct.sources và distractors[].sources, chỉ ghi nhãn nguồn ngắn (ví dụ S1, D1) "
-                "đã có trong context; tuyệt đối không ghi chunk_id hay ID nội bộ. "
-                "Mỗi correct.quote và distractor.quote phải là trích dẫn nguyên văn tối đa 200 ký tự "
-                "từ chính nguồn được ghi. Mỗi why_wrong tối đa " + str(limits["why_wrong_chars"]) + " ký tự; "
-                "explanation tối đa " + str(limits["explanation_chars"]) + " ký tự. "
-                "Nếu option lấy từ distractor_candidates thì from phải đúng bằng D-label đó, sources phải chỉ chứa "
-                "chính D-label ấy, và quote phải nằm trong anchor của candidate. Nếu không có candidate phù hợp "
-                "hoặc option suy ra từ chunks của khái niệm hiện tại, dùng from='moi', sources chỉ chứa S-label, "
-                "và quote phải nằm trong chunk S ấy. Không chọn option có tên trùng/bao chứa alias đáp án; "
-                "không để text của một option chứa text option khác theo bất kỳ chiều nào. "
-                "Độ dài đáp án không được vượt 1.3 lần trung bình độ dài hai nhiễu khi đáp án là option dài nhất. "
-                "Gán bloom theo target_blooms. Không dùng công thức làm phương án. "
-                "Trả JSON theo schema, dạng {items:[...],gaps:[...]}.\n"
-                + json.dumps(context, ensure_ascii=False, default=str))
+    def _blind_solve(self, concept, material, items, images, picture_tokens, usage, doc_id, lap):
+        """Keep the questions the solver answers like the generator. The solver sees shuffled options and no answer."""
+        settings = self._settings()
+        shown = []
+        for number, item in enumerate(items):
+            order = list(range(len(item["options"])))
+            with self._rng_lock:
+                self.rng.shuffle(order)
+            shown.append({"q": number, "stem": item["stem"], "order": order,
+                          "options": [item["options"][k]["text"] for k in order]})
+        message = solver_message(material, shown)
+        judged = {}
 
-    @staticmethod
-    def _prompt_context(context):
-        return {key: value for key, value in context.items() if not key.startswith("_")}
+        def counts(payload):
+            judged["rows"] = verdicts(payload, shown, items)
+            kept = sum(row[0] for row in judged["rows"])
+            return {"kept": kept, "rejected": len(items) - kept}
 
-    @staticmethod
-    def _verifier_prompt(context, labels):
-        return (VERIFIER_INSTRUCTIONS + "\n"
-                + json.dumps({"chunks": context["chunks"],
-                              "distractor_sources": context["distractor_candidates"],
-                              "items": labels}, ensure_ascii=False))
+        result = call_json(
+            self.verifier_model, message, response_schema=SOLVER_SCHEMA, system_prompt=SYSTEM_SOLVER, store=self.store,
+            purpose="quiz_verify", doc_id=doc_id, context_hash=hashlib.sha256(message.encode()).hexdigest(),
+            allow_spend=True, settings=settings, spend_guard=self.spend_guard, clock=self.clock, images=images,
+            temperature=SOLVER_TEMPERATURE, thinking_level=settings.quiz_verifier_thinking_level or None,
+            extra_input_tokens=picture_tokens, usage_extra=counts)
+        self._add_call_usage(usage, result)
+        kept = []
+        for item, (keep, reason, detail) in zip(items, judged["rows"]):
+            if keep:
+                kept.append(item)
+            else:
+                self._reject(concept, lap, "solver", reason, item=item, detail=detail)
+        return kept
 
-    def _bank_estimate_tokens(self, context):
-        """Bound two variants plus one repair and blind-verifier retry."""
-        gen_input, gen_output, verify_input, verify_output = self._bank_estimate_token_breakdown(context)
-        return gen_input + verify_input, gen_output + verify_output
+    def _reject(self, concept, lap, stage, reason, *, raw=None, item=None, detail=None):
+        """Admin log of a question that was not kept: the concept, the lap, and the local rule or the solver's reason."""
+        self._record_rejection(stage, reason, concept, raw, item)
+        source = item or raw or {}
+        options = [{"text": str(option.get("text", "")), "is_correct": bool(option.get("is_correct"))}
+                   for option in (item or {}).get("options", [])]
+        self.store.put_record("quiz_rejection", secrets.token_hex(12), {
+            "doc_id": self.graph.payload.get("doc_id") if isinstance(getattr(self.graph, "payload", None), dict) else None,
+            "concept_id": concept.get("node_id"), "concept_name": self._name(concept), "lap": lap, "stage": stage,
+            "reason": reason, "solver_reason": detail, "item_id": (item or {}).get("item_id"),
+            "stem": str(source.get("stem", ""))[:500], "options": options,
+            "created_at": self.clock.now().isoformat() if self.clock else datetime.now(timezone.utc).isoformat()})
 
-    def _bank_estimate_token_breakdown(self, context):
-        generation_cap = self._setting("quiz_generation_max_output_tokens", 1200)
-        verifier_cap = self._setting("quiz_verifier_max_output_tokens", 400)
-        schema_tokens = lambda schema: math.ceil(len(json.dumps(schema, ensure_ascii=False, sort_keys=True)) / 3)
-        generation_tokens = math.ceil(len(self._generation_prompt(context)) / 3) + schema_tokens(QUIZ_SCHEMA)
+    def _bank_estimate_token_breakdown(self, material):
+        """Upper bound for two laps: text divided by three, plus a picture's tokens, plus the output cap.
 
-        verifier_payload = {"chunks": context["chunks"],
-                            "distractor_sources": context["distractor_candidates"], "items": []}
-        verifier_prefix = VERIFIER_INSTRUCTIONS + "\n"
-        verifier_tokens = (math.ceil((len(verifier_prefix) + len(json.dumps(verifier_payload, ensure_ascii=False))) / 3)
-                           + generation_cap + schema_tokens(VERIFIER_SCHEMA))
-        # Two generation attempts; the repair may include the entire preceding capped reply.
-        # Each verifier call may also receive a max-sized generated reply.
-        return (2 * generation_tokens + generation_cap, 2 * generation_cap,
-                2 * verifier_tokens, 2 * verifier_cap)
+        The solver also reads what the generator wrote, so the generation cap counts as its input.
+        """
+        settings = self._settings()
+        schema_tokens = lambda schema: len(json.dumps(schema, ensure_ascii=False, sort_keys=True)) // 3
+        pictures = IMAGE_TOKEN_ESTIMATE * len(material.pages)
+        generation = ((len(generation_system(bool(material.pages))) + len(material.user)) // 3
+                      + schema_tokens(GENERATION_SCHEMA) + pictures)
+        solver = ((len(SYSTEM_SOLVER) + len(material.user)) // 3 + schema_tokens(SOLVER_SCHEMA) + pictures
+                  + settings.quiz_generation_max_output_tokens)
+        return (2 * generation, 2 * settings.quiz_generation_max_output_tokens,
+                2 * solver, 2 * settings.quiz_verifier_max_output_tokens)
 
     @staticmethod
     def _add_call_usage(total, result):
@@ -735,158 +577,6 @@ class QuizUseCase:
         total["ms"] += result.elapsed_ms
         total["input_tokens"] += result.usage.get("input_tokens", result.usage.get("promptTokenCount", 0))
         total["output_tokens"] += result.usage.get("output_tokens", result.usage.get("candidatesTokenCount", 0))
-
-    def _normalize_item(self, concept, context, raw):
-        item, _ = self._normalize_item_with_reason(concept, context, raw)
-        return item
-
-    def _normalize_item_with_reason(self, concept, context, raw):
-        try:
-            if self._norm(raw["concept"]) not in {
-                self._norm(value) for value in [self._name(concept), *self._aliases(concept)]
-            }:
-                return None, "normalize.concept_mismatch"
-            correct = raw["correct"]
-            correct_sources = correct.get("sources", [])
-            correct_source = next((label for label in correct_sources
-                                   if self._quote_for_label(correct.get("quote", ""), label, context,
-                                                            correct=True)), None)
-            if correct_source is None:
-                labels = {row["label"] for row in context.get("chunks", [])}
-                if not any(label in labels for label in correct_sources):
-                    return None, "normalize.correct_source_label"
-                return None, "normalize.correct_quote"
-            correct_chunk = next(row["chunk_id"] for row in context["chunks"] if row["label"] == correct_source)
-            options = [{"text": correct["text"].strip(), "is_correct": True, "why_wrong": ""}]
-            distractors = raw.get("distractors", [])
-            if not isinstance(distractors, list) or len(distractors) != 2:
-                return None, "normalize.option_count"
-            options.extend({"text": d["text"].strip(), "is_correct": False,
-                            "why_wrong": d.get("why_wrong", "")[:self._setting("quiz_why_wrong_max_chars", 150)],
-                            "sources": d.get("sources", []), "quote": d.get("quote", ""), "from": d.get("from")}
-                           for d in distractors)
-            if len(options) != 3:
-                return None, "normalize.option_count"
-            for option in options[1:]:
-                if not option.get("sources"):
-                    return None, "normalize.distractor_source_label"
-                if not option.get("quote") or not any(
-                        self._quote_for_label(option["quote"], label, context)
-                        for label in option["sources"]):
-                    source_labels = ({row["label"] for row in context.get("chunks", [])}
-                                     | {row["label"] for row in context.get("distractor_candidates", [])}
-                                     | {row.get("label") for row in context.get("exercises", [])}
-                                     | {row.get("source_label") for row in context.get("prerequisites", [])})
-                    if not any(label in source_labels for label in option["sources"]):
-                        return None, "normalize.distractor_source_label"
-                    return None, "normalize.distractor_quote"
-            evidence = [self._citation(context, correct_source, correct["quote"])]
-            for option in options[1:]:
-                source = next(label for label in option["sources"]
-                              if self._quote_for_label(option["quote"], label, context))
-                source_candidate = next((row for row in context.get("distractor_candidates", [])
-                                         if row["label"] == source), None)
-                declared_from = option.get("from")
-                if declared_from in {row["label"] for row in context.get("distractor_candidates", [])}:
-                    if declared_from != source or source_candidate is None:
-                        return None, "normalize.from_source_mismatch"
-                    if source_candidate.get("evidence_chunk_id") == correct_chunk:
-                        return None, "normalize.distractor_same_chunk"
-                elif declared_from == "moi":
-                    if source not in {row["label"] for row in context["chunks"]}:
-                        return None, "normalize.from_source_mismatch"
-                else:
-                    return None, "normalize.from_source_mismatch"
-                option["sources"] = [source]
-                option["evidence"] = [self._citation(context, source, option["quote"])]
-            stem = raw["stem"].strip()
-            item_id = "qi_" + hashlib.sha256((concept["node_id"] + stem + "|".join(o["text"] for o in options)).encode()).hexdigest()[:24]
-            return {"item_id": item_id, "concept_id": concept["node_id"], "module_id": context["module"]["module_id"],
-                    "generator": "llm", "bloom": raw.get("bloom", "hieu"), "stem": stem, "options": options,
-                    "explanation": raw.get("explanation", "")[:self._setting("quiz_explanation_max_chars", 300)], "evidence": evidence,
-                    "formula_refs": raw.get("formula_refs", []),
-                    "checks": {"rules_passed": [], "verifier": "pending", "flags": []}}, None
-        except (KeyError, TypeError, IndexError):
-            return None, "normalize.malformed_candidate"
-
-    def _rules_pass(self, item, context):
-        return self._rules_pass_with_reason(item, context)[0]
-
-    def _rules_pass_with_reason(self, item, context):
-        options = item["options"]
-        texts = [self._norm(o["text"]) for o in options]
-        correct = next((o for o in options if o["is_correct"]), None)
-        if not correct or len(set(texts)) != 3:
-            return False, "local.option_count_or_duplicate"
-        if self._option_substring_overlap(options):
-            return False, "local.option_substring_overlap"
-        aliases = {self._norm(x) for x in [self._name(context["concept"]), *self._aliases(context["concept"])]}
-        if any(self._norm(o["text"]) in aliases for o in options if not o["is_correct"]):
-            return False, "local.distractor_is_target_alias"
-        answer_len = len(correct["text"])
-        distractor_mean = sum(len(o["text"]) for o in options if not o["is_correct"]) / 2
-        if answer_len > 1.3 * distractor_mean and answer_len == max(map(lambda o: len(o["text"]), options)):
-            return False, "local.answer_too_long"
-        stem = item["stem"].casefold()
-        if any(term in stem for term in ("tất cả đáp án", "không có đáp án", " ngoại trừ", "không phải")):
-            return False, "local.negative_stem"
-        if any(term in " ".join(texts) for term in ("luôn luôn", "không bao giờ")):
-            return False, "local.absolute_option"
-        content_stops = {"một", "những", "các", "là", "của", "và", "trong", "được", "gọi", "nào", "gì",
-                         "theo", "với", "khi", "cho", "từ", "đến", "có", "không", "về", "mỗi", "này", "đó"}
-        stem_words = set(re.findall(r"[^\W_]+", stem)) - content_stops
-        answer_words = set(re.findall(r"[^\W_]+", self._norm(correct["text"]))) - content_stops
-        distractor_words = set().union(*(set(re.findall(r"[^\W_]+", self._norm(o["text"]))) - content_stops
-                                         for o in options if not o["is_correct"]))
-        target_aliases = [self._name(context["concept"]), *self._aliases(context["concept"])]
-        if (any(alias.casefold() in stem for alias in target_aliases if alias)
-                and self._norm(correct["text"]) in aliases):
-            return False, "local.target_name_in_stem"
-        if (stem_words & answer_words) - distractor_words:
-            return False, "local.answer_cue"
-        text = stem + " " + " ".join(texts)
-        if "```" in text or "**" in text or "__" in text or re.search(r"^\s*(?:câu hỏi:|[SDK]\d+:|K\d+:)", text, re.I | re.M):
-            return False, "local.markup_or_source_label"
-        if self._visual_or_formula_reference(text):
-            return False, "local.visual_or_formula_reference"
-        if any(re.search(r"\[formula\]|\[CT[^\]]+\]|\bCT\w+\b|[=∑∫√^_×÷±≤≥<>]", option["text"], re.I)
-               for option in options):
-            return False, "local.formula_option"
-        if (len(item.get("explanation", "")) > self._setting("quiz_explanation_max_chars", 300)
-                or any(len(o.get("why_wrong", "")) > self._setting("quiz_why_wrong_max_chars", 150)
-                       for o in options)):
-            return False, "local.explanation_or_why_wrong_too_long"
-        source = " ".join(c["text"] for c in context["chunks"])
-        if not self._math_from_source(text, source):
-            return False, "local.unsupported_math"
-        minimum_vietnamese = min(0.25, self._vietnamese_ratio(source) * 0.5)
-        language_texts = [item["stem"], item.get("explanation", ""),
-                          *(option.get("why_wrong", "") for option in options if not option["is_correct"])]
-        if not all(self._vietnamese_ratio(value) >= minimum_vietnamese for value in language_texts if value.strip()):
-            return False, "local.language_ratio"
-        return True, None
-
-    def _verifier_rejection_reason(self, item, context, options, result, complete_verdicts, verdict_values):
-        if result is None:
-            return "verifier.missing_result"
-        if item is None:
-            return "verifier.unknown_item"
-        selected = next((option for index, option in enumerate(options)
-                         if str(index) == str(result.get("selected_option_id"))), None)
-        if selected is None or not selected.get("is_correct"):
-            return "verifier.wrong_choice"
-        if result.get("valid") is not True:
-            return "verifier.invalid_question"
-        if not self._quote_found(result.get("quote", ""), context, current_only=True):
-            return "verifier.quote_not_found"
-        normalized_verdicts = [str(value).casefold() for value in verdict_values]
-        if any("nguồn không nói" in value for value in normalized_verdicts):
-            return "verifier.distractor_inconclusive"
-        if any("đúng theo nguồn" in value for value in normalized_verdicts):
-            return "verifier.distractor_supported"
-        if not complete_verdicts:
-            return "verifier.distractor_verdict_missing_or_not_wrong"
-        return None
 
     def _duplicate(self, first, second):
         def grams(item):
@@ -946,6 +636,9 @@ class QuizUseCase:
             if self._cloze_visual_or_formula_reference(quote):
                 self._record_rejection("cloze", "local.visual_or_formula_reference", concept,
                                        {"stem": quote})
+                continue
+            if CLOZE_MATH.search(quote):
+                self._record_rejection("cloze", "cloze.math_notation", concept, {"stem": quote})
                 continue
             # A sentence ending in a colon leads into a list or formula that the stem does not show.
             if INCOMPLETE_CLOZE_LEAD_IN.search(quote) or quote.endswith(":"):
@@ -1038,10 +731,6 @@ class QuizUseCase:
                    for index, a in enumerate(texts) for b in texts[index + 1:])
 
     @staticmethod
-    def _visual_or_formula_reference(text):
-        return bool(VISUAL_OR_FORMULA_REFERENCE.search(str(text or "")))
-
-    @staticmethod
     def _cloze_visual_or_formula_reference(text):
         return bool(CLOZE_VISUAL_OR_FORMULA_REFERENCE.search(str(text or "")))
 
@@ -1115,37 +804,6 @@ class QuizUseCase:
                       if any(n and re.search(re.escape(n), self._get(chunk, "text", ""), re.I) for n in names)]
         return chunks[:8]
 
-    def _citation(self, context, label, quote):
-        sources = context.get("_source_registry") or self.sources
-        if sources and label:
-            try:
-                return sources.citation(label, quote)
-            except (KeyError, ValueError):
-                pass
-        chunk = next((c for c in context["chunks"] if c["chunk_id"] == label or c["label"] == label), None)
-        if chunk is None:
-            candidate = next((row for row in context.get("distractor_candidates", []) if row["label"] == label), None)
-            if candidate:
-                chunk = self.graph.chunks.get(candidate.get("evidence_chunk_id"))
-                if chunk:
-                    citation = self._raw_citation(chunk, quote)
-                    citation["label"] = label
-                    return citation
-        return self._raw_citation(chunk, quote) if chunk else {"label": label, "quote": quote}
-
-    def _quote_for_label(self, quote, label, context, *, correct=False):
-        from doc2roadmap.application.phase_b.common import quote_is_verbatim
-
-        label = str(label)
-        source = next((row["text"] for row in context["chunks"] if row["label"] == label), None)
-        if source is None and not correct:
-            source = next((row["anchor"] for row in context.get("distractor_candidates", [])
-                           if row["label"] == label), None)
-        if source is None and not correct:
-            source = next((row["text"] for row in context.get("exercises", []) + context.get("prerequisites", [])
-                           if row.get("label") == label), None)
-        return bool(source and quote_is_verbatim(quote, source, max_chars=200))
-
     def _raw_citation(self, chunk, quote):
         text = self._get(chunk, "text", "")
         start = text.find(quote) if quote else -1
@@ -1209,17 +867,3 @@ class QuizUseCase:
     @staticmethod
     def _norm(text):
         return " ".join(unicodedata.normalize("NFC", str(text)).casefold().split())
-
-    @staticmethod
-    def _math_from_source(text, source):
-        pattern = r"[α-ωΑ-Ω∑∏√∞≤≥≠≈∈∉⊂⊆→⇒×÷±^_=<>+*/-]|\b\d+(?:\.\d+)?\b"
-        return set(re.findall(pattern, text)) <= set(re.findall(pattern, source))
-
-    @staticmethod
-    def _vietnamese_ratio(text):
-        tokens = re.findall(r"[^\W_]+", unicodedata.normalize("NFC", str(text)))
-        if not tokens:
-            return 0.0
-        marks = set("\u0300\u0301\u0303\u0309\u0323\u0302\u0306\u031b")
-        return sum(any(char in marks for char in unicodedata.normalize("NFD", token))
-                   for token in tokens) / len(tokens)

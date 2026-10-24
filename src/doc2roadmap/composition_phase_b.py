@@ -213,7 +213,8 @@ class PhaseBRuntime:
         model = self.model('quiz_gen') if self.mode == 'gemini' else None
         verifier = self.model('quiz_verify') if self.mode == 'gemini' else None
         return QuizUseCase(graph, self.store, model, settings=self.b_settings, verifier_model=verifier,
-                           progress_use_case=self.progress(graph), spend_guard=self.spend_guard, clock=self.clock)
+                           progress_use_case=self.progress(graph), spend_guard=self.spend_guard, clock=self.clock,
+                           page_images=self.page_images)
 
     def document(self, graph, request, scope, *, owner='local', dry_run=False, home_scope=None,
                  session_id=None, origin='button', on_event=None):
