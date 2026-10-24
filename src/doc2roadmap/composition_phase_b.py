@@ -157,8 +157,8 @@ class PhaseBRuntime:
                 vertex_location=self.settings.vertex_location, vertex_credentials=self.vertex_credentials))
         return self._query_embedding
 
-    def search(self, graph, query, *, scope='uu_tien_module', k=6, current_module_id=None):
-        if self.allow_spend:
+    def search(self, graph, query, *, scope='uu_tien_module', k=6, current_module_id=None, free=False):
+        if self.allow_spend and not free:
             embedding = self.query_embedding()
             return SearchDocumentB(self.artifacts, embedding, self.store).search(
                 query, doc_id=graph.doc_id, graph_version=graph.graph_version, current_module_id=current_module_id,
@@ -216,16 +216,14 @@ class PhaseBRuntime:
                            progress_use_case=self.progress(graph), spend_guard=self.spend_guard, clock=self.clock)
 
     def document(self, graph, request, scope, *, owner='local', dry_run=False, home_scope=None,
-                 session_id=None, origin='button'):
-        retriever = None
-        if self.allow_spend and self.mode == 'gemini':
-            embedding = self.query_embedding()
-            retriever = SearchDocumentB(self.artifacts, embedding, self.store)
-        return DocumentUseCase(self.model('document'), self.store, settings=self.b_settings, retriever=retriever,
+                 session_id=None, origin='button', on_event=None):
+        model = None if self.mode == 'offline' and not self.replay_dir else self.model('document')
+        return DocumentUseCase(model, self.store, settings=self.b_settings,
+                               search=partial(self.search, graph, free=dry_run), page_images=self.page_images,
                                clock=self.clock, spend_guard=self.spend_guard).create(
             graph.doc_id, graph.graph_version, graph, request, scope, owner=owner, dry_run=dry_run,
             allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir),
-            home_scope=home_scope, session_id=session_id, origin=origin)
+            home_scope=home_scope, session_id=session_id, origin=origin, on_event=on_event)
 
     def assistant(self, graph):
         def get_lecture(concept, **kwargs):

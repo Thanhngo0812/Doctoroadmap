@@ -93,46 +93,41 @@ def test_outside_definition_of_in_scope_name_or_alias_is_removed(graph, body):
     assert any(row['kind'] == 'outside_document_removed' for row in warnings)
 
 
-def make_document(graph, markdown, outside=None):
-    class Model:
-        model_id = pricing.GENERATION_MODEL
-
-        def ask_json(self, prompt, *, response_schema):
-            return NS(payload={'title': 'Dữ liệu', 'markdown': markdown,
-                'citations': [{'label': 'S1', 'quote': graph.chunks['c1'].text}],
-                'outside_document_blocks': outside or []}, usage={})
-
-    return DocumentUseCase(Model(), InMemoryPhaseBStore()).create(
+def make_document(graph, markdown):
+    """SA-67: the model streams its Markdown; the use case keeps it as written."""
+    from sa64_support import FakeModel, FakeClock, list_pieces
+    store = InMemoryPhaseBStore()
+    document = DocumentUseCase(FakeModel(list_pieces(markdown)), store, clock=FakeClock()).create(
         'book', 1, graph, 'Giải thích CSDL', 'n', owner='test', allow_spend=True)
+    return document, store
 
 
-def test_document_removes_uncited_definitions_and_fake_compound_labels_without_duplicate_h1(graph):
-    document = make_document(graph, '# Dữ liệu\n\nCSDL có cấu trúc [S1, S999]. '
-        'Supervised learning là học từ dữ liệu.\n\nCSDL có đúng 7 phần [S999].')
-    assert document['status'] == 'ready'
+def test_document_keeps_every_sentence_and_logs_fake_labels_and_unsourced_sentences(graph):
+    # SA-67 (was: removed uncited definitions and fake compound labels). document-3 never edits the model's text.
+    text = ('# Dữ liệu\n\nCSDL có cấu trúc [S1, S999]. Supervised learning là học từ dữ liệu.\n\n'
+            'CSDL có đúng 7 phần [S999].')
+    document, store = make_document(graph, text)
+    assert document['status'] == 'ready' and document['markdown'] == text
     assert document['markdown'].count('# Dữ liệu') == 1
-    assert 'Supervised learning' not in document['markdown']
-    assert '7 phần' not in document['markdown']
-    assert 'S999' not in document['markdown']
-    assert {row['label'] for row in document['citations']} == {'S1'}
-    assert document['postcheck']['unsourced_sentence'] == 2
+    log = store.get_record('document_validation', document['document_id'])
+    assert log['unknown_labels'] == ['S999'] and log['unsourced_sentences'] == 1
 
 
-def test_document_requires_a_retained_sourced_sentence_and_rejects_outside_definition(graph):
-    document = make_document(graph, 'CSDL có đúng 7 phần.',
-        ['Supervised learning là một nhánh của học máy.'])
-    assert document['status'] == 'failed'
-    assert document['outside_document_blocks'] == 0
-    assert 'Supervised learning' not in document['markdown']
+def test_document_without_any_label_is_still_shown_and_only_logged(graph):
+    # SA-67 (was: failed without a retained sourced sentence). ADR 0024: failed only when the model wrote nothing.
+    document, store = make_document(graph, 'CSDL có đúng 7 phần.')
+    assert document['status'] == 'ready' and document['markdown'] == 'CSDL có đúng 7 phần.'
+    assert store.get_record('document_validation', document['document_id'])['unsourced_sentences'] == 1
+    assert 'outside_document_blocks' not in document
 
 
-def test_markdown_heading_cannot_hide_an_unsourced_definition_or_numeric_claim(graph):
-    document = make_document(graph, '# Dữ liệu\n\n## CSDL có đúng 7 phần\n\n'
-        '## Supervised learning là một nhánh học máy\n\nCSDL có cấu trúc [S1].')
-    assert document['status'] == 'ready'
-    assert '7 phần' not in document['markdown']
-    assert 'Supervised learning' not in document['markdown']
-    assert document['postcheck']['unsourced_sentence'] == 2
+def test_markdown_headings_are_kept_and_not_counted_as_unsourced_sentences(graph):
+    # SA-67 (was: headings could not hide an unsourced claim, which the checker deleted).
+    text = ('# Dữ liệu\n\n## CSDL có đúng 7 phần\n\n## Supervised learning là một nhánh học máy\n\n'
+            'CSDL có cấu trúc [S1].')
+    document, store = make_document(graph, text)
+    assert document['status'] == 'ready' and document['markdown'] == text
+    assert store.get_record('document_validation', document['document_id'])['unsourced_sentences'] == 0
 
 
 def test_traverse_never_leaks_distinct_open_requires_edge(graph):
@@ -160,10 +155,11 @@ def test_shared_price_change_reaches_assistant_and_document_plans_and_ledgers(gr
             yield Delta('CSDL có cấu trúc [S1].')
             yield Done(usage)
 
-        def ask_json(self, *args, **kwargs):
-            return NS(payload={'title': 'Dữ liệu', 'markdown': 'CSDL có cấu trúc [S1].',
-                'citations': [{'label': 'S1', 'quote': graph.chunks['c1'].text}],
-                'outside_document_blocks': []}, usage=usage)
+        last_usage = usage
+        last_finish_reason = 'STOP'
+
+        def stream_text(self, *args, **kwargs):
+            yield 'CSDL có cấu trúc [S1].'
 
     settings = replace(BSettings(), assistant_max_usd=1, document_max_usd=1)
     store = InMemoryPhaseBStore()
@@ -182,7 +178,8 @@ def test_shared_price_change_reaches_assistant_and_document_plans_and_ledgers(gr
     expected = pricing.token_cost(pricing.GENERATION_MODEL, usage)
     assert answer['usage']['usd'] == pytest.approx(expected)
     assert document['usage']['cost_usd'] == pytest.approx(expected)
-    assert all(row['cost_usd'] == pytest.approx(expected) for row in store.usage_rows())
+    assert all(row['cost_usd'] == pytest.approx(expected) for row in store.usage_rows()
+               if row['purpose'] in {'assistant', 'document'})
 
 
 def test_old_client_turn_cache_cannot_bypass_the_new_answer_contract(graph):

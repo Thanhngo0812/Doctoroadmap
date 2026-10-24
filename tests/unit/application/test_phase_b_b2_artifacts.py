@@ -19,7 +19,7 @@ def test_document_scope_remap_reads_configured_jaccard_threshold():
     narrow = low.create('dev', 1, graph, 'Tóm tắt', scope, owner='alice', dry_run=True)
     broad = high.create('dev', 1, graph, 'Tóm tắt', scope, owner='alice', dry_run=True)
     assert narrow['scope']['module_ids'] == ['m0']
-    assert broad['reason'] == 'scope_too_large'
+    assert broad['failure']['reason_code'] == 'scope_too_large'
 from doc2roadmap.infrastructure.llm.phase_b_demo import DemoModel
 
 
@@ -139,7 +139,7 @@ def test_document_scope_over_five_modules_fails_before_calling_model():
     )
 
     assert result["status"] == "failed"
-    assert result["reason"] == "scope_too_large"
+    assert result["failure"]["reason_code"] == "scope_too_large"
     assert result["usage"] == {}
     assert result["origin"] == "button"
     assert result["session_id"] is None
@@ -149,19 +149,8 @@ def test_document_scope_over_five_modules_fails_before_calling_model():
 def test_five_module_document_is_allowed_and_stores_button_metadata():
     graph = RoadmapGraph(module_count=5, nodes_per_module=1)
 
-    class Model:
-        model_id = "fake"
-
-        def ask_json(self, prompt, *, response_schema, system_prompt=""):
-            context = json.loads(prompt.split("\nUse Markdown", 1)[0])
-            citations, paragraphs = [], []
-            for label, source in context["sources"].items():
-                quote = source["text"].split("\n", 1)[0]
-                citations.append({"label": label, "quote": quote})
-                paragraphs.append(f"{quote} [{label}]")
-            return SimpleNamespace(payload={"title": "Tổng hợp", "markdown": "\n\n".join(paragraphs),
-                                              "citations": citations, "outside_document_blocks": []},
-                                   usage={"promptTokenCount": 200, "candidatesTokenCount": 300})
+    from sa64_support import FakeModel
+    Model = FakeModel  # SA-67: document-3 streams Markdown
 
     result = DocumentUseCase(Model(), InMemoryPhaseBStore(), settings=BSettings(document_max_modules=5)).create(
         "dev", 1, graph, "Tổng hợp", {"module_ids": list(graph.modules)}, owner="alice", allow_spend=True,
@@ -169,7 +158,7 @@ def test_five_module_document_is_allowed_and_stores_button_metadata():
     )
 
     assert result["status"] == "ready"
-    assert result["contract_version"] == "document-2"
+    assert result["contract_version"] == "document-3"
     assert result["home_scope"] == {"kind": "roadmap"}
     assert result["origin"] == "button"
     assert result["session_id"] is None
@@ -224,7 +213,7 @@ def test_document_spend_guard_denial_is_a_zero_call_daily_limit():
     )
 
     assert result["status"] == "failed"
-    assert result["reason"] == "daily_limit"
+    assert result["failure"]["reason_code"] == "daily_limit"
     assert guard.checks == [("document", guard.checks[0][1], "alice")]
     assert result["usage"] == {}
 
