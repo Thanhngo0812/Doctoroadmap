@@ -39,6 +39,7 @@ class GeminiToolModel:
         temperature: float = 0.0,
         max_output_tokens: int = 2048,
         timeout_seconds: float = 60,
+        vertex_credentials: VertexCredentials | None = None,
     ) -> None:
         if transport == "developer_api" and not (api_key and api_key.strip()):
             raise ValueError("missing Gemini API key")
@@ -49,7 +50,9 @@ class GeminiToolModel:
         self.api_key = api_key
         self.model_id = model_id
         self.transport = transport
-        self.vertex = VertexCredentials(vertex_project or "", vertex_location) if transport == "vertex" else None
+        # A runtime passes one shared credentials object so every client reuses the same token.
+        self.vertex = (vertex_credentials or VertexCredentials(vertex_project or "", vertex_location)
+                       ) if transport == "vertex" else None
         self.temperature = temperature
         self.max_output_tokens = max_output_tokens
         self.timeout_seconds = timeout_seconds
@@ -306,7 +309,11 @@ class GeminiToolSession:
         for message in messages:
             role = message.get("role")
             if role == "user":
-                contents.append({"role": "user", "parts": [{"text": str(message.get("text", ""))}]})
+                parts = [{"text": str(message.get("text", ""))}]
+                for page, data in message.get("images", ()):
+                    parts += [{"text": f"Ảnh trang {page} của sách:"},
+                              {"inlineData": {"mimeType": "image/jpeg", "data": base64.b64encode(data).decode("ascii")}}]
+                contents.append({"role": "user", "parts": parts})
             elif role == "model":
                 parts = []
                 turn_id = message.get("turn_id")
@@ -457,7 +464,7 @@ class RecordingToolSession:
 
     def stream(self, messages: list[dict[str, Any]], *, mode: Literal["AUTO", "NONE"] = "AUTO") -> Iterator[Delta | ToolCall | Done]:
         # The caller extends `messages` after this call; record what was sent now.
-        snapshot = deepcopy(messages)
+        snapshot = _wire_messages(messages)
         events = []
         for event in self.delegate.stream(messages, mode=mode):
             events.append(_event_dict(event))
@@ -569,7 +576,7 @@ class ReplayToolSession:
             raise RuntimeError(f"recorded text stream failed: {call['error'].get('type', 'error')}")
 
     def stream(self, messages: list[dict[str, Any]], *, mode: Literal["AUTO", "NONE"] = "AUTO") -> Iterator[Delta | ToolCall | Done]:
-        call = self._take("conversation", {"messages": messages, "mode": mode})
+        call = self._take("conversation", {"messages": _wire_messages(messages), "mode": mode})
         for event in call["events"]:
             parsed = _event_from_dict(event)
             if isinstance(parsed, Done):
@@ -580,6 +587,15 @@ class ReplayToolSession:
 
 def _picture_ids(images: Sequence[tuple[int, bytes]]) -> list[list[Any]]:
     return [[page, hashlib.sha256(data).hexdigest()] for page, data in images]
+
+
+def _wire_messages(messages: Sequence[Mapping[str, Any]]) -> list[dict[str, Any]]:
+    """Messages as recorded: page pictures become (page, sha256) pairs so fixtures stay JSON and small."""
+    wire = deepcopy([{key: value for key, value in message.items() if key != "images"} for message in messages])
+    for row, message in zip(wire, messages):
+        if message.get("images"):
+            row["images"] = _picture_ids(message["images"])
+    return wire
 
 
 def _event_dict(event: Delta | ToolCall | Done) -> dict[str, Any]:

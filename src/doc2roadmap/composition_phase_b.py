@@ -1,8 +1,10 @@
 """Composition of the learner-facing use cases; providers stay outside application."""
+import logging
 from functools import partial
 from dataclasses import asdict
 from pathlib import Path
 from statistics import median
+from threading import Thread
 from uuid import uuid4
 
 from doc2roadmap.application.phase_b.assistant import AssistantUseCase
@@ -24,10 +26,12 @@ from doc2roadmap.infrastructure.artifacts.page_images import ArtifactPageImages
 from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
 from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
 from doc2roadmap.infrastructure.embedding.query_cache import CachedQueryEmbedding
+from doc2roadmap.infrastructure.google_auth import VertexCredentials
 from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel, RecordingToolModel, ReplayToolModel
 from doc2roadmap.infrastructure.llm.phase_b_demo import DemoModel
 
 
+_log = logging.getLogger(__name__)
 DEVELOPMENT_DOCS = ('doc-1', 'nhap-mon-ml', 'naive-bayes', 'doc-6', 'xstk-ch3-1', 'doc-4')
 
 
@@ -56,6 +60,20 @@ class PhaseBRuntime:
         self._query_embedding = None
         self._concept_indexes = {}
         self.page_images = ArtifactPageImages(self.settings.artifact_dir)
+        # One credentials object serves every model and embedding client; its token is fetched once, in the background.
+        self.vertex_credentials = None
+        self.auth_warmup = None
+        if (self.mode == 'gemini' and not replay_dir and self.settings.llm_transport == 'vertex'
+                and self.settings.vertex_project):
+            self.vertex_credentials = VertexCredentials(self.settings.vertex_project, self.settings.vertex_location)
+            self.auth_warmup = Thread(target=self._warm_credentials, name='vertex-auth-warmup', daemon=True)
+            self.auth_warmup.start()
+
+    def _warm_credentials(self):
+        try:
+            self.vertex_credentials.headers()
+        except Exception as error:  # noqa: BLE001 - a failed warm-up only costs the first call its wait
+            _log.warning('Vertex auth warm-up failed: %s', type(error).__name__)
 
     def model(self, purpose):
         if purpose in self._models:
@@ -75,13 +93,14 @@ class PhaseBRuntime:
                    'quiz_verify': self.b_settings.quiz_verifier_max_output_tokens}
         temperature = {'module_title': self.b_settings.naming_temperature,
                        'lecture': self.b_settings.lecture_temperature,
-                       'document': self.b_settings.document_temperature}.get(purpose, 1.0 if purpose == 'assistant' else 0.0)
+                       'assistant': self.b_settings.assistant_temperature,
+                       'document': self.b_settings.document_temperature}.get(purpose, 0.0)
         model = GeminiToolModel(
             self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else 'dry-run-no-key',
             self.b_settings.model_id, transport=self.settings.llm_transport,
             vertex_project=self.settings.vertex_project, vertex_location=self.settings.vertex_location,
             temperature=temperature, max_output_tokens=outputs[purpose],
-            timeout_seconds=self.settings.gemini_timeout_seconds)
+            timeout_seconds=self.settings.gemini_timeout_seconds, vertex_credentials=self.vertex_credentials)
         if self.record_dir:
             model = RecordingToolModel(model, Path(self.record_dir) / (purpose + '.json'), prompt_hash=prompt_hash)
         self._models[purpose] = model
@@ -135,7 +154,7 @@ class PhaseBRuntime:
                 self.settings.gemini_api_key.get_secret_value() if self.settings.gemini_api_key else None,
                 model=self.b_settings.embedding_model_id, output_dimensionality=768,
                 transport=self.settings.llm_transport, vertex_project=self.settings.vertex_project,
-                vertex_location=self.settings.vertex_location))
+                vertex_location=self.settings.vertex_location, vertex_credentials=self.vertex_credentials))
         return self._query_embedding
 
     def search(self, graph, query, *, scope='uu_tien_module', k=6, current_module_id=None):
@@ -223,7 +242,7 @@ class PhaseBRuntime:
         return AssistantUseCase(graph, self.store, self.model('assistant'), settings=self.b_settings,
                                 search=partial(self.search, graph), concept_lookup=partial(self.lookup, graph), lecture=get_lecture,
                                 quiz=make_quiz, document=make_document, clock=self.clock,
-                                progress=self.progress(graph), spend_guard=self.spend_guard)
+                                progress=self.progress(graph), spend_guard=self.spend_guard, page_images=self.page_images)
 
     def lookup(self, graph, query):
         named = graph.lookup_concept(query)

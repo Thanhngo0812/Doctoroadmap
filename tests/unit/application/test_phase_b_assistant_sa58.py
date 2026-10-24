@@ -82,7 +82,7 @@ def test_a_turn_runs_against_the_real_search_in_both_session_kinds(scope_kind, e
     seen = []
     use_case, _ = assistant([answer_turn()], scope_kind, seen)
     result = ask(use_case)
-    assert result['status'] == 'answered' and '[S1]' in result['answer']
+    assert result['status'] == 'answered' and '[S1]' in result['answer_md']
     assert seen == [expected]
 
 
@@ -91,7 +91,7 @@ def tool_search(args):
     turns = [[ToolCall('search_document', args, '1'), Done({})], answer_turn()]
     use_case, model = assistant(turns, 'm3', seen)
     result = ask(use_case)
-    assert result['status'] in {'answered', 'partial'} and '[S1]' in result['answer']  # partial: a tool call was refused
+    assert result['status'] == 'answered' and '[S1]' in result['answer_md']  # a refused tool call is counted in usage, not in the status
     return result['tool_calls'][0]['result_summary'], seen, model
 
 
@@ -142,5 +142,5 @@ def test_a_two_round_turn_recorded_then_replayed_matches(tmp_path):
     session(store2, graph2, 'm3')
     replayed = ask(AssistantUseCase(graph2, store2, ReplayToolModel(path, prompt_hash='sa58'),
                                     search=fixed_search))
-    assert replayed['answer'] == live['answer'] and '[S1]' in live['answer']
+    assert replayed['answer_md'] == live['answer_md'] and '[S1]' in live['answer_md']
     assert [row['name'] for row in replayed['tool_calls']] == ['search_document']

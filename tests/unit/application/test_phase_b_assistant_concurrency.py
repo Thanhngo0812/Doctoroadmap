@@ -27,13 +27,13 @@ class _ObservedStore(InMemoryPhaseBStore):
         self.turn_lock = Lock()
         self.follower_waiting = Event()
 
-    def single_flight(self, key, generate):
+    def single_flight(self, key, generate, **options):
         if key.startswith("assistant-turn:"):
             with self.turn_lock:
                 self.turn_requests += 1
                 if self.turn_requests == 2:
                     self.follower_waiting.set()
-        return super().single_flight(key, generate)
+        return super().single_flight(key, generate, **options)
 
 
 class _BlockingModel:
