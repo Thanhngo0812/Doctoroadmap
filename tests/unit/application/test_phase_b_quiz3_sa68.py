@@ -438,3 +438,20 @@ def test_lecture_keys_do_not_move_when_only_quiz_limits_change():
     changed = replace(BSettings(), quiz_parallel_concepts=1, quiz_verifier_thinking_level="high",
                       quiz_generation_prompt_version="quiz-gen-9", quiz_items_per_concept=5)
     assert support.lecture_keys(changed) == support.lecture_keys()
+
+
+def test_learners_never_find_the_answer_where_the_generator_put_it():
+    # Claude's acceptance (2026-10-24): a generator that always writes the answer first must not give it away by position.
+    import random
+
+    def answer_always_first(concept, lap):
+        return [raw_item(f"{concept} lượt {lap} câu {k}", correct=0, bloom=bloom)
+                for k, bloom in enumerate(("nho", "hieu", "van_dung"))]
+    use, _, _, _ = build(script=answer_always_first, rng=random.Random(5))
+    positions = set()
+    for learner in range(6):
+        quiz = use.make_quiz("d", "m", f"learner{learner}", node_ids=["n1"], allow_spend=True)
+        for item in quiz["items"]:
+            texts = [option["text"] for option in item["options"]]
+            positions.add(next(index for index, text in enumerate(texts) if text.endswith("phương án 0")))
+    assert len(positions) >= 3
