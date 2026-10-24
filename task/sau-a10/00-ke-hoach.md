@@ -125,7 +125,7 @@ Bốn luật:
 | [69](69-tro-ly-3-sua-sau-chay-that.md) | Trợ lý `answer-3` sửa sau chạy thật: phạm vi công cụ quiz/tài liệu theo số module, chống lộ lời nhắc ([spec](../../doc/tro-ly-3-spec.md) mục 8) | 66 | 0 | **đang cài** (agent Sonnet, 2026-10-24); gấp vì web W-09 |
 | [70](70-bai-giang-3-ban-2.md) | Bài giảng bản 2: lời nhắc V5, chữ thô công thức, 8 ảnh, sửa cờ log, stream không lộ tự kiểm tra, tham số suy nghĩ ([spec](../../doc/bai-giang-3-spec.md) mục 11) | 69 | 0 khi cài | chờ SA-69. So sánh mù V4/V5/có suy nghĩ: không khác biệt có ý nghĩa; giữ V5 |
 | [67](67-tai-lieu-3-viet-tu-nhien.md) | Tài liệu `document-3`: viết tự nhiên theo yêu cầu, tư liệu rộng, kiểm chỉ ghi log (ADR 0027, [spec](../../doc/tai-lieu-3-spec.md)) | 70 | 0 khi cài | chờ SA-70. Bản thử 2026-10-24: 6/6 tài liệu 584–908 từ đúng hình thức xin (bản cũ 280–1.583 ký tự, có bài lạc đề); suy nghĩ không giúp; giới hạn đã biết ở ADR |
-| 68 (chưa vé) | Quiz: rà như bài giảng (SA-22: kiểm loại 58% câu LLM, `quiz_verify` cắt ở 400 token) | 66 | — | như 67 |
+| [68](68-quiz-3-cau-hoi-hieu-va-giai-mu.md) | Quiz `quiz-3`: 3 câu/khái niệm, 4 phương án, LaTeX; giữ câu nhờ giải mù suy nghĩ `medium` (ADR 0028, [spec](../../doc/quiz-3-spec.md)) | 70 | 0 khi cài | chờ SA-70. Bản thử 2026-10-24: 36 câu, Claude đọc: 29 tốt/3 mơ hồ/3 sai; giải mù `medium` bắt 2/3 sai, 0 loại nhầm (bản cũ: 8 câu cho 12 khái niệm) |
 
 **Vá sau SA-45, 2026-10-19:** các lỗi 46–50 đã ghép và kiểm, SA-51 sửa phương pháp tổng hợp và phát lại đủ 12 mẫu, không dùng phê duyệt chi cũ cho lượt mới. Xem [bàn giao 46–51](../../report/pha-b-sa46-51-2026-10-19.md). Các phán xét SA-45 ở dòng 34–43 phía trên là lịch sử trước vá; lỗi tương ứng đã xử lý ở 46–50, giới hạn bằng chứng so nhiệt độ vẫn được giữ tại 51.
 
