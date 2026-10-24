@@ -16,8 +16,9 @@ function LectureMarkdown(props: { text: string; sources?: Lecture['sources']; on
   return <Suspense fallback={<div className="lecture-markdown">{props.text}</div>}><MarkdownContent {...props} /></Suspense>;
 }
 
-function Lesson({ courseId, nodeId, title, learned, pending, progressError, onToggle, onAccessError }: {
+function Lesson({ courseId, nodeId, title, progress, learned, pending, progressError, onToggle, onAccessError }: {
   courseId: string; nodeId: string; title: string; learned: boolean; pending: boolean;
+  progress: CourseProgress['nodes'];
   progressError?: string; onToggle: () => void; onAccessError: (cause: ApiError) => void;
 }) {
   const auth = useAuth();
@@ -79,15 +80,16 @@ function Lesson({ courseId, nodeId, title, learned, pending, progressError, onTo
   const definition = lecture?.definition;
   const readPage = failure?.read_page?.page ?? definition?.page ?? definition?.citation?.page;
   // The answer is a disclosure in final. Do not reveal the model's unsplit answer while it streams.
-  const body = streaming ? lecture?.body_md.split(/^###\s+Tự kiểm tra\s*$/im)[0] ?? '' : lecture?.body_md ?? '';
+  // Match lecture3.split_self_check's heading grammar; final body stays intact if core could not split it.
+  const body = streaming ? lecture?.body_md.split(/^[ \t]*#{2,4}[ \t]*Tự kiểm tra[ \t:]*$/im)[0] ?? '' : lecture?.body_md ?? '';
   return <article className="learning-lesson" aria-labelledby="learning-lesson-title">
     <div className="learning-lesson__position">Bài học {lecture?.position.index_in_module ?? '—'} / {lecture?.position.count_in_module ?? '—'}</div>
     <h1 ref={heading} tabIndex={-1} id="learning-lesson-title">{title}</h1>
     {lecture?.prerequisites.length ? <section className="lecture-prerequisites" aria-labelledby="prerequisites-title">
       <h2 id="prerequisites-title">Cần biết trước</h2>
-      {lecture.prerequisites.map(({ recall, learner_status }) => <details key={recall.node_id}>
+      {lecture.prerequisites.map(({ recall }) => <details key={recall.node_id}>
         <summary><span>{recall.name}<small>Module {recall.module_number ?? '—'} · {recall.module_title}</small></span>
-          <span className={learner_status === 'learned' ? 'is-learned' : ''}>{learner_status === 'learned' ? 'Đã học' : 'Chưa học'}</span></summary>
+          <span className={progress[recall.node_id]?.state === 'learned' ? 'is-learned' : ''}>{progress[recall.node_id]?.state === 'learned' ? 'Đã học' : 'Chưa học'}</span></summary>
         <div><p>{recall.definition.quote || 'Tài liệu chưa có định nghĩa riêng cho bài học này.'}</p>
           {sourceButton(recall.definition.citation?.page)}
           {recall.module_id && <Link className="lecture-source-link" to={lecturePath(courseId, recall.module_id, recall.node_id)}>Mở bài học tiên quyết</Link>}
@@ -124,7 +126,7 @@ function Lesson({ courseId, nodeId, title, learned, pending, progressError, onTo
     {lecture?.media.map(media => <figure key={media.asset_key}><img src={media.url} alt={media.caption || 'Hình trong tài liệu'} loading="lazy" />{media.caption && <figcaption>{media.caption}</figcaption>}</figure>)}
     {lecture?.next_up.length ? <section className="lecture-next" aria-labelledby="lecture-next-title"><h2 id="lecture-next-title">Tiếp theo</h2>
       {lecture.next_up.map(next => <Link key={next.node_id} to={lecturePath(courseId, next.module_id ?? lecture.position.module_id, next.node_id)}>
-        <span>{next.name}<small>Module {next.module_number ?? '—'} · {next.learner_status === 'learned' ? 'Đã học' : 'Chưa học'}</small></span>
+        <span>{next.name}<small>Module {next.module_number ?? '—'} · {progress[next.node_id]?.state === 'learned' ? 'Đã học' : 'Chưa học'}</small></span>
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg>
       </Link>)}
     </section> : null}
@@ -197,6 +199,7 @@ export function LearningPage(props: ThemeProps) {
             </li>)}</ol><p className="learning-private">Tiến độ của riêng bạn</p></nav>
             <div className="learning-reading">
               {selected ? <><Link className="learning-list-back" to={modulePath(cid, mid)}>← Danh sách bài học</Link><Lesson key={selected.node_id} courseId={cid} nodeId={selected.node_id} title={selected.name}
+                progress={data.progress.nodes}
                 learned={data.progress.nodes[selected.node_id]?.state === 'learned'} pending={pending.has(selected.node_id)} progressError={errors[selected.node_id]}
                 onToggle={() => void toggle(selected.node_id)} onAccessError={accessError} /></>
                 : <section className="learning-module-intro"><h1>{module.title}</h1><p>{(typeof module.description === 'string'

@@ -34,6 +34,7 @@ async function main() {
       const pathname = location?.startsWith(base) ? new URL(location).pathname : location;
       const expected = (stage === 'bootstrap' && pathname === '/api/v1/me' && text.includes('401'))
         || (stage === 'rollback' && pathname === `/api/v1/courses/${cid}/progress/${nid}` && text.includes('500'))
+        || (stage === 'related-rollback' && pathname?.startsWith(`/api/v1/courses/${cid}/progress/`) && text.includes('500'))
         || (stage === 'removed' && [`/api/v1/courses/${cid}`, `/api/v1/courses/${cid}/roadmap`, `/api/v1/courses/${cid}/progress`].includes(pathname) && text.includes('404'))
         || (stage.startsWith('axe:') && text.includes('Content Security Policy') && text.includes('fonts.googleapis.com'));
       (expected ? audit.expectedConsole : audit.errors).push({ stage, path: pathname, text });
@@ -289,6 +290,59 @@ async function main() {
     await control({ action: 'scenario', name: 'normal' }); await control({ action: 'release' });
     await learner.reload(); await learner.getByText('Xem đáp án', { exact: true }).waitFor();
     stage = 'ready-after-save'; await capture(learner, 'saved', 1280, 'dark');
+    // R-W08-1: while A remains open, sidebar B updates every visible related badge without another lecture request.
+    const lecture = await (await learner.request.get(`${api}/concepts/${encodeURIComponent(nid)}/lecture`)).json();
+    const related = lecture.prerequisites.find(row => row.recall.module_id === mid);
+    assert.ok(related, 'fixture must expose a prerequisite in the current sidebar');
+    const bid = related.recall.node_id;
+    const relatedMark = learner.getByRole('checkbox', { name: `Đã học: ${related.recall.name}`, exact: true });
+    const badge = learner.locator('.lecture-prerequisites details').filter({ has: learner.locator('summary', { hasText: related.recall.name }) }).locator('summary > span:last-child');
+    const badgeState = async value => assert.equal((await badge.textContent()).trim(), value);
+    const beforeCalls = (await control({ action: 'probe' })).calls;
+    await Promise.allSettled(pending);
+    const beforeLectureRequests = audit.http.filter(row => row.path?.includes('/lecture')).length;
+    stage = 'related-save';
+    await relatedMark.check(); await relatedMark.waitFor({ state: 'visible' });
+    await learner.waitForFunction(label => !document.querySelector(`input[aria-label="${label}"]`).disabled, `Đã học: ${related.recall.name}`);
+    await badgeState('Đã học');
+    const savedRelated = await control({ action: 'progress-probe', node_id: bid });
+    assert.equal(savedRelated.record?.state, 'learned');
+    await capture(learner, 'related-saved', 1280, 'dark');
+    await control({ action: 'progress-fail' }); stage = 'related-rollback';
+    await relatedMark.uncheck();
+    await learner.getByText(/Chưa lưu được tiến độ/).first().waitFor();
+    assert.equal(await relatedMark.isChecked(), true); await badgeState('Đã học');
+    const rolledBack = await control({ action: 'progress-probe', node_id: bid });
+    assert.equal(rolledBack.record?.state, 'learned');
+    await capture(learner, 'related-rollback', 1280, 'dark');
+    await control({ action: 'progress-ok' }); stage = 'related-unmark';
+    await relatedMark.uncheck();
+    await learner.waitForFunction(label => !document.querySelector(`input[aria-label="${label}"]`).disabled, `Đã học: ${related.recall.name}`);
+    await badgeState('Chưa học');
+    const unmarked = await control({ action: 'progress-probe', node_id: bid });
+    assert.equal(unmarked.record?.state, 'not_learned');
+    assert.equal((await control({ action: 'probe' })).calls, beforeCalls);
+    await Promise.allSettled(pending);
+    assert.equal(audit.http.filter(row => row.path?.includes('/lecture')).length, beforeLectureRequests, 'badge changes must not fetch/regenerate a lecture');
+    audit.relatedProgress = { nodeId: bid, saved: savedRelated, rollback: rolledBack, unmarked, noLectureRefetch: true };
+    // R-W08-2: HTTP uses the actual core splitter; React also protects against older/full text deltas.
+    audit.selfCheckHeadings = [];
+    for (const name of ['heading-two', 'heading-four', 'heading-indent', 'heading-colon', 'heading-tab']) {
+      stage = name; await control({ action: 'scenario', name }); await learner.goto(lessonUrl);
+      await learner.getByText('Phần chính hiện ngay.', { exact: true }).waitFor();
+      assert.equal((await control({ action: 'probe' })).finished, false);
+      assert.equal(await learner.getByText('Đáp án riêng phải gập.', { exact: true }).count(), 0);
+      await control({ action: 'release' });
+      const answer = learner.getByText('Đáp án riêng phải gập.', { exact: true });
+      await answer.waitFor({ state: 'attached' }); assert.equal(await answer.isVisible(), false);
+      await learner.getByText('Xem đáp án', { exact: true }).click(); assert.equal(await answer.isVisible(), true);
+      audit.selfCheckHeadings.push({ scenario: name, hiddenBeforeFinal: true, foldedFinal: true, opensOnRequest: true });
+      await capture(learner, name, 1280, 'dark');
+    }
+    stage = 'unsplit'; await control({ action: 'scenario', name: 'unsplit' }); await learner.goto(lessonUrl);
+    await learner.getByText('Đoạn cuối thiếu khuôn hỏi đáp vẫn phải được giữ ở final.', { exact: true }).waitFor();
+    assert.equal(await learner.locator('.lecture-self-check').count(), 0);
+    await capture(learner, 'unsplit-final', 1280, 'dark');
     // Taste inspection uses a design-only copy of this real authenticated DOM.
     let snapshot = (await learner.evaluate(() => {
       const clone = document.documentElement.cloneNode(true);

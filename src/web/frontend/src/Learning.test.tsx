@@ -126,3 +126,37 @@ it('explains that DOCX has no numbered pages and still offers opening the origin
   expect(screen.getByRole('link', { name: 'Mở cả tệp' })).toHaveAttribute('href', '/api/v1/courses/c/source');
   expect(screen.getByRole('button', { name: 'Thử lại' })).toBeEnabled();
 });
+
+it.each([true, false])('keeps every related badge on current progress after sidebar save success=%s without reloading the lecture', async success => {
+  let resolveSave!: (value: Response) => void;
+  const original = fetchMock.getMockImplementation()!;
+  fetchMock.mockImplementation((input, init) => String(input).endsWith('/progress/b')
+    ? new Promise<Response>(resolve => { resolveSave = resolve; }) : original(input, init));
+  const { container } = page(); await started();
+  await act(async () => { frame('final', { lecture: { ...skeleton, status: 'ready', body_md: 'Bài đang đọc không thay đổi.' } }); controller.close(); });
+  const lessonRequests = () => fetchMock.mock.calls.filter(([url]) => String(url).includes('/lecture')).length;
+  const before = lessonRequests();
+  const badges = () => [container.querySelector('.lecture-prerequisites summary'), container.querySelector('.lecture-next')];
+  for (const badge of badges()) expect(badge).toHaveTextContent('Chưa học');
+  await userEvent.click(screen.getByRole('checkbox', { name: 'Đã học: Không gian mẫu' }));
+  for (const badge of badges()) expect(badge).toHaveTextContent('Đã học');
+  expect(screen.getByText('Module 1 · 1/2 bài học đã học')).toBeInTheDocument();
+  await act(async () => resolveSave(success
+    ? json({ ...progress, nodes: { ...progress.nodes, b: { state: 'learned', source: 'learner', updated_at: '2026-10-24' } } })
+    : json({ error: { code: 'internal_error' } }, 500)));
+  for (const badge of badges()) expect(badge).toHaveTextContent(success ? 'Đã học' : 'Chưa học');
+  expect(screen.getByRole('checkbox', { name: 'Đã học: Không gian mẫu' }).matches(':checked')).toBe(success);
+  expect(screen.getByText(`Module 1 · ${success ? 1 : 0}/2 bài học đã học`)).toBeInTheDocument();
+  expect(lessonRequests()).toBe(before);
+  expect(screen.getByText('Bài đang đọc không thay đổi.')).toBeVisible();
+});
+
+it.each(['## Tự kiểm tra', '#### Tự kiểm tra', '  ### Tự kiểm tra:', '\t##TỰ KIỂM TRA ::'])('restores the complete final body when core cannot split self_check: %s', async heading => {
+  page(); await started();
+  const body = `Phần chính được giữ.\n\n${heading}\n\nĐoạn cuối không có khuôn câu hỏi và đáp án.`;
+  await act(async () => frame('delta', { text: body }));
+  expect(screen.queryByText('Đoạn cuối không có khuôn câu hỏi và đáp án.')).not.toBeInTheDocument();
+  await act(async () => { frame('final', { lecture: { ...skeleton, status: 'ready', body_md: body, self_check: null } }); controller.close(); });
+  expect(await screen.findByText('Đoạn cuối không có khuôn câu hỏi và đáp án.')).toBeVisible();
+  expect(screen.queryByText('Xem đáp án')).not.toBeInTheDocument();
+});

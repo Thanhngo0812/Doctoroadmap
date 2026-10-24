@@ -135,6 +135,15 @@ def main():
             if action == 'release':
                 model.release.set()
                 return {'released': True}
+            if action == 'progress-probe':
+                node = data.get('node_id')
+                if node not in graph.learnable_nodes:
+                    raise WebError('not_found', 'Không tìm thấy bài học')
+                # Read through the independent engine, not a gateway response or React state.
+                with audit.connect() as c:
+                    row = c.scalar(text("SELECT value FROM phase_b_record WHERE kind='progress' AND owner=:owner AND doc_id='doc-1' AND value->>'node_id'=:node"),
+                        {'owner': identities['learner'].user_id, 'node': node})
+                return {'node_id': node, 'record': row}
             if action in {'progress-fail', 'progress-ok'}:
                 with engine.begin() as c:
                     c.execute(text('DROP TRIGGER IF EXISTS w08_progress_failure ON phase_b_record'))
@@ -142,7 +151,10 @@ def main():
                         c.execute(text("CREATE OR REPLACE FUNCTION w08_fail_progress() RETURNS trigger LANGUAGE plpgsql AS $$ BEGIN RAISE EXCEPTION 'W08 deliberate private-DB save failure'; END $$"))
                         c.execute(text("CREATE TRIGGER w08_progress_failure BEFORE INSERT OR UPDATE ON phase_b_record FOR EACH ROW WHEN (NEW.kind='progress') EXECUTE FUNCTION w08_fail_progress()"))
                 return {'enabled': action == 'progress-fail'}
-            if action != 'scenario' or data.get('name') not in {'normal', 'tail', 'empty', 'no-self-check', 'unsafe'}:
+            headings = {'heading-two': '## Tự kiểm tra', 'heading-four': '#### Tự kiểm tra',
+                'heading-indent': '  ### Tự kiểm tra', 'heading-colon': '### Tự kiểm tra:',
+                'heading-tab': '\t##TỰ KIỂM TRA ::'}
+            if action != 'scenario' or data.get('name') not in {'normal', 'tail', 'empty', 'no-self-check', 'unsafe', 'unsplit', *headings}:
                 raise WebError('validation', 'Kịch bản kiểm không hợp lệ')
             if any(not row.finished for row in model.calls):
                 raise WebError('conflict', 'Lần sinh trước chưa hoàn tất')
@@ -152,8 +164,11 @@ def main():
                 'empty': [[RuntimeError('W08 scripted empty failure')]],
                 'no-self-check': [['Bài này không có câu hỏi tự kiểm tra riêng. [S1]']],
                 'unsafe': [['Nội dung an toàn. <script>window.__w08pwned=true</script>\n\n![bad](https://evil.example/image)\n\n[bad](javascript:alert%281%29)\n\n$\\htmlClass{w08-injected}{bad}$']],
+                'unsplit': [['Phần chính nguyên vẹn.\n\n## Tự kiểm tra\n\nĐoạn cuối thiếu khuôn hỏi đáp vẫn phải được giữ ở final.']],
             }
-            model = ScriptedLectureModel(scripts[data['name']], delay_seconds=3 if data['name'] == 'normal' else 0)
+            scripts.update({name: [[f'Phần chính hiện ngay.\n\n{heading}\n\n**Câu hỏi:** Câu hỏi kiểm riêng.\n\n**Đáp án:** Đáp án riêng phải gập.', '\n']]
+                for name, heading in headings.items()})
+            model = ScriptedLectureModel(scripts[data['name']], delay_seconds=3 if data['name'] == 'normal' or data['name'] in headings else 0)
             models.append(model); learning.runtime.model = model
             with engine.begin() as c:
                 c.execute(text("DELETE FROM phase_b_cache WHERE value->>'doc_id'='doc-1'"))

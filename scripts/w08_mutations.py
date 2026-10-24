@@ -48,6 +48,10 @@ CASES = (
     ('safe-math', FRONT + 'LectureMarkdown.tsx', 'LectureMarkdown.test.tsx', 'trust: false', 'trust: true'),
     ('source-page-identity', FRONT + 'SourceViewer.tsx', 'SourceViewer.test.tsx',
      'image?.page === page ? <img', 'image ? <img'),
+    ('live-related-progress', FRONT + 'Learning.tsx', 'Learning.review-repro.test.tsx',
+     'progress={data.progress.nodes}', 'progress={{}}'),
+    ('self-check-heading-grammar', FRONT + 'Learning.tsx', 'Learning.review-repro.test.tsx',
+     'split(/^[ \\t]*#{2,4}[ \\t]*Tự kiểm tra[ \\t:]*$/im)', 'split(/^###\\s+Tự kiểm tra\\s*$/im)'),
 )
 
 
