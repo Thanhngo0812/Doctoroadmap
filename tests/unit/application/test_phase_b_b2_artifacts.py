@@ -49,7 +49,7 @@ class RoadmapGraph:
                 self.chunks[chunk_id] = SimpleNamespace(
                     chunk_id=chunk_id, text=text, page=module_index + 1,
                     char_start=0, char_end=len(text), section_path=[f"M{module_index}"],
-                    order_index=module_index * nodes_per_module + node_index,
+                    order_index=module_index * nodes_per_module + node_index, role="noi_dung",
                 )
                 node_ids.append(node_id)
             self.modules[module_id] = {
@@ -111,7 +111,7 @@ def test_roadmap_quiz_prefers_learned_nodes_and_spreads_selection_by_module():
     assert result["origin"] == "button"
     assert result["session_id"] is None
     assert result["created_at"]
-    assert result["contract_version"] == "quiz-2"
+    assert result["contract_version"] == "quiz-3"
     assert len(result["items"]) <= 10
     assert all("answer" not in item and "explanation" not in item for item in result["items"])
     assert len({graph.nodes[node_id]["module_id"] for node_id in selected}) == 4

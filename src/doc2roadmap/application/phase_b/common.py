@@ -5,6 +5,7 @@ import inspect
 import json
 from dataclasses import dataclass
 from time import perf_counter
+from collections.abc import Callable, Sequence
 from typing import Any, Mapping
 
 from doc2roadmap.application.ports.phase_b import JsonCallResult, PhaseBStore
@@ -60,8 +61,17 @@ def call_json(
     learner_id: str | None = None,
     spend_guard: Any = None,
     clock: Any = None,
+    images: Sequence[tuple[int, bytes]] = (),
+    temperature: float | None = None,
+    thinking_level: str | None = None,
+    extra_input_tokens: int = 0,
+    usage_extra: Callable[[dict[str, Any]], Mapping[str, Any]] | None = None,
 ) -> JsonCallResult:
-    """Call a scripted or provider JSON model and record its measured usage."""
+    """Call a scripted or provider JSON model and record its measured usage.
+
+    `images`, `temperature` and `thinking_level` reach the model only when given. `extra_input_tokens` is added to the
+    estimate (pictures). `usage_extra(payload)` adds fields to the usage row of a successful call.
+    """
     settings = settings or BSettings()
     if dry_run:
         input_prompt = system_prompt + "\n" + prompt
@@ -73,7 +83,7 @@ def call_json(
             "assistant": settings.assistant_max_output_tokens,
             "document": settings.document_max_output_tokens,
         }.get(purpose, settings.lecture_max_output_tokens)
-        input_tokens = (len(input_prompt) + len(stable_json(response_schema))) // 3
+        input_tokens = (len(input_prompt) + len(stable_json(response_schema))) // 3 + extra_input_tokens
         estimate = estimate_cost(_model_id(model, settings), input_tokens, max_output)
         return JsonCallResult({}, {"estimated_input_tokens": input_tokens, "estimated_output_tokens": max_output}, 0, None, estimate, True)
     if not allow_spend:
@@ -86,7 +96,10 @@ def call_json(
     replayed = bool(getattr(model, 'is_replay', False))
     plan = call_json(model, prompt, response_schema=response_schema, system_prompt=system_prompt,
                      store=store, purpose=purpose, doc_id=doc_id, context_hash=context_hash,
-                     dry_run=True, settings=settings, learner_id=learner_id)
+                     dry_run=True, settings=settings, learner_id=learner_id, extra_input_tokens=extra_input_tokens)
+    options = {**({"images": images} if images else {}),
+               **({"temperature": temperature} if temperature is not None else {}),
+               **({"thinking_level": thinking_level} if thinking_level else {})}
     with spending_call(spend_guard, purpose, plan.cost_usd, learner_id,
                        replayed=replayed, clock=clock) as admitted_at:
         started = perf_counter()
@@ -95,14 +108,14 @@ def call_json(
         try:
             if hasattr(model, "start_session"):
                 session = model.start_session(system_prompt)
-                reply = session.ask_json(prompt, response_schema=response_schema)
+                reply = session.ask_json(prompt, response_schema=response_schema, **options)
             else:
                 ask = model.ask_json
                 parameters = inspect.signature(ask).parameters
                 if "system_prompt" in parameters:
-                    reply = ask(prompt, response_schema=response_schema, system_prompt=system_prompt)
+                    reply = ask(prompt, response_schema=response_schema, system_prompt=system_prompt, **options)
                 else:
-                    reply = ask(prompt, response_schema=response_schema)
+                    reply = ask(prompt, response_schema=response_schema, **options)
             usage = _usage(reply)
             payload = _as_mapping(reply)
             elapsed_ms = round((perf_counter() - started) * 1000)
@@ -133,6 +146,8 @@ def call_json(
         )
         row['replayed'] = replayed
         row['created_at'] = admitted_at
+        if usage_extra is not None:
+            row.update(usage_extra(payload))
         store.append_usage(row)
         return JsonCallResult(payload, usage, elapsed_ms, row['ttft_ms'], cost)
 
