@@ -169,7 +169,7 @@ Lưu cùng bài trong cache và trong dòng usage `lecture_validation`:
 
 Lượt thật `lecture-3` 30 bài (2026-10-23, 0,065 USD) đạt 30/30. Sonnet rà lượt đầu, Claude đối chiếu sách. Phần bám sách đúng, công thức khớp ảnh trang. Lỗi nằm ở
 phần mô hình tự viết thêm: ví dụ tự nghĩ không nhất quán; câu kết mô tả sai khái niệm tiếp theo; gán sai vai trò; đảo chiều mệnh đề ("r = 0 thì độc lập").
-Sáu thay đổi:
+Bảy thay đổi:
 
 1. **Lời nhắc V5** (mục 4, ba chỗ sửa): soát ví dụ tự nghĩ; câu kết không tự định nghĩa khái niệm tiếp theo; giữ chiều và vai trò của phát biểu.
    - Chạy lại đúng 30 khái niệm: năm lỗi đã xác nhận đều hết.
@@ -195,6 +195,9 @@ Sáu thay đổi:
    - Lý do: biên bản nghiệm thu web lần 3 (R-W08-2), bốn dạng tiêu đề hợp lệ làm đáp án hiện trước `final`. Chặn ở lõi để mọi người dùng cùng một luật.
 6. **Tham số `lecture_thinking_level`**, mặc định tắt. Đặt mức (`low`, …) thì gửi `thinkingConfig` cho lời gọi bài giảng và mức này vào khoá cache. Lý do:
    bản có suy nghĩ xếp nhất 13/30 trong so sánh mù nhưng chưa có ý nghĩa thống kê, chậm hơn 0,8 giây ở trung vị, đắt hơn 40%. Để đợt đánh giá tổng đo lại.
+7. **Lỗi chụp ảnh trang không làm hỏng lần dựng sách.** Hiện `learning_prep` gọi `CapturePageImages` trực tiếp: lỗi pdfium hay ghi đĩa làm cả lần dựng
+   `failed` (`loi_noi_bo`), sau khi đã chi cho trích khái niệm và đồ thị. Bắt lỗi ở bước này: ghi `page_images = {"failed": <tên lỗi>}` vào chi tiết bước,
+   ghi cảnh báo log, lần dựng vẫn `succeeded`. Bài giảng chạy được khi thiếu ảnh (mục 3).
 
 ## Quyết định kiểm thử
 
@@ -221,6 +224,7 @@ Sáu thay đổi:
       `body_md` của `final` (bỏ khoảng trắng cuối). Tiêu đề khác (`### Ví dụ`) vẫn được phát.
   14. *(SA-70)* Lời nhắc đúng nguyên văn mục 4 (V5); luật công thức theo mục 4.
   15. *(SA-70)* `lecture_thinking_level` tắt thì thân yêu cầu không có `thinkingConfig`; đặt `low` thì có và khoá cache đổi.
+  16. *(SA-70)* Bộ chụp ảnh trang giả ném lỗi trong `learning_prep`: lần dựng `succeeded`, chi tiết bước có `page_images.failed`.
 
 ## Ngoài phạm vi
 

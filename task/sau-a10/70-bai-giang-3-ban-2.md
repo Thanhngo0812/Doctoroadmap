@@ -1,4 +1,4 @@
-# SA-70 — Bài giảng `lecture-3` bản 2: lời nhắc V5, chữ thô công thức, 8 ảnh, stream không lộ câu tự kiểm tra
+# SA-70 — Bài giảng `lecture-3` bản 2: lời nhắc V5, chữ thô công thức, 8 ảnh, stream không lộ câu tự kiểm tra, ảnh trang không làm hỏng lần dựng
 
 **Nguồn:** [spec bài giảng 3](../../doc/bai-giang-3-spec.md), mục 11 (chuẩn của vé này), mục 4 (lời nhắc nguyên văn) và mục 10; [spec trợ lý 3](../../doc/tro-ly-3-spec.md)
 mục 9. Thử nghiệm 2026-10-23/24: script `tmp/claude-tools/chay_that_lecture3.py` (cờ `--prompt`, `--raw-formula`, `--max-images`, `--thinking`), so sánh mù ở
@@ -17,6 +17,7 @@ Sửa hay thêm:
   `assistant-prompt-5`; đếm `pages_with_formula` trước khi cắt;
 - `src/doc2roadmap/domain/phase_b_limits.py`: khoá ở mục 10 (`lecture-prompt-4`, `lecture-context-4`, 8 ảnh, `lecture_thinking_level`);
 - client mô hình trong `infrastructure/llm/phase_b.py`, nếu cần để truyền `thinkingConfig` cho `stream_text`;
+- `src/doc2roadmap/composition_build.py`: bắt lỗi chụp ảnh trang trong `learning_prep` (spec mục 11.7);
 - test mới, và sửa test khẳng định lời nhắc hay trần cũ (liệt kê từng cái).
 
 **Không sửa:** `postcheck.py`, `documents.py`, quiz, `src/web/`.
@@ -25,7 +26,7 @@ Sửa hay thêm:
 
 Mọi test phải **đỏ trên mã cũ**. Ghi trong báo cáo cách đã thấy chúng đỏ.
 
-- [ ] Bất biến 11–15 của spec bài giảng. Lời nhắc so với khối `text` đọc từ tệp spec.
+- [ ] Bất biến 11–16 của spec bài giảng. Lời nhắc so với khối `text` đọc từ tệp spec.
 - [ ] Trợ lý: đoạn tư liệu có `[formula: <raw_text>]` đúng thứ tự; `pages_with_formula` đếm trước khi cắt; lời nhắc so với khối `text` của spec trợ lý.
 - [ ] **Chữ thô trên graph thật,** chỉ đọc: với doc-1 v8, xstk v68, naive-bayes v49, mọi đoạn có `[formula]` đều thay được hết (số chỗ thay bằng số
   `formula_refs`). Riêng xstk v68, khái niệm "Hệ số tương quan mẫu": tin nhắn gửi mô hình chứa `0,8165`.
