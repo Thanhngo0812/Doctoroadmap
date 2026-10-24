@@ -112,7 +112,7 @@ def usage(store, clock, purpose, cost, learner=None):
 
 def test_daily_cap_owner_timezone_and_settings(store):
     clock = FakeClock()
-    guard = DailySpendGuard(store, clock=clock)
+    guard = DailySpendGuard(store, clock=clock, settings=replace(BSettings(), learner_daily_max_usd=.20))
     usage(store, clock, 'assistant', .19, 'alice')
     usage(store, clock, 'document', .10, 'bob')
     assert not guard.check('document', .02, owner='alice')
