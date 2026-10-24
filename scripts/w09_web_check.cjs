@@ -123,7 +123,9 @@ async function main() {
           const scroller = element.closest('.learning-chat-messages');
           if (scroller) { const r = scroller.getBoundingClientRect(); top = Math.max(top, r.top); bottom = Math.min(bottom, r.bottom); }
           const hit = right > left && bottom > top ? document.elementFromPoint((left + right) / 2, (top + bottom) / 2) : null;
-          const unobscured = Boolean(hit && (element.contains(hit) || hit.contains(element)));
+          // KaTeX's positioned fraction wrappers overlap inside one mathematical expression.
+          const math = element.closest('.katex');
+          const unobscured = Boolean(hit && (element.contains(hit) || hit.contains(element) || (math && hit.closest('.katex') === math)));
           const ancestors = [];
           for (let current = element; current; current = current.parentElement) ancestors.push(current);
           let background = [1, 1, 1, 1];
@@ -131,7 +133,7 @@ async function main() {
           const foreground = color(getComputedStyle(element).color);
           foreground[3] *= ancestors.reduce((opacity, ancestor) => opacity * Number(getComputedStyle(ancestor).opacity), 1);
           const ink = blend(foreground, background), light = luminance(ink), ground = luminance(background);
-          return { selector, eligible: true, unobscured, foreground, background, contrast: (Math.max(light, ground) + .05) / (Math.min(light, ground) + .05) };
+          return { selector, eligible: true, unobscured, hitTag: hit?.tagName, hitClass: hit?.getAttribute('class'), foreground, background, contrast: (Math.max(light, ground) + .05) / (Math.min(light, ground) + .05) };
         });
       }, nodes.map(node => node.target.length === 1 ? node.target[0] : '__unsupported_shadow_target__'));
     }
