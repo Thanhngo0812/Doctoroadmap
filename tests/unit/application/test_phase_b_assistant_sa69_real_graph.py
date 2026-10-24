@@ -35,12 +35,7 @@ class Scripted:
         yield from next(self.turns)
 
 
-class DocModel:
-    model_id = "fake-doc"
-
-    def ask_json(self, prompt, *, response_schema):
-        return NS(payload={"title": "Tài liệu thử", "markdown": "Nội dung. [S1]", "citations": [],
-                           "outside_document_blocks": []}, usage={})
+from sa64_support import FakeModel as DocModel  # SA-67: document-3 streams Markdown
 
 
 def replay(doc_id, version, module_no, tool, args):
@@ -86,4 +81,4 @@ def test_doc_6_v29_module_1_document_is_made_for_that_module():
     document = made[0]
     assert document["scope"]["module_ids"] == [module_id]
     assert document["scope"]["node_ids"] == graph.modules[module_id]["node_ids"]
-    assert summary.get("error", {}).get("code") != "tool_error"
+    assert document["status"] == "ready" and summary.get("error", {}).get("code") != "tool_error"

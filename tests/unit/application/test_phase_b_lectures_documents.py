@@ -1,6 +1,8 @@
 import json
 from types import SimpleNamespace
 
+from sa64_support import FakeClock, FakeModel
+
 from doc2roadmap.application.phase_b.documents import DocumentUseCase, _cap_context
 from doc2roadmap.application.phase_b.lectures import LectureUseCase, _assemble, _trim_context
 from doc2roadmap.application.phase_b.common import stable_json
@@ -257,52 +259,58 @@ def test_document_context_cap_keeps_serialized_prompt_under_token_budget():
 
 
 def test_document_owner_boundary_export_and_dry_run():
+    # SA-67: the model streams Markdown; the export turns its labels into page footnotes (was: quotes + outside block).
     sentence = "Tế bào là đơn vị cấu trúc cơ bản của cơ thể."
-
-    class ScriptedJson:
-        model_id = "scripted"
-
-        def ask_json(self, prompt, *, response_schema, system_prompt=""):
-            from doc2roadmap.application.ports.extraction import ExtractionReply
-            return ExtractionReply({"title": "Tế bào", "markdown": f"{sentence} [S1]",
-                                   "citations": [{"label": "S1", "quote": sentence}],
-                                   "outside_document_blocks": ["Ví dụ bổ sung"]}, "", usage={
-                                       "promptTokenCount": 100, "candidatesTokenCount": 50,
-                                       "thoughtsTokenCount": 10})
-
+    usage = {"promptTokenCount": 100, "candidatesTokenCount": 50, "thoughtsTokenCount": 10}
+    model = FakeModel([sentence + " [S1]"])
     store = InMemoryPhaseBStore()
-    use_case = DocumentUseCase(ScriptedJson(), store)
+    use_case = DocumentUseCase(model, store, clock=FakeClock())
     estimate = use_case.create("d1", "g1", _graph(), "Tạo tài liệu", "n1", owner="alice", dry_run=True)
     assert estimate["dry_run"] is True
-    assert store.list_records("documents") == []
+    assert store.list_records("documents") == [] and model.calls == []
+    original = model.start_session
+
+    def start(system, tools=()):
+        session = original(system, tools)
+        real = session.stream_text
+
+        def stream(*args, **kwargs):
+            yield from real(*args, **kwargs)
+            session.last_usage = usage
+        session.stream_text = stream
+        return session
+    model.start_session = start
     document = use_case.create("d1", "g1", _graph(), "Tạo tài liệu", "n1", owner="alice", allow_spend=True)
     assert use_case.get(document["document_id"], owner="bob") is None
     assert use_case.get(document["document_id"], owner="alice")["status"] == "ready"
     exported = use_case.export(document["document_id"], owner="alice")
-    assert "Ví dụ bổ sung" in exported
-    assert "[^S1]: tr. 2" in exported
+    assert sentence + " [^S1]" in exported
+    assert "[^S1]: tr. 2, Sinh học (đoạn c1)" in exported
     assert document["usage"]["thought_tokens"] == 10
 
 
-def test_invalid_document_json_returns_persisted_failed_document_with_billed_usage():
+def test_model_error_before_any_text_returns_persisted_failed_document_with_billed_usage():
+    # SA-67 (was: invalid JSON from the model). The equivalent now: the stream breaks before the first text.
     class Session:
         last_usage = {"promptTokenCount": 100, "candidatesTokenCount": 20, "thoughtsTokenCount": 5}
+        last_finish_reason = None
 
-        def ask_json(self, prompt, *, response_schema):
-            raise json.JSONDecodeError("invalid", "{truncated", 1)
+        def stream_text(self, prompt, **kwargs):
+            raise RuntimeError("đứt kết nối")
+            yield ""
 
     class Model:
         model_id = "scripted"
 
-        def start_session(self, system_prompt):
+        def start_session(self, system_prompt, tools=()):
             return Session()
 
     store = InMemoryPhaseBStore()
-    use_case = DocumentUseCase(Model(), store)
+    use_case = DocumentUseCase(Model(), store, clock=FakeClock())
     document = use_case.create("d1", "g1", _graph(), "Tạo tài liệu", "n1",
                                owner="alice", allow_spend=True)
     assert document["status"] == "failed"
-    assert document["reason"] == "invalid_model_response"
+    assert document["failure"]["reason_code"] == "loi_mang"
     assert document["usage"]["input_tokens"] == 100
     assert document["usage"]["output_tokens"] == 20
     assert document["usage"]["thought_tokens"] == 5
@@ -327,36 +335,22 @@ def test_provider_schemas_require_grounded_lecture_fields_and_document_citations
     assert {"question", "answer", "sources", "quote"} <= set(check["required"])
 
 
-def test_document_injected_hybrid_retriever_is_dry_run_safe_and_uses_local_labels():
+def test_document_injected_search_is_asked_for_the_request_and_its_passage_is_sent():
+    # SA-67 (was: a hybrid retriever with dry-run/allow_spend flags and local labels). The search is now a plain
+    # callable (the assistant's), asked once for six passages; the dry run uses it too, since the runtime picks the free path.
     sentence = "Tế bào gồm nhiều thành phần có chức năng khác nhau."
+    calls = []
 
-    class Search:
-        calls = []
+    def search(query, **kwargs):
+        calls.append((query, kwargs))
+        return [{"chunk_id": "c2", "text": sentence}]
 
-        def search(self, query, **kwargs):
-            self.calls.append(kwargs)
-            if kwargs["dry_run"]:
-                return {"estimated_cost_usd": 0.00001}
-            return [{"chunk_id": "c2", "text": sentence}]
-
-    class ScriptedJson:
-        model_id = "scripted"
-
-        def ask_json(self, prompt, *, response_schema, system_prompt=""):
-            from doc2roadmap.application.ports.extraction import ExtractionReply
-            return ExtractionReply({"title": "Tế bào", "markdown": f"{sentence} [S2]",
-                                   "citations": [{"label": "S2", "quote": sentence}],
-                                   "outside_document_blocks": []}, "", usage={})
-
-    search = Search()
-    use_case = DocumentUseCase(ScriptedJson(), InMemoryPhaseBStore(), retriever=search)
+    model = FakeModel(["Nội dung. [S2]"])
+    use_case = DocumentUseCase(model, InMemoryPhaseBStore(), search=search, clock=FakeClock())
     estimate = use_case.create("d1", "g1", _graph(), "khác", "n1", owner="a", dry_run=True)
-    assert estimate["estimate_usd"] >= 0.00001
+    assert estimate["estimate_usd"] > 0 and model.calls == []
     result = use_case.create("d1", "g1", _graph(), "khác", "n1", owner="a", allow_spend=True)
-    assert search.calls == [
-        {"doc_id": "d1", "graph_version": "g1", "current_module_id": "m1", "scope": "all",
-         "k": 5, "dry_run": True, "allow_spend": False},
-        {"doc_id": "d1", "graph_version": "g1", "current_module_id": "m1", "scope": "all",
-         "k": 5, "dry_run": False, "allow_spend": True},
-    ]
+    assert calls == [("khác", {"scope": "all", "k": 6})] * 2
     assert result["status"] == "ready"
+    assert [row["chunk_id"] for row in result["sources"]] == ["c1", "c2"]
+    assert sentence in model.calls[0].prompt
