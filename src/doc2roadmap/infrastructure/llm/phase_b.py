@@ -207,7 +207,7 @@ class GeminiToolSession:
 
     def stream_text(self, prompt: str, *, images: Sequence[tuple[int, bytes]] = (),
                     temperature: float | None = None, transport_retries: int | None = None,
-                    timeout_seconds: float | None = None) -> Iterator[str]:
+                    timeout_seconds: float | None = None, thinking_level: str | None = None) -> Iterator[str]:
         """Plain-text stream (no JSON schema). Each image is a (page, JPEG bytes) pair sent after the prompt."""
         parts: list[dict[str, Any]] = [{"text": prompt}]
         for page, data in images:
@@ -221,6 +221,8 @@ class GeminiToolSession:
                 "maxOutputTokens": self.model.max_output_tokens,
             },
         }
+        if thinking_level:
+            body["generationConfig"]["thinkingConfig"] = {"thinkingLevel": thinking_level}
         started = perf_counter()
         self.last_ttft_ms = None
         self.last_usage = {}
@@ -443,10 +445,10 @@ class RecordingToolSession:
 
     def stream_text(self, prompt: str, *, images: Sequence[tuple[int, bytes]] = (),
                     temperature: float | None = None, transport_retries: int | None = None,
-                    timeout_seconds: float | None = None) -> Iterator[str]:
+                    timeout_seconds: float | None = None, thinking_level: str | None = None) -> Iterator[str]:
         chunks = []
         options = {"temperature": temperature, "transport_retries": transport_retries,
-                   "timeout_seconds": timeout_seconds}
+                   "timeout_seconds": timeout_seconds, "thinking_level": thinking_level}
         pictures = _picture_ids(images)
         try:
             for chunk in self.delegate.stream_text(prompt, images=images, **{
@@ -562,8 +564,8 @@ class ReplayToolSession:
 
     def stream_text(self, prompt: str, *, images: Sequence[tuple[int, bytes]] = (),
                     temperature: float | None = None, transport_retries: int | None = None,
-                    timeout_seconds: float | None = None) -> Iterator[str]:
-        options = {"temperature": temperature, "transport_retries": transport_retries}
+                    timeout_seconds: float | None = None, thinking_level: str | None = None) -> Iterator[str]:
+        options = {"temperature": temperature, "transport_retries": transport_retries, "thinking_level": thinking_level}
         call = self._take("text_stream", {"prompt": prompt, "images": _picture_ids(images)})
         recorded = call.get("options") or {}
         if any(recorded.get(key) != value for key, value in options.items()):
