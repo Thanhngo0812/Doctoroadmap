@@ -178,8 +178,8 @@ def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_sco
     doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
     w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
     w.model.tool_turns = [
-        [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
-        [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+        [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'),
+         ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
         [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
     ]
     sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
@@ -189,7 +189,8 @@ def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_sco
     assert len(final['artifacts']) == 2
     timeline = [(row['event'], row.get('name') if row['event'] == 'tool_call' else row.get('artifact', {}).get('kind'), row.get('state')) for row in rows]
     assert timeline.index(('tool_call', 'make_quiz', 'running')) < timeline.index(('artifact', 'quiz', None))
-    assert timeline.index(('artifact', 'quiz', None)) < timeline.index(('tool_call', 'make_document', 'running'))
+    assert timeline.index(('tool_call', 'make_quiz', 'done')) < timeline.index(('tool_call', 'make_document', 'running'))
+    assert timeline.index(('tool_call', 'make_document', 'done')) < timeline.index(('artifact', 'quiz', None))
     assert timeline.index(('tool_call', 'make_document', 'running')) < timeline.index(('artifact', 'document', None))
     expected = ['n4'] if scope == 'module 4' else ['n1']
     for item in final['artifacts']:
