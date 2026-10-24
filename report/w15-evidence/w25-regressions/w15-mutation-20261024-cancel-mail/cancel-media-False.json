@@ -1,0 +1,243 @@
+{
+  "kind": "independent PostgreSQL SQL; synthetic usage; zero provider calls",
+  "build": {
+    "id": "ea0ffb8b-2ec4-4e2b-9051-6307952c83cb",
+    "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+    "upload_id": "1656c3d9-5162-4427-a20c-15568dbbd131",
+    "requested_by": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+    "status": "cancelled",
+    "step": "learning_prep",
+    "pipeline_version": "web-fake-v1",
+    "counts_quota": true,
+    "cancel_requested": true,
+    "claim_count": 1,
+    "claimed_by": "worker-1c80b4fb8e3444ec9b81fc93586f9aee",
+    "lease_id": "78b4d974-b353-4afd-8055-33662b86a404",
+    "heartbeat_at": "2026-01-01 00:00:00+00:00",
+    "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+    "queued_at": "2026-01-01 00:00:00+00:00",
+    "started_at": "2026-01-01 00:00:00+00:00",
+    "finished_at": "2026-01-01 00:00:00+00:00",
+    "created_at": "2026-01-01 00:00:00+00:00",
+    "error_code": null,
+    "error_message": null,
+    "retryable": false,
+    "spent_usd": "0.003000",
+    "model_calls": 3,
+    "input_tokens": 300,
+    "output_tokens": 60,
+    "usage_complete": false,
+    "elapsed_seconds": 3.5,
+    "graph_version": null,
+    "module_count": 0
+  },
+  "courses": [
+    {
+      "status": "failed",
+      "title": "book",
+      "published_graph_version": null,
+      "module_count": 0
+    }
+  ],
+  "uploads": [
+    {
+      "confirmed_at": "2026-01-01 00:00:00+00:00"
+    }
+  ],
+  "attempts": [
+    {
+      "build_id": "ea0ffb8b-2ec4-4e2b-9051-6307952c83cb",
+      "lease_id": "78b4d974-b353-4afd-8055-33662b86a404",
+      "claim_count": 1,
+      "spent_usd": "0.003000",
+      "model_calls": 3,
+      "input_tokens": 300,
+      "output_tokens": 60,
+      "usage_complete": false,
+      "result": {
+        "error": null,
+        "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+        "status": "cancelled",
+        "spent_usd": 0.003,
+        "model_calls": 3,
+        "input_tokens": 300,
+        "step_details": {
+          "learning_prep": {
+            "confirmed_media": [
+              {
+                "path": "0.png",
+                "asset_key": "0.png",
+                "confirmed": true
+              },
+              {
+                "path": "1.png",
+                "asset_key": "1.png",
+                "confirmed": true
+              }
+            ]
+          }
+        },
+        "graph_version": null,
+        "output_tokens": 60,
+        "usage_complete": false,
+        "completed_steps": [
+          "doc_reading",
+          "concepts",
+          "graph",
+          "learning_prep"
+        ],
+        "elapsed_seconds": 3.5,
+        "pipeline_version": "web-fake-v1"
+      }
+    }
+  ],
+  "ledger": [
+    {
+      "id": 25,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+      "context_hash": null,
+      "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "concepts",
+        "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+        "purpose": "build",
+        "user_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "build_id": "ea0ffb8b-2ec4-4e2b-9051-6307952c83cb",
+        "cost_usd": 0.001,
+        "lease_id": "78b4d974-b353-4afd-8055-33662b86a404",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": false,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 26,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+      "context_hash": null,
+      "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "graph",
+        "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+        "purpose": "build",
+        "user_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "build_id": "ea0ffb8b-2ec4-4e2b-9051-6307952c83cb",
+        "cost_usd": 0.001,
+        "lease_id": "78b4d974-b353-4afd-8055-33662b86a404",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": false,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 27,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+      "context_hash": null,
+      "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "learning_prep",
+        "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+        "purpose": "build",
+        "user_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "build_id": "ea0ffb8b-2ec4-4e2b-9051-6307952c83cb",
+        "cost_usd": 0.001,
+        "lease_id": "78b4d974-b353-4afd-8055-33662b86a404",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": false,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 28,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+      "context_hash": null,
+      "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+      "cost_usd": "0.000000",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": true,
+      "replayed": false,
+      "extra": {
+        "step": null,
+        "doc_id": "u-ed9cc2d4bf2e7e0986d3",
+        "purpose": "build",
+        "user_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "build_id": "ea0ffb8b-2ec4-4e2b-9051-6307952c83cb",
+        "cost_usd": 0.0,
+        "lease_id": "78b4d974-b353-4afd-8055-33662b86a404",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "a0e34ef5-4ac8-4eb8-bf98-97d8d7d3583a",
+        "claim_count": 1,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": false,
+        "attribution_complete": false
+      }
+    }
+  ],
+  "assets": [],
+  "quota": {
+    "builds_used": 1,
+    "build_monthly_max": null,
+    "builds_remaining": null
+  },
+  "mail": [
+    {
+      "to": "b003a857984546acbd508ce2e01552e4@example.vn",
+      "subject": "Bản dựng lỗi",
+      "body": "Xem khoá học: http://127.0.0.1:8000/khoa-hoc/5d1503a4-4d4b-4071-a555-0fdcd43cd5cb",
+      "html_body": null
+    }
+  ],
+  "observations": {}
+}

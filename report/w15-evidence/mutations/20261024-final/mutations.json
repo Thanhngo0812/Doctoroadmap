@@ -1,0 +1,42 @@
+[
+  {
+    "label": "postport-injection",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_pipeline_postport_w15.py",
+      "-k",
+      "success-False",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-44126425-postport-injection",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\20261024-final\\postport-injection.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  },
+  {
+    "label": "postport-checkpoints",
+    "exit_code": 1,
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "command": [
+      "src/web/backend/tests/test_pipeline_postport_w15.py",
+      "-k",
+      "success-False",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-mut-44126425-postport-checkpoints",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\20261024-final\\postport-checkpoints.xml"
+    ],
+    "original_sha256": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "source_restored": true
+  }
+]

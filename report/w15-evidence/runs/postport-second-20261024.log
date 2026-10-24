@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_postport_whole_pipeline_with_fake_providers_and_independent_pg _____
+src\web\backend\tests\test_pipeline_postport_w15.py:150: in test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+    assert job['status'] == 'succeeded', json.dumps(receipt, ensure_ascii=False)
+E   AssertionError: {"error": {"code": "loi_noi_bo", "message": "Không thể hoàn tất bản dựng", "retryable": false}, "doc_id": "u-3f5b32bc5445652ae5cb", "status": "failed", "spent_usd": 5.5e-05, "model_calls": 1, "input_tokens": 100, "step_details": {"concepts": {"web_timing": {"wall_seconds": 3.6627882999999315, "embedding_wait_seconds": null, "embedding_wait_measured": false}}, "doc_reading": {"page_count": 1, "web_timing": {"wall_seconds": 8.110823600000003, "embedding_wait_seconds": null, "embedding_wait_measured": false}, "chunk_count": 1, "parse_version": 1, "chunks_version": 1, "a4_gold_coverage": "none", "alphabetic_chars": 412, "empty_page_ratio": 0.0, "vi_diacritic_ratio": 0.32281553398058255, "average_alphabetic_chars_per_page": 412.0}}, "graph_version": null, "output_tokens": 20, "usage_complete": true, "completed_steps": ["doc_reading"], "elapsed_seconds": 11.870727500000044, "pipeline_version": "web-real:338dcd27457dec1a63042afeaef181c73d8ebc21:d3d267174fa7bfba80fe721ef38908256e5dc6af9fcb6a4d6c2b5bdb89e4b98e"}
+E   assert 'failed' == 'succeeded'
+E
+E     - succeeded
+E     + failed
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+src/web/backend/tests/test_pipeline_postport_w15.py::test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+src/web/backend/tests/test_pipeline_postport_w15.py::test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\postport-second-20261024.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_pipeline_postport_w15.py::test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+1 failed, 3 warnings in 24.23s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute
