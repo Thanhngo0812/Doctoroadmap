@@ -302,7 +302,7 @@ class AssistantUseCase:
             result = callback(**args, owner=owner, doc_id=doc_id, graph_version=graph_version,
                               graph=graph, allow_spend=allow_spend)
         if result.get('status') == 'failed':
-            reason = result.get('reason') or 'content_generation_failed'
+            reason = result.get('reason') or (result.get('failure') or {}).get('reason_code') or 'content_generation_failed'
             messages = {
                 'scope_too_large': 'Chọn tối đa 5 module hoặc thu hẹp phạm vi để tạo tài liệu.',
                 'daily_limit': 'Đã hết hạn mức chi hôm nay; hãy thử lại vào ngày mai.',

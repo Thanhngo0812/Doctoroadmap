@@ -24,7 +24,7 @@ GOOD_DOC = ("# Đề cương ôn tập\n\nAlpha là khái niệm cơ bản số 
             "| Khái niệm | Ý chính |\n|---|---|\n| Alpha | điều kiện $x^2$ [S1] |\n")
 
 
-def doc_graph(modules=3, per=2, filler=0, filler_chars=900, formula_pages=(), raw=None):
+def doc_graph(modules=3, per=2, filler=0, filler_chars=900, formula_pages=(), raw=None, doc_id="d1"):
     """`modules` modules of `per` concepts. Concept k is defined in chunk c(10k+10) with the marker DEF-<name>.
 
     The searched-for passage c25 sits between the third and fourth definition; filler chunks name their concept again
@@ -46,7 +46,7 @@ def doc_graph(modules=3, per=2, filler=0, filler_chars=900, formula_pages=(), ra
                                     f"{name} ví dụ số {j}. " + "chữ " * (filler_chars // 4)))
             k += 1
         mods.append({"module_id": f"m{m}", "index": m, "title": f"Phần {m + 1}", "node_ids": ids})
-    chunks.append(chunk(25, "noi_dung", "Chương 2", ["Ghi chú"], 55, "Ghi chú đặc biệt về TRUYVAN trong bài."))
+    chunks.append(chunk(25, "noi_dung", "Phụ lục", ["Ghi chú"], 55, "Ghi chú đặc biệt về TRUYVAN trong bài."))
     tree_nodes = []
     for i, page in enumerate(formula_pages):
         text = f"Alpha còn có công thức [formula] ở trang {page}."
@@ -54,7 +54,7 @@ def doc_graph(modules=3, per=2, filler=0, filler_chars=900, formula_pages=(), ra
         c.formula_refs = [NS(formula_id=f"f{page}", char_start=0)]
         chunks.append(c)
         tree_nodes.append(NS(formula_id=f"f{page}", raw_text=(raw or "RAW{}").format(page)))
-    graph = LearningGraph({"doc_id": "d1", "graph_version": "g1", "nodes": nodes, "modules": mods,
+    graph = LearningGraph({"doc_id": doc_id, "graph_version": "g1", "nodes": nodes, "modules": mods,
                            "requires_edges": [], "open_edges": []}, chunks)
     graph.parse_version = 3
     graph.tree = NS(nodes=tree_nodes)
@@ -171,14 +171,14 @@ def test_search_failure_still_gives_a_document_and_is_logged():
 
 def test_each_formula_mark_becomes_its_raw_text_and_exactly_the_formula_pages_get_a_picture_up_to_eight():
     order = [40, 12, 13, 14, 15, 16, 17, 18, 19, 20]
-    pages = FakePages({page: JPEG + bytes([page]) for page in range(1, 400)})
+    pages = FakePages({page: JPEG + page.to_bytes(2, "big") for page in range(1, 400)})
     result, _, store, model, _, _ = run(graph=doc_graph(formula_pages=order, raw="x²  +\ny{}"), pages=pages)
     prompt = model.calls[0].prompt
     assert "[formula: x² + y40]" in prompt and "[formula: x² + y20]" in prompt and "[formula]" not in prompt
     sent = [page for page, _ in model.calls[0].images]
     assert sent == order[:8]
     assert [call[2] for call in pages.calls] == sent
-    assert all(data == JPEG + bytes([page]) for page, data in model.calls[0].images)
+    assert all(data == JPEG + page.to_bytes(2, "big") for page, data in model.calls[0].images)
     assert 100 not in sent                                  # the definition page holds no [formula]
     log = validation_of(store, result)
     assert log["pages_with_formula"] == 10 and log["images_sent"] == 8 and log["thieu_anh_trang"] is True
@@ -411,8 +411,10 @@ def test_estimate_counts_text_a_third_and_thirteen_hundred_tokens_per_picture():
     assert plain[3].calls and dry[0]["dry_run"] is True and dry[3].calls == []
     base = run(graph=doc_graph(formula_pages=[40]), dry_run=True)[0]["estimate_usd"]
     assert dry[0]["estimate_usd"] > base
+    from doc2roadmap.application.phase_b.document_context3 import system_prompt
     from doc2roadmap.domain.phase_b_pricing import estimate_cost
-    assert dry[0]["estimate_usd"] - base == pytest.approx(estimate_cost(BSettings().model_id, 1300, 0))
+    extra_tokens = 1300 + (len(system_prompt(True)) - len(system_prompt(False))) // 3
+    assert dry[0]["estimate_usd"] - base == pytest.approx(estimate_cost(BSettings().model_id, extra_tokens, 0))
 
 
 def test_dry_run_makes_no_call_and_stores_nothing():
@@ -442,13 +444,13 @@ def test_validation_is_in_no_learner_facing_output():
 
 def test_make_document_tool_result_carries_no_validation_and_only_artifact_title_status():
     from tests.unit.application.test_phase_b_assistant_sa66 import Model, ask, seed, turn
-    graph, store = doc_graph(modules=2, per=1), InMemoryPhaseBStore()
+    graph, store = doc_graph(modules=2, per=1, doc_id="book"), InMemoryPhaseBStore()
     seed(store, graph, "m0")
     made = []
 
     def make_document(request, scope, *, owner, **kwargs):
         made.append(DocumentUseCase(FakeModel(list_pieces(GOOD_DOC)), store, search=Search(), clock=FakeClock()).create(
-            "d1", "g1", graph, request, scope, owner=owner, origin="assistant", allow_spend=True,
+            "book", "g1", graph, request, scope, owner=owner, origin="assistant", allow_spend=True,
             home_scope=kwargs.get("home_scope"), session_id=kwargs.get("session_id")))
         return made[-1]
     model = Model([[ToolCall("make_document", {"request": "Đề cương", "scope": "module 1"}, "1"), Done({})], turn("Xong.")])
@@ -461,12 +463,12 @@ def test_make_document_tool_result_carries_no_validation_and_only_artifact_title
 
 def test_failed_document_tool_result_reports_the_reason_code_of_the_failure_block():
     from tests.unit.application.test_phase_b_assistant_sa66 import Model, ask, seed, turn
-    graph, store = doc_graph(modules=2, per=1), InMemoryPhaseBStore()
+    graph, store = doc_graph(modules=2, per=1, doc_id="book"), InMemoryPhaseBStore()
     seed(store, graph, "m0")
 
     def make_document(request, scope, *, owner, **kwargs):
         return DocumentUseCase(FakeModel(), store, settings=BSettings(document_max_modules=1), clock=FakeClock()).create(
-            "d1", "g1", graph, request, scope, owner=owner, origin="assistant", allow_spend=True)
+            "book", "g1", graph, request, scope, owner=owner, origin="assistant", allow_spend=True)
     model = Model([[ToolCall("make_document", {"request": "Tất cả", "scope": "roadmap"}, "1"), Done({})], turn("Xong.")])
     summary = ask(AssistantUseCase(graph, store, model, document=make_document, search=lambda *a, **k: []),
                   "Tạo giúp")["tool_calls"][0]["result_summary"]
