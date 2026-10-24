@@ -39,6 +39,16 @@ agent khác. Người điều phối:
 
 ## 2. Tình hình lúc bàn giao
 
+**Điều chỉnh 2026-10-24 theo chủ dự án và bàn giao mới nhất của Claude (`2a39c32`):** SA-66 đã ghép `ba4350f`, **SA-69 đã ghép `973fa99`**;
+W-09 đã được gỡ chặn, nhận main triển khai/kiểm answer-3 sau W-08. Web dùng fake hợp đồng đúng, không tự vá scope;
+thẻ quiz/tài liệu từ sự kiện `artifact`, link tự bịa dạng `quiz:…` trong chữ không cho bấm. SA-70 sẽ xử lý stream tự kiểm tra ở core;
+tới lúc ghép vẫn sửa/giữ hồi quy R-W08-2. Spec document-3/quiz-3 và vé SA-67/68 đã có, W-10 chờ mốc triển khai được nhận.
+Chủ dự án bỏ yêu cầu Cloud Figma; **nhận W-22/W-24 đạt có ghi chú cho mốc thiết kế web đã kiểm**.
+Giữ luồng thiết kế HTML/CSS/token → web triển khai React → hai nhóm soát giao diện thật; W-23 đối chiếu spec/token/mẫu HTML và không chờ Cloud.
+Lỗi chức năng W-08 vẫn phải sửa; các mẫu HTML cũ còn sai phải ghi rõ hoặc cập nhật khi dùng lại. Chưa ghép nhánh thiết kế `f292f18` bằng quyết định tài liệu này.
+[Bản giao việc đã chỉnh](lenh-giao-viec-ba-nhom-lan3-2026-10-23.md), [quyết định/phạm vi](dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md).
+Các phán xét Cloud/lời giao cũ bên dưới giữ làm lịch sử. Không chạy lại cổng, không có chi mới trong lượt chỉnh tài liệu này.
+
 **Mới nhất tối 2026-10-23, Codex — nghiệm thu lần 3:** chưa nhận/ghép gói mới. Web W-08 `89122f6`, mốc kiểm `1449d51` nhận main `0ccedae`:
 2.385 Python đạt / 0 fail / 1 Cloudinary live không bật, 158 React và build đạt; browser 12 cấu hình / 101 ảnh / 306 HTTP / 17 Axe đạt có phạm vi.
 Tuy vậy, 6 assertion đỏ / 11 control đạt / 0 error tái hiện hai Required: nhãn tiên quyết/Tiếp theo không theo thao tác sidebar;
@@ -302,6 +312,13 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**2026-10-24, Codex nhận cập nhật Claude/chủ dự án:** SA-66 và SA-69 đều đã ghép; W-09 nhận answer-3 từ main sau W-08,
+điểm chờ SA-69 được gỡ trong lúc chỉnh tài liệu. Web kiểm UI/tích hợp bằng fake và lấy thẻ quiz/tài liệu từ sự kiện artifact, không cho bấm link tự bịa trong chữ.
+SA-70 tiếp stream tự kiểm tra; nhóm web giữ hồi quy hiện tại tới lúc nhận mốc mới.
+Chủ dự án bỏ Cloud Figma, nhận mốc thiết kế web có ghi chú và tiếp dùng mẫu HTML/CSS/token cho React.
+W-23 không chờ Cloud; W-08 vẫn sửa hai lỗi đã tái hiện, W-15 tiếp như cũ và theo dõi thay đổi chụp ảnh của SA-70 sau ghép.
+Không có cổng PostgreSQL của Codex đang chạy; cửa ghép SA vẫn mở. Bản giao việc lần 3 đã được chỉnh ngày 24/10.
+
 **Cửa kiểm điều phối lần 3, 2026-10-23 tối — đã xong kiểm, mở lại sau khi đẩy hồ sơ:** nền main `e5fa492`/thông báo `0ccedae` có SA-62/64/65;
 mốc `1449d51` kiểm W-08 `89122f6`, W-15 `6bcbae6`, W-24 `f292f18`. Không ghép ba gói mới vì các phạm vi chưa đạt trong biên bản lần3.
 Codex đã xong toàn bộ cổng PostgreSQL/browser/focused, DB riêng và cổng 8018 đã dừng; Claude có thể nhận main mới rồi tiếp cổng/ghép SA-66 sau khi hồ sơ này được đẩy.
@@ -445,6 +462,8 @@ thêm nếu có. Chỉ khi Pha B đã nghiệm thu xong Claude mới về điề
 web (ví dụ phần web gửi kèm `focus_node_id` ở W-09) thì hai bên thống nhất qua mục 8.
 
 ## 10. Nhật ký điều phối
+
+| 2026-10-24 | chỉnh bản giao việc theo Claude và chủ dự án | Codex | gỡ chặn W-09 sau SA-69; nhận có ghi chú mốc thiết kế web W-22/W-24, bỏ Cloud Figma | Lúc đầu fcff761/ce2ad73 yêu cầu chờ SA-69; đang chỉnh thì Claude ghép 973fa99 và ghi 2a39c32, đã cập nhật bản giao việc theo trạng thái mới. W-09 nhận answer-3 từ main sau W-08; thẻ từ sự kiện artifact, không cho bấm link tự bịa quiz: trong chữ. Báo trước SA-70 về stream tự kiểm tra, giữ hồi quy web tới khi nhận mã mới. Chủ dự án bỏ Cloud; giữ HTML/CSS/token → React → soát web thật, W-23 bỏ phụ thuộc Cloud. Giữ kết quả kiểm cũ, chưa ghép f292f18 hoặc sửa mã sản phẩm. Đã chỉnh bản giao việc lần 3, spec thiết kế, vé/kế hoạch và ghi report/dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md. Chỉ kiểm tài liệu/đường dẫn/phạm vi và bảo toàn tệp dở của phiên khác; không chạy cổng, chi mới 0 USD, cửa SA vẫn mở. |
 
 | 2026-10-23 | nghiệm thu ba nhóm lần 3 tối, kế hoạch và mở lại cửa SA | Codex | chưa ghép gói mới; W-08/W-24 còn Required, W-15 nhận hồ sơ pre-port có giới hạn | Ghim web 89122f6 / lõi 6bcbae6 / thiết kế f292f18, nền 0ccedae, mốc 1449d51. 2.385 Python / 1 Cloudinary skip / 0 fail, 158 React và build đạt; browser 12 cấu hình / 101 ảnh / 306 HTTP / 17 Axe, SQL độc lập, DB/cổng 8018 đã dừng. W-08 có 6 assertion fail / 11 pass / 0 error từ hai lỗi nhãn tiến độ/đáp án stream, chưa bản vá. W-24 có 49 test qua runner / VM 9 kịch bản; đóng mã Variables/chat, còn preview lecture-3, claim, hai anchor và Cloud/video; đọc Cloud mới vẫn 0 Variables/components/bindings/reactions/starting points. W-15 chỉ 5 tệp docs/pre-port; SA-62/64/65 đã ở main, tiếp pipeline giả/PG → identity/cache → dry-run 0 USD → đề nghị trần. Báo cáo report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md, prompt MD cùng lần 3, JUnit report/coord-ba-nhom-lan3-evidence-2026-10-23/runs/full.xml. 125 entry SHA cùng manifest khoảng 7,74 MB, hai video thô giữ local/SHA; 0 USD, giữ sáu tệp dở root và mọi dữ liệu/worktree. Mở lại cửa ghép SA cho Claude sau đẩy hồ sơ; không còn full PG gate của Codex. |
 

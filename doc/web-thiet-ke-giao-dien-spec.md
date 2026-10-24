@@ -1,4 +1,10 @@
-# Spec thiết kế giao diện WayFinder — cho bản Figma và giao diện React
+# Spec thiết kế giao diện WayFinder — mẫu HTML/CSS và giao diện React
+
+**Quyết định chủ dự án 2026-10-24, có hiệu lực trước các yêu cầu Figma bên dưới:** không cần Cloud Figma.
+Nhóm thiết kế bàn giao HTML/CSS/token để nhóm web tham khảo và triển khai React; cùng soát giao diện chạy thật.
+Không còn điều kiện Variables export từ Cloud, native components/bindings/reactions hoặc video Present Figma.
+Giữ tiêu chuẩn thị giác, thương hiệu, responsive, tương phản, focus, chuyển động và bằng chứng trình duyệt trong spec.
+W-23 đối chiếu React với spec/token/mẫu HTML đã chọn. [Quyết định/phạm vi nghiệm thu](../report/dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md).
 
 **Ngày:** 2026-10-18. **Nhãn:** `ready-for-agent`. **Dùng cho:** vé [W-22](../task/web/W-22-ban-figma.md) (Figma), giao diện của mọi vé `task/web/`, và
 [W-23](../task/web/W-23-doi-chieu-figma-va-giao-dien.md) (đối chiếu).
@@ -13,7 +19,7 @@
 - màu do Claude chọn, lấy từ logo;
 - logo, favicon và GIF chờ do chủ dự án cung cấp;
 - stack React + FastAPI + PostgreSQL;
-- nhân viên vẽ Figma, Claude chỉ viết spec.
+- nhân viên bàn giao mẫu HTML/CSS/token, Claude viết spec; Figma là tuỳ chọn theo cập nhật 2026-10-24.
 - **Bổ sung theo chủ dự án 2026-10-18:** giao diện Figma và React phải đẹp, hoàn thiện về thị giác và có hiệu ứng tương tác phù hợp; được phép dùng các
   skill trong bộ `taste-skill` do chủ dự án nạp vào. Yêu cầu và cách nghiệm thu ở mục 3a.
 

@@ -1,8 +1,14 @@
-# W-22 — Bản Figma theo spec thiết kế
+# W-22 — Bàn giao thiết kế web theo spec (HTML/CSS/token)
 
 **Nguồn chân lý:** [spec thiết kế giao diện](../../doc/web-thiet-ke-giao-dien-spec.md) (toàn bộ); [spec chức năng](../../doc/web-chuc-nang-spec.md) (danh sách chức năng, mã lỗi); tệp
 thương hiệu ở `design/`.
-**Ai:** người thiết kế của nhóm · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, chưa đủ nghiệm thu; bổ sung/sửa theo W-24.
+**Ai:** người thiết kế của nhóm · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đạt có ghi chú mốc thiết kế web đã kiểm, theo quyết định chủ dự án 2026-10-24.
+
+**Phạm vi mới 2026-10-24:** chủ dự án bỏ yêu cầu Cloud Figma. Nhận phần token/bố cục/responsive/thương hiệu đã kiểm;
+nhóm thiết kế tiếp giao mẫu HTML/CSS/token để web triển khai React và phối hợp soát giao diện thật.
+Các yêu cầu Cloud/Variables export/native components/reactions/Present ở hồ sơ gốc dưới đây hết là điều kiện chặn.
+Những màn tương lai nhận theo vé web tương ứng; lỗi React và các preview cũ còn sai phải xử lý/ghi đúng phạm vi khi dùng lại.
+Nhánh W-24 `f292f18` chưa được ghép bởi quyết định này. [Phán xét theo phạm vi mới](../../report/dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md).
 
 **Kiểm trực tiếp Cloud 2026-10-22:** file mở được qua Figma connector, nhưng collection hiện0 Variables/Light-only và frame prototype `45:222`
 không có reactions; bốn ID từng khai không tồn tại. W-24 `78fb774` sửa đúng mã token/OS local, chưa đủ đóng W-22.
@@ -24,7 +30,15 @@ Export hiện sinh từ JSON local, audit prototype vẫn xanh khi cố ý bỏ 
 Nhóm cần một bản thiết kế thống nhất cho báo cáo đồ án và để nhóm React đối chiếu. Claude không vẽ trên Figma; spec thiết kế là nguồn, Figma là bản vẽ của
 spec đó.
 
-## Cần làm
+## Bàn giao tiếp theo trong phạm vi web
+
+- Duy trì `design/tokens/` và các mẫu `design/preview/`, ghi đúng phiên bản/trạng thái để web tham khảo.
+- Hỗ trợ web W-08/W-09 và soát W-23 theo spec/token trên React; ảnh và tương tác trình duyệt là bằng chứng.
+- Các lỗi trên mẫu cũ sửa khi tiếp tục dùng mẫu hoặc đánh dấu rõ phạm vi; không giao lại Cloud hoặc vẽ lại bộ token đã đạt.
+
+## Yêu cầu gốc để tra lịch sử
+
+Các mục về Figma bên dưới là yêu cầu trước quyết định 2026-10-24; áp dụng theo phạm vi web mới ở trên.
 
 **Thư viện thành phần:**
 - **biến (variables)** khớp đúng token của spec thiết kế: màu sáng và tối, chữ Be Vietnam Pro, khoảng cách, bo góc, bóng. Tên biến giữ đúng tên token, để
