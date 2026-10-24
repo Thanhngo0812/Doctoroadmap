@@ -1,0 +1,141 @@
+{
+  "reviewed_commit": "b59cae0f38db053a0395be80fcf52471ef41099f",
+  "main_received": "fcff7619813b53d09074988760bd60bffc661c6c",
+  "python": {
+    "tests": 2417,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 2,
+    "passed": 2412
+  },
+  "react": {
+    "tests": 143,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 143
+  },
+  "build_exit": 0,
+  "mutations_caught": 17,
+  "postport_mutations_rechecked": 2,
+  "core_port_received": true,
+  "whole_real_pipeline_with_fake_providers": {
+    "success-False": {
+      "status": "succeeded",
+      "synthetic_meter_usd": "0.000585",
+      "model_calls": 15,
+      "usage_complete": true
+    },
+    "success-True": {
+      "status": "succeeded",
+      "synthetic_meter_usd": "0.000530",
+      "model_calls": 15,
+      "usage_complete": false
+    },
+    "cancel-False": {
+      "status": "cancelled",
+      "synthetic_meter_usd": "0.000570",
+      "model_calls": 14,
+      "usage_complete": true
+    },
+    "error-False": {
+      "status": "failed",
+      "synthetic_meter_usd": "0.000585",
+      "model_calls": 15,
+      "usage_complete": true
+    },
+    "lease-False": {
+      "status": "reading",
+      "synthetic_meter_usd": "0.000570",
+      "model_calls": 14,
+      "usage_complete": false
+    }
+  },
+  "real_dry_runs": {
+    "doc-6": {
+      "status": "dry_run",
+      "sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+      "provider_calls": 0,
+      "usage_usd": 0.0,
+      "wall_seconds": {
+        "doc_reading": 2.9100616000000628
+      },
+      "label_roles_plan": {
+        "status": "run",
+        "remaining_items": 2,
+        "unit": "batch",
+        "calls_estimate": 2,
+        "usd_estimate": 0.002936,
+        "checkpoint_id": null,
+        "note": "\u01af\u1edbc input 3 k\u00fd t\u1ef1/token; output trung b\u00ecnh checkpoint ho\u1eb7c 512 token/l\u1eddi g\u1ecdi; ch\u01b0a t\u00ednh retry/repair. 78 headings in 2 batches of at most 40; invalid labels retry once.",
+        "label": "s\u1ebd ch\u1ea1y"
+      },
+      "queue_rows": {
+        "build": 0,
+        "build_attempt": 0,
+        "course": 0,
+        "usage_ledger": 0,
+        "phase_b_cache": 0
+      }
+    },
+    "candidate": {
+      "status": "dry_run",
+      "sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+      "provider_calls": 0,
+      "usage_usd": 0.0,
+      "wall_seconds": {
+        "doc_reading": 10.828215999999884
+      },
+      "label_roles_plan": {
+        "status": "run",
+        "remaining_items": 6,
+        "unit": "batch",
+        "calls_estimate": 6,
+        "usd_estimate": 0.00997,
+        "checkpoint_id": null,
+        "note": "\u01af\u1edbc input 3 k\u00fd t\u1ef1/token; output trung b\u00ecnh checkpoint ho\u1eb7c 512 token/l\u1eddi g\u1ecdi; ch\u01b0a t\u00ednh retry/repair. 103 headings in 6 batches of at most 40; invalid labels retry once.",
+        "label": "s\u1ebd ch\u1ea1y"
+      },
+      "queue_rows": {
+        "build": 0,
+        "build_attempt": 0,
+        "course": 0,
+        "usage_ledger": 0,
+        "phase_b_cache": 0
+      }
+    }
+  },
+  "future_total_calls_usd_minutes_cap": "unknown",
+  "embedding_wait_seconds": null,
+  "historical_evidence_unchanged": true,
+  "new_product_changes": [],
+  "new_core_edits": [],
+  "new_migrations": [],
+  "provider_calls": 0,
+  "provider_spend_usd": 0,
+  "web_doc6_ready_at_zero_cost_proven": false,
+  "paid_book_run_executed": false,
+  "w15_complete": false,
+  "full_gate_green": false,
+  "full_gate_commit": "9667235e934797991f25b22cd64a02093bc776b2",
+  "w15_scoped_passed": 42,
+  "global_blockers": [
+    "test_system_prompt_is_the_text_block_of_the_spec_word_for_word",
+    "test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[False]",
+    "test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[True]"
+  ],
+  "native_exit_by_gate": {
+    "full-main-20261024": 1,
+    "react-main-20261024": 0,
+    "frontend-build-main-20261024": 0,
+    "latest-scope-and-spec-20261024": 1
+  },
+  "gate_commit_by_label": {
+    "full-main-20261024": "9667235e934797991f25b22cd64a02093bc776b2",
+    "react-main-20261024": "9667235e934797991f25b22cd64a02093bc776b2",
+    "frontend-build-main-20261024": "9667235e934797991f25b22cd64a02093bc776b2",
+    "latest-scope-and-spec-20261024": "b59cae0f38db053a0395be80fcf52471ef41099f"
+  },
+  "pytest_skip": 1,
+  "pytest_xfail": 1
+}
