@@ -21,7 +21,7 @@ class BSettings:
     lecture_max_output_tokens: int = 4096
     document_max_output_tokens: int = 3000
     assistant_contract_version: str = "answer-3"
-    assistant_prompt_version: str = "assistant-prompt-3"
+    assistant_prompt_version: str = "assistant-prompt-4"
     assistant_temperature: float = 1.0
     assistant_max_output_tokens: int = 2048
     lecture_context_tokens: int = 2500

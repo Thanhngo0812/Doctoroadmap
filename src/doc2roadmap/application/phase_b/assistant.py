@@ -52,6 +52,9 @@ def _string():
     return {'type': 'string'}
 
 
+SCOPE_PARAM = {'type': ['string', 'array'], 'items': _string(),
+               'description': "số module như 'module 4', tên module hay tên khái niệm; bỏ trống là module đang mở"}
+MODULE_NUMBER = re.compile(r'\s*module\s*(\d+)(?!\d)', re.I)
 SEARCH_SCOPES = ['uu_tien_module', 'ca_tai_lieu']
 
 TOOLS = [
@@ -68,10 +71,9 @@ TOOLS = [
     _declaration('get_media', 'Hình và bảng đã xác nhận.', {'concept': _string()}, ['concept']),
     _declaration('get_lecture', 'Mở bài giảng dùng chung với nút bấm.', {'concept': _string()}, ['concept']),
     _declaration('make_quiz', 'Tạo lần làm quiz, không trả đáp án.',
-                 {'scope': {'type': ['string', 'array'], 'items': _string()},
-                  'n': {'type': 'integer', 'minimum': 1, 'maximum': 10}, 'level': _string()}, ['scope']),
+                 {'scope': SCOPE_PARAM, 'n': {'type': 'integer', 'minimum': 1, 'maximum': 10}, 'level': _string()}, []),
     _declaration('make_document', 'Tạo tài liệu có trích dẫn theo yêu cầu.',
-                 {'request': _string(), 'scope': {'type': ['string', 'array'], 'items': _string()}}, ['request', 'scope']),
+                 {'request': _string(), 'scope': SCOPE_PARAM}, ['request']),
 ]
 
 
@@ -83,6 +85,10 @@ def _check_args(schema, args):
     for key, value in args.items():
         field = schema['properties'][key]
         types = field['type'] if isinstance(field['type'], list) else [field['type']]
+        # An empty content scope is allowed on purpose: it means the module the learner has open.
+        if key == 'scope' and 'enum' not in field and (isinstance(value, str) or isinstance(value, list)
+                                                       and all(isinstance(item, str) for item in value)):
+            continue
         good = ('string' in types and isinstance(value, str) and bool(value.strip())
                 or 'integer' in types and type(value) is int
                 or 'array' in types and isinstance(value, list) and bool(value)
@@ -223,6 +229,41 @@ class AssistantUseCase:
             raise ValueError('Khái niệm không có hoặc có nhiều ứng viên; hãy dùng node_id')
         return matches[0]['node_id']
 
+    def _content_scope(self, graph, value, open_module_id):
+        """Turn the scope the model wrote ("module 4", a name...) into a form quiz and document already accept.
+
+        Module numbers are the ones the model reads in the context (`ctx.module_number`). Anything that cannot be
+        resolved means the module the learner has open, or the whole roadmap when none is open."""
+        items = [value] if isinstance(value, str) else [v for v in (value or ()) if isinstance(v, str)]
+        modules, node_ids = [], []
+        for item in items:
+            text = item.strip()
+            by_number = MODULE_NUMBER.match(text)
+            if text.casefold() == 'roadmap':
+                return 'roadmap'
+            if by_number:
+                found = [mid for mid, module in graph.modules.items()
+                         if ctx.module_number(module) == int(by_number[1])]
+                if found:
+                    modules.append(found[0])
+                    continue
+            if text in graph.modules:
+                modules.append(text)
+                continue
+            name = ' '.join(text.casefold().split())
+            found = [mid for mid, module in graph.modules.items() if name and name in {
+                ' '.join(str(module.get(key)).casefold().split()) for key in ('display_name', 'title') if module.get(key)}]
+            if found:
+                modules.append(found[0])
+                continue
+            node_ids += [row['node_id'] for row in graph.lookup_concept(text)['matches']]
+        if not modules and not node_ids:
+            return open_module_id if open_module_id in graph.modules else 'roadmap'
+        modules = list(dict.fromkeys(modules))
+        if len(modules) == 1 and not node_ids:
+            return modules[0]
+        return list(dict.fromkeys([nid for mid in modules for nid in graph.modules[mid].get('node_ids', [])] + node_ids))
+
     def _tool(self, graph, call, *, module, owner, doc_id, graph_version, allow_spend, artifacts,
               session_id=None, session_scope=None, shown=None):
         args = call.args
@@ -252,6 +293,7 @@ class AssistantUseCase:
         if name == 'get_lecture':
             args = {**args, 'concept': self._concept_id(graph, args['concept'])}
         if name in {'make_quiz', 'make_document'}:
+            args = {**args, 'scope': self._content_scope(graph, args.get('scope'), module)}
             result = callback(**args, owner=owner, doc_id=doc_id, graph_version=graph_version,
                               graph=graph, allow_spend=allow_spend, home_scope=session_scope,
                               session_id=session_id, origin='assistant')
