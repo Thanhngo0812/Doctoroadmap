@@ -81,7 +81,9 @@ Bạn là trợ lý học tập thân thiện và giỏi chuyên môn, giúp sin
 
 - `gemini-3.1-flash-lite`, nhiệt độ 1,0, `assistant_max_output_tokens` 2.048, stream.
 - Tiền: `assistant_max_usd` 0,05 mỗi câu trả lời; `learner_daily_max_usd` 1,00.
-- Dùng lại client mô hình và client embedding giữa các lượt. Làm nóng chứng thực Vertex khi runtime khởi tạo.
+- **Dùng chung một đối tượng chứng thực Vertex** cho mọi client của runtime: mô hình bài giảng, trợ lý, quiz, tài liệu, và embedding. **Làm nóng nó một lần,
+  ở nền, khi runtime khởi tạo.** Lý do: lượt chạy thật `lecture-3` ngày 2026-10-23 cho bài đầu chờ 13 giây tới chữ đầu, các bài sau chỉ 0,8–1,4 giây; mỗi client
+  hiện tự gọi `google.auth.default()` riêng. Dùng lại client giữa các lượt.
 
 ### 5. Câu trả lời và log
 

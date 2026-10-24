@@ -4,7 +4,20 @@
 [ADR 0024](../../doc/adr/0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md); nhãn người học ở [spec Pha B2](../../doc/pha-b2-spec.md), mục 6.5;
 [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 1 (SSE), 7 (mở tệp gốc); spec thiết kế, trang học và vòng chờ.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07; SA-64 thay SA-63, ảnh trang SA-65 · **Trạng thái:**
-sau W-11 chuẩn bị/triển khai theo lecture-3; cổng tích hợp cuối chờ SA-64 được Claude nghiệm thu/ghép.
+sửa hai Required sau kiểm độc lập `89122f6`, chưa ghép; SA-62/64/65 đều đã ở main, không còn chờ lõi.
+
+**Nghiệm thu lần 3, 2026-10-23 tối:** mốc điều phối `1449d51` nhận main `0ccedae`, mã khớp web `e6b336e`.
+2.385 Python đạt / 0 fail / 1 Cloudinary live không bật, 158 React và build đạt; browser 12 cấu hình / 101 ảnh / 17 Axe đạt có phạm vi.
+Ca phản chứng bổ sung có **6 assertion fail/11 pass/0 error**: (1) đánh dấu B ở sidebar không cập nhật nhãn B trong tiên quyết/Tiếp theo của bài A;
+(2) bốn tiêu đề tự kiểm tra hợp lệ với core (`##`, `####`, thụt đầu, dấu `:`) làm lộ đáp án trước final do regex React chỉ nhận một dạng.
+Sửa cả save/rollback bằng tiến độ hiện tại, không sinh lại bài; đồng bộ che/gập đáp án khi stream và giữ trường hợp không có self_check.
+Nhận ca hồi quy vào suite, ghi RED→GREEN, nhận main mới/chạy cổng/browser trước đề nghị ghép. Không làm lại phần đã đạt.
+[Biên bản/ca tái hiện](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md),
+[lời giao tiếp](../../report/lenh-giao-viec-ba-nhom-lan3-2026-10-23.md).
+
+**Cập nhật sau ghép SA-62:** core lecture-3 đã ở main (`1d91b0b`), port PG cũng đã vào main (`9ac2a85`), cổng kết hợp trên `14110c0` có2.355Python/143React/build xanh.
+Web nhận main mới rồi cài/kiểm W-08 theo hợp đồng hiện hành. **SA-65 đã ghép `4a4b957`, bàn giao `e5fa492`**;
+ảnh trang vẫn ở kho tệp cạnh artifact, dữ liệu mới cần manifest/SHA riêng; không tự sửa lõi hay ghi đè snapshot cũ.
 
 **Quyết định mới nhất 2026-10-23, `9ee69ce`:** ADR 0025 thay cấu trúc lecture-2 bằng lecture-3; SA-63 dừng, thay bằng SA-64.
 Nội dung là `body_md` Markdown/LaTeX, `self_check` đáp án gập và `sources[]`; bỏ `sections`/`bridge`.

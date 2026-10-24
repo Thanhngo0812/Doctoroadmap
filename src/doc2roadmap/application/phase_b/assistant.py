@@ -185,8 +185,12 @@ class AssistantUseCase:
         reader = self.content_tools.get('get_lecture')
         lecture = reader(concept=node_id, owner=owner, doc_id=doc_id, graph_version=graph_version,
                          graph=graph, allow_spend=False, cache_only=True) if reader else {}
-        ideas = [IDEA_REF.sub('', item['text']).strip() for section in lecture.get('sections', [])
-                 for item in section.get('items', []) if lecture.get('status') == 'ready' and item.get('text')]
+        if lecture.get('status') == 'ready' and lecture.get('body_md'):
+            ideas = [IDEA_REF.sub('', part).strip() for part in re.split(r'\n\s*\n', lecture['body_md'])
+                     if not part.lstrip().startswith('#')]
+        else:
+            ideas = [IDEA_REF.sub('', item['text']).strip() for section in lecture.get('sections', [])
+                     for item in section.get('items', []) if lecture.get('status') == 'ready' and item.get('text')]
         ideas = [idea for idea in ideas if idea]
         while ideas:
             block['lecture_ideas'] = {'note': 'Đã hiện cho người học; không phải nguồn, không trích dẫn.',
@@ -247,7 +251,11 @@ class AssistantUseCase:
             }
             return {'error': {'code': reason, 'message': messages.get(
                 reason, 'Không tạo được nội dung có nguồn trong phạm vi này')}}
-        if name == 'get_lecture':
+        if name == 'get_lecture' and 'body_md' in result:
+            artifact = {'kind': 'lecture', 'id': result['lecture_key'], 'node_id': result['node_id']}
+            summary = {'artifact': artifact, 'status': result.get('status'), 'body_md': result.get('body_md'),
+                       'sources': deepcopy(result.get('sources', []))}
+        elif name == 'get_lecture':
             artifact = {'kind': 'lecture', 'id': result['lecture_key'], 'node_id': result['node_id']}
             items = deepcopy([item for section in result.get('sections', []) for item in section.get('items', [])])
             for item in items:

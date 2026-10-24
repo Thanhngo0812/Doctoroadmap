@@ -1,0 +1,39 @@
+{
+  "sourceHead": "f292f18c823045c327e5e5a0fb1881961be15390",
+  "sourceRestored": true,
+  "workerReadOnly": true,
+  "runs": [
+    {
+      "label": "alpha0.99",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/unit/presentation/test_tokens_and_wcag.py::test_figma_plugin_has_all_37_variables_and_error_handling",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=alpha0.99-mutation.xml"
+      ],
+      "nativeExitCode": 1
+    },
+    {
+      "label": "silent-create-primary",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "tests/unit/presentation/test_tokens_and_wcag.py::test_figma_plugin_has_all_37_variables_and_error_handling",
+        "-q",
+        "-o",
+        "addopts=",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=silent-create-primary-mutation.xml"
+      ],
+      "nativeExitCode": 0
+    }
+  ]
+}

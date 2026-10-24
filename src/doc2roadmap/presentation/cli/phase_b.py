@@ -12,7 +12,7 @@ from doc2roadmap.domain.scope import module_scope, resolve_scope
 def configure(commands):
     phase = commands.add_parser('phase-b', help='bài giảng, quiz và trợ lý theo hợp đồng Pha B')
     actions = phase.add_subparsers(dest='b_action', required=True)
-    for name in ('names', 'a12', 'lookup', 'search', 'graph-tool', 'concept-index', 'formulas', 'lecture',
+    for name in ('names', 'a12', 'lookup', 'search', 'graph-tool', 'concept-index', 'formulas', 'page-images', 'lecture',
                  'quiz', 'submit', 'history', 'report-question', 'ask', 'document', 'usage', 'lecture-diagnostics', 'serve',
                  'scope-resolve', 'session-create', 'session-list', 'session-rename', 'session-delete',
                  'session-turns', 'progress', 'progress-set', 'library'):
@@ -64,7 +64,7 @@ def configure(commands):
             command.add_argument('request')
             command.add_argument('--scope', required=True)
             command.add_argument('--output', type=Path)
-        if name == 'formulas':
+        if name in {'formulas', 'page-images'}:
             command.add_argument('--pdf', type=Path, required=True)
         if name == 'serve':
             command.add_argument('--port', type=int, default=8765)
@@ -193,4 +193,14 @@ def run(args):
         artifact = runtime.artifacts.load_graph(args.doc_id, graph.graph_version)
         chunks = runtime.artifacts.load_chunks(args.doc_id, artifact.manifest['config']['chunks_version'])
         return persist_formula_images(result, runtime.settings.artifact_dir, args.doc_id, chunks.manifest['parse_version'])
+    if action == 'page-images':
+        from doc2roadmap.application.phase_b.page_images import CapturePageImages, formula_pages
+        from doc2roadmap.infrastructure.media.page_images import PdfiumPageRenderer
+        artifact = runtime.artifacts.load_graph(args.doc_id, graph.graph_version)
+        chunks = runtime.artifacts.load_chunks(args.doc_id, artifact.manifest['config']['chunks_version'])
+        if args.dry_run:
+            return {'dry_run': True, 'page_count': len(formula_pages(graph.tree, chunks.result.chunks)), 'usd': 0}
+        return CapturePageImages(PdfiumPageRenderer()).execute(
+            args.pdf, graph.tree, chunks.result.chunks, root=runtime.settings.artifact_dir,
+            doc_id=args.doc_id, parse_version=chunks.manifest['parse_version'], verify=True)
     raise ValueError('Lệnh Pha B không được hỗ trợ')

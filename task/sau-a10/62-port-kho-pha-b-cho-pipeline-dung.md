@@ -4,7 +4,13 @@
 Claude chốt người làm, phạm vi và nguồn tính chi ngày 2026-10-23.
 
 **Ai:** agent Sonnet cài · Claude nghiệm thu và ghép · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không. Chạy sau khi agent SA-21 xong, để cổng không chạy
-chồng lúc SA-21 đo giây · **Ghép:** Claude ghi cửa ghép ở mục 10 bàn giao trước khi ghép, theo cửa sổ kiểm của người điều phối · **Trạng thái:** sẵn sàng
+chồng lúc SA-21 đo giây · **Ghép:** Codex thực hiện theo quyền tự ghép trong lời bàn giao · **Trạng thái:** đạt, đã ghép/đẩy `9ac2a85`.
+
+**Hoàn tất 2026-10-23:** test web bổ sung commit `ce5f581` trên chính nhánh SA-62; hai ca âm factory thiếu port giữ nguyên,
+ca dương default factory ghi/đọc kho PG qua kết nối độc lập, guards provider/ADC/JSON/SQLite còn bật.
+Cổng trước SA-64: 2.305 Python/143 React/build xanh. Đã kiểm chứng sau ghép cùng SA-64 tại `14110c0`: **2.355 Python đạt/0 fail/1 Cloudinary live không bật,
+143 React/build**, mọi native exit 0. Giữ nhật ký việc main đổi trước lúc ghép và cả hai lượt kiểm.
+[Báo cáo và JUnit](../../report/sa62-tiep-nhan-test-web-2026-10-23.md). SA-62 gỡ chờ port của W-15; toàn W-15 còn bước pipeline thật/cache/dry-run, chưa quyền chi.
 
 ## Vì sao
 
@@ -41,8 +47,8 @@ Chỉ sửa:
      `call_json`, và `embedding`/`concept_index` của `IndexConcepts`, vốn là số ước lượng.
    - Pipeline bọc kho Pha B, tiêm hay mặc định, bằng một lớp mỏng **ở tầng composition**. Lớp này thêm `counted_in: "build"` vào mỗi dòng
      `append_usage`; mọi phương thức khác chuyển thẳng xuống kho gốc. Không sửa use case.
-   - `DailySpendGuard` **giữ nguyên**: vẫn tính các dòng này vào trần ngày. Lý do: đó là tiền thật đã chi trong ngày, và guard là trần an toàn chứ không phải
-     sổ cái.
+   - `DailySpendGuard` **giữ nguyên**: chỉ cộng purpose lecture/quiz/assistant/document. Trace module_title/embedding của lượt dựng không vào trần ngày Pha B.
+     Khâu dựng dùng guard riêng của web theo purpose=build; không lấy test một dòng lecture để suy ra guard tính trace dựng.
    - Mọi phép cộng chi nhà cung cấp (receipt, ledger, báo cáo, bảng chi quản trị) **không cộng** dòng có `counted_in = "build"`. Phía lõi: ghi luật này
      vào docstring của lớp bọc. Phía web: người điều phối áp khi đọc bảng usage Pha B.
 

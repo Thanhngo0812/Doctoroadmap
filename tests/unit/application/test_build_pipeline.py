@@ -311,9 +311,9 @@ def test_learning_prep_pins_parse_and_returns_only_compact_metadata(monkeypatch,
         load_graph=lambda doc, version: types.SimpleNamespace(
             manifest={"config": {"chunks_version": 5}}),
         load_chunks=lambda doc, version: (
-            versions.append(version) or types.SimpleNamespace(manifest={"parse_version": 12})
+            versions.append(version) or types.SimpleNamespace(manifest={"parse_version": 12}, result=types.SimpleNamespace(chunks=[]))
         ),
-        load_parse=lambda doc, version: (versions.append(version) or types.SimpleNamespace(tree=object())),
+        load_parse=lambda doc, version: (versions.append(version) or types.SimpleNamespace(tree=types.SimpleNamespace(nodes=[], parse_stats={}))),
     )
 
     result = pipeline.learning_prep(tmp_path / "book.pdf", "book", 8)
@@ -325,6 +325,7 @@ def test_learning_prep_pins_parse_and_returns_only_compact_metadata(monkeypatch,
                            "concept_count": 1},
         "formulas": {"index_path": str(tmp_path / "formula-index.json"),
                      "parse_version": 12, "cut_count": 2, "skipped_count": 1},
+        "page_images": {"parse_version": 12, "page_count": 0},
     }
 
 
@@ -360,3 +361,38 @@ def test_learning_prep_reuses_paid_concept_cache_without_spend(monkeypatch, tmp_
     repeated = pipeline.learning_prep(tmp_path / "book.docx", "book", 8)
     assert repeated["concept_index"]["reused"] is True
     assert calls == [1]
+
+
+def test_learning_prep_captures_formula_pages_of_a_pdf_and_skips_other_files(monkeypatch, tmp_path):
+    import types
+    from doc2roadmap.composition_phase_b import PhaseBRuntime
+    from doc2roadmap.domain.models import DocumentNode
+    from doc2roadmap.infrastructure.artifacts.page_images import ArtifactPageImages
+    from tests.unit.presentation.test_a1_d02_packets import make_pdf
+
+    monkeypatch.setattr(PhaseBRuntime, "a12", lambda self, doc_id, **kwargs: {
+        "graph_version": 8, "retrieval_version": 1, "assignments": {}})
+    monkeypatch.setattr("doc2roadmap.application.phase_b.concept_index.IndexConcepts",
+                        lambda *args: types.SimpleNamespace(execute=lambda *a, **k: {"concept_count": 0}))
+    monkeypatch.setattr("doc2roadmap.application.phase_b.formula_images.persist_formula_images",
+                        lambda *a, **k: {"index_path": "i", "cut_count": 0, "skipped_count": 0})
+    pdf = tmp_path / "book.pdf"
+    make_pdf(pdf)
+    tree = types.SimpleNamespace(nodes=[DocumentNode("formula", "[formula]", 1, page=1)], parse_stats={"page_count": 1})
+    pipeline = object.__new__(DocumentPipeline)
+    pipeline.settings = Settings(_env_file=None, artifact_dir=tmp_path / "art")
+    pipeline.allow_spend = False
+    pipeline.embedding_guard = object()
+    pipeline.store = types.SimpleNamespace(
+        load_graph=lambda doc, version: types.SimpleNamespace(manifest={"config": {"chunks_version": 5}}),
+        load_chunks=lambda doc, version: types.SimpleNamespace(manifest={"parse_version": 4},
+                                                               result=types.SimpleNamespace(chunks=[])),
+        load_parse=lambda doc, version: types.SimpleNamespace(tree=tree))
+    monkeypatch.setattr("doc2roadmap.application.phase_b.formula_images.CutFormulaImages",
+                        lambda renderer: types.SimpleNamespace(execute=lambda *a, **k: {}))
+
+    result = pipeline.learning_prep(pdf, "book", 8)
+
+    assert result["page_images"] == {"parse_version": 4, "page_count": 1}
+    assert ArtifactPageImages(tmp_path / "art").get("book", 4, 1)[:2] == bytes([0xFF, 0xD8])
+    assert pipeline.learning_prep(tmp_path / "book.docx", "book", 8)["page_images"] == {"skipped": "not a PDF"}

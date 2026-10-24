@@ -7,7 +7,7 @@ from uuid import uuid4
 
 from doc2roadmap.application.phase_b.assistant import AssistantUseCase
 from doc2roadmap.application.phase_b.documents import DocumentUseCase
-from doc2roadmap.application.phase_b.lectures import LectureUseCase
+from doc2roadmap.application.phase_b.lecture3 import Lecture3UseCase
 from doc2roadmap.application.phase_b.naming import NameModulesB
 from doc2roadmap.application.phase_b.quiz import QuizUseCase
 from doc2roadmap.application.phase_b.retrieval import (
@@ -20,6 +20,7 @@ from doc2roadmap.application.use_cases.index_document import retriever_from_payl
 from doc2roadmap.config import Settings
 from doc2roadmap.domain.phase_b_limits import BSettings, context_hash
 from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+from doc2roadmap.infrastructure.artifacts.page_images import ArtifactPageImages
 from doc2roadmap.infrastructure.artifacts.phase_b_store import JsonPhaseBStore
 from doc2roadmap.infrastructure.embedding.gemini import GeminiEmbedding
 from doc2roadmap.infrastructure.embedding.query_cache import CachedQueryEmbedding
@@ -32,7 +33,9 @@ DEVELOPMENT_DOCS = ('doc-1', 'nhap-mon-ml', 'naive-bayes', 'doc-6', 'xstk-ch3-1'
 
 class PhaseBRuntime:
     def __init__(self, *, settings=None, b_settings=None, allow_spend=False, store_path=None, mode=None,
-                 record_dir=None, replay_dir=None, clock=None):
+                 record_dir=None, replay_dir=None, clock=None, store=None):
+        if store is not None and store_path is not None:
+            raise ValueError('Chọn một trong store và store_path')
         self.settings = settings or Settings()
         self.b_settings = b_settings or BSettings()
         self.allow_spend = allow_spend
@@ -41,7 +44,8 @@ class PhaseBRuntime:
         self.mode = mode or ('gemini' if allow_spend else 'offline')
         if self.mode not in {'gemini', 'offline'}:
             raise ValueError('mode phải là gemini hoặc offline')
-        self.store = JsonPhaseBStore(store_path or root / ('live.json' if self.mode == 'gemini' else 'offline.json'))
+        self.store = store if store is not None else JsonPhaseBStore(
+            store_path or root / ('live.json' if self.mode == 'gemini' else 'offline.json'))
         self.clock = clock or SystemClock()
         self.spend_guard = DailySpendGuard(self.store, settings=self.b_settings, clock=self.clock)
         if record_dir and replay_dir:
@@ -51,6 +55,7 @@ class PhaseBRuntime:
         self._models = {}
         self._query_embedding = None
         self._concept_indexes = {}
+        self.page_images = ArtifactPageImages(self.settings.artifact_dir)
 
     def model(self, purpose):
         if purpose in self._models:
@@ -179,8 +184,8 @@ class PhaseBRuntime:
     def lecture(self, graph, node_id, *, dry_run=False, on_event=None, preload_next=False, deterministic=False, owner=None,
                 cache_only=False):
         model = None if deterministic or (self.mode == 'offline' and not self.replay_dir) else self.model('lecture')
-        return LectureUseCase(model, self.store, settings=self.b_settings, clock=self.clock,
-                              progress=self.progress(graph), spend_guard=self.spend_guard).make(
+        return Lecture3UseCase(model, self.store, page_images=self.page_images, settings=self.b_settings, clock=self.clock,
+                               progress=self.progress(graph), spend_guard=self.spend_guard).make(
             graph.doc_id, graph.graph_version, graph, node_id, dry_run=dry_run,
             allow_spend=self.allow_spend or self.mode == 'offline' or bool(self.replay_dir), on_event=on_event,
             preload_next=preload_next, owner=owner, cache_only=cache_only)

@@ -1,0 +1,58 @@
+{
+  "commit": "6bcbae61e821981e5254314aee7ee65db9868eeb",
+  "verdict": "approve documentation/pre-port milestone only",
+  "required_findings": [],
+  "changed_files": [
+    "report/w15-evidence/pre-port-20261023/audit.log",
+    "report/w15-evidence/pre-port-20261023/audit.py",
+    "report/w15-evidence/pre-port-20261023/manifest.json",
+    "report/w15-evidence/pre-port-20261023/result.json",
+    "report/w15-noi-bo-dung-that-2026-10-22.md"
+  ],
+  "changed_file_count": 5,
+  "numstat": [
+    "41\t0\treport/w15-evidence/pre-port-20261023/audit.log",
+    "98\t0\treport/w15-evidence/pre-port-20261023/audit.py",
+    "22\t0\treport/w15-evidence/pre-port-20261023/manifest.json",
+    "41\t0\treport/w15-evidence/pre-port-20261023/result.json",
+    "30\t0\treport/w15-noi-bo-dung-that-2026-10-22.md"
+  ],
+  "report_lines_added": 30,
+  "manifest_entries_verified": 3,
+  "manifest_entries_matched": 3,
+  "manifest_checks": [
+    {
+      "path": "report/w15-evidence/pre-port-20261023/audit.log",
+      "sha256": "8c671ccee62a84caab1bc3f999b47d9b925a19403dd6fab1ac1e2818ca217701",
+      "expected_sha256": "8c671ccee62a84caab1bc3f999b47d9b925a19403dd6fab1ac1e2818ca217701",
+      "bytes": 1339,
+      "expected_bytes": 1339,
+      "matches": true
+    },
+    {
+      "path": "report/w15-evidence/pre-port-20261023/audit.py",
+      "sha256": "fcfd0474b290617a54a71b534346ce932ccd7e7f2b1c2996dcf097839817a552",
+      "expected_sha256": "fcfd0474b290617a54a71b534346ce932ccd7e7f2b1c2996dcf097839817a552",
+      "bytes": 5709,
+      "expected_bytes": 5709,
+      "matches": true
+    },
+    {
+      "path": "report/w15-evidence/pre-port-20261023/result.json",
+      "sha256": "8c671ccee62a84caab1bc3f999b47d9b925a19403dd6fab1ac1e2818ca217701",
+      "expected_sha256": "8c671ccee62a84caab1bc3f999b47d9b925a19403dd6fab1ac1e2818ca217701",
+      "bytes": 1339,
+      "expected_bytes": 1339,
+      "matches": true
+    }
+  ],
+  "historical_audit_commit": "f96fc0056e3c5e7316a5ce368fd5680b5aaba6e9",
+  "post_sa62_preflight_executed": false,
+  "real_dry_run_executed": false,
+  "product_or_tests_changed_by_commit": false,
+  "limits": [
+    "Audit is historical pre-SA62 at f96fc00; no pipeline execute or PostgreSQL gate was run in this review.",
+    "Old SA62-not-merged blocker no longer applies on current main (root identifies 0cc); receive current main and run post-port zero-spend integration.",
+    "No authorization for paid providers; W15 remains incomplete."
+  ]
+}

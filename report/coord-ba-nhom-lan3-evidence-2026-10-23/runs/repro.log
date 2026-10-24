@@ -1,0 +1,91 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run src/Learning.review-repro.test.tsx --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r3-tools-20261023/runs/repro.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r3-acceptance-20261023/src/web/frontend
+
+ ❯ src/Learning.review-repro.test.tsx (17 tests | 6 failed) 7541ms
+   ✓ shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe 690ms
+   ✓ keeps sent text when the stream ends badly and shows the shortened notice 79ms
+   ✓ gives a message and Retry for failure loi_mang even if an old retryable flag is false 108ms
+   ✓ gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false 80ms
+   ✓ gives a message and Retry for failure tran_he_thong even if an old retryable flag is false 66ms
+   ✓ gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false 84ms
+   ✓ gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false 82ms
+   ✓ rolls back an optimistic learner mark after a failed save 167ms
+   ✓ keeps a module list on the module route and links to a specific lesson without generating one 65ms
+   ✓ explains that DOCX has no numbered pages and still offers opening the original file 60ms
+   × review: marking a prerequisite from the sidebar immediately refreshes its lesson badge 107ms
+   × review: marking the next concept from the sidebar immediately refreshes its lesson badge 115ms
+   ✓ review: the self-check accepted by core stays folded during a stream: ### Tự kiểm tra 68ms
+   × review: the self-check accepted by core stays folded during a stream: ## Tự kiểm tra 64ms
+   × review: the self-check accepted by core stays folded during a stream: ### Tự kiểm tra: 62ms
+   × review: the self-check accepted by core stays folded during a stream: #### Tự kiểm tra 61ms
+   × review: the self-check accepted by core stays folded during a stream:   ### Tự kiểm tra 64ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 6 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Learning.review-repro.test.tsx > review: marking a prerequisite from the sidebar immediately refreshes its lesson badge
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Đã học
+Received:
+  Không gian mẫuModule — · Bước đầuChưa học
+ ❯ src/Learning.review-repro.test.tsx:141:69
+    139|   await waitFor(() => expect(screen.getByRole('checkbox', { name: 'Đã …
+    140|   expect(screen.getByRole('checkbox', { name: 'Đã học: Không gian mẫu'…
+    141|   expect(container.querySelector('.lecture-prerequisites summary')).to…
+       |                                                                     ^
+    142| });
+    143|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/6]⎯
+
+ FAIL  src/Learning.review-repro.test.tsx > review: marking the next concept from the sidebar immediately refreshes its lesson badge
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Đã học
+Received:
+  Tiếp theoKhông gian mẫuModule — · Chưa học
+ ❯ src/Learning.review-repro.test.tsx:155:52
+    153|   await waitFor(() => expect(screen.getByRole('checkbox', { name: 'Đã …
+    154|   expect(screen.getByRole('checkbox', { name: 'Đã học: Không gian mẫu'…
+    155|   expect(container.querySelector('.lecture-next')).toHaveTextContent('…
+       |                                                    ^
+    156| });
+    157|
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/6]⎯
+
+ FAIL  src/Learning.review-repro.test.tsx > review: the self-check accepted by core stays folded during a stream: ## Tự kiểm tra
+ FAIL  src/Learning.review-repro.test.tsx > review: the self-check accepted by core stays folded during a stream: ### Tự kiểm tra:
+ FAIL  src/Learning.review-repro.test.tsx > review: the self-check accepted by core stays folded during a stream: #### Tự kiểm tra
+ FAIL  src/Learning.review-repro.test.tsx > review: the self-check accepted by core stays folded during a stream:   ### Tự kiểm tra
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found <p>
+  <strong>
+    Đáp án:
+  </strong>
+   Private folded answer.
+</p> instead
+ ❯ src/Learning.review-repro.test.tsx:163:80
+    161|     await act(async () => frame('delta', { text: `Visible main lesson.…
+    162|     expect(await screen.findByText('Visible main lesson.')).toBeVisibl…
+    163|     expect(screen.queryByText('Private folded answer.', { exact: false…
+       |                                                                                ^
+    164|     await act(async () => {
+    165|       frame('final', { lecture: { ...skeleton, status: 'ready', body_m…
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/6]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  6 failed | 11 passed (17)
+   Start at  22:45:41
+   Duration  28.92s (environment 47%, tests 27%, setup 16%, import 9%, transform 1%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r3-tools-20261023/runs/repro.xml

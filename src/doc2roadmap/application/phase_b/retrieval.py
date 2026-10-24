@@ -127,6 +127,7 @@ def load_learning_graph(store, doc_id: str, graph_version: int | None = None) ->
     payload = {**graph.payload, "doc_id": doc_id, "graph_version": graph.version}
     learning_graph = LearningGraph(payload, chunks.result.chunks, tree)
     learning_graph.formula_images = _load_formula_images(store, doc_id, parse_version)
+    learning_graph.parse_version = int(parse_version) if parse_version else None
     return learning_graph
 
 
