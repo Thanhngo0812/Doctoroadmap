@@ -1,5 +1,16 @@
 # W-15 — adapter/composition và kiểm 0 USD — 2026-10-22
 
+## Hiện hành sau tiếp quản và SA-70 — 2026-10-24
+
+Đã nhận main có SA-69/SA-70, nền `604cab0`, merge W-15 **`be31507`**. Cổng đúng mốc này:
+**78 scope đạt; 2.500 Python đạt/0 lỗi/1 skip/1 xfail; 143 React đạt; build thành công**, mọi native exit 0.
+Bốn lỗi prompt/spec của lượt trước SA-70 đã hết; mã web/test/guard của W-15 không đổi so với handoff `ca409b1`.
+Hai dry-run thật trên nền mới vẫn 0 provider calls/0 USD, PostgreSQL thật/collector và guard giữ nguyên.
+Toàn W-15 còn mở: chưa chứng minh doc-6 qua web ready/mail 0 USD, chưa đủ dự toán/trần toàn cuốn, chưa có quyền chạy có tiền.
+Đọc [báo cáo tiếp quản hiện hành](w15-tiep-quan-kiem-main-2026-10-24.md) và
+[summary mới](w15-evidence/resume-20261024-02/summary.json).
+Các kết quả đỏ/điểm chờ bên dưới giữ làm lịch sử đúng mốc, được thay bởi cập nhật này về hiện trạng cổng.
+
 ## Mốc sau port và dry-run thật — 2026-10-24
 
 **Thông tin hiện hành, thay các ghi chú “chưa có port/chưa chạy dry-run” trong lịch sử bên dưới.** Đã nhận main `b51afec` có SA-62 `9ac2a85`, SA-64 `1d91b0b`, SA-65 `4a4b957`; merge trên nhánh W-15 là `338dcd27457dec1a63042afeaef181c73d8ebc21`. Giữ ca dương default factory/PG đã ghép tại `ce5f581` và ca âm `PipelineWithoutStorePort`; không làm lại adapter/trace accounting. Không sửa hai tệp composition hoặc `budget.py`.

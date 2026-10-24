@@ -1,6 +1,45 @@
-# W-15 — tiếp quản và kiểm main sau SA-69 — 2026-10-24
+# W-15 — tiếp quản và kiểm main sau SA-69/SA-70 — 2026-10-24
 
-## Hiện trạng của lượt tiếp quản
+## Hiện hành sau nhận SA-70
+
+Đã commit hồ sơ lượt trước SA-70 tại **`b00641b`**, worktree sạch, rồi nhận main đã có SA-70 `5188908`
+và docs `604cab0a660fad511545416af6e2f4a638f7e7f6` bằng merge **`be31507d0c7152ae273c8038b4bdcbc194f5ebd1`**.
+`604cab0` chỉ sửa một dòng kế hoạch; không lấy số lượt thật của làn Claude làm số đo W-15.
+Đã đọc báo cáo SA-70 và delta 22 tệp, gồm catch riêng lỗi `CapturePageImages.execute`, giữ lỗi ảnh công thức lan ra.
+Kiểm tiến trình ngay trước lượt mới không còn Python/pytest của làn khác.
+
+**Scope mở rộng 78/78 đạt**, native exit 0, 74,86 s gồm runner (42 W-15/W-25, 3 prompt/spec, 30 SA-69, 3 learning_prep SA-70).
+Audit AST: diff prompt trợ lý và bài giảng so với spec đều rỗng; giữ ngoại lệ dòng định dạng tự kiểm tra của bài giảng.
+Ca ảnh trang của core đạt cả OSError/RuntimeError và lỗi ghi ảnh công thức vẫn lan ra. Các ca này dùng helper core;
+không suy thành đã kiểm web publish/mail với ảnh sách thật bị lỗi.
+**Python toàn repo: 2.500 đạt, 0 fail/error, 1 skip/1 xfail, native exit 0**, 562,58 s gồm runner (pytest 544,69 s).
+Không còn bốn lỗi cổng của lượt trước SA-70. Một skip Cloudinary live chưa bật; xfail replay SA-55 còn answer-2 đã có trên main, W-15 không thêm skip/xfail.
+**React 143/143 đạt, native exit 0** (114,52 s gồm wrapper); **TypeScript/Vite build thành công, native exit 0** (4,11 s).
+Mọi lượt chạy tuần tự, ghim `be31507`, nhãn `resume-*-20261024-02`; main và origin/main vẫn cùng `604cab0` khi chốt.
+Không sửa mã sản phẩm/test, prompt/spec hoặc schema để ép xanh. Các kết quả đỏ dưới đây là lịch sử **trước SA-70**.
+Commit hồ sơ sau kiểm chỉ đổi báo cáo/bằng chứng; số cổng vẫn ghim commit chạy thật `be31507`.
+Vì pipeline version chứa Git HEAD, commit docs cũng đổi identity của pipeline cho lượt chạy tương lai;
+không dùng fingerprint của profile dry-run này để hứa reuse trong triển khai thật.
+
+[Scope/JUnit](w15-evidence/runs/resume-scope-20261024-02.xml),
+[lệnh/native/SHA](w15-evidence/runs/resume-scope-20261024-02-exit.json),
+[prompt khớp](w15-evidence/resume-20261024-02/prompt-diff.json),
+[7 blob nguồn](w15-evidence/resume-20261024-02/source-provenance.json).
+Dry-run mới trên nền này: doc-6 **1,7362718 s**, ứng viên **4,7615114 s** cho đọc/kiểm;
+cả hai 0 provider calls/0 USD, collector 1, mọi count SQL 0. Hash/số trang/reader/plan nhãn giữ như lượt đầu.
+[Doc-6](w15-evidence/sql/resume-scope-20261024-02/real-dry-run-doc-6.json),
+[ứng viên](w15-evidence/sql/resume-scope-20261024-02/real-dry-run-candidate.json).
+[Full Python/JUnit](w15-evidence/runs/resume-full-20261024-02.xml),
+[lệnh/native/SHA](w15-evidence/runs/resume-full-20261024-02-exit.json).
+[React/JUnit](w15-evidence/runs/resume-react-20261024-02.xml),
+[React native](w15-evidence/runs/resume-react-20261024-02-exit.json),
+[build native](w15-evidence/runs/resume-build-20261024-02-exit.json),
+[summary hiện hành](w15-evidence/resume-20261024-02/summary.json),
+[manifest mới 108 entry](w15-evidence/resume-20261024-02/manifest.json).
+Chi provider mới **0 USD**. Cổng tổng hiện xanh; toàn W-15 vẫn mở vì cache doc-6 qua web/ready/mail,
+dự toán/trần toàn cuốn và lượt thật chưa hoàn thành. Chưa có phê duyệt tiền W-15.
+
+## Lịch sử lượt đầu sau SA-69
 
 Tiếp vai trò nhóm lõi trong phạm vi W-15 và các vé được giao tiếp, làm tại `tmp/w15-real-build`, nhánh `work/w15-real-build`.
 Đã đọc handoff `ca409b1`, AGENTS.md, quy trình nhánh, quy tắc fixture, vé/spec và lệnh giao hiện hành.
@@ -74,6 +113,7 @@ Chuỗi sản phẩm giữ ingest nhẹ → kiểm chữ → label-roles → A3/
 
 Các thời gian là quan sát từng lượt, không phải benchmark hoặc dự báo phút/cuốn. Lần kiểm tiến trình đầu chưa có Python;
 kiểm chi tiết sau đó thấy cổng `tmp/cong-sa70` khởi động 12:35:34, trong khi full W-15 khởi động 12:39:31.
+Lượt full đầu đã thiếu kiểm lại tiến trình ngay trước khởi động nên chồng cổng này; đã kiểm lại ngay trước lượt SA-70 mới.
 Không dừng hay sửa tiến trình làn khác. Cơ sở dữ liệu test tách riêng theo UUID; tải CPU có thể ảnh hưởng thời gian.
 
 ## Chuẩn bị tiếp: phần planner còn thiếu và đề nghị đúng làn
@@ -128,8 +168,15 @@ Chưa đề nghị một trần số học khi dữ liệu toàn chuỗi còn un
 
 ## Bảo toàn và review
 
-[Kiểm nguyên trạng 401 entry](w15-evidence/resume-20261024-01/historical-integrity.json) của manifest 20261024 đạt.
+[Kiểm nguyên trạng](w15-evidence/resume-20261024-02/historical-integrity.json): 401 entry của manifest 20261024
+và 103 entry manifest lượt đầu tiếp quản đều đạt; 108 entry mới được kiểm SHA trước commit.
 Giữ bằng chứng mới ở nhãn mới; báo cáo này thay trạng thái cổng cũ theo mốc kiểm mới, không sửa kết quả lịch sử.
 Mã W-15/test/guard/schema không đổi trong lượt tiếp quản. Cổng và bước chuẩn bị không làm toàn W-15 hoàn tất.
-Review cuối: đối chiếu native exit/JUnit, kiểm phạm vi đường dẫn, SHA bằng chứng cũ, giữ export hồi quy trước khi phục hồi,
-không commit secrets/PDF/artifact/.env hoặc tệp của làn khác. Hồ sơ chỉ được commit trên nhánh W-15.
+Review cuối đạt: native/JUnit khớp số trên, 17 SHA nguồn khớp capture scope mới, `git diff ca409b1 -- src/web` rỗng,
+`git diff --check` đạt, không thêm migration/suppressions/skip/xfail. Chỉ thay báo cáo/bằng chứng của W-15;
+không tự nghiệm thu/ghép mốc mã của session trước.
+8 export W-06/W-14 của mỗi lượt full đã lưu trong `regression-exports/resume-20261024-01`/`-02` rồi phục hồi riêng;
+42 tệp W-25 mỗi vòng được giữ trong `w25-regressions` theo nhãn. Không xoá dữ liệu/snapshot/worktree.
+[Chuẩn hoá](w15-evidence/resume-20261024-02/normalization.json) giữ hash raw, JSON values/JUnit case attributes,
+raw còn trong `tmp/w15-resume-raw`; không phát hiện giá trị credentials cấu hình trong bằng chứng mới.
+Không commit secrets/PDF/artifact/.env hoặc tệp của làn khác. Hồ sơ chỉ được commit trên nhánh W-15.
