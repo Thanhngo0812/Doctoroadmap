@@ -116,6 +116,7 @@ async function main() {
         return targets.map(selector => {
           const element = document.querySelector(selector);
           if (!element?.closest('.katex,.learning-chat-panel')) return { selector, eligible: false };
+          element.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
           let box = element.getBoundingClientRect();
           let left = Math.max(box.left, 0), right = Math.min(box.right, innerWidth);
           let top = Math.max(box.top, 0), bottom = Math.min(box.bottom, innerHeight);
@@ -153,7 +154,7 @@ async function main() {
       });
       assert.equal(layout.overflow, false, `${name}: overflow`); assert.deepEqual(layout.targets, [], `${name}: 44px targets`);
       const file = `${name}-${width}-${theme}${reduced ? '-reduced' : ''}.png`;
-      await learner.screenshot({ path: path.join(out, file), fullPage: true }); audit.screens.push({ file, name, width, theme, reduced, layout });
+      await learner.screenshot({ path: path.join(out, file), fullPage: width >= 1280 }); audit.screens.push({ file, name, width, theme, reduced, layout });
       if (axe) {
         const result = await new AxeBuilder({ page: learner }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
         audit.accessibility.push({ file, violations: result.violations, incomplete: result.incomplete, passes: result.passes.length });
@@ -256,6 +257,9 @@ async function main() {
     await capture('delete-confirmation'); await learner.getByRole('button', { name: 'Xác nhận xoá' }).click();
     await learner.getByRole('group', { name: 'Xác nhận xoá phiên' }).waitFor({ state: 'hidden' });
     assert.equal((await control({ action: 'probe' })).documents, counts.documents);
+    const retained = await learner.request.get(`${api}/library?scope=all`);
+    assert.equal(retained.status(), 200);
+    assert.ok((await retained.json()).items.some(item => item.kind === 'document' && item.session_deleted));
     await newSession();
     stage = 'failure'; await control({ action: 'scenario', name: 'failure' }); await ask('Thử kết nối lỗi.'); await ready();
     await learner.getByRole('button', { name: 'Thử lại câu hỏi' }).waitFor(); await capture('failure', true);

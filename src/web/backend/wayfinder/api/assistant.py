@@ -127,6 +127,26 @@ class Turns(BaseModel):
     turns: list[Turn]
 
 
+class LibraryItem(BaseModel):
+    kind: Literal['document', 'quiz_attempt']
+    id: str
+    title: str
+    created_at: str | None = None
+    origin: str | None = None
+    group: str
+    module_labels: list[str]
+    label: str | None = None
+    session_deleted: bool = False
+
+
+class Library(BaseModel):
+    contract_version: Literal['library-1']
+    course_id: str
+    doc_id: str
+    scope_filter: str
+    items: list[LibraryItem]
+
+
 class QuizOption(BaseModel):
     option_id: str
     text: str
@@ -242,5 +262,18 @@ def assistant_router():
                 future.add_done_callback(lambda done: done.exception() if not done.cancelled() else None)
 
         return StreamingResponse(stream(), media_type='text/event-stream', headers={'cache-control': 'no-store', 'x-accel-buffering': 'no'})
+
+    return router
+
+
+def assistant_library_router():
+    # Read-only inventory is needed to prove W09 deletion keeps saved artifacts.
+    # Generation, submission and the library screen remain W10.
+    router = APIRouter(tags=['assistant'])
+
+    @router.get('/api/v1/courses/{cid}/library', response_model=Library)
+    def library(cid: str, request: Request, response: Response, scope: str = 'all', actor: Actor = Depends(get_actor)):
+        response.headers['cache-control'] = 'no-store'
+        return request.app.state.services.learning.list_library(actor, cid, scope)
 
     return router

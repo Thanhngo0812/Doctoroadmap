@@ -1198,6 +1198,58 @@
         }
       }
     },
+    "/api/v1/courses/{cid}/library": {
+      "get": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Library",
+        "operationId": "library_api_v1_courses__cid__library_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "all",
+              "title": "Scope"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Library"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/courses/{cid}/share-links": {
       "post": {
         "tags": [
@@ -3424,6 +3476,121 @@
           "definition"
         ],
         "title": "LectureView"
+      },
+      "Library": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "library-1",
+            "title": "Contract Version"
+          },
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "scope_filter": {
+            "type": "string",
+            "title": "Scope Filter"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LibraryItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "course_id",
+          "doc_id",
+          "scope_filter",
+          "items"
+        ],
+        "title": "Library"
+      },
+      "LibraryItem": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "document",
+              "quiz_attempt"
+            ],
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "module_labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Module Labels"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "session_deleted": {
+            "type": "boolean",
+            "title": "Session Deleted",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "title",
+          "group",
+          "module_labels"
+        ],
+        "title": "LibraryItem"
       },
       "LoginRequest": {
         "properties": {

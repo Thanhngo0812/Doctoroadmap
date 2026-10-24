@@ -310,3 +310,11 @@ class LearningGateway:
                  'options': [pick(option, ('option_id', 'text')) for option in row.get('options', [])]}
                 for row in raw['items']]}
         raise WebError('not_found', 'Không tìm thấy nội dung')
+
+    def list_library(self, actor, cid, scope='all'):
+        from doc2roadmap.application.phase_b.library import LibraryUseCase
+        course, graph = self._context(actor, cid)
+        if scope not in {'all', 'roadmap'} and not (scope.startswith('module:') and scope[7:] in graph.modules):
+            raise WebError('validation', 'Bộ lọc thư viện không hợp lệ')
+        return {'course_id': cid, **LibraryUseCase(self.runtime.store, graph, settings=self.runtime.settings,
+            clock=self.runtime.clock).list_library(actor.user_id, course.doc_id, scope)}

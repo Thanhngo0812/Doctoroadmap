@@ -202,6 +202,11 @@ def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_sco
     assert w.a.client.get(f'{w.url}/{sid}/turns').status_code == 404
     assert len(w.independent_store.list_records('documents', owner=w.a.actor.user_id)) == 1
     assert len(w.independent_store.list_records('quiz_attempt', owner=w.a.actor.user_id)) == 1
+    library = w.a.client.get(f'/api/v1/courses/{w.course.id}/library?scope=all')
+    assert library.status_code == 200
+    assert {item['id'] for item in library.json()['items']} == {item['id'] for item in final['artifacts']}
+    assert all(item['session_deleted'] for item in library.json()['items'])
+    assert w.b.client.get(f'/api/v1/courses/{w.course.id}/library?scope=all').json()['items'] == []
 
 
 def test_w09_two_concurrent_distinct_intents_are_serialized_not_coalesced(chat):
