@@ -21,6 +21,21 @@ trợ lý không chạy được trên Developer API, và có thể cả các kh
 - Lập danh sách khoá phải lọc theo tài liệu chính thức của Gemini API. Ghi nguồn vào báo cáo; không đoán.
 - Kiểm mọi chỗ gửi schema: trợ lý, quiz (sinh và kiểm), bài giảng, tên module, tài liệu.
 
+## Bổ sung 2026-10-24 (Claude, trước khi giao)
+
+- **Giao sau SA-68.** Hôm nay có thêm nhiều chỗ gửi lược đồ hay cấu hình mới, phải phủ hết:
+  - quiz-3: lược đồ sinh câu, lược đồ giải mù kèm `thinkingConfig`;
+  - bài giảng: `thinkingConfig` khi `lecture_thinking_level` được đặt;
+  - trợ lý: ảnh trang trong tin nhắn;
+  - tài liệu `document-3`.
+- **Kiểm theo tài liệu chính thức** xem Developer API có nhận `thinkingConfig.thinkingLevel` và `responseJsonSchema` như Vertex không; ghi nguồn.
+- **Ngoài lõi, việc của người điều phối** (ghi ở bàn giao mục 10), cần trước hôm đổi transport cho demo:
+  - nới chốt "WayFinder web requires DOC2ROADMAP_LLM_TRANSPORT=vertex" trong `src/web/backend/wayfinder/composition.py`;
+  - thêm `DOC2ROADMAP_GEMINI_API_KEY` vào `src/web/.env` và đổi `DOC2ROADMAP_LLM_TRANSPORT`.
+
+  Web chạy bằng `wayfinder.cli --env-file src/web/.env` từ worktree. Lõi chỉ đọc tệp `.env` ở thư mục đang đứng, nên không thấy `.env` tổng của repo; mọi khoá
+  `DOC2ROADMAP_*` của web phải nằm trong `src/web/.env`.
+
 ## Tiêu chí nghiệm thu
 
 - [ ] Test với transport giả, ghi lại thân request:
