@@ -88,7 +88,7 @@ def main():
     models = []
     summary = dict(base=BASE, databaseName=name, temporaryDatabaseRemoved=False, modelCalls=0,
         externalCostUsd=0, mailer='FakeMailer', media='LocalImageMedia: copied PDF rendered locally',
-        core='Lecture3UseCase received through SA64 merge 1d91b0b',
+        core='Lecture3UseCase received through reviewed SA64 and SA70 merge 5188908',
         sourceCommit=subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(),
         dirtySourcePaths=subprocess.check_output(['git', 'diff', 'HEAD', '--name-only', '--', 'src', 'scripts'], cwd=ROOT, text=True).splitlines())
     created = False
