@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.010" timestamp="2026-10-24T14:50:57.160862+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_default_requires_core_port_before_claim_or_provider" time="1.642"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.real_build.CoreBuildPortUnavailable'&gt;">src\web\backend\tests\test_real_build_w15.py:129: in test_real_default_requires_core_port_before_claim_or_provider
+    with pytest.raises(adapter.CoreBuildPortUnavailable, match='phase_b_store'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.real_build.CoreBuildPortUnavailable'&gt;</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="4" time="4.342" timestamp="2026-10-24T13:43:15.426511+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt" time="1.404"><failure message="AssertionError: The exact-file operator approval boundary is missing&#10;assert None is not None">src\web\backend\tests\test_build_approval_w15.py:34: in test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt
+    runtime.spend_approval = approval(reference='test-only-one-attempt', file_sha256=digest,
+src\web\backend\tests\test_build_approval_w15.py:16: in approval
+    assert kind is not None, 'The exact-file operator approval boundary is missing'
+E   AssertionError: The exact-file operator approval boundary is missing
+E   assert None is not None</failure></testcase><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[file]" time="0.255"><failure message="AssertionError: The exact-file operator approval boundary is missing&#10;assert None is not None">src\web\backend\tests\test_build_approval_w15.py:59: in test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline
+    runtime.spend_approval = approval(reference='test-only-mismatch-' + mismatch, file_sha256=digest,
+src\web\backend\tests\test_build_approval_w15.py:16: in approval
+    assert kind is not None, 'The exact-file operator approval boundary is missing'
+E   AssertionError: The exact-file operator approval boundary is missing
+E   assert None is not None</failure></testcase><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[doc_id]" time="0.243"><failure message="AssertionError: The exact-file operator approval boundary is missing&#10;assert None is not None">src\web\backend\tests\test_build_approval_w15.py:59: in test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline
+    runtime.spend_approval = approval(reference='test-only-mismatch-' + mismatch, file_sha256=digest,
+src\web\backend\tests\test_build_approval_w15.py:16: in approval
+    assert kind is not None, 'The exact-file operator approval boundary is missing'
+E   AssertionError: The exact-file operator approval boundary is missing
+E   assert None is not None</failure></testcase><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[pipeline]" time="0.269"><failure message="AssertionError: The exact-file operator approval boundary is missing&#10;assert None is not None">src\web\backend\tests\test_build_approval_w15.py:59: in test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline
+    runtime.spend_approval = approval(reference='test-only-mismatch-' + mismatch, file_sha256=digest,
+src\web\backend\tests\test_build_approval_w15.py:16: in approval
+    assert kind is not None, 'The exact-file operator approval boundary is missing'
+E   AssertionError: The exact-file operator approval boundary is missing
+E   assert None is not None</failure></testcase></testsuite></testsuites>

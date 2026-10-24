@@ -1,0 +1,59 @@
+{
+  "head_tested": "ffd070d7c22688ef1ce00558fae2858f62752aad",
+  "main_received": "604cab0a660fad511545416af6e2f4a638f7e7f6",
+  "gates": {
+    "full": {
+      "commit": "ffd070d7c22688ef1ce00558fae2858f62752aad",
+      "exit_code": 0,
+      "seconds": 571.97,
+      "junit": {
+        "tests": 2536,
+        "passed": 2534,
+        "failures": [],
+        "errors": [],
+        "skipped": [
+          {
+            "classname": "tests.unit.application.test_phase_b_sa55_runner",
+            "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+            "time": "0.249",
+            "type": "pytest.xfail",
+            "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+          },
+          {
+            "classname": "src.web.backend.tests.test_media_store",
+            "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+            "time": "0.005",
+            "type": "pytest.skip",
+            "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+          }
+        ]
+      }
+    },
+    "react": {
+      "commit": "ffd070d7c22688ef1ce00558fae2858f62752aad",
+      "exit_code": 0,
+      "seconds": 139.38,
+      "junit": {
+        "tests": 143,
+        "passed": 143,
+        "failures": [],
+        "errors": [],
+        "skipped": []
+      }
+    },
+    "build": {
+      "commit": "ffd070d7c22688ef1ce00558fae2858f62752aad",
+      "exit_code": 0,
+      "seconds": 6.11
+    }
+  },
+  "scope_passed": 76,
+  "mutation_caught": 29,
+  "paid_run_executed": false,
+  "provider_spend_usd": 0,
+  "w15_complete": false,
+  "full_gate_green": true,
+  "proposed_doc6_bootstrap_cap_usd": "1.00",
+  "proposed_candidate_attempt_cap_usd": "3.00",
+  "owner_approval_received": false
+}

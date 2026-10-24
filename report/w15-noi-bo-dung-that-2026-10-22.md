@@ -1,5 +1,10 @@
 # W-15 — adapter/composition và kiểm 0 USD — 2026-10-22
 
+**Cập nhật mới hơn trong ngày 2026-10-24:** mã operator/hàng rào chi ở `ffd070d` và
+[đề nghị hai lượt thật](w15-de-nghi-luot-that-2026-10-24.md). Phần dưới giữ kết quả theo mốc cũ.
+Đã chứng minh doc-6 cache-only dừng ở label-roles; web ready 0 USD trên doc-6 thật vẫn chờ
+bootstrap được chủ dự án duyệt riêng. Chưa gọi API có phí và chưa đóng W-15.
+
 ## Hiện hành sau tiếp quản và SA-70 — 2026-10-24
 
 Đã nhận main có SA-69/SA-70, nền `604cab0`, merge W-15 **`be31507`**. Cổng đúng mốc này:

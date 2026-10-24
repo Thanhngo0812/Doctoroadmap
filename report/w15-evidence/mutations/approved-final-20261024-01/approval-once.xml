@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.638" timestamp="2026-10-24T14:52:44.257194+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt" time="0.973"><failure message="Failed: DID NOT RAISE &lt;class 'ValueError'&gt;">src\web\backend\tests\test_build_approval_w15.py:52: in test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt
+    with pytest.raises(ValueError, match='consumed'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'ValueError'&gt;</failure></testcase></testsuite></testsuites>

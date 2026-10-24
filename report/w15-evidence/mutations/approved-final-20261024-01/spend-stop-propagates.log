@@ -1,0 +1,13 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_stop_exception_is_not_swallowed_as_a_model_repair_error _________
+src\web\backend\tests\test_build_spend_w15.py:109: in test_stop_exception_is_not_swallowed_as_a_model_repair_error
+    assert not issubclass(module().BuildSpendStopped, RuntimeError)
+E   AssertionError: assert not True
+E    +  where True = issubclass(<class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'>, RuntimeError)
+E    +    where <class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'> = <module 'wayfinder.infrastructure.build_spend' from 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\src\\web\\backend\\wayfinder\\infrastructure\\build_spend.py'>.BuildSpendStopped
+E    +      where <module 'wayfinder.infrastructure.build_spend' from 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\src\\web\\backend\\wayfinder\\infrastructure\\build_spend.py'> = module()
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-final-20261024-01\spend-stop-propagates.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_stop_exception_is_not_swallowed_as_a_model_repair_error
+1 failed, 17 deselected in 0.28s

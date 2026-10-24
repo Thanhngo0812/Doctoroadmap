@@ -1,0 +1,39 @@
+.FF..FF.                                                                 [100%]
+================================== FAILURES ===================================
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:214: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(uploads) == 1, 'stop before uploading another asset after cancellation'
+E   AssertionError: stop before uploading another asset after cancellation
+E   assert 2 == 1
+E    +  where 2 = len(['wayfinder/dev/media/u-68417b45b6e6e40986be/ac3b20db67e44f90a8a369ec51079b91', 'wayfinder/dev/media/u-68417b45b6e6e40986be/7ede729c6396433aa0649b7b560fb7e6'])
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:214: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(uploads) == 1, 'stop before uploading another asset after cancellation'
+E   AssertionError: stop before uploading another asset after cancellation
+E   assert 2 == 1
+E    +  where 2 = len(['wayfinder/dev/media/u-83176f84978856bde991/dc66ffd5ebfe4dfebd67158b7dc57b69', 'wayfinder/dev/media/u-83176f84978856bde991/e81f9ca1863f49cda1f39f109363b4b1'])
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:214: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(uploads) == 1, 'stop before uploading another asset after cancellation'
+E   AssertionError: stop before uploading another asset after cancellation
+E   assert 2 == 1
+E    +  where 2 = len(['wayfinder/dev/media/u-7d99ce3ee6201af2a44d/2acd99d7e5994a5b824cd9b923e39b25', 'wayfinder/dev/media/u-7d99ce3ee6201af2a44d/c3ac3a2a4039431f9150492d25e9e395'])
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:214: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(uploads) == 1, 'stop before uploading another asset after cancellation'
+E   AssertionError: stop before uploading another asset after cancellation
+E   assert 2 == 1
+E    +  where 2 = len(['wayfinder/dev/media/u-4890d5cc573f74634208/5705296a09ab4e7bbc44d1f6bc971334', 'wayfinder/dev/media/u-4890d5cc573f74634208/f1f4dd58b8644abdb2a8f8a56a32e374'])
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-20261024-01\media-cancel.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media]
+4 failed, 4 passed, 5 deselected, 1 warning in 9.80s

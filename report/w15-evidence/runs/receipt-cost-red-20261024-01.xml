@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="3" time="4.019" timestamp="2026-10-24T14:27:24.370274+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait[none]" time="1.194" /><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait[audit]" time="0.546"><failure message="assert 0.0 == 0.000265 ± 2.6e-10&#10;  &#10;  comparison failed&#10;  Obtained: 0.0&#10;  Expected: 0.000265 ± 2.6e-10">src\web\backend\tests\test_build_approval_w15.py:137: in test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait
+    assert result.spent_usd == pytest.approx(.000265 if fault == 'audit' else .00025)
+E   assert 0.0 == 0.000265 ± 2.6e-10
+E
+E     comparison failed
+E     Obtained: 0.0
+E     Expected: 0.000265 ± 2.6e-10</failure></testcase><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait[partial_usage]" time="0.441"><failure message="AssertionError: assert ('failed' == 'failed'&#10;  &#10;    failed and not True)&#10; +  where True = BuildResult(doc_id='u-f50e3cabb10a4a57b740', status='failed', pipeline_version='web-real:40380552dc4b7e04582fc6acbaad7...9000009625452, error={'code': 'loi_noi_bo', 'message': 'Operator budget or usage requires review', 'retryable': False}).usage_complete">src\web\backend\tests\test_build_approval_w15.py:136: in test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait
+    assert result.status == 'failed' and not result.usage_complete and len(calls) == 1
+E   AssertionError: assert ('failed' == 'failed'
+E
+E       failed and not True)
+E    +  where True = BuildResult(doc_id='u-f50e3cabb10a4a57b740', status='failed', pipeline_version='web-real:40380552dc4b7e04582fc6acbaad7...9000009625452, error={'code': 'loi_noi_bo', 'message': 'Operator budget or usage requires review', 'retryable': False}).usage_complete</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,11 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_next_request_is_rejected_before_the_provider_when_capacity_is_exhausted _
+src\web\backend\tests\test_build_spend_w15.py:35: in test_next_request_is_rejected_before_the_provider_when_capacity_is_exhausted
+    with pytest.raises(api.BuildSpendStopped):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'>
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-final-20261024-01\spend-capacity.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_next_request_is_rejected_before_the_provider_when_capacity_is_exhausted
+1 failed, 17 deselected in 0.40s
