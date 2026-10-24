@@ -4,8 +4,15 @@
 [spec Pha B2](../../doc/pha-b2-spec.md), mục 1–2, 8, 10 (`session-1`, `turn-1`, phần còn hiệu lực); [spec chức năng](../../doc/web-chuc-nang-spec.md),
 mục 1 (công cụ buộc phía máy chủ, SSE), 7 (giới hạn tần suất), 8; [ADR 0017](../../doc/adr/0017-pham-vi-phien-la-noi-luu-neo-vao-khai-niem.md); spec thiết
 kế, khung chat.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07, SA-56/58 đã ghép; hợp đồng mới SA-66 sau SA-64 · **Trạng thái:**
-sau W-08 chuẩn bị theo answer-3; cổng cuối chờ Claude nghiệm thu/ghép SA-66.
+**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07; SA-66/SA-69 đều đã ghép · **Trạng thái:**
+sau W-08 nhận main có `ba4350f`/`973fa99` để triển khai và kiểm tích hợp answer-3, không còn chờ SA-69.
+
+**Cập nhật mới nhất 2026-10-24 từ Claude (`2a39c32`):** SA-69 đã ghép `973fa99`, sửa lỗi hồi quy công cụ quiz/tài liệu không hiểu `scope` dạng "module 4"/tên module.
+Đọc [vé SA-69](../sau-a10/69-tro-ly-3-sua-sau-chay-that.md) và spec trợ lý mục 8; phân giải ở lõi, web không tự dịch/vá scope.
+Thẻ quiz/tài liệu nhận qua sự kiện `artifact`; chữ trả lời có thể còn link tự bịa dạng `quiz:…` tới SA-70, web không biến chuỗi đó thành link bấm được.
+SA-70 tiếp nâng công thức/ngữ cảnh theo mục 9; chỉ nhận hành vi mới sau khi có mốc đã ghép.
+Thiết kế bàn giao HTML/CSS/token, web triển khai React; không chờ Cloud Figma theo quyết định chủ dự án.
+[Lời giao đã chỉnh](../../report/lenh-giao-viec-ba-nhom-lan3-2026-10-23.md).
 
 **Cập nhật mới nhất `a50955b`, 2026-10-23:** answer-3 dùng `answer_md` Markdown/LaTeX và `sources[]`; bỏ citations/outside_document_blocks cũ,
 không còn insufficient_context/not_in_document. Stream progress/tool_call/delta/graph_card/artifact/final/failure; delta hiện ngay,

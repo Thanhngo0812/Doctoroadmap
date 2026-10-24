@@ -2,7 +2,14 @@
 
 **Nguồn chân lý:** [W-22](W-22-ban-figma.md); [spec thiết kế](../../doc/web-thiet-ke-giao-dien-spec.md), mục 3, 3a, 7–11 và quyết định kiểm thử.
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
-**Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đã bàn giao, kiểm lại chưa đạt toàn bộ; tiếp tục cùng vé.
+**Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đạt có ghi chú mốc thiết kế web đã kiểm, theo quyết định chủ dự án 2026-10-24.
+
+**Phán xét mới 2026-10-24:** chủ dự án bỏ yêu cầu Cloud Figma; nhận phần thiết kế web đã kiểm và bàn giao.
+Tiếp luồng HTML/CSS/token → React → cùng soát giao diện thật; W-22/W-24 không còn chờ Variables export/components/reactions hoặc video Present Figma.
+Các kết quả kiểm lần 3 dưới đây giữ làm lịch sử, không được diễn giải là các test đỏ đã sửa xanh.
+Preview HTML cũ sai LaTeX/spinner/retry hoặc anchor phải ghi rõ bản cũ hoặc sửa khi dùng lại; lỗi thật của React vẫn thuộc W-08/W-09 tương ứng.
+Plugin Cloud và guard riêng của plugin không còn là việc bắt buộc để nhận mốc thiết kế web. Giữ kiểm token/tương phản thực của web.
+Nhánh `f292f18` chưa được ghép; hỗ trợ nhóm web và W-23 theo [bản giao việc đã chỉnh](../../report/lenh-giao-viec-ba-nhom-lan3-2026-10-23.md).
 
 **Soát lần 3 tối 2026-10-23, `f292f18`: chưa nhận cả gói, chưa ghép.** Đóng mã báo lỗi Variables/alpha và chat usage/raw tools;
 chat rỗng, pending invitation và các section anchor đã có. 49 test qua runner, VM 9 kịch bản đầu ra/lỗi thực, browser 12 cấu hình xác minh.
@@ -93,7 +100,16 @@ Xem [nghiệm thu mới](../../report/dieu-phoi-nghiem-thu-w02-w05-w24-2026-10-2
 
 Giữ cùng vé; báo cáo phân biệt phần đã kiểm đạt và phần chưa có bằng chứng, không ghi hoàn tất 100% khi các mục trên còn mở.
 
-## Mục tiêu
+## Phần hỗ trợ tiếp sau mốc đã nhận
+
+- Bàn giao mẫu HTML/CSS/token có ghi phiên bản; nhóm web đọc mẫu mới ở nhánh W-24, không nhập cả nhánh chưa soát.
+- Soát React W-08/W-09: bố cục, công thức, nguồn, chờ/lỗi, đáp án gập, responsive/sáng tối/reduced-motion và focus.
+- Cập nhật claim/anchor của tài liệu nếu tiếp tục dùng mẫu; ghi đúng bằng chứng web, không cần node Figma.
+- Tham gia W-23 đối chiếu React với spec/token/mẫu HTML được chọn; nhận các màn tương lai theo vé tương ứng.
+
+## Yêu cầu gốc để tra lịch sử (phần Cloud đã bỏ theo quyết định 2026-10-24)
+
+### Mục tiêu gốc
 
 Hoàn thiện các tiêu chí gốc của W-22 và sửa những lỗi đã tái hiện. Không thiết kế lại thương hiệu, đổi spec hoặc xây ứng dụng React trong vé này.
 Nếu phần còn thiếu đã có trên Figma, bổ sung bằng chứng thay vì làm lại.

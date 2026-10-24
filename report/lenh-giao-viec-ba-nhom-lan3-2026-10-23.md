@@ -1,5 +1,8 @@
 # Lời giao ba nhóm sau nghiệm thu lần 3 — 2026-10-23
 
+**Đã chỉnh ngày 2026-10-24 theo chủ dự án và bàn giao mới nhất của Claude `2a39c32`.** SA-66 và SA-69 đều đã ghép, W-09 đã được gỡ chặn;
+nhóm thiết kế được nhận mốc giao diện web có ghi chú, bỏ yêu cầu Cloud Figma. [Quyết định và phạm vi](dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md).
+
 [Biên bản và bằng chứng](dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md). Chủ dự án chuyển riêng từng phần; điều phối chưa gửi phiên bên ngoài.
 
 ## Nhóm web — sửa hai lỗi W-08 trước, rồi W-09
@@ -7,6 +10,8 @@
 > Tiếp `tmp/w08-lecture`, nhánh `work/w08-lecture`, nhận main mới nhất. Mốc bàn giao `89122f6` chưa được ghép.
 > Điều phối đã kiểm độc lập 2.385 Python/158 React/build xanh, 12 cấu hình browser/101 ảnh/17 Axe; hồ sơ nguồn/hashes/mutation khớp.
 > Không làm lại phần quyền/gateway/Markdown/media đã đạt. Hai Required còn lại trong `Learning.tsx`:
+> Dùng HTML/CSS/token do nhóm thiết kế bàn giao trong `design/preview/` để tham khảo khi triển khai React;
+> bản mới trên nhánh W-24 có thể đọc tại `tmp/w24-figma-evidence/design/preview/`. Chọn mẫu đúng spec, không nhập cả nhánh chưa duyệt hoặc chép đè mã đang làm.
 >
 > 1. Bài A đang mở, đánh dấu B trong sidebar: checkbox/tiến độ đổi nhưng nhãn B ở Cần biết trước/Tiếp theo vẫn đọc snapshot cũ.
 >    Dùng tiến độ hiện tại cho mọi nhãn, kiểm lưu thành công và rollback; không gọi sinh lại bài chỉ để đổi nhãn.
@@ -17,11 +22,17 @@
 > 6 assertion fail/11 control pass, không setup error. Nhận ca hồi quy vào suite của vé; ghi RED→GREEN trên đúng mã, không giảm assertion/timeout.
 > Chạy lại cổng qua runner và browser sau sửa, ghi commit/SHA/native/SQL, giữ các lượt cũ. Chờ điều phối nghiệm thu/ghép, không tự ghép main.
 >
-> Sau W-08 đạt: W-09 theo ADR0026/answer-3, đọc `doc/tro-ly-3-spec.md`. SA-66 đang ở làn Claude; chuẩn bị bằng fake hợp đồng mới được,
-> cổng cuối phải nhận main đã ghép SA-66. answer_md/Markdown/LaTeX/sources/delta; focus body_md lecture-3 cache-only, không sinh khi miss;
+> Sau W-08 đạt: W-09 theo ADR0026/answer-3, đọc `doc/tro-ly-3-spec.md`, đặc biệt mục 8, và vé SA-69.
+> **SA-66 đã ghép `ba4350f`, SA-69 đã ghép `973fa99`; Claude xác nhận W-09 có thể nhận answer-3 từ main.**
+> Điểm chờ cũ do scope "module 4"/tên module đã được sửa ở lõi. Nhận main mới, kiểm công cụ quiz/tài liệu qua đường web bằng fake hợp đồng đúng;
+> không tự dịch/vá scope ở web. Thẻ quiz/tài liệu lấy từ sự kiện `artifact`; link mô hình tự bịa dạng `quiz:…` trong chữ không biến thành link bấm được.
+> answer_md/Markdown/LaTeX/sources/delta; focus body_md lecture-3 cache-only, không sinh khi miss;
 > giữ session/quyền/client_turn_id/graph_cards/artifacts. Validation riêng admin, UI tỷ lệ used_ratio/limited/resets_at,
 > trần học 1 USD/ngày theo hợp đồng, 10 lượt/phút riêng; không bịa số lượt/ngày hoặc lộ tool arguments.
-> Giữ Vertex và mọi test 0 USD. W-10 sau W-09, nhận spec/mốc SA-67/68 thật khi có, không tự chốt hợp đồng tương lai.
+> **Báo trước SA-70:** lõi sẽ ngừng phát delta từ tiêu đề tự kiểm tra bằng đúng bộ tách của core; tới lúc SA-70 ghép vẫn sửa/giữ hồi quy R-W08-2 phía web.
+> Khi nhận SA-70 kiểm lại cả HTTP và React, không tạo hai bộ cắt lệch nhau. SA-70 do Claude phụ trách, nhóm web không sửa lõi.
+> Giữ Vertex và mọi test 0 USD. W-10 sau W-09: spec document-3/quiz-3 và vé SA-67/68 đã có; đọc bản mới,
+> chờ mốc triển khai được Claude nghiệm thu/ghép trước tích hợp cuối, không dùng hợp đồng cũ thay cho bản mới.
 
 ## Nhóm lõi — W-15 tiếp ngay, đã có port
 
@@ -40,28 +51,33 @@
 >    Trình đúng cuốn/hash/lượt/trần có căn cứ; chỉ chủ dự án duyệt mới mở có tiền. Ngân sách phục hồi/SA cũ không áp dụng.
 >
 > Bàn giao rõ milestone nào đã chạy; toàn W-15 chưa đóng khi chỉ có adapter hoặc audit metadata. Giữ Vertex, fake provider và chi mới 0 USD.
+> Theo dõi SA-70 mục 11.7: lỗi chụp ảnh trang sẽ được ghi trong chi tiết bước, không làm hỏng cả lần dựng. Chỉ kiểm hành vi mới sau khi nhận mốc đã ghép;
+> không sửa composition lõi thuộc làn Claude hoặc nhận spec mới là mã đã có.
 
-## Nhóm thiết kế — giữ sửa đã đạt, hoàn thiện W-24
+## Nhóm thiết kế — nhận mốc web, hỗ trợ hoàn thiện giao diện thực tế
 
-> Tiếp `tmp/w24-figma-evidence`, nhánh `work/w24-figma-evidence`; `f292f18` chưa được ghép.
-> Điều phối đóng lỗi mã Variables báo lỗi/alpha và chat bịa trần/raw tools; xác nhận empty chat/pending invitation/section anchors mới.
-> Không làm lại những phần này. Đã kiểm 49 test trên worktree qua runner, VM 9 nhánh, browser 12 cấu hình.
+> Theo quyết định chủ dự án 2026-10-24, **nhận đạt có ghi chú phần thiết kế web đã bàn giao**: token, bố cục, thương hiệu, responsive và usage/chat đã kiểm.
+> W-22/W-24 không còn bị giữ bởi Cloud Figma. Không giao thêm Variables export, native components/bindings/reactions trên Cloud hoặc video Present Figma.
+> `f292f18` vẫn ở nhánh riêng, chưa ghép; phán xét phạm vi thiết kế không thay cổng kiểm mã trước khi ghép nhánh.
+> Giữ các phần đã đạt, không làm lại plugin hay bộ token. Ưu tiên giúp nhóm React hoàn thiện giao diện web theo spec và bằng chứng trình duyệt.
+> Tiếp tục bàn giao mẫu HTML/CSS/token cho nhóm web tham khảo; ghi rõ mẫu nào đã nhận, mẫu nào cần cập nhật.
+> Nhóm web chuyển mẫu sang React, hai nhóm cùng soát kết quả; không yêu cầu nhóm web tự thiết kế lại những mẫu đã phù hợp.
 >
-> Phần còn lại:
-> 1. W-08 local phải dựng được công thức mẫu; hiện 0 .katex và LaTeX hiện thô. Khối chờ dùng nhân vật 96px và ảnh tĩnh khi reduced-motion,
->    không claim spinner96 khi CSS là20px. Mọi lỗi chưa có chữ có message/Thử lại, bỏ nhánh “không thể phục hồi” khôngretry;
->    lỗi đuôi giữ chữ/cat_ngan, không hứa hành động tải bản đủ ngoài hợp đồng. Giữ đáp án gập và nguồn đúng trang; đây là preview thiết kế, không giao viết lại React.
-> 2. Sửa report138/152: #text-tool-action và #btn-delete-course không tồn tại; nút thật #btn-delete-course-permanent.
->    Bảng theo từng trạng thái có link/node/minh chứng thật hoặc ghi thiếu; sửa claim 100%, KaTeX/96px cho đúng.
->    W-09 KaTeX/answer-3 ghi rõ phạm vi chuẩn bị nếu chưa có minh chứng; cú pháp $ của LaTeX không phải tiền USD trên UI.
-> 3. Đưa kiểm đầu ra plugin và lỗi create/set mode vào kiểm hồi quy dùng output thực. Mã hiện đã báo lỗi đúng;
->    guard text/toy vẫn lọt khi bỏ accounting create, nên không lấy số 49 hoặc 13 mutation làm bằng chứng bảo vệ mọi nhánh.
-> 4. Hoàn thiện file Figma UVhhlZnqdpV0JDcAHwJczo: Variables Light/Dark đúng token, native components/variants/bindings,
->    prototype reactions/starting points và đủ bốn video Present. Đọc Cloud mới ở đợt này vẫn0Variables/components/bindings/reactions/startingpoints.
->    Nộp export/receipt/node IDs và video chạy thật; HTML/plugin source không thay bàn giao Cloud.
+> Việc tiếp theo:
+> 1. Phối hợp soát React W-08 ở 390/768/1280 sáng/tối và giảm chuyển động: chữ/công thức đọc rõ, nguồn đúng trang,
+>    nhân vật chờ đúng cỡ, message/Thử lại khi chưa có chữ, đáp án gập và giữ chữ sau lỗi đuôi. Hai lỗi W-08 điều phối đã tái hiện vẫn do nhóm web sửa.
+> 2. Preview HTML chỉ là tài liệu hỗ trợ. Các chỗ LaTeX thô/spinner20/fatal khôngretry chưa sửa phải ghi rõ là bản cũ,
+>    hoặc cập nhật khi dùng lại làm mẫu cho React; không bắt làm lại toàn bộ preview để đóng mốc thiết kế đã được nhận.
+> 3. Sửa hai anchor sai và claim KaTeX/96px/100% trong báo cáo nếu tiếp tục dùng tài liệu đó. Trỏ ảnh/đường dẫn màn web thực tế;
+>    không cần node Figma. Cú pháp $ của LaTeX không phải tiền USD trên UI.
+> 4. Chuẩn bị và soát giao diện W-09 theo answer-3 bằng fake; SA-69 đã ghép, nhóm web nhận main để tích hợp sau W-08.
+>    Tiếp đó hỗ trợ W-23 đối chiếu React với spec/token,
+>    ghi nhận lỗi thị giác/hiệu ứng, ảnh và video trình duyệt khi cần chứng minh tương tác. Không giao tự sửa các tệp React nhóm web đang làm;
+>    nếu nhận cài giao diện thì tách lát và worktree riêng được điều phối phân công.
 >
-> W-22/W-24 vẫn mở; W-23 chưa thể đối chiếu trọn bộ. Logo Artboard9–28, Be Vietnam Pro/token/motion theo spec,
-> được dùng taste-skill đã nạp. Giữ 390/768/1280 sáng/tối/reduced-motion, 44px, kiểm thị giác, không bịa nghiệp vụ.
+> W-22/W-24 đạt có ghi chú trong phạm vi web đã kiểm. W-23 không chờ Cloud, nhưng nghiệm thu toàn bộ vẫn chờ các màn W-08/W-09/W-10 hoàn thành.
+> Logo Artboard 9–28, Be Vietnam Pro/token/motion theo spec, được dùng taste-skill đã nạp. Giữ 390/768/1280 sáng/tối/reduced-motion,
+> vùng bấm 44px và kiểm thị giác; không bịa nghiệp vụ. Các màn tương lai được nhận theo vé tương ứng khi có giao diện chạy thật.
 
 ## Luật chung
 

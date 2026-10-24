@@ -4,8 +4,8 @@
 mục 9. Thử nghiệm 2026-10-23/24: script `tmp/claude-tools/chay_that_lecture3.py` (cờ `--prompt`, `--raw-formula`, `--max-images`, `--thinking`), so sánh mù ở
 scratchpad `lecture3-so-sanh/`. Biên bản web lần 3, R-W08-2: `report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md`.
 
-**Ai:** agent Sonnet cài · Claude nghiệm thu, chạy lượt thật và ghép · **Chi phí mô hình:** 0 USD khi cài (mô hình giả) · **Chặn bởi:** SA-69 ghép (cùng đụng
-`assistant_context.py`). Trước khi giao, Claude cập nhật luật công thức trong khối lời nhắc mục 2 của spec trợ lý theo mục 9 · **Trạng thái:** chờ SA-69
+**Ai:** agent Sonnet cài · Claude nghiệm thu, chạy lượt thật và ghép · **Chi phí mô hình:** 0 USD khi cài (mô hình giả) · **Chặn bởi:** SA-69 (đã ghép
+`973fa99`). Khối lời nhắc mục 2 của spec trợ lý đã lên `assistant-prompt-5` (dòng công thức, dòng quiz/tài liệu đã tạo) · **Trạng thái:** sẵn sàng
 
 ## Phạm vi tệp
 
