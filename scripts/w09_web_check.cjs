@@ -157,6 +157,8 @@ async function main() {
     }
     async function capture(name, axe = false) {
       await learner.evaluate(() => document.fonts.ready);
+      await learner.evaluate(() => Promise.all(document.getAnimations().filter(animation =>
+        animation.effect?.getTiming().iterations !== Infinity).map(animation => animation.finished.catch(() => {}))));
       const width = learner.viewportSize().width;
       const theme = await learner.locator('html').getAttribute('data-theme');
       const reduced = await learner.evaluate(() => matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -173,8 +175,12 @@ async function main() {
       const file = `${name}-${width}-${theme}${reduced ? '-reduced' : ''}.png`;
       await learner.screenshot({ path: path.join(out, file), fullPage: width >= 1280 }); audit.screens.push({ file, name, width, theme, reduced, layout });
       if (axe) {
-        const result = await new AxeBuilder({ page: learner }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
-        audit.accessibility.push({ file, violations: result.violations, incomplete: result.incomplete, passes: result.passes.length });
+        // The opened options intentionally cover text below. Audit that floating group separately;
+        // the underlying conversation is audited in the immediately preceding answered capture.
+        const scope = name === 'conversation-options' ? '.learning-chat-options-panel' : null;
+        const builder = new AxeBuilder({ page: learner }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']);
+        const result = await (scope ? builder.include(scope) : builder).analyze();
+        audit.accessibility.push({ file, scope: scope ?? 'document', violations: result.violations, incomplete: result.incomplete, passes: result.passes.length });
         assert.deepEqual(result.violations, [], `${name}: Axe violations`);
         const manual = [], unresolved = [];
         for (const finding of result.incomplete) {
