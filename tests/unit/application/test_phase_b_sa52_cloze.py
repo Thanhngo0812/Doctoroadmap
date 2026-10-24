@@ -98,10 +98,9 @@ def test_bank_cached_under_rules_v3_is_not_served_by_the_shipped_rules(monkeypat
     graph, store = Graph(), InMemoryPhaseBStore()
     quiz = QuizUseCase(graph, store)
     concept = quiz._concepts("m", ["a"])[0]
-    context = quiz._context("m", concept)
     with monkeypatch.context() as patch:
         patch.setattr(QuizUseCase, "LOCAL_RULES_VERSION", "quiz-local-rules-v3")
-        old_key = quiz._bank_key("d", "m", concept, None, context=context)
+        old_key = quiz._bank_key("d", "m", concept, None)
     store.put_cache(old_key, [{"item_id": "legacy-v3", "concept_id": "a", "generator": "cloze",
                                "stem": "old", "options": [], "checks": {}}])
 
