@@ -47,7 +47,7 @@ def make_worker(settings,*,source_doc=None,fixture_root=None,manifest=None,manif
     return worker,engine
 
 
-def make_real_worker(settings,*,media=None,mailer=None,core_settings=None,pipeline_factory=None,graph_loader=None):
+def make_real_worker(settings,*,media=None,mailer=None,core_settings=None,pipeline_factory=None,graph_loader=None,spend_approval=None):
     from doc2roadmap.application.phase_b.retrieval import load_learning_graph
     from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
     from wayfinder.application.build_worker import BuildWorker
@@ -60,7 +60,8 @@ def make_real_worker(settings,*,media=None,mailer=None,core_settings=None,pipeli
     engine=create_database_engine(settings.database_url)
     runtime=None
     try:
-        runtime=RealBuildRuntime(settings,engine,core_settings=core_settings,pipeline_factory=pipeline_factory)
+        runtime=RealBuildRuntime(settings,engine,core_settings=core_settings,pipeline_factory=pipeline_factory,
+                                 spend_approval=spend_approval)
         service=compose_build_service(settings,engine,media=media,core_settings=runtime.settings)
         loader=graph_loader or (lambda doc,version:load_learning_graph(JsonArtifactStore(settings.artifact_root),doc,version))
         worker=BuildWorker(service,runner_factory=runtime.runner,graph_loader=loader,
