@@ -38,7 +38,7 @@ MUTANTS = {
     "stream_bo_flush": ("không xả dòng dở khi hết", [(L3, "                if shown := gate.flush():\n                    emit({\"event\": \"delta\", \"text\": shown})\n", "")]),
     "stream_khong_tinh_khoang_trang": ("giữ cả dòng chỉ có khoảng trắng bị bỏ", [(L3, "if partial.strip() and not", "if not")]),
     "khoa_khong_co_muc_suy_nghi": ("khoá cache bỏ mức suy nghĩ", [(L3, '            "thinking_level": settings.lecture_thinking_level})', "            })")]),
-    "luon_gui_thinking": ("luôn gửi thinking_level", [(L3, 'if self.settings.lecture_thinking_level else {})', 'else {})')]),
+    "luon_gui_thinking": ("luôn gửi thinking_level", [(L3, 'if self.settings.lecture_thinking_level else {})', 'if True else {})')]),
     "client_luon_thinking_config": ("client luôn gửi thinkingConfig", [(CL, "        if thinking_level:\n", "        if True:\n")]),
     "client_bo_thinking": ("client bỏ thinkingConfig", [(CL, 'body["generationConfig"]["thinkingConfig"] = {"thinkingLevel": thinking_level}', "pass")]),
     "loi_nhac_v4": ("lời nhắc quay về V4", [(L3, "miễn là đúng: soát lại từng con số, từng bước suy luận của ví dụ tự nghĩ trước khi viết.", "miễn là đúng.")]),
@@ -46,7 +46,7 @@ MUTANTS = {
     "tro_ly_dem_sau_cat": ("trợ lý đếm trang sau khi cắt", [(AS, "formula_pages([graph.chunks[row['chunk_id']] for row in sources])", "formula_pages([graph.chunks[row['chunk_id']] for row in sources], settings.assistant_max_page_images)")]),
     "tro_ly_loi_nhac_cu": ("lời nhắc trợ lý bỏ dòng cuối", [(ACTX, "\n- Khi đã tạo quiz hay tài liệu bằng công cụ", "\n- Khi đã tạo quiz hay tài liệu bằng công cụ (x)")]),
     "tro_ly_phien_ban_4": ("phiên bản lời nhắc trợ lý 4", [(LIM, 'assistant_prompt_version: str = "assistant-prompt-5"', 'assistant_prompt_version: str = "assistant-prompt-4"')]),
-    "chup_anh_nuot_het": ("nuốt mọi lỗi của learning_prep", [(CB, "            try:\n                captured =", "            try:\n                full_formulas = None\n                captured =")]),
+    "chup_anh_nuot_het": ("nuốt cả lỗi ghi ảnh công thức", [(CB, "import CutFormulaImages, persist_formula_images\n", "import CutFormulaImages, persist_formula_images as _p\n            def persist_formula_images(*a, **k):\n                try:\n                    return _p(*a, **k)\n                except Exception:\n                    return {'index_path': None, 'cut_count': 0, 'skipped_count': 0}\n")]),
     "chup_anh_khong_bat": ("không bắt lỗi chụp ảnh", [(CB, "            except Exception as error:\n                # Lectures", "            except ZeroDivisionError as error:\n                # Lectures")]),
 }
 

@@ -167,6 +167,13 @@ def test_a_heading_cut_across_two_pieces_is_still_held_back(heading):
         assert deltas(events).rstrip() == result["body_md"].rstrip(), cut
 
 
+def test_a_blank_piece_before_the_heading_is_held_so_no_trailing_spaces_are_shown():
+    text = LESSON_HEAD + "  ### Tự kiểm tra" + SELF_CHECK_BODY
+    start = text.index("  ###")
+    result, events, *_ = run(FakeModel([text[:start], "  ", text[start + 2:]]))
+    assert deltas(events) == LESSON_HEAD and not deltas(events).endswith(" ")
+
+
 def test_one_character_pieces_behave_the_same():
     text = LESSON_HEAD + "### Tự kiểm tra" + SELF_CHECK_BODY
     result, events, *_ = run(FakeModel(list(text)))
