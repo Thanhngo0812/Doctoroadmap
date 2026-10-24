@@ -218,6 +218,23 @@ async function main() {
       }
       await learner.getByRole('button', { name: 'Đóng trợ lý' }).click();
     }
+    stage = 'changing-focus';
+    await control({ action: 'advance' });
+    await learner.goto(lesson); await open(); await ask('Bài X đang mở.'); await ready();
+    assert.equal(audit.requests.at(-1).body.focus_node_id, nid);
+    await learner.getByRole('button', { name: 'Đóng trợ lý' }).click();
+    await learner.locator(`.learning-sidebar a[href$="/khai-niem/${runtime.otherNodeId}"]`).click();
+    await learner.waitForURL(url => decodeURIComponent(url.pathname).endsWith('/' + runtime.otherNodeId));
+    await open(); await ask('Tôi đã chuyển sang bài Y.'); await ready();
+    assert.equal(audit.requests.at(-1).body.focus_node_id, runtime.otherNodeId);
+    await learner.goto(lesson);
+    await learner.locator('.lecture-prerequisites summary').first().click();
+    const prerequisite = learner.getByRole('link', { name: 'Mở bài học tiên quyết' }).first();
+    const prerequisitePath = await prerequisite.getAttribute('href');
+    await prerequisite.click(); await learner.waitForURL(url => url.pathname === prerequisitePath);
+    await open(); await ask('Giải thích bài tiên quyết đang mở.'); await ready();
+    assert.equal(audit.requests.at(-1).body.focus_node_id, decodeURIComponent(prerequisitePath.split('/').at(-1)));
+    await capture('prerequisite-focus');
     stage = 'session-actions';
     await learner.goto(lesson); await open();
     await learner.getByRole('button', { name: 'Đổi tên', exact: true }).click();
@@ -246,11 +263,17 @@ async function main() {
     assert.equal((await control({ action: 'probe' })).calls, 1);
     assert.equal(audit.requests.filter(row => row.body.client_turn_id === intent.client_turn_id).length, 1);
     await capture('reload-saved', true);
-    stage = 'tools'; await control({ action: 'scenario', name: 'tools' }); await ask('Tạo quiz và tài liệu ôn tập.'); await ready();
+    stage = 'tools'; await control({ action: 'scenario', name: 'tools' }); await ask('Tạo quiz và tài liệu ôn tập.');
+    await learner.getByRole('status').filter({ hasText: 'Đang tạo tài liệu' }).waitFor();
+    assert.equal(await learner.getByRole('button', { name: /Tài liệu đã tạo/ }).count(), 0);
+    await capture('creating-artifact'); await control({ action: 'release-tools' }); await ready();
     await learner.getByRole('button', { name: /Tài liệu đã tạo/ }).last().waitFor();
     await capture('artifacts', true);
     await learner.getByRole('button', { name: /Tài liệu đã tạo/ }).last().click();
     await learner.getByText('Tài liệu ôn tập đã lưu.', { exact: false }).last().waitFor(); await capture('artifact-preview', true);
+    await learner.getByRole('button', { name: 'Đóng nội dung' }).last().click();
+    await learner.getByRole('button', { name: /Quiz đã tạo/ }).last().click();
+    await learner.locator('.learning-chat-preview h4').first().waitFor(); await capture('quiz-preview', true);
     await learner.getByRole('button', { name: 'Đóng nội dung' }).last().click();
     const counts = await control({ action: 'probe' }); assert.ok(counts.documents > 0);
     stage = 'delete'; await learner.getByRole('button', { name: 'Xoá phiên', exact: true }).click();

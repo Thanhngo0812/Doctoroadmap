@@ -85,7 +85,7 @@ def main():
             courses.store.add_membership(Membership(course.id, actors['learner'].user_id, 'learner', 'email', clock.now(), clock.now()))
         learning.runtime.lecture(graph).make('doc-1', 8, graph, nid, owner=actors['learner'].user_id, allow_spend=True)
         assistant = ScriptedAssistantModel()
-        document = ScriptedLectureModel([['Tài liệu ôn tập đã lưu. $x^2$ [S1]']])
+        document = ScriptedLectureModel([['Tài liệu ôn tập đã lưu. ', '$x^2$ [S1]']], pause_after_first=True)
         models.extend([assistant, document, lecture])
         learning.runtime.model_for = lambda purpose: assistant if purpose == 'assistant' else document if purpose == 'document' else None
         sharing = compose_sharing_service(settings, engine, graph_loader=learning.graph_loader)
@@ -108,6 +108,8 @@ def main():
                     quizzes=quizzes, documents=documents)
             if action == 'release':
                 assistant.release.set(); return {'released': True}
+            if action == 'release-tools':
+                document.release.set(); return {'released': True}
             if action == 'advance':
                 clock.advance(61); return {'advanced': True}
             if action == 'limit':
