@@ -117,6 +117,12 @@ def test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries(chat):
     assert ask(w, sid, key=keys[0]).status_code == 200
     response = ask(w, sid)
     assert response.status_code == 429 and response.json()['error']['retry_after'] > 0
+    other_course = w.courses.create_course(w.a.actor, doc_id='doc-1', title='Khoá thứ hai', graph_version=8, module_count=1)
+    other_url = f'/api/v1/courses/{other_course.id}/sessions'
+    other_sid = w.a.client.post(other_url, headers=w.a.headers, json={'scope': {'kind': 'roadmap'}}).json()['session_id']
+    denied = w.a.client.post(f'{other_url}/{other_sid}/turns', headers=w.a.headers,
+        json={'question': 'Khoá khác vẫn dùng chung giới hạn phút', 'client_turn_id': uuid4().hex})
+    assert denied.status_code == 429 and denied.json()['error']['code'] == 'rate_limited'
     assert len(w.model.tool_calls) == 10
     w.clock.advance(61)
     w.model.tool_turns.append([Delta('Đã đặt lại.'), Done({})])
