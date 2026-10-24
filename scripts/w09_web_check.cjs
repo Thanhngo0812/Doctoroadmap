@@ -175,6 +175,7 @@ async function main() {
       const file = `${name}-${width}-${theme}${reduced ? '-reduced' : ''}.png`;
       await learner.screenshot({ path: path.join(out, file), fullPage: width >= 1280 }); audit.screens.push({ file, name, width, theme, reduced, layout });
       if (axe) {
+        const focused = await learner.evaluateHandle(() => document.activeElement);
         // The opened options intentionally cover text below. Audit that floating group separately;
         // the underlying conversation is audited in the immediately preceding answered capture.
         const scope = name === 'conversation-options' ? '.learning-chat-options-panel' : null;
@@ -198,6 +199,15 @@ async function main() {
           assert.throws(() => assertMathContrast(manual.map(row => ({ ...row, unobscured: false }))), { code: 'ERR_ASSERTION' });
           audit.contrastCounterexample = { invisibleInkRejected: true, obscuredTextRejected: true, threshold: 4.5 };
         }
+        const focus = await focused.evaluate(element => {
+          const changed = element !== document.activeElement;
+          const before = element?.getAttribute('aria-label') ?? element?.textContent?.trim().slice(0, 60);
+          const after = document.activeElement?.getAttribute('aria-label') ?? document.activeElement?.tagName;
+          if (changed && element instanceof HTMLElement && element.isConnected) element.focus({ preventScroll: true });
+          return { changedByInspection: changed, before, after };
+        });
+        audit.accessibility.at(-1).focus = focus;
+        await focused.dispose();
       }
     }
     const smoke = process.env.W09_BROWSER_SMOKE === '1';
