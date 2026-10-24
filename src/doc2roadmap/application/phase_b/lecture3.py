@@ -21,7 +21,8 @@ from doc2roadmap.application.phase_b.budget import DailyLimitExceeded, DailySpen
 from doc2roadmap.application.phase_b.clock import SystemClock
 from doc2roadmap.application.phase_b.common import stable_json
 from doc2roadmap.application.phase_b.lecture_context3 import (
-    FORMULA_MARK, formula_pages, gather_chunks, prerequisite_rows, source_rows, source_texts, user_message,
+    FORMULA_MARK, formula_pages, formula_raw_texts, gather_chunks, prerequisite_rows, source_rows, source_texts,
+    user_message,
 )
 from doc2roadmap.application.phase_b.lectures import _aggregate_usage, _assemble, _without_learner_status
 from doc2roadmap.application.ports.page_images import PageImages
@@ -34,13 +35,14 @@ Cách viết:
 - Văn xuôi tự nhiên, mạch lạc, như đang giảng trên lớp: gần gũi nhưng chính xác. Không liệt kê khô khan, không lặp lại cùng một ý bằng lời khác.
 - Mở đầu bằng một hai câu cho thấy khái niệm này giải quyết vấn đề gì, hay vì sao cần nó. Nếu có khái niệm tiên quyết, nối sang nó tự nhiên; không viết "như bạn đã học".
 - Giải thích trực giác trước, rồi nêu chính xác định nghĩa hay phát biểu theo sách.
-- Có ít nhất một ví dụ cụ thể, giải từng bước. Ưu tiên ví dụ trong sách. Được thêm một ví dụ hay hình ảnh so sánh đời thường do bạn nghĩ ra nếu nó giúp hiểu, miễn là đúng.
+- Có ít nhất một ví dụ cụ thể, giải từng bước. Ưu tiên ví dụ trong sách. Được thêm một ví dụ hay hình ảnh so sánh đời thường do bạn nghĩ ra nếu nó giúp hiểu, miễn là đúng: soát lại từng con số, từng bước suy luận của ví dụ tự nghĩ trước khi viết.
 - Nêu một hai chỗ người học hay nhầm, hoặc phân biệt với khái niệm gần.
-- Kết bằng một câu cho biết khái niệm này sẽ được dùng vào đâu tiếp theo, dựa trên danh sách "Khái niệm tiếp theo" nếu có.
+- Kết bằng một câu nối sang khái niệm tiếp theo trong danh sách "Khái niệm tiếp theo" nếu có: nói khái niệm này cần cho nó ở chỗ nào. Đừng tự định nghĩa hay mô tả khái niệm tiếp theo khi tư liệu không nói về nó.
 - Cuối bài: một câu hỏi tự kiểm tra ngắn, kèm đáp án.
 {self_check_line}
 Trung thực với sách:
 - Sách là chuẩn. Không viết điều mâu thuẫn với sách. Dùng đúng ký hiệu và thuật ngữ của sách.
+- Giữ đúng chiều và phạm vi của phát biểu trong sách: sách nói "nếu A thì B" thì đừng viết thành "nếu B thì A"; điều sách gán cho đối tượng hay vai trò nào thì giữ đúng đối tượng, vai trò đó.
 - Viết công thức bằng LaTeX trong $...$ hoặc $$...$$.
 - {formula_rule}
 - Đoạn nào dựa vào sách thì gắn nhãn nguồn như [S2] ở cuối đoạn. Phần trực giác hay ví dụ tự nghĩ thì không cần nhãn.
@@ -50,10 +52,10 @@ Trung thực với sách:
 # The one line added to the spec text: it lets code split the self-check off the lesson.
 SELF_CHECK_LINE = ('- Mục tự kiểm tra viết đúng khuôn: một dòng "### Tự kiểm tra", rồi một dòng "**Câu hỏi:** …", '
                    'rồi một dòng "**Đáp án:** …".\n')
-FORMULA_RULE_WITH_IMAGES = ('Chữ "[formula]" là chỗ công thức bị mất khi trích PDF. '
-                            'Ảnh các trang sách được đính kèm: đọc công thức đúng từ ảnh.')
-FORMULA_RULE_TEXT_ONLY = ('Chữ "[formula]" là chỗ công thức bị mất khi trích PDF. '
-                          'Đừng đoán công thức bạn không chắc; khi đó diễn đạt bằng lời.')
+FORMULA_RULE_WITH_IMAGES = (
+    'Chữ "[formula: …]" là chỗ công thức bị mất khi trích PDF; phần sau dấu hai chấm là chữ trích thô của công thức, có thể lộn thứ tự và mất ký hiệu. Ảnh các trang sách được đính kèm: đọc công thức đúng từ ảnh. Công thức ở trang không có ảnh thì dựng lại từ chữ trích thô, chỉ khi chắc chắn; không chắc thì diễn đạt bằng lời.')
+FORMULA_RULE_TEXT_ONLY = (
+    'Chữ "[formula: …]" là chỗ công thức bị mất khi trích PDF; phần sau dấu hai chấm là chữ trích thô của công thức, có thể lộn thứ tự và mất ký hiệu. Dựng lại công thức từ chữ trích thô, chỉ khi chắc chắn; không chắc thì diễn đạt bằng lời.')
 IMAGE_TOKEN_ESTIMATE = 1300
 VALIDATION_VERSION = "lecture3-validation-1"
 _MESSAGES = {
@@ -111,7 +113,9 @@ def _repeated_8grams(words: list[str]) -> int:
 
 def build_validation(text: str, sources: dict[str, str], *, finish_reason: str | None, images_sent: int,
                      pages_wanted: int, self_check_found: bool) -> dict[str, Any]:
-    """Admin log of one lecture. Nothing here changes or blocks the lecture."""
+    """Admin log of one lecture. Nothing here changes or blocks the lecture.
+
+    `pages_wanted` is every page with a formula in the material, counted before the picture limit cut it."""
     scores: dict[str, list[float]] = {}
     for paragraph in re.split(r"\n\s*\n", text):
         labels = [label.strip() for group in _LABEL_GROUP.findall(paragraph) for label in re.split(r"[,;]", group)]
@@ -125,9 +129,46 @@ def build_validation(text: str, sources: dict[str, str], *, finish_reason: str |
             "labels": {label: round(sum(values) / len(values), 3) if values else None
                        for label, values in sorted(scores.items()) if label in sources},
             "unknown_labels": sorted(label for label in scores if label not in sources),
-            "formula_left": FORMULA_MARK in text, "repeated_8grams": _repeated_8grams(_words(text)),
-            "finish_reason": finish_reason, "thieu_anh_trang": images_sent < pages_wanted,
-            "images_sent": images_sent}
+            "formula_left": FORMULA_MARK[:-1] in text, "repeated_8grams": _repeated_8grams(_words(text)),
+            "finish_reason": finish_reason, "pages_with_formula": pages_wanted,
+            "thieu_anh_trang": images_sent < pages_wanted, "images_sent": images_sent}
+
+
+class _SelfCheckGate:
+    """Lets the stream through line by line, and stops at the self-check heading so the answer is not shown early.
+
+    Only a half-written line that may become a heading (blank so far, or starting with `#`) is held back; any other
+    text goes out at once. Everything from the heading on is left for the final lesson.
+    """
+
+    def __init__(self) -> None:
+        self.held = ""
+        self.stopped = False
+
+    def feed(self, piece: str) -> str:
+        if self.stopped:
+            return ""
+        *lines, partial = (self.held + piece).split("\n")
+        self.held = ""
+        out = []
+        for line in lines:
+            if _HEADING.search(line):
+                self.stopped = True
+                return "".join(out)
+            out.append(line + "\n")
+        if partial.strip() and not partial.lstrip().startswith("#"):
+            out.append(partial)
+        else:
+            self.held = partial
+        return "".join(out)
+
+    def flush(self) -> str:
+        """The held half line, once the stream is over: shown unless it is the heading itself."""
+        held, self.held = self.held, ""
+        if self.stopped or _HEADING.search(held):
+            self.stopped = True
+            return ""
+        return held
 
 
 @dataclass
@@ -183,18 +224,20 @@ class Lecture3UseCase:
             emit({"event": "final", "lecture": result})
             return result
 
-        pages = formula_pages(chunks, settings.lecture_max_page_images)
-        images = self._load_images(doc_id, graph, pages)
+        pages = formula_pages(chunks)
+        images = self._load_images(doc_id, graph, pages[:settings.lecture_max_page_images])
         system = system_prompt(bool(images))
         user = user_message(node, graph.modules.get(node.get("module_id"), {}), chunks,
-                            prerequisite_rows(base, context), [row["name"] for row in base["next_up"]])
+                            prerequisite_rows(base, context), [row["name"] for row in base["next_up"]],
+                            formula_raw_texts(graph))
         material = context_hash({"user": user, "images": [[page, hashlib.sha256(data).hexdigest()] for page, data in images]})
         key = context_hash({
             "contract_version": settings.lecture_contract_version, "doc_id": doc_id, "node_id": node_id,
             "material": material, "prompt_version": settings.lecture_prompt_version,
             "system_prompt": hashlib.sha256(system.encode("utf-8")).hexdigest(),
             "context_version": settings.lecture_context_version, "model_id": settings.model_id,
-            "temperature": settings.lecture_temperature, "max_output_tokens": settings.lecture_max_output_tokens})
+            "temperature": settings.lecture_temperature, "max_output_tokens": settings.lecture_max_output_tokens,
+            "thinking_level": settings.lecture_thinking_level})
         skeleton["lecture_key"] = key
         emit({"event": "skeleton", "lecture": self._with_learner_status(skeleton, owner, doc_id)})
 
@@ -357,11 +400,15 @@ class Lecture3UseCase:
         with spending_call(self.spend_guard, "lecture", estimate, replayed=replayed, clock=self.clock) as admitted_at:
             began = perf_counter()
             session = stream = None
+            gate = _SelfCheckGate()
             try:
                 session = self.model.start_session(system)
+                # Only an explicit level reaches the request; a model without the option never sees the argument.
+                thinking = ({"thinking_level": self.settings.lecture_thinking_level}
+                            if self.settings.lecture_thinking_level else {})
                 stream = iter(session.stream_text(
                     user, images=images, temperature=self.settings.lecture_temperature, transport_retries=retries,
-                    timeout_seconds=max(0.1, deadline - perf_counter())))
+                    timeout_seconds=max(0.1, deadline - perf_counter()), **thinking))
             except Exception as error:
                 attempt.error = error
             try:
@@ -379,11 +426,14 @@ class Lecture3UseCase:
                         if not attempt.text:
                             attempt.ttft_ms = round((perf_counter() - began) * 1000)
                         attempt.text += piece
-                        emit({"event": "delta", "text": piece})
+                        if shown := gate.feed(piece):
+                            emit({"event": "delta", "text": shown})
                     if perf_counter() >= deadline:
                         attempt.timed_out = True
                         break
             finally:
+                if shown := gate.flush():
+                    emit({"event": "delta", "text": shown})
                 close = getattr(stream, "close", None)
                 if close:
                     close()

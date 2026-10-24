@@ -91,11 +91,11 @@ def test_context_without_any_chunk_naming_the_concept_is_no_source():
 
 # ---------------------------------------------------------------- 2. page pictures
 
-def test_pictures_of_exactly_the_formula_pages_are_sent_at_most_four_in_reading_order():
-    pages = FakePages({p: JPEG + bytes([p]) for p in (30, 12, 13, 14, 15, 16)})
-    result, _, _, model, _ = run(graph=make_graph(formula_pages=(12, 13, 14, 15, 16)), pages=pages)
+def test_pictures_of_exactly_the_formula_pages_are_sent_at_most_eight_in_reading_order():
+    pages = FakePages({p: JPEG + bytes([p]) for p in range(10, 20)})
+    result, _, _, model, _ = run(graph=make_graph(formula_pages=tuple(range(11, 19))), pages=pages)
     sent = [page for page, _ in model.calls[0].images]
-    assert sent == [30, 12, 13, 14]
+    assert sent == [30, 11, 12, 13, 14, 15, 16, 17]
     assert [call[2] for call in pages.calls] == sent
     assert all(data == JPEG + bytes([page]) for page, data in model.calls[0].images)
     assert 2 not in sent  # page 2 holds the definition but no [formula]
@@ -117,14 +117,14 @@ def test_empty_picture_port_still_gives_a_lesson_and_logs_the_missing_pictures()
     assert result["status"] == "ready" and result["body_md"]
     assert model.calls[0].images == []
     assert cached_validation(store, result)["thieu_anh_trang"] is True
-    assert "Đừng đoán công thức" in model.calls[0].system
+    assert "Dựng lại công thức từ chữ trích thô" in model.calls[0].system
 
 
 def test_picture_rule_follows_whether_pictures_were_sent():
     with_images = run(pages=FakePages({30: JPEG}))[3].calls[0].system
     without = run(pages=FakePages({}))[3].calls[0].system
-    assert "đọc công thức đúng từ ảnh" in with_images and "Đừng đoán" not in with_images
-    assert "Đừng đoán công thức" in without and "đọc công thức đúng từ ảnh" not in without
+    assert "đọc công thức đúng từ ảnh" in with_images and "Dựng lại công thức từ chữ trích thô" not in with_images
+    assert "Dựng lại công thức từ chữ trích thô" in without and "đọc công thức đúng từ ảnh" not in without
 
 
 def test_formula_pages_helper_keeps_reading_order_and_the_limit():
@@ -166,7 +166,7 @@ def test_defaults_are_temperature_one_and_four_thousand_tokens_and_the_model_get
     settings = BSettings()
     assert (settings.lecture_temperature, settings.lecture_max_output_tokens) == (1.0, 4096)
     assert (settings.lecture_contract_version, settings.lecture_prompt_version, settings.lecture_context_version,
-            settings.lecture_max_page_images) == ("lecture-3", "lecture-prompt-3", "lecture-context-3", 4)
+            settings.lecture_max_page_images) == ("lecture-3", "lecture-prompt-4", "lecture-context-4", 8)
     assert run()[3].calls[0].temperature == 1.0
 
 
@@ -366,7 +366,7 @@ def test_second_click_costs_no_call_and_a_new_prompt_version_writes_again():
     first, _, _, _, use_case = run(model, store=store)
     second = use_case.make("d1", "g1", make_graph(), "a", allow_spend=True)
     assert len(model.calls) == 1 and second["body_md"] == first["body_md"] and second["lecture_key"] == first["lecture_key"]
-    newer = Lecture3UseCase(model, store, settings=replace(BSettings(), lecture_prompt_version="lecture-prompt-4"),
+    newer = Lecture3UseCase(model, store, settings=replace(BSettings(), lecture_prompt_version="lecture-prompt-5"),
                             clock=FakeClock()).make("d1", "g1", make_graph(), "a", allow_spend=True)
     assert len(model.calls) == 2 and newer["lecture_key"] != first["lecture_key"]
 
