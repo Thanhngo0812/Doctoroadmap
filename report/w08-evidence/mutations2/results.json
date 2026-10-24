@@ -1,0 +1,154 @@
+[
+  {
+    "name": "cache-only",
+    "source": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner",
+      "--basetemp=tmp/w08-mut-cache-only-dae44071702b4ac99da736b5bb715c04",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\cache-only.xml"
+    ],
+    "beforeSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386"
+  },
+  {
+    "name": "learner-status",
+    "source": "src/web/backend/wayfinder/application/lecture_view.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner",
+      "--basetemp=tmp/w08-mut-learner-status-e9417de16d874a93a5507c11cdaa0dbb",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\learner-status.xml"
+    ],
+    "beforeSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3"
+  },
+  {
+    "name": "node-guard",
+    "source": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lectures_w08.py::test_w08_node_must_be_in_published_learnable_graph",
+      "--basetemp=tmp/w08-mut-node-guard-b21d31d8e17242e8828418f3c19ff6a2",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\node-guard.xml"
+    ],
+    "beforeSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+    "nativeExit": 1,
+    "failures": 2,
+    "errors": 0,
+    "restoredSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386"
+  },
+  {
+    "name": "page-range",
+    "source": "src/web/backend/wayfinder/infrastructure/learning_media.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lectures_w08.py::test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres",
+      "--basetemp=tmp/w08-mut-page-range-93eb111be9d744c484505e13f8c84509",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\page-range.xml"
+    ],
+    "beforeSha256": "96a0a1b8a086735031236e29550d39acf611fd826bda77a16a0ae839d114fb3c",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "96a0a1b8a086735031236e29550d39acf611fd826bda77a16a0ae839d114fb3c"
+  },
+  {
+    "name": "http-dto-privacy",
+    "source": "src/web/backend/wayfinder/api/learning.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_http_dto_discards_admin_keys_even_if_a_gateway_returns_them",
+      "--basetemp=tmp/w08-mut-http-dto-privacy-27b73ec2274744c0b4ee6dd560b823d9",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\http-dto-privacy.xml"
+    ],
+    "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+  },
+  {
+    "name": "sse-membership",
+    "source": "src/web/backend/wayfinder/api/learning.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lectures_w08.py::test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres",
+      "--basetemp=tmp/w08-mut-sse-membership-9a24134ae91f47a18b7f829a177cefc0",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\sse-membership.xml"
+    ],
+    "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+  },
+  {
+    "name": "early-delta",
+    "source": "src/web/backend/wayfinder/api/learning.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_first_delta_precedes_model_finish_and_cache_is_completed_after_http_disconnect",
+      "--basetemp=tmp/w08-mut-early-delta-038a057f16354572b72478af32ea833b",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\early-delta.xml"
+    ],
+    "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+  },
+  {
+    "name": "cross-site",
+    "source": "src/web/backend/wayfinder/api/learning.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_cross_site_navigation_cannot_start_a_paid_generation",
+      "--basetemp=tmp/w08-mut-cross-site-7f9d1dde8c2b40db8bd99bad80f1165d",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations2\\cross-site.xml"
+    ],
+    "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+    "nativeExit": 0,
+    "failures": 0,
+    "errors": 0,
+    "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+  }
+]

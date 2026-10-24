@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="8.496" timestamp="2026-10-23T21:09:07.427638+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lectures_w08" name="test_w08_node_must_be_in_published_learnable_graph[missing]" time="3.468"><failure message="assert 200 == 404&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">lecture_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b55c03e3b76f4b56a097d42401fc7...dLecture3 object at 0x000001AA611A8920&gt;, url='/api/v1/courses/19955f16-e457-408d-989e-efa027f23c9a/concepts/a/lecture')
+node_id = 'missing'
+
+    @pytest.mark.parametrize('node_id', ['missing', 'hidden'])
+    def test_w08_node_must_be_in_published_learnable_graph(lecture_web, node_id):
+        w = lecture_web
+        response = w.a.client.get(w.url.replace('/a/', f'/{node_id}/') + '/stream')
+&gt;       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_lectures_w08.py:101: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_lectures_w08" name="test_w08_node_must_be_in_published_learnable_graph[hidden]" time="0.958"><failure message="assert 200 == 404&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">lecture_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b55c03e3b76f4b56a097d42401fc7...dLecture3 object at 0x000001AA6148B2F0&gt;, url='/api/v1/courses/5037e9b4-6a21-4b91-b354-4f8b992e8bdc/concepts/a/lecture')
+node_id = 'hidden'
+
+    @pytest.mark.parametrize('node_id', ['missing', 'hidden'])
+    def test_w08_node_must_be_in_published_learnable_graph(lecture_web, node_id):
+        w = lecture_web
+        response = w.a.client.get(w.url.replace('/a/', f'/{node_id}/') + '/stream')
+&gt;       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_lectures_w08.py:101: AssertionError</failure></testcase></testsuite></testsuites>

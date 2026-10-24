@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="2" failures="2" errors="0" time="0.1956911">
+    <testsuite name="src/LectureMarkdown.test.tsx" timestamp="2026-10-23T10:27:46.135Z" hostname="ADMIN" tests="2" failures="2" errors="0" skipped="0" time="0.1956911">
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; renders inline/block LaTeX and makes only registered source labels actionable" time="0.1542989">
+            <failure message="expected  to have a length of 2 but got +0" type="AssertionError">
+AssertionError: expected  to have a length of 2 but got +0
+
+- Expected
++ Received
+
+- 2
++ 0
+
+ ❯ src/LectureMarkdown.test.tsx:12:50
+            </failure>
+        </testcase>
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; does not execute raw HTML, load external images, or allow dangerous links/LaTeX HTML" time="0.0368131">
+            <failure message="expected &lt;img alt=&quot;image&quot; …(1)&gt;&lt;/img&gt; to be null" type="AssertionError">
+AssertionError: expected &lt;img alt=&quot;image&quot; …(1)&gt;&lt;/img&gt; to be null
+
+- Expected:
+null
+
++ Received:
+&lt;img
+  alt=&quot;image&quot;
+  src=&quot;https://evil.example/b&quot;
+/&gt;
+
+ ❯ src/LectureMarkdown.test.tsx:24:61
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

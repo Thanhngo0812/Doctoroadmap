@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="19.056" timestamp="2026-10-24T11:17:02.126729+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_pipeline_postport_w15" name="test_postport_whole_pipeline_with_fake_providers_and_independent_pg[success-False]" time="13.802"><failure message="AssertionError: assert set() == {'concepts', ...earning_prep'}&#10;  &#10;  Extra items in the right set:&#10;  'concepts'&#10;  'learning_prep'&#10;  'graph'&#10;  Use -v to get more diff">src\web\backend\tests\test_pipeline_postport_w15.py:205: in test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+    assert {row['extra']['step'] for row in ledger if row['extra']['step'] is not None} == {
+E   AssertionError: assert set() == {'concepts', ...earning_prep'}
+E
+E     Extra items in the right set:
+E     'concepts'
+E     'learning_prep'
+E     'graph'
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

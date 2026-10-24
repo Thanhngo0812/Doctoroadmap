@@ -1,0 +1,149 @@
+[
+  {
+    "name": "rollback",
+    "source": "src/web/frontend/src/Learning.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Learning.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required-20261024\\rollback.xml"
+    ],
+    "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+    "nativeExit": 1,
+    "failures": 2,
+    "errors": 0,
+    "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+  },
+  {
+    "name": "late-error-keeps-text",
+    "source": "src/web/frontend/src/Learning.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Learning.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required-20261024\\late-error-keeps-text.xml"
+    ],
+    "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+  },
+  {
+    "name": "always-retry",
+    "source": "src/web/frontend/src/Learning.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Learning.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required-20261024\\always-retry.xml"
+    ],
+    "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+    "nativeExit": 1,
+    "failures": 5,
+    "errors": 0,
+    "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+  },
+  {
+    "name": "safe-math",
+    "source": "src/web/frontend/src/LectureMarkdown.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/LectureMarkdown.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required-20261024\\safe-math.xml"
+    ],
+    "beforeSha256": "872a0a7eca6b6a23ebe509bf67652f3babf7aad7b9ded5c42588ac9bcc475cb4",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "872a0a7eca6b6a23ebe509bf67652f3babf7aad7b9ded5c42588ac9bcc475cb4"
+  },
+  {
+    "name": "source-page-identity",
+    "source": "src/web/frontend/src/SourceViewer.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/SourceViewer.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required-20261024\\source-page-identity.xml"
+    ],
+    "beforeSha256": "8dde8fb5dab1073714a821f4fb3fe278d3e73043b73bd86d0b821e4879efe5e6",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "8dde8fb5dab1073714a821f4fb3fe278d3e73043b73bd86d0b821e4879efe5e6"
+  },
+  {
+    "name": "live-related-progress",
+    "source": "src/web/frontend/src/Learning.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Learning.review-repro.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required-20261024\\live-related-progress.xml"
+    ],
+    "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+    "nativeExit": 1,
+    "failures": 2,
+    "errors": 0,
+    "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+  },
+  {
+    "name": "self-check-heading-grammar",
+    "source": "src/web/frontend/src/Learning.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Learning.review-repro.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required-20261024\\self-check-heading-grammar.xml"
+    ],
+    "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+    "nativeExit": 1,
+    "failures": 4,
+    "errors": 0,
+    "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+  }
+]

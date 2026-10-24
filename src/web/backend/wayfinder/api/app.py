@@ -15,6 +15,7 @@ from starlette.exceptions import HTTPException
 from wayfinder import __version__
 from wayfinder.api.auth import auth_router, enforce_csrf
 from wayfinder.api.courses import course_router
+from wayfinder.api.learning import learning_router
 from wayfinder.api.sharing import sharing_router
 from wayfinder.api.token_privacy import install_share_link_log_filter
 from wayfinder.api.builds import build_router
@@ -57,6 +58,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
     app.state.settings = settings
     app.include_router(auth_router())
     app.include_router(course_router())
+    app.include_router(learning_router())
     app.include_router(sharing_router())
     install_share_link_log_filter()
     app.include_router(build_router())
@@ -138,6 +140,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
         response.headers["content-security-policy"] = (
             "default-src 'self'; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; img-src 'self' data: blob:; "
             "style-src 'self' https://fonts.googleapis.com; style-src-elem 'self' https://fonts.googleapis.com; "
+            "style-src-attr 'unsafe-inline'; "  # KaTeX layout attributes; inline scripts/stylesheets stay blocked.
             "font-src 'self' https://fonts.gstatic.com data:"
         )
         response.headers["x-content-type-options"] = "nosniff"

@@ -32,6 +32,12 @@ CASES = [case for case in W25_CASES if case[0] in W25_LABELS] + [
      "version = 'web-fake-v1'", 'cumulative_usage', TEST),
     ('trace-not-billed', 'infrastructure/phase_b_store.py',
      'if value.get("counted_in") == "build":', 'if False:', 'trace_keeps_raw_usage or only_build_charge', TEST),
+    ('postport-injection', 'infrastructure/real_build.py',
+     'phase_b_store=runtime.phase_b_store)', 'phase_b_store=None)', 'success-False',
+     'src/web/backend/tests/test_pipeline_postport_w15.py'),
+    ('postport-checkpoints', 'infrastructure/real_build.py',
+     "data['usage'] = {key: getattr(snapshot, key) for key in", "data['ignored_usage'] = {key: getattr(snapshot, key) for key in",
+     'success-False', 'src/web/backend/tests/test_pipeline_postport_w15.py'),
 ]
 
 
