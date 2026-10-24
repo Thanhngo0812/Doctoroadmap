@@ -59,7 +59,7 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
       if (data.turns.some(turn => turn.client_turn_id === intent.client_turn_id)) {
         sessionStorage.removeItem(pendingKey(selected)); setLive(null);
       } else if (!active.current) setLive({ intent, text: '', status: '', artifacts: [], busy: false,
-        error: 'Lượt hỏi trước có thể vẫn đang xử lý. Cập nhật phiên hoặc thử lại cùng câu hỏi để nhận kết quả.' });
+        error: 'Lượt hỏi trước có thể vẫn đang xử lý. Cập nhật cuộc trò chuyện hoặc thử lại cùng câu hỏi để nhận kết quả.' });
     }).catch(cause => { if (!c.signal.aborted) invalidate(cause); });
     return () => c.abort();
   // Storage is scoped to the authenticated account, course and selected session.
@@ -67,7 +67,7 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
   useEffect(() => () => { active.current?.controller.abort(); active.current = null; }, [cid, uid]);
   const stop = () => {
     active.current?.controller.abort(); active.current = null;
-    setLive(value => value && ({ ...value, busy: false, error: 'Đã dừng nhận chữ. Máy chủ vẫn có thể hoàn tất lượt; hãy cập nhật phiên để xem kết quả.' }));
+    setLive(value => value && ({ ...value, busy: false, error: 'Đã dừng nhận chữ. Máy chủ vẫn có thể hoàn tất lượt; hãy cập nhật cuộc trò chuyện để xem kết quả.' }));
   };
   const run = async (intent: Intent) => {
     if (active.current) return;

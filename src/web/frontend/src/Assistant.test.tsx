@@ -21,6 +21,7 @@ function page(focusNodeId?: string) {
 }
 beforeEach(() => {
   localStorage.clear(); sessionStorage.clear(); requests = []; history = []; sessions = [{ ...session }];
+  Object.defineProperty(window, 'innerWidth', { configurable: true, value: 1280, writable: true });
   Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({ matches: true, addEventListener() {}, removeEventListener() {} })) });
   vi.stubGlobal('fetch', vi.fn(async (input, init) => {
     const url = String(input); const method = init?.method ?? 'GET';
@@ -44,7 +45,7 @@ afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 
 async function openAndAsk() {
   await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
-  await screen.findByText('Ôn tập hợp');
+  await screen.findByRole('option', { name: /^Ôn tập hợp/ });
   await userEvent.type(screen.getByRole('textbox', { name: 'Câu hỏi' }), 'Phần này là gì?');
   await userEvent.click(screen.getByRole('button', { name: 'Gửi câu hỏi' }));
   await waitFor(() => expect(requests.length).toBeGreaterThan(0));
@@ -111,20 +112,23 @@ it('restores a pending intent after remount and reconciles the saved result with
 
 it('renames sessions and requires explicit confirmation before deleting history', async () => {
   render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
-  await screen.findByText('Ôn tập hợp');
+  await screen.findByRole('option', { name: /^Ôn tập hợp/ });
+  await userEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' }));
   await userEvent.click(screen.getByRole('button', { name: 'Đổi tên' }));
-  const title = screen.getByRole('textbox', { name: 'Tên phiên' });
+  const title = screen.getByRole('textbox', { name: 'Tên cuộc trò chuyện' });
   await userEvent.clear(title); await userEvent.type(title, 'Ôn chương một');
   await userEvent.click(screen.getByRole('button', { name: 'Lưu tên' }));
-  expect(await screen.findByRole('option', { name: 'Ôn chương một' })).toBeInTheDocument();
-  await userEvent.click(screen.getByRole('button', { name: 'Xoá phiên' }));
+  expect(await screen.findByRole('option', { name: /^Ôn chương một/ })).toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Xoá cuộc trò chuyện' }));
   expect(sessions).toHaveLength(1);
-  await userEvent.click(screen.getByRole('button', { name: 'Giữ phiên' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Giữ cuộc trò chuyện' }));
   expect(sessions).toHaveLength(1);
-  await userEvent.click(screen.getByRole('button', { name: 'Xoá phiên' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Xoá cuộc trò chuyện' }));
   await userEvent.click(screen.getByRole('button', { name: 'Xác nhận xoá' }));
   await waitFor(() => expect(sessions).toHaveLength(0));
-  expect(await screen.findByRole('option', { name: 'Chưa có phiên' })).toBeInTheDocument();
+  expect(await screen.findByRole('option', { name: 'Chưa có cuộc trò chuyện' })).toBeInTheDocument();
 });
 
 it('opens a persisted artifact only from a structured event, independently of model prose', async () => {
@@ -140,12 +144,12 @@ it('opens a persisted artifact only from a structured event, independently of mo
 
 it('blocks sending while a new session is being created and then sends into that session', async () => {
   render(page('lesson-a')); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
-  await screen.findByText('Ôn tập hợp');
+  await screen.findByRole('option', { name: /^Ôn tập hợp/ });
   const original = vi.mocked(fetch).getMockImplementation()!;
   let finish!: (response: Response) => void;
   vi.mocked(fetch).mockImplementation((input, init) => String(input).endsWith('/sessions') && init?.method === 'POST'
     ? new Promise(resolve => { finish = resolve; }) : original(input, init));
-  await userEvent.click(screen.getByRole('button', { name: 'Phiên mới' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Trò chuyện mới' }));
   expect(screen.getByRole('textbox', { name: 'Câu hỏi' })).toBeDisabled();
   expect(screen.getByRole('button', { name: 'Gửi câu hỏi' })).toBeDisabled();
   expect(requests).toHaveLength(0);
@@ -197,4 +201,67 @@ it('keeps an opened artifact preview when history replaces the temporary turn ID
   await act(async () => releaseHistory(json({ turns: [{ turn_id: 'stored-id', client_turn_id: requests[0].body.client_turn_id,
     question: 'Phần này là gì?', created_at: session.created_at, answer: completed }] })));
   expect(screen.getByText('Nội dung tài liệu đã lưu.')).toBeVisible();
+});
+
+it('separates starting a conversation from options for the currently selected conversation', async () => {
+  render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
+  expect(await screen.findByRole('combobox', { name: 'Cuộc trò chuyện đang mở' })).toHaveValue('s1');
+  expect(screen.getByRole('button', { name: 'Trò chuyện mới' })).toBeEnabled();
+  expect(screen.queryByRole('button', { name: 'Đổi tên' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('button', { name: 'Xoá cuộc trò chuyện' })).not.toBeInTheDocument();
+  const options = screen.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' });
+  await userEvent.click(options);
+  expect(screen.getByRole('button', { name: 'Đổi tên' })).toHaveFocus();
+  expect(screen.getByRole('button', { name: 'Xoá cuộc trò chuyện' })).toBeVisible();
+  await userEvent.keyboard('{Escape}');
+  expect(options).toHaveFocus();
+  expect(screen.queryByRole('button', { name: 'Xoá cuộc trò chuyện' })).not.toBeInTheDocument();
+});
+
+it('distinguishes conversations with identical titles by their update date and time', async () => {
+  sessions = [{ ...session, title: 'Cùng tên' }, { ...session, session_id: 's2', title: 'Cùng tên', updated_at: '2026-10-24T12:00:00Z' }];
+  render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
+  const select = await screen.findByRole('combobox', { name: 'Cuộc trò chuyện đang mở' });
+  const choices = Array.from((select as HTMLSelectElement).options).map(option => option.text);
+  expect(choices).toHaveLength(2); expect(choices[0]).not.toBe(choices[1]);
+  expect(choices[0]).toContain('17:00'); expect(choices[1]).toContain('19:00');
+});
+
+it('resizes by keyboard within reading-safe bounds and restores the chosen width after remount', async () => {
+  const view = render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
+  const resize = await screen.findByRole('separator', { name: 'Điều chỉnh độ rộng trợ lý' });
+  expect(resize).toHaveAttribute('aria-valuenow', '380');
+  resize.focus(); await userEvent.keyboard('{ArrowLeft}');
+  expect(resize).toHaveAttribute('aria-valuenow', '396');
+  await userEvent.keyboard('{End}{ArrowLeft}'); expect(resize).toHaveAttribute('aria-valuenow', '512');
+  await userEvent.keyboard('{Home}{ArrowRight}'); expect(resize).toHaveAttribute('aria-valuenow', '340');
+  view.unmount(); render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
+  expect(await screen.findByRole('separator', { name: 'Điều chỉnh độ rộng trợ lý' })).toHaveAttribute('aria-valuenow', '340');
+});
+
+it('clamps a saved width to the viewport without losing the preference on a larger screen', async () => {
+  localStorage.setItem('wf-assistant-width', '640');
+  render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
+  const resize = await screen.findByRole('separator', { name: 'Điều chỉnh độ rộng trợ lý' });
+  expect(resize).toHaveAttribute('aria-valuenow', '512');
+  await act(async () => { window.innerWidth = 1440; window.dispatchEvent(new Event('resize')); });
+  expect(resize).toHaveAttribute('aria-valuenow', '640');
+  expect(resize).toHaveAttribute('aria-valuetext', '640 pixel');
+});
+
+it('keeps the phone conversation full-screen without the desktop resize handle', async () => {
+  Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) });
+  HTMLDialogElement.prototype.showModal = function () { this.setAttribute('open', ''); };
+  HTMLDialogElement.prototype.close = function () { this.removeAttribute('open'); };
+  render(page()); await userEvent.click(screen.getByRole('button', { name: 'Mở khung trợ lý' }));
+  expect(await screen.findByRole('dialog', { name: 'Trợ lý học tập' })).toBeVisible();
+  expect(screen.queryByRole('separator')).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Trò chuyện mới' })).toBeVisible();
+});
+
+it('shows the current question in conversation metadata before the next history reload', async () => {
+  render(page()); await openAndAsk();
+  expect(document.querySelector('.learning-chat-session-meta span')).toHaveTextContent('Phần này là gì?');
+  expect(screen.queryByText('Chưa có tin nhắn')).not.toBeInTheDocument();
+  await act(async () => { frame('final', { answer }); controller.close(); });
 });

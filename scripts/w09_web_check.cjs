@@ -76,7 +76,7 @@ async function main() {
     async function open() {
       await learner.getByRole('button', { name: 'Mở khung trợ lý' }).click();
       await learner.getByRole('textbox', { name: 'Câu hỏi' }).waitFor();
-      await learner.getByText('Đang mở phiên…', { exact: true }).waitFor({ state: 'hidden' });
+      await learner.getByText('Đang mở cuộc trò chuyện…', { exact: true }).waitFor({ state: 'hidden' });
       const target = await learner.getByRole('textbox', { name: 'Câu hỏi' }).isDisabled()
         ? learner.getByRole('button', { name: 'Đóng trợ lý' }) : learner.getByRole('textbox', { name: 'Câu hỏi' });
       assert.equal(await target.evaluate(e => e === document.activeElement), true, 'opening focuses the composer or close when limited');
@@ -97,10 +97,25 @@ async function main() {
     }
     async function newSession() {
       const [response] = await Promise.all([learner.waitForResponse(r => r.url().endsWith('/sessions') && r.request().method() === 'POST'),
-        learner.getByRole('button', { name: 'Phiên mới', exact: true }).click()]);
+        learner.getByRole('button', { name: 'Trò chuyện mới', exact: true }).click()]);
       const value = await response.json();
       await learner.waitForFunction(sid => document.querySelector('.learning-chat-session-controls select')?.value === sid, value.session_id);
-      await learner.getByRole('button', { name: 'Phiên mới', exact: true }).waitFor();
+      await learner.getByRole('button', { name: 'Trò chuyện mới', exact: true }).waitFor();
+    }
+    async function dragChat(target) {
+      const handle = learner.getByRole('separator', { name: 'Điều chỉnh độ rộng trợ lý' });
+      const from = Number(await handle.getAttribute('aria-valuenow')), box = await handle.boundingBox();
+      assert.ok(box.width >= 44 && box.height >= 44);
+      await learner.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await learner.mouse.down(); await learner.mouse.move(box.x + box.width / 2 + from - target, box.y + box.height / 2, { steps: 10 }); await learner.mouse.up();
+      const expected = Math.max(Number(await handle.getAttribute('aria-valuemin')), Math.min(target, Number(await handle.getAttribute('aria-valuemax'))));
+      await learner.waitForFunction(width => Math.abs(document.querySelector('.learning-chat-panel').getBoundingClientRect().width - width) < 1, expected);
+      const actual = await learner.evaluate(() => ({ chat: document.querySelector('.learning-chat-panel').getBoundingClientRect().toJSON(),
+        main: document.querySelector('.courses-page').getBoundingClientRect().toJSON(), reading: document.querySelector('.learning-reading')?.getBoundingClientRect().toJSON(),
+        saved: localStorage.getItem('wf-assistant-width') }));
+      assert.equal(Number(actual.saved), expected); assert.ok(actual.main.right + 44 <= actual.chat.left + 1);
+      if (actual.reading) assert.ok(actual.reading.width >= 379, 'dragging must retain a readable lesson column');
+      (audit.resizes ??= []).push({ stage, requested: target, expected, actual });
     }
     async function mathContrast(page, nodes) {
       return page.evaluate(targets => {
@@ -198,6 +213,11 @@ async function main() {
       assert.equal(await learner.getByRole('link', { name: 'URL tự bịa' }).count(), 0);
       assert.match(await learner.locator('.learning-chat-messages').innerText(), /\[S999\]/);
       await capture('answered', true);
+      await learner.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' }).click();
+      assert.equal(await learner.getByRole('button', { name: 'Đổi tên', exact: true }).evaluate(element => element === document.activeElement), true);
+      await capture('conversation-options', width === 390 || width === 1280);
+      await learner.keyboard.press('Escape');
+      assert.equal(await learner.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' }).evaluate(element => element === document.activeElement), true);
       await learner.getByRole('button', { name: 'Đóng trợ lý' }).click();
       if (width < 1280) await learner.getByRole('button', { name: 'Mở khung trợ lý' }).waitFor({ state: 'visible' });
       await learner.goto(lesson); await learner.getByRole('button', { name: 'Mở khung trợ lý' }).waitFor(); await open();
@@ -205,6 +225,14 @@ async function main() {
       await ask(`Bài này khác gì ${width} ${theme} ${reduced}?`); await ready();
       assert.equal(audit.requests.at(-1).body.focus_node_id, nid);
       await capture('lesson', width === 390);
+      if (width === 1280) {
+        await dragChat(480); await capture('chat-wide', true);
+        await dragChat(700); assert.equal(await learner.getByRole('separator').getAttribute('aria-valuenow'), '512');
+        await dragChat(200); await capture('chat-narrow');
+        await dragChat(480); await learner.reload(); await open();
+        assert.equal(await learner.getByRole('separator').getAttribute('aria-valuenow'), '480');
+        await capture('chat-restored'); await dragChat(380); await capture('lesson-current', true);
+      } else assert.equal(await learner.getByRole('separator').count(), 0);
       const citation = learner.locator('.learning-chat-answer .lecture-citation').first();
       if (await citation.count()) {
         const sourcePage = Number((await citation.getAttribute('aria-label')).match(/trang (\d+)/)[1]);
@@ -239,13 +267,14 @@ async function main() {
     await capture('prerequisite-focus');
     stage = 'session-actions';
     await learner.goto(lesson); await open();
+    await learner.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' }).click();
     await learner.getByRole('button', { name: 'Đổi tên', exact: true }).click();
-    await learner.getByRole('textbox', { name: 'Tên phiên' }).fill('Ôn tập trước kiểm tra');
+    await learner.getByRole('textbox', { name: 'Tên cuộc trò chuyện' }).fill('Ôn tập trước kiểm tra');
     await learner.getByRole('button', { name: 'Lưu tên' }).click();
-    await learner.getByRole('option', { name: 'Ôn tập trước kiểm tra' }).waitFor({ state: 'attached' });
+    await learner.getByRole('option', { name: /^Ôn tập trước kiểm tra/ }).waitFor({ state: 'attached' });
     await control({ action: 'old-scope' }); await learner.reload(); await open();
-    await learner.getByRole('checkbox', { name: 'Tất cả phiên' }).check();
-    await learner.getByRole('combobox', { name: 'Phiên học' }).selectOption({ label: 'Ôn tập trước kiểm tra' });
+    await learner.getByRole('checkbox', { name: 'Tất cả cuộc trò chuyện' }).check();
+    await learner.getByRole('combobox', { name: 'Cuộc trò chuyện đang mở' }).selectOption(await learner.getByRole('option', { name: /^Ôn tập trước kiểm tra/ }).getAttribute('value'));
     await control({ action: 'advance' }); await ask('Ôn lại phạm vi đã đổi.'); await ready();
     await learner.getByText('Module này đã đổi. Bạn có thể mở phiên mới cho module hiện tại.').last().waitFor();
     await capture('old-scope', true);
@@ -260,7 +289,7 @@ async function main() {
     await learner.getByRole('button', { name: 'Thử lại câu hỏi' }).waitFor();
     await capture('reload-pending'); await control({ action: 'release' });
     await probeUntil(value => value.finished && value.turns === before.turns + 1);
-    await learner.getByRole('button', { name: 'Cập nhật phiên', exact: true }).last().click();
+    await learner.getByRole('button', { name: 'Cập nhật trò chuyện', exact: true }).last().click();
     await learner.getByRole('button', { name: 'Thử lại câu hỏi' }).waitFor({ state: 'hidden' });
     assert.equal((await control({ action: 'probe' })).calls, 1);
     assert.equal(audit.requests.filter(row => row.body.client_turn_id === intent.client_turn_id).length, 1);
@@ -280,9 +309,10 @@ async function main() {
     await learner.locator('.learning-chat-preview').scrollIntoViewIfNeeded(); await capture('quiz-preview', true);
     await learner.locator('.learning-chat-preview').getByRole('button', { name: 'Đóng nội dung' }).click();
     const counts = await control({ action: 'probe' }); assert.ok(counts.documents > 0);
-    stage = 'delete'; await learner.getByRole('button', { name: 'Xoá phiên', exact: true }).click();
+    stage = 'delete'; await learner.getByRole('button', { name: 'Tuỳ chọn cuộc trò chuyện' }).click();
+    await learner.getByRole('button', { name: 'Xoá cuộc trò chuyện', exact: true }).click();
     await capture('delete-confirmation'); await learner.getByRole('button', { name: 'Xác nhận xoá' }).click();
-    await learner.getByRole('group', { name: 'Xác nhận xoá phiên' }).waitFor({ state: 'hidden' });
+    await learner.getByRole('group', { name: 'Xác nhận xoá cuộc trò chuyện' }).waitFor({ state: 'hidden' });
     assert.equal((await control({ action: 'probe' })).documents, counts.documents);
     const retained = await learner.request.get(`${api}/library?scope=all`);
     assert.equal(retained.status(), 200);
