@@ -36,6 +36,10 @@ trợ lý không chạy được trên Developer API, và có thể cả các kh
   Web chạy bằng `wayfinder.cli --env-file src/web/.env` từ worktree. Lõi chỉ đọc tệp `.env` ở thư mục đang đứng, nên không thấy `.env` tổng của repo; mọi khoá
   `DOC2ROADMAP_*` của web phải nằm trong `src/web/.env`.
 
+- **Số đo làm mốc cho ngày đổi (2026-10-24 tối):** embedding truy vấn qua Vertex 11,4–16 s mỗi lần (global, us-central1, asia-southeast1 như nhau), qua
+  Developer API 0,62–0,73 s; vector hai đường giống hệt (cosine 1,0), nên chỉ mục đoạn sách dùng tiếp được. Chủ dự án chọn giữ Vertex tới ngày đổi cả hệ thống.
+  Sau khi đổi, đo lại chữ đầu của trợ lý và tài liệu (hiện 13–21 s ở tài liệu, phần lớn là chờ embedding).
+
 ## Tiêu chí nghiệm thu
 
 - [ ] Test với transport giả, ghi lại thân request:
