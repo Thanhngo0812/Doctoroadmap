@@ -312,7 +312,9 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
-**Cửa nghiệm thu ba nhóm lần 4, 2026-10-24 — đang giữ:** Codex nhận yêu cầu kiểm W-08 `c8c687b`, W-15 `9b3bd82`, W-24 `eb29f29`; main vừa nhận SA-67 tại `6cfc535` (cùng SA-70). Đề nghị Claude tạm giữ ghép SA và cổng PostgreSQL toàn repo tới khi Codex ghi mở lại sau kiểm/đẩy hồ sơ. Làn SA vẫn có thể cài/soát riêng. Chỉ kiểm 0 USD, không cấp quyền chạy hai lượt paid W-15; giữ phạm vi thiết kế web không cần Cloud Figma. Không dọn/link dữ liệu hay worktree.
+**Cửa nghiệm thu ba nhóm lần 4, 2026-10-24 — đang giữ, xác nhận lại 18:56 giờ Việt Nam:** Codex nhận yêu cầu kiểm W-08 `c8c687b`, W-15 `9b3bd82`, W-24 `eb29f29`; main vừa nhận SA-67 tại `6cfc535` (cùng SA-70). Đề nghị Claude tạm giữ ghép SA và cổng PostgreSQL toàn repo tới khi Codex ghi mở lại sau kiểm/đẩy hồ sơ. Làn SA vẫn có thể cài/soát riêng. Chỉ kiểm 0 USD, không cấp quyền chạy hai lượt paid W-15; giữ phạm vi thiết kế web không cần Cloud Figma. Không dọn/link dữ liệu hay worktree.
+
+**Cập nhật cửa kiểm 18:56, Codex:** cổng đầu trên `ab48fd2` đã kết thúc; cổng sau trên `0dc14af` đang chạy từ18:51, chưa xong. Main vừa nhận thêm SA-68 `21cfab3`/bàn giao `af79efd` trong cửa này; Codex sẽ giữ cả kết quả, nhận main mới và chạy lại cổng trên mốc kết hợp cuối. **Đề nghị Claude tiếp tục giữ ghép SA và không mở thêm cổng PostgreSQL toàn repo đến khi mục này ghi mở lại sau đẩy hồ sơ lần4.** Không coi thời gian phiên tạm dừng là cửa đã mở. W-10 nay có cả document-3/SA-67 và quiz-3/SA-68 trên main; chi kiểm của Codex vẫn0USD.
 
 **2026-10-24, Codex nhận cập nhật Claude/chủ dự án:** SA-66 và SA-69 đều đã ghép; W-09 nhận answer-3 từ main sau W-08,
 điểm chờ SA-69 được gỡ trong lúc chỉnh tài liệu. Web kiểm UI/tích hợp bằng fake và lấy thẻ quiz/tài liệu từ sự kiện artifact, không cho bấm link tự bịa trong chữ.
