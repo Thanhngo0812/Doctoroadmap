@@ -8,6 +8,12 @@
 - [spec Pha B2](../../doc/pha-b2-spec.md) cho mọi hợp đồng nội dung học;
 - [ADR 0023](../../doc/adr/0023-cloudinary-cho-tep-goc-va-anh.md): tệp gốc và ảnh ở Cloudinary (gói miễn phí, riêng tư), artifact Pha A ở đĩa.
 
+**Quyết định mới của chủ dự án 2026-10-24:** nhóm thiết kế bàn giao HTML/CSS/token để nhóm web tham khảo và triển khai React;
+hai nhóm soát giao diện thật. Bỏ điều kiện Cloud Figma, nhận có ghi chú mốc thiết kế web W-22/W-24 đã kiểm.
+W-23 đối chiếu React với spec/token/mẫu HTML, vẫn chờ các màn W-08/W-09/W-10 để nhận toàn bộ.
+SA-66 đã ghép `ba4350f`, **SA-69 đã ghép `973fa99`**; W-09 được gỡ chặn và nhận main để làm sau W-08, kiểm bằng fake hợp đồng đúng.
+[Bản giao việc đã chỉnh](../../report/lenh-giao-viec-ba-nhom-lan3-2026-10-23.md), [quyết định và ghi chú](../../report/dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md).
+
 **Stack:** React (Vite, TypeScript) + FastAPI + PostgreSQL 16 (Docker) + Cloudinary (tệp gốc và ảnh) + Gmail SMTP. React phục vụ cùng nguồn với API.
 
 **Nơi đặt mã** (chủ dự án chốt 2026-10-18): mọi mã web ở `src/web/` — `backend/wayfinder/` (gói Python), `backend/tests/`, `frontend/` (React),
@@ -82,8 +88,8 @@ còn đổi; nhóm web đã được báo.
 | [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đạt · đã ghép `dc41ee8`, mốc `8b6e500`; 2.107 Python/77 React/build, browser PG; [nghiệm thu](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md) |
 | [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | đạt · đã ghép f20d198, mốc 2a14723; 2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình; [soát](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md) |
 | [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07; SA-62/64/65 đã ghép | chưa nhận `89122f6`: cổng 2.385 Python / 158 React / build xanh, nhưng 6 ca phản chứng đỏ từ hai lỗi nhãn tiến độ/đáp án stream; sửa trước ghép, [soát lần 3](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md) |
-| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07; SA-56/58 đạt, SA-66 sau SA-64 cho answer-3 | làm sau W-08, answer_md/Markdown/LaTeX/sources/delta, focus cache-only lecture-3; cổng cuối chờ SA-66, giữ Vertex |
-| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07, SA-35/37/52 đã ghép; kế hoạch nâng SA-67/68 | sau W-08/W-09; nhận spec/mốc mới khi Claude chốt SA-67/68, không tự chốt hợp đồng tương lai hoặc lấy replay cũ thay nghiệm thu web |
+| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-07; SA-66 ba4350f và SA-69 973fa99 đã ghép | gỡ chặn SA-69; sau W-08 nhận main cài/kiểm answer-3, thẻ từ sự kiện artifact; link tự bịa quiz: trong chữ không cho bấm; giữ Vertex |
+| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07; spec document-3/quiz-3 và vé SA-67/68 đã có | sau W-08/W-09; đọc spec mới, cổng cuối nhận mốc SA-67/68 được Claude nghiệm thu/ghép; không lấy hợp đồng cũ hoặc replay cũ thay nghiệm thu web |
 | [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | đạt · ghép/đẩy `e85427a`, mốc `b625752`: 2.296 Python/143 React/build, browser 8 auth-return/48 ảnh/16 Axe; [soát lần2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md) |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
 | [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
@@ -95,12 +101,17 @@ còn đổi; nhóm web đã được báo.
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
-| [W-22](W-22-ban-figma.md) | bản Figma theo spec thiết kế | — | còn mở: đọc Cloud mới tối 23 có 0 Variables/native components/bindings/reactions/starting points; một collection Light rỗng, chưa bốn video; local không thay Cloud |
-| [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu Figma với giao diện React, chỉnh lệch | W-22, W-08, W-09, W-10 | chưa mở; chờ đủ bản Figma được nhận và các màn học/chat/quiz |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao W-22 | — | chưa nhận `f292f18`; đóng mã Variables/chat, 49 test / VM 9 kịch bản; còn preview lecture-3, claim, hai anchor và Cloud/video; giữ guard đầu ra thực, [soát lần 3](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan3-2026-10-23.md) |
+| [W-22](W-22-ban-figma.md) | bàn giao thiết kế web HTML/CSS/token | — | đạt có ghi chú mốc web đã kiểm, theo chủ dự án 24/10; bỏ Cloud Figma, tiếp hỗ trợ React và các màn theo vé tương ứng |
+| [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu React với spec/token/mẫu HTML | W-22 đã nhận mốc web; W-08/W-09/W-10 | không chờ Cloud; được soát từng trang đã chạy, nghiệm thu trọn bộ chờ các màn học/chat/quiz |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | đạt có ghi chú phạm vi web đã kiểm theo chủ dự án 24/10; f292f18 chưa ghép, mẫu cũ sai ghi rõ hoặc sửa khi dùng lại; lỗi React tiếp ở vé web, [quyết định](../../report/dieu-chinh-giao-viec-web-thiet-ke-2026-10-24.md) |
 | [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
 
 ## Thứ tự đề xuất
+
+- **Điều chỉnh 2026-10-24:** web sửa W-08; SA-66/SA-69 đã ghép, W-09 nhận main triển khai/kiểm bằng fake sau W-08.
+  Theo dõi SA-70 về stream tự kiểm tra, giữ hồi quy W-08 tới khi nhận mã mới. Thiết kế tiếp bàn giao HTML/CSS/token và hỗ trợ soát React;
+  W-22/W-24 đã nhận có ghi chú phạm vi web, bỏ Cloud. Lõi tiếp W-15; W-10 đọc spec mới document-3/quiz-3 và chờ mốc SA-67/68.
+  Các đoạn kế hoạch cũ bên dưới giữ làm lịch sử; ưu tiên bản giao việc đã chỉnh ngày 24/10.
 
 - **Nghiệm thu lần 3 tối 2026-10-23:** chưa ghép gói mới. Web sửa hai Required W-08 trước W-09; lõi tiếp W-15 sau port ngay:
   pipeline giả/PG → cache/identity → dry-run 0 USD → đề nghị trần riêng. Thiết kế giữ Variables/chat đã đạt, sửa preview/hồ sơ,

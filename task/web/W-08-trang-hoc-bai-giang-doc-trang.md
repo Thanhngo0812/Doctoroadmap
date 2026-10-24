@@ -6,6 +6,10 @@
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07; SA-64 thay SA-63, ảnh trang SA-65 · **Trạng thái:**
 sửa hai Required sau kiểm độc lập `89122f6`, chưa ghép; SA-62/64/65 đều đã ở main, không còn chờ lõi.
 
+**Báo trước của Claude 2026-10-24:** [SA-70](../sau-a10/70-bai-giang-3-ban-2.md) sẽ ngừng phát delta từ tiêu đề tự kiểm tra bằng cùng biểu thức của bộ tách core.
+Tới lúc SA-70 ghép vẫn sửa/giữ hồi quy R-W08-2 phía web; sau nhận main đó kiểm lại HTTP/React để tránh hai quy tắc khác nhau.
+R-W08-1 về nhãn tiến độ giữ nguyên. UI tham khảo mẫu HTML/CSS/token của nhóm thiết kế và được soát trên React, không cần Cloud Figma.
+
 **Nghiệm thu lần 3, 2026-10-23 tối:** mốc điều phối `1449d51` nhận main `0ccedae`, mã khớp web `e6b336e`.
 2.385 Python đạt / 0 fail / 1 Cloudinary live không bật, 158 React và build đạt; browser 12 cấu hình / 101 ảnh / 17 Axe đạt có phạm vi.
 Ca phản chứng bổ sung có **6 assertion fail/11 pass/0 error**: (1) đánh dấu B ở sidebar không cập nhật nhãn B trong tiên quyết/Tiếp theo của bài A;
