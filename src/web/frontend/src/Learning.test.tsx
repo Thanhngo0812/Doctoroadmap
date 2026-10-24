@@ -1,9 +1,10 @@
-import { afterEach, beforeAll, beforeEach, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { act, cleanup, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 import App from './App';
 import type { Lecture } from './lecture-api';
+import './LectureMarkdown';
 
 const account = { id: 'a', email: 'a@example.invalid', display_name: 'Nguyễn An', role: 'user', email_verified: true };
 const concepts = [{ node_id: 'a', name: 'Biến cố' }, { node_id: 'b', name: 'Không gian mẫu' }];
@@ -27,8 +28,6 @@ const encoder = new TextEncoder();
 let fetchMock = vi.fn<(input: RequestInfo | URL, init?: RequestInit) => Promise<Response>>();
 function frame(event: string, data: unknown) { controller.enqueue(encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`)); }
 function page(path = '/khoa-hoc/c/module/m/khai-niem/a') { return render(<MemoryRouter initialEntries={[path]}><App /></MemoryRouter>); }
-// Keep module I/O out of the scripted stream clock; rendering/security assertions still use the real renderer.
-beforeAll(async () => { await import('./LectureMarkdown'); });
 async function started() {
   await screen.findByText(skeleton.definition.quote!);
   await waitFor(() => expect(fetchMock.mock.calls.some(([url]) => String(url).endsWith('/lecture/stream'))).toBe(true));

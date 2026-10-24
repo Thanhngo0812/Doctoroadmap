@@ -336,7 +336,13 @@ async function main() {
       const answer = learner.getByText('Đáp án riêng phải gập.', { exact: true });
       await answer.waitFor({ state: 'attached' }); assert.equal(await answer.isVisible(), false);
       await learner.getByText('Xem đáp án', { exact: true }).click(); assert.equal(await answer.isVisible(), true);
-      audit.selfCheckHeadings.push({ scenario: name, hiddenBeforeFinal: true, foldedFinal: true, opensOnRequest: true });
+      await Promise.allSettled(pending);
+      const stream = audit.http.findLast(row => row.stage === name && row.path.endsWith('/lecture/stream'));
+      assert.ok(stream, 'inspect actual HTTP/SSE, independently from the React filter');
+      const deltaText = stream.body.split(/\r?\n\r?\n/).filter(frame => /^event: delta\r?\n/.test(frame))
+        .map(frame => JSON.parse(frame.split(/\r?\n/).find(line => line.startsWith('data:')).slice(5)).text).join('');
+      assert.equal(deltaText.trim(), 'Phần chính hiện ngay.', 'SA70 must keep the whole self-check out of HTTP deltas');
+      audit.selfCheckHeadings.push({ scenario: name, hiddenBeforeFinal: true, foldedFinal: true, opensOnRequest: true, httpDeltasExcludeSelfCheck: true });
       await capture(learner, name, 1280, 'dark');
     }
     stage = 'unsplit'; await control({ action: 'scenario', name: 'unsplit' }); await learner.goto(lessonUrl);
