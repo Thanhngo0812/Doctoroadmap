@@ -12,6 +12,7 @@ Implements strict dynamic verification and falsifiable tests as required by AGEN
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 import re
 import pytest
@@ -655,6 +656,7 @@ def test_w11_course_management_specification():
     assert 'id="section-invite-email"' in w11_html, "w11 must have #section-invite-email anchor"
     assert 'id="section-pending-invitations"' in w11_html, "w11 must have #section-pending-invitations anchor"
     assert 'id="section-danger-zone"' in w11_html, "w11 must have #section-danger-zone anchor"
+    assert 'id="btn-delete-course-permanent"' in w11_html, "w11 must have #btn-delete-course-permanent button"
     assert "Tiến trình học riêng của học viên và các tài liệu/artifact dùng chung được lưu giữ" in w11_html
     
     # 4. Touch target >= 44px
@@ -676,8 +678,15 @@ def test_w08_lecture_specification():
     assert 'id="badge-cat-ngan"' in w08_html
     assert 'id="section-lecture-fatal-error"' in w08_html
     assert 'id="btn-exit-to-roadmap"' in w08_html
+    assert 'id="btn-retry-lecture-fatal"' in w08_html, "All pre-text errors must have retry button"
     assert 'id="section-page-image-viewer"' in w08_html
     assert 'id="section-content-bug-report"' in w08_html
+    assert 'class="katex"' in w08_html, "w08 must render .katex math elements in DOM"
+    assert 'id="waiting-character-96px"' in w08_html, "Waiting block must use 96px character asset"
+    assert 'width="96"' in w08_html and 'height="96"' in w08_html, "Character must be 96x96px"
+    assert 'Untitled_Artwork_static.png' in w08_html, "Must have static fallback for reduced-motion"
+    assert "Tải lại bản đủ" not in w08_html, "Must not promise out-of-contract full download in tail error"
+    assert "không thể phục hồi" not in w08_html, "Must not have dead-end unrecoverable branch without retry"
     assert "OCR y khoa" not in w08_html, "Must not claim OCR y khoa without spec"
     assert "lecture-2" not in w08_html, "Must not contain deprecated lecture-2"
     assert "36px" not in w08_html, "w08_lecture_screens.html must not contain substandard 36px buttons"
@@ -697,6 +706,8 @@ def test_w09_chat_screens_specification():
     assert '{"query":' not in w09_html, "Must not display raw JSON arguments"
     assert "10 lượt/phút" in w09_html, "Must specify 10 turns/min rate limit"
     assert 'id="section-chat-tool-progress"' in w09_html
+    assert 'id="text-tool-action"' in w09_html, "Tool action text element must have id text-tool-action"
+    assert 'class="katex"' in w09_html, "w09 assistant response should render math formula via .katex"
     assert 'id="section-chat-scope-outdated"' in w09_html
     assert 'id="section-chat-limit-exceeded"' in w09_html
     assert 'id="btn-return-roadmap-from-chat"' in w09_html
@@ -817,3 +828,57 @@ def test_falsifiable_chat_raw_toolname_json_fails():
     with pytest.raises(AssertionError):
         assert "vector_search_harrison_21st" not in fake_tool
         assert '{"query":' not in fake_tool
+
+
+
+def test_figma_plugin_runtime_output_and_real_execution():
+    """Execute code.js via Node VM against in-memory Figma API stub to test real output."""
+    cmd = ["node", "scripts/verify_figma_plugin_vm.cjs"]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    data = json.loads(res.stdout)
+    report = data["report"]
+    
+    assert report["attempted"] == 74, f"Expected 74 attempted, got {report['attempted']}"
+    assert report["created"] == 74, f"Expected 74 created values, got {report['created']}"
+    assert report["failed"] == 0, f"Expected 0 failures, got {report['failed']}: {report['errors']}"
+    assert len(report["errors"]) == 0
+    assert data["variableCount"] == 37, f"Expected 37 variables, got {data['variableCount']}"
+    
+    # Verify dark brand tint alpha 0.14
+    brand_tint = next((v for v in data["variables"] if v["name"] == "color/brand-tint"), None)
+    assert brand_tint is not None
+    assert "mode_dark" in brand_tint["valuesByMode"]
+    assert abs(brand_tint["valuesByMode"]["mode_dark"].get("a", 1.0) - 0.14) < 0.001
+
+    # Verify radius-lg is 14 in both modes
+    radius_lg = next((v for v in data["variables"] if v["name"] == "radius/radius-lg"), None)
+    assert radius_lg is not None
+    assert radius_lg["valuesByMode"]["mode_light"] == 14
+    assert radius_lg["valuesByMode"]["mode_dark"] == 14
+
+
+def test_figma_plugin_runtime_fault_injection():
+    """Verify that forced createVariable failure is caught by plugin accounting and alerts runner."""
+    cmd = ["node", "scripts/verify_figma_plugin_vm.cjs", "--fault-var", "color/primary"]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    data = json.loads(res.stdout)
+    report = data["report"]
+    
+    assert report["created"] == 72, f"Expected 72 created upon forced primary failure, got {report['created']}"
+    assert report["failed"] == 2, f"Expected 2 failures for light and dark modes, got {report['failed']}"
+    assert len(report["errors"]) == 1
+    assert report["errors"][0]["name"] == "color/primary"
+    assert len(data["notifications"]) >= 1
+    assert data["notifications"][0]["opts"].get("error") is True
+
+
+def test_falsifiable_plugin_accounting_removed_fails():
+    """Falsifiable test: prove that removing created++ accounting fails verification in real output."""
+    cmd = ["node", "scripts/verify_figma_plugin_vm.cjs", "--remove-accounting"]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    data = json.loads(res.stdout)
+    report = data["report"]
+    
+    # Asserting that if accounting was removed, report.created is 0 instead of 74
+    with pytest.raises(AssertionError):
+        assert report["created"] == 74, "Plugin created count must be 74"

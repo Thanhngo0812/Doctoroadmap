@@ -164,6 +164,9 @@
         errors: [],
         details: []
       };
+      if (typeof figma !== 'undefined') {
+        figma.__variableReport = variableReport;
+      }
 
       function registerVariable(name, type, lightVal, darkVal) {
         variableReport.attempted += 2; // 2 modes (Light and Dark)

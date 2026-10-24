@@ -94,6 +94,26 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.4; }
     }
+    /* KaTeX formula typography fallback styles */
+    .katex {
+      font-family: KaTeX_Main, "Times New Roman", serif;
+      line-height: 1.2;
+      text-indent: 0;
+      text-rendering: auto;
+      display: inline-block;
+    }
+    .katex-display {
+      display: block;
+      margin: 1em 0;
+      text-align: center;
+    }
+    .katex .mathnormal { font-style: italic; }
+    .katex .mord.text { font-style: normal; }
+    .katex .mbin, .katex .mrel { padding: 0 0.2778em; }
+    .katex-html { display: inline-block; }
+    .katex .base { position: relative; white-space: nowrap; width: min-content; display: inline-block; }
+    .katex .msupsub, .katex .msub { display: inline-block; font-size: 0.75em; vertical-align: -0.25em; }
+
     .skeleton-line {
       height: 16px;
       background: var(--color-border);
@@ -103,6 +123,9 @@
     }
     @media (prefers-reduced-motion: reduce) {
       .skeleton-line { animation: none; opacity: 0.7; }
+      img.spinner-gif {
+        content: url('../Untitled_Artwork_static.png') !important;
+      }
     }
 
     /* Source link citation badge */
@@ -180,11 +203,19 @@
       </div>
 
       <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
-        <div style="display: flex; align-items: center; gap: var(--space-3); margin-bottom: var(--space-3);">
-          <div style="width: 20px; height: 20px; border: 2px solid var(--color-brand); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-          <strong style="color: var(--color-primary); font-size: var(--text-body);">
-            Giảng viên WayFinder đang chuẩn bị bài giảng từ Harrison 21st...
-          </strong>
+        <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-3);">
+          <picture style="flex-shrink: 0;">
+            <source srcset="../Untitled_Artwork_static.png" media="(prefers-reduced-motion: reduce)">
+            <img src="../Untitled_Artwork.gif" class="spinner-gif" id="waiting-character-96px" width="96" height="96" alt="Nhân vật WayFinder đang chuẩn bị bài giảng" style="width: 96px; height: 96px; object-fit: contain; display: block; border-radius: var(--radius-md);">
+          </picture>
+          <div>
+            <strong style="color: var(--color-primary); font-size: var(--text-body); display: block; margin-bottom: 4px;">
+              Giảng viên WayFinder đang chuẩn bị bài giảng từ Harrison 21st...
+            </strong>
+            <span style="font-size: var(--text-small); color: var(--color-text-muted);">
+              Khối chờ bài giảng sử dụng nhân vật động 96px (hoặc ảnh tĩnh 96px khi giảm chuyển động)
+            </span>
+          </div>
         </div>
         <div class="skeleton-line" style="width: 80%;"></div>
         <div class="skeleton-line" style="width: 95%;"></div>
@@ -236,8 +267,13 @@
           Về mặt trực giác, động mạch vành xuất phát ngay tại gốc động mạch chủ (xoang Valsalva) và chia thành hai nhánh chính: động mạch vành trái (LMCA) và động mạch vành phải (RCA) <a href="#source-s1" class="source-tag" title="Mở trang 1892 giáo trình">[S1]</a>. Nhánh liên thất trước (LAD) chạy trong rãnh liên thất trước, cấp máu cho 2/3 trước của vách liên thất và thành trước thất trái:
         </p>
 
-        <div style="background: var(--color-bg-subtle); border-left: 3px solid var(--color-primary); padding: var(--space-3); margin: var(--space-3) 0; font-family: serif; font-size: var(--text-body);">
-          Áp lực tưới máu cơ tim: $P_{\text{coronary}} = P_{\text{diastolic}} - P_{\text{LVEDP}}$ <br>
+        <div style="background: var(--color-bg-subtle); border-left: 3px solid var(--color-primary); padding: var(--space-3); margin: var(--space-3) 0; font-size: var(--text-body);">
+          <span>Áp lực tưới máu cơ tim: </span>
+          <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">coronary</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">diastolic</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LVEDP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span>
+          <br>
+          <div class="katex-display">
+            <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">diastolic</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LVEDP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">/</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">R</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">coronary</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>
+          </div>
           Lưu lượng dòng máu đạt đỉnh chủ yếu trong <em>thì tâm trương</em>, khác biệt hoàn toàn với mọi cơ quan khác trong cơ thể.
         </div>
 
@@ -286,24 +322,21 @@
         <p style="font-size: var(--text-body); color: var(--color-text); margin-bottom: var(--space-3);">
           Động mạch vành xuất phát từ xoang Valsalva gồm LAD và LCx... (Phần đã nhận an toàn trước khi mạng bị ngắt).
         </p>
-        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-bg-subtle); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm);">
-          <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
-            Bài được lưu tạm dưới dạng <strong>bài rút gọn</strong>. Bạn có thể tải lại để lấy bản đầy đủ.
+        <div style="background: var(--color-bg-subtle); padding: var(--space-3); border-radius: var(--radius-sm); border-left: 3px solid var(--color-warning);">
+          <span style="font-size: var(--text-small); color: var(--color-text-muted); display: block; line-height: 1.5;">
+            Đường truyền bị gián đoạn trong lúc nhận dữ liệu. Theo hợp đồng bài giảng ADR 0025, toàn bộ nội dung đã nhận trước thời điểm ngắt được lưu giữ an toàn dưới dạng bài rút gọn (<code>cat_ngan</code>).
           </span>
-          <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-3); font-size: var(--text-small);">
-            🔄 Tải lại bản đủ
-          </button>
         </div>
       </div>
     </section>
 
-    <!-- TRẠNG THÁI 4: BÀI HỌC HỎNG HẲN KÈM LỐI RA (FATAL LECTURE WITH EXIT) -->
+    <!-- TRẠNG THÁI 4: LỖI KHỞI TẠO BÀI HỌC (HIỆN MESSAGE + THỬ LẠI + LỐI RA) -->
     <section class="card" id="section-lecture-fatal-error">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
         <div>
           <span class="badge badge-danger">Lỗi xử lý bài học</span>
           <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
-            4. Trạng thái: Bài học hỏng hẳn (Fatal Error) kèm lối ra an toàn
+            4. Trạng thái: Lỗi khởi tạo bài học (Thông báo lỗi + Thử lại + Lối ra)
           </h2>
         </div>
         <span style="font-size: var(--text-caption); color: var(--color-danger); font-weight: var(--font-semibold);">Mã: ERR-LEC-7429</span>
@@ -312,13 +345,16 @@
       <div style="text-align: center; padding: var(--space-6) var(--space-4); background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
         <div style="font-family: monospace; font-size: 32px; color: var(--color-danger); margin-bottom: var(--space-3);">[ · _ · ]</div>
         <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text); margin-bottom: var(--space-2);">
-          Không thể khởi tạo nội dung bài học này
+          Chưa thể tạo nội dung bài học
         </h3>
         <p style="font-size: var(--text-small); color: var(--color-text-muted); max-width: 540px; margin: 0 auto var(--space-5); line-height: 1.5;">
-          Hệ thống gặp sự cố không thể phục hồi khi phân tích cấu trúc giải phẫu từ tài liệu nguồn. Bạn có thể quay lại lộ trình học để tiếp tục các bài khác hoặc gửi báo lỗi nội dung để đội ngũ kỹ thuật xử lý.
+          Dịch vụ tạo bài giảng phản hồi lỗi trước khi truyền dữ liệu. Bạn có thể bấm thử lại để hệ thống yêu cầu lại luồng dữ liệu, hoặc quay về lộ trình học.
         </p>
         <div class="action-row-wrap" style="display: flex; justify-content: center; gap: var(--space-3); flex-wrap: wrap;">
-          <a href="/khoa-hoc/demo/lo-trinh" class="btn btn-primary" id="btn-exit-to-roadmap" style="min-height: 44px; min-width: 44px;">
+          <button class="btn btn-primary" id="btn-retry-lecture-fatal" style="min-height: 44px; min-width: 44px;">
+            🔄 Thử lại bài giảng
+          </button>
+          <a href="/khoa-hoc/demo/lo-trinh" class="btn btn-secondary" id="btn-exit-to-roadmap" style="min-height: 44px; min-width: 44px;">
             ← Quay về Lộ trình học
           </a>
           <button class="btn btn-secondary" id="btn-trigger-bug-report" style="min-height: 44px; min-width: 44px;">
