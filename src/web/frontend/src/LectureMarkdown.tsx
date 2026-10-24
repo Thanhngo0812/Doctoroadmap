@@ -8,8 +8,8 @@ export type LectureSource = { label: string; chunk_id: string; page: number | nu
 
 type MdNode = { type: string; value?: string; url?: string; children?: MdNode[] };
 
-function LectureMarkdown({ text, sources = [], onSource }: {
-  text: string; sources?: LectureSource[]; onSource?: (page: number) => void;
+function LectureMarkdown({ text, sources = [], onSource, allowLinks = true }: {
+  text: string; sources?: LectureSource[]; onSource?: (page: number) => void; allowLinks?: boolean;
 }) {
   const registered = new Map(sources.filter(source => /^S[1-9]\d*$/.test(source.label)
     && Number.isInteger(source.page) && source.page! > 0).map(source => [source.label, source]));
@@ -43,7 +43,7 @@ function LectureMarkdown({ text, sources = [], onSource }: {
         if (source) return <button className="lecture-citation" type="button"
           aria-label={`Nguồn ${source.label}, trang ${source.page}`} disabled={!onSource}
           onClick={() => onSource?.(source.page!)}>{children}</button>;
-        return href ? <a href={href} target="_blank" rel="noopener noreferrer">{children}</a> : <span>{children}</span>;
+        return href && allowLinks ? <a href={href} target="_blank" rel="noopener noreferrer">{children}</a> : <span>{children}</span>;
       },
     }}>{text}</Markdown></div>;
 }

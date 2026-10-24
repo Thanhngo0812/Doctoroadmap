@@ -16,6 +16,7 @@ from wayfinder import __version__
 from wayfinder.api.auth import auth_router, enforce_csrf
 from wayfinder.api.courses import course_router
 from wayfinder.api.learning import learning_router
+from wayfinder.api.assistant import assistant_router
 from wayfinder.api.sharing import sharing_router
 from wayfinder.api.token_privacy import install_share_link_log_filter
 from wayfinder.api.builds import build_router
@@ -59,6 +60,7 @@ def create_app(settings: WebSettings, services: WebServices) -> FastAPI:
     app.include_router(auth_router())
     app.include_router(course_router())
     app.include_router(learning_router())
+    app.include_router(assistant_router())
     app.include_router(sharing_router())
     install_share_link_log_filter()
     app.include_router(build_router())

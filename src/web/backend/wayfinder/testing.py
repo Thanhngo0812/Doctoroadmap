@@ -6,7 +6,7 @@ from zoneinfo import ZoneInfo
 
 from doc2roadmap.application.phase_b.assistant import AssistantUseCase
 from doc2roadmap.application.phase_b.documents import DocumentUseCase
-from doc2roadmap.application.phase_b.lectures import LectureUseCase
+from doc2roadmap.application.phase_b.lecture3 import Lecture3UseCase
 from doc2roadmap.application.phase_b.library import LibraryUseCase
 from doc2roadmap.application.phase_b.progress import ProgressUseCase
 from doc2roadmap.application.phase_b.quiz import QuizUseCase
@@ -61,6 +61,9 @@ class ScriptedModel:
         model = self
 
         class Session:
+            def stream(self, messages, *, mode='AUTO'):
+                return model.stream(messages, mode=mode)
+
             def stream_json(self, prompt: str, *, response_schema: dict[str, Any], **_kwargs: Any):
                 return model.stream_json(system_prompt, prompt, response_schema)
 
@@ -96,7 +99,7 @@ class PhaseBTestRuntime:
     progress: ProgressUseCase
     sessions: SessionUseCase
     library: LibraryUseCase
-    lecture: LectureUseCase
+    lecture: Lecture3UseCase
     quiz: QuizUseCase
     assistant: AssistantUseCase
     documents: DocumentUseCase
@@ -142,9 +145,12 @@ def build_test_application() -> TestApplication:
     progress = ProgressUseCase(store, graph, clock=clock)
     sessions = SessionUseCase(store, graph, settings=settings, clock=clock)
     library = LibraryUseCase(store, graph, settings=settings, clock=clock)
-    lecture = LectureUseCase(model, store, settings=settings, clock=clock, progress=progress)
+    lecture = Lecture3UseCase(model, store, settings=settings, clock=clock, progress=progress)
     quiz = QuizUseCase(graph, store, model, settings=settings, progress_use_case=progress, clock=clock)
-    assistant = AssistantUseCase(graph, store, model, lecture=lecture.get, settings=settings,
+    def get_lecture(concept, **kwargs):
+        return lecture.make(graph.doc_id, graph.graph_version, graph, concept,
+            owner=kwargs.get('owner'), cache_only=kwargs.get('cache_only', False), allow_spend=kwargs.get('allow_spend', False))
+    assistant = AssistantUseCase(graph, store, model, lecture=get_lecture, settings=settings,
                                  clock=clock, progress=progress)
     documents = DocumentUseCase(model, store, settings=settings, clock=clock)
     phase_b = PhaseBTestRuntime(store, clock, graph, model, embedding, progress, sessions, library,
