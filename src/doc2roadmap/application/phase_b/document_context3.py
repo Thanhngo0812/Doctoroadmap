@@ -77,24 +77,30 @@ def gather(graph: Any, node_ids: list[str], request: str, settings: BSettings, s
     """Per concept (module order, then order in the module) its definition first; then the passages found for the
     request; then the rest of each concept's passages, until `document_context_chars`. Shown in reading order."""
     raw_texts = formula_raw_texts(graph)
-    small = replace(settings, lecture_context_chars=settings.document_per_concept_chars)
-    concepts, firsts, rest = [], [], []
+    concepts, firsts, rests = [], [], []
     for node_id in _ordered_nodes(graph, node_ids):
         node = graph.nodes[node_id]
         module = graph.modules.get(node.get("module_id"), {})
         concepts.append((node.get("display_name") or node.get("name"), module_number(module) if module else "?"))
         _, base, _ = _assemble(graph, node_id, settings)
         definition = base["definition"].get("chunk_id")
-        picked = gather_chunks(graph, node, definition, small)
+        # The per-concept limit counts what comes after the definition passage, which is always taken whole:
+        # a long definition must not push out the example that follows it (see the report, "Câu hỏi").
+        defined = graph.chunks.get(definition)
+        room = settings.document_per_concept_chars + len(str(_get(defined, "text", "")).strip() if defined else "")
+        picked = gather_chunks(graph, node, definition, replace(settings, lecture_context_chars=room))
         first = next((chunk for chunk in picked if _get(chunk, "chunk_id") == definition), picked[0] if picked else None)
         firsts += [first] if first is not None else []
-        rest += [chunk for chunk in picked if chunk is not first]
+        rests.append([chunk for chunk in picked if chunk is not first])
     hits, search_error = [], False
     try:
         hits = [graph.chunks[row["chunk_id"]] for row in search(request, scope="all", k=6)
                 if row.get("chunk_id") in graph.chunks] if search is not None else []
     except Exception:  # noqa: BLE001 - a failed search only narrows the material
         search_error = True
+    # The remaining passages go round the concepts (every concept's next passage before any concept's third), so the
+    # concepts at the end of the scope are not starved by the first ones.
+    rest = [rows[rank] for rank in range(max((len(rows) for rows in rests), default=0)) for rows in rests if rank < len(rows)]
     chosen: dict[str, Any] = {}
     total = 0
     for chunk in [*firsts, *hits, *rest]:

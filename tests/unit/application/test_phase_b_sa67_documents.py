@@ -24,7 +24,7 @@ GOOD_DOC = ("# Đề cương ôn tập\n\nAlpha là khái niệm cơ bản số 
             "| Khái niệm | Ý chính |\n|---|---|\n| Alpha | điều kiện $x^2$ [S1] |\n")
 
 
-def doc_graph(modules=3, per=2, filler=0, filler_chars=900, formula_pages=(), raw=None, doc_id="d1"):
+def doc_graph(modules=3, per=2, filler=0, filler_chars=900, formula_pages=(), raw=None, doc_id="d1", def_pad=0):
     """`modules` modules of `per` concepts. Concept k is defined in chunk c(10k+10) with the marker DEF-<name>.
 
     The searched-for passage c25 sits between the third and fourth definition; filler chunks name their concept again
@@ -36,7 +36,7 @@ def doc_graph(modules=3, per=2, filler=0, filler_chars=900, formula_pages=(), ra
             name, cid = NAMES[k], 10 * k + 10
             sentence = f"{name} là khái niệm cơ bản số {k}."
             chunks.append(chunk(cid, "noi_dung", f"Chương {m + 1}", ["Định nghĩa"], 100 + k,
-                                f"{sentence} DEF-{name} nằm ở đây."))
+                                f"{sentence} DEF-{name} nằm ở đây." + " đệm" * (def_pad // 4)))
             nodes.append({"node_id": f"n{k}", "name": name, "display_name": name, "learnable": True,
                           "module_id": f"m{m}", "teaching_chunk_ids": [f"c{cid}"], "defining_chunk_ids": [],
                           "anchor": {"chunk_id": f"c{cid}", "sentence": sentence}})
@@ -158,6 +158,20 @@ def test_default_per_concept_limit_keeps_a_concept_to_sixteen_hundred_characters
     _, _, _, model, _, _ = run(graph=doc_graph(modules=1, per=1, filler=14))
     body = " ".join(text for _, _, text in passages(model.calls[0].prompt))
     assert body.count("Alpha ví dụ số") <= 2
+
+
+def test_remaining_passages_go_round_the_concepts_so_the_last_concept_is_not_starved():
+    settings = replace(BSettings(), document_per_concept_chars=3000, document_context_chars=3000)
+    _, _, _, model, _, _ = run(graph=doc_graph(modules=1, per=3, filler=3), settings=settings)
+    shown = " ".join(text for _, _, text in passages(model.calls[0].prompt))
+    assert all(f"{name} ví dụ số 0" in shown for name in NAMES[:3])
+    assert "Alpha ví dụ số 1" not in shown
+
+
+def test_a_long_definition_does_not_use_up_the_room_of_the_passage_that_follows_it():
+    _, _, _, model, _, _ = run(graph=doc_graph(modules=1, per=1, filler=2, def_pad=1700))
+    shown = " ".join(text for _, _, text in passages(model.calls[0].prompt))
+    assert "DEF-Alpha" in shown and "Alpha ví dụ số 0" in shown and "Alpha ví dụ số 1" not in shown
 
 
 def test_search_failure_still_gives_a_document_and_is_logged():
