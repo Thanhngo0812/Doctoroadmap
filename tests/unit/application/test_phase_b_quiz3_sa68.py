@@ -199,6 +199,7 @@ def test_two_laps_at_most_even_when_nothing_is_kept_and_the_empty_result_is_stor
     assert bank_of(use) != []                                # nothing kept: the learner still gets a cloze question
     assert (len(generator.calls), len(solver.calls)) == (2, 2)
     assert len(rejections(store)) == 6
+    assert store.get_cache(use._bank_key("d", "m", use._concepts("m", ["n1"])[0], None)) == []
     bank_of(use)
     assert (len(generator.calls), len(solver.calls)) == (2, 2)   # the empty bank is the bank: no third lap, no fourth
 
