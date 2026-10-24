@@ -123,7 +123,9 @@ def _budget_worker(url, start, read_barrier, finish, queue, mutation):
     if mutation:
         _remove_lock(store.engine, "pg_advisory_xact_lock(")
     clock = SimpleNamespace(now=lambda: datetime(2026, 10, 18, 10, tzinfo=timezone.utc))
-    guard = DailySpendGuard(store, clock=clock)
+    from dataclasses import replace
+    from doc2roadmap.domain.phase_b_limits import BSettings
+    guard = DailySpendGuard(store, clock=clock, settings=replace(BSettings(), learner_daily_max_usd=0.2))
     token = None
     try:
         start.wait(10)
