@@ -115,7 +115,14 @@ async function main() {
           .reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
         return targets.map(selector => {
           const element = document.querySelector(selector);
-          if (!element?.closest('.katex')) return { selector, eligible: false };
+          if (!element?.closest('.katex,.learning-chat-panel')) return { selector, eligible: false };
+          let box = element.getBoundingClientRect();
+          let left = Math.max(box.left, 0), right = Math.min(box.right, innerWidth);
+          let top = Math.max(box.top, 0), bottom = Math.min(box.bottom, innerHeight);
+          const scroller = element.closest('.learning-chat-messages');
+          if (scroller) { const r = scroller.getBoundingClientRect(); top = Math.max(top, r.top); bottom = Math.min(bottom, r.bottom); }
+          const hit = right > left && bottom > top ? document.elementFromPoint((left + right) / 2, (top + bottom) / 2) : null;
+          const unobscured = Boolean(hit && (element.contains(hit) || hit.contains(element)));
           const ancestors = [];
           for (let current = element; current; current = current.parentElement) ancestors.push(current);
           let background = [1, 1, 1, 1];
@@ -123,12 +130,12 @@ async function main() {
           const foreground = color(getComputedStyle(element).color);
           foreground[3] *= ancestors.reduce((opacity, ancestor) => opacity * Number(getComputedStyle(ancestor).opacity), 1);
           const ink = blend(foreground, background), light = luminance(ink), ground = luminance(background);
-          return { selector, eligible: true, foreground, background, contrast: (Math.max(light, ground) + .05) / (Math.min(light, ground) + .05) };
+          return { selector, eligible: true, unobscured, foreground, background, contrast: (Math.max(light, ground) + .05) / (Math.min(light, ground) + .05) };
         });
       }, nodes.map(node => node.target.length === 1 ? node.target[0] : '__unsupported_shadow_target__'));
     }
     function assertMathContrast(rows) {
-      for (const row of rows) assert.ok(row.eligible && row.contrast >= 4.5, `KaTeX contrast must reach 4.5:1: ${JSON.stringify(row)}`);
+      for (const row of rows) assert.ok(row.eligible && row.unobscured && row.contrast >= 4.5, `Visible text contrast must reach 4.5:1: ${JSON.stringify(row)}`);
     }
     async function capture(name, axe = false) {
       await learner.evaluate(() => document.fonts.ready);
@@ -154,13 +161,19 @@ async function main() {
         const manual = [], unresolved = [];
         for (const finding of result.incomplete) {
           const supported = finding.id === 'color-contrast' && finding.nodes.every(node => node.any.every(check =>
-            check.id === 'color-contrast' && check.message === 'Element content is too short to determine if it is actual text content'));
+            check.id === 'color-contrast' && ['Element content is too short to determine if it is actual text content',
+              "Element's background color could not be determined because it partially overlaps other elements"].includes(check.message)));
           const measured = supported ? await mathContrast(learner, finding.nodes) : [];
           if (!supported || !measured.every(row => row.eligible)) unresolved.push(finding);
           else { assertMathContrast(measured); manual.push(...measured); }
         }
         audit.accessibility.at(-1).manualMath = manual;
         assert.deepEqual(unresolved, [], `${name}: unresolved accessibility checks`);
+        if (manual.length && !audit.contrastCounterexample) {
+          assert.throws(() => assertMathContrast(manual.map(row => ({ ...row, contrast: 1 }))), { code: 'ERR_ASSERTION' });
+          assert.throws(() => assertMathContrast(manual.map(row => ({ ...row, unobscured: false }))), { code: 'ERR_ASSERTION' });
+          audit.contrastCounterexample = { invisibleInkRejected: true, obscuredTextRejected: true, threshold: 4.5 };
+        }
       }
     }
     const smoke = process.env.W09_BROWSER_SMOKE === '1';
