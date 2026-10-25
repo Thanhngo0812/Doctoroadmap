@@ -1,0 +1,11 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_unverified_online_embedding_price_is_rejected_before_the_provider ____
+src\web\backend\tests\test_build_spend_w15.py:41: in test_unverified_online_embedding_price_is_rejected_before_the_provider
+    with pytest.raises(api.BuildSpendStopped, match='billing unit'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'>
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\r4-20261025\unverified-embedding.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_unverified_online_embedding_price_is_rejected_before_the_provider
+1 failed, 18 deselected in 0.36s

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.802" timestamp="2026-10-25T10:23:41.398720+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption" time="1.021"><failure message="AssertionError: Unverified pricing reached paid pipeline construction">src\web\backend\tests\test_build_approval_w15.py:166: in test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption
+    runtime.runner(receipts.append).execute(source, 'u-' + digest[:20])
+src\web\backend\wayfinder\infrastructure\real_build.py:71: in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True, spend_guard=guard)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\real_build.py:75: in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+src\web\backend\tests\test_build_approval_w15.py:160: in forbidden
+    raise AssertionError('Unverified pricing reached paid pipeline construction')
+E   AssertionError: Unverified pricing reached paid pipeline construction</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,29 @@
+// Public Google pricing only; a fresh anonymous browser, no ADC/account/model calls.
+const fs = require('node:fs/promises');
+const path = require('node:path');
+const root = path.resolve(__dirname, '..');
+const shared = path.resolve(root, '../..');
+process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(shared, '.tmp/w01-browsers');
+const { chromium } = require(path.join(shared, '.tmp/w01-browser-tools/node_modules/playwright'));
+(async () => {
+  const browser = await chromium.launch();
+  const context = await browser.newContext();
+  const page = await context.newPage();
+  const responses = [];
+  page.on('response', async response => {
+    if (response.url().includes('batchexecute')) {
+      responses.push({ url: response.url().split('?')[0], status: response.status(), body: await response.text() });
+    }
+  });
+  try {
+    await page.goto('https://cloud.google.com/skus?currency=USD&filter=E4FB-7AE2-9CAE', {waitUntil: 'domcontentloaded'});
+    let loaded = true;
+    try { await page.getByText('Large Text Embedding Model - Predictions', {exact: true}).waitFor({timeout: 45000}); }
+    catch { loaded = false; }
+    const text = await page.locator('body').innerText();
+    await fs.writeFile(path.join(root, 'tmp/w15-r4-pricing/sku-browser.txt'), text);
+    await fs.writeFile(path.join(root, 'tmp/w15-r4-pricing/sku-browser-rpc.json'), JSON.stringify(responses, null, 2));
+    const at = text.indexOf('Large Text Embedding');
+    console.log(JSON.stringify({loaded, rpc_responses: responses.length, excerpt: at < 0 ? text.slice(-1800) : text.slice(at-400, at+1600)}));
+  } finally { await browser.close(); }
+})().catch(error => { console.error(error.message); process.exitCode = 1; });

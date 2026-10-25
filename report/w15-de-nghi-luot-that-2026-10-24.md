@@ -1,5 +1,10 @@
 # W-15 — chuẩn bị lượt Vertex thật sau kiểm 0 USD — 2026-10-24
 
+**Đã có sửa sau nghiệm thu lần 4:** xem [operator R4 ngày 2026-10-25](w15-sua-operator-lan4-2026-10-25.md).
+Plan Windows trong hồ sơ này là lịch sử, không sửa tay hoặc dùng lại để chạy.
+Đơn vị embedding online chưa được đối soát; chủ dự án đã cho chọn giá giả định demo trong phiên mới,
+không coi các câu “profile đã xác minh” bên dưới là kết luận hiện hành.
+
 **Hiện hành sau hồ sơ tiếp quản `4038055`. Chưa chạy có tiền; W-15 chưa đóng.**
 Nhánh `work/w15-real-build`, worktree `tmp/w15-real-build`; main đã nhận `604cab0`
 có SA-69/SA-70. Root giữ main. Không sửa `src/doc2roadmap/`, không ghép/push main.
