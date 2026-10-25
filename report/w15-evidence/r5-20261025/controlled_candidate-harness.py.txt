@@ -1,0 +1,96 @@
+"""One explicit owner-authorized diagnostic book attempt at concurrency 8, no retries."""
+from datetime import datetime
+from decimal import Decimal
+from hashlib import sha256
+from io import BytesIO
+import json
+from pathlib import Path
+import socket
+import subprocess
+import sys
+from threading import Lock
+from time import perf_counter
+from unittest.mock import patch
+from uuid import uuid4
+
+root = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(root/'src'),str(root/'src/web/backend'),str(root/'src/web/backend/tests')]
+import w15_operator_run as operator
+from wayfinder.infrastructure import build_spend
+from sqlalchemy import text
+
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+assert head=='6249dab5c8cd89b36edeb5add45ab88d5d7d7bce'
+capture=json.loads((root/'report/w15-evidence/runs/r4-full-20261025-02-exit.json').read_text())
+assert all(sha256((root/p).read_bytes()).hexdigest()==digest for p,digest in capture['source_sha256'].items())
+bundle=json.loads((root/'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+worst=Decimal(0)
+for item in bundle['attempts']:
+    execution=json.loads((root/item['run_dir']/'execution.json').read_text(encoding='utf-8'))
+    receipt=execution.get('bootstrap') or execution['attempts'][0]['result']
+    budget=receipt['step_details']['operator_budget']
+    worst+=Decimal(budget['known_usd'])+Decimal(budget['unknown_upper_usd'])
+diagnostic_location=json.loads((root/'tmp/w15-r5-diagnostic-location.json').read_text())
+diagnostic=json.loads((root/diagnostic_location['run_dir']/'diagnostic-result.json').read_text(encoding='utf-8'))
+assert diagnostic['status']=='diagnostic_succeeded'
+budget=diagnostic['approval_record']['budget']
+worst+=Decimal(budget['known_usd'])+Decimal(budget['unknown_upper_usd'])
+assert worst+Decimal(3)<=Decimal(4)
+location=root/'tmp/w15-r5-controlled-location.json'
+assert not location.exists()
+original_profile=operator.profile
+def controlled_profile(run_dir,database):
+    settings,core=original_profile(run_dir,database)
+    return settings,core.model_copy(update={'llm_max_in_flight':8,'gemini_max_retries':0})
+operator.profile=controlled_profile
+original_connect=socket.socket.connect
+def local_connect(sock,address):
+    if isinstance(address,tuple) and address[0] not in {'127.0.0.1','localhost','::1'}:
+        raise AssertionError('Dry-run forbids non-local network')
+    return original_connect(sock,address)
+with patch.object(socket.socket,'connect',local_connect):
+    plan_path=operator.prepare('candidate')
+plan=json.loads(plan_path.read_text(encoding='utf-8'))
+run=plan_path.parent
+assert plan['prepared_commit']==head and plan['embedding_billing_verified'] is False
+reference='w15-debug-controlled-owner-20261025-'+uuid4().hex
+permission={key:plan[key] for key in ('file_sha256','pipeline_version','database','embedding_price_profile')}
+permission.update(reference=reference,max_usd='3.00',approved=True,approved_by='project-owner',
+    embedding_billing_verified=False,owner_message_quote='nếu cần chi tiền tìm lỗi thì cứ chi',
+    operation='one-controlled-candidate-debug-build',max_in_flight=8,max_provider_retries=0,
+    plan_sha256=sha256(plan_path.read_bytes()).hexdigest(),previous_attempts_upper_usd=str(worst),
+    all_attempts_upper_including_this_cap_usd=str(worst+Decimal(3)),created_at=datetime.now().astimezone().isoformat())
+grant_path=run/'owner-controlled-approval.json'
+grant_path.write_bytes((json.dumps(permission,ensure_ascii=False,indent=2)+'\n').encode())
+location.write_bytes((json.dumps(dict(run_dir=run.relative_to(root).as_posix(),reference=reference,
+    database=plan['database'],plan_sha256=sha256(plan_path.read_bytes()).hexdigest(),
+    approval_sha256=sha256(grant_path.read_bytes()).hexdigest(),head=head,max_in_flight=8,max_provider_retries=0,
+    cap_usd='3.00',all_attempts_upper_including_this_cap_usd=str(worst+Decimal(3))),indent=2)+'\n').encode())
+real_urlopen=build_spend.urlopen
+lock=Lock()
+def observed_provider(request,*args,**kwargs):
+    row=dict(operation=request.full_url.rsplit(':',1)[-1],started_at=datetime.now().astimezone().isoformat(),
+        timeout_seconds=kwargs.get('timeout'),request_sha256=sha256(request.data).hexdigest(),http_status=None)
+    start=perf_counter()
+    try:
+        with real_urlopen(request,*args,**kwargs) as response:
+            row['http_status']=response.status
+            raw=response.read()
+        value=json.loads(raw)
+        row.update(response_keys=list(value),usageMetadata=value.get('usageMetadata'),
+            embedding_statistics=[p.get('embeddings',{}).get('statistics') for p in value.get('predictions',[])])
+        return BytesIO(raw)
+    except Exception as error:
+        row.update(error_type=type(error).__name__,error_message=str(error)[:500],
+            reason_type=type(getattr(error,'reason',None)).__name__,http_status=getattr(error,'code',row['http_status']))
+        raise
+    finally:
+        row['wall_seconds']=perf_counter()-start
+        with lock:
+            with (run/'transport-trace.jsonl').open('a',encoding='utf-8') as handle:
+                handle.write(json.dumps(row,ensure_ascii=False)+'\n')
+
+print(json.dumps(dict(run_dir=str(run),reference=reference,cap_usd='3.00',max_in_flight=8,
+    max_provider_retries=0,all_attempts_upper_including_this_cap_usd=str(worst+Decimal(3))),indent=2),flush=True)
+with patch.object(build_spend,'urlopen',observed_provider):
+    operator.execute(plan_path,grant_path)

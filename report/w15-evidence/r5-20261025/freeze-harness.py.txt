@@ -1,0 +1,84 @@
+"""Freeze this round's reports; preserve original run bytes and every old manifest."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import xml.etree.ElementTree as ET
+from dotenv import dotenv_values
+root=Path(__file__).resolve().parents[1]
+e=root/'report/w15-evidence'; dest=e/'r5-20261025'
+def git(*args):return subprocess.check_output(['git',*args],cwd=root).decode('utf-8').strip()
+def dump(path,data):path.write_bytes((json.dumps(data,ensure_ascii=False,indent=2)+'\n').encode())
+assert git('branch','--show-current')=='work/w15-real-build'
+assert git('-C',str(root.parents[1]),'branch','--show-current')=='main'
+assert git('rev-parse','HEAD')=='6249dab5c8cd89b36edeb5add45ab88d5d7d7bce'
+assert not git('diff','cfabaeb','--','src') and not git('diff','--','src')
+assert not git('diff','--cached','--name-only')
+facts=json.loads((dest/'measured-facts.json').read_text(encoding='utf-8'))
+assert all('budget' in r for r in facts['attempts'])
+historical=[]
+for relative in ('manifest-20261024.json','resume-20261024-01/manifest.json','resume-20261024-02/manifest.json','operator-20261024/manifest.json','r4-20261025/manifest.json'):
+    rows=json.loads((e/relative).read_text(encoding='utf-8'))['files']
+    assert all(sha256((e/r['path']).read_bytes()).hexdigest()==r['sha256'] for r in rows),relative
+    historical.append(dict(manifest=relative,verified_entries=len(rows),changed=[]))
+dump(dest/'historical-integrity.json',historical)
+focused=json.loads((e/'runs/r5-focused-20261025-01-exit.json').read_text(encoding='utf-8'))
+cases=list(ET.parse(e/'runs/r5-focused-20261025-01.xml').iter('testcase'))
+assert focused['exit_code']==0 and all(c.find('failure') is None and c.find('error') is None and c.find('skipped') is None for c in cases)
+native=[]
+for path in sorted((e/'runs').glob('r5-*-exit.json')):
+    record=json.loads(path.read_text(encoding='utf-8'))
+    assert record['commit']==git('rev-parse','HEAD')
+    assert all(sha256((root/p).read_bytes()).hexdigest()==h for p,h in record['source_sha256'].items())
+    native.append(dict(path=path.relative_to(e).as_posix(),exit_code=record['exit_code'],seconds=record['seconds']))
+provenance=[]
+for row in facts['attempts']:
+    run=root/row['run_dir']; target=dest/row['label'];target.mkdir(exist_ok=False)
+    selected=[run/'plan.json',*run.glob('owner-*.json'),*run.glob('requests-*.jsonl'),*run.glob('budget-requests.jsonl'),
+        *run.glob('transport-trace.jsonl'),*run.glob('input-hashes.json')]
+    selected.append(run/('diagnostic-result.json' if row['label'] in ('diagnostic','probe100') else 'execution.json'))
+    for source in selected:
+        assert source.is_file() and not source.is_symlink()
+        path=target/source.name;shutil.copyfile(source,path)
+        provenance.append(dict(source=source.relative_to(root).as_posix(),source_sha256=sha256(source.read_bytes()).hexdigest(),stored=path.relative_to(e).as_posix()))
+shutil.copyfile(root/'tmp/w15-r5-pause.json',dest/'pause-resume.json')
+for name in ('prepare_authorized','execute','status','inspect','failure_log','diagnostic','controlled_candidate','probe100','mixed100','audit','http_read','graph_check','facts','mixed_analysis','report','freeze'):
+    source=root/('tmp/w15_r5_'+name+'.py')
+    assert source.exists(),source
+    path=dest/(name+'-harness.py.txt');shutil.copyfile(source,path)
+    provenance.append(dict(source=source.relative_to(root).as_posix(),source_sha256=sha256(source.read_bytes()).hexdigest(),stored=path.relative_to(e).as_posix()))
+dump(dest/'provenance.json',dict(note='Immutable source runs remain in ignored local tmp. Git evidence copies may have UTF-8/LF normalization; never execute the copies or edit/reuse consumed grants.',files=provenance))
+dump(dest/'summary.json',dict(head_executed=git('rev-parse','HEAD'),main_received=git('rev-parse','main'),
+    product_source_changes=False,source_matches_full_gate_cfabaeb=True,focused_passed=len(cases),focused_exit=0,
+    historical_manifests=historical,native=native,known_demo_usd=facts['total_known_usd'],unknown_upper_usd=facts['total_unknown_upper_usd'],
+    total_upper_usd=facts['total_upper_usd'],embedding_billing_verified=False,invoice_reconciled=False,
+    doc6_bootstrap_real_succeeded=True,doc6_web_cache_only_provider_calls=0,candidate_concurrency8_real_ready=True,
+    standalone_embedding100_success=True,mixed100_failed_at='A6 BuildClusters node-description embedding',
+    mixed100_unknown_embeddings=81,mixed100_generation_unknown=0,root_mechanism_isolated=False,
+    smtp_real=False,cloudinary_real=False,w15_accepted_complete=False))
+secrets=[]
+for env in (root.parents[1]/'.env',root.parents[1]/'src/web/.env'):
+    secrets += [str(v).encode() for k,v in dotenv_values(env).items() if v and len(str(v))>=8 and any(s in k.upper() for s in ('PASSWORD','SECRET','TOKEN','API_KEY','DATABASE_URL'))]
+paths=git('ls-files','--others','--exclude-standard','report/w15-evidence').splitlines()
+entries=[]
+for relative in paths:
+    assert relative.startswith('report/w15-evidence/r5-20261025/') or relative.startswith('report/w15-evidence/runs/r5-'),relative
+    path=root/relative;raw=path.read_bytes()
+    assert path.is_file() and not path.is_symlink() and path.stat().st_nlink==1
+    assert not any(s in raw for s in secrets),relative
+    backup=root/'tmp/w15-r5-raw-20261025'/relative
+    assert not backup.exists() and backup.resolve().is_relative_to(root)
+    backup.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(path,backup)
+    normalized=('\n'.join(line.rstrip() for line in raw.decode('utf-8-sig').splitlines()).rstrip()+'\n').encode()
+    if path.suffix=='.json':assert json.loads(raw)==json.loads(normalized)
+    if path.suffix=='.jsonl':assert [json.loads(l) for l in raw.splitlines()]==[json.loads(l) for l in normalized.splitlines()]
+    if path.suffix=='.xml':assert [c.attrib for c in ET.fromstring(raw).iter('testcase')]==[c.attrib for c in ET.fromstring(normalized).iter('testcase')]
+    path.write_bytes(normalized)
+    entries.append(dict(path=path.relative_to(e).as_posix(),source_raw_sha256=sha256(raw).hexdigest(),sha256=sha256(normalized).hexdigest(),bytes=len(normalized)))
+dump(dest/'normalization.json',dict(operation='UTF-8/LF/trailing whitespace on new evidence copies only; original run files untouched',raw_backup='tmp/w15-r5-raw-20261025',configured_secret_matches=0,json_values_and_junit_attributes_preserved=True,files=entries))
+normal=dest/'normalization.json'
+manifest=entries+[dict(path=normal.relative_to(e).as_posix(),sha256=sha256(normal.read_bytes()).hexdigest(),bytes=normal.stat().st_size)]
+dump(dest/'manifest.json',dict(files=manifest))
+assert all(sha256((e/r['path']).read_bytes()).hexdigest()==r['sha256'] for r in manifest)
+print(json.dumps(dict(focused_passed=len(cases),historical_entries=sum(h['verified_entries'] for h in historical),new_evidence_files=len(manifest)+1,configured_secret_matches=0),indent=2))

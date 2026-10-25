@@ -1,0 +1,105 @@
+"""Read-only reconciliation, actual artifact image decoding and stage measurements."""
+from collections import Counter
+from decimal import Decimal
+from datetime import datetime
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+root=Path(__file__).resolve().parents[1]
+sys.path[:0]=[str(root/'src'),str(root/'src/web/backend'),str(root/'src/web/backend/tests')]
+import w15_operator_run as operator
+from sqlalchemy import text
+from PIL import Image
+from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+
+out=root/'report/w15-evidence/r5-20261025'
+bundle=json.loads((root/'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+items=[(x['book']+'-first',x) for x in bundle['attempts']]
+for name in ('diagnostic','controlled','probe100','mixed100'):
+    loc=root/('tmp/w15-r5-'+name+'-location.json')
+    if loc.exists(): items.append((name,json.loads(loc.read_text())))
+rows=[]
+for label,item in items:
+    run=root/item['run_dir']
+    terminal=run/('diagnostic-result.json' if label in ('diagnostic','probe100') else 'execution.json')
+    if not terminal.exists():
+        rows.append(dict(label=label,state='running',run_dir=item['run_dir']))
+        continue
+    plan=json.loads((run/'plan.json').read_text(encoding='utf-8'))
+    result=json.loads(terminal.read_text(encoding='utf-8'))
+    debug=label in ('diagnostic','probe100')
+    receipt=result if debug else result.get('bootstrap') or result['attempts'][0]['result']
+    budget=result['approval_record']['budget'] if debug else receipt['step_details']['operator_budget']
+    events=[]
+    for f in [*run.glob('requests-*.jsonl'),*run.glob('budget-requests.jsonl')]:
+        events.extend(json.loads(line) for line in f.read_text(encoding='utf-8').splitlines())
+    known=sum((Decimal(e['actual_usd']) for e in events if e['actual_usd'] is not None),Decimal(0))
+    unknown=sum((Decimal(e['reserved_usd']) for e in events if e['actual_usd'] is None),Decimal(0))
+    assert len(events)==budget['http_calls'] and known==Decimal(budget['known_usd']) and unknown==Decimal(budget['unknown_upper_usd'])
+    assert budget['held_usd']=='0' and known+unknown<=Decimal(budget['limit_usd'])
+    assert budget['embedding_billing_verified'] is False
+    assert sha256((run/'source.pdf').read_bytes()).hexdigest()==plan['file_sha256'] and (run/'source.pdf').stat().st_nlink==1
+    engine=operator.create_database_engine(operator.test_database_url(item['database']))
+    try:
+        with engine.connect() as conn:
+            approval=conn.execute(text("SELECT value FROM phase_b_record WHERE kind='w15_build_approval' AND record_id=:ref"),{'ref':item['reference']}).scalar_one()
+            ledger=[dict(r) for r in conn.execute(text('SELECT purpose,cost_usd,input_tokens,output_tokens,extra FROM usage_ledger ORDER BY id')).mappings()]
+        assert approval['state']=='finished' and approval['budget']==budget
+        assert approval['file_sha256']==plan['file_sha256'] and approval['pipeline_version']==plan['pipeline_version']
+        usd=sum((r['cost_usd'] for r in ledger),Decimal(0))
+        meter=result['usage'] if debug else receipt
+        assert usd==Decimal(str(round(meter['spent_usd'],6)))
+        assert all(r['cost_usd']==r['input_tokens']==r['output_tokens']==0 for r in ledger if r['extra'].get('counted_in')=='build')
+    finally: engine.dispose()
+    trace=run/'transport-trace.jsonl'
+    traces=[json.loads(line) for line in trace.read_text(encoding='utf-8').splitlines()] if trace.exists() else []
+    peaks={}
+    for operation in ('all','predict','generateContent'):
+        points=[]
+        for t in traces:
+            if operation!='all' and t['operation']!=operation:continue
+            start=datetime.fromisoformat(t['started_at']).timestamp()
+            points.extend([(start,1),(start+t['wall_seconds'],-1)])
+        current=peak=0
+        for _,delta in sorted(points):current+=delta;peak=max(peak,current)
+        peaks[operation]=peak
+    stages=[]
+    for stage in sorted({e['stage'] for e in events}|set(receipt.get('completed_steps',[]))):
+        es=[e for e in events if e['stage']==stage]
+        detail=receipt.get('step_details',{}).get(stage,{})
+        stages.append(dict(step=stage,generation=sum(Decimal(e['reserved_usd'])>Decimal('.001') for e in es),
+            embedding=sum(Decimal(e['reserved_usd'])<Decimal('.001') for e in es),
+            known_usd=str(sum((Decimal(e['actual_usd']) for e in es if e['actual_usd'] is not None),Decimal(0))),
+            unknown_upper_usd=str(sum((Decimal(e['reserved_usd']) for e in es if e['actual_usd'] is None),Decimal(0))),
+            timing=detail.get('web_timing'),cache_detail=detail))
+    row=dict(label=label,status=result['status'] if debug else receipt['status'],run_dir=item['run_dir'],database=item['database'],
+        reference=item['reference'],plan=plan,budget=budget,sql_ledger_usd=str(usd),usage=meter if debug else {k:receipt[k] for k in ('spent_usd','model_calls','input_tokens','output_tokens','usage_complete')},
+        stages=stages,transport=dict(responses=len(traces),status_counts=dict(Counter(str(t.get('http_status')) for t in traces)),
+            errors=[t for t in traces if t.get('error_type')],max_seconds=max((t['wall_seconds'] for t in traces),default=None),observed_peak=peaks),
+        accounting_assertions_passed=True)
+    if debug:
+        row['diagnostic_summary']={k:v for k,v in result.items() if k not in ('approval_record','traceback','usage')}
+    elif receipt['graph_version'] is not None:
+        store=JsonArtifactStore(run/'artifacts'); graph=store.load_graph(receipt['doc_id'],receipt['graph_version'])
+        row['graph']=dict(version=graph.version,module_count=len(graph.payload['modules']),concept_count=len(graph.payload['nodes']),
+            mentioned_count=len(graph.payload.get('mentioned_nodes',[])),non_learnable_count=len(graph.payload.get('non_learnable_nodes',[])),
+            edges={k:len(v) for k,v in graph.payload.items() if k.endswith('edges')},quality_gate=graph.payload.get('quality_gate'))
+        images=[]
+        for path in sorted((run/'artifacts').rglob('*')):
+            if path.suffix.lower() not in ('.png','.jpg','.jpeg','.webp'):continue
+            with Image.open(path) as im:
+                im.verify()
+            with Image.open(path) as im:
+                images.append(dict(path=path.relative_to(run).as_posix(),size=list(im.size),format=im.format,bytes=path.stat().st_size,sha256=sha256(path.read_bytes()).hexdigest()))
+        row['artifact_images']=images
+        parsed=store.load_parse(receipt['doc_id'],receipt['step_details']['doc_reading']['parse_version'])
+        row['parse_node_types']=dict(Counter(n.node_type for n in parsed.tree.nodes))
+        row['http_read_evidence']='http-ready-doc-6.json' if label=='doc-6-first' else 'http-ready-candidate-controlled.json' if label=='controlled' else None
+    rows.append(row)
+known=sum((Decimal(r['budget']['known_usd']) for r in rows if 'budget' in r),Decimal(0))
+unknown=sum((Decimal(r['budget']['unknown_upper_usd']) for r in rows if 'budget' in r),Decimal(0))
+value=dict(attempts=rows,total_known_usd=str(known),total_unknown_upper_usd=str(unknown),total_upper_usd=str(known+unknown),
+    embedding_billing_verified=False,invoice_reconciled=False,pause=json.loads((root/'tmp/w15-r5-pause.json').read_text(encoding='utf-8-sig')))
+(out/'measured-facts.json').write_bytes((json.dumps(value,ensure_ascii=False,indent=2,default=str)+'\n').encode())
+print(json.dumps(dict(totals={k:v for k,v in value.items() if k.startswith('total')},attempts=[dict(label=r['label'],status=r.get('status'),budget=r.get('budget'),graph=r.get('graph'),transport={k:v for k,v in r.get('transport',{}).items() if k!='errors'},error_count=len(r.get('transport',{}).get('errors',[]))) for r in rows]),ensure_ascii=False,indent=2))
