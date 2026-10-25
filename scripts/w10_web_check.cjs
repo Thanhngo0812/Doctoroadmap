@@ -1,4 +1,5 @@
 const assert = require('node:assert/strict');
+const { spawnSync } = require('node:child_process');
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const root = path.resolve(__dirname, '..'), shared = path.resolve(root, '../..');
@@ -77,7 +78,8 @@ async function main() {
       });
       assert.equal(layout.overflow, false, name + ' horizontal overflow');
       assert.deepEqual(layout.targets, [], name + ' 44px targets');
-      await learner.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+      if (width < 1280 && name.startsWith('library-')) await learner.locator('.content-library').scrollIntoViewIfNeeded();
+      else await learner.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
       await learner.screenshot({ path: path.join(out, file), fullPage: width >= 1280 }); audit.screens.push({ file, width, theme, reduced, layout });
       if (axe) {
         const result = await new AxeBuilder({ page: learner }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
@@ -155,7 +157,8 @@ async function main() {
       await learner.locator('.content-question input').first().waitFor();
       const early = learner.locator('.content-question input').first();
       const earlyChoice = { item: await early.getAttribute('name'), option: await early.getAttribute('value') };
-      await early.check();
+      await early.focus(); await learner.keyboard.press('Space');
+      assert.equal(await early.isChecked(), true);
       if (first) {
         const probe = await control({ action: 'probe' });
         assert.equal(probe.quizWaiting, true);
@@ -200,6 +203,13 @@ async function main() {
       const dialog = learner.getByRole('dialog', { name: 'Tạo tài liệu học tập' });
       await dialog.waitFor();
       await settled();
+      assert.equal(await dialog.getByRole('textbox').evaluate(e => e === document.activeElement), true, 'dialog starts on request field');
+      await learner.keyboard.press('Shift+Tab');
+      assert.equal(await dialog.evaluate(e => e.contains(document.activeElement)), true, 'native modal contains keyboard focus');
+      await learner.keyboard.press('Escape');
+      assert.equal(await dialog.count(), 0, 'Escape closes dialog');
+      await library.getByRole('button', { name: 'Tạo tài liệu', exact: true }).click();
+      await dialog.waitFor(); await settled();
       if (reduced) assert.equal(await dialog.evaluate(e => getComputedStyle(e).animationName), 'none');
       if (first) {
         const boxes = dialog.getByRole('checkbox');
@@ -225,6 +235,9 @@ async function main() {
       lastDid = new URL(learner.url()).pathname.split('/').at(-1);
       await learner.getByRole('link', { name: 'Tải Markdown' }).waitFor();
       assert.equal(await learner.locator('.content-document-body img').count(), 0);
+      assert.equal(await learner.locator('.content-document-body table').count(), 1);
+      assert.equal(await learner.getByRole('heading', { name: 'Ghi chú ôn tập', exact: true }).count(), 1);
+      assert.equal(await learner.locator('.content-document-body .katex').count() > 0, true);
       await capture('document-view', true);
       const source = learner.locator('.content-document-body .lecture-citation').first();
       if (await source.count()) {
@@ -233,6 +246,42 @@ async function main() {
         await capture('document-source'); await learner.locator('.source-viewer').getByRole('button', { name: 'Đóng', exact: true }).click();
       }
       if (first) {
+    // Taste inspection uses a design-only copy of this real authenticated DOM.
+    let snapshot = (await learner.evaluate(() => {
+      const clone = document.documentElement.cloneNode(true);
+      const source = [...document.querySelectorAll('input[type=checkbox]')];
+      [...clone.querySelectorAll('input[type=checkbox]')].forEach((input, index) => input.toggleAttribute('checked', source[index].checked));
+      return '<!doctype html>' + clone.outerHTML;
+    })).replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, '');
+    for (const match of [...snapshot.matchAll(/<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']([^"']+)["'][^>]*>/gi)]) {
+      const cssUrl = new URL(match[1], base).href;
+      let css = (await (await learner.request.get(cssUrl)).text()).replace(/url\((['"]?)([^)'"\s]+)\1\)/g,
+        (full, delimiter, value) => value.startsWith('data:') ? full : `url("${new URL(value, cssUrl).href}")`);
+      // A file:// design snapshot has a different origin. Embed its fonts, not a CORS-blocked localhost URL.
+      for (const font of [...new Set([...css.matchAll(/url\("([^"()]+\.(?:woff2?|ttf))"\)/g)].map(match => match[1]))]) {
+        const response = await learner.request.get(font);
+        assert.equal(response.status(), 200);
+        const type = font.endsWith('.woff2') ? 'font/woff2' : font.endsWith('.woff') ? 'font/woff' : 'font/ttf';
+        css = css.split(font).join(`data:${type};base64,${Buffer.from(await response.body()).toString('base64')}`);
+      }
+      snapshot = snapshot.replace(match[0], `<style>${css}</style>`);
+    }
+    for (const match of [...snapshot.matchAll(/<img\b[^>]*src=["']([^"']*\/api\/v1\/[^"']+)["'][^>]*>/gi)]) {
+      const response = await learner.request.get(new URL(match[1], base).href);
+      const data = Buffer.from(await response.body()).toString('base64');
+      snapshot = snapshot.replace(match[1], `data:image/webp;base64,${data}`);
+    }
+    const snapshotPath = path.join(root, 'tmp/w10-inspect.html');
+    await fs.writeFile(snapshotPath, snapshot.replace(/<head([^>]*)>/i, `<head$1><base href="${base}/">`));
+    await fs.mkdir(path.join(root, 'tmp/w10-taste-profiles'), { recursive: true });
+    const inspected = spawnSync(process.execPath, [path.join(shared, '.agents/skills/design-taste-frontend/scripts/inspect.mjs'), snapshotPath,
+      '--out', path.join(out, 'taste-inspect'), '--widths', '1280,768,390', '--app', '--json'],
+      { cwd: root, encoding: 'utf8', timeout: 180000, env: { ...process.env, TASTE_SKILL_TMP: path.join(root, 'tmp/w10-taste-profiles') } });
+    await fs.writeFile(path.join(out, 'taste-inspector.log'), String(`${inspected.stdout ?? ''}${inspected.stderr ?? ''}`));
+    assert.ok([0, 1].includes(inspected.status));
+    audit.designInspection = JSON.parse(await fs.readFile(path.join(out, 'taste-inspect/report.json'), 'utf8'));
+    assert.equal(audit.designInspection.findings.filter(finding => finding.level === 'FAIL').length, 0, 'taste inspector failures must be fixed');
+
         const downloadPromise = learner.waitForEvent('download');
         await learner.getByRole('link', { name: 'Tải Markdown' }).click();
         const download = await downloadPromise; await download.saveAs(path.join(out, 'document-export.md'));
@@ -243,6 +292,30 @@ async function main() {
       assert.equal(grouping.items.find(row => row.id === lastDid).group, 'elsewhere');
       first = false;
     }
+    stage = 'disconnect-document';
+    await control({ action: 'advance' }); await control({ action: 'document-mode', mode: 'pause' });
+    const previousDocuments = new Set((await control({ action: 'probe' })).documentRows.map(row => row.id));
+    await learner.goto(modulePage); await learner.getByRole('button', { name: 'Tạo tài liệu', exact: true }).click();
+    await learner.getByRole('dialog').getByRole('button', { name: 'Tạo tài liệu', exact: true }).click();
+    await learner.locator('.content-draft').waitFor();
+    const pendingDocument = (await control({ action: 'probe' })).documentRows.find(row => !previousDocuments.has(row.id));
+    assert.ok(pendingDocument, 'PG stores a document identity before the provider finishes');
+    await learner.getByRole('button', { name: 'Đóng tạo tài liệu' }).click();
+    await control({ action: 'release-document' });
+    await require(path.join(shared, '.tmp/w01-browser-tools/node_modules/playwright')).expect.poll(async () =>
+      (await (await learner.request.get(api + '/documents/' + pendingDocument.id)).json()).status).toBe('ready');
+    audit.disconnect = { documentId: pendingDocument.id, completedAfterDialogClosed: true };
+    stage = 'hour-limit';
+    await control({ action: 'advance' }); await control({ action: 'document-mode', mode: 'normal' });
+    for (let index = 0; index < 10; index++) {
+      const response = await learner.request.post(api + '/documents', { headers: learnerHeaders, data: { request: 'Ôn tập ' + index, module_ids: [ma] } });
+      assert.equal(response.status(), 201, await response.text());
+    }
+    const beforeLimit = (await control({ action: 'probe' })).documentCalls;
+    const limited = await learner.request.post(api + '/documents', { headers: { ...learnerHeaders, Accept: 'text/event-stream' }, data: { request: 'Lượt thứ 11', module_ids: [ma] } });
+    assert.equal(limited.status(), 429); assert.match(limited.headers()['content-type'], /json/);
+    assert.equal((await control({ action: 'probe' })).documentCalls, beforeLimit);
+    audit.hourLimit = { status: limited.status(), body: await limited.json(), providerCallsUnchanged: true };
     stage = 'failure';
     await control({ action: 'advance' }); await control({ action: 'document-mode', mode: 'failure' });
     await learner.goto(modulePage); await learner.getByRole('button', { name: 'Tạo tài liệu', exact: true }).click();

@@ -124,7 +124,7 @@ def main():
                     counts = c.execute(text("SELECT kind,count(*) AS count FROM phase_b_record GROUP BY kind ORDER BY kind")).mappings().all()
                     attempts = list(c.scalars(text("SELECT value FROM phase_b_record WHERE kind='quiz_attempt' ORDER BY record_id")))
                 return {'records': [dict(row) for row in counts], 'generatorCalls': len(generator.calls), 'solverCalls': len(solver.calls),
-                    'documentCalls': sum(len(row.calls) for row in documents), 'quizWaiting': generator.waiting.is_set(),
+                    'documentCalls': sum(len(row.calls) for row in documents), 'documentRows': [{ 'id': row['document_id'], 'status': row['status'] } for row in phase.list_records('documents')], 'quizWaiting': generator.waiting.is_set(),
                     'answers': {row['record_id'] if 'record_id' in row else row['attempt_id']:
                         {iid: next(o['option_id'] for o in item['options'] if o['is_correct']) for iid, item in row['_private'].items()}
                         for row in attempts}}
