@@ -16,6 +16,9 @@ BACK = 'src/web/backend/wayfinder/'
 FRONT = 'src/web/frontend/src/'
 TEST = 'src/web/backend/tests/test_content_w10.py::test_w10_'
 cases = [
+    ["ui-keyboard-focus", FRONT+"ContentPages.tsx",
+        "if (previousAttempt.current !== 'tao' || saved?.attempt_id !== aid) heading.current?.focus({ preventScroll: true });",
+        "if (true) heading.current?.focus({ preventScroll: true });", "react"],
     ["public-answer", BACK+"api/content.py",
         "return await run_in_threadpool(gateway.make_quiz, actor, cid, scope, data.n)",
         "return __import__('starlette.responses', fromlist=['JSONResponse']).JSONResponse({**(await run_in_threadpool(gateway.make_quiz, actor, cid, scope, data.n)), 'correct_index': 0})",

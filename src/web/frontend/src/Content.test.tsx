@@ -150,3 +150,14 @@ it('refreshes a stale history quiz snapshot from the server after submission wit
   expect(vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('/quizzes/qa_1'))).toHaveLength(1);
   expect(posts).toHaveLength(0);
 });
+
+it('keeps keyboard focus on the current option when streaming becomes a saved quiz', async () => {
+  page('/khoa-hoc/c/quiz/tao?module=m1');
+  await waitFor(() => expect(posts).toHaveLength(1));
+  await act(async () => frame('item_ready', { attempt_id: 'qa_1', item }));
+  const choice = document.querySelector<HTMLInputElement>('input[value="o2"]')!;
+  choice.focus(); expect(choice).toHaveFocus();
+  await act(async () => { frame('final', { quiz }); controller.close(); });
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Nộp bài' })).toBeEnabled());
+  expect(document.querySelector('input[value="o2"]')).toHaveFocus();
+});

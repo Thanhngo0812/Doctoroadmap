@@ -23,12 +23,12 @@ export function QuizPage(props: ThemeProps) {
   const [result, setResult] = useState<QuizResult | null>(null), [answers, setAnswers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true), [sending, setSending] = useState(false), [error, setError] = useState('');
   const [revision, setRevision] = useState(0), [page, setPage] = useState<number | null>(null);
-  const submitting = useRef(false), heading = useRef<HTMLHeadingElement>(null);
+  const submitting = useRef(false), heading = useRef<HTMLHeadingElement>(null), previousAttempt = useRef(aid);
   const cached = location.state as { quiz?: Quiz; answers?: Record<string, string> } | null;
   const saved = cached?.quiz;
   const answersRef = useRef<Record<string, string>>({});
   useEffect(() => {
-    const c = new AbortController(); setError(''); setLoading(true); setItems([]); setQuiz(null); setResult(null); answersRef.current = saved?.attempt_id === aid ? cached?.answers ?? {} : {}; setAnswers(answersRef.current); setPage(null);
+    const c = new AbortController(); setError(''); setLoading(true); setItems(saved?.attempt_id === aid ? saved.items : []); setQuiz(saved?.attempt_id === aid ? saved : null); setResult(null); answersRef.current = saved?.attempt_id === aid ? cached?.answers ?? {} : {}; setAnswers(answersRef.current); setPage(null);
     void (async () => {
       if (aid === 'tao') {
         await createContent(cid, 'quizzes', { scope: moduleId ? { kind: 'module', module_id: moduleId } : { kind: 'roadmap' } }, c.signal, row => {
@@ -51,7 +51,10 @@ export function QuizPage(props: ThemeProps) {
     } }).finally(() => { if (!c.signal.aborted) setLoading(false); });
     return () => c.abort();
   }, [cid, aid, moduleId, revision, auth.clearSession, navigate, saved]);
-  useEffect(() => { heading.current?.focus({ preventScroll: true }); }, [aid]);
+  useEffect(() => {
+    if (previousAttempt.current !== 'tao' || saved?.attempt_id !== aid) heading.current?.focus({ preventScroll: true });
+    previousAttempt.current = aid;
+  }, [aid, saved]);
   const back = moduleId ? modulePath(cid, moduleId) : coursePath(cid);
   const pages = quiz?.source_document?.kind === 'pdf' ? quiz.source_document.page_count : null;
   const source = (sources: LectureSource[]) => <div className="content-result-sources">{sources.filter(row => row.page && (!pages || row.page <= pages)).map((row, i) =>

@@ -78,7 +78,7 @@ async function main() {
       });
       assert.equal(layout.overflow, false, name + ' horizontal overflow');
       assert.deepEqual(layout.targets, [], name + ' 44px targets');
-      if (width < 1280 && name.startsWith('library-')) await learner.locator('.content-library').scrollIntoViewIfNeeded();
+      if (width < 1280 && name.startsWith('library-')) await learner.locator('.content-library').evaluate(e => scrollTo({ top: scrollY + e.getBoundingClientRect().top - document.querySelector('.courses-header').getBoundingClientRect().height - 16, behavior: 'instant' }));
       else await learner.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
       await learner.screenshot({ path: path.join(out, file), fullPage: width >= 1280 }); audit.screens.push({ file, width, theme, reduced, layout });
       if (axe) {
