@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.305" timestamp="2026-10-24T14:18:23.290815+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_next_request_is_rejected_before_the_provider_when_capacity_is_exhausted" time="0.124"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'&gt;">src\web\backend\tests\test_build_spend_w15.py:35: in test_next_request_is_rejected_before_the_provider_when_capacity_is_exhausted
+    with pytest.raises(api.BuildSpendStopped):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'&gt;</failure></testcase></testsuite></testsuites>

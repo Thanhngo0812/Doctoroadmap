@@ -1,0 +1,66 @@
+{
+  "head_tested": "cfabaeb51a7212b9684eaef711fb568ac81673bc",
+  "main_received": "46d829a55a62d852897f07102e89cf9a1fd5185e",
+  "gates": {
+    "full": {
+      "commit": "cfabaeb51a7212b9684eaef711fb568ac81673bc",
+      "exit_code": 0,
+      "seconds": 506.16,
+      "junit": {
+        "tests": 2643,
+        "passed": 2641,
+        "failures": [],
+        "errors": [],
+        "skipped": [
+          {
+            "classname": "tests.unit.application.test_phase_b_sa55_runner",
+            "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+            "time": "0.155",
+            "type": "pytest.xfail",
+            "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+          },
+          {
+            "classname": "src.web.backend.tests.test_media_store",
+            "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+            "time": "0.006",
+            "type": "pytest.skip",
+            "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+          }
+        ]
+      }
+    },
+    "react": {
+      "commit": "cfabaeb51a7212b9684eaef711fb568ac81673bc",
+      "exit_code": 0,
+      "seconds": 105.92,
+      "junit": {
+        "tests": 181,
+        "passed": 181,
+        "failures": [],
+        "errors": [],
+        "skipped": []
+      }
+    },
+    "build": {
+      "commit": "cfabaeb51a7212b9684eaef711fb568ac81673bc",
+      "exit_code": 0,
+      "seconds": 5.08
+    }
+  },
+  "focused_passed": 39,
+  "r4_mutation_caught": 4,
+  "full_gate_green": true,
+  "path_finding": "fixed_with_prepare_saved_json_execute_regression",
+  "online_embedding_sku_unit_verified": false,
+  "embedding_price_profile": "owner-demo-embedding-token-20261025",
+  "owner_demo_assumption_authorized": true,
+  "assumed_embedding_input_usd_per_million_tokens": "0.15",
+  "provider_spend_usd": 0,
+  "paid_run_executed": false,
+  "owner_paid_approval_received": false,
+  "w15_complete": false,
+  "doc6_real_ready_proven": false,
+  "proposed_doc6_cap_usd": "1.00",
+  "proposed_candidate_cap_usd": "3.00",
+  "cap_is_estimate": false
+}

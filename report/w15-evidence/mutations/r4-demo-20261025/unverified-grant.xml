@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="2.847" timestamp="2026-10-25T10:38:51.993575+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption[None]" time="0.844"><failure message="AssertionError: Unverified pricing reached paid pipeline construction">src\web\backend\tests\test_build_approval_w15.py:168: in test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption
+    runtime.runner(receipts.append).execute(source, 'u-' + digest[:20])
+src\web\backend\wayfinder\infrastructure\real_build.py:71: in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True, spend_guard=guard)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\real_build.py:75: in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+src\web\backend\tests\test_build_approval_w15.py:162: in forbidden
+    raise AssertionError('Unverified pricing reached paid pipeline construction')
+E   AssertionError: Unverified pricing reached paid pipeline construction</failure></testcase><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption[another-price-profile]" time="0.294"><failure message="ValueError: Approval was already consumed">src\web\backend\tests\test_build_approval_w15.py:168: in test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption
+    runtime.runner(receipts.append).execute(source, 'u-' + digest[:20])
+src\web\backend\wayfinder\infrastructure\real_build.py:70: in execute
+    with self.runtime.spend_approval.activate(file_path, doc_id, self.runtime) as guard:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\build_spend.py:183: in activate
+    raise ValueError('Approval was already consumed')
+E   ValueError: Approval was already consumed</failure></testcase></testsuite></testsuites>

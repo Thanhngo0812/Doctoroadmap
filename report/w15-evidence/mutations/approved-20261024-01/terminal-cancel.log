@@ -1,0 +1,47 @@
+F..FF..F                                                                 [100%]
+================================== FAILURES ===================================
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('83ebeabd-f432-4441-9d3e-8b6be518adbe'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('15606c81-7719-463d-b013-a8a8eeeb5dd8'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('dec4cc5c-5fdc-484b-a446-f724e840dc1d'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:198: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert proof['build']['status'] == 'cancelled', proof
+E   AssertionError: {'assets': [], 'attempts': [{'build_id': UUID('06e9d77c-54a8-46af-a635-b1a6fa6e308f'), 'claim_count': 1, 'input_tokens.../UTC')), ...}, 'courses': [{'module_count': 1, 'published_graph_version': 8, 'status': 'ready', 'title': 'book'}], ...}
+E   assert 'succeeded' == 'cancelled'
+E
+E     - cancelled
+E     + succeeded
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-20261024-01\terminal-cancel.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal]
+4 failed, 4 passed, 5 deselected, 1 warning in 10.86s

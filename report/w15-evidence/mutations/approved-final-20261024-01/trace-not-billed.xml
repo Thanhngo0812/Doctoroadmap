@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="4" time="3.709" timestamp="2026-10-24T14:51:49.462127+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_build_trace_keeps_raw_usage_but_is_not_billed_twice[build]" time="1.095"><failure message="AssertionError: assert Decimal('0.003000') == 0">src\web\backend\tests\test_real_build_w15.py:482: in test_build_trace_keeps_raw_usage_but_is_not_billed_twice
+    assert totals['usd'] == (0 if trace else Decimal('.003'))
+E   AssertionError: assert Decimal('0.003000') == 0</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_build_trace_keeps_raw_usage_but_is_not_billed_twice[None]" time="0.315" /><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_build_trace_keeps_raw_usage_but_is_not_billed_twice[other]" time="0.301" /><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_meter_is_the_only_build_charge_with_child_traces" time="0.641"><failure message="AssertionError: assert {'input': 500...l('0.005000')} == {'input': 300...imal('0.003')}&#10;  &#10;  Differing items:&#10;  {'output': 100} != {'output': 60}&#10;  {'usd': Decimal('0.005000')} != {'usd': Decimal('0.003')}&#10;  {'input': 500} != {'input': 300}&#10;  Use -v to get more diff">src\web\backend\tests\test_real_build_w15.py:528: in test_real_adapter_meter_is_the_only_build_charge_with_child_traces
+    assert totals == {'usd': Decimal('.003'), 'input': 300, 'output': 60}
+E   AssertionError: assert {'input': 500...l('0.005000')} == {'input': 300...imal('0.003')}
+E
+E     Differing items:
+E     {'output': 100} != {'output': 60}
+E     {'usd': Decimal('0.005000')} != {'usd': Decimal('0.003')}
+E     {'input': 500} != {'input': 300}
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

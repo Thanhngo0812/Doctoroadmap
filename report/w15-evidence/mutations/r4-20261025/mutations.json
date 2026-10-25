@@ -1,0 +1,71 @@
+[
+  {
+    "label": "portable-plan",
+    "source": "src/web/backend/tests/w15_operator_run.py",
+    "original_sha256": "57bd4214c9ca80dda70d3f64f80c38b310e3d99ca0efec55182272e7a5a0e4b7",
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "native_exit": 1,
+    "source_restored": true,
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_operator_w15.py",
+      "-k",
+      "prepare_saved_plan",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-r4-mut-portable-plan",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\r4-20261025\\portable-plan.xml"
+    ]
+  },
+  {
+    "label": "unverified-embedding",
+    "source": "src/web/backend/wayfinder/infrastructure/build_spend.py",
+    "original_sha256": "aa6f5007c57be71259f8732e01c7db6c4ab904af70fdcdde29048c5584cbccdf",
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "native_exit": 1,
+    "source_restored": true,
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_build_spend_w15.py",
+      "-k",
+      "unverified_online",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-r4-mut-unverified-embedding",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\r4-20261025\\unverified-embedding.xml"
+    ]
+  },
+  {
+    "label": "unverified-grant",
+    "source": "src/web/backend/wayfinder/infrastructure/build_spend.py",
+    "original_sha256": "aa6f5007c57be71259f8732e01c7db6c4ab904af70fdcdde29048c5584cbccdf",
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "native_exit": 1,
+    "source_restored": true,
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_build_approval_w15.py",
+      "-k",
+      "unverified_online",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-r4-mut-unverified-grant",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\r4-20261025\\unverified-grant.xml"
+    ]
+  }
+]

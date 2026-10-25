@@ -1,0 +1,11 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_unknown_usage_preserves_the_reservation_and_blocks_later_dispatch ____
+src\web\backend\tests\test_build_spend_w15.py:46: in test_unknown_usage_preserves_the_reservation_and_blocks_later_dispatch
+    with pytest.raises(api.BuildSpendStopped):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'>
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-final-20261024-01\unknown-usage-stop.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_unknown_usage_preserves_the_reservation_and_blocks_later_dispatch
+1 failed, 17 deselected in 0.28s

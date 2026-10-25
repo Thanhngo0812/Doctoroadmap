@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Màn hình Quản lý Khoá học & Chia sẻ Liên kết (W-11) — WayFinder</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      padding: var(--space-6);
+      line-height: 1.5;
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+      flex-wrap: wrap;
+      gap: var(--space-3);
+    }
+    .theme-toggle-btn {
+      min-height: 44px;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border-input);
+      background: var(--color-surface);
+      color: var(--color-text);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: 4px var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: var(--font-semibold);
+    }
+    .badge-primary { background: var(--color-brand-tint); color: var(--color-primary); }
+    .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+    .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
+    .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+    .badge-muted { background: var(--color-bg-subtle); color: var(--color-text-muted); border: 1px solid var(--color-border); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      min-width: 44px;
+      height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-body);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: background-color var(--motion-fast);
+      box-sizing: border-box;
+    }
+    .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
+    .btn-primary:hover { background: var(--color-primary-hover); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border-input); }
+    .btn-danger { background: var(--color-danger); color: var(--color-primary-text); }
+    .form-group {
+      margin-bottom: var(--space-4);
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: var(--space-1);
+      font-size: var(--text-small);
+      font-weight: var(--font-semibold);
+      color: var(--color-text);
+    }
+    .form-control {
+      width: 100%;
+      min-height: 44px;
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--color-border-input);
+      background: var(--color-surface);
+      color: var(--color-text);
+      font-family: inherit;
+      font-size: var(--text-body);
+    }
+    .form-control:focus {
+      outline: 2px solid var(--color-brand);
+      border-color: var(--color-brand);
+    }
+    .table-responsive {
+      overflow-x: auto;
+      margin-top: var(--space-3);
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      min-width: 540px;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th, td {
+      padding: var(--space-3);
+      border-bottom: 1px solid var(--color-border);
+      font-size: var(--text-small);
+      vertical-align: middle;
+    }
+    th {
+      background: var(--color-bg-subtle);
+      font-weight: var(--font-semibold);
+      color: var(--color-text-muted);
+    }
+    .privacy-notice {
+      background: var(--color-brand-tint);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin: var(--space-4) 0;
+    }
+    .pixel-face {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 32px;
+      line-height: 1;
+      margin-bottom: var(--space-2);
+    }
+    .danger-zone {
+      border: 1px solid var(--color-danger);
+      background: var(--color-danger-tint);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+    .new-link-result-box {
+      background: var(--color-brand-tint);
+      border: 2px solid var(--color-brand);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin-top: var(--space-4);
+      margin-bottom: var(--space-4);
+    }
+
+    /* Responsive adjustments for 390px mobile */
+    @media (max-width: 640px) {
+      body { padding: var(--space-3); }
+      .header-bar { flex-direction: column; align-items: flex-start; }
+      .theme-toggle-btn { width: 100%; }
+      .card { padding: var(--space-4); }
+      .form-grid-2col { grid-template-columns: 1fr !important; }
+      .email-invite-row { flex-direction: column !important; }
+      .email-invite-row .btn { width: 100%; }
+      .action-row-wrap { flex-direction: column !important; width: 100%; }
+      .action-row-wrap .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <div>
+      <h1 style="font-size: var(--text-h2); font-weight: var(--font-bold); color: var(--color-text);">
+        Quản lý Khoá học & Chia sẻ Liên kết (W-11)
+      </h1>
+      <p style="font-size: var(--text-small); color: var(--color-text-muted);">
+        Theo dõi cấu hình chia sẻ link mời, xác nhận tham gia khoá học và quản trị theo hợp đồng W-11 & Mục 11 Spec.
+      </p>
+    </div>
+    <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Đổi giao diện Sáng/Tối">
+      🌓 Chế độ Sáng/Tối
+    </button>
+  </div>
+
+  <main class="container">
+    <!-- SECTION 1: QUẢN LÝ KHOÁ HỌC (/khoa-hoc/:cid/quan-ly) -->
+    <section class="card" id="section-course-management">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-primary">Chủ khoá học</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            1. Quản lý khoá học: Dược lý lâm sàng & Phác đồ điều trị 2026
+          </h2>
+        </div>
+        <a href="#section-join-flow" class="btn btn-secondary">Xem màn hình Tham gia (/join) ➔</a>
+      </div>
+
+      <!-- Tab 1: Cấu hình thông tin -->
+      <div style="margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-4);">
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); margin-bottom: var(--space-3); color: var(--color-text);">
+          Thông tin cơ bản
+        </h3>
+        <div class="form-group">
+          <label for="input-course-title">Tên khoá học</label>
+          <input type="text" class="form-control" id="input-course-title" value="Dược lý lâm sàng & Phác đồ điều trị 2026">
+        </div>
+        <div class="form-group">
+          <label for="input-course-desc">Mô tả tóm tắt</label>
+          <textarea class="form-control" id="input-course-desc" rows="2">Giáo trình cập nhật tương tác thuốc tim mạch, kháng sinh thế hệ mới và phác đồ can thiệp sốc phản vệ.</textarea>
+        </div>
+        <button class="btn btn-primary" id="btn-save-course-info">Lưu thay đổi</button>
+      </div>
+
+      <!-- Tab 2: Chia sẻ & Liên kết mời -->
+      <div style="margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-4);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+          <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+            Liên kết mời & Chia sẻ khoá học
+          </h3>
+          <button class="btn btn-primary" id="btn-create-share-link" onclick="document.getElementById('form-create-link-box').style.display='block'">+ Tạo liên kết mới</button>
+        </div>
+
+        <!-- Form tạo liên kết mới -->
+        <div id="form-create-link-box" style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-bottom: var(--space-4);">
+          <h4 style="font-size: var(--text-small); font-weight: var(--font-bold); margin-bottom: var(--space-3);">Tạo liên kết tham gia mới</h4>
+          <div class="form-grid-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4);">
+            <div class="form-group">
+              <label for="select-expire-days">Thời hạn liên kết</label>
+              <select class="form-control" id="select-expire-days">
+                <option value="7">7 ngày</option>
+                <option value="30">30 ngày</option>
+                <option value="never">Không giới hạn thời gian</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="select-max-uses">Giới hạn số học viên tham gia</label>
+              <select class="form-control" id="select-max-uses">
+                <option value="25">25 học viên</option>
+                <option value="50">50 học viên</option>
+                <option value="unlimited">Không giới hạn</option>
+              </select>
+            </div>
+          </div>
+          <div class="action-row-wrap" style="display: flex; gap: var(--space-2); margin-top: var(--space-2);">
+            <button class="btn btn-primary" id="btn-confirm-create-link" onclick="document.getElementById('box-new-link-result').style.display='block'">Xác nhận tạo link</button>
+            <button class="btn btn-secondary" id="btn-cancel-create-link" onclick="document.getElementById('form-create-link-box').style.display='none'">Đóng</button>
+          </div>
+
+          <!-- VÙNG KẾT QUẢ TẠO MỚI MỘT LẦN (URL ĐẦY ĐỦ VÀ COPY CHỈ HIỆN Ở ĐÂY) -->
+          <div id="box-new-link-result" class="new-link-result-box" style="display: block;">
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2);">
+              <span class="badge badge-success">✓ Đã tạo thành công</span>
+              <strong style="font-size: var(--text-small); color: var(--color-primary);">Liên kết tham gia mới của bạn:</strong>
+            </div>
+            <p style="font-size: var(--text-caption); color: var(--color-text-muted); margin-bottom: var(--space-3);">
+              URL đầy đủ chỉ hiển thị ở đây một lần. Trong bảng danh sách bên dưới chỉ lưu đuôi 6 ký tự để bảo mật.
+            </p>
+            <div class="action-row-wrap" style="display: flex; gap: var(--space-3); align-items: center;">
+              <input type="text" class="form-control" id="input-full-created-url" readonly value="https://wayfinder.edu.vn/join/X9A4B2" style="font-family: var(--font-mono); font-weight: var(--font-semibold); background: var(--color-surface);">
+              <button class="btn btn-primary" id="btn-copy-new-link-one-time" onclick="navigator.clipboard.writeText('https://wayfinder.edu.vn/join/X9A4B2')" style="white-space: nowrap;">
+                Sao chép liên kết
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bảng danh sách liên kết đã tạo (CHỈ HIỂN THỊ ĐUÔI 6 KÝ TỰ, KHÔNG COPY TỪ LIST) -->
+        <h4 style="font-size: var(--text-small); color: var(--color-text-muted); margin-bottom: var(--space-2);">
+          Danh sách liên kết đã tạo (chỉ lưu mã 6 ký tự theo spec W-11):
+        </h4>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Mã liên kết (6 ký tự)</th>
+                <th>Thời hạn</th>
+                <th>Lượt dùng</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <strong style="color: var(--color-primary); font-family: var(--font-mono); font-size: var(--text-body);">X9A4B2</strong>
+                  <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Tạo lúc: 2026-10-20 09:30</p>
+                </td>
+                <td>Còn 5 ngày</td>
+                <td><strong>14</strong> / 50 học viên</td>
+                <td><span class="badge badge-success">● Đang hoạt động</span></td>
+                <td>
+                  <button class="btn btn-danger" id="btn-revoke-x9a4b2">Thu hồi</button>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong style="color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-body);">K3P9M1</strong>
+                  <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Tạo lúc: 2026-09-01 14:00</p>
+                </td>
+                <td>Hết hạn 2026-10-01</td>
+                <td><strong>50</strong> / 50 học viên</td>
+                <td><span class="badge badge-accent">Đã đủ lượt</span></td>
+                <td>
+                  <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Đã đóng</span>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong style="color: var(--color-text-muted); font-family: var(--font-mono); font-size: var(--text-body);">R7T2W4</strong>
+                  <p style="font-size: var(--text-caption); color: var(--color-text-muted);">Tạo lúc: 2026-10-15 08:12</p>
+                </td>
+                <td>Đã thu hồi thủ công</td>
+                <td><strong>3</strong> / 25 học viên</td>
+                <td><span class="badge badge-muted">Đã thu hồi</span></td>
+                <td>
+                  <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Vô hiệu</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Mời qua Email -->
+      <div id="section-invite-email" style="margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-4);">
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); margin-bottom: var(--space-3); color: var(--color-text);">
+          Mời học viên qua Email trực tiếp
+        </h3>
+        <div class="email-invite-row" style="display: flex; gap: var(--space-3);">
+          <input type="email" class="form-control" id="input-invite-email" placeholder="Nhập địa chỉ email đồng nghiệp/học viên (ví dụ: bsi.lan@benhvien.vn)">
+          <button class="btn btn-primary" id="btn-send-email-invite" style="white-space: nowrap;">Gửi thư mời</button>
+        </div>
+        <p style="font-size: var(--text-caption); color: var(--color-text-muted); margin-top: var(--space-2);">
+          Hệ thống sẽ gửi thư kèm liên kết tham gia trực tiếp có hiệu lực trong 7 ngày.
+        </p>
+      </div>
+
+      <!-- Tab 3b: Lời mời đang chờ (Pending Invitations - theo Spec 11) -->
+      <div id="section-pending-invitations" style="margin-bottom: var(--space-6); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-4);">
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); margin-bottom: var(--space-2); color: var(--color-text);">
+          Lời mời đang chờ chấp nhận (Pending Invitations)
+        </h3>
+        <p style="font-size: var(--text-caption); color: var(--color-text-muted); margin-bottom: var(--space-3);">
+          Danh sách người nhận thư mời qua email chưa kích hoạt tham gia khoá học:
+        </p>
+        <div class="table-responsive">
+          <table>
+            <thead>
+              <tr>
+                <th>Email người nhận</th>
+                <th>Ngày gửi</th>
+                <th>Hạn chấp nhận</th>
+                <th>Trạng thái</th>
+                <th>Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>bsi.lan@benhvien.vn</strong></td>
+                <td>2026-10-22 14:15</td>
+                <td>Còn 6 ngày</td>
+                <td><span class="badge badge-accent">Chưa kích hoạt</span></td>
+                <td>
+                  <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-3); font-size: var(--text-small);">
+                    Thu hồi thư mời
+                  </button>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>hocvien.tuan@daihoc.edu.vn</strong></td>
+                <td>2026-10-21 08:30</td>
+                <td>Còn 5 ngày</td>
+                <td><span class="badge badge-accent">Chưa kích hoạt</span></td>
+                <td>
+                  <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px; height: 44px; padding: 0 var(--space-3); font-size: var(--text-small);">
+                    Thu hồi thư mời
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 4: Vùng nguy hiểm (Danger Zone) - LỜI HỨA ĐÚNG SPEC -->
+      <div class="danger-zone" id="section-danger-zone">
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-danger); margin-bottom: var(--space-2);">
+          ⚠️ Vùng nguy hiểm: Xoá khoá học
+        </h3>
+        <p style="font-size: var(--text-small); color: var(--color-text); margin-bottom: var(--space-3); line-height: 1.5;">
+          Hành động này sẽ xoá khoá học và lộ trình trên hệ thống. <strong>Tiến trình học riêng của học viên và các tài liệu/artifact dùng chung được lưu giữ theo chính sách dữ liệu cá nhân của người học</strong>; không xoá dữ liệu cá nhân của người học.
+        </p>
+        <div class="form-group">
+          <label for="input-confirm-delete-course">
+            Gõ lại chính xác tên khoá học <code>Dược lý lâm sàng & Phác đồ điều trị 2026</code> để xác nhận:
+          </label>
+          <input type="text" class="form-control" id="input-confirm-delete-course" placeholder="Gõ lại tên khoá học tại đây">
+        </div>
+        <button class="btn btn-danger" id="btn-delete-course-permanent">Xoá khoá học này</button>
+      </div>
+    </section>
+
+    <!-- SECTION 2: MÀN HÌNH THAM GIA KHOÁ HỌC (/join/:token) -->
+    <section class="card" id="section-join-flow">
+      <h2 style="font-size: var(--text-h3); margin-bottom: var(--space-4); color: var(--color-text);">
+        2. Màn hình Tham gia khoá học bằng liên kết (/join/:token)
+      </h2>
+
+      <!-- Trạng thái 2A: Học viên đã đăng nhập -->
+      <div style="background: var(--color-surface); border: 2px solid var(--color-brand); border-radius: var(--radius-lg); padding: var(--space-6); max-width: 520px; margin: 0 auto var(--space-6); text-align: center;">
+        <span class="badge badge-primary" style="margin-bottom: var(--space-3);">Liên kết hợp lệ</span>
+        <div style="width: 48px; height: 48px; border-radius: 50%; background: var(--color-brand-tint); color: var(--color-primary); display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto var(--space-3);">
+          🧭
+        </div>
+        <h3 style="font-size: var(--text-h3); font-weight: var(--font-bold); color: var(--color-text); margin-bottom: var(--space-1);">
+          Dược lý lâm sàng & Phác đồ điều trị 2026
+        </h3>
+        <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          do <strong>Bác sĩ Lan</strong> chia sẻ • 6 module • 18 bài học
+        </p>
+
+        <!-- Khối thông báo quyền riêng tư dữ liệu (Spec 11 chuẩn) -->
+        <div class="privacy-notice" style="text-align: left;">
+          <strong style="display: block; font-size: var(--text-small); color: var(--color-text); margin-bottom: 4px;">
+            🔒 Thông báo minh bạch dữ liệu:
+          </strong>
+          <p style="font-size: var(--text-caption); color: var(--color-text-muted); line-height: 1.4;">
+            Chủ khoá thấy tên bạn, ngày tham gia, số khái niệm bạn đã đánh dấu học. Không thấy nội dung chat hay bài làm của bạn.
+          </p>
+        </div>
+
+        <div class="action-row-wrap" style="display: flex; flex-direction: column; gap: var(--space-3); margin-top: var(--space-4);">
+          <button class="btn btn-primary" id="btn-confirm-join-course" style="width: 100%;">
+            Xác nhận tham gia khoá học
+          </button>
+          <a href="#" class="btn btn-secondary" style="width: 100%;">Quay lại trang chủ</a>
+        </div>
+      </div>
+
+      <!-- Trạng thái 2B: Khách chưa đăng nhập -->
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); max-width: 520px; margin: 0 auto var(--space-6); text-align: center;">
+        <span class="badge badge-accent" style="margin-bottom: var(--space-3);">Yêu cầu đăng nhập</span>
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text); margin-bottom: var(--space-1);">
+          Bạn được mời tham gia: Dược lý lâm sàng
+        </h3>
+        <p style="font-size: var(--text-small); color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          Vui lòng đăng nhập hoặc tạo tài khoản WayFinder để ghi nhận tiến trình học tập của bạn vào khoá học này.
+        </p>
+        <div class="action-row-wrap" style="display: flex; gap: var(--space-3);">
+          <button class="btn btn-primary" style="flex: 1;" id="btn-guest-login">Đăng nhập</button>
+          <button class="btn btn-secondary" style="flex: 1;" id="btn-guest-register">Đăng ký mới</button>
+        </div>
+      </div>
+
+      <!-- Trạng thái 2C: Liên kết hỏng / Hết hạn (link_invalid) -->
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); max-width: 520px; margin: 0 auto; text-align: center;" id="screen-join-invalid">
+        <div class="pixel-face">
+          [ · _ · ]
+        </div>
+        <span class="badge badge-danger" style="margin-bottom: var(--space-3);">Liên kết không hợp lệ</span>
+        <h3 style="font-size: var(--text-h3); font-weight: var(--font-bold); color: var(--color-danger); margin-bottom: var(--space-2);">
+          Liên kết mời không còn khả dụng
+        </h3>
+        <p style="font-size: var(--text-body); color: var(--color-text); margin-bottom: var(--space-2);">
+          Link mời không còn dùng được. Hãy xin chủ khoá một link mới.
+        </p>
+        <p style="font-size: var(--text-caption); color: var(--color-text-muted); margin-bottom: var(--space-4);">
+          Lý do có thể do link đã hết hạn sau thời gian ấn định, đã đạt giới hạn số lượng học viên hoặc chủ khoá học đã thu hồi.
+        </p>
+        <button class="btn btn-primary" id="btn-return-home" style="width: 100%;">
+          Về trang chủ của tôi
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const cur = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>

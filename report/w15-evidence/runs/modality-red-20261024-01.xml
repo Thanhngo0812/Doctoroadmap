@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="6" time="0.448" timestamp="2026-10-24T14:44:28.950219+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad0]" time="0.135" /><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad1]" time="0.001" /><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad2]" time="0.001" /><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad3]" time="0.002"><failure message="TypeError: 'NoneType' object does not support the context manager protocol">src\web\backend\tests\test_build_spend_w15.py:92: in test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider
+    guard(bad)
+src\web\backend\wayfinder\infrastructure\build_spend.py:94: in __call__
+    with self.provider(request, *args, **kwargs) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'NoneType' object does not support the context manager protocol</failure></testcase><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad4]" time="0.001"><failure message="TypeError: 'NoneType' object does not support the context manager protocol">src\web\backend\tests\test_build_spend_w15.py:92: in test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider
+    guard(bad)
+src\web\backend\wayfinder\infrastructure\build_spend.py:94: in __call__
+    with self.provider(request, *args, **kwargs) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'NoneType' object does not support the context manager protocol</failure></testcase><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad5]" time="0.001" /></testsuite></testsuites>

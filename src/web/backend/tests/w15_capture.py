@@ -26,6 +26,10 @@ def main():
               ('w15_capture.py', 'w15_mutations.py', 'w15_cache_metadata.py')]
     paths += [ROOT / 'src/web/backend/tests' / name for name in
               ('test_pipeline_postport_w15.py', 'test_internal_dry_run_w15.py')]
+    paths += [ROOT / 'src/web/backend/tests' / name for name in
+              ('test_doc6_cache_only_w15.py', 'test_build_spend_w15.py', 'test_build_approval_w15.py',
+               'w15_operator_run.py', 'test_operator_w15.py')]
+    paths += [ROOT / 'src/web/backend/wayfinder/infrastructure/build_spend.py']
     paths += [ROOT / 'src/doc2roadmap' / name for name in ('composition_build.py', 'composition_phase_b.py')]
     hashes = {path.relative_to(ROOT).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest() for path in paths}
     start = monotonic()
