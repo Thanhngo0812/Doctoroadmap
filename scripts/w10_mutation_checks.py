@@ -16,6 +16,13 @@ BACK = 'src/web/backend/wayfinder/'
 FRONT = 'src/web/frontend/src/'
 TEST = 'src/web/backend/tests/test_content_w10.py::test_w10_'
 cases = [
+    ["public-answer", BACK+"api/content.py",
+        "return await run_in_threadpool(gateway.make_quiz, actor, cid, scope, data.n)",
+        "return __import__('starlette.responses', fromlist=['JSONResponse']).JSONResponse({**(await run_in_threadpool(gateway.make_quiz, actor, cid, scope, data.n)), 'correct_index': 0})",
+        "quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping"],
+    ["ui-server-reload", FRONT+"ContentPages.tsx",
+        "const opened = await getQuiz(cid, aid, c.signal);",
+        "const opened = saved?.attempt_id === aid ? saved : await getQuiz(cid, aid, c.signal);", "react"],
     [
         "result-owner",
         "src/web/backend/wayfinder/application/learning_gateway.py",

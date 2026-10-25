@@ -139,3 +139,14 @@ it('shows a generated document title once while preserving the complete raw Mark
   expect(screen.getAllByRole('heading', { name: 'Bảng ôn tập' })).toHaveLength(1);
   expect(screen.getByRole('link', { name: 'Tải Markdown' })).toHaveAttribute('href', '/api/v1/courses/c/documents/d1/markdown');
 });
+
+it('refreshes a stale history quiz snapshot from the server after submission without posting again', async () => {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation((input, init) => String(input).endsWith('/quizzes/qa_1')
+    ? Promise.resolve(json({ ...quiz, submitted: true }))
+    : String(input).endsWith('/quizzes/qa_1/result') ? Promise.resolve(json(result)) : original(input, init));
+  render(<MemoryRouter initialEntries={[{ pathname: '/khoa-hoc/c/quiz/qa_1', state: { quiz, answers: { q1: 'o2' } } }]}><App /></MemoryRouter>);
+  await waitFor(() => expect(document.querySelector('h1')?.textContent).toBe('Kết quả quiz'));
+  expect(vi.mocked(fetch).mock.calls.filter(([url]) => String(url).endsWith('/quizzes/qa_1'))).toHaveLength(1);
+  expect(posts).toHaveLength(0);
+});

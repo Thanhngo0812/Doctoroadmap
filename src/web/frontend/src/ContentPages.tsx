@@ -38,7 +38,7 @@ export function QuizPage(props: ThemeProps) {
           if (row.failure) setError(row.failure.message);
         });
       } else {
-        const opened = saved?.attempt_id === aid ? saved : await getQuiz(cid, aid, c.signal);
+        const opened = await getQuiz(cid, aid, c.signal);
         if (c.signal.aborted) return;
         setQuiz(opened); setItems(opened.items);
         if (opened.submitted) {
