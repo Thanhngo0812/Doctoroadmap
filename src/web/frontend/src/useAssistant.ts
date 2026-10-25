@@ -16,7 +16,7 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
   const [deleting, setDeleting] = useState(false);
   const [live, setLive] = useState<LiveTurn | null>(null), [all, setAll] = useState(false), [revision, setRevision] = useState(0);
   const [pageCount, setPageCount] = useState<number | null>(null);
-  const active = useRef<{ sid: string; controller: AbortController } | null>(null);
+  const active = useRef<{ sid: string; controller: AbortController; terminal: boolean } | null>(null);
   const storage = `wf-chat:${uid ?? ''}:${cid}`;
   const pendingKey = (sid: string) => `${storage}:pending:${sid}`;
   const refresh = useCallback(() => setRevision(v => v + 1), []);
@@ -70,15 +70,16 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
     setLive(value => value && ({ ...value, busy: false, error: 'Đã dừng nhận chữ. Máy chủ vẫn có thể hoàn tất lượt; hãy cập nhật cuộc trò chuyện để xem kết quả.' }));
   };
   const run = async (intent: Intent) => {
-    if (active.current) return;
-    const controller = new AbortController(); active.current = { sid: intent.sessionId, controller };
+    if (active.current && !active.current.terminal) return;
+    const controller = new AbortController();
+    const request = { sid: intent.sessionId, controller, terminal: false }; active.current = request;
     sessionStorage.setItem(pendingKey(intent.sessionId), JSON.stringify(intent));
     setError(null); setLive(value => ({ intent, text: value?.intent.client_turn_id === intent.client_turn_id ? value.text : '',
       status: 'Đang chuẩn bị câu trả lời…', artifacts: [], busy: true }));
     let text = '';
     try {
       await streamChat(cid, intent, controller.signal, row => {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || active.current !== request || request.terminal) return;
         if (row.event === 'delta') {
           text += row.text ?? ''; setLive(value => value && ({ ...value, text }));
         } else if (row.event === 'tool_call' || row.event === 'progress') {
@@ -88,6 +89,7 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
         } else if (row.event === 'graph_card' && row.graph_cards) {
           setLive(value => value && ({ ...value, cards: row.graph_cards }));
         } else if (row.answer) {
+          request.terminal = true;
           const answer = row.answer;
           setLive(value => value && ({ ...value, text: answer.answer_md || text, answer, status: '',
             error: answer.failure?.message, busy: false }));
@@ -100,15 +102,17 @@ export function useAssistant(cid: string, uid: string | undefined, open: boolean
         } else if (row.event === 'failure') throw new ApiError('assistant_failed', row.failure?.message ?? 'Không nhận được câu trả lời');
       });
       const amount = await apiJson<Usage>('/api/v1/me/usage', { signal: controller.signal });
-      if (!controller.signal.aborted) setUsage(amount);
+      if (!controller.signal.aborted && active.current === request) setUsage(amount);
     } catch (cause) {
-      if (!controller.signal.aborted) {
+      if (!controller.signal.aborted && active.current === request && !request.terminal) {
         if (cause instanceof ApiError && ['not_found', 'unauthenticated'].includes(cause.code)) invalidate(cause);
         else setLive(value => value && ({ ...value, busy: false, status: '', error: problem(cause) }));
       }
     } finally {
-      if (active.current?.controller === controller) active.current = null;
-      if (!controller.signal.aborted) setLive(value => value && ({ ...value, busy: false }));
+      if (active.current === request) {
+        active.current = null;
+        if (!controller.signal.aborted) setLive(value => value && ({ ...value, busy: false }));
+      }
     }
   };
   const create = async () => {

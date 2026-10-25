@@ -104,8 +104,15 @@ def main():
                     turns = c.scalar(text("SELECT count(*) FROM phase_b_record WHERE kind='turn'"))
                     quizzes = c.scalar(text("SELECT count(*) FROM phase_b_record WHERE kind='quiz_attempt'"))
                     documents = c.scalar(text("SELECT count(*) FROM phase_b_record WHERE kind='documents'"))
+                    lectures = c.scalar(text("SELECT count(*) FROM phase_b_cache WHERE value->>'contract_version'='lecture-3' AND value->>'status'='ready'"))
                 return dict(calls=len(assistant.calls), finished=all(row.finished for row in assistant.calls), turns=turns,
-                    quizzes=quizzes, documents=documents)
+                    quizzes=quizzes, documents=documents, lectureCalls=len(lecture.calls), lectures=lectures)
+            if action == 'uncached-lecture':
+                with engine.begin() as c:
+                    c.execute(text("DELETE FROM phase_b_cache WHERE value->>'contract_version'='lecture-3'"))
+                assistant = ScriptedAssistantModel(scenario='lecture', lecture_node=nid)
+                models.append(assistant)
+                return {'isolatedFixtureCacheCleared': True}
             if action == 'release':
                 assistant.release.set(); return {'released': True}
             if action == 'release-tools':

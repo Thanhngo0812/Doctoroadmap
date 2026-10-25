@@ -333,6 +333,26 @@ def test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates(
         assert c.scalar(text("SELECT count(*) FROM phase_b_cache WHERE value->>'contract_version'='lecture-3'")) == 0
 
 
+def test_w09_ordinary_lecture_tool_generates_through_http_and_postgresql(chat):
+    w = chat
+    model = ScriptedModel(tool_turns=[
+        [ToolCall('get_lecture', {'concept': 'a'}, 'open-lecture'), Done({})],
+        [Delta('Đã mở bài học được yêu cầu.'), Done({})],
+    ], text_replies=[['HTTP_PG_LECTURE_SENTINEL. Nội dung bài mới. [S1]']])
+    w.gateway.runtime.model = model
+    sid = create(w)['session_id']
+    result = events(ask(w, sid))
+    assert result[-1]['answer']['status'] == 'answered'
+    assert len(model.text_calls) == 1
+    artifact = next(row['artifact'] for row in result if row['event'] == 'artifact')
+    assert artifact['kind'] == 'lecture' and artifact['node_id'] == 'a'
+    with w.independent_engine.connect() as c:
+        cached = c.scalar(text("SELECT value FROM phase_b_cache WHERE value->>'contract_version'='lecture-3'"))
+        assert cached['status'] == 'ready' and 'HTTP_PG_LECTURE_SENTINEL' in cached['body_md']
+        assert c.scalar(text("SELECT owner FROM phase_b_record WHERE kind='session' AND record_id=:sid"), {'sid': sid}) == w.a.actor.user_id
+    assert len(w.b.client.get(w.url).json()['sessions']) == 0
+
+
 def test_w09_sse_dto_discards_tool_args_and_nested_admin_data_even_from_bad_gateway(chat, monkeypatch):
     w = chat; sid = create(w)['session_id']
     raw = events(ask(w, sid))[-1]['answer']

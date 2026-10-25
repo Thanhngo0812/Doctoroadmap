@@ -9,8 +9,9 @@ class ScriptedAssistantModel:
     model_id = 'gemini-3.1-flash-lite'
     is_replay = True
 
-    def __init__(self, *, scenario='normal', pause=False):
+    def __init__(self, *, scenario='normal', pause=False, lecture_node=None):
         self.scenario, self.pause = scenario, pause
+        self.lecture_node = lecture_node
         self.calls, self.systems = [], []
         self.waiting, self.release, self.lock = Event(), Event(), Lock()
 
@@ -32,6 +33,8 @@ class ScriptedAssistantModel:
                     if model.scenario == 'tools' and self.round == 0:
                         yield ToolCall('make_quiz', {'scope': 'module 1', 'n': 1, 'owner': 'forged-model-owner'}, 'quiz')
                         yield ToolCall('make_document', {'request': 'Tóm tắt bài học', 'scope': 'module này'}, 'doc')
+                    elif model.scenario == 'lecture' and self.round == 0:
+                        yield ToolCall('get_lecture', {'concept': model.lecture_node}, 'lecture')
                     else:
                         yield Delta('Theo sách, một tập hợp gồm các phần tử. [S1]\n\n')
                         model.waiting.set()

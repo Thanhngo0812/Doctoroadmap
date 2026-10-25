@@ -54,7 +54,8 @@ class WebLearningRuntime:
         def get_lecture(concept, **kwargs):
             starting('get_lecture')
             return self.lecture(graph).make(graph.doc_id, graph.graph_version, graph, concept,
-                owner=kwargs.get('owner'), cache_only=True)
+                owner=kwargs.get('owner'), cache_only=kwargs.get('cache_only', False),
+                allow_spend=kwargs.get('allow_spend', False))
         def make_quiz(scope, n=None, level=None, *, owner, **kwargs):
             starting('make_quiz')
             return self.quiz(graph).make_quiz(graph.doc_id, None, owner, scope=scope, n=n, level=level,
