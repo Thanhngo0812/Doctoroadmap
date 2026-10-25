@@ -1,0 +1,1674 @@
+{
+  "operation": "isolated-100-embedding-and-one-generation-control",
+  "configured_concurrency": 100,
+  "requested_embeddings": 100,
+  "generation_control_requests": 1,
+  "actual_generation_100_not_tested": true,
+  "embedding_billing_verified": false,
+  "generation_ok": true,
+  "embedding_wall_seconds": 13.870660500004306,
+  "embedding_results": 100,
+  "all_dimensions_768": true,
+  "status": "diagnostic_succeeded",
+  "usage": {
+    "model_calls": 101,
+    "input_tokens": 19442,
+    "output_tokens": 5,
+    "spent_usd": 0.0029295999999999997,
+    "usage_complete": true,
+    "missing_usage_calls": 0
+  },
+  "approval_record": {
+    "state": "finished",
+    "budget": {
+      "stopped": false,
+      "held_usd": "0",
+      "known_usd": "0.0029296",
+      "limit_usd": "0.4",
+      "http_calls": 101,
+      "audit_failed": false,
+      "unknown_upper_usd": "0",
+      "embedding_price_profile": "owner-demo-embedding-token-20261025",
+      "embedding_billing_verified": false
+    },
+    "doc_id": "u-1f019766e74a747d293c",
+    "events": [
+      {
+        "stage": "generation_control",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.000022",
+          "limit_usd": "0.4",
+          "http_calls": 1,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000022",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0304128",
+          "known_usd": "0.00007285",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005085",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0301056",
+          "known_usd": "0.00008515",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000123",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0297984",
+          "known_usd": "0.000103",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001785",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0294912",
+          "known_usd": "0.0001126",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000096",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.029184",
+          "known_usd": "0.00013375",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002115",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0288768",
+          "known_usd": "0.00013885",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000051",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0285696",
+          "known_usd": "0.0001504",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001155",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0282624",
+          "known_usd": "0.0001726",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000222",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0279552",
+          "known_usd": "0.00019765",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002505",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.027648",
+          "known_usd": "0.0002401",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00004245",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0273408",
+          "known_usd": "0.0002866",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000465",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0270336",
+          "known_usd": "0.0002962",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000096",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0267264",
+          "known_usd": "0.0002995",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000033",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0264192",
+          "known_usd": "0.00036385",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00006435",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.026112",
+          "known_usd": "0.0004186",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005475",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0258048",
+          "known_usd": "0.00044215",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002355",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0254976",
+          "known_usd": "0.00044395",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000018",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0251904",
+          "known_usd": "0.00048265",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000387",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0248832",
+          "known_usd": "0.0005125",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002985",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.024576",
+          "known_usd": "0.0005434",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000309",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0242688",
+          "known_usd": "0.0005962",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000528",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0239616",
+          "known_usd": "0.0006202",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000024",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0236544",
+          "known_usd": "0.0006379",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000177",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0233472",
+          "known_usd": "0.00065125",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001335",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.02304",
+          "known_usd": "0.00065755",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0227328",
+          "known_usd": "0.0006847",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002715",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0224256",
+          "known_usd": "0.0007429",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000582",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0221184",
+          "known_usd": "0.00079285",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00004995",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0218112",
+          "known_usd": "0.0008182",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002535",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.021504",
+          "known_usd": "0.00083275",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001455",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0211968",
+          "known_usd": "0.00086065",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000279",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0208896",
+          "known_usd": "0.00087865",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000018",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0205824",
+          "known_usd": "0.0008914",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001275",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0202752",
+          "known_usd": "0.0009028",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000114",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.019968",
+          "known_usd": "0.0009586",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000558",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0196608",
+          "known_usd": "0.00098515",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002655",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0193536",
+          "known_usd": "0.00099505",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000099",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0190464",
+          "known_usd": "0.0010222",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002715",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0187392",
+          "known_usd": "0.00106795",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00004575",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.018432",
+          "known_usd": "0.00109465",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000267",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0181248",
+          "known_usd": "0.001138",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00004335",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0178176",
+          "known_usd": "0.0011743",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000363",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0175104",
+          "known_usd": "0.001207",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000327",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0172032",
+          "known_usd": "0.0012142",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000072",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.016896",
+          "known_usd": "0.00126655",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005235",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0165888",
+          "known_usd": "0.00128995",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000234",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0162816",
+          "known_usd": "0.00133105",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000411",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0159744",
+          "known_usd": "0.00134875",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000177",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0156672",
+          "known_usd": "0.0013543",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000555",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.01536",
+          "known_usd": "0.0013918",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000375",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0150528",
+          "known_usd": "0.0014155",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000237",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0147456",
+          "known_usd": "0.00143215",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001665",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0144384",
+          "known_usd": "0.00145645",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000243",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0141312",
+          "known_usd": "0.00148585",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000294",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.013824",
+          "known_usd": "0.00153865",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000528",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0135168",
+          "known_usd": "0.0015841",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00004545",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0132096",
+          "known_usd": "0.0016504",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000663",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0129024",
+          "known_usd": "0.00166765",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001725",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0125952",
+          "known_usd": "0.00172375",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000561",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.012288",
+          "known_usd": "0.00174055",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000168",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0119808",
+          "known_usd": "0.0017911",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005055",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0116736",
+          "known_usd": "0.0018229",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000318",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0113664",
+          "known_usd": "0.0018484",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000255",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0110592",
+          "known_usd": "0.00188665",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00003825",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.010752",
+          "known_usd": "0.00191395",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000273",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0104448",
+          "known_usd": "0.00195625",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000423",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0101376",
+          "known_usd": "0.00196165",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000054",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0098304",
+          "known_usd": "0.00200095",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000393",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0095232",
+          "known_usd": "0.00204325",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000423",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.009216",
+          "known_usd": "0.0020995",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005625",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0089088",
+          "known_usd": "0.00210685",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000735",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0086016",
+          "known_usd": "0.00214345",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000366",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0082944",
+          "known_usd": "0.00215605",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000126",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0079872",
+          "known_usd": "0.0021799",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002385",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.00768",
+          "known_usd": "0.00219505",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001515",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0073728",
+          "known_usd": "0.002221",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002595",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0070656",
+          "known_usd": "0.0022549",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000339",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0067584",
+          "known_usd": "0.0022897",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000348",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0064512",
+          "known_usd": "0.00233995",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005025",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.006144",
+          "known_usd": "0.002374",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00003405",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0058368",
+          "known_usd": "0.00239245",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001845",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0055296",
+          "known_usd": "0.0024106",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001815",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0052224",
+          "known_usd": "0.00243055",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001995",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0049152",
+          "known_usd": "0.0024595",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002895",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.004608",
+          "known_usd": "0.00246595",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0043008",
+          "known_usd": "0.0024835",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001755",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0039936",
+          "known_usd": "0.00253675",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005325",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0036864",
+          "known_usd": "0.0025558",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001905",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0033792",
+          "known_usd": "0.00261025",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00005445",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.003072",
+          "known_usd": "0.0026254",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001515",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0027648",
+          "known_usd": "0.00263905",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001365",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0024576",
+          "known_usd": "0.00268975",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000507",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0021504",
+          "known_usd": "0.00271195",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000222",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0018432",
+          "known_usd": "0.00272365",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000117",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.001536",
+          "known_usd": "0.00277225",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000486",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0012288",
+          "known_usd": "0.0028108",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00003855",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0009216",
+          "known_usd": "0.0028336",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000228",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0006144",
+          "known_usd": "0.0028816",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000048",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0003072",
+          "known_usd": "0.0029191",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000375",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "embedding_100",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0029296",
+          "limit_usd": "0.4",
+          "http_calls": 101,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000105",
+        "reserved_usd": "0.0003072"
+      }
+    ],
+    "max_usd": "0.40",
+    "reference": "w15-owner-probe100-20261025-f0ef22aaa71045f685d6eb7e89d87aab",
+    "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:5c87f2c9d01da5aac497a0d1cedf1086b783806ca1aac0b2aff5ce1ad19343d0",
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false
+  },
+  "transport_counts": {
+    "current": 0,
+    "peak": 100,
+    "dispatch": 101
+  },
+  "limiter": {
+    "max_in_flight": 100,
+    "current_limit": 100,
+    "max_observed": 100,
+    "throttle_count": 0,
+    "generation": 0,
+    "tokens_per_minute": 1600000,
+    "requests_per_minute": null
+  }
+}

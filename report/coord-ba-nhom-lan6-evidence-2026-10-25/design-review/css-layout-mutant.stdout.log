@@ -1,0 +1,45 @@
+FF                                                                       [100%]
+================================== FAILURES ===================================
+________________ test_w09_formula_has_subscript_layout_styles _________________
+
+    def test_w09_formula_has_subscript_layout_styles():
+        """Verify that W-09 includes strict CSS rules for KaTeX layout and subscript alignment without lenient fallbacks."""
+        source, _ = parse_preview_tree("w09_chat_screens.html")
+        styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+        for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+            href = match.group(1)
+            if ":" not in href:
+                css_file = Path("design/preview/" + href).resolve()
+                if css_file.exists():
+                    styles += css_file.read_text(encoding="utf-8")
+>       assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-09"
+E       AssertionError: Missing .msub layout CSS in W-09
+E       assert None
+E        +  where None = <function search at 0x000001E688B3C4A0>('\\.msub\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')
+E        +    where <function search at 0x000001E688B3C4A0> = re.search
+
+tests\unit\presentation\test_tokens_and_wcag.py:997: AssertionError
+________________ test_w10_formula_has_subscript_layout_styles _________________
+
+    def test_w10_formula_has_subscript_layout_styles():
+        """Verify that W-10 includes strict CSS rules for KaTeX layout and subscript alignment."""
+        source, _ = parse_preview_tree("w10_quiz_screens.html")
+        styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+        for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+            href = match.group(1)
+            if ":" not in href:
+                css_file = Path("design/preview/" + href).resolve()
+                if css_file.exists():
+                    styles += css_file.read_text(encoding="utf-8")
+>       assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-10"
+E       AssertionError: Missing .msub layout CSS in W-10
+E       assert None
+E        +  where None = <function search at 0x000001E688B3C4A0>('\\.msub\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')
+E        +    where <function search at 0x000001E688B3C4A0> = re.search
+
+tests\unit\presentation\test_tokens_and_wcag.py:1019: AssertionError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r6-design-review-20261025\css-layout-mutant.xml -
+=========================== short test summary info ===========================
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formula_has_subscript_layout_styles
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w10_formula_has_subscript_layout_styles
+2 failed, 59 deselected in 0.81s

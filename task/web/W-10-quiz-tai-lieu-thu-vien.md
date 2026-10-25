@@ -1,5 +1,7 @@
 # W-10 — Quiz, tài liệu, thư viện
 
+**Mở sau nghiệm thu lần 6, 2026-10-25:** W-09 đã đạt/ghép local 7f54b14; SA-67/68 đã ở main. Nhóm web bắt đầu W-10 trong worktree riêng, ba lát quiz→submit/chấm, tài liệu trực tiếp→xem/tải và thư viện. Tái dùng phần library/preview W-09; group here/elsewhere theo core/home_scope, không đồng nhất origin button/assistant. Thiết kế sửa D-R6-01 trước khi nhận gói mẫu 0b5993e; phần quiz/tài liệu không bị chặn bởi lỗi mẫu thư viện. Dùng fake/PG 0 USD, không Cloud; [biên bản lần 6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md) và [lời giao](../../report/lenh-giao-viec-ba-nhom-lan6-2026-10-25.md).
+
 **Điều phối lần 5, 2026-10-25:** SA-67 document-3 và SA-68 quiz-3 đã ở main, không còn chờ hai lõi này. Web sửa hai Required W-09 trước khi triển khai W-10. Tái dùng library chỉ đọc/preview artifact của W-09 sau được nhận; vẫn còn sinh trực tiếp/submit/chấm/ẩn đáp án/xáo phương án/quyền/thư viện đầy đủ theo spec mới. Design chuẩn bị HTML/CSS/token đúng hợp đồng, không Cloud; [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md).
 
 **Cập nhật nghiệm thu lần4, 2026-10-24:** SA-67 document-3 đã ghép `6cfc535`, SA-68 quiz-3 đã ghép `21cfab3`. W-10 đã có cả hai mốc lõi mới, xếp sau W-09; đọc spec document-3/quiz-3 và kiểm HTTP/React/ẩn đáp án/xáo phương án/nộp bài/quyền/thư viện bằng PG/fake0USD. Không dùng hợp đồng cũ thay bản mới; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md). Các điểm chờ SA-67/68 phía dưới là lịch sử.

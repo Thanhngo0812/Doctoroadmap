@@ -1,0 +1,49 @@
+"""Execute exactly one owner-approved W15 attempt; refuse source/plan/grant drift or reuse."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+root = Path(__file__).resolve().parents[1]
+book = sys.argv[1]
+assert book in {'doc-6', 'candidate'}
+bundle = json.loads((root / 'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+item = next(row for row in bundle['attempts'] if row['book'] == book)
+head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+assert head == bundle['commit'] == '6249dab5c8cd89b36edeb5add45ab88d5d7d7bce'
+capture = json.loads((root / 'report/w15-evidence/runs/r4-full-20261025-02-exit.json').read_text())
+assert all(sha256((root / path).read_bytes()).hexdigest() == digest for path, digest in capture['source_sha256'].items())
+assert not subprocess.check_output(['git', 'diff', '--', 'src'], cwd=root).strip()
+plan, grant = root / item['plan'], root / item['approval']
+assert sha256(plan.read_bytes()).hexdigest() == item['plan_sha256']
+assert sha256(grant.read_bytes()).hexdigest() == item['approval_sha256']
+permission = json.loads(grant.read_text(encoding='utf-8'))
+assert permission['approved'] is True and permission['owner_message_quote'] == 'tôi có duyệt tiền, phân tích tiep tuc trien khai'
+assert permission['max_usd'] == ('1.00' if book == 'doc-6' else '3.00')
+assert permission['embedding_price_profile'] == 'owner-demo-embedding-token-20261025'
+assert permission['embedding_billing_verified'] is False
+assert not (root / item['run_dir'] / 'execution.json').exists()
+if book == 'candidate':
+    doc6 = next(row for row in bundle['attempts'] if row['book'] == 'doc-6')
+    completed = json.loads((root / doc6['run_dir'] / 'execution.json').read_text(encoding='utf-8'))
+    assert completed['bootstrap']['status'] == completed['build']['status'] == 'succeeded'
+    assert completed['bootstrap']['usage_complete'] is True
+    budget = completed['bootstrap']['step_details']['operator_budget']
+    assert budget['unknown_upper_usd'] == '0' and not budget['stopped']
+    assert completed['build']['model_calls'] == 0 and float(completed['build']['spent_usd']) == 0
+sys.path[:0] = [str(root / 'src'), str(root / 'src/web/backend'), str(root / 'src/web/backend/tests')]
+import w15_operator_run as operator
+from sqlalchemy import text
+engine = operator.create_database_engine(operator.test_database_url(item['database']))
+try:
+    with engine.connect() as connection:
+        assert connection.execute(text("SELECT count(*) FROM phase_b_record WHERE kind='w15_build_approval' AND record_id=:ref"),
+                                  {'ref': item['reference']}).scalar_one() == 0
+finally:
+    engine.dispose()
+print(json.dumps(dict(book=book, reference=item['reference'], cap_usd=permission['max_usd'], commit=head,
+                     source_and_plan_checked=True, owner_paid_approval_received=True)), flush=True)
+command = [sys.executable, '-X', 'utf8', 'src/web/backend/tests/w15_capture.py', 'r5-real-' + book + '-20261025-01',
+           sys.executable, '-X', 'utf8', 'src/web/backend/tests/w15_operator_run.py', '--plan', str(plan), '--approval', str(grant)]
+raise SystemExit(subprocess.call(command, cwd=root))

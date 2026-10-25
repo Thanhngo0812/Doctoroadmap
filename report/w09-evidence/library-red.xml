@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="17.080" timestamp="2026-10-24T23:04:44.291900+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4]" time="6.128"><failure message="assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_10fe13ab72e44c889516268051333...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/b41087e9-47e3-4504-9427-233d4613bfc9/sessions')
+scope = 'module 4'
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            distractors = []
+            for k, name in enumerate(['Phần tử', 'Quy tắc', 'Đặc điểm']):
+                extra_id = f'{nid}_d{k}'; distractors.append(extra_id)
+                payload['nodes'].append({**base, 'node_id': extra_id, 'name': name, 'display_name': name, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid, *distractors]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+        assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
+            (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
+        assert len(final['artifacts']) == 2
+        expected = ['n4'] if scope == 'module 4' else ['n1']
+        for item in final['artifacts']:
+            raw = w.independent_store.get_record('quiz_attempt' if item['kind'] == 'quiz' else 'documents', item['id'])
+            assert raw['owner'] == w.a.actor.user_id and raw['doc_id'] == 'doc-1'
+            assert raw['node_ids'] == (expected if item['kind'] == 'quiz' else [expected[0], *[f'{expected[0]}_d{k}' for k in range(3)]])
+            content = w.a.client.get(f"{w.url}/{sid}/artifacts/{item['kind']}/{item['id']}")
+            assert content.status_code == 200 and content.json()['contract_version'] == ('quiz-3' if item['kind'] == 'quiz' else 'document-3')
+            assert all(word not in content.text for word in ['_private', 'is_correct', 'validation', 'public_id', 'usage', 'cost_usd'])
+            assert w.b.client.get(f"{w.url}/{sid}/artifacts/{item['kind']}/{item['id']}").status_code == 404
+        assert 'forged' not in json.dumps(w.phase_b.list_records('quiz_attempt') + w.phase_b.list_records('documents'))
+        assert 'result_summary' not in json.dumps(rows) and '"args"' not in json.dumps(rows)
+        assert w.a.client.delete(f'{w.url}/{sid}', headers=w.a.headers).status_code == 200
+        assert w.a.client.get(f'{w.url}/{sid}/turns').status_code == 404
+        assert len(w.independent_store.list_records('documents', owner=w.a.actor.user_id)) == 1
+        assert len(w.independent_store.list_records('quiz_attempt', owner=w.a.actor.user_id)) == 1
+        library = w.a.client.get(f'/api/v1/courses/{w.course.id}/library?scope=all')
+&gt;       assert library.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:206: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[scope1]" time="3.093"><failure message="assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_10fe13ab72e44c889516268051333...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/8da94bfd-e343-41f5-b72a-a26b13a10f9e/sessions')
+scope = ['module 1: Cơ sở']
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            distractors = []
+            for k, name in enumerate(['Phần tử', 'Quy tắc', 'Đặc điểm']):
+                extra_id = f'{nid}_d{k}'; distractors.append(extra_id)
+                payload['nodes'].append({**base, 'node_id': extra_id, 'name': name, 'display_name': name, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid, *distractors]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+        assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
+            (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
+        assert len(final['artifacts']) == 2
+        expected = ['n4'] if scope == 'module 4' else ['n1']
+        for item in final['artifacts']:
+            raw = w.independent_store.get_record('quiz_attempt' if item['kind'] == 'quiz' else 'documents', item['id'])
+            assert raw['owner'] == w.a.actor.user_id and raw['doc_id'] == 'doc-1'
+            assert raw['node_ids'] == (expected if item['kind'] == 'quiz' else [expected[0], *[f'{expected[0]}_d{k}' for k in range(3)]])
+            content = w.a.client.get(f"{w.url}/{sid}/artifacts/{item['kind']}/{item['id']}")
+            assert content.status_code == 200 and content.json()['contract_version'] == ('quiz-3' if item['kind'] == 'quiz' else 'document-3')
+            assert all(word not in content.text for word in ['_private', 'is_correct', 'validation', 'public_id', 'usage', 'cost_usd'])
+            assert w.b.client.get(f"{w.url}/{sid}/artifacts/{item['kind']}/{item['id']}").status_code == 404
+        assert 'forged' not in json.dumps(w.phase_b.list_records('quiz_attempt') + w.phase_b.list_records('documents'))
+        assert 'result_summary' not in json.dumps(rows) and '"args"' not in json.dumps(rows)
+        assert w.a.client.delete(f'{w.url}/{sid}', headers=w.a.headers).status_code == 200
+        assert w.a.client.get(f'{w.url}/{sid}/turns').status_code == 404
+        assert len(w.independent_store.list_records('documents', owner=w.a.actor.user_id)) == 1
+        assert len(w.independent_store.list_records('quiz_attempt', owner=w.a.actor.user_id)) == 1
+        library = w.a.client.get(f'/api/v1/courses/{w.course.id}/library?scope=all')
+&gt;       assert library.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:206: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[Kh\xf4ng ph\xe2n gi\u1ea3i \u0111\u01b0\u1ee3c]" time="2.699"><failure message="assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_10fe13ab72e44c889516268051333...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/2386ca90-269c-4760-8e0f-19d14904602b/sessions')
+scope = 'Không phân giải được'
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            distractors = []
+            for k, name in enumerate(['Phần tử', 'Quy tắc', 'Đặc điểm']):
+                extra_id = f'{nid}_d{k}'; distractors.append(extra_id)
+                payload['nodes'].append({**base, 'node_id': extra_id, 'name': name, 'display_name': name, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid, *distractors]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+        assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
+            (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
+        assert len(final['artifacts']) == 2
+        expected = ['n4'] if scope == 'module 4' else ['n1']
+        for item in final['artifacts']:
+            raw = w.independent_store.get_record('quiz_attempt' if item['kind'] == 'quiz' else 'documents', item['id'])
+            assert raw['owner'] == w.a.actor.user_id and raw['doc_id'] == 'doc-1'
+            assert raw['node_ids'] == (expected if item['kind'] == 'quiz' else [expected[0], *[f'{expected[0]}_d{k}' for k in range(3)]])
+            content = w.a.client.get(f"{w.url}/{sid}/artifacts/{item['kind']}/{item['id']}")
+            assert content.status_code == 200 and content.json()['contract_version'] == ('quiz-3' if item['kind'] == 'quiz' else 'document-3')
+            assert all(word not in content.text for word in ['_private', 'is_correct', 'validation', 'public_id', 'usage', 'cost_usd'])
+            assert w.b.client.get(f"{w.url}/{sid}/artifacts/{item['kind']}/{item['id']}").status_code == 404
+        assert 'forged' not in json.dumps(w.phase_b.list_records('quiz_attempt') + w.phase_b.list_records('documents'))
+        assert 'result_summary' not in json.dumps(rows) and '"args"' not in json.dumps(rows)
+        assert w.a.client.delete(f'{w.url}/{sid}', headers=w.a.headers).status_code == 200
+        assert w.a.client.get(f'{w.url}/{sid}/turns').status_code == 404
+        assert len(w.independent_store.list_records('documents', owner=w.a.actor.user_id)) == 1
+        assert len(w.independent_store.list_records('quiz_attempt', owner=w.a.actor.user_id)) == 1
+        library = w.a.client.get(f'/api/v1/courses/{w.course.id}/library?scope=all')
+&gt;       assert library.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:206: AssertionError</failure></testcase></testsuite></testsuites>

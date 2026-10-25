@@ -1,0 +1,29 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries ____
+
+chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_bcbdc481af1f45ecb3521570d4581...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/68418374-9059-48df-aab6-3d3b669696e2/sessions')
+
+    def test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries(chat):
+        w = chat; sid = create(w)['session_id']
+        w.model.tool_turns = [[Delta('Đã trả lời.'), Done({})] for _ in range(10)]
+        keys = [uuid4().hex for _ in range(10)]
+        for key in keys:
+            assert ask(w, sid, key=key).status_code == 200
+        assert ask(w, sid, key=keys[0]).status_code == 200
+        response = ask(w, sid)
+>       assert response.status_code == 429 and response.json()['error']['retry_after'] > 0
+E       assert (200 == 429)
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_assistant_w09.py:119: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-evidence\mutations2\rate.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_w09.py::test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries
+1 failed, 1 warning in 11.88s

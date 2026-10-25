@@ -1,0 +1,2125 @@
+{
+  "label": "candidate-first",
+  "plan": {
+    "book": "candidate",
+    "run_dir": "tmp/w15-operator-candidate-dba02280ea67",
+    "database": "wayfinder_w15_dba02280ea67",
+    "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+    "dry_run": {
+      "doc_id": "u-1f019766e74a747d293c",
+      "status": "dry_run",
+      "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+      "graph_version": null,
+      "completed_steps": [
+        "doc_reading"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 1,
+          "parse_version": 1,
+          "chunk_count": 125,
+          "a4_gold_coverage": "none",
+          "page_count": 52,
+          "alphabetic_chars": 52325,
+          "average_alphabetic_chars_per_page": 1006.25,
+          "empty_page_ratio": 0.019230769230769232,
+          "vi_diacritic_ratio": 0.270157668418538
+        },
+        "dry_run": {
+          "cache_validated": false,
+          "chunks_version": 1,
+          "candidate_version": null,
+          "canonical_version": null,
+          "graph_version": null,
+          "retrieval_version": null
+        }
+      },
+      "spent_usd": 0.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 4.885892700011027,
+      "error": null
+    },
+    "vertex_project_configured": true,
+    "transport": "vertex",
+    "location": "global",
+    "approved": false,
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false,
+    "provider_calls": 0,
+    "proposed_max_usd": "3.00"
+  },
+  "receipt": {
+    "error": {
+      "code": "loi_noi_bo",
+      "message": "Không thể hoàn tất bản dựng",
+      "retryable": false
+    },
+    "doc_id": "u-1f019766e74a747d293c",
+    "status": "failed",
+    "spent_usd": 0.012417,
+    "model_calls": 400,
+    "input_tokens": 26962,
+    "step_details": {
+      "concepts": {
+        "web_timing": {
+          "wall_seconds": 302.65815949998796,
+          "embedding_wait_seconds": 135.24040669998794,
+          "embedding_wait_measured": true
+        }
+      },
+      "doc_reading": {
+        "page_count": 52,
+        "web_timing": {
+          "wall_seconds": 2.075442400004249,
+          "embedding_wait_seconds": 0.0,
+          "embedding_wait_measured": true
+        },
+        "chunk_count": 125,
+        "parse_version": 1,
+        "chunks_version": 1,
+        "a4_gold_coverage": "none",
+        "alphabetic_chars": 52325,
+        "empty_page_ratio": 0.019230769230769232,
+        "vi_diacritic_ratio": 0.270157668418538,
+        "average_alphabetic_chars_per_page": 1006.25
+      },
+      "operator_budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.0124168",
+        "limit_usd": "3",
+        "http_calls": 111,
+        "audit_failed": false,
+        "unknown_upper_usd": "0.3890176",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      }
+    },
+    "graph_version": null,
+    "output_tokens": 3833,
+    "usage_complete": false,
+    "completed_steps": [
+      "doc_reading"
+    ],
+    "elapsed_seconds": 304.7604239000066,
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268"
+  },
+  "web_receipt": {
+    "error": {
+      "code": "loi_noi_bo",
+      "message": "Không thể hoàn tất bản dựng",
+      "retryable": false
+    },
+    "doc_id": "u-1f019766e74a747d293c",
+    "status": "failed",
+    "spent_usd": 0.012417,
+    "model_calls": 400,
+    "input_tokens": 26962,
+    "step_details": {
+      "concepts": {
+        "web_timing": {
+          "wall_seconds": 302.65815949998796,
+          "embedding_wait_seconds": 135.24040669998794,
+          "embedding_wait_measured": true
+        }
+      },
+      "doc_reading": {
+        "page_count": 52,
+        "web_timing": {
+          "wall_seconds": 2.075442400004249,
+          "embedding_wait_seconds": 0.0,
+          "embedding_wait_measured": true
+        },
+        "chunk_count": 125,
+        "parse_version": 1,
+        "chunks_version": 1,
+        "a4_gold_coverage": "none",
+        "alphabetic_chars": 52325,
+        "empty_page_ratio": 0.019230769230769232,
+        "vi_diacritic_ratio": 0.270157668418538,
+        "average_alphabetic_chars_per_page": 1006.25
+      },
+      "operator_budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.0124168",
+        "limit_usd": "3",
+        "http_calls": 111,
+        "audit_failed": false,
+        "unknown_upper_usd": "0.3890176",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      }
+    },
+    "graph_version": null,
+    "output_tokens": 3833,
+    "usage_complete": false,
+    "completed_steps": [
+      "doc_reading"
+    ],
+    "elapsed_seconds": 304.7604239000066,
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268"
+  },
+  "mail_subjects": [
+    "Bản dựng lỗi"
+  ],
+  "approval": {
+    "state": "finished",
+    "budget": {
+      "stopped": false,
+      "held_usd": "0",
+      "known_usd": "0.0124168",
+      "limit_usd": "3",
+      "http_calls": 111,
+      "audit_failed": false,
+      "unknown_upper_usd": "0.3890176",
+      "embedding_price_profile": "owner-demo-embedding-token-20261025",
+      "embedding_billing_verified": false
+    },
+    "doc_id": "u-1f019766e74a747d293c",
+    "events": [
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.002184",
+          "limit_usd": "3",
+          "http_calls": 1,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.002184",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.005116",
+          "limit_usd": "3",
+          "http_calls": 2,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.002932",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.00562225",
+          "limit_usd": "3",
+          "http_calls": 3,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00050625",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.007338",
+          "limit_usd": "3",
+          "http_calls": 4,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00171575",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.00807425",
+          "limit_usd": "3",
+          "http_calls": 5,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00073625",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.008726",
+          "limit_usd": "3",
+          "http_calls": 6,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00065175",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.008889",
+          "limit_usd": "3",
+          "http_calls": 7,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000163",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0304128",
+          "known_usd": "0.0089253",
+          "limit_usd": "3",
+          "http_calls": 107,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000363",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3905536",
+          "known_usd": "0.0089304",
+          "limit_usd": "3",
+          "http_calls": 108,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000051",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7506944",
+          "known_usd": "0.0089367",
+          "limit_usd": "3",
+          "http_calls": 109,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.1108352",
+          "known_usd": "0.00895455",
+          "limit_usd": "3",
+          "http_calls": 110,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001785",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.470976",
+          "known_usd": "0.0089682",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001365",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4706688",
+          "known_usd": "0.0089862",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000018",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4703616",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000126",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4700544",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0003072",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4697472",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0006144",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.46944",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0009216",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4691328",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0012288",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4688256",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.001536",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4685184",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0018432",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4682112",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0021504",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.467904",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0024576",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4675968",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0027648",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4672896",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.003072",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4669824",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0033792",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4666752",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0036864",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.466368",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0039936",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4660608",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0043008",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4657536",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.004608",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4654464",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0049152",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4651392",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0052224",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.464832",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0055296",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4645248",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0058368",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4642176",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.006144",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4639104",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0064512",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4636032",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0067584",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.463296",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0070656",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4629888",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0073728",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4626816",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.00768",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4623744",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0079872",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4620672",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0082944",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.46176",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0086016",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4614528",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0089088",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4611456",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.009216",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4608384",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0095232",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4605312",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0098304",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.460224",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0101376",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4599168",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0104448",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4596096",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.010752",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4593024",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0110592",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4589952",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0113664",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.458688",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0116736",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4583808",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0119808",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4580736",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.012288",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4577664",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0125952",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.4574592",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.0129024",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0970112",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3733504",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.096704",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3736576",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0963968",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3739648",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0960896",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.374272",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0957824",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3745792",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0954752",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3748864",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.095168",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3751936",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0948608",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3755008",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0945536",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.375808",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0942464",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3761152",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0939392",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3764224",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.093632",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3767296",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0933248",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3770368",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0930176",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.377344",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0927104",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3776512",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0924032",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3779584",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.092096",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3782656",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0917888",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3785728",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0914816",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.37888",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0911744",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3791872",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0908672",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3794944",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.09056",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3798016",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0902528",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3801088",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0899456",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.380416",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0896384",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3807232",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0893312",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3810304",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.089024",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3813376",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0887168",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3816448",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0884096",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.381952",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0881024",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3822592",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0877952",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3825664",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.087488",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3828736",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0871808",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3831808",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0868736",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.383488",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0865664",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3837952",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0862592",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3841024",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.085952",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3844096",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0856448",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3847168",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0853376",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.385024",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0850304",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3853312",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0847232",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3856384",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.084416",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3859456",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0841088",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3862528",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0838016",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.38656",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0834944",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3868672",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0831872",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3871744",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.08288",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3874816",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0825728",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3877888",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0822656",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.388096",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0819584",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3884032",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.0816512",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3887104",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "1.081344",
+          "known_usd": "0.0089988",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3890176",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": null,
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.720896",
+          "known_usd": "0.0093743",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3890176",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0003755",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0102878",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3890176",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0009135",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0124168",
+          "limit_usd": "3",
+          "http_calls": 111,
+          "audit_failed": false,
+          "unknown_upper_usd": "0.3890176",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.002129",
+        "reserved_usd": "0.360448"
+      }
+    ],
+    "max_usd": "3.00",
+    "reference": "w15-owner-20261025-candidate-6fa183506ad746a0bb40db1e8ae3efd2",
+    "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false
+  },
+  "sql": {
+    "courses": [
+      {
+        "id": "d9731d6a-646b-4512-a17c-c6530c2ae5a5",
+        "status": "failed",
+        "doc_id": "u-1f019766e74a747d293c",
+        "published_graph_version": null
+      }
+    ],
+    "builds": [
+      {
+        "id": "9c0ce935-7d13-4f53-8e4c-20c6c50f1825",
+        "status": "failed",
+        "doc_id": "u-1f019766e74a747d293c",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+        "spent_usd": "0.012417",
+        "model_calls": 400,
+        "input_tokens": 26962,
+        "output_tokens": 3833,
+        "usage_complete": false,
+        "claim_count": 1
+      }
+    ],
+    "attempt_count": 1,
+    "cache_entries": 0,
+    "ledger": [
+      {
+        "id": 1,
+        "purpose": "build",
+        "cost_usd": "0.012417",
+        "input_tokens": 26962,
+        "output_tokens": 3833,
+        "extra": {
+          "step": null,
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "build",
+          "user_id": "e090908e-68b2-47bb-92c1-cb40a4246b11",
+          "build_id": "9c0ce935-7d13-4f53-8e4c-20c6c50f1825",
+          "cost_usd": 0.012417,
+          "lease_id": "060dfacf-c8c7-447e-b58c-dbe86b7767c7",
+          "created_at": "2026-10-25T06:21:10.962773+00:00",
+          "learner_id": "e090908e-68b2-47bb-92c1-cb40a4246b11",
+          "claim_count": 1,
+          "model_calls": 400,
+          "input_tokens": 26962,
+          "output_tokens": 3833,
+          "usage_complete": false,
+          "attribution_complete": false
+        }
+      }
+    ],
+    "trace_rows": 0,
+    "ledger_total_usd": "0.012417"
+  },
+  "budget": {
+    "stopped": false,
+    "held_usd": "0",
+    "known_usd": "0.0124168",
+    "limit_usd": "3",
+    "http_calls": 111,
+    "audit_failed": false,
+    "unknown_upper_usd": "0.3890176",
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false
+  },
+  "step_measurements": [
+    {
+      "step": "doc_reading",
+      "completed": true,
+      "dispatched_generation": 0,
+      "dispatched_embedding": 0,
+      "known_usd": "0",
+      "unknown_upper_usd": "0",
+      "timing": {
+        "wall_seconds": 2.075442400004249,
+        "embedding_wait_seconds": 0.0,
+        "embedding_wait_measured": true
+      },
+      "receipt_detail": {
+        "page_count": 52,
+        "web_timing": {
+          "wall_seconds": 2.075442400004249,
+          "embedding_wait_seconds": 0.0,
+          "embedding_wait_measured": true
+        },
+        "chunk_count": 125,
+        "parse_version": 1,
+        "chunks_version": 1,
+        "a4_gold_coverage": "none",
+        "alphabetic_chars": 52325,
+        "empty_page_ratio": 0.019230769230769232,
+        "vi_diacritic_ratio": 0.270157668418538,
+        "average_alphabetic_chars_per_page": 1006.25
+      }
+    },
+    {
+      "step": "concepts",
+      "completed": false,
+      "dispatched_generation": 11,
+      "dispatched_embedding": 100,
+      "known_usd": "0.01241680",
+      "unknown_upper_usd": "0.3890176",
+      "timing": {
+        "wall_seconds": 302.65815949998796,
+        "embedding_wait_seconds": 135.24040669998794,
+        "embedding_wait_measured": true
+      },
+      "receipt_detail": {
+        "web_timing": {
+          "wall_seconds": 302.65815949998796,
+          "embedding_wait_seconds": 135.24040669998794,
+          "embedding_wait_measured": true
+        }
+      }
+    },
+    {
+      "step": "graph",
+      "completed": false,
+      "dispatched_generation": 0,
+      "dispatched_embedding": 0,
+      "known_usd": "0",
+      "unknown_upper_usd": "0",
+      "timing": null,
+      "receipt_detail": {}
+    },
+    {
+      "step": "learning_prep",
+      "completed": false,
+      "dispatched_generation": 0,
+      "dispatched_embedding": 0,
+      "known_usd": "0",
+      "unknown_upper_usd": "0",
+      "timing": null,
+      "receipt_detail": {}
+    }
+  ],
+  "assertions": {
+    "identity_and_version": true,
+    "one_attempt_and_claim": true,
+    "trace_not_double_billed": true,
+    "ledger_equals_meter_delta": true,
+    "unknown_not_zeroed": true,
+    "no_dispatch_after_unknown": true,
+    "cap_under_demo_assumption": true,
+    "failure_has_no_published_graph_or_ready_course": true,
+    "no_success_mail": true
+  },
+  "parse_node_types": {
+    "section_header": 127,
+    "text": 221,
+    "list_item": 239,
+    "figure": 12,
+    "formula": 14
+  },
+  "graph": null
+}

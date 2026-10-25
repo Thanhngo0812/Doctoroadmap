@@ -1,0 +1,20 @@
+[
+  {
+    "variant": "drop-unknown",
+    "exit": 1,
+    "stdout": "{\"variant\": \"drop-unknown\", \"checks\": [{\"name\": \"legacy_unknown_denies_dispatch\", \"passed\": true}, {\"name\": \"strict_boolean\", \"passed\": true}, {\"name\": \"approved_retry_preserves_unknown_and_cap\", \"passed\": false, \"error_type\": \"AssertionError\", \"message\": \"Expected BuildSpendStopped did not occur\"}, {\"name\": \"parallel_reservations_keep_retained_unknown\", \"passed\": false, \"error_type\": \"AssertionError\", \"message\": \"\"}, {\"name\": \"ready_wrapper_keeps_result_but_reports_unknown\", \"passed\": true}], \"provider_calls\": 0, \"database_connections\": 0, \"guard_compiled_sha256\": \"63bc221b10ef712df1b5af9288c10342ce88ac12e23b3e17220da389c2065033\", \"adapter_compiled_sha256\": \"2c14b261a01e58f307be26b903ec5c6d9b78a942a588911e9a12ba90a68faa06\"}\r\n",
+    "stderr": ""
+  },
+  {
+    "variant": "disable-opt-in",
+    "exit": 1,
+    "stdout": "{\"variant\": \"disable-opt-in\", \"checks\": [{\"name\": \"legacy_unknown_denies_dispatch\", \"passed\": true}, {\"name\": \"strict_boolean\", \"passed\": true}, {\"name\": \"approved_retry_preserves_unknown_and_cap\", \"passed\": false, \"error_type\": \"BuildSpendStopped\", \"message\": \"Usage is unknown or a provider bound was exceeded; stop dispatch\"}, {\"name\": \"parallel_reservations_keep_retained_unknown\", \"passed\": true}, {\"name\": \"ready_wrapper_keeps_result_but_reports_unknown\", \"passed\": true}], \"provider_calls\": 0, \"database_connections\": 0, \"guard_compiled_sha256\": \"d8b26eddc67e6c9d166bdc2f5150164b72d699a5fed1e4c47ea36e63f517f0e7\", \"adapter_compiled_sha256\": \"2c14b261a01e58f307be26b903ec5c6d9b78a942a588911e9a12ba90a68faa06\"}\r\n",
+    "stderr": ""
+  },
+  {
+    "variant": "override-result",
+    "exit": 1,
+    "stdout": "{\"variant\": \"override-result\", \"checks\": [{\"name\": \"legacy_unknown_denies_dispatch\", \"passed\": true}, {\"name\": \"strict_boolean\", \"passed\": true}, {\"name\": \"approved_retry_preserves_unknown_and_cap\", \"passed\": true}, {\"name\": \"parallel_reservations_keep_retained_unknown\", \"passed\": true}, {\"name\": \"ready_wrapper_keeps_result_but_reports_unknown\", \"passed\": false, \"error_type\": \"AssertionError\", \"message\": \"\"}], \"provider_calls\": 0, \"database_connections\": 0, \"guard_compiled_sha256\": \"7e4f66ee109c2414726989c812f5b841bcea119d76c53ed83c5c26eea086611d\", \"adapter_compiled_sha256\": \"882a597b2c036bfc20ce31d3fe17b7f696f838ddbd209139c1958770f0b5f10e\"}\r\n",
+    "stderr": ""
+  }
+]

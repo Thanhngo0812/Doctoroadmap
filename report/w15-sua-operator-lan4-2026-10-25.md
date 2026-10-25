@@ -1,5 +1,9 @@
 # W-15 — sửa operator sau nghiệm thu lần 4 — 2026-10-25
 
+**Mốc này đã được nhận tại `fb0c769`, ghép local `9028db2`.**
+Hiện hành: [lượt thật và chẩn đoán cấu hình 100](w15-luot-that-2026-10-25.md), trên nền `6249dab`.
+Đã có phê duyệt chi mới; phần dưới giữ lịch sử sửa/kiểm operator, không phải trạng thái chi hiện tại.
+
 **Hiện hành sau `9b3bd82`; chưa ghép main, chưa chạy có phí, toàn W-15 còn mở.**
 Tiếp đúng worktree `tmp/w15-real-build`, nhánh `work/w15-real-build`; root giữ main.
 Đã đọc biên bản lần 4, core-review/review.md, summary và embedding-pricing-primary-check.md.

@@ -1,0 +1,43 @@
+import json
+from pathlib import Path
+import sys
+root=Path(__file__).resolve().parents[1]
+sys.path[:0]=[str(root/'src'),str(root/'src/web/backend'),str(root/'src/web/backend/tests')]
+from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+from doc2roadmap.application.phase_b.retrieval import load_learning_graph
+loc=json.loads((root/'tmp/w15-r5-controlled-location.json').read_text())
+run=root/loc['run_dir']
+plan=json.loads((run/'plan.json').read_text())
+execution=json.loads((run/'execution.json').read_text())
+receipt=execution['attempts'][0]['result']
+store=JsonArtifactStore(run/'artifacts')
+doc=receipt['doc_id']
+g=store.load_graph(doc,receipt['graph_version'])
+lg=load_learning_graph(store,doc,g.version)
+ids=set(lg.learnable_nodes)
+allids=set(lg.nodes)
+bad=[e for e in g.payload['requires_edges'] if e['source'] not in ids or e['target'] not in ids or e['source']==e['target']]
+result=dict(graph_version=g.version,learnable_count=len(ids),all_nodes=len(allids),requires_count=len(g.payload['requires_edges']),
+ bad_edges=bad,endpoint_details={n:lg.nodes.get(n) for e in bad for n in (e['source'],e['target'])},
+ quality_gate=g.payload.get('quality_gate'),validation_flags=g.payload.get('validation_flags'),display_flags=g.payload.get('display_flags'),
+ edge_counts={k:len(v) for k,v in g.payload.items() if k.endswith('edges')},
+ node_counts={k:len(v) for k,v in g.payload.items() if k.endswith('nodes')},
+ payload_keys=list(g.payload),formula_refs=len(lg.formula_images))
+from doc2roadmap.domain.global_validation import strongly_connected_components
+result.update(invalid_endpoint_count=len(bad),missing_endpoint_count=sum(e['source'] not in allids or e['target'] not in allids for e in g.payload['requires_edges']),
+ self_edge_count=sum(e['source']==e['target'] for e in g.payload['requires_edges']),
+ full_requires_cycles=[p for p in strongly_connected_components(allids,g.payload['requires_edges']) if len(p)>1],
+ learnable_requires_cycles=[p for p in strongly_connected_components(ids,[e for e in g.payload['requires_edges'] if e['source'] in ids and e['target'] in ids]) if len(p)>1],
+ module_count=len(g.payload['modules']),module_titles=[m['title'] for m in g.payload['modules']],
+ modules_cover_once=sorted(n for m in g.payload['modules'] for n in m['node_ids'])==sorted(ids),
+ sequence_covers_once=sorted(g.payload['sequence'])==sorted(ids),
+ source_sha256=plan['file_sha256'],pipeline_version=plan['pipeline_version'],database=plan['database'],run_dir=loc['run_dir'])
+hard=[e for e in [*g.payload['requires_edges'],*g.payload.get('bypassed_edges',[])] if not e.get('soft') and e['source'] in ids and e['target'] in ids]
+result.update(hard_learnable_requires_cycles=[p for p in strongly_connected_components(ids,hard) if len(p)>1],
+ hard_learnable_edges=len(hard),soft_requires_count=sum(bool(e.get('soft')) for e in g.payload['requires_edges']),
+ preserved_display_edges_outside_roadmap=len(bad),strict_raw_display_edge_assertion_passed=False,
+ display_edges_contract='A10 deliberately preserves upstream display edges; hard roadmap excludes soft and bypasses mentioned nodes')
+assert not result['hard_learnable_requires_cycles']
+output=root/'report/w15-evidence/r5-20261025/candidate-graph-check.json'
+output.write_bytes((json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode())
+print(json.dumps({k:v for k,v in result.items() if k not in ('bad_edges','endpoint_details','validation_flags','display_flags','payload_keys')},ensure_ascii=False,indent=2))

@@ -1,8 +1,10 @@
 # W-16 — Trang mức dùng và dải hết trần
 
+**Phân công sau nghiệm thu lần 6, 2026-10-25:** W-09/W-14 đã đạt; W-15 đã nhận có ghi chú. Lõi nhận **mốc backend W-16** trong worktree riêng, soát/dùng lại usage-1/GET me/usage, truy vấn ledger/quota đã có từ W-09/W-14, chỉ bổ sung chỗ thiếu/sai với test. React do web làm sau W-10; backend đạt không đóng toàn vé. Kiểm ngày/tháng Việt Nam, cộng xuyên khoá, không USD cho người thường, max=null khi demo tắt; không đổi giá/trần/logic sinh-cache-retry của core. 0 USD, [biên bản lần 6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md) và [phạm vi tệp/lời giao](../../report/lenh-giao-viec-ba-nhom-lan6-2026-10-25.md).
+
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 8 (`usage-1`, bốn trần); [spec Pha B2](../../doc/pha-b2-spec.md), mục 8; spec thiết kế, trang
 mức dùng và dải hết trần.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-09, W-14 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm mốc backend; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-09, W-14 · **Trạng thái:** ready-for-agent
 
 ## Vì sao
 

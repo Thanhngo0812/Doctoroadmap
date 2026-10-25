@@ -1,0 +1,94 @@
+{
+  "base": "http://127.0.0.1:8019",
+  "databaseName": "wayfinder_w09_1d2cfa5643c3465cbc9629f75590f89d",
+  "temporaryDatabaseRemoved": true,
+  "externalCostUsd": 0,
+  "providers": "scripted model/embedding-free local search, FakeMailer, LocalImageMedia",
+  "sourceCommit": "0ba4ac8f5bc63256e33d736a08c0d6411a5b0b48",
+  "dirtySourcePaths": [],
+  "courseId": "7805a2ba-3b3a-4950-9651-632f49072d39",
+  "ownerId": "e161cad5-292e-45ff-ad68-bf34bb121110",
+  "learnerId": "aa7339ea-2f32-4bd4-a1dc-5a7d59db62b4",
+  "nodeId": "node_9f23f5df7eb27a4bc46857c8",
+  "moduleId": "module_001",
+  "otherNodeId": "node_92b86f8bac3397ea9de112b0",
+  "controlPath": "/api/v1/__test/w09/control",
+  "migrationHead": "w11_0007",
+  "browserExitCode": 0,
+  "independentSql": {
+    "records": [
+      {
+        "kind": "answer",
+        "count": 34
+      },
+      {
+        "kind": "assistant_state",
+        "count": 28
+      },
+      {
+        "kind": "assistant_validation",
+        "count": 35
+      },
+      {
+        "kind": "documents",
+        "count": 1
+      },
+      {
+        "kind": "document_validation",
+        "count": 1
+      },
+      {
+        "kind": "quiz_attempt",
+        "count": 1
+      },
+      {
+        "kind": "session",
+        "count": 27
+      },
+      {
+        "kind": "turn",
+        "count": 32
+      },
+      {
+        "kind": "web_assistant_intent",
+        "count": 34
+      }
+    ],
+    "owners": [
+      "aa7339ea-2f32-4bd4-a1dc-5a7d59db62b4"
+    ],
+    "usage": [
+      {
+        "purpose": "document_validation",
+        "rows": 1,
+        "usd": 0.0
+      },
+      {
+        "purpose": "assistant",
+        "rows": 37,
+        "usd": 0.0
+      },
+      {
+        "purpose": "lecture_validation",
+        "rows": 3,
+        "usd": 0.0
+      },
+      {
+        "purpose": "document",
+        "rows": 2,
+        "usd": 1.0
+      },
+      {
+        "purpose": "lecture",
+        "rows": 3,
+        "usd": 0.0
+      }
+    ],
+    "syntheticLimitUsd": 1.0,
+    "sourcePages": [
+      9
+    ],
+    "fakeProviderCalls": 41
+  },
+  "serverThreadStopped": true
+}

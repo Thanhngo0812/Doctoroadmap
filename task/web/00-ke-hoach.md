@@ -1,5 +1,7 @@
 # Web WayFinder — kế hoạch vé
 
+**Mới nhất — nghiệm thu lần 6, 2026-10-25:** W-09 378131e và W-15 efed8db đạt (W-15 có ghi chú phạm vi đo/tích hợp), ghép local **7f54b14**. Cổng đúng c23d111: 2.716 Python/0 fail/1 skip/1 xfail có sẵn, 203 React/build; browser 12 cấu hình/102 ảnh/46 Axe. Thiết kế 0b5993e chưa nhận do D-R6-01 bộ lọc here/elsewhere; mốc thiết kế cũ giữ nguyên. Web bắt đầu W-10, lõi backend W-16, thiết kế sửa mẫu và soát React W-23. Chi điều phối 0 USD; chi W-15 đã kiểm known demo 1,96881130 USD + unknown upper 0,4139008 USD. Chỉ commit local/chưa push, không Cloud, giữ Vertex. [biên bản lần 6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md), [lời giao](../../report/lenh-giao-viec-ba-nhom-lan6-2026-10-25.md).
+
 **Mới nhất — nghiệm thu lần 5, 2026-10-25:** lõi/operator fb0c769 và thiết kế aa387f3 đạt mốc, ghép local `9028db2`; cổng đúng đỉnh8bb746f có 2.676 Python/0 fail/1 skip/1 xfail có sẵn,181 React/build. W-09 chưa nhận da4d639 do hai Required; web sửa trước W-10. Lõi chuẩn bị plan mới sau nhận main, chưa được chi; thiết kế hỗ trợ React/W23/mẫu W-10. Không push main, không Cloud, giữ Vertex. [Biên bản](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md), [lời giao](../../report/lenh-giao-viec-ba-nhom-lan5-2026-10-25.md).
 
 **Đồng bộ local theo quyết định chủ dự án 2026-10-24:** tạm thời chưa cần push main; ghi commit mới nhất trên máy và chờ chủ dự án yêu cầu tiếp. Điều kiện soát/test trước ghép vẫn giữ nguyên.
@@ -94,25 +96,27 @@ còn đổi; nhóm web đã được báo.
 | [W-06](W-06-khoa-mau-khoa-hoc-cua-toi-gateway.md) | khoá mẫu, "Khoá học của tôi", `LearningGateway`, test người ngoài khoá | W-02, W-05 | đạt · đã ghép `dc41ee8`, mốc `8b6e500`; 2.107 Python/77 React/build, browser PG; [nghiệm thu](../../report/dieu-phoi-nghiem-thu-w06-va-ke-hoach-2026-10-21.md) |
 | [W-07](W-07-trang-lo-trinh-tien-do.md) | trang lộ trình và tiến độ | W-06, SA-34 | đạt · đã ghép f20d198, mốc 2a14723; 2.114 Python/85 React/build, browser PostgreSQL: 11 kiểm tra/6 cấu hình; [soát](../../report/dieu-phoi-nghiem-thu-w07-w14-w24-va-ke-hoach-2026-10-21.md) |
 | [W-08](W-08-trang-hoc-bai-giang-doc-trang.md) | trang học: bài giảng stream, "Đọc trang p" | W-07; SA-62/64/65/70 đã ghép | đạt · ghép local `bad8e45`, cổng `c4d281b`: 2.602Python/0fail/1skip/1xfail,181React/build; browser12cấu hình/109ảnh/17Axe; đóng2Required, [lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md) |
-| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-08 và SA-66/69/70 đã ghép | chưa nhận da4d639, chưa ghép: mất câu hỏi sau final khi usage chậm và tool thường bị ép cache-only; sửa hai Required trước W-10, [lần5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md) |
-| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07; SA-67/68 đã ghép | đủ document-3/quiz-3; sau W-09 đạt, tái dùng phần library/preview đã có, kiểm sinh/submit/chấm/quyền/thư viện đầy đủ |
+| [W-09](W-09-tro-ly-va-phien.md) | trợ lý và phiên chat | W-08 và SA-66/69/70 đã ghép | đạt 378131e · ghép local 7f54b14; đóng hai Required, 203 React/102 ảnh/46 Axe; [lần6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md) |
+| [W-10](W-10-quiz-tai-lieu-thu-vien.md) | quiz, tài liệu, thư viện | W-07; SA-67/68 đã ghép | đủ phụ thuộc, giao web bắt đầu; tái dùng W-09, quiz-3/document-3; nhóm thư viện theo core group, không theo origin |
 | [W-11](W-11-chia-se-link-thanh-vien.md) | chia sẻ bằng link, thành viên, rời khoá | W-06; W-14 đã ghép | đạt · ghép/đẩy `e85427a`, mốc `b625752`: 2.296 Python/143 React/build, browser 8 auth-return/48 ảnh/16 Axe; [soát lần2](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan2-2026-10-23.md) |
 | [W-12](W-12-moi-qua-email.md) | mời qua email, lời mời trong ứng dụng | W-03, W-11 | ready-for-agent |
 | [W-13](W-13-dung-mot-cuon-o-loi.md) | use case `build_document` ở lõi | — | đạt nghiệm thu; doc-6 hoàn tất cả hai kho, điều phối tái lập 0 USD; [soát mới](../../report/dieu-phoi-kiem-lai-w13-w24-2026-10-19.md) |
 | [W-14](W-14-tai-sach-len-ban-dung.md) | tải sách lên, xác nhận, kiểm sớm, hàng đợi, worker, ghi usage thực; bộ dựng giả | W-03, W-06; W-25 đã đạt | đạt có ghi chú · đã ghép/đẩy `7fe63df`, mốc `61b5d80`:2185Python/104React/build, browser13nhóm/47ảnh/14Axe,0USD; [soát](../../report/dieu-phoi-nghiem-thu-w14-ba-nhom-va-ke-hoach-2026-10-22.md) |
-| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13/14/SA-62 đã đạt | nhận fb0c769 operator/profile demo, ghép local 9028db2; đóng Windows, giá demo chưa onlineverified, toàn vé còn mở; chuẩn bị plan main mới và chờ duyệt đúng lượt/cap, không quyền chi mới |
-| [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | ready-for-agent |
+| [W-15](W-15-noi-bo-dung-that-do-usd-cuon.md) | nối bộ dựng thật, đo USD/cuốn và phút/cuốn | W-13/14/SA-62 đã đạt | đạt có ghi chú efed8db · ghép local 7f54b14; dựng thật/đo chi/core retry; billing demo chưa đối soát, không nhận production SMTP/media; [lần6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md) |
+| [W-16](W-16-muc-dung.md) | trang mức dùng và dải hết trần | W-09, W-14 | giao lõi mốc backend trên usage-1 đã có; React do web làm sau W-10, toàn vé chưa đóng |
 | [W-17](W-17-quan-tri.md) | quản trị: người dùng, bản dựng, chi, khoá mẫu, nhật ký | W-14, W-16 | ready-for-agent |
 | [W-18](W-18-tien-do-thanh-vien-cho-chu-khoa.md) | tiến độ tổng hợp của thành viên cho chủ khoá | W-07, W-11 | ready-for-agent |
 | [W-19](W-19-bao-loi-noi-dung.md) | báo lỗi nội dung | W-08, W-09, W-10 | ready-for-agent |
 | [W-20](W-20-xoa-tai-khoan-xoa-khoa-hoc.md) | xoá tài khoản, xoá khoá học | W-11, W-14 | ready-for-agent |
 | [W-21](W-21-trien-khai-sao-luu-thu-dau-cuoi.md) | triển khai, sao lưu, thử đầu-cuối, soát an ninh | W-12, W-15, W-17, W-20 | ready-for-agent |
 | [W-22](W-22-ban-figma.md) | bàn giao thiết kế web HTML/CSS/token | — | đạt có ghi chú mốc web đã kiểm, theo chủ dự án 24/10; bỏ Cloud Figma, tiếp hỗ trợ React và các màn theo vé tương ứng |
-| [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu React với spec/token/mẫu HTML | W-22/W-24 đã nhận; W-08/W-09/W-10 | soát từng màn, W-08 làm ngay; W-09 còn hai Required, toàn vé chờ đủ W-09/W-10, không chờ Cloud |
-| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | đạt có ghi chú mốc web; aa387f3 đóng3 lỗi công thức, ghép local 9028db2; 58 test/24lượt browser, tiếp hỗ trợ React/W23/W10, không Cloud |
+| [W-23](W-23-doi-chieu-figma-va-giao-dien.md) | đối chiếu React với spec/token/mẫu HTML | W-22/W-24 đã nhận; W-08/W-09/W-10 | soát React W-08/W-09 ngay; báo cáo source/ảnh HTML chưa thay đối chiếu runtime; toàn vé chờ W-10, không Cloud |
+| [W-24](W-24-bo-sung-va-sua-ban-giao-w22.md) | sửa/bổ sung bàn giao thiết kế web | — | giữ mốc web/công thức aa387f3 đã ghép; chưa nhận 0b5993e, sửa D-R6-01 nhóm thư viện W-10; không Cloud |
 | [W-25](W-25-dong-bo-xac-nhan-huy-va-ket-thuc-ban-dung.md) | sửa race xác nhận/huỷ và huỷ khi publication W-14 | mã W-14 5b24ece, không chờ W-14 đạt | đạt · đã ghép/đẩy a572459, mốc4dbfe8e; 2.163 Python/85 React nền/build, sáu guard bị bắt, 0USD |
 
 ## Thứ tự đề xuất
+
+- **Ưu tiên lần 6, 2026-10-25:** web W-10; lõi backend W-16 theo phạm vi tệp riêng; thiết kế sửa D-R6-01 và đối chiếu W-23 trên React thực. W-09/W-15 đã nhận; không chạy lại paid, không push GitHub. Xem lời giao lần 6 ở đầu tài liệu.
 
 - **Điều chỉnh 2026-10-24:** web sửa W-08; SA-66/SA-69 đã ghép, W-09 nhận main triển khai/kiểm bằng fake sau W-08.
   Theo dõi SA-70 về stream tự kiểm tra, giữ hồi quy W-08 tới khi nhận mã mới. Thiết kế tiếp bàn giao HTML/CSS/token và hỗ trợ soát React;

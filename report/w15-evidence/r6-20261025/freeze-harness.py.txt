@@ -1,0 +1,89 @@
+"""Preserve and normalize this round's evidence; no model calls or product edits."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import xml.etree.ElementTree as ET
+from dotenv import dotenv_values
+root=Path(__file__).resolve().parents[1];e=root/'report/w15-evidence';out=e/'r6-20261025'
+def git(*args):return subprocess.check_output(['git',*args],cwd=root).decode().strip()
+def dump(p,v):p.write_bytes((json.dumps(v,ensure_ascii=False,indent=2)+'\n').encode())
+head=git('rev-parse','HEAD')
+assert head=='bd05c1b2596d20709efd43c8350bf338af0a614f'
+assert git('branch','--show-current')=='work/w15-real-build' and git('-C',str(root.parents[1]),'branch','--show-current')=='main'
+assert not git('diff','--','src') and not git('diff','main','--','src/doc2roadmap')
+assert not git('diff','--cached','--name-only')
+historical=[]
+for rel in ('manifest-20261024.json','resume-20261024-01/manifest.json','resume-20261024-02/manifest.json','operator-20261024/manifest.json','r4-20261025/manifest.json','r5-20261025/manifest.json'):
+    rows=json.loads((e/rel).read_text())['files']
+    assert all(sha256((e/r['path']).read_bytes()).hexdigest()==r['sha256'] for r in rows),rel
+    historical.append(dict(manifest=rel,verified_entries=len(rows),changed=[]))
+dump(out/'historical-integrity.json',historical)
+native=[]
+for label in ('r6-full-20261025-01','r6-full-retry-candidate-20261025-01','r6-retry-green-20261025-02'):
+    record=json.loads((e/'runs'/(label+'-exit.json')).read_text())
+    assert record['exit_code']==0
+    if 'green' not in label:assert record['commit']==head
+    assert all(sha256((root/p).read_bytes()).hexdigest()==h for p,h in record['source_sha256'].items())
+    native.append(dict(label=label,commit=record['commit'],exit_code=0,seconds=record['seconds']))
+cases=list(ET.parse(e/'runs/r6-full-20261025-01.xml').iter('testcase'))
+assert not any(c.find('failure') is not None or c.find('error') is not None for c in cases)
+skipped=[dict(c.attrib,**c.find('skipped').attrib) for c in cases if c.find('skipped') is not None]
+assert len(cases)-len(skipped)==2685 and len(skipped)==2
+audit=json.loads((out/'final-audit.json').read_text(encoding='utf-8'))
+assert audit['new_unknown_upper_usd']=='0' and audit['sql']['courses'][0]['status']=='ready'
+run=root/audit['location']['run_dir'];target=out/'full-retry';target.mkdir(exist_ok=True)
+provenance=[]
+for source in [run/'plan.json',run/'owner-core-retry-approval.json',run/'execution.json',run/'dispatch.jsonl',run/'transport-trace.jsonl',run/'transport-counts.json',*run.glob('requests-*.jsonl')]:
+    path=target/source.name;assert source.is_file();shutil.copyfile(source,path)
+    provenance.append(dict(source=source.relative_to(root).as_posix(),source_sha256=sha256(source.read_bytes()).hexdigest(),stored=path.relative_to(e).as_posix()))
+for name in ('environment','tls_probe','full_retry','status','mutations','audit','http_read','counts','report','freeze'):
+    source=root/('tmp/w15_r6_'+name+'.py');path=out/(name+'-harness.py.txt')
+    shutil.copyfile(source,path)
+    provenance.append(dict(source=source.relative_to(root).as_posix(),source_sha256=sha256(source.read_bytes()).hexdigest(),stored=path.relative_to(e).as_posix()))
+dump(out/'provenance.json',dict(note='Source local run bytes untouched; Git evidence copies normalized UTF-8/LF, never reuse consumed plans/grants.',files=provenance))
+dump(out/'summary.json',dict(head_executed=head,main_received=git('rev-parse','main'),code_commit=head,core_source_changed=False,
+    full_python_passed=2685,full_skipped_or_xfailed=skipped,focused_passed=48,mutations_caught=3,native=native,
+    real_book_ready=True,modules=audit['graph']['module_count'],learnable_concepts=audit['graph']['learnable_count'],
+    elapsed_seconds=633.92,actual_http_calls=1637,generation_calls=715,embedding_calls=922,http_429=2,embedding_timeouts=0,
+    stage_peaks=audit['stage_peaks'],usage_complete=audit['usage_complete'],new_known_demo_usd=audit['new_known_demo_usd'],
+    new_unknown_upper_usd=audit['new_unknown_upper_usd'],combined_known_demo_usd=audit['combined_known_demo_usd'],
+    combined_unknown_upper_usd=audit['combined_unknown_upper_usd'],combined_upper_usd=audit['combined_upper_usd'],
+    embedding_billing_verified=False,invoice_reconciled=False,operator_retry_opt_in=True,web_default_allow_spend=False,
+    owner_stopped_further_root_cause_experiments=True,w15_accepted_complete=False))
+secrets=[]
+for env in (root.parents[1]/'.env',root.parents[1]/'src/web/.env'):
+    secrets += [str(v).encode() for k,v in dotenv_values(env).items() if v and len(str(v))>=8 and any(x in k.upper() for x in ('PASSWORD','SECRET','TOKEN','API_KEY','DATABASE_URL'))]
+paths=git('ls-files','--others','--exclude-standard','report/w15-evidence').splitlines();entries=[]
+allowed=('report/w15-evidence/r6-20261025/','report/w15-evidence/runs/r6-','report/w15-evidence/regression-exports/r6-full-20261025-01/','report/w15-evidence/w25-regressions/r6-full-20261025-01/','report/w15-evidence/sql/r6-full-20261025-01/')
+def normalize(raw):
+    return ('\n'.join(l.rstrip() for l in raw.decode('utf-8-sig').splitlines()).rstrip()+'\n').encode()
+for relative in paths:
+    assert relative.startswith(allowed),relative
+    path=root/relative;raw=path.read_bytes()
+    assert path.is_file() and not path.is_symlink() and path.stat().st_nlink==1
+    assert not any(s in raw for s in secrets),relative
+    backup=root/'tmp/w15-r6-raw-20261025'/relative
+    assert backup.resolve().is_relative_to(root)
+    if backup.exists():
+        previous_raw=backup.read_bytes()
+        if normalize(previous_raw)==normalize(raw):
+            raw=previous_raw
+        else:
+            backup=backup.with_name(backup.name+'.revision-'+sha256(raw).hexdigest()[:12])
+    backup.parent.mkdir(parents=True,exist_ok=True)
+    if not backup.exists():backup.write_bytes(raw)
+    else:assert backup.read_bytes()==raw
+    norm=normalize(raw)
+    if path.suffix=='.json':assert json.loads(raw)==json.loads(norm)
+    if path.suffix=='.jsonl':assert [json.loads(l) for l in raw.splitlines()]==[json.loads(l) for l in norm.splitlines()]
+    if path.suffix=='.xml':assert [c.attrib for c in ET.fromstring(raw).iter('testcase')]==[c.attrib for c in ET.fromstring(norm).iter('testcase')]
+    path.write_bytes(norm)
+    entries.append(dict(path=path.relative_to(e).as_posix(),source_raw_sha256=sha256(raw).hexdigest(),raw_backup=backup.relative_to(root).as_posix(),sha256=sha256(norm).hexdigest(),bytes=len(norm)))
+dump(out/'normalization.json',dict(operation='UTF-8/LF on new evidence copies only; source run bytes and historical evidence unchanged',raw_backup='tmp/w15-r6-raw-20261025',configured_secret_matches=0,json_values_and_junit_attributes_preserved=True,files=entries))
+norm=out/'normalization.json'
+manifest=entries+[dict(path=norm.relative_to(e).as_posix(),sha256=sha256(norm.read_bytes()).hexdigest(),bytes=norm.stat().st_size)]
+dump(out/'manifest.json',dict(files=manifest))
+assert all(sha256((e/r['path']).read_bytes()).hexdigest()==r['sha256'] for r in manifest)
+print(json.dumps(dict(new_evidence_files=len(manifest)+1,historical_entries_verified=sum(r['verified_entries'] for r in historical),full_passed=2685,configured_secret_matches=0),indent=2))

@@ -1,0 +1,15 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap _
+src\web\backend\tests\test_build_spend_w15.py:104: in test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap
+    assert guard(request()).read()
+           ^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\build_spend.py:107: in __call__
+    self._reserve(reserved)
+src\web\backend\wayfinder\infrastructure\build_spend.py:85: in _reserve
+    raise BuildSpendStopped('Usage is unknown or a provider bound was exceeded; stop dispatch')
+E   wayfinder.infrastructure.build_spend.BuildSpendStopped: Usage is unknown or a provider bound was exceeded; stop dispatch
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\r6-20261025\mutations\block-approved-core-retry.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap
+1 failed, 23 deselected in 0.34s

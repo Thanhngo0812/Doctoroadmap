@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="7.761" timestamp="2026-10-24T22:26:57.919657+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates" time="3.923"><failure message="assert 'LECTURE_CACHE_SENTINEL' in '[[{&quot;role&quot;: &quot;user&quot;, &quot;text&quot;: &quot;Người học đang xem cả lộ trình của cuốn sách.\\nKhái niệm liên quan: Tập hợp (module 2: C...ểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\\n\\nCâu hỏi của người học: Tập hợp là gì?&quot;}], &quot;AUTO&quot;]'&#10; +  where '[[{&quot;role&quot;: &quot;user&quot;, &quot;text&quot;: &quot;Người học đang xem cả lộ trình của cuốn sách.\\nKhái niệm liên quan: Tập hợp (module 2: C...ểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\\n\\nCâu hỏi của người học: Tập hợp là gì?&quot;}], &quot;AUTO&quot;]' = &lt;function dumps at 0x0000014C92EC1EE0&gt;(([{'role': 'user', 'text': 'Người học đang xem cả lộ trình của cuốn sách.\nKhái niệm liên quan: Tập hợp (module 2: Cơ ... điểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\n\nCâu hỏi của người học: Tập hợp là gì?'}], 'AUTO'), ensure_ascii=False)&#10; +    where &lt;function dumps at 0x0000014C92EC1EE0&gt; = json.dumps">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a37697e10ffa4bf3942150b8760ff...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/c2130561-d050-4f73-9406-8ab8cc13901c/sessions')
+
+    def test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates(chat):
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        lecture = ScriptedLectureModel([['LECTURE_CACHE_SENTINEL. Nội dung bài có sẵn.']])
+        w.gateway.runtime.model = lecture
+        made = w.gateway.runtime.lecture(w.graph).make('doc-1', 8, w.graph, 'a', owner=w.a.actor.user_id, allow_spend=True)
+        assert made['status'] == 'ready' and len(lecture.calls) == 1
+        w.gateway.runtime.model = w.model
+        sid = create(w)['session_id']; events(ask(w, sid, focus_node_id='a'))
+&gt;       assert 'LECTURE_CACHE_SENTINEL' in json.dumps(w.model.tool_calls[0], ensure_ascii=False)
+E       assert 'LECTURE_CACHE_SENTINEL' in '[[{"role": "user", "text": "Người học đang xem cả lộ trình của cuốn sách.\\nKhái niệm liên quan: Tập hợp (module 2: C...ểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\\n\\nCâu hỏi của người học: Tập hợp là gì?"}], "AUTO"]'
+E        +  where '[[{"role": "user", "text": "Người học đang xem cả lộ trình của cuốn sách.\\nKhái niệm liên quan: Tập hợp (module 2: C...ểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\\n\\nCâu hỏi của người học: Tập hợp là gì?"}], "AUTO"]' = &lt;function dumps at 0x0000014C92EC1EE0&gt;(([{'role': 'user', 'text': 'Người học đang xem cả lộ trình của cuốn sách.\nKhái niệm liên quan: Tập hợp (module 2: Cơ ... điểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\n\nCâu hỏi của người học: Tập hợp là gì?'}], 'AUTO'), ensure_ascii=False)
+E        +    where &lt;function dumps at 0x0000014C92EC1EE0&gt; = json.dumps
+
+src\web\backend\tests\test_assistant_w09.py:305: AssertionError</failure></testcase></testsuite></testsuites>

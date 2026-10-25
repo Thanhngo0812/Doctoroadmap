@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.824" timestamp="2026-10-24T22:28:02.831902+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_daily_limit_is_shared_across_courses_and_separate_for_each_learner" time="3.588"><failure message="AssertionError: assert ('answered' == 'daily_limit'&#10;  &#10;  - daily_limit&#10;  + answered)">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_4fd10e36a1f749e5a457c6b6c9e31...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/aa2671b5-d28a-4625-a9f2-e39b636142aa/sessions')
+
+    def test_w09_daily_limit_is_shared_across_courses_and_separate_for_each_learner(chat):
+        w = chat; w.model.is_replay = False; w.model.model_id = 'gemini-3.1-flash-lite'
+        w.phase_b.append_usage({'purpose': 'document', 'learner_id': w.a.actor.user_id, 'doc_id': 'another-book',
+            'created_at': w.clock.now().isoformat(), 'cost_usd': 1.0})
+        sid = create(w)['session_id']; final = events(ask(w, sid))[-1]['answer']
+&gt;       assert final['status'] == 'daily_limit' and not w.model.tool_calls
+E       AssertionError: assert ('answered' == 'daily_limit'
+E
+E         - daily_limit
+E         + answered)
+
+src\web\backend\tests\test_assistant_w09.py:289: AssertionError</failure></testcase></testsuite></testsuites>

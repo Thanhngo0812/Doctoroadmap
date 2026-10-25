@@ -1,0 +1,6 @@
+{"accounting_debug": [{"label": "doc-6-first", "calls": 334, "known": "0.12040340", "unknown": "0"}, {"label": "candidate-first", "calls": 111, "known": "0.01241680", "unknown": "0.3890176"}, {"label": "diagnostic", "calls": 0, "known": "0", "unknown": "0"}, {"label": "controlled", "calls": 1616, "known": "0.68726825", "unknown": "0"}, {"label": "probe100", "calls": 0, "known": "0", "unknown": "0"}, {"label": "mixed100", "calls": 1197, "known": "0.46637390", "unknown": "0.0248832"}]}
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r6-tools-20261025\audit_doc6.py", line 46, in <module>
+    assert sum(Decimal(x['known']) for x in accounting)==Decimal('1.28947575')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

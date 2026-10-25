@@ -1,5 +1,7 @@
 # W-15 — Nối bộ dựng thật; đo USD/cuốn và phút/cuốn
 
+**Nghiệm thu lần 6, 2026-10-25: W-15 đạt có ghi chú `efed8db`, ghép local `7f54b14`.** Đã kiểm lượt thật được chủ dự án duyệt trong phiên nhân viên: candidate graph v8/16 module/104 khái niệm/33 ảnh, 633,92 giây, known demo 0,67933555 USD; doc-6 web cache-only 0 call/0 USD. Tổng R5+R6 known 1,96881130 USD, unknown upper giữ riêng 0,4139008 USD, cận trên 2,38271210 USD. Core tự retry; backend chỉ giữ cận chi bằng opt-in approval, không viết vòng retry. usage_complete=false và embedding_billing_verified=false giữ nguyên; không đối soát hóa đơn hoặc nhận SMTP/Cloudinary giả là production. Đề xuất chưa bật: daily build 5 USD toàn hệ thống và build_monthly_max=3 lượt có chi/tài khoản/tháng. Không chạy thêm paid; lõi tiếp backend W-16. [biên bản lần 6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md). Các dòng chưa duyệt/chưa chạy bên dưới là lịch sử trước phê duyệt mới được trích trong biên bản.
+
 **Nghiệm thu lần 5, 2026-10-25: nhận operator/profile demo `fb0c769`, đã ghép local `9028db2`; toàn W-15 còn mở.** Đóng lỗi Windows bằng prepare→JSON→execute và guard đường dẫn xấu. Giá embedding chỉ là giả định demo 0,15 USD/triệu token theo chỉ thị được trích trong báo cáo lõi; profile opt-in, billing_verified=false, không coi SKU online đã xác minh. Chưa duyệt/chưa execute bootstrap1 USD hoặc candidate3 USD. Nhận main local cuối rồi tạo plan mới đúng HEAD/pipeline/profile, giữ plan cũ fb0c769; trình chủ dự án đúng lượt/trần trước chi. [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md).
 
 **Nghiệm thu lần4, 2026-10-24: nhận mốc 0USD `bf761fe`, ghép local `bad8e45`; toàn W-15 vẫn mở.** Đã kiểm toàn pipeline thật với provider giả/PG, hai dry-run nội bộ, doc-6 cache-only dừng label-roles/SpendNotAllowed, không nhận ready/course/mail thật. Gói operator `9b3bd82` chưa ghép: sửa run_dir Windows ghi dấu ngược bị safe_path từ chối bằng test prepare→JSON→execute thực; xác minh đơn vị SKU online Vertex embedding trước duyệt profile/có tiền. Đề nghị bootstrap1USD và cuốn52trang3USD chưa được duyệt, chưa chạy. Worktree kiểm cần chép thêm candidate PDF theo SHA riêng, ngoài fixture sáu cuốn. Giữ Vertex/meter duy nhất/không chi; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md).
@@ -79,15 +81,15 @@ Bản demo không giới hạn khâu dựng (chủ dự án chốt 2026-10-18), 
 
 ## Tiêu chí nghiệm thu
 
-- [ ] Lượt 1 qua web xong với chi ≈ 0, khoá học `ready`, thư "bản dựng xong" trong `Mailer` console.
-- [ ] Lượt 2 có dry-run, có xác nhận duyệt của chủ dự án (trích tin nhắn hay ghi chú), rồi mới chạy.
-- [ ] Bảng số: USD/cuốn, phút/cuốn theo bước, số lời gọi/token thực và cờ thiếu usage; trần đã duyệt so với chi thực. Không lấy chi lịch sử trong manifest
+- [x] Lượt 1 qua web xong với chi ≈ 0, khoá học `ready`, thư "bản dựng xong" trong `Mailer` console.
+- [x] Lượt 2 có dry-run, có xác nhận duyệt của chủ dự án (trích tin nhắn hay ghi chú), rồi mới chạy.
+- [x] Bảng số: USD/cuốn, phút/cuốn theo bước, số lời gọi/token thực và cờ thiếu usage; trần đã duyệt so với chi thực. Không lấy chi lịch sử trong manifest
   làm chi của lần cache mới; không yêu cầu chức năng dự toán trên app.
-- [ ] Báo cáo ghi đúng transport thực tế: hiện tạm dùng `vertex` cho sinh/embedding; nếu chủ dự án đã chỉ thị chuyển để demo thì trích chỉ thị và ghi
+- [x] Báo cáo ghi đúng transport thực tế: hiện tạm dùng `vertex` cho sinh/embedding; nếu chủ dự án đã chỉ thị chuyển để demo thì trích chỉ thị và ghi
   cấu hình mới. Không tự chuyển transport.
-- [ ] Đề xuất mức `system_daily_build_max_usd`, `build_monthly_max` **để sẵn khi cần bật**, theo số đo. Claude đọc rồi báo chủ dự
+- [x] Đề xuất mức `system_daily_build_max_usd`, `build_monthly_max` **để sẵn khi cần bật**, theo số đo. Claude đọc rồi báo chủ dự
   án.
-- [ ] Không mở tập giữ lại.
+- [x] Không mở tập giữ lại.
 
 ## Ngoài vé
 

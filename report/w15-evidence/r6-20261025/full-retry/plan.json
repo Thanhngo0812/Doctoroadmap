@@ -1,0 +1,53 @@
+{
+  "book": "candidate",
+  "run_dir": "tmp/w15-operator-candidate-b5f1aa6534ce",
+  "database": "wayfinder_w15_b5f1aa6534ce",
+  "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+  "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+  "prepared_commit": "bd05c1b2596d20709efd43c8350bf338af0a614f",
+  "dry_run": {
+    "doc_id": "u-1f019766e74a747d293c",
+    "status": "dry_run",
+    "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "graph_version": null,
+    "completed_steps": [
+      "doc_reading"
+    ],
+    "step_details": {
+      "doc_reading": {
+        "chunks_version": 1,
+        "parse_version": 1,
+        "chunk_count": 125,
+        "a4_gold_coverage": "none",
+        "page_count": 52,
+        "alphabetic_chars": 52325,
+        "average_alphabetic_chars_per_page": 1006.25,
+        "empty_page_ratio": 0.019230769230769232,
+        "vi_diacritic_ratio": 0.270157668418538
+      },
+      "dry_run": {
+        "cache_validated": false,
+        "chunks_version": 1,
+        "candidate_version": null,
+        "canonical_version": null,
+        "graph_version": null,
+        "retrieval_version": null
+      }
+    },
+    "spent_usd": 0.0,
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "usage_complete": true,
+    "elapsed_seconds": 10.185420100009651,
+    "error": null
+  },
+  "vertex_project_configured": true,
+  "transport": "vertex",
+  "location": "global",
+  "approved": false,
+  "embedding_price_profile": "owner-demo-embedding-token-20261025",
+  "embedding_billing_verified": false,
+  "provider_calls": 0,
+  "proposed_max_usd": "3.00"
+}

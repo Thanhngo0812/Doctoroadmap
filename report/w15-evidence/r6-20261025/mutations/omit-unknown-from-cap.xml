@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.312" timestamp="2026-10-25T17:00:12.703301+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap" time="0.129"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'&gt;">src\web\backend\tests\test_build_spend_w15.py:105: in test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap
+    with pytest.raises(api.BuildSpendStopped, match='remaining budget'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'&gt;</failure></testcase></testsuite></testsuites>

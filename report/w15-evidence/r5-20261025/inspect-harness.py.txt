@@ -1,0 +1,30 @@
+"""Read only this run's terminal receipt/graph and independent PG aggregates."""
+import json
+from pathlib import Path
+import sys
+root = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(root / 'src'), str(root / 'src/web/backend'), str(root / 'src/web/backend/tests')]
+import w15_operator_run as operator
+from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+from sqlalchemy import text
+bundle = json.loads((root / 'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+item = next(row for row in bundle['attempts'] if row['book'] == sys.argv[1])
+run = root / item['run_dir']
+execution = json.loads((run / 'execution.json').read_text(encoding='utf-8'))
+receipt = execution.get('bootstrap') or execution['attempts'][0]['result']
+store = JsonArtifactStore(run / 'artifacts')
+graph = store.load_graph('u-' + item['file_sha256'][:20], receipt['graph_version'])
+shape = {key: {'type': type(value).__name__, 'len': len(value) if isinstance(value, (list,dict)) else None}
+         for key, value in graph.payload.items()}
+engine = operator.create_database_engine(operator.test_database_url(item['database']))
+try:
+    with engine.connect() as reader:
+        usage = [dict(row) for row in reader.execute(text(
+            'SELECT purpose,count(*) AS rows,sum(cost_usd) AS usd,sum(input_tokens) AS input_tokens,sum(output_tokens) AS output_tokens FROM usage_ledger GROUP BY purpose')).mappings()]
+        traces = dict(reader.execute(text("SELECT count(*) AS n,coalesce(sum(cost_usd),0) AS usd,coalesce(sum(input_tokens),0) AS input_tokens,coalesce(sum(output_tokens),0) AS output_tokens FROM usage_ledger WHERE extra->>'counted_in'='build'")).mappings().one())
+        records = [dict(row) for row in reader.execute(text('SELECT kind,count(*) AS n FROM phase_b_record GROUP BY kind')).mappings()]
+finally:
+    engine.dispose()
+print(json.dumps(dict(book=item['book'], receipt=receipt, graph_version=graph.version,
+    graph_payload_shape=shape, graph_manifest=graph.manifest, sample_module=graph.payload.get('modules', [])[:1],
+    sample_node=graph.payload.get('nodes', [])[:1], usage=usage, traces=traces, record_kinds=records), ensure_ascii=False, indent=2, default=str))

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="30" time="26.496" timestamp="2026-10-24T21:40:57.892658+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sessions_bind_actor_document_and_scope_from_published_graph" time="1.791" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_answer3_history_and_idempotency_keep_private_fields_on_server" time="0.869" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures" time="1.148" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries" time="2.821" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts" time="0.381" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_revoked_membership_denies_next_session_and_stream_request" time="0.551" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4]" time="0.660"><failure message="AssertionError: assert {'document'} == {'document', 'quiz'}&#10;  &#10;  Extra items in the right set:&#10;  'quiz'&#10;  Use -v to get more diff">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a18add0f54164270b868ddf8a5e5d...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/7d218223-ad2e-4729-b39c-63a8b2e34f5c/sessions')
+scope = 'module 4'
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+&gt;       assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}
+E       AssertionError: assert {'document'} == {'document', 'quiz'}
+E
+E         Extra items in the right set:
+E         'quiz'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_assistant_w09.py:170: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[scope1]" time="0.650"><failure message="AssertionError: assert {'document'} == {'document', 'quiz'}&#10;  &#10;  Extra items in the right set:&#10;  'quiz'&#10;  Use -v to get more diff">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a18add0f54164270b868ddf8a5e5d...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/44e2d46e-3c22-40fd-834c-eceab838fdb0/sessions')
+scope = ['module 1: Cơ sở']
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+&gt;       assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}
+E       AssertionError: assert {'document'} == {'document', 'quiz'}
+E
+E         Extra items in the right set:
+E         'quiz'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_assistant_w09.py:170: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[Kh\xf4ng ph\xe2n gi\u1ea3i \u0111\u01b0\u1ee3c]" time="0.763"><failure message="AssertionError: assert {'document'} == {'document', 'quiz'}&#10;  &#10;  Extra items in the right set:&#10;  'quiz'&#10;  Use -v to get more diff">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a18add0f54164270b868ddf8a5e5d...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/67243082-cbbb-4279-b63a-6f0b390e99b2/sessions')
+scope = 'Không phân giải được'
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+&gt;       assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}
+E       AssertionError: assert {'document'} == {'document', 'quiz'}
+E
+E         Extra items in the right set:
+E         'quiz'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_assistant_w09.py:170: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="1.639" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_route_inventory_catches_a_new_unguarded_route" time="1.015" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates" time="0.590" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_guest_and_prod_cannot_join_or_discover_samples" time="0.352" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_owner_constraint_and_course_creation_rollback" time="0.274" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_update_requires_owner_and_cannot_change_identity" time="0.463" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_membership_activity_updates_only_after_five_minutes" time="0.444" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection" time="1.031" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_database_cannot_commit_course_without_matching_owner_membership" time="0.245" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_join_concurrency_respects_course_capacity" time="0.494" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_only_allows_six_development_documents_in_dev_and_uploads_once" time="0.395" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_composition_binds_vertex_models_and_all_child_stores_to_postgres" time="0.352" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_cli_uses_admin_identity_and_media_port" time="0.332" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_real_six_book_seed_join_and_roadmap_over_tcp_http" time="5.038" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_deferred_owner_check_protects_source_when_owner_membership_is_moved" time="0.248" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_cached_graph_never_bypasses_revoked_membership" time="0.492" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_course_progress_and_resume_are_per_actor_and_resume_resolves_module_scope" time="0.627" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_graph_is_pinned_to_course_version_and_cached_by_doc_version" time="0.331" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_w06_migration_is_single_head_after_w03_and_empty_database_upgrades" time="0.226" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point" time="0.012" /><testcase classname="src.web.backend.tests.test_builds_w14" name="test_http_contract_and_building_course_card_are_real_application_outputs" time="0.762" /></testsuite></testsuites>

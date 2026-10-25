@@ -1,0 +1,49 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_w09_two_concurrent_distinct_intents_are_serialized_not_coalesced ____
+
+chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e92ee607ac1b4dc3b70c4c158a275...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/93c314d3-9d23-413e-8819-e0b7c7129772/sessions')
+
+    def test_w09_two_concurrent_distinct_intents_are_serialized_not_coalesced(chat):
+        from threading import Event, Thread
+        from time import monotonic, sleep
+        from wayfinder.fakes.assistant import ScriptedAssistantModel
+        w = chat; model = ScriptedAssistantModel(pause=True); w.gateway.runtime.model = model
+        sid = create(w)['session_id']; keys = [uuid4().hex, uuid4().hex]
+        for i, key in enumerate(keys):
+            w.gateway.prepare_turn(w.a.actor, w.course.id, sid, key, f'Câu hỏi {i}')
+        results, errors, second_started = {}, [], Event()
+        def run(i):
+            try:
+                if i == 1: second_started.set()
+                rows = []
+                w.gateway.ask_stream(w.a.actor, w.course.id, sid, keys[i], f'Câu hỏi {i}', rows.append)
+                results[i] = rows[-1]['answer']
+            except BaseException as error:
+                errors.append(error)
+        first, second = Thread(target=run, args=(0,)), Thread(target=run, args=(1,))
+        try:
+            first.start(); assert model.waiting.wait(5)
+            second.start(); assert second_started.wait(2)
+            deadline = monotonic() + 5
+            waiting = 0
+            while monotonic() < deadline:
+                with w.independent_engine.connect() as c:
+                    waiting = c.scalar(text("SELECT count(*) FROM pg_locks l JOIN pg_stat_activity a USING(pid) WHERE a.datname=current_database() AND l.locktype='advisory' AND NOT l.granted"))
+                if waiting: break
+                sleep(.02)
+>           assert waiting == 1, 'Independent SQL must see the second turn waiting for the session lock'
+E           AssertionError: Independent SQL must see the second turn waiting for the session lock
+E           assert 0 == 1
+
+src\web\backend\tests\test_assistant_w09.py:226: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-evidence\mutations2\session-mutex.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_w09.py::test_w09_two_concurrent_distinct_intents_are_serialized_not_coalesced
+1 failed, 1 warning in 12.12s

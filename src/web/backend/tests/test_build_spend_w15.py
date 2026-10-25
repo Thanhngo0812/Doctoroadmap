@@ -90,6 +90,33 @@ def test_a_timeout_retains_its_upper_bound_and_is_not_treated_as_zero_spend():
     assert len(calls) == 1 and guard.snapshot()['unknown_upper_usd'] == '0.360448'
 
 
+def test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap():
+    api = module()
+    calls = []
+    def provider(*args, **kwargs):
+        calls.append(1)
+        if len(calls) == 1:
+            raise TimeoutError('fake response timeout')
+        return response()
+    guard = api.BuildSpendGuard('.721', provider, retry_unknown_within_cap=True)
+    with pytest.raises(TimeoutError):
+        guard(request())
+    assert guard(request()).read()
+    with pytest.raises(api.BuildSpendStopped, match='remaining budget'):
+        guard(request())
+    assert len(calls) == 2
+    budget = guard.snapshot()
+    assert budget['unknown_upper_usd'] == '0.360448' and budget['known_usd'] == '0.000265'
+    assert budget['held_usd'] == '0' and budget['retry_unknown_within_cap'] is True
+    assert api.Decimal(budget['known_usd']) + api.Decimal(budget['unknown_upper_usd']) <= api.Decimal(budget['limit_usd'])
+
+
+@pytest.mark.parametrize('invalid', [None, 1, 'true'])
+def test_retry_opt_in_requires_an_actual_boolean(invalid):
+    with pytest.raises(ValueError, match='boolean'):
+        module().BuildSpendGuard('1', lambda *a, **k: response(), retry_unknown_within_cap=invalid)
+
+
 def test_non_200_http_errors_do_not_consume_the_approved_budget():
     api = module()
     def error(*args, **kwargs):

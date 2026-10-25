@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="1" errors="0" time="5.3291138">
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-24T15:30:40.345Z" hostname="ADMIN" tests="7" failures="1" errors="0" skipped="0" time="5.3291138">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="0.9976414">
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;a
+  href=&quot;/khoa-hoc/c/quizzes/made-up&quot;
+  rel=&quot;noopener noreferrer&quot;
+  target=&quot;_blank&quot;
+&gt;
+  URL giả
+&lt;/a&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;a
+  href=&quot;/khoa-hoc/c/quizzes/made-up&quot;
+  rel=&quot;noopener noreferrer&quot;
+  target=&quot;_blank&quot;
+&gt;
+  URL giả
+&lt;/a&gt; instead
+ ❯ src/Assistant.test.tsx:63:63
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="0.7709535">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="0.4945318">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="restores a pending intent after remount and reconciles the saved result without sending a new turn" time="0.9508573">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="renames sessions and requires explicit confirmation before deleting history" time="0.8484369">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="opens a persisted artifact only from a structured event, independently of model prose" time="0.6703776">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="blocks sending while a new session is being created and then sends into that session" time="0.5923822">
+        </testcase>
+    </testsuite>
+</testsuites>

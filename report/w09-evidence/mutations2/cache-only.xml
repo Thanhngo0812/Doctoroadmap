@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="7.505" timestamp="2026-10-24T22:29:21.955715+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures" time="3.607"><failure message="AssertionError: assert ([{'cache_only': False, 'owner': 'd52d4638-1511-413b-8455-4c4d6028ebd2'}] and False)&#10; +  where False = all(&lt;generator object test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001A3FF5469B0&gt;)">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e1dc6d1868c94fbda51616e40ac42...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/68cfba2e-4b56-475a-aaa5-8f83593e35c4/sessions')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001A3F5909F10&gt;
+
+    def test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures(chat, monkeypatch):
+        w = chat; sid = create(w)['session_id']; reads = []
+        def cached_lecture(graph):
+            class Reader:
+                def make(self, *args, **kwargs):
+                    reads.append(kwargs)
+                    assert kwargs['cache_only'] is True
+                    return {'status': 'not_cached'}
+            return Reader()
+        monkeypatch.setattr(w.gateway.runtime, 'lecture', cached_lecture)
+        events(ask(w, sid, focus_node_id='a'))
+&gt;       assert reads and all(row['cache_only'] for row in reads)
+E       AssertionError: assert ([{'cache_only': False, 'owner': 'd52d4638-1511-413b-8455-4c4d6028ebd2'}] and False)
+E        +  where False = all(&lt;generator object test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001A3FF5469B0&gt;)
+
+src\web\backend\tests\test_assistant_w09.py:101: AssertionError</failure></testcase></testsuite></testsuites>

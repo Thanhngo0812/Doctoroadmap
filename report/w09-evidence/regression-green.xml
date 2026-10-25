@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="27" time="75.545" timestamp="2026-10-24T23:17:47.965332+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sessions_bind_actor_document_and_scope_from_published_graph" time="3.670" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_answer3_history_and_idempotency_keep_private_fields_on_server" time="2.439" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures" time="2.749" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries" time="6.964" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts" time="0.980" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_revoked_membership_denies_next_session_and_stream_request" time="0.952" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4]" time="1.519"><failure message="AssertionError: assert 9 &lt; 4&#10; +  where 9 = &lt;built-in method index of list object at 0x00000188C75BA600&gt;(('artifact', 'quiz', None))&#10; +    where &lt;built-in method index of list object at 0x00000188C75BA600&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index&#10; +  and   4 = &lt;built-in method index of list object at 0x00000188C75BA600&gt;(('tool_call', 'make_document', 'running'))&#10; +    where &lt;built-in method index of list object at 0x00000188C75BA600&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_8cde1108af9c40cab2f1131440b56...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/e868bb1d-97ab-439e-bdb6-0934e4839f8a/sessions')
+scope = 'module 4'
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            distractors = []
+            for k, name in enumerate(['Phần tử', 'Quy tắc', 'Đặc điểm']):
+                extra_id = f'{nid}_d{k}'; distractors.append(extra_id)
+                payload['nodes'].append({**base, 'node_id': extra_id, 'name': name, 'display_name': name, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid, *distractors]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+        assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
+            (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
+        assert len(final['artifacts']) == 2
+        timeline = [(row['event'], row.get('name') if row['event'] == 'tool_call' else row.get('artifact', {}).get('kind'), row.get('state')) for row in rows]
+        assert timeline.index(('tool_call', 'make_quiz', 'running')) &lt; timeline.index(('artifact', 'quiz', None))
+&gt;       assert timeline.index(('artifact', 'quiz', None)) &lt; timeline.index(('tool_call', 'make_document', 'running'))
+E       AssertionError: assert 9 &lt; 4
+E        +  where 9 = &lt;built-in method index of list object at 0x00000188C75BA600&gt;(('artifact', 'quiz', None))
+E        +    where &lt;built-in method index of list object at 0x00000188C75BA600&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index
+E        +  and   4 = &lt;built-in method index of list object at 0x00000188C75BA600&gt;(('tool_call', 'make_document', 'running'))
+E        +    where &lt;built-in method index of list object at 0x00000188C75BA600&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index
+
+src\web\backend\tests\test_assistant_w09.py:192: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[scope1]" time="1.453"><failure message="AssertionError: assert 9 &lt; 4&#10; +  where 9 = &lt;built-in method index of list object at 0x00000188C786C680&gt;(('artifact', 'quiz', None))&#10; +    where &lt;built-in method index of list object at 0x00000188C786C680&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index&#10; +  and   4 = &lt;built-in method index of list object at 0x00000188C786C680&gt;(('tool_call', 'make_document', 'running'))&#10; +    where &lt;built-in method index of list object at 0x00000188C786C680&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_8cde1108af9c40cab2f1131440b56...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/d5d62521-4498-46fa-b5cd-f9969db231a4/sessions')
+scope = ['module 1: Cơ sở']
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            distractors = []
+            for k, name in enumerate(['Phần tử', 'Quy tắc', 'Đặc điểm']):
+                extra_id = f'{nid}_d{k}'; distractors.append(extra_id)
+                payload['nodes'].append({**base, 'node_id': extra_id, 'name': name, 'display_name': name, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid, *distractors]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+        assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
+            (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
+        assert len(final['artifacts']) == 2
+        timeline = [(row['event'], row.get('name') if row['event'] == 'tool_call' else row.get('artifact', {}).get('kind'), row.get('state')) for row in rows]
+        assert timeline.index(('tool_call', 'make_quiz', 'running')) &lt; timeline.index(('artifact', 'quiz', None))
+&gt;       assert timeline.index(('artifact', 'quiz', None)) &lt; timeline.index(('tool_call', 'make_document', 'running'))
+E       AssertionError: assert 9 &lt; 4
+E        +  where 9 = &lt;built-in method index of list object at 0x00000188C786C680&gt;(('artifact', 'quiz', None))
+E        +    where &lt;built-in method index of list object at 0x00000188C786C680&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index
+E        +  and   4 = &lt;built-in method index of list object at 0x00000188C786C680&gt;(('tool_call', 'make_document', 'running'))
+E        +    where &lt;built-in method index of list object at 0x00000188C786C680&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index
+
+src\web\backend\tests\test_assistant_w09.py:192: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[Kh\xf4ng ph\xe2n gi\u1ea3i \u0111\u01b0\u1ee3c]" time="1.595"><failure message="AssertionError: assert 9 &lt; 4&#10; +  where 9 = &lt;built-in method index of list object at 0x00000188C7947740&gt;(('artifact', 'quiz', None))&#10; +    where &lt;built-in method index of list object at 0x00000188C7947740&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index&#10; +  and   4 = &lt;built-in method index of list object at 0x00000188C7947740&gt;(('tool_call', 'make_document', 'running'))&#10; +    where &lt;built-in method index of list object at 0x00000188C7947740&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_8cde1108af9c40cab2f1131440b56...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/2f40cd76-67f0-4c4d-a5a6-3e177f3243b0/sessions')
+scope = 'Không phân giải được'
+
+    @pytest.mark.parametrize('scope', ['module 4', ['module 1: Cơ sở'], 'Không phân giải được'])
+    def test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope(chat, scope):
+        from copy import deepcopy
+        from doc2roadmap.domain.learning_graph import LearningGraph
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        payload = deepcopy(w.graph.payload)
+        base = deepcopy(payload['nodes'][0]); payload['nodes'], payload['modules'] = [], []
+        for i in range(1, 5):
+            nid, mid = f'n{i}', f'm{i}'
+            payload['nodes'].append({**base, 'node_id': nid, 'module_id': mid})
+            distractors = []
+            for k, name in enumerate(['Phần tử', 'Quy tắc', 'Đặc điểm']):
+                extra_id = f'{nid}_d{k}'; distractors.append(extra_id)
+                payload['nodes'].append({**base, 'node_id': extra_id, 'name': name, 'display_name': name, 'module_id': mid})
+            payload['modules'].append({'module_id': mid, 'title': f'Cơ sở {i}', 'index': i - 1, 'node_ids': [nid, *distractors]})
+        payload['doc_id'] = 'doc-1'
+        graph = LearningGraph(payload, list(w.graph.chunks.values())); graph.graph_version = 8
+        w.gateway.graph_loader = lambda *_: graph; w.gateway._graphs.clear()
+        doc_model = ScriptedLectureModel([['# Tài liệu ôn tập\n\nMột tập hợp gồm các phần tử. [S1]']])
+        w.gateway.runtime.model_for = lambda purpose: w.model if purpose == 'assistant' else doc_model if purpose == 'document' else None
+        w.model.tool_turns = [
+            [ToolCall('make_quiz', {'scope': scope, 'n': 1, 'owner': 'forged', 'doc_id': 'other', 'graph_version': 999}, 'quiz'), Done({})],
+            [ToolCall('make_document', {'request': 'Tóm tắt giúp tôi', 'scope': scope, 'owner': 'forged'}, 'doc'), Done({})],
+            [Delta('Đã tạo xong. [Link giả](quiz:not-real)'), Done({})],
+        ]
+        sid = create(w, scope={'kind': 'module', 'module_id': 'm1'})['session_id']
+        rows = events(ask(w, sid)); final = rows[-1]['answer']
+        assert {row['artifact']['kind'] for row in rows if row['event'] == 'artifact'} == {'quiz', 'document'}, [
+            (call['name'], call['result_summary']) for turn in w.phase_b.list_records('turn') for call in turn['answer'].get('tool_calls', [])]
+        assert len(final['artifacts']) == 2
+        timeline = [(row['event'], row.get('name') if row['event'] == 'tool_call' else row.get('artifact', {}).get('kind'), row.get('state')) for row in rows]
+        assert timeline.index(('tool_call', 'make_quiz', 'running')) &lt; timeline.index(('artifact', 'quiz', None))
+&gt;       assert timeline.index(('artifact', 'quiz', None)) &lt; timeline.index(('tool_call', 'make_document', 'running'))
+E       AssertionError: assert 9 &lt; 4
+E        +  where 9 = &lt;built-in method index of list object at 0x00000188C7947740&gt;(('artifact', 'quiz', None))
+E        +    where &lt;built-in method index of list object at 0x00000188C7947740&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index
+E        +  and   4 = &lt;built-in method index of list object at 0x00000188C7947740&gt;(('tool_call', 'make_document', 'running'))
+E        +    where &lt;built-in method index of list object at 0x00000188C7947740&gt; = [('progress', None, None), ('tool_call', 'make_quiz', 'running'), ('tool_call', 'make_quiz', 'done'), ('progress', None, None), ('tool_call', 'make_document', 'running'), ('tool_call', 'make_document', 'done'), ...].index
+
+src\web\backend\tests\test_assistant_w09.py:192: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_two_concurrent_distinct_intents_are_serialized_not_coalesced" time="1.817" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_http_disconnect_completes_and_retry_reuses_the_saved_turn" time="2.314" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_daily_limit_is_shared_across_courses_and_separate_for_each_learner" time="2.175" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates" time="2.099" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sse_dto_discards_tool_args_and_nested_admin_data_even_from_bad_gateway" time="1.585" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_artifact_card_and_content_recheck_owner_book_and_ready_state[owner]" time="1.004" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_artifact_card_and_content_recheck_owner_book_and_ready_state[doc_id]" time="1.171" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_artifact_card_and_content_recheck_owner_book_and_ready_state[status]" time="0.999" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_composition_uses_role_models_with_shared_vertex_credentials_without_live_auth" time="0.849" /><testcase classname="src.web.backend.tests.test_testing" name="test_fake_application_runs_phase_b_lecture_on_shared_memory_ports" time="0.085" /><testcase classname="src.web.backend.tests.test_testing" name="test_scripted_json_adapter_still_consumes_exactly_one_reply" time="0.002" /><testcase classname="src.web.backend.tests.test_web_architecture" name="test_domain_and_application_do_not_import_infrastructure_frameworks" time="0.130" /><testcase classname="src.web.backend.tests.test_web_architecture" name="test_core_does_not_import_web_package" time="1.577" /><testcase classname="src.web.backend.tests.test_web_architecture" name="test_import_boundary_guards_detect_mutations_in_isolated_tree" time="0.021" /><testcase classname="src.web.backend.tests.test_web_architecture" name="test_openapi_snapshot_matches_application" time="1.076" /><testcase classname="src.web.backend.tests.test_web_architecture" name="test_openapi_snapshot_guard_rejects_an_added_route" time="0.779" /><testcase classname="src.web.backend.tests.test_internal_dry_run_w15" name="test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost[doc-6]" time="16.342" /><testcase classname="src.web.backend.tests.test_internal_dry_run_w15" name="test_real_internal_dry_run_has_no_queue_receipt_or_provider_cost[candidate]" time="15.321" /></testsuite></testsuites>

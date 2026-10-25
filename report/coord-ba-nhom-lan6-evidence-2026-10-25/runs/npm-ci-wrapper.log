@@ -1,0 +1,18 @@
+fatal: detected dubious ownership in repository at 'C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-acceptance-20261025'
+'C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-acceptance-20261025/.git' is owned by:
+	ADMIN/ngoco (S-1-5-21-2283932825-479387747-37237405-1001)
+but the current user is:
+	ADMIN/CodexSandboxOffline (S-1-5-21-2283932825-479387747-37237405-1005)
+To add an exception for this directory, call:
+
+	git config --global --add safe.directory C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-acceptance-20261025
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-review-20261021\run_check.py", line 11, in <module>
+    commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=cwd, text=True).strip()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['git', 'rev-parse', 'HEAD']' returned non-zero exit status 128.

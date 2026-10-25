@@ -7,6 +7,7 @@ import { coursePath, getCourse, getProgress, getRoadmap, modulePath, setProgress
 import { getLecture, lecturePath, sourcePath, streamLecture, type Lecture, type LectureFailure } from './lecture-api';
 import SourceViewer from './SourceViewer';
 import TaskWait from './TaskWait';
+import { AssistantDock } from './Assistant';
 import './learning.css';
 
 const problem = (cause: unknown) => cause instanceof ApiError ? cause.message : 'Kết nối bị gián đoạn. Bạn có thể thử lại.';
@@ -16,12 +17,12 @@ function LectureMarkdown(props: { text: string; sources?: Lecture['sources']; on
   return <Suspense fallback={<div className="lecture-markdown">{props.text}</div>}><MarkdownContent {...props} /></Suspense>;
 }
 
-function Lesson({ courseId, nodeId, title, progress, learned, pending, progressError, onToggle, onAccessError }: {
+function Lesson({ courseId, nodeId, title, progress, learned, pending, progressError, onToggle, onAccessError, onAsk }: {
   courseId: string; nodeId: string; title: string; learned: boolean; pending: boolean;
   progress: CourseProgress['nodes'];
+  onAsk: () => void;
   progressError?: string; onToggle: () => void; onAccessError: (cause: ApiError) => void;
 }) {
-  const auth = useAuth();
   const [lecture, setLecture] = useState<Lecture | null>(null);
   const [failure, setFailure] = useState<LectureFailure | null>(null);
   const [streaming, setStreaming] = useState(false);
@@ -108,7 +109,7 @@ function Lesson({ courseId, nodeId, title, progress, learned, pending, progressE
     {failure && !body && <section className="lecture-failure" aria-labelledby="lecture-failure-title">
       <h2 id="lecture-failure-title">Chưa có bài giảng</h2><p role="alert">{failure.message || 'Chưa thể soạn bài. Bạn có thể thử lại.'}</p>
       <div className="lecture-actions">{sourceButton(readPage)}
-        <button className="button button-secondary" type="button" onClick={() => auth.notify('Trợ lý chưa sẵn sàng. Bạn vẫn có thể đọc tài liệu hoặc thử lại.')}>Hỏi trợ lý</button>
+        <button className="button button-secondary" type="button" onClick={onAsk}>Hỏi trợ lý</button>
         <button className="button button-primary" type="button" onClick={() => setAttempt(value => value + 1)}>Thử lại</button>
       </div>
     </section>}
@@ -145,6 +146,7 @@ export function LearningPage(props: ThemeProps) {
   const [reload, setReload] = useState(0);
   const [pending, setPending] = useState<Set<string>>(new Set());
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [chatRequest, setChatRequest] = useState<{ version: number; question: string }>();
   const requests = useRef(new Map<string, AbortController>());
   const accessError = useRef((cause: ApiError) => {
     if (cause.code === 'unauthenticated') auth.clearSession();
@@ -200,6 +202,7 @@ export function LearningPage(props: ThemeProps) {
             <div className="learning-reading">
               {selected ? <><Link className="learning-list-back" to={modulePath(cid, mid)}>← Danh sách bài học</Link><Lesson key={selected.node_id} courseId={cid} nodeId={selected.node_id} title={selected.name}
                 progress={data.progress.nodes}
+                onAsk={() => setChatRequest(value => ({ version: (value?.version ?? 0) + 1, question: `Giải thích giúp tôi bài ${selected.name}.` }))}
                 learned={data.progress.nodes[selected.node_id]?.state === 'learned'} pending={pending.has(selected.node_id)} progressError={errors[selected.node_id]}
                 onToggle={() => void toggle(selected.node_id)} onAccessError={accessError} /></>
                 : <section className="learning-module-intro"><h1>{module.title}</h1><p>{(typeof module.description === 'string'
@@ -211,5 +214,6 @@ export function LearningPage(props: ThemeProps) {
           </div>
         </>}
     </div>
+    {!error && data && module && <AssistantDock key={cid} courseId={cid} moduleId={mid} focusNodeId={selected?.node_id} request={chatRequest} />}
   </CourseShell>;
 }

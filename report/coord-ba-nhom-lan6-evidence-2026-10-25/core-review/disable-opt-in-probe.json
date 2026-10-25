@@ -1,0 +1,31 @@
+{
+  "variant": "disable-opt-in",
+  "checks": [
+    {
+      "name": "legacy_unknown_denies_dispatch",
+      "passed": true
+    },
+    {
+      "name": "strict_boolean",
+      "passed": true
+    },
+    {
+      "name": "approved_retry_preserves_unknown_and_cap",
+      "passed": false,
+      "error_type": "BuildSpendStopped",
+      "message": "Usage is unknown or a provider bound was exceeded; stop dispatch"
+    },
+    {
+      "name": "parallel_reservations_keep_retained_unknown",
+      "passed": true
+    },
+    {
+      "name": "ready_wrapper_keeps_result_but_reports_unknown",
+      "passed": true
+    }
+  ],
+  "provider_calls": 0,
+  "database_connections": 0,
+  "guard_compiled_sha256": "d8b26eddc67e6c9d166bdc2f5150164b72d699a5fed1e4c47ea36e63f517f0e7",
+  "adapter_compiled_sha256": "2c14b261a01e58f307be26b903ec5c6d9b78a942a588911e9a12ba90a68faa06"
+}

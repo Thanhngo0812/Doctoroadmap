@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.355" timestamp="2026-10-24T22:28:15.329425+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts" time="2.842"><failure message="assert 1.0 == 0.35 ± 3.5e-07&#10;  &#10;  comparison failed&#10;  Obtained: 1.0&#10;  Expected: 0.35 ± 3.5e-07">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_d28c5c0c49f04eccb92906e9e1136...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/4a6a4235-b4e2-45c5-af80-0f81d3d83831/sessions')
+
+    def test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts(chat):
+        w = chat
+        for cost, extra in [(.35, {}), (.7, {'counted_in': 'build'})]:
+            w.phase_b.append_usage({'purpose': 'assistant', 'learner_id': w.a.actor.user_id, 'doc_id': 'other-book',
+                'created_at': w.clock.now().isoformat(), 'cost_usd': cost, **extra})
+        w.phase_b.append_usage({'purpose': 'document', 'learner_id': w.b.actor.user_id, 'doc_id': 'other-book',
+            'created_at': w.clock.now().isoformat(), 'cost_usd': .9})
+        data = w.a.client.get('/api/v1/me/usage').json()
+        assert data['contract_version'] == 'usage-1'
+&gt;       assert data['learner_today']['used_ratio'] == pytest.approx(.35)
+E       assert 1.0 == 0.35 ± 3.5e-07
+E
+E         comparison failed
+E         Obtained: 1.0
+E         Expected: 0.35 ± 3.5e-07
+
+src\web\backend\tests\test_assistant_w09.py:135: AssertionError</failure></testcase></testsuite></testsuites>

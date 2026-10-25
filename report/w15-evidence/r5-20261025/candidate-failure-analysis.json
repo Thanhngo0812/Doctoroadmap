@@ -1,0 +1,50 @@
+{
+  "checkpoints": [
+    {
+      "path": "tmp/w15-operator-candidate-dba02280ea67/artifacts/checkpoints/graph/u-1f019766e74a747d293c/a3-b8adc55421e45ffe4bcdf82ab0e32d1e355983fd781828a3fa4c1e3b526c727e.json",
+      "keys": [
+        "chunks_version",
+        "completed",
+        "source_hash",
+        "stage_measurements"
+      ]
+    }
+  ],
+  "checkpoint_error_fields": [],
+  "audit": {
+    "events": 111,
+    "known_response_count": 17,
+    "unknown_response_count": 94,
+    "unknown_by_kind": {
+      "embedding": 93,
+      "generation": 1
+    },
+    "first_unknown_event_index": 14,
+    "first_unknown": {
+      "stage": "concepts",
+      "reserved_usd": "0.0003072",
+      "actual_usd": null,
+      "budget": {
+        "limit_usd": "3",
+        "known_usd": "0.0089988",
+        "held_usd": "1.4700544",
+        "unknown_upper_usd": "0.0003072",
+        "http_calls": 111,
+        "stopped": false,
+        "audit_failed": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      }
+    },
+    "dispatched_at_first_unknown": 111,
+    "final_dispatched": 111,
+    "no_dispatch_after_unknown": true,
+    "audit_keys": [
+      "stage",
+      "reserved_usd",
+      "actual_usd",
+      "budget"
+    ],
+    "exception_or_http_status_recorded": false
+  }
+}

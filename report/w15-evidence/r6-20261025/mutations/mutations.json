@@ -1,0 +1,42 @@
+{
+  "source_sha256_restored": "7e4f66ee109c2414726989c812f5b841bcea119d76c53ed83c5c26eea086611d",
+  "source_restored": true,
+  "mutations": [
+    {
+      "mutation": "omit-unknown-from-cap",
+      "exit_code": 1,
+      "assertion_failures": [
+        {
+          "classname": "src.web.backend.tests.test_build_spend_w15",
+          "name": "test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap",
+          "time": "0.129"
+        }
+      ],
+      "setup_errors": []
+    },
+    {
+      "mutation": "block-approved-core-retry",
+      "exit_code": 1,
+      "assertion_failures": [
+        {
+          "classname": "src.web.backend.tests.test_build_spend_w15",
+          "name": "test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap",
+          "time": "0.142"
+        }
+      ],
+      "setup_errors": []
+    },
+    {
+      "mutation": "ignore-default-unknown-stop",
+      "exit_code": 1,
+      "assertion_failures": [
+        {
+          "classname": "src.web.backend.tests.test_build_spend_w15",
+          "name": "test_unknown_usage_preserves_the_reservation_and_blocks_later_dispatch",
+          "time": "0.152"
+        }
+      ],
+      "setup_errors": []
+    }
+  ]
+}

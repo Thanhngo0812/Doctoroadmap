@@ -1,0 +1,153 @@
+"""One explicit whole-book diagnostic: unchanged core retry, capped unknown cost, socket read traces."""
+from datetime import datetime
+from decimal import Decimal
+from hashlib import sha256
+from io import BytesIO
+import json
+from pathlib import Path
+import socket
+import ssl
+import subprocess
+import sys
+from threading import Lock, local
+from time import perf_counter
+import traceback
+from unittest.mock import patch
+from uuid import uuid4
+root=Path(__file__).resolve().parents[1]
+sys.path[:0]=[str(root/'src'),str(root/'src/web/backend'),str(root/'src/web/backend/tests')]
+import w15_operator_run as operator
+from wayfinder.infrastructure import build_spend
+from doc2roadmap.infrastructure.google_auth import VertexCredentials
+
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+assert head=='bd05c1b2596d20709efd43c8350bf338af0a614f'
+assert not subprocess.check_output(['git','diff','--','src'],cwd=root)
+gate_path=root/'report/w15-evidence/runs/r6-full-20261025-01-exit.json'
+if not gate_path.exists():
+    gate_path=root/'report/w15-evidence/runs/r6-retry-green-20261025-02-exit.json'
+gate=json.loads(gate_path.read_text(encoding='utf-8'))
+assert gate['exit_code']==0
+assert all(sha256((root/p).read_bytes()).hexdigest()==h for p,h in gate['source_sha256'].items())
+previous=json.loads((root/'report/w15-evidence/r5-20261025/summary.json').read_text(encoding='utf-8'))
+previous_upper=Decimal(previous['total_upper_usd'])
+cap=Decimal('2.25')
+assert previous_upper+cap<=Decimal(4)
+location=root/'tmp/w15-r6-full-retry-location.json'
+assert not location.exists()
+real_connect=socket.socket.connect
+def local_connect(sock,address):
+    if isinstance(address,tuple) and address[0] not in {'127.0.0.1','localhost','::1'}:
+        raise AssertionError('Prepare forbids non-local traffic')
+    return real_connect(sock,address)
+with patch.object(socket.socket,'connect',local_connect):
+    plan_path=operator.prepare('candidate')
+run=plan_path.parent
+plan=json.loads(plan_path.read_text(encoding='utf-8'))
+settings,core=operator.profile(run,plan['database'])
+assert core.llm_max_in_flight==100 and core.gemini_max_retries==8 and core.gemini_timeout_seconds==120
+VertexCredentials(core.vertex_project,core.vertex_location).headers()
+reference='w15-owner-core-retry-20261025-'+uuid4().hex
+permission={k:plan[k] for k in ('file_sha256','pipeline_version','database','embedding_price_profile')}
+permission.update(reference=reference,max_usd=str(cap),approved=True,approved_by='project-owner',
+    embedding_billing_verified=False,retry_unknown_within_cap=True,
+    owner_debug_quote='nếu cần chi tiền tìm lỗi thì cứ chi',
+    owner_request_quote='hãy tìm nguyên nhân lỗi đi',
+    owner_core_quote='cần gì, tôi chỉ muốn backend lắp core vào dự án thôi mà nhỉ, sao backend lại chặn retry của core',
+    owner_retry_quote='nếu retry thành công thì lấy usage đó thôi chứ có gì đâu',
+    owner_repeat_quote='bạn chạy lại thử luôn đi tôi duyệt tiền',
+    operation='one-full-candidate-core-retry-and-socket-diagnostics',max_in_flight=100,max_provider_retries=8,
+    plan_sha256=sha256(plan_path.read_bytes()).hexdigest(),previous_upper_usd=str(previous_upper),
+    all_attempts_upper_including_this_cap_usd=str(previous_upper+cap),
+    gate_basis=gate_path.relative_to(root).as_posix(),gate_source_hashes_match=True)
+approval_path=run/'owner-core-retry-approval.json'
+approval_path.write_bytes((json.dumps(permission,ensure_ascii=False,indent=2)+'\n').encode())
+location.write_bytes((json.dumps(dict(run_dir=run.relative_to(root).as_posix(),database=plan['database'],reference=reference,
+    cap_usd=str(cap),head=head,plan_sha256=sha256(plan_path.read_bytes()).hexdigest(),
+    approval_sha256=sha256(approval_path.read_bytes()).hexdigest()),indent=2)+'\n').encode())
+real_urlopen=build_spend.urlopen
+real_readinto=socket.SocketIO.readinto
+real_create_connection=socket.create_connection
+real_wrap_socket=ssl.SSLContext.wrap_socket
+real_guard_call=build_spend.BuildSpendGuard.__call__
+state=local();lock=Lock();counts=dict(sequence=0,active=0,peak=0)
+def create_connection(*args,**kwargs):
+    start=perf_counter()
+    sock=real_create_connection(*args,**kwargs)
+    row=getattr(state,'row',None)
+    if row is not None:row.update(tcp_peer=sock.getpeername(),tcp_seconds=perf_counter()-start)
+    return sock
+def wrap_socket(context,*args,**kwargs):
+    start=perf_counter()
+    sock=real_wrap_socket(context,*args,**kwargs)
+    row=getattr(state,'row',None)
+    if row is not None:row.update(tls_handshake_seconds=perf_counter()-start,tls_handshake_finished=True)
+    return sock
+def observe_guard(guard,*args,**kwargs):
+    state.stage=guard.stage
+    return real_guard_call(guard,*args,**kwargs)
+def socket_read(sock,buffer):
+    row=getattr(state,'row',None)
+    if row is None:return real_readinto(sock,buffer)
+    start=perf_counter();event=dict(phase=row['phase'],requested_bytes=len(buffer))
+    try:
+        n=real_readinto(sock,buffer)
+        event['read_bytes']=n
+        row['wire_bytes_read']+=n or 0
+        return n
+    except Exception as error:
+        event['error_type']=type(error).__name__
+        raise
+    finally:
+        event['seconds']=perf_counter()-start
+        row['socket_reads'].append(event)
+def observed_provider(request,*args,**kwargs):
+    payload=json.loads(request.data)
+    with lock:
+        counts['sequence']+=1;counts['active']+=1;counts['peak']=max(counts['peak'],counts['active'])
+        sequence=counts['sequence']
+    row=dict(sequence=sequence,stage=getattr(state,'stage',None),operation=request.full_url.rsplit(':',1)[-1],
+        request_sha256=sha256(request.data).hexdigest(),request_bytes=len(request.data),
+        task_type=payload.get('instances',[{}])[0].get('task_type'),
+        started_at=datetime.now().astimezone().isoformat(),timeout_seconds=kwargs.get('timeout'),
+        phase='urlopen',http_status=None,wire_bytes_read=0,socket_reads=[])
+    state.row=row;start=perf_counter();response=None
+    with lock:
+        with (run/'dispatch.jsonl').open('a',encoding='utf-8') as f:
+            f.write(json.dumps({k:row[k] for k in ('sequence','stage','operation','task_type','request_sha256','started_at')})+'\n')
+    try:
+        with real_urlopen(request,*args,**kwargs) as response:
+            row.update(http_status=response.status,headers_seconds=perf_counter()-start,
+                headers={k.lower():v for k,v in response.headers.items() if k.lower() in
+                    {'content-type','content-length','content-encoding','transfer-encoding','connection','server','date','x-request-id','x-goog-request-id'}},
+                http_version=response.version,chunked=response.chunked,will_close=response.will_close,
+                length_at_headers=response.length,wire_bytes_at_headers=row['wire_bytes_read'])
+            try:
+                sock=response.fp.raw._sock
+                row['tls']=dict(version=sock.version(),cipher=sock.cipher(),alpn=sock.selected_alpn_protocol(),peer=sock.getpeername(),timeout=sock.gettimeout())
+            except (AttributeError,OSError):
+                row['tls']=None
+            row['phase']='body'
+            raw=response.read()
+            row.update(body_bytes=len(raw),body_sha256=sha256(raw).hexdigest(),body_seconds=perf_counter()-start-row['headers_seconds'])
+        value=json.loads(raw)
+        row.update(usageMetadata=value.get('usageMetadata'),embedding_statistics=[p.get('embeddings',{}).get('statistics') for p in value.get('predictions',[])])
+        return BytesIO(raw)
+    except Exception as error:
+        row.update(error_type=type(error).__name__,error_message=str(error)[:600],traceback=traceback.format_exc(),
+            http_status=getattr(error,'code',row['http_status']),length_after_error=getattr(response,'length',None),
+            chunk_left_after_error=getattr(response,'chunk_left',None))
+        raise
+    finally:
+        row['wall_seconds']=perf_counter()-start
+        state.row=None
+        with lock:
+            counts['active']-=1
+            with (run/'transport-trace.jsonl').open('a',encoding='utf-8') as f:f.write(json.dumps(row,ensure_ascii=False)+'\n')
+print(json.dumps(dict(location=str(location),reference=reference,cap_usd=str(cap),core_retry=core.gemini_max_retries,
+    max_in_flight=core.llm_max_in_flight,combined_upper_including_cap=str(previous_upper+cap)),indent=2),flush=True)
+try:
+    with patch.object(build_spend,'urlopen',observed_provider),patch.object(build_spend.BuildSpendGuard,'__call__',observe_guard),patch.object(socket.SocketIO,'readinto',socket_read),patch.object(socket,'create_connection',create_connection),patch.object(ssl.SSLContext,'wrap_socket',wrap_socket):
+        operator.execute(plan_path,approval_path)
+finally:
+    (run/'transport-counts.json').write_bytes((json.dumps(counts,indent=2)+'\n').encode())

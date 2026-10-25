@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\tmp\w15_r5_audit.py", line 141, in <module>
+    results.append(audit_book(item,'candidate-controlled',True))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\tmp\w15_r5_audit.py", line 110, in audit_book
+    assert all(edge['source'] in ids and edge['target'] in ids and edge['source']!=edge['target'] for edge in edges)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

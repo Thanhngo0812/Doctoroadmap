@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\tmp\w15_r5_diagnostic.py", line 39, in <module>
+    plan_path = operator.prepare('candidate')
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\w15_operator_run.py", line 85, in prepare
+    pipeline = runtime.pipeline_factory(core, allow_spend=False, phase_b_store=runtime.phase_b_store)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\doc2roadmap\composition_build.py", line 77, in __init__
+    self.limiter = AdaptiveModelLimiter(settings.llm_max_in_flight, settings.llm_tpm_budget,
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\doc2roadmap\infrastructure\llm\rate_limit.py", line 34, in __init__
+    raise ValueError("trần đồng thời phải từ 2; ngân sách mô hình phải dương")
+ValueError: trần đồng thời phải từ 2; ngân sách mô hình phải dương

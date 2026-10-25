@@ -1,0 +1,53 @@
+"""Append measured final integration results to the R6 report; no provider calls."""
+from collections import Counter
+from decimal import Decimal
+import json
+from pathlib import Path
+root=Path(__file__).resolve().parents[1]
+out=root/'report/w15-evidence/r6-20261025'
+audit=json.loads((out/'final-audit.json').read_text(encoding='utf-8'))
+run=root/audit['location']['run_dir']
+events=[]
+for p in run.glob('requests-*.jsonl'):events.extend(json.loads(l) for l in p.read_text(encoding='utf-8').splitlines())
+native=json.loads((root/'report/w15-evidence/runs/r6-full-retry-candidate-20261025-01-exit.json').read_text())
+path=root/'report/w15-phan-tich-timeout-va-retry-2026-10-25.md'
+text=path.read_text(encoding='utf-8')
+marker='## Kết quả cuối — lượt mới đã được duyệt'
+assert marker not in text
+text=text.replace('Chưa chạy thêm lượt có phí ở mốc code này.', 'Ở mốc code `bd05c1b` chưa chạy thêm lượt có phí; kết quả sau phê duyệt mới ở mục cuối bên dưới.')
+g=audit['graph'];b=audit['budget'];r=audit['receipt']
+lines=['',marker,'',
+'> bạn chạy lại thử luôn đi tôi duyệt tiền','',
+'Sau đó chủ dự án chốt hướng tích hợp:',
+'', '> tôi thấy h biết nguyên nhân là 429 và core đã handle bằng retry, ta đâu cần nghiên cứu, chỉ cần theo họ là đc','',
+'Đã theo cơ chế retry/adaptive limiter sẵn có của core, không mở lượt nghiên cứu hoặc phép thử trả phí khác. Các kiểm tra sau dựng chỉ đọc với guard 0 USD.',
+'',f"**Thành công:** native exit 0, toàn lượt **{native['seconds']:.2f} giây = 10 phút 34 giây**, gồm prepare/ADC/HTTP/worker; không có khoảng nghỉ. Core chạy HEAD `{native['commit']}`; không thay HEAD từ prepare đến execute.",
+f"Graph v{g['version']}, **{g['module_count']} module / {g['learnable_count']} khái niệm học**, {g['formula_refs']} formula refs; {len(audit['artifact_images'])} tệp ảnh thật đã giải mã/verify dưới artifact riêng. Quality gate A9 passed={g['quality_gate']['passed']}.",
+'',f"DB `{audit['location']['database']}`; run `{audit['location']['run_dir']}`; reference `{audit['location']['reference']}`.",
+f"Pipeline `{audit['plan']['pipeline_version']}`. Plan vẫn approved=false, approval riêng có retry_unknown_within_cap=true; cả hai giữ embedding_billing_verified=false. SHA plan/approval nguồn ở provenance/manifest.",
+'','### Retry của core và thời gian từng bước','',
+'1.637 dispatch thật: 1.635 HTTP 200, hai HTTP 429 của generateContent ở concepts. Cùng payload bị 429 hai lần rồi có HTTP 200; core tự retry, không có vòng retry backend. 25 lần lặp hash payload trong toàn run còn gồm các thao tác model/repair khác, không gọi tất cả là transport retries.',
+'',f"Peak HTTP theo bước đo từ trace: `{audit['stage_peaks']}`. Cấu hình max_in_flight=100; sau 429 core tự giảm concurrency, nên graph peak 49, learning_prep peak 54. Không nhận là 100 generation đồng thời hoặc A6 đã vượt qua đúng burst 100 của lượt R5.",
+'','| Bước | Generation dispatch | Embedding dispatch | Known USD | Unknown upper USD | Wall giây | Embedding wait giây |','|---|---:|---:|---:|---:|---:|---:|']
+for step in ('doc_reading','concepts','graph','learning_prep'):
+    rows=[e for e in events if e['stage']==step]
+    timing=r['step_details'][step]['web_timing']
+    lines.append(f"| {step} | {sum(Decimal(e['reserved_usd'])>Decimal('.001') for e in rows)} | {sum(Decimal(e['reserved_usd'])<Decimal('.001') for e in rows)} | {sum((Decimal(e['actual_usd']) for e in rows if e['actual_usd'] is not None),Decimal(0))} | {sum((Decimal(e['reserved_usd']) for e in rows if e['actual_usd'] is None),Decimal(0))} | {timing['wall_seconds']:.4f} | {timing['embedding_wait_seconds']:.4f} |")
+lines+=['',
+'Parse/chunks dùng bản dry-run cùng nguồn trong DB/artifact mới; label-roles/A3/A3-prime/canonical/graph/concept index là miss và được dựng trong lượt này. Không lấy cache/alias từ run cũ để ép reuse. Cache ngoài các cờ có receipt giữ unknown, không tự suy hit. Embedding wait là hợp khoảng wrapper, có thể gồm limiter/xác thực/retry, không riêng latency mạng.',
+'',
+'Không có TimeoutError embedding hoặc unknown upper mới trong lượt R6. Hai 429 có guard actual_usd=0; core meter vẫn giữ usage_complete=false vì hai attempt không có usage response. Giữ nguyên cờ của core, không tự đổi thành true, không gọi các lần 429 là embedding unknown. Điều này khác 81 timeout A6 ở R5; lượt mới không chứng minh rằng 429 là nguyên nhân của những timeout cũ.',
+'','### SQL, HTTP và artifact độc lập','',
+f"Một build attempt, một claim; grant finished/không replay; course `{audit['sql']['courses'][0]['id']}` ready và pin graph v{g['version']}. Sổ SQL cost {audit['sql']['builds'][0]['spent_usd']} USD khớp meter delta làm tròn 6 số. Trace counted_in=build có cột cost/token bằng 0, không cộng lại. Module/sequence phủ đủ khái niệm đúng một lần; hard requires là DAG và đúng topo; retrieval/chunks fingerprint tương thích.",
+'',
+'Đã GET course/roadmap/progress có đăng nhập qua PG thật, HTTP 200, số module/concept/graph khớp; guard provider/ADC/SMTP chặn và ledger không tăng. Mail ConsoleMailer “Bản dựng xong”, không phải SMTP thật. Media local fake; endpoint source-page là payload giả 29 byte, không dùng làm bằng chứng ảnh PDF render thật. Các tệp ảnh/công thức Pha A đã verify trực tiếp, vẫn nằm ở filesystem, không chuyển vào DB/commit.',
+'','### Cổng, phạm vi và phần còn mở','',
+'Commit code **bd05c1b**: 6 tệp source/test thuộc W-15 + báo cáo, 48 focused pass; 3 mutation đều bị assertion bắt. Full gate ở đúng commit: **2.685 Python pass / 1 skip Cloudinary / 1 xfail SA-55 cũ**, native exit 0. Full test kết thúc trước khi run tới graph/A6; phần concepts có chồng thời gian đầu với full test, không dùng làm benchmark kiểm soát.',
+'',
+'Không sửa core/adapter thuật toán, .env, alias/roles hoặc test để ép xanh. Root main vẫn 6249dab; không ghép/push main, không dọn DB/artifact/PDF. Frontend không đổi; cổng React/build đã nhận ở mốc trước, không ghi là đã chạy mới trong R6. Mốc dựng thật/tích hợp backend đã có bằng chứng; W-15 chờ người soát nghiệm thu, chưa triển khai product hay SMTP/Cloudinary thật.',
+'','## 10. Chi để bàn giao qua điều phối','',
+f"Lượt R6: known theo profile demo **{audit['new_known_demo_usd']} USD**, unknown upper **{audit['new_unknown_upper_usd']} USD**, cap **{b['limit_usd']} USD**. Toàn R5+R6: known **{audit['combined_known_demo_usd']} USD**, unknown upper giữ lại **{audit['combined_unknown_upper_usd']} USD**, tổng cận trên **{audit['combined_upper_usd']} USD**, dưới 4 USD. Không đối soát hóa đơn; đơn vị giá embedding online chưa xác minh, vẫn embedding_billing_verified=false.",
+'',
+'Báo cáo trực tiếp chủ dự án; điều phối có thể lấy nguyên mục 10 và [final audit](w15-evidence/r6-20261025/final-audit.json). Không gửi message hoặc sửa hồ sơ điều phối. [Manifest](w15-evidence/r6-20261025/manifest.json) và provenance giữ SHA tệp nguồn/bản lưu. Bản evidence chuẩn UTF-8/LF; plan/approval local thật giữ nguyên byte, grant đã consume, không chạy lại từ bản lưu.']
+path.write_bytes((text.rstrip()+'\n'+'\n'.join(lines)+'\n').encode())
+print(json.dumps(dict(report=path.relative_to(root).as_posix(),elapsed_seconds=native['seconds'],modules=g['module_count'],concepts=g['learnable_count'],combined_upper_usd=audit['combined_upper_usd']),indent=2))
