@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="4" skipped="0" tests="5" time="14.599" timestamp="2026-10-25T16:52:59.841327+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_operator_w15" name="test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls[False]" time="7.844" /><testcase classname="src.web.backend.tests.test_operator_w15" name="test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls[True]" time="4.431"><failure message="assert False is True">src\web\backend\tests\test_operator_w15.py:141: in test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls
+    assert result['bootstrap']['step_details']['operator_budget']['retry_unknown_within_cap'] is retry_unknown
+E   assert False is True</failure></testcase><testcase classname="src.web.backend.tests.test_operator_w15" name="test_operator_rejects_non_boolean_retry_permission_before_composition[1]" time="0.017"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'boolean'&#10; Input: 'Owner approval differs from the prepared file_sha256'">src\web\backend\tests\test_operator_w15.py:156: in test_operator_rejects_non_boolean_retry_permission_before_composition
+    operator.execute(plan, approval)
+src\web\backend\tests\w15_operator_run.py:123: in execute
+    raise ValueError('Owner approval differs from the prepared ' + field)
+E   ValueError: Owner approval differs from the prepared file_sha256
+
+During handling of the above exception, another exception occurred:
+src\web\backend\tests\test_operator_w15.py:155: in test_operator_rejects_non_boolean_retry_permission_before_composition
+    with pytest.raises(ValueError, match='boolean'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E    Regex: 'boolean'
+E    Input: 'Owner approval differs from the prepared file_sha256'</failure></testcase><testcase classname="src.web.backend.tests.test_operator_w15" name="test_operator_rejects_non_boolean_retry_permission_before_composition[true]" time="0.013"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'boolean'&#10; Input: 'Owner approval differs from the prepared file_sha256'">src\web\backend\tests\test_operator_w15.py:156: in test_operator_rejects_non_boolean_retry_permission_before_composition
+    operator.execute(plan, approval)
+src\web\backend\tests\w15_operator_run.py:123: in execute
+    raise ValueError('Owner approval differs from the prepared ' + field)
+E   ValueError: Owner approval differs from the prepared file_sha256
+
+During handling of the above exception, another exception occurred:
+src\web\backend\tests\test_operator_w15.py:155: in test_operator_rejects_non_boolean_retry_permission_before_composition
+    with pytest.raises(ValueError, match='boolean'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E    Regex: 'boolean'
+E    Input: 'Owner approval differs from the prepared file_sha256'</failure></testcase><testcase classname="src.web.backend.tests.test_operator_w15" name="test_operator_rejects_non_boolean_retry_permission_before_composition[None]" time="0.024"><failure message="AssertionError: Regex pattern did not match.&#10; Regex: 'boolean'&#10; Input: 'Owner approval differs from the prepared file_sha256'">src\web\backend\tests\test_operator_w15.py:156: in test_operator_rejects_non_boolean_retry_permission_before_composition
+    operator.execute(plan, approval)
+src\web\backend\tests\w15_operator_run.py:123: in execute
+    raise ValueError('Owner approval differs from the prepared ' + field)
+E   ValueError: Owner approval differs from the prepared file_sha256
+
+During handling of the above exception, another exception occurred:
+src\web\backend\tests\test_operator_w15.py:155: in test_operator_rejects_non_boolean_retry_permission_before_composition
+    with pytest.raises(ValueError, match='boolean'):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   AssertionError: Regex pattern did not match.
+E    Regex: 'boolean'
+E    Input: 'Owner approval differs from the prepared file_sha256'</failure></testcase></testsuite></testsuites>

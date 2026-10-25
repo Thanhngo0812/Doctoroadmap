@@ -1,0 +1,1245 @@
+{
+  "location": {
+    "run_dir": "tmp/w15-operator-candidate-b5f1aa6534ce",
+    "database": "wayfinder_w15_b5f1aa6534ce",
+    "reference": "w15-owner-core-retry-20261025-dc87f4746a5849c2a5f3b9c17d114a86",
+    "cap_usd": "2.25",
+    "head": "bd05c1b2596d20709efd43c8350bf338af0a614f",
+    "plan_sha256": "67d37803aa82a30bbae8a97eb023ccbc11a2f16c5e0b7b4fd4502a933267a8e6",
+    "approval_sha256": "e8f0f6196ce5ce2c051c88de04f7acf36f37dd8ef13309ff987d06c774e96988"
+  },
+  "plan": {
+    "book": "candidate",
+    "run_dir": "tmp/w15-operator-candidate-b5f1aa6534ce",
+    "database": "wayfinder_w15_b5f1aa6534ce",
+    "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+    "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "prepared_commit": "bd05c1b2596d20709efd43c8350bf338af0a614f",
+    "dry_run": {
+      "doc_id": "u-1f019766e74a747d293c",
+      "status": "dry_run",
+      "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+      "graph_version": null,
+      "completed_steps": [
+        "doc_reading"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 1,
+          "parse_version": 1,
+          "chunk_count": 125,
+          "a4_gold_coverage": "none",
+          "page_count": 52,
+          "alphabetic_chars": 52325,
+          "average_alphabetic_chars_per_page": 1006.25,
+          "empty_page_ratio": 0.019230769230769232,
+          "vi_diacritic_ratio": 0.270157668418538
+        },
+        "dry_run": {
+          "cache_validated": false,
+          "chunks_version": 1,
+          "candidate_version": null,
+          "canonical_version": null,
+          "graph_version": null,
+          "retrieval_version": null
+        }
+      },
+      "spent_usd": 0.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 10.185420100009651,
+      "error": null
+    },
+    "vertex_project_configured": true,
+    "transport": "vertex",
+    "location": "global",
+    "approved": false,
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false,
+    "provider_calls": 0,
+    "proposed_max_usd": "3.00"
+  },
+  "receipt": {
+    "error": null,
+    "doc_id": "u-1f019766e74a747d293c",
+    "status": "succeeded",
+    "spent_usd": 0.679336,
+    "model_calls": 1637,
+    "input_tokens": 1799291,
+    "step_details": {
+      "graph": {
+        "reused": false,
+        "web_timing": {
+          "wall_seconds": 99.99143780001032,
+          "embedding_wait_seconds": 16.300998999999138,
+          "embedding_wait_measured": true
+        },
+        "graph_version": 8
+      },
+      "concepts": {
+        "a3": {
+          "a3_reused": false,
+          "a3_prime_reused": false,
+          "candidate_version": 1,
+          "retrieval_version": 1
+        },
+        "canonical": {
+          "reused": false,
+          "a4_gold_coverage": "none",
+          "canonical_version": 1
+        },
+        "web_timing": {
+          "wall_seconds": 501.6158126000082,
+          "embedding_wait_seconds": 122.04738180000277,
+          "embedding_wait_measured": true
+        },
+        "label_roles": {
+          "reused": false,
+          "chunks_version": 2
+        }
+      },
+      "doc_reading": {
+        "page_count": 52,
+        "web_timing": {
+          "wall_seconds": 3.170404699994833,
+          "embedding_wait_seconds": 0.0,
+          "embedding_wait_measured": true
+        },
+        "chunk_count": 125,
+        "parse_version": 1,
+        "chunks_version": 1,
+        "a4_gold_coverage": "none",
+        "alphabetic_chars": 52325,
+        "empty_page_ratio": 0.019230769230769232,
+        "vi_diacritic_ratio": 0.270157668418538,
+        "average_alphabetic_chars_per_page": 1006.25
+      },
+      "learning_prep": {
+        "a12": {
+          "graph_version": 8,
+          "assignment_count": 125,
+          "retrieval_version": 1
+        },
+        "formulas": {
+          "cut_count": 14,
+          "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-candidate-b5f1aa6534ce\\artifacts\\phase_b\\formula_images\\u-1f019766e74a747d293c\\parse-v1\\index.json",
+          "parse_version": 1,
+          "skipped_count": 0
+        },
+        "web_timing": {
+          "wall_seconds": 6.832095899997512,
+          "embedding_wait_seconds": 6.023506500001531,
+          "embedding_wait_measured": true
+        },
+        "page_images": {
+          "page_count": 7,
+          "parse_version": 1
+        },
+        "concept_index": {
+          "reused": false,
+          "model_id": "gemini-embedding-001:768",
+          "concept_count": 104,
+          "graph_version": 8
+        }
+      },
+      "operator_budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.67933555",
+        "limit_usd": "2.25",
+        "http_calls": 1637,
+        "audit_failed": false,
+        "unknown_upper_usd": "0",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "retry_unknown_within_cap": true,
+        "embedding_billing_verified": false
+      }
+    },
+    "graph_version": 8,
+    "output_tokens": 157168,
+    "usage_complete": false,
+    "completed_steps": [
+      "doc_reading",
+      "concepts",
+      "graph",
+      "learning_prep"
+    ],
+    "elapsed_seconds": 611.7159697000025,
+    "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268"
+  },
+  "budget": {
+    "stopped": false,
+    "held_usd": "0",
+    "known_usd": "0.67933555",
+    "limit_usd": "2.25",
+    "http_calls": 1637,
+    "audit_failed": false,
+    "unknown_upper_usd": "0",
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "retry_unknown_within_cap": true,
+    "embedding_billing_verified": false
+  },
+  "sql": {
+    "builds": [
+      {
+        "id": "c57efd3c-450b-4829-941d-3af2e1baa124",
+        "status": "succeeded",
+        "doc_id": "u-1f019766e74a747d293c",
+        "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+        "spent_usd": "0.679336",
+        "model_calls": 1637,
+        "usage_complete": false,
+        "claim_count": 1
+      }
+    ],
+    "courses": [
+      {
+        "id": "2721b2b6-dd64-4b95-92d4-93b673b25619",
+        "status": "ready",
+        "doc_id": "u-1f019766e74a747d293c",
+        "published_graph_version": 8
+      }
+    ],
+    "attempt_count": 1,
+    "ledger": [
+      {
+        "purpose": "build",
+        "cost_usd": "0.473906",
+        "input_tokens": 1200310,
+        "output_tokens": 117925,
+        "extra": {
+          "step": "concepts",
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "build",
+          "user_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "build_id": "c57efd3c-450b-4829-941d-3af2e1baa124",
+          "cost_usd": 0.473906,
+          "lease_id": "958624bc-b5a6-45cb-8392-6ccd270d2e5c",
+          "created_at": "2026-10-25T10:14:48.333081+00:00",
+          "learner_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "claim_count": 1,
+          "model_calls": 1119,
+          "input_tokens": 1200310,
+          "output_tokens": 117925,
+          "usage_complete": false,
+          "attribution_complete": true
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.001095,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.098622+00:00",
+          "elapsed_ms": 3220,
+          "learner_id": null,
+          "context_hash": "sha256:65b79990468d1a58b5818a5269909d8bfefc71ca2a650f22ef51be0b627ded0e",
+          "input_tokens": 3006,
+          "output_tokens": 229,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.0008005,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.073180+00:00",
+          "elapsed_ms": 3284,
+          "learner_id": null,
+          "context_hash": "sha256:27bbf91cf3b8c3125925adc42cfd57e4c7471aa355b13aa6163d77d98e742513",
+          "input_tokens": 2128,
+          "output_tokens": 179,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00112825,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.096323+00:00",
+          "elapsed_ms": 3384,
+          "learner_id": null,
+          "context_hash": "sha256:392aa36fb3f574a488ac0790ee7a8d28685c82d30c5684a9d779c09e3df0e152",
+          "input_tokens": 2989,
+          "output_tokens": 254,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.0012405,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.097461+00:00",
+          "elapsed_ms": 3713,
+          "learner_id": null,
+          "context_hash": "sha256:0e86f655064b8dedef8d13b8f9c3b29524e1ef8e7141059cb52ac1d243824c44",
+          "input_tokens": 2532,
+          "output_tokens": 405,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00087425,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.100272+00:00",
+          "elapsed_ms": 4754,
+          "learner_id": null,
+          "context_hash": "sha256:83a7ff0861b6fb74d4e95df5274051c772c8c6dc7b95992647cd375933fdef10",
+          "input_tokens": 2645,
+          "output_tokens": 142,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00087875,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.102483+00:00",
+          "elapsed_ms": 4764,
+          "learner_id": null,
+          "context_hash": "sha256:4da223d1f456785b8e07845c071d9e91424898877f345b7253c3a421d488efe8",
+          "input_tokens": 2615,
+          "output_tokens": 150,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00112825,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.101379+00:00",
+          "elapsed_ms": 5112,
+          "learner_id": null,
+          "context_hash": "sha256:212a802444bc83cb508b1e1d106d528c7173e0a16cadd5f9e25daa2ae7174dce",
+          "input_tokens": 2677,
+          "output_tokens": 306,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00094275,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:22.343849+00:00",
+          "elapsed_ms": 2055,
+          "learner_id": null,
+          "context_hash": "sha256:5e1ba7bd242539b9027d4d15bc89aba096c34d7337b23e1b9510d451100b25c1",
+          "input_tokens": 2235,
+          "output_tokens": 256,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.0007335,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:22.377323+00:00",
+          "elapsed_ms": 2885,
+          "learner_id": null,
+          "context_hash": "sha256:04633be814fea5ebd201f2d0d56db0a8420cd6cb83923c8c599491d41242b78e",
+          "input_tokens": 2256,
+          "output_tokens": 113,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00113625,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:22.834049+00:00",
+          "elapsed_ms": 2965,
+          "learner_id": null,
+          "context_hash": "sha256:a2b63ead2405bf2e0c0e4433cd11c65955dcb18dc2351e0c29350d7a14434b2b",
+          "input_tokens": 2709,
+          "output_tokens": 306,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00107675,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:22.503708+00:00",
+          "elapsed_ms": 3330,
+          "learner_id": null,
+          "context_hash": "sha256:508f32aa24268a8a6b458d7211e25727a0f5f7309e2c6f1cbbd2774601f8a3fa",
+          "input_tokens": 2651,
+          "output_tokens": 276,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00128725,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:19.110065+00:00",
+          "elapsed_ms": 7395,
+          "learner_id": null,
+          "context_hash": "sha256:9d78b42cf3a1f804d0b6a2907d125d62a74cb1cdf677686ebd6f4deab80077a3",
+          "input_tokens": 2695,
+          "output_tokens": 409,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.0010435,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:24.235961+00:00",
+          "elapsed_ms": 2606,
+          "learner_id": null,
+          "context_hash": "sha256:f6dc98942577afabcf2cd5a80ea47bd704787ee366e86aa7f9b1e7de17fc3d30",
+          "input_tokens": 2584,
+          "output_tokens": 265,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00094925,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:23.885399+00:00",
+          "elapsed_ms": 3017,
+          "learner_id": null,
+          "context_hash": "sha256:d0610125b6c0e37df86778e7b7933bf2b126fe03f23422ef6fc97fcaaaf9b206",
+          "input_tokens": 2519,
+          "output_tokens": 213,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.00076075,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:24.422718+00:00",
+          "elapsed_ms": 2825,
+          "learner_id": null,
+          "context_hash": "sha256:0d6395f0256a529040541a55e89c1164bdf7bfe4d11029d71dc10cf12b7b9666",
+          "input_tokens": 2197,
+          "output_tokens": 141,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.0010935,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:23.878558+00:00",
+          "elapsed_ms": 4306,
+          "learner_id": null,
+          "context_hash": "sha256:1bce8e62837393f8083b3a2927faf4c64561ed663d6e78b80ea1c010e63a6656",
+          "input_tokens": 2766,
+          "output_tokens": 268,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "purpose": "build",
+        "cost_usd": "0.204048",
+        "input_tokens": 589771,
+        "output_tokens": 39243,
+        "extra": {
+          "step": "graph",
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "build",
+          "user_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "build_id": "c57efd3c-450b-4829-941d-3af2e1baa124",
+          "cost_usd": 0.204048,
+          "lease_id": "958624bc-b5a6-45cb-8392-6ccd270d2e5c",
+          "created_at": "2026-10-25T10:16:28.347903+00:00",
+          "learner_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "claim_count": 1,
+          "model_calls": 414,
+          "input_tokens": 589771,
+          "output_tokens": 39243,
+          "usage_complete": false,
+          "attribution_complete": true
+        }
+      },
+      {
+        "purpose": "embedding",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "embedding",
+          "cost_usd": 0.00120975,
+          "model_id": "gemini-embedding-001:768",
+          "operation": "concept_index",
+          "cost_basis": "estimated tokens at shared online embedding price",
+          "counted_in": "build",
+          "created_at": "2026-10-25T10:16:34.830228+00:00",
+          "elapsed_ms": 6034,
+          "input_count": 104,
+          "context_hash": "27fc87192b2fff143dc0fde8fd90e3815ca87857f2198026ff7f85cb0aef1109",
+          "input_tokens": 8065
+        }
+      },
+      {
+        "purpose": "build",
+        "cost_usd": "0.001382",
+        "input_tokens": 9210,
+        "output_tokens": 0,
+        "extra": {
+          "step": "learning_prep",
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "build",
+          "user_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "build_id": "c57efd3c-450b-4829-941d-3af2e1baa124",
+          "cost_usd": 0.001382,
+          "lease_id": "958624bc-b5a6-45cb-8392-6ccd270d2e5c",
+          "created_at": "2026-10-25T10:16:35.203525+00:00",
+          "learner_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "claim_count": 1,
+          "model_calls": 104,
+          "input_tokens": 9210,
+          "output_tokens": 0,
+          "usage_complete": false,
+          "attribution_complete": true
+        }
+      },
+      {
+        "purpose": "build",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "step": null,
+          "doc_id": "u-1f019766e74a747d293c",
+          "purpose": "build",
+          "user_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "build_id": "c57efd3c-450b-4829-941d-3af2e1baa124",
+          "cost_usd": 0.0,
+          "lease_id": "958624bc-b5a6-45cb-8392-6ccd270d2e5c",
+          "created_at": "2026-10-25T10:16:35.714583+00:00",
+          "learner_id": "e223f4e8-a43b-429c-b1c0-c23059f6e750",
+          "claim_count": 1,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": false,
+          "attribution_complete": false
+        }
+      }
+    ],
+    "approval": {
+      "state": "finished",
+      "budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.67933555",
+        "limit_usd": "2.25",
+        "http_calls": 1637,
+        "audit_failed": false,
+        "unknown_upper_usd": "0",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "retry_unknown_within_cap": true,
+        "embedding_billing_verified": false
+      },
+      "doc_id": "u-1f019766e74a747d293c",
+      "max_usd": "2.25",
+      "reference": "w15-owner-core-retry-20261025-dc87f4746a5849c2a5f3b9c17d114a86",
+      "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+      "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+      "embedding_price_profile": "owner-demo-embedding-token-20261025",
+      "retry_unknown_within_cap": true,
+      "embedding_billing_verified": false
+    },
+    "approval_event_count": 1637,
+    "approval_events_match_request_log": true
+  },
+  "graph": {
+    "version": 8,
+    "module_count": 16,
+    "learnable_count": 104,
+    "mentioned_count": 41,
+    "non_learnable_count": 13,
+    "edges": {
+      "bypassed_edges": 0,
+      "main_edges": 98,
+      "open_edges": 132,
+      "removed_cycle_edges": 0,
+      "requires_edges": 159,
+      "secondary_edges": 64,
+      "soft_backward_edges": 31,
+      "topic_edges": 127
+    },
+    "quality_gate": {
+      "fallback": null,
+      "isolated_learnable_count": 37,
+      "isolated_ratio": 0.25517241379310346,
+      "learnable_node_count": 145,
+      "nonredundant_edges_per_learnable": 0.8137931034482758,
+      "nonredundant_requires_edge_count": 118,
+      "passed": true,
+      "requires_edge_count": 147,
+      "warning": null
+    },
+    "module_titles": [
+      "Kỹ thuật thủy canh",
+      "Hệ thống thủy canh hồi lưu",
+      "5 Các loại hình thủy canh",
+      "Các nguyên tố dinh dưỡng trong thủy canh",
+      "KNO3 · Canxi",
+      "Vai trò của sắt và kẽm trong dinh dưỡng cây trồng",
+      "Công thức và pha chế dung dịch dinh dưỡng thủy canh",
+      "Tính toán nồng độ dinh dưỡng",
+      "Than bùn · Cát",
+      "Dung dịch dinh dưỡng",
+      "Hệ thống carbonat trong thủy canh",
+      "Điều kiện kị khí · Nhiệt độ",
+      "Kiểm soát độ pH và cơ chất trong thủy canh",
+      "Kiểm soát nồng độ ion trong dung dịch thủy canh",
+      "Chuẩn bị bộ dụng cụ thủy canh",
+      "Chuẩn bị dung dịch dinh dưỡng"
+    ],
+    "formula_refs": 14,
+    "retrieval_input_fingerprint": "4191b081da40d67444d0e8fc2d25f7966f0c4810a2f6a9151ff7f0b851646cd3",
+    "graph_manifest": {
+      "artifact_type": "graph",
+      "config": {
+        "algorithm_id": "phase-b-module-names-v6",
+        "backward_edges": "backward-edges-soft-v1",
+        "canonical_has_anchors": true,
+        "canonical_version": 1,
+        "chunks_version": 2,
+        "deterministic": false,
+        "eligibility": "taught-or-uncertain-only-with-mentioned-aside-v2",
+        "level_rule": "median-concepts-per-section-at-least-half-cap",
+        "model_id": "gemini-3.1-flash-lite",
+        "module_cap": 8,
+        "placement_rule": "content-evidence-before-name-mention-v3",
+        "prompt_hash": "09e03fbd3ac5e1160f581ace3e1c776cbbb1b55a00cd614d3bff7720b45380a0",
+        "requires_cycles": "assert-dag",
+        "settings": {
+          "allow_outside_examples": true,
+          "assistant_contract_version": "answer-3",
+          "assistant_focus_chars": 1500,
+          "assistant_history_tokens": 3000,
+          "assistant_history_turns": 6,
+          "assistant_max_output_tokens": 2048,
+          "assistant_max_page_images": 3,
+          "assistant_max_rounds": 3,
+          "assistant_max_usd": 0.05,
+          "assistant_prompt_version": "assistant-prompt-5",
+          "assistant_temperature": 1.0,
+          "bridge_forbidden_phrases": [
+            "như bạn đã học",
+            "bạn đã biết",
+            "ở bài trước",
+            "như đã học"
+          ],
+          "bridge_max_chars": 160,
+          "connector_sentence_max_chars": 60,
+          "contract_version": "lecture-2",
+          "document_context_chars": 20000,
+          "document_context_tokens": 8000,
+          "document_context_version": "document-context-3",
+          "document_contract_version": "document-3",
+          "document_max_modules": 5,
+          "document_max_output_tokens": 8192,
+          "document_max_page_images": 8,
+          "document_max_usd": 0.03,
+          "document_per_concept_chars": 1600,
+          "document_prompt_version": "document-prompt-3",
+          "document_temperature": 1.0,
+          "document_timeout_seconds": 120.0,
+          "embedding_model_id": "gemini-embedding-001",
+          "learner_daily_max_usd": 1.0,
+          "lecture_click_timeout_seconds": 30.0,
+          "lecture_click_transport_retries": 1,
+          "lecture_context_chars": 9000,
+          "lecture_context_tokens": 2500,
+          "lecture_context_version": "lecture-context-4",
+          "lecture_contract_version": "lecture-3",
+          "lecture_duplicate_jaccard_threshold": 0.6,
+          "lecture_failure_ttl_seconds": 86400,
+          "lecture_max_contrasts": 2,
+          "lecture_max_examples": 1,
+          "lecture_max_explanations": 6,
+          "lecture_max_output_tokens": 4096,
+          "lecture_max_page_images": 8,
+          "lecture_max_prerequisites": 3,
+          "lecture_min_explanations": 2,
+          "lecture_min_source_coverage": 0.5,
+          "lecture_preload_transport_retries": 2,
+          "lecture_prompt_version": "lecture-prompt-4",
+          "lecture_retry_temperature": 0.0,
+          "lecture_temperature": 1.0,
+          "lecture_thinking_level": null,
+          "lecture_validator_version": "lecture-validator-7",
+          "model_id": "gemini-3.1-flash-lite",
+          "naming_common_chunk_ratio": 0.02,
+          "naming_max_output_tokens": 512,
+          "naming_temperature": 0.0,
+          "negative_cache_seconds": 60,
+          "next_up_max": 2,
+          "quiz_bank_variants": 2,
+          "quiz_contract_version": "quiz-3",
+          "quiz_estimated_module_usd": 0.015,
+          "quiz_explanation_max_chars": 300,
+          "quiz_generation_max_output_tokens": 4096,
+          "quiz_generation_prompt_version": "quiz-gen-5",
+          "quiz_hide_report_threshold": 3,
+          "quiz_items_per_concept": 3,
+          "quiz_parallel_concepts": 4,
+          "quiz_roadmap_max_items": 10,
+          "quiz_verifier_max_output_tokens": 8192,
+          "quiz_verifier_prompt_version": "quiz-verify-5",
+          "quiz_verifier_thinking_level": "medium",
+          "quiz_why_wrong_max_chars": 150,
+          "quote_max_chars": 200,
+          "roadmap_recent_module_sessions": 5,
+          "scope_remap_min_jaccard": 0.5,
+          "session_title_max_chars": 60,
+          "spend_day_timezone": "Asia/Ho_Chi_Minh",
+          "system_daily_max_usd": 5.0,
+          "title_max_chars": 60,
+          "tool_results_tokens": 2500
+        },
+        "title_sections_version": 2,
+        "upstream_chain": "gop",
+        "upstream_config_hash": "bcc921a7d1db5d83440212ceafba4ec6b5e41872ed3ea3e796572f7944859db9",
+        "upstream_version": 7,
+        "weights": {
+          "alpha": 1,
+          "chapter": 4,
+          "cut": 1,
+          "floor": 3,
+          "small": 2,
+          "unit": 2
+        }
+      },
+      "config_hash": "1d6c31943d80241f40d3868181334e5401bb5d022aa32215f4cec0bcffd1eb91",
+      "created_at": "2026-10-25T10:16:28.238130+00:00",
+      "doc_id": "u-1f019766e74a747d293c",
+      "source_hash": "254f81ec1053298e54e7cf11a92925a3c8e4a9ab94b1d4c008195e5500cee3cd",
+      "stage": "stages",
+      "stats": {
+        "embedding_input_tokens": 0,
+        "embedding_model_calls": 0,
+        "input_tokens": 0,
+        "measurement_history_complete": true,
+        "model_calls": 0,
+        "output_tokens": 0,
+        "runtime_seconds": 9.452745300004608,
+        "token_usage_complete": true,
+        "usage_responses": 0
+      },
+      "upstream_version": 7,
+      "version": 8
+    }
+  },
+  "artifact_images": [
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/15551043ea05513344c556382b934e371890540ea8e2890ff0cf6c15e21d7a2b.png",
+      "size": [
+        401,
+        250
+      ],
+      "format": "PNG",
+      "sha256": "15551043ea05513344c556382b934e371890540ea8e2890ff0cf6c15e21d7a2b"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/4bccac42ae1360c9fcb43e31e27878552e81eec3faa451a66c1bc0b56f4a487d.png",
+      "size": [
+        633,
+        264
+      ],
+      "format": "PNG",
+      "sha256": "4bccac42ae1360c9fcb43e31e27878552e81eec3faa451a66c1bc0b56f4a487d"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/78f7d3f5a908bc3886830fb03e1559703074cbfff9e8476874ce63c700e39128.png",
+      "size": [
+        401,
+        250
+      ],
+      "format": "PNG",
+      "sha256": "78f7d3f5a908bc3886830fb03e1559703074cbfff9e8476874ce63c700e39128"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/8999735a48bb7854d190c31f9ab36620d98bf629ba5e91109950cc83d69d8055.png",
+      "size": [
+        401,
+        250
+      ],
+      "format": "PNG",
+      "sha256": "8999735a48bb7854d190c31f9ab36620d98bf629ba5e91109950cc83d69d8055"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/94b7126c30d92caf4a4195b78681b4f6c1a68e47ada320651b4d664f38e4b7bf.png",
+      "size": [
+        889,
+        341
+      ],
+      "format": "PNG",
+      "sha256": "94b7126c30d92caf4a4195b78681b4f6c1a68e47ada320651b4d664f38e4b7bf"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/961b702d3a13742cf8a85d3c6bf6e67b90044d9136baf37918ae2cbf746a6bb7.png",
+      "size": [
+        401,
+        250
+      ],
+      "format": "PNG",
+      "sha256": "961b702d3a13742cf8a85d3c6bf6e67b90044d9136baf37918ae2cbf746a6bb7"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/9c79449c94b535fd232289e09334931b5111acc95b8b5c0987f916181ededa48.png",
+      "size": [
+        775,
+        684
+      ],
+      "format": "PNG",
+      "sha256": "9c79449c94b535fd232289e09334931b5111acc95b8b5c0987f916181ededa48"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/a21e46c993643396589b682214a7d48dc12f902f05a60d9a047ea83032fa88e8.png",
+      "size": [
+        400,
+        251
+      ],
+      "format": "PNG",
+      "sha256": "a21e46c993643396589b682214a7d48dc12f902f05a60d9a047ea83032fa88e8"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/a8eebd8794f35eef97c2e54cd372fc6ee404978efd3db0575fc4f7281cf8dfb4.png",
+      "size": [
+        885,
+        480
+      ],
+      "format": "PNG",
+      "sha256": "a8eebd8794f35eef97c2e54cd372fc6ee404978efd3db0575fc4f7281cf8dfb4"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/cc86ee20645102a5aa345f4156f93d67e3c607dd5cd6efe91fb8403e1a26e4bd.png",
+      "size": [
+        839,
+        511
+      ],
+      "format": "PNG",
+      "sha256": "cc86ee20645102a5aa345f4156f93d67e3c607dd5cd6efe91fb8403e1a26e4bd"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/ce503eaf8611a75338e54ec7f73956b1c1a883fe57cf059c3b38c10a4fb487f0.png",
+      "size": [
+        401,
+        251
+      ],
+      "format": "PNG",
+      "sha256": "ce503eaf8611a75338e54ec7f73956b1c1a883fe57cf059c3b38c10a4fb487f0"
+    },
+    {
+      "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/ee92016ef132f192c27c9f6020246a17a874307739736e4ad146e78aeac19dfc.png",
+      "size": [
+        485,
+        653
+      ],
+      "format": "PNG",
+      "sha256": "ee92016ef132f192c27c9f6020246a17a874307739736e4ad146e78aeac19dfc"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/109a348b5aae6f74f15aebe7deecd523582c3c72c6aa816f412edf185cdbb76c.png",
+      "size": [
+        20,
+        16
+      ],
+      "format": "PNG",
+      "sha256": "109a348b5aae6f74f15aebe7deecd523582c3c72c6aa816f412edf185cdbb76c"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/1db465c9db44f9ec08f45122394d26308b4f2a751e66d21866b70349133a8ba4.png",
+      "size": [
+        11,
+        16
+      ],
+      "format": "PNG",
+      "sha256": "1db465c9db44f9ec08f45122394d26308b4f2a751e66d21866b70349133a8ba4"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/3453936afdaa440c5afc25b574d5c7c237de5ab55dc3593745c17a374a06f408.png",
+      "size": [
+        10,
+        16
+      ],
+      "format": "PNG",
+      "sha256": "3453936afdaa440c5afc25b574d5c7c237de5ab55dc3593745c17a374a06f408"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/46260d131961bd2dec4405b1b601259a6e1dc745e6fac28dbd1688d7d251577f.png",
+      "size": [
+        10,
+        17
+      ],
+      "format": "PNG",
+      "sha256": "46260d131961bd2dec4405b1b601259a6e1dc745e6fac28dbd1688d7d251577f"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/81b3c41daa5ea035474d934a380b2506104ac28ae8314dde986ae9b4f70bee20.png",
+      "size": [
+        89,
+        40
+      ],
+      "format": "PNG",
+      "sha256": "81b3c41daa5ea035474d934a380b2506104ac28ae8314dde986ae9b4f70bee20"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/a86642f9935188739d2f3e56e0cfde855d0c5a614fe9d1b8570e3ca9e0fde74d.png",
+      "size": [
+        271,
+        26
+      ],
+      "format": "PNG",
+      "sha256": "a86642f9935188739d2f3e56e0cfde855d0c5a614fe9d1b8570e3ca9e0fde74d"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/aa6fceca71380360c21827ec86b4275ffc8f56f341110854a3ff4117a9b30a4b.png",
+      "size": [
+        93,
+        35
+      ],
+      "format": "PNG",
+      "sha256": "aa6fceca71380360c21827ec86b4275ffc8f56f341110854a3ff4117a9b30a4b"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/aebad04c1b210e1900a9cacb25f6dfe9fd8f77348d70352caf0ee99a03c89de0.png",
+      "size": [
+        10,
+        17
+      ],
+      "format": "PNG",
+      "sha256": "aebad04c1b210e1900a9cacb25f6dfe9fd8f77348d70352caf0ee99a03c89de0"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/c201783680513f1139689c51c58aa79d12c30d06dc93c35f4f044ee4581e69ac.png",
+      "size": [
+        871,
+        71
+      ],
+      "format": "PNG",
+      "sha256": "c201783680513f1139689c51c58aa79d12c30d06dc93c35f4f044ee4581e69ac"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/c211ffb56010d08149fba9090ec16e7349dada24797d9955a4925937c7844874.png",
+      "size": [
+        79,
+        26
+      ],
+      "format": "PNG",
+      "sha256": "c211ffb56010d08149fba9090ec16e7349dada24797d9955a4925937c7844874"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/cdeb9f11e8b22753ce6e02030336f870733ff0ec40b915a1d3f339838377028a.png",
+      "size": [
+        11,
+        17
+      ],
+      "format": "PNG",
+      "sha256": "cdeb9f11e8b22753ce6e02030336f870733ff0ec40b915a1d3f339838377028a"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/d52983288fbb203d451eab4eedfa705f38e92c4bf8e62a4e760aea497822eebc.png",
+      "size": [
+        216,
+        26
+      ],
+      "format": "PNG",
+      "sha256": "d52983288fbb203d451eab4eedfa705f38e92c4bf8e62a4e760aea497822eebc"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/e7f7c891db1cdb001f8e340e7aca6301892cf6cb538ef2353a6807ab1483ed7f.png",
+      "size": [
+        10,
+        16
+      ],
+      "format": "PNG",
+      "sha256": "e7f7c891db1cdb001f8e340e7aca6301892cf6cb538ef2353a6807ab1483ed7f"
+    },
+    {
+      "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/ecc930d5ee6dfbb7006fe834e4fd1150deb134a425987f76aadb0c17dde494cd.png",
+      "size": [
+        907,
+        65
+      ],
+      "format": "PNG",
+      "sha256": "ecc930d5ee6dfbb7006fe834e4fd1150deb134a425987f76aadb0c17dde494cd"
+    },
+    {
+      "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p021.jpg",
+      "size": [
+        893,
+        1264
+      ],
+      "format": "JPEG",
+      "sha256": "0403937c51e508f264c7912a2028e4355deaa4dfa296d053b69cf182aa52b684"
+    },
+    {
+      "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p023.jpg",
+      "size": [
+        893,
+        1264
+      ],
+      "format": "JPEG",
+      "sha256": "daacce991b05dc3562f211bdbdad37f24346840290844e130c50860aee83c6c1"
+    },
+    {
+      "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p024.jpg",
+      "size": [
+        893,
+        1264
+      ],
+      "format": "JPEG",
+      "sha256": "97bdb01a4f648f5072330419eb4d0cf13e323f3448494fc721e8fd9acf4c1372"
+    },
+    {
+      "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p028.jpg",
+      "size": [
+        893,
+        1264
+      ],
+      "format": "JPEG",
+      "sha256": "8ce33a3081f37eccf680ae0150770b9d095c1744757b4806032309ac2414caa1"
+    },
+    {
+      "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p029.jpg",
+      "size": [
+        893,
+        1264
+      ],
+      "format": "JPEG",
+      "sha256": "4b8ef95c747d6348ec4f8bdedca27d5bd8b18f81f8caadf695b7635989613dfb"
+    },
+    {
+      "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p031.jpg",
+      "size": [
+        893,
+        1264
+      ],
+      "format": "JPEG",
+      "sha256": "3d99ccb5edd10ad9117f9345af9be6afca423cef594ad2fd95175372ee351789"
+    },
+    {
+      "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p043.jpg",
+      "size": [
+        893,
+        1264
+      ],
+      "format": "JPEG",
+      "sha256": "d84f16f0fd132595e45f20453c77f8a2600cda7ca8206f618e43110e92b98078"
+    }
+  ],
+  "actual_http_calls": 1637,
+  "http_status_counts": {
+    "200": 1635,
+    "429": 2
+  },
+  "stage_peaks": {
+    "concepts": 100,
+    "graph": 49,
+    "learning_prep": 54
+  },
+  "recovered_error_chains": [
+    {
+      "request_sha256": "e531b45bb11676a0611b6c83f5025ba1743d253bac8be166eea5e2a73d73f30f",
+      "errors": [
+        {
+          "sequence": 222,
+          "stage": "concepts",
+          "operation": "generateContent",
+          "http_status": 429,
+          "error_type": "HTTPError",
+          "phase": "urlopen",
+          "wall_seconds": 62.020999200001825
+        },
+        {
+          "sequence": 308,
+          "stage": "concepts",
+          "operation": "generateContent",
+          "http_status": 429,
+          "error_type": "HTTPError",
+          "phase": "urlopen",
+          "wall_seconds": 53.92320990000735
+        }
+      ],
+      "later_successes": [
+        {
+          "sequence": 411,
+          "stage": "concepts",
+          "operation": "generateContent",
+          "http_status": 200,
+          "wall_seconds": 68.45840400000452
+        }
+      ]
+    }
+  ],
+  "generation_100_simultaneously_proven": false,
+  "embedding_timeout_reproduced": false,
+  "core_unchanged": true,
+  "usage_complete": false,
+  "new_known_demo_usd": "0.67933555",
+  "new_unknown_upper_usd": "0",
+  "combined_known_demo_usd": "1.96881130",
+  "combined_unknown_upper_usd": "0.4139008",
+  "combined_upper_usd": "2.38271210",
+  "invoice_reconciled": false,
+  "embedding_billing_verified": false,
+  "assertions": {
+    "sql_ready_and_exactly_one_attempt": true,
+    "pinned_graph_identity": true,
+    "ledger_equals_meter_delta": true,
+    "raw_trace_not_double_billed": true,
+    "all_learnable_covered_once": true,
+    "hard_requires_dag_and_topological_sequence": true,
+    "retrieval_inputs_compatible": true,
+    "ordinary_source_copy_sha": true,
+    "unknown_reserved_inside_cap": true
+  }
+}

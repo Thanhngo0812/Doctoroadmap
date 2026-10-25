@@ -1,0 +1,10 @@
+"""Reuse the guarded HTTP read checks, targeting only the finished R6 book."""
+from pathlib import Path
+root=Path(__file__).resolve().parents[1]
+source=(root/'tmp/w15_r5_http_read.py').read_text(encoding='utf-8')
+start=source.index('bundle=json.loads(')
+end=source.index('for item in items:')
+source=source[:start]+"items=[json.loads((root/'tmp/w15-r6-full-retry-location.json').read_text())]\n"+source[end:]
+source=source.replace("root/'report/w15-evidence/r5-20261025'/('http-ready-'+('doc-6' if item is items[0] else 'candidate-controlled')+'.json')", "root/'report/w15-evidence/r6-20261025/http-ready-candidate-core-retry.json'")
+assert "http-ready-candidate-core-retry.json" in source
+exec(compile(source,str(Path(__file__)),'exec'))

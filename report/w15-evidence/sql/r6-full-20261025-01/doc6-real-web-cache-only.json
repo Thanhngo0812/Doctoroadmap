@@ -1,0 +1,170 @@
+{
+  "source_sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+  "copied_files": 127,
+  "build": {
+    "id": "06a0589d-0259-42ce-9e90-0616e0cb1f96",
+    "doc_id": "u-82cb494d407c4755d29d",
+    "upload_id": "9c95cd07-3ccd-4667-b66a-4f75adff43ac",
+    "requested_by": "d41cfd8c-c282-41be-80eb-413faa2e9608",
+    "status": "failed",
+    "step": "concepts",
+    "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:30d2a603bb8445cbbe85414c0950e23583e67e48e267cb0d7e4e87b2f48b0c6e",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "doc6-cache-only",
+    "lease_id": "55e9b9f2-f802-484d-a6ba-85251438005d",
+    "heartbeat_at": "2026-01-01 00:00:00+00:00",
+    "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+    "queued_at": "2026-01-01 00:00:00+00:00",
+    "started_at": "2026-01-01 00:00:00+00:00",
+    "finished_at": "2026-01-01 00:00:00+00:00",
+    "created_at": "2026-01-01 00:00:00+00:00",
+    "error_code": "loi_noi_bo",
+    "error_message": "Không thể hoàn tất bản dựng",
+    "retryable": false,
+    "spent_usd": "0.000000",
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "usage_complete": true,
+    "elapsed_seconds": 1.9446050000115065,
+    "graph_version": null,
+    "module_count": 0
+  },
+  "receipt_before_web_error_mapping": {
+    "doc_id": "u-82cb494d407c4755d29d",
+    "status": "failed",
+    "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:30d2a603bb8445cbbe85414c0950e23583e67e48e267cb0d7e4e87b2f48b0c6e",
+    "graph_version": null,
+    "completed_steps": [
+      "doc_reading"
+    ],
+    "step_details": {
+      "doc_reading": {
+        "chunks_version": 1,
+        "parse_version": 1,
+        "chunk_count": 26,
+        "a4_gold_coverage": "none",
+        "page_count": 25,
+        "alphabetic_chars": 4495,
+        "average_alphabetic_chars_per_page": 179.8,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.2407119021134594,
+        "web_timing": {
+          "wall_seconds": 1.8512956000049599,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        }
+      },
+      "concepts": {
+        "web_timing": {
+          "wall_seconds": 0.05162099999142811,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        }
+      }
+    },
+    "spent_usd": 0.0,
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "usage_complete": true,
+    "elapsed_seconds": 1.9446050000115065,
+    "error": {
+      "code": "loi_noi_bo",
+      "error_type": "SpendNotAllowed",
+      "message": "stage ? cần gọi mô hình trả tiền; chạy lại với --allow-spend nếu muốn chi",
+      "stage": "concepts",
+      "retryable": false
+    }
+  },
+  "courses": [
+    {
+      "status": "failed",
+      "doc_id": "u-82cb494d407c4755d29d",
+      "published_graph_version": null
+    }
+  ],
+  "attempts": [
+    {
+      "result": {
+        "error": {
+          "code": "loi_noi_bo",
+          "message": "Không thể hoàn tất bản dựng",
+          "retryable": false
+        },
+        "doc_id": "u-82cb494d407c4755d29d",
+        "status": "failed",
+        "spent_usd": 0.0,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "step_details": {
+          "concepts": {
+            "web_timing": {
+              "wall_seconds": 0.05162099999142811,
+              "embedding_wait_seconds": null,
+              "embedding_wait_measured": false
+            }
+          },
+          "doc_reading": {
+            "page_count": 25,
+            "web_timing": {
+              "wall_seconds": 1.8512956000049599,
+              "embedding_wait_seconds": null,
+              "embedding_wait_measured": false
+            },
+            "chunk_count": 26,
+            "parse_version": 1,
+            "chunks_version": 1,
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 4495,
+            "empty_page_ratio": 0.0,
+            "vi_diacritic_ratio": 0.2407119021134594,
+            "average_alphabetic_chars_per_page": 179.8
+          }
+        },
+        "graph_version": null,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "completed_steps": [
+          "doc_reading"
+        ],
+        "elapsed_seconds": 1.9446050000115065,
+        "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:30d2a603bb8445cbbe85414c0950e23583e67e48e267cb0d7e4e87b2f48b0c6e"
+      }
+    }
+  ],
+  "ledger": [
+    {
+      "purpose": "build",
+      "cost_usd": "0.000000",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "extra": {
+        "step": null,
+        "doc_id": "u-82cb494d407c4755d29d",
+        "purpose": "build",
+        "user_id": "d41cfd8c-c282-41be-80eb-413faa2e9608",
+        "build_id": "06a0589d-0259-42ce-9e90-0616e0cb1f96",
+        "cost_usd": 0.0,
+        "lease_id": "55e9b9f2-f802-484d-a6ba-85251438005d",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "d41cfd8c-c282-41be-80eb-413faa2e9608",
+        "claim_count": 1,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "attribution_complete": false
+      }
+    }
+  ],
+  "mail_subjects": [
+    "Bản dựng lỗi"
+  ],
+  "provider_calls": 0,
+  "ready_at_zero_cost_proven": false,
+  "source_manifest_sha256": "5fc819f723f7263fe3d443ec780009a75aae66f2c35db8fe0bc3e3c50464eb84",
+  "test_source_sha256": "16ef6b10bd4e304c7ae95519f3c6865d3378930daa015efbb899258774a1183c"
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.250" timestamp="2026-10-25T16:57:14.199139+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_owner_opt_in_allows_the_real_core_embedding_retry_and_retains_unknown_in_pg" time="1.248"><failure message="AssertionError: assert ([BuildResult(...ble': False})] == [BuildResult(...ble': False})]&#10;  &#10;  Use -v to get more diff and 'failed' == 'succeeded'&#10;  &#10;  - succeeded&#10;  + failed)">src\web\backend\tests\test_build_approval_w15.py:68: in test_owner_opt_in_allows_the_real_core_embedding_retry_and_retains_unknown_in_pg
+    assert receipts == [result] and result.status == 'succeeded' and result.graph_version == 8
+E   AssertionError: assert ([BuildResult(...ble': False})] == [BuildResult(...ble': False})]
+E
+E     Use -v to get more diff and 'failed' == 'succeeded'
+E
+E     - succeeded
+E     + failed)</failure></testcase></testsuite></testsuites>
