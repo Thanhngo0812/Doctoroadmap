@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="10" time="13.287" timestamp="2026-10-25T22:32:18.509822+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping" time="2.323" /><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score" time="0.620" /><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited" time="1.068"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;rate_limited&quot;,&quot;message&quot;:&quot;Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.&quot;,&quot;retry_after&quot;:3600,&quot;ref&quot;:null}}&#10;assert 429 == 201&#10; +  where 429 = &lt;Response [429 Too Many Requests]&gt;.status_code">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a0350975cd1d4bf59649b8910a7e0...ecture.ScriptedLectureModel object at 0x000002E92682DC70&gt;, base='/api/v1/courses/1d0e5ec6-2716-48b1-9943-c8098e74cb8a')
+
+    def test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited(content):
+        w = content
+        for index in range(2, 7):
+            mid = f'm{index}'; nid = f'n{index}'
+            w.graph.nodes[nid] = {**w.graph.nodes['a'], 'node_id': nid, 'module_id': mid}
+            w.graph.learnable_nodes[nid] = w.graph.nodes[nid]
+            w.graph.modules[mid] = {'module_id': mid, 'index': index, 'title': mid, 'node_ids': [nid]}
+        rejected = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+            json={'request': 'Tóm tắt', 'module_ids': ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']})
+        assert rejected.status_code == 422 and rejected.json()['error']['code'] == 'scope_too_large'
+        assert not w.document.calls
+        for _ in range(10):
+            response = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+                json={'request': 'Tóm tắt', 'module_ids': ['m1']})
+&gt;           assert response.status_code == 201, response.text
+E           AssertionError: {"error":{"code":"rate_limited","message":"Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.","retry_after":3600,"ref":null}}
+E           assert 429 == 201
+E            +  where 429 = &lt;Response [429 Too Many Requests]&gt;.status_code
+
+src\web\backend\tests\test_content_w10.py:112: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_library_groups_are_independent_of_button_or_assistant_origin" time="0.615" /><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers" time="0.485"><failure message="assert False&#10; +  where False = any(&lt;generator object test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers.&lt;locals&gt;.&lt;genexpr&gt; at 0x000002E92654AA80&gt;)">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a0350975cd1d4bf59649b8910a7e0...ecture.ScriptedLectureModel object at 0x000002E926AB9A90&gt;, base='/api/v1/courses/6d242fe9-cab4-4596-88a9-6138e974e4fa')
+
+    def test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers(content):
+        w = content; w.courses.settings.documents_per_hour = 1
+        path = w.base + '/documents'
+        headers = {**w.a.headers, 'Accept': 'text/event-stream'}
+        streamed = w.a.client.post(path, headers=headers, json={'module_ids': ['m1'], 'request': 'Ôn tập'})
+        assert streamed.status_code == 200 and 'text/event-stream' in streamed.headers['content-type']
+        events = [json.loads(line[6:]) for line in streamed.text.splitlines() if line.startswith('data: ')]
+&gt;       assert any(row.get('text') for row in events)
+E       assert False
+E        +  where False = any(&lt;generator object test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers.&lt;locals&gt;.&lt;genexpr&gt; at 0x000002E92654AA80&gt;)
+
+src\web\backend\tests\test_content_w10.py:151: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_submission_rolls_back_both_attempt_and_progress_when_core_write_fails" time="0.807" /><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_independent_runtimes_serialize_competing_submissions" time="0.580" /><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_quiz_sse_keeps_answers_private_and_revocation_denies_the_next_request" time="0.704"><failure message="assert 500 == 200&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a0350975cd1d4bf59649b8910a7e0...ecture.ScriptedLectureModel object at 0x000002E92721CEF0&gt;, base='/api/v1/courses/d43a52ff-f6dd-4fdf-90e0-43b1c3e2e71f')
+
+    def test_w10_quiz_sse_keeps_answers_private_and_revocation_denies_the_next_request(content):
+        w = content
+        streamed = w.b.client.post(w.base + '/quizzes', headers={**w.b.headers, 'Accept': 'text/event-stream'},
+            json={'scope': {'kind': 'module', 'module_id': 'm1'}, 'n': 1})
+        assert streamed.status_code == 200
+        events = [json.loads(line[6:]) for line in streamed.text.splitlines() if line.startswith('data: ')]
+        assert any('item' in row for row in events)
+        assert_no_answers(events)
+        aid = events[-1]['quiz']['attempt_id']
+        assert w.b.client.get(w.base + '/quizzes/' + aid).status_code == 200
+        removed = w.a.client.delete(w.base + '/members/' + w.b.actor.user_id, headers=w.a.headers)
+&gt;       assert removed.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_content_w10.py:210: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="2.545" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_route_inventory_catches_a_new_unguarded_route" time="1.670" /></testsuite></testsuites>

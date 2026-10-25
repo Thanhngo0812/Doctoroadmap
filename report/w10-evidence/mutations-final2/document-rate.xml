@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.694" timestamp="2026-10-25T23:36:59.463602+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited" time="2.914"><failure message="assert (201 == 429)&#10; +  where 201 = &lt;Response [201 Created]&gt;.status_code">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_bf410426565242bab393146895b39...ecture.ScriptedLectureModel object at 0x00000164F8BB23C0&gt;, base='/api/v1/courses/80d9fc11-0507-4ac4-b0eb-d2f899467a1f')
+
+    def test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited(content):
+        w = content
+        for index in range(2, 7):
+            mid = f'm{index}'; nid = f'n{index}'
+            w.graph.nodes[nid] = {**w.graph.nodes['a'], 'node_id': nid, 'module_id': mid}
+            w.graph.learnable_nodes[nid] = w.graph.nodes[nid]
+            w.graph.modules[mid] = {'module_id': mid, 'index': index, 'title': mid, 'node_ids': [nid]}
+        rejected = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+            json={'request': 'Tóm tắt', 'module_ids': ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']})
+        assert rejected.status_code == 422 and rejected.json()['error']['code'] == 'scope_too_large'
+        assert not w.document.calls
+        for _ in range(10):
+            response = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+                json={'request': 'Tóm tắt', 'module_ids': ['m1']})
+            assert response.status_code == 201, response.text
+        other = w.courses.create_course(w.a.actor, doc_id='doc-1', title='Other', graph_version=8, module_count=6)
+        last = w.a.client.post(f'/api/v1/courses/{other.id}/documents', headers=w.a.headers,
+            json={'request': 'Tóm tắt', 'module_ids': ['m1']})
+&gt;       assert last.status_code == 429 and last.json()['error']['code'] == 'rate_limited'
+E       assert (201 == 429)
+E        +  where 201 = &lt;Response [201 Created]&gt;.status_code
+
+src\web\backend\tests\test_content_w10.py:120: AssertionError</failure></testcase></testsuite></testsuites>

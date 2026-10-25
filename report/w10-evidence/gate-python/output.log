@@ -1,0 +1,505 @@
+........................................................................ [  2%]
+........................................................................ [  5%]
+........................................................................ [  7%]
+........................................................................ [ 10%]
+........................................................................ [ 13%]
+........................................................................ [ 15%]
+........................................................................ [ 18%]
+........................................................................ [ 21%]
+........................................................................ [ 23%]
+........................................................................ [ 26%]
+........................................................................ [ 29%]
+........................................................................ [ 31%]
+........................................................................ [ 34%]
+........................................................................ [ 36%]
+.....................................x.................................. [ 39%]
+........................................................................ [ 42%]
+........................................................................ [ 44%]
+........................................................................ [ 47%]
+........................................................................ [ 50%]
+........................................................................ [ 52%]
+........................................................................ [ 55%]
+........................................................................ [ 58%]
+........................................................................ [ 60%]
+........................................................................ [ 63%]
+........................................................................ [ 65%]
+........................................................................ [ 68%]
+........................................................................ [ 71%]
+........................................................................ [ 73%]
+........................................................................ [ 76%]
+........................................................................ [ 79%]
+........................................................................ [ 81%]
+........................................................................ [ 84%]
+........................................................................ [ 87%]
+........................................................................ [ 89%]
+........................................................................ [ 92%]
+......................s................................................. [ 94%]
+........................................................................ [ 97%]
+.................................................................        [100%]
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture0-pypdfium2]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-docling-parse]
+tests/integration/test_docling_parser.py::test_docling_parses_real_document[fixture2-pypdfium2]
+tests/integration/test_ingest_real.py::test_real_ingest_reuses_parse_and_keeps_unchanged_chunk_ids
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\docling\models\stages\ocr\rapid_ocr_model.py:430: DeprecationWarning: deprecated
+    if self.options.rec_font_path is not None:
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf5034f920; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf502cffe0; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf5034f9a0; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf50c02f00; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf4f7e1240; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf50092400; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf50c038a0; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf50d94a80; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf50d94bc0; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf500921c0; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf4f7e0e60; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 82, in _close_template
+      assert not parent._tree_closed()
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+tests/integration/test_w13_build.py::test_doc6_dry_run_uses_real_reader_without_graph_or_provider_calls
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <finalize object at 0x1bf4e607fa0; dead>
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\composition_phase_b.py", line 74, in _warm_credentials
+      self.vertex_credentials.headers()
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\doc2roadmap\infrastructure\google_auth.py", line 20, in headers
+      self._credentials, _ = google.auth.default(
+                             ^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\google\auth\_default.py", line 750, in default
+      raise exceptions.DefaultCredentialsError(_CLOUD_SDK_MISSING_CREDENTIALS)
+  google.auth.exceptions.DefaultCredentialsError: Your default credentials were not found. To set up Application Default Credentials, see https://cloud.google.com/docs/authentication/external/set-up-adc for more information.
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\logging\__init__.py", line 1798, in isEnabledFor
+      return self._cache[level]
+             ~~~~~~~~~~~^^^^^^^
+  KeyError: 30
+
+  During handling of the above exception, another exception occurred:
+
+  Traceback (most recent call last):
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\weakref.py", line 590, in __call__
+      return info.func(*info.args, **(info.kwargs or {}))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\pypdfium2\internal\bases.py", line 84, in _close_template
+      assert owner.wref in parent._kids, f"{owner.repr} {owner.wref}, {parent} {parent._kids}"
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  AssertionError: <PdfPage 0x1bf4fde7bf0> <weakref at 0x000001BF4FE926B0; dead>, <PdfDocument 0x1bf4ff6a2a0 from <bytes object at 0x1bf505d0040>> set()
+
+  Enable tracemalloc to get traceback where the object was allocated.
+  See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+    warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\gate-python.xml -
+2727 passed, 1 skipped, 1 xfailed, 20 warnings in 642.78s (0:10:42)
+Weakref <weakref at 0x000001BF4FDD8A90; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FC13D80; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FDDB240; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FC10D60; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FDDA430; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FDD9800; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FC10450; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FC10BD0; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FC10EA0; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FC10630; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FDD8DB0; dead> was not cleaned up from ObjectTracker.
+Weakref <weakref at 0x000001BF4FE926B0; dead> was not cleaned up from ObjectTracker.
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

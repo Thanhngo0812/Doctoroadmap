@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="2" errors="0" time="2.0640785">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-25T16:06:33.790Z" hostname="ADMIN" tests="7" failures="2" errors="0" skipped="0" time="2.0640785">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0.3124425">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0.5993767">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0.3202436">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="0.6544344">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0.047418">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0.0716872">
+            <failure message="Array.prototype.forEach called on null or undefined" type="TypeError">
+TypeError: Array.prototype.forEach called on null or undefined
+ ❯ exports.getDeclarationForElement node_modules/jsdom/lib/jsdom/living/helpers/style-rules.js:162:11
+ ❯ window.getComputedStyle node_modules/jsdom/lib/jsdom/browser/Window.js:901:32
+ ❯ isInaccessible node_modules/@testing-library/dom/dist/role-helpers.js:67:14
+ ❯ node_modules/@testing-library/dom/dist/role-helpers.js:169:31
+ ❯ getRoles node_modules/@testing-library/dom/dist/role-helpers.js:168:32
+ ❯ prettyRoles node_modules/@testing-library/dom/dist/role-helpers.js:191:17
+ ❯ node_modules/@testing-library/dom/dist/queries/role.js:228:43
+            </failure>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0.055787">
+            <failure message="expected [ &lt;h1&gt;&lt;/h1&gt;, &lt;h1&gt;&lt;/h1&gt; ] to have a length of 1 but got 2" type="AssertionError">
+AssertionError: expected [ &lt;h1&gt;&lt;/h1&gt;, &lt;h1&gt;&lt;/h1&gt; ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/Content.test.tsx:138:67
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

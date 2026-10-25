@@ -1,0 +1,10 @@
+file:///C:/Users/ngoco/Desktop/Doctoroadmap/.agents/skills/design-taste-frontend/scripts/lib/cdp.mjs:122
+      const timer = setTimeout(() => { this.pending.delete(id); reject(new Error('CDP timeout: ' + method)); }, timeoutMs);
+                                                                       ^
+
+Error: CDP timeout: Page.enable
+    at Timeout._onTimeout (file:///C:/Users/ngoco/Desktop/Doctoroadmap/.agents/skills/design-taste-frontend/scripts/lib/cdp.mjs:122:72)
+    at listOnTimeout (node:internal/timers:605:17)
+    at process.processTimers (node:internal/timers:541:7)
+
+Node.js v24.11.1

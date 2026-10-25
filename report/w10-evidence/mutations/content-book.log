@@ -1,0 +1,28 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_w10_saved_content_cannot_be_opened_through_another_book _________
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_be06b23534404b959f0c6db9cd32e...ecture.ScriptedLectureModel object at 0x000001697DD95E80>, base='/api/v1/courses/19cf25a3-fb18-42e8-ba72-a86f8fb47943')
+
+    def test_w10_saved_content_cannot_be_opened_through_another_book(content):
+        w = content; made = create_quiz(w)
+        other = w.courses.create_course(w.a.actor, doc_id='another-book', title='Another book', graph_version=8, module_count=1)
+        def load(doc_id, version):
+            graph = deepcopy(w.graph); graph.doc_id = doc_id; return graph
+        w.gateway.graph_loader = load
+        response = w.a.client.get(f'/api/v1/courses/{other.id}/quizzes/{made["attempt_id"]}')
+>       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_content_w10.py:244: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\mutations\content-book.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_saved_content_cannot_be_opened_through_another_book
+1 failed, 1 warning in 4.15s

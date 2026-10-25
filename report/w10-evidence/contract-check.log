@@ -1,0 +1,15 @@
+F....                                                                    [100%]
+================================== FAILURES ===================================
+_____ test_domain_and_application_do_not_import_infrastructure_frameworks _____
+
+    def test_domain_and_application_do_not_import_infrastructure_frameworks() -> None:
+        for layer in ("domain", "application"):
+>           assert not _violations(BACKEND / layer, FORBIDDEN_FRAMEWORKS)
+E           AssertionError: assert not {WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w10-quiz-documents/src/web/backend/wayfinder/application/learning_gateway.py')}
+E            +  where {WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w10-quiz-documents/src/web/backend/wayfinder/application/learning_gateway.py')} = _violations((WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w10-quiz-documents/src/web/backend/wayfinder') / 'application'), {'alembic', 'argon2', 'cloudinary', 'fastapi', 'sqlalchemy'})
+
+src\web\backend\tests\test_web_architecture.py:26: AssertionError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\contract-check.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_web_architecture.py::test_domain_and_application_do_not_import_infrastructure_frameworks
+1 failed, 4 passed in 4.38s
