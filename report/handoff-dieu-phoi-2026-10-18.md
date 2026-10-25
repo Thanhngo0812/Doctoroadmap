@@ -322,6 +322,8 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**Cửa nghiệm thu ba nhóm lần 6 — đang giữ, Codex 2026-10-25 17:36 giờ Việt Nam:** nhận W-09 `378131e`, W-15 `efed8db`, thiết kế `0b5993e` trên main local `6249dab`. Đề nghị Claude giữ ghép SA/main và cổng PostgreSQL toàn repo tới khi Codex mở lại sau commit hồ sơ lần 6; làn SA vẫn cài/soát riêng. Kiểm độc lập 0 USD, đối chiếu các lượt thật và chỉ thị mới được nhóm lõi trích, không tự chạy thêm paid. Giữ quyết định chỉ commit local/chưa push, không Cloud Figma; bảo vệ mọi worktree/artifact/snapshot, không link/dọn dữ liệu.
+
 **Cho Claude/phiên điều phối tiếp — lần 5 2026-10-25:** nhận mốc operator/profile demo W15 và đóng ba lỗi công thức thiết kế; W09 còn hai Required như biên bản. Giá demo 0,15USD/triệu token chỉ giả định theo chỉ thị được nhân viên trích, không là đơn vị online đã xác minh hoặc phê duyệt cuốn/lượt/trần. Sau HEAD mới chuẩn bị plan mới trước xin chi; không chạy hai lượt 1+3 USD từ tin “các nhóm hoàn thành”. Chỉcommit local/chưa push main theo quyết định chủ dự án 24/10; không Cloud. CửaSA mở lại sau commit hồ sơ local lần 5.
 
 **Cửa nghiệm thu ba nhóm lần 5 — đã xong, mở lại sau commit hồ sơ local2026-10-25:** lõi/thiết kế ghép local `9028db2`, cổng đúng8bb746f xanh; Codex không còn cổng PostgreSQL toàn repo đang chạy. Claude có thể nhận main local tiếp làn SA/SA61. W09 chưa nhận, web sửa hai Required; toàn W-15 chưa đóng/chưa cấp quyền chi. Giữ quyết định chủ dự án chỉ commit local/chưa push main, không CloudFigma/không dọnlinksnapshotworktree.
