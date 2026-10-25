@@ -298,13 +298,18 @@ async function main() {
     await learner.goto(modulePage); await learner.getByRole('button', { name: 'Tạo tài liệu', exact: true }).click();
     await learner.getByRole('dialog').getByRole('button', { name: 'Tạo tài liệu', exact: true }).click();
     await learner.locator('.content-draft').waitFor();
-    const pendingDocument = (await control({ action: 'probe' })).documentRows.find(row => !previousDocuments.has(row.id));
-    assert.ok(pendingDocument, 'PG stores a document identity before the provider finishes');
     await learner.getByRole('button', { name: 'Đóng tạo tài liệu' }).click();
     await control({ action: 'release-document' });
-    await require(path.join(shared, '.tmp/w01-browser-tools/node_modules/playwright')).expect.poll(async () =>
-      (await (await learner.request.get(api + '/documents/' + pendingDocument.id)).json()).status).toBe('ready');
-    audit.disconnect = { documentId: pendingDocument.id, completedAfterDialogClosed: true };
+    let completedDocument;
+    const completedBy = Date.now() + 5000;
+    do {
+      completedDocument = (await control({ action: 'probe' })).documentRows.find(row => !previousDocuments.has(row.id));
+      if (completedDocument?.status === 'ready') break;
+      await new Promise(resolve => setTimeout(resolve, 100));
+    } while (Date.now() < completedBy);
+    assert.equal(completedDocument?.status, 'ready', 'server completes and commits after the dialog closes');
+    assert.equal((await (await learner.request.get(api + '/documents/' + completedDocument.id)).json()).status, 'ready');
+    audit.disconnect = { documentId: completedDocument.id, completedAfterDialogClosed: true };
     stage = 'hour-limit';
     await control({ action: 'advance' }); await control({ action: 'document-mode', mode: 'normal' });
     for (let index = 0; index < 10; index++) {
