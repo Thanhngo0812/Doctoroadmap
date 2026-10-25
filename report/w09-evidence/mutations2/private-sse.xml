@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="7.864" timestamp="2026-10-24T22:29:08.031809+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sse_dto_discards_tool_args_and_nested_admin_data_even_from_bad_gateway" time="4.057"><failure message="assert False&#10; +  where False = all(&lt;generator object test_w09_sse_dto_discards_tool_args_and_nested_admin_data_even_from_bad_gateway.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000019BE64668E0&gt;)">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_8d37e05343604c59a5054022a10c1...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/c7c1f033-14af-4cd2-bd61-c106d2679b66/sessions')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000019BC6821F70&gt;
+
+    def test_w09_sse_dto_discards_tool_args_and_nested_admin_data_even_from_bad_gateway(chat, monkeypatch):
+        w = chat; sid = create(w)['session_id']
+        raw = events(ask(w, sid))[-1]['answer']
+        raw.update(validation={'ADMIN_SENTINEL': True}, public_id='PRIVATE_SENTINEL', usage={'cost_usd': 10})
+        raw['sources'][0].update(public_id='PRIVATE_SENTINEL')
+        def bad_gateway(actor, cid, sid, key, question, emit, focus):
+            emit({'event': 'tool_call', 'name': 'search_document', 'args': {'owner': 'PRIVATE_SENTINEL'},
+                'text': 'PRIVATE_SENTINEL', 'result_summary': {'validation': 'ADMIN_SENTINEL'}})
+            emit({'event': 'admin_log', 'validation': 'ADMIN_SENTINEL'})
+            emit({'event': 'final', 'answer': raw, 'validation': 'ADMIN_SENTINEL'})
+        monkeypatch.setattr(w.gateway, 'ask_stream', bad_gateway)
+        response = ask(w, sid)
+        assert response.status_code == 200
+&gt;       assert all(word not in response.text for word in ['ADMIN_SENTINEL', 'PRIVATE_SENTINEL', '"args"', 'validation', 'cost_usd', 'public_id', 'admin_log'])
+E       assert False
+E        +  where False = all(&lt;generator object test_w09_sse_dto_discards_tool_args_and_nested_admin_data_even_from_bad_gateway.&lt;locals&gt;.&lt;genexpr&gt; at 0x0000019BE64668E0&gt;)
+
+src\web\backend\tests\test_assistant_w09.py:330: AssertionError</failure></testcase></testsuite></testsuites>

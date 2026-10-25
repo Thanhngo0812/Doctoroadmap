@@ -1,0 +1,117 @@
+"""One small paid diagnostic authorized by the owner; no whole-book retry or publication."""
+from datetime import datetime
+from decimal import Decimal
+from hashlib import sha256
+from io import BytesIO
+import json
+from pathlib import Path
+import subprocess
+import sys
+from time import perf_counter
+from unittest.mock import patch
+from uuid import uuid4
+
+root = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(root / 'src'), str(root / 'src/web/backend'), str(root / 'src/web/backend/tests')]
+import w15_operator_run as operator
+from wayfinder.infrastructure import build_spend
+from wayfinder.infrastructure.real_build import RealBuildRuntime
+from doc2roadmap.application.ports.embedding import EmbeddingRequest
+from doc2roadmap.application.build_usage import MeteredModel
+from doc2roadmap.domain.retrieval import embedding_text
+from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+
+head = subprocess.check_output(['git','rev-parse','HEAD'], cwd=root, text=True).strip()
+assert head == '6249dab5c8cd89b36edeb5add45ab88d5d7d7bce'
+bundle = json.loads((root / 'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+worst = Decimal(0)
+for item in bundle['attempts']:
+    execution = json.loads((root / item['run_dir'] / 'execution.json').read_text(encoding='utf-8'))
+    receipt = execution.get('bootstrap') or execution['attempts'][0]['result']
+    budget = receipt['step_details']['operator_budget']
+    worst += Decimal(budget['known_usd']) + Decimal(budget['unknown_upper_usd'])
+assert worst + Decimal('.50') <= Decimal(4)
+original_profile = operator.profile
+def diagnostic_profile(run_dir, database):
+    settings, core = original_profile(run_dir, database)
+    return settings, core.model_copy(update={'gemini_max_retries':0, 'llm_max_in_flight':2})
+operator.profile = diagnostic_profile
+plan_path = operator.prepare('candidate')
+plan = json.loads(plan_path.read_text(encoding='utf-8'))
+run = plan_path.parent
+settings, core = diagnostic_profile(run, plan['database'])
+engine = operator.create_database_engine(operator.test_database_url(plan['database']))
+runtime = RealBuildRuntime(settings, engine, core_settings=core)
+assert runtime.pipeline_version == plan['pipeline_version']
+reference = 'w15-debug-owner-20261025-' + uuid4().hex
+permission = dict(approved=True, approved_by='project-owner', owner_message_quote='nếu cần chi tiền tìm lỗi thì cứ chi',
+    reference=reference, max_usd='0.50', file_sha256=plan['file_sha256'], pipeline_version=plan['pipeline_version'],
+    database=plan['database'], embedding_price_profile=plan['embedding_price_profile'], embedding_billing_verified=False,
+    operation='serial-embedding-then-tiny-generation-diagnostic', max_provider_retries=0, max_in_flight=2,
+    plan_sha256=sha256(plan_path.read_bytes()).hexdigest(), created_at=datetime.now().astimezone().isoformat())
+(run / 'owner-debug-approval.json').write_bytes((json.dumps(permission, ensure_ascii=False, indent=2)+'\n').encode())
+grant = build_spend.BuildSpendApproval(**{k:permission[k] for k in ('reference','max_usd','file_sha256','pipeline_version','embedding_price_profile')},
+    audit_log=run / 'budget-requests.jsonl')
+trace_path = run / 'transport-trace.jsonl'
+real_urlopen = build_spend.urlopen
+def observed_provider(request, *args, **kwargs):
+    row = dict(operation=request.full_url.rsplit(':',1)[-1], started_at=datetime.now().astimezone().isoformat(),
+               timeout_seconds=kwargs.get('timeout'), request_sha256=sha256(request.data).hexdigest(), http_status=None)
+    start = perf_counter()
+    try:
+        with real_urlopen(request, *args, **kwargs) as response:
+            row['http_status'] = response.status
+            raw = response.read()
+        value = json.loads(raw)
+        row['response_keys'] = list(value)
+        row['usageMetadata'] = value.get('usageMetadata')
+        row['embedding_statistics'] = [p.get('embeddings',{}).get('statistics') for p in value.get('predictions',[])]
+        row['metadata_keys'] = list(value.get('metadata',{}))
+        return BytesIO(raw)
+    except Exception as error:
+        row.update(error_type=type(error).__name__, error_message=str(error)[:500],
+                   reason_type=type(getattr(error,'reason',None)).__name__)
+        row['http_status'] = getattr(error,'code',row['http_status'])
+        raise
+    finally:
+        row['wall_seconds'] = perf_counter()-start
+        with trace_path.open('a',encoding='utf-8') as handle:
+            handle.write(json.dumps(row,ensure_ascii=False)+'\n')
+        print(json.dumps(row,ensure_ascii=False),flush=True)
+
+candidate = next(row for row in bundle['attempts'] if row['book']=='candidate')
+old_store = JsonArtifactStore(root / candidate['run_dir'] / 'artifacts')
+chunks = old_store.load_latest_chunks('u-'+plan['file_sha256'][:20])
+chunk = max(chunks.result.chunks,key=lambda c:len(c.text))
+probe_text = embedding_text(chunk.section_path,chunk.text)
+outcome = dict(operation=permission['operation'], reference=reference, source_plan=str(plan_path.relative_to(root)),
+               input_chunk_id=chunk.chunk_id, input_text_sha256=sha256(probe_text.encode()).hexdigest(),
+               input_characters=len(probe_text), embedding_billing_verified=False)
+pipeline = None
+try:
+    with patch.object(build_spend,'urlopen',observed_provider), grant.activate(run / 'source.pdf','u-'+plan['file_sha256'][:20],runtime) as guard:
+        pipeline = runtime.pipeline_factory(core,allow_spend=True,phase_b_store=runtime.phase_b_store)
+        guard.stage='diagnostic_embedding_serial'
+        vectors=pipeline.embedding_guard.embed([EmbeddingRequest(probe_text,'RETRIEVAL_DOCUMENT')])
+        outcome['embedding_dimensions']=len(vectors[0])
+        guard.stage='diagnostic_generation_serial'
+        model=MeteredModel(pipeline._extractor(core.extraction_model_id,max_output_tokens=32),pipeline.usage_meter)
+        reply=model.start_session('Return only the requested JSON object.').ask_json('Return {"ok":true}.',
+            response_schema={'type':'object','properties':{'ok':{'type':'boolean'}},'required':['ok']})
+        outcome.update(status='diagnostic_succeeded',json_ok=reply.payload.get('ok'),budget=guard.snapshot())
+except Exception as error:
+    outcome.update(status='diagnostic_failed',error_type=type(error).__name__,error_message=str(error)[:500])
+finally:
+    usage=pipeline.usage() if pipeline else dict(spent_usd=0,model_calls=0,input_tokens=0,output_tokens=0,usage_complete=True)
+    record=runtime.phase_b_store.get_record('w15_build_approval',reference)
+    outcome.update(usage=usage,approval_record=record)
+    runtime.phase_b_store.put_record('w15_debug_receipt',reference,outcome)
+    runtime.phase_b_store.append_usage(dict(purpose='build',doc_id='u-'+plan['file_sha256'][:20],
+        operation=permission['operation'],approval_reference=reference,cost_usd=round(usage['spent_usd'],6),
+        input_tokens=usage['input_tokens'],output_tokens=usage['output_tokens'],model_calls=usage['model_calls'],
+        usage_complete=usage['usage_complete'],embedding_billing_verified=False))
+    (run / 'diagnostic-result.json').write_bytes((json.dumps(outcome,ensure_ascii=False,indent=2,default=str)+'\n').encode())
+    (root / 'tmp/w15-r5-diagnostic-location.json').write_bytes((json.dumps(dict(run_dir=run.relative_to(root).as_posix(),
+        reference=reference,database=plan['database']),indent=2)+'\n').encode())
+    runtime.close();engine.dispose()
+    print(json.dumps(dict(result=str(run/'diagnostic-result.json'),status=outcome['status'],usage=usage),ensure_ascii=False,indent=2),flush=True)

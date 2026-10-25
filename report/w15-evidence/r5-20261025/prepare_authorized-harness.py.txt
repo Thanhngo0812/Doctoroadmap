@@ -1,0 +1,83 @@
+"""Prepare exact new plans and separate one-use grants from the owner's current approval."""
+from contextlib import contextmanager
+from datetime import datetime
+from hashlib import sha256
+import json
+from pathlib import Path
+import socket
+import subprocess
+import sys
+from unittest.mock import patch
+from uuid import uuid4
+
+root = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(root / 'src'), str(root / 'src/web/backend'), str(root / 'src/web/backend/tests')]
+import w15_operator_run as operator
+from doc2roadmap.infrastructure.google_auth import VertexCredentials
+from sqlalchemy import text
+
+head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+assert head == '6249dab5c8cd89b36edeb5add45ab88d5d7d7bce'
+assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=root).strip()
+capture = json.loads((root / 'report/w15-evidence/runs/r4-full-20261025-02-exit.json').read_text())
+assert capture['exit_code'] == 0 and all(sha256((root / p).read_bytes()).hexdigest() == digest
+    for p, digest in capture['source_sha256'].items())
+bundle = root / ('tmp/w15-r5-authorized-' + uuid4().hex[:12] + '.json')
+assert not bundle.exists()
+approval_text = 'tôi có duyệt tiền, phân tích tiep tuc trien khai'
+scope_text = 'Giữ đề nghị bootstrap doc-6 tối đa 1 USD và một cuốn 52 trang tối đa 3 USD; tổng 4 USD chưa được duyệt.'
+items = []
+original_connect = socket.socket.connect
+def only_local_network(sock, address):
+    if isinstance(address, tuple) and address[0] not in {'127.0.0.1', 'localhost', '::1'}:
+        raise AssertionError('Dry-run forbids non-local network connections')
+    return original_connect(sock, address)
+
+for book in ('doc-6', 'candidate'):
+    with patch.object(socket.socket, 'connect', only_local_network):
+        plan_path = operator.prepare(book)
+    plan = json.loads(plan_path.read_text(encoding='utf-8'))
+    assert plan['prepared_commit'] == head and plan['approved'] is False
+    assert plan['embedding_price_profile'] == 'owner-demo-embedding-token-20261025'
+    assert plan['embedding_billing_verified'] is False and '\\' not in plan['run_dir']
+    assert plan['provider_calls'] == plan['dry_run']['model_calls'] == plan['dry_run']['spent_usd'] == 0
+    source = root / plan['run_dir'] / 'source.pdf'
+    assert source.stat().st_nlink == 1 and sha256(source.read_bytes()).hexdigest() == plan['file_sha256']
+    engine = operator.create_database_engine(operator.test_database_url(plan['database']))
+    try:
+        with engine.connect() as reader:
+            counts = {table: reader.execute(text('SELECT count(*) FROM ' + table)).scalar_one()
+                for table in ('upload', 'build', 'course', 'usage_ledger', 'phase_b_cache', 'phase_b_record')}
+        assert not any(counts.values()), counts
+    finally:
+        engine.dispose()
+    reference = 'w15-owner-20261025-' + book + '-' + uuid4().hex
+    grant = {key: plan[key] for key in ('file_sha256', 'pipeline_version', 'database', 'embedding_price_profile')}
+    grant.update(reference=reference, max_usd=plan['proposed_max_usd'], approved=True, approved_by='project-owner',
+        embedding_billing_verified=False, prepared_commit=head, plan_sha256=sha256(plan_path.read_bytes()).hexdigest(),
+        owner_message_quote=approval_text, owner_message_scope_quote=scope_text,
+        owner_message_context='Current user message supplies this scope and ends with the explicit money approval quoted above',
+        approval_recorded_at=datetime.now().astimezone().isoformat())
+    grant_path = plan_path.parent / 'owner-approval.json'
+    assert not grant_path.exists()
+    grant_path.write_bytes((json.dumps(grant, ensure_ascii=False, indent=2) + '\n').encode())
+    items.append({key: plan[key] for key in ('book', 'run_dir', 'database', 'file_sha256', 'pipeline_version',
+                  'embedding_price_profile', 'embedding_billing_verified', 'proposed_max_usd')}
+        | dict(plan=plan_path.relative_to(root).as_posix(), plan_sha256=sha256(plan_path.read_bytes()).hexdigest(),
+               approval=grant_path.relative_to(root).as_posix(), approval_sha256=sha256(grant_path.read_bytes()).hexdigest(),
+               reference=reference, operation='internal-bootstrap-then-cache-only-web' if book == 'doc-6' else 'one-http-web-build',
+               sql_counts_after_prepare=counts))
+
+# Authentication refresh is not a model inference. Do it before consuming a paid-attempt reference.
+settings, core = operator.profile(root / items[0]['run_dir'], items[0]['database'])
+headers = VertexCredentials(core.vertex_project, core.vertex_location).headers()
+assert headers.get('Authorization', '').startswith('Bearer ')
+del headers
+record = dict(commit=head, created_at=datetime.now().astimezone().isoformat(), owner_paid_approval_received=True,
+    owner_message_quote=approval_text, total_cap_usd='4.00', caps_under_demo_assumption=True,
+    google_online_billing_unit_verified=False, auth_preflight_ready=True,
+    provider_calls_during_prepare=0, artifacts_and_pg_isolated=True, attempts=items)
+bundle.write_bytes((json.dumps(record, ensure_ascii=False, indent=2) + '\n').encode())
+assert not subprocess.check_output(['git', 'status', '--porcelain'], cwd=root).strip()
+print(json.dumps(dict(bundle=str(bundle), commit=head, plans=items, auth_preflight_ready=True,
+    provider_calls_during_prepare=0, owner_paid_approval_received=True), ensure_ascii=False, indent=2))

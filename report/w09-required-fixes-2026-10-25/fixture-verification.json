@@ -1,0 +1,29 @@
+{
+  "bundles": [
+    {
+      "manifest": "report/doc1-rebuild-evidence-2026-10-20/development-fixtures.json",
+      "manifestSha256": "5fc819f723f7263fe3d443ec780009a75aae66f2c35db8fe0bc3e3c50464eb84",
+      "snapshot": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\document-data\\development-rebuilt-2026-10-20",
+      "verifiedFiles": 3080,
+      "sourceAndTargetSha256Match": true,
+      "linksUsed": false
+    },
+    {
+      "manifest": "report/w06-fixtures-evidence-2026-10-20/development-fixtures.json",
+      "manifestSha256": "4f81f6d0f04e64bd02257aa873f9d68145bc121ec6e1ecf10d819458ed4d4a5a",
+      "snapshot": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\document-data\\development-w06-four-books-2026-10-20",
+      "verifiedFiles": 64,
+      "sourceAndTargetSha256Match": true,
+      "linksUsed": false
+    }
+  ],
+  "verifiedFiles": 3144,
+  "excludedCliStores": [
+    {
+      "path": "artifacts/phase_b/doc-1-rebuild-20261020.json",
+      "presentInWorktree": false,
+      "reason": "CLI learner store excluded by copy_w06_fixtures.py; never imported into web PG."
+    }
+  ],
+  "action": "Read-only verification. No copies, changes or overwrites. An initial overly broad check stopped at absent CLI store; corrected to the existing web input allowlist."
+}

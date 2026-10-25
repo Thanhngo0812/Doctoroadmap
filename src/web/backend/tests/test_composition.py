@@ -34,6 +34,33 @@ def test_vertex_transport_is_passed_to_model_and_embedding_without_api_key() -> 
     assert services.model is not None and services.embedding is not None
 
 
+def test_lecture_model_uses_core_limits_instead_of_transport_defaults() -> None:
+    from types import SimpleNamespace
+    from doc2roadmap.domain.phase_b_limits import BSettings
+    from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel
+    settings = BSettings()
+    services = compose_services(WebSettings(_env_file=None), health_check=lambda: 'ok',
+        core_settings=Settings(_env_file=None, llm_transport='vertex', vertex_project='fake-project', vertex_location='us-central1'),
+        auth_validator=lambda *_: None, model_factory=GeminiToolModel,
+        embedding_factory=lambda *_a, **_k: object())
+    try:
+        assert services.model.max_output_tokens == settings.lecture_max_output_tokens
+        assert services.model.temperature == settings.lecture_temperature
+        assert services.model.model_id == settings.model_id
+        requests = []
+        def capture(operation, body, **kwargs):
+            requests.append(body)
+            return SimpleNamespace(close=lambda: None)
+        services.model._request = capture
+        services.model._decode_sse = lambda _response: iter(())
+        assert list(services.model.start_session('fake system').stream_text('fake prompt', temperature=settings.lecture_temperature)) == []
+        request = requests[0]
+        assert request['generationConfig']['maxOutputTokens'] == settings.lecture_max_output_tokens
+        assert request['generationConfig']['temperature'] == settings.lecture_temperature
+    finally:
+        services.close()
+
+
 def test_missing_vertex_project_fails_before_auth_or_model() -> None:
     calls = []
 

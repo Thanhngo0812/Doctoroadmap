@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.860" timestamp="2026-10-24T22:26:33.667588+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sessions_bind_actor_document_and_scope_from_published_graph" time="3.301"><failure message="AssertionError: assert 500 == 404&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code&#10; +    where &lt;Response [500 Internal Server Error]&gt; = get('/api/v1/courses/44de345b-1cf6-4932-81b0-48232cc6228c/sessions/bb3ec07960e843e5a3533f2274837dfd/turns')&#10; +      where get = &lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt;.get&#10; +        where &lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt; = namespace(client=&lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt;, actor=Actor(user_id='8151d784-833e-45...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'I7f_SCJg_kR_r_5DnLOYk7Jpevob_2mhHUkjVkjamm0'}).client&#10; +          where namespace(client=&lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt;, actor=Actor(user_id='8151d784-833e-45...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'I7f_SCJg_kR_r_5DnLOYk7Jpevob_2mhHUkjVkjamm0'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_39d085cdbe944273b5a714571e6b9...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/44de345b-1cf6-4932-81b0-48232cc6228c/sessions').b">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_39d085cdbe944273b5a714571e6b9...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/44de345b-1cf6-4932-81b0-48232cc6228c/sessions')
+
+    def test_w09_sessions_bind_actor_document_and_scope_from_published_graph(chat):
+        w = chat
+        session = create(w, scope={'kind': 'module', 'module_id': 'm1', 'node_ids': ['attacker']})
+        sid = session['session_id']
+        assert 'owner' not in session and 'state' not in session
+        with w.independent_engine.connect() as c:
+            row = c.scalar(text("SELECT value FROM phase_b_record WHERE kind='session' AND record_id=:sid"), {'sid': sid})
+        assert row['owner'] == w.a.actor.user_id and row['doc_id'] == 'doc-1'
+        assert row['scope']['node_ids'] == ['a', 'b']
+        assert w.b.client.get(w.url).json()['sessions'] == []
+&gt;       assert w.b.client.get(f'{w.url}/{sid}/turns').status_code == 404
+E       AssertionError: assert 500 == 404
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+E        +    where &lt;Response [500 Internal Server Error]&gt; = get('/api/v1/courses/44de345b-1cf6-4932-81b0-48232cc6228c/sessions/bb3ec07960e843e5a3533f2274837dfd/turns')
+E        +      where get = &lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt;.get
+E        +        where &lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt; = namespace(client=&lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt;, actor=Actor(user_id='8151d784-833e-45...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'I7f_SCJg_kR_r_5DnLOYk7Jpevob_2mhHUkjVkjamm0'}).client
+E        +          where namespace(client=&lt;starlette.testclient.TestClient object at 0x0000021AA6DFDEB0&gt;, actor=Actor(user_id='8151d784-833e-45...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'I7f_SCJg_kR_r_5DnLOYk7Jpevob_2mhHUkjVkjamm0'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_39d085cdbe944273b5a714571e6b9...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/44de345b-1cf6-4932-81b0-48232cc6228c/sessions').b
+
+src\web\backend\tests\test_assistant_w09.py:56: AssertionError</failure></testcase></testsuite></testsuites>

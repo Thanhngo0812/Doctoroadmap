@@ -1,0 +1,40 @@
+"""Extract error-only evidence from the failed candidate's own checkpoint/audit."""
+from collections import Counter
+from decimal import Decimal
+import json
+from pathlib import Path
+root = Path(__file__).resolve().parents[1]
+run = root / 'tmp/w15-operator-candidate-dba02280ea67'
+errors, checkpoint_shapes = [], []
+def walk(value, location):
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key in {'error', 'error_type', 'failed_sections', 'failed', 'warnings', 'retry_failed'}:
+                errors.append(dict(path=location + '/' + key, value=item))
+            if key not in {'input', 'raw_text', 'output', 'last_output', 'text', 'entities', 'edges', 'candidate_embeddings'}:
+                walk(item, location + '/' + key)
+    elif isinstance(value, list):
+        for index, item in enumerate(value):
+            walk(item, location + '/' + str(index))
+for path in (run / 'artifacts/checkpoints').rglob('*.json'):
+    value = json.loads(path.read_text(encoding='utf-8'))
+    checkpoint_shapes.append(dict(path=path.relative_to(root).as_posix(), keys=list(value)))
+    walk(value, path.name)
+events = []
+for path in run.glob('requests-*.jsonl'):
+    events += [json.loads(line) for line in path.read_text(encoding='utf-8').splitlines()]
+unknown = [event for event in events if event['actual_usd'] is None]
+first = next(i for i, event in enumerate(events) if event['actual_usd'] is None)
+dispatched_at_first_unknown = events[first]['budget']['http_calls']
+assert all(event['budget']['http_calls'] == dispatched_at_first_unknown for event in events[first:])
+data = dict(checkpoints=checkpoint_shapes, checkpoint_error_fields=errors,
+    audit=dict(events=len(events), known_response_count=len(events)-len(unknown), unknown_response_count=len(unknown),
+        unknown_by_kind=dict(Counter('generation' if Decimal(row['reserved_usd']) > Decimal('.001') else 'embedding' for row in unknown)),
+        first_unknown_event_index=first, first_unknown=events[first],
+        dispatched_at_first_unknown=dispatched_at_first_unknown, final_dispatched=events[-1]['budget']['http_calls'],
+        no_dispatch_after_unknown=True, audit_keys=list(events[0]),
+        exception_or_http_status_recorded=any('error_type' in event or 'http_status' in event for event in events)))
+out = root / 'report/w15-evidence/r5-20261025/candidate-failure-analysis.json'
+out.parent.mkdir(parents=True, exist_ok=True)
+out.write_bytes((json.dumps(data, ensure_ascii=False, indent=2) + '\n').encode())
+print(json.dumps(data, ensure_ascii=False, indent=2))

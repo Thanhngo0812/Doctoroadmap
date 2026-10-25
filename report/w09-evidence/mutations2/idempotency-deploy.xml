@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.728" timestamp="2026-10-24T22:29:35.721889+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_answer3_history_and_idempotency_keep_private_fields_on_server" time="4.764"><failure message="AssertionError: assert '3917a1a5-471...-67a79760a3ea' == 'd9c86e9c-0f5...-76813922c055'&#10;  &#10;  - d9c86e9c-0f5e-4123-99c5-76813922c055&#10;  + 3917a1a5-4714-4ade-a1ba-67a79760a3ea">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_7a9ae66e6337488c99e23a389af5d...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/7184e43f-73d1-4b03-89c0-963007d2ece3/sessions')
+
+    def test_w09_answer3_history_and_idempotency_keep_private_fields_on_server(chat):
+        w = chat; sid = create(w)['session_id']; key = uuid4().hex
+        first = events(ask(w, sid, key=key))
+        assert any(row['event'] == 'delta' and 'x^2' in row['text'] for row in first)
+        final = first[-1]['answer']
+        assert final['contract_version'] == 'answer-3' and final['status'] == 'answered'
+        assert final['answer_md'] == 'Câu trả lời $x^2$. [S1] [S999]'
+        second = events(ask(w, sid, key=key))[-1]['answer']
+        assert second['answer_id'] == final['answer_id'] and len(w.model.tool_calls) == 1
+        from dataclasses import replace
+        w.gateway.runtime.settings = replace(w.gateway.runtime.settings, assistant_prompt_version='fake-new-prompt')
+&gt;       assert events(ask(w, sid, key=key))[-1]['answer']['answer_id'] == final['answer_id']
+E       AssertionError: assert '3917a1a5-471...-67a79760a3ea' == 'd9c86e9c-0f5...-76813922c055'
+E
+E         - d9c86e9c-0f5e-4123-99c5-76813922c055
+E         + 3917a1a5-4714-4ade-a1ba-67a79760a3ea
+
+src\web\backend\tests\test_assistant_w09.py:77: AssertionError</failure></testcase></testsuite></testsuites>

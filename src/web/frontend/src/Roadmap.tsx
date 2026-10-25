@@ -5,6 +5,7 @@ import { ApiError } from './api';
 import { buildPath, buildStatusLabel } from './builds-api';
 import { CourseShell, type ThemeProps } from './Courses';
 import { ShareDialog } from './Sharing';
+import { AssistantDock } from './Assistant';
 import { coursePath, getCourse, getProgress, getRoadmap, modulePath, setProgress, type Course, type CourseModule, type CourseProgress, type ProgressNode, type Roadmap } from './courses-api';
 import './roadmap.css';
 
@@ -239,5 +240,6 @@ export function RoadmapPage(props: ThemeProps) {
         </>}
     </div>}
     {data?.course.role === 'owner' && <ShareDialog courseId={cid} open={shareOpen} onClose={() => setShareOpen(false)} />}
+    {!error && data?.course.status === 'ready' && <AssistantDock key={cid} courseId={cid} />}
   </CourseShell>;
 }

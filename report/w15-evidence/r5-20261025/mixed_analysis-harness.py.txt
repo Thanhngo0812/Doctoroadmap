@@ -1,0 +1,54 @@
+"""Classify observed mixed-load failures, retaining original response/usage uncertainty."""
+from collections import Counter
+from datetime import datetime,timedelta
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+root=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(root/'src'))
+from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+loc=json.loads((root/'tmp/w15-r5-mixed100-location.json').read_text())
+run=root/loc['run_dir']
+execution=json.loads((run/'execution.json').read_text(encoding='utf-8'))
+receipt=execution['attempts'][0]['result']
+traces=[json.loads(l) for l in (run/'transport-trace.jsonl').read_text(encoding='utf-8').splitlines()]
+errors=[r for r in traces if r.get('error_type')]
+events=[]
+for path in run.glob('requests-*.jsonl'):events += [json.loads(l) for l in path.read_text(encoding='utf-8').splitlines()]
+unknown=[r for r in events if r['actual_usd'] is None]
+first_unknown=next(i for i,r in enumerate(events) if r['actual_usd'] is None)
+assert len(traces)==len(events)==receipt['step_details']['operator_budget']['http_calls']
+assert len(errors)==len(unknown)
+assert all(r['budget']['http_calls']==events[first_unknown]['budget']['http_calls'] for r in events[first_unknown:])
+assert all(r['operation']=='predict' for r in errors)
+def key(row):return '|'.join(str(row.get(k)) for k in ('operation','http_status','error_type','reason_type','error_message'))
+categories=Counter(key(r) for r in errors)
+details=[]
+for k,count in categories.items():
+    group=[r for r in errors if key(r)==k]
+    details.append(dict(category=k,count=count,minimum_wall_seconds=min(r['wall_seconds'] for r in group),
+        maximum_wall_seconds=max(r['wall_seconds'] for r in group),first_example=group[0]))
+value=dict(run_dir=loc['run_dir'],database=loc['database'],reference=loc['reference'],
+    completed_steps=receipt['completed_steps'],receipt_error=receipt.get('error'),stage_counts=dict(Counter(r['stage'] for r in events)),
+    unknown_stages=dict(Counter(r['stage'] for r in unknown)),actual_http_calls=len(traces),successful_full_responses=len(traces)-len(errors),
+    error_count=len(errors),error_categories=details,first_unknown_event_index=first_unknown,
+    dispatched_count_at_first_unknown=events[first_unknown]['budget']['http_calls'],
+    no_new_http_after_unknown=True,all_unknown_requests_embedding=True,budget=receipt['step_details']['operator_budget'],
+    graph_published=receipt['graph_version'] is not None,mail_subjects=execution['mail_subjects'],
+    conclusion='Mixed whole-book concurrency 100 reproduced embedding transport timeouts; isolated 100 embedding passed. Timeout location is observed; provider-side, client/socket, and network mechanism is not isolated.')
+canonical=JsonArtifactStore(run/'artifacts').load_latest_canonical(receipt['doc_id'])
+node_inputs={}
+for node in canonical.payload['nodes']:
+    content=node.get('description') or node['name']
+    payload={'instances':[{'content':content,'task_type':'SEMANTIC_SIMILARITY'}],'parameters':{'outputDimensionality':768}}
+    digest=sha256(json.dumps(payload,ensure_ascii=False).encode('utf-8')).hexdigest()
+    node_inputs[digest]=dict(node_id=node['node_id'],characters=len(content),task_type='SEMANTIC_SIMILARITY')
+assert all(r['request_sha256'] in node_inputs for r in traces[-100:])
+value.update(exact_request_hashes_match_a6_build_clusters=100,canonical_version=canonical.version,
+    canonical_node_count=len(canonical.payload['nodes']),failed_stage='graph/A6 BuildClusters embedding node description',
+    failed_request_inputs=[dict(request_sha256=r['request_sha256'],**node_inputs[r['request_sha256']]) for r in errors],
+    isolated_probe_difference='Probe100 used RETRIEVAL_DOCUMENT chunk texts; graph burst uses SEMANTIC_SIMILARITY node descriptions after sustained concepts traffic.')
+(root/'report/w15-evidence/r5-20261025/mixed100-failure-analysis.json').write_bytes((json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode())
+print(json.dumps({k:v for k,v in value.items() if k!='error_categories'},ensure_ascii=False,indent=2))
+print(json.dumps([dict(category=r['category'],count=r['count'],minimum_wall_seconds=r['minimum_wall_seconds'],maximum_wall_seconds=r['maximum_wall_seconds']) for r in details],ensure_ascii=False,indent=2))

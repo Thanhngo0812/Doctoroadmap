@@ -1,0 +1,446 @@
+{
+  "sourceCommit": "56acc16914eb2a20f1cb60eafa139cd04d74a4bc",
+  "browserNativeExitCode": 0,
+  "configurations": 12,
+  "screens": 71,
+  "axeRuns": 27,
+  "axeViolations": 0,
+  "httpSseRecords": 343,
+  "httpNote": "Includes tee copies of actual SSE responses; this count is not unique HTTP requests",
+  "pageErrors": 0,
+  "expectedConsole": [
+    {
+      "stage": "bootstrap",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "url": "http://127.0.0.1:8019/api/v1/me",
+      "reason": "Expected guest session probe before login"
+    },
+    {
+      "stage": "bootstrap",
+      "message": "Failed to load resource: the server responded with a status of 401 (Unauthorized)",
+      "url": "http://127.0.0.1:8019/api/v1/me",
+      "reason": "Expected guest session probe before login"
+    },
+    {
+      "stage": "matrix:390:light:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:light:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:light:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:light:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:light:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:light:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:light:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:light:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:390:dark:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:light:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:light:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:light:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:light:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:dark:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:dark:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:dark:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:768:dark:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:light:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:false",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:false",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:true",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "matrix:1280:dark:true",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "session-actions",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "session-actions",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "disconnect-reload",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "disconnect-reload",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "tools",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "tools",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "tools",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "tools",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "tools",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "tools",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "failure",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "failure",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "daily-limit",
+      "message": "Connecting to 'https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap' violates the following Content Security Policy directive: \"default-src 'self'\". Note that 'connect-src' was not explicitly set, so 'default-src' is used as a fallback. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "daily-limit",
+      "message": "Applying inline style violates the following Content Security Policy directive 'style-src-elem 'self' https://fonts.googleapis.com'. Either the 'unsafe-inline' keyword, a hash ('sha256-TElYFZKrnk10vQHk6J8RZGGzC/xfyngkQaYXJfVeCgM='), or a nonce ('nonce-...') is required to enable inline execution. The action has been blocked.",
+      "url": "",
+      "reason": "Axe style/font inspection blocked by unchanged application CSP; no product policy weakened"
+    },
+    {
+      "stage": "revoked",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8019/api/v1/courses/7b2155af-a556-421c-a52a-7d6d038741c9",
+      "reason": "Expected next-request membership denial"
+    },
+    {
+      "stage": "revoked",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8019/api/v1/courses/7b2155af-a556-421c-a52a-7d6d038741c9/roadmap",
+      "reason": "Expected next-request membership denial"
+    },
+    {
+      "stage": "revoked",
+      "message": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://127.0.0.1:8019/api/v1/courses/7b2155af-a556-421c-a52a-7d6d038741c9/progress",
+      "reason": "Expected next-request membership denial"
+    }
+  ],
+  "unexpectedConsole": [],
+  "temporaryDatabaseRemoved": true,
+  "serverThreadStopped": true,
+  "externalCostUsd": 0,
+  "independentSql": {
+    "records": [
+      {
+        "kind": "answer",
+        "count": 31
+      },
+      {
+        "kind": "assistant_state",
+        "count": 26
+      },
+      {
+        "kind": "assistant_validation",
+        "count": 32
+      },
+      {
+        "kind": "documents",
+        "count": 1
+      },
+      {
+        "kind": "document_validation",
+        "count": 1
+      },
+      {
+        "kind": "quiz_attempt",
+        "count": 1
+      },
+      {
+        "kind": "session",
+        "count": 25
+      },
+      {
+        "kind": "turn",
+        "count": 29
+      },
+      {
+        "kind": "web_assistant_intent",
+        "count": 31
+      }
+    ],
+    "owners": [
+      "af4884b2-4083-4961-8ded-e6f41df3bb8c"
+    ],
+    "usage": [
+      {
+        "purpose": "document_validation",
+        "rows": 1,
+        "usd": 0.0
+      },
+      {
+        "purpose": "assistant",
+        "rows": 33,
+        "usd": 0.0
+      },
+      {
+        "purpose": "lecture_validation",
+        "rows": 2,
+        "usd": 0.0
+      },
+      {
+        "purpose": "document",
+        "rows": 2,
+        "usd": 1.0
+      },
+      {
+        "purpose": "lecture",
+        "rows": 2,
+        "usd": 0.0
+      }
+    ],
+    "syntheticLimitUsd": 1.0,
+    "sourcePages": [
+      9
+    ],
+    "fakeProviderCalls": 36
+  }
+}

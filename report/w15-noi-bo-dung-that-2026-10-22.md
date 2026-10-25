@@ -1,8 +1,9 @@
 # W-15 — adapter/composition và kiểm 0 USD — 2026-10-22
 
-**Hiện hành 2026-10-25:** [sửa operator sau nghiệm thu lần 4](w15-sua-operator-lan4-2026-10-25.md).
-Mốc 0 USD đã được nhận riêng trên main; phần operator tiếp tục sửa đường dẫn và profile giá.
-Chưa có lượt thật có phí hoặc bằng chứng doc-6 ready/course/mail miễn phí.
+**Hiện hành 2026-10-25:** [lượt thật và chẩn đoán 100](w15-luot-that-2026-10-25.md).
+Operator/profile đã nhận và ghép main; chủ dự án đã duyệt lượt chi mới.
+Doc-6 bootstrap thật đạt, web cache-only sau đó đạt 0 calls/0 USD; candidate 52 trang đạt ở mức 8.
+Whole-build mức 100 tái hiện timeout embedding A6. Các mục dưới là lịch sử từng mốc; W-15 chờ soát.
 
 **Cập nhật mới hơn trong ngày 2026-10-24:** mã operator/hàng rào chi ở `ffd070d` và
 [đề nghị hai lượt thật](w15-de-nghi-luot-that-2026-10-24.md). Phần dưới giữ kết quả theo mốc cũ.

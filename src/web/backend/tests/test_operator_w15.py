@@ -101,7 +101,8 @@ def test_operator_rejects_any_difference_from_the_dry_run_before_composition(tmp
         operator.execute(plan, approval)
 
 
-def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls(builds, fake_providers, monkeypatch):
+@pytest.mark.parametrize('retry_unknown', [False, True])
+def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls(builds, fake_providers, monkeypatch, retry_unknown):
     from doc2roadmap.config import Settings
     from wayfinder.infrastructure.real_build import RealBuildRuntime
     nonce = uuid4().hex[:12]
@@ -124,7 +125,7 @@ def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_
     plan, permission = run_dir / 'plan.json', run_dir / 'fake-approval.json'
     plan.write_text(json.dumps(data), encoding='utf-8')
     permission.write_text(json.dumps({**data, 'reference': 'fake-only-operator-' + nonce, 'max_usd': '1',
-        'approved': True, 'approved_by': 'project-owner'}), encoding='utf-8')
+        'approved': True, 'approved_by': 'project-owner', 'retry_unknown_within_cap': retry_unknown}), encoding='utf-8')
     monkeypatch.setattr(operator, 'profile', lambda *args: (settings, core))
     monkeypatch.setattr(operator, 'test_database_url', lambda *args: builds.postgres_database_url)
     def forbidden(*args, **kwargs):
@@ -137,4 +138,19 @@ def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_
     assert result['build']['model_calls'] == 0 and Decimal(result['build']['spent_usd']) == 0
     assert len(result['courses']) == 1 and result['courses'][0]['status'] == 'ready'
     assert result['mail_subjects'] == ['Bản dựng xong']
+    assert result['bootstrap']['step_details']['operator_budget']['retry_unknown_within_cap'] is retry_unknown
     assert 'operator_budget' not in json.dumps(result['http_build']) and 'spent_usd' not in json.dumps(result['http_build'])
+
+
+@pytest.mark.parametrize('invalid', [1, 'true', None])
+def test_operator_rejects_non_boolean_retry_permission_before_composition(tmp_path, monkeypatch, invalid):
+    plan, approval = tmp_path / 'plan.json', tmp_path / 'approval.json'
+    plan.write_text('{}', encoding='utf-8')
+    approval.write_text(json.dumps({'approved': True, 'approved_by': 'project-owner',
+                                   'retry_unknown_within_cap': invalid}), encoding='utf-8')
+    def forbidden(*args, **kwargs):
+        raise AssertionError('Invalid retry permission reached composition')
+    monkeypatch.setattr(operator, 'profile', forbidden)
+    monkeypatch.setattr(operator, 'create_database_engine', forbidden)
+    with pytest.raises(ValueError, match='boolean'):
+        operator.execute(plan, approval)

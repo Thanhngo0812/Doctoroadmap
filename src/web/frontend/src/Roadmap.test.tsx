@@ -45,7 +45,7 @@ function baseFetch() {
 
 beforeEach(() => {
   localStorage.clear();
-  Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({ matches: false })) });
+  Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) });
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 

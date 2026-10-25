@@ -1,0 +1,26 @@
+{
+  "plan": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-candidate-88fdef3027cc\\plan.json",
+  "book": "candidate",
+  "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+  "provider_calls": 0,
+  "approved": false
+}
+{
+  "run_dir": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-candidate-88fdef3027cc",
+  "reference": "w15-debug-mixed100-owner-20261025-de5411e701874eadbb25a08dc7f1b8c0",
+  "cap_usd": "2.75",
+  "max_in_flight": 100,
+  "max_provider_retries": 8,
+  "all_attempts_upper_including_this_cap_usd": "3.96211945"
+}
+Console Mailer: Bản dựng lỗi
+C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\tmp\w15_r5_mixed100.py", line 27, in <module>
+    exec(compile(base,str(Path(__file__)), 'exec'))
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\tmp\w15_r5_mixed100.py", line 108, in <module>
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\w15_operator_run.py", line 210, in execute
+    assert job['status'] == 'succeeded' and result['courses'] and all(row['status'] == 'ready' for row in result['courses'])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

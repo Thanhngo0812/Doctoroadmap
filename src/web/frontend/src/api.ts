@@ -34,7 +34,7 @@ const errorMessages: Record<string, string> = {
   loi_noi_bo: 'Không thể hoàn tất bản dựng. Hãy thử lại sau.',
   confirmation_expired: 'Đã hết hạn xác nhận. Hãy tải lại tài liệu.',
   quota_exceeded: 'Bạn đã dùng hết lượt dựng tháng này. Lượt mới có từ {resets_at}.',
-  daily_limit: 'Hôm nay bạn đã dùng hết lượt hỏi. Lượt mới từ {resets_at}. Bạn vẫn đọc bài giảng, làm quiz và xem thư viện được.',
+  daily_limit: 'Bạn đã dùng hết hạn mức hôm nay. Hạn mức đặt lại từ {resets_at}. Bạn vẫn có thể đọc nội dung đã có.',
   internal_error: 'Có lỗi phía máy chủ. Mã tra cứu: {ref}.',
   csrf_failed: 'Phiên làm việc đã hết hạn. Hãy tải lại trang rồi thử lại.',
 };

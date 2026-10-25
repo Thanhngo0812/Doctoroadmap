@@ -1,0 +1,52 @@
+"""Read-only W15 run status: no provider, no cache contents or credentials."""
+import json
+from pathlib import Path
+import sys
+from datetime import datetime
+root = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(root / 'src'), str(root / 'src/web/backend'), str(root / 'src/web/backend/tests')]
+import w15_operator_run as operator
+from sqlalchemy import text
+bundle = json.loads((root / 'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+for label in ('controlled','mixed100'):
+    controlled = root / ('tmp/w15-r5-'+label+'-location.json')
+    if controlled.exists():
+        item = json.loads(controlled.read_text())
+        item['book'] = 'candidate-'+label
+        bundle['attempts'].append(item)
+rows = []
+for item in bundle['attempts']:
+    run = root / item['run_dir']
+    events = []
+    for path in run.glob('requests-*.jsonl'):
+        for line in path.read_text(encoding='utf-8').splitlines():
+            try:
+                events.append(json.loads(line))
+            except json.JSONDecodeError:
+                pass
+    stages = {stage: sum(event['stage'] == stage for event in events) for stage in sorted({event['stage'] for event in events})}
+    engine = operator.create_database_engine(operator.test_database_url(item['database']))
+    try:
+        with engine.connect() as reader:
+            record = reader.execute(text("SELECT value FROM phase_b_record WHERE kind='w15_build_approval' AND record_id=:ref"),
+                                    {'ref': item['reference']}).scalar_one_or_none()
+            builds = [dict(r) for r in reader.execute(text('SELECT status,spent_usd,model_calls FROM build')).mappings()]
+    finally:
+        engine.dispose()
+    receipt = None
+    if (run / 'execution.json').exists():
+        result = json.loads((run / 'execution.json').read_text(encoding='utf-8'))
+        receipt = {key: ({field: result[key].get(field) for field in ('status','spent_usd','model_calls','usage_complete','completed_steps','error')})
+                   for key in ('bootstrap', 'build') if key in result}
+    transport = []
+    if (run/'transport-trace.jsonl').exists():
+        for line in (run/'transport-trace.jsonl').read_text(encoding='utf-8').splitlines():
+            try: transport.append(json.loads(line))
+            except json.JSONDecodeError: pass
+    rows.append(dict(book=item['book'], approval_state=record.get('state') if record else None,
+        budget=record.get('budget') if record and 'budget' in record else events[-1]['budget'] if events else None,
+        completed_http_requests_by_stage=stages, builds=builds, receipt=receipt,
+        transport=dict(completed=len(transport),errors=[{k:row.get(k) for k in ('operation','http_status','error_type','error_message','wall_seconds')}
+            for row in transport if row.get('error_type')],
+            maximum_wall_seconds=max((row['wall_seconds'] for row in transport),default=0))))
+print(json.dumps(dict(time=datetime.now().astimezone().isoformat(), runs=rows), ensure_ascii=False, indent=2, default=str))

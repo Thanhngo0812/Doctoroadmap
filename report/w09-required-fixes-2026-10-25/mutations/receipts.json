@@ -1,0 +1,86 @@
+[
+  {
+    "name": "terminal-lock",
+    "sourceCommit": "0ba4ac8f5bc63256e33d736a08c0d6411a5b0b48",
+    "path": "src/web/frontend/src/useAssistant.ts",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.EXE",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\src\\web\\frontend\\node_modules\\vitest\\vitest.mjs",
+      "run",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Assistant.final-usage-race.test.tsx",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\report\\w09-required-fixes-2026-10-25\\mutations\\terminal-lock.xml"
+    ],
+    "nativeExit": 1,
+    "failures": 5,
+    "errors": 0,
+    "originalSha256": "feebfdbfccf2ef72622f27c2bb15b9be1229e57442af437b9ad9ad063d292060",
+    "mutatedSha256": "9062be3d3b0326ff438e7b1635b5ee833b02e14a009b9629c044b895f5c4cae9",
+    "restoredSha256": "feebfdbfccf2ef72622f27c2bb15b9be1229e57442af437b9ad9ad063d292060"
+  },
+  {
+    "name": "old-usage",
+    "sourceCommit": "0ba4ac8f5bc63256e33d736a08c0d6411a5b0b48",
+    "path": "src/web/frontend/src/useAssistant.ts",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.EXE",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\src\\web\\frontend\\node_modules\\vitest\\vitest.mjs",
+      "run",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Assistant.final-usage-race.test.tsx",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\report\\w09-required-fixes-2026-10-25\\mutations\\old-usage.xml"
+    ],
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "originalSha256": "feebfdbfccf2ef72622f27c2bb15b9be1229e57442af437b9ad9ad063d292060",
+    "mutatedSha256": "22842d6d28a8925d2ba23fa4d752fdba38d35368096639a9902eed820f3679f9",
+    "restoredSha256": "feebfdbfccf2ef72622f27c2bb15b9be1229e57442af437b9ad9ad063d292060"
+  },
+  {
+    "name": "old-finally",
+    "sourceCommit": "0ba4ac8f5bc63256e33d736a08c0d6411a5b0b48",
+    "path": "src/web/frontend/src/useAssistant.ts",
+    "command": [
+      "C:\\Program Files\\nodejs\\node.EXE",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\src\\web\\frontend\\node_modules\\vitest\\vitest.mjs",
+      "run",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Assistant.final-usage-race.test.tsx",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\report\\w09-required-fixes-2026-10-25\\mutations\\old-finally.xml"
+    ],
+    "nativeExit": 1,
+    "failures": 3,
+    "errors": 0,
+    "originalSha256": "feebfdbfccf2ef72622f27c2bb15b9be1229e57442af437b9ad9ad063d292060",
+    "mutatedSha256": "98b885d31a61168f4debd95c92834b3547f1de99b4bd26d9a67526f2421a3f63",
+    "restoredSha256": "feebfdbfccf2ef72622f27c2bb15b9be1229e57442af437b9ad9ad063d292060"
+  },
+  {
+    "name": "forced-cache",
+    "sourceCommit": "0ba4ac8f5bc63256e33d736a08c0d6411a5b0b48",
+    "path": "src/web/backend/wayfinder/infrastructure/learning_runtime.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\scripts\\w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_assistant_lecture_forwarding_w09.py",
+      "--basetemp=tmp/cong-w09-mut-forced-cache-20261025",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\report\\w09-required-fixes-2026-10-25\\mutations\\forced-cache.xml"
+    ],
+    "nativeExit": 1,
+    "failures": 8,
+    "errors": 0,
+    "originalSha256": "2a260e2a906d74e147eec2d21f0397eaf275bfffb6c423fb94ad783a39f7b2ad",
+    "mutatedSha256": "28f9742a2fef0d88803eec5807c6fce1feb7ef98e1addabf4b0729311fdb7edf",
+    "restoredSha256": "2a260e2a906d74e147eec2d21f0397eaf275bfffb6c423fb94ad783a39f7b2ad"
+  }
+]

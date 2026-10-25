@@ -108,7 +108,7 @@ class RealBuildAdapter:
                 result.step_details['operator_budget'] = budget
                 if spend_guard.unknown:
                     result.usage_complete = False
-                if spend_guard.unknown or spend_guard.stopped:
+                if spend_guard.stopped or (spend_guard.unknown and not spend_guard.retry_unknown_within_cap):
                     result.status = 'failed'
                     result.error = {'code': 'loi_noi_bo', 'message': 'Operator budget or usage requires review', 'retryable': False}
             for step in list(started):

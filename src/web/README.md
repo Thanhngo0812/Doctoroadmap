@@ -1,5 +1,53 @@
 # WayFinder — chạy backend và frontend
 
+## Mở bản W-09 — trợ lý và phiên học
+
+Worktree `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant`, nhánh `work/w09-assistant`. Backend dùng PostgreSQL, answer-3 và bài lecture-3 đã lưu; khung trợ lý có ở lộ trình và trang học.
+
+**PowerShell 1 — backend:** bật Docker Desktop, rồi chạy:
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+$env:WAYFINDER_MAILER = 'console'
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+```
+
+**PowerShell 2 — frontend:**
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant
+npm.cmd --prefix src/web/frontend ci --no-audit --no-fund
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+```
+
+Mở `http://127.0.0.1:5173/khoa-hoc`, chọn khoá sẵn sàng → **Hỏi trợ lý**. Phiên ở lộ trình dùng cả lộ trình; phiên ở trang học có phạm vi module, mỗi câu hỏi gửi bài đang mở. Có phiên mới, lịch sử, đổi tên, xoá có xác nhận, nguồn theo trang và xem nội dung quiz/tài liệu đã tạo. Làm bài/chấm điểm và thư viện đầy đủ thuộc W-10.
+
+Đóng trang chỉ ngừng nhận chữ: server tiếp tục lượt đang chạy và lưu vào PostgreSQL. Mở lại phiên và chọn **Cập nhật phiên**; nếu cần thử lại, trình duyệt giữ mã lượt cũ. Đây chưa phải hàng đợi bền: nếu tiến trình server dừng giữa lượt, có thể phải thử lại. Dừng hai terminal bằng `Ctrl+C`; không xoá volume DB.
+
+Cấu hình dev bên trên có thể gọi nhà cung cấp thật. **Để kiểm W-09 ở 0 USD**, dùng bộ riêng dưới đây: script chặn nhà cung cấp thật, tạo DB UUID tạm trên `db-test`, dùng use case thật và mô hình/Mailer/MediaStore giả. Không dùng DB dev để kiểm phá.
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db-test
+& $wfPython -X utf8 src/web/backend/tests/copy_w06_fixtures.py
+npm.cmd --prefix src/web/frontend run build
+$env:W09_EVIDENCE_RUN = 'browser-local-1' # Mỗi lần chọn tên mới, giữ bằng chứng cũ.
+& $wfPython -X utf8 scripts/w09_web_runtime.py
+```
+
+Runtime kiểm ở `http://127.0.0.1:8019`; script tự mở/đóng server và chỉ xoá DB UUID do chính lượt kiểm tạo. Ảnh/video, JSON HTTP, SQL và audit nằm trong `report/w09-evidence/<tên lượt>/`. Tệp giả/basetemp nằm dưới `tmp/`, không trộn với ảnh UI.
+
 ## Mở bản W-08 — trang học lecture-3
 
 Worktree: `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture`, nhánh `work/w08-lecture`. Đã nhận main có SA-64 tại merge `1d91b0b`; W-08 dùng `body_md`, LaTeX, nguồn và tự kiểm tra của lecture-3. Giữ worktree W-11 để đối chiếu.

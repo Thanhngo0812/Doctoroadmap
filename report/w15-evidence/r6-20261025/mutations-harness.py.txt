@@ -1,0 +1,36 @@
+"""Prove that the retry-cap assertions reject broken guards; restore exact source bytes."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+root=Path(__file__).resolve().parents[1]
+source=root/'src/web/backend/wayfinder/infrastructure/build_spend.py'
+original=source.read_bytes(); text=original.decode('utf-8')
+out=root/'report/w15-evidence/r6-20261025/mutations';out.mkdir(parents=True,exist_ok=True)
+cases=[('omit-unknown-from-cap','self.known + self.unknown + self.held + value','self.known + self.held + value','owner_opt_in'),
+ ('block-approved-core-retry','(self.unknown and not self.retry_unknown_within_cap)','self.unknown','owner_opt_in'),
+ ('ignore-default-unknown-stop','(self.unknown and not self.retry_unknown_within_cap)','False','unknown_usage_preserves')]
+results=[]
+try:
+    for label,old,new,selected in cases:
+        assert text.count(old)==1
+        source.write_bytes(text.replace(old,new).encode())
+        xml=out/(label+'.xml')
+        command=[sys.executable,'scripts/w05_run_tests.py','src/web/backend/tests/test_build_spend_w15.py','-k',selected,
+            '-o','addopts=','-q','--tb=short','--basetemp=tmp/w15-r6-mutation-'+label,'--junitxml='+str(xml)]
+        result=subprocess.run(command,cwd=root,capture_output=True,encoding='utf-8',errors='replace')
+        (out/(label+'.log')).write_bytes((result.stdout+result.stderr).encode())
+        cases_xml=list(ET.parse(xml).iter('testcase'))
+        failed=[r.attrib for r in cases_xml if r.find('failure') is not None]
+        errors=[r.attrib for r in cases_xml if r.find('error') is not None]
+        assert result.returncode==1 and failed and not errors,label
+        results.append(dict(mutation=label,exit_code=result.returncode,assertion_failures=failed,setup_errors=errors))
+        source.write_bytes(original)
+finally:
+    source.write_bytes(original)
+assert sha256(source.read_bytes()).hexdigest()==sha256(original).hexdigest()
+value=dict(source_sha256_restored=sha256(original).hexdigest(),source_restored=True,mutations=results)
+(out/'mutations.json').write_bytes((json.dumps(value,indent=2)+'\n').encode())
+print(json.dumps(value,indent=2))

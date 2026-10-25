@@ -1,0 +1,19 @@
+from collections import Counter
+import json
+from pathlib import Path
+import sys
+root=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(root/'src'))
+from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+item=json.loads((root/'tmp/w15-r6-full-retry-location.json').read_text());run=root/item['run_dir']
+audit=json.loads((root/'report/w15-evidence/r6-20261025/final-audit.json').read_text(encoding='utf-8'))
+doc=audit['receipt']['doc_id'];store=JsonArtifactStore(run/'artifacts')
+canonical=store.load_latest_canonical(doc);candidates=store.load_latest_candidates(doc)
+rows=[json.loads(l) for l in (run/'transport-trace.jsonl').read_text(encoding='utf-8').splitlines()]
+result=dict(raw_candidate_entities=len(candidates.payload['entities']),canonical_nodes=len(canonical.payload['nodes']),
+    learnable=audit['graph']['learnable_count'],mentioned=audit['graph']['mentioned_count'],non_learnable=audit['graph']['non_learnable_count'],
+    modules=audit['graph']['module_count'],calls_by_operation=dict(Counter(r['operation'] for r in rows)),
+    calls_by_stage_operation=dict(Counter(r['stage']+'/'+r['operation'] for r in rows)),
+    errors=dict(Counter(r['operation']+'/'+str(r.get('http_status'))+'/'+r['error_type'] for r in rows if r.get('error_type'))))
+(root/'report/w15-evidence/r6-20261025/entity-and-request-counts.json').write_bytes((json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode())
+print(json.dumps(result,ensure_ascii=False,indent=2))

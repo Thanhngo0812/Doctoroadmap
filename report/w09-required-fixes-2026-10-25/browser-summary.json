@@ -1,0 +1,152 @@
+{
+  "commit": "0ba4ac8f5bc63256e33d736a08c0d6411a5b0b48",
+  "dirtySourcePaths": [],
+  "nativeExit": 0,
+  "matrix": 12,
+  "screens": 102,
+  "http": 386,
+  "axe": 46,
+  "axeViolations": 0,
+  "pageErrors": [],
+  "consoleExpected": 97,
+  "consoleUnexpected": [],
+  "requiredRace": {
+    "before": {
+      "calls": 0,
+      "finished": true,
+      "turns": 24,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 1,
+      "lectures": 1
+    },
+    "after": {
+      "calls": 1,
+      "finished": true,
+      "turns": 26,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 1,
+      "lectures": 1
+    },
+    "posts": [
+      {
+        "stage": "final-usage-race",
+        "path": "/api/v1/courses/7805a2ba-3b3a-4950-9651-632f49072d39/sessions/dbcc519172fd4b7385f7a182791463ad/turns",
+        "body": {
+          "question": "Câu đầu trước khi cập nhật hạn mức.",
+          "client_turn_id": "b0b6ab32-1640-425c-9612-2f3591526657"
+        }
+      },
+      {
+        "stage": "final-usage-race",
+        "path": "/api/v1/courses/7805a2ba-3b3a-4950-9651-632f49072d39/sessions/dbcc519172fd4b7385f7a182791463ad/turns",
+        "body": {
+          "question": "Câu tiếp theo phải được gửi nguyên vẹn.",
+          "client_turn_id": "529c38a3-0ab2-4dbd-8461-5864e2d91148"
+        }
+      }
+    ],
+    "oldUsageHeld": true,
+    "activeSecondTurnKept": true
+  },
+  "requiredLecture": {
+    "before": {
+      "calls": 0,
+      "finished": true,
+      "turns": 26,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 1,
+      "lectures": 0
+    },
+    "after": {
+      "calls": 2,
+      "finished": true,
+      "turns": 27,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 2,
+      "lectures": 1
+    },
+    "nodeId": "node_9f23f5df7eb27a4bc46857c8"
+  },
+  "databaseRemoved": true,
+  "serverStopped": true,
+  "externalCostUsd": 0,
+  "sql": {
+    "records": [
+      {
+        "kind": "answer",
+        "count": 34
+      },
+      {
+        "kind": "assistant_state",
+        "count": 28
+      },
+      {
+        "kind": "assistant_validation",
+        "count": 35
+      },
+      {
+        "kind": "documents",
+        "count": 1
+      },
+      {
+        "kind": "document_validation",
+        "count": 1
+      },
+      {
+        "kind": "quiz_attempt",
+        "count": 1
+      },
+      {
+        "kind": "session",
+        "count": 27
+      },
+      {
+        "kind": "turn",
+        "count": 32
+      },
+      {
+        "kind": "web_assistant_intent",
+        "count": 34
+      }
+    ],
+    "owners": [
+      "aa7339ea-2f32-4bd4-a1dc-5a7d59db62b4"
+    ],
+    "usage": [
+      {
+        "purpose": "document_validation",
+        "rows": 1,
+        "usd": 0.0
+      },
+      {
+        "purpose": "assistant",
+        "rows": 37,
+        "usd": 0.0
+      },
+      {
+        "purpose": "lecture_validation",
+        "rows": 3,
+        "usd": 0.0
+      },
+      {
+        "purpose": "document",
+        "rows": 2,
+        "usd": 1.0
+      },
+      {
+        "purpose": "lecture",
+        "rows": 3,
+        "usd": 0.0
+      }
+    ],
+    "syntheticLimitUsd": 1.0,
+    "sourcePages": [
+      9
+    ],
+    "fakeProviderCalls": 41
+  }
+}

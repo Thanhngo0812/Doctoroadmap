@@ -1,0 +1,27 @@
+"""Explicit owner-authorized whole-book reproduction at original 100/retry-8 profile."""
+from pathlib import Path
+base=Path(__file__).with_name('w15_r5_controlled_candidate.py').read_text(encoding='utf-8')
+base=base.replace("'llm_max_in_flight':8,'gemini_max_retries':0", "'llm_max_in_flight':100,'gemini_max_retries':8")
+base=base.replace("assert worst+Decimal(3)<=Decimal(4)", """
+for kind in ('controlled','probe100'):
+    loc=json.loads((root/('tmp/w15-r5-'+kind+'-location.json')).read_text())
+    target=root/loc['run_dir']
+    if kind=='controlled':
+        result=json.loads((target/'execution.json').read_text(encoding='utf-8'))
+        added=result['attempts'][0]['result']['step_details']['operator_budget']
+    else:
+        result=json.loads((target/'diagnostic-result.json').read_text(encoding='utf-8'))
+        added=result['approval_record']['budget']
+    worst+=Decimal(added['known_usd'])+Decimal(added['unknown_upper_usd'])
+assert worst+Decimal('2.75')<=Decimal(4)
+""")
+base=base.replace('tmp/w15-r5-controlled-location.json','tmp/w15-r5-mixed100-location.json')
+base=base.replace('w15-debug-controlled-owner-20261025-','w15-debug-mixed100-owner-20261025-')
+base=base.replace('owner-controlled-approval.json','owner-mixed100-approval.json')
+base=base.replace('one-controlled-candidate-debug-build','one-mixed100-candidate-debug-build')
+base=base.replace("max_in_flight=8,max_provider_retries=0", "max_in_flight=100,max_provider_retries=8")
+base=base.replace("max_provider_retries=0,all_attempts", "max_provider_retries=8,all_attempts")
+base=base.replace("cap_usd='3.00',max_in_flight=8", "cap_usd='2.75',max_in_flight=100")
+base=base.replace("'3.00'", "'2.75'").replace('worst+Decimal(3)',"worst+Decimal('2.75')")
+base=base.replace("operation='one-mixed100-candidate-debug-build'", "owner_concurrency_quote='ok cho phép bạn tăng lên 100 test đấy nhưng sau giờ nghỉ trưa, tạm ngưng công việc chút',owner_resume_quote='tiếp tục công việc',operation='one-mixed100-candidate-debug-build'")
+exec(compile(base,str(Path(__file__)), 'exec'))

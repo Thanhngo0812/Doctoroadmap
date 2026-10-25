@@ -1,0 +1,48 @@
+"""Read-only status/transport summary for the owner-approved retry diagnostic."""
+from collections import Counter
+from datetime import datetime
+import json
+from pathlib import Path
+import sys
+root=Path(__file__).resolve().parents[1]
+sys.path[:0]=[str(root/'src'),str(root/'src/web/backend'),str(root/'src/web/backend/tests')]
+import w15_operator_run as operator
+from sqlalchemy import text
+location=root/'tmp/w15-r6-full-retry-location.json'
+if not location.exists():
+    print('Preparation has not published the new attempt location.');raise SystemExit(0)
+item=json.loads(location.read_text());run=root/item['run_dir']
+engine=operator.create_database_engine(operator.test_database_url(item['database']))
+try:
+    with engine.connect() as c:
+        record=c.execute(text("SELECT value FROM phase_b_record WHERE kind='w15_build_approval' AND record_id=:ref"),{'ref':item['reference']}).scalar_one_or_none()
+        builds=[dict(r) for r in c.execute(text('SELECT status,step,spent_usd,model_calls,usage_complete FROM build')).mappings()]
+finally:engine.dispose()
+rows=[]
+path=run/'transport-trace.jsonl'
+if path.exists():
+    for l in path.read_text(encoding='utf-8').splitlines():
+        try:rows.append(json.loads(l))
+        except json.JSONDecodeError:pass
+dispatch=[]
+path=run/'dispatch.jsonl'
+if path.exists():
+    for l in path.read_text(encoding='utf-8').splitlines():
+        try:dispatch.append(json.loads(l))
+        except json.JSONDecodeError:pass
+errors=[r for r in rows if r.get('error_type')]
+successful_retry_hashes={e['request_sha256'] for e in errors if any(
+    r['request_sha256']==e['request_sha256'] and r['sequence']>e['sequence'] and not r.get('error_type') for r in rows)}
+last_budget=record.get('budget') if record else None
+if last_budget is None:
+    for path in run.glob('requests-*.jsonl'):
+        for line in reversed(path.read_text(encoding='utf-8').splitlines()):
+            try:last_budget=json.loads(line)['budget'];break
+            except (json.JSONDecodeError,KeyError):pass
+print(json.dumps(dict(time=datetime.now().astimezone().isoformat(),run_dir=item['run_dir'],builds=builds,
+    approval_state=record.get('state') if record else None,budget=last_budget,
+    completed=len(rows),dispatched=len(dispatch),stages=dict(Counter(r['stage'] for r in rows)),
+    error_groups=dict(Counter(str((r['stage'],r['operation'],r.get('task_type'),r.get('http_status'),r['error_type'],r.get('phase'))) for r in errors)),
+    successful_retry_payloads=len(successful_retry_hashes),
+    repeated_payloads=sum(v-1 for v in Counter(r['request_sha256'] for r in dispatch).values()),
+    latest_error={k:errors[-1].get(k) for k in ('stage','operation','task_type','http_status','error_type','error_message','phase','headers','wire_bytes_read','wire_bytes_at_headers','tcp_seconds','tls_handshake_seconds','wall_seconds')} if errors else None),ensure_ascii=False,indent=2,default=str))
