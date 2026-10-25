@@ -1,0 +1,796 @@
+{
+  "head": "da4d6399965f5a67accaacc6ea34af8ce56f0dd5",
+  "errors": [],
+  "limits": "Selected source/receipt verification only; app gates not rerun. Original full Python gate is functional-source evidence, not a new UI gate.",
+  "productChangesAfterBrowser": [],
+  "backendChangesAfterFullGate": [],
+  "receiptHashesChecked": 238,
+  "sourceChecks": [
+    {
+      "path": "src/web/frontend/src/Assistant.tsx",
+      "passed": true
+    },
+    {
+      "path": "src/web/frontend/src/Assistant.test.tsx",
+      "passed": true
+    },
+    {
+      "path": "src/web/frontend/src/assistant.css",
+      "passed": true
+    },
+    {
+      "path": "src/web/frontend/src/useAssistant.ts",
+      "passed": true
+    },
+    {
+      "path": "src/web/frontend/src/useAssistantWidth.ts",
+      "passed": true
+    },
+    {
+      "path": "scripts/w09_web_check.cjs",
+      "passed": true
+    },
+    {
+      "path": "scripts/w09_web_runtime.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/tests/test_assistant_w09.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/tests/test_composition.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/tests/test_testing.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/api/app.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/api/assistant.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/api/builds.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/application/assistant_view.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/composition.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/fakes/assistant.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/infrastructure/assistant_model.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/infrastructure/assistant_requests.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/infrastructure/learning_runtime.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/infrastructure/learning_usage.py",
+      "passed": true
+    },
+    {
+      "path": "src/web/backend/wayfinder/testing.py",
+      "passed": true
+    }
+  ],
+  "junit": {
+    "report\\w09-evidence\\gate-final4": {
+      "tests": 2624,
+      "passed": 2622,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 1,
+      "xfailed": 1,
+      "failedNames": []
+    },
+    "report\\w09-evidence\\react-final5": {
+      "tests": 192,
+      "passed": 192,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-evidence\\library-green2": {
+      "tests": 43,
+      "passed": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-evidence\\lecture-config-red": {
+      "tests": 1,
+      "passed": 0,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": [
+        "test_lecture_model_uses_core_limits_instead_of_transport_defaults"
+      ]
+    },
+    "report\\w09-evidence\\config-green2": {
+      "tests": 27,
+      "passed": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-evidence\\library-red": {
+      "tests": 3,
+      "passed": 0,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": [
+        "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4]",
+        "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[scope1]",
+        "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[Kh\\xf4ng ph\\xe2n gi\\u1ea3i \\u0111\\u01b0\\u1ee3c]"
+      ]
+    },
+    "report\\w09-evidence\\history-race-red": {
+      "tests": 10,
+      "passed": 9,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": [
+        "keeps a completed new turn when an older history request arrives afterwards"
+      ]
+    },
+    "report\\w09-evidence\\history-race-green": {
+      "tests": 10,
+      "passed": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-evidence\\preview-race-red": {
+      "tests": 11,
+      "passed": 10,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": [
+        "keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID"
+      ]
+    },
+    "report\\w09-evidence\\preview-race-green": {
+      "tests": 11,
+      "passed": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-evidence\\tool-state-red2": {
+      "tests": 3,
+      "passed": 0,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": [
+        "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[module 4]",
+        "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[scope1]",
+        "test_w09_tools_create_real_quiz3_document3_with_server_identity_and_core_scope[Kh\\xf4ng ph\\xe2n gi\\u1ea3i \\u0111\\u01b0\\u1ee3c]"
+      ]
+    },
+    "report\\w09-evidence\\regression-green2": {
+      "tests": 27,
+      "passed": 27,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-session-ui-2026-10-25\\red": {
+      "tests": 14,
+      "passed": 11,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": [
+        "separates starting a conversation from options for the currently selected conversation",
+        "distinguishes conversations with identical titles by their update date and time",
+        "resizes by keyboard within reading-safe bounds and restores the chosen width after remount"
+      ]
+    },
+    "report\\w09-session-ui-2026-10-25\\green3": {
+      "tests": 16,
+      "passed": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-session-ui-2026-10-25\\metadata-red": {
+      "tests": 17,
+      "passed": 16,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": [
+        "shows the current question in conversation metadata before the next history reload"
+      ]
+    },
+    "report\\w09-session-ui-2026-10-25\\metadata-green": {
+      "tests": 17,
+      "passed": 17,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    },
+    "report\\w09-session-ui-2026-10-25\\react": {
+      "tests": 198,
+      "passed": 198,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xfailed": 0,
+      "failedNames": []
+    }
+  },
+  "nativeUiExitsMatch": true,
+  "mutations": [
+    {
+      "name": "session-owner",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "scope-server",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "focus",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "tool-actor",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 3
+    },
+    {
+      "name": "rate",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": true,
+      "failures": 1
+    },
+    {
+      "name": "session-mutex",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": true,
+      "failures": 1
+    },
+    {
+      "name": "personal-cap",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "canonical-ledger",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "artifact-owner",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "artifact-book",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "artifact-ready",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "private-sse",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "cache-only",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "idempotency-deploy",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "disconnect",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "ui-focus",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "ui-retry-id",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 2
+    },
+    {
+      "name": "ui-fabricated-link",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    },
+    {
+      "name": "ui-new-session",
+      "receiptValid": true,
+      "sameCurrentSourceBytes": false,
+      "failures": 1
+    }
+  ],
+  "wireChecks": [
+    {
+      "stage": "matrix:390:light:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:390:light:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:390:light:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:390:light:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:390:dark:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:390:dark:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:390:dark:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:390:dark:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:light:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:light:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:light:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:light:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:dark:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:dark:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:dark:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:768:dark:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:light:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:light:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:light:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:light:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:dark:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:dark:false",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:dark:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "matrix:1280:dark:true",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "changing-focus",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "changing-focus",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "changing-focus",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "session-actions",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    },
+    {
+      "stage": "tools",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "tool_call",
+        "tool_call",
+        "progress",
+        "tool_call",
+        "tool_call",
+        "progress",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "artifact",
+        "artifact",
+        "final"
+      ]
+    },
+    {
+      "stage": "failure",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "graph_card",
+        "failure"
+      ]
+    },
+    {
+      "stage": "failure",
+      "passed": true,
+      "events": [
+        "progress",
+        "tool_call",
+        "delta",
+        "delta",
+        "delta",
+        "graph_card",
+        "final"
+      ]
+    }
+  ],
+  "browserCounts": {
+    "configurations": 12,
+    "screens": 99,
+    "accessibility": 43,
+    "http": 371,
+    "pageErrors": []
+  },
+  "ok": true
+}

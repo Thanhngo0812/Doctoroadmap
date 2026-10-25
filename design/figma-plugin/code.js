@@ -6,6 +6,15 @@
 
 (async () => {
   // 1. Color Palette Tokens & Hex-accurate parser from tokens.json
+    function rgbaToFigma(r, g, b, a) {
+    return {
+      r: Number((r / 255).toFixed(4)),
+      g: Number((g / 255).toFixed(4)),
+      b: Number((b / 255).toFixed(4)),
+      a: Number(a.toFixed(4))
+    };
+  }
+
   function hexToRgb(hex) {
     hex = hex.replace('#', '').trim();
     if (hex.length === 3) {
@@ -97,11 +106,31 @@
       }
       const lightModeId = collection.modes[0].modeId;
       collection.renameMode(lightModeId, "Light");
-      let darkModeId;
-      if (collection.modes.length > 1) {
-        darkModeId = collection.modes[1].modeId;
-      } else {
-        darkModeId = collection.addMode("Dark");
+
+      let darkModeId = null;
+      try {
+        if (collection.modes.length > 1) {
+          darkModeId = collection.modes[1].modeId;
+        } else {
+          darkModeId = collection.addMode("Dark");
+        }
+      } catch (modeErr) {
+        console.log("Note: Single mode plan or addMode restriction:", modeErr);
+      }
+
+      let darkCollection = null;
+      let darkColModeId = null;
+      if (!darkModeId) {
+        try {
+          darkCollection = collections.find(c => c.name === "WayFinder Tokens (Dark)");
+          if (!darkCollection) {
+            darkCollection = figma.variables.createVariableCollection("WayFinder Tokens (Dark)");
+          }
+          darkColModeId = darkCollection.modes[0].modeId;
+          darkCollection.renameMode(darkColModeId, "Dark");
+        } catch (colErr) {
+          console.log("Note: Dark collection fallback note:", colErr);
+        }
       }
 
       const colorDefs = [
@@ -109,6 +138,7 @@
         { name: "color/primary-text", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
         { name: "color/primary-hover", light: hexToRgb("#0A5E9C"), dark: hexToRgb("#52B8FF") },
         { name: "color/brand", light: hexToRgb("#29A9FF"), dark: hexToRgb("#29A9FF") },
+        { name: "color/brand-tint", light: hexToRgb("#EAF6FF"), dark: rgbaToFigma(41, 169, 255, 0.14) },
         { name: "color/bg", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#0E1217") },
         { name: "color/bg-subtle", light: hexToRgb("#F6F8FA"), dark: hexToRgb("#161B22") },
         { name: "color/surface", light: hexToRgb("#FFFFFF"), dark: hexToRgb("#161B22") },
@@ -118,15 +148,78 @@
         { name: "color/text", light: hexToRgb("#12161B"), dark: hexToRgb("#E8EDF2") },
         { name: "color/text-muted", light: hexToRgb("#5B6673"), dark: hexToRgb("#9AA6B2") },
         { name: "color/accent", light: hexToRgb("#FEBA4F"), dark: hexToRgb("#FEBA4F") },
+        { name: "color/accent-tint", light: hexToRgb("#FFF4DF"), dark: rgbaToFigma(254, 186, 79, 0.14) },
         { name: "color/accent-text", light: hexToRgb("#8A4F0F"), dark: hexToRgb("#FEBA4F") },
         { name: "color/success", light: hexToRgb("#146C3B"), dark: hexToRgb("#4ADE80") },
-        { name: "color/danger", light: hexToRgb("#B02F2F"), dark: hexToRgb("#F87171") }
+        { name: "color/success-tint", light: hexToRgb("#E8F6EE"), dark: rgbaToFigma(74, 222, 128, 0.14) },
+        { name: "color/danger", light: hexToRgb("#B02F2F"), dark: hexToRgb("#F87171") },
+        { name: "color/danger-tint", light: hexToRgb("#FDECEC"), dark: rgbaToFigma(248, 113, 113, 0.14) }
       ];
 
+      // Detailed Variable generation tracker (NO SILENT CATCH - captures attempted/created/failed)
+      const variableReport = {
+        attempted: 0,
+        created: 0,
+        failed: 0,
+        errors: [],
+        details: []
+      };
+      if (typeof figma !== 'undefined') {
+        figma.__variableReport = variableReport;
+      }
+
+      function registerVariable(name, type, lightVal, darkVal) {
+        variableReport.attempted += 2; // 2 modes (Light and Dark)
+        let v = null;
+
+        try {
+          v = figma.variables.createVariable(name, collection, type);
+        } catch (createErr) {
+          variableReport.failed += 2;
+          const errItem = { name, type, mode: "both", stage: "createVariable", error: String(createErr) };
+          variableReport.errors.push(errItem);
+          variableReport.details.push({ name, type, mode: "Light", status: "FAILED", error: String(createErr) });
+          variableReport.details.push({ name, type, mode: "Dark", status: "FAILED", error: String(createErr) });
+          console.error(`[WayFinder Plugin Error] createVariable failed for ${name} (${type}):`, createErr);
+          return;
+        }
+
+        // Set Light mode value
+        try {
+          v.setValueForMode(lightModeId, lightVal);
+          variableReport.created += 1;
+          variableReport.details.push({ name, type, mode: "Light", status: "CREATED", value: lightVal });
+        } catch (setLightErr) {
+          variableReport.failed += 1;
+          variableReport.errors.push({ name, type, mode: "Light", stage: "setValueForMode", error: String(setLightErr) });
+          variableReport.details.push({ name, type, mode: "Light", status: "FAILED", error: String(setLightErr) });
+          console.error(`[WayFinder Plugin Error] setValueForMode (Light) failed for ${name}:`, setLightErr);
+        }
+
+        // Set Dark mode value
+        try {
+          if (darkModeId) {
+            v.setValueForMode(darkModeId, darkVal);
+            variableReport.created += 1;
+            variableReport.details.push({ name, type, mode: "Dark", status: "CREATED", value: darkVal });
+          } else if (darkCollection && darkColModeId) {
+            const vDark = figma.variables.createVariable(name, darkCollection, type);
+            vDark.setValueForMode(darkColModeId, darkVal);
+            variableReport.created += 1;
+            variableReport.details.push({ name, type, mode: "Dark", status: "CREATED_FALLBACK_COLLECTION", value: darkVal });
+          } else {
+            throw new Error("No dark mode available in collection or fallback collection");
+          }
+        } catch (setDarkErr) {
+          variableReport.failed += 1;
+          variableReport.errors.push({ name, type, mode: "Dark", stage: "setValueForMode", error: String(setDarkErr) });
+          variableReport.details.push({ name, type, mode: "Dark", status: "FAILED", error: String(setDarkErr) });
+          console.error(`[WayFinder Plugin Error] setValueForMode (Dark) failed for ${name}:`, setDarkErr);
+        }
+      }
+
       for (const c of colorDefs) {
-        const v = figma.variables.createVariable(c.name, collection, "COLOR");
-        v.setValueForMode(lightModeId, c.light);
-        v.setValueForMode(darkModeId, c.dark);
+        registerVariable(c.name, "COLOR", c.light, c.dark);
       }
 
       const spacingDefs = [
@@ -142,12 +235,39 @@
         { name: "spacing/space-16", val: 64 }
       ];
       for (const s of spacingDefs) {
-        const v = figma.variables.createVariable(s.name, collection, "FLOAT");
-        v.setValueForMode(lightModeId, s.val);
-        v.setValueForMode(darkModeId, s.val);
+        registerVariable(s.name, "FLOAT", s.val, s.val);
+      }
+
+      const radiusDefs = [
+        { name: "radius/radius-sm", val: 6 },
+        { name: "radius/radius-md", val: 10 },
+        { name: "radius/radius-lg", val: 14 },
+        { name: "radius/radius-xl", val: 20 },
+        { name: "radius/radius-full", val: 9999 }
+      ];
+      for (const r of radiusDefs) {
+        registerVariable(r.name, "FLOAT", r.val, r.val);
+      }
+
+      const motionDefs = [
+        { name: "motion/motion-fast", val: "120ms" },
+        { name: "motion/motion-base", val: "200ms" }
+      ];
+      for (const m of motionDefs) {
+        registerVariable(m.name, "STRING", m.val, m.val);
+      }
+
+      // Assert completeness & notify runner
+      if (variableReport.failed > 0 || variableReport.created < 74) {
+        const errorMsg = `WayFinder Variables: LỖI thiếu ${74 - variableReport.created}/74 giá trị! Thất bại: ${variableReport.failed}. Xem console log để biết chi tiết.`;
+        console.error(errorMsg, variableReport.errors);
+        figma.notify(errorMsg, { error: true, timeout: 9000 });
+      } else {
+        console.log(`WayFinder Variables: Đã tạo đầy đủ ${variableReport.created}/${variableReport.attempted} giá trị biến (37 biến × 2 mode Light/Dark).`);
       }
     } catch (varErr) {
-      console.log("Figma Variables notice:", varErr);
+      console.error("[WayFinder Plugin] Fatal collection creation error:", varErr);
+      figma.notify(`WayFinder Tokens: Lỗi cấu trúc collection: ${varErr.message || varErr}`, { error: true, timeout: 9000 });
     }
   }
 
@@ -303,6 +423,35 @@
   compFrame.itemSpacing = 20;
 
   compFrame.appendChild(createText("Thư viện thành phần giao diện (UI Library)", 24, FONT_BOLD, C.text));
+
+  // Native Figma Components
+  if (typeof figma.createComponent === "function") {
+    try {
+      const compBtnPrimary = figma.createComponent();
+      compBtnPrimary.name = "Component / Button Primary";
+      compBtnPrimary.layoutMode = "HORIZONTAL";
+      compBtnPrimary.primaryAxisAlignItems = "CENTER";
+      compBtnPrimary.counterAxisAlignItems = "CENTER";
+      compBtnPrimary.paddingLeft = 16; compBtnPrimary.paddingRight = 16;
+      compBtnPrimary.paddingTop = 10; compBtnPrimary.paddingBottom = 10;
+      compBtnPrimary.cornerRadius = 10;
+      compBtnPrimary.fills = solidFill(C.primary);
+      compBtnPrimary.appendChild(createText("Nút chính (Primary)", 14, FONT_SEMI, C.white));
+      compFrame.appendChild(compBtnPrimary);
+
+      const compBadgeSuccess = figma.createComponent();
+      compBadgeSuccess.name = "Component / Badge Success";
+      compBadgeSuccess.layoutMode = "HORIZONTAL";
+      compBadgeSuccess.paddingLeft = 8; compBadgeSuccess.paddingRight = 8;
+      compBadgeSuccess.paddingTop = 4; compBadgeSuccess.paddingBottom = 4;
+      compBadgeSuccess.cornerRadius = 6;
+      compBadgeSuccess.fills = solidFill(C.successTint);
+      compBadgeSuccess.appendChild(createText("✓ Hoàn thành", 12, FONT_SEMI, C.success));
+      compFrame.appendChild(compBadgeSuccess);
+    } catch (compErr) {
+      console.log("Component creation notice:", compErr);
+    }
+  }
 
   // Buttons Row
   const btnRow = figma.createFrame();
@@ -770,7 +919,7 @@
   w03Frame.itemSpacing = 16;
 
   w03Frame.appendChild(createText("Bộ màn hình W-03: Xác thực Email, Quên & Đặt lại mật khẩu (Token một lần)", 22, FONT_BOLD, C.text));
-  w03Frame.appendChild(createText("Bàn giao chuẩn phục vụ nhóm Web (W-03) &bull; Viewport thích ứng &bull; Nút 44px &bull; WCAG 2.1 AA", 13, FONT_REG, C.textMuted));
+  w03Frame.appendChild(createText("Bàn giao chuẩn phục vụ nhóm Web (W-03) • Viewport thích ứng • Nút 44px • WCAG 2.1 AA", 13, FONT_REG, C.textMuted));
 
   const w03CardsRow = figma.createFrame();
   w03CardsRow.layoutMode = "HORIZONTAL";
@@ -930,7 +1079,7 @@
   f1A.strokes = [{ type: "SOLID", color: C.border }];
   f1A.paddingLeft = 14; f1A.paddingRight = 14; f1A.paddingTop = 14; f1A.paddingBottom = 14;
   f1A.layoutMode = "VERTICAL"; f1A.itemSpacing = 8;
-  f1A.appendChild(makeBadge("Luồng 1 &bull; Bước 1", C.brandTint, C.primary));
+  f1A.appendChild(makeBadge("Luồng 1 • Bước 1", C.brandTint, C.primary));
   f1A.appendChild(createText("Đăng ký tài khoản", 14, FONT_SEMI, C.text));
   const f1ABtn = makeButton("Đăng ký & Vào khoá học ➔", C.primary, C.white);
   f1ABtn.resize(260, 44);
@@ -946,7 +1095,7 @@
   f1B.strokes = [{ type: "SOLID", color: C.border }];
   f1B.paddingLeft = 14; f1B.paddingRight = 14; f1B.paddingTop = 14; f1B.paddingBottom = 14;
   f1B.layoutMode = "VERTICAL"; f1B.itemSpacing = 8;
-  f1B.appendChild(makeBadge("Luồng 1 &bull; Bước 2", C.successTint, C.success));
+  f1B.appendChild(makeBadge("Luồng 1 • Bước 2", C.successTint, C.success));
   f1B.appendChild(createText("Khoá học: Bác sĩ Nội trú", 14, FONT_SEMI, C.text));
   const f1BBtn = makeButton("Mở bài lecture-2 ➔", C.primary, C.white);
   f1BBtn.resize(260, 44);
@@ -963,9 +1112,9 @@
   f1C.strokeWeight = 2;
   f1C.paddingLeft = 14; f1C.paddingRight = 14; f1C.paddingTop = 14; f1C.paddingBottom = 14;
   f1C.layoutMode = "VERTICAL"; f1C.itemSpacing = 8;
-  f1C.appendChild(makeBadge("Luồng 1 &bull; Bước 3", C.brandTint, C.primary));
+  f1C.appendChild(makeBadge("Luồng 1 • Bước 3", C.brandTint, C.primary));
   f1C.appendChild(createText("lecture-2: Giải phẫu động mạch", 14, FONT_SEMI, C.text));
-  f1C.appendChild(createText("✓ Accordion mở &bull; Nội dung sẵn sàng", 12, FONT_REG, C.success));
+  f1C.appendChild(createText("✓ Accordion mở • Nội dung sẵn sàng", 12, FONT_REG, C.success));
   flow1Container.appendChild(f1C);
 
   // Connect Flow 1 prototype reactions
@@ -986,7 +1135,7 @@
   f2A.strokes = [{ type: "SOLID", color: C.border }];
   f2A.paddingLeft = 14; f2A.paddingRight = 14; f2A.paddingTop = 14; f2A.paddingBottom = 14;
   f2A.layoutMode = "VERTICAL"; f2A.itemSpacing = 8;
-  f2A.appendChild(makeBadge("Luồng 2 &bull; Bước 1", C.brandTint, C.primary));
+  f2A.appendChild(makeBadge("Luồng 2 • Bước 1", C.brandTint, C.primary));
   f2A.appendChild(createText("Chia sẻ: WF-PHARM-2026", 14, FONT_SEMI, C.text));
   const f2ABtn = makeButton("Mở liên kết tham gia ➔", C.primary, C.white);
   f2ABtn.resize(260, 44);
@@ -999,7 +1148,7 @@
   f2B.strokes = [{ type: "SOLID", color: C.border }];
   f2B.paddingLeft = 14; f2B.paddingRight = 14; f2B.paddingTop = 14; f2B.paddingBottom = 14;
   f2B.layoutMode = "VERTICAL"; f2B.itemSpacing = 8;
-  f2B.appendChild(makeBadge("Luồng 2 &bull; Bước 2", C.accentTint, C.accentText));
+  f2B.appendChild(makeBadge("Luồng 2 • Bước 2", C.accentTint, C.accentText));
   f2B.appendChild(createText("Xác nhận vào Dược lý", 14, FONT_SEMI, C.text));
   const f2BBtn = makeButton("Xác nhận tham gia ➔", C.primary, C.white);
   f2BBtn.resize(260, 44);
@@ -1012,7 +1161,7 @@
   f2C.strokes = [{ type: "SOLID", color: C.success }]; f2C.strokeWeight = 2;
   f2C.paddingLeft = 14; f2C.paddingRight = 14; f2C.paddingTop = 14; f2C.paddingBottom = 14;
   f2C.layoutMode = "VERTICAL"; f2C.itemSpacing = 8;
-  f2C.appendChild(makeBadge("Luồng 2 &bull; Bước 3", C.successTint, C.success));
+  f2C.appendChild(makeBadge("Luồng 2 • Bước 3", C.successTint, C.success));
   f2C.appendChild(createText("Đã là thành viên chính thức", 14, FONT_SEMI, C.text));
   f2C.appendChild(createText("✓ Quyền truy cập đã kích hoạt", 12, FONT_REG, C.success));
   flow2Container.appendChild(f2C);
@@ -1034,7 +1183,7 @@
   f3A.strokes = [{ type: "SOLID", color: C.border }];
   f3A.paddingLeft = 14; f3A.paddingRight = 14; f3A.paddingTop = 14; f3A.paddingBottom = 14;
   f3A.layoutMode = "VERTICAL"; f3A.itemSpacing = 8;
-  f3A.appendChild(makeBadge("Luồng 3 &bull; Bước 1", C.brandTint, C.primary));
+  f3A.appendChild(makeBadge("Luồng 3 • Bước 1", C.brandTint, C.primary));
   f3A.appendChild(createText("Kéo thả Harrison.pdf", 14, FONT_SEMI, C.text));
   const f3ABtn = makeButton("Chọn tệp & Cấu hình ➔", C.primary, C.white);
   f3ABtn.resize(260, 44);
@@ -1047,7 +1196,7 @@
   f3B.strokes = [{ type: "SOLID", color: C.border }];
   f3B.paddingLeft = 14; f3B.paddingRight = 14; f3B.paddingTop = 14; f3B.paddingBottom = 14;
   f3B.layoutMode = "VERTICAL"; f3B.itemSpacing = 8;
-  f3B.appendChild(makeBadge("Luồng 3 &bull; Bước 2", C.accentTint, C.accentText));
+  f3B.appendChild(makeBadge("Luồng 3 • Bước 2", C.accentTint, C.accentText));
   f3B.appendChild(createText("Mục tiêu: Bác sĩ Nội trú", 14, FONT_SEMI, C.text));
   const f3BBtn = makeButton("Bắt đầu dựng lộ trình ➔", C.primary, C.white);
   f3BBtn.resize(260, 44);
@@ -1060,7 +1209,7 @@
   f3C.strokes = [{ type: "SOLID", color: C.success }]; f3C.strokeWeight = 2;
   f3C.paddingLeft = 14; f3C.paddingRight = 14; f3C.paddingTop = 14; f3C.paddingBottom = 14;
   f3C.layoutMode = "VERTICAL"; f3C.itemSpacing = 8;
-  f3C.appendChild(makeBadge("Luồng 3 &bull; Bước 3", C.successTint, C.success));
+  f3C.appendChild(makeBadge("Luồng 3 • Bước 3", C.successTint, C.success));
   f3C.appendChild(createText("Lộ trình 18 khái niệm", 14, FONT_SEMI, C.text));
   f3C.appendChild(createText("✓ Tiến trình 4 bước đã hoàn tất", 12, FONT_REG, C.success));
   flow3Container.appendChild(f3C);
@@ -1082,7 +1231,7 @@
   f4A.strokes = [{ type: "SOLID", color: C.border }];
   f4A.paddingLeft = 14; f4A.paddingRight = 14; f4A.paddingTop = 14; f4A.paddingBottom = 14;
   f4A.layoutMode = "VERTICAL"; f4A.itemSpacing = 8;
-  f4A.appendChild(makeBadge("Luồng 4 &bull; Bước 1", C.brandTint, C.primary));
+  f4A.appendChild(makeBadge("Luồng 4 • Bước 1", C.brandTint, C.primary));
   f4A.appendChild(createText("Chọn đáp án B: Nhánh LAD", 14, FONT_SEMI, C.text));
   const f4ABtn = makeButton("Nộp bài & Chấm điểm ➔", C.primary, C.white);
   f4ABtn.resize(260, 44);
@@ -1095,7 +1244,7 @@
   f4B.strokes = [{ type: "SOLID", color: C.success }]; f4B.strokeWeight = 2;
   f4B.paddingLeft = 14; f4B.paddingRight = 14; f4B.paddingTop = 14; f4B.paddingBottom = 14;
   f4B.layoutMode = "VERTICAL"; f4B.itemSpacing = 8;
-  f4B.appendChild(makeBadge("Luồng 4 &bull; Bước 2", C.successTint, C.success));
+  f4B.appendChild(makeBadge("Luồng 4 • Bước 2", C.successTint, C.success));
   f4B.appendChild(createText("Chính xác: 10/10 điểm", 14, FONT_SEMI, C.success));
   f4B.appendChild(createText("📖 Trích dẫn: Harrison 21st, Tr. 1892", 11, FONT_REG, C.textMuted));
   flow4Container.appendChild(f4B);
@@ -1106,6 +1255,18 @@
   protoMasterFrame.appendChild(protoRows);
   figma.currentPage.appendChild(protoMasterFrame);
   createdNodes.push(protoMasterFrame);
+
+  // Native Figma Flow Starting Points (4 Core Flows)
+  try {
+    figma.currentPage.flowStartingPoints = [
+      { nodeId: f1A.id, name: "Luồng 1: Đăng ký -> Khoá học -> Bài giảng" },
+      { nodeId: f2A.id, name: "Luồng 2: Chia sẻ -> Tham gia khoá học" },
+      { nodeId: f3A.id, name: "Luồng 3: Tải giáo trình -> Dựng 4 bước" },
+      { nodeId: f4A.id, name: "Luồng 4: Quiz -> Chấm điểm -> Trích dẫn" }
+    ];
+  } catch (flowErr) {
+    console.log("Flow starting points notice:", flowErr);
+  }
 
   // ==========================================
   // 7. FRAME: MÀN HÌNH W-06 (KHOÁ HỌC CỦA TÔI /khoa-hoc)
@@ -1336,6 +1497,605 @@
   figma.currentPage.appendChild(w04Frame);
   createdNodes.push(w04Frame);
 
+  // ==========================================
+  // 9. FRAME: MÀN HÌNH W-07 (LỘ TRÌNH & TIẾN ĐỘ BÀI HỌC)
+  // ==========================================
+  const w07Frame = figma.createFrame();
+  w07Frame.name = "9. Màn hình W-07: Lộ trình & Quản lý Tiến độ (/khoa-hoc/:cid)";
+  w07Frame.x = 0;
+  w07Frame.y = 4160;
+  w07Frame.resize(1280, 620);
+  w07Frame.fills = solidFill(C.surface);
+  w07Frame.cornerRadius = 16;
+  w07Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w07Frame.strokeWeight = 1;
+  w07Frame.layoutMode = "VERTICAL";
+  w07Frame.paddingTop = 28;
+  w07Frame.paddingBottom = 28;
+  w07Frame.paddingLeft = 32;
+  w07Frame.paddingRight = 32;
+  w07Frame.itemSpacing = 16;
+
+  w07Frame.appendChild(createText("Lộ trình học tập & Quản lý Tiến độ bài học — W-07", 22, FONT_BOLD, C.text));
+  w07Frame.appendChild(createText("Mã tài liệu: DOC-SAMPLE-01 · Module mở/gập, tiến độ trực quan, đánh dấu hoàn thành và hoàn tác bài học (0 USD chi phí học viên).", 13, FONT_REG, C.textMuted));
+
+  const w07CardsRow = figma.createFrame();
+  w07CardsRow.layoutMode = "HORIZONTAL";
+  w07CardsRow.itemSpacing = 16;
+  w07CardsRow.fills = [];
+
+  // Card 1: Module 1 Completed
+  const m1Card = figma.createFrame();
+  m1Card.layoutMode = "VERTICAL";
+  m1Card.itemSpacing = 12;
+  m1Card.resize(380, 460);
+  m1Card.cornerRadius = 12;
+  m1Card.fills = solidFill(C.bgSubtle);
+  m1Card.strokes = [{ type: "SOLID", color: C.success }];
+  m1Card.strokeWeight = 2;
+  m1Card.paddingLeft = 20; m1Card.paddingRight = 20; m1Card.paddingTop = 20; m1Card.paddingBottom = 20;
+  m1Card.appendChild(makeBadge("Module 1 · Xong 5/5", C.successTint, C.success));
+  m1Card.appendChild(createText("① Giải phẫu Đại thể Tim", 18, FONT_BOLD, C.text));
+  m1Card.appendChild(createText("Hình thể ngoài, rãnh liên thất, 4 buồng tim và hệ thống vách ngăn.", 13, FONT_REG, C.textMuted));
+  m1Card.appendChild(createText("Tiến độ: 5/5 bài học (100% hoàn thành)", 13, FONT_SEMI, C.success));
+  const btnRevM1 = makeButton("Xem lại bài học", C.surface, C.text, C.borderInput);
+  btnRevM1.resize(340, 44);
+  m1Card.appendChild(btnRevM1);
+  w07CardsRow.appendChild(m1Card);
+
+  // Card 2: Module 2 In Progress with Concept Accordion
+  const m2Card = figma.createFrame();
+  m2Card.layoutMode = "VERTICAL";
+  m2Card.itemSpacing = 10;
+  m2Card.resize(400, 460);
+  m2Card.cornerRadius = 12;
+  m2Card.fills = solidFill(C.bgSubtle);
+  m2Card.strokes = [{ type: "SOLID", color: C.primary }];
+  m2Card.strokeWeight = 2;
+  m2Card.paddingLeft = 20; m2Card.paddingRight = 20; m2Card.paddingTop = 20; m2Card.paddingBottom = 20;
+  m2Card.appendChild(makeBadge("Module 2 · Đang học 3/8", C.accentTint, C.accentText));
+  m2Card.appendChild(createText("② Động mạch Vành & Tuần hoàn", 18, FONT_BOLD, C.text));
+  
+  // Concept item A (Learned + Rollback)
+  const cItemA = figma.createFrame();
+  cItemA.layoutMode = "HORIZONTAL";
+  cItemA.primaryAxisAlignItems = "SPACE_BETWEEN";
+  cItemA.counterAxisAlignItems = "CENTER";
+  cItemA.resize(360, 48);
+  cItemA.cornerRadius = 8;
+  cItemA.fills = solidFill(C.successTint);
+  cItemA.paddingLeft = 10; cItemA.paddingRight = 10;
+  cItemA.appendChild(createText("■ Nhánh LAD (✓ Đã học)", 12, FONT_SEMI, C.success));
+  const btnRollback = makeButton("Hoàn tác", C.surface, C.danger, C.danger);
+  btnRollback.resize(70, 32);
+  cItemA.appendChild(btnRollback);
+  m2Card.appendChild(cItemA);
+
+  // Concept item B (Not learned + Mark complete)
+  const cItemB = figma.createFrame();
+  cItemB.layoutMode = "HORIZONTAL";
+  cItemB.primaryAxisAlignItems = "SPACE_BETWEEN";
+  cItemB.counterAxisAlignItems = "CENTER";
+  cItemB.resize(360, 48);
+  cItemB.cornerRadius = 8;
+  cItemB.fills = solidFill(C.surface);
+  cItemB.strokes = [{ type: "SOLID", color: C.border }];
+  cItemB.paddingLeft = 10; cItemB.paddingRight = 10;
+  cItemB.appendChild(createText("□ Nhánh LCx (Chưa học)", 12, FONT_REG, C.text));
+  const btnMark = makeButton("Đánh dấu", C.primary, C.white);
+  btnMark.resize(76, 32);
+  cItemB.appendChild(btnMark);
+  m2Card.appendChild(cItemB);
+
+  const btnContM2 = makeButton("Tiếp tục học Module 2 ➔", C.primary, C.white);
+  btnContM2.resize(360, 44);
+  m2Card.appendChild(btnContM2);
+  w07CardsRow.appendChild(m2Card);
+
+  // Card 3: Action & Quiz Panel
+  const actCard = figma.createFrame();
+  actCard.layoutMode = "VERTICAL";
+  actCard.itemSpacing = 12;
+  actCard.resize(380, 460);
+  actCard.cornerRadius = 12;
+  actCard.fills = solidFill(C.bgSubtle);
+  actCard.strokes = [{ type: "SOLID", color: C.border }];
+  actCard.strokeWeight = 1;
+  actCard.paddingLeft = 20; actCard.paddingRight = 20; actCard.paddingTop = 20; actCard.paddingBottom = 20;
+  actCard.appendChild(makeBadge("Hoạt động tổng kết", C.brandTint, C.primary));
+  actCard.appendChild(createText("Lượng giá & Tài liệu", 18, FONT_BOLD, C.text));
+  actCard.appendChild(createText("Làm bài kiểm tra trắc nghiệm cả khoá hoặc tạo tài liệu bài học rút gọn.", 13, FONT_REG, C.textMuted));
+  const btnQuiz = makeButton("📝 Làm quiz cả khoá", C.primary, C.white);
+  btnQuiz.resize(340, 44);
+  actCard.appendChild(btnQuiz);
+  const btnShare = makeButton("🔗 Chia sẻ liên kết mời", C.surface, C.text, C.borderInput);
+  btnShare.resize(340, 44);
+  actCard.appendChild(btnShare);
+  w07CardsRow.appendChild(actCard);
+
+  w07Frame.appendChild(w07CardsRow);
+  figma.currentPage.appendChild(w07Frame);
+  createdNodes.push(w07Frame);
+
+  // ==========================================
+  // 10. FRAME: MÀN HÌNH W-14 (TẢI GIÁO TRÌNH & DỰNG LỘ TRÌNH 4 BƯỚC)
+  // ==========================================
+  const w14Frame = figma.createFrame();
+  w14Frame.name = "10. Màn hình W-14: Tải giáo trình & Dựng lộ trình (/tai-len)";
+  w14Frame.x = 0;
+  w14Frame.y = 4800;
+  w14Frame.resize(1280, 620);
+  w14Frame.fills = solidFill(C.surface);
+  w14Frame.cornerRadius = 16;
+  w14Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w14Frame.strokeWeight = 1;
+  w14Frame.layoutMode = "VERTICAL";
+  w14Frame.paddingTop = 28;
+  w14Frame.paddingBottom = 28;
+  w14Frame.paddingLeft = 32;
+  w14Frame.paddingRight = 32;
+  w14Frame.itemSpacing = 16;
+
+  w14Frame.appendChild(createText("Tải tài liệu & Dựng lộ trình 4 bước — W-14", 22, FONT_BOLD, C.text));
+  w14Frame.appendChild(createText("Chọn tệp PDF/DOCX, xác nhận bản quyền, tiến trình 4 bước và xử lý cảnh báo bản quét (0 USD chi phí học viên).", 13, FONT_REG, C.textMuted));
+
+  const w14CardsRow = figma.createFrame();
+  w14CardsRow.layoutMode = "HORIZONTAL";
+  w14CardsRow.itemSpacing = 16;
+  w14CardsRow.fills = [];
+
+  // Card 1: Upload & Copyright
+  const upCard = figma.createFrame();
+  upCard.layoutMode = "VERTICAL";
+  upCard.itemSpacing = 12;
+  upCard.resize(380, 460);
+  upCard.cornerRadius = 12;
+  upCard.fills = solidFill(C.bgSubtle);
+  upCard.strokes = [{ type: "SOLID", color: C.border }];
+  upCard.paddingLeft = 20; upCard.paddingRight = 20; upCard.paddingTop = 20; upCard.paddingBottom = 20;
+  upCard.appendChild(makeBadge("Bước 1: Chọn tài liệu", C.brandTint, C.primary));
+  upCard.appendChild(createText("Chọn giáo trình PDF/DOCX", 18, FONT_BOLD, C.text));
+  upCard.appendChild(createText("Tệp đã chọn: DOC-SAMPLE-01.pdf (8.4 MB)", 13, FONT_SEMI, C.text));
+  upCard.appendChild(createText("☑ Tôi có quyền dùng và chia sẻ tài liệu này", 12, FONT_REG, C.text));
+  const btnStartPipeline = makeButton("🚀 Dựng lộ trình", C.primary, C.white);
+  btnStartPipeline.resize(340, 44);
+  upCard.appendChild(btnStartPipeline);
+  w14CardsRow.appendChild(upCard);
+
+  // Card 2: 4-Step Build Progress
+  const progCard = figma.createFrame();
+  progCard.layoutMode = "VERTICAL";
+  progCard.itemSpacing = 10;
+  progCard.resize(380, 460);
+  progCard.cornerRadius = 12;
+  progCard.fills = solidFill(C.bgSubtle);
+  progCard.strokes = [{ type: "SOLID", color: C.primary }];
+  progCard.strokeWeight = 2;
+  progCard.paddingLeft = 20; progCard.paddingRight = 20; progCard.paddingTop = 20; progCard.paddingBottom = 20;
+  progCard.appendChild(makeBadge("Bước 2: Tiến trình 4 bước", C.brandTint, C.primary));
+  progCard.appendChild(createText("Đang dựng lộ trình thông minh", 18, FONT_BOLD, C.text));
+  progCard.appendChild(createText("✓ 1. Đọc tài liệu (Trích văn bản & mục lục)", 12, FONT_SEMI, C.success));
+  progCard.appendChild(createText("● 2. Trích khái niệm (Nhận diện thực thể)", 12, FONT_SEMI, C.primary));
+  progCard.appendChild(createText("○ 3. Dựng đồ thị và lộ trình", 12, FONT_REG, C.textMuted));
+  progCard.appendChild(createText("○ 4. Chuẩn bị bài học", 12, FONT_REG, C.textMuted));
+  const btnCancelProg = makeButton("Huỷ tiến trình", C.surface, C.danger, C.danger);
+  btnCancelProg.resize(340, 44);
+  progCard.appendChild(btnCancelProg);
+  w14CardsRow.appendChild(progCard);
+
+  // Card 3: Scanned PDF Error Handling
+  const errCard = figma.createFrame();
+  errCard.layoutMode = "VERTICAL";
+  errCard.itemSpacing = 12;
+  errCard.resize(380, 460);
+  errCard.cornerRadius = 12;
+  errCard.fills = solidFill(C.bgSubtle);
+  errCard.strokes = [{ type: "SOLID", color: C.danger }];
+  errCard.strokeWeight = 2;
+  errCard.paddingLeft = 20; errCard.paddingRight = 20; errCard.paddingTop = 20; errCard.paddingBottom = 20;
+  errCard.appendChild(makeBadge("Lỗi: Bản quét (Scanned PDF)", C.dangerTint, C.danger));
+  errCard.appendChild(createText("Tài liệu không hợp lệ", 18, FONT_BOLD, C.danger));
+  const scanErrBox = figma.createFrame();
+  scanErrBox.resize(340, 80);
+  scanErrBox.cornerRadius = 8;
+  scanErrBox.fills = solidFill(C.dangerTint);
+  scanErrBox.paddingLeft = 12; scanErrBox.paddingRight = 12; scanErrBox.paddingTop = 10;
+  scanErrBox.appendChild(createText("⚠️ Tệp này là bản quét (ảnh chụp trang), WayFinder chưa đọc được. Hãy dùng bản PDF có chữ chọn được.", 12, FONT_REG, C.danger));
+  errCard.appendChild(scanErrBox);
+  errCard.appendChild(createText("Lưu ý: Không trừ lượt và không phát sinh bất kỳ chi phí nào.", 11, FONT_REG, C.textMuted));
+  const btnRetryUpload = makeButton("Thử lại với tệp khác", C.primary, C.white);
+  btnRetryUpload.resize(340, 44);
+  errCard.appendChild(btnRetryUpload);
+  w14CardsRow.appendChild(errCard);
+
+  w14Frame.appendChild(w14CardsRow);
+  figma.currentPage.appendChild(w14Frame);
+  createdNodes.push(w14Frame);
+
+  // ==========================================
+  // 11. FRAME: MÀN HÌNH W-11 (QUẢN LÝ KHOÁ HỌC & CHIA SẺ LIÊN KẾT)
+  // ==========================================
+  const w11Frame = figma.createFrame();
+  w11Frame.name = "11. Màn hình W-11: Quản lý Khoá học & Chia sẻ Liên kết (/join)";
+  w11Frame.x = 0;
+  w11Frame.y = 5450;
+  w11Frame.resize(1280, 540);
+  w11Frame.fills = solidFill(C.surface);
+  w11Frame.cornerRadius = 16;
+  w11Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w11Frame.strokeWeight = 1;
+  w11Frame.layoutMode = "VERTICAL";
+  w11Frame.paddingTop = 28; w11Frame.paddingBottom = 28;
+  w11Frame.paddingLeft = 32; w11Frame.paddingRight = 32;
+  w11Frame.itemSpacing = 20;
+
+  w11Frame.appendChild(createText("Quản lý Khoá học & Chia sẻ Liên kết (W-11 /join/:token)", 22, FONT_BOLD, C.text));
+  w11Frame.appendChild(createText("Bao gồm: Cấu hình tạo link (thời hạn, số lượt), Bảng danh sách link & thu hồi, Màn hình tham gia minh bạch dữ liệu.", 13, FONT_REG, C.textMuted));
+
+  const w11CardsRow = figma.createFrame();
+  w11CardsRow.layoutMode = "HORIZONTAL";
+  w11CardsRow.itemSpacing = 16;
+  w11CardsRow.fills = [];
+
+  // Card 1: Course Share Settings & One-time Result Box
+  const w11ShareCard = figma.createFrame();
+  w11ShareCard.layoutMode = "VERTICAL";
+  w11ShareCard.itemSpacing = 10;
+  w11ShareCard.resize(380, 440);
+  w11ShareCard.cornerRadius = 12;
+  w11ShareCard.fills = solidFill(C.bgSubtle);
+  w11ShareCard.strokes = [{ type: "SOLID", color: C.border }];
+  w11ShareCard.paddingLeft = 16; w11ShareCard.paddingRight = 16; w11ShareCard.paddingTop = 16; w11ShareCard.paddingBottom = 16;
+  w11ShareCard.appendChild(makeBadge("W-11: Quản lý chia sẻ", C.brandTint, C.primary));
+  w11ShareCard.appendChild(createText("Tạo liên kết tham gia mới", 16, FONT_SEMI, C.text));
+  w11ShareCard.appendChild(createText("Thời hạn: 7 ngày • Tối đa 50 học viên", 12, FONT_REG, C.textMuted));
+  const oneTimeBox = figma.createFrame();
+  oneTimeBox.layoutMode = "VERTICAL";
+  oneTimeBox.resize(348, 90);
+  oneTimeBox.cornerRadius = 8;
+  oneTimeBox.fills = solidFill(C.brandTint);
+  oneTimeBox.paddingLeft = 10; oneTimeBox.paddingRight = 10; oneTimeBox.paddingTop = 8; oneTimeBox.paddingBottom = 8;
+  oneTimeBox.itemSpacing = 6;
+  oneTimeBox.appendChild(createText("✓ URL tạo một lần: https://wayfinder.edu.vn/join/X9A4B2", 11, FONT_SEMI, C.primary));
+  const btnCopyOneTime = makeButton("Sao chép liên kết (một lần)", C.primary, C.white);
+  btnCopyOneTime.resize(328, 44);
+  oneTimeBox.appendChild(btnCopyOneTime);
+  w11ShareCard.appendChild(oneTimeBox);
+  w11CardsRow.appendChild(w11ShareCard);
+
+  // Card 2: Link List (ONLY 6-char code X9A4B2, NO copy button in list)
+  const w11ListCard = figma.createFrame();
+  w11ListCard.layoutMode = "VERTICAL";
+  w11ListCard.itemSpacing = 10;
+  w11ListCard.resize(380, 440);
+  w11ListCard.cornerRadius = 12;
+  w11ListCard.fills = solidFill(C.bgSubtle);
+  w11ListCard.strokes = [{ type: "SOLID", color: C.border }];
+  w11ListCard.paddingLeft = 16; w11ListCard.paddingRight = 16; w11ListCard.paddingTop = 16; w11ListCard.paddingBottom = 16;
+  w11ListCard.appendChild(makeBadge("Danh sách liên kết (Mã 6 ký tự)", C.successTint, C.success));
+  w11ListCard.appendChild(createText("Mã: X9A4B2", 18, FONT_BOLD, C.primary));
+  w11ListCard.appendChild(createText("Đã dùng: 14/50 lượt • Còn 5 ngày", 12, FONT_REG, C.textMuted));
+  w11ListCard.appendChild(createText("Ghi chú: Không copy lại từ list, chỉ lưu mã định danh.", 11, FONT_REG, C.textMuted));
+  const btnRevokeLink = makeButton("Thu hồi liên kết", C.surface, C.danger, C.danger);
+  btnRevokeLink.resize(348, 44);
+  w11ListCard.appendChild(btnRevokeLink);
+  w11CardsRow.appendChild(w11ListCard);
+
+  // Card 3: Join Screen (/join/:token) with Privacy Notice
+  const w11JoinCard = figma.createFrame();
+  w11JoinCard.layoutMode = "VERTICAL";
+  w11JoinCard.itemSpacing = 10;
+  w11JoinCard.resize(380, 420);
+  w11JoinCard.cornerRadius = 12;
+  w11JoinCard.fills = solidFill(C.bgSubtle);
+  w11JoinCard.strokes = [{ type: "SOLID", color: C.primary }];
+  w11JoinCard.strokeWeight = 2;
+  w11JoinCard.paddingLeft = 16; w11JoinCard.paddingRight = 16; w11JoinCard.paddingTop = 16; w11JoinCard.paddingBottom = 16;
+  w11JoinCard.appendChild(makeBadge("Màn hình /join/:token", C.brandTint, C.primary));
+  w11JoinCard.appendChild(createText("Xác nhận vào Dược lý lâm sàng", 16, FONT_BOLD, C.text));
+  const privacyBox = figma.createFrame();
+  privacyBox.resize(348, 68);
+  privacyBox.cornerRadius = 8;
+  privacyBox.fills = solidFill(C.brandTint);
+  privacyBox.paddingLeft = 10; privacyBox.paddingRight = 10; privacyBox.paddingTop = 8;
+  privacyBox.appendChild(createText("🔒 Chủ khoá thấy tên, ngày vào, số bài học. Không thấy chat hay bài làm.", 11, FONT_REG, C.primary));
+  w11JoinCard.appendChild(privacyBox);
+  const btnJoinConfirm = makeButton("Tham gia khoá học ➔", C.primary, C.white);
+  btnJoinConfirm.resize(348, 44);
+  w11JoinCard.appendChild(btnJoinConfirm);
+  w11CardsRow.appendChild(w11JoinCard);
+
+  w11Frame.appendChild(w11CardsRow);
+  figma.currentPage.appendChild(w11Frame);
+  createdNodes.push(w11Frame);
+
+  // ==========================================
+  // 12. FRAME: W-08 LECTURE, VIEWER & BUG REPORT
+  // ==========================================
+  const w08Frame = figma.createFrame();
+  w08Frame.name = "12. Màn hình W-08: Bài học Y khoa, Viewer & Báo lỗi";
+  w08Frame.x = 0;
+  w08Frame.y = 6050;
+  w08Frame.resize(1280, 560);
+  w08Frame.fills = solidFill(C.surface);
+  w08Frame.cornerRadius = 16;
+  w08Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w08Frame.strokeWeight = 1;
+  w08Frame.layoutMode = "VERTICAL";
+  w08Frame.paddingTop = 28; w08Frame.paddingBottom = 28;
+  w08Frame.paddingLeft = 32; w08Frame.paddingRight = 32;
+  w08Frame.itemSpacing = 20;
+
+  w08Frame.appendChild(createText("Trang học & Bài giảng Y khoa (W-08)", 22, FONT_BOLD, C.text));
+  w08Frame.appendChild(createText("Bao gồm: Bài đang chờ/streaming skeleton, Accordion tiên quyết, Bài học hỏng hẳn có lối ra, Viewer ảnh trang & Báo lỗi.", 13, FONT_REG, C.textMuted));
+
+  const w08CardsRow = figma.createFrame();
+  w08CardsRow.layoutMode = "HORIZONTAL";
+  w08CardsRow.itemSpacing = 16;
+  w08CardsRow.fills = [];
+
+  // Card 1: Fatal Error with Exit
+  const w08FatalCard = figma.createFrame();
+  w08FatalCard.layoutMode = "VERTICAL";
+  w08FatalCard.itemSpacing = 10;
+  w08FatalCard.resize(380, 440);
+  w08FatalCard.cornerRadius = 12;
+  w08FatalCard.fills = solidFill(C.bgSubtle);
+  w08FatalCard.strokes = [{ type: "SOLID", color: C.danger }];
+  w08FatalCard.strokeWeight = 1.5;
+  w08FatalCard.paddingLeft = 16; w08FatalCard.paddingRight = 16; w08FatalCard.paddingTop = 16; w08FatalCard.paddingBottom = 16;
+  w08FatalCard.appendChild(makeBadge("Bài học hỏng hẳn (Fatal Error)", C.dangerTint, C.danger));
+  w08FatalCard.appendChild(createText("[ · _ · ] Lỗi xử lý bài học", 16, FONT_BOLD, C.danger));
+  w08FatalCard.appendChild(createText("Hệ thống gặp sự cố không thể phục hồi cấu trúc bài học. Bạn có thể quay lại lộ trình học an toàn.", 12, FONT_REG, C.textMuted));
+  const btnExitRoadmap = makeButton("← Quay về Lộ trình học", C.primary, C.white);
+  btnExitRoadmap.resize(348, 44);
+  w08FatalCard.appendChild(btnExitRoadmap);
+  const btnReportBug = makeButton("⚠️ Báo lỗi nội dung bài này", C.surface, C.danger, C.danger);
+  btnReportBug.resize(348, 44);
+  w08FatalCard.appendChild(btnReportBug);
+  w08CardsRow.appendChild(w08FatalCard);
+
+  // Card 2: Page Image Viewer with Controls
+  const w08ViewerCard = figma.createFrame();
+  w08ViewerCard.layoutMode = "VERTICAL";
+  w08ViewerCard.itemSpacing = 10;
+  w08ViewerCard.resize(380, 440);
+  w08ViewerCard.cornerRadius = 12;
+  w08ViewerCard.fills = solidFill(C.bgSubtle);
+  w08ViewerCard.strokes = [{ type: "SOLID", color: C.border }];
+  w08ViewerCard.paddingLeft = 16; w08ViewerCard.paddingRight = 16; w08ViewerCard.paddingTop = 16; w08ViewerCard.paddingBottom = 16;
+  w08ViewerCard.appendChild(makeBadge("Viewer ảnh trang có điều khiển", C.brandTint, C.primary));
+  w08ViewerCard.appendChild(createText("Harrison 21st • Trang 1892 / 4120", 15, FONT_SEMI, C.text));
+  const viewerControlsRow = figma.createFrame();
+  viewerControlsRow.layoutMode = "HORIZONTAL";
+  viewerControlsRow.itemSpacing = 8;
+  viewerControlsRow.fills = [];
+  const btnZoom = makeButton("🔍 100%", C.surface, C.text, C.border);
+  btnZoom.resize(100, 44);
+  const btnPrevP = makeButton("◀ Trước", C.surface, C.text, C.border);
+  btnPrevP.resize(116, 44);
+  const btnNextP = makeButton("Sau ▶", C.surface, C.text, C.border);
+  btnNextP.resize(116, 44);
+  viewerControlsRow.appendChild(btnZoom);
+  viewerControlsRow.appendChild(btnPrevP);
+  viewerControlsRow.appendChild(btnNextP);
+  w08ViewerCard.appendChild(viewerControlsRow);
+  const imgBox = figma.createFrame();
+  imgBox.resize(348, 200);
+  imgBox.cornerRadius = 8;
+  imgBox.fills = solidFill(C.surface);
+  imgBox.strokes = [{ type: "SOLID", color: C.border }];
+  imgBox.paddingLeft = 12; imgBox.paddingRight = 12; imgBox.paddingTop = 12;
+  imgBox.appendChild(createText("📖 Sơ đồ phân nhánh động mạch vành trái (LAD & LCx)", 11, FONT_SEMI, C.primary));
+  imgBox.appendChild(createText("Trích đoạn đối chiếu từ giáo trình nguồn đã tải lên.", 11, FONT_REG, C.textMuted));
+  w08ViewerCard.appendChild(imgBox);
+  w08CardsRow.appendChild(w08ViewerCard);
+
+  // Card 3: Content Bug Report Form
+  const w08ReportCard = figma.createFrame();
+  w08ReportCard.layoutMode = "VERTICAL";
+  w08ReportCard.itemSpacing = 10;
+  w08ReportCard.resize(380, 440);
+  w08ReportCard.cornerRadius = 12;
+  w08ReportCard.fills = solidFill(C.bgSubtle);
+  w08ReportCard.strokes = [{ type: "SOLID", color: C.border }];
+  w08ReportCard.paddingLeft = 16; w08ReportCard.paddingRight = 16; w08ReportCard.paddingTop = 16; w08ReportCard.paddingBottom = 16;
+  w08ReportCard.appendChild(makeBadge("Báo lỗi nội dung bài học", C.accentTint, C.accentText));
+  w08ReportCard.appendChild(createText("Gửi phản hồi chất lượng chuyên môn", 15, FONT_SEMI, C.text));
+  w08ReportCard.appendChild(createText("• Sai kiến thức y khoa • Lỗi trình bày • Sai trích dẫn", 11, FONT_REG, C.textMuted));
+  const descBox = figma.createFrame();
+  descBox.resize(348, 140);
+  descBox.cornerRadius = 8;
+  descBox.fills = solidFill(C.surface);
+  descBox.strokes = [{ type: "SOLID", color: C.border }];
+  descBox.paddingLeft = 12; descBox.paddingRight = 12; descBox.paddingTop = 10;
+  descBox.appendChild(createText("Mô tả chi tiết lỗi phát hiện và đề xuất hiệu đính...", 11, FONT_REG, C.textMuted));
+  w08ReportCard.appendChild(descBox);
+  const btnSubmitBug = makeButton("Gửi báo cáo lỗi nội dung", C.primary, C.white);
+  btnSubmitBug.resize(348, 44);
+  w08ReportCard.appendChild(btnSubmitBug);
+  w08CardsRow.appendChild(w08ReportCard);
+
+  w08Frame.appendChild(w08CardsRow);
+  figma.currentPage.appendChild(w08Frame);
+  createdNodes.push(w08Frame);
+
+  // ==========================================
+  // 13. FRAME: W-09 CHAT TRỢ LÝ HỌC TẬP
+  // ==========================================
+  const w09Frame = figma.createFrame();
+  w09Frame.name = "13. Màn hình W-09: Khung Chat Trợ lý Học tập";
+  w09Frame.x = 0;
+  w09Frame.y = 6670;
+  w09Frame.resize(1280, 540);
+  w09Frame.fills = solidFill(C.surface);
+  w09Frame.cornerRadius = 16;
+  w09Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w09Frame.strokeWeight = 1;
+  w09Frame.layoutMode = "VERTICAL";
+  w09Frame.paddingTop = 28; w09Frame.paddingBottom = 28;
+  w09Frame.paddingLeft = 32; w09Frame.paddingRight = 32;
+  w09Frame.itemSpacing = 20;
+
+  w09Frame.appendChild(createText("Khung Chat Trợ lý Học tập (W-09)", 22, FONT_BOLD, C.text));
+  w09Frame.appendChild(createText("Bao gồm: Phiên hoạt động có lượt & thẻ module, Tiến trình công cụ, Phạm vi đã cũ, Hết trần trong ngày.", 13, FONT_REG, C.textMuted));
+
+  const w09CardsRow = figma.createFrame();
+  w09CardsRow.layoutMode = "HORIZONTAL";
+  w09CardsRow.itemSpacing = 16;
+  w09CardsRow.fills = [];
+
+  // Card 1: Active Chat with Module & Usage ratio (usage-1 contract, rate limit 10/min)
+  const w09ActiveCard = figma.createFrame();
+  w09ActiveCard.layoutMode = "VERTICAL";
+  w09ActiveCard.itemSpacing = 10;
+  w09ActiveCard.resize(380, 420);
+  w09ActiveCard.cornerRadius = 12;
+  w09ActiveCard.fills = solidFill(C.bgSubtle);
+  w09ActiveCard.strokes = [{ type: "SOLID", color: C.border }];
+  w09ActiveCard.paddingLeft = 16; w09ActiveCard.paddingRight = 16; w09ActiveCard.paddingTop = 16; w09ActiveCard.paddingBottom = 16;
+  w09ActiveCard.appendChild(makeBadge("Phiên chat • Đã dùng 35% trần ngày", C.brandTint, C.primary));
+  w09ActiveCard.appendChild(createText("📌 Module 1: Động mạch vành", 15, FONT_SEMI, C.primary));
+  const chatBubble = figma.createFrame();
+  chatBubble.resize(348, 160);
+  chatBubble.cornerRadius = 8;
+  chatBubble.fills = solidFill(C.surface);
+  chatBubble.paddingLeft = 12; chatBubble.paddingRight = 12; chatBubble.paddingTop = 10;
+  chatBubble.appendChild(createText("Nhánh LAD phát ra các nhánh xiên cấp máu cho 2/3 trước vách liên thất [S1].", 12, FONT_REG, C.text));
+  chatBubble.appendChild(createText("📖 [S1] Mở Trang 1892 (Chương 273, Harrison 21st)", 11, FONT_SEMI, C.primary));
+  w09ActiveCard.appendChild(chatBubble);
+  const btnSendMsg = makeButton("Gửi câu hỏi (Tối đa 10 lượt/phút)", C.primary, C.white);
+  btnSendMsg.resize(348, 44);
+  w09ActiveCard.appendChild(btnSendMsg);
+  w09CardsRow.appendChild(w09ActiveCard);
+
+  // Card 2: Scope Outdated Warning
+  const w09ScopeCard = figma.createFrame();
+  w09ScopeCard.layoutMode = "VERTICAL";
+  w09ScopeCard.itemSpacing = 10;
+  w09ScopeCard.resize(380, 420);
+  w09ScopeCard.cornerRadius = 12;
+  w09ScopeCard.fills = solidFill(C.bgSubtle);
+  w09ScopeCard.strokes = [{ type: "SOLID", color: C.danger }];
+  w09ScopeCard.paddingLeft = 16; w09ScopeCard.paddingRight = 16; w09ScopeCard.paddingTop = 16; w09ScopeCard.paddingBottom = 16;
+  w09ScopeCard.appendChild(makeBadge("Phạm vi đã cũ (Scope Outdated)", C.dangerTint, C.danger));
+  w09ScopeCard.appendChild(createText("Đang xem Module 3, chat thuộc Module 1", 14, FONT_SEMI, C.danger));
+  w09ScopeCard.appendChild(createText("Ngữ cảnh câu trả lời có thể không còn phù hợp. Bạn nên mở phiên mới.", 12, FONT_REG, C.textMuted));
+  const btnNewScope = makeButton("+ Mở phiên chat mới cho Module 3", C.surface, C.primary, C.primary);
+  btnNewScope.resize(348, 44);
+  w09ScopeCard.appendChild(btnNewScope);
+  w09CardsRow.appendChild(w09ScopeCard);
+
+  // Card 3: Daily Limit Reached (ADR 0026 / usage-1: no USD shown to learners, resets_at 00:00)
+  const w09LimitCard = figma.createFrame();
+  w09LimitCard.layoutMode = "VERTICAL";
+  w09LimitCard.itemSpacing = 10;
+  w09LimitCard.resize(380, 420);
+  w09LimitCard.cornerRadius = 12;
+  w09LimitCard.fills = solidFill(C.bgSubtle);
+  w09LimitCard.strokes = [{ type: "SOLID", color: C.border }];
+  w09LimitCard.paddingLeft = 16; w09LimitCard.paddingRight = 16; w09LimitCard.paddingTop = 16; w09LimitCard.paddingBottom = 16;
+  w09LimitCard.appendChild(makeBadge("Hết trần ngày (daily_limit)", C.dangerTint, C.danger));
+  w09LimitCard.appendChild(createText("Hôm nay bạn đã dùng hết lượt hỏi", 15, FONT_BOLD, C.text));
+  w09LimitCard.appendChild(createText("Bạn vẫn đọc bài giảng, làm quiz và xem tài liệu được. Lượt mới tự động đặt lại từ 00:00 ngày mai.", 12, FONT_REG, C.textMuted));
+  const btnBackRoadmap = makeButton("Quay lại Lộ trình học ➔", C.primary, C.white);
+  btnBackRoadmap.resize(348, 44);
+  w09LimitCard.appendChild(btnBackRoadmap);
+  w09CardsRow.appendChild(w09LimitCard);
+
+  w09Frame.appendChild(w09CardsRow);
+  figma.currentPage.appendChild(w09Frame);
+  createdNodes.push(w09Frame);
+
+  // ==========================================
+  // 14. FRAME: W-10 QUIZ KIỂM TRA Y KHOA
+  // ==========================================
+  const w10Frame = figma.createFrame();
+  w10Frame.name = "14. Màn hình W-10: Khung Quiz Kiểm tra Y khoa";
+  w10Frame.x = 0;
+  w10Frame.y = 7270;
+  w10Frame.resize(1280, 540);
+  w10Frame.fills = solidFill(C.surface);
+  w10Frame.cornerRadius = 16;
+  w10Frame.strokes = [{ type: "SOLID", color: C.border }];
+  w10Frame.strokeWeight = 1;
+  w10Frame.layoutMode = "VERTICAL";
+  w10Frame.paddingTop = 28; w10Frame.paddingBottom = 28;
+  w10Frame.paddingLeft = 32; w10Frame.paddingRight = 32;
+  w10Frame.itemSpacing = 20;
+
+  w10Frame.appendChild(createText("Khung Quiz Kiểm tra Y khoa (W-10)", 22, FONT_BOLD, C.text));
+  w10Frame.appendChild(createText("Bao gồm: Đang sinh câu hỏi (loading skeleton), Đang làm bài (chọn đáp án), Kết quả 10/10 kèm đối chiếu trích dẫn nguồn.", 13, FONT_REG, C.textMuted));
+
+  const w10CardsRow = figma.createFrame();
+  w10CardsRow.layoutMode = "HORIZONTAL";
+  w10CardsRow.itemSpacing = 16;
+  w10CardsRow.fills = [];
+
+  // Card 1: Question taking
+  const w10QCard = figma.createFrame();
+  w10QCard.layoutMode = "VERTICAL";
+  w10QCard.itemSpacing = 10;
+  w10QCard.resize(380, 420);
+  w10QCard.cornerRadius = 12;
+  w10QCard.fills = solidFill(C.bgSubtle);
+  w10QCard.strokes = [{ type: "SOLID", color: C.border }];
+  w10QCard.paddingLeft = 16; w10QCard.paddingRight = 16; w10QCard.paddingTop = 16; w10QCard.paddingBottom = 16;
+  w10QCard.appendChild(makeBadge("Câu hỏi 3/5 • Đang làm", C.brandTint, C.primary));
+  w10QCard.appendChild(createText("Động mạch cấp máu nút AV ở 90% dân số?", 14, FONT_SEMI, C.text));
+  w10QCard.appendChild(createText("✓ B. Động mạch vành phải (RCA) [ĐÃ CHỌN]", 12, FONT_BOLD, C.primary));
+  const btnSubmitQ = makeButton("Nộp bài kiểm tra ▶", C.primary, C.white);
+  btnSubmitQ.resize(348, 44);
+  w10QCard.appendChild(btnSubmitQ);
+  w10CardsRow.appendChild(w10QCard);
+
+  // Card 2: 10/10 Result & Citation
+  const w10ResCard = figma.createFrame();
+  w10ResCard.layoutMode = "VERTICAL";
+  w10ResCard.itemSpacing = 10;
+  w10ResCard.resize(380, 420);
+  w10ResCard.cornerRadius = 12;
+  w10ResCard.fills = solidFill(C.bgSubtle);
+  w10ResCard.strokes = [{ type: "SOLID", color: C.success }];
+  w10ResCard.strokeWeight = 1.5;
+  w10ResCard.paddingLeft = 16; w10ResCard.paddingRight = 16; w10ResCard.paddingTop = 16; w10ResCard.paddingBottom = 16;
+  w10ResCard.appendChild(makeBadge("Kết quả: 10/10 điểm", C.successTint, C.success));
+  w10ResCard.appendChild(createText("Xuất sắc! Đúng 5/5 câu hỏi", 16, FONT_BOLD, C.text));
+  const citeBox = figma.createFrame();
+  citeBox.resize(348, 120);
+  citeBox.cornerRadius = 8;
+  citeBox.fills = solidFill(C.surface);
+  citeBox.paddingLeft = 12; citeBox.paddingRight = 12; citeBox.paddingTop = 10;
+  citeBox.appendChild(createText("📖 Đối chiếu Harrison 21st (Trang 1892): RCA cấp máu nút AV ở 90% người.", 11, FONT_REG, C.textMuted));
+  w10ResCard.appendChild(citeBox);
+  const btnNextLec = makeButton("Bài học tiếp theo ➔", C.primary, C.white);
+  btnNextLec.resize(348, 44);
+  w10ResCard.appendChild(btnNextLec);
+  w10CardsRow.appendChild(w10ResCard);
+
+  // Card 3: Generating Skeleton
+  const w10GenCard = figma.createFrame();
+  w10GenCard.layoutMode = "VERTICAL";
+  w10GenCard.itemSpacing = 10;
+  w10GenCard.resize(380, 420);
+  w10GenCard.cornerRadius = 12;
+  w10GenCard.fills = solidFill(C.bgSubtle);
+  w10GenCard.strokes = [{ type: "SOLID", color: C.border }];
+  w10GenCard.paddingLeft = 16; w10GenCard.paddingRight = 16; w10GenCard.paddingTop = 16; w10GenCard.paddingBottom = 16;
+  w10GenCard.appendChild(makeBadge("Đang sinh câu hỏi (Generating)", C.accentTint, C.accentText));
+  w10GenCard.appendChild(createText("Đang biên soạn 5 câu hỏi từ Harrison 21st...", 13, FONT_SEMI, C.text));
+  const skel1 = figma.createFrame(); skel1.resize(348, 20); skel1.cornerRadius = 4; skel1.fills = solidFill(C.border);
+  const skel2 = figma.createFrame(); skel2.resize(348, 44); skel2.cornerRadius = 8; skel2.fills = solidFill(C.surface);
+  const skel3 = figma.createFrame(); skel3.resize(348, 44); skel3.cornerRadius = 8; skel3.fills = solidFill(C.surface);
+  w10GenCard.appendChild(skel1);
+  w10GenCard.appendChild(skel2);
+  w10GenCard.appendChild(skel3);
+  w10CardsRow.appendChild(w10GenCard);
+
+  w10Frame.appendChild(w10CardsRow);
+  figma.currentPage.appendChild(w10Frame);
+  createdNodes.push(w10Frame);
+
   // Focus and Zoom
   figma.viewport.scrollAndZoomIntoView(createdNodes);
 
@@ -1343,7 +2103,7 @@
   const reactionSummary = reactionStats.failed === 0 && reactionStats.linked > 0
     ? `Đã nối thành công ${reactionStats.linked}/${reactionStats.attempted} prototype reactions.`
     : `Reactions: ${reactionStats.linked} tự động, ${reactionStats.failed} cần nối thủ công qua panel Prototype của Figma.`;
-  figma.notify(`WayFinder: Đã tạo ${createdNodes.length} Khung Artboard (8 Frames chuẩn). ${reactionSummary}`);
+  figma.notify(`WayFinder: Đã tạo ${createdNodes.length} Khung Artboard (10 Frames chuẩn: W-02..W-14). ${reactionSummary}`);
   console.log("WayFinder Plugin Generation Report:", {
     totalFrames: createdNodes.length,
     reactions: reactionStats

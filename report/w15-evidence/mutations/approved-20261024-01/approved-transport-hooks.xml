@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.857" timestamp="2026-10-24T14:19:08.407415+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait" time="1.131"><failure message="assert (1 == 2)">src\web\backend\tests\test_build_approval_w15.py:133: in test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait
+    assert record['budget']['http_calls'] == 2 and record['budget']['known_usd'] == '0.00028'
+E   assert (1 == 2)</failure></testcase></testsuite></testsuites>

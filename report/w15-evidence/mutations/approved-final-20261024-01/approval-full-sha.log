@@ -1,0 +1,30 @@
+F..                                                                      [100%]
+================================== FAILURES ===================================
+_ test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[file] _
+src\web\backend\tests\test_build_approval_w15.py:77: in test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline
+    runtime.runner(lambda result: None).execute(source, 'other-doc' if mismatch == 'doc_id' else 'u-' + digest[:20])
+src\web\backend\wayfinder\infrastructure\real_build.py:71: in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True, spend_guard=guard)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\real_build.py:75: in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+src\web\backend\tests\test_build_approval_w15.py:67: in forbidden
+    raise AssertionError('An unmatched approval reached pipeline construction')
+E   AssertionError: An unmatched approval reached pipeline construction
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+src/web/backend/tests/test_build_approval_w15.py::test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[file]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+src/web/backend/tests/test_build_approval_w15.py::test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[file]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-final-20261024-01\approval-full-sha.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_approval_w15.py::test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[file]
+1 failed, 2 passed, 4 deselected, 3 warnings in 3.60s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

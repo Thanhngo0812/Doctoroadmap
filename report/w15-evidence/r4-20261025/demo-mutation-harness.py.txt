@@ -1,0 +1,15 @@
+"""Repeat R4 boundaries on the explicit owner demo profile, including honest cost basis."""
+from pathlib import Path
+
+root = Path(__file__).resolve().parents[1]
+source = (root / 'tmp/w15_r4_mutations.py').read_text(encoding='utf-8')
+source = source.replace("'report/w15-evidence/mutations/r4-20261025'", "'report/w15-evidence/mutations/r4-demo-20261025'")
+source = source.replace('require_embedding_price_profile()', 'require_embedding_price_profile(self.embedding_price_profile)')
+source = source.replace("'--basetemp=tmp/w15-r4-mut-'", "'--basetemp=tmp/w15-r4-demo-mut-'")
+source = source.replace("'W15_EVIDENCE_RUN': 'r4-mutation-'", "'W15_EVIDENCE_RUN': 'r4-demo-mutation-'")
+source = source.replace("'W25_EVIDENCE_RUN': 'w15-r4-mutation-'", "'W25_EVIDENCE_RUN': 'w15-r4-demo-mutation-'")
+source = source.replace('records = []', '''cases.append(('billing-basis', 'src/web/backend/wayfinder/infrastructure/build_spend.py',
+    "'embedding_billing_verified': False", "'embedding_billing_verified': True",
+    'src/web/backend/tests/test_build_spend_w15.py', 'explicit_owner_demo'))
+records = []''')
+exec(compile(source, str(root / 'tmp/w15_r4_mutations.py'), 'exec'))

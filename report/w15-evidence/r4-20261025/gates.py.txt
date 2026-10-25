@@ -1,0 +1,23 @@
+"""Only the three mandatory zero-dollar W15 R4 gates, through the existing capture."""
+import argparse
+from pathlib import Path
+import subprocess
+import sys
+
+root = Path(__file__).resolve().parents[1]
+parser = argparse.ArgumentParser()
+parser.add_argument('gate', choices=['full', 'react', 'build'])
+parser.add_argument('--round', choices=['01', '02'], default='01')
+args = parser.parse_args()
+gate = args.gate
+label = 'r4-' + gate + '-20261025-' + args.round
+xml = root / 'report/w15-evidence/runs' / (label + '.xml')
+if gate == 'full':
+    command = [sys.executable, 'scripts/w05_run_tests.py', '-o', 'addopts=', '-q', '--tb=short',
+               '--basetemp=tmp/w15-' + label, '--junitxml=' + str(xml)]
+elif gate == 'react':
+    command = ['npm.cmd', '--prefix', 'src/web/frontend', 'test', '--', '--pool=threads', '--maxWorkers=1',
+               '--reporter=default', '--reporter=junit', '--outputFile=' + str(xml)]
+else:
+    command = ['npm.cmd', '--prefix', 'src/web/frontend', 'run', 'build']
+raise SystemExit(subprocess.call([sys.executable, '-X', 'utf8', 'src/web/backend/tests/w15_capture.py', label, *command], cwd=root))

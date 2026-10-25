@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="17.151" timestamp="2026-10-25T10:05:59.850234+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_operator_w15" name="test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape" time="12.893"><failure message="Failed: prepare output was rejected before composition: Path escapes its root">src\web\backend\tests\test_operator_w15.py:59: in test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
+    operator.execute(plan_path, permission)
+src\web\backend\tests\w15_operator_run.py:122: in execute
+    run_dir = safe_path(ROOT, plan['run_dir'])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\domain\file_paths.py:9: in safe_path
+    raise ValueError('Path escapes its root')
+E   ValueError: Path escapes its root
+
+During handling of the above exception, another exception occurred:
+src\web\backend\tests\test_operator_w15.py:63: in test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
+    pytest.fail('prepare output was rejected before composition: ' + str(error))
+E   Failed: prepare output was rejected before composition: Path escapes its root</failure></testcase></testsuite></testsuites>

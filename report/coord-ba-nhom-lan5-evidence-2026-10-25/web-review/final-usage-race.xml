@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+    <testsuite name="../../../../coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx" timestamp="2026-10-25T04:37:42.732Z" hostname="ADMIN" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="../../../../coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx" name="../../../../coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx" time="0">
+            <failure message="Failed to resolve import &quot;react/jsx-dev-runtime&quot; from &quot;tmp/coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx&quot;. Does the file exist?" type="Error">
+Error: Failed to resolve import &quot;react/jsx-dev-runtime&quot; from &quot;tmp/coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx&quot;. Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx:9:35
+  7  |  import &quot;../w09-assistant/src/web/frontend/src/LectureMarkdown&quot;;
+  8  |  var _jsxFileName = &quot;C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r5-web-review-20261025/Assistant.final-usage-race.t...
+  9  |  import { jsxDEV as _jsxDEV } from &quot;react/jsx-dev-runtime&quot;;
+     |                                     ^
+  10 |  const json = (value) =&gt; new Response(JSON.stringify(value), { headers: { &quot;content-type&quot;: &quot;application/json&quot; } });
+  11 |  afterEach(() =&gt; {
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

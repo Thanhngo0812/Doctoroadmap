@@ -1,0 +1,53 @@
+[
+  {
+    "name": "ui-retry-id",
+    "path": "src/web/frontend/src/useAssistant.ts",
+    "sourceSha256": "672584a6d7402d08131fc80ec4e5088d62b2831c00ed1be69c69e8a8d65f7d7c",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Assistant.test.tsx",
+      "--reporter=junit",
+      "--outputFile=../../../report/w09-evidence/mutations-coord-r5/ui-retry-id.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "retains received text after a disconnect and retries with the same intent ID and focus",
+      "restores a pending intent after remount and reconciles the saved result without sending a new turn"
+    ],
+    "errors": 0
+  },
+  {
+    "name": "ui-fabricated-link",
+    "path": "src/web/frontend/src/AssistantAnswer.tsx",
+    "sourceSha256": "c9d25fc127e467c966cf4cb9fdcc55c1c1de66e985ce4cd9d1e5603f5c268164",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Assistant.test.tsx",
+      "--reporter=junit",
+      "--outputFile=../../../report/w09-evidence/mutations-coord-r5/ui-fabricated-link.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn"
+    ],
+    "errors": 0
+  }
+]

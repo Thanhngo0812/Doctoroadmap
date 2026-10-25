@@ -1,5 +1,7 @@
 # W-15 — Nối bộ dựng thật; đo USD/cuốn và phút/cuốn
 
+**Nghiệm thu lần 5, 2026-10-25: nhận operator/profile demo `fb0c769`, đã ghép local `9028db2`; toàn W-15 còn mở.** Đóng lỗi Windows bằng prepare→JSON→execute và guard đường dẫn xấu. Giá embedding chỉ là giả định demo 0,15 USD/triệu token theo chỉ thị được trích trong báo cáo lõi; profile opt-in, billing_verified=false, không coi SKU online đã xác minh. Chưa duyệt/chưa execute bootstrap1 USD hoặc candidate3 USD. Nhận main local cuối rồi tạo plan mới đúng HEAD/pipeline/profile, giữ plan cũ fb0c769; trình chủ dự án đúng lượt/trần trước chi. [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md).
+
 **Nghiệm thu lần4, 2026-10-24: nhận mốc 0USD `bf761fe`, ghép local `bad8e45`; toàn W-15 vẫn mở.** Đã kiểm toàn pipeline thật với provider giả/PG, hai dry-run nội bộ, doc-6 cache-only dừng label-roles/SpendNotAllowed, không nhận ready/course/mail thật. Gói operator `9b3bd82` chưa ghép: sửa run_dir Windows ghi dấu ngược bị safe_path từ chối bằng test prepare→JSON→execute thực; xác minh đơn vị SKU online Vertex embedding trước duyệt profile/có tiền. Đề nghị bootstrap1USD và cuốn52trang3USD chưa được duyệt, chưa chạy. Worktree kiểm cần chép thêm candidate PDF theo SHA riêng, ngoài fixture sáu cuốn. Giữ Vertex/meter duy nhất/không chi; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md).
 
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4, 8, câu hỏi mở 2; vé [W-13](W-13-dung-mot-cuon-o-loi.md), [W-14](W-14-tai-sach-len-ban-dung.md).

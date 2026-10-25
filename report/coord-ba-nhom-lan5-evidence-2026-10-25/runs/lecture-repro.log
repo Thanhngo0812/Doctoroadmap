@@ -1,0 +1,33 @@
+{
+  "actualWebRuntime": {
+    "toolResult": {
+      "artifact": {
+        "kind": "lecture",
+        "id": "sha256:a5cd4c06ce914b7e5710ab8e20f019f903a2c859f9524861b14171e547b7ab78",
+        "node_id": "a"
+      },
+      "status": "not_cached",
+      "body_md": ""
+    },
+    "lectureModelCalls": 0,
+    "answerStatus": "answered"
+  },
+  "canonicalForwardingControl": {
+    "toolResult": {
+      "artifact": {
+        "kind": "lecture",
+        "id": "sha256:a5cd4c06ce914b7e5710ab8e20f019f903a2c859f9524861b14171e547b7ab78",
+        "node_id": "a"
+      },
+      "status": "ready",
+      "body_md": "Nội dung bài giảng mới."
+    },
+    "lectureModelCalls": 1,
+    "answerStatus": "answered"
+  }
+}
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r5-web-review-20261025\repro_ordinary_lecture.py", line 37, in <module>
+    assert result['actualWebRuntime']['toolResult']['status'] == 'ready', 'Ordinary get_lecture is incorrectly forced into cache_only and cannot generate the requested lesson'
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Ordinary get_lecture is incorrectly forced into cache_only and cannot generate the requested lesson

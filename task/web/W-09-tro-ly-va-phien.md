@@ -1,5 +1,7 @@
 # W-09 — Trợ lý và phiên chat
 
+**Nghiệm thu lần 5, 2026-10-25: chưa nhận `da4d639`, chưa ghép W-09.** 198 React/build và browser 12 cấu hình/99 ảnh/43 Axe đạt các đường đã kiểm, nhưng hai phản chứng độc lập còn đỏ: (R-W09-1) final đã hiện, refresh usage còn pending, gửi câu tiếp làm mất draft mà không POST; (R-W09-2) tool get_lecture thông thường bị wrapper ép cache_only=True/bỏ allow_spend. Sửa ranh giới kết thúc lượt và forward đúng kwargs như composition lõi; focus hit/miss vẫn không sinh bài. Giữ phần quyền/session/DTO/artifact/usage đã kiểm; sửa hai lỗi trước W-10. [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md) và [helper/lời giao](../../report/lenh-giao-viec-ba-nhom-lan5-2026-10-25.md). Chỉ commit local, không push main.
+
 **Mở sau nghiệm thu lần4, 2026-10-24:** W-08 đã đạt/ghép `bad8e45`; SA-66/69/70 đã ở main, không còn điểm chờ lõi. Nhận main cài HTTP/gateway/React answer-3 bằng PG/fake0USD, focus từng lượt/cache-only, session ownership/client_turn_id, nguồn và sự kiện artifact an toàn; tham khảo HTML/CSS/token và cùng thiết kế soát React, không chờ Cloud. [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md) và [lời giao lần4](../../report/lenh-giao-viec-ba-nhom-lan4-2026-10-24.md).
 
 **Nguồn chân lý:** [spec trợ lý 3](../../doc/tro-ly-3-spec.md), [ADR 0026](../../doc/adr/0026-tro-ly-3-gia-su-tu-nhien.md) (`answer-3`);
@@ -7,7 +9,7 @@
 mục 1 (công cụ buộc phía máy chủ, SSE), 7 (giới hạn tần suất), 8; [ADR 0017](../../doc/adr/0017-pham-vi-phien-la-noi-luu-neo-vao-khai-niem.md); spec thiết
 kế, khung chat.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07; SA-66/SA-69 đều đã ghép · **Trạng thái:**
-sau W-08 nhận main có `ba4350f`/`973fa99` để triển khai và kiểm tích hợp answer-3, không còn chờ SA-69.
+chưa nhận da4d639 sau kiểm lần 5; sửa R-W09-1/2 trước ghép. Phụ thuộc SA-66/69/70 đã đủ.
 
 **Cập nhật mới nhất 2026-10-24 từ Claude (`2a39c32`):** SA-69 đã ghép `973fa99`, sửa lỗi hồi quy công cụ quiz/tài liệu không hiểu `scope` dạng "module 4"/tên module.
 Đọc [vé SA-69](../sau-a10/69-tro-ly-3-sua-sau-chay-that.md) và spec trợ lý mục 8; phân giải ở lõi, web không tự dịch/vá scope.

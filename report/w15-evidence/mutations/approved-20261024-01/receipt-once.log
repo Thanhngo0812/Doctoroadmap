@@ -1,0 +1,131 @@
+FFFFFFFF                                                                 [100%]
+================================== FAILURES ===================================
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-7b12a5ac7436f7f9fb3f', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-7b12a5ac7436f7f9fb3f', ...}])
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-987e10bb3f9b41381e66', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-987e10bb3f9b41381e66', ...}])
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=910598c4-6c24-4e8f-950c-12073fd66087
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 72, in record
+    self.publish_formula_images(job,lease)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 131, in publish_formula_images
+    self.publish_asset(job,lease,key,path,'formula')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-6d6ef8baf146d4c573df', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-6d6ef8baf146d4c573df', ...}])
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=8a263c9a-5d5a-441f-af89-c9e7e09a2c27
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 77, in record
+    self.publish_asset(job,lease,asset['asset_key'],path,'media')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-720421d0e65608c7f7ac', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-720421d0e65608c7f7ac', ...}])
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-4a5b2416553ddc5df496', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-4a5b2416553ddc5df496', ...}])
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-dfbaf4e22c676186a38b', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-dfbaf4e22c676186a38b', ...}])
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=8f2070e3-5e97-4c8e-98a3-a1dfb5b98b34
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 72, in record
+    self.publish_formula_images(job,lease)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 131, in publish_formula_images
+    self.publish_asset(job,lease,key,path,'formula')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-57c9fb01750ce0453a34', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-57c9fb01750ce0453a34', ...}])
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=e956a2d5-ec2a-4bff-ae3d-008aca1d5904
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\fakes\build.py", line 39, in execute
+    if self.recorder: self.recorder(result)
+                      ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 77, in record
+    self.publish_asset(job,lease,asset['asset_key'],path,'media')
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 143, in publish_asset
+    if current['cancel_requested']: raise InterruptedError('Build cancelled during media upload')
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+InterruptedError: Build cancelled during media upload
+_ test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal] _
+src\web\backend\tests\test_build_cancellation_w25.py:223: in test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt
+    assert len(after['ledger']) == len(proof['ledger'])
+E   AssertionError: assert 5 == 4
+E    +  where 5 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-2ead1c5f15645b8ff3a9', ...}])
+E    +  and   4 = len([{'context_hash': None, 'cost_usd': Decimal('0.001000'), 'created_at': datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zone...datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), 'doc_id': 'u-2ead1c5f15645b8ff3a9', ...}])
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-20261024-01\receipt-once.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-media]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[complete-terminal]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-graph]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-formula]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-media]
+FAILED src/web/backend/tests/test_build_cancellation_w25.py::test_cancel_commit_before_terminal_prevents_success_and_preserves_receipt[incomplete-terminal]
+8 failed, 5 deselected, 1 warning in 10.39s

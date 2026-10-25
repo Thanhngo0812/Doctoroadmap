@@ -33,7 +33,7 @@ def require_store_port(factory):
 
 class RealBuildRuntime:
     def __init__(self, settings, engine, *, core_settings=None, pipeline_factory=None,
-                 monotonic=perf_counter):
+                 monotonic=perf_counter, spend_approval=None):
         self.settings = real_settings(settings, core_settings)
         if pipeline_factory is None:
             from doc2roadmap.composition_build import DocumentPipeline
@@ -46,6 +46,7 @@ class RealBuildRuntime:
         self.pipeline_factory = pipeline_factory
         self.pipeline_version = real_pipeline_version(settings, self.settings)
         self.monotonic = monotonic
+        self.spend_approval = spend_approval
         self.phase_b_store = PostgresPhaseBStore(engine, lock_pool_size=settings.phase_b_lock_pool_size)
 
     def runner(self, recorder):
@@ -64,9 +65,14 @@ class RealBuildAdapter:
     def execute(self, file_path, doc_id, *, language='vi', progress=None, cancelled=None, dry_run=False):
         if dry_run:
             raise ValueError('Internal dry-run must not run in the build queue')
+        if self.runtime.spend_approval is None:
+            return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=False)
+        with self.runtime.spend_approval.activate(file_path, doc_id, self.runtime) as guard:
+            return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True, spend_guard=guard)
+
+    def _execute(self, file_path, doc_id, language, progress, cancelled, *, allow_spend, spend_guard=None):
         runtime = self.runtime
-        # This stage deliberately keeps model spend disabled, including injected pipelines.
-        pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=False,
+        pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
                                             phase_b_store=runtime.phase_b_store)
         before = pipeline.usage()
         started, timings = {}, {}
@@ -74,12 +80,15 @@ class RealBuildAdapter:
         def finish_step(step):
             if step in started:
                 timings[step] = {'wall_seconds': max(0., runtime.monotonic() - started.pop(step)),
-                                 'embedding_wait_seconds': None, 'embedding_wait_measured': False}
+                                 'embedding_wait_seconds': spend_guard.embedding_wait(step) if spend_guard else None,
+                                 'embedding_wait_measured': spend_guard is not None}
 
         def checkpoint(step, data):
             data = dict(data)
             if data.get('status') == 'started':
                 started[step] = runtime.monotonic()
+                if spend_guard:
+                    spend_guard.stage = step
             elif data.get('status') == 'completed':
                 finish_step(step)
                 snapshot = BuildResult(doc_id, 'failed', runtime.pipeline_version)
@@ -94,6 +103,14 @@ class RealBuildAdapter:
 
         def record(result):
             result.spent_usd = round(result.spent_usd, 6)
+            if spend_guard:
+                budget = spend_guard.snapshot()
+                result.step_details['operator_budget'] = budget
+                if spend_guard.unknown:
+                    result.usage_complete = False
+                if spend_guard.unknown or spend_guard.stopped:
+                    result.status = 'failed'
+                    result.error = {'code': 'loi_noi_bo', 'message': 'Operator budget or usage requires review', 'retryable': False}
             for step in list(started):
                 finish_step(step)
             for step, timing in timings.items():

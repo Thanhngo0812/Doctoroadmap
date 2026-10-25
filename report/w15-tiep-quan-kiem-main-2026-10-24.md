@@ -1,5 +1,12 @@
 # W-15 — tiếp quản và kiểm main sau SA-69/SA-70 — 2026-10-24
 
+**Mốc mới hơn 2026-10-25:** [operator R4](w15-sua-operator-lan4-2026-10-25.md),
+đã nhận main `46d829a` có biên bản lần 4. Giữ toàn bộ số liệu dưới đây theo mốc lịch sử.
+
+**Mốc mới hơn:** [chuẩn bị lượt thật sau kiểm 0 USD](w15-de-nghi-luot-that-2026-10-24.md),
+mã `ffd070d`. Các kết quả/câu đề nghị dưới đây là trạng thái tại `4038055` trở về trước;
+đề nghị planner không còn là điều kiện chờ bắt buộc của cách chạy W-15 hiện hành.
+
 ## Hiện hành sau nhận SA-70
 
 Đã commit hồ sơ lượt trước SA-70 tại **`b00641b`**, worktree sạch, rồi nhận main đã có SA-70 `5188908`

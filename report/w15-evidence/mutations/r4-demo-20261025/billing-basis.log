@@ -1,0 +1,10 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_explicit_owner_demo_profile_keeps_billing_unverified_and_uses_the_declared_token_rate _
+src\web\backend\tests\test_build_spend_w15.py:44: in test_explicit_owner_demo_profile_keeps_billing_unverified_and_uses_the_declared_token_rate
+    assert guard.snapshot()['embedding_billing_verified'] is False
+E   assert True is False
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\r4-demo-20261025\billing-basis.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_explicit_owner_demo_profile_keeps_billing_unverified_and_uses_the_declared_token_rate
+1 failed, 19 deselected in 0.45s

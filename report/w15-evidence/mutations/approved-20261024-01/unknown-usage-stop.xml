@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.328" timestamp="2026-10-24T14:18:25.865826+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_unknown_usage_preserves_the_reservation_and_blocks_later_dispatch" time="0.154"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'&gt;">src\web\backend\tests\test_build_spend_w15.py:46: in test_unknown_usage_preserves_the_reservation_and_blocks_later_dispatch
+    with pytest.raises(api.BuildSpendStopped):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE &lt;class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'&gt;</failure></testcase></testsuite></testsuites>

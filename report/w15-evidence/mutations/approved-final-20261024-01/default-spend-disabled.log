@@ -1,0 +1,162 @@
+FFFFFF                                                                   [100%]
+================================== FAILURES ===================================
+______ test_real_adapter_cumulative_usage_and_pg_recorder[success-True] _______
+src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'succeeded'
+E
+E     - succeeded
+E     + failed
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=4c96beed-89bc-4d1d-98bd-d82f31aa1ae0
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 69, in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 75, in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\test_real_build_w15.py", line 58, in __init__
+    assert settings.llm_transport == 'vertex' and not allow_spend
+AssertionError: assert ('vertex' == 'vertex'
+
+    vertex and not True)
+______ test_real_adapter_cumulative_usage_and_pg_recorder[success-False] ______
+src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'succeeded'
+E
+E     - succeeded
+E     + failed
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=1b68aa86-bcd4-4c29-9838-214a6a76c381
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 69, in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 75, in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\test_real_build_w15.py", line 58, in __init__
+    assert settings.llm_transport == 'vertex' and not allow_spend
+AssertionError: assert ('vertex' == 'vertex'
+
+    vertex and not True)
+______ test_real_adapter_cumulative_usage_and_pg_recorder[failure-True] _______
+src\web\backend\tests\test_real_build_w15.py:218: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['spent_usd'] == amount
+E   AssertionError: assert Decimal('0.000000') == Decimal('0.002')
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=d31ec136-0fbd-46f1-8bab-cdcad1c28c70
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 69, in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 75, in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\test_real_build_w15.py", line 58, in __init__
+    assert settings.llm_transport == 'vertex' and not allow_spend
+AssertionError: assert ('vertex' == 'vertex'
+
+    vertex and not True)
+______ test_real_adapter_cumulative_usage_and_pg_recorder[failure-False] ______
+src\web\backend\tests\test_real_build_w15.py:218: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['spent_usd'] == amount
+E   AssertionError: assert Decimal('0.000000') == Decimal('0.002')
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=94d8bdb9-e0e2-4d48-bb45-eb0979226388
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 69, in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 75, in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\test_real_build_w15.py", line 58, in __init__
+    assert settings.llm_transport == 'vertex' and not allow_spend
+AssertionError: assert ('vertex' == 'vertex'
+
+    vertex and not True)
+_______ test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True] _______
+src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'cancelled'
+E
+E     - cancelled
+E     + failed
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=1614d264-0a8d-4aff-9343-ca7ff700de4d
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 69, in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 75, in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\test_real_build_w15.py", line 58, in __init__
+    assert settings.llm_transport == 'vertex' and not allow_spend
+AssertionError: assert ('vertex' == 'vertex'
+
+    vertex and not True)
+______ test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False] _______
+src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'cancelled'
+E
+E     - cancelled
+E     + failed
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.application.build_worker:build_worker.py:118 Build execution failed build=f225bbbb-9f60-4977-a33c-1739d7149bc2
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\application\build_worker.py", line 107, in run_next_job
+    result=runner.execute(source,job['doc_id'],language='vi',progress=progress,cancelled=cancelled)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 69, in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\wayfinder\infrastructure\real_build.py", line 75, in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\src\web\backend\tests\test_real_build_w15.py", line 58, in __init__
+    assert settings.llm_transport == 'vertex' and not allow_spend
+AssertionError: assert ('vertex' == 'vertex'
+
+    vertex and not True)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[success-True]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[success-True]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-final-20261024-01\default-spend-disabled.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[success-True]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[success-False]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[failure-True]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[failure-False]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True]
+FAILED src/web/backend/tests/test_real_build_w15.py::test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False]
+6 failed, 16 deselected, 3 warnings in 7.56s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

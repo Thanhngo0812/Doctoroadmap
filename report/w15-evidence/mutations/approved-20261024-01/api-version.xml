@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="3.869" timestamp="2026-10-24T14:17:46.504651+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-True]" time="1.203"><failure message="AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'&#10;  &#10;  - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255&#10;  + web-fake-v1)">src\web\backend\tests\test_real_build_w15.py:197: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert service.pipeline_version == runtime.pipeline_version and service.pipeline_version != 'web-fake-v1'
+E   AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'
+E
+E     - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255
+E     + web-fake-v1)</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-False]" time="0.228"><failure message="AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'&#10;  &#10;  - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255&#10;  + web-fake-v1)">src\web\backend\tests\test_real_build_w15.py:197: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert service.pipeline_version == runtime.pipeline_version and service.pipeline_version != 'web-fake-v1'
+E   AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'
+E
+E     - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255
+E     + web-fake-v1)</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-True]" time="0.221"><failure message="AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'&#10;  &#10;  - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255&#10;  + web-fake-v1)">src\web\backend\tests\test_real_build_w15.py:197: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert service.pipeline_version == runtime.pipeline_version and service.pipeline_version != 'web-fake-v1'
+E   AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'
+E
+E     - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255
+E     + web-fake-v1)</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-False]" time="0.229"><failure message="AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'&#10;  &#10;  - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255&#10;  + web-fake-v1)">src\web\backend\tests\test_real_build_w15.py:197: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert service.pipeline_version == runtime.pipeline_version and service.pipeline_version != 'web-fake-v1'
+E   AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'
+E
+E     - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255
+E     + web-fake-v1)</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True]" time="0.278"><failure message="AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'&#10;  &#10;  - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255&#10;  + web-fake-v1)">src\web\backend\tests\test_real_build_w15.py:197: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert service.pipeline_version == runtime.pipeline_version and service.pipeline_version != 'web-fake-v1'
+E   AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'
+E
+E     - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255
+E     + web-fake-v1)</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False]" time="0.255"><failure message="AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'&#10;  &#10;  - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255&#10;  + web-fake-v1)">src\web\backend\tests\test_real_build_w15.py:197: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert service.pipeline_version == runtime.pipeline_version and service.pipeline_version != 'web-fake-v1'
+E   AssertionError: assert ('web-fake-v1' == 'web-real:403...de617821a1255'
+E
+E     - web-real:40380552dc4b7e04582fc6acbaad78c5894da75e:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255
+E     + web-fake-v1)</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,94 @@
+[
+  {
+    "label": "portable-plan",
+    "source": "src/web/backend/tests/w15_operator_run.py",
+    "original_sha256": "cdae3bbe58ce3aec6e1f94d6eb819afe85bb1e214ef9d80a410853b29d8b8f03",
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "native_exit": 1,
+    "source_restored": true,
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_operator_w15.py",
+      "-k",
+      "prepare_saved_plan",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-r4-demo-mut-portable-plan",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\r4-demo-20261025\\portable-plan.xml"
+    ]
+  },
+  {
+    "label": "unverified-embedding",
+    "source": "src/web/backend/wayfinder/infrastructure/build_spend.py",
+    "original_sha256": "76d0e2f1f6213d13d4064dbed0797791cd9cc612de1fc1f1f7e31f22073a181e",
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "native_exit": 1,
+    "source_restored": true,
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_build_spend_w15.py",
+      "-k",
+      "unverified_online",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-r4-demo-mut-unverified-embedding",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\r4-demo-20261025\\unverified-embedding.xml"
+    ]
+  },
+  {
+    "label": "unverified-grant",
+    "source": "src/web/backend/wayfinder/infrastructure/build_spend.py",
+    "original_sha256": "76d0e2f1f6213d13d4064dbed0797791cd9cc612de1fc1f1f7e31f22073a181e",
+    "failures": 2,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "native_exit": 1,
+    "source_restored": true,
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_build_approval_w15.py",
+      "-k",
+      "unverified_online",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-r4-demo-mut-unverified-grant",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\r4-demo-20261025\\unverified-grant.xml"
+    ]
+  },
+  {
+    "label": "billing-basis",
+    "source": "src/web/backend/wayfinder/infrastructure/build_spend.py",
+    "original_sha256": "76d0e2f1f6213d13d4064dbed0797791cd9cc612de1fc1f1f7e31f22073a181e",
+    "failures": 1,
+    "assertion_failures": 1,
+    "setup_errors": 0,
+    "native_exit": 1,
+    "source_restored": true,
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "src/web/backend/tests/test_build_spend_w15.py",
+      "-k",
+      "explicit_owner_demo",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--basetemp=tmp/w15-r4-demo-mut-billing-basis",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\report\\w15-evidence\\mutations\\r4-demo-20261025\\billing-basis.xml"
+    ]
+  }
+]

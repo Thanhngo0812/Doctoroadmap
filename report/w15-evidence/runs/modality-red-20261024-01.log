@@ -1,0 +1,21 @@
+...FF.                                                                   [100%]
+================================== FAILURES ===================================
+_ test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad3] _
+src\web\backend\tests\test_build_spend_w15.py:92: in test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider
+    guard(bad)
+src\web\backend\wayfinder\infrastructure\build_spend.py:94: in __call__
+    with self.provider(request, *args, **kwargs) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'NoneType' object does not support the context manager protocol
+_ test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad4] _
+src\web\backend\tests\test_build_spend_w15.py:92: in test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider
+    guard(bad)
+src\web\backend\wayfinder\infrastructure\build_spend.py:94: in __call__
+    with self.provider(request, *args, **kwargs) as response:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'NoneType' object does not support the context manager protocol
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\modality-red-20261024-01.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad3]
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad4]
+2 failed, 4 passed, 12 deselected in 0.45s

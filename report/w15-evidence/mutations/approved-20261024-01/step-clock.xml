@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="6.309" timestamp="2026-10-24T14:17:32.350505+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-True]" time="1.722"><failure message="assert 0.0 == 1">src\web\backend\tests\test_real_build_w15.py:231: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert details['concepts']['web_timing']['wall_seconds'] == 1
+E   assert 0.0 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-False]" time="0.585"><failure message="assert 0.0 == 1">src\web\backend\tests\test_real_build_w15.py:231: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert details['concepts']['web_timing']['wall_seconds'] == 1
+E   assert 0.0 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-True]" time="0.555"><failure message="assert 0.0 == 1">src\web\backend\tests\test_real_build_w15.py:231: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert details['concepts']['web_timing']['wall_seconds'] == 1
+E   assert 0.0 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-False]" time="0.570"><failure message="assert 0.0 == 1">src\web\backend\tests\test_real_build_w15.py:231: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert details['concepts']['web_timing']['wall_seconds'] == 1
+E   assert 0.0 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True]" time="0.677"><failure message="assert 0.0 == 1">src\web\backend\tests\test_real_build_w15.py:231: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert details['concepts']['web_timing']['wall_seconds'] == 1
+E   assert 0.0 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False]" time="0.646"><failure message="assert 0.0 == 1">src\web\backend\tests\test_real_build_w15.py:231: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert details['concepts']['web_timing']['wall_seconds'] == 1
+E   assert 0.0 == 1</failure></testcase></testsuite></testsuites>
