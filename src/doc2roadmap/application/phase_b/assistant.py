@@ -11,7 +11,7 @@ from uuid import uuid4
 from doc2roadmap.application.phase_b.common import stable_json
 from doc2roadmap.application.phase_b.budget import DailyLimitExceeded, DailySpendGuard, spending_call
 from doc2roadmap.application.phase_b import assistant_context as ctx
-from doc2roadmap.application.phase_b.lecture_context3 import formula_pages
+from doc2roadmap.application.phase_b.lecture_context3 import formula_pages, formula_raw_texts, formula_text
 from doc2roadmap.application.phase_b.lectures import LectureUseCase
 from doc2roadmap.application.phase_b.progress import ProgressUseCase
 from doc2roadmap.application.phase_b.sessions import SessionUseCase
@@ -174,7 +174,8 @@ class AssistantUseCase:
         for row in self._sources(graph, rows):
             if all(known['chunk_id'] != row['chunk_id'] for known in result):
                 chunk = graph.chunks[row['chunk_id']]
-                result.append({**row, 'full_text': str(_value(chunk, 'text', ''))[:ctx.SOURCE_CHARS],
+                text = str(_value(chunk, 'text', ''))[:ctx.SOURCE_CHARS]
+                result.append({**row, 'full_text': formula_text(chunk, formula_raw_texts(graph), text),
                                'section_path': list(_value(chunk, 'section_path') or [])})
         return result
 
@@ -301,7 +302,7 @@ class AssistantUseCase:
             result = callback(**args, owner=owner, doc_id=doc_id, graph_version=graph_version,
                               graph=graph, allow_spend=allow_spend)
         if result.get('status') == 'failed':
-            reason = result.get('reason') or 'content_generation_failed'
+            reason = result.get('reason') or (result.get('failure') or {}).get('reason_code') or 'content_generation_failed'
             messages = {
                 'scope_too_large': 'Chọn tối đa 5 module hoặc thu hẹp phạm vi để tạo tài liệu.',
                 'daily_limit': 'Đã hết hạn mức chi hôm nay; hãy thử lại vào ngày mai.',
@@ -457,10 +458,10 @@ class AssistantUseCase:
         progress_rows = self.progress.get_progress(owner, doc_id)['nodes']
         concepts = [{'node_id': nid, 'prerequisites': graph.why_here(nid, current_module_id, settings=settings)['prerequisites'],
                      'path': graph.path_to(nid)} for nid in linked]
-        pages = formula_pages([graph.chunks[row['chunk_id']] for row in sources], settings.assistant_max_page_images)
+        pages = formula_pages([graph.chunks[row['chunk_id']] for row in sources])
         images = []
         if pages and self.page_images is not None and graph.parse_version is not None:
-            images = [(page, data) for page in pages
+            images = [(page, data) for page in pages[:settings.assistant_max_page_images]
                       if (data := self.page_images.get(doc_id, int(graph.parse_version), page))]
         bounded_history = self._bounded_history(state['turns'])
         text = ctx.user_message(

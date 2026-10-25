@@ -5,7 +5,7 @@
 `quiz-baseline/`, `quiz-v3/`.
 
 **Ai:** agent Sonnet cài · Claude nghiệm thu, chạy lượt thật và ghép · **Chi phí mô hình:** 0 USD khi cài (mô hình giả) · **Chặn bởi:** SA-70 ghép (hàm chữ thô công
-thức dùng chung, trần ảnh). Có thể chạy song song với SA-67 nếu khác tệp, nhưng giao từng agent một · **Trạng thái:** chờ SA-70
+thức dùng chung, trần ảnh). Có thể chạy song song với SA-67 nếu khác tệp, nhưng giao từng agent một · **Trạng thái:** sẵn sàng (SA-70 đã ghép `5188908`)
 
 ## Phạm vi tệp
 

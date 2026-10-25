@@ -1,0 +1,21 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "http.version=HTTP/1.1",
+    "-c",
+    "http.postBuffer=524288000",
+    "-c",
+    "http.lowSpeedLimit=1000",
+    "-c",
+    "http.lowSpeedTime=30",
+    "push",
+    "--progress",
+    "origin",
+    "63714b951406a17f232f01706324e761a09ce950:refs/tags/coord-transfer/w08-learner-20261024"
+  ],
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap",
+  "commit": "bad8e45f392ee8a463efbb944669b27d6c20f390",
+  "native_exit_code": 1,
+  "elapsed_seconds": 47.89
+}

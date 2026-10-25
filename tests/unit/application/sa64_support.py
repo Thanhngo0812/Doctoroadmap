@@ -73,12 +73,13 @@ class FakeSession:
         self.model, self.system = model, system
         self.last_usage, self.last_finish_reason, self.last_ttft_ms = {}, None, None
 
-    def stream_text(self, prompt, *, images=(), temperature=None, transport_retries=None, timeout_seconds=None):
+    def stream_text(self, prompt, *, images=(), temperature=None, transport_retries=None, timeout_seconds=None,
+                    **extra):
         model = self.model
         index = len(model.calls)
         model.calls.append(SimpleNamespace(system=self.system, prompt=prompt, images=list(images),
                                            temperature=temperature, transport_retries=transport_retries,
-                                           timeout_seconds=timeout_seconds, finished=False))
+                                           timeout_seconds=timeout_seconds, extra=extra, finished=False))
         script = model.scripts[min(index, len(model.scripts) - 1)]
         self.last_usage = {"promptTokenCount": 1000 + 100 * len(images), "candidatesTokenCount": 400}
         self.last_finish_reason = "STOP"

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="7.454" timestamp="2026-10-23T21:09:21.683938+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lectures_w08" name="test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres" time="3.551"><failure message="AssertionError: assert 500 == 404&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code&#10; +    where &lt;Response [500 Internal Server Error]&gt; = get((('/api/v1/courses/ab22ac55-d987-4ded-80c1-89ff3e0273af' + '/source/pages/') + '0'))&#10; +      where get = &lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt;.get&#10; +        where &lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt; = namespace(client=&lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt;, actor=Actor(user_id='bf524e9f-9814-44...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': '[REDACTED-TEST-BEARER]'}).client&#10; +          where namespace(client=&lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt;, actor=Actor(user_id='bf524e9f-9814-44...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': '[REDACTED-TEST-BEARER]'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e2da560040e1431cad092099454ab...dLecture3 object at 0x0000027B62B72060&gt;, url='/api/v1/courses/ab22ac55-d987-4ded-80c1-89ff3e0273af/concepts/a/lecture').a">lecture_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e2da560040e1431cad092099454ab...dLecture3 object at 0x0000027B62B72060&gt;, url='/api/v1/courses/ab22ac55-d987-4ded-80c1-89ff3e0273af/concepts/a/lecture')
+tmp_path = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w08-lecture/tmp/w08-mut-page-range-116af50b48754853a61884e66dce8e87/test_w08_private_source_page_h0')
+
+    def test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres(lecture_web, tmp_path):
+        from wayfinder.fakes.media import MemoryMediaStore
+        from wayfinder.infrastructure.learning_media import LearningMedia
+        w = lecture_web
+        settings = w.courses.settings
+        settings.artifact_root = tmp_path
+        media = MemoryMediaStore()
+        pdf = tmp_path / 'source.pdf'
+        pdf.write_bytes(b'%PDF-test')
+        public = media.upload(pdf, 'private-source', 'image')
+        with w.engine.begin() as c:
+            c.execute(text('UPDATE course SET source_public_id=:public WHERE id=:cid'), {'public': public, 'cid': w.course.id})
+        w.graph.tree = SimpleNamespace(parse_stats={'page_count': 2})
+        w.graph.parse_version = 1
+        w.graph.formula_images = {'f@p1': {'image_ref': 'images/formula.png'}}
+        image = tmp_path / 'phase_b/formula_images/doc-1/parse-v1/images/formula.png'
+        image.parent.mkdir(parents=True)
+        image.write_bytes(b'fake-formula')
+        w.gateway.media = LearningMedia(w.engine, settings, store=media)
+        base = f'/api/v1/courses/{w.course.id}'
+        for bad in ['0', '3', '-1', 'not-a-page']:
+&gt;           assert w.a.client.get(base + '/source/pages/' + bad).status_code == 404
+E           AssertionError: assert 500 == 404
+E            +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+E            +    where &lt;Response [500 Internal Server Error]&gt; = get((('/api/v1/courses/ab22ac55-d987-4ded-80c1-89ff3e0273af' + '/source/pages/') + '0'))
+E            +      where get = &lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt;.get
+E            +        where &lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt; = namespace(client=&lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt;, actor=Actor(user_id='bf524e9f-9814-44...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': '[REDACTED-TEST-BEARER]'}).client
+E            +          where namespace(client=&lt;starlette.testclient.TestClient object at 0x0000027B6280C8C0&gt;, actor=Actor(user_id='bf524e9f-9814-44...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': '[REDACTED-TEST-BEARER]'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e2da560040e1431cad092099454ab...dLecture3 object at 0x0000027B62B72060&gt;, url='/api/v1/courses/ab22ac55-d987-4ded-80c1-89ff3e0273af/concepts/a/lecture').a
+
+src\web\backend\tests\test_lectures_w08.py:127: AssertionError</failure></testcase></testsuite></testsuites>

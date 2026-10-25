@@ -1,0 +1,27 @@
+{
+  "reason": "W08 routes and typed lecture3 schema added; keep equality/added-route guard unchanged",
+  "addedPaths": [
+    "/api/v1/courses/{cid}/concepts/{node_id}/lecture",
+    "/api/v1/courses/{cid}/concepts/{node_id}/lecture/stream",
+    "/api/v1/courses/{cid}/media/{asset_key}",
+    "/api/v1/courses/{cid}/source",
+    "/api/v1/courses/{cid}/source/pages/{page}"
+  ],
+  "removedPaths": [],
+  "newSchemas": [
+    "Citation",
+    "Definition",
+    "Failure",
+    "Formula",
+    "LectureView",
+    "Media",
+    "NextLesson",
+    "Position",
+    "Prerequisite",
+    "ReadPage",
+    "Recall",
+    "SelfCheck",
+    "Source",
+    "SourceDocument"
+  ]
+}

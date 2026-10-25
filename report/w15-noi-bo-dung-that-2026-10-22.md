@@ -1,5 +1,147 @@
 # W-15 — adapter/composition và kiểm 0 USD — 2026-10-22
 
+## Hiện hành sau tiếp quản và SA-70 — 2026-10-24
+
+Đã nhận main có SA-69/SA-70, nền `604cab0`, merge W-15 **`be31507`**. Cổng đúng mốc này:
+**78 scope đạt; 2.500 Python đạt/0 lỗi/1 skip/1 xfail; 143 React đạt; build thành công**, mọi native exit 0.
+Bốn lỗi prompt/spec của lượt trước SA-70 đã hết; mã web/test/guard của W-15 không đổi so với handoff `ca409b1`.
+Hai dry-run thật trên nền mới vẫn 0 provider calls/0 USD, PostgreSQL thật/collector và guard giữ nguyên.
+Toàn W-15 còn mở: chưa chứng minh doc-6 qua web ready/mail 0 USD, chưa đủ dự toán/trần toàn cuốn, chưa có quyền chạy có tiền.
+Đọc [báo cáo tiếp quản hiện hành](w15-tiep-quan-kiem-main-2026-10-24.md) và
+[summary mới](w15-evidence/resume-20261024-02/summary.json).
+Các kết quả đỏ/điểm chờ bên dưới giữ làm lịch sử đúng mốc, được thay bởi cập nhật này về hiện trạng cổng.
+
+## Mốc sau port và dry-run thật — 2026-10-24
+
+**Thông tin hiện hành, thay các ghi chú “chưa có port/chưa chạy dry-run” trong lịch sử bên dưới.** Đã nhận main `b51afec` có SA-62 `9ac2a85`, SA-64 `1d91b0b`, SA-65 `4a4b957`; merge trên nhánh W-15 là `338dcd27457dec1a63042afeaef181c73d8ebc21`. Giữ ca dương default factory/PG đã ghép tại `ce5f581` và ca âm `PipelineWithoutStorePort`; không làm lại adapter/trace accounting. Không sửa hai tệp composition hoặc `budget.py`.
+
+Mã test/harness mới **`a888e92d075c8872ab7774981464db68049d8e7d`**: `test_pipeline_postport_w15.py`, `test_internal_dry_run_w15.py`, mở rộng capture/mutation. Chỉ trong `src/web/backend/tests/`; mã sản phẩm/schema không đổi. Các fixture tổng hợp dưới đây không đọc tập giữ lại hoặc learner cache chung.
+
+Sau kiểm đầu, thêm assertion trực tiếp cho runtime con tại **`4cbd2acc0e3139a5a3b125a7f1ae5c2c4a542ab1`** (5 ca GREEN). SA-66 vào main trong lúc làm: đã nhận `ba4350f` bằng merge **`424019c888c519eb33e9f9a83cae0b0c6d2e13a7`**, đây là mốc chạy cổng cuối. Không sửa mã SA-66; ca dương/âm đã nghiệm thu vẫn giữ nguyên.
+
+### DocumentPipeline thật và PostgreSQL
+
+- PDF tổng hợp một trang, một khái niệm Ma trận, tạo bằng pypdfium2/Arial đã có trong Windows. Chạy nguyên các phương thức `read`, `label_roles`, `a3`, `canonical`, `roadmap`, `learning_prep`, cùng use case thật; không thay stage hoặc store artifact bằng stub. A3/A3′ đi qua executor thật. A4 tiếng Việt/coverage none; cả formulas và SA-65 page_images được gọi (PDF này không có công thức, số ảnh 0).
+- Factory test nhận `allow_spend=False` từ adapter rồi **chỉ trong fixture fake** tạo DocumentPipeline với `allow_spend=True` để mô hình/embedding giả trả lời. Provider constructor được thay bằng fake, HTTP/ADC/SMTP/Cloudinary/constructor JsonPhaseBStore/SqliteBuildLog bị cấm. Đây không phải bật chi trong production; adapter sản phẩm vẫn cố định false, không có cờ mở chi mới. Các transport truyền vào fake phải là Vertex.
+- Fake phản hồi theo schema; meter nhận sự kiện usage tổng hợp. Một phản hồi thiếu usage ở ca riêng, các phản hồi còn lại có số → giữ chi biết được khác 0 và `usage_complete=false`. Lỗi embedding sau khi có usage vẫn ghi meter. Không nhập chi lịch sử từ artifact.
+- Ca thành công đọc tên/cache/A12 bằng engine/kết nối PG độc lập; plan tên báo 0 gọi, IndexConcepts `allow_spend=False` dùng cache mà bộ đếm fake không tăng. Session do WebLearningRuntime ghi đọc lại được qua reader PG. Spy subclass chỉ quan sát constructor **PhaseBRuntime thật của learning_prep**, gọi nguyên `super().__init__`; ghi dòng lecture tổng hợp qua store con, reader PG đọc lại, **spend_guard của chính runtime con** từ chối reservation và không còn reservation lưu. Đây là guard shared-content, **không phải guard build**; không tuyên bố module_title/embedding vào hạn mức học.
+- Ca huỷ lúc gọi tên, lỗi embedding và reclaim lease lúc gọi tên giữ usage/receipt một lần. Receipt cũ gửi lại không tăng ledger; lease cũ không publish vào lease mới, không mail thành công. Terminal dư chưa phân bổ vẫn `step=null`; ba bước có chi có delta ledger, đọc không gọi provider nên checkpoint 0 không tạo dòng chi.
+- `counted_in=build` giữ raw trong extra, typed USD/token bằng 0. Tổng `purpose=build` khớp meter; không cộng trace raw lần hai. Graph/chunks/parse/manifest/retrieval, formulas và page_images vẫn trên tệp; PG chỉ chứa kho Pha B/record/cache/sổ chi theo port.
+
+**Phạm vi:** kiểm toàn chuỗi trên sách tổng hợp với provider giả, không chứng minh chất lượng nội dung hoặc số gọi/phút/chi của sách thật. Fixture Windows dùng font Arial, không thêm thư viện PDF. SQL/receipt/ledger/cache keys và record metadata lưu riêng theo lượt; không xuất nội dung cache learner.
+
+### RED/GREEN và cổng
+
+| Lượt | Kết quả | Bằng chứng |
+|---|---|---|
+| Whole pipeline đầu | 1 pass | [postport-third](w15-evidence/runs/postport-third-20261024.xml) |
+| Ma trận thật + provider fake | 5 pass: success đủ/thiếu usage, cancel, error, lease | [matrix2](w15-evidence/runs/postport-matrix2-20261024.xml) |
+| Dry-run thật đầu tiên, sau matrix2 | 2 pass: doc-6 và ứng viên | [JUnit](w15-evidence/runs/real-dryrun-20261024.xml), [SQL/collector](w15-evidence/sql/real-dryrun-20261024/) |
+| Gói mới, thêm kiểm cache độc lập/plan nhãn | 7 pass | [green2](w15-evidence/runs/postport-green2-20261024.xml) |
+| Child runtime guard | 5 pass | [JUnit](w15-evidence/runs/child-guard-green-20261024.xml) |
+| Mutation tại `a888e92` | **17/17 bị bắt bằng assertion**, 0 setup error, source phục hồi nguyên byte | [JSON](w15-evidence/mutations/20261024/mutations.json), [native exit](w15-evidence/runs/mutations-20261024-exit.json) |
+| Lặp hai mutation sau assertion runtime con tại `4cbd2ac` | **2/2 injection/checkpoint bị bắt**, 0 setup error, SHA phục hồi | [JSON](w15-evidence/mutations/20261024-final/mutations.json), [native exit](w15-evidence/runs/mutations-final-20261024-exit.json) |
+| Cổng đầu tại `424019c` | **2.414 pass, 1 fail, 1 skip, 1 xfail**, native exit 1; React **143 pass**, build exit 0 | [Python](w15-evidence/runs/full-20261024.xml), [log](w15-evidence/runs/full-20261024.log), [React](w15-evidence/runs/react-20261024.xml) |
+| Chẩn đoán lỗi test lõi cũ, giữ nguyên nguồn/assertion | **2 pass**, native exit 0 | [JUnit](w15-evidence/runs/checkpoint-diagnostic2-20261024.xml) |
+| Cổng sau nhận main docs tại `9667235` | **2.412 pass, 3 fail, 1 skip, 1 xfail**, native exit 1; React **143 pass**, build exit 0 | [Python](w15-evidence/runs/full-main-20261024.xml), [log](w15-evidence/runs/full-main-20261024.log), [React](w15-evidence/runs/react-main-20261024.xml), [build](w15-evidence/runs/frontend-build-main-20261024.log) |
+| Gói W-15/W-25 riêng tại `9667235` | **42 pass**, native exit 0 | [JUnit](w15-evidence/runs/w15-scoped-final-20261024.xml) |
+| Tái hiện prompt/spec riêng | **3 assertion fail**, không setup error | [JUnit](w15-evidence/runs/spec-prompt-red-20261024.xml) |
+| Nhận main `fcff761`, kiểm đúng đỉnh `b59cae0` | **42 ca W-15/W-25 pass + đúng 3 ca prompt/spec fail**, native exit 1 | [JUnit](w15-evidence/runs/latest-scope-and-spec-20261024.xml), [native exit/commit/SHA](w15-evidence/runs/latest-scope-and-spec-20261024-exit.json) |
+
+Lượt full đầu fail tại `tests/unit/application/test_main_checkpoint_review_19k.py::test_transport_failure_preserves_every_finished_call_and_reuses_it[main]`: peak 3 thay vì 4. Helper FailingModel dùng sleep theo 15 ms, không có barrier đảm bảo mọi thread đã vào; nghi vấn assertion phụ thuộc lịch luồng, **không coi đây là lỗi đã sửa**. Chạy riêng hai biến thể cùng assertion đạt. Không sửa test/core, không skip hoặc giảm số concurrency để xanh; giữ toàn bộ log, chạy lại cả cổng với basetemp mới. Nếu tái diễn cần làn sở hữu test lõi ổn định điều kiện đồng thời bằng tín hiệu/barrier và soát riêng.
+
+Một skip là Cloudinary live chưa bật. Một xfail đã có trên main SA-66 là replay SA-55 còn hợp đồng answer-2; tái ghi cần tiền và nằm ngoài W-15 (không tự tạo replay có tiền). W-15 không thêm skip/xfail. Lượt chẩn đoán đầu exit 4 vì chỉ truyền test lõi nên conftest web chưa đăng ký `--require-postgres`; đã đưa thêm đường test web vào collection và lọc đúng hai ca. Không tính lỗi dùng runner này là assertion/guard bắt được lỗi.
+
+Trong cổng đầu main thêm docs SA-69/handoff/SA-67; đã nhận main `987641a` bằng merge **`9667235e934797991f25b22cd64a02093bc776b2`**. `git diff 424019c..9667235 -- src tests scripts` rỗng. Đây là lần cập nhật nền tài liệu, không sửa mã SA/W-15. Các mục sau vẫn giữ kết quả đo của từng lượt, không trộn thời gian cổng với phút/cuốn.
+
+### Cổng tổng còn đỏ — yêu cầu để làn Claude xử lý, không tự sửa nóng
+
+Lỗi checkpoint peak không lặp ở cổng thứ hai. Ba lỗi lần này là **prompt lõi chưa khớp spec mới**, tái hiện độc lập và tái hiện trên nền main mới nhận:
+
+| Assertion nguyên trạng | Tệp sở hữu lõi cần đối chiếu |
+|---|---|
+| `test_phase_b_assistant_sa66.py::test_system_prompt_is_the_text_block_of_the_spec_word_for_word` | `src/doc2roadmap/application/phase_b/assistant_context.py::SYSTEM_PROMPT` so với khối text của `doc/tro-ly-3-spec.md` (SA-69) |
+| `test_phase_b_lecture3_sa64.py::test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[True/False]` | `src/doc2roadmap/application/phase_b/lecture3.py::SYSTEM_TEMPLATE` so với mục 4 `doc/bai-giang-3-spec.md` (SA-70), giữ ngoại lệ đúng một dòng self-check đã có |
+
+Đã nhận main **`fcff761`** qua merge **`b59cae0f38db053a0395be80fcf52471ef41099f`**, không đổi src/tests/scripts so với `9667235`. [Bảy Git blob core/test/spec khớp main](w15-evidence/main-prompt-provenance-20261024.json); [diff prompt thực so spec](w15-evidence/prompt-diff-20261024.json) là đề nghị đối chiếu, **không phải bản vá đã cài**. Phần cập nhật thêm là tài liệu quiz-3 và chính sách lỗi ảnh trang SA-70; không tự cài SA-67/68/69/70 vào W-15.
+
+Đề nghị cho người soát chuyển qua handoff: làn Claude đồng bộ prompt/hành vi theo đúng SA-69/70 và giữ các assertion đối chiếu spec; không rollback spec hoặc đổi expected để ép xanh. Sau khi mốc sửa được nghiệm thu/ghép, nhận main và chạy lại cổng toàn repo. **Không gọi cổng tổng xanh, không đề nghị ghép mốc này như đã đạt, không xin đóng W-15.** Không gửi tin trực tiếp hoặc sửa handoff của điều phối.
+
+Toàn bộ phần W-15 được giao ở giai đoạn kiểm sau port/dry-run đã thực thi; phần code/test chờ người soát, cổng ghép còn vướng ba lỗi lõi nêu trên. [Tổng hợp máy đọc](w15-evidence/summary-20261024.json) giữ `full_gate_green=false`; [SQL mới nhất](w15-evidence/sql/latest-scope-and-spec-20261024/) phân biệt rõ chi fake với dry-run 0 USD. [Manifest mới](w15-evidence/manifest-20261024.json) và [chuẩn hoá](w15-evidence/normalization-20261024.json) giữ hash raw, JSON/JUnit không đổi giá trị/số ca. Mọi bằng chứng đã commit trước đó được kiểm nguyên hash; export W-06/W-14 do test ghi lại được lưu riêng rồi khôi phục. Không dọn worktree/snapshot/ZIP hoặc chép `.env`/PDF/artifact vào Git.
+
+Giữ các lượt chưa đạt: `postport-first` thiếu reportlab trong helper thử ban đầu (đã dùng pypdfium2 có sẵn); `postport-second` fake thiếu thuộc tính giao thức (`identifier`/`repaired`); `postport-matrix` giả định sai lỗi naming phải lan ra ngoài (core chủ động fallback) và chọn receipt NULL của lease mới. Đã chuyển lỗi sang embedding, đọc receipt cũ `IS NOT NULL`. `postport-green` 40 pass/2 assertion fail do test đòi một dòng chi đọc bằng 0; đã đối chiếu quy tắc ledger và kiểm đúng ba bước có delta, vẫn kiểm thời gian đọc. Các lượt đó không được tính là guard bắt hồi quy. Không sửa mã lõi/sản phẩm hoặc bỏ guard để xanh.
+
+### Hai dry-run thật nội bộ đã chạy
+
+Lệnh đã chạy qua runner: `python -X utf8 src/web/backend/tests/w15_capture.py real-dryrun-20261024 <python> scripts/w05_run_tests.py src/web/backend/tests/test_internal_dry_run_w15.py -o addopts= -q --tb=short --basetemp=tmp/w15-real-dryrun-20261024 --junitxml=report/w15-evidence/runs/real-dryrun-20261024.xml`. Đây là thực thi core `BuildDocument.execute(dry_run=True)` với default DocumentPipeline/RealBuildRuntime, collector được tiêm, PostgreSQL thật. Không dùng factory CLI mặc định SQLite và không gọi adapter queue với dry_run.
+
+Profile dry-run dùng Settings mặc định với Vertex/project placeholder `dry-run-no-network`, region global; không lấy ADC thật. Parser/use case/inspect và tệp đầu vào chạy thật; không có phản hồi model fake trong hai dry-run (không cần gọi model). Đây không phải xác minh credentials hoặc cache của profile triển khai có project/config khác. Hash pipeline chứa project/config và Git HEAD; trước lượt thật phải ghim đúng cấu hình đã soát và kiểm lại identity/cache tương ứng, không hứa reuse từ pipeline version của profile kiểm.
+
+Doc-6: kiểm 127 tệp theo manifest SHA cũ, chép từng tệp sang basetemp riêng rồi kiểm lại nguồn/đích. Ứng viên: chép độc lập tệp đã ghim SHA, không link. Không mở live.json, không nhập lịch sử chi, không sửa snapshot/bằng chứng cũ. Không nhận dữ liệu ảnh SA-65 mới từ kho chung khi chưa có manifest riêng; phép kiểm tổng hợp tự tạo ảnh index trong basetemp của nó.
+
+| Quan sát | Doc-6 | Ứng viên `rau-thuy-canh.pdf` |
+|---|---|---|
+| SHA-256 | `82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7` | `1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627` |
+| Trang | 25 | 52 |
+| ID web, không đổi để lách cache | `u-82cb494d407c4755d29d` | `u-1f019766e74a747d293c` |
+| Đọc + kiểm sớm, lượt dry-run đầu | 8,0288435 s ≈ 0,134 phút | 12,652333 s ≈ 0,211 phút |
+| Kết quả collector | đúng 1, status dry_run | đúng 1, status dry_run |
+| SQL build/attempt/course/usage/cache | đều 0 | đều 0 |
+| Đã gọi sinh/embedding/USD | 0/0/0 | 0/0/0 |
+| Parser thật | a1-nhe:r2-full | a1-nhe:r2-full |
+| Bước thực thi | chỉ doc_reading | chỉ doc_reading |
+| Sau đọc dưới ID web | chunks v1; candidates/canonical/graph/retrieval chưa có | cùng tình trạng |
+| label-roles plan ở lượt green2 | 78 heading, 2 batch gọi ban đầu | 103 heading, 6 batch gọi ban đầu |
+| Cache mô hình sinh/embedding | unknown, không nhập kho learner cũ | unknown; chưa kết luận cold toàn cục |
+
+`inspect.cache_validated=false`: dry-run core chỉ ingest/kiểm chữ rồi inspect version, phát 3 event planned. Nó **không kiểm hoặc dựng** các phụ thuộc A3/A4/roadmap/Pha B. Kiểm label-roles bổ sung gọi đúng `.plan` trong bản sao, không mở phiên; số batch chưa gồm retry/repair. Ước riêng label-roles từ công thức core ở lượt green2: doc-6 `.002936`, ứng viên `.009970` USD (3 ký tự/token, output giả định 512 token/lời gọi). Đây **không** là usage thực, giá được kiểm mới hoặc trần; không dùng làm dự toán toàn cuốn/app.
+
+Doc-6 v29/alias cũ vẫn có trong bản sao, fingerprint nguồn đã kiểm ở hồ sơ trước. Đường đọc nhẹ dưới u-hash tạo parse/chunks mới, không tái dùng parse Docling cũ chỉ vì cùng PDF. Không hứa dựng trọn doc-6 miễn phí.
+
+### Bảng đề nghị cho đúng lượt cuốn mới — chưa xin mở chi
+
+Ứng viên cố định: `document-data/train/nong-nghiep/rau-thuy-canh.pdf`, SHA ở bảng trên, 52 trang. Lượt đang chuẩn bị là **một lượt dựng thật qua web dưới ID hash và pipeline version của commit được soát**, chưa có quyền chạy.
+
+| Bước | Cache | Gọi sinh/embedding dự kiến | USD/phút khi dựng thật |
+|---|---|---|---|
+| doc_reading | lần dry-run đọc mới; có parse/chunks trong bản sao đó | 0/0 theo hợp đồng | chi 0; thời gian dry-run đã đo, không hứa cùng thời gian lượt khác |
+| concepts | nhãn còn chờ; A3/A4 cache chưa xác minh | label-roles 6 gọi ban đầu; phần còn lại/embedding unknown | unknown; không dùng chi fake tổng hợp để suy ra |
+| graph/roadmap/tên | unknown | unknown/unknown | unknown |
+| learning_prep | chưa có graph web đầu vào | unknown/unknown | unknown |
+| embedding wait/tổng | chưa đo wait riêng | tổng unknown | unknown |
+
+**Trần đề nghị: chưa đủ căn cứ chốt.** Chưa trình phê duyệt tiền khi tổng phụ thuộc còn unknown. Cần bước chuẩn bị tiếp theo cho các planner/phụ thuộc chưa tồn tại, hoặc chốt phạm vi thử có điểm dừng với chủ dự án; không tự lấy con số dưới 3 USD/khôi phục/SA làm quyền chi. Điểm dừng giữ: sai transport/identity/fingerprint, provider bị gọi khi false, thiếu usage chưa giải thích, vượt trần được duyệt hoặc không có tin nhắn duyệt đúng cuốn/hash/lượt/trần. Phần paid/web doc-6 ready/thư/đọc chất lượng vẫn chưa chạy; toàn W-15 chưa đóng.
+
+## Tiếp nhận sau mốc `6627c00` — main `f96fc00`, 2026-10-23
+
+Đã giữ worktree/nhánh W-15 và nhận main **`f96fc0056e3c5e7316a5ce368fd5680b5aaba6e9`** bằng fast-forward. Mốc web `6627c00` đã được người điều phối nghiệm thu/ghép qua **`e85427a`**; không làm lại adapter/trace accounting. Handoff mục 8 trên main đã ghi đề nghị Claude nhận nền web vào SA-62 và kiểm cổng đúng đỉnh.
+
+**SA-62 `266dbdc` chưa là tổ tiên của main tại lần kiểm này.** Không nhận nhánh SA-62 chưa ghép, không sửa hai tệp composition, không còn coi việc chọn người port là điểm chờ. Điểm chờ hiện tại là Claude nghiệm thu/ghép đúng port. Trong lúc đọc hiện trạng có cổng SA-64 đang chạy; không khởi động chồng cổng PostgreSQL. Đợt này chỉ thêm báo cáo/bằng chứng, không đổi mã sản phẩm, schema hay test đã nghiệm thu.
+
+### Kiểm có thể hoàn tất trước port
+
+Lệnh đã chạy, native exit **0**: `python -X utf8 report/w15-evidence/pre-port-20261023/audit.py`, tại worktree W-15 bằng Python của `.venv` chung. Script tự đặt đường nạp về chính `src/` và backend của worktree; đây là audit metadata/preflight, **không phải pytest hoặc dry-run BuildDocument**. [Kết quả](w15-evidence/pre-port-20261023/result.json).
+
+| Quan sát có nguồn | Kết quả và phạm vi |
+|---|---|
+| Manifest doc-1/doc-6 được ghim | SHA `5fc819f723f7263fe3d443ec780009a75aae66f2c35db8fe0bc3e3c50464eb84`; 127 tệp doc-6 đối chiếu SHA trước/sau, không links, không thay dữ liệu |
+| Graph nguồn | `doc-6` v29, 2 module/27 chunk; chunks v4, parse v2, retrieval v1 |
+| Fingerprint retrieval với chunk nguồn | Khớp: `d3eb66232372c65f42c6f691d968b09109c38a9791c20a07ea921874cc6faaba`. Đổi text của một document chỉ trong bộ nhớ bị `assert_retrieval_compatible` từ chối |
+| Parser của parse nguồn | `docling:2.114.0+pypdfium2`, adapter version 8; không suy thành parse của bộ đọc nhẹ mặc định hiện hành |
+| Hash nguồn so với parse manifest | Khớp `82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7` |
+| Identity web | `u-82cb494d407c4755d29d`; **0/6** thư mục parse/chunks/candidates/canonical/graph/retrieval trong bản sao có ID đó. Đây là miss đường dẫn/identity trong phạm vi bản sao, không phải kết luận mọi cache miss |
+| Cache sinh/embedding, chi/gọi/phút để dựng qua web | **Chưa biết**; không đọc learner cache/live.json. Không đổi ID/version, không cam kết doc-6 miễn phí |
+| Preflight factory mặc định | Main chưa có tham số `phase_b_store`; `RealBuildRuntime` từ chối trước truy cập engine/provider. Chặn constructor JSON/SQLite, ADC/provider/SMTP/Cloudinary trong preflight |
+| Attempt/collector/queue | Không chạy execute; 0 collector receipt, 0 queue claim, 0 provider call/0 USD. Không đưa dry_run vào queue hoặc đổi course ready |
+
+### Phần tiếp theo sau SA-62 được ghép, để người điều phối nhận qua handoff
+
+Mốc chuẩn bị đã xong: adapter và trace/test âm `6627c00` đã ghép, nhận nền web mới, kiểm lại dữ liệu/fingerprint nguồn/preflight an toàn. Handoff main đã có yêu cầu nhận nền web; chỉ ghi báo cáo cho chủ dự án, không gửi tin sang phiên khác hoặc tự sửa handoff của điều phối.
+
+Ngay khi SA-62 ở main: ca dương phải tạo default `RealBuildRuntime`/`make_worker` không có factory giả thay thế, trước provider; giữ `PipelineWithoutStorePort` cho ca âm. Sau đó chạy DocumentPipeline thật với model/embedding fake và PG độc lập, kiểm tên/cache/A12/session/spend guard/usage/receipt/huỷ/lease/identity. Không dùng ca `lecture` làm bằng chứng guard build; không sửa `budget.py`. Artifact Pha A vẫn là tệp. SA-65 nếu cung cấp dữ liệu mới phải nhận manifest/SHA mới và chép riêng, không ghi đè gói này.
+
+**Chưa chạy dry-run thật** vì điều kiện nhận port chưa thoả. Sau kiểm fake/PG mới chạy dry-run nội bộ ở kho bản sao riêng, collector, `allow_spend=False`, guard mạng; giữ chuỗi đọc nhẹ → kiểm chữ → label-roles → A3/A3′ → A4 vi/coverage none → roadmap → learning_prep. Bảng cuốn mới/SHA/52 trang phía dưới vẫn là ứng viên; các số gọi/USD/phút/embedding wait/trần chưa biết giữ nguyên. Không mở chi hoặc xin đóng toàn W-15 trong lượt này.
+
 ## Cập nhật 2026-10-23 — tiếp nhận nghiệm thu và hợp đồng SA-62
 
 Mốc adapter/test cũ **đã được điều phối nghiệm thu và ghép**: `eea5472` → `d12b67c`, 2.266 Python/104 React/build xanh. Không giao lại phần đã đạt. Worktree/nhánh W-15 giữ nguyên, đã nhận main **`50a8035ed040f3114239cd214aa9bca9669e5918`**. Các mục sau phần cập nhật này lưu nguyên hồ sơ lượt 2026-10-22.

@@ -1,5 +1,7 @@
 # W-15 — Nối bộ dựng thật; đo USD/cuốn và phút/cuốn
 
+**Nghiệm thu lần4, 2026-10-24: nhận mốc 0USD `bf761fe`, ghép local `bad8e45`; toàn W-15 vẫn mở.** Đã kiểm toàn pipeline thật với provider giả/PG, hai dry-run nội bộ, doc-6 cache-only dừng label-roles/SpendNotAllowed, không nhận ready/course/mail thật. Gói operator `9b3bd82` chưa ghép: sửa run_dir Windows ghi dấu ngược bị safe_path từ chối bằng test prepare→JSON→execute thực; xác minh đơn vị SKU online Vertex embedding trước duyệt profile/có tiền. Đề nghị bootstrap1USD và cuốn52trang3USD chưa được duyệt, chưa chạy. Worktree kiểm cần chép thêm candidate PDF theo SHA riêng, ngoài fixture sáu cuốn. Giữ Vertex/meter duy nhất/không chi; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md).
+
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 4, 8, câu hỏi mở 2; vé [W-13](W-13-dung-mot-cuon-o-loi.md), [W-14](W-14-tai-sach-len-ban-dung.md).
 **Ai:** nhân viên lõi chạy · người soát và Claude đọc số · **Chi phí mô hình:** một cuốn mới, ước dưới 3 USD theo D-01; dry-run trước, **chủ dự án duyệt**
 · **Chặn bởi:** W-13/W-14/SA-62 đã đạt; còn kiểm pipeline thật/cache/dry-run · **Trạng thái:** port đã ghép/đẩy `9ac2a85`; toàn W-15 còn mở, chưa cấp quyền chạy có tiền.

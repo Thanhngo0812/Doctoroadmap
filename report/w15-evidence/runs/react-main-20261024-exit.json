@@ -1,0 +1,37 @@
+{
+  "commit": "9667235e934797991f25b22cd64a02093bc776b2",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build",
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=default",
+    "--reporter=junit",
+    "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/report/w15-evidence/runs/react-main-20261024.xml"
+  ],
+  "exit_code": 0,
+  "seconds": 157.08,
+  "source_sha256": {
+    "src/web/backend/wayfinder/application/builds.py": "4dc61b0f9f0038c0d7ee6779a3a370e1157bfc4e03f8503ef4a40eafcbbddee7",
+    "src/web/backend/wayfinder/application/build_worker.py": "aa20f04690a6e24657f0a142f836012569e622001cc34080ae7872cd28b1c22f",
+    "src/web/backend/wayfinder/infrastructure/build_store.py": "1e59259aba7a797c453ebbf9df1d6aa81dedb318c2b3071884273f26dc195dec",
+    "src/web/backend/tests/test_real_build_w15.py": "e9736e1c783c010da91d3c774ea4d932479fc7c17b23b2b1e85adc0c48423ac5",
+    "src/web/backend/wayfinder/settings.py": "366f67e78bc2d11c6131cd5f513ea70075b1e78bb6e5908814590282a2bc2345",
+    "src/web/backend/wayfinder/worker.py": "ffcb0743b0b88cc695d3dfaaaff9e109a6955d7a505e44b512ab096b47e8ba73",
+    "src/web/backend/wayfinder/cli.py": "6b874d67f7dbd067d2cb42682063e98cab5c5588a8c59df28b3868559ad6b2d4",
+    "src/web/backend/wayfinder/composition.py": "cc8da8cc0f423e3f1894168e59f83387ccd7af6814709de0ca2c1f069fc5730c",
+    "src/web/backend/wayfinder/infrastructure/real_build.py": "26576573730fc94824a8b7b0e5b743836be16299961f0c5ca3a603b4ed82c145",
+    "src/web/backend/wayfinder/infrastructure/phase_b_store.py": "be3d84ee7415dd3a85d0349d25057c5dfb41a9a582a5ad8d9d907a65c949a256",
+    "src/web/backend/tests/w15_capture.py": "f1ede1b7f90bedc5b37b40cfcb5b2fcc7616dc20d86986ae5d8981aa8f3dfe7b",
+    "src/web/backend/tests/w15_mutations.py": "b5ba92d4742c149a75273448b87a95ca69657d0588a4cb4a7a12b676bc9fdd2e",
+    "src/web/backend/tests/w15_cache_metadata.py": "5e95bee605cc942908dddf6b456c2f5d9605f5f9bfebd27db8fcf8b5ffb553ba",
+    "src/web/backend/tests/test_pipeline_postport_w15.py": "db7bbb517f6428da29a77799c98e0d8df5f92ffa997d8d7d80089a4a5347e638",
+    "src/web/backend/tests/test_internal_dry_run_w15.py": "1116ffa100a7fb9c00eb7d281ad4312441d93baabbdea442e020d66de82080b7",
+    "src/doc2roadmap/composition_build.py": "984697f64422d8d2e0d175558f3e5d56f935632a76603417bd16eec4bbdd2716",
+    "src/doc2roadmap/composition_phase_b.py": "1b689d31c1e55e861ccb8f7014dc733e30c123927a51cf18e592627e6ce49c60"
+  }
+}

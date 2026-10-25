@@ -1,0 +1,19 @@
+{
+  "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+  "mainBase": "e5fa4924cc7e3d6eda924d6668c8c15b453cea91",
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=junit",
+    "--outputFile=../../../report/w08-evidence/final5-react.xml"
+  ],
+  "startedAt": "2026-10-23T14:58:37.712720+00:00",
+  "nativeExit": 0,
+  "wallSeconds": 112.36,
+  "finishedAt": "2026-10-23T15:00:30.060183+00:00"
+}

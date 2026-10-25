@@ -4,7 +4,7 @@
 `tmp/claude-tools/proto_tai_lieu.py` (`--baseline`, `--v3`), `tmp/claude-tools/lap_tai_lieu.py`; kết quả ở scratchpad `tai-lieu-*`.
 
 **Ai:** agent Sonnet cài · Claude nghiệm thu, chạy lượt thật và ghép · **Chi phí mô hình:** 0 USD khi cài (mô hình giả) · **Chặn bởi:** SA-70 ghép (hàm chữ thô công
-thức dùng chung, trần ảnh) · **Trạng thái:** chờ SA-70
+thức dùng chung, trần ảnh) · **Trạng thái:** đang cài (SA-70 đã ghép `5188908`)
 
 ## Phạm vi tệp
 

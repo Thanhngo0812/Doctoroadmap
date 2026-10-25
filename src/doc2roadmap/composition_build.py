@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import logging
 import subprocess
 from concurrent.futures import ThreadPoolExecutor
 from contextvars import copy_context
@@ -274,10 +275,15 @@ class DocumentPipeline:
                         "skipped_count": full_formulas["skipped_count"]}
             from doc2roadmap.application.phase_b.page_images import CapturePageImages
             from doc2roadmap.infrastructure.media.page_images import PdfiumPageRenderer
-            captured = CapturePageImages(PdfiumPageRenderer()).execute(
-                file_path, parsed.tree, chunks.result.chunks, root=self.settings.artifact_dir,
-                doc_id=doc_id, parse_version=chunks.manifest["parse_version"])
-            page_images = {"parse_version": chunks.manifest["parse_version"], "page_count": captured["page_count"]}
+            try:
+                captured = CapturePageImages(PdfiumPageRenderer()).execute(
+                    file_path, parsed.tree, chunks.result.chunks, root=self.settings.artifact_dir,
+                    doc_id=doc_id, parse_version=chunks.manifest["parse_version"])
+                page_images = {"parse_version": chunks.manifest["parse_version"], "page_count": captured["page_count"]}
+            except Exception as error:
+                # Lectures run without page pictures (spec bài giảng mục 3); the build already paid for the graph.
+                logging.getLogger(__name__).warning("page_images capture failed for %s: %s", doc_id, type(error).__name__)
+                page_images = {"failed": type(error).__name__}
         return {"a12": a12_metadata, "concept_index": concept_metadata, "formulas": formulas,
                 "page_images": page_images}
 

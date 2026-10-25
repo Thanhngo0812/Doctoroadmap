@@ -1,0 +1,73 @@
+{
+  "review_date": "2026-10-24",
+  "branch": "work/w15-real-build",
+  "reviewed_sha": "9b3bd8287e50c095e946eb4301ccc00a5572ca02",
+  "baseline_requested": "5936a5d",
+  "baseline_root_later_reported": "a3804cf",
+  "full_operator_package_verdict": "request_changes",
+  "required_findings": [
+    {
+      "id": "W15-R4-1",
+      "severity": "Required",
+      "file": "src/web/backend/tests/w15_operator_run.py",
+      "line": 88,
+      "title": "Windows prepare writes a run_dir that execute rejects",
+      "consumer_line": 122,
+      "test_masking_file": "src/web/backend/tests/test_operator_w15.py",
+      "test_masking_line": 60,
+      "reproduced": true,
+      "repro": "repro_windows_plan.py",
+      "native_exit": 0,
+      "actual_exception": "ValueError: Path escapes its root",
+      "affected_committed_plans": 2,
+      "minimal_fix": "Serialize run_dir with run_dir.relative_to(ROOT).as_posix() and test prepare output at execute validation boundary"
+    }
+  ],
+  "safe_split": {
+    "prefix_commit": "bf761fe",
+    "verdict": "source_review_approve_subject_to_root_integration_gates",
+    "source_files_changed_vs_baseline": 5,
+    "source_lines_added": 458,
+    "product_source_changed": false,
+    "scope": "Real pipeline plus fake providers plus PostgreSQL, internal zero-cost dry runs, and real doc6 cache-miss regression only",
+    "exclude_commits": ["5ed9ca1", "ffd070d", "9b3bd82"]
+  },
+  "verification": {
+    "source_worker_mutations": 0,
+    "database_connections": 0,
+    "provider_calls": 0,
+    "paid_runs": 0,
+    "selected_manifest_sha_and_byte_entries_verified": 10,
+    "full_gate_native_current_source_sha_matches": 23,
+    "recorded_full_gate": {"commit": "ffd070d7c22688ef1ce00558fae2858f62752aad", "tests": 2536, "passed": 2534, "failure": 0, "error": 0, "skip_including_xfail": 2, "native_exit": 0},
+    "recorded_scope": {"tests": 76, "failure": 0, "error": 0, "skip": 0, "native_exit": 0},
+    "recorded_mutations": {"assertion_kills": 29, "setup_errors": 0, "source_restored_flags": true, "independently_rerun": false},
+    "isolated_fake_guard_probes": {"capacity_stop": true, "timeout_preserves_unknown_upper": true, "reported_bound_exceeded_stops_next_dispatch": true, "native_exit": 0},
+    "synthetic_ledger_single_count": true,
+    "real_doc6_cache_miss_not_free_success": true,
+    "internal_dry_run_no_queue_or_provider": true
+  },
+  "w15_complete": false,
+  "owner_money_approval_received": false,
+  "paid_profile_prerequisites": [
+    {
+      "id": "W15-R4-P1",
+      "severity": "Required before paid/profile sign-off",
+      "title": "Verify exact online Vertex embedding billing unit and response mapping",
+      "file": "src/web/backend/wayfinder/infrastructure/build_spend.py",
+      "bound_line": 56,
+      "actual_cost_line": 103,
+      "proven_undercharge": false,
+      "online_unit_conclusively_verified": false,
+      "primary_evidence_supports_batch_token_pricing": true,
+      "details": "embedding-pricing-primary-check.md",
+      "prefix_bf761fe_affected": false
+    }
+  ],
+  "evidence_limits": [
+    "No full or focused PostgreSQL suite run by this reviewer; root handles integration gates",
+    "Selected committed synthetic SQL exports only; no global live cache or held-out data read",
+    "No claim of actual Vertex billing, content quality, actual book ready/mail success, or process-kill recovery",
+    "Approval JSON relies on a trusted local operator; no HTTP endpoint grants spend and no cryptographic owner authentication is claimed"
+  ]
+}

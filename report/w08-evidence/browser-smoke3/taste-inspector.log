@@ -1,0 +1,16 @@
+node:fs:3039
+  return binding.mkdtemp(prefix, options.encoding);
+                 ^
+
+Error: ENOENT: no such file or directory, mkdtemp 'C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\tmp\w08-taste-profiles\ad-chrome-XXXXXX'
+    at mkdtempSync (node:fs:3039:18)
+    at Browser.launch (file:///C:/Users/ngoco/Desktop/Doctoroadmap/.agents/skills/design-taste-frontend/scripts/lib/cdp.mjs:71:17)
+    at file:///C:/Users/ngoco/Desktop/Doctoroadmap/.agents/skills/design-taste-frontend/scripts/inspect.mjs:69:31
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'mkdtemp',
+  path: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\tmp\\w08-taste-profiles\\ad-chrome-XXXXXX'
+}
+
+Node.js v24.11.1

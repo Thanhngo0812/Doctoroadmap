@@ -1,0 +1,91 @@
+{
+  "book": "candidate",
+  "source_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+  "source_pages": 52,
+  "input_copy": "tmp\\w15-real-dryrun-20261024\\test_real_internal_dry_run_has1\\dry-run-copy\\tmp\\w15-candidate\\input.pdf",
+  "artifact_copy": "tmp\\w15-real-dryrun-20261024\\test_real_internal_dry_run_has1\\dry-run-copy\\artifacts",
+  "copied_input_manifest": [
+    {
+      "path": "tmp/w15-candidate/input.pdf",
+      "sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627"
+    }
+  ],
+  "web_doc_id": "u-1f019766e74a747d293c",
+  "result": {
+    "doc_id": "u-1f019766e74a747d293c",
+    "status": "dry_run",
+    "pipeline_version": "web-real:338dcd27457dec1a63042afeaef181c73d8ebc21:09aabdebaa50461d075c2bbacfcd187d6433812287246d495d4acc942fc5f734",
+    "graph_version": null,
+    "completed_steps": [
+      "doc_reading"
+    ],
+    "step_details": {
+      "doc_reading": {
+        "chunks_version": 1,
+        "parse_version": 1,
+        "chunk_count": 125,
+        "a4_gold_coverage": "none",
+        "page_count": 52,
+        "alphabetic_chars": 52325,
+        "average_alphabetic_chars_per_page": 1006.25,
+        "empty_page_ratio": 0.019230769230769232,
+        "vi_diacritic_ratio": 0.270157668418538
+      },
+      "dry_run": {
+        "cache_validated": false,
+        "chunks_version": 1,
+        "candidate_version": null,
+        "canonical_version": null,
+        "graph_version": null,
+        "retrieval_version": null
+      }
+    },
+    "spent_usd": 0.0,
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "usage_complete": true,
+    "elapsed_seconds": 12.666975500000035,
+    "error": null
+  },
+  "collector_receipts": 1,
+  "events": [
+    {
+      "step": "doc_reading",
+      "status": "started"
+    },
+    {
+      "step": "doc_reading",
+      "status": "completed"
+    },
+    {
+      "step": "concepts",
+      "status": "planned"
+    },
+    {
+      "step": "graph",
+      "status": "planned"
+    },
+    {
+      "step": "learning_prep",
+      "status": "planned"
+    }
+  ],
+  "wall_seconds_by_completed_step": {
+    "doc_reading": 12.652332999999999
+  },
+  "embedding_wait_seconds": null,
+  "embedding_wait_measured": false,
+  "model_calls_for_future_steps": "unknown",
+  "future_usd_minutes_cap": "unknown",
+  "provider_calls": 0,
+  "real_read_and_inspect": true,
+  "queued": false,
+  "sql_counts": {
+    "build": 0,
+    "build_attempt": 0,
+    "course": 0,
+    "usage_ledger": 0,
+    "phase_b_cache": 0
+  }
+}

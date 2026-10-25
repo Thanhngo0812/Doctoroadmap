@@ -573,6 +573,244 @@
         }
       }
     },
+    "/api/v1/courses/{cid}/concepts/{node_id}/lecture": {
+      "get": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Lecture",
+        "operationId": "lecture_api_v1_courses__cid__concepts__node_id__lecture_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LectureView"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/concepts/{node_id}/lecture/stream": {
+      "get": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Stream",
+        "operationId": "stream_api_v1_courses__cid__concepts__node_id__lecture_stream_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "node_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Node Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/source/pages/{page}": {
+      "get": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Source Page",
+        "operationId": "source_page_api_v1_courses__cid__source_pages__page__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "page",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Page"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/source": {
+      "get": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Source",
+        "operationId": "source_api_v1_courses__cid__source_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/media/{asset_key}": {
+      "get": {
+        "tags": [
+          "learning"
+        ],
+        "summary": "Media",
+        "operationId": "media_api_v1_courses__cid__media__asset_key__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "asset_key",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Asset Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/courses/{cid}/share-links": {
       "post": {
         "tags": [
@@ -1532,6 +1770,85 @@
         ],
         "title": "BuildView"
       },
+      "Citation": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "chunk_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chunk Id"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "section_path": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Section Path"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote"
+          },
+          "char_start": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Char Start"
+          },
+          "char_end": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Char End"
+          }
+        },
+        "type": "object",
+        "title": "Citation"
+      },
       "Concept": {
         "properties": {
           "node_id": {
@@ -1917,6 +2234,168 @@
         ],
         "title": "CreatedShareLinkEnvelope"
       },
+      "Definition": {
+        "properties": {
+          "quote": {
+            "type": "string",
+            "title": "Quote",
+            "default": ""
+          },
+          "chunk_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chunk Id"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Citation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "formula_refs": {
+            "items": {
+              "$ref": "#/components/schemas/Formula"
+            },
+            "type": "array",
+            "title": "Formula Refs"
+          }
+        },
+        "type": "object",
+        "title": "Definition"
+      },
+      "Failure": {
+        "properties": {
+          "reason_code": {
+            "type": "string",
+            "title": "Reason Code"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Message"
+          },
+          "retryable": {
+            "type": "boolean",
+            "const": true,
+            "title": "Retryable",
+            "default": true
+          },
+          "read_page": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReadPage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ask_assistant": {
+            "type": "boolean",
+            "title": "Ask Assistant",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason_code",
+          "message"
+        ],
+        "title": "Failure"
+      },
+      "Formula": {
+        "properties": {
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "formula_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Formula Id"
+          },
+          "occurrence_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Occurrence Id"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "asset_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Asset Key"
+          },
+          "url": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "title": "Formula"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -2046,6 +2525,154 @@
         ],
         "title": "JoinResult"
       },
+      "LectureView": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "lecture-3",
+            "title": "Contract Version"
+          },
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "graph_version": {
+            "type": "integer",
+            "title": "Graph Version"
+          },
+          "node_id": {
+            "type": "string",
+            "title": "Node Id"
+          },
+          "lecture_key": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lecture Key"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "generating",
+              "ready",
+              "failed",
+              "no_source"
+            ],
+            "title": "Status"
+          },
+          "position": {
+            "$ref": "#/components/schemas/Position"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/Definition"
+          },
+          "prerequisites": {
+            "items": {
+              "$ref": "#/components/schemas/Prerequisite"
+            },
+            "type": "array",
+            "title": "Prerequisites"
+          },
+          "next_up": {
+            "items": {
+              "$ref": "#/components/schemas/NextLesson"
+            },
+            "type": "array",
+            "title": "Next Up"
+          },
+          "body_md": {
+            "type": "string",
+            "title": "Body Md",
+            "default": ""
+          },
+          "self_check": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SelfCheck"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Failure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "usage": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Usage"
+          },
+          "media": {
+            "items": {
+              "$ref": "#/components/schemas/Media"
+            },
+            "type": "array",
+            "title": "Media"
+          },
+          "source_document": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceDocument"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "course_id",
+          "doc_id",
+          "graph_version",
+          "node_id",
+          "status",
+          "position",
+          "definition"
+        ],
+        "title": "LectureView"
+      },
       "LoginRequest": {
         "properties": {
           "email": {
@@ -2068,6 +2695,29 @@
           "password"
         ],
         "title": "LoginRequest"
+      },
+      "Media": {
+        "properties": {
+          "asset_key": {
+            "type": "string",
+            "title": "Asset Key"
+          },
+          "caption": {
+            "type": "string",
+            "title": "Caption",
+            "default": ""
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "asset_key",
+          "url"
+        ],
+        "title": "Media"
       },
       "MemberInfo": {
         "properties": {
@@ -2162,6 +2812,99 @@
         ],
         "title": "MessageResponse"
       },
+      "NextLesson": {
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "title": "Node Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "module_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Number"
+          },
+          "module_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Index"
+          },
+          "module_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Title"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote"
+          },
+          "citation": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/Citation"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "learner_status": {
+            "type": "string",
+            "enum": [
+              "learned",
+              "not_learned",
+              "unknown"
+            ],
+            "title": "Learner Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "node_id",
+          "name",
+          "learner_status"
+        ],
+        "title": "NextLesson"
+      },
       "OwnerInfo": {
         "properties": {
           "user_id": {
@@ -2237,6 +2980,90 @@
           "email"
         ],
         "title": "PasswordResetRequest"
+      },
+      "Position": {
+        "properties": {
+          "module_id": {
+            "type": "string",
+            "title": "Module Id"
+          },
+          "module_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Index"
+          },
+          "index_in_module": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Index In Module"
+          },
+          "count_in_module": {
+            "type": "integer",
+            "title": "Count In Module"
+          },
+          "previous_node_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Previous Node Id"
+          },
+          "next_node_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Next Node Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_id",
+          "count_in_module"
+        ],
+        "title": "Position"
+      },
+      "Prerequisite": {
+        "properties": {
+          "recall": {
+            "$ref": "#/components/schemas/Recall"
+          },
+          "learner_status": {
+            "type": "string",
+            "enum": [
+              "learned",
+              "not_learned",
+              "unknown"
+            ],
+            "title": "Learner Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "recall",
+          "learner_status"
+        ],
+        "title": "Prerequisite"
       },
       "ProgressModule": {
         "properties": {
@@ -2323,6 +3150,111 @@
           "total"
         ],
         "title": "ProgressSummary"
+      },
+      "ReadPage": {
+        "properties": {
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "chunk_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Chunk Id"
+          }
+        },
+        "type": "object",
+        "title": "ReadPage"
+      },
+      "Recall": {
+        "properties": {
+          "node_id": {
+            "type": "string",
+            "title": "Node Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "module_number": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Number"
+          },
+          "module_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Index"
+          },
+          "module_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Title"
+          },
+          "order_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Order Note"
+          },
+          "definition": {
+            "$ref": "#/components/schemas/Definition"
+          }
+        },
+        "type": "object",
+        "required": [
+          "node_id",
+          "name",
+          "definition"
+        ],
+        "title": "Recall"
       },
       "RegisterRequest": {
         "properties": {
@@ -2454,6 +3386,24 @@
         ],
         "title": "RoadmapModule"
       },
+      "SelfCheck": {
+        "properties": {
+          "question_md": {
+            "type": "string",
+            "title": "Question Md"
+          },
+          "answer_md": {
+            "type": "string",
+            "title": "Answer Md"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question_md",
+          "answer_md"
+        ],
+        "title": "SelfCheck"
+      },
       "SetProgressRequest": {
         "properties": {
           "learned": {
@@ -2558,6 +3508,70 @@
           "items"
         ],
         "title": "ShareLinkList"
+      },
+      "Source": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "chunk_id": {
+            "type": "string",
+            "title": "Chunk Id"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "section_path": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Section Path"
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "chunk_id"
+        ],
+        "title": "Source"
+      },
+      "SourceDocument": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "pdf",
+              "docx"
+            ],
+            "title": "Kind"
+          },
+          "page_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page Count"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "SourceDocument"
       },
       "UploadView": {
         "properties": {

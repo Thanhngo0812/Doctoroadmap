@@ -5,8 +5,9 @@ from wayfinder.api.errors import WebError
 
 
 class LearningGateway:
-    def __init__(self, courses, runtime, graph_loader):
+    def __init__(self, courses, runtime, graph_loader, *, media=None):
         self.courses, self.runtime, self.graph_loader = courses, runtime, graph_loader
+        self.media = media
         self._graphs = {}
         self._graph_lock = RLock()
 
@@ -69,6 +70,53 @@ class LearningGateway:
         result = self.runtime.progress(graph).get_progress(actor.user_id, course.doc_id)
         result["modules"] = self._module_progress(graph, result["nodes"])
         return {"course_id": cid, **result}
+
+    def lecture_context(self, actor, cid, node_id):
+        course, graph = self._context(actor, cid)
+        if node_id not in graph.learnable_nodes:
+            raise WebError('not_found', 'Không tìm thấy nội dung yêu cầu')
+        return course, graph
+
+    def get_lecture(self, actor, cid, node_id):
+        from wayfinder.application.lecture_view import public_lecture
+        course, graph = self.lecture_context(actor, cid, node_id)
+        raw = self.runtime.lecture(graph).make(course.doc_id, course.published_graph_version,
+            graph, node_id, owner=actor.user_id, cache_only=True)
+        progress = self.runtime.progress(graph).get_progress(actor.user_id, course.doc_id)['nodes']
+        return public_lecture(raw, course, graph, progress, self.media)
+
+    def stream_lecture(self, actor, cid, node_id, on_event):
+        from wayfinder.application.lecture_view import public_lecture
+        course, graph = self.lecture_context(actor, cid, node_id)
+
+        def emit(event):
+            kind = event.get('event')
+            if kind == 'delta':
+                on_event({'event': 'delta', 'text': event['text']})
+            elif kind in {'skeleton', 'final', 'failure'}:
+                progress = self.runtime.progress(graph).get_progress(actor.user_id, course.doc_id)['nodes']
+                on_event({'event': kind, 'lecture': public_lecture(event['lecture'], course, graph, progress, self.media)})
+
+        return self.runtime.lecture(graph).make(course.doc_id, course.published_graph_version,
+            graph, node_id, owner=actor.user_id, allow_spend=True, on_event=emit)
+
+    def open_source_page(self, actor, cid, page):
+        course, graph = self._context(actor, cid)
+        if not self.media:
+            raise WebError('not_found', 'Tài liệu không có trang để xem')
+        return self.media.open_source_page(course, graph, page)
+
+    def open_source_file(self, actor, cid):
+        course, graph = self._context(actor, cid)
+        if not self.media:
+            raise WebError('not_found', 'Không có tệp tài liệu')
+        return self.media.open_source_file(course, graph)
+
+    def get_media(self, actor, cid, asset_key):
+        course, graph = self._context(actor, cid)
+        if not self.media:
+            raise WebError('not_found', 'Không tìm thấy nội dung yêu cầu')
+        return self.media.get_media(course, graph, asset_key)
 
     def set_progress(self, actor, cid, node_id, learned):
         course, graph = self._context(actor, cid)

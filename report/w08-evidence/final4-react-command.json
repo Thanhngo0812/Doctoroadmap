@@ -1,0 +1,19 @@
+{
+  "sourceCommit": "d07c31ed0a9020f50d2bcd9e45e1b5cc7af29487",
+  "mainBase": "710d01352f70d7e0b70d3bf3065469cb3c5c4445",
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=junit",
+    "--outputFile=../../../report/w08-evidence/final4-react.xml"
+  ],
+  "startedAt": "2026-10-23T14:47:56.377303+00:00",
+  "nativeExit": 0,
+  "wallSeconds": 136.547,
+  "finishedAt": "2026-10-23T14:50:12.928474+00:00"
+}

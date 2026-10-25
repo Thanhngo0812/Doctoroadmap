@@ -1,0 +1,190 @@
+{
+  "sourceCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+  "mainBase": "5936a5d91b6c3979f1918b33ce330403414b776f",
+  "commands": {
+    "python": {
+      "sourceCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+      "mainBase": "5936a5d91b6c3979f1918b33ce330403414b776f",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/w08-required-20261024-3",
+        "--junitxml=report/w08-evidence/required3-2026-10-24/python.xml"
+      ],
+      "nativeExit": 0,
+      "startedAt": "2026-10-24T10:28:25.964433+00:00",
+      "finishedAt": "2026-10-24T10:42:28.667688+00:00",
+      "wallSeconds": 842.704
+    },
+    "react": {
+      "sourceCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+      "mainBase": "5936a5d91b6c3979f1918b33ce330403414b776f",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=../../../report/w08-evidence/required3-2026-10-24/react.xml"
+      ],
+      "nativeExit": 0,
+      "startedAt": "2026-10-24T10:28:25.964433+00:00",
+      "finishedAt": "2026-10-24T10:31:43.254380+00:00",
+      "wallSeconds": 197.282
+    },
+    "build": {
+      "sourceCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+      "mainBase": "5936a5d91b6c3979f1918b33ce330403414b776f",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "nativeExit": 0,
+      "startedAt": "2026-10-24T10:31:43.258013+00:00",
+      "finishedAt": "2026-10-24T10:31:50.237183+00:00",
+      "wallSeconds": 6.984
+    },
+    "browser": {
+      "sourceCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+      "mainBase": "5936a5d91b6c3979f1918b33ce330403414b776f",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "-X",
+        "utf8",
+        "scripts/w08_web_runtime.py"
+      ],
+      "nativeExit": 0,
+      "startedAt": "2026-10-24T10:31:50.241254+00:00",
+      "finishedAt": "2026-10-24T10:39:18.066359+00:00",
+      "wallSeconds": 447.828
+    }
+  },
+  "python": {
+    "tests": 2513,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 1,
+    "passed": 2511,
+    "xfailed": 1
+  },
+  "react": {
+    "tests": 181,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 181,
+    "xfailed": 0
+  },
+  "browser": {
+    "configurations": 12,
+    "screens": 109,
+    "axeAudits": 17,
+    "httpExchanges": 348,
+    "actualSseWireTraces": 5,
+    "axeScope": "1280px module/ready/source/failure in light/dark and normal/reduced motion, plus selected-lesson rollback; extra Required captures receive layout checks and visual review, not additional Axe claims",
+    "violations": 0,
+    "unreviewedIncomplete": 0,
+    "manualMathNodes": 8,
+    "sameColourCounterexampleRejected": true,
+    "unexpectedBrowserErrors": 0,
+    "audit": "../browser-required3-20261024/audit.json"
+  },
+  "relatedProgressIndependentSql": {
+    "nodeId": "node_92b86f8bac3397ea9de112b0",
+    "saved": {
+      "node_id": "node_92b86f8bac3397ea9de112b0",
+      "record": {
+        "owner": "d871d8d9-cd62-441e-94f7-048f546c45c1",
+        "state": "learned",
+        "doc_id": "doc-1",
+        "source": "learner",
+        "node_id": "node_92b86f8bac3397ea9de112b0",
+        "updated_at": "2026-10-24T10:36:26.824566+00:00"
+      }
+    },
+    "rollback": {
+      "node_id": "node_92b86f8bac3397ea9de112b0",
+      "record": {
+        "owner": "d871d8d9-cd62-441e-94f7-048f546c45c1",
+        "state": "learned",
+        "doc_id": "doc-1",
+        "source": "learner",
+        "node_id": "node_92b86f8bac3397ea9de112b0",
+        "updated_at": "2026-10-24T10:36:26.824566+00:00"
+      }
+    },
+    "unmarked": {
+      "node_id": "node_92b86f8bac3397ea9de112b0",
+      "record": {
+        "owner": "d871d8d9-cd62-441e-94f7-048f546c45c1",
+        "state": "not_learned",
+        "doc_id": "doc-1",
+        "source": "learner",
+        "node_id": "node_92b86f8bac3397ea9de112b0",
+        "updated_at": "2026-10-24T10:36:28.393982+00:00"
+      }
+    },
+    "noLectureRefetch": true
+  },
+  "selfCheckHeadings": [
+    {
+      "scenario": "heading-two",
+      "hiddenBeforeFinal": true,
+      "foldedFinal": true,
+      "opensOnRequest": true,
+      "httpDeltasExcludeSelfCheck": true
+    },
+    {
+      "scenario": "heading-four",
+      "hiddenBeforeFinal": true,
+      "foldedFinal": true,
+      "opensOnRequest": true,
+      "httpDeltasExcludeSelfCheck": true
+    },
+    {
+      "scenario": "heading-indent",
+      "hiddenBeforeFinal": true,
+      "foldedFinal": true,
+      "opensOnRequest": true,
+      "httpDeltasExcludeSelfCheck": true
+    },
+    {
+      "scenario": "heading-colon",
+      "hiddenBeforeFinal": true,
+      "foldedFinal": true,
+      "opensOnRequest": true,
+      "httpDeltasExcludeSelfCheck": true
+    },
+    {
+      "scenario": "heading-tab",
+      "hiddenBeforeFinal": true,
+      "foldedFinal": true,
+      "opensOnRequest": true,
+      "httpDeltasExcludeSelfCheck": true
+    }
+  ],
+  "independentSql": {
+    "cachedLessons": 1,
+    "adminValidationInCache": true,
+    "usageRows": 35,
+    "fakeLedgerUsd": 0.0,
+    "fakeInputTokens": 3500,
+    "memberCountAfterRemoval": 1,
+    "progressOwners": [
+      "d871d8d9-cd62-441e-94f7-048f546c45c1"
+    ]
+  },
+  "providerCalls": 0,
+  "fakeModelCalls": 35,
+  "externalCostUsd": 0,
+  "acceptance": "Pending independent coordinator review; no main merge/push"
+}

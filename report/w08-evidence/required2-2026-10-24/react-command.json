@@ -1,0 +1,19 @@
+{
+  "sourceCommit": "f2e1e98414e7c6cd5b5ebb8bc2718f618ba448d1",
+  "mainBase": "5936a5d91b6c3979f1918b33ce330403414b776f",
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=junit",
+    "--outputFile=../../../report/w08-evidence/required2-2026-10-24/react.xml"
+  ],
+  "nativeExit": 0,
+  "startedAt": "2026-10-24T10:10:11.645302+00:00",
+  "finishedAt": "2026-10-24T10:12:31.829015+00:00",
+  "wallSeconds": 140.188
+}

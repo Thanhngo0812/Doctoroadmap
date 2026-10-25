@@ -1,0 +1,16 @@
+{
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "src/Learning.review-repro.test.tsx",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=junit",
+    "--outputFile=../../../report/w08-evidence/required-2026-10-24/repro-red.xml"
+  ],
+  "nativeExit": 1,
+  "sourceCommit": "1d34795b76ecb2ad59a2b0a9754bb53edebae5ef"
+}

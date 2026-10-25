@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="16" failures="2" errors="0" time="2.4427118">
+    <testsuite name="src/Learning.test.tsx" timestamp="2026-10-24T05:15:33.425Z" hostname="ADMIN" tests="16" failures="2" errors="0" skipped="0" time="2.4427118">
+        <testcase classname="src/Learning.test.tsx" name="shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe" time="0.6454205">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps sent text when the stream ends badly and shows the shortened notice" time="0.1332933">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure loi_mang even if an old retryable flag is false" time="0.1159065">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false" time="0.1036492">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure tran_he_thong even if an old retryable flag is false" time="0.1109203">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false" time="0.0821572">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false" time="0.0963079">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="rolls back an optimistic learner mark after a failed save" time="0.1312263">
+            <failure message="expect(element).not.toBeChecked()
+
+Received element is checked:
+  &lt;input
+  type=&quot;checkbox&quot;
+/&gt;" type="Error">
+Error: expect(element).not.toBeChecked()
+
+Received element is checked:
+  &lt;input
+  type=&quot;checkbox&quot;
+/&gt;
+ ❯ src/Learning.test.tsx:103:81
+            </failure>
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps a module list on the module route and links to a specific lesson without generating one" time="0.0272804">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="explains that DOCX has no numbered pages and still offers opening the original file" time="0.1157134">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps every related badge on current progress after sidebar save success=true without reloading the lecture" time="0.1370395">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps every related badge on current progress after sidebar save success=false without reloading the lecture" time="0.1028305">
+            <failure message="expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Chưa học
+Received:
+  Không gian mẫuModule — · Bước đầuĐã học" type="Error">
+Error: expect(element).toHaveTextContent()
+
+Expected element to have text content:
+  Chưa học
+Received:
+  Không gian mẫuModule — · Bước đầuĐã học
+ ❯ src/Learning.test.tsx:147:47
+            </failure>
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check: ## Tự kiểm tra" time="0.0570068">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check: #### Tự kiểm tra" time="0.0782069">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check:   ### Tự kiểm tra:" time="0.0793928">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="restores the complete final body when core cannot split self_check: 	##TỰ KIỂM TRA ::" time="0.0615092">
+        </testcase>
+    </testsuite>
+</testsuites>

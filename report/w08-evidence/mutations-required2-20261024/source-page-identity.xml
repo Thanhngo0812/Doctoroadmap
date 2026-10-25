@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="3" failures="1" errors="0" time="0.6002555">
+    <testsuite name="src/SourceViewer.test.tsx" timestamp="2026-10-24T10:08:55.677Z" hostname="ADMIN" tests="3" failures="1" errors="0" skipped="0" time="0.6002555">
+        <testcase classname="src/SourceViewer.test.tsx" name="restores focus to the matching citation even if streaming replaces the original button" time="0.3504381">
+        </testcase>
+        <testcase classname="src/SourceViewer.test.tsx" name="requests the actual next/previous page and keeps boundary controls disabled" time="0.1213964">
+        </testcase>
+        <testcase classname="src/SourceViewer.test.tsx" name="never relabels the previous image as a new page while the new request is pending" time="0.1246958">
+            <failure message="expect(element).toHaveAttribute(&quot;alt&quot;, &quot;Trang 1 của tài liệu&quot;) // element.getAttribute(&quot;alt&quot;) === &quot;Trang 1 của tài liệu&quot;
+
+Expected the element to have attribute:
+  alt=&quot;Trang 1 của tài liệu&quot;
+Received:
+  alt=&quot;Trang 2 của tài liệu&quot;" type="Error">
+Error: expect(element).toHaveAttribute(&quot;alt&quot;, &quot;Trang 1 của tài liệu&quot;) // element.getAttribute(&quot;alt&quot;) === &quot;Trang 1 của tài liệu&quot;
+
+Expected the element to have attribute:
+  alt=&quot;Trang 1 của tài liệu&quot;
+Received:
+  alt=&quot;Trang 2 của tài liệu&quot;
+ ❯ src/SourceViewer.test.tsx:49:20
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,1977 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="157" failures="1" errors="0" time="83.41985">
+    <testsuite name="src/App.test.tsx" timestamp="2026-10-23T14:22:32.161Z" hostname="ADMIN" tests="24" failures="0" errors="0" skipped="0" time="17.779621">
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; takes a learner from the sample document through lecture, quiz, and visible progress" time="2.6793764">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; reports a database-down 503 and recovers when the learner retries" time="0.1925947">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; toggles the theme from the keyboard and routes unknown paths to the pixel 404 page" time="0.1738134">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; does not allow the sample flow to start before the consent control is checked" time="0.1487003">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; uses an instant footer scroll when reduced motion is enabled" time="0.1386617">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; registers through the API, hydrates the new session, and lands on courses" time="1.3271163">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; keeps duplicate registration generic when no session is created" time="1.282792">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; shows generic login and rate-limit errors, and the account menu logs out with CSRF" time="0.8965058">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; redirects an unauthenticated account visit to login with a local return path" time="0.0436088">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; checks password confirmation locally and exposes the password toggle state accessibly" time="1.426058">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; maps API validation fields to a focused alert and inline accessible error" time="1.2826767">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="WayFinder demo &gt; offers recovery when session lookup fails on a public auth route" time="0.1282503">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving login" time="0.8741851">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; clears errors and private form state when leaving register" time="1.4041879">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; does not carry a late login failure into the registration form" time="0.8159726">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; keeps a success notification visible after login reaches courses" time="0.6794842">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows inline errors for short invalid fields without submitting to the API" time="0.9986213">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for body.password" time="1.225902">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; shows the actual password field message for [ &apos;body&apos;, &apos;password&apos; ]" time="1.1669102">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is false" time="0.1126814">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="auth feedback and switching &gt; uses native auth switching only when reduced motion is true" time="0.1042676">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion false" time="0.1968667">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; transitions only after logout succeeds, with reduced motion true" time="0.1997634">
+        </testcase>
+        <testcase classname="src/App.test.tsx" name="account logout feedback &gt; keeps the account visible and allows retry when logout fails" time="0.2731511">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Builds.test.tsx" timestamp="2026-10-23T14:22:32.197Z" hostname="ADMIN" tests="10" failures="0" errors="0" skipped="0" time="2.3177016">
+        <testcase classname="src/Builds.test.tsx" name="requires rights confirmation before upload and queues only after explicit title confirmation" time="1.209276">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="aborts an in-flight upload when leaving the upload screen" time="0.2842196">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="selects one dropped file without uploading before rights confirmation" time="0.0887329">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="recovers an awaiting build from its scoped route and does not start it on load" time="0.0846501">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="polls active builds every three seconds and only exposes controls allowed by the returned state" time="0.0815419">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="confirms this learner’s own title when a shared build is already running" time="0.1437651">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="offers retry only for a retryable failure and sends the course scope" time="0.1535998">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="shows the real course action after success" time="0.0790739">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="cancels only when the server allows it and includes the course ID" time="0.1278456">
+        </testcase>
+        <testcase classname="src/Builds.test.tsx" name="explains a completed cancellation without suggesting an unavailable retry button" time="0.0612586">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/CourseShellGuest.test.tsx" timestamp="2026-10-23T14:22:32.211Z" hostname="ADMIN" tests="1" failures="0" errors="0" skipped="0" time="0.2680612">
+        <testcase classname="src/CourseShellGuest.test.tsx" name="shows a guest login action that preserves the invite instead of an empty account menu" time="0.2637732">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Courses.test.tsx" timestamp="2026-10-23T14:22:32.213Z" hostname="ADMIN" tests="17" failures="0" errors="0" skipped="0" time="2.3191706">
+        <testcase classname="src/Courses.test.tsx" name="shows real-shaped owned joined and samples without inventing sample progress" time="0.4188848">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="joins through POST with session CSRF and moves the returned card to joined exactly once" time="0.3186479">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="hides samples in an empty production-shaped response and offers the specified next steps" time="0.0693995">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="keeps the page frame while loading and retries a failed request" time="0.1449798">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows join errors beside the sample and never creates a pretend membership" time="0.1794893">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="redirects guests and preserves their course path" time="0.0623523">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="loads a membership-gated course entry and selected resume module from actual route shapes" time="0.3812294">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows not found for an outsider without rendering private course metadata" time="0.0449479">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="shows building and failed courses without offering a pretend resume or progress" time="0.0829847">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="keeps each course context and the real worker step on shared-build cards" time="0.1079711">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="refreshes active build cards after three seconds and stops after the course becomes ready" time="0.0786669">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /" time="0.1181522">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap" time="0.0579664">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-ky" time="0.075958">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=https%3A%2F%2Fevil.example" time="0.0579612">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="uses courses as the signed-in home on /dang-nhap?next=%2F%2Fevil.example" time="0.0542804">
+        </testcase>
+        <testcase classname="src/Courses.test.tsx" name="resumes the requested private route after authenticating" time="0.0613341">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Learning.test.tsx" timestamp="2026-10-23T14:22:32.226Z" hostname="ADMIN" tests="9" failures="1" errors="0" skipped="0" time="3.8413707">
+        <testcase classname="src/Learning.test.tsx" name="shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe" time="2.0184193">
+            <failure message="Unable to find role=&quot;button&quot; and name &quot;Nguồn S1, trang 37&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Nguyễn An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Nguyễn An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Xác suất
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              2
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace has-lesson&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Bước đầu
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;is-current&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Biến cố&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      aria-current=&quot;page&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/a&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Biến cố
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Không gian mẫu&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        2
+                      &lt;/small&gt;
+                      Không gian mẫu
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;a
+                class=&quot;learning-list-back&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/khoa-hoc/c/module/m&quot;
+              &gt;
+                ← Danh sách bài học
+              &lt;/a&gt;
+              &lt;article
+                aria-labelledby=&quot;learning-lesson-title&quot;
+                class=&quot;learning-lesson&quot;
+              &gt;
+                &lt;div
+                  class=&quot;learning-lesson__position&quot;
+                &gt;
+                  Bài học
+                  1
+                   /
+                  2
+                &lt;/div&gt;
+                &lt;h1
+                  id=&quot;learning-lesson-title&quot;
+                  tabindex=&quot;-1&quot;
+                &gt;
+                  Biến cố
+                &lt;/h1&gt;
+                &lt;section
+                  aria-labelledby=&quot;prerequisites-title&quot;
+                  class=&quot;lecture-prerequisites&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;prerequisites-title&quot;
+                  &gt;
+                    Cần biết trước
+                  &lt;/h2&gt;
+                  &lt;details&gt;
+                    &lt;summary&gt;
+                      &lt;span&gt;
+                        Không gian mẫu
+                        &lt;small&gt;
+                          Module
+                          —
+                           ·
+                          Bước đầu
+                        &lt;/small&gt;
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;&quot;
+                      &gt;
+                        Chưa học
+                      &lt;/span&gt;
+                    &lt;/summary&gt;
+                    &lt;div&gt;
+                      &lt;p&gt;
+                        Câu nhắc lại riêng của tiên quyết.
+                      &lt;/p&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Đọc trang 36 trong tài liệu
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/details&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-definition-title&quot;
+                  class=&quot;lecture-definition&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-definition-title&quot;
+                  &gt;
+                    Định nghĩa trong tài liệu
+                  &lt;/h2&gt;
+                  &lt;blockquote&gt;
+                    Định nghĩa nguyên văn theo tài liệu.
+                  &lt;/blockquote&gt;
+                  &lt;button
+                    class=&quot;lecture-source-link&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Đọc trang 37 trong tài liệu
+                  &lt;/button&gt;
+                &lt;/section&gt;
+                &lt;div
+                  class=&quot;lecture-body&quot;
+                &gt;
+                  &lt;div
+                    class=&quot;lecture-markdown&quot;
+                  &gt;
+                    Nội dung đầu tiên $x^2$. [S1] [S999]
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;p
+                  class=&quot;lecture-streaming&quot;
+                  role=&quot;status&quot;
+                &gt;
+                  Đang viết tiếp…
+                &lt;/p&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-sources-title&quot;
+                  class=&quot;lecture-sources&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-sources-title&quot;
+                  &gt;
+                    Trong sách
+                  &lt;/h2&gt;
+                  &lt;ul&gt;
+                    &lt;li&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        [S1] Trang 37
+                      &lt;/button&gt;
+                      &lt;span&gt;
+                        Ví dụ 1
+                      &lt;/span&gt;
+                    &lt;/li&gt;
+                  &lt;/ul&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-next-title&quot;
+                  class=&quot;lecture-next&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-next-title&quot;
+                  &gt;
+                    Tiếp theo
+                  &lt;/h2&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                  &gt;
+                    &lt;span&gt;
+                      Không gian mẫu
+                      &lt;small&gt;
+                        Module
+                        —
+                         ·
+                        Chưa học
+                      &lt;/small&gt;
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;18&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.8&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;18&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;M5 12h14m-6-6 6 6-6 6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/a&gt;
+                &lt;/section&gt;
+                &lt;footer
+                  class=&quot;lecture-progress&quot;
+                &gt;
+                  &lt;label&gt;
+                    &lt;input
+                      type=&quot;checkbox&quot;
+                    /&gt;
+                    Đánh dấu bài học đã học
+                  &lt;/label&gt;
+                &lt;/footer&gt;
+              &lt;/article&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Nguyễn An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Nguyễn An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Xác suất
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              2
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace has-lesson&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Bước đầu
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;is-current&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Biến cố&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      aria-current=&quot;page&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/a&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Biến cố
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Không gian mẫu&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        2
+                      &lt;/small&gt;
+                      Không gian mẫu
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;a
+                class=&quot;learning-list-back&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/khoa-hoc/c/module/m&quot;
+              &gt;
+                ← Danh sách bài học
+              &lt;/a&gt;
+              &lt;article
+                aria-labelledby=&quot;learning-lesson-title&quot;
+                class=&quot;learning-lesson&quot;
+              &gt;
+                &lt;div
+                  class=&quot;learning-lesson__position&quot;
+                &gt;
+                  Bài học
+                  1
+                   /
+                  2
+                &lt;/div&gt;
+                &lt;h1
+                  id=&quot;learning-lesson-title&quot;
+                  tabindex=&quot;-1&quot;
+                &gt;
+                  Biến cố
+                &lt;/h1&gt;
+                &lt;section
+                  aria-labelledby=&quot;prerequisites-title&quot;
+                  class=&quot;lecture-prerequisites&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;prerequisites-title&quot;
+                  &gt;
+                    Cần biết trước
+                  &lt;/h2&gt;
+                  &lt;details&gt;
+                    &lt;summary&gt;
+                      &lt;span&gt;
+                        Không gian mẫu
+                        &lt;small&gt;
+                          Module
+                          —
+                           ·
+                          Bước đầu
+                        &lt;/small&gt;
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;&quot;
+                      &gt;
+                        Chưa học
+                      &lt;/span&gt;
+                    &lt;/summary&gt;
+                    &lt;div&gt;
+                      &lt;p&gt;
+                        Câu nhắc lại riêng của tiên quyết.
+                      &lt;/p&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Đọc trang 36 trong tài liệu
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/details&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-definition-title&quot;
+                  class=&quot;lecture-definition&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-definition-title&quot;
+                  &gt;
+                    Định nghĩa trong tài liệu
+                  &lt;/h2&gt;
+                  &lt;blockquote&gt;
+                    Định nghĩa nguyên văn theo tài liệu.
+                  &lt;/blockquote&gt;
+                  &lt;button
+                    class=&quot;lecture-source-link&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Đọc trang 37 trong tài liệu
+                  &lt;/button&gt;
+                &lt;/section&gt;
+                &lt;div
+                  class=&quot;lecture-body&quot;
+                &gt;
+                  &lt;div
+                    class=&quot;lecture-markdown&quot;
+                  &gt;
+                    Nội dung đầu tiên $x^2$. [S1] [S999]
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;p
+                  class=&quot;lecture-streaming&quot;
+                  role=&quot;status&quot;
+                &gt;
+                  Đang viết tiếp…
+                &lt;/p&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-sources-title&quot;
+                  class=&quot;lecture-sources&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-sources-title&quot;
+                  &gt;
+                    Trong sách
+                  &lt;/h2&gt;
+                  &lt;ul&gt;
+                    &lt;li&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        [S1] Trang 37
+                      &lt;/button&gt;
+                      &lt;span&gt;
+                        Ví dụ 1
+                      &lt;/span&gt;
+                    &lt;/li&gt;
+                  &lt;/ul&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-next-title&quot;
+                  class=&quot;lecture-next&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-next-title&quot;
+                  &gt;
+                    Tiếp theo
+                  &lt;/h2&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                  &gt;
+                    &lt;span&gt;
+                      Không gian mẫu
+                      &lt;small&gt;
+                        Module
+                        —
+                         ·
+                        Chưa học
+                      &lt;/small&gt;
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;18&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.8&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;18&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;M5 12h14m-6-6 6 6-6 6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/a&gt;
+                &lt;/section&gt;
+                &lt;footer
+                  class=&quot;lecture-progress&quot;
+                &gt;
+                  &lt;label&gt;
+                    &lt;input
+                      type=&quot;checkbox&quot;
+                    /&gt;
+                    Đánh dấu bài học đã học
+                  &lt;/label&gt;
+                &lt;/footer&gt;
+              &lt;/article&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find role=&quot;button&quot; and name &quot;Nguồn S1, trang 37&quot;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Nguyễn An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Nguyễn An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Xác suất
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              2
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace has-lesson&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Bước đầu
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;is-current&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Biến cố&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      aria-current=&quot;page&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/a&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Biến cố
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Không gian mẫu&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        2
+                      &lt;/small&gt;
+                      Không gian mẫu
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;a
+                class=&quot;learning-list-back&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/khoa-hoc/c/module/m&quot;
+              &gt;
+                ← Danh sách bài học
+              &lt;/a&gt;
+              &lt;article
+                aria-labelledby=&quot;learning-lesson-title&quot;
+                class=&quot;learning-lesson&quot;
+              &gt;
+                &lt;div
+                  class=&quot;learning-lesson__position&quot;
+                &gt;
+                  Bài học
+                  1
+                   /
+                  2
+                &lt;/div&gt;
+                &lt;h1
+                  id=&quot;learning-lesson-title&quot;
+                  tabindex=&quot;-1&quot;
+                &gt;
+                  Biến cố
+                &lt;/h1&gt;
+                &lt;section
+                  aria-labelledby=&quot;prerequisites-title&quot;
+                  class=&quot;lecture-prerequisites&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;prerequisites-title&quot;
+                  &gt;
+                    Cần biết trước
+                  &lt;/h2&gt;
+                  &lt;details&gt;
+                    &lt;summary&gt;
+                      &lt;span&gt;
+                        Không gian mẫu
+                        &lt;small&gt;
+                          Module
+                          —
+                           ·
+                          Bước đầu
+                        &lt;/small&gt;
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;&quot;
+                      &gt;
+                        Chưa học
+                      &lt;/span&gt;
+                    &lt;/summary&gt;
+                    &lt;div&gt;
+                      &lt;p&gt;
+                        Câu nhắc lại riêng của tiên quyết.
+                      &lt;/p&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Đọc trang 36 trong tài liệu
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/details&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-definition-title&quot;
+                  class=&quot;lecture-definition&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-definition-title&quot;
+                  &gt;
+                    Định nghĩa trong tài liệu
+                  &lt;/h2&gt;
+                  &lt;blockquote&gt;
+                    Định nghĩa nguyên văn theo tài liệu.
+                  &lt;/blockquote&gt;
+                  &lt;button
+                    class=&quot;lecture-source-link&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Đọc trang 37 trong tài liệu
+                  &lt;/button&gt;
+                &lt;/section&gt;
+                &lt;div
+                  class=&quot;lecture-body&quot;
+                &gt;
+                  &lt;div
+                    class=&quot;lecture-markdown&quot;
+                  &gt;
+                    Nội dung đầu tiên $x^2$. [S1] [S999]
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;p
+                  class=&quot;lecture-streaming&quot;
+                  role=&quot;status&quot;
+                &gt;
+                  Đang viết tiếp…
+                &lt;/p&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-sources-title&quot;
+                  class=&quot;lecture-sources&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-sources-title&quot;
+                  &gt;
+                    Trong sách
+                  &lt;/h2&gt;
+                  &lt;ul&gt;
+                    &lt;li&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        [S1] Trang 37
+                      &lt;/button&gt;
+                      &lt;span&gt;
+                        Ví dụ 1
+                      &lt;/span&gt;
+                    &lt;/li&gt;
+                  &lt;/ul&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-next-title&quot;
+                  class=&quot;lecture-next&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-next-title&quot;
+                  &gt;
+                    Tiếp theo
+                  &lt;/h2&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                  &gt;
+                    &lt;span&gt;
+                      Không gian mẫu
+                      &lt;small&gt;
+                        Module
+                        —
+                         ·
+                        Chưa học
+                      &lt;/small&gt;
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;18&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.8&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;18&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;M5 12h14m-6-6 6 6-6 6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/a&gt;
+                &lt;/section&gt;
+                &lt;footer
+                  class=&quot;lecture-progress&quot;
+                &gt;
+                  &lt;label&gt;
+                    &lt;input
+                      type=&quot;checkbox&quot;
+                    /&gt;
+                    Đánh dấu bài học đã học
+                  &lt;/label&gt;
+                &lt;/footer&gt;
+              &lt;/article&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của Nguyễn An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  Nguyễn An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Xác suất
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              2
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace has-lesson&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Bước đầu
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;is-current&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Biến cố&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      aria-current=&quot;page&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/a&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Biến cố
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Không gian mẫu&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        2
+                      &lt;/small&gt;
+                      Không gian mẫu
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;a
+                class=&quot;learning-list-back&quot;
+                data-discover=&quot;true&quot;
+                href=&quot;/khoa-hoc/c/module/m&quot;
+              &gt;
+                ← Danh sách bài học
+              &lt;/a&gt;
+              &lt;article
+                aria-labelledby=&quot;learning-lesson-title&quot;
+                class=&quot;learning-lesson&quot;
+              &gt;
+                &lt;div
+                  class=&quot;learning-lesson__position&quot;
+                &gt;
+                  Bài học
+                  1
+                   /
+                  2
+                &lt;/div&gt;
+                &lt;h1
+                  id=&quot;learning-lesson-title&quot;
+                  tabindex=&quot;-1&quot;
+                &gt;
+                  Biến cố
+                &lt;/h1&gt;
+                &lt;section
+                  aria-labelledby=&quot;prerequisites-title&quot;
+                  class=&quot;lecture-prerequisites&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;prerequisites-title&quot;
+                  &gt;
+                    Cần biết trước
+                  &lt;/h2&gt;
+                  &lt;details&gt;
+                    &lt;summary&gt;
+                      &lt;span&gt;
+                        Không gian mẫu
+                        &lt;small&gt;
+                          Module
+                          —
+                           ·
+                          Bước đầu
+                        &lt;/small&gt;
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;&quot;
+                      &gt;
+                        Chưa học
+                      &lt;/span&gt;
+                    &lt;/summary&gt;
+                    &lt;div&gt;
+                      &lt;p&gt;
+                        Câu nhắc lại riêng của tiên quyết.
+                      &lt;/p&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        Đọc trang 36 trong tài liệu
+                      &lt;/button&gt;
+                    &lt;/div&gt;
+                  &lt;/details&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-definition-title&quot;
+                  class=&quot;lecture-definition&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-definition-title&quot;
+                  &gt;
+                    Định nghĩa trong tài liệu
+                  &lt;/h2&gt;
+                  &lt;blockquote&gt;
+                    Định nghĩa nguyên văn theo tài liệu.
+                  &lt;/blockquote&gt;
+                  &lt;button
+                    class=&quot;lecture-source-link&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Đọc trang 37 trong tài liệu
+                  &lt;/button&gt;
+                &lt;/section&gt;
+                &lt;div
+                  class=&quot;lecture-body&quot;
+                &gt;
+                  &lt;div
+                    class=&quot;lecture-markdown&quot;
+                  &gt;
+                    Nội dung đầu tiên $x^2$. [S1] [S999]
+                  &lt;/div&gt;
+                &lt;/div&gt;
+                &lt;p
+                  class=&quot;lecture-streaming&quot;
+                  role=&quot;status&quot;
+                &gt;
+                  Đang viết tiếp…
+                &lt;/p&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-sources-title&quot;
+                  class=&quot;lecture-sources&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-sources-title&quot;
+                  &gt;
+                    Trong sách
+                  &lt;/h2&gt;
+                  &lt;ul&gt;
+                    &lt;li&gt;
+                      &lt;button
+                        class=&quot;lecture-source-link&quot;
+                        type=&quot;button&quot;
+                      &gt;
+                        [S1] Trang 37
+                      &lt;/button&gt;
+                      &lt;span&gt;
+                        Ví dụ 1
+                      &lt;/span&gt;
+                    &lt;/li&gt;
+                  &lt;/ul&gt;
+                &lt;/section&gt;
+                &lt;section
+                  aria-labelledby=&quot;lecture-next-title&quot;
+                  class=&quot;lecture-next&quot;
+                &gt;
+                  &lt;h2
+                    id=&quot;lecture-next-title&quot;
+                  &gt;
+                    Tiếp theo
+                  &lt;/h2&gt;
+                  &lt;a
+                    data-discover=&quot;true&quot;
+                    href=&quot;/khoa-hoc/c/module/m/khai-niem/b&quot;
+                  &gt;
+                    &lt;span&gt;
+                      Không gian mẫu
+                      &lt;small&gt;
+                        Module
+                        —
+                         ·
+                        Chưa học
+                      &lt;/small&gt;
+                    &lt;/span&gt;
+                    &lt;svg
+                      aria-hidden=&quot;true&quot;
+                      fill=&quot;none&quot;
+                      height=&quot;18&quot;
+                      stroke=&quot;currentColor&quot;
+                      stroke-width=&quot;1.8&quot;
+                      viewBox=&quot;0 0 24 24&quot;
+                      width=&quot;18&quot;
+                    &gt;
+                      &lt;path
+                        d=&quot;M5 12h14m-6-6 6 6-6 6&quot;
+                      /&gt;
+                    &lt;/svg&gt;
+                  &lt;/a&gt;
+                &lt;/section&gt;
+                &lt;footer
+                  class=&quot;lecture-progress&quot;
+                &gt;
+                  &lt;label&gt;
+                    &lt;input
+                      type=&quot;checkbox&quot;
+                    /&gt;
+                    Đánh dấu bài học đã học
+                  &lt;/label&gt;
+                &lt;/footer&gt;
+              &lt;/article&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Learning.test.tsx:59:23
+            </failure>
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps sent text when the stream ends badly and shows the shortened notice" time="0.2256781">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure loi_mang even if an old retryable flag is false" time="0.2432505">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false" time="0.2397302">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure tran_he_thong even if an old retryable flag is false" time="0.217069">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false" time="0.2274487">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false" time="0.2242898">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="rolls back an optimistic learner mark after a failed save" time="0.3401844">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps a module list on the module route and links to a specific lesson without generating one" time="0.1002208">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/LectureMarkdown.test.tsx" timestamp="2026-10-23T14:22:32.252Z" hostname="ADMIN" tests="2" failures="0" errors="0" skipped="0" time="0.4992906">
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; renders inline/block LaTeX and makes only registered source labels actionable" time="0.4509472">
+        </testcase>
+        <testcase classname="src/LectureMarkdown.test.tsx" name="lecture-3 safe Markdown &gt; does not execute raw HTML, load external images, or allow dangerous links/LaTeX HTML" time="0.0425221">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Roadmap.test.tsx" timestamp="2026-10-23T14:22:32.254Z" hostname="ADMIN" tests="8" failures="0" errors="0" skipped="0" time="2.0143949">
+        <testcase classname="src/Roadmap.test.tsx" name="shows API-ordered modules, honest course and module totals, and the expanded concept checklist" time="0.5940348">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="marks a fully learned module with a success indicator" time="0.1035953">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows a quiet empty state when the API roadmap has no modules" time="0.0557876">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="clears an expired session after a progress write returns 401" time="0.228211">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="optimistically updates one concept and restores only that checkbox when its request fails" time="0.1682187">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="rolls back when a successful write response omits the requested node" time="0.1500636">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="merges concurrent node responses by their own node so stale full snapshots cannot undo another check" time="0.2840668">
+        </testcase>
+        <testcase classname="src/Roadmap.test.tsx" name="shows the selected module and the shared learner mark on the module route" time="0.4257296">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Sharing.test.tsx" timestamp="2026-10-23T14:22:32.262Z" hostname="ADMIN" tests="16" failures="0" errors="0" skipped="0" time="3.5338088">
+        <testcase classname="src/Sharing.test.tsx" name="keeps the invalid join screen labelled by its own heading" time="0.327369">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="keeps a denied members screen labelled by its own heading" time="0.0705996">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not reference an absent heading while loading /join/pending" time="0.0339837">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not reference an absent heading while loading /khoa-hoc/course-1/thanh-vien" time="0.0322758">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="creates a one-time share URL, copies only on a successful clipboard write, and clears it on close" time="0.8131548">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not reveal a one-time URL when creation finishes after the dialog closes" time="0.441118">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="clears a one-time URL when the open dialog switches to a different course" time="0.3351744">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="lets guests preview a valid course invite and return to that invite after authentication" time="0.0688417">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows the data disclosure to a signed-in learner before joining" time="0.1183814">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="uses one invalid-link message for a bad invite token" time="0.0430449">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows one join-action error without replacing the valid invite preview" time="0.1181659">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="ignores a join response after the invite token changes" time="0.1966397">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="lets an owner remove a learner after confirmation and keeps the owner row protected" time="0.2007494">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="does not apply a deferred member removal to the next course" time="0.3317648">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows one mutation alert and one heading when member removal fails" time="0.2174389">
+        </testcase>
+        <testcase classname="src/Sharing.test.tsx" name="shows no other learner identities and lets a learner leave after confirmation" time="0.1798449">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/SourceViewer.test.tsx" timestamp="2026-10-23T14:22:32.274Z" hostname="ADMIN" tests="3" failures="0" errors="0" skipped="0" time="1.1253316">
+        <testcase classname="src/SourceViewer.test.tsx" name="restores focus to the matching citation even if streaming replaces the original button" time="0.6588661">
+        </testcase>
+        <testcase classname="src/SourceViewer.test.tsx" name="requests the actual next/previous page and keeps boundary controls disabled" time="0.2167877">
+        </testcase>
+        <testcase classname="src/SourceViewer.test.tsx" name="never relabels the previous image as a new page while the new request is pending" time="0.2446111">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/TaskWait.test.tsx" timestamp="2026-10-23T14:22:32.277Z" hostname="ADMIN" tests="2" failures="0" errors="0" skipped="0" time="0.2513828">
+        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; waits at least 400ms, then exposes an animated WebP with a GIF fallback and status text" time="0.2247286">
+        </testcase>
+        <testcase classname="src/TaskWait.test.tsx" name="TaskWait &gt; uses only the static PNG when reduced motion is requested" time="0.0223839">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/W03.test.tsx" timestamp="2026-10-23T14:22:32.281Z" hostname="ADMIN" tests="21" failures="0" errors="0" skipped="0" time="6.6598961">
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the recovery header scoped and omits the redundant account eyebrow" time="0.2403222">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=false)" time="0.0643864">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=false)" time="0.0639139">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /xac-minh#token=verify-header (Xác minh email, authenticated=true)" time="0.0538026">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; omits header navigation on /dat-lai-mat-khau#token=reset-header (Đặt mật khẩu mới, authenticated=true)" time="0.0593708">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows the verification reminder and resends with the in-memory CSRF token" time="0.1458441">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; does not verify on GET and confirms a fragment token only after a button press" time="0.0935936">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; captures a second verification token opened in the same tab after success" time="0.2310614">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; ignores a late response from the previous verification token" time="0.2707025">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; sends a generic password-reset request without revealing whether the email exists" time="0.5280032">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps recovery navigation pointed at the account for an authenticated user" time="0.0523785">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; uses the fragment token, resets without auto-login, and shows the success notice on login" time="0.841846">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_expired by the token error type" time="0.0705883">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_used by the token error type" time="0.086412">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; maps token_invalid by the token error type" time="0.0812445">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; focuses the recovery heading and hides reset fields after a terminal token error" time="1.0492927">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; replaces a terminal reset link with a second link opened in the same tab" time="1.7822319">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the reset form available after a retryable network failure" time="0.8475086">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; shows a missing-token state and does not send a request" time="0.0254294">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /xac-minh?utm=mail" time="0.0339345">
+        </testcase>
+        <testcase classname="src/W03.test.tsx" name="W-03 email verification and recovery &gt; keeps the missing-token alert for a tokenless link with URL parameters: /dat-lai-mat-khau#token=" time="0.0335347">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/W11AuthReturn.repro.test.tsx" timestamp="2026-10-23T14:22:32.304Z" hostname="ADMIN" tests="22" failures="0" errors="0" skipped="0" time="42.7208611">
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct login returns to the exact invitation after authentication" time="1.7334846">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="control: direct register returns to the exact invitation after authentication" time="2.1337194">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false)" time="2.154463">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true)" time="2.0802532">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false)" time="2.0252299">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true)" time="2.1362225">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false)" time="2.0947117">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true)" time="2.1027316">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false)" time="2.0802185">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true)" time="2.1302899">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false)" time="2.0864443">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true)" time="2.1363884">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false)" time="2.0611018">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true)" time="2.0378041">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=false)" time="2.1699961">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through header (viewTransition=true)" time="2.1765748">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=false)" time="2.1668227">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after login -&gt; register through footer (viewTransition=true)" time="2.1555758">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=false)" time="1.2772801">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through header (viewTransition=true)" time="1.2548866">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=false)" time="1.2806167">
+        </testcase>
+        <testcase classname="src/W11AuthReturn.repro.test.tsx" name="retains invite after register -&gt; login through footer (viewTransition=true)" time="1.2416022">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/api.test.ts" timestamp="2026-10-23T14:22:32.316Z" hostname="ADMIN" tests="22" failures="0" errors="0" skipped="0" time="0.088959">
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error ban_quet" time="0.0071153">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error ngon_ngu_khong_ho_tro" time="0.0007073">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error loi_mang" time="0.0004776">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error het_tran_he_thong" time="0.0004475">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error loi_noi_bo" time="0.0011852">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error confirmation_expired" time="0.0006742">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="uses safe product copy for build error too_many_pages" time="0.0009511">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; sends cookies on reads and attaches the in-memory CSRF token on writes only" time="0.0165084">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps unauthenticated to a stable Vietnamese message" time="0.0094384">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps conflict to a stable Vietnamese message" time="0.0022343">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps validation to a stable Vietnamese message" time="0.0013803">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps owns_shared_courses to a stable Vietnamese message" time="0.0011474">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; maps structured server errors to Vietnamese without exposing raw server text" time="0.0025795">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="apiFetch &gt; keeps a valid degraded health payload when the API uses HTTP 503 for database downtime" time="0.0022036">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; parses events across CRLF boundaries and a split multibyte Vietnamese character" time="0.0185483">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; joins multiline data and ignores comments" time="0.0034772">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; keeps multiline data together when a CRLF pair is split between chunks" time="0.0017506">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; drops an event that is not terminated by a blank line at EOF" time="0.0012032">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; keeps the last event ID across messages" time="0.0012582">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; preserves structured API errors from a failed SSE response" time="0.0012806">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; cancels the stream when an event callback throws" time="0.0038787">
+        </testcase>
+        <testcase classname="src/api.test.ts" name="readSse &gt; cancels an already-aborted stream and releases its reader" time="0.0039166">
+        </testcase>
+    </testsuite>
+</testsuites>
