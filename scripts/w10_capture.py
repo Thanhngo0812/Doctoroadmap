@@ -17,7 +17,15 @@ def main():
     folder.mkdir(parents=True)
     protected = ['report/w06-evidence/http-doc1.json', 'report/w06-evidence/http-six-books.json']
     protected += ['report/w14-evidence/' + name + '.json' for name in ['http-contract', 'sql-cancelled', 'sql-capacity', 'sql-failed', 'sql-queue-claims', 'sql-succeeded']]
+    if not label.startswith('gate-python'):
+        protected = []
     originals = {name: (ROOT / name).read_bytes() if (ROOT / name).exists() else None for name in protected}
+    original_folder = folder / 'legacy-originals'
+    if originals:
+        original_folder.mkdir()
+        for name, value in originals.items():
+            if value is not None:
+                (original_folder / Path(name).name).write_bytes(value)
     commit = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip()
     files = subprocess.check_output(['git', 'ls-files', 'src', 'scripts'], cwd=ROOT, text=True).splitlines()
     hashes = {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in files if (ROOT / p).is_file()}
