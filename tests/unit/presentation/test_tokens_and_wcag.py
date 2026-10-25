@@ -719,13 +719,20 @@ def test_w09_chat_screens_specification():
 
 
 def test_w10_quiz_screens_specification():
-    """Verify W-10 quiz states: generating skeleton, taking question with option selection, 10/10 result and citation, >=44px buttons."""
+    """Verify W-10 quiz & document states: generating, taking with hidden chat, selected opt, 10/10 result & why_wrong, document-3 creation (<=5 modules) & library."""
     w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
     assert 'id="section-quiz-generating"' in w10_html
     assert 'id="section-quiz-taking"' in w10_html
+    assert 'id="quiz-chat-hidden-indicator"' in w10_html
     assert 'id="opt-q3-selected"' in w10_html
     assert 'id="section-quiz-result"' in w10_html
     assert 'id="quiz-citation-box"' in w10_html
+    assert 'id="section-document-create"' in w10_html
+    assert 'id="scope-count-indicator"' in w10_html
+    assert 'id="section-document-library"' in w10_html
+    assert 'id="tab-lib-here"' in w10_html
+    assert 'id="tab-lib-elsewhere"' in w10_html
+    assert 'id="btn-download-markdown"' in w10_html
     assert "min-height: 44px" in w10_html
     assert "36px" not in w10_html
 
@@ -978,7 +985,7 @@ def test_w08_formula_nodes_are_not_accidentally_nested():
 
 
 def test_w09_formula_has_subscript_layout_styles():
-    """Verify that W-09 includes CSS rules for KaTeX layout and subscript alignment."""
+    """Verify that W-09 includes strict CSS rules for KaTeX layout and subscript alignment without lenient fallbacks."""
     source, _ = parse_preview_tree("w09_chat_screens.html")
     styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
     for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
@@ -987,9 +994,39 @@ def test_w09_formula_has_subscript_layout_styles():
             css_file = Path("design/preview/" + href).resolve()
             if css_file.exists():
                 styles += css_file.read_text(encoding="utf-8")
-    assert re.search(r"\.(?:msub|vlist-t|katex)\b[^{}]*\{", styles), (
-        "W-09 has KaTeX-shaped DOM but zero KaTeX/subscript layout CSS in inline or linked styles"
-    )
+    assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-09"
+    assert re.search(r"\.vlist-t\b[^{}]*\{", styles), "Missing .vlist-t layout CSS in W-09"
+
+
+def test_w10_formulas_have_accessible_content():
+    """Verify that all KaTeX formulas in W-10 have accessible representations (MathML or aria-label)."""
+    formulas = math_formula_accessibility("w10_quiz_screens.html")
+    assert len(formulas) >= 1, f"Expected formulas in W-10, got {len(formulas)}"
+    for f in formulas:
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility in W-10: {f}"
+
+
+def test_w10_formula_has_subscript_layout_styles():
+    """Verify that W-10 includes strict CSS rules for KaTeX layout and subscript alignment."""
+    source, _ = parse_preview_tree("w10_quiz_screens.html")
+    styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+    for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+        href = match.group(1)
+        if ":" not in href:
+            css_file = Path("design/preview/" + href).resolve()
+            if css_file.exists():
+                styles += css_file.read_text(encoding="utf-8")
+    assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-10"
+    assert re.search(r"\.vlist-t\b[^{}]*\{", styles), "Missing .vlist-t layout CSS in W-10"
+
+
+def test_falsifiable_missing_subscript_rules_fails():
+    """Falsifiable test: prove that CSS having only .katex but missing .msub or .vlist-t fails the strict guard."""
+    incomplete_styles = ".katex { font-family: serif; font-size: 1.1em; }"
+    with pytest.raises(AssertionError):
+        assert re.search(r"\.msub\b[^{}]*\{", incomplete_styles)
+    with pytest.raises(AssertionError):
+        assert re.search(r"\.vlist-t\b[^{}]*\{", incomplete_styles)
 
 
 def test_falsifiable_aria_hidden_without_accessible_math_fails():
