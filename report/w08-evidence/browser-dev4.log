@@ -1,0 +1,66 @@
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe : AssertionError [ERR_ASSERTION]: Axe source light
+At line:3 char:1
++ C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (AssertionError ...xe source light:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
++ actual - expected
+
++ [
++   {
++     description: 'Ensure elements that have scrollable content are accessible by keyboard in Safari',
++     help: 'Scrollable region must have keyboard access',
++     helpUrl: 'https://dequeuniversity.com/rules/axe/4.14/scrollable-region-focusable?application=playwright',
++     id: 'scrollable-region-focusable',
++     impact: 'serious',
++     nodes: [
++       {
++         all: [],
++         any: [
++           {
++             data: null,
++             id: 'focusable-content',
++             impact: 'serious',
++             message: 'Element should have focusable content',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'focusable-element',
++             impact: 'serious',
++             message: 'Element should be focusable',
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element should have focusable content\n' +
++           '  Element should be focusable',
++         html: '<div class="source-viewer__image"><img alt="Trang 10 của tài liệu"
+src="blob:http://127.0.0.1:8018/f8db8714-7825-4936-8a5f-4b61ac26f100"></div>',
++         impact: 'serious',
++         none: [],
++         target: [
++           '.source-viewer__image'
++         ]
++       }
++     ],
++     tags: [
++       'cat.keyboard',
++       'wcag2a',
++       'wcag211',
++       'wcag213',
++       'TTv5',
++       'TT4.a',
++       'EN-301-549',
++       'EN-9.2.1.1',
++       'EN-9.2.1.3',
++       'RGAAv4',
++       'RGAA-7.3.2'
++     ]
++   }
++ ]
+- []
+
+    at capture (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_web_check.cjs:148:16)
+    at async main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_web_check.cjs:210:7)

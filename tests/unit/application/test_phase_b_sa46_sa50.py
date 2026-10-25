@@ -185,10 +185,9 @@ def test_cloze_skips_substring_overlapping_alias_and_uses_safe_distractors():
                for index, left in enumerate(texts) for right in texts[index + 1:])
 
 
-def test_generic_chart_word_keeps_llm_guard_without_rejecting_cloze_by_itself():
+def test_generic_chart_word_does_not_reject_cloze_by_itself():
     text = "Đồ thị là một biểu diễn của quan hệ trên tập hợp."
 
-    assert QuizUseCase._visual_or_formula_reference(text)
     assert not QuizUseCase._cloze_visual_or_formula_reference(text)
 
 
@@ -197,9 +196,8 @@ def test_new_local_rule_version_invalidates_cached_cloze_bank(monkeypatch):
     store = InMemoryPhaseBStore()
     quiz = QuizUseCase(graph, store)
     concept = quiz._concepts("m", ["a"])[0]
-    context = quiz._context("m", concept)
     monkeypatch.setattr(QuizUseCase, "LOCAL_RULES_VERSION", "quiz-local-rules-v2", raising=False)
-    old_key = quiz._bank_key("d", "m", concept, None, context=context)
+    old_key = quiz._bank_key("d", "m", concept, None)
     legacy = [{"item_id": "legacy-invalid", "concept_id": "a", "generator": "llm",
                "stem": "old invalid bank", "options": [], "checks": {}}]
     store.put_cache(old_key, legacy)

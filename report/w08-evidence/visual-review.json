@@ -1,0 +1,23 @@
+{
+  "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+  "method": "Opened actual browser-final5 PNG captures with the image viewer after the real HTTP/PostgreSQL browser run; separate from automatic layout checks and Axe.",
+  "observations": [
+    {
+      "image": "browser-final5/ready-390-dark-reduced.png",
+      "result": "Readable hierarchy and wrapped source labels on mobile; dark panels and blue source actions remain distinct. Original formula crop keeps its white paper background. Self-check answer starts folded."
+    },
+    {
+      "image": "browser-final5/failure-390-light.png",
+      "result": "Failure message and three exit actions fit the narrow layout. Retry is prominent; the source action and assistant notice are visible, without replacing the preserved definition."
+    },
+    {
+      "image": "browser-final5/source-768-light.png",
+      "result": "Viewer displays PDF page 10 of 102 with readable image, close/paging/original-file controls. Full-page capture extends below the viewport; the visible viewport uses the native modal backdrop."
+    },
+    {
+      "image": "browser-final5/ready-1280-light.png",
+      "result": "Module navigation and reading column align. Definition, math, source references, self-check and next lessons have consistent spacing. Source document titles remain verbatim; UI labels use bai hoc/tai lieu."
+    }
+  ],
+  "limits": "Lesson prose is scripted test content; images of document pages come from the copied real PDF via local fake media. Visual review does not establish live model quality."
+}

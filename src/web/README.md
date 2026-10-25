@@ -1,5 +1,51 @@
 # WayFinder — chạy backend và frontend
 
+## Mở bản W-08 — trang học lecture-3
+
+Worktree: `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture`, nhánh `work/w08-lecture`. Đã nhận main có SA-64 tại merge `1d91b0b`; W-08 dùng `body_md`, LaTeX, nguồn và tự kiểm tra của lecture-3. Giữ worktree W-11 để đối chiếu.
+
+**PowerShell 1 — PostgreSQL và backend:** bật Docker Desktop, rồi chạy:
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+$env:WAYFINDER_MAILER = 'console'
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+```
+
+**PowerShell 2 — frontend:**
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture
+npm.cmd --prefix src/web/frontend ci --no-audit --no-fund
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+```
+
+Mở `http://127.0.0.1:5173/khoa-hoc`, vào khoá đã sẵn sàng → **Mở module** → chọn bài học. Bài hiện dần; có tiên quyết gập, nguồn đúng trang, đáp án tự kiểm tra gập và dấu đã học riêng. Các nút Hỏi trợ lý sẽ nối ở W-09. Không cần worker dựng tài liệu để đọc khoá đã sẵn sàng. Dừng từng terminal bằng `Ctrl+C`; không xoá volume DB.
+
+Hai service trên dùng cấu hình dev của bạn: mở bài chưa có cache có thể gọi model đã cấu hình; xem ảnh/tệp dùng MediaStore. **Đợt kiểm W-08 dùng script riêng bên dưới với mô hình/Mailer/MediaStore giả và PostgreSQL UUID tạm, chi ngoài 0 USD**, không dùng tài khoản/DB dev để phá thử.
+
+```powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db-test
+& $wfPython -X utf8 src/web/backend/tests/copy_w06_fixtures.py
+npm.cmd --prefix src/web/frontend run build
+$env:W08_EVIDENCE_RUN = 'browser-local-1' # Chọn tên mới mỗi lượt, không ghi đè bằng chứng.
+& $wfPython -X utf8 scripts/w08_web_runtime.py
+```
+
+Harness tự mở/đóng API ở8018, tạo/gỡ DB UUID riêng và lưu JSON/ảnh/video trong `report/w08-evidence/<tên-lượt>/`. PDF chỉ chép từ snapshot theo manifest/SHA-256; không lấy kho CLI/live. [Báo cáo W-08](../../report/w08-trang-hoc-lecture3-2026-10-23.md) phân biệt kiểm phát triển và cổng cuối. Các mục W-11/W-14/W-07 dưới đây giữ hướng dẫn mốc cũ.
+
 ## Mở bản W-11 — chia sẻ bằng link và thành viên
 
 Mã W-11 ở `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w11-share-links`, nhánh `work/w11-share-links`, đã nhận main `865974a`. Bản vá ngày 2026-10-23 giữ link mời khi đổi giữa đăng nhập/đăng ký qua header, footer và view transition. Migration `w11_0007` nối `w14_0006`. Cổng tự động dùng PostgreSQL UUID riêng và dịch vụ giả; không chạy trên DB phát triển của bạn. Bản này chờ điều phối nghiệm thu W-11, không tự ghép main.

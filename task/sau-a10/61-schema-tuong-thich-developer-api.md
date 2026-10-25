@@ -6,7 +6,7 @@ nhận. Claude đã kiểm ngày 2026-10-22 rằng `additionalProperties` có �
 - schema đầu ra JSON của quiz: `application/phase_b/quiz.py`.
 
 **Ai:** agent Sonnet cài · Claude nghiệm thu · **Chi phí mô hình:** 0 USD khi cài; một lượt thử thật rất nhỏ trên Developer API nếu cần, dry-run và xin duyệt
-riêng · **Chặn bởi:** không · **Trạng thái:** sẵn sàng
+riêng · **Chặn bởi:** không · **Trạng thái:** đang cài (2026-10-24, vé cuối của đợt; SA-67, SA-68 đã ghép)
 
 ## Vì sao
 
@@ -20,6 +20,25 @@ trợ lý không chạy được trên Developer API, và có thể cả các kh
   `response_schema`, đệ quy qua schema con. Vertex giữ nguyên request như hiện tại.
 - Lập danh sách khoá phải lọc theo tài liệu chính thức của Gemini API. Ghi nguồn vào báo cáo; không đoán.
 - Kiểm mọi chỗ gửi schema: trợ lý, quiz (sinh và kiểm), bài giảng, tên module, tài liệu.
+
+## Bổ sung 2026-10-24 (Claude, trước khi giao)
+
+- **Giao sau SA-68.** Hôm nay có thêm nhiều chỗ gửi lược đồ hay cấu hình mới, phải phủ hết:
+  - quiz-3: lược đồ sinh câu, lược đồ giải mù kèm `thinkingConfig`;
+  - bài giảng: `thinkingConfig` khi `lecture_thinking_level` được đặt;
+  - trợ lý: ảnh trang trong tin nhắn;
+  - tài liệu `document-3`.
+- **Kiểm theo tài liệu chính thức** xem Developer API có nhận `thinkingConfig.thinkingLevel` và `responseJsonSchema` như Vertex không; ghi nguồn.
+- **Ngoài lõi, việc của người điều phối** (ghi ở bàn giao mục 10), cần trước hôm đổi transport cho demo:
+  - nới chốt "WayFinder web requires DOC2ROADMAP_LLM_TRANSPORT=vertex" trong `src/web/backend/wayfinder/composition.py`;
+  - thêm `DOC2ROADMAP_GEMINI_API_KEY` vào `src/web/.env` và đổi `DOC2ROADMAP_LLM_TRANSPORT`.
+
+  Web chạy bằng `wayfinder.cli --env-file src/web/.env` từ worktree. Lõi chỉ đọc tệp `.env` ở thư mục đang đứng, nên không thấy `.env` tổng của repo; mọi khoá
+  `DOC2ROADMAP_*` của web phải nằm trong `src/web/.env`.
+
+- **Số đo làm mốc cho ngày đổi (2026-10-24 tối):** embedding truy vấn qua Vertex 11,4–16 s mỗi lần (global, us-central1, asia-southeast1 như nhau), qua
+  Developer API 0,62–0,73 s; vector hai đường giống hệt (cosine 1,0), nên chỉ mục đoạn sách dùng tiếp được. Chủ dự án chọn giữ Vertex tới ngày đổi cả hệ thống.
+  Sau khi đổi, đo lại chữ đầu của trợ lý và tài liệu (hiện 13–21 s ở tài liệu, phần lớn là chờ embedding).
 
 ## Tiêu chí nghiệm thu
 

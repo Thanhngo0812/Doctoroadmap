@@ -1,0 +1,136 @@
+C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe : AssertionError [ERR_ASSERTION]: Axe incomplete ready
+light
+At line:3 char:1
++ C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8  ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (AssertionError ...ete ready light:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
++ actual - expected
+
++ [
++   {
++     description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast
+ratio thresholds',
++     help: 'Elements must meet minimum color contrast ratio thresholds',
++     helpUrl: 'https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright',
++     id: 'color-contrast',
++     impact: 'serious',
++     nodes: [
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               contrastRatio: 0,
++               expectedContrastRatio: '4.5:1',
++               fontSize: '14.5pt (19.36px)',
++               fontWeight: 'normal',
++               messageKey: 'shortTextContent'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: 'Element content is too short to determine if it is actual text content',
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content is too short to determine if it is actual text content',
++         html: '<span class="mord">2</span>',
++         impact: 'serious',
++         none: [],
++         target: [
++           '.base:nth-child(1) > .mord > .mfrac > .vlist-t2.vlist-t > .vlist-r:nth-child(1) > .vlist >
+span:nth-child(1) > .mord > .mord'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               contrastRatio: 0,
++               expectedContrastRatio: '4.5:1',
++               fontSize: '14.5pt (19.36px)',
++               fontWeight: 'normal',
++               messageKey: 'shortTextContent'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: 'Element content is too short to determine if it is actual text content',
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content is too short to determine if it is actual text content',
++         html: '<span class="mord">2</span>',
++         impact: 'serious',
++         none: [],
++         target: [
++           '.base:nth-child(2) > .mord > .mfrac > .vlist-t2.vlist-t > .vlist-r:nth-child(1) > .vlist >
+span:nth-child(1) > .mord > .mord'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               messageKey: 'nonBmp'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: 'Element content contains only non-text characters',
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content contains only non-text characters',
++         html: '<span aria-hidden="true">→</span>',
++         impact: 'serious',
++         none: [],
++         target: [
++           'a[data-discover="true"]:nth-child(2) > span[aria-hidden="true"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               messageKey: 'nonBmp'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: 'Element content contains only non-text characters',
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element content contains only non-text characters',
++         html: '<span aria-hidden="true">→</span>',
++         impact: 'serious',
++         none: [],
++         target: [
++           'a[data-discover="true"]:nth-child(3) > span[aria-hidden="true"]'
++         ]
++       }
++     ],
++     tags: [
++       'cat.color',
++       'wcag2aa',
++       'wcag143',
++       'TTv5',
++       'TT13.c',
++       'EN-301-549',
++       'EN-9.1.4.3',
++       'ACT',
++       'RGAAv4',
++       'RGAA-3.2.1'
++     ]
++   }
++ ]
+- []
+
+    at capture (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_web_check.cjs:112:16)
+    at async main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\scripts\w08_web_check.cjs:142:7)

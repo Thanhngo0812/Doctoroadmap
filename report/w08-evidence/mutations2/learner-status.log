@@ -1,0 +1,37 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner _
+
+core_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b7037eb5e0f24d70bf16a941a7d02...tureModel object at 0x0000027084CCA930>, url='/api/v1/courses/e7607853-4ec3-4448-9455-920b90e1e94d/concepts/a/lecture')
+
+    def test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner(core_web):
+        w = core_web
+        w.gateway.set_progress(w.a.actor, w.course.id, 'b', True)
+        assert w.gateway.runtime.settings.learner_daily_max_usd == 1.0
+        assert w.a.client.get(w.url).json()['status'] == 'generating'
+        assert not w.model.calls
+        streamed = w.a.client.get(w.url + '/stream')
+        assert streamed.status_code == 200
+        lesson = events(streamed)[-1]['lecture']
+        assert lesson['status'] == 'ready' and lesson['contract_version'] == 'lecture-3'
+        assert '$x^2+y^2$' in lesson['body_md'] and '[S999]' in lesson['body_md']
+        assert lesson['self_check']['answer_md'] == 'Bằng $1$.'
+        assert 'validation' not in streamed.text and 'sections' not in streamed.text and 'bridge' not in streamed.text
+>       assert lesson['prerequisites'][0]['learner_status'] == 'learned'
+E       AssertionError: assert 'not_learned' == 'learned'
+E
+E         - learned
+E         + not_learned
+E         ? ++++
+
+src\web\backend\tests\test_lecture3_integration_w08.py:50: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w08-lecture\report\w08-evidence\mutations2\learner-status.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner
+1 failed, 1 warning in 8.51s

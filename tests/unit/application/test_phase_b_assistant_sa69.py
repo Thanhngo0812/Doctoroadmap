@@ -45,12 +45,7 @@ def make_graph(indexes=(0, 1, 2, 3), order=(0, 1, 2, 3)):
     return graph
 
 
-class DocModel:
-    model_id = 'fake-doc'
-
-    def ask_json(self, prompt, *, response_schema):
-        return NS(payload={'title': 'Tài liệu thử', 'markdown': 'Nội dung có nguồn [S1].',
-                           'citations': [{'label': 'S1', 'quote': 'x'}], 'outside_document_blocks': []}, usage={})
+from sa64_support import FakeModel as DocModel  # SA-67: document-3 streams Markdown, so the model is a streaming fake
 
 
 def build(scope_kind, calls, *, graph=None, limit=5):
@@ -151,7 +146,7 @@ def test_roadmap_session_without_scope_makes_a_roadmap_quiz_and_a_too_large_docu
     assert error is None and quiz['status'] == 'ready' and quiz['module_id'] is None
     assert quiz['home_scope'] == {'kind': 'roadmap'} and len(quiz['node_ids']) >= 3
     created, error = run('roadmap', 'make_document', {'request': 'Tóm tắt'}, limit=3)
-    assert created[-1][2]['reason'] == 'scope_too_large' and error['code'] == 'scope_too_large'
+    assert created[-1][2]['failure']['reason_code'] == 'scope_too_large' and error['code'] == 'scope_too_large'
 
 
 def test_roadmap_session_with_a_named_module_still_makes_that_module():

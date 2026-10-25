@@ -87,7 +87,7 @@ def test_stream_endpoints_use_real_use_cases_and_never_return_quiz_answers(serve
     quiz = events(request(base + '/api/quiz', {**args, 'scope': {'kind': 'roadmap'}}))
     assert quiz[-1]['event'] == 'final'
     public = quiz[-1]['quiz']
-    assert public['contract_version'] == 'quiz-2'
+    assert public['contract_version'] == 'quiz-3'
     assert public['home_scope'] == {'kind': 'roadmap'}
     assert public['origin'] == 'button'
     assert public['session_id'] is None

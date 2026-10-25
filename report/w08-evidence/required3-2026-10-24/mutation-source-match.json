@@ -1,0 +1,305 @@
+{
+  "sourceCommit": "b4136987668c3fb822ea374f399b947064ce7f18",
+  "cases": [
+    {
+      "name": "cache-only",
+      "source": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner",
+        "--basetemp=tmp/w08-mut-cache-only-c54f8cad3f5944289ee120d17001ec5e",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\cache-only.xml"
+      ],
+      "beforeSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386"
+    },
+    {
+      "name": "learner-status",
+      "source": "src/web/backend/wayfinder/application/lecture_view.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner",
+        "--basetemp=tmp/w08-mut-learner-status-11cc8dc5305941909adc89a24d656436",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\learner-status.xml"
+      ],
+      "beforeSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3"
+    },
+    {
+      "name": "node-guard",
+      "source": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lectures_w08.py::test_w08_node_must_be_in_published_learnable_graph",
+        "--basetemp=tmp/w08-mut-node-guard-d8842e0c10aa4a43ae52f0262f8398d6",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\node-guard.xml"
+      ],
+      "beforeSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+      "nativeExit": 1,
+      "failures": 2,
+      "errors": 0,
+      "restoredSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386"
+    },
+    {
+      "name": "page-range",
+      "source": "src/web/backend/wayfinder/infrastructure/learning_media.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lectures_w08.py::test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres",
+        "--basetemp=tmp/w08-mut-page-range-116af50b48754853a61884e66dce8e87",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\page-range.xml"
+      ],
+      "beforeSha256": "96a0a1b8a086735031236e29550d39acf611fd826bda77a16a0ae839d114fb3c",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "96a0a1b8a086735031236e29550d39acf611fd826bda77a16a0ae839d114fb3c"
+    },
+    {
+      "name": "http-dto-privacy",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_http_dto_discards_admin_keys_even_if_a_gateway_returns_them",
+        "--basetemp=tmp/w08-mut-http-dto-privacy-dcba49b807c44e63abb0b69efcfc8a80",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\http-dto-privacy.xml"
+      ],
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+    },
+    {
+      "name": "sse-membership",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lectures_w08.py::test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres",
+        "--basetemp=tmp/w08-mut-sse-membership-eeda0a6e5ca64763978f3209a2a60618",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\sse-membership.xml"
+      ],
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+    },
+    {
+      "name": "early-delta",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_first_delta_precedes_model_finish_and_cache_is_completed_after_http_disconnect",
+        "--basetemp=tmp/w08-mut-early-delta-c80ba1483cf34ccb91e45e7729da8a1a",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\early-delta.xml"
+      ],
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+    },
+    {
+      "name": "cross-site",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_cross_site_navigation_cannot_start_a_paid_generation",
+        "--basetemp=tmp/w08-mut-cross-site-de3ae6b624bc4cffb12af168789642b3",
+        "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations3\\cross-site.xml"
+      ],
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8"
+    },
+    {
+      "name": "rollback",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "src/Learning.test.tsx",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required2-20261024\\rollback.xml"
+      ],
+      "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+      "nativeExit": 1,
+      "failures": 2,
+      "errors": 0,
+      "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+    },
+    {
+      "name": "late-error-keeps-text",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "src/Learning.test.tsx",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required2-20261024\\late-error-keeps-text.xml"
+      ],
+      "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+    },
+    {
+      "name": "always-retry",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "src/Learning.test.tsx",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required2-20261024\\always-retry.xml"
+      ],
+      "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+      "nativeExit": 1,
+      "failures": 5,
+      "errors": 0,
+      "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+    },
+    {
+      "name": "safe-math",
+      "source": "src/web/frontend/src/LectureMarkdown.tsx",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "src/LectureMarkdown.test.tsx",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required2-20261024\\safe-math.xml"
+      ],
+      "beforeSha256": "872a0a7eca6b6a23ebe509bf67652f3babf7aad7b9ded5c42588ac9bcc475cb4",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "872a0a7eca6b6a23ebe509bf67652f3babf7aad7b9ded5c42588ac9bcc475cb4"
+    },
+    {
+      "name": "source-page-identity",
+      "source": "src/web/frontend/src/SourceViewer.tsx",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "src/SourceViewer.test.tsx",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required2-20261024\\source-page-identity.xml"
+      ],
+      "beforeSha256": "8dde8fb5dab1073714a821f4fb3fe278d3e73043b73bd86d0b821e4879efe5e6",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0,
+      "restoredSha256": "8dde8fb5dab1073714a821f4fb3fe278d3e73043b73bd86d0b821e4879efe5e6"
+    },
+    {
+      "name": "live-related-progress",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "src/Learning.review-repro.test.tsx",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required2-20261024\\live-related-progress.xml"
+      ],
+      "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+      "nativeExit": 1,
+      "failures": 2,
+      "errors": 0,
+      "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+    },
+    {
+      "name": "self-check-heading-grammar",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "src/Learning.review-repro.test.tsx",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=junit",
+        "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations-required2-20261024\\self-check-heading-grammar.xml"
+      ],
+      "beforeSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab",
+      "nativeExit": 1,
+      "failures": 4,
+      "errors": 0,
+      "restoredSha256": "7a4c7e310750af75c96b8066f510e12551668d5aba548a783bf40e0b40fecfab"
+    }
+  ],
+  "method": "Eight unchanged backend guards from mutations3; seven refreshed UI guards including both Required bugs. Exact source restoration before all servers/gates."
+}

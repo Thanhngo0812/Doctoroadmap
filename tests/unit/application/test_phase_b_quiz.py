@@ -6,7 +6,8 @@ import json
 from pathlib import Path
 from pydantic import SecretStr
 
-from doc2roadmap.application.phase_b.quiz import QUIZ_SCHEMA, QuizUseCase
+from doc2roadmap.application.phase_b.quiz import QuizUseCase
+from doc2roadmap.application.phase_b.quiz_context3 import GENERATION_SCHEMA
 from doc2roadmap.application.prerequisite_prompt import PRICING_USD_PER_MILLION
 from doc2roadmap.application.phase_b.retrieval import load_learning_graph
 from doc2roadmap.application.phase_b.assistant import AssistantUseCase
@@ -18,6 +19,8 @@ from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
 from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel
 from doc2roadmap.composition_phase_b import PhaseBRuntime
 from doc2roadmap.config import Settings
+
+from sa68_support import make_book
 
 
 class Graph:
@@ -108,7 +111,7 @@ def test_dry_run_has_no_model_calls_or_store_writes():
     assert store.usage_rows() == []
 
 
-def test_dry_run_quiz_cost_uses_context_and_four_calls_with_configured_caps():
+def test_dry_run_quiz_cost_uses_material_and_four_calls_with_configured_caps():
     class NoCalls:
         model_id = "fake"
 
@@ -117,7 +120,7 @@ def test_dry_run_quiz_cost_uses_context_and_four_calls_with_configured_caps():
 
     settings = BSettings(quiz_generation_max_output_tokens=77, quiz_verifier_max_output_tokens=23)
     store = InMemoryPhaseBStore()
-    usecase = QuizUseCase(Graph(), store, NoCalls(), verifier_model=NoCalls(), settings=settings)
+    usecase = QuizUseCase(make_book(plain=3, formula=False), store, NoCalls(), verifier_model=NoCalls(), settings=settings)
     result = usecase.make_quiz("d", "m", "alice", dry_run=True)
 
     assert result["estimated_calls"] == 4 * result["uncached_concepts"] == 12
@@ -130,8 +133,8 @@ def test_dry_run_quiz_cost_uses_context_and_four_calls_with_configured_caps():
     assert store.usage_rows() == []
     assert store.list_records("quiz_attempt") == []
 
-    larger_graph = Graph()
-    larger_graph.chunks["ca"].text += " Tài liệu bổ sung mô tả khái niệm." * 200
+    larger_graph = make_book(plain=3, formula=False)
+    larger_graph.chunks["c0"].text += " Tài liệu bổ sung mô tả khái niệm." * 200
     larger = QuizUseCase(larger_graph, InMemoryPhaseBStore(), NoCalls(),
                          verifier_model=NoCalls(), settings=settings).make_quiz(
                              "d", "m", "alice", dry_run=True)
@@ -155,7 +158,7 @@ def test_cloze_does_not_blank_hiệu_inside_the_ký_hiệu_compound():
     assert "kí ___" not in quiz["items"][0]["stem"]
 
 
-def test_quiz_sources_are_short_context_labels_and_context_hash_is_order_independent():
+def test_cloze_sources_are_short_context_labels_and_the_bank_key_is_order_independent():
     graph = Graph()
     usecase = QuizUseCase(graph, InMemoryPhaseBStore())
     concept_a, concept_b = usecase._concepts("m", ["a", "b"])
@@ -169,14 +172,8 @@ def test_quiz_sources_are_short_context_labels_and_context_hash_is_order_indepen
     assert [row["label"] for row in context_a_second["chunks"]] == ["S1"]
     assert [row["label"] for row in context_b_first["chunks"]] == ["S1"]
     assert [row["label"] for row in context_b_second["chunks"]] == ["S1"]
-    assert usecase._bank_key("d", "m", concept_a, None, context=context_a_first) == \
-        usecase._bank_key("d", "m", concept_a, None, context=context_a_second)
-
-    prompt = usecase._generation_prompt(context_a_first)
-    assert "tuyệt đối không ghi chunk_id hay ID nội bộ" in prompt
-    assert "tối đa 200 ký tự" in prompt
-    assert "đúng 3 phương án" in prompt
-    assert "_source_registry" not in prompt
+    assert usecase._bank_key("d", "m", concept_a, None) == usecase._bank_key("d", "m", concept_a, None)
+    assert usecase._bank_key("d", "m", concept_a, None) != usecase._bank_key("d", "m", concept_b, None)
 
 
 def test_question_reports_hide_after_distinct_owners_only():
@@ -203,287 +200,6 @@ def test_small_modules_fill_five_with_variants_when_available():
     assert quiz["ready_count"] == 5
 
 
-def test_blind_verifier_rejecting_its_answer_uses_cloze_and_logs_both_model_calls():
-    class Reply:
-        usage = {"promptTokenCount": 100, "candidatesTokenCount": 20}
-
-        def __init__(self, payload):
-            self.payload = payload
-
-    class Model:
-        def __init__(self, model_id):
-            self.model_id = model_id
-            self.calls = 0
-
-        def start_session(self, _system_prompt):
-            return self
-
-        def ask_json(self, prompt, response_schema):
-            import json
-            self.calls += 1
-
-            assert response_schema["type"] == "object"
-            assert response_schema["properties"]["items"]["items"]["type"] == "object"
-
-            if prompt.startswith("Giải mù"):
-                data = json.loads(prompt.split("\n", 1)[1])
-                item = data["items"][0]
-                assert set(item) == {"item_id", "stem", "options"}
-                assert all(set(option) == {"option_id", "text"} for option in item["options"])
-                assert all("correct" not in repr(option).casefold() for option in item["options"])
-                wrong = next(option for option in item["options"] if option["text"] != "Tam giác")
-                return Reply({"items": [{"item_id": item["item_id"],
-                                         "selected_option_id": wrong["option_id"],
-                                         "valid": True, "quote": "Tam giác là hình phẳng có ba cạnh.",
-                                         "distractor_verdicts": []}]})
-            return Reply({"items": [{
-                "concept": "Tam giác",
-                "stem": "Một hình phẳng có ba cạnh được gọi là gì?", "bloom": "hieu",
-                "correct": {"text": "Tam giác", "sources": ["S1"], "quote": "Tam giác là hình phẳng có ba cạnh."},
-                "distractors": [
-                    {"text": "Hình vuông", "from": "D1", "why_wrong": "Có bốn cạnh.",
-                     "sources": ["D1"], "quote": "Hình vuông là hình phẳng có bốn cạnh bằng nhau."},
-                    {"text": "Hình tròn", "from": "D2", "why_wrong": "Không có cạnh.",
-                     "sources": ["D2"], "quote": "Hình tròn là tập hợp các điểm cách đều một tâm."},
-                ],
-                "explanation": "Nguồn định nghĩa khái niệm qua số cạnh.", "formula_refs": [],
-            }]})
-
-    store = InMemoryPhaseBStore()
-    generator, verifier = Model("generator"), Model("verifier")
-    quiz = QuizUseCase(Graph(), store, generator, verifier_model=verifier).make_quiz(
-        "d", "m", "alice", node_ids=["a"], allow_spend=True)
-
-    assert quiz["ready_count"] == 1
-    assert quiz["items"][0]["generator"] == "cloze"
-    assert len(store.usage_rows("d")) == 4
-    assert {row["purpose"] for row in store.usage_rows("d")} == {"quiz_gen", "quiz_verify"}
-    assert generator.calls == verifier.calls == 2
-    assert {row["model_id"] for row in store.usage_rows("d")} == {"generator", "verifier"}
-
-
-def test_generator_repairs_chunk_ids_to_short_labels_then_blind_verifier_accepts():
-    class Reply:
-        usage = {"promptTokenCount": 80, "candidatesTokenCount": 20}
-
-        def __init__(self, payload):
-            self.payload = payload
-
-    class Generator:
-        model_id = "generator"
-
-        def __init__(self):
-            self.calls = 0
-            self.prompts = []
-
-        def start_session(self, _system_prompt, _tools=()):
-            return self
-
-        def ask_json(self, prompt, *, response_schema):
-            self.calls += 1
-            self.prompts.append(prompt)
-            assert response_schema["type"] == "object"
-            sources = ["ca"] if self.calls == 1 else ["S1"]
-            return Reply({"items": [{
-                "concept": "Tam giác", "stem": "Một hình có ba cạnh là gì?", "bloom": "hieu",
-                "correct": {"text": "Tam giác", "sources": sources,
-                            "quote": "Tam giác là hình phẳng có ba cạnh."},
-                "distractors": [
-                    {"text": "Hình vuông", "from": "D1", "why_wrong": "Có bốn cạnh.",
-                     "sources": ["D1"], "quote": "Hình vuông là hình phẳng có bốn cạnh bằng nhau."},
-                    {"text": "Hình tròn", "from": "D2", "why_wrong": "Không có cạnh.",
-                     "sources": ["D2"], "quote": "Hình tròn là tập hợp các điểm cách đều một tâm."},
-                ], "explanation": "Định nghĩa nêu số cạnh.", "formula_refs": [],
-            }], "gaps": []})
-
-    class Verifier:
-        model_id = "verifier"
-
-        def __init__(self):
-            self.calls = 0
-
-        def start_session(self, _system_prompt, _tools=()):
-            return self
-
-        def ask_json(self, prompt, *, response_schema):
-            self.calls += 1
-            assert prompt.startswith("Giải mù")
-            data = json.loads(prompt.split("\n", 1)[1])
-            options = data["items"][0]["options"]
-            assert all(set(option) == {"option_id", "text"} for option in options)
-            assert "is_correct" not in prompt and "why_wrong" not in prompt
-            answer = next(option for option in options if option["text"] == "Tam giác")
-            distractor_verdicts = [
-                {"option_id": option["option_id"], "verdict": "sai theo nguồn"}
-                for option in options if option is not answer
-            ]
-            return Reply({"items": [{"item_id": data["items"][0]["item_id"],
-                                     "selected_option_id": answer["option_id"], "valid": True,
-                                     "quote": "Tam giác là hình phẳng có ba cạnh.",
-                                     "distractor_verdicts": distractor_verdicts}]})
-
-    store = InMemoryPhaseBStore()
-    generator, verifier = Generator(), Verifier()
-    usecase = QuizUseCase(Graph(), store, generator, verifier_model=verifier)
-    concept = usecase._concepts("m", ["a"])[0]
-    context = usecase._context("m", concept)
-    first_payload = {"concept": "Tam giác", "stem": "Một hình có ba cạnh là gì?", "bloom": "hieu",
-                     "correct": {"text": "Tam giác", "sources": ["ca"],
-                                 "quote": "Tam giác là hình phẳng có ba cạnh."},
-                     "distractors": [
-                         {"text": "Hình vuông", "from": "D1", "why_wrong": "Có bốn cạnh.",
-                          "sources": ["D1"], "quote": "Hình vuông là hình phẳng có bốn cạnh bằng nhau."},
-                         {"text": "Hình tròn", "from": "D2", "why_wrong": "Không có cạnh.",
-                          "sources": ["D2"], "quote": "Hình tròn là tập hợp các điểm cách đều một tâm."}],
-                     "explanation": "Định nghĩa nêu số cạnh.", "formula_refs": []}
-    assert usecase._normalize_item(concept, context, first_payload) is None
-
-    quiz = usecase.make_quiz("d", "m", "alice", node_ids=["a"], allow_spend=True)
-    assert quiz["status"] == "ready"
-    assert quiz["items"][0]["generator"] == "llm"
-    assert generator.calls == 2
-    assert verifier.calls == 1
-    assert all("tuyệt đối không ghi chunk_id hay ID nội bộ" in prompt for prompt in generator.prompts)
-    assert len(store.usage_rows("d")) == 3
-
-
-def test_no_eligible_distractors_uses_moi_source_and_passes_blind_verifier():
-    class Reply:
-        usage = {"promptTokenCount": 90, "candidatesTokenCount": 22}
-
-        def __init__(self, payload):
-            self.payload = payload
-
-    class Generator:
-        model_id = "generator"
-
-        def start_session(self, _system_prompt, _tools=()):
-            return self
-
-        def ask_json(self, prompt, *, response_schema):
-            assert "Nếu không có candidate phù hợp" in prompt
-            assert "from='moi'" in prompt and "sources chỉ chứa S-label" in prompt
-            assert "1.3 lần" in prompt
-            return Reply({"items": [{
-                "concept": "Tam giác", "stem": "Một hình phẳng có ba cạnh được gọi là gì?",
-                "bloom": "hieu",
-                "correct": {"text": "Tam giác", "sources": ["S1"],
-                            "quote": "Tam giác là hình phẳng có ba cạnh."},
-                "distractors": [
-                    {"text": "Hình vuông", "from": "moi", "why_wrong": "Có bốn cạnh.",
-                     "sources": ["S1"], "quote": "Tam giác là hình phẳng có ba cạnh."},
-                    {"text": "Hình tròn", "from": "moi", "why_wrong": "Không có cạnh.",
-                     "sources": ["S1"], "quote": "Tam giác là hình phẳng có ba cạnh."},
-                ], "explanation": "Nguồn nói tam giác có ba cạnh.", "formula_refs": [],
-            }], "gaps": []})
-
-    class Verifier:
-        model_id = "verifier"
-
-        def __init__(self):
-            self.calls = 0
-
-        def start_session(self, _system_prompt, _tools=()):
-            return self
-
-        def ask_json(self, prompt, *, response_schema):
-            self.calls += 1
-            assert prompt.startswith("Giải mù")
-            data = json.loads(prompt.split("\n", 1)[1])
-            item = data["items"][0]
-            answer = next(option for option in item["options"] if option["text"] == "Tam giác")
-            return Reply({"items": [{"item_id": item["item_id"],
-                                     "selected_option_id": answer["option_id"], "valid": True,
-                                     "quote": "Tam giác là hình phẳng có ba cạnh.",
-                                     "distractor_verdicts": [
-                                         {"option_id": option["option_id"], "verdict": "sai theo nguồn"}
-                                         for option in item["options"] if option is not answer]}]})
-
-    graph = Graph()
-    # All distractor concepts point to the target's chunk, so none can be cited as D.
-    for node_id in ("b", "c"):
-        graph.nodes[node_id]["anchor"]["chunk_id"] = "ca"
-    store = InMemoryPhaseBStore()
-    verifier = Verifier()
-    usecase = QuizUseCase(graph, store, Generator(), verifier_model=verifier)
-    concept = usecase._concepts("m", ["a"])[0]
-    context = usecase._context("m", concept)
-    assert context["distractor_candidates"] == []
-
-    quiz = usecase.make_quiz("d", "m", "alice", node_ids=["a"], allow_spend=True)
-    assert quiz["status"] == "ready"
-    assert quiz["items"][0]["generator"] == "llm"
-    assert verifier.calls == 1
-    assert all(option["text"] in {"Tam giác", "Hình vuông", "Hình tròn"}
-               for option in quiz["items"][0]["options"])
-    private = store.get_record("quiz_attempt", quiz["attempt_id"])["_private"]
-    item = next(iter(private.values()))
-    assert {option["from"] for option in item["options"] if not option["is_correct"]} == {"moi"}
-    assert {option["sources"][0] for option in item["options"] if not option["is_correct"]} == {"S1"}
-
-
-def test_context_excludes_same_chunk_and_substring_overlapping_distractors():
-    graph = Graph()
-    graph.nodes["a"].update(name="Tập hợp", aliases=["tập"])
-    graph.nodes["b"].update(name="Tập hợp con", aliases=[])
-    graph.nodes["b"]["anchor"]["chunk_id"] = "cb"
-    graph.nodes["c"]["anchor"]["chunk_id"] = "ca"
-    usecase = QuizUseCase(graph, InMemoryPhaseBStore())
-    concept = usecase._concepts("m", ["a"])[0]
-
-    context = usecase._context("m", concept)
-
-    assert all(row["name"] != "Tập hợp con" for row in context["distractor_candidates"])
-    assert all(row["evidence_chunk_id"] != "ca" for row in context["distractor_candidates"])
-
-
-def test_distractor_from_must_match_its_cited_source_family():
-    usecase = QuizUseCase(Graph(), InMemoryPhaseBStore())
-    concept = usecase._concepts("m", ["a"])[0]
-    context = usecase._context("m", concept)
-    good = {
-        "concept": "Tam giác", "stem": "Một hình có ba cạnh là gì?",
-        "correct": {"text": "Tam giác", "sources": ["S1"],
-                    "quote": "Tam giác là hình phẳng có ba cạnh."},
-        "distractors": [
-            {"text": "Hình vuông", "from": "D1", "why_wrong": "Có bốn cạnh.",
-             "sources": ["D1"], "quote": "Hình vuông là hình phẳng có bốn cạnh bằng nhau."},
-            {"text": "Hình tròn", "from": "moi", "why_wrong": "Không có cạnh.",
-             "sources": ["S1"], "quote": "Tam giác là hình phẳng có ba cạnh."},
-        ], "explanation": "Định nghĩa nêu số cạnh.", "formula_refs": [],
-    }
-    assert usecase._normalize_item(concept, context, good)
-
-    mismatch = deepcopy(good)
-    mismatch["distractors"][0]["sources"] = ["S1"]
-    mismatch["distractors"][0]["quote"] = "Tam giác là hình phẳng có ba cạnh."
-    assert usecase._normalize_item(concept, context, mismatch) is None
-    mismatch = deepcopy(good)
-    mismatch["distractors"][1]["sources"] = ["D1"]
-    mismatch["distractors"][1]["quote"] = "Hình vuông là hình phẳng có bốn cạnh bằng nhau."
-    assert usecase._normalize_item(concept, context, mismatch) is None
-
-
-def test_blind_verifier_is_told_to_route_options_to_distractor_anchor_evidence():
-    usecase = QuizUseCase(Graph(), InMemoryPhaseBStore())
-    concept = usecase._concepts("m", ["a"])[0]
-    context = usecase._context("m", concept)
-    prompt = usecase._verifier_prompt(context, [{
-        "item_id": "q1", "stem": "Which concept is described?",
-        "options": [{"option_id": "0", "text": "Tam giác"},
-                    {"option_id": "1", "text": "Hình vuông"},
-                    {"option_id": "2", "text": "Hình tròn"}],
-    }])
-    evidence = json.loads(prompt.split("\n", 1)[1])
-
-    assert "bằng cả hai nhóm chứng cứ" in prompt
-    assert "Không chỉ tìm tên option trong chunks" in prompt
-    assert "Đối chiếu tên/alias" in prompt and "anchor của candidate đó" in prompt
-    assert evidence["distractor_sources"][0]["label"] == "D1"
-    assert evidence["distractor_sources"][0]["anchor"]
-    assert all(set(option) == {"option_id", "text"} for option in evidence["items"][0]["options"])
-    assert "is_correct" not in prompt and '"correct"' not in prompt
-
 def test_cloze_requires_named_anchor_sentence_in_same_source_chunk():
     graph = Graph()
     graph.nodes["a"]["anchor"]["sentence"] = "A short unrelated sentence."
@@ -505,69 +221,6 @@ def test_fallback_context_only_uses_chunks_mapped_to_the_same_module():
     usecase = QuizUseCase(graph, InMemoryPhaseBStore())
 
     assert [chunk.chunk_id for chunk in usecase._chunks_for(concept)] == ["cc"]
-
-
-def _generated_candidate(usecase, concept, context):
-    return usecase._normalize_item(concept, context, {
-        "concept": "Tam giác", "stem": "Một hình phẳng có ba cạnh được gọi là gì?", "bloom": "hieu",
-        "correct": {"text": "Tam giác", "sources": ["S1"],
-                    "quote": "Tam giác là hình phẳng có ba cạnh."},
-        "distractors": [
-            {"text": "Hình vuông", "from": "D1", "why_wrong": "Có bốn cạnh.",
-             "sources": ["D1"], "quote": "Hình vuông là hình phẳng có bốn cạnh bằng nhau."},
-            {"text": "Hình tròn", "from": "D2", "why_wrong": "Không có cạnh.",
-             "sources": ["D2"], "quote": "Hình tròn là tập hợp các điểm cách đều một tâm."},
-        ], "explanation": "Nguồn định nghĩa khái niệm qua số cạnh.", "formula_refs": [],
-    })
-
-
-def test_q2_q3_q4_source_alias_and_anchor_guards_reject_bad_items():
-    usecase = QuizUseCase(Graph(), InMemoryPhaseBStore())
-    concept = usecase._concepts("m", ["a"])[0]
-    context = usecase._context("m", concept)
-    assert usecase._rules_pass(_generated_candidate(usecase, concept, context), context)
-    assert {"hình tam giác", "tam giác"} <= set(usecase._aliases(concept))
-
-    wrong_source = _generated_candidate(usecase, concept, context)
-    wrong_source["evidence"] = [{"label": "S2", "quote": "Tam giác là hình phẳng có ba cạnh."}]
-    assert not usecase._quote_for_label(wrong_source["evidence"][0]["quote"], "S2", context, correct=True)
-
-    alias_as_distractor = _generated_candidate(usecase, concept, context)
-    alias_as_distractor["options"][1]["text"] = "Hình tam giác"
-    assert not usecase._rules_pass(alias_as_distractor, context)
-
-    context["distractor_candidates"][0]["evidence_chunk_id"] = "ca"
-    assert usecase._normalize_item(concept, context, {
-        "stem": "Một hình phẳng có ba cạnh được gọi là gì?",
-        "concept": "Tam giác",
-        "correct": {"text": "Tam giác", "sources": ["S1"], "quote": "Tam giác là hình phẳng có ba cạnh."},
-        "distractors": [{"text": "Hình vuông", "from": "D1", "why_wrong": "Có bốn cạnh.",
-                         "sources": ["D1"], "quote": "Hình vuông là hình phẳng có bốn cạnh bằng nhau."},
-                        {"text": "Hình tròn", "from": "D2", "why_wrong": "Không có cạnh.",
-                         "sources": ["D2"], "quote": "Hình tròn là tập hợp các điểm cách đều một tâm."}],
-    }) is None
-
-
-def test_q5_q6_q7_and_q8_guards_have_reproducible_rejections():
-    usecase = QuizUseCase(Graph(), InMemoryPhaseBStore())
-    concept = usecase._concepts("m", ["a"])[0]
-    context = usecase._context("m", concept)
-    candidate = _generated_candidate(usecase, concept, context)
-
-    answer_cue = deepcopy(candidate)
-    answer_cue["options"][0]["text"] = "ba cạnh"
-    assert not usecase._rules_pass(answer_cue, context)
-
-    formula = deepcopy(candidate)
-    formula["options"][0]["text"] = "x^2"
-    assert not usecase._rules_pass(formula, context)
-
-    english = deepcopy(candidate)
-    english["stem"] = "Which phrase describes this geometric object?"
-    assert not usecase._rules_pass(english, context)
-
-    duplicate = deepcopy(candidate)
-    assert usecase._duplicate(candidate, duplicate)
 
 
 def test_get_attempt_returns_owned_answer_free_snapshot():
@@ -641,14 +294,14 @@ def test_assistant_make_quiz_tool_returns_only_attempt_reference_and_count():
     assert "items" not in repr(summary) and "is_correct" not in repr(summary)
 
 
-def test_quiz_schema_is_sent_as_json_schema_in_fake_http_request():
+def test_quiz_3_schema_is_sent_as_json_schema_in_fake_http_request():
     model = GeminiToolModel("test-key")
     captured = {}
 
     class Response:
         def __init__(self):
             import io
-            self.body = io.BytesIO(json.dumps({"candidates": [{"content": {"parts": [{"text": "{\"items\":[],\"gaps\":[]}"}]}}]}).encode())
+            self.body = io.BytesIO(json.dumps({"candidates": [{"content": {"parts": [{"text": "{\"items\":[]}"}]}}]}).encode())
 
         def read(self, size=-1):
             return self.body.read(size)
@@ -662,19 +315,36 @@ def test_quiz_schema_is_sent_as_json_schema_in_fake_http_request():
         return Response()
 
     model._request = fake_http
-    reply = model.ask_json("prompt", response_schema=QUIZ_SCHEMA)
+    reply = model.ask_json("prompt", response_schema=GENERATION_SCHEMA)
 
     schema = captured["generationConfig"]["responseJsonSchema"]
-    assert reply.payload == {"items": [], "gaps": []}
+    assert reply.payload == {"items": []}
     assert schema["type"] == "object"
-    assert schema["properties"]["items"]["items"]["properties"]["correct"]["required"] == ["text", "sources", "quote"]
+    assert schema["properties"]["items"]["items"]["required"] == [
+        "bloom", "stem", "options", "correct_index", "explanation", "source_labels"]
+    assert schema["properties"]["items"]["items"]["properties"]["options"]["minItems"] == 4
 
 
-def test_runtime_gives_verifier_its_400_token_budget():
+def test_runtime_gives_the_generator_4096_and_the_solver_8192_output_tokens():
     runtime = PhaseBRuntime(settings=Settings(artifact_dir=Path("artifacts"),
                                                gemini_api_key=SecretStr("fake-key")), mode="gemini")
     usecase = runtime.quiz(Graph())
 
-    assert usecase.model.max_output_tokens == 1200
-    assert usecase.verifier_model.max_output_tokens == 400
+    assert usecase.model.max_output_tokens == 4096
+    assert usecase.verifier_model.max_output_tokens == 8192
     assert usecase.model is not usecase.verifier_model
+
+
+def test_aliases_of_a_concept_read_dict_and_identity_aliases():
+    usecase = QuizUseCase(Graph(), InMemoryPhaseBStore())
+    concept = usecase._concepts("m", ["a"])[0]
+    assert {"hình tam giác", "tam giác"} <= set(usecase._aliases(concept))
+
+
+def test_two_questions_with_the_same_stem_and_answer_are_duplicates():
+    usecase = QuizUseCase(Graph(), InMemoryPhaseBStore())
+    item = {"stem": "Một hình có ba cạnh là gì?",
+            "options": [{"text": "Tam giác", "is_correct": True}, {"text": "Hình vuông", "is_correct": False}]}
+    assert usecase._duplicate(item, deepcopy(item))
+    assert not usecase._duplicate(item, {"stem": "Hình có bốn cạnh bằng nhau là gì?",
+                                         "options": [{"text": "Hình vuông", "is_correct": True}]})

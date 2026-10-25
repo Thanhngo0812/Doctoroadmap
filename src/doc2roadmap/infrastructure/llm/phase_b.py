@@ -131,22 +131,30 @@ class GeminiToolSession:
         self.last_raw_text: str | None = None
         self.last_finish_reason: str | None = None
 
-    def ask_json(self, prompt: str, *, response_schema: dict[str, Any]) -> ExtractionReply:
+    def ask_json(self, prompt: str, *, response_schema: dict[str, Any], images: Sequence[tuple[int, bytes]] = (),
+                 temperature: float | None = None, thinking_level: str | None = None) -> ExtractionReply:
+        """JSON reply. Each image is a (page, JPEG bytes) pair sent after the prompt; `thinking_level` turns thinking on."""
         started = perf_counter()
         self.last_ttft_ms = None
         self.last_usage = {}
         self.last_raw_text = None
         self.last_finish_reason = None
+        parts: list[dict[str, Any]] = [{"text": prompt}]
+        for page, data in images:
+            parts += [{"text": f"Ảnh trang {page} của sách:"},
+                      {"inlineData": {"mimeType": "image/jpeg", "data": base64.b64encode(data).decode("ascii")}}]
         body = {
             "systemInstruction": {"parts": [{"text": self.system_prompt}]},
-            "contents": [{"role": "user", "parts": [{"text": prompt}]}],
+            "contents": [{"role": "user", "parts": parts}],
             "generationConfig": {
-                "temperature": self.model.temperature,
+                "temperature": self.model.temperature if temperature is None else temperature,
                 "maxOutputTokens": self.model.max_output_tokens,
                 "responseMimeType": "application/json",
                 "responseJsonSchema": response_schema,
             },
         }
+        if thinking_level:
+            body["generationConfig"]["thinkingConfig"] = {"thinkingLevel": thinking_level}
         response = self.model._request("generateContent", body, stream=False)
         try:
             first = response.read(1)
@@ -399,20 +407,26 @@ class RecordingToolSession:
     def last_finish_reason(self) -> str | None:
         return getattr(self.delegate, "last_finish_reason", None)
 
-    def ask_json(self, prompt: str, *, response_schema: dict[str, Any]) -> Any:
+    def ask_json(self, prompt: str, *, response_schema: dict[str, Any], images: Sequence[tuple[int, bytes]] = (),
+                 temperature: float | None = None, thinking_level: str | None = None) -> Any:
+        options = {key: value for key, value in {"temperature": temperature, "thinking_level": thinking_level}.items()
+                   if value is not None}
+        # Calls without pictures or options are recorded as before, so older fixtures still replay.
+        marks = {**({"images": _picture_ids(images)} if images else {}), **({"options": options} if options else {})}
+        extra = {**options, **({"images": images} if images else {})}
         try:
-            reply = self.delegate.ask_json(prompt, response_schema=response_schema)
+            reply = self.delegate.ask_json(prompt, response_schema=response_schema, **extra)
         except Exception as error:
             raw_text = getattr(self.delegate, "last_raw_text", None)
             usage = dict(getattr(self.delegate, "last_usage", {}) or {})
-            self._record({"kind": "json", "prompt": prompt, "schema": response_schema,
+            self._record({"kind": "json", "prompt": prompt, "schema": response_schema, **marks,
                           "error": {"type": type(error).__name__,
                                     "pos": getattr(error, "pos", None)},
                           "raw_text": raw_text, "usage": usage,
                           "finish_reason": getattr(self.delegate, "last_finish_reason", None),
                           "ttft_ms": self.last_ttft_ms})
             raise
-        self._record({"kind": "json", "prompt": prompt, "schema": response_schema, "ttft_ms": self.last_ttft_ms,
+        self._record({"kind": "json", "prompt": prompt, "schema": response_schema, **marks, "ttft_ms": self.last_ttft_ms,
                       "reply": {"payload": reply.payload, "raw_text": reply.raw_text,
                                 "usage": reply.usage or {}}})
         return reply
@@ -527,8 +541,15 @@ class ReplayToolSession:
         self.index += 1
         return call
 
-    def ask_json(self, prompt: str, *, response_schema: dict[str, Any]) -> ExtractionReply:
-        call = self._take("json", {"prompt": prompt, "schema": response_schema})
+    def ask_json(self, prompt: str, *, response_schema: dict[str, Any], images: Sequence[tuple[int, bytes]] = (),
+                 temperature: float | None = None, thinking_level: str | None = None) -> ExtractionReply:
+        actual = {"prompt": prompt, "schema": response_schema}
+        if images:
+            actual["images"] = _picture_ids(images)
+        if temperature is not None or thinking_level is not None:
+            actual["options"] = {key: value for key, value in
+                                 {"temperature": temperature, "thinking_level": thinking_level}.items() if value is not None}
+        call = self._take("json", actual)
         self.last_ttft_ms = call.get('ttft_ms')
         if "error" in call:
             self.last_usage = dict(call.get("usage", {}))

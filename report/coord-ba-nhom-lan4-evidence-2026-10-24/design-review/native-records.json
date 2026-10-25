@@ -1,0 +1,101 @@
+[
+  {
+    "name": "pytest-focused-baseline",
+    "argv": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-c",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\pytest-review.ini",
+      "--rootdir=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\isolated",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\pytest-focused-baseline.xml",
+      "tests/unit/presentation/test_tokens_and_wcag.py"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792839446.2191784,
+    "elapsed_seconds": 2.897
+  },
+  {
+    "name": "vm-baseline",
+    "argv": [
+      "node",
+      "scripts/verify_figma_plugin_vm.cjs"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792839449.1165464,
+    "elapsed_seconds": 0.112
+  },
+  {
+    "name": "vm-fault-create-primary",
+    "argv": [
+      "node",
+      "scripts/verify_figma_plugin_vm.cjs",
+      "--fault-var",
+      "color/primary"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792839449.2368062,
+    "elapsed_seconds": 0.119
+  },
+  {
+    "name": "vm-removed-accounting",
+    "argv": [
+      "node",
+      "scripts/verify_figma_plugin_vm.cjs",
+      "--remove-accounting"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792839449.3616056,
+    "elapsed_seconds": 0.104
+  },
+  {
+    "name": "mutation-removed-accounting-existing-baseline-test",
+    "argv": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-c",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\pytest-review.ini",
+      "--rootdir=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\isolated",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_figma_plugin_runtime_output_and_real_execution"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\isolated",
+    "native_exit_code": 1,
+    "started_epoch": 1792839449.4743524,
+    "elapsed_seconds": 2.909
+  },
+  {
+    "name": "reviewer-structural",
+    "argv": [
+      "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\structural_review.py"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024",
+    "native_exit_code": 1,
+    "started_epoch": 1792839593.7741628,
+    "elapsed_seconds": 5.823
+  },
+  {
+    "name": "reviewer-structural",
+    "argv": [
+      "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024\\structural_review.py"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-design-review-20261024",
+    "native_exit_code": 1,
+    "started_epoch": 1792839642.315291,
+    "elapsed_seconds": 5.472
+  }
+]

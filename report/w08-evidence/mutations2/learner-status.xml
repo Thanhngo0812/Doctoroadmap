@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="8.507" timestamp="2026-10-23T21:06:30.046666+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lecture3_integration_w08" name="test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner" time="4.600"><failure message="AssertionError: assert 'not_learned' == 'learned'&#10;  &#10;  - learned&#10;  + not_learned&#10;  ? ++++">core_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b7037eb5e0f24d70bf16a941a7d02...tureModel object at 0x0000027084CCA930&gt;, url='/api/v1/courses/e7607853-4ec3-4448-9455-920b90e1e94d/concepts/a/lecture')
+
+    def test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner(core_web):
+        w = core_web
+        w.gateway.set_progress(w.a.actor, w.course.id, 'b', True)
+        assert w.gateway.runtime.settings.learner_daily_max_usd == 1.0
+        assert w.a.client.get(w.url).json()['status'] == 'generating'
+        assert not w.model.calls
+        streamed = w.a.client.get(w.url + '/stream')
+        assert streamed.status_code == 200
+        lesson = events(streamed)[-1]['lecture']
+        assert lesson['status'] == 'ready' and lesson['contract_version'] == 'lecture-3'
+        assert '$x^2+y^2$' in lesson['body_md'] and '[S999]' in lesson['body_md']
+        assert lesson['self_check']['answer_md'] == 'Bằng $1$.'
+        assert 'validation' not in streamed.text and 'sections' not in streamed.text and 'bridge' not in streamed.text
+&gt;       assert lesson['prerequisites'][0]['learner_status'] == 'learned'
+E       AssertionError: assert 'not_learned' == 'learned'
+E
+E         - learned
+E         + not_learned
+E         ? ++++
+
+src\web\backend\tests\test_lecture3_integration_w08.py:50: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,214 @@
+{
+  "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+  "pythonJunit": "final5-python.xml",
+  "reactJunit": "final5-react.xml",
+  "assertionMethods": {
+    "earlyDeltaAndDisconnect": "Real HTTP reads text while fake model is blocked; disconnect Event observed; independent PostgreSQL runtime reads the completed cached lesson",
+    "sharedGenerationPrivateProgress": "Two independent runtimes, one fake generation; actor A mark never changes actor B view; cache has no learner status",
+    "privacy": "Admin validation exists in cache row but not HTTP/SSE, including extra keys from a deliberately malicious gateway DTO",
+    "authorization": "All CID routes discovered, outsider requests return not_found; removing a member denies next lecture/stream/page/file request",
+    "sourceIntegrity": "Private page range, published graph media allowlist, actual rendered fixture PDF and captured source page headers; pending page never relabels old image",
+    "failurePolicy": "First-text and tail errors asserted separately; tail stays ready/cat_ngan without fallback; every fatal/no_source branch exposes message and Retry",
+    "rollback": "Real SQL trigger rejects a save; checkbox returns to its previous state; later write succeeds after trigger removal",
+    "safeRendering": "Real Markdown/KaTeX renderer, malicious HTML/URL/math and external image fixtures; registered/unknown sources and code checked",
+    "accessibility": "Real OS media preference emulation, keyboard focus/Escape, 44px targets, no horizontal overflow; scoped Axe plus independent contrast counterexample"
+  },
+  "pythonAssertions": [
+    {
+      "classname": "src.web.backend.tests.test_builds_w14",
+      "name": "test_build_cards_expose_only_the_viewers_upload_for_the_course",
+      "time": "0.970"
+    },
+    {
+      "classname": "src.web.backend.tests.test_builds_w14",
+      "name": "test_reused_queued_upload_has_its_own_confirmation_and_title",
+      "time": "1.292"
+    },
+    {
+      "classname": "src.web.backend.tests.test_courses_w06",
+      "name": "test_every_cid_route_hides_private_course_from_outsiders_including_admin",
+      "time": "1.787"
+    },
+    {
+      "classname": "src.web.backend.tests.test_courses_w06",
+      "name": "test_route_inventory_catches_a_new_unguarded_route",
+      "time": "1.062"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner",
+      "time": "0.767"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_first_delta_precedes_model_finish_and_cache_is_completed_after_http_disconnect",
+      "time": "0.976"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_concurrent_members_share_one_generation_across_postgres_runtimes",
+      "time": "0.596"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_real_core_failure_policy_and_no_fallback[pieces0-failed]",
+      "time": "0.662"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_real_core_failure_policy_and_no_fallback[pieces1-ready]",
+      "time": "0.674"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_real_core_failure_policy_and_no_fallback[pieces2-failed]",
+      "time": "0.660"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_cross_site_navigation_cannot_start_a_paid_generation",
+      "time": "0.624"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_personal_daily_guard_uses_one_dollar_and_keeps_learner_ledgers_separate",
+      "time": "0.594"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_http_dto_discards_admin_keys_even_if_a_gateway_returns_them",
+      "time": "0.421"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_request_context_cannot_override_the_actor_or_published_document",
+      "time": "0.431"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lecture3_integration_w08",
+      "name": "test_w08_no_source_still_has_a_message_and_retry_without_inventing_a_body",
+      "time": "0.493"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lectures_w08",
+      "name": "test_w08_cache_read_does_not_generate_and_stream_has_lecture3_only",
+      "time": "1.029"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lectures_w08",
+      "name": "test_w08_cache_is_shared_but_progress_is_attached_to_current_actor",
+      "time": "0.791"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lectures_w08",
+      "name": "test_w08_node_must_be_in_published_learnable_graph[missing]",
+      "time": "0.477"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lectures_w08",
+      "name": "test_w08_node_must_be_in_published_learnable_graph[hidden]",
+      "time": "0.529"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lectures_w08",
+      "name": "test_w08_private_source_page_headers_range_and_lazy_media_are_real_postgres",
+      "time": "1.254"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lectures_w08",
+      "name": "test_w08_transport_failure_retains_text_or_has_a_vietnamese_retry[False]",
+      "time": "0.515"
+    },
+    {
+      "classname": "src.web.backend.tests.test_lectures_w08",
+      "name": "test_w08_transport_failure_retains_text_or_has_a_vietnamese_retry[True]",
+      "time": "0.439"
+    }
+  ],
+  "reactAssertions": [
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe",
+      "time": "1.0741991"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "keeps sent text when the stream ends badly and shows the shortened notice",
+      "time": "0.1218843"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "gives a message and Retry for failure loi_mang even if an old retryable flag is false",
+      "time": "0.159139"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false",
+      "time": "0.1628446"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "gives a message and Retry for failure tran_he_thong even if an old retryable flag is false",
+      "time": "0.1783847"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false",
+      "time": "0.1519263"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false",
+      "time": "0.1395452"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "rolls back an optimistic learner mark after a failed save",
+      "time": "0.2223683"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "keeps a module list on the module route and links to a specific lesson without generating one",
+      "time": "0.0662803"
+    },
+    {
+      "classname": "src/Learning.test.tsx",
+      "name": "explains that DOCX has no numbered pages and still offers opening the original file",
+      "time": "0.1830261"
+    },
+    {
+      "classname": "src/LectureMarkdown.test.tsx",
+      "name": "lecture-3 safe Markdown > renders inline/block LaTeX and makes only registered source labels actionable",
+      "time": "0.2214901"
+    },
+    {
+      "classname": "src/LectureMarkdown.test.tsx",
+      "name": "lecture-3 safe Markdown > does not execute raw HTML, load external images, or allow dangerous links/LaTeX HTML",
+      "time": "0.0223369"
+    },
+    {
+      "classname": "src/SourceViewer.test.tsx",
+      "name": "restores focus to the matching citation even if streaming replaces the original button",
+      "time": "0.2640208"
+    },
+    {
+      "classname": "src/SourceViewer.test.tsx",
+      "name": "requests the actual next/previous page and keeps boundary controls disabled",
+      "time": "0.0853048"
+    },
+    {
+      "classname": "src/SourceViewer.test.tsx",
+      "name": "never relabels the previous image as a new page while the new request is pending",
+      "time": "0.1127468"
+    }
+  ],
+  "mutationSources": "mutation-source-match.json",
+  "browserAssertions": [
+    "real SA64 + HTTP + PostgreSQL, fake model/media/mail only",
+    "first delta visible before completion, reload reuses cache",
+    "Markdown/LaTeX and source page mapping safe; unknown labels preserved; self-check collapsed/null",
+    "real PostgreSQL write failure rolls back progress; subsequent write succeeds",
+    "member removal denies the next lecture/source request",
+    "390/768/1280 in both themes; browser reduced motion, keyboard, 44px targets and scoped Axe"
+  ]
+}

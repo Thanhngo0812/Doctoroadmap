@@ -1,0 +1,40 @@
+[
+  {
+    "name": "cache-only",
+    "source": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner",
+      "--basetemp=tmp/w08-mut-cache-only-922700f56efa4dd88f259c71c5417fda",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations\\cache-only.xml"
+    ],
+    "beforeSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386"
+  },
+  {
+    "name": "learner-status",
+    "source": "src/web/backend/wayfinder/application/lecture_view.py",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_lecture3_integration_w08.py::test_w08_real_lecture3_cache_validation_stays_private_and_status_is_per_learner",
+      "--basetemp=tmp/w08-mut-learner-status-eaceb488686248189c60c08576ae032a",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w08-lecture\\report\\w08-evidence\\mutations\\learner-status.xml"
+    ],
+    "beforeSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3",
+    "nativeExit": 1,
+    "failures": 1,
+    "errors": 0,
+    "restoredSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3"
+  }
+]

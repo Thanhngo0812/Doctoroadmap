@@ -1,0 +1,18 @@
+{
+  "command": [
+    "npm.cmd",
+    "--prefix",
+    "src/web/frontend",
+    "test",
+    "--",
+    "src/Learning.test.tsx",
+    "src/Learning.review-repro.test.tsx",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "--reporter=junit",
+    "--outputFile=../../../report/w08-evidence/required2-2026-10-24/sa70-focused-green.xml"
+  ],
+  "nativeExit": 0,
+  "sourceCommit": "f4ddfce6af63b43f6a7170badb5f18a3060199bd",
+  "change": "Static real renderer import instead of timed async preload hook; assertions and timeouts unchanged."
+}

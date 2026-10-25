@@ -19,7 +19,7 @@ def test_document_scope_remap_reads_configured_jaccard_threshold():
     narrow = low.create('dev', 1, graph, 'Tóm tắt', scope, owner='alice', dry_run=True)
     broad = high.create('dev', 1, graph, 'Tóm tắt', scope, owner='alice', dry_run=True)
     assert narrow['scope']['module_ids'] == ['m0']
-    assert broad['reason'] == 'scope_too_large'
+    assert broad['failure']['reason_code'] == 'scope_too_large'
 from doc2roadmap.infrastructure.llm.phase_b_demo import DemoModel
 
 
@@ -49,7 +49,7 @@ class RoadmapGraph:
                 self.chunks[chunk_id] = SimpleNamespace(
                     chunk_id=chunk_id, text=text, page=module_index + 1,
                     char_start=0, char_end=len(text), section_path=[f"M{module_index}"],
-                    order_index=module_index * nodes_per_module + node_index,
+                    order_index=module_index * nodes_per_module + node_index, role="noi_dung",
                 )
                 node_ids.append(node_id)
             self.modules[module_id] = {
@@ -111,7 +111,7 @@ def test_roadmap_quiz_prefers_learned_nodes_and_spreads_selection_by_module():
     assert result["origin"] == "button"
     assert result["session_id"] is None
     assert result["created_at"]
-    assert result["contract_version"] == "quiz-2"
+    assert result["contract_version"] == "quiz-3"
     assert len(result["items"]) <= 10
     assert all("answer" not in item and "explanation" not in item for item in result["items"])
     assert len({graph.nodes[node_id]["module_id"] for node_id in selected}) == 4
@@ -139,7 +139,7 @@ def test_document_scope_over_five_modules_fails_before_calling_model():
     )
 
     assert result["status"] == "failed"
-    assert result["reason"] == "scope_too_large"
+    assert result["failure"]["reason_code"] == "scope_too_large"
     assert result["usage"] == {}
     assert result["origin"] == "button"
     assert result["session_id"] is None
@@ -149,19 +149,8 @@ def test_document_scope_over_five_modules_fails_before_calling_model():
 def test_five_module_document_is_allowed_and_stores_button_metadata():
     graph = RoadmapGraph(module_count=5, nodes_per_module=1)
 
-    class Model:
-        model_id = "fake"
-
-        def ask_json(self, prompt, *, response_schema, system_prompt=""):
-            context = json.loads(prompt.split("\nUse Markdown", 1)[0])
-            citations, paragraphs = [], []
-            for label, source in context["sources"].items():
-                quote = source["text"].split("\n", 1)[0]
-                citations.append({"label": label, "quote": quote})
-                paragraphs.append(f"{quote} [{label}]")
-            return SimpleNamespace(payload={"title": "Tổng hợp", "markdown": "\n\n".join(paragraphs),
-                                              "citations": citations, "outside_document_blocks": []},
-                                   usage={"promptTokenCount": 200, "candidatesTokenCount": 300})
+    from sa64_support import FakeModel
+    Model = FakeModel  # SA-67: document-3 streams Markdown
 
     result = DocumentUseCase(Model(), InMemoryPhaseBStore(), settings=BSettings(document_max_modules=5)).create(
         "dev", 1, graph, "Tổng hợp", {"module_ids": list(graph.modules)}, owner="alice", allow_spend=True,
@@ -169,7 +158,7 @@ def test_five_module_document_is_allowed_and_stores_button_metadata():
     )
 
     assert result["status"] == "ready"
-    assert result["contract_version"] == "document-2"
+    assert result["contract_version"] == "document-3"
     assert result["home_scope"] == {"kind": "roadmap"}
     assert result["origin"] == "button"
     assert result["session_id"] is None
@@ -224,7 +213,7 @@ def test_document_spend_guard_denial_is_a_zero_call_daily_limit():
     )
 
     assert result["status"] == "failed"
-    assert result["reason"] == "daily_limit"
+    assert result["failure"]["reason_code"] == "daily_limit"
     assert guard.checks == [("document", guard.checks[0][1], "alice")]
     assert result["usage"] == {}
 

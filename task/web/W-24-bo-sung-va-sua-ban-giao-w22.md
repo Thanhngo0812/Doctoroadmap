@@ -1,5 +1,7 @@
 # W-24 — Bổ sung bằng chứng và sửa bản bàn giao W-22
 
+**Nghiệm thu lần4, 2026-10-24: giữ đạt có ghi chú mốc thiết kế web đã nhận; không yêu cầu Cloud Figma.** Nguồn mới `eb29f29`: 52test qua runner, 24lượt preview browser; nhận các sửa96px/retry/lỗi đuôi/anchor/VM. Chưa ghép cả nhánh; trả riêng3lỗi công thức HTML mới: W09 thiếu CSS chỉ số dưới, W08/W09 mất biểu thức ở cây truy cập, W08 thiếu thẻ đóng làm lồng công thức/văn xuôi. Sửa giới hạn trước dùng lại mẫu; không giao làm lại token/layout/plugin/Cloud và không thu hồi mốc web đã nhận. Hỗ trợ W-09/soát React W-08 theo W-23; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md).
+
 **Nguồn chân lý:** [W-22](W-22-ban-figma.md); [spec thiết kế](../../doc/web-thiet-ke-giao-dien-spec.md), mục 3, 3a, 7–11 và quyết định kiểm thử.
 **Căn cứ soát:** [tiếp nhận W-22](../../report/dieu-phoi-tiep-nhan-w22-2026-10-19.md).
 **Ai:** người làm W-22 / người thiết kế; nhóm React phối hợp hợp đồng token · **Chi phí mô hình:** 0 USD · **Chặn bởi:** không · **Trạng thái:** đạt có ghi chú mốc thiết kế web đã kiểm, theo quyết định chủ dự án 2026-10-24.

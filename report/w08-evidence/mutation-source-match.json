@@ -1,0 +1,126 @@
+{
+  "sourceCommit": "e6b336e6b31466a89b8a9893312f10f40d75cb8a",
+  "all13MutationSourcesMatchFinalBytes": true,
+  "backendLedger": "mutations3/results.json",
+  "refreshedUiLedger": "mutations4/results.json",
+  "cases": [
+    {
+      "name": "cache-only",
+      "source": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "beforeSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+      "restoredSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "learner-status",
+      "source": "src/web/backend/wayfinder/application/lecture_view.py",
+      "beforeSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3",
+      "restoredSha256": "1c1b660a2f0b2a2ec9095d647fad851d535628c5e5e65ce6fb0412a5c0a74bc3",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "node-guard",
+      "source": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "beforeSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+      "restoredSha256": "7ccbb03981bd39445bcad15ebb0b4845c823c8006ed6cdaa2e92faad60e89386",
+      "nativeExit": 1,
+      "failures": 2,
+      "errors": 0
+    },
+    {
+      "name": "page-range",
+      "source": "src/web/backend/wayfinder/infrastructure/learning_media.py",
+      "beforeSha256": "96a0a1b8a086735031236e29550d39acf611fd826bda77a16a0ae839d114fb3c",
+      "restoredSha256": "96a0a1b8a086735031236e29550d39acf611fd826bda77a16a0ae839d114fb3c",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "http-dto-privacy",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "sse-membership",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "early-delta",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "cross-site",
+      "source": "src/web/backend/wayfinder/api/learning.py",
+      "beforeSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "restoredSha256": "5c522cc6104db238503f5638f6b9a493f38fcb3ae46b5b5afbc08bebffddebe8",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "rollback",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "beforeSha256": "4fa596ac7c94864b7e1ed0158823ca6e56dac8f5256b679bed8bb49d7de3d58b",
+      "restoredSha256": "4fa596ac7c94864b7e1ed0158823ca6e56dac8f5256b679bed8bb49d7de3d58b",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "late-error-keeps-text",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "beforeSha256": "4fa596ac7c94864b7e1ed0158823ca6e56dac8f5256b679bed8bb49d7de3d58b",
+      "restoredSha256": "4fa596ac7c94864b7e1ed0158823ca6e56dac8f5256b679bed8bb49d7de3d58b",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "always-retry",
+      "source": "src/web/frontend/src/Learning.tsx",
+      "beforeSha256": "4fa596ac7c94864b7e1ed0158823ca6e56dac8f5256b679bed8bb49d7de3d58b",
+      "restoredSha256": "4fa596ac7c94864b7e1ed0158823ca6e56dac8f5256b679bed8bb49d7de3d58b",
+      "nativeExit": 1,
+      "failures": 5,
+      "errors": 0
+    },
+    {
+      "name": "safe-math",
+      "source": "src/web/frontend/src/LectureMarkdown.tsx",
+      "beforeSha256": "872a0a7eca6b6a23ebe509bf67652f3babf7aad7b9ded5c42588ac9bcc475cb4",
+      "restoredSha256": "872a0a7eca6b6a23ebe509bf67652f3babf7aad7b9ded5c42588ac9bcc475cb4",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    },
+    {
+      "name": "source-page-identity",
+      "source": "src/web/frontend/src/SourceViewer.tsx",
+      "beforeSha256": "8dde8fb5dab1073714a821f4fb3fe278d3e73043b73bd86d0b821e4879efe5e6",
+      "restoredSha256": "8dde8fb5dab1073714a821f4fb3fe278d3e73043b73bd86d0b821e4879efe5e6",
+      "nativeExit": 1,
+      "failures": 1,
+      "errors": 0
+    }
+  ],
+  "unchangedW08MutationSourceAfterSa65": true
+}
