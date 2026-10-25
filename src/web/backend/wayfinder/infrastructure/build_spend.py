@@ -35,10 +35,13 @@ def require_embedding_price_profile(profile):
 
 
 class BuildSpendGuard:
-    def __init__(self, limit, provider, *, log=None, embedding_price_profile=None):
+    def __init__(self, limit, provider, *, log=None, embedding_price_profile=None, retry_unknown_within_cap=False):
         self.limit = Decimal(str(limit))
         if not self.limit.is_finite() or self.limit <= 0:
             raise ValueError('The approved budget must be positive and finite')
+        if type(retry_unknown_within_cap) is not bool:
+            raise ValueError('Retry approval must be a boolean')
+        self.retry_unknown_within_cap = retry_unknown_within_cap
         self.provider, self.condition = provider, Condition()
         self.log = log
         self.embedding_price_profile = embedding_price_profile
@@ -78,12 +81,12 @@ class BuildSpendGuard:
     def _reserve(self, value):
         with self.condition:
             while True:
-                if self.stopped or self.unknown:
+                if self.stopped or (self.unknown and not self.retry_unknown_within_cap):
                     raise BuildSpendStopped('Usage is unknown or a provider bound was exceeded; stop dispatch')
                 if value > self.limit:
                     self.stopped = True
                     raise BuildSpendStopped('One request exceeds the approved budget')
-                if self.known + self.held + value <= self.limit:
+                if self.known + self.unknown + self.held + value <= self.limit:
                     self.held += value
                     return
                 if not self.held:
@@ -97,7 +100,7 @@ class BuildSpendGuard:
                 'limit_usd': self.limit, 'known_usd': self.known, 'held_usd': self.held,
                 'unknown_upper_usd': self.unknown}.items()}, 'http_calls': self.calls, 'stopped': self.stopped,
                     'audit_failed': self.audit_failed, 'embedding_price_profile': self.embedding_price_profile,
-                    'embedding_billing_verified': False}
+                    'embedding_billing_verified': False, 'retry_unknown_within_cap': self.retry_unknown_within_cap}
 
     def __call__(self, request, *args, **kwargs):
         reserved = self.bound(request)
@@ -160,6 +163,7 @@ class BuildSpendApproval:
     max_usd: str
     audit_log: Path | None = None
     embedding_price_profile: str | None = None
+    retry_unknown_within_cap: bool = False
 
     @contextmanager
     def activate(self, path, doc_id, runtime):
@@ -174,11 +178,13 @@ class BuildSpendApproval:
             raise ValueError('Approval requires the verified Vertex global price profile')
         require_embedding_price_profile(self.embedding_price_profile)
         guard = BuildSpendGuard(self.max_usd, urlopen, log=self.audit_log,
-                                embedding_price_profile=self.embedding_price_profile)
+                                embedding_price_profile=self.embedding_price_profile,
+                                retry_unknown_within_cap=self.retry_unknown_within_cap)
         store = runtime.phase_b_store
         record = dict(reference=self.reference, doc_id=doc_id, file_sha256=digest,
                       pipeline_version=self.pipeline_version, max_usd=self.max_usd, state='consumed',
-                      embedding_price_profile=self.embedding_price_profile, embedding_billing_verified=False)
+                      embedding_price_profile=self.embedding_price_profile, embedding_billing_verified=False,
+                      retry_unknown_within_cap=self.retry_unknown_within_cap)
         with store.atomic():
             if store.get_record('w15_build_approval', self.reference) is not None:
                 raise ValueError('Approval was already consumed')
