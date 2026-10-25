@@ -27,6 +27,23 @@ def response(**usage):
     return BytesIO(json.dumps({'usageMetadata': dict(promptTokenCount=1000, candidatesTokenCount=10, **usage)}).encode())
 
 
+@pytest.fixture
+def synthetic_embedding_price(monkeypatch):
+    # Conditional token-price fixture only; this never certifies Google's online tariff.
+    monkeypatch.setattr(module(), 'require_embedding_price_profile', lambda: None)
+
+
+def test_unverified_online_embedding_price_is_rejected_before_the_provider():
+    api = module()
+    calls = []
+    guard = api.BuildSpendGuard('1', lambda *a, **k: (calls.append(1), BytesIO(
+        b'{"predictions":[{"embeddings":{"statistics":{"token_count":100}}}]}'))[1])
+    with pytest.raises(api.BuildSpendStopped, match='billing unit'):
+        guard(request('gemini-embedding-001', 'predict', instances=[{'content': 'abc'}]))
+    assert calls == [] and guard.snapshot()['http_calls'] == 0
+    assert guard.snapshot()['known_usd'] == guard.snapshot()['held_usd'] == guard.snapshot()['unknown_upper_usd'] == '0'
+
+
 def test_next_request_is_rejected_before_the_provider_when_capacity_is_exhausted():
     api = module()
     calls = []
@@ -144,10 +161,10 @@ def test_parallel_requests_reserve_capacity_until_their_responses_arrive(monkeyp
     assert guard.snapshot()['known_usd'] == '0.000795' and guard.snapshot()['held_usd'] == '0'
 
 
-def test_embedding_usage_and_unknown_embedding_usage_are_kept_separate():
+def test_embedding_usage_and_unknown_embedding_usage_are_kept_separate(synthetic_embedding_price):
     api = module()
-    replies = iter([BytesIO(b'{"predictions":[{"embeddings":{"statistics":{"token_count":100}}}]}'),
-                    BytesIO(b'{"predictions":[{"embeddings":{"statistics":{}}}]}')])
+    replies = iter([BytesIO(b'{"predictions":[{"embeddings":{"statistics":{"token_count":100}}}],"metadata":{"billableCharacterCount":9999}}'),
+                    BytesIO(b'{"predictions":[{"embeddings":{"statistics":{}}}],"metadata":{"billableCharacterCount":112}}')])
     guard = api.BuildSpendGuard('1', lambda *a, **k: next(replies))
     embedding = request('gemini-embedding-001', 'predict', instances=[{'content': 'abc'}])
     guard(embedding)

@@ -11,6 +11,7 @@ import pytest
 import w15_operator_run as operator
 from test_builds_w14 import builds
 from test_pipeline_postport_w15 import fake_providers, guarded_pg, source_pdf, Model, Embedding
+from test_build_spend_w15 import synthetic_embedding_price
 
 
 def test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape(builds, guarded_pg, tmp_path, monkeypatch):
@@ -99,7 +100,7 @@ def test_operator_rejects_any_difference_from_the_dry_run_before_composition(tmp
         operator.execute(plan, approval)
 
 
-def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls(builds, fake_providers, monkeypatch):
+def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls(builds, fake_providers, monkeypatch, synthetic_embedding_price):
     from doc2roadmap.config import Settings
     from wayfinder.infrastructure.real_build import RealBuildRuntime
     nonce = uuid4().hex[:12]

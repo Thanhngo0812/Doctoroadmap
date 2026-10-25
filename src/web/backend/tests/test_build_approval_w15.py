@@ -7,6 +7,7 @@ import pytest
 
 from test_builds_w14 import builds, sql
 from test_real_build_w15 import core
+from test_build_spend_w15 import synthetic_embedding_price
 from wayfinder.infrastructure import build_spend
 from wayfinder.infrastructure.real_build import RealBuildRuntime
 
@@ -26,7 +27,7 @@ def approval(**kwargs):
     return kind(**kwargs)
 
 
-def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(builds, tmp_path):
+def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(builds, tmp_path, synthetic_embedding_price):
     from doc2roadmap.application.ports.build import BuildRejected
     source = tmp_path / 'book.pdf'
     source.write_bytes(b'approved fake input')
@@ -57,7 +58,7 @@ def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(buil
 
 
 @pytest.mark.parametrize('mismatch', ['file', 'doc_id', 'pipeline'])
-def test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline(builds, tmp_path, mismatch):
+def test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline(builds, tmp_path, mismatch, synthetic_embedding_price):
     source = tmp_path / 'book.pdf'
     source.write_bytes(b'one approved input')
     digest = sha256(source.read_bytes()).hexdigest()
@@ -83,7 +84,7 @@ def test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline(b
 
 
 @pytest.mark.parametrize('fault', ['none', 'audit', 'partial_usage'])
-def test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait(builds, tmp_path, monkeypatch, fault):
+def test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait(builds, tmp_path, monkeypatch, fault, synthetic_embedding_price):
     from doc2roadmap.composition_build import DocumentPipeline
     from doc2roadmap.application.ports.embedding import EmbeddingRequest
     from doc2roadmap.application.build_usage import MeteredModel
@@ -145,5 +146,26 @@ def test_real_http_adapters_use_the_approval_budget_and_record_measured_embeddin
         else:
             assert record['budget']['known_usd'] == ('0.00028' if fault == 'none' else '0.000265')
             assert record['budget']['unknown_upper_usd'] == '0'
+    finally:
+        runtime.close()
+
+
+def test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption(builds, tmp_path):
+    source = tmp_path / 'unverified.pdf'
+    source.write_bytes(b'fake source for an unverified online price')
+    digest = sha256(source.read_bytes()).hexdigest()
+    calls, receipts = [], []
+    def forbidden(settings, *, allow_spend, phase_b_store):
+        calls.append(allow_spend)
+        raise AssertionError('Unverified pricing reached paid pipeline construction')
+    runtime = RealBuildRuntime(builds.settings, builds.engine, core_settings=core(builds), pipeline_factory=forbidden)
+    runtime.spend_approval = approval(reference='test-only-unverified-online-price', file_sha256=digest,
+        pipeline_version=runtime.pipeline_version, max_usd='1')
+    try:
+        with pytest.raises(build_spend.BuildSpendStopped, match='billing unit'):
+            runtime.runner(receipts.append).execute(source, 'u-' + digest[:20])
+        assert calls == receipts == []
+        assert sql(builds, "SELECT count(*) AS n FROM phase_b_record WHERE kind='w15_build_approval' AND record_id=:ref",
+                   {'ref': runtime.spend_approval.reference})[0]['n'] == 0
     finally:
         runtime.close()

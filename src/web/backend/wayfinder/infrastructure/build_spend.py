@@ -1,8 +1,9 @@
 """Per-attempt Vertex reservation, adapted from the W-13 recovery BudgetGuard.
 
-Global standard prices: cloud.google.com/vertex-ai/generative-ai/pricing.
+Global standard generation prices: cloud.google.com/vertex-ai/generative-ai/pricing.
 Generation reserves the full 1,048,576 context plus 65,536 output tokens,
-including images/thinking. Embedding reserves its documented 2,048-token limit.
+including images/thinking. The online embedding billing unit is unverified:
+paid operator activation is blocked; its token arithmetic is a test fixture only.
 This deliberately conservative bound is not a forecast of book cost.
 """
 from decimal import Decimal
@@ -24,6 +25,12 @@ _operator_run_lock = Lock()
 
 class BuildSpendStopped(Exception):
     """Must propagate through model-job repair handlers that catch RuntimeError."""
+
+
+def require_embedding_price_profile():
+    # W15-R4-P1: the online SKU says "count"; batch/Gemini API token prices do not settle its unit.
+    # No env/approval flag can bypass this. Reconcile the bound AND core meter before enabling.
+    raise BuildSpendStopped('Online Vertex embedding billing unit is unverified; paid operator disabled')
 
 
 class BuildSpendGuard:
@@ -51,6 +58,7 @@ class BuildSpendGuard:
             raise BuildSpendStopped('Only the approved Vertex global transport is priced')
         payload = json.loads(request.data)
         if url.path.endswith('/models/gemini-embedding-001:predict'):
+            require_embedding_price_profile()
             if len(payload.get('instances', [])) != 1:
                 raise BuildSpendStopped('Vertex embedding accepts one text per request')
             return Decimal('0.0003072')
@@ -160,6 +168,7 @@ class BuildSpendApproval:
                 getattr(settings, field) != 'gemini-3.1-flash-lite' for field in
                 ('extraction_model_id', 'merge_model_id', 'description_model_id', 'roadmap_model_id')):
             raise ValueError('Approval requires the verified Vertex global price profile')
+        require_embedding_price_profile()
         guard = BuildSpendGuard(self.max_usd, urlopen, log=self.audit_log)
         store = runtime.phase_b_store
         record = dict(reference=self.reference, doc_id=doc_id, file_sha256=digest,
