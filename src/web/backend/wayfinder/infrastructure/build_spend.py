@@ -2,8 +2,8 @@
 
 Global standard generation prices: cloud.google.com/vertex-ai/generative-ai/pricing.
 Generation reserves the full 1,048,576 context plus 65,536 output tokens,
-including images/thinking. The online embedding billing unit is unverified:
-paid operator activation is blocked; its token arithmetic is a test fixture only.
+including images/thinking. The online embedding billing unit is unverified;
+the owner permits a named demo assumption of USD .15/M input tokens (2026-10-25).
 This deliberately conservative bound is not a forecast of book cost.
 """
 from decimal import Decimal
@@ -21,25 +21,27 @@ from urllib.request import urlopen
 from unittest.mock import patch
 
 _operator_run_lock = Lock()
+DEMO_EMBEDDING_PRICE_PROFILE = 'owner-demo-embedding-token-20261025'
 
 
 class BuildSpendStopped(Exception):
     """Must propagate through model-job repair handlers that catch RuntimeError."""
 
 
-def require_embedding_price_profile():
-    # W15-R4-P1: the online SKU says "count"; batch/Gemini API token prices do not settle its unit.
-    # No env/approval flag can bypass this. Reconcile the bound AND core meter before enabling.
-    raise BuildSpendStopped('Online Vertex embedding billing unit is unverified; paid operator disabled')
+def require_embedding_price_profile(profile):
+    # Owner-approved demo assumption, not a verified online SKU or an invoice reconciliation.
+    if profile != DEMO_EMBEDDING_PRICE_PROFILE:
+        raise BuildSpendStopped('Online Vertex embedding billing unit is unverified; exact owner demo profile required')
 
 
 class BuildSpendGuard:
-    def __init__(self, limit, provider, *, log=None):
+    def __init__(self, limit, provider, *, log=None, embedding_price_profile=None):
         self.limit = Decimal(str(limit))
         if not self.limit.is_finite() or self.limit <= 0:
             raise ValueError('The approved budget must be positive and finite')
         self.provider, self.condition = provider, Condition()
         self.log = log
+        self.embedding_price_profile = embedding_price_profile
         self.known = self.held = self.unknown = Decimal(0)
         self.calls, self.stopped, self.events = 0, False, []
         self.audit_failed = False
@@ -58,7 +60,7 @@ class BuildSpendGuard:
             raise BuildSpendStopped('Only the approved Vertex global transport is priced')
         payload = json.loads(request.data)
         if url.path.endswith('/models/gemini-embedding-001:predict'):
-            require_embedding_price_profile()
+            require_embedding_price_profile(self.embedding_price_profile)
             if len(payload.get('instances', [])) != 1:
                 raise BuildSpendStopped('Vertex embedding accepts one text per request')
             return Decimal('0.0003072')
@@ -94,7 +96,8 @@ class BuildSpendGuard:
             return {**{key: format(value.normalize(), 'f') for key, value in {
                 'limit_usd': self.limit, 'known_usd': self.known, 'held_usd': self.held,
                 'unknown_upper_usd': self.unknown}.items()}, 'http_calls': self.calls, 'stopped': self.stopped,
-                    'audit_failed': self.audit_failed}
+                    'audit_failed': self.audit_failed, 'embedding_price_profile': self.embedding_price_profile,
+                    'embedding_billing_verified': False}
 
     def __call__(self, request, *args, **kwargs):
         reserved = self.bound(request)
@@ -156,6 +159,7 @@ class BuildSpendApproval:
     pipeline_version: str
     max_usd: str
     audit_log: Path | None = None
+    embedding_price_profile: str | None = None
 
     @contextmanager
     def activate(self, path, doc_id, runtime):
@@ -168,11 +172,13 @@ class BuildSpendApproval:
                 getattr(settings, field) != 'gemini-3.1-flash-lite' for field in
                 ('extraction_model_id', 'merge_model_id', 'description_model_id', 'roadmap_model_id')):
             raise ValueError('Approval requires the verified Vertex global price profile')
-        require_embedding_price_profile()
-        guard = BuildSpendGuard(self.max_usd, urlopen, log=self.audit_log)
+        require_embedding_price_profile(self.embedding_price_profile)
+        guard = BuildSpendGuard(self.max_usd, urlopen, log=self.audit_log,
+                                embedding_price_profile=self.embedding_price_profile)
         store = runtime.phase_b_store
         record = dict(reference=self.reference, doc_id=doc_id, file_sha256=digest,
-                      pipeline_version=self.pipeline_version, max_usd=self.max_usd, state='consumed')
+                      pipeline_version=self.pipeline_version, max_usd=self.max_usd, state='consumed',
+                      embedding_price_profile=self.embedding_price_profile, embedding_billing_verified=False)
         with store.atomic():
             if store.get_record('w15_build_approval', self.reference) is not None:
                 raise ValueError('Approval was already consumed')

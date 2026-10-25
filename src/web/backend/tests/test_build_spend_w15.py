@@ -1,6 +1,7 @@
 """Operator-run W-15 budget reservations; every provider here is an in-process fake."""
 import importlib
 import importlib.util
+from inspect import signature
 from io import BytesIO
 import json
 from concurrent.futures import ThreadPoolExecutor
@@ -27,10 +28,20 @@ def response(**usage):
     return BytesIO(json.dumps({'usageMetadata': dict(promptTokenCount=1000, candidatesTokenCount=10, **usage)}).encode())
 
 
-@pytest.fixture
-def synthetic_embedding_price(monkeypatch):
-    # Conditional token-price fixture only; this never certifies Google's online tariff.
-    monkeypatch.setattr(module(), 'require_embedding_price_profile', lambda: None)
+def test_explicit_owner_demo_profile_keeps_billing_unverified_and_uses_the_declared_token_rate():
+    api = module()
+    assert 'embedding_price_profile' in signature(api.BuildSpendGuard).parameters, 'An explicit owner demo price profile is missing'
+    calls = []
+    def provider(*args, **kwargs):
+        calls.append(1)
+        return BytesIO(b'{"predictions":[{"embeddings":{"statistics":{"token_count":100}}}],"metadata":{"billableCharacterCount":9999}}')
+    guard = api.BuildSpendGuard('1', provider, embedding_price_profile='owner-demo-embedding-token-20261025')
+    embedding = request('gemini-embedding-001', 'predict', instances=[{'content': 'abc'}])
+    assert guard.bound(embedding) == api.Decimal('0.0003072')
+    guard(embedding)
+    assert calls == [1] and guard.snapshot()['known_usd'] == '0.000015'
+    assert guard.snapshot()['embedding_price_profile'] == 'owner-demo-embedding-token-20261025'
+    assert guard.snapshot()['embedding_billing_verified'] is False
 
 
 def test_unverified_online_embedding_price_is_rejected_before_the_provider():
@@ -161,11 +172,12 @@ def test_parallel_requests_reserve_capacity_until_their_responses_arrive(monkeyp
     assert guard.snapshot()['known_usd'] == '0.000795' and guard.snapshot()['held_usd'] == '0'
 
 
-def test_embedding_usage_and_unknown_embedding_usage_are_kept_separate(synthetic_embedding_price):
+def test_embedding_usage_and_unknown_embedding_usage_are_kept_separate():
     api = module()
     replies = iter([BytesIO(b'{"predictions":[{"embeddings":{"statistics":{"token_count":100}}}],"metadata":{"billableCharacterCount":9999}}'),
                     BytesIO(b'{"predictions":[{"embeddings":{"statistics":{}}}],"metadata":{"billableCharacterCount":112}}')])
-    guard = api.BuildSpendGuard('1', lambda *a, **k: next(replies))
+    guard = api.BuildSpendGuard('1', lambda *a, **k: next(replies),
+                                embedding_price_profile='owner-demo-embedding-token-20261025')
     embedding = request('gemini-embedding-001', 'predict', instances=[{'content': 'abc'}])
     guard(embedding)
     guard(embedding)

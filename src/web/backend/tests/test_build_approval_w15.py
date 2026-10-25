@@ -7,7 +7,6 @@ import pytest
 
 from test_builds_w14 import builds, sql
 from test_real_build_w15 import core
-from test_build_spend_w15 import synthetic_embedding_price
 from wayfinder.infrastructure import build_spend
 from wayfinder.infrastructure.real_build import RealBuildRuntime
 
@@ -24,10 +23,10 @@ def deny_live_approval_transport(monkeypatch):
 def approval(**kwargs):
     kind = getattr(build_spend, 'BuildSpendApproval', None)
     assert kind is not None, 'The exact-file operator approval boundary is missing'
-    return kind(**kwargs)
+    return kind(embedding_price_profile='owner-demo-embedding-token-20261025', **kwargs)
 
 
-def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(builds, tmp_path, synthetic_embedding_price):
+def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(builds, tmp_path):
     from doc2roadmap.application.ports.build import BuildRejected
     source = tmp_path / 'book.pdf'
     source.write_bytes(b'approved fake input')
@@ -50,6 +49,8 @@ def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(buil
         records = sql(builds, "SELECT value FROM phase_b_record WHERE kind='w15_build_approval' AND record_id=:ref",
                       {'ref': 'test-only-one-attempt'})
         assert len(records) == 1 and records[0]['value']['state'] == 'finished'
+        assert records[0]['value']['embedding_price_profile'] == 'owner-demo-embedding-token-20261025'
+        assert records[0]['value']['embedding_billing_verified'] is False
         with pytest.raises(ValueError, match='consumed'):
             runtime.runner(receipts.append).execute(source, 'u-' + digest[:20])
         assert calls == [True] and receipts == [result]
@@ -58,7 +59,7 @@ def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(buil
 
 
 @pytest.mark.parametrize('mismatch', ['file', 'doc_id', 'pipeline'])
-def test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline(builds, tmp_path, mismatch, synthetic_embedding_price):
+def test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline(builds, tmp_path, mismatch):
     source = tmp_path / 'book.pdf'
     source.write_bytes(b'one approved input')
     digest = sha256(source.read_bytes()).hexdigest()
@@ -84,7 +85,7 @@ def test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline(b
 
 
 @pytest.mark.parametrize('fault', ['none', 'audit', 'partial_usage'])
-def test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait(builds, tmp_path, monkeypatch, fault, synthetic_embedding_price):
+def test_real_http_adapters_use_the_approval_budget_and_record_measured_embedding_wait(builds, tmp_path, monkeypatch, fault):
     from doc2roadmap.composition_build import DocumentPipeline
     from doc2roadmap.application.ports.embedding import EmbeddingRequest
     from doc2roadmap.application.build_usage import MeteredModel
@@ -150,7 +151,8 @@ def test_real_http_adapters_use_the_approval_budget_and_record_measured_embeddin
         runtime.close()
 
 
-def test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption(builds, tmp_path):
+@pytest.mark.parametrize('price_profile', [None, 'another-price-profile'])
+def test_unverified_online_price_blocks_the_whole_operator_profile_before_consumption(builds, tmp_path, price_profile):
     source = tmp_path / 'unverified.pdf'
     source.write_bytes(b'fake source for an unverified online price')
     digest = sha256(source.read_bytes()).hexdigest()
@@ -159,8 +161,8 @@ def test_unverified_online_price_blocks_the_whole_operator_profile_before_consum
         calls.append(allow_spend)
         raise AssertionError('Unverified pricing reached paid pipeline construction')
     runtime = RealBuildRuntime(builds.settings, builds.engine, core_settings=core(builds), pipeline_factory=forbidden)
-    runtime.spend_approval = approval(reference='test-only-unverified-online-price', file_sha256=digest,
-        pipeline_version=runtime.pipeline_version, max_usd='1')
+    runtime.spend_approval = build_spend.BuildSpendApproval(reference='test-only-unverified-online-price', file_sha256=digest,
+        pipeline_version=runtime.pipeline_version, max_usd='1', embedding_price_profile=price_profile)
     try:
         with pytest.raises(build_spend.BuildSpendStopped, match='billing unit'):
             runtime.runner(receipts.append).execute(source, 'u-' + digest[:20])

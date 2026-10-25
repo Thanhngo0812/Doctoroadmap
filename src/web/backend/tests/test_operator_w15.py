@@ -11,7 +11,6 @@ import pytest
 import w15_operator_run as operator
 from test_builds_w14 import builds
 from test_pipeline_postport_w15 import fake_providers, guarded_pg, source_pdf, Model, Embedding
-from test_build_spend_w15 import synthetic_embedding_price
 
 
 def test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape(builds, guarded_pg, tmp_path, monkeypatch):
@@ -44,10 +43,11 @@ def test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
     plan_path = operator.prepare('candidate')
     saved_bytes = plan_path.read_bytes()
     plan = json.loads(saved_bytes)
+    assert plan.get('embedding_price_profile') == 'owner-demo-embedding-token-20261025', 'prepare omitted the explicit demo price profile'
     assert created == ['CREATE DATABASE "' + plan['database'] + '"'] and migrated == [builds.postgres_database_url]
     assert plan['dry_run']['status'] == 'dry_run' and plan['provider_calls'] == plan['dry_run']['spent_usd'] == 0
     permission = plan_path.parent / 'fake-approval.json'
-    permission.write_text(json.dumps({**{key: plan[key] for key in ('file_sha256', 'pipeline_version', 'database')},
+    permission.write_text(json.dumps({**{key: plan[key] for key in ('file_sha256', 'pipeline_version', 'database', 'embedding_price_profile')},
         'approved': True, 'approved_by': 'project-owner'}), encoding='utf-8')
     composed = []
     class CompositionReached(Exception):
@@ -85,9 +85,10 @@ def test_operator_rejects_missing_or_non_boolean_owner_approval_before_compositi
         operator.execute(plan, approval)
 
 
-@pytest.mark.parametrize('field', ['file_sha256', 'pipeline_version', 'database'])
+@pytest.mark.parametrize('field', ['file_sha256', 'pipeline_version', 'database', 'embedding_price_profile'])
 def test_operator_rejects_any_difference_from_the_dry_run_before_composition(tmp_path, monkeypatch, field):
-    data = {'file_sha256': 'a' * 64, 'pipeline_version': 'one-profile', 'database': 'one-prepared-db'}
+    data = {'file_sha256': 'a' * 64, 'pipeline_version': 'one-profile', 'database': 'one-prepared-db',
+            'embedding_price_profile': 'owner-demo-embedding-token-20261025'}
     plan, approval = tmp_path / 'plan.json', tmp_path / 'approval.json'
     plan.write_text(json.dumps(data), encoding='utf-8')
     permission = {**data, field: 'a-different-value', 'approved': True, 'approved_by': 'project-owner'}
@@ -100,7 +101,7 @@ def test_operator_rejects_any_difference_from_the_dry_run_before_composition(tmp
         operator.execute(plan, approval)
 
 
-def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls(builds, fake_providers, monkeypatch, synthetic_embedding_price):
+def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_fake_calls(builds, fake_providers, monkeypatch):
     from doc2roadmap.config import Settings
     from wayfinder.infrastructure.real_build import RealBuildRuntime
     nonce = uuid4().hex[:12]
@@ -119,7 +120,7 @@ def test_operator_bootstrap_then_web_ready_mail_uses_the_new_cache_without_more_
     finally:
         runtime.close()
     data = dict(book='doc-6', run_dir=run_dir.relative_to(operator.ROOT).as_posix(), database='wayfinder_w15_' + nonce,
-                file_sha256=digest, pipeline_version=version)
+                file_sha256=digest, pipeline_version=version, embedding_price_profile='owner-demo-embedding-token-20261025')
     plan, permission = run_dir / 'plan.json', run_dir / 'fake-approval.json'
     plan.write_text(json.dumps(data), encoding='utf-8')
     permission.write_text(json.dumps({**data, 'reference': 'fake-only-operator-' + nonce, 'max_usd': '1',

@@ -22,6 +22,7 @@ from doc2roadmap.application.use_cases.build_document import BuildDocument
 from doc2roadmap.config import Settings
 from wayfinder.infrastructure.database import create_database_engine, upgrade_database
 from wayfinder.infrastructure.real_build import RealBuildRuntime
+from wayfinder.infrastructure.build_spend import DEMO_EMBEDDING_PRICE_PROFILE
 from wayfinder.settings import WebSettings
 
 
@@ -89,6 +90,7 @@ def prepare(book):
             pipeline_version=runtime.pipeline_version, prepared_commit=subprocess.check_output(
                 ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(), dry_run=result.to_dict(),
             vertex_project_configured=True, transport='vertex', location='global', approved=False,
+            embedding_price_profile=DEMO_EMBEDDING_PRICE_PROFILE, embedding_billing_verified=False,
             provider_calls=0, proposed_max_usd='1.00' if book == 'doc-6' else '3.00')
         destination = run_dir / 'plan.json'
         destination.write_bytes((json.dumps(plan, ensure_ascii=False, indent=2) + '\n').encode('utf-8'))
@@ -116,8 +118,8 @@ def execute(plan_path, approval_path):
     permission = json.loads(approval_path.read_text(encoding='utf-8'))
     if permission.get('approved') is not True or permission.get('approved_by') != 'project-owner':
         raise ValueError('A new exact-run approval from the project owner is required')
-    for field in ('file_sha256', 'pipeline_version', 'database'):
-        if permission.get(field) != plan[field]:
+    for field in ('file_sha256', 'pipeline_version', 'database', 'embedding_price_profile'):
+        if not plan.get(field) or permission.get(field) != plan[field]:
             raise ValueError('Owner approval differs from the prepared ' + field)
     run_dir = safe_path(ROOT, plan['run_dir'])
     if (run_dir.parent != ROOT / 'tmp' or not re.fullmatch(r'w15-operator-(doc-6|candidate)-[0-9a-f]{12}', run_dir.name)
@@ -137,7 +139,7 @@ def execute(plan_path, approval_path):
         engine.dispose()
         raise ValueError('Code/config changed since dry-run; prepare again before approving')
     grant = BuildSpendApproval(**{key: permission[key] for key in
-        ('reference', 'file_sha256', 'pipeline_version', 'max_usd')}, audit_log=safe_path(run_dir,
+        ('reference', 'file_sha256', 'pipeline_version', 'max_usd', 'embedding_price_profile')}, audit_log=safe_path(run_dir,
             'requests-' + sha256(permission['reference'].encode()).hexdigest()[:12] + '.jsonl'))
     media, account_mail = LocalFakeMediaStore(run_dir / 'media'), FakeMailer()
     service = compose_build_service(settings, engine, media=media, core_settings=core)
