@@ -1,0 +1,71 @@
+{
+  "pinned": {
+    "main": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+    "web": "378131ec0be0ac91b599549ae13b1a192fc710ac",
+    "core": "efed8db5b6b2cf76965a8884f23bfe2b9fe4c988",
+    "design": "0b5993e47a01b45bc2f645741aa38af42f99c5f4",
+    "window": "bababd001835a7381382d0b30594d2605d14669a",
+    "candidate": "7a99fbd17621b6429dec08869e07a7e4d178f97f"
+  },
+  "web": {
+    "verdict": "approve W09; close R-W09-1 and R-W09-2",
+    "required": [],
+    "critical": [],
+    "r1": {
+      "currentPass": 5,
+      "oldAssertionFail": 5,
+      "mutantAssertionFail": 1,
+      "setupErrors": 0
+    },
+    "r2": {
+      "flagCombinations": 9,
+      "ordinaryCurrentCalls": 1,
+      "ordinaryOldCalls": 0,
+      "focusMissCalls": 0,
+      "focusHitAdditionalCalls": 0
+    },
+    "provenance": {
+      "evidenceEntries": 230,
+      "sourceEntries": 750,
+      "mismatches": 0
+    }
+  },
+  "core": {
+    "verdict": "approve W15 real-build integration with documented limits; no paid calls in review",
+    "required": [],
+    "critical": [],
+    "probes": [
+      "legacy_unknown_denies_dispatch",
+      "strict_boolean",
+      "approved_retry_preserves_unknown_and_cap",
+      "parallel_reservations_keep_retained_unknown",
+      "ready_wrapper_keeps_result_but_reports_unknown"
+    ],
+    "mutantsCaught": 3,
+    "sqlReadOnly": true,
+    "billingVerified": false,
+    "invoiceReconciled": false,
+    "qualityReviewNonBlocking": true
+  },
+  "design": {
+    "verdict": "request changes for new W10 preview; prior accepted W22/W24 milestones retained",
+    "required": [
+      {
+        "id": "D-R6-01",
+        "severity": "P2",
+        "files": [
+          "design/preview/w10_quiz_screens.html:543",
+          "design/preview/w10_quiz_screens.html:551",
+          "design/preview/w10_quiz_screens.html:645"
+        ],
+        "issue": "Library here/elsewhere filters origin instead of canonical group derived from home_scope and node intersection",
+        "proof": "design-library-counterexample.json",
+        "fix": "Use group=here|elsewhere from canonical list_library; origin is a separate label; crossed-origin cases"
+      }
+    ],
+    "evidenceLimit": "W23 worker report inspects React source and captures static previews; not an independent React-vs-HTML browser comparison across 12 configurations",
+    "focusedPass": 61,
+    "configurations": 12,
+    "priorMathGuardsRetained": true
+  }
+}

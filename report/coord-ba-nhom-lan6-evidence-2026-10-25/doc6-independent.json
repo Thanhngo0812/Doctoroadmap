@@ -1,0 +1,59 @@
+{
+  "doc6_web_cache_only": {
+    "status": "succeeded",
+    "model_calls": 0,
+    "usd": 0,
+    "modules": 2,
+    "concepts": 15,
+    "graph_version": 8,
+    "independent_sql": true,
+    "sql_builds": 1,
+    "claims": 1,
+    "attempts": 1,
+    "grant_state": "finished",
+    "ledger_including_bootstrap": "0.120403",
+    "bootstrap_known_demo_usd": "0.1204034",
+    "bootstrap_quality_gate_passed": false,
+    "bootstrap_fallback": "document_order"
+  },
+  "r5_accounting": [
+    {
+      "label": "doc-6-first",
+      "calls": 334,
+      "known": "0.12040340",
+      "unknown": "0"
+    },
+    {
+      "label": "candidate-first",
+      "calls": 111,
+      "known": "0.01241680",
+      "unknown": "0.3890176"
+    },
+    {
+      "label": "diagnostic",
+      "calls": 2,
+      "known": "0.0000838",
+      "unknown": "0"
+    },
+    {
+      "label": "controlled",
+      "calls": 1616,
+      "known": "0.68726825",
+      "unknown": "0"
+    },
+    {
+      "label": "probe100",
+      "calls": 101,
+      "known": "0.00292960",
+      "unknown": "0"
+    },
+    {
+      "label": "mixed100",
+      "calls": 1197,
+      "known": "0.46637390",
+      "unknown": "0.0248832"
+    }
+  ],
+  "provider_calls_this_audit": 0,
+  "sql_read_only": true
+}

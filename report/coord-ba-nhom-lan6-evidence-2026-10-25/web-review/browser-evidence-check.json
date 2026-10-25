@@ -1,0 +1,72 @@
+{
+  "matrix": 12,
+  "screens": 102,
+  "http": 386,
+  "axe": 46,
+  "violations": 0,
+  "pageErrors": 0,
+  "console": 97,
+  "overflow": 0,
+  "badTargets": 0,
+  "requiredRace": {
+    "before": {
+      "calls": 0,
+      "finished": true,
+      "turns": 24,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 1,
+      "lectures": 1
+    },
+    "after": {
+      "calls": 1,
+      "finished": true,
+      "turns": 26,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 1,
+      "lectures": 1
+    },
+    "posts": [
+      {
+        "stage": "final-usage-race",
+        "path": "/api/v1/courses/7805a2ba-3b3a-4950-9651-632f49072d39/sessions/dbcc519172fd4b7385f7a182791463ad/turns",
+        "body": {
+          "question": "Câu đầu trước khi cập nhật hạn mức.",
+          "client_turn_id": "b0b6ab32-1640-425c-9612-2f3591526657"
+        }
+      },
+      {
+        "stage": "final-usage-race",
+        "path": "/api/v1/courses/7805a2ba-3b3a-4950-9651-632f49072d39/sessions/dbcc519172fd4b7385f7a182791463ad/turns",
+        "body": {
+          "question": "Câu tiếp theo phải được gửi nguyên vẹn.",
+          "client_turn_id": "529c38a3-0ab2-4dbd-8461-5864e2d91148"
+        }
+      }
+    ],
+    "oldUsageHeld": true,
+    "activeSecondTurnKept": true
+  },
+  "requiredLecture": {
+    "before": {
+      "calls": 0,
+      "finished": true,
+      "turns": 26,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 1,
+      "lectures": 0
+    },
+    "after": {
+      "calls": 2,
+      "finished": true,
+      "turns": 27,
+      "quizzes": 0,
+      "documents": 0,
+      "lectureCalls": 2,
+      "lectures": 1
+    },
+    "nodeId": "node_9f23f5df7eb27a4bc46857c8"
+  }
+}

@@ -1,0 +1,49 @@
+FFF                                                                      [100%]
+================================== FAILURES ===================================
+_____________________ test_w10_quiz_screens_specification _____________________
+
+    def test_w10_quiz_screens_specification():
+        """Verify W-10 quiz & document states: generating, taking with hidden chat, selected opt, 10/10 result & why_wrong, document-3 creation (<=5 modules) & library."""
+        w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
+        assert 'id="section-quiz-generating"' in w10_html
+        assert 'id="section-quiz-taking"' in w10_html
+>       assert 'id="quiz-chat-hidden-indicator"' in w10_html
+E       assert 'id="quiz-chat-hidden-indicator"' in '<!DOCTYPE html>\n<html lang="vi" data-theme="light">\n<head>\n  <meta charset="UTF-8">\n  <meta name="viewport" conte...   html.setAttribute(\'data-theme\', cur === \'dark\' ? \'light\' : \'dark\');\n    }\n  </script>\n</body>\n</html>\n'
+
+tests\unit\presentation\test_tokens_and_wcag.py:726: AssertionError
+__________________ test_w10_formulas_have_accessible_content __________________
+
+    def test_w10_formulas_have_accessible_content():
+        """Verify that all KaTeX formulas in W-10 have accessible representations (MathML or aria-label)."""
+        formulas = math_formula_accessibility("w10_quiz_screens.html")
+>       assert len(formulas) >= 1, f"Expected formulas in W-10, got {len(formulas)}"
+E       AssertionError: Expected formulas in W-10, got 0
+E       assert 0 >= 1
+E        +  where 0 = len([])
+
+tests\unit\presentation\test_tokens_and_wcag.py:1004: AssertionError
+________________ test_w10_formula_has_subscript_layout_styles _________________
+
+    def test_w10_formula_has_subscript_layout_styles():
+        """Verify that W-10 includes strict CSS rules for KaTeX layout and subscript alignment."""
+        source, _ = parse_preview_tree("w10_quiz_screens.html")
+        styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+        for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+            href = match.group(1)
+            if ":" not in href:
+                css_file = Path("design/preview/" + href).resolve()
+                if css_file.exists():
+                    styles += css_file.read_text(encoding="utf-8")
+>       assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-10"
+E       AssertionError: Missing .msub layout CSS in W-10
+E       assert None
+E        +  where None = <function search at 0x000001CD1BC0C4A0>('\\.msub\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')
+E        +    where <function search at 0x000001CD1BC0C4A0> = re.search
+
+tests\unit\presentation\test_tokens_and_wcag.py:1019: AssertionError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r6-design-review-20261025\old-w10-current-guards.xml -
+=========================== short test summary info ===========================
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w10_quiz_screens_specification
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w10_formulas_have_accessible_content
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w10_formula_has_subscript_layout_styles
+3 failed, 58 deselected in 0.63s
