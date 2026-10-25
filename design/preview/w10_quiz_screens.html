@@ -540,76 +540,96 @@
             5. Trạng thái: Thư viện tài liệu học tập (Lọc Tạo ở đây / Tạo ở nơi khác)
           </h2>
         </div>
-        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Quản lý tài liệu theo origin (ADR 0027)</span>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Lọc theo nhóm home_scope (Pha B2 mục 4: here / elsewhere độc lập với origin)</span>
       </div>
 
-      <!-- Bộ lọc Tabs: Tất cả / Tạo ở đây / Tạo ở nơi khác -->
+      <!-- Bộ lọc Tabs: Tất cả / Tạo ở đây (Module này) / Tạo ở nơi khác -->
       <div class="filter-tabs">
         <button class="filter-tab active" id="tab-lib-all" onclick="filterLibrary('all', this)">
-          Tất cả (3)
+          Tất cả (4)
         </button>
-        <button class="filter-tab" id="tab-lib-here" onclick="filterLibrary('button', this)">
-          Tạo ở đây (Giao diện này - 2)
+        <button class="filter-tab" id="tab-lib-here" onclick="filterLibrary('here', this)">
+          Tạo ở đây (Module này - 2)
         </button>
-        <button class="filter-tab" id="tab-lib-elsewhere" onclick="filterLibrary('assistant', this)">
-          Tạo ở nơi khác (Trợ lý chat - 1)
+        <button class="filter-tab" id="tab-lib-elsewhere" onclick="filterLibrary('elsewhere', this)">
+          Tạo ở nơi khác (Khác - 2)
         </button>
       </div>
 
-      <!-- Danh sách tài liệu -->
+      <!-- Danh sách tài liệu (Phân loại theo data-group here/elsewhere, độc lập với data-origin) -->
       <div style="display: flex; flex-direction: column; gap: var(--space-3);" id="library-list-container">
-        <!-- Item 1: Tạo ở đây (button) -->
-        <div class="doc-card" data-origin="button" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+        <!-- Item 1: here + assistant (Crossed origin) -->
+        <div class="doc-card" data-group="here" data-origin="assistant" data-testid="assistant-created-in-A" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
           <div>
             <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
-              <span class="badge badge-primary">Tạo ở đây (button)</span>
-              <span class="badge badge-module">Module 1, 2</span>
-            </div>
-            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
-              Tóm tắt công thức huyết động & Bảng so sánh nhánh mạch vành
-            </h3>
-            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
-              Khởi tạo: 2026-10-25 10:30 • 1.250 từ • 2 trích dẫn nguồn
-            </span>
-          </div>
-          <div style="display: flex; gap: var(--space-2);">
-            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
-            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
-          </div>
-        </div>
-
-        <!-- Item 2: Tạo ở đây (button) -->
-        <div class="doc-card" data-origin="button" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
-          <div>
-            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
-              <span class="badge badge-primary">Tạo ở đây (button)</span>
-              <span class="badge badge-module">Module 1</span>
-            </div>
-            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
-              Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất
-            </h3>
-            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
-              Khởi tạo: 2026-10-24 16:15 • 820 từ • 1 trích dẫn nguồn
-            </span>
-          </div>
-          <div style="display: flex; gap: var(--space-2);">
-            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
-            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
-          </div>
-        </div>
-
-        <!-- Item 3: Tạo ở nơi khác (assistant) -->
-        <div class="doc-card" data-origin="assistant" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
-          <div>
-            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
-              <span class="badge badge-accent">Tạo ở nơi khác (assistant)</span>
-              <span class="badge badge-module">Module 1</span>
+              <span class="badge badge-accent">Trợ lý chat (assistant)</span>
+              <span class="badge badge-module">Tạo tại Module 1 (here)</span>
             </div>
             <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
               Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước
             </h3>
             <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
-              Khởi tạo từ Trợ lý: 2026-10-23 20:45 • 940 từ • 3 trích dẫn nguồn
+              Khởi tạo từ Trợ lý chat tại Module 1 • 940 từ • 3 trích dẫn nguồn
+            </span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
+          </div>
+        </div>
+
+        <!-- Item 2: elsewhere + button (Crossed origin) -->
+        <div class="doc-card" data-group="elsewhere" data-origin="button" data-testid="button-created-in-roadmap-about-A" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <div>
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <span class="badge badge-primary">Nút giao diện (button)</span>
+              <span class="badge badge-module">Tạo từ Lộ trình chung (elsewhere)</span>
+            </div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Tóm tắt công thức huyết động & Bảng so sánh nhánh mạch vành
+            </h3>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+              Khởi tạo từ Nút tạo tài liệu ở Lộ trình chung về Module 1 & 2 • 1.250 từ • 2 trích dẫn nguồn
+            </span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
+          </div>
+        </div>
+
+        <!-- Item 3: here + button -->
+        <div class="doc-card" data-group="here" data-origin="button" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <div>
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <span class="badge badge-primary">Nút giao diện (button)</span>
+              <span class="badge badge-module">Tạo tại Module 1 (here)</span>
+            </div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất
+            </h3>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+              Khởi tạo từ Nút tạo tài liệu tại Module 1 • 820 từ • 1 trích dẫn nguồn
+            </span>
+          </div>
+          <div style="display: flex; gap: var(--space-2);">
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">👁️ Xem</button>
+            <button class="btn btn-secondary" style="min-height: 44px; min-width: 44px;">📥 Tải .md</button>
+          </div>
+        </div>
+
+        <!-- Item 4: elsewhere + assistant -->
+        <div class="doc-card" data-group="elsewhere" data-origin="assistant" style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-3);">
+          <div>
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <span class="badge badge-accent">Trợ lý chat (assistant)</span>
+              <span class="badge badge-module">Tạo từ Module 2 (elsewhere)</span>
+            </div>
+            <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text);">
+              Tổng quan các nhánh xiên vách và cơ chế tưới máu tâm trương
+            </h3>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">
+              Khởi tạo từ Trợ lý chat tại Module 2 liên quan đến Module 1 • 1.100 từ • 2 trích dẫn nguồn
             </span>
           </div>
           <div style="display: flex; gap: var(--space-2);">
@@ -632,22 +652,34 @@
       const checked = document.querySelectorAll('.module-chips input:checked').length;
       const indicator = document.getElementById('scope-count-indicator');
       const warning = document.getElementById('scope-warning-box');
+      const btnCreate = document.getElementById('btn-create-document');
       indicator.textContent = `Đã chọn: ${checked} / 5 module tối đa`;
       if (checked > 5) {
         indicator.className = 'badge badge-danger';
         warning.style.display = 'block';
+        if (btnCreate) {
+          btnCreate.setAttribute('disabled', 'true');
+          btnCreate.style.opacity = '0.6';
+          btnCreate.style.cursor = 'not-allowed';
+        }
       } else {
         indicator.className = 'badge badge-primary';
         warning.style.display = 'none';
+        if (btnCreate) {
+          btnCreate.removeAttribute('disabled');
+          btnCreate.style.opacity = '1';
+          btnCreate.style.cursor = 'pointer';
+        }
       }
     }
 
-    function filterLibrary(origin, tabBtn) {
+    function filterLibrary(group, tabBtn) {
       document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
       tabBtn.classList.add('active');
       const cards = document.querySelectorAll('.doc-card');
       cards.forEach(card => {
-        if (origin === 'all' || card.getAttribute('data-origin') === origin) {
+        const cardGroup = card.getAttribute('data-group') || (card.dataset ? card.dataset.group : '');
+        if (group === 'all' || cardGroup === group) {
           card.style.display = 'flex';
         } else {
           card.style.display = 'none';

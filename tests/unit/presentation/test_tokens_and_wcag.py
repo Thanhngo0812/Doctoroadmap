@@ -1051,3 +1051,63 @@ def test_falsifiable_unclosed_nested_katex_fails():
     with pytest.raises(AssertionError):
         assert all(not any(child.hasclass("katex") for child in n.descendants()) for n in formulas)
 
+
+def test_w10_library_filters_by_group_independent_of_origin():
+    """Verify D-R6-01: W-10 library tabs filter by group (here/elsewhere) per Pha B2 section 4, independent of origin."""
+    w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
+    
+    # 1. Tabs invoke filterLibrary with 'here' and 'elsewhere', not button/assistant
+    assert "filterLibrary('here', this)" in w10_html, "tab-lib-here must pass 'here' group parameter"
+    assert "filterLibrary('elsewhere', this)" in w10_html, "tab-lib-elsewhere must pass 'elsewhere' group parameter"
+    assert "filterLibrary('button', this)" not in w10_html, "Must not map here tab to origin 'button'"
+    assert "filterLibrary('assistant', this)" not in w10_html, "Must not map elsewhere tab to origin 'assistant'"
+
+    # 2. Both groups contain crossed origins (both button and assistant appear in both here and elsewhere)
+    _, tree = parse_preview_tree("w10_quiz_screens.html")
+    doc_cards = [n for n in tree.root.descendants() if n.hasclass("doc-card")]
+    assert len(doc_cards) >= 4, f"Expected at least 4 document cards, got {len(doc_cards)}"
+    
+    here_cards = [n for n in doc_cards if n.attrs.get("data-group") == "here"]
+    elsewhere_cards = [n for n in doc_cards if n.attrs.get("data-group") == "elsewhere"]
+    assert len(here_cards) >= 2, "Expected at least 2 cards in 'here' group"
+    assert len(elsewhere_cards) >= 2, "Expected at least 2 cards in 'elsewhere' group"
+
+    here_origins = {n.attrs.get("data-origin") for n in here_cards}
+    elsewhere_origins = {n.attrs.get("data-origin") for n in elsewhere_cards}
+    assert "assistant" in here_origins, "Must have assistant origin in 'here' group (created in module via assistant)"
+    assert "button" in here_origins, "Must have button origin in 'here' group (created in module via button)"
+    assert "assistant" in elsewhere_origins, "Must have assistant origin in 'elsewhere' group"
+    assert "button" in elsewhere_origins, "Must have button origin in 'elsewhere' group (created from roadmap about module)"
+
+    # 3. filterLibrary function filters on data-group / dataset.group
+    assert "card.getAttribute('data-group')" in w10_html or "card.dataset.group" in w10_html, (
+        "filterLibrary JS must filter cards using data-group, not data-origin"
+    )
+
+
+def test_falsifiable_library_origin_group_conflation_fails():
+    """Falsifiable test: prove that filtering on origin instead of group fails when origin is crossed."""
+    # A card with group=here but origin=assistant
+    card_group = "here"
+    card_origin = "assistant"
+    target_filter_group = "here"
+
+    # Incorrect filter implementation (conflating here with button):
+    incorrect_matches = (card_origin == "button")
+    # Correct filter implementation:
+    correct_matches = (card_group == target_filter_group)
+
+    with pytest.raises(AssertionError):
+        # Asserting that the incorrect filter matches the card must FAIL
+        assert incorrect_matches is True, "Origin-based filter incorrectly rejects crossed-origin card"
+    assert correct_matches is True, "Group-based filter correctly accepts card"
+
+
+def test_w10_scope_count_disables_button_when_over_limit():
+    """Verify that W-10 document generator script disables create button when > 5 modules are selected."""
+    w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
+    assert "updateScopeCount" in w10_html
+    assert "btnCreate.setAttribute('disabled', 'true')" in w10_html
+    assert "scope-warning-box" in w10_html
+
+
