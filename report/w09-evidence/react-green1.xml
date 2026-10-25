@@ -1,0 +1,1652 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="3" failures="3" errors="0" time="3.5966465">
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-24T14:31:13.774Z" hostname="ADMIN" tests="3" failures="3" errors="0" skipped="0" time="3.5966465">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="1.4158686">
+            <failure message="Unable to find an element with the text: Ôn tập hợp. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Ôn tập hợp. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ openAndAsk src/Assistant.test.tsx:41:16
+ ❯ src/Assistant.test.tsx:48:42
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="1.0793897">
+            <failure message="Unable to find an element with the text: Ôn tập hợp. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Ôn tập hợp. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ openAndAsk src/Assistant.test.tsx:41:16
+ ❯ src/Assistant.test.tsx:70:29
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="1.0962619">
+            <failure message="Unable to find an element with the text: Ôn tập hợp. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Ôn tập hợp. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;assistant-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        class=&quot;button button-secondary assistant-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;assistant-title-c&quot;
+        class=&quot;assistant-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;assistant-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;assistant-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;assistant-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;assistant-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;&quot;
+              &gt;
+                Chưa có phiên
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;assistant-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;assistant-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            disabled=&quot;&quot;
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;assistant-messages&quot;
+          role=&quot;log&quot;
+        &gt;
+          &lt;div
+            class=&quot;assistant-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;assistant-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;assistant-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;assistant-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ openAndAsk src/Assistant.test.tsx:41:16
+ ❯ src/Assistant.test.tsx:80:19
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

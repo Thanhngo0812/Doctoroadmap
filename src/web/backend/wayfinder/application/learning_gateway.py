@@ -163,3 +163,158 @@ class LearningGateway:
             resume = ordered[0]["module_id"]
         return {"progress": {"learned": sum(row["state"] == "learned" for row in progress["nodes"].values()),
                              "total": len(progress["nodes"])}, "resume": {"module_id": resume} if resume else None}
+
+    def _owned_session(self, actor, cid, sid):
+        course, graph = self._context(actor, cid)
+        session = self.runtime.sessions(graph).get(actor.user_id, sid)
+        if session is None or session['doc_id'] != course.doc_id:
+            raise WebError('not_found', 'Không tìm thấy phiên học')
+        return course, graph, session
+
+    def list_sessions(self, actor, cid, filter='roadmap_page'):
+        from wayfinder.application.assistant_view import session_view
+        course, graph = self._context(actor, cid)
+        if filter not in {'all', 'roadmap_page'} and not (filter.startswith('module:') and filter[7:] in graph.modules):
+            raise WebError('validation', 'Bộ lọc phiên không hợp lệ')
+        return {'course_id': cid, 'source_document': self.media.describe_source(course, graph) if self.media else None,
+            'sessions': [session_view(row) for row in
+            self.runtime.sessions(graph).list_sessions(actor.user_id, course.doc_id, filter)]}
+
+    def create_session(self, actor, cid, scope):
+        from wayfinder.application.assistant_view import session_view
+        course, graph = self._context(actor, cid)
+        if scope.get('kind') == 'roadmap':
+            saved = {'kind': 'roadmap'}
+        elif scope.get('kind') == 'module' and scope.get('module_id') in graph.modules:
+            mid = scope['module_id']
+            saved = {'kind': 'module', 'module_id_at_creation': mid,
+                'graph_version_at_creation': course.published_graph_version,
+                'node_ids': [nid for nid in graph.modules[mid]['node_ids'] if nid in graph.learnable_nodes]}
+            if not saved['node_ids']:
+                raise WebError('validation', 'Module chưa có bài học')
+        else:
+            raise WebError('validation', 'Phạm vi phiên không hợp lệ')
+        with self.runtime.store.atomic():
+            row = self.runtime.sessions(graph).create_session(actor.user_id, course.doc_id, saved)
+        return session_view(row)
+
+    def rename_session(self, actor, cid, sid, title):
+        from wayfinder.application.assistant_view import session_view
+        from wayfinder.infrastructure.assistant_requests import AssistantRequests
+        def update():
+            _, graph, _ = self._owned_session(actor, cid, sid)
+            with self.runtime.store.atomic():
+                return session_view(self.runtime.sessions(graph).rename_session(actor.user_id, sid, title))
+        self._owned_session(actor, cid, sid)
+        with AssistantRequests(self.courses.store.engine, self.courses.settings, self.runtime.clock).serial(sid):
+            return update()
+
+    def delete_session(self, actor, cid, sid):
+        from wayfinder.infrastructure.assistant_requests import AssistantRequests
+        def remove():
+            _, graph, _ = self._owned_session(actor, cid, sid)
+            with self.runtime.store.atomic():
+                return self.runtime.sessions(graph).delete_session(actor.user_id, sid)
+        self._owned_session(actor, cid, sid)
+        with AssistantRequests(self.courses.store.engine, self.courses.settings, self.runtime.clock).serial(sid):
+            return remove()
+
+    def _artifact(self, actor, course, graph, item):
+        kind, aid = item.get('kind'), item.get('id')
+        if kind == 'lecture' and item.get('node_id') in graph.learnable_nodes:
+            nid = item['node_id']
+            return {'kind': 'lecture', 'id': str(aid or ''), 'node_id': nid, 'module_id': graph.nodes[nid]['module_id'],
+                'title': graph.nodes[nid].get('display_name') or graph.nodes[nid].get('name', 'Bài học')}
+        record = self.runtime.store.get_record({'quiz': 'quiz_attempt', 'document': 'documents'}.get(kind, ''), aid or '')
+        if not record or record.get('owner') != actor.user_id or record.get('doc_id') != course.doc_id:
+            return None
+        if record.get('status') != 'ready':
+            return None
+        return {'kind': kind, 'id': aid, 'title': record.get('title') or ('Quiz ôn tập' if kind == 'quiz' else 'Tài liệu học tập')}
+
+    def _answer_view(self, actor, course, graph, raw, focus=None):
+        from wayfinder.application.assistant_view import answer_view
+        artifacts = [result for item in raw.get('artifacts', []) if (result := self._artifact(actor, course, graph, item))]
+        result = answer_view(raw, course, graph, artifacts)
+        # Core decides focus validity. The web reflects a null result without dropping/changing the submitted ID.
+        result['warnings'] = ['focus_ignored'] if focus is not None and raw.get('focus_node_id') is None else []
+        return result
+
+    def list_turns(self, actor, cid, sid):
+        from doc2roadmap.domain.phase_b_limits import context_hash
+        course, graph, _ = self._owned_session(actor, cid, sid)
+        turns = []
+        for row in self.runtime.sessions(graph).list_turns(actor.user_id, sid):
+            key = context_hash([actor.user_id, course.doc_id, sid, row.get('client_turn_id')])
+            intent = self.runtime.store.get_record('web_assistant_intent', key) or {}
+            turns.append({key: row.get(key) for key in ('contract_version', 'turn_id', 'client_turn_id', 'question', 'created_at')}
+                | {'answer': self._answer_view(actor, course, graph, row['answer'], intent.get('payload', {}).get('focus_node_id'))})
+        return {'course_id': cid, 'session_id': sid, 'turns': turns}
+
+    def prepare_turn(self, actor, cid, sid, key, question, focus=None):
+        from wayfinder.infrastructure.assistant_requests import AssistantRequests
+        course, _, _ = self._owned_session(actor, cid, sid)
+        AssistantRequests(self.courses.store.engine, self.courses.settings, self.runtime.clock).admit(
+            actor, course, sid, key, question, focus)
+
+    def ask_stream(self, actor, cid, sid, key, question, on_event, focus=None):
+        from wayfinder.application.assistant_view import TOOL_LABELS, cards_view
+        from wayfinder.infrastructure.assistant_requests import AssistantRequests
+        def generate():
+            course, graph, _ = self._owned_session(actor, cid, sid)
+            for previous in self.runtime.sessions(graph).list_turns(actor.user_id, sid):
+                if previous.get('client_turn_id') == key:
+                    on_event({'event': 'final', 'answer': self._answer_view(actor, course, graph, previous['answer'], focus)})
+                    return previous['answer']
+            def emit(row):
+                kind = row.get('event')
+                if kind == 'delta':
+                    on_event({'event': 'delta', 'text': row['text']})
+                elif kind == 'progress':
+                    on_event({'event': 'progress', 'text': 'Đang chuẩn bị câu trả lời…'})
+                elif kind == 'tool_call':
+                    on_event({'event': 'tool_call', 'name': row.get('name') if row.get('name') in TOOL_LABELS else 'other',
+                        'text': TOOL_LABELS.get(row.get('name'), 'Đang xử lý yêu cầu…')})
+                elif kind == 'graph_card':
+                    on_event({'event': kind, 'graph_cards': cards_view(row, graph)})
+                elif kind == 'artifact':
+                    artifact = self._artifact(actor, course, graph, row)
+                    if artifact:
+                        on_event({'event': kind, 'artifact': artifact})
+                elif kind in {'final', 'failure'}:
+                    on_event({'event': kind, 'answer': self._answer_view(actor, course, graph, row['answer'], focus)})
+            def tool_started(name):
+                on_event({'event': 'tool_call', 'name': name if name in TOOL_LABELS else 'other',
+                    'text': TOOL_LABELS.get(name, 'Đang xử lý yêu cầu…'), 'state': 'running'})
+            return self.runtime.assistant(graph, on_tool_start=tool_started).ask(course.doc_id, course.published_graph_version, sid, question,
+                owner=actor.user_id, client_turn_id=key, focus_node_id=focus, allow_spend=True, on_event=emit)
+        self._owned_session(actor, cid, sid)
+        with AssistantRequests(self.courses.store.engine, self.courses.settings, self.runtime.clock).serial(sid):
+            return generate()
+
+    def get_assistant_artifact(self, actor, cid, sid, kind, aid):
+        from wayfinder.application.lecture_view import pick
+        course, graph, session = self._owned_session(actor, cid, sid)
+        if {'kind': kind, 'artifact_id': aid} not in session.get('artifact_refs', []):
+            raise WebError('not_found', 'Không tìm thấy nội dung')
+        verified = self._artifact(actor, course, graph, {'kind': kind, 'id': aid})
+        if verified is None:
+            raise WebError('not_found', 'Không tìm thấy nội dung')
+        if kind == 'document':
+            raw = self.runtime.document(graph).get(aid, owner=actor.user_id)
+            return {**verified, **pick(raw, ('contract_version', 'markdown', 'sources'))}
+        if kind == 'quiz':
+            raw = self.runtime.quiz(graph).get_attempt(aid, actor.user_id)
+            return {**verified, 'contract_version': raw['contract_version'], 'items': [
+                {'item_id': row['item_id'], 'question': row.get('question') or row.get('stem', ''),
+                 'options': [pick(option, ('option_id', 'text')) for option in row.get('options', [])]}
+                for row in raw['items']]}
+        raise WebError('not_found', 'Không tìm thấy nội dung')
+
+    def list_library(self, actor, cid, scope='all'):
+        from doc2roadmap.application.phase_b.library import LibraryUseCase
+        course, graph = self._context(actor, cid)
+        if scope not in {'all', 'roadmap'} and not (scope.startswith('module:') and scope[7:] in graph.modules):
+            raise WebError('validation', 'Bộ lọc thư viện không hợp lệ')
+        return {'course_id': cid, **LibraryUseCase(self.runtime.store, graph, settings=self.runtime.settings,
+            clock=self.runtime.clock).list_library(actor.user_id, course.doc_id, scope)}

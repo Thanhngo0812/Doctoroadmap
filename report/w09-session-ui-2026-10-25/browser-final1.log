@@ -1,0 +1,146 @@
+python.exe : AssertionError [ERR_ASSERTION]: conversation-options: unresolved accessibility checks
+At line:2 char:162
++ ... lyContinue; & C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/pytho ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (AssertionError ...sibility checks:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+
++ actual - expected
+
++ [
++   {
++     description: 'Ensure the contrast between foreground and background colors meets WCAG 2 AA minimum contrast
+ratio thresholds',
++     help: 'Elements must meet minimum color contrast ratio thresholds',
++     helpUrl: 'https://dequeuniversity.com/rules/axe/4.14/color-contrast?application=playwright',
++     id: 'color-contrast',
++     impact: 'serious',
++     nodes: [
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               contrastRatio: 0,
++               expectedContrastRatio: '4.5:1',
++               fontSize: '9.0pt (12px)',
++               fontWeight: 'normal',
++               messageKey: 'bgOverlap'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: "Element's background color could not be determined because it is overlapped by another
+element",
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           "  Element's background color could not be determined because it is overlapped by another element",
++         html: '<span title="Giải thích ý chính 390 light false.">Giải thích ý chính 390 light false.</span>',
++         impact: 'serious',
++         none: [],
++         target: [
++           '.learning-chat-session-meta > span'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               contrastRatio: 0,
++               expectedContrastRatio: '4.5:1',
++               fontSize: '12.0pt (16px)',
++               fontWeight: 'normal',
++               messageKey: 'elmPartiallyObscuring'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: "Element's background color could not be determined because it partially overlaps other
+elements",
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           "  Element's background color could not be determined because it partially overlaps other elements",
++         html: '<p class="learning-chat-question"><span class="sr-only">Bạn hỏi: </span>Giải thích ý chính 390 light
+false.</p>',
++         impact: 'serious',
++         none: [],
++         target: [
++           '.learning-chat-question'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               contrastRatio: 0,
++               expectedContrastRatio: '4.5:1',
++               fontSize: '12.0pt (16px)',
++               fontWeight: 'normal',
++               messageKey: 'elmPartiallyObscuring'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: "Element's background color could not be determined because it partially overlaps other
+elements",
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           "  Element's background color could not be determined because it partially overlaps other elements",
++         html: '<p>',
++         impact: 'serious',
++         none: [],
++         target: [
++           '.lecture-markdown > p:nth-child(2)'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               contrastRatio: 0,
++               expectedContrastRatio: '4.5:1',
++               fontSize: '9.0pt (12px)',
++               fontWeight: 'normal',
++               messageKey: 'elmPartiallyObscuring'
++             },
++             id: 'color-contrast',
++             impact: 'serious',
++             message: "Element's background color could not be determined because it partially overlaps other
+elements",
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           "  Element's background color could not be determined because it partially overlaps other elements",
++         html: '<small>Enter để gửi · Shift+Enter xuống dòng</small>',
++         impact: 'serious',
++         none: [],
++         target: [
++           'div > small'
++         ]
++       }
++     ],
++     tags: [
++       'cat.color',
++       'wcag2aa',
++       'wcag143',
++       'TTv5',
++       'TT13.c',
++       'EN-301-549',
++       'EN-9.1.4.3',
++       'ACT',
++       'RGAAv4',
++       'RGAA-3.2.1'
++     ]
++   }
++ ]
+- []
+
+    at capture (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\scripts\w09_web_check.cjs:189:16)
+    at async main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\scripts\w09_web_check.cjs:218:7)

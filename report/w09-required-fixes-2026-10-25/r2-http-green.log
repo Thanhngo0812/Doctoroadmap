@@ -1,0 +1,42 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+____ test_w09_ordinary_lecture_tool_generates_through_http_and_postgresql _____
+
+chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0b8805d14f4e4bd391f1d7cdbde3f...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/d6933a11-6c4b-4cb2-824e-6629b6b6abaf/sessions')
+
+    def test_w09_ordinary_lecture_tool_generates_through_http_and_postgresql(chat):
+        w = chat
+        model = ScriptedModel(tool_turns=[
+            [ToolCall('get_lecture', {'concept': 'a'}, 'open-lecture'), Done({})],
+            [Delta('Đã mở bài học được yêu cầu.'), Done({})],
+        ], text_replies=[['HTTP_PG_LECTURE_SENTINEL. Nội dung bài mới. [S1]']])
+        w.gateway.runtime.model = model
+        sid = create(w)['session_id']
+        result = events(ask(w, sid))
+        assert result[-1]['answer']['status'] == 'answered'
+        assert len(model.text_calls) == 1
+        artifact = next(row['artifact'] for row in result if row['event'] == 'artifact')
+        assert artifact['kind'] == 'lecture' and artifact['node_id'] == 'a'
+        with w.independent_engine.connect() as c:
+            cached = c.scalar(text("SELECT value FROM phase_b_cache WHERE value->>'contract_version'='lecture-3'"))
+            assert cached['status'] == 'ready' and 'HTTP_PG_LECTURE_SENTINEL' in cached['body_md']
+>           assert c.scalar(text("SELECT learner_id FROM usage_ledger WHERE purpose='lecture'")) == w.a.actor.user_id
+E           assert None == 'c350b348-e8bf-4358-84c6-ce369cbe0d2e'
+E            +  where None = scalar(<sqlalchemy.sql.elements.TextClause object at 0x0000026DC98BE2D0>)
+E            +    where scalar = <sqlalchemy.engine.base.Connection object at 0x0000026DC96FA960>.scalar
+E            +    and   <sqlalchemy.sql.elements.TextClause object at 0x0000026DC98BE2D0> = text("SELECT learner_id FROM usage_ledger WHERE purpose='lecture'")
+E            +  and   'c350b348-e8bf-4358-84c6-ce369cbe0d2e' = Actor(user_id='c350b348-e8bf-4358-84c6-ce369cbe0d2e', role='user', email_verified=False, status='active').user_id
+E            +    where Actor(user_id='c350b348-e8bf-4358-84c6-ce369cbe0d2e', role='user', email_verified=False, status='active') = namespace(client=<starlette.testclient.TestClient object at 0x0000026DAA118680>, actor=Actor(user_id='c350b348-e8bf-43...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'wM8vGkibDh9KDkv8fh8vhMaNX33chuZq1B2pOYe9Zhs'}).actor
+E            +      where namespace(client=<starlette.testclient.TestClient object at 0x0000026DAA118680>, actor=Actor(user_id='c350b348-e8bf-43...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'wM8vGkibDh9KDkv8fh8vhMaNX33chuZq1B2pOYe9Zhs'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0b8805d14f4e4bd391f1d7cdbde3f...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/d6933a11-6c4b-4cb2-824e-6629b6b6abaf/sessions').a
+
+src\web\backend\tests\test_assistant_w09.py:352: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-required-fixes-2026-10-25\r2-http-green.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_w09.py::test_w09_ordinary_lecture_tool_generates_through_http_and_postgresql
+1 failed, 18 deselected, 1 warning in 4.88s

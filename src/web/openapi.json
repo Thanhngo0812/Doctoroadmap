@@ -811,6 +811,445 @@
         }
       }
     },
+    "/api/v1/courses/{cid}/sessions": {
+      "get": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Sessions",
+        "operationId": "sessions_api_v1_courses__cid__sessions_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "roadmap_page",
+              "title": "Filter"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Sessions"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Create",
+        "operationId": "create_api_v1_courses__cid__sessions_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewSession"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/sessions/{sid}": {
+      "patch": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Rename",
+        "operationId": "rename_api_v1_courses__cid__sessions__sid__patch",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RenameSession"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Session"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Delete",
+        "operationId": "delete_api_v1_courses__cid__sessions__sid__delete",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/sessions/{sid}/turns": {
+      "get": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Turns",
+        "operationId": "turns_api_v1_courses__cid__sessions__sid__turns_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Turns"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Ask",
+        "operationId": "ask_api_v1_courses__cid__sessions__sid__turns_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewTurn"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/sessions/{sid}/artifacts/{kind}/{aid}": {
+      "get": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Artifact",
+        "operationId": "artifact_api_v1_courses__cid__sessions__sid__artifacts__kind___aid__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "sid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Sid"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Kind"
+            }
+          },
+          {
+            "name": "aid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Aid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ArtifactContent"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/library": {
+      "get": {
+        "tags": [
+          "assistant"
+        ],
+        "summary": "Library",
+        "operationId": "library_api_v1_courses__cid__library_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "scope",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "all",
+              "title": "Scope"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Library"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/courses/{cid}/share-links": {
       "post": {
         "tags": [
@@ -1493,7 +1932,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BuildQuota"
+                  "$ref": "#/components/schemas/MyUsage"
                 }
               }
             }
@@ -1572,6 +2011,253 @@
         ],
         "title": "AccountResponse"
       },
+      "Answer": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "answer-3",
+            "title": "Contract Version"
+          },
+          "answer_id": {
+            "type": "string",
+            "title": "Answer Id"
+          },
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "graph_version": {
+            "type": "integer",
+            "title": "Graph Version"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "client_turn_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Turn Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "answered",
+              "failed",
+              "daily_limit"
+            ],
+            "title": "Status"
+          },
+          "answer_md": {
+            "type": "string",
+            "title": "Answer Md"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "graph_cards": {
+            "$ref": "#/components/schemas/Cards"
+          },
+          "artifacts": {
+            "items": {
+              "$ref": "#/components/schemas/Artifact"
+            },
+            "type": "array",
+            "title": "Artifacts"
+          },
+          "focus_node_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Focus Node Id"
+          },
+          "warnings": {
+            "items": {
+              "type": "string",
+              "const": "focus_ignored"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/wayfinder__api__assistant__Failure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "answer_id",
+          "course_id",
+          "doc_id",
+          "graph_version",
+          "session_id",
+          "client_turn_id",
+          "status",
+          "answer_md",
+          "graph_cards"
+        ],
+        "title": "Answer"
+      },
+      "Artifact": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "quiz",
+              "document",
+              "lecture"
+            ],
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "node_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Id"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "title"
+        ],
+        "title": "Artifact"
+      },
+      "ArtifactContent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "quiz",
+              "document",
+              "lecture"
+            ],
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "node_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Id"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "contract_version": {
+            "type": "string",
+            "enum": [
+              "document-3",
+              "quiz-3"
+            ],
+            "title": "Contract Version"
+          },
+          "markdown": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Markdown"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/QuizItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "title",
+          "contract_version"
+        ],
+        "title": "ArtifactContent"
+      },
       "Body_upload_api_v1_uploads_post": {
         "properties": {
           "file": {
@@ -1613,43 +2299,6 @@
           "retryable"
         ],
         "title": "BuildError"
-      },
-      "BuildQuota": {
-        "properties": {
-          "builds_used": {
-            "type": "integer",
-            "title": "Builds Used"
-          },
-          "build_monthly_max": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Build Monthly Max"
-          },
-          "builds_remaining": {
-            "anyOf": [
-              {
-                "type": "integer"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Builds Remaining"
-          }
-        },
-        "type": "object",
-        "required": [
-          "builds_used",
-          "build_monthly_max",
-          "builds_remaining"
-        ],
-        "title": "BuildQuota"
       },
       "BuildView": {
         "properties": {
@@ -1769,6 +2418,178 @@
           "error"
         ],
         "title": "BuildView"
+      },
+      "Card": {
+        "properties": {
+          "node_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "module_index": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Index"
+          },
+          "module_title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Title"
+          },
+          "title": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Title"
+          },
+          "text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Text"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "quote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Quote"
+          },
+          "page": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Page"
+          },
+          "learner_status": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Learner Status"
+          }
+        },
+        "type": "object",
+        "title": "Card"
+      },
+      "Cards": {
+        "properties": {
+          "scope_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope Note"
+          },
+          "module_cards": {
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "type": "array",
+            "title": "Module Cards"
+          },
+          "later_modules": {
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "type": "array",
+            "title": "Later Modules"
+          },
+          "reminders": {
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "type": "array",
+            "title": "Reminders"
+          },
+          "roadmap": {
+            "items": {
+              "$ref": "#/components/schemas/Card"
+            },
+            "type": "array",
+            "title": "Roadmap"
+          }
+        },
+        "type": "object",
+        "title": "Cards"
       },
       "Citation": {
         "properties": {
@@ -2284,46 +3105,6 @@
         "type": "object",
         "title": "Definition"
       },
-      "Failure": {
-        "properties": {
-          "reason_code": {
-            "type": "string",
-            "title": "Reason Code"
-          },
-          "message": {
-            "type": "string",
-            "minLength": 1,
-            "title": "Message"
-          },
-          "retryable": {
-            "type": "boolean",
-            "const": true,
-            "title": "Retryable",
-            "default": true
-          },
-          "read_page": {
-            "anyOf": [
-              {
-                "$ref": "#/components/schemas/ReadPage"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
-          "ask_assistant": {
-            "type": "boolean",
-            "title": "Ask Assistant",
-            "default": true
-          }
-        },
-        "type": "object",
-        "required": [
-          "reason_code",
-          "message"
-        ],
-        "title": "Failure"
-      },
       "Formula": {
         "properties": {
           "label": {
@@ -2525,6 +3306,29 @@
         ],
         "title": "JoinResult"
       },
+      "LearnerUsage": {
+        "properties": {
+          "used_ratio": {
+            "type": "number",
+            "title": "Used Ratio"
+          },
+          "limited": {
+            "type": "boolean",
+            "title": "Limited"
+          },
+          "resets_at": {
+            "type": "string",
+            "title": "Resets At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "used_ratio",
+          "limited",
+          "resets_at"
+        ],
+        "title": "LearnerUsage"
+      },
       "LectureView": {
         "properties": {
           "contract_version": {
@@ -2614,7 +3418,7 @@
           "failure": {
             "anyOf": [
               {
-                "$ref": "#/components/schemas/Failure"
+                "$ref": "#/components/schemas/wayfinder__api__lecture_models__Failure"
               },
               {
                 "type": "null"
@@ -2672,6 +3476,121 @@
           "definition"
         ],
         "title": "LectureView"
+      },
+      "Library": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "library-1",
+            "title": "Contract Version"
+          },
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "doc_id": {
+            "type": "string",
+            "title": "Doc Id"
+          },
+          "scope_filter": {
+            "type": "string",
+            "title": "Scope Filter"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/LibraryItem"
+            },
+            "type": "array",
+            "title": "Items"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "course_id",
+          "doc_id",
+          "scope_filter",
+          "items"
+        ],
+        "title": "Library"
+      },
+      "LibraryItem": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "document",
+              "quiz_attempt"
+            ],
+            "title": "Kind"
+          },
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "created_at": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Created At"
+          },
+          "origin": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Origin"
+          },
+          "group": {
+            "type": "string",
+            "title": "Group"
+          },
+          "module_labels": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Module Labels"
+          },
+          "label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Label"
+          },
+          "session_deleted": {
+            "type": "boolean",
+            "title": "Session Deleted",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind",
+          "id",
+          "title",
+          "group",
+          "module_labels"
+        ],
+        "title": "LibraryItem"
       },
       "LoginRequest": {
         "properties": {
@@ -2811,6 +3730,138 @@
           "message"
         ],
         "title": "MessageResponse"
+      },
+      "MonthlyUsage": {
+        "properties": {
+          "used": {
+            "type": "integer",
+            "title": "Used"
+          },
+          "max": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max"
+          },
+          "resets_at": {
+            "type": "string",
+            "title": "Resets At"
+          }
+        },
+        "type": "object",
+        "required": [
+          "used",
+          "max",
+          "resets_at"
+        ],
+        "title": "MonthlyUsage"
+      },
+      "MyUsage": {
+        "properties": {
+          "builds_used": {
+            "type": "integer",
+            "title": "Builds Used"
+          },
+          "build_monthly_max": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Build Monthly Max"
+          },
+          "builds_remaining": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Builds Remaining"
+          },
+          "contract_version": {
+            "type": "string",
+            "title": "Contract Version",
+            "default": "usage-1"
+          },
+          "learner_today": {
+            "$ref": "#/components/schemas/LearnerUsage"
+          },
+          "shared_content_today": {
+            "$ref": "#/components/schemas/SharedUsage"
+          },
+          "builds_this_month": {
+            "$ref": "#/components/schemas/MonthlyUsage"
+          }
+        },
+        "type": "object",
+        "required": [
+          "builds_used",
+          "build_monthly_max",
+          "builds_remaining",
+          "learner_today",
+          "shared_content_today",
+          "builds_this_month"
+        ],
+        "title": "MyUsage"
+      },
+      "NewSession": {
+        "properties": {
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scope"
+        ],
+        "title": "NewSession"
+      },
+      "NewTurn": {
+        "properties": {
+          "question": {
+            "type": "string",
+            "maxLength": 4000,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Question"
+          },
+          "client_turn_id": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 1,
+            "pattern": "^[a-zA-Z0-9_-]+$",
+            "title": "Client Turn Id"
+          },
+          "focus_node_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 256
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Focus Node Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "question",
+          "client_turn_id"
+        ],
+        "title": "NewTurn"
       },
       "NextLesson": {
         "properties": {
@@ -3151,6 +4202,50 @@
         ],
         "title": "ProgressSummary"
       },
+      "QuizItem": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "title": "Item Id"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/QuizOption"
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "question",
+          "options"
+        ],
+        "title": "QuizItem"
+      },
+      "QuizOption": {
+        "properties": {
+          "option_id": {
+            "type": "string",
+            "title": "Option Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "option_id",
+          "text"
+        ],
+        "title": "QuizOption"
+      },
       "ReadPage": {
         "properties": {
           "page": {
@@ -3287,6 +4382,22 @@
         ],
         "title": "RegisterRequest"
       },
+      "RenameSession": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "pattern": "\\S",
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "title": "RenameSession"
+      },
       "Resume": {
         "properties": {
           "module_id": {
@@ -3386,6 +4497,49 @@
         ],
         "title": "RoadmapModule"
       },
+      "Scope": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "roadmap",
+              "module"
+            ],
+            "title": "Kind"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "node_ids": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Node Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "title": "Scope"
+      },
       "SelfCheck": {
         "properties": {
           "question_md": {
@@ -3403,6 +4557,129 @@
           "answer_md"
         ],
         "title": "SelfCheck"
+      },
+      "Session": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "session-1",
+            "title": "Contract Version"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "scope": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Scope"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "title": "Updated At"
+          },
+          "turn_count": {
+            "type": "integer",
+            "title": "Turn Count"
+          },
+          "last_question_preview": {
+            "type": "string",
+            "title": "Last Question Preview"
+          },
+          "resolved_module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Resolved Module Id"
+          },
+          "module_label": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Label"
+          },
+          "scope_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scope Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "session_id",
+          "title",
+          "scope",
+          "created_at",
+          "updated_at",
+          "turn_count",
+          "last_question_preview"
+        ],
+        "title": "Session"
+      },
+      "Sessions": {
+        "properties": {
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "sessions": {
+            "items": {
+              "$ref": "#/components/schemas/Session"
+            },
+            "type": "array",
+            "title": "Sessions"
+          },
+          "source_document": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceDocument"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "course_id",
+          "sessions"
+        ],
+        "title": "Sessions"
       },
       "SetProgressRequest": {
         "properties": {
@@ -3509,6 +4786,19 @@
         ],
         "title": "ShareLinkList"
       },
+      "SharedUsage": {
+        "properties": {
+          "limited": {
+            "type": "boolean",
+            "title": "Limited"
+          }
+        },
+        "type": "object",
+        "required": [
+          "limited"
+        ],
+        "title": "SharedUsage"
+      },
       "Source": {
         "properties": {
           "label": {
@@ -3572,6 +4862,77 @@
           "kind"
         ],
         "title": "SourceDocument"
+      },
+      "Turn": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "turn-1",
+            "title": "Contract Version"
+          },
+          "turn_id": {
+            "type": "string",
+            "title": "Turn Id"
+          },
+          "client_turn_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Client Turn Id"
+          },
+          "question": {
+            "type": "string",
+            "title": "Question"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "answer": {
+            "$ref": "#/components/schemas/Answer"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "turn_id",
+          "client_turn_id",
+          "question",
+          "created_at",
+          "answer"
+        ],
+        "title": "Turn"
+      },
+      "Turns": {
+        "properties": {
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "session_id": {
+            "type": "string",
+            "title": "Session Id"
+          },
+          "turns": {
+            "items": {
+              "$ref": "#/components/schemas/Turn"
+            },
+            "type": "array",
+            "title": "Turns"
+          }
+        },
+        "type": "object",
+        "required": [
+          "course_id",
+          "session_id",
+          "turns"
+        ],
+        "title": "Turns"
       },
       "UploadView": {
         "properties": {
@@ -3689,6 +5050,69 @@
           "token"
         ],
         "title": "VerifyEmailRequest"
+      },
+      "wayfinder__api__assistant__Failure": {
+        "properties": {
+          "reason_code": {
+            "type": "string",
+            "title": "Reason Code"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "retryable": {
+            "type": "boolean",
+            "title": "Retryable"
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason_code",
+          "message",
+          "retryable"
+        ],
+        "title": "Failure"
+      },
+      "wayfinder__api__lecture_models__Failure": {
+        "properties": {
+          "reason_code": {
+            "type": "string",
+            "title": "Reason Code"
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Message"
+          },
+          "retryable": {
+            "type": "boolean",
+            "const": true,
+            "title": "Retryable",
+            "default": true
+          },
+          "read_page": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ReadPage"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "ask_assistant": {
+            "type": "boolean",
+            "title": "Ask Assistant",
+            "default": true
+          }
+        },
+        "type": "object",
+        "required": [
+          "reason_code",
+          "message"
+        ],
+        "title": "Failure"
       }
     }
   }

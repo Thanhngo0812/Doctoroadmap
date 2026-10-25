@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="1" errors="0" time="4.9381277">
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-24T15:30:16.563Z" hostname="ADMIN" tests="7" failures="1" errors="0" skipped="0" time="4.9381277">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="0.8429286">
+            <failure message="expected undefined to be &apos;lesson-a&apos; // Object.is equality" type="AssertionError">
+AssertionError: expected undefined to be &apos;lesson-a&apos; // Object.is equality
+
+- Expected:
+&quot;lesson-a&quot;
+
++ Received:
+undefined
+
+ ❯ src/Assistant.test.tsx:55:42
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="0.7177769">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="0.5145861">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="restores a pending intent after remount and reconciles the saved result without sending a new turn" time="0.8324826">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="renames sessions and requires explicit confirmation before deleting history" time="0.8242324">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="opens a persisted artifact only from a structured event, independently of model prose" time="0.6204976">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="blocks sending while a new session is being created and then sends into that session" time="0.5813782">
+        </testcase>
+    </testsuite>
+</testsuites>

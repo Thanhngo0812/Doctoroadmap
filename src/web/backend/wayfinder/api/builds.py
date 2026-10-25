@@ -53,6 +53,29 @@ class BuildQuota(BaseModel):
     builds_remaining: int | None
 
 
+class LearnerUsage(BaseModel):
+    used_ratio: float
+    limited: bool
+    resets_at: str
+
+
+class SharedUsage(BaseModel):
+    limited: bool
+
+
+class MonthlyUsage(BaseModel):
+    used: int
+    max: int | None
+    resets_at: str
+
+
+class MyUsage(BuildQuota):
+    contract_version: str = 'usage-1'
+    learner_today: LearnerUsage
+    shared_content_today: SharedUsage
+    builds_this_month: MonthlyUsage
+
+
 def build_router():
     router=APIRouter(prefix='/api/v1',tags=['builds'])
 
@@ -87,9 +110,21 @@ def build_router():
     def retry(id:str,request:Request,actor:Actor=Depends(get_actor),course_id:str|None=None):
         return request.app.state.services.builds.retry_build(actor,id,course_id=course_id)
 
-    @router.get('/me/usage',response_model=BuildQuota)
+    @router.get('/me/usage',response_model=MyUsage)
     def quota(request:Request,response:Response,actor:Actor=Depends(get_actor)):
         response.headers['cache-control']='no-store'
-        return request.app.state.services.builds.usage(actor)
+        from wayfinder.infrastructure.learning_usage import my_learning_usage
+        services=request.app.state.services
+        learning=services.learning
+        quota=services.builds.usage(actor) if services.builds else {'builds_used':0,'build_monthly_max':None,'builds_remaining':None}
+        if learning is not None:
+            amount=my_learning_usage(actor,learning.courses.store.engine,learning.runtime)
+        else:
+            from types import SimpleNamespace
+            from doc2roadmap.domain.phase_b_limits import BSettings
+            amount=my_learning_usage(actor,services.builds.store.engine,
+                SimpleNamespace(clock=services.builds.clock,settings=BSettings()))
+        return {**quota,**amount,'builds_this_month':{'used':quota['builds_used'],'max':quota['build_monthly_max'],
+            'resets_at':amount.pop('build_month_resets_at')}}
 
     return router

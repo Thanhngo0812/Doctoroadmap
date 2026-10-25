@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.073" timestamp="2026-10-24T22:51:57.003837+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_composition" name="test_lecture_model_uses_core_limits_instead_of_transport_defaults" time="0.291"><failure message="AssertionError: assert 2048 == 4096&#10; +  where 2048 = &lt;doc2roadmap.infrastructure.llm.phase_b.GeminiToolModel object at 0x000001C9E474BB00&gt;.max_output_tokens&#10; +    where &lt;doc2roadmap.infrastructure.llm.phase_b.GeminiToolModel object at 0x000001C9E474BB00&gt; = WebServices(health_check=&lt;function test_lecture_model_uses_core_limits_instead_of_transport_defaults.&lt;locals&gt;.&lt;lambda&gt;...ject at 0x000001C9E43704C0&gt;, accounts=None, phase_b_store=None, courses=None, learning=None, sharing=None, builds=None).model&#10; +  and   4096 = BSettings(model_id='gemini-3.1-flash-lite', embedding_model_id='gemini-embedding-001', lecture_temperature=1.0, docume...ontext_version='lecture-context-4', lecture_context_chars=9000, lecture_max_page_images=8, lecture_thinking_level=None).lecture_max_output_tokens">def test_lecture_model_uses_core_limits_instead_of_transport_defaults() -&gt; None:
+        from doc2roadmap.domain.phase_b_limits import BSettings
+        from doc2roadmap.infrastructure.llm.phase_b import GeminiToolModel
+        settings = BSettings()
+        services = compose_services(WebSettings(_env_file=None), health_check=lambda: 'ok',
+            core_settings=Settings(_env_file=None, llm_transport='vertex', vertex_project='fake-project', vertex_location='us-central1'),
+            auth_validator=lambda *_: None, model_factory=GeminiToolModel,
+            embedding_factory=lambda *_a, **_k: object())
+        try:
+&gt;           assert services.model.max_output_tokens == settings.lecture_max_output_tokens
+E           AssertionError: assert 2048 == 4096
+E            +  where 2048 = &lt;doc2roadmap.infrastructure.llm.phase_b.GeminiToolModel object at 0x000001C9E474BB00&gt;.max_output_tokens
+E            +    where &lt;doc2roadmap.infrastructure.llm.phase_b.GeminiToolModel object at 0x000001C9E474BB00&gt; = WebServices(health_check=&lt;function test_lecture_model_uses_core_limits_instead_of_transport_defaults.&lt;locals&gt;.&lt;lambda&gt;...ject at 0x000001C9E43704C0&gt;, accounts=None, phase_b_store=None, courses=None, learning=None, sharing=None, builds=None).model
+E            +  and   4096 = BSettings(model_id='gemini-3.1-flash-lite', embedding_model_id='gemini-embedding-001', lecture_temperature=1.0, docume...ontext_version='lecture-context-4', lecture_context_chars=9000, lecture_max_page_images=8, lecture_thinking_level=None).lecture_max_output_tokens
+
+src\web\backend\tests\test_composition.py:46: AssertionError</failure></testcase></testsuite></testsuites>

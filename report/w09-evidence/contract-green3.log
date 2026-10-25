@@ -1,0 +1,71 @@
+................E.E......EE                                              [100%]
+=================================== ERRORS ====================================
+_ ERROR at setup of test_seed_only_allows_six_development_documents_in_dev_and_uploads_once _
+
+self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError
+_____ ERROR at setup of test_seed_cli_uses_admin_identity_and_media_port ______
+
+self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError
+_ ERROR at setup of test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point _
+
+self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError
+_ ERROR at setup of test_http_contract_and_building_course_card_are_real_application_outputs _
+
+self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+>           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-evidence\contract-green3.xml -
+=========================== short test summary info ===========================
+ERROR src/web/backend/tests/test_courses_w06.py::test_seed_only_allows_six_development_documents_in_dev_and_uploads_once
+ERROR src/web/backend/tests/test_courses_w06.py::test_seed_cli_uses_admin_identity_and_media_port
+ERROR src/web/backend/tests/test_courses_w06.py::test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point
+ERROR src/web/backend/tests/test_builds_w14.py::test_http_contract_and_building_course_card_are_real_application_outputs
+23 passed, 1 warning, 4 errors in 52.34s
