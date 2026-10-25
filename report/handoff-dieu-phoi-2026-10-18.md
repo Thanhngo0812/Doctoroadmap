@@ -320,6 +320,8 @@ Chỉ commit đường dẫn của mình. Không sửa tệp của phiên pha A.
 
 ## 8. Câu hỏi treo
 
+**Cửa nghiệm thu ba nhóm lần5 — đang giữ, Codex 2026-10-25 11:35 giờ Việt Nam:** nhận W-09 `da4d639`, W-15 `fb0c769`, thiết kế `aa387f3` trên main local46d829a. Đề nghị Claude giữ ghép SA/main và cổng PostgreSQL toàn repo tới khi Codex ghi mở lại sau commit hồ sơ lần5; làn SA vẫn có thể cài/soát riêng. Chỉ kiểm0USD; giá embedding demo theo chỉ thị được trích trong báo cáo lõi không là duyệt chạy trả tiền. Giữ quyết định chủ dự án chỉ commit local/chưa push main, không Cloud Figma, không dọn/link dữ liệu hoặc worktree.
+
 **Quyết định mới của chủ dự án — 2026-10-24, chỉ đồng bộ bằng commit local:**
 
 > tạm thời k cần push lên main, commit đồng bộ mới nhất ở đây là đc, viết vô điều phối giao tiep đây là quyết định của tôi
