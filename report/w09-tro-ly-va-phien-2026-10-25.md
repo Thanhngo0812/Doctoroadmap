@@ -1,5 +1,7 @@
 # W-09 — trợ lý answer-3 và phiên học
 
+**Bổ sung sau nghiệm thu lần 5, 2026-10-25:** đã nhận main `6249dab`, vá hai Required R-W09-1 (gửi câu tiếp khi usage/EOF cũ còn chờ) và R-W09-2 (tool bài giảng thường phải chuyển đúng cache_only/allow_spend). Mốc mã sửa `0ba4ac8`; xem [báo cáo vá và cổng mới](w09-required-fixes-2026-10-25.md). Các số liệu/mutant/mốc dưới đây là lịch sử trước đợt vá, không gán lại thành chạy trên HEAD mới. Chờ điều phối soát/ghép W-09 trước W-10.
+
 Đợt triển khai ngày 2026-10-24, nhánh `work/w09-assistant`, worktree `tmp/w09-assistant`. Đã hoàn tất triển khai và cổng local, bàn giao để điều phối soát/ghép; không tự đánh dấu vé đạt hoặc ghép main.
 
 ## Mốc và phạm vi

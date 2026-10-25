@@ -1,0 +1,557 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="5" failures="1" errors="0" time="3.4559586">
+    <testsuite name="src/Assistant.final-usage-race.test.tsx" timestamp="2026-10-25T05:45:50.736Z" hostname="ADMIN" tests="5" failures="1" errors="0" skipped="0" time="3.4559586">
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="review: a question submitted after final is sent while the usage refresh remains pending" time="1.1833491">
+            <system-out>
+REVIEW_OBSERVATION {&quot;usageCalls&quot;:2,&quot;postedQuestions&quot;:[{&quot;question&quot;:&quot;First question&quot;,&quot;client_turn_id&quot;:&quot;0c29c94c-cc52-4284-9ec4-4e88a4e49151&quot;},{&quot;question&quot;:&quot;Second question must not disappear&quot;,&quot;client_turn_id&quot;:&quot;e60a9182-a879-4b81-be95-6d977da2fe26&quot;}],&quot;draftAfterSubmit&quot;:&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="an old usage success and finally cannot unlock or replace the next streaming turn" time="0.5474579">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="an old usage network error and finally cannot unlock or replace the next streaming turn" time="0.5254282">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="accepts the next question before old EOF and ignores a late old stream error" time="0.7007379">
+        </testcase>
+        <testcase classname="src/Assistant.final-usage-race.test.tsx" name="a late old usage result cannot overwrite newer usage after both answers finish" time="0.4971861">
+            <failure message="Unable to find an element with the text: /80%/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;learning-chat-dock&quot;
+      data-open=&quot;true&quot;
+      data-resizing=&quot;false&quot;
+      style=&quot;--learning-chat-width: 340px;&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        aria-label=&quot;Mở khung trợ lý&quot;
+        class=&quot;button button-secondary learning-chat-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;div
+        aria-controls=&quot;learning-chat-panel-c&quot;
+        aria-label=&quot;Điều chỉnh độ rộng trợ lý&quot;
+        aria-orientation=&quot;vertical&quot;
+        aria-valuemax=&quot;340&quot;
+        aria-valuemin=&quot;340&quot;
+        aria-valuenow=&quot;340&quot;
+        aria-valuetext=&quot;340 pixel&quot;
+        class=&quot;learning-chat-resizer&quot;
+        role=&quot;separator&quot;
+        tabindex=&quot;0&quot;
+        title=&quot;Kéo ngang hoặc dùng phím mũi tên để điều chỉnh&quot;
+      &gt;
+        &lt;span /&gt;
+      &lt;/div&gt;
+      &lt;aside
+        aria-labelledby=&quot;learning-chat-title-c&quot;
+        class=&quot;learning-chat-panel&quot;
+        id=&quot;learning-chat-panel-c&quot;
+      &gt;
+        &lt;header
+          class=&quot;learning-chat-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;learning-chat-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Cả lộ trình
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;learning-chat-close&quot;
+            type=&quot;button&quot;
+          &gt;
+            &lt;svg
+              aria-hidden=&quot;true&quot;
+              viewBox=&quot;0 0 24 24&quot;
+            &gt;
+              &lt;path
+                d=&quot;m6 6 12 12M18 6 6 18&quot;
+              /&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;section
+          aria-label=&quot;Cuộc trò chuyện&quot;
+          class=&quot;learning-chat-conversations&quot;
+        &gt;
+          &lt;div
+            class=&quot;learning-chat-session-toolbar&quot;
+          &gt;
+            &lt;button
+              class=&quot;learning-chat-new&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                viewBox=&quot;0 0 24 24&quot;
+              &gt;
+                &lt;path
+                  d=&quot;M12 5v14M5 12h14&quot;
+                /&gt;
+              &lt;/svg&gt;
+              Trò chuyện mới
+            &lt;/button&gt;
+            &lt;label
+              class=&quot;learning-chat-filter&quot;
+            &gt;
+              &lt;input
+                aria-label=&quot;Tất cả cuộc trò chuyện&quot;
+                type=&quot;checkbox&quot;
+              /&gt;
+              Tất cả
+            &lt;/label&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-chat-session-controls&quot;
+          &gt;
+            &lt;label&gt;
+              Cuộc trò chuyện đang mở
+              &lt;select
+                aria-label=&quot;Cuộc trò chuyện đang mở&quot;
+              &gt;
+                &lt;option
+                  value=&quot;s1&quot;
+                &gt;
+                  Race test
+                   ·
+                  07:00 25-10
+                &lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/label&gt;
+            &lt;div
+              class=&quot;learning-chat-options&quot;
+            &gt;
+              &lt;button
+                aria-controls=&quot;learning-chat-options-c&quot;
+                aria-expanded=&quot;false&quot;
+                aria-label=&quot;Tuỳ chọn cuộc trò chuyện&quot;
+                class=&quot;learning-chat-more&quot;
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                &gt;
+                  &lt;circle
+                    cx=&quot;5&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;1&quot;
+                  /&gt;
+                  &lt;circle
+                    cx=&quot;12&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;1&quot;
+                  /&gt;
+                  &lt;circle
+                    cx=&quot;19&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;1&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;p
+            class=&quot;learning-chat-session-meta&quot;
+          &gt;
+            &lt;time
+              datetime=&quot;2026-10-25T00:00:00Z&quot;
+            &gt;
+              07:00 25-10
+            &lt;/time&gt;
+            &lt;span
+              title=&quot;Second&quot;
+            &gt;
+              Second
+            &lt;/span&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+        &lt;div
+          class=&quot;learning-chat-usage&quot;
+        &gt;
+          &lt;p&gt;
+            Đã dùng 20% hạn mức hôm nay
+          &lt;/p&gt;
+          &lt;progress
+            aria-label=&quot;Hạn mức học hôm nay&quot;
+            max=&quot;1&quot;
+            value=&quot;0.2&quot;
+          /&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;learning-chat-messages&quot;
+          role=&quot;log&quot;
+          tabindex=&quot;0&quot;
+        &gt;
+          &lt;section
+            class=&quot;learning-chat-turn&quot;
+          &gt;
+            &lt;p
+              class=&quot;learning-chat-question&quot;
+            &gt;
+              &lt;span
+                class=&quot;sr-only&quot;
+              &gt;
+                Bạn hỏi:
+              &lt;/span&gt;
+              First
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;learning-chat-answer&quot;
+            &gt;
+              &lt;div
+                class=&quot;lecture-markdown&quot;
+              &gt;
+                &lt;p&gt;
+                  Completed answer 0
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;section
+            class=&quot;learning-chat-turn&quot;
+          &gt;
+            &lt;p
+              class=&quot;learning-chat-question&quot;
+            &gt;
+              &lt;span
+                class=&quot;sr-only&quot;
+              &gt;
+                Bạn hỏi:
+              &lt;/span&gt;
+              Second
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;learning-chat-answer&quot;
+            &gt;
+              &lt;div
+                class=&quot;lecture-markdown&quot;
+              &gt;
+                &lt;p&gt;
+                  Completed answer 1
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;learning-chat-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;learning-chat-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;learning-chat-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: /80%/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;learning-chat-dock&quot;
+      data-open=&quot;true&quot;
+      data-resizing=&quot;false&quot;
+      style=&quot;--learning-chat-width: 340px;&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        aria-label=&quot;Mở khung trợ lý&quot;
+        class=&quot;button button-secondary learning-chat-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;div
+        aria-controls=&quot;learning-chat-panel-c&quot;
+        aria-label=&quot;Điều chỉnh độ rộng trợ lý&quot;
+        aria-orientation=&quot;vertical&quot;
+        aria-valuemax=&quot;340&quot;
+        aria-valuemin=&quot;340&quot;
+        aria-valuenow=&quot;340&quot;
+        aria-valuetext=&quot;340 pixel&quot;
+        class=&quot;learning-chat-resizer&quot;
+        role=&quot;separator&quot;
+        tabindex=&quot;0&quot;
+        title=&quot;Kéo ngang hoặc dùng phím mũi tên để điều chỉnh&quot;
+      &gt;
+        &lt;span /&gt;
+      &lt;/div&gt;
+      &lt;aside
+        aria-labelledby=&quot;learning-chat-title-c&quot;
+        class=&quot;learning-chat-panel&quot;
+        id=&quot;learning-chat-panel-c&quot;
+      &gt;
+        &lt;header
+          class=&quot;learning-chat-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;learning-chat-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Cả lộ trình
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;learning-chat-close&quot;
+            type=&quot;button&quot;
+          &gt;
+            &lt;svg
+              aria-hidden=&quot;true&quot;
+              viewBox=&quot;0 0 24 24&quot;
+            &gt;
+              &lt;path
+                d=&quot;m6 6 12 12M18 6 6 18&quot;
+              /&gt;
+            &lt;/svg&gt;
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;section
+          aria-label=&quot;Cuộc trò chuyện&quot;
+          class=&quot;learning-chat-conversations&quot;
+        &gt;
+          &lt;div
+            class=&quot;learning-chat-session-toolbar&quot;
+          &gt;
+            &lt;button
+              class=&quot;learning-chat-new&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                viewBox=&quot;0 0 24 24&quot;
+              &gt;
+                &lt;path
+                  d=&quot;M12 5v14M5 12h14&quot;
+                /&gt;
+              &lt;/svg&gt;
+              Trò chuyện mới
+            &lt;/button&gt;
+            &lt;label
+              class=&quot;learning-chat-filter&quot;
+            &gt;
+              &lt;input
+                aria-label=&quot;Tất cả cuộc trò chuyện&quot;
+                type=&quot;checkbox&quot;
+              /&gt;
+              Tất cả
+            &lt;/label&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-chat-session-controls&quot;
+          &gt;
+            &lt;label&gt;
+              Cuộc trò chuyện đang mở
+              &lt;select
+                aria-label=&quot;Cuộc trò chuyện đang mở&quot;
+              &gt;
+                &lt;option
+                  value=&quot;s1&quot;
+                &gt;
+                  Race test
+                   ·
+                  07:00 25-10
+                &lt;/option&gt;
+              &lt;/select&gt;
+            &lt;/label&gt;
+            &lt;div
+              class=&quot;learning-chat-options&quot;
+            &gt;
+              &lt;button
+                aria-controls=&quot;learning-chat-options-c&quot;
+                aria-expanded=&quot;false&quot;
+                aria-label=&quot;Tuỳ chọn cuộc trò chuyện&quot;
+                class=&quot;learning-chat-more&quot;
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                &gt;
+                  &lt;circle
+                    cx=&quot;5&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;1&quot;
+                  /&gt;
+                  &lt;circle
+                    cx=&quot;12&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;1&quot;
+                  /&gt;
+                  &lt;circle
+                    cx=&quot;19&quot;
+                    cy=&quot;12&quot;
+                    r=&quot;1&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+          &lt;p
+            class=&quot;learning-chat-session-meta&quot;
+          &gt;
+            &lt;time
+              datetime=&quot;2026-10-25T00:00:00Z&quot;
+            &gt;
+              07:00 25-10
+            &lt;/time&gt;
+            &lt;span
+              title=&quot;Second&quot;
+            &gt;
+              Second
+            &lt;/span&gt;
+          &lt;/p&gt;
+        &lt;/section&gt;
+        &lt;div
+          class=&quot;learning-chat-usage&quot;
+        &gt;
+          &lt;p&gt;
+            Đã dùng 20% hạn mức hôm nay
+          &lt;/p&gt;
+          &lt;progress
+            aria-label=&quot;Hạn mức học hôm nay&quot;
+            max=&quot;1&quot;
+            value=&quot;0.2&quot;
+          /&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;learning-chat-messages&quot;
+          role=&quot;log&quot;
+          tabindex=&quot;0&quot;
+        &gt;
+          &lt;section
+            class=&quot;learning-chat-turn&quot;
+          &gt;
+            &lt;p
+              class=&quot;learning-chat-question&quot;
+            &gt;
+              &lt;span
+                class=&quot;sr-only&quot;
+              &gt;
+                Bạn hỏi:
+              &lt;/span&gt;
+              First
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;learning-chat-answer&quot;
+            &gt;
+              &lt;div
+                class=&quot;lecture-markdown&quot;
+              &gt;
+                &lt;p&gt;
+                  Completed answer 0
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;section
+            class=&quot;learning-chat-turn&quot;
+          &gt;
+            &lt;p
+              class=&quot;learning-chat-question&quot;
+            &gt;
+              &lt;span
+                class=&quot;sr-only&quot;
+              &gt;
+                Bạn hỏi:
+              &lt;/span&gt;
+              Second
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;learning-chat-answer&quot;
+            &gt;
+              &lt;div
+                class=&quot;lecture-markdown&quot;
+              &gt;
+                &lt;p&gt;
+                  Completed answer 1
+                &lt;/p&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;learning-chat-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;learning-chat-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;learning-chat-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Assistant.final-usage-race.test.tsx:150:17
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
