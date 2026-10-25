@@ -318,3 +318,110 @@ class LearningGateway:
             raise WebError('validation', 'Bộ lọc thư viện không hợp lệ')
         return {'course_id': cid, **LibraryUseCase(self.runtime.store, graph, settings=self.runtime.settings,
             clock=self.runtime.clock).list_library(actor.user_id, course.doc_id, scope)}
+
+    @staticmethod
+    def _content_scope(graph, module_id=None):
+        if module_id is None:
+            return {'kind': 'roadmap'}
+        if module_id not in graph.modules:
+            raise WebError('not_found', 'Không tìm thấy module')
+        return {'kind': 'module', 'module_id_at_creation': module_id,
+            'graph_version_at_creation': graph.graph_version,
+            'node_ids': [nid for nid in graph.modules[module_id]['node_ids'] if nid in graph.learnable_nodes]}
+
+    def prepare_quiz(self, actor, cid, scope):
+        course, graph = self._context(actor, cid)
+        if scope.get('kind') == 'module' and not scope.get('module_id'):
+            raise WebError('validation', 'Hãy chọn module để làm quiz')
+        home = self._content_scope(graph, scope.get('module_id') if scope.get('kind') == 'module' else None)
+        return course, graph, home
+
+    def make_quiz(self, actor, cid, scope, n=None, on_event=None):
+        from wayfinder.application.content_view import quiz_item, quiz_view
+        course, graph, home = self.prepare_quiz(actor, cid, scope)
+        def emit(row):
+            if on_event and row.get('event') == 'item_ready':
+                on_event({'event': 'item_ready', 'attempt_id': row['attempt_id'], 'item': quiz_item(row['item'])})
+        raw = self.runtime.quiz(graph).make_quiz(course.doc_id, owner=actor.user_id, scope=home,
+            graph_version=course.published_graph_version, origin='button', home_scope=home, allow_spend=True,
+            n=n, on_event=emit)
+        result = quiz_view(raw, course, self.media.describe_source(course, graph) if self.media else None)
+        if on_event:
+            on_event({'event': 'final', 'quiz': result})
+        return result
+
+    def _owned_content(self, actor, cid, kind, aid):
+        course, graph = self._context(actor, cid)
+        row = self.runtime.store.get_record(kind, aid)
+        if not row or row.get('owner') != actor.user_id or row.get('doc_id') != course.doc_id:
+            raise WebError('not_found', 'Không tìm thấy nội dung yêu cầu')
+        return course, graph, row
+
+    def get_quiz(self, actor, cid, aid):
+        from wayfinder.application.content_view import quiz_view
+        course, graph, _ = self._owned_content(actor, cid, 'quiz_attempt', aid)
+        raw = self.runtime.quiz(graph).get_attempt(aid, actor.user_id)
+        return quiz_view(raw, course, self.media.describe_source(course, graph) if self.media else None)
+
+    def get_quiz_result(self, actor, cid, aid):
+        from wayfinder.application.content_view import result_view
+        _, _, row = self._owned_content(actor, cid, 'quiz_attempt', aid)
+        if not row.get('submission'):
+            raise WebError('not_found', 'Quiz này chưa được nộp')
+        return result_view({**row['submission'], 'contract_version': row['contract_version'], 'attempt_id': aid})
+
+    def submit_quiz(self, actor, cid, aid, answers):
+        from wayfinder.application.content_view import result_view
+        # Core submission and progress writes share this short PostgreSQL transaction.
+        with self.runtime.store.atomic():
+            _, graph, row = self._owned_content(actor, cid, 'quiz_attempt', aid)
+            if row.get('status') != 'ready':
+                raise WebError('conflict', 'Quiz chưa sẵn sàng để nộp')
+            allowed = {item['item_id']: {option['option_id'] for option in item['options']} for item in row['items']}
+            if any(key not in allowed or value not in allowed[key] for key, value in answers.items()):
+                raise WebError('validation', 'Lựa chọn không thuộc đề quiz này')
+            if row.get('submission'):
+                if row['submission']['answers'] != answers:
+                    raise WebError('conflict', 'Quiz đã được nộp. Hãy mở một lần làm mới.')
+                return self.get_quiz_result(actor, cid, aid)
+            return result_view(self.runtime.quiz(graph).submit(aid, actor.user_id, answers))
+
+    def prepare_document(self, actor, cid, module_ids, home_module_id=None):
+        course, graph = self._context(actor, cid)
+        modules = list(dict.fromkeys(module_ids))
+        if not modules or any(mid not in graph.modules for mid in modules):
+            raise WebError('validation', 'Hãy chọn module thuộc lộ trình này')
+        if len(modules) > self.runtime.settings.document_max_modules:
+            raise WebError('scope_too_large', 'Chọn tối đa 5 module hoặc thu hẹp phạm vi để tạo tài liệu.')
+        return course, graph, modules, self._content_scope(graph, home_module_id)
+
+    def admit_document(self, actor):
+        from wayfinder.infrastructure.document_requests import DocumentRequests
+        DocumentRequests(self.courses.store.engine, self.courses.settings, self.runtime.clock).admit(actor.user_id)
+
+    def make_document(self, actor, cid, request, module_ids, home_module_id=None, on_event=None):
+        from wayfinder.application.content_view import document_view
+        course, graph, modules, home = self.prepare_document(actor, cid, module_ids, home_module_id)
+        source = self.media.describe_source(course, graph) if self.media else None
+        def emit(row):
+            if not on_event:
+                return
+            kind = row['event']
+            if kind in {'skeleton', 'delta'}:
+                on_event({key: row[key] for key in ('event', 'document_id', 'title', 'text') if key in row})
+            elif kind in {'final', 'failure'}:
+                on_event({'event': kind, 'document': document_view(row['document'], course, source)})
+        raw = self.runtime.document(graph).create(course.doc_id, course.published_graph_version, graph, request,
+            {'module_ids': modules}, owner=actor.user_id, origin='button', home_scope=home,
+            allow_spend=True, on_event=emit)
+        return document_view(raw, course, source)
+
+    def get_document(self, actor, cid, did):
+        from wayfinder.application.content_view import document_view
+        course, graph, _ = self._owned_content(actor, cid, 'documents', did)
+        return document_view(self.runtime.document(graph).get(did, owner=actor.user_id), course,
+            self.media.describe_source(course, graph) if self.media else None)
+
+    def export_document(self, actor, cid, did):
+        _, graph, _ = self._owned_content(actor, cid, 'documents', did)
+        return self.runtime.document(graph).export(did, owner=actor.user_id)

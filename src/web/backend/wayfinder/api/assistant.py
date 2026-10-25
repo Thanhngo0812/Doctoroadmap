@@ -137,6 +137,7 @@ class LibraryItem(BaseModel):
     module_labels: list[str]
     label: str | None = None
     session_deleted: bool = False
+    score: dict[str, int] | None = None
 
 
 class Library(BaseModel):
