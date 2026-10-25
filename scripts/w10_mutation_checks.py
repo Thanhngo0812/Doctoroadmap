@@ -80,3 +80,40 @@ cases = [
         "react"
     ]
 ]
+
+
+def main():
+    assert not OUT.exists(), 'Retain the previous mutation run'
+    OUT.mkdir(parents=True)
+    results = []
+    for name, relative, before, after, test in cases:
+        target = ROOT / relative; original = target.read_bytes(); source = original.decode('utf8')
+        assert source.count(before) == 1, (name, 'mutation must have exactly one target', source.count(before))
+        log, junit = OUT / (name+'.log'), OUT / (name+'.xml')
+        if test == 'react':
+            args = ['cmd', '/d', '/c', 'npm.cmd', '--prefix', 'src/web/frontend', 'test', '--', '--pool=threads', '--maxWorkers=1',
+                'src/Content.test.tsx', '--reporter=junit', '--outputFile=../../../'+str(junit.relative_to(ROOT)).replace('\\','/')]
+        else:
+            args = [sys.executable, '-X', 'utf8', 'scripts/w05_run_tests.py', '-o', 'addopts=', '-q', TEST+test,
+                '--basetemp=tmp/w10-'+RUN+'-'+name, '--junitxml='+str(junit.relative_to(ROOT))]
+        try:
+            target.write_text(source.replace(before, after), encoding='utf8')
+            with log.open('wb') as output:
+                native = subprocess.run(args, cwd=ROOT, stdout=output, stderr=subprocess.STDOUT, env=os.environ).returncode
+            tree = ET.parse(junit)
+            failed = [row.attrib.get('name') for row in tree.findall('.//testcase') if row.find('failure') is not None]
+            errors = tree.findall('.//testcase/error')
+            row = dict(name=name, path=relative, sourceCommit=subprocess.check_output(['git','rev-parse','HEAD'], cwd=ROOT, text=True).strip(), sourceSha256=hashlib.sha256(original).hexdigest(), mutatedSha256=hashlib.sha256(target.read_bytes()).hexdigest(),
+                command=args, nativeExitCode=native, failedAssertions=failed, errors=len(errors))
+            results.append(row)
+            assert native == 1 and failed and not errors, row
+        finally:
+            target.write_bytes(original)
+            assert target.read_bytes() == original
+            results[-1]['restoredSha256'] = hashlib.sha256(target.read_bytes()).hexdigest()
+            (OUT / 'results.json').write_text(json.dumps(results, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
+        print(name + ': RED; source restored', flush=True)
+    return 0
+
+
+if __name__ == '__main__': raise SystemExit(main())
