@@ -80,7 +80,9 @@ def test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffl
     conflict = w.a.client.post(path + '/submit', headers=w.a.headers, json={'answers': {}})
     assert conflict.status_code == 409
     assert_no_answers(w.a.client.get(path).json())
+    assert w.a.client.get(path).json()['submitted'] is True
     assert w.a.client.get(path + '/result').json() == first.json()
+    assert w.b.client.get(path + '/result').status_code == 404
     assert len(w.generator.calls) == len(w.verifier.calls) == 1
 
 
@@ -212,3 +214,35 @@ def test_w10_quiz_sse_keeps_answers_private_and_revocation_denies_the_next_reque
     assert removed.status_code == 200
     assert w.b.client.get(w.base + '/quizzes/' + aid).status_code == 404
     assert w.b.client.post(w.base + '/quizzes/' + aid + '/submit', headers=w.b.headers, json={'answers': {}}).status_code == 404
+
+
+def test_w10_core_limits_stop_document_model_and_keep_quiz_bank_available(content):
+    w = content
+    made = create_quiz(w); before = len(w.generator.calls)
+    w.generator.is_replay = w.verifier.is_replay = False
+    w.document.is_replay = False
+    w.phase_b.append_usage({'purpose': 'document', 'doc_id': 'another-book', 'learner_id': w.a.actor.user_id,
+        'created_at': w.clock.now().isoformat(), 'cost_usd': 1.0})
+    denied = w.a.client.post(w.base + '/documents', headers=w.a.headers, json={'module_ids': ['m1']})
+    assert denied.status_code == 201 and denied.json()['status'] == 'failed'
+    assert denied.json()['failure']['reason_code'] == 'daily_limit'
+    assert not w.document.calls
+    w.phase_b.append_usage({'purpose': 'quiz_gen', 'doc_id': 'another-book',
+        'created_at': w.clock.now().isoformat(), 'cost_usd': 5.0})
+    reused = create_quiz(w)
+    assert reused['status'] == 'ready' and len(w.generator.calls) == before
+    assert len(reused['items'][0]['options']) == 4
+
+
+def test_w10_saved_content_cannot_be_opened_through_another_book(content):
+    w = content; made = create_quiz(w)
+    other = w.courses.create_course(w.a.actor, doc_id='another-book', title='Another book', graph_version=8, module_count=1)
+    def load(doc_id, version):
+        graph = deepcopy(w.graph); graph.doc_id = doc_id; return graph
+    w.gateway.graph_loader = load
+    response = w.a.client.get(f'/api/v1/courses/{other.id}/quizzes/{made["attempt_id"]}')
+    assert response.status_code == 404
+    bad = w.a.client.post(w.base + '/quizzes/' + made['attempt_id'] + '/submit', headers=w.a.headers,
+        json={'answers': {made['items'][0]['item_id']: 'forged-option'}})
+    assert bad.status_code == 422
+    assert 'submission' not in w.phase_b.get_record('quiz_attempt', made['attempt_id'])

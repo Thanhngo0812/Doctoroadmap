@@ -4,7 +4,7 @@ import { useAuth } from './Auth';
 import { ApiError } from './api';
 import { createContent, documentPath, getLibrary, quizPath, type LibraryItem } from './content-api';
 import type { CourseModule } from './courses-api';
-import LectureMarkdown from './LectureMarkdown';
+import LectureMarkdown from './ContentMarkdown';
 import TaskWait from './TaskWait';
 import './content.css';
 
@@ -66,7 +66,7 @@ function CreateDocument({ courseId, moduleId, modules, onClose }: {
       {invalid ? <p className="content-field-error" id="document-scope-error" role="alert">Chọn tối đa 5 module. Bỏ bớt một module để tiếp tục.</p>
         : <p className="content-hint" id="document-scope-hint">Chọn tối đa 5 module. Tài liệu được lưu riêng trong thư viện của bạn.</p>}
       {error && <p className="content-error" role="alert">{error}</p>}
-      {body && <div className="content-draft" aria-label="Tài liệu đang viết"><LectureMarkdown text={body} allowLinks={false} /></div>}
+      {body && <div className="content-draft" aria-label="Tài liệu đang viết"><LectureMarkdown text={body} gfm allowLinks={false} /></div>}
       {busy && <TaskWait message={body ? 'Đang viết tiếp tài liệu…' : 'Đang chuẩn bị tài liệu…'} />}
       {error && savedId && <Link to={documentPath(courseId, savedId)}>Mở tài liệu đã lưu</Link>}
       <footer><button className="button button-secondary" type="button" onClick={onClose}>Đóng</button>

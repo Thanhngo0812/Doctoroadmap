@@ -112,3 +112,30 @@ it('restores an already submitted result on reload without resubmitting', async 
   expect(posts).toHaveLength(0);
   expect(screen.queryByRole('button', { name: 'Nộp bài' })).not.toBeInTheDocument();
 });
+
+
+function documentResponse() {
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation((input, init) => String(input).endsWith('/documents/d1')
+    ? Promise.resolve(json({ contract_version: 'document-3', course_id: 'c', document_id: 'd1', request: 'Ôn tập', status: 'ready',
+      title: 'Bảng ôn tập', markdown: '# Bảng ôn tập\n\n| Công thức | Ghi chú |\n| --- | --- |\n| $x^2$ | Ví dụ [S1] |\n\n<img src=x onerror=alert(1)>\n\n[Link lạ](javascript:alert(1)) [S999]',
+      sources: [{ label: 'S1', chunk_id: 'ch', page: 1, section_path: [] }], warnings: [], failure: null, source_document: { kind: 'pdf', page_count: 2 } }))
+    : original(input, init));
+}
+it('renders a document Markdown table with safe math, registered sources and no executable prose links', async () => {
+  documentResponse(); page('/khoa-hoc/c/tai-lieu/d1');
+  await screen.findByRole('link', { name: 'Tải Markdown' });
+  expect(document.querySelector('.content-document-body table')).not.toBeNull();
+  expect(document.querySelector('.content-document-body table')).toHaveTextContent('Công thức');
+  expect(document.querySelector('.content-document-body .katex')).not.toBeNull();
+  expect(document.querySelector('.content-document-body img')).toBeNull();
+  expect(screen.queryByRole('link', { name: 'Link lạ' })).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Nguồn S1, trang 1' })).toBeEnabled();
+  expect(screen.getByText('[S999]')).toBeVisible();
+});
+it('shows a generated document title once while preserving the complete raw Markdown for download', async () => {
+  documentResponse(); page('/khoa-hoc/c/tai-lieu/d1');
+  await screen.findByRole('link', { name: 'Tải Markdown' });
+  expect(screen.getAllByRole('heading', { name: 'Bảng ôn tập' })).toHaveLength(1);
+  expect(screen.getByRole('link', { name: 'Tải Markdown' })).toHaveAttribute('href', '/api/v1/courses/c/documents/d1/markdown');
+});

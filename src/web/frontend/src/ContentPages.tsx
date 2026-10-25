@@ -6,7 +6,8 @@ import { CourseShell, type ThemeProps } from './Courses';
 import { coursePath, modulePath } from './courses-api';
 import { contentBase, createContent, getDocument, getQuiz, getQuizResult, quizPath, submitQuiz,
   type Quiz, type QuizItem, type QuizResult, type StudyDocument } from './content-api';
-import LectureMarkdown, { type LectureSource } from './LectureMarkdown';
+import type { LectureSource } from './LectureMarkdown';
+import LectureMarkdown from './ContentMarkdown';
 import SourceViewer from './SourceViewer';
 import TaskWait from './TaskWait';
 import './learning.css';
@@ -85,9 +86,9 @@ export function QuizPage(props: ThemeProps) {
         <legend><span>Câu {index + 1}</span>{item.bloom && <small>{bloomLabel[item.bloom] || 'Ôn tập'}</small>}</legend>
         <LectureMarkdown text={item.stem} allowLinks={false} />
         <div className="content-options">{item.options.map((option, position) => <label className={answers[item.item_id] === option.option_id ? 'is-selected' : ''} key={option.option_id}>
-          <input type="radio" name={item.item_id} value={option.option_id} checked={answers[item.item_id] === option.option_id}
+          <input type="radio" aria-label={'Phương án ' + String.fromCharCode(65 + position)} aria-describedby={'quiz-option-' + item.item_id + '-' + option.option_id} name={item.item_id} value={option.option_id} checked={answers[item.item_id] === option.option_id}
             onChange={() => { const next = { ...answersRef.current, [item.item_id]: option.option_id }; answersRef.current = next; setAnswers(next); }} />
-          <span className="content-option-letter" aria-hidden="true">{String.fromCharCode(65 + position)}</span><LectureMarkdown text={option.text} allowLinks={false} />
+          <span className="content-option-letter" aria-hidden="true">{String.fromCharCode(65 + position)}</span><div id={'quiz-option-' + item.item_id + '-' + option.option_id}><LectureMarkdown text={option.text} allowLinks={false} /></div>
         </label>)}</div>
       </fieldset>)}
       {loading && <TaskWait message={items.length ? 'Đang soạn thêm câu hỏi…' : 'Đang chuẩn bị quiz…'} />}
@@ -116,12 +117,12 @@ export function DocumentPage(props: ThemeProps) {
     <Link className="content-back" to={coursePath(cid)}>← Quay lại lộ trình</Link>
     {error ? <div className="content-error" role="alert"><h1>Chưa mở được tài liệu</h1><p>{error}</p><button className="button button-secondary" type="button" onClick={() => setRevision(value => value + 1)}>Thử lại</button></div>
       : !document ? <><h1>Tài liệu học tập</h1><TaskWait message="Đang mở tài liệu…" /></>
-      : <><header className="content-page-heading"><p className="content-eyebrow">Thư viện của bạn</p><h1>{document.title || 'Tài liệu học tập'}</h1>
+      : <><header className="content-page-heading"><p className="content-eyebrow">Thư viện của bạn</p><LectureMarkdown text={'# ' + (document.title || 'Tài liệu học tập')} allowLinks={false} />
         {document.status === 'ready' && <a className="button button-secondary" download href={contentBase(cid) + '/documents/' + encodeURIComponent(did) + '/markdown'}>Tải Markdown</a>}</header>
         {document.failure && <div className="content-error" role="alert"><p>{document.failure.message}</p><Link to={coursePath(cid)}>Quay lại để tạo tài liệu khác</Link></div>}
         {document.warnings.includes('cat_ngan') && <p className="content-notice" role="status">Nội dung bị ngắt ở cuối. Phần đã viết vẫn được giữ.</p>}
         <p className="content-hint">Nhãn [Sx] dẫn đến tài liệu gốc. Diễn giải và ví dụ mở rộng có thể không có nhãn nguồn.</p>
-        <article className="content-document-body"><LectureMarkdown text={document.markdown} sources={document.sources} allowLinks={false}
+        <article className="content-document-body"><LectureMarkdown text={document.markdown.replace(/^\s*# ([^\n]+)\n*/, (heading, title: string) => title.trim() === document.title.trim() ? '' : heading)} gfm sources={document.sources} allowLinks={false}
           onSource={pages ? value => setPage(value) : undefined} /></article>
         {document.sources.length > 0 && <section className="lecture-sources"><h2>Trong sách</h2><ul>{document.sources.map((row, index) => <li key={row.label + index}>
           <button className="lecture-source-link" type="button" disabled={!pages || !row.page || row.page > pages} onClick={() => row.page && setPage(row.page)}>[{row.label}] Trang {row.page ?? '—'}</button>

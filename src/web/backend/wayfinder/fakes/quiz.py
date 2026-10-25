@@ -1,6 +1,6 @@
 """Quiz-3 generator and blind solver for zero-cost HTTP/browser checks."""
 import json
-from threading import Lock
+from threading import Lock, Event
 from types import SimpleNamespace
 
 
@@ -11,6 +11,8 @@ class ScriptedQuizModel:
     def __init__(self, generator=None):
         self.generator = generator
         self.calls, self.correct, self.lock = [], {}, Lock()
+        self.pause_concept = None
+        self.waiting, self.release = Event(), Event()
 
     def start_session(self, system, tools=()):
         model = self
@@ -20,6 +22,10 @@ class ScriptedQuizModel:
                     model.calls.append({'system': system, 'prompt': prompt, **kwargs})
                 if model.generator is None:
                     name = prompt.split('\n', 1)[0].removeprefix('Khái niệm: ')
+                    if name == model.pause_concept:
+                        model.waiting.set()
+                        if not model.release.wait(15):
+                            raise TimeoutError('W10 fake quiz release timed out')
                     items = []
                     for number, bloom in enumerate(['nho', 'hieu', 'van_dung'], 1):
                         stem = f'{name}: phép tính $1+{number}$ có kết quả nào?'

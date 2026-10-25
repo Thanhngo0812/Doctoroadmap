@@ -359,9 +359,9 @@ class LearningGateway:
 
     def get_quiz(self, actor, cid, aid):
         from wayfinder.application.content_view import quiz_view
-        course, graph, _ = self._owned_content(actor, cid, 'quiz_attempt', aid)
+        course, graph, stored = self._owned_content(actor, cid, 'quiz_attempt', aid)
         raw = self.runtime.quiz(graph).get_attempt(aid, actor.user_id)
-        return quiz_view(raw, course, self.media.describe_source(course, graph) if self.media else None)
+        return quiz_view({**raw, 'submission': bool(stored.get('submission'))}, course, self.media.describe_source(course, graph) if self.media else None)
 
     def get_quiz_result(self, actor, cid, aid):
         from wayfinder.application.content_view import result_view
