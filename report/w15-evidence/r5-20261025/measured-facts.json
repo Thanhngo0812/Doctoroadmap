@@ -1,0 +1,2611 @@
+{
+  "attempts": [
+    {
+      "label": "doc-6-first",
+      "status": "succeeded",
+      "run_dir": "tmp/w15-operator-doc-6-722e9386b724",
+      "database": "wayfinder_w15_722e9386b724",
+      "reference": "w15-owner-20261025-doc-6-241f4459945a49dbb25847573f97acd8",
+      "plan": {
+        "book": "doc-6",
+        "run_dir": "tmp/w15-operator-doc-6-722e9386b724",
+        "database": "wayfinder_w15_722e9386b724",
+        "file_sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+        "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+        "dry_run": {
+          "doc_id": "u-82cb494d407c4755d29d",
+          "status": "dry_run",
+          "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+          "graph_version": null,
+          "completed_steps": [
+            "doc_reading"
+          ],
+          "step_details": {
+            "doc_reading": {
+              "chunks_version": 1,
+              "parse_version": 1,
+              "chunk_count": 26,
+              "a4_gold_coverage": "none",
+              "page_count": 25,
+              "alphabetic_chars": 4495,
+              "average_alphabetic_chars_per_page": 179.8,
+              "empty_page_ratio": 0.0,
+              "vi_diacritic_ratio": 0.2407119021134594
+            },
+            "dry_run": {
+              "cache_validated": false,
+              "chunks_version": 1,
+              "candidate_version": null,
+              "canonical_version": null,
+              "graph_version": null,
+              "retrieval_version": null
+            }
+          },
+          "spent_usd": 0.0,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": true,
+          "elapsed_seconds": 5.203513700005715,
+          "error": null
+        },
+        "vertex_project_configured": true,
+        "transport": "vertex",
+        "location": "global",
+        "approved": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false,
+        "provider_calls": 0,
+        "proposed_max_usd": "1.00"
+      },
+      "budget": {
+        "limit_usd": "1",
+        "known_usd": "0.1204034",
+        "held_usd": "0",
+        "unknown_upper_usd": "0",
+        "http_calls": 334,
+        "stopped": false,
+        "audit_failed": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      },
+      "sql_ledger_usd": "0.120403",
+      "usage": {
+        "spent_usd": 0.120403,
+        "model_calls": 334,
+        "input_tokens": 332688,
+        "output_tokens": 25390,
+        "usage_complete": true
+      },
+      "stages": [
+        {
+          "step": "concepts",
+          "generation": 114,
+          "embedding": 121,
+          "known_usd": "0.10773590",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 168.2843862999871,
+            "embedding_wait_seconds": 39.23766329999489,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "label_roles": {
+              "chunks_version": 2,
+              "reused": false
+            },
+            "a3": {
+              "candidate_version": 1,
+              "retrieval_version": 1,
+              "a3_reused": false,
+              "a3_prime_reused": false
+            },
+            "canonical": {
+              "canonical_version": 1,
+              "reused": false,
+              "a4_gold_coverage": "none"
+            },
+            "web_timing": {
+              "wall_seconds": 168.2843862999871,
+              "embedding_wait_seconds": 39.23766329999489,
+              "embedding_wait_measured": true
+            }
+          }
+        },
+        {
+          "step": "doc_reading",
+          "generation": 0,
+          "embedding": 0,
+          "known_usd": "0",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 0.20657260000007227,
+            "embedding_wait_seconds": 0.0,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "chunks_version": 1,
+            "parse_version": 1,
+            "chunk_count": 26,
+            "a4_gold_coverage": "none",
+            "page_count": 25,
+            "alphabetic_chars": 4495,
+            "average_alphabetic_chars_per_page": 179.8,
+            "empty_page_ratio": 0.0,
+            "vi_diacritic_ratio": 0.2407119021134594,
+            "web_timing": {
+              "wall_seconds": 0.20657260000007227,
+              "embedding_wait_seconds": 0.0,
+              "embedding_wait_measured": true
+            }
+          }
+        },
+        {
+          "step": "graph",
+          "generation": 4,
+          "embedding": 80,
+          "known_usd": "0.01246575",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 41.84031600000162,
+            "embedding_wait_seconds": 25.187475399987306,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "graph_version": 8,
+            "reused": false,
+            "web_timing": {
+              "wall_seconds": 41.84031600000162,
+              "embedding_wait_seconds": 25.187475399987306,
+              "embedding_wait_measured": true
+            }
+          }
+        },
+        {
+          "step": "learning_prep",
+          "generation": 0,
+          "embedding": 15,
+          "known_usd": "0.00020175",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 11.845662499996251,
+            "embedding_wait_seconds": 11.690737900004024,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "a12": {
+              "graph_version": 8,
+              "retrieval_version": 1,
+              "assignment_count": 26
+            },
+            "concept_index": {
+              "graph_version": 8,
+              "model_id": "gemini-embedding-001:768",
+              "reused": false,
+              "concept_count": 15
+            },
+            "formulas": {
+              "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-doc-6-722e9386b724\\artifacts\\phase_b\\formula_images\\u-82cb494d407c4755d29d\\parse-v1\\index.json",
+              "parse_version": 1,
+              "cut_count": 0,
+              "skipped_count": 0
+            },
+            "page_images": {
+              "parse_version": 1,
+              "page_count": 0
+            },
+            "web_timing": {
+              "wall_seconds": 11.845662499996251,
+              "embedding_wait_seconds": 11.690737900004024,
+              "embedding_wait_measured": true
+            }
+          }
+        }
+      ],
+      "transport": {
+        "responses": 0,
+        "status_counts": {},
+        "errors": [],
+        "max_seconds": null,
+        "observed_peak": {
+          "all": 0,
+          "predict": 0,
+          "generateContent": 0
+        }
+      },
+      "accounting_assertions_passed": true,
+      "graph": {
+        "version": 8,
+        "module_count": 2,
+        "concept_count": 15,
+        "mentioned_count": 12,
+        "non_learnable_count": 26,
+        "edges": {
+          "bypassed_edges": 0,
+          "main_edges": 1,
+          "open_edges": 46,
+          "removed_cycle_edges": 0,
+          "requires_edges": 1,
+          "secondary_edges": 0,
+          "soft_backward_edges": 0,
+          "topic_edges": 52
+        },
+        "quality_gate": {
+          "fallback": "document_order",
+          "isolated_learnable_count": 25,
+          "isolated_ratio": 0.9259259259259259,
+          "learnable_node_count": 27,
+          "nonredundant_edges_per_learnable": 0.037037037037037035,
+          "nonredundant_requires_edge_count": 1,
+          "passed": false,
+          "requires_edge_count": 1,
+          "warning": "A9 structural consistency gate closed: prerequisite graph is too sparse or isolated; A10 will use document order"
+        }
+      },
+      "artifact_images": [
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/06c935328c3b08f7a13ed7bd625539189f7aeae907ec00fa7a96c4782211c3b7.png",
+          "size": [
+            1280,
+            720
+          ],
+          "format": "PNG",
+          "bytes": 639813,
+          "sha256": "06c935328c3b08f7a13ed7bd625539189f7aeae907ec00fa7a96c4782211c3b7"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/249ba18b9295c5d5a55ce6090f0555e7ca5e9d6089af59df12244f74dd76f8c2.png",
+          "size": [
+            580,
+            580
+          ],
+          "format": "PNG",
+          "bytes": 40177,
+          "sha256": "249ba18b9295c5d5a55ce6090f0555e7ca5e9d6089af59df12244f74dd76f8c2"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/2f749e97f253a83f0d3cbbded4b9f500b5ae676cff8f90f4f3aae4a1a03de527.png",
+          "size": [
+            580,
+            580
+          ],
+          "format": "PNG",
+          "bytes": 40178,
+          "sha256": "2f749e97f253a83f0d3cbbded4b9f500b5ae676cff8f90f4f3aae4a1a03de527"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/36a4fc2b9ccc672e039061493a009af5da78a5cf4e2c85e12960cffe366cb90d.png",
+          "size": [
+            257,
+            257
+          ],
+          "format": "PNG",
+          "bytes": 19663,
+          "sha256": "36a4fc2b9ccc672e039061493a009af5da78a5cf4e2c85e12960cffe366cb90d"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/4cb88a6bc748684df57c8b40c0af03f88c17da3c5b39fed64114e90fce9d998a.png",
+          "size": [
+            737,
+            736
+          ],
+          "format": "PNG",
+          "bytes": 86153,
+          "sha256": "4cb88a6bc748684df57c8b40c0af03f88c17da3c5b39fed64114e90fce9d998a"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/5b07b8a986e48e80069925deb8a6fa9c701c71d5c0743340dda3b70741913dab.png",
+          "size": [
+            2688,
+            160
+          ],
+          "format": "PNG",
+          "bytes": 30303,
+          "sha256": "5b07b8a986e48e80069925deb8a6fa9c701c71d5c0743340dda3b70741913dab"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/66a39d4cc87e6045efdeaab21e4d1ce2303aef9f65263baf919de64c690481eb.png",
+          "size": [
+            1189,
+            824
+          ],
+          "format": "PNG",
+          "bytes": 53945,
+          "sha256": "66a39d4cc87e6045efdeaab21e4d1ce2303aef9f65263baf919de64c690481eb"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/74f63cba3c877c1681ce401728e986c17a6e2071fef2b8e33a19d0b77747aace.png",
+          "size": [
+            2688,
+            159
+          ],
+          "format": "PNG",
+          "bytes": 3367,
+          "sha256": "74f63cba3c877c1681ce401728e986c17a6e2071fef2b8e33a19d0b77747aace"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/8797ce997d7b079e5eed94124795f2978e7fae619b980baf3cd3450497bdc01e.png",
+          "size": [
+            1065,
+            824
+          ],
+          "format": "PNG",
+          "bytes": 52977,
+          "sha256": "8797ce997d7b079e5eed94124795f2978e7fae619b980baf3cd3450497bdc01e"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/8d67164be8a5451075dd81af9201c1b7f8fabdbb4c5c1228acf0c81e1a4cbd1b.png",
+          "size": [
+            863,
+            275
+          ],
+          "format": "PNG",
+          "bytes": 6658,
+          "sha256": "8d67164be8a5451075dd81af9201c1b7f8fabdbb4c5c1228acf0c81e1a4cbd1b"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/8f4e0b4e48f6c880ceaf550a3cb155ea333ea5e85c5a53c5aa2e8e34dfac9b3a.png",
+          "size": [
+            581,
+            581
+          ],
+          "format": "PNG",
+          "bytes": 48653,
+          "sha256": "8f4e0b4e48f6c880ceaf550a3cb155ea333ea5e85c5a53c5aa2e8e34dfac9b3a"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/99f125e2ff48955be0d9888405c7ddcad83d2a843b8e47c8fc785bb2b016dc67.png",
+          "size": [
+            458,
+            1064
+          ],
+          "format": "PNG",
+          "bytes": 117502,
+          "sha256": "99f125e2ff48955be0d9888405c7ddcad83d2a843b8e47c8fc785bb2b016dc67"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/a5089035823c0cc590150d7b8a3f2e7e2f404b5291812aef056bbd3b9d072283.png",
+          "size": [
+            2689,
+            161
+          ],
+          "format": "PNG",
+          "bytes": 3448,
+          "sha256": "a5089035823c0cc590150d7b8a3f2e7e2f404b5291812aef056bbd3b9d072283"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/aa04b113e91a3c7b4bdafcdb8af25382d3f904500fca0a1e598e8507f5fce7bd.png",
+          "size": [
+            580,
+            580
+          ],
+          "format": "PNG",
+          "bytes": 40366,
+          "sha256": "aa04b113e91a3c7b4bdafcdb8af25382d3f904500fca0a1e598e8507f5fce7bd"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/b11aef9891206d5d25ca28fbbe205d6303be5aca6dacffb7c925b2d035a30ab9.png",
+          "size": [
+            1920,
+            1296
+          ],
+          "format": "PNG",
+          "bytes": 251549,
+          "sha256": "b11aef9891206d5d25ca28fbbe205d6303be5aca6dacffb7c925b2d035a30ab9"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/b24b92361fb71fb58edf43f3a6c94ce8dbb7eb2808caf4ede977e3f7a5d4a37d.png",
+          "size": [
+            289,
+            1063
+          ],
+          "format": "PNG",
+          "bytes": 4562,
+          "sha256": "b24b92361fb71fb58edf43f3a6c94ce8dbb7eb2808caf4ede977e3f7a5d4a37d"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/bb4f6cc7957dc21ef8b31279296654ed936fb2f58fbcb85501cb265e23437c27.png",
+          "size": [
+            423,
+            300
+          ],
+          "format": "PNG",
+          "bytes": 111096,
+          "sha256": "bb4f6cc7957dc21ef8b31279296654ed936fb2f58fbcb85501cb265e23437c27"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/bb69d963a8013e35245f1e774241f20d1afd3e6e93426f482aef04e35cc0ccfd.png",
+          "size": [
+            863,
+            273
+          ],
+          "format": "PNG",
+          "bytes": 6485,
+          "sha256": "bb69d963a8013e35245f1e774241f20d1afd3e6e93426f482aef04e35cc0ccfd"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/c5785072194bea5d76144183f6ad54f6fb5d18e368b5a27d63c4c865422462ba.png",
+          "size": [
+            581,
+            581
+          ],
+          "format": "PNG",
+          "bytes": 48269,
+          "sha256": "c5785072194bea5d76144183f6ad54f6fb5d18e368b5a27d63c4c865422462ba"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/c9a32edf7992d28c6c28f180110c15002d269bfb6a997392b969aadcbd177225.png",
+          "size": [
+            863,
+            275
+          ],
+          "format": "PNG",
+          "bytes": 6607,
+          "sha256": "c9a32edf7992d28c6c28f180110c15002d269bfb6a997392b969aadcbd177225"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/d19e9daacbb316192c2c8aa0f658d3f2488ce9eb6a04dd1eb2c19dffd7e0be4f.png",
+          "size": [
+            300,
+            221
+          ],
+          "format": "PNG",
+          "bytes": 56593,
+          "sha256": "d19e9daacbb316192c2c8aa0f658d3f2488ce9eb6a04dd1eb2c19dffd7e0be4f"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/d47f53c59b71b6dcdfb8a849ed52e9ad0ab9652a1be7f759b8cea42c60fe47c6.png",
+          "size": [
+            620,
+            392
+          ],
+          "format": "PNG",
+          "bytes": 345657,
+          "sha256": "d47f53c59b71b6dcdfb8a849ed52e9ad0ab9652a1be7f759b8cea42c60fe47c6"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/d6be8478d4965da741d0328b7cec558739ca9507d1132ecee94e48a44931d3f2.png",
+          "size": [
+            1065,
+            824
+          ],
+          "format": "PNG",
+          "bytes": 52206,
+          "sha256": "d6be8478d4965da741d0328b7cec558739ca9507d1132ecee94e48a44931d3f2"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/e0cbbc5c474c56f093e2bb22e08582c838517df1625707a1922b9b25d9f2d226.png",
+          "size": [
+            1395,
+            1119
+          ],
+          "format": "PNG",
+          "bytes": 53410,
+          "sha256": "e0cbbc5c474c56f093e2bb22e08582c838517df1625707a1922b9b25d9f2d226"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/f2a666d999fd8711b61066b94c36419ba73e271e62068b16ebc6136b77c43869.png",
+          "size": [
+            800,
+            600
+          ],
+          "format": "PNG",
+          "bytes": 72909,
+          "sha256": "f2a666d999fd8711b61066b94c36419ba73e271e62068b16ebc6136b77c43869"
+        },
+        {
+          "path": "artifacts/parse_tree/u-82cb494d407c4755d29d/v1/images/f33def882f12ba1963ca8e48c39ab4159a90b5f2da403ea245b68eb923e12650.png",
+          "size": [
+            580,
+            580
+          ],
+          "format": "PNG",
+          "bytes": 40416,
+          "sha256": "f33def882f12ba1963ca8e48c39ab4159a90b5f2da403ea245b68eb923e12650"
+        }
+      ],
+      "parse_node_types": {
+        "section_header": 79,
+        "text": 60,
+        "figure": 27,
+        "footnote": 4
+      },
+      "http_read_evidence": "http-ready-doc-6.json"
+    },
+    {
+      "label": "candidate-first",
+      "status": "failed",
+      "run_dir": "tmp/w15-operator-candidate-dba02280ea67",
+      "database": "wayfinder_w15_dba02280ea67",
+      "reference": "w15-owner-20261025-candidate-6fa183506ad746a0bb40db1e8ae3efd2",
+      "plan": {
+        "book": "candidate",
+        "run_dir": "tmp/w15-operator-candidate-dba02280ea67",
+        "database": "wayfinder_w15_dba02280ea67",
+        "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+        "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+        "dry_run": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "status": "dry_run",
+          "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+          "graph_version": null,
+          "completed_steps": [
+            "doc_reading"
+          ],
+          "step_details": {
+            "doc_reading": {
+              "chunks_version": 1,
+              "parse_version": 1,
+              "chunk_count": 125,
+              "a4_gold_coverage": "none",
+              "page_count": 52,
+              "alphabetic_chars": 52325,
+              "average_alphabetic_chars_per_page": 1006.25,
+              "empty_page_ratio": 0.019230769230769232,
+              "vi_diacritic_ratio": 0.270157668418538
+            },
+            "dry_run": {
+              "cache_validated": false,
+              "chunks_version": 1,
+              "candidate_version": null,
+              "canonical_version": null,
+              "graph_version": null,
+              "retrieval_version": null
+            }
+          },
+          "spent_usd": 0.0,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": true,
+          "elapsed_seconds": 4.885892700011027,
+          "error": null
+        },
+        "vertex_project_configured": true,
+        "transport": "vertex",
+        "location": "global",
+        "approved": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false,
+        "provider_calls": 0,
+        "proposed_max_usd": "3.00"
+      },
+      "budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.0124168",
+        "limit_usd": "3",
+        "http_calls": 111,
+        "audit_failed": false,
+        "unknown_upper_usd": "0.3890176",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      },
+      "sql_ledger_usd": "0.012417",
+      "usage": {
+        "spent_usd": 0.012417,
+        "model_calls": 400,
+        "input_tokens": 26962,
+        "output_tokens": 3833,
+        "usage_complete": false
+      },
+      "stages": [
+        {
+          "step": "concepts",
+          "generation": 11,
+          "embedding": 100,
+          "known_usd": "0.01241680",
+          "unknown_upper_usd": "0.3890176",
+          "timing": {
+            "wall_seconds": 302.65815949998796,
+            "embedding_wait_seconds": 135.24040669998794,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "web_timing": {
+              "wall_seconds": 302.65815949998796,
+              "embedding_wait_seconds": 135.24040669998794,
+              "embedding_wait_measured": true
+            }
+          }
+        },
+        {
+          "step": "doc_reading",
+          "generation": 0,
+          "embedding": 0,
+          "known_usd": "0",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 2.075442400004249,
+            "embedding_wait_seconds": 0.0,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "page_count": 52,
+            "web_timing": {
+              "wall_seconds": 2.075442400004249,
+              "embedding_wait_seconds": 0.0,
+              "embedding_wait_measured": true
+            },
+            "chunk_count": 125,
+            "parse_version": 1,
+            "chunks_version": 1,
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 52325,
+            "empty_page_ratio": 0.019230769230769232,
+            "vi_diacritic_ratio": 0.270157668418538,
+            "average_alphabetic_chars_per_page": 1006.25
+          }
+        }
+      ],
+      "transport": {
+        "responses": 0,
+        "status_counts": {},
+        "errors": [],
+        "max_seconds": null,
+        "observed_peak": {
+          "all": 0,
+          "predict": 0,
+          "generateContent": 0
+        }
+      },
+      "accounting_assertions_passed": true
+    },
+    {
+      "label": "diagnostic",
+      "status": "diagnostic_succeeded",
+      "run_dir": "tmp/w15-operator-candidate-a1839ddc1cd6",
+      "database": "wayfinder_w15_a1839ddc1cd6",
+      "reference": "w15-debug-owner-20261025-58ac407915534701ade2a6105c36fbad",
+      "plan": {
+        "book": "candidate",
+        "run_dir": "tmp/w15-operator-candidate-a1839ddc1cd6",
+        "database": "wayfinder_w15_a1839ddc1cd6",
+        "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:165bf0a22bc3b2aef4b61bb1092789dc040cb192528671b2efb7805357ade916",
+        "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+        "dry_run": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "status": "dry_run",
+          "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:165bf0a22bc3b2aef4b61bb1092789dc040cb192528671b2efb7805357ade916",
+          "graph_version": null,
+          "completed_steps": [
+            "doc_reading"
+          ],
+          "step_details": {
+            "doc_reading": {
+              "chunks_version": 1,
+              "parse_version": 1,
+              "chunk_count": 125,
+              "a4_gold_coverage": "none",
+              "page_count": 52,
+              "alphabetic_chars": 52325,
+              "average_alphabetic_chars_per_page": 1006.25,
+              "empty_page_ratio": 0.019230769230769232,
+              "vi_diacritic_ratio": 0.270157668418538
+            },
+            "dry_run": {
+              "cache_validated": false,
+              "chunks_version": 1,
+              "candidate_version": null,
+              "canonical_version": null,
+              "graph_version": null,
+              "retrieval_version": null
+            }
+          },
+          "spent_usd": 0.0,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": true,
+          "elapsed_seconds": 7.185229299997445,
+          "error": null
+        },
+        "vertex_project_configured": true,
+        "transport": "vertex",
+        "location": "global",
+        "approved": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false,
+        "provider_calls": 0,
+        "proposed_max_usd": "3.00"
+      },
+      "budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.0000838",
+        "limit_usd": "0.5",
+        "http_calls": 2,
+        "audit_failed": false,
+        "unknown_upper_usd": "0",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      },
+      "sql_ledger_usd": "0.000084",
+      "usage": {
+        "model_calls": 2,
+        "input_tokens": 470,
+        "output_tokens": 5,
+        "spent_usd": 8.38e-05,
+        "usage_complete": true,
+        "missing_usage_calls": 0
+      },
+      "stages": [
+        {
+          "step": "diagnostic_embedding_serial",
+          "generation": 0,
+          "embedding": 1,
+          "known_usd": "0.0000618",
+          "unknown_upper_usd": "0",
+          "timing": null,
+          "cache_detail": {}
+        },
+        {
+          "step": "diagnostic_generation_serial",
+          "generation": 1,
+          "embedding": 0,
+          "known_usd": "0.000022",
+          "unknown_upper_usd": "0",
+          "timing": null,
+          "cache_detail": {}
+        }
+      ],
+      "transport": {
+        "responses": 2,
+        "status_counts": {
+          "200": 2
+        },
+        "errors": [],
+        "max_seconds": 11.851920700006303,
+        "observed_peak": {
+          "all": 1,
+          "predict": 1,
+          "generateContent": 1
+        }
+      },
+      "accounting_assertions_passed": true,
+      "diagnostic_summary": {
+        "operation": "serial-embedding-then-tiny-generation-diagnostic",
+        "reference": "w15-debug-owner-20261025-58ac407915534701ade2a6105c36fbad",
+        "source_plan": "tmp\\w15-operator-candidate-a1839ddc1cd6\\plan.json",
+        "input_chunk_id": "c_51db2866e902631ec57b935f",
+        "input_text_sha256": "87b27b13a65ef868ed4939023876522fc6b52a4106e106389336d5185da30b9e",
+        "input_characters": 1479,
+        "embedding_billing_verified": false,
+        "embedding_dimensions": 768,
+        "status": "diagnostic_succeeded",
+        "json_ok": true,
+        "budget": {
+          "limit_usd": "0.5",
+          "known_usd": "0.0000838",
+          "held_usd": "0",
+          "unknown_upper_usd": "0",
+          "http_calls": 2,
+          "stopped": false,
+          "audit_failed": false,
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        }
+      }
+    },
+    {
+      "label": "controlled",
+      "status": "succeeded",
+      "run_dir": "tmp/w15-operator-candidate-d3039895d37a",
+      "database": "wayfinder_w15_d3039895d37a",
+      "reference": "w15-debug-controlled-owner-20261025-3bc435bc9c924b9a95ffaae1ce4a5a90",
+      "plan": {
+        "book": "candidate",
+        "run_dir": "tmp/w15-operator-candidate-d3039895d37a",
+        "database": "wayfinder_w15_d3039895d37a",
+        "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:fa76ad51ce2b4666c64d2113cfb37a563d196fd8a53026e2ad0c64a61008073b",
+        "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+        "dry_run": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "status": "dry_run",
+          "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:fa76ad51ce2b4666c64d2113cfb37a563d196fd8a53026e2ad0c64a61008073b",
+          "graph_version": null,
+          "completed_steps": [
+            "doc_reading"
+          ],
+          "step_details": {
+            "doc_reading": {
+              "chunks_version": 1,
+              "parse_version": 1,
+              "chunk_count": 125,
+              "a4_gold_coverage": "none",
+              "page_count": 52,
+              "alphabetic_chars": 52325,
+              "average_alphabetic_chars_per_page": 1006.25,
+              "empty_page_ratio": 0.019230769230769232,
+              "vi_diacritic_ratio": 0.270157668418538
+            },
+            "dry_run": {
+              "cache_validated": false,
+              "chunks_version": 1,
+              "candidate_version": null,
+              "canonical_version": null,
+              "graph_version": null,
+              "retrieval_version": null
+            }
+          },
+          "spent_usd": 0.0,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": true,
+          "elapsed_seconds": 7.021033600001829,
+          "error": null
+        },
+        "vertex_project_configured": true,
+        "transport": "vertex",
+        "location": "global",
+        "approved": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false,
+        "provider_calls": 0,
+        "proposed_max_usd": "3.00"
+      },
+      "budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.68726825",
+        "limit_usd": "3",
+        "http_calls": 1616,
+        "audit_failed": false,
+        "unknown_upper_usd": "0",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      },
+      "sql_ledger_usd": "0.687268",
+      "usage": {
+        "spent_usd": 0.687268,
+        "model_calls": 1616,
+        "input_tokens": 1829867,
+        "output_tokens": 157341,
+        "usage_complete": true
+      },
+      "stages": [
+        {
+          "step": "concepts",
+          "generation": 599,
+          "embedding": 506,
+          "known_usd": "0.47081165",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 3258.804726699993,
+            "embedding_wait_seconds": 539.0648755000002,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "a3": {
+              "a3_reused": false,
+              "a3_prime_reused": false,
+              "candidate_version": 1,
+              "retrieval_version": 1
+            },
+            "canonical": {
+              "reused": false,
+              "a4_gold_coverage": "none",
+              "canonical_version": 1
+            },
+            "web_timing": {
+              "wall_seconds": 3258.804726699993,
+              "embedding_wait_seconds": 539.0648755000002,
+              "embedding_wait_measured": true
+            },
+            "label_roles": {
+              "reused": false,
+              "chunks_version": 2
+            }
+          }
+        },
+        {
+          "step": "doc_reading",
+          "generation": 0,
+          "embedding": 0,
+          "known_usd": "0",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 2.0192856999929063,
+            "embedding_wait_seconds": 0.0,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "page_count": 52,
+            "web_timing": {
+              "wall_seconds": 2.0192856999929063,
+              "embedding_wait_seconds": 0.0,
+              "embedding_wait_measured": true
+            },
+            "chunk_count": 125,
+            "parse_version": 1,
+            "chunks_version": 1,
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 52325,
+            "empty_page_ratio": 0.019230769230769232,
+            "vi_diacritic_ratio": 0.270157668418538,
+            "average_alphabetic_chars_per_page": 1006.25
+          }
+        },
+        {
+          "step": "graph",
+          "generation": 107,
+          "embedding": 304,
+          "known_usd": "0.21509220",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 522.3818017000012,
+            "embedding_wait_seconds": 437.52739329999895,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "reused": false,
+            "web_timing": {
+              "wall_seconds": 522.3818017000012,
+              "embedding_wait_seconds": 437.52739329999895,
+              "embedding_wait_measured": true
+            },
+            "graph_version": 8
+          }
+        },
+        {
+          "step": "learning_prep",
+          "generation": 0,
+          "embedding": 100,
+          "known_usd": "0.00136440",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 144.48405650000495,
+            "embedding_wait_seconds": 143.32626030000392,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "a12": {
+              "graph_version": 8,
+              "assignment_count": 125,
+              "retrieval_version": 1
+            },
+            "formulas": {
+              "cut_count": 14,
+              "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-candidate-d3039895d37a\\artifacts\\phase_b\\formula_images\\u-1f019766e74a747d293c\\parse-v1\\index.json",
+              "parse_version": 1,
+              "skipped_count": 0
+            },
+            "web_timing": {
+              "wall_seconds": 144.48405650000495,
+              "embedding_wait_seconds": 143.32626030000392,
+              "embedding_wait_measured": true
+            },
+            "page_images": {
+              "page_count": 7,
+              "parse_version": 1
+            },
+            "concept_index": {
+              "reused": false,
+              "model_id": "gemini-embedding-001:768",
+              "concept_count": 100,
+              "graph_version": 8
+            }
+          }
+        }
+      ],
+      "transport": {
+        "responses": 1616,
+        "status_counts": {
+          "200": 1616
+        },
+        "errors": [],
+        "max_seconds": 12.73393760000181,
+        "observed_peak": {
+          "all": 8,
+          "predict": 8,
+          "generateContent": 7
+        }
+      },
+      "accounting_assertions_passed": true,
+      "graph": {
+        "version": 8,
+        "module_count": 15,
+        "concept_count": 100,
+        "mentioned_count": 45,
+        "non_learnable_count": 14,
+        "edges": {
+          "bypassed_edges": 0,
+          "main_edges": 94,
+          "open_edges": 135,
+          "removed_cycle_edges": 0,
+          "requires_edges": 151,
+          "secondary_edges": 60,
+          "soft_backward_edges": 21,
+          "topic_edges": 151
+        },
+        "quality_gate": {
+          "fallback": null,
+          "isolated_learnable_count": 39,
+          "isolated_ratio": 0.2689655172413793,
+          "learnable_node_count": 145,
+          "nonredundant_edges_per_learnable": 0.8413793103448276,
+          "nonredundant_requires_edge_count": 122,
+          "passed": true,
+          "requires_edge_count": 136,
+          "warning": null
+        }
+      },
+      "artifact_images": [
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/15551043ea05513344c556382b934e371890540ea8e2890ff0cf6c15e21d7a2b.png",
+          "size": [
+            401,
+            250
+          ],
+          "format": "PNG",
+          "bytes": 69905,
+          "sha256": "15551043ea05513344c556382b934e371890540ea8e2890ff0cf6c15e21d7a2b"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/4bccac42ae1360c9fcb43e31e27878552e81eec3faa451a66c1bc0b56f4a487d.png",
+          "size": [
+            633,
+            264
+          ],
+          "format": "PNG",
+          "bytes": 378113,
+          "sha256": "4bccac42ae1360c9fcb43e31e27878552e81eec3faa451a66c1bc0b56f4a487d"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/78f7d3f5a908bc3886830fb03e1559703074cbfff9e8476874ce63c700e39128.png",
+          "size": [
+            401,
+            250
+          ],
+          "format": "PNG",
+          "bytes": 94516,
+          "sha256": "78f7d3f5a908bc3886830fb03e1559703074cbfff9e8476874ce63c700e39128"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/8999735a48bb7854d190c31f9ab36620d98bf629ba5e91109950cc83d69d8055.png",
+          "size": [
+            401,
+            250
+          ],
+          "format": "PNG",
+          "bytes": 77527,
+          "sha256": "8999735a48bb7854d190c31f9ab36620d98bf629ba5e91109950cc83d69d8055"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/94b7126c30d92caf4a4195b78681b4f6c1a68e47ada320651b4d664f38e4b7bf.png",
+          "size": [
+            889,
+            341
+          ],
+          "format": "PNG",
+          "bytes": 68079,
+          "sha256": "94b7126c30d92caf4a4195b78681b4f6c1a68e47ada320651b4d664f38e4b7bf"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/961b702d3a13742cf8a85d3c6bf6e67b90044d9136baf37918ae2cbf746a6bb7.png",
+          "size": [
+            401,
+            250
+          ],
+          "format": "PNG",
+          "bytes": 103219,
+          "sha256": "961b702d3a13742cf8a85d3c6bf6e67b90044d9136baf37918ae2cbf746a6bb7"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/9c79449c94b535fd232289e09334931b5111acc95b8b5c0987f916181ededa48.png",
+          "size": [
+            775,
+            684
+          ],
+          "format": "PNG",
+          "bytes": 136825,
+          "sha256": "9c79449c94b535fd232289e09334931b5111acc95b8b5c0987f916181ededa48"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/a21e46c993643396589b682214a7d48dc12f902f05a60d9a047ea83032fa88e8.png",
+          "size": [
+            400,
+            251
+          ],
+          "format": "PNG",
+          "bytes": 102865,
+          "sha256": "a21e46c993643396589b682214a7d48dc12f902f05a60d9a047ea83032fa88e8"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/a8eebd8794f35eef97c2e54cd372fc6ee404978efd3db0575fc4f7281cf8dfb4.png",
+          "size": [
+            885,
+            480
+          ],
+          "format": "PNG",
+          "bytes": 84433,
+          "sha256": "a8eebd8794f35eef97c2e54cd372fc6ee404978efd3db0575fc4f7281cf8dfb4"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/cc86ee20645102a5aa345f4156f93d67e3c607dd5cd6efe91fb8403e1a26e4bd.png",
+          "size": [
+            839,
+            511
+          ],
+          "format": "PNG",
+          "bytes": 84780,
+          "sha256": "cc86ee20645102a5aa345f4156f93d67e3c607dd5cd6efe91fb8403e1a26e4bd"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/ce503eaf8611a75338e54ec7f73956b1c1a883fe57cf059c3b38c10a4fb487f0.png",
+          "size": [
+            401,
+            251
+          ],
+          "format": "PNG",
+          "bytes": 87639,
+          "sha256": "ce503eaf8611a75338e54ec7f73956b1c1a883fe57cf059c3b38c10a4fb487f0"
+        },
+        {
+          "path": "artifacts/parse_tree/u-1f019766e74a747d293c/v1/images/ee92016ef132f192c27c9f6020246a17a874307739736e4ad146e78aeac19dfc.png",
+          "size": [
+            485,
+            653
+          ],
+          "format": "PNG",
+          "bytes": 76242,
+          "sha256": "ee92016ef132f192c27c9f6020246a17a874307739736e4ad146e78aeac19dfc"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/109a348b5aae6f74f15aebe7deecd523582c3c72c6aa816f412edf185cdbb76c.png",
+          "size": [
+            20,
+            16
+          ],
+          "format": "PNG",
+          "bytes": 463,
+          "sha256": "109a348b5aae6f74f15aebe7deecd523582c3c72c6aa816f412edf185cdbb76c"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/1db465c9db44f9ec08f45122394d26308b4f2a751e66d21866b70349133a8ba4.png",
+          "size": [
+            11,
+            16
+          ],
+          "format": "PNG",
+          "bytes": 212,
+          "sha256": "1db465c9db44f9ec08f45122394d26308b4f2a751e66d21866b70349133a8ba4"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/3453936afdaa440c5afc25b574d5c7c237de5ab55dc3593745c17a374a06f408.png",
+          "size": [
+            10,
+            16
+          ],
+          "format": "PNG",
+          "bytes": 174,
+          "sha256": "3453936afdaa440c5afc25b574d5c7c237de5ab55dc3593745c17a374a06f408"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/46260d131961bd2dec4405b1b601259a6e1dc745e6fac28dbd1688d7d251577f.png",
+          "size": [
+            10,
+            17
+          ],
+          "format": "PNG",
+          "bytes": 174,
+          "sha256": "46260d131961bd2dec4405b1b601259a6e1dc745e6fac28dbd1688d7d251577f"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/81b3c41daa5ea035474d934a380b2506104ac28ae8314dde986ae9b4f70bee20.png",
+          "size": [
+            89,
+            40
+          ],
+          "format": "PNG",
+          "bytes": 1593,
+          "sha256": "81b3c41daa5ea035474d934a380b2506104ac28ae8314dde986ae9b4f70bee20"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/a86642f9935188739d2f3e56e0cfde855d0c5a614fe9d1b8570e3ca9e0fde74d.png",
+          "size": [
+            271,
+            26
+          ],
+          "format": "PNG",
+          "bytes": 4839,
+          "sha256": "a86642f9935188739d2f3e56e0cfde855d0c5a614fe9d1b8570e3ca9e0fde74d"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/aa6fceca71380360c21827ec86b4275ffc8f56f341110854a3ff4117a9b30a4b.png",
+          "size": [
+            93,
+            35
+          ],
+          "format": "PNG",
+          "bytes": 2255,
+          "sha256": "aa6fceca71380360c21827ec86b4275ffc8f56f341110854a3ff4117a9b30a4b"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/aebad04c1b210e1900a9cacb25f6dfe9fd8f77348d70352caf0ee99a03c89de0.png",
+          "size": [
+            10,
+            17
+          ],
+          "format": "PNG",
+          "bytes": 204,
+          "sha256": "aebad04c1b210e1900a9cacb25f6dfe9fd8f77348d70352caf0ee99a03c89de0"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/c201783680513f1139689c51c58aa79d12c30d06dc93c35f4f044ee4581e69ac.png",
+          "size": [
+            871,
+            71
+          ],
+          "format": "PNG",
+          "bytes": 25889,
+          "sha256": "c201783680513f1139689c51c58aa79d12c30d06dc93c35f4f044ee4581e69ac"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/c211ffb56010d08149fba9090ec16e7349dada24797d9955a4925937c7844874.png",
+          "size": [
+            79,
+            26
+          ],
+          "format": "PNG",
+          "bytes": 1461,
+          "sha256": "c211ffb56010d08149fba9090ec16e7349dada24797d9955a4925937c7844874"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/cdeb9f11e8b22753ce6e02030336f870733ff0ec40b915a1d3f339838377028a.png",
+          "size": [
+            11,
+            17
+          ],
+          "format": "PNG",
+          "bytes": 194,
+          "sha256": "cdeb9f11e8b22753ce6e02030336f870733ff0ec40b915a1d3f339838377028a"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/d52983288fbb203d451eab4eedfa705f38e92c4bf8e62a4e760aea497822eebc.png",
+          "size": [
+            216,
+            26
+          ],
+          "format": "PNG",
+          "bytes": 4831,
+          "sha256": "d52983288fbb203d451eab4eedfa705f38e92c4bf8e62a4e760aea497822eebc"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/e7f7c891db1cdb001f8e340e7aca6301892cf6cb538ef2353a6807ab1483ed7f.png",
+          "size": [
+            10,
+            16
+          ],
+          "format": "PNG",
+          "bytes": 196,
+          "sha256": "e7f7c891db1cdb001f8e340e7aca6301892cf6cb538ef2353a6807ab1483ed7f"
+        },
+        {
+          "path": "artifacts/phase_b/formula_images/u-1f019766e74a747d293c/parse-v1/images/ecc930d5ee6dfbb7006fe834e4fd1150deb134a425987f76aadb0c17dde494cd.png",
+          "size": [
+            907,
+            65
+          ],
+          "format": "PNG",
+          "bytes": 24953,
+          "sha256": "ecc930d5ee6dfbb7006fe834e4fd1150deb134a425987f76aadb0c17dde494cd"
+        },
+        {
+          "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p021.jpg",
+          "size": [
+            893,
+            1264
+          ],
+          "format": "JPEG",
+          "bytes": 191916,
+          "sha256": "0403937c51e508f264c7912a2028e4355deaa4dfa296d053b69cf182aa52b684"
+        },
+        {
+          "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p023.jpg",
+          "size": [
+            893,
+            1264
+          ],
+          "format": "JPEG",
+          "bytes": 185581,
+          "sha256": "daacce991b05dc3562f211bdbdad37f24346840290844e130c50860aee83c6c1"
+        },
+        {
+          "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p024.jpg",
+          "size": [
+            893,
+            1264
+          ],
+          "format": "JPEG",
+          "bytes": 179328,
+          "sha256": "97bdb01a4f648f5072330419eb4d0cf13e323f3448494fc721e8fd9acf4c1372"
+        },
+        {
+          "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p028.jpg",
+          "size": [
+            893,
+            1264
+          ],
+          "format": "JPEG",
+          "bytes": 136505,
+          "sha256": "8ce33a3081f37eccf680ae0150770b9d095c1744757b4806032309ac2414caa1"
+        },
+        {
+          "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p029.jpg",
+          "size": [
+            893,
+            1264
+          ],
+          "format": "JPEG",
+          "bytes": 160626,
+          "sha256": "4b8ef95c747d6348ec4f8bdedca27d5bd8b18f81f8caadf695b7635989613dfb"
+        },
+        {
+          "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p031.jpg",
+          "size": [
+            893,
+            1264
+          ],
+          "format": "JPEG",
+          "bytes": 205943,
+          "sha256": "3d99ccb5edd10ad9117f9345af9be6afca423cef594ad2fd95175372ee351789"
+        },
+        {
+          "path": "artifacts/phase_b/page_images/u-1f019766e74a747d293c/parse-v1/pages/p043.jpg",
+          "size": [
+            893,
+            1264
+          ],
+          "format": "JPEG",
+          "bytes": 208462,
+          "sha256": "d84f16f0fd132595e45f20453c77f8a2600cda7ca8206f618e43110e92b98078"
+        }
+      ],
+      "parse_node_types": {
+        "section_header": 127,
+        "text": 221,
+        "list_item": 239,
+        "figure": 12,
+        "formula": 14
+      },
+      "http_read_evidence": "http-ready-candidate-controlled.json"
+    },
+    {
+      "label": "probe100",
+      "status": "diagnostic_succeeded",
+      "run_dir": "tmp/w15-operator-candidate-efd678f5ca95",
+      "database": "wayfinder_w15_efd678f5ca95",
+      "reference": "w15-owner-probe100-20261025-f0ef22aaa71045f685d6eb7e89d87aab",
+      "plan": {
+        "book": "candidate",
+        "run_dir": "tmp/w15-operator-candidate-efd678f5ca95",
+        "database": "wayfinder_w15_efd678f5ca95",
+        "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:5c87f2c9d01da5aac497a0d1cedf1086b783806ca1aac0b2aff5ce1ad19343d0",
+        "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+        "dry_run": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "status": "dry_run",
+          "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:5c87f2c9d01da5aac497a0d1cedf1086b783806ca1aac0b2aff5ce1ad19343d0",
+          "graph_version": null,
+          "completed_steps": [
+            "doc_reading"
+          ],
+          "step_details": {
+            "doc_reading": {
+              "chunks_version": 1,
+              "parse_version": 1,
+              "chunk_count": 125,
+              "a4_gold_coverage": "none",
+              "page_count": 52,
+              "alphabetic_chars": 52325,
+              "average_alphabetic_chars_per_page": 1006.25,
+              "empty_page_ratio": 0.019230769230769232,
+              "vi_diacritic_ratio": 0.270157668418538
+            },
+            "dry_run": {
+              "cache_validated": false,
+              "chunks_version": 1,
+              "candidate_version": null,
+              "canonical_version": null,
+              "graph_version": null,
+              "retrieval_version": null
+            }
+          },
+          "spent_usd": 0.0,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": true,
+          "elapsed_seconds": 12.575337699992815,
+          "error": null
+        },
+        "vertex_project_configured": true,
+        "transport": "vertex",
+        "location": "global",
+        "approved": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false,
+        "provider_calls": 0,
+        "proposed_max_usd": "3.00"
+      },
+      "budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.0029296",
+        "limit_usd": "0.4",
+        "http_calls": 101,
+        "audit_failed": false,
+        "unknown_upper_usd": "0",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      },
+      "sql_ledger_usd": "0.002930",
+      "usage": {
+        "model_calls": 101,
+        "input_tokens": 19442,
+        "output_tokens": 5,
+        "spent_usd": 0.0029295999999999997,
+        "usage_complete": true,
+        "missing_usage_calls": 0
+      },
+      "stages": [
+        {
+          "step": "embedding_100",
+          "generation": 0,
+          "embedding": 100,
+          "known_usd": "0.00290760",
+          "unknown_upper_usd": "0",
+          "timing": null,
+          "cache_detail": {}
+        },
+        {
+          "step": "generation_control",
+          "generation": 1,
+          "embedding": 0,
+          "known_usd": "0.000022",
+          "unknown_upper_usd": "0",
+          "timing": null,
+          "cache_detail": {}
+        }
+      ],
+      "transport": {
+        "responses": 101,
+        "status_counts": {
+          "200": 101
+        },
+        "errors": [],
+        "max_seconds": 13.684883999987505,
+        "observed_peak": {
+          "all": 100,
+          "predict": 100,
+          "generateContent": 1
+        }
+      },
+      "accounting_assertions_passed": true,
+      "diagnostic_summary": {
+        "operation": "isolated-100-embedding-and-one-generation-control",
+        "configured_concurrency": 100,
+        "requested_embeddings": 100,
+        "generation_control_requests": 1,
+        "actual_generation_100_not_tested": true,
+        "embedding_billing_verified": false,
+        "generation_ok": true,
+        "embedding_wall_seconds": 13.870660500004306,
+        "embedding_results": 100,
+        "all_dimensions_768": true,
+        "status": "diagnostic_succeeded",
+        "transport_counts": {
+          "current": 0,
+          "peak": 100,
+          "dispatch": 101
+        },
+        "limiter": {
+          "max_in_flight": 100,
+          "current_limit": 100,
+          "max_observed": 100,
+          "throttle_count": 0,
+          "generation": 0,
+          "tokens_per_minute": 1600000,
+          "requests_per_minute": null
+        }
+      }
+    },
+    {
+      "label": "mixed100",
+      "status": "failed",
+      "run_dir": "tmp/w15-operator-candidate-88fdef3027cc",
+      "database": "wayfinder_w15_88fdef3027cc",
+      "reference": "w15-debug-mixed100-owner-20261025-de5411e701874eadbb25a08dc7f1b8c0",
+      "plan": {
+        "book": "candidate",
+        "run_dir": "tmp/w15-operator-candidate-88fdef3027cc",
+        "database": "wayfinder_w15_88fdef3027cc",
+        "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+        "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+        "dry_run": {
+          "doc_id": "u-1f019766e74a747d293c",
+          "status": "dry_run",
+          "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+          "graph_version": null,
+          "completed_steps": [
+            "doc_reading"
+          ],
+          "step_details": {
+            "doc_reading": {
+              "chunks_version": 1,
+              "parse_version": 1,
+              "chunk_count": 125,
+              "a4_gold_coverage": "none",
+              "page_count": 52,
+              "alphabetic_chars": 52325,
+              "average_alphabetic_chars_per_page": 1006.25,
+              "empty_page_ratio": 0.019230769230769232,
+              "vi_diacritic_ratio": 0.270157668418538
+            },
+            "dry_run": {
+              "cache_validated": false,
+              "chunks_version": 1,
+              "candidate_version": null,
+              "canonical_version": null,
+              "graph_version": null,
+              "retrieval_version": null
+            }
+          },
+          "spent_usd": 0.0,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": true,
+          "elapsed_seconds": 6.697171000007074,
+          "error": null
+        },
+        "vertex_project_configured": true,
+        "transport": "vertex",
+        "location": "global",
+        "approved": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false,
+        "provider_calls": 0,
+        "proposed_max_usd": "3.00"
+      },
+      "budget": {
+        "stopped": false,
+        "held_usd": "0",
+        "known_usd": "0.4663739",
+        "limit_usd": "2.75",
+        "http_calls": 1197,
+        "audit_failed": false,
+        "unknown_upper_usd": "0.0248832",
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      },
+      "sql_ledger_usd": "0.466374",
+      "usage": {
+        "spent_usd": 0.466374,
+        "model_calls": 1278,
+        "input_tokens": 1186204,
+        "output_tokens": 115321,
+        "usage_complete": false
+      },
+      "stages": [
+        {
+          "step": "concepts",
+          "generation": 593,
+          "embedding": 504,
+          "known_usd": "0.46621325",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 344.0514519999997,
+            "embedding_wait_seconds": 93.416078499984,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "a3": {
+              "a3_reused": false,
+              "a3_prime_reused": false,
+              "candidate_version": 1,
+              "retrieval_version": 1
+            },
+            "canonical": {
+              "reused": false,
+              "a4_gold_coverage": "none",
+              "canonical_version": 1
+            },
+            "web_timing": {
+              "wall_seconds": 344.0514519999997,
+              "embedding_wait_seconds": 93.416078499984,
+              "embedding_wait_measured": true
+            },
+            "label_roles": {
+              "reused": false,
+              "chunks_version": 2
+            }
+          }
+        },
+        {
+          "step": "doc_reading",
+          "generation": 0,
+          "embedding": 0,
+          "known_usd": "0",
+          "unknown_upper_usd": "0",
+          "timing": {
+            "wall_seconds": 2.2720507999911206,
+            "embedding_wait_seconds": 0.0,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "page_count": 52,
+            "web_timing": {
+              "wall_seconds": 2.2720507999911206,
+              "embedding_wait_seconds": 0.0,
+              "embedding_wait_measured": true
+            },
+            "chunk_count": 125,
+            "parse_version": 1,
+            "chunks_version": 1,
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 52325,
+            "empty_page_ratio": 0.019230769230769232,
+            "vi_diacritic_ratio": 0.270157668418538,
+            "average_alphabetic_chars_per_page": 1006.25
+          }
+        },
+        {
+          "step": "graph",
+          "generation": 0,
+          "embedding": 100,
+          "known_usd": "0.00016065",
+          "unknown_upper_usd": "0.0248832",
+          "timing": {
+            "wall_seconds": 133.76126929999737,
+            "embedding_wait_seconds": 132.98612470000808,
+            "embedding_wait_measured": true
+          },
+          "cache_detail": {
+            "web_timing": {
+              "wall_seconds": 133.76126929999737,
+              "embedding_wait_seconds": 132.98612470000808,
+              "embedding_wait_measured": true
+            }
+          }
+        }
+      ],
+      "transport": {
+        "responses": 1197,
+        "status_counts": {
+          "200": 1168,
+          "None": 29
+        },
+        "errors": [
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.733974+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "acb3c42b34ae50deefaf46cc415678a9e87dc65c6705121b549d83211d259e17",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.1973386000027
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.749817+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "92d9e780d954db67afb40da1491134ad07ca4802ec7d4a30b09806c287c46387",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.24560860000202
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.755326+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "b24a67977694a1ecc8545215d8ffe3c270f58a4ae57a1b101517ee2e01b6da62",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.24035979999462
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.739645+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "99a2a4078352b05c9c2c0d2165a8ef3844ef0d465f896b35b5c98ea317687f38",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.25573679999798
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.760896+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "fede248bfdccac59794314ddd20a84b8a1eaf8b1cffc0243c9cb1e7f9024eccd",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.25024839999969
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.759890+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "a23beded01350da746f92f33d8c49abe97b83f5283ff1e224a023ccf404d27e3",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.25084039999638
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.759329+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "e79caee40e8cd954bafd82a03ff3d8d2edde631c801bbb7bd18f14dc47a3b343",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.25150129999383
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.763406+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "1dbcce4d475cff37bdef3f8c5b8775fb129cc4b59a35b98fceb6f3e5446b3ad4",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.24707480000507
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.763406+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "c0554d9795deac57cd8bd393f7872e7251aa522b4a095666fb2addaf4e43c51a",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.2629758999974
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.760896+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "9ca02e778adbaa7351b06ace01b48ff879206fdaf4b5ef647bb5b9aecb25a294",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.26526080000622
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.762401+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "fd9241dfc0983f54236026042beb4e1110723b744e91bcd5beb77791d6d3cb25",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.2641222999955
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.776923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "2f67391ade1c9e1d2af4b316727ce4df55318b4c9a8636ba5291561513acfb3c",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.26535539999895
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.774918+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "955327933c43a69a0bc608c618b7db82ddea3b2b2f8be6a3169a969c5cd3a787",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.26675160000741
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.772849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "caa133bfb18c7a6c32309c940c875ab250c82e96db8f0eddc38c0ed15cd54208",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.26943529999699
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.767849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "e77b80d5595e452a7aecdba9d681104b2a57231347c4762c71db8986c387283f",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.28942299999471
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.777923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "e898fab9d50a9e0ef34cc7124a923fd0a07ca726d8fc853d951f2503f019fb60",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.28005630000553
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.771849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "6981147d323c4eab7b26d291421284477a1dd059b018eb5b753a3acfb2449a4c",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.28631630000018
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.768849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "d22b1f03f3c1b322aa8dbbe7b71ef00bb07ca55c3a2d29469c16246c9dc84455",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.28900220000651
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.770849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "808975d12854038a7cfe2aaecb007198e66aee5467bf4dfd2f031908296f2927",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.28691830000025
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.778923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "3118d6a2e5204f4c2836b5477bd14f910297241f34537e4c2eeb145680e15659",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.27896930000861
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.764411+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "79fa7255dc484f673a0302f2b27b7e1d23b9c9ec1af2fc056d10d7090b5ba618",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.30805449999752
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.768849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "b7783ace8ca2d25566b74fa7d6b31d1a5a36333abd556f0501cc779dc4768d0c",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.30388590000803
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.769849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "0c0f2cea87252cc26ab93bbf11cb1145c4b68f93aad2472f4c2079aa46993c90",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.30328100000042
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.762401+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "cf2f0ff901767be3a7a51043b2855078d1758b736457ff0cdbd6077776deda9c",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.31059429999732
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.781923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "4cde2cb6a0180948511b5650a3a60d0fef79f9a91771e468b752c1ecc52eacbe",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.2914318999974
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.776923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "179c3013a6a01241b13cc6cc05741bf2f2131f3ce51e578fbc2d5c2c9b8de158",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.29617469999357
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.743703+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "bc7db85c4a0b4bf2496af5431ade9f3700c9ad3a7bffb52b26601cecd06f96a3",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.34487749999971
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.777923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "193947b01e875ac2ead771295c75a8d87fdb0d2ab6791aa3cf627e839d485096",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.31020189999253
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.780923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "0d0d02f6e651c11bf31e029761f292f1ec3d96872507835d7871e628152ec5d9",
+            "http_status": null,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 120.30797870000242
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.727195+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "5560ce4b36d8b613c653b9a4028d7c1cac94759029a28fe81d6f3dda14912ba7",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.6632821999956
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.737458+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "8f66dee2bc02deda5d73fe9500e79064140489035a8902bd448df32fcc7939a1",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.6532898999867
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.738645+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "dd08eddb3fc82aca683b1ed5e96785296c28300c82723784f492ac6526091c78",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.66826970000693
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.732964+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "3ac37acdf07c06b38ac26261156a0fe72cd2c05e7c3a25522e81d1bb20950482",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.67449099999794
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.745300+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "aa184a275d121b81e99d94113193822e1eac14c80db68afeb74a515ce282677c",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.66187979999813
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.733974+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "6bf2781a2a133ba95a412e8af7e4ba8667028fd1a6194f68b16be009d9c8d53c",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.68852020001214
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.749817+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "f4e5270cc41f063a3e0cc2a96920ea3cff380f731c55b0cf9c04bd1c913dfec0",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.68775169999572
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.726195+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "fab81d0296214e76ee02ef16cff2ba689f285eda4b41800d4df5630de0dce61a",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.7262725000037
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.729946+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "6ac8a6f9bdeeb8fc9d4bfc43f5f878a3d6407ef5c28270caaf279d12dc26c6c7",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.73783970001386
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.748815+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "e55b5413f62bfb990a34d4df324b95f17cabcc40fd90e2c8f86aaa9b22df1443",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.74922209999932
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.750816+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "6cbdb4784ad7e5106d835499ad5c24802c5ed243fa35c7edf1b9fe2675253229",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.76288979999663
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.745300+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "1a828a594c2fbce4e859330063dc7a5b082fd94ab47dbd6c6e36c8b3aaa92aaf",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.76835760001268
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.771849+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "af27dd3f139ad44deee6e6f7adc965d7ea5a37c8b1dd008eab383952f722828e",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.74203569999372
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.724195+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "89dec6d0c5b0239c650820ddd6d05345318eb71892eea553ddb6f8afdd7e3764",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.8046522000077
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.731970+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "67abb198c615a5b2b191d13c4e368484156446aa779d58b0b08118b437cee59b",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.7976445999957
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.739645+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "3dd649a2f28e51d71c072d554dd413260017df3848a828d09f9786e50e9a2714",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.80675170000177
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.758326+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "507bacbe2cf0f81265bfd8b1f1f894d5781aca25a430441687b81fec76587863",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.78736400000344
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.747308+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "c1a22d19d1d4205d45bf5878004ab2946564e9d55a2e132e3e218f8167e7d28a",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.79920399999537
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.736461+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "d973c51b25f5fcbdbaa0121ee37c605db3783a8715f832545122bb677c30605e",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.80949669999245
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.751816+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "29fc1c7f49863f150963bcbca1c0a617d36cecd2eb2fe1434a0e6b047ab4c78d",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.7938056999992
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.750816+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "a88579a61b127c2db9dcba14ab1a308dfe4eb79fca37875b46dabb4b4f928d2f",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.7957763000013
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.744283+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "ef8f4995dda82424907219bbef5c21db80c447e747b85a6311b229daa1fed18b",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.81699890000164
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.753320+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "5a34543dfc833664db13cd46cd6f3e3a22f20a2b0eb1770d5f9ca8e93e626289",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.8082921000023
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.740741+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "434afef5bad2710e545da8af57edc5de3106f19cc489094862e7161037efbd8b",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.8207900999987
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.747308+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "429baf4ad06a7da557abf10dfdd8b4899095b73b6fd608b7c8aa271bb9c20e6e",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.81410460000916
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.775924+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "46dd9f0037c979055a459361f5f1f598d77b98b0e65e01e59a42c770bdfd307d",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.78597949999676
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.765853+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "1417cdd4f21d329ab6b6126534ef2985f0379674554f7f9d2511a262ed605627",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.81047840000247
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.725195+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "79d5b68ea53b91da6ec51281580a34ed25542ca35e92cbd6438234fcf2d721ec",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.8507496000093
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.753320+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "f9611dbd688121f96523cfe5c017956476146e2b6f85f8a4dfa3a0a7e1a99d94",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.8234494000062
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.757325+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "ff819c2aabcc479c0b4ef248b89c0285086dc3f1dec37329af6b2762dcae924e",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.83389789999637
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.746308+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "66204b7ae02cd7618970279dcc87426e4d4f71cccc6a8a53b8e2f8cf81ffd1da",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.84525820000272
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.740741+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "c02eb1b7e2077e5919765ea9e4b047f9179b83f409406b117fa7fa530aec4235",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.85000230000878
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.736461+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "1de632c5144dbb2914f85f3d0f3729854575829429630f7eecf2a82920b56a68",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.85545779998938
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.722688+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "cd23947321ffaabef67ea55914eec57944b04e1c3157a19fd4e460c437191b33",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.8841492999927
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.733974+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "6c3fed946ee4ed0ff7ddae8f777b824ea6997b57baa98e72af93c856d3d802a9",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.88873790000798
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.774358+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "42ce58156719a0897289d48883568d94ccd466fb03704be55e95d4c142650328",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.86366719999933
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.756326+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "90f96b77875512e921f534dfd5c355651ff59ff84f31c6fe78380c2d4b18f0fa",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.89763950000633
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.766851+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "c39ca12163337544fbfa7470fb43f343dddd3b3d99c5e0bd6fcc0e6a7db06424",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.8870525999955
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.743188+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "02d0e4758395b8dd943d224013f3b4566a979b26097e154eb7a94266f33f570d",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.91145790000155
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.723194+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "0a87bbcf1fd21f084650afd2feb224b45ef6a5b54cbf0748c46b57f3f29aeecd",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.94590080001217
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.754326+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "99d1f51b4be70e06f4d7e8285133f594a00984fd33a1212b20ffc47e544d3322",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.930260299996
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.721688+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "27aa71cdf3347df2e5e4d3a7a9b4f31e61dc0bfaaf766a4600a761a8ad0b8fb9",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.9628326999955
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.761896+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "66228a9a59c56a23d87506cf48cfd7c7c89f40d24e6f9a4e3354e365c714fdd7",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.938837099995
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.780923+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "8a702f72ef1fca3f95f24a3e48e499c0a1f19b2af3d11ed0a7ad8d26ab256d10",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.91935679999006
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.754326+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "14c06ffb12d2ec81902176c1cc63281cc89233a85f1d192864aca421e35f2d13",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.9459319000016
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.764411+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "f8a46be3100ccf74b2092a02a318fa5e6d8bf058b796ea2dfcb1ea644b9cdbe8",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.93615779999527
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.725195+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "36eaf3ef131d66ac58bafa342f6d3ca9cf24365aed286494688d350d1f792458",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.9755323999998
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.748308+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "4bc62e32857e22d5aba89d5ba51dfe5b668e9df8e064cf2e82017636fbf7d6f3",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.95232149999356
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.737458+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "49b96b096c22409f1bec968911bf88c83040f6a33efe2538664953001dfcd0fc",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.963488399997
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.735458+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "e1d3fc3207091b95068f440dac918ba33220cbcd6fa25e1e44e1865794815efc",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.96500469998864
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.758326+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "5d2cbf718bf7faededbaf001a2850d98b13b8f5114fde551ca1736adf8eb6976",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.94250099999772
+          },
+          {
+            "operation": "predict",
+            "started_at": "2026-10-25T16:23:57.751816+07:00",
+            "timeout_seconds": 120.0,
+            "request_sha256": "1a8a01ef324532558c71e17a90ed3b36bd59f2bf827aa84076d5187a68738383",
+            "http_status": 200,
+            "error_type": "TimeoutError",
+            "error_message": "The read operation timed out",
+            "reason_type": "NoneType",
+            "wall_seconds": 131.9489126999979
+          }
+        ],
+        "max_seconds": 131.9755323999998,
+        "observed_peak": {
+          "all": 100,
+          "predict": 100,
+          "generateContent": 6
+        }
+      },
+      "accounting_assertions_passed": true
+    }
+  ],
+  "total_known_usd": "1.28947575",
+  "total_unknown_upper_usd": "0.4139008",
+  "total_upper_usd": "1.70337655",
+  "embedding_billing_verified": false,
+  "invoice_reconciled": false,
+  "pause": {
+    "state": "resumed",
+    "paused_at": "2026-10-25T13:43:13.5419892+07:00",
+    "targets": [
+      {
+        "creation_date": "2026-10-25T13:37:12.9717490+07:00",
+        "executable": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.uv-python\\cpython-3.12.11-windows-x86_64-none\\python.exe",
+        "command_line": "\"C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.uv-python\\cpython-3.12.11-windows-x86_64-none\\python.exe\" -X utf8 tmp/w15_r5_controlled_candidate.py",
+        "state": "resumed",
+        "pid": 27604
+      }
+    ],
+    "reason": "Owner requested lunch pause; concurrency 100 permitted after lunch only",
+    "head": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+    "resumed_at": "2026-10-25T14:26:10.0541295+07:00"
+  }
+}

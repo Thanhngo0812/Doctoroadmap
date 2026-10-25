@@ -1,0 +1,87 @@
+"""Check actual ready courses via authenticated HTTP under provider/ADC/SMTP guards."""
+from contextlib import ExitStack
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+from unittest.mock import patch
+root=Path(__file__).resolve().parents[1]
+sys.path[:0]=[str(root/'src'),str(root/'src/web/backend'),str(root/'src/web/backend/tests')]
+import w15_operator_run as operator
+from fastapi.testclient import TestClient
+from sqlalchemy import text
+from wayfinder.api.app import create_app
+from wayfinder.composition import WebServices,compose_account_service,compose_build_service,compose_course_services
+from wayfinder.fakes.mail import FakeMailer
+from wayfinder.fakes.local_media import LocalFakeMediaStore
+from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+
+bundle=json.loads((root/'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+items=[next(row for row in bundle['attempts'] if row['book']=='doc-6')]
+if len(sys.argv)>1:
+    items.append(json.loads((root/'tmp/w15-r5-controlled-location.json').read_text()))
+for item in items:
+    run=root/item['run_dir']
+    execution=json.loads((run/'execution.json').read_text(encoding='utf-8'))
+    cid=execution['http_build']['course_id']
+    settings,core=operator.profile(run,item['database'])
+    engine=operator.create_database_engine(operator.test_database_url(item['database']))
+    store=PostgresPhaseBStore(engine)
+    denied=[]
+    def forbidden(*args,**kwargs):
+        denied.append(1)
+        raise AssertionError('HTTP read verification must not call provider/ADC/SMTP')
+    try:
+        with engine.connect() as reader:
+            email=reader.execute(text('SELECT a.email FROM account a JOIN course c ON c.owner_id=a.id WHERE c.id=:id'),{'id':cid}).scalar_one()
+            before=reader.execute(text('SELECT count(*) FROM usage_ledger')).scalar_one()
+        media=LocalFakeMediaStore(run/'media')
+        with ExitStack() as guards:
+            for name in ('doc2roadmap.infrastructure.llm.gemini.urlopen','doc2roadmap.infrastructure.embedding.gemini.urlopen',
+                'doc2roadmap.infrastructure.llm.phase_b.urlopen','wayfinder.infrastructure.build_spend.urlopen',
+                'doc2roadmap.infrastructure.google_auth.VertexCredentials.headers','google.auth.default','smtplib.SMTP'):
+                guards.enter_context(patch(name,forbidden))
+            courses,learning=compose_course_services(settings,engine,store,media=media)
+            services=WebServices(health_check=lambda:'ok',accounts=compose_account_service(settings,engine,mailer=FakeMailer()),
+                builds=compose_build_service(settings,engine,media=media,core_settings=core),courses=courses,learning=learning)
+            with TestClient(create_app(settings,services)) as client:
+                login=client.post('/api/v1/auth/login',headers={'Origin':'http://testserver'},
+                    json={'email':email,'password':'W15 isolated operator passphrase!'})
+                assert login.status_code==200,login.text
+                views={}
+                for name,suffix in [('course',''),('roadmap','/roadmap'),('progress','/progress')]:
+                    response=client.get('/api/v1/courses/'+cid+suffix)
+                    assert response.status_code==200,response.text
+                    assert 'spent_usd' not in response.text and 'operator_budget' not in response.text
+                    views[name]=response.json()
+                source=client.get('/api/v1/courses/'+cid+'/source/pages/1')
+                assert source.status_code==200,source.text[:300]
+                assert source.headers['content-type'].startswith('image/')
+                # LocalFakeMediaStore intentionally returns a synthetic RIFF payload.
+                assert source.content.startswith(b'RIFF') and b'WEBPpage:1;width:' in source.content
+                (run/'http-source-page1.webp').write_bytes(source.content)
+        assert views['course']['status']=='ready'
+        assert views['roadmap']['graph_version']==views['course']['published_graph_version']
+        assert len(views['roadmap']['modules'])==views['course']['module_count']
+        assert sum(len(m['concepts']) for m in views['roadmap']['modules'])==len(views['progress']['nodes'])
+        with engine.connect() as reader:
+            after=reader.execute(text('SELECT count(*) FROM usage_ledger')).scalar_one()
+        assert before==after and denied==[]
+        result=dict(run_dir=item['run_dir'],course_id=cid,views=views,source_page=dict(status=200,
+            content_type=source.headers['content-type'],bytes=len(source.content),sha256=sha256(source.content).hexdigest()),
+            provider_calls=0,usage_ledger_rows_before=before,usage_ledger_rows_after=after,
+            assertions=dict(authenticated_http_200=True,pinned_graph_version=True,roadmap_and_progress_counts_match=True,
+                            source_page_fake_media_contract=True,source_page_real_render_verified=False,
+                            no_provider_or_usage_side_effect=True,no_cost_fields_in_http=True))
+        output=root/'report/w15-evidence/r5-20261025'/('http-ready-'+('doc-6' if item is items[0] else 'candidate-controlled')+'.json')
+        if output.exists():
+            previous=json.loads(output.read_text(encoding='utf-8'))
+            if previous.get('assertions',{}).get('source_page_real_image'):
+                preserved=output.with_name(output.stem+'-initial-overclaim.json')
+                assert not preserved.exists()
+                preserved.write_bytes(output.read_bytes())
+        output.write_bytes((json.dumps(result,ensure_ascii=False,indent=2)+'\n').encode())
+        print(json.dumps(dict(evidence=str(output),modules=views['course']['module_count'],
+            concepts=len(views['progress']['nodes']),provider_calls=0,source_page_bytes=len(source.content)),ensure_ascii=False))
+    finally:
+        store.close();engine.dispose()

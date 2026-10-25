@@ -1,0 +1,24 @@
+"""Record non-secret client/network configuration; no provider requests."""
+from importlib.metadata import version
+import json
+from pathlib import Path
+import platform
+import socket
+import ssl
+import sys
+from urllib.parse import urlsplit
+from urllib.request import getproxies
+root=Path(__file__).resolve().parents[1]
+out=root/'report/w15-evidence/r6-20261025'
+out.mkdir(exist_ok=True)
+proxies={}
+for name,value in getproxies().items():
+    if name=='no':
+        proxies[name]=dict(configured=bool(value));continue
+    parsed=urlsplit(value if '://' in value else 'http://'+value)
+    proxies[name]=dict(scheme=parsed.scheme,host=parsed.hostname,port=parsed.port,credentials_present=bool(parsed.username or parsed.password))
+value=dict(python=sys.version,platform=platform.platform(),openssl=ssl.OPENSSL_VERSION,
+    packages={name:version(name) for name in ('httpx','google-auth','requests')},
+    proxies=proxies,default_socket_timeout=socket.getdefaulttimeout(),provider_calls=0)
+(out/'environment.json').write_bytes((json.dumps(value,indent=2)+'\n').encode())
+print(json.dumps(value,indent=2))

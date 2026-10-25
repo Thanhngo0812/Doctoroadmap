@@ -1,0 +1,262 @@
+{
+  "build": {
+    "id": "72b392e6-5658-4340-8252-191e8d8a4467",
+    "doc_id": "u-98b6efa729ebf97f5e83",
+    "upload_id": "fc884188-c31c-435d-a525-9a9a83227278",
+    "requested_by": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+    "status": "failed",
+    "step": "learning_prep",
+    "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:d3d267174fa7bfba80fe721ef38908256e5dc6af9fcb6a4d6c2b5bdb89e4b98e",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "postport-real-pipeline",
+    "lease_id": "624c596d-cd49-4f8b-a85e-d872b1e54faa",
+    "heartbeat_at": "2026-01-01 00:00:00+00:00",
+    "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+    "queued_at": "2026-01-01 00:00:00+00:00",
+    "started_at": "2026-01-01 00:00:00+00:00",
+    "finished_at": "2026-01-01 00:00:00+00:00",
+    "created_at": "2026-01-01 00:00:00+00:00",
+    "error_code": "loi_mang",
+    "error_message": "Kết nối bị gián đoạn; bạn có thể thử lại",
+    "retryable": true,
+    "spent_usd": "0.000585",
+    "model_calls": 15,
+    "input_tokens": 1500,
+    "output_tokens": 180,
+    "usage_complete": true,
+    "elapsed_seconds": 1.0932766999903833,
+    "graph_version": 8,
+    "module_count": 0
+  },
+  "receipt": {
+    "error": {
+      "code": "loi_mang",
+      "message": "Kết nối bị gián đoạn; bạn có thể thử lại",
+      "retryable": true
+    },
+    "doc_id": "u-98b6efa729ebf97f5e83",
+    "status": "failed",
+    "spent_usd": 0.000585,
+    "model_calls": 15,
+    "input_tokens": 1500,
+    "step_details": {
+      "graph": {
+        "reused": false,
+        "web_timing": {
+          "wall_seconds": 0.3318645999970613,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "graph_version": 8
+      },
+      "concepts": {
+        "a3": {
+          "a3_reused": false,
+          "a3_prime_reused": false,
+          "candidate_version": 1,
+          "retrieval_version": 1
+        },
+        "canonical": {
+          "reused": false,
+          "a4_gold_coverage": "none",
+          "canonical_version": 1
+        },
+        "web_timing": {
+          "wall_seconds": 0.5200138999935007,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "label_roles": {
+          "reused": false,
+          "chunks_version": 2
+        }
+      },
+      "doc_reading": {
+        "page_count": 1,
+        "web_timing": {
+          "wall_seconds": 0.12543929999810643,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "chunk_count": 1,
+        "parse_version": 1,
+        "chunks_version": 1,
+        "a4_gold_coverage": "none",
+        "alphabetic_chars": 412,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.32281553398058255,
+        "average_alphabetic_chars_per_page": 412.0
+      },
+      "learning_prep": {
+        "web_timing": {
+          "wall_seconds": 0.047792200013645925,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        }
+      }
+    },
+    "graph_version": 8,
+    "output_tokens": 180,
+    "usage_complete": true,
+    "completed_steps": [
+      "doc_reading",
+      "concepts",
+      "graph"
+    ],
+    "elapsed_seconds": 1.0932766999903833,
+    "pipeline_version": "web-real:bd05c1b2596d20709efd43c8350bf338af0a614f:d3d267174fa7bfba80fe721ef38908256e5dc6af9fcb6a4d6c2b5bdb89e4b98e"
+  },
+  "traces": [
+    {
+      "id": 138,
+      "created_at": "2026-10-25 10:08:55.778737+00:00",
+      "purpose": "module_title",
+      "model_id": "gemini-3.1-flash-lite",
+      "doc_id": "u-98b6efa729ebf97f5e83",
+      "context_hash": "sha256:428d223e34bc2ff4328f257740377f2db51c4ee9d4e9bf82ff8bd8d1da297574",
+      "learner_id": null,
+      "cost_usd": "0.000000",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "elapsed_ms": 0,
+      "ttft_ms": null,
+      "failed": null,
+      "replayed": false,
+      "extra": {
+        "doc_id": "u-98b6efa729ebf97f5e83",
+        "purpose": "module_title",
+        "ttft_ms": null,
+        "cost_usd": 5.5e-05,
+        "model_id": "gemini-3.1-flash-lite",
+        "replayed": false,
+        "counted_in": "build",
+        "created_at": "2026-10-25T10:08:55.778737+00:00",
+        "elapsed_ms": 0,
+        "learner_id": null,
+        "context_hash": "sha256:428d223e34bc2ff4328f257740377f2db51c4ee9d4e9bf82ff8bd8d1da297574",
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "thought_tokens": 0
+      }
+    }
+  ],
+  "ledger": [
+    {
+      "id": 137,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-98b6efa729ebf97f5e83",
+      "context_hash": null,
+      "learner_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+      "cost_usd": "0.000375",
+      "input_tokens": 900,
+      "output_tokens": 120,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "concepts",
+        "doc_id": "u-98b6efa729ebf97f5e83",
+        "purpose": "build",
+        "user_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+        "build_id": "72b392e6-5658-4340-8252-191e8d8a4467",
+        "cost_usd": 0.000375,
+        "lease_id": "624c596d-cd49-4f8b-a85e-d872b1e54faa",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+        "claim_count": 1,
+        "model_calls": 9,
+        "input_tokens": 900,
+        "output_tokens": 120,
+        "usage_complete": true,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 139,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-98b6efa729ebf97f5e83",
+      "context_hash": null,
+      "learner_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+      "cost_usd": "0.000195",
+      "input_tokens": 500,
+      "output_tokens": 60,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "graph",
+        "doc_id": "u-98b6efa729ebf97f5e83",
+        "purpose": "build",
+        "user_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+        "build_id": "72b392e6-5658-4340-8252-191e8d8a4467",
+        "cost_usd": 0.000195,
+        "lease_id": "624c596d-cd49-4f8b-a85e-d872b1e54faa",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+        "claim_count": 1,
+        "model_calls": 5,
+        "input_tokens": 500,
+        "output_tokens": 60,
+        "usage_complete": true,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 140,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-98b6efa729ebf97f5e83",
+      "context_hash": null,
+      "learner_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+      "cost_usd": "0.000015",
+      "input_tokens": 100,
+      "output_tokens": 0,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": true,
+      "replayed": false,
+      "extra": {
+        "step": null,
+        "doc_id": "u-98b6efa729ebf97f5e83",
+        "purpose": "build",
+        "user_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+        "build_id": "72b392e6-5658-4340-8252-191e8d8a4467",
+        "cost_usd": 1.5e-05,
+        "lease_id": "624c596d-cd49-4f8b-a85e-d872b1e54faa",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "b63944e2-ee0f-45e4-9a0e-bd33b4cc1f86",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "attribution_complete": false
+      }
+    }
+  ],
+  "phase_b_records": [
+    {
+      "kind": "module_assignment",
+      "owner": null,
+      "doc_id": "u-98b6efa729ebf97f5e83"
+    }
+  ],
+  "phase_b_cache_keys": [
+    {
+      "key": "sha256:6e9b16bfe4c327c0921f10197d27da67c2529813256bfc6adc3ee655e7c44b02"
+    }
+  ],
+  "generation_fake_calls": 9,
+  "embedding_fake_calls": 6,
+  "provider_calls": 0,
+  "synthetic_usage": true
+}

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.342" timestamp="2026-10-25T17:00:15.429774+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_spend_w15" name="test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap" time="0.142"><failure message="wayfinder.infrastructure.build_spend.BuildSpendStopped: Usage is unknown or a provider bound was exceeded; stop dispatch">src\web\backend\tests\test_build_spend_w15.py:104: in test_owner_opt_in_keeps_unknown_reserved_while_allowing_core_retry_within_cap
+    assert guard(request()).read()
+           ^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\build_spend.py:107: in __call__
+    self._reserve(reserved)
+src\web\backend\wayfinder\infrastructure\build_spend.py:85: in _reserve
+    raise BuildSpendStopped('Usage is unknown or a provider bound was exceeded; stop dispatch')
+E   wayfinder.infrastructure.build_spend.BuildSpendStopped: Usage is unknown or a provider bound was exceeded; stop dispatch</failure></testcase></testsuite></testsuites>

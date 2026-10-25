@@ -26,6 +26,61 @@ def approval(**kwargs):
     return kind(embedding_price_profile='owner-demo-embedding-token-20261025', **kwargs)
 
 
+def test_owner_opt_in_allows_the_real_core_embedding_retry_and_retains_unknown_in_pg(builds, tmp_path, monkeypatch):
+    from doc2roadmap.composition_build import DocumentPipeline
+    from doc2roadmap.application.ports.embedding import EmbeddingRequest
+    source = tmp_path / 'retry-source.pdf'
+    source.write_bytes(b'one explicitly approved retry diagnostic')
+    digest = sha256(source.read_bytes()).hexdigest()
+    calls = []
+    def provider(*args, **kwargs):
+        calls.append(1)
+        if len(calls) == 1:
+            raise TimeoutError('fake first attempt timeout')
+        value = {'predictions': [{'embeddings': {'values': [1.] + [0.] * 767, 'statistics': {'token_count': 100}}}]}
+        return BytesIO(json.dumps(value).encode())
+    monkeypatch.setattr(build_spend, 'urlopen', provider)
+    monkeypatch.setattr('doc2roadmap.infrastructure.google_auth.VertexCredentials.headers', lambda self: {'Authorization': 'test-only'})
+    monkeypatch.setattr('doc2roadmap.infrastructure.embedding.gemini.sleep', lambda seconds: None)
+    settings = core(builds).model_copy(update={'gemini_max_retries': 1})
+    class RetryPipeline(DocumentPipeline):
+        def read(self, *args):
+            return {'page_texts': ['Đây là giáo trình tiếng Việt có đầy đủ ví dụ. ' * 20]}
+        def label_roles(self, doc):
+            vectors = self.embedding_guard.embed([EmbeddingRequest('fake node description', 'SEMANTIC_SIMILARITY')])
+            assert vectors == [[1.] + [0.] * 767]
+            return {}
+        def a3(self, doc):
+            return {}
+        def canonical(self, *args):
+            return {}
+        def roadmap(self, doc):
+            return {'graph_version': 8}
+        def learning_prep(self, *args):
+            return {}
+    runtime = RealBuildRuntime(builds.settings, builds.engine, core_settings=settings, pipeline_factory=RetryPipeline)
+    grant = approval(reference='owner-core-retry-test', file_sha256=digest, pipeline_version=runtime.pipeline_version,
+                     max_usd='.00062', retry_unknown_within_cap=True)
+    try:
+        runtime.spend_approval = grant
+        receipts = []
+        result = runtime.runner(receipts.append).execute(source, 'u-' + digest[:20])
+        assert receipts == [result] and result.status == 'succeeded' and result.graph_version == 8
+        assert result.completed_steps == ['doc_reading', 'concepts', 'graph', 'learning_prep'] and len(calls) == 2
+        assert result.input_tokens == 100 and result.model_calls == 2 and result.usage_complete is False
+        assert result.step_details['operator_budget']['known_usd'] == '0.000015'
+        assert result.step_details['operator_budget']['unknown_upper_usd'] == '0.0003072'
+        record = runtime.phase_b_store.get_record('w15_build_approval', grant.reference)
+        assert record['state'] == 'finished' and record['retry_unknown_within_cap'] is True
+        assert [event['actual_usd'] for event in record['events']] == [None, '0.000015']
+        with pytest.raises(ValueError, match='consumed'):
+            with grant.activate(source, 'u-' + digest[:20], runtime):
+                pytest.fail('Consumed retry approval was replayed')
+        assert len(calls) == 2
+    finally:
+        runtime.close()
+
+
 def test_approved_file_is_consumed_once_in_pg_and_enables_only_that_attempt(builds, tmp_path):
     from doc2roadmap.application.ports.build import BuildRejected
     source = tmp_path / 'book.pdf'

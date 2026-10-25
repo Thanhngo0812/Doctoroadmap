@@ -1,0 +1,103 @@
+{
+  "head_executed": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+  "main_received": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+  "product_source_changes": false,
+  "source_matches_full_gate_cfabaeb": true,
+  "focused_passed": 39,
+  "focused_exit": 0,
+  "historical_manifests": [
+    {
+      "manifest": "manifest-20261024.json",
+      "verified_entries": 401,
+      "changed": []
+    },
+    {
+      "manifest": "resume-20261024-01/manifest.json",
+      "verified_entries": 103,
+      "changed": []
+    },
+    {
+      "manifest": "resume-20261024-02/manifest.json",
+      "verified_entries": 108,
+      "changed": []
+    },
+    {
+      "manifest": "operator-20261024/manifest.json",
+      "verified_entries": 472,
+      "changed": []
+    },
+    {
+      "manifest": "r4-20261025/manifest.json",
+      "verified_entries": 169,
+      "changed": []
+    }
+  ],
+  "native": [
+    {
+      "path": "runs/r5-audit-candidate-graph-red-20261025-01-exit.json",
+      "exit_code": 1,
+      "seconds": 2.01
+    },
+    {
+      "path": "runs/r5-audit-candidate-graph-red-20261025-02-exit.json",
+      "exit_code": 1,
+      "seconds": 2.28
+    },
+    {
+      "path": "runs/r5-controlled-candidate-20261025-01-exit.json",
+      "exit_code": 0,
+      "seconds": 3942.14
+    },
+    {
+      "path": "runs/r5-diagnostic-20261025-01-exit.json",
+      "exit_code": 1,
+      "seconds": 2.7
+    },
+    {
+      "path": "runs/r5-diagnostic-20261025-02-exit.json",
+      "exit_code": 0,
+      "seconds": 27.83
+    },
+    {
+      "path": "runs/r5-focused-20261025-01-exit.json",
+      "exit_code": 0,
+      "seconds": 20.75
+    },
+    {
+      "path": "runs/r5-mixed100-candidate-20261025-01-exit.json",
+      "exit_code": 1,
+      "seconds": 492.16
+    },
+    {
+      "path": "runs/r5-probe100-20261025-01-exit.json",
+      "exit_code": 0,
+      "seconds": 43.17
+    },
+    {
+      "path": "runs/r5-real-candidate-20261025-01-exit.json",
+      "exit_code": 1,
+      "seconds": 309.25
+    },
+    {
+      "path": "runs/r5-real-doc-6-20261025-01-exit.json",
+      "exit_code": 0,
+      "seconds": 228.73
+    }
+  ],
+  "known_demo_usd": "1.28947575",
+  "unknown_upper_usd": "0.4139008",
+  "total_upper_usd": "1.70337655",
+  "embedding_billing_verified": false,
+  "invoice_reconciled": false,
+  "doc6_bootstrap_real_succeeded": true,
+  "doc6_web_cache_only_provider_calls": 0,
+  "candidate_concurrency8_real_ready": true,
+  "standalone_embedding100_success": true,
+  "mixed100_failed_at": "A6 BuildClusters node-description embedding",
+  "mixed100_unknown_embeddings": 81,
+  "mixed100_generation_unknown": 0,
+  "root_mechanism_isolated": false,
+  "smtp_real": false,
+  "cloudinary_real": false,
+  "w15_accepted_complete": false
+}

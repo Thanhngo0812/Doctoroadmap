@@ -1,0 +1,270 @@
+{
+  "book": "doc-6",
+  "file_sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+  "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+  "bootstrap": {
+    "doc_id": "u-82cb494d407c4755d29d",
+    "status": "succeeded",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "graph_version": 8,
+    "completed_steps": [
+      "doc_reading",
+      "concepts",
+      "graph",
+      "learning_prep"
+    ],
+    "step_details": {
+      "doc_reading": {
+        "chunks_version": 1,
+        "parse_version": 1,
+        "chunk_count": 26,
+        "a4_gold_coverage": "none",
+        "page_count": 25,
+        "alphabetic_chars": 4495,
+        "average_alphabetic_chars_per_page": 179.8,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.2407119021134594,
+        "web_timing": {
+          "wall_seconds": 0.20657260000007227,
+          "embedding_wait_seconds": 0.0,
+          "embedding_wait_measured": true
+        }
+      },
+      "concepts": {
+        "label_roles": {
+          "chunks_version": 2,
+          "reused": false
+        },
+        "a3": {
+          "candidate_version": 1,
+          "retrieval_version": 1,
+          "a3_reused": false,
+          "a3_prime_reused": false
+        },
+        "canonical": {
+          "canonical_version": 1,
+          "reused": false,
+          "a4_gold_coverage": "none"
+        },
+        "web_timing": {
+          "wall_seconds": 168.2843862999871,
+          "embedding_wait_seconds": 39.23766329999489,
+          "embedding_wait_measured": true
+        }
+      },
+      "graph": {
+        "graph_version": 8,
+        "reused": false,
+        "web_timing": {
+          "wall_seconds": 41.84031600000162,
+          "embedding_wait_seconds": 25.187475399987306,
+          "embedding_wait_measured": true
+        }
+      },
+      "learning_prep": {
+        "a12": {
+          "graph_version": 8,
+          "retrieval_version": 1,
+          "assignment_count": 26
+        },
+        "concept_index": {
+          "graph_version": 8,
+          "model_id": "gemini-embedding-001:768",
+          "reused": false,
+          "concept_count": 15
+        },
+        "formulas": {
+          "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-doc-6-722e9386b724\\artifacts\\phase_b\\formula_images\\u-82cb494d407c4755d29d\\parse-v1\\index.json",
+          "parse_version": 1,
+          "cut_count": 0,
+          "skipped_count": 0
+        },
+        "page_images": {
+          "parse_version": 1,
+          "page_count": 0
+        },
+        "web_timing": {
+          "wall_seconds": 11.845662499996251,
+          "embedding_wait_seconds": 11.690737900004024,
+          "embedding_wait_measured": true
+        }
+      },
+      "operator_budget": {
+        "limit_usd": "1",
+        "known_usd": "0.1204034",
+        "held_usd": "0",
+        "unknown_upper_usd": "0",
+        "http_calls": 334,
+        "stopped": false,
+        "audit_failed": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      }
+    },
+    "spent_usd": 0.120403,
+    "model_calls": 334,
+    "input_tokens": 332688,
+    "output_tokens": 25390,
+    "usage_complete": true,
+    "elapsed_seconds": 222.17748860000574,
+    "error": null
+  },
+  "build": {
+    "id": "5097c6e4-fd2e-48f6-83b9-dc47656a895d",
+    "doc_id": "u-82cb494d407c4755d29d",
+    "upload_id": "609dff22-2423-4c42-a81a-141f9a888343",
+    "requested_by": "b85ded66-1aba-4ba0-92e9-89905ae43c8c",
+    "status": "succeeded",
+    "step": "learning_prep",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "29144-4d6145d05a54474380e9301b95fb175f",
+    "lease_id": "ef7770bf-efba-4cdd-bd6e-3e1a1547c040",
+    "heartbeat_at": "2026-10-25 06:14:58.797866+00:00",
+    "confirmation_expires_at": "2026-10-28 06:14:56.696344+00:00",
+    "queued_at": "2026-10-25 06:14:56.796758+00:00",
+    "started_at": "2026-10-25 06:14:56.870878+00:00",
+    "finished_at": "2026-10-25 06:14:58.797866+00:00",
+    "created_at": "2026-10-25 06:14:56.696344+00:00",
+    "error_code": null,
+    "error_message": null,
+    "retryable": false,
+    "spent_usd": "0.000000",
+    "model_calls": 0,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "usage_complete": true,
+    "elapsed_seconds": 1.6276177999970969,
+    "graph_version": 8,
+    "module_count": 2
+  },
+  "http_build": {
+    "contract_version": "build-1",
+    "build_id": "5097c6e4-fd2e-48f6-83b9-dc47656a895d",
+    "course_id": "6d383ad1-1297-426e-943a-ca7be3fec917",
+    "upload_id": "609dff22-2423-4c42-a81a-141f9a888343",
+    "status": "succeeded",
+    "step": "learning_prep",
+    "step_index": 4,
+    "step_count": 4,
+    "started_at": "2026-10-25T06:14:56.870878Z",
+    "finished_at": "2026-10-25T06:14:58.797866Z",
+    "confirmation_expires_at": "2026-10-28T06:14:56.696344Z",
+    "cancel_requested": false,
+    "can_cancel": false,
+    "can_retry": false,
+    "error": null
+  },
+  "mail_subjects": [
+    "Bản dựng xong"
+  ],
+  "attempts": [
+    {
+      "result": {
+        "error": null,
+        "doc_id": "u-82cb494d407c4755d29d",
+        "status": "succeeded",
+        "spent_usd": 0.0,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "step_details": {
+          "graph": {
+            "reused": true,
+            "web_timing": {
+              "wall_seconds": 0.39850929999374785,
+              "embedding_wait_seconds": null,
+              "embedding_wait_measured": false
+            },
+            "graph_version": 8
+          },
+          "concepts": {
+            "a3": {
+              "a3_reused": true,
+              "a3_prime_reused": true,
+              "candidate_version": 1,
+              "retrieval_version": 1
+            },
+            "canonical": {
+              "reused": true,
+              "a4_gold_coverage": "none",
+              "canonical_version": 1
+            },
+            "web_timing": {
+              "wall_seconds": 0.7971674000000348,
+              "embedding_wait_seconds": null,
+              "embedding_wait_measured": false
+            },
+            "label_roles": {
+              "reused": true,
+              "chunks_version": 2
+            }
+          },
+          "doc_reading": {
+            "page_count": 25,
+            "web_timing": {
+              "wall_seconds": 0.23158300000068266,
+              "embedding_wait_seconds": null,
+              "embedding_wait_measured": false
+            },
+            "chunk_count": 26,
+            "parse_version": 1,
+            "chunks_version": 1,
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 4495,
+            "empty_page_ratio": 0.0,
+            "vi_diacritic_ratio": 0.2407119021134594,
+            "average_alphabetic_chars_per_page": 179.8
+          },
+          "learning_prep": {
+            "a12": {
+              "graph_version": 8,
+              "assignment_count": 26,
+              "retrieval_version": 1
+            },
+            "formulas": {
+              "cut_count": 0,
+              "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-doc-6-722e9386b724\\artifacts\\phase_b\\formula_images\\u-82cb494d407c4755d29d\\parse-v1\\index.json",
+              "parse_version": 1,
+              "skipped_count": 0
+            },
+            "web_timing": {
+              "wall_seconds": 0.09885439999925438,
+              "embedding_wait_seconds": null,
+              "embedding_wait_measured": false
+            },
+            "page_images": {
+              "page_count": 0,
+              "parse_version": 1
+            },
+            "concept_index": {
+              "reused": true,
+              "model_id": "gemini-embedding-001:768",
+              "concept_count": 15,
+              "graph_version": 8
+            }
+          }
+        },
+        "graph_version": 8,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "completed_steps": [
+          "doc_reading",
+          "concepts",
+          "graph",
+          "learning_prep"
+        ],
+        "elapsed_seconds": 1.6276177999970969,
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268"
+      }
+    }
+  ],
+  "courses": [
+    {
+      "status": "ready",
+      "doc_id": "u-82cb494d407c4755d29d",
+      "published_graph_version": 8
+    }
+  ]
+}

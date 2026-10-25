@@ -1,0 +1,71 @@
+{
+  "head_executed": "bd05c1b2596d20709efd43c8350bf338af0a614f",
+  "main_received": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+  "code_commit": "bd05c1b2596d20709efd43c8350bf338af0a614f",
+  "core_source_changed": false,
+  "full_python_passed": 2685,
+  "full_skipped_or_xfailed": [
+    {
+      "classname": "tests.unit.application.test_phase_b_sa55_runner",
+      "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+      "time": "0.206",
+      "type": "pytest.xfail",
+      "message": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+    },
+    {
+      "classname": "src.web.backend.tests.test_media_store",
+      "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+      "time": "0.006",
+      "type": "pytest.skip",
+      "message": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+    }
+  ],
+  "focused_passed": 48,
+  "mutations_caught": 3,
+  "native": [
+    {
+      "label": "r6-full-20261025-01",
+      "commit": "bd05c1b2596d20709efd43c8350bf338af0a614f",
+      "exit_code": 0,
+      "seconds": 513.91
+    },
+    {
+      "label": "r6-full-retry-candidate-20261025-01",
+      "commit": "bd05c1b2596d20709efd43c8350bf338af0a614f",
+      "exit_code": 0,
+      "seconds": 633.92
+    },
+    {
+      "label": "r6-retry-green-20261025-02",
+      "commit": "c19d461dcb56dadcbb1095003038524bcc719084",
+      "exit_code": 0,
+      "seconds": 22.91
+    }
+  ],
+  "real_book_ready": true,
+  "modules": 16,
+  "learnable_concepts": 104,
+  "elapsed_seconds": 633.92,
+  "actual_http_calls": 1637,
+  "generation_calls": 715,
+  "embedding_calls": 922,
+  "http_429": 2,
+  "embedding_timeouts": 0,
+  "stage_peaks": {
+    "concepts": 100,
+    "graph": 49,
+    "learning_prep": 54
+  },
+  "usage_complete": false,
+  "new_known_demo_usd": "0.67933555",
+  "new_unknown_upper_usd": "0",
+  "combined_known_demo_usd": "1.96881130",
+  "combined_unknown_upper_usd": "0.4139008",
+  "combined_upper_usd": "2.38271210",
+  "embedding_billing_verified": false,
+  "invoice_reconciled": false,
+  "operator_retry_opt_in": true,
+  "web_default_allow_spend": false,
+  "owner_stopped_further_root_cause_experiments": true,
+  "w15_accepted_complete": false
+}

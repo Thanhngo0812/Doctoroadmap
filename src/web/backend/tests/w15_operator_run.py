@@ -118,6 +118,9 @@ def execute(plan_path, approval_path):
     permission = json.loads(approval_path.read_text(encoding='utf-8'))
     if permission.get('approved') is not True or permission.get('approved_by') != 'project-owner':
         raise ValueError('A new exact-run approval from the project owner is required')
+    retry_unknown = permission.get('retry_unknown_within_cap', False)
+    if type(retry_unknown) is not bool:
+        raise ValueError('Retry approval must be a boolean')
     for field in ('file_sha256', 'pipeline_version', 'database', 'embedding_price_profile'):
         if not plan.get(field) or permission.get(field) != plan[field]:
             raise ValueError('Owner approval differs from the prepared ' + field)
@@ -139,7 +142,8 @@ def execute(plan_path, approval_path):
         engine.dispose()
         raise ValueError('Code/config changed since dry-run; prepare again before approving')
     grant = BuildSpendApproval(**{key: permission[key] for key in
-        ('reference', 'file_sha256', 'pipeline_version', 'max_usd', 'embedding_price_profile')}, audit_log=safe_path(run_dir,
+        ('reference', 'file_sha256', 'pipeline_version', 'max_usd', 'embedding_price_profile')},
+        retry_unknown_within_cap=retry_unknown, audit_log=safe_path(run_dir,
             'requests-' + sha256(permission['reference'].encode()).hexdigest()[:12] + '.jsonl'))
     media, account_mail = LocalFakeMediaStore(run_dir / 'media'), FakeMailer()
     service = compose_build_service(settings, engine, media=media, core_settings=core)

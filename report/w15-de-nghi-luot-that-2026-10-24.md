@@ -1,5 +1,9 @@
 # W-15 — chuẩn bị lượt Vertex thật sau kiểm 0 USD — 2026-10-24
 
+**Kết quả hiện hành 2026-10-25:** [lượt thật được duyệt và lỗi A6 tại concurrency 100](w15-luot-that-2026-10-25.md).
+Doc-6 bootstrap/web cache-only và candidate mức 8 đã đạt. Kết quả/plan/trần trong hồ sơ bên dưới là lịch sử,
+không dùng lại; việc chi mới, số known/unknown và reference thực thi ở báo cáo hiện hành.
+
 **Đã có sửa sau nghiệm thu lần 4:** xem [operator R4 ngày 2026-10-25](w15-sua-operator-lan4-2026-10-25.md).
 Plan Windows trong hồ sơ này là lịch sử, không sửa tay hoặc dùng lại để chạy.
 Đơn vị embedding online chưa được đối soát; chủ dự án đã cho chọn giá giả định demo trong phiên mới,
