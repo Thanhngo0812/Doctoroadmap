@@ -39,8 +39,10 @@ class PostgresBuildStore(PostgresCourseStore):
     def quota(self, uid, now, default, *, lock=False):
         account=self.one('SELECT build_monthly_max FROM account WHERE id=:uid'+(' FOR UPDATE' if lock else ''),{'uid':uid})
         maximum=account['build_monthly_max'] if account['build_monthly_max'] is not None else default
-        used=self.one('SELECT count(*) AS n FROM build WHERE requested_by=:uid AND counts_quota AND queued_at>=:start',
-                      {'uid':uid,'start':month_start(now)})['n']
+        start=month_start(now)
+        end=(start+timedelta(days=32)).replace(day=1)
+        used=self.one('SELECT count(*) AS n FROM build WHERE requested_by=:uid AND counts_quota AND queued_at>=:start AND queued_at<:end',
+                      {'uid':uid,'start':start,'end':end})['n']
         return {'builds_used':used,'build_monthly_max':maximum,
                 'builds_remaining':None if maximum is None else max(0,maximum-used)}
 
