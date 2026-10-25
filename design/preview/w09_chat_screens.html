@@ -158,6 +158,39 @@
       text-decoration: none;
     }
 
+    /* KaTeX formula typography and layout styles */
+    .katex {
+      font-family: KaTeX_Main, "Times New Roman", serif;
+      font-size: 1.1em;
+      text-rendering: auto;
+      line-height: 1.2;
+      text-indent: 0;
+    }
+    .katex-display {
+      display: block;
+      margin: var(--space-3) 0;
+      text-align: center;
+    }
+    .katex .mathnormal { font-style: italic; }
+    .katex .mord.text { font-style: normal; }
+    .katex .mbin, .katex .mrel { padding: 0 0.2778em; }
+    .katex-html { display: inline-block; }
+    .katex .base { position: relative; white-space: nowrap; width: min-content; display: inline-block; }
+    .katex .msupsub, .katex .msub { display: inline-block; font-size: 0.75em; vertical-align: -0.25em; line-height: 1; }
+    .katex .vlist-t { display: inline-table; table-layout: fixed; vertical-align: -0.25em; }
+    .katex .vlist-r { display: table-row; }
+    .katex .vlist { display: table-cell; vertical-align: bottom; position: relative; }
+    .katex .vlist-s { display: table-cell; vertical-align: bottom; font-size: 1px; min-width: 1px; line-height: 1px; }
+    .katex-mathml {
+      position: absolute;
+      clip: rect(1px, 1px, 1px, 1px);
+      padding: 0;
+      border: 0;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+    }
+
     @media (max-width: 640px) {
       body { padding: var(--space-3); }
       .header-bar { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
@@ -251,7 +284,7 @@
           <div class="message-bubble message-assistant">
             Theo giáo trình <em>Harrison's Principles of Internal Medicine</em>: Nhánh động mạch liên thất trước (LAD) chạy trong rãnh liên thất trước, phát ra các nhánh xiên (septal perforators) cấp máu cho <strong>2/3 trước của vách liên thất</strong> và bó His-Purkinje [S1].
             <div style="margin: var(--space-2) 0; padding: var(--space-2); background: var(--color-bg-subtle); border-radius: var(--radius-sm); font-size: var(--text-small);">
-              Công thức áp lực tưới máu vành: <span class="katex"><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">coronary</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">diastolic</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LVEDP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span>
+              Công thức áp lực tưới máu vành: <span class="katex" role="math" aria-label="P_coronary = P_diastolic - P_LVEDP"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>coronary</mtext></msub><mo>=</mo><msub><mi>P</mi><mtext>diastolic</mtext></msub><mo>−</mo><msub><mi>P</mi><mtext>LVEDP</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{coronary}} = P_{\text{diastolic}} - P_{\text{LVEDP}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">coronary</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">diastolic</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LVEDP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>
             </div>
             <a href="#source-doc-view" class="source-pill-link" onclick="alert('Mở tài liệu nguồn tại Trang 1892'); return false;">
               📖 [S1] Mở Trang 1892 (Chương 273, Harrison 21st Edition)

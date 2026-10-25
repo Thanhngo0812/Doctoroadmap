@@ -882,3 +882,135 @@ def test_falsifiable_plugin_accounting_removed_fails():
     # Asserting that if accounting was removed, report.created is 0 instead of 74
     with pytest.raises(AssertionError):
         assert report["created"] == 74, "Plugin created count must be 74"
+
+
+from html.parser import HTMLParser
+
+
+class HtmlAstNode:
+    def __init__(self, tag="root", attrs=(), parent=None):
+        self.tag = tag
+        self.attrs = dict(attrs)
+        self.parent = parent
+        self.children = []
+
+    def descendants(self):
+        for child in self.children:
+            if isinstance(child, HtmlAstNode):
+                yield child
+                yield from child.descendants()
+
+    def hasclass(self, name):
+        return name in (self.attrs.get("class") or "").split()
+
+    def accessible_text(self):
+        if self.attrs.get("aria-hidden") == "true":
+            return ""
+        if self.attrs.get("aria-label"):
+            return self.attrs["aria-label"]
+        return "".join(child.accessible_text() if isinstance(child, HtmlAstNode) else child for child in self.children)
+
+
+class HtmlAstTree(HTMLParser):
+    def __init__(self, text):
+        super().__init__()
+        self.root = HtmlAstNode()
+        self.current = self.root
+        self.feed(text)
+
+    def handle_starttag(self, tag, attrs):
+        child = HtmlAstNode(tag, attrs, self.current)
+        self.current.children.append(child)
+        if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}:
+            self.current = child
+
+    def handle_endtag(self, tag):
+        node = self.current
+        while node is not self.root:
+            if node.tag == tag:
+                self.current = node.parent
+                return
+            node = node.parent
+
+    def handle_data(self, data):
+        self.current.children.append(data)
+
+
+def parse_preview_tree(filename):
+    source = Path("design/preview/" + filename).read_text(encoding="utf-8")
+    return source, HtmlAstTree(source)
+
+
+def math_formula_accessibility(filename):
+    _, tree = parse_preview_tree(filename)
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    return [{
+        "accessible_text": n.accessible_text().strip(),
+        "has_mathml": any(c.tag == "math" for c in n.descendants()),
+        "has_aria_label": bool(n.attrs.get("aria-label")),
+        "aria_hidden_branches": sum(c.attrs.get("aria-hidden") == "true" for c in n.descendants())
+    } for n in formulas]
+
+
+def test_w08_formulas_have_accessible_content():
+    """Verify that all KaTeX formulas in W-08 have accessible representations (MathML or aria-label)."""
+    formulas = math_formula_accessibility("w08_lecture_screens.html")
+    assert len(formulas) == 2, f"Expected 2 formulas in W-08, got {len(formulas)}"
+    for f in formulas:
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility: {f}"
+
+
+def test_w09_formulas_have_accessible_content():
+    """Verify that all KaTeX formulas in W-09 have accessible representations (MathML or aria-label)."""
+    formulas = math_formula_accessibility("w09_chat_screens.html")
+    assert len(formulas) == 1, f"Expected 1 formula in W-09, got {len(formulas)}"
+    for f in formulas:
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility: {f}"
+
+
+def test_w08_formula_nodes_are_not_accidentally_nested():
+    """Verify that W-08 inline formula does not leave .katex unclosed, avoiding accidental nesting of subsequent nodes."""
+    _, tree = parse_preview_tree("w08_lecture_screens.html")
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    assert all(not any(child.hasclass("katex") for child in n.descendants()) for n in formulas), (
+        "W-08 inline formula has unclosed outer .katex span and contains the following display formula and prose"
+    )
+
+
+def test_w09_formula_has_subscript_layout_styles():
+    """Verify that W-09 includes CSS rules for KaTeX layout and subscript alignment."""
+    source, _ = parse_preview_tree("w09_chat_screens.html")
+    styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+    for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+        href = match.group(1)
+        if ":" not in href:
+            css_file = Path("design/preview/" + href).resolve()
+            if css_file.exists():
+                styles += css_file.read_text(encoding="utf-8")
+    assert re.search(r"\.(?:msub|vlist-t|katex)\b[^{}]*\{", styles), (
+        "W-09 has KaTeX-shaped DOM but zero KaTeX/subscript layout CSS in inline or linked styles"
+    )
+
+
+def test_falsifiable_aria_hidden_without_accessible_math_fails():
+    """Falsifiable test: prove that math hidden by aria-hidden without MathML/aria-label fails accessibility check."""
+    inaccessible_html = '<span class="katex"><span class="katex-html" aria-hidden="true"><span>P = 10</span></span></span>'
+    tree = HtmlAstTree(inaccessible_html)
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    f = {
+        "accessible_text": formulas[0].accessible_text().strip(),
+        "has_mathml": any(c.tag == "math" for c in formulas[0].descendants()),
+        "has_aria_label": bool(formulas[0].attrs.get("aria-label")),
+    }
+    with pytest.raises(AssertionError):
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"]
+
+
+def test_falsifiable_unclosed_nested_katex_fails():
+    """Falsifiable test: prove that unclosed outer span causes nesting assertion to fail."""
+    nested_html = '<div><span class="katex"><span>First</span><br><div class="katex-display"><span class="katex"><span>Second</span></span></div></div>'
+    tree = HtmlAstTree(nested_html)
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    with pytest.raises(AssertionError):
+        assert all(not any(child.hasclass("katex") for child in n.descendants()) for n in formulas)
+
