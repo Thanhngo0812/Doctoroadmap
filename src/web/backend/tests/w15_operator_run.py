@@ -85,7 +85,7 @@ def prepare(book):
             result = BuildDocument(pipeline, runtime.pipeline_version, recorder=receipts.append).execute(
                 target, 'u-' + expected[:20], dry_run=True)
         assert result.status == 'dry_run' and len(receipts) == 1 and result.model_calls == result.spent_usd == 0
-        plan = dict(book=book, run_dir=str(run_dir.relative_to(ROOT)), database=database, file_sha256=expected,
+        plan = dict(book=book, run_dir=run_dir.relative_to(ROOT).as_posix(), database=database, file_sha256=expected,
             pipeline_version=runtime.pipeline_version, prepared_commit=subprocess.check_output(
                 ['git', 'rev-parse', 'HEAD'], cwd=ROOT, text=True).strip(), dry_run=result.to_dict(),
             vertex_project_configured=True, transport='vertex', location='global', approved=False,
