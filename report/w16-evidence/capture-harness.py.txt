@@ -1,0 +1,25 @@
+"""Capture W-16 native output and source identity; no credentials in commands or metadata."""
+from hashlib import sha256
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+from time import monotonic
+root=Path(__file__).resolve().parents[1]
+label,*command=sys.argv[1:]
+out=root/'report/w16-evidence/runs';out.mkdir(parents=True,exist_ok=True)
+names=['src/web/backend/wayfinder/infrastructure/learning_usage.py','src/web/backend/wayfinder/infrastructure/build_store.py',
+       'src/web/backend/wayfinder/infrastructure/phase_b_store.py','src/web/backend/wayfinder/api/builds.py',
+       'src/web/backend/tests/test_usage_w16.py','src/doc2roadmap/application/phase_b/budget.py','src/doc2roadmap/domain/phase_b_limits.py']
+hashes={p:sha256((root/p).read_bytes()).hexdigest() for p in names}
+head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=root,text=True).strip()
+start=monotonic()
+result=subprocess.run(command,cwd=root,capture_output=True,encoding='utf-8',errors='replace',
+    env={**os.environ,'W16_EVIDENCE_RUN':label,'W15_EVIDENCE_RUN':'w16-'+label,'W25_EVIDENCE_RUN':'w16-'+label})
+(out/(label+'.log')).write_bytes((result.stdout+result.stderr).encode())
+record=dict(commit=head,cwd=str(root),command=command,exit_code=result.returncode,seconds=round(monotonic()-start,2),source_sha256=hashes)
+(out/(label+'-exit.json')).write_bytes((json.dumps(record,indent=2)+'\n').encode())
+print(json.dumps({k:v for k,v in record.items() if k!='source_sha256'},indent=2))
+print((result.stdout+result.stderr)[-6000:])
+raise SystemExit(result.returncode)

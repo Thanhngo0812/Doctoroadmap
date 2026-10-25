@@ -47,3 +47,11 @@ max=null là không giới hạn theo cấu hình demo, resets_at giữ offset +
 Web giữ OpenAPI, trang mức dùng/dải React thực hiện sau W-10 và sau khi mốc backend được ghép.
 Không tự ghép/push main, không sửa task/kế hoạch/handoff điều phối, không gửi message cho phiên khác.
 Mốc này chờ soát và **không đóng toàn W-16**. Cổng toàn repo/React/build và commit cuối được ghi tiếp bên dưới.
+
+## Kết quả cổng cuối
+
+Commit mã **`7f98cf799cff78344a2d196118ec430d164c6b26`**, main đã nhận `b3c4426666dd868040ea0bc52e6485f5af6e1ac4`. Full PostgreSQL: **2729 pass**, 2 skip/xfail giữ nguyên; React **203 pass**; build **exit 0**. Các cổng chạy tuần tự; native/JUnit/lệnh/cwd/source SHA ở `w16-evidence/runs/`.
+
+[JSON usage-1 bàn giao](w16-evidence/usage-1.json), [metadata fixture](w16-evidence/usage-1.metadata.json), [manifest](w16-evidence/manifest.json). JSON từ GET thật, ledger tổng hợp; không là chi tiền thật hoặc truy vấn dữ liệu W-15.
+
+Tự động duyệt đã từ chối helper khôi phục rộng báo cáo W-14/W-06 vì có nguy cơ bỏ sửa dở ngoài phạm vi. Đã dùng phương án chỉ COPY; giữ nguyên output gốc chưa commit ngoài W-16 và ghi danh sách `retained-test-exports.json`. Không stash/reset/restore, không xóa dữ liệu. Những tệp đó không nằm trong commit W-16; source và commit mốc sạch trong phạm vi được giao.

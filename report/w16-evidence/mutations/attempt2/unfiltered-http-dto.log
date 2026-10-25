@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_______ test_usage_real_response_dto_recursively_removes_internal_money _______
+src\web\backend\tests\test_usage_w16.py:208: in test_usage_real_response_dto_recursively_removes_internal_money
+    assert_no_money_keys(view)
+src\web\backend\tests\test_usage_w16.py:65: in assert_no_money_keys
+    assert all('usd' not in key.lower() and 'cost' not in key.lower() for key in value)
+E   assert False
+E    +  where False = all(<generator object assert_no_money_keys.<locals>.<genexpr> at 0x000001BD8DF076B0>)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\report\w16-evidence\mutations\attempt2\unfiltered-http-dto.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_usage_w16.py::test_usage_real_response_dto_recursively_removes_internal_money
+1 failed, 12 deselected, 1 warning in 2.93s
