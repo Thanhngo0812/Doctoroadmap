@@ -1,0 +1,102 @@
+[
+  {
+    "name": "pytest-focused-baseline",
+    "argv": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-c",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\pytest-review.ini",
+      "--rootdir=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\pytest-focused-baseline.xml",
+      "tests/unit/presentation/test_tokens_and_wcag.py"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792902909.602645,
+    "elapsed_seconds": 4.564
+  },
+  {
+    "name": "regression-old-html-current-guards",
+    "argv": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-c",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\pytest-review.ini",
+      "--rootdir=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\regression-old-html.xml",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w08_formulas_have_accessible_content",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formulas_have_accessible_content",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w08_formula_nodes_are_not_accidentally_nested",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formula_has_subscript_layout_styles"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+    "native_exit_code": 1,
+    "started_epoch": 1792902914.439694,
+    "elapsed_seconds": 4.149
+  },
+  {
+    "name": "mutation-removed-subscript-rules-css-guard",
+    "argv": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-c",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\pytest-review.ini",
+      "--rootdir=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formula_has_subscript_layout_styles"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792902918.5987728,
+    "elapsed_seconds": 3.676
+  },
+  {
+    "name": "sample-math-structure",
+    "argv": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\inspect_math.py"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792902992.7008958,
+    "elapsed_seconds": 0.864
+  },
+  {
+    "name": "math-guards-after-restoration",
+    "argv": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "--noconftest",
+      "-c",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\pytest-review.ini",
+      "--rootdir=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\math-guards-after-restoration.xml",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w08_formulas_have_accessible_content",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formulas_have_accessible_content",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w08_formula_nodes_are_not_accidentally_nested",
+      "tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formula_has_subscript_layout_styles"
+    ],
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r5-design-review-20261025\\isolated",
+    "native_exit_code": 0,
+    "started_epoch": 1792903052.8429635,
+    "elapsed_seconds": 4.026
+  }
+]

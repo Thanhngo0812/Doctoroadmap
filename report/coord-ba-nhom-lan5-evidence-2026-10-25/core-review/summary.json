@@ -1,0 +1,77 @@
+{
+  "review_date": "2026-10-25",
+  "reviewed_branch": "work/w15-real-build",
+  "reviewed_sha": "fb0c769ad146d1aa6a5b2b2e1648a12a359ad194",
+  "baseline_sha": "46d829a55a62d852897f07102e89cf9a1fd5185e",
+  "source_verdict": "approve_conditionally_on_root_integration_gates",
+  "new_required_functional_findings": [],
+  "r4_windows_finding": {
+    "id": "W15-R4-1",
+    "status": "closed",
+    "fix_commit": "3d5e1cd",
+    "evidence": "real prepare to unchanged saved JSON to real execute validation; old serializer reproduced only in memory",
+    "offline_native_exit": 0,
+    "hostile_paths_rejected": 4,
+    "recorded_red": {"tests": 1, "failures": 1, "setup_errors": 0},
+    "recorded_green": {"tests": 1, "failures": 0, "setup_errors": 0}
+  },
+  "r4_pricing_prerequisite": {
+    "id": "W15-R4-P1",
+    "online_unit_verified": false,
+    "proven_undercharge": false,
+    "demo_assumption_supported_explicitly_by_code": true,
+    "demo_profile": "owner-demo-embedding-token-20261025",
+    "billing_verified_flag": false,
+    "default_without_grant": "allow_spend_false",
+    "grant_without_exact_profile": "refused_before_store_consumption_and_paid_factory",
+    "technical_source_status": "conditional_approve_opt_in_demo_profile_not_online_tariff_verification"
+  },
+  "approval_provenance": {
+    "quote_path": "report/w15-sua-operator-lan4-2026-10-25.md",
+    "quote_line": 66,
+    "independently_authenticated_transcript": false,
+    "reported_scope": "permission to choose a theoretical demo embedding price assumption",
+    "exact_pdf_run_reference_ceiling_approval_in_quote": false,
+    "owner_exact_run_paid_approval_received": false,
+    "provenance_is_code_blocker": false,
+    "actual_spend_authorized_by_this_review": false
+  },
+  "merge_scope": {
+    "preferred": "whole fb0c769 operator package as disabled-by-default opt-in code, subject to root integration gates",
+    "smaller_fail_closed_prefix": "7f90749ef237b5c47625a3bbbea67e116000b7fe",
+    "prefix_meaning": "portable paths plus unconditional refusal of all paid grants/embedding until pricing resolved",
+    "avoid_intermediate_prefix": "3d5e1cd alone fixes paths but inherits the old unverified paid price path",
+    "whole_package_approval_does_not_close_w15": true
+  },
+  "verification": {
+    "worker_source_writes": 0,
+    "root_source_writes": 0,
+    "pg_gate_runs_by_reviewer": 0,
+    "database_connections": 0,
+    "provider_adc_smtp_cloudinary_calls": 0,
+    "selected_manifest_sha_and_byte_entries": 22,
+    "current_source_sha_matches_full_native": 23,
+    "recorded_tested_commit": "cfabaeb51a7212b9684eaef711fb568ac81673bc",
+    "recorded_full": {"tests": 2643, "passed": 2641, "failures": 0, "errors": 0, "skip_including_xfail": 2, "native_exit": 0},
+    "recorded_focused": {"tests": 39, "failures": 0, "errors": 0, "skip": 0},
+    "recorded_react": {"tests": 181, "failures": 0, "errors": 0, "skip": 0},
+    "recorded_final_mutations": {"assertion_kills": 4, "setup_errors": 0, "source_restored_flags": true, "rerun_by_reviewer": false},
+    "offline_scripts_native_exits": {"offline_roundtrip.py": 0, "offline_spend.py": 0, "verify_evidence.py": 0},
+    "normal_adapter_no_spend": true,
+    "default_embedding_dispatch_denied": true,
+    "same_grant_consumed_once_in_fake_store": true,
+    "missing_token_with_character_metadata_keeps_unknown_and_stops_next": true,
+    "timeout_keeps_known_and_unknown_upper_costs": true,
+    "synthetic_trace_not_double_billed": true,
+    "current_unapproved_local_plan_hashes_verified": 2
+  },
+  "remaining_handoff": [
+    "Root must complete current combined integration gates before merging",
+    "Preserve quote provenance as reported, not an independently authenticated paid approval",
+    "No execute of either local plan without a new exact run/PDF/version/profile/ceiling decision",
+    "After code/HEAD changes prepare new immutable plans; pipeline version contains HEAD",
+    "Actual book provider cost, output quality, doc6 ready/mail cache reuse and process-kill recovery are unproven",
+    "Keep W15 open; no publish/deploy/push or paid run authorized"
+  ],
+  "w15_complete": false
+}

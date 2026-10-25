@@ -1,5 +1,7 @@
 # W-24 — Bổ sung bằng chứng và sửa bản bàn giao W-22
 
+**Nghiệm thu lần 5, 2026-10-25: nhận `aa387f3`, đã ghép local `9028db2`.** Đóng D-R4-01/02/03: subscript có font/vị trí đúng, biểu thức hiện trong cây truy cập/MathML, W-08 không lồng công thức/văn xuôi. 58 test đạt, bốn guard mới đỏ trên HTML cũ; browser12 cấu hình/24 trang/36 snapshot toán. Giữ đạt có ghi chú phạm vi web, không yêu cầu Cloud. Tiếp cùng web soát React W-08/W09 theo W23 và mẫu W-10 đúngquiz3/document3; không giao lại token/layout/branding đã nhận. [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md).
+
 **Nghiệm thu lần4, 2026-10-24: giữ đạt có ghi chú mốc thiết kế web đã nhận; không yêu cầu Cloud Figma.** Nguồn mới `eb29f29`: 52test qua runner, 24lượt preview browser; nhận các sửa96px/retry/lỗi đuôi/anchor/VM. Chưa ghép cả nhánh; trả riêng3lỗi công thức HTML mới: W09 thiếu CSS chỉ số dưới, W08/W09 mất biểu thức ở cây truy cập, W08 thiếu thẻ đóng làm lồng công thức/văn xuôi. Sửa giới hạn trước dùng lại mẫu; không giao làm lại token/layout/plugin/Cloud và không thu hồi mốc web đã nhận. Hỗ trợ W-09/soát React W-08 theo W-23; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md).
 
 **Nguồn chân lý:** [W-22](W-22-ban-figma.md); [spec thiết kế](../../doc/web-thiet-ke-giao-dien-spec.md), mục 3, 3a, 7–11 và quyết định kiểm thử.

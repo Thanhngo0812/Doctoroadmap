@@ -1,5 +1,7 @@
 # W-23 — Đối chiếu giao diện React với spec/token và mẫu HTML
 
+**Điều phối lần 5, 2026-10-25:** thiết kế web và ba sửa công thức đã được nhận/ghép local, không cần Cloud Figma. Có thể soát React W-08 ngay theo spec/token/mẫu HTML đã ghép; W-09 còn hai lỗi chức năng do web sửa, toàn W-23 chờ đủ W-09/W-10. Chỉ ghi lỗi thị giác/tương tác mới, không tự sửa tệp React web đang làm. [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md).
+
 **Nguồn chân lý:** [spec thiết kế giao diện](../../doc/web-thiet-ke-giao-dien-spec.md), token và mẫu HTML/CSS được nhận từ [W-22](W-22-ban-figma.md).
 **Ai:** nhóm web · người thiết kế duyệt · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-22, W-08, W-09, W-10 · **Trạng thái:** ready-for-agent
 
