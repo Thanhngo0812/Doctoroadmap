@@ -7,6 +7,7 @@ import { CourseShell, type ThemeProps } from './Courses';
 import { ShareDialog } from './Sharing';
 import { AssistantDock } from './Assistant';
 import { coursePath, getCourse, getProgress, getRoadmap, modulePath, setProgress, type Course, type CourseModule, type CourseProgress, type ProgressNode, type Roadmap } from './courses-api';
+import { ContentLibrary } from './ContentLibrary';
 import './roadmap.css';
 
 type PageData = { course: Course; roadmap: Roadmap | null; progress: CourseProgress | null };
@@ -120,20 +121,6 @@ function RoadmapModules({ roadmap, nodes, pending, errors, onToggle, activeModul
   </ol>;
 }
 
-function ReservedSections() {
-  return <div className="roadmap-reserved">
-    <section className="roadmap-reserved__section" aria-labelledby="roadmap-chat-title">
-      <h2 id="roadmap-chat-title">Trò chuyện</h2>
-      <p>Chưa có cuộc trò chuyện.</p>
-      <small>Tính năng này sẽ được bổ sung.</small>
-    </section>
-    <section className="roadmap-reserved__section" aria-labelledby="roadmap-library-title">
-      <h2 id="roadmap-library-title">Tài liệu và bài ôn</h2>
-      <p>Chưa có nội dung.</p>
-      <small>Tính năng này sẽ được bổ sung.</small>
-    </section>
-  </div>;
-}
 
 export function RoadmapPage(props: ThemeProps) {
   const { cid = '', mid } = useParams();
@@ -235,7 +222,7 @@ export function RoadmapPage(props: ThemeProps) {
             {data.roadmap.modules.length
               ? <RoadmapModules roadmap={data.roadmap} nodes={nodes} pending={pending} errors={errors} onToggle={toggleNode} />
               : <p className="roadmap-empty">Chưa có bài học trong lộ trình này.</p>}
-            <ReservedSections />
+            <ContentLibrary courseId={cid} modules={data.roadmap.modules} />
           </>}
         </>}
     </div>}

@@ -8,6 +8,7 @@ import { getLecture, lecturePath, sourcePath, streamLecture, type Lecture, type 
 import SourceViewer from './SourceViewer';
 import TaskWait from './TaskWait';
 import { AssistantDock } from './Assistant';
+import { ContentLibrary } from './ContentLibrary';
 import './learning.css';
 
 const problem = (cause: unknown) => cause instanceof ApiError ? cause.message : 'Kết nối bị gián đoạn. Bạn có thể thử lại.';
@@ -210,6 +211,7 @@ export function LearningPage(props: ThemeProps) {
                   {module.concepts[0] && <Link className="button button-primary" to={lecturePath(cid, mid, module.concepts[0].node_id)}>Mở bài học đầu tiên</Link>}
                   {!module.concepts.length && <p>Module này chưa có bài học.</p>}
                 </section>}
+              <ContentLibrary key={mid} courseId={cid} moduleId={mid} modules={data.roadmap.modules} />
             </div>
           </div>
         </>}

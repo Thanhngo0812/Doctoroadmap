@@ -1,5 +1,44 @@
 # WayFinder — chạy backend và frontend
 
+## Mở bản W-10 — quiz, tài liệu và thư viện
+
+Worktree: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents, nhánh work/w10-quiz-documents. Bản này kế thừa W-09 đã nghiệm thu; không dùng service đang chạy từ một worktree cũ để kiểm API W-10.
+
+**PowerShell 1 — PostgreSQL và backend:**
+
+~~~powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents
+$wfPython = (Resolve-Path ../../.venv/Scripts/python.exe).Path
+$wfEnv = (Resolve-Path ../../src/web/.env).Path
+$env:PYTHONPATH = "$($PWD.Path)\src\web\backend;$($PWD.Path)\src"
+$env:WAYFINDER_FRONTEND_DIST = "$($PWD.Path)\src\web\frontend\dist"
+$env:WAYFINDER_ARTIFACT_ROOT = "$($PWD.Path)\artifacts"
+$env:WAYFINDER_ALLOWED_ORIGINS = '["http://127.0.0.1:8000","http://127.0.0.1:5173"]'
+$env:WAYFINDER_PUBLIC_BASE_URL = 'http://127.0.0.1:5173'
+$env:WAYFINDER_MAILER = 'console'
+docker compose -f src/web/docker-compose.yml --env-file $wfEnv up -d --wait db
+& $wfPython -m wayfinder.cli --env-file $wfEnv db upgrade
+& $wfPython -m wayfinder.cli --env-file $wfEnv serve --host 127.0.0.1 --port 8000
+~~~
+
+**PowerShell 2 — frontend:**
+
+~~~powershell
+cd C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents
+npm.cmd --prefix src/web/frontend ci --no-audit --no-fund
+npm.cmd --prefix src/web/frontend run dev -- --port 5173 --strictPort
+~~~
+
+Mở http://127.0.0.1:5173/khoa-hoc. Trong một khoá sẵn sàng: **Làm quiz cả khoá** hoặc mở module → **Làm quiz**. Chọn phương án rồi **Nộp bài**; lúc làm không có khung chat. Mở lại lần làm đã nộp sẽ hiện kết quả đã lưu. **Tạo tài liệu** cho chọn 1–5 module và yêu cầu; tài liệu viết dần, sau đó mở để xem nguồn hoặc **Tải Markdown**.
+
+Thư viện ở lộ trình mặc định là nội dung tạo tại lộ trình; chọn **Tất cả nội dung trong khoá** để xem rộng hơn. Module có **Tạo ở đây/Tạo ở nơi khác**, theo nhóm core trả; dòng **Tạo trực tiếp/Qua trợ lý** là thông tin nguồn tạo riêng. Xoá cuộc trò chuyện không xoá tài liệu hoặc quiz đã lưu.
+
+API W-10 dùng quiz-3/document-3. POST quizzes/documents nhận JSON hoặc Accept: text/event-stream. Đề public không có đáp án. POST submit cùng lựa chọn trả kết quả cũ; lựa chọn khác sau nộp trả conflict. Tạo tài liệu vượt 5 module trả scope_too_large, yêu cầu thứ 11/giờ theo người xuyên khoá trả rate_limited trước SSE.
+
+Service dev theo cấu hình trên có thể gọi provider thật khi người dùng bấm tạo. Bộ kiểm W-10 dùng PostgreSQL UUID riêng và model/media/mailer giả, chi phí 0 USD; không dùng DB dev để kiểm phá. Dừng service bằng Ctrl+C, giữ nguyên volume DB và worktree.
+
+
+
 ## Mở bản W-09 — trợ lý và phiên học
 
 Worktree `C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant`, nhánh `work/w09-assistant`. Backend dùng PostgreSQL, answer-3 và bài lecture-3 đã lưu; khung trợ lý có ở lộ trình và trang học.

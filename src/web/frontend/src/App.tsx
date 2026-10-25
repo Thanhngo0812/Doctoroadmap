@@ -6,6 +6,7 @@ import { CoursesPage } from './Courses';
 import { RoadmapPage } from './Roadmap';
 import { JoinPage, MembersPage } from './Sharing';
 import { BuildPage, UploadPage } from './Builds';
+import { QuizPage, DocumentPage } from './ContentPages';
 
 type Theme = 'light' | 'dark';
 
@@ -367,6 +368,8 @@ export default function App() {
     <Route path="/khoa-hoc/:cid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><RoadmapPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/khoa-hoc/:cid/module/:mid" element={<LearningRoute theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/khoa-hoc/:cid/module/:mid/khai-niem/:nid" element={<LearningRoute theme={theme} onToggleTheme={toggleTheme} />} />
+    <Route path="/khoa-hoc/:cid/quiz/:aid" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><QuizPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
+    <Route path="/khoa-hoc/:cid/tai-lieu/:did" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><DocumentPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/khoa-hoc/:cid/thanh-vien" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><MembersPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />
     <Route path="/join/:token" element={<JoinPage theme={theme} onToggleTheme={toggleTheme} />} />
     <Route path="/tai-len" element={<RequireAccount theme={theme} onToggleTheme={toggleTheme}><UploadPage theme={theme} onToggleTheme={toggleTheme} /></RequireAccount>} />

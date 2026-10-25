@@ -38,6 +38,7 @@ beforeEach(() => {
   Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({ matches: false, addEventListener() {}, removeEventListener() {} })) });
   fetchMock = vi.fn(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/me')) return json({ account, csrf_token: 'w08-csrf-fake' });
     if (url.endsWith('/roadmap')) return json(roadmap);
     if (url.endsWith('/progress')) return json(progress);
