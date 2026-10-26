@@ -249,3 +249,15 @@ def test_doc_trang_bang_pypdfium2(tmp_path):
     assert "Trang mot" in doc(1) and "hai dong" in doc(1)
     assert "Trang hai" in doc(2)
     assert doc(3) == ""  # ngoài tệp không làm sập
+
+
+def test_so_trang_chap_nhan_int_float_nguyen_va_chuoi_so_tu_choi_con_lai():
+    from danhgia.phieu.kiem import _so_trang
+    assert _so_trang(2.0) == 2 and isinstance(_so_trang(2.0), int)
+    assert _so_trang("7") == 7 and _so_trang(" 7 ") == 7
+    assert _so_trang(2.5) is None and _so_trang(True) is None and _so_trang("7a") is None
+
+
+def test_trang_go_thanh_chuoi_so_van_hop_le(tmp_path, manifest, trang_text):
+    kq = kiem_voi(tmp_path, manifest, trang_text, {"c10-001": {"trang": "1"}})
+    assert kq.loi == [] and kq.du_lieu["khai_niem"][0]["dinh_nghia"]["trang"] == 1
