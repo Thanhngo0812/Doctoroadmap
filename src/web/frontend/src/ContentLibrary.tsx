@@ -6,12 +6,15 @@ import { createContent, documentPath, getLibrary, quizPath, type LibraryItem } f
 import type { CourseModule } from './courses-api';
 import LectureMarkdown from './ContentMarkdown';
 import TaskWait from './TaskWait';
+import { UsageLimits } from './Usage';
+import { useUsage } from './useUsage';
+import type { Usage } from './usage-api';
 import './content.css';
 
 const message = (cause: unknown) => cause instanceof ApiError ? cause.message : 'Kết nối bị gián đoạn. Hãy kiểm tra mạng rồi thử lại.';
 
-function CreateDocument({ courseId, moduleId, modules, onClose }: {
-  courseId: string; moduleId?: string; modules: CourseModule[]; onClose: () => void;
+function CreateDocument({ courseId, moduleId, modules, usage, onClose }: {
+  courseId: string; moduleId?: string; modules: CourseModule[]; usage: Usage | null; onClose: () => void;
 }) {
   const navigate = useNavigate(), auth = useAuth();
   const dialog = useRef<HTMLDialogElement>(null), field = useRef<HTMLTextAreaElement>(null);
@@ -54,6 +57,7 @@ function CreateDocument({ courseId, moduleId, modules, onClose }: {
     <header><div><h2 id="document-create-title">Tạo tài liệu học tập</h2><p>Chọn phần cần ôn và mô tả điều bạn muốn hiểu rõ hơn.</p></div>
       <button className="content-close" type="button" aria-label="Đóng tạo tài liệu" onClick={onClose}>×</button></header>
     <form onSubmit={event => void submit(event)}>
+      <UsageLimits usage={usage} />
       <label className="content-field">Bạn muốn tài liệu như thế nào?<textarea ref={field} rows={3} maxLength={4000} value={request}
         placeholder="Ví dụ: Tóm tắt công thức và thêm một ví dụ giải từng bước." onChange={event => setRequest(event.target.value)} disabled={busy} /></label>
       <fieldset aria-invalid={invalid} aria-describedby={invalid ? 'document-scope-error' : 'document-scope-hint'} disabled={busy}>
@@ -80,6 +84,7 @@ export function ContentLibrary({ courseId, moduleId, modules }: { courseId: stri
   const [rows, setRows] = useState<LibraryItem[]>([]), [error, setError] = useState('');
   const [loading, setLoading] = useState(true), [revision, setRevision] = useState(0), [all, setAll] = useState(false);
   const [group, setGroup] = useState<'here' | 'elsewhere'>('here'), [createOpen, setCreateOpen] = useState(false);
+  const usage = useUsage(revision);
   const scope = moduleId ? 'module:' + moduleId : all ? 'all' : 'roadmap';
   useEffect(() => {
     const c = new AbortController(); setLoading(true); setError(''); setRows([]);
@@ -96,6 +101,7 @@ export function ContentLibrary({ courseId, moduleId, modules }: { courseId: stri
     <header className="content-library-heading"><div><h2>{label}</h2><p>{moduleId ? 'Ôn lại nội dung dành cho module đang học.' : 'Nội dung của riêng bạn trong lộ trình này.'}</p></div>
       <div className="content-actions"><Link className="button button-secondary" to={quizPath(courseId, 'tao') + (moduleId ? '?module=' + encodeURIComponent(moduleId) : '')}>{moduleId ? 'Làm quiz' : 'Làm quiz cả khoá'}</Link>
         <button className="button button-primary" type="button" onClick={() => setCreateOpen(true)}>Tạo tài liệu</button></div></header>
+    <UsageLimits usage={usage.value} />
     <div className="content-library-filters">
       {moduleId ? <div className="content-tabs" role="group" aria-label="Nơi tạo nội dung">
         <button type="button" aria-pressed={group === 'here'} onClick={() => setGroup('here')}>Tạo ở đây <span>{rows.filter(row => row.group === 'here').length}</span></button>
@@ -114,6 +120,6 @@ export function ContentLibrary({ courseId, moduleId, modules }: { courseId: stri
           {row.score && <span className="content-library-score">{row.score.correct}/{row.score.total} câu đúng</span>}
           {row.session_deleted && <small>Cuộc trò chuyện đã xoá · nội dung vẫn được giữ</small>}
         </Link></li>)}</ul>}
-    {createOpen && <CreateDocument courseId={courseId} moduleId={moduleId} modules={modules} onClose={() => { setCreateOpen(false); setRevision(value => value + 1); }} />}
+    {createOpen && <CreateDocument courseId={courseId} moduleId={moduleId} modules={modules} usage={usage.value} onClose={() => { setCreateOpen(false); setRevision(value => value + 1); }} />}
   </section>;
 }
