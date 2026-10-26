@@ -4,6 +4,8 @@ Mỗi khái niệm đích của vàng cũ thành một khái niệm G3 (`G-<sác
 của G4. Bảng căn nối mỗi khái niệm vàng với node đang có trong đồ thị qua **bảng chuyển hướng** của canonical, đúng như
 `score_roadmap_order(..., remap_gold_ids=True)`. Bản đồ danh tính không áp ở đây: nó nằm trong hợp đồng của hệ và do lõi chấm áp.
 
+Khái niệm không quy được thì từ chối chuyển, như bộ chấm cũ (danh tính lệch cho điểm giả).
+
 Vàng cũ không có trạng thái dạy, trang hay câu định nghĩa; các trường đó để null, trạng thái là `day_o_day` vì mọi đích của vàng cũ
 là khái niệm được dạy trong chương.
 """
@@ -20,11 +22,19 @@ def _quy(ma, chuyen_huong, node_ids):
     return hien if hien in node_ids else None
 
 
-def chuyen(vang_cu, *, ma_sach, ten, node_ids, redirects):
+class KhongQuyDuoc(ValueError):
+    """Khái niệm của vàng cũ không quy được về node trong đồ thị: danh tính lệch, như `UnresolvedGoldConcepts` của bộ chấm cũ."""
+
+
+def chuyen(vang_cu, *, ma_sach, ten, node_ids, redirects, cho_phep_chua_can=False):
     nhan_chuong = vang_cu["chapter"]["label"]
     dich = list(dict.fromkeys(vang_cu["targets"]))
     dau_nguon = list(dict.fromkeys(e["prerequisite"] for e in vang_cu["edges"] if e["prerequisite"] not in set(dich)))
     quy = {ma: _quy(ma, redirects, node_ids) for ma in [*dich, *dau_nguon]}
+    chua_can = sorted(ma for ma, nut in quy.items() if nut is None)
+    if chua_can and not cho_phep_chua_can:
+        raise KhongQuyDuoc(f"{len(chua_can)} khái niệm của vàng cũ không quy được về node trong đồ thị: "
+                           + ", ".join(chua_can) + "; từ chối chuyển (đặt cho_phep_chua_can để chuyển phần còn lại)")
     thieu_ten = sorted(ma for ma, nut in quy.items() if nut is not None and ma not in ten and nut not in ten)
     if thieu_ten:
         raise ValueError(f"thiếu tên cho khái niệm {thieu_ten}; bộ chuyển không tự đặt tên")
@@ -65,7 +75,7 @@ def chuyen(vang_cu, *, ma_sach, ten, node_ids, redirects):
     can = {"schema": "danh-gia-can-1", "ma_sach": ma_sach, "hang": hang}
     bao_cao = {
         "so_khai_niem": len(dich), "so_nguon_ngoai": len(dau_nguon), "so_canh": len(quan_he),
-        "chua_can": sorted(ma for ma, nut in quy.items() if nut is None),
+        "chua_can": chua_can,
         "chuyen_huong": {ma: nut for ma, nut in quy.items() if nut is not None and nut != ma},
     }
     return {"g3": g3, "g4": g4, "can": can, "bao_cao": bao_cao}

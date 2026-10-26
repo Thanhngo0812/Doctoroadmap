@@ -44,7 +44,8 @@ def lenh_chuyen_vang(args):
     _, chuyen_huong = doc_chuyen_huong(args.kho, args.doc, args.phien_ban)
     ket_qua = chuyen(_doc(args.vang_cu), ma_sach=args.ma_sach or args.doc,
                      ten={k["ma"]: k["ten"] for k in hd["khai_niem"]},
-                     node_ids={k["ma"] for k in hd["khai_niem"]}, redirects=chuyen_huong)
+                     node_ids={k["ma"] for k in hd["khai_niem"]}, redirects=chuyen_huong,
+                     cho_phep_chua_can=args.cho_phep_chua_can)
     ra = Path(args.ra)
     ra.mkdir(parents=True, exist_ok=True)
     for ten in ("g3", "g4", "can"):
@@ -103,6 +104,8 @@ def _tham_so():
     chuyen.add_argument("--hop-dong", required=True)
     chuyen.add_argument("--vang-cu", required=True)
     chuyen.add_argument("--ma-sach", default=None)
+    chuyen.add_argument("--cho-phep-chua-can", action="store_true",
+                        help="chuyển phần quy được thay vì từ chối khi có id vàng không quy được")
     chuyen.add_argument("--ra", required=True, help="thư mục ghi g3.json, g4.json, can.json")
     chuyen.set_defaults(ham=lenh_chuyen_vang)
 

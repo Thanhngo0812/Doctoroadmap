@@ -1,5 +1,7 @@
 """Bộ chuyển vàng A8 cũ sang G3, G4 và bảng căn. Định dạng phải đúng `danh-gia-g3-1` và `danh-gia-g4-1`."""
-from danhgia.vang.cu import chuyen
+import pytest
+
+from danhgia.vang.cu import KhongQuyDuoc, chuyen
 
 
 def vang_cu():
@@ -55,13 +57,17 @@ def test_bang_can_dung_bang_chuyen_huong():
     assert ket_qua["bao_cao"]["chuyen_huong"] == {"t3old": "t3"}
 
 
-def test_khai_niem_khong_quy_duoc_ve_node_khong_co_hang_can_va_duoc_bao_cao():
-    ket_qua = chay(node_ids={"t1", "t2", "o1"})  # t3 không còn trong đồ thị
+def test_khai_niem_khong_quy_duoc_bi_tu_choi_nhu_bo_cham_cu():
+    with pytest.raises(KhongQuyDuoc, match="t3old"):
+        chay(node_ids={"t1", "t2", "o1"})  # t3 không còn trong đồ thị
+
+
+def test_cho_phep_chua_can_thi_chuyen_phan_con_lai_va_bao_cao():
+    ket_qua = chay(node_ids={"t1", "t2", "o1"}, cho_phep_chua_can=True)
     assert ket_qua["bao_cao"]["chua_can"] == ["t3old"]
     assert not [h for h in ket_qua["can"]["hang"] if h["may"] == "t3"]
 
 
 def test_ten_thieu_la_loi_khong_dien_ngam():
-    import pytest
     with pytest.raises(ValueError, match="t1"):
         chay(ten={"t2": "Khái niệm hai"})
