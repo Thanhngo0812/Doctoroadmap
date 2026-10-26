@@ -392,9 +392,12 @@ async function main() {
     await learner.getByRole('button', { name: 'Mở khung trợ lý' }).click();
     await learner.getByText('Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.', { exact: true }).waitFor();
     for (const width of (smoke ? [1280] : [390, 768, 1280])) for (const theme of (smoke ? ['light'] : ['light', 'dark'])) {
+      await learner.getByRole('button', { name: 'Đóng trợ lý', exact: true }).click();
       await learner.setViewportSize({width, height: 900}); await learner.emulateMedia({colorScheme:theme, reducedMotion:'reduce'});
       if (await learner.locator('html').getAttribute('data-theme') !== theme)
         await learner.getByRole('button', { name: theme === 'dark' ? 'Bật chế độ tối' : 'Bật chế độ sáng' }).click();
+      await learner.getByRole('button', { name: 'Mở khung trợ lý' }).click();
+      await learner.getByText('Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.', { exact: true }).waitFor();
       await capture('assistant-hour-limit', true);
     }
     audit.sharedDocumentLimit = {buttonRequests:10, assistantGeneratedDocuments:0, modelCallsUnchanged:true, persistentNotice:true};
