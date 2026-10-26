@@ -1,12 +1,16 @@
 """Sequential W10 R7 mutations; run with no full gate or browser on this tree."""
 from pathlib import Path
+import os
+import re
 import w10_mutation_checks as checks
 ROOT=Path(__file__).resolve().parents[1]
-checks.OUT=ROOT/'report/w10-r7-evidence/mutations-existing'
-checks.RUN='mutations-r7-existing'
+suffix=os.environ.get('W10_R7_MUTATION_SUFFIX','')
+assert not suffix or re.fullmatch('-[a-z0-9-]+',suffix)
+checks.OUT=ROOT/('report/w10-r7-evidence/mutations-existing'+suffix)
+checks.RUN='mutations-r7-existing'+suffix
 assert checks.main()==0
-checks.OUT=ROOT/'report/w10-r7-evidence/mutations-required'
-checks.RUN='mutations-r7-required'
+checks.OUT=ROOT/('report/w10-r7-evidence/mutations-required'+suffix)
+checks.RUN='mutations-r7-required'+suffix
 checks.TEST='src/web/backend/tests/test_content_admission_w10.py::'
 B='src/web/backend/wayfinder/'
 F='src/web/frontend/src/'
