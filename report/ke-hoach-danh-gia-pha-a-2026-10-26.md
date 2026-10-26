@@ -153,13 +153,17 @@ vàng. Hợp đồng phải trung lập, không gắn với graph artifact của
 ## 5. Bộ sách
 
 Bộ sách chia làm hai tập:
-- **Tập thử: 8 giáo trình đầy đủ, mỗi chủ đề một cuốn** (toán, lý, hoá, sinh, văn, triết, kinh tế, luật), cỡ 150–300 trang, tránh cuốn
+- **Tập thử: 8 giáo trình đầy đủ, mỗi chủ đề một cuốn** (toán, lý, hoá, sinh, văn, công nghệ thông tin, kinh tế, luật; Q34 thay triết
+  bằng công nghệ thông tin), cỡ 150–300 trang, tránh cuốn
   trên 400 trang. Chủ dự án đang chuẩn bị sách; cuốn nào của tập khoá D-02 hợp chủ đề thì dùng được (đã có quyền và nhãn A1 agentic, vẫn
   phải duyệt lại theo G1). Điều kiện:
   - là PDF gốc (Claude kiểm bằng bộ định tuyến, chỉ in số);
   - không thuộc D-01 (đã dùng huấn luyện pass phụ ML và bộ nhận tiêu đề), T-01 hay tập phát triển;
   - quyền sử dụng đã xác nhận;
-  - sách văn là giáo trình lý luận văn học hay ngôn ngữ học, không phải tuyển tập tác phẩm.
+  - sách văn là giáo trình lý luận văn học hay ngôn ngữ học, không phải tuyển tập tác phẩm;
+  - sách công nghệ thông tin không trùng hai cuốn CNTT của D-01 (hệ quản trị cơ sở dữ liệu, hệ điều hành) hay hai cuốn học máy của tập
+    phát triển. Pass phụ ML đã học trên D-01, trong đó có sách CNTT, nên báo cáo ghi rõ đây là cùng ngành nhưng khác cuốn. Sách CNTT hay có
+    khối mã nguồn; dry-run sẽ xem A1/A2 xử lý chúng thế nào.
 - **Bốc chương:** hệ chạy trên cả cuốn. G1, G2 gán cả cuốn. G3, G4 gán trên **3 chương bốc theo seed** (một chương phần đầu, một phần
   giữa, một phần cuối, khoảng 25–30% cuốn), không bốc chương mở đầu. Cạnh được lấy nguồn từ bất kỳ phần nào trước đó của sách. Luật bốc ghi
   vào giao thức trước khi bốc. Ba chương mỗi cuốn cho tầng thứ hai của bootstrap phân cấp.
@@ -379,6 +383,7 @@ Về chi và công cụ:
 | Q31 | Hệ chạy cả cuốn; G1, G2 cả cuốn; G3, G4 trên 3 chương bốc theo seed |
 | Q32 | Pass phụ LLM chỉ trên cặp của 3 chương; docling 3–4 cuốn hoặc bỏ; giữ K = 5; bỏ lượt doc-4 |
 | Q33 | Chủ dự án đang chuẩn bị sách; dùng được cuốn khoá D-02 nếu hợp chủ đề |
+| Q34 | Thay triết học bằng công nghệ thông tin trong 8 chủ đề |
 
 ## 16. Rủi ro
 

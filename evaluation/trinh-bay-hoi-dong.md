@@ -73,7 +73,7 @@ Bảng 3. Hai tập dữ liệu
 | Tập | Nội dung | Dùng để |
 |---|---|---|
 | Phát triển | ba khoảng chương của ba giáo trình đã dùng khi phát triển: thống kê, đại số tuyến tính, triết học | tìm lỗi, chọn cải tiến |
-| Thử | 8 giáo trình tiếng Việt đầy đủ, mỗi chủ đề một cuốn: toán, vật lý, hoá học, sinh học, văn học, triết học, kinh tế, luật; mỗi cuốn khoảng 150–300 trang | số báo cáo cuối |
+| Thử | 8 giáo trình tiếng Việt đầy đủ, mỗi chủ đề một cuốn: toán, vật lý, hoá học, sinh học, văn học, công nghệ thông tin, kinh tế, luật; mỗi cuốn khoảng 150–300 trang | số báo cáo cuối |
 
 Danh sách 8 cuốn (Bảng 4) sẽ điền khi gom xong. Mọi cuốn là PDF gốc có lớp chữ, không phải bản quét. Hệ chạy trên **cả cuốn**, nên thời
 gian và chi phí đo được là của một giáo trình thật. Đáp án chuẩn có hai phạm vi:
@@ -93,7 +93,7 @@ Bảng 4. Danh sách sách tập thử (điền sau)
 | Hoá học | H | — | — | — |
 | Sinh học | S | — | — | — |
 | Văn học | V | — | — | — |
-| Triết học | TR | — | — | — |
+| Công nghệ thông tin | C | — | — | — |
 | Kinh tế | K | — | — | — |
 | Luật | LU | — | — | — |
 
@@ -224,7 +224,7 @@ Bảng 7. Các hệ được so
 | | A10 nhận quan hệ vàng thay vì quan hệ máy suy ra | "Cách xếp lộ trình có tốt không, khi quan hệ đúng hoàn toàn?" |
 
 Luật R17 cần giải thích thêm. Khi hệ suy ra "phải học X trước Y" mà sách lại dạy X sau Y, luật này không ép người học đổi thứ tự, vì quan
-hệ ngược thứ tự sách thường là quan hệ trích sai. Nhưng ở sách triết học, sách đôi khi dùng một khái niệm trước rồi mới định nghĩa nó ở
+hệ ngược thứ tự sách thường là quan hệ trích sai. Nhưng trong giai đoạn phát triển, nhóm thấy ở một giáo trình triết học, sách đôi khi dùng một khái niệm trước rồi mới định nghĩa nó ở
 chương sau. Thí nghiệm tắt R17 đo luật này giúp hay hại trên từng ngành.
 
 Baseline B1 quan trọng nhất. Giáo trình thường định nghĩa trước khi dùng, nên lộ trình theo mục lục có thể đã khá tốt. Hệ phải cho thấy giá
