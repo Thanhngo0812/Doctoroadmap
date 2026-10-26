@@ -72,7 +72,7 @@ Bảng 3. Hai tập dữ liệu
 
 | Tập | Nội dung | Dùng để |
 |---|---|---|
-| Phát triển | ba khoảng chương của ba giáo trình đã dùng khi phát triển: thống kê, đại số tuyến tính, triết học | tìm lỗi, chọn cải tiến |
+| Phát triển | ba khoảng chương của ba giáo trình đã dùng khi phát triển: thống kê, đại số tuyến tính, nhập môn học máy | tìm lỗi, chọn cải tiến |
 | Thử | 8 giáo trình tiếng Việt đầy đủ, mỗi chủ đề một cuốn: toán, vật lý, hoá học, sinh học, văn học, công nghệ thông tin, kinh tế, luật; mỗi cuốn khoảng 150–300 trang | số báo cáo cuối |
 
 Danh sách 8 cuốn (Bảng 4) sẽ điền khi gom xong. Mọi cuốn là PDF gốc có lớp chữ, không phải bản quét. Hệ chạy trên **cả cuốn**, nên thời

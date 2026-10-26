@@ -167,8 +167,9 @@ Bộ sách chia làm hai tập:
 - **Bốc chương:** hệ chạy trên cả cuốn. G1, G2 gán cả cuốn. G3, G4 gán trên **3 chương bốc theo seed** (một chương phần đầu, một phần
   giữa, một phần cuối, khoảng 25–30% cuốn), không bốc chương mở đầu. Cạnh được lấy nguồn từ bất kỳ phần nào trước đó của sách. Luật bốc ghi
   vào giao thức trước khi bốc. Ba chương mỗi cuốn cho tầng thứ hai của bootstrap phân cấp.
-- **Tập phát triển:** xstk ch10–13 (gồm chương gán thử), doc-1 ch10–12, doc-4 ch8. Cả ba đã có vàng A8 cũ của người, nên so được giao
-  thức cũ với mới. Sinh viên gán theo giao thức mới (mục 6).
+- **Tập phát triển (Q35):** xstk ch10–13 (gồm chương gán thử) và doc-1 ch10–12, hai khoảng toán đã có vàng A8 cũ của người nên so được
+  giao thức cũ với mới; cộng một khoảng chương của `nhap-mon-ml` (nhập môn học máy, thuộc CNTT), bốc theo seed, cỡ tương đương, để tập phát
+  triển không chỉ có sách toán. doc-4 ch8 bỏ vì tập thử không còn môn triết. Sinh viên gán theo giao thức mới (mục 6).
 - **T-01 bỏ khỏi đợt này.** Không chấm, không báo.
 
 ## 6. Người gán và năm lớp vàng
@@ -177,8 +178,8 @@ Bộ sách chia làm hai tập:
 
 Cách tổ chức người gán đã chốt như sau:
 - **Tập thử:** mỗi chủ đề có 2 sinh viên đại học chuyên ngành, ưu tiên năm 3–4 đã học môn. Hai người gán cuốn của chủ đề, độc lập. Báo cáo gọi là "sinh viên chuyên ngành", không gọi là chuyên gia.
-- **Tập phát triển:** ưu tiên 2–4 sinh viên toán và triết **khác** các cặp gán tập thử, hai người mỗi khoảng chương. Nếu không có thì
-  chính cặp toán và cặp triết gán phát triển trước (29/10–01/11), rồi mới gán tập thử; khi đó có thể bỏ doc-4 ch8.
+- **Tập phát triển:** ưu tiên sinh viên toán và CNTT **khác** các cặp gán tập thử, hai người mỗi khoảng chương. Nếu không có thì chính
+  cặp toán và cặp CNTT gán phát triển trước (29/10–01/11), rồi mới gán tập thử.
 - **Mù:** người gán không xem đầu ra máy của sách mình gán (kể cả trên web demo) cho tới khi vàng tập thử đóng băng. Vòng nâng cấp do
   Claude và agent làm.
 - **Datasheet:** thông tin người gán ghi ẩn danh theo mã (T1, T2, L1…): ngành, năm học, có trả công hay không (VL §12).
@@ -384,6 +385,7 @@ Về chi và công cụ:
 | Q32 | Pass phụ LLM chỉ trên cặp của 3 chương; docling 3–4 cuốn hoặc bỏ; giữ K = 5; bỏ lượt doc-4 |
 | Q33 | Chủ dự án đang chuẩn bị sách; dùng được cuốn khoá D-02 nếu hợp chủ đề |
 | Q34 | Thay triết học bằng công nghệ thông tin trong 8 chủ đề |
+| Q35 | Tập phát triển: bỏ doc-4 ch8, thay bằng một khoảng chương `nhap-mon-ml` do sinh viên CNTT gán; Q29 áp cho cặp toán và cặp CNTT |
 
 ## 16. Rủi ro
 
