@@ -44,7 +44,7 @@ def lenh_chuyen_vang(args):
     _, chuyen_huong = doc_chuyen_huong(args.kho, args.doc, args.phien_ban)
     ket_qua = chuyen(_doc(args.vang_cu), ma_sach=args.ma_sach or args.doc,
                      ten={k["ma"]: k["ten"] for k in hd["khai_niem"]},
-                     node_ids={k["ma"] for k in hd["khai_niem"]}, redirects=chuyen_huong,
+                     node_ids={k["ma"] for k in hd["khai_niem"]}, redirects=chuyen_huong, danh_tinh=hd["ban_do_danh_tinh"],
                      cho_phep_chua_can=args.cho_phep_chua_can)
     ra = Path(args.ra)
     ra.mkdir(parents=True, exist_ok=True)

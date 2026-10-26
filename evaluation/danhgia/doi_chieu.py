@@ -68,14 +68,17 @@ def doi_chieu(kho, doc_id, phien_ban, duong_vang):
     # --- bên mới ---
     hd = xuat(kho, doc_id, phien_ban, dinh_danh=DINH_DANH_DOI_CHIEU)
     chuyen_ket_qua = chuyen(vang_cu, ma_sach=doc_id, ten={k["ma"]: k["ten"] for k in hd["khai_niem"]},
-                            node_ids={k["ma"] for k in hd["khai_niem"]}, redirects=chuyen_huong)
+                            node_ids={k["ma"] for k in hd["khai_niem"]}, redirects=chuyen_huong,
+                            danh_tinh=identity)
     g3, g4, can = chuyen_ket_qua["g3"], chuyen_ket_qua["g4"], chuyen_ket_qua["can"]
     moi = {ho_so: _gop_moi(cham(hd, g3, g4, can, ho_so=ho_so)) for ho_so in ("spec", "giu_lai_v3")}
 
     bang = []
 
-    def them(chi_so, gia_cu, gia_moi):
-        bang.append({"chi_so": chi_so, "cu": gia_cu, "moi": gia_moi, "lech": gia_moi != gia_cu})
+    def them(chi_so, gia_cu, gia_moi, *, khac_co_chu_y=False):
+        # F1 khi tp = 0: luật mới cho 0 (hoặc None nếu không có cạnh vàng), cũ cho None khi P+R = 0. Khác có chủ ý, không so.
+        bang.append({"chi_so": chi_so, "cu": gia_cu, "moi": gia_moi, "lech": gia_moi != gia_cu and not khac_co_chu_y,
+                     "khac_co_chu_y": khac_co_chu_y and gia_moi != gia_cu})
 
     for ho_so in ("spec", "giu_lai_v3"):
         for kieu, ten_thuoc in (("truc_tiep", "a8.f1_truc_tiep.nghiem"), ("bao_dong", "a8.f1_bao_dong.nghiem")):
@@ -84,7 +87,7 @@ def doi_chieu(kho, doc_id, phien_ban, duong_vang):
                 them(f"{ho_so} {kieu} {truong}", c[ten_cu], m[truong])
             them(f"{ho_so} {kieu} P", c["precision"], dong.chi_so_f1(m)[0])
             them(f"{ho_so} {kieu} R", c["recall"], dong.chi_so_f1(m)[1])
-            them(f"{ho_so} {kieu} F1", c["f1"], dong.chi_so_f1(m)[2])
+            them(f"{ho_so} {kieu} F1", c["f1"], dong.chi_so_f1(m)[2], khac_co_chu_y=m["tp"] == 0)
     thang = moi["spec"]
     tt = cu["gold_order"]
     q6 = thang[("a10.q6.nghiem", "ti_le")]
@@ -101,7 +104,8 @@ def doi_chieu(kho, doc_id, phien_ban, duong_vang):
     them("Q7b số đích", cu["target_precision"]["targets"], m["n"])
     them("Q7b trung bình", cu["target_precision"]["mean_precision"], dong.gia_tri(m))
     tu_noi_cu = cu["identity_dropped_gold_edges"] + cu.get("redirect_dropped_gold_edges", 0)
-    them("cạnh vàng tự nối (danh tính + chuyển hướng)", tu_noi_cu, thang[("can.tu_noi.nghiem", "dem")]["gia_tri"])
+    tu_noi_moi = thang[("can.tu_noi.nghiem", "dem")]["gia_tri"] + chuyen_ket_qua["bao_cao"]["canh_tu_noi"]
+    them("cạnh vàng tự nối (danh tính + chuyển hướng)", tu_noi_cu, tu_noi_moi)
     return {
         "bang": bang, "lech": sum(1 for dong_ in bang if dong_["lech"]),
         "ghi_chu": {"so_canh_vang_goc": len(vang_cu["edges"]), "bao_cao_chuyen_vang": chuyen_ket_qua["bao_cao"],
@@ -114,7 +118,7 @@ def doi_chieu(kho, doc_id, phien_ban, duong_vang):
 def in_bang(ket_qua, ten):
     dong_ = [f"### {ten}", "", "| Chỉ số | Cũ | Mới | Lệch |", "|---|---|---|---|"]
     for hang in ket_qua["bang"]:
-        dong_.append(f"| {hang['chi_so']} | {hang['cu']} | {hang['moi']} | {'LỆCH' if hang['lech'] else '0'} |")
+        dong_.append(f"| {hang['chi_so']} | {hang['cu']} | {hang['moi']} | {'LỆCH' if hang['lech'] else 'khác có chủ ý (tp = 0)' if hang['khac_co_chu_y'] else '0'} |")
     dong_.append("")
     dong_.append(f"Tổng số chỉ số lệch: {ket_qua['lech']} trên {len(ket_qua['bang'])}.")
     return "\n".join(dong_)

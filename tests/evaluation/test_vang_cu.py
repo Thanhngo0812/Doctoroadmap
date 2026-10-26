@@ -71,3 +71,18 @@ def test_cho_phep_chua_can_thi_chuyen_phan_con_lai_va_bao_cao():
 def test_ten_thieu_la_loi_khong_dien_ngam():
     with pytest.raises(ValueError, match="t1"):
         chay(ten={"t2": "Khái niệm hai"})
+
+
+def test_hai_id_cu_cung_chuyen_huong_ve_mot_node_thanh_mot_khai_niem():
+    vang = vang_cu()
+    vang["targets"] = ["t1", "t2", "t2old"]
+    vang["edges"] = [
+        {"prerequisite": "t1", "target": "t2", "note": ""},
+        {"prerequisite": "t1", "target": "t2old", "note": ""},      # trùng cạnh trên sau khi hợp nhất
+        {"prerequisite": "t2old", "target": "t2", "note": ""},      # tự nối sau khi hợp nhất
+    ]
+    ket_qua = chuyen(vang, ma_sach="d", ten=TEN, node_ids={"t1", "t2"}, redirects={"t2old": "t2"})
+    assert [k["ten"] for k in ket_qua["g3"]["khai_niem"]] == ["Khái niệm một", "Khái niệm hai"]
+    assert len(ket_qua["g4"]["quan_he"]) == 1
+    assert ket_qua["bao_cao"]["canh_tu_noi"] == 1 and ket_qua["bao_cao"]["khai_niem_gop"] == {"t2old": "t2"}
+    assert len(ket_qua["can"]["hang"]) == 2

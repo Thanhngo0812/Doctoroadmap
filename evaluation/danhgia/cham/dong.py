@@ -35,10 +35,20 @@ def _chia(tu, mau):
 
 
 def chi_so_f1(row):
-    """(precision, recall, f1); phần nào có mẫu số 0 hoặc P+R=0 thì None."""
-    p, r = _chia(row["tp"], row["tp"] + row["fp"]), _chia(row["tp"], row["tp"] + row["fn"])
-    if p is None or r is None or p + r == 0:
+    """(precision, recall, f1).
+
+    - R là None khi tp+fn = 0 (không có cạnh vàng); P là None khi tp+fp = 0 (máy không dự đoán gì);
+    - **F1 là None chỉ khi tp+fn = 0**; còn lại F1 = 2tp/(2tp+fp+fn), nên bằng 0 khi tp = 0.
+
+    Khác bộ chấm cũ **có chủ ý**: cũ cho F1 = None khi P+R = 0, nên một cuốn mà hệ sai hết bị loại khỏi trung bình macro và
+    số bị thổi lên. Khi tp > 0 công thức cho đúng từng bit số của bộ chấm cũ.
+    """
+    tp, fp, fn = row["tp"], row["fp"], row["fn"]
+    p, r = _chia(tp, tp + fp), _chia(tp, tp + fn)
+    if tp + fn == 0:
         return p, r, None
+    if tp == 0:
+        return p, r, 0.0
     return p, r, 2 * p * r / (p + r)
 
 
