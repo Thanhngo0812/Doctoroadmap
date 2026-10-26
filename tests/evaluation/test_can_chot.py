@@ -89,6 +89,14 @@ def test_dem_dong_thuan_theo_chuong_dung_tren_vi_du_dung_tay():
     assert d["tong"] == {"a": 2, "b": 2, "c": 3, "f1": pytest.approx(4 / 9)}
 
 
+def test_cap_gan_truoc_hoi_y_tinh_la_bat_dong_khong_tinh_la_dong_y():
+    # Thêm khi Claude nghiệm thu: phép phá "đếm cặp gần vào a" từng sống sót. Đồng thuận đo trước hội ý, nên một cặp
+    # mới chỉ "gần" (chưa ai xác nhận là cùng khái niệm) là hai mục riêng: b = 1, c = 1, a = 0.
+    can = cap([kn("c10-001", "c10", "Xác suất", trang=2)], [kn("c10-001", "c10", "Xác suất có điều kiện", trang=2)])
+    assert len(can["cap_gan"]) == 1
+    assert dem_dong_thuan(can)["tong"] == {"a": 0, "b": 1, "c": 1, "f1": 0.0}
+
+
 def test_dem_khong_ai_liet_ke_thi_f1_la_none_khong_chia_cho_khong():
     assert dem_dong_thuan(cap([], []))["tong"] == {"a": 0, "b": 0, "c": 0, "f1": None}
 
