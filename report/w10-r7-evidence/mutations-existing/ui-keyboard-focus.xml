@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="1" errors="0" time="4.0374142">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-26T08:16:18.313Z" hostname="ADMIN" tests="15" failures="1" errors="0" skipped="0" time="4.0374142">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0.3546657">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0.5330435">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0.3038634">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="0.7200977">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0.0798643">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0.1064227">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0.0667858">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="refreshes a stale history quiz snapshot from the server after submission without posting again" time="0.0676785">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps keyboard focus on the current option when streaming becomes a saved quiz" time="0.128955">
+            <failure message="expect(element).toHaveFocus()
+
+Expected element with focus:
+  &lt;input
+  aria-describedby=&quot;quiz-option-q1-o2&quot;
+  aria-label=&quot;Phương án B&quot;
+  name=&quot;q1&quot;
+  type=&quot;radio&quot;
+  value=&quot;o2&quot;
+/&gt;
+Received element with focus:
+  &lt;h1
+  tabindex=&quot;-1&quot;
+&gt;
+  Quiz ôn tập
+&lt;/h1&gt;" type="Error">
+Error: expect(element).toHaveFocus()
+
+Expected element with focus:
+  &lt;input
+  aria-describedby=&quot;quiz-option-q1-o2&quot;
+  aria-label=&quot;Phương án B&quot;
+  name=&quot;q1&quot;
+  type=&quot;radio&quot;
+  value=&quot;o2&quot;
+/&gt;
+Received element with focus:
+  &lt;h1
+  tabindex=&quot;-1&quot;
+&gt;
+  Quiz ôn tập
+&lt;/h1&gt;
+ ❯ src/Content.test.tsx:162:55
+            </failure>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="R7 ignores a late submission result after browser history opens another attempt" time="0.1933782">
+            <system-out>
+R7_OBSERVED {&quot;activeRoute&quot;:&quot;/khoa-hoc/c/quiz/qa_2&quot;,&quot;heading&quot;:&quot;Quiz ôn tập&quot;,&quot;secondQuestionVisible&quot;:true}
+
+            </system-out>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old success submit callbacks while a new attempt is pending" time="0.3515734">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old network submit callbacks while a new attempt is pending" time="0.2485534">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old unauthenticated submit callbacks while a new attempt is pending" time="0.3264734">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old not_found submit callbacks while a new attempt is pending" time="0.3077575">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores a previous course submit even when the new course has the same attempt ID" time="0.2452116">
+        </testcase>
+    </testsuite>
+</testsuites>

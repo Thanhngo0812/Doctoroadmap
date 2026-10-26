@@ -1,0 +1,120 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+_ test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping _
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_34cb31154bc948f69a786796498b7...ecture.ScriptedLectureModel object at 0x00000290DCC42480>, base='/api/v1/courses/cd82621d-2cb1-4521-ab5b-a43f7dcf62a1')
+
+    def test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping(content):
+        w = content
+        original = w.gateway.runtime.quiz
+        class Reverse(random.Random):
+            def shuffle(self, rows):
+                rows.reverse()
+        def quiz(graph):
+            case = original(graph); case.rng = Reverse(1); return case
+        w.gateway.runtime.quiz = quiz
+>       made = create_quiz(w, owner=w.b.actor.user_id, doc_id='forged', graph_version=99)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_content_w10.py:57:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_34cb31154bc948f69a786796498b7...ecture.ScriptedLectureModel object at 0x00000290DCC42480>, base='/api/v1/courses/cd82621d-2cb1-4521-ab5b-a43f7dcf62a1')
+body = {'doc_id': 'forged', 'graph_version': 99, 'owner': '294ead29-d932-4507-9096-8975caea37f6'}
+response = <Response [404 Not Found]>, @py_assert1 = 404, @py_assert4 = 201
+@py_assert3 = False
+@py_format6 = '404\n{404 = <Response [404 Not Found]>.status_code\n} == 201'
+@py_format8 = '{"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}\n>assert 404\n{404 = <Response [404 Not Found]>.status_code\n} == 201'
+
+    def create_quiz(w, **body):
+        response = w.a.client.post(w.base + '/quizzes', headers=w.a.headers,
+            json={'scope': {'kind': 'module', 'module_id': 'm1'}, 'n': 1, **body})
+>       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 201
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_content_w10.py:34: AssertionError
+___ test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score ___
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_34cb31154bc948f69a786796498b7...ecture.ScriptedLectureModel object at 0x00000290DCF46780>, base='/api/v1/courses/5080cb20-d5f5-4b9c-9707-047c4bc2eaa7')
+
+    def test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score(content):
+>       w = content; made = create_quiz(w); item = made['items'][0]
+                            ^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_content_w10.py:86:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_34cb31154bc948f69a786796498b7...ecture.ScriptedLectureModel object at 0x00000290DCF46780>, base='/api/v1/courses/5080cb20-d5f5-4b9c-9707-047c4bc2eaa7')
+body = {}, response = <Response [404 Not Found]>, @py_assert1 = 404
+@py_assert4 = 201, @py_assert3 = False
+@py_format6 = '404\n{404 = <Response [404 Not Found]>.status_code\n} == 201'
+@py_format8 = '{"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}\n>assert 404\n{404 = <Response [404 Not Found]>.status_code\n} == 201'
+
+    def create_quiz(w, **body):
+        response = w.a.client.post(w.base + '/quizzes', headers=w.a.headers,
+            json={'scope': {'kind': 'module', 'module_id': 'm1'}, 'n': 1, **body})
+>       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 201
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_content_w10.py:34: AssertionError
+_ test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited _
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_34cb31154bc948f69a786796498b7...ecture.ScriptedLectureModel object at 0x00000290DD158FB0>, base='/api/v1/courses/58df68eb-8de0-427c-863b-f1b3d3928ad0')
+
+    def test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited(content):
+        w = content
+        for index in range(2, 7):
+            mid = f'm{index}'; nid = f'n{index}'
+            w.graph.nodes[nid] = {**w.graph.nodes['a'], 'node_id': nid, 'module_id': mid}
+            w.graph.learnable_nodes[nid] = w.graph.nodes[nid]
+            w.graph.modules[mid] = {'module_id': mid, 'index': index, 'title': mid, 'node_ids': [nid]}
+        rejected = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+            json={'request': 'Tóm tắt', 'module_ids': ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']})
+>       assert rejected.status_code == 422 and rejected.json()['error']['code'] == 'scope_too_large'
+E       assert (404 == 422)
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_content_w10.py:107: AssertionError
+____ test_w10_library_groups_are_independent_of_button_or_assistant_origin ____
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_34cb31154bc948f69a786796498b7...ecture.ScriptedLectureModel object at 0x00000290DD316FF0>, base='/api/v1/courses/1b2e8840-0bf1-4038-8d95-d88a13b53a40')
+
+    def test_w10_library_groups_are_independent_of_button_or_assistant_origin(content):
+        w = content
+        w.graph.modules['m2'] = {'module_id': 'm2', 'index': 2, 'title': 'Module B', 'node_ids': ['b']}
+        w.graph.modules['m1']['node_ids'] = ['a']; w.graph.nodes['b']['module_id'] = 'm2'
+        # Home A, content B: both creation sources belong to here in A and elsewhere in B.
+        for origin in ['button', 'assistant']:
+            raw = w.gateway.runtime.document(w.graph).create('doc-1', 8, w.graph, 'Ôn B', ['b'],
+                owner=w.a.actor.user_id, origin=origin, allow_spend=True,
+                home_scope={'kind': 'module', 'module_id_at_creation': 'm1', 'graph_version_at_creation': 8, 'node_ids': ['a']})
+            assert raw['status'] == 'ready'
+        here = w.a.client.get(w.base + '/library?scope=module:m1').json()['items']
+        elsewhere = w.a.client.get(w.base + '/library?scope=module:m2').json()['items']
+        assert {row['origin'] for row in here} == {row['origin'] for row in elsewhere} == {'button', 'assistant'}
+        assert {row['group'] for row in here} == {'here'}
+        assert {row['group'] for row in elsewhere} == {'elsewhere'}
+        did = here[0]['id']
+        viewed = w.a.client.get(w.base + '/documents/' + did)
+>       assert viewed.status_code == 200 and viewed.json()['contract_version'] == 'document-3'
+E       assert (404 == 200)
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_content_w10.py:137: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\backend-red.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_library_groups_are_independent_of_button_or_assistant_origin
+4 failed, 1 warning in 9.64s

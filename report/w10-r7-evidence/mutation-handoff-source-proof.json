@@ -1,0 +1,298 @@
+{
+  "handoffCommit": "1ea62bb3e76e52170dd711547b0846fa538f1d6e",
+  "note": "19 mutations actually executed on 9bb90d9; every production target remains byte-identical on handoff. Later commits changed only browser driver scope and sheet/theme interaction; they are not relabeled as new mutation executions.",
+  "cases": [
+    {
+      "name": "ui-keyboard-focus",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/frontend/src/ContentPages.tsx",
+      "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "mutatedSha256": "a12ea5a73ba36ac3d1af5375ccd75602fc4f2f497a7096e6c81a37145043322f",
+      "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "handoffSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "keeps keyboard focus on the current option when streaming becomes a saved quiz"
+      ]
+    },
+    {
+      "name": "public-answer",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/api/content.py",
+      "sourceSha256": "fef916cc086217a6bcdd04f1b529a4da271397b23f8afb37091070156afbf4f8",
+      "mutatedSha256": "26dfbcc597213687194c131f1c6afed270bc59b39c84b89eff578dc165a7e57e",
+      "restoredSha256": "fef916cc086217a6bcdd04f1b529a4da271397b23f8afb37091070156afbf4f8",
+      "handoffSha256": "fef916cc086217a6bcdd04f1b529a4da271397b23f8afb37091070156afbf4f8",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping"
+      ]
+    },
+    {
+      "name": "ui-server-reload",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/frontend/src/ContentPages.tsx",
+      "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "mutatedSha256": "6835e26bad6cd62e3649cbe2bb6d7d522413d0d046f523903d0a94353ae32945",
+      "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "handoffSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "refreshes a stale history quiz snapshot from the server after submission without posting again"
+      ]
+    },
+    {
+      "name": "result-owner",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "mutatedSha256": "1b51a05cffb559448cd57387e8ec40359b76a96c557d4228b5c632a0b948aada",
+      "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "handoffSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping"
+      ]
+    },
+    {
+      "name": "content-book",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "mutatedSha256": "a53c0084e242aaa13bda0e6d763369ec8b330d316b0d30afcc87236b07573117",
+      "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "handoffSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_saved_content_cannot_be_opened_through_another_book"
+      ]
+    },
+    {
+      "name": "document-scope",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "mutatedSha256": "8d6f652ea2efa952e496c678d2a93f2988bbf4c4070c5546e14545cbea10d42c",
+      "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "handoffSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited"
+      ]
+    },
+    {
+      "name": "document-rate",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/infrastructure/document_requests.py",
+      "sourceSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2",
+      "mutatedSha256": "ffca327b4ccab9ea0e5b3771902c6c178724cb947bc56864bb9cbdad838d3347",
+      "restoredSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2",
+      "handoffSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited"
+      ]
+    },
+    {
+      "name": "atomic-submit",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "mutatedSha256": "adb26c85c479262c67848f6beb226f7d8fbb7dcbf563a453000485df45b12fae",
+      "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "handoffSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_submission_rolls_back_both_attempt_and_progress_when_core_write_fails"
+      ]
+    },
+    {
+      "name": "idempotent-submit",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+      "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "mutatedSha256": "1ad2f6141a2f72e2b58c60ed116b79c24e4b5d3ccb8a89fec06ae9709abe44c7",
+      "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "handoffSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping"
+      ]
+    },
+    {
+      "name": "selected-reason",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/application/content_view.py",
+      "sourceSha256": "8dc2c74a454e116c31f1b593b6867f7129bd1e092879a066a1a8511c4451ce60",
+      "mutatedSha256": "b3299371d8199caf55ca6994aea2da6379e9c1b675fb8a02e3bee7987e606fc9",
+      "restoredSha256": "8dc2c74a454e116c31f1b593b6867f7129bd1e092879a066a1a8511c4451ce60",
+      "handoffSha256": "8dc2c74a454e116c31f1b593b6867f7129bd1e092879a066a1a8511c4451ce60",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score"
+      ]
+    },
+    {
+      "name": "ui-core-group",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/frontend/src/ContentLibrary.tsx",
+      "sourceSha256": "e943f96fed5a0b3d2dc235c2e17ebb76187d491e9a2e59a127ec9a468df3f0ca",
+      "mutatedSha256": "e42bc33a6f9a5a9d9ce8c1087fb8708a1126129a4358254599e77ed45c62c6c6",
+      "restoredSha256": "e943f96fed5a0b3d2dc235c2e17ebb76187d491e9a2e59a127ec9a468df3f0ca",
+      "handoffSha256": "e943f96fed5a0b3d2dc235c2e17ebb76187d491e9a2e59a127ec9a468df3f0ca",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "uses core groups independently of origin on the real module page"
+      ]
+    },
+    {
+      "name": "ui-early-choice",
+      "receipt": "mutations-existing-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/frontend/src/ContentPages.tsx",
+      "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "mutatedSha256": "8315f0d22f8dea3d34678e34d2e2cd058df54f3b83544f7e67278876c6de4d23",
+      "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "handoffSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "keeps a selection made while quiz items stream and submits the actual shuffled option ID"
+      ]
+    },
+    {
+      "name": "assistant-admission",
+      "receipt": "mutations-required-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/infrastructure/learning_runtime.py",
+      "sourceSha256": "b120602fd198ea1c1b1ecb96336ed725d415dd9cc89cbb0c12d3f2a56a79d878",
+      "mutatedSha256": "30e8d00f33ebe2bbcc12535b2f30661aca1e3ba6ecd814b809c906632b798d7c",
+      "restoredSha256": "b120602fd198ea1c1b1ecb96336ed725d415dd9cc89cbb0c12d3f2a56a79d878",
+      "handoffSha256": "b120602fd198ea1c1b1ecb96336ed725d415dd9cc89cbb0c12d3f2a56a79d878",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_documents_per_hour_applies_across_button_and_assistant"
+      ]
+    },
+    {
+      "name": "quota-lock",
+      "receipt": "mutations-required-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/infrastructure/document_requests.py",
+      "sourceSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2",
+      "mutatedSha256": "fbfd9daeb66bfb0f8f4d31d29739d0fb88abbc45e688c65d0ae104e9891679ac",
+      "restoredSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2",
+      "handoffSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_admission_waits_for_the_other_postgres_runtime_before_rechecking_the_last_slot"
+      ]
+    },
+    {
+      "name": "tool-error-code",
+      "receipt": "mutations-required-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/infrastructure/assistant_tools.py",
+      "sourceSha256": "4cbbdf03d40ca3b3753e16247d28fd7cf08d33a4e10814d64906ae876bcdc03e",
+      "mutatedSha256": "b1012956f33ef88e64d70f5dd5379ebd0b68c1d373a85b492a026dd28c98337f",
+      "restoredSha256": "4cbbdf03d40ca3b3753e16247d28fd7cf08d33a4e10814d64906ae876bcdc03e",
+      "handoffSha256": "4cbbdf03d40ca3b3753e16247d28fd7cf08d33a4e10814d64906ae876bcdc03e",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_hourly_document_limit_has_safe_tool_error_and_persistent_public_chat_notice"
+      ]
+    },
+    {
+      "name": "tool-error-message",
+      "receipt": "mutations-required-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/backend/wayfinder/infrastructure/assistant_tools.py",
+      "sourceSha256": "4cbbdf03d40ca3b3753e16247d28fd7cf08d33a4e10814d64906ae876bcdc03e",
+      "mutatedSha256": "441b9f6e9859952af19d081717333587f07b8f03bc33d04a475d27e87acef490",
+      "restoredSha256": "4cbbdf03d40ca3b3753e16247d28fd7cf08d33a4e10814d64906ae876bcdc03e",
+      "handoffSha256": "4cbbdf03d40ca3b3753e16247d28fd7cf08d33a4e10814d64906ae876bcdc03e",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "test_hourly_document_limit_has_safe_tool_error_and_persistent_public_chat_notice"
+      ]
+    },
+    {
+      "name": "late-success",
+      "receipt": "mutations-required-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/frontend/src/ContentPages.tsx",
+      "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "mutatedSha256": "fca398d06bcbd6ca422444fdbeeb66715e611b2bd552646bbef15680a8ba5f38",
+      "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "handoffSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "R7 ignores a late submission result after browser history opens another attempt",
+        "ignores old success submit callbacks while a new attempt is pending",
+        "ignores a previous course submit even when the new course has the same attempt ID"
+      ]
+    },
+    {
+      "name": "late-error",
+      "receipt": "mutations-required-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/frontend/src/ContentPages.tsx",
+      "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "mutatedSha256": "0207b60812aa25efed6aaabf06a4b58ee140eae524fcc64d3ed78eb9b691cd62",
+      "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "handoffSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "ignores old network submit callbacks while a new attempt is pending",
+        "ignores old unauthenticated submit callbacks while a new attempt is pending",
+        "ignores old not_found submit callbacks while a new attempt is pending"
+      ]
+    },
+    {
+      "name": "late-finally",
+      "receipt": "mutations-required-final2/results.json",
+      "testedCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+      "path": "src/web/frontend/src/ContentPages.tsx",
+      "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "mutatedSha256": "888d8bbf7d70f3a02504c8378973b4ba69c12a66c43701eddf5aac5d66f8cc15",
+      "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "handoffSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+      "nativeExitCode": 1,
+      "setupErrors": 0,
+      "failedAssertions": [
+        "ignores old success submit callbacks while a new attempt is pending",
+        "ignores old network submit callbacks while a new attempt is pending",
+        "ignores old unauthenticated submit callbacks while a new attempt is pending",
+        "ignores old not_found submit callbacks while a new attempt is pending"
+      ]
+    }
+  ]
+}

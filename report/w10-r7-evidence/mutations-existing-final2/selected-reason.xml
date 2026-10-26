@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.509" timestamp="2026-10-26T15:29:53.383908+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score" time="2.893"><failure message="AssertionError: assert None == 'Cần cộng thêm một đơn vị.'">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_da0c407aa4024b73bfae6ebb00e3c...ecture.ScriptedLectureModel object at 0x0000017241B160C0&gt;, base='/api/v1/courses/ef2b212f-83fd-4cf3-a0e4-27f534d37e4e')
+
+    def test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score(content):
+        w = content; made = create_quiz(w); item = made['items'][0]
+        stored = w.phase_b.get_record('quiz_attempt', made['attempt_id'])
+        wrong = next(o for o in stored['_private'][item['item_id']]['options'] if not o['is_correct'])
+        response = w.a.client.post(w.base + '/quizzes/' + made['attempt_id'] + '/submit', headers=w.a.headers,
+            json={'answers': {item['item_id']: wrong['option_id']}})
+        assert response.status_code == 200
+&gt;       assert response.json()['results'][0]['why_wrong'] == wrong['why_wrong']
+E       AssertionError: assert None == 'Cần cộng thêm một đơn vị.'
+
+src\web\backend\tests\test_content_w10.py:96: AssertionError</failure></testcase></testsuite></testsuites>

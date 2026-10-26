@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.680" timestamp="2026-10-26T15:17:57.440013+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_admission_w10" name="test_documents_per_hour_applies_across_button_and_assistant" time="3.659"><failure message="AssertionError: 11th document must be refused before generation regardless of creation origin&#10;assert 11 == 10&#10; +  where 11 = len([namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), ...])&#10; +    where [namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), ...] = &lt;wayfinder.fakes.lecture.ScriptedLectureModel object at 0x00000141A60AF5C0&gt;.calls&#10; +      where &lt;wayfinder.fakes.lecture.ScriptedLectureModel object at 0x00000141A60AF5C0&gt; = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b28837351620419382e4420230d84...ecture.ScriptedLectureModel object at 0x00000141A60AF5C0&gt;, base='/api/v1/courses/bdac9312-b180-4a4e-bce7-0a36d21bbf9f').document">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b28837351620419382e4420230d84...ecture.ScriptedLectureModel object at 0x00000141A60AF5C0&gt;, base='/api/v1/courses/bdac9312-b180-4a4e-bce7-0a36d21bbf9f')
+
+    def test_documents_per_hour_applies_across_button_and_assistant(content):
+        w=content
+        for _ in range(10):
+            r=w.a.client.post(w.base+'/documents',headers=w.a.headers,json={'request':'Ôn tập','module_ids':['m1']})
+            assert r.status_code==201 and r.json()['status']=='ready',r.text
+        denied=w.a.client.post(w.base+'/documents',headers=w.a.headers,json={'request':'Ôn tập','module_ids':['m1']})
+        assert denied.status_code==429 and denied.json()['error']['code']=='rate_limited'
+        assert len(w.document.calls)==10
+        with w.independent_engine.connect() as c:
+            before=c.scalar(text("SELECT count(*) FROM phase_b_record WHERE kind='documents' AND owner=:owner"),{'owner':w.a.actor.user_id})
+            rate_before=c.scalar(text("SELECT count(*) FROM rate_limit_event WHERE bucket=:bucket"),{'bucket':'document:'+w.a.actor.user_id})
+        assert before==rate_before==10
+        assistant=ScriptedAssistantModel(scenario='tools')
+        original=w.gateway.runtime.model_for
+        w.gateway.runtime.model_for=lambda purpose: assistant if purpose=='assistant' else original(purpose)
+        made=w.a.client.post(w.base+'/sessions',headers=w.a.headers,json={'scope':{'kind':'module','module_id':'m1'}})
+        assert made.status_code==201,made.text
+        response=w.a.client.post(w.base+'/sessions/'+made.json()['session_id']+'/turns',headers=w.a.headers,
+            json={'question':'Hãy tạo tài liệu ôn tập.','client_turn_id':uuid4().hex})
+        assert response.status_code==200,response.text
+        with w.independent_engine.connect() as c:
+            rows=list(c.execute(text("SELECT value FROM phase_b_record WHERE kind='documents' AND owner=:owner ORDER BY record_id"),{'owner':w.a.actor.user_id}).scalars())
+            rate_after=c.scalar(text("SELECT count(*) FROM rate_limit_event WHERE bucket=:bucket"),{'bucket':'document:'+w.a.actor.user_id})
+        observed={'before_documents':before,'after_documents':len(rows),'document_model_calls':len(w.document.calls),
+          'direct_over_limit_status':denied.status_code,'assistant_http_status':response.status_code,'rate_bucket_before':rate_before,
+          'rate_bucket_after':rate_after,'assistant_ready_documents':sum(r.get('origin')=='assistant' and r.get('status')=='ready' for r in rows),
+          'external_cost_usd':0,'test_source':'test_coord_r7_rate_origin.py','expected_model_calls':10}
+        (OUT/'observed.json').write_text(json.dumps(observed,indent=2)+'\n',encoding='utf8')
+        print(json.dumps(observed))
+&gt;       assert len(w.document.calls)==10,'11th document must be refused before generation regardless of creation origin'
+E       AssertionError: 11th document must be refused before generation regardless of creation origin
+E       assert 11 == 10
+E        +  where 11 = len([namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), ...])
+E        +    where [namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), ...] = &lt;wayfinder.fakes.lecture.ScriptedLectureModel object at 0x00000141A60AF5C0&gt;.calls
+E        +      where &lt;wayfinder.fakes.lecture.ScriptedLectureModel object at 0x00000141A60AF5C0&gt; = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b28837351620419382e4420230d84...ecture.ScriptedLectureModel object at 0x00000141A60AF5C0&gt;, base='/api/v1/courses/bdac9312-b180-4a4e-bce7-0a36d21bbf9f').document
+
+src\web\backend\tests\test_content_admission_w10.py:41: AssertionError</failure></testcase></testsuite></testsuites>

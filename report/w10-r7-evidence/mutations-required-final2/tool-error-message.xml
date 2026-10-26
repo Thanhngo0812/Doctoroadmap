@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.104" timestamp="2026-10-26T15:30:52.605965+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_admission_w10" name="test_hourly_document_limit_has_safe_tool_error_and_persistent_public_chat_notice" time="2.512"><failure message="AssertionError: assert 'giờ' in 'Internal error'">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_6e4c3a2a1305425695a730950bded...ecture.ScriptedLectureModel object at 0x000001B6FF383620&gt;, base='/api/v1/courses/23caca06-fc24-43cc-b67f-97eea5e0ed84')
+
+    def test_hourly_document_limit_has_safe_tool_error_and_persistent_public_chat_notice(content):
+        w = content
+        w.courses.settings.documents_per_hour = 1
+        first = w.a.client.post(w.base+'/documents', headers=w.a.headers, json={'request':'Ôn', 'module_ids':['m1']})
+        assert first.status_code == 201
+        assistant = ScriptedAssistantModel(scenario='tools')
+        original = w.gateway.runtime.model_for
+        w.gateway.runtime.model_for = lambda purpose: assistant if purpose == 'assistant' else original(purpose)
+        session = w.a.client.post(w.base+'/sessions', headers=w.a.headers, json={'scope':{'kind':'module','module_id':'m1'}}).json()
+        url = w.base+'/sessions/'+session['session_id']+'/turns'
+        response = w.a.client.post(url, headers=w.a.headers, json={'question':'Tạo tài liệu', 'client_turn_id':uuid4().hex})
+        assert response.status_code == 200
+        assert len(w.document.calls) == 1
+        tool = next(call for row in w.independent_store.list_records('turn') for call in row['answer']['tool_calls'] if call['name'] == 'make_document')
+        assert tool['result_summary']['error']['code'] == 'rate_limited'
+&gt;       assert 'giờ' in tool['result_summary']['error']['message']
+E       AssertionError: assert 'giờ' in 'Internal error'
+
+src\web\backend\tests\test_content_admission_w10.py:60: AssertionError</failure></testcase></testsuite></testsuites>

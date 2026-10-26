@@ -30,8 +30,9 @@ class ScriptedAssistantModel:
                 try:
                     if model.scenario == 'failure':
                         raise ConnectionError('scripted private transport error')
-                    if model.scenario == 'tools' and self.round == 0:
-                        yield ToolCall('make_quiz', {'scope': 'module 1', 'n': 1, 'owner': 'forged-model-owner'}, 'quiz')
+                    if model.scenario in {'tools', 'document'} and self.round == 0:
+                        if model.scenario == 'tools':
+                            yield ToolCall('make_quiz', {'scope': 'module 1', 'n': 1, 'owner': 'forged-model-owner'}, 'quiz')
                         yield ToolCall('make_document', {'request': 'Tóm tắt bài học', 'scope': 'module này'}, 'doc')
                     elif model.scenario == 'lecture' and self.round == 0:
                         yield ToolCall('get_lecture', {'concept': model.lecture_node}, 'lecture')

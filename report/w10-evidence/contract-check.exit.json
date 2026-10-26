@@ -1,0 +1,17 @@
+{
+  "pid": 22100,
+  "name": "contract-check",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "src/web/backend/tests/test_web_architecture.py",
+    "--basetemp=tmp/cong-w10-contract1",
+    "--junitxml=report/w10-evidence/contract-check.xml"
+  ],
+  "status": "complete",
+  "code": 1,
+  "signal": null
+}

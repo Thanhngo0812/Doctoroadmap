@@ -1,0 +1,20 @@
+{
+  "pid": 49612,
+  "name": "admission-green2",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "src/web/backend/tests/test_content_admission_w10.py",
+    "src/web/backend/tests/test_content_w10.py",
+    "src/web/backend/tests/test_assistant_w09.py",
+    "src/web/backend/tests/test_assistant_lecture_forwarding_w09.py",
+    "--basetemp=tmp/w10-r7-admission-green2",
+    "--junitxml=report/w10-r7-evidence/admission-green2.xml"
+  ],
+  "status": "complete",
+  "code": 1,
+  "signal": null
+}

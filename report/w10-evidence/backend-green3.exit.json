@@ -1,0 +1,20 @@
+{
+  "pid": 33812,
+  "name": "backend-green3",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "src/web/backend/tests/test_content_w10.py",
+    "src/web/backend/tests/test_courses_w06.py",
+    "-k",
+    "w10 or every_cid or route_inventory",
+    "--basetemp=tmp/cong-w10-content-green3",
+    "--junitxml=report/w10-evidence/backend-green3.xml"
+  ],
+  "status": "complete",
+  "code": 0,
+  "signal": null
+}

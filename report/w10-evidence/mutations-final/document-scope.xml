@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.696" timestamp="2026-10-25T23:20:39.349296+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited" time="1.869"><failure message="assert (201 == 422)&#10; +  where 201 = &lt;Response [201 Created]&gt;.status_code">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_9a357be20a8b472ab0eee25759f3c...ecture.ScriptedLectureModel object at 0x00000155BB4E5F40&gt;, base='/api/v1/courses/6b3262c4-87fc-403a-879a-c54658b6823c')
+
+    def test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited(content):
+        w = content
+        for index in range(2, 7):
+            mid = f'm{index}'; nid = f'n{index}'
+            w.graph.nodes[nid] = {**w.graph.nodes['a'], 'node_id': nid, 'module_id': mid}
+            w.graph.learnable_nodes[nid] = w.graph.nodes[nid]
+            w.graph.modules[mid] = {'module_id': mid, 'index': index, 'title': mid, 'node_ids': [nid]}
+        rejected = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+            json={'request': 'Tóm tắt', 'module_ids': ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']})
+&gt;       assert rejected.status_code == 422 and rejected.json()['error']['code'] == 'scope_too_large'
+E       assert (201 == 422)
+E        +  where 201 = &lt;Response [201 Created]&gt;.status_code
+
+src\web\backend\tests\test_content_w10.py:111: AssertionError</failure></testcase></testsuite></testsuites>

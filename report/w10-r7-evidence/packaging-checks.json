@@ -1,0 +1,19 @@
+{
+  "sourceCommit": "1fc0f553bec808241388b722fa2c10a1c6ead33d",
+  "evidenceCommit": "7051a6bfa6abab26359090f8be731b5c2373a75f",
+  "initialCheck": {
+    "result": "CRLF JSON reported as trailing CR after byte-preserving -text; PowerShell continued to evidence commit",
+    "functionalGateImpact": "none"
+  },
+  "correction": {
+    "attributes": "blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol",
+    "note": "Preserve original JSON bytes while recognizing CRLF. Keep standard trailing-space/blank-at-EOF/space-before-tab checks.",
+    "command": [
+      "git",
+      "diff",
+      "HEAD^",
+      "--check"
+    ],
+    "nativeExitCode": 0
+  }
+}

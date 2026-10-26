@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.479" timestamp="2026-10-26T15:29:31.940127+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_submission_rolls_back_both_attempt_and_progress_when_core_write_fails" time="2.305"><failure message="AssertionError: assert 'submission' not in {'_private': {'qi_590c88eb8e845208d62b5a85': {'bloom': 'nho', 'concept_id': 'a', 'evidence': [{'chunk_id': 'c1', 'labe...nswers': {'qi_590c88eb8e845208d62b5a85': 'o1'}, 'attempt_id': 'qa_141c2a36fee4cc42784bb5ed', 'concept_ids': ['a'], ...}">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_d26ffc969b98465db5ea3e4a98d16...ecture.ScriptedLectureModel object at 0x0000022A3CD165A0&gt;, base='/api/v1/courses/ba320f41-1d03-4b2b-9955-b183dfebe97b')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x0000022A1D0439E0&gt;
+
+    def test_w10_submission_rolls_back_both_attempt_and_progress_when_core_write_fails(content, monkeypatch):
+        from doc2roadmap.application.phase_b.progress import ProgressUseCase
+        w = content; made = create_quiz(w); item = made['items'][0]
+        stored = w.phase_b.get_record('quiz_attempt', made['attempt_id'])
+        correct = next(o for o in stored['_private'][item['item_id']]['options'] if o['is_correct'])
+        def broken(*args, **kwargs):
+            raise RuntimeError('W10 rollback probe')
+        monkeypatch.setattr(ProgressUseCase, 'mark_quiz_correct', broken)
+        response = w.a.client.post(w.base + '/quizzes/' + made['attempt_id'] + '/submit', headers=w.a.headers,
+            json={'answers': {item['item_id']: correct['option_id']}})
+        assert response.status_code == 500
+        with w.independent_engine.connect() as c:
+            row = c.scalar(text("SELECT value FROM phase_b_record WHERE kind='quiz_attempt' AND record_id=:aid"), {'aid': made['attempt_id']})
+&gt;           assert 'submission' not in row
+E           AssertionError: assert 'submission' not in {'_private': {'qi_590c88eb8e845208d62b5a85': {'bloom': 'nho', 'concept_id': 'a', 'evidence': [{'chunk_id': 'c1', 'labe...nswers': {'qi_590c88eb8e845208d62b5a85': 'o1'}, 'attempt_id': 'qa_141c2a36fee4cc42784bb5ed', 'concept_ids': ['a'], ...}
+
+src\web\backend\tests\test_content_w10.py:176: AssertionError</failure></testcase></testsuite></testsuites>

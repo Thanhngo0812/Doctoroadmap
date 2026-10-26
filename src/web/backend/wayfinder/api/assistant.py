@@ -88,7 +88,7 @@ class Answer(BaseModel):
     graph_cards: Cards
     artifacts: list[Artifact] = Field(default_factory=list)
     focus_node_id: str | None = None
-    warnings: list[Literal['focus_ignored']] = Field(default_factory=list)
+    warnings: list[Literal['focus_ignored', 'document_rate_limited']] = Field(default_factory=list)
     failure: Failure | None = None
 
 
@@ -137,6 +137,7 @@ class LibraryItem(BaseModel):
     module_labels: list[str]
     label: str | None = None
     session_deleted: bool = False
+    score: dict[str, int] | None = None
 
 
 class Library(BaseModel):

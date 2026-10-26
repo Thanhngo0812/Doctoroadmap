@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.213" timestamp="2026-10-26T15:30:34.831744+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_admission_w10" name="test_admission_waits_for_the_other_postgres_runtime_before_rechecking_the_last_slot" time="2.177"><failure message="AssertionError: the independent runtime must wait for the held PostgreSQL account lock&#10;assert None">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_9b5ec7faf91047338b71906efee7c...ecture.ScriptedLectureModel object at 0x00000211FEDAA9C0&gt;, base='/api/v1/courses/f51129b8-208b-4daa-8a3a-8f27de586f64')
+
+    def test_admission_waits_for_the_other_postgres_runtime_before_rechecking_the_last_slot(content):
+        import pytest
+        from concurrent.futures import ThreadPoolExecutor
+        from time import monotonic, sleep
+        from sqlalchemy import event
+        from wayfinder.api.errors import WebError
+        w = content; w.courses.settings.documents_per_hour = 2
+        assert w.a.client.post(w.base+'/documents', headers=w.a.headers, json={'request':'Ôn', 'module_ids':['m1']}).status_code == 201
+        policy = w.other_gateway.runtime.document_requests
+        backend_pid = {}
+        def observe(connection, cursor, statement, parameters, context, executemany):
+            if 'pg_advisory_xact_lock' in statement:
+                backend_pid['value'] = connection.connection.driver_connection.info.backend_pid
+        event.listen(w.independent_engine, 'before_cursor_execute', observe)
+        pool = ThreadPoolExecutor(max_workers=1)
+        try:
+            with w.engine.begin() as transaction:
+                bucket = 'document:'+w.a.actor.user_id
+                transaction.execute(text('SELECT pg_advisory_xact_lock(hashtextextended(:bucket,0))'), {'bucket':bucket})
+                future = pool.submit(policy.admit, w.a.actor.user_id)
+                waiting = False; deadline = monotonic()+5
+                while monotonic()&lt;deadline and not future.done():
+                    with w.independent_engine.connect() as probe:
+                        waiting = probe.scalar(text("SELECT wait_event_type='Lock' FROM pg_stat_activity WHERE pid=:pid"), {'pid':backend_pid.get('value')})
+                    if waiting: break
+                    sleep(.01)
+&gt;               assert waiting, 'the independent runtime must wait for the held PostgreSQL account lock'
+E               AssertionError: the independent runtime must wait for the held PostgreSQL account lock
+E               assert None
+
+src\web\backend\tests\test_content_admission_w10.py:186: AssertionError</failure></testcase></testsuite></testsuites>

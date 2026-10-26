@@ -1,0 +1,55 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_documents_per_hour_applies_across_button_and_assistant _________
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_78920b62720c4956beeccb99824b2...ecture.ScriptedLectureModel object at 0x00000221EEE4F6E0>, base='/api/v1/courses/0df109c4-844c-4b6c-8d42-0545949aee58')
+
+    def test_documents_per_hour_applies_across_button_and_assistant(content):
+        w=content
+        for _ in range(10):
+            r=w.a.client.post(w.base+'/documents',headers=w.a.headers,json={'request':'Ôn tập','module_ids':['m1']})
+            assert r.status_code==201 and r.json()['status']=='ready',r.text
+        denied=w.a.client.post(w.base+'/documents',headers=w.a.headers,json={'request':'Ôn tập','module_ids':['m1']})
+        assert denied.status_code==429 and denied.json()['error']['code']=='rate_limited'
+        assert len(w.document.calls)==10
+        with w.independent_engine.connect() as c:
+            before=c.scalar(text("SELECT count(*) FROM phase_b_record WHERE kind='documents' AND owner=:owner"),{'owner':w.a.actor.user_id})
+            rate_before=c.scalar(text("SELECT count(*) FROM rate_limit_event WHERE bucket=:bucket"),{'bucket':'document:'+w.a.actor.user_id})
+        assert before==rate_before==10
+        assistant=ScriptedAssistantModel(scenario='tools')
+        original=w.gateway.runtime.model_for
+        w.gateway.runtime.model_for=lambda purpose: assistant if purpose=='assistant' else original(purpose)
+        made=w.a.client.post(w.base+'/sessions',headers=w.a.headers,json={'scope':{'kind':'module','module_id':'m1'}})
+        assert made.status_code==201,made.text
+        response=w.a.client.post(w.base+'/sessions/'+made.json()['session_id']+'/turns',headers=w.a.headers,
+            json={'question':'Hãy tạo tài liệu ôn tập.','client_turn_id':uuid4().hex})
+        assert response.status_code==200,response.text
+        with w.independent_engine.connect() as c:
+            rows=list(c.execute(text("SELECT value FROM phase_b_record WHERE kind='documents' AND owner=:owner ORDER BY record_id"),{'owner':w.a.actor.user_id}).scalars())
+            rate_after=c.scalar(text("SELECT count(*) FROM rate_limit_event WHERE bucket=:bucket"),{'bucket':'document:'+w.a.actor.user_id})
+        observed={'before_documents':before,'after_documents':len(rows),'document_model_calls':len(w.document.calls),
+          'direct_over_limit_status':denied.status_code,'assistant_http_status':response.status_code,'rate_bucket_before':rate_before,
+          'rate_bucket_after':rate_after,'assistant_ready_documents':sum(r.get('origin')=='assistant' and r.get('status')=='ready' for r in rows),
+          'external_cost_usd':0,'test_source':'test_coord_r7_rate_origin.py','expected_model_calls':10}
+        (OUT/'observed.json').write_text(json.dumps(observed,indent=2)+'\n',encoding='utf8')
+        print(json.dumps(observed))
+>       assert len(w.document.calls)==10,'11th document must be refused before generation regardless of creation origin'
+E       AssertionError: 11th document must be refused before generation regardless of creation origin
+E       assert 11 == 10
+E        +  where 11 = len([namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), ...])
+E        +    where [namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), namespace(finished=True, pieces=2), ...] = <wayfinder.fakes.lecture.ScriptedLectureModel object at 0x00000221EEE4F6E0>.calls
+E        +      where <wayfinder.fakes.lecture.ScriptedLectureModel object at 0x00000221EEE4F6E0> = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_78920b62720c4956beeccb99824b2...ecture.ScriptedLectureModel object at 0x00000221EEE4F6E0>, base='/api/v1/courses/0df109c4-844c-4b6c-8d42-0545949aee58').document
+
+src\web\backend\tests\test_content_admission_w10.py:41: AssertionError
+---------------------------- Captured stdout call -----------------------------
+{"before_documents": 10, "after_documents": 11, "document_model_calls": 11, "direct_over_limit_status": 429, "assistant_http_status": 200, "rate_bucket_before": 10, "rate_bucket_after": 10, "assistant_ready_documents": 1, "external_cost_usd": 0, "test_source": "test_coord_r7_rate_origin.py", "expected_model_calls": 10}
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-r7-evidence\mutations-required-final2\assistant-admission.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_admission_w10.py::test_documents_per_hour_applies_across_button_and_assistant
+1 failed, 1 warning in 6.46s

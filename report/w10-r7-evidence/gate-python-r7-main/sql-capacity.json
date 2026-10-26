@@ -1,0 +1,61 @@
+{
+  "kind": "independent PostgreSQL; fake cap and usage",
+  "builds": [
+    {
+      "id": "19009d9b-51b8-4852-8bde-e12e1d24e840",
+      "status": "failed",
+      "spent_usd": "0.001000",
+      "error_code": "het_tran_he_thong"
+    },
+    {
+      "id": "7d18c0f0-7225-4603-a5c0-ff15f750444e",
+      "status": "queued",
+      "spent_usd": "0.000000",
+      "error_code": null
+    }
+  ],
+  "ledger": [
+    {
+      "purpose": "build",
+      "cost_usd": "0.001000",
+      "extra": {
+        "step": "concepts",
+        "doc_id": "u-b39697cc54e1d8f20cc1",
+        "purpose": "build",
+        "user_id": "6a74f1d4-0506-4011-8a4e-b8691f351d36",
+        "build_id": "19009d9b-51b8-4852-8bde-e12e1d24e840",
+        "cost_usd": 0.001,
+        "lease_id": "bb193233-2b3d-4b16-b6a9-353e9fec0d83",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "6a74f1d4-0506-4011-8a4e-b8691f351d36",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": true,
+        "attribution_complete": true
+      }
+    },
+    {
+      "purpose": "build",
+      "cost_usd": "0.000000",
+      "extra": {
+        "step": null,
+        "doc_id": "u-b39697cc54e1d8f20cc1",
+        "purpose": "build",
+        "user_id": "6a74f1d4-0506-4011-8a4e-b8691f351d36",
+        "build_id": "19009d9b-51b8-4852-8bde-e12e1d24e840",
+        "cost_usd": 0.0,
+        "lease_id": "bb193233-2b3d-4b16-b6a9-353e9fec0d83",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "6a74f1d4-0506-4011-8a4e-b8691f351d36",
+        "claim_count": 1,
+        "model_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "attribution_complete": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "pid": 30176,
+  "name": "document-render-green",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "src/Content.test.tsx",
+    "src/LectureMarkdown.test.tsx",
+    "--reporter=junit",
+    "--outputFile=../../../report/w10-evidence/document-render-green.xml"
+  ],
+  "status": "complete",
+  "code": 0,
+  "signal": null
+}

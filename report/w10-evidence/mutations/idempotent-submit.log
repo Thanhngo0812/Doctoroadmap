@@ -1,0 +1,54 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping _
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_4bffda2590e24c0ca1845c9298ac5...ecture.ScriptedLectureModel object at 0x000001F3B96060F0>, base='/api/v1/courses/426d78ff-01dd-4ccd-a69d-a4aa1c41a75e')
+
+    def test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping(content):
+        w = content
+        original = w.gateway.runtime.quiz
+        class Reverse(random.Random):
+            def shuffle(self, rows):
+                rows.reverse()
+        def quiz(graph):
+            case = original(graph); case.rng = Reverse(1); return case
+        w.gateway.runtime.quiz = quiz
+        made = create_quiz(w, owner=w.b.actor.user_id, doc_id='forged', graph_version=99)
+        assert made['contract_version'] == 'quiz-3' and made['status'] == 'ready'
+        assert_no_answers(made)
+        item = made['items'][0]
+        assert item['generator'] == 'llm' and len(item['options']) == 4
+        assert item['bloom'] in {'nho', 'hieu', 'van_dung'} and '$' in item['stem']
+        with w.independent_engine.connect() as c:
+            stored = c.scalar(text("SELECT value FROM phase_b_record WHERE kind='quiz_attempt' AND record_id=:id"), {'id': made['attempt_id']})
+        assert stored['owner'] == w.a.actor.user_id and stored['doc_id'] == 'doc-1'
+        correct = next(option for option in stored['_private'][item['item_id']]['options'] if option['is_correct'])
+        assert item['options'][0]['option_id'] != correct['option_id']
+        path = w.base + '/quizzes/' + made['attempt_id']
+        assert w.b.client.get(path).status_code == 404
+        assert w.b.client.post(path + '/submit', headers=w.b.headers, json={'answers': {}}).status_code == 404
+        selected = {item['item_id']: correct['option_id']}
+        first = w.a.client.post(path + '/submit', headers=w.a.headers, json={'answers': selected})
+        assert first.status_code == 200, first.text
+        assert first.json()['correct_count'] == 1
+        assert first.json()['results'][0]['explanation'] and first.json()['results'][0]['evidence']
+        replay = w.a.client.post(path + '/submit', headers=w.a.headers, json={'answers': selected})
+>       assert replay.json() == first.json()
+E       AssertionError: assert {'attempt_id'...ount': 1, ...} == {'attempt_id'...ount': 1, ...}
+E
+E         Omitting 5 identical items, use -vv to show
+E         Differing items:
+E         {'submitted_at': '2026-10-25T16:17:17.556120+00:00'} != {'submitted_at': '2026-10-25T16:17:17.498154+00:00'}
+E         Use -v to get more diff
+
+src\web\backend\tests\test_content_w10.py:79: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\mutations\idempotent-submit.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping
+1 failed, 1 warning in 4.55s
