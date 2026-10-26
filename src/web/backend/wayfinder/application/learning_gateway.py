@@ -7,6 +7,8 @@ from wayfinder.api.errors import WebError
 class LearningGateway:
     def __init__(self, courses, runtime, graph_loader, *, media=None):
         self.courses, self.runtime, self.graph_loader = courses, runtime, graph_loader
+        from wayfinder.infrastructure.document_requests import DocumentRequests
+        runtime.document_requests = DocumentRequests(courses.store.engine, courses.settings, runtime.clock)
         self.media = media
         self._graphs = {}
         self._graph_lock = RLock()
@@ -238,6 +240,9 @@ class LearningGateway:
         result = answer_view(raw, course, graph, artifacts)
         # Core decides focus validity. The web reflects a null result without dropping/changing the submitted ID.
         result['warnings'] = ['focus_ignored'] if focus is not None and raw.get('focus_node_id') is None else []
+        if any(call.get('name') == 'make_document' and call.get('result_summary', {}).get('error', {}).get('code') == 'rate_limited'
+               for call in raw.get('tool_calls', [])):
+            result['warnings'].append('document_rate_limited')
         return result
 
     def list_turns(self, actor, cid, sid):
@@ -396,8 +401,7 @@ class LearningGateway:
         return course, graph, modules, self._content_scope(graph, home_module_id)
 
     def admit_document(self, actor):
-        from wayfinder.infrastructure.document_requests import DocumentRequests
-        DocumentRequests(self.courses.store.engine, self.courses.settings, self.runtime.clock).admit(actor.user_id)
+        self.runtime.document_requests.admit(actor.user_id)
 
     def make_document(self, actor, cid, request, module_ids, home_module_id=None, on_event=None):
         from wayfinder.application.content_view import document_view

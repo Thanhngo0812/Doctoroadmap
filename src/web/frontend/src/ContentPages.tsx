@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useAuth } from './Auth';
 import { ApiError } from './api';
@@ -23,10 +23,14 @@ export function QuizPage(props: ThemeProps) {
   const [result, setResult] = useState<QuizResult | null>(null), [answers, setAnswers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true), [sending, setSending] = useState(false), [error, setError] = useState('');
   const [revision, setRevision] = useState(0), [page, setPage] = useState<number | null>(null);
-  const submitting = useRef(false), heading = useRef<HTMLHeadingElement>(null), previousAttempt = useRef(aid);
+  const submitting = useRef<object | null>(null), heading = useRef<HTMLHeadingElement>(null), previousAttempt = useRef(aid);
   const cached = location.state as { quiz?: Quiz; answers?: Record<string, string> } | null;
   const saved = cached?.quiz;
   const answersRef = useRef<Record<string, string>>({});
+  useLayoutEffect(() => {
+    submitting.current = null; setSending(false);
+    return () => { submitting.current = null; };
+  }, [cid, aid, location.key]);
   useEffect(() => {
     const c = new AbortController(); setError(''); setLoading(true); setItems(saved?.attempt_id === aid ? saved.items : []); setQuiz(saved?.attempt_id === aid ? saved : null); setResult(null); answersRef.current = saved?.attempt_id === aid ? cached?.answers ?? {} : {}; setAnswers(answersRef.current); setPage(null);
     void (async () => {
@@ -50,11 +54,11 @@ export function QuizPage(props: ThemeProps) {
       if (cause instanceof ApiError && cause.code === 'unauthenticated') auth.clearSession(); else setError(message(cause));
     } }).finally(() => { if (!c.signal.aborted) setLoading(false); });
     return () => c.abort();
-  }, [cid, aid, moduleId, revision, auth.clearSession, navigate, saved]);
+  }, [cid, aid, moduleId, revision, auth.clearSession, navigate, saved, location.key]);
   useEffect(() => {
     if (previousAttempt.current !== 'tao' || saved?.attempt_id !== aid) heading.current?.focus({ preventScroll: true });
     previousAttempt.current = aid;
-  }, [aid, saved]);
+  }, [cid, aid, saved, location.key]);
   const back = moduleId ? modulePath(cid, moduleId) : coursePath(cid);
   const pages = quiz?.source_document?.kind === 'pdf' ? quiz.source_document.page_count : null;
   const source = (sources: LectureSource[]) => <div className="content-result-sources">{sources.filter(row => row.page && (!pages || row.page <= pages)).map((row, i) =>
@@ -62,12 +66,17 @@ export function QuizPage(props: ThemeProps) {
       onClick={() => row.page && setPage(row.page)}>Nguồn {row.label} · trang {row.page}</button>)}</div>;
   const submit = async () => {
     if (!quiz || submitting.current || loading) return;
-    submitting.current = true; setSending(true); setError('');
-    try { setResult(await submitQuiz(cid, quiz.attempt_id, answers)); heading.current?.focus({ preventScroll: true }); }
-    catch (cause) {
+    const request = { cid, aid, key: location.key };
+    submitting.current = request; setSending(true); setError('');
+    try {
+      const grade = await submitQuiz(cid, quiz.attempt_id, answers);
+      if (submitting.current !== request) return;
+      setResult(grade); heading.current?.focus({ preventScroll: true });
+    } catch (cause) {
+      if (submitting.current !== request) return;
       if (cause instanceof ApiError && cause.code === 'unauthenticated') auth.clearSession();
       else { setError(message(cause)); if (cause instanceof ApiError && cause.code === 'not_found') { setQuiz(null); setItems([]); } }
-    } finally { submitting.current = false; setSending(false); }
+    } finally { if (submitting.current === request) { submitting.current = null; setSending(false); } }
   };
   return <CourseShell {...props}><div className="content-page content-quiz-page">
     <Link className="content-back" to={back}>← Quay lại lộ trình</Link>

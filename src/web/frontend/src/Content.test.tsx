@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { act, cleanup, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useNavigate, useLocation } from 'react-router-dom';
 import App from './App';
 import './LectureMarkdown';
 
@@ -160,4 +160,95 @@ it('keeps keyboard focus on the current option when streaming becomes a saved qu
   await act(async () => { frame('final', { quiz }); controller.close(); });
   await waitFor(() => expect(screen.getByRole('button', { name: 'Nộp bài' })).toBeEnabled());
   expect(document.querySelector('input[value="o2"]')).toHaveFocus();
+});
+
+it('R7 ignores a late submission result after browser history opens another attempt', async () => {
+  let resolveSubmit!: (r: Response) => void;
+  const pending = new Promise<Response>(resolve => { resolveSubmit = resolve; });
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  const second = { ...quiz, attempt_id: 'qa_2', items: [{...item, stem: 'Attempt two question'}] };
+  vi.mocked(fetch).mockImplementation((input, init) => String(input).endsWith('/quizzes/qa_1/submit')
+    ? pending : String(input).endsWith('/quizzes/qa_2') ? Promise.resolve(json(second)) : original(input, init));
+  function HistoryBack() { const navigate = useNavigate(), location = useLocation(); return <><output aria-label="active-route">{location.pathname}</output><button onClick={() => navigate(-1)}>History back</button></>; }
+  render(<MemoryRouter initialEntries={['/khoa-hoc/c/quiz/qa_2','/khoa-hoc/c/quiz/qa_1']} initialIndex={1}><HistoryBack /><App /></MemoryRouter>);
+  await screen.findByRole('button', { name: 'Nộp bài' });
+  await userEvent.click(screen.getByRole('button', { name: 'Nộp bài' }));
+  await userEvent.click(screen.getByRole('button', { name: 'History back' }));
+  await screen.findByText('Attempt two question');
+  await act(async () => { resolveSubmit(json(result)); });
+  console.log('R7_OBSERVED', JSON.stringify({activeRoute: screen.getByLabelText('active-route').textContent, heading: document.querySelector('h1')?.textContent, secondQuestionVisible: !!screen.queryByText('Attempt two question')}));
+  expect(screen.queryByRole('heading', { name: 'Kết quả quiz' })).not.toBeInTheDocument();
+  expect(screen.getByText('Attempt two question')).toBeVisible();
+});
+
+function deferredResponse() {
+  let resolve!: (response: Response) => void, reject!: (error: Error) => void;
+  const promise = new Promise<Response>((yes, no) => { resolve = yes; reject = no; });
+  return { promise, resolve, reject };
+}
+function RequestHistory() {
+  const navigate = useNavigate(), location = useLocation();
+  return <><output aria-label="request-route">{location.pathname}</output>
+    <button onClick={() => navigate(-1)}>Back request</button><button onClick={() => navigate(1)}>Forward request</button>
+    <button onClick={() => navigate('/khoa-hoc/d/quiz/qa_1')}>Other course</button></>;
+}
+it.each(['success', 'network', 'unauthenticated', 'not_found'])('ignores old %s submit callbacks while a new attempt is pending', async outcome => {
+  const first = deferredResponse(), second = deferredResponse();
+  let firstSubmitted = false;
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  const q2 = { ...quiz, attempt_id: 'qa_2', items: [{ ...item, stem: 'Second attempt question' }] };
+  const grade2 = { ...result, attempt_id: 'qa_2', results: [{ ...result.results[0], stem: 'Second attempt graded' }] };
+  vi.mocked(fetch).mockImplementation((input, init) => {
+    const url = String(input);
+    if (url.endsWith('/qa_1/submit')) return first.promise;
+    if (url.endsWith('/qa_2/submit')) return second.promise;
+    if (url.endsWith('/quizzes/qa_2')) return Promise.resolve(json(q2));
+    if (url.endsWith('/quizzes/qa_1') && firstSubmitted) return Promise.resolve(json({ ...quiz, submitted: true }));
+    if (url.endsWith('/qa_1/result')) return Promise.resolve(json(result));
+    return original(input, init);
+  });
+  render(<MemoryRouter initialEntries={['/khoa-hoc/c/quiz/qa_2','/khoa-hoc/c/quiz/qa_1']} initialIndex={1}><RequestHistory /><App /></MemoryRouter>);
+  await screen.findByRole('button', { name: 'Nộp bài' });
+  await userEvent.click(screen.getByRole('button', { name: 'Nộp bài' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Back request' }));
+  await screen.findByText('Second attempt question');
+  expect(screen.getByRole('button', { name: 'Nộp bài' })).toBeEnabled();
+  await userEvent.click(screen.getByRole('button', { name: 'Nộp bài' }));
+  await act(async () => {
+    if (outcome === 'network') first.reject(new TypeError('old network failure'));
+    else if (outcome === 'success') { firstSubmitted = true; first.resolve(json(result)); }
+    else first.resolve(json({ error: { code: outcome, message: 'Old response must stay invisible' } }, outcome === 'unauthenticated' ? 401 : 404));
+  });
+  expect(screen.getByLabelText('request-route')).toHaveTextContent('/khoa-hoc/c/quiz/qa_2');
+  expect(screen.getByText('Second attempt question')).toBeVisible();
+  expect(screen.getByRole('button', { name: 'Đang nộp…' })).toBeDisabled();
+  expect(screen.queryByRole('alert')).not.toBeInTheDocument();
+  expect(document.querySelector('h1')).not.toHaveFocus();
+  await act(async () => second.resolve(json(grade2)));
+  expect(await screen.findByText('Second attempt graded')).toBeVisible();
+  if (outcome === 'success') {
+    await userEvent.click(screen.getByRole('button', { name: 'Forward request' }));
+    expect(await screen.findByRole('heading', { name: 'Kết quả quiz' })).toBeVisible();
+    expect(screen.queryByText('Second attempt graded')).not.toBeInTheDocument();
+  }
+});
+it('ignores a previous course submit even when the new course has the same attempt ID', async () => {
+  const pending = deferredResponse();
+  const original = vi.mocked(fetch).getMockImplementation()!;
+  vi.mocked(fetch).mockImplementation((input, init) => {
+    const url = String(input);
+    if (url.endsWith('/courses/c/quizzes/qa_1/submit')) return pending.promise;
+    if (url.endsWith('/courses/d/quizzes/qa_1')) return Promise.resolve(json({ ...quiz, course_id: 'd', items: [{...item, stem:'Other course question'}] }));
+    return original(input, init);
+  });
+  render(<MemoryRouter initialEntries={['/khoa-hoc/c/quiz/qa_1']}><RequestHistory /><App /></MemoryRouter>);
+  await screen.findByRole('button', { name: 'Nộp bài' });
+  await userEvent.click(screen.getByRole('button', { name: 'Nộp bài' }));
+  await userEvent.click(screen.getByRole('button', { name: 'Other course' }));
+  await screen.findByText('Other course question');
+  await act(async () => pending.resolve(json(result)));
+  expect(screen.getByLabelText('request-route')).toHaveTextContent('/khoa-hoc/d/quiz/qa_1');
+  expect(screen.getByText('Other course question')).toBeVisible();
+  expect(screen.queryByRole('heading', { name: 'Kết quả quiz' })).not.toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Nộp bài' })).toBeEnabled();
 });

@@ -1,4 +1,4 @@
-"""Account-wide rolling-hour admission for direct document requests."""
+"""Account-wide rolling-hour admission for button and assistant document requests."""
 from datetime import timedelta
 from math import ceil
 from sqlalchemy import text

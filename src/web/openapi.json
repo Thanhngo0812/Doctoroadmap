@@ -2460,7 +2460,10 @@
           "warnings": {
             "items": {
               "type": "string",
-              "const": "focus_ignored"
+              "enum": [
+                "focus_ignored",
+                "document_rate_limited"
+              ]
             },
             "type": "array",
             "title": "Warnings"

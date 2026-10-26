@@ -10,6 +10,7 @@ from doc2roadmap.domain.phase_b_limits import BSettings
 class WebLearningRuntime:
     def __init__(self, store, *, model=None, embedding=None, clock=None, settings=None, page_images=None, artifacts=None, model_for=None):
         self.store, self.model, self.embedding = store, model, embedding
+        self.document_requests = None  # Bound by LearningGateway to the web PostgreSQL admission policy.
         self.page_images = page_images
         self.artifacts, self.model_for = artifacts, model_for or (lambda purpose: self.model)
         self.clock = clock or SystemClock()
@@ -46,7 +47,7 @@ class WebLearningRuntime:
             clock=self.clock, spend_guard=self.spend_guard, page_images=self.page_images)
 
     def assistant(self, graph, *, on_tool_start=None):
-        from doc2roadmap.application.phase_b.assistant import AssistantUseCase
+        from wayfinder.infrastructure.assistant_tools import WebAssistantUseCase
         from wayfinder.infrastructure.assistant_model import ActorBoundAssistantModel
         def starting(name):
             if on_tool_start:
@@ -61,6 +62,7 @@ class WebLearningRuntime:
             return self.quiz(graph).make_quiz(graph.doc_id, None, owner, scope=scope, n=n, level=level,
                 origin='assistant', allow_spend=True, home_scope=kwargs.get('home_scope'), session_id=kwargs.get('session_id'))
         def make_document(request, scope, *, owner, **kwargs):
+            self.document_requests.admit(owner)
             starting('make_document')
             return self.document(graph).create(graph.doc_id, graph.graph_version, graph, request, scope,
                 owner=owner, origin='assistant', allow_spend=True,
@@ -68,7 +70,7 @@ class WebLearningRuntime:
         def search(query, **kwargs):
             starting('search_document')
             return self.search(graph, query, **kwargs)
-        return AssistantUseCase(graph, self.store, ActorBoundAssistantModel(self.model_for('assistant')), settings=self.settings,
+        return WebAssistantUseCase(graph, self.store, ActorBoundAssistantModel(self.model_for('assistant')), settings=self.settings,
             search=search if self.artifacts is not None else None,
             lecture=get_lecture, quiz=make_quiz, document=make_document, clock=self.clock,
             progress=self.progress(graph), spend_guard=self.spend_guard, page_images=self.page_images)

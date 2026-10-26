@@ -12,7 +12,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     label, *command = sys.argv[1:]
     assert label.replace('-', '').isalnum()
-    folder = ROOT / 'report/w10-evidence' / label
+    evidence = os.environ.get('W10_EVIDENCE_FOLDER', 'w10-evidence')
+    assert evidence in {'w10-evidence', 'w10-r7-evidence'}
+    folder = ROOT / 'report' / evidence / label
     assert not folder.exists(), 'Use a fresh evidence label'
     folder.mkdir(parents=True)
     protected = ['report/w06-evidence/http-doc1.json', 'report/w06-evidence/http-six-books.json']

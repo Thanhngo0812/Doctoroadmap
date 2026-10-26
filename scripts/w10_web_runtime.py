@@ -24,6 +24,7 @@ from wayfinder.composition import WebServices, compose_account_service, compose_
 from wayfinder.domain.auth import Actor
 from wayfinder.domain.courses import Membership
 from wayfinder.fakes.quiz import ScriptedQuizModel
+from wayfinder.fakes.assistant import ScriptedAssistantModel
 from wayfinder.fakes.lecture import ScriptedLectureModel
 from wayfinder.fakes.mail import FakeMailer
 from wayfinder.infrastructure.database import create_database_engine, upgrade_database
@@ -36,7 +37,9 @@ from w14_web_runtime import _forbid_live_providers
 BASE = 'http://127.0.0.1:8020'
 RUN = os.environ.get('W10_EVIDENCE_RUN', 'browser-dev1')
 assert re.fullmatch(r'browser-[a-z0-9-]+', RUN)
-OUT = ROOT / 'report/w10-evidence' / RUN
+EVIDENCE = os.environ.get('W10_EVIDENCE_FOLDER', 'w10-evidence')
+assert EVIDENCE in {'w10-evidence', 'w10-r7-evidence'}
+OUT = ROOT / 'report' / EVIDENCE / RUN
 
 
 def save(name, value):
@@ -78,8 +81,9 @@ def main():
         document = ScriptedLectureModel([['# Ghi chú ôn tập\n\n', 'Ta có $1+1=2$. [S1]\n\nNhãn chưa biết [S999].\n\n<img src=x onerror=alert(1)>']])
         documents.append(document)
         lecture = ScriptedLectureModel()
+        assistant = ScriptedAssistantModel(scenario='document')
         courses, gateway = compose_course_services(settings, engine, phase, clock=clock, model=lecture, media=media,
-            model_for=lambda purpose: {'quiz_gen': generator, 'quiz_verify': solver, 'document': document}.get(purpose))
+            model_for=lambda purpose: {'quiz_gen': generator, 'quiz_verify': solver, 'document': document, 'assistant': assistant}.get(purpose))
         graph = gateway.graph_loader('doc-1', 8)
         modules = sorted((m for m in graph.modules.values() if m['node_ids']), key=lambda m: m.get('index', 0))
         ma, mb = modules[0]['module_id'], modules[1]['module_id']

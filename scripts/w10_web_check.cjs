@@ -1,4 +1,5 @@
 const assert = require('node:assert/strict');
+const { hasTerminalFrame, intentionalDisconnect } = require('./w10_sse_audit.cjs');
 const { spawnSync } = require('node:child_process');
 const fs = require('node:fs/promises');
 const path = require('node:path');
@@ -7,16 +8,77 @@ process.env.PLAYWRIGHT_BROWSERS_PATH = path.join(shared, '.tmp/w01-browsers');
 const { chromium } = require(path.join(shared, '.tmp/w01-browser-tools/node_modules/playwright'));
 const { AxeBuilder } = require(path.join(shared, '.tmp/w01-browser-tools/node_modules/@axe-core/playwright'));
 const out = path.dirname(process.env.W10_RUNTIME);
-const audit = { configurations: [], screens: [], accessibility: [], http: [], pageErrors: [], console: [], requests: [], assertions: [] };
+const audit = { configurations: [], screens: [], accessibility: [], http: [], pageErrors: [], console: [], requests: [], assertions: [], streams: [], privacyFailures: [] };
 let stage = 'bootstrap';
 async function main() {
   const runtime = JSON.parse(await fs.readFile(process.env.W10_RUNTIME, 'utf8'));
   const { base, courseId: cid, moduleA: ma, moduleB: mb } = runtime;
   const api = base + '/api/v1/courses/' + cid, modulePage = base + '/khoa-hoc/' + cid + '/module/' + ma;
-  const browser = await chromium.launch(), contexts = [], pending = [];
+  function inspectPayload(url, body) {
+    if (!/\/(quizzes|documents|library|sessions)/.test(url)) return;
+    for (const value of ['"validation"', '"public_id"', '"_private"', 'res.cloudinary.com', 'PRIVATE_SOLVER_REASON', '"result_summary"', '"tool_calls"'])
+      assert.ok(!body.includes(value), value);
+    if (/\/quizzes(?:\/[^/]+)?$/.test(new URL(url).pathname) && !/\/submit|\/result/.test(url)) {
+      for (const value of ['"correct_index"', '"is_correct"', '"explanation"', '"why_wrong"', '"answers"'])
+        assert.ok(!body.includes(value), 'public quiz leaked ' + value);
+    }
+  }
+  const browser = await chromium.launch(), contexts = [], pending = [], releaseRoutes = [], submitHolds = new Map();
   async function userPage(name) {
     const context = await browser.newContext({ viewport: { width: 1280, height: 900 },
       recordVideo: { dir: path.join(root, 'tmp/w10-video'), size: { width: 1280, height: 900 } } });
+    await context.exposeBinding('__w10HoldSubmit', (_, url) => {
+      const hold = submitHolds.get(url);
+      if (hold) { hold.ready = true; return hold.gate; }
+    });
+    const streams = new Map();
+    await context.exposeBinding('__w10RecordStream', (_, row) => {
+      if (row.event === 'start') {
+        const receipt = { id: row.id, stage, path: new URL(row.url).pathname, url: row.url, method: row.method,
+          status: row.status, type: row.type, body: '', via: 'fetch-body-tee', complete: false, terminalSeen: false };
+        streams.set(row.id, receipt); audit.streams.push(receipt); audit.http.push(receipt);
+        return;
+      }
+      const receipt = streams.get(row.id); assert.ok(receipt, 'stream identity');
+      if (row.event === 'chunk') {
+        receipt.body += row.text;
+        receipt.terminalSeen = hasTerminalFrame(receipt.body);
+        try { inspectPayload(receipt.url, receipt.body); }
+        catch (error) { audit.privacyFailures.push({ id: row.id, message: error.message }); throw error; }
+      } else if (row.event === 'done') receipt.complete = true;
+      else if (row.event === 'cancel') receipt.cancelled = true;
+      else { receipt.readError = row.message; receipt.readErrorName = row.name; if (row.name === 'AbortError') receipt.cancelled = true; }
+    });
+    await context.addInitScript(({ prefix }) => {
+      const original = window.fetch.bind(window);
+      window.fetch = async (...args) => {
+        const response = await original(...args);
+        if (response.url.endsWith('/submit')) await window.__w10HoldSubmit(response.url);
+        if (!response.url.startsWith(prefix) || !response.body || !response.headers.get('content-type')?.startsWith('text/event-stream')) return response;
+        const id = crypto.randomUUID(), [application, recording] = response.body.tee();
+        const appReader = application.getReader(), recorder = recording.getReader(), decoder = new TextDecoder();
+        const record = event => window.__w10RecordStream({ id, ...event });
+        await record({ event: 'start', url: response.url, method: args[1]?.method ?? 'GET', status: response.status, type: response.headers.get('content-type') });
+        const body = new ReadableStream({
+          async pull(controller) {
+            try {
+              const [part, copy] = await Promise.all([appReader.read(), recorder.read()]);
+              if (part.done) { await record({ event: 'done' }); controller.close(); return; }
+              await record({ event: 'chunk', text: decoder.decode(copy.value, { stream: true }) });
+              controller.enqueue(part.value);
+            } catch (error) {
+              await record({ event: 'error', name: error.name, message: error.message }).catch(() => {});
+              controller.error(error);
+            }
+          },
+          async cancel(reason) {
+            await record({ event: 'cancel' }).catch(() => {});
+            await Promise.all([appReader.cancel(reason), recorder.cancel(reason)]);
+          },
+        });
+        return new Response(body, { status: response.status, statusText: response.statusText, headers: response.headers });
+      };
+    }, { prefix: base + '/api/v1/courses/' });
     const page = await context.newPage(); contexts.push({ context, page, name });
     page.on('pageerror', error => audit.pageErrors.push({ stage, message: error.message }));
     page.on('console', message => { if (message.type() === 'error') audit.console.push({ stage, message: message.text() }); });
@@ -27,19 +89,14 @@ async function main() {
     page.on('response', response => {
       if (!response.url().startsWith(api)) return;
       const when = stage;
-      pending.push((async () => {
+      const job = (async () => {
         const type = response.headers()['content-type'] ?? '';
-        const body = /json|event-stream|markdown/.test(type) ? await response.text() : null;
-        if (/\/(quizzes|documents|library)/.test(response.url()) && body) {
-          for (const value of ['"validation"', '"public_id"', '"_private"', 'res.cloudinary.com', 'PRIVATE_SOLVER_REASON'])
-            assert.ok(!body.includes(value), value);
-          if (/\/quizzes(?:\/[^/]+)?$/.test(new URL(response.url()).pathname) && !/\/submit|\/result/.test(response.url())) {
-            for (const value of ['"correct_index"', '"is_correct"', '"explanation"', '"why_wrong"', '"answers"'])
-              assert.ok(!body.includes(value), 'public quiz leaked ' + value);
-          }
-        }
+        if (type.startsWith('text/event-stream')) return; // The fetch tee records each chunk before the app sees it.
+        const body = /json|markdown/.test(type) ? await response.text() : null;
+        if (body) inspectPayload(response.url(), body);
         audit.http.push({ stage: when, path: new URL(response.url()).pathname, method: response.request().method(), status: response.status(), type, body });
-      })().catch(error => { if (error.code === 'ERR_ASSERTION') throw error; audit.http.push({ stage: when, path: new URL(response.url()).pathname, status: response.status(), unavailableBody: error.message }); }));
+      })();
+      pending.push(job); void job.catch(() => {}); // Keep the original rejection for the final audited assertion.
     });
     return page;
   }
@@ -321,6 +378,26 @@ async function main() {
     assert.equal(limited.status(), 429); assert.match(limited.headers()['content-type'], /json/);
     assert.equal((await control({ action: 'probe' })).documentCalls, beforeLimit);
     audit.hourLimit = { status: limited.status(), body: await limited.json(), providerCallsUnchanged: true };
+    stage = 'assistant-hour-limit';
+    const documentsBeforeChat = (await control({ action: 'probe' })).documentRows.length;
+    await learner.goto(modulePage);
+    await learner.getByRole('button', { name: 'Mở khung trợ lý' }).click();
+    await learner.getByRole('textbox', { name: 'Câu hỏi' }).fill('Tạo tài liệu ôn tập.');
+    await learner.getByRole('button', { name: 'Gửi câu hỏi', exact: true }).click();
+    await learner.getByText('Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.', { exact: true }).waitFor();
+    const afterChat = await control({ action: 'probe' });
+    assert.equal(afterChat.documentCalls, beforeLimit);
+    assert.equal(afterChat.documentRows.length, documentsBeforeChat);
+    await learner.reload();
+    await learner.getByRole('button', { name: 'Mở khung trợ lý' }).click();
+    await learner.getByText('Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.', { exact: true }).waitFor();
+    for (const width of (smoke ? [1280] : [390, 768, 1280])) for (const theme of (smoke ? ['light'] : ['light', 'dark'])) {
+      await learner.setViewportSize({width, height: 900}); await learner.emulateMedia({colorScheme:theme, reducedMotion:'reduce'});
+      if (await learner.locator('html').getAttribute('data-theme') !== theme)
+        await learner.getByRole('button', { name: theme === 'dark' ? 'Bật chế độ tối' : 'Bật chế độ sáng' }).click();
+      await capture('assistant-hour-limit', true);
+    }
+    audit.sharedDocumentLimit = {buttonRequests:10, assistantGeneratedDocuments:0, modelCallsUnchanged:true, persistentNotice:true};
     stage = 'failure';
     await control({ action: 'advance' }); await control({ action: 'document-mode', mode: 'failure' });
     await learner.goto(modulePage); await learner.getByRole('button', { name: 'Tạo tài liệu', exact: true }).click();
@@ -328,6 +405,41 @@ async function main() {
     await learner.getByRole('dialog').getByRole('alert').waitFor(); await capture('document-failure', true);
     assert.equal(await learner.getByRole('dialog').getByRole('button', { name: 'Thử lại' }).isEnabled(), true);
     await learner.getByRole('button', { name: 'Đóng tạo tài liệu' }).click();
+    stage = 'late-submit';
+    const made = [];
+    for (let index=0; index<2; index++) {
+      const response = await learner.request.post(api+'/quizzes', {headers:learnerHeaders, data:{scope:{kind:'module',module_id:ma},n:1}});
+      assert.equal(response.status(),201); made.push(await response.json());
+    }
+    const pathFor = q => base+'/khoa-hoc/'+cid+'/quiz/'+q.attempt_id;
+    await learner.goto(pathFor(made[1]));
+    await learner.getByRole('button', {name:'Nộp bài',exact:true}).waitFor();
+    await learner.evaluate(path => {
+      history.pushState({idx:(history.state?.idx??0)+1,key:'w10-r7-native-history',usr:null},'',path);
+      dispatchEvent(new PopStateEvent('popstate'));
+    }, pathFor(made[0]));
+    await learner.waitForURL(pathFor(made[0]));
+    await learner.getByRole('button', {name:'Nộp bài',exact:true}).waitFor();
+    let releaseOld, releaseNew;
+    const oldGate=new Promise(resolve=>{releaseOld=resolve}), newGate=new Promise(resolve=>{releaseNew=resolve});
+    const oldHold={gate:oldGate,ready:false}, newHold={gate:newGate,ready:false};
+    submitHolds.set(api+'/quizzes/'+made[0].attempt_id+'/submit',oldHold);
+    submitHolds.set(api+'/quizzes/'+made[1].attempt_id+'/submit',newHold);
+    releaseRoutes.push(releaseOld,releaseNew);
+    const waitForFlag=async read=>{const until=Date.now()+5000;while(!read()&&Date.now()<until)await new Promise(r=>setTimeout(r,25));assert.ok(read());};
+    await learner.getByRole('button', {name:'Nộp bài',exact:true}).click(); await waitForFlag(()=>oldHold.ready);
+    await learner.goBack(); await learner.waitForURL(pathFor(made[1]));
+    await learner.getByRole('button', {name:'Nộp bài',exact:true}).click(); await waitForFlag(()=>newHold.ready);
+    releaseOld();
+    await learner.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+    assert.equal(learner.url(),pathFor(made[1]));
+    assert.equal(await learner.getByRole('heading',{name:'Kết quả quiz',exact:true}).count(),0);
+    assert.equal(await learner.getByRole('button',{name:'Đang nộp…',exact:true}).isDisabled(),true);
+    await capture('late-old-result-new-pending',true);
+    releaseNew(); await learner.getByRole('heading',{name:'Kết quả quiz',exact:true}).waitFor();
+    await learner.goForward(); await learner.waitForURL(pathFor(made[0]));
+    await learner.getByRole('heading',{name:'Kết quả quiz',exact:true}).waitFor();
+    audit.lateSubmit = {oldAttempt:made[0].attempt_id,newAttempt:made[1].attempt_id,oldIgnoredWhileNewPending:true,forwardRestoresSavedResult:true,driver:'fetch completion held after real HTTP response; native history entries/popstate; real PG grading'};
     stage = 'privacy';
     const outsider = await userPage('outsider'); await login(outsider, 'outsider');
     assert.equal((await outsider.request.get(api + '/quizzes/' + lastAid)).status(), 404);
@@ -341,10 +453,18 @@ async function main() {
       'Six-module UI prevents POST; real Markdown export/source PDF; errors have retry', 'Outsider and removed member denied next HTTP request; 0 external provider calls');
     assert.deepEqual(audit.pageErrors, []);
     console.log(JSON.stringify({ screens: audit.screens.length, axe: audit.accessibility.length, http: audit.http.length }));
+  } catch (error) { audit.failure={stage,message:error.message,stack:error.stack}; throw error;
   } finally {
+    releaseRoutes.forEach(release=>release());
     for (const { context, page, name } of contexts) { const video = page.video(); await context.close(); if (video) await video.saveAs(path.join(out, name + '.webm')); }
-    await Promise.allSettled(pending);
+    const settled = await Promise.allSettled(pending);
+    audit.pendingRejections = settled.filter(row => row.status === 'rejected').map(row => String(row.reason?.stack ?? row.reason));
+    audit.payloadCoverage = { streams: audit.streams.length, missingStreamBodies: audit.streams.filter(row => !row.body).length, terminalStreams: audit.streams.filter(row => row.terminalSeen).length, cancelledBeforeTerminal: audit.streams.filter(row => !row.terminalSeen).map(row => ({id:row.id,stage:row.stage,path:row.path,cancelled:row.cancelled,readError:row.readError,readErrorName:row.readErrorName})) };
     await fs.writeFile(path.join(out, 'audit.json'), JSON.stringify(audit, null, 2) + '\n'); await browser.close();
+    assert.deepEqual(audit.pendingRejections, [], 'all HTTP audit promises must succeed');
+    assert.deepEqual(audit.privacyFailures, [], 'SSE privacy assertions must succeed');
+    assert.equal(audit.payloadCoverage.missingStreamBodies, 0);
+    assert.ok(audit.payloadCoverage.cancelledBeforeTerminal.every(intentionalDisconnect), 'only intentional disconnect may omit terminal');
   }
 }
 main().catch(error => { console.error(error.stack); process.exitCode = 1; });

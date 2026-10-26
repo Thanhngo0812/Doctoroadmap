@@ -26,6 +26,7 @@ export function AssistantAnswer({ courseId, sessionId, text, answer, artifacts, 
   useEffect(() => { if (preview) panel.current?.focus(); }, [preview]);
   return <div className="learning-chat-answer">
     <LectureMarkdown text={text} sources={answer?.sources} onSource={onSource} allowLinks={false} />
+    {answer?.warnings.includes('document_rate_limited') && <p className="learning-chat-note" role="status">Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.</p>}
     {answer?.warnings.includes('focus_ignored') && <p className="learning-chat-note">Bài học đang mở không còn khớp lộ trình; trợ lý đã trả lời theo phạm vi phiên.</p>}
     {graph?.scope_note && <p className="learning-chat-note">Module này đã đổi. Bạn có thể mở phiên mới cho module hiện tại.</p>}
     {graph?.module_cards.map((item, index) => item.module_id && <Link className="learning-chat-card" key={`${item.module_id}:${index}`} to={modulePath(courseId, item.module_id)}>
