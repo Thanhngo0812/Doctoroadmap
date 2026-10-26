@@ -16,10 +16,10 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 | Vé | Việc | Ai | Chặn bởi | Hạn | Trạng thái |
 |---|---|---|---|---|---|
 | [01](01-manifest-va-boc-chuong.md) | Manifest sách, bốc chương theo seed, kiểm PDF gốc | Claude | — | 28/10 | chưa làm |
-| [02](02-phieu-g3-kho-khai-niem.md) | Hướng dẫn và phiếu G3 trọn vòng, tới kho chốt | Claude (hướng dẫn) + agent A | lược đồ manifest của 01 | 28/10 | chưa làm |
-| [03](03-phieu-g4-quan-he.md) | Hướng dẫn và phiếu G4 trọn vòng, tới vàng chính/hợp/giao | Claude (hướng dẫn) + agent A | 02 | 29/10 | chưa làm |
-| [04](04-hop-dong-xuat-cham-a8-a10.md) | Hợp đồng đánh giá, bộ xuất hệ chính, chấm A8/A10, đối chiếu bộ chấm cũ | agent B | — | 29/10 | chưa làm |
-| [05](05-thong-ke-va-dong-thuan.md) | Thống kê và đồng thuận | Claude, agent soát | — | 31/10 | chưa làm |
+| [02](02-phieu-g3-kho-khai-niem.md) | Hướng dẫn và phiếu G3 trọn vòng, tới kho chốt | Claude (hướng dẫn) + agent A | lược đồ manifest của 01 | 28/10 | agent A đang cài (2026-10-26); hướng dẫn g3-1 chờ duyệt |
+| [03](03-phieu-g4-quan-he.md) | Hướng dẫn và phiếu G4 trọn vòng, tới vàng chính/hợp/giao | Claude (hướng dẫn) + agent A | 02 | 29/10 | hướng dẫn g4-1 chờ duyệt; công cụ chờ 02 |
+| [04](04-hop-dong-xuat-cham-a8-a10.md) | Hợp đồng đánh giá, bộ xuất hệ chính, chấm A8/A10, đối chiếu bộ chấm cũ | agent B | — | 29/10 | agent B đang cài (2026-10-26) |
+| [05](05-thong-ke-va-dong-thuan.md) | Thống kê và đồng thuận | Claude, agent soát | — | 31/10 | Claude cài xong trên `work/dg-05-thong-ke` (22 test, phá 12/12); chờ agent soát |
 | [06](06-cong-tac-pipeline.md) | Công tắc pipeline mặc định tắt: giây chờ embedding, seed xáo pass chính, lọc cặp pass phụ | agent B | 04 | 30/10 | chưa làm |
 | [07](07-b5-llm-doc-thang.md) | B5 "LLM đọc thẳng" | Claude (lời nhắc) + agent B | 04 | 31/10 | chưa làm |
 | [08](08-dieu-phoi-luot-chay.md) | Điều phối lượt chạy, chạy một khoảng chương phát triển tới bảng điểm | agent B | 04, 06 | 31/10 | chưa làm |
