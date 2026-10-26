@@ -1,0 +1,121 @@
+{
+  "review": "W10 R7 independent review",
+  "head": "fa346c95aafb90ff9273df947b07e093f19d3fb4",
+  "base": "b3c4426666dd868040ea0bc52e6485f5af6e1ac4",
+  "verdict": "request_changes",
+  "critical": [],
+  "required": [
+    {
+      "id": "R-W10-1",
+      "title": "Document frequency admission omits assistant origin",
+      "files": [
+        "src/web/backend/wayfinder/api/content.py",
+        "src/web/backend/wayfinder/infrastructure/document_requests.py",
+        "src/web/backend/wayfinder/infrastructure/learning_runtime.py"
+      ],
+      "evidence": [
+        "rate-origin-offline.py",
+        "rate-origin-offline.log",
+        "parent-rate-http-repro.py",
+        "parent-rate-http-repro.xml",
+        "parent-rate-http-observed.json",
+        "parent-evidence-receipts.json"
+      ],
+      "scope": "Reviewer offline real assistant closure/core plus inspected coordinator full HTTP/PG counterexample",
+      "modelCallsBefore": 10,
+      "modelCallsAfter": 11,
+      "documentsAfter": 11,
+      "coordinatorHttpPG": {
+        "native": 1,
+        "assertionFailures": 1,
+        "setupErrors": 0,
+        "direct11Status": 429,
+        "assistantStatus": 200,
+        "modelCalls": 11,
+        "documentCount": 11,
+        "rateBucketCount": 10
+      }
+    },
+    {
+      "id": "R-W10-2",
+      "title": "Late submit response replaces current quiz after history navigation",
+      "file": "src/web/frontend/src/ContentPages.tsx",
+      "line": 66,
+      "evidence": [
+        "late-submit-current.xml",
+        "late-submit-control.xml",
+        "late-submit-repro.test.tsx",
+        "reproduce-late-submit.cjs"
+      ],
+      "current": {
+        "native": 1,
+        "assertionFailures": 1,
+        "setupErrors": 0
+      },
+      "scratchControl": {
+        "native": 0,
+        "passed": 10,
+        "failures": 0,
+        "errors": 0
+      }
+    }
+  ],
+  "optional": [
+    {
+      "title": "Browser body-privacy assertion rejections are ignored by Promise.allSettled",
+      "file": "scripts/w10_web_check.cjs",
+      "line": 346
+    }
+  ],
+  "independentRuns": {
+    "reactBaseline": {
+      "native": 0,
+      "passed": 9,
+      "failed": 0,
+      "errors": 0
+    },
+    "scratchGroupingMutant": {
+      "native": 1,
+      "failedAssertions": 1,
+      "setupErrors": 0,
+      "restored": true
+    },
+    "fullPostgresGate": false,
+    "browser": false,
+    "paidProvider": false
+  },
+  "authorGateCountsNotReviewerRuns": {
+    "pythonPass": 2727,
+    "pythonSkip": 1,
+    "pythonXfail": 1,
+    "reactPass": 212,
+    "browserConfigurations": 12,
+    "browserImages": 89,
+    "axeChecks": 58
+  },
+  "receiptAudit": {
+    "head": "fa346c95aafb90ff9273df947b07e093f19d3fb4",
+    "base": "b3c4426666dd868040ea0bc52e6485f5af6e1ac4",
+    "deliverySource": "4d2f652f5a9564f54587ebe08051c525200b888e",
+    "sourceDeltaToHead": "",
+    "manifestFiles": 544,
+    "manifestMismatches": [],
+    "sourceFiles": 766,
+    "sourceMismatches": [],
+    "buildFrontendFiles": 52,
+    "buildMismatches": [],
+    "reviewerBaseline": "<testsuites name=\"vitest tests\" tests=\"9\" failures=\"0\" errors=\"0\" time=\"2.4308714\">",
+    "distFiles": 75,
+    "distMismatches": [],
+    "rawArchiveNative": 0,
+    "rawArchive": {
+      "archive": "raw-text-2026-10-26.zip",
+      "files": 493,
+      "mismatches": []
+    },
+    "authorMutationCount": 12,
+    "authorMutationMismatches": []
+  },
+  "externalCostUSD": 0,
+  "sourcePreserved": true
+}

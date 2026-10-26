@@ -1,0 +1,28 @@
+{
+  "currentUnit": {
+    "command": "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe -X utf8 -m pytest test_tokens_and_wcag.py -q -p no:cacheprovider --junitxml=current-tests.xml",
+    "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r7-design-review-20261026",
+    "exitCode": 0,
+    "passed": 64,
+    "postgresRun": false,
+    "scope": "Focused parser/token/static checks in copied design tree, no DB tests"
+  },
+  "mutatedUnit": {
+    "mutation": "cardGroup === group -> cardGroup !== group",
+    "source": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+    "mutationFile": "design/preview/mutant-filter.html",
+    "exitCode": 0,
+    "passed": 64,
+    "caught": false,
+    "workerSourceEdited": false
+  },
+  "browser": {
+    "command": "node browser-probe.cjs C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w24-figma-evidence/design/preview/w10_quiz_screens.html",
+    "exitCode": 0,
+    "configurations": 12,
+    "currentPassed": true,
+    "oldFilterFailures": 2,
+    "invertedFilterFailures": 2,
+    "font": "Offline fallback Segoe UI; no Be Vietnam Pro face loaded; one deliberately blocked Google Fonts console resource error per configuration"
+  }
+}

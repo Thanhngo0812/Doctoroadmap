@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.984" timestamp="2026-10-26T12:38:51.105102+07:00" hostname="ADMIN"><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_actor_purpose_course_trace_and_failure_aggregation" time="0.618"><failure message="AssertionError: assert {'limited': False} == {'limited': True}&#10;  &#10;  Differing items:&#10;  {'limited': False} != {'limited': True}&#10;  Use -v to get more diff">..\coord-r7-core-review-20261026\test_review_core.py:123: in test_actor_purpose_course_trace_and_failure_aggregation
+    assert view['shared_content_today'] == {'limited': True}
+E   AssertionError: assert {'limited': False} == {'limited': True}
+E
+E     Differing items:
+E     {'limited': False} != {'limited': True}
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

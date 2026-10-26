@@ -1,0 +1,71 @@
+[
+  {
+    "mutant": "trace",
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-p",
+      "src.web.backend.tests.conftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--w16-review-mutant=trace",
+      "-k",
+      "actor_purpose",
+      "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-trace-temp",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-trace.xml",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+    ],
+    "status": 1,
+    "error": null,
+    "caught": true
+  },
+  {
+    "mutant": "day-upper",
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-p",
+      "src.web.backend.tests.conftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--w16-review-mutant=day-upper",
+      "-k",
+      "exact_day",
+      "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-day-upper-temp",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-day-upper.xml",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+    ],
+    "status": 1,
+    "error": null,
+    "caught": true
+  },
+  {
+    "mutant": "personal-owner",
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-p",
+      "src.web.backend.tests.conftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--w16-review-mutant=personal-owner",
+      "-k",
+      "actor_purpose",
+      "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-personal-owner-temp",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-personal-owner.xml",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+    ],
+    "status": 1,
+    "error": null,
+    "caught": true
+  }
+]

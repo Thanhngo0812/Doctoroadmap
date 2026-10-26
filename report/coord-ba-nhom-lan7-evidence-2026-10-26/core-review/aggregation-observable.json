@@ -1,0 +1,66 @@
+{
+  "alice": {
+    "contract_version": "usage-1",
+    "build_month_resets_at": "2026-11-01T00:00:00+07:00",
+    "learner_today": {
+      "used_ratio": 0.5,
+      "limited": false,
+      "resets_at": "2026-10-27T00:00:00+07:00"
+    },
+    "shared_content_today": {
+      "limited": true
+    }
+  },
+  "bob": {
+    "contract_version": "usage-1",
+    "build_month_resets_at": "2026-11-01T00:00:00+07:00",
+    "learner_today": {
+      "used_ratio": 0.8,
+      "limited": false,
+      "resets_at": "2026-10-27T00:00:00+07:00"
+    },
+    "shared_content_today": {
+      "limited": true
+    }
+  },
+  "queries": [
+    {
+      "owner": "alice",
+      "purposes": [
+        "assistant",
+        "document"
+      ],
+      "row_count": 5,
+      "sql": "SELECT usage_ledger.extra \nFROM usage_ledger \nWHERE usage_ledger.learner_id = :learner_id_1::VARCHAR AND usage_ledger.created_at >= :created_at_1::TIMESTAMP WITH TIME ZONE AND purpose IN ('assistant','document') AND usage_ledger.purpose IN (:purpose_1_1::VARCHAR, :purpose_1_2::VARCHAR) ORDER BY usage_ledger.id"
+    },
+    {
+      "owner": null,
+      "purposes": [
+        "lecture",
+        "quiz_gen",
+        "quiz_verify"
+      ],
+      "row_count": 6,
+      "sql": "SELECT usage_ledger.extra \nFROM usage_ledger \nWHERE usage_ledger.created_at >= :created_at_1::TIMESTAMP WITH TIME ZONE AND usage_ledger.purpose IN (:purpose_1_1::VARCHAR, :purpose_1_2::VARCHAR, :purpose_1_3::VARCHAR) ORDER BY usage_ledger.id"
+    },
+    {
+      "owner": "bob",
+      "purposes": [
+        "assistant",
+        "document"
+      ],
+      "row_count": 1,
+      "sql": "SELECT usage_ledger.extra \nFROM usage_ledger \nWHERE usage_ledger.learner_id = :learner_id_1::VARCHAR AND usage_ledger.created_at >= :created_at_1::TIMESTAMP WITH TIME ZONE AND purpose IN ('assistant','document') AND usage_ledger.purpose IN (:purpose_1_1::VARCHAR, :purpose_1_2::VARCHAR) ORDER BY usage_ledger.id"
+    },
+    {
+      "owner": null,
+      "purposes": [
+        "lecture",
+        "quiz_gen",
+        "quiz_verify"
+      ],
+      "row_count": 6,
+      "sql": "SELECT usage_ledger.extra \nFROM usage_ledger \nWHERE usage_ledger.created_at >= :created_at_1::TIMESTAMP WITH TIME ZONE AND usage_ledger.purpose IN (:purpose_1_1::VARCHAR, :purpose_1_2::VARCHAR, :purpose_1_3::VARCHAR) ORDER BY usage_ledger.id"
+    }
+  ]
+}

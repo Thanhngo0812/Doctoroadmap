@@ -1,0 +1,94 @@
+[
+  {
+    "mutant": "shared-owner",
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-p",
+      "src.web.backend.tests.conftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--w16-review-mutant=shared-owner",
+      "-k",
+      "actor_purpose",
+      "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-shared-owner-temp",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-shared-owner.xml",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+    ],
+    "status": 1,
+    "error": null,
+    "caught": true
+  },
+  {
+    "mutant": "month-upper",
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-p",
+      "src.web.backend.tests.conftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--w16-review-mutant=month-upper",
+      "-k",
+      "real_quota",
+      "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-upper-temp",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-upper.xml",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+    ],
+    "status": 1,
+    "error": null,
+    "caught": true
+  },
+  {
+    "mutant": "month-lower",
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-p",
+      "src.web.backend.tests.conftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--w16-review-mutant=month-lower",
+      "-k",
+      "real_quota",
+      "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-lower-temp",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-lower.xml",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+    ],
+    "status": 1,
+    "error": null,
+    "caught": true
+  },
+  {
+    "mutant": "dto",
+    "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "scripts/w05_run_tests.py",
+      "-p",
+      "src.web.backend.tests.conftest",
+      "-o",
+      "addopts=",
+      "-q",
+      "--tb=short",
+      "--w16-review-mutant=dto",
+      "-k",
+      "actual_http",
+      "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-dto-temp",
+      "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-dto.xml",
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+    ],
+    "status": 1,
+    "error": null,
+    "caught": true
+  }
+]
