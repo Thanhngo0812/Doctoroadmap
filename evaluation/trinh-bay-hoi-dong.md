@@ -129,7 +129,8 @@ Bảng 5. Các lớp vàng
 | G5 Phán mù đầu ra | sau khi hệ chạy: khái niệm và cạnh máy đưa ra mà vàng không có thì đúng hay sai; lộ trình có dễ học không | độ chính xác, đánh giá người dùng |
 
 G1 và G2 chủ yếu là đối chiếu với mục lục, nên một trợ lý AI lập bản nháp và sinh viên duyệt lại toàn bộ. Bản nháp không lấy từ đầu ra
-của hệ, để tránh chấm hệ bằng chính nó. G3, G4 và G5 do sinh viên làm từ đầu.
+của hệ, để tránh chấm hệ bằng chính nó. Để biết người duyệt có duyệt thật hay chỉ gật đầu, nhóm cài sẵn 3–5 lỗi đã biết vào bản nháp mỗi cuốn,
+rồi báo tỉ lệ lỗi cài được bắt. G3, G4 và G5 do sinh viên làm từ đầu.
 
 ### 5.3 Gán hai giai đoạn
 
@@ -228,7 +229,7 @@ Bảng 7. Các hệ được so
 | | **B5: mô hình ngôn ngữ đọc thẳng** cả sách (hoặc từng chương) và trả luôn khái niệm, quan hệ, lộ trình | **"Vì sao cần mười bước mà không hỏi thẳng mô hình?"** |
 | Bỏ hoặc thay một bộ phận (ablation) | đọc PDF bằng công cụ docling thay bộ đọc nhẹ (trên 3–4 cuốn, vì docling chậm) | "Bộ đọc nhanh có làm kém chất lượng không?" |
 | | bước phụ của A8 dùng mô hình ngôn ngữ thay mô hình học máy (trên các cặp của 3 chương bốc, vì bản mô hình ngôn ngữ rất tốn) | "Thay mô hình ngôn ngữ bằng học máy để tiết kiệm thì mất bao nhiêu chất lượng?" |
-| | bỏ bước suy luận chính của A8 | "Bước suy luận chính đóng góp bao nhiêu?" |
+| | bỏ các quan hệ do bước suy luận chính của A8 đề xuất; hoặc bỏ các quan hệ do bước phụ đề xuất | "Mỗi bước của A8 đóng góp bao nhiêu?" |
 | | tắt luật R17 | "Luật giữ thứ tự sách giúp hay hại?" |
 | | tắt gán vai trò vùng A2; tắt lọc trạng thái dạy A5 (nếu lịch còn chỗ) | "Hai bước lọc này có cần không?" |
 | Thay khâu bằng đáp án đúng (oracle) | A8 nhận khái niệm vàng thay vì khái niệm máy trích | "Lỗi ở A8 hay ở các khâu trước?" |
@@ -396,7 +397,8 @@ Bảng 11. Thí nghiệm bỏ hoặc thay bộ phận
 |---|---|---|
 | docling thay bộ đọc nhẹ (3–4 cuốn) | — | — |
 | bước phụ A8 bằng mô hình ngôn ngữ (cặp của 3 chương bốc) | — | — |
-| bỏ bước suy luận chính | — | — |
+| bỏ quan hệ của bước suy luận chính | — | — |
+| bỏ quan hệ của bước phụ | — | — |
 | tắt R17 | — | — |
 | tắt gán vai trò vùng A2 (nếu chạy) | — | — |
 | tắt lọc trạng thái dạy A5 (nếu chạy) | — | — |

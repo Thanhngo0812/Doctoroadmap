@@ -1,4 +1,5 @@
-Trạng thái: thiết kế đã được chủ dự án xác nhận ngày 2026-10-26, sau sáu vòng tra hỏi (mục 15). Bước kế: spec (`to-spec`), rồi vé.
+Trạng thái: thiết kế đã được chủ dự án xác nhận ngày 2026-10-26, sau sáu vòng tra hỏi (mục 15). **Spec đã viết:** `doc/danh-gia-pha-a-spec.md`
+(ADR 0029). Bước kế: chia vé (`to-tickets`).
 Bản trình bày cho hội đồng nằm ở `evaluation/trinh-bay-hoi-dong.md` và được cập nhật song song: kế hoạch này đổi thì bản đó đổi theo.
 **Sửa cùng ngày (Q30–Q33):** tập thử đổi từ 16 cuốn 50–70 trang sang **8 giáo trình đầy đủ, mỗi chủ đề một cuốn, cỡ 150–300 trang**. G1, G2
 gán cả cuốn; G3, G4 gán trên 3 chương bốc theo seed. Các mục dưới đã sửa theo.
@@ -275,7 +276,8 @@ Mỗi nhóm hệ dưới đây trả lời một RQ:
 - **Ablation** (RQ4):
   - docling thay bộ đọc nhẹ, chạy lại cả chuỗi, chỉ trên 3–4 cuốn;
   - pass phụ LLM thay ML, chỉ trên các cặp có đích nằm trong 3 chương bốc;
-  - bỏ pass chính;
+  - bỏ cạnh pass chính, và bỏ cạnh pass phụ: hai lượt phát lại A9 → A10, 0 USD. Pass phụ ML lấy đặc trưng từ đầu ra pass chính nên không
+    bỏ được cả khâu pass chính (phát hiện khi viết spec);
   - tắt R17 (luật làm mềm cạnh ngược thứ tự sách);
   - nếu lịch 07–09/11 còn chỗ: tắt gán vai trò vùng A2 (mọi mục là nội dung), và tắt lọc trạng thái dạy A5 (mọi khái niệm trích được vào
     lộ trình).
