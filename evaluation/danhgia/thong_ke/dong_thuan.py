@@ -40,6 +40,11 @@ def _ma_tran_trung_hop(du_lieu):
 
 
 def krippendorff_alpha(du_lieu, *, muc_do="danh_nghia"):
+    """α của Krippendorff. Trả `None` khi kỳ vọng bất đồng bằng 0, tức mọi giá trị quan sát là một giá trị duy nhất: đồng ý
+    tuyệt đối nhưng không có biến thiên để đo độ tin cậy; nơi gọi phải báo riêng ca này, không đọc `None` là "chưa đo".
+    Mức `thu_bac` và `khoang` cần nhãn là số có thứ tự tự nhiên; nhãn chữ sẽ bị sắp theo từ điển và cho số sai (soát S-07)."""
+    if muc_do in ("thu_bac", "khoang") and any(isinstance(v, str) for hang in du_lieu for v in hang):
+        raise ValueError("mức thứ bậc và khoảng cần nhãn số")
     o = _ma_tran_trung_hop(du_lieu)
     gia_tri = sorted({c for c, _ in o} | {k for _, k in o})
     n_c = {c: sum(v for (x, _), v in o.items() if x == c) for c in gia_tri}
