@@ -1,0 +1,17 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 src/Usage.test.tsx --reporter=default --reporter=junit --outputFile=../../../report/w16-react-evidence/timezone-la-control.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/src/web/frontend
+
+ ✓ src/Usage.test.tsx (9 tests) 2012ms
+   ✓ shows the API ratio 0.35 and honest state Còn nhiều 481ms
+   ✓ ignores a stale usage result after route change and loads the new route independently 380ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  08:43:08
+   Duration  7.00s (environment 33%, tests 31%, import 24%, setup 8%, transform 4%)
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w16-usage-react/report/w16-react-evidence/timezone-la-control.xml

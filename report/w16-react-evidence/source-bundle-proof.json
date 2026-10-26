@@ -1,0 +1,30 @@
+{
+  "source": "012abea28a32272a91aaccfa54823037652af28a",
+  "trackedSourceFiles": 783,
+  "mismatches": [],
+  "bundleFiles": 75,
+  "bundleMismatch": [],
+  "afterMutationRestored": {
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Usage.test.tsx",
+      "-t",
+      "keeps null build quota",
+      "--reporter=default",
+      "--reporter=junit",
+      "--outputFile=../../../report/w16-react-evidence/mutation-null-final/junit.xml"
+    ],
+    "sourceCommit": "012abea28a32272a91aaccfa54823037652af28a",
+    "sourceSha256": "d4e75338f2a5a6eb06348aa52ac307634ac3cf0d938ce3c3e1e90cc980b91489",
+    "mutatedSha256": "ac9558cc95579731aa50c3e650ba314562f6da23f73587f8b392658a25f0bc66",
+    "restoredSha256": "d4e75338f2a5a6eb06348aa52ac307634ac3cf0d938ce3c3e1e90cc980b91489",
+    "nativeExitCode": 1
+  },
+  "dirtyPaths": []
+}
