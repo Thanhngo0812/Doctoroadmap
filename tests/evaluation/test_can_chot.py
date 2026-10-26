@@ -140,7 +140,7 @@ def test_mot_nguoi_giu_mot_nguoi_bo_la_tranh_chap_khong_vao_kho(qa, qb):
 
 def test_khop_tu_dong_vao_kho_khong_can_hoi_y_va_ghi_trang_thai_hai_ben():
     can = bo_hai_nguoi()
-    qd = {m["id"]: "bo" for m in bat_dong.tao_muc(can) if m["loai"] == "rieng"}
+    qd = {m["id"]: ("bo" if m["loai"] == "rieng" else "khac") for m in bat_dong.tao_muc(can)}
     kho = chot(can, {"T1-a": quyet(**qd), "T1-b": quyet(**qd)})
     ky_vong = [k for k in kho["khai_niem"] if k["ten"] == "Kỳ vọng"]
     assert len(ky_vong) == 1 and ky_vong[0]["trang_thai"] == "day_o_day"
