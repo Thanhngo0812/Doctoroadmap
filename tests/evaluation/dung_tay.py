@@ -44,7 +44,7 @@ def g4(ma_sach, quan_he, *, tranh_chap=()):
         loai = item[2] if len(item) > 2 else "van_ban"
         rows.append({"dich": dich, "nguon": nguon, "loai": loai, "bang_chung": {"trang": 1, "cau": "x"},
                      "khong_chac": False, "ghi_chu": ""})
-    chinh = [row for row in rows if row["loai"] == "van_ban" and (row["nguon"], row["dich"]) not in set(tranh_chap)]
+    chinh = [row for row in rows if row["loai"] == "van_ban" and [row["nguon"], row["dich"]] not in [list(t) for t in tranh_chap]]
     return {"schema": "danh-gia-g4-1", "ma_sach": ma_sach, "nguoi_gan": "hoi-y", "kho_chot_sha256": "0" * 64,
             "quan_he": rows, "vang_chinh": chinh, "vang_hop": chinh, "vang_giao": chinh,
             "tranh_chap": [{"nguon": n, "dich": d} for n, d in tranh_chap]}

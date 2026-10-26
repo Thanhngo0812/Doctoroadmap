@@ -19,7 +19,7 @@ TEN = {"t1": "Khái niệm một", "t2": "Khái niệm hai", "t3": "Khái niệm
 
 
 def chay(**kw):
-    tham_so = dict(ma_sach="d", ten=TEN, node_ids={"t1", "t2", "t3", "o1"}, redirects={"t3old": "t3"}, danh_tinh={})
+    tham_so = dict(ma_sach="d", ten=TEN, node_ids={"t1", "t2", "t3", "o1"}, redirects={"t3old": "t3"})
     tham_so.update(kw)
     return chuyen(vang_cu(), **tham_so)
 
@@ -46,15 +46,13 @@ def test_g4_dung_dinh_dang_va_nguon_ngoai_chuong():
     assert all(q["loai"] == "van_ban" for q in g4["quan_he"])
 
 
-def test_bang_can_dung_bang_chuyen_huong_va_danh_tinh():
+def test_bang_can_dung_bang_chuyen_huong():
     ket_qua = chay()
     can = {(h["vang"] if isinstance(h["vang"], str) else "ngoai"): h for h in ket_qua["can"]["hang"]}
     ma_ba = next(k["ma"] for k in ket_qua["g3"]["khai_niem"] if k["ten"] == "Khái niệm ba")
     assert can[ma_ba]["may"] == "t3" and can[ma_ba]["quan_he"] == "khop"  # t3old chuyển hướng sang t3
     assert can["ngoai"]["may"] == "o1"
-    ket_qua = chay(danh_tinh={"t3": "t2"})  # t3 gộp vào t2: hai khái niệm vàng dồn chung một node
-    nodes = {h["may"] for h in ket_qua["can"]["hang"] if h["vang"] in (ma_ba, "G-d-002")}
-    assert nodes == {"t2"}
+    assert ket_qua["bao_cao"]["chuyen_huong"] == {"t3old": "t3"}
 
 
 def test_khai_niem_khong_quy_duoc_ve_node_khong_co_hang_can_va_duoc_bao_cao():
