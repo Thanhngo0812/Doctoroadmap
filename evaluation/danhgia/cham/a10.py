@@ -30,28 +30,27 @@ def _canh_trong_day(canh_may, hang):
 def q7(cap_vang_toan_cuon, canh_may, dich, hang):
     """Với mỗi đích có tổ tiên vàng: phần tổ tiên vàng nằm trong tổ tiên máy. Trả (tổng tỉ lệ, số đích, số đích trọn)."""
     vang, may = to_tien(cap_vang_toan_cuon), to_tien(_canh_trong_day(canh_may, hang))
-    tong, n, tron = 0.0, 0, 0
+    ti_le, tron = [], 0
     for nut in sorted(dich):
         can = vang.get(nut, set())
         if not can:
             continue
         co = may.get(nut, set())
-        tong += len(can & co) / len(can)
-        n += 1
+        ti_le.append(len(can & co) / len(can))
         tron += can <= co
-    return tong, n, tron
+    # sum() của Python 3.12 cộng bù sai số; dùng nó để tổng khớp từng bit với bộ chấm cũ (cùng thứ tự, cùng hàm cộng)
+    return sum(ti_le), len(ti_le), tron
 
 
 def q7b(cap_vang_toan_cuon, canh_may, dich, hang):
     """Tổ tiên máy thuộc chương vàng có thật sự cần không. Trả (tổng độ chính xác, số đích có tổ tiên máy)."""
     vang, may = to_tien(cap_vang_toan_cuon), to_tien(_canh_trong_day(canh_may, hang))
-    pham_vi, tong, n = set(dich), 0.0, 0
+    pham_vi, ti_le = set(dich), []
     for nut in sorted(dich):
         co = may.get(nut, set()) & pham_vi
         if co:
-            tong += len(co & vang.get(nut, set())) / len(co)
-            n += 1
-    return tong, n
+            ti_le.append(len(co & vang.get(nut, set())) / len(co))
+    return sum(ti_le), len(ti_le)
 
 
 def cau_truc_do_thi(canh_cung, day_hoc):

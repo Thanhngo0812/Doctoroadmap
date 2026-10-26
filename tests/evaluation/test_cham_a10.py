@@ -122,3 +122,16 @@ def test_he_khong_co_lo_trinh_bao_khong_ap_dung():
     rows = cham(hd, v3, v4, cc, ma_sach=S)
     assert not [r for r in rows if r["thuoc"].startswith("a10.")]
     assert [r for r in rows if r["thuoc"].startswith("a8.")]
+
+
+def test_q7_tong_cong_bu_sai_so_khop_tung_bit_voi_bo_cham_cu():
+    # 10 đích, mỗi đích có 10 tổ tiên vàng và máy phủ đúng 1: mỗi tỉ lệ 0,1. Cộng thẳng cho 0,9999999999999999.
+    a, t = [f"G-S-a{i}" for i in range(10)], [f"G-S-t{i}" for i in range(10)]
+    vang3 = g3(S, [(m, "c1") for m in [*a, *t]])
+    vang4 = g4(S, [(x, y) for y in t for x in a])
+    cc = can(S, [(m, "n" + m[-2:], "khop") for m in [*a, *t]])
+    nodes = ["n" + m[-2:] for m in [*a, *t]]
+    hd = hop_dong([khai_niem(n) for n in nodes], [canh(nodes[0], nodes[10 + i]) for i in range(10)], nodes)
+    q7 = lay(cham(hd, vang3, vang4, cc, ma_sach=S), "a10.q7.nghiem")
+    assert q7["n"] == 10
+    assert q7["tong"] == 1.0
