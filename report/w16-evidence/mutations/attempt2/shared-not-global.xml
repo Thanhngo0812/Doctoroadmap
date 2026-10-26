@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.967" timestamp="2026-10-26T06:28:59.682250+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_combines_courses_isolates_people_and_separates_shared_and_build" time="1.378"><failure message="AssertionError: assert {'limited': False} == {'limited': True}&#10;  &#10;  Differing items:&#10;  {'limited': False} != {'limited': True}&#10;  Use -v to get more diff">src\web\backend\tests\test_usage_w16.py:91: in test_usage_combines_courses_isolates_people_and_separates_shared_and_build
+    assert usage(b)['shared_content_today'] == {'limited': True}
+E   AssertionError: assert {'limited': False} == {'limited': True}
+E
+E     Differing items:
+E     {'limited': False} != {'limited': True}
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

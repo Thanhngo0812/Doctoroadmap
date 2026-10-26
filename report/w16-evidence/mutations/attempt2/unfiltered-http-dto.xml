@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.928" timestamp="2026-10-26T06:29:05.319430+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_real_response_dto_recursively_removes_internal_money" time="1.172"><failure message="assert False&#10; +  where False = all(&lt;generator object assert_no_money_keys.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001BD8DF076B0&gt;)">src\web\backend\tests\test_usage_w16.py:208: in test_usage_real_response_dto_recursively_removes_internal_money
+    assert_no_money_keys(view)
+src\web\backend\tests\test_usage_w16.py:65: in assert_no_money_keys
+    assert all('usd' not in key.lower() and 'cost' not in key.lower() for key in value)
+E   assert False
+E    +  where False = all(&lt;generator object assert_no_money_keys.&lt;locals&gt;.&lt;genexpr&gt; at 0x000001BD8DF076B0&gt;)</failure></testcase></testsuite></testsuites>
