@@ -169,7 +169,7 @@ async function main() {
           .reduce((sum, value, index) => sum + value * [.2126, .7152, .0722][index], 0);
         return targets.map(selector => {
           const element = document.querySelector(selector);
-          if (!element?.closest('.katex,.content-page,.content-dialog')) return { selector, eligible: false };
+          if (!element?.closest('.katex,.content-page,.content-dialog,.learning-chat-panel')) return { selector, eligible: false };
           element.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'instant' });
           let box = element.getBoundingClientRect();
           let left = Math.max(box.left, 0), right = Math.min(box.right, innerWidth);
@@ -391,7 +391,7 @@ async function main() {
     await learner.reload();
     await learner.getByRole('button', { name: 'Mở khung trợ lý' }).click();
     await learner.getByText('Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.', { exact: true }).waitFor();
-    for (const width of (smoke ? [1280] : [390, 768, 1280])) for (const theme of (smoke ? ['light'] : ['light', 'dark'])) {
+    for (const width of [390, 768, 1280]) for (const theme of ['light', 'dark']) {
       await learner.getByRole('button', { name: 'Đóng trợ lý', exact: true }).click();
       await learner.setViewportSize({width, height: 900}); await learner.emulateMedia({colorScheme:theme, reducedMotion:'reduce'});
       if (await learner.locator('html').getAttribute('data-theme') !== theme)
