@@ -1,0 +1,1978 @@
+warning: unable to access 'C:\Users\ngoco/.config/git/ignore': Permission denied
+warning: in the working copy of 'src/web/backend/wayfinder/fakes/quiz.py', LF will be replaced by CRLF the next time Git touches it
+AssertionError [ERR_ASSERTION]: quiz-ready Axe
++ actual - expected
+
++ [
++   {
++     description: 'Ensure every form element has a label',
++     help: 'Form elements must have labels',
++     helpUrl: 'https://dequeuniversity.com/rules/axe/4.14/label?application=playwright',
++     id: 'label',
++     impact: 'critical',
++     nodes: [
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="is-selected">',
++                 target: [
++                   'fieldset:nth-child(3) > .content-options > .is-selected'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o2" name="qi_29d0ae9ad799b879b044ab4b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_29d0ae9ad799b879b044ab4b"][value="o2"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(3) > .content-options > label:nth-child(2)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o3" name="qi_29d0ae9ad799b879b044ab4b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_29d0ae9ad799b879b044ab4b"][value="o3"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(3) > .content-options > label:nth-child(3)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o4" name="qi_29d0ae9ad799b879b044ab4b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_29d0ae9ad799b879b044ab4b"][value="o4"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(3) > .content-options > label:nth-child(4)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o1" name="qi_29d0ae9ad799b879b044ab4b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_29d0ae9ad799b879b044ab4b"][value="o1"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="is-selected">',
++                 target: [
++                   'fieldset:nth-child(4) > .content-options > .is-selected'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o1" name="qi_31ebf3c171c5ffc27ca4d43a" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_31ebf3c171c5ffc27ca4d43a"][value="o1"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(4) > .content-options > label:nth-child(2)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o2" name="qi_31ebf3c171c5ffc27ca4d43a" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_31ebf3c171c5ffc27ca4d43a"][value="o2"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(4) > .content-options > label:nth-child(3)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o4" name="qi_31ebf3c171c5ffc27ca4d43a" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_31ebf3c171c5ffc27ca4d43a"][value="o4"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(4) > .content-options > label:nth-child(4)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o3" name="qi_31ebf3c171c5ffc27ca4d43a" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_31ebf3c171c5ffc27ca4d43a"][value="o3"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="is-selected">',
++                 target: [
++                   'fieldset:nth-child(5) > .content-options > .is-selected'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o1" name="qi_89f368f7d3cfd4df4169604b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_89f368f7d3cfd4df4169604b"][value="o1"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(5) > .content-options > label:nth-child(2)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o3" name="qi_89f368f7d3cfd4df4169604b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_89f368f7d3cfd4df4169604b"][value="o3"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(5) > .content-options > label:nth-child(3)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o2" name="qi_89f368f7d3cfd4df4169604b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_89f368f7d3cfd4df4169604b"][value="o2"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(5) > .content-options > label:nth-child(4)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o4" name="qi_89f368f7d3cfd4df4169604b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_89f368f7d3cfd4df4169604b"][value="o4"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(6) > .content-options > label:nth-child(1)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o3" name="qi_5cec0b567975a5dbe8ee6ea0" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_5cec0b567975a5dbe8ee6ea0"][value="o3"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="is-selected">',
++                 target: [
++                   'fieldset:nth-child(6) > .content-options > .is-selected'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o1" name="qi_5cec0b567975a5dbe8ee6ea0" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_5cec0b567975a5dbe8ee6ea0"][value="o1"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(6) > .content-options > label:nth-child(3)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o4" name="qi_5cec0b567975a5dbe8ee6ea0" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_5cec0b567975a5dbe8ee6ea0"][value="o4"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(6) > .content-options > label:nth-child(4)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o2" name="qi_5cec0b567975a5dbe8ee6ea0" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_5cec0b567975a5dbe8ee6ea0"][value="o2"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(7) > .content-options > label:nth-child(1)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o4" name="qi_f35b501969bea776198d321b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_f35b501969bea776198d321b"][value="o4"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="is-selected">',
++                 target: [
++                   'fieldset:nth-child(7) > .content-options > .is-selected'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o1" name="qi_f35b501969bea776198d321b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_f35b501969bea776198d321b"][value="o1"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(7) > .content-options > label:nth-child(3)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o2" name="qi_f35b501969bea776198d321b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_f35b501969bea776198d321b"][value="o2"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(7) > .content-options > label:nth-child(4)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o3" name="qi_f35b501969bea776198d321b" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_f35b501969bea776198d321b"][value="o3"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="is-selected">',
++                 target: [
++                   'fieldset:nth-child(8) > .content-options > .is-selected'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o1" name="qi_a9666046fe66ae6adf33420f" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_a9666046fe66ae6adf33420f"][value="o1"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(8) > .content-options > label:nth-child(2)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o2" name="qi_a9666046fe66ae6adf33420f" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_a9666046fe66ae6adf33420f"][value="o2"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(8) > .content-options > label:nth-child(3)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o3" name="qi_a9666046fe66ae6adf33420f" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_a9666046fe66ae6adf33420f"][value="o3"]'
++         ]
++       },
++       {
++         all: [],
++         any: [
++           {
++             data: {
++               implicitLabel: ''
++             },
++             id: 'implicit-label',
++             impact: 'critical',
++             message: 'Element does not have an implicit (wrapped) <label>',
++             relatedNodes: [
++               {
++                 html: '<label class="">',
++                 target: [
++                   'fieldset:nth-child(8) > .content-options > label:nth-child(4)'
++                 ]
++               }
++             ]
++           },
++           {
++             data: null,
++             id: 'explicit-label',
++             impact: 'critical',
++             message: 'Element does not have an explicit <label>',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-label',
++             impact: 'critical',
++             message: 'aria-label attribute does not exist or is empty',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'aria-labelledby',
++             impact: 'critical',
++             message: 'aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-title',
++             impact: 'critical',
++             message: 'Element has no title attribute',
++             relatedNodes: []
++           },
++           {
++             data: {
++               messageKey: 'noAttr'
++             },
++             id: 'non-empty-placeholder',
++             impact: 'critical',
++             message: 'Element has no placeholder attribute',
++             relatedNodes: []
++           },
++           {
++             data: null,
++             id: 'presentational-role',
++             impact: 'critical',
++             message: `Element's default semantics were not overridden with role="none" or role="presentation"`,
++             relatedNodes: []
++           }
++         ],
++         failureSummary: 'Fix any of the following:\n' +
++           '  Element does not have an implicit (wrapped) <label>\n' +
++           '  Element does not have an explicit <label>\n' +
++           '  aria-label attribute does not exist or is empty\n' +
++           '  aria-labelledby attribute does not exist, references elements that do not exist or references elements that are empty\n' +
++           '  Element has no title attribute\n' +
++           '  Element has no placeholder attribute\n' +
++           `  Element's default semantics were not overridden with role="none" or role="presentation"`,
++         html: '<input type="radio" value="o4" name="qi_a9666046fe66ae6adf33420f" style="">',
++         impact: 'critical',
++         none: [],
++         target: [
++           'input[name="qi_a9666046fe66ae6adf33420f"][value="o4"]'
++         ]
++       }
++     ],
++     tags: [
++       'cat.forms',
++       'wcag2a',
++       'wcag412',
++       'section508',
++       'section508.22.n',
++       'TTv5',
++       'TT5.c',
++       'EN-301-549',
++       'EN-9.4.1.2',
++       'ACT',
++       'RGAAv4',
++       'RGAA-11.1.1'
++     ]
++   }
++ ]
+- []
+
+    at capture (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\scripts\w10_web_check.cjs:84:47)
+    at async main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\scripts\w10_web_check.cjs:175:7)

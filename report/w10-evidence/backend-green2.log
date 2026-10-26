@@ -1,0 +1,151 @@
+..F.F..F..                                                               [100%]
+================================== FAILURES ===================================
+_ test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited _
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a0350975cd1d4bf59649b8910a7e0...ecture.ScriptedLectureModel object at 0x000002E92682DC70>, base='/api/v1/courses/1d0e5ec6-2716-48b1-9943-c8098e74cb8a')
+
+    def test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited(content):
+        w = content
+        for index in range(2, 7):
+            mid = f'm{index}'; nid = f'n{index}'
+            w.graph.nodes[nid] = {**w.graph.nodes['a'], 'node_id': nid, 'module_id': mid}
+            w.graph.learnable_nodes[nid] = w.graph.nodes[nid]
+            w.graph.modules[mid] = {'module_id': mid, 'index': index, 'title': mid, 'node_ids': [nid]}
+        rejected = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+            json={'request': 'Tóm tắt', 'module_ids': ['m1', 'm2', 'm3', 'm4', 'm5', 'm6']})
+        assert rejected.status_code == 422 and rejected.json()['error']['code'] == 'scope_too_large'
+        assert not w.document.calls
+        for _ in range(10):
+            response = w.a.client.post(w.base + '/documents', headers=w.a.headers,
+                json={'request': 'Tóm tắt', 'module_ids': ['m1']})
+>           assert response.status_code == 201, response.text
+E           AssertionError: {"error":{"code":"rate_limited","message":"Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.","retry_after":3600,"ref":null}}
+E           assert 429 == 201
+E            +  where 429 = <Response [429 Too Many Requests]>.status_code
+
+src\web\backend\tests\test_content_w10.py:112: AssertionError
+_ test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers __
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a0350975cd1d4bf59649b8910a7e0...ecture.ScriptedLectureModel object at 0x000002E926AB9A90>, base='/api/v1/courses/6d242fe9-cab4-4596-88a9-6138e974e4fa')
+
+    def test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers(content):
+        w = content; w.courses.settings.documents_per_hour = 1
+        path = w.base + '/documents'
+        headers = {**w.a.headers, 'Accept': 'text/event-stream'}
+        streamed = w.a.client.post(path, headers=headers, json={'module_ids': ['m1'], 'request': 'Ôn tập'})
+        assert streamed.status_code == 200 and 'text/event-stream' in streamed.headers['content-type']
+        events = [json.loads(line[6:]) for line in streamed.text.splitlines() if line.startswith('data: ')]
+>       assert any(row.get('text') for row in events)
+E       assert False
+E        +  where False = any(<generator object test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers.<locals>.<genexpr> at 0x000002E92654AA80>)
+
+src\web\backend\tests\test_content_w10.py:151: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.content:content.py:134 Content stream failed
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\web\backend\wayfinder\api\content.py", line 132, in produce
+    producer(emit)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\web\backend\wayfinder\api\content.py", line 198, in <lambda>
+    return stream_content(lambda emit: gateway.make_document(actor, cid, data.request, data.module_ids, data.home_module_id, emit))
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\web\backend\wayfinder\application\learning_gateway.py", line 415, in make_document
+    self.admit_document(actor)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\web\backend\wayfinder\application\learning_gateway.py", line 408, in admit_document
+    raise WebError('rate_limited', 'Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.',
+wayfinder.api.errors.WebError: Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.
+_ test_w10_quiz_sse_keeps_answers_private_and_revocation_denies_the_next_request _
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a0350975cd1d4bf59649b8910a7e0...ecture.ScriptedLectureModel object at 0x000002E92721CEF0>, base='/api/v1/courses/d43a52ff-f6dd-4fdf-90e0-43b1c3e2e71f')
+
+    def test_w10_quiz_sse_keeps_answers_private_and_revocation_denies_the_next_request(content):
+        w = content
+        streamed = w.b.client.post(w.base + '/quizzes', headers={**w.b.headers, 'Accept': 'text/event-stream'},
+            json={'scope': {'kind': 'module', 'module_id': 'm1'}, 'n': 1})
+        assert streamed.status_code == 200
+        events = [json.loads(line[6:]) for line in streamed.text.splitlines() if line.startswith('data: ')]
+        assert any('item' in row for row in events)
+        assert_no_answers(events)
+        aid = events[-1]['quiz']['attempt_id']
+        assert w.b.client.get(w.base + '/quizzes/' + aid).status_code == 200
+        removed = w.a.client.delete(w.base + '/members/' + w.b.actor.user_id, headers=w.a.headers)
+>       assert removed.status_code == 200
+E       assert 500 == 200
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_content_w10.py:210: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:143 Unhandled request error ref=7c62ebdfcd5a4701b635e6a011d2eab7
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\web\backend\wayfinder\api\app.py", line 136, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\src\web\backend\wayfinder\api\sharing.py", line 121, in remove_member
+    return request.app.state.services.sharing.remove_member(actor, cid, uid, ip=client_ip(request))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'NoneType' object has no attribute 'remove_member'
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\backend-green2.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_document_stream_is_public_and_rate_limit_fails_before_sse_headers
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_quiz_sse_keeps_answers_private_and_revocation_denies_the_next_request
+3 failed, 7 passed, 18 deselected, 1 warning in 13.29s

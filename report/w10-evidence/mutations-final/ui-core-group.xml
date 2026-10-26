@@ -1,0 +1,1471 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="8" failures="1" errors="0" time="2.6706418">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-25T16:21:18.977Z" hostname="ADMIN" tests="8" failures="1" errors="0" skipped="0" time="2.6706418">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0.1893924">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="1.3374689">
+            <failure message="Unable to find role=&quot;link&quot; and name `/Ghi chú trợ lý/`
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Khoá thử
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              1
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Module 1
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Bài 0&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Bài 0
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;section
+                class=&quot;learning-module-intro&quot;
+              &gt;
+                &lt;h1&gt;
+                  Module 1
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Chọn một bài học để bắt đầu. Bạn có thể đọc tài liệu gốc và quay lại bất cứ lúc nào.
+                &lt;/p&gt;
+                &lt;a
+                  class=&quot;button button-primary&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                &gt;
+                  Mở bài học đầu tiên
+                &lt;/a&gt;
+              &lt;/section&gt;
+              &lt;section
+                aria-label=&quot;Tài liệu &amp; Quiz của module&quot;
+                class=&quot;content-library&quot;
+              &gt;
+                &lt;header
+                  class=&quot;content-library-heading&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;h2&gt;
+                      Tài liệu &amp; Quiz của module
+                    &lt;/h2&gt;
+                    &lt;p&gt;
+                      Ôn lại nội dung dành cho module đang học.
+                    &lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;content-actions&quot;
+                  &gt;
+                    &lt;a
+                      class=&quot;button button-secondary&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/quiz/tao?module=m1&quot;
+                    &gt;
+                      Làm quiz
+                    &lt;/a&gt;
+                    &lt;button
+                      class=&quot;button button-primary&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo tài liệu
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/header&gt;
+                &lt;div
+                  class=&quot;content-library-filters&quot;
+                &gt;
+                  &lt;div
+                    aria-label=&quot;Nơi tạo nội dung&quot;
+                    class=&quot;content-tabs&quot;
+                    role=&quot;group&quot;
+                  &gt;
+                    &lt;button
+                      aria-pressed=&quot;true&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở đây
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                    &lt;button
+                      aria-pressed=&quot;false&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở nơi khác
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;content-refresh&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Cập nhật thư viện
+                  &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;ul
+                  class=&quot;content-library-list&quot;
+                &gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d1&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Ghi chú tự tạo
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d3&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Từ lộ trình
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/section&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;learning-chat-dock&quot;
+          data-open=&quot;false&quot;
+          data-resizing=&quot;false&quot;
+          style=&quot;--learning-chat-width: 340px;&quot;
+        &gt;
+          &lt;button
+            aria-expanded=&quot;false&quot;
+            aria-label=&quot;Mở khung trợ lý&quot;
+            class=&quot;button button-secondary learning-chat-opener&quot;
+            type=&quot;button&quot;
+          &gt;
+            Hỏi trợ lý
+          &lt;/button&gt;
+          &lt;dialog
+            aria-labelledby=&quot;learning-chat-title-c&quot;
+            class=&quot;learning-chat-panel&quot;
+          /&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Khoá thử
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              1
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Module 1
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Bài 0&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Bài 0
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;section
+                class=&quot;learning-module-intro&quot;
+              &gt;
+                &lt;h1&gt;
+                  Module 1
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Chọn một bài học để bắt đầu. Bạn có thể đọc tài liệu gốc và quay lại bất cứ lúc nào.
+                &lt;/p&gt;
+                &lt;a
+                  class=&quot;button button-primary&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                &gt;
+                  Mở bài học đầu tiên
+                &lt;/a&gt;
+              &lt;/section&gt;
+              &lt;section
+                aria-label=&quot;Tài liệu &amp; Quiz của module&quot;
+                class=&quot;content-library&quot;
+              &gt;
+                &lt;header
+                  class=&quot;content-library-heading&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;h2&gt;
+                      Tài liệu &amp; Quiz của module
+                    &lt;/h2&gt;
+                    &lt;p&gt;
+                      Ôn lại nội dung dành cho module đang học.
+                    &lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;content-actions&quot;
+                  &gt;
+                    &lt;a
+                      class=&quot;button button-secondary&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/quiz/tao?module=m1&quot;
+                    &gt;
+                      Làm quiz
+                    &lt;/a&gt;
+                    &lt;button
+                      class=&quot;button button-primary&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo tài liệu
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/header&gt;
+                &lt;div
+                  class=&quot;content-library-filters&quot;
+                &gt;
+                  &lt;div
+                    aria-label=&quot;Nơi tạo nội dung&quot;
+                    class=&quot;content-tabs&quot;
+                    role=&quot;group&quot;
+                  &gt;
+                    &lt;button
+                      aria-pressed=&quot;true&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở đây
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                    &lt;button
+                      aria-pressed=&quot;false&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở nơi khác
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;content-refresh&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Cập nhật thư viện
+                  &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;ul
+                  class=&quot;content-library-list&quot;
+                &gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d1&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Ghi chú tự tạo
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d3&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Từ lộ trình
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/section&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;learning-chat-dock&quot;
+          data-open=&quot;false&quot;
+          data-resizing=&quot;false&quot;
+          style=&quot;--learning-chat-width: 340px;&quot;
+        &gt;
+          &lt;button
+            aria-expanded=&quot;false&quot;
+            aria-label=&quot;Mở khung trợ lý&quot;
+            class=&quot;button button-secondary learning-chat-opener&quot;
+            type=&quot;button&quot;
+          &gt;
+            Hỏi trợ lý
+          &lt;/button&gt;
+          &lt;dialog
+            aria-labelledby=&quot;learning-chat-title-c&quot;
+            class=&quot;learning-chat-panel&quot;
+          /&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find role=&quot;link&quot; and name `/Ghi chú trợ lý/`
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Khoá thử
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              1
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Module 1
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Bài 0&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Bài 0
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;section
+                class=&quot;learning-module-intro&quot;
+              &gt;
+                &lt;h1&gt;
+                  Module 1
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Chọn một bài học để bắt đầu. Bạn có thể đọc tài liệu gốc và quay lại bất cứ lúc nào.
+                &lt;/p&gt;
+                &lt;a
+                  class=&quot;button button-primary&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                &gt;
+                  Mở bài học đầu tiên
+                &lt;/a&gt;
+              &lt;/section&gt;
+              &lt;section
+                aria-label=&quot;Tài liệu &amp; Quiz của module&quot;
+                class=&quot;content-library&quot;
+              &gt;
+                &lt;header
+                  class=&quot;content-library-heading&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;h2&gt;
+                      Tài liệu &amp; Quiz của module
+                    &lt;/h2&gt;
+                    &lt;p&gt;
+                      Ôn lại nội dung dành cho module đang học.
+                    &lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;content-actions&quot;
+                  &gt;
+                    &lt;a
+                      class=&quot;button button-secondary&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/quiz/tao?module=m1&quot;
+                    &gt;
+                      Làm quiz
+                    &lt;/a&gt;
+                    &lt;button
+                      class=&quot;button button-primary&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo tài liệu
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/header&gt;
+                &lt;div
+                  class=&quot;content-library-filters&quot;
+                &gt;
+                  &lt;div
+                    aria-label=&quot;Nơi tạo nội dung&quot;
+                    class=&quot;content-tabs&quot;
+                    role=&quot;group&quot;
+                  &gt;
+                    &lt;button
+                      aria-pressed=&quot;true&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở đây
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                    &lt;button
+                      aria-pressed=&quot;false&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở nơi khác
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;content-refresh&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Cập nhật thư viện
+                  &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;ul
+                  class=&quot;content-library-list&quot;
+                &gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d1&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Ghi chú tự tạo
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d3&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Từ lộ trình
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/section&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;learning-chat-dock&quot;
+          data-open=&quot;false&quot;
+          data-resizing=&quot;false&quot;
+          style=&quot;--learning-chat-width: 340px;&quot;
+        &gt;
+          &lt;button
+            aria-expanded=&quot;false&quot;
+            aria-label=&quot;Mở khung trợ lý&quot;
+            class=&quot;button button-secondary learning-chat-opener&quot;
+            type=&quot;button&quot;
+          &gt;
+            Hỏi trợ lý
+          &lt;/button&gt;
+          &lt;dialog
+            aria-labelledby=&quot;learning-chat-title-c&quot;
+            class=&quot;learning-chat-panel&quot;
+          /&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;learning-page&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;Quay lại lộ trình&quot;
+            class=&quot;learning-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;learning-context&quot;
+          &gt;
+            &lt;a
+              data-discover=&quot;true&quot;
+              href=&quot;/khoa-hoc/c&quot;
+            &gt;
+              Khoá thử
+            &lt;/a&gt;
+            &lt;span&gt;
+              Module
+              1
+               ·
+              0
+              /
+              1
+               bài học đã học
+            &lt;/span&gt;
+          &lt;/div&gt;
+          &lt;div
+            class=&quot;learning-workspace&quot;
+          &gt;
+            &lt;nav
+              aria-label=&quot;Bài học trong module&quot;
+              class=&quot;learning-sidebar&quot;
+              tabindex=&quot;0&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-sidebar__title&quot;
+              &gt;
+                Module 1
+              &lt;/p&gt;
+              &lt;ol&gt;
+                &lt;li
+                  class=&quot;&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;label
+                      class=&quot;learning-check&quot;
+                    &gt;
+                      &lt;input
+                        aria-label=&quot;Đã học: Bài 0&quot;
+                        type=&quot;checkbox&quot;
+                      /&gt;
+                    &lt;/label&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                    &gt;
+                      &lt;small&gt;
+                        Bài
+                        1
+                      &lt;/small&gt;
+                      Bài 0
+                    &lt;/a&gt;
+                  &lt;/div&gt;
+                &lt;/li&gt;
+              &lt;/ol&gt;
+              &lt;p
+                class=&quot;learning-private&quot;
+              &gt;
+                Tiến độ của riêng bạn
+              &lt;/p&gt;
+            &lt;/nav&gt;
+            &lt;div
+              class=&quot;learning-reading&quot;
+            &gt;
+              &lt;section
+                class=&quot;learning-module-intro&quot;
+              &gt;
+                &lt;h1&gt;
+                  Module 1
+                &lt;/h1&gt;
+                &lt;p&gt;
+                  Chọn một bài học để bắt đầu. Bạn có thể đọc tài liệu gốc và quay lại bất cứ lúc nào.
+                &lt;/p&gt;
+                &lt;a
+                  class=&quot;button button-primary&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/khoa-hoc/c/module/m1/khai-niem/n0&quot;
+                &gt;
+                  Mở bài học đầu tiên
+                &lt;/a&gt;
+              &lt;/section&gt;
+              &lt;section
+                aria-label=&quot;Tài liệu &amp; Quiz của module&quot;
+                class=&quot;content-library&quot;
+              &gt;
+                &lt;header
+                  class=&quot;content-library-heading&quot;
+                &gt;
+                  &lt;div&gt;
+                    &lt;h2&gt;
+                      Tài liệu &amp; Quiz của module
+                    &lt;/h2&gt;
+                    &lt;p&gt;
+                      Ôn lại nội dung dành cho module đang học.
+                    &lt;/p&gt;
+                  &lt;/div&gt;
+                  &lt;div
+                    class=&quot;content-actions&quot;
+                  &gt;
+                    &lt;a
+                      class=&quot;button button-secondary&quot;
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/quiz/tao?module=m1&quot;
+                    &gt;
+                      Làm quiz
+                    &lt;/a&gt;
+                    &lt;button
+                      class=&quot;button button-primary&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo tài liệu
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                &lt;/header&gt;
+                &lt;div
+                  class=&quot;content-library-filters&quot;
+                &gt;
+                  &lt;div
+                    aria-label=&quot;Nơi tạo nội dung&quot;
+                    class=&quot;content-tabs&quot;
+                    role=&quot;group&quot;
+                  &gt;
+                    &lt;button
+                      aria-pressed=&quot;true&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở đây
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                    &lt;button
+                      aria-pressed=&quot;false&quot;
+                      type=&quot;button&quot;
+                    &gt;
+                      Tạo ở nơi khác
+                      &lt;span&gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/button&gt;
+                  &lt;/div&gt;
+                  &lt;button
+                    class=&quot;content-refresh&quot;
+                    type=&quot;button&quot;
+                  &gt;
+                    Cập nhật thư viện
+                  &lt;/button&gt;
+                &lt;/div&gt;
+                &lt;ul
+                  class=&quot;content-library-list&quot;
+                &gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d1&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Ghi chú tự tạo
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                  &lt;li&gt;
+                    &lt;a
+                      data-discover=&quot;true&quot;
+                      href=&quot;/khoa-hoc/c/tai-lieu/d3&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;content-library-kind&quot;
+                      &gt;
+                        Tài liệu
+                      &lt;/span&gt;
+                      &lt;strong&gt;
+                        Từ lộ trình
+                      &lt;/strong&gt;
+                      &lt;small&gt;
+                        Tạo trực tiếp
+                         · Module 1
+                         · 25/10/2026
+                      &lt;/small&gt;
+                    &lt;/a&gt;
+                  &lt;/li&gt;
+                &lt;/ul&gt;
+              &lt;/section&gt;
+            &lt;/div&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;learning-chat-dock&quot;
+          data-open=&quot;false&quot;
+          data-resizing=&quot;false&quot;
+          style=&quot;--learning-chat-width: 340px;&quot;
+        &gt;
+          &lt;button
+            aria-expanded=&quot;false&quot;
+            aria-label=&quot;Mở khung trợ lý&quot;
+            class=&quot;button button-secondary learning-chat-opener&quot;
+            type=&quot;button&quot;
+          &gt;
+            Hỏi trợ lý
+          &lt;/button&gt;
+          &lt;dialog
+            aria-labelledby=&quot;learning-chat-title-c&quot;
+            class=&quot;learning-chat-panel&quot;
+          /&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ waitForWrapper node_modules/@testing-library/dom/dist/wait-for.js:163:27
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:86:33
+ ❯ src/Content.test.tsx:61:23
+            </failure>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0.3325621">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="0.6416619">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0.0509275">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0.0488702">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0.040546">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="refreshes a stale history quiz snapshot from the server after submission without posting again" time="0.0275947">
+        </testcase>
+    </testsuite>
+</testsuites>

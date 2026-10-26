@@ -1,0 +1,30 @@
+{
+  "sourceCommit": "1fc0f553bec808241388b722fa2c10a1c6ead33d",
+  "skill": "design-taste-frontend (app screens)",
+  "designSource": {
+    "path": "design/preview/w10_quiz_screens.html",
+    "sha256": "f2dea29c39708a24cf72e4617731e8d7dea588d4d2d6fc2aa75c4087d89ca989"
+  },
+  "observations": [
+    {
+      "image": "browser-r7-main/document-view-1280-light.png",
+      "note": "Khung đọc 720 px, lề hai bên rõ, tiêu đề/tải Markdown/nguồn không chồng. Nguồn mẫu [S999] giữ nguyên chữ, không thành nguồn bấm giả.",
+      "sha256": "c1cc3ccb3460d30849adc2d8ad00291f72e151dc725b2a04178b246b0f8ae768"
+    },
+    {
+      "image": "browser-r7-main/assistant-hour-limit-390-dark-reduced.png",
+      "note": "Chat toàn màn hình, scope/phiên đang mở rõ; notice giới hạn nằm cùng câu trả lời, xuống dòng trong chiều rộng. Composer/focus không bị notice che.",
+      "sha256": "66beb41043514a8f465f28c9d064ee94c6bbada692bae7c4be33172ba79b2528"
+    },
+    {
+      "image": "browser-r7-main/document-create-768-light.png",
+      "note": "Dialog giữ footer hành động; danh sách module cuộn trong nội dung, tiêu đề/nội dung chọn và hint đọc được. Khung không tràn ngang.",
+      "sha256": "b4f8ab329fa4581507f82909f97e501e7ccc9254998fc3d2b0af6ce203ec7ea6"
+    }
+  ],
+  "limits": [
+    "Nội dung sinh và provider giả; ảnh là browser thật/HTTP thật/PG riêng.",
+    "Nhận xét thị giác này chỉ ghi ba ảnh đã mở; audit.json ghi phạm vi ảnh/layout/Axe khác.",
+    "Không thay phán xét W-23 của điều phối/thiết kế."
+  ]
+}

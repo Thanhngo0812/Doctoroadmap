@@ -1,0 +1,49 @@
+warning: in the working copy of 'scripts/w10_capture.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/w10_web_check.cjs', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'scripts/w10_web_runtime.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/api/assistant.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/application/learning_gateway.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/fakes/assistant.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/infrastructure/document_requests.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/infrastructure/learning_runtime.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/frontend/src/Assistant.test.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/frontend/src/AssistantAnswer.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/frontend/src/Content.test.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/frontend/src/ContentPages.tsx', LF will be replaced by CRLF the next time Git touches it
+Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+{"screens":14,"axe":9,"http":50}
+AssertionError [ERR_ASSERTION]: all HTTP audit promises must succeed
++ actual - expected
+
++ [
++   'route.fulfill: Route is already handled!\n' +
++     '    at C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w10-quiz-documents\\scripts\\w10_web_check.cjs:424:106\n' +
++     '    at async learner.route.times (C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w10-quiz-documents\\scripts\\w10_web_check.cjs:425:47)'
++ ]
+- []
+
+    at main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\scripts\w10_web_check.cjs:463:12)
+Cancel 0 running task(s), timeout graceful shutdown exceeded

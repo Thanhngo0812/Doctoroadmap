@@ -1,0 +1,27 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___ test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score ___
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_4c7deb1ebbdc477b84fb9e6333d7c...ecture.ScriptedLectureModel object at 0x00000223CD682090>, base='/api/v1/courses/a42d7147-366b-4c92-93a4-ba8e60f251a4')
+
+    def test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score(content):
+        w = content; made = create_quiz(w); item = made['items'][0]
+        stored = w.phase_b.get_record('quiz_attempt', made['attempt_id'])
+        wrong = next(o for o in stored['_private'][item['item_id']]['options'] if not o['is_correct'])
+        response = w.a.client.post(w.base + '/quizzes/' + made['attempt_id'] + '/submit', headers=w.a.headers,
+            json={'answers': {item['item_id']: wrong['option_id']}})
+        assert response.status_code == 200
+>       assert response.json()['results'][0]['why_wrong'] == wrong['why_wrong']
+E       AssertionError: assert None == 'Cần cộng thêm một đơn vị.'
+
+src\web\backend\tests\test_content_w10.py:96: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\mutations-final\selected-reason.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score
+1 failed, 1 warning in 4.00s

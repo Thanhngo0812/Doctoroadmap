@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="3.776" timestamp="2026-10-26T19:08:26.307398+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[postgres-PATCH-/me-payload0]" time="1.180"><failure message="assert (200 == 403)&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x0000028E738E94F0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000028E7397FF80&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x0000028E738872C0&gt;))
+method = 'PATCH', path = '/me', payload = {'display_name': 'Changed'}
+
+    @pytest.mark.parametrize("method,path,payload", [("PATCH", "/me", {"display_name": "Changed"}),
+        ("POST", "/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+        ("POST", "/auth/logout-all", {})])
+    def test_csrf_origin_guest_disabled_and_cross_session_guards(runtime, method, path, payload):
+        service, a, b, other, _ = runtime
+        before = snapshot(service)
+        valid = headers(a)
+        for bad in ({}, {"Origin": ORIGIN}, {**valid, "Origin": "null"},
+                    {**valid, "Origin": "https://attacker.example"},
+                    {**valid, "X-CSRF-Token": headers(b)["X-CSRF-Token"]}):
+            response = a.request(method, "/api/v1" + path, headers=bad, json=payload)
+&gt;           assert response.status_code == 403 and response.json()["error"]["code"] == "csrf_failed"
+E           assert (200 == 403)
+E            +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:251: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[postgres-POST-/me/password-payload1]" time="0.672"><failure message="assert (200 == 403)&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x0000028E7427BAA0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000028E7446FFE0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x0000028E7427B9B0&gt;))
+method = 'POST', path = '/me/password'
+payload = {'current_password': 'W04 synthetic original passphrase!', 'new_password': 'W04 synthetic replacement passphrase!'}
+
+    @pytest.mark.parametrize("method,path,payload", [("PATCH", "/me", {"display_name": "Changed"}),
+        ("POST", "/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+        ("POST", "/auth/logout-all", {})])
+    def test_csrf_origin_guest_disabled_and_cross_session_guards(runtime, method, path, payload):
+        service, a, b, other, _ = runtime
+        before = snapshot(service)
+        valid = headers(a)
+        for bad in ({}, {"Origin": ORIGIN}, {**valid, "Origin": "null"},
+                    {**valid, "Origin": "https://attacker.example"},
+                    {**valid, "X-CSRF-Token": headers(b)["X-CSRF-Token"]}):
+            response = a.request(method, "/api/v1" + path, headers=bad, json=payload)
+&gt;           assert response.status_code == 403 and response.json()["error"]["code"] == "csrf_failed"
+E           assert (200 == 403)
+E            +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:251: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[postgres-POST-/auth/logout-all-payload2]" time="0.474"><failure message="assert (200 == 403)&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x0000028E754FCF80&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000028E755DB4A0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x0000028E754FCEF0&gt;))
+method = 'POST', path = '/auth/logout-all', payload = {}
+
+    @pytest.mark.parametrize("method,path,payload", [("PATCH", "/me", {"display_name": "Changed"}),
+        ("POST", "/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+        ("POST", "/auth/logout-all", {})])
+    def test_csrf_origin_guest_disabled_and_cross_session_guards(runtime, method, path, payload):
+        service, a, b, other, _ = runtime
+        before = snapshot(service)
+        valid = headers(a)
+        for bad in ({}, {"Origin": ORIGIN}, {**valid, "Origin": "null"},
+                    {**valid, "Origin": "https://attacker.example"},
+                    {**valid, "X-CSRF-Token": headers(b)["X-CSRF-Token"]}):
+            response = a.request(method, "/api/v1" + path, headers=bad, json=payload)
+&gt;           assert response.status_code == 403 and response.json()["error"]["code"] == "csrf_failed"
+E           assert (200 == 403)
+E            +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:251: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1053,54 +1053,94 @@ def test_falsifiable_unclosed_nested_katex_fails():
 
 
 def test_w10_library_filters_by_group_independent_of_origin():
-    """Verify D-R6-01: W-10 library tabs filter by group (here/elsewhere) per Pha B2 section 4, independent of origin."""
-    w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
-    
-    # 1. Tabs invoke filterLibrary with 'here' and 'elsewhere', not button/assistant
-    assert "filterLibrary('here', this)" in w10_html, "tab-lib-here must pass 'here' group parameter"
-    assert "filterLibrary('elsewhere', this)" in w10_html, "tab-lib-elsewhere must pass 'elsewhere' group parameter"
-    assert "filterLibrary('button', this)" not in w10_html, "Must not map here tab to origin 'button'"
-    assert "filterLibrary('assistant', this)" not in w10_html, "Must not map elsewhere tab to origin 'assistant'"
+    """Verify D-R6-01 & D-R7-02: W-10 library tabs filter by group (here/elsewhere) per Pha B2 section 4, independent of origin.
+    Executes actual JavaScript from the preview HTML via Node.js VM to verify behavioral correctness.
+    """
+    import subprocess
+    import json
+    from pathlib import Path
 
-    # 2. Both groups contain crossed origins (both button and assistant appear in both here and elsewhere)
-    _, tree = parse_preview_tree("w10_quiz_screens.html")
-    doc_cards = [n for n in tree.root.descendants() if n.hasclass("doc-card")]
-    assert len(doc_cards) >= 4, f"Expected at least 4 document cards, got {len(doc_cards)}"
-    
-    here_cards = [n for n in doc_cards if n.attrs.get("data-group") == "here"]
-    elsewhere_cards = [n for n in doc_cards if n.attrs.get("data-group") == "elsewhere"]
-    assert len(here_cards) >= 2, "Expected at least 2 cards in 'here' group"
-    assert len(elsewhere_cards) >= 2, "Expected at least 2 cards in 'elsewhere' group"
+    w10_html_path = Path("design/preview/w10_quiz_screens.html")
+    assert w10_html_path.exists(), "w10_quiz_screens.html must exist"
 
-    here_origins = {n.attrs.get("data-origin") for n in here_cards}
-    elsewhere_origins = {n.attrs.get("data-origin") for n in elsewhere_cards}
-    assert "assistant" in here_origins, "Must have assistant origin in 'here' group (created in module via assistant)"
-    assert "button" in here_origins, "Must have button origin in 'here' group (created in module via button)"
-    assert "assistant" in elsewhere_origins, "Must have assistant origin in 'elsewhere' group"
-    assert "button" in elsewhere_origins, "Must have button origin in 'elsewhere' group (created from roadmap about module)"
+    vm_script_path = Path("scripts/test_w10_library_filter_vm.cjs")
+    assert vm_script_path.exists(), "test_w10_library_filter_vm.cjs must exist"
 
-    # 3. filterLibrary function filters on data-group / dataset.group
-    assert "card.getAttribute('data-group')" in w10_html or "card.dataset.group" in w10_html, (
-        "filterLibrary JS must filter cards using data-group, not data-origin"
+    # Execute actual filter JS extracted from preview HTML via Node VM
+    proc = subprocess.run(
+        ["node", str(vm_script_path), str(w10_html_path), "normal"],
+        capture_output=True,
+        encoding="utf-8",
+        check=True
     )
+    res = json.loads(proc.stdout)
+
+    expected_here = [
+        "Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước",
+        "Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất"
+    ]
+    expected_elsewhere = [
+        "Tóm tắt công thức huyết động & Bảng so sánh nhánh mạch vành",
+        "Tổng quan các nhánh xiên vách và cơ chế tưới máu tâm trương"
+    ]
+
+    assert res["visibleHere"] == expected_here, f"Expected here group {expected_here}, got {res['visibleHere']}"
+    assert res["visibleElsewhere"] == expected_elsewhere, f"Expected elsewhere group {expected_elsewhere}, got {res['visibleElsewhere']}"
+    assert len(res["visibleAll"]) == 4, f"Expected 4 items in all group, got {len(res['visibleAll'])}"
+
+    # Check scope boundary: 5 -> 6 -> 5
+    sb = res["scopeBoundary"]
+    assert sb["at5"]["disabled"] is False and sb["at5"]["warning"] is False, "At 5 modules, button must be enabled and warning hidden"
+    assert sb["at6"]["disabled"] is True and sb["at6"]["warning"] is True, "At 6 modules, button must be disabled and warning shown"
+    assert sb["back5"]["disabled"] is False and sb["back5"]["warning"] is False, "Returning to 5 modules must restore button"
 
 
 def test_falsifiable_library_origin_group_conflation_fails():
-    """Falsifiable test: prove that filtering on origin instead of group fails when origin is crossed."""
-    # A card with group=here but origin=assistant
-    card_group = "here"
-    card_origin = "assistant"
-    target_filter_group = "here"
+    """Falsifiable test: prove that executing the inverted comparison or old origin filter
+    against actual crossed fixtures FAILS observable title assertions in the VM runtime.
+    """
+    import subprocess
+    import json
+    from pathlib import Path
 
-    # Incorrect filter implementation (conflating here with button):
-    incorrect_matches = (card_origin == "button")
-    # Correct filter implementation:
-    correct_matches = (card_group == target_filter_group)
+    w10_html_path = Path("design/preview/w10_quiz_screens.html")
+    vm_script_path = Path("scripts/test_w10_library_filter_vm.cjs")
 
+    expected_here = [
+        "Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước",
+        "Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất"
+    ]
+    expected_elsewhere = [
+        "Tóm tắt công thức huyết động & Bảng so sánh nhánh mạch vành",
+        "Tổng quan các nhánh xiên vách và cơ chế tưới máu tâm trương"
+    ]
+
+    # 1. Mutant: Inverted condition (cardGroup !== group)
+    proc_inv = subprocess.run(
+        ["node", str(vm_script_path), str(w10_html_path), "inverted"],
+        capture_output=True,
+        encoding="utf-8",
+        check=True
+    )
+    res_inv = json.loads(proc_inv.stdout)
     with pytest.raises(AssertionError):
-        # Asserting that the incorrect filter matches the card must FAIL
-        assert incorrect_matches is True, "Origin-based filter incorrectly rejects crossed-origin card"
-    assert correct_matches is True, "Group-based filter correctly accepts card"
+        assert res_inv["visibleHere"] == expected_here, "Inverted condition must NOT match expected here group"
+    with pytest.raises(AssertionError):
+        assert res_inv["visibleElsewhere"] == expected_elsewhere, "Inverted condition must NOT match expected elsewhere group"
+
+    # 2. Mutant: Old origin filter conflating origin with group
+    proc_old = subprocess.run(
+        ["node", str(vm_script_path), str(w10_html_path), "old-origin"],
+        capture_output=True,
+        encoding="utf-8",
+        check=True
+    )
+    res_old = json.loads(proc_old.stdout)
+    with pytest.raises(AssertionError):
+        assert res_old["visibleHere"] == expected_here, "Old origin filter must NOT match expected here group"
+    with pytest.raises(AssertionError):
+        assert res_old["visibleElsewhere"] == expected_elsewhere, "Old origin filter must NOT match expected elsewhere group"
+
 
 
 def test_w10_scope_count_disables_button_when_over_limit():

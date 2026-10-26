@@ -1,6 +1,7 @@
 import Markdown from 'react-markdown';
 import { memo } from 'react';
 import remarkMath from 'remark-math';
+import remarkGfm from 'remark-gfm';
 import rehypeKatex from 'rehype-katex';
 import 'katex/dist/katex.min.css';
 
@@ -8,8 +9,8 @@ export type LectureSource = { label: string; chunk_id: string; page: number | nu
 
 type MdNode = { type: string; value?: string; url?: string; children?: MdNode[] };
 
-function LectureMarkdown({ text, sources = [], onSource, allowLinks = true }: {
-  text: string; sources?: LectureSource[]; onSource?: (page: number) => void; allowLinks?: boolean;
+function LectureMarkdown({ text, sources = [], onSource, allowLinks = true, gfm = false }: {
+  text: string; sources?: LectureSource[]; onSource?: (page: number) => void; allowLinks?: boolean; gfm?: boolean;
 }) {
   const registered = new Map(sources.filter(source => /^S[1-9]\d*$/.test(source.label)
     && Number.isInteger(source.page) && source.page! > 0).map(source => [source.label, source]));
@@ -34,7 +35,7 @@ function LectureMarkdown({ text, sources = [], onSource, allowLinks = true }: {
     visit(tree);
   };
   return <div className="lecture-markdown"><Markdown skipHtml
-    remarkPlugins={[remarkMath, citations]}
+    remarkPlugins={[remarkMath, ...(gfm ? [remarkGfm] : []), citations]}
     rehypePlugins={[[rehypeKatex, { trust: false, maxExpand: 500, maxSize: 10, strict: 'ignore' }]]}
     components={{
       img: () => null,

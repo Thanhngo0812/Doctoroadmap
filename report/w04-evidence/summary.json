@@ -1,0 +1,89 @@
+{
+  "source_commit": "b8cb7de1edef899a38fb2df4215bbc2dd177cce4",
+  "main_received": "8c7aab42b216ecbdc63bcc91ccbc4861df111024",
+  "gates": {
+    "full-01": {
+      "commit": "b8cb7de1edef899a38fb2df4215bbc2dd177cce4",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w04-account-backend",
+      "command": [
+        "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "--basetemp=tmp/w04-full-01",
+        "--junitxml=report/w04-evidence/runs/full-01.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 837.38,
+      "passed": 2808,
+      "skipped_or_xfailed": [
+        {
+          "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+          "classname": "tests.unit.application.test_phase_b_sa55_runner",
+          "reason": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66."
+        },
+        {
+          "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+          "classname": "src.web.backend.tests.test_media_store",
+          "reason": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests"
+        }
+      ]
+    },
+    "react-01": {
+      "commit": "b8cb7de1edef899a38fb2df4215bbc2dd177cce4",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w04-account-backend",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "test",
+        "--",
+        "--pool=threads",
+        "--maxWorkers=1",
+        "--reporter=default",
+        "--reporter=junit",
+        "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w04-account-backend/report/w04-evidence/runs/react-01.xml"
+      ],
+      "exit_code": 0,
+      "seconds": 142.67,
+      "passed": 203,
+      "skipped_or_xfailed": []
+    },
+    "build-01": {
+      "commit": "b8cb7de1edef899a38fb2df4215bbc2dd177cce4",
+      "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w04-account-backend",
+      "command": [
+        "npm.cmd",
+        "--prefix",
+        "src/web/frontend",
+        "run",
+        "build"
+      ],
+      "exit_code": 0,
+      "seconds": 6.17
+    }
+  },
+  "baseline_red": {
+    "failed": 34,
+    "passed": 8,
+    "setup_errors": 0
+  },
+  "w04_cases": 49,
+  "focused_regression_passed": 119,
+  "mutants_caught": 10,
+  "source_restored": true,
+  "external_calls": 0,
+  "actual_provider_spend_usd": 0,
+  "ledger_and_account_fixtures_are_real_spend": false,
+  "migration_added": false,
+  "core_changed": false,
+  "frontend_changed": false,
+  "app_changed": false,
+  "openapi_generated": true,
+  "previous_operations_preserved": 44,
+  "new_operations": 3,
+  "backend_milestone_ready_for_review": true,
+  "w04_complete": false,
+  "merged_main": false
+}

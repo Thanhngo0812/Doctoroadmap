@@ -1,0 +1,47 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping _
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_fa4d5e4e6f4a4a9bb8e6e035e5a28...ecture.ScriptedLectureModel object at 0x000002A3E67C6180>, base='/api/v1/courses/85995a14-53ff-4640-9eb5-cdce9a70f519')
+
+    def test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping(content):
+        w = content
+        original = w.gateway.runtime.quiz
+        class Reverse(random.Random):
+            def shuffle(self, rows):
+                rows.reverse()
+        def quiz(graph):
+            case = original(graph); case.rng = Reverse(1); return case
+        w.gateway.runtime.quiz = quiz
+>       made = create_quiz(w, owner=w.b.actor.user_id, doc_id='forged', graph_version=99)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_content_w10.py:59:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_fa4d5e4e6f4a4a9bb8e6e035e5a28...ecture.ScriptedLectureModel object at 0x000002A3E67C6180>, base='/api/v1/courses/85995a14-53ff-4640-9eb5-cdce9a70f519')
+body = {'doc_id': 'forged', 'graph_version': 99, 'owner': '7807ab2b-78ad-4150-9c8a-3dfa565e87c2'}
+response = <Response [200 OK]>, @py_assert1 = 200, @py_assert4 = 201
+@py_assert3 = False
+@py_format6 = '200\n{200 = <Response [200 OK]>.status_code\n} == 201'
+@py_format8 = '{"contract_version":"quiz-3","attempt_id":"qa_f582ba0db87d455b4d01986a","status":"ready","created_at":"2026-01-01T00:...rce_document":null,"submitted":false,"correct_index":0}\n>assert 200\n{200 = <Response [200 OK]>.status_code\n} == 201'
+
+    def create_quiz(w, **body):
+        response = w.a.client.post(w.base + '/quizzes', headers=w.a.headers,
+            json={'scope': {'kind': 'module', 'module_id': 'm1'}, 'n': 1, **body})
+>       assert response.status_code == 201, response.text
+E       AssertionError: {"contract_version":"quiz-3","attempt_id":"qa_f582ba0db87d455b4d01986a","status":"ready","created_at":"2026-01-01T00:00:00+00:00","ready_count":1,"total_concepts":1,"course_id":"85995a14-53ff-4640-9eb5-cdce9a70f519","items":[{"item_id":"qi_590c88eb8e845208d62b5a85","concept_id":"a","module_id":"m1","generator":"llm","bloom":"nho","stem":"Tập hợp: phép tính $1+1$ có kết quả nào?","options":[{"option_id":"o4","text":"$5$"},{"option_id":"o3","text":"$4$"},{"option_id":"o2","text":"$3$"},{"option_id":"o1","text":"$2$"}]}],"module_id":"m1","source_document":null,"submitted":false,"correct_index":0}
+E       assert 200 == 201
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_content_w10.py:36: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-evidence\mutations-final\public-answer.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_w10.py::test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping
+1 failed, 1 warning in 3.50s

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.016" timestamp="2026-10-26T19:06:34.758845+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_change_keeps_a_revokes_b_checks_hash_login_and_audit[postgres]" time="1.608"><failure message="AssertionError: assert 401 == 200&#10; +  where 401 = &lt;Response [401 Unauthorized]&gt;.status_code&#10; +    where &lt;Response [401 Unauthorized]&gt; = get('/api/v1/me')&#10; +      where get = &lt;starlette.testclient.TestClient object at 0x000001820D281100&gt;.get&#10; +  and   200 = &lt;Response [200 OK]&gt;.status_code&#10; +    where &lt;Response [200 OK]&gt; = get('/api/v1/me')&#10; +      where get = &lt;starlette.testclient.TestClient object at 0x000001820E7C9430&gt;.get">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000001820CE4A0F0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000001820CEDFF50&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000001820CDE76B0&gt;))
+
+    def test_change_keeps_a_revokes_b_checks_hash_login_and_audit(runtime):
+        service, a, b, other, _ = runtime
+        raw_a, raw_b = a.cookies.get("d2r_session"), b.cookies.get("d2r_session")
+        before = snapshot(service)
+        result = change(a)
+        assert result.status_code == 200
+        assert result.headers["cache-control"] == "no-store"
+        assert a.cookies.get("d2r_session") == raw_a
+&gt;       assert a.get("/api/v1/me").status_code == other.get("/api/v1/me").status_code == 200
+E       AssertionError: assert 401 == 200
+E        +  where 401 = &lt;Response [401 Unauthorized]&gt;.status_code
+E        +    where &lt;Response [401 Unauthorized]&gt; = get('/api/v1/me')
+E        +      where get = &lt;starlette.testclient.TestClient object at 0x000001820D281100&gt;.get
+E        +  and   200 = &lt;Response [200 OK]&gt;.status_code
+E        +    where &lt;Response [200 OK]&gt; = get('/api/v1/me')
+E        +      where get = &lt;starlette.testclient.TestClient object at 0x000001820E7C9430&gt;.get
+
+src\web\backend\tests\test_w04_accounts.py:183: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.858" timestamp="2026-10-26T19:08:15.034203+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_logout_all_revokes_a_b_preserves_other_and_cookie_security[postgres]" time="1.225"><failure message="assert 200 == 401&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x00000230F2E49550&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000230F2EDFE00&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x00000230F2DE7380&gt;))
+
+    def test_logout_all_revokes_a_b_preserves_other_and_cookie_security(runtime):
+        service, a, b, other, _ = runtime
+        old_cookies = [client.cookies.get("d2r_session") for client in (a, b)]
+        owner = a.get("/api/v1/me").json()["account"]["id"]
+        result = a.post("/api/v1/auth/logout-all", headers=headers(a))
+        assert result.status_code == 200
+        cookie = result.headers["set-cookie"].lower()
+        assert all(part in cookie for part in ("max-age=0", "path=/", "httponly", "secure", "samesite=lax"))
+        assert "domain=" not in cookie and "d2r_session" not in a.cookies
+        for client, cookie in zip((a, b), old_cookies):
+&gt;           assert_unauthenticated(client)
+
+src\web\backend\tests\test_w04_accounts.py:230:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = &lt;starlette.testclient.TestClient object at 0x00000230F47AAA20&gt;
+
+    def assert_unauthenticated(client):
+        response = client.get("/api/v1/me")
+&gt;       assert response.status_code == 401
+E       assert 200 == 401
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:98: AssertionError</failure></testcase></testsuite></testsuites>

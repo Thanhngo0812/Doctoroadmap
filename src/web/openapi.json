@@ -250,6 +250,134 @@
             }
           }
         }
+      },
+      "patch": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Update Profile",
+        "operationId": "update_profile_api_v1_me_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProfileRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IdentityResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me/password": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Change Password",
+        "operationId": "change_password_api_v1_me_password_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PasswordChangeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/logout-all": {
+      "post": {
+        "tags": [
+          "accounts"
+        ],
+        "summary": "Logout All",
+        "operationId": "logout_all_api_v1_auth_logout_all_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "anyOf": [
+                  {
+                    "$ref": "#/components/schemas/LogoutAllRequest"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ],
+                "title": "Data"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/auth/logout": {
@@ -786,6 +914,373 @@
             "schema": {
               "type": "string",
               "title": "Asset Key"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/quizzes": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Make Quiz",
+        "operationId": "make_quiz_api_v1_courses__cid__quizzes_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewQuiz"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/quizzes/{aid}": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Quiz",
+        "operationId": "quiz_api_v1_courses__cid__quizzes__aid__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "aid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Aid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Quiz"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/quizzes/{aid}/submit": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Submit",
+        "operationId": "submit_api_v1_courses__cid__quizzes__aid__submit_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "aid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Aid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SubmitQuiz"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/quizzes/{aid}/result": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Result",
+        "operationId": "result_api_v1_courses__cid__quizzes__aid__result_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "aid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Aid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Result"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/documents": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Make Document",
+        "operationId": "make_document_api_v1_courses__cid__documents_post",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewDocument"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/documents/{did}": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Document",
+        "operationId": "document_api_v1_courses__cid__documents__did__get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "did",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Did"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Document"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/courses/{cid}/documents/{did}/markdown": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Markdown",
+        "operationId": "markdown_api_v1_courses__cid__documents__did__markdown_get",
+        "parameters": [
+          {
+            "name": "cid",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Cid"
+            }
+          },
+          {
+            "name": "did",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Did"
             }
           }
         ],
@@ -2093,7 +2588,10 @@
           "warnings": {
             "items": {
               "type": "string",
-              "const": "focus_ignored"
+              "enum": [
+                "focus_ignored",
+                "document_rate_limited"
+              ]
             },
             "type": "array",
             "title": "Warnings"
@@ -2708,6 +3206,19 @@
         "type": "object",
         "title": "Confirmation"
       },
+      "CorrectOption": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "CorrectOption"
+      },
       "CourseCard": {
         "properties": {
           "course_id": {
@@ -3105,6 +3616,94 @@
         "type": "object",
         "title": "Definition"
       },
+      "Document": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "document-3",
+            "title": "Contract Version"
+          },
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "document_id": {
+            "type": "string",
+            "title": "Document Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "request": {
+            "type": "string",
+            "title": "Request"
+          },
+          "markdown": {
+            "type": "string",
+            "title": "Markdown"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "warnings": {
+            "items": {
+              "type": "string",
+              "const": "cat_ngan"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "failure": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/wayfinder__api__assistant__Failure"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "source_document": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceDocument"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "course_id",
+          "document_id",
+          "title",
+          "request",
+          "markdown",
+          "status",
+          "created_at"
+        ],
+        "title": "Document"
+      },
       "Formula": {
         "properties": {
           "label": {
@@ -3177,6 +3776,72 @@
         "type": "object",
         "title": "Formula"
       },
+      "GradedItem": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "title": "Item Id"
+          },
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "stem": {
+            "type": "string",
+            "title": "Stem"
+          },
+          "selected_option_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Option Id"
+          },
+          "is_correct": {
+            "type": "boolean",
+            "title": "Is Correct"
+          },
+          "correct_option": {
+            "$ref": "#/components/schemas/CorrectOption"
+          },
+          "explanation": {
+            "type": "string",
+            "title": "Explanation"
+          },
+          "why_wrong": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Why Wrong"
+          },
+          "evidence": {
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            },
+            "type": "array",
+            "title": "Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "concept_id",
+          "stem",
+          "is_correct",
+          "correct_option",
+          "explanation"
+        ],
+        "title": "GradedItem"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -3237,6 +3902,68 @@
           "csrf_token"
         ],
         "title": "IdentityResponse"
+      },
+      "Item": {
+        "properties": {
+          "item_id": {
+            "type": "string",
+            "title": "Item Id"
+          },
+          "concept_id": {
+            "type": "string",
+            "title": "Concept Id"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "generator": {
+            "type": "string",
+            "enum": [
+              "llm",
+              "cloze"
+            ],
+            "title": "Generator"
+          },
+          "bloom": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bloom"
+          },
+          "stem": {
+            "type": "string",
+            "title": "Stem"
+          },
+          "options": {
+            "items": {
+              "$ref": "#/components/schemas/Option"
+            },
+            "type": "array",
+            "title": "Options"
+          }
+        },
+        "type": "object",
+        "required": [
+          "item_id",
+          "concept_id",
+          "generator",
+          "stem",
+          "options"
+        ],
+        "title": "Item"
       },
       "JoinPreview": {
         "properties": {
@@ -3580,6 +4307,20 @@
             "type": "boolean",
             "title": "Session Deleted",
             "default": false
+          },
+          "score": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "integer"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Score"
           }
         },
         "type": "object",
@@ -3614,6 +4355,12 @@
           "password"
         ],
         "title": "LoginRequest"
+      },
+      "LogoutAllRequest": {
+        "properties": {},
+        "additionalProperties": false,
+        "type": "object",
+        "title": "LogoutAllRequest"
       },
       "Media": {
         "properties": {
@@ -3815,6 +4562,67 @@
         ],
         "title": "MyUsage"
       },
+      "NewDocument": {
+        "properties": {
+          "request": {
+            "type": "string",
+            "maxLength": 4000,
+            "title": "Request",
+            "default": ""
+          },
+          "module_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "maxItems": 100,
+            "minItems": 1,
+            "title": "Module Ids"
+          },
+          "home_module_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Home Module Id"
+          }
+        },
+        "type": "object",
+        "required": [
+          "module_ids"
+        ],
+        "title": "NewDocument"
+      },
+      "NewQuiz": {
+        "properties": {
+          "scope": {
+            "$ref": "#/components/schemas/Scope"
+          },
+          "n": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "maximum": 10.0,
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "N"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scope"
+        ],
+        "title": "NewQuiz"
+      },
       "NewSession": {
         "properties": {
           "scope": {
@@ -3956,6 +4764,24 @@
         ],
         "title": "NextLesson"
       },
+      "Option": {
+        "properties": {
+          "option_id": {
+            "type": "string",
+            "title": "Option Id"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "option_id",
+          "text"
+        ],
+        "title": "Option"
+      },
       "OwnerInfo": {
         "properties": {
           "user_id": {
@@ -3991,6 +4817,32 @@
           "display_name"
         ],
         "title": "OwnerSummary"
+      },
+      "PasswordChangeRequest": {
+        "properties": {
+          "current_password": {
+            "type": "string",
+            "maxLength": 128,
+            "format": "password",
+            "title": "Current Password",
+            "writeOnly": true
+          },
+          "new_password": {
+            "type": "string",
+            "maxLength": 128,
+            "minLength": 8,
+            "format": "password",
+            "title": "New Password",
+            "writeOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "current_password",
+          "new_password"
+        ],
+        "title": "PasswordChangeRequest"
       },
       "PasswordResetConfirmRequest": {
         "properties": {
@@ -4116,6 +4968,22 @@
         ],
         "title": "Prerequisite"
       },
+      "ProfileRequest": {
+        "properties": {
+          "display_name": {
+            "type": "string",
+            "maxLength": 60,
+            "minLength": 1,
+            "title": "Display Name"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "display_name"
+        ],
+        "title": "ProfileRequest"
+      },
       "ProgressModule": {
         "properties": {
           "module_id": {
@@ -4201,6 +5069,88 @@
           "total"
         ],
         "title": "ProgressSummary"
+      },
+      "Quiz": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "quiz-3",
+            "title": "Contract Version"
+          },
+          "course_id": {
+            "type": "string",
+            "title": "Course Id"
+          },
+          "attempt_id": {
+            "type": "string",
+            "title": "Attempt Id"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ready",
+              "failed"
+            ],
+            "title": "Status"
+          },
+          "created_at": {
+            "type": "string",
+            "title": "Created At"
+          },
+          "module_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Module Id"
+          },
+          "ready_count": {
+            "type": "integer",
+            "title": "Ready Count"
+          },
+          "total_concepts": {
+            "type": "integer",
+            "title": "Total Concepts"
+          },
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/Item"
+            },
+            "type": "array",
+            "title": "Items"
+          },
+          "submitted": {
+            "type": "boolean",
+            "title": "Submitted",
+            "default": false
+          },
+          "source_document": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceDocument"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "course_id",
+          "attempt_id",
+          "status",
+          "created_at",
+          "ready_count",
+          "total_concepts",
+          "items"
+        ],
+        "title": "Quiz"
       },
       "QuizItem": {
         "properties": {
@@ -4397,6 +5347,48 @@
           "title"
         ],
         "title": "RenameSession"
+      },
+      "Result": {
+        "properties": {
+          "contract_version": {
+            "type": "string",
+            "const": "quiz-3",
+            "title": "Contract Version"
+          },
+          "attempt_id": {
+            "type": "string",
+            "title": "Attempt Id"
+          },
+          "correct_count": {
+            "type": "integer",
+            "title": "Correct Count"
+          },
+          "question_count": {
+            "type": "integer",
+            "title": "Question Count"
+          },
+          "submitted_at": {
+            "type": "string",
+            "title": "Submitted At"
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/GradedItem"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "contract_version",
+          "attempt_id",
+          "correct_count",
+          "question_count",
+          "submitted_at",
+          "results"
+        ],
+        "title": "Result"
       },
       "Resume": {
         "properties": {
@@ -4862,6 +5854,20 @@
           "kind"
         ],
         "title": "SourceDocument"
+      },
+      "SubmitQuiz": {
+        "properties": {
+          "answers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "maxProperties": 1000,
+            "title": "Answers"
+          }
+        },
+        "type": "object",
+        "title": "SubmitQuiz"
       },
       "Turn": {
         "properties": {

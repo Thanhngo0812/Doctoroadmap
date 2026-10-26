@@ -1,0 +1,13 @@
+wrong-current-accepted: caught
+current-a-revoked: caught
+other-b-survives: caught
+logout-only-a: caught
+logout-cross-account: caught
+csrf-unbound: caught
+public-dto-bypassed: caught
+non-atomic-change: caught
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\tmp\w04_mutations.py", line 49, in <module>
+    assert source.count(before) == 1, (name, relative, 'ambiguous patch')
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('name-61-accepted', 'src/web/backend/wayfinder/application/accounts.py', 'ambiguous patch')

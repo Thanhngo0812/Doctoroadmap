@@ -1,0 +1,12 @@
+{
+  "pid": 36748,
+  "name": "sse-required-fields-red",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "-e",
+    "const assert=require('node:assert/strict'); const {hasTerminalFrame}=require('./scripts/w10_sse_audit.cjs'); assert.equal(hasTerminalFrame('event: final\\ndata: {\"quiz\":{\"contract_version\":\"quiz-3\"}}\\n\\n'),false,'version-only payload is not a complete Quiz DTO');"
+  ],
+  "status": "complete",
+  "code": 1,
+  "signal": null
+}

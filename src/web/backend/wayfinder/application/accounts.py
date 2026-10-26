@@ -4,6 +4,7 @@ import hashlib
 import logging
 import re
 import secrets
+from contextlib import contextmanager
 from dataclasses import dataclass, replace
 from datetime import datetime, timedelta
 from math import ceil
@@ -337,6 +338,50 @@ class AccountService:
                 self.store.append_audit(AuditEvent(now, session.account_id, "logout", "account",
                                                    session.account_id, ip))
 
+    def update_profile(self, raw_token: str, display_name: str) -> SessionIdentity:
+        if not isinstance(display_name, str) or not 1 <= len(display_name.strip()) <= 60:
+            raise AuthError("validation", "Tên hiển thị không hợp lệ.", fields=[
+                {"loc": "display_name", "message": "Tên hiển thị phải có từ 1 đến 60 ký tự."}])
+        with self._account_session(raw_token) as identity:
+            account = self.store.update_profile(identity.account.id, display_name.strip(), self.clock.now())
+            return SessionIdentity(account, identity.session)
+
+    def change_password(self, raw_token: str, current_password: str, new_password: str,
+                        *, ip: str | None) -> None:
+        self._validate_password(new_password, field_name="new_password")
+        with self._account_session(raw_token) as identity:
+            account = identity.account
+            credentials = self.store.get_credentials(account.email_normalized)
+            if not self.hasher.verify(credentials.password_hash, current_password):
+                raise AuthError("invalid_credentials", _INVALID_CREDENTIALS)
+            now = self.clock.now()
+            self.store.update_password(account.id, self.hasher.hash(new_password), now)
+            self.store.delete_account_sessions(account.id, except_session_id=identity.session.id)
+            self.store.append_audit(AuditEvent(now, account.id, "password_changed", "account", account.id, ip))
+
+    def logout_all(self, raw_token: str, *, ip: str | None) -> None:
+        with self._account_session(raw_token) as identity:
+            account = identity.account
+            self.store.delete_account_sessions(account.id)
+            self.store.append_audit(AuditEvent(self.clock.now(), account.id, "logout_all", "account", account.id, ip))
+
+    @contextmanager
+    def _account_session(self, raw_token: str):
+        identity = self.me(raw_token)
+        account = identity.account
+        with self.store.atomic([f"account:{account.id}", f"account:{account.email_normalized}",
+                                f"session:{identity.session.token_hash.hex()}"]):
+            # Recheck after taking the same account locks as login/password reset.
+            session = self.store.get_session(identity.session.token_hash)
+            account = self.store.get_account(account.id)
+            now = self.clock.now()
+            if session is None or account is None or now >= session.expires_at or (
+                    now - session.last_seen_at >= timedelta(days=self.policy.session_idle_days)):
+                raise AuthError("unauthenticated", _UNAUTHENTICATED)
+            if account.status == "disabled":
+                raise AuthError("account_disabled", _ACCOUNT_DISABLED)
+            yield SessionIdentity(account, session)
+
     def create_admin(self, email: str, password: str, display_name: str = "Quản trị viên") -> Account:
         normalized, email = self._validated_identity(email, password, display_name)
         now = self.clock.now()
@@ -371,13 +416,13 @@ class AccountService:
             raise AuthError("validation", "Thông tin đăng ký không hợp lệ.", fields=errors)
         return normalized, original
 
-    def _validate_password(self, password: str) -> None:
+    def _validate_password(self, password: str, *, field_name: str = "password") -> None:
         if not isinstance(password, str) or not 8 <= len(password) <= 128:
             raise AuthError("validation", "Mật khẩu không hợp lệ.",
-                            fields=[{"loc": "password", "message": "Mật khẩu phải có từ 8 đến 128 ký tự."}])
+                            fields=[{"loc": field_name, "message": "Mật khẩu phải có từ 8 đến 128 ký tự."}])
         if password.casefold() in self.common_passwords:
             raise AuthError("validation", "Mật khẩu không hợp lệ.",
-                            fields=[{"loc": "password", "message": "Mật khẩu nằm trong danh sách phổ biến."}])
+                            fields=[{"loc": field_name, "message": "Mật khẩu nằm trong danh sách phổ biến."}])
 
     def _new_email_token(self, account: Account, purpose: EmailPurpose, now: datetime,
                          lifetime: timedelta) -> tuple[str, EmailToken]:

@@ -265,3 +265,11 @@ it('shows the current question in conversation metadata before the next history 
   expect(screen.queryByText('Chưa có tin nhắn')).not.toBeInTheDocument();
   await act(async () => { frame('final', { answer }); controller.close(); });
 });
+
+it('keeps a document hourly-limit notice after the final answer and in saved history', async () => {
+  render(page()); await openAndAsk();
+  const limited = { ...answer, answer_md: 'Nội dung đã lưu vẫn dùng được.', warnings: ['document_rate_limited'] };
+  await act(async () => { frame('final', { answer: limited }); controller.close(); });
+  expect(await screen.findByText('Bạn đã tạo nhiều tài liệu trong giờ này. Hãy thử lại sau.')).toBeVisible();
+  expect(screen.queryByText('Tài liệu đã tạo')).not.toBeInTheDocument();
+});

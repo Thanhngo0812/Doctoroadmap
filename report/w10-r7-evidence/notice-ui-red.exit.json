@@ -1,0 +1,19 @@
+{
+  "pid": 31748,
+  "name": "notice-ui-red",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "node_modules/vitest/vitest.mjs",
+    "run",
+    "--pool=threads",
+    "--maxWorkers=1",
+    "src/Assistant.test.tsx",
+    "-t",
+    "hourly-limit notice",
+    "--reporter=junit",
+    "--outputFile=../../../report/w10-r7-evidence/notice-ui-red.xml"
+  ],
+  "status": "complete",
+  "code": 1,
+  "signal": null
+}

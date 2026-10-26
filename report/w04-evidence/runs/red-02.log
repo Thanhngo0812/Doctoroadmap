@@ -1,0 +1,581 @@
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF......FF..                               [100%]
+================================== FAILURES ===================================
+______ test_profile_trim_boundaries_persist_and_preserve_identity[fake] _______
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002221FE48920>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002221FFB9CA0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002221FE49D30>))
+
+    def test_profile_trim_boundaries_persist_and_preserve_identity(runtime):
+        service, a, b, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        original = service.store.get_credentials("w04@example.vn")
+        for name in ("  An  ", "  " + "Đ" * 60 + "  ", " x "):
+            result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>           assert result.status_code == 200
+E           assert 405 == 200
+E            +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:108: AssertionError
+____ test_profile_trim_boundaries_persist_and_preserve_identity[postgres] _____
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002222018F170>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222204215B0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002222018F5F0>))
+
+    def test_profile_trim_boundaries_persist_and_preserve_identity(runtime):
+        service, a, b, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        original = service.store.get_credentials("w04@example.vn")
+        for name in ("  An  ", "  " + "Đ" * 60 + "  ", " x "):
+            result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>           assert result.status_code == 200
+E           assert 405 == 200
+E            +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:108: AssertionError
+___________ test_profile_validation_fields_without_mutation[fake-] ____________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022220457FE0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022221BE5FA0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022221A722A0>))
+name = ''
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError
+__________ test_profile_validation_fields_without_mutation[fake-   ] __________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022221BC79E0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022221CD57C0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022221BD1730>))
+name = '   '
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError
+_ test_profile_validation_fields_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022221C897F0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022221E89160>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022221C89C10>))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError
+_________ test_profile_validation_fields_without_mutation[postgres-] __________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022221E37FB0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002222203CAD0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022221C88980>))
+name = ''
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError
+________ test_profile_validation_fields_without_mutation[postgres-   ] ________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222220B6660>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002222226D100>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000222220B7C50>))
+name = '   '
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError
+_ test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222222D2AB0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002222248A120>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222350980>))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError
+______________ test_profile_rejects_mass_assignment[fake-extra0] ______________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222224B29F0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222226A8920>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000222224B2930>))
+extra = {'role': 'admin'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+______________ test_profile_rejects_mass_assignment[fake-extra1] ______________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002222236E8D0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222204D1A30>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002222236D5E0>))
+extra = {'email': 'other-w04@example.vn'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+______________ test_profile_rejects_mass_assignment[fake-extra2] ______________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022221C539B0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222323770>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022221BC8980>))
+extra = {'owner': 'other-account'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+______________ test_profile_rejects_mass_assignment[fake-extra3] ______________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222221737A0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022221F15400>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002222233BBC0>))
+extra = {'account_id': 'other-account'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+____________ test_profile_rejects_mass_assignment[postgres-extra0] ____________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022221C32AB0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222226ECDA0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022221E1BBC0>))
+extra = {'role': 'admin'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+____________ test_profile_rejects_mass_assignment[postgres-extra1] ____________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222226D91C0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222228A1070>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222675CA0>))
+extra = {'email': 'other-w04@example.vn'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+____________ test_profile_rejects_mass_assignment[postgres-extra2] ____________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222228DDC10>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222AB9B20>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000222228DDC70>))
+extra = {'owner': 'other-account'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+____________ test_profile_rejects_mass_assignment[postgres-extra3] ____________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222A6AAB0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222202518B0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002222274B260>))
+extra = {'account_id': 'other-account'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+>       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = <Response [405 Method Not Allowed]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError
+_ test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[fake] __
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222353CE0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222390050>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222351A00>))
+
+    def test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged(runtime):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        result = change(a, current_password="incorrect synthetic password")
+>       assert result.status_code == 401
+E       assert 404 == 401
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:152: AssertionError
+_ test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[postgres] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022221A2B9B0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222B15D30>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222762ED0>))
+
+    def test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged(runtime):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        result = change(a, current_password="incorrect synthetic password")
+>       assert result.status_code == 401
+E       assert 404 == 401
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:152: AssertionError
+_______ test_new_password_uses_w02_policy_without_mutation[fake-short] ________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002222258EE70>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222B97230>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002222258CB30>))
+password = 'short'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+>       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError
+_ test_new_password_uses_w02_policy_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222B97FE0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222DA5D60>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222C2E180>))
+password = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+>       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError
+______ test_new_password_uses_w02_policy_without_mutation[fake-password] ______
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222D89F40>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222F51520>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222D89C70>))
+password = 'password'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+>       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError
+_____ test_new_password_uses_w02_policy_without_mutation[postgres-short] ______
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222DEF9B0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022221E11490>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022223F35850>))
+password = 'short'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+>       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError
+_ test_new_password_uses_w02_policy_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222579CD0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222206840>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002222257A180>))
+password = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+>       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError
+____ test_new_password_uses_w02_policy_without_mutation[postgres-password] ____
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022223F99CA0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022222AA89B0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022223F9BA70>))
+password = 'password'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+>       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError
+_______ test_change_keeps_a_revokes_b_checks_hash_login_and_audit[fake] _______
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222B2EDE0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222240055E0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222B286B0>))
+
+    def test_change_keeps_a_revokes_b_checks_hash_login_and_audit(runtime):
+        service, a, b, other, _ = runtime
+        raw_a, raw_b = a.cookies.get("d2r_session"), b.cookies.get("d2r_session")
+        before = snapshot(service)
+        result = change(a)
+>       assert result.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:179: AssertionError
+_____ test_change_keeps_a_revokes_b_checks_hash_login_and_audit[postgres] _____
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222C7C950>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022224125100>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022223FD7710>))
+
+    def test_change_keeps_a_revokes_b_checks_hash_login_and_audit(runtime):
+        service, a, b, other, _ = runtime
+        raw_a, raw_b = a.cookies.get("d2r_session"), b.cookies.get("d2r_session")
+        before = snapshot(service)
+        result = change(a)
+>       assert result.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:179: AssertionError
+____ test_session_owner_body_forgery_rejected[fake-/me/password-payload0] _____
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222241487D0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222242D46B0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000222241486E0>))
+path = '/me/password'
+payload = {'current_password': 'W04 synthetic original passphrase!', 'new_password': 'W04 synthetic replacement passphrase!'}
+
+    @pytest.mark.parametrize("path,payload", [("/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+                                              ("/auth/logout-all", {})])
+    def test_session_owner_body_forgery_rejected(runtime, path, payload):
+        service, a, b, other, _ = runtime
+        raw_b = b.cookies.get("d2r_session")
+        session_b = service.store.get_session(hashlib.sha256(raw_b.encode()).digest())
+        owner = other.get("/api/v1/me").json()["account"]["id"]
+        before = snapshot(service)
+        result = a.post("/api/v1" + path, headers=headers(a), json={**payload, "session_id": session_b.id, "owner": owner})
+>       assert result.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:212: AssertionError
+__ test_session_owner_body_forgery_rejected[fake-/auth/logout-all-payload1] ___
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222242891C0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222219506E0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002222428A300>))
+path = '/auth/logout-all', payload = {}
+
+    @pytest.mark.parametrize("path,payload", [("/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+                                              ("/auth/logout-all", {})])
+    def test_session_owner_body_forgery_rejected(runtime, path, payload):
+        service, a, b, other, _ = runtime
+        raw_b = b.cookies.get("d2r_session")
+        session_b = service.store.get_session(hashlib.sha256(raw_b.encode()).digest())
+        owner = other.get("/api/v1/me").json()["account"]["id"]
+        before = snapshot(service)
+        result = a.post("/api/v1" + path, headers=headers(a), json={**payload, "session_id": session_b.id, "owner": owner})
+>       assert result.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:212: AssertionError
+__ test_session_owner_body_forgery_rejected[postgres-/me/password-payload0] ___
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022222572AB0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022224001C40>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022222578980>))
+path = '/me/password'
+payload = {'current_password': 'W04 synthetic original passphrase!', 'new_password': 'W04 synthetic replacement passphrase!'}
+
+    @pytest.mark.parametrize("path,payload", [("/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+                                              ("/auth/logout-all", {})])
+    def test_session_owner_body_forgery_rejected(runtime, path, payload):
+        service, a, b, other, _ = runtime
+        raw_b = b.cookies.get("d2r_session")
+        session_b = service.store.get_session(hashlib.sha256(raw_b.encode()).digest())
+        owner = other.get("/api/v1/me").json()["account"]["id"]
+        before = snapshot(service)
+        result = a.post("/api/v1" + path, headers=headers(a), json={**payload, "session_id": session_b.id, "owner": owner})
+>       assert result.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:212: AssertionError
+_ test_session_owner_body_forgery_rejected[postgres-/auth/logout-all-payload1] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222243279B0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022224388080>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022224002A50>))
+path = '/auth/logout-all', payload = {}
+
+    @pytest.mark.parametrize("path,payload", [("/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+                                              ("/auth/logout-all", {})])
+    def test_session_owner_body_forgery_rejected(runtime, path, payload):
+        service, a, b, other, _ = runtime
+        raw_b = b.cookies.get("d2r_session")
+        session_b = service.store.get_session(hashlib.sha256(raw_b.encode()).digest())
+        owner = other.get("/api/v1/me").json()["account"]["id"]
+        before = snapshot(service)
+        result = a.post("/api/v1" + path, headers=headers(a), json={**payload, "session_id": session_b.id, "owner": owner})
+>       assert result.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:212: AssertionError
+____ test_logout_all_revokes_a_b_preserves_other_and_cookie_security[fake] ____
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222243579B0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022224451190>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000222243671D0>))
+
+    def test_logout_all_revokes_a_b_preserves_other_and_cookie_security(runtime):
+        service, a, b, other, _ = runtime
+        old_cookies = [client.cookies.get("d2r_session") for client in (a, b)]
+        owner = a.get("/api/v1/me").json()["account"]["id"]
+        result = a.post("/api/v1/auth/logout-all", headers=headers(a))
+>       assert result.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:224: AssertionError
+__ test_logout_all_revokes_a_b_preserves_other_and_cookie_security[postgres] __
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x0000022224412900>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222244EBD10>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000222243E7B90>))
+
+    def test_logout_all_revokes_a_b_preserves_other_and_cookie_security(runtime):
+        service, a, b, other, _ = runtime
+        old_cookies = [client.cookies.get("d2r_session") for client in (a, b)]
+        owner = a.get("/api/v1/me").json()["account"]["id"]
+        result = a.post("/api/v1/auth/logout-all", headers=headers(a))
+>       assert result.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = <Response [404 Not Found]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:224: AssertionError
+__ test_service_methods_validate_without_http_and_reject_stale_session[fake] __
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000222248BE150>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000222249ADE50>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000222248BCD70>))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000222248BDD00>
+
+    def test_service_methods_validate_without_http_and_reject_stale_session(runtime, monkeypatch):
+        service, a, b, _, _ = runtime
+        raw = a.cookies.get("d2r_session")
+        before = snapshot(service)
+        with pytest.raises(AuthError) as failure:
+>           service.update_profile(raw, " " * 3)
+            ^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'AccountService' object has no attribute 'update_profile'
+
+src\web\backend\tests\test_w04_accounts.py:276: AttributeError
+_ test_service_methods_validate_without_http_and_reject_stale_session[postgres] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002222499BAD0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022224A80B00>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000022224999A90>))
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x00000222249987D0>
+
+    def test_service_methods_validate_without_http_and_reject_stale_session(runtime, monkeypatch):
+        service, a, b, _, _ = runtime
+        raw = a.cookies.get("d2r_session")
+        before = snapshot(service)
+        with pytest.raises(AuthError) as failure:
+>           service.update_profile(raw, " " * 3)
+            ^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'AccountService' object has no attribute 'update_profile'
+
+src\web\backend\tests\test_w04_accounts.py:276: AttributeError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\report\w04-evidence\runs\red-02.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_trim_boundaries_persist_and_preserve_identity[fake]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_trim_boundaries_persist_and_preserve_identity[postgres]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[fake-]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[fake-   ]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[postgres-]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[postgres-   ]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[fake-extra0]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[fake-extra1]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[fake-extra2]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[fake-extra3]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[postgres-extra0]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[postgres-extra1]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[postgres-extra2]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_rejects_mass_assignment[postgres-extra3]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[fake]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[postgres]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_new_password_uses_w02_policy_without_mutation[fake-short]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_new_password_uses_w02_policy_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_new_password_uses_w02_policy_without_mutation[fake-password]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_new_password_uses_w02_policy_without_mutation[postgres-short]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_new_password_uses_w02_policy_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_new_password_uses_w02_policy_without_mutation[postgres-password]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_change_keeps_a_revokes_b_checks_hash_login_and_audit[fake]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_change_keeps_a_revokes_b_checks_hash_login_and_audit[postgres]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_session_owner_body_forgery_rejected[fake-/me/password-payload0]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_session_owner_body_forgery_rejected[fake-/auth/logout-all-payload1]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_session_owner_body_forgery_rejected[postgres-/me/password-payload0]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_session_owner_body_forgery_rejected[postgres-/auth/logout-all-payload1]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_logout_all_revokes_a_b_preserves_other_and_cookie_security[fake]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_logout_all_revokes_a_b_preserves_other_and_cookie_security[postgres]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_service_methods_validate_without_http_and_reject_stale_session[fake]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_service_methods_validate_without_http_and_reject_stale_session[postgres]
+34 failed, 8 passed, 1 warning in 24.20s

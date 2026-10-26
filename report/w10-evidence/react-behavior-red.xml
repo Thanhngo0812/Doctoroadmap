@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="5" failures="1" errors="0" time="2.0848432">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-25T15:42:17.865Z" hostname="ADMIN" tests="5" failures="1" errors="0" skipped="0" time="2.0848432">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0.3635027">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0.5677604">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0.2911477">
+            <failure message="expect(element).toBeChecked()
+
+Received element is not checked:
+  &lt;input
+  name=&quot;q1&quot;
+  type=&quot;radio&quot;
+  value=&quot;o2&quot;
+/&gt;" type="Error">
+Error: expect(element).toBeChecked()
+
+Received element is not checked:
+  &lt;input
+  name=&quot;q1&quot;
+  type=&quot;radio&quot;
+  value=&quot;o2&quot;
+/&gt;
+ ❯ src/Content.test.tsx:80:55
+            </failure>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="0.7968976">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0.0625582">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="2" errors="0" time="1.899989">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-25T16:11:49.356Z" hostname="ADMIN" tests="7" failures="2" errors="0" skipped="0" time="1.899989">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0.2208603">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0.5229184">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0.3183675">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="0.7151482">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0.037875">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0.039093">
+            <failure message="expected null not to be null" type="AssertionError">
+AssertionError: expected null not to be null
+ ❯ src/Content.test.tsx:128:70
+            </failure>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0.0439952">
+            <failure message="expected [ &lt;h1&gt;&lt;/h1&gt;, &lt;h1&gt;&lt;/h1&gt; ] to have a length of 1 but got 2" type="AssertionError">
+AssertionError: expected [ &lt;h1&gt;&lt;/h1&gt;, &lt;h1&gt;&lt;/h1&gt; ] to have a length of 1 but got 2
+
+- Expected
++ Received
+
+- 1
++ 2
+
+ ❯ src/Content.test.tsx:139:67
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

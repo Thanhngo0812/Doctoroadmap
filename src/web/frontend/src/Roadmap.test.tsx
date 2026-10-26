@@ -35,6 +35,7 @@ function renderPage(path = '/khoa-hoc/course-1') {
 function baseFetch() {
   return vi.fn(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/me')) return json({ account, csrf_token: 'csrf-w07' });
     if (url.endsWith('/progress')) return json(progress());
     if (url.endsWith('/roadmap')) return json(roadmap);
@@ -69,6 +70,7 @@ it('marks a fully learned module with a success indicator', async () => {
   vi.stubGlobal('fetch', baseFetch());
   vi.mocked(fetch).mockImplementation(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/progress')) return json(progress(['node-1', 'node-2', 'node-3', 'node-4']));
     if (url.endsWith('/roadmap')) return json(roadmap);
     if (url.endsWith('/courses/course-1')) return json(course);
@@ -83,6 +85,7 @@ it('shows a quiet empty state when the API roadmap has no modules', async () => 
   const fetcher = baseFetch();
   fetcher.mockImplementation(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/roadmap')) return json({ ...roadmap, progress: { learned: 0, total: 0 }, modules: [] });
     if (url.endsWith('/me')) return json({ account, csrf_token: 'csrf-w07' });
     if (url.endsWith('/progress')) return json({ ...progress([]), nodes: {}, modules: [] });
@@ -92,13 +95,14 @@ it('shows a quiet empty state when the API roadmap has no modules', async () => 
   vi.stubGlobal('fetch', fetcher);
   renderPage();
   expect(await screen.findByText('Chưa có bài học trong lộ trình này.')).toBeInTheDocument();
-  expect(screen.queryByRole('checkbox')).not.toBeInTheDocument();
+  expect(screen.queryByRole('checkbox', { name: /Đã học:/ })).not.toBeInTheDocument();
 });
 
 it('clears an expired session after a progress write returns 401', async () => {
   const fetcher = baseFetch();
   fetcher.mockImplementation(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/progress/node-2')) return json({ error: { code: 'unauthenticated' } }, 401);
     if (url.endsWith('/me')) return json({ account, csrf_token: 'csrf-w07' });
     if (url.endsWith('/progress')) return json(progress());
@@ -117,6 +121,7 @@ it('optimistically updates one concept and restores only that checkbox when its 
   const fetcher = baseFetch();
   fetcher.mockImplementation(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/progress/node-2')) return new Promise<Response>(resolve => { rejectWrite = resolve; });
     if (url.endsWith('/me')) return json({ account, csrf_token: 'csrf-w07' });
     if (url.endsWith('/progress')) return json(progress());
@@ -146,6 +151,7 @@ it('rolls back when a successful write response omits the requested node', async
   const fetcher = baseFetch();
   fetcher.mockImplementation(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/progress/node-2')) {
       const malformed = progress();
       delete malformed.nodes['node-2'];
@@ -171,6 +177,7 @@ it('merges concurrent node responses by their own node so stale full snapshots c
   const fetcher = baseFetch();
   fetcher.mockImplementation(async (input: RequestInfo | URL) => {
     const url = String(input);
+    if (url.includes('/library?')) return json({ items: [] });
     if (url.endsWith('/progress/node-1')) return new Promise<Response>(resolve => { resolveNode1 = resolve; });
     if (url.endsWith('/progress/node-2')) return new Promise<Response>(resolve => { resolveNode2 = resolve; });
     if (url.endsWith('/me')) return json({ account, csrf_token: 'csrf-w07' });

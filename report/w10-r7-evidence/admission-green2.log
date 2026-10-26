@@ -1,0 +1,37 @@
+..F........................................                              [100%]
+================================== FAILURES ===================================
+_ test_assistant_to_button_is_single_admission_across_courses_and_separate_per_person _
+
+content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e68ce1948d214252861b9244422da...ecture.ScriptedLectureModel object at 0x000001B14EF47B60>, base='/api/v1/courses/f9def2ce-06c1-4915-822a-e84bacf2d11f')
+
+    def test_assistant_to_button_is_single_admission_across_courses_and_separate_per_person(content):
+        w = content; w.courses.settings.documents_per_hour = 2
+        setup_document_chat(w)
+        key = uuid4().hex
+        made, url = ask_document(w, key=key)
+        assert len(made['artifacts']) == 1 and made['artifacts'][0]['kind'] == 'document'
+        retry = w.a.client.post(url, headers=w.a.headers, json={'question':'Tạo tài liệu','client_turn_id':key})
+        assert retry.status_code == 200
+        assert counts(w, w.a.actor.user_id) == (1, 1)
+        assert len(w.document.calls) == 1
+        other = w.courses.create_course(w.a.actor, doc_id='doc-1', title='Other', graph_version=8, module_count=1)
+        button = '/api/v1/courses/'+other.id+'/documents'
+        allowed = w.a.client.post(button, headers=w.a.headers, json={'request':'Ôn', 'module_ids':['m1']})
+        assert allowed.status_code == 201
+        denied = w.a.client.post(w.base+'/documents', headers=w.a.headers, json={'request':'Ôn', 'module_ids':['m1']})
+        assert denied.status_code == 429
+        limited, _ = ask_document(w, cid=other.id)
+>       assert 'document_rate_limited' in limited['warnings'] and limited['artifacts'] == []
+E       AssertionError: assert ('document_rate_limited' in [])
+
+src\web\backend\tests\test_content_admission_w10.py:119: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\report\w10-r7-evidence\admission-green2.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_content_admission_w10.py::test_assistant_to_button_is_single_admission_across_courses_and_separate_per_person
+1 failed, 42 passed, 1 warning in 36.19s

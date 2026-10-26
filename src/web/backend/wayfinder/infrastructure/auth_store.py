@@ -77,6 +77,14 @@ class PostgresAuthStore:
                 .values(last_login_at=at, updated_at=at)
             )
 
+    def update_profile(self, account_id: str, display_name: str, at) -> Account:
+        table = self._table("account")
+        with self._use_connection(write=True) as connection:
+            row = connection.execute(update(table).where(table.c.id == account_id).values(
+                display_name=display_name, updated_at=at
+            ).returning(table)).mappings().one()
+            return _account(row)
+
     def get_session(self, token_hash: bytes) -> AuthSession | None:
         table = self._table("auth_session")
         with self._use_connection() as connection:
@@ -113,10 +121,13 @@ class PostgresAuthStore:
         with self._use_connection(write=True) as connection:
             connection.execute(delete(table).where(table.c.id == session_id))
 
-    def delete_account_sessions(self, account_id: str) -> None:
+    def delete_account_sessions(self, account_id: str, *, except_session_id: str | None = None) -> None:
         table = self._table("auth_session")
+        statement = delete(table).where(table.c.account_id == account_id)
+        if except_session_id is not None:
+            statement = statement.where(table.c.id != except_session_id)
         with self._use_connection(write=True) as connection:
-            connection.execute(delete(table).where(table.c.account_id == account_id))
+            connection.execute(statement)
 
     def create_email_token(self, token: EmailToken) -> None:
         table = self._table("email_token")

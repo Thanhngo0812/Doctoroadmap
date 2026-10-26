@@ -1,0 +1,28 @@
+{
+  "commit": "8c7aab42b216ecbdc63bcc91ccbc4861df111024",
+  "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w04-account-backend",
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w05_run_tests.py",
+    "-o",
+    "addopts=",
+    "-q",
+    "src/web/backend/tests/test_w04_accounts.py",
+    "-k",
+    "profile",
+    "--basetemp=tmp/w04-profile-01",
+    "--junitxml=report/w04-evidence/runs/profile-green-01.xml"
+  ],
+  "exit_code": 1,
+  "seconds": 11.91,
+  "source_sha256": {
+    "src/web/backend/wayfinder/application/accounts.py": "ae3838395f6756120576699c0320a877bfed311f2fe89303c6bcb7d17257666e",
+    "src/web/backend/wayfinder/application/auth_ports.py": "b0645f1b87086c1374ccc4238afb486413fc6c517d910fcc9b24ce6e35553f7e",
+    "src/web/backend/wayfinder/infrastructure/auth_store.py": "f4b7817aaae4c13a9369df377725f4c9b7ace9ea4448123c5ae3b2f4d9604eb5",
+    "src/web/backend/wayfinder/fakes/auth.py": "8dada29616be12af238ee44e4988dab5cb5742a1ad42c801ebff650b03b8aa6f",
+    "src/web/backend/wayfinder/api/auth.py": "a23d94645716579457d8f5bad7bc0a744704dbb831eb939245140d01225c4da6",
+    "src/web/backend/wayfinder/api/app.py": "a6bfa2b6ed34f248c11e736be3442bd63df6ef525ae54e939764b383201e9e0c",
+    "src/web/backend/tests/test_w04_accounts.py": "b938d3327fabaa6fdd5be6ba7a67557a247bd32a33790ec30dbbfbf9712d1361",
+    "src/web/openapi.json": "656a0e7df53c7a328e4b73a4ceb6f2be357cff43a9bd4380a5a2af8a6040e2f0"
+  }
+}
