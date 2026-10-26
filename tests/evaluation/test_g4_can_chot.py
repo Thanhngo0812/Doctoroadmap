@@ -273,3 +273,12 @@ def test_chot_on_dinh_thu_tu_va_khong_phu_thuoc_thu_tu_dau_vao():
     assert g1 == g2
     assert [(x["dich"], x["nguon"]) for x in g1["vang_chinh"]] == [
         ("G-dev-test-002", "G-dev-test-001"), ("G-dev-test-004", "G-dev-test-001"), ("G-dev-test-005", "G-dev-test-006")]
+
+
+def test_bac_cau_khong_tin_dung_canh_ma_nguoi_kia_da_ghi_nhung_khac_loai():
+    # Hai người đều ghi 001→004 nhưng khác loại: đó là bất đồng về loại, không phải thiếu sót được bắc cầu bù.
+    a = [e("c10-q001", 4, 1, "van_ban")]
+    b = [e("c10-q001", 4, 1, "kien_thuc"), e("c10-q002", 2, 1), e("c10-q003", 4, 2)]  # B cũng có đường 001→002→004
+    d = dem_g4(can(a, b))["bac_cau"]["tong"]
+    assert (d["van_ban"]["a"], d["van_ban"]["b"], d["van_ban"]["c"]) == (0, 1, 2)
+    assert (d["tong"]["a"], d["tong"]["b"], d["tong"]["c"]) == (1, 0, 2)  # bỏ qua loại: cạnh đó cả hai cùng ghi
