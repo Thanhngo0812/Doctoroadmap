@@ -23,8 +23,10 @@ def gia_tri(kieu, dem):
         tu, mau = dem
         return tu / mau if mau else None
     tp, fp, fn = dem
-    mau = 2 * tp + fp + fn
-    return 2 * tp / mau if mau else None
+    # F1 chỉ chưa đo được khi không có cạnh vàng; tp = 0 mà có vàng thì F1 = 0, không phải None (luật chung với DG-04).
+    if tp + fn == 0:
+        return None
+    return 2 * tp / (2 * tp + fp + fn)
 
 
 def cong(dem_a, dem_b):
