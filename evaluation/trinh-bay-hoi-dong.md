@@ -73,26 +73,33 @@ Bảng 3. Hai tập dữ liệu
 | Tập | Nội dung | Dùng để |
 |---|---|---|
 | Phát triển | ba khoảng chương của ba giáo trình đã dùng khi phát triển: thống kê, đại số tuyến tính, triết học | tìm lỗi, chọn cải tiến |
-| Thử | 16 giáo trình tiếng Việt thuộc 8 chủ đề: toán, vật lý, hoá học, sinh học, văn học, triết học, kinh tế, luật; mỗi chủ đề 2 cuốn, mỗi cuốn 50–70 trang, đánh giá cả cuốn | số báo cáo cuối |
+| Thử | 8 giáo trình tiếng Việt đầy đủ, mỗi chủ đề một cuốn: toán, vật lý, hoá học, sinh học, văn học, triết học, kinh tế, luật; mỗi cuốn khoảng 150–300 trang | số báo cáo cuối |
 
-Danh sách 16 cuốn (Bảng 4) sẽ điền khi gom xong. Mọi cuốn là PDF gốc có lớp chữ, không phải bản quét. Một số cuốn có thể là đoạn trích
-trọn chương từ giáo trình dài hơn; bảng ghi rõ cuốn nào là đoạn trích.
+Danh sách 8 cuốn (Bảng 4) sẽ điền khi gom xong. Mọi cuốn là PDF gốc có lớp chữ, không phải bản quét. Hệ chạy trên **cả cuốn**, nên thời
+gian và chi phí đo được là của một giáo trình thật. Đáp án chuẩn có hai phạm vi:
+- cấu trúc mục và vai trò vùng được gán cho cả cuốn;
+- khái niệm và quan hệ tiên quyết được gán trên **3 chương bốc ngẫu nhiên theo một hạt giống cố định** (một chương phần đầu, một phần giữa,
+  một phần cuối, khoảng 25–30% cuốn).
+
+Một quan hệ có thể lấy khái niệm tiên quyết từ bất kỳ phần nào trước đó của sách, nên vẫn chấm được các quan hệ xuyên chương. Chương được
+bốc trước khi chạy hệ, theo luật ghi sẵn trong giao thức.
 
 Bảng 4. Danh sách sách tập thử (điền sau)
 
-| Chủ đề | Mã | Tên sách | Số trang | Loại (trọn cuốn / đoạn trích) |
+| Chủ đề | Mã | Tên sách | Số trang | Ba chương bốc |
 |---|---|---|---|---|
-| Toán | T1, T2 | — | — | — |
-| Vật lý | L1, L2 | — | — | — |
-| Hoá học | H1, H2 | — | — | — |
-| Sinh học | S1, S2 | — | — | — |
-| Văn học | V1, V2 | — | — | — |
-| Triết học | TR1, TR2 | — | — | — |
-| Kinh tế | K1, K2 | — | — | — |
-| Luật | LU1, LU2 | — | — | — |
+| Toán | T | — | — | — |
+| Vật lý | L | — | — | — |
+| Hoá học | H | — | — | — |
+| Sinh học | S | — | — | — |
+| Văn học | V | — | — | — |
+| Triết học | TR | — | — | — |
+| Kinh tế | K | — | — | — |
+| Luật | LU | — | — | — |
 
-Chọn 8 chủ đề, mỗi chủ đề 2 cuốn, để có thể nói hệ dùng được cho nhiều ngành, không chỉ ngành toán hay công nghệ thông tin. Về thống kê,
-16 cuốn cho 16 đơn vị độc lập. Mục 9 giải thích vì sao số cuốn quan trọng hơn số trang.
+Chọn 8 chủ đề để có thể nói hệ dùng được cho nhiều ngành, không chỉ ngành toán hay công nghệ thông tin. Chọn giáo trình đầy đủ để chất
+lượng và chi phí đo được đúng với cách sản phẩm được dùng. Về thống kê, mỗi cuốn là một đơn vị độc lập, và ba chương trong cuốn là tầng thứ
+hai (mục 9).
 
 ## 5. Đáp án chuẩn được làm thế nào
 
@@ -100,8 +107,7 @@ Muốn chấm hệ thì phải có đáp án chuẩn, gọi là **vàng**. Vàng
 
 ### 5.1 Người gán
 
-Mỗi chủ đề có **hai sinh viên đại học của chính ngành đó**. Hai người đọc cả hai cuốn của chủ đề và gán **độc lập**, không trao đổi với
-nhau. Họ không được xem đầu ra của hệ trên các cuốn này cho tới khi vàng đã chốt. Tập phát triển do các sinh viên khác gán theo cùng giao
+Mỗi chủ đề có **hai sinh viên đại học của chính ngành đó**. Hai người cùng gán cuốn của chủ đề, **độc lập**, không trao đổi với nhau. Họ không được xem đầu ra của hệ trên các cuốn này cho tới khi vàng đã chốt. Tập phát triển do các sinh viên khác gán theo cùng giao
 thức. Thông tin người gán (ngành, năm học) được ghi ẩn danh trong phụ lục.
 
 ### 5.2 Năm lớp vàng
@@ -112,10 +118,10 @@ Bảng 5. Các lớp vàng
 
 | Lớp | Người gán ghi gì | Dùng để chấm |
 |---|---|---|
-| G1 Cấu trúc | cây mục của sách: tiêu đề, cấp, trang | A1 |
-| G2 Vai trò vùng | mỗi mục là nội dung, bài tập, đề cương, mở đầu, hành chính hay phần cuối sách | A2 |
-| G3 Kho khái niệm | các khái niệm sách dạy, câu định nghĩa (trang và câu nguyên văn), trạng thái dạy, tên gọi khác | A3, A4, A5 |
-| G4 Quan hệ tiên quyết | các cặp "phải hiểu X trước khi học Y", kèm câu trong sách làm bằng chứng | A8, A10 |
+| G1 Cấu trúc | cây mục của cả cuốn: tiêu đề, cấp, trang | A1 |
+| G2 Vai trò vùng | mỗi mục của cả cuốn là nội dung, bài tập, đề cương, mở đầu, hành chính hay phần cuối sách | A2 |
+| G3 Kho khái niệm | trên 3 chương bốc: các khái niệm sách dạy, câu định nghĩa (trang và câu nguyên văn), trạng thái dạy, tên gọi khác | A3, A4, A5 |
+| G4 Quan hệ tiên quyết | các cặp "phải hiểu X trước khi học Y" với Y thuộc 3 chương bốc, kèm câu trong sách làm bằng chứng | A8, A10 |
 | G5 Phán mù đầu ra | sau khi hệ chạy: khái niệm và cạnh máy đưa ra mà vàng không có thì đúng hay sai; lộ trình có dễ học không | độ chính xác, đánh giá người dùng |
 
 G1 và G2 chủ yếu là đối chiếu với mục lục, nên một trợ lý AI lập bản nháp và sinh viên duyệt lại toàn bộ. Bản nháp không lấy từ đầu ra
@@ -210,8 +216,8 @@ Bảng 7. Các hệ được so
 | | B2: cạnh "X được nhắc trong câu định nghĩa Y, X dạy trước Y", không dùng mô hình | "Bước suy luận bằng mô hình có hơn một luật đơn giản không?" |
 | | B3: khái niệm lấy từ tiêu đề mục | "Trích khái niệm bằng mô hình có hơn đọc tiêu đề không?" |
 | | B4: gộp khái niệm chỉ khi trùng tên | "Bước hợp nhất có cần thiết không?" |
-| Bỏ hoặc thay một bộ phận (ablation) | đọc PDF bằng công cụ docling thay bộ đọc nhẹ | "Bộ đọc nhanh có làm kém chất lượng không?" |
-| | bước phụ của A8 dùng mô hình ngôn ngữ thay mô hình học máy | "Thay mô hình ngôn ngữ bằng học máy để tiết kiệm thì mất bao nhiêu chất lượng?" |
+| Bỏ hoặc thay một bộ phận (ablation) | đọc PDF bằng công cụ docling thay bộ đọc nhẹ (trên 3–4 cuốn, vì docling chậm) | "Bộ đọc nhanh có làm kém chất lượng không?" |
+| | bước phụ của A8 dùng mô hình ngôn ngữ thay mô hình học máy (trên các cặp của 3 chương bốc, vì bản mô hình ngôn ngữ rất tốn) | "Thay mô hình ngôn ngữ bằng học máy để tiết kiệm thì mất bao nhiêu chất lượng?" |
 | | bỏ bước suy luận chính của A8 | "Bước suy luận chính đóng góp bao nhiêu?" |
 | | tắt luật R17 | "Luật giữ thứ tự sách giúp hay hại?" |
 | Thay khâu bằng đáp án đúng (oracle) | A8 nhận khái niệm vàng thay vì khái niệm máy trích | "Lỗi ở A8 hay ở các khâu trước?" |
@@ -249,14 +255,14 @@ Vì vậy:
 - khi so hai hệ, dùng **kiểm định hoán vị ghép cặp**: hai hệ được so trên cùng từng cuốn, và chỉ hoán vị trong cùng một cuốn [10], [11],
   [22]. Kèm theo là đếm số cuốn mà hệ này hơn hệ kia.
 
-Với 16 cuốn, phép đếm này đủ sức đưa ra kết luận. Nếu chỉ có 5 cuốn trở xuống thì không bao giờ đạt mức ý nghĩa 5%, dù chênh lệch lớn đến
-đâu.
+Với 8 cuốn, phép đếm này chỉ đạt mức ý nghĩa 5% khi cả 8 cuốn cùng nghiêng về một hệ. Vì vậy kết luận chính dựa trên kiểm định hoán vị
+phân tầng theo cuốn và chương; phép đếm theo cuốn chỉ để bổ sung và để người đọc thấy kết quả có nhất quán giữa các ngành không.
 
 Chỉ hai đến ba phép so được kiểm định chính thức, chọn trước khi chấm: Q6 của hệ so với mục lục (B1); F1 cạnh của hệ so với luật đơn giản
 (B2); và mô hình học máy so với mô hình ngôn ngữ ở bước phụ của A8. Các so sánh còn lại chỉ mô tả, để tránh việc "thử đủ phép, thế nào cũng
 có một phép đạt".
 
-[CHÈN HÌNH 3 – Biểu đồ điểm theo cuốn (forest plot). Trục dọc: 16 cuốn, xếp theo chủ đề. Trục ngang: F1 cạnh tiên quyết. Mỗi cuốn một chấm
+[CHÈN HÌNH 3 – Biểu đồ điểm theo cuốn (forest plot). Trục dọc: 8 cuốn, ghi tên chủ đề. Trục ngang: F1 cạnh tiên quyết. Mỗi cuốn một chấm
 cho hệ chính và một chấm cho baseline B2, kèm thanh khoảng tin cậy. Dòng cuối: trung bình chung kèm khoảng tin cậy bootstrap phân cấp. Vẽ
 từ số liệu sau lượt chạy.]
 
@@ -313,10 +319,9 @@ Hình 4. Quan hệ tiên quyết bị mất qua từng khâu
 - số phút từ lúc nhận PDF tới lúc có lộ trình, chia theo khâu;
 - số tiền gọi mô hình (USD), chia theo khâu;
 - số lời gọi mô hình và số token;
-- phút trên một trang và USD trên một trang, để suy ra cho sách dài hơn.
+- phút trên một trang và USD trên một trang, để so được giữa các cuốn dài ngắn khác nhau.
 
-Sách thử dài 50–70 trang, ngắn hơn giáo trình thật. Vì vậy nhóm chạy thêm hệ trên một giáo trình hơn 400 trang để đo chi phí thật của một
-cuốn dài. Lượt này chỉ đo chi phí, không chấm chất lượng.
+Sách thử là giáo trình đầy đủ, nên các con số trên chính là chi phí của sản phẩm khi xử lý một giáo trình thật.
 
 Trong đợt đánh giá, hệ gọi mô hình qua nền tảng Vertex AI. Trên nền tảng này, mỗi lần tính embedding phải chờ khoảng 11–16 giây vì giới hạn
 lưu lượng, trong khi bản sản phẩm dùng Gemini Developer API chỉ mất dưới một giây. Vì vậy thời gian được báo hai số: tổng, và tổng trừ phần
@@ -334,7 +339,7 @@ Nhóm theo danh mục báo cáo nghiên cứu có trách nhiệm của ACL [21].
 
 Mục này sẽ điền sau lượt chạy tập thử (07–09/11). Các bảng dưới là khung.
 
-Bảng 9. Kết quả đầu-cuối trên 16 cuốn (khoảng tin cậy 95% trong ngoặc)
+Bảng 9. Kết quả đầu-cuối trên 8 giáo trình (khoảng tin cậy 95% trong ngoặc)
 
 | Hệ | Độ phủ khái niệm | Q6 (thấp là tốt) | F1 cạnh tiên quyết | Phút/cuốn | USD/cuốn |
 |---|---|---|---|---|---|
@@ -359,8 +364,8 @@ Bảng 11. Thí nghiệm bỏ hoặc thay bộ phận
 
 | Thí nghiệm | Thay đổi so với hệ chính | Chi phí thay đổi |
 |---|---|---|
-| docling thay bộ đọc nhẹ | — | — |
-| bước phụ A8 bằng mô hình ngôn ngữ | — | — |
+| docling thay bộ đọc nhẹ (3–4 cuốn) | — | — |
+| bước phụ A8 bằng mô hình ngôn ngữ (cặp của 3 chương bốc) | — | — |
 | bỏ bước suy luận chính | — | — |
 | tắt R17 | — | — |
 | oracle A8 (khái niệm vàng) | — | — |
@@ -377,8 +382,9 @@ Bảng 12. Đánh giá của người học (sinh viên chấm lộ trình, mù 
 
 Nhóm nêu trước các giới hạn sau:
 - **Người gán là sinh viên, không phải chuyên gia.** Bù lại, giao thức yêu cầu bám văn bản, và mọi phiếu đều có câu kiểm và câu đối chứng.
-- **Sách thử ngắn (50–70 trang).** Chi phí được báo theo trang, và có một lượt đo trên giáo trình dài.
-- **Mỗi chủ đề chỉ có 2 cuốn.** Số theo từng chủ đề chỉ để mô tả, không đủ để kết luận riêng cho từng ngành.
+- **Mỗi chủ đề chỉ có một cuốn.** Kết quả cho thấy hệ hoạt động trên nhiều ngành, nhưng không đủ để kết luận riêng cho từng ngành.
+- **Khái niệm và quan hệ tiên quyết chỉ được gán trên 3 chương mỗi cuốn**, không phải cả cuốn, vì gán cả một giáo trình dài vượt sức người
+  gán trong thời gian có hạn. Cấu trúc mục và vai trò vùng vẫn được gán cho cả cuốn.
 - **Bước ghép khái niệm có phần phán tay.** Nhóm giảm rủi ro bằng luật viết trước, nhật ký và kiểm 20%.
 - **Kết quả có điều kiện trên mô hình và nền tảng đã dùng** (gemini-3.1-flash-lite qua Vertex AI, tháng 11/2026).
 

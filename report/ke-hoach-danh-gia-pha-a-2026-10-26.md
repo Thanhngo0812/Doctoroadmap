@@ -1,5 +1,7 @@
 Trạng thái: thiết kế đã được chủ dự án xác nhận ngày 2026-10-26, sau sáu vòng tra hỏi (mục 15). Bước kế: spec (`to-spec`), rồi vé.
 Bản trình bày cho hội đồng nằm ở `evaluation/trinh-bay-hoi-dong.md` và được cập nhật song song: kế hoạch này đổi thì bản đó đổi theo.
+**Sửa cùng ngày (Q30–Q33):** tập thử đổi từ 16 cuốn 50–70 trang sang **8 giáo trình đầy đủ, mỗi chủ đề một cuốn, cỡ 150–300 trang**. G1, G2
+gán cả cuốn; G3, G4 gán trên 3 chương bốc theo seed. Các mục dưới đã sửa theo.
 
 # Kế hoạch đánh giá Pha A dựng lại từ đầu — 2026-10-26
 
@@ -18,13 +20,13 @@ Thiết kế có năm ý chính:
 - **Một luồng duy nhất:** sách → chạy hệ với cấu hình đóng băng → xuất ra một **hợp đồng đánh giá** chung → căn với vàng → chấm từng
   khâu → thống kê theo cuốn → quy lỗi → bảng và hình. Mọi hệ cùng xuất một hợp đồng: bản đồ án, bản seminar không LLM, baseline,
   ablation và oracle.
-- **Vàng người, neo vào văn bản.** Sinh viên chuyên ngành đọc **cả cuốn** và ghi khái niệm, câu định nghĩa, trạng thái dạy, cạnh
-  tiên quyết theo trang và câu. Vàng không lấy danh sách khái niệm của máy, nên không phải chuyển id khi A4 đổi, và chấm được mọi hệ
+- **Vàng người, neo vào văn bản.** Sinh viên chuyên ngành ghi cây mục và vai trò vùng của cả cuốn; trên 3 chương bốc, họ ghi khái niệm,
+  câu định nghĩa, trạng thái dạy và cạnh tiên quyết theo trang và câu. Vàng không lấy danh sách khái niệm của máy, nên không phải chuyển id khi A4 đổi, và chấm được mọi hệ
   trên cùng vàng.
 - **Gán hai giai đoạn:** chốt kho khái niệm (G3) trước, rồi mới gán cạnh (G4). PREAP đo được: cho người gán thêm khái niệm trong lúc
   gán quan hệ thì κ tụt từ 0,62 xuống 0,25 (VL §6.1).
-- **Tập thử mới, 16 cuốn, 8 chủ đề**, mỗi cuốn 50–70 trang, gán đôi độc lập. Tập phát triển cũng do sinh viên gán theo cùng giao
-  thức, để vòng nâng cấp dựa trên vàng người.
+- **Tập thử mới: 8 giáo trình đầy đủ, mỗi chủ đề một cuốn**, cỡ 150–300 trang, gán đôi độc lập. Hệ chạy trên cả cuốn, nên phút/cuốn và
+  USD/cuốn đại diện cho sản phẩm. Tập phát triển cũng do sinh viên gán theo cùng giao thức, để vòng nâng cấp dựa trên vàng người.
 - **Thống kê theo cuốn, không theo cạnh.** Bootstrap phân cấp; so hai hệ bằng hoán vị ghép cặp trong cùng cuốn; mọi số đặt cạnh
   trần người. Giao thức được chốt và ghi hash trước khi chấm.
 
@@ -66,7 +68,7 @@ Sáu câu hỏi, mỗi câu có số đo và phép thống kê ở mục 8 và 1
 |---|---|---|
 | RQ1 | Trên giáo trình tiếng Việt chưa từng thấy, lộ trình có dạy đủ khái niệm trọng yếu và tôn trọng quan hệ tiên quyết thật không? | độ phủ khái niệm vàng trong dãy học, Q6, đánh giá người; so với baseline |
 | RQ2 | Từng khâu tốt tới đâu, và lỗi cuối bắt nguồn từ khâu nào? | thước từng khâu, quy lỗi từng cạnh vàng bị mất, oracle |
-| RQ3 | Hệ tốn bao nhiêu phút và USD cho một cuốn, chia theo khâu? | sổ chi, thời gian, số lời gọi; phút/trang, USD/trang; lượt doc-4 |
+| RQ3 | Hệ tốn bao nhiêu phút và USD cho một cuốn, chia theo khâu? | sổ chi, thời gian, số lời gọi trên 8 giáo trình đầy đủ; phút/trang, USD/trang |
 | RQ4 | Các quyết định thiết kế chính đóng góp bao nhiêu? | ablation |
 | RQ5 | Kết quả ổn định tới đâu trước nhiễu đầu vào giữ nghĩa? | K = 5 lượt xáo pass chính |
 | RQ6 | (seminar) Thay LLM bằng ML/DL ở từng khâu thì được và mất gì? | cùng vàng, cùng hợp đồng xuất |
@@ -91,7 +93,7 @@ Các nguyên tắc dưới đây lấy từ bài học các đợt trước và 
 ### 4.1 Luồng
 
 ```text
-bo-sach (manifest, SHA-256, loại: sách trọn / đoạn cắt)
+bo-sach (manifest, SHA-256, 3 chương bốc theo seed)
    │
    ▼
 chạy hệ (cấu hình đóng băng, kho artifact mới, Vertex) ──► sổ chi và thời gian từng khâu
@@ -119,7 +121,7 @@ evaluation/
   README.md            luồng, lệnh chạy, luật mù; cửa vào duy nhất
   giao-thuc/           giao thức chốt trước, bản có hash
     huong-dan-gan/     hướng dẫn cho sinh viên: G1–G5, rubric lộ trình, phiếu bất đồng; ví dụ tự soạn ngoài 8 chủ đề
-  bo-sach/             manifest dev/test: mã sách, SHA-256 PDF, chủ đề, loại, khoảng trang nếu là đoạn cắt, quyền; datasheet
+  bo-sach/             manifest dev/test: mã sách, SHA-256 PDF, chủ đề, số trang, chương bốc, quyền; datasheet
   vang/
     schema/            JSON Schema từng lớp + validator chỉ dùng thư viện chuẩn
     dev/               vàng phát triển (commit)
@@ -151,13 +153,16 @@ vàng. Hợp đồng phải trung lập, không gắn với graph artifact của
 ## 5. Bộ sách
 
 Bộ sách chia làm hai tập:
-- **Tập thử: 16 cuốn, 8 chủ đề** (toán, lý, hoá, sinh, văn, triết, kinh tế, luật), mỗi chủ đề 2 cuốn, mỗi cuốn 50–70 trang, gán **cả
-  cuốn**. Chủ dự án gom. Điều kiện:
+- **Tập thử: 8 giáo trình đầy đủ, mỗi chủ đề một cuốn** (toán, lý, hoá, sinh, văn, triết, kinh tế, luật), cỡ 150–300 trang, tránh cuốn
+  trên 400 trang. Chủ dự án đang chuẩn bị sách; cuốn nào của tập khoá D-02 hợp chủ đề thì dùng được (đã có quyền và nhãn A1 agentic, vẫn
+  phải duyệt lại theo G1). Điều kiện:
   - là PDF gốc (Claude kiểm bằng bộ định tuyến, chỉ in số);
   - không thuộc D-01 (đã dùng huấn luyện pass phụ ML và bộ nhận tiêu đề), T-01 hay tập phát triển;
   - quyền sử dụng đã xác nhận;
-  - sách văn là giáo trình lý luận văn học hay ngôn ngữ học, không phải tuyển tập tác phẩm;
-  - được dùng sách ngắn trọn vẹn **hoặc** đoạn cắt đúng ranh giới chương từ giáo trình PDF gốc; manifest ghi loại và khoảng trang.
+  - sách văn là giáo trình lý luận văn học hay ngôn ngữ học, không phải tuyển tập tác phẩm.
+- **Bốc chương:** hệ chạy trên cả cuốn. G1, G2 gán cả cuốn. G3, G4 gán trên **3 chương bốc theo seed** (một chương phần đầu, một phần
+  giữa, một phần cuối, khoảng 25–30% cuốn), không bốc chương mở đầu. Cạnh được lấy nguồn từ bất kỳ phần nào trước đó của sách. Luật bốc ghi
+  vào giao thức trước khi bốc. Ba chương mỗi cuốn cho tầng thứ hai của bootstrap phân cấp.
 - **Tập phát triển:** xstk ch10–13 (gồm chương gán thử), doc-1 ch10–12, doc-4 ch8. Cả ba đã có vàng A8 cũ của người, nên so được giao
   thức cũ với mới. Sinh viên gán theo giao thức mới (mục 6).
 - **T-01 bỏ khỏi đợt này.** Không chấm, không báo.
@@ -167,8 +172,7 @@ Bộ sách chia làm hai tập:
 ### 6.1 Người gán
 
 Cách tổ chức người gán đã chốt như sau:
-- **Tập thử:** mỗi chủ đề có 2 sinh viên đại học chuyên ngành, ưu tiên năm 3–4 đã học môn. Hai người gán **cả hai cuốn** của chủ đề,
-  độc lập. Báo cáo gọi là "sinh viên chuyên ngành", không gọi là chuyên gia.
+- **Tập thử:** mỗi chủ đề có 2 sinh viên đại học chuyên ngành, ưu tiên năm 3–4 đã học môn. Hai người gán cuốn của chủ đề, độc lập. Báo cáo gọi là "sinh viên chuyên ngành", không gọi là chuyên gia.
 - **Tập phát triển:** ưu tiên 2–4 sinh viên toán và triết **khác** các cặp gán tập thử, hai người mỗi khoảng chương. Nếu không có thì
   chính cặp toán và cặp triết gán phát triển trước (29/10–01/11), rồi mới gán tập thử; khi đó có thể bỏ doc-4 ch8.
 - **Mù:** người gán không xem đầu ra máy của sách mình gán (kể cả trên web demo) cho tới khi vàng tập thử đóng băng. Vòng nâng cấp do
@@ -179,10 +183,10 @@ Cách tổ chức người gán đã chốt như sau:
 
 | Lớp | Nội dung | Ai gán | Đồng thuận |
 |---|---|---|---|
-| G1 cấu trúc | cây mục cả cuốn: tiêu đề, cấp, cha, trang | Codex làm nháp, **không** lấy từ đầu ra A1 của hệ; sinh viên duyệt đủ | sinh viên thứ hai duyệt lại một cuốn mỗi chủ đề |
-| G2 vai trò vùng | vai trò từng mục (`noi_dung`, `bai_tap`, `de_cuong`, `mo_dau`, `hanh_chinh`, `cuoi_sach`) | Codex nháp, không lấy từ A2 của hệ; sinh viên duyệt đủ | như G1; Cohen κ và % đồng ý |
-| G3 kho khái niệm | khái niệm được dạy; câu định nghĩa (trang, câu nguyên văn); trạng thái (dạy ở đây, dạy qua ví dụ, chỉ nhắc, kiến thức nền); tên khác | hai sinh viên độc lập → hội ý → **kho chốt** | F1 giữa hai người trước hội ý |
-| G4 cạnh tiên quyết | cạnh X → Y theo PREAP trên kho chốt, kèm câu bằng chứng; cờ "văn bản thể hiện" hay "kiến thức chuyên môn" | hai sinh viên độc lập → hội ý | F1 giữa hai người, có và không tính bắc cầu |
+| G1 cấu trúc | cây mục cả cuốn: tiêu đề, cấp, cha, trang | Codex làm nháp, **không** lấy từ đầu ra A1 của hệ; một sinh viên duyệt đủ | sinh viên thứ hai duyệt lại khoảng 30% số mục |
+| G2 vai trò vùng | vai trò từng mục cả cuốn (`noi_dung`, `bai_tap`, `de_cuong`, `mo_dau`, `hanh_chinh`, `cuoi_sach`) | Codex nháp, không lấy từ A2 của hệ; sinh viên duyệt đủ | như G1; Cohen κ và % đồng ý |
+| G3 kho khái niệm | trên 3 chương bốc: khái niệm được dạy; câu định nghĩa (trang, câu nguyên văn); trạng thái (dạy ở đây, dạy qua ví dụ, chỉ nhắc, kiến thức nền); tên khác | hai sinh viên độc lập → hội ý → **kho chốt** | F1 giữa hai người trước hội ý |
+| G4 cạnh tiên quyết | cạnh X → Y theo PREAP, đích là khái niệm của 3 chương bốc, nguồn ở bất kỳ phần nào trước đó; kèm câu bằng chứng; cờ "văn bản thể hiện" hay "kiến thức chuyên môn" | hai sinh viên độc lập → hội ý | F1 giữa hai người, có và không tính bắc cầu |
 | G5 phán mù | (a) khái niệm máy không căn được: dạy, chỉ nhắc, không phải khái niệm, rác; (b) cạnh máy ngoài vàng: cần, không cần, ngược; (c) rubric lộ trình theo module (Likert 7 mức có neo) và so sánh cặp mù hệ chính với B1 | chính hai sinh viên, mù tên hệ, phiếu có **câu đối chứng** (cạnh vàng của chính họ, cặp ngẫu nhiên) trộn lẫn | hai người phán mọi mục; α thứ bậc cho Likert |
 
 **Khái niệm trong G3** gồm đơn vị kiến thức có tên mà người học phải nắm: khái niệm, định nghĩa, định lý hay định luật có tên, phương pháp
@@ -203,8 +207,8 @@ Quy trình gán gồm các luật sau:
 - **Hội ý không gặp mặt:** Claude sinh phiếu bất đồng (chỉ mục hai người ghi khác, kèm câu trích hai bên); mỗi người ghi "giữ" hoặc "bỏ"
   cùng một dòng lý do; chủ dự án chuyển phiếu một vòng và không phán nội dung. Ca còn bất đồng ghi là **tranh chấp**, bỏ khỏi vàng
   chính, và báo thêm số trên vàng hợp và vàng giao.
-- **Công ước lượng** (thô; lượt thử đo lại): mỗi sinh viên khoảng 12–20 giờ cho hai cuốn (G3 khoảng 2–3 giờ/cuốn, G4 khoảng 3–5 giờ/cuốn,
-  cộng hội ý và duyệt G1/G2), cộng 4–5 giờ cho G5 và kiểm phần căn.
+- **Công ước lượng** (thô; lượt thử đo lại): mỗi sinh viên khoảng 15–25 giờ cho cuốn của mình (duyệt G1/G2 cả cuốn, G3 và G4 trên 3
+  chương, hội ý), cộng 4–5 giờ cho G5 và kiểm phần căn.
 
 ## 7. Căn khái niệm máy với vàng
 
@@ -248,25 +252,25 @@ Mỗi nhóm hệ dưới đây trả lời một RQ:
   - B3: khái niệm lấy từ tiêu đề mục;
   - B4: gộp chỉ theo tên chuẩn hoá.
 - **Ablation** (RQ4):
-  - docling thay bộ đọc nhẹ, chạy lại cả chuỗi;
-  - pass phụ LLM thay ML (cả 16 cuốn nếu dry-run hợp lý, không thì một cuốn mỗi chủ đề);
+  - docling thay bộ đọc nhẹ, chạy lại cả chuỗi, chỉ trên 3–4 cuốn;
+  - pass phụ LLM thay ML, chỉ trên các cặp có đích nằm trong 3 chương bốc;
   - bỏ pass chính;
   - tắt R17 (luật làm mềm cạnh ngược thứ tự sách).
 - **Oracle** (RQ2): A8 chạy trên kho khái niệm vàng; A10 chạy trên cạnh vàng. Số oracle báo trong cột "thiết lập" riêng, không đặt
   ngang số đầu-cuối (VL §11).
-- **Lượt chi phí:** hệ chính trên doc-4 (trên 400 trang), chỉ đo phút và USD, không chấm.
 - **Seminar** (RQ6): khâu không LLM nào có thì cắm vào, cùng hợp đồng xuất.
 
-Thiếu thời gian thì cắt ablation docling trước, vì nó phải chạy lại cả 16 cuốn.
+Lượt chi phí riêng trên doc-4 bỏ, vì sách thử nay đã là giáo trình đầy đủ. Thiếu thời gian thì bỏ ablation docling trước.
 
 ## 10. Thống kê
 
 Theo VL §9 và §10:
-- Chỉ số tính **theo từng cuốn**; báo bảng từng cuốn, theo chủ đề (chỉ mô tả, vì mỗi chủ đề 2 cuốn) và trung bình macro.
+- Chỉ số tính **theo từng cuốn** (mỗi cuốn là một chủ đề); báo bảng từng cuốn và trung bình macro. Không kết luận riêng cho từng ngành.
 - CI 95% bằng **bootstrap phân cấp** (lấy mẫu lại cuốn, rồi chương trong cuốn), seed cố định, dùng bộ sinh số LCG tất định đã có. Wilson
   chỉ dùng cho tỉ lệ trên mẫu ngẫu nhiên đơn trong một cuốn (ví dụ phán G5).
-- **So hai hệ:** hoán vị ghép cặp, chỉ hoán vị trong cùng cuốn; kèm sign test theo cuốn. Với 16 cuốn, p nhỏ nhất của sign test là
-  2·0,5¹⁶. Chỉ hai đến ba phép so được kiểm định chính thức, khai trong giao thức. Đề xuất: Q6 hệ chính so với B1; F1 cạnh A8 hệ chính
+- **So hai hệ:** hoán vị ghép cặp, chỉ hoán vị trong cùng cuốn; kèm sign test theo cuốn. Với 8 cuốn, sign test chỉ đạt p < 0,05 khi cả
+  8/8 cuốn cùng chiều (p = 0,0078); 7/8 cho p ≈ 0,07. Vì vậy kết luận chính dựa trên hoán vị ghép cặp phân tầng theo cuốn và chương; sign
+  test chỉ để bổ sung. Chỉ hai đến ba phép so được kiểm định chính thức, khai trong giao thức. Đề xuất: Q6 hệ chính so với B1; F1 cạnh A8 hệ chính
   so với B2; F1 pass phụ ML so với LLM. Các phép so khác chỉ mô tả.
 - **Phân tích công suất bằng mô phỏng** trước khi chốt giao thức, dựa trên phương sai đo ở tập phát triển và lượt thử gán.
 - **Nhiễu:** K = 5 lượt xáo ngữ cảnh pass chính giữ nghĩa, khai trước; so hai hệ trên cùng tập lượt xáo. Lượt chạy trễ thì giảm về K = 3 và
@@ -310,13 +314,13 @@ Lịch theo ngày bảo vệ 2026-11-14:
 
 | Ngày | Việc | Ai |
 |---|---|---|
-| 26–28/10 | spec và vé công cụ; hướng dẫn gán bản 1 (chủ dự án duyệt trước 29/10); gom 16 cuốn, kiểm PDF gốc và quyền | Claude, chủ dự án |
+| 26–28/10 | spec và vé công cụ; hướng dẫn gán bản 1 (chủ dự án duyệt trước 29/10); gom 8 cuốn, kiểm PDF gốc và quyền; bốc chương theo seed | Claude, chủ dự án |
 | 29/10–02/11 | agent cài công cụ; gán thử xstk (29–30/10), sửa hướng dẫn; gán tập phát triển (tới 01/11) | agent, Claude, sinh viên |
 | 31/10–03/11 | G3 tập thử, hội ý | sinh viên, chủ dự án chuyển phiếu |
 | 03–06/11 | G4 tập thử, hội ý; G1, G2 duyệt; đóng băng vàng, ghi hash | sinh viên, Claude giữ sổ |
 | 01–06/11 | đánh giá tập phát triển cùng oracle, quy lỗi; vòng nâng cấp | Claude, agent |
 | 07/11 | đóng băng mã, cấu hình, giao thức; dry-run chi | Claude; chủ dự án duyệt chi |
-| 07–09/11 | chạy 16 cuốn: hệ chính, baseline, ablation, oracle, K = 5; lượt chi phí doc-4 | Claude |
+| 07–09/11 | chạy 8 cuốn: hệ chính, baseline, ablation, oracle, K = 5 | Claude |
 | 09–10/11 | G5 phán mù; kiểm 20% phần căn | sinh viên |
 | 10–13/11 | thống kê, quy lỗi, bảng và hình, chương đánh giá, datasheet, slide | Claude, chủ dự án |
 
@@ -326,14 +330,14 @@ Vàng đóng băng (06/11) trước khi chạy tập thử (07/11). Mọi lượ
 
 Về chi và công cụ:
 - **Chi LLM:** chủ dự án cho dùng theo nhu cầu và duyệt từng lượt; mỗi lượt có dry-run trước. Ước lượng thô, biên rộng:
-  - hệ chính 16 cuốn: khoảng 15–40 USD;
-  - 4 lượt xáo thêm: khoảng 20–40 USD;
-  - ablation docling: khoảng 15–40 USD; pass phụ LLM: khoảng 30–100 USD tuỳ phạm vi;
+  - hệ chính 8 giáo trình đầy đủ: khoảng 25–60 USD;
+  - 4 lượt xáo thêm cho pass chính: khoảng 15–60 USD;
+  - ablation docling trên 3–4 cuốn: khoảng 15–30 USD; pass phụ LLM trên cặp của 3 chương bốc: khoảng 15–40 USD;
   - oracle, bỏ pass chính, tắt R17: dưới 20 USD;
-  - lượt chi phí doc-4: khoảng 5–8 USD;
   - tập phát triển và nâng cấp: khoảng 10–30 USD.
 
-  Tổng vào khoảng 100–280 USD. Dry-run sẽ chốt số.
+  Tổng vào khoảng 100–240 USD. Dry-run sẽ chốt số. Thời gian chạy là ràng buộc chặt hơn tiền: trên Vertex, một giáo trình 300 trang có thể
+  mất vài giờ vì chờ embedding.
 - **Cài công cụ:** Claude viết spec và vé; hai agent Sonnet cài song song trên hai worktree, chia khối không chung tệp; Claude tự cài
   validator và phần thống kê, agent soát độc lập. Claude nghiệm thu đủ: đọc diff, chạy lại test, tự viết phép phá.
 - **Tài liệu kèm:** datasheet cho bộ vàng (VL §12); mục khai việc dùng AI: Codex nháp G1/G2, Claude căn khái niệm, Sonnet rà soát.
@@ -352,7 +356,7 @@ Về chi và công cụ:
 | Q8 | Khung dùng chung cho seminar |
 | Q9 | Gán thử trên xstk |
 | Q10 | Bỏ T-01 khỏi đợt này |
-| Q11 | 2 người cùng ngành mỗi chủ đề, gán cả hai cuốn; hội ý qua chủ dự án |
+| Q11 | 2 người cùng ngành mỗi chủ đề, gán cuốn của chủ đề (ban đầu là hai cuốn, nay một cuốn theo Q30); hội ý qua chủ dự án |
 | Q12 | G1, G2: Codex nháp, người duyệt đủ |
 | Q13 | G5: chính hai sinh viên phán, mù, có câu đối chứng (Claude chọn theo uỷ quyền) |
 | Q14 | 4 baseline, 4 ablation, 2 oracle; cắt docling trước |
@@ -360,17 +364,21 @@ Về chi và công cụ:
 | Q16 | Hai agent song song; Claude cài validator và thống kê |
 | Q17 | Hội ý một vòng; ca còn lại là tranh chấp, báo vàng hợp và giao |
 | Q18 | Cạnh gắn cờ văn bản / kiến thức; chỉ số chính trên cạnh văn bản |
-| Q19 | Gán cả cuốn; sách 50–70 trang |
+| Q19 | ~~Gán cả cuốn; sách 50–70 trang~~ → thay bằng Q30, Q31 |
 | Q20 | Cặp toán gán thử; phiếu Excel kèm validator |
-| Q21 | Nhận sách trọn và đoạn cắt đúng ranh giới chương |
+| Q21 | ~~Nhận sách trọn và đoạn cắt~~ → không còn áp dụng: sách thử là giáo trình đầy đủ |
 | Q22 | Gán theo thứ tự chương; không kịp thì cắt ở ranh giới chương |
 | Q23 | Định nghĩa "khái niệm" như mục 6.2 |
-| Q24 | Báo theo trang, cộng lượt chi phí doc-4 |
+| Q24 | ~~Báo theo trang, cộng lượt chi phí doc-4~~ → báo theo cuốn và theo trang; bỏ lượt doc-4 (Q32) |
 | Q25 | K = 5 |
 | Q26 | Người gán là sinh viên đại học chuyên ngành, ghi ẩn danh |
 | Q27 | Sinh viên gán cả tập phát triển |
 | Q28 | Một sinh viên mỗi chủ đề kiểm 20% phần căn, phiếu mù |
 | Q29 | Sinh viên khác cho tập phát triển nếu có; không thì cặp toán, triết làm trước, có thể bỏ doc-4 ch8 |
+| Q30 | Tập thử: mỗi chủ đề một giáo trình đầy đủ, cỡ 150–300 trang, tránh trên 400 trang |
+| Q31 | Hệ chạy cả cuốn; G1, G2 cả cuốn; G3, G4 trên 3 chương bốc theo seed |
+| Q32 | Pass phụ LLM chỉ trên cặp của 3 chương; docling 3–4 cuốn hoặc bỏ; giữ K = 5; bỏ lượt doc-4 |
+| Q33 | Chủ dự án đang chuẩn bị sách; dùng được cuốn khoá D-02 nếu hợp chủ đề |
 
 ## 16. Rủi ro
 
@@ -378,6 +386,9 @@ Các rủi ro đã biết:
 - **Bước căn có thể quyết định điểm** vì máy và người gọi tên khác độ hạt. Giảm bằng luật viết trước, nhật ký, kiểm 20% và báo tỉ lệ căn.
 - **Đồng thuận cạnh có thể vẫn thấp** dù gán hai giai đoạn. Khi đó báo trung thực, đặt điểm hệ cạnh trần người.
 - **Sinh viên không phải chuyên gia.** Giảm bằng giao thức bám văn bản, cờ "kiến thức chuyên môn", câu kiểm và câu đối chứng.
-- **Sách 50–70 trang ngắn hơn giáo trình thật.** Báo theo trang và đo lượt chi phí doc-4.
+- **Chỉ 8 cuốn, mỗi chủ đề một cuốn.** Thống kê xuyên cuốn yếu hơn; không kết luận riêng cho từng ngành. Bù một phần bằng tầng chương trong
+  bootstrap phân cấp.
+- **Vàng quan hệ chỉ phủ 3 chương mỗi cuốn**, không phải cả cuốn. Số A3–A8 có điều kiện trên các chương bốc; G1, G2 vẫn phủ cả cuốn.
+- **Thời gian chạy giáo trình đầy đủ trên Vertex.** Lượt 07–09/11 có thể chật; chạy song song nhiều cuốn và dry-run sớm để ước giờ.
 - **Lịch 19 ngày.** Thứ tự cắt khi trễ: ablation docling → bớt K về 3 → cắt ở ranh giới chương. Không cắt phương pháp.
 - **Đánh giá Pha B** chưa nằm trong kế hoạch này; hợp đồng xuất và cách giữ tập thử dùng lại được.
