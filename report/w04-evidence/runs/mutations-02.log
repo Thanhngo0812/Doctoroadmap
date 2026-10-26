@@ -1,0 +1,6 @@
+wrong-current-accepted: caught
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\tmp\w04_mutations.py", line 62, in <module>
+    assert all(f.get('message', '').startswith(('assert ', 'DID NOT RAISE', 'Failed: DID NOT RAISE'))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: ('current-a-revoked', 'unexpected failure type')

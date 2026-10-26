@@ -1,0 +1,135 @@
+..F                                                                      [100%]
+================================== FAILURES ===================================
+_ test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000270F999B020>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000270F9A67E90>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000270F999B650>))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+>       assert response.status_code == 422
+E       assert 500 == 422
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.app:app.py:141 Unhandled request error ref=39b6eecc167e4c0aaf6e7d5c6daa9e44
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+psycopg.errors.CheckViolation: new row for relation "account" violates check constraint "ck_account_display_name"
+DETAIL:  Failing row contains (46ade9cc-c368-4f20-98e9-9f0c5e77b80c, w04@example.vn, w04@example.vn, $argon2id$v=19$m=19456,t=2,p=1$//5KQRub3yGNjE0Bo5WA6g$lUep/F/oPx..., xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx, user, active, null, null, 2026-01-01 00:00:00+00, 2026-01-01 00:00:00+00, 2026-01-01 00:00:00+00).
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\src\web\backend\wayfinder\api\app.py", line 134, in security_and_internal_errors
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 179, in call_next
+    raise app_exc from app_exc.__cause__ or app_exc.__context__
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\base.py", line 149, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\routing.py", line 678, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2809, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1837, in handle
+    await self.original_router.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 2892, in handle
+    await included_router._handle_selected(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1863, in _handle_selected
+    await original_route.handle(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 1326, in handle
+    await effective_context.app(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 166, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 152, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 745, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\routing.py", line 374, in run_endpoint_function
+    return await run_in_threadpool(
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\starlette\concurrency.py", line 34, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\to_thread.py", line 65, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 2641, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\anyio\_backends\_asyncio.py", line 1033, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\telemetry\_api.py", line 244, in _run_sync_endpoint
+    return function(**arguments)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\src\web\backend\wayfinder\api\auth.py", line 220, in update_profile
+    identity = _service(request).update_profile(request.cookies.get(COOKIE_NAME), data.display_name)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\src\web\backend\wayfinder\application\accounts.py", line 346, in update_profile
+    account = self.store.update_profile(identity.account.id, display_name.strip(), self.clock.now())
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\src\web\backend\wayfinder\infrastructure\auth_store.py", line 83, in update_profile
+    row = connection.execute(update(table).where(table.c.id == account_id).values(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1458, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 533, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1678, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1832, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1972, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2342, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1953, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 1192, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\psycopg\cursor.py", line 117, in execute
+    raise ex.with_traceback(None)
+sqlalchemy.exc.IntegrityError: (psycopg.errors.CheckViolation) new row for relation "account" violates check constraint "ck_account_display_name"
+DETAIL:  Failing row contains (46ade9cc-c368-4f20-98e9-9f0c5e77b80c, w04@example.vn, w04@example.vn, $argon2id$v=19$m=19456,t=2,p=1$//5KQRub3yGNjE0Bo5WA6g$lUep/F/oPx..., xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx, user, active, null, null, 2026-01-01 00:00:00+00, 2026-01-01 00:00:00+00, 2026-01-01 00:00:00+00).
+[SQL: UPDATE auth_test_bd681e09a39648d2bd6b51aa373a97fb.account SET display_name=%(display_name)s::VARCHAR, updated_at=%(updated_at)s::TIMESTAMP WITH TIME ZONE WHERE auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.id = %(id_1)s::UUID RETURNING auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.id, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.email, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.email_normalized, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.password_hash, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.display_name, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.role, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.status, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.email_verified_at, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.build_monthly_max, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.created_at, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.updated_at, auth_test_bd681e09a39648d2bd6b51aa373a97fb.account.last_login_at]
+[SQL parameters hidden due to hide_parameters=True]
+(Background on this error at: https://sqlalche.me/e/21/gkpj)
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\report\w04-evidence\mutations\attempt4\name-61-accepted.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+1 failed, 2 passed, 46 deselected, 1 warning in 4.79s

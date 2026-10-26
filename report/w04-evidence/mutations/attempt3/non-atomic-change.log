@@ -1,0 +1,37 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+________ test_pg_password_hash_revocation_and_audit_commit_atomically _________
+
+auth_database = (<wayfinder.infrastructure.auth_store.PostgresAuthStore object at 0x000002C46CE02E70>, Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_f74ee0f87fde45d2bc09055500dfab33), 'auth_test_c0859237f8e34289800e63f001525b54')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002C46CA39430>
+
+    def test_pg_password_hash_revocation_and_audit_commit_atomically(auth_database, monkeypatch):
+        service = build_test_application().services.accounts
+        service.store = auth_database[0]
+        a = service.register("w04@example.vn", PASSWORD, "An", ip=None, user_agent=None).session
+        b = service.login("w04@example.vn", PASSWORD, ip=None, user_agent=None)
+        before = snapshot(service)
+
+        def fail_audit(event):
+            raise RuntimeError("synthetic audit storage failure")
+
+        monkeypatch.setattr(service.store, "append_audit", fail_audit)
+        with pytest.raises(RuntimeError, match="synthetic audit storage failure"):
+            service.change_password(a.token, PASSWORD, NEW_PASSWORD, ip=None)
+>       assert snapshot(service) == before
+E       AssertionError: assert ('$argon2id$v...id': 2, ...}]) == ('$argon2id$v...id': 2, ...}])
+E
+E         At index 0 diff: '$argon2id$v=19$m=19456,t=2,p=1$ga49Rp2OgelZYqijLC5a2Q$J8qGiLffHlkYIgbd7/9PWTvQp3e67UmOa6RsHbeHaT4' != '$argon2id$v=19$m=19456,t=2,p=1$UwLtcIgpB9Uk0QLDvSgSYA$dKYgPBTLWVDMTiohgUXbXI3uyW0j1Kd3vgHId80ZTU8'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w04_accounts.py:336: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\report\w04-evidence\mutations\attempt3\non-atomic-change.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w04_accounts.py::test_pg_password_hash_revocation_and_audit_commit_atomically
+1 failed, 48 deselected, 1 warning in 2.37s

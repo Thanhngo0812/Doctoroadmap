@@ -1,0 +1,40 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__ test_logout_all_revokes_a_b_preserves_other_and_cookie_security[postgres] __
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x00000230F2E49550>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000230F2EDFE00>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x00000230F2DE7380>))
+
+    def test_logout_all_revokes_a_b_preserves_other_and_cookie_security(runtime):
+        service, a, b, other, _ = runtime
+        old_cookies = [client.cookies.get("d2r_session") for client in (a, b)]
+        owner = a.get("/api/v1/me").json()["account"]["id"]
+        result = a.post("/api/v1/auth/logout-all", headers=headers(a))
+        assert result.status_code == 200
+        cookie = result.headers["set-cookie"].lower()
+        assert all(part in cookie for part in ("max-age=0", "path=/", "httponly", "secure", "samesite=lax"))
+        assert "domain=" not in cookie and "d2r_session" not in a.cookies
+        for client, cookie in zip((a, b), old_cookies):
+>           assert_unauthenticated(client)
+
+src\web\backend\tests\test_w04_accounts.py:230:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = <starlette.testclient.TestClient object at 0x00000230F47AAA20>
+
+    def assert_unauthenticated(client):
+        response = client.get("/api/v1/me")
+>       assert response.status_code == 401
+E       assert 200 == 401
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:98: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\report\w04-evidence\mutations\attempt3\logout-only-a.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w04_accounts.py::test_logout_all_revokes_a_b_preserves_other_and_cookie_security[postgres]
+1 failed, 48 deselected, 1 warning in 2.86s

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="4.791" timestamp="2026-10-26T19:09:16.284879+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-]" time="1.445" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-   ]" time="0.631" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.914"><failure message="assert 500 == 422&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x00000270F999B020&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000270F9A67E90&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x00000270F999B650&gt;))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+&gt;       assert response.status_code == 422
+E       assert 500 == 422
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError</failure></testcase></testsuite></testsuites>

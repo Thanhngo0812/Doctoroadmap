@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="21" failures="17" skipped="0" tests="42" time="1165.820" timestamp="2026-10-26T18:36:17.579933+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_trim_boundaries_persist_and_preserve_identity[fake]" time="2.109"><failure message="assert 405 == 200&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344C60D790&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344C508350&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344C509D90&gt;))
+
+    def test_profile_trim_boundaries_persist_and_preserve_identity(runtime):
+        service, a, b, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        original = service.store.get_credentials("w04@example.vn")
+        for name in ("  An  ", "  " + "Đ" * 60 + "  ", " x "):
+            result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+&gt;           assert result.status_code == 200
+E           assert 405 == 200
+E            +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:108: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_trim_boundaries_persist_and_preserve_identity[postgres]" time="4.251"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[fake-]" time="0.593"><failure message="assert 405 == 422&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344DF14560&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E011BE0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344DF14470&gt;))
+name = ''
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+&gt;       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[fake-   ]" time="0.534"><failure message="assert 405 == 422&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344DF9B9B0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E211190&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E03CD70&gt;))
+name = '   '
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+&gt;       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.595"><failure message="assert 405 == 422&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E230440&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E3D4DA0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E230320&gt;))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+&gt;       assert response.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:127: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-]" time="0.076"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-   ]" time="0.093"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.079"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra0]" time="0.584"><failure message="assert 405 == 422&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E61A510&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E699490&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E61B170&gt;))
+extra = {'role': 'admin'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+&gt;       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra1]" time="0.583"><failure message="assert 405 == 422&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E6039B0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E7DCD40&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E591850&gt;))
+extra = {'email': 'other-w04@example.vn'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+&gt;       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra2]" time="0.674"><failure message="assert 405 == 422&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E79FFB0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E9945F0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E7E9F70&gt;))
+extra = {'owner': 'other-account'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+&gt;       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra3]" time="0.522"><failure message="assert 405 == 422&#10; +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E992B10&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344C5CAF00&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E6A4830&gt;))
+extra = {'account_id': 'other-account'}
+
+    @pytest.mark.parametrize("extra", [{"role": "admin"}, {"email": "other-w04@example.vn"},
+                                       {"owner": "other-account"}, {"account_id": "other-account"}])
+    def test_profile_rejects_mass_assignment(runtime, extra):
+        _, a, _, other, _ = runtime
+        before = a.get("/api/v1/me").json()
+        other_before = other.get("/api/v1/me").json()
+        result = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "Attacker", **extra})
+&gt;       assert result.status_code == 422
+E       assert 405 == 422
+E        +  where 405 = &lt;Response [405 Method Not Allowed]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:142: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra0]" time="0.081"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra1]" time="0.077"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra2]" time="0.081"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra3]" time="0.072"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[fake]" time="0.564"><failure message="assert 404 == 401&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E0C03E0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E9E01D0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E0C0DA0&gt;))
+
+    def test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged(runtime):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        result = change(a, current_password="incorrect synthetic password")
+&gt;       assert result.status_code == 401
+E       assert 404 == 401
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:152: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[postgres]" time="0.070"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_new_password_uses_w02_policy_without_mutation[fake-short]" time="0.476"><failure message="assert 404 == 422&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E9F1370&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344EA74D10&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344E9F2B70&gt;))
+password = 'short'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+&gt;       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_new_password_uses_w02_policy_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.484"><failure message="assert 404 == 422&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344E9B7FB0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344EB4FE60&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344EA5A600&gt;))
+password = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+&gt;       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_new_password_uses_w02_policy_without_mutation[fake-password]" time="0.502"><failure message="assert 404 == 422&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344EBF39B0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344ED74230&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344EB9ED50&gt;))
+password = 'password'
+
+    @pytest.mark.parametrize("password", ["short", "x" * 129, "password"])
+    def test_new_password_uses_w02_policy_without_mutation(runtime, password):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        response = change(a, new_password=password)
+&gt;       assert response.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:166: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_new_password_uses_w02_policy_without_mutation[postgres-short]" time="0.067"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_new_password_uses_w02_policy_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.071"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_new_password_uses_w02_policy_without_mutation[postgres-password]" time="0.071"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_change_keeps_a_revokes_b_checks_hash_login_and_audit[fake]" time="0.495"><failure message="assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344EFB9280&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344EF97FE0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344EFB8980&gt;))
+
+    def test_change_keeps_a_revokes_b_checks_hash_login_and_audit(runtime):
+        service, a, b, other, _ = runtime
+        raw_a, raw_b = a.cookies.get("d2r_session"), b.cookies.get("d2r_session")
+        before = snapshot(service)
+        result = change(a)
+&gt;       assert result.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:179: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_change_keeps_a_revokes_b_checks_hash_login_and_audit[postgres]" time="0.076"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_session_owner_body_forgery_rejected[fake-/me/password-payload0]" time="0.761"><failure message="assert 404 == 422&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344F178D70&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344F280230&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344F178C80&gt;))
+path = '/me/password'
+payload = {'current_password': 'W04 synthetic original passphrase!', 'new_password': 'W04 synthetic replacement passphrase!'}
+
+    @pytest.mark.parametrize("path,payload", [("/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+                                              ("/auth/logout-all", {})])
+    def test_session_owner_body_forgery_rejected(runtime, path, payload):
+        service, a, b, other, _ = runtime
+        raw_b = b.cookies.get("d2r_session")
+        session_b = service.store.get_session(hashlib.sha256(raw_b.encode()).digest())
+        owner = other.get("/api/v1/me").json()["account"]["id"]
+        before = snapshot(service)
+        result = a.post("/api/v1" + path, headers=headers(a), json={**payload, "session_id": session_b.id, "owner": owner})
+&gt;       assert result.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:212: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_session_owner_body_forgery_rejected[fake-/auth/logout-all-payload1]" time="0.518"><failure message="assert 404 == 422&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344EE3B9B0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344F23C800&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344EFB0140&gt;))
+path = '/auth/logout-all', payload = {}
+
+    @pytest.mark.parametrize("path,payload", [("/me/password", {"current_password": PASSWORD, "new_password": NEW_PASSWORD}),
+                                              ("/auth/logout-all", {})])
+    def test_session_owner_body_forgery_rejected(runtime, path, payload):
+        service, a, b, other, _ = runtime
+        raw_b = b.cookies.get("d2r_session")
+        session_b = service.store.get_session(hashlib.sha256(raw_b.encode()).digest())
+        owner = other.get("/api/v1/me").json()["account"]["id"]
+        before = snapshot(service)
+        result = a.post("/api/v1" + path, headers=headers(a), json={**payload, "session_id": session_b.id, "owner": owner})
+&gt;       assert result.status_code == 422
+E       assert 404 == 422
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:212: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_session_owner_body_forgery_rejected[postgres-/me/password-payload0]" time="0.071"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_session_owner_body_forgery_rejected[postgres-/auth/logout-all-payload1]" time="0.072"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_logout_all_revokes_a_b_preserves_other_and_cookie_security[fake]" time="0.480"><failure message="assert 404 == 200&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344B453FB0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344E9F16D0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344F24CB60&gt;))
+
+    def test_logout_all_revokes_a_b_preserves_other_and_cookie_security(runtime):
+        service, a, b, other, _ = runtime
+        old_cookies = [client.cookies.get("d2r_session") for client in (a, b)]
+        owner = a.get("/api/v1/me").json()["account"]["id"]
+        result = a.post("/api/v1/auth/logout-all", headers=headers(a))
+&gt;       assert result.status_code == 200
+E       assert 404 == 200
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:224: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_logout_all_revokes_a_b_preserves_other_and_cookie_security[postgres]" time="0.084"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[fake-PATCH-/me-payload0]" time="0.454" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[fake-POST-/me/password-payload1]" time="0.455" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[fake-POST-/auth/logout-all-payload2]" time="0.459" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[postgres-PATCH-/me-payload0]" time="0.068"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[postgres-POST-/me/password-payload1]" time="0.070"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_csrf_origin_guest_disabled_and_cross_session_guards[postgres-POST-/auth/logout-all-payload2]" time="0.071"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_service_methods_validate_without_http_and_reject_stale_session[fake]" time="0.419"><failure message="AttributeError: 'AccountService' object has no attribute 'update_profile'">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002344F288F80&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002344F28FDA0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002344F2891C0&gt;))
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002344F289520&gt;
+
+    def test_service_methods_validate_without_http_and_reject_stale_session(runtime, monkeypatch):
+        service, a, b, _, _ = runtime
+        raw = a.cookies.get("d2r_session")
+        before = snapshot(service)
+        with pytest.raises(AuthError) as failure:
+&gt;           service.update_profile(raw, " " * 3)
+            ^^^^^^^^^^^^^^^^^^^^^^
+E           AttributeError: 'AccountService' object has no attribute 'update_profile'
+
+src\web\backend\tests\test_w04_accounts.py:276: AttributeError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_service_methods_validate_without_http_and_reject_stale_session[postgres]" time="0.069"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_w03_reset_still_revokes_all_including_a[fake]" time="0.648" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_w03_reset_still_revokes_all_including_a[postgres]" time="0.064"><error message="failed on setup with &quot;Failed: PostgreSQL: db-test is configured but unavailable, or cannot create a test database&quot;">connection timeout expired
+
+The above exception was the direct cause of the following exception:
+(psycopg.errors.ConnectionTimeout) connection timeout expired
+(Background on this error at: https://sqlalche.me/e/21/e3q8)
+
+During handling of the above exception, another exception occurred:
+PostgreSQL: db-test is configured but unavailable, or cannot create a test database</error></testcase></testsuite></testsuites>

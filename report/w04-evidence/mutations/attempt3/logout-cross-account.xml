@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.664" timestamp="2026-10-26T19:08:20.805695+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_logout_all_revokes_a_b_preserves_other_and_cookie_security[postgres]" time="1.053"><failure message="AssertionError: assert 401 == 200&#10; +  where 401 = &lt;Response [401 Unauthorized]&gt;.status_code&#10; +    where &lt;Response [401 Unauthorized]&gt; = get('/api/v1/me')&#10; +      where get = &lt;starlette.testclient.TestClient object at 0x000001F5C212CF80&gt;.get">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000001F5C1779CA0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000001F5C188C1A0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000001F5C17171D0&gt;))
+
+    def test_logout_all_revokes_a_b_preserves_other_and_cookie_security(runtime):
+        service, a, b, other, _ = runtime
+        old_cookies = [client.cookies.get("d2r_session") for client in (a, b)]
+        owner = a.get("/api/v1/me").json()["account"]["id"]
+        result = a.post("/api/v1/auth/logout-all", headers=headers(a))
+        assert result.status_code == 200
+        cookie = result.headers["set-cookie"].lower()
+        assert all(part in cookie for part in ("max-age=0", "path=/", "httponly", "secure", "samesite=lax"))
+        assert "domain=" not in cookie and "d2r_session" not in a.cookies
+        for client, cookie in zip((a, b), old_cookies):
+            assert_unauthenticated(client)
+            assert client.get("/api/v1/me", headers={"Cookie": f"d2r_session={cookie}"}).status_code == 401
+&gt;       assert other.get("/api/v1/me").status_code == 200
+E       AssertionError: assert 401 == 200
+E        +  where 401 = &lt;Response [401 Unauthorized]&gt;.status_code
+E        +    where &lt;Response [401 Unauthorized]&gt; = get('/api/v1/me')
+E        +      where get = &lt;starlette.testclient.TestClient object at 0x000001F5C212CF80&gt;.get
+
+src\web\backend\tests\test_w04_accounts.py:232: AssertionError</failure></testcase></testsuite></testsuites>

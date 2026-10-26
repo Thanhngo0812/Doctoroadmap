@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="16" time="8.828" timestamp="2026-10-26T18:59:23.078350+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_trim_boundaries_persist_and_preserve_identity[fake]" time="0.581" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_trim_boundaries_persist_and_preserve_identity[postgres]" time="1.305" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[fake-]" time="0.311"><failure message="AssertionError: assert 'body.display_name' == 'display_name'&#10;  &#10;  - display_name&#10;  + body.display_name&#10;  ? +++++">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002682E1E4920&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E2EBB30&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002682E232B40&gt;))
+name = ''
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+&gt;       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[fake-   ]" time="0.213"><failure message="AssertionError: assert 'body.display_name' == 'display_name'&#10;  &#10;  - display_name&#10;  + body.display_name&#10;  ? +++++">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002682CDF3320&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E46DB20&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002682CDF3830&gt;))
+name = '   '
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+&gt;       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.243"><failure message="AssertionError: assert 'body.display_name' == 'display_name'&#10;  &#10;  - display_name&#10;  + body.display_name&#10;  ? +++++">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002682E45F380&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E414620&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002682E45E480&gt;))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+&gt;       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-]" time="0.518"><failure message="AssertionError: assert 'body.display_name' == 'display_name'&#10;  &#10;  - display_name&#10;  + body.display_name&#10;  ? +++++">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002682E4DFFB0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E5E6CC0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002682E53A690&gt;))
+name = ''
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+&gt;       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-   ]" time="0.477"><failure message="AssertionError: assert 'body.display_name' == 'display_name'&#10;  &#10;  - display_name&#10;  + body.display_name&#10;  ? +++++">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002682E6129C0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E79ABA0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002682E69E8A0&gt;))
+name = '   '
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+&gt;       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]" time="0.495"><failure message="AssertionError: assert 'body.display_name' == 'display_name'&#10;  &#10;  - display_name&#10;  + body.display_name&#10;  ? +++++">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002682E8229C0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E94F140&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002682E85E420&gt;))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+&gt;       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra0]" time="0.256" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra1]" time="0.231" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra2]" time="0.252" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[fake-extra3]" time="0.338" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra0]" time="0.514" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra1]" time="0.635" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra2]" time="0.504" /><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_rejects_mass_assignment[postgres-extra3]" time="0.443" /></testsuite></testsuites>

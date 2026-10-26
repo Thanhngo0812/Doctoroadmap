@@ -1,0 +1,53 @@
+{
+  "results": [
+    {
+      "name": "name-61-accepted",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "profile_validation and postgres",
+        "--basetemp=tmp/w04-mutant-name-61-accepted",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt4\\name-61-accepted.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "f2dd90f3072ddd28082fbc5716ff7d600be221008087326e60019fdc183d2744",
+        "src/web/backend/wayfinder/api/auth.py": "9041bf1aca7de62b383ba23134ca45afae072246fb21feda7daf7f239dd8cfb5"
+      }
+    },
+    {
+      "name": "stale-identity-reused",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "stale_session and postgres",
+        "--basetemp=tmp/w04-mutant-stale-identity-reused",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt4\\stale-identity-reused.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 3,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "3d0c0cf4e2475c4a7cd3a8ddd8d410d2c6e447df2edc486cd817c2f7188af8f1"
+      }
+    }
+  ],
+  "sources_restored": true,
+  "original_sha256": {
+    "src/web/backend/wayfinder/application/accounts.py": "c84a527959168fdc6244b071e93661f8113357712a8b28ea2c0be73c4f5ed534",
+    "src/web/backend/wayfinder/api/auth.py": "5d1b88037229b598e7c192bd5134e28a2eab5bc97e4d6b21fde148590560fcbf",
+    "src/web/backend/wayfinder/infrastructure/auth_store.py": "fec470051a56b58c0d8413c7dfd1078f68d34c3f308e84922043805f92b6bf71"
+  }
+}

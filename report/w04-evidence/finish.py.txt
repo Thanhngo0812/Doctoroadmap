@@ -1,0 +1,130 @@
+"""Freeze only W04 evidence after native gates; retain other generated outputs unchanged."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import xml.etree.ElementTree as ET
+
+from dotenv import dotenv_values
+
+root = Path(__file__).resolve().parents[1]
+out = root / 'report/w04-evidence'
+source_head = 'b8cb7de1edef899a38fb2df4215bbc2dd177cce4'
+main_head = '8c7aab42b216ecbdc63bcc91ccbc4861df111024'
+git = lambda *args: subprocess.check_output(['git', *args], cwd=root).decode().strip()
+assert git('rev-parse', 'HEAD') == source_head
+assert git('rev-parse', 'main') == main_head
+assert not git('diff', '--name-only', '--', 'src')
+assert not (out / 'manifest.json').exists()
+
+def write(path, body):
+    path.write_bytes((json.dumps(body, indent=2, ensure_ascii=False) + '\n').encode())
+
+gates = {}
+for label in ('full-01', 'react-01', 'build-01'):
+    meta = json.loads((out / 'runs' / (label + '-exit.json')).read_text())
+    assert meta['commit'] == source_head and meta['exit_code'] == 0
+    for name, digest in meta['source_sha256'].items():
+        assert sha256((root / name).read_bytes()).hexdigest() == digest, name
+    gate = {k: v for k, v in meta.items() if k != 'source_sha256'}
+    xml = out / 'runs' / (label + '.xml')
+    if xml.exists():
+        tree = ET.parse(xml)
+        assert not tree.findall('.//failure') and not tree.findall('.//error')
+        tests = tree.findall('.//testcase')
+        skipped = [dict(name=t.get('name'), classname=t.get('classname'),
+                        reason=t.find('skipped').get('message')) for t in tests if t.find('skipped') is not None]
+        gate.update(passed=len(tests)-len(skipped), skipped_or_xfailed=skipped)
+    gates[label] = gate
+
+mutants = []
+for attempt in ('attempt3', 'attempt4'):
+    result = json.loads((out / 'mutations' / attempt / 'summary.json').read_text())
+    assert result['sources_restored']
+    for name, digest in result['original_sha256'].items():
+        assert sha256((root / name).read_bytes()).hexdigest() == digest
+    mutants.extend(result['results'])
+assert len(mutants) == len({m['name'] for m in mutants}) == 10
+write(out / 'mutations' / 'accepted-results.json', dict(mutants=mutants, caught=10, sources_restored=True,
+    note='attempt3 caught first 8 then stopped before ambiguous name patch; attempt4 caught final 2'))
+
+public = out / 'public'
+public.mkdir(exist_ok=True)
+for name in ('profile', 'profile-validation', 'wrong-current-password', 'new-password-validation',
+             'password-changed', 'logout-all', 'password_changed-audit', 'logout_all-audit'):
+    shutil.copyfile(out / 'full-01' / (name + '.json'), public / (name + '.json'))
+write(public / 'metadata.json', dict(source_commit=source_head, backend='PostgresAuthStore',
+    source='Actual HTTP responses and PG audit rows from full-01; last parametrization is PostgreSQL',
+    data='Synthetic accounts, fake clock and mailer/model/media; never real users or provider spend',
+    csrf='Only ephemeral fixture csrf_token value replaced with explicit omission marker',
+    independent_test_accounts='Each example can come from a different isolated test; do not combine their IDs',
+    openapi='src/web/openapi.json, generated from combined app, 44 previous + 3 new = 47 operations'))
+
+status = subprocess.check_output(['git', 'status', '--short', '--untracked-files=all'], cwd=root).decode()
+retained = [line for line in status.splitlines()
+            if not line[3:].startswith(('report/w04-', 'report/w04/'))]
+write(out / 'retained-test-exports.json', dict(note='Original generated test outputs retained outside commit; no restore/delete/stash',
+                                            paths=retained))
+helpers = []
+for name in ('w04_capture.py', 'w04_inputs.py', 'w04_openapi.py', 'w04_mutations.py',
+             'w04_commit_source.py', 'w04_finish.py'):
+    path = root / 'tmp' / name
+    target = out / (name.removeprefix('w04_') + '.txt')
+    shutil.copyfile(path, target)
+    helpers.append(dict(source=path.relative_to(root).as_posix(), source_sha256=sha256(path.read_bytes()).hexdigest(),
+                        stored=target.name))
+write(out / 'provenance.json', dict(files=helpers,
+    note='New W04 evidence normalized to UTF-8/LF; unmodified original evidence copies retained in ignored tmp'))
+summary = dict(source_commit=source_head, main_received=main_head, gates=gates,
+    baseline_red=dict(failed=34, passed=8, setup_errors=0), w04_cases=49, focused_regression_passed=119,
+    mutants_caught=10, source_restored=True, external_calls=0, actual_provider_spend_usd=0,
+    ledger_and_account_fixtures_are_real_spend=False, migration_added=False,
+    core_changed=False, frontend_changed=False, app_changed=False,
+    openapi_generated=True, previous_operations_preserved=44, new_operations=3,
+    backend_milestone_ready_for_review=True, w04_complete=False, merged_main=False)
+write(out / 'summary.json', summary)
+
+report = root / 'report/w04-account-backend-2026-10-26.md'
+full, react, build = (gates[label] for label in ('full-01', 'react-01', 'build-01'))
+with report.open('a', encoding='utf-8', newline='\n') as stream:
+    stream.write('\n\n## Kết quả cổng cuối và bàn giao\n\n'
+        f'Commit mã **`{source_head}`** trên main đã nhận `{main_head}`. '
+        f'PG toàn repo: **{full["passed"]} pass**, {len(full["skipped_or_xfailed"])} skip/xfail có sẵn; '
+        f'React **{react["passed"]} pass**; build native **{build["exit_code"]}**. '
+        'Ba cổng chạy tuần tự trên cùng source/HEAD; native, lệnh, cwd, số giây và source SHA trong `w04-evidence/runs/`.\n\n'
+        'Sau phục hồi mutation, **119 test hồi quy đạt**, gồm **49 ca W-04**. '
+        '**10/10 mutant bị bắt bằng assertion**, không setup error trong các lượt được tính. '
+        'Tự review correctness/readability/architecture/security/performance không còn phát hiện chặn; '
+        'đây là tự kiểm, vẫn chờ điều phối soát độc lập.\n\n'
+        '[JSON public/audit cho web](w04-evidence/public/metadata.json), '
+        '[summary](w04-evidence/summary.json), [manifest SHA](w04-evidence/manifest.json). '
+        'CSRF fixture được che; tên/email/UUID còn lại là dữ liệu tổng hợp, không phải dữ liệu người dùng thật. '
+        'Không đổi cấu hình demo, không gọi nhà cung cấp/SMTP/Cloudinary/ADC thật; **0 USD**.\n\n'
+        'Worktree còn output phát sinh của cổng cũ ngoài W-04, được liệt kê trong '
+        '`retained-test-exports.json`; giữ nguyên và không nằm trong commit bàn giao. '
+        '**Backend W-04 sẵn sàng soát; toàn W-04 còn React/tích hợp của web. Chưa ghép/push main.**\n')
+
+values = dotenv_values(root.parents[1] / 'src/web/.env')
+secrets = [value.encode() for key, value in values.items() if value and len(value) >= 8
+           and any(part in key.lower() for part in ('password', 'secret', 'token', 'api_key'))]
+for path in [report, *out.rglob('*')]:
+    if path.is_file():
+        assert not any(secret in path.read_bytes() for secret in secrets), 'Configured secret found; do not commit'
+
+raw = root / 'tmp/w04-raw-evidence'
+manifest = []
+for path in sorted(p for p in out.rglob('*') if p.is_file()):
+    original = path.read_bytes()
+    relative = path.relative_to(out)
+    backup = raw / relative
+    backup.parent.mkdir(parents=True, exist_ok=True)
+    assert not backup.exists()
+    backup.write_bytes(original)
+    normalized = original.decode('utf-8-sig').replace('\r\n', '\n').encode()
+    path.write_bytes(normalized)
+    manifest.append(dict(path=relative.as_posix(), raw_sha256=sha256(original).hexdigest(),
+                         sha256=sha256(normalized).hexdigest(), bytes=len(normalized)))
+write(out / 'manifest.json', dict(files=manifest))
+print(json.dumps(dict(gates={label: {'passed': g.get('passed'), 'exit_code': g['exit_code']} for label,g in gates.items()},
+    evidence_files=len(manifest), secrets_found=0, source_commit=source_head, w04_complete=False), indent=2))

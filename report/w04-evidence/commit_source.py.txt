@@ -1,0 +1,23 @@
+from pathlib import Path
+import subprocess
+
+root = Path(__file__).resolve().parents[1]
+def git(*args):
+    return subprocess.check_output(['git', *args], cwd=root).decode().strip()
+
+paths = ['src/web/backend/wayfinder/' + p for p in (
+    'application/accounts.py', 'application/auth_ports.py', 'infrastructure/auth_store.py',
+    'fakes/auth.py', 'api/auth.py')]
+paths += ['src/web/backend/tests/test_w04_accounts.py', 'src/web/openapi.json']
+assert git('branch', '--show-current') == 'work/w04-account-backend'
+assert git('-C', str(root.parents[1]), 'branch', '--show-current') == 'main'
+assert git('rev-parse', 'HEAD') == git('rev-parse', 'main') == '8c7aab42b216ecbdc63bcc91ccbc4861df111024'
+assert not git('diff', '--cached', '--name-only')
+assert not git('diff', '--name-only', '--', 'src/doc2roadmap', 'src/web/frontend',
+               'src/web/backend/wayfinder/api/app.py', 'src/web/backend/wayfinder/infrastructure/learning_usage.py')
+subprocess.run(['git', 'add', '--', *paths], cwd=root, check=True)
+assert set(git('diff', '--cached', '--name-only').splitlines()) == set(paths)
+subprocess.run(['git', 'diff', '--cached', '--check'], cwd=root, check=True)
+subprocess.run(['git', 'commit', '-m', 'feat(w04): add profile changes, password changes and account-wide logout', '--', *paths],
+               cwd=root, check=True)
+print(git('rev-parse', 'HEAD'))

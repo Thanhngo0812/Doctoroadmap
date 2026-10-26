@@ -1,0 +1,137 @@
+..FFFFFF........                                                         [100%]
+================================== FAILURES ===================================
+___________ test_profile_validation_fields_without_mutation[fake-] ____________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002682E1E4920>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E2EBB30>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002682E232B40>))
+name = ''
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+>       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError
+__________ test_profile_validation_fields_without_mutation[fake-   ] __________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002682CDF3320>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E46DB20>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002682CDF3830>))
+name = '   '
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+>       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError
+_ test_profile_validation_fields_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002682E45F380>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E414620>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002682E45E480>))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+>       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError
+_________ test_profile_validation_fields_without_mutation[postgres-] __________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002682E4DFFB0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E5E6CC0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002682E53A690>))
+name = ''
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+>       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError
+________ test_profile_validation_fields_without_mutation[postgres-   ] ________
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002682E6129C0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E79ABA0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002682E69E8A0>))
+name = '   '
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+>       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError
+_ test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000002682E8229C0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002682E94F140>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000002682E85E420>))
+name = 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+
+    @pytest.mark.parametrize("name", ["", "   ", "x" * 61])
+    def test_profile_validation_fields_without_mutation(runtime, name):
+        service, a, b, _, _ = runtime
+        previous = a.get("/api/v1/me").json()
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": name})
+        assert response.status_code == 422
+        assert response.json()["error"]["code"] == "validation"
+>       assert response.json()["error"]["fields"][0]["loc"] == "display_name"
+E       AssertionError: assert 'body.display_name' == 'display_name'
+E
+E         - display_name
+E         + body.display_name
+E         ? +++++
+
+src\web\backend\tests\test_w04_accounts.py:129: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\report\w04-evidence\runs\profile-green-01.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[fake-]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[fake-   ]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[fake-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[postgres-]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[postgres-   ]
+FAILED src/web/backend/tests/test_w04_accounts.py::test_profile_validation_fields_without_mutation[postgres-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx]
+6 failed, 10 passed, 26 deselected, 1 warning in 8.83s

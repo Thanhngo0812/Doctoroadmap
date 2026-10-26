@@ -1,0 +1,76 @@
+"""Temporarily break actual W04 guards, require assertion failures, restore exact owned source bytes."""
+from hashlib import sha256
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+root = Path(__file__).resolve().parents[1]
+base = 'src/web/backend/wayfinder/'
+account = base + 'application/accounts.py'
+api = base + 'api/auth.py'
+pg = base + 'infrastructure/auth_store.py'
+cases = [
+    ('wrong-current-accepted', [(account,
+        'if not self.hasher.verify(credentials.password_hash, current_password):', 'if False:')], 'wrong_current and postgres'),
+    ('current-a-revoked', [(account, 'except_session_id=identity.session.id', 'except_session_id=None')], 'change_keeps_a and postgres'),
+    ('other-b-survives', [(account,
+        'self.store.delete_account_sessions(account.id, except_session_id=identity.session.id)', 'pass  # mutant skips other-session revocation')], 'change_keeps_a and postgres'),
+    ('logout-only-a', [(account,
+        'self.store.delete_account_sessions(account.id)\n            self.store.append_audit(AuditEvent(self.clock.now(), account.id, "logout_all"',
+        'self.store.delete_session(identity.session.id)\n            self.store.append_audit(AuditEvent(self.clock.now(), account.id, "logout_all"')], 'logout_all_revokes and postgres'),
+    ('logout-cross-account', [(pg, 'statement = delete(table).where(table.c.account_id == account_id)',
+        'statement = delete(table)')], 'logout_all_revokes and postgres'),
+    ('csrf-unbound', [(api, 'if not secrets.compare_digest(token.encode("utf-8"), identity.session.csrf_token.encode("utf-8")):',
+        'if False:')], 'csrf_origin_guest and postgres'),
+    ('public-dto-bypassed', [(api, '@router.patch("/me", response_model=IdentityResponse)',
+        '@router.patch("/me", response_model=None)')], 'profile_uses_public and postgres'),
+    ('non-atomic-change', [(account, 'from contextlib import contextmanager', 'from contextlib import contextmanager, nullcontext'),
+        (account, 'with self.store.atomic([f"account:{account.id}", f"account:{account.email_normalized}",\n                                f"session:{identity.session.token_hash.hex()}"]):',
+        'with nullcontext():')], 'pg_password_hash_revocation'),
+    ('name-61-accepted', [(account, '1 <= len(display_name.strip()) <= 60:', '1 <= len(display_name.strip()) <= 61:'),
+        (api, 'display_name: str = Field(min_length=1, max_length=60)\n\n    @field_validator',
+        'display_name: str = Field(min_length=1, max_length=61)\n\n    @field_validator')], 'profile_validation and postgres'),
+    ('stale-identity-reused', [(account, 'session = self.store.get_session(identity.session.token_hash)',
+        'session = identity.session')], 'stale_session and postgres'),
+]
+out = root / 'report/w04-evidence/mutations/attempt2'
+out.mkdir(parents=True, exist_ok=False)
+originals = {p: (root/p).read_bytes() for p in {patch[0] for _, patches, _ in cases for patch in patches}}
+results = []
+try:
+    for name, patches, selection in cases:
+        try:
+            for relative, before, after in patches:
+                path = root / relative
+                source = path.read_text(encoding='utf-8')
+                assert source.count(before) == 1, (name, relative, 'ambiguous patch')
+                path.write_text(source.replace(before, after), encoding='utf-8', newline='\n')
+            xml = out / (name + '.xml')
+            command = [sys.executable, 'scripts/w05_run_tests.py', '-o', 'addopts=', '-q',
+                'src/web/backend/tests/test_w04_accounts.py', '-k', selection,
+                '--basetemp=tmp/w04-mutant-' + name, '--junitxml=' + str(xml.relative_to(root))]
+            changed = {p: sha256((root/p).read_bytes()).hexdigest() for p, _, _ in patches}
+            result = subprocess.run(command, cwd=root, capture_output=True, encoding='utf-8', errors='replace',
+                env={**os.environ, 'W04_EVIDENCE_RUN': 'mutant-' + name})
+            (out / (name + '.log')).write_bytes((result.stdout + result.stderr).encode())
+            tree = ET.parse(xml)
+            failures, errors = tree.findall('.//failure'), tree.findall('.//error')
+            assert result.returncode == 1 and failures and not errors, (name, 'not an assertion RED')
+            assert all(f.get('message', '').startswith(('assert ', 'DID NOT RAISE', 'Failed: DID NOT RAISE'))
+                       for f in failures), (name, 'unexpected failure type')
+            results.append(dict(name=name, command=command, native_exit=result.returncode,
+                failure_count=len(failures), setup_errors=len(errors), mutant_sha256=changed))
+            print(name + ': caught', flush=True)
+        finally:
+            for relative, original in originals.items():
+                (root / relative).write_bytes(original)
+    assert all((root/p).read_bytes() == data for p, data in originals.items())
+finally:
+    for relative, original in originals.items():
+        (root / relative).write_bytes(original)
+    (out / 'summary.json').write_text(json.dumps(dict(results=results,
+        sources_restored=all((root/p).read_bytes() == data for p, data in originals.items()),
+        original_sha256={p: sha256(data).hexdigest() for p, data in originals.items()}), indent=2)+'\n', encoding='utf-8')
