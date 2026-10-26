@@ -49,7 +49,7 @@ class BuildSecondaryMLEdges(BuildSecondaryEdges):
         if cached is not None:
             return StagePlan("reused", artifact=cached) if planning else (cached, True)
         pairs, _ = select_secondary_pairs(nodes, payload.get("suspected_pairs", []), ledger, [], route=route)
-        pairs = self._loc_cap(pairs)
+        pairs = self._loc_cap(pairs, nodes)
         if planning:
             return StagePlan("run", remaining_items=len(pairs), unit="pair", calls_estimate=0, usd_estimate=0.0,
                              note="Pass phụ ML chạy offline; không cần --allow-spend, không gọi LLM/embedding.")

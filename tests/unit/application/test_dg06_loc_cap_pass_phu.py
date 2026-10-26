@@ -97,12 +97,20 @@ def test_llm_bo_loc_vao_hash_cau_hinh_va_checkpoint():
     assert len(ids) == 3
 
 
-def test_ml_cap_ngoai_danh_sach_khong_duoc_cham():
-    # fixture ML có đúng một cặp a-b; lọc đích zzz (không có cặp nào chứa) thì không cặp nào được chấm
-    _, scorer, artifact = chay_ml(target_filter=["zzz"])
-    assert artifact.payload["stats"]["secondary_pair_count"] == 0
-    assert artifact.payload["stats"]["secondary_candidate_count"] == 0
-    assert artifact.payload["secondary_edges"] == [] and artifact.payload["secondary_log"] == []
+def test_id_dich_khong_co_trong_do_thi_bao_loi_o_ca_hai_che_do():
+    # Claude thêm khi nghiệm thu: danh sách đích gõ sai id (hay của sách khác) không được lặng lẽ cho ablation rỗng.
+    with pytest.raises(ValueError, match="không id nào trong danh sách đích"):
+        chay_ml(target_filter=["zzz"])
+    with pytest.raises(ValueError, match="không id nào trong danh sách đích"):
+        chay_llm(target_filter=["zzz"])
+
+
+def test_id_dich_co_trong_do_thi_nhung_khong_cap_nao_thi_hop_le():
+    # node c có trong đồ thị ML? fixture ML chỉ có a, b: dùng LLM, nơi c có trong đồ thị; bỏ mọi cặp chứa c thì 0 cặp vẫn hợp lệ.
+    store, model = them_nut_c(Store()), PairModel()
+    store.main.payload["suspected_pairs"] = [p for p in store.main.payload["suspected_pairs"] if "c" not in (p["left"], p["right"])]
+    BuildSecondaryEdges(store, model, concurrency=2, target_filter=["c"]).execute("doc")
+    assert cap_da_gui(model) == []
 
 
 def test_ml_giu_cap_khi_mot_dau_la_dich_cho_phep():

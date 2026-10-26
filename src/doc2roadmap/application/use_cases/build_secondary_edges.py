@@ -49,12 +49,17 @@ class BuildSecondaryEdges:
         self.window_pairs = window_pairs or max(1, concurrency // 2)
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
 
-    def _loc_cap(self, pairs):
-        """Giữ cặp có ít nhất một đầu là đích được phép; cặp không có đầu nào thì không được chấm hay gửi đi."""
+    def _loc_cap(self, pairs, nodes):
+        """Giữ cặp có ít nhất một đầu là đích được phép; cặp không có đầu nào thì không được chấm hay gửi đi.
+
+        Không id nào của danh sách có trong đồ thị thì báo lỗi: danh sách gõ sai hay của sách khác không được lặng lẽ cho ablation
+        rỗng. Có id trong đồ thị mà không cặp nào khớp thì hợp lệ (0 cặp)."""
         allowed = getattr(self, "target_filter", None)
         if allowed is None:
             return pairs
         allowed = set(allowed)
+        if not allowed & {node["node_id"] for node in nodes}:
+            raise ValueError(f"không id nào trong danh sách đích pass phụ có trong đồ thị ({len(allowed)} id)")
         return [pair for pair in pairs if pair["left"] in allowed or pair["right"] in allowed]
 
     def _edge_checkpoint(self, doc_id, latest):
@@ -170,7 +175,7 @@ class BuildSecondaryEdges:
             [],
             route=route,
         )
-        pairs = self._loc_cap(pairs)
+        pairs = self._loc_cap(pairs, nodes)
         pending = [pair for pair in pairs if pair["pair_id"] not in completed]
         system_prompt = secondary_system_prompt()
         if planning:
