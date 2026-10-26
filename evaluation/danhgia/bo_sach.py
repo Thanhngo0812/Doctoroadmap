@@ -11,6 +11,7 @@ Chạy: `python -m danhgia.bo_sach boc <manifest.json> --seed S --n-trang N` ho�
 """
 import argparse
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -22,6 +23,11 @@ LOAI = {"noi_dung", "mo_dau", "bai_tap", "phu_luc"}
 NGUONG_KY_TU = 80          # một trang có lớp chữ khi có từ 80 ký tự không trắng trở lên
 NGUONG_BAN_QUET = 0.8      # dưới 80% trang có lớp chữ thì nghi là bản quét, phải kiểm thêm bằng bộ định tuyến vé 15
 ALLOWLIST_PDF = ("so_trang", "so_trang_co_chu", "ti_le_co_chu", "nghi_ban_quet")
+
+
+def _so_nguyen(x):
+    """Số nguyên thật, không nhận bool (trong Python `True` cũng là `int`)."""
+    return isinstance(x, int) and not isinstance(x, bool)
 
 
 def _so_trang(chuong):
@@ -36,10 +42,13 @@ def kiem_manifest(m):
     for truong in ("ma_sach", "chu_de", "pdf_sha256", "quyen"):
         if not isinstance(m.get(truong), str) or not m.get(truong):
             loi.append(f"thiếu {truong}")
+    sha = m.get("pdf_sha256")
+    if isinstance(sha, str) and sha and not re.fullmatch(r"[0-9a-f]{64}", sha):
+        loi.append("pdf_sha256 phải là 64 ký tự hex thường")
     if m.get("tap") not in TAP:
         loi.append(f"tap phải thuộc {sorted(TAP)}")
     so_trang = m.get("so_trang")
-    if not isinstance(so_trang, int) or so_trang < 1:
+    if not _so_nguyen(so_trang) or so_trang < 1:
         loi.append("so_trang phải là số nguyên dương")
         so_trang = None
     chuong = m.get("chuong") or []
@@ -54,7 +63,7 @@ def kiem_manifest(m):
         if c.get("loai") not in LOAI:
             loi.append(f"{ma}: loai phải thuộc {sorted(LOAI)}")
         dau, cuoi = c.get("trang_dau"), c.get("trang_cuoi")
-        if not isinstance(dau, int) or not isinstance(cuoi, int) or dau < 1 or cuoi < dau or (so_trang and cuoi > so_trang):
+        if not _so_nguyen(dau) or not _so_nguyen(cuoi) or dau < 1 or cuoi < dau or (so_trang and cuoi > so_trang):
             loi.append(f"{ma}: trang_dau/trang_cuoi không hợp lệ")
             continue
         if truoc is not None and dau <= truoc["trang_cuoi"] and dau != truoc["trang_cuoi"]:
@@ -63,6 +72,9 @@ def kiem_manifest(m):
         truoc = c
     boc = m.get("boc")
     if boc is not None:
+        for truong in ("seed", "n_trang_toi_thieu"):
+            if boc.get(truong) is not None and not _so_nguyen(boc.get(truong)):
+                loi.append(f"boc: {truong} phải là số nguyên hoặc null")
         for ma in boc.get("chuong", []):
             if ma not in ma_da_thay:
                 loi.append(f"boc: chương {ma} không có trong danh sách")
@@ -75,7 +87,8 @@ def boc_chuong(m, *, seed, n_trang_toi_thieu):
         raise ValueError(f"manifest không hợp lệ: {loi}")
     hop_le = [c["ma"] for c in m["chuong"] if c["loai"] == "noi_dung" and _so_trang(c) >= n_trang_toi_thieu]
     if len(hop_le) < 3:
-        raise ValueError(f"{m['ma_sach']}: chỉ có {len(hop_le)} chương hợp lệ, cần ít nhất 3")
+        # Không đưa mã hay tên sách vào thông điệp: lỗi có thể in ra màn hình khi chạy trên tập thử.
+        raise ValueError(f"chỉ có {len(hop_le)} chương hợp lệ, cần ít nhất 3")
     n = len(hop_le)
     co = [n // 3 + (1 if i < n % 3 else 0) for i in range(3)]
     sinh, dau, chon = Lcg(seed), 0, []
@@ -129,7 +142,12 @@ def main(argv=None):
     pdf.add_argument("pdf", type=Path)
     a = p.parse_args(argv)
     if a.lenh == "kiem-pdf":
-        print(tom_tat_kiem_pdf(a.ma, kiem_pdf_goc(a.pdf)))
+        try:
+            ket = kiem_pdf_goc(a.pdf)
+        except Exception:  # noqa: BLE001 — traceback in đường dẫn tập thử, nên chỉ in mã ẩn danh (soát S-01)
+            print(tom_tat_kiem_pdf(a.ma, {}).split(" ")[0] + " loi_doc_pdf")
+            return 1
+        print(tom_tat_kiem_pdf(a.ma, ket))
         return 0
     m = json.loads(a.manifest.read_text(encoding="utf-8"))
     if a.lenh == "kiem":

@@ -127,3 +127,99 @@ def test_tom_tat_kiem_pdf_chi_in_truong_so_trong_allowlist(tmp_path):
     dong = tom_tat_kiem_pdf("T", ket)
     assert "bi-mat" not in dong and "TEN-SACH-GIA" not in dong
     assert "so_trang=5" in dong
+
+
+# --- bổ sung sau soát độc lập (agent A, 2026-10-27: S-01, S-06, S-10) ----------------------------------------------
+
+def test_kiem_pdf_tep_thieu_hoac_hong_khong_lo_duong_dan(tmp_path):
+    # Lỗi thật S-01: traceback in đường dẫn tập thử. Chạy qua đúng CLI, bắt cả stdout lẫn stderr.
+    import subprocess
+    import sys
+    evaluation = Path(__file__).resolve().parents[2] / "evaluation"
+    hong = tmp_path / "bi-mat-TEN-SACH-GIA-hong.pdf"
+    hong.write_bytes(b"khong phai pdf")
+    for duong in (tmp_path / "bi-mat-TEN-SACH-GIA-thieu.pdf", hong):
+        kq = subprocess.run([sys.executable, "-m", "danhgia.bo_sach", "kiem-pdf", "T", str(duong)],
+                            capture_output=True, text=True, cwd=evaluation, encoding="utf-8")
+        assert kq.returncode == 1
+        dau_ra = kq.stdout + kq.stderr
+        assert "bi-mat" not in dau_ra and "TEN-SACH-GIA" not in dau_ra
+        assert "T loi_doc_pdf" in kq.stdout
+
+
+def test_boc_bao_loi_khong_dua_ten_sach_vao_thong_diep():
+    m = _manifest(_chuong(3))
+    m["ma_sach"] = "bi-mat-TEN-SACH-GIA"
+    with pytest.raises(ValueError) as loi:
+        boc_chuong(m, seed=1, n_trang_toi_thieu=5)
+    assert "bi-mat" not in str(loi.value)
+
+
+@pytest.mark.parametrize("so_chuong, kich", [(10, (4, 3, 3)), (11, (4, 4, 3))])
+def test_chia_ba_phan_du_don_ve_dau(so_chuong, kich):
+    # S-06: số chương hợp lệ không chia hết cho 3, phần dư dồn về các phần đầu.
+    m = _manifest(_chuong(so_chuong + 1))          # c1 là mở đầu, c2… hợp lệ
+    hop_le = [f"c{i}" for i in range(2, so_chuong + 2)]
+    phan, dau = [], 0
+    for k in kich:
+        phan.append(set(hop_le[dau:dau + k]))
+        dau += k
+    da_thay = [set(), set(), set()]
+    for seed in range(300):
+        for i, ma in enumerate(boc_chuong(m, seed=seed, n_trang_toi_thieu=5)["chuong"]):
+            assert ma in phan[i]
+            da_thay[i].add(ma)
+    assert da_thay == phan                          # mọi chương trong mỗi phần đều có lúc được bốc
+
+
+def test_chuong_dung_n_trang_hop_le_n_tru_1_bi_loai():
+    # S-06: c2 dài đúng N = 5 trang thì hợp lệ; c3 dài 4 trang thì bị loại. Hợp lệ còn c2, c4, c5, c6 (chia 2-1-1).
+    chuong = _chuong(6, trang=10)
+    chuong[1]["trang_cuoi"] = chuong[1]["trang_dau"] + 4
+    chuong[2]["trang_cuoi"] = chuong[2]["trang_dau"] + 3
+    m = _manifest(chuong)
+    chon = {ma for s in range(200) for ma in boc_chuong(m, seed=s, n_trang_toi_thieu=5)["chuong"]}
+    assert "c2" in chon and "c3" not in chon
+
+
+def test_nguong_80_ky_tu_khong_trang(tmp_path):
+    pytest.importorskip("pypdfium2")
+    from danhgia.bo_sach import NGUONG_KY_TU
+    assert NGUONG_KY_TU == 80
+    duong = _pdf_chu_dai(tmp_path, [79, 80])
+    ket = kiem_pdf_goc(duong)
+    assert ket["so_trang_co_chu"] == 1               # trang 79 ký tự không tính, trang 80 ký tự tính
+
+
+def _pdf_chu_dai(tmp_path, so_ky_tu):
+    """Mỗi trang đúng `n` ký tự không trắng (chữ x liền nhau)."""
+    doi_tuong = ["<< /Type /Catalog /Pages 2 0 R >>", None, "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>"]
+    trang_ids = []
+    for n in so_ky_tu:
+        chu = f"BT /F1 8 Tf 20 700 Td ({'x' * n}) Tj ET"
+        doi_tuong.append(f"<< /Length {len(chu)} >>\nstream\n{chu}\nendstream")
+        doi_tuong.append(f"<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Contents {len(doi_tuong)} 0 R "
+                         "/Resources << /Font << /F1 3 0 R >> >> >>")
+        trang_ids.append(len(doi_tuong))
+    doi_tuong[1] = f"<< /Type /Pages /Kids [{' '.join(f'{i} 0 R' for i in trang_ids)}] /Count {len(trang_ids)} >>"
+    ra, vi_tri = bytearray(b"%PDF-1.4\n"), []
+    for so, than in enumerate(doi_tuong, start=1):
+        vi_tri.append(len(ra))
+        ra += f"{so} 0 obj\n{than}\nendobj\n".encode("latin-1")
+    xref = len(ra)
+    ra += f"xref\n0 {len(doi_tuong) + 1}\n0000000000 65535 f \n".encode("latin-1")
+    ra += "".join(f"{v:010d} 00000 n \n" for v in vi_tri).encode("latin-1")
+    ra += f"trailer\n<< /Size {len(doi_tuong) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode("latin-1")
+    duong = tmp_path / "dai.pdf"
+    duong.write_bytes(bytes(ra))
+    return duong
+
+
+def test_kiem_manifest_bat_schema_sha_va_kieu():
+    m = _manifest(_chuong(5))
+    m["schema"] = "khac"
+    m["pdf_sha256"] = "xyz"
+    m["so_trang"] = True
+    m["boc"] = {"seed": "1", "n_trang_toi_thieu": 5, "chuong": []}
+    loi = " | ".join(kiem_manifest(m))
+    assert "schema" in loi and "pdf_sha256" in loi and "so_trang" in loi and "seed" in loi
