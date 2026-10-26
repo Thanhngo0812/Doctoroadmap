@@ -1,6 +1,7 @@
 """Vàng G3: luật chốt ba nhánh, kho chốt có mã `G-<ma_sach>-<nnn>` ổn định, số đếm đồng thuận."""
 
 from danhgia.phieu import bat_dong
+from danhgia.phieu.can import NGUONG_CAU, _cung_trang_giong_cau
 from danhgia.phieu.g3 import SCHEMA
 from danhgia.ten import chuan_hoa
 
@@ -25,28 +26,40 @@ def dem_dong_thuan(can: dict) -> dict:
 
 
 def dem_kho(kho: dict) -> dict:
-    theo = {ch: {"vao_kho": 0, "loai": 0, "tranh_chap": 0} for ch in kho["chuong"]}
+    theo = {ch: {"vao_kho": 0, "loai": 0, "tranh_chap": 0, "trang_thai_tranh_chap": 0} for ch in kho["chuong"]}
     for k in kho["khai_niem"]:
         theo[k["chuong"]]["vao_kho"] += 1
+        theo[k["chuong"]]["trang_thai_tranh_chap"] += k["trang_thai"] is None
     for k in kho["loai"]:
         theo[k["chuong"]]["loai"] += 1
     for k in kho["tranh_chap"]:
         theo[k["chuong"]]["tranh_chap"] += 1
-    return {"theo_chuong": theo, "tong": {x: sum(v[x] for v in theo.values()) for x in ("vao_kho", "loai", "tranh_chap")}}
+    return {"theo_chuong": theo, "tong": {x: sum(v[x] for v in theo.values()) for x in ("vao_kho", "loai", "tranh_chap", "trang_thai_tranh_chap")}}
 
 
-def _gop(ea: dict, eb: dict, nguoi: list[str]) -> dict:
+def _gop(ea: dict, eb: dict, nguoi: list[str], chon_trang_thai: dict | None) -> dict:
+    """Gộp hai khái niệm khớp. `ea` là của người có mã nhỏ hơn. `chon_trang_thai` là lựa chọn hội ý của từng người, nếu có mục."""
     da_co = {chuan_hoa(ea["ten"])}
     ten_khac = []
     for t in [*ea["ten_khac"], eb["ten"], *eb["ten_khac"]]:
         if chuan_hoa(t) not in da_co:
             da_co.add(chuan_hoa(t))
             ten_khac.append(t)
-    d = ea["dinh_nghia"] if (ea["dinh_nghia"]["cau"] or not eb["dinh_nghia"]["cau"]) else eb["dinh_nghia"]
-    gop = {**ea, "ten_khac": ten_khac, "dinh_nghia": dict(d), "khong_chac": ea["khong_chac"] or eb["khong_chac"],
+    gop = {**ea, "ten_khac": ten_khac, "khong_chac": ea["khong_chac"] or eb["khong_chac"],
            "ghi_chu": " | ".join(x for x in (ea["ghi_chu"], eb["ghi_chu"]) if x)}
-    if ea["trang_thai"] != eb["trang_thai"]:
-        gop["trang_thai_khac"] = {nguoi[0]: ea["trang_thai"], nguoi[1]: eb["trang_thai"]}
+    if not ea["dinh_nghia"]["cau"] and eb["dinh_nghia"]["cau"]:
+        gop["dinh_nghia"] = dict(eb["dinh_nghia"])
+    else:
+        gop["dinh_nghia"] = dict(ea["dinh_nghia"])
+        if eb["dinh_nghia"]["cau"] and not _cung_trang_giong_cau(ea, eb, NGUONG_CAU):
+            gop["dinh_nghia_khac"] = [dict(eb["dinh_nghia"])]
+    if ea["trang_thai"] == eb["trang_thai"]:
+        gop["trang_thai"] = ea["trang_thai"]
+    elif len(set(chon_trang_thai.values())) == 1:
+        gop["trang_thai"] = next(iter(chon_trang_thai.values()))
+    else:
+        gop["trang_thai"] = None
+        gop["trang_thai_tranh_chap"] = dict(chon_trang_thai)
     return gop
 
 
@@ -72,8 +85,11 @@ def chot(can: dict, quyet_dinh: dict[str, dict]) -> dict:
                 dung_a.add(m["a"])
                 dung_b.add(m["b"])
     vao = []
+    muc_tt = {(m["a"], m["b"]): m["id"] for m in muc if m["loai"] == "trang_thai"}
     for ma_a, ma_b in gop:
-        e = _gop(ent["a"][ma_a], ent["b"][ma_b], nguoi)
+        id_tt = muc_tt.get((ma_a, ma_b))
+        chon = {c: quyet_dinh[c][id_tt]["lua_chon"] for c in nguoi} if id_tt else None
+        e = _gop(ent["a"][ma_a], ent["b"][ma_b], nguoi, chon)
         e["nguon"] = [f"{nguoi[0]}:{ma_a}", f"{nguoi[1]}:{ma_b}"]
         vao.append(e)
     loai, tranh_chap = [], []

@@ -1,8 +1,10 @@
 """Phiếu bất đồng G3: chỉ gồm mục hai người ghi khác nhau.
 
-Hai loại mục:
+Ba loại mục:
 - `cap_gan`: cặp khái niệm gần nhau, hỏi "có phải cùng khái niệm không" (lựa chọn `cung` hoặc `khac`);
-- `rieng`: khái niệm chỉ một người liệt kê, cả hai người chọn `giu` hoặc `bo`.
+- `rieng`: khái niệm chỉ một người liệt kê, cả hai người chọn `giu` hoặc `bo`;
+- `trang_thai`: khái niệm khớp (tự động, hoặc cặp gần nếu được gộp) mà hai người ghi trạng thái khác nhau; mỗi người chọn một
+  trong bốn trạng thái. Với cặp gần, mục này luôn có và chỉ có hiệu lực khi cặp được gộp (`dieu_kien` là mã mục cặp gần).
 Mỗi lựa chọn kèm một dòng lý do. Mục khớp tự động không vào phiếu. Phiếu không ghi mã người kia.
 """
 
@@ -16,7 +18,7 @@ from danhgia.phieu import g3
 from danhgia.phieu.kiem import Loi
 
 SCHEMA = "danh-gia-g3-bat-dong-1"
-LUA_CHON = {"rieng": ("giu", "bo"), "cap_gan": ("cung", "khac")}
+LUA_CHON = {"rieng": ("giu", "bo"), "cap_gan": ("cung", "khac"), "trang_thai": g3.TRANG_THAI}
 TIEU_DE = ["id", "Chương", "Câu hỏi", "Của", "Khái niệm (bên 1)", "Khái niệm (bên 2)", "Lựa chọn", "Lý do (một dòng)"]
 HUONG_DAN = (
     "PHIẾU BẤT ĐỒNG G3\n"
@@ -43,6 +45,12 @@ def tao_muc(can: dict) -> list[dict]:
         for ben, ds in (("a", can["chi_a"]), ("b", can["chi_b"])):
             for ma in sorted(m for m in ds if ent[ben][m]["chuong"] == ch):
                 moi(loai="rieng", ben=ben, muc=ma, ten=ent[ben][ma]["ten"])
+        cac_cap = [(k["a"], k["b"], None) for k in sorted((x for x in can["khop"] if x["chuong"] == ch), key=lambda x: x["a"])]
+        cac_cap += [(m["a"], m["b"], m["id"]) for m in muc if m["chuong"] == ch and m["loai"] == "cap_gan"]
+        for ma_a, ma_b, dieu_kien in cac_cap:
+            tt_a, tt_b = ent["a"][ma_a]["trang_thai"], ent["b"][ma_b]["trang_thai"]
+            if tt_a != tt_b:
+                moi(loai="trang_thai", a=ma_a, b=ma_b, ten=ent["a"][ma_a]["ten"], tt_a=tt_a, tt_b=tt_b, dieu_kien=dieu_kien)
     return muc
 
 
@@ -77,6 +85,11 @@ def sinh_phieu_bat_dong(can: dict, nguoi: str, duong_dan: str | Path, *, huong_d
             ws.cell(r, 5).value = _mo_ta(ent["a"][m["a"]])
             ws.cell(r, 6).value = _mo_ta(ent["b"][m["b"]])
             ds = "=DS!$B$1:$B$2"
+        elif m["loai"] == "trang_thai":
+            ws.cell(r, 3).value = "Trạng thái đúng của khái niệm này là gì?"
+            ws.cell(r, 5).value = _mo_ta(ent["a"][m["a"]])
+            ws.cell(r, 6).value = _mo_ta(ent["b"][m["b"]])
+            ds = "=DS!$C$1:$C$4"
         else:
             ws.cell(r, 3).value = "Giữ hay bỏ khái niệm này?"
             ws.cell(r, 4).value = "bạn" if m["ben"] == ben_toi else "người kia"
@@ -92,7 +105,7 @@ def sinh_phieu_bat_dong(can: dict, nguoi: str, duong_dan: str | Path, *, huong_d
     for cot, rong in zip("BCDEFGH", (9, 30, 11, 55, 55, 12, 40)):
         ws.column_dimensions[cot].width = rong
     ws.freeze_panes = "B2"
-    g3.tao_sheet_an(wb, "DS", [list(LUA_CHON["rieng"]), list(LUA_CHON["cap_gan"])])
+    g3.tao_sheet_an(wb, "DS", [list(LUA_CHON["rieng"]), list(LUA_CHON["cap_gan"]), list(LUA_CHON["trang_thai"])])
     g3.tao_sheet_an(wb, "meta", [["schema", "ma_sach", "nguoi_gan"], [SCHEMA, can["ma_sach"], nguoi]])
     wb.save(duong_dan)
     return Path(duong_dan)

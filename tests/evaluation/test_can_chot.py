@@ -217,7 +217,7 @@ def test_dem_kho_vao_kho_loai_tranh_chap_theo_chuong():
     ids = {m["muc"]: m["id"] for m in bat_dong.tao_muc(can)}
     kho = chot(can, {"T1-a": quyet(**{ids["c10-001"]: "giu", ids["c10-002"]: "bo", ids["c10-003"]: "giu"}),
                      "T1-b": quyet(**{ids["c10-001"]: "giu", ids["c10-002"]: "bo", ids["c10-003"]: "bo"})})
-    assert dem_kho(kho)["theo_chuong"]["c10"] == {"vao_kho": 1, "loai": 1, "tranh_chap": 1}
+    assert dem_kho(kho)["theo_chuong"]["c10"] == {"vao_kho": 1, "loai": 1, "tranh_chap": 1, "trang_thai_tranh_chap": 0}
 
 
 # --- phiếu bất đồng Excel: round-trip và validator ---
@@ -244,7 +244,11 @@ def test_phieu_bat_dong_khong_chua_muc_khop_tu_dong_va_khong_ten_nguoi_kia(tmp_p
     p = tmp_path / "bd.xlsx"
     bat_dong.sinh_phieu_bat_dong(can, "T1-a", p)
     gia_tri = " ".join(str(c.value) for ws in openpyxl.load_workbook(p).worksheets for row in ws.iter_rows() for c in row if c.value)
-    assert "T1-b" not in gia_tri and "Kỳ vọng là trung bình" not in gia_tri
+    assert "T1-b" not in gia_tri
+    # khái niệm khớp tự động chỉ vào phiếu qua câu hỏi trạng thái (hai người ghi khác nhau), không qua giữ/bỏ
+    ws = openpyxl.load_workbook(p)["bat-dong"]
+    hang_ky_vong = [r for r in range(2, ws.max_row + 1) if "Kỳ vọng" in str(ws.cell(r, 5).value)]
+    assert [ws.cell(r, 3).value for r in hang_ky_vong] == ["Trạng thái đúng của khái niệm này là gì?"]
     assert "Trung vị" in gia_tri and "Mốt" in gia_tri  # câu trích của mỗi bên hiện ở mục bất đồng
 
 
