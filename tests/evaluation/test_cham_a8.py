@@ -123,14 +123,16 @@ def test_node_gop_nham_hai_khai_niem_vang_anh_xa_sang_ca_hai():
     assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 1, 0)  # n1>n3 thành G1>G3 (đúng) và G2>G3 (thừa)
 
 
-def test_hai_khai_niem_vang_don_chung_mot_node_tu_noi_roi_phep_cham_va_duoc_bao_cao():
+def test_hai_khai_niem_vang_don_chung_mot_node_van_o_lai_trong_vang_thanh_fn_va_duoc_bao_cao():
+    # Claude sửa khi nghiệm thu: vàng độc lập với máy nên không được co lại theo lỗi gộp của máy. Nếu bỏ G1>G2 khỏi phép chấm
+    # (luật bộ chấm cũ) thì hệ gộp nhầm tiên quyết với đích lại được thưởng. G1>G2 ở lại, thành FN; tu_noi vẫn báo riêng.
     vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1"), ("G-S-003", "c1")])
     vang4 = g4(S, [("G-S-001", "G-S-002"), ("G-S-002", "G-S-003")])
     cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n1", "khop"), ("G-S-003", "n3", "khop")])
     hd = hop_dong([khai_niem("n1"), khai_niem("n3")], [canh("n1", "n3")], ["n1", "n3"])
     rows = cham(hd, vang3, vang4, cc, ma_sach=S)
-    # G1>G2 bị tự nối nên rời phép chấm; n1>n3 ánh xạ sang G1>G3 (thừa) và G2>G3 (đúng) vì n1 căn với cả hai
-    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 1, 0)
+    # n1>n3 ánh xạ sang G1>G3 (thừa) và G2>G3 (đúng); G1>G2 không máy nào biểu diễn được nên là FN
+    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 1, 1)
     assert lay(rows, "can.tu_noi.nghiem", "c1")["gia_tri"] == 1
 
 

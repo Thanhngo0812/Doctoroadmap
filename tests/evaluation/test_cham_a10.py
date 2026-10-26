@@ -87,14 +87,15 @@ def test_q6_khong_co_canh_vang_tra_none_khong_tra_khong():
     assert dong.gia_tri(lay(rows, "a10.q6.nghiem")) is None
 
 
-def test_q6_khai_niem_vang_don_chung_mot_node_tu_noi_khong_vao_mau_so():
+def test_q6_khai_niem_vang_don_chung_mot_node_van_vao_mau_so_va_tinh_la_loi():
     vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1"), ("G-S-003", "c1")])
     vang4 = g4(S, [("G-S-001", "G-S-002"), ("G-S-002", "G-S-003")])
     cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n1", "khop"), ("G-S-003", "n3", "khop")])
     hd = hop_dong([khai_niem("n1"), khai_niem("n3")], [], ["n1", "n3"])
     rows = cham(hd, vang3, vang4, cc, ma_sach=S)
     q6 = lay(rows, "a10.q6.nghiem")
-    assert (q6["tu"], q6["mau"]) == (0, 1)
+    # G1 và G2 cùng vị trí (cùng n1) nên G1>G2 không được bảo đảm học trước: tính là lỗi (Claude sửa khi nghiệm thu)
+    assert (q6["tu"], q6["mau"]) == (1, 2)
 
 
 def test_so_chu_trinh_va_so_thanh_phan_lien_thong():

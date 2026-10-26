@@ -7,7 +7,9 @@ Luật ánh xạ (đếm trong không gian vàng, nên tập cạnh vàng không
   nằm trong phạm vi; đích ảo không bao giờ nằm trong phạm vi;
 - node căn với hai khái niệm vàng (gộp nhầm) ánh xạ sang cả hai;
 - khái niệm vàng tách thành nhiều node không làm tăng mẫu số hay FN (lỗi tách đã có thước A4 riêng);
-- cạnh vàng mà hai đầu có chung một node (hai khái niệm vàng dồn vào một node) rời phép chấm và được đếm riêng (`tu_noi`);
+- cạnh vàng mà hai đầu có chung một node (hai khái niệm vàng dồn vào một node) **vẫn ở lại trong vàng**: máy không biểu diễn
+  được nó nên nó là FN ở A8 và là lỗi ở Q6; số lượng được đếm riêng (`tu_noi`) để chẩn đoán. Vàng độc lập với máy nên không
+  co lại theo lỗi gộp của máy (khác bộ chấm cũ, có chủ ý; Claude sửa khi nghiệm thu DG-04);
 - vị trí của một khái niệm vàng trong dãy học là vị trí **sớm nhất** trong các node căn với nó (xem `a10`).
 """
 from __future__ import annotations
@@ -74,7 +76,7 @@ def doc_vang(g3, g4, can, muc, ban_do_danh_tinh, *, vang="chinh"):
             raise ValueError(f"cạnh {nguon!r} > {dich!r} vừa nằm trong vàng vừa nằm trong tranh chấp")
         if nut_cua_vang.get(nguon, set()) & nut_cua_vang.get(dich, set()):
             tu_noi[cua[dich]] += 1
-        elif nguon != dich:
+        if nguon != dich:
             cap.add((nguon, dich))
     return {"dich_theo_chuong": dich_theo_chuong, "cap": cap, "tu_noi": tu_noi,
             "nut_cua_vang": nut_cua_vang, "vang_cua_nut": vang_cua_nut}
