@@ -6,7 +6,7 @@ nhận. Claude đã kiểm ngày 2026-10-22 rằng `additionalProperties` có �
 - schema đầu ra JSON của quiz: `application/phase_b/quiz.py`.
 
 **Ai:** agent Sonnet cài · Claude nghiệm thu · **Chi phí mô hình:** 0 USD khi cài; một lượt thử thật rất nhỏ trên Developer API nếu cần, dry-run và xin duyệt
-riêng · **Chặn bởi:** không · **Trạng thái:** đang cài (2026-10-24, vé cuối của đợt; SA-67, SA-68 đã ghép)
+riêng · **Chặn bởi:** không · **Trạng thái:** đạt, đã ghép `ab5c2fa` (2026-10-26, main local)
 
 ## Vì sao
 
