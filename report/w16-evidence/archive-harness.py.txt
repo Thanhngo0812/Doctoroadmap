@@ -1,0 +1,23 @@
+"""Keep this task's generated regression exports without altering historic reports."""
+from pathlib import Path
+import json
+import shutil
+import subprocess
+import sys
+root=Path(__file__).resolve().parents[1];label=sys.argv[1]
+assert label.replace('-','').isalnum()
+exports=[line[3:] for line in subprocess.check_output(['git','status','--porcelain','--untracked-files=no'],cwd=root,text=True).splitlines()
+    if line.startswith((' M report/w14-evidence/',' M report/w06-evidence/'))]
+for relative in exports:
+    source=(root/relative).resolve();target=(root/'report/w16-evidence/regression-exports'/label/relative).resolve()
+    assert source.is_relative_to(root) and target.is_relative_to(root) and source.is_file() and not source.is_symlink()
+    target.parent.mkdir(parents=True,exist_ok=True);assert not target.exists();shutil.copyfile(source,target)
+moved=[]
+for base in ('report/w15-evidence/sql/','report/w25-evidence/sql/'):
+    files=subprocess.check_output(['git','ls-files','--others','--exclude-standard',base],cwd=root,text=True).splitlines()
+    for relative in files:
+        assert '/w16-' in relative,relative
+        source=(root/relative).resolve();target=(root/'report/w16-evidence/regression-exports'/label/relative).resolve()
+        assert source.is_relative_to(root) and target.is_relative_to(root) and source.is_file() and not source.is_symlink()
+        assert not target.exists();target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,target);moved.append(relative)
+print(json.dumps(dict(copied_and_retained_originals=exports,own_sql_exports_copied_and_retained=moved),indent=2))

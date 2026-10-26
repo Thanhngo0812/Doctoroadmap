@@ -1,0 +1,37 @@
+"""Observe otherwise-correct DTO/isolation/trace guards fail under controlled faults."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+root=Path(__file__).resolve().parents[1]
+out=root/'report/w16-evidence/mutations';out.mkdir(parents=True,exist_ok=True)
+projection=root/'src/web/backend/wayfinder/infrastructure/learning_usage.py'
+router=root/'src/web/backend/wayfinder/api/builds.py'
+originals={p:p.read_bytes() for p in (projection,router)}
+cases=[('count-build-trace',projection,"row.get('counted_in') != 'build' and",'True and','combines_courses'),
+       ('other-learners',projection,'learner_id=owner, since=start','learner_id=None, since=start','combines_courses'),
+       ('shared-not-global',projection,"total({'lecture', 'quiz_gen', 'quiz_verify'})","total({'lecture', 'quiz_gen', 'quiz_verify'}, actor.user_id)",'combines_courses'),
+       ('unfiltered-http-dto',router,"@router.get('/me/usage',response_model=MyUsage)","@router.get('/me/usage',response_model=None)",'real_response_dto')]
+results=[]
+try:
+    for name,path,old,new,selected in cases:
+        source=originals[path].decode();assert source.count(old)==1
+        path.write_bytes(source.replace(old,new).encode())
+        xml=out/(name+'.xml')
+        command=[sys.executable,'scripts/w05_run_tests.py','src/web/backend/tests/test_usage_w16.py','-k',selected,
+            '-o','addopts=','-q','--tb=short','--basetemp=tmp/w16-mutation-'+name,'--junitxml='+str(xml)]
+        result=subprocess.run(command,cwd=root,capture_output=True,encoding='utf-8',errors='replace')
+        (out/(name+'.log')).write_bytes((result.stdout+result.stderr).encode())
+        tests=list(ET.parse(xml).iter('testcase'))
+        failed=[r.attrib for r in tests if r.find('failure') is not None]
+        errors=[r.attrib for r in tests if r.find('error') is not None]
+        assert result.returncode==1 and failed and not errors,name
+        results.append(dict(mutation=name,exit_code=result.returncode,assertion_failures=failed,setup_errors=errors))
+        path.write_bytes(originals[path])
+finally:
+    for path,raw in originals.items():path.write_bytes(raw)
+assert all(p.read_bytes()==raw for p,raw in originals.items())
+(out/'summary.json').write_bytes((json.dumps(dict(source_restored=True,source_sha256={p.relative_to(root).as_posix():sha256(raw).hexdigest() for p,raw in originals.items()},mutations=results),indent=2)+'\n').encode())
+print(json.dumps(dict(mutations_caught=len(results),source_restored=True)))

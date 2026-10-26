@@ -1,0 +1,90 @@
+"""Freeze only W-16 evidence; leave original generated reports and all W-15 data intact."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import re
+import shutil
+import subprocess
+import xml.etree.ElementTree as ET
+from dotenv import dotenv_values
+root=Path(__file__).resolve().parents[1];e=root/'report/w16-evidence'
+def git(*args):return subprocess.check_output(['git',*args],cwd=root)
+def dump(path,value):path.write_bytes((json.dumps(value,ensure_ascii=False,indent=2)+'\n').encode())
+assert git('branch','--show-current').strip()==b'work/w16-usage-backend'
+assert git('-C',str(root.parents[1]),'branch','--show-current').strip()==b'main'
+assert not git('diff','--','src').strip()
+assert not git('diff','main','--','src/doc2roadmap','src/web/frontend','src/web/backend/wayfinder/api','src/web/backend/wayfinder/application').strip()
+head=git('rev-parse','HEAD').decode().strip()
+gates={}
+for name in ('full','react','build'):
+    label=name+'-20261026-01'
+    record=json.loads((e/'runs'/(label+'-exit.json')).read_text())
+    assert record['exit_code']==0 and record['commit']==head
+    assert all(sha256((root/p).read_bytes()).hexdigest()==h for p,h in record['source_sha256'].items())
+    gates[name]={k:record[k] for k in ('commit','exit_code','seconds')}
+    xml=e/'runs'/(label+'.xml')
+    if xml.exists():
+        cases=list(ET.parse(xml).iter('testcase'))
+        assert not any(c.find('failure') is not None or c.find('error') is not None for c in cases)
+        skipped=[{**c.attrib,**c.find('skipped').attrib} for c in cases if c.find('skipped') is not None]
+        gates[name].update(passed=len(cases)-len(skipped),skipped_or_xfailed=skipped)
+mutations=json.loads((e/'mutations/attempt2/summary.json').read_text())
+assert mutations['source_restored'] and len(mutations['mutations'])==4
+assert all(m['assertion_failures'] and not m['setup_errors'] for m in mutations['mutations'])
+shutil.copyfile(e/'full-20261026-01/usage-1.json',e/'usage-1.json')
+payload=json.loads((e/'usage-1.json').read_text())
+def no_money(value):
+    if isinstance(value,dict):
+        assert all(not any(x in k.lower() for x in ('usd','cost')) for k in value)
+        for v in value.values():no_money(v)
+    elif isinstance(value,list):
+        for v in value:no_money(v)
+no_money(payload)
+assert payload['builds_this_month']['max'] is None and payload['contract_version']=='usage-1'
+dump(e/'usage-1.metadata.json',dict(kind='Actual GET /api/v1/me/usage HTTP/DTO over PostgreSQL; synthetic ledger fixtures',
+    provider_calls=0,provider_spend_usd=0,build_monthly_max_default=None,main_received=git('rev-parse','main').decode().strip(),head_tested=head))
+leftovers=git('status','--porcelain').decode().splitlines()
+retained=[line for line in leftovers if 'report/w14-evidence/' in line or 'report/w06-evidence/' in line or 'report/w15-evidence/sql/' in line or 'report/w25-evidence/sql/' in line]
+dump(e/'retained-test-exports.json',dict(reason='Automatic review rejected broad git restore; originals retained, selected snapshots copied to W16, no restore/delete/move performed',files=retained))
+report=root/'report/w16-usage-backend-2026-10-26.md'
+text=report.read_text(encoding='utf-8')
+assert '## Kết quả cổng cuối' not in text
+text+='\n## Kết quả cổng cuối\n\n'
+text+=f"Commit mã **`{head}`**, main đã nhận `{git('rev-parse','main').decode().strip()}`. "
+text+=f"Full PostgreSQL: **{gates['full']['passed']} pass**, {len(gates['full']['skipped_or_xfailed'])} skip/xfail giữ nguyên; React **{gates['react']['passed']} pass**; build **exit 0**. "
+text+='Các cổng chạy tuần tự; native/JUnit/lệnh/cwd/source SHA ở `w16-evidence/runs/`.\n\n'
+text+='[JSON usage-1 bàn giao](w16-evidence/usage-1.json), [metadata fixture](w16-evidence/usage-1.metadata.json), [manifest](w16-evidence/manifest.json). JSON từ GET thật, ledger tổng hợp; không là chi tiền thật hoặc truy vấn dữ liệu W-15.\n\n'
+text+='Tự động duyệt đã từ chối helper khôi phục rộng báo cáo W-14/W-06 vì có nguy cơ bỏ sửa dở ngoài phạm vi. Đã dùng phương án chỉ COPY; giữ nguyên output gốc chưa commit ngoài W-16 và ghi danh sách `retained-test-exports.json`. Không stash/reset/restore, không xóa dữ liệu. Những tệp đó không nằm trong commit W-16; source và commit mốc sạch trong phạm vi được giao.\n'
+report.write_bytes((text.rstrip()+'\n').encode())
+provenance=[]
+for name in ('capture','inputs','mutations','archive','finish'):
+    source=root/('tmp/w16_'+name+'.py');target=e/(name+'-harness.py.txt')
+    assert not target.exists();shutil.copyfile(source,target)
+    provenance.append(dict(source=source.relative_to(root).as_posix(),source_sha256=sha256(source.read_bytes()).hexdigest(),stored=target.relative_to(e).as_posix()))
+dump(e/'provenance.json',dict(note='Only new W16 evidence copies normalized UTF-8/LF; originals and prior run data untouched',files=provenance))
+dump(e/'summary.json',dict(head_tested=head,main_received=git('rev-parse','main').decode().strip(),gates=gates,
+    initial_red_assertion_failures=7,initial_red_passed=6,focused_passed=13,w09_w14_regressions_passed=69,
+    mutations_caught=4,source_restored=True,api_dto_reused=True,migration_added=False,core_changed=False,frontend_changed=False,
+    provider_calls=0,provider_spend_usd=0,fixture_ledger_is_real_spend=False,web_openapi_owned_by_web=True,
+    backend_milestone_ready_for_review=True,w16_complete=False,legacy_report_restore_rejected=True,original_test_exports_retained=True))
+secrets=[]
+for env in (root.parents[1]/'.env',root.parents[1]/'src/web/.env'):
+    secrets += [str(v).encode() for k,v in dotenv_values(env).items() if v and len(str(v))>=8 and any(x in k.upper() for x in ('PASSWORD','SECRET','TOKEN','API_KEY','DATABASE_URL'))]
+entries=[]
+for path in sorted(e.rglob('*')):
+    if not path.is_file():continue
+    assert not path.is_symlink() and path.stat().st_nlink==1
+    raw=path.read_bytes();assert not any(s in raw for s in secrets),path
+    backup=root/'tmp/w16-raw-evidence'/path.relative_to(root)
+    assert not backup.exists() and backup.resolve().is_relative_to(root)
+    backup.parent.mkdir(parents=True,exist_ok=True);backup.write_bytes(raw)
+    normalized=('\n'.join(l.rstrip() for l in raw.decode('utf-8-sig').splitlines()).rstrip()+'\n').encode()
+    if path.suffix=='.json':assert json.loads(raw)==json.loads(normalized)
+    if path.suffix=='.xml':assert [c.attrib for c in ET.fromstring(raw).iter('testcase')]==[c.attrib for c in ET.fromstring(normalized).iter('testcase')]
+    path.write_bytes(normalized)
+    entries.append(dict(path=path.relative_to(e).as_posix(),raw_sha256=sha256(raw).hexdigest(),sha256=sha256(normalized).hexdigest(),bytes=len(normalized)))
+dump(e/'manifest.json',dict(files=entries,operation='UTF-8/LF new W16 evidence only; raw retained in tmp/w16-raw-evidence',configured_secret_matches=0))
+for target in re.findall(r'\]\(([^)]+)\)',report.read_text(encoding='utf-8')):
+    if not target.startswith(('https://','http://')):
+        assert (report.parent/target).exists(),target
+print(json.dumps(dict(gates=gates,manifest_files=len(entries),provider_calls=0,retained_export_entries=len(retained)),indent=2))

@@ -1,0 +1,24 @@
+"""Stage only the train candidate required by existing full-suite fixtures; no W-15 execution."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import shutil
+root=Path(__file__).resolve().parents[1];shared=root.parents[1]
+candidate=json.loads((root/'report/w15-evidence/candidate.json').read_text(encoding='utf-8'))
+assert candidate['candidate'].startswith('document-data/train/')
+source=(shared/candidate['candidate']).resolve();target=(root/candidate['staged_copy']).resolve()
+assert source.is_relative_to(shared/'document-data/train') and target.is_relative_to(root/'tmp')
+assert source.is_file() and not source.is_symlink() and source.stat().st_nlink==1
+assert sha256(source.read_bytes()).hexdigest()==candidate['sha256']
+if target.exists():assert sha256(target.read_bytes()).hexdigest()==candidate['sha256']
+else:
+    target.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(source,target)
+assert target.stat().st_nlink==1 and sha256(target.read_bytes()).hexdigest()==candidate['sha256']
+out=root/'report/w16-evidence';out.mkdir(exist_ok=True)
+(out/'candidate-fixture-copy.json').write_bytes((json.dumps(dict(source=candidate['candidate'],target=candidate['staged_copy'],
+    sha256=candidate['sha256'],bytes=target.stat().st_size,ordinary_copy=True,purpose='Existing full-suite fixture only; no paid W-15 run/cache/DB imported'),indent=2)+'\n').encode())
+shutil.copyfile(root/'tmp/w16-red-20261026-01.xml',out/'runs/setup-20261026-01.xml')
+(out/'runs/setup-20261026-01-exit.json').write_bytes((json.dumps(dict(exit_code=1,source='Initial PTY command result',
+    error='13 setup errors: basetemp parent did not exist; not counted as regression RED',
+    junit='setup-20261026-01.xml'),indent=2)+'\n').encode())
+print('Train candidate SHA verified; no paid run or private W-15 state copied.')
