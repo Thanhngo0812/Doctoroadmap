@@ -12,6 +12,7 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
+from doc2roadmap.infrastructure.llm.developer_api_schema import for_developer_api
 from doc2roadmap.application.stage_measurements import record_model_call, record_usage
 from doc2roadmap.infrastructure.llm.rate_limit import AdaptiveModelLimiter, _Permit
 from doc2roadmap.application.ports.extraction import (
@@ -119,6 +120,8 @@ class GeminiEntityExtractor:
         }
         url = self._vertex.url(self._model_id, "generateContent") if self._vertex else _ENDPOINT.format(model=self._model_id)
         headers = self._vertex.headers() if self._vertex else {"x-goog-api-key": self._api_key}
+        if not self._vertex:
+            body = for_developer_api(body)
         request = Request(
             url,
             data=json.dumps(body, ensure_ascii=False, separators=(",", ":")).encode(),
