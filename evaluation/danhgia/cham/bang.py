@@ -8,7 +8,7 @@ __all__ = ["cham", "MUC_CAN"]
 
 
 def _hien_dien(hd):
-    return {k["ma"] for k in hd["khai_niem"] if not k["bi_loai"]}
+    return {k["ma"] for k in hd["khai_niem"] if not k["bi_loai"] and not k["da_gop"]}
 
 
 def cham(hd, g3, g4, can, *, ma_sach=None, ho_so="spec", mem="cung", vang="chinh"):

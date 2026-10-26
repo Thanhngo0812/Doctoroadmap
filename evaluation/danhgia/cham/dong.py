@@ -62,7 +62,7 @@ def gop_cuon(rows):
     for row in rows:
         khoa = (row["he"], row["ma_sach"], row["thuoc"], row["kieu"])
         if khoa not in nhom:
-            nhom[khoa] = {**_goc(*khoa[:3], "cuon", khoa[3]), **dict.fromkeys(_TRUONG_CONG[row["kieu"]], 0)}
+            nhom[khoa] = {**_goc(khoa[0], khoa[1], "cuon", khoa[2], khoa[3]), **dict.fromkeys(_TRUONG_CONG[row["kieu"]], 0)}
         for truong in _TRUONG_CONG[row["kieu"]]:
             nhom[khoa][truong] += row[truong]
     return list(nhom.values())
