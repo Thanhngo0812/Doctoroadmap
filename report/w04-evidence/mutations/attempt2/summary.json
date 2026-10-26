@@ -1,0 +1,31 @@
+{
+  "results": [
+    {
+      "name": "wrong-current-accepted",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "wrong_current and postgres",
+        "--basetemp=tmp/w04-mutant-wrong-current-accepted",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt2\\wrong-current-accepted.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "55de931d628cf20976fb6c877d50b273f0f8face5d695cfdd99a4dd73f641921"
+      }
+    }
+  ],
+  "sources_restored": true,
+  "original_sha256": {
+    "src/web/backend/wayfinder/api/auth.py": "5d1b88037229b598e7c192bd5134e28a2eab5bc97e4d6b21fde148590560fcbf",
+    "src/web/backend/wayfinder/infrastructure/auth_store.py": "fec470051a56b58c0d8413c7dfd1078f68d34c3f308e84922043805f92b6bf71",
+    "src/web/backend/wayfinder/application/accounts.py": "c84a527959168fdc6244b071e93661f8113357712a8b28ea2c0be73c4f5ed534"
+  }
+}

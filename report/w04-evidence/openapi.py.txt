@@ -1,0 +1,24 @@
+"""Regenerate from the combined application, and prove no previous route was removed."""
+import json
+from pathlib import Path
+import subprocess
+import sys
+
+root = Path(__file__).resolve().parents[1]
+sys.path[:0] = [str(root / 'src'), str(root / 'src/web/backend')]
+from wayfinder.api.app import create_app
+from wayfinder.api.openapi import write_openapi
+from wayfinder.composition import WebServices
+from wayfinder.settings import WebSettings
+
+old = json.loads(subprocess.check_output(['git', 'show', 'main:src/web/openapi.json'], cwd=root))
+app = create_app(WebSettings(_env_file=None, frontend_dist='C:/missing-wayfinder-dist'),
+                 WebServices(health_check=lambda: 'ok'))
+current = app.openapi()
+routes = lambda spec: {(path, method) for path, methods in spec['paths'].items() for method in methods}
+assert routes(old) <= routes(current)
+assert routes(current) - routes(old) == {('/api/v1/me', 'patch'), ('/api/v1/me/password', 'post'),
+                                        ('/api/v1/auth/logout-all', 'post')}
+write_openapi(app, root / 'src/web/openapi.json')
+print(json.dumps(dict(previous_operations=len(routes(old)), current_operations=len(routes(current)),
+                     preserved_all_previous_routes=True)))

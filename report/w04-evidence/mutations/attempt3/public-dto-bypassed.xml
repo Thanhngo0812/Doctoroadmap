@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.618" timestamp="2026-10-26T19:08:32.797850+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_profile_uses_public_response_dto[postgres]" time="1.100"><failure message="AssertionError: assert {'account', '...assword_hash'} == {'account', 'csrf_token'}&#10;  &#10;  Extra items in the left set:&#10;  'password_hash'&#10;  Use -v to get more diff">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002252B179640&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002252AD50E30&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002252B117830&gt;))
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002252B0E4680&gt;
+
+    def test_profile_uses_public_response_dto(runtime, monkeypatch):
+        from wayfinder.api import auth
+        _, a, _, _, _ = runtime
+        original = auth._identity_response
+
+        def private_fields(identity):
+            body = original(identity)
+            body["password_hash"] = "fixture-private-hash"
+            body["account"]["session_token"] = "fixture-private-token"
+            return body
+
+        monkeypatch.setattr(auth, "_identity_response", private_fields)
+        response = a.patch("/api/v1/me", headers=headers(a), json={"display_name": "An"})
+        assert response.status_code == 200
+&gt;       assert set(response.json()) == {"account", "csrf_token"}
+E       AssertionError: assert {'account', '...assword_hash'} == {'account', 'csrf_token'}
+E
+E         Extra items in the left set:
+E         'password_hash'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w04_accounts.py:318: AssertionError</failure></testcase></testsuite></testsuites>

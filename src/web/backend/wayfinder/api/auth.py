@@ -4,7 +4,7 @@ import secrets
 from typing import Literal
 
 from fastapi import APIRouter, Request, Response
-from pydantic import BaseModel, ConfigDict, Field, SecretStr
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, field_validator
 from starlette.concurrency import run_in_threadpool
 
 from wayfinder.api.errors import WebError
@@ -52,6 +52,26 @@ class PasswordResetConfirmRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
     token: str = Field(min_length=1, max_length=256)
     password: SecretStr = Field(min_length=8, max_length=128)
+
+
+class ProfileRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    display_name: str = Field(min_length=1, max_length=60)
+
+    @field_validator("display_name", mode="before")
+    @classmethod
+    def trim_display_name(cls, value):
+        return value.strip() if isinstance(value, str) else value
+
+
+class PasswordChangeRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+    current_password: SecretStr = Field(max_length=128)
+    new_password: SecretStr = Field(min_length=8, max_length=128)
+
+
+class LogoutAllRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
 
 class AccountResponse(BaseModel):
@@ -194,6 +214,27 @@ def auth_router() -> APIRouter:
     def me(request: Request, response: Response):
         response.headers["cache-control"] = "no-store"
         return _identity_response(get_identity(request))
+
+    @router.patch("/me", response_model=IdentityResponse)
+    def update_profile(data: ProfileRequest, request: Request, response: Response):
+        identity = _service(request).update_profile(request.cookies.get(COOKIE_NAME), data.display_name)
+        response.headers["cache-control"] = "no-store"
+        return _identity_response(identity)
+
+    @router.post("/me/password", response_model=MessageResponse)
+    def change_password(data: PasswordChangeRequest, request: Request, response: Response):
+        _service(request).change_password(request.cookies.get(COOKIE_NAME), data.current_password.get_secret_value(),
+                                          data.new_password.get_secret_value(), ip=client_ip(request))
+        response.headers["cache-control"] = "no-store"
+        return {"message": "Đã đổi mật khẩu. Các phiên đăng nhập khác đã được đăng xuất."}
+
+    @router.post("/auth/logout-all", response_model=MessageResponse)
+    def logout_all(request: Request, response: Response, data: LogoutAllRequest | None = None):
+        _service(request).logout_all(request.cookies.get(COOKIE_NAME), ip=client_ip(request))
+        response.delete_cookie(COOKIE_NAME, path="/", secure=_secure_cookie(request),
+                               httponly=True, samesite="lax")
+        response.headers["cache-control"] = "no-store"
+        return {"message": "Đã đăng xuất khỏi mọi thiết bị."}
 
     @router.post("/auth/logout", response_model=MessageResponse)
     def logout(request: Request, response: Response):

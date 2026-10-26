@@ -1,0 +1,9 @@
+{
+  "source_commit": "b8cb7de1edef899a38fb2df4215bbc2dd177cce4",
+  "backend": "PostgresAuthStore",
+  "source": "Actual HTTP responses and PG audit rows from full-01; last parametrization is PostgreSQL",
+  "data": "Synthetic accounts, fake clock and mailer/model/media; never real users or provider spend",
+  "csrf": "Only ephemeral fixture csrf_token value replaced with explicit omission marker",
+  "independent_test_accounts": "Each example can come from a different isolated test; do not combine their IDs",
+  "openapi": "src/web/openapi.json, generated from combined app, 44 previous + 3 new = 47 operations"
+}

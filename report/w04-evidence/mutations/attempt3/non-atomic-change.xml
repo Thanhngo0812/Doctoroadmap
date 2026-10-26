@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.368" timestamp="2026-10-26T19:08:38.361597+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_pg_password_hash_revocation_and_audit_commit_atomically" time="0.865"><failure message="AssertionError: assert ('$argon2id$v...id': 2, ...}]) == ('$argon2id$v...id': 2, ...}])&#10;  &#10;  At index 0 diff: '$argon2id$v=19$m=19456,t=2,p=1$ga49Rp2OgelZYqijLC5a2Q$J8qGiLffHlkYIgbd7/9PWTvQp3e67UmOa6RsHbeHaT4' != '$argon2id$v=19$m=19456,t=2,p=1$UwLtcIgpB9Uk0QLDvSgSYA$dKYgPBTLWVDMTiohgUXbXI3uyW0j1Kd3vgHId80ZTU8'&#10;  Use -v to get more diff">auth_database = (&lt;wayfinder.infrastructure.auth_store.PostgresAuthStore object at 0x000002C46CE02E70&gt;, Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_f74ee0f87fde45d2bc09055500dfab33), 'auth_test_c0859237f8e34289800e63f001525b54')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000002C46CA39430&gt;
+
+    def test_pg_password_hash_revocation_and_audit_commit_atomically(auth_database, monkeypatch):
+        service = build_test_application().services.accounts
+        service.store = auth_database[0]
+        a = service.register("w04@example.vn", PASSWORD, "An", ip=None, user_agent=None).session
+        b = service.login("w04@example.vn", PASSWORD, ip=None, user_agent=None)
+        before = snapshot(service)
+
+        def fail_audit(event):
+            raise RuntimeError("synthetic audit storage failure")
+
+        monkeypatch.setattr(service.store, "append_audit", fail_audit)
+        with pytest.raises(RuntimeError, match="synthetic audit storage failure"):
+            service.change_password(a.token, PASSWORD, NEW_PASSWORD, ip=None)
+&gt;       assert snapshot(service) == before
+E       AssertionError: assert ('$argon2id$v...id': 2, ...}]) == ('$argon2id$v...id': 2, ...}])
+E
+E         At index 0 diff: '$argon2id$v=19$m=19456,t=2,p=1$ga49Rp2OgelZYqijLC5a2Q$J8qGiLffHlkYIgbd7/9PWTvQp3e67UmOa6RsHbeHaT4' != '$argon2id$v=19$m=19456,t=2,p=1$UwLtcIgpB9Uk0QLDvSgSYA$dKYgPBTLWVDMTiohgUXbXI3uyW0j1Kd3vgHId80ZTU8'
+E         Use -v to get more diff
+
+src\web\backend\tests\test_w04_accounts.py:336: AssertionError</failure></testcase></testsuite></testsuites>

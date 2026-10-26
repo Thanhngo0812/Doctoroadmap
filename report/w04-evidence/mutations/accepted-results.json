@@ -1,0 +1,218 @@
+{
+  "mutants": [
+    {
+      "name": "wrong-current-accepted",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "wrong_current and postgres",
+        "--basetemp=tmp/w04-mutant-wrong-current-accepted",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\wrong-current-accepted.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "55de931d628cf20976fb6c877d50b273f0f8face5d695cfdd99a4dd73f641921"
+      }
+    },
+    {
+      "name": "current-a-revoked",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "change_keeps_a and postgres",
+        "--basetemp=tmp/w04-mutant-current-a-revoked",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\current-a-revoked.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "de4156bc442a76d025c8eb748ae2954812f16ac66cf8747bbe6661936ff64379"
+      }
+    },
+    {
+      "name": "other-b-survives",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "change_keeps_a and postgres",
+        "--basetemp=tmp/w04-mutant-other-b-survives",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\other-b-survives.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "01035c69a00609ad5b41156cab8ab80f91ef87b5c86f5dafdfd740cf8958a8b4"
+      }
+    },
+    {
+      "name": "logout-only-a",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "logout_all_revokes and postgres",
+        "--basetemp=tmp/w04-mutant-logout-only-a",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\logout-only-a.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "5c98b30694e335d2d14068185e8889d5d56d03d3cac2a9a21bd966cfad49b7b3"
+      }
+    },
+    {
+      "name": "logout-cross-account",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "logout_all_revokes and postgres",
+        "--basetemp=tmp/w04-mutant-logout-cross-account",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\logout-cross-account.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/infrastructure/auth_store.py": "df751dd0c66f7bf17153e021479b86e238e632d06acc49792b6bf5c39f8285b7"
+      }
+    },
+    {
+      "name": "csrf-unbound",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "csrf_origin_guest and postgres",
+        "--basetemp=tmp/w04-mutant-csrf-unbound",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\csrf-unbound.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 3,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/api/auth.py": "807945518237b7f74b0af9cc04d6d432c2d915381a8eb61d74f78428c6ed86e7"
+      }
+    },
+    {
+      "name": "public-dto-bypassed",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "profile_uses_public and postgres",
+        "--basetemp=tmp/w04-mutant-public-dto-bypassed",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\public-dto-bypassed.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/api/auth.py": "93cca257ec34762c62eec075dd935d1327cd49220b13fa1e7d0b2e5699818a86"
+      }
+    },
+    {
+      "name": "non-atomic-change",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "pg_password_hash_revocation",
+        "--basetemp=tmp/w04-mutant-non-atomic-change",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt3\\non-atomic-change.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "b8aaaf1db7ad0af8def7baa5ec58be1629980dc20a16cbb2b7489d2f44cf5137"
+      }
+    },
+    {
+      "name": "name-61-accepted",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "profile_validation and postgres",
+        "--basetemp=tmp/w04-mutant-name-61-accepted",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt4\\name-61-accepted.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 1,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "f2dd90f3072ddd28082fbc5716ff7d600be221008087326e60019fdc183d2744",
+        "src/web/backend/wayfinder/api/auth.py": "9041bf1aca7de62b383ba23134ca45afae072246fb21feda7daf7f239dd8cfb5"
+      }
+    },
+    {
+      "name": "stale-identity-reused",
+      "command": [
+        "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+        "scripts/w05_run_tests.py",
+        "-o",
+        "addopts=",
+        "-q",
+        "src/web/backend/tests/test_w04_accounts.py",
+        "-k",
+        "stale_session and postgres",
+        "--basetemp=tmp/w04-mutant-stale-identity-reused",
+        "--junitxml=report\\w04-evidence\\mutations\\attempt4\\stale-identity-reused.xml"
+      ],
+      "native_exit": 1,
+      "failure_count": 3,
+      "setup_errors": 0,
+      "mutant_sha256": {
+        "src/web/backend/wayfinder/application/accounts.py": "3d0c0cf4e2475c4a7cd3a8ddd8d410d2c6e447df2edc486cd817c2f7188af8f1"
+      }
+    }
+  ],
+  "caught": 10,
+  "sources_restored": true,
+  "note": "attempt3 caught first 8 then stopped before ambiguous name patch; attempt4 caught final 2"
+}

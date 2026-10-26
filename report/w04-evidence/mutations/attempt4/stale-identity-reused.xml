@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="3" skipped="0" tests="3" time="4.966" timestamp="2026-10-26T19:09:25.767992+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_service_methods_validate_without_http_and_reject_stale_session[postgres-profile]" time="1.417"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x0000022104AB8A70&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000022104BD0080&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x0000022104A56840&gt;))
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000221049FB440&gt;
+action = 'profile'
+
+    @pytest.mark.parametrize("action", ["profile", "password", "logout"])
+    def test_service_methods_validate_without_http_and_reject_stale_session(runtime, monkeypatch, action):
+        service, a, b, _, _ = runtime
+        raw = a.cookies.get("d2r_session")
+        before = snapshot(service)
+        with pytest.raises(AuthError) as failure:
+            service.update_profile(raw, " " * 3)
+        assert failure.value.code == "validation"
+        with pytest.raises(AuthError) as failure:
+            service.change_password(raw, "wrong", NEW_PASSWORD, ip=None)
+        assert failure.value.code == "invalid_credentials"
+        assert snapshot(service) == before
+        original_me = service.me
+
+        def revoked_after_authentication(token):
+            identity = original_me(token)
+            service.store.delete_session(identity.session.id)
+            return identity
+
+        monkeypatch.setattr(service, "me", revoked_after_authentication)
+&gt;       with pytest.raises(AuthError) as failure:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+src\web\backend\tests\test_w04_accounts.py:292: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_service_methods_validate_without_http_and_reject_stale_session[postgres-password]" time="0.592"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002210544ECF0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000221065C3440&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002210544ED20&gt;))
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000221054A1670&gt;
+action = 'password'
+
+    @pytest.mark.parametrize("action", ["profile", "password", "logout"])
+    def test_service_methods_validate_without_http_and_reject_stale_session(runtime, monkeypatch, action):
+        service, a, b, _, _ = runtime
+        raw = a.cookies.get("d2r_session")
+        before = snapshot(service)
+        with pytest.raises(AuthError) as failure:
+            service.update_profile(raw, " " * 3)
+        assert failure.value.code == "validation"
+        with pytest.raises(AuthError) as failure:
+            service.change_password(raw, "wrong", NEW_PASSWORD, ip=None)
+        assert failure.value.code == "invalid_credentials"
+        assert snapshot(service) == before
+        original_me = service.me
+
+        def revoked_after_authentication(token):
+            identity = original_me(token)
+            service.store.delete_session(identity.session.id)
+            return identity
+
+        monkeypatch.setattr(service, "me", revoked_after_authentication)
+&gt;       with pytest.raises(AuthError) as failure:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+src\web\backend\tests\test_w04_accounts.py:292: Failed</failure></testcase><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_service_methods_validate_without_http_and_reject_stale_session[postgres-logout]" time="0.490"><failure message="Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x00000221066AAEA0&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x00000221067A3E90&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x00000221066AAFC0&gt;))
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x00000221066F5490&gt;
+action = 'logout'
+
+    @pytest.mark.parametrize("action", ["profile", "password", "logout"])
+    def test_service_methods_validate_without_http_and_reject_stale_session(runtime, monkeypatch, action):
+        service, a, b, _, _ = runtime
+        raw = a.cookies.get("d2r_session")
+        before = snapshot(service)
+        with pytest.raises(AuthError) as failure:
+            service.update_profile(raw, " " * 3)
+        assert failure.value.code == "validation"
+        with pytest.raises(AuthError) as failure:
+            service.change_password(raw, "wrong", NEW_PASSWORD, ip=None)
+        assert failure.value.code == "invalid_credentials"
+        assert snapshot(service) == before
+        original_me = service.me
+
+        def revoked_after_authentication(token):
+            identity = original_me(token)
+            service.store.delete_session(identity.session.id)
+            return identity
+
+        monkeypatch.setattr(service, "me", revoked_after_authentication)
+&gt;       with pytest.raises(AuthError) as failure:
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE &lt;class 'wayfinder.application.accounts.AuthError'&gt;
+
+src\web\backend\tests\test_w04_accounts.py:292: Failed</failure></testcase></testsuite></testsuites>

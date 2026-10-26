@@ -1,0 +1,25 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[postgres] _
+
+runtime = (<wayfinder.application.accounts.AccountService object at 0x000001FDE8949FD0>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x000001FDE8564AD0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x000001FDE88E7710>))
+
+    def test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged(runtime):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        result = change(a, current_password="incorrect synthetic password")
+>       assert result.status_code == 401
+E       assert 200 == 401
+E        +  where 200 = <Response [200 OK]>.status_code
+
+src\web\backend\tests\test_w04_accounts.py:152: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w04-account-backend\report\w04-evidence\mutations\attempt2\wrong-current-accepted.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_w04_accounts.py::test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[postgres]
+1 failed, 48 deselected, 1 warning in 2.47s

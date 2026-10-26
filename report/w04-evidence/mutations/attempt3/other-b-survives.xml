@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="3.140" timestamp="2026-10-26T19:08:08.946952+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_change_keeps_a_revokes_b_checks_hash_login_and_audit[postgres]" time="1.561"><failure message="assert 200 == 401&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x000002B810962180&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x000002B810E4FFE0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x000002B810D578C0&gt;))
+
+    def test_change_keeps_a_revokes_b_checks_hash_login_and_audit(runtime):
+        service, a, b, other, _ = runtime
+        raw_a, raw_b = a.cookies.get("d2r_session"), b.cookies.get("d2r_session")
+        before = snapshot(service)
+        result = change(a)
+        assert result.status_code == 200
+        assert result.headers["cache-control"] == "no-store"
+        assert a.cookies.get("d2r_session") == raw_a
+        assert a.get("/api/v1/me").status_code == other.get("/api/v1/me").status_code == 200
+&gt;       assert_unauthenticated(b)
+
+src\web\backend\tests\test_w04_accounts.py:184:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+client = &lt;starlette.testclient.TestClient object at 0x000002B81271ABA0&gt;
+
+    def assert_unauthenticated(client):
+        response = client.get("/api/v1/me")
+&gt;       assert response.status_code == 401
+E       assert 200 == 401
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:98: AssertionError</failure></testcase></testsuite></testsuites>

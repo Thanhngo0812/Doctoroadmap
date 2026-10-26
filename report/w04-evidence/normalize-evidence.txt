@@ -1,0 +1,49 @@
+"""Trim physical trailing whitespace only in new W04 evidence copies; retain all raw originals."""
+from hashlib import sha256
+import json
+from pathlib import Path
+import shutil
+import xml.etree.ElementTree as ET
+
+root = Path(__file__).resolve().parents[1]
+out = root / 'report/w04-evidence'
+raw = root / 'tmp/w04-raw-evidence'
+manifest_path = out / 'manifest.json'
+old = json.loads(manifest_path.read_text())['files']
+for entry in old:
+    assert sha256((out / entry['path']).read_bytes()).hexdigest() == entry['sha256']
+    assert sha256((raw / entry['path']).read_bytes()).hexdigest() == entry['raw_sha256']
+
+helper = Path(__file__)
+shutil.copyfile(helper, out / 'normalize-evidence.txt')
+proof_path = out / 'provenance.json'
+proof = json.loads(proof_path.read_text())
+proof['files'].append(dict(source=helper.relative_to(root).as_posix(),
+    source_sha256=sha256(helper.read_bytes()).hexdigest(), stored='normalize-evidence.txt'))
+proof['note'] += '; physical trailing spaces/tabs trimmed in committed copies; raw hashes/originals retained'
+proof_path.write_bytes((json.dumps(proof, indent=2) + '\n').encode())
+report = root / 'report/w04-account-backend-2026-10-26.md'
+with report.open('a', encoding='utf-8', newline='\n') as stream:
+    stream.write('\nBản commit log/XML dùng UTF-8/LF và bỏ khoảng trắng/tab cuối dòng vật lý để đạt '
+        '`git diff --check`; raw gốc giữ nguyên trong ignored `tmp/w04-raw-evidence/`, '
+        '`manifest.json` ghi cả raw_sha256 và sha256 bản commit. Không đổi JSON values, JUnit attributes, '
+        'số test hoặc native; có helper normalize kèm provenance.\n')
+
+entries = []
+for path in sorted(p for p in out.rglob('*') if p.is_file() and p != manifest_path):
+    relative = path.relative_to(out)
+    original = raw / relative
+    original.parent.mkdir(parents=True, exist_ok=True)
+    if not original.exists():
+        original.write_bytes(path.read_bytes())
+    before = path.read_bytes()
+    normalized = '\n'.join(line.rstrip(' \t') for line in before.decode().split('\n')).encode()
+    if path.suffix == '.json':
+        assert json.loads(before) == json.loads(normalized)
+    if path.suffix == '.xml':
+        assert [node.attrib for node in ET.fromstring(before).iter()] == [node.attrib for node in ET.fromstring(normalized).iter()]
+    path.write_bytes(normalized)
+    entries.append(dict(path=relative.as_posix(), raw_sha256=sha256(original.read_bytes()).hexdigest(),
+        sha256=sha256(normalized).hexdigest(), bytes=len(normalized)))
+manifest_path.write_bytes((json.dumps(dict(files=entries), indent=2) + '\n').encode())
+print(json.dumps(dict(files=len(entries), raw_originals_retained=True, json_values_and_junit_attributes_preserved=True)))

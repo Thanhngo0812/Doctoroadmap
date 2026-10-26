@@ -1,0 +1,18 @@
+{
+  "status": 422,
+  "body": {
+    "error": {
+      "code": "validation",
+      "message": "Dữ liệu yêu cầu không hợp lệ",
+      "retry_after": null,
+      "ref": null,
+      "fields": [
+        {
+          "loc": "body.display_name",
+          "type": "string_too_long",
+          "message": "String should have at most 60 characters"
+        }
+      ]
+    }
+  }
+}
