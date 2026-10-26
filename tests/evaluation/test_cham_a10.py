@@ -150,3 +150,13 @@ def test_canh_bo_qua_tinh_vao_q7_nhung_khong_vao_f1():
 
 def g4_(x):
     return x
+
+
+def test_q6_khai_niem_vang_tach_lay_vi_tri_som_nhat():
+    # G2 tách thành n2 (vị trí 3) và n2b (vị trí 0); cạnh vàng G1>G2 với G1 ở vị trí 1: đúng vì lấy vị trí sớm nhất của G2 là 0?
+    vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1")])
+    vang4 = g4(S, [("G-S-002", "G-S-001")])  # G2 là tiên quyết của G1
+    cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n2", "khop"), ("G-S-002", "n2b", "khop")])
+    hd = hop_dong([khai_niem(x) for x in ("n1", "n2", "n2b")], [], ["n2b", "n1", "n2"])
+    q6 = lay(cham(hd, vang3, vang4, cc, ma_sach=S), "a10.q6.nghiem")
+    assert (q6["tu"], q6["mau"]) == (0, 1)  # vị trí G2 = min(2, 0) = 0 < vị trí G1 = 1

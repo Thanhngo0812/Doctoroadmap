@@ -99,8 +99,28 @@ def test_khai_niem_vang_bi_tach_thanh_hai_node():
     cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n2", "khop"), ("G-S-002", "n2b", "khop")])
     hd = hop_dong([khai_niem("n1"), khai_niem("n2"), khai_niem("n2b")], [canh("n1", "n2")], ["n1", "n2", "n2b"])
     rows = cham(hd, vang3, vang4, cc, ma_sach=S)
-    # vàng thành hai cặp node (n1>n2, n1>n2b); máy chỉ có n1>n2
-    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 0, 1)
+    # so trong không gian vàng: một cạnh vàng G1>G2; tách làm hai node không làm phình mẫu số
+    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 0, 0)
+
+
+def test_khai_niem_vang_tach_hai_node_moi_node_co_mot_canh_toi_dich():
+    vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1")])
+    vang4 = g4(S, [("G-S-001", "G-S-002")])
+    cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n2", "khop"), ("G-S-002", "n2b", "khop")])
+    hd = hop_dong([khai_niem("n1"), khai_niem("n2"), khai_niem("n2b")], [canh("n1", "n2"), canh("n1", "n2b")],
+                  ["n1", "n2", "n2b"])
+    rows = cham(hd, vang3, vang4, cc, ma_sach=S)
+    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 0, 0)  # hai cạnh máy cùng ánh xạ về G1>G2
+    assert bo(lay(rows, "a8.f1_bao_dong.nghiem", "c1")) == (1, 0, 0)
+
+
+def test_node_gop_nham_hai_khai_niem_vang_anh_xa_sang_ca_hai():
+    vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1"), ("G-S-003", "c1")])
+    vang4 = g4(S, [("G-S-001", "G-S-003")])
+    cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n1", "khop"), ("G-S-003", "n3", "khop")])
+    hd = hop_dong([khai_niem("n1"), khai_niem("n3")], [canh("n1", "n3")], ["n1", "n3"])
+    rows = cham(hd, vang3, vang4, cc, ma_sach=S)
+    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 1, 0)  # n1>n3 thành G1>G3 (đúng) và G2>G3 (thừa)
 
 
 def test_hai_khai_niem_vang_don_chung_mot_node_tu_noi_roi_phep_cham_va_duoc_bao_cao():
@@ -109,7 +129,8 @@ def test_hai_khai_niem_vang_don_chung_mot_node_tu_noi_roi_phep_cham_va_duoc_bao_
     cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n1", "khop"), ("G-S-003", "n3", "khop")])
     hd = hop_dong([khai_niem("n1"), khai_niem("n3")], [canh("n1", "n3")], ["n1", "n3"])
     rows = cham(hd, vang3, vang4, cc, ma_sach=S)
-    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 0, 0)  # chỉ còn n1>n3
+    # G1>G2 bị tự nối nên rời phép chấm; n1>n3 ánh xạ sang G1>G3 (thừa) và G2>G3 (đúng) vì n1 căn với cả hai
+    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 1, 0)
     assert lay(rows, "can.tu_noi.nghiem", "c1")["gia_tri"] == 1
 
 

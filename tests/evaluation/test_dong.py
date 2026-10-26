@@ -19,9 +19,33 @@ def test_f1_theo_cuon_cong_tp_fp_fn():
     assert (p, r) == (pytest.approx(0.6), pytest.approx(0.6)) and f == pytest.approx(0.6)
 
 
-def test_f1_mau_so_khong_la_none():
+def test_f1_tp_bang_0_co_vang_thi_f1_la_0_khong_phai_none():
+    # khác bộ chấm cũ CÓ CHỦ Ý: cũ cho None khi P+R=0, làm cuốn sai hết bị loại khỏi trung bình macro
+    assert dong.chi_so_f1(dong.f1("h", "A", "c1", "f1", 0, 2, 3)) == (0.0, 0.0, 0.0)
+
+
+def test_f1_khong_co_canh_vang_thi_f1_va_recall_la_none():
+    p, r, f = dong.chi_so_f1(dong.f1("h", "A", "c1", "f1", 0, 2, 0))
+    assert (p, r, f) == (0.0, None, None)
     assert dong.gia_tri(dong.f1("h", "A", "c1", "f1", 0, 0, 0)) is None
-    assert dong.gia_tri(dong.f1("h", "A", "c1", "f1", 0, 3, 3)) is None  # P=R=0 nên F1 không xác định
+
+
+def test_f1_khong_du_doan_nhung_co_vang_thi_f1_la_0_precision_none():
+    p, r, f = dong.chi_so_f1(dong.f1("h", "A", "c1", "f1", 0, 0, 3))
+    assert (p, r, f) == (None, 0.0, 0.0)
+
+
+def test_f1_binh_thuong_khong_doi():
+    assert dong.gia_tri(dong.f1("h", "A", "c1", "f1", 3, 1, 1)) == pytest.approx(0.75)
+
+
+def test_cuon_sai_het_van_vao_trung_binh_macro_voi_0():
+    rows = [dong.f1("h", "A", "cuon", "f1", 3, 1, 1), dong.f1("h", "B", "cuon", "f1", 0, 4, 4)]
+    macro = dong.trung_binh_macro(rows)[("h", "f1")]
+    assert macro["gia_tri"] == pytest.approx(0.375) and macro["so_cuon_co_so"] == 2
+
+
+def test_ti_le_mau_so_khong_la_none():
     assert dong.gia_tri(dong.ti_le("h", "A", "c1", "q6", 0, 0)) is None
 
 
