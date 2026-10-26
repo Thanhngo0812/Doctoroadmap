@@ -1,0 +1,12 @@
+{
+  "pid": 50352,
+  "name": "sse-real-payloads-green",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "-e",
+    "const fs=require('node:fs'),assert=require('node:assert/strict'),{hasTerminalFrame,intentionalDisconnect}=require('./scripts/w10_sse_audit.cjs'); const a=JSON.parse(fs.readFileSync('report/w10-r7-evidence/browser-r7-smoke4/audit.json','utf8')); for(const row of a.streams){ if(row.terminalSeen) assert.equal(hasTerminalFrame(row.body),true,row.path);else assert.equal(intentionalDisconnect(row),true,row.path); } console.log('All captured complete public DTOs and the intentional prefix classified correctly');"
+  ],
+  "status": "complete",
+  "code": 0,
+  "signal": null
+}

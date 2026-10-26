@@ -1,0 +1,109 @@
+{
+  "sourceCommit": "1fc0f553bec808241388b722fa2c10a1c6ead33d",
+  "dirty": [],
+  "configurations": 12,
+  "screens": 96,
+  "axeRuns": 65,
+  "axeViolations": 0,
+  "http": 250,
+  "sse": {
+    "streams": 27,
+    "missingStreamBodies": 0,
+    "terminalStreams": 26,
+    "cancelledBeforeTerminal": [
+      {
+        "id": "70bd9b7f-7f91-465d-84aa-0f2063ca7e1b",
+        "stage": "disconnect-document",
+        "path": "/api/v1/courses/69543730-e234-4ff6-a468-dbc90b98a3ef/documents",
+        "cancelled": true,
+        "readError": "signal is aborted without reason",
+        "readErrorName": "AbortError"
+      }
+    ]
+  },
+  "pending": [],
+  "privacyFailures": [],
+  "pageErrors": [],
+  "console": {
+    "http401": 3,
+    "axe_font_csp": 65,
+    "axe_inline_csp": 65,
+    "injected_network": 1,
+    "http404": 1
+  },
+  "manualContrastCount": 73,
+  "manualContrastMinimum": 5.844797723334521,
+  "sharedLimit": {
+    "buttonRequests": 10,
+    "assistantGeneratedDocuments": 0,
+    "modelCallsUnchanged": true,
+    "persistentNotice": true
+  },
+  "lateSubmit": {
+    "oldAttempt": "qa_f90a7a5f511264cf90f6e4f6",
+    "newAttempt": "qa_f499ed491363112a76bc93a0",
+    "oldIgnoredWhileNewPending": true,
+    "forwardRestoresSavedResult": true,
+    "driver": "fetch completion held after real HTTP response; native history entries/popstate; real PG grading"
+  },
+  "sqlRecords": [
+    {
+      "kind": "documents",
+      "owner": "b61b3314-69df-42f0-8f56-4f24fc79bca0",
+      "count": 28
+    },
+    {
+      "kind": "progress",
+      "owner": "b61b3314-69df-42f0-8f56-4f24fc79bca0",
+      "count": 6
+    },
+    {
+      "kind": "quiz_attempt",
+      "owner": "b61b3314-69df-42f0-8f56-4f24fc79bca0",
+      "count": 14
+    }
+  ],
+  "usage": [
+    {
+      "purpose": "quiz_gen",
+      "rows": 6,
+      "usd": 0
+    },
+    {
+      "purpose": "quiz_verify",
+      "rows": 6,
+      "usd": 0
+    },
+    {
+      "purpose": "assistant",
+      "rows": 2,
+      "usd": 0
+    },
+    {
+      "purpose": "document",
+      "rows": 28,
+      "usd": 0
+    },
+    {
+      "purpose": "document_validation",
+      "rows": 27,
+      "usd": 0
+    }
+  ],
+  "dbRemoved": true,
+  "serverStopped": true,
+  "externalCostUsd": 0,
+  "designFindings": [
+    {
+      "level": "WARN",
+      "id": "font-fallback",
+      "width": 1280,
+      "message": "Typeface(s) declared but not loaded, so a fallback is rendering: math",
+      "fix": "Fix the font URL / family name, or the screenshots you are judging are not the design.",
+      "alsoAt": [
+        768,
+        390
+      ]
+    }
+  ]
+}

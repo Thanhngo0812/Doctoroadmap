@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.124" timestamp="2026-10-26T15:16:49.233147+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_saved_content_cannot_be_opened_through_another_book" time="2.083"><failure message="assert 200 == 404&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a236bd5550554ccbb090834b91f0e...ecture.ScriptedLectureModel object at 0x000001EE27F3DC10&gt;, base='/api/v1/courses/3adfded3-0966-4adb-a1ec-f29671802f85')
+
+    def test_w10_saved_content_cannot_be_opened_through_another_book(content):
+        w = content; made = create_quiz(w)
+        other = w.courses.create_course(w.a.actor, doc_id='another-book', title='Another book', graph_version=8, module_count=1)
+        def load(doc_id, version):
+            graph = deepcopy(w.graph); graph.doc_id = doc_id; return graph
+        w.gateway.graph_loader = load
+        response = w.a.client.get(f'/api/v1/courses/{other.id}/quizzes/{made["attempt_id"]}')
+&gt;       assert response.status_code == 404
+E       assert 200 == 404
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_content_w10.py:244: AssertionError</failure></testcase></testsuite></testsuites>

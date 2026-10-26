@@ -1,0 +1,314 @@
+[
+  {
+    "name": "ui-keyboard-focus",
+    "path": "src/web/frontend/src/ContentPages.tsx",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+    "mutatedSha256": "a12ea5a73ba36ac3d1af5375ccd75602fc4f2f497a7096e6c81a37145043322f",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Content.test.tsx",
+      "--reporter=junit",
+      "--outputFile=../../../report/w10-r7-evidence/mutations-existing-final2/ui-keyboard-focus.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "keeps keyboard focus on the current option when streaming becomes a saved quiz"
+    ],
+    "errors": 0,
+    "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd"
+  },
+  {
+    "name": "public-answer",
+    "path": "src/web/backend/wayfinder/api/content.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "fef916cc086217a6bcdd04f1b529a4da271397b23f8afb37091070156afbf4f8",
+    "mutatedSha256": "26dfbcc597213687194c131f1c6afed270bc59b39c84b89eff578dc165a7e57e",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-public-answer",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\public-answer.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping"
+    ],
+    "errors": 0,
+    "restoredSha256": "fef916cc086217a6bcdd04f1b529a4da271397b23f8afb37091070156afbf4f8"
+  },
+  {
+    "name": "ui-server-reload",
+    "path": "src/web/frontend/src/ContentPages.tsx",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+    "mutatedSha256": "6835e26bad6cd62e3649cbe2bb6d7d522413d0d046f523903d0a94353ae32945",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Content.test.tsx",
+      "--reporter=junit",
+      "--outputFile=../../../report/w10-r7-evidence/mutations-existing-final2/ui-server-reload.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "refreshes a stale history quiz snapshot from the server after submission without posting again"
+    ],
+    "errors": 0,
+    "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd"
+  },
+  {
+    "name": "result-owner",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+    "mutatedSha256": "1b51a05cffb559448cd57387e8ec40359b76a96c557d4228b5c632a0b948aada",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-result-owner",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\result-owner.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping"
+    ],
+    "errors": 0,
+    "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6"
+  },
+  {
+    "name": "content-book",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+    "mutatedSha256": "a53c0084e242aaa13bda0e6d763369ec8b330d316b0d30afcc87236b07573117",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_saved_content_cannot_be_opened_through_another_book",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-content-book",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\content-book.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_saved_content_cannot_be_opened_through_another_book"
+    ],
+    "errors": 0,
+    "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6"
+  },
+  {
+    "name": "document-scope",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+    "mutatedSha256": "8d6f652ea2efa952e496c678d2a93f2988bbf4c4070c5546e14545cbea10d42c",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-document-scope",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\document-scope.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited"
+    ],
+    "errors": 0,
+    "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6"
+  },
+  {
+    "name": "document-rate",
+    "path": "src/web/backend/wayfinder/infrastructure/document_requests.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2",
+    "mutatedSha256": "ffca327b4ccab9ea0e5b3771902c6c178724cb947bc56864bb9cbdad838d3347",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-document-rate",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\document-rate.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_document_six_modules_rejected_before_model_and_eleventh_request_is_rate_limited"
+    ],
+    "errors": 0,
+    "restoredSha256": "99c656ce3c92c4416c8eebf9dbf7093ba52df2d1f3168670a4e1207afda3dff2"
+  },
+  {
+    "name": "atomic-submit",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+    "mutatedSha256": "adb26c85c479262c67848f6beb226f7d8fbb7dcbf563a453000485df45b12fae",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_submission_rolls_back_both_attempt_and_progress_when_core_write_fails",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-atomic-submit",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\atomic-submit.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_submission_rolls_back_both_attempt_and_progress_when_core_write_fails"
+    ],
+    "errors": 0,
+    "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6"
+  },
+  {
+    "name": "idempotent-submit",
+    "path": "src/web/backend/wayfinder/application/learning_gateway.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6",
+    "mutatedSha256": "1ad2f6141a2f72e2b58c60ed116b79c24e4b5d3ccb8a89fec06ae9709abe44c7",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-idempotent-submit",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\idempotent-submit.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping"
+    ],
+    "errors": 0,
+    "restoredSha256": "f39922ef7492c2e17ef5b1771059f6fedb9207847046fdb99757ac47de7ae9d6"
+  },
+  {
+    "name": "selected-reason",
+    "path": "src/web/backend/wayfinder/application/content_view.py",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "8dc2c74a454e116c31f1b593b6867f7129bd1e092879a066a1a8511c4451ce60",
+    "mutatedSha256": "b3299371d8199caf55ca6994aea2da6379e9c1b675fb8a02e3bee7987e606fc9",
+    "command": [
+      "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+      "-X",
+      "utf8",
+      "scripts/w05_run_tests.py",
+      "-o",
+      "addopts=",
+      "-q",
+      "src/web/backend/tests/test_content_w10.py::test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score",
+      "--basetemp=tmp/w10-mutations-r7-existing-final2-selected-reason",
+      "--junitxml=report\\w10-r7-evidence\\mutations-existing-final2\\selected-reason.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "test_w10_wrong_answer_returns_only_selected_why_wrong_and_library_score"
+    ],
+    "errors": 0,
+    "restoredSha256": "8dc2c74a454e116c31f1b593b6867f7129bd1e092879a066a1a8511c4451ce60"
+  },
+  {
+    "name": "ui-core-group",
+    "path": "src/web/frontend/src/ContentLibrary.tsx",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "e943f96fed5a0b3d2dc235c2e17ebb76187d491e9a2e59a127ec9a468df3f0ca",
+    "mutatedSha256": "e42bc33a6f9a5a9d9ce8c1087fb8708a1126129a4358254599e77ed45c62c6c6",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Content.test.tsx",
+      "--reporter=junit",
+      "--outputFile=../../../report/w10-r7-evidence/mutations-existing-final2/ui-core-group.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "uses core groups independently of origin on the real module page"
+    ],
+    "errors": 0,
+    "restoredSha256": "e943f96fed5a0b3d2dc235c2e17ebb76187d491e9a2e59a127ec9a468df3f0ca"
+  },
+  {
+    "name": "ui-early-choice",
+    "path": "src/web/frontend/src/ContentPages.tsx",
+    "sourceCommit": "9bb90d9c10c125bbdf98e65884fe6a89a26dd57c",
+    "sourceSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd",
+    "mutatedSha256": "8315f0d22f8dea3d34678e34d2e2cd058df54f3b83544f7e67278876c6de4d23",
+    "command": [
+      "cmd",
+      "/d",
+      "/c",
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "src/Content.test.tsx",
+      "--reporter=junit",
+      "--outputFile=../../../report/w10-r7-evidence/mutations-existing-final2/ui-early-choice.xml"
+    ],
+    "nativeExitCode": 1,
+    "failedAssertions": [
+      "keeps a selection made while quiz items stream and submits the actual shuffled option ID"
+    ],
+    "errors": 0,
+    "restoredSha256": "2e361f32f070599d5ab8562a03649a6bddc4695fcdd0a951d3c2c7635c92f2fd"
+  }
+]

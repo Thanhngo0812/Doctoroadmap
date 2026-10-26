@@ -1,0 +1,12 @@
+{
+  "pid": 35604,
+  "name": "sse-terminal-red",
+  "command": [
+    "C:\\Program Files\\nodejs\\node.exe",
+    "-e",
+    "const fs=require('node:fs'),assert=require('node:assert/strict'); const src=fs.readFileSync('scripts/w10_web_check.cjs','utf8'); const line=src.split('\\n').find(x=>x.includes('receipt.terminalSeen =')); const classify=new Function('receipt','return '+line.trim().slice('receipt.terminalSeen = '.length)); assert.equal(classify({body:'event: final\\n\\n'}),false,'an empty terminal frame must not count as a complete payload');"
+  ],
+  "status": "complete",
+  "code": 1,
+  "signal": null
+}

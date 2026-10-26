@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="5.171" timestamp="2026-10-26T15:28:53.788223+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_content_w10" name="test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping" time="2.807"><failure message="AssertionError: assert 500 == 404&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code&#10; +    where &lt;Response [500 Internal Server Error]&gt; = get('/api/v1/courses/25a870df-9410-4970-99eb-d7d25e3a497a/quizzes/qa_8165b10d3896cc9365a3d24b')&#10; +      where get = &lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt;.get&#10; +        where &lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt; = namespace(client=&lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt;, actor=Actor(user_id='aff29bf5-579b-4c...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'DMXHt3HmIikNQdFoAglu4HjPEQCksVqHYW34RIWJJqI'}).client&#10; +          where namespace(client=&lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt;, actor=Actor(user_id='aff29bf5-579b-4c...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'DMXHt3HmIikNQdFoAglu4HjPEQCksVqHYW34RIWJJqI'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b996acc729554f06aeb46dae98689...ecture.ScriptedLectureModel object at 0x0000029CFD7863F0&gt;, base='/api/v1/courses/25a870df-9410-4970-99eb-d7d25e3a497a').b">content = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b996acc729554f06aeb46dae98689...ecture.ScriptedLectureModel object at 0x0000029CFD7863F0&gt;, base='/api/v1/courses/25a870df-9410-4970-99eb-d7d25e3a497a')
+
+    def test_w10_quiz_public_snapshot_has_no_answers_and_submission_preserves_shuffled_mapping(content):
+        w = content
+        original = w.gateway.runtime.quiz
+        class Reverse(random.Random):
+            def shuffle(self, rows):
+                rows.reverse()
+        def quiz(graph):
+            case = original(graph); case.rng = Reverse(1); return case
+        w.gateway.runtime.quiz = quiz
+        made = create_quiz(w, owner=w.b.actor.user_id, doc_id='forged', graph_version=99)
+        assert made['contract_version'] == 'quiz-3' and made['status'] == 'ready'
+        assert_no_answers(made)
+        item = made['items'][0]
+        assert item['generator'] == 'llm' and len(item['options']) == 4
+        assert item['bloom'] in {'nho', 'hieu', 'van_dung'} and '$' in item['stem']
+        with w.independent_engine.connect() as c:
+            stored = c.scalar(text("SELECT value FROM phase_b_record WHERE kind='quiz_attempt' AND record_id=:id"), {'id': made['attempt_id']})
+        assert stored['owner'] == w.a.actor.user_id and stored['doc_id'] == 'doc-1'
+        correct = next(option for option in stored['_private'][item['item_id']]['options'] if option['is_correct'])
+        assert item['options'][0]['option_id'] != correct['option_id']
+        path = w.base + '/quizzes/' + made['attempt_id']
+&gt;       assert w.b.client.get(path).status_code == 404
+E       AssertionError: assert 500 == 404
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+E        +    where &lt;Response [500 Internal Server Error]&gt; = get('/api/v1/courses/25a870df-9410-4970-99eb-d7d25e3a497a/quizzes/qa_8165b10d3896cc9365a3d24b')
+E        +      where get = &lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt;.get
+E        +        where &lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt; = namespace(client=&lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt;, actor=Actor(user_id='aff29bf5-579b-4c...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'DMXHt3HmIikNQdFoAglu4HjPEQCksVqHYW34RIWJJqI'}).client
+E        +          where namespace(client=&lt;starlette.testclient.TestClient object at 0x0000029CDE1AD9D0&gt;, actor=Actor(user_id='aff29bf5-579b-4c...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'DMXHt3HmIikNQdFoAglu4HjPEQCksVqHYW34RIWJJqI'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_b996acc729554f06aeb46dae98689...ecture.ScriptedLectureModel object at 0x0000029CFD7863F0&gt;, base='/api/v1/courses/25a870df-9410-4970-99eb-d7d25e3a497a').b
+
+src\web\backend\tests\test_content_w10.py:71: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,53 @@
+warning: in the working copy of 'src/web/backend/wayfinder/api/content.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/application/content_view.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/application/learning_gateway.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/infrastructure/assistant_tools.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/infrastructure/document_requests.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/backend/wayfinder/infrastructure/learning_runtime.py', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/frontend/src/ContentLibrary.tsx', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'src/web/frontend/src/ContentPages.tsx', LF will be replaced by CRLF the next time Git touches it
+Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+Exception in callback _ProactorBasePipeTransport._call_connection_lost(None)
+handle: <Handle _ProactorBasePipeTransport._call_connection_lost(None)>
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py", line 88, in _run
+    self._context.run(self._callback, *self._args)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 165, in _call_connection_lost
+    self._sock.shutdown(socket.SHUT_RDWR)
+ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+locator.click: Timeout 30000ms exceeded.
+Call log:
+[2m  - waiting for getByRole('button', { name: 'Bật chế độ sáng' })[22m
+[2m    - locator resolved to <button type="button" aria-label="Bật chế độ sáng" class="icon-button theme-toggle">…</button>[22m
+[2m  - attempting click action[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <header class="learning-chat-heading">…</header> from <main tabindex="-1" id="courses-main" class="courses-page page-frame">…</main> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m    - waiting 20ms[22m
+[2m    2 × waiting for element to be visible, enabled and stable[22m
+[2m      - element is visible, enabled and stable[22m
+[2m      - scrolling into view if needed[22m
+[2m      - done scrolling[22m
+[2m      - <header class="learning-chat-heading">…</header> from <main tabindex="-1" id="courses-main" class="courses-page page-frame">…</main> subtree intercepts pointer events[22m
+[2m    - retrying click action[22m
+[2m      - waiting 100ms[22m
+[2m    57 × waiting for element to be visible, enabled and stable[22m
+[2m       - element is visible, enabled and stable[22m
+[2m       - scrolling into view if needed[22m
+[2m       - done scrolling[22m
+[2m       - <header class="learning-chat-heading">…</header> from <main tabindex="-1" id="courses-main" class="courses-page page-frame">…</main> subtree intercepts pointer events[22m
+[2m     - retrying click action[22m
+[2m       - waiting 500ms[22m
+
+    at main (C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w10-quiz-documents\scripts\w10_web_check.cjs:397:110)
+Cancel 0 running task(s), timeout graceful shutdown exceeded
