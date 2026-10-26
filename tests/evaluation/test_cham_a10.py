@@ -135,3 +135,18 @@ def test_q7_tong_cong_bu_sai_so_khop_tung_bit_voi_bo_cham_cu():
     q7 = lay(cham(hd, vang3, vang4, cc, ma_sach=S), "a10.q7.nghiem")
     assert q7["n"] == 10
     assert q7["tong"] == 1.0
+
+
+def test_canh_bo_qua_tinh_vao_q7_nhung_khong_vao_f1():
+    vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1")])
+    vang4 = g4(S, [("G-S-001", "G-S-002")])
+    cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n2", "khop")])
+    hd = hop_dong([khai_niem("n1"), khai_niem("n2")], [canh("n1", "n2", bo_qua=True)], ["n1", "n2"])
+    rows = cham(hd, vang3, g4_(vang4), cc, ma_sach=S)
+    assert lay(rows, "a10.q7.nghiem")["tong"] == 1.0  # tổ tiên n1 của n2 được phủ nhờ cạnh bypass
+    f1 = lay(rows, "a8.f1_truc_tiep.nghiem")
+    assert (f1["tp"], f1["fp"], f1["fn"]) == (0, 0, 1)  # F1 chỉ xét cạnh yêu cầu, như bộ chấm cũ
+
+
+def g4_(x):
+    return x

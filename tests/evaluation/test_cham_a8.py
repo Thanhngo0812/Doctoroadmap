@@ -127,6 +127,7 @@ def test_khong_quen_anh_xa_danh_tinh_khi_node_da_gop():
 def test_chi_cham_quan_he_van_ban_khong_dem_kien_thuc_vao_vang_chinh():
     vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1"), ("G-S-003", "c1")])
     vang4 = g4(S, [("G-S-001", "G-S-002"), ("G-S-001", "G-S-003", "kien_thuc")])
+    vang4["vang_chinh"] = list(vang4["quan_he"])  # cố ý để cả quan hệ kiến thức lọt vào danh sách vàng
     cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n2", "khop"), ("G-S-003", "n3", "khop")])
     hd = hop_dong([khai_niem(f"n{i}") for i in (1, 2, 3)], [canh("n1", "n2")], ["n1", "n2", "n3"])
     rows = cham(hd, vang3, vang4, cc, ma_sach=S)
@@ -164,3 +165,24 @@ def test_mau_so_khong_la_none_khong_la_khong():
     f1_c1 = lay(rows, "a8.f1_truc_tiep.nghiem", "c1")
     assert bo(f1_c1) == (0, 0, 0)
     assert dong.gia_tri(f1_c1) is None
+
+
+def test_canh_vua_trong_vang_chinh_vua_tranh_chap_la_loi_du_lieu():
+    import pytest
+    vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1")])
+    vang4 = g4(S, [("G-S-001", "G-S-002")])
+    vang4["tranh_chap"] = [{"nguon": "G-S-001", "dich": "G-S-002"}]  # vẫn nằm trong vang_chinh
+    cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n2", "khop")])
+    hd = hop_dong([khai_niem("n1"), khai_niem("n2")], [], ["n1", "n2"])
+    with pytest.raises(ValueError, match="tranh chấp"):
+        cham(hd, vang3, vang4, cc, ma_sach=S)
+
+
+def test_danh_tinh_ap_ca_cho_canh_may_dung_id_cu():
+    vang3 = g3(S, [("G-S-001", "c1"), ("G-S-002", "c1")])
+    vang4 = g4(S, [("G-S-001", "G-S-002")])
+    cc = can(S, [("G-S-001", "n1", "khop"), ("G-S-002", "n2", "khop")])
+    hd = hop_dong([khai_niem("n1"), khai_niem("n2"), khai_niem("n2old", da_gop=True, trong_day_hoc=False)],
+                  [canh("n1", "n2old")], ["n1", "n2"], ban_do_danh_tinh={"n2old": "n2"})
+    rows = cham(hd, vang3, vang4, cc, ma_sach=S)
+    assert bo(lay(rows, "a8.f1_truc_tiep.nghiem", "c1")) == (1, 0, 0)
