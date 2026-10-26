@@ -30,16 +30,20 @@ def hoan_vi_ghep_cap(rows, he_a, he_b, *, thuoc, so_lan=10000, seed=20261114):
     cap = {s: [(dem_a[s][c], dem_b[s][c]) for c in sorted(dem_a[s])] for s in sorted(dem_a)}
     quan_sat = _hieu_macro(kieu_a, cap)
     if quan_sat is None:
-        return {"hieu": None, "p": None, "so_lan": so_lan}
+        return {"hieu": None, "p": None, "so_lan": so_lan, "so_lan_bo": 0}
     sinh = Lcg(seed)
-    cuc_doan = 0
+    cuc_doan = bo = 0
     for _ in range(so_lan):
         xao = {s: [(y, x) if sinh.dong_xu() else (x, y) for x, y in chuong] for s, chuong in cap.items()}
         hieu = _hieu_macro(kieu_a, xao)
+        if hieu is None:
+            # Chỉ xảy ra khi rất ít cuốn đo được: lần xáo này không có hiệu, không tính cực đoan, nhưng đếm để báo (soát S-08).
+            bo += 1
         # Sai số dấu phẩy động: hiệu bằng đúng hiệu quan sát vẫn phải tính là cực đoan.
-        if hieu is not None and abs(hieu) >= abs(quan_sat) - 1e-12:
+        elif abs(hieu) >= abs(quan_sat) - 1e-12:
             cuc_doan += 1
-    return {"hieu": quan_sat, "p": (cuc_doan + 1) / (so_lan + 1), "so_lan": so_lan}
+    # +1 ở tử và mẫu: p không bao giờ bằng 0 (lần quan sát cũng là một hoán vị).
+    return {"hieu": quan_sat, "p": (cuc_doan + 1) / (so_lan + 1), "so_lan": so_lan, "so_lan_bo": bo}
 
 
 def sign_test(thang, thua):

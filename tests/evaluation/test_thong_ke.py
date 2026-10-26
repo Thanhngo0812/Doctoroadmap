@@ -221,3 +221,76 @@ def test_thong_ke_khong_nhap_doc2roadmap():
             elif isinstance(nut, ast.ImportFrom) and nut.module:
                 ten = [nut.module]
             assert not any(t.split(".")[0] == "doc2roadmap" for t in ten), tep
+
+
+# --- bổ sung sau soát độc lập (agent A, 2026-10-27: S-03, S-04, S-05, S-08) -----------------------------------------
+
+def test_phan_vi_khop_numpy_noi_suy_tuyen_tinh():
+    from danhgia.thong_ke.bootstrap import _phan_vi
+    # Giá trị tham chiếu tính bằng numpy.percentile (mặc định nội suy tuyến tính).
+    assert _phan_vi([0, 1, 2, 3], 0.025) == pytest.approx(0.075)
+    assert _phan_vi([0, 1, 2, 3], 0.975) == pytest.approx(2.925)
+    assert _phan_vi(sorted([5, 1, 9, 2, 7]), 0.025) == pytest.approx(1.1)
+    assert _phan_vi(sorted([5, 1, 9, 2, 7]), 0.975) == pytest.approx(8.8)
+
+
+def _bien_thien():
+    rows = []
+    for i, (tp, fp) in enumerate([(5, 1), (2, 4), (7, 0), (3, 3), (6, 2), (1, 5)]):
+        rows.append(_f1("he", f"s{i}", "c1", tp, fp, 2))
+        rows.append(_f1("he", f"s{i}", "c2", tp // 2 + 1, fp + 1, 1))
+    return rows
+
+
+# Tính bằng bản đúng (đã đối chiếu phân vị với numpy) ngày 2026-10-27; đổi số này phải có lý do ghi trong báo cáo.
+DONG_BANG_BOOTSTRAP = (0.395265, 0.736448)
+
+
+def test_bootstrap_khoang_hai_phia_gia_tri_dong_bang():
+    # Đóng băng số: phát hiện đổi thuật toán LCG, đổi cách lấy phân vị, khoảng một phía, hay seed bị bỏ qua.
+    ket = bootstrap_phan_cap(_bien_thien(), he="he", thuoc="f1_quan_he", so_vong=2000, seed=99)
+    assert (round(ket["thap"], 6), round(ket["cao"], 6)) == DONG_BANG_BOOTSTRAP
+    assert ket["thap"] < ket["macro"] < ket["cao"]
+
+
+def test_seed_khac_cho_ket_qua_khac():
+    a = bootstrap_phan_cap(_bien_thien(), he="he", thuoc="f1_quan_he", so_vong=500, seed=1)
+    b = bootstrap_phan_cap(_bien_thien(), he="he", thuoc="f1_quan_he", so_vong=500, seed=2)
+    assert (a["thap"], a["cao"]) != (b["thap"], b["cao"])
+    rows = []
+    for sach in ("s1", "s2", "s3"):
+        for chuong, (x, y) in zip(("c1", "c2", "c3"), [(3, 2), (2, 3), (4, 1)]):
+            rows.append(_f1("A", sach, chuong, x, 2, 2))
+            rows.append(_f1("B", sach, chuong, y, 2, 2))
+    p1 = hoan_vi_ghep_cap(rows, "A", "B", thuoc="f1_quan_he", so_lan=300, seed=1)["p"]
+    p2 = hoan_vi_ghep_cap(rows, "A", "B", thuoc="f1_quan_he", so_lan=300, seed=2)["p"]
+    assert p1 != p2
+
+
+def test_p_hoan_vi_khong_bao_gio_bang_0_va_bao_so_lan_bo():
+    # 10 cuốn × 3 chương, A hơn B ở mọi chương: không lần xáo nào chạm cực trị (xác suất 2/2^30 mỗi lần), nên p phải đúng
+    # bằng 1/(N+1). Bản bỏ +1 sẽ cho p = 0.
+    rows = []
+    for i in range(10):
+        for chuong in ("c1", "c2", "c3"):
+            rows.append(_f1("A", f"s{i}", chuong, 9, 1, 1))
+            rows.append(_f1("B", f"s{i}", chuong, 5, 5, 5))
+    ket = hoan_vi_ghep_cap(rows, "A", "B", thuoc="f1_quan_he", so_lan=500, seed=2)
+    assert ket["p"] == pytest.approx(1 / 501)
+    assert ket["so_lan_bo"] == 0
+
+
+def test_cohen_kappa_bien_khac_nhau():
+    a = ["x"] * 7 + ["y"] * 3
+    b = ["x"] * 4 + ["y"] * 6
+    # po = (4 cặp x-x + 3 cặp y-y) / 10 = 0,7; pe = (7·4 + 3·6) / 100 = 0,46; κ = 0,24 / 0,54.
+    ket = cohen_kappa(a, b)
+    assert ket["dong_y"] == pytest.approx(0.7)
+    assert ket["kappa"] == pytest.approx(0.24 / 0.54)
+
+
+def test_alpha_thu_bac_tu_choi_nhan_chu():
+    # Soát S-07: nhãn chữ bị sắp theo từ điển sẽ cho α thứ bậc sai mà không báo.
+    with pytest.raises(ValueError):
+        krippendorff_alpha([["thap", "cao"], ["thap", "vua"]], muc_do="thu_bac")
+    assert krippendorff_alpha([["thap", "cao"], ["thap", "cao"]], muc_do="danh_nghia") == pytest.approx(1.0)
