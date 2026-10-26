@@ -114,7 +114,8 @@ def _tham_so():
     cham.add_argument("--g3", required=True)
     cham.add_argument("--g4", required=True)
     cham.add_argument("--can", required=True)
-    cham.add_argument("--ho-so", choices=("spec", "giu_lai_v3"), default="spec")
+    cham.add_argument("--ho-so", choices=("spec", "giu_lai_v3"), default="spec",
+                      help="spec = số báo cáo (mặc định); giu_lai_v3 = hồ sơ lịch sử, chỉ để so với số v3 và T-01 đã báo")
     cham.add_argument("--mem", choices=("cung", "ca_hai"), default="cung")
     cham.add_argument("--ra", default=None)
     cham.set_defaults(ham=lenh_cham)

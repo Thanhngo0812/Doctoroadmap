@@ -32,3 +32,9 @@ def test_kiem_tra_hop_dong_hong_tra_ma_loi_khac_khong(tmp_path):
 def test_doi_chieu_qua_cli_tra_0_khi_khong_lech():
     assert main(["doi-chieu", "--kho", str(KHO), "--doc", "xstk-ch3-1", "--phien-ban", "68",
                  "--vang", str(KHO / "a8-gold" / "xstk-nho-vang.json")]) == 0
+
+
+def test_ho_so_mac_dinh_cua_cli_la_spec():
+    from danhgia.__main__ import _tham_so
+    args = _tham_so().parse_args(["cham", "--hop-dong", "a", "--g3", "b", "--g4", "c", "--can", "d"])
+    assert args.ho_so == "spec"
