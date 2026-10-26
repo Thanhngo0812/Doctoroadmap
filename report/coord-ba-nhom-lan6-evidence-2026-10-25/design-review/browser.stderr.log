@@ -1,0 +1,14 @@
+locator.check: Error: strict mode violation: locator('.module-chips input') resolved to 6 elements:
+    1) <input checked type="checkbox" onchange="updateScopeCount(this)"/> aka getByRole('checkbox', { name: 'Module 1: Giải phẫu mạch vành' })
+    2) <input checked type="checkbox" onchange="updateScopeCount(this)"/> aka getByRole('checkbox', { name: 'Module 2: Sinh lý tưới máu' })
+    3) <input type="checkbox" onchange="updateScopeCount(this)"/> aka getByRole('checkbox', { name: 'Module 3: Bệnh mạch vành mạn' })
+    4) <input type="checkbox" onchange="updateScopeCount(this)"/> aka getByRole('checkbox', { name: 'Module 4: Hội chứng vành cấp' })
+    5) <input type="checkbox" onchange="updateScopeCount(this)"/> aka getByRole('checkbox', { name: 'Module 5: Điện tâm đồ thiếu m' })
+    6) <input type="checkbox" onchange="updateScopeCount(this)"/> aka getByRole('checkbox', { name: 'Module 6: Can thiệp mạch vành' })
+
+Call log:
+[2m  - waiting for locator('.module-chips input')[22m
+
+    at C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r6-design-review-20261025\browser-review.cjs:15:43 {
+  log: [ "  - waiting for locator('.module-chips input')" ]
+}

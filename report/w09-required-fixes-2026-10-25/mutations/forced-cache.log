@@ -1,0 +1,179 @@
+FF.FFFFFF.                                                               [100%]
+================================== FAILURES ===================================
+_ test_w09_lecture_callback_respects_cache_flag_and_reuses_ready_content[None] _
+
+cache_only = None
+
+    @pytest.mark.parametrize('cache_only', [None, False, True])
+    def test_w09_lecture_callback_respects_cache_flag_and_reuses_ready_content(cache_only):
+        graph, store = _sample_graph(), InMemoryPhaseBStore()
+        model = ScriptedModel(text_replies=[['Nội dung bài giảng mới. [S1]']])
+        runtime = WebLearningRuntime(store, model=model, clock=FakeClock())
+        kwargs = {} if cache_only is None else {'cache_only': cache_only}
+        result = runtime.assistant(graph).content_tools['get_lecture']('a', owner='learner-a', allow_spend=True, **kwargs)
+>       assert result['status'] == ('not_cached' if cache_only else 'ready')
+E       AssertionError: assert 'not_cached' == 'ready'
+E
+E         - ready
+E         + not_cached
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:17: AssertionError
+_ test_w09_lecture_callback_respects_cache_flag_and_reuses_ready_content[False] _
+
+cache_only = False
+
+    @pytest.mark.parametrize('cache_only', [None, False, True])
+    def test_w09_lecture_callback_respects_cache_flag_and_reuses_ready_content(cache_only):
+        graph, store = _sample_graph(), InMemoryPhaseBStore()
+        model = ScriptedModel(text_replies=[['Nội dung bài giảng mới. [S1]']])
+        runtime = WebLearningRuntime(store, model=model, clock=FakeClock())
+        kwargs = {} if cache_only is None else {'cache_only': cache_only}
+        result = runtime.assistant(graph).content_tools['get_lecture']('a', owner='learner-a', allow_spend=True, **kwargs)
+>       assert result['status'] == ('not_cached' if cache_only else 'ready')
+E       AssertionError: assert 'not_cached' == 'ready'
+E
+E         - ready
+E         + not_cached
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:17: AssertionError
+_ test_w09_lecture_callback_forwards_spend_permission_without_widening_it[None] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002E7769575C0>
+allow_spend = None
+
+    @pytest.mark.parametrize('allow_spend', [None, False, True])
+    def test_w09_lecture_callback_forwards_spend_permission_without_widening_it(monkeypatch, allow_spend):
+        graph = _sample_graph()
+        runtime = WebLearningRuntime(InMemoryPhaseBStore(), clock=FakeClock())
+        calls = []
+        class Reader:
+            def make(self, *args, **kwargs):
+                calls.append((args, kwargs))
+                return {'status': 'ready'}
+        monkeypatch.setattr(runtime, 'lecture', lambda actual: Reader() if actual is graph else pytest.fail('wrong graph'))
+        kwargs = {} if allow_spend is None else {'allow_spend': allow_spend}
+        runtime.assistant(graph).content_tools['get_lecture']('a', owner='learner-a', cache_only=False, **kwargs)
+>       assert calls == [((graph.doc_id, graph.graph_version, graph, 'a'),
+            {'owner': 'learner-a', 'cache_only': False, 'allow_spend': bool(allow_spend)})]
+E       AssertionError: assert [(('sample', ...'learner-a'})] == [(('sample', ...'learner-a'})]
+E
+E         At index 0 diff: (('sample', 'g1', <doc2roadmap.domain.learning_graph.LearningGraph object at 0x000002E7769575F0>, 'a'), {'owner': 'learner-a', 'cache_only': True}) != (('sample', 'g1', <doc2roadmap.domain.learning_graph.LearningGraph object at 0x000002E7769575F0>, 'a'), {'owner': 'learner-a', 'cache_only': False, 'allow_spend': False})
+E         Use -v to get more diff
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:39: AssertionError
+_ test_w09_lecture_callback_forwards_spend_permission_without_widening_it[False] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002E776957740>
+allow_spend = False
+
+    @pytest.mark.parametrize('allow_spend', [None, False, True])
+    def test_w09_lecture_callback_forwards_spend_permission_without_widening_it(monkeypatch, allow_spend):
+        graph = _sample_graph()
+        runtime = WebLearningRuntime(InMemoryPhaseBStore(), clock=FakeClock())
+        calls = []
+        class Reader:
+            def make(self, *args, **kwargs):
+                calls.append((args, kwargs))
+                return {'status': 'ready'}
+        monkeypatch.setattr(runtime, 'lecture', lambda actual: Reader() if actual is graph else pytest.fail('wrong graph'))
+        kwargs = {} if allow_spend is None else {'allow_spend': allow_spend}
+        runtime.assistant(graph).content_tools['get_lecture']('a', owner='learner-a', cache_only=False, **kwargs)
+>       assert calls == [((graph.doc_id, graph.graph_version, graph, 'a'),
+            {'owner': 'learner-a', 'cache_only': False, 'allow_spend': bool(allow_spend)})]
+E       AssertionError: assert [(('sample', ...'learner-a'})] == [(('sample', ...'learner-a'})]
+E
+E         At index 0 diff: (('sample', 'g1', <doc2roadmap.domain.learning_graph.LearningGraph object at 0x000002E776957590>, 'a'), {'owner': 'learner-a', 'cache_only': True}) != (('sample', 'g1', <doc2roadmap.domain.learning_graph.LearningGraph object at 0x000002E776957590>, 'a'), {'owner': 'learner-a', 'cache_only': False, 'allow_spend': False})
+E         Use -v to get more diff
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:39: AssertionError
+_ test_w09_lecture_callback_forwards_spend_permission_without_widening_it[True] _
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000002E7769C4230>
+allow_spend = True
+
+    @pytest.mark.parametrize('allow_spend', [None, False, True])
+    def test_w09_lecture_callback_forwards_spend_permission_without_widening_it(monkeypatch, allow_spend):
+        graph = _sample_graph()
+        runtime = WebLearningRuntime(InMemoryPhaseBStore(), clock=FakeClock())
+        calls = []
+        class Reader:
+            def make(self, *args, **kwargs):
+                calls.append((args, kwargs))
+                return {'status': 'ready'}
+        monkeypatch.setattr(runtime, 'lecture', lambda actual: Reader() if actual is graph else pytest.fail('wrong graph'))
+        kwargs = {} if allow_spend is None else {'allow_spend': allow_spend}
+        runtime.assistant(graph).content_tools['get_lecture']('a', owner='learner-a', cache_only=False, **kwargs)
+>       assert calls == [((graph.doc_id, graph.graph_version, graph, 'a'),
+            {'owner': 'learner-a', 'cache_only': False, 'allow_spend': bool(allow_spend)})]
+E       AssertionError: assert [(('sample', ...'learner-a'})] == [(('sample', ...'learner-a'})]
+E
+E         At index 0 diff: (('sample', 'g1', <doc2roadmap.domain.learning_graph.LearningGraph object at 0x000002E7769C4260>, 'a'), {'owner': 'learner-a', 'cache_only': True}) != (('sample', 'g1', <doc2roadmap.domain.learning_graph.LearningGraph object at 0x000002E7769C4260>, 'a'), {'owner': 'learner-a', 'cache_only': False, 'allow_spend': True})
+E         Use -v to get more diff
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:39: AssertionError
+_______ test_w09_ordinary_assistant_tool_generates_an_uncached_lecture ________
+
+    def test_w09_ordinary_assistant_tool_generates_an_uncached_lecture():
+        graph, store = _sample_graph(), InMemoryPhaseBStore()
+        model = ScriptedModel(tool_turns=[
+            [ToolCall('get_lecture', {'concept': 'a'}, 'open-lecture'), Done({})],
+            [Delta('Đã mở bài học.'), Done({})],
+        ], text_replies=[['Nội dung bài giảng mới. [S1]']])
+        runtime = WebLearningRuntime(store, model=model, clock=FakeClock())
+        sid = runtime.sessions(graph).create_session('learner-a', graph.doc_id, {'kind': 'roadmap'})['session_id']
+        answer = runtime.assistant(graph).ask(graph.doc_id, graph.graph_version, sid, 'Mở bài giảng tập hợp',
+            owner='learner-a', client_turn_id='ordinary-lecture', allow_spend=True)
+>       assert answer['tool_calls'][0]['result_summary']['status'] == 'ready'
+E       AssertionError: assert 'not_cached' == 'ready'
+E
+E         - ready
+E         + not_cached
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:53: AssertionError
+_ test_w09_uncached_ordinary_tool_cannot_generate_without_spend_permission[None] _
+
+permission = None
+
+    @pytest.mark.parametrize('permission', [None, False])
+    def test_w09_uncached_ordinary_tool_cannot_generate_without_spend_permission(permission):
+        graph, store = _sample_graph(), InMemoryPhaseBStore()
+        model = ScriptedModel(text_replies=[['Must not be generated']])
+        runtime = WebLearningRuntime(store, model=model, clock=FakeClock())
+        kwargs = {} if permission is None else {'allow_spend': permission}
+        result = runtime.assistant(graph).content_tools['get_lecture']('a', owner='learner-a', **kwargs)
+>       assert result['status'] == 'failed'
+E       AssertionError: assert 'not_cached' == 'failed'
+E
+E         - failed
+E         + not_cached
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:65: AssertionError
+_ test_w09_uncached_ordinary_tool_cannot_generate_without_spend_permission[False] _
+
+permission = False
+
+    @pytest.mark.parametrize('permission', [None, False])
+    def test_w09_uncached_ordinary_tool_cannot_generate_without_spend_permission(permission):
+        graph, store = _sample_graph(), InMemoryPhaseBStore()
+        model = ScriptedModel(text_replies=[['Must not be generated']])
+        runtime = WebLearningRuntime(store, model=model, clock=FakeClock())
+        kwargs = {} if permission is None else {'allow_spend': permission}
+        result = runtime.assistant(graph).content_tools['get_lecture']('a', owner='learner-a', **kwargs)
+>       assert result['status'] == 'failed'
+E       AssertionError: assert 'not_cached' == 'failed'
+E
+E         - failed
+E         + not_cached
+
+src\web\backend\tests\test_assistant_lecture_forwarding_w09.py:65: AssertionError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-required-fixes-2026-10-25\mutations\forced-cache.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_lecture_callback_respects_cache_flag_and_reuses_ready_content[None]
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_lecture_callback_respects_cache_flag_and_reuses_ready_content[False]
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_lecture_callback_forwards_spend_permission_without_widening_it[None]
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_lecture_callback_forwards_spend_permission_without_widening_it[False]
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_lecture_callback_forwards_spend_permission_without_widening_it[True]
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_ordinary_assistant_tool_generates_an_uncached_lecture
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_uncached_ordinary_tool_cannot_generate_without_spend_permission[None]
+FAILED src/web/backend/tests/test_assistant_lecture_forwarding_w09.py::test_w09_uncached_ordinary_tool_cannot_generate_without_spend_permission[False]
+8 failed, 2 passed in 1.07s

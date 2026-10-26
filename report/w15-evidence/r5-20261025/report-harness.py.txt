@@ -1,0 +1,188 @@
+"""Render the report from reconciled measurements; no provider calls."""
+from datetime import datetime
+import json
+from pathlib import Path
+root=Path(__file__).resolve().parents[1]
+e=root/'report/w15-evidence/r5-20261025'
+facts=json.loads((e/'measured-facts.json').read_text(encoding='utf-8'))
+rows=facts['attempts']
+assert all('budget' in r for r in rows), 'Wait for every paid attempt to finish before reporting/committing'
+def link(label,name):return f'[{label}](w15-evidence/r5-20261025/{name})'
+def cache(row):
+    d=row['cache_detail']; bits=[]
+    for k in ('label_roles','a3','canonical','concept_index'):
+        if k in d:
+            for name,v in d[k].items():
+                if 'reused' in name:bits.append(k+':'+('hit' if v else 'miss'))
+    if 'reused' in d:bits.append('hit' if d['reused'] else 'miss')
+    if row['step']=='doc_reading':bits.append('parse/chunks từ dry-run cùng nguồn')
+    return ', '.join(bits) or 'unknown/không có cờ reuse'
+parts=['''# W-15 — kết quả lượt thật và chẩn đoán concurrency 100 — 2026-10-25
+
+Đã chạy Vertex thật qua backend/worker với PostgreSQL và artifact riêng. Doc-6 bootstrap thành công;
+web cache-only sau bootstrap hoàn tất dưới guard provider/ADC, 0 calls / 0 USD.
+Candidate 52 trang ở cấu hình 8/retry 0 đã course-ready, 15 module / 100 khái niệm học.
+Probe riêng đã đo đúng peak 100 embedding và 100/100 HTTP 200. Kết quả toàn pipeline 100 ở bảng dưới.
+Toàn W-15 còn chờ soát/nghiệm thu; không đồng nhất course-ready với chất lượng nội dung đã được chấm.
+
+## 1. Nền chạy và quyền chi
+
+Worktree `tmp/w15-real-build`, nhánh `work/w15-real-build`; thư mục chung giữ main.
+Nhận main local bằng merge trên cây sạch, HEAD prepare/execute giữ nguyên
+`6249dab5c8cd89b36edeb5add45ab88d5d7d7bce` suốt các lượt.
+Không sửa `src/`, không làm lại adapter/serializer/port PG, không ghép/push main.
+Không commit PDF, vector, cache hay artifact sản phẩm. Artifact Pha A/ảnh vẫn là tệp;
+record/cache/ledger ở database riêng của từng lượt.
+
+Phê duyệt mới của chủ dự án, đoạn kết tin giao hai lượt 1 USD + 3 USD:
+
+> tôi có duyệt tiền, phân tích tiep tuc trien khai
+
+Sau khi lượt candidate đầu dừng, chủ dự án cho chẩn đoán:
+
+> nếu cần chi tiền tìm lỗi thì cứ chi
+
+Sau đó cho cấu hình 100 và nghỉ trưa, rồi gửi `tiếp tục công việc`.
+Xem [nguyên văn các chỉ thị và phạm vi](w15-evidence/r5-20261025/owner-authorizations.md).
+Mỗi lượt có plan approved=false và approval/reference riêng, consume một lần trước dispatch;
+không sửa tay plan/hash/version và không tái dùng reference. Lượt chẩn đoán mới là quyết định riêng,
+không phải cơ chế tự retry whole-build. Web thông thường giữ allow_spend=False.
+
+Profile `owner-demo-embedding-token-20261025`: giá lý thuyết 0,15 USD/triệu input token embedding.
+Mọi plan/grant/audit giữ embedding_billing_verified=false. Không xác nhận giá SKU online hoặc hóa đơn.
+Cap là trần theo profile demo, không phải dự toán hay cam kết dựng xong.
+
+## 2. Kết quả và chi theo từng lượt
+
+| Lượt | Kết quả | HTTP thực | Known USD chính xác | Unknown upper USD | Trần USD |
+|---|---|---:|---:|---:|---:|''']
+for r in rows:
+    b=r['budget'];parts.append(f"| {r['label']} | {r['status']} | {b['http_calls']} | {b['known_usd']} | {b['unknown_upper_usd']} | {b['limit_usd']} |")
+parts+=['',f"Tổng known theo giá giả định: **{facts['total_known_usd']} USD**; unknown giữ riêng **{facts['total_unknown_upper_usd']} USD**; tổng cận trên **{facts['total_upper_usd']} USD**, dưới 4 USD.",
+'''Sổ SQL làm tròn từng receipt đến 6 chữ số; known của guard giữ độ chính xác cao hơn.
+Unknown không phải đã xác nhận nhà cung cấp thu khoản đó; cũng không được ghi 0 USD.
+Meter delta là chi build duy nhất; trace counted_in=build có cột cost/token bằng 0 để không cộng hai lần.
+Diagnostic chuẩn bị lần đầu với limiter=1 bị validation bắt trước provider, native exit 1, 0 USD;
+đã lưu log, không coi là lỗi ingest hoặc yêu cầu trả phí.
+
+## 3. Identity, database, plan và quyền một lượt
+
+PDF SHA đầy đủ:
+
+- Doc-6, 25 trang: `82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7`.
+- Candidate, 52 trang: `1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627`.
+
+Từng bản source.pdf được ordinary-copy, st_nlink=1 và SHA đối chiếu trước chạy, kiểm lại độc lập sau chạy.
+Prepare của các lượt dùng guard provider/ADC/SMTP, các lượt whole-book có thêm socket guard chỉ localhost.
+Không dùng kho artifact chung hay cache của lần khác để ép thành công.
+Các bản sao plan/approval, SHA nguồn và SHA tệp lưu trong provenance.json/manifest.json.
+''']
+for r in rows:
+    p=r['plan'];parts.append(f"- **{r['label']}**: DB `{r['database']}`; run `{r['run_dir']}`; reference `{r['reference']}`; pipeline `{p['pipeline_version']}`. [Plan](w15-evidence/r5-20261025/{r['label']}/plan.json).")
+parts+=['','## 4. Từng bước: cache, số gọi, tiền, phút và chờ embedding','',
+'Số generation/embedding được đếm từ dispatch thực trong audit, không từ lượt gọi ứng dụng bị guard chặn. Thời gian chờ là hợp khoảng wrapper embedding, có thể gồm limiter/xác thực; không cộng thời gian request song song. `unknown` nghĩa chưa đo/chưa có cờ, không thay bằng 0.','']
+for r in rows:
+    parts+=['### '+r['label'],'','| Bước | Cache | Sinh | Embed | Known USD | Unknown upper USD | Phút wall | Chờ embedding giây |','|---|---|---:|---:|---:|---:|---:|---:|']
+    for s in r['stages']:
+        t=s['timing'] or {};wall=t.get('wall_seconds');wait=t.get('embedding_wait_seconds')
+        parts.append(f"| {s['step']} | {cache(s)} | {s['generation']} | {s['embedding']} | {s['known_usd']} | {s['unknown_upper_usd']} | {wall/60:.4f} | {wait:.4f} |" if wall is not None and wait is not None else
+            f"| {s['step']} | {cache(s)} | {s['generation']} | {s['embedding']} | {s['known_usd']} | {s['unknown_upper_usd']} | {'unknown' if wall is None else format(wall/60,'.4f')} | {'unknown' if wait is None else format(wait,'.4f')} |")
+pause=facts['pause'];seconds=(datetime.fromisoformat(pause['resumed_at'])-datetime.fromisoformat(pause['paused_at'])).total_seconds()
+parts+=['',f"Lượt controlled bị suspend theo yêu cầu nghỉ trưa **{seconds:.2f} giây** ({pause['paused_at']} → {pause['resumed_at']}). Wall thô của bước concepts và tổng lượt gồm khoảng này; không dùng làm benchmark hoặc kết luận concurrency 8 chậm hơn. Transport latency từng HTTP không chứa cả khoảng nghỉ (không có request đang giữ tiền lúc suspend).",'''
+Doc-6 web sau bootstrap: tất cả bước hoàn tất, label-roles/A3/A3-prime/canonical/graph/concept-index hit đúng identity;
+0 calls / 0 USD, 1,6276 giây toàn pipeline. Embedding wait lượt cache-only không được đo, giữ null/unknown.
+Không gọi việc bootstrap trước đó là miễn phí. Candidate-first dừng concepts, các bước graph/learning_prep chưa đo/chưa hoàn tất.
+
+## 5. Log và kết luận về cấu hình 100
+
+Lượt candidate-first có 111 dispatch HTTP, 17 response có usage và 94 response usage unknown
+(93 embedding + 1 generation). Counter dispatch đứng nguyên từ sự kiện unknown đầu tiên; không có request mới
+đi qua guard sau mốc đó. 400 model_calls ở receipt gồm các lời gọi bị guard từ chối; không được nói 400 HTTP đã trả phí.
+Lượt cũ không giữ exception HTTP/status gốc nên **chưa xác định được nguyên nhân transport**;
+không kết luận chắc timeout, quota hay lỗi model từ SpendStopped.
+
+Diagnostic tuần tự sau đó: embedding HTTP 200, 412 input token, truncated=false; generation HTTP 200.
+Lượt controlled: 1.616/1.616 HTTP 200, usage đầy đủ, toàn cuốn ready. Probe riêng: một generation control
+và 100 embedding thực đồng thời, peak=100, limiter max_observed=100, tất cả HTTP 200/usage đầy đủ.
+Các kết quả này bác việc khẳng định “embedding concurrency 100 luôn lỗi”; không chứng minh tải hỗn hợp luôn ổn định.
+Không có bằng chứng 100 generation đồng thời: cùng llm_max_in_flight dùng chung và reserve/cap còn giới hạn generation.
+''']
+mixed=next(r for r in rows if r['label']=='mixed100')
+parts.append(f"Lượt whole-book tái hiện dùng cấu hình gốc 100/retry 8, timeout 120 giây, DB/cache mới; trần riêng 2,75 USD để tổng cận trên vẫn dưới 4 USD (lượt đầu cap 3 USD). Kết quả **{mixed['status']}**, HTTP {mixed['budget']['http_calls']}, HTTP status {mixed['transport']['status_counts']}, lỗi transport {len(mixed['transport']['errors'])}, peak quan sát {mixed['transport']['observed_peak']}. Trần khác có thể giới hạn generation khác; không gọi đây là phép so hiệu năng kiểm soát hoàn toàn.")
+parts+=['''
+**Đã ghim điểm lỗi bằng SHA payload:** toàn bộ 100 request ở đầu bước graph khớp chính xác A6 BuildClusters,
+embedding description/name của node, task_type=SEMANTIC_SIMILARITY, outputDimensionality=768; canonical v1 có 161 node.
+Concepts đã hoàn tất với 1.097 dispatch có usage. A6 gửi 100 request: 19 đủ response, **81 timeout embedding**;
+29 TimeoutError trước khi có HTTP status (120,197–120,345 giây), 52 nhận HTTP 200 rồi response.read() timeout
+(131,653–131,976 giây tổng request với timeout socket 120 giây). Không có generation unknown ở lượt mới.
+Unknown upper mới 81 × 0,0003072 = 0,0248832 USD; counter giữ 1.197 sau first unknown, không dispatch tiếp,
+không publish graph/course-ready và ConsoleMailer báo lỗi. Guard không dừng vì hết cap: known + unknown thấp hơn 2,75 USD.
+
+Đây là bằng chứng timeout transport tại graph/A6, không phải bằng chứng mô hình đọc/ingest PDF thất bại:
+parse/chunks/concepts/canonical đã xong. Probe riêng dùng RETRIEVAL_DOCUMENT trên chunk; A6 dùng
+SEMANTIC_SIMILARITY trên node sau tải concepts, nên chúng không phải cùng workload.
+Chưa tách được cơ chế ở provider/client/socket/mạng; không quy lỗi Google hoặc quota, không suy ngược chắc chắn
+timeout là nguyên nhân của 94 usage unknown lượt đầu vì lượt đó không có transport trace.
+Xem [phân tích lỗi với SHA payload](w15-evidence/r5-20261025/mixed100-failure-analysis.json).
+
+Vận hành thử đã có bằng chứng toàn cuốn ở shared concurrency 8/retry 0; không tự đổi .env hoặc giảm giới hạn product.
+Hướng sửa cần làn lõi soát: giới hạn embedding riêng hoặc backpressure cho A6 và thêm transport diagnostics;
+giữ nguyên unknown/reserve, không tăng timeout hoặc retry có phí ngầm để che lỗi. Chưa áp dụng sửa lõi trong W-15.
+''']
+parts+=['','## 6. Đồ thị, công thức, ảnh và HTTP/SQL độc lập','']
+for r in rows:
+    if 'graph' not in r:continue
+    g=r['graph'];imgs=r['artifact_images'];parts.append(f"- **{r['label']}**: graph v{g['version']}, {g['module_count']} module / {g['concept_count']} khái niệm học; mentioned {g['mentioned_count']}, non-learnable {g['non_learnable_count']}; cạnh {g['edges']}. Parse node types `{r['parse_node_types']}`; {len(imgs)} tệp ảnh artifact đã Image.verify()/đọc kích thước, không đưa vào DB/commit.")
+parts+=['''
+HTTP có đăng nhập qua PG thật: GET course/roadmap/progress trả 200, đúng graph pin, số module/concept khớp,
+không lộ chi operator; provider/ADC/SMTP bị chặn và ledger không tăng. SQL độc lập kiểm một attempt/claim,
+grant finished, version/SHA/known/unknown/ledger đúng. ConsoleMailer báo đúng “Bản dựng xong”; không phải SMTP thật.
+Media là LocalFakeMediaStore. HTTP source-page 29 byte là payload RIFF giả theo fake contract, **không là ảnh PDF render thật**.
+Bản http-ready-doc-6-initial-overclaim.json giữ lỗi ghi nhận ban đầu source_page_real_image=true;
+đã sửa bằng chứng mới thành fake_media_contract=true, real_render_verified=false, giữ lịch sử để soát.
+Các ảnh công thức/Pha A được kiểm trực tiếp trên tệp artifact là dữ liệu thật riêng với fake HTTP media.
+
+## 7. Chất lượng và assertion đồ thị
+
+Doc-6 ready nhưng quality_gate.passed=false, fallback=document_order; A9 ghi 25/27 node cô lập, tỷ lệ 0,9259.
+Đây là cảnh báo chất lượng có thật, không xóa hoặc coi ready là chất lượng đã được chấm.
+Candidate controlled có quality_gate.passed=true trên 145 node ở A9; A10 còn 100 khái niệm học và 45 mentioned,
+nên số đếm ở hai mốc không giống nhau. Module/sequence phủ mỗi khái niệm học đúng một lần.
+
+Audit bổ sung ban đầu của tôi áp assertion “mọi raw requires_edges phải nằm trong learnable và toàn bộ là DAG”.
+Đã lưu hai native exit=1, không xóa RED và không đổi test sản phẩm để ép xanh.
+Đối chiếu build_roadmap.py: A10 cố ý giữ upstream display edges, kể cả cạnh tới mentioned và cạnh soft;
+đồ thị học dùng hard_edges sau bypass/soften. Candidate có 17 display edges ngoài tập học, không thiếu endpoint,
+36 soft edges; ba chu trình ở raw display gồm cạnh mềm. Kiểm riêng hard learnable graph (98 cạnh) là DAG.
+Assertion raw-display ban đầu quá chặt so với hợp đồng; đây không phải bằng chứng lỗi lõi.
+ADR 0010 là hiện hành: dãy học chia module, thay thế yêu cầu stage song song trong spec A9/A10 cũ.
+Xem candidate-graph-check.json và harness; giữ phần này để người soát đánh giá độc lập.
+
+## 8. Cổng và giới hạn
+
+Không sửa source sản phẩm hoặc test đã nghiệm thu. Full gate lịch sử tại cfabaeb: 2.641 Python pass,
+1 skip Cloudinary/1 xfail SA-55 cũ; 181 React pass; build pass. Source src/ không đổi so với nền cổng đó;
+23 SHA trong native capture khớp. Không trình bày số cổng cũ thành lượt full suite mới ở HEAD 6249dab.
+Đã chạy lại cổng operator/budget/approval 0 USD tại HEAD 6249dab: **39 pass**, native exit 0,
+JUnit giữ riêng trong r5-focused; các guard từ chối/replay/escape/unknown vẫn được thực thi.
+Prepare/dry-run và HTTP read có guard; paid native receipt, audit SQL/usage, 100-fanout và whole-build
+được giữ riêng, gồm cả failure. Không sửa lõi thuộc làn Claude, không bỏ label-roles hay làm yếu safe_path/guard.
+
+Chưa xác minh đơn vị billable online/invoice embedding; chưa SMTP/Cloudinary thật, chưa triển khai product.
+Chưa đo 100 generation đồng thời; không nâng trần, không chạy thêm trả phí sau các lượt nêu.
+Toàn W-15 chờ người soát nghiệm thu bằng chứng, không tự đóng vé hay ghép main.
+
+## 9. Bằng chứng và tái kiểm 0 USD
+
+[Measured facts](w15-evidence/r5-20261025/measured-facts.json) chứa per-stage/cache/timing, budget và ledger đối chiếu.
+[Manifest](w15-evidence/r5-20261025/manifest.json), provenance.json giữ SHA tệp nguồn/bản lưu;
+historical-integrity.json kiểm các manifest cũ không đổi. Harness lưu dạng .py.txt để đọc/tái kiểm;
+Các bản chứng cứ được chuẩn UTF-8/LF để lưu git; source_sha256 trong provenance là hash byte tệp local thật,
+sha256 trong manifest là hash bản lưu. Không đổi byte plan/approval trong run local đã execute.
+không chạy lại paid harness hoặc tái dùng plan/grant đã consume. Plan gắn HEAD thực thi cũ;
+commit báo cáo làm đổi HEAD, muốn chạy thêm phải prepare mới và quyền cụ thể còn hiệu lực.
+
+## 10. Chi và bàn giao trực tiếp chủ dự án
+''',f"Chi known theo profile demo **{facts['total_known_usd']} USD**; retained unknown **{facts['total_unknown_upper_usd']} USD**; worst-case **{facts['total_upper_usd']} USD**. Không coi unknown là hóa đơn đã thu, không coi known demo là đối soát Google. Các DB/artifact/receipt còn nguyên, không dọn. Kết quả được báo trực tiếp chủ dự án qua hồ sơ này để điều phối chép mục 10 bàn giao; không gửi message hoặc tự sửa hồ sơ điều phối."]
+(root/'report/w15-luot-that-2026-10-25.md').write_bytes(('\n'.join(parts)+'\n').encode())
+print('Report rendered from measured facts; no provider calls.')

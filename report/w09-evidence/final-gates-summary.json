@@ -1,0 +1,34 @@
+{
+  "sourceCommit": "56acc16914eb2a20f1cb60eafa139cd04d74a4bc",
+  "main": "46d829a55a62d852897f07102e89cf9a1fd5185e",
+  "python": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "2",
+    "tests": "2624",
+    "time": "897.351",
+    "timestamp": "2026-10-24T23:43:22.355281+07:00",
+    "hostname": "ADMIN"
+  },
+  "react": {
+    "name": "vitest tests",
+    "tests": "192",
+    "failures": "0",
+    "errors": "0",
+    "time": "102.2884037"
+  },
+  "commands": {
+    "python": "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe scripts/w05_run_tests.py -o addopts= -q --basetemp=tmp/cong-w09-final4 --junitxml=report/w09-evidence/gate-final4.xml",
+    "react": "npm.cmd --prefix src/web/frontend test -- --pool=threads --maxWorkers=1 --reporter=junit --outputFile=../../../report/w09-evidence/react-final5.xml",
+    "build": "npm.cmd --prefix src/web/frontend run build",
+    "browser": "W09_EVIDENCE_RUN=browser-final8 python -X utf8 scripts/w09_web_runtime.py"
+  },
+  "nativeExitCodes": {
+    "python": 0,
+    "react": 0,
+    "build": 0,
+    "browser": 0
+  },
+  "unchangedSourceFiles": 1043
+}

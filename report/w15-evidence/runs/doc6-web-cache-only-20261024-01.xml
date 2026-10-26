@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="13.974" timestamp="2026-10-24T13:23:26.424477+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_doc6_cache_only_w15" name="test_doc6_real_web_worker_stops_at_the_first_uncached_stage_without_spending" time="11.511"><failure message="assert 1 == 0">src\web\backend\tests\test_doc6_cache_only_w15.py:77: in test_doc6_real_web_worker_stops_at_the_first_uncached_stage_without_spending
+    assert sql(builds, 'SELECT count(*) AS n FROM usage_ledger')[0]['n'] == 0
+E   assert 1 == 0</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="17.853" timestamp="2026-10-23T21:07:36.524240+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_lecture3_integration_w08" name="test_w08_first_delta_precedes_model_finish_and_cache_is_completed_after_http_disconnect" time="13.738"><failure message="httpx.ReadTimeout: timed out">@contextlib.contextmanager
+    def map_httpcore_exceptions() -&gt; typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+&gt;           yield
+
+..\..\.venv\Lib\site-packages\httpx\_transports\default.py:101:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\.venv\Lib\site-packages\httpx\_transports\default.py:127: in __iter__
+    for part in self._httpcore_stream:
+                ^^^^^^^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py:407: in __iter__
+    raise exc from None
+..\..\.venv\Lib\site-packages\httpcore\_sync\connection_pool.py:403: in __iter__
+    for part in self._stream:
+                ^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpcore\_sync\http11.py:342: in __iter__
+    raise exc
+..\..\.venv\Lib\site-packages\httpcore\_sync\http11.py:334: in __iter__
+    for chunk in self._connection._receive_response_body(**kwargs):
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpcore\_sync\http11.py:203: in _receive_response_body
+    event = self._receive_event(timeout=timeout)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpcore\_sync\http11.py:217: in _receive_event
+    data = self._network_stream.read(
+..\..\.venv\Lib\site-packages\httpcore\_backends\sync.py:126: in read
+    with map_exceptions(exc_map):
+         ^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+map = {&lt;class 'TimeoutError'&gt;: &lt;class 'httpcore.ReadTimeout'&gt;, &lt;class 'OSError'&gt;: &lt;class 'httpcore.ReadError'&gt;}
+
+    @contextlib.contextmanager
+    def map_exceptions(map: ExceptionMapping) -&gt; typing.Iterator[None]:
+        try:
+            yield
+        except Exception as exc:  # noqa: PIE786
+            for from_exc, to_exc in map.items():
+                if isinstance(exc, from_exc):
+&gt;                   raise to_exc(exc) from exc
+E                   httpcore.ReadTimeout: timed out
+
+..\..\.venv\Lib\site-packages\httpcore\_exceptions.py:14: ReadTimeout
+
+The above exception was the direct cause of the following exception:
+
+core_web = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_459dd40951a046f391fd7dba3caac...tureModel object at 0x000001E847921E50&gt;, url='/api/v1/courses/a198b845-5b7f-42a8-bc70-faa100e4a538/concepts/a/lecture')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001E8472F5010&gt;
+
+    def test_w08_first_delta_precedes_model_finish_and_cache_is_completed_after_http_disconnect(core_web, monkeypatch):
+        import socket
+        w = core_web
+        w.model.pause_after_first = True
+        connections = []
+        def tracked_connection():
+            event = Event(); connections.append(event)
+            return event
+        monkeypatch.setattr('wayfinder.api.learning.Event', tracked_connection)
+        listener = socket.socket()
+        listener.bind(('127.0.0.1', 0)); listener.listen(128)
+        port = listener.getsockname()[1]
+        server = uvicorn.Server(uvicorn.Config(w.app, log_config=None, access_log=False, log_level='warning'))
+        thread = Thread(target=server.run, kwargs={'sockets': [listener]}, daemon=True)
+        thread.start()
+        try:
+            deadline = monotonic() + 5
+            while not server.started and monotonic() &lt; deadline: sleep(.01)
+            assert server.started
+            with httpx.Client(base_url=f'http://127.0.0.1:{port}', cookies=dict(w.a.client.cookies), timeout=10) as client:
+                with client.stream('GET', w.url + '/stream') as response:
+                    assert response.status_code == 200
+                    iterator = response.iter_lines()
+                    skeleton = None
+&gt;                   for line in iterator:
+                                ^^^^^^^^
+
+src\web\backend\tests\test_lecture3_integration_w08.py:87:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+..\..\.venv\Lib\site-packages\httpx\_models.py:929: in iter_lines
+    for text in self.iter_text():
+                ^^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpx\_models.py:916: in iter_text
+    for byte_content in self.iter_bytes():
+                        ^^^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpx\_models.py:897: in iter_bytes
+    for raw_bytes in self.iter_raw():
+                     ^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpx\_models.py:951: in iter_raw
+    for raw_stream_bytes in self.stream:
+                            ^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpx\_client.py:153: in __iter__
+    for chunk in self._stream:
+                 ^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\httpx\_transports\default.py:126: in __iter__
+    with map_httpcore_exceptions():
+         ^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py:158: in __exit__
+    self.gen.throw(value)
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+    @contextlib.contextmanager
+    def map_httpcore_exceptions() -&gt; typing.Iterator[None]:
+        global HTTPCORE_EXC_MAP
+        if len(HTTPCORE_EXC_MAP) == 0:
+            HTTPCORE_EXC_MAP = _load_httpcore_exceptions()
+        try:
+            yield
+        except Exception as exc:
+            mapped_exc = None
+
+            for from_exc, to_exc in HTTPCORE_EXC_MAP.items():
+                if not isinstance(exc, from_exc):
+                    continue
+                # We want to map to the most specific exception we can find.
+                # Eg if `exc` is an `httpcore.ReadTimeout`, we want to map to
+                # `httpx.ReadTimeout`, not just `httpx.TimeoutException`.
+                if mapped_exc is None or issubclass(to_exc, mapped_exc):
+                    mapped_exc = to_exc
+
+            if mapped_exc is None:  # pragma: no cover
+                raise
+
+            message = str(exc)
+&gt;           raise mapped_exc(message) from exc
+E           httpx.ReadTimeout: timed out
+
+..\..\.venv\Lib\site-packages\httpx\_transports\default.py:118: ReadTimeout</failure></testcase></testsuite></testsuites>

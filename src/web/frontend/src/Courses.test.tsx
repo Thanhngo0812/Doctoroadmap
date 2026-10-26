@@ -18,7 +18,7 @@ function mockFetch(courses: unknown) {
 }
 beforeEach(() => {
   localStorage.clear();
-  Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({ matches: true })) });
+  Object.defineProperty(window, 'matchMedia', { configurable: true, value: vi.fn(() => ({ matches: true, addEventListener() {}, removeEventListener() {} })) });
 });
 afterEach(() => { cleanup(); vi.unstubAllGlobals(); });
 

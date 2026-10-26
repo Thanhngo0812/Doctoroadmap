@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="8.189" timestamp="2026-10-24T21:17:18.727537+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sessions_bind_actor_document_and_scope_from_published_graph" time="3.209"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 201&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/ecd274ab-8e74-4d81-815d-20178349240a/sessions')
+
+    def test_w09_sessions_bind_actor_document_and_scope_from_published_graph(chat):
+        w = chat
+&gt;       session = create(w, scope={'kind': 'module', 'module_id': 'm1', 'node_ids': ['attacker']})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_assistant_w09.py:48:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/ecd274ab-8e74-4d81-815d-20178349240a/sessions')
+
+    def create(w, *, client=None, scope=None):
+        user = client or w.a
+        response = user.client.post(w.url, headers=user.headers, json={'scope': scope or {'kind': 'roadmap'}})
+&gt;       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 201
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:30: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_answer3_history_and_idempotency_keep_private_fields_on_server" time="0.459"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 201&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/8a5516a1-b404-4d94-ab9e-fbf4dd5cf5d9/sessions')
+
+    def test_w09_answer3_history_and_idempotency_keep_private_fields_on_server(chat):
+&gt;       w = chat; sid = create(w)['session_id']; key = uuid4().hex
+                        ^^^^^^^^^
+
+src\web\backend\tests\test_assistant_w09.py:67:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/8a5516a1-b404-4d94-ab9e-fbf4dd5cf5d9/sessions')
+
+    def create(w, *, client=None, scope=None):
+        user = client or w.a
+        response = user.client.post(w.url, headers=user.headers, json={'scope': scope or {'kind': 'roadmap'}})
+&gt;       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 201
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:30: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures" time="0.368"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 201&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/73b532fe-6bb0-4eed-ade9-9119bba30a3a/sessions')
+monkeypatch = &lt;_pytest.monkeypatch.MonkeyPatch object at 0x000001F53F23D3A0&gt;
+
+    def test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures(chat, monkeypatch):
+&gt;       w = chat; sid = create(w)['session_id']; reads = []
+                        ^^^^^^^^^
+
+src\web\backend\tests\test_assistant_w09.py:87:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/73b532fe-6bb0-4eed-ade9-9119bba30a3a/sessions')
+
+    def create(w, *, client=None, scope=None):
+        user = client or w.a
+        response = user.client.post(w.url, headers=user.headers, json={'scope': scope or {'kind': 'roadmap'}})
+&gt;       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 201
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:30: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries" time="0.340"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 201&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/9f6b7ab0-f9af-4f69-a6be-41c97e1fe786/sessions')
+
+    def test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries(chat):
+&gt;       w = chat; sid = create(w)['session_id']
+                        ^^^^^^^^^
+
+src\web\backend\tests\test_assistant_w09.py:108:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/9f6b7ab0-f9af-4f69-a6be-41c97e1fe786/sessions')
+
+    def create(w, *, client=None, scope=None):
+        user = client or w.a
+        response = user.client.post(w.url, headers=user.headers, json={'scope': scope or {'kind': 'roadmap'}})
+&gt;       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 201
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:30: AssertionError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts" time="0.370"><failure message="KeyError: 'contract_version'">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/9ee4982a-2859-4e49-a7e4-dba74d12d7be/sessions')
+
+    def test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts(chat):
+        w = chat
+        for cost, extra in [(.35, {}), (.7, {'counted_in': 'build'})]:
+            w.phase_b.append_usage({'purpose': 'assistant', 'learner_id': w.a.actor.user_id, 'doc_id': 'other-book',
+                'created_at': w.clock.now().isoformat(), 'cost_usd': cost, **extra})
+        w.phase_b.append_usage({'purpose': 'document', 'learner_id': w.b.actor.user_id, 'doc_id': 'other-book',
+            'created_at': w.clock.now().isoformat(), 'cost_usd': .9})
+        data = w.a.client.get('/api/v1/me/usage').json()
+&gt;       assert data['contract_version'] == 'usage-1'
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'contract_version'
+
+src\web\backend\tests\test_assistant_w09.py:130: KeyError</failure></testcase><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_revoked_membership_denies_next_session_and_stream_request" time="0.455"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;not_found&quot;,&quot;message&quot;:&quot;Không tìm thấy nội dung yêu cầu&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:null}}&#10;assert 404 == 201&#10; +  where 404 = &lt;Response [404 Not Found]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/d634db69-b13b-48c0-a135-bb056ed61899/sessions')
+
+    def test_w09_revoked_membership_denies_next_session_and_stream_request(chat):
+&gt;       w = chat; sid = create(w)['session_id']
+                        ^^^^^^^^^
+
+src\web\backend\tests\test_assistant_w09.py:138:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_0dba8eaba9c74c63a7a9972a69dd7...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/d634db69-b13b-48c0-a135-bb056ed61899/sessions')
+
+    def create(w, *, client=None, scope=None):
+        user = client or w.a
+        response = user.client.post(w.url, headers=user.headers, json={'scope': scope or {'kind': 'roadmap'}})
+&gt;       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"not_found","message":"Không tìm thấy nội dung yêu cầu","retry_after":null,"ref":null}}
+E       assert 404 == 201
+E        +  where 404 = &lt;Response [404 Not Found]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:30: AssertionError</failure></testcase></testsuite></testsuites>

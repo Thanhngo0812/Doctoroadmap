@@ -1,0 +1,53 @@
+"""Read-only ordinary-copy/hash checks for the existing W15 fixture inputs."""
+from hashlib import sha256
+import importlib.util
+import json
+from pathlib import Path, PurePosixPath
+
+root = Path(__file__).resolve().parents[1]
+spec = importlib.util.spec_from_file_location('fixture_copy', root / 'src/web/backend/tests/copy_w06_fixtures.py')
+helper = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(helper)
+bundles_path = root / 'report/w06-fixtures-evidence-2026-10-20/bundles.json'
+bundles = json.loads(bundles_path.read_text())
+verified = []
+for bundle in bundles['bundles']:
+    manifest = helper.safe_path(root, bundle['manifest'])
+    assert helper.digest(manifest) == bundle['manifest_sha256']
+    rows = json.loads(manifest.read_text())['files']
+    count = 0
+    for row in rows:
+        relative = row['path']
+        if relative.startswith('artifacts/phase_b/') and not relative.startswith('artifacts/phase_b/formula_images/'):
+            continue
+        path = helper.safe_path(root, relative)
+        assert path.is_file() and helper.digest(path) == row['sha256'], relative
+        count += 1
+    verified.append(dict(manifest=bundle['manifest'], manifest_sha256=helper.digest(manifest), ordinary_files=count))
+candidate_path = root / 'report/w15-evidence/candidate.json'
+candidate = json.loads(candidate_path.read_text())
+source = helper.safe_path(root, candidate['staged_copy'])
+assert source.stat().st_size == candidate['bytes'] and helper.digest(source) == candidate['sha256']
+result = dict(existing_worktree=True, recopy_needed=False, helper='src/web/backend/tests/copy_w06_fixtures.py',
+    bundles_sha256=helper.digest(bundles_path), six_book_manifests=verified, learner_store_read=False,
+    shared_artifacts_read=False, links_used=False, candidate_separate_from_six_book_snapshot=True,
+    candidate={key: candidate[key] for key in ('staged_copy', 'sha256', 'bytes', 'page_count')})
+output = root / 'report/w15-evidence/r4-20261025/fixture-integrity.json'
+output.parent.mkdir(parents=True, exist_ok=True)
+output.write_bytes((json.dumps(result, indent=2) + '\n').encode())
+print(json.dumps(result, indent=2))
+
+rpc = root / 'tmp/w15-r4-pricing/sku-browser-rpc.json'
+record = json.loads(rpc.read_text())[0]
+text = record['body']
+assert record['status'] == 200 and 'E4FB-7AE2-9CAE' in text and '0.00015 USD per 1,000 count' in text
+result = dict(source='https://cloud.google.com/skus?currency=USD&filter=E4FB-7AE2-9CAE',
+    checked_date='2026-10-25', retrieval='fresh anonymous Playwright Chromium; no Google account/ADC/model request',
+    sku='E4FB-7AE2-9CAE', service='C7E2-9256-1C43', region='global',
+    description='Large Text Embedding Model - Predictions', public_display='0.00015 USD per 1,000 count',
+    explicit_token_or_character_unit=False, raw_rpc_path=rpc.relative_to(root).as_posix(),
+    raw_rpc_sha256=sha256(rpc.read_bytes()).hexdigest(), online_profile_verified=False,
+    paid_run_permitted=False, proven_undercharge=False)
+output = output.parent / 'embedding-sku-public.json'
+output.write_bytes((json.dumps(result, indent=2) + '\n').encode())
+print(json.dumps(result, indent=2))

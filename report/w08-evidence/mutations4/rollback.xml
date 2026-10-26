@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="1" errors="0" time="1.9078424">
+    <testsuite name="src/Learning.test.tsx" timestamp="2026-10-23T14:47:34.037Z" hostname="ADMIN" tests="10" failures="1" errors="0" skipped="0" time="1.9078424">
+        <testcase classname="src/Learning.test.tsx" name="shows the first delta before completion; prerequisites/answers start collapsed and source labels remain safe" time="0.5795396">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps sent text when the stream ends badly and shows the shortened notice" time="0.1270463">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure loi_mang even if an old retryable flag is false" time="0.1080642">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure het_thoi_gian even if an old retryable flag is false" time="0.120799">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure tran_he_thong even if an old retryable flag is false" time="0.1229421">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure khong_co_mo_hinh even if an old retryable flag is false" time="0.1040618">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="gives a message and Retry for failure dau_ra_rong even if an old retryable flag is false" time="0.1014329">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="rolls back an optimistic learner mark after a failed save" time="0.1356161">
+            <failure message="expect(element).not.toBeChecked()
+
+Received element is checked:
+  &lt;input
+  type=&quot;checkbox&quot;
+/&gt;" type="Error">
+Error: expect(element).not.toBeChecked()
+
+Received element is checked:
+  &lt;input
+  type=&quot;checkbox&quot;
+/&gt;
+ ❯ src/Learning.test.tsx:103:81
+            </failure>
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="keeps a module list on the module route and links to a specific lesson without generating one" time="0.0416667">
+        </testcase>
+        <testcase classname="src/Learning.test.tsx" name="explains that DOCX has no numbered pages and still offers opening the original file" time="0.0709035">
+        </testcase>
+    </testsuite>
+</testsuites>

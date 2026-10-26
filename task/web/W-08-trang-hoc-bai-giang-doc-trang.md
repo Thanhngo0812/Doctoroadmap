@@ -1,10 +1,12 @@
 # W-08 — Trang học: bài giảng stream, "Đọc trang p"
 
+**Nghiệm thu lần4, 2026-10-24: W-08 đạt · đã ghép local `bad8e45`.** Mốc web `c8c687b`, cổng cuối `c4d281b` đã nhận main có SA-68: 2.602 Python đạt/0 fail/1 Cloudinary skip/1 replay xfail có sẵn, 181 React/build; browser PG12cấu hình/109ảnh/341HTTP/17Axe. Đóng R-W08-1 (nhãn theo tiến độ hiện tại, save/rollback không fetch bài) và R-W08-2 (tiêu đề tự kiểm tra, final authoritative); hai mutation lỗi cũ bị bắt, 5 rawSSE không lộ đáp án. Chuyển web sang W-09, giữ bằng chứng/không dọn worktree; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md). Các trạng thái chưa nhận bên dưới là lịch sử.
+
 **Nguồn chân lý:** [spec bài giảng 3](../../doc/bai-giang-3-spec.md), mục 6 (`lecture-3`) và 9; [ADR 0025](../../doc/adr/0025-bai-giang-3-van-xuoi-tu-nhien.md),
 [ADR 0024](../../doc/adr/0024-bai-giang-luon-hien-luat-kiem-chi-ghi-log.md); nhãn người học ở [spec Pha B2](../../doc/pha-b2-spec.md), mục 6.5;
 [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 1 (SSE), 7 (mở tệp gốc); spec thiết kế, trang học và vòng chờ.
 **Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD (mô hình giả và phát lại) · **Chặn bởi:** W-07; SA-64 thay SA-63, ảnh trang SA-65 · **Trạng thái:**
-sửa hai Required sau kiểm độc lập `89122f6`, chưa ghép; SA-62/64/65 đều đã ở main, không còn chờ lõi.
+đạt · đã ghép local `bad8e45`; hai Required đã đóng, chuyển W-09. Phần chưa ghép dưới đây là lịch sử.
 
 **Báo trước của Claude 2026-10-24:** [SA-70](../sau-a10/70-bai-giang-3-ban-2.md) sẽ ngừng phát delta từ tiêu đề tự kiểm tra bằng cùng biểu thức của bộ tách core.
 Tới lúc SA-70 ghép vẫn sửa/giữ hồi quy R-W08-2 phía web; sau nhận main đó kiểm lại HTTP/React để tránh hai quy tắc khác nhau.

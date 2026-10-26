@@ -1,5 +1,13 @@
 # W-10 — Quiz, tài liệu, thư viện
 
+**Nghiệm thu lần 7, 2026-10-26: chưa nhận/chưa ghép `fa346c9`.** Focused 87/React 212/build/browser 89 ảnh/58 Axe đạt các đường đã kiểm; còn hai Required độc lập: R-W10-1 trực tiếp hết 10 tài liệu nhưng trợ lý vẫn tạo tài liệu thứ 11 (HTTP/PG/model fake có assertion đỏ); R-W10-2 phản hồi nộp quiz cũ ghi kết quả vào màn quiz mới sau Back (React thật, control guard đạt). Sửa admission web chung hai nguồn và ranh giới request/route; giữ use case sinh/cache/retry/ngân sách core, không làm lại những phần đã đúng. Backend W-16/mẫu W-10 đã ghép local c5b4f5f; web nhận main sửa hai lỗi, sau W-10 đạt mới React W-16. [biên bản lần 7](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan7-2026-10-26.md) và [helper/lời giao](../../report/lenh-giao-viec-ba-nhom-lan7-2026-10-26.md).
+
+**Mở sau nghiệm thu lần 6, 2026-10-25:** W-09 đã đạt/ghép local 7f54b14; SA-67/68 đã ở main. Nhóm web bắt đầu W-10 trong worktree riêng, ba lát quiz→submit/chấm, tài liệu trực tiếp→xem/tải và thư viện. Tái dùng phần library/preview W-09; group here/elsewhere theo core/home_scope, không đồng nhất origin button/assistant. Thiết kế sửa D-R6-01 trước khi nhận gói mẫu 0b5993e; phần quiz/tài liệu không bị chặn bởi lỗi mẫu thư viện. Dùng fake/PG 0 USD, không Cloud; [biên bản lần 6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md) và [lời giao](../../report/lenh-giao-viec-ba-nhom-lan6-2026-10-25.md).
+
+**Điều phối lần 5, 2026-10-25:** SA-67 document-3 và SA-68 quiz-3 đã ở main, không còn chờ hai lõi này. Web sửa hai Required W-09 trước khi triển khai W-10. Tái dùng library chỉ đọc/preview artifact của W-09 sau được nhận; vẫn còn sinh trực tiếp/submit/chấm/ẩn đáp án/xáo phương án/quyền/thư viện đầy đủ theo spec mới. Design chuẩn bị HTML/CSS/token đúng hợp đồng, không Cloud; [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md).
+
+**Cập nhật nghiệm thu lần4, 2026-10-24:** SA-67 document-3 đã ghép `6cfc535`, SA-68 quiz-3 đã ghép `21cfab3`. W-10 đã có cả hai mốc lõi mới, xếp sau W-09; đọc spec document-3/quiz-3 và kiểm HTTP/React/ẩn đáp án/xáo phương án/nộp bài/quyền/thư viện bằng PG/fake0USD. Không dùng hợp đồng cũ thay bản mới; [biên bản lần4](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan4-2026-10-24.md). Các điểm chờ SA-67/68 phía dưới là lịch sử.
+
 **Cập nhật 2026-10-24:** đã có spec [document-3](../../doc/tai-lieu-3-spec.md), [quiz-3](../../doc/quiz-3-spec.md) và vé SA-67/68.
 Sau W-08/W-09, đọc hợp đồng mới; tích hợp cuối nhận mốc được Claude nghiệm thu/ghép. Các hướng dẫn quiz-2/document-2 bên dưới là lịch sử,
 không tự dùng làm chuẩn cho bản nâng mới. UI tham khảo HTML/CSS/token do thiết kế bàn giao, không chờ Cloud Figma.

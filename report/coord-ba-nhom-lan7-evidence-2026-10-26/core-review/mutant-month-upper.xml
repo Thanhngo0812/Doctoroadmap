@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="2.520" timestamp="2026-10-26T12:39:01.951872+07:00" hostname="ADMIN"><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[None-2026-01-31]" time="0.149"><failure message="AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'builds_used': 3} != {'builds_used': 2}&#10;  Use -v to get more diff">..\coord-r7-core-review-20261026\test_review_core.py:158: in test_real_quota_sql_counts_exact_month_not_dollars
+    assert view == {'builds_used': 2, 'build_monthly_max': maximum,
+E   AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}
+E
+E     Omitting 2 identical items, use -vv to show
+E     Differing items:
+E     {'builds_used': 3} != {'builds_used': 2}
+E     Use -v to get more diff</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[None-2026-12-31]" time="0.015"><failure message="AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'builds_used': 3} != {'builds_used': 2}&#10;  Use -v to get more diff">..\coord-r7-core-review-20261026\test_review_core.py:158: in test_real_quota_sql_counts_exact_month_not_dollars
+    assert view == {'builds_used': 2, 'build_monthly_max': maximum,
+E   AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}
+E
+E     Omitting 2 identical items, use -vv to show
+E     Differing items:
+E     {'builds_used': 3} != {'builds_used': 2}
+E     Use -v to get more diff</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[None-2028-02-29]" time="0.014"><failure message="AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}&#10;  &#10;  Omitting 2 identical items, use -vv to show&#10;  Differing items:&#10;  {'builds_used': 3} != {'builds_used': 2}&#10;  Use -v to get more diff">..\coord-r7-core-review-20261026\test_review_core.py:158: in test_real_quota_sql_counts_exact_month_not_dollars
+    assert view == {'builds_used': 2, 'build_monthly_max': maximum,
+E   AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}
+E
+E     Omitting 2 identical items, use -vv to show
+E     Differing items:
+E     {'builds_used': 3} != {'builds_used': 2}
+E     Use -v to get more diff</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[3-2026-01-31]" time="0.013"><failure message="AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}&#10;  &#10;  Omitting 1 identical items, use -vv to show&#10;  Differing items:&#10;  {'builds_used': 3} != {'builds_used': 2}&#10;  {'builds_remaining': 0} != {'builds_remaining': 1}&#10;  Use -v to get more diff">..\coord-r7-core-review-20261026\test_review_core.py:158: in test_real_quota_sql_counts_exact_month_not_dollars
+    assert view == {'builds_used': 2, 'build_monthly_max': maximum,
+E   AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}
+E
+E     Omitting 1 identical items, use -vv to show
+E     Differing items:
+E     {'builds_used': 3} != {'builds_used': 2}
+E     {'builds_remaining': 0} != {'builds_remaining': 1}
+E     Use -v to get more diff</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[3-2026-12-31]" time="0.013"><failure message="AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}&#10;  &#10;  Omitting 1 identical items, use -vv to show&#10;  Differing items:&#10;  {'builds_used': 3} != {'builds_used': 2}&#10;  {'builds_remaining': 0} != {'builds_remaining': 1}&#10;  Use -v to get more diff">..\coord-r7-core-review-20261026\test_review_core.py:158: in test_real_quota_sql_counts_exact_month_not_dollars
+    assert view == {'builds_used': 2, 'build_monthly_max': maximum,
+E   AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}
+E
+E     Omitting 1 identical items, use -vv to show
+E     Differing items:
+E     {'builds_used': 3} != {'builds_used': 2}
+E     {'builds_remaining': 0} != {'builds_remaining': 1}
+E     Use -v to get more diff</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[3-2028-02-29]" time="0.013"><failure message="AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}&#10;  &#10;  Omitting 1 identical items, use -vv to show&#10;  Differing items:&#10;  {'builds_used': 3} != {'builds_used': 2}&#10;  {'builds_remaining': 0} != {'builds_remaining': 1}&#10;  Use -v to get more diff">..\coord-r7-core-review-20261026\test_review_core.py:158: in test_real_quota_sql_counts_exact_month_not_dollars
+    assert view == {'builds_used': 2, 'build_monthly_max': maximum,
+E   AssertionError: assert {'build_month...ilds_used': 3} == {'build_month...ilds_used': 2}
+E
+E     Omitting 1 identical items, use -vv to show
+E     Differing items:
+E     {'builds_used': 3} != {'builds_used': 2}
+E     {'builds_remaining': 0} != {'builds_remaining': 1}
+E     Use -v to get more diff</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,11 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_an_unwritable_audit_stops_further_dispatch_without_discarding_known_cost _
+src\web\backend\tests\test_build_spend_w15.py:185: in test_an_unwritable_audit_stops_further_dispatch_without_discarding_known_cost
+    with pytest.raises(api.BuildSpendStopped):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'>
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-final-20261024-01\audit-failure-stop.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_an_unwritable_audit_stops_further_dispatch_without_discarding_known_cost
+1 failed, 17 deselected in 0.54s

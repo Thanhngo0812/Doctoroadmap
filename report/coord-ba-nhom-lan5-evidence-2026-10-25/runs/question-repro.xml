@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="2.5277843">
+    <testsuite name="../../../../coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx" timestamp="2026-10-25T04:43:46.682Z" hostname="ADMIN" tests="1" failures="1" errors="0" skipped="0" time="2.5277843">
+        <testcase classname="../../../../coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx" name="review: a question submitted after final is sent while the usage refresh remains pending" time="2.5252306">
+            <system-out>
+REVIEW_OBSERVATION {&quot;usageCalls&quot;:2,&quot;postedQuestions&quot;:[{&quot;question&quot;:&quot;First question&quot;,&quot;client_turn_id&quot;:&quot;abebaaba-0525-433c-afac-113f0d2d21ec&quot;}],&quot;draftAfterSubmit&quot;:&quot;&quot;}
+
+            </system-out>
+            <failure message="expected [ Array(1) ] to have a length of 2 but got 1
+
+Ignored nodes: comments, script, style
+&lt;html&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;div
+        class=&quot;learning-chat-dock&quot;
+        data-open=&quot;true&quot;
+        data-resizing=&quot;false&quot;
+        style=&quot;--learning-chat-width: 340px;&quot;
+      &gt;
+        &lt;button
+          aria-expanded=&quot;true&quot;
+          aria-label=&quot;Mở khung trợ lý&quot;
+          class=&quot;button button-secondary learning-chat-opener&quot;
+          type=&quot;button&quot;
+        &gt;
+          Hỏi trợ lý
+        &lt;/button&gt;
+        &lt;div
+          aria-controls=&quot;learning-chat-panel-review-course&quot;
+          aria-label=&quot;Điều chỉnh độ rộng trợ lý&quot;
+          aria-orientation=&quot;vertical&quot;
+          aria-valuemax=&quot;340&quot;
+          aria-valuemin=&quot;340&quot;
+          aria-valuenow=&quot;340&quot;
+          aria-valuetext=&quot;340 pixel&quot;
+          class=&quot;learning-chat-resizer&quot;
+          role=&quot;separator&quot;
+          tabindex=&quot;0&quot;
+          title=&quot;Kéo ngang hoặc dùng phím mũi tên để điều chỉnh&quot;
+        &gt;
+          &lt;span /&gt;
+        &lt;/div&gt;
+        &lt;aside
+          aria-labelledby=&quot;learning-chat-title-review-course&quot;
+          class=&quot;learning-chat-panel&quot;
+          id=&quot;learning-chat-panel-review-course&quot;
+        &gt;
+          &lt;header
+            class=&quot;learning-chat-heading&quot;
+          &gt;
+            &lt;div&gt;
+              &lt;h2
+                id=&quot;learning-chat-title-review-course&quot;
+              &gt;
+                Trợ lý học tập
+              &lt;/h2&gt;
+              &lt;p&gt;
+                Cả lộ trình
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;button
+              aria-label=&quot;Đóng trợ lý&quot;
+              class=&quot;learning-chat-close&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                viewBox=&quot;0 0 24 24&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m6 6 12 12M18 6 6 18&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Cuộc trò chuyện&quot;
+            class=&quot;learning-chat-conversations&quot;
+          &gt;
+            &lt;div
+              class=&quot;learning-chat-session-toolbar&quot;
+            &gt;
+              &lt;button
+                class=&quot;learning-chat-new&quot;
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M12 5v14M5 12h14&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Trò chuyện mới
+              &lt;/button&gt;
+              &lt;label
+                class=&quot;learning-chat-filter&quot;
+              &gt;
+                &lt;input
+                  aria-label=&quot;Tất cả cuộc trò chuyện&quot;
+                  type=&quot;checkbox&quot;
+                /&gt;
+                Tất cả
+              &lt;/label&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;learning-chat-session-controls&quot;
+            &gt;
+              &lt;label&gt;
+                Cuộc trò chuyện đang mở
+                &lt;select
+                  aria-label=&quot;Cuộc trò chuyện đang mở&quot;
+                &gt;
+                  &lt;option
+                    value=&quot;s1&quot;
+                  &gt;
+                    Review session
+                     ·
+                    17:00 24-10
+                  &lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/label&gt;
+              &lt;div
+                class=&quot;learning-chat-options&quot;
+              &gt;
+                &lt;button
+                  aria-controls=&quot;learning-chat-options-review-course&quot;
+                  aria-expanded=&quot;false&quot;
+                  aria-label=&quot;Tuỳ chọn cuộc trò chuyện&quot;
+                  class=&quot;learning-chat-more&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  &lt;svg
+                    aria-hidden=&quot;true&quot;
+                    viewBox=&quot;0 0 24 24&quot;
+                  &gt;
+                    &lt;circle
+                      cx=&quot;5&quot;
+                      cy=&quot;12&quot;
+                      r=&quot;1&quot;
+                    /&gt;
+                    &lt;circle
+                      cx=&quot;12&quot;
+                      cy=&quot;12&quot;
+                      r=&quot;1&quot;
+                    /&gt;
+                    &lt;circle
+                      cx=&quot;19&quot;
+                      cy=&quot;12&quot;
+                      r=&quot;1&quot;
+                    /&gt;
+                  &lt;/svg&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p
+              class=&quot;learning-chat-session-meta&quot;
+            &gt;
+              &lt;time
+                datetime=&quot;2026-10-24T10:00:00Z&quot;
+              &gt;
+                17:00 24-10
+              &lt;/time&gt;
+              &lt;span
+                title=&quot;First question&quot;
+              &gt;
+                First question
+              &lt;/span&gt;
+            &lt;/p&gt;
+          &lt;/section&gt;
+          &lt;div
+            class=&quot;learning-chat-usage&quot;
+          &gt;
+            &lt;p&gt;
+              Đã dùng 0% hạn mức hôm nay
+            &lt;/p&gt;
+            &lt;progress
+              aria-label=&quot;Hạn mức học hôm nay&quot;
+              max=&quot;1&quot;
+              value=&quot;0&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div
+            aria-label=&quot;Hội thoại&quot;
+            aria-live=&quot;polite&quot;
+            class=&quot;learning-chat-messages&quot;
+            role=&quot;log&quot;
+            tabindex=&quot;0&quot;
+          &gt;
+            &lt;section
+              class=&quot;learning-chat-turn&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-chat-question&quot;
+              &gt;
+                &lt;span
+                  class=&quot;sr-only&quot;
+                &gt;
+                  Bạn hỏi:
+                &lt;/span&gt;
+                First question
+              &lt;/p&gt;
+              &lt;div
+                class=&quot;learning-chat-answer&quot;
+              &gt;
+                &lt;div
+                  class=&quot;lecture-markdown&quot;
+                &gt;
+                  &lt;p&gt;
+                    First answer is complete.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div /&gt;
+          &lt;/div&gt;
+          &lt;form
+            class=&quot;learning-chat-compose&quot;
+          &gt;
+            &lt;label
+              class=&quot;sr-only&quot;
+              for=&quot;learning-chat-question-review-course&quot;
+            &gt;
+              Câu hỏi
+            &lt;/label&gt;
+            &lt;textarea
+              id=&quot;learning-chat-question-review-course&quot;
+              maxlength=&quot;4000&quot;
+              placeholder=&quot;Hỏi về bài đang học…&quot;
+              rows=&quot;3&quot;
+            /&gt;
+            &lt;div&gt;
+              &lt;small&gt;
+                Enter để gửi · Shift+Enter xuống dòng
+              &lt;/small&gt;
+              &lt;button
+                class=&quot;button button-primary&quot;
+                disabled=&quot;&quot;
+                type=&quot;submit&quot;
+              &gt;
+                Gửi câu hỏi
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/aside&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;" type="AssertionError">
+AssertionError: expected [ Array(1) ] to have a length of 2 but got 1
+
+Ignored nodes: comments, script, style
+&lt;html&gt;
+  &lt;head /&gt;
+  &lt;body&gt;
+    &lt;div&gt;
+      &lt;div
+        class=&quot;learning-chat-dock&quot;
+        data-open=&quot;true&quot;
+        data-resizing=&quot;false&quot;
+        style=&quot;--learning-chat-width: 340px;&quot;
+      &gt;
+        &lt;button
+          aria-expanded=&quot;true&quot;
+          aria-label=&quot;Mở khung trợ lý&quot;
+          class=&quot;button button-secondary learning-chat-opener&quot;
+          type=&quot;button&quot;
+        &gt;
+          Hỏi trợ lý
+        &lt;/button&gt;
+        &lt;div
+          aria-controls=&quot;learning-chat-panel-review-course&quot;
+          aria-label=&quot;Điều chỉnh độ rộng trợ lý&quot;
+          aria-orientation=&quot;vertical&quot;
+          aria-valuemax=&quot;340&quot;
+          aria-valuemin=&quot;340&quot;
+          aria-valuenow=&quot;340&quot;
+          aria-valuetext=&quot;340 pixel&quot;
+          class=&quot;learning-chat-resizer&quot;
+          role=&quot;separator&quot;
+          tabindex=&quot;0&quot;
+          title=&quot;Kéo ngang hoặc dùng phím mũi tên để điều chỉnh&quot;
+        &gt;
+          &lt;span /&gt;
+        &lt;/div&gt;
+        &lt;aside
+          aria-labelledby=&quot;learning-chat-title-review-course&quot;
+          class=&quot;learning-chat-panel&quot;
+          id=&quot;learning-chat-panel-review-course&quot;
+        &gt;
+          &lt;header
+            class=&quot;learning-chat-heading&quot;
+          &gt;
+            &lt;div&gt;
+              &lt;h2
+                id=&quot;learning-chat-title-review-course&quot;
+              &gt;
+                Trợ lý học tập
+              &lt;/h2&gt;
+              &lt;p&gt;
+                Cả lộ trình
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;button
+              aria-label=&quot;Đóng trợ lý&quot;
+              class=&quot;learning-chat-close&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                viewBox=&quot;0 0 24 24&quot;
+              &gt;
+                &lt;path
+                  d=&quot;m6 6 12 12M18 6 6 18&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Cuộc trò chuyện&quot;
+            class=&quot;learning-chat-conversations&quot;
+          &gt;
+            &lt;div
+              class=&quot;learning-chat-session-toolbar&quot;
+            &gt;
+              &lt;button
+                class=&quot;learning-chat-new&quot;
+                type=&quot;button&quot;
+              &gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;M12 5v14M5 12h14&quot;
+                  /&gt;
+                &lt;/svg&gt;
+                Trò chuyện mới
+              &lt;/button&gt;
+              &lt;label
+                class=&quot;learning-chat-filter&quot;
+              &gt;
+                &lt;input
+                  aria-label=&quot;Tất cả cuộc trò chuyện&quot;
+                  type=&quot;checkbox&quot;
+                /&gt;
+                Tất cả
+              &lt;/label&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;learning-chat-session-controls&quot;
+            &gt;
+              &lt;label&gt;
+                Cuộc trò chuyện đang mở
+                &lt;select
+                  aria-label=&quot;Cuộc trò chuyện đang mở&quot;
+                &gt;
+                  &lt;option
+                    value=&quot;s1&quot;
+                  &gt;
+                    Review session
+                     ·
+                    17:00 24-10
+                  &lt;/option&gt;
+                &lt;/select&gt;
+              &lt;/label&gt;
+              &lt;div
+                class=&quot;learning-chat-options&quot;
+              &gt;
+                &lt;button
+                  aria-controls=&quot;learning-chat-options-review-course&quot;
+                  aria-expanded=&quot;false&quot;
+                  aria-label=&quot;Tuỳ chọn cuộc trò chuyện&quot;
+                  class=&quot;learning-chat-more&quot;
+                  type=&quot;button&quot;
+                &gt;
+                  &lt;svg
+                    aria-hidden=&quot;true&quot;
+                    viewBox=&quot;0 0 24 24&quot;
+                  &gt;
+                    &lt;circle
+                      cx=&quot;5&quot;
+                      cy=&quot;12&quot;
+                      r=&quot;1&quot;
+                    /&gt;
+                    &lt;circle
+                      cx=&quot;12&quot;
+                      cy=&quot;12&quot;
+                      r=&quot;1&quot;
+                    /&gt;
+                    &lt;circle
+                      cx=&quot;19&quot;
+                      cy=&quot;12&quot;
+                      r=&quot;1&quot;
+                    /&gt;
+                  &lt;/svg&gt;
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/div&gt;
+            &lt;p
+              class=&quot;learning-chat-session-meta&quot;
+            &gt;
+              &lt;time
+                datetime=&quot;2026-10-24T10:00:00Z&quot;
+              &gt;
+                17:00 24-10
+              &lt;/time&gt;
+              &lt;span
+                title=&quot;First question&quot;
+              &gt;
+                First question
+              &lt;/span&gt;
+            &lt;/p&gt;
+          &lt;/section&gt;
+          &lt;div
+            class=&quot;learning-chat-usage&quot;
+          &gt;
+            &lt;p&gt;
+              Đã dùng 0% hạn mức hôm nay
+            &lt;/p&gt;
+            &lt;progress
+              aria-label=&quot;Hạn mức học hôm nay&quot;
+              max=&quot;1&quot;
+              value=&quot;0&quot;
+            /&gt;
+          &lt;/div&gt;
+          &lt;div
+            aria-label=&quot;Hội thoại&quot;
+            aria-live=&quot;polite&quot;
+            class=&quot;learning-chat-messages&quot;
+            role=&quot;log&quot;
+            tabindex=&quot;0&quot;
+          &gt;
+            &lt;section
+              class=&quot;learning-chat-turn&quot;
+            &gt;
+              &lt;p
+                class=&quot;learning-chat-question&quot;
+              &gt;
+                &lt;span
+                  class=&quot;sr-only&quot;
+                &gt;
+                  Bạn hỏi:
+                &lt;/span&gt;
+                First question
+              &lt;/p&gt;
+              &lt;div
+                class=&quot;learning-chat-answer&quot;
+              &gt;
+                &lt;div
+                  class=&quot;lecture-markdown&quot;
+                &gt;
+                  &lt;p&gt;
+                    First answer is complete.
+                  &lt;/p&gt;
+                &lt;/div&gt;
+              &lt;/div&gt;
+            &lt;/section&gt;
+            &lt;div /&gt;
+          &lt;/div&gt;
+          &lt;form
+            class=&quot;learning-chat-compose&quot;
+          &gt;
+            &lt;label
+              class=&quot;sr-only&quot;
+              for=&quot;learning-chat-question-review-course&quot;
+            &gt;
+              Câu hỏi
+            &lt;/label&gt;
+            &lt;textarea
+              id=&quot;learning-chat-question-review-course&quot;
+              maxlength=&quot;4000&quot;
+              placeholder=&quot;Hỏi về bài đang học…&quot;
+              rows=&quot;3&quot;
+            /&gt;
+            &lt;div&gt;
+              &lt;small&gt;
+                Enter để gửi · Shift+Enter xuống dòng
+              &lt;/small&gt;
+              &lt;button
+                class=&quot;button button-primary&quot;
+                disabled=&quot;&quot;
+                type=&quot;submit&quot;
+              &gt;
+                Gửi câu hỏi
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/form&gt;
+        &lt;/aside&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+
+- Expected
++ Received
+
+- 2
++ 1
+
+ ❯ ../../../../coord-r5-web-review-20261025/Assistant.final-usage-race.test.tsx:60:39
+ ❯ runWithExpensiveErrorDiagnosticsDisabled node_modules/@testing-library/dom/dist/config.js:47:12
+ ❯ checkCallback node_modules/@testing-library/dom/dist/wait-for.js:124:77
+ ❯ Timeout.checkRealTimersCallback node_modules/@testing-library/dom/dist/wait-for.js:118:16
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

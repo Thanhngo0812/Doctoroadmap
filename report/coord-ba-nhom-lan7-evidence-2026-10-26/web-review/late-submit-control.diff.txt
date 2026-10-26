@@ -1,0 +1,2 @@
+  const activeAttempt = useRef(aid); activeAttempt.current = aid;
+    try { const submittedAid = quiz.attempt_id; const value = await submitQuiz(cid, submittedAid, answers); if (activeAttempt.current !== submittedAid) return; setResult(value); heading.current?.focus({ preventScroll: true }); }

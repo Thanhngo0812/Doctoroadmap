@@ -1,0 +1,174 @@
+{
+  "book": "candidate",
+  "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+  "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:fa76ad51ce2b4666c64d2113cfb37a563d196fd8a53026e2ad0c64a61008073b",
+  "build": {
+    "id": "a15a5f71-4362-4cd4-99e7-b1de40654741",
+    "doc_id": "u-1f019766e74a747d293c",
+    "upload_id": "5a40a04c-b6e1-4fe6-be9e-3667409aef8e",
+    "requested_by": "ca23e19c-8385-424e-b31f-b7a38855f0f2",
+    "status": "succeeded",
+    "step": "learning_prep",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:fa76ad51ce2b4666c64d2113cfb37a563d196fd8a53026e2ad0c64a61008073b",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "27604-58a6a85a3c8b4575afc8c1c2cdff82e1",
+    "lease_id": "f8b0f539-bc49-4f4d-b182-10e2b584c9fa",
+    "heartbeat_at": "2026-10-25 07:42:52.788731+00:00",
+    "confirmation_expires_at": "2026-10-28 06:37:24.116742+00:00",
+    "queued_at": "2026-10-25 06:37:24.225095+00:00",
+    "started_at": "2026-10-25 06:37:24.289880+00:00",
+    "finished_at": "2026-10-25 07:42:52.788731+00:00",
+    "created_at": "2026-10-25 06:37:24.116742+00:00",
+    "error_code": null,
+    "error_message": null,
+    "retryable": false,
+    "spent_usd": "0.687268",
+    "model_calls": 1616,
+    "input_tokens": 1829867,
+    "output_tokens": 157341,
+    "usage_complete": true,
+    "elapsed_seconds": 3927.811192299996,
+    "graph_version": 8,
+    "module_count": 15
+  },
+  "http_build": {
+    "contract_version": "build-1",
+    "build_id": "a15a5f71-4362-4cd4-99e7-b1de40654741",
+    "course_id": "139f8992-463d-4dd7-9aea-3bc0cdba6220",
+    "upload_id": "5a40a04c-b6e1-4fe6-be9e-3667409aef8e",
+    "status": "succeeded",
+    "step": "learning_prep",
+    "step_index": 4,
+    "step_count": 4,
+    "started_at": "2026-10-25T06:37:24.289880Z",
+    "finished_at": "2026-10-25T07:42:52.788731Z",
+    "confirmation_expires_at": "2026-10-28T06:37:24.116742Z",
+    "cancel_requested": false,
+    "can_cancel": false,
+    "can_retry": false,
+    "error": null
+  },
+  "mail_subjects": [
+    "Bản dựng xong"
+  ],
+  "attempts": [
+    {
+      "result": {
+        "error": null,
+        "doc_id": "u-1f019766e74a747d293c",
+        "status": "succeeded",
+        "spent_usd": 0.687268,
+        "model_calls": 1616,
+        "input_tokens": 1829867,
+        "step_details": {
+          "graph": {
+            "reused": false,
+            "web_timing": {
+              "wall_seconds": 522.3818017000012,
+              "embedding_wait_seconds": 437.52739329999895,
+              "embedding_wait_measured": true
+            },
+            "graph_version": 8
+          },
+          "concepts": {
+            "a3": {
+              "a3_reused": false,
+              "a3_prime_reused": false,
+              "candidate_version": 1,
+              "retrieval_version": 1
+            },
+            "canonical": {
+              "reused": false,
+              "a4_gold_coverage": "none",
+              "canonical_version": 1
+            },
+            "web_timing": {
+              "wall_seconds": 3258.804726699993,
+              "embedding_wait_seconds": 539.0648755000002,
+              "embedding_wait_measured": true
+            },
+            "label_roles": {
+              "reused": false,
+              "chunks_version": 2
+            }
+          },
+          "doc_reading": {
+            "page_count": 52,
+            "web_timing": {
+              "wall_seconds": 2.0192856999929063,
+              "embedding_wait_seconds": 0.0,
+              "embedding_wait_measured": true
+            },
+            "chunk_count": 125,
+            "parse_version": 1,
+            "chunks_version": 1,
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 52325,
+            "empty_page_ratio": 0.019230769230769232,
+            "vi_diacritic_ratio": 0.270157668418538,
+            "average_alphabetic_chars_per_page": 1006.25
+          },
+          "learning_prep": {
+            "a12": {
+              "graph_version": 8,
+              "assignment_count": 125,
+              "retrieval_version": 1
+            },
+            "formulas": {
+              "cut_count": 14,
+              "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-candidate-d3039895d37a\\artifacts\\phase_b\\formula_images\\u-1f019766e74a747d293c\\parse-v1\\index.json",
+              "parse_version": 1,
+              "skipped_count": 0
+            },
+            "web_timing": {
+              "wall_seconds": 144.48405650000495,
+              "embedding_wait_seconds": 143.32626030000392,
+              "embedding_wait_measured": true
+            },
+            "page_images": {
+              "page_count": 7,
+              "parse_version": 1
+            },
+            "concept_index": {
+              "reused": false,
+              "model_id": "gemini-embedding-001:768",
+              "concept_count": 100,
+              "graph_version": 8
+            }
+          },
+          "operator_budget": {
+            "stopped": false,
+            "held_usd": "0",
+            "known_usd": "0.68726825",
+            "limit_usd": "3",
+            "http_calls": 1616,
+            "audit_failed": false,
+            "unknown_upper_usd": "0",
+            "embedding_price_profile": "owner-demo-embedding-token-20261025",
+            "embedding_billing_verified": false
+          }
+        },
+        "graph_version": 8,
+        "output_tokens": 157341,
+        "usage_complete": true,
+        "completed_steps": [
+          "doc_reading",
+          "concepts",
+          "graph",
+          "learning_prep"
+        ],
+        "elapsed_seconds": 3927.811192299996,
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:fa76ad51ce2b4666c64d2113cfb37a563d196fd8a53026e2ad0c64a61008073b"
+      }
+    }
+  ],
+  "courses": [
+    {
+      "status": "ready",
+      "doc_id": "u-1f019766e74a747d293c",
+      "published_graph_version": 8
+    }
+  ]
+}

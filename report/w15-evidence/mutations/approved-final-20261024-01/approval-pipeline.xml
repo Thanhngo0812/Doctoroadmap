@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="3" time="4.831" timestamp="2026-10-24T14:52:36.022020+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[file]" time="1.476" /><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[doc_id]" time="0.332" /><testcase classname="src.web.backend.tests.test_build_approval_w15" name="test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline[pipeline]" time="0.299"><failure message="AssertionError: An unmatched approval reached pipeline construction">src\web\backend\tests\test_build_approval_w15.py:77: in test_mismatched_file_identity_or_pipeline_cannot_construct_a_paid_pipeline
+    runtime.runner(lambda result: None).execute(source, 'other-doc' if mismatch == 'doc_id' else 'u-' + digest[:20])
+src\web\backend\wayfinder\infrastructure\real_build.py:71: in execute
+    return self._execute(file_path, doc_id, language, progress, cancelled, allow_spend=True, spend_guard=guard)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\infrastructure\real_build.py:75: in _execute
+    pipeline = runtime.pipeline_factory(runtime.settings, allow_spend=allow_spend,
+src\web\backend\tests\test_build_approval_w15.py:67: in forbidden
+    raise AssertionError('An unmatched approval reached pipeline construction')
+E   AssertionError: An unmatched approval reached pipeline construction</failure></testcase></testsuite></testsuites>

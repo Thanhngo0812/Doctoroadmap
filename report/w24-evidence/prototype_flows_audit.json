@@ -1,0 +1,36 @@
+{
+  "timestamp": "2026-10-25T06:11:48.786Z",
+  "totalFlows": 4,
+  "passedCount": 4,
+  "allPassed": true,
+  "flows": [
+    {
+      "flow": "Flow 1: Register -> Courses -> Lecture",
+      "stepsChecked": 5,
+      "passed": true,
+      "evidence": "report/w24-evidence/prototype_flow1_auth.png",
+      "notes": "Strict two-way open/close accordion toggle verified."
+    },
+    {
+      "flow": "Flow 2: Share -> Join Course",
+      "stepsChecked": 4,
+      "passed": true,
+      "evidence": "report/w24-evidence/prototype_flow2_learning.png",
+      "notes": "Clipboard content strictly verified: \"https://wayfinder.doctoroadmap.vn/join?code=WF-PHARM-2026\""
+    },
+    {
+      "flow": "Flow 3: Upload -> Config -> 4-Step Build",
+      "stepsChecked": 6,
+      "passed": true,
+      "evidence": "report/w24-evidence/prototype_flow3_upload.png",
+      "notes": "Both OS prefers-reduced-motion and manual toggle verified: zero failed requests, rendered width > 0, buffer frozen over time."
+    },
+    {
+      "flow": "Flow 4: Quiz -> Submit -> Result & Citation",
+      "stepsChecked": 6,
+      "passed": true,
+      "evidence": "report/w24-evidence/prototype_flow4_quiz.png",
+      "notes": "Citation content proven: Harrison 21st Ed, Trang 1892, with verified view interaction."
+    }
+  ]
+}

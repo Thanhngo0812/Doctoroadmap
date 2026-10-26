@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="17" failures="2" errors="0" time="10.4133905">
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-25T04:35:20.379Z" hostname="ADMIN" tests="17" failures="2" errors="0" skipped="0" time="10.4133905">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="1.6206921">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="0.6807154">
+            <failure message="expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+-   &quot;client_turn_id&quot;: &quot;59481a5d-1f8a-4e39-b331-deca653185de&quot;,
++   &quot;client_turn_id&quot;: &quot;dea41a42-3e3c-476e-a074-a9429f7670c0&quot;,
+    &quot;focus_node_id&quot;: &quot;lesson-a&quot;,
+    &quot;question&quot;: &quot;Phần này là gì?&quot;,
+  }
+
+ ❯ src/Assistant.test.tsx:82:28
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="0.4843885">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="restores a pending intent after remount and reconciles the saved result without sending a new turn" time="0.8664278">
+            <failure message="expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+-   &quot;client_turn_id&quot;: &quot;150ee0c1-015f-4128-9505-48437491864b&quot;,
++   &quot;client_turn_id&quot;: &quot;fb5666c1-1c92-4227-bbb2-ffccd5f3382b&quot;,
+    &quot;focus_node_id&quot;: &quot;lesson-a&quot;,
+    &quot;question&quot;: &quot;Phần này là gì?&quot;,
+  }
+
+ ❯ src/Assistant.test.tsx:103:28
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="renames sessions and requires explicit confirmation before deleting history" time="1.4318688">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="opens a persisted artifact only from a structured event, independently of model prose" time="0.6960852">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="blocks sending while a new session is being created and then sends into that session" time="0.6278753">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: not_found" time="0.6218503">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: unauthenticated" time="0.6740626">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps a completed new turn when an older history request arrives afterwards" time="0.5343477">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps an opened artifact preview when history replaces the temporary turn ID with the stored ID" time="0.6675848">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="separates starting a conversation from options for the currently selected conversation" time="0.2979277">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="distinguishes conversations with identical titles by their update date and time" time="0.10753">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="resizes by keyboard within reading-safe bounds and restores the chosen width after remount" time="0.3092849">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clamps a saved width to the viewport without losing the preference on a larger screen" time="0.1083019">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps the phone conversation full-screen without the desktop resize handle" time="0.1334883">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="shows the current question in conversation metadata before the next history reload" time="0.5459879">
+        </testcase>
+    </testsuite>
+</testsuites>

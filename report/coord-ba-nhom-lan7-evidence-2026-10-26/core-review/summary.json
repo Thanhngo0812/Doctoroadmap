@@ -1,0 +1,232 @@
+{
+  "review_date": "2026-10-26",
+  "reviewer": "independent R7 core backend review",
+  "branch": "work/w16-usage-backend",
+  "head": "d1bf42b274c8015fcfdc09b861f5f9a7edfecadb",
+  "base": "b3c4426666dd868040ea0bc52e6485f5af6e1ac4",
+  "verdict": "approve_backend_milestone",
+  "concrete_blockers": [],
+  "whole_w16_complete": false,
+  "remaining_scope": "React usage page and limit banners assigned to web after W10; root final PG gate remains separately owned by root",
+  "independent_verification": {
+    "baseline_passed": 12,
+    "final_passed": 12,
+    "mutants_caught": 7,
+    "mutants": [
+      {
+        "mutant": "trace",
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-p",
+          "src.web.backend.tests.conftest",
+          "-o",
+          "addopts=",
+          "-q",
+          "--tb=short",
+          "--w16-review-mutant=trace",
+          "-k",
+          "actor_purpose",
+          "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-trace-temp",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-trace.xml",
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+        ],
+        "status": 1,
+        "error": null,
+        "caught": true,
+        "assertion_failures": 1,
+        "setup_or_runtime_errors": 0
+      },
+      {
+        "mutant": "day-upper",
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-p",
+          "src.web.backend.tests.conftest",
+          "-o",
+          "addopts=",
+          "-q",
+          "--tb=short",
+          "--w16-review-mutant=day-upper",
+          "-k",
+          "exact_day",
+          "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-day-upper-temp",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-day-upper.xml",
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+        ],
+        "status": 1,
+        "error": null,
+        "caught": true,
+        "assertion_failures": 3,
+        "setup_or_runtime_errors": 0
+      },
+      {
+        "mutant": "personal-owner",
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-p",
+          "src.web.backend.tests.conftest",
+          "-o",
+          "addopts=",
+          "-q",
+          "--tb=short",
+          "--w16-review-mutant=personal-owner",
+          "-k",
+          "actor_purpose",
+          "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-personal-owner-temp",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-personal-owner.xml",
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+        ],
+        "status": 1,
+        "error": null,
+        "caught": true,
+        "assertion_failures": 1,
+        "setup_or_runtime_errors": 0
+      },
+      {
+        "mutant": "shared-owner",
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-p",
+          "src.web.backend.tests.conftest",
+          "-o",
+          "addopts=",
+          "-q",
+          "--tb=short",
+          "--w16-review-mutant=shared-owner",
+          "-k",
+          "actor_purpose",
+          "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-shared-owner-temp",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-shared-owner.xml",
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+        ],
+        "status": 1,
+        "error": null,
+        "caught": true,
+        "assertion_failures": 1,
+        "setup_or_runtime_errors": 0
+      },
+      {
+        "mutant": "month-upper",
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-p",
+          "src.web.backend.tests.conftest",
+          "-o",
+          "addopts=",
+          "-q",
+          "--tb=short",
+          "--w16-review-mutant=month-upper",
+          "-k",
+          "real_quota",
+          "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-upper-temp",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-upper.xml",
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+        ],
+        "status": 1,
+        "error": null,
+        "caught": true,
+        "assertion_failures": 6,
+        "setup_or_runtime_errors": 0
+      },
+      {
+        "mutant": "month-lower",
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-p",
+          "src.web.backend.tests.conftest",
+          "-o",
+          "addopts=",
+          "-q",
+          "--tb=short",
+          "--w16-review-mutant=month-lower",
+          "-k",
+          "real_quota",
+          "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-lower-temp",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-month-lower.xml",
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+        ],
+        "status": 1,
+        "error": null,
+        "caught": true,
+        "assertion_failures": 6,
+        "setup_or_runtime_errors": 0
+      },
+      {
+        "mutant": "dto",
+        "cwd": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w16-usage-backend",
+        "command": [
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\.venv\\Scripts\\python.exe",
+          "scripts/w05_run_tests.py",
+          "-p",
+          "src.web.backend.tests.conftest",
+          "-o",
+          "addopts=",
+          "-q",
+          "--tb=short",
+          "--w16-review-mutant=dto",
+          "-k",
+          "actual_http",
+          "--basetemp=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-dto-temp",
+          "--junitxml=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\mutant-dto.xml",
+          "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-core-review-20261026\\test_review_core.py"
+        ],
+        "status": 1,
+        "error": null,
+        "caught": true,
+        "assertion_failures": 1,
+        "setup_or_runtime_errors": 0
+      }
+    ],
+    "postgres_sessions": 0,
+    "provider_calls": 0,
+    "provider_spend_usd": 0,
+    "external_network_calls": 0,
+    "source_unchanged": true
+  },
+  "worker_evidence": {
+    "manifest_files_verified": 115,
+    "manifest_mismatches": [],
+    "full_xml": {
+      "tests": 2731,
+      "passed": 2729,
+      "skipped_or_xfailed": 2,
+      "errors": 0,
+      "failures": 0,
+      "w16_cases": 13
+    },
+    "react_xml": {
+      "tests": 203,
+      "errors": 0,
+      "failures": 0
+    },
+    "build_exit": 0,
+    "source_commit_tested": "7f98cf799cff78344a2d196118ec430d164c6b26",
+    "product_diff_to_head": ""
+  },
+  "limitations": [
+    "Independent execution used an isolated SQLite adapter for PostgreSQL query predicates and quota SQL; no PG connections were opened by this reviewer.",
+    "HTTP route and response model executed with a dependency-overridden actor; real authentication and fallback PG path were inspected in worker native evidence and are covered by root gate.",
+    "Two scratch harness compatibility failures were retained as harness-attempt1 and baseline2 artifacts; they are not product findings."
+  ],
+  "files": {
+    "review": "review.md",
+    "tests": "test_review_core.py",
+    "final_log": "final.log",
+    "final_xml": "final.xml",
+    "source_before": "source-before.json",
+    "source_after": "source-after.json",
+    "evidence": "evidence-verification.json"
+  }
+}

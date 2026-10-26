@@ -1,0 +1,5926 @@
+{
+  "label": "doc-6-first",
+  "plan": {
+    "book": "doc-6",
+    "run_dir": "tmp/w15-operator-doc-6-722e9386b724",
+    "database": "wayfinder_w15_722e9386b724",
+    "file_sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "prepared_commit": "6249dab5c8cd89b36edeb5add45ab88d5d7d7bce",
+    "dry_run": {
+      "doc_id": "u-82cb494d407c4755d29d",
+      "status": "dry_run",
+      "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+      "graph_version": null,
+      "completed_steps": [
+        "doc_reading"
+      ],
+      "step_details": {
+        "doc_reading": {
+          "chunks_version": 1,
+          "parse_version": 1,
+          "chunk_count": 26,
+          "a4_gold_coverage": "none",
+          "page_count": 25,
+          "alphabetic_chars": 4495,
+          "average_alphabetic_chars_per_page": 179.8,
+          "empty_page_ratio": 0.0,
+          "vi_diacritic_ratio": 0.2407119021134594
+        },
+        "dry_run": {
+          "cache_validated": false,
+          "chunks_version": 1,
+          "candidate_version": null,
+          "canonical_version": null,
+          "graph_version": null,
+          "retrieval_version": null
+        }
+      },
+      "spent_usd": 0.0,
+      "model_calls": 0,
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "usage_complete": true,
+      "elapsed_seconds": 5.203513700005715,
+      "error": null
+    },
+    "vertex_project_configured": true,
+    "transport": "vertex",
+    "location": "global",
+    "approved": false,
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false,
+    "provider_calls": 0,
+    "proposed_max_usd": "1.00"
+  },
+  "receipt": {
+    "doc_id": "u-82cb494d407c4755d29d",
+    "status": "succeeded",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "graph_version": 8,
+    "completed_steps": [
+      "doc_reading",
+      "concepts",
+      "graph",
+      "learning_prep"
+    ],
+    "step_details": {
+      "doc_reading": {
+        "chunks_version": 1,
+        "parse_version": 1,
+        "chunk_count": 26,
+        "a4_gold_coverage": "none",
+        "page_count": 25,
+        "alphabetic_chars": 4495,
+        "average_alphabetic_chars_per_page": 179.8,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.2407119021134594,
+        "web_timing": {
+          "wall_seconds": 0.20657260000007227,
+          "embedding_wait_seconds": 0.0,
+          "embedding_wait_measured": true
+        }
+      },
+      "concepts": {
+        "label_roles": {
+          "chunks_version": 2,
+          "reused": false
+        },
+        "a3": {
+          "candidate_version": 1,
+          "retrieval_version": 1,
+          "a3_reused": false,
+          "a3_prime_reused": false
+        },
+        "canonical": {
+          "canonical_version": 1,
+          "reused": false,
+          "a4_gold_coverage": "none"
+        },
+        "web_timing": {
+          "wall_seconds": 168.2843862999871,
+          "embedding_wait_seconds": 39.23766329999489,
+          "embedding_wait_measured": true
+        }
+      },
+      "graph": {
+        "graph_version": 8,
+        "reused": false,
+        "web_timing": {
+          "wall_seconds": 41.84031600000162,
+          "embedding_wait_seconds": 25.187475399987306,
+          "embedding_wait_measured": true
+        }
+      },
+      "learning_prep": {
+        "a12": {
+          "graph_version": 8,
+          "retrieval_version": 1,
+          "assignment_count": 26
+        },
+        "concept_index": {
+          "graph_version": 8,
+          "model_id": "gemini-embedding-001:768",
+          "reused": false,
+          "concept_count": 15
+        },
+        "formulas": {
+          "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-doc-6-722e9386b724\\artifacts\\phase_b\\formula_images\\u-82cb494d407c4755d29d\\parse-v1\\index.json",
+          "parse_version": 1,
+          "cut_count": 0,
+          "skipped_count": 0
+        },
+        "page_images": {
+          "parse_version": 1,
+          "page_count": 0
+        },
+        "web_timing": {
+          "wall_seconds": 11.845662499996251,
+          "embedding_wait_seconds": 11.690737900004024,
+          "embedding_wait_measured": true
+        }
+      },
+      "operator_budget": {
+        "limit_usd": "1",
+        "known_usd": "0.1204034",
+        "held_usd": "0",
+        "unknown_upper_usd": "0",
+        "http_calls": 334,
+        "stopped": false,
+        "audit_failed": false,
+        "embedding_price_profile": "owner-demo-embedding-token-20261025",
+        "embedding_billing_verified": false
+      }
+    },
+    "spent_usd": 0.120403,
+    "model_calls": 334,
+    "input_tokens": 332688,
+    "output_tokens": 25390,
+    "usage_complete": true,
+    "elapsed_seconds": 222.17748860000574,
+    "error": null
+  },
+  "web_receipt": {
+    "error": null,
+    "doc_id": "u-82cb494d407c4755d29d",
+    "status": "succeeded",
+    "spent_usd": 0.0,
+    "model_calls": 0,
+    "input_tokens": 0,
+    "step_details": {
+      "graph": {
+        "reused": true,
+        "web_timing": {
+          "wall_seconds": 0.39850929999374785,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "graph_version": 8
+      },
+      "concepts": {
+        "a3": {
+          "a3_reused": true,
+          "a3_prime_reused": true,
+          "candidate_version": 1,
+          "retrieval_version": 1
+        },
+        "canonical": {
+          "reused": true,
+          "a4_gold_coverage": "none",
+          "canonical_version": 1
+        },
+        "web_timing": {
+          "wall_seconds": 0.7971674000000348,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "label_roles": {
+          "reused": true,
+          "chunks_version": 2
+        }
+      },
+      "doc_reading": {
+        "page_count": 25,
+        "web_timing": {
+          "wall_seconds": 0.23158300000068266,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "chunk_count": 26,
+        "parse_version": 1,
+        "chunks_version": 1,
+        "a4_gold_coverage": "none",
+        "alphabetic_chars": 4495,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.2407119021134594,
+        "average_alphabetic_chars_per_page": 179.8
+      },
+      "learning_prep": {
+        "a12": {
+          "graph_version": 8,
+          "assignment_count": 26,
+          "retrieval_version": 1
+        },
+        "formulas": {
+          "cut_count": 0,
+          "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-doc-6-722e9386b724\\artifacts\\phase_b\\formula_images\\u-82cb494d407c4755d29d\\parse-v1\\index.json",
+          "parse_version": 1,
+          "skipped_count": 0
+        },
+        "web_timing": {
+          "wall_seconds": 0.09885439999925438,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "page_images": {
+          "page_count": 0,
+          "parse_version": 1
+        },
+        "concept_index": {
+          "reused": true,
+          "model_id": "gemini-embedding-001:768",
+          "concept_count": 15,
+          "graph_version": 8
+        }
+      }
+    },
+    "graph_version": 8,
+    "output_tokens": 0,
+    "usage_complete": true,
+    "completed_steps": [
+      "doc_reading",
+      "concepts",
+      "graph",
+      "learning_prep"
+    ],
+    "elapsed_seconds": 1.6276177999970969,
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268"
+  },
+  "mail_subjects": [
+    "Bản dựng xong"
+  ],
+  "approval": {
+    "state": "finished",
+    "budget": {
+      "stopped": false,
+      "held_usd": "0",
+      "known_usd": "0.1204034",
+      "limit_usd": "1",
+      "http_calls": 334,
+      "audit_failed": false,
+      "unknown_upper_usd": "0",
+      "embedding_price_profile": "owner-demo-embedding-token-20261025",
+      "embedding_billing_verified": false
+    },
+    "doc_id": "u-82cb494d407c4755d29d",
+    "events": [
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0017075",
+          "limit_usd": "1",
+          "http_calls": 1,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0017075",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.003501",
+          "limit_usd": "1",
+          "http_calls": 2,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0017935",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.00441675",
+          "limit_usd": "1",
+          "http_calls": 30,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00091575",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.00586525",
+          "limit_usd": "1",
+          "http_calls": 31,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0014485",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.0064625",
+          "limit_usd": "1",
+          "http_calls": 32,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00059725",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.007216",
+          "limit_usd": "1",
+          "http_calls": 33,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0007535",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.00807025",
+          "limit_usd": "1",
+          "http_calls": 34,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00085425",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.00871525",
+          "limit_usd": "1",
+          "http_calls": 35,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000645",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.00928625",
+          "limit_usd": "1",
+          "http_calls": 36,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000571",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3684352",
+          "known_usd": "0.00972475",
+          "limit_usd": "1",
+          "http_calls": 37,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004385",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.728576",
+          "known_usd": "0.00973705",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000123",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7282688",
+          "known_usd": "0.0097384",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7279616",
+          "known_usd": "0.00975625",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001785",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7276544",
+          "known_usd": "0.00976255",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7273472",
+          "known_usd": "0.0097705",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000795",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.72704",
+          "known_usd": "0.00977965",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000915",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7267328",
+          "known_usd": "0.00978925",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000096",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7264256",
+          "known_usd": "0.00979315",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000039",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.3659776",
+          "known_usd": "0.01014115",
+          "limit_usd": "1",
+          "http_calls": 38,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000348",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7261184",
+          "known_usd": "0.0101485",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000735",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7258112",
+          "known_usd": "0.01015945",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001095",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.725504",
+          "known_usd": "0.0101803",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002085",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7251968",
+          "known_usd": "0.01018255",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000225",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7248896",
+          "known_usd": "0.01019695",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000144",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7245824",
+          "known_usd": "0.01021105",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000141",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7242752",
+          "known_usd": "0.0102277",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001665",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.723968",
+          "known_usd": "0.01023325",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000555",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7236608",
+          "known_usd": "0.01024645",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000132",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7233536",
+          "known_usd": "0.0102628",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001635",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7230464",
+          "known_usd": "0.01027075",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000795",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7227392",
+          "known_usd": "0.01028215",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000114",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.722432",
+          "known_usd": "0.0102952",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001305",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7221248",
+          "known_usd": "0.01030285",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000765",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7218176",
+          "known_usd": "0.01030675",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000039",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7215104",
+          "known_usd": "0.0103183",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001155",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.7212032",
+          "known_usd": "0.01032205",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000375",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.720896",
+          "known_usd": "0.01033195",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000099",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.01327395",
+          "limit_usd": "1",
+          "http_calls": 39,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.002942",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.01514545",
+          "limit_usd": "1",
+          "http_calls": 40,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0018715",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0172357",
+          "limit_usd": "1",
+          "http_calls": 41,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00209025",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0187227",
+          "limit_usd": "1",
+          "http_calls": 42,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.001487",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.02059395",
+          "limit_usd": "1",
+          "http_calls": 43,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00187125",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.02114745",
+          "limit_usd": "1",
+          "http_calls": 44,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0005535",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0226462",
+          "limit_usd": "1",
+          "http_calls": 45,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00149875",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.02309895",
+          "limit_usd": "1",
+          "http_calls": 46,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00045275",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.02345995",
+          "limit_usd": "1",
+          "http_calls": 47,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000361",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.02719645",
+          "limit_usd": "1",
+          "http_calls": 48,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0037365",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0279492",
+          "limit_usd": "1",
+          "http_calls": 49,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00075275",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.02842495",
+          "limit_usd": "1",
+          "http_calls": 50,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00047575",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0309537",
+          "limit_usd": "1",
+          "http_calls": 51,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00252875",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.03135095",
+          "limit_usd": "1",
+          "http_calls": 52,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00039725",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0338817",
+          "limit_usd": "1",
+          "http_calls": 53,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00253075",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0347502",
+          "limit_usd": "1",
+          "http_calls": 54,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0008685",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.03576095",
+          "limit_usd": "1",
+          "http_calls": 55,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00101075",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0362572",
+          "limit_usd": "1",
+          "http_calls": 56,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00049625",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0367782",
+          "limit_usd": "1",
+          "http_calls": 57,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000521",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.03722445",
+          "limit_usd": "1",
+          "http_calls": 58,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00044625",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.03770895",
+          "limit_usd": "1",
+          "http_calls": 59,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004845",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.03857695",
+          "limit_usd": "1",
+          "http_calls": 60,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000868",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0390692",
+          "limit_usd": "1",
+          "http_calls": 61,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00049225",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.03952745",
+          "limit_usd": "1",
+          "http_calls": 62,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00045825",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.04320945",
+          "limit_usd": "1",
+          "http_calls": 63,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.003682",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.04573545",
+          "limit_usd": "1",
+          "http_calls": 64,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.002526",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.04726945",
+          "limit_usd": "1",
+          "http_calls": 65,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.001534",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0478842",
+          "limit_usd": "1",
+          "http_calls": 66,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00061475",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.04879495",
+          "limit_usd": "1",
+          "http_calls": 67,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00091075",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0495422",
+          "limit_usd": "1",
+          "http_calls": 68,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00074725",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.05018095",
+          "limit_usd": "1",
+          "http_calls": 69,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00063875",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0507712",
+          "limit_usd": "1",
+          "http_calls": 70,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00059025",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.05297145",
+          "limit_usd": "1",
+          "http_calls": 71,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00220025",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0538517",
+          "limit_usd": "1",
+          "http_calls": 72,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00088025",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.05508495",
+          "limit_usd": "1",
+          "http_calls": 73,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00123325",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.05558245",
+          "limit_usd": "1",
+          "http_calls": 74,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004975",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0567842",
+          "limit_usd": "1",
+          "http_calls": 75,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00120175",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0572067",
+          "limit_usd": "1",
+          "http_calls": 76,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004225",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0587222",
+          "limit_usd": "1",
+          "http_calls": 77,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0015155",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0618647",
+          "limit_usd": "1",
+          "http_calls": 78,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0031425",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.06249695",
+          "limit_usd": "1",
+          "http_calls": 79,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00063225",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.06310145",
+          "limit_usd": "1",
+          "http_calls": 80,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0006045",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.06476595",
+          "limit_usd": "1",
+          "http_calls": 81,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0016645",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.06581145",
+          "limit_usd": "1",
+          "http_calls": 82,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0010455",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0663422",
+          "limit_usd": "1",
+          "http_calls": 83,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00053075",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0680557",
+          "limit_usd": "1",
+          "http_calls": 84,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0017135",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0685317",
+          "limit_usd": "1",
+          "http_calls": 85,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000476",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.06924845",
+          "limit_usd": "1",
+          "http_calls": 86,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00071675",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.06971995",
+          "limit_usd": "1",
+          "http_calls": 87,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004715",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.07010395",
+          "limit_usd": "1",
+          "http_calls": 88,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000384",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.07259695",
+          "limit_usd": "1",
+          "http_calls": 89,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.002493",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0735062",
+          "limit_usd": "1",
+          "http_calls": 89,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00090925",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.07425445",
+          "limit_usd": "1",
+          "http_calls": 90,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00074825",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0748942",
+          "limit_usd": "1",
+          "http_calls": 91,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00063975",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.018432",
+          "known_usd": "0.07489885",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000465",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0181248",
+          "known_usd": "0.07490335",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000045",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0178176",
+          "known_usd": "0.07490725",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000039",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0175104",
+          "known_usd": "0.07491025",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0172032",
+          "known_usd": "0.0749116",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.016896",
+          "known_usd": "0.0749161",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000045",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0165888",
+          "known_usd": "0.07491895",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000285",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0162816",
+          "known_usd": "0.07492465",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000057",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0159744",
+          "known_usd": "0.07492765",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0156672",
+          "known_usd": "0.0749314",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000375",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.01536",
+          "known_usd": "0.0749368",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000054",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0150528",
+          "known_usd": "0.07493785",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0147456",
+          "known_usd": "0.07494055",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000027",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0144384",
+          "known_usd": "0.0749416",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0141312",
+          "known_usd": "0.0749455",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000039",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.013824",
+          "known_usd": "0.07494805",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000255",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0135168",
+          "known_usd": "0.07495105",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0132096",
+          "known_usd": "0.07495465",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000036",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0129024",
+          "known_usd": "0.07495855",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000039",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0125952",
+          "known_usd": "0.07496035",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000018",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.012288",
+          "known_usd": "0.0749614",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0119808",
+          "known_usd": "0.0749644",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0116736",
+          "known_usd": "0.07496575",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0113664",
+          "known_usd": "0.07496665",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0110592",
+          "known_usd": "0.07496875",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000021",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.010752",
+          "known_usd": "0.07496965",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0104448",
+          "known_usd": "0.07497205",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000024",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0101376",
+          "known_usd": "0.074977",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000495",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0098304",
+          "known_usd": "0.07497865",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0095232",
+          "known_usd": "0.0749809",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000225",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.009216",
+          "known_usd": "0.07498285",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000195",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0089088",
+          "known_usd": "0.0749857",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000285",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0086016",
+          "known_usd": "0.07499275",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000705",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0082944",
+          "known_usd": "0.07499635",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000036",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0079872",
+          "known_usd": "0.07500055",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000042",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.00768",
+          "known_usd": "0.07500235",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000018",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0073728",
+          "known_usd": "0.07500655",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000042",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0070656",
+          "known_usd": "0.0750103",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000375",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0067584",
+          "known_usd": "0.0750133",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0064512",
+          "known_usd": "0.0750148",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000015",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.006144",
+          "known_usd": "0.07501645",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0058368",
+          "known_usd": "0.07501915",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000027",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0055296",
+          "known_usd": "0.0750205",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0052224",
+          "known_usd": "0.07502335",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000285",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0049152",
+          "known_usd": "0.07502425",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.004608",
+          "known_usd": "0.0750259",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0043008",
+          "known_usd": "0.07503235",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0039936",
+          "known_usd": "0.0750346",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000225",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0036864",
+          "known_usd": "0.07503565",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0033792",
+          "known_usd": "0.0750373",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.003072",
+          "known_usd": "0.07504",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000027",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0027648",
+          "known_usd": "0.07504285",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000285",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0024576",
+          "known_usd": "0.0750463",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000345",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0021504",
+          "known_usd": "0.07504945",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000315",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0018432",
+          "known_usd": "0.0750547",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000525",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.001536",
+          "known_usd": "0.0750577",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0012288",
+          "known_usd": "0.0750598",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000021",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0009216",
+          "known_usd": "0.0750628",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0006144",
+          "known_usd": "0.0750652",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000024",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0003072",
+          "known_usd": "0.07506865",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000345",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0750718",
+          "limit_usd": "1",
+          "http_calls": 152,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000315",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0101376",
+          "known_usd": "0.07507225",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "4.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0098304",
+          "known_usd": "0.0750733",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0095232",
+          "known_usd": "0.0750739",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "6E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.009216",
+          "known_usd": "0.07507465",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "7.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0089088",
+          "known_usd": "0.07507555",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0086016",
+          "known_usd": "0.0750763",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "7.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0082944",
+          "known_usd": "0.0750772",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0079872",
+          "known_usd": "0.0750778",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "6E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.00768",
+          "known_usd": "0.07507855",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "7.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0073728",
+          "known_usd": "0.07508005",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000015",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0070656",
+          "known_usd": "0.0750811",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0067584",
+          "known_usd": "0.0750823",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000012",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0064512",
+          "known_usd": "0.07508305",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "7.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.006144",
+          "known_usd": "0.07508335",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "3E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0058368",
+          "known_usd": "0.0750838",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "4.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0055296",
+          "known_usd": "0.07508425",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "4.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0052224",
+          "known_usd": "0.0750853",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0049152",
+          "known_usd": "0.07508605",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "7.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.004608",
+          "known_usd": "0.07508635",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "3E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0043008",
+          "known_usd": "0.0750865",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "1.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0039936",
+          "known_usd": "0.07508695",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "4.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0036864",
+          "known_usd": "0.0750874",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "4.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0033792",
+          "known_usd": "0.07508845",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.003072",
+          "known_usd": "0.07508905",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "6E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0027648",
+          "known_usd": "0.0750904",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0024576",
+          "known_usd": "0.0750916",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000012",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0021504",
+          "known_usd": "0.0750928",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000012",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0018432",
+          "known_usd": "0.07509355",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "7.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.001536",
+          "known_usd": "0.075094",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "4.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0012288",
+          "known_usd": "0.07509475",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "7.5E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0009216",
+          "known_usd": "0.07509535",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "6E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0006144",
+          "known_usd": "0.07509595",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "6E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0003072",
+          "known_usd": "0.0750973",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0750979",
+          "limit_usd": "1",
+          "http_calls": 186,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "6E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.07573965",
+          "limit_usd": "1",
+          "http_calls": 188,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00064175",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.07697015",
+          "limit_usd": "1",
+          "http_calls": 189,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0012305",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.07756215",
+          "limit_usd": "1",
+          "http_calls": 190,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000592",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.07941065",
+          "limit_usd": "1",
+          "http_calls": 191,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0018485",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.08016415",
+          "limit_usd": "1",
+          "http_calls": 192,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0007535",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.08064515",
+          "limit_usd": "1",
+          "http_calls": 193,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000481",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.08164465",
+          "limit_usd": "1",
+          "http_calls": 194,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0009995",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0823034",
+          "limit_usd": "1",
+          "http_calls": 194,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00065875",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0828354",
+          "limit_usd": "1",
+          "http_calls": 196,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000532",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.08407665",
+          "limit_usd": "1",
+          "http_calls": 196,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00124125",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0844999",
+          "limit_usd": "1",
+          "http_calls": 198,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00042325",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0849449",
+          "limit_usd": "1",
+          "http_calls": 198,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000445",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.08594515",
+          "limit_usd": "1",
+          "http_calls": 200,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00100025",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0867174",
+          "limit_usd": "1",
+          "http_calls": 200,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00077225",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0871909",
+          "limit_usd": "1",
+          "http_calls": 202,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004735",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.08796365",
+          "limit_usd": "1",
+          "http_calls": 203,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00077275",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.08870215",
+          "limit_usd": "1",
+          "http_calls": 204,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0007385",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0893274",
+          "limit_usd": "1",
+          "http_calls": 204,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00062525",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0913274",
+          "limit_usd": "1",
+          "http_calls": 206,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.002",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0931639",
+          "limit_usd": "1",
+          "http_calls": 207,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0018365",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0934094",
+          "limit_usd": "1",
+          "http_calls": 207,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0002455",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.09390015",
+          "limit_usd": "1",
+          "http_calls": 208,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00049075",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.09430815",
+          "limit_usd": "1",
+          "http_calls": 210,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000408",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.09483065",
+          "limit_usd": "1",
+          "http_calls": 211,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0005225",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0952534",
+          "limit_usd": "1",
+          "http_calls": 212,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00042275",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0959659",
+          "limit_usd": "1",
+          "http_calls": 213,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0007125",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0964409",
+          "limit_usd": "1",
+          "http_calls": 214,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000475",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.09693865",
+          "limit_usd": "1",
+          "http_calls": 215,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00049775",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.09751065",
+          "limit_usd": "1",
+          "http_calls": 216,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000572",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.09791315",
+          "limit_usd": "1",
+          "http_calls": 217,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004025",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.09832665",
+          "limit_usd": "1",
+          "http_calls": 218,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004135",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0988314",
+          "limit_usd": "1",
+          "http_calls": 219,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00050475",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.0995689",
+          "limit_usd": "1",
+          "http_calls": 220,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0007375",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.10015415",
+          "limit_usd": "1",
+          "http_calls": 221,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00058525",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.1009024",
+          "limit_usd": "1",
+          "http_calls": 222,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00074825",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.10131815",
+          "limit_usd": "1",
+          "http_calls": 223,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00041575",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.1019439",
+          "limit_usd": "1",
+          "http_calls": 224,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00062575",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.10258315",
+          "limit_usd": "1",
+          "http_calls": 225,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00063925",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.1030304",
+          "limit_usd": "1",
+          "http_calls": 226,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00044725",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.1034274",
+          "limit_usd": "1",
+          "http_calls": 227,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000397",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.1038504",
+          "limit_usd": "1",
+          "http_calls": 227,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000423",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.10425015",
+          "limit_usd": "1",
+          "http_calls": 229,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00039975",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.10464365",
+          "limit_usd": "1",
+          "http_calls": 230,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0003935",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.10527915",
+          "limit_usd": "1",
+          "http_calls": 231,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0006355",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.1059169",
+          "limit_usd": "1",
+          "http_calls": 232,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00063775",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.1063414",
+          "limit_usd": "1",
+          "http_calls": 233,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0004245",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.1067984",
+          "limit_usd": "1",
+          "http_calls": 234,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000457",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.10719965",
+          "limit_usd": "1",
+          "http_calls": 235,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00040125",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "concepts",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.1077359",
+          "limit_usd": "1",
+          "http_calls": 235,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00053625",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0159744",
+          "known_usd": "0.10773755",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0156672",
+          "known_usd": "0.10773905",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000015",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.01536",
+          "known_usd": "0.10774505",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000006",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0150528",
+          "known_usd": "0.1077479",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000285",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0147456",
+          "known_usd": "0.10774895",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0144384",
+          "known_usd": "0.1077506",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0141312",
+          "known_usd": "0.10775225",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.013824",
+          "known_usd": "0.10775525",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000003",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0135168",
+          "known_usd": "0.1077563",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0132096",
+          "known_usd": "0.10776185",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000555",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0129024",
+          "known_usd": "0.10776275",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0125952",
+          "known_usd": "0.1077698",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000705",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.012288",
+          "known_usd": "0.10777295",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000315",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0119808",
+          "known_usd": "0.1077995",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002655",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0116736",
+          "known_usd": "0.1078004",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0113664",
+          "known_usd": "0.10780685",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0110592",
+          "known_usd": "0.10781075",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000039",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.010752",
+          "known_usd": "0.1078121",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0104448",
+          "known_usd": "0.107813",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "9E-7",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0101376",
+          "known_usd": "0.10781525",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000225",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0098304",
+          "known_usd": "0.10781975",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000045",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0095232",
+          "known_usd": "0.10782785",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000081",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.009216",
+          "known_usd": "0.10783355",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000057",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0089088",
+          "known_usd": "0.1078352",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000165",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0086016",
+          "known_usd": "0.10783895",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000375",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0082944",
+          "known_usd": "0.10784555",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000066",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0079872",
+          "known_usd": "0.10785185",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.00768",
+          "known_usd": "0.1078592",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000735",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0073728",
+          "known_usd": "0.10786025",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0070656",
+          "known_usd": "0.107867",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000675",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0067584",
+          "known_usd": "0.10787345",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0064512",
+          "known_usd": "0.1078802",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000675",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.006144",
+          "known_usd": "0.10788905",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000885",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0058368",
+          "known_usd": "0.1078955",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0055296",
+          "known_usd": "0.10792385",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002835",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0052224",
+          "known_usd": "0.107933",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000915",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0049152",
+          "known_usd": "0.10794095",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000795",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.004608",
+          "known_usd": "0.1079486",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000765",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0043008",
+          "known_usd": "0.10794965",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000105",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0039936",
+          "known_usd": "0.10797305",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000234",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0036864",
+          "known_usd": "0.10797965",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000066",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0033792",
+          "known_usd": "0.10800125",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000216",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.003072",
+          "known_usd": "0.10800815",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000069",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0027648",
+          "known_usd": "0.10802765",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000195",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0024576",
+          "known_usd": "0.1080365",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000885",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0021504",
+          "known_usd": "0.10804325",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000675",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0018432",
+          "known_usd": "0.10804955",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.001536",
+          "known_usd": "0.1080569",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000735",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0012288",
+          "known_usd": "0.1080632",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0009216",
+          "known_usd": "0.108071",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000078",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0006144",
+          "known_usd": "0.10807235",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0003072",
+          "known_usd": "0.10807415",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000018",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.1080755",
+          "limit_usd": "1",
+          "http_calls": 288,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000135",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0079872",
+          "known_usd": "0.10810385",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002835",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.00768",
+          "known_usd": "0.1081106",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000675",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0073728",
+          "known_usd": "0.1081322",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000216",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0070656",
+          "known_usd": "0.1081385",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0067584",
+          "known_usd": "0.1081466",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000081",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0064512",
+          "known_usd": "0.10815335",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000675",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.006144",
+          "known_usd": "0.10816115",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000078",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0058368",
+          "known_usd": "0.1081667",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000555",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0055296",
+          "known_usd": "0.108173",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0052224",
+          "known_usd": "0.10818035",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000735",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0049152",
+          "known_usd": "0.10818665",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000063",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.004608",
+          "known_usd": "0.1081931",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0043008",
+          "known_usd": "0.1081997",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000066",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0039936",
+          "known_usd": "0.10820765",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000795",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0036864",
+          "known_usd": "0.10821425",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000066",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0033792",
+          "known_usd": "0.1082234",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000915",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.003072",
+          "known_usd": "0.1082294",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000006",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0027648",
+          "known_usd": "0.1082363",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000069",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0024576",
+          "known_usd": "0.10824275",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0021504",
+          "known_usd": "0.1082516",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000885",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0018432",
+          "known_usd": "0.1082711",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000195",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.001536",
+          "known_usd": "0.10827875",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000765",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0012288",
+          "known_usd": "0.1082876",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000885",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0009216",
+          "known_usd": "0.10829435",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000675",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0006144",
+          "known_usd": "0.10831775",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000234",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0003072",
+          "known_usd": "0.1083443",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002655",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.10835165",
+          "limit_usd": "1",
+          "http_calls": 315,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000735",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.1139479",
+          "limit_usd": "1",
+          "http_calls": 316,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00559625",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.11858165",
+          "limit_usd": "1",
+          "http_calls": 317,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00463375",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.360448",
+          "known_usd": "0.11938965",
+          "limit_usd": "1",
+          "http_calls": 319,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000808",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "graph",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.12020165",
+          "limit_usd": "1",
+          "http_calls": 319,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000812",
+        "reserved_usd": "0.360448"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0043008",
+          "known_usd": "0.12021005",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000084",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0039936",
+          "known_usd": "0.1202303",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002025",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0036864",
+          "known_usd": "0.12026",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000297",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0033792",
+          "known_usd": "0.12026825",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000825",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.003072",
+          "known_usd": "0.1202747",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000645",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0027648",
+          "known_usd": "0.1202816",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000069",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0024576",
+          "known_usd": "0.12030575",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002415",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0021504",
+          "known_usd": "0.1203131",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000735",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0018432",
+          "known_usd": "0.12032105",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000795",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.001536",
+          "known_usd": "0.1203314",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00001035",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0012288",
+          "known_usd": "0.1203395",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000081",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0009216",
+          "known_usd": "0.12036695",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002745",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0006144",
+          "known_usd": "0.1203893",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00002235",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0.0003072",
+          "known_usd": "0.12039725",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000795",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "learning_prep",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.1204034",
+          "limit_usd": "1",
+          "http_calls": 334,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.00000615",
+        "reserved_usd": "0.0003072"
+      }
+    ],
+    "max_usd": "1.00",
+    "reference": "w15-owner-20261025-doc-6-241f4459945a49dbb25847573f97acd8",
+    "file_sha256": "82cb494d407c4755d29deb7c08b9a4f3794f79e241c307fd2b5dfc149cd559c7",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false
+  },
+  "sql": {
+    "courses": [
+      {
+        "id": "6d383ad1-1297-426e-943a-ca7be3fec917",
+        "status": "ready",
+        "doc_id": "u-82cb494d407c4755d29d",
+        "published_graph_version": 8
+      }
+    ],
+    "builds": [
+      {
+        "id": "5097c6e4-fd2e-48f6-83b9-dc47656a895d",
+        "status": "succeeded",
+        "doc_id": "u-82cb494d407c4755d29d",
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+        "spent_usd": "0.000000",
+        "model_calls": 0,
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "claim_count": 1
+      }
+    ],
+    "attempt_count": 1,
+    "cache_entries": 3,
+    "ledger": [
+      {
+        "id": 1,
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-82cb494d407c4755d29d",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.000808,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T06:14:40.773823+00:00",
+          "elapsed_ms": 3636,
+          "learner_id": null,
+          "context_hash": "sha256:36946a7e63ed30c954a309fc8231e8e59ba5d70a3391f5c866bcd2b2894e5720",
+          "input_tokens": 2272,
+          "output_tokens": 160,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "id": 2,
+        "purpose": "module_title",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-82cb494d407c4755d29d",
+          "purpose": "module_title",
+          "ttft_ms": null,
+          "cost_usd": 0.000812,
+          "model_id": "gemini-3.1-flash-lite",
+          "replayed": false,
+          "counted_in": "build",
+          "created_at": "2026-10-25T06:14:40.765803+00:00",
+          "elapsed_ms": 3876,
+          "learner_id": null,
+          "context_hash": "sha256:69c0e2157a3f0b86b691117a8df6ad45dd32eb14cb44a86a3a053c5057a276ff",
+          "input_tokens": 2108,
+          "output_tokens": 190,
+          "thought_tokens": 0
+        }
+      },
+      {
+        "id": 3,
+        "purpose": "embedding",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "doc_id": "u-82cb494d407c4755d29d",
+          "purpose": "embedding",
+          "cost_usd": 0.00016395,
+          "model_id": "gemini-embedding-001:768",
+          "operation": "concept_index",
+          "cost_basis": "estimated tokens at shared online embedding price",
+          "counted_in": "build",
+          "created_at": "2026-10-25T06:14:56.514229+00:00",
+          "elapsed_ms": 11693,
+          "input_count": 15,
+          "context_hash": "669f1a04f44cba2ec5e18dc11f3a548c7593042a6c8439ddeaf7b8a47745028d",
+          "input_tokens": 1093
+        }
+      },
+      {
+        "id": 4,
+        "purpose": "build",
+        "cost_usd": "0.120403",
+        "input_tokens": 332688,
+        "output_tokens": 25390,
+        "extra": {
+          "doc_id": "u-82cb494d407c4755d29d",
+          "failed": false,
+          "purpose": "build",
+          "cost_usd": 0.120403,
+          "operation": "w15_doc6_cache_bootstrap",
+          "created_at": "2026-10-25T06:14:56.542685+00:00",
+          "learner_id": "b85ded66-1aba-4ba0-92e9-89905ae43c8c",
+          "model_calls": 334,
+          "input_tokens": 332688,
+          "output_tokens": 25390,
+          "usage_complete": true,
+          "approval_reference": "w15-owner-20261025-doc-6-241f4459945a49dbb25847573f97acd8"
+        }
+      },
+      {
+        "id": 5,
+        "purpose": "build",
+        "cost_usd": "0.000000",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "extra": {
+          "step": null,
+          "doc_id": "u-82cb494d407c4755d29d",
+          "purpose": "build",
+          "user_id": "b85ded66-1aba-4ba0-92e9-89905ae43c8c",
+          "build_id": "5097c6e4-fd2e-48f6-83b9-dc47656a895d",
+          "cost_usd": 0.0,
+          "lease_id": "ef7770bf-efba-4cdd-bd6e-3e1a1547c040",
+          "created_at": "2026-10-25T06:14:58.797866+00:00",
+          "learner_id": "b85ded66-1aba-4ba0-92e9-89905ae43c8c",
+          "claim_count": 1,
+          "model_calls": 0,
+          "input_tokens": 0,
+          "output_tokens": 0,
+          "usage_complete": true,
+          "attribution_complete": false
+        }
+      }
+    ],
+    "trace_rows": 3,
+    "ledger_total_usd": "0.120403"
+  },
+  "budget": {
+    "limit_usd": "1",
+    "known_usd": "0.1204034",
+    "held_usd": "0",
+    "unknown_upper_usd": "0",
+    "http_calls": 334,
+    "stopped": false,
+    "audit_failed": false,
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false
+  },
+  "step_measurements": [
+    {
+      "step": "doc_reading",
+      "completed": true,
+      "dispatched_generation": 0,
+      "dispatched_embedding": 0,
+      "known_usd": "0",
+      "unknown_upper_usd": "0",
+      "timing": {
+        "wall_seconds": 0.20657260000007227,
+        "embedding_wait_seconds": 0.0,
+        "embedding_wait_measured": true
+      },
+      "receipt_detail": {
+        "chunks_version": 1,
+        "parse_version": 1,
+        "chunk_count": 26,
+        "a4_gold_coverage": "none",
+        "page_count": 25,
+        "alphabetic_chars": 4495,
+        "average_alphabetic_chars_per_page": 179.8,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.2407119021134594,
+        "web_timing": {
+          "wall_seconds": 0.20657260000007227,
+          "embedding_wait_seconds": 0.0,
+          "embedding_wait_measured": true
+        }
+      }
+    },
+    {
+      "step": "concepts",
+      "completed": true,
+      "dispatched_generation": 114,
+      "dispatched_embedding": 121,
+      "known_usd": "0.10773590",
+      "unknown_upper_usd": "0",
+      "timing": {
+        "wall_seconds": 168.2843862999871,
+        "embedding_wait_seconds": 39.23766329999489,
+        "embedding_wait_measured": true
+      },
+      "receipt_detail": {
+        "label_roles": {
+          "chunks_version": 2,
+          "reused": false
+        },
+        "a3": {
+          "candidate_version": 1,
+          "retrieval_version": 1,
+          "a3_reused": false,
+          "a3_prime_reused": false
+        },
+        "canonical": {
+          "canonical_version": 1,
+          "reused": false,
+          "a4_gold_coverage": "none"
+        },
+        "web_timing": {
+          "wall_seconds": 168.2843862999871,
+          "embedding_wait_seconds": 39.23766329999489,
+          "embedding_wait_measured": true
+        }
+      }
+    },
+    {
+      "step": "graph",
+      "completed": true,
+      "dispatched_generation": 4,
+      "dispatched_embedding": 80,
+      "known_usd": "0.01246575",
+      "unknown_upper_usd": "0",
+      "timing": {
+        "wall_seconds": 41.84031600000162,
+        "embedding_wait_seconds": 25.187475399987306,
+        "embedding_wait_measured": true
+      },
+      "receipt_detail": {
+        "graph_version": 8,
+        "reused": false,
+        "web_timing": {
+          "wall_seconds": 41.84031600000162,
+          "embedding_wait_seconds": 25.187475399987306,
+          "embedding_wait_measured": true
+        }
+      }
+    },
+    {
+      "step": "learning_prep",
+      "completed": true,
+      "dispatched_generation": 0,
+      "dispatched_embedding": 15,
+      "known_usd": "0.00020175",
+      "unknown_upper_usd": "0",
+      "timing": {
+        "wall_seconds": 11.845662499996251,
+        "embedding_wait_seconds": 11.690737900004024,
+        "embedding_wait_measured": true
+      },
+      "receipt_detail": {
+        "a12": {
+          "graph_version": 8,
+          "retrieval_version": 1,
+          "assignment_count": 26
+        },
+        "concept_index": {
+          "graph_version": 8,
+          "model_id": "gemini-embedding-001:768",
+          "reused": false,
+          "concept_count": 15
+        },
+        "formulas": {
+          "index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-operator-doc-6-722e9386b724\\artifacts\\phase_b\\formula_images\\u-82cb494d407c4755d29d\\parse-v1\\index.json",
+          "parse_version": 1,
+          "cut_count": 0,
+          "skipped_count": 0
+        },
+        "page_images": {
+          "parse_version": 1,
+          "page_count": 0
+        },
+        "web_timing": {
+          "wall_seconds": 11.845662499996251,
+          "embedding_wait_seconds": 11.690737900004024,
+          "embedding_wait_measured": true
+        }
+      }
+    }
+  ],
+  "assertions": {
+    "identity_and_version": true,
+    "one_attempt_and_claim": true,
+    "trace_not_double_billed": true,
+    "ledger_equals_meter_delta": true,
+    "unknown_not_zeroed": true,
+    "no_dispatch_after_unknown": true,
+    "cap_under_demo_assumption": true
+  },
+  "parse_node_types": {
+    "section_header": 79,
+    "text": 60,
+    "figure": 27,
+    "footnote": 4
+  }
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "name": "live-related-progress",
+    "source": "src/web/frontend/src/Learning.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Learning.review-repro.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-acceptance-20261024\\report\\w08-evidence\\mutations-coord-r4\\live-related-progress.xml"
+    ],
+    "beforeSha256": "1930fc578b0011d8ffdbe99797e4b37b98b24c99ec44aa921d1170fb1433826b",
+    "nativeExit": 1,
+    "failures": 2,
+    "errors": 0,
+    "restoredSha256": "1930fc578b0011d8ffdbe99797e4b37b98b24c99ec44aa921d1170fb1433826b"
+  },
+  {
+    "name": "self-check-heading-grammar",
+    "source": "src/web/frontend/src/Learning.tsx",
+    "command": [
+      "npm.cmd",
+      "--prefix",
+      "src/web/frontend",
+      "test",
+      "--",
+      "src/Learning.review-repro.test.tsx",
+      "--pool=threads",
+      "--maxWorkers=1",
+      "--reporter=junit",
+      "--outputFile=C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r4-acceptance-20261024\\report\\w08-evidence\\mutations-coord-r4\\self-check-heading-grammar.xml"
+    ],
+    "beforeSha256": "1930fc578b0011d8ffdbe99797e4b37b98b24c99ec44aa921d1170fb1433826b",
+    "nativeExit": 1,
+    "failures": 4,
+    "errors": 0,
+    "restoredSha256": "1930fc578b0011d8ffdbe99797e4b37b98b24c99ec44aa921d1170fb1433826b"
+  }
+]

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="7" failures="2" errors="0" time="5.3336538">
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-24T15:30:28.369Z" hostname="ADMIN" tests="7" failures="2" errors="0" skipped="0" time="5.3336538">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="1.5970825">
+            <system-err>
+Encountered two children with the same key, `a1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+Encountered two children with the same key, `a1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="0.6314938">
+            <failure message="expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+-   &quot;client_turn_id&quot;: &quot;62ddf905-e242-49d9-b4e1-2a5551cd1f5f&quot;,
++   &quot;client_turn_id&quot;: &quot;c012e4d4-dfec-4695-b2f5-28e951ab53ad&quot;,
+    &quot;focus_node_id&quot;: &quot;lesson-a&quot;,
+    &quot;question&quot;: &quot;Phần này là gì?&quot;,
+  }
+
+ ❯ src/Assistant.test.tsx:81:28
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="0.4840522">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="restores a pending intent after remount and reconciles the saved result without sending a new turn" time="0.6923607">
+            <failure message="expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }" type="AssertionError">
+AssertionError: expected { question: &apos;Phần này là gì?&apos;, …(2) } to deeply equal { question: &apos;Phần này là gì?&apos;, …(2) }
+
+- Expected
++ Received
+
+  {
+-   &quot;client_turn_id&quot;: &quot;debccda5-e963-436d-8c71-4051c7540424&quot;,
++   &quot;client_turn_id&quot;: &quot;2795b085-17f4-43d0-b915-36517953e40b&quot;,
+    &quot;focus_node_id&quot;: &quot;lesson-a&quot;,
+    &quot;question&quot;: &quot;Phần này là gì?&quot;,
+  }
+
+ ❯ src/Assistant.test.tsx:102:28
+            </failure>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="renames sessions and requires explicit confirmation before deleting history" time="0.8053242">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="opens a persisted artifact only from a structured event, independently of model prose" time="0.5889179">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="blocks sending while a new session is being created and then sends into that session" time="0.5304906">
+        </testcase>
+    </testsuite>
+</testsuites>

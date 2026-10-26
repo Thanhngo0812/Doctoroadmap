@@ -1,0 +1,22 @@
+{
+  "sourceCommit": "0b5993e47a01b45bc2f645741aa38af42f99c5f4",
+  "fixture": "crossed origin vs home_scope, controlled DOM only",
+  "actual": [
+    "button-created-in-roadmap-about-A"
+  ],
+  "expected": [
+    "assistant-created-in-A"
+  ],
+  "assertionFailure": {
+    "type": "AssertionError",
+    "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'button-created-in-roadmap-about-A'\n-   'assistant-created-in-A'\n  ]\n"
+  },
+  "controlHere": [
+    "assistant-created-in-A"
+  ],
+  "controlElsewhere": [
+    "button-created-in-roadmap-about-A"
+  ],
+  "productFilesChanged": false,
+  "externalCostUsd": 0
+}

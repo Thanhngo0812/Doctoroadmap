@@ -1,0 +1,160 @@
+{
+  "build": {
+    "id": "115c7625-92df-4325-85b3-c245c02c4847",
+    "doc_id": "u-a0450a88ed702460a0dc",
+    "upload_id": "7089927f-3453-4b0e-9e80-c6ae8d5c6007",
+    "requested_by": "22151a53-fb0a-4f1f-9185-51b454ec6e43",
+    "status": "failed",
+    "step": "graph",
+    "pipeline_version": "web-real:e48ee1bc59238c4b3f929176811b8e5d83c5a412:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "real-adapter-fake-pipeline",
+    "lease_id": "b1c9cf01-66ce-47de-b360-6eddd0dd229c",
+    "heartbeat_at": "2026-01-01 00:00:00+00:00",
+    "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+    "queued_at": "2026-01-01 00:00:00+00:00",
+    "started_at": "2026-01-01 00:00:00+00:00",
+    "finished_at": "2026-01-01 00:00:00+00:00",
+    "created_at": "2026-01-01 00:00:00+00:00",
+    "error_code": "loi_mang",
+    "error_message": "Kết nối bị gián đoạn; bạn có thể thử lại",
+    "retryable": true,
+    "spent_usd": "0.002000",
+    "model_calls": 2,
+    "input_tokens": 200,
+    "output_tokens": 40,
+    "usage_complete": true,
+    "elapsed_seconds": 0.1152431999998953,
+    "graph_version": null,
+    "module_count": 0
+  },
+  "receipt": {
+    "error": {
+      "code": "loi_mang",
+      "message": "Kết nối bị gián đoạn; bạn có thể thử lại",
+      "retryable": true
+    },
+    "doc_id": "u-a0450a88ed702460a0dc",
+    "status": "failed",
+    "spent_usd": 0.002,
+    "model_calls": 2,
+    "input_tokens": 200,
+    "step_details": {
+      "graph": {
+        "web_timing": {
+          "wall_seconds": 1,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        }
+      },
+      "concepts": {
+        "a3": {
+          "a3_prime": true
+        },
+        "canonical": {},
+        "web_timing": {
+          "wall_seconds": 1,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "label_roles": {
+          "reused": false
+        }
+      },
+      "doc_reading": {
+        "page_count": 1,
+        "web_timing": {
+          "wall_seconds": 1,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "alphabetic_chars": 820,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.36585365853658536,
+        "average_alphabetic_chars_per_page": 820.0
+      }
+    },
+    "graph_version": null,
+    "output_tokens": 40,
+    "usage_complete": true,
+    "completed_steps": [
+      "doc_reading",
+      "concepts"
+    ],
+    "elapsed_seconds": 0.1152431999998953,
+    "pipeline_version": "web-real:e48ee1bc59238c4b3f929176811b8e5d83c5a412:94dd1332c8125c6f12f6cb34e11865764f82e58db32b01bf307de617821a1255"
+  },
+  "ledger": [
+    {
+      "id": 34,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-a0450a88ed702460a0dc",
+      "context_hash": null,
+      "learner_id": "22151a53-fb0a-4f1f-9185-51b454ec6e43",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "concepts",
+        "doc_id": "u-a0450a88ed702460a0dc",
+        "purpose": "build",
+        "user_id": "22151a53-fb0a-4f1f-9185-51b454ec6e43",
+        "build_id": "115c7625-92df-4325-85b3-c245c02c4847",
+        "cost_usd": 0.001,
+        "lease_id": "b1c9cf01-66ce-47de-b360-6eddd0dd229c",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "22151a53-fb0a-4f1f-9185-51b454ec6e43",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": true,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 35,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-a0450a88ed702460a0dc",
+      "context_hash": null,
+      "learner_id": "22151a53-fb0a-4f1f-9185-51b454ec6e43",
+      "cost_usd": "0.001000",
+      "input_tokens": 100,
+      "output_tokens": 20,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": true,
+      "replayed": false,
+      "extra": {
+        "step": null,
+        "doc_id": "u-a0450a88ed702460a0dc",
+        "purpose": "build",
+        "user_id": "22151a53-fb0a-4f1f-9185-51b454ec6e43",
+        "build_id": "115c7625-92df-4325-85b3-c245c02c4847",
+        "cost_usd": 0.001,
+        "lease_id": "b1c9cf01-66ce-47de-b360-6eddd0dd229c",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "22151a53-fb0a-4f1f-9185-51b454ec6e43",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "usage_complete": true,
+        "attribution_complete": false
+      }
+    }
+  ],
+  "transport": "vertex",
+  "new_provider_calls": 0,
+  "synthetic_usage": true
+}

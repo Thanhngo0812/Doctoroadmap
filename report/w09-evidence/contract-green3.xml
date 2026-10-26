@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="4" failures="0" skipped="0" tests="27" time="52.345" timestamp="2026-10-24T21:36:58.118117+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sessions_bind_actor_document_and_scope_from_published_graph" time="4.434" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_answer3_history_and_idempotency_keep_private_fields_on_server" time="2.431" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures" time="2.613" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_rate_limit_counts_new_intents_across_courses_but_not_retries" time="7.129" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_usage_ratio_has_one_ledger_and_does_not_double_count_build_receipts" time="0.911" /><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_revoked_membership_denies_next_session_and_stream_request" time="0.984" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_every_cid_route_hides_private_course_from_outsiders_including_admin" time="3.628" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_route_inventory_catches_a_new_unguarded_route" time="2.140" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_logged_in_unverified_user_can_join_dev_sample_and_repeat_without_duplicates" time="1.385" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_guest_and_prod_cannot_join_or_discover_samples" time="0.685" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_owner_constraint_and_course_creation_rollback" time="0.679" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_update_requires_owner_and_cannot_change_identity" time="0.924" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_membership_activity_updates_only_after_five_minutes" time="0.769" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_gateway_ignores_claimed_owner_and_records_actor_in_independent_postgres_connection" time="2.680" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_database_cannot_commit_course_without_matching_owner_membership" time="0.508" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_join_concurrency_respects_course_capacity" time="0.821" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_only_allows_six_development_documents_in_dev_and_uploads_once" time="0.503"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_composition_binds_vertex_models_and_all_child_stores_to_postgres" time="0.945" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_seed_cli_uses_admin_identity_and_media_port" time="0.491"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_courses_w06" name="test_real_six_book_seed_join_and_roadmap_over_tcp_http" time="9.003" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_deferred_owner_check_protects_source_when_owner_membership_is_moved" time="0.540" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_cached_graph_never_bypasses_revoked_membership" time="0.860" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_course_progress_and_resume_are_per_actor_and_resume_resolves_module_scope" time="1.223" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_graph_is_pinned_to_course_version_and_cached_by_doc_version" time="0.664" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_w06_migration_is_single_head_after_w03_and_empty_database_upgrades" time="0.510" /><testcase classname="src.web.backend.tests.test_courses_w06" name="test_fixture_copy_refuses_escape_hardlink_and_dangling_reparse_point" time="0.003"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase><testcase classname="src.web.backend.tests.test_builds_w14" name="test_http_contract_and_building_course_card_are_real_application_outputs" time="0.046"><error message="failed on setup with &quot;FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'&quot;">self = WindowsPath('C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w09-assistant/tmp/w09-contract-green-3')
+mode = 448, parents = False, exist_ok = False
+
+    def mkdir(self, mode=0o777, parents=False, exist_ok=False):
+        """
+        Create a new directory at this given path.
+        """
+        try:
+&gt;           os.mkdir(self, mode)
+E           FileNotFoundError: [WinError 3] The system cannot find the path specified: 'C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w09-assistant\\tmp\\w09-contract-green-3'
+
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\pathlib.py:1311: FileNotFoundError</error></testcase></testsuite></testsuites>

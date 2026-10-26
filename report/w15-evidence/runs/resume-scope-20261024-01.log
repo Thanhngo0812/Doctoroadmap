@@ -1,0 +1,59 @@
+..........................................FFF                            [100%]
+================================== FAILURES ===================================
+_______ test_system_prompt_is_the_text_block_of_the_spec_word_for_word ________
+tests\unit\application\test_phase_b_assistant_sa66.py:426: in test_system_prompt_is_the_text_block_of_the_spec_word_for_word
+    assert model.prompt == block and 'KHONG_DU' not in model.prompt and 'chỉ dùng tài liệu' not in model.prompt
+E   assert ('Bạn là trợ l...quay lại bài.' == 'Bạn là trợ l...ung tài liệu.'
+E
+E     Skipping 958 identical leading characters in diff, use -v to show
+E     -  "[formula: …]" là chỗ công thức bị mất khi trích PDF; phần sau dấu hai chấm là chữ trích thô, có thể lộn thứ tự và mất ký hiệu. Có ảnh trang thì đọc công thức từ ảnh; không có thì dựng lại từ chữ trích thô, chỉ khi chắc chắn.
+E     +  "[formula]" là chỗ công thức bị mất khi trích PDF; nếu có ảnh trang đính kèm, đọc công thức từ ảnh; nếu không, đừng đoán công thức bạn không chắc.
+E       - Nối tiếp hội thoại trước một cách tự nhiên. Không chào hỏi rườm rà, không lặp lại câu hỏi.
+E       - Câu hỏi không liên quan tới việc học...
+E
+E     ...Full output truncated (11 lines hidden), use '-vv' to show)
+_ test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[True] _
+tests\unit\application\test_phase_b_lecture3_sa64.py:150: in test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line
+    assert sent.replace(SELF_CHECK_LINE, "") == expected
+E   assert 'Bạn là một g..."đoạn trích".' == 'Bạn là một g..."đoạn trích".'
+E
+E     Skipping 779 identical leading characters in diff, use -v to show
+E     - ễn là đúng: soát lại từng con số, từng bước suy luận của ví dụ tự nghĩ trước khi viết.
+E     + ễn là đúng.
+E       - Nêu một hai chỗ người học hay nhầm, hoặc phân biệt với khái niệm gần.
+E     - - Kết bằng một câu nối sang khái niệm tiếp theo trong danh sách "Khái niệm tiếp theo" nếu có: nói khái niệm này cần cho nó ở chỗ nào. Đừng tự định nghĩa hay mô tả khái niệm tiếp theo khi tư liệu không nói về nó.
+E     + - Kết bằng một câu cho biết khái niệm này sẽ được dùng vào đâu tiếp theo, dựa trên danh sách "Khái niệm tiếp theo" nếu có....
+E
+E     ...Full output truncated (12 lines hidden), use '-vv' to show
+_ test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[False] _
+tests\unit\application\test_phase_b_lecture3_sa64.py:150: in test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line
+    assert sent.replace(SELF_CHECK_LINE, "") == expected
+E   assert 'Bạn là một g..."đoạn trích".' == 'Bạn là một g..."đoạn trích".'
+E
+E     Skipping 779 identical leading characters in diff, use -v to show
+E     - ễn là đúng: soát lại từng con số, từng bước suy luận của ví dụ tự nghĩ trước khi viết.
+E     + ễn là đúng.
+E       - Nêu một hai chỗ người học hay nhầm, hoặc phân biệt với khái niệm gần.
+E     - - Kết bằng một câu nối sang khái niệm tiếp theo trong danh sách "Khái niệm tiếp theo" nếu có: nói khái niệm này cần cho nó ở chỗ nào. Đừng tự định nghĩa hay mô tả khái niệm tiếp theo khi tư liệu không nói về nó.
+E     + - Kết bằng một câu cho biết khái niệm này sẽ được dùng vào đâu tiếp theo, dựa trên danh sách "Khái niệm tiếp theo" nếu có....
+E
+E     ...Full output truncated (12 lines hidden), use '-vv' to show
+============================== warnings summary ===============================
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+<frozen importlib._bootstrap>:488
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\resume-scope-20261024-01.xml -
+=========================== short test summary info ===========================
+FAILED tests/unit/application/test_phase_b_assistant_sa66.py::test_system_prompt_is_the_text_block_of_the_spec_word_for_word
+FAILED tests/unit/application/test_phase_b_lecture3_sa64.py::test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[True]
+FAILED tests/unit/application/test_phase_b_lecture3_sa64.py::test_system_prompt_sent_to_the_model_is_the_spec_text_plus_one_format_line[False]
+3 failed, 42 passed, 3 warnings in 82.38s (0:01:22)
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

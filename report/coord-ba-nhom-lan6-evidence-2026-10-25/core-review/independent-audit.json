@@ -1,0 +1,74 @@
+{
+  "source_head": "efed8db5b6b2cf76965a8884f23bfe2b9fe4c988",
+  "manifest_checks": [
+    {
+      "round": "r5-20261025",
+      "manifest_entries": 84,
+      "source_provenance_entries": 45
+    },
+    {
+      "round": "r6-20261025",
+      "manifest_entries": 104,
+      "source_provenance_entries": 17
+    }
+  ],
+  "source_pdf_verified": true,
+  "plan_sha_verified": true,
+  "approval_sha_verified": true,
+  "sql_read_only": true,
+  "sql": {
+    "build_count": 1,
+    "course_count": 1,
+    "attempt_count": 1,
+    "claim_count": 1,
+    "course_status": "ready",
+    "approval_state": "finished",
+    "ledger_total": "0.679336",
+    "trace_rows_zero": true
+  },
+  "graph": {
+    "version": 8,
+    "modules": 16,
+    "learnable": 104,
+    "mentioned": 41,
+    "nonlearnable": 13,
+    "formula_refs": 14,
+    "module_and_sequence_coverage": true,
+    "hard_dag": true,
+    "topological": true,
+    "retrieval_compatible": true,
+    "quality_gate": {
+      "fallback": null,
+      "isolated_learnable_count": 37,
+      "isolated_ratio": 0.25517241379310346,
+      "learnable_node_count": 145,
+      "nonredundant_edges_per_learnable": 0.8137931034482758,
+      "nonredundant_requires_edge_count": 118,
+      "passed": true,
+      "requires_edge_count": 147,
+      "warning": null
+    }
+  },
+  "images_verified": 33,
+  "requests": 1637,
+  "operations": {
+    "generateContent": 715,
+    "predict": 922
+  },
+  "statuses": {
+    "200": 1635,
+    "429": 2
+  },
+  "two_429_recovered_same_payload": true,
+  "stage_peaks": {
+    "concepts": 100,
+    "graph": 49,
+    "learning_prep": 54
+  },
+  "known_demo_usd": "0.67933555",
+  "unknown_upper_usd": "0",
+  "combined_upper_usd": "2.38271210",
+  "billing_verified": false,
+  "usage_complete": false,
+  "provider_calls_this_review": 0
+}

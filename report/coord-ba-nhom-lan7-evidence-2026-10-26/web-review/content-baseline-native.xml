@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="1" failures="1" errors="0" time="0">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-26T05:35:36.625Z" hostname="ADMIN" tests="1" failures="1" errors="0" skipped="0" time="0">
+        <testcase classname="src/Content.test.tsx" name="src/Content.test.tsx" time="0">
+            <failure message="Vitest cannot be imported in a CommonJS module using require(). Please use &quot;import&quot; instead.
+
+If you are using &quot;import&quot; in your source code, then it&apos;s possible it was bundled into require() automatically by your bundler. In that case, do not bundle CommonJS output since it will never work with Vitest, or use dynamic import() which is available in all CommonJS modules." type="Error">
+Error: Vitest cannot be imported in a CommonJS module using require(). Please use &quot;import&quot; instead.
+
+If you are using &quot;import&quot; in your source code, then it&apos;s possible it was bundled into require() automatically by your bundler. In that case, do not bundle CommonJS output since it will never work with Vitest, or use dynamic import() which is available in all CommonJS modules.
+ ❯ Object.&lt;anonymous&gt; ../../w10-quiz-documents/src/web/frontend/node_modules/vitest/index.cjs:1:7
+ ❯ Object.&lt;anonymous&gt; ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/jest-dom/dist/vitest.js:3:14
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,86 @@
+{
+  "operation": "serial-embedding-then-tiny-generation-diagnostic",
+  "reference": "w15-debug-owner-20261025-58ac407915534701ade2a6105c36fbad",
+  "source_plan": "tmp\\w15-operator-candidate-a1839ddc1cd6\\plan.json",
+  "input_chunk_id": "c_51db2866e902631ec57b935f",
+  "input_text_sha256": "87b27b13a65ef868ed4939023876522fc6b52a4106e106389336d5185da30b9e",
+  "input_characters": 1479,
+  "embedding_billing_verified": false,
+  "embedding_dimensions": 768,
+  "status": "diagnostic_succeeded",
+  "json_ok": true,
+  "budget": {
+    "limit_usd": "0.5",
+    "known_usd": "0.0000838",
+    "held_usd": "0",
+    "unknown_upper_usd": "0",
+    "http_calls": 2,
+    "stopped": false,
+    "audit_failed": false,
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false
+  },
+  "usage": {
+    "model_calls": 2,
+    "input_tokens": 470,
+    "output_tokens": 5,
+    "spent_usd": 8.38e-05,
+    "usage_complete": true,
+    "missing_usage_calls": 0
+  },
+  "approval_record": {
+    "state": "finished",
+    "budget": {
+      "stopped": false,
+      "held_usd": "0",
+      "known_usd": "0.0000838",
+      "limit_usd": "0.5",
+      "http_calls": 2,
+      "audit_failed": false,
+      "unknown_upper_usd": "0",
+      "embedding_price_profile": "owner-demo-embedding-token-20261025",
+      "embedding_billing_verified": false
+    },
+    "doc_id": "u-1f019766e74a747d293c",
+    "events": [
+      {
+        "stage": "diagnostic_embedding_serial",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0000618",
+          "limit_usd": "0.5",
+          "http_calls": 1,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.0000618",
+        "reserved_usd": "0.0003072"
+      },
+      {
+        "stage": "diagnostic_generation_serial",
+        "budget": {
+          "stopped": false,
+          "held_usd": "0",
+          "known_usd": "0.0000838",
+          "limit_usd": "0.5",
+          "http_calls": 2,
+          "audit_failed": false,
+          "unknown_upper_usd": "0",
+          "embedding_price_profile": "owner-demo-embedding-token-20261025",
+          "embedding_billing_verified": false
+        },
+        "actual_usd": "0.000022",
+        "reserved_usd": "0.360448"
+      }
+    ],
+    "max_usd": "0.50",
+    "reference": "w15-debug-owner-20261025-58ac407915534701ade2a6105c36fbad",
+    "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:165bf0a22bc3b2aef4b61bb1092789dc040cb192528671b2efb7805357ade916",
+    "embedding_price_profile": "owner-demo-embedding-token-20261025",
+    "embedding_billing_verified": false
+  }
+}

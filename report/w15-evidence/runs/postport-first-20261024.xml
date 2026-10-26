@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="13.767" timestamp="2026-10-24T11:00:06.927272+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_pipeline_postport_w15" name="test_postport_whole_pipeline_with_fake_providers_and_independent_pg" time="5.281"><failure message="ModuleNotFoundError: No module named 'reportlab'">src\web\backend\tests\test_pipeline_postport_w15.py:134: in test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+    content = source_pdf()
+              ^^^^^^^^^^^^
+src\web\backend\tests\test_pipeline_postport_w15.py:20: in source_pdf
+    from reportlab.pdfgen.canvas import Canvas
+E   ModuleNotFoundError: No module named 'reportlab'</failure></testcase></testsuite></testsuites>

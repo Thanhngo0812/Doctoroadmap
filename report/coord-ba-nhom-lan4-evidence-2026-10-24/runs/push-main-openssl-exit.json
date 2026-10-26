@@ -1,0 +1,22 @@
+{
+  "command": [
+    "git",
+    "-c",
+    "http.sslBackend=openssl",
+    "-c",
+    "http.version=HTTP/1.1",
+    "-c",
+    "http.postBuffer=524288000",
+    "-c",
+    "http.lowSpeedLimit=1000",
+    "-c",
+    "http.lowSpeedTime=30",
+    "push",
+    "origin",
+    "main"
+  ],
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap",
+  "commit": "bad8e45f392ee8a463efbb944669b27d6c20f390",
+  "native_exit_code": 1,
+  "elapsed_seconds": 66.23
+}

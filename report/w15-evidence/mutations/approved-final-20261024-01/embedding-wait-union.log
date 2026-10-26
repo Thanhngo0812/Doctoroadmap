@@ -1,0 +1,12 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_________ test_overlapping_embedding_intervals_are_not_counted_twice __________
+src\web\backend\tests\test_build_spend_w15.py:163: in test_overlapping_embedding_intervals_are_not_counted_twice
+    assert guard.embedding_wait('concepts') == 4 and guard.embedding_wait('graph') == 7
+E   AssertionError: assert (5.0 == 4)
+E    +  where 5.0 = embedding_wait('concepts')
+E    +    where embedding_wait = <wayfinder.infrastructure.build_spend.BuildSpendGuard object at 0x0000012F14538560>.embedding_wait
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\mutations\approved-final-20261024-01\embedding-wait-union.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_overlapping_embedding_intervals_are_not_counted_twice
+1 failed, 17 deselected in 0.46s

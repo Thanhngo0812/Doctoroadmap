@@ -1,6 +1,8 @@
 from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Literal
+from threading import RLock, Thread
+import logging
 
 from doc2roadmap.config import Settings
 from doc2roadmap.application.ports.phase_b import PhaseBStore
@@ -59,6 +61,15 @@ def compose_services(
         raise ValueError("missing DOC2ROADMAP_VERTEX_LOCATION")
 
     auth_validator(core.vertex_project, core.vertex_location)
+    from doc2roadmap.infrastructure.google_auth import VertexCredentials
+    credentials = VertexCredentials(core.vertex_project, core.vertex_location)
+    if auth_validator is validate_vertex_auth:
+        def warm_credentials():
+            try:
+                credentials.headers()
+            except Exception as error:
+                logging.getLogger(__name__).warning('Vertex warm-up failed: %s', type(error).__name__)
+        Thread(target=warm_credentials, name='web-vertex-warmup', daemon=True).start()
     database_engine = None
     if health_check is None:
         if settings.database_url is None:
@@ -69,14 +80,28 @@ def compose_services(
         health_check = database_health
         close = database_health.close
     api_key = core.gemini_api_key.get_secret_value() if core.gemini_api_key else None
-    model = model_factory(api_key, core.roadmap_model_id, transport="vertex",
+    limits = BSettings()
+    model = model_factory(api_key, limits.model_id, transport="vertex",
                           vertex_project=core.vertex_project, vertex_location=core.vertex_location,
-                          timeout_seconds=core.gemini_timeout_seconds)
+                          timeout_seconds=core.gemini_timeout_seconds, vertex_credentials=credentials,
+                          temperature=limits.lecture_temperature, max_output_tokens=limits.lecture_max_output_tokens)
     embedding = embedding_factory(api_key, model=core.embedding_model_id,
                                   output_dimensionality=core.embedding_dimensions,
                                   timeout=core.gemini_timeout_seconds, max_retries=core.gemini_max_retries,
                                   transport="vertex", vertex_project=core.vertex_project,
-                                  vertex_location=core.vertex_location)
+                                  vertex_location=core.vertex_location, vertex_credentials=credentials)
+    models, model_lock = {'lecture': model}, RLock()
+    def model_for(purpose):
+        with model_lock:
+            if purpose not in models:
+                outputs = {'assistant': limits.assistant_max_output_tokens, 'document': limits.document_max_output_tokens,
+                    'quiz_gen': limits.quiz_generation_max_output_tokens, 'quiz_verify': limits.quiz_verifier_max_output_tokens}
+                temperatures = {'assistant': limits.assistant_temperature, 'document': limits.document_temperature}
+                models[purpose] = model_factory(api_key, limits.model_id, transport='vertex',
+                    vertex_project=core.vertex_project, vertex_location=core.vertex_location,
+                    vertex_credentials=credentials, timeout_seconds=core.gemini_timeout_seconds,
+                    temperature=temperatures.get(purpose, 0.0), max_output_tokens=outputs[purpose])
+            return models[purpose]
     created_engine = None
     database_engine = database_engine or getattr(health_check, "engine", None)
     if database_engine is None and settings.database_url is not None:
@@ -94,7 +119,7 @@ def compose_services(
     courses = learning = sharing = None
     if database_engine is not None:
         courses, learning = compose_course_services(settings, database_engine, phase_b_store,
-            model=model, embedding=embedding, graph_loader=graph_loader, clock=clock)
+            model=model, embedding=embedding, graph_loader=graph_loader, clock=clock, media=build_media, model_for=model_for)
         sharing = compose_sharing_service(settings, database_engine, graph_loader=courses.gateway.graph_loader, clock=clock)
 
     def close_services():
@@ -133,20 +158,26 @@ def compose_build_service(settings, engine, *, media=None, clock=None, core_sett
 
 
 def compose_course_services(settings, engine, phase_b_store, *, model=None, embedding=None,
-                            clock=None, graph_loader=None):
+                            clock=None, graph_loader=None, media=None, model_for=None):
     from doc2roadmap.application.phase_b.retrieval import load_learning_graph
     from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+    from doc2roadmap.infrastructure.artifacts.page_images import ArtifactPageImages
     from wayfinder.application.courses import CourseService
     from wayfinder.application.learning_gateway import LearningGateway
     from wayfinder.infrastructure.course_store import PostgresCourseStore
     from wayfinder.infrastructure.learning_runtime import WebLearningRuntime
+    from wayfinder.infrastructure.learning_media import LearningMedia
 
     if graph_loader is None:
         def graph_loader(doc_id, version):
             return load_learning_graph(JsonArtifactStore(settings.artifact_root), doc_id, version)
-    runtime = WebLearningRuntime(phase_b_store, model=model, embedding=embedding, clock=clock)
+    runtime = WebLearningRuntime(phase_b_store, model=model, embedding=embedding, clock=clock,
+                                page_images=ArtifactPageImages(settings.artifact_root),
+                                artifacts=JsonArtifactStore(settings.artifact_root) if embedding is not None else None,
+                                model_for=model_for)
     courses = CourseService(PostgresCourseStore(engine), settings=settings, clock=clock)
-    gateway = LearningGateway(courses, runtime, graph_loader)
+    gateway = LearningGateway(courses, runtime, graph_loader,
+                              media=LearningMedia(engine, settings, store=media, clock=clock))
     courses.gateway = gateway
     return courses, gateway
 

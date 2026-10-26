@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="6" skipped="0" tests="6" time="7.566" timestamp="2026-10-24T14:52:56.515108+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-True]" time="1.956"><failure message="AssertionError: assert 'failed' == 'succeeded'&#10;  &#10;  - succeeded&#10;  + failed">src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'succeeded'
+E
+E     - succeeded
+E     + failed</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[success-False]" time="0.565"><failure message="AssertionError: assert 'failed' == 'succeeded'&#10;  &#10;  - succeeded&#10;  + failed">src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'succeeded'
+E
+E     - succeeded
+E     + failed</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-True]" time="0.553"><failure message="AssertionError: assert Decimal('0.000000') == Decimal('0.002')">src\web\backend\tests\test_real_build_w15.py:218: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['spent_usd'] == amount
+E   AssertionError: assert Decimal('0.000000') == Decimal('0.002')</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[failure-False]" time="0.517"><failure message="AssertionError: assert Decimal('0.000000') == Decimal('0.002')">src\web\backend\tests\test_real_build_w15.py:218: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['spent_usd'] == amount
+E   AssertionError: assert Decimal('0.000000') == Decimal('0.002')</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-True]" time="0.729"><failure message="AssertionError: assert 'failed' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + failed">src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'cancelled'
+E
+E     - cancelled
+E     + failed</failure></testcase><testcase classname="src.web.backend.tests.test_real_build_w15" name="test_real_adapter_cumulative_usage_and_pg_recorder[cancel-False]" time="0.548"><failure message="AssertionError: assert 'failed' == 'cancelled'&#10;  &#10;  - cancelled&#10;  + failed">src\web\backend\tests\test_real_build_w15.py:216: in test_real_adapter_cumulative_usage_and_pg_recorder
+    assert result['status'] == expected
+E   AssertionError: assert 'failed' == 'cancelled'
+E
+E     - cancelled
+E     + failed</failure></testcase></testsuite></testsuites>

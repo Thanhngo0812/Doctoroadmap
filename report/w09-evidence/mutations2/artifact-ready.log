@@ -1,0 +1,37 @@
+..F                                                                      [100%]
+================================== FAILURES ===================================
+_ test_w09_artifact_card_and_content_recheck_owner_book_and_ready_state[status] _
+
+chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_c925675cae7d4e15bedd2b3763ad5...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/e7e65141-bf31-47f8-a6ff-3104615d62a6/sessions')
+foreign = 'status'
+
+    @pytest.mark.parametrize('foreign', ['owner', 'doc_id', 'status'])
+    def test_w09_artifact_card_and_content_recheck_owner_book_and_ready_state(chat, foreign):
+        w = chat; sid = create(w)['session_id']; aid = uuid4().hex
+        row = {'contract_version': 'document-3', 'document_id': aid, 'owner': w.a.actor.user_id,
+            'doc_id': 'doc-1', 'status': 'ready', 'title': 'Private document', 'markdown': 'SECRET_OTHER_ARTIFACT', 'sources': []}
+        row[foreign] = {'owner': w.b.actor.user_id, 'doc_id': 'other-book', 'status': 'failed'}[foreign]
+        w.phase_b.put_record('documents', aid, row)
+        session = w.phase_b.get_record('session', sid)
+        session['artifact_refs'] = [{'kind': 'document', 'artifact_id': aid}]
+        w.phase_b.put_record('session', sid, session)
+        course, graph = w.gateway._context(w.a.actor, w.course.id)
+>       assert w.gateway._artifact(w.a.actor, course, graph, {'kind': 'document', 'id': aid}) is None
+E       AssertionError: assert {'id': '07be3a205cdc411d8f2f1b8aeaa329aa', 'kind': 'document', 'title': 'Private document'} is None
+E        +  where {'id': '07be3a205cdc411d8f2f1b8aeaa329aa', 'kind': 'document', 'title': 'Private document'} = _artifact(Actor(user_id='39b0f9d7-9662-40d2-8f07-6839c19dc7f5', role='user', email_verified=False, status='active'), Course(id='e7e65141-bf31-47f8-a6ff-3104615d62a6', owner_id='39b0f9d7-9662-40d2-8f07-6839c19dc7f5', doc_id='doc-1', tit...ey='Etc/UTC')), updated_at=datetime.datetime(2026, 1, 1, 0, 0, tzinfo=zoneinfo.ZoneInfo(key='Etc/UTC')), build_id=None), <doc2roadmap.domain.learning_graph.LearningGraph object at 0x000001515C8CF9E0>, {'id': '07be3a205cdc411d8f2f1b8aeaa329aa', 'kind': 'document'})
+E        +    where _artifact = <wayfinder.application.learning_gateway.LearningGateway object at 0x000001515C8CF1A0>._artifact
+E        +      where <wayfinder.application.learning_gateway.LearningGateway object at 0x000001515C8CF1A0> = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_c925675cae7d4e15bedd2b3763ad5...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/e7e65141-bf31-47f8-a6ff-3104615d62a6/sessions').gateway
+E        +    and   Actor(user_id='39b0f9d7-9662-40d2-8f07-6839c19dc7f5', role='user', email_verified=False, status='active') = namespace(client=<starlette.testclient.TestClient object at 0x000001515C8CFBC0>, actor=Actor(user_id='39b0f9d7-9662-40...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'R5rUUUlozrMfx6sFGYSW7u5QeEdc8jG3NLzeqyACsqg'}).actor
+E        +      where namespace(client=<starlette.testclient.TestClient object at 0x000001515C8CFBC0>, actor=Actor(user_id='39b0f9d7-9662-40...atus='active'), headers={'Origin': 'http://testserver', 'X-CSRF-Token': 'R5rUUUlozrMfx6sFGYSW7u5QeEdc8jG3NLzeqyACsqg'}) = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_c925675cae7d4e15bedd2b3763ad5...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/e7e65141-bf31-47f8-a6ff-3104615d62a6/sessions').a
+
+src\web\backend\tests\test_assistant_w09.py:345: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-evidence\mutations2\artifact-ready.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_w09.py::test_w09_artifact_card_and_content_recheck_owner_book_and_ready_state[status]
+1 failed, 2 passed, 1 warning in 8.12s

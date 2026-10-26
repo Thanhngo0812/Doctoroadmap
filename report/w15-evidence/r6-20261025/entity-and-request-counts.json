@@ -1,0 +1,22 @@
+{
+  "raw_candidate_entities": 229,
+  "canonical_nodes": 158,
+  "learnable": 104,
+  "mentioned": 41,
+  "non_learnable": 13,
+  "modules": 16,
+  "calls_by_operation": {
+    "generateContent": 715,
+    "predict": 922
+  },
+  "calls_by_stage_operation": {
+    "concepts/generateContent": 604,
+    "concepts/predict": 515,
+    "graph/predict": 303,
+    "graph/generateContent": 111,
+    "learning_prep/predict": 104
+  },
+  "errors": {
+    "generateContent/429/HTTPError": 2
+  }
+}

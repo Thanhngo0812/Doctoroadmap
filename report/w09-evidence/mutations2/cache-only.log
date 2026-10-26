@@ -1,0 +1,68 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_____ test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures ______
+
+chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_e1dc6d1868c94fbda51616e40ac42...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/68cfba2e-4b56-475a-aaa5-8f83593e35c4/sessions')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x000001A3F5909F10>
+
+    def test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures(chat, monkeypatch):
+        w = chat; sid = create(w)['session_id']; reads = []
+        def cached_lecture(graph):
+            class Reader:
+                def make(self, *args, **kwargs):
+                    reads.append(kwargs)
+                    assert kwargs['cache_only'] is True
+                    return {'status': 'not_cached'}
+            return Reader()
+        monkeypatch.setattr(w.gateway.runtime, 'lecture', cached_lecture)
+        events(ask(w, sid, focus_node_id='a'))
+>       assert reads and all(row['cache_only'] for row in reads)
+E       AssertionError: assert ([{'cache_only': False, 'owner': 'd52d4638-1511-413b-8455-4c4d6028ebd2'}] and False)
+E        +  where False = all(<generator object test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures.<locals>.<genexpr> at 0x000001A3FF5469B0>)
+
+src\web\backend\tests\test_assistant_w09.py:101: AssertionError
+------------------------------ Captured log call ------------------------------
+ERROR    wayfinder.api.assistant:assistant.py:219 Assistant turn failed course=68cfba2e-4b56-475a-aaa5-8f83593e35c4 session=8bcd46dd2a00498d94476c456c83b161
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\web\backend\wayfinder\api\assistant.py", line 217, in produce
+    gateway.ask_stream(actor, cid, sid, data.client_turn_id, data.question, emit, data.focus_node_id)
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\web\backend\wayfinder\application\learning_gateway.py", line 293, in ask_stream
+    return generate()
+           ^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\web\backend\wayfinder\application\learning_gateway.py", line 289, in generate
+    return self.runtime.assistant(graph, on_tool_start=tool_started).ask(course.doc_id, course.published_graph_version, sid, question,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\doc2roadmap\application\phase_b\assistant.py", line 378, in ask
+    result = self.store.single_flight('assistant-turn:' + key, generate,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\web\backend\wayfinder\infrastructure\phase_b_store.py", line 227, in single_flight
+    flight.value = self._shared_flight(key, generate, cache_if, ttl)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\web\backend\wayfinder\infrastructure\phase_b_store.py", line 193, in _shared_flight
+    value = generate()
+            ^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\doc2roadmap\application\phase_b\assistant.py", line 375, in generate
+    return self._ask(doc_id, graph_version, session_id, question, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\doc2roadmap\application\phase_b\assistant.py", line 456, in _ask
+    focus = self._focus(graph, focus_id, sources, owner=owner, doc_id=doc_id,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\doc2roadmap\application\phase_b\assistant.py", line 212, in _focus
+    lecture = reader(concept=node_id, owner=owner, doc_id=doc_id, graph_version=graph_version,
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\web\backend\wayfinder\infrastructure\learning_runtime.py", line 103, in get_lecture
+    return self.lecture(graph).make(graph.doc_id, graph.graph_version, graph, concept,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\src\web\backend\tests\test_assistant_w09.py", line 96, in make
+    assert kwargs['cache_only'] is True
+AssertionError: assert False is True
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-evidence\mutations2\cache-only.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_w09.py::test_w09_focus_is_per_turn_and_cache_only_never_generates_lectures
+1 failed, 1 warning in 7.50s

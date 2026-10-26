@@ -1,0 +1,262 @@
+{
+  "build": {
+    "id": "019b49be-d2b2-40de-aad7-4b3822809242",
+    "doc_id": "u-fcc1bbf84d416f8ef176",
+    "upload_id": "093a34e8-6bb2-4884-9e6a-29ce27f03d83",
+    "requested_by": "841b706f-ba05-4fec-ab99-16411f97e495",
+    "status": "failed",
+    "step": "learning_prep",
+    "pipeline_version": "web-real:cfabaeb51a7212b9684eaef711fb568ac81673bc:d3d267174fa7bfba80fe721ef38908256e5dc6af9fcb6a4d6c2b5bdb89e4b98e",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "postport-real-pipeline",
+    "lease_id": "20cf30d7-0eb1-4a1d-98c6-4ffd82a35d94",
+    "heartbeat_at": "2026-01-01 00:00:00+00:00",
+    "confirmation_expires_at": "2026-01-04 00:00:00+00:00",
+    "queued_at": "2026-01-01 00:00:00+00:00",
+    "started_at": "2026-01-01 00:00:00+00:00",
+    "finished_at": "2026-01-01 00:00:00+00:00",
+    "created_at": "2026-01-01 00:00:00+00:00",
+    "error_code": "loi_mang",
+    "error_message": "Kết nối bị gián đoạn; bạn có thể thử lại",
+    "retryable": true,
+    "spent_usd": "0.000585",
+    "model_calls": 15,
+    "input_tokens": 1500,
+    "output_tokens": 180,
+    "usage_complete": true,
+    "elapsed_seconds": 1.5061194000008982,
+    "graph_version": 8,
+    "module_count": 0
+  },
+  "receipt": {
+    "error": {
+      "code": "loi_mang",
+      "message": "Kết nối bị gián đoạn; bạn có thể thử lại",
+      "retryable": true
+    },
+    "doc_id": "u-fcc1bbf84d416f8ef176",
+    "status": "failed",
+    "spent_usd": 0.000585,
+    "model_calls": 15,
+    "input_tokens": 1500,
+    "step_details": {
+      "graph": {
+        "reused": false,
+        "web_timing": {
+          "wall_seconds": 0.48317169999791076,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "graph_version": 8
+      },
+      "concepts": {
+        "a3": {
+          "a3_reused": false,
+          "a3_prime_reused": false,
+          "candidate_version": 1,
+          "retrieval_version": 1
+        },
+        "canonical": {
+          "reused": false,
+          "a4_gold_coverage": "none",
+          "canonical_version": 1
+        },
+        "web_timing": {
+          "wall_seconds": 0.709178700002667,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "label_roles": {
+          "reused": false,
+          "chunks_version": 2
+        }
+      },
+      "doc_reading": {
+        "page_count": 1,
+        "web_timing": {
+          "wall_seconds": 0.15129289999458706,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        },
+        "chunk_count": 1,
+        "parse_version": 1,
+        "chunks_version": 1,
+        "a4_gold_coverage": "none",
+        "alphabetic_chars": 412,
+        "empty_page_ratio": 0.0,
+        "vi_diacritic_ratio": 0.32281553398058255,
+        "average_alphabetic_chars_per_page": 412.0
+      },
+      "learning_prep": {
+        "web_timing": {
+          "wall_seconds": 0.06083249999937834,
+          "embedding_wait_seconds": null,
+          "embedding_wait_measured": false
+        }
+      }
+    },
+    "graph_version": 8,
+    "output_tokens": 180,
+    "usage_complete": true,
+    "completed_steps": [
+      "doc_reading",
+      "concepts",
+      "graph"
+    ],
+    "elapsed_seconds": 1.5061194000008982,
+    "pipeline_version": "web-real:cfabaeb51a7212b9684eaef711fb568ac81673bc:d3d267174fa7bfba80fe721ef38908256e5dc6af9fcb6a4d6c2b5bdb89e4b98e"
+  },
+  "traces": [
+    {
+      "id": 134,
+      "created_at": "2026-10-25 03:47:34.935789+00:00",
+      "purpose": "module_title",
+      "model_id": "gemini-3.1-flash-lite",
+      "doc_id": "u-fcc1bbf84d416f8ef176",
+      "context_hash": "sha256:54c151ee7ad17177a3fb3a91e66ae5f7042c707c63c99abfb4a47ad10edd2ece",
+      "learner_id": null,
+      "cost_usd": "0.000000",
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "elapsed_ms": 0,
+      "ttft_ms": null,
+      "failed": null,
+      "replayed": false,
+      "extra": {
+        "doc_id": "u-fcc1bbf84d416f8ef176",
+        "purpose": "module_title",
+        "ttft_ms": null,
+        "cost_usd": 5.5e-05,
+        "model_id": "gemini-3.1-flash-lite",
+        "replayed": false,
+        "counted_in": "build",
+        "created_at": "2026-10-25T03:47:34.935789+00:00",
+        "elapsed_ms": 0,
+        "learner_id": null,
+        "context_hash": "sha256:54c151ee7ad17177a3fb3a91e66ae5f7042c707c63c99abfb4a47ad10edd2ece",
+        "input_tokens": 100,
+        "output_tokens": 20,
+        "thought_tokens": 0
+      }
+    }
+  ],
+  "ledger": [
+    {
+      "id": 133,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-fcc1bbf84d416f8ef176",
+      "context_hash": null,
+      "learner_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+      "cost_usd": "0.000375",
+      "input_tokens": 900,
+      "output_tokens": 120,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "concepts",
+        "doc_id": "u-fcc1bbf84d416f8ef176",
+        "purpose": "build",
+        "user_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+        "build_id": "019b49be-d2b2-40de-aad7-4b3822809242",
+        "cost_usd": 0.000375,
+        "lease_id": "20cf30d7-0eb1-4a1d-98c6-4ffd82a35d94",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+        "claim_count": 1,
+        "model_calls": 9,
+        "input_tokens": 900,
+        "output_tokens": 120,
+        "usage_complete": true,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 135,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-fcc1bbf84d416f8ef176",
+      "context_hash": null,
+      "learner_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+      "cost_usd": "0.000195",
+      "input_tokens": 500,
+      "output_tokens": 60,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": false,
+      "replayed": false,
+      "extra": {
+        "step": "graph",
+        "doc_id": "u-fcc1bbf84d416f8ef176",
+        "purpose": "build",
+        "user_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+        "build_id": "019b49be-d2b2-40de-aad7-4b3822809242",
+        "cost_usd": 0.000195,
+        "lease_id": "20cf30d7-0eb1-4a1d-98c6-4ffd82a35d94",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+        "claim_count": 1,
+        "model_calls": 5,
+        "input_tokens": 500,
+        "output_tokens": 60,
+        "usage_complete": true,
+        "attribution_complete": true
+      }
+    },
+    {
+      "id": 136,
+      "created_at": "2026-01-01 00:00:00+00:00",
+      "purpose": "build",
+      "model_id": null,
+      "doc_id": "u-fcc1bbf84d416f8ef176",
+      "context_hash": null,
+      "learner_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+      "cost_usd": "0.000015",
+      "input_tokens": 100,
+      "output_tokens": 0,
+      "elapsed_ms": null,
+      "ttft_ms": null,
+      "failed": true,
+      "replayed": false,
+      "extra": {
+        "step": null,
+        "doc_id": "u-fcc1bbf84d416f8ef176",
+        "purpose": "build",
+        "user_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+        "build_id": "019b49be-d2b2-40de-aad7-4b3822809242",
+        "cost_usd": 1.5e-05,
+        "lease_id": "20cf30d7-0eb1-4a1d-98c6-4ffd82a35d94",
+        "created_at": "2026-01-01T00:00:00+00:00",
+        "learner_id": "841b706f-ba05-4fec-ab99-16411f97e495",
+        "claim_count": 1,
+        "model_calls": 1,
+        "input_tokens": 100,
+        "output_tokens": 0,
+        "usage_complete": true,
+        "attribution_complete": false
+      }
+    }
+  ],
+  "phase_b_records": [
+    {
+      "kind": "module_assignment",
+      "owner": null,
+      "doc_id": "u-fcc1bbf84d416f8ef176"
+    }
+  ],
+  "phase_b_cache_keys": [
+    {
+      "key": "sha256:e410b9d893f1c0522bc620bab19d0abbd91546e81130a1ce6eaa5af4e2637953"
+    }
+  ],
+  "generation_fake_calls": 9,
+  "embedding_fake_calls": 6,
+  "provider_calls": 0,
+  "synthetic_usage": true
+}

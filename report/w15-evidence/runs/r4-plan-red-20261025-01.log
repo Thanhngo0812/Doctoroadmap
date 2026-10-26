@@ -1,0 +1,41 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape _
+src\web\backend\tests\test_operator_w15.py:59: in test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
+    operator.execute(plan_path, permission)
+src\web\backend\tests\w15_operator_run.py:122: in execute
+    run_dir = safe_path(ROOT, plan['run_dir'])
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\web\backend\wayfinder\domain\file_paths.py:9: in safe_path
+    raise ValueError('Path escapes its root')
+E   ValueError: Path escapes its root
+
+During handling of the above exception, another exception occurred:
+src\web\backend\tests\test_operator_w15.py:63: in test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
+    pytest.fail('prepare output was rejected before composition: ' + str(error))
+E   Failed: prepare output was rejected before composition: Path escapes its root
+---------------------------- Captured stdout call -----------------------------
+{
+  "plan": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-r4-plan-red-20261025-01\\test_prepare_saved_plan_roundt0\\operator-root\\tmp\\w15-operator-candidate-bb9baa7e4779\\plan.json",
+  "book": "candidate",
+  "pipeline_version": "web-real:a4f2d08a4e9ed848d536078ac106de5a1d5ec539:ea7e4866ac961d15b8eb0c3ce9ef177be4f3e4bfbfded13048a3b4d48d31c51e",
+  "provider_calls": 0,
+  "approved": false
+}
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+src/web/backend/tests/test_operator_w15.py::test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+src/web/backend/tests/test_operator_w15.py::test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\r4-plan-red-20261025-01.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_operator_w15.py::test_prepare_saved_plan_roundtrips_to_execute_composition_and_rejects_escape
+1 failed, 8 deselected, 3 warnings in 17.15s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

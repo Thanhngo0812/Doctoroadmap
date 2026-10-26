@@ -1,5 +1,11 @@
 # W-23 — Đối chiếu giao diện React với spec/token và mẫu HTML
 
+**Điều phối lần 7, 2026-10-26: W-23 vẫn chưa đạt.** Báo cáo thiết kế 26e4a9a gọi nhầm ảnh HTML là React và ghép cặp khác trạng thái; đã ghi đính chính ở đầu báo cáo, rút tuyên bố “khớp hoàn hảo”/nghiệm thu từng phần. Mẫu W-10/source D-R6-01 được nhận bằng browser độc lập 12 cấu hình, không thay điều kiện W-23. Tiếp bảng cặp ảnh React/HTML đúng nguồn/SHA/viewport/theme/state, video thao tác/bàn phím/reduced-motion; W-10 còn hai Required chức năng nên toàn W-23 tiếp tục mở. Không Cloud; [biên bản lần 7](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan7-2026-10-26.md).
+
+**Điều phối lần 6, 2026-10-25:** W-08/W-09 đã đạt, thiết kế có thể soát cả hai ngay. Báo cáo 0b5993e hiện soát source React và chụp preview HTML, chưa đủ bảng ảnh React/HTML cùng viewport/video thao tác thật để nhận W-23. Đính chính phạm vi, bổ sung đối chiếu thực bằng fake/PG 0 USD, được tái dùng bằng chứng điều phối khi SHA nguồn khớp. Toàn vé vẫn chờ W-10; không yêu cầu Cloud, không tự sửa chéo React. [biên bản lần 6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md).
+
+**Điều phối lần 5, 2026-10-25:** thiết kế web và ba sửa công thức đã được nhận/ghép local, không cần Cloud Figma. Có thể soát React W-08 ngay theo spec/token/mẫu HTML đã ghép; W-09 còn hai lỗi chức năng do web sửa, toàn W-23 chờ đủ W-09/W-10. Chỉ ghi lỗi thị giác/tương tác mới, không tự sửa tệp React web đang làm. [biên bản lần 5](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan5-2026-10-25.md).
+
 **Nguồn chân lý:** [spec thiết kế giao diện](../../doc/web-thiet-ke-giao-dien-spec.md), token và mẫu HTML/CSS được nhận từ [W-22](W-22-ban-figma.md).
 **Ai:** nhóm web · người thiết kế duyệt · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-22, W-08, W-09, W-10 · **Trạng thái:** ready-for-agent
 

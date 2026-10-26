@@ -1,0 +1,127 @@
+{
+  "book": "candidate",
+  "file_sha256": "1f019766e74a747d293c15ad5bc86b2ea90420b49a8437cf27c1f6805656a627",
+  "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+  "build": {
+    "id": "9c0ce935-7d13-4f53-8e4c-20c6c50f1825",
+    "doc_id": "u-1f019766e74a747d293c",
+    "upload_id": "3352b454-b9e0-4eef-84df-a487bbae76f1",
+    "requested_by": "e090908e-68b2-47bb-92c1-cb40a4246b11",
+    "status": "failed",
+    "step": "concepts",
+    "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268",
+    "counts_quota": true,
+    "cancel_requested": false,
+    "claim_count": 1,
+    "claimed_by": "27416-f768ab961a6c4080b3bf9373b938cb5e",
+    "lease_id": "060dfacf-c8c7-447e-b58c-dbe86b7767c7",
+    "heartbeat_at": "2026-10-25 06:21:10.962773+00:00",
+    "confirmation_expires_at": "2026-10-28 06:16:05.727114+00:00",
+    "queued_at": "2026-10-25 06:16:05.833348+00:00",
+    "started_at": "2026-10-25 06:16:05.903095+00:00",
+    "finished_at": "2026-10-25 06:21:10.962773+00:00",
+    "created_at": "2026-10-25 06:16:05.727114+00:00",
+    "error_code": "loi_noi_bo",
+    "error_message": "Không thể hoàn tất bản dựng",
+    "retryable": false,
+    "spent_usd": "0.012417",
+    "model_calls": 400,
+    "input_tokens": 26962,
+    "output_tokens": 3833,
+    "usage_complete": false,
+    "elapsed_seconds": 304.7604239000066,
+    "graph_version": null,
+    "module_count": 0
+  },
+  "http_build": {
+    "contract_version": "build-1",
+    "build_id": "9c0ce935-7d13-4f53-8e4c-20c6c50f1825",
+    "course_id": "d9731d6a-646b-4512-a17c-c6530c2ae5a5",
+    "upload_id": "3352b454-b9e0-4eef-84df-a487bbae76f1",
+    "status": "failed",
+    "step": "concepts",
+    "step_index": 2,
+    "step_count": 4,
+    "started_at": "2026-10-25T06:16:05.903095Z",
+    "finished_at": "2026-10-25T06:21:10.962773Z",
+    "confirmation_expires_at": "2026-10-28T06:16:05.727114Z",
+    "cancel_requested": false,
+    "can_cancel": false,
+    "can_retry": false,
+    "error": {
+      "code": "loi_noi_bo",
+      "message": "Không thể hoàn tất bản dựng",
+      "retryable": false
+    }
+  },
+  "mail_subjects": [
+    "Bản dựng lỗi"
+  ],
+  "attempts": [
+    {
+      "result": {
+        "error": {
+          "code": "loi_noi_bo",
+          "message": "Không thể hoàn tất bản dựng",
+          "retryable": false
+        },
+        "doc_id": "u-1f019766e74a747d293c",
+        "status": "failed",
+        "spent_usd": 0.012417,
+        "model_calls": 400,
+        "input_tokens": 26962,
+        "step_details": {
+          "concepts": {
+            "web_timing": {
+              "wall_seconds": 302.65815949998796,
+              "embedding_wait_seconds": 135.24040669998794,
+              "embedding_wait_measured": true
+            }
+          },
+          "doc_reading": {
+            "page_count": 52,
+            "web_timing": {
+              "wall_seconds": 2.075442400004249,
+              "embedding_wait_seconds": 0.0,
+              "embedding_wait_measured": true
+            },
+            "chunk_count": 125,
+            "parse_version": 1,
+            "chunks_version": 1,
+            "a4_gold_coverage": "none",
+            "alphabetic_chars": 52325,
+            "empty_page_ratio": 0.019230769230769232,
+            "vi_diacritic_ratio": 0.270157668418538,
+            "average_alphabetic_chars_per_page": 1006.25
+          },
+          "operator_budget": {
+            "stopped": false,
+            "held_usd": "0",
+            "known_usd": "0.0124168",
+            "limit_usd": "3",
+            "http_calls": 111,
+            "audit_failed": false,
+            "unknown_upper_usd": "0.3890176",
+            "embedding_price_profile": "owner-demo-embedding-token-20261025",
+            "embedding_billing_verified": false
+          }
+        },
+        "graph_version": null,
+        "output_tokens": 3833,
+        "usage_complete": false,
+        "completed_steps": [
+          "doc_reading"
+        ],
+        "elapsed_seconds": 304.7604239000066,
+        "pipeline_version": "web-real:6249dab5c8cd89b36edeb5add45ab88d5d7d7bce:f0094970d6aedfb24a6c13d19853f72386b5ce4ba5a9dc3c57bb57ce31c7c268"
+      }
+    }
+  ],
+  "courses": [
+    {
+      "status": "failed",
+      "doc_id": "u-1f019766e74a747d293c",
+      "published_graph_version": null
+    }
+  ]
+}

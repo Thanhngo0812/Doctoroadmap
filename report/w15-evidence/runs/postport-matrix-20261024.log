@@ -1,0 +1,33 @@
+...FF                                                                    [100%]
+================================== FAILURES ===================================
+_ test_postport_whole_pipeline_with_fake_providers_and_independent_pg[error-False] _
+src\web\backend\tests\test_pipeline_postport_w15.py:189: in test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+    assert job['status'] == expected, json.dumps(raw_receipts, ensure_ascii=False)
+E   AssertionError: [{"doc_id": "u-b386de9e32f8ba3d18a0", "status": "succeeded", "pipeline_version": "web-real:338dcd27457dec1a63042afeaef181c73d8ebc21:d3d267174fa7bfba80fe721ef38908256e5dc6af9fcb6a4d6c2b5bdb89e4b98e", "graph_version": 8, "completed_steps": ["doc_reading", "concepts", "graph", "learning_prep"], "step_details": {"doc_reading": {"chunks_version": 1, "parse_version": 1, "chunk_count": 1, "a4_gold_coverage": "none", "page_count": 1, "alphabetic_chars": 412, "average_alphabetic_chars_per_page": 412.0, "empty_page_ratio": 0.0, "vi_diacritic_ratio": 0.32281553398058255, "web_timing": {"wall_seconds": 0.4535063999999238, "embedding_wait_seconds": null, "embedding_wait_measured": false}}, "concepts": {"label_roles": {"chunks_version": 2, "reused": false}, "a3": {"candidate_version": 1, "retrieval_version": 1, "a3_reused": false, "a3_prime_reused": false}, "canonical": {"canonical_version": 1, "reused": false, "a4_gold_coverage": "none"}, "web_timing": {"wall_seconds": 1.764595800000052, "embedding_wait_seconds": null, "embedding_wait_measured": false}}, "graph": {"graph_version": 8, "reused": false, "web_timing": {"wall_seconds": 1.140301900000054, "embedding_wait_seconds": null, "embedding_wait_measured": false}}, "learning_prep": {"a12": {"graph_version": 8, "retrieval_version": 1, "assignment_count": 1}, "concept_index": {"graph_version": 8, "model_id": "gemini-embedding-001:768", "reused": false, "concept_count": 1}, "formulas": {"index_path": "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w15-real-build\\tmp\\w15-postport-matrix\\test_postport_whole_pipeline_w3\\artifacts\\phase_b\\formula_images\\u-b386de9e32f8ba3d18a0\\parse-v1\\index.json", "parse_version": 1, "cut_count": 0, "skipped_count": 0}, "page_images": {"parse_version": 1, "page_count": 0}, "web_timing": {"wall_seconds": 0.1610556999999062, "embedding_wait_seconds": null, "embedding_wait_measured": false}}}, "spent_usd": 0.000585, "model_calls": 15, "input_tokens": 1500, "output_tokens": 180, "usage_complete": true, "elapsed_seconds": 3.834836999999993, "error": null}]
+E   assert 'succeeded' == 'failed'
+E
+E     - failed
+E     + succeeded
+_ test_postport_whole_pipeline_with_fake_providers_and_independent_pg[lease-False] _
+src\web\backend\tests\test_pipeline_postport_w15.py:190: in test_postport_whole_pipeline_with_fake_providers_and_independent_pg
+    assert receipt['model_calls'] == len(Model.calls) + Embedding.calls > 0
+           ^^^^^^^^^^^^^^^^^^^^^^
+E   TypeError: 'NoneType' object is not subscriptable
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+src/web/backend/tests/test_pipeline_postport_w15.py::test_postport_whole_pipeline_with_fake_providers_and_independent_pg[success-False]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyPacked has no __module__ attribute
+
+src/web/backend/tests/test_pipeline_postport_w15.py::test_postport_whole_pipeline_with_fake_providers_and_independent_pg[success-False]
+  <frozen importlib._bootstrap>:488: DeprecationWarning: builtin type SwigPyObject has no __module__ attribute
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\postport-matrix-20261024.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_pipeline_postport_w15.py::test_postport_whole_pipeline_with_fake_providers_and_independent_pg[error-False]
+FAILED src/web/backend/tests/test_pipeline_postport_w15.py::test_postport_whole_pipeline_with_fake_providers_and_independent_pg[lease-False]
+2 failed, 3 passed, 3 warnings in 51.90s
+sys:1: DeprecationWarning: builtin type swigvarlink has no __module__ attribute

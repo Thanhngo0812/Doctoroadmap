@@ -1,0 +1,61 @@
+{
+  "reviewDate": "2026-10-26",
+  "reviewer": "independent R7 design reviewer",
+  "head": "26e4a9adc66410679b616b76dff9d5f1522a0d0a",
+  "base": "b3c4426",
+  "sourceVerdict": "APPROVE D-R6-01 / W10 HTML design source milestone",
+  "packetVerdict": "Accept source after coordinator corrects report; W23 remains open",
+  "w23Accepted": false,
+  "blockingProductDefects": [],
+  "required": [
+    {
+      "id": "D-R7-01",
+      "file": "report/w24-w10-w23-phoihop-2026-10-25.md",
+      "line": 40,
+      "title": "Withdraw unsupported React/HTML perfect-match and partial W23 acceptance claims",
+      "evidence": "w23-provenance.json",
+      "disposition": "Dated coordinator correction before packet acceptance; preserve original submission. True paired viewport/state review and video belong to next design job."
+    },
+    {
+      "id": "D-R7-02",
+      "file": "tests/unit/presentation/test_tokens_and_wcag.py",
+      "line": 1054,
+      "title": "Authored regression guard does not execute changed JS and survives inverted comparison",
+      "evidence": [
+        "current-tests.xml",
+        "mutant-tests.xml",
+        "browser-probe.json"
+      ],
+      "disposition": "Independent runnable browser probe compensates for current source acceptance; assign authored behavior guard upgrade to next design slice and correct report lines27-30,69."
+    }
+  ],
+  "optional": [],
+  "checks": {
+    "unitPassed": 64,
+    "unitMutantPassed": 64,
+    "unitMutantCaught": false,
+    "browserConfigurations": 12,
+    "browserCurrentPassed": true,
+    "oldOriginFilterRejected": true,
+    "invertedGroupFilterRejected": true,
+    "scope5to6to5Passed": true,
+    "mathPhysicalAndAccessiblePassed": true,
+    "horizontalOverflow": false,
+    "smallTouchTargets": false,
+    "pageErrors": 0,
+    "consoleErrorsPerConfig": 1,
+    "consoleErrorCause": "Google Fonts deliberately blocked offline",
+    "realFont": "Segoe UI fallback; Be Vietnam Pro not loaded",
+    "postgresRun": false,
+    "externalCostUsd": 0,
+    "providerCalls": 0,
+    "workerFilesEdited": false,
+    "reactFilesEdited": false,
+    "frontendSourceIdenticalToPriorReactRuntime": true
+  },
+  "constraints": {
+    "cloudFigmaWaived": true,
+    "w22w24AndMathMilestonesPreserved": true,
+    "w23FutureDependency": "W10 actual React plus correct W08/W09 paired-state evidence, keyboard/effects/reduced-motion and video"
+  }
+}

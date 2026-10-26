@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trang học & Bài giảng Y khoa (W-08 / lecture-3 ADR 0025) — WayFinder Design Preview</title>
+  <link rel="stylesheet" href="../tokens/tokens.css">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-sans);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+      padding: var(--space-6);
+      transition: background-color var(--motion-fast), color var(--motion-fast);
+    }
+    .header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: var(--space-6);
+      padding-bottom: var(--space-4);
+      border-bottom: 1px solid var(--color-border);
+    }
+    .theme-toggle-btn {
+      background: var(--color-surface);
+      color: var(--color-text);
+      border: 1px solid var(--color-border-input);
+      border-radius: var(--radius-md);
+      padding: var(--space-2) var(--space-4);
+      cursor: pointer;
+      font-size: var(--text-small);
+      font-weight: var(--font-semibold);
+      min-height: 44px;
+      min-width: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-6);
+    }
+    .card {
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-6);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: 4px var(--space-2);
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: var(--font-semibold);
+    }
+    .badge-primary { background: var(--color-brand-tint); color: var(--color-primary); }
+    .badge-success { background: var(--color-success-tint); color: var(--color-success); }
+    .badge-danger { background: var(--color-danger-tint); color: var(--color-danger); }
+    .badge-accent { background: var(--color-accent-tint); color: var(--color-accent-text); }
+    .badge-warning { background: var(--color-accent-tint); color: var(--color-accent-text); border: 1px solid var(--color-border); }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      height: 44px;
+      padding: 0 var(--space-4);
+      border-radius: var(--radius-md);
+      font-size: var(--text-body);
+      font-weight: var(--font-semibold);
+      cursor: pointer;
+      border: none;
+      text-decoration: none;
+      transition: background-color var(--motion-fast);
+    }
+    .btn-primary { background: var(--color-primary); color: var(--color-primary-text); }
+    .btn-secondary { background: var(--color-surface); color: var(--color-text); border: 1px solid var(--color-border-input); }
+    .btn-danger { background: var(--color-danger); color: var(--color-primary-text); }
+    
+    /* Skeleton loader pulse */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    /* KaTeX formula typography fallback styles */
+    .katex {
+      font-family: KaTeX_Main, "Times New Roman", serif;
+      line-height: 1.2;
+      text-indent: 0;
+      text-rendering: auto;
+      display: inline-block;
+    }
+    .katex-display {
+      display: block;
+      margin: 1em 0;
+      text-align: center;
+    }
+    .katex .mathnormal { font-style: italic; }
+    .katex .mord.text { font-style: normal; }
+    .katex .mbin, .katex .mrel { padding: 0 0.2778em; }
+    .katex-html { display: inline-block; }
+    .katex .base { position: relative; white-space: nowrap; width: min-content; display: inline-block; }
+    .katex .msupsub, .katex .msub { display: inline-block; font-size: 0.75em; vertical-align: -0.25em; line-height: 1; }
+    .katex .vlist-t { display: inline-table; table-layout: fixed; vertical-align: -0.25em; }
+    .katex .vlist-r { display: table-row; }
+    .katex .vlist { display: table-cell; vertical-align: bottom; position: relative; }
+    .katex .vlist-s { display: table-cell; vertical-align: bottom; font-size: 1px; min-width: 1px; line-height: 1px; }
+    .katex-mathml {
+      position: absolute;
+      clip: rect(1px, 1px, 1px, 1px);
+      padding: 0;
+      border: 0;
+      height: 1px;
+      width: 1px;
+      overflow: hidden;
+    }
+
+    .skeleton-line {
+      height: 16px;
+      background: var(--color-border);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--space-2);
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton-line { animation: none; opacity: 0.7; }
+      img.spinner-gif {
+        content: url('../Untitled_Artwork_static.png') !important;
+      }
+    }
+
+    /* Source link citation badge */
+    .source-tag {
+      display: inline-flex;
+      align-items: center;
+      background: var(--color-brand-tint);
+      color: var(--color-primary);
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      font-size: var(--text-caption);
+      font-weight: var(--font-bold);
+      text-decoration: none;
+      margin-left: 4px;
+      border: 1px solid var(--color-brand-tint);
+      cursor: pointer;
+    }
+    .source-tag:hover {
+      background: var(--color-primary);
+      color: var(--color-primary-text);
+    }
+
+    /* Self-check details fold */
+    details.self-check-box {
+      background: var(--color-bg-subtle);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: var(--space-4);
+      margin-top: var(--space-4);
+    }
+    details.self-check-box summary {
+      cursor: pointer;
+      font-weight: var(--font-semibold);
+      color: var(--color-primary);
+      outline: none;
+      user-select: none;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: var(--space-3); }
+      .header-bar { flex-direction: column; align-items: flex-start; gap: var(--space-3); }
+      .theme-toggle-btn { width: 100%; }
+      .card { padding: var(--space-4); }
+      .action-row-wrap { flex-direction: column !important; align-items: flex-start !important; gap: var(--space-3) !important; }
+      .action-row-wrap .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header-bar">
+    <div>
+      <h1 style="font-size: var(--text-h2); font-weight: var(--font-bold); color: var(--color-text);">
+        Trang học & Bài giảng Y khoa (W-08)
+      </h1>
+      <p style="font-size: var(--text-small); color: var(--color-text-muted);">
+        Chuẩn hoá toàn diện theo ADR 0025 / SA-64 (hợp đồng lecture-3: văn xuôi Markdown/LaTeX, khối Trong sách, tự kiểm tra gập, lỗi đuôi cắt ngắn).
+      </p>
+    </div>
+    <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" aria-label="Đổi giao diện Sáng/Tối">
+      🌓 Chế độ Sáng/Tối
+    </button>
+  </div>
+
+  <main class="container">
+    <!-- TRẠNG THÁI 1A: CHỜ CHỮ ĐẦU (WAITING FOR FIRST CHUNK) -->
+    <section class="card" id="section-lecture-waiting-first-chunk">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-accent">⚡ Chờ chữ đầu (First Chunk)</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            1a. Trạng thái: Chờ chữ đầu từ mô hình (Stream Skeleton)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Khái niệm: Động mạch vành</span>
+      </div>
+
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+        <div style="display: flex; align-items: center; gap: var(--space-4); margin-bottom: var(--space-3);">
+          <picture style="flex-shrink: 0;">
+            <source srcset="../Untitled_Artwork_static.png" media="(prefers-reduced-motion: reduce)">
+            <img src="../Untitled_Artwork.gif" class="spinner-gif" id="waiting-character-96px" width="96" height="96" alt="Nhân vật WayFinder đang chuẩn bị bài giảng" style="width: 96px; height: 96px; object-fit: contain; display: block; border-radius: var(--radius-md);">
+          </picture>
+          <div>
+            <strong style="color: var(--color-primary); font-size: var(--text-body); display: block; margin-bottom: 4px;">
+              Giảng viên WayFinder đang chuẩn bị bài giảng từ Harrison 21st...
+            </strong>
+            <span style="font-size: var(--text-small); color: var(--color-text-muted);">
+              Khối chờ bài giảng sử dụng nhân vật động 96px (hoặc ảnh tĩnh 96px khi giảm chuyển động)
+            </span>
+          </div>
+        </div>
+        <div class="skeleton-line" style="width: 80%;"></div>
+        <div class="skeleton-line" style="width: 95%;"></div>
+        <div class="skeleton-line" style="width: 65%;"></div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 1B: LỖI CHƯA CÓ CHỮ (HIỆN MESSAGE + NÚT THỬ LẠI LUÔN) -->
+    <section class="card" id="section-lecture-early-error">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-danger">Lỗi kết nối</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            1b. Trạng thái: Lỗi trước khi có chữ (Hiện thông báo + Thử lại ngay)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-danger);">Mã: upstream_unavailable</span>
+      </div>
+
+      <div style="background: var(--color-danger-tint); border: 1px solid var(--color-danger); border-radius: var(--radius-md); padding: var(--space-4);">
+        <p style="font-size: var(--text-body); color: var(--color-text); margin-bottom: var(--space-3);">
+          Không thể kết nối với dịch vụ tạo bài giảng. Đường truyền tạm thời gián đoạn.
+        </p>
+        <button class="btn btn-primary" id="btn-retry-lecture-early" style="min-height: 44px; min-width: 44px;">
+          🔄 Thử lại ngay
+        </button>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 2: BÀI GIẢNG LECTURE-3 HOÀN CHỈNH (VĂN XUÔI MARKDOWN/LATEX + KHỐI TRONG SÁCH + TỰ KIỂM TRA GẬP) -->
+    <section class="card" id="section-lecture-ready">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-success">✓ Bài giảng chuẩn lecture-3</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            2. Bài giảng văn xuôi tự nhiên (ADR 0025: body_md, sources, self_check gập)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Module 1 • Dài 520 từ</span>
+      </div>
+
+      <!-- body_md văn xuôi tự nhiên -->
+      <article style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-5); line-height: 1.7; font-size: var(--text-body);">
+        <p style="margin-bottom: var(--space-3);">
+          Để nuôi dưỡng một khối cơ tim liên tục co bóp khoảng 70 lần mỗi phút suốt đời, cơ thể cần một hệ thống tưới máu đặc biệt giàu oxy và nhạy bén với nhu cầu chuyển hoá. Hệ thống đó chính là mạng lưới <strong>động mạch vành (coronary circulation)</strong>.
+        </p>
+
+        <p style="margin-bottom: var(--space-3);">
+          Về mặt trực giác, động mạch vành xuất phát ngay tại gốc động mạch chủ (xoang Valsalva) và chia thành hai nhánh chính: động mạch vành trái (LMCA) và động mạch vành phải (RCA) <a href="#source-s1" class="source-tag" title="Mở trang 1892 giáo trình">[S1]</a>. Nhánh liên thất trước (LAD) chạy trong rãnh liên thất trước, cấp máu cho 2/3 trước của vách liên thất và thành trước thất trái:
+        </p>
+
+        <div style="background: var(--color-bg-subtle); border-left: 3px solid var(--color-primary); padding: var(--space-3); margin: var(--space-3) 0; font-size: var(--text-body);">
+          <span>Áp lực tưới máu cơ tim: </span>
+          <span class="katex" role="math" aria-label="P_coronary = P_diastolic - P_LVEDP"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mtext>coronary</mtext></msub><mo>=</mo><msub><mi>P</mi><mtext>diastolic</mtext></msub><mo>−</mo><msub><mi>P</mi><mtext>LVEDP</mtext></msub></mrow><annotation encoding="application/x-tex">P_{\text{coronary}} = P_{\text{diastolic}} - P_{\text{LVEDP}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">coronary</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">diastolic</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LVEDP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>
+          <br>
+          <div class="katex-display">
+            <span class="katex" role="math" aria-label="Q = (P_diastolic - P_LVEDP) / R_coronary"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo>=</mo><mfrac><mrow><msub><mi>P</mi><mtext>diastolic</mtext></msub><mo>−</mo><msub><mi>P</mi><mtext>LVEDP</mtext></msub></mrow><msub><mi>R</mi><mtext>coronary</mtext></msub></mfrac></mrow><annotation encoding="application/x-tex">Q = \frac{P_{\text{diastolic}} - P_{\text{LVEDP}}}{R_{\text{coronary}}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="mord mathnormal">Q</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="mord"><span class="mopen">(</span><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">diastolic</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">P</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">LVEDP</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span><span class="mclose">)</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">/</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mord"><span class="mord mathnormal">R</span><span class="msub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span style="top:-0.25em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:0.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord text mtight"><span class="mord mtight">coronary</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>
+          </div>
+          Lưu lượng dòng máu đạt đỉnh chủ yếu trong <em>thì tâm trương</em>, khác biệt hoàn toàn với mọi cơ quan khác trong cơ thể.
+        </div>
+
+        <p style="margin-bottom: var(--space-3);">
+          <strong>Điểm dễ nhầm lẫn:</strong> Nhiều sinh viên cho rằng thiếu máu cơ tim xảy ra ở thì tâm thu do tim co bóp mạnh nhất. Tuy nhiên, chính sức ép cơ tim trong thì tâm thu lại bóp nghẹt các mạch máu nhỏ dưới nội tâm mạc; do đó 80% lượng máu tưới mạch vành diễn ra ở thì tâm trương <a href="#source-s2" class="source-tag" title="Mở trang 1893 giáo trình">[S2]</a>.
+        </p>
+
+        <!-- Khối "Trong sách" (Sources list - theo ADR 0025) -->
+        <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4); margin-top: var(--space-4);">
+          <strong style="color: var(--color-primary); font-size: var(--text-small); display: block; margin-bottom: var(--space-2);">
+            📚 Trong sách (Tài liệu nguồn được trích dẫn):
+          </strong>
+          <ul style="padding-left: var(--space-4); font-size: var(--text-small); color: var(--color-text-muted); display: flex; flex-direction: column; gap: var(--space-1);">
+            <li id="source-s1">
+              <strong>[S1]</strong> <a href="#" onclick="alert('Mở trang 1892'); return false;" style="color: var(--color-primary); text-decoration: underline;">Harrison's Principles of Internal Medicine, 21st Edition • Chương 273 • Trang 1892 (Mục Giải phẫu mạch vành)</a>
+            </li>
+            <li id="source-s2">
+              <strong>[S2]</strong> <a href="#" onclick="alert('Mở trang 1893'); return false;" style="color: var(--color-primary); text-decoration: underline;">Harrison's Principles of Internal Medicine, 21st Edition • Chương 273 • Trang 1893 (Mục Sinh lý tưới máu tâm trương)</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Khối Tự kiểm tra (self_check đáp án gập sẵn) -->
+        <details class="self-check-box" id="details-self-check">
+          <summary>💡 Câu hỏi tự kiểm tra: Vì sao nhịp tim quá nhanh lại dễ gây thiếu máu cơ tim?</summary>
+          <div style="padding-top: var(--space-3); color: var(--color-text); font-size: var(--text-small); border-top: 1px dashed var(--color-border); margin-top: var(--space-2);">
+            <strong>Đáp án giải thích:</strong> Khi nhịp tim tăng cao, thời gian thì tâm trương bị rút ngắn đáng kể so với thì tâm thu. Vì dòng máu vành tưới cơ tim chủ yếu diễn ra ở thì tâm trương, sự rút ngắn này làm giảm tưới máu cơ tim, đặc biệt là vùng dưới nội tâm mạc.
+          </div>
+        </details>
+      </article>
+    </section>
+
+    <!-- TRẠNG THÁI 3: LỖI ĐUÔI GIỮ CHỮ VÀ GẮN NHÃN cat_ngan (PARTIAL FAILURE FALLBACK) -->
+    <section class="card" id="section-lecture-tail-error">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-warning" id="badge-cat-ngan">⚠️ cat_ngan (Bài rút gọn)</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            3. Trạng thái: Lỗi đuôi — Giữ nguyên phần đã stream kèm nhãn `cat_ngan`
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Nội dung đã nhận hiển thị trên màn hình</span>
+      </div>
+
+      <div style="background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+        <p style="font-size: var(--text-body); color: var(--color-text); margin-bottom: var(--space-3);">
+          Động mạch vành xuất phát từ xoang Valsalva gồm LAD và LCx... (Phần đã nhận an toàn trước khi mạng bị ngắt).
+        </p>
+        <div style="background: var(--color-bg-subtle); padding: var(--space-3); border-radius: var(--radius-sm); border-left: 3px solid var(--color-warning);">
+          <span style="font-size: var(--text-small); color: var(--color-text-muted); display: block; line-height: 1.5;">
+            Đường truyền bị gián đoạn trong lúc nhận dữ liệu. Theo hợp đồng bài giảng ADR 0025, phần đã nhận vẫn hiện trên màn hình dưới dạng bài rút gọn (<code>cat_ngan</code>).
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 4: LỖI KHỞI TẠO BÀI HỌC (HIỆN MESSAGE + THỬ LẠI + LỐI RA) -->
+    <section class="card" id="section-lecture-fatal-error">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-danger">Lỗi xử lý bài học</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            4. Trạng thái: Lỗi khởi tạo bài học (Thông báo lỗi + Thử lại + Lối ra)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-danger); font-weight: var(--font-semibold);">Mã: ERR-LEC-7429</span>
+      </div>
+
+      <div style="text-align: center; padding: var(--space-6) var(--space-4); background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md);">
+        <div style="font-family: monospace; font-size: 32px; color: var(--color-danger); margin-bottom: var(--space-3);">[ · _ · ]</div>
+        <h3 style="font-size: var(--text-body); font-weight: var(--font-bold); color: var(--color-text); margin-bottom: var(--space-2);">
+          Chưa thể tạo nội dung bài học
+        </h3>
+        <p style="font-size: var(--text-small); color: var(--color-text-muted); max-width: 540px; margin: 0 auto var(--space-5); line-height: 1.5;">
+          Dịch vụ tạo bài giảng phản hồi lỗi trước khi truyền dữ liệu. Bạn có thể bấm thử lại để hệ thống yêu cầu lại luồng dữ liệu, hoặc quay về lộ trình học.
+        </p>
+        <div class="action-row-wrap" style="display: flex; justify-content: center; gap: var(--space-3); flex-wrap: wrap;">
+          <button class="btn btn-primary" id="btn-retry-lecture-fatal" style="min-height: 44px; min-width: 44px;">
+            🔄 Thử lại bài giảng
+          </button>
+          <a href="/khoa-hoc/demo/lo-trinh" class="btn btn-secondary" id="btn-exit-to-roadmap" style="min-height: 44px; min-width: 44px;">
+            ← Quay về Lộ trình học
+          </a>
+          <button class="btn btn-secondary" id="btn-trigger-bug-report" style="min-height: 44px; min-width: 44px;">
+            ⚠️ Báo lỗi nội dung bài này
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 5: VIEWER ẢNH TRANG GIÁO TRÌNH VỚI ĐIỀU KHIỂN (PAGE IMAGE VIEWER) -->
+    <section class="card" id="section-page-image-viewer">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-primary">Khung xem tài liệu gốc</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            5. Khung xem ảnh trang giáo trình (Page Viewer có điều khiển placeholder)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Phạm vi: Bố cục điều khiển thu/phóng (placeholder)</span>
+      </div>
+
+      <!-- Toolbar điều khiển viewer -->
+      <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-surface-2); border: 1px solid var(--color-border); border-radius: var(--radius-md) var(--radius-md) 0 0; padding: var(--space-2) var(--space-3); flex-wrap: wrap; gap: var(--space-2);">
+        <div style="display: flex; align-items: center; gap: var(--space-2);">
+          <button class="btn btn-secondary" id="btn-viewer-zoom-out" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-3);" aria-label="Thu nhỏ">🔍 -</button>
+          <span style="font-size: var(--text-small); font-weight: var(--font-semibold); color: var(--color-text); min-width: 50px; text-align: center;">100%</span>
+          <button class="btn btn-secondary" id="btn-viewer-zoom-in" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-3);" aria-label="Phóng to">🔍 +</button>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: var(--space-2);">
+          <button class="btn btn-secondary" id="btn-viewer-prev-page" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-3);">◀ Trang trước</button>
+          <span style="font-size: var(--text-small); color: var(--color-text); font-weight: var(--font-semibold); padding: 0 var(--space-2);">
+            Trang 1892 / 4120
+          </span>
+          <button class="btn btn-secondary" id="btn-viewer-next-page" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-3);">Trang sau ▶</button>
+        </div>
+
+        <div>
+          <button class="btn btn-secondary" id="btn-viewer-close" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-4);">Đóng khung</button>
+        </div>
+      </div>
+
+      <!-- Canvas / Viewport ảnh trang -->
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-top: none; border-radius: 0 0 var(--radius-md) var(--radius-md); padding: var(--space-6); display: flex; justify-content: center; align-items: center; min-height: 320px; overflow: auto;">
+        <div style="background: var(--color-surface); border: 1px solid var(--color-border); box-shadow: var(--shadow-md); border-radius: var(--radius-sm); padding: var(--space-6); width: 100%; max-width: 600px; text-align: left;">
+          <div style="border-bottom: 2px solid var(--color-primary); padding-bottom: var(--space-2); margin-bottom: var(--space-4); display: flex; justify-content: space-between;">
+            <strong style="color: var(--color-primary); font-size: var(--text-small);">PART 7 • DISORDERS OF THE CARDIOVASCULAR SYSTEM</strong>
+            <span style="font-size: var(--text-caption); color: var(--color-text-muted);">PAGE 1892</span>
+          </div>
+          <div style="background: var(--color-bg-subtle); height: 160px; border-radius: var(--radius-sm); border: 1px dashed var(--color-border); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
+            <div style="text-align: center; color: var(--color-text-muted); font-size: var(--text-caption);">
+              [Ảnh scan trang sách giáo trình gốc — Sơ đồ phân nhánh động mạch vành trái (LAD & LCx)]
+            </div>
+          </div>
+          <p style="font-size: 11px; color: var(--color-text); line-height: 1.6;">
+            <strong>Figure 273-1: Anterior and posterior views of coronary arterial circulation.</strong> The RCA arises from the right coronary sinus and travels down the right AV groove. The LMCA branches into the LAD and LCx arteries supplying the interventricular septum and lateral ventricular walls respectively.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TRẠNG THÁI 6: FORM BÁO LỖI NỘI DUNG (CONTENT BUG REPORTING) -->
+    <section class="card" id="section-content-bug-report">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-4); flex-wrap: wrap; gap: var(--space-2);">
+        <div>
+          <span class="badge badge-accent">Phản hồi chất lượng</span>
+          <h2 style="font-size: var(--text-h3); margin-top: 4px; color: var(--color-text);">
+            6. Báo lỗi nội dung bài học (Content Quality Feedback)
+          </h2>
+        </div>
+        <span style="font-size: var(--text-caption); color: var(--color-text-muted);">Gửi trực tiếp cho nhóm biên soạn</span>
+      </div>
+
+      <div style="background: var(--color-bg-subtle); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: var(--space-4);">
+        <form onsubmit="event.preventDefault(); alert('Đã tiếp nhận báo lỗi nội dung!');">
+          <div style="margin-bottom: var(--space-3);">
+            <label style="display: block; font-size: var(--text-small); font-weight: var(--font-semibold); color: var(--color-text); margin-bottom: var(--space-1);">
+              Loại lỗi phát hiện:
+            </label>
+            <div style="display: flex; gap: var(--space-4); flex-wrap: wrap;">
+              <label style="font-size: var(--text-small); color: var(--color-text); display: flex; align-items: center; gap: var(--space-1);">
+                <input type="radio" name="bug_type" value="fact" checked> Sai sót kiến thức y khoa
+              </label>
+              <label style="font-size: var(--text-small); color: var(--color-text); display: flex; align-items: center; gap: var(--space-1);">
+                <input type="radio" name="bug_type" value="format"> Lỗi trình bày / dịch thuật
+              </label>
+              <label style="font-size: var(--text-small); color: var(--color-text); display: flex; align-items: center; gap: var(--space-1);">
+                <input type="radio" name="bug_type" value="citation"> Sai lệch trích dẫn nguồn
+              </label>
+            </div>
+          </div>
+
+          <div style="margin-bottom: var(--space-4);">
+            <label for="bug-desc" style="display: block; font-size: var(--text-small); font-weight: var(--font-semibold); color: var(--color-text); margin-bottom: var(--space-1);">
+              Mô tả chi tiết lỗi và kiến nghị chỉnh sửa:
+            </label>
+            <textarea id="bug-desc" rows="3" style="width: 100%; border: 1px solid var(--color-border-input); border-radius: var(--radius-sm); padding: var(--space-2); font-family: inherit; font-size: var(--text-body); background: var(--color-surface); color: var(--color-text);" placeholder="Mô tả cụ thể dòng/khái niệm gặp sự cố..."></textarea>
+          </div>
+
+          <div class="action-row-wrap" style="display: flex; justify-content: flex-end; gap: var(--space-3); flex-wrap: wrap;">
+            <button type="button" class="btn btn-secondary" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-4);">Huỷ bỏ</button>
+            <button type="submit" class="btn btn-primary" id="btn-submit-content-bug" style="min-height: 44px; min-width: 44px; padding: 0 var(--space-4);">Gửi báo lỗi</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      const cur = html.getAttribute('data-theme');
+      html.setAttribute('data-theme', cur === 'dark' ? 'light' : 'dark');
+    }
+  </script>
+</body>
+</html>

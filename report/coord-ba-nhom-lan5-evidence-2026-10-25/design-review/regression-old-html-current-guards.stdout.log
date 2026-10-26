@@ -1,0 +1,68 @@
+FFFF                                                                     [100%]
+================================== FAILURES ===================================
+__________________ test_w08_formulas_have_accessible_content __________________
+
+    def test_w08_formulas_have_accessible_content():
+        """Verify that all KaTeX formulas in W-08 have accessible representations (MathML or aria-label)."""
+        formulas = math_formula_accessibility("w08_lecture_screens.html")
+        assert len(formulas) == 2, f"Expected 2 formulas in W-08, got {len(formulas)}"
+        for f in formulas:
+>           assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility: {f}"
+E           AssertionError: Formula lacks accessibility: {'accessible_text': 'Lưu lượng dòng máu đạt đỉnh chủ yếu trong thì tâm trương, khác biệt hoàn toàn với mọi cơ quan khác trong cơ thể.', 'has_mathml': False, 'has_aria_label': False, 'aria_hidden_branches': 2}
+E           assert (False or False or '=' in 'Lưu lượng dòng máu đạt đỉnh chủ yếu trong thì tâm trương, khác biệt hoàn toàn với mọi cơ quan khác trong cơ thể.')
+
+tests\unit\presentation\test_tokens_and_wcag.py:960: AssertionError
+__________________ test_w09_formulas_have_accessible_content __________________
+
+    def test_w09_formulas_have_accessible_content():
+        """Verify that all KaTeX formulas in W-09 have accessible representations (MathML or aria-label)."""
+        formulas = math_formula_accessibility("w09_chat_screens.html")
+        assert len(formulas) == 1, f"Expected 1 formula in W-09, got {len(formulas)}"
+        for f in formulas:
+>           assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility: {f}"
+E           AssertionError: Formula lacks accessibility: {'accessible_text': '', 'has_mathml': False, 'has_aria_label': False, 'aria_hidden_branches': 1}
+E           assert (False or False or '=' in '')
+
+tests\unit\presentation\test_tokens_and_wcag.py:968: AssertionError
+_____________ test_w08_formula_nodes_are_not_accidentally_nested ______________
+
+    def test_w08_formula_nodes_are_not_accidentally_nested():
+        """Verify that W-08 inline formula does not leave .katex unclosed, avoiding accidental nesting of subsequent nodes."""
+        _, tree = parse_preview_tree("w08_lecture_screens.html")
+        formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+>       assert all(not any(child.hasclass("katex") for child in n.descendants()) for n in formulas), (
+            "W-08 inline formula has unclosed outer .katex span and contains the following display formula and prose"
+        )
+E       AssertionError: W-08 inline formula has unclosed outer .katex span and contains the following display formula and prose
+E       assert False
+E        +  where False = all(<generator object test_w08_formula_nodes_are_not_accidentally_nested.<locals>.<genexpr> at 0x000001E7B54983C0>)
+
+tests\unit\presentation\test_tokens_and_wcag.py:975: AssertionError
+________________ test_w09_formula_has_subscript_layout_styles _________________
+
+    def test_w09_formula_has_subscript_layout_styles():
+        """Verify that W-09 includes CSS rules for KaTeX layout and subscript alignment."""
+        source, _ = parse_preview_tree("w09_chat_screens.html")
+        styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+        for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+            href = match.group(1)
+            if ":" not in href:
+                css_file = Path("design/preview/" + href).resolve()
+                if css_file.exists():
+                    styles += css_file.read_text(encoding="utf-8")
+>       assert re.search(r"\.(?:msub|vlist-t|katex)\b[^{}]*\{", styles), (
+            "W-09 has KaTeX-shaped DOM but zero KaTeX/subscript layout CSS in inline or linked styles"
+        )
+E       AssertionError: W-09 has KaTeX-shaped DOM but zero KaTeX/subscript layout CSS in inline or linked styles
+E       assert None
+E        +  where None = <function search at 0x000001E7B16604A0>('\\.(?:msub|vlist-t|katex)\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')
+E        +    where <function search at 0x000001E7B16604A0> = re.search
+
+tests\unit\presentation\test_tokens_and_wcag.py:990: AssertionError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r5-design-review-20261025\regression-old-html.xml -
+=========================== short test summary info ===========================
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w08_formulas_have_accessible_content
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formulas_have_accessible_content
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w08_formula_nodes_are_not_accidentally_nested
+FAILED tests/unit/presentation/test_tokens_and_wcag.py::test_w09_formula_has_subscript_layout_styles
+4 failed in 1.53s

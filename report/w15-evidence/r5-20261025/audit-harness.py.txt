@@ -1,0 +1,143 @@
+"""Independent, zero-provider assertions over W15 real receipts, PG, graph and HTTP read paths."""
+from collections import Counter
+from contextlib import ExitStack
+from decimal import Decimal
+from hashlib import sha256
+import json
+from pathlib import Path
+import sys
+from unittest.mock import patch
+
+root=Path(__file__).resolve().parents[1]
+sys.path[:0]=[str(root/'src'),str(root/'src/web/backend'),str(root/'src/web/backend/tests')]
+import w15_operator_run as operator
+from sqlalchemy import text
+from doc2roadmap.infrastructure.artifacts.json_store import JsonArtifactStore
+from doc2roadmap.application.phase_b.retrieval import load_learning_graph,assert_retrieval_compatible
+from doc2roadmap.domain.global_validation import strongly_connected_components
+from wayfinder.infrastructure.phase_b_store import PostgresPhaseBStore
+
+out=root/'report/w15-evidence/r5-20261025'
+out.mkdir(parents=True,exist_ok=True)
+def dump(name,value):
+    (out/name).write_bytes((json.dumps(value,ensure_ascii=False,indent=2,default=str)+'\n').encode())
+
+def audit_book(item,label,expected_success):
+    run=root/item['run_dir']
+    plan=json.loads((run/'plan.json').read_text(encoding='utf-8'))
+    execution=json.loads((run/'execution.json').read_text(encoding='utf-8'))
+    web=execution['attempts'][0]['result']
+    receipt=execution.get('bootstrap') or web
+    doc='u-'+plan['file_sha256'][:20]
+    assert sha256((run/'source.pdf').read_bytes()).hexdigest()==plan['file_sha256']
+    assert (run/'source.pdf').stat().st_nlink==1
+    assert receipt['doc_id']==web['doc_id']==doc and receipt['pipeline_version']==web['pipeline_version']==plan['pipeline_version']
+    events=[]
+    for path in run.glob('requests-*.jsonl'):
+        events += [json.loads(line) for line in path.read_text(encoding='utf-8').splitlines()]
+    budget=receipt['step_details']['operator_budget']
+    assert len(events)==budget['http_calls'] and budget['held_usd']=='0'
+    assert budget['embedding_billing_verified'] is False and budget['embedding_price_profile']==plan['embedding_price_profile']
+    known=sum((Decimal(event['actual_usd']) for event in events if event['actual_usd'] is not None),Decimal(0))
+    unknown=sum((Decimal(event['reserved_usd']) for event in events if event['actual_usd'] is None),Decimal(0))
+    assert known==Decimal(budget['known_usd']) and unknown==Decimal(budget['unknown_upper_usd'])
+    assert known+unknown<=Decimal(budget['limit_usd'])
+    first_unknown=next((i for i,event in enumerate(events) if event['actual_usd'] is None),None)
+    if first_unknown is not None:
+        assert all(event['budget']['http_calls']==events[first_unknown]['budget']['http_calls'] for event in events[first_unknown:])
+    engine=operator.create_database_engine(operator.test_database_url(plan['database']))
+    try:
+        with engine.connect() as reader:
+            approval=reader.execute(text("SELECT value FROM phase_b_record WHERE kind='w15_build_approval' AND record_id=:ref"),{'ref':item['reference']}).scalar_one()
+            ledger=[dict(row) for row in reader.execute(text('SELECT id,purpose,cost_usd,input_tokens,output_tokens,extra FROM usage_ledger ORDER BY id')).mappings()]
+            courses=[dict(row) for row in reader.execute(text('SELECT id,status,doc_id,published_graph_version FROM course')).mappings()]
+            builds=[dict(row) for row in reader.execute(text('SELECT id,status,doc_id,pipeline_version,spent_usd,model_calls,input_tokens,output_tokens,usage_complete,claim_count FROM build')).mappings()]
+            attempts=reader.execute(text('SELECT count(*) FROM build_attempt')).scalar_one()
+            caches=reader.execute(text('SELECT count(*) FROM phase_b_cache')).scalar_one()
+        assert approval['state']=='finished' and approval['reference']==item['reference']
+        assert approval['file_sha256']==plan['file_sha256'] and approval['pipeline_version']==plan['pipeline_version']
+        assert approval['budget']==budget and len(builds)==len(courses)==attempts==1
+        assert builds[0]['claim_count']==1 and builds[0]['pipeline_version']==plan['pipeline_version']
+        assert sum((row['cost_usd'] for row in ledger),Decimal(0))==Decimal(str(receipt['spent_usd']))
+        traces=[row for row in ledger if row['extra'].get('counted_in')=='build']
+        assert all(row['cost_usd']==row['input_tokens']==row['output_tokens']==0 for row in traces)
+        assert all(row['purpose']=='build' or row['extra'].get('counted_in')=='build' for row in ledger)
+        assert builds[0]['model_calls']==web['model_calls'] and builds[0]['spent_usd']==Decimal(str(web['spent_usd']))
+        assert courses[0]['doc_id']==doc
+        stages=[]
+        for stage in ('doc_reading','concepts','graph','learning_prep'):
+            rows=[event for event in events if event['stage']==stage]
+            detail=receipt['step_details'].get(stage,{})
+            stages.append(dict(step=stage,completed=stage in receipt['completed_steps'],
+                dispatched_generation=sum(Decimal(r['reserved_usd'])>Decimal('.001') for r in rows),
+                dispatched_embedding=sum(Decimal(r['reserved_usd'])<Decimal('.001') for r in rows),
+                known_usd=str(sum((Decimal(r['actual_usd']) for r in rows if r['actual_usd'] is not None),Decimal(0))),
+                unknown_upper_usd=str(sum((Decimal(r['reserved_usd']) for r in rows if r['actual_usd'] is None),Decimal(0))),
+                timing=detail.get('web_timing'),receipt_detail=detail))
+        result=dict(label=label,plan=plan,receipt=receipt,web_receipt=web,mail_subjects=execution['mail_subjects'],
+            approval=approval,sql=dict(courses=courses,builds=builds,attempt_count=attempts,cache_entries=caches,
+                ledger=ledger,trace_rows=len(traces),ledger_total_usd=str(sum((r['cost_usd'] for r in ledger),Decimal(0)))),
+            budget=budget,step_measurements=stages,assertions=dict(identity_and_version=True,one_attempt_and_claim=True,
+                trace_not_double_billed=True,ledger_equals_meter_delta=True,unknown_not_zeroed=True,
+                no_dispatch_after_unknown=first_unknown is None or all(e['budget']['http_calls']==events[first_unknown]['budget']['http_calls'] for e in events[first_unknown:]),
+                cap_under_demo_assumption=True))
+        store=JsonArtifactStore(run/'artifacts')
+        parsed=store.load_parse(doc,receipt['step_details']['doc_reading']['parse_version'])
+        assert parsed.manifest['source_hash']==plan['file_sha256']
+        result['parse_node_types']=dict(Counter(n.node_type for n in parsed.tree.nodes))
+        # Preserve the accounting assertions even if a later graph assertion fails.
+        dump(label+'-accounting-independent.json',result)
+        if expected_success:
+            assert receipt['status']==web['status']=='succeeded' and receipt['usage_complete'] and web['usage_complete']
+            assert unknown==0 and courses[0]['status']=='ready' and execution['mail_subjects']==['Bản dựng xong']
+            if 'bootstrap' in execution:
+                assert web['model_calls']==web['spent_usd']==web['input_tokens']==web['output_tokens']==0
+                assert web['step_details']['concepts']['label_roles']['reused']
+                assert web['step_details']['concepts']['a3']['a3_reused'] and web['step_details']['concepts']['a3']['a3_prime_reused']
+                assert web['step_details']['graph']['reused'] and web['step_details']['learning_prep']['concept_index']['reused']
+            graph=store.load_graph(doc,receipt['graph_version'])
+            learning_graph=load_learning_graph(store,doc,graph.version)
+            chunks=store.load_chunks(doc,graph.manifest['config']['chunks_version'])
+            retrieval=store.load_latest_retrieval(doc)
+            input_hash=assert_retrieval_compatible(retrieval.payload,chunks.result.chunks)
+            assert courses[0]['published_graph_version']==graph.version==web['graph_version']
+            ids=set(learning_graph.learnable_nodes)
+            assert ids and set(graph.payload['sequence'])==ids
+            members=[node for module in graph.payload['modules'] for node in module['node_ids']]
+            assert len(members)==len(set(members)) and set(members)==ids
+            assert all(module.get('title','').strip() for module in graph.payload['modules'])
+            edges=graph.payload['requires_edges']
+            assert all(edge['source'] in ids and edge['target'] in ids and edge['source']!=edge['target'] for edge in edges)
+            assert all(len(part)==1 for part in strongly_connected_components(ids,edges))
+            result['graph']=dict(version=graph.version,modules=len(graph.payload['modules']),concepts=len(ids),
+                mentioned=len(graph.payload.get('mentioned_nodes',[])),non_learnable=len(graph.payload.get('non_learnable_nodes',[])),
+                main_edges=len(graph.payload.get('main_edges',[])),requires_edges=len(edges),open_edges=len(graph.payload.get('open_edges',[])),
+                topic_edges=len(graph.payload.get('topic_edges',[])),secondary_edges=len(graph.payload.get('secondary_edges',[])),
+                module_titles=[m['title'] for m in graph.payload['modules']],quality_gate=graph.payload.get('quality_gate'),
+                display_flags=graph.payload.get('display_flags'),validation_flags=graph.payload.get('validation_flags'),
+                module_naming_flags=[dict(module_id=m['module_id'],title_source=m.get('title_source'),
+                    description_source=m.get('description_source'),flags=m.get('naming_flags',[])) for m in graph.payload['modules']],
+                retrieval_input_fingerprint=input_hash,graph_config_hash=graph.manifest['config_hash'],chunks_version=chunks.version,
+                parse_version=parsed.version,canonical_version=graph.manifest['config']['canonical_version'])
+            result['assertions'].update(ready_and_success_mail=True,pinned_graph_and_retrieval_compatible=True,
+                roadmap_covers_all_learnable_nodes_once=True,requires_graph_is_dag=True)
+        else:
+            assert receipt['status']==web['status']=='failed' and web['usage_complete'] is False and unknown>0
+            assert courses[0]['status']=='failed' and courses[0]['published_graph_version'] is None
+            assert not (run/'artifacts/graph'/doc).exists() and execution['mail_subjects']==['Bản dựng lỗi']
+            result['graph']=None
+            result['assertions'].update(failure_has_no_published_graph_or_ready_course=True,no_success_mail=True)
+        dump(label+'-independent.json',result)
+        return result
+    finally:
+        engine.dispose()
+
+bundle=json.loads((root/'tmp/w15-r5-authorized-fa80b31ad6b6.json').read_text(encoding='utf-8'))
+results=[]
+for item in bundle['attempts']:
+    results.append(audit_book(item,item['book']+'-first',item['book']=='doc-6'))
+if len(sys.argv)>1 and sys.argv[1]=='include-controlled':
+    item=json.loads((root/'tmp/w15-r5-controlled-location.json').read_text())
+    results.append(audit_book(item,'candidate-controlled',True))
+print(json.dumps([dict(label=r['label'],status=r['receipt']['status'],known_usd=r['budget']['known_usd'],
+    unknown_upper_usd=r['budget']['unknown_upper_usd'],graph=r['graph'],assertions=r['assertions']) for r in results],ensure_ascii=False,indent=2))

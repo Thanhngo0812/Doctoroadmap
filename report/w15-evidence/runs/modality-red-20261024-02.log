@@ -1,0 +1,17 @@
+...FF.                                                                   [100%]
+================================== FAILURES ===================================
+_ test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad3] _
+src\web\backend\tests\test_build_spend_w15.py:91: in test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider
+    with pytest.raises(api.BuildSpendStopped):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'>
+_ test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad4] _
+src\web\backend\tests\test_build_spend_w15.py:91: in test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider
+    with pytest.raises(api.BuildSpendStopped):
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   Failed: DID NOT RAISE <class 'wayfinder.infrastructure.build_spend.BuildSpendStopped'>
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\modality-red-20261024-02.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad3]
+FAILED src/web/backend/tests/test_build_spend_w15.py::test_unpriced_models_extra_services_and_wrong_transport_never_reach_the_provider[bad4]
+2 failed, 4 passed, 12 deselected in 0.33s

@@ -1,0 +1,50 @@
+{
+  "review": "W08 independent round 4",
+  "date": "2026-10-24",
+  "verdict": "approve reviewed delta",
+  "head": "c8c687b63afff86d628688de73abb92dfd4f17a2",
+  "baseline": "89122f6",
+  "testedSource": "b4136987668c3fb822ea374f399b947064ce7f18",
+  "mainBase": "5936a5d91b6c3979f1918b33ce330403414b776f",
+  "worktree": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w08-lecture",
+  "findings": [],
+  "critical": 0,
+  "required": 0,
+  "closed": [
+    {
+      "id": "R-W08-1",
+      "reason": "Related badges use current progress nodes with optimistic updates and rollback; lecture dependencies exclude progress.",
+      "locations": ["src/web/frontend/src/Learning.tsx:92", "src/web/frontend/src/Learning.tsx:129", "src/web/frontend/src/Learning.tsx:202"],
+      "tests": ["review: marking a prerequisite from the sidebar immediately refreshes its lesson badge", "review: marking the next concept from the sidebar immediately refreshes its lesson badge", "keeps every related badge on current progress after sidebar save success=true without reloading the lecture", "keeps every related badge on current progress after sidebar save success=false without reloading the lecture"]
+    },
+    {
+      "id": "R-W08-2",
+      "reason": "UI streaming heading grammar matches core. Final body remains authoritative when self_check is null. SA70 buffers fragmented headings before HTTP deltas.",
+      "locations": ["src/web/frontend/src/Learning.tsx:84", "src/doc2roadmap/application/phase_b/lecture3.py:75", "src/doc2roadmap/application/phase_b/lecture3.py:137"],
+      "tests": ["review: the self-check accepted by core stays folded during a stream", "restores the complete final body when core cannot split self_check", "test_a_heading_cut_across_two_pieces_is_still_held_back", "test_one_character_pieces_behave_the_same", "test_an_unsplittable_self_check_keeps_the_whole_lesson_in_final"]
+    }
+  ],
+  "receiptChecks": {
+    "artifact": "receipt-check.json",
+    "passed": true,
+    "sha256AndSize": 392,
+    "relatedSourceFilesAndGitBlobs": 19,
+    "mutantJUnitNativeAndRestoredSource": 15,
+    "pythonPassed": 2511,
+    "pythonSkipped": 1,
+    "pythonXfailed": 1,
+    "reactPassed": 181,
+    "mappedReactAssertions": 33,
+    "mappedPythonAssertions": 18,
+    "nativeExitZeroCommands": ["python", "react", "build", "browser"],
+    "sourceChangesAfterTestedCommit": [],
+    "rawSseTracesIndependentlyParsed": 5,
+    "red2Failures": 6,
+    "red2ControlsPassed": 11,
+    "coordinatorHelperBodiesPreserved": true
+  },
+  "executed": ["Read-only check_receipts.py using Python stdlib and git show"],
+  "notExecuted": ["PostgreSQL", "full test suite", "browser", "provider or ADC"],
+  "workerOrMainModified": false,
+  "limits": "Code and handed-off receipts reviewed independently; coordinator runtime gates remain separate evidence."
+}

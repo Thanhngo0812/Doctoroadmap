@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.261" timestamp="2026-10-26T12:38:28.822777+07:00" hostname="ADMIN"><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_actor_purpose_course_trace_and_failure_aggregation" time="0.453"><failure message="assert 1.0 == 0.5 ± 5.0e-07&#10;  &#10;  comparison failed&#10;  Obtained: 1.0&#10;  Expected: 0.5 ± 5.0e-07">..\coord-r7-core-review-20261026\test_review_core.py:122: in test_actor_purpose_course_trace_and_failure_aggregation
+    assert view['learner_today']['used_ratio'] == pytest.approx(.5)
+E   assert 1.0 == 0.5 ± 5.0e-07
+E
+E     comparison failed
+E     Obtained: 1.0
+E     Expected: 0.5 ± 5.0e-07</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="5" failures="0" errors="0" time="3.5141368">
+    <testsuite name="../../../../coord-r6-web-review-20261025/Assistant.final-usage-race.test.tsx" timestamp="2026-10-25T10:37:49.030Z" hostname="ADMIN" tests="5" failures="0" errors="0" skipped="0" time="3.5141368">
+        <testcase classname="../../../../coord-r6-web-review-20261025/Assistant.final-usage-race.test.tsx" name="review: a question submitted after final is sent while the usage refresh remains pending" time="1.3214519">
+            <system-out>
+REVIEW_OBSERVATION {&quot;usageCalls&quot;:2,&quot;postedQuestions&quot;:[{&quot;question&quot;:&quot;First question&quot;,&quot;client_turn_id&quot;:&quot;ccc487de-8877-4866-9edd-ac3bae674b9d&quot;},{&quot;question&quot;:&quot;Second question must not disappear&quot;,&quot;client_turn_id&quot;:&quot;1ba3d48b-691d-4c72-bd99-4f6bd5114af8&quot;}],&quot;draftAfterSubmit&quot;:&quot;&quot;}
+
+            </system-out>
+        </testcase>
+        <testcase classname="../../../../coord-r6-web-review-20261025/Assistant.final-usage-race.test.tsx" name="an old usage success and finally cannot unlock or replace the next streaming turn" time="0.5356754">
+        </testcase>
+        <testcase classname="../../../../coord-r6-web-review-20261025/Assistant.final-usage-race.test.tsx" name="an old usage network error and finally cannot unlock or replace the next streaming turn" time="0.4689693">
+        </testcase>
+        <testcase classname="../../../../coord-r6-web-review-20261025/Assistant.final-usage-race.test.tsx" name="accepts the next question before old EOF and ignores a late old stream error" time="0.6684338">
+        </testcase>
+        <testcase classname="../../../../coord-r6-web-review-20261025/Assistant.final-usage-race.test.tsx" name="a late old usage result cannot overwrite newer usage after both answers finish" time="0.5172828">
+        </testcase>
+    </testsuite>
+</testsuites>

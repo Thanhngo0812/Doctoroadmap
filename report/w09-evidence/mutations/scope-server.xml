@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.743" timestamp="2026-10-24T22:23:52.772745+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_assistant_w09" name="test_w09_sessions_bind_actor_document_and_scope_from_published_graph" time="3.098"><failure message="AssertionError: {&quot;error&quot;:{&quot;code&quot;:&quot;internal_error&quot;,&quot;message&quot;:&quot;Đã xảy ra lỗi máy chủ&quot;,&quot;retry_after&quot;:null,&quot;ref&quot;:&quot;3a9d9230c274429c885a1071eddfdb49&quot;}}&#10;assert 500 == 201&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_7eb3266c2e5e4664b064ae3d4f67d...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/ba08e539-d1ce-4eee-8883-11ab3febb6f9/sessions')
+
+    def test_w09_sessions_bind_actor_document_and_scope_from_published_graph(chat):
+        w = chat
+&gt;       session = create(w, scope={'kind': 'module', 'module_id': 'm1', 'node_ids': ['attacker']})
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src\web\backend\tests\test_assistant_w09.py:48:
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+w = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_7eb3266c2e5e4664b064ae3d4f67d...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/ba08e539-d1ce-4eee-8883-11ab3febb6f9/sessions')
+
+    def create(w, *, client=None, scope=None):
+        user = client or w.a
+        response = user.client.post(w.url, headers=user.headers, json={'scope': scope or {'kind': 'roadmap'}})
+&gt;       assert response.status_code == 201, response.text
+E       AssertionError: {"error":{"code":"internal_error","message":"Đã xảy ra lỗi máy chủ","retry_after":null,"ref":"3a9d9230c274429c885a1071eddfdb49"}}
+E       assert 500 == 201
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+src\web\backend\tests\test_assistant_w09.py:30: AssertionError</failure></testcase></testsuite></testsuites>

@@ -1,0 +1,14 @@
+{
+  "code": 1,
+  "args": [
+    "C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\w10-quiz-documents\\src\\web\\frontend\\node_modules\\vitest/vitest.mjs",
+    "run",
+    "src/Content.test.tsx",
+    "--config",
+    "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r7-web-review-20261026/frontend/vite.config.mjs",
+    "--reporter=junit",
+    "--outputFile=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r7-web-review-20261026/content-baseline.xml"
+  ],
+  "log": "content-baseline.log",
+  "output": "\u001b[31mfailed to load config from C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-web-review-20261026\\frontend\\vite.config.mjs\u001b[39m\n\n\u001b[31m⎯⎯⎯⎯⎯⎯⎯\u001b[39m\u001b[1m\u001b[41m Startup Error \u001b[49m\u001b[22m\u001b[31m⎯⎯⎯⎯⎯⎯⎯⎯\u001b[39m\nError: Cannot find module 'file:///C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w10-quiz-documents/src/web/frontend/node_modules/std-env/dist/index.mjs'\nRequire stack:\n- C:\\Users\\ngoco\\Desktop\\Doctoroadmap\\tmp\\coord-r7-web-review-20261026\\frontend\\vite.config.mjs.timestamp-1792992906264-ea9ebf6a7307f.mjs\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1421:15)\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1059:19)\n    at defaultResolve (node:internal/modules/cjs/loader:1094:31)\n    at nextStep (node:internal/modules/customization_hooks:189:26)\n    at customizationHookResolve (file:///C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w10-quiz-documents/src/web/frontend/node_modules/vite/dist/node/chunks/node.js:433:9)\n    at nextStep (node:internal/modules/customization_hooks:189:26)\n    at resolveWithHooks (node:internal/modules/customization_hooks:417:10)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1103:25)\n    at Module._load (node:internal/modules/cjs/loader:1227:37)\n    at TracingChannel.traceSync (node:diagnostics_channel:328:14) {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: [\n    'C:\\\\Users\\\\ngoco\\\\Desktop\\\\Doctoroadmap\\\\tmp\\\\coord-r7-web-review-20261026\\\\frontend\\\\vite.config.mjs.timestamp-1792992906264-ea9ebf6a7307f.mjs'\n  ]\n}\n\n\n\n"
+}

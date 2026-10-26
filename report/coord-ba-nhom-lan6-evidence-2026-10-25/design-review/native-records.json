@@ -1,0 +1,75 @@
+[
+  {
+    "name": "focused",
+    "argv": [
+      "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+      "scripts/w05_run_tests.py",
+      "-c",
+      "pytest-review.ini",
+      "-o",
+      "addopts=",
+      "-q",
+      "--rootdir=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+      "tests/unit/presentation/test_tokens_and_wcag.py",
+      "--junitxml=focused.xml"
+    ],
+    "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+    "native_exit_code": 0
+  },
+  {
+    "name": "css-layout-mutant",
+    "argv": [
+      "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+      "scripts/w05_run_tests.py",
+      "-c",
+      "pytest-review.ini",
+      "-o",
+      "addopts=",
+      "-q",
+      "--rootdir=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+      "tests/unit/presentation/test_tokens_and_wcag.py",
+      "-k",
+      "formula_has_subscript_layout_styles",
+      "--junitxml=css-layout-mutant.xml"
+    ],
+    "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+    "native_exit_code": 1
+  },
+  {
+    "name": "old-w10-current-guards",
+    "argv": [
+      "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+      "scripts/w05_run_tests.py",
+      "-c",
+      "pytest-review.ini",
+      "-o",
+      "addopts=",
+      "-q",
+      "--rootdir=C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+      "tests/unit/presentation/test_tokens_and_wcag.py",
+      "-k",
+      "w10_",
+      "--junitxml=old-w10-current-guards.xml"
+    ],
+    "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+    "native_exit_code": 1
+  },
+  {
+    "name": "browser",
+    "argv": [
+      "node",
+      "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025/browser-review.cjs"
+    ],
+    "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+    "native_exit_code": 1
+  },
+  {
+    "name": "browser-rerun",
+    "argv": [
+      "node",
+      "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025/browser-review.cjs"
+    ],
+    "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r6-design-review-20261025",
+    "native_exit_code": 0
+  }
+]

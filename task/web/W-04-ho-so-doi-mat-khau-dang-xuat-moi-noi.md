@@ -1,7 +1,9 @@
 # W-04 — Hồ sơ, đổi mật khẩu, đăng xuất mọi nơi
 
+**Phân công sau nghiệm thu lần 7, 2026-10-26:** giao nhân viên lõi mốc backend W-04 ở worktree riêng; React/tích hợp vẫn do web làm sau W-10/W-16. Dùng lại AccountService/session/CSRF/audit W-02/W-03: hồ sơ tên 1–60, đổi mật khẩu từ A giữ A/hủy B, logout-all hủy cả A+B; định danh phiên hiện tại từ server, không tin payload. Không tạo migration rỗng hoặc viết frontend tạm. Chỉ 0 USD, [biên bản lần 7](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan7-2026-10-26.md) và [phạm vi/lời giao](../../report/lenh-giao-viec-ba-nhom-lan7-2026-10-26.md). Backend đạt không đóng toàn vé có giao diện.
+
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 2 (đổi mật khẩu, đăng xuất mọi nơi), user story 11–13; spec thiết kế, trang hồ sơ.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm mốc backend; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-02 · **Trạng thái:** ready-for-agent
 
 **2026-10-20, sau W-03:** W-02/W-03 đã nghiệm thu, W-04 đủ điều kiện nhận. Web ưu tiên React/tích hợp W-06;
 xếp W-04 sau nếu chỉ có một phiên web, chỉ làm song song khi có người riêng và phân vùng AccountService.

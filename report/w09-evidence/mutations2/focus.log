@@ -1,0 +1,31 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+_ test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates _
+
+chat = namespace(engine=Engine(postgresql+psycopg://wayfinder:***@127.0.0.1:5433/wayfinder_test_a37697e10ffa4bf3942150b8760ff...promptTokenCount': 0, 'candidatesTokenCount': 0}), url='/api/v1/courses/c2130561-d050-4f73-9406-8ab8cc13901c/sessions')
+
+    def test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates(chat):
+        from wayfinder.fakes.lecture import ScriptedLectureModel
+        w = chat
+        lecture = ScriptedLectureModel([['LECTURE_CACHE_SENTINEL. Nội dung bài có sẵn.']])
+        w.gateway.runtime.model = lecture
+        made = w.gateway.runtime.lecture(w.graph).make('doc-1', 8, w.graph, 'a', owner=w.a.actor.user_id, allow_spend=True)
+        assert made['status'] == 'ready' and len(lecture.calls) == 1
+        w.gateway.runtime.model = w.model
+        sid = create(w)['session_id']; events(ask(w, sid, focus_node_id='a'))
+>       assert 'LECTURE_CACHE_SENTINEL' in json.dumps(w.model.tool_calls[0], ensure_ascii=False)
+E       assert 'LECTURE_CACHE_SENTINEL' in '[[{"role": "user", "text": "Người học đang xem cả lộ trình của cuốn sách.\\nKhái niệm liên quan: Tập hợp (module 2: C...ểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\\n\\nCâu hỏi của người học: Tập hợp là gì?"}], "AUTO"]'
+E        +  where '[[{"role": "user", "text": "Người học đang xem cả lộ trình của cuốn sách.\\nKhái niệm liên quan: Tập hợp (module 2: C...ểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\\n\\nCâu hỏi của người học: Tập hợp là gì?"}], "AUTO"]' = <function dumps at 0x0000014C92EC1EE0>(([{'role': 'user', 'text': 'Người học đang xem cả lộ trình của cuốn sách.\nKhái niệm liên quan: Tập hợp (module 2: Cơ ... điểm. Mỗi phần tử của tập hợp được xét theo một quy tắc xác định.\n\nCâu hỏi của người học: Tập hợp là gì?'}], 'AUTO'), ensure_ascii=False)
+E        +    where <function dumps at 0x0000014C92EC1EE0> = json.dumps
+
+src\web\backend\tests\test_assistant_w09.py:305: AssertionError
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w09-assistant\report\w09-evidence\mutations2\focus.xml -
+=========================== short test summary info ===========================
+FAILED src/web/backend/tests/test_assistant_w09.py::test_w09_focus_reads_actual_lecture3_cache_and_a_cache_miss_never_generates
+1 failed, 1 warning in 7.76s

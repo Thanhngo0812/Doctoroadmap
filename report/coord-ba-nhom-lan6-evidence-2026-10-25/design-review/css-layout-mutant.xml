@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="2" skipped="0" tests="2" time="0.811" timestamp="2026-10-25T17:38:36.765560+07:00" hostname="ADMIN"><testcase classname="tests.unit.presentation.test_tokens_and_wcag" name="test_w09_formula_has_subscript_layout_styles" time="0.219"><failure message="AssertionError: Missing .msub layout CSS in W-09&#10;assert None&#10; +  where None = &lt;function search at 0x000001E688B3C4A0&gt;('\\.msub\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')&#10; +    where &lt;function search at 0x000001E688B3C4A0&gt; = re.search">def test_w09_formula_has_subscript_layout_styles():
+        """Verify that W-09 includes strict CSS rules for KaTeX layout and subscript alignment without lenient fallbacks."""
+        source, _ = parse_preview_tree("w09_chat_screens.html")
+        styles = "".join(re.findall(r"&lt;style&gt;(.*?)&lt;/style&gt;", source, re.S))
+        for match in re.finditer(r'&lt;link\b[^&gt;]*href="([^"]+)"', source):
+            href = match.group(1)
+            if ":" not in href:
+                css_file = Path("design/preview/" + href).resolve()
+                if css_file.exists():
+                    styles += css_file.read_text(encoding="utf-8")
+&gt;       assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-09"
+E       AssertionError: Missing .msub layout CSS in W-09
+E       assert None
+E        +  where None = &lt;function search at 0x000001E688B3C4A0&gt;('\\.msub\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')
+E        +    where &lt;function search at 0x000001E688B3C4A0&gt; = re.search
+
+tests\unit\presentation\test_tokens_and_wcag.py:997: AssertionError</failure></testcase><testcase classname="tests.unit.presentation.test_tokens_and_wcag" name="test_w10_formula_has_subscript_layout_styles" time="0.006"><failure message="AssertionError: Missing .msub layout CSS in W-10&#10;assert None&#10; +  where None = &lt;function search at 0x000001E688B3C4A0&gt;('\\.msub\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')&#10; +    where &lt;function search at 0x000001E688B3C4A0&gt; = re.search">def test_w10_formula_has_subscript_layout_styles():
+        """Verify that W-10 includes strict CSS rules for KaTeX layout and subscript alignment."""
+        source, _ = parse_preview_tree("w10_quiz_screens.html")
+        styles = "".join(re.findall(r"&lt;style&gt;(.*?)&lt;/style&gt;", source, re.S))
+        for match in re.finditer(r'&lt;link\b[^&gt;]*href="([^"]+)"', source):
+            href = match.group(1)
+            if ":" not in href:
+                css_file = Path("design/preview/" + href).resolve()
+                if css_file.exists():
+                    styles += css_file.read_text(encoding="utf-8")
+&gt;       assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-10"
+E       AssertionError: Missing .msub layout CSS in W-10
+E       assert None
+E        +  where None = &lt;function search at 0x000001E688B3C4A0&gt;('\\.msub\\b[^{}]*\\{', '\n    * {\n      box-sizing: border-box;\n      margin: 0;\n      padding: 0;\n    }\n    body {\n      font-family: ...ion-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n')
+E        +    where &lt;function search at 0x000001E688B3C4A0&gt; = re.search
+
+tests\unit\presentation\test_tokens_and_wcag.py:1019: AssertionError</failure></testcase></testsuite></testsuites>

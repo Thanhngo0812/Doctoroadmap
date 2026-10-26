@@ -1,0 +1,140 @@
+
+> wayfinder-web@0.1.0 test
+> vitest run --pool=threads --maxWorkers=1 --reporter=default --reporter=junit --outputFile=C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w15-real-build\report\w15-evidence\runs\r4-react-20261025-01.xml
+
+
+ RUN  v5.0.5 C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/src/web/frontend
+
+ ✓ src/App.test.tsx (24 tests) 16060ms
+   ✓ WayFinder demo (12)
+     ✓ takes a learner from the sample document through lecture, quiz, and visible progress 2079ms
+     ✓ registers through the API, hydrates the new session, and lands on courses 1253ms
+     ✓ keeps duplicate registration generic when no session is created 1153ms
+     ✓ shows generic login and rate-limit errors, and the account menu logs out with CSRF 866ms
+     ✓ checks password confirmation locally and exposes the password toggle state accessibly 1286ms
+     ✓ maps API validation fields to a focused alert and inline accessible error 1292ms
+   ✓ auth feedback and switching (9)
+     ✓ clears errors and private form state when leaving login 800ms
+     ✓ clears errors and private form state when leaving register 1260ms
+     ✓ does not carry a late login failure into the registration form 770ms
+     ✓ keeps a success notification visible after login reaches courses 694ms
+     ✓ shows inline errors for short invalid fields without submitting to the API 840ms
+     ✓ shows the actual password field message for body.password 1145ms
+     ✓ shows the actual password field message for [ 'body', 'password' ] 1154ms
+ ✓ src/W03.test.tsx (21 tests) 6140ms
+   ✓ W-03 email verification and recovery (21)
+     ✓ sends a generic password-reset request without revealing whether the email exists 444ms
+     ✓ uses the fragment token, resets without auto-login, and shows the success notice on login 780ms
+     ✓ focuses the recovery heading and hides reset fields after a terminal token error 812ms
+     ✓ replaces a terminal reset link with a second link opened in the same tab 1816ms
+     ✓ keeps the reset form available after a retryable network failure 973ms
+ ✓ src/Sharing.test.tsx (16 tests) 2621ms
+   ✓ creates a one-time share URL, copies only on a successful clipboard write, and clears it on close 510ms
+   ✓ does not reveal a one-time URL when creation finishes after the dialog closes 323ms
+ ✓ src/Builds.test.tsx (10 tests) 1782ms
+   ✓ requires rights confirmation before upload and queues only after explicit title confirmation 860ms
+ ✓ src/Courses.test.tsx (17 tests) 2040ms
+   ✓ shows real-shaped owned joined and samples without inventing sample progress 433ms
+   ✓ loads a membership-gated course entry and selected resume module from actual route shapes 378ms
+ ❯ src/Learning.review-repro.test.tsx (0 test)
+ ❯ src/Learning.test.tsx (0 test)
+ ✓ src/W11AuthReturn.repro.test.tsx (22 tests) 41401ms
+   ✓ control: direct login returns to the exact invitation after authentication 1445ms
+   ✓ control: direct register returns to the exact invitation after authentication 2036ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=false) 2133ms
+   ✓ keeps unsafe next internal after switching (next=https://evil.example/, viewTransition=true) 2023ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=false) 2135ms
+   ✓ keeps unsafe next internal after switching (next=//evil.example/, viewTransition=true) 2029ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=false) 2019ms
+   ✓ keeps unsafe next internal after switching (next=/\evil.example/, viewTransition=true) 2048ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=false) 2031ms
+   ✓ keeps unsafe next internal after switching (next=/ unsafe, viewTransition=true) 2037ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=false) 2046ms
+   ✓ keeps unsafe next internal after switching (next=/	evil.example/, viewTransition=true) 2067ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=false) 2060ms
+   ✓ keeps unsafe next internal after switching (next=javascript:alert(1), viewTransition=true) 2035ms
+   ✓ retains invite after login -> register through header (viewTransition=false) 2157ms
+   ✓ retains invite after login -> register through header (viewTransition=true) 2039ms
+   ✓ retains invite after login -> register through footer (viewTransition=false) 2087ms
+   ✓ retains invite after login -> register through footer (viewTransition=true) 2059ms
+   ✓ retains invite after register -> login through header (viewTransition=false) 1332ms
+   ✓ retains invite after register -> login through header (viewTransition=true) 1217ms
+   ✓ retains invite after register -> login through footer (viewTransition=false) 1155ms
+   ✓ retains invite after register -> login through footer (viewTransition=true) 1206ms
+ ✓ src/Roadmap.test.tsx (8 tests) 1313ms
+   ✓ shows the selected module and the shared learner mark on the module route 378ms
+ ✓ src/SourceViewer.test.tsx (3 tests) 437ms
+ ✓ src/TaskWait.test.tsx (2 tests) 158ms
+ ❯ src/LectureMarkdown.test.tsx (0 test)
+ ✓ src/CourseShellGuest.test.tsx (1 test) 183ms
+ ✓ src/api.test.ts (22 tests) 46ms
+
+ Test Files  3 failed | 11 passed (14)
+      Tests  146 passed (146)
+   Start at  10:26:50
+   Duration  128.54s (tests 59%, environment 27%, setup 8%, import 5%, transform 1%)
+
+    Isolate  14 workers spawned · ~2.68s startup each (spawn + environment, per file)
+             at least ~34.85s faster with isolate: false — reuses workers across files instead of one per file
+
+JUNIT report written to C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/report/w15-evidence/runs/r4-react-20261025-01.xml
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  src/Learning.review-repro.test.tsx [ src/Learning.review-repro.test.tsx ]
+Error: Failed to resolve import "react-markdown" from "src/LectureMarkdown.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/src/web/frontend/src/LectureMarkdown.tsx:1:21
+  1  |  import Markdown from "react-markdown";
+     |                        ^
+  2  |  import { memo } from "react";
+  3  |  import remarkMath from "remark-math";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ FAIL  src/Learning.test.tsx [ src/Learning.test.tsx ]
+Error: Failed to resolve import "katex/dist/katex.min.css" from "src/LectureMarkdown.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/src/web/frontend/src/LectureMarkdown.tsx:5:7
+  3  |  import remarkMath from "remark-math";
+  4  |  import rehypeKatex from "rehype-katex";
+  5  |  import "katex/dist/katex.min.css";
+     |          ^
+  6  |  var _jsxFileName = "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/src/web/frontend/src/LectureMarkdown.tsx";
+  7  |  import { jsxDEV as _jsxDEV } from "react/jsx-dev-runtime";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+ ❯ fetchModule node_modules/vite/dist/node/chunks/node.js:36165:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/3]⎯
+
+ FAIL  src/LectureMarkdown.test.tsx [ src/LectureMarkdown.test.tsx ]
+Error: Failed to resolve import "react-markdown" from "src/LectureMarkdown.tsx". Does the file exist?
+  Plugin: vite:import-analysis
+  File: C:/Users/ngoco/Desktop/Doctoroadmap/tmp/w15-real-build/src/web/frontend/src/LectureMarkdown.tsx:1:21
+  1  |  import Markdown from "react-markdown";
+     |                        ^
+  2  |  import { memo } from "react";
+  3  |  import remarkMath from "remark-math";
+ ❯ TransformPluginContext._formatLog node_modules/vite/dist/node/chunks/node.js:8766:39
+ ❯ TransformPluginContext.error node_modules/vite/dist/node/chunks/node.js:8763:14
+ ❯ normalizeUrl node_modules/vite/dist/node/chunks/node.js:26632:18
+ ❯ node_modules/vite/dist/node/chunks/node.js:26702:30
+ ❯ TransformPluginContext.transform node_modules/vite/dist/node/chunks/node.js:26668:4
+ ❯ EnvironmentPluginContainer.transform node_modules/vite/dist/node/chunks/node.js:8545:14
+ ❯ loadAndTransform node_modules/vite/dist/node/chunks/node.js:20184:26
+ ❯ fetchModule node_modules/vite/dist/node/chunks/node.js:36165:15
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/3]⎯

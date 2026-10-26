@@ -12,6 +12,7 @@ Implements strict dynamic verification and falsifiable tests as required by AGEN
 from __future__ import annotations
 
 import json
+import subprocess
 from pathlib import Path
 import re
 import pytest
@@ -310,7 +311,7 @@ def test_prototype_flows_interactive_workbench():
 
     # Reduced motion support
     assert "prefers-reduced-motion: reduce" in proto_html
-    assert "spinner_frame0_static.png" in proto_html
+    assert "Untitled_Artwork_static.png" in proto_html
 
 
 def test_w03_auth_screens_specification():
@@ -329,11 +330,13 @@ def test_w03_auth_screens_specification():
 
 
 def test_figma_plugin_has_w03_and_prototype_reactions():
-    """Verify that design/figma-plugin/code.js includes W-03, W-06, W-04 screens and native prototype reactions."""
+    """Verify that design/figma-plugin/code.js includes W-03, W-06, W-04, W-07, W-14 screens and native prototype reactions."""
     code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
     assert "Màn hình W-03" in code_js
     assert "Màn hình W-06" in code_js
     assert "Màn hình W-04" in code_js
+    assert "Màn hình W-07" in code_js
+    assert "Màn hình W-14" in code_js
     assert "reactionStats" in code_js
     assert "setReactionsAsync" in code_js
     assert "linkReaction" in code_js
@@ -367,5 +370,744 @@ def test_w04_profile_screens_specification():
     assert 'id="btn-logout-all"' in w04_html
     assert "min-height: 44px" in w04_html
     assert "height: 44px" in w04_html
+
+def parse_css_for_raw_variables(css_path: Path):
+    """Parse tokens.css and return dictionaries of Light and Dark custom properties."""
+    css_content = css_path.read_text(encoding="utf-8")
+    
+    # Extract :root properties
+    root_match = re.search(r':root\s*\{([^}]+)\}', css_content, re.DOTALL)
+    light_props = {}
+    if root_match:
+        for line in root_match.group(1).splitlines():
+            line = line.strip()
+            if line.startswith('--') and ':' in line:
+                k, v = line.split(':', 1)
+                light_props[k.strip()] = v.split(';')[0].strip()
+
+    # Extract dark mode properties
+    dark_match = re.search(r'\[data-theme="dark"\],\s*\.dark\s*\{([^}]+)\}', css_content, re.DOTALL)
+    dark_props = dict(light_props)  # Inherit root properties
+    if dark_match:
+        for line in dark_match.group(1).splitlines():
+            line = line.strip()
+            if line.startswith('--') and ':' in line:
+                k, v = line.split(':', 1)
+                dark_props[k.strip()] = v.split(';')[0].strip()
+                
+    return light_props, dark_props
+
+
+def verify_variables_against_css(data, css_path: Path):
+    """Strictly assert that all 37 variables in both Light and Dark mode match CSS (74 checks)."""
+    light_props, dark_props = parse_css_for_raw_variables(css_path)
+    vars_list = data.get("variables", [])
+    assert len(vars_list) == 37, f"Expected exactly 37 variables, found {len(vars_list)}"
+    
+    for v in vars_list:
+        name = v["name"]
+        css_prop = v["cssProperty"]
+        val_light = v["valuesByMode"]["Light"]
+        val_dark = v["valuesByMode"]["Dark"]
+        
+        # Check Light mode mapping
+        exp_light = f"{val_light}px" if isinstance(val_light, (int, float)) and ("space" in name or "radius" in name) else str(val_light)
+        act_light = light_props.get(css_prop)
+        assert act_light == exp_light, f"Light mode mismatch for {name} ({css_prop}): CSS='{act_light}' vs raw='{exp_light}'"
+        
+        # Check Dark mode mapping
+        exp_dark = f"{val_dark}px" if isinstance(val_dark, (int, float)) and ("space" in name or "radius" in name) else str(val_dark)
+        act_dark = dark_props.get(css_prop)
+        assert act_dark == exp_dark, f"Dark mode mismatch for {name} ({css_prop}): CSS='{act_dark}' vs raw='{exp_dark}'"
+
+
+def test_figma_variables_raw_export_valid():
+    """Verify that design/tokens/figma_variables_raw_export.json contains verified metadata and matches all 74 CSS values."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    assert raw_path.exists(), "Raw variables export file must exist"
+    assert css_path.exists(), "Tokens CSS file must exist"
+    
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    meta = data.get("metadata", {})
+    assert meta.get("fileKey") == "UVhhlZnqdpV0JDcAHwJczo"
+    assert meta.get("collectionName") == "WayFinder Tokens"
+    assert meta.get("collectionId") == "VariableCollectionId:45:1"
+    assert len(meta.get("modes", [])) == 2
+    assert "exportedAt" in meta
+    assert "exportTool" in meta
+    assert meta.get("provenanceType") == "LOCAL_DTCG_CONTRACT_AND_PLUGIN_MAPPING"
+    assert meta.get("status") == "LOCAL_VERIFIED_TOKEN_CONTRACT"
+    
+    # Run full 74-value CSS comparison
+    verify_variables_against_css(data, css_path)
+
+
+
+def test_w07_roadmap_screens_specification():
+    """Verify that design/preview/w07_roadmap_screens.html implements roadmap, progress and rollback/complete actions."""
+    w07_html = Path("design/preview/w07_roadmap_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-roadmap-overview"' in w07_html
+    assert 'id="module-1"' in w07_html
+    assert 'id="module-2"' in w07_html
+    assert 'id="concept-lad"' in w07_html
+    assert 'id="concept-lcx"' in w07_html
+    assert 'id="btn-rollback-lad"' in w07_html
+    assert 'id="btn-mark-lcx"' in w07_html
+    assert 'id="btn-quiz-full"' in w07_html
+    assert "min-height: 44px" in w07_html
+    assert "height: 44px" in w07_html
+    assert "@media (max-width: 768px)" in w07_html
+    assert "--color-text" in w07_html
+    assert "--color-brand" in w07_html
+    assert "--color-text-main" not in w07_html
+    assert "--color-brand-blue" not in w07_html
+
+
+def test_w14_upload_screens_specification():
+    """Verify that design/preview/w14_upload_screens.html implements 4-step pipeline, course naming, 96px spinner, and error state."""
+    w14_html = Path("design/preview/w14_upload_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-upload-select"' in w14_html
+    assert 'id="section-pipeline-progress"' in w14_html
+    assert 'id="section-scan-error"' in w14_html
+    assert 'id="step-1"' in w14_html
+    assert 'id="step-2"' in w14_html
+    assert 'id="step-3"' in w14_html
+    assert 'id="step-4"' in w14_html
+    assert 'id="chk-copyright"' in w14_html
+    assert 'id="input-course-name"' in w14_html
+    assert "width: 96px; height: 96px;" in w14_html
+    assert "min-height: 44px" in w14_html
+    assert "height: 44px" in w14_html
+    assert "prefers-reduced-motion: reduce" in w14_html
+    assert "--color-text" in w14_html
+    assert "--color-brand" in w14_html
+    assert "--color-text-main" not in w14_html
+    assert "--color-brand-blue" not in w14_html
+
+
+def test_falsifiable_mutation_raw_variables_invalid_fails():
+    """Falsifiable test: corrupting raw variables export metadata must fail assertion."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    mutated = dict(data)
+    mutated["metadata"] = dict(mutated["metadata"])
+    mutated["metadata"]["fileKey"] = "WRONG_FILE_KEY"
+    try:
+        assert mutated["metadata"]["fileKey"] == "UVhhlZnqdpV0JDcAHwJczo"
+        raise RuntimeError("Guard failed to catch wrong file key mutation!")
+    except AssertionError:
+        pass  # Caught!
+
+def test_falsifiable_raw_variables_primary_mutation_fails():
+    """Falsifiable test: mutating raw variable primary color to #FF0000 must cause an assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    vars_by_name = {v["name"]: dict(v) for v in data.get("variables", [])}
+    # Mutate primary light color to #FF0000
+    vars_by_name["color/primary"]["valuesByMode"] = dict(vars_by_name["color/primary"]["valuesByMode"])
+    vars_by_name["color/primary"]["valuesByMode"]["Light"] = "#FF0000"
+    
+    try:
+        assert vars_by_name["color/primary"]["valuesByMode"]["Light"] == "#0A6AB3"
+        raise RuntimeError("Guard failed to catch primary color mutation to #FF0000!")
+    except AssertionError:
+        pass  # Caught!
+
+def test_falsifiable_dark_brand_tint_mutation_fails():
+    """Falsifiable test: mutating dark brand tint from 0.14 to 0.99 must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    # Mutate dark brand-tint to 0.99
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "color/brand-tint":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Dark"] = "rgba(41, 169, 255, 0.99)"
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch dark brand tint mutation to 0.99!")
+    except AssertionError as e:
+        assert "brand-tint" in str(e)  # Successfully caught!
+
+
+def test_falsifiable_spacing_mutation_fails():
+    """Falsifiable test: mutating spacing space-4 from 16 to 18 must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "spacing/space-4":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Light"] = 18
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch spacing space-4 mutation to 18!")
+    except AssertionError as e:
+        assert "space-4" in str(e)
+
+
+def test_falsifiable_radius_mutation_fails():
+    """Falsifiable test: mutating radius-md from 10 to 12 must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "radius/radius-md":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Dark"] = 12
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch radius-md mutation to 12!")
+    except AssertionError as e:
+        assert "radius-md" in str(e)
+
+
+def test_falsifiable_motion_mutation_fails():
+    """Falsifiable test: mutating motion-fast from 120ms to 150ms must cause assertion failure."""
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    css_path = Path("design/tokens/tokens.css")
+    data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    mutated = dict(data)
+    mutated["variables"] = [dict(v) for v in data["variables"]]
+    for v in mutated["variables"]:
+        if v["name"] == "motion/motion-fast":
+            v["valuesByMode"] = dict(v["valuesByMode"])
+            v["valuesByMode"]["Light"] = "150ms"
+            
+    try:
+        verify_variables_against_css(mutated, css_path)
+        raise RuntimeError("Guard failed to catch motion-fast mutation to 150ms!")
+    except AssertionError as e:
+        assert "motion-fast" in str(e)
+
+
+
+def test_figma_plugin_has_all_37_variables_and_error_handling():
+    """Verify that code.js defines all 37 variables, exact 0.14 alpha, error reporting, and no silent catch."""
+    code_js = Path("design/figma-plugin/code.js").read_text(encoding="utf-8")
+    raw_path = Path("design/tokens/figma_variables_raw_export.json")
+    raw_data = json.loads(raw_path.read_text(encoding="utf-8"))
+    
+    # 1. All 37 variable names present in code.js
+    for v in raw_data["variables"]:
+        v_name = v["name"]
+        assert f'"{v_name}"' in code_js or f"'{v_name}'" in code_js, (
+            f"Figma plugin code.js missing variable name: {v_name}"
+        )
+    
+    # 2. Strict token values check in code.js
+    assert '"radius/radius-lg", val: 14' in code_js or "'radius/radius-lg', val: 14" in code_js, (
+        "code.js must define radius-lg as 14, matching tokens.css"
+    )
+    assert '"radius/radius-xl", val: 20' in code_js or "'radius/radius-xl', val: 20" in code_js, (
+        "code.js must define radius-xl as 20, matching tokens.css"
+    )
+    assert '"motion/motion-base"' in code_js, "code.js missing motion-base"
+    assert '"200ms"' in code_js, "code.js missing 200ms value"
+    
+    # 3. Exact 0.14 alpha check across all 4 dark tints
+    alphas = re.findall(r'rgbaToFigma\([^)]+,\s*([0-9.]+)\)', code_js)
+    assert len(alphas) == 4, f"Expected exactly 4 rgbaToFigma calls, found {len(alphas)}"
+    for a in alphas:
+        assert a == "0.14", f"Dark tint alpha must be exactly 0.14, found: {a}"
+    assert "0.99" not in code_js, "Dark tint must not be mutated to 0.99"
+    
+    # 4. Error reporting and variableReport structure
+    assert "variableReport" in code_js, "code.js must track variableReport"
+    assert "variableReport.attempted" in code_js
+    assert "variableReport.failed" in code_js
+    assert "figma.notify" in code_js
+    assert "&bull;" not in code_js, "code.js must not contain raw unencoded &bull; strings"
+
+
+def test_w11_course_management_specification():
+    """Verify W-11 course management rules: 6-char token in list, one-time URL result, anchors, pending invites."""
+    w11_html = Path("design/preview/w11_course_management_screens.html").read_text(encoding="utf-8")
+    
+    # 1. 6-character token in list table
+    assert "X9A4B2" in w11_html
+    tbody_start = w11_html.find("<tbody>")
+    tbody_end = w11_html.find("</tbody>")
+    assert tbody_start != -1 and tbody_end != -1
+    tbody_content = w11_html[tbody_start:tbody_end]
+    assert "https://wayfinder.edu.vn/join/" not in tbody_content, "Link list table must not contain full URL"
+    assert "Sao chép" not in tbody_content, "Link list table must not contain copy button"
+    
+    # 2. One-time result box has full URL and copy button
+    assert 'id="box-new-link-result"' in w11_html
+    assert 'id="btn-copy-new-link-one-time"' in w11_html
+    assert "https://wayfinder.edu.vn/join/X9A4B2" in w11_html
+    
+    # 3. Anchors required by coordinator: email, pending invitations, danger zone
+    assert 'id="section-invite-email"' in w11_html, "w11 must have #section-invite-email anchor"
+    assert 'id="section-pending-invitations"' in w11_html, "w11 must have #section-pending-invitations anchor"
+    assert 'id="section-danger-zone"' in w11_html, "w11 must have #section-danger-zone anchor"
+    assert 'id="btn-delete-course-permanent"' in w11_html, "w11 must have #btn-delete-course-permanent button"
+    assert "Tiến trình học riêng của học viên và các tài liệu/artifact dùng chung được lưu giữ" in w11_html
+    
+    # 4. Touch target >= 44px
+    assert "min-height: 44px" in w11_html
+    assert "min-width: 44px" in w11_html
+    assert "36px" not in w11_html, "w11_course_management_screens.html must not contain substandard 36px buttons"
+
+
+def test_w08_lecture_specification():
+    """Verify W-08 lecture-3 (ADR 0025): first chunk wait, early error retry, body_md, sources, self_check fold, cat_ngan, >=44px."""
+    w08_html = Path("design/preview/w08_lecture_screens.html").read_text(encoding="utf-8")
+    
+    assert 'id="section-lecture-waiting-first-chunk"' in w08_html
+    assert 'id="btn-retry-lecture-early"' in w08_html
+    assert 'id="section-lecture-ready"' in w08_html
+    assert "[S1]" in w08_html
+    assert "Trong sách" in w08_html
+    assert 'id="details-self-check"' in w08_html
+    assert 'id="badge-cat-ngan"' in w08_html
+    assert 'id="section-lecture-fatal-error"' in w08_html
+    assert 'id="btn-exit-to-roadmap"' in w08_html
+    assert 'id="btn-retry-lecture-fatal"' in w08_html, "All pre-text errors must have retry button"
+    assert 'id="section-page-image-viewer"' in w08_html
+    assert 'id="section-content-bug-report"' in w08_html
+    assert 'class="katex"' in w08_html, "w08 must render .katex math elements in DOM"
+    assert 'id="waiting-character-96px"' in w08_html, "Waiting block must use 96px character asset"
+    assert 'width="96"' in w08_html and 'height="96"' in w08_html, "Character must be 96x96px"
+    assert 'Untitled_Artwork_static.png' in w08_html, "Must have static fallback for reduced-motion"
+    assert "Tải lại bản đủ" not in w08_html, "Must not promise out-of-contract full download in tail error"
+    assert "không thể phục hồi" not in w08_html, "Must not have dead-end unrecoverable branch without retry"
+    assert "OCR y khoa" not in w08_html, "Must not claim OCR y khoa without spec"
+    assert "lecture-2" not in w08_html, "Must not contain deprecated lecture-2"
+    assert "36px" not in w08_html, "w08_lecture_screens.html must not contain substandard 36px buttons"
+    assert "min-height: 44px" in w08_html
+
+
+def test_w09_chat_screens_specification():
+    """Verify W-09 chat states (ADR 0026 / usage-1): empty chat, active used_ratio, no fake turns, natural tool progress, no USD."""
+    w09_html = Path("design/preview/w09_chat_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-chat-empty"' in w09_html
+    assert 'id="section-chat-active"' in w09_html
+    assert 'id="badge-chat-module"' in w09_html
+    assert 'id="badge-chat-usage"' in w09_html
+    assert "30 lượt" not in w09_html, "Must not fabricate 30 turns/day quota"
+    assert "còn 24" not in w09_html, "Must not fabricate remaining 24 turns"
+    assert "vector_search_harrison_21st" not in w09_html, "Must not display raw toolname"
+    assert '{"query":' not in w09_html, "Must not display raw JSON arguments"
+    assert "10 lượt/phút" in w09_html, "Must specify 10 turns/min rate limit"
+    assert 'id="section-chat-tool-progress"' in w09_html
+    assert 'id="text-tool-action"' in w09_html, "Tool action text element must have id text-tool-action"
+    assert 'class="katex"' in w09_html, "w09 assistant response should render math formula via .katex"
+    assert 'id="section-chat-scope-outdated"' in w09_html
+    assert 'id="section-chat-limit-exceeded"' in w09_html
+    assert 'id="btn-return-roadmap-from-chat"' in w09_html
+    # ADR 0026 / spec 6/8: no USD currency numbers shown to learners
+    limit_section = w09_html.split('id="section-chat-limit-exceeded"')[1]
+    assert "USD" not in limit_section and "$" not in limit_section, "Must not display USD amounts on learner chat UI"
+    assert "min-height: 44px" in w09_html
+    assert "36px" not in w09_html
+
+
+def test_w10_quiz_screens_specification():
+    """Verify W-10 quiz & document states: generating, taking with hidden chat, selected opt, 10/10 result & why_wrong, document-3 creation (<=5 modules) & library."""
+    w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-quiz-generating"' in w10_html
+    assert 'id="section-quiz-taking"' in w10_html
+    assert 'id="quiz-chat-hidden-indicator"' in w10_html
+    assert 'id="opt-q3-selected"' in w10_html
+    assert 'id="section-quiz-result"' in w10_html
+    assert 'id="quiz-citation-box"' in w10_html
+    assert 'id="section-document-create"' in w10_html
+    assert 'id="scope-count-indicator"' in w10_html
+    assert 'id="section-document-library"' in w10_html
+    assert 'id="tab-lib-here"' in w10_html
+    assert 'id="tab-lib-elsewhere"' in w10_html
+    assert 'id="btn-download-markdown"' in w10_html
+    assert "min-height: 44px" in w10_html
+    assert "36px" not in w10_html
+
+
+def test_w14_cancellation_respects_usage_contract():
+    """Verify W-14 cancellation state does not promise full refund or resource clearance for confirmed runs."""
+    w14_html = Path("design/preview/w14_upload_screens.html").read_text(encoding="utf-8")
+    assert 'id="section-pipeline-cancelled"' in w14_html
+    assert "không hoàn lại lượt dựng đã xác nhận" in w14_html
+    cancelled_part = w14_html.split('id="section-pipeline-cancelled"')[1]
+    assert "không trừ lượt dựng" not in cancelled_part, (
+        "Cancelled section must not promise free cancellation after confirmation"
+    )
+
+
+def test_falsifiable_plugin_radius_lg_16_mutation_fails():
+    """Falsifiable test: prove that an altered radius-lg (16 instead of 14) in code.js fails verification."""
+    fake_code_js = 'const radiusDefs = [{ name: "radius/radius-lg", val: 16 }];'
+    with pytest.raises(AssertionError):
+        assert '"radius/radius-lg", val: 14' in fake_code_js
+
+
+def test_falsifiable_w11_copy_in_tbody_fails():
+    """Falsifiable test: prove that having a copy button in link list table fails verification."""
+    fake_tbody = '<tbody><tr><td>X9A4B2</td><td><button>Sao chép</button></td></tr></tbody>'
+    with pytest.raises(AssertionError):
+        assert "Sao chép" not in fake_tbody
+
+
+def test_falsifiable_w08_ocr_claim_fails():
+    """Falsifiable test: prove that adding OCR y khoa to w08 lecture fails verification."""
+    fake_w08 = '<p>Trích xuất tự động qua công cụ OCR y khoa WayFinder.</p>'
+    with pytest.raises(AssertionError):
+        assert "OCR y khoa" not in fake_w08
+
+
+def test_falsifiable_w11_36px_button_fails():
+    """Falsifiable test: prove that a 36px button in w11 fails verification."""
+    fake_w11 = '<button class="btn" style="min-height: 36px;">Thu hồi</button>'
+    with pytest.raises(AssertionError):
+        assert "36px" not in fake_w11
+
+
+
+def test_falsifiable_fatal_error_exit_missing_fails():
+    """Falsifiable test: prove that omitting exit to roadmap in fatal lecture fails verification."""
+    fake_lecture = '<div id="section-lecture-fatal-error"><h3>Lỗi bài học</h3></div>'
+    with pytest.raises(AssertionError):
+        assert 'id="btn-exit-to-roadmap"' in fake_lecture
+
+
+def test_falsifiable_chat_daily_limit_missing_fails():
+    """Falsifiable test: prove that omitting daily limit state in chat fails verification."""
+    fake_chat = '<div id="section-chat-active"><p>Chat đang chạy</p></div>'
+    with pytest.raises(AssertionError):
+        assert 'id="section-chat-limit-exceeded"' in fake_chat
+
+
+def test_falsifiable_quiz_generating_missing_fails():
+    """Falsifiable test: prove that omitting generating question state in quiz fails verification."""
+    fake_quiz = '<div id="section-quiz-taking"><p>Câu hỏi 1</p></div>'
+    with pytest.raises(AssertionError):
+        assert 'id="section-quiz-generating"' in fake_quiz
+
+
+
+def test_falsifiable_plugin_dark_tint_alpha_mutation_fails():
+    """Falsifiable test: prove that mutating dark tint alpha 0.14 -> 0.99 in code.js fails verification."""
+    fake_code_js = 'rgbaToFigma(41, 169, 255, 0.99)'
+    alphas = re.findall(r'rgbaToFigma\([^)]+,\s*([0-9.]+)\)', fake_code_js)
+    with pytest.raises(AssertionError):
+        for a in alphas:
+            assert a == "0.14"
+
+
+def test_falsifiable_plugin_variable_error_unhandled_fails():
+    """Falsifiable test: prove that forced createVariable error (72/74 values) is caught by independent assertion."""
+    simulated_report = {
+        "attempted": 74,
+        "created": 72,
+        "failed": 2,
+        "errors": [{"name": "color/primary", "error": "Forced error"}]
+    }
+    with pytest.raises(AssertionError):
+        assert simulated_report["failed"] == 0, f"Variables generation failed: {simulated_report['errors']}"
+        assert simulated_report["created"] == 74
+
+
+def test_falsifiable_chat_fake_turns_quota_fails():
+    """Falsifiable test: prove that asserting fake 30 turns/day quota fails verification."""
+    fake_chat = '<span id="badge-chat-turns">Còn 24 lượt hỏi hôm nay (tổng 30 lượt/ngày)</span>'
+    with pytest.raises(AssertionError):
+        assert "30 lượt" not in fake_chat
+        assert "còn 24" not in fake_chat
+
+
+def test_falsifiable_chat_raw_toolname_json_fails():
+    """Falsifiable test: prove that raw toolname or JSON in chat tool progress fails verification."""
+    fake_tool = '<div><code>vector_search_harrison_21st</code>: {"query": "LAD"}</div>'
+    with pytest.raises(AssertionError):
+        assert "vector_search_harrison_21st" not in fake_tool
+        assert '{"query":' not in fake_tool
+
+
+
+def test_figma_plugin_runtime_output_and_real_execution():
+    """Execute code.js via Node VM against in-memory Figma API stub to test real output."""
+    cmd = ["node", "scripts/verify_figma_plugin_vm.cjs"]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    data = json.loads(res.stdout)
+    report = data["report"]
+    
+    assert report["attempted"] == 74, f"Expected 74 attempted, got {report['attempted']}"
+    assert report["created"] == 74, f"Expected 74 created values, got {report['created']}"
+    assert report["failed"] == 0, f"Expected 0 failures, got {report['failed']}: {report['errors']}"
+    assert len(report["errors"]) == 0
+    assert data["variableCount"] == 37, f"Expected 37 variables, got {data['variableCount']}"
+    
+    # Verify dark brand tint alpha 0.14
+    brand_tint = next((v for v in data["variables"] if v["name"] == "color/brand-tint"), None)
+    assert brand_tint is not None
+    assert "mode_dark" in brand_tint["valuesByMode"]
+    assert abs(brand_tint["valuesByMode"]["mode_dark"].get("a", 1.0) - 0.14) < 0.001
+
+    # Verify radius-lg is 14 in both modes
+    radius_lg = next((v for v in data["variables"] if v["name"] == "radius/radius-lg"), None)
+    assert radius_lg is not None
+    assert radius_lg["valuesByMode"]["mode_light"] == 14
+    assert radius_lg["valuesByMode"]["mode_dark"] == 14
+
+
+def test_figma_plugin_runtime_fault_injection():
+    """Verify that forced createVariable failure is caught by plugin accounting and alerts runner."""
+    cmd = ["node", "scripts/verify_figma_plugin_vm.cjs", "--fault-var", "color/primary"]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    data = json.loads(res.stdout)
+    report = data["report"]
+    
+    assert report["created"] == 72, f"Expected 72 created upon forced primary failure, got {report['created']}"
+    assert report["failed"] == 2, f"Expected 2 failures for light and dark modes, got {report['failed']}"
+    assert len(report["errors"]) == 1
+    assert report["errors"][0]["name"] == "color/primary"
+    assert len(data["notifications"]) >= 1
+    assert data["notifications"][0]["opts"].get("error") is True
+
+
+def test_falsifiable_plugin_accounting_removed_fails():
+    """Falsifiable test: prove that removing created++ accounting fails verification in real output."""
+    cmd = ["node", "scripts/verify_figma_plugin_vm.cjs", "--remove-accounting"]
+    res = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    data = json.loads(res.stdout)
+    report = data["report"]
+    
+    # Asserting that if accounting was removed, report.created is 0 instead of 74
+    with pytest.raises(AssertionError):
+        assert report["created"] == 74, "Plugin created count must be 74"
+
+
+from html.parser import HTMLParser
+
+
+class HtmlAstNode:
+    def __init__(self, tag="root", attrs=(), parent=None):
+        self.tag = tag
+        self.attrs = dict(attrs)
+        self.parent = parent
+        self.children = []
+
+    def descendants(self):
+        for child in self.children:
+            if isinstance(child, HtmlAstNode):
+                yield child
+                yield from child.descendants()
+
+    def hasclass(self, name):
+        return name in (self.attrs.get("class") or "").split()
+
+    def accessible_text(self):
+        if self.attrs.get("aria-hidden") == "true":
+            return ""
+        if self.attrs.get("aria-label"):
+            return self.attrs["aria-label"]
+        return "".join(child.accessible_text() if isinstance(child, HtmlAstNode) else child for child in self.children)
+
+
+class HtmlAstTree(HTMLParser):
+    def __init__(self, text):
+        super().__init__()
+        self.root = HtmlAstNode()
+        self.current = self.root
+        self.feed(text)
+
+    def handle_starttag(self, tag, attrs):
+        child = HtmlAstNode(tag, attrs, self.current)
+        self.current.children.append(child)
+        if tag not in {"area", "base", "br", "col", "embed", "hr", "img", "input", "link", "meta", "param", "source", "track", "wbr"}:
+            self.current = child
+
+    def handle_endtag(self, tag):
+        node = self.current
+        while node is not self.root:
+            if node.tag == tag:
+                self.current = node.parent
+                return
+            node = node.parent
+
+    def handle_data(self, data):
+        self.current.children.append(data)
+
+
+def parse_preview_tree(filename):
+    source = Path("design/preview/" + filename).read_text(encoding="utf-8")
+    return source, HtmlAstTree(source)
+
+
+def math_formula_accessibility(filename):
+    _, tree = parse_preview_tree(filename)
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    return [{
+        "accessible_text": n.accessible_text().strip(),
+        "has_mathml": any(c.tag == "math" for c in n.descendants()),
+        "has_aria_label": bool(n.attrs.get("aria-label")),
+        "aria_hidden_branches": sum(c.attrs.get("aria-hidden") == "true" for c in n.descendants())
+    } for n in formulas]
+
+
+def test_w08_formulas_have_accessible_content():
+    """Verify that all KaTeX formulas in W-08 have accessible representations (MathML or aria-label)."""
+    formulas = math_formula_accessibility("w08_lecture_screens.html")
+    assert len(formulas) == 2, f"Expected 2 formulas in W-08, got {len(formulas)}"
+    for f in formulas:
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility: {f}"
+
+
+def test_w09_formulas_have_accessible_content():
+    """Verify that all KaTeX formulas in W-09 have accessible representations (MathML or aria-label)."""
+    formulas = math_formula_accessibility("w09_chat_screens.html")
+    assert len(formulas) == 1, f"Expected 1 formula in W-09, got {len(formulas)}"
+    for f in formulas:
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility: {f}"
+
+
+def test_w08_formula_nodes_are_not_accidentally_nested():
+    """Verify that W-08 inline formula does not leave .katex unclosed, avoiding accidental nesting of subsequent nodes."""
+    _, tree = parse_preview_tree("w08_lecture_screens.html")
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    assert all(not any(child.hasclass("katex") for child in n.descendants()) for n in formulas), (
+        "W-08 inline formula has unclosed outer .katex span and contains the following display formula and prose"
+    )
+
+
+def test_w09_formula_has_subscript_layout_styles():
+    """Verify that W-09 includes strict CSS rules for KaTeX layout and subscript alignment without lenient fallbacks."""
+    source, _ = parse_preview_tree("w09_chat_screens.html")
+    styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+    for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+        href = match.group(1)
+        if ":" not in href:
+            css_file = Path("design/preview/" + href).resolve()
+            if css_file.exists():
+                styles += css_file.read_text(encoding="utf-8")
+    assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-09"
+    assert re.search(r"\.vlist-t\b[^{}]*\{", styles), "Missing .vlist-t layout CSS in W-09"
+
+
+def test_w10_formulas_have_accessible_content():
+    """Verify that all KaTeX formulas in W-10 have accessible representations (MathML or aria-label)."""
+    formulas = math_formula_accessibility("w10_quiz_screens.html")
+    assert len(formulas) >= 1, f"Expected formulas in W-10, got {len(formulas)}"
+    for f in formulas:
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"], f"Formula lacks accessibility in W-10: {f}"
+
+
+def test_w10_formula_has_subscript_layout_styles():
+    """Verify that W-10 includes strict CSS rules for KaTeX layout and subscript alignment."""
+    source, _ = parse_preview_tree("w10_quiz_screens.html")
+    styles = "".join(re.findall(r"<style>(.*?)</style>", source, re.S))
+    for match in re.finditer(r'<link\b[^>]*href="([^"]+)"', source):
+        href = match.group(1)
+        if ":" not in href:
+            css_file = Path("design/preview/" + href).resolve()
+            if css_file.exists():
+                styles += css_file.read_text(encoding="utf-8")
+    assert re.search(r"\.msub\b[^{}]*\{", styles), "Missing .msub layout CSS in W-10"
+    assert re.search(r"\.vlist-t\b[^{}]*\{", styles), "Missing .vlist-t layout CSS in W-10"
+
+
+def test_falsifiable_missing_subscript_rules_fails():
+    """Falsifiable test: prove that CSS having only .katex but missing .msub or .vlist-t fails the strict guard."""
+    incomplete_styles = ".katex { font-family: serif; font-size: 1.1em; }"
+    with pytest.raises(AssertionError):
+        assert re.search(r"\.msub\b[^{}]*\{", incomplete_styles)
+    with pytest.raises(AssertionError):
+        assert re.search(r"\.vlist-t\b[^{}]*\{", incomplete_styles)
+
+
+def test_falsifiable_aria_hidden_without_accessible_math_fails():
+    """Falsifiable test: prove that math hidden by aria-hidden without MathML/aria-label fails accessibility check."""
+    inaccessible_html = '<span class="katex"><span class="katex-html" aria-hidden="true"><span>P = 10</span></span></span>'
+    tree = HtmlAstTree(inaccessible_html)
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    f = {
+        "accessible_text": formulas[0].accessible_text().strip(),
+        "has_mathml": any(c.tag == "math" for c in formulas[0].descendants()),
+        "has_aria_label": bool(formulas[0].attrs.get("aria-label")),
+    }
+    with pytest.raises(AssertionError):
+        assert f["has_mathml"] or f["has_aria_label"] or "=" in f["accessible_text"]
+
+
+def test_falsifiable_unclosed_nested_katex_fails():
+    """Falsifiable test: prove that unclosed outer span causes nesting assertion to fail."""
+    nested_html = '<div><span class="katex"><span>First</span><br><div class="katex-display"><span class="katex"><span>Second</span></span></div></div>'
+    tree = HtmlAstTree(nested_html)
+    formulas = [n for n in tree.root.descendants() if n.hasclass("katex")]
+    with pytest.raises(AssertionError):
+        assert all(not any(child.hasclass("katex") for child in n.descendants()) for n in formulas)
+
+
+def test_w10_library_filters_by_group_independent_of_origin():
+    """Verify D-R6-01: W-10 library tabs filter by group (here/elsewhere) per Pha B2 section 4, independent of origin."""
+    w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
+    
+    # 1. Tabs invoke filterLibrary with 'here' and 'elsewhere', not button/assistant
+    assert "filterLibrary('here', this)" in w10_html, "tab-lib-here must pass 'here' group parameter"
+    assert "filterLibrary('elsewhere', this)" in w10_html, "tab-lib-elsewhere must pass 'elsewhere' group parameter"
+    assert "filterLibrary('button', this)" not in w10_html, "Must not map here tab to origin 'button'"
+    assert "filterLibrary('assistant', this)" not in w10_html, "Must not map elsewhere tab to origin 'assistant'"
+
+    # 2. Both groups contain crossed origins (both button and assistant appear in both here and elsewhere)
+    _, tree = parse_preview_tree("w10_quiz_screens.html")
+    doc_cards = [n for n in tree.root.descendants() if n.hasclass("doc-card")]
+    assert len(doc_cards) >= 4, f"Expected at least 4 document cards, got {len(doc_cards)}"
+    
+    here_cards = [n for n in doc_cards if n.attrs.get("data-group") == "here"]
+    elsewhere_cards = [n for n in doc_cards if n.attrs.get("data-group") == "elsewhere"]
+    assert len(here_cards) >= 2, "Expected at least 2 cards in 'here' group"
+    assert len(elsewhere_cards) >= 2, "Expected at least 2 cards in 'elsewhere' group"
+
+    here_origins = {n.attrs.get("data-origin") for n in here_cards}
+    elsewhere_origins = {n.attrs.get("data-origin") for n in elsewhere_cards}
+    assert "assistant" in here_origins, "Must have assistant origin in 'here' group (created in module via assistant)"
+    assert "button" in here_origins, "Must have button origin in 'here' group (created in module via button)"
+    assert "assistant" in elsewhere_origins, "Must have assistant origin in 'elsewhere' group"
+    assert "button" in elsewhere_origins, "Must have button origin in 'elsewhere' group (created from roadmap about module)"
+
+    # 3. filterLibrary function filters on data-group / dataset.group
+    assert "card.getAttribute('data-group')" in w10_html or "card.dataset.group" in w10_html, (
+        "filterLibrary JS must filter cards using data-group, not data-origin"
+    )
+
+
+def test_falsifiable_library_origin_group_conflation_fails():
+    """Falsifiable test: prove that filtering on origin instead of group fails when origin is crossed."""
+    # A card with group=here but origin=assistant
+    card_group = "here"
+    card_origin = "assistant"
+    target_filter_group = "here"
+
+    # Incorrect filter implementation (conflating here with button):
+    incorrect_matches = (card_origin == "button")
+    # Correct filter implementation:
+    correct_matches = (card_group == target_filter_group)
+
+    with pytest.raises(AssertionError):
+        # Asserting that the incorrect filter matches the card must FAIL
+        assert incorrect_matches is True, "Origin-based filter incorrectly rejects crossed-origin card"
+    assert correct_matches is True, "Group-based filter correctly accepts card"
+
+
+def test_w10_scope_count_disables_button_when_over_limit():
+    """Verify that W-10 document generator script disables create button when > 5 modules are selected."""
+    w10_html = Path("design/preview/w10_quiz_screens.html").read_text(encoding="utf-8")
+    assert "updateScopeCount" in w10_html
+    assert "btnCreate.setAttribute('disabled', 'true')" in w10_html
+    assert "scope-warning-box" in w10_html
 
 

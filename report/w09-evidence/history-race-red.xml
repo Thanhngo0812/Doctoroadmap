@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="10" failures="1" errors="0" time="7.2557492">
+    <testsuite name="src/Assistant.test.tsx" timestamp="2026-10-24T16:31:33.182Z" hostname="ADMIN" tests="10" failures="1" errors="0" skipped="0" time="7.2557492">
+        <testcase classname="src/Assistant.test.tsx" name="streams real Markdown/math, hides fabricated action URLs and tool arguments, and sends the current lesson focus per turn" time="1.5677216">
+            <system-err>
+Encountered two children with the same key, `a1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+Encountered two children with the same key, `a1`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+
+            </system-err>
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="retains received text after a disconnect and retries with the same intent ID and focus" time="0.5841677">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="does not send a focus from the roadmap and shows a ratio rather than invented daily turns" time="0.4779577">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="restores a pending intent after remount and reconciles the saved result without sending a new turn" time="0.8764869">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="renames sessions and requires explicit confirmation before deleting history" time="0.8506256">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="opens a persisted artifact only from a structured event, independently of model prose" time="0.6775831">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="blocks sending while a new session is being created and then sends into that session" time="0.5905127">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: not_found" time="0.5513258">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="clears displayed history when the next request is denied: unauthenticated" time="0.5618789">
+        </testcase>
+        <testcase classname="src/Assistant.test.tsx" name="keeps a completed new turn when an older history request arrives afterwards" time="0.513866">
+            <failure message="Unable to find an element with the text: Lượt mới đã hoàn tất.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;learning-chat-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        aria-label=&quot;Mở khung trợ lý&quot;
+        class=&quot;button button-secondary learning-chat-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;learning-chat-title-c&quot;
+        class=&quot;learning-chat-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;learning-chat-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;learning-chat-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;learning-chat-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;learning-chat-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;s1&quot;
+              &gt;
+                Ôn tập hợp
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;learning-chat-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;learning-chat-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p
+          class=&quot;learning-chat-session-meta&quot;
+        &gt;
+          24/10/2026
+
+        &lt;/p&gt;
+        &lt;div
+          class=&quot;learning-chat-usage&quot;
+        &gt;
+          &lt;p&gt;
+            Đã dùng 35% hạn mức hôm nay
+          &lt;/p&gt;
+          &lt;progress
+            aria-label=&quot;Hạn mức học hôm nay&quot;
+            max=&quot;1&quot;
+            value=&quot;0.35&quot;
+          /&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;learning-chat-messages&quot;
+          role=&quot;log&quot;
+          tabindex=&quot;0&quot;
+        &gt;
+          &lt;div
+            class=&quot;learning-chat-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;learning-chat-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;learning-chat-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;learning-chat-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Lượt mới đã hoàn tất.. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;div
+      class=&quot;learning-chat-dock&quot;
+      data-open=&quot;true&quot;
+    &gt;
+      &lt;button
+        aria-expanded=&quot;true&quot;
+        aria-label=&quot;Mở khung trợ lý&quot;
+        class=&quot;button button-secondary learning-chat-opener&quot;
+        type=&quot;button&quot;
+      &gt;
+        Hỏi trợ lý
+      &lt;/button&gt;
+      &lt;aside
+        aria-labelledby=&quot;learning-chat-title-c&quot;
+        class=&quot;learning-chat-panel&quot;
+      &gt;
+        &lt;header
+          class=&quot;learning-chat-heading&quot;
+        &gt;
+          &lt;div&gt;
+            &lt;h2
+              id=&quot;learning-chat-title-c&quot;
+            &gt;
+              Trợ lý học tập
+            &lt;/h2&gt;
+            &lt;p&gt;
+              Trong module đang học
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;button
+            aria-label=&quot;Đóng trợ lý&quot;
+            class=&quot;learning-chat-icon-button&quot;
+            type=&quot;button&quot;
+          &gt;
+            Đóng
+          &lt;/button&gt;
+        &lt;/header&gt;
+        &lt;div
+          class=&quot;learning-chat-session-controls&quot;
+        &gt;
+          &lt;label&gt;
+            Phiên học
+            &lt;select
+              aria-label=&quot;Phiên học&quot;
+            &gt;
+              &lt;option
+                value=&quot;s1&quot;
+              &gt;
+                Ôn tập hợp
+              &lt;/option&gt;
+            &lt;/select&gt;
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Phiên mới
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;div
+          class=&quot;learning-chat-session-actions&quot;
+        &gt;
+          &lt;label
+            class=&quot;learning-chat-filter&quot;
+          &gt;
+            &lt;input
+              type=&quot;checkbox&quot;
+            /&gt;
+            Tất cả phiên
+          &lt;/label&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Đổi tên
+          &lt;/button&gt;
+          &lt;button
+            type=&quot;button&quot;
+          &gt;
+            Xoá phiên
+          &lt;/button&gt;
+        &lt;/div&gt;
+        &lt;p
+          class=&quot;learning-chat-session-meta&quot;
+        &gt;
+          24/10/2026
+
+        &lt;/p&gt;
+        &lt;div
+          class=&quot;learning-chat-usage&quot;
+        &gt;
+          &lt;p&gt;
+            Đã dùng 35% hạn mức hôm nay
+          &lt;/p&gt;
+          &lt;progress
+            aria-label=&quot;Hạn mức học hôm nay&quot;
+            max=&quot;1&quot;
+            value=&quot;0.35&quot;
+          /&gt;
+        &lt;/div&gt;
+        &lt;div
+          aria-label=&quot;Hội thoại&quot;
+          aria-live=&quot;polite&quot;
+          class=&quot;learning-chat-messages&quot;
+          role=&quot;log&quot;
+          tabindex=&quot;0&quot;
+        &gt;
+          &lt;div
+            class=&quot;learning-chat-empty&quot;
+          &gt;
+            &lt;h3&gt;
+              Cùng hiểu bài đang học
+            &lt;/h3&gt;
+            &lt;p&gt;
+              Hỏi về một ý chưa rõ, nhờ giải thích công thức hoặc chọn bài nên học tiếp.
+            &lt;/p&gt;
+          &lt;/div&gt;
+          &lt;div /&gt;
+        &lt;/div&gt;
+        &lt;form
+          class=&quot;learning-chat-compose&quot;
+        &gt;
+          &lt;label
+            class=&quot;sr-only&quot;
+            for=&quot;learning-chat-question-c&quot;
+          &gt;
+            Câu hỏi
+          &lt;/label&gt;
+          &lt;textarea
+            id=&quot;learning-chat-question-c&quot;
+            maxlength=&quot;4000&quot;
+            placeholder=&quot;Hỏi về bài đang học…&quot;
+            rows=&quot;3&quot;
+          /&gt;
+          &lt;div&gt;
+            &lt;small&gt;
+              Enter để gửi · Shift+Enter xuống dòng
+            &lt;/small&gt;
+            &lt;button
+              class=&quot;button button-primary&quot;
+              disabled=&quot;&quot;
+              type=&quot;submit&quot;
+            &gt;
+              Gửi câu hỏi
+            &lt;/button&gt;
+          &lt;/div&gt;
+        &lt;/form&gt;
+      &lt;/aside&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Assistant.test.tsx:183:17
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>
