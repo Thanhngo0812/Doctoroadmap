@@ -1,8 +1,10 @@
 # W-12 — Mời qua email, lời mời trong ứng dụng
 
+**Phân công sau nghiệm thu lần 8, 2026-10-26:** lõi đã xong mốc backend W-04, được giao **mốc backend W-12** trong nhánh/worktree mới; web làm React/tích hợp sau W-16/W-04. Dùng lại SharingService/AuthStore/Mailer W-03/W-11; thêm invitation/migration đúng một head, 50 email/lần, 200 thư/chủ/ngày, TTL 7 ngày, đúng email đã xác minh và membership nguyên tử. Mẫu thư dùng FakeMailer/0 USD; không gửi thư thật, không tự đóng toàn W-12 từ backend. [biên bản lần 8](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan8-2026-10-26.md) và [lời giao lần 8](../../report/lenh-giao-viec-ba-nhom-lan8-2026-10-26.md).
+
 **Nguồn chân lý:** [spec chức năng](../../doc/web-chuc-nang-spec.md), mục 6 (mời theo email), user story 36–37; [spec cơ sở dữ liệu](../../doc/web-co-so-du-lieu-spec.md),
 bảng `invitation`; spec thiết kế, hộp mời, khối lời mời ở trang chủ, mẫu thư.
-**Ai:** nhóm web · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-03, W-11 · **Trạng thái:** ready-for-agent
+**Ai:** lõi làm mốc backend/mẫu thư; web làm React/tích hợp · người soát kiểm · **Chi phí mô hình:** 0 USD · **Chặn bởi:** W-03, W-11 · **Trạng thái:** ready-for-agent
 
 ## Vì sao
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="6.779" timestamp="2026-10-26T21:23:17.791227+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_w04_accounts" name="test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[fake]" time="1.930"><failure message="assert 200 == 401&#10; +  where 200 = &lt;Response [200 OK]&gt;.status_code">runtime = (&lt;wayfinder.application.accounts.AccountService object at 0x0000012A3597A330&gt;, &lt;starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000012A35BC41D0&gt;, mailer=&lt;wayfinder.fakes.mail.FakeMailer object at 0x0000012A35A3EAB0&gt;))
+
+    def test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged(runtime):
+        service, a, b, _, _ = runtime
+        before = snapshot(service)
+        result = change(a, current_password="incorrect synthetic password")
+&gt;       assert result.status_code == 401
+E       assert 200 == 401
+E        +  where 200 = &lt;Response [200 OK]&gt;.status_code
+
+src\web\backend\tests\test_w04_accounts.py:152: AssertionError</failure></testcase></testsuite></testsuites>

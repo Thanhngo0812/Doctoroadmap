@@ -1,0 +1,26 @@
+{
+  "cwd": "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r8-acceptance-20261026",
+  "env": {
+    "W10_EVIDENCE_RUN": "browser-coord-r8-ready",
+    "W10_EVIDENCE_FOLDER": "w10-r7-evidence"
+  },
+  "command": [
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-review-20261021/run_check.py",
+    "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r8-acceptance-20261026",
+    "C:/Users/ngoco/Desktop/Doctoroadmap/tmp/coord-r8-tools-20261026/runs",
+    "browser-ready",
+    "C:/Users/ngoco/Desktop/Doctoroadmap/.venv/Scripts/python.exe",
+    "scripts/w10_web_runtime.py"
+  ],
+  "firstFailedRun": {
+    "W10_EVIDENCE_RUN": "browser-coord-r8",
+    "W10_EVIDENCE_FOLDER": "w10-r7-evidence"
+  },
+  "dockerRecovery": [
+    "Start-Process -FilePath C:/Program Files/Docker/Docker/Docker Desktop.exe -WindowStyle Hidden",
+    "docker compose --env-file src/web/.env -f src/web/docker-compose.yml up -d --no-recreate db-test",
+    "docker exec wayfinder-db-test-1 pg_isready -U wayfinder -d wayfinder_test"
+  ],
+  "newExternalProviderSpendUsd": 0
+}

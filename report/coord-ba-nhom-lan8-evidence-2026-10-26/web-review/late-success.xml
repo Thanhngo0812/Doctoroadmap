@@ -1,0 +1,1976 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="15" failures="3" errors="0" time="2.6653258">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-26T14:22:04.501Z" hostname="ADMIN" tests="15" failures="3" errors="0" skipped="9" time="2.6653258">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="refreshes a stale history quiz snapshot from the server after submission without posting again" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps keyboard focus on the current option when streaming becomes a saved quiz" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="R7 ignores a late submission result after browser history opens another attempt" time="0.7214526">
+            <system-out>
+R7_OBSERVED {&quot;activeRoute&quot;:&quot;/khoa-hoc/c/quiz/qa_2&quot;,&quot;heading&quot;:&quot;Kết quả quiz&quot;,&quot;secondQuestionVisible&quot;:false}
+
+            </system-out>
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;h1
+  tabindex=&quot;-1&quot;
+&gt;
+  Kết quả quiz
+&lt;/h1&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;h1
+  tabindex=&quot;-1&quot;
+&gt;
+  Kết quả quiz
+&lt;/h1&gt; instead
+ ❯ src/Content.test.tsx:180:71
+            </failure>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old success submit callbacks while a new attempt is pending" time="0.4208376">
+            <failure message="Unable to find an element with the text: Second attempt question. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;request-route&quot;
+    &gt;
+      /khoa-hoc/c/quiz/qa_2
+    &lt;/output&gt;
+    &lt;button&gt;
+      Back request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Forward request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Other course
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;content-page content-quiz-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;content-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;content-page-heading&quot;
+          &gt;
+            &lt;p
+              class=&quot;content-eyebrow&quot;
+            &gt;
+              Tự kiểm tra
+            &lt;/p&gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Kết quả quiz
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Xem lại cách làm và đối chiếu nguồn trong tài liệu.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Điểm quiz&quot;
+            class=&quot;content-score&quot;
+          &gt;
+            &lt;strong&gt;
+              1
+              &lt;span&gt;
+                /
+                1
+              &lt;/span&gt;
+            &lt;/strong&gt;
+            &lt;p&gt;
+              câu trả lời đúng
+            &lt;/p&gt;
+          &lt;/section&gt;
+          &lt;section
+            class=&quot;content-result is-correct&quot;
+          &gt;
+            &lt;div
+              class=&quot;content-question-meta&quot;
+            &gt;
+              &lt;span&gt;
+                Câu
+                1
+              &lt;/span&gt;
+              &lt;strong&gt;
+                Đúng
+              &lt;/strong&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Tính
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;p
+              class=&quot;content-result-label&quot;
+            &gt;
+              Đáp án đúng
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Vì
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            =
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1=2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mrel&quot;
+                      &gt;
+                        =
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;content-result-sources&quot;
+            &gt;
+              &lt;button
+                class=&quot;lecture-source-link&quot;
+                disabled=&quot;&quot;
+                type=&quot;button&quot;
+              &gt;
+                Nguồn
+                S1
+                 · trang
+                1
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;a
+            class=&quot;button button-primary&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c/quiz/tao&quot;
+          &gt;
+            Làm quiz mới
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Second attempt question. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;request-route&quot;
+    &gt;
+      /khoa-hoc/c/quiz/qa_2
+    &lt;/output&gt;
+    &lt;button&gt;
+      Back request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Forward request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Other course
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;content-page content-quiz-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;content-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;content-page-heading&quot;
+          &gt;
+            &lt;p
+              class=&quot;content-eyebrow&quot;
+            &gt;
+              Tự kiểm tra
+            &lt;/p&gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Kết quả quiz
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Xem lại cách làm và đối chiếu nguồn trong tài liệu.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Điểm quiz&quot;
+            class=&quot;content-score&quot;
+          &gt;
+            &lt;strong&gt;
+              1
+              &lt;span&gt;
+                /
+                1
+              &lt;/span&gt;
+            &lt;/strong&gt;
+            &lt;p&gt;
+              câu trả lời đúng
+            &lt;/p&gt;
+          &lt;/section&gt;
+          &lt;section
+            class=&quot;content-result is-correct&quot;
+          &gt;
+            &lt;div
+              class=&quot;content-question-meta&quot;
+            &gt;
+              &lt;span&gt;
+                Câu
+                1
+              &lt;/span&gt;
+              &lt;strong&gt;
+                Đúng
+              &lt;/strong&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Tính
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;p
+              class=&quot;content-result-label&quot;
+            &gt;
+              Đáp án đúng
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Vì
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            =
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1=2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mrel&quot;
+                      &gt;
+                        =
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;content-result-sources&quot;
+            &gt;
+              &lt;button
+                class=&quot;lecture-source-link&quot;
+                disabled=&quot;&quot;
+                type=&quot;button&quot;
+              &gt;
+                Nguồn
+                S1
+                 · trang
+                1
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;a
+            class=&quot;button button-primary&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/c/quiz/tao&quot;
+          &gt;
+            Làm quiz mới
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Content.test.tsx:223:17
+            </failure>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old network submit callbacks while a new attempt is pending" time="0.4217132">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old unauthenticated submit callbacks while a new attempt is pending" time="0.3887383">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old not_found submit callbacks while a new attempt is pending" time="0.3811326">
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores a previous course submit even when the new course has the same attempt ID" time="0.3280492">
+            <failure message="Unable to find an element with the text: Other course question. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;request-route&quot;
+    &gt;
+      /khoa-hoc/d/quiz/qa_1
+    &lt;/output&gt;
+    &lt;button&gt;
+      Back request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Forward request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Other course
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;content-page content-quiz-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;content-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/d&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;content-page-heading&quot;
+          &gt;
+            &lt;p
+              class=&quot;content-eyebrow&quot;
+            &gt;
+              Tự kiểm tra
+            &lt;/p&gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Kết quả quiz
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Xem lại cách làm và đối chiếu nguồn trong tài liệu.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Điểm quiz&quot;
+            class=&quot;content-score&quot;
+          &gt;
+            &lt;strong&gt;
+              1
+              &lt;span&gt;
+                /
+                1
+              &lt;/span&gt;
+            &lt;/strong&gt;
+            &lt;p&gt;
+              câu trả lời đúng
+            &lt;/p&gt;
+          &lt;/section&gt;
+          &lt;section
+            class=&quot;content-result is-correct&quot;
+          &gt;
+            &lt;div
+              class=&quot;content-question-meta&quot;
+            &gt;
+              &lt;span&gt;
+                Câu
+                1
+              &lt;/span&gt;
+              &lt;strong&gt;
+                Đúng
+              &lt;/strong&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Tính
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;p
+              class=&quot;content-result-label&quot;
+            &gt;
+              Đáp án đúng
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Vì
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            =
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1=2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mrel&quot;
+                      &gt;
+                        =
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;content-result-sources&quot;
+            &gt;
+              &lt;button
+                class=&quot;lecture-source-link&quot;
+                disabled=&quot;&quot;
+                type=&quot;button&quot;
+              &gt;
+                Nguồn
+                S1
+                 · trang
+                1
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;a
+            class=&quot;button button-primary&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/d/quiz/tao&quot;
+          &gt;
+            Làm quiz mới
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;" type="TestingLibraryElementError">
+TestingLibraryElementError: Unable to find an element with the text: Other course question. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+&lt;body&gt;
+  &lt;div&gt;
+    &lt;output
+      aria-label=&quot;request-route&quot;
+    &gt;
+      /khoa-hoc/d/quiz/qa_1
+    &lt;/output&gt;
+    &lt;button&gt;
+      Back request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Forward request
+    &lt;/button&gt;
+    &lt;button&gt;
+      Other course
+    &lt;/button&gt;
+    &lt;div
+      class=&quot;courses-shell&quot;
+    &gt;
+      &lt;a
+        class=&quot;skip-link&quot;
+        href=&quot;#courses-main&quot;
+      &gt;
+        Đến nội dung chính
+      &lt;/a&gt;
+      &lt;header
+        class=&quot;courses-header&quot;
+      &gt;
+        &lt;div
+          class=&quot;header-inner&quot;
+        &gt;
+          &lt;a
+            aria-label=&quot;WayFinder, về khoá học&quot;
+            class=&quot;brand-link&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc&quot;
+          &gt;
+            &lt;img
+              alt=&quot;WayFinder&quot;
+              src=&quot;/assets/Artboard%2024.png&quot;
+            /&gt;
+          &lt;/a&gt;
+          &lt;div
+            class=&quot;header-actions&quot;
+          &gt;
+            &lt;a
+              class=&quot;button button-primary courses-upload&quot;
+              data-discover=&quot;true&quot;
+              href=&quot;/tai-len&quot;
+            &gt;
+              Tải tài liệu
+            &lt;/a&gt;
+            &lt;button
+              aria-label=&quot;Bật chế độ tối&quot;
+              class=&quot;icon-button theme-toggle&quot;
+              type=&quot;button&quot;
+            &gt;
+              &lt;svg
+                aria-hidden=&quot;true&quot;
+                fill=&quot;none&quot;
+                height=&quot;20&quot;
+                stroke=&quot;currentColor&quot;
+                stroke-width=&quot;1.5&quot;
+                viewBox=&quot;0 0 24 24&quot;
+                width=&quot;20&quot;
+              &gt;
+                &lt;circle
+                  cx=&quot;12&quot;
+                  cy=&quot;12&quot;
+                  r=&quot;8&quot;
+                /&gt;
+                &lt;path
+                  d=&quot;M12 4a8 8 0 0 0 0 16Z&quot;
+                  fill=&quot;currentColor&quot;
+                  stroke=&quot;none&quot;
+                /&gt;
+              &lt;/svg&gt;
+            &lt;/button&gt;
+            &lt;details
+              class=&quot;account-menu&quot;
+            &gt;
+              &lt;summary
+                aria-label=&quot;Tài khoản của An&quot;
+              &gt;
+                &lt;span
+                  class=&quot;account-menu-name&quot;
+                &gt;
+                  An
+                &lt;/span&gt;
+                &lt;span
+                  class=&quot;courses-account-label&quot;
+                &gt;
+                  Tài khoản
+                &lt;/span&gt;
+                &lt;svg
+                  aria-hidden=&quot;true&quot;
+                  class=&quot;account-menu-chevron&quot;
+                  fill=&quot;none&quot;
+                  height=&quot;16&quot;
+                  stroke=&quot;currentColor&quot;
+                  stroke-width=&quot;1.75&quot;
+                  viewBox=&quot;0 0 24 24&quot;
+                  width=&quot;16&quot;
+                &gt;
+                  &lt;path
+                    d=&quot;m7 10 5 5 5-5&quot;
+                  /&gt;
+                &lt;/svg&gt;
+              &lt;/summary&gt;
+              &lt;div
+                class=&quot;account-menu-panel&quot;
+              &gt;
+                &lt;a
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-khoan&quot;
+                &gt;
+                  Tài khoản
+                &lt;/a&gt;
+                &lt;a
+                  class=&quot;courses-menu-upload&quot;
+                  data-discover=&quot;true&quot;
+                  href=&quot;/tai-len&quot;
+                &gt;
+                  Tải tài liệu
+                &lt;/a&gt;
+                &lt;button
+                  type=&quot;button&quot;
+                &gt;
+                  Đăng xuất
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/details&gt;
+          &lt;/div&gt;
+        &lt;/div&gt;
+      &lt;/header&gt;
+      &lt;main
+        class=&quot;courses-page page-frame&quot;
+        id=&quot;courses-main&quot;
+        tabindex=&quot;-1&quot;
+      &gt;
+        &lt;div
+          class=&quot;content-page content-quiz-page&quot;
+        &gt;
+          &lt;a
+            class=&quot;content-back&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/d&quot;
+          &gt;
+            ← Quay lại lộ trình
+          &lt;/a&gt;
+          &lt;header
+            class=&quot;content-page-heading&quot;
+          &gt;
+            &lt;p
+              class=&quot;content-eyebrow&quot;
+            &gt;
+              Tự kiểm tra
+            &lt;/p&gt;
+            &lt;h1
+              tabindex=&quot;-1&quot;
+            &gt;
+              Kết quả quiz
+            &lt;/h1&gt;
+            &lt;p&gt;
+              Xem lại cách làm và đối chiếu nguồn trong tài liệu.
+            &lt;/p&gt;
+          &lt;/header&gt;
+          &lt;section
+            aria-label=&quot;Điểm quiz&quot;
+            class=&quot;content-score&quot;
+          &gt;
+            &lt;strong&gt;
+              1
+              &lt;span&gt;
+                /
+                1
+              &lt;/span&gt;
+            &lt;/strong&gt;
+            &lt;p&gt;
+              câu trả lời đúng
+            &lt;/p&gt;
+          &lt;/section&gt;
+          &lt;section
+            class=&quot;content-result is-correct&quot;
+          &gt;
+            &lt;div
+              class=&quot;content-question-meta&quot;
+            &gt;
+              &lt;span&gt;
+                Câu
+                1
+              &lt;/span&gt;
+              &lt;strong&gt;
+                Đúng
+              &lt;/strong&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Tính
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;p
+              class=&quot;content-result-label&quot;
+            &gt;
+              Đáp án đúng
+            &lt;/p&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;lecture-markdown&quot;
+            &gt;
+              &lt;p&gt;
+                Vì
+                &lt;span
+                  class=&quot;katex&quot;
+                &gt;
+                  &lt;span
+                    class=&quot;katex-mathml&quot;
+                  &gt;
+                    &lt;math
+                      xmlns=&quot;http://www.w3.org/1998/Math/MathML&quot;
+                    &gt;
+                      &lt;semantics&gt;
+                        &lt;mrow&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            +
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            1
+                          &lt;/mn&gt;
+                          &lt;mo&gt;
+                            =
+                          &lt;/mo&gt;
+                          &lt;mn&gt;
+                            2
+                          &lt;/mn&gt;
+                        &lt;/mrow&gt;
+                        &lt;annotation
+                          encoding=&quot;application/x-tex&quot;
+                        &gt;
+                          1+1=2
+                        &lt;/annotation&gt;
+                      &lt;/semantics&gt;
+                    &lt;/math&gt;
+                  &lt;/span&gt;
+                  &lt;span
+                    aria-hidden=&quot;true&quot;
+                    class=&quot;katex-html&quot;
+                  &gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.7278em; vertical-align: -0.0833em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mbin&quot;
+                      &gt;
+                        +
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2222em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        1
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mrel&quot;
+                      &gt;
+                        =
+                      &lt;/span&gt;
+                      &lt;span
+                        class=&quot;mspace&quot;
+                        style=&quot;margin-right: 0.2778em;&quot;
+                      /&gt;
+                    &lt;/span&gt;
+                    &lt;span
+                      class=&quot;katex-base&quot;
+                    &gt;
+                      &lt;span
+                        class=&quot;katex-strut&quot;
+                        style=&quot;height: 0.6444em;&quot;
+                      /&gt;
+                      &lt;span
+                        class=&quot;mord&quot;
+                      &gt;
+                        2
+                      &lt;/span&gt;
+                    &lt;/span&gt;
+                  &lt;/span&gt;
+                &lt;/span&gt;
+                .
+              &lt;/p&gt;
+            &lt;/div&gt;
+            &lt;div
+              class=&quot;content-result-sources&quot;
+            &gt;
+              &lt;button
+                class=&quot;lecture-source-link&quot;
+                disabled=&quot;&quot;
+                type=&quot;button&quot;
+              &gt;
+                Nguồn
+                S1
+                 · trang
+                1
+              &lt;/button&gt;
+            &lt;/div&gt;
+          &lt;/section&gt;
+          &lt;a
+            class=&quot;button button-primary&quot;
+            data-discover=&quot;true&quot;
+            href=&quot;/khoa-hoc/d/quiz/tao&quot;
+          &gt;
+            Làm quiz mới
+          &lt;/a&gt;
+        &lt;/div&gt;
+      &lt;/main&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/body&gt;
+ ❯ Object.getElementError ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/config.js:37:19
+ ❯ ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:76:38
+ ❯ ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:52:17
+ ❯ ../../w10-quiz-documents/src/web/frontend/node_modules/@testing-library/dom/dist/query-helpers.js:95:19
+ ❯ src/Content.test.tsx:251:17
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

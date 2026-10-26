@@ -1,0 +1,38 @@
+[
+  {
+    "name": "inverted-filter",
+    "xml": "mutant-inverted-filter.xml",
+    "exit": "mutant-inverted-filter-exit.json",
+    "old": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+    "mutant": "614c4a75e49e9f4c317470374c0d587dfc36c5128dc44384eab28c4887e0d673",
+    "result": "1 assertion failure,0 errors",
+    "suiteHeader": "<testsuite name=\"pytest\" errors=\"0\" failures=\"1\" skipped=\"0\" tests=\"1\" time=\"2.654\" timestamp=\"2026-10-26T21:22:51.769507+07:00\" hostname=\"ADMIN\">"
+  },
+  {
+    "name": "old-origin-filter",
+    "xml": "mutant-old-origin-filter2.xml",
+    "exit": "mutant-old-origin-filter2-exit.json",
+    "old": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+    "mutant": "f487ac36df66e05788be67cfb63aa53c00611cc1d9b6142b2c7a8a9ea77fd3f5",
+    "result": "1 assertion failure,0 errors",
+    "suiteHeader": "<testsuite name=\"pytest\" errors=\"0\" failures=\"1\" skipped=\"0\" tests=\"1\" time=\"1.290\" timestamp=\"2026-10-26T21:23:47.406685+07:00\" hostname=\"ADMIN\">"
+  },
+  {
+    "name": "scope-off-by-one",
+    "xml": "mutant-scope-off-by-one2.xml",
+    "exit": "mutant-scope-off-by-one2-exit.json",
+    "old": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+    "mutant": "18654921be95dd607d5e36424115977c533168d2c9d472bd39e0d39eca3f3b75",
+    "result": "1 assertion failure,0 errors",
+    "suiteHeader": "<testsuite name=\"pytest\" errors=\"0\" failures=\"1\" skipped=\"0\" tests=\"1\" time=\"0.747\" timestamp=\"2026-10-26T21:24:02.159090+07:00\" hostname=\"ADMIN\">"
+  },
+  {
+    "name": "tab-wiring",
+    "xml": "mutant-tab-wiring.xml",
+    "exit": "mutant-tab-wiring-exit.json",
+    "old": "a6d42207d1c4f3915734b9efff6c757442ca6fefead5bec61706b9eddf7c0ecf",
+    "mutant": "f03b276bc298794e139d87e7a16d8595d5723d2e06d8f169d6bd998c9941cce5",
+    "result": "64 pass;optional coverage gap",
+    "suiteHeader": "<testsuite name=\"pytest\" errors=\"0\" failures=\"0\" skipped=\"0\" tests=\"64\" time=\"1.249\" timestamp=\"2026-10-26T21:24:47.889224+07:00\" hostname=\"ADMIN\">"
+  }
+]

@@ -1,0 +1,57 @@
+{
+  "reviewer": "review_core_r8",
+  "ticket": "W-04",
+  "milestone": "backend only",
+  "branch": "work/w04-account-backend",
+  "pinned_commit": "c1f2fe9c813b81af66cfb61ce47a0fe760279de9",
+  "code_commit": "b8cb7de1edef899a38fb2df4215bbc2dd177cce4",
+  "main_reviewed": "153c5778b04474307395fb7d86c4d7605bf83855",
+  "verdict": "approve backend milestone, subject to coordinator integrated PostgreSQL gate",
+  "critical": [],
+  "required": [],
+  "optional": [],
+  "independent": {
+    "fake_http_cases_passed": 24,
+    "independent_probes_passed": 5,
+    "restored_control_cases_passed": 2,
+    "mutants_caught": 2,
+    "mutant_setup_errors": 0,
+    "postgres_run_by_this_reviewer": false,
+    "source_copies": 332,
+    "source_bytes": 2542331,
+    "ordinary_copies": true,
+    "original_scratch_sources_restored": true
+  },
+  "provenance": {
+    "manifest_entries": 143,
+    "archive_sha_verified": 143,
+    "raw_sha_verified": 143,
+    "full_gate_source_sha_verified": 8,
+    "product_delta_code_to_delivery": false,
+    "author_mutants_xml_verified": 10,
+    "author_python_passed": 2808,
+    "author_python_skipped_or_xfailed": 2,
+    "author_react_passed": 203,
+    "author_build_native": 0
+  },
+  "provider_calls": 0,
+  "actual_new_spend_usd": 0,
+  "whole_ticket_complete": false,
+  "limitations": [
+    "Independent reviewer fake/HTTP/concurrency runs did not contact PostgreSQL; root runs the combined mandatory-PG gate.",
+    "No new React/profile UI work was submitted; W-04 as a whole remains open."
+  ],
+  "evidence": [
+    "review.md",
+    "provenance-audit.json",
+    "author-gate-audit.json",
+    "author-mutation-audit.json",
+    "mutation-summary.json",
+    "runs/fake-baseline.xml",
+    "runs/independent-probes-final.xml",
+    "runs/fake-restored-control.xml",
+    "runs/current-a-revoked.xml",
+    "runs/wrong-current-accepted.xml",
+    "src/web/backend/tests/test_coord_w04_concurrency.py"
+  ]
+}

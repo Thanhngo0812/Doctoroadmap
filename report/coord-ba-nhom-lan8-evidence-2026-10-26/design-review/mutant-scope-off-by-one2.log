@@ -1,0 +1,51 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+___________ test_w10_library_filters_by_group_independent_of_origin ___________
+
+    def test_w10_library_filters_by_group_independent_of_origin():
+        """Verify D-R6-01 & D-R7-02: W-10 library tabs filter by group (here/elsewhere) per Pha B2 section 4, independent of origin.
+        Executes actual JavaScript from the preview HTML via Node.js VM to verify behavioral correctness.
+        """
+        import subprocess
+        import json
+        from pathlib import Path
+
+        w10_html_path = Path("design/preview/w10_quiz_screens.html")
+        assert w10_html_path.exists(), "w10_quiz_screens.html must exist"
+
+        vm_script_path = Path("scripts/test_w10_library_filter_vm.cjs")
+        assert vm_script_path.exists(), "test_w10_library_filter_vm.cjs must exist"
+
+        # Execute actual filter JS extracted from preview HTML via Node VM
+        proc = subprocess.run(
+            ["node", str(vm_script_path), str(w10_html_path), "normal"],
+            capture_output=True,
+            encoding="utf-8",
+            check=True
+        )
+        res = json.loads(proc.stdout)
+
+        expected_here = [
+            "Đề cương ôn tập các nhánh xiên vách động mạch liên thất trước",
+            "Bảng tra cứu phân bố giải phẫu nút xoang và nút nhĩ thất"
+        ]
+        expected_elsewhere = [
+            "Tóm tắt công thức huyết động & Bảng so sánh nhánh mạch vành",
+            "Tổng quan các nhánh xiên vách và cơ chế tưới máu tâm trương"
+        ]
+
+        assert res["visibleHere"] == expected_here, f"Expected here group {expected_here}, got {res['visibleHere']}"
+        assert res["visibleElsewhere"] == expected_elsewhere, f"Expected elsewhere group {expected_elsewhere}, got {res['visibleElsewhere']}"
+        assert len(res["visibleAll"]) == 4, f"Expected 4 items in all group, got {len(res['visibleAll'])}"
+
+        # Check scope boundary: 5 -> 6 -> 5
+        sb = res["scopeBoundary"]
+>       assert sb["at5"]["disabled"] is False and sb["at5"]["warning"] is False, "At 5 modules, button must be enabled and warning hidden"
+E       AssertionError: At 5 modules, button must be enabled and warning hidden
+E       assert (True is False)
+
+tests\unit\presentation\test_tokens_and_wcag.py:1093: AssertionError
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r8-design-review-20261026\mutant-scope-off-by-one2.xml -
+=========================== short test summary info ===========================
+FAILED tests\unit\presentation\test_tokens_and_wcag.py::test_w10_library_filters_by_group_independent_of_origin
+1 failed, 63 deselected in 0.75s

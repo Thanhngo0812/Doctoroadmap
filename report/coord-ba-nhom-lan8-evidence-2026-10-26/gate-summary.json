@@ -1,0 +1,50 @@
+{
+  "full-ready": {
+    "tests": 2826,
+    "passed": 2824,
+    "failures": 0,
+    "errors": 0,
+    "skipped_or_xfailed": 2,
+    "native": 0,
+    "seconds": 723.92
+  },
+  "named_groups": {
+    "test_w04_accounts": 49,
+    "test_content_admission_w10": 5,
+    "test_content_w10": 10,
+    "test_tokens_and_wcag": 64,
+    "test_usage_w16": 13
+  },
+  "retained_skips": [
+    {
+      "name": "test_replay_reproduces_the_live_turns_at_zero_usd",
+      "reason": "SA-66: the recordings are of the answer-2 assistant (prompt, JSON context, insufficient_context). Re-recording needs paid calls: left to SA-23, see report/pha-b-sa66.",
+      "type": "pytest.xfail"
+    },
+    {
+      "name": "test_cloudinary_satisfies_shared_media_contract_when_explicitly_enabled",
+      "reason": "set CLOUDINARY_URL and WAYFINDER_RUN_CLOUDINARY_TESTS=1 for live Cloudinary tests",
+      "type": "pytest.skip"
+    }
+  ],
+  "react": {
+    "tests": 219,
+    "passed": 219,
+    "failures": 0,
+    "errors": 0,
+    "skipped_or_xfailed": 0,
+    "native": 0,
+    "seconds": 149.69
+  },
+  "build": {
+    "native": 0,
+    "seconds": 4.61
+  },
+  "browser-ready": {
+    "native": 0,
+    "seconds": 326.7
+  },
+  "browser_port8020_closed": true,
+  "browser_database_absent_independent_read": true,
+  "protected_six_files_unchanged": true
+}

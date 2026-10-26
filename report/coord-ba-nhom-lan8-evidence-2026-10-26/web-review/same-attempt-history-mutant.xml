@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="16" failures="1" errors="0" time="0.58922">
+    <testsuite name="src/Content.test.tsx" timestamp="2026-10-26T14:25:41.798Z" hostname="ADMIN" tests="16" failures="1" errors="0" skipped="15" time="0.58922">
+        <testcase classname="src/Content.test.tsx" name="offers the quiz and document actions on the real roadmap" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="uses core groups independently of origin on the real module page" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps a selection made while quiz items stream and submits the actual shuffled option ID" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="validates six modules locally, sends no request, and allows a corrected document scope" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="restores an already submitted result on reload without resubmitting" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="renders a document Markdown table with safe math, registered sources and no executable prose links" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="shows a generated document title once while preserving the complete raw Markdown for download" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="refreshes a stale history quiz snapshot from the server after submission without posting again" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="keeps keyboard focus on the current option when streaming becomes a saved quiz" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="R7 ignores a late submission result after browser history opens another attempt" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old success submit callbacks while a new attempt is pending" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old network submit callbacks while a new attempt is pending" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old unauthenticated submit callbacks while a new attempt is pending" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores old not_found submit callbacks while a new attempt is pending" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="ignores a previous course submit even when the new course has the same attempt ID" time="0">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/Content.test.tsx" name="independent R8 ignores a late submit after Back reopens the same attempt ID in a different history entry" time="0.5855998">
+            <failure message="expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;h1
+  tabindex=&quot;-1&quot;
+&gt;
+  Kết quả quiz
+&lt;/h1&gt; instead" type="Error">
+Error: expect(element).not.toBeInTheDocument()
+
+expected document not to contain element, found &lt;h1
+  tabindex=&quot;-1&quot;
+&gt;
+  Kết quả quiz
+&lt;/h1&gt; instead
+ ❯ src/Content.test.tsx:272:71
+            </failure>
+        </testcase>
+    </testsuite>
+</testsuites>

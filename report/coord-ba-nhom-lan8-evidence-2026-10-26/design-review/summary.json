@@ -1,0 +1,81 @@
+{
+  "review": "R8 design independent acceptance",
+  "date": "2026-10-26",
+  "workerCommit": "feb5f5e1ac847b8b8bfa0db726b4d26142859f6d",
+  "baseMain": "153c5778b04474307395fb7d86c4d7605bf83855",
+  "scope": "3 changed files: actual-JS Node VM guard, presentation tests, W23 report",
+  "verdict": {
+    "actualJsGuard": "ACCEPT D-R7-02 milestone; actual source function and crossed fixtures verified",
+    "w23": "NOT ACCEPTED; stays open",
+    "branch": "Guard code can be received with dated coordinator correction of report; do not count W23 as accepted"
+  },
+  "tests": {
+    "baseline": {
+      "passed": 64,
+      "native": 0,
+      "xml": "baseline3.xml"
+    },
+    "restoredGreen": {
+      "passed": 64,
+      "native": 0,
+      "xml": "final-green2.xml"
+    },
+    "mutantsCaught": 3,
+    "mutants": [
+      {
+        "name": "inverted-filter",
+        "failures": 1,
+        "errors": 0,
+        "native": 1
+      },
+      {
+        "name": "old-origin-filter",
+        "failures": 1,
+        "errors": 0,
+        "native": 1
+      },
+      {
+        "name": "scope-off-by-one",
+        "failures": 1,
+        "errors": 0,
+        "native": 1
+      }
+    ],
+    "optionalGap": {
+      "name": "inline-tab-wiring",
+      "passed": 64,
+      "native": 0,
+      "xml": "mutant-tab-wiring.xml"
+    },
+    "database": "No database tests; scratch conftest only accepts runner flag. Root owns mandatory PostgreSQL gate."
+  },
+  "findings": [
+    {
+      "id": "D-R8-01",
+      "severity": "Required (documentation/W23 only)",
+      "file": "report/w24-w10-w23-phoihop-2026-10-25.md",
+      "line": 52,
+      "description": "New visual table still claims matching states/layout contrary to actual images. Rows52-56 include false cardiac fixture claim, closed HTML selfcheck vs openReact, modalcenter called right-half, three nonexistent anchors, menuactions not present in screenshot. Need dated correction; W23 stays open."
+    },
+    {
+      "id": "D-R8-02",
+      "severity": "Optional (coverage follow-up)",
+      "file": "scripts/test_w10_library_filter_vm.cjs",
+      "line": 93,
+      "description": "Helper calls filterLibrary with hardcoded here/elsewhere and does not execute real onclick wiring. Old static wiring assertions were removed; only changing inline tab args to button/assistant leaves64tests green. Actual function guard D-R7-02 is now effective; add DOM event or retain former wiring assertions/browser guard."
+    },
+    {
+      "id": "D-R8-03",
+      "severity": "Nit",
+      "file": "report/w24-w10-w23-phoihop-2026-10-25.md",
+      "line": 32,
+      "description": "New script/video links use absolute file://worktree URLs; prefer repository-relative links. Do not gate source acceptance."
+    }
+  ],
+  "sourceRestored": true,
+  "workerSourceUnchanged": true,
+  "providerCalls": 0,
+  "newSpendUsd": 0,
+  "setupFailures": "baseline2 missing copied verify_figma_plugin_vm.cjs produced3failures; fixed scratch copy only,baseline3/final64green. One NodeREPL20s timeout interrupted second mutant; raw XML retained but not counted; exact rerun2 verified.",
+  "evidence": "referenced-evidence.json,w23-provenance.json,mutations.json,copied-source.json,restored-source.json"
+}

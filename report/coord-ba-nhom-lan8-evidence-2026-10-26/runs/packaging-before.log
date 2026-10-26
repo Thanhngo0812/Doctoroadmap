@@ -1,0 +1,2788 @@
+report/coord-ba-nhom-lan8-evidence-2026-10-26/.gitattributes:1: trailing whitespace.
++* -text
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:2: trailing whitespace.
++F                                                                        [100%]
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:3: trailing whitespace.
++================================== FAILURES ===================================
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:4: trailing whitespace.
++_______ test_change_keeps_a_revokes_b_checks_hash_login_and_audit[fake] _______
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:5: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:6: trailing whitespace.
++runtime = (<wayfinder.application.accounts.AccountService object at 0x0000014B16C65190>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000014B16C0FCE0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000014B16E52900>))
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:7: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:8: trailing whitespace.
++    def test_change_keeps_a_revokes_b_checks_hash_login_and_audit(runtime):
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:9: trailing whitespace.
++        service, a, b, other, _ = runtime
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:10: trailing whitespace.
++        raw_a, raw_b = a.cookies.get("d2r_session"), b.cookies.get("d2r_session")
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:11: trailing whitespace.
++        before = snapshot(service)
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:12: trailing whitespace.
++        result = change(a)
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:13: trailing whitespace.
++        assert result.status_code == 200
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:14: trailing whitespace.
++        assert result.headers["cache-control"] == "no-store"
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:15: trailing whitespace.
++        assert a.cookies.get("d2r_session") == raw_a
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:16: trailing whitespace.
++>       assert a.get("/api/v1/me").status_code == other.get("/api/v1/me").status_code == 200
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:17: trailing whitespace.
++E       AssertionError: assert 401 == 200
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:18: trailing whitespace.
++E        +  where 401 = <Response [401 Unauthorized]>.status_code
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:19: trailing whitespace.
++E        +    where <Response [401 Unauthorized]> = get('/api/v1/me')
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:20: trailing whitespace.
++E        +      where get = <starlette.testclient.TestClient object at 0x0000014B16F53D10>.get
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:21: trailing whitespace.
++E        +  and   200 = <Response [200 OK]>.status_code
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:22: trailing whitespace.
++E        +    where <Response [200 OK]> = get('/api/v1/me')
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:23: trailing whitespace.
++E        +      where get = <starlette.testclient.TestClient object at 0x0000014B171AED20>.get
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:24: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:25: trailing whitespace.
++src\web\backend\tests\test_w04_accounts.py:183: AssertionError
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:26: trailing whitespace.
++============================== warnings summary ===============================
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:27: trailing whitespace.
++..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:28: trailing whitespace.
++  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:29: trailing whitespace.
++    from starlette.testclient import TestClient as TestClient  # noqa
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:30: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:31: trailing whitespace.
++-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:32: trailing whitespace.
++- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r8-core-review-20261026\runs\current-a-revoked.xml -
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:33: trailing whitespace.
++=========================== short test summary info ===========================
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:34: trailing whitespace.
++FAILED src/web/backend/tests/test_w04_accounts.py::test_change_keeps_a_revokes_b_checks_hash_login_and_audit[fake]
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:35: trailing whitespace.
++1 failed, 48 deselected, 1 warning in 11.91s
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/current-a-revoked-wrapper.log:36: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:2: trailing whitespace.
++F                                                                        [100%]
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:3: trailing whitespace.
++================================== FAILURES ===================================
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:4: trailing whitespace.
++_ test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[fake] __
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:5: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:6: trailing whitespace.
++runtime = (<wayfinder.application.accounts.AccountService object at 0x0000012A3597A330>, <starlette.testclient.TestClient object...MemoryMediaStore object at 0x0000012A35BC41D0>, mailer=<wayfinder.fakes.mail.FakeMailer object at 0x0000012A35A3EAB0>))
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:7: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:8: trailing whitespace.
++    def test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged(runtime):
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:9: trailing whitespace.
++        service, a, b, _, _ = runtime
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:10: trailing whitespace.
++        before = snapshot(service)
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:11: trailing whitespace.
++        result = change(a, current_password="incorrect synthetic password")
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:12: trailing whitespace.
++>       assert result.status_code == 401
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:13: trailing whitespace.
++E       assert 200 == 401
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:14: trailing whitespace.
++E        +  where 200 = <Response [200 OK]>.status_code
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:15: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:16: trailing whitespace.
++src\web\backend\tests\test_w04_accounts.py:152: AssertionError
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:17: trailing whitespace.
++============================== warnings summary ===============================
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:18: trailing whitespace.
++..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:19: trailing whitespace.
++  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:20: trailing whitespace.
++    from starlette.testclient import TestClient as TestClient  # noqa
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:21: trailing whitespace.
++
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:22: trailing whitespace.
++-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:23: trailing whitespace.
++- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r8-core-review-20261026\runs\wrong-current-accepted.xml -
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:24: trailing whitespace.
++=========================== short test summary info ===========================
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:25: trailing whitespace.
++FAILED src/web/backend/tests/test_w04_accounts.py::test_wrong_current_password_leaves_hash_sessions_and_audit_unchanged[fake]
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:26: trailing whitespace.
++1 failed, 48 deselected, 1 warning in 6.77s
+report/coord-ba-nhom-lan8-evidence-2026-10-26/core-review/runs/wrong-current-accepted-wrapper.log:27: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/design-review/baseline2.log:276: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/design-review/baseline3.log:4: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/design-review/mutant-inverted-filter.log:49: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1: trailing whitespace.
++{
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:2: trailing whitespace.
++  "files": [
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:3: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:4: trailing whitespace.
++      "path": "runs/browser-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:5: trailing whitespace.
++      "sha256": "dd6bb18562569f537cdd56182c2b51b46cc1bcf1d71f6be1bb5232d34c6ee91d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:6: trailing whitespace.
++      "bytes": 313,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:7: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/browser-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:8: trailing whitespace.
++      "raw_sha256": "e4908cd1ee6c2135ef308ea6e7224aa459146ed924b8da482f99b26b853ffa18",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:9: trailing whitespace.
++      "raw_bytes": 323,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:10: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:11: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:12: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:13: trailing whitespace.
++      "path": "runs/browser-ready-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:14: trailing whitespace.
++      "sha256": "56988b5cc8f032fd9dde33c770c021ce72b3cfa5094326b36dcf6c32b50e7700",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:15: trailing whitespace.
++      "bytes": 314,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:16: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/browser-ready-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:17: trailing whitespace.
++      "raw_sha256": "29f5e31d96fc7fa54d8d7a0f93a9d69e9a0a542b50388a074771837e6fa41994",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:18: trailing whitespace.
++      "raw_bytes": 324,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:19: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:20: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:21: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:22: trailing whitespace.
++      "path": "runs/browser-ready.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:23: trailing whitespace.
++      "sha256": "2562e53779fac9b035a423eb5f65f6146aee420e62d18c41b5bdda0a0f6abb3b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:24: trailing whitespace.
++      "bytes": 2103,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:25: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/browser-ready.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:26: trailing whitespace.
++      "raw_sha256": "23d86b3bb374543810c1783b3bca5e6d53be9c42c0e0983973a968c8af3d8c93",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:27: trailing whitespace.
++      "raw_bytes": 2128,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:28: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:29: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:30: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:31: trailing whitespace.
++      "path": "runs/browser.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:32: trailing whitespace.
++      "sha256": "79aaffc2b642793ef640abb97ea8d5ea92e1c194b615d8409b851674b5743fba",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:33: trailing whitespace.
++      "bytes": 7486,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:34: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/browser.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:35: trailing whitespace.
++      "raw_sha256": "1244bfa39ce55706fb7e371cb08373da8d2d2f54795d3cab907dd3b33c11252c",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:36: trailing whitespace.
++      "raw_bytes": 7595,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:37: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:38: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:39: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:40: trailing whitespace.
++      "path": "runs/build-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:41: trailing whitespace.
++      "sha256": "7f4af7d38c4d109009e9183c7bfc43cc471b551c0272e28ab8ae8d8ae80f8f4d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:42: trailing whitespace.
++      "bytes": 290,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:43: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/build-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:44: trailing whitespace.
++      "raw_sha256": "cadb12e306e7bf6401bdfd720e1dd0fbe8c674f19fea330135d669efeea20ea8",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:45: trailing whitespace.
++      "raw_bytes": 303,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:46: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:47: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:48: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:49: trailing whitespace.
++      "path": "runs/build.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:50: trailing whitespace.
++      "sha256": "f24db4ad0371a6cdc151dd6069d62500000eb8405e16b860e22ee2d2de79a2c7",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:51: trailing whitespace.
++      "bytes": 4499,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:52: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/build.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:53: trailing whitespace.
++      "raw_sha256": "f24db4ad0371a6cdc151dd6069d62500000eb8405e16b860e22ee2d2de79a2c7",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:54: trailing whitespace.
++      "raw_bytes": 4499,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:55: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:56: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:57: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:58: trailing whitespace.
++      "path": "runs/fixtures-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:59: trailing whitespace.
++      "sha256": "727b0a7768d00ecb6b2746f0b7b555e3a8b22886f1740ce4bd664439058304eb",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:60: trailing whitespace.
++      "bytes": 330,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:61: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/fixtures-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:62: trailing whitespace.
++      "raw_sha256": "8cd760c319363bdda02326f8715f3e89151b2fafd2095a425fffde943bbd9353",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:63: trailing whitespace.
++      "raw_bytes": 340,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:64: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:65: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:66: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:67: trailing whitespace.
++      "path": "runs/fixtures.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:68: trailing whitespace.
++      "sha256": "80cd4eb12f8361e5ecf95af372a213ec4c726bb7fbc62b827e321214249d292f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:69: trailing whitespace.
++      "bytes": 966,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:70: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/fixtures.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:71: trailing whitespace.
++      "raw_sha256": "0cc7d1d604802997272422b43366c64d81cfaf0983d612eb01414714874017e2",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:72: trailing whitespace.
++      "raw_bytes": 999,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:73: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:74: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:75: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:76: trailing whitespace.
++      "path": "runs/full-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:77: trailing whitespace.
++      "sha256": "9489bb1b86aac04996231d0a37d7909444cce69a5ffdb195678c4e0d088c9df4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:78: trailing whitespace.
++      "bytes": 489,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:79: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/full-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:80: trailing whitespace.
++      "raw_sha256": "1614c9bd4556fb55898f9c2e3a6d0479f57a547733e3f562378007d19edf89ca",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:81: trailing whitespace.
++      "raw_bytes": 504,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:82: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:83: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:84: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:85: trailing whitespace.
++      "path": "runs/full-ready-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:86: trailing whitespace.
++      "sha256": "025291f8c387192af9f5f1cecf44993c554ef00dd0f244f1e145fe63bddd54a0",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:87: trailing whitespace.
++      "bytes": 493,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:88: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/full-ready-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:89: trailing whitespace.
++      "raw_sha256": "dfa857e02f99f94125542dfa3a9dfcc29a2b3e485851b8f3fb7701696c72e40a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:90: trailing whitespace.
++      "raw_bytes": 508,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:91: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:92: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:93: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:94: trailing whitespace.
++      "path": "runs/full-ready.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:95: trailing whitespace.
++      "sha256": "cceb94ae3d76e64ca9c5da584bfff620e9b8ca551b2dd36e3d66abf0b3e84e47",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:96: trailing whitespace.
++      "bytes": 4905,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:97: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/full-ready.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:98: trailing whitespace.
++      "raw_sha256": "57ae9c1dc08405dca03923aa367ccf9aba2ce13174fd69c986d9900fb9bcc417",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:99: trailing whitespace.
++      "raw_bytes": 4968,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:100: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:101: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:102: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:103: trailing whitespace.
++      "path": "runs/full-ready.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:104: trailing whitespace.
++      "sha256": "17a090497b1c44c4b9867988d3e682e67406c33aca5d22fabdc7a1b4a8867576",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:105: trailing whitespace.
++      "bytes": 444686,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:106: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/full-ready.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:107: trailing whitespace.
++      "raw_sha256": "17a090497b1c44c4b9867988d3e682e67406c33aca5d22fabdc7a1b4a8867576",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:108: trailing whitespace.
++      "raw_bytes": 444686,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:109: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:110: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:111: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:112: trailing whitespace.
++      "path": "runs/full.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:113: trailing whitespace.
++      "sha256": "77ab1e658dad3070d35db54b0ca904b78a30f56e32cda440b791ca98f66ce7dd",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:114: trailing whitespace.
++      "bytes": 83,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:115: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/full.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:116: trailing whitespace.
++      "raw_sha256": "e60e121067b4a3694cb7f761ad224d452dc125d9aacd1964784c848b5ffb6bad",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:117: trailing whitespace.
++      "raw_bytes": 84,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:118: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:119: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:120: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:121: trailing whitespace.
++      "path": "runs/npm-ci-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:122: trailing whitespace.
++      "sha256": "ff46d9e64bcf338159f7a69cc97655b092c02100158d158531d990617c6919f8",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:123: trailing whitespace.
++      "bytes": 277,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:124: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/npm-ci-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:125: trailing whitespace.
++      "raw_sha256": "c6b0d405bbe8869047670801547e47aceed9d5e180520b65bd5707627264a79a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:126: trailing whitespace.
++      "raw_bytes": 289,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:127: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:128: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:129: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:130: trailing whitespace.
++      "path": "runs/npm-ci.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:131: trailing whitespace.
++      "sha256": "866db5d4cf6a59d265226c1f9e6e17dfd7f09300b91e8cb46392b8707371487e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:132: trailing whitespace.
++      "bytes": 267,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:133: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/npm-ci.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:134: trailing whitespace.
++      "raw_sha256": "866db5d4cf6a59d265226c1f9e6e17dfd7f09300b91e8cb46392b8707371487e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:135: trailing whitespace.
++      "raw_bytes": 267,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:136: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:137: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:138: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:139: trailing whitespace.
++      "path": "runs/react-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:140: trailing whitespace.
++      "sha256": "571cd9546b11116ca45443665cb239b131fb30c4556a896adee751483705eb69",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:141: trailing whitespace.
++      "bytes": 483,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:142: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/react-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:143: trailing whitespace.
++      "raw_sha256": "3726df95b7976df0e959aec01ed9eb00e56c8c1fbbfe6f49ebc9730202295155",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:144: trailing whitespace.
++      "raw_bytes": 501,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:145: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:146: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:147: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:148: trailing whitespace.
++      "path": "runs/react.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:149: trailing whitespace.
++      "sha256": "61c27d0e447eaead52a92a86b94d17cd7372be370abf22b64803e970e4d19b9f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:150: trailing whitespace.
++      "bytes": 9403,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:151: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/react.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:152: trailing whitespace.
++      "raw_sha256": "61c27d0e447eaead52a92a86b94d17cd7372be370abf22b64803e970e4d19b9f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:153: trailing whitespace.
++      "raw_bytes": 9403,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:154: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:155: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:156: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:157: trailing whitespace.
++      "path": "runs/react.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:158: trailing whitespace.
++      "sha256": "b080e575eae5b806259cbb7959fe39dd4b2cef5efc969d12aa3b90d722122cff",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:159: trailing whitespace.
++      "bytes": 43862,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:160: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/runs/react.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:161: trailing whitespace.
++      "raw_sha256": "b080e575eae5b806259cbb7959fe39dd4b2cef5efc969d12aa3b90d722122cff",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:162: trailing whitespace.
++      "raw_bytes": 43862,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:163: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:164: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:165: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:166: trailing whitespace.
++      "path": "pinned.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:167: trailing whitespace.
++      "sha256": "b12a61ac56543a616d89a973b08f24a2705e51744a83254df41cc296662fbc49",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:168: trailing whitespace.
++      "bytes": 220,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:169: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/pinned.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:170: trailing whitespace.
++      "raw_sha256": "b12a61ac56543a616d89a973b08f24a2705e51744a83254df41cc296662fbc49",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:171: trailing whitespace.
++      "raw_bytes": 220,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:172: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:173: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:174: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:175: trailing whitespace.
++      "path": "protected.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:176: trailing whitespace.
++      "sha256": "2530819fb37cc75699ecd48c70e27be4f4ef2e1feacef78058518f006fda731f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:177: trailing whitespace.
++      "bytes": 697,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:178: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/protected.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:179: trailing whitespace.
++      "raw_sha256": "2530819fb37cc75699ecd48c70e27be4f4ef2e1feacef78058518f006fda731f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:180: trailing whitespace.
++      "raw_bytes": 697,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:181: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:182: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:183: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:184: trailing whitespace.
++      "path": "reservation.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:185: trailing whitespace.
++      "sha256": "55dda4054bb43cb3d6d2954608595b5e413b34c5b67f60f7e7b2ad97a2644fe6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:186: trailing whitespace.
++      "bytes": 935,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:187: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/reservation.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:188: trailing whitespace.
++      "raw_sha256": "55dda4054bb43cb3d6d2954608595b5e413b34c5b67f60f7e7b2ad97a2644fe6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:189: trailing whitespace.
++      "raw_bytes": 935,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:190: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:191: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:192: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:193: trailing whitespace.
++      "path": "integration-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:194: trailing whitespace.
++      "sha256": "51460d7d014361a8db7e7ecc9ce1c754153a971a0ff28bfeb4fbbf2a1d1827e6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:195: trailing whitespace.
++      "bytes": 449,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:196: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/integration-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:197: trailing whitespace.
++      "raw_sha256": "51460d7d014361a8db7e7ecc9ce1c754153a971a0ff28bfeb4fbbf2a1d1827e6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:198: trailing whitespace.
++      "raw_bytes": 449,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:199: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:200: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:201: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:202: trailing whitespace.
++      "path": "product-comparison.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:203: trailing whitespace.
++      "sha256": "7956e724088e5c16832a018b80478093afb614d5050c23f5b627acfe95da3d7e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:204: trailing whitespace.
++      "bytes": 17509,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:205: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/product-comparison.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:206: trailing whitespace.
++      "raw_sha256": "7956e724088e5c16832a018b80478093afb614d5050c23f5b627acfe95da3d7e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:207: trailing whitespace.
++      "raw_bytes": 17509,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:208: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:209: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:210: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:211: trailing whitespace.
++      "path": "openapi-operations.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:212: trailing whitespace.
++      "sha256": "ce3e16a8bc8d3d6a2a2d8088358aff0df808d674c831ef57fc34fad0b3a143b4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:213: trailing whitespace.
++      "bytes": 2335,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:214: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/openapi-operations.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:215: trailing whitespace.
++      "raw_sha256": "ce3e16a8bc8d3d6a2a2d8088358aff0df808d674c831ef57fc34fad0b3a143b4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:216: trailing whitespace.
++      "raw_bytes": 2335,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:217: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:218: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:219: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:220: trailing whitespace.
++      "path": "candidate-copy.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:221: trailing whitespace.
++      "sha256": "e65531b3649bf63e59bcea04d762ed69bf09460aae18c736698918f3ad4c67be",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:222: trailing whitespace.
++      "bytes": 192,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:223: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/candidate-copy.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:224: trailing whitespace.
++      "raw_sha256": "9e7054c97bb93695f2c5b593695979dd4490f0f7e2c7f3243edd75f5ee977d6c",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:225: trailing whitespace.
++      "raw_bytes": 199,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:226: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:227: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:228: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:229: trailing whitespace.
++      "path": "environment-failure.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:230: trailing whitespace.
++      "sha256": "4d26aaed27660cbaebbc7bc0b6f99c429f878167a092f8bb33f25f686beb4cba",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:231: trailing whitespace.
++      "bytes": 396,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:232: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/environment-failure.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:233: trailing whitespace.
++      "raw_sha256": "4d26aaed27660cbaebbc7bc0b6f99c429f878167a092f8bb33f25f686beb4cba",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:234: trailing whitespace.
++      "raw_bytes": 396,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:235: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:236: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:237: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:238: trailing whitespace.
++      "path": "merge-result.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:239: trailing whitespace.
++      "sha256": "06e443b96f6a7ce66cf55c05a6bbf0222ed50d00b9b9dd96e22331c5a8086419",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:240: trailing whitespace.
++      "bytes": 272,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:241: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/merge-result.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:242: trailing whitespace.
++      "raw_sha256": "06e443b96f6a7ce66cf55c05a6bbf0222ed50d00b9b9dd96e22331c5a8086419",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:243: trailing whitespace.
++      "raw_bytes": 272,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:244: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:245: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:246: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:247: trailing whitespace.
++      "path": "gate-summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:248: trailing whitespace.
++      "sha256": "f4582140a30f8296ccc75bd698fc0745adc0f70c0d1c36fff6f07a0abf9d999f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:249: trailing whitespace.
++      "bytes": 1303,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:250: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/gate-summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:251: trailing whitespace.
++      "raw_sha256": "0d4b2d25765d9354e195f75e644113ea46894cc1f0217c6082d1b1a7356bc833",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:252: trailing whitespace.
++      "raw_bytes": 1353,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:253: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:254: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:255: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:256: trailing whitespace.
++      "path": "browser-summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:257: trailing whitespace.
++      "sha256": "a75e23d51aae7a1feb7b092cd4557bf60b88eac7eec3e64e99af108f077a2406",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:258: trailing whitespace.
++      "bytes": 2035,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:259: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/browser-summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:260: trailing whitespace.
++      "raw_sha256": "a75e23d51aae7a1feb7b092cd4557bf60b88eac7eec3e64e99af108f077a2406",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:261: trailing whitespace.
++      "raw_bytes": 2035,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:262: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:263: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:264: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:265: trailing whitespace.
++      "path": "browser-invocation.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:266: trailing whitespace.
++      "sha256": "6bd6285b1653d07909612dc74504450b4fb6fd539da8634d0faf6afd2fa140dc",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:267: trailing whitespace.
++      "bytes": 1103,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:268: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/browser-invocation.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:269: trailing whitespace.
++      "raw_sha256": "6bd6285b1653d07909612dc74504450b4fb6fd539da8634d0faf6afd2fa140dc",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:270: trailing whitespace.
++      "raw_bytes": 1103,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:271: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:272: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:273: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:274: trailing whitespace.
++      "path": "finish_checks.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:275: trailing whitespace.
++      "sha256": "da574f57121403781a29816a722523981bc952fbea1ec4810dd602909a88aa9d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:276: trailing whitespace.
++      "bytes": 2813,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:277: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/finish_checks.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:278: trailing whitespace.
++      "raw_sha256": "da574f57121403781a29816a722523981bc952fbea1ec4810dd602909a88aa9d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:279: trailing whitespace.
++      "raw_bytes": 2813,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:280: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:281: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:282: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:283: trailing whitespace.
++      "path": "copy_candidate.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:284: trailing whitespace.
++      "sha256": "78239a19527897f7b3dc3c94fb3c79c8bff151eab7e5a19709c4238b5e3d8cb6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:285: trailing whitespace.
++      "bytes": 1035,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:286: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/copy_candidate.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:287: trailing whitespace.
++      "raw_sha256": "78239a19527897f7b3dc3c94fb3c79c8bff151eab7e5a19709c4238b5e3d8cb6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:288: trailing whitespace.
++      "raw_bytes": 1035,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:289: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:290: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:291: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:292: trailing whitespace.
++      "path": "verify_final.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:293: trailing whitespace.
++      "sha256": "a9c9cb466aec882db50bbd4f5bc7c3fa7fb66d18600667b0a90524371de519d9",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:294: trailing whitespace.
++      "bytes": 3090,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:295: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/verify_final.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:296: trailing whitespace.
++      "raw_sha256": "a9c9cb466aec882db50bbd4f5bc7c3fa7fb66d18600667b0a90524371de519d9",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:297: trailing whitespace.
++      "raw_bytes": 3090,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:298: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:299: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:300: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:301: trailing whitespace.
++      "path": "archive.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:302: trailing whitespace.
++      "sha256": "5e9d293ce0f894f407c68c6aafe3898c2c5cce44d52510744c2a29f3e72aad8b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:303: trailing whitespace.
++      "bytes": 3944,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:304: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/archive.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:305: trailing whitespace.
++      "raw_sha256": "5e9d293ce0f894f407c68c6aafe3898c2c5cce44d52510744c2a29f3e72aad8b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:306: trailing whitespace.
++      "raw_bytes": 3944,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:307: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:308: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:309: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:310: trailing whitespace.
++      "path": "fixture-copy.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:311: trailing whitespace.
++      "sha256": "196612d8a38671e881cea49a5e0ee88b600c74574167c0526bb0e76d68989a66",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:312: trailing whitespace.
++      "bytes": 724163,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:313: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w06-evidence/fixture-copy.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:314: trailing whitespace.
++      "raw_sha256": "15ccb83a08e2a2ef4d79661f3ff997cc6327a52f7b8006e302b3842acf527731",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:315: trailing whitespace.
++      "raw_bytes": 736774,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:316: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:317: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:318: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:319: trailing whitespace.
++      "path": "web-review/author-manifest-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:320: trailing whitespace.
++      "sha256": "a451627260165f12c6abee42e19c48866760605415ad780b9ac340b336e4d2f7",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:321: trailing whitespace.
++      "bytes": 95,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:322: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/author-manifest-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:323: trailing whitespace.
++      "raw_sha256": "a451627260165f12c6abee42e19c48866760605415ad780b9ac340b336e4d2f7",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:324: trailing whitespace.
++      "raw_bytes": 95,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:325: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:326: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:327: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:328: trailing whitespace.
++      "path": "web-review/content-baseline.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:329: trailing whitespace.
++      "sha256": "c4f1bb612d0f86df3edeb16c28534ee5ac6651a695ffcc7a970e595f5762823a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:330: trailing whitespace.
++      "bytes": 662,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:331: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/content-baseline.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:332: trailing whitespace.
++      "raw_sha256": "c4f1bb612d0f86df3edeb16c28534ee5ac6651a695ffcc7a970e595f5762823a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:333: trailing whitespace.
++      "raw_bytes": 662,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:334: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:335: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:336: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:337: trailing whitespace.
++      "path": "web-review/content-baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:338: trailing whitespace.
++      "sha256": "d5284d7753ceb12ff20d272816ad35667c803aca1ff9d4e296182271fe737abd",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:339: trailing whitespace.
++      "bytes": 115,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:340: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/content-baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:341: trailing whitespace.
++      "raw_sha256": "d5284d7753ceb12ff20d272816ad35667c803aca1ff9d4e296182271fe737abd",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:342: trailing whitespace.
++      "raw_bytes": 115,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:343: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:344: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:345: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:346: trailing whitespace.
++      "path": "web-review/content-baseline.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:347: trailing whitespace.
++      "sha256": "f0eeaedc92dc56302296952f0c6ba8011355f4b8276cc8d2d540c2043f669940",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:348: trailing whitespace.
++      "bytes": 6629,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:349: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/content-baseline.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:350: trailing whitespace.
++      "raw_sha256": "f0eeaedc92dc56302296952f0c6ba8011355f4b8276cc8d2d540c2043f669940",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:351: trailing whitespace.
++      "raw_bytes": 6629,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:352: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:353: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:354: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:355: trailing whitespace.
++      "path": "web-review/frontend-check.cjs",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:356: trailing whitespace.
++      "sha256": "a04ec8f65bc95ea21cce4468d66c5b66a0a504122ea085a9bed6253d991a1ce3",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:357: trailing whitespace.
++      "bytes": 2366,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:358: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/frontend-check.cjs",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:359: trailing whitespace.
++      "raw_sha256": "a04ec8f65bc95ea21cce4468d66c5b66a0a504122ea085a9bed6253d991a1ce3",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:360: trailing whitespace.
++      "raw_bytes": 2366,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:361: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:362: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:363: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:364: trailing whitespace.
++      "path": "web-review/gate-source-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:365: trailing whitespace.
++      "sha256": "7e1782889f2748e76fd6559aeb8b32f3558a830abc53563d8db09718f6c1e15e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:366: trailing whitespace.
++      "bytes": 660,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:367: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/gate-source-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:368: trailing whitespace.
++      "raw_sha256": "7e1782889f2748e76fd6559aeb8b32f3558a830abc53563d8db09718f6c1e15e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:369: trailing whitespace.
++      "raw_bytes": 660,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:370: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:371: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:372: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:373: trailing whitespace.
++      "path": "web-review/late-error.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:374: trailing whitespace.
++      "sha256": "2c087ce7429f4507ec46cebfc5152518ae0ff2e92643fb5b22b9f4b60b2a0aed",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:375: trailing whitespace.
++      "bytes": 678,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:376: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-error.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:377: trailing whitespace.
++      "raw_sha256": "2c087ce7429f4507ec46cebfc5152518ae0ff2e92643fb5b22b9f4b60b2a0aed",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:378: trailing whitespace.
++      "raw_bytes": 678,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:379: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:380: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:381: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:382: trailing whitespace.
++      "path": "web-review/late-error.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:383: trailing whitespace.
++      "sha256": "f3903445018f540ecfa37a1812a2e887693d8fae9fe9493984b9a171c62a6831",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:384: trailing whitespace.
++      "bytes": 109,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:385: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-error.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:386: trailing whitespace.
++      "raw_sha256": "f3903445018f540ecfa37a1812a2e887693d8fae9fe9493984b9a171c62a6831",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:387: trailing whitespace.
++      "raw_bytes": 109,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:388: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:389: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:390: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:391: trailing whitespace.
++      "path": "web-review/late-error.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:392: trailing whitespace.
++      "sha256": "ee9b0e30cdf737de20a6e74aa4908daef4ddf65e276c796ad71bac77ee59c47a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:393: trailing whitespace.
++      "bytes": 16928,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:394: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-error.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:395: trailing whitespace.
++      "raw_sha256": "ee9b0e30cdf737de20a6e74aa4908daef4ddf65e276c796ad71bac77ee59c47a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:396: trailing whitespace.
++      "raw_bytes": 16928,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:397: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:398: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:399: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:400: trailing whitespace.
++      "path": "web-review/late-finally.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:401: trailing whitespace.
++      "sha256": "bb04a6f53482f58f608a92988d1b013ad9bd5d28ab078eca2c0aed5e23ddf7fa",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:402: trailing whitespace.
++      "bytes": 682,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:403: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-finally.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:404: trailing whitespace.
++      "raw_sha256": "bb04a6f53482f58f608a92988d1b013ad9bd5d28ab078eca2c0aed5e23ddf7fa",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:405: trailing whitespace.
++      "raw_bytes": 682,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:406: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:407: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:408: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:409: trailing whitespace.
++      "path": "web-review/late-finally.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:410: trailing whitespace.
++      "sha256": "620ceca9bbe35dc9e49dae4000a3dc1fda626fb5e8f6b034e751f5cf3d7278c6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:411: trailing whitespace.
++      "bytes": 111,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:412: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-finally.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:413: trailing whitespace.
++      "raw_sha256": "620ceca9bbe35dc9e49dae4000a3dc1fda626fb5e8f6b034e751f5cf3d7278c6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:414: trailing whitespace.
++      "raw_bytes": 111,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:415: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:416: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:417: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:418: trailing whitespace.
++      "path": "web-review/late-finally.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:419: trailing whitespace.
++      "sha256": "b22f757a4eda069277743f1884118eb389afeff12eb386e791051c6150e35649",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:420: trailing whitespace.
++      "bytes": 7430,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:421: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-finally.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:422: trailing whitespace.
++      "raw_sha256": "b22f757a4eda069277743f1884118eb389afeff12eb386e791051c6150e35649",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:423: trailing whitespace.
++      "raw_bytes": 7430,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:424: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:425: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:426: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:427: trailing whitespace.
++      "path": "web-review/late-success.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:428: trailing whitespace.
++      "sha256": "5dd88261b5026dd91cbf28c1bfbcc253074fe5f62bb8b7ec36a75f93a76830a4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:429: trailing whitespace.
++      "bytes": 682,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:430: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-success.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:431: trailing whitespace.
++      "raw_sha256": "5dd88261b5026dd91cbf28c1bfbcc253074fe5f62bb8b7ec36a75f93a76830a4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:432: trailing whitespace.
++      "raw_bytes": 682,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:433: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:434: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:435: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:436: trailing whitespace.
++      "path": "web-review/late-success.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:437: trailing whitespace.
++      "sha256": "64084f415647d1fadb1947a760e897f5f0bf93e10e9cc2acf0736b37332ba290",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:438: trailing whitespace.
++      "bytes": 111,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:439: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-success.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:440: trailing whitespace.
++      "raw_sha256": "64084f415647d1fadb1947a760e897f5f0bf93e10e9cc2acf0736b37332ba290",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:441: trailing whitespace.
++      "raw_bytes": 111,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:442: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:443: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:444: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:445: trailing whitespace.
++      "path": "web-review/late-success.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:446: trailing whitespace.
++      "sha256": "66b73d09f7cfe3d4ed0c44afb8ed7200a6f89390f2b15f673e9331a75520a770",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:447: trailing whitespace.
++      "bytes": 68703,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:448: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/late-success.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:449: trailing whitespace.
++      "raw_sha256": "9f419bf3634cb8f5a1f31ce772f3dc38c06ccf1cc512c30f2ef0e0c594927b35",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:450: trailing whitespace.
++      "raw_bytes": 68723,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:451: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:452: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:453: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:454: trailing whitespace.
++      "path": "web-review/mutation-provenance-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:455: trailing whitespace.
++      "sha256": "c9983acdcdbe6bfd9b348ea1d0b2da958e636d85566fcb1340e29effa9441fce",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:456: trailing whitespace.
++      "bytes": 65,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:457: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/mutation-provenance-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:458: trailing whitespace.
++      "raw_sha256": "c9983acdcdbe6bfd9b348ea1d0b2da958e636d85566fcb1340e29effa9441fce",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:459: trailing whitespace.
++      "raw_bytes": 65,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:460: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:461: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:462: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:463: trailing whitespace.
++      "path": "web-review/mutation-results.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:464: trailing whitespace.
++      "sha256": "9623b0942e8d9e8e1408f72b2df008cf3518af261bff801961052d2986454a57",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:465: trailing whitespace.
++      "bytes": 724,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:466: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/mutation-results.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:467: trailing whitespace.
++      "raw_sha256": "9623b0942e8d9e8e1408f72b2df008cf3518af261bff801961052d2986454a57",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:468: trailing whitespace.
++      "raw_bytes": 724,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:469: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:470: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:471: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:472: trailing whitespace.
++      "path": "web-review/offline-baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:473: trailing whitespace.
++      "sha256": "1c857717e622527543ac6a396bca9806357b60f7d6fc1f92cc836456e0eb0a9f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:474: trailing whitespace.
++      "bytes": 388,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:475: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/offline-baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:476: trailing whitespace.
++      "raw_sha256": "2ec4bf794a28ff0eb997a59bd99d62322c42f12d5ad4aab15397fced8a855cd1",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:477: trailing whitespace.
++      "raw_bytes": 389,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:478: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:479: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:480: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:481: trailing whitespace.
++      "path": "web-review/offline-boundary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:482: trailing whitespace.
++      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:483: trailing whitespace.
++      "bytes": 2,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:484: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/offline-boundary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:485: trailing whitespace.
++      "raw_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:486: trailing whitespace.
++      "raw_bytes": 2,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:487: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:488: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:489: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:490: trailing whitespace.
++      "path": "web-review/offline-boundary.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:491: trailing whitespace.
++      "sha256": "6f0ce07fbcfa64d1ec616a479dab12c60377195b55f4e0aa72ec543d63cd2930",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:492: trailing whitespace.
++      "bytes": 2552,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:493: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/offline-boundary.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:494: trailing whitespace.
++      "raw_sha256": "6f0ce07fbcfa64d1ec616a479dab12c60377195b55f4e0aa72ec543d63cd2930",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:495: trailing whitespace.
++      "raw_bytes": 2552,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:496: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:497: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:498: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:499: trailing whitespace.
++      "path": "web-review/offline-bypass-admission.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:500: trailing whitespace.
++      "sha256": "6530f92e4cf550ed74ac15b3d9fb8a4beaa306586796589cdee60b170b279c77",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:501: trailing whitespace.
++      "bytes": 630,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:502: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/offline-bypass-admission.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:503: trailing whitespace.
++      "raw_sha256": "01ea006bd3ea07a22eaa3f66520895158d75a9f4954c446932c9e276a274a38d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:504: trailing whitespace.
++      "raw_bytes": 636,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:505: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:506: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:507: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:508: trailing whitespace.
++      "path": "web-review/offline-check.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:509: trailing whitespace.
++      "sha256": "4213aa9b9555bbe693c57e4f241dc6a694cf02caaa6f70758882bb05c8935802",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:510: trailing whitespace.
++      "bytes": 1062,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:511: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/offline-check.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:512: trailing whitespace.
++      "raw_sha256": "4213aa9b9555bbe693c57e4f241dc6a694cf02caaa6f70758882bb05c8935802",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:513: trailing whitespace.
++      "raw_bytes": 1062,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:514: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:515: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:516: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:517: trailing whitespace.
++      "path": "web-review/offline-receipts.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:518: trailing whitespace.
++      "sha256": "00b43c2f8b50702540b745fdc07f4a4f448a7897f69d2c3f3fbcddcf6c6ba3f2",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:519: trailing whitespace.
++      "bytes": 362,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:520: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/offline-receipts.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:521: trailing whitespace.
++      "raw_sha256": "537a816b0936b4b9e601ff80c24714898b14a6f77809690b2c4e676236928c7d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:522: trailing whitespace.
++      "raw_bytes": 376,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:523: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:524: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:525: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:526: trailing whitespace.
++      "path": "web-review/raw-archive-check.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:527: trailing whitespace.
++      "sha256": "65718ee5d404a2e15f571349c54f0186a52065a19f8878446b98faea0d601190",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:528: trailing whitespace.
++      "bytes": 648,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:529: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/raw-archive-check.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:530: trailing whitespace.
++      "raw_sha256": "65718ee5d404a2e15f571349c54f0186a52065a19f8878446b98faea0d601190",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:531: trailing whitespace.
++      "raw_bytes": 648,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:532: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:533: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:534: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:535: trailing whitespace.
++      "path": "web-review/raw-archive-receipt.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:536: trailing whitespace.
++      "sha256": "3d06809f4996611d46d9c82cbeae91f2815dc8f551191e29d6576a65bad9a774",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:537: trailing whitespace.
++      "bytes": 143,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:538: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/raw-archive-receipt.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:539: trailing whitespace.
++      "raw_sha256": "3d06809f4996611d46d9c82cbeae91f2815dc8f551191e29d6576a65bad9a774",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:540: trailing whitespace.
++      "raw_bytes": 143,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:541: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:542: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:543: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:544: trailing whitespace.
++      "path": "web-review/review.md",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:545: trailing whitespace.
++      "sha256": "acfa84e451abb62c3d683104de0dc431d2ec50d3ac52d9dccaac3b6cbd6ed71f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:546: trailing whitespace.
++      "bytes": 6072,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:547: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/review.md",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:548: trailing whitespace.
++      "raw_sha256": "acfa84e451abb62c3d683104de0dc431d2ec50d3ac52d9dccaac3b6cbd6ed71f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:549: trailing whitespace.
++      "raw_bytes": 6072,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:550: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:551: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:552: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:553: trailing whitespace.
++      "path": "web-review/same-attempt-check.cjs",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:554: trailing whitespace.
++      "sha256": "da3415cd0f5103665af1c195de47f9bedc9e8dbc4440a56d4b622117a2c693cd",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:555: trailing whitespace.
++      "bytes": 1230,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:556: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/same-attempt-check.cjs",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:557: trailing whitespace.
++      "raw_sha256": "da3415cd0f5103665af1c195de47f9bedc9e8dbc4440a56d4b622117a2c693cd",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:558: trailing whitespace.
++      "raw_bytes": 1230,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:559: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:560: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:561: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:562: trailing whitespace.
++      "path": "web-review/same-attempt-history-green.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:563: trailing whitespace.
++      "sha256": "824ed7a6c6c35e3264e4e87a269afafba147668dc04201d5df99c09b69c15cda",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:564: trailing whitespace.
++      "bytes": 621,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:565: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/same-attempt-history-green.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:566: trailing whitespace.
++      "raw_sha256": "824ed7a6c6c35e3264e4e87a269afafba147668dc04201d5df99c09b69c15cda",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:567: trailing whitespace.
++      "raw_bytes": 621,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:568: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:569: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:570: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:571: trailing whitespace.
++      "path": "web-review/same-attempt-history-green.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:572: trailing whitespace.
++      "sha256": "d53c3479769cfd8d27e7ba5bcd8acd83d50d3ad03daa1138290d7cfabaee6431",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:573: trailing whitespace.
++      "bytes": 125,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:574: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/same-attempt-history-green.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:575: trailing whitespace.
++      "raw_sha256": "d53c3479769cfd8d27e7ba5bcd8acd83d50d3ad03daa1138290d7cfabaee6431",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:576: trailing whitespace.
++      "raw_bytes": 125,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:577: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:578: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:579: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:580: trailing whitespace.
++      "path": "web-review/same-attempt-history-green.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:581: trailing whitespace.
++      "sha256": "6bfc967dc2e2dcf0f77cdb73757757acefb473aceeca8b6790102b6d98490a3f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:582: trailing whitespace.
++      "bytes": 3362,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:583: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/same-attempt-history-green.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:584: trailing whitespace.
++      "raw_sha256": "6bfc967dc2e2dcf0f77cdb73757757acefb473aceeca8b6790102b6d98490a3f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:585: trailing whitespace.
++      "raw_bytes": 3362,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:586: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:587: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:588: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:589: trailing whitespace.
++      "path": "web-review/same-attempt-history-mutant.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:590: trailing whitespace.
++      "sha256": "3881af9a6fb07be14c80822408218556fd62826ef51d90ef525ba55b14f33e94",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:591: trailing whitespace.
++      "bytes": 622,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:592: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/same-attempt-history-mutant.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:593: trailing whitespace.
++      "raw_sha256": "3881af9a6fb07be14c80822408218556fd62826ef51d90ef525ba55b14f33e94",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:594: trailing whitespace.
++      "raw_bytes": 622,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:595: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:596: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:597: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:598: trailing whitespace.
++      "path": "web-review/same-attempt-history-mutant.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:599: trailing whitespace.
++      "sha256": "9497c8a3aeac632b2dacf8ba9ea2fdf1f13f58b67ccb6b5408078b09db4a2d53",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:600: trailing whitespace.
++      "bytes": 126,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:601: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/same-attempt-history-mutant.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:602: trailing whitespace.
++      "raw_sha256": "9497c8a3aeac632b2dacf8ba9ea2fdf1f13f58b67ccb6b5408078b09db4a2d53",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:603: trailing whitespace.
++      "raw_bytes": 126,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:604: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:605: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:606: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:607: trailing whitespace.
++      "path": "web-review/same-attempt-history-mutant.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:608: trailing whitespace.
++      "sha256": "53f34df3b885174b8069832b647a7dec1348ec9b07047f36b3d559b8185b93ef",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:609: trailing whitespace.
++      "bytes": 3798,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:610: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/same-attempt-history-mutant.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:611: trailing whitespace.
++      "raw_sha256": "53f34df3b885174b8069832b647a7dec1348ec9b07047f36b3d559b8185b93ef",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:612: trailing whitespace.
++      "raw_bytes": 3798,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:613: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:614: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:615: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:616: trailing whitespace.
++      "path": "web-review/source-before.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:617: trailing whitespace.
++      "sha256": "8cb2daa28219e7378accbbdb0d1ba3607d37d4a97d3fd060eb542d242ad67db4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:618: trailing whitespace.
++      "bytes": 5607,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:619: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/source-before.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:620: trailing whitespace.
++      "raw_sha256": "8cb2daa28219e7378accbbdb0d1ba3607d37d4a97d3fd060eb542d242ad67db4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:621: trailing whitespace.
++      "raw_bytes": 5607,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:622: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:623: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:624: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:625: trailing whitespace.
++      "path": "web-review/source-preservation.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:626: trailing whitespace.
++      "sha256": "5960a3ffed5e33a52875e77edf3b98aed8065564308ab4697cda13a52e178843",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:627: trailing whitespace.
++      "bytes": 9532,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:628: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/source-preservation.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:629: trailing whitespace.
++      "raw_sha256": "5960a3ffed5e33a52875e77edf3b98aed8065564308ab4697cda13a52e178843",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:630: trailing whitespace.
++      "raw_bytes": 9532,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:631: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:632: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:633: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:634: trailing whitespace.
++      "path": "web-review/summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:635: trailing whitespace.
++      "sha256": "96839dee9c6f9a44e4bf9a98d0055a79920dee563f4cb276967abe389cbcfa8d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:636: trailing whitespace.
++      "bytes": 2126,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:637: trailing whitespace.
++      "raw_source": "tmp/coord-r8-web-review-20261026/summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:638: trailing whitespace.
++      "raw_sha256": "96839dee9c6f9a44e4bf9a98d0055a79920dee563f4cb276967abe389cbcfa8d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:639: trailing whitespace.
++      "raw_bytes": 2126,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:640: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:641: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:642: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:643: trailing whitespace.
++      "path": "core-review/author-gate-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:644: trailing whitespace.
++      "sha256": "e0d4871f81673dcfc122825fd2b643c5dc19e4f4f074c776f6a5940197bb31a6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:645: trailing whitespace.
++      "bytes": 224,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:646: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/author-gate-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:647: trailing whitespace.
++      "raw_sha256": "e0d4871f81673dcfc122825fd2b643c5dc19e4f4f074c776f6a5940197bb31a6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:648: trailing whitespace.
++      "raw_bytes": 224,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:649: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:650: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:651: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:652: trailing whitespace.
++      "path": "core-review/author-mutation-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:653: trailing whitespace.
++      "sha256": "89928153179283977de8d179fd1b9f32a7cf162d7cb0e6f2c34450b5190c8c0e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:654: trailing whitespace.
++      "bytes": 1495,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:655: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/author-mutation-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:656: trailing whitespace.
++      "raw_sha256": "89928153179283977de8d179fd1b9f32a7cf162d7cb0e6f2c34450b5190c8c0e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:657: trailing whitespace.
++      "raw_bytes": 1495,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:658: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:659: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:660: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:661: trailing whitespace.
++      "path": "core-review/capture.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:662: trailing whitespace.
++      "sha256": "75e10a501cc8cb6c86108cfce6fed7ee5543eeae1b3981e782b25c1993bad3f5",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:663: trailing whitespace.
++      "bytes": 739,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:664: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/capture.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:665: trailing whitespace.
++      "raw_sha256": "75e10a501cc8cb6c86108cfce6fed7ee5543eeae1b3981e782b25c1993bad3f5",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:666: trailing whitespace.
++      "raw_bytes": 739,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:667: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:668: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:669: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:670: trailing whitespace.
++      "path": "core-review/copied-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:671: trailing whitespace.
++      "sha256": "ac1249e948ee506960476e4b12805932786ed5a8384ed5a1291aed3befad288b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:672: trailing whitespace.
++      "bytes": 60719,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:673: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/copied-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:674: trailing whitespace.
++      "raw_sha256": "ac1249e948ee506960476e4b12805932786ed5a8384ed5a1291aed3befad288b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:675: trailing whitespace.
++      "raw_bytes": 60719,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:676: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:677: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:678: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:679: trailing whitespace.
++      "path": "core-review/main-openapi.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:680: trailing whitespace.
++      "sha256": "863b6e64ac64fa71d5e5fce77afa2fb2de58606eeca75a9e466b90974091dd52",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:681: trailing whitespace.
++      "bytes": 121813,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:682: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/main-openapi.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:683: trailing whitespace.
++      "raw_sha256": "863b6e64ac64fa71d5e5fce77afa2fb2de58606eeca75a9e466b90974091dd52",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:684: trailing whitespace.
++      "raw_bytes": 121813,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:685: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:686: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:687: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:688: trailing whitespace.
++      "path": "core-review/mutate.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:689: trailing whitespace.
++      "sha256": "8c32b2dae4f75914aef1a4b7344659ca1fc14516e7daf822bcf9956b4328d312",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:690: trailing whitespace.
++      "bytes": 2020,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:691: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/mutate.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:692: trailing whitespace.
++      "raw_sha256": "8c32b2dae4f75914aef1a4b7344659ca1fc14516e7daf822bcf9956b4328d312",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:693: trailing whitespace.
++      "raw_bytes": 2020,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:694: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:695: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:696: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:697: trailing whitespace.
++      "path": "core-review/mutation-summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:698: trailing whitespace.
++      "sha256": "26bcdea8f091e1237dc42a3109d87ec93890af64a6117e6dc377851438cf6429",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:699: trailing whitespace.
++      "bytes": 976,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:700: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/mutation-summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:701: trailing whitespace.
++      "raw_sha256": "48432f522eaf618dd33e4e64a038ed7e42c92547d601fed01b7f27594703714f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:702: trailing whitespace.
++      "raw_bytes": 1002,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:703: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:704: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:705: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:706: trailing whitespace.
++      "path": "core-review/provenance-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:707: trailing whitespace.
++      "sha256": "23e62acc7c7837ad27adfa2df27b4fcfd0a28f5cdc7d0b3e0f5946ff9284ea9a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:708: trailing whitespace.
++      "bytes": 630,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:709: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/provenance-audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:710: trailing whitespace.
++      "raw_sha256": "23e62acc7c7837ad27adfa2df27b4fcfd0a28f5cdc7d0b3e0f5946ff9284ea9a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:711: trailing whitespace.
++      "raw_bytes": 630,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:712: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:713: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:714: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:715: trailing whitespace.
++      "path": "core-review/review.md",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:716: trailing whitespace.
++      "sha256": "d2ac70d9bed05ea0f0da561bce0708fe14a4e2d3e89b21491d398d0a9763e553",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:717: trailing whitespace.
++      "bytes": 5513,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:718: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/review.md",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:719: trailing whitespace.
++      "raw_sha256": "d2ac70d9bed05ea0f0da561bce0708fe14a4e2d3e89b21491d398d0a9763e553",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:720: trailing whitespace.
++      "raw_bytes": 5513,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:721: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:722: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:723: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:724: trailing whitespace.
++      "path": "core-review/summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:725: trailing whitespace.
++      "sha256": "a0fbcba3cd42ef44bfbedef93e85552783d1d049e7a2e1012d54766a00007223",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:726: trailing whitespace.
++      "bytes": 1914,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:727: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:728: trailing whitespace.
++      "raw_sha256": "a0fbcba3cd42ef44bfbedef93e85552783d1d049e7a2e1012d54766a00007223",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:729: trailing whitespace.
++      "raw_bytes": 1914,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:730: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:731: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:732: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:733: trailing whitespace.
++      "path": "core-review/runs/current-a-revoked-wrapper.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:734: trailing whitespace.
++      "sha256": "5aad33f2886f4fc828f6dff7403c1047d0013c5eba0565792cad9458ff6f9fcd",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:735: trailing whitespace.
++      "bytes": 2842,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:736: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/current-a-revoked-wrapper.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:737: trailing whitespace.
++      "raw_sha256": "2170d18f7bc37c4dcecc2e11db861723cacdd538ba1b22a35ee2b78816ab8512",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:738: trailing whitespace.
++      "raw_bytes": 2878,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:739: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:740: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:741: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:742: trailing whitespace.
++      "path": "core-review/runs/current-a-revoked.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:743: trailing whitespace.
++      "sha256": "17ce23b9e81c089360aba6b3de6d8269a695e1be9f4e18343b9ebe8549cc4111",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:744: trailing whitespace.
++      "bytes": 473,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:745: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/current-a-revoked.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:746: trailing whitespace.
++      "raw_sha256": "ec6b954b66a08e74a5b6904a100294df82941c3007a226a522409287b9137e23",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:747: trailing whitespace.
++      "raw_bytes": 490,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:748: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:749: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:750: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:751: trailing whitespace.
++      "path": "core-review/runs/current-a-revoked.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:752: trailing whitespace.
++      "sha256": "baa57de52f46aa68f9cdafdab9e1a63d9358625630b857e2f26490bac2c7931b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:753: trailing whitespace.
++      "bytes": 2388,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:754: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/current-a-revoked.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:755: trailing whitespace.
++      "raw_sha256": "6c5dc54e16efc875001c1fac2b02c2907dfde19eefd7eb630e70922526ad3500",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:756: trailing whitespace.
++      "raw_bytes": 2422,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:757: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:758: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:759: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:760: trailing whitespace.
++      "path": "core-review/runs/current-a-revoked.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:761: trailing whitespace.
++      "sha256": "14bf2a7a4906e3ea81ea10996ff71aa89f31eb95c24f5ab1dbbbf60bb01d0aa7",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:762: trailing whitespace.
++      "bytes": 2282,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:763: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/current-a-revoked.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:764: trailing whitespace.
++      "raw_sha256": "c8b57dba82f245f0c21d172c541480da085ed5d673dfbc574f4032781ccc55d5",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:765: trailing whitespace.
++      "raw_bytes": 2301,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:766: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:767: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:768: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:769: trailing whitespace.
++      "path": "core-review/runs/fake-baseline.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:770: trailing whitespace.
++      "sha256": "408eac1a0bffb41c304504f29efcf6de9da8a632034dae427cb1e60f6a646aa6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:771: trailing whitespace.
++      "bytes": 446,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:772: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/fake-baseline.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:773: trailing whitespace.
++      "raw_sha256": "845120f4b3f11ac11ed6b75624b819945fc077561f17f9e60addd3dea961e331",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:774: trailing whitespace.
++      "raw_bytes": 463,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:775: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:776: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:777: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:778: trailing whitespace.
++      "path": "core-review/runs/fake-baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:779: trailing whitespace.
++      "sha256": "87b5621b5b704f9db038ad16d1abfd7db57cbb38fe861fdc95780439a8cbaad2",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:780: trailing whitespace.
++      "bytes": 719,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:781: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/fake-baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:782: trailing whitespace.
++      "raw_sha256": "53724cc6ddb7838d26e9f1b94c8938c5a55ad085123a1058ed443c9bb50966b9",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:783: trailing whitespace.
++      "raw_bytes": 728,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:784: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:785: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:786: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:787: trailing whitespace.
++      "path": "core-review/runs/fake-baseline.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:788: trailing whitespace.
++      "sha256": "28fd1e59066eb87ca8b78c804a3103b3f74f2a739bd2fe798e062075f2b3e1a0",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:789: trailing whitespace.
++      "bytes": 4027,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:790: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/fake-baseline.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:791: trailing whitespace.
++      "raw_sha256": "28fd1e59066eb87ca8b78c804a3103b3f74f2a739bd2fe798e062075f2b3e1a0",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:792: trailing whitespace.
++      "raw_bytes": 4027,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:793: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:794: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:795: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:796: trailing whitespace.
++      "path": "core-review/runs/fake-restored-control.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:797: trailing whitespace.
++      "sha256": "e84a078e35cc2b2ac5c1808abd049859a747bbe34805c49970289b4063618557",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:798: trailing whitespace.
++      "bytes": 499,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:799: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/fake-restored-control.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:800: trailing whitespace.
++      "raw_sha256": "11b33791eb4065d0706248198ef51e3cb6a1964db3e1396f9b1c8f7606e24559",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:801: trailing whitespace.
++      "raw_bytes": 516,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:802: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:803: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:804: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:805: trailing whitespace.
++      "path": "core-review/runs/fake-restored-control.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:806: trailing whitespace.
++      "sha256": "74f0ad3e35c04d9bae9c3203059333123aa7ddea2c65ffdd99495d6bab475a14",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:807: trailing whitespace.
++      "bytes": 725,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:808: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/fake-restored-control.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:809: trailing whitespace.
++      "raw_sha256": "f192049b75acd41534347560cf0b1f36869b3e8573c11b4e0d90c44691207eec",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:810: trailing whitespace.
++      "raw_bytes": 734,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:811: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:812: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:813: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:814: trailing whitespace.
++      "path": "core-review/runs/fake-restored-control.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:815: trailing whitespace.
++      "sha256": "f994a18f43844b82975c57760d9fe427334399e8d64ab6ffe769bd607a0ff58e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:816: trailing whitespace.
++      "bytes": 548,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:817: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/fake-restored-control.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:818: trailing whitespace.
++      "raw_sha256": "f994a18f43844b82975c57760d9fe427334399e8d64ab6ffe769bd607a0ff58e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:819: trailing whitespace.
++      "raw_bytes": 548,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:820: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:821: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:822: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:823: trailing whitespace.
++      "path": "core-review/runs/independent-probes-final.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:824: trailing whitespace.
++      "sha256": "4fd3b4f68f3eaaff40cbf966a68f82ffa414bb2d238e015a113af513f4c018c3",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:825: trailing whitespace.
++      "bytes": 454,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:826: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/independent-probes-final.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:827: trailing whitespace.
++      "raw_sha256": "9a3dd6ca0878c3b4def6f49e43b902db830ec64956fc9d554d0ea96caaf42315",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:828: trailing whitespace.
++      "raw_bytes": 469,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:829: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:830: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:831: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:832: trailing whitespace.
++      "path": "core-review/runs/independent-probes-final.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:833: trailing whitespace.
++      "sha256": "bc1c5ee5f66fd4de6240f04815ae5638a6f12d1a27b28ff306b438cd1dd6a632",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:834: trailing whitespace.
++      "bytes": 713,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:835: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/independent-probes-final.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:836: trailing whitespace.
++      "raw_sha256": "aa6f1e108b101c29369d48d16ea9b358b062e838d93f63746cb79b0c47c747ec",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:837: trailing whitespace.
++      "raw_bytes": 722,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:838: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:839: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:840: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:841: trailing whitespace.
++      "path": "core-review/runs/independent-probes-final.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:842: trailing whitespace.
++      "sha256": "62ba2affff8b27c1259bd220c7bf758e896b43b19827f7677b64f09a18b135c2",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:843: trailing whitespace.
++      "bytes": 1046,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:844: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/independent-probes-final.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:845: trailing whitespace.
++      "raw_sha256": "62ba2affff8b27c1259bd220c7bf758e896b43b19827f7677b64f09a18b135c2",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:846: trailing whitespace.
++      "raw_bytes": 1046,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:847: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:848: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:849: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:850: trailing whitespace.
++      "path": "core-review/runs/independent-probes.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:851: trailing whitespace.
++      "sha256": "682992e0749ef1f6fa860a18655e59c18b92681183e27b39217a8ab641737ab0",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:852: trailing whitespace.
++      "bytes": 442,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:853: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/independent-probes.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:854: trailing whitespace.
++      "raw_sha256": "a7aab1010452d7459b447277d4441bb57d9ccfebe12758e753dbe565fab9ae06",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:855: trailing whitespace.
++      "raw_bytes": 457,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:856: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:857: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:858: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:859: trailing whitespace.
++      "path": "core-review/runs/independent-probes.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:860: trailing whitespace.
++      "sha256": "8996d82bd3b8a686f3da2ea1086a9d200e8796a9ca8f3056010ceb24c143b045",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:861: trailing whitespace.
++      "bytes": 707,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:862: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/independent-probes.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:863: trailing whitespace.
++      "raw_sha256": "310929ec6197136b4201aad52172ff4e09ce9b03acdc81a5e7acadee7707542a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:864: trailing whitespace.
++      "raw_bytes": 716,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:865: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:866: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:867: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:868: trailing whitespace.
++      "path": "core-review/runs/independent-probes.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:869: trailing whitespace.
++      "sha256": "c2b2d86b1eccd09c1a000d1c4ca48b155e1e2eff89624a0cccc6764cf2a0f623",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:870: trailing whitespace.
++      "bytes": 888,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:871: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/independent-probes.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:872: trailing whitespace.
++      "raw_sha256": "c2b2d86b1eccd09c1a000d1c4ca48b155e1e2eff89624a0cccc6764cf2a0f623",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:873: trailing whitespace.
++      "raw_bytes": 888,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:874: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:875: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:876: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:877: trailing whitespace.
++      "path": "core-review/runs/wrong-current-accepted-wrapper.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:878: trailing whitespace.
++      "sha256": "b01bc872b5c87513e3c76eb15185369bcb62114612a72e8d09ac9b6a22a6b4af",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:879: trailing whitespace.
++      "bytes": 2222,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:880: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/wrong-current-accepted-wrapper.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:881: trailing whitespace.
++      "raw_sha256": "e2493b8d2d68c5923bf97e504ec4b80796d3a19e4d2bfdc605db280d373f424e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:882: trailing whitespace.
++      "raw_bytes": 2249,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:883: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:884: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:885: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:886: trailing whitespace.
++      "path": "core-review/runs/wrong-current-accepted.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:887: trailing whitespace.
++      "sha256": "6919c97b527e701e2f5b918d457a5d1a5aa99e302bea863d7b6773816f0ad324",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:888: trailing whitespace.
++      "bytes": 482,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:889: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/wrong-current-accepted.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:890: trailing whitespace.
++      "raw_sha256": "0ba78fb4881f303595e7b1c0f5f75775ec4998df1b5bd62ebc9bfdf8be6fc10e",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:891: trailing whitespace.
++      "raw_bytes": 499,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:892: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:893: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:894: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:895: trailing whitespace.
++      "path": "core-review/runs/wrong-current-accepted.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:896: trailing whitespace.
++      "sha256": "83933287dbe95f09e81ca0f3d8fc45bf90bd893881e84285ab02a4d14cac102d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:897: trailing whitespace.
++      "bytes": 1768,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:898: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/wrong-current-accepted.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:899: trailing whitespace.
++      "raw_sha256": "f55e1c948a6dce524962c156b5a4ae836b173a90789c80f19980701dbb7c34b5",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:900: trailing whitespace.
++      "raw_bytes": 1793,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:901: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:902: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:903: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:904: trailing whitespace.
++      "path": "core-review/runs/wrong-current-accepted.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:905: trailing whitespace.
++      "sha256": "18ad221ac6f3050c631fd562b9cff9700218a4802b1dc40eb123e5c86dc9bfe0",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:906: trailing whitespace.
++      "bytes": 1215,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:907: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/runs/wrong-current-accepted.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:908: trailing whitespace.
++      "raw_sha256": "7dfd01dd368e1b705ea04817838dcbdebffcc6adca424af60f5f004fb7c2e82b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:909: trailing whitespace.
++      "raw_bytes": 1225,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:910: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:911: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:912: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:913: trailing whitespace.
++      "path": "design-review/baseline-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:914: trailing whitespace.
++      "sha256": "ba304ec213c71faf5a99388503b8d99cc17d3a0559cdd0c4d649f157749c75fa",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:915: trailing whitespace.
++      "bytes": 26,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:916: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:917: trailing whitespace.
++      "raw_sha256": "ba304ec213c71faf5a99388503b8d99cc17d3a0559cdd0c4d649f157749c75fa",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:918: trailing whitespace.
++      "raw_bytes": 26,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:919: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:920: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:921: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:922: trailing whitespace.
++      "path": "design-review/baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:923: trailing whitespace.
++      "sha256": "871bbfa8f7ae13296837cd3b740094fdb93e552d973a83f607d0fd3653682cae",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:924: trailing whitespace.
++      "bytes": 19,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:925: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:926: trailing whitespace.
++      "raw_sha256": "871bbfa8f7ae13296837cd3b740094fdb93e552d973a83f607d0fd3653682cae",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:927: trailing whitespace.
++      "raw_bytes": 19,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:928: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:929: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:930: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:931: trailing whitespace.
++      "path": "design-review/baseline2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:932: trailing whitespace.
++      "sha256": "60d8232563ed5acd1f69e7f333dea1e78521100d17b1138157ce6192d5e92927",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:933: trailing whitespace.
++      "bytes": 16674,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:934: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:935: trailing whitespace.
++      "raw_sha256": "60d8232563ed5acd1f69e7f333dea1e78521100d17b1138157ce6192d5e92927",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:936: trailing whitespace.
++      "raw_bytes": 16674,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:937: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:938: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:939: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:940: trailing whitespace.
++      "path": "design-review/baseline2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:941: trailing whitespace.
++      "sha256": "b5fa19bf62f303b119aeb9a4b4bb41b7dc401ccc895939757a5f81d9c8232dff",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:942: trailing whitespace.
++      "bytes": 15257,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:943: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:944: trailing whitespace.
++      "raw_sha256": "e5d0a3f780547c53a2ae50a96dbdf3d4b45b16051038fc1737d58ddc9617d085",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:945: trailing whitespace.
++      "raw_bytes": 15631,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:946: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:947: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:948: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:949: trailing whitespace.
++      "path": "design-review/baseline2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:950: trailing whitespace.
++      "sha256": "9cf0b874ecadbc305a76f956242e56eeee2312eba7c71780accd75bb589d83fa",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:951: trailing whitespace.
++      "bytes": 25994,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:952: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:953: trailing whitespace.
++      "raw_sha256": "4413df3dd74f7283b345c6114d8c6981b5a441a8bc297c764cd0a49fa6f30716",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:954: trailing whitespace.
++      "raw_bytes": 26351,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:955: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:956: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:957: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:958: trailing whitespace.
++      "path": "design-review/baseline3-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:959: trailing whitespace.
++      "sha256": "043073ecd5fddfa5b38d50505653550fdbaa2edaea115a73aa37136aa8adc746",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:960: trailing whitespace.
++      "bytes": 298,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:961: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline3-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:962: trailing whitespace.
++      "raw_sha256": "043073ecd5fddfa5b38d50505653550fdbaa2edaea115a73aa37136aa8adc746",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:963: trailing whitespace.
++      "raw_bytes": 298,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:964: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:965: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:966: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:967: trailing whitespace.
++      "path": "design-review/baseline3.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:968: trailing whitespace.
++      "sha256": "861a77003fc67e923cd455df78a4e579bb017c954279d79ce4bc001993f95114",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:969: trailing whitespace.
++      "bytes": 210,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:970: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline3.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:971: trailing whitespace.
++      "raw_sha256": "3b564bd1f13e1901c642db453002db4481a2044df0238ec66f7fb05b58f08c50",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:972: trailing whitespace.
++      "raw_bytes": 213,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:973: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:974: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:975: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:976: trailing whitespace.
++      "path": "design-review/baseline3.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:977: trailing whitespace.
++      "sha256": "c908923a33cde64516192eba2a072895506836a864caed57ad323d493f96750b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:978: trailing whitespace.
++      "bytes": 11106,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:979: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/baseline3.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:980: trailing whitespace.
++      "raw_sha256": "c908923a33cde64516192eba2a072895506836a864caed57ad323d493f96750b",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:981: trailing whitespace.
++      "raw_bytes": 11106,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:982: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:983: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:984: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:985: trailing whitespace.
++      "path": "design-review/conftest.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:986: trailing whitespace.
++      "sha256": "6a166845e2f62d0cf174d9340efe0c3d88aabcdf11300f8ffe5e567746bb8fd8",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:987: trailing whitespace.
++      "bytes": 247,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:988: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/conftest.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:989: trailing whitespace.
++      "raw_sha256": "6a166845e2f62d0cf174d9340efe0c3d88aabcdf11300f8ffe5e567746bb8fd8",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:990: trailing whitespace.
++      "raw_bytes": 247,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:991: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:992: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:993: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:994: trailing whitespace.
++      "path": "design-review/copied-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:995: trailing whitespace.
++      "sha256": "9803b3cd2fd06cb5e5153f08627b20515c2c8a0068139907275721f7eb436049",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:996: trailing whitespace.
++      "bytes": 8292,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:997: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/copied-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:998: trailing whitespace.
++      "raw_sha256": "9803b3cd2fd06cb5e5153f08627b20515c2c8a0068139907275721f7eb436049",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:999: trailing whitespace.
++      "raw_bytes": 8292,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1000: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1001: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1002: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1003: trailing whitespace.
++      "path": "design-review/final-green2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1004: trailing whitespace.
++      "sha256": "9492fd3df1e238c46102e2a2c0d6afca0a00b5497a9c6ebd81947253c0753426",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1005: trailing whitespace.
++      "bytes": 352,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1006: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/final-green2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1007: trailing whitespace.
++      "raw_sha256": "9492fd3df1e238c46102e2a2c0d6afca0a00b5497a9c6ebd81947253c0753426",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1008: trailing whitespace.
++      "raw_bytes": 352,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1009: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1010: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1011: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1012: trailing whitespace.
++      "path": "design-review/final-green2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1013: trailing whitespace.
++      "sha256": "e78fb3f2882e3dd06a9e45df41df549754cfc5c46b55f6647a54951e34a82121",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1014: trailing whitespace.
++      "bytes": 212,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1015: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/final-green2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1016: trailing whitespace.
++      "raw_sha256": "398bb589a58a57f5f702a29ba90140141a83d10856cff5ffdfc9a7bd6bda0e70",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1017: trailing whitespace.
++      "raw_bytes": 215,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1018: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1019: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1020: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1021: trailing whitespace.
++      "path": "design-review/final-green2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1022: trailing whitespace.
++      "sha256": "2838048549afc643db2d5c8800ba6923fa8df704be3639d9ae6e21c7b80b1b26",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1023: trailing whitespace.
++      "bytes": 11106,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1024: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/final-green2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1025: trailing whitespace.
++      "raw_sha256": "2838048549afc643db2d5c8800ba6923fa8df704be3639d9ae6e21c7b80b1b26",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1026: trailing whitespace.
++      "raw_bytes": 11106,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1027: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1028: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1029: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1030: trailing whitespace.
++      "path": "design-review/interrupted-process.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1031: trailing whitespace.
++      "sha256": "5918948461d96925b5fbe29ac1adfaab424cdb5dabf4f575abde18076b76af9a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1032: trailing whitespace.
++      "bytes": 258,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1033: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/interrupted-process.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1034: trailing whitespace.
++      "raw_sha256": "5918948461d96925b5fbe29ac1adfaab424cdb5dabf4f575abde18076b76af9a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1035: trailing whitespace.
++      "raw_bytes": 258,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1036: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1037: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1038: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1039: trailing whitespace.
++      "path": "design-review/mutant-inverted-filter-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1040: trailing whitespace.
++      "sha256": "bc9b65c6461e72f5fb0c9e76878da1b08b711b5329640c24f0df68df55c8e8d0",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1041: trailing whitespace.
++      "bytes": 3559,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1042: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-inverted-filter-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1043: trailing whitespace.
++      "raw_sha256": "bc9b65c6461e72f5fb0c9e76878da1b08b711b5329640c24f0df68df55c8e8d0",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1044: trailing whitespace.
++      "raw_bytes": 3559,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1045: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1046: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1047: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1048: trailing whitespace.
++      "path": "design-review/mutant-inverted-filter.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1049: trailing whitespace.
++      "sha256": "0f2147bd6c4126a6d50b999f29e2a7f0b6883e251d81a8a831494aa49d46971d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1050: trailing whitespace.
++      "bytes": 2947,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1051: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-inverted-filter.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1052: trailing whitespace.
++      "raw_sha256": "1fb2aefc34cb0c8518a3e8c53ca649557182bb43fe9f2b004ab281d2fd7b0b41",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1053: trailing whitespace.
++      "raw_bytes": 3024,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1054: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1055: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1056: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1057: trailing whitespace.
++      "path": "design-review/mutant-inverted-filter.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1058: trailing whitespace.
++      "sha256": "0d1abe429801ae12b5c71696504e7479194a087ddfb4074645b356afe8dbc236",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1059: trailing whitespace.
++      "bytes": 3531,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1060: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-inverted-filter.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1061: trailing whitespace.
++      "raw_sha256": "c0d74fa4a32cbafc277f20e3b8a1c98ebb9df0151606e29b32b3b6c5e1f1b837",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1062: trailing whitespace.
++      "raw_bytes": 3599,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1063: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1064: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1065: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1066: trailing whitespace.
++      "path": "design-review/mutant-old-origin-filter.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1067: trailing whitespace.
++      "sha256": "cfa1d3ae907e1baa3072217d20ca7cf3c2a8b5b03ea5434a7b8e67014cb75300",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1068: trailing whitespace.
++      "bytes": 6400,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1069: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-old-origin-filter.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1070: trailing whitespace.
++      "raw_sha256": "68a75a296241ebb298008b790d7f8f555a268e7dbc034428db5a5fc6592f39e4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1071: trailing whitespace.
++      "raw_bytes": 6484,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1072: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1073: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1074: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1075: trailing whitespace.
++      "path": "design-review/mutant-old-origin-filter2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1076: trailing whitespace.
++      "sha256": "40918576fbdd3c0397197686ac918d56834f67521ee363b41499b725b7e2351d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1077: trailing whitespace.
++      "bytes": 3290,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1078: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-old-origin-filter2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1079: trailing whitespace.
++      "raw_sha256": "40918576fbdd3c0397197686ac918d56834f67521ee363b41499b725b7e2351d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1080: trailing whitespace.
++      "raw_bytes": 3290,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1081: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1082: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1083: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1084: trailing whitespace.
++      "path": "design-review/mutant-old-origin-filter2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1085: trailing whitespace.
++      "sha256": "e7601c9de272888fca61c1ead1a0be7a335757255a8d444159097ca24ded320c",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1086: trailing whitespace.
++      "bytes": 2947,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1087: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-old-origin-filter2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1088: trailing whitespace.
++      "raw_sha256": "c5177496426fdd76a32621454cae66738203378a4f339682fe5b2066c19543a6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1089: trailing whitespace.
++      "raw_bytes": 3024,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1090: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1091: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1092: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1093: trailing whitespace.
++      "path": "design-review/mutant-old-origin-filter2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1094: trailing whitespace.
++      "sha256": "480c004863c99d1ce9bdd31ae6b9d4232f9016bdec61b097f6624d2107434fd4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1095: trailing whitespace.
++      "bytes": 3527,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1096: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-old-origin-filter2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1097: trailing whitespace.
++      "raw_sha256": "4129c4ccfd21f8fa2421d4023673e39a6dbdfa18c81d4d68188f8c8bdeb5fc48",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1098: trailing whitespace.
++      "raw_bytes": 3595,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1099: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1100: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1101: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1102: trailing whitespace.
++      "path": "design-review/mutant-old-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1103: trailing whitespace.
++      "sha256": "2e4fb9cc41f01873b5b4bcee70ab2539d6d05bbbf351c164a1f9e2ac2b784f77",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1104: trailing whitespace.
++      "bytes": 164,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1105: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-old-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1106: trailing whitespace.
++      "raw_sha256": "2e4fb9cc41f01873b5b4bcee70ab2539d6d05bbbf351c164a1f9e2ac2b784f77",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1107: trailing whitespace.
++      "raw_bytes": 164,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1108: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1109: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1110: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1111: trailing whitespace.
++      "path": "design-review/mutant-scope-off-by-one2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1112: trailing whitespace.
++      "sha256": "942485994425222e46c876c0a1a1a4b9f9e7872d8953d31516d7e02b3cfc83c6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1113: trailing whitespace.
++      "bytes": 3186,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1114: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-scope-off-by-one2-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1115: trailing whitespace.
++      "raw_sha256": "942485994425222e46c876c0a1a1a4b9f9e7872d8953d31516d7e02b3cfc83c6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1116: trailing whitespace.
++      "raw_bytes": 3186,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1117: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1118: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1119: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1120: trailing whitespace.
++      "path": "design-review/mutant-scope-off-by-one2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1121: trailing whitespace.
++      "sha256": "153a6350b3f92d62ff4372eaca31317356bc23258ec51525a95da29a869e152a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1122: trailing whitespace.
++      "bytes": 2819,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1123: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-scope-off-by-one2.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1124: trailing whitespace.
++      "raw_sha256": "1677268e124dca76ec1f38932afd8691972966772a4804327851a5f4f954cfe8",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1125: trailing whitespace.
++      "raw_bytes": 2894,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1126: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1127: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1128: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1129: trailing whitespace.
++      "path": "design-review/mutant-scope-off-by-one2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1130: trailing whitespace.
++      "sha256": "1383dceb5b4700260b81268a04f0c31084ca46a6f84908d1e8b52d1669875764",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1131: trailing whitespace.
++      "bytes": 2799,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1132: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-scope-off-by-one2.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1133: trailing whitespace.
++      "raw_sha256": "b6cf9266f3ccf55bee377af5d21d5c7b616ec287883ad5a56b699376d9ee42e2",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1134: trailing whitespace.
++      "raw_bytes": 2865,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1135: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1136: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1137: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1138: trailing whitespace.
++      "path": "design-review/mutant-scope-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1139: trailing whitespace.
++      "sha256": "d2b5aee72bbe63853da40bebf66e89639475695dfa481514710c739e8986b962",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1140: trailing whitespace.
++      "bytes": 164,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1141: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-scope-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1142: trailing whitespace.
++      "raw_sha256": "d2b5aee72bbe63853da40bebf66e89639475695dfa481514710c739e8986b962",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1143: trailing whitespace.
++      "raw_bytes": 164,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1144: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1145: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1146: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1147: trailing whitespace.
++      "path": "design-review/mutant-tab-wiring-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1148: trailing whitespace.
++      "sha256": "25009cbab2a4e27d3a6c3b34ebf9d061995439a1feb478efcafda4230daebcd9",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1149: trailing whitespace.
++      "bytes": 357,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1150: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-tab-wiring-exit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1151: trailing whitespace.
++      "raw_sha256": "25009cbab2a4e27d3a6c3b34ebf9d061995439a1feb478efcafda4230daebcd9",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1152: trailing whitespace.
++      "raw_bytes": 357,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1153: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1154: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1155: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1156: trailing whitespace.
++      "path": "design-review/mutant-tab-wiring-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1157: trailing whitespace.
++      "sha256": "1fc141fdcebc19b8faa526c17930d20bd567d0eec4c050725c06ca2c0e2bc415",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1158: trailing whitespace.
++      "bytes": 261,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1159: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-tab-wiring-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1160: trailing whitespace.
++      "raw_sha256": "1fc141fdcebc19b8faa526c17930d20bd567d0eec4c050725c06ca2c0e2bc415",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1161: trailing whitespace.
++      "raw_bytes": 261,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1162: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1163: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1164: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1165: trailing whitespace.
++      "path": "design-review/mutant-tab-wiring.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1166: trailing whitespace.
++      "sha256": "5163e66095e4123a9c5f1282ccfa6ed3440cd010563ce9637c6c4796fb2e7585",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1167: trailing whitespace.
++      "bytes": 217,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1168: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-tab-wiring.log",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1169: trailing whitespace.
++      "raw_sha256": "944f035133aa33801cbe64fcca049d179f77b60c655f52c76b6c977e409e45c9",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1170: trailing whitespace.
++      "raw_bytes": 220,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1171: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1172: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1173: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1174: trailing whitespace.
++      "path": "design-review/mutant-tab-wiring.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1175: trailing whitespace.
++      "sha256": "17b3eea5ea46447b8d54db587a072bace002b79723db19dfc98282fcc1541735",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1176: trailing whitespace.
++      "bytes": 11106,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1177: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutant-tab-wiring.xml",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1178: trailing whitespace.
++      "raw_sha256": "17b3eea5ea46447b8d54db587a072bace002b79723db19dfc98282fcc1541735",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1179: trailing whitespace.
++      "raw_bytes": 11106,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1180: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1181: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1182: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1183: trailing whitespace.
++      "path": "design-review/mutations.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1184: trailing whitespace.
++      "sha256": "33880f36491089dac3861653929f37f36b3113df7d7f28b8d3b96c81695ad03d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1185: trailing whitespace.
++      "bytes": 2082,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1186: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/mutations.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1187: trailing whitespace.
++      "raw_sha256": "33880f36491089dac3861653929f37f36b3113df7d7f28b8d3b96c81695ad03d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1188: trailing whitespace.
++      "raw_bytes": 2082,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1189: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1190: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1191: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1192: trailing whitespace.
++      "path": "design-review/referenced-evidence.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1193: trailing whitespace.
++      "sha256": "dfbfa3dbcbc319bd74c8982bfdde0374c95949c5e6a37397c763b4954032ec8a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1194: trailing whitespace.
++      "bytes": 4925,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1195: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/referenced-evidence.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1196: trailing whitespace.
++      "raw_sha256": "dfbfa3dbcbc319bd74c8982bfdde0374c95949c5e6a37397c763b4954032ec8a",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1197: trailing whitespace.
++      "raw_bytes": 4925,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1198: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1199: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1200: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1201: trailing whitespace.
++      "path": "design-review/restored-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1202: trailing whitespace.
++      "sha256": "0ebfb336f654c3366ab9072cfb2854e2746a4e7aceaf1f50000c6bcf8e49176f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1203: trailing whitespace.
++      "bytes": 245,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1204: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/restored-source.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1205: trailing whitespace.
++      "raw_sha256": "0ebfb336f654c3366ab9072cfb2854e2746a4e7aceaf1f50000c6bcf8e49176f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1206: trailing whitespace.
++      "raw_bytes": 245,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1207: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1208: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1209: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1210: trailing whitespace.
++      "path": "design-review/review.md",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1211: trailing whitespace.
++      "sha256": "0da0085d23595704de77beeca606f0c5d3b188c68342d42c01a2c79a72a4b377",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1212: trailing whitespace.
++      "bytes": 6516,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1213: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/review.md",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1214: trailing whitespace.
++      "raw_sha256": "0da0085d23595704de77beeca606f0c5d3b188c68342d42c01a2c79a72a4b377",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1215: trailing whitespace.
++      "raw_bytes": 6516,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1216: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1217: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1218: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1219: trailing whitespace.
++      "path": "design-review/summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1220: trailing whitespace.
++      "sha256": "4077e53e0d5f2319ab19e4e00343bbad8129560a9b08c3d19dc729737e5081c4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1221: trailing whitespace.
++      "bytes": 3194,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1222: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/summary.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1223: trailing whitespace.
++      "raw_sha256": "4077e53e0d5f2319ab19e4e00343bbad8129560a9b08c3d19dc729737e5081c4",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1224: trailing whitespace.
++      "raw_bytes": 3194,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1225: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1226: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1227: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1228: trailing whitespace.
++      "path": "design-review/w23-provenance.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1229: trailing whitespace.
++      "sha256": "16dc35f25664abb338718cea6e48c49859db40fce5f1146c557400a35b2c0af1",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1230: trailing whitespace.
++      "bytes": 1041,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1231: trailing whitespace.
++      "raw_source": "tmp/coord-r8-design-review-20261026/w23-provenance.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1232: trailing whitespace.
++      "raw_sha256": "16dc35f25664abb338718cea6e48c49859db40fce5f1146c557400a35b2c0af1",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1233: trailing whitespace.
++      "raw_bytes": 1041,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1234: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1235: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1236: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1237: trailing whitespace.
++      "path": "core-review/test_coord_w04_concurrency.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1238: trailing whitespace.
++      "sha256": "775d54e658b2905b13a8e7ad4fe55793f4c401fffa66fc2103f5088e96a446c1",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1239: trailing whitespace.
++      "bytes": 4554,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1240: trailing whitespace.
++      "raw_source": "tmp/coord-r8-core-review-20261026/src/web/backend/tests/test_coord_w04_concurrency.py",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1241: trailing whitespace.
++      "raw_sha256": "775d54e658b2905b13a8e7ad4fe55793f4c401fffa66fc2103f5088e96a446c1",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1242: trailing whitespace.
++      "raw_bytes": 4554,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1243: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1244: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1245: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1246: trailing whitespace.
++      "path": "browser/audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1247: trailing whitespace.
++      "sha256": "e581324233bc81f18c8fdf2d2b6463d83e901757295a7d2a0fd69b1d890fc69d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1248: trailing whitespace.
++      "bytes": 2955662,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1249: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready/audit.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1250: trailing whitespace.
++      "raw_sha256": "e581324233bc81f18c8fdf2d2b6463d83e901757295a7d2a0fd69b1d890fc69d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1251: trailing whitespace.
++      "raw_bytes": 2955662,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1252: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1253: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1254: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1255: trailing whitespace.
++      "path": "browser/runtime.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1256: trailing whitespace.
++      "sha256": "e88fcee107d82db26ac7a0f481ba345f20f324dd4ce3788bd718287042d20431",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1257: trailing whitespace.
++      "bytes": 75659,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1258: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready/runtime.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1259: trailing whitespace.
++      "raw_sha256": "a82538900ac6c2c669c00b79425492495bfc41e882569c66431554f06ef8b565",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1260: trailing whitespace.
++      "raw_bytes": 78052,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1261: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1262: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1263: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1264: trailing whitespace.
++      "path": "browser/taste-inspect/report.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1265: trailing whitespace.
++      "sha256": "225372912d6aa7c34309d22ab10743dff71311acb081ddde78094e3684b2a136",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1266: trailing whitespace.
++      "bytes": 25305,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1267: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready/taste-inspect/report.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1268: trailing whitespace.
++      "raw_sha256": "225372912d6aa7c34309d22ab10743dff71311acb081ddde78094e3684b2a136",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1269: trailing whitespace.
++      "raw_bytes": 25305,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1270: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1271: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1272: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1273: trailing whitespace.
++      "path": "browser/quiz-ready-1280-light.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1274: trailing whitespace.
++      "sha256": "71d7c51a45230f99513181ca6f495d54baf949b1f18313c3f9d6b99a85166d8f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1275: trailing whitespace.
++      "bytes": 123050,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1276: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready/quiz-ready-1280-light.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1277: trailing whitespace.
++      "raw_sha256": "71d7c51a45230f99513181ca6f495d54baf949b1f18313c3f9d6b99a85166d8f",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1278: trailing whitespace.
++      "raw_bytes": 123050,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1279: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1280: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1281: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1282: trailing whitespace.
++      "path": "browser/document-view-390-light.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1283: trailing whitespace.
++      "sha256": "e2a4bdb914153b0a5f08bead6bcb54ce178547f5b02b317333d6e2f140800a3d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1284: trailing whitespace.
++      "bytes": 43527,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1285: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready/document-view-390-light.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1286: trailing whitespace.
++      "raw_sha256": "e2a4bdb914153b0a5f08bead6bcb54ce178547f5b02b317333d6e2f140800a3d",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1287: trailing whitespace.
++      "raw_bytes": 43527,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1288: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1289: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1290: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1291: trailing whitespace.
++      "path": "browser/assistant-hour-limit-390-dark-reduced.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1292: trailing whitespace.
++      "sha256": "66beb41043514a8f465f28c9d064ee94c6bbada692bae7c4be33172ba79b2528",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1293: trailing whitespace.
++      "bytes": 53245,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1294: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready/assistant-hour-limit-390-dark-reduced.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1295: trailing whitespace.
++      "raw_sha256": "66beb41043514a8f465f28c9d064ee94c6bbada692bae7c4be33172ba79b2528",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1296: trailing whitespace.
++      "raw_bytes": 53245,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1297: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1298: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1299: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1300: trailing whitespace.
++      "path": "browser/document-create-768-light.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1301: trailing whitespace.
++      "sha256": "b4f8ab329fa4581507f82909f97e501e7ccc9254998fc3d2b0af6ce203ec7ea6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1302: trailing whitespace.
++      "bytes": 70114,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1303: trailing whitespace.
++      "raw_source": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready/document-create-768-light.png",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1304: trailing whitespace.
++      "raw_sha256": "b4f8ab329fa4581507f82909f97e501e7ccc9254998fc3d2b0af6ce203ec7ea6",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1305: trailing whitespace.
++      "raw_bytes": 70114,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1306: trailing whitespace.
++      "text_normalized": false
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1307: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1308: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1309: trailing whitespace.
++      "path": "browser-local-files.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1310: trailing whitespace.
++      "sha256": "1e0593f7120a0927d47b0117eb7b44e8d1f9f254b95f10a1b207c380a1980e54",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1311: trailing whitespace.
++      "bytes": 27138,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1312: trailing whitespace.
++      "raw_source": "tmp/coord-r8-tools-20261026/browser-local-files.json",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1313: trailing whitespace.
++      "raw_sha256": "f39e97c65bf74ecb111c8072095367ffa709b5c4a5ccf59968ed4060fb01a5e3",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1314: trailing whitespace.
++      "raw_bytes": 27694,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1315: trailing whitespace.
++      "text_normalized": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1316: trailing whitespace.
++    },
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1317: trailing whitespace.
++    {
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1318: trailing whitespace.
++      "path": ".gitattributes",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1319: trailing whitespace.
++      "sha256": "8b9c3028d6467ff3be7c793141927841d70f47f52d0590677438f488ca154992",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1320: trailing whitespace.
++      "bytes": 9,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1321: trailing whitespace.
++      "generated": true
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1322: trailing whitespace.
++    }
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1323: trailing whitespace.
++  ],
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1324: trailing whitespace.
++  "normalization": "QA text copies: UTF-8/LF and remove trailing physical space/tab; raw originals unchanged with before/after SHA-256.",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1325: trailing whitespace.
++  "files_count": 147,
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1326: trailing whitespace.
++  "raw_browser_location": "tmp/coord-r8-acceptance-20261026/report/w10-r7-evidence/browser-coord-r8-ready",
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1327: trailing whitespace.
++  "new_provider_spend_usd": 0
+report/coord-ba-nhom-lan8-evidence-2026-10-26/manifest.json:1328: trailing whitespace.
++}
+report/coord-ba-nhom-lan8-evidence-2026-10-26/web-review/content-baseline.log:2: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/web-review/late-error.log:2: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/web-review/late-finally.log:2: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/web-review/late-success.log:2: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/web-review/offline-baseline.log:2: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/web-review/same-attempt-history-green.log:2: new blank line at EOF.
+report/coord-ba-nhom-lan8-evidence-2026-10-26/web-review/same-attempt-history-mutant.log:2: new blank line at EOF.

@@ -1,0 +1,85 @@
+{
+  "configurations": 12,
+  "screens": 96,
+  "axeRuns": 65,
+  "axeViolations": 0,
+  "manualContrastCount": 73,
+  "minContrast": 5.844797723334521,
+  "httpRecords": 250,
+  "streams": {
+    "streams": 27,
+    "missingStreamBodies": 0,
+    "terminalStreams": 26,
+    "cancelledBeforeTerminal": [
+      {
+        "id": "0f05f385-d51b-4514-af58-0f90d79c90b8",
+        "stage": "disconnect-document",
+        "path": "/api/v1/courses/82db020b-8b42-4431-b59b-dd4534dfd07b/documents",
+        "cancelled": true,
+        "readError": "signal is aborted without reason",
+        "readErrorName": "AbortError"
+      }
+    ]
+  },
+  "privacyFailures": 0,
+  "pendingRejections": 0,
+  "pageErrors": 0,
+  "layoutFailures": 0,
+  "independentParsedPayloads": 355,
+  "independentQuestionPayloads": 112,
+  "console": {
+    "expected_401": 3,
+    "axe_csp_font": 65,
+    "axe_csp_inline_style": 65,
+    "intentional_lost_response": 1,
+    "expected_404": 1
+  },
+  "windowsTransportCloseWarnings": 3,
+  "sharedDocumentLimit": {
+    "buttonRequests": 10,
+    "assistantGeneratedDocuments": 0,
+    "modelCallsUnchanged": true,
+    "persistentNotice": true
+  },
+  "lateSubmit": {
+    "oldAttempt": "qa_94cd5f49a21bd89d92b5c1c5",
+    "newAttempt": "qa_6f4bafecb1c757bd3e164a94",
+    "oldIgnoredWhileNewPending": true,
+    "forwardRestoresSavedResult": true,
+    "driver": "fetch completion held after real HTTP response; native history entries/popstate; real PG grading"
+  },
+  "sql": {
+    "documents": 28,
+    "quizAttempts": 14,
+    "progress": 6,
+    "submissions": 14,
+    "usage": [
+      {
+        "purpose": "quiz_gen",
+        "rows": 6,
+        "usd": 0
+      },
+      {
+        "purpose": "quiz_verify",
+        "rows": 6,
+        "usd": 0
+      },
+      {
+        "purpose": "assistant",
+        "rows": 2,
+        "usd": 0
+      },
+      {
+        "purpose": "document",
+        "rows": 28,
+        "usd": 0
+      },
+      {
+        "purpose": "document_validation",
+        "rows": 27,
+        "usd": 0
+      }
+    ]
+  },
+  "externalCostUsd": 0
+}

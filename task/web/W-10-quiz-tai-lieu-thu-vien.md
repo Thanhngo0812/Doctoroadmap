@@ -1,5 +1,7 @@
 # W-10 — Quiz, tài liệu, thư viện
 
+**Nghiệm thu lần 8, 2026-10-26: đạt `aaf68eb`, ghép local `1be7e1c`.** Đóng R-W10-1/R-W10-2; admission button/tool chung và phản hồi submit gắn đúng route/history. Cổng tích hợp `ee5a75f`: 2.824 Python/0 fail/1 skip/1 xfail cũ, 219 React/build; browser 12 cấu hình/96 ảnh/65 Axe/27 SSE đủ body. 0 USD, chỉ local/chưa push. Web tiếp React W-16 rồi W-04; không làm lại phần đã nhận. [biên bản lần 8](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan8-2026-10-26.md) và [lời giao lần 8](../../report/lenh-giao-viec-ba-nhom-lan8-2026-10-26.md).
+
 **Nghiệm thu lần 7, 2026-10-26: chưa nhận/chưa ghép `fa346c9`.** Focused 87/React 212/build/browser 89 ảnh/58 Axe đạt các đường đã kiểm; còn hai Required độc lập: R-W10-1 trực tiếp hết 10 tài liệu nhưng trợ lý vẫn tạo tài liệu thứ 11 (HTTP/PG/model fake có assertion đỏ); R-W10-2 phản hồi nộp quiz cũ ghi kết quả vào màn quiz mới sau Back (React thật, control guard đạt). Sửa admission web chung hai nguồn và ranh giới request/route; giữ use case sinh/cache/retry/ngân sách core, không làm lại những phần đã đúng. Backend W-16/mẫu W-10 đã ghép local c5b4f5f; web nhận main sửa hai lỗi, sau W-10 đạt mới React W-16. [biên bản lần 7](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan7-2026-10-26.md) và [helper/lời giao](../../report/lenh-giao-viec-ba-nhom-lan7-2026-10-26.md).
 
 **Mở sau nghiệm thu lần 6, 2026-10-25:** W-09 đã đạt/ghép local 7f54b14; SA-67/68 đã ở main. Nhóm web bắt đầu W-10 trong worktree riêng, ba lát quiz→submit/chấm, tài liệu trực tiếp→xem/tải và thư viện. Tái dùng phần library/preview W-09; group here/elsewhere theo core/home_scope, không đồng nhất origin button/assistant. Thiết kế sửa D-R6-01 trước khi nhận gói mẫu 0b5993e; phần quiz/tài liệu không bị chặn bởi lỗi mẫu thư viện. Dùng fake/PG 0 USD, không Cloud; [biên bản lần 6](../../report/dieu-phoi-nghiem-thu-ba-nhom-lan6-2026-10-25.md) và [lời giao](../../report/lenh-giao-viec-ba-nhom-lan6-2026-10-25.md).
@@ -64,12 +66,12 @@ Người học tự kiểm tra bằng quiz, xin tài liệu theo yêu cầu, và
 ## Tiêu chí nghiệm thu
 
 Mỗi test thấy đỏ trước trên bản sai:
-- [ ] Tầng HTTP: thân phản hồi của `POST /quizzes` không có trường đáp án đúng nào (quét đệ quy mọi khoá có tên kiểu `correct`, `answer`).
-- [ ] Nộp quiz của người khác thì `not_found`.
-- [ ] Tài liệu tạo trong phiên module A về khái niệm của module B hiện ở thư viện A (`here`) và thư viện B (`elsewhere`).
-- [ ] Chọn 6 module thì `scope_too_large`, 0 lời gọi mô hình.
-- [ ] Yêu cầu tài liệu thứ 11 trong một giờ thì `rate_limited`.
-- [ ] Ảnh chụp: làm quiz, kết quả quiz, tạo tài liệu, xem tài liệu, thư viện hai nhóm; cỡ 390 px và 1280 px.
+- [x] Tầng HTTP: thân phản hồi của `POST /quizzes` không có trường đáp án đúng nào (quét đệ quy mọi khoá có tên kiểu `correct`, `answer`).
+- [x] Nộp quiz của người khác thì `not_found`.
+- [x] Tài liệu tạo trong phiên module A về khái niệm của module B hiện ở thư viện A (`here`) và thư viện B (`elsewhere`).
+- [x] Chọn 6 module thì `scope_too_large`, 0 lời gọi mô hình.
+- [x] Yêu cầu tài liệu thứ 11 trong một giờ thì `rate_limited`.
+- [x] Ảnh chụp: làm quiz, kết quả quiz, tạo tài liệu, xem tài liệu, thư viện hai nhóm; cỡ 390 px và 1280 px.
 
 ## Ngoài vé
 

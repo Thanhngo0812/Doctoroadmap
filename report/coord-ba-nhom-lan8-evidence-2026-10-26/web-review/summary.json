@@ -1,0 +1,73 @@
+{
+  "ticket": "W-10",
+  "pinned": "aaf68eb6795c929169e5212a05093d8d817c76e3",
+  "testedAuthorSource": "1fc0f553bec808241388b722fa2c10a1c6ead33d",
+  "verdict": "approve-source-and-two-R7-fixes; root must pass combined current-main PostgreSQL/React/build/browser gates",
+  "critical": [],
+  "required": [],
+  "closed": [
+    "R-W10-1",
+    "R-W10-2",
+    "R7 optional SSE audit gap"
+  ],
+  "independent": {
+    "reactExisting": 33,
+    "reactExistingFailures": 0,
+    "additionalSameAttemptHistory": 1,
+    "additionalHistoryFailures": 0,
+    "frontendMutants": [
+      {
+        "name": "late-success",
+        "assertionFailures": 3,
+        "setupErrors": 0
+      },
+      {
+        "name": "late-error",
+        "assertionFailures": 3,
+        "setupErrors": 0
+      },
+      {
+        "name": "late-finally",
+        "assertionFailures": 4,
+        "setupErrors": 0
+      },
+      {
+        "name": "same-attempt-history-key",
+        "assertionFailures": 1,
+        "setupErrors": 0
+      }
+    ],
+    "offlineRuntimeBoundary": {
+      "baseline": 0,
+      "mutant": 1,
+      "assertionFailure": 1,
+      "setupErrors": 0,
+      "scope": "actual runtime + core + WebAssistantUseCase with isolated admission stub; not a PostgreSQL check"
+    },
+    "costUSD": 0
+  },
+  "authorProvenance": {
+    "evidenceFiles": 616,
+    "evidenceBad": [],
+    "sourceFilesPerGate": 772,
+    "gates": 4,
+    "sourceBad": [],
+    "rawArchiveMembers": 544,
+    "rawArchiveBad": [],
+    "authorMutants": 19,
+    "authorMutationProofBad": [],
+    "handoffProductDiff": []
+  },
+  "rootNeeded": [
+    "run current combined main through scripts/w05_run_tests.py with PostgreSQL",
+    "test_content_admission_w10.py all five cases including concurrent origins and physical lock",
+    "current combined React/build/browser"
+  ],
+  "limits": [
+    "No independent PostgreSQL run by this reviewer; root owns exclusive gate",
+    "Author 2775 Python/219 React is historical evidence on1fc0f55, not the root combined gate",
+    "No paid/model/live-data calls",
+    "First offline encoding failure is not counted as RED"
+  ],
+  "sourcePreserved": true
+}

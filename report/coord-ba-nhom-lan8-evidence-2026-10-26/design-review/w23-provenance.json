@@ -1,0 +1,31 @@
+{
+  "sourceCommitW08": "b4136987668c3fb822ea374f399b947064ce7f18",
+  "sourceCommitW09": "0ba4ac8f5bc63256e33d736a08c0d6411a5b0b48",
+  "sourceW08Base": "http://127.0.0.1:8018",
+  "sourceW09Base": "http://127.0.0.1:8019",
+  "sourceComparison": {
+    "w08Claimed": "c4d281b",
+    "w08FrontendDiff": "",
+    "w09Claimed": "378131e",
+    "w09FrontendDiff": ""
+  },
+  "referencesVerified": 12,
+  "allRootWorkerHashesEqual": true,
+  "anchors": {
+    "incorrect": [
+      "section-lecture-generating",
+      "section-chat-answered",
+      "section-chat-options"
+    ],
+    "correct": [
+      "section-lecture-waiting-first-chunk",
+      "section-chat-active"
+    ],
+    "viewer": "section-page-image-viewer"
+  },
+  "limitations": [
+    "Images visually inspected; no new React/HTML matched state captures or fresh browser videos were made by reviewer",
+    "Videos exist and SHA-256/size match, video content not decoded frame by frame",
+    "Old React source matches claimed reviewed frontend commits, not evidence of all current main source"
+  ]
+}

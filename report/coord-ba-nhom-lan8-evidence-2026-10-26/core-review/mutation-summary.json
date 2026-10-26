@@ -1,0 +1,26 @@
+{
+  "mutations": [
+    {
+      "name": "current-a-revoked",
+      "before": "self.store.delete_account_sessions(account.id, except_session_id=identity.session.id)",
+      "after": "self.store.delete_account_sessions(account.id)",
+      "mutant_sha256": "6d97381516ef66b8ab6ca2c07e45cbca2a6a92d564018e5dc1968a54ebe38f5d",
+      "native_exit": 1,
+      "failures": 1,
+      "setup_errors": 0,
+      "assertion_failures": true
+    },
+    {
+      "name": "wrong-current-accepted",
+      "before": "if not self.hasher.verify(credentials.password_hash, current_password):",
+      "after": "if self.hasher.verify(credentials.password_hash, current_password):",
+      "mutant_sha256": "6164234fe30abe5d76aba3aeb0c8aa91a5c62db6a30234d172309e56d749e108",
+      "native_exit": 1,
+      "failures": 1,
+      "setup_errors": 0,
+      "assertion_failures": true
+    }
+  ],
+  "source_restored": true,
+  "original_sha256": "c84a527959168fdc6244b071e93661f8113357712a8b28ea2c0be73c4f5ed534"
+}
