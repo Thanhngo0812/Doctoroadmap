@@ -50,6 +50,8 @@ def tao_muc_g4(can: dict) -> list[dict]:
 
         for ben, ds in (("a", can["chi_a"]), ("b", can["chi_b"])):
             for ma in ds:
+                if ma in can["bao_ham"][ben]:
+                    continue  # người kia đã bao hàm qua đường dài toàn van_ban: đồng ý qua bắc cầu, không hội ý
                 e = canh[ben][ma]
                 if e["chuong"] == ch:
                     moi(loai="rieng", ben=ben, muc=ma, dich=can["kho"][e["dich"]]["ten"], nguon=_ten_nguon(can, e))

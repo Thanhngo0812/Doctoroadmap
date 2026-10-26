@@ -8,6 +8,8 @@ Ba vàng (mỗi quan hệ là một cạnh nguồn -> đích):
 """
 
 from danhgia.phieu import bat_dong_g4
+from danhgia.phieu.can_g4 import co_duong as _co_duong
+from danhgia.phieu.can_g4 import do_thi_cua as _do_thi
 from danhgia.phieu.g4 import SCHEMA, LOAI
 
 
@@ -17,27 +19,6 @@ def _f1(a: int, b: int, c: int):
 
 def _dem(a: int, b: int, c: int) -> dict:
     return {"a": a, "b": b, "c": c, "f1": _f1(a, b, c)}
-
-
-def _co_duong(do_thi: dict, tu, den) -> bool:
-    """Có đường (một cạnh trở lên) đi theo chiều nguồn -> đích từ `tu` tới `den`; duyệt rộng có tập đã thăm nên chịu được chu trình."""
-    da_tham, hang = {tu}, [tu]
-    while hang:
-        nut = hang.pop()
-        for ke in do_thi.get(nut, ()):
-            if ke == den:
-                return True
-            if ke not in da_tham:
-                da_tham.add(ke)
-                hang.append(ke)
-    return False
-
-
-def _do_thi(canh: dict) -> dict:
-    do_thi: dict = {}
-    for e in canh.values():
-        do_thi.setdefault(e["nguon_khoa"], set()).add(e["dich_khoa"])
-    return do_thi
 
 
 def _dem_theo_chuong(can: dict, bac_cau: bool) -> dict:
@@ -72,7 +53,10 @@ def dem_g4(can: dict) -> dict:
     `tong` bỏ qua loại; `van_ban` và `kien_thuc` đếm theo loại mỗi người ghi (cạnh cả hai ghi nhưng khác loại là chỉ-một-người ở cả hai
     loại). Bản `bac_cau` coi cạnh một người ghi mà người kia có đường nguồn -> ... -> đích (không có cạnh trực tiếp) là đồng thuận.
     """
-    return {"khong_bac_cau": _dem_theo_chuong(can, False), "bac_cau": _dem_theo_chuong(can, True)}
+    bao_ham = {ch: sum(1 for ben, ds in (("a", can["bao_ham"]["a"]), ("b", can["bao_ham"]["b"])) for ma in ds
+                       if can["canh"][ben][ma]["chuong"] == ch) for ch in can["chuong"]}
+    return {"khong_bac_cau": _dem_theo_chuong(can, False), "bac_cau": _dem_theo_chuong(can, True),
+            "bao_ham_bac_cau": {"theo_chuong": bao_ham, "tong": sum(bao_ham.values())}}
 
 
 def _kiem_quyet_dinh(muc: list[dict], nguoi: list[str], quyet_dinh: dict) -> None:
@@ -136,7 +120,9 @@ def chot_g4(can: dict, quyet_dinh: dict[str, dict]) -> dict:
     vang_chinh = sorted(van_ban, key=khoa)
     vang_giao = sorted((r for r in van_ban if id(r) in giao_goc), key=khoa)
     kien_thuc = sorted((r for r in dong_y if r["loai"] == "kien_thuc"), key=khoa)
-    vang_hop = sorted([*dong_y, *({k: v for k, v in t.items() if k != "quyet_dinh"} for t in tranh_chap)], key=khoa)
+    bao_ham = [{**_ban_ghi((ca if ben == "a" else cb)[ma], [nguoi[0] if ben == "a" else nguoi[1]]), "nhan": "bao_ham_bac_cau"}
+               for ben in ("a", "b") for ma in can["bao_ham"][ben]]
+    vang_hop = sorted([*dong_y, *bao_ham, *({k: v for k, v in t.items() if k != "quyet_dinh"} for t in tranh_chap)], key=khoa)
     return {"schema": SCHEMA, "ma_sach": can["ma_sach"], "nguoi_gan": "hoi-y", "kho_chot_sha256": can["kho_chot_sha256"],
             "quan_he": vang_chinh, "vang_chinh": vang_chinh, "vang_hop": vang_hop, "vang_giao": vang_giao,
-            "kien_thuc": kien_thuc, "tranh_chap": sorted(tranh_chap, key=khoa), "loai": sorted(loai_bo, key=khoa)}
+            "kien_thuc": kien_thuc, "tranh_chap": sorted(tranh_chap, key=khoa), "loai": sorted(loai_bo, key=khoa), "bao_ham_bac_cau": len(bao_ham)}

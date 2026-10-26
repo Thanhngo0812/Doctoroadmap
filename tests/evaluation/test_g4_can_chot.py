@@ -282,3 +282,55 @@ def test_bac_cau_khong_tin_dung_canh_ma_nguoi_kia_da_ghi_nhung_khac_loai():
     d = dem_g4(can(a, b))["bac_cau"]["tong"]
     assert (d["van_ban"]["a"], d["van_ban"]["b"], d["van_ban"]["c"]) == (0, 1, 2)
     assert (d["tong"]["a"], d["tong"]["b"], d["tong"]["c"]) == (1, 0, 2)  # bỏ qua loại: cạnh đó cả hai cùng ghi
+
+
+# --- cạnh chỉ một người ghi mà người kia bao hàm qua đường dài toàn van_ban ---
+
+def bao_ham(loai_duong="van_ban"):
+    a = [e("c10-q001", 4, 1)]  # 001→004
+    b = [e("c10-q001", 2, 1, loai_duong), e("c10-q002", 4, 2, loai_duong)]  # 001→002→004
+    return can(a, b)
+
+
+def test_canh_chi_mot_nguoi_ghi_ma_nguoi_kia_co_duong_toan_van_ban_la_bao_ham_bac_cau():
+    c = bao_ham()
+    assert c["bao_ham"] == {"a": ["c10-q001"], "b": []}
+    assert c["chi_a"] == ["c10-q001"]  # vẫn là cạnh chỉ-một-người trong danh sách căn
+    assert not any(m["loai"] == "rieng" and m["ben"] == "a" for m in bat_dong_g4.tao_muc_g4(c))
+
+
+def test_khong_bao_ham_khi_duong_cua_nguoi_kia_co_canh_kien_thuc():
+    assert bao_ham("kien_thuc")["bao_ham"] == {"a": [], "b": []}
+    b = [e("c10-q001", 2, 1), e("c10-q002", 4, 2, "kien_thuc")]
+    c = can([e("c10-q001", 4, 1)], b)
+    assert c["bao_ham"]["a"] == [] and any(m["ben"] == "a" for m in bat_dong_g4.tao_muc_g4(c) if m["loai"] == "rieng")
+
+
+def test_khong_bao_ham_theo_chieu_nguoc():
+    c = can([e("c10-q001", 1, 4)], [e("c10-q001", 2, 1), e("c10-q002", 4, 2)])  # A: 004→001, ngược chiều đường của B
+    assert c["bao_ham"] == {"a": [], "b": []}
+
+
+def test_bao_ham_doi_xung_cho_canh_chi_cua_b_va_chiu_duoc_chu_trinh():
+    a = [e("c10-q001", 2, 1), e("c10-q002", 4, 2), e("c10-q003", 1, 2)]  # có chu trình 001↔002
+    b = [e("c10-q001", 4, 1)]
+    c = can(a, b)
+    assert c["bao_ham"] == {"a": [], "b": ["c10-q001"]}
+
+
+def test_chot_bao_ham_vao_vang_hop_co_nhan_khong_vao_chinh_giao_kien_thuc():
+    c = bao_ham()
+    muc = bat_dong_g4.tao_muc_g4(c)
+    g = chot_g4(c, {"T1-a": quyet(**tra_loi(muc)), "T1-b": quyet(**tra_loi(muc))})
+    # vàng chính là các cạnh trực tiếp đã chốt (đường 001→002→004 của B), không có cạnh rút ngắn 001→004
+    assert [(x["dich"], x["nguon"]) for x in g["vang_chinh"]] == [("G-dev-test-002", "G-dev-test-001"), ("G-dev-test-004", "G-dev-test-002")]
+    ds = [(x["dich"], x["nguon"], x.get("nhan")) for x in g["vang_hop"]]
+    assert ("G-dev-test-004", "G-dev-test-001", "bao_ham_bac_cau") in ds
+    for ten in ("vang_chinh", "vang_giao", "kien_thuc", "tranh_chap", "loai"):
+        assert ("G-dev-test-004", "G-dev-test-001") not in [(x["dich"], x["nguon"]) for x in g[ten]]
+    assert g["bao_ham_bac_cau"] == 1
+
+
+def test_dem_bao_ham_bac_cau_theo_chuong_va_tong():
+    d = dem_g4(bao_ham())["bao_ham_bac_cau"]
+    assert d == {"theo_chuong": {"c10": 1, "c11": 0}, "tong": 1}

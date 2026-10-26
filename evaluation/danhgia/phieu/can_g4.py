@@ -12,6 +12,28 @@ SCHEMA_CAN = "danh-gia-g4-can-1"
 SAI_LECH_TRANG_NGOAI = 1
 
 
+def co_duong(do_thi: dict, tu, den) -> bool:
+    """Có đường (một cạnh trở lên) theo chiều nguồn -> đích từ `tu` tới `den`; có tập đã thăm nên chịu được chu trình."""
+    da_tham, hang = {tu}, [tu]
+    while hang:
+        nut = hang.pop()
+        for ke in do_thi.get(nut, ()):
+            if ke == den:
+                return True
+            if ke not in da_tham:
+                da_tham.add(ke)
+                hang.append(ke)
+    return False
+
+
+def do_thi_cua(canh: dict, chi_loai: str | None = None) -> dict:
+    do_thi: dict = {}
+    for e in canh.values():
+        if chi_loai is None or e["loai"] == chi_loai:
+            do_thi.setdefault(e["nguon_khoa"], set()).add(e["dich_khoa"])
+    return do_thi
+
+
 def _cum_nguon_ngoai(ban_a: dict, ban_b: dict) -> dict:
     """`{(tên âm tiết, trang): khoá}`; khoá ổn định, không phụ thuộc thứ tự đầu vào."""
     theo_ten: dict[tuple, set] = {}
@@ -82,9 +104,16 @@ def can_g4(ban_1: dict, ban_2: dict, kho: dict) -> dict:
             khop.append({"chuong": e["chuong"], "a": ma, "b": mb})
     da_khop_b = {k["b"] for k in khop}
     chi_b = [ma for ma, e in sorted(canh_b.items(), key=lambda kv: sap_xep(kv[1])) if ma not in da_khop_b]
+    # Cạnh chỉ một người ghi mà đồ thị toàn `van_ban` của người kia có đường nguồn -> ... -> đích: đồng ý qua bắc cầu,
+    # không vào phiếu bất đồng (hướng dẫn chỉ ghi quan hệ trực tiếp).
+    van_ban_a, van_ban_b = do_thi_cua(canh_a, "van_ban"), do_thi_cua(canh_b, "van_ban")
+    bao_ham = {
+        "a": [ma for ma in chi_a if co_duong(van_ban_b, canh_a[ma]["nguon_khoa"], canh_a[ma]["dich_khoa"])],
+        "b": [ma for ma in chi_b if co_duong(van_ban_a, canh_b[ma]["nguon_khoa"], canh_b[ma]["dich_khoa"])],
+    }
     return {
         "schema": SCHEMA_CAN, "ma_sach": ban_a["ma_sach"], "kho_chot_sha256": sha,
         "nguoi": [ban_a["nguoi_gan"], ban_b["nguoi_gan"]], "chuong": sorted(kho["chuong"], key=khoa_chuong),
         "kho": {k["ma"]: {"ten": k["ten"], "chuong": k["chuong"], "trang_thai": k["trang_thai"]} for k in kho["khai_niem"]},
-        "canh": {"a": canh_a, "b": canh_b}, "khop": khop, "chi_a": chi_a, "chi_b": chi_b,
+        "canh": {"a": canh_a, "b": canh_b}, "khop": khop, "chi_a": chi_a, "chi_b": chi_b, "bao_ham": bao_ham,
     }
