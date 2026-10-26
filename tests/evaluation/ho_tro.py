@@ -82,3 +82,41 @@ def khai_niem(ma, chuong, ten, trang_thai="day_o_day", trang=1, cau="", ten_khac
 def tho(nguoi, *muc, ma_sach="dev-test"):
     return {"schema": "danh-gia-g3-1", "ma_sach": ma_sach, "nguoi_gan": nguoi, "phien_ban_huong_dan": "g3-1",
             "khai_niem": list(muc), "tranh_chap": []}
+
+
+KHO = {
+    "schema": "danh-gia-g3-1", "ma_sach": "dev-test", "nguoi_gan": "hoi-y", "phien_ban_huong_dan": "g3-1",
+    "chuong": ["c10", "c11"], "tranh_chap": [], "loai": [],
+    "khai_niem": [
+        {"ma": "G-dev-test-001", "chuong": "c10", "ten": "Tổng thể", "ten_khac": ["đám đông"], "trang_thai": "day_o_day",
+         "dinh_nghia": {"trang": 1, "cau": "Tổng thể là tập hợp các phần tử."}, "khong_chac": False, "ghi_chu": ""},
+        {"ma": "G-dev-test-002", "chuong": "c10", "ten": "Mẫu", "ten_khac": [], "trang_thai": "day_o_day",
+         "dinh_nghia": {"trang": 1, "cau": "Mẫu là tập con của tổng thể."}, "khong_chac": False, "ghi_chu": ""},
+        {"ma": "G-dev-test-003", "chuong": "c10", "ten": "Kích thước mẫu", "ten_khac": [], "trang_thai": "chi_nhac",
+         "dinh_nghia": {"trang": 1, "cau": ""}, "khong_chac": False, "ghi_chu": ""},
+        {"ma": "G-dev-test-004", "chuong": "c10", "ten": "Mẫu ngẫu nhiên", "ten_khac": [], "trang_thai": "day_qua_vi_du",
+         "dinh_nghia": {"trang": 2, "cau": "Mẫu ngẫu nhiên là mẫu đại diện."}, "khong_chac": False, "ghi_chu": ""},
+        {"ma": "G-dev-test-005", "chuong": "c11", "ten": "Phương sai", "ten_khac": [], "trang_thai": "day_o_day",
+         "dinh_nghia": {"trang": 4, "cau": "Phương sai đo độ phân tán."}, "khong_chac": False, "ghi_chu": ""},
+        {"ma": "G-dev-test-006", "chuong": "c11", "ten": "Kỳ vọng", "ten_khac": [], "trang_thai": "kien_thuc_nen",
+         "dinh_nghia": {"trang": None, "cau": ""}, "khong_chac": False, "ghi_chu": ""},
+    ],
+}
+
+
+def ma_khai_niem(so: int) -> str:
+    return f"G-dev-test-{so:03d}"
+
+
+def canh(ma, chuong, dich, nguon, loai="van_ban", trang=1, cau="Tổng thể là tập hợp các phần tử.", khong_chac=False):
+    """Một quan hệ thô của danh-gia-g4-1; dich và nguon là số thứ tự khái niệm kho, hoặc nguon là dict {"ngoai": ...}."""
+    return {
+        "ma": ma, "chuong": chuong, "dich": ma_khai_niem(dich),
+        "nguon": nguon if isinstance(nguon, dict) else ma_khai_niem(nguon), "loai": loai,
+        "bang_chung": {"trang": trang if loai == "van_ban" else None, "cau": cau if loai == "van_ban" else ""},
+        "khong_chac": khong_chac, "ghi_chu": "",
+    }
+
+
+def tho_g4(nguoi, kho_sha, *quan_he, ma_sach="dev-test"):
+    return {"schema": "danh-gia-g4-1", "ma_sach": ma_sach, "nguoi_gan": nguoi, "kho_chot_sha256": kho_sha, "quan_he": list(quan_he)}
