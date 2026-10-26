@@ -266,6 +266,12 @@ Mỗi nhóm hệ dưới đây trả lời một RQ:
     hay B5b sau khi dry-run thử trên một cuốn phát triển xem đầu ra có vượt trần token không. B5 xuất cùng hợp đồng đánh giá; không có cây
     mục và vai trò nên các thước A1, A2 không áp. Đây là phép so trả lời câu "vì sao cần 10 bước". Nếu B5 đạt gần hệ chính ở thước chất
     lượng, báo đúng như vậy; giá trị của luồng khi đó nằm ở truy nguyên, độ ổn định và khả năng thay khâu bằng mô hình không LLM.
+  - **B5 phải công bằng, không phải hình nộm:** lời nhắc viết và thử trên tập phát triển, có lược đồ đầu ra, có hướng dẫn trích câu nguyên
+    văn. B5 cũng chạy K lượt nhiễu giữ nghĩa (ví dụ đổi định dạng lời nhắc; chốt ở spec) để so độ ổn định.
+  - **Thước phụ khai trước khi so với B5** (Q38), chỉ mô tả, không kiểm định: tỉ lệ khái niệm bịa; độ phủ khái niệm theo độ dài sách (B5a có
+    thể chạm trần token đầu ra ở sách dài); tỉ lệ tách giữa các chương (B5b dễ đặt hai tên cho một khái niệm); độ ổn định qua K lượt. Dự
+    đoán trước của Claude: luồng hơn ở truy nguyên và khái niệm bịa, B5 hơn ở chi phí; các thước khác chưa rõ. Không thêm thước nào sau khi
+    thấy số.
 - **Ablation** (RQ4):
   - docling thay bộ đọc nhẹ, chạy lại cả chuỗi, chỉ trên 3–4 cuốn;
   - pass phụ LLM thay ML, chỉ trên các cặp có đích nằm trong 3 chương bốc;
@@ -322,6 +328,9 @@ Vòng nâng cấp theo bốn luật:
 - Chỉ chỉnh dựa trên tập phát triển, trong cửa sổ **01–06/11**. **Đóng băng mã và cấu hình ngày 07/11.** Sửa nào không xong ghi vào báo cáo
   là hướng phát triển, kèm số quy lỗi.
 - Mỗi sửa đi theo quy trình: spec ngắn → vé → agent Sonnet cài → Claude nghiệm thu.
+- **B5 chạy trên tập phát triển ngày 01/11** (Q39), đầu cửa sổ nâng cấp. Nếu B5 hơn luồng ở F1 quan hệ, vòng nâng cấp ưu tiên thử **hướng
+  lai**: giữ khung truy nguyên (câu neo có mã, gộp trên cả cuốn), cho A8 hoặc A3 ngữ cảnh dài như B5. Hệ chính lúc đóng băng là bản đã nâng
+  cấp, và vẫn được so với B5 trên tập thử.
 
 Ứng viên đã biết từ trước: A2 lớp nhãn LLM không ổn định theo cách gom lô; R17 ở sách xã hội; khái niệm khung làm tiên quyết và neo sai câu
 ở A8/A5; cây mục dạng bài giảng ở A1/A2.
@@ -336,7 +345,7 @@ Lịch theo ngày bảo vệ 2026-11-14:
 | 29/10–02/11 | agent cài công cụ; gán thử xstk (29–30/10), sửa hướng dẫn; gán tập phát triển (tới 01/11) | agent, Claude, sinh viên |
 | 31/10–03/11 | G3 tập thử, hội ý | sinh viên, chủ dự án chuyển phiếu |
 | 03–06/11 | G4 tập thử, hội ý; G1, G2 duyệt; đóng băng vàng, ghi hash | sinh viên, Claude giữ sổ |
-| 01–06/11 | đánh giá tập phát triển cùng oracle, quy lỗi; vòng nâng cấp | Claude, agent |
+| 01–06/11 | B5 trên tập phát triển (01/11); đánh giá tập phát triển cùng oracle, quy lỗi; vòng nâng cấp | Claude, agent |
 | 07/11 | đóng băng mã, cấu hình, giao thức; dry-run chi | Claude; chủ dự án duyệt chi |
 | 07–09/11 | chạy 8 cuốn: hệ chính, baseline, ablation, oracle, K = 5 | Claude |
 | 09–10/11 | G5 phán mù; kiểm 20% phần căn | sinh viên |
@@ -402,6 +411,8 @@ Về chi và công cụ:
 | Q35 | Tập phát triển: bỏ doc-4 ch8, thay bằng một khoảng chương `nhap-mon-ml` do sinh viên CNTT gán; Q29 áp cho cặp toán và cặp CNTT |
 | Q36 | Thêm B5 "LLM đọc thẳng" (B5a hoặc B5b sau dry-run); vào ba phép kiểm định chính thức; thêm thước truy nguyên; ablation A2, A5 nếu còn chỗ |
 | Q37 | Bốc 3 chương đầu, giữa, cuối theo seed; luật lọc không nhìn nội dung; nguồn ngoài 3 chương ghi kèm trang |
+| Q38 | Khai trước bốn thước phụ khi so với B5: khái niệm bịa, độ phủ theo độ dài sách, tỉ lệ tách giữa chương, độ ổn định; B5 chạy K lượt |
+| Q39 | B5 chạy trên tập phát triển ngày 01/11; B5 hơn ở F1 quan hệ thì ưu tiên nâng cấp theo hướng lai, trước đóng băng 07/11 |
 
 ## 16. Rủi ro
 

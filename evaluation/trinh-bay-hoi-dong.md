@@ -246,6 +246,16 @@ Hai baseline quan trọng nhất là B1 và B5, vì chúng là hai cách "đơn 
   luồng nằm ở chỗ mọi khái niệm và quan hệ đều truy được về câu trong sách, kết quả ổn định hơn, và từng bước có thể thay bằng mô hình nhỏ
   không cần mô hình ngôn ngữ lớn.
 
+Để phép so với B5 công bằng, nhóm làm ba việc:
+- **B5 không phải hình nộm.** Lời nhắc của B5 được viết và thử trên tập phát triển, có định dạng đầu ra rõ ràng và yêu cầu trích câu nguyên
+  văn, với công sức tương đương phần còn lại.
+- **Thước so được khai trước khi có số.** Ngoài các thước chính, nhóm khai sẵn bốn thước phụ, đều là chỗ hai cách làm khác nhau về bản
+  chất: tỉ lệ khái niệm không có trong sách; độ phủ khái niệm theo độ dài sách (một lời gọi có thể chạm giới hạn độ dài đầu ra); tỉ lệ một
+  khái niệm bị đặt hai tên ở hai chương; độ ổn định qua nhiều lần chạy. Không thước nào được thêm sau khi thấy kết quả.
+- **Biết trước trên tập phát triển.** B5 chạy trên tập phát triển trước khi hệ đóng băng. Nếu B5 tốt hơn, nhóm cải tiến hệ theo hướng kết
+  hợp: giữ khả năng truy về câu trong sách, nhưng cho mô hình nhìn ngữ cảnh rộng hơn như B5. Bản được đánh giá trên tập thử là bản sau cải
+  tiến.
+
 Số của thí nghiệm oracle được báo trong một cột riêng, không đặt ngang số của hệ thật. Khi một khâu được cho đáp án đúng, bài toán của các
 khâu sau dễ đi hẳn, nên hai con số không cùng điều kiện [15].
 
@@ -419,7 +429,7 @@ Bảng 13. Lịch đánh giá
 | 26–28/10 | viết giao thức và hướng dẫn gán; gom sách |
 | 29/10–02/11 | dựng công cụ chấm; gán thử; gán tập phát triển |
 | 31/10–06/11 | sinh viên gán tập thử; chốt vàng ngày 06/11 |
-| 01–06/11 | đánh giá trên tập phát triển; cải tiến hệ |
+| 01–06/11 | chạy B5 và đánh giá trên tập phát triển; cải tiến hệ |
 | 07/11 | đóng băng hệ và giao thức |
 | 07–09/11 | chạy tập thử |
 | 09–10/11 | sinh viên phán mù đầu ra |
