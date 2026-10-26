@@ -45,6 +45,16 @@ def test_mau_so_0_tra_none_va_khong_keo_trung_binh_ve_0():
     assert ket_qua["macro"] == pytest.approx(0.25)
 
 
+def test_f1_bang_0_khi_tp_0_va_co_vang_none_chi_khi_khong_co_vang():
+    # Luật chung với lõi chấm DG-04: F1 = None chỉ khi không có cạnh vàng. Nếu để None khi tp = 0 thì cuốn hệ sai hết bị
+    # loại khỏi trung bình macro và số bị thổi lên.
+    rows = [_f1("he", "s1", "c1", tp=0, fp=2, fn=2), _f1("he", "s2", "c1", tp=0, fp=0, fn=3),
+            _f1("he", "s3", "c1", tp=0, fp=4, fn=0), _f1("he", "s4", "c1", tp=2, fp=0, fn=0)]
+    ket_qua = thuoc_theo_cuon(rows, he="he", thuoc="f1_quan_he")
+    assert ket_qua["theo_cuon"] == {"s1": 0.0, "s2": 0.0, "s3": None, "s4": 1.0}
+    assert ket_qua["macro"] == pytest.approx(1 / 3)
+
+
 def test_dong_khac_kieu_trong_cung_thuoc_bi_tu_choi():
     rows = [_f1("he", "s1", "c1", 1, 0, 0, thuoc="x"), _ti_le("he", "s1", "c2", 1, 1, thuoc="x")]
     with pytest.raises(ValueError):
