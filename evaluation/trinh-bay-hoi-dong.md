@@ -81,8 +81,12 @@ gian và chi phí đo được là của một giáo trình thật. Đáp án ch
 - khái niệm và quan hệ tiên quyết được gán trên **3 chương bốc ngẫu nhiên theo một hạt giống cố định** (một chương phần đầu, một phần giữa,
   một phần cuối, khoảng 25–30% cuốn).
 
-Một quan hệ có thể lấy khái niệm tiên quyết từ bất kỳ phần nào trước đó của sách, nên vẫn chấm được các quan hệ xuyên chương. Chương được
-bốc trước khi chạy hệ, theo luật ghi sẵn trong giao thức.
+Một quan hệ có thể lấy khái niệm tiên quyết từ bất kỳ phần nào trước đó của sách, nên vẫn chấm được các quan hệ xuyên chương dù ba chương
+không liên quan với nhau. Khái niệm tiên quyết nằm ngoài ba chương được người gán ghi kèm trang nơi nó được định nghĩa.
+
+Chương được bốc ngẫu nhiên trước khi chạy hệ, theo luật ghi sẵn trong giao thức. Luật lọc chỉ dựa vào cây mục, không nhìn nội dung: chương phải
+đủ dài, không phải chương mở đầu, không phải chương chỉ có bài tập hay phụ lục. Nhóm cố ý **không** chọn những chương "có nhiều quan hệ",
+vì muốn biết chương nào nhiều quan hệ thì phải đọc trước nội dung hoặc nhìn đầu ra của hệ, và kết quả khi đó sẽ thiên lệch.
 
 Bảng 4. Danh sách sách tập thử (điền sau)
 
@@ -180,6 +184,7 @@ Bảng 6. Thước đo chính theo khâu
 | A8 Tiên quyết | các cạnh "X trước Y" của máy có đúng không, có đủ không | F1 cạnh tiên quyết | trung hoà giữa đúng và đủ, từ 0 tới 1 |
 | A10 Lộ trình | lộ trình có đặt khái niệm tiên quyết trước khái niệm cần nó không | Q6: tỉ lệ cạnh vàng bị vi phạm | 0,10 nghĩa là 10% quan hệ tiên quyết thật bị đặt ngược hoặc thiếu |
 | Đầu-cuối | người học nhận được gì | độ phủ khái niệm trong lộ trình, cộng Q6 | — |
+| Truy nguyên | khái niệm và quan hệ có dẫn về đúng câu trong sách không | tỉ lệ bằng chứng có thật | 0,95 nghĩa là 95% câu hệ trích có nguyên văn trong sách |
 
 Khung dưới ghi công thức của các thước chính.
 
@@ -194,6 +199,9 @@ Khung dưới ghi công thức của các thước chính.
 > **Độ phủ khái niệm:** = số khái niệm vàng có trong lộ trình / số khái niệm vàng được sách dạy.
 >
 > **Đồng thuận giữa hai người gán** (mục 9.1): F1 = 2a / (2a + b + c); a là số mục cả hai cùng ghi, b và c là số mục chỉ một người ghi [7].
+>
+> **Tỉ lệ bằng chứng có thật:** = số câu định nghĩa và câu bằng chứng của hệ tìm thấy nguyên văn trong sách / tổng số câu hệ trích.
+> Thước này cho biết người học bấm vào một khái niệm hay một quan hệ có được dẫn về đúng câu trong sách không, hay câu đó do mô hình tự viết.
 
 Có hai lưu ý về thước:
 - Q6 và M3 là thước nhóm tự định nghĩa vì đúng với điều sản phẩm cần, và văn liệu chưa có thước trùng khớp. Báo cáo ghi kèm thước gần nhất
@@ -206,7 +214,8 @@ Có hai lưu ý về thước:
 
 ## 8. So với cái gì
 
-Một con số đứng một mình khó nói tốt hay xấu. Hệ được so với ba nhóm hệ khác, mỗi nhóm trả lời một kiểu câu hỏi (Bảng 7).
+Một con số đứng một mình khó nói tốt hay xấu. Hệ được so với ba nhóm hệ khác, mỗi nhóm trả lời một kiểu câu hỏi (Bảng 7). Mọi hệ xuất kết
+quả theo cùng một định dạng và được chấm bằng cùng bộ thước.
 
 Bảng 7. Các hệ được so
 
@@ -216,10 +225,12 @@ Bảng 7. Các hệ được so
 | | B2: cạnh "X được nhắc trong câu định nghĩa Y, X dạy trước Y", không dùng mô hình | "Bước suy luận bằng mô hình có hơn một luật đơn giản không?" |
 | | B3: khái niệm lấy từ tiêu đề mục | "Trích khái niệm bằng mô hình có hơn đọc tiêu đề không?" |
 | | B4: gộp khái niệm chỉ khi trùng tên | "Bước hợp nhất có cần thiết không?" |
+| | **B5: mô hình ngôn ngữ đọc thẳng** cả sách (hoặc từng chương) và trả luôn khái niệm, quan hệ, lộ trình | **"Vì sao cần mười bước mà không hỏi thẳng mô hình?"** |
 | Bỏ hoặc thay một bộ phận (ablation) | đọc PDF bằng công cụ docling thay bộ đọc nhẹ (trên 3–4 cuốn, vì docling chậm) | "Bộ đọc nhanh có làm kém chất lượng không?" |
 | | bước phụ của A8 dùng mô hình ngôn ngữ thay mô hình học máy (trên các cặp của 3 chương bốc, vì bản mô hình ngôn ngữ rất tốn) | "Thay mô hình ngôn ngữ bằng học máy để tiết kiệm thì mất bao nhiêu chất lượng?" |
 | | bỏ bước suy luận chính của A8 | "Bước suy luận chính đóng góp bao nhiêu?" |
 | | tắt luật R17 | "Luật giữ thứ tự sách giúp hay hại?" |
+| | tắt gán vai trò vùng A2; tắt lọc trạng thái dạy A5 (nếu lịch còn chỗ) | "Hai bước lọc này có cần không?" |
 | Thay khâu bằng đáp án đúng (oracle) | A8 nhận khái niệm vàng thay vì khái niệm máy trích | "Lỗi ở A8 hay ở các khâu trước?" |
 | | A10 nhận quan hệ vàng thay vì quan hệ máy suy ra | "Cách xếp lộ trình có tốt không, khi quan hệ đúng hoàn toàn?" |
 
@@ -227,8 +238,13 @@ Luật R17 cần giải thích thêm. Khi hệ suy ra "phải học X trước Y
 hệ ngược thứ tự sách thường là quan hệ trích sai. Nhưng trong giai đoạn phát triển, nhóm thấy ở một giáo trình triết học, sách đôi khi dùng một khái niệm trước rồi mới định nghĩa nó ở
 chương sau. Thí nghiệm tắt R17 đo luật này giúp hay hại trên từng ngành.
 
-Baseline B1 quan trọng nhất. Giáo trình thường định nghĩa trước khi dùng, nên lộ trình theo mục lục có thể đã khá tốt. Hệ phải cho thấy giá
-trị thêm, ví dụ chỉ ra đúng khái niệm nào cần học trước, hay chia module hợp lý hơn.
+Hai baseline quan trọng nhất là B1 và B5, vì chúng là hai cách "đơn giản" mà người nghe nghĩ tới đầu tiên:
+- **B1, mục lục:** giáo trình thường định nghĩa trước khi dùng, nên lộ trình theo mục lục có thể đã khá tốt. Hệ phải cho thấy giá trị
+  thêm, ví dụ chỉ ra đúng khái niệm nào cần học trước, hay chia module hợp lý hơn.
+- **B5, hỏi thẳng mô hình:** cùng mô hình mà hệ dùng, nhưng không qua mười bước. Nếu B5 kém hơn hệ chính về độ đúng của quan hệ, hay hay
+  trích câu không có trong sách, thì mười bước là cần thiết. Nếu B5 đạt gần bằng ở một số thước, nhóm báo đúng như vậy; khi đó giá trị của
+  luồng nằm ở chỗ mọi khái niệm và quan hệ đều truy được về câu trong sách, kết quả ổn định hơn, và từng bước có thể thay bằng mô hình nhỏ
+  không cần mô hình ngôn ngữ lớn.
 
 Số của thí nghiệm oracle được báo trong một cột riêng, không đặt ngang số của hệ thật. Khi một khâu được cho đáp án đúng, bài toán của các
 khâu sau dễ đi hẳn, nên hai con số không cùng điều kiện [15].
@@ -258,12 +274,15 @@ Vì vậy:
 Với 8 cuốn, phép đếm này chỉ đạt mức ý nghĩa 5% khi cả 8 cuốn cùng nghiêng về một hệ. Vì vậy kết luận chính dựa trên kiểm định hoán vị
 phân tầng theo cuốn và chương; phép đếm theo cuốn chỉ để bổ sung và để người đọc thấy kết quả có nhất quán giữa các ngành không.
 
-Chỉ hai đến ba phép so được kiểm định chính thức, chọn trước khi chấm: Q6 của hệ so với mục lục (B1); F1 cạnh của hệ so với luật đơn giản
-(B2); và mô hình học máy so với mô hình ngôn ngữ ở bước phụ của A8. Các so sánh còn lại chỉ mô tả, để tránh việc "thử đủ phép, thế nào cũng
-có một phép đạt".
+Chỉ ba phép so được kiểm định chính thức, chọn trước khi chấm, và p-value được hiệu chỉnh theo phương pháp Holm cho cả ba:
+1. Q6 của hệ so với mục lục (B1);
+2. F1 quan hệ tiên quyết của hệ so với mô hình đọc thẳng (B5);
+3. tỉ lệ bằng chứng có thật của hệ so với B5.
+
+Các so sánh còn lại chỉ mô tả, để tránh việc "thử đủ phép, thế nào cũng có một phép đạt".
 
 [CHÈN HÌNH 3 – Biểu đồ điểm theo cuốn (forest plot). Trục dọc: 8 cuốn, ghi tên chủ đề. Trục ngang: F1 cạnh tiên quyết. Mỗi cuốn một chấm
-cho hệ chính và một chấm cho baseline B2, kèm thanh khoảng tin cậy. Dòng cuối: trung bình chung kèm khoảng tin cậy bootstrap phân cấp. Vẽ
+cho hệ chính và một chấm cho baseline B5, kèm thanh khoảng tin cậy. Dòng cuối: trung bình chung kèm khoảng tin cậy bootstrap phân cấp. Vẽ
 từ số liệu sau lượt chạy.]
 
 Hình 3. F1 cạnh tiên quyết theo từng cuốn
@@ -341,12 +360,13 @@ Mục này sẽ điền sau lượt chạy tập thử (07–09/11). Các bảng
 
 Bảng 9. Kết quả đầu-cuối trên 8 giáo trình (khoảng tin cậy 95% trong ngoặc)
 
-| Hệ | Độ phủ khái niệm | Q6 (thấp là tốt) | F1 cạnh tiên quyết | Phút/cuốn | USD/cuốn |
-|---|---|---|---|---|---|
-| Hệ chính | — | — | — | — | — |
-| B1 mục lục | — | — | — | — | — |
-| B2 luật đơn giản | — | — | — | — | — |
-| Trần người (F1 giữa hai sinh viên) | — | — | — | — | — |
+| Hệ | Độ phủ khái niệm | Q6 (thấp là tốt) | F1 cạnh tiên quyết | Bằng chứng có thật | Phút/cuốn | USD/cuốn |
+|---|---|---|---|---|---|---|
+| Hệ chính | — | — | — | — | — | — |
+| B1 mục lục | — | — | — | — | — | — |
+| B2 luật đơn giản | — | — | — | — | — | — |
+| B5 mô hình đọc thẳng | — | — | — | — | — | — |
+| Trần người (F1 giữa hai sinh viên) | — | — | — | — | — | — |
 
 Bảng 10. Kết quả từng khâu
 
@@ -368,6 +388,8 @@ Bảng 11. Thí nghiệm bỏ hoặc thay bộ phận
 | bước phụ A8 bằng mô hình ngôn ngữ (cặp của 3 chương bốc) | — | — |
 | bỏ bước suy luận chính | — | — |
 | tắt R17 | — | — |
+| tắt gán vai trò vùng A2 (nếu chạy) | — | — |
+| tắt lọc trạng thái dạy A5 (nếu chạy) | — | — |
 | oracle A8 (khái niệm vàng) | — | — |
 | oracle A10 (quan hệ vàng) | — | — |
 

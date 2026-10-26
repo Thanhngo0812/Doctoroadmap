@@ -165,8 +165,12 @@ Bộ sách chia làm hai tập:
     phát triển. Pass phụ ML đã học trên D-01, trong đó có sách CNTT, nên báo cáo ghi rõ đây là cùng ngành nhưng khác cuốn. Sách CNTT hay có
     khối mã nguồn; dry-run sẽ xem A1/A2 xử lý chúng thế nào.
 - **Bốc chương:** hệ chạy trên cả cuốn. G1, G2 gán cả cuốn. G3, G4 gán trên **3 chương bốc theo seed** (một chương phần đầu, một phần
-  giữa, một phần cuối, khoảng 25–30% cuốn), không bốc chương mở đầu. Cạnh được lấy nguồn từ bất kỳ phần nào trước đó của sách. Luật bốc ghi
-  vào giao thức trước khi bốc. Ba chương mỗi cuốn cho tầng thứ hai của bootstrap phân cấp.
+  giữa, một phần cuối, khoảng 25–30% cuốn). Cạnh được lấy nguồn từ bất kỳ phần nào trước đó của sách, nên quan hệ xuyên chương vẫn vào vàng
+  dù 3 chương không liên quan nhau. Luật bốc ghi vào giao thức trước khi bốc. Ba chương mỗi cuốn cho tầng thứ hai của bootstrap phân cấp.
+  - **Không chọn chương theo "nhiều quan hệ"** (Q37): chọn như vậy phải đọc trước nội dung hoặc nhìn đầu ra máy, làm kết quả thiên lệch.
+  - **Luật lọc không nhìn nội dung,** chỉ dựa vào cây mục G1: chương phải dài từ N trang trở lên (N chốt trong giao thức), không phải chương
+    mở đầu, không phải chương chỉ có bài tập hay phụ lục.
+  - **Nguồn ngoài 3 chương** được ghi kèm vị trí: tên khái niệm và trang nơi nó được định nghĩa, để bước căn ghép được với node máy.
 - **Tập phát triển (Q35):** xstk ch10–13 (gồm chương gán thử) và doc-1 ch10–12, hai khoảng toán đã có vàng A8 cũ của người nên so được
   giao thức cũ với mới; cộng một khoảng chương của `nhap-mon-ml` (nhập môn học máy, thuộc CNTT), bốc theo seed, cỡ tương đương, để tập phát
   triển không chỉ có sách toán. doc-4 ch8 bỏ vì tập thử không còn môn triết. Sinh viên gán theo giao thức mới (mục 6).
@@ -191,7 +195,7 @@ Cách tổ chức người gán đã chốt như sau:
 | G1 cấu trúc | cây mục cả cuốn: tiêu đề, cấp, cha, trang | Codex làm nháp, **không** lấy từ đầu ra A1 của hệ; một sinh viên duyệt đủ | sinh viên thứ hai duyệt lại khoảng 30% số mục |
 | G2 vai trò vùng | vai trò từng mục cả cuốn (`noi_dung`, `bai_tap`, `de_cuong`, `mo_dau`, `hanh_chinh`, `cuoi_sach`) | Codex nháp, không lấy từ A2 của hệ; sinh viên duyệt đủ | như G1; Cohen κ và % đồng ý |
 | G3 kho khái niệm | trên 3 chương bốc: khái niệm được dạy; câu định nghĩa (trang, câu nguyên văn); trạng thái (dạy ở đây, dạy qua ví dụ, chỉ nhắc, kiến thức nền); tên khác | hai sinh viên độc lập → hội ý → **kho chốt** | F1 giữa hai người trước hội ý |
-| G4 cạnh tiên quyết | cạnh X → Y theo PREAP, đích là khái niệm của 3 chương bốc, nguồn ở bất kỳ phần nào trước đó; kèm câu bằng chứng; cờ "văn bản thể hiện" hay "kiến thức chuyên môn" | hai sinh viên độc lập → hội ý | F1 giữa hai người, có và không tính bắc cầu |
+| G4 cạnh tiên quyết | cạnh X → Y theo PREAP, đích là khái niệm của 3 chương bốc, nguồn ở bất kỳ phần nào trước đó (nguồn ngoài 3 chương ghi kèm trang định nghĩa); kèm câu bằng chứng; cờ "văn bản thể hiện" hay "kiến thức chuyên môn" | hai sinh viên độc lập → hội ý | F1 giữa hai người, có và không tính bắc cầu |
 | G5 phán mù | (a) khái niệm máy không căn được: dạy, chỉ nhắc, không phải khái niệm, rác; (b) cạnh máy ngoài vàng: cần, không cần, ngược; (c) rubric lộ trình theo module (Likert 7 mức có neo) và so sánh cặp mù hệ chính với B1 | chính hai sinh viên, mù tên hệ, phiếu có **câu đối chứng** (cạnh vàng của chính họ, cặp ngẫu nhiên) trộn lẫn | hai người phán mọi mục; α thứ bậc cho Likert |
 
 **Khái niệm trong G3** gồm đơn vị kiến thức có tên mà người học phải nắm: khái niệm, định nghĩa, định lý hay định luật có tên, phương pháp
@@ -241,6 +245,7 @@ Mỗi khâu có một chỉ số chính, theo bảng 13.1 của VL; công thức
 | A8 | F1 cạnh trực tiếp, trên khái niệm căn được, vàng hội ý, cạnh bám văn bản | P/R bao đóng; precision hiệu chỉnh từ G5(b); pass phụ: PR-AUC trên phân phối cặp ứng viên thật; máy so với **từng** sinh viên, đặt cạnh F1 giữa hai người | G4, G5 |
 | A9/A10 | Q6 lỗi thứ tự học (ngược, cùng bậc, ngoài lộ trình; cùng mẫu số) | Q7, Q7b; số chu trình, thành phần liên thông; τ so mục lục (chẩn đoán); G5(c) rubric và so sánh cặp (báo như nghiên cứu thăm dò) | G4, G5 |
 | Đầu-cuối | độ phủ khái niệm vàng trong dãy học, cộng Q6 | đánh giá người tổng thể | G3, G4, G5 |
+| Truy nguyên | **tỉ lệ bằng chứng có thật**: câu định nghĩa và câu bằng chứng mà hệ trích có nằm nguyên văn trong sách không (khớp mờ trong trang) | tỉ lệ khái niệm bịa (tên không xuất hiện trong sách); tỉ lệ khái niệm và cạnh có bằng chứng | văn bản sách |
 | Chi phí | phút/cuốn (tổng và trừ chờ embedding), USD/cuốn | theo khâu; lời gọi; token; phút/trang, USD/trang; đường chất lượng–chi phí | sổ chi |
 | Ổn định | trung bình và khoảng của chỉ số chính qua K = 5 lượt | tỉ lệ cạnh giữ nguyên qua các lượt | lượt xáo |
 
@@ -251,16 +256,23 @@ liệu (F1 "complete entry", P/R cạnh).
 
 Mỗi nhóm hệ dưới đây trả lời một RQ:
 - **Hệ chính** (RQ1–3): sản phẩm lúc đóng băng (bộ đọc nhẹ, chuỗi gộp, pass chính LLM, pass phụ ML).
-- **Baseline** (RQ1), gần như 0 USD:
+- **Baseline** (RQ1); B1–B4 gần như 0 USD:
   - B1: thứ tự sách (dãy học bằng thứ tự dạy, không cạnh);
   - B2: cạnh "X được nhắc trong cửa sổ định nghĩa Y, X dạy trước Y", không học;
   - B3: khái niệm lấy từ tiêu đề mục;
-  - B4: gộp chỉ theo tên chuẩn hoá.
+  - B4: gộp chỉ theo tên chuẩn hoá;
+  - **B5: LLM đọc thẳng** (Q36): cùng mô hình flash-lite đọc sách và trả luôn khái niệm, câu định nghĩa, quan hệ tiên quyết, lộ trình,
+    không qua 10 bước. B5a là một lời gọi cho cả cuốn; B5b là mỗi chương một lời gọi, kèm danh sách khái niệm các chương trước. Chọn B5a
+    hay B5b sau khi dry-run thử trên một cuốn phát triển xem đầu ra có vượt trần token không. B5 xuất cùng hợp đồng đánh giá; không có cây
+    mục và vai trò nên các thước A1, A2 không áp. Đây là phép so trả lời câu "vì sao cần 10 bước". Nếu B5 đạt gần hệ chính ở thước chất
+    lượng, báo đúng như vậy; giá trị của luồng khi đó nằm ở truy nguyên, độ ổn định và khả năng thay khâu bằng mô hình không LLM.
 - **Ablation** (RQ4):
   - docling thay bộ đọc nhẹ, chạy lại cả chuỗi, chỉ trên 3–4 cuốn;
   - pass phụ LLM thay ML, chỉ trên các cặp có đích nằm trong 3 chương bốc;
   - bỏ pass chính;
-  - tắt R17 (luật làm mềm cạnh ngược thứ tự sách).
+  - tắt R17 (luật làm mềm cạnh ngược thứ tự sách);
+  - nếu lịch 07–09/11 còn chỗ: tắt gán vai trò vùng A2 (mọi mục là nội dung), và tắt lọc trạng thái dạy A5 (mọi khái niệm trích được vào
+    lộ trình).
 - **Oracle** (RQ2): A8 chạy trên kho khái niệm vàng; A10 chạy trên cạnh vàng. Số oracle báo trong cột "thiết lập" riêng, không đặt
   ngang số đầu-cuối (VL §11).
 - **Seminar** (RQ6): khâu không LLM nào có thì cắm vào, cùng hợp đồng xuất.
@@ -275,8 +287,9 @@ Theo VL §9 và §10:
   chỉ dùng cho tỉ lệ trên mẫu ngẫu nhiên đơn trong một cuốn (ví dụ phán G5).
 - **So hai hệ:** hoán vị ghép cặp, chỉ hoán vị trong cùng cuốn; kèm sign test theo cuốn. Với 8 cuốn, sign test chỉ đạt p < 0,05 khi cả
   8/8 cuốn cùng chiều (p = 0,0078); 7/8 cho p ≈ 0,07. Vì vậy kết luận chính dựa trên hoán vị ghép cặp phân tầng theo cuốn và chương; sign
-  test chỉ để bổ sung. Chỉ hai đến ba phép so được kiểm định chính thức, khai trong giao thức. Đề xuất: Q6 hệ chính so với B1; F1 cạnh A8 hệ chính
-  so với B2; F1 pass phụ ML so với LLM. Các phép so khác chỉ mô tả.
+  test chỉ để bổ sung. Chỉ hai đến ba phép so được kiểm định chính thức, khai trong giao thức. Ba phép kiểm định chính thức
+  (Q36), hiệu chỉnh Holm trên cả ba: Q6 hệ chính so với B1; F1 quan hệ hệ chính so với B5; tỉ lệ bằng chứng có thật hệ chính so với B5.
+  Các phép so khác (B2–B4, pass phụ ML so với LLM, các ablation) chỉ mô tả.
 - **Phân tích công suất bằng mô phỏng** trước khi chốt giao thức, dựa trên phương sai đo ở tập phát triển và lượt thử gán.
 - **Nhiễu:** K = 5 lượt xáo ngữ cảnh pass chính giữ nghĩa, khai trước; so hai hệ trên cùng tập lượt xáo. Lượt chạy trễ thì giảm về K = 3 và
   ghi rõ. A2 ghim một bản nhãn cho lượt chính; độ bất ổn A2 đo trên tập phát triển, báo riêng.
@@ -339,9 +352,10 @@ Về chi và công cụ:
   - 4 lượt xáo thêm cho pass chính: khoảng 15–60 USD;
   - ablation docling trên 3–4 cuốn: khoảng 15–30 USD; pass phụ LLM trên cặp của 3 chương bốc: khoảng 15–40 USD;
   - oracle, bỏ pass chính, tắt R17: dưới 20 USD;
+  - B5 LLM đọc thẳng: vài lời gọi mỗi cuốn, ước dưới 10 USD cả 8 cuốn; ablation A2, A5 (nếu chạy): khoảng 10–30 USD;
   - tập phát triển và nâng cấp: khoảng 10–30 USD.
 
-  Tổng vào khoảng 100–240 USD. Dry-run sẽ chốt số. Thời gian chạy là ràng buộc chặt hơn tiền: trên Vertex, một giáo trình 300 trang có thể
+  Tổng vào khoảng 110–280 USD. Dry-run sẽ chốt số. Thời gian chạy là ràng buộc chặt hơn tiền: trên Vertex, một giáo trình 300 trang có thể
   mất vài giờ vì chờ embedding.
 - **Cài công cụ:** Claude viết spec và vé; hai agent Sonnet cài song song trên hai worktree, chia khối không chung tệp; Claude tự cài
   validator và phần thống kê, agent soát độc lập. Claude nghiệm thu đủ: đọc diff, chạy lại test, tự viết phép phá.
@@ -386,6 +400,8 @@ Về chi và công cụ:
 | Q33 | Chủ dự án đang chuẩn bị sách; dùng được cuốn khoá D-02 nếu hợp chủ đề |
 | Q34 | Thay triết học bằng công nghệ thông tin trong 8 chủ đề |
 | Q35 | Tập phát triển: bỏ doc-4 ch8, thay bằng một khoảng chương `nhap-mon-ml` do sinh viên CNTT gán; Q29 áp cho cặp toán và cặp CNTT |
+| Q36 | Thêm B5 "LLM đọc thẳng" (B5a hoặc B5b sau dry-run); vào ba phép kiểm định chính thức; thêm thước truy nguyên; ablation A2, A5 nếu còn chỗ |
+| Q37 | Bốc 3 chương đầu, giữa, cuối theo seed; luật lọc không nhìn nội dung; nguồn ngoài 3 chương ghi kèm trang |
 
 ## 16. Rủi ro
 
