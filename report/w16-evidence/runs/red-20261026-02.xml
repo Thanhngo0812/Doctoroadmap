@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="7" skipped="0" tests="13" time="9.337" timestamp="2026-10-26T06:13:31.131895+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_combines_courses_isolates_people_and_separates_shared_and_build" time="1.986" /><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_resets_at_1700_utc_and_excludes_next_day_rows[2026-10-31-2026-11-02T00:00:00+07:00]" time="0.532"><failure message="assert 1.0 == 0.75 ± 7.5e-07&#10;  &#10;  comparison failed&#10;  Obtained: 1.0&#10;  Expected: 0.75 ± 7.5e-07">src\web\backend\tests\test_usage_w16.py:110: in test_usage_resets_at_1700_utc_and_excludes_next_day_rows
+    assert view['learner_today']['used_ratio'] == pytest.approx(.75)
+E   assert 1.0 == 0.75 ± 7.5e-07
+E
+E     comparison failed
+E     Obtained: 1.0
+E     Expected: 0.75 ± 7.5e-07</failure></testcase><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_resets_at_1700_utc_and_excludes_next_day_rows[2026-12-31-2027-01-02T00:00:00+07:00]" time="0.378"><failure message="assert 1.0 == 0.75 ± 7.5e-07&#10;  &#10;  comparison failed&#10;  Obtained: 1.0&#10;  Expected: 0.75 ± 7.5e-07">src\web\backend\tests\test_usage_w16.py:110: in test_usage_resets_at_1700_utc_and_excludes_next_day_rows
+    assert view['learner_today']['used_ratio'] == pytest.approx(.75)
+E   assert 1.0 == 0.75 ± 7.5e-07
+E
+E     comparison failed
+E     Obtained: 1.0
+E     Expected: 0.75 ± 7.5e-07</failure></testcase><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_resets_at_1700_utc_and_excludes_next_day_rows[2028-02-29-2028-03-02T00:00:00+07:00]" time="0.391"><failure message="assert 1.0 == 0.75 ± 7.5e-07&#10;  &#10;  comparison failed&#10;  Obtained: 1.0&#10;  Expected: 0.75 ± 7.5e-07">src\web\backend\tests\test_usage_w16.py:110: in test_usage_resets_at_1700_utc_and_excludes_next_day_rows
+    assert view['learner_today']['used_ratio'] == pytest.approx(.75)
+E   assert 1.0 == 0.75 ± 7.5e-07
+E
+E     comparison failed
+E     Obtained: 1.0
+E     Expected: 0.75 ± 7.5e-07</failure></testcase><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_projection_uses_the_scoped_ledger_port" time="0.312"><failure message="AssertionError: assert [] == [('3eca9c9a-7..._verify'}, 1)]&#10;  &#10;  Right contains 2 more items, first extra item: ('3eca9c9a-7aea-408a-b36c-1867054b9251', {'assistant', 'document'}, 1)&#10;  Use -v to get more diff">src\web\backend\tests\test_usage_w16.py:137: in test_usage_projection_uses_the_scoped_ledger_port
+    assert observed == [(b.actor.user_id, {'assistant', 'document'}, 1),
+E   AssertionError: assert [] == [('3eca9c9a-7..._verify'}, 1)]
+E
+E     Right contains 2 more items, first extra item: ('3eca9c9a-7aea-408a-b36c-1867054b9251', {'assistant', 'document'}, 1)
+E     Use -v to get more diff</failure></testcase><testcase classname="src.web.backend.tests.test_usage_w16" name="test_monthly_quota_uses_counted_attempts_in_exact_vietnam_month[2026-01-31-2026-02-01T00:00:00+07:00]" time="0.618"><failure message="assert 2 == 1">src\web\backend\tests\test_usage_w16.py:161: in test_monthly_quota_uses_counted_attempts_in_exact_vietnam_month
+    assert b.store.quota(b.actor.user_id, before, None)['builds_used'] == 1
+E   assert 2 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_usage_w16" name="test_monthly_quota_uses_counted_attempts_in_exact_vietnam_month[2026-12-31-2027-01-01T00:00:00+07:00]" time="0.666"><failure message="assert 2 == 1">src\web\backend\tests\test_usage_w16.py:161: in test_monthly_quota_uses_counted_attempts_in_exact_vietnam_month
+    assert b.store.quota(b.actor.user_id, before, None)['builds_used'] == 1
+E   assert 2 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_usage_w16" name="test_monthly_quota_uses_counted_attempts_in_exact_vietnam_month[2028-02-29-2028-03-01T00:00:00+07:00]" time="0.782"><failure message="assert 2 == 1">src\web\backend\tests\test_usage_w16.py:161: in test_monthly_quota_uses_counted_attempts_in_exact_vietnam_month
+    assert b.store.quota(b.actor.user_id, before, None)['builds_used'] == 1
+E   assert 2 == 1</failure></testcase><testcase classname="src.web.backend.tests.test_usage_w16" name="test_monthly_demo_default_and_account_override_use_existing_quota[None]" time="0.444" /><testcase classname="src.web.backend.tests.test_usage_w16" name="test_monthly_demo_default_and_account_override_use_existing_quota[3]" time="0.457" /><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_http_enforces_authentication_and_cannot_select_another_owner" time="0.423" /><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_real_response_dto_recursively_removes_internal_money" time="0.368" /><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_http_without_learning_runtime_keeps_usage_1_and_exports_fixture_json" time="0.425" /></testsuite></testsuites>

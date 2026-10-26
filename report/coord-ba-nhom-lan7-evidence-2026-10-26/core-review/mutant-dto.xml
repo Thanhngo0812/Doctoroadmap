@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="4.997" timestamp="2026-10-26T12:39:15.967949+07:00" hostname="ADMIN"><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_actual_http_response_model_removes_private_nested_keys" time="0.640"><failure message="AssertionError: assert not ['internal_cost_usd']">..\coord-r7-core-review-20261026\test_review_core.py:199: in test_actual_http_response_model_removes_private_nested_keys
+    assert_no_money(view)
+..\coord-r7-core-review-20261026\test_review_core.py:169: in assert_no_money
+    assert not [key for key in value if any(s in key.lower() for s in ['usd','cost'])]
+E   AssertionError: assert not ['internal_cost_usd']</failure></testcase></testsuite></testsuites>

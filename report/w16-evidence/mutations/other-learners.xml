@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.986" timestamp="2026-10-26T06:24:42.116340+07:00" hostname="ADMIN"><testcase classname="src.web.backend.tests.test_usage_w16" name="test_usage_combines_courses_isolates_people_and_separates_shared_and_build" time="1.259"><failure message="assert 1.0 == 0.6 ± 6.0e-07&#10;  &#10;  comparison failed&#10;  Obtained: 1.0&#10;  Expected: 0.6 ± 6.0e-07">src\web\backend\tests\test_usage_w16.py:84: in test_usage_combines_courses_isolates_people_and_separates_shared_and_build
+    assert view['learner_today']['used_ratio'] == pytest.approx(.6)
+E   assert 1.0 == 0.6 ± 6.0e-07
+E
+E     comparison failed
+E     Obtained: 1.0
+E     Expected: 0.6 ± 6.0e-07</failure></testcase></testsuite></testsuites>

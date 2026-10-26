@@ -1,0 +1,15 @@
+{
+  "view": {
+    "builds_used": 2,
+    "build_monthly_max": 3,
+    "builds_remaining": 1
+  },
+  "queries": [
+    "SELECT build_monthly_max FROM account WHERE id=:uid",
+    "SELECT count(*) AS n FROM build WHERE requested_by=:uid AND counts_quota AND queued_at>=:start AND queued_at<:end",
+    "SELECT build_monthly_max FROM account WHERE id=:uid",
+    "SELECT count(*) AS n FROM build WHERE requested_by=:uid AND counts_quota AND queued_at>=:start AND queued_at<:end",
+    "SELECT build_monthly_max FROM account WHERE id=:uid",
+    "SELECT count(*) AS n FROM build WHERE requested_by=:uid AND counts_quota AND queued_at>=:start AND queued_at<:end"
+  ]
+}

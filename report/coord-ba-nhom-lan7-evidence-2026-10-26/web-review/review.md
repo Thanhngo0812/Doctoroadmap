@@ -1,0 +1,41 @@
+# R7 independent Web W-10 review — 2026-10-26
+
+Verdict: **Request changes**. No Critical finding. Two Required findings in the W-10 integration; accepted W-09/W-15 behavior is preserved.
+
+Pinned worktree: `tmp/w10-quiz-documents`, HEAD `fa346c95aafb90ff9273df947b07e093f19d3fb4`, base main `b3c4426666dd868040ea0bc52e6485f5af6e1ac4`. Delivery code `4d2f652f5a9564f54587ebe08051c525200b888e` has no src/scripts delta to the reviewed HEAD. Read AGENTS.md, code-review-and-quality skill, R6 acceptance/assignment, W-10 task, quiz-3/document-3 and Pha B2 library-1 contracts. No worker/root product change, Git mutation, paid provider, network service, ADC, SMTP, Cloudinary, full PostgreSQL gate or browser run was made by this reviewer. Scratch files live only here. External spend: **0 USD**.
+
+## Required R-W10-1 — apply the account document rate limit to assistant tools too
+
+Locations: `src/web/backend/wayfinder/api/content.py:196` (direct route admission), `src/web/backend/wayfinder/infrastructure/document_requests.py:12`, and existing `src/web/backend/wayfinder/infrastructure/learning_runtime.py:63` (assistant tool closure).
+
+The new rate policy is entered only by direct POST /documents. The production WebLearningRuntime assistant make_document closure calls DocumentUseCase.create directly and neither consumes nor checks DocumentRequests admission. The web functional spec section 7 says `documents_per_hour (10) mỗi người`, without restricting origin; W-10 repeats 10 documents/hour/person and R6 assignment says the eleventh request across courses. A user who exhausted the ten direct requests can ask the assistant for another document; assistant-only documents also do not reduce the direct quota. The monetary daily cap is a separate policy.
+
+Independent offline proof: `rate-origin-offline.py` uses the real WebLearningRuntime assistant closure, real DocumentUseCase, InMemoryPhaseBStore, FakeClock and ScriptedLectureModel. After ten same-hour button-origin records, the assistant tool creates a READY eleventh document: model calls 10→11, document records 10→11, one assistant-origin record, all at the same timestamp. Native 0 in `rate-origin-offline.log`. This probe deliberately does **not** claim to exercise PostgreSQL admission or the full HTTP assistant path; the direct-only admission placement is independently visible in source. The parent coordinator independently ran the complete HTTP/PG sequence and this reviewer inspected its source, JUnit and SQL observations. Ten direct requests produce ten READY documents; direct request eleven returns 429; an assistant HTTP turn then produces a READY eleventh document, document model calls 10→11 and rows 10→11, while the document rate bucket remains ten. The coordinator regression has one assertion failure and zero setup errors. Byte-identical copies are saved as `parent-rate-http-repro.py`, `parent-rate-http-repro.xml`, and `parent-rate-http-observed.json`; provenance and SHA are in `parent-evidence-receipts.json`. This is a coordinator run inspected by this reviewer, not a second reviewer HTTP/PG run.
+
+Required remedy: reuse one account-wide web admission policy immediately before every direct or assistant document generation; keep generation/cache/retry and monetary decisions in core. Preserve direct HTTP429 before SSE. Add a mixed-origin test with ten accepted requests across courses followed by assistant and direct attempts; provider-call and saved-document counts must stay unchanged on denial. This is incomplete W-10 frequency integration, not a request to reopen accepted W-09 content/session behavior.
+
+## Required R-W10-2 — late submission result overwrites another quiz attempt
+
+Location: `src/web/frontend/src/ContentPages.tsx:63` through submit handling, particularly line 66. The loading effect aborts its GET/SSE requests when aid changes, but submitQuiz has no route/request identity guard. Its success, catch and finally callbacks can still update the reused QuizPage after browser history opens a different attempt.
+
+Reproduction uses real MemoryRouter history and the real QuizPage/App with fetch responses held in the test: entries qa_2→qa_1; start qa_1 submit; browser Back to qa_2; wait for the qa_2 question; resolve qa_1 submit. Observed independent output is `activeRoute=/khoa-hoc/c/quiz/qa_2`, heading `Kết quả quiz`, and `secondQuestionVisible=false`. The old result replaces the current attempt despite the URL identifying qa_2. The server submission itself remains correctly owned/atomic; this finding concerns displayed attempt identity.
+
+`late-submit-current.xml`: native 1, one assertion failure, zero setup errors (nine existing tests intentionally filtered). `late-submit-repro.test.tsx` contains the original nine tests plus the runnable new regression. Run `node reproduce-late-submit.cjs` from this folder to reproduce on the copied source. A scratch-only active-attempt guard passes all ten tests, native 0, in `late-submit-control.xml`; the two control lines are saved in `late-submit-control.diff.txt`. Product and scratch production files were restored byte-for-byte afterward, see `source-preservation.json`.
+
+Required remedy: invalidate pending submission UI callbacks when course/attempt/request changes, including success/error/finally and submission locking. Add the browser-history race regression. The scratch control proves the root cause; it is not a complete proposed product patch.
+
+## Optional — surface rejected browser response assertions
+
+`scripts/w10_web_check.cjs:346` ends with `await Promise.allSettled(pending)` and does not inspect rejection outcomes. Response-listener privacy assertions are rethrown into those promises, so such an assertion rejection alone cannot make the browser process fail. Inspect the settled results and fail on rejected assertions. Current DTO allowlists and backend privacy tests independently protect this invariant; this is a harness strengthening suggestion, not evidence of an actual leak or another merge blocker.
+
+## Independent verification and retained good work
+
+- Copied-source React W-10 baseline: **9 passed / 0 failed / 0 errors**, native 0, `content-baseline-final.xml`. Startup attempts before that were runner module-resolution setup failures and are retained separately; they are not application failures.
+- Real mutation on reviewer scratch only: changed module library grouping from core group to button/assistant origin. Named crossed-origin test fails (one assertion, zero setup errors), native 1; original source restored. `group-origin-mutant.xml` and `mutation-receipt.json` record source/mutant/restored SHA.
+- Independent race: current HEAD **1 assertion fails / 0 setup errors**; scratch guarded control **10 pass**, no skip, native 0.
+- Independent receipts: **544 evidence files**, **766 src/scripts files**, **52 frontend source files**, **75 dist files**, ZIP SHA and **493 raw ZIP members**, plus source/restoration identity for **12 author mutations** all match. `receipt-audit.json` and `verify-raw-archive.py/.log`. These counts verify source provenance, not new executions of the author's gates.
+- Author-reported runs (not rerun by reviewer): 2727 Python pass/1 skip/1 xfail, 212 React pass/build native0, 12 browser configurations/89 images/58 Axe. Parent owns one integrated PG gate and browser verification.
+- Source review found explicit nested allowlists at gateway and Pydantic HTTP/SSE boundaries; public quiz omits private answers/explanations/why_wrong/usage, result releases only after owned submission, shuffled option IDs stay intact, account/book authorization is server-bound, attempt/progress share an atomic PostgreSQL scope, and same-answer resubmission returns the saved result. Generation/cache/retry stay in core.
+- Six-module rejection precedes admission/provider work. Library uses core here/elsewhere independently from origin, including crossed fixtures. Source/Markdown/table output reuses skipHtml, image suppression, untrusted KaTeX, registered source labels and disallowed prose links. GFM is scoped by a prop; adjacent accepted renderer behavior is retained. Only remark-gfm is added, with its lockfile. No unrelated product cleanup was found.
+
+The review makes no pedagogical-quality or live-provider claim and no new production-readiness claim.

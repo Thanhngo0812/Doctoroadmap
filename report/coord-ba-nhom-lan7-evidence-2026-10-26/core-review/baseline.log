@@ -1,0 +1,132 @@
+FFFF......F.                                                             [100%]
+================================== FAILURES ===================================
+_________________ test_exact_day_bounds_and_reset[2026-10-31] _________________
+..\coord-r7-core-review-20261026\test_review_core.py:95: in test_exact_day_bounds_and_reset
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error
+_________________ test_exact_day_bounds_and_reset[2026-12-31] _________________
+..\coord-r7-core-review-20261026\test_review_core.py:95: in test_exact_day_bounds_and_reset
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error
+_________________ test_exact_day_bounds_and_reset[2028-02-29] _________________
+..\coord-r7-core-review-20261026\test_review_core.py:95: in test_exact_day_bounds_and_reset
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error
+___________ test_actor_purpose_course_trace_and_failure_aggregation ___________
+..\coord-r7-core-review-20261026\test_review_core.py:120: in test_actor_purpose_course_trace_and_failure_aggregation
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error
+_________ test_actual_http_response_model_removes_private_nested_keys _________
+..\coord-r7-core-review-20261026\test_review_core.py:193: in test_actual_http_response_model_removes_private_nested_keys
+    with TestClient(app) as client:
+         ^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\starlette\testclient.py:559: in __enter__
+    self.portal = portal = stack.enter_context(anyio.from_thread.start_blocking_portal(**self.async_backend))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py:526: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\anyio\from_thread.py:548: in start_blocking_portal
+    portal = future.result()
+             ^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\.venv\Lib\site-packages\anyio\from_thread.py:536: in run_blocking_portal
+    run_eventloop(
+..\..\.venv\Lib\site-packages\anyio\_core\_eventloop.py:83: in run
+    return async_backend.run(func, args, {}, backend_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:2480: in run
+    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\runners.py:58: in __enter__
+    self._lazy_init()
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\runners.py:137: in _lazy_init
+    self._loop = events.new_event_loop()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py:823: in new_event_loop
+    return get_event_loop_policy().new_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py:720: in new_event_loop
+    return self._loop_factory()
+           ^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\windows_events.py:316: in __init__
+    super().__init__(proactor)
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py:640: in __init__
+    self._make_self_pipe()
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py:787: in _make_self_pipe
+    self._ssock, self._csock = socket.socketpair()
+                               ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\socket.py:623: in _fallback_socketpair
+    csock.connect((addr, port))
+..\coord-r7-core-review-20261026\conftest.py:10: in forbidden
+    raise AssertionError('R7 offline review forbids network, PostgreSQL and provider connections')
+E   AssertionError: R7 offline review forbids network, PostgreSQL and provider connections
+============================== warnings summary ===============================
+..\..\.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: C:\Users\ngoco\Desktop\Doctoroadmap\tmp\coord-r7-core-review-20261026\baseline.xml -
+=========================== short test summary info ===========================
+FAILED ..\coord-r7-core-review-20261026\test_review_core.py::test_exact_day_bounds_and_reset[2026-10-31]
+FAILED ..\coord-r7-core-review-20261026\test_review_core.py::test_exact_day_bounds_and_reset[2026-12-31]
+FAILED ..\coord-r7-core-review-20261026\test_review_core.py::test_exact_day_bounds_and_reset[2028-02-29]
+FAILED ..\coord-r7-core-review-20261026\test_review_core.py::test_actor_purpose_course_trace_and_failure_aggregation
+FAILED ..\coord-r7-core-review-20261026\test_review_core.py::test_actual_http_response_model_removes_private_nested_keys
+5 failed, 7 passed, 1 warning in 6.91s
+
+C:\Users\ngoco\Desktop\Doctoroadmap\.venv\Lib\site-packages\_pytest\unraisableexception.py:67: PytestUnraisableExceptionWarning: Exception ignored in: <function BaseEventLoop.__del__ at 0x000001B543B75C60>
+
+Traceback (most recent call last):
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\base_events.py", line 732, in __del__
+    self.close()
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 697, in close
+    self._close_self_pipe()
+  File "C:\Users\ngoco\Desktop\Doctoroadmap\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py", line 779, in _close_self_pipe
+    self._ssock.close()
+    ^^^^^^^^^^^
+AttributeError: 'ProactorEventLoop' object has no attribute '_ssock'
+
+Enable tracemalloc to get traceback where the object was allocated.
+See https://docs.pytest.org/en/stable/how-to/capture-warnings.html#resource-warnings for more info.
+  warnings.warn(pytest.PytestUnraisableExceptionWarning(msg))

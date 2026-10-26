@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="12" time="6.907" timestamp="2026-10-26T12:36:40.456027+07:00" hostname="ADMIN"><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_exact_day_bounds_and_reset[2026-10-31]" time="0.470"><failure message="sqlite3.OperationalError: near &quot;WITH&quot;: syntax error">..\coord-r7-core-review-20261026\test_review_core.py:95: in test_exact_day_bounds_and_reset
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_exact_day_bounds_and_reset[2026-12-31]" time="0.029"><failure message="sqlite3.OperationalError: near &quot;WITH&quot;: syntax error">..\coord-r7-core-review-20261026\test_review_core.py:95: in test_exact_day_bounds_and_reset
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_exact_day_bounds_and_reset[2028-02-29]" time="0.027"><failure message="sqlite3.OperationalError: near &quot;WITH&quot;: syntax error">..\coord-r7-core-review-20261026\test_review_core.py:95: in test_exact_day_bounds_and_reset
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_actor_purpose_course_trace_and_failure_aggregation" time="0.037"><failure message="sqlite3.OperationalError: near &quot;WITH&quot;: syntax error">..\coord-r7-core-review-20261026\test_review_core.py:120: in test_actor_purpose_course_trace_and_failure_aggregation
+    view = modules.usage.my_learning_usage(ACTOR, None, runtime(ledger, now))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:21: in my_learning_usage
+    ???
+C:\Users\ngoco\Desktop\Doctoroadmap\tmp\w16-usage-backend\src\web\backend\wayfinder\infrastructure\learning_usage.py#in-memory:18: in total
+    ???
+..\coord-r7-core-review-20261026\test_review_core.py:74: in usage_rows
+    rows = [json.loads(row[0]) for row in self.db.execute(str(compiled), params)]
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   sqlite3.OperationalError: near "WITH": syntax error</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[None-2026-01-31]" time="0.489" /><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[None-2026-12-31]" time="0.031" /><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[None-2028-02-29]" time="0.033" /><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[3-2026-01-31]" time="0.024" /><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[3-2026-12-31]" time="0.035" /><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_real_quota_sql_counts_exact_month_not_dollars[3-2028-02-29]" time="0.033" /><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_actual_http_response_model_removes_private_nested_keys" time="0.242"><failure message="AssertionError: R7 offline review forbids network, PostgreSQL and provider connections">..\coord-r7-core-review-20261026\test_review_core.py:193: in test_actual_http_response_model_removes_private_nested_keys
+    with TestClient(app) as client:
+         ^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\starlette\testclient.py:559: in __enter__
+    self.portal = portal = stack.enter_context(anyio.from_thread.start_blocking_portal(**self.async_backend))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py:526: in enter_context
+    result = _enter(cm)
+             ^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\contextlib.py:137: in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\anyio\from_thread.py:548: in start_blocking_portal
+    portal = future.result()
+             ^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:456: in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\concurrent\futures\_base.py:401: in __get_result
+    raise self._exception
+..\..\.venv\Lib\site-packages\anyio\from_thread.py:536: in run_blocking_portal
+    run_eventloop(
+..\..\.venv\Lib\site-packages\anyio\_core\_eventloop.py:83: in run
+    return async_backend.run(func, args, {}, backend_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.venv\Lib\site-packages\anyio\_backends\_asyncio.py:2480: in run
+    with Runner(debug=debug, loop_factory=loop_factory) as runner:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\runners.py:58: in __enter__
+    self._lazy_init()
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\runners.py:137: in _lazy_init
+    self._loop = events.new_event_loop()
+                 ^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py:823: in new_event_loop
+    return get_event_loop_policy().new_event_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\events.py:720: in new_event_loop
+    return self._loop_factory()
+           ^^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\windows_events.py:316: in __init__
+    super().__init__(proactor)
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py:640: in __init__
+    self._make_self_pipe()
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\asyncio\proactor_events.py:787: in _make_self_pipe
+    self._ssock, self._csock = socket.socketpair()
+                               ^^^^^^^^^^^^^^^^^^^
+..\..\.uv-python\cpython-3.12.11-windows-x86_64-none\Lib\socket.py:623: in _fallback_socketpair
+    csock.connect((addr, port))
+..\coord-r7-core-review-20261026\conftest.py:10: in forbidden
+    raise AssertionError('R7 offline review forbids network, PostgreSQL and provider connections')
+E   AssertionError: R7 offline review forbids network, PostgreSQL and provider connections</failure></testcase><testcase classname="tmp.coord-r7-core-review-20261026.test_review_core" name="test_repository_rejects_naive_since" time="0.002" /></testsuite></testsuites>
