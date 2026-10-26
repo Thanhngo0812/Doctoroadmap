@@ -19,6 +19,7 @@ from urllib.request import Request, urlopen
 from doc2roadmap.application.ports.phase_b import Delta, Done, ToolCall
 from doc2roadmap.application.ports.extraction import ExtractionReply
 from doc2roadmap.infrastructure.google_auth import VertexCredentials
+from doc2roadmap.infrastructure.llm.developer_api_schema import for_developer_api
 
 
 _DEV = "https://generativelanguage.googleapis.com/v1beta/models/{model}:{operation}"
@@ -76,6 +77,7 @@ class GeminiToolModel:
             if stream:
                 url += "?alt=sse"
             headers = {"x-goog-api-key": self.api_key or ""}
+            body = for_developer_api(body)
         request = Request(
             url,
             data=json.dumps(body, ensure_ascii=False, separators=(",", ":")).encode("utf-8"),
