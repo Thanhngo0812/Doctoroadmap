@@ -7,6 +7,7 @@ import sys
 # tên lệnh con -> mô-đun có `them_lenh(parser)`; parser đặt `args.chay` là hàm nhận args và trả mã thoát
 _LENH = {
     "phieu-g3": "danhgia.phieu.lenh_g3",
+    "phieu-g4": "danhgia.phieu.lenh_g4",
 }
 
 
