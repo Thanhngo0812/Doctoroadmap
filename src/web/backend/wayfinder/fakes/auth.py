@@ -50,6 +50,13 @@ class FakeAuthStore:
             self.credentials_by_email[updated.email_normalized], account=updated
         )
 
+    def update_profile(self, account_id: str, display_name: str, at: datetime) -> Account:
+        updated = replace(self.accounts[account_id], display_name=display_name, updated_at=at)
+        self.accounts[account_id] = updated
+        self.credentials_by_email[updated.email_normalized] = replace(
+            self.credentials_by_email[updated.email_normalized], account=updated)
+        return updated
+
     def get_session(self, token_hash: bytes) -> AuthSession | None:
         return self.sessions.get(token_hash)
 
@@ -68,9 +75,9 @@ class FakeAuthStore:
         if session is not None:
             self.sessions.pop(session.token_hash, None)
 
-    def delete_account_sessions(self, account_id: str) -> None:
+    def delete_account_sessions(self, account_id: str, *, except_session_id: str | None = None) -> None:
         for session in list(self.sessions_by_id.values()):
-            if session.account_id == account_id:
+            if session.account_id == account_id and session.id != except_session_id:
                 self.delete_session(session.id)
 
     def create_email_token(self, token: EmailToken) -> None:
