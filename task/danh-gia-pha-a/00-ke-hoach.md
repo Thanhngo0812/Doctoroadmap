@@ -15,7 +15,7 @@ Mỗi vé có worktree `tmp/dg-NN` và nhánh `work/dg-NN-<tên>`. Claude ghép 
 
 | Vé | Việc | Ai | Chặn bởi | Hạn | Trạng thái |
 |---|---|---|---|---|---|
-| [01](01-manifest-va-boc-chuong.md) | Manifest sách, bốc chương theo seed, kiểm PDF gốc | Claude | — | 28/10 | chưa làm |
+| [01](01-manifest-va-boc-chuong.md) | Manifest sách, bốc chương theo seed, kiểm PDF gốc | Claude | — | 28/10 | Claude cài xong trên `work/dg-01-bo-sach` (nối tiếp DG-05; 11 test, phá 8/8); manifest tập phát triển xong; manifest tập thử chờ sách |
 | [02](02-phieu-g3-kho-khai-niem.md) | Hướng dẫn và phiếu G3 trọn vòng, tới kho chốt | Claude (hướng dẫn) + agent A | lược đồ manifest của 01 | 28/10 | agent A đang cài (2026-10-26); hướng dẫn g3-1 chờ duyệt |
 | [03](03-phieu-g4-quan-he.md) | Hướng dẫn và phiếu G4 trọn vòng, tới vàng chính/hợp/giao | Claude (hướng dẫn) + agent A | 02 | 29/10 | hướng dẫn g4-1 chờ duyệt; công cụ chờ 02 |
 | [04](04-hop-dong-xuat-cham-a8-a10.md) | Hợp đồng đánh giá, bộ xuất hệ chính, chấm A8/A10, đối chiếu bộ chấm cũ | agent B | — | 29/10 | agent B đang cài (2026-10-26) |
