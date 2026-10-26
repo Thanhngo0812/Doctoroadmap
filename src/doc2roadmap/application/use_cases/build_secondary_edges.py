@@ -23,8 +23,22 @@ from doc2roadmap.domain.secondary import (
 )
 
 
+def chuan_hoa_loc_dich(target_filter):
+    """Bộ lọc cặp theo đích (DG-06): None = không lọc; danh sách rỗng là lỗi, không âm thầm bỏ hết cặp."""
+    if target_filter is None:
+        return None
+    if isinstance(target_filter, (str, bytes)) or not isinstance(target_filter, (list, tuple, set, frozenset)):
+        raise ValueError("bộ lọc đích pass phụ phải là danh sách id node hoặc None")
+    if not target_filter:
+        raise ValueError("danh sách đích pass phụ rỗng: bỏ hết mọi cặp; dùng None để không lọc")
+    if any(not isinstance(value, str) or not value for value in target_filter):
+        raise ValueError("bộ lọc đích pass phụ phải là danh sách id node (chuỗi không rỗng)")
+    return sorted(set(target_filter))
+
+
 class BuildSecondaryEdges:
-    def __init__(self, store, model, *, concurrency=4, window_pairs=None, generation=None):
+    def __init__(self, store, model, *, concurrency=4, window_pairs=None, generation=None, target_filter=None):
+        self.target_filter = chuan_hoa_loc_dich(target_filter)
         if type(concurrency) is not int or concurrency < 1:
             raise ValueError("concurrency phải là số nguyên dương")
         if window_pairs is not None and (type(window_pairs) is not int or window_pairs < 1):
@@ -34,6 +48,14 @@ class BuildSecondaryEdges:
         self.concurrency = concurrency
         self.window_pairs = window_pairs or max(1, concurrency // 2)
         self.generation = generation or {"temperature": 0.0, "max_output_tokens": 8192}
+
+    def _loc_cap(self, pairs):
+        """Giữ cặp có ít nhất một đầu là đích được phép; cặp không có đầu nào thì không được chấm hay gửi đi."""
+        allowed = getattr(self, "target_filter", None)
+        if allowed is None:
+            return pairs
+        allowed = set(allowed)
+        return [pair for pair in pairs if pair["left"] in allowed or pair["right"] in allowed]
 
     def _edge_checkpoint(self, doc_id, latest):
         artifact = latest
@@ -117,6 +139,8 @@ class BuildSecondaryEdges:
             "pricing_usd_per_million": PRICING_USD_PER_MILLION,
             "pricing_source": PRICING_SOURCE,
         }
+        if getattr(self, "target_filter", None) is not None:  # chỉ khi bật: tắt thì hash cấu hình giữ nguyên từng bit
+            base_config["target_filter"] = self.target_filter
         base_config_hash = digest(base_config)
         source_hash = digest(main.payload)
         cached = self.store.find_graph(doc_id, source_hash, base_config_hash)
@@ -146,6 +170,7 @@ class BuildSecondaryEdges:
             [],
             route=route,
         )
+        pairs = self._loc_cap(pairs)
         pending = [pair for pair in pairs if pair["pair_id"] not in completed]
         system_prompt = secondary_system_prompt()
         if planning:
